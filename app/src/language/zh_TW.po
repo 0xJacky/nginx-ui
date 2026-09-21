@@ -238,6 +238,17 @@ msgstr "私有 CA："
 msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可訪問的 IP 地址均可用於私有證書頒發機構"
 
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr "DNS-01 驗證需要 DNS-01 外掛，請前往「系統 > 外掛」安裝。"
+
+msgid "Install DNS-01 plugin"
+msgstr "安裝 DNS-01 外掛"
+
+msgid "Go to System > Plugins"
+msgstr "前往「系統 > 外掛」"
+
 msgid "Challenge Method"
 msgstr "驗證方式"
 
@@ -264,6 +275,9 @@ msgstr "OCSP 強制裝訂可能會導致部分使用者在首次使用 Firefox �
 msgid "Lego disable CNAME Support"
 msgstr "Lego 停用 CNAME 支援"
 
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "如果您的域名有 CNAME 記錄且無法獲取證書，"
+
 msgid ""
 "If your domain has CNAME records and you cannot obtain certificates, you "
 "need to enable this option."
@@ -271,6 +285,9 @@ msgstr "如果您的網域有 CNAME 記錄且無法取得憑證，則需要啟�
 
 msgid "Disable Authoritative DNS Propagation Check"
 msgstr "停用權威 DNS 傳播檢查"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr "跳過本地 DNS 傳播檢查，並在請求前等待 60 秒。"
 
 msgid ""
 "Skip local DNS propagation checks and wait 60 seconds before asking the "
@@ -410,27 +427,6 @@ msgstr "停用"
 
 msgid "Maintenance"
 msgstr "維護"
-
-msgid "Site"
-msgstr "站點"
-
-msgid "Stream"
-msgstr "串流"
-
-msgid "Configuration"
-msgstr "配置"
-
-msgid "+%{count} more"
-msgstr "+%{count} 更多"
-
-msgid "Search"
-msgstr "搜尋"
-
-msgid "No file matches the search"
-msgstr "沒有符合的檔案"
-
-msgid "Not used"
-msgstr "未使用"
 
 msgid "Starting download..."
 msgstr "開始下載..."
@@ -913,6 +909,9 @@ msgstr "完成"
 msgid "Unknown"
 msgstr "未知"
 
+msgid "Search"
+msgstr "搜尋"
+
 msgid "Open in split view"
 msgstr "在分割檢視中開啟"
 
@@ -1009,6 +1008,12 @@ msgstr ""
 "任務 %{backup_name} 的舊備份未被刪除，因為任務 %{conflict_names} "
 "會將同名備份檔案寫入同一儲存位置。請重新命名其中一個任務或變更其儲存路徑。"
 
+msgid "Backups to Keep"
+msgstr "保留備份數"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "保留備份數（0 表示全部保留）"
+
 msgid "Renew Certificate Success"
 msgstr "更新憑證成功"
 
@@ -1020,6 +1025,14 @@ msgstr "更新憑證錯誤"
 
 msgid "Certificate %{name} renewal failed: %{error}"
 msgstr "憑證 %{name} 續期失敗：%{error}"
+
+msgid "DNS-01 plugin unavailable"
+msgstr "DNS-01 外掛不可用"
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr "憑證 %{name} 無法續簽，因為沒有已啟用的外掛提供 DNS-01 驗證"
 
 msgid "Certificate Expired"
 msgstr "憑證已過期"
@@ -1038,14 +1051,6 @@ msgstr "憑證 %{name} 將在 %{days} 天後過期"
 
 msgid "Certificate Expiring Soon"
 msgstr "憑證即將到期"
-
-msgid "Certificate Relocated"
-msgstr "憑證已遷移"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr "憑證 %{name} 現已儲存在 %{path}，請將載入 %{previous_path} 的站點指向它"
 
 msgid "Sync Certificate Error"
 msgstr "同步憑證錯誤"
@@ -1581,51 +1586,6 @@ msgstr "使用恢復碼"
 msgid "Use OTP"
 msgstr "使用一次性密碼"
 
-msgid "Recovery codes downloaded"
-msgstr "復原碼已下載"
-
-msgid "MFA setup completed. Save your recovery codes before continuing."
-msgstr "MFA 設定已完成。請在繼續之前儲存您的復原代碼。"
-
-msgid "Download"
-msgstr "下載"
-
-msgid "Continue"
-msgstr "繼續"
-
-msgid "MFA session expired. Please sign in again."
-msgstr "MFA 會話已過期。請重新登入。"
-
-msgid "MFA is required. Set up an authenticator or a passkey to continue."
-msgstr "需要 MFA。請設定驗證器或通行密鑰以繼續。"
-
-msgid "Verify your MFA method to continue signing in."
-msgstr "驗證您的 MFA 方法以繼續登入。"
-
-msgid "Enable TOTP"
-msgstr "啟用 TOTP"
-
-msgid "Verify"
-msgstr "驗證"
-
-msgid "Add a passkey"
-msgstr "新增通行金鑰"
-
-msgid "Back to sign in"
-msgstr "返回登入"
-
-msgid "Secret has been copied"
-msgstr "金鑰已複製"
-
-msgid "Click to copy"
-msgstr "點選複製"
-
-msgid "Current Password"
-msgstr "當前密碼"
-
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr "用手機掃描二維碼將賬戶新增到應用程式中。"
-
 msgid "Generate new recovery codes"
 msgstr "產生新的復原代碼"
 
@@ -1645,11 +1605,6 @@ msgstr "需要多重因素驗證"
 
 msgid "Invalid passcode or recovery code"
 msgstr "無效的密碼或恢復碼"
-
-msgid ""
-"Enable MFA on your own account before managing MFA policies or resetting "
-"another user."
-msgstr "在管理 MFA 政策或重設其他使用者之前，請先在您自己的帳戶上啟用 MFA。"
 
 msgid "Node Status"
 msgstr "節點狀態"
@@ -2258,6 +2213,9 @@ msgstr "歸檔中未找到私鑰"
 msgid "No certificate in the archive matches its private key"
 msgstr "歸檔中沒有憑證與其私鑰匹配"
 
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr "{0} 沒有可用的 DNS-01 提供者：請安裝並啟用 DNS-01 外掛"
+
 msgid "Path is not under the nginx conf dir"
 msgstr "路徑不在 Nginx 設定目錄下"
 
@@ -2281,9 +2239,6 @@ msgstr "檔案內容包含無效的控制字元"
 
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "檔案內容包含受限的 nginx 指令：{0}"
-
-msgid "File content must be valid PEM or htpasswd data"
-msgstr "檔案內容必須是有效的 PEM 或 htpasswd 資料"
 
 msgid "Destination file: {0} already exists"
 msgstr "目標檔案: {0} 已存在"
@@ -2472,71 +2427,6 @@ msgstr "掃描主機金鑰失敗： {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "主機金鑰演算法不相符：預期 {0}，實際為 {1}"
-
-msgid "Invalid request: {0}"
-msgstr "無效的請求：{0}"
-
-msgid ""
-"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
-"starting and ending with a letter or digit"
-msgstr "無效的 Ingress 名稱：請使用 1-40 個小寫字母、數字和連字號，並以字母或數字開頭和結尾"
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr "無效的擁有者：請使用 1-64 個字母、數字、點、底線和連字號"
-
-msgid "Invalid host: {0}"
-msgstr "無效的主機：{0}"
-
-msgid "Invalid backend {0}: {1}"
-msgstr "無效的後端 {0}：{1}"
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr "後端伺服器 {0} 不在允許的後端位址範圍內"
-
-msgid "Invalid route {0}: {1}"
-msgstr "無效的路由 {0}：{1}"
-
-msgid "Invalid tls: {0}"
-msgstr "無效的 TLS 配置：{0}"
-
-msgid "Invalid policy: {0}"
-msgstr "無效的策略：{0}"
-
-msgid "Server {0} not found in backend {1}"
-msgstr "後端 {1} 中找不到伺服器 {0}"
-
-msgid "Ingress {0} not found"
-msgstr "找不到 Ingress {0}"
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr "Ingress {0} 屬於 {1}；如需接管請傳入 force"
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr "主機 {0} 已由 Ingress {1} 提供服務"
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr "網站 {0} 已存在，且不由此 Ingress 管理"
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr "Ingress {0} 在刪除過程中被更新"
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr "Upstream {0} 已存在，且不由此 Ingress 管理"
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr "等待 Ingress {0} 達到版本 {1} 逾時"
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr "等待 Ingress {0} 刪除逾時"
-
-msgid "Apply failed: {0}"
-msgstr "套用失敗：{0}"
-
-msgid "Certificate not ready: {0}"
-msgstr "憑證未就緒：{0}"
-
-msgid "Not implemented"
-msgstr "尚未實作"
 
 msgid "Code completion is not enabled"
 msgstr "程式碼補全未啟用"
@@ -2740,6 +2630,66 @@ msgstr "構建 nginx 配置失敗: {0}"
 msgid "Failed to get nginx.conf path"
 msgstr "無法獲取 nginx.conf 路徑"
 
+msgid "Plugin manifest is invalid"
+msgstr "外掛清單無效"
+
+msgid "Plugin not found"
+msgstr "找不到外掛"
+
+msgid "Plugin already exists"
+msgstr "外掛已存在"
+
+msgid "Plugin is not running"
+msgstr "外掛未執行"
+
+msgid "Plugin handshake failed"
+msgstr "外掛握手失敗"
+
+msgid "Plugin has no executable for this platform"
+msgstr "外掛沒有適用於此平台的可執行檔"
+
+msgid "Plugin package is invalid"
+msgstr "外掛套件無效"
+
+msgid "Plugin package is too large"
+msgstr "外掛套件過大"
+
+msgid "Plugin api version is incompatible"
+msgstr "外掛 API 版本不相容"
+
+msgid "Plugin permissions need approval"
+msgstr "外掛權限需要核准"
+
+msgid "Plugin dependency is missing: {0}"
+msgstr "外掛缺少相依項目：{0}"
+
+msgid "Plugin dependencies form a cycle"
+msgstr "外掛相依關係形成循環"
+
+msgid "Plugin is in use by {0}"
+msgstr "外掛正被 {0} 使用中"
+
+msgid "Plugin system is disabled"
+msgstr "外掛系統已停用"
+
+msgid "Plugin uploads are disabled"
+msgstr "外掛上傳已停用"
+
+msgid "Plugin call timed out"
+msgstr "外掛呼叫逾時"
+
+msgid "Plugin rpc error: {0}"
+msgstr "外掛 RPC 錯誤：{0}"
+
+msgid "Plugin setting {0} is invalid"
+msgstr "外掛設定 {0} 無效"
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr "外掛需要 nginx-ui {0} 或更新版本，而此節點執行的是 {1}"
+
+msgid "Plugin package declares another id"
+msgstr "外掛套件宣告了另一個 ID"
+
 msgid "Task not found"
 msgstr "找不到任務"
 
@@ -2858,37 +2808,6 @@ msgstr "網站處於維護模式"
 
 msgid "Read dir failed: {0}"
 msgstr "讀取目錄失敗: {0}"
-
-msgid ""
-"Site is managed by ingress {0}; change the ingress instead or force the "
-"change"
-msgstr "網站由 Ingress {0} 管理；請修改該 Ingress，或強制執行此變更"
-
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr "檔名必須以 .conf 結尾，且只能包含字母、數字、點、連字號和底線"
-
-msgid "Snippet not found"
-msgstr "找不到片段"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "片段超過 256 KiB"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "片段的檔案標頭無法解析：{0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "片段仍被以下檔案引用：{0}"
-
-msgid "A snippet with this file name already exists"
-msgstr "已存在相同檔名的片段"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "變數 {0} 無效：{1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "內容無法解析為範本：{0}"
 
 msgid "Stream not found"
 msgstr "串流未找到"
@@ -3059,9 +2978,6 @@ msgid ""
 "from the additional directives"
 msgstr "共享記憶體區域由 zone 開關設定；請從附加指令中移除 zone 指令"
 
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr "以 {0} 開頭的 upstream 名稱保留給 Ingress 使用"
-
 msgid "Upstream not found: {0}"
 msgstr "未找到 upstream：{0}"
 
@@ -3081,11 +2997,6 @@ msgid ""
 "The shared memory zone {0} is already used by another directive; nginx "
 "reported: {1}"
 msgstr "共享記憶體區域 {0} 已被其他指令使用；nginx 報告：{1}"
-
-msgid ""
-"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
-"the change"
-msgstr "Upstream {0} 由 Ingress {1} 管理；請修改該 Ingress，或強制執行此變更"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "nginx conf.d 目錄不可用: {0}"
@@ -3113,15 +3024,6 @@ msgstr "無效的恢復碼"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "不允許使用舊版恢復代碼，因為未啟用 TOTP 功能"
-
-msgid "MFA enrollment is required"
-msgstr "需要註冊 MFA"
-
-msgid "MFA verification is required"
-msgstr "需要進行 MFA 驗證"
-
-msgid "Cannot remove the last required MFA method"
-msgstr "無法移除最後一個必要的 MFA 方法"
 
 msgid "WebAuthn settings are not configured"
 msgstr "WebAuthn 設定尚未設定"
@@ -3990,9 +3892,6 @@ msgstr "群組記錄"
 msgid "Not Found"
 msgstr "找不到頁面"
 
-msgid "Ingresses"
-msgstr "Ingress"
-
 msgid "Namespaces"
 msgstr "命名空間"
 
@@ -4020,18 +3919,6 @@ msgstr "網站列表"
 msgid "Add Site"
 msgstr "新增網站"
 
-msgid "Snippets"
-msgstr "片段"
-
-msgid "Create Snippet"
-msgstr "建立片段"
-
-msgid "Built-in Template"
-msgstr "內建範本"
-
-msgid "Edit Snippet"
-msgstr "編輯片段"
-
 msgid "Edit Site"
 msgstr "編輯網站"
 
@@ -4043,6 +3930,9 @@ msgstr "編輯 Stream"
 
 msgid "Upgrade"
 msgstr "升級"
+
+msgid "Plugins"
+msgstr "外掛"
 
 msgid "About"
 msgstr "關於"
@@ -4109,17 +3999,29 @@ msgid ""
 "uses it."
 msgstr "存取清單將 IP 位址集中管理。可在網站編輯器中為伺服器或位置選擇存取清單；在此處修改清單會同步更新所有使用該清單的網站。"
 
+msgid "+%{count} more"
+msgstr "+%{count} 更多"
+
 msgid "Deny"
 msgstr "拒絕"
 
 msgid "Allow"
 msgstr "允許"
 
+msgid "Not used"
+msgstr "未使用"
+
 msgid "Use list"
 msgstr "使用清單"
 
 msgid "Deny (403)"
 msgstr "拒絕 (403)"
+
+msgid "Site"
+msgstr "站點"
+
+msgid "Stream"
+msgstr "串流"
 
 msgid "Access list %{name} saved"
 msgstr "存取清單 %{name} 已儲存"
@@ -4146,6 +4048,10 @@ msgstr "操作"
 
 msgid "Address or list"
 msgstr "位址或列表"
+
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "備註"
 
 msgid "Select a list"
 msgstr "選擇清單"
@@ -4211,15 +4117,6 @@ msgstr "每週 %{day} 的 %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "每月 %{day} 日 %{time}"
-
-msgid "Backups to Keep"
-msgstr "保留備份數"
-
-msgid "All"
-msgstr "全部"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "保留備份數（0 表示全部保留）"
 
 msgid "Last Backup Time"
 msgstr "上次備份時間"
@@ -4572,10 +4469,6 @@ msgstr "無法驗證部署狀態"
 msgid "Not After"
 msgstr "不晚於"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "被 %{count} 個配置使用"
-
 msgid "Failed to scan certificates"
 msgstr "掃描憑證失敗"
 
@@ -4620,12 +4513,6 @@ msgstr "返回"
 
 msgid "This field is required"
 msgstr "此欄位為必填項"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "路徑存在，但檔案不是憑證"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "路徑存在，但檔案不是金鑰"
 
 msgid "Sync to"
 msgstr "同步到"
@@ -4696,6 +4583,9 @@ msgstr "憑證檔案下載成功"
 
 msgid "Failed to download certificate files"
 msgstr "下載憑證檔案失敗"
+
+msgid "Download"
+msgstr "下載"
 
 msgid "Download Certificate Files"
 msgstr "下載證書文件"
@@ -4861,14 +4751,14 @@ msgstr "若要確認撤銷，請在下方欄位中輸入「撤銷」："
 msgid "Renew successfully"
 msgstr "更新成功"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert 正在執行中，請稍候..."
+msgid "Renew"
+msgstr "更換"
 
 msgid "Renew Certificate"
 msgstr "更換憑證"
 
-msgid "Renew"
-msgstr "更換"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert 正在執行中，請稍候..."
 
 msgid "Certificate issued successfully"
 msgstr "憑證簽發成功"
@@ -5745,6 +5635,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "其他設定"
 
+msgid "All"
+msgstr "全部"
+
 msgid "Host, e.g. @ or www"
 msgstr "主機，例如 @ 或 www"
 
@@ -5895,6 +5788,9 @@ msgstr "名稱不能為空"
 
 msgid "Please select DNS provider"
 msgstr "請選擇 DNS 供應商"
+
+msgid "Configuration"
+msgstr "配置"
 
 msgid "DNS Credentials"
 msgstr "DNS 認證"
@@ -6254,6 +6150,9 @@ msgstr "建立記錄"
 msgid "Unknown error"
 msgstr "未知錯誤"
 
+msgid "Plugin %{plugin} failed to render"
+msgstr "外掛 %{plugin} 渲染失敗"
+
 msgid "Manage DNS zones and records for domains under your account."
 msgstr "管理帳戶下網域的 DNS 區域與記錄。"
 
@@ -6316,296 +6215,6 @@ msgstr "檢視系統健康狀態、升級狀態與元件詳情。"
 
 msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr "存取整合終端工作階段以執行維護任務。"
-
-msgid "HTTP only"
-msgstr "僅 HTTP"
-
-msgid "Not issued yet"
-msgstr "尚未簽發"
-
-msgid "Expired %{date}"
-msgstr "已於 %{date} 過期"
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] "%{date}（剩餘 %{days} 天）"
-
-msgid "Address"
-msgstr "地址"
-
-msgid "Health"
-msgstr "健康狀態"
-
-msgid "Max Fails"
-msgstr "最大失敗次數"
-
-msgid "Fail Timeout"
-msgstr "故障逾時"
-
-msgid "Path Prefix"
-msgstr "路徑前綴"
-
-msgid "Backend"
-msgstr "後端"
-
-msgid "Options"
-msgstr "選項"
-
-msgid "Allowed Sources"
-msgstr "允許的來源"
-
-msgid "Last Transition"
-msgstr "最後變更時間"
-
-msgid "Drained"
-msgstr "已摘除"
-
-msgid "No Data"
-msgstr "無資料"
-
-msgid "Healthy"
-msgstr "健康"
-
-msgid "Unhealthy"
-msgstr "不健康"
-
-msgid ""
-"The generated site could not be loaded. It is written by the first "
-"successful apply."
-msgstr "無法載入產生的網站。網站檔案會在首次成功套用時寫入。"
-
-msgid "Reconcile Now"
-msgstr "立即調和"
-
-msgid "The last apply failed; the previous config is still live"
-msgstr "上次套用失敗；先前的配置仍在生效"
-
-msgid "Owner"
-msgstr "擁有者"
-
-msgid "External ID"
-msgstr "外部 ID"
-
-msgid "Generation"
-msgstr "版本"
-
-msgid "%{observed} applied of %{generation}"
-msgstr "已套用 %{observed} / 共 %{generation}"
-
-msgid "Generated Site"
-msgstr "產生的網站"
-
-msgid "Last Applied"
-msgstr "最後套用時間"
-
-msgid "Config Hash"
-msgstr "配置雜湊"
-
-msgid "Labels"
-msgstr "標籤"
-
-msgid "Hosts"
-msgstr "主機"
-
-msgid "TLS"
-msgstr "TLS"
-
-msgid "Mode"
-msgstr "模式"
-
-msgid "Certificate"
-msgstr "憑證"
-
-msgid "View certificate"
-msgstr "檢視憑證"
-
-msgid "Challenge"
-msgstr "驗證方式"
-
-msgid "Redirect to HTTPS"
-msgstr "重新導向至 HTTPS"
-
-msgid "HSTS"
-msgstr "HSTS"
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr "憑證簽發前僅提供 HTTP 監聽。"
-
-msgid "Backends"
-msgstr "後端"
-
-msgid "Routes"
-msgstr "路由"
-
-msgid "Policy default"
-msgstr "使用策略預設值"
-
-msgid "Policy"
-msgstr "策略"
-
-msgid "Everyone"
-msgstr "所有人"
-
-msgid "Rate Limit"
-msgstr "速率限制"
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr "每個用戶端 %{rps} 請求/秒，突發 %{burst}"
-
-msgid "Unlimited"
-msgstr "不限制"
-
-msgid "Max Body Size"
-msgstr "最大請求主體大小"
-
-msgid "Extra Headers"
-msgstr "附加請求標頭"
-
-msgid "Conditions"
-msgstr "狀態條件"
-
-msgid "True"
-msgstr "是"
-
-msgid "False"
-msgstr "否"
-
-msgid "Generated Site Config"
-msgstr "產生的網站配置"
-
-msgid "Open in site editor"
-msgstr "在網站編輯器中開啟"
-
-msgid "Not ready"
-msgstr "未就緒"
-
-msgid "The latest spec has not been applied yet"
-msgstr "最新的規格尚未套用"
-
-msgid "Applying"
-msgstr "套用中"
-
-msgid "Ready"
-msgstr "就緒"
-
-msgid "Degraded"
-msgstr "降級"
-
-msgid "Config Applied"
-msgstr "配置已套用"
-
-msgid "Certificate Ready"
-msgstr "憑證就緒"
-
-msgid "Backends Healthy"
-msgstr "後端健康"
-
-msgid "Issued automatically (ACME)"
-msgstr "自動簽發（ACME）"
-
-msgid "Existing certificate"
-msgstr "現有憑證"
-
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Round Robin"
-msgstr "輪詢"
-
-msgid "Least Connections"
-msgstr "最少連接"
-
-msgid "IP Hash"
-msgstr "IP 雜湊"
-
-msgid "All owners"
-msgstr "全部擁有者"
-
-msgid "Reconcile of %{name} queued"
-msgstr "已將 %{name} 加入調和佇列"
-
-msgid "Delete ingress %{name}?"
-msgstr "刪除 Ingress %{name}？"
-
-msgid ""
-"This ingress is owned by %{owner}. Its controller will probably recreate it "
-"on the next sync; remove it from the controller to delete it for good."
-msgstr "此 Ingress 屬於 %{owner}。其控制器很可能在下次同步時重新建立它；如需徹底刪除，請在控制器中移除。"
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr "將刪除產生的網站和上游檔案，並重新載入 Nginx。"
-
-msgid "Also delete the certificate"
-msgstr "同時刪除憑證"
-
-msgid "Ingress %{name} deleted"
-msgstr "已刪除 Ingress %{name}"
-
-msgid "Ingress"
-msgstr "Ingress"
-
-msgid "Phase"
-msgstr "階段"
-
-msgid "%{healthy}/%{total} healthy"
-msgstr "%{healthy}/%{total} 健康"
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] "%{total} 台伺服器"
-
-msgid "%{count} down"
-msgstr "%{count} 台已摘除"
-
-msgid "Filter by owner"
-msgstr "依擁有者篩選"
-
-msgid "Applied generation / latest generation"
-msgstr "已套用版本 / 最新版本"
-
-msgid "gen %{observed}/%{generation}"
-msgstr "版本 %{observed}/%{generation}"
-
-msgid "Reconcile"
-msgstr "調和"
-
-msgid ""
-"Ingresses are reverse proxy entries published by external controllers "
-"through the Ingress API. Nginx UI renders each one into a managed site and "
-"upstreams, issues its certificate and reports its status here. Change them "
-"in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-"Ingress 是外部控制器透過 Ingress API 發佈的反向代理項目。Nginx UI 會將每個 Ingress "
-"轉譯為受管網站和上游，簽發憑證，並在這裡回報狀態。請在控制器中修改它們；在此處所做的修改會被下一次調和覆寫。"
-
-msgid "Learn more"
-msgstr "了解更多"
-
-msgid "No ingresses yet"
-msgstr "尚無 Ingress"
-
-msgid ""
-"A controller such as a deployment platform creates ingresses with PUT "
-"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
-"They show up here as soon as they are stored."
-msgstr ""
-"部署平台等控制器透過 PUT /api/ingresses/:name 建立 Ingress，以叢集節點身分或 API 權杖認證。Ingress "
-"儲存後會立即顯示在這裡。"
-
-msgid "Read the Ingress API guide"
-msgstr "閱讀 Ingress API 指南"
-
-msgid "Search by name, host or external ID"
-msgstr "依名稱、主機或外部 ID 搜尋"
-
-msgid "Search ingresses"
-msgstr "搜尋 Ingress"
-
-msgid "No ingress matches the filter"
-msgstr "沒有符合篩選條件的 Ingress"
 
 msgid "Please input your E-mail!"
 msgstr "請輸入您的電子郵件！"
@@ -7517,6 +7126,15 @@ msgstr "版本"
 msgid "Authentication"
 msgstr "認證"
 
+msgid "Accept plugin sync"
+msgstr "接受外掛同步"
+
+msgid "Accepted"
+msgstr "已接受"
+
+msgid "Opted out"
+msgstr "已選擇退出"
+
 msgid "The selected content will be pushed to: %{nodes}"
 msgstr "所選內容將推送到：%{nodes}"
 
@@ -7698,14 +7316,6 @@ msgid ""
 "this value."
 msgstr "當憑證剩餘有效期小於或等於此值時續簽憑證。"
 
-msgid "Recursive Nameservers"
-msgstr "遞迴名稱伺服器"
-
-msgid ""
-"Set the recursive nameservers to override the systems nameservers for the "
-"step of DNS challenge."
-msgstr "設定遞迴網域名稱伺服器，在 DNS 驗證步驟中覆寫系統的網域名稱伺服器。"
-
 msgid "Stub Status Port"
 msgstr "存根狀態端口"
 
@@ -7874,6 +7484,9 @@ msgstr "請將類似 100000_full.json 的檔案放在此目錄，預設只提供
 msgid "Register passkey successfully"
 msgstr "通行金鑰註冊成功"
 
+msgid "Add a passkey"
+msgstr "新增通行金鑰"
+
 msgid "Tips"
 msgstr "提示"
 
@@ -7889,6 +7502,9 @@ msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr "請按照對話框中的指示完成通行金鑰的註冊流程。"
+
+msgid "Current Password"
+msgstr "當前密碼"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -8000,9 +7616,6 @@ msgstr "請輸入目前密碼"
 msgid "Enable 2FA successfully"
 msgstr "啟用多因素身份驗證成功"
 
-msgid "TOTP disabled"
-msgstr "TOTP 已停用"
-
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -8016,25 +7629,23 @@ msgid ""
 "on your mobile phone."
 msgstr "要啟用它，您需要在手機上安裝 Google 或 Microsoft Authenticator 應用程式。"
 
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr "用手機掃描二維碼將賬戶新增到應用程式中。"
+
 msgid "Current account is not enabled TOTP."
 msgstr "目前帳戶未啟用 TOTP。"
 
 msgid "Current account is enabled TOTP."
 msgstr "目前帳戶已啟用 TOTP。"
 
-msgid "Replace TOTP"
-msgstr "取代 TOTP"
+msgid "Enable TOTP"
+msgstr "啟用 TOTP"
 
-msgid "Disable TOTP for this account?"
-msgstr "要為此帳戶停用 TOTP 嗎？"
+msgid "Secret has been copied"
+msgstr "金鑰已複製"
 
-msgid "Disable TOTP"
-msgstr "停用 TOTP"
-
-msgid ""
-"Your current authenticator remains active until the new code is verified. "
-"New recovery codes replace the old ones."
-msgstr "在新代碼驗證之前，您目前的驗證器將持續有效。新的恢復代碼將取代舊代碼。"
+msgid "Click to copy"
+msgstr "點選複製"
 
 msgid "Bark"
 msgstr "Bark"
@@ -9092,6 +8703,9 @@ msgstr "存取與安裝"
 msgid "File mode and setup instructions"
 msgstr "檔案存取模式與設定說明"
 
+msgid "Verify"
+msgstr "驗證"
+
 msgid "Run checks and save"
 msgstr "執行檢查並儲存"
 
@@ -9151,6 +8765,10 @@ msgstr "無法開啟 SSH 設定"
 
 msgid "Basics"
 msgstr "基礎"
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr "維護"
 
 msgid "Address, protocol and certificate used to reach this Nginx UI instance."
 msgstr "存取此 Nginx UI 執行個體所用的位址、協定和憑證。"
@@ -9356,25 +8974,6 @@ msgstr "一般"
 msgid "Banned Until"
 msgstr "禁止至"
 
-msgid "MFA Policy"
-msgstr "MFA 政策"
-
-msgid ""
-"Require MFA at the next sign-in. Users must enroll their own authenticator "
-"or passkey."
-msgstr "要求下次登入時使用 MFA。使用者必須註冊自己的 Authenticator 或 Passkey。"
-
-msgid "Require MFA for all users"
-msgstr "要求所有使用者啟用 MFA"
-
-msgid "Require local MFA for SSO sign-in"
-msgstr "要求 SSO 登入時使用本機 MFA"
-
-msgid ""
-"Apply local MFA verification and enrollment requirements to OIDC and "
-"Casdoor sign-in."
-msgstr "將本地 MFA 驗證和註冊要求應用於 OIDC 和 Casdoor 登入。"
-
 msgid "Passkeys"
 msgstr "Passkey"
 
@@ -9400,12 +8999,6 @@ msgstr "續期"
 
 msgid "Days"
 msgstr "天"
-
-msgid "DNS Challenge"
-msgstr "DNS 驗證"
-
-msgid "Are you sure you want to remove this item?"
-msgstr "您確定要刪除此項目嗎？"
 
 msgid "This notification is disabled"
 msgstr "此通知已停用"
@@ -9639,6 +9232,9 @@ msgstr "所有網路介面"
 msgid "HTTPS"
 msgstr "HTTPS"
 
+msgid "Certificate"
+msgstr "憑證"
+
 msgid "Pick the certificate that secures the web interface."
 msgstr "選擇用於保護網頁介面的憑證。"
 
@@ -9658,6 +9254,9 @@ msgstr "結束時間必須晚於開始時間"
 
 msgid "Set maintenance information"
 msgstr "設定維護資訊"
+
+msgid "Continue"
+msgstr "繼續"
 
 msgid "Start time"
 msgstr "開始時間"
@@ -9682,20 +9281,6 @@ msgstr "附加資訊"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "例如：預計復原方案或事件編號"
-
-msgid "Managed by ingress %{name}"
-msgstr "由 Ingress %{name} 管理"
-
-msgid ""
-"Changes will be overwritten by the next reconcile. Edit the ingress in its "
-"controller instead."
-msgstr "下一次調和會覆寫此處的修改。請改為在控制器中編輯該 Ingress。"
-
-msgid "View ingress"
-msgstr "檢視 Ingress"
-
-msgid "Edit anyway"
-msgstr "仍然編輯"
 
 msgid "Configuration Name"
 msgstr "設定名稱"
@@ -9907,9 +9492,6 @@ msgstr "命名空間"
 msgid "The parameter of server_name is required"
 msgstr "必須提供 server_name 參數"
 
-msgid "Config Template"
-msgstr "配置模板"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "啟用 HTTPS 前，請先儲存已編輯的設定。"
 
@@ -10004,28 +9586,11 @@ msgstr "自行簽署憑證"
 msgid "Generate self-signed certificate"
 msgstr "產生自簽名憑證"
 
-msgid "Built-in"
-msgstr "內建"
-
 msgid "Search templates"
 msgstr "搜尋模板"
 
-msgid "Snippet"
-msgstr "片段"
-
 msgid "Author"
 msgstr "作者"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr "引用會讓網站與 snippets/%{file} 保持關聯，之後對片段的修改都會作用到網站。插入則會把內容複製到網站中。"
-
-msgid "Insert"
-msgstr "插入"
-
-msgid "Include"
-msgstr "引用"
 
 msgid "Do you want to enable TLS?"
 msgstr "您想啟用 TLS 嗎？"
@@ -10048,6 +9613,15 @@ msgstr "HTTPS 設定會根據已儲存的設定產生 HTTPS server 區塊，該�
 
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "不是有效的網域名稱或 IP 位址：%{value}"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Existing certificate"
+msgstr "現有憑證"
 
 msgid "Skip for now"
 msgstr "暫時略過"
@@ -10280,6 +9854,9 @@ msgstr "重新創建 DNS 記錄"
 msgid "Clear Link"
 msgstr "清除連結"
 
+msgid "Config Template"
+msgstr "配置模板"
+
 msgid "Port Scanner"
 msgstr "端口掃描器"
 
@@ -10297,9 +9874,6 @@ msgstr "Nginx 設定解析錯誤"
 
 msgid "No."
 msgstr "序號"
-
-msgid "Ingress: %{name}"
-msgstr "Ingress：%{name}"
 
 msgid "Please input name, "
 msgstr "請輸入名稱，"
@@ -10366,9 +9940,992 @@ msgstr "為選取的站點設定維護資訊"
 msgid "%{count} sites selected"
 msgstr "%{count} 個已選站點"
 
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] "包含 %{count} 個由 Ingress 管理的網站"
+msgid "Do you want to %{action} this stream?"
+msgstr "您要 %{action} 此串流嗎？"
+
+msgid "Delete stream: %{stream_name}"
+msgstr "刪除 Stream：%{stream_name}"
+
+msgid "Added successfully"
+msgstr "新增成功"
+
+msgid "Add Stream"
+msgstr "新增 Stream"
+
+msgid "%{count} streams selected"
+msgstr "已選擇 %{count} 個串流"
+
+msgid "Development Mode"
+msgstr "開發模式"
+
+msgid "Official Document"
+msgstr "官方文件"
+
+msgid "Sponsor"
+msgstr "贊助"
+
+msgid "Project Team"
+msgstr "專案團隊"
+
+msgid "License"
+msgstr "開源授權"
+
+msgid "View Third-party Components"
+msgstr "查看第三方組件"
+
+msgid "View version details and core information about this Nginx UI instance."
+msgstr "檢視此 Nginx UI 執行個體的版本詳情與核心資訊。"
+
+msgid "Run built-in diagnostics to validate environment and service readiness."
+msgstr "執行內建診斷以驗證環境與服務就緒狀態。"
+
+msgid "Check release updates and execute upgrade operations when available."
+msgstr "檢查版本更新並在可用時執行升級操作。"
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr "安裝、設定並疑難排解為 Nginx UI 擴充功能的外掛。"
+
+msgid "Review third-party licenses and open source component attributions."
+msgstr "檢視第三方授權與開源元件歸屬資訊。"
+
+msgid "Total Components"
+msgstr "總元件數"
+
+msgid "Backend"
+msgstr "後端"
+
+msgid "Frontend"
+msgstr "前端"
+
+msgid "License Types"
+msgstr "許可證類型"
+
+msgid "License Distribution"
+msgstr "授權分佈"
+
+msgid "components"
+msgstr "組件"
+
+msgid "All Components"
+msgstr "所有組件"
+
+msgid "Plugin"
+msgstr "外掛"
+
+msgid "Capabilities"
+msgstr "功能"
+
+msgid "Auto install to nodes"
+msgstr "自動安裝至節點"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "外掛已同步至 %{count} 個節點"
+
+msgid "Some nodes could not be synchronized"
+msgstr "部分節點未能同步"
+
+msgid "Failed to synchronize the plugin"
+msgstr "同步外掛失敗"
+
+msgid "Installed"
+msgstr "已安裝"
+
+msgid "Starting"
+msgstr "啟動中"
+
+msgid "Missing"
+msgstr "缺失"
+
+msgid "Incompatible"
+msgstr "不相容"
+
+msgid "Needs approval"
+msgstr "需要核准"
+
+msgid "Failed to load the plugin list"
+msgstr "載入外掛清單失敗"
+
+msgid "Plugin enabled"
+msgstr "外掛已啟用"
+
+msgid "Failed to enable the plugin"
+msgstr "啟用外掛失敗"
+
+msgid "Plugin disabled"
+msgstr "外掛已停用"
+
+msgid "Failed to disable the plugin"
+msgstr "停用外掛失敗"
+
+msgid "Plugin uninstalled"
+msgstr "外掛已解除安裝"
+
+msgid "Failed to uninstall the plugin"
+msgstr "解除安裝外掛失敗"
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr "請重新整理頁面以套用開發外掛網址"
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr "外掛可以為 Nginx UI 擴充額外功能，請僅安裝您信任的作者發布的外掛套件。"
+
+msgid "Development plugin URL"
+msgstr "開發外掛網址"
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+"由任意靜態伺服器提供的 plugin.json 位址，該外掛會在已安裝外掛之外額外載入。"
+
+msgid "Dev plugin"
+msgstr "開發外掛"
+
+msgid "No plugins installed"
+msgstr "尚未安裝任何外掛"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Logs"
+msgstr "日誌"
+
+msgid "Sync to nodes"
+msgstr "同步至節點"
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr "確定要解除安裝 %{name} 嗎？其資料和設定都會被移除。"
+
+msgid "Uninstall"
+msgstr "解除安裝"
+
+msgid "Sync %{name} to nodes"
+msgstr "將 %{name} 同步至節點"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "不勾選任何節點即可同步至所有子節點。"
+
+msgid "Already in sync"
+msgstr "已同步"
+
+msgid "This node only"
+msgstr "僅此節點"
+
+msgid "All child nodes"
+msgstr "所有子節點"
+
+msgid "Selected nodes"
+msgstr "已選節點"
+
+msgid "Failed to read the plugin bundle"
+msgstr "讀取外掛套件失敗"
+
+msgid "Plugin installed"
+msgstr "外掛已安裝"
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr "外掛已在本機安裝，但未能推送至各節點"
+
+msgid "Failed to install the plugin"
+msgstr "安裝外掛失敗"
+
+msgid "Install plugin"
+msgstr "安裝外掛"
+
+msgid "Click or drag a plugin bundle here"
+msgstr "點擊或將外掛套件拖曳至此處"
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr "由外掛作者產生的 .tar.gz 檔案"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "(replaces %{version})"
+msgstr "（取代 %{version}）"
+
+msgid "None"
+msgstr "無"
+
+msgid "Install the plugins below first"
+msgstr "請先安裝以下外掛"
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr "此版本要求了您尚未核准的權限。"
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr "安裝前請檢視以下清單，外掛在您核准這些權限前將保持停用狀態。"
+
+msgid "Requested permissions"
+msgstr "要求的權限"
+
+msgid "Enable after install"
+msgstr "安裝後啟用"
+
+msgid "Also install to child nodes"
+msgstr "同時安裝至子節點"
+
+msgid "Keep in sync automatically"
+msgstr "自動保持同步"
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr "這些節點上的版本、啟用狀態及後續更新都會保持一致。"
+
+msgid "Failed to load the plugin logs"
+msgstr "載入外掛日誌失敗"
+
+msgid "Logs copied to clipboard"
+msgstr "日誌已複製到剪貼簿"
+
+msgid "Failed to copy the logs"
+msgstr "複製日誌失敗"
+
+msgid "Logs: %{name}"
+msgstr "日誌：%{name}"
+
+msgid "No log output yet"
+msgstr "尚無日誌輸出"
+
+msgid "Failed to load the plugin marketplace"
+msgstr "載入外掛市集失敗"
+
+msgid "Reloading the catalog"
+msgstr "正在重新載入目錄"
+
+msgid "Search plugins"
+msgstr "搜尋外掛"
+
+msgid "All categories"
+msgstr "所有分類"
+
+msgid "All sources"
+msgstr "所有來源"
+
+msgid "Updates only"
+msgstr "僅顯示可更新"
+
+msgid "Sources"
+msgstr "來源"
+
+msgid "Every installed plugin is up to date"
+msgstr "所有已安裝的外掛皆為最新版本"
+
+msgid "No plugins match your search"
+msgstr "找不到符合搜尋條件的外掛"
+
+msgid "Downloading the package"
+msgstr "正在下載安裝套件"
+
+msgid "Verifying the signature"
+msgstr "正在驗證簽章"
+
+msgid "Installing"
+msgstr "正在安裝"
+
+msgid "%{phase}: %{plugin}"
+msgstr "%{phase}：%{plugin}"
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr "從市集載入外掛失敗"
+
+msgid "Update plugin"
+msgstr "更新外掛"
+
+msgid "No release available for this platform"
+msgstr "此平台沒有可用的發行版本"
+
+msgid "Source"
+msgstr "來源"
+
+msgid "This is a community plugin"
+msgstr "這是一個社群外掛"
+
+msgid "The plugins below are installed together with it"
+msgstr "以下外掛將隨其一併安裝"
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr "無法取得即時進度，改為檢查外掛清單"
+
+msgid "No description provided."
+msgstr "未提供描述。"
+
+msgid "Installed: %{version}"
+msgstr "已安裝：%{version}"
+
+msgid "Homepage"
+msgstr "首頁"
+
+msgid "Repository"
+msgstr "原始碼庫"
+
+msgid "Release notes"
+msgstr "發行說明"
+
+msgid "Released"
+msgstr "發布日期"
+
+msgid "Platforms"
+msgstr "平台"
+
+msgid "Failed to load the plugin details"
+msgstr "載入外掛詳情失敗"
+
+msgid "Installed version"
+msgstr "已安裝版本"
+
+msgid "Versions"
+msgstr "版本"
+
+msgid "Yanked"
+msgstr "已撤回"
+
+msgid "Latest"
+msgstr "最新"
+
+msgid "Readme"
+msgstr "Readme"
+
+msgid "Failed to load the marketplace sources"
+msgstr "載入市集來源失敗"
+
+msgid "Marketplace sources saved"
+msgstr "市集來源已儲存"
+
+msgid "Failed to save the marketplace sources"
+msgstr "儲存市集來源失敗"
+
+msgid "Marketplace sources"
+msgstr "市集來源"
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr "目錄按順序合併，最先提供該外掛的來源生效。清單留空即使用官方目錄。"
+
+msgid "Using the official catalog"
+msgstr "正在使用官方目錄"
+
+msgid "Add source"
+msgstr "新增來源"
+
+msgid "Add the official catalog"
+msgstr "新增官方目錄"
+
+msgid "Official"
+msgstr "官方"
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr "由 Nginx UI 維護者建置並簽署。"
+
+msgid "Verified"
+msgstr "已驗證"
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr "經 Nginx UI 維護者審核，並使用發布金鑰簽署。"
+
+msgid "Community"
+msgstr "社群"
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+"由第三方發布，未經審核。它會以您授予的權限執行，請僅在信任其作者時安裝。"
+
+msgid "Approve permissions"
+msgstr "核准權限"
+
+msgid "Approve and enable"
+msgstr "核准並啟用"
+
+msgid "%{name} needs your approval before it can run."
+msgstr "%{name} 需要獲得您的核准才能執行。"
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+"請僅在信任作者時核准。核准記錄會被保留，且當所要求的權限有變動時會再次詢問。"
+
+msgid "This plugin does not request any host permission."
+msgstr "此外掛未要求任何主機權限。"
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr "讀取已儲存的 %{kind} 憑證，包括其密鑰。"
+
+msgid "unknown"
+msgstr "未知"
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr "在 Nginx UI 資料庫中儲存和讀取外掛自身的鍵值資料。"
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr "向其清單中宣告的主機發出對外網路請求。"
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr "依其清單中宣告的排程執行定時任務。"
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr "透過 Nginx UI 的通知管道發送通知。"
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr "讀取此節點的 CPU、記憶體、網路及 Nginx 狀態指標。"
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr "以您的權限呼叫 Nginx UI 管理 API。"
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr "未知權限，請僅在信任外掛作者時授予。"
+
+msgid "In sync"
+msgstr "已同步"
+
+msgid "Outdated"
+msgstr "版本過舊"
+
+msgid "Not installed"
+msgstr "未安裝"
+
+msgid "Unsupported platform"
+msgstr "不支援的平台"
+
+msgid "Unsupported"
+msgstr "不支援"
+
+msgid "Failed to load the plugin matrix"
+msgstr "載入外掛矩陣失敗"
+
+msgid "Update to %{version}"
+msgstr "更新至 %{version}"
+
+msgid "Sync to this node"
+msgstr "同步至此節點"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+"顯示各子節點已安裝的外掛，並與本控制節點比對。於頁首切換所選節點後即可直接管"
+"理該節點。"
+
+msgid "All nodes"
+msgstr "所有節點"
+
+msgid "This instance has no child node"
+msgstr "此執行個體沒有子節點"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr "請先新增節點，之後即可在此處為其安裝外掛。"
+
+msgid "Sync to selected"
+msgstr "同步至所選"
+
+msgid "Sync to all"
+msgstr "同步至全部"
+
+msgid "Marketplace"
+msgstr "市集"
+
+msgid "%{field} is required"
+msgstr "%{field} 為必填項目"
+
+msgid "Failed to load the plugin settings"
+msgstr "載入外掛設定失敗"
+
+msgid "Plugin settings saved"
+msgstr "外掛設定已儲存"
+
+msgid "Failed to save the plugin settings"
+msgstr "儲存外掛設定失敗"
+
+msgid "Settings: %{name}"
+msgstr "設定：%{name}"
+
+msgid "This plugin has no settings."
+msgstr "該外掛沒有可設定的項目。"
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] "還有 %{count} 筆"
+
+msgid "Sync policy saved"
+msgstr "同步政策已儲存"
+
+msgid "Failed to save the sync policy"
+msgstr "儲存同步政策失敗"
+
+msgid "Automatic installation"
+msgstr "自動安裝"
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+"讓此外掛在所選子節點上保持相同的版本與狀態。不勾選任何節點即可涵蓋全部節點，"
+"包括之後新增的節點。"
+
+msgid "Also sync the plugin settings"
+msgstr "同時同步外掛設定"
+
+msgid "Dev"
+msgstr "Dev"
+
+msgid "Reinstall"
+msgstr "重新安裝"
+
+msgid "Core Upgrade"
+msgstr "核心升級"
+
+msgid "You can check Nginx UI upgrade at this page."
+msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
+
+msgid "Current Version"
+msgstr "目前版本"
+
+msgid "Arch"
+msgstr "架構"
+
+msgid "Executable Path"
+msgstr "可執行檔路徑"
+
+msgid "Last checked at"
+msgstr "上次檢查時間"
+
+msgid "You are using the latest version"
+msgstr "您正在使用最新版本"
+
+msgid "New version released"
+msgstr "新版本發布"
+
+msgid "Release Note"
+msgstr "發行公告"
+
+msgid "Hide Assistant"
+msgstr "隱藏助手"
+
+msgid "Show Assistant"
+msgstr "顯示助手"
+
+msgid "Connection lost for this terminal. Please refresh if needed."
+msgstr "此終端連接已斷開。請根據需要重新整理。"
+
+msgid ""
+"This is a simulated terminal running entirely in your browser. Commands are "
+"answered locally and never reach a server."
+msgstr "這是一個完全在瀏覽器中執行的模擬終端機。指令會在本機處理，絕不會傳送到伺服器。"
+
+msgid ""
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
+msgstr "您正在透過非本地主機域上的不安全 HTTP 連線存取此終端機。這可能會暴露敏感資訊。"
+
+msgid "Round Robin (default)"
+msgstr "Round Robin（預設）"
+
+msgid "Least Connections (least_conn)"
+msgstr "最少連線數 (least_conn)"
+
+msgid "IP Hash (ip_hash)"
+msgstr "IP 哈希 (ip_hash)"
+
+msgid "Hash (hash)"
+msgstr "哈希 (hash)"
+
+msgid "Random (random)"
+msgstr "隨機（random）"
+
+msgid "Upstream %{name} saved and Nginx reloaded"
+msgstr "Upstream %{name} 已儲存，Nginx 已重新載入"
+
+msgid "Edit Upstream %{name}"
+msgstr "編輯 Upstream %{name}"
+
+msgid "Create Upstream"
+msgstr "建立 Upstream"
+
+msgid "Sites use it as proxy_pass http://%{name};"
+msgstr "站點透過 proxy_pass http://%{name} 使用它；"
+
+msgid "Load Balancing Method"
+msgstr "負載均衡方式"
+
+msgid "Hash Key"
+msgstr "雜湊鍵"
+
+msgid "Consistent Hashing"
+msgstr "一致性雜湊"
+
+msgid "Servers"
+msgstr "伺服器"
+
+msgid "Address"
+msgstr "地址"
+
+msgid "Max Fails"
+msgstr "最大失敗次數"
+
+msgid "Fail Timeout"
+msgstr "故障逾時"
+
+msgid "Not available with this load balancing method"
+msgstr "此負載均衡方式不支援該功能"
+
+msgid "Keepalive"
+msgstr "Keepalive"
+
+msgid ""
+"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
+"need proxy_http_version 1.1 and an empty Connection header."
+msgstr ""
+"每個 worker 保持開啟的閒置連線數；0 表示停用。被代理的站點還需要 proxy_http_version 1.1 和空的 Connection "
+"標頭。"
+
+msgid "Connections"
+msgstr "連線"
+
+msgid "Additional Directives"
+msgstr "附加指令"
+
+msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
+msgstr "每行一條指令，例如 keepalive_timeout 或 keepalive_requests。"
+
+msgid "Referenced By"
+msgstr "被引用"
+
+msgid "No site uses this upstream yet."
+msgstr "目前還沒有站台使用此 upstream。"
+
+msgid "Configuration Preview"
+msgstr "設定預覽"
+
+msgid "Enable server %{address}"
+msgstr "啟用伺服器 %{address}"
+
+msgid "Disable server %{address}"
+msgstr "停用伺服器 %{address}"
+
+msgid ""
+"Create shared upstream groups with load balancing and reuse them across "
+"sites."
+msgstr "建立帶有負載均衡的共享 Upstream 組，並在多個站點間重複使用。"
+
+msgid "Monitor the health of every proxy target and toggle its health check."
+msgstr "監控每個代理目標的健康狀態，並切換其健康檢查。"
+
+msgid "Socket"
+msgstr "套接字"
+
+msgid "Direct"
+msgstr "直接"
+
+msgid "Health Status"
+msgstr "健康狀態"
+
+msgid "No Data"
+msgstr "無資料"
+
+msgid "Last Check"
+msgstr "最後檢查"
+
+msgid "Upstream health checks are globally paused"
+msgstr "上游健康檢查已全域暫停"
+
+msgid ""
+"Per-target selections are preserved. Resume probes from Health Check "
+"preferences."
+msgstr "各目標的選擇會保留。可在健康檢查偏好設定中恢復探測。"
+
+msgid "Round Robin"
+msgstr "輪詢"
+
+msgid "Least Connections"
+msgstr "最少連接"
+
+msgid "IP Hash"
+msgstr "IP 雜湊"
+
+msgid "Hash"
+msgstr "雜湊"
+
+msgid "Random"
+msgstr "隨機"
+
+msgid "Load Balancing"
+msgstr "負載平衡"
+
+msgid "Defined In"
+msgstr "定義於"
+
+msgid "Matched upstreams: %{groups}, servers: %{servers}"
+msgstr "匹配的 upstream：%{groups}，伺服器：%{servers}"
+
+msgid "Server %{address} enabled"
+msgstr "伺服器 %{address} 已啟用"
+
+msgid "Server %{address} disabled"
+msgstr "伺服器 %{address} 已停用"
+
+msgid "Disable the last active server of %{name}?"
+msgstr "停用 %{name} 的最後一個活躍伺服器？"
+
+msgid ""
+"No other primary server of this upstream is enabled. Requests will fail "
+"unless a backup server takes over."
+msgstr "該上游群組沒有其他啟用的主要伺服器。除非備用伺服器接管，否則請求將會失敗。"
+
+msgid "Upstream %{name} is still in use"
+msgstr "Upstream %{name} 仍在使用中"
+
+msgid "Point these configurations at another upstream before deleting it:"
+msgstr "請先將這些設定指向其他 upstream，然後再刪除："
+
+msgid "Delete upstream %{name}?"
+msgstr "刪除 upstream %{name}？"
+
+msgid "%{path} will be removed and Nginx reloaded."
+msgstr "%{path} 將被刪除，Nginx 將重新載入。"
+
+msgid "Upstream %{name} deleted"
+msgstr "Upstream %{name} 已刪除"
+
+msgid ""
+"An upstream group shares its servers and load balancing method across "
+"sites. Choose it as the proxy target when setting up a site; later changes "
+"here apply to every site that uses it."
+msgstr "上游群組在各站點之間共享其伺服器和負載平衡方式。在設定站點時可選擇它作為代理目標；此處的後續變更將套用至所有使用它的站點。"
+
+msgid "Files are stored in %{dir}."
+msgstr "檔案儲存在 %{dir} 中。"
+
+msgid "Search by name or IP:port"
+msgstr "按名稱或 IP:port 搜尋"
+
+msgid "Search upstreams by name or server address"
+msgstr "按名稱或伺服器位址搜尋上游"
+
+msgid "No upstream group matches the search"
+msgstr "沒有符合搜尋條件的上游群組"
+
+msgid "Upstreams Defined in Other Files"
+msgstr "其他檔案中定義的 Upstream"
+
+msgid ""
+"These upstream blocks live inside site or other configuration files. Edit "
+"their settings in their own file; servers can be switched on and off here. "
+"A block inside a site can be converted to a shared group that other sites "
+"can use too."
+msgstr "這些 upstream 區塊位於站點或其他設定檔內。請在各自的檔案中編輯其設定；伺服器可以在此處啟停。站點內的區塊可以轉換為共享組，供其他站點使用。"
+
+msgid "User info updated successfully"
+msgstr "用戶資訊更新成功"
+
+msgid "Passwords do not match"
+msgstr "密碼不匹配"
+
+msgid "Password updated successfully"
+msgstr "密碼更新成功"
+
+msgid "Personal Information"
+msgstr "個人資訊"
+
+msgid "Update Profile"
+msgstr "更新資料"
+
+msgid "Security Settings"
+msgstr "安全設定"
+
+msgid "Change Password"
+msgstr "更改密碼"
+
+msgid "New Password"
+msgstr "新密碼"
+
+msgid "Confirm New Password"
+msgstr "確認新密碼"
+
+msgid "Update Password"
+msgstr "更新密碼"
+
+msgid "Node %{name} cannot be opened"
+msgstr "無法開啟節點 %{name}"
+
+msgid "Exit workspace"
+msgstr "退出工作區"
+
+msgid "New tab"
+msgstr "新建分頁"
+
+msgid "Single pane"
+msgstr "單窗格"
+
+msgid "Split view"
+msgstr "分割檢視"
+
+#~ msgid "Recursive Nameservers"
+#~ msgstr "遞迴名稱伺服器"
+
+#~ msgid ""
+#~ "Set the recursive nameservers to override the systems nameservers for the "
+#~ "step of DNS challenge."
+#~ msgstr "設定遞迴網域名稱伺服器，在 DNS 驗證步驟中覆寫系統的網域名稱伺服器。"
+
+#~ msgid "DNS Challenge"
+#~ msgstr "DNS 驗證"
+
+#~ msgid "Are you sure you want to remove this item?"
+#~ msgstr "您確定要刪除此項目嗎？"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "檔名必須以 .conf 結尾，且只能包含字母、數字、點、連字號和底線"
+
+msgid "Snippet not found"
+msgstr "找不到片段"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "片段超過 256 KiB"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "片段的檔案標頭無法解析：{0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "片段仍被以下檔案引用：{0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "已存在相同檔名的片段"
+
+msgid "Snippets"
+msgstr "片段"
+
+msgid "Snippet"
+msgstr "片段"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr "引用會讓網站與 snippets/%{file} 保持關聯，之後對片段的修改都會作用到網站。插入則會把內容複製到網站中。"
+
+msgid "Insert"
+msgstr "插入"
+
+msgid "Include"
+msgstr "引用"
+
+msgid "Snippet %{name} saved"
+msgstr "片段 %{name} 已儲存"
+
+msgid "Edit Snippet %{name}"
+msgstr "編輯片段 %{name}"
+
+msgid "Create Snippet"
+msgstr "建立片段"
+
+msgid "Static file cache"
+msgstr "靜態檔案快取"
+
+msgid "File Name"
+msgstr "檔名"
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "字母、數字、點、連字號和底線。"
+
+msgid "No configuration includes this snippet yet."
+msgstr "目前沒有設定引用此片段。"
+
+msgid "Snippets are no longer synchronized"
+msgstr "片段已停止同步"
+
+msgid "Synchronize Snippets"
+msgstr "同步片段"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr "所有片段會立即複製到所選節點，之後的修改也會自動同步。清空選擇即可停止同步。"
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "取代節點上已存在的片段"
+
+msgid "Delete snippet %{name}?"
+msgstr "刪除片段 %{name}？"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "將在本節點和已同步的節點上刪除 snippets/%{file}。"
+
+msgid "snippets/%{file} will be removed."
+msgstr "將刪除 snippets/%{file}。"
+
+msgid "Snippet %{name} deleted"
+msgstr "片段 %{name} 已刪除"
+
+msgid "Synchronize"
+msgstr "同步"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "已同步到 %{count} 個節點"
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr "片段把一段 Nginx 設定放在一處統一管理。可以在網站中引用它，也可以在網站編輯器的配置模板面板中插入它；修改被引用的片段會更新所有使用它的網站。"
+
+msgid "Copied %{include}"
+msgstr "已複製 %{include}"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} 個變數"
+
+msgid "Copy the include directive"
+msgstr "複製引用指令"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "請先從引用它的檔案中移除該片段。"
+
+msgid "Search snippets"
+msgstr "搜尋片段"
+
+msgid "No snippets yet"
+msgstr "還沒有片段"
+
+msgid "No snippet matches the search"
+msgstr "沒有符合的片段"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "被 %{count} 個檔案引用"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "被 %{count} 個配置使用"
+
+msgid "No file matches the search"
+msgstr "沒有符合的檔案"
+
+msgid "Built-in"
+msgstr "內建"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "變數 {0} 無效：{1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "內容無法解析為範本：{0}"
+
+msgid "Built-in Template"
+msgstr "內建範本"
+
+msgid "Edit Snippet"
+msgstr "編輯片段"
 
 msgid "Read Only"
 msgstr "唯讀"
@@ -10384,9 +10941,6 @@ msgid ""
 "snippet to change it."
 msgstr "內建範本隨 Nginx UI 提供，無法修改。如需修改，請將其複製為片段。"
 
-msgid "File Name"
-msgstr "檔名"
-
 msgid "Variables"
 msgstr "變數"
 
@@ -10398,10 +10952,6 @@ msgstr "範本"
 
 msgid "No template matches the search"
 msgstr "沒有符合的範本"
-
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] "%{count} 個變數"
 
 msgid "Translations"
 msgstr "翻譯"
@@ -10495,29 +11045,14 @@ msgstr "沒有需要填寫的內容。"
 msgid "Fix the variables to preview the snippet."
 msgstr "請先修正變數，再預覽片段。"
 
-msgid "Snippets are no longer synchronized"
-msgstr "片段已停止同步"
-
-msgid "Synchronize Snippets"
-msgstr "同步片段"
-
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr "所有片段會立即複製到所選節點，之後的修改也會自動同步。清空選擇即可停止同步。"
-
-msgid "Replace snippets that already exist on the nodes"
-msgstr "取代節點上已存在的片段"
-
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] "被 %{count} 個檔案引用"
-
 msgid "Not Used"
 msgstr "未使用"
 
 msgid "Max Age"
 msgstr "有效時間"
+
+msgid "Options"
+msgstr "選項"
 
 msgid "Remove option"
 msgstr "刪除選項"
@@ -10531,17 +11066,11 @@ msgstr "刪除變數"
 msgid "Used in the content, not declared"
 msgstr "內容中使用但未宣告"
 
-msgid "Snippet %{name} saved"
-msgstr "片段 %{name} 已儲存"
-
 msgid "Discard the unsaved changes?"
 msgstr "放棄未儲存的變更？"
 
 msgid "Keep Editing"
 msgstr "繼續編輯"
-
-msgid "Edit Snippet %{name}"
-msgstr "編輯片段 %{name}"
 
 msgid "Sites can include this snippet and follow its later changes."
 msgstr "網站可以引用此片段，並隨片段的後續修改同步更新。"
@@ -10565,23 +11094,14 @@ msgid ""
 "snippet follow its later changes."
 msgstr "將此指令加入 server 或 location 區塊中。引用此片段的網站會隨其後續修改同步更新。"
 
-msgid "Static file cache"
-msgstr "靜態檔案快取"
-
 msgid "Fixed while configurations include the snippet, so they keep working."
 msgstr "有設定引用此片段時不可修改，以確保這些設定繼續正常運作。"
-
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr "字母、數字、點、連字號和底線。"
 
 msgid ""
 "Variables are filled in when the snippet is inserted from the config "
 "template panel of the site editor. A snippet with variables can only be "
 "inserted, not included."
 msgstr "從網站編輯器的設定範本面板插入片段時填寫變數。含有變數的片段只能插入，不能被引用。"
-
-msgid "No configuration includes this snippet yet."
-msgstr "目前沒有設定引用此片段。"
 
 msgid "Unsaved changes"
 msgstr "有未儲存的變更"
@@ -10592,28 +11112,6 @@ msgstr "我的片段"
 msgid "Built-in Templates"
 msgstr "內建範本"
 
-msgid "Copied %{include}"
-msgstr "已複製 %{include}"
-
-msgid "Delete snippet %{name}?"
-msgstr "刪除片段 %{name}？"
-
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr "將在本節點和已同步的節點上刪除 snippets/%{file}。"
-
-msgid "snippets/%{file} will be removed."
-msgstr "將刪除 snippets/%{file}。"
-
-msgid "Snippet %{name} deleted"
-msgstr "片段 %{name} 已刪除"
-
-msgid "Synchronize"
-msgstr "同步"
-
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] "已同步到 %{count} 個節點"
-
 msgid ""
 "Has %{count} variable. Sites insert a filled in copy from the config "
 "template panel of the site editor."
@@ -10621,27 +11119,6 @@ msgid_plural ""
 "Has %{count} variables. Sites insert a filled in copy from the config "
 "template panel of the site editor."
 msgstr[0] "含有 %{count} 個變數。網站從網站編輯器的設定範本面板插入填寫後的副本。"
-
-msgid "Copy the include directive"
-msgstr "複製引用指令"
-
-msgid "Remove the snippet from the files that include it first."
-msgstr "請先從引用它的檔案中移除該片段。"
-
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in "
-"a site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr "片段把一段 Nginx 設定放在一處統一管理。可以在網站中引用它，也可以在網站編輯器的配置模板面板中插入它；修改被引用的片段會更新所有使用它的網站。"
-
-msgid "Search snippets"
-msgstr "搜尋片段"
-
-msgid "No snippets yet"
-msgstr "還沒有片段"
-
-msgid "No snippet matches the search"
-msgstr "沒有符合的片段"
 
 msgid "Enter a key."
 msgstr "請輸入鍵名。"
@@ -10663,447 +11140,6 @@ msgstr "選項的值不能重複。"
 
 msgid "Choose the default option."
 msgstr "請選擇預設選項。"
-
-msgid "Do you want to %{action} this stream?"
-msgstr "您要 %{action} 此串流嗎？"
-
-msgid "Delete stream: %{stream_name}"
-msgstr "刪除 Stream：%{stream_name}"
-
-msgid "Added successfully"
-msgstr "新增成功"
-
-msgid "Add Stream"
-msgstr "新增 Stream"
-
-msgid "%{count} streams selected"
-msgstr "已選擇 %{count} 個串流"
-
-msgid "Development Mode"
-msgstr "開發模式"
-
-msgid "Official Document"
-msgstr "官方文件"
-
-msgid "Sponsor"
-msgstr "贊助"
-
-msgid "Project Team"
-msgstr "專案團隊"
-
-msgid "License"
-msgstr "開源授權"
-
-msgid "View Third-party Components"
-msgstr "查看第三方組件"
-
-msgid "View version details and core information about this Nginx UI instance."
-msgstr "檢視此 Nginx UI 執行個體的版本詳情與核心資訊。"
-
-msgid "Run built-in diagnostics to validate environment and service readiness."
-msgstr "執行內建診斷以驗證環境與服務就緒狀態。"
-
-msgid "Check release updates and execute upgrade operations when available."
-msgstr "檢查版本更新並在可用時執行升級操作。"
-
-msgid "Review third-party licenses and open source component attributions."
-msgstr "檢視第三方授權與開源元件歸屬資訊。"
-
-msgid "Total Components"
-msgstr "總元件數"
-
-msgid "Frontend"
-msgstr "前端"
-
-msgid "License Types"
-msgstr "許可證類型"
-
-msgid "License Distribution"
-msgstr "授權分佈"
-
-msgid "components"
-msgstr "組件"
-
-msgid "All Components"
-msgstr "所有組件"
-
-msgid "Dev"
-msgstr "Dev"
-
-msgid "Reinstall"
-msgstr "重新安裝"
-
-msgid "Core Upgrade"
-msgstr "核心升級"
-
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
-
-msgid "Current Version"
-msgstr "目前版本"
-
-msgid "Arch"
-msgstr "架構"
-
-msgid "Executable Path"
-msgstr "可執行檔路徑"
-
-msgid "Last checked at"
-msgstr "上次檢查時間"
-
-msgid "You are using the latest version"
-msgstr "您正在使用最新版本"
-
-msgid "New version released"
-msgstr "新版本發布"
-
-msgid "Release Note"
-msgstr "發行公告"
-
-msgid "Hide Assistant"
-msgstr "隱藏助手"
-
-msgid "Show Assistant"
-msgstr "顯示助手"
-
-msgid "Connection lost for this terminal. Please refresh if needed."
-msgstr "此終端連接已斷開。請根據需要重新整理。"
-
-msgid ""
-"This is a simulated terminal running entirely in your browser. Commands are "
-"answered locally and never reach a server."
-msgstr "這是一個完全在瀏覽器中執行的模擬終端機。指令會在本機處理，絕不會傳送到伺服器。"
-
-msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
-msgstr "您正在透過非本地主機域上的不安全 HTTP 連線存取此終端機。這可能會暴露敏感資訊。"
-
-msgid "Create Upstream"
-msgstr "建立 Upstream"
-
-msgid "View Upstream %{name}"
-msgstr "檢視 Upstream %{name}"
-
-msgid "Edit Upstream %{name}"
-msgstr "編輯 Upstream %{name}"
-
-msgid "Round Robin (default)"
-msgstr "Round Robin（預設）"
-
-msgid "Least Connections (least_conn)"
-msgstr "最少連線數 (least_conn)"
-
-msgid "IP Hash (ip_hash)"
-msgstr "IP 哈希 (ip_hash)"
-
-msgid "Hash (hash)"
-msgstr "哈希 (hash)"
-
-msgid "Random (random)"
-msgstr "隨機（random）"
-
-msgid "Upstream %{name} saved and Nginx reloaded"
-msgstr "Upstream %{name} 已儲存，Nginx 已重新載入"
-
-msgid "Sites use it as proxy_pass http://%{name};"
-msgstr "站點透過 proxy_pass http://%{name} 使用它；"
-
-msgid "Load Balancing Method"
-msgstr "負載均衡方式"
-
-msgid "Hash Key"
-msgstr "雜湊鍵"
-
-msgid "Consistent Hashing"
-msgstr "一致性雜湊"
-
-msgid "Servers"
-msgstr "伺服器"
-
-msgid "Not available with this load balancing method"
-msgstr "此負載均衡方式不支援該功能"
-
-msgid "Keepalive"
-msgstr "Keepalive"
-
-msgid ""
-"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
-"need proxy_http_version 1.1 and an empty Connection header."
-msgstr ""
-"每個 worker 保持開啟的閒置連線數；0 表示停用。被代理的站點還需要 proxy_http_version 1.1 和空的 Connection "
-"標頭。"
-
-msgid "Connections"
-msgstr "連線"
-
-msgid "Additional Directives"
-msgstr "附加指令"
-
-msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
-msgstr "每行一條指令，例如 keepalive_timeout 或 keepalive_requests。"
-
-msgid "Referenced By"
-msgstr "被引用"
-
-msgid "No site uses this upstream yet."
-msgstr "目前還沒有站台使用此 upstream。"
-
-msgid "Configuration Preview"
-msgstr "設定預覽"
-
-msgid "Enable server %{address}"
-msgstr "啟用伺服器 %{address}"
-
-msgid "Disable server %{address}"
-msgstr "停用伺服器 %{address}"
-
-msgid ""
-"Create shared upstream groups with load balancing and reuse them across "
-"sites."
-msgstr "建立帶有負載均衡的共享 Upstream 組，並在多個站點間重複使用。"
-
-msgid "Monitor the health of every proxy target and toggle its health check."
-msgstr "監控每個代理目標的健康狀態，並切換其健康檢查。"
-
-msgid "Socket"
-msgstr "套接字"
-
-msgid "Direct"
-msgstr "直接"
-
-msgid "Health Status"
-msgstr "健康狀態"
-
-msgid "Last Check"
-msgstr "最後檢查"
-
-msgid "Upstream health checks are globally paused"
-msgstr "上游健康檢查已全域暫停"
-
-msgid ""
-"Per-target selections are preserved. Resume probes from Health Check "
-"preferences."
-msgstr "各目標的選擇會保留。可在健康檢查偏好設定中恢復探測。"
-
-msgid "Hash"
-msgstr "雜湊"
-
-msgid "Random"
-msgstr "隨機"
-
-msgid "Load Balancing"
-msgstr "負載平衡"
-
-msgid "Defined In"
-msgstr "定義於"
-
-msgid "Matched upstreams: %{groups}, servers: %{servers}"
-msgstr "匹配的 upstream：%{groups}，伺服器：%{servers}"
-
-msgid ""
-"Ingress %{name} owns this upstream. Change the ingress instead; its next "
-"apply overwrites changes made here."
-msgstr "此 Upstream 歸 Ingress %{name} 所有。請改為修改該 Ingress，它下次套用時會覆寫在此處所做的變更。"
-
-msgid "Server %{address} enabled"
-msgstr "伺服器 %{address} 已啟用"
-
-msgid "Server %{address} disabled"
-msgstr "伺服器 %{address} 已停用"
-
-msgid "Disable the last active server of %{name}?"
-msgstr "停用 %{name} 的最後一個活躍伺服器？"
-
-msgid ""
-"No other primary server of this upstream is enabled. Requests will fail "
-"unless a backup server takes over."
-msgstr "該上游群組沒有其他啟用的主要伺服器。除非備用伺服器接管，否則請求將會失敗。"
-
-msgid "Upstream %{name} is still in use"
-msgstr "Upstream %{name} 仍在使用中"
-
-msgid "Point these configurations at another upstream before deleting it:"
-msgstr "請先將這些設定指向其他 upstream，然後再刪除："
-
-msgid "Delete upstream %{name}?"
-msgstr "刪除 upstream %{name}？"
-
-msgid "%{path} will be removed and Nginx reloaded."
-msgstr "%{path} 將被刪除，Nginx 將重新載入。"
-
-msgid "Upstream %{name} deleted"
-msgstr "Upstream %{name} 已刪除"
-
-msgid ""
-"An upstream group shares its servers and load balancing method across "
-"sites. Choose it as the proxy target when setting up a site; later changes "
-"here apply to every site that uses it."
-msgstr "上游群組在各站點之間共享其伺服器和負載平衡方式。在設定站點時可選擇它作為代理目標；此處的後續變更將套用至所有使用它的站點。"
-
-msgid "Files are stored in %{dir}."
-msgstr "檔案儲存在 %{dir} 中。"
-
-msgid "Search by name or IP:port"
-msgstr "按名稱或 IP:port 搜尋"
-
-msgid "Search upstreams by name or server address"
-msgstr "按名稱或伺服器位址搜尋上游"
-
-msgid "No upstream group matches the search"
-msgstr "沒有符合搜尋條件的上游群組"
-
-msgid "Upstreams Defined in Other Files"
-msgstr "其他檔案中定義的 Upstream"
-
-msgid ""
-"These upstream blocks live inside site or other configuration files. Edit "
-"their settings in their own file; servers can be switched on and off here. "
-"A block inside a site can be converted to a shared group that other sites "
-"can use too."
-msgstr "這些 upstream 區塊位於站點或其他設定檔內。請在各自的檔案中編輯其設定；伺服器可以在此處啟停。站點內的區塊可以轉換為共享組，供其他站點使用。"
-
-msgid "MFA Settings"
-msgstr "MFA 設定"
-
-msgid "Require MFA for this user"
-msgstr "要求此使用者啟用 MFA"
-
-msgid "Global enforcement"
-msgstr "全球執行"
-
-msgid "User enforcement"
-msgstr "使用者強制執行"
-
-msgid "Optional"
-msgstr "選填"
-
-msgid "MFA Enrollment"
-msgstr "MFA 綁定狀態"
-
-msgid "Pending enrollment"
-msgstr "待綁定"
-
-msgid "Enrolled"
-msgstr "已綁定"
-
-msgid "Not enrolled"
-msgstr "未綁定"
-
-msgid "MFA policy updated. It takes effect at the next sign-in."
-msgstr "MFA 政策已更新。將於下次登入時生效。"
-
-msgid "MFA credentials and sessions reset"
-msgstr "MFA 憑證和工作階段重置"
-
-msgid ""
-"Global MFA enforcement is active. Changing the user policy does not "
-"override it."
-msgstr "全域 MFA 強制執行已啟用。變更使用者政策不會覆寫它。"
-
-msgid ""
-"Reset removes TOTP, all passkeys and recovery codes, and ends all sessions. "
-"The MFA requirement is preserved."
-msgstr "重設會移除 TOTP、所有通行金鑰和復原代碼，並結束所有工作階段。MFA 要求將予以保留。"
-
-msgid "Reset all MFA credentials and sessions for this user?"
-msgstr "為該使用者重設所有 MFA 憑證和工作階段？"
-
-msgid "Reset MFA"
-msgstr "重設 MFA"
-
-msgid "User info updated successfully"
-msgstr "用戶資訊更新成功"
-
-msgid "Passwords do not match"
-msgstr "密碼不匹配"
-
-msgid "Password updated successfully"
-msgstr "密碼更新成功"
-
-msgid "Personal Information"
-msgstr "個人資訊"
-
-msgid "Update Profile"
-msgstr "更新資料"
-
-msgid ""
-"MFA is required by the global policy. You cannot remove your last MFA "
-"method."
-msgstr "全球政策要求啟用 MFA。您無法移除最後一個 MFA 方法。"
-
-msgid "MFA is required for your account. You cannot remove your last MFA method."
-msgstr "您的帳戶需要 MFA。您無法移除最後的 MFA 方法。"
-
-msgid "Security Settings"
-msgstr "安全設定"
-
-msgid "Change Password"
-msgstr "更改密碼"
-
-msgid "New Password"
-msgstr "新密碼"
-
-msgid "Confirm New Password"
-msgstr "確認新密碼"
-
-msgid "Update Password"
-msgstr "更新密碼"
-
-msgid "Node %{name} cannot be opened"
-msgstr "無法開啟節點 %{name}"
-
-msgid "Exit workspace"
-msgstr "退出工作區"
-
-msgid "New tab"
-msgstr "新建分頁"
-
-msgid "Single pane"
-msgstr "單窗格"
-
-msgid "Split view"
-msgstr "分割檢視"
-
-msgctxt "Access list rule"
-msgid "Note"
-msgstr "備註"
-
-msgctxt "preference group"
-msgid "Maintenance"
-msgstr "維護"
-
-#~ msgid "Are you sure to reset 2FA?"
-#~ msgstr "您確定要重設 2FA 嗎？"
-
-#~ msgid "Reset 2FA"
-#~ msgstr "重設多重因素驗證"
-
-#~ msgid "Or enter the secret: %{secret}"
-#~ msgstr "或輸入金鑰：%{secret}"
-
-#~ msgid "Input the code from the app:"
-#~ msgstr "請輸入應用程式中的代碼："
-
-#~ msgid "2FA"
-#~ msgstr "雙因素驗證"
-
-#~ msgid "Fixed after creation, so the sites that include the snippet keep working."
-#~ msgstr "建立後不可修改，以確保引用該片段的網站繼續正常運作。"
-
-#~ msgid ""
-#~ "This snippet has variables: %{names}. Insert it from the config template "
-#~ "panel of the site editor, which fills them in; Nginx cannot include it "
-#~ "directly."
-#~ msgstr "此片段包含變數：%{names}。請在網站編輯器的配置模板面板中插入它，由面板填寫變數；Nginx 無法直接引用它。"
-
-#~ msgid "To use the snippet, add this directive to a server or location block:"
-#~ msgstr "在 server 或 location 區塊中加入以下指令即可使用該片段："
-
-#~ msgid ""
-#~ "Fill in the variables by inserting the snippet from the config template "
-#~ "panel of the site editor."
-#~ msgstr "請在網站編輯器的配置模板面板中插入該片段並填寫變數。"
 
 #~ msgid "Webauthn"
 #~ msgstr "Webauthn"
@@ -11137,3 +11173,538 @@ msgstr "維護"
 
 #~ msgid "SAN Aliases: %{aliases}"
 #~ msgstr "SAN 別名：%{aliases}"
+
+#~ msgid "Fixed after creation, so the sites that include the snippet keep working."
+#~ msgstr "建立後不可修改，以確保引用該片段的網站繼續正常運作。"
+
+#~ msgid ""
+#~ "This snippet has variables: %{names}. Insert it from the config template "
+#~ "panel of the site editor, which fills them in; Nginx cannot include it "
+#~ "directly."
+#~ msgstr "此片段包含變數：%{names}。請在網站編輯器的配置模板面板中插入它，由面板填寫變數；Nginx 無法直接引用它。"
+
+#~ msgid "To use the snippet, add this directive to a server or location block:"
+#~ msgstr "在 server 或 location 區塊中加入以下指令即可使用該片段："
+
+#~ msgid ""
+#~ "Fill in the variables by inserting the snippet from the config template "
+#~ "panel of the site editor."
+#~ msgstr "請在網站編輯器的配置模板面板中插入該片段並填寫變數。"
+
+msgid "Certificate Relocated"
+msgstr "憑證已遷移"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr "憑證 %{name} 現已儲存在 %{path}，請將載入 %{previous_path} 的站點指向它"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "路徑存在，但檔案不是憑證"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "路徑存在，但檔案不是金鑰"
+
+msgid "MFA Enrollment"
+msgstr "MFA 綁定狀態"
+
+msgid "Enrolled"
+msgstr "已綁定"
+
+msgid "Not enrolled"
+msgstr "未綁定"
+
+msgid "Pending enrollment"
+msgstr "待綁定"
+
+msgid "Invalid request: {0}"
+msgstr "無效的請求：{0}"
+
+msgid ""
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
+msgstr "無效的 Ingress 名稱：請使用 1-40 個小寫字母、數字和連字號，並以字母或數字開頭和結尾"
+
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr "無效的擁有者：請使用 1-64 個字母、數字、點、底線和連字號"
+
+msgid "Invalid host: {0}"
+msgstr "無效的主機：{0}"
+
+msgid "Invalid backend {0}: {1}"
+msgstr "無效的後端 {0}：{1}"
+
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "後端伺服器 {0} 不在允許的後端位址範圍內"
+
+msgid "Invalid route {0}: {1}"
+msgstr "無效的路由 {0}：{1}"
+
+msgid "Invalid tls: {0}"
+msgstr "無效的 TLS 配置：{0}"
+
+msgid "Invalid policy: {0}"
+msgstr "無效的策略：{0}"
+
+msgid "Server {0} not found in backend {1}"
+msgstr "後端 {1} 中找不到伺服器 {0}"
+
+msgid "Ingress {0} not found"
+msgstr "找不到 Ingress {0}"
+
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0} 屬於 {1}；如需接管請傳入 force"
+
+msgid "Host {0} is already served by ingress {1}"
+msgstr "主機 {0} 已由 Ingress {1} 提供服務"
+
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "網站 {0} 已存在，且不由此 Ingress 管理"
+
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "等待 Ingress {0} 達到版本 {1} 逾時"
+
+msgid "Apply failed: {0}"
+msgstr "套用失敗：{0}"
+
+msgid "Certificate not ready: {0}"
+msgstr "憑證未就緒：{0}"
+
+msgid "Not implemented"
+msgstr "尚未實作"
+
+msgid ""
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
+msgstr "網站由 Ingress {0} 管理；請修改該 Ingress，或強制執行此變更"
+
+msgid "Ingresses"
+msgstr "Ingress"
+
+msgid "HTTP only"
+msgstr "僅 HTTP"
+
+msgid "Not issued yet"
+msgstr "尚未簽發"
+
+msgid "Expired %{date}"
+msgstr "已於 %{date} 過期"
+
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date}（剩餘 %{days} 天）"
+
+msgid "Health"
+msgstr "健康狀態"
+
+msgid "Path Prefix"
+msgstr "路徑前綴"
+
+msgid "Allowed Sources"
+msgstr "允許的來源"
+
+msgid "Last Transition"
+msgstr "最後變更時間"
+
+msgid "Drained"
+msgstr "已摘除"
+
+msgid "Healthy"
+msgstr "健康"
+
+msgid "Unhealthy"
+msgstr "不健康"
+
+msgid ""
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr "無法載入產生的網站。網站檔案會在首次成功套用時寫入。"
+
+msgid "Reconcile Now"
+msgstr "立即調和"
+
+msgid "The last apply failed; the previous config is still live"
+msgstr "上次套用失敗；先前的配置仍在生效"
+
+msgid "Owner"
+msgstr "擁有者"
+
+msgid "External ID"
+msgstr "外部 ID"
+
+msgid "Generation"
+msgstr "版本"
+
+msgid "%{observed} applied of %{generation}"
+msgstr "已套用 %{observed} / 共 %{generation}"
+
+msgid "Generated Site"
+msgstr "產生的網站"
+
+msgid "Last Applied"
+msgstr "最後套用時間"
+
+msgid "Config Hash"
+msgstr "配置雜湊"
+
+msgid "Labels"
+msgstr "標籤"
+
+msgid "Hosts"
+msgstr "主機"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "模式"
+
+msgid "View certificate"
+msgstr "檢視憑證"
+
+msgid "Challenge"
+msgstr "驗證方式"
+
+msgid "Redirect to HTTPS"
+msgstr "重新導向至 HTTPS"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "憑證簽發前僅提供 HTTP 監聽。"
+
+msgid "Backends"
+msgstr "後端"
+
+msgid "Routes"
+msgstr "路由"
+
+msgid "Policy default"
+msgstr "使用策略預設值"
+
+msgid "Policy"
+msgstr "策略"
+
+msgid "Everyone"
+msgstr "所有人"
+
+msgid "Rate Limit"
+msgstr "速率限制"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "每個用戶端 %{rps} 請求/秒，突發 %{burst}"
+
+msgid "Unlimited"
+msgstr "不限制"
+
+msgid "Max Body Size"
+msgstr "最大請求主體大小"
+
+msgid "Extra Headers"
+msgstr "附加請求標頭"
+
+msgid "Conditions"
+msgstr "狀態條件"
+
+msgid "True"
+msgstr "是"
+
+msgid "False"
+msgstr "否"
+
+msgid "Generated Site Config"
+msgstr "產生的網站配置"
+
+msgid "Open in site editor"
+msgstr "在網站編輯器中開啟"
+
+msgid "Not ready"
+msgstr "未就緒"
+
+msgid "The latest spec has not been applied yet"
+msgstr "最新的規格尚未套用"
+
+msgid "Applying"
+msgstr "套用中"
+
+msgid "Ready"
+msgstr "就緒"
+
+msgid "Degraded"
+msgstr "降級"
+
+msgid "Config Applied"
+msgstr "配置已套用"
+
+msgid "Certificate Ready"
+msgstr "憑證就緒"
+
+msgid "Backends Healthy"
+msgstr "後端健康"
+
+msgid "Issued automatically (ACME)"
+msgstr "自動簽發（ACME）"
+
+msgid "All owners"
+msgstr "全部擁有者"
+
+msgid "Reconcile of %{name} queued"
+msgstr "已將 %{name} 加入調和佇列"
+
+msgid "Delete ingress %{name}?"
+msgstr "刪除 Ingress %{name}？"
+
+msgid ""
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
+msgstr "此 Ingress 屬於 %{owner}。其控制器很可能在下次同步時重新建立它；如需徹底刪除，請在控制器中移除。"
+
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "將刪除產生的網站和上游檔案，並重新載入 Nginx。"
+
+msgid "Also delete the certificate"
+msgstr "同時刪除憑證"
+
+msgid "Ingress %{name} deleted"
+msgstr "已刪除 Ingress %{name}"
+
+msgid "Ingress"
+msgstr "Ingress"
+
+msgid "Phase"
+msgstr "階段"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} 健康"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} 台伺服器"
+
+msgid "%{count} down"
+msgstr "%{count} 台已摘除"
+
+msgid "Filter by owner"
+msgstr "依擁有者篩選"
+
+msgid "Applied generation / latest generation"
+msgstr "已套用版本 / 最新版本"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "版本 %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "調和"
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+"Ingress 是外部控制器透過 Ingress API 發佈的反向代理項目。Nginx UI 會將每個 Ingress "
+"轉譯為受管網站和上游，簽發憑證，並在這裡回報狀態。請在控制器中修改它們；在此處所做的修改會被下一次調和覆寫。"
+
+msgid "Learn more"
+msgstr "了解更多"
+
+msgid "No ingresses yet"
+msgstr "尚無 Ingress"
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"部署平台等控制器透過 PUT /api/ingresses/:name 建立 Ingress，以叢集節點身分或 API 權杖認證。Ingress "
+"儲存後會立即顯示在這裡。"
+
+msgid "Read the Ingress API guide"
+msgstr "閱讀 Ingress API 指南"
+
+msgid "Search by name, host or external ID"
+msgstr "依名稱、主機或外部 ID 搜尋"
+
+msgid "Search ingresses"
+msgstr "搜尋 Ingress"
+
+msgid "No ingress matches the filter"
+msgstr "沒有符合篩選條件的 Ingress"
+
+msgid "Managed by ingress %{name}"
+msgstr "由 Ingress %{name} 管理"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr "下一次調和會覆寫此處的修改。請改為在控制器中編輯該 Ingress。"
+
+msgid "View ingress"
+msgstr "檢視 Ingress"
+
+msgid "Edit anyway"
+msgstr "仍然編輯"
+
+msgid "Ingress: %{name}"
+msgstr "Ingress：%{name}"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "包含 %{count} 個由 Ingress 管理的網站"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0} 在刪除過程中被更新"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "Upstream {0} 已存在，且不由此 Ingress 管理"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "等待 Ingress {0} 刪除逾時"
+
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "以 {0} 開頭的 upstream 名稱保留給 Ingress 使用"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr "Upstream {0} 由 Ingress {1} 管理；請修改該 Ingress，或強制執行此變更"
+
+msgid ""
+"Ingress %{name} owns this upstream. Change the ingress instead; its next "
+"apply overwrites changes made here."
+msgstr "此 Upstream 歸 Ingress %{name} 所有。請改為修改該 Ingress，它下次套用時會覆寫在此處所做的變更。"
+
+msgid "View Upstream %{name}"
+msgstr "檢視 Upstream %{name}"
+
+msgid "Recovery codes downloaded"
+msgstr "復原碼已下載"
+
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr "MFA 設定已完成。請在繼續之前儲存您的復原代碼。"
+
+msgid "MFA session expired. Please sign in again."
+msgstr "MFA 會話已過期。請重新登入。"
+
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "需要 MFA。請設定驗證器或通行密鑰以繼續。"
+
+msgid "Verify your MFA method to continue signing in."
+msgstr "驗證您的 MFA 方法以繼續登入。"
+
+msgid "Back to sign in"
+msgstr "返回登入"
+
+msgid ""
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
+msgstr "在管理 MFA 政策或重設其他使用者之前，請先在您自己的帳戶上啟用 MFA。"
+
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "檔案內容必須是有效的 PEM 或 htpasswd 資料"
+
+msgid "MFA enrollment is required"
+msgstr "需要註冊 MFA"
+
+msgid "MFA verification is required"
+msgstr "需要進行 MFA 驗證"
+
+msgid "Cannot remove the last required MFA method"
+msgstr "無法移除最後一個必要的 MFA 方法"
+
+msgid "TOTP disabled"
+msgstr "TOTP 已停用"
+
+msgid "Replace TOTP"
+msgstr "取代 TOTP"
+
+msgid "Disable TOTP for this account?"
+msgstr "要為此帳戶停用 TOTP 嗎？"
+
+msgid "Disable TOTP"
+msgstr "停用 TOTP"
+
+msgid ""
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
+msgstr "在新代碼驗證之前，您目前的驗證器將持續有效。新的恢復代碼將取代舊代碼。"
+
+msgid "MFA Policy"
+msgstr "MFA 政策"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr "要求下次登入時使用 MFA。使用者必須註冊自己的 Authenticator 或 Passkey。"
+
+msgid "Require MFA for all users"
+msgstr "要求所有使用者啟用 MFA"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "要求 SSO 登入時使用本機 MFA"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr "將本地 MFA 驗證和註冊要求應用於 OIDC 和 Casdoor 登入。"
+
+msgid "MFA Settings"
+msgstr "MFA 設定"
+
+msgid "Require MFA for this user"
+msgstr "要求此使用者啟用 MFA"
+
+msgid "Global enforcement"
+msgstr "全球執行"
+
+msgid "User enforcement"
+msgstr "使用者強制執行"
+
+msgid "Optional"
+msgstr "選填"
+
+msgid "MFA policy updated. It takes effect at the next sign-in."
+msgstr "MFA 政策已更新。將於下次登入時生效。"
+
+msgid "MFA credentials and sessions reset"
+msgstr "MFA 憑證和工作階段重置"
+
+msgid ""
+"Global MFA enforcement is active. Changing the user policy does not "
+"override it."
+msgstr "全域 MFA 強制執行已啟用。變更使用者政策不會覆寫它。"
+
+msgid ""
+"Reset removes TOTP, all passkeys and recovery codes, and ends all sessions. "
+"The MFA requirement is preserved."
+msgstr "重設會移除 TOTP、所有通行金鑰和復原代碼，並結束所有工作階段。MFA 要求將予以保留。"
+
+msgid "Reset all MFA credentials and sessions for this user?"
+msgstr "為該使用者重設所有 MFA 憑證和工作階段？"
+
+msgid "Reset MFA"
+msgstr "重設 MFA"
+
+msgid ""
+"MFA is required by the global policy. You cannot remove your last MFA "
+"method."
+msgstr "全球政策要求啟用 MFA。您無法移除最後一個 MFA 方法。"
+
+msgid "MFA is required for your account. You cannot remove your last MFA method."
+msgstr "您的帳戶需要 MFA。您無法移除最後的 MFA 方法。"
+
+#~ msgid "Are you sure to reset 2FA?"
+#~ msgstr "您確定要重設 2FA 嗎？"
+
+#~ msgid "Reset 2FA"
+#~ msgstr "重設多重因素驗證"
+
+#~ msgid "Or enter the secret: %{secret}"
+#~ msgstr "或輸入金鑰：%{secret}"
+
+#~ msgid "Input the code from the app:"
+#~ msgstr "請輸入應用程式中的代碼："
+
+#~ msgid "2FA"
+#~ msgstr "雙因素驗證"

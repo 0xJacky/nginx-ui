@@ -444,27 +444,6 @@ msgstr "Đã tắt"
 msgid "Maintenance"
 msgstr "Bảo trì"
 
-msgid "Site"
-msgstr "Trang web"
-
-msgid "Stream"
-msgstr "Luồng"
-
-msgid "Configuration"
-msgstr "Cấu hình"
-
-msgid "+%{count} more"
-msgstr "+%{count} mục nữa"
-
-msgid "Search"
-msgstr "Tìm kiếm"
-
-msgid "No file matches the search"
-msgstr "Không có tệp nào khớp với tìm kiếm"
-
-msgid "Not used"
-msgstr "Chưa sử dụng"
-
 msgid "Starting download..."
 msgstr "Đang bắt đầu tải xuống..."
 
@@ -985,6 +964,9 @@ msgstr "Hoàn tất"
 msgid "Unknown"
 msgstr "Không xác định"
 
+msgid "Search"
+msgstr "Tìm kiếm"
+
 msgid "Open in split view"
 msgstr "Mở ở dạng xem chia đôi"
 
@@ -1087,6 +1069,12 @@ msgstr ""
 "trữ. Hãy đổi tên một trong các tác vụ hoặc thay đổi đường dẫn lưu trữ của "
 "nó."
 
+msgid "Backups to Keep"
+msgstr "Bản sao lưu cần giữ"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "Số bản sao lưu giữ (0 giữ tất cả)"
+
 msgid "Renew Certificate Success"
 msgstr "Gia hạn chứng chỉ thành công"
 
@@ -1116,16 +1104,6 @@ msgstr "Chứng chỉ %{name} sẽ hết hạn sau %{days} ngày"
 
 msgid "Certificate Expiring Soon"
 msgstr "Chứng chỉ sắp hết hạn"
-
-msgid "Certificate Relocated"
-msgstr "Chứng chỉ đã được di chuyển"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr ""
-"Chứng chỉ %{name} hiện được lưu trong %{path}, hãy trỏ các trang web tải "
-"%{previous_path} đến nó"
 
 msgid "Sync Certificate Error"
 msgstr "Lỗi đồng bộ chứng chỉ"
@@ -1694,51 +1672,6 @@ msgstr "Sử dụng mã khôi phục"
 msgid "Use OTP"
 msgstr "Sử dụng OTP"
 
-msgid "Recovery codes downloaded"
-msgstr "Mã khôi phục đã được tải xuống"
-
-msgid "MFA setup completed. Save your recovery codes before continuing."
-msgstr "Thiết lập MFA hoàn tất. Lưu mã khôi phục của bạn trước khi tiếp tục."
-
-msgid "Download"
-msgstr "Tải xuống"
-
-msgid "Continue"
-msgstr "Tiếp tục"
-
-msgid "MFA session expired. Please sign in again."
-msgstr "Phiên MFA đã hết hạn. Vui lòng đăng nhập lại."
-
-msgid "MFA is required. Set up an authenticator or a passkey to continue."
-msgstr "Bắt buộc MFA. Thiết lập trình xác thực hoặc passkey để tiếp tục."
-
-msgid "Verify your MFA method to continue signing in."
-msgstr "Xác minh phương thức MFA của bạn để tiếp tục đăng nhập."
-
-msgid "Enable TOTP"
-msgstr "Bật TOTP"
-
-msgid "Verify"
-msgstr "Xác minh"
-
-msgid "Add a passkey"
-msgstr "Thêm khóa truy cập"
-
-msgid "Back to sign in"
-msgstr "Quay lại đăng nhập"
-
-msgid "Secret has been copied"
-msgstr "Mật khẩu đã được sao chép"
-
-msgid "Click to copy"
-msgstr "Bấm để sao chép"
-
-msgid "Current Password"
-msgstr "Mật khẩu hiện tại"
-
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr "Quét mã QR bằng điện thoại di động của bạn để thêm tài khoản vào ứng dụng."
-
 msgid "Generate new recovery codes"
 msgstr "Tạo mã khôi phục mới"
 
@@ -1761,13 +1694,6 @@ msgstr "Yêu cầu xác thực hai yếu tố"
 
 msgid "Invalid passcode or recovery code"
 msgstr "Mã xác thực hoặc mã khôi phục không hợp lệ"
-
-msgid ""
-"Enable MFA on your own account before managing MFA policies or resetting "
-"another user."
-msgstr ""
-"Kích hoạt MFA trên tài khoản của riêng bạn trước khi quản lý chính sách MFA "
-"hoặc đặt lại người dùng khác."
 
 msgid "Node Status"
 msgstr "Trạng thái nút"
@@ -2410,9 +2336,6 @@ msgstr "Nội dung tệp chứa ký tự điều khiển không hợp lệ"
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "Nội dung tệp chứa chỉ thị nginx bị hạn chế: {0}"
 
-msgid "File content must be valid PEM or htpasswd data"
-msgstr "Nội dung tệp phải là dữ liệu PEM hoặc htpasswd hợp lệ"
-
 msgid "Destination file: {0} already exists"
 msgstr "Tệp đích: {0} đã tồn tại"
 
@@ -2600,75 +2523,6 @@ msgstr "Quét khóa máy chủ thất bại: {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "Thuật toán khóa máy chủ không khớp: dự kiến {0}, nhưng nhận được {1}"
-
-msgid "Invalid request: {0}"
-msgstr "Yêu cầu không hợp lệ: {0}"
-
-msgid ""
-"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
-"starting and ending with a letter or digit"
-msgstr ""
-"Tên ingress không hợp lệ: sử dụng 1-40 chữ thường, chữ số và dấu gạch "
-"ngang, bắt đầu và kết thúc bằng chữ cái hoặc chữ số"
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr ""
-"Chủ sở hữu không hợp lệ: sử dụng từ 1-64 chữ cái, chữ số, dấu chấm, gạch "
-"dưới và gạch nối"
-
-msgid "Invalid host: {0}"
-msgstr "Máy chủ không hợp lệ: {0}"
-
-msgid "Invalid backend {0}: {1}"
-msgstr "Backend không hợp lệ {0}: {1}"
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr "Máy chủ backend {0} nằm ngoài phạm vi backend được phép"
-
-msgid "Invalid route {0}: {1}"
-msgstr "Tuyến đường không hợp lệ {0}: {1}"
-
-msgid "Invalid tls: {0}"
-msgstr "TLS không hợp lệ: {0}"
-
-msgid "Invalid policy: {0}"
-msgstr "Chính sách không hợp lệ: {0}"
-
-msgid "Server {0} not found in backend {1}"
-msgstr "Không tìm thấy máy chủ {0} trong backend {1}"
-
-msgid "Ingress {0} not found"
-msgstr "Không tìm thấy Ingress {0}"
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr "Ingress {0} thuộc sở hữu của {1}; truyền force để chiếm quyền kiểm soát"
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr "Máy chủ {0} đã được phục vụ bởi ingress {1}"
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr "Trang web {0} đã tồn tại và không được quản lý bởi ingress này"
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr "Ingress {0} đã được cập nhật trong khi đang bị xóa"
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr "Upstream {0} đã tồn tại và không được quản lý bởi ingress này"
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr "Hết thời gian chờ ingress {0} đạt đến thế hệ {1}"
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr "Hết thời gian chờ xóa ingress {0}"
-
-msgid "Apply failed: {0}"
-msgstr "Áp dụng thất bại: {0}"
-
-msgid "Certificate not ready: {0}"
-msgstr "Chứng chỉ chưa sẵn sàng: {0}"
-
-msgid "Not implemented"
-msgstr "Chưa được triển khai"
 
 msgid "Code completion is not enabled"
 msgstr "Hoàn thành mã không được bật"
@@ -2999,41 +2853,6 @@ msgstr "Trang web đang trong chế độ bảo trì"
 msgid "Read dir failed: {0}"
 msgstr "Đọc thư mục thất bại: {0}"
 
-msgid ""
-"Site is managed by ingress {0}; change the ingress instead or force the "
-"change"
-msgstr ""
-"Trang web được quản lý bởi ingress {0}; hãy thay đổi ingress thay vào đó "
-"hoặc buộc thay đổi"
-
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr ""
-"Tên tệp phải kết thúc bằng .conf và chỉ được chứa chữ cái, chữ số, dấu "
-"chấm, dấu gạch ngang và dấu gạch dưới"
-
-msgid "Snippet not found"
-msgstr "Không tìm thấy đoạn mã"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "Đoạn mã vượt quá 256 KiB"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "Phần đầu của đoạn mã không thể phân tích cú pháp: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "Đoạn mã vẫn được bao gồm bởi {0}"
-
-msgid "A snippet with this file name already exists"
-msgstr "Một đoạn mã với tên tệp này đã tồn tại"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "Biến {0} không hợp lệ: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "Nội dung không được phân tích cú pháp dưới dạng mẫu: {0}"
-
 msgid "Stream not found"
 msgstr "Không tìm thấy luồng"
 
@@ -3217,9 +3036,6 @@ msgstr ""
 "Vùng bộ nhớ dùng chung được thiết lập bằng công tắc zone; hãy xóa chỉ thị "
 "zone khỏi các chỉ thị bổ sung"
 
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr "Các tên upstream bắt đầu bằng {0} được dành riêng cho ingresses"
-
 msgid "Upstream not found: {0}"
 msgstr "Không tìm thấy upstream: {0}"
 
@@ -3241,13 +3057,6 @@ msgid ""
 msgstr ""
 "Vùng bộ nhớ dùng chung {0} đã được sử dụng bởi một chỉ thị khác; nginx báo "
 "cáo: {1}"
-
-msgid ""
-"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
-"the change"
-msgstr ""
-"Upstream {0} được quản lý bởi ingress {1}; hãy thay đổi ingress thay vào đó "
-"hoặc buộc thay đổi"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "Thư mục nginx conf.d không khả dụng: {0}"
@@ -3275,15 +3084,6 @@ msgstr "Mã khôi phục không hợp lệ"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "Không cho phép mã khôi phục cũ vì TOTP chưa được bật"
-
-msgid "MFA enrollment is required"
-msgstr "Yêu cầu đăng ký MFA"
-
-msgid "MFA verification is required"
-msgstr "Yêu cầu xác minh MFA"
-
-msgid "Cannot remove the last required MFA method"
-msgstr "Không thể xóa phương thức MFA bắt buộc cuối cùng"
 
 msgid "WebAuthn settings are not configured"
 msgstr "Cài đặt WebAuthn chưa được cấu hình"
@@ -4230,9 +4030,6 @@ msgstr "Bản ghi nhóm"
 msgid "Not Found"
 msgstr "Không tìm thấy"
 
-msgid "Ingresses"
-msgstr "Ingresses"
-
 msgid "Namespaces"
 msgstr "Không gian tên"
 
@@ -4259,18 +4056,6 @@ msgstr "Danh sách Website"
 
 msgid "Add Site"
 msgstr "Thêm Website"
-
-msgid "Snippets"
-msgstr "Snippet"
-
-msgid "Create Snippet"
-msgstr "Tạo đoạn mã"
-
-msgid "Built-in Template"
-msgstr "Mẫu tích hợp"
-
-msgid "Edit Snippet"
-msgstr "Chỉnh sửa đoạn mã"
 
 msgid "Edit Site"
 msgstr "Sửa trang web"
@@ -4354,17 +4139,29 @@ msgstr ""
 "hoặc vị trí trong trình chỉnh sửa trang web; thay đổi danh sách tại đây sẽ "
 "cập nhật mọi trang web sử dụng nó."
 
+msgid "+%{count} more"
+msgstr "+%{count} mục nữa"
+
 msgid "Deny"
 msgstr "Từ chối"
 
 msgid "Allow"
 msgstr "Cho phép"
 
+msgid "Not used"
+msgstr "Chưa sử dụng"
+
 msgid "Use list"
 msgstr "Sử dụng danh sách"
 
 msgid "Deny (403)"
 msgstr "Từ chối (403)"
+
+msgid "Site"
+msgstr "Trang web"
+
+msgid "Stream"
+msgstr "Luồng"
 
 msgid "Access list %{name} saved"
 msgstr "Danh sách truy cập %{name} đã được lưu"
@@ -4395,6 +4192,10 @@ msgstr "Hành động"
 
 msgid "Address or list"
 msgstr "Địa chỉ hoặc danh sách"
+
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "Ghi chú"
 
 msgid "Select a list"
 msgstr "Chọn một danh sách"
@@ -4466,15 +4267,6 @@ msgstr "Hàng tuần vào %{day} lúc %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Hàng tháng vào ngày %{day} lúc %{time}"
-
-msgid "Backups to Keep"
-msgstr "Bản sao lưu cần giữ"
-
-msgid "All"
-msgstr "Tất cả"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "Số bản sao lưu giữ (0 giữ tất cả)"
 
 msgid "Last Backup Time"
 msgstr "Thời gian sao lưu cuối cùng"
@@ -4839,10 +4631,6 @@ msgstr "Không thể xác minh việc triển khai"
 msgid "Not After"
 msgstr "Không phải sau khi"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "Được sử dụng bởi %{count} cấu hình"
-
 msgid "Failed to scan certificates"
 msgstr "Không quét được chứng chỉ"
 
@@ -4889,12 +4677,6 @@ msgstr "Quay lại"
 
 msgid "This field is required"
 msgstr "Trường này là bắt buộc"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "Đường dẫn tồn tại, nhưng tệp không phải là chứng chỉ"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "Đường dẫn tồn tại, nhưng tệp không phải là khóa riêng tư"
 
 msgid "Sync to"
 msgstr "Đồng bộ tới"
@@ -4967,6 +4749,9 @@ msgstr "Tải xuống tệp chứng chỉ thành công"
 
 msgid "Failed to download certificate files"
 msgstr "Tải xuống tệp chứng chỉ thất bại"
+
+msgid "Download"
+msgstr "Tải xuống"
 
 msgid "Download Certificate Files"
 msgstr "Tải xuống tệp chứng chỉ"
@@ -5140,14 +4925,14 @@ msgstr "Để xác nhận thu hồi, vui lòng nhập \"Thu hồi\" vào trườ
 msgid "Renew successfully"
 msgstr "Gia hạn thành công"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert đang chạy, vui lòng chờ..."
+msgid "Renew"
+msgstr "Gia hạn"
 
 msgid "Renew Certificate"
 msgstr "Gia hạn chứng chỉ"
 
-msgid "Renew"
-msgstr "Gia hạn"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert đang chạy, vui lòng chờ..."
 
 msgid "Certificate issued successfully"
 msgstr "Chứng chỉ đã được cấp thành công"
@@ -5751,16 +5536,6 @@ msgstr ""
 "URL tuyệt đối tuỳ chọn. Dùng khi địa chỉ công khai khác với host hoặc cổng "
 "upstream thực tế."
 
-msgid "Site Card Click URL"
-msgstr "URL nhấp vào thẻ trang web"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr ""
-"URL HTTP/HTTPS tuyệt đối tùy chọn được sử dụng khi mở thẻ trang web này. "
-"Nếu để trống, URL trang web mặc định sẽ được sử dụng."
-
 msgid "HTTP Method"
 msgstr "Phương thức HTTP"
 
@@ -6067,6 +5842,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "Bổ sung"
 
+msgid "All"
+msgstr "Tất cả"
+
 msgid "Host, e.g. @ or www"
 msgstr "Máy chủ, vd: @ hoặc www"
 
@@ -6226,6 +6004,9 @@ msgstr "Tên không được để trống"
 
 msgid "Please select DNS provider"
 msgstr "Vui lòng chọn nhà cung cấp DNS"
+
+msgid "Configuration"
+msgstr "Cấu hình"
 
 msgid "DNS Credentials"
 msgstr "Xác thực DNS"
@@ -6676,304 +6457,6 @@ msgstr ""
 
 msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr "Truy cập các phiên đầu cuối tích hợp cho các nhiệm vụ bảo trì."
-
-msgid "HTTP only"
-msgstr "Chỉ HTTP"
-
-msgid "Not issued yet"
-msgstr "Chưa được cấp"
-
-msgid "Expired %{date}"
-msgstr "Đã hết hạn %{date}"
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] "%{date} (còn %{days} ngày)"
-
-msgid "Address"
-msgstr "Địa chỉ"
-
-msgid "Health"
-msgstr "Sức khỏe"
-
-msgid "Max Fails"
-msgstr "Số lỗi tối đa"
-
-msgid "Fail Timeout"
-msgstr "Thời gian chờ lỗi"
-
-msgid "Path Prefix"
-msgstr "Tiền tố đường dẫn"
-
-msgid "Backend"
-msgstr "Backend"
-
-msgid "Options"
-msgstr "Tùy chọn"
-
-msgid "Allowed Sources"
-msgstr "Nguồn được phép"
-
-msgid "Last Transition"
-msgstr "Chuyển đổi cuối cùng"
-
-msgid "Drained"
-msgstr "Kiệt sức"
-
-msgid "No Data"
-msgstr "Không có dữ liệu"
-
-msgid "Healthy"
-msgstr "Khỏe mạnh"
-
-msgid "Unhealthy"
-msgstr "Không lành mạnh"
-
-msgid ""
-"The generated site could not be loaded. It is written by the first "
-"successful apply."
-msgstr ""
-"Không thể tải trang web đã tạo. Nó được ghi vào lần áp dụng thành công đầu "
-"tiên."
-
-msgid "Reconcile Now"
-msgstr "Đối chiếu ngay"
-
-msgid "The last apply failed; the previous config is still live"
-msgstr "Lần áp dụng cuối cùng thất bại; cấu hình trước đó vẫn đang hoạt động."
-
-msgid "Owner"
-msgstr "Chủ sở hữu"
-
-msgid "External ID"
-msgstr "ID bên ngoài"
-
-msgid "Generation"
-msgstr "Thế hệ"
-
-msgid "%{observed} applied of %{generation}"
-msgstr "%{observed} đã áp dụng trên %{generation}"
-
-msgid "Generated Site"
-msgstr "Trang web đã tạo"
-
-msgid "Last Applied"
-msgstr "Lần áp dụng cuối"
-
-msgid "Config Hash"
-msgstr "Mã băm cấu hình"
-
-msgid "Labels"
-msgstr "Nhãn"
-
-msgid "Hosts"
-msgstr "Máy chủ"
-
-msgid "TLS"
-msgstr "TLS"
-
-msgid "Mode"
-msgstr "Chế độ"
-
-msgid "Certificate"
-msgstr "Chứng chỉ"
-
-msgid "View certificate"
-msgstr "Xem chứng chỉ"
-
-msgid "Challenge"
-msgstr "Thử thách"
-
-msgid "Redirect to HTTPS"
-msgstr "Chuyển hướng sang HTTPS"
-
-msgid "HSTS"
-msgstr "HSTS"
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr "Chỉ listener HTTP được phục vụ cho đến khi chứng chỉ được cấp."
-
-msgid "Backends"
-msgstr "Backends"
-
-msgid "Routes"
-msgstr "Các tuyến đường"
-
-msgid "Policy default"
-msgstr "Mặc định chính sách"
-
-msgid "Policy"
-msgstr "Chính sách"
-
-msgid "Everyone"
-msgstr "Mọi người"
-
-msgid "Rate Limit"
-msgstr "Giới hạn tần suất"
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr "%{rps} yêu cầu/giây cho mỗi client, burst %{burst}"
-
-msgid "Unlimited"
-msgstr "Không giới hạn"
-
-msgid "Max Body Size"
-msgstr "Kích thước thân tối đa"
-
-msgid "Extra Headers"
-msgstr "Tiêu đề bổ sung"
-
-msgid "Conditions"
-msgstr "Điều kiện"
-
-msgid "True"
-msgstr "Đúng"
-
-msgid "False"
-msgstr "Sai"
-
-msgid "Generated Site Config"
-msgstr "Cấu hình trang web đã tạo"
-
-msgid "Open in site editor"
-msgstr "Mở trong trình chỉnh sửa trang"
-
-msgid "Not ready"
-msgstr "Chưa sẵn sàng"
-
-msgid "The latest spec has not been applied yet"
-msgstr "Thông số kỹ thuật mới nhất chưa được áp dụng"
-
-msgid "Applying"
-msgstr "Đang áp dụng"
-
-msgid "Ready"
-msgstr "Sẵn sàng"
-
-msgid "Degraded"
-msgstr "Suy giảm"
-
-msgid "Config Applied"
-msgstr "Đã áp dụng cấu hình"
-
-msgid "Certificate Ready"
-msgstr "Chứng chỉ đã sẵn sàng"
-
-msgid "Backends Healthy"
-msgstr "Backend hoạt động tốt"
-
-msgid "Issued automatically (ACME)"
-msgstr "Được cấp tự động (ACME)"
-
-msgid "Existing certificate"
-msgstr "Chứng chỉ hiện có"
-
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Round Robin"
-msgstr "Round Robin"
-
-msgid "Least Connections"
-msgstr "Ít kết nối nhất"
-
-msgid "IP Hash"
-msgstr "Hash IP"
-
-msgid "All owners"
-msgstr "Tất cả chủ sở hữu"
-
-msgid "Reconcile of %{name} queued"
-msgstr "Đối soát của %{name} đã được xếp hàng chờ"
-
-msgid "Delete ingress %{name}?"
-msgstr "Xóa ingress %{name}?"
-
-msgid ""
-"This ingress is owned by %{owner}. Its controller will probably recreate it "
-"on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-"Ingress này thuộc sở hữu của %{owner}. Controller của nó có thể sẽ tạo lại "
-"nó trong lần đồng bộ tiếp theo; hãy xóa nó khỏi controller để xóa vĩnh viễn."
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr "Trang web đã tạo và các tệp upstream bị xóa và nginx được tải lại."
-
-msgid "Also delete the certificate"
-msgstr "Cũng xóa chứng chỉ"
-
-msgid "Ingress %{name} deleted"
-msgstr "Ingress %{name} đã bị xóa"
-
-msgid "Ingress"
-msgstr "Ingress"
-
-msgid "Phase"
-msgstr "Giai đoạn"
-
-msgid "%{healthy}/%{total} healthy"
-msgstr "%{healthy}/%{total} khỏe mạnh"
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] "%{total} máy chủ"
-
-msgid "%{count} down"
-msgstr "Còn %{count}"
-
-msgid "Filter by owner"
-msgstr "Lọc theo chủ sở hữu"
-
-msgid "Applied generation / latest generation"
-msgstr "Thế hệ áp dụng / Thế hệ mới nhất"
-
-msgid "gen %{observed}/%{generation}"
-msgstr "gen %{observed}/%{generation}"
-
-msgid "Reconcile"
-msgstr "Đối soát"
-
-msgid ""
-"Ingresses are reverse proxy entries published by external controllers "
-"through the Ingress API. Nginx UI renders each one into a managed site and "
-"upstreams, issues its certificate and reports its status here. Change them "
-"in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-"Ingress là các mục nhập proxy ngược được xuất bản bởi các bộ điều khiển bên "
-"ngoài thông qua Ingress API. Nginx UI hiển thị từng mục thành một trang "
-"được quản lý kèm các upstream, cấp phát chứng chỉ và báo cáo trạng thái tại "
-"đây. Hãy thay đổi chúng trong bộ điều khiển tương ứng; các chỉnh sửa thực "
-"hiện tại đây sẽ bị ghi đè bởi lần điều chỉnh tiếp theo."
-
-msgid "Learn more"
-msgstr "Tìm hiểu thêm"
-
-msgid "No ingresses yet"
-msgstr "Chưa có ingress nào"
-
-msgid ""
-"A controller such as a deployment platform creates ingresses with PUT "
-"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
-"They show up here as soon as they are stored."
-msgstr ""
-"Một bộ điều khiển như nền tảng triển khai tạo ra các ingress với PUT "
-"/api/ingresses/:name, được xác thực dưới dạng một nút cụm hoặc bằng một API "
-"token. Chúng xuất hiện ở đây ngay khi được lưu trữ."
-
-msgid "Read the Ingress API guide"
-msgstr "Đọc hướng dẫn Ingress API"
-
-msgid "Search by name, host or external ID"
-msgstr "Tìm kiếm theo tên, máy chủ hoặc ID bên ngoài"
-
-msgid "Search ingresses"
-msgstr "Tìm kiếm Ingress"
-
-msgid "No ingress matches the filter"
-msgstr "Không có Ingress nào khớp với bộ lọc"
 
 msgid "Please input your E-mail!"
 msgstr "Vui lòng nhập E-mail của bạn!"
@@ -8336,6 +7819,9 @@ msgstr ""
 msgid "Register passkey successfully"
 msgstr "Đăng ký khóa truy cập thành công"
 
+msgid "Add a passkey"
+msgstr "Thêm khóa truy cập"
+
 msgid "Tips"
 msgstr "Mẹo"
 
@@ -8355,6 +7841,9 @@ msgid ""
 msgstr ""
 "Làm theo hướng dẫn trong hộp thoại để hoàn tất quá trình đăng ký khóa truy "
 "cập."
+
+msgid "Current Password"
+msgstr "Mật khẩu hiện tại"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -8486,9 +7975,6 @@ msgstr "Vui lòng nhập mật khẩu hiện tại của bạn"
 msgid "Enable 2FA successfully"
 msgstr "Bật 2FA thành công"
 
-msgid "TOTP disabled"
-msgstr "TOTP đã bị tắt"
-
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -8506,27 +7992,23 @@ msgstr ""
 "Để bật tính năng này, bạn cần cài đặt ứng dụng Google Authenticator hoặc "
 "Microsoft Authenticator trên điện thoại di động của mình."
 
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr "Quét mã QR bằng điện thoại di động của bạn để thêm tài khoản vào ứng dụng."
+
 msgid "Current account is not enabled TOTP."
 msgstr "Tài khoản hiện tại chưa bật TOTP."
 
 msgid "Current account is enabled TOTP."
 msgstr "Tài khoản hiện tại đã bật TOTP."
 
-msgid "Replace TOTP"
-msgstr "Thay thế TOTP"
+msgid "Enable TOTP"
+msgstr "Bật TOTP"
 
-msgid "Disable TOTP for this account?"
-msgstr "Vô hiệu hóa TOTP cho tài khoản này?"
+msgid "Secret has been copied"
+msgstr "Mật khẩu đã được sao chép"
 
-msgid "Disable TOTP"
-msgstr "Tắt TOTP"
-
-msgid ""
-"Your current authenticator remains active until the new code is verified. "
-"New recovery codes replace the old ones."
-msgstr ""
-"Trình xác thực hiện tại của bạn vẫn hoạt động cho đến khi mã mới được xác "
-"minh. Các mã khôi phục mới sẽ thay thế mã cũ."
+msgid "Click to copy"
+msgstr "Bấm để sao chép"
 
 msgid "Bark"
 msgstr "Bark"
@@ -9682,6 +9164,9 @@ msgstr "Truy cập và cài đặt"
 msgid "File mode and setup instructions"
 msgstr "Chế độ tệp và hướng dẫn thiết lập"
 
+msgid "Verify"
+msgstr "Xác minh"
+
 msgid "Run checks and save"
 msgstr "Chạy kiểm tra và lưu"
 
@@ -9743,6 +9228,10 @@ msgstr "Không thể mở thiết lập SSH"
 
 msgid "Basics"
 msgstr "Cơ bản"
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr "Bảo trì"
 
 msgid "Address, protocol and certificate used to reach this Nginx UI instance."
 msgstr "Địa chỉ, giao thức và chứng chỉ dùng để truy cập phiên bản Nginx UI này."
@@ -9957,29 +9446,6 @@ msgstr "Chung"
 
 msgid "Banned Until"
 msgstr "Bị cấm đến"
-
-msgid "MFA Policy"
-msgstr "Chính sách MFA"
-
-msgid ""
-"Require MFA at the next sign-in. Users must enroll their own authenticator "
-"or passkey."
-msgstr ""
-"Yêu cầu MFA khi đăng nhập lần tới. Người dùng phải đăng ký Authenticator "
-"hoặc Passkey của riêng mình."
-
-msgid "Require MFA for all users"
-msgstr "Yêu cầu MFA cho tất cả người dùng"
-
-msgid "Require local MFA for SSO sign-in"
-msgstr "Yêu cầu MFA cục bộ cho đăng nhập SSO"
-
-msgid ""
-"Apply local MFA verification and enrollment requirements to OIDC and "
-"Casdoor sign-in."
-msgstr ""
-"Áp dụng các yêu cầu xác minh và đăng ký MFA cục bộ cho đăng nhập OIDC và "
-"Casdoor."
 
 msgid "Passkeys"
 msgstr "Passkey"
@@ -10273,6 +9739,9 @@ msgstr "Tất cả giao diện"
 msgid "HTTPS"
 msgstr "HTTPS"
 
+msgid "Certificate"
+msgstr "Chứng chỉ"
+
 msgid "Pick the certificate that secures the web interface."
 msgstr "Chọn chứng chỉ bảo mật giao diện web."
 
@@ -10297,6 +9766,9 @@ msgstr "Thời gian kết thúc phải sau thời gian bắt đầu"
 msgid "Set maintenance information"
 msgstr "Đặt thông tin bảo trì"
 
+msgid "Continue"
+msgstr "Tiếp tục"
+
 msgid "Start time"
 msgstr "Thời gian bắt đầu"
 
@@ -10320,22 +9792,6 @@ msgstr "Thông tin bổ sung"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Ví dụ: kế hoạch khôi phục dự kiến hoặc tham chiếu sự cố"
-
-msgid "Managed by ingress %{name}"
-msgstr "Được quản lý bởi ingress %{name}"
-
-msgid ""
-"Changes will be overwritten by the next reconcile. Edit the ingress in its "
-"controller instead."
-msgstr ""
-"Các thay đổi sẽ bị ghi đè bởi lần reconcile tiếp theo. Hãy chỉnh sửa "
-"Ingress trong controller của nó thay thế."
-
-msgid "View ingress"
-msgstr "Xem Ingress"
-
-msgid "Edit anyway"
-msgstr "Vẫn chỉnh sửa"
 
 msgid "Configuration Name"
 msgstr "Tên cấu hình"
@@ -10555,9 +10011,6 @@ msgstr "Không gian tên"
 msgid "The parameter of server_name is required"
 msgstr "Tham số của server_name là bắt buộc"
 
-msgid "Config Template"
-msgstr "Mẫu cấu hình"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "Lưu cấu hình đã chỉnh sửa trước khi bật HTTPS."
 
@@ -10654,31 +10107,11 @@ msgstr "Chứng chỉ tự ký"
 msgid "Generate self-signed certificate"
 msgstr "Tạo chứng chỉ tự ký"
 
-msgid "Built-in"
-msgstr "Tích hợp sẵn"
-
 msgid "Search templates"
 msgstr "Tìm kiếm mẫu"
 
-msgid "Snippet"
-msgstr "Đoạn mã"
-
 msgid "Author"
 msgstr "Tác giả"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"Include giữ cho trang được liên kết với snippets/%{file}, do đó các thay "
-"đổi sau này của đoạn mã sẽ được áp dụng cho nó. Insert thay vào đó sẽ sao "
-"chép nội dung vào trang."
-
-msgid "Insert"
-msgstr "Chèn"
-
-msgid "Include"
-msgstr "Bao gồm"
 
 msgid "Do you want to enable TLS?"
 msgstr "Bạn có muốn bật TLS không?"
@@ -10707,6 +10140,15 @@ msgstr ""
 
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "Không phải tên miền hoặc địa chỉ IP hợp lệ: %{value}"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Existing certificate"
+msgstr "Chứng chỉ hiện có"
 
 msgid "Skip for now"
 msgstr "Bỏ qua trong lúc này"
@@ -10975,6 +10417,9 @@ msgstr "Tạo lại bản ghi DNS"
 msgid "Clear Link"
 msgstr "Xóa liên kết"
 
+msgid "Config Template"
+msgstr "Mẫu cấu hình"
+
 msgid "Port Scanner"
 msgstr "Trình quét cổng"
 
@@ -10992,9 +10437,6 @@ msgstr "Lỗi phân tích cấu hình Nginx"
 
 msgid "No."
 msgstr "STT"
-
-msgid "Ingress: %{name}"
-msgstr "Ingress: %{name}"
 
 msgid "Please input name, "
 msgstr "Vui lòng nhập tên, "
@@ -11063,9 +10505,1067 @@ msgstr "Đặt thông tin bảo trì cho các trang web đã chọn"
 msgid "%{count} sites selected"
 msgstr "%{count} trang web đã chọn"
 
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] "Bao gồm %{count} trang web do ingress quản lý"
+msgid "Do you want to %{action} this stream?"
+msgstr "Bạn có muốn %{action} luồng này không?"
+
+msgid "Delete stream: %{stream_name}"
+msgstr "Xóa luồng: %{stream_name}"
+
+msgid "Added successfully"
+msgstr "Đã thêm thành công"
+
+msgid "Add Stream"
+msgstr "Thêm luồng"
+
+msgid "%{count} streams selected"
+msgstr "Đã chọn %{count} luồng"
+
+msgid "Development Mode"
+msgstr "Chế độ phát triển"
+
+msgid "Official Document"
+msgstr "Tài liệu chính thức"
+
+msgid "Sponsor"
+msgstr "Nhà tài trợ"
+
+msgid "Project Team"
+msgstr "Đội ngũ phát triển"
+
+msgid "License"
+msgstr "Giấy phép"
+
+msgid "View Third-party Components"
+msgstr "Xem các thành phần bên thứ ba"
+
+msgid "View version details and core information about this Nginx UI instance."
+msgstr "Xem chi tiết phiên bản và thông tin cốt lõi về thể thể hiện Nginx UI này."
+
+msgid "Run built-in diagnostics to validate environment and service readiness."
+msgstr ""
+"Chạy chẩn đoán tích hợp để xác nhận trạng thái sẵn sàng của môi trường và "
+"dịch vụ."
+
+msgid "Check release updates and execute upgrade operations when available."
+msgstr "Kiểm tra bản phát hành cập nhật và thực hiện thao tác nâng cấp khi có sẵn."
+
+msgid "Review third-party licenses and open source component attributions."
+msgstr ""
+"Xem giấy phép của bên thứ ba và ghi nhận đóng góp của các thành phần mã "
+"nguồn mở."
+
+msgid "Total Components"
+msgstr "Tổng số thành phần"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Frontend"
+msgstr "Giao diện người dùng"
+
+msgid "License Types"
+msgstr "Loại giấy phép"
+
+msgid "License Distribution"
+msgstr "Phân phối giấy phép"
+
+msgid "components"
+msgstr "thành phần"
+
+msgid "All Components"
+msgstr "Tất cả các thành phần"
+
+msgid "Dev"
+msgstr "Dev"
+
+msgid "Reinstall"
+msgstr "Cài đặt lại"
+
+msgid "Core Upgrade"
+msgstr "Cập nhật core"
+
+msgid "You can check Nginx UI upgrade at this page."
+msgstr "Bạn có thể kiểm tra nâng cấp Nginx UI tại trang này"
+
+msgid "Current Version"
+msgstr "Phiên bản hiện tại"
+
+msgid "Arch"
+msgstr "Kiến trúc"
+
+msgid "Executable Path"
+msgstr "Đường dẫn thực thi"
+
+msgid "Last checked at"
+msgstr "Kiểm tra lần cuối lúc"
+
+msgid "You are using the latest version"
+msgstr "Bạn đang sử dụng phiên bản mới nhất"
+
+msgid "New version released"
+msgstr "Đã có phiên bản mới"
+
+msgid "Release Note"
+msgstr "Ghi chú phát hành"
+
+msgid "Hide Assistant"
+msgstr "Ẩn trợ lý"
+
+msgid "Show Assistant"
+msgstr "Hiển thị trợ lý"
+
+msgid "Connection lost for this terminal. Please refresh if needed."
+msgstr "Mất kết nối với thiết bị đầu cuối này. Vui lòng làm mới nếu cần."
+
+msgid ""
+"This is a simulated terminal running entirely in your browser. Commands are "
+"answered locally and never reach a server."
+msgstr ""
+"Đây là một terminal mô phỏng chạy hoàn toàn trong trình duyệt của bạn. Các "
+"lệnh được xử lý cục bộ và không bao giờ gửi đến máy chủ."
+
+msgid ""
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
+msgstr ""
+"Bạn đang truy cập thiết bị đầu cuối này thông qua kết nối HTTP không an "
+"toàn trên một miền không phải localhost. Điều này có thể làm lộ thông tin "
+"nhạy cảm."
+
+msgid "Round Robin (default)"
+msgstr "Round Robin (mặc định)"
+
+msgid "Least Connections (least_conn)"
+msgstr "Ít kết nối nhất (least_conn)"
+
+msgid "IP Hash (ip_hash)"
+msgstr "Hash IP (ip_hash)"
+
+msgid "Hash (hash)"
+msgstr "Hash (hash)"
+
+msgid "Random (random)"
+msgstr "Ngẫu nhiên (random)"
+
+msgid "Upstream %{name} saved and Nginx reloaded"
+msgstr "Upstream %{name} đã được lưu và Nginx đã được tải lại"
+
+msgid "Edit Upstream %{name}"
+msgstr "Chỉnh sửa Upstream %{name}"
+
+msgid "Create Upstream"
+msgstr "Tạo Upstream"
+
+msgid "Sites use it as proxy_pass http://%{name};"
+msgstr "Các trang web sử dụng nó như proxy_pass http://%{name};"
+
+msgid "Load Balancing Method"
+msgstr "Phương pháp cân bằng tải"
+
+msgid "Hash Key"
+msgstr "Khóa băm"
+
+msgid "Consistent Hashing"
+msgstr "Băm nhất quán"
+
+msgid "Servers"
+msgstr "Máy chủ"
+
+msgid "Address"
+msgstr "Địa chỉ"
+
+msgid "Max Fails"
+msgstr "Số lỗi tối đa"
+
+msgid "Fail Timeout"
+msgstr "Thời gian chờ lỗi"
+
+msgid "Not available with this load balancing method"
+msgstr "Không khả dụng với phương pháp cân bằng tải này"
+
+msgid "Keepalive"
+msgstr "Keepalive"
+
+msgid ""
+"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
+"need proxy_http_version 1.1 and an empty Connection header."
+msgstr ""
+"Số kết nối nhàn rỗi cần giữ mở cho mỗi worker; 0 để tắt. Các trang được "
+"proxy cũng cần proxy_http_version 1.1 và tiêu đề Connection trống."
+
+msgid "Connections"
+msgstr "Kết nối"
+
+msgid "Additional Directives"
+msgstr "Chỉ thị bổ sung"
+
+msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
+msgstr "Mỗi dòng một chỉ thị, ví dụ: keepalive_timeout hoặc keepalive_requests."
+
+msgid "Referenced By"
+msgstr "Được tham chiếu bởi"
+
+msgid "No site uses this upstream yet."
+msgstr "Chưa có site nào sử dụng upstream này."
+
+msgid "Configuration Preview"
+msgstr "Xem trước cấu hình"
+
+msgid "Enable server %{address}"
+msgstr "Bật máy chủ %{address}"
+
+msgid "Disable server %{address}"
+msgstr "Tắt máy chủ %{address}"
+
+msgid ""
+"Create shared upstream groups with load balancing and reuse them across "
+"sites."
+msgstr ""
+"Tạo các nhóm upstream dùng chung với cân bằng tải và tái sử dụng chúng trên "
+"nhiều trang web."
+
+msgid "Monitor the health of every proxy target and toggle its health check."
+msgstr ""
+"Theo dõi tình trạng của mọi mục tiêu proxy và bật/tắt kiểm tra sức khỏe của "
+"chúng."
+
+msgid "Socket"
+msgstr "Socket"
+
+msgid "Direct"
+msgstr "Trực tiếp"
+
+msgid "Health Status"
+msgstr "Trạng thái sức khỏe"
+
+msgid "No Data"
+msgstr "Không có dữ liệu"
+
+msgid "Last Check"
+msgstr "Lần kiểm tra cuối"
+
+msgid "Upstream health checks are globally paused"
+msgstr "Kiểm tra sức khoẻ upstream đang tạm dừng toàn cục"
+
+msgid ""
+"Per-target selections are preserved. Resume probes from Health Check "
+"preferences."
+msgstr ""
+"Lựa chọn của từng đích được giữ nguyên. Hãy tiếp tục thăm dò trong tuỳ chọn "
+"Kiểm tra sức khoẻ."
+
+msgid "Round Robin"
+msgstr "Round Robin"
+
+msgid "Least Connections"
+msgstr "Ít kết nối nhất"
+
+msgid "IP Hash"
+msgstr "Hash IP"
+
+msgid "Hash"
+msgstr "Hash"
+
+msgid "Random"
+msgstr "Ngẫu nhiên"
+
+msgid "Load Balancing"
+msgstr "Cân bằng tải"
+
+msgid "Defined In"
+msgstr "Được định nghĩa trong"
+
+msgid "Matched upstreams: %{groups}, servers: %{servers}"
+msgstr "Upstream phù hợp: %{groups}, máy chủ: %{servers}"
+
+msgid "Server %{address} enabled"
+msgstr "Máy chủ %{address} đã được bật"
+
+msgid "Server %{address} disabled"
+msgstr "Máy chủ %{address} đã bị tắt"
+
+msgid "Disable the last active server of %{name}?"
+msgstr "Vô hiệu hóa máy chủ hoạt động cuối cùng của %{name}?"
+
+msgid ""
+"No other primary server of this upstream is enabled. Requests will fail "
+"unless a backup server takes over."
+msgstr ""
+"Không có máy chủ chính nào khác của upstream này được bật. Yêu cầu sẽ thất "
+"bại trừ khi một máy chủ dự phòng tiếp quản."
+
+msgid "Upstream %{name} is still in use"
+msgstr "Upstream %{name} vẫn đang được sử dụng"
+
+msgid "Point these configurations at another upstream before deleting it:"
+msgstr "Trỏ các cấu hình này sang một upstream khác trước khi xóa:"
+
+msgid "Delete upstream %{name}?"
+msgstr "Xóa upstream %{name}?"
+
+msgid "%{path} will be removed and Nginx reloaded."
+msgstr "%{path} sẽ bị xóa và Nginx sẽ được tải lại."
+
+msgid "Upstream %{name} deleted"
+msgstr "Upstream %{name} đã bị xóa"
+
+msgid ""
+"An upstream group shares its servers and load balancing method across "
+"sites. Choose it as the proxy target when setting up a site; later changes "
+"here apply to every site that uses it."
+msgstr ""
+"Một nhóm upstream chia sẻ các máy chủ và phương pháp cân bằng tải của nó "
+"giữa các trang web. Chọn nó làm đích proxy khi thiết lập trang web; các "
+"thay đổi sau này tại đây sẽ áp dụng cho mọi trang web sử dụng nó."
+
+msgid "Files are stored in %{dir}."
+msgstr "Các tệp được lưu trữ trong %{dir}."
+
+msgid "Search by name or IP:port"
+msgstr "Tìm theo tên hoặc IP:port"
+
+msgid "Search upstreams by name or server address"
+msgstr "Tìm kiếm upstream theo tên hoặc địa chỉ máy chủ"
+
+msgid "No upstream group matches the search"
+msgstr "Không có nhóm upstream nào khớp với tìm kiếm"
+
+msgid "Upstreams Defined in Other Files"
+msgstr "Upstream được định nghĩa trong các tệp khác"
+
+msgid ""
+"These upstream blocks live inside site or other configuration files. Edit "
+"their settings in their own file; servers can be switched on and off here. "
+"A block inside a site can be converted to a shared group that other sites "
+"can use too."
+msgstr ""
+"Các khối upstream này nằm trong tệp cấu hình của trang web hoặc các tệp "
+"khác. Chỉnh sửa cài đặt của chúng trong tệp tương ứng; có thể bật/tắt máy "
+"chủ tại đây. Một khối bên trong trang web có thể được chuyển thành nhóm "
+"chia sẻ mà các trang web khác cũng có thể sử dụng."
+
+msgid "User info updated successfully"
+msgstr "Cập nhật thông tin người dùng thành công"
+
+msgid "Passwords do not match"
+msgstr "Mật khẩu không khớp"
+
+msgid "Password updated successfully"
+msgstr "Cập nhật mật khẩu thành công"
+
+msgid "Personal Information"
+msgstr "Thông tin cá nhân"
+
+msgid "Update Profile"
+msgstr "Cập nhật hồ sơ"
+
+msgid "Security Settings"
+msgstr "Cài đặt bảo mật"
+
+msgid "Change Password"
+msgstr "Đổi mật khẩu"
+
+msgid "New Password"
+msgstr "Mật khẩu mới"
+
+msgid "Confirm New Password"
+msgstr "Xác nhận mật khẩu mới"
+
+msgid "Update Password"
+msgstr "Cập nhật mật khẩu"
+
+msgid "Node %{name} cannot be opened"
+msgstr "Không thể mở nút %{name}"
+
+msgid "Exit workspace"
+msgstr "Thoát khỏi không gian làm việc"
+
+msgid "New tab"
+msgstr "Tab mới"
+
+msgid "Single pane"
+msgstr "Một ô đơn"
+
+msgid "Split view"
+msgstr "Chia đôi màn hình"
+
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+
+msgid "Install DNS-01 plugin"
+msgstr ""
+
+msgid "Go to System > Plugins"
+msgstr ""
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "Nếu tên miền của bạn có bản ghi CNAME và bạn không thể nhận chứng chỉ,"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr ""
+"Bỏ qua kiểm tra lan truyền DNS cục bộ và đợi 60 giây trước khi yêu cầu "
+
+msgid "DNS-01 plugin unavailable"
+msgstr ""
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr ""
+
+msgid "Plugin %{plugin} failed to render"
+msgstr ""
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+
+msgid "Plugin manifest is invalid"
+msgstr ""
+
+msgid "Plugin not found"
+msgstr ""
+
+msgid "Plugin already exists"
+msgstr ""
+
+msgid "Plugin is not running"
+msgstr ""
+
+msgid "Plugin handshake failed"
+msgstr ""
+
+msgid "Plugin has no executable for this platform"
+msgstr ""
+
+msgid "Plugin package is invalid"
+msgstr ""
+
+msgid "Plugin package is too large"
+msgstr ""
+
+msgid "Plugin api version is incompatible"
+msgstr ""
+
+msgid "Plugin permissions need approval"
+msgstr ""
+
+msgid "Plugin dependency is missing: {0}"
+msgstr ""
+
+msgid "Plugin dependencies form a cycle"
+msgstr ""
+
+msgid "Plugin is in use by {0}"
+msgstr ""
+
+msgid "Plugin system is disabled"
+msgstr ""
+
+msgid "Plugin uploads are disabled"
+msgstr ""
+
+msgid "Plugin call timed out"
+msgstr ""
+
+msgid "Plugin rpc error: {0}"
+msgstr ""
+
+msgid "Plugin setting {0} is invalid"
+msgstr ""
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+
+msgid "Plugin package declares another id"
+msgstr ""
+
+msgid "Plugins"
+msgstr ""
+
+msgid "Accept plugin sync"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Opted out"
+msgstr ""
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Capabilities"
+msgstr ""
+
+msgid "Auto install to nodes"
+msgstr ""
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr ""
+
+msgid "Some nodes could not be synchronized"
+msgstr ""
+
+msgid "Failed to synchronize the plugin"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Starting"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "Incompatible"
+msgstr ""
+
+msgid "Needs approval"
+msgstr ""
+
+msgid "Failed to load the plugin list"
+msgstr ""
+
+msgid "Plugin enabled"
+msgstr ""
+
+msgid "Failed to enable the plugin"
+msgstr ""
+
+msgid "Plugin disabled"
+msgstr ""
+
+msgid "Failed to disable the plugin"
+msgstr ""
+
+msgid "Plugin uninstalled"
+msgstr ""
+
+msgid "Failed to uninstall the plugin"
+msgstr ""
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr ""
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+
+msgid "Development plugin URL"
+msgstr ""
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+
+msgid "Dev plugin"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr ""
+
+msgid "Settings"
+msgstr "Cài đặt"
+
+msgid "Logs"
+msgstr ""
+
+msgid "Sync to nodes"
+msgstr ""
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Sync %{name} to nodes"
+msgstr ""
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr ""
+
+msgid "Already in sync"
+msgstr ""
+
+msgid "This node only"
+msgstr ""
+
+msgid "All child nodes"
+msgstr ""
+
+msgid "Selected nodes"
+msgstr ""
+
+msgid "Failed to read the plugin bundle"
+msgstr ""
+
+msgid "Plugin installed"
+msgstr ""
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+
+msgid "Failed to install the plugin"
+msgstr ""
+
+msgid "Install plugin"
+msgstr ""
+
+msgid "Click or drag a plugin bundle here"
+msgstr ""
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "(replaces %{version})"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Install the plugins below first"
+msgstr ""
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr ""
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+
+msgid "Requested permissions"
+msgstr ""
+
+msgid "Enable after install"
+msgstr ""
+
+msgid "Also install to child nodes"
+msgstr ""
+
+msgid "Keep in sync automatically"
+msgstr ""
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+
+msgid "Failed to load the plugin logs"
+msgstr ""
+
+msgid "Logs copied to clipboard"
+msgstr ""
+
+msgid "Failed to copy the logs"
+msgstr ""
+
+msgid "Logs: %{name}"
+msgstr ""
+
+msgid "No log output yet"
+msgstr ""
+
+msgid "Failed to load the plugin marketplace"
+msgstr ""
+
+msgid "Reloading the catalog"
+msgstr ""
+
+msgid "Search plugins"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "All sources"
+msgstr ""
+
+msgid "Updates only"
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid "Every installed plugin is up to date"
+msgstr ""
+
+msgid "No plugins match your search"
+msgstr ""
+
+msgid "Downloading the package"
+msgstr ""
+
+msgid "Verifying the signature"
+msgstr ""
+
+msgid "Installing"
+msgstr ""
+
+msgid "%{phase}: %{plugin}"
+msgstr ""
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr ""
+
+msgid "Update plugin"
+msgstr ""
+
+msgid "No release available for this platform"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "This is a community plugin"
+msgstr ""
+
+msgid "The plugins below are installed together with it"
+msgstr ""
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+
+msgid "No description provided."
+msgstr ""
+
+msgid "Installed: %{version}"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Repository"
+msgstr ""
+
+msgid "Release notes"
+msgstr ""
+
+msgid "Released"
+msgstr ""
+
+msgid "Platforms"
+msgstr ""
+
+msgid "Failed to load the plugin details"
+msgstr ""
+
+msgid "Installed version"
+msgstr ""
+
+msgid "Versions"
+msgstr ""
+
+msgid "Yanked"
+msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "Readme"
+msgstr ""
+
+msgid "Failed to load the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources saved"
+msgstr ""
+
+msgid "Failed to save the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources"
+msgstr ""
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+
+msgid "Using the official catalog"
+msgstr ""
+
+msgid "Add source"
+msgstr ""
+
+msgid "Add the official catalog"
+msgstr ""
+
+msgid "Official"
+msgstr ""
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+
+msgid "Community"
+msgstr ""
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+
+msgid "Approve permissions"
+msgstr ""
+
+msgid "Approve and enable"
+msgstr ""
+
+msgid "%{name} needs your approval before it can run."
+msgstr ""
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+
+msgid "This plugin does not request any host permission."
+msgstr ""
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+
+msgid "unknown"
+msgstr ""
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr ""
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr ""
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr ""
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr ""
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr ""
+
+msgid "In sync"
+msgstr ""
+
+msgid "Outdated"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Unsupported platform"
+msgstr ""
+
+msgid "Unsupported"
+msgstr ""
+
+msgid "Failed to load the plugin matrix"
+msgstr ""
+
+msgid "Update to %{version}"
+msgstr ""
+
+msgid "Sync to this node"
+msgstr ""
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+
+msgid "All nodes"
+msgstr ""
+
+msgid "This instance has no child node"
+msgstr ""
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+
+msgid "Sync to selected"
+msgstr ""
+
+msgid "Sync to all"
+msgstr ""
+
+msgid "Marketplace"
+msgstr ""
+
+msgid "%{field} is required"
+msgstr ""
+
+msgid "Failed to load the plugin settings"
+msgstr ""
+
+msgid "Plugin settings saved"
+msgstr ""
+
+msgid "Failed to save the plugin settings"
+msgstr ""
+
+msgid "Settings: %{name}"
+msgstr ""
+
+msgid "This plugin has no settings."
+msgstr ""
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] ""
+
+msgid "Sync policy saved"
+msgstr ""
+
+msgid "Failed to save the sync policy"
+msgstr ""
+
+msgid "Automatic installation"
+msgstr ""
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+
+msgid "Also sync the plugin settings"
+msgstr ""
+
+#~ msgid "Webauthn"
+#~ msgstr "WebAuthn"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts in "
+#~ "ban threshold minutes,"
+#~ msgstr ""
+#~ "Nếu số lần thử đăng nhập thất bại từ một IP đạt đến số lần tối đa trong "
+#~ "khoảng thời gian ngưỡng cấm (phút),"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr "Đặt máy chủ tên đệ quy để ghi đè máy chủ tên hệ thống"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "MMDB tùy chỉnh hiện đang được bật"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "Tên tệp IndexCustomMMDB"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "Được cấu hình từ [nginx_log].GeoMapPath. Giữ các tệp có tên như "
+#~ "100000_full.json trong thư mục này."
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "Chỉ có bản đồ thế giới được cung cấp mặc định. Vui lòng tự tải xuống các "
+#~ "tệp ranh giới của Trung Quốc và các tỉnh và đặt vào thư mục này."
+
+#~ msgid "Global health check controls"
+#~ msgstr "Điều khiển kiểm tra sức khoẻ toàn cục"
+
+msgid "No file matches the search"
+msgstr "Không có tệp nào khớp với tìm kiếm"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+"Tên tệp phải kết thúc bằng .conf và chỉ được chứa chữ cái, chữ số, dấu "
+"chấm, dấu gạch ngang và dấu gạch dưới"
+
+msgid "Snippet not found"
+msgstr "Không tìm thấy đoạn mã"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "Đoạn mã vượt quá 256 KiB"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "Phần đầu của đoạn mã không thể phân tích cú pháp: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "Đoạn mã vẫn được bao gồm bởi {0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "Một đoạn mã với tên tệp này đã tồn tại"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "Biến {0} không hợp lệ: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "Nội dung không được phân tích cú pháp dưới dạng mẫu: {0}"
+
+msgid "Snippets"
+msgstr "Snippet"
+
+msgid "Create Snippet"
+msgstr "Tạo đoạn mã"
+
+msgid "Built-in Template"
+msgstr "Mẫu tích hợp"
+
+msgid "Edit Snippet"
+msgstr "Chỉnh sửa đoạn mã"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "Được sử dụng bởi %{count} cấu hình"
+
+msgid "Site Card Click URL"
+msgstr "URL nhấp vào thẻ trang web"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr ""
+"URL HTTP/HTTPS tuyệt đối tùy chọn được sử dụng khi mở thẻ trang web này. "
+"Nếu để trống, URL trang web mặc định sẽ được sử dụng."
+
+msgid "Built-in"
+msgstr "Tích hợp sẵn"
+
+msgid "Snippet"
+msgstr "Đoạn mã"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include giữ cho trang được liên kết với snippets/%{file}, do đó các thay "
+"đổi sau này của đoạn mã sẽ được áp dụng cho nó. Insert thay vào đó sẽ sao "
+"chép nội dung vào trang."
+
+msgid "Insert"
+msgstr "Chèn"
+
+msgid "Include"
+msgstr "Bao gồm"
 
 msgid "Read Only"
 msgstr "Chỉ đọc"
@@ -11227,6 +11727,9 @@ msgstr "Không sử dụng"
 
 msgid "Max Age"
 msgstr "Tuổi tối đa"
+
+msgid "Options"
+msgstr "Tùy chọn"
 
 msgid "Remove option"
 msgstr "Xóa tùy chọn"
@@ -11391,257 +11894,404 @@ msgstr "Các giá trị tùy chọn phải là duy nhất."
 msgid "Choose the default option."
 msgstr "Chọn tùy chọn mặc định."
 
-msgid "Do you want to %{action} this stream?"
-msgstr "Bạn có muốn %{action} luồng này không?"
-
-msgid "Delete stream: %{stream_name}"
-msgstr "Xóa luồng: %{stream_name}"
-
-msgid "Added successfully"
-msgstr "Đã thêm thành công"
-
-msgid "Add Stream"
-msgstr "Thêm luồng"
-
-msgid "%{count} streams selected"
-msgstr "Đã chọn %{count} luồng"
-
-msgid "Development Mode"
-msgstr "Chế độ phát triển"
-
-msgid "Official Document"
-msgstr "Tài liệu chính thức"
-
-msgid "Sponsor"
-msgstr "Nhà tài trợ"
-
-msgid "Project Team"
-msgstr "Đội ngũ phát triển"
-
-msgid "License"
-msgstr "Giấy phép"
-
-msgid "View Third-party Components"
-msgstr "Xem các thành phần bên thứ ba"
-
-msgid "View version details and core information about this Nginx UI instance."
-msgstr "Xem chi tiết phiên bản và thông tin cốt lõi về thể thể hiện Nginx UI này."
-
-msgid "Run built-in diagnostics to validate environment and service readiness."
-msgstr ""
-"Chạy chẩn đoán tích hợp để xác nhận trạng thái sẵn sàng của môi trường và "
-"dịch vụ."
-
-msgid "Check release updates and execute upgrade operations when available."
-msgstr "Kiểm tra bản phát hành cập nhật và thực hiện thao tác nâng cấp khi có sẵn."
-
-msgid "Review third-party licenses and open source component attributions."
-msgstr ""
-"Xem giấy phép của bên thứ ba và ghi nhận đóng góp của các thành phần mã "
-"nguồn mở."
-
-msgid "Total Components"
-msgstr "Tổng số thành phần"
-
-msgid "Frontend"
-msgstr "Giao diện người dùng"
-
-msgid "License Types"
-msgstr "Loại giấy phép"
-
-msgid "License Distribution"
-msgstr "Phân phối giấy phép"
-
-msgid "components"
-msgstr "thành phần"
-
-msgid "All Components"
-msgstr "Tất cả các thành phần"
-
-msgid "Dev"
-msgstr "Dev"
-
-msgid "Reinstall"
-msgstr "Cài đặt lại"
-
-msgid "Core Upgrade"
-msgstr "Cập nhật core"
-
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "Bạn có thể kiểm tra nâng cấp Nginx UI tại trang này"
-
-msgid "Current Version"
-msgstr "Phiên bản hiện tại"
-
-msgid "Arch"
-msgstr "Kiến trúc"
-
-msgid "Executable Path"
-msgstr "Đường dẫn thực thi"
-
-msgid "Last checked at"
-msgstr "Kiểm tra lần cuối lúc"
-
-msgid "You are using the latest version"
-msgstr "Bạn đang sử dụng phiên bản mới nhất"
-
-msgid "New version released"
-msgstr "Đã có phiên bản mới"
-
-msgid "Release Note"
-msgstr "Ghi chú phát hành"
-
-msgid "Hide Assistant"
-msgstr "Ẩn trợ lý"
-
-msgid "Show Assistant"
-msgstr "Hiển thị trợ lý"
-
-msgid "Connection lost for this terminal. Please refresh if needed."
-msgstr "Mất kết nối với thiết bị đầu cuối này. Vui lòng làm mới nếu cần."
+msgid "Certificate Relocated"
+msgstr "Chứng chỉ đã được di chuyển"
 
 msgid ""
-"This is a simulated terminal running entirely in your browser. Commands are "
-"answered locally and never reach a server."
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
 msgstr ""
-"Đây là một terminal mô phỏng chạy hoàn toàn trong trình duyệt của bạn. Các "
-"lệnh được xử lý cục bộ và không bao giờ gửi đến máy chủ."
+"Chứng chỉ %{name} hiện được lưu trong %{path}, hãy trỏ các trang web tải "
+"%{previous_path} đến nó"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "Đường dẫn tồn tại, nhưng tệp không phải là chứng chỉ"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "Đường dẫn tồn tại, nhưng tệp không phải là khóa riêng tư"
+
+msgid "MFA Enrollment"
+msgstr "Trạng thái đăng ký MFA"
+
+msgid "Enrolled"
+msgstr "Đã đăng ký"
+
+msgid "Not enrolled"
+msgstr "Chưa đăng ký"
+
+msgid "Pending enrollment"
+msgstr "Đang chờ đăng ký"
+
+msgid "Invalid request: {0}"
+msgstr "Yêu cầu không hợp lệ: {0}"
 
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
 msgstr ""
-"Bạn đang truy cập thiết bị đầu cuối này thông qua kết nối HTTP không an "
-"toàn trên một miền không phải localhost. Điều này có thể làm lộ thông tin "
-"nhạy cảm."
+"Tên ingress không hợp lệ: sử dụng 1-40 chữ thường, chữ số và dấu gạch "
+"ngang, bắt đầu và kết thúc bằng chữ cái hoặc chữ số"
 
-msgid "Create Upstream"
-msgstr "Tạo Upstream"
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr ""
+"Chủ sở hữu không hợp lệ: sử dụng từ 1-64 chữ cái, chữ số, dấu chấm, gạch "
+"dưới và gạch nối"
 
-msgid "View Upstream %{name}"
-msgstr "Xem upstream %{name}"
+msgid "Invalid host: {0}"
+msgstr "Máy chủ không hợp lệ: {0}"
 
-msgid "Edit Upstream %{name}"
-msgstr "Chỉnh sửa Upstream %{name}"
+msgid "Invalid backend {0}: {1}"
+msgstr "Backend không hợp lệ {0}: {1}"
 
-msgid "Round Robin (default)"
-msgstr "Round Robin (mặc định)"
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "Máy chủ backend {0} nằm ngoài phạm vi backend được phép"
 
-msgid "Least Connections (least_conn)"
-msgstr "Ít kết nối nhất (least_conn)"
+msgid "Invalid route {0}: {1}"
+msgstr "Tuyến đường không hợp lệ {0}: {1}"
 
-msgid "IP Hash (ip_hash)"
-msgstr "Hash IP (ip_hash)"
+msgid "Invalid tls: {0}"
+msgstr "TLS không hợp lệ: {0}"
 
-msgid "Hash (hash)"
-msgstr "Hash (hash)"
+msgid "Invalid policy: {0}"
+msgstr "Chính sách không hợp lệ: {0}"
 
-msgid "Random (random)"
-msgstr "Ngẫu nhiên (random)"
+msgid "Server {0} not found in backend {1}"
+msgstr "Không tìm thấy máy chủ {0} trong backend {1}"
 
-msgid "Upstream %{name} saved and Nginx reloaded"
-msgstr "Upstream %{name} đã được lưu và Nginx đã được tải lại"
+msgid "Ingress {0} not found"
+msgstr "Không tìm thấy Ingress {0}"
 
-msgid "Sites use it as proxy_pass http://%{name};"
-msgstr "Các trang web sử dụng nó như proxy_pass http://%{name};"
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0} thuộc sở hữu của {1}; truyền force để chiếm quyền kiểm soát"
 
-msgid "Load Balancing Method"
-msgstr "Phương pháp cân bằng tải"
+msgid "Host {0} is already served by ingress {1}"
+msgstr "Máy chủ {0} đã được phục vụ bởi ingress {1}"
 
-msgid "Hash Key"
-msgstr "Khóa băm"
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "Trang web {0} đã tồn tại và không được quản lý bởi ingress này"
 
-msgid "Consistent Hashing"
-msgstr "Băm nhất quán"
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "Hết thời gian chờ ingress {0} đạt đến thế hệ {1}"
 
-msgid "Servers"
+msgid "Apply failed: {0}"
+msgstr "Áp dụng thất bại: {0}"
+
+msgid "Certificate not ready: {0}"
+msgstr "Chứng chỉ chưa sẵn sàng: {0}"
+
+msgid "Not implemented"
+msgstr "Chưa được triển khai"
+
+msgid ""
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
+msgstr ""
+"Trang web được quản lý bởi ingress {0}; hãy thay đổi ingress thay vào đó "
+"hoặc buộc thay đổi"
+
+msgid "Ingresses"
+msgstr "Ingresses"
+
+msgid "HTTP only"
+msgstr "Chỉ HTTP"
+
+msgid "Not issued yet"
+msgstr "Chưa được cấp"
+
+msgid "Expired %{date}"
+msgstr "Đã hết hạn %{date}"
+
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date} (còn %{days} ngày)"
+
+msgid "Health"
+msgstr "Sức khỏe"
+
+msgid "Path Prefix"
+msgstr "Tiền tố đường dẫn"
+
+msgid "Allowed Sources"
+msgstr "Nguồn được phép"
+
+msgid "Last Transition"
+msgstr "Chuyển đổi cuối cùng"
+
+msgid "Drained"
+msgstr "Kiệt sức"
+
+msgid "Healthy"
+msgstr "Khỏe mạnh"
+
+msgid "Unhealthy"
+msgstr "Không lành mạnh"
+
+msgid ""
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr ""
+"Không thể tải trang web đã tạo. Nó được ghi vào lần áp dụng thành công đầu "
+"tiên."
+
+msgid "Reconcile Now"
+msgstr "Đối chiếu ngay"
+
+msgid "The last apply failed; the previous config is still live"
+msgstr "Lần áp dụng cuối cùng thất bại; cấu hình trước đó vẫn đang hoạt động."
+
+msgid "Owner"
+msgstr "Chủ sở hữu"
+
+msgid "External ID"
+msgstr "ID bên ngoài"
+
+msgid "Generation"
+msgstr "Thế hệ"
+
+msgid "%{observed} applied of %{generation}"
+msgstr "%{observed} đã áp dụng trên %{generation}"
+
+msgid "Generated Site"
+msgstr "Trang web đã tạo"
+
+msgid "Last Applied"
+msgstr "Lần áp dụng cuối"
+
+msgid "Config Hash"
+msgstr "Mã băm cấu hình"
+
+msgid "Labels"
+msgstr "Nhãn"
+
+msgid "Hosts"
 msgstr "Máy chủ"
 
-msgid "Not available with this load balancing method"
-msgstr "Không khả dụng với phương pháp cân bằng tải này"
+msgid "TLS"
+msgstr "TLS"
 
-msgid "Keepalive"
-msgstr "Keepalive"
+msgid "Mode"
+msgstr "Chế độ"
+
+msgid "View certificate"
+msgstr "Xem chứng chỉ"
+
+msgid "Challenge"
+msgstr "Thử thách"
+
+msgid "Redirect to HTTPS"
+msgstr "Chuyển hướng sang HTTPS"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "Chỉ listener HTTP được phục vụ cho đến khi chứng chỉ được cấp."
+
+msgid "Backends"
+msgstr "Backends"
+
+msgid "Routes"
+msgstr "Các tuyến đường"
+
+msgid "Policy default"
+msgstr "Mặc định chính sách"
+
+msgid "Policy"
+msgstr "Chính sách"
+
+msgid "Everyone"
+msgstr "Mọi người"
+
+msgid "Rate Limit"
+msgstr "Giới hạn tần suất"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "%{rps} yêu cầu/giây cho mỗi client, burst %{burst}"
+
+msgid "Unlimited"
+msgstr "Không giới hạn"
+
+msgid "Max Body Size"
+msgstr "Kích thước thân tối đa"
+
+msgid "Extra Headers"
+msgstr "Tiêu đề bổ sung"
+
+msgid "Conditions"
+msgstr "Điều kiện"
+
+msgid "True"
+msgstr "Đúng"
+
+msgid "False"
+msgstr "Sai"
+
+msgid "Generated Site Config"
+msgstr "Cấu hình trang web đã tạo"
+
+msgid "Open in site editor"
+msgstr "Mở trong trình chỉnh sửa trang"
+
+msgid "Not ready"
+msgstr "Chưa sẵn sàng"
+
+msgid "The latest spec has not been applied yet"
+msgstr "Thông số kỹ thuật mới nhất chưa được áp dụng"
+
+msgid "Applying"
+msgstr "Đang áp dụng"
+
+msgid "Ready"
+msgstr "Sẵn sàng"
+
+msgid "Degraded"
+msgstr "Suy giảm"
+
+msgid "Config Applied"
+msgstr "Đã áp dụng cấu hình"
+
+msgid "Certificate Ready"
+msgstr "Chứng chỉ đã sẵn sàng"
+
+msgid "Backends Healthy"
+msgstr "Backend hoạt động tốt"
+
+msgid "Issued automatically (ACME)"
+msgstr "Được cấp tự động (ACME)"
+
+msgid "All owners"
+msgstr "Tất cả chủ sở hữu"
+
+msgid "Reconcile of %{name} queued"
+msgstr "Đối soát của %{name} đã được xếp hàng chờ"
+
+msgid "Delete ingress %{name}?"
+msgstr "Xóa ingress %{name}?"
 
 msgid ""
-"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
-"need proxy_http_version 1.1 and an empty Connection header."
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
 msgstr ""
-"Số kết nối nhàn rỗi cần giữ mở cho mỗi worker; 0 để tắt. Các trang được "
-"proxy cũng cần proxy_http_version 1.1 và tiêu đề Connection trống."
+"Ingress này thuộc sở hữu của %{owner}. Controller của nó có thể sẽ tạo lại "
+"nó trong lần đồng bộ tiếp theo; hãy xóa nó khỏi controller để xóa vĩnh viễn."
 
-msgid "Connections"
-msgstr "Kết nối"
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "Trang web đã tạo và các tệp upstream bị xóa và nginx được tải lại."
 
-msgid "Additional Directives"
-msgstr "Chỉ thị bổ sung"
+msgid "Also delete the certificate"
+msgstr "Cũng xóa chứng chỉ"
 
-msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
-msgstr "Mỗi dòng một chỉ thị, ví dụ: keepalive_timeout hoặc keepalive_requests."
+msgid "Ingress %{name} deleted"
+msgstr "Ingress %{name} đã bị xóa"
 
-msgid "Referenced By"
-msgstr "Được tham chiếu bởi"
+msgid "Ingress"
+msgstr "Ingress"
 
-msgid "No site uses this upstream yet."
-msgstr "Chưa có site nào sử dụng upstream này."
+msgid "Phase"
+msgstr "Giai đoạn"
 
-msgid "Configuration Preview"
-msgstr "Xem trước cấu hình"
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} khỏe mạnh"
 
-msgid "Enable server %{address}"
-msgstr "Bật máy chủ %{address}"
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} máy chủ"
 
-msgid "Disable server %{address}"
-msgstr "Tắt máy chủ %{address}"
+msgid "%{count} down"
+msgstr "Còn %{count}"
+
+msgid "Filter by owner"
+msgstr "Lọc theo chủ sở hữu"
+
+msgid "Applied generation / latest generation"
+msgstr "Thế hệ áp dụng / Thế hệ mới nhất"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "gen %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "Đối soát"
 
 msgid ""
-"Create shared upstream groups with load balancing and reuse them across "
-"sites."
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
 msgstr ""
-"Tạo các nhóm upstream dùng chung với cân bằng tải và tái sử dụng chúng trên "
-"nhiều trang web."
+"Ingress là các mục nhập proxy ngược được xuất bản bởi các bộ điều khiển bên "
+"ngoài thông qua Ingress API. Nginx UI hiển thị từng mục thành một trang "
+"được quản lý kèm các upstream, cấp phát chứng chỉ và báo cáo trạng thái tại "
+"đây. Hãy thay đổi chúng trong bộ điều khiển tương ứng; các chỉnh sửa thực "
+"hiện tại đây sẽ bị ghi đè bởi lần điều chỉnh tiếp theo."
 
-msgid "Monitor the health of every proxy target and toggle its health check."
-msgstr ""
-"Theo dõi tình trạng của mọi mục tiêu proxy và bật/tắt kiểm tra sức khỏe của "
-"chúng."
+msgid "Learn more"
+msgstr "Tìm hiểu thêm"
 
-msgid "Socket"
-msgstr "Socket"
-
-msgid "Direct"
-msgstr "Trực tiếp"
-
-msgid "Health Status"
-msgstr "Trạng thái sức khỏe"
-
-msgid "Last Check"
-msgstr "Lần kiểm tra cuối"
-
-msgid "Upstream health checks are globally paused"
-msgstr "Kiểm tra sức khoẻ upstream đang tạm dừng toàn cục"
+msgid "No ingresses yet"
+msgstr "Chưa có ingress nào"
 
 msgid ""
-"Per-target selections are preserved. Resume probes from Health Check "
-"preferences."
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
 msgstr ""
-"Lựa chọn của từng đích được giữ nguyên. Hãy tiếp tục thăm dò trong tuỳ chọn "
-"Kiểm tra sức khoẻ."
+"Một bộ điều khiển như nền tảng triển khai tạo ra các ingress với PUT "
+"/api/ingresses/:name, được xác thực dưới dạng một nút cụm hoặc bằng một API "
+"token. Chúng xuất hiện ở đây ngay khi được lưu trữ."
 
-msgid "Hash"
-msgstr "Hash"
+msgid "Read the Ingress API guide"
+msgstr "Đọc hướng dẫn Ingress API"
 
-msgid "Random"
-msgstr "Ngẫu nhiên"
+msgid "Search by name, host or external ID"
+msgstr "Tìm kiếm theo tên, máy chủ hoặc ID bên ngoài"
 
-msgid "Load Balancing"
-msgstr "Cân bằng tải"
+msgid "Search ingresses"
+msgstr "Tìm kiếm Ingress"
 
-msgid "Defined In"
-msgstr "Được định nghĩa trong"
+msgid "No ingress matches the filter"
+msgstr "Không có Ingress nào khớp với bộ lọc"
 
-msgid "Matched upstreams: %{groups}, servers: %{servers}"
-msgstr "Upstream phù hợp: %{groups}, máy chủ: %{servers}"
+msgid "Managed by ingress %{name}"
+msgstr "Được quản lý bởi ingress %{name}"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr ""
+"Các thay đổi sẽ bị ghi đè bởi lần reconcile tiếp theo. Hãy chỉnh sửa "
+"Ingress trong controller của nó thay thế."
+
+msgid "View ingress"
+msgstr "Xem Ingress"
+
+msgid "Edit anyway"
+msgstr "Vẫn chỉnh sửa"
+
+msgid "Ingress: %{name}"
+msgstr "Ingress: %{name}"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "Bao gồm %{count} trang web do ingress quản lý"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0} đã được cập nhật trong khi đang bị xóa"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "Upstream {0} đã tồn tại và không được quản lý bởi ingress này"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "Hết thời gian chờ xóa ingress {0}"
+
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "Các tên upstream bắt đầu bằng {0} được dành riêng cho ingresses"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr ""
+"Upstream {0} được quản lý bởi ingress {1}; hãy thay đổi ingress thay vào đó "
+"hoặc buộc thay đổi"
 
 msgid ""
 "Ingress %{name} owns this upstream. Change the ingress instead; its next "
@@ -11650,71 +12300,87 @@ msgstr ""
 "Ingress %{name} sở hữu upstream này. Hãy thay đổi ingress thay vào đó; lần "
 "áp dụng tiếp theo của nó sẽ ghi đè các thay đổi được thực hiện tại đây."
 
-msgid "Server %{address} enabled"
-msgstr "Máy chủ %{address} đã được bật"
+msgid "View Upstream %{name}"
+msgstr "Xem upstream %{name}"
 
-msgid "Server %{address} disabled"
-msgstr "Máy chủ %{address} đã bị tắt"
+msgid "Recovery codes downloaded"
+msgstr "Mã khôi phục đã được tải xuống"
 
-msgid "Disable the last active server of %{name}?"
-msgstr "Vô hiệu hóa máy chủ hoạt động cuối cùng của %{name}?"
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr "Thiết lập MFA hoàn tất. Lưu mã khôi phục của bạn trước khi tiếp tục."
 
-msgid ""
-"No other primary server of this upstream is enabled. Requests will fail "
-"unless a backup server takes over."
-msgstr ""
-"Không có máy chủ chính nào khác của upstream này được bật. Yêu cầu sẽ thất "
-"bại trừ khi một máy chủ dự phòng tiếp quản."
+msgid "MFA session expired. Please sign in again."
+msgstr "Phiên MFA đã hết hạn. Vui lòng đăng nhập lại."
 
-msgid "Upstream %{name} is still in use"
-msgstr "Upstream %{name} vẫn đang được sử dụng"
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "Bắt buộc MFA. Thiết lập trình xác thực hoặc passkey để tiếp tục."
 
-msgid "Point these configurations at another upstream before deleting it:"
-msgstr "Trỏ các cấu hình này sang một upstream khác trước khi xóa:"
+msgid "Verify your MFA method to continue signing in."
+msgstr "Xác minh phương thức MFA của bạn để tiếp tục đăng nhập."
 
-msgid "Delete upstream %{name}?"
-msgstr "Xóa upstream %{name}?"
-
-msgid "%{path} will be removed and Nginx reloaded."
-msgstr "%{path} sẽ bị xóa và Nginx sẽ được tải lại."
-
-msgid "Upstream %{name} deleted"
-msgstr "Upstream %{name} đã bị xóa"
+msgid "Back to sign in"
+msgstr "Quay lại đăng nhập"
 
 msgid ""
-"An upstream group shares its servers and load balancing method across "
-"sites. Choose it as the proxy target when setting up a site; later changes "
-"here apply to every site that uses it."
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
 msgstr ""
-"Một nhóm upstream chia sẻ các máy chủ và phương pháp cân bằng tải của nó "
-"giữa các trang web. Chọn nó làm đích proxy khi thiết lập trang web; các "
-"thay đổi sau này tại đây sẽ áp dụng cho mọi trang web sử dụng nó."
+"Kích hoạt MFA trên tài khoản của riêng bạn trước khi quản lý chính sách MFA "
+"hoặc đặt lại người dùng khác."
 
-msgid "Files are stored in %{dir}."
-msgstr "Các tệp được lưu trữ trong %{dir}."
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "Nội dung tệp phải là dữ liệu PEM hoặc htpasswd hợp lệ"
 
-msgid "Search by name or IP:port"
-msgstr "Tìm theo tên hoặc IP:port"
+msgid "MFA enrollment is required"
+msgstr "Yêu cầu đăng ký MFA"
 
-msgid "Search upstreams by name or server address"
-msgstr "Tìm kiếm upstream theo tên hoặc địa chỉ máy chủ"
+msgid "MFA verification is required"
+msgstr "Yêu cầu xác minh MFA"
 
-msgid "No upstream group matches the search"
-msgstr "Không có nhóm upstream nào khớp với tìm kiếm"
+msgid "Cannot remove the last required MFA method"
+msgstr "Không thể xóa phương thức MFA bắt buộc cuối cùng"
 
-msgid "Upstreams Defined in Other Files"
-msgstr "Upstream được định nghĩa trong các tệp khác"
+msgid "TOTP disabled"
+msgstr "TOTP đã bị tắt"
+
+msgid "Replace TOTP"
+msgstr "Thay thế TOTP"
+
+msgid "Disable TOTP for this account?"
+msgstr "Vô hiệu hóa TOTP cho tài khoản này?"
+
+msgid "Disable TOTP"
+msgstr "Tắt TOTP"
 
 msgid ""
-"These upstream blocks live inside site or other configuration files. Edit "
-"their settings in their own file; servers can be switched on and off here. "
-"A block inside a site can be converted to a shared group that other sites "
-"can use too."
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
 msgstr ""
-"Các khối upstream này nằm trong tệp cấu hình của trang web hoặc các tệp "
-"khác. Chỉnh sửa cài đặt của chúng trong tệp tương ứng; có thể bật/tắt máy "
-"chủ tại đây. Một khối bên trong trang web có thể được chuyển thành nhóm "
-"chia sẻ mà các trang web khác cũng có thể sử dụng."
+"Trình xác thực hiện tại của bạn vẫn hoạt động cho đến khi mã mới được xác "
+"minh. Các mã khôi phục mới sẽ thay thế mã cũ."
+
+msgid "MFA Policy"
+msgstr "Chính sách MFA"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr ""
+"Yêu cầu MFA khi đăng nhập lần tới. Người dùng phải đăng ký Authenticator "
+"hoặc Passkey của riêng mình."
+
+msgid "Require MFA for all users"
+msgstr "Yêu cầu MFA cho tất cả người dùng"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "Yêu cầu MFA cục bộ cho đăng nhập SSO"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr ""
+"Áp dụng các yêu cầu xác minh và đăng ký MFA cục bộ cho đăng nhập OIDC và "
+"Casdoor."
 
 msgid "MFA Settings"
 msgstr "Cài đặt MFA"
@@ -11730,18 +12396,6 @@ msgstr "Thực thi người dùng"
 
 msgid "Optional"
 msgstr "Tùy chọn"
-
-msgid "MFA Enrollment"
-msgstr "Trạng thái đăng ký MFA"
-
-msgid "Pending enrollment"
-msgstr "Đang chờ đăng ký"
-
-msgid "Enrolled"
-msgstr "Đã đăng ký"
-
-msgid "Not enrolled"
-msgstr "Chưa đăng ký"
 
 msgid "MFA policy updated. It takes effect at the next sign-in."
 msgstr ""
@@ -11771,21 +12425,6 @@ msgstr "Đặt lại tất cả thông tin xác thực và phiên MFA cho ngư�
 msgid "Reset MFA"
 msgstr "Đặt lại MFA"
 
-msgid "User info updated successfully"
-msgstr "Cập nhật thông tin người dùng thành công"
-
-msgid "Passwords do not match"
-msgstr "Mật khẩu không khớp"
-
-msgid "Password updated successfully"
-msgstr "Cập nhật mật khẩu thành công"
-
-msgid "Personal Information"
-msgstr "Thông tin cá nhân"
-
-msgid "Update Profile"
-msgstr "Cập nhật hồ sơ"
-
 msgid ""
 "MFA is required by the global policy. You cannot remove your last MFA "
 "method."
@@ -11797,44 +12436,6 @@ msgid "MFA is required for your account. You cannot remove your last MFA method.
 msgstr ""
 "Tài khoản của bạn yêu cầu MFA. Bạn không thể xóa phương thức MFA cuối cùng "
 "của mình."
-
-msgid "Security Settings"
-msgstr "Cài đặt bảo mật"
-
-msgid "Change Password"
-msgstr "Đổi mật khẩu"
-
-msgid "New Password"
-msgstr "Mật khẩu mới"
-
-msgid "Confirm New Password"
-msgstr "Xác nhận mật khẩu mới"
-
-msgid "Update Password"
-msgstr "Cập nhật mật khẩu"
-
-msgid "Node %{name} cannot be opened"
-msgstr "Không thể mở nút %{name}"
-
-msgid "Exit workspace"
-msgstr "Thoát khỏi không gian làm việc"
-
-msgid "New tab"
-msgstr "Tab mới"
-
-msgid "Single pane"
-msgstr "Một ô đơn"
-
-msgid "Split view"
-msgstr "Chia đôi màn hình"
-
-msgctxt "Access list rule"
-msgid "Note"
-msgstr "Ghi chú"
-
-msgctxt "preference group"
-msgid "Maintenance"
-msgstr "Bảo trì"
 
 #~ msgid "Are you sure to reset 2FA?"
 #~ msgstr "Bạn có chắc chắn muốn đặt lại xác thực hai yếu tố không?"
@@ -11850,39 +12451,3 @@ msgstr "Bảo trì"
 
 #~ msgid "2FA"
 #~ msgstr "2fa"
-
-#~ msgid "Webauthn"
-#~ msgstr "WebAuthn"
-
-#~ msgid ""
-#~ "If the number of login failed attempts from a ip reach the max attempts in "
-#~ "ban threshold minutes,"
-#~ msgstr ""
-#~ "Nếu số lần thử đăng nhập thất bại từ một IP đạt đến số lần tối đa trong "
-#~ "khoảng thời gian ngưỡng cấm (phút),"
-
-#~ msgid "Set the recursive nameservers to override the systems nameservers "
-#~ msgstr "Đặt máy chủ tên đệ quy để ghi đè máy chủ tên hệ thống"
-
-#~ msgid "Custom MMDB is currently enabled"
-#~ msgstr "MMDB tùy chỉnh hiện đang được bật"
-
-#~ msgid "IndexCustomMMDB File Name"
-#~ msgstr "Tên tệp IndexCustomMMDB"
-
-#~ msgid ""
-#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
-#~ "100000_full.json in this directory."
-#~ msgstr ""
-#~ "Được cấu hình từ [nginx_log].GeoMapPath. Giữ các tệp có tên như "
-#~ "100000_full.json trong thư mục này."
-
-#~ msgid ""
-#~ "Only the world map is provided by default. Please download China and "
-#~ "province boundary files yourself and place them in this directory."
-#~ msgstr ""
-#~ "Chỉ có bản đồ thế giới được cung cấp mặc định. Vui lòng tự tải xuống các "
-#~ "tệp ranh giới của Trung Quốc và các tỉnh và đặt vào thư mục này."
-
-#~ msgid "Global health check controls"
-#~ msgstr "Điều khiển kiểm tra sức khoẻ toàn cục"
