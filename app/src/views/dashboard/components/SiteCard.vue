@@ -132,6 +132,14 @@ function formatCertRemaining(site: SiteInfo): string {
 
   return $gettext('%{days}d', { days: String(site.cert_days_remaining) })
 }
+
+function getSiteTitle(site: SiteInfo): string {
+  const baseName = site.site_name || site.name
+  if (Number.isFinite(site.index) && site.index > 0)
+    return `${baseName} [${site.index}]`
+
+  return baseName
+}
 </script>
 
 <template>
@@ -191,7 +199,7 @@ function formatCertRemaining(site: SiteInfo): string {
 
     <div class="site-info">
       <h3 class="site-title">
-        {{ site.site_name || site.name }}
+        {{ getSiteTitle(site) }}
       </h3>
       <p class="site-url">
         <span v-if="site.scheme && site.host_port" class="url-parts">
