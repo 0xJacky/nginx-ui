@@ -29,6 +29,8 @@ var (
 // after installation, and is safe to call more than once; failures are
 // logged, and issuance registers the user lazily if it is still missing.
 func InitRegister(ctx context.Context) {
+	InitChallengeEnv()
+
 	if settings.CertSettings.Email == "" {
 		return
 	}
