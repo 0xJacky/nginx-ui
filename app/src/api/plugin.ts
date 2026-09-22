@@ -116,13 +116,13 @@ export interface PluginManifestHTTP {
 }
 
 /** Mirrors internal/plugin/protocol/manifest.go. */
-/** Field types of a notify channel or probe kind form. Absent means text. */
+/** Field types of a capability entry form. Absent means text. */
 export type ConfigurationFieldType = 'text' | 'textarea' | 'number' | 'bool'
 
 /**
- * One field of the form a plugin declares for a notify channel or a probe
- * kind. Every value travels as a string: numbers in decimal, booleans as
- * "true" or "false".
+ * One field of the form a plugin declares for a notify channel, a probe
+ * kind, a storage backend or a deploy target. Every value travels as a
+ * string: numbers in decimal, booleans as "true" or "false".
  */
 export interface ConfigurationField {
   key: string
@@ -168,6 +168,26 @@ export interface PluginManifestMCP {
   tools: MCPTool[]
 }
 
+export interface ManifestStorageBackend {
+  code: string
+  name: string
+  configuration?: ConfigurationSchema
+}
+
+export interface PluginManifestStorage {
+  backends: ManifestStorageBackend[]
+}
+
+export interface ManifestDeployTarget {
+  code: string
+  name: string
+  configuration?: ConfigurationSchema
+}
+
+export interface PluginManifestDeploy {
+  targets: ManifestDeployTarget[]
+}
+
 export interface PluginManifest {
   id: string
   name: string
@@ -193,6 +213,8 @@ export interface PluginManifest {
   notify?: PluginManifestNotify
   probe?: PluginManifestProbe
   mcp?: PluginManifestMCP
+  storage?: PluginManifestStorage
+  deploy?: PluginManifestDeploy
 }
 
 export interface PluginInfo {

@@ -870,12 +870,13 @@ func mergedSettings(manifest *protocol.Manifest, row *model.Plugin) map[string]a
 }
 
 // OwnerOf resolves which enabled plugin serves a capability code: a dns01
-// provider, a notify channel or a probe kind. When several plugins declare the
-// same code the lowest plugin id wins, except that the official plugin always
-// wins a dns01 code.
+// provider, a notify channel, a probe kind, a storage backend or a deploy
+// target kind. When several plugins declare the same code the lowest plugin
+// id wins, except that the official plugin always wins a dns01 code.
 func (m *Manager) OwnerOf(capability, code string) (string, bool) {
 	switch capability {
-	case protocol.CapabilityDNS01, protocol.CapabilityNotify, protocol.CapabilityProbe:
+	case protocol.CapabilityDNS01, protocol.CapabilityNotify, protocol.CapabilityProbe,
+		protocol.CapabilityStorage, protocol.CapabilityCertDeploy:
 	default:
 		return "", false
 	}

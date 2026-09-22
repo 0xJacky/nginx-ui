@@ -9,9 +9,16 @@ package plugin
 
 import (
 	"context"
+	"crypto/ecdsa"
+	"crypto/elliptic"
+	"crypto/rand"
+	"crypto/x509"
+	"crypto/x509/pkix"
 	"encoding/json"
+	"encoding/pem"
 	"errors"
 	"fmt"
+	"math/big"
 	"os"
 	"path/filepath"
 	"slices"
@@ -245,6 +252,8 @@ type conformanceTargets struct {
 	// mcpUnknownTool is a tool name the manifest does not declare, empty when
 	// the mcp cases do not run.
 	mcpUnknownTool string
+	storage        *protocol.StorageBackend
+	deploy         *protocol.DeployTarget
 }
 
 // conformanceTargetsOf picks the targets of the capabilities being tested.
@@ -262,6 +271,14 @@ func conformanceTargetsOf(manifest *protocol.Manifest, capabilities []string) co
 	}
 	if slices.Contains(capabilities, protocol.CapabilityMCP) {
 		targets.mcpUnknownTool = unknownMCPTool(manifest)
+	}
+	if slices.Contains(capabilities, protocol.CapabilityStorage) && manifest.Storage != nil && len(manifest.Storage.Backends) > 0 {
+		backend := manifest.Storage.Backends[0]
+		targets.storage = &backend
+	}
+	if slices.Contains(capabilities, protocol.CapabilityCertDeploy) && manifest.Deploy != nil && len(manifest.Deploy.Targets) > 0 {
+		target := manifest.Deploy.Targets[0]
+		targets.deploy = &target
 	}
 	return targets
 }
@@ -294,6 +311,14 @@ func runCapabilityCases(ctx context.Context, caller jsonrpc.Caller, targets conf
 	}
 	if targets.mcpUnknownTool != "" {
 		runMCPUnknownTool(ctx, caller, targets.mcpUnknownTool, record)
+	}
+	if targets.storage != nil {
+		runStorageValidate(ctx, caller, *targets.storage, record)
+		runStorageList(ctx, caller, *targets.storage, record)
+	}
+	if targets.deploy != nil {
+		runDeployValidate(ctx, caller, *targets.deploy, record)
+		runDeployDryRun(ctx, caller, *targets.deploy, record)
 	}
 }
 
@@ -453,6 +478,20 @@ func runTransportParity(ctx context.Context, stdio, grpc jsonrpc.Caller, targets
 			method: protocol.MethodMCPCall,
 			params: protocol.MCPCallParams{Tool: targets.mcpUnknownTool},
 			result: func() any { return &protocol.MCPCallResult{} },
+		})
+	}
+	if targets.storage != nil {
+		probes = append(probes, parityProbe{
+			name:   protocol.MethodStorageValidate,
+			method: protocol.MethodStorageValidate,
+			params: protocol.StorageValidateParams{Backend: targets.storage.Code, Config: map[string]string{}},
+		})
+	}
+	if targets.deploy != nil {
+		probes = append(probes, parityProbe{
+			name:   protocol.MethodDeployValidate,
+			method: protocol.MethodDeployValidate,
+			params: protocol.DeployValidateParams{Kind: targets.deploy.Code, Config: map[string]string{}},
 		})
 	}
 	probes = append(probes, parityProbe{
@@ -822,30 +861,207 @@ func invalidConfigFieldOf(err error) (field string, ok bool) {
 // required field, and accepted otherwise. notify.send is never called, it
 // would reach the vendor.
 func runNotifyValidate(ctx context.Context, caller jsonrpc.Caller, channel protocol.NotifyChannel, record recorder) {
+	runEmptyConfigValidate(ctx, caller, emptyConfigCase{
+		rule: "NOTIFY-8", method: protocol.MethodNotifyValidate, entry: "channel", code: channel.Code,
+		params: protocol.NotifyValidateParams{Channel: channel.Code, Config: map[string]string{}},
+		schema: channel.Configuration,
+	}, record)
+}
+
+// emptyConfigCase is a validate method called with an empty config.
+type emptyConfigCase struct {
+	rule   string
+	method string
+	// entry names the kind of manifest entry in the messages.
+	entry  string
+	code   string
+	params any
+	schema *protocol.ConfigurationSchema
+}
+
+// runEmptyConfigValidate checks an optional validate method: an empty config
+// is rejected with -32003 and data.field when the entry has a required field,
+// and accepted otherwise.
+func runEmptyConfigValidate(ctx context.Context, caller jsonrpc.Caller, tc emptyConfigCase, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
-	err := caller.Call(callCtx, protocol.MethodNotifyValidate, protocol.NotifyValidateParams{
-		Channel: channel.Code,
-		Config:  map[string]string{},
-	}, nil)
+	err := caller.Call(callCtx, tc.method, tc.params, nil)
 
-	required := requiredConfigurationField(channel.Configuration)
+	required := requiredConfigurationField(tc.schema)
 	field, invalid := invalidConfigFieldOf(err)
 	switch {
 	case isOptionalUnimplemented(err):
-		record("NOTIFY-8", "notify.validate", StatusSkip, 0, "not implemented (%s)", protocolErrorCode(err))
+		record(tc.rule, tc.method, StatusSkip, 0, "not implemented (%s)", protocolErrorCode(err))
 	case invalid && field == "":
-		record("NOTIFY-8", "notify.validate", StatusFail, 0, "an empty config was rejected with -32003 but without data.field")
+		record(tc.rule, tc.method, StatusFail, 0, "an empty config was rejected with -32003 but without data.field")
 	case invalid:
-		record("NOTIFY-8", "notify.validate", StatusPass, 0, "an empty config for channel %s was rejected with -32003 naming %s", channel.Code, field)
+		record(tc.rule, tc.method, StatusPass, 0, "an empty config for %s %s was rejected with -32003 naming %s", tc.entry, tc.code, field)
 	case err == nil && required != "":
-		record("NOTIFY-8", "notify.validate", StatusFail, 0, "an empty config was accepted although field %s is required", required)
+		record(tc.rule, tc.method, StatusFail, 0, "an empty config was accepted although field %s is required", required)
 	case err == nil:
-		record("NOTIFY-8", "notify.validate", StatusPass, 0, "channel %s declares no required field and accepted an empty config", channel.Code)
+		record(tc.rule, tc.method, StatusPass, 0, "%s %s declares no required field and accepted an empty config", tc.entry, tc.code)
 	default:
-		record("NOTIFY-8", "notify.validate", StatusFail, 0, "expected -32003 or {}, got %v", err)
+		record(tc.rule, tc.method, StatusFail, 0, "expected -32003 or {}, got %v", err)
 	}
 }
+
+// runStorageValidate checks STORAGE-10 against the manifest's first backend,
+// as runNotifyValidate does for a channel.
+func runStorageValidate(ctx context.Context, caller jsonrpc.Caller, backend protocol.StorageBackend, record recorder) {
+	runEmptyConfigValidate(ctx, caller, emptyConfigCase{
+		rule: "STORAGE-10", method: protocol.MethodStorageValidate, entry: "backend", code: backend.Code,
+		params: protocol.StorageValidateParams{Backend: backend.Code, Config: map[string]string{}},
+		schema: backend.Configuration,
+	}, record)
+}
+
+// runDeployValidate checks DEPLOY-9 against the manifest's first target kind,
+// as runNotifyValidate does for a channel.
+func runDeployValidate(ctx context.Context, caller jsonrpc.Caller, target protocol.DeployTarget, record recorder) {
+	runEmptyConfigValidate(ctx, caller, emptyConfigCase{
+		rule: "DEPLOY-9", method: protocol.MethodDeployValidate, entry: "target kind", code: target.Code,
+		params: protocol.DeployValidateParams{Kind: target.Code, Config: map[string]string{}},
+		schema: target.Configuration,
+	}, record)
+}
+
+// runStorageList checks STORAGE-8 against the manifest's first backend: with
+// an empty config and an empty prefix it answers in time, with -32003 and
+// data.field when the backend has a required field and with an object list
+// otherwise. put, get and delete are never called, they change or fetch real
+// data.
+func runStorageList(ctx context.Context, caller jsonrpc.Caller, backend protocol.StorageBackend, record recorder) {
+	callCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+	started := time.Now()
+	var result json.RawMessage
+	err := caller.Call(callCtx, protocol.MethodStorageList, protocol.StorageListParams{
+		Backend: backend.Code,
+		Config:  map[string]string{},
+	}, &result)
+	elapsed := time.Since(started)
+	required := requiredConfigurationField(backend.Configuration)
+
+	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
+		record("STORAGE-8", "storage.list", StatusFail, elapsed, "no answer within 30 seconds")
+		return
+	}
+	if field, invalid := invalidConfigFieldOf(err); invalid {
+		switch {
+		case field == "":
+			record("STORAGE-8", "storage.list", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
+		case required == "":
+			record("STORAGE-8", "storage.list", StatusFail, elapsed, "backend %s declares no required field but rejected an empty config naming %s", backend.Code, field)
+		default:
+			record("STORAGE-8", "storage.list", StatusPass, elapsed, "an empty config for backend %s was rejected with -32003 naming %s", backend.Code, field)
+		}
+		return
+	}
+	if err != nil {
+		record("STORAGE-8", "storage.list", StatusFail, elapsed, "expected an object list or -32003, got %v", err)
+		return
+	}
+	if required != "" {
+		record("STORAGE-8", "storage.list", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
+		return
+	}
+	var listed struct {
+		Objects *[]protocol.StorageObject `json:"objects"`
+	}
+	if err = json.Unmarshal(result, &listed); err != nil {
+		record("STORAGE-8", "storage.list", StatusFail, elapsed, "objects is not a list of objects: %v", err)
+		return
+	}
+	count := 0
+	if listed.Objects != nil {
+		count = len(*listed.Objects)
+	}
+	record("STORAGE-8", "storage.list", StatusPass, elapsed, "backend %s listed %d object(s) for an empty prefix", backend.Code, count)
+}
+
+// runDeployDryRun checks DEPLOY-6 against the manifest's first target kind:
+// a dry run with an empty config and a throwaway certificate answers in
+// time, with -32003 and data.field when the kind has a required field and
+// with a result otherwise. A real push is never made.
+func runDeployDryRun(ctx context.Context, caller jsonrpc.Caller, target protocol.DeployTarget, record recorder) {
+	certificate, err := conformanceCertificate()
+	if err != nil {
+		record("DEPLOY-6", "deploy.push dry_run", StatusFail, 0, "cannot build the throwaway certificate: %v", err)
+		return
+	}
+
+	callCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+	started := time.Now()
+	var result protocol.DeployPushResult
+	err = caller.Call(callCtx, protocol.MethodDeployPush, protocol.DeployPushParams{
+		Kind:        target.Code,
+		Config:      map[string]string{},
+		Certificate: certificate,
+		DryRun:      true,
+	}, &result)
+	elapsed := time.Since(started)
+	required := requiredConfigurationField(target.Configuration)
+
+	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
+		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "no answer within 30 seconds")
+		return
+	}
+	field, invalid := invalidConfigFieldOf(err)
+	switch {
+	case invalid && field == "":
+		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
+	case invalid && required == "":
+		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "target kind %s declares no required field but rejected an empty config naming %s", target.Code, field)
+	case invalid:
+		record("DEPLOY-6", "deploy.push dry_run", StatusPass, elapsed, "an empty config for target kind %s was rejected with -32003 naming %s", target.Code, field)
+	case err != nil && required != "":
+		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "expected -32003 naming a required field, got %v", err)
+	case err != nil:
+		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "a dry run of a kind without required fields failed: %v", err)
+	case required != "":
+		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
+	default:
+		record("DEPLOY-6", "deploy.push dry_run", StatusPass, elapsed, "target kind %s answered a dry run in %s", target.Code, elapsed.Round(time.Millisecond))
+	}
+}
+
+// conformanceCertificate is a throwaway self-signed certificate for the
+// unroutable conformance.invalid, so a dry run carries realistic PEM data.
+func conformanceCertificate() (protocol.DeployCertificate, error) {
+	key, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		return protocol.DeployCertificate{}, err
+	}
+	notAfter := time.Now().Add(24 * time.Hour).UTC().Truncate(time.Second)
+	template := &x509.Certificate{
+		SerialNumber: big.NewInt(1),
+		Subject:      pkix.Name{CommonName: conformanceDeployDomain},
+		DNSNames:     []string{conformanceDeployDomain},
+		NotBefore:    time.Now().Add(-time.Hour),
+		NotAfter:     notAfter,
+		KeyUsage:     x509.KeyUsageDigitalSignature,
+		ExtKeyUsage:  []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
+	}
+	der, err := x509.CreateCertificate(rand.Reader, template, template, &key.PublicKey, key)
+	if err != nil {
+		return protocol.DeployCertificate{}, err
+	}
+	keyDER, err := x509.MarshalPKCS8PrivateKey(key)
+	if err != nil {
+		return protocol.DeployCertificate{}, err
+	}
+	return protocol.DeployCertificate{
+		Name:           conformanceDeployDomain,
+		Domains:        []string{conformanceDeployDomain},
+		CertificatePEM: string(pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: der})),
+		PrivateKeyPEM:  string(pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: keyDER})),
+		NotAfter:       notAfter.Format(time.RFC3339),
+	}, nil
+}
+
+// conformanceDeployDomain is unroutable, so a dry run touches nothing real.
+const conformanceDeployDomain = "conformance.invalid"
 
 // conformanceProbeTarget is unroutable, so a probe answers without touching
 // anything real.

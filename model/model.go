@@ -64,6 +64,8 @@ func GenerateAllModel() []any {
 		Ingress{},
 		Plugin{},
 		PluginKV{},
+		CertDeployTarget{},
+		CertDeployment{},
 	}
 }
 

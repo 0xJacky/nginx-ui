@@ -260,7 +260,8 @@ func writeKeyFile(keyPath, aesKey, aesIv string) error {
 
 func buildAutoBackupOutputPath(autoBackup *model.AutoBackup, filename string) (string, error) {
 	baseDir := autoBackup.StoragePath
-	if autoBackup.StorageType == model.StorageTypeS3 {
+	// Remote storage uploads from a temporary copy that is removed afterwards.
+	if autoBackup.StorageType == model.StorageTypeS3 || autoBackup.IsPluginStorage() {
 		baseDir = os.TempDir()
 	}
 
@@ -469,9 +470,17 @@ func validateStorageConfiguration(autoBackup *model.AutoBackup) error {
 		}
 		return s3Client.TestS3Connection(context.Background())
 	default:
+		if autoBackup.IsPluginStorage() {
+			ctx, cancel := context.WithTimeout(context.Background(), pluginStorageCheckTimeout)
+			defer cancel()
+			return validateSourceStorage(ctx, autoBackup)
+		}
 		return cosy.WrapErrorWithParams(ErrAutoBackupUnsupportedType, string(autoBackup.StorageType))
 	}
 }
+
+// pluginStorageCheckTimeout bounds the configuration check before a run.
+const pluginStorageCheckTimeout = time.Minute
 
 // handleBackupStorage handles the storage of backup files based on storage type.
 // This function routes backup storage to the appropriate handler (local or S3).
@@ -492,6 +501,10 @@ func handleBackupStorage(autoBackup *model.AutoBackup, result *ExecutionResult) 
 		// For S3 storage, upload files to S3 and optionally clean up local files
 		return handleS3Storage(autoBackup, result)
 	default:
+		if autoBackup.IsPluginStorage() {
+			// The plugin adapter bounds every call with its own timeout.
+			return handleSourceStorage(context.Background(), autoBackup, result)
+		}
 		return cosy.WrapErrorWithParams(ErrAutoBackupUnsupportedType, string(autoBackup.StorageType))
 	}
 }
@@ -591,6 +604,15 @@ func ValidateAutoBackupConfig(config *model.AutoBackup) error {
 		if err := ValidateS3Config(config); err != nil {
 			return err
 		}
+	}
+
+	// A plugin backend is checked by ValidatePluginStorage, which needs the
+	// whole stored configuration and may call the plugin.
+	if config.StorageType != "" && !IsValidStorageType(config.StorageType) {
+		return cosy.WrapErrorWithParams(ErrAutoBackupUnsupportedType, string(config.StorageType))
+	}
+	if config.RetentionCount < 0 {
+		return cosy.WrapErrorWithParams(ErrInvalidPath, "retention count cannot be negative")
 	}
 
 	return nil

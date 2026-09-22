@@ -29,8 +29,8 @@ var (
 	pluginIDPattern = regexp.MustCompile(`^[a-z0-9]+(\.[a-z0-9-]+)+$`)
 	// dns01CodePattern bounds provider codes so they are safe in URLs and forms.
 	dns01CodePattern = regexp.MustCompile(`^[a-z0-9-]{2,32}$`)
-	// capabilityCodePattern bounds notify channel and probe kind codes the
-	// same way.
+	// capabilityCodePattern bounds notify channel, probe kind, storage
+	// backend and deploy target codes the same way.
 	capabilityCodePattern = regexp.MustCompile(`^[a-z0-9-]{2,32}$`)
 	// mcpToolNamePattern keeps the published tool name within the MCP limits,
 	// see MCPToolName.
@@ -48,6 +48,8 @@ var knownCapabilities = []string{
 	protocol.CapabilityNotify,
 	protocol.CapabilityProbe,
 	protocol.CapabilityMCP,
+	protocol.CapabilityStorage,
+	protocol.CapabilityCertDeploy,
 }
 
 // knownPermissions lists the fixed permission names. Credential permissions
@@ -60,6 +62,7 @@ var knownPermissions = []string{
 	protocol.PermissionMetricsRead,
 	protocol.PermissionCoreAPI,
 	protocol.PermissionMCP,
+	protocol.PermissionCertDeploy,
 }
 
 // knownSettingsTypes lists the field types the settings form can render.
@@ -68,8 +71,8 @@ var knownSettingsTypes = []string{"text", "bool", "number", "select", "secret", 
 // knownHTTPListenModes lists the transports of the http capability.
 var knownHTTPListenModes = []string{"unix", "rpc"}
 
-// knownConfigurationFieldTypes lists the field types of a notify channel or
-// probe kind form. Empty means text.
+// knownConfigurationFieldTypes lists the field types of a capability entry
+// form. Empty means text.
 var knownConfigurationFieldTypes = []string{
 	"",
 	protocol.ConfigurationFieldText,
@@ -266,6 +269,65 @@ func validateCapabilities(m *protocol.Manifest) error {
 			return err
 		}
 	}
+	if _, ok := seen[protocol.CapabilityStorage]; ok {
+		if err := validateStorage(m.Storage); err != nil {
+			return err
+		}
+	}
+	if _, ok := seen[protocol.CapabilityCertDeploy]; ok {
+		if err := validateDeploy(m); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateStorage(s *protocol.ManifestStorage) error {
+	if s == nil || len(s.Backends) == 0 {
+		return invalidManifest("capability storage requires at least one backend")
+	}
+	seen := make(map[string]struct{}, len(s.Backends))
+	for _, b := range s.Backends {
+		if !capabilityCodePattern.MatchString(b.Code) {
+			return invalidManifest("storage backend code %q must match %s", b.Code, capabilityCodePattern)
+		}
+		if _, dup := seen[b.Code]; dup {
+			return invalidManifest("storage backend code %q is declared twice", b.Code)
+		}
+		seen[b.Code] = struct{}{}
+		if b.Name == "" {
+			return invalidManifest("storage.backends[%q].name is required", b.Code)
+		}
+		if err := validateConfigurationSchema(fmt.Sprintf("storage.backends[%q]", b.Code), b.Configuration); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateDeploy(m *protocol.Manifest) error {
+	if m.Deploy == nil || len(m.Deploy.Targets) == 0 {
+		return invalidManifest("capability cert.deploy requires at least one target")
+	}
+	if !slices.Contains(m.Permissions, protocol.PermissionCertDeploy) {
+		return invalidManifest("capability cert.deploy requires the %s permission", protocol.PermissionCertDeploy)
+	}
+	seen := make(map[string]struct{}, len(m.Deploy.Targets))
+	for _, t := range m.Deploy.Targets {
+		if !capabilityCodePattern.MatchString(t.Code) {
+			return invalidManifest("deploy target code %q must match %s", t.Code, capabilityCodePattern)
+		}
+		if _, dup := seen[t.Code]; dup {
+			return invalidManifest("deploy target code %q is declared twice", t.Code)
+		}
+		seen[t.Code] = struct{}{}
+		if t.Name == "" {
+			return invalidManifest("deploy.targets[%q].name is required", t.Code)
+		}
+		if err := validateConfigurationSchema(fmt.Sprintf("deploy.targets[%q]", t.Code), t.Configuration); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -315,8 +377,8 @@ func validateProbe(p *protocol.ManifestProbe) error {
 	return nil
 }
 
-// validateConfigurationSchema checks the form of a notify channel or a probe
-// kind. where names the owner in the error.
+// validateConfigurationSchema checks the form of a capability entry. where
+// names the owner in the error.
 func validateConfigurationSchema(where string, schema *protocol.ConfigurationSchema) error {
 	if schema == nil {
 		return nil

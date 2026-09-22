@@ -475,9 +475,22 @@ func TestHostBackendKeyValueRoundTrip(t *testing.T) {
 	require.True(t, found)
 	assert.JSONEq(t, `{"n":2}`, string(value))
 
+	// Prefixes are literal and case sensitive whatever the database makes
+	// of LIKE: pattern characters match themselves and "A/" is not "a/".
+	require.NoError(t, backend.KVSet("official.alpha", "a_1", json.RawMessage(`1`)))
+	require.NoError(t, backend.KVSet("official.alpha", "ab1", json.RawMessage(`1`)))
+	require.NoError(t, backend.KVSet("official.alpha", "a%1", json.RawMessage(`1`)))
+	require.NoError(t, backend.KVSet("official.alpha", "A/upper", json.RawMessage(`1`)))
+
 	keys, err := backend.KVList("official.alpha", "a/")
 	require.NoError(t, err)
 	assert.Equal(t, []string{"a/one", "a/two"}, keys)
+	keys, err = backend.KVList("official.alpha", "a_")
+	require.NoError(t, err)
+	assert.Equal(t, []string{"a_1"}, keys)
+	keys, err = backend.KVList("official.alpha", "a%")
+	require.NoError(t, err)
+	assert.Equal(t, []string{"a%1"}, keys)
 
 	require.NoError(t, backend.KVDelete("official.alpha", "a/one"))
 	_, found, err = backend.KVGet("official.alpha", "a/one")
