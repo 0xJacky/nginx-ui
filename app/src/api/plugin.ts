@@ -18,6 +18,9 @@ export type PluginStatus
 
 export type PluginLifecycle = 'resident' | 'on_demand'
 
+/** How the host reaches a running plugin process for capability calls. */
+export type PluginTransport = 'stdio' | 'grpc'
+
 export type PluginSyncPolicy = 'manual' | 'auto'
 
 export type SettingsFieldType = 'text' | 'bool' | 'number' | 'select' | 'secret' | 'textarea'
@@ -161,6 +164,8 @@ export interface PluginInfo {
   sync_node_ids: number[]
   sync_settings: boolean
   updated_at?: string
+  /** Transport of capability calls, absent while no process is running. */
+  transport?: PluginTransport
 }
 
 export interface PluginInspect {

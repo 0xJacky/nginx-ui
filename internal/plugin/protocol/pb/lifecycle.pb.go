@@ -175,7 +175,11 @@ type PluginInitializeResponse struct {
 	// cannot listen on a Unix socket.
 	RpcPort int32 `protobuf:"varint,5,opt,name=rpc_port,json=rpcPort,proto3" json:"rpc_port,omitempty"`
 	// One-time token the host presents on the loopback gRPC transport.
-	RpcToken      string `protobuf:"bytes,6,opt,name=rpc_token,json=rpcToken,proto3" json:"rpc_token,omitempty"`
+	RpcToken string `protobuf:"bytes,6,opt,name=rpc_token,json=rpcToken,proto3" json:"rpc_token,omitempty"`
+	// Absolute path of the Unix socket the gRPC transport listens on. Empty
+	// means <NGINX_UI_PLUGIN_DATA_DIR>/rpc.sock. A plugin reports it when the
+	// default path does not fit the platform's socket path limit.
+	RpcSocket     string `protobuf:"bytes,7,opt,name=rpc_socket,json=rpcSocket,proto3" json:"rpc_socket,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -248,6 +252,13 @@ func (x *PluginInitializeResponse) GetRpcPort() int32 {
 func (x *PluginInitializeResponse) GetRpcToken() string {
 	if x != nil {
 		return x.RpcToken
+	}
+	return ""
+}
+
+func (x *PluginInitializeResponse) GetRpcSocket() string {
+	if x != nil {
+		return x.RpcSocket
 	}
 	return ""
 }
@@ -645,7 +656,7 @@ const file_nginxui_plugin_v1_lifecycle_proto_rawDesc = "" +
 	"\x17PluginInitializeRequest\x12/\n" +
 	"\x04host\x18\x01 \x01(\v2\x1b.nginxui.plugin.v1.HostInfoR\x04host\x123\n" +
 	"\bsettings\x18\x02 \x01(\v2\x17.google.protobuf.StructR\bsettings\x12 \n" +
-	"\vpermissions\x18\x03 \x03(\tR\vpermissions\"\xd4\x01\n" +
+	"\vpermissions\x18\x03 \x03(\tR\vpermissions\"\xf3\x01\n" +
 	"\x18PluginInitializeResponse\x12\x1f\n" +
 	"\vapi_version\x18\x01 \x01(\x05R\n" +
 	"apiVersion\x12\"\n" +
@@ -655,7 +666,9 @@ const file_nginxui_plugin_v1_lifecycle_proto_rawDesc = "" +
 	"transports\x12\x1b\n" +
 	"\thttp_port\x18\x04 \x01(\x05R\bhttpPort\x12\x19\n" +
 	"\brpc_port\x18\x05 \x01(\x05R\arpcPort\x12\x1b\n" +
-	"\trpc_token\x18\x06 \x01(\tR\brpcToken\"\x1a\n" +
+	"\trpc_token\x18\x06 \x01(\tR\brpcToken\x12\x1d\n" +
+	"\n" +
+	"rpc_socket\x18\a \x01(\tR\trpcSocket\"\x1a\n" +
 	"\x18PluginInitializedRequest\"\x1b\n" +
 	"\x19PluginInitializedResponse\"M\n" +
 	"\x16PluginConfigureRequest\x123\n" +

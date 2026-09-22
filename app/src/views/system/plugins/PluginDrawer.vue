@@ -46,6 +46,8 @@ const lifecycleLabel = computed(() => {
   return props.plugin.lifecycle === 'on_demand' ? $gettext('On demand') : $gettext('Resident')
 })
 
+const transportLabel = computed(() => props.plugin?.transport === 'grpc' ? 'gRPC' : 'stdio')
+
 const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
 </script>
 
@@ -124,6 +126,9 @@ const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
             </ADescriptionsItem>
             <ADescriptionsItem :label="$gettext('Process')">
               {{ lifecycleLabel }}
+            </ADescriptionsItem>
+            <ADescriptionsItem v-if="props.plugin.transport" :label="$gettext('Transport')">
+              {{ transportLabel }}
             </ADescriptionsItem>
             <ADescriptionsItem :label="$gettext('Capabilities')">
               <div v-if="props.plugin.capabilities?.length" class="flex flex-wrap gap-1">

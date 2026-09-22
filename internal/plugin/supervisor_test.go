@@ -68,7 +68,9 @@ func runTestPlugin(mode string) {
 			if mode == pluginModeBadAPI {
 				apiVersion = protocol.APIVersion + 98
 			}
-			pluginReply(msg.ID, protocol.InitializeResult{APIVersion: apiVersion, Capabilities: capabilities})
+			result := protocol.InitializeResult{APIVersion: apiVersion, Capabilities: capabilities}
+			extendTestInitialize(mode, &result)
+			pluginReply(msg.ID, result)
 		case protocol.MethodInitialized:
 			if mode == pluginModeCrash {
 				// Exit only once the handshake is complete, so the supervisor
@@ -107,6 +109,10 @@ func runTestPlugin(mode string) {
 		case "":
 			// A response to one of our own requests, nothing to do.
 		default:
+			if result, err, ok := handleTestPluginMethod(mode, msg.Method, msg.Params); ok {
+				pluginAnswer(msg.ID, result, err)
+				continue
+			}
 			pluginReplyError(msg.ID, protocol.CodeMethodNotFound, "unknown method "+msg.Method)
 		}
 	}
