@@ -14,6 +14,7 @@ var Migrations = []*gormigrate.Migration{
 	DropLegacyRenamedTableIndexes,
 	RepairCertDomainsJSON,
 	BackfillCertChallengeConfig,
+	AddProbeKindToSiteConfigs,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{

@@ -1072,6 +1072,17 @@ func (sc *SiteChecker) checkSite(ctx context.Context, siteName, siteURL string) 
 		}
 	}
 
+	// A probe kind a source serves replaces the built-in check entirely.
+	if err == nil && config != nil && !IsBuiltinProbeKind(config.ProbeKind) {
+		siteInfo := sc.siteInfoFromProbe(siteName, siteURL, config, probeWithKind(ctx, siteURL, config))
+		if existing := sc.getExistingSiteSnapshot(siteURL); existing != nil {
+			siteInfo.FaviconURL = existing.FaviconURL
+			siteInfo.FaviconData = existing.FaviconData
+		}
+		evaluateSiteHealthAlert(config, siteInfo)
+		return siteInfo, nil
+	}
+
 	if err == nil && config != nil && config.HealthCheckConfig != nil {
 		result, _ := sc.enhanced.CheckSiteWithSiteConfig(ctx, siteURL, config)
 		if result != nil && result.Info != nil {

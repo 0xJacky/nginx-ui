@@ -869,11 +869,14 @@ func mergedSettings(manifest *protocol.Manifest, row *model.Plugin) map[string]a
 	return merged
 }
 
-// OwnerOf resolves which enabled plugin serves a capability code. dns01 codes
-// are matched against the manifest provider list, and the official plugin wins
-// when several plugins offer the same code.
+// OwnerOf resolves which enabled plugin serves a capability code: a dns01
+// provider, a notify channel or a probe kind. When several plugins declare the
+// same code the lowest plugin id wins, except that the official plugin always
+// wins a dns01 code.
 func (m *Manager) OwnerOf(capability, code string) (string, bool) {
-	if capability != protocol.CapabilityDNS01 {
+	switch capability {
+	case protocol.CapabilityDNS01, protocol.CapabilityNotify, protocol.CapabilityProbe:
+	default:
 		return "", false
 	}
 
@@ -882,19 +885,14 @@ func (m *Manager) OwnerOf(capability, code string) (string, bool) {
 
 	owner := ""
 	for _, item := range m.entries {
-		if !enabledWithCapabilityLocked(item, capability) || item.manifest.DNS01 == nil {
+		if !enabledWithCapabilityLocked(item, capability) || !slices.Contains(declaredCodes(item.manifest, capability), code) {
 			continue
 		}
-		for _, provider := range item.manifest.DNS01.Providers {
-			if provider.Code != code {
-				continue
-			}
-			if item.id == OfficialDNS01PluginID {
-				return item.id, true
-			}
-			if owner == "" || item.id < owner {
-				owner = item.id
-			}
+		if capability == protocol.CapabilityDNS01 && item.id == OfficialDNS01PluginID {
+			return item.id, true
+		}
+		if owner == "" || item.id < owner {
+			owner = item.id
 		}
 	}
 	return owner, owner != ""

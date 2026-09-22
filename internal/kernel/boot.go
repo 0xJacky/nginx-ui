@@ -263,5 +263,9 @@ func CheckAndCleanupOTA() {
 // initPluginCapabilities connects the plugin manager to the core registries
 // that accept plugin provided implementations.
 func initPluginCapabilities(context.Context) {
-	capability.RegisterDNS01(plugin.GetManager())
+	manager := plugin.GetManager()
+	capability.RegisterDNS01(manager)
+	capability.RegisterNotify(manager)
+	capability.RegisterProbe(manager)
+	capability.RegisterMCP(manager)
 }

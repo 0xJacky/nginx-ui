@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { SelectProps } from 'antdv-next'
 import type { ExternalNotify } from '@/api/external_notify'
-import type { EnhancedHealthCheckConfig, HeaderItem, SiteInfo } from '@/api/site_navigation'
+import type { EnhancedHealthCheckConfig, HeaderItem, ProbeKindInfo, SiteInfo } from '@/api/site_navigation'
 import { CloseOutlined, PlusOutlined } from '@antdv-next/icons'
 import { listExternalNotifies } from '@/api/external_notify'
 import { siteNavigationApi } from '@/api/site_navigation'
+import PluginConfigForm from '@/components/PluginConfigForm'
 
 interface Props {
   site?: SiteInfo
@@ -21,6 +22,8 @@ const { message } = useGlobalApp()
 const visible = defineModel<boolean>('open', { required: true })
 const testing = ref(false)
 const externalNotifies = ref<ExternalNotify[]>([])
+// Probe kinds plugins offer next to the built-in check
+const probeKinds = ref<ProbeKindInfo[]>([])
 
 const methodOptions: SelectProps['options'] = [
   { label: 'GET', value: 'GET' },
@@ -85,7 +88,35 @@ const formData = ref<EnhancedHealthCheckConfig>({
   alertRecoveryEnabled: true,
   alertCooldownSeconds: 900,
   externalNotifyIds: [],
+
+  // Plugin probe kind
+  probeKind: '',
+  probeConfig: {},
 })
+
+const usesProbeKind = computed(() => formData.value.probeKind !== '')
+
+const selectedProbeKind = computed(() => probeKinds.value.find(kind => kind.kind === formData.value.probeKind))
+
+// The selector only shows up when a plugin offers a kind, or when the site
+// still uses one whose plugin is gone.
+const probeKindOptions = computed<SelectProps['options']>(() => {
+  const options = [
+    { label: $gettext('Built-in HTTP / gRPC check'), value: '' },
+    ...probeKinds.value.map(kind => ({ label: kind.name, value: kind.kind })),
+  ]
+  if (usesProbeKind.value && !selectedProbeKind.value) {
+    options.push({
+      label: $gettext('%{kind} (unavailable)', { kind: formData.value.probeKind }),
+      value: formData.value.probeKind,
+    })
+  }
+  return options
+})
+
+function handleProbeKindChange() {
+  formData.value.probeConfig = {}
+}
 
 interface StatusCodeOption {
   value: number
@@ -202,11 +233,13 @@ async function loadExistingConfig() {
     return
 
   try {
-    const [config, notifyResponse] = await Promise.all([
+    const [config, notifyResponse, probeKindResponse] = await Promise.all([
       siteNavigationApi.getHealthCheck(props.site.id),
       listExternalNotifies(),
+      siteNavigationApi.getProbeKinds().catch(() => ({ data: [] as ProbeKindInfo[] })),
     ])
     externalNotifies.value = (notifyResponse.data || []).filter(item => item.enabled)
+    probeKinds.value = probeKindResponse.data || []
 
     // Convert backend config to frontend format
     formData.value = {
@@ -253,6 +286,10 @@ async function loadExistingConfig() {
       alertRecoveryEnabled: config.health_check_alert?.recovery_enabled ?? true,
       alertCooldownSeconds: config.health_check_alert?.cooldown_seconds ?? 900,
       externalNotifyIds: config.health_check_alert?.external_notify_ids ?? [],
+
+      // Plugin probe kind
+      probeKind: config.probe_kind ?? '',
+      probeConfig: { ...config.probe_config },
     }
   }
   catch (error) {
@@ -307,6 +344,10 @@ function resetForm() {
     alertRecoveryEnabled: true,
     alertCooldownSeconds: 900,
     externalNotifyIds: [],
+
+    // Plugin probe kind
+    probeKind: '',
+    probeConfig: {},
   }
 }
 
@@ -484,6 +525,8 @@ async function handleSave() {
         cooldown_seconds: config.alertCooldownSeconds,
         external_notify_ids: config.externalNotifyIds,
       },
+      probe_kind: config.probeKind || undefined,
+      probe_config: config.probeKind ? config.probeConfig : undefined,
     }
 
     const response = await siteNavigationApi.updateHealthCheck(props.site.id, backendConfig)
@@ -534,7 +577,9 @@ async function handleTest() {
     }
 
     // Call test API endpoint (we'll need to create this)
-    const result = await siteNavigationApi.testHealthCheck(props.site.id, testConfig)
+    const result = await siteNavigationApi.testHealthCheck(props.site.id, testConfig, usesProbeKind.value
+      ? { probe_kind: formData.value.probeKind, probe_config: formData.value.probeConfig }
+      : {})
 
     if (result.success) {
       message.success($gettext('Test successful! Response time: %{response_time}ms', { response_time: String(result.response_time || 0) }))
@@ -580,8 +625,36 @@ async function handleTest() {
 
           <ADivider />
 
+          <!-- Check method, shown when a plugin offers a probe kind -->
+          <AFormItem
+            v-if="probeKindOptions && probeKindOptions.length > 1"
+            :label="$gettext('Check Method')"
+          >
+            <ASelect
+              v-model:value="formData.probeKind"
+              data-testid="health-check-probe-kind"
+              :options="probeKindOptions"
+              @change="handleProbeKindChange"
+            />
+          </AFormItem>
+
+          <template v-if="usesProbeKind">
+            <AAlert
+              v-if="!selectedProbeKind"
+              type="warning"
+              show-icon
+              class="mb-4"
+              :title="$gettext('The plugin that provides this check is not enabled. The site is reported as an error until it is enabled again or another check method is selected.')"
+            />
+            <PluginConfigForm
+              v-else
+              v-model="formData.probeConfig"
+              :fields="selectedProbeKind.fields"
+            />
+          </template>
+
           <!-- Protocol Selection -->
-          <AFormItem :label="$gettext('Protocol')">
+          <AFormItem v-if="!usesProbeKind" :label="$gettext('Protocol')">
             <ARadioGroup v-model:value="formData.protocol">
               <ARadio value="http">
                 HTTP
@@ -621,7 +694,7 @@ async function handleTest() {
           </AFormItem>
 
           <!-- HTTP/HTTPS Settings -->
-          <div v-if="!['grpc', 'grpcs'].includes(formData.protocol)">
+          <div v-if="!usesProbeKind && !['grpc', 'grpcs'].includes(formData.protocol)">
             <ARow :gutter="16">
               <ACol :span="12">
                 <AFormItem :label="$gettext('HTTP Method')">
@@ -684,7 +757,7 @@ async function handleTest() {
           </div>
 
           <!-- gRPC/gRPCS Settings -->
-          <div v-if="['grpc', 'grpcs'].includes(formData.protocol)">
+          <div v-if="!usesProbeKind && ['grpc', 'grpcs'].includes(formData.protocol)">
             <AAlert
               v-if="['grpc', 'grpcs'].includes(formData.protocol)"
               :title="formData.protocol === 'grpcs'
@@ -725,11 +798,11 @@ async function handleTest() {
                 </ACol>
               </ARow>
 
-              <AFormItem :label="$gettext('User Agent')">
+              <AFormItem v-if="!usesProbeKind" :label="$gettext('User Agent')">
                 <AInput v-model:value="formData.userAgent" />
               </AFormItem>
 
-              <div v-if="!['grpc', 'grpcs'].includes(formData.protocol)">
+              <div v-if="!usesProbeKind && !['grpc', 'grpcs'].includes(formData.protocol)">
                 <ARow :gutter="16">
                   <ACol :span="12">
                     <AFormItem :label="$gettext('Max Redirects')">
@@ -765,7 +838,7 @@ async function handleTest() {
               </div>
 
               <!-- DNS & Network -->
-              <ARow :gutter="16">
+              <ARow v-if="!usesProbeKind" :gutter="16">
                 <ACol :span="12">
                   <AFormItem :label="$gettext('DNS Resolver')">
                     <AInput v-model:value="formData.dnsResolver" placeholder="8.8.8.8:53" />
@@ -779,7 +852,7 @@ async function handleTest() {
               </ARow>
 
               <!-- Client Certificates -->
-              <ARow :gutter="16">
+              <ARow v-if="!usesProbeKind" :gutter="16">
                 <ACol :span="12">
                   <AFormItem :label="$gettext('Client Certificate')">
                     <AInput v-model:value="formData.clientCert" placeholder="/path/to/client.crt" />

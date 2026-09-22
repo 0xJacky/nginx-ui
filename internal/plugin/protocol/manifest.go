@@ -26,6 +26,9 @@ type Manifest struct {
 	DNS01          *ManifestDNS01  `json:"dns01,omitempty"`
 	HTTP           *ManifestHTTP   `json:"http,omitempty"`
 	SettingsSchema *SettingsSchema `json:"settings_schema,omitempty"`
+	Notify         *ManifestNotify `json:"notify,omitempty"`
+	Probe          *ManifestProbe  `json:"probe,omitempty"`
+	MCP            *ManifestMCP    `json:"mcp,omitempty"`
 }
 
 // ManifestServer describes how to start the plugin process.
@@ -106,6 +109,73 @@ type DNS01ProviderLinks struct {
 type ManifestHTTP struct {
 	// Listen is "unix" (reverse proxy to a socket) or "rpc" (http.handle fallback).
 	Listen string `json:"listen"`
+}
+
+// ManifestNotify is the metadata block for the notify capability.
+type ManifestNotify struct {
+	Channels []NotifyChannel `json:"channels"`
+}
+
+// NotifyChannel describes one vendor channel a plugin delivers notifications through.
+type NotifyChannel struct {
+	// Code is shared across every installed notify plugin.
+	Code          string               `json:"code"`
+	Name          string               `json:"name"`
+	Configuration *ConfigurationSchema `json:"configuration,omitempty"`
+}
+
+// ManifestProbe is the metadata block for the probe capability.
+type ManifestProbe struct {
+	Kinds []ProbeKind `json:"kinds"`
+}
+
+// ProbeKind describes one way a plugin can check the health of a target.
+type ProbeKind struct {
+	// Code is shared across every installed probe plugin.
+	Code          string               `json:"code"`
+	Name          string               `json:"name"`
+	Configuration *ConfigurationSchema `json:"configuration,omitempty"`
+}
+
+// ConfigurationSchema drives the form of a notify channel or a probe kind.
+// The values travel as a map of strings.
+type ConfigurationSchema struct {
+	Fields []ConfigurationField `json:"fields,omitempty"`
+}
+
+// ConfigurationField is one entry of ConfigurationSchema.
+type ConfigurationField struct {
+	Key string `json:"key"`
+	// Type is one of the ConfigurationFieldType values, empty means text.
+	Type        string `json:"type,omitempty"`
+	DisplayName string `json:"display_name"`
+	HelpText    string `json:"help_text,omitempty"`
+	Required    bool   `json:"required,omitempty"`
+	// Secret marks a credential: masked in forms and never logged.
+	Secret bool `json:"secret,omitempty"`
+}
+
+// Values of ConfigurationField.Type.
+const (
+	ConfigurationFieldText     = "text"
+	ConfigurationFieldTextarea = "textarea"
+	ConfigurationFieldNumber   = "number"
+	ConfigurationFieldBool     = "bool"
+)
+
+// ManifestMCP is the metadata block for the mcp capability.
+type ManifestMCP struct {
+	Tools []MCPTool `json:"tools"`
+}
+
+// MCPTool describes one Model Context Protocol tool a plugin serves.
+type MCPTool struct {
+	// Name is unique within the plugin. The host publishes it with a prefix
+	// derived from the plugin id.
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	// InputSchema is the JSON Schema of the arguments object.
+	InputSchema map[string]any `json:"input_schema,omitempty"`
 }
 
 // SettingsSchema drives the auto-rendered settings form.

@@ -64,6 +64,9 @@ func runTestPlugin(mode string) {
 			if mode == pluginModeWrongCaps {
 				capabilities = []string{protocol.CapabilityHTTP}
 			}
+			if mode == pluginModeAllCaps {
+				capabilities = allTestCapabilities
+			}
 			apiVersion := protocol.APIVersion
 			if mode == pluginModeBadAPI {
 				apiVersion = protocol.APIVersion + 98
