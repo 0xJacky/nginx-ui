@@ -6,6 +6,9 @@ on:
     types: [published]
     branches: [dev]
 
+permissions:
+  contents: read
+
 jobs:
   force-push-main:
     runs-on: ubuntu-latest
@@ -16,6 +19,8 @@ jobs:
           fetch-depth: 0
           ref: dev
           clean: false
+          # persist-credentials stays on here: the force push below is
+          # authenticated by the credential this checkout stores.
           token: ${{ secrets.PAT_TOKEN }}
 
       - name: Configure Git

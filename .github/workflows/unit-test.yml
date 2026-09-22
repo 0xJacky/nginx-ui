@@ -38,6 +38,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up Go
         uses: actions/setup-go@v7
@@ -63,6 +65,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up Go
         uses: actions/setup-go@v7
@@ -70,7 +74,7 @@ jobs:
           go-version-file: go.mod
 
       - name: Set up C compiler for the race detector
-        uses: msys2/setup-msys2@v2
+        uses: msys2/setup-msys2@66cd2cce69caa17b53920067426061ca1de3a884 # v2
         with:
           msystem: UCRT64
           install: mingw-w64-ucrt-x86_64-gcc
@@ -103,6 +107,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Test installer detection and paths
         run: bash tests/install_openwrt_test.sh
