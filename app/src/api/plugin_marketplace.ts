@@ -13,14 +13,32 @@ export type PluginInstallStatus = 'downloading' | 'verifying' | 'installing' | '
 /** Websocket event carrying the install progress. */
 export const PLUGIN_INSTALL_PROGRESS_EVENT = 'plugin_install_progress'
 
+/** Key of a platform independent package in `CatalogRelease.downloads`. */
+export const ANY_PLATFORM = 'any'
+
+/** One package file of a release. */
+export interface CatalogDownload {
+  url: string
+  sha256?: string
+  /** Defaults to `<url>.minisig`. */
+  signature_url?: string
+}
+
 /** One downloadable version of a catalog entry. */
 export interface CatalogRelease {
   version: string
   released_at?: string
   api_version: number
   min_nginx_ui_version?: string
-  /** "<goos>-<goarch>" values, or ["any"] for a portable package. */
+  /**
+   * Summary of where the release installs: the keys of `downloads` plus the
+   * platforms the portable package covers. Empty means the portable package
+   * runs everywhere.
+   */
   platforms?: string[]
+  /** Per-platform packages keyed by "<goos>-<goarch>" or "any". */
+  downloads?: Record<string, CatalogDownload>
+  /** Portable package, the fallback for platforms `downloads` does not name. */
   download_url: string
   sha256?: string
   signature_url?: string
@@ -74,11 +92,14 @@ export interface PluginUpdateInfo {
 export interface MarketplaceListResponse {
   plugins: CatalogEntry[]
   sources: string[]
+  /** "<goos>-<goarch>" of this node, what installable_release was picked for. */
+  host_platform?: string
 }
 
 export interface MarketplaceDetailResponse {
   plugin: CatalogEntry
   readme: string
+  host_platform?: string
 }
 
 export interface MarketplaceSourcesResponse {
@@ -113,6 +134,8 @@ export interface PluginInstallProgress {
   status: PluginInstallStatus
   progress: number
   message?: string
+  /** Downloads key of the package being installed, empty for the portable one. */
+  platform?: string
 }
 
 function pluginPath(id: string, suffix = '') {
@@ -159,6 +182,27 @@ export function getMarketplaceSources(): Promise<MarketplaceSourcesResponse> {
 
 export function saveMarketplaceSources(sources: string[]): Promise<MarketplaceSourcesResponse> {
   return http.post('/plugins/marketplace/sources', { sources })
+}
+
+/**
+ * Platforms a release can be installed on: the keys of `downloads` that carry
+ * a url, falling back to the `platforms` summary. An empty list means any.
+ */
+export function releasePlatforms(release: CatalogRelease): string[] {
+  const platforms = new Set(
+    Object.entries(release.downloads ?? {})
+      .filter(([, download]) => Boolean(download?.url))
+      .map(([platform]) => platform),
+  )
+  if (platforms.size === 0)
+    return release.platforms ?? []
+
+  // The portable package still serves whatever else the summary lists.
+  if (release.download_url) {
+    for (const platform of release.platforms ?? [])
+      platforms.add(platform)
+  }
+  return [...platforms].sort()
 }
 
 /** Display name of a catalog entry in the active language, English fallback. */

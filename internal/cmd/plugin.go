@@ -200,6 +200,8 @@ func InspectPlugin(ctx context.Context, command *cli.Command) error {
 	}
 	fmt.Printf("capabilities: %s\n", strings.Join(manifest.Capabilities, ", "))
 	fmt.Printf("permissions: %s\n", strings.Join(result.Permissions, ", "))
+	fmt.Printf("platforms: %s\n", strings.Join(result.Platforms, ", "))
+	fmt.Printf("runs on this node (%s): %t\n", result.HostPlatform, result.PlatformSupported)
 	if result.InstalledVersion != "" {
 		fmt.Printf("installed version: %s\n", result.InstalledVersion)
 		fmt.Printf("permissions changed: %t\n", result.PermissionsChanged)

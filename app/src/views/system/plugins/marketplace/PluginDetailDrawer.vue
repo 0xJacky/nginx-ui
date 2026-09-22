@@ -1,9 +1,15 @@
 <script setup lang="ts">
-import type { CatalogEntry } from '@/api/plugin_marketplace'
+import type { CatalogEntry, CatalogRelease } from '@/api/plugin_marketplace'
 import { AppstoreOutlined, GlobalOutlined, LinkOutlined } from '@antdv-next/icons'
 import { useWindowSize } from '@vueuse/core'
 import { marked } from 'marked'
-import { catalogEntryDescription, catalogEntryName, getMarketplacePlugin } from '@/api/plugin_marketplace'
+import {
+  ANY_PLATFORM,
+  catalogEntryDescription,
+  catalogEntryName,
+  getMarketplacePlugin,
+  releasePlatforms,
+} from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import PermissionList from '../PermissionList.vue'
@@ -27,6 +33,7 @@ const loading = ref(false)
 const error = ref('')
 const readme = ref('')
 const detail = ref<CatalogEntry>()
+const hostPlatform = ref('')
 
 const current = computed(() => detail.value ?? props.entry)
 const name = computed(() => (current.value ? catalogEntryName(current.value, gettext.current) : ''))
@@ -50,6 +57,20 @@ const releaseColumns = computed(() => [
   { title: $gettext('Platforms'), dataIndex: 'platforms' },
 ])
 
+/** Whether a platform tag stands for the build this node would install. */
+function isHostBuild(release: CatalogRelease, platform: string) {
+  if (!hostPlatform.value)
+    return false
+  if (platform === hostPlatform.value)
+    return true
+  // "any" only serves this node when no dedicated build exists.
+  return platform === ANY_PLATFORM && !releasePlatforms(release).includes(hostPlatform.value)
+}
+
+function platformLabel(platform: string) {
+  return platform === ANY_PLATFORM ? $gettext('Any') : platform
+}
+
 async function load() {
   const id = props.entry?.id
   if (!id)
@@ -63,6 +84,7 @@ async function load() {
     const response = await getMarketplacePlugin(id, props.entry?.source)
     detail.value = response.plugin
     readme.value = response.readme
+    hostPlatform.value = response.host_platform ?? ''
   }
   catch (e) {
     error.value = getErrorMessage(e, $gettext('Failed to load the plugin details'))
@@ -169,6 +191,9 @@ watch(open, value => {
         <h3 class="mt-6">
           {{ $gettext('Versions') }}
         </h3>
+        <p v-if="hostPlatform" class="mb-2 text-xs text-gray-500">
+          {{ $gettext('This node runs %{platform}, its build is highlighted.', { platform: hostPlatform }) }}
+        </p>
         <ATable
           :columns="releaseColumns"
           :data-source="current.releases ?? []"
@@ -191,9 +216,14 @@ watch(open, value => {
               <span class="text-xs text-gray-500">{{ record.released_at?.slice(0, 10) || '-' }}</span>
             </template>
             <template v-else-if="column.dataIndex === 'platforms'">
-              <div v-if="record.platforms?.length" class="flex flex-wrap gap-1">
-                <ATag v-for="platform in record.platforms" :key="platform" class="m-0">
-                  {{ platform }}
+              <div v-if="releasePlatforms(record).length" class="flex flex-wrap gap-1">
+                <ATag
+                  v-for="platform in releasePlatforms(record)"
+                  :key="platform"
+                  :color="isHostBuild(record, platform) ? 'blue' : undefined"
+                  class="m-0"
+                >
+                  {{ platformLabel(platform) }}
                 </ATag>
               </div>
               <span v-else class="text-gray-400">{{ $gettext('Any') }}</span>
