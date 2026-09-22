@@ -343,6 +343,10 @@ func (m *Manager) unregisterCron(item *entry) {
 	}
 }
 
+// minCronInterval is the shortest "@every" period a plugin may schedule, so
+// a typo cannot turn a scheduled task into a busy loop.
+const minCronInterval = time.Second
+
 // cronDefinition understands five field cron expressions and "@every <duration>".
 func cronDefinition(schedule string) (gocron.JobDefinition, error) {
 	schedule = strings.TrimSpace(schedule)
@@ -351,8 +355,8 @@ func cronDefinition(schedule string) (gocron.JobDefinition, error) {
 		if err != nil {
 			return nil, fmt.Errorf("parse interval %q: %w", rest, err)
 		}
-		if interval <= 0 {
-			return nil, fmt.Errorf("interval %q must be positive", rest)
+		if interval < minCronInterval {
+			return nil, fmt.Errorf("interval %q is shorter than %s", rest, minCronInterval)
 		}
 		return gocron.DurationJob(interval), nil
 	}
