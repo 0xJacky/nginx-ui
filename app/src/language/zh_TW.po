@@ -10234,6 +10234,18 @@ msgstr "功能"
 msgid "Auto install to nodes"
 msgstr "自動安裝至節點"
 
+msgid "Sync now"
+msgstr "立即同步"
+
+msgid "Danger zone"
+msgstr "危險區域"
+
+msgid "Uninstall this plugin"
+msgstr "解除安裝此外掛"
+
+msgid "Its files, data and settings are removed from this node."
+msgstr "將從此節點移除其檔案、資料和設定。"
+
 msgid "Plugin synchronized to %{count} node(s)"
 msgstr "外掛已同步至 %{count} 個節點"
 
@@ -10258,6 +10270,9 @@ msgstr "不相容"
 msgid "Needs approval"
 msgstr "需要核准"
 
+msgid "Idle"
+msgstr "閒置"
+
 msgid "Failed to load the plugin list"
 msgstr "載入外掛清單失敗"
 
@@ -10273,11 +10288,40 @@ msgstr "外掛已停用"
 msgid "Failed to disable the plugin"
 msgstr "停用外掛失敗"
 
+msgid "Uninstall %{name}?"
+msgstr "解除安裝 %{name}？"
+
+msgid ""
+"Its files, data and settings are removed from this node. Other nodes are not "
+"touched."
+msgstr "將從此節點移除其檔案、資料和設定，其他節點不受影響。"
+
 msgid "Plugin uninstalled"
 msgstr "外掛已解除安裝"
 
 msgid "Failed to uninstall the plugin"
 msgstr "解除安裝外掛失敗"
+
+msgid "Search installed plugins"
+msgstr "搜尋已安裝的外掛"
+
+msgid "No plugins installed yet"
+msgstr "尚未安裝任何外掛"
+
+msgid "Pick one from the marketplace or upload a bundle you built yourself."
+msgstr "從市集挑選一個，或上傳您自行建置的外掛套件。"
+
+msgid "Browse marketplace"
+msgstr "瀏覽市集"
+
+msgid "Install from file"
+msgstr "從檔案安裝"
+
+msgid "No plugins match the current filter"
+msgstr "沒有符合目前篩選條件的外掛"
+
+msgid "This plugin cannot run on this node"
+msgstr "該外掛無法在此節點上執行"
 
 msgid "Reload the page to apply the development plugin URL"
 msgstr "請重新整理頁面以套用開發外掛網址"
@@ -10299,6 +10343,9 @@ msgstr ""
 msgid "Dev plugin"
 msgstr "開發外掛"
 
+msgid "Needs attention"
+msgstr "需處理"
+
 msgid "No plugins installed"
 msgstr "尚未安裝任何外掛"
 
@@ -10308,11 +10355,11 @@ msgstr "設定"
 msgid "Logs"
 msgstr "日誌"
 
+msgid "More actions"
+msgstr "更多操作"
+
 msgid "Sync to nodes"
 msgstr "同步至節點"
-
-msgid "Uninstall %{name}? Its data and settings are removed."
-msgstr "確定要解除安裝 %{name} 嗎？其資料和設定都會被移除。"
 
 msgid "Uninstall"
 msgstr "解除安裝"
@@ -10402,11 +10449,17 @@ msgstr "日誌已複製到剪貼簿"
 msgid "Failed to copy the logs"
 msgstr "複製日誌失敗"
 
-msgid "Logs: %{name}"
-msgstr "日誌：%{name}"
+msgid "Follow new lines"
+msgstr "跟隨新日誌"
 
 msgid "No log output yet"
 msgstr "尚無日誌輸出"
+
+msgid "All plugins"
+msgstr "全部外掛"
+
+msgid "Updates"
+msgstr "更新"
 
 msgid "Failed to load the plugin marketplace"
 msgstr "載入外掛市集失敗"
@@ -10414,8 +10467,8 @@ msgstr "載入外掛市集失敗"
 msgid "Reloading the catalog"
 msgstr "正在重新載入目錄"
 
-msgid "Search plugins"
-msgstr "搜尋外掛"
+msgid "Search the marketplace"
+msgstr "搜尋市集"
 
 msgid "All categories"
 msgstr "所有分類"
@@ -10423,17 +10476,27 @@ msgstr "所有分類"
 msgid "All sources"
 msgstr "所有來源"
 
-msgid "Updates only"
-msgstr "僅顯示可更新"
-
 msgid "Sources"
 msgstr "來源"
+
+msgid "%{count} installed plugin has a newer release."
+msgid_plural "%{count} installed plugins have a newer release."
+msgstr[0] "%{count} 個已安裝的外掛有新版本。"
+
+msgid "Show updates"
+msgstr "檢視更新"
+
+msgid "The marketplace is unavailable"
+msgstr "市集暫時無法使用"
 
 msgid "Every installed plugin is up to date"
 msgstr "所有已安裝的外掛皆為最新版本"
 
 msgid "No plugins match your search"
 msgstr "找不到符合搜尋條件的外掛"
+
+msgid "The catalog is empty"
+msgstr "目錄為空"
 
 msgid "Downloading the package"
 msgstr "正在下載安裝套件"
@@ -10599,6 +10662,45 @@ msgstr "以您的權限呼叫 Nginx UI 管理 API。"
 msgid "Unknown permission. Only grant it if you trust the plugin author."
 msgstr "未知權限，請僅在信任外掛作者時授予。"
 
+msgid "Overview"
+msgstr "概覽"
+
+msgid "No background process"
+msgstr "無背景處理程序"
+
+msgid "On demand"
+msgstr "按需啟動"
+
+msgid "Resident"
+msgstr "常駐"
+
+msgid "Last error"
+msgstr "最近的錯誤"
+
+msgid "This plugin needs your approval before it can run."
+msgstr "此外掛需要您的核准後才能執行。"
+
+msgid "Turn it on to review the requested permissions."
+msgstr "開啟開關即可檢視其要求的權限。"
+
+msgid "API version"
+msgstr "API 版本"
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr "需要 Nginx UI %{version} 或更新版本"
+
+msgid "Depends on"
+msgstr "相依"
+
+msgid "Needs capabilities"
+msgstr "相依的能力"
+
+msgid "Permissions"
+msgstr "權限"
+
+msgid "Cluster"
+msgstr "叢集"
+
 msgid "In sync"
 msgstr "已同步"
 
@@ -10633,17 +10735,32 @@ msgstr ""
 msgid "All nodes"
 msgstr "所有節點"
 
+msgid "%{count} in sync"
+msgstr "%{count} 個已同步"
+
+msgid "%{count} pending"
+msgstr "%{count} 個待處理"
+
+msgid "%{count} failing"
+msgstr "%{count} 個失敗"
+
 msgid "This instance has no child node"
 msgstr "此執行個體沒有子節點"
 
 msgid "Add a node first, then plugins can be installed on it from here."
 msgstr "請先新增節點，之後即可在此處為其安裝外掛。"
 
+msgid "Manage nodes"
+msgstr "管理節點"
+
 msgid "Sync to selected"
 msgstr "同步至所選"
 
 msgid "Sync to all"
 msgstr "同步至全部"
+
+msgid "Updates available"
+msgstr "可更新"
 
 msgid "Marketplace"
 msgstr "市集"
@@ -10659,9 +10776,6 @@ msgstr "外掛設定已儲存"
 
 msgid "Failed to save the plugin settings"
 msgstr "儲存外掛設定失敗"
-
-msgid "Settings: %{name}"
-msgstr "設定：%{name}"
 
 msgid "This plugin has no settings."
 msgstr "該外掛沒有可設定的項目。"
@@ -10996,6 +11110,21 @@ msgstr "單窗格"
 
 msgid "Split view"
 msgstr "分割檢視"
+
+#~ msgid "Uninstall %{name}? Its data and settings are removed."
+#~ msgstr "確定要解除安裝 %{name} 嗎？其資料和設定都會被移除。"
+
+#~ msgid "Logs: %{name}"
+#~ msgstr "日誌：%{name}"
+
+#~ msgid "Search plugins"
+#~ msgstr "搜尋外掛"
+
+#~ msgid "Updates only"
+#~ msgstr "僅顯示可更新"
+
+#~ msgid "Settings: %{name}"
+#~ msgstr "設定：%{name}"
 
 #~ msgid "Lego disable CNAME Support"
 #~ msgstr "Lego 停用 CNAME 支援"

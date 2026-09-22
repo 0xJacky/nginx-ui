@@ -10224,6 +10224,18 @@ msgstr "功能"
 msgid "Auto install to nodes"
 msgstr "自动安装到节点"
 
+msgid "Sync now"
+msgstr "立即同步"
+
+msgid "Danger zone"
+msgstr "危险区域"
+
+msgid "Uninstall this plugin"
+msgstr "卸载此插件"
+
+msgid "Its files, data and settings are removed from this node."
+msgstr "将从此节点移除其文件、数据和设置。"
+
 msgid "Plugin synchronized to %{count} node(s)"
 msgstr "插件已同步到 %{count} 个节点"
 
@@ -10248,6 +10260,9 @@ msgstr "不兼容"
 msgid "Needs approval"
 msgstr "需要批准"
 
+msgid "Idle"
+msgstr "空闲"
+
 msgid "Failed to load the plugin list"
 msgstr "加载插件列表失败"
 
@@ -10263,11 +10278,40 @@ msgstr "插件已禁用"
 msgid "Failed to disable the plugin"
 msgstr "禁用插件失败"
 
+msgid "Uninstall %{name}?"
+msgstr "卸载 %{name}？"
+
+msgid ""
+"Its files, data and settings are removed from this node. Other nodes are not "
+"touched."
+msgstr "将从此节点移除其文件、数据和设置，其他节点不受影响。"
+
 msgid "Plugin uninstalled"
 msgstr "插件已卸载"
 
 msgid "Failed to uninstall the plugin"
 msgstr "卸载插件失败"
+
+msgid "Search installed plugins"
+msgstr "搜索已安装的插件"
+
+msgid "No plugins installed yet"
+msgstr "尚未安装任何插件"
+
+msgid "Pick one from the marketplace or upload a bundle you built yourself."
+msgstr "从市场挑选一个，或上传您自己构建的插件包。"
+
+msgid "Browse marketplace"
+msgstr "浏览市场"
+
+msgid "Install from file"
+msgstr "从文件安装"
+
+msgid "No plugins match the current filter"
+msgstr "没有符合当前筛选条件的插件"
+
+msgid "This plugin cannot run on this node"
+msgstr "该插件无法在此节点上运行"
 
 msgid "Reload the page to apply the development plugin URL"
 msgstr "请刷新页面以应用开发插件地址"
@@ -10290,6 +10334,9 @@ msgstr ""
 msgid "Dev plugin"
 msgstr "开发插件"
 
+msgid "Needs attention"
+msgstr "需处理"
+
 msgid "No plugins installed"
 msgstr "尚未安装任何插件"
 
@@ -10299,11 +10346,11 @@ msgstr "设置"
 msgid "Logs"
 msgstr "日志"
 
+msgid "More actions"
+msgstr "更多操作"
+
 msgid "Sync to nodes"
 msgstr "同步到节点"
-
-msgid "Uninstall %{name}? Its data and settings are removed."
-msgstr "确定要卸载 %{name} 吗？其数据和设置都将被移除。"
 
 msgid "Uninstall"
 msgstr "卸载"
@@ -10393,11 +10440,17 @@ msgstr "日志已复制到剪贴板"
 msgid "Failed to copy the logs"
 msgstr "复制日志失败"
 
-msgid "Logs: %{name}"
-msgstr "日志：%{name}"
+msgid "Follow new lines"
+msgstr "跟随新日志"
 
 msgid "No log output yet"
 msgstr "暂无日志输出"
+
+msgid "All plugins"
+msgstr "全部插件"
+
+msgid "Updates"
+msgstr "更新"
 
 msgid "Failed to load the plugin marketplace"
 msgstr "加载插件市场失败"
@@ -10405,8 +10458,8 @@ msgstr "加载插件市场失败"
 msgid "Reloading the catalog"
 msgstr "正在重新加载目录"
 
-msgid "Search plugins"
-msgstr "搜索插件"
+msgid "Search the marketplace"
+msgstr "搜索市场"
 
 msgid "All categories"
 msgstr "所有分类"
@@ -10414,17 +10467,27 @@ msgstr "所有分类"
 msgid "All sources"
 msgstr "所有来源"
 
-msgid "Updates only"
-msgstr "仅显示可更新"
-
 msgid "Sources"
 msgstr "来源"
+
+msgid "%{count} installed plugin has a newer release."
+msgid_plural "%{count} installed plugins have a newer release."
+msgstr[0] "%{count} 个已安装的插件有新版本。"
+
+msgid "Show updates"
+msgstr "查看更新"
+
+msgid "The marketplace is unavailable"
+msgstr "市场暂时不可用"
 
 msgid "Every installed plugin is up to date"
 msgstr "所有已安装的插件均为最新版本"
 
 msgid "No plugins match your search"
 msgstr "没有找到匹配的插件"
+
+msgid "The catalog is empty"
+msgstr "目录为空"
 
 msgid "Downloading the package"
 msgstr "正在下载安装包"
@@ -10591,6 +10654,45 @@ msgstr "以您的权限调用 Nginx UI 管理 API。"
 msgid "Unknown permission. Only grant it if you trust the plugin author."
 msgstr "未知权限，请仅在信任插件作者时授予。"
 
+msgid "Overview"
+msgstr "概览"
+
+msgid "No background process"
+msgstr "无后台进程"
+
+msgid "On demand"
+msgstr "按需启动"
+
+msgid "Resident"
+msgstr "常驻"
+
+msgid "Last error"
+msgstr "最近的错误"
+
+msgid "This plugin needs your approval before it can run."
+msgstr "此插件需要您的批准后才能运行。"
+
+msgid "Turn it on to review the requested permissions."
+msgstr "打开开关即可查看其请求的权限。"
+
+msgid "API version"
+msgstr "API 版本"
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr "需要 Nginx UI %{version} 或更高版本"
+
+msgid "Depends on"
+msgstr "依赖"
+
+msgid "Needs capabilities"
+msgstr "依赖的能力"
+
+msgid "Permissions"
+msgstr "权限"
+
+msgid "Cluster"
+msgstr "集群"
+
 msgid "In sync"
 msgstr "已同步"
 
@@ -10625,17 +10727,32 @@ msgstr ""
 msgid "All nodes"
 msgstr "所有节点"
 
+msgid "%{count} in sync"
+msgstr "%{count} 个已同步"
+
+msgid "%{count} pending"
+msgstr "%{count} 个待处理"
+
+msgid "%{count} failing"
+msgstr "%{count} 个失败"
+
 msgid "This instance has no child node"
 msgstr "此实例没有子节点"
 
 msgid "Add a node first, then plugins can be installed on it from here."
 msgstr "请先添加节点，之后即可在此处为其安装插件。"
 
+msgid "Manage nodes"
+msgstr "管理节点"
+
 msgid "Sync to selected"
 msgstr "同步到所选"
 
 msgid "Sync to all"
 msgstr "同步到全部"
+
+msgid "Updates available"
+msgstr "可更新"
 
 msgid "Marketplace"
 msgstr "市场"
@@ -10651,9 +10768,6 @@ msgstr "插件设置已保存"
 
 msgid "Failed to save the plugin settings"
 msgstr "保存插件设置失败"
-
-msgid "Settings: %{name}"
-msgstr "设置：%{name}"
 
 msgid "This plugin has no settings."
 msgstr "该插件没有可配置的设置。"
@@ -10985,6 +11099,21 @@ msgstr "单窗格"
 
 msgid "Split view"
 msgstr "分屏视图"
+
+#~ msgid "Uninstall %{name}? Its data and settings are removed."
+#~ msgstr "确定要卸载 %{name} 吗？其数据和设置都将被移除。"
+
+#~ msgid "Logs: %{name}"
+#~ msgstr "日志：%{name}"
+
+#~ msgid "Search plugins"
+#~ msgstr "搜索插件"
+
+#~ msgid "Updates only"
+#~ msgstr "仅显示可更新"
+
+#~ msgid "Settings: %{name}"
+#~ msgstr "设置：%{name}"
 
 #~ msgid "Lego disable CNAME Support"
 #~ msgstr "Lego 禁用 CNAME 支持"
