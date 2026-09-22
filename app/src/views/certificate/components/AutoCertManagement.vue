@@ -71,8 +71,7 @@ function handleRenewed() {
                     dns_credential_id: data.dns_credential_id,
                     acme_user_id: data.acme_user_id,
                     must_staple: data.must_staple,
-                    lego_disable_cname_support: data.lego_disable_cname_support,
-                    disable_authoritative_ns_propagation: data.disable_authoritative_ns_propagation,
+                    challenge_config: data.challenge_config,
                     enable_common_name: data.enable_common_name,
                     revoke_old: data.revoke_old,
                   }"

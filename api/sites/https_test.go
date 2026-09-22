@@ -835,17 +835,16 @@ func TestHTTPSIssuePayloadLeavesConfigNameEmpty(t *testing.T) {
 	payload := httpsIssuePayload(site.HTTPSIssueRequest{
 		SiteName: httpsTestSite,
 		HTTPSRequest: site.HTTPSRequest{
-			Domains:                           []string{"example.com", "www.example.com"},
-			ChallengeMethod:                   "dns01",
-			DNSCredentialID:                   3,
-			ACMEUserID:                        4,
-			KeyType:                           "",
-			Profile:                           "shortlived",
-			MustStaple:                        true,
-			LegoDisableCNAMESupport:           true,
-			DisableAuthoritativeNSPropagation: true,
-			EnableCommonName:                  true,
-			RevokeOld:                         true,
+			Domains:          []string{"example.com", "www.example.com"},
+			ChallengeMethod:  "dns01",
+			DNSCredentialID:  3,
+			ACMEUserID:       4,
+			KeyType:          "",
+			Profile:          "shortlived",
+			MustStaple:       true,
+			ChallengeConfig:  map[string]any{"disable_cname": true},
+			EnableCommonName: true,
+			RevokeOld:        true,
 		},
 	})
 
@@ -857,8 +856,7 @@ func TestHTTPSIssuePayloadLeavesConfigNameEmpty(t *testing.T) {
 	assert.NotEmpty(t, payload.KeyType, "the key type is normalized to the default")
 	assert.Equal(t, "shortlived", payload.Profile)
 	assert.True(t, payload.MustStaple)
-	assert.True(t, payload.LegoDisableCNAMESupport)
-	assert.True(t, payload.DisableAuthoritativeNSPropagation)
+	assert.Equal(t, map[string]any{"disable_cname": true}, payload.ChallengeConfig)
 	assert.True(t, payload.EnableCommonName)
 	assert.True(t, payload.RevokeOld)
 }

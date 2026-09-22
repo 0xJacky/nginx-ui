@@ -150,21 +150,19 @@ func autoCert(certModel *model.Cert) {
 // only after a failed renewal, to explain the failure.
 func newAutoRenewPayload(certModel *model.Cert, certInfo *Info, replacesCertID string) *ConfigPayload {
 	return &ConfigPayload{
-		CertID:                            certModel.ID,
-		ServerName:                        certModel.Domains,
-		ChallengeMethod:                   certModel.ChallengeMethod,
-		Profile:                           certModel.Profile,
-		DNSCredentialID:                   certModel.DnsCredentialID,
-		KeyType:                           certModel.GetKeyType(),
-		ACMEUserID:                        certModel.ACMEUserID,
-		NotBefore:                         certInfo.NotBefore,
-		MustStaple:                        certModel.MustStaple,
-		LegoDisableCNAMESupport:           certModel.LegoDisableCNAMESupport,
-		DisableAuthoritativeNSPropagation: certModel.DisableAuthoritativeNSPropagation,
-		ChallengeConfig:                   certModel.ChallengeConfig,
-		EnableCommonName:                  certModel.EnableCommonName,
-		RevokeOld:                         certModel.RevokeOld,
-		ReplacesCertID:                    replacesCertID,
+		CertID:           certModel.ID,
+		ServerName:       certModel.Domains,
+		ChallengeMethod:  certModel.ChallengeMethod,
+		Profile:          certModel.Profile,
+		DNSCredentialID:  certModel.DnsCredentialID,
+		KeyType:          certModel.GetKeyType(),
+		ACMEUserID:       certModel.ACMEUserID,
+		NotBefore:        certInfo.NotBefore,
+		MustStaple:       certModel.MustStaple,
+		ChallengeConfig:  certModel.ChallengeConfig,
+		EnableCommonName: certModel.EnableCommonName,
+		RevokeOld:        certModel.RevokeOld,
+		ReplacesCertID:   replacesCertID,
 	}
 }
 
