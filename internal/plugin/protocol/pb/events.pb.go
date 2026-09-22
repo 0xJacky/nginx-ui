@@ -22,8 +22,9 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// EventsOnRequest is the params of events.on. The host also uses this message
-// for cron invocations, with type naming the cron entry and no data.
+// EventsOnRequest is the params of events.on. A fired cron entry reuses this
+// shape as the params of a request to the entry's own method, with type set
+// to the entry id and no data (spec/06-host-api.md HOST-10).
 type EventsOnRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Event type such as "cert.renewed".

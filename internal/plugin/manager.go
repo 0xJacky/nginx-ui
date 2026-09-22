@@ -87,6 +87,9 @@ type Info struct {
 	SyncSettings         bool                           `json:"sync_settings"`
 	UpdatedAt            time.Time                      `json:"updated_at"`
 	DroppedEvents        int64                          `json:"dropped_events"`
+	// Transport is how capability calls reach the running process, "stdio" or
+	// "grpc". Empty when no process is running.
+	Transport string `json:"transport,omitempty"`
 }
 
 // WebappEntry tells the browser runtime what to load for one plugin. The URLs
@@ -499,7 +502,7 @@ func (m *Manager) Spec() Spec {
 		APIVersions:      []int{protocol.APIVersion},
 		WebappAPIVersion: protocol.APIVersion,
 		Capabilities:     slices.Clone(knownCapabilities),
-		Transports:       []string{protocol.TransportStdio},
+		Transports:       []string{protocol.TransportStdio, protocol.TransportGRPC},
 		Platform:         HostPlatform(),
 	}
 }
@@ -537,6 +540,9 @@ func (m *Manager) infoLocked(item *entry) Info {
 		info.SyncPolicy = model.PluginSyncPolicyManual
 	}
 	info.LastError = item.lastErr
+	if item.supervisor != nil {
+		info.Transport = item.supervisor.Transport()
+	}
 
 	manifest := item.manifest
 	if manifest == nil {

@@ -1,7 +1,8 @@
 package protocol
 
-// EventNotification is the payload of the events.on notification and of cron
-// invocations (where Method is the cron entry's method and Data is nil).
+// EventNotification is the payload of the events.on notification. A fired
+// cron entry reuses it as the params of a request to the entry's own method,
+// with Type set to the cron entry id and no Data.
 type EventNotification struct {
 	Type string `json:"type"`
 	Data any    `json:"data,omitempty"`
