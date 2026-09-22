@@ -2,9 +2,11 @@
 import type { ExternalNotifyConfig } from './types'
 import { testMessage } from '@/api/external_notify'
 import CodeEditor from '@/components/CodeEditor'
+import PluginConfigForm from '@/components/PluginConfigForm'
 import { SensitiveInput } from '@/components/SensitiveString'
 import gettext from '@/gettext'
 import configMap from './index'
+import { configKeysOf, findPluginChannel, loadPluginChannels } from './pluginChannels'
 
 const props = defineProps<{
   type?: string
@@ -85,9 +87,12 @@ const currentConfig = computed<ExternalNotifyConfig | undefined>(() => {
   return configMap[props.type?.toLowerCase() ?? '']
 })
 
-const allowedConfigKeys = computed<string[]>(() => {
-  return currentConfig.value?.config.map(item => item.key) ?? []
-})
+// A channel a plugin provides, rendered from the schema it declares.
+const pluginChannel = computed(() => currentConfig.value ? undefined : findPluginChannel(props.type))
+
+onMounted(() => loadPluginChannels())
+
+const allowedConfigKeys = computed<string[]>(() => configKeysOf(props.type))
 
 const singleLineConfigItems = computed(() => {
   if (!currentConfig.value)
@@ -180,7 +185,7 @@ const sanitizedConfig = computed<Record<string, string>>(() => {
 })
 
 watch([() => props.type, allowedConfigKeys], () => {
-  if (!currentConfig.value)
+  if (!currentConfig.value && !pluginChannel.value)
     return
 
   const nextConfig = sanitizedConfig.value
@@ -306,7 +311,26 @@ async function handleSendTestMessage() {
 </script>
 
 <template>
-  <div v-if="currentConfig">
+  <div v-if="pluginChannel">
+    <AForm layout="vertical">
+      <PluginConfigForm
+        v-model="modelValue"
+        :fields="pluginChannel.fields"
+      />
+    </AForm>
+
+    <div>
+      <AButton
+        type="primary"
+        size="small"
+        :loading="loading"
+        @click="handleSendTestMessage"
+      >
+        {{ $gettext("Send test message") }}
+      </AButton>
+    </div>
+  </div>
+  <div v-else-if="currentConfig">
     <AFormItem
       v-for="item in singleLineConfigItems"
       :key="item.key"

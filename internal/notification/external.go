@@ -20,13 +20,21 @@ var (
 type ExternalNotifierHandlerFunc func(ctx context.Context, n *model.ExternalNotify, msg *ExternalMessage) error
 
 func externalNotifierHandler(n *model.ExternalNotify) (ExternalNotifierHandlerFunc, error) {
+	if notifier, ok := builtinHandler(n.Type); ok {
+		return notifier, nil
+	}
+	if notifier, ok := sourceHandler(n.Type); ok {
+		return notifier, nil
+	}
+	return nil, ErrNotifierNotFound
+}
+
+// builtinHandler looks a notifier type up in the static registry.
+func builtinHandler(notifierType string) (ExternalNotifierHandlerFunc, bool) {
 	externalNotifierRegistryMutex.RLock()
 	defer externalNotifierRegistryMutex.RUnlock()
-	notifier, ok := externalNotifierRegistry[n.Type]
-	if !ok {
-		return nil, ErrNotifierNotFound
-	}
-	return notifier, nil
+	notifier, ok := externalNotifierRegistry[notifierType]
+	return notifier, ok
 }
 
 func RegisterExternalNotifier(name string, handler ExternalNotifierHandlerFunc) {

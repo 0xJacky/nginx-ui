@@ -59,3 +59,26 @@ func Init(ctx context.Context) {
 		mcpServer.AddTool(tool.Tool, tool.Handler)
 	}
 }
+
+// AddServerTools publishes tools on the live server right away and tells the
+// connected clients the tool list changed. Built-in tools are collected with
+// AddTool and published by Init instead; this is for tools that come and go
+// at runtime, such as the ones plugins provide.
+func AddServerTools(list ...Tool) {
+	if len(list) == 0 {
+		return
+	}
+	serverTools := make([]server.ServerTool, 0, len(list))
+	for _, tool := range list {
+		serverTools = append(serverTools, server.ServerTool{Tool: tool.Tool, Handler: tool.Handler})
+	}
+	mcpServer.AddTools(serverTools...)
+}
+
+// DeleteServerTools withdraws tools published with AddServerTools.
+func DeleteServerTools(names ...string) {
+	if len(names) == 0 {
+		return
+	}
+	mcpServer.DeleteTools(names...)
+}

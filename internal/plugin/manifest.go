@@ -29,6 +29,12 @@ var (
 	pluginIDPattern = regexp.MustCompile(`^[a-z0-9]+(\.[a-z0-9-]+)+$`)
 	// dns01CodePattern bounds provider codes so they are safe in URLs and forms.
 	dns01CodePattern = regexp.MustCompile(`^[a-z0-9-]{2,32}$`)
+	// capabilityCodePattern bounds notify channel and probe kind codes the
+	// same way.
+	capabilityCodePattern = regexp.MustCompile(`^[a-z0-9-]{2,32}$`)
+	// mcpToolNamePattern keeps the published tool name within the MCP limits,
+	// see MCPToolName.
+	mcpToolNamePattern = regexp.MustCompile(`^[a-z0-9][a-z0-9_-]{0,47}$`)
 	// semverPattern is the official semantic versioning 2.0.0 grammar.
 	semverPattern = regexp.MustCompile(`^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)` +
 		`(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?` +
@@ -36,7 +42,13 @@ var (
 )
 
 // knownCapabilities lists the capability names the host can serve.
-var knownCapabilities = []string{protocol.CapabilityDNS01, protocol.CapabilityHTTP}
+var knownCapabilities = []string{
+	protocol.CapabilityDNS01,
+	protocol.CapabilityHTTP,
+	protocol.CapabilityNotify,
+	protocol.CapabilityProbe,
+	protocol.CapabilityMCP,
+}
 
 // knownPermissions lists the fixed permission names. Credential permissions
 // carry a kind suffix and are checked separately.
@@ -47,6 +59,7 @@ var knownPermissions = []string{
 	protocol.PermissionNotify,
 	protocol.PermissionMetricsRead,
 	protocol.PermissionCoreAPI,
+	protocol.PermissionMCP,
 }
 
 // knownSettingsTypes lists the field types the settings form can render.
@@ -54,6 +67,16 @@ var knownSettingsTypes = []string{"text", "bool", "number", "select", "secret", 
 
 // knownHTTPListenModes lists the transports of the http capability.
 var knownHTTPListenModes = []string{"unix", "rpc"}
+
+// knownConfigurationFieldTypes lists the field types of a notify channel or
+// probe kind form. Empty means text.
+var knownConfigurationFieldTypes = []string{
+	"",
+	protocol.ConfigurationFieldText,
+	protocol.ConfigurationFieldTextarea,
+	protocol.ConfigurationFieldNumber,
+	protocol.ConfigurationFieldBool,
+}
 
 // invalidManifest wraps ErrManifestInvalid with the concrete reason so the API
 // layer keeps the cosy error code while the user still sees what is wrong.
@@ -228,7 +251,129 @@ func validateCapabilities(m *protocol.Manifest) error {
 			return invalidManifest("http.listen %q must be one of %s", m.HTTP.Listen, strings.Join(knownHTTPListenModes, ", "))
 		}
 	}
+	if _, ok := seen[protocol.CapabilityNotify]; ok {
+		if err := validateNotify(m.Notify); err != nil {
+			return err
+		}
+	}
+	if _, ok := seen[protocol.CapabilityProbe]; ok {
+		if err := validateProbe(m.Probe); err != nil {
+			return err
+		}
+	}
+	if _, ok := seen[protocol.CapabilityMCP]; ok {
+		if err := validateMCP(m); err != nil {
+			return err
+		}
+	}
 	return nil
+}
+
+func validateNotify(n *protocol.ManifestNotify) error {
+	if n == nil || len(n.Channels) == 0 {
+		return invalidManifest("capability notify requires at least one channel")
+	}
+	seen := make(map[string]struct{}, len(n.Channels))
+	for _, c := range n.Channels {
+		if !capabilityCodePattern.MatchString(c.Code) {
+			return invalidManifest("notify channel code %q must match %s", c.Code, capabilityCodePattern)
+		}
+		if _, dup := seen[c.Code]; dup {
+			return invalidManifest("notify channel code %q is declared twice", c.Code)
+		}
+		seen[c.Code] = struct{}{}
+		if c.Name == "" {
+			return invalidManifest("notify.channels[%q].name is required", c.Code)
+		}
+		if err := validateConfigurationSchema(fmt.Sprintf("notify.channels[%q]", c.Code), c.Configuration); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateProbe(p *protocol.ManifestProbe) error {
+	if p == nil || len(p.Kinds) == 0 {
+		return invalidManifest("capability probe requires at least one kind")
+	}
+	seen := make(map[string]struct{}, len(p.Kinds))
+	for _, k := range p.Kinds {
+		if !capabilityCodePattern.MatchString(k.Code) {
+			return invalidManifest("probe kind code %q must match %s", k.Code, capabilityCodePattern)
+		}
+		if _, dup := seen[k.Code]; dup {
+			return invalidManifest("probe kind code %q is declared twice", k.Code)
+		}
+		seen[k.Code] = struct{}{}
+		if k.Name == "" {
+			return invalidManifest("probe.kinds[%q].name is required", k.Code)
+		}
+		if err := validateConfigurationSchema(fmt.Sprintf("probe.kinds[%q]", k.Code), k.Configuration); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// validateConfigurationSchema checks the form of a notify channel or a probe
+// kind. where names the owner in the error.
+func validateConfigurationSchema(where string, schema *protocol.ConfigurationSchema) error {
+	if schema == nil {
+		return nil
+	}
+	seen := make(map[string]struct{}, len(schema.Fields))
+	for _, field := range schema.Fields {
+		if field.Key == "" {
+			return invalidManifest("%s.configuration field key is required", where)
+		}
+		if _, dup := seen[field.Key]; dup {
+			return invalidManifest("%s.configuration key %q is declared twice", where, field.Key)
+		}
+		seen[field.Key] = struct{}{}
+		if !slices.Contains(knownConfigurationFieldTypes, field.Type) {
+			return invalidManifest("%s.configuration key %q has unknown type %q", where, field.Key, field.Type)
+		}
+		if field.DisplayName == "" {
+			return invalidManifest("%s.configuration key %q needs a display_name", where, field.Key)
+		}
+	}
+	return nil
+}
+
+func validateMCP(m *protocol.Manifest) error {
+	if m.MCP == nil || len(m.MCP.Tools) == 0 {
+		return invalidManifest("capability mcp requires at least one tool")
+	}
+	if !slices.Contains(m.Permissions, protocol.PermissionMCP) {
+		return invalidManifest("capability mcp requires the %s permission", protocol.PermissionMCP)
+	}
+	seen := make(map[string]struct{}, len(m.MCP.Tools))
+	for _, tool := range m.MCP.Tools {
+		if !mcpToolNamePattern.MatchString(tool.Name) {
+			return invalidManifest("mcp tool name %q must match %s", tool.Name, mcpToolNamePattern)
+		}
+		if _, dup := seen[tool.Name]; dup {
+			return invalidManifest("mcp tool %q is declared twice", tool.Name)
+		}
+		seen[tool.Name] = struct{}{}
+		if tool.Description == "" {
+			return invalidManifest("mcp tool %q needs a description", tool.Name)
+		}
+		if !isObjectSchema(tool.InputSchema) {
+			return invalidManifest("mcp tool %q input_schema must have type object", tool.Name)
+		}
+	}
+	return nil
+}
+
+// isObjectSchema reports whether an MCP input schema describes an object. An
+// absent schema means a tool without arguments.
+func isObjectSchema(schema map[string]any) bool {
+	if schema == nil {
+		return true
+	}
+	kind, ok := schema["type"].(string)
+	return ok && kind == "object"
 }
 
 func validateDNS01(d *protocol.ManifestDNS01) error {

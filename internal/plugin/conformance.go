@@ -185,11 +185,7 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 			"handshake reported %v, manifest declares %v", init.Capabilities, manifest.Capabilities)
 	}
 
-	var dns01Code string
-	effective := effectiveCapabilities(manifest, opts)
-	if slices.Contains(effective, protocol.CapabilityDNS01) && manifest.DNS01 != nil && len(manifest.DNS01.Providers) > 0 {
-		dns01Code = manifest.DNS01.Providers[0].Code
-	}
+	targets := conformanceTargetsOf(manifest, effectiveCapabilities(manifest, opts))
 
 	advertised := slices.Contains(init.Transports, protocol.TransportGRPC)
 	runStdio := opts.Transport != TransportFlagGRPC
@@ -203,7 +199,7 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 			record("LIFE-1", "handshake", StatusFail, 0, "the plugin stopped right after the handshake: %v", err)
 			return report, nil
 		}
-		runStdioCases(runCtx, sup, stdioCaller, dns01Code, recordOn(protocol.TransportStdio))
+		runStdioCases(runCtx, sup, stdioCaller, targets, recordOn(protocol.TransportStdio))
 	}
 
 	var grpcClient *grpcbridge.Client
@@ -211,12 +207,12 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 		grpcRecord := recordOn(protocol.TransportGRPC)
 		grpcClient = connectConformanceGRPC(runCtx, sup, init, dataDir, grpcRecord)
 		if grpcClient != nil {
-			runGRPCCases(runCtx, grpcClient, dns01Code, grpcRecord)
+			runGRPCCases(runCtx, grpcClient, targets, grpcRecord)
 		}
 	}
 
 	if stdioCaller != nil && grpcClient != nil {
-		runTransportParity(runCtx, stdioCaller, &grpcConformanceCaller{client: grpcClient}, dns01Code, record)
+		runTransportParity(runCtx, stdioCaller, &grpcConformanceCaller{client: grpcClient}, targets, record)
 	}
 	if grpcClient != nil {
 		_ = grpcClient.Close()
@@ -239,18 +235,80 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 	return report, nil
 }
 
+// conformanceTargets is what the capability cases run against: the first
+// entry of every capability block the run covers. Empty fields skip the cases
+// of that capability.
+type conformanceTargets struct {
+	dns01Code string
+	notify    *protocol.NotifyChannel
+	probeCode string
+	// mcpUnknownTool is a tool name the manifest does not declare, empty when
+	// the mcp cases do not run.
+	mcpUnknownTool string
+}
+
+// conformanceTargetsOf picks the targets of the capabilities being tested.
+func conformanceTargetsOf(manifest *protocol.Manifest, capabilities []string) conformanceTargets {
+	var targets conformanceTargets
+	if slices.Contains(capabilities, protocol.CapabilityDNS01) && manifest.DNS01 != nil && len(manifest.DNS01.Providers) > 0 {
+		targets.dns01Code = manifest.DNS01.Providers[0].Code
+	}
+	if slices.Contains(capabilities, protocol.CapabilityNotify) && manifest.Notify != nil && len(manifest.Notify.Channels) > 0 {
+		channel := manifest.Notify.Channels[0]
+		targets.notify = &channel
+	}
+	if slices.Contains(capabilities, protocol.CapabilityProbe) && manifest.Probe != nil && len(manifest.Probe.Kinds) > 0 {
+		targets.probeCode = manifest.Probe.Kinds[0].Code
+	}
+	if slices.Contains(capabilities, protocol.CapabilityMCP) {
+		targets.mcpUnknownTool = unknownMCPTool(manifest)
+	}
+	return targets
+}
+
+// unknownMCPTool returns a tool name the manifest does not declare.
+func unknownMCPTool(manifest *protocol.Manifest) string {
+	declared := map[string]bool{}
+	if manifest.MCP != nil {
+		for _, tool := range manifest.MCP.Tools {
+			declared[tool.Name] = true
+		}
+	}
+	name := "nginx-ui-conformance-unknown-tool"
+	for declared[name] {
+		name += "-x"
+	}
+	return name
+}
+
+// runCapabilityCases runs the capability cases shared by both transports.
+func runCapabilityCases(ctx context.Context, caller jsonrpc.Caller, targets conformanceTargets, record recorder) {
+	if targets.dns01Code != "" {
+		runDNS01Cases(ctx, caller, targets.dns01Code, record)
+	}
+	if targets.notify != nil {
+		runNotifyValidate(ctx, caller, *targets.notify, record)
+	}
+	if targets.probeCode != "" {
+		runProbeCheck(ctx, caller, targets.probeCode, record)
+	}
+	if targets.mcpUnknownTool != "" {
+		runMCPUnknownTool(ctx, caller, targets.mcpUnknownTool, record)
+	}
+}
+
 // runStdioCases runs the protocol and capability cases over stdio.
-func runStdioCases(ctx context.Context, sup *Supervisor, caller jsonrpc.Caller, dns01Code string, record recorder) {
+func runStdioCases(ctx context.Context, sup *Supervisor, caller jsonrpc.Caller, targets conformanceTargets, record recorder) {
 	runPing(ctx, caller, record)
 	runUnknownMethod(ctx, caller, record)
 	runNotificationThenPing(ctx, caller, record)
 	runConcurrentPings(ctx, caller, record)
 	runStdoutHygiene(sup, record)
 
-	if dns01Code != "" {
+	if targets.dns01Code != "" {
 		runInvalidParams(ctx, caller, record)
-		runDNS01Cases(ctx, caller, dns01Code, record)
 	}
+	runCapabilityCases(ctx, caller, targets, record)
 }
 
 // connectConformanceGRPC checks WIRE-11: the plugin advertises grpc and its
@@ -286,16 +344,16 @@ func connectConformanceGRPC(ctx context.Context, sup *Supervisor, init protocol.
 
 // runGRPCCases runs the protocol and capability cases over gRPC. The
 // notification and stdout cases are stdio only.
-func runGRPCCases(ctx context.Context, client *grpcbridge.Client, dns01Code string, record recorder) {
+func runGRPCCases(ctx context.Context, client *grpcbridge.Client, targets conformanceTargets, record recorder) {
 	caller := &grpcConformanceCaller{client: client}
 	runPing(ctx, caller, record)
 	runUnknownMethod(ctx, caller, record)
 	runConcurrentPings(ctx, caller, record)
 
-	if dns01Code != "" {
+	if targets.dns01Code != "" {
 		runGRPCInvalidParams(ctx, client, record)
-		runDNS01Cases(ctx, caller, dns01Code, record)
 	}
+	runCapabilityCases(ctx, caller, targets, record)
 }
 
 // unknownGRPCMethod is a gRPC path outside the contract.
@@ -365,22 +423,37 @@ type parityProbe struct {
 
 // runTransportParity checks TRANSPORT-1: the same calls produce the same
 // result or error on stdio and on gRPC.
-func runTransportParity(ctx context.Context, stdio, grpc jsonrpc.Caller, dns01Code string, record recorder) {
+func runTransportParity(ctx context.Context, stdio, grpc jsonrpc.Caller, targets conformanceTargets, record recorder) {
 	probes := []parityProbe{}
-	if dns01Code != "" {
+	if targets.dns01Code != "" {
 		probes = append(probes,
 			parityProbe{
 				name:   protocol.MethodDNS01Options,
 				method: protocol.MethodDNS01Options,
-				params: protocol.DNS01OptionsParams{Provider: dns01Code, Config: map[string]string{}},
+				params: protocol.DNS01OptionsParams{Provider: targets.dns01Code, Config: map[string]string{}},
 				result: func() any { return &protocol.DNS01OptionsResult{} },
 			},
 			parityProbe{
 				name:   protocol.MethodDNS01Validate,
 				method: protocol.MethodDNS01Validate,
-				params: protocol.DNS01ValidateParams{Provider: dns01Code, Config: map[string]string{}},
+				params: protocol.DNS01ValidateParams{Provider: targets.dns01Code, Config: map[string]string{}},
 			},
 		)
+	}
+	if targets.notify != nil {
+		probes = append(probes, parityProbe{
+			name:   protocol.MethodNotifyValidate,
+			method: protocol.MethodNotifyValidate,
+			params: protocol.NotifyValidateParams{Channel: targets.notify.Code, Config: map[string]string{}},
+		})
+	}
+	if targets.mcpUnknownTool != "" {
+		probes = append(probes, parityProbe{
+			name:   protocol.MethodMCPCall + " of an unknown tool",
+			method: protocol.MethodMCPCall,
+			params: protocol.MCPCallParams{Tool: targets.mcpUnknownTool},
+			result: func() any { return &protocol.MCPCallResult{} },
+		})
 	}
 	probes = append(probes, parityProbe{
 		name:          "unknown method",
@@ -709,6 +782,135 @@ func runDNS01Check(ctx context.Context, caller jsonrpc.Caller, code string, reco
 		return
 	}
 	record("DNS01-11", "dns01.check", StatusPass, elapsed, "answered in %s (err=%v)", elapsed.Round(time.Millisecond), err)
+}
+
+// requiredConfigurationField returns the key of the first required field of
+// a form, empty when nothing is required.
+func requiredConfigurationField(schema *protocol.ConfigurationSchema) string {
+	if schema == nil {
+		return ""
+	}
+	for _, field := range schema.Fields {
+		if field.Required {
+			return field.Key
+		}
+	}
+	return ""
+}
+
+// invalidConfigFieldOf returns data.field of a CodeInvalidConfig error.
+func invalidConfigFieldOf(err error) (field string, ok bool) {
+	perr, isProtocol := jsonrpc.AsProtocolError(err)
+	if !isProtocol || perr.Code != protocol.CodeInvalidConfig {
+		return "", false
+	}
+	switch data := perr.Data.(type) {
+	case map[string]any:
+		field, _ = data["field"].(string)
+	case protocol.InvalidConfigData:
+		field = data.Field
+	case *protocol.InvalidConfigData:
+		if data != nil {
+			field = data.Field
+		}
+	}
+	return field, true
+}
+
+// runNotifyValidate checks NOTIFY-8 against the manifest's first channel: an
+// empty config is rejected with -32003 and data.field when the channel has a
+// required field, and accepted otherwise. notify.send is never called, it
+// would reach the vendor.
+func runNotifyValidate(ctx context.Context, caller jsonrpc.Caller, channel protocol.NotifyChannel, record recorder) {
+	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	err := caller.Call(callCtx, protocol.MethodNotifyValidate, protocol.NotifyValidateParams{
+		Channel: channel.Code,
+		Config:  map[string]string{},
+	}, nil)
+
+	required := requiredConfigurationField(channel.Configuration)
+	field, invalid := invalidConfigFieldOf(err)
+	switch {
+	case isOptionalUnimplemented(err):
+		record("NOTIFY-8", "notify.validate", StatusSkip, 0, "not implemented (%s)", protocolErrorCode(err))
+	case invalid && field == "":
+		record("NOTIFY-8", "notify.validate", StatusFail, 0, "an empty config was rejected with -32003 but without data.field")
+	case invalid:
+		record("NOTIFY-8", "notify.validate", StatusPass, 0, "an empty config for channel %s was rejected with -32003 naming %s", channel.Code, field)
+	case err == nil && required != "":
+		record("NOTIFY-8", "notify.validate", StatusFail, 0, "an empty config was accepted although field %s is required", required)
+	case err == nil:
+		record("NOTIFY-8", "notify.validate", StatusPass, 0, "channel %s declares no required field and accepted an empty config", channel.Code)
+	default:
+		record("NOTIFY-8", "notify.validate", StatusFail, 0, "expected -32003 or {}, got %v", err)
+	}
+}
+
+// conformanceProbeTarget is unroutable, so a probe answers without touching
+// anything real.
+const conformanceProbeTarget = "http://conformance.invalid"
+
+// runProbeCheck checks PROBE-4 and PROBE-5 against the manifest's first kind:
+// the unroutable target answers in time with a known status, or the empty
+// config is rejected with -32003 and data.field.
+func runProbeCheck(ctx context.Context, caller jsonrpc.Caller, code string, record recorder) {
+	callCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
+	defer cancel()
+	started := time.Now()
+	var result protocol.ProbeCheckResult
+	err := caller.Call(callCtx, protocol.MethodProbeCheck, protocol.ProbeCheckParams{
+		Kind:           code,
+		Target:         conformanceProbeTarget,
+		Config:         map[string]string{},
+		TimeoutSeconds: 5,
+	}, &result)
+	elapsed := time.Since(started)
+
+	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
+		record("PROBE-4", "probe.check", StatusFail, elapsed, "no answer within 15 seconds for timeout_seconds 5")
+		return
+	}
+	if field, invalid := invalidConfigFieldOf(err); invalid {
+		if field == "" {
+			record("PROBE-5", "probe.check", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
+			return
+		}
+		record("PROBE-5", "probe.check", StatusPass, elapsed, "an empty config for kind %s was rejected with -32003 naming %s", code, field)
+		return
+	}
+	if err != nil {
+		record("PROBE-5", "probe.check", StatusFail, elapsed, "an unreachable target must be reported as down, got %v", err)
+		return
+	}
+	switch result.Status {
+	case protocol.ProbeStatusUp, protocol.ProbeStatusDown, protocol.ProbeStatusDegraded:
+	default:
+		record("PROBE-5", "probe.check", StatusFail, elapsed, "unknown status %q", result.Status)
+		return
+	}
+	if result.LatencyMS < 0 {
+		record("PROBE-5", "probe.check", StatusFail, elapsed, "negative latency_ms %d", result.LatencyMS)
+		return
+	}
+	record("PROBE-5", "probe.check", StatusPass, elapsed, "%s answered %s in %s", conformanceProbeTarget, result.Status, elapsed.Round(time.Millisecond))
+}
+
+// runMCPUnknownTool checks MCP-6: a tool the manifest does not declare answers
+// -32602. No declared tool is called, it may change state.
+func runMCPUnknownTool(ctx context.Context, caller jsonrpc.Caller, tool string, record recorder) {
+	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	err := caller.Call(callCtx, protocol.MethodMCPCall, protocol.MCPCallParams{Tool: tool}, &protocol.MCPCallResult{})
+	if perr, ok := jsonrpc.AsProtocolError(err); ok && perr.Code == protocol.CodeInvalidParams {
+		record("MCP-6", "mcp.call unknown tool", StatusPass, 0, "an unknown tool answered -32602 as required")
+		return
+	}
+	if err == nil {
+		record("MCP-6", "mcp.call unknown tool", StatusFail, 0, "tool %s is not declared but answered with a result", tool)
+		return
+	}
+	record("MCP-6", "mcp.call unknown tool", StatusFail, 0, "expected -32602 for an unknown tool, got %v", err)
 }
 
 // checkWebapp checks WEB-1 and WEB-5 against the bundle file on disk. It
