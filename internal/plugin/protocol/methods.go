@@ -24,6 +24,22 @@ const (
 	MethodHTTPHandle = "http.handle"
 )
 
+// Capability notify methods (host -> plugin).
+const (
+	MethodNotifySend     = "notify.send"
+	MethodNotifyValidate = "notify.validate"
+)
+
+// Capability probe methods (host -> plugin).
+const (
+	MethodProbeCheck = "probe.check"
+)
+
+// Capability mcp methods (host -> plugin).
+const (
+	MethodMCPCall = "mcp.call"
+)
+
 // Event and cron delivery (host -> plugin).
 const (
 	MethodEventsOn = "events.on" // notification
@@ -47,8 +63,11 @@ const (
 
 // Capability names a plugin may declare in its manifest.
 const (
-	CapabilityDNS01 = "dns01"
-	CapabilityHTTP  = "http"
+	CapabilityDNS01  = "dns01"
+	CapabilityHTTP   = "http"
+	CapabilityNotify = "notify"
+	CapabilityProbe  = "probe"
+	CapabilityMCP    = "mcp"
 )
 
 // Permission names a plugin may request in its manifest.
@@ -59,6 +78,8 @@ const (
 	PermissionNotify      = "notify"
 	PermissionMetricsRead = "metrics.read"
 	PermissionCoreAPI     = "core_api"
+	// PermissionMCP lets the host publish the tools of the mcp capability.
+	PermissionMCP = "mcp"
 	// PermissionCredentialsReadPrefix is followed by the credential kind, e.g. "credentials.read:dns".
 	PermissionCredentialsReadPrefix = "credentials.read:"
 )

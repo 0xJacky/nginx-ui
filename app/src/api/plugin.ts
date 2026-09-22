@@ -116,6 +116,58 @@ export interface PluginManifestHTTP {
 }
 
 /** Mirrors internal/plugin/protocol/manifest.go. */
+/** Field types of a notify channel or probe kind form. Absent means text. */
+export type ConfigurationFieldType = 'text' | 'textarea' | 'number' | 'bool'
+
+/**
+ * One field of the form a plugin declares for a notify channel or a probe
+ * kind. Every value travels as a string: numbers in decimal, booleans as
+ * "true" or "false".
+ */
+export interface ConfigurationField {
+  key: string
+  type?: ConfigurationFieldType
+  display_name: string
+  help_text?: string
+  required?: boolean
+  /** A credential: rendered as a masked input. */
+  secret?: boolean
+}
+
+export interface ConfigurationSchema {
+  fields?: ConfigurationField[]
+}
+
+export interface NotifyChannel {
+  code: string
+  name: string
+  configuration?: ConfigurationSchema
+}
+
+export interface PluginManifestNotify {
+  channels: NotifyChannel[]
+}
+
+export interface ProbeKind {
+  code: string
+  name: string
+  configuration?: ConfigurationSchema
+}
+
+export interface PluginManifestProbe {
+  kinds: ProbeKind[]
+}
+
+export interface MCPTool {
+  name: string
+  description: string
+  input_schema?: Record<string, unknown>
+}
+
+export interface PluginManifestMCP {
+  tools: MCPTool[]
+}
+
 export interface PluginManifest {
   id: string
   name: string
@@ -138,6 +190,9 @@ export interface PluginManifest {
   dns01?: PluginManifestDNS01
   http?: PluginManifestHTTP
   settings_schema?: SettingsSchema | null
+  notify?: PluginManifestNotify
+  probe?: PluginManifestProbe
+  mcp?: PluginManifestMCP
 }
 
 export interface PluginInfo {
