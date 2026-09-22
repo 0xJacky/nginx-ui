@@ -121,8 +121,9 @@ export type ConfigurationFieldType = 'text' | 'textarea' | 'number' | 'bool'
 
 /**
  * One field of the form a plugin declares for a notify channel, a probe
- * kind, a storage backend or a deploy target. Every value travels as a
- * string: numbers in decimal, booleans as "true" or "false".
+ * kind, a storage backend, a deploy target, a blocklist source or a
+ * discovery provider. Every value travels as a string: numbers in decimal,
+ * booleans as "true" or "false".
  */
 export interface ConfigurationField {
   key: string
@@ -188,6 +189,28 @@ export interface PluginManifestDeploy {
   targets: ManifestDeployTarget[]
 }
 
+export interface ManifestBlocklistSource {
+  code: string
+  name: string
+  configuration?: ConfigurationSchema
+  /** Default refresh interval of a source of this kind, 0 means 3600. */
+  refresh_seconds?: number
+}
+
+export interface PluginManifestBlocklist {
+  sources: ManifestBlocklistSource[]
+}
+
+export interface ManifestDiscoveryProvider {
+  code: string
+  name: string
+  configuration?: ConfigurationSchema
+}
+
+export interface PluginManifestDiscovery {
+  providers: ManifestDiscoveryProvider[]
+}
+
 export interface PluginManifest {
   id: string
   name: string
@@ -215,6 +238,8 @@ export interface PluginManifest {
   mcp?: PluginManifestMCP
   storage?: PluginManifestStorage
   deploy?: PluginManifestDeploy
+  blocklist?: PluginManifestBlocklist
+  discovery?: PluginManifestDiscovery
 }
 
 export interface PluginInfo {

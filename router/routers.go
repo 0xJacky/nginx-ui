@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/analytic"
 	"github.com/0xJacky/Nginx-UI/api/audit"
 	"github.com/0xJacky/Nginx-UI/api/backup"
+	"github.com/0xJacky/Nginx-UI/api/blocklist"
 	"github.com/0xJacky/Nginx-UI/api/cert_deploy"
 	"github.com/0xJacky/Nginx-UI/api/certificate"
 	"github.com/0xJacky/Nginx-UI/api/cluster"
@@ -33,6 +34,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/template"
 	"github.com/0xJacky/Nginx-UI/api/terminal"
 	"github.com/0xJacky/Nginx-UI/api/upstream"
+	"github.com/0xJacky/Nginx-UI/api/upstream_discovery"
 	"github.com/0xJacky/Nginx-UI/api/user"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/mcp"
@@ -130,6 +132,8 @@ func InitRouter() {
 			certificate.InitDNSCredentialRouter(g)
 			certificate.InitAcmeUserRouter(g)
 			cert_deploy.InitRouter(g)
+			blocklist.InitRouter(g)
+			upstream_discovery.InitRouter(g)
 			dnsapi.InitRouter(g)
 			system.InitPrivateRouter(g)
 			settings.InitRouter(g)

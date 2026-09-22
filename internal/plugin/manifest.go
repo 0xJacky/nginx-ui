@@ -30,7 +30,8 @@ var (
 	// dns01CodePattern bounds provider codes so they are safe in URLs and forms.
 	dns01CodePattern = regexp.MustCompile(`^[a-z0-9-]{2,32}$`)
 	// capabilityCodePattern bounds notify channel, probe kind, storage
-	// backend and deploy target codes the same way.
+	// backend, deploy target, blocklist source and discovery provider codes
+	// the same way.
 	capabilityCodePattern = regexp.MustCompile(`^[a-z0-9-]{2,32}$`)
 	// mcpToolNamePattern keeps the published tool name within the MCP limits,
 	// see MCPToolName.
@@ -50,6 +51,8 @@ var knownCapabilities = []string{
 	protocol.CapabilityMCP,
 	protocol.CapabilityStorage,
 	protocol.CapabilityCertDeploy,
+	protocol.CapabilitySecurityBlocklist,
+	protocol.CapabilityUpstreamDiscovery,
 }
 
 // knownPermissions lists the fixed permission names. Credential permissions
@@ -132,6 +135,9 @@ func ValidateManifest(m *protocol.Manifest) error {
 		return err
 	}
 	if err := validateContent(m.Content); err != nil {
+		return err
+	}
+	if err := validateProcessless(m); err != nil {
 		return err
 	}
 	if err := validateCapabilities(m); err != nil {
@@ -230,6 +236,23 @@ func validateContent(c *protocol.ManifestContent) error {
 	return nil
 }
 
+// validateProcessless rejects what only a process can serve on a manifest
+// without a server block (spec CONTENT-1).
+func validateProcessless(m *protocol.Manifest) error {
+	if m.Server != nil {
+		return nil
+	}
+	switch {
+	case len(m.Capabilities) > 0:
+		return invalidManifest("capabilities need a server block")
+	case len(m.Cron) > 0:
+		return invalidManifest("cron entries need a server block")
+	case len(m.Events) > 0:
+		return invalidManifest("events need a server block")
+	}
+	return nil
+}
+
 func validateCapabilities(m *protocol.Manifest) error {
 	seen := make(map[string]struct{}, len(m.Capabilities))
 	for _, capability := range m.Capabilities {
@@ -276,6 +299,78 @@ func validateCapabilities(m *protocol.Manifest) error {
 	}
 	if _, ok := seen[protocol.CapabilityCertDeploy]; ok {
 		if err := validateDeploy(m); err != nil {
+			return err
+		}
+	}
+	if _, ok := seen[protocol.CapabilitySecurityBlocklist]; ok {
+		if err := validateBlocklist(m); err != nil {
+			return err
+		}
+	}
+	if _, ok := seen[protocol.CapabilityUpstreamDiscovery]; ok {
+		if err := validateDiscovery(m); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func validateBlocklist(m *protocol.Manifest) error {
+	if m.Blocklist == nil || len(m.Blocklist.Sources) == 0 {
+		return invalidManifest("capability security.blocklist requires at least one source")
+	}
+	if !slices.Contains(m.Permissions, protocol.PermissionNetwork) {
+		return invalidManifest("capability security.blocklist requires the %s permission", protocol.PermissionNetwork)
+	}
+	seen := make(map[string]struct{}, len(m.Blocklist.Sources))
+	for _, source := range m.Blocklist.Sources {
+		if !capabilityCodePattern.MatchString(source.Code) {
+			return invalidManifest("blocklist source code %q must match %s", source.Code, capabilityCodePattern)
+		}
+		if _, dup := seen[source.Code]; dup {
+			return invalidManifest("blocklist source code %q is declared twice", source.Code)
+		}
+		seen[source.Code] = struct{}{}
+		if source.Name == "" {
+			return invalidManifest("blocklist.sources[%q].name is required", source.Code)
+		}
+		if !validBlocklistRefresh(source.RefreshSeconds) {
+			return invalidManifest("blocklist.sources[%q].refresh_seconds must be 0 or at least %d",
+				source.Code, protocol.MinBlocklistRefreshSeconds)
+		}
+		if err := validateConfigurationSchema(fmt.Sprintf("blocklist.sources[%q]", source.Code), source.Configuration); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// validBlocklistRefresh reports whether a manifest refresh interval is 0
+// (the default) or long enough.
+func validBlocklistRefresh(seconds int) bool {
+	return seconds == 0 || seconds >= protocol.MinBlocklistRefreshSeconds
+}
+
+func validateDiscovery(m *protocol.Manifest) error {
+	if m.Discovery == nil || len(m.Discovery.Providers) == 0 {
+		return invalidManifest("capability upstream.discovery requires at least one provider")
+	}
+	if !slices.Contains(m.Permissions, protocol.PermissionNetwork) {
+		return invalidManifest("capability upstream.discovery requires the %s permission", protocol.PermissionNetwork)
+	}
+	seen := make(map[string]struct{}, len(m.Discovery.Providers))
+	for _, provider := range m.Discovery.Providers {
+		if !capabilityCodePattern.MatchString(provider.Code) {
+			return invalidManifest("discovery provider code %q must match %s", provider.Code, capabilityCodePattern)
+		}
+		if _, dup := seen[provider.Code]; dup {
+			return invalidManifest("discovery provider code %q is declared twice", provider.Code)
+		}
+		seen[provider.Code] = struct{}{}
+		if provider.Name == "" {
+			return invalidManifest("discovery.providers[%q].name is required", provider.Code)
+		}
+		if err := validateConfigurationSchema(fmt.Sprintf("discovery.providers[%q]", provider.Code), provider.Configuration); err != nil {
 			return err
 		}
 	}

@@ -28,9 +28,11 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/plugin"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/capability"
+	"github.com/0xJacky/Nginx-UI/internal/security/blocklist"
 	"github.com/0xJacky/Nginx-UI/internal/self_check"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
 	"github.com/0xJacky/Nginx-UI/internal/system"
+	"github.com/0xJacky/Nginx-UI/internal/upstream/discovery"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -262,8 +264,9 @@ func CheckAndCleanupOTA() {
 }
 
 // initPluginCapabilities connects the plugin manager to the core registries
-// that accept plugin provided implementations, and starts pushing issued
-// certificates to their deploy targets.
+// that accept plugin provided implementations, starts pushing issued
+// certificates to their deploy targets and starts refreshing the generated
+// blocklists and upstreams.
 func initPluginCapabilities(ctx context.Context) {
 	manager := plugin.GetManager()
 	capability.RegisterDNS01(manager)
@@ -272,5 +275,10 @@ func initPluginCapabilities(ctx context.Context) {
 	capability.RegisterMCP(manager)
 	capability.RegisterStorage(manager)
 	capability.RegisterDeploy(manager)
+	capability.RegisterBlocklist(manager)
+	capability.RegisterDiscovery(manager)
+	capability.RegisterContent(manager)
 	certdeploy.Start(ctx)
+	blocklist.Start(ctx)
+	discovery.Start(ctx)
 }

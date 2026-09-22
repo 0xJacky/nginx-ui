@@ -76,6 +76,25 @@ func TestManagerListsCapabilityEntries(t *testing.T) {
 	owner, ok = m.OwnerOf(protocol.CapabilityCertDeploy, "mycdn")
 	assert.True(t, ok)
 	assert.Equal(t, "io.github.a.plugin", owner)
+
+	sources := m.BlocklistSources()
+	require.Len(t, sources, 2)
+	assert.Equal(t, "io.github.a.plugin", sources[0].PluginID)
+	assert.Equal(t, "threatfeed", sources[0].Source.Code)
+	assert.Equal(t, 900, sources[0].Source.RefreshSeconds)
+	owner, ok = m.OwnerOf(protocol.CapabilitySecurityBlocklist, "threatfeed")
+	assert.True(t, ok)
+	assert.Equal(t, "io.github.a.plugin", owner)
+
+	providers := m.DiscoveryProviders()
+	require.Len(t, providers, 2)
+	assert.Equal(t, "registry", providers[1].Provider.Code)
+	assert.Equal(t, "io.github.b.plugin", providers[1].PluginID)
+	owner, ok = m.OwnerOf(protocol.CapabilityUpstreamDiscovery, "registry")
+	assert.True(t, ok)
+	assert.Equal(t, "io.github.a.plugin", owner)
+	_, ok = m.OwnerOf(protocol.CapabilityUpstreamDiscovery, "unknown")
+	assert.False(t, ok)
 }
 
 func TestManagerDeployTargetsNeedThePermission(t *testing.T) {
