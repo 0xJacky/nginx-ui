@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"context"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -78,7 +79,7 @@ func InstallPlugin(c *gin.Context) {
 	}
 	defer cleanup()
 
-	info, err := plugin.GetManager().Install(c, archivePath, plugin.InstallOptions{
+	info, err := plugin.GetManager().Install(detach(c), archivePath, plugin.InstallOptions{
 		Enable: c.PostForm("enable") == "true",
 	})
 	if err != nil {
@@ -94,7 +95,7 @@ func UninstallPlugin(c *gin.Context) {
 	if !ok {
 		return
 	}
-	if err := plugin.GetManager().Uninstall(c, id, c.Query("cascade") == "true"); err != nil {
+	if err := plugin.GetManager().Uninstall(detach(c), id, c.Query("cascade") == "true"); err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
@@ -114,7 +115,7 @@ func EnablePlugin(c *gin.Context) {
 	// The UI sends an empty body when it does not need to approve anything.
 	_ = c.ShouldBindJSON(&body)
 
-	info, err := plugin.GetManager().Enable(c, id, body.ApprovePermissions)
+	info, err := plugin.GetManager().Enable(detach(c), id, body.ApprovePermissions)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -128,7 +129,7 @@ func DisablePlugin(c *gin.Context) {
 	if !ok {
 		return
 	}
-	info, err := plugin.GetManager().Disable(c, id)
+	info, err := plugin.GetManager().Disable(detach(c), id)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -168,7 +169,7 @@ func SavePluginSettings(c *gin.Context) {
 	}
 
 	manager := plugin.GetManager()
-	if err := manager.SaveSettings(c, id, body.Settings); err != nil {
+	if err := manager.SaveSettings(detach(c), id, body.Settings); err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
@@ -206,6 +207,12 @@ func GetPluginLogs(c *gin.Context) {
 		lines = []plugin.LogLine{}
 	}
 	c.JSON(http.StatusOK, logsResponse{Lines: lines})
+}
+
+// detach keeps a mutation running after the client disconnects, so files and
+// database rows are never left half applied. Request values stay reachable.
+func detach(c *gin.Context) context.Context {
+	return context.WithoutCancel(c)
 }
 
 // pluginID reads and validates the :id route parameter.

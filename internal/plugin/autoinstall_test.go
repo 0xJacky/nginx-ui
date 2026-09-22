@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"aead.dev/minisign"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
@@ -47,17 +48,28 @@ func dns01Manifest(pluginVersion string) *protocol.Manifest {
 	return manifest
 }
 
+// useSignedMarketplace points the settings at a test catalog whose packages
+// must be signed, which is what lets a custom source vouch for its entries.
+func useSignedMarketplace(t *testing.T, source string) *minisign.PrivateKey {
+	t.Helper()
+	useMarketplace(t, source)
+	public, private := newSigningKey(t)
+	trustKey(t, public)
+	settings.PluginSettings.RequireSignature = true
+	return &private
+}
+
 func TestEnsureDNS01PluginInstallsFromTheMarketplace(t *testing.T) {
 	manager := newCertAwareManager(t)
 	server := newCatalogServer(t)
-	useMarketplace(t, server.catalogURL())
+	signer := useSignedMarketplace(t, server.catalogURL())
 
 	previous := settings.CertSettings.RecursiveNameservers
 	settings.CertSettings.RecursiveNameservers = []string{"8.8.8.8:53", "1.1.1.1:53"}
 	t.Cleanup(func() { settings.CertSettings.RecursiveNameservers = previous })
 
 	addDNS01Cert(t)
-	server.publish(t, dns01Manifest("1.0.0"), nil, nil)
+	server.publish(t, dns01Manifest("1.0.0"), signer, nil)
 
 	manager.EnsureDNS01Plugin(context.Background())
 
@@ -102,10 +114,10 @@ func TestEnsureDNS01PluginSkipsWhenNoCertificateNeedsIt(t *testing.T) {
 func TestEnsureDNS01PluginRefusesACommunityImpostor(t *testing.T) {
 	manager := newCertAwareManager(t)
 	server := newCatalogServer(t)
-	useMarketplace(t, server.catalogURL())
+	signer := useSignedMarketplace(t, server.catalogURL())
 
 	addDNS01Cert(t)
-	server.publish(t, dns01Manifest("1.0.0"), nil, func(entry *CatalogEntry, _ *CatalogRelease) {
+	server.publish(t, dns01Manifest("1.0.0"), signer, func(entry *CatalogEntry, _ *CatalogRelease) {
 		entry.Trust = TrustCommunity
 	})
 
@@ -115,10 +127,52 @@ func TestEnsureDNS01PluginRefusesACommunityImpostor(t *testing.T) {
 	assert.ErrorIs(t, err, ErrPluginNotFound)
 }
 
+func TestEnsureDNS01PluginIgnoresAnOfficialClaimFromAnUnsignedSource(t *testing.T) {
+	manager := newCertAwareManager(t)
+	server := newCatalogServer(t)
+	// Without the signature policy the source cannot vouch for anything,
+	// whatever trust level its entries claim.
+	useMarketplace(t, server.catalogURL())
+
+	addDNS01Cert(t)
+	server.publish(t, dns01Manifest("1.0.0"), nil, nil)
+
+	manager.EnsureDNS01Plugin(context.Background())
+
+	_, err := manager.Get(OfficialDNS01PluginID)
+	assert.ErrorIs(t, err, ErrPluginNotFound)
+}
+
+func TestInstallSeedsTheOfficialDNS01PluginWithTheCoreResolvers(t *testing.T) {
+	manager := newCertAwareManager(t)
+	ctx := context.Background()
+	require.NoError(t, manager.LoadOffline(ctx))
+
+	previous := settings.CertSettings.RecursiveNameservers
+	settings.CertSettings.RecursiveNameservers = []string{"8.8.8.8:53"}
+	t.Cleanup(func() { settings.CertSettings.RecursiveNameservers = previous })
+
+	// Every way a package arrives goes through Install, an upload included.
+	files := map[string]string{"webapp/main.js": "export default {}"}
+	_, err := manager.Install(ctx, buildTestPackage(t, dns01Manifest("1.0.0"), files), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	_, values, err := manager.Settings(OfficialDNS01PluginID)
+	require.NoError(t, err)
+	assert.Equal(t, "8.8.8.8:53", values[recursiveNameserversKey])
+
+	// The value the user set afterwards survives an upgrade.
+	require.NoError(t, manager.SaveSettings(ctx, OfficialDNS01PluginID, map[string]any{recursiveNameserversKey: "1.1.1.1:53"}))
+	_, err = manager.Install(ctx, buildTestPackage(t, dns01Manifest("1.1.0"), files), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	_, values, err = manager.Settings(OfficialDNS01PluginID)
+	require.NoError(t, err)
+	assert.Equal(t, "1.1.1.1:53", values[recursiveNameserversKey])
+}
+
 func TestRepairIncompatiblePluginsUpgradesOfficialOnes(t *testing.T) {
 	manager := newCertAwareManager(t)
 	server := newCatalogServer(t)
-	useMarketplace(t, server.catalogURL())
+	signer := useSignedMarketplace(t, server.catalogURL())
 
 	// A core upgrade left a plugin built for another protocol version behind.
 	stale := marketplaceManifest("com.example.alpha", "1.0.0")
@@ -131,7 +185,7 @@ func TestRepairIncompatiblePluginsUpgradesOfficialOnes(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, StatusIncompatible, current.Status)
 
-	server.publish(t, marketplaceManifest("com.example.alpha", "1.1.0"), nil, nil)
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.1.0"), signer, nil)
 	manager.repairIncompatiblePlugins(context.Background())
 
 	repaired, err := manager.Get("com.example.alpha")
