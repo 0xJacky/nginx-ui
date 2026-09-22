@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { CatalogEntry } from '@/api/plugin_marketplace'
-import { AppstoreOutlined, ArrowUpOutlined, CheckCircleOutlined, DownloadOutlined } from '@antdv-next/icons'
+import { ArrowUpOutlined, CheckCircleOutlined, DownloadOutlined } from '@antdv-next/icons'
 import { catalogEntryDescription, catalogEntryName } from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
+import PluginIcon from '../PluginIcon.vue'
 import { trustPreset } from './trust'
 
 const props = defineProps<{
@@ -21,6 +22,7 @@ const trust = computed(() => trustPreset(props.entry.trust))
 
 const isInstalled = computed(() => Boolean(props.entry.installed_version))
 const canInstall = computed(() => Boolean(props.entry.installable_release))
+const isActionable = computed(() => canInstall.value && (!isInstalled.value || props.entry.update_available))
 
 const actionLabel = computed(() => {
   if (props.entry.update_available)
@@ -32,68 +34,71 @@ const actionLabel = computed(() => {
 </script>
 
 <template>
-  <ACard
-    class="plugin-card"
-    size="small"
-    hoverable
+  <article
+    class="plugin-card is-clickable"
+    role="button"
+    tabindex="0"
     @click="emit('detail', entry)"
+    @keydown.enter.self="emit('detail', entry)"
   >
-    <div class="flex items-start gap-3">
-      <img
-        v-if="entry.icon_url"
-        :src="entry.icon_url"
-        class="plugin-card-icon"
-        alt=""
-        loading="lazy"
-      >
-      <AppstoreOutlined v-else class="plugin-card-icon-fallback" />
-
-      <div class="min-w-0 flex-1">
-        <div class="flex flex-wrap items-center gap-2">
-          <span class="truncate font-medium">{{ name }}</span>
-          <ATooltip :title="trust.hint()">
-            <ATag :color="trust.color" class="m-0">
-              {{ trust.label() }}
-            </ATag>
-          </ATooltip>
-          <ATag v-if="entry.stage && entry.stage !== 'production'" color="purple" class="m-0">
-            {{ entry.stage }}
-          </ATag>
+    <div class="plugin-card-head">
+      <PluginIcon :src="entry.icon_url" :size="40" />
+      <div class="plugin-card-body">
+        <div class="plugin-card-title">
+          <span class="plugin-card-name">{{ name }}</span>
+          <span v-if="entry.installable_release" class="plugin-card-version">
+            v{{ entry.installable_release.version }}
+          </span>
         </div>
-        <div class="truncate font-mono text-xs text-gray-400">
+        <div class="plugin-card-id">
           {{ entry.id }}
         </div>
       </div>
+      <ATooltip :title="trust.hint()">
+        <ATag :color="trust.color" class="m-0 flex-none" variant="filled">
+          {{ trust.label() }}
+        </ATag>
+      </ATooltip>
     </div>
 
     <p class="plugin-card-description">
       {{ description || $gettext('No description provided.') }}
     </p>
 
-    <div class="mb-3 flex flex-wrap gap-1">
-      <ATag v-for="capability in entry.capabilities ?? []" :key="capability" class="m-0">
+    <div class="plugin-card-meta">
+      <ATag
+        v-for="capability in entry.capabilities ?? []"
+        :key="capability"
+        class="m-0"
+        variant="filled"
+      >
         {{ capability }}
+      </ATag>
+      <ATag
+        v-if="entry.stage && entry.stage !== 'production'"
+        color="purple"
+        class="m-0"
+      >
+        {{ entry.stage }}
       </ATag>
     </div>
 
-    <div class="flex flex-wrap items-center justify-between gap-2">
-      <div class="min-w-0 text-xs text-gray-500">
-        <span v-if="entry.author">{{ entry.author }}</span>
-        <span v-if="entry.author && entry.installable_release"> · </span>
-        <span v-if="entry.installable_release">v{{ entry.installable_release.version }}</span>
-        <div v-if="isInstalled" class="flex items-center gap-1">
-          <CheckCircleOutlined v-if="!entry.update_available" class="text-green-500" />
-          <ArrowUpOutlined v-else class="text-orange-500" />
-          <span>{{ $gettext('Installed: %{version}', { version: entry.installed_version! }) }}</span>
-        </div>
+    <div class="plugin-card-foot" @click.stop>
+      <div class="plugin-card-status">
+        <span v-if="entry.author" class="truncate">{{ entry.author }}</span>
+        <span v-if="isInstalled" class="plugin-card-installed" :class="{ 'is-outdated': entry.update_available }">
+          <ArrowUpOutlined v-if="entry.update_available" />
+          <CheckCircleOutlined v-else />
+          {{ $gettext('Installed: %{version}', { version: entry.installed_version! }) }}
+        </span>
       </div>
 
       <AButton
-        :type="entry.update_available || !isInstalled ? 'primary' : 'default'"
+        :type="isActionable ? 'primary' : 'default'"
         size="small"
-        :disabled="!canInstall || (isInstalled && !entry.update_available)"
+        :disabled="!isActionable"
         :loading="installing"
-        @click.stop="emit('install', entry)"
+        @click="emit('install', entry)"
       >
         <template #icon>
           <DownloadOutlined />
@@ -101,41 +106,29 @@ const actionLabel = computed(() => {
         {{ actionLabel }}
       </AButton>
     </div>
-  </ACard>
+  </article>
 </template>
 
 <style lang="less" scoped>
-.plugin-card {
-  height: 100%;
-  cursor: pointer;
-}
+@import '../plugin-card.less';
 
-.plugin-card-icon,
-.plugin-card-icon-fallback {
-  width: 36px;
-  height: 36px;
-  flex: none;
-  object-fit: contain;
-  border-radius: 8px;
-}
-
-.plugin-card-icon-fallback {
+.plugin-card-status {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  color: var(--ant-color-text-quaternary);
-  background-color: var(--ant-color-fill-tertiary);
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--ant-color-text-secondary);
 }
 
-.plugin-card-description {
-  margin: 12px 0;
-  color: var(--ant-color-text-secondary);
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 44px;
+.plugin-card-installed {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ant-color-success);
+
+  &.is-outdated {
+    color: var(--ant-color-warning);
+  }
 }
 </style>
