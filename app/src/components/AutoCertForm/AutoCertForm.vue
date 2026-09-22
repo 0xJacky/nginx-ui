@@ -242,8 +242,7 @@ defineExpose({
       <AFormItem :label="$gettext('Lego disable CNAME Support')">
         <template #help>
           <p>
-            {{ $gettext('If your domain has CNAME records and you cannot obtain certificates, '
-              + 'you need to enable this option.') }}
+            {{ $gettext('If your domain has CNAME records and you cannot obtain certificates, you need to enable this option.') }}
           </p>
         </template>
         <ASwitch v-model:checked="data.lego_disable_cname_support" />
@@ -254,8 +253,7 @@ defineExpose({
       >
         <template #help>
           <p>
-            {{ $gettext('Skip local DNS propagation checks and wait 60 seconds before asking '
-              + 'the certificate authority to validate the record.') }}
+            {{ $gettext('Skip local DNS propagation checks and wait 60 seconds before asking the certificate authority to validate the record.') }}
           </p>
         </template>
         <ASwitch v-model:checked="data.disable_authoritative_ns_propagation" />
