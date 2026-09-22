@@ -63,6 +63,18 @@ export function buildWebSocketUrlWithQuery(
   return wsUrl.toString()
 }
 
+function resolveAutoReconnect(url: string, reconnect: boolean): UseWebSocketOptions['autoReconnect'] {
+  return reconnect
+    ? {
+        retries: 10,
+        delay: 1000,
+        onFailed: () => {
+          console.warn(`Failed to reconnect to WebSocket after 10 retries: ${url}`)
+        },
+      }
+    : false
+}
+
 /**
  * Create a WebSocket connection using VueUse
  * @param url - The WebSocket endpoint URL
@@ -92,17 +104,50 @@ export function useWebSocket<T = any>(
   const wsUrl = buildWebSocketUrlWithQuery(url, token.value, shortToken.value, extraQuery, settings.node.id)
 
   return vueUseWebSocket<T>(wsUrl, {
-    autoReconnect: reconnect
-      ? {
-          retries: 10,
-          delay: 1000,
-          onFailed: () => {
-            console.warn(`Failed to reconnect to WebSocket after 10 retries: ${url}`)
-          },
-        }
-      : false,
+    autoReconnect: resolveAutoReconnect(url, reconnect),
     immediate: true,
     autoClose: true,
     ...options,
   })
+}
+
+/**
+ * Create a WebSocket owned by a Pinia store (or anything else that outlives a
+ * login session).
+ *
+ * useWebSocket() bakes the credentials into the URL once, which is right for a
+ * page-scoped socket that is recreated on every mount. A store is set up once
+ * per tab, though, and logging out and back in happens without a reload, so a
+ * snapshotted URL keeps dialling with the previous session's credential: a
+ * long token is deleted on logout and every reconnect is rejected, while a
+ * short token still authenticates as the session that already ended. Here the
+ * URL is resolved on each connection attempt instead — the first open and
+ * every autoReconnect retry — so reconnects always carry the current session.
+ *
+ * The URL is deliberately not watched (autoConnect is off): a changing token
+ * must not tear down a healthy connection, only the next dial picks it up.
+ * The socket starts closed and stays open until close() is called; lifecycle
+ * belongs to the owner.
+ */
+// eslint-disable-next-line ts/no-explicit-any
+export function useStoreWebSocket<T = any>(
+  url: string,
+  reconnect: boolean = true,
+  options?: Omit<UseWebSocketOptions, 'autoReconnect' | 'autoConnect' | 'immediate' | 'autoClose'>,
+  extraQuery?: Record<string, string | undefined>,
+): UseWebSocketReturn<T> {
+  const userStore = useUserStore()
+  const settings = useSettingsStore()
+  const { token, shortToken } = storeToRefs(userStore)
+
+  return vueUseWebSocket<T>(
+    () => buildWebSocketUrlWithQuery(url, token.value, shortToken.value, extraQuery, settings.node.id),
+    {
+      ...options,
+      autoReconnect: resolveAutoReconnect(url, reconnect),
+      autoConnect: false,
+      immediate: false,
+      autoClose: false,
+    },
+  )
 }

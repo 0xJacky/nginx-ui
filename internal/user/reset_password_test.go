@@ -16,7 +16,7 @@ func TestUpdateInitUserPasswordReenablesDisabledUser(t *testing.T) {
 	dbName := fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())
 	database, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
 	require.NoError(t, err)
-	require.NoError(t, database.AutoMigrate(&model.User{}))
+	require.NoError(t, database.AutoMigrate(&model.User{}, &model.Passkey{}))
 	require.NoError(t, database.Create(&model.User{
 		Model:    model.Model{ID: 1},
 		Name:     "admin",

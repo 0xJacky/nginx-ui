@@ -237,27 +237,46 @@ func (p *provider) DeleteRecord(ctx context.Context, domain string, recordID str
 }
 
 func (p *provider) zoneID(ctx context.Context, domain string) (string, error) {
-	normalized := strings.TrimSuffix(strings.ToLower(strings.TrimSpace(domain)), ".")
+	normalized := dns.ToASCIIName(domain)
+	if normalized == "" {
+		return "", fmt.Errorf("cloudflare: resolve zone id: empty domain")
+	}
 	if zoneID, ok := p.zoneCache.Load(normalized); ok {
 		return zoneID.(string), nil
 	}
 
-	params := cfzones.ZoneListParams{}
-	setField(&params.Name.Value, &params.Name.Present, normalized)
-	pager := p.zones.ListAutoPaging(ctx, params)
-	for pager.Next() {
-		zone := pager.Current()
-		if strings.EqualFold(strings.TrimSuffix(zone.Name, "."), normalized) {
-			p.zoneCache.Store(normalized, zone.ID)
-			return zone.ID, nil
+	// Cloudflare reports an internationalized zone under its Unicode name, so the
+	// filter is tried in both spellings and every candidate is compared in ASCII
+	// space rather than by raw string equality.
+	for _, candidate := range zoneNameCandidates(normalized) {
+		params := cfzones.ZoneListParams{}
+		setField(&params.Name.Value, &params.Name.Present, candidate)
+		pager := p.zones.ListAutoPaging(ctx, params)
+		for pager.Next() {
+			zone := pager.Current()
+			if dns.ToASCIIName(zone.Name) == normalized {
+				p.zoneCache.Store(normalized, zone.ID)
+				return zone.ID, nil
+			}
+		}
+
+		if err := pager.Err(); err != nil {
+			return "", fmt.Errorf("cloudflare: resolve zone id: %w", err)
 		}
 	}
 
-	if err := pager.Err(); err != nil {
-		return "", fmt.Errorf("cloudflare: resolve zone id: %w", err)
-	}
-
 	return "", fmt.Errorf("cloudflare: resolve zone id: not found")
+}
+
+// zoneNameCandidates lists the spellings to try against the Cloudflare zone
+// filter. An ASCII-only zone resolves in a single request; an internationalized
+// one falls back to the Unicode spelling Cloudflare stores it under.
+func zoneNameCandidates(asciiName string) []string {
+	candidates := []string{asciiName}
+	if unicodeName := dns.ToUnicodeName(asciiName); unicodeName != "" && unicodeName != asciiName {
+		candidates = append(candidates, unicodeName)
+	}
+	return candidates
 }
 
 func firstNonEmpty(values ...string) string {
@@ -270,30 +289,31 @@ func firstNonEmpty(values ...string) string {
 }
 
 func buildFQDN(domain, name string) string {
-	name = strings.TrimSpace(name)
-	domain = strings.TrimSuffix(strings.TrimSpace(domain), ".")
-	if name == "" || name == "@" {
-		return domain
+	// Both sides are reduced to punycode so a record under an internationalized
+	// zone is addressed by the same spelling Cloudflare stores it under.
+	base := dns.ToASCIIName(domain)
+	label := dns.ToASCIIName(name)
+	if label == "" || label == "@" {
+		return base
 	}
-	if strings.HasSuffix(name, "."+domain) {
-		return name
+	if label == base || strings.HasSuffix(label, "."+base) {
+		return label
 	}
-	if name == domain {
-		return domain
-	}
-	return name + "." + domain
+	return label + "." + base
 }
 
 func toRelativeName(fqdn, domain string) string {
-	fqdn = strings.TrimSuffix(strings.TrimSpace(fqdn), ".")
-	domain = strings.TrimSuffix(strings.TrimSpace(domain), ".")
-	if fqdn == domain {
+	// Cloudflare may answer with the Unicode spelling of an internationalized
+	// name, which only strips back to a relative label in ASCII space.
+	name := dns.ToASCIIName(fqdn)
+	base := dns.ToASCIIName(domain)
+	if name == base {
 		return "@"
 	}
-	if strings.HasSuffix(fqdn, "."+domain) {
-		return strings.TrimSuffix(fqdn, "."+domain)
+	if base != "" && strings.HasSuffix(name, "."+base) {
+		return strings.TrimSuffix(name, "."+base)
 	}
-	return fqdn
+	return name
 }
 
 func toOptionalPriority(value float64) *int {

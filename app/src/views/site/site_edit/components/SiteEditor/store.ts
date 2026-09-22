@@ -64,21 +64,53 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     return ngxConfig.value.servers && ngxConfig.value.servers.length > 0
   })
 
+  // This store is a singleton, so opening another site reuses the state left
+  // behind by the previous one. Every init() run takes a ticket and only the
+  // newest one may write, otherwise a slow response for the site the operator
+  // just left would land on top of the one now on screen.
+  let loadSeq = 0
+
+  function reset() {
+    advanceMode.value = false
+    parseErrorStatus.value = false
+    parseErrorMessage.value = ''
+    data.value = {} as Site
+    autoCert.value = false
+    certInfoMap.value = {}
+    filename.value = ''
+    filepath.value = ''
+    issuingCert.value = false
+    dnsLinked.value = false
+    linkedDNSName.value = ''
+    ngxConfigStore.reset()
+  }
+
   async function init(_name: string) {
+    const seq = ++loadSeq
     loading.value = true
+    reset()
     await nextTick()
+    if (seq !== loadSeq)
+      return
+
     name.value = _name
 
     if (name.value) {
       try {
         const r = await site.getItem(encodeURIComponent(name.value))
-        handleResponse(r)
+        if (seq !== loadSeq)
+          return
+        await handleResponse(r)
       }
       catch (error) {
-        handleParseError(error as CosyError)
+        if (seq !== loadSeq)
+          return
+        await handleParseError(error as CosyError)
       }
     }
-    loading.value = false
+
+    if (seq === loadSeq)
+      loading.value = false
   }
 
   function getTLSServerIssues(config: NgxConfig = ngxConfig.value): TLSServerIssue[] {
@@ -184,8 +216,11 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     console.error(e)
     parseErrorStatus.value = true
     parseErrorMessage.value = await translateError(e)
-    config.getItem(`sites-available/${encodeURIComponent(name.value)}`).then(r => {
-      configText.value = r.content
+    const target = name.value
+    config.getItem(`sites-available/${encodeURIComponent(target)}`).then(r => {
+      // Another site may have taken over the store while this was in flight.
+      if (name.value === target)
+        configText.value = r.content
     })
   }
 
@@ -202,9 +237,6 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     data.value = r
     autoCert.value = r.auto_cert
     certInfoMap.value = r.cert_info || {}
-    Object.assign(ngxConfig, r.tokenized)
-
-    const ngxConfigStore = useNgxConfigStore()
 
     if (r.tokenized)
       ngxConfigStore.setNgxConfig(r.tokenized)
@@ -220,13 +252,8 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         await buildConfig()
       }
       else {
-        let r = await site.getItem(encodeURIComponent(name.value))
+        const r = await site.getItem(encodeURIComponent(name.value))
         await handleResponse(r)
-        r = await ngx.tokenize_config(configText.value)
-        Object.assign(ngxConfig, {
-          ...r,
-          name: name.value,
-        })
       }
     }
     // eslint-disable-next-line ts/no-explicit-any
@@ -313,6 +340,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     dnsLinked,
     linkedDNSName,
     init,
+    reset,
     save,
     handleModeChange,
   }

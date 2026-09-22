@@ -1,7 +1,11 @@
 package middleware
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -9,6 +13,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -18,6 +23,17 @@ import (
 )
 
 const proxyUpstreamStatusHeader = "X-Nginx-UI-Upstream-Status"
+
+const maxServiceTokenRedactionBodySize = 16 << 20
+
+var serviceTokenRedactedResponseFields = map[string][]string{
+	"/api/acme_users":          {"eab_key_id", "eab_hmac_key"},
+	"/api/acme_users/:id":      {"eab_key_id", "eab_hmac_key"},
+	"/api/auto_backup":         {"s3_access_key_id", "s3_secret_access_key"},
+	"/api/auto_backup/:id":     {"s3_access_key_id", "s3_secret_access_key"},
+	"/api/dns_credentials":     {"config", "configuration", "links"},
+	"/api/dns_credentials/:id": {"config", "configuration", "links"},
+}
 
 type proxyLogFunc func(message string, keysAndValues ...any)
 
@@ -69,10 +85,10 @@ func Proxy() gin.HandlerFunc {
 
 		proxy.Transport = nodeauth.NewTransport(node, customTransport)
 
-		configureProxyDirector(proxy)
-
 		route := c.FullPath()
-		configureProxyResponse(proxy, id, route, logger.GetLogger().Warnw)
+		isServiceToken := internalmcp.IsServiceTokenRequest(c)
+		configureProxyDirector(proxy, isServiceToken && serviceTokenRedactedResponseFields[route] != nil)
+		configureProxyResponse(proxy, id, route, isServiceToken, logger.GetLogger().Warnw)
 
 		proxy.ErrorHandler = func(rw http.ResponseWriter, req *http.Request, err error) {
 			logger.Error(err)
@@ -100,13 +116,82 @@ func Proxy() gin.HandlerFunc {
 	}
 }
 
-func configureProxyResponse(proxy *httputil.ReverseProxy, nodeID uint64, route string, warn proxyLogFunc) {
+func configureProxyResponse(
+	proxy *httputil.ReverseProxy,
+	nodeID uint64,
+	route string,
+	isServiceToken bool,
+	warn proxyLogFunc,
+) {
 	proxy.ModifyResponse = func(resp *http.Response) error {
 		upstreamStatus := normalizeProxyResponse(resp)
+		if isServiceToken && upstreamStatus >= http.StatusOK && upstreamStatus < http.StatusMultipleChoices {
+			if err := redactServiceTokenProxyResponse(resp, route); err != nil {
+				return err
+			}
+		}
 		if shouldLogProxyResponse(upstreamStatus) {
 			logProxyResponse(warn, nodeID, route, resp, upstreamStatus)
 		}
 		return nil
+	}
+}
+
+func redactServiceTokenProxyResponse(response *http.Response, route string) error {
+	fields := serviceTokenRedactedResponseFields[route]
+	if len(fields) == 0 {
+		return nil
+	}
+	if response.Body == nil {
+		return fmt.Errorf("redact service token response for %s: response body is missing", route)
+	}
+
+	body, err := io.ReadAll(io.LimitReader(response.Body, maxServiceTokenRedactionBodySize+1))
+	closeErr := response.Body.Close()
+	if err != nil {
+		return fmt.Errorf("redact service token response for %s: %w", route, err)
+	}
+	if closeErr != nil {
+		return fmt.Errorf("redact service token response for %s: %w", route, closeErr)
+	}
+	if len(body) > maxServiceTokenRedactionBodySize {
+		return fmt.Errorf("redact service token response for %s: response body is too large", route)
+	}
+
+	var payload map[string]any
+	if err := json.Unmarshal(body, &payload); err != nil {
+		return fmt.Errorf("redact service token response for %s: %w", route, err)
+	}
+	if strings.HasSuffix(route, "/:id") {
+		redactResponseFields(payload, fields)
+	} else {
+		items, ok := payload["data"].([]any)
+		if !ok {
+			return fmt.Errorf("redact service token response for %s: list data is invalid", route)
+		}
+		for _, value := range items {
+			item, ok := value.(map[string]any)
+			if !ok {
+				return fmt.Errorf("redact service token response for %s: list item is invalid", route)
+			}
+			redactResponseFields(item, fields)
+		}
+	}
+
+	redactedBody, err := json.Marshal(payload)
+	if err != nil {
+		return fmt.Errorf("redact service token response for %s: %w", route, err)
+	}
+	response.Body = io.NopCloser(bytes.NewReader(redactedBody))
+	response.ContentLength = int64(len(redactedBody))
+	response.Header.Set("Content-Length", strconv.FormatInt(response.ContentLength, 10))
+	response.Header.Del("ETag")
+	return nil
+}
+
+func redactResponseFields(payload map[string]any, fields []string) {
+	for _, field := range fields {
+		delete(payload, field)
 	}
 }
 
@@ -205,7 +290,7 @@ func boundedLogValue(value string) string {
 	return value
 }
 
-func configureProxyDirector(proxy *httputil.ReverseProxy) {
+func configureProxyDirector(proxy *httputil.ReverseProxy, requireIdentityEncoding bool) {
 	defaultDirector := proxy.Director
 	proxy.Director = func(req *http.Request) {
 		defaultDirector(req)
@@ -215,5 +300,8 @@ func configureProxyDirector(proxy *httputil.ReverseProxy) {
 		query.Del("x_node_id")
 		req.URL.RawQuery = query.Encode()
 		req.Header.Del("X-Node-ID")
+		if requireIdentityEncoding {
+			req.Header.Set("Accept-Encoding", "identity")
+		}
 	}
 }

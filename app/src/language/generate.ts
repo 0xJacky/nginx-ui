@@ -2,6 +2,7 @@
 
 export const msg = [
   $gettext('Bundled nginx-ui.conf has WebSocket reverse-proxy fix'),
+  $gettext('Certificate deleted, but revocation failed: %{error}'),
   $gettext('Certificate not found: %{error}'),
   $gettext('Certificate revoked successfully'),
   $gettext('Check if /var/run/docker.sock exists. If you are using Nginx UI Official Docker Image, please make sure the docker socket is mounted like this: `-v /var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/run/docker.sock to communicate with the host Docker Engine via Docker Client API. This feature is used to control Nginx in another container and perform container replacement rather than binary replacement during OTA upgrades of Nginx UI to ensure container dependencies are also upgraded. If you don\'t need this feature, please add the environment variable NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container.'),
@@ -40,8 +41,10 @@ export const msg = [
   $gettext('When the container is behind an outer reverse proxy that terminates TLS (e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust the inbound X-Forwarded-Proto/Host headers; otherwise WebSocket origin checks fail. Older deployments that persisted /etc/nginx may still have the unfixed version.'),
   $gettext('[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}'),
   $gettext('[Nginx UI] Backing up current certificate for later revocation'),
+  $gettext('[Nginx UI] Certificate has already expired, no revocation needed'),
   $gettext('[Nginx UI] Certificate renewed successfully'),
   $gettext('[Nginx UI] Certificate successfully revoked'),
+  $gettext('[Nginx UI] Certificate was already revoked by the CA'),
   $gettext('[Nginx UI] Certificate was used for server, reloading server TLS certificate'),
   $gettext('[Nginx UI] Creating client facilitates communication with the CA server'),
   $gettext('[Nginx UI] Environment variables cleaned'),

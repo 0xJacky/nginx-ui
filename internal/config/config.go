@@ -19,6 +19,7 @@ const (
 type ProxyTarget = upstream.ProxyTarget
 
 type Config struct {
+	Index         uint64           `json:"index"`
 	Name          string           `json:"name"`
 	Description   string           `json:"description,omitempty"`
 	Content       string           `json:"content"`

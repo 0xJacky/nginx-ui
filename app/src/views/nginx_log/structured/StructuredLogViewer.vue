@@ -708,8 +708,13 @@ watch(timeRange, () => {
       <div v-if="shouldShowControls" class="mb-4">
         <!-- Time Range Picker -->
         <div class="mb-4">
-          <div class="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-            {{ $gettext('Time Range') }}
+          <div class="mb-2 flex items-center justify-between gap-4">
+            <div class="text-sm font-medium text-gray-700 dark:text-gray-300">
+              {{ $gettext('Time Range') }}
+            </div>
+            <div class="flex flex-wrap items-center justify-end gap-3">
+              <slot name="time-range-right" />
+            </div>
           </div>
           <ASpace wrap>
             <ADropdown placement="bottomLeft">

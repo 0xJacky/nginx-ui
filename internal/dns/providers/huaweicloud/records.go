@@ -173,7 +173,7 @@ func isQuotedTXTValue(value string) bool {
 
 func recordFQDN(domain, name string) string {
 	zone := normalizeZoneName(domain)
-	relative := strings.Trim(strings.ToLower(strings.TrimSpace(name)), ".")
+	relative := dns.ToASCIIName(name)
 	if relative == "" || relative == "@" || relative == zone {
 		return zone + "."
 	}
@@ -195,8 +195,10 @@ func relativeRecordName(name, domain string) string {
 	return recordName
 }
 
+// normalizeZoneName reduces a zone or record name to its canonical ASCII form so
+// the Unicode and punycode spellings of an internationalized name compare equal.
 func normalizeZoneName(value string) string {
-	return strings.Trim(strings.ToLower(strings.TrimSpace(value)), ".")
+	return dns.ToASCIIName(value)
 }
 
 func recordLine(line *string, fallback string) string {

@@ -65,8 +65,40 @@ func getLogPath(control *controlStruct) (logPath string, err error) {
 	return
 }
 
+// reportLogError hands err, or nil for a quiet end, to the session without
+// blocking. The channel has room for one report from each session goroutine,
+// so a full channel only means the session is already ending.
+func reportLogError(errChan chan<- error, err error) {
+	select {
+	case errChan <- err:
+	default:
+	}
+}
+
+// reportLogWriteError ends the session after a failed WebSocket write, logging
+// only failures other than the peer going away.
+func reportLogWriteError(errChan chan<- error, err error, message string) {
+	if helper.IsUnexpectedWebsocketError(err) {
+		reportLogError(errChan, errors.Wrap(err, message))
+		return
+	}
+	reportLogError(errChan, nil)
+}
+
+// waitForLogControl waits for the client to choose a log. It reports false
+// when the session ends first.
+func waitForLogControl(done <-chan struct{}, controlChan <-chan controlStruct) (controlStruct, bool) {
+	select {
+	case control := <-controlChan:
+		return control, true
+	case <-done:
+		return controlStruct{}, false
+	}
+}
+
 // tailNginxLog tails the specified log file and sends each line to the websocket
-func tailNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan controlStruct, errChan chan error) {
+// until done is closed.
+func tailNginxLog(done <-chan struct{}, writer *helper.SafeWebSocketWriter, controlChan <-chan controlStruct, errChan chan<- error) {
 	defer func() {
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
@@ -78,24 +110,27 @@ func tailNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan controlSt
 
 	usesSFTP, err := nginx.UsesSFTPTarget()
 	if err != nil {
-		errChan <- err
+		reportLogError(errChan, err)
 		return
 	}
 	if usesSFTP {
-		tailSFTPNginxLog(writer, controlChan, errChan)
+		tailSFTPNginxLog(done, writer, controlChan, errChan)
 		return
 	}
-	tailLocalNginxLog(writer, controlChan, errChan)
+	tailLocalNginxLog(done, writer, controlChan, errChan)
 }
 
-func tailLocalNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan controlStruct, errChan chan error) {
-	control := <-controlChan
+func tailLocalNginxLog(done <-chan struct{}, writer *helper.SafeWebSocketWriter, controlChan <-chan controlStruct, errChan chan<- error) {
+	control, ok := waitForLogControl(done, controlChan)
+	if !ok {
+		return
+	}
 
 	for {
 		logPath, err := getLogPath(&control)
 
 		if err != nil {
-			errChan <- err
+			reportLogError(errChan, err)
 			return
 		}
 
@@ -106,12 +141,16 @@ func tailLocalNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan cont
 
 		stat, err := nginx.Stat(logPath)
 		if os.IsNotExist(err) {
-			errChan <- cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotExists, logPath)
+			reportLogError(errChan, cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotExists, logPath))
+			return
+		}
+		if err != nil {
+			reportLogError(errChan, err)
 			return
 		}
 
 		if !stat.Mode().IsRegular() {
-			errChan <- cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotRegular, logPath)
+			reportLogError(errChan, cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotRegular, logPath))
 			return
 		}
 
@@ -119,64 +158,80 @@ func tailLocalNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan cont
 		t, err := tail.TailFile(logPath, tail.Config{Follow: true,
 			ReOpen: true, Location: &seek})
 		if err != nil {
-			errChan <- errors.Wrap(err, "error tailing log")
+			reportLogError(errChan, errors.Wrap(err, "error tailing log"))
 			return
 		}
 
-		for {
-			var next = false
-			select {
-			case line := <-t.Lines:
-				// Print the text of each received line
-				if line == nil {
-					continue
-				}
-
-				err = writer.WriteMessage(websocket.TextMessage, []byte(line.Text))
-				if err != nil {
-					if helper.IsUnexpectedWebsocketError(err) {
-						errChan <- errors.Wrap(err, "error tailNginxLog write message")
-					}
-					return
-				}
-			case control = <-controlChan:
-				next = true
-				break
-			}
-			if next {
-				break
-			}
+		control, ok = followLocalLog(done, t, writer, controlChan, errChan)
+		if !ok {
+			return
 		}
 	}
 }
 
-func tailSFTPNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan controlStruct, errChan chan error) {
-	control := <-controlChan
+// followLocalLog sends the lines t produces until the client selects another
+// log, which it returns with true. It returns false once the session is over.
+// The tail is stopped on every return, so its file watcher never outlives the
+// session or survives a switch to another log.
+func followLocalLog(done <-chan struct{}, t *tail.Tail, writer *helper.SafeWebSocketWriter, controlChan <-chan controlStruct, errChan chan<- error) (controlStruct, bool) {
+	defer func() {
+		_ = t.Stop()
+	}()
+
+	for {
+		select {
+		case line, ok := <-t.Lines:
+			if !ok {
+				// The tail gave up on its own, e.g. the file became unreadable.
+				reportLogError(errChan, errors.Wrap(t.Err(), "error tailing log"))
+				return controlStruct{}, false
+			}
+			if line == nil {
+				continue
+			}
+
+			if err := writer.WriteMessage(websocket.TextMessage, []byte(line.Text)); err != nil {
+				reportLogWriteError(errChan, err, "error tailNginxLog write message")
+				return controlStruct{}, false
+			}
+		case control := <-controlChan:
+			return control, true
+		case <-done:
+			return controlStruct{}, false
+		}
+	}
+}
+
+func tailSFTPNginxLog(done <-chan struct{}, writer *helper.SafeWebSocketWriter, controlChan <-chan controlStruct, errChan chan<- error) {
+	control, ok := waitForLogControl(done, controlChan)
+	if !ok {
+		return
+	}
 
 	for {
 		logPath, err := getLogPath(&control)
 		if err != nil {
-			errChan <- err
+			reportLogError(errChan, err)
 			return
 		}
 
 		stat, err := nginx.Stat(logPath)
 		if os.IsNotExist(err) {
-			errChan <- cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotExists, logPath)
+			reportLogError(errChan, cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotExists, logPath))
 			return
 		}
 		if err != nil {
-			errChan <- err
+			reportLogError(errChan, err)
 			return
 		}
 		if !stat.Mode().IsRegular() {
-			errChan <- cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotRegular, logPath)
+			reportLogError(errChan, cosy.WrapErrorWithParams(nginx_log.ErrLogFileNotRegular, logPath))
 			return
 		}
 
 		file, err := nginx.Open(logPath)
 		if err != nil {
-			errChan <- err
+			reportLogError(errChan, err)
 			return
 		}
 		offset := stat.Size()
@@ -188,12 +243,16 @@ func tailSFTPNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan contr
 			select {
 			case control = <-controlChan:
 				next = true
+			case <-done:
+				ticker.Stop()
+				_ = file.Close()
+				return
 			case <-ticker.C:
 				current, statErr := nginx.Stat(logPath)
 				if statErr != nil {
 					ticker.Stop()
 					_ = file.Close()
-					errChan <- statErr
+					reportLogError(errChan, statErr)
 					return
 				}
 				if current.Size() < offset {
@@ -201,7 +260,7 @@ func tailSFTPNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan contr
 					file, err = nginx.Open(logPath)
 					if err != nil {
 						ticker.Stop()
-						errChan <- err
+						reportLogError(errChan, err)
 						return
 					}
 					offset = 0
@@ -213,14 +272,14 @@ func tailSFTPNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan contr
 				if _, err = file.Seek(offset, io.SeekStart); err != nil {
 					ticker.Stop()
 					_ = file.Close()
-					errChan <- err
+					reportLogError(errChan, err)
 					return
 				}
 				chunk, readErr := io.ReadAll(io.LimitReader(file, current.Size()-offset))
 				if readErr != nil {
 					ticker.Stop()
 					_ = file.Close()
-					errChan <- readErr
+					reportLogError(errChan, readErr)
 					return
 				}
 				offset += int64(len(chunk))
@@ -231,9 +290,7 @@ func tailSFTPNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan contr
 					if err = writer.WriteMessage(websocket.TextMessage, line); err != nil {
 						ticker.Stop()
 						_ = file.Close()
-						if helper.IsUnexpectedWebsocketError(err) {
-							errChan <- errors.Wrap(err, "error tailSFTPNginxLog write message")
-						}
+						reportLogWriteError(errChan, err, "error tailSFTPNginxLog write message")
 						return
 					}
 				}
@@ -245,8 +302,9 @@ func tailSFTPNginxLog(writer *helper.SafeWebSocketWriter, controlChan chan contr
 	}
 }
 
-// handleLogControl processes websocket control messages
-func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errChan chan error) {
+// handleLogControl processes websocket control messages. It is the
+// connection's only reader, so it reads through the keepalive.
+func handleLogControl(done <-chan struct{}, keepalive *helper.WebSocketKeepalive, controlChan chan<- controlStruct, errChan chan<- error) {
 	defer func() {
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
@@ -257,24 +315,34 @@ func handleLogControl(ws *websocket.Conn, controlChan chan controlStruct, errCha
 	}()
 
 	for {
-		msgType, payload, err := ws.ReadMessage()
-		if err != nil && helper.IsUnexpectedWebsocketError(err) {
-			errChan <- errors.Wrap(err, "error handleLogControl read message")
+		msgType, payload, err := keepalive.ReadMessage()
+		if err != nil {
+			if helper.IsUnexpectedWebsocketError(err) {
+				reportLogError(errChan, errors.Wrap(err, "error handleLogControl read message"))
+				return
+			}
+			// The client closed the connection or stopped answering pings.
+			reportLogError(errChan, nil)
 			return
 		}
 
 		if msgType != websocket.TextMessage {
-			errChan <- nginx_log.ErrInvalidWebSocketMessageType
+			reportLogError(errChan, nginx_log.ErrInvalidWebSocketMessageType)
 			return
 		}
 
 		var msg controlStruct
 		err = json.Unmarshal(payload, &msg)
 		if err != nil {
-			errChan <- errors.Wrap(err, "error ReadWsAndWritePty json.Unmarshal")
+			reportLogError(errChan, errors.Wrap(err, "error ReadWsAndWritePty json.Unmarshal"))
 			return
 		}
-		controlChan <- msg
+
+		select {
+		case controlChan <- msg:
+		case <-done:
+			return
+		}
 	}
 }
 
@@ -292,17 +360,27 @@ func Log(c *gin.Context) {
 
 	defer ws.Close()
 
+	// Arm the keepalive before handleLogControl starts reading. A client that
+	// vanished without a close frame then ends the session, and the tail it
+	// drives, within the pong wait.
+	keepalive := helper.StartWebSocketKeepalive(ws)
+	defer keepalive.Stop()
+
 	wsWriter := helper.NewSafeWebSocketWriter(ws)
 
-	errChan := make(chan error, 1)
+	// Room for one report from each session goroutine, so neither blocks.
+	errChan := make(chan error, 2)
 	controlChan := make(chan controlStruct, 1)
 
-	go tailNginxLog(wsWriter, controlChan, errChan)
-	go handleLogControl(ws, controlChan, errChan)
+	// Closing done stops the tail and control goroutines with the session.
+	done := make(chan struct{})
+	defer close(done)
+
+	go tailNginxLog(done, wsWriter, controlChan, errChan)
+	go handleLogControl(done, keepalive, controlChan, errChan)
 
 	if err = <-errChan; err != nil {
 		logger.Error(err)
 		_ = wsWriter.WriteMessage(websocket.TextMessage, []byte(err.Error()))
-		return
 	}
 }

@@ -13,7 +13,18 @@ const route = useRoute()
 const data = ref<ReleaseInfo>({} as ReleaseInfo)
 const lastCheck = ref('')
 const loading = ref(false)
-const channel = ref('stable')
+const availableChannels = ['stable', 'prerelease', 'dev'] as const
+
+type UpgradeChannel = typeof availableChannels[number]
+
+function normalizeChannel(value: unknown): UpgradeChannel {
+  if (typeof value === 'string' && availableChannels.includes(value as UpgradeChannel))
+    return value as UpgradeChannel
+
+  return 'stable'
+}
+
+const channel = ref<UpgradeChannel>('stable')
 
 const channelOptions = computed<SelectProps['options']>(() => [
   {
@@ -58,12 +69,58 @@ function getLatestRelease() {
   })
 }
 
-getLatestRelease()
+const channelInitialized = ref(false)
 
-watch(channel, getLatestRelease)
+watch(channel, () => {
+  if (!channelInitialized.value)
+    return
+
+  getLatestRelease()
+})
+
+async function initUpgradeChannel() {
+  try {
+    const resp = await upgrade.get_channel()
+    channel.value = normalizeChannel(resp?.channel)
+  }
+  finally {
+    channelInitialized.value = true
+    getLatestRelease()
+  }
+}
+
+initUpgradeChannel()
 
 const isLatestVer = computed(() => {
   return data.value.name === `v${version.version}`
+})
+
+const runtimeShortSha = computed(() => {
+  return data.value?.cur_version?.short_hash?.slice(0, 7) || ''
+})
+
+const releaseShortSha = computed(() => {
+  if (!data.value?.name?.startsWith('sha-'))
+    return ''
+
+  return data.value.name.slice(4, 11)
+})
+
+const isCurrentDevBuild = computed(() => {
+  if (channel.value !== 'dev')
+    return false
+
+  if (!runtimeShortSha.value || !releaseShortSha.value)
+    return false
+
+  return runtimeShortSha.value.toLowerCase() === releaseShortSha.value.toLowerCase()
+})
+
+const isCurrentChannelLatest = computed(() => {
+  if (channel.value === 'dev')
+    return isCurrentDevBuild.value
+
+  return isLatestVer.value
 })
 
 const logContainer = useTemplateRef('logContainer')
@@ -87,6 +144,8 @@ const testCommitAndRestart = computed(() => {
 })
 
 async function performUpgrade() {
+  await upgrade.save_channel(channel.value).catch(() => null)
+
   progressStatus.value = 'active'
   modalClosable.value = false
   modalVisible.value = true
@@ -162,9 +221,9 @@ async function performUpgrade() {
 }
 
 const performUpgradeBtnText = computed(() => {
-  if (channel.value === 'dev')
+  if (channel.value === 'dev' && !isCurrentDevBuild.value)
     return $gettext('Install')
-  else if (isLatestVer.value)
+  else if (isCurrentChannelLatest.value)
     return $gettext('Reinstall')
   else
     return $gettext('Upgrade')
@@ -196,7 +255,7 @@ const performUpgradeBtnText = computed(() => {
       <p>{{ $gettext('You can check Nginx UI upgrade at this page.') }}</p>
       <h3>
         {{ $gettext('Current Version') }}: v{{ version.version }}
-        <span v-if="data?.cur_version?.short_hash" class="short-hash">({{ data?.cur_version?.short_hash }})</span>
+        <span v-if="runtimeShortSha" class="short-hash">({{ runtimeShortSha }})</span>
       </h3>
       <template v-if="getReleaseError">
         <AAlert
@@ -228,7 +287,7 @@ const performUpgradeBtnText = computed(() => {
         </AFormItem>
         <template v-if="!loading">
           <AAlert
-            v-if="isLatestVer && channel !== 'dev'"
+            v-if="isCurrentChannelLatest"
             type="success"
             :title="$gettext('You are using the latest version')"
             banner

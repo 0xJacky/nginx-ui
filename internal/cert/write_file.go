@@ -50,6 +50,10 @@ func (c *Content) WriteFile() (err error) {
 	if err = ensureWritableFileTarget(c.SSLCertificateKeyPath); err != nil {
 		return
 	}
+	privateKeyOptions, err := privateKeyWriteOptions(c.SSLCertificateKeyPath)
+	if err != nil {
+		return err
+	}
 
 	tmpFiles := make(map[string]string, 2)
 	defer func() {
@@ -65,7 +69,8 @@ func (c *Content) WriteFile() (err error) {
 	}
 
 	if c.SSLCertificateKey != "" {
-		if tmpFiles[c.SSLCertificateKeyPath], err = writeTempFileNextTo(c.SSLCertificateKeyPath, []byte(c.SSLCertificateKey), 0600); err != nil {
+		if tmpFiles[c.SSLCertificateKeyPath], err = writeTempFileNextToWithOptions(c.SSLCertificateKeyPath,
+			[]byte(c.SSLCertificateKey), privateKeyOptions); err != nil {
 			return
 		}
 	}
@@ -85,9 +90,9 @@ func (c *Content) WriteFile() (err error) {
 // existing file, so staging into a fresh temp file next to the target is what
 // repairs keys that earlier versions created with looser permissions. The
 // content is never visible under a looser mode because the temp file is
-// created exclusively, chmod'd to perm before any byte is written, and only
-// then renamed over the target. Every step goes through the nginx target
-// filesystem so the files land where nginx will load them.
+// created exclusively, forced to 0600 before any byte is written, and only
+// given its final mode before the rename. Every step goes through the nginx
+// target filesystem so the files land where nginx will load them.
 func writeFileWithMode(path string, content []byte, perm os.FileMode) error {
 	if err := ensureWritableFileTarget(path); err != nil {
 		return err
@@ -103,6 +108,57 @@ func writeFileWithMode(path string, content []byte, perm os.FileMode) error {
 		return err
 	}
 
+	return nil
+}
+
+type fileWriteOptions struct {
+	perm      os.FileMode
+	ownership *nginx.FileOwnership
+}
+
+// privateKeyWriteOptions keeps an administrator's explicit group-readable
+// setup across certificate renewal. New keys and keys with any other mode are
+// written owner-only, so legacy world-readable permissions are still repaired.
+func privateKeyWriteOptions(path string) (fileWriteOptions, error) {
+	options := fileWriteOptions{perm: 0600}
+	info, err := nginx.Stat(path)
+	if os.IsNotExist(err) {
+		return options, nil
+	}
+	if err != nil {
+		return options, err
+	}
+	if info.IsDir() || info.Mode().Perm() != 0640 {
+		return options, nil
+	}
+
+	ownership, ok := nginx.Ownership(info)
+	if !ok {
+		return options, nil
+	}
+	options.perm = 0640
+	options.ownership = &ownership
+	return options, nil
+}
+
+func writePrivateKey(path string, content []byte) error {
+	options, err := privateKeyWriteOptions(path)
+	if err != nil {
+		return err
+	}
+
+	if err = ensureWritableFileTarget(path); err != nil {
+		return err
+	}
+
+	tmpPath, err := writeTempFileNextToWithOptions(path, content, options)
+	if err != nil {
+		return err
+	}
+	if err = replaceFile(tmpPath, path); err != nil {
+		_ = nginx.Remove(tmpPath)
+		return err
+	}
 	return nil
 }
 
@@ -123,11 +179,14 @@ const tempFileCreateAttempts = 10
 
 // writeTempFileNextTo stages content into a fresh, exclusively created temp
 // file in the directory of path on the nginx target filesystem and returns
-// the temp file path. The file is chmod'd to perm before any content is
-// written: the local backend already creates it with perm, but the SFTP
-// backend ignores the mode passed to OpenFile and would otherwise expose a
-// private key under the server's default umask until the chmod.
+// the temp file path. The file is forced to 0600 before any content is written
+// because the SFTP backend ignores the mode passed to OpenFile. Its final
+// ownership and mode are applied only after the complete content is closed.
 func writeTempFileNextTo(path string, content []byte, perm os.FileMode) (string, error) {
+	return writeTempFileNextToWithOptions(path, content, fileWriteOptions{perm: perm})
+}
+
+func writeTempFileNextToWithOptions(path string, content []byte, options fileWriteOptions) (string, error) {
 	dir := filepath.Dir(path)
 	prefix := "." + filepath.Base(path) + "."
 
@@ -139,7 +198,7 @@ func writeTempFileNextTo(path string, content []byte, perm os.FileMode) (string,
 		}
 		tmpPath := filepath.Join(dir, prefix+hex.EncodeToString(random[:])+".tmp")
 
-		tmpFile, err := nginx.OpenFile(tmpPath, os.O_WRONLY|os.O_CREATE|os.O_EXCL, perm)
+		tmpFile, err := nginx.OpenFile(tmpPath, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0600)
 		if err != nil {
 			if os.IsExist(err) {
 				lastErr = err
@@ -148,7 +207,7 @@ func writeTempFileNextTo(path string, content []byte, perm os.FileMode) (string,
 			return "", err
 		}
 
-		if err = nginx.Chmod(tmpPath, perm); err != nil {
+		if err = nginx.Chmod(tmpPath, 0600); err != nil {
 			_ = tmpFile.Close()
 			_ = nginx.Remove(tmpPath)
 			return "", err
@@ -159,6 +218,16 @@ func writeTempFileNextTo(path string, content []byte, perm os.FileMode) (string,
 			return "", err
 		}
 		if err = tmpFile.Close(); err != nil {
+			_ = nginx.Remove(tmpPath)
+			return "", err
+		}
+		if options.ownership != nil {
+			if err = nginx.Chown(tmpPath, options.ownership.UID, options.ownership.GID); err != nil {
+				_ = nginx.Remove(tmpPath)
+				return "", err
+			}
+		}
+		if err = nginx.Chmod(tmpPath, options.perm); err != nil {
 			_ = nginx.Remove(tmpPath)
 			return "", err
 		}

@@ -2,11 +2,13 @@
 import config from '@/api/config'
 import NodeSelector from '@/components/NodeSelector'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
+import { useConfigFavorites } from '@/composables/useConfigFavorites'
 import { urlJoin } from '@/lib/helper'
 import { isProtectedPath } from '@/views/config/configUtils'
 
 const emit = defineEmits(['deleted'])
 const { message } = useGlobalApp()
+const { forgetFavorites } = useConfigFavorites()
 const visible = ref(false)
 const confirmText = ref('')
 
@@ -71,13 +73,14 @@ function ok() {
     return
   }
 
-  const { basePath, name, sync_node_ids } = data.value
+  const { basePath, name, isDir, sync_node_ids } = data.value
   const otpModal = use2FAModal()
 
   otpModal.open().then(() => {
     config.delete(basePath, name, sync_node_ids).then(() => {
       visible.value = false
       message.success($gettext('Deleted successfully'))
+      forgetFavorites(basePath, name, isDir)
       emit('deleted')
     })
   })

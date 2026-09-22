@@ -105,6 +105,8 @@ func TestMCPServiceTokenScopesAndQueryRejection(t *testing.T) {
 	require.NoError(t, err)
 	_, writeToken, err := internalmcp.CreateServiceToken("writer", []string{model.MCPTokenScopeWrite}, nil, userID)
 	require.NoError(t, err)
+	_, apiReadToken, err := internalmcp.CreateServiceToken("api-reader", []string{model.APITokenScopeRead}, nil, userID)
+	require.NoError(t, err)
 
 	readRequest := httptest.NewRequest(http.MethodPost, "/mcp_message", bytes.NewBufferString(`{
 		"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"nginx_config_get"}
@@ -112,7 +114,8 @@ func TestMCPServiceTokenScopesAndQueryRejection(t *testing.T) {
 	readRequest.Header.Set("Authorization", "Bearer "+readToken)
 	readRecorder := httptest.NewRecorder()
 	router.ServeHTTP(readRecorder, readRequest)
-	assert.NotEqual(t, http.StatusForbidden, readRecorder.Code)
+	assert.Equal(t, http.StatusBadRequest, readRecorder.Code)
+	assert.Contains(t, readRecorder.Body.String(), "Missing sessionId")
 
 	writeWithReadToken := httptest.NewRequest(http.MethodPost, "/mcp_message", bytes.NewBufferString(`{
 		"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"nginx_config_modify"}
@@ -128,13 +131,79 @@ func TestMCPServiceTokenScopesAndQueryRejection(t *testing.T) {
 	writeRequest.Header.Set("Authorization", "Bearer "+writeToken)
 	writeRecorder := httptest.NewRecorder()
 	router.ServeHTTP(writeRecorder, writeRequest)
-	assert.NotEqual(t, http.StatusForbidden, writeRecorder.Code)
+	assert.Equal(t, http.StatusBadRequest, writeRecorder.Code)
+	assert.Contains(t, writeRecorder.Body.String(), "Missing sessionId")
+
+	apiReadRequest := httptest.NewRequest(http.MethodPost, "/mcp_message", bytes.NewBufferString(`{
+		"jsonrpc":"2.0","id":4,"method":"tools/call","params":{"name":"nginx_config_modify"}
+	}`))
+	apiReadRequest.Header.Set("Authorization", "Bearer "+apiReadToken)
+	apiReadRecorder := httptest.NewRecorder()
+	router.ServeHTTP(apiReadRecorder, apiReadRequest)
+	assert.Equal(t, http.StatusForbidden, apiReadRecorder.Code)
+	assert.JSONEq(t, `{"message":"MCP token scope is insufficient"}`, apiReadRecorder.Body.String())
 
 	queryCredentialRequest := httptest.NewRequest(http.MethodPost, "/mcp?node_secret=leaked", nil)
 	queryCredentialRequest.Header.Set("Authorization", userToken)
 	queryCredentialRecorder := httptest.NewRecorder()
 	router.ServeHTTP(queryCredentialRecorder, queryCredentialRequest)
 	assert.Equal(t, http.StatusForbidden, queryCredentialRecorder.Code)
+}
+
+func TestMCPMessageEndpointRejectsUnsupportedOrAmbiguousBodies(t *testing.T) {
+	router, userToken, userID := setupMCPSecurityRouter(t)
+	_, readToken, err := internalmcp.CreateServiceToken("reader", []string{model.MCPTokenScopeRead}, nil, userID)
+	require.NoError(t, err)
+
+	tests := []struct {
+		name  string
+		body  string
+		token string
+	}{
+		{
+			name:  "malformed JSON",
+			body:  `{"jsonrpc":"2.0","id":1,"method":"tools/call"`,
+			token: readToken,
+		},
+		{
+			name: "write call with trailing garbage and read token",
+			body: `{"jsonrpc":"2.0","id":2,"method":"tools/call",` +
+				`"params":{"name":"nginx_config_modify"}} trailing`,
+			token: readToken,
+		},
+		{
+			name: "write call followed by second JSON value and read token",
+			body: `{"jsonrpc":"2.0","id":3,"method":"tools/call",` +
+				`"params":{"name":"nginx_config_modify"}}` +
+				`{"jsonrpc":"2.0","id":4,"method":"tools/list"}`,
+			token: readToken,
+		},
+		{
+			name: "batch array",
+			body: `[{"jsonrpc":"2.0","id":5,"method":"tools/call",` +
+				`"params":{"name":"nginx_config_get"}}]`,
+			token: readToken,
+		},
+		{
+			name: "write call with trailing garbage and no secure session",
+			body: `{"jsonrpc":"2.0","id":6,"method":"tools/call",` +
+				`"params":{"name":"nginx_config_modify"}} trailing`,
+			token: userToken,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			request := httptest.NewRequest(http.MethodPost, "/mcp_message", bytes.NewBufferString(tt.body))
+			request.Header.Set("Authorization", "Bearer "+tt.token)
+			recorder := httptest.NewRecorder()
+
+			router.ServeHTTP(recorder, request)
+
+			assert.Equal(t, http.StatusBadRequest, recorder.Code)
+			assert.JSONEq(t, `{"message":"Invalid MCP request body"}`, recorder.Body.String())
+		})
+	}
 }
 
 // TestMCPLegacyHeaderRequiresTheConfiguredSecret covers the shared-secret path
@@ -233,40 +302,64 @@ func TestMCPReadOnlyToolDoesNotRequireSecureSessionForOTPUser(t *testing.T) {
 	assert.NotEqual(t, http.StatusUnauthorized, w.Code)
 }
 
-func TestMCPRequestNeedsSecureSession(t *testing.T) {
+func TestClassifyMCPRequest(t *testing.T) {
 	tests := []struct {
-		name string
-		body string
-		want bool
+		name      string
+		body      string
+		wantScope string
+		wantError bool
 	}{
 		{
-			name: "mutating config tool",
-			body: `{"method":"tools/call","params":{"name":"nginx_config_add"}}`,
-			want: true,
+			name:      "mutating config tool",
+			body:      `{"method":"tools/call","params":{"name":"nginx_config_add"}}`,
+			wantScope: model.MCPTokenScopeWrite,
 		},
 		{
-			name: "read-only config tool",
-			body: `{"method":"tools/call","params":{"name":"nginx_config_get"}}`,
-			want: false,
+			name:      "read-only config tool",
+			body:      `{"method":"tools/call","params":{"name":"nginx_config_get"}}`,
+			wantScope: model.MCPTokenScopeRead,
 		},
 		{
-			name: "batch containing mutating tool",
-			body: `[
-				{"method":"tools/call","params":{"name":"nginx_config_list"}},
-				{"method":"tools/call","params":{"name":"restart_nginx"}}
-			]`,
-			want: true,
+			name:      "unknown tool fails closed",
+			body:      `{"method":"tools/call","params":{"name":"future_tool"}}`,
+			wantScope: model.MCPTokenScopeWrite,
 		},
 		{
-			name: "non-tool request",
-			body: `{"method":"tools/list"}`,
-			want: false,
+			name:      "non-tool request",
+			body:      `{"method":"tools/list"}`,
+			wantScope: model.MCPTokenScopeRead,
+		},
+		{
+			name:      "trailing garbage",
+			body:      `{"method":"tools/call","params":{"name":"nginx_config_add"}} trailing`,
+			wantError: true,
+		},
+		{
+			name:      "concatenated JSON values",
+			body:      `{"method":"tools/call","params":{"name":"nginx_config_add"}}{"method":"tools/list"}`,
+			wantError: true,
+		},
+		{
+			name:      "batch array",
+			body:      `[{"method":"tools/call","params":{"name":"nginx_config_add"}}]`,
+			wantError: true,
+		},
+		{
+			name:      "malformed JSON",
+			body:      `{"method":"tools/call"`,
+			wantError: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.want, mcpRequestNeedsSecureSession([]byte(tt.body)))
+			scope, err := classifyMCPRequest([]byte(tt.body))
+			if tt.wantError {
+				assert.ErrorIs(t, err, errInvalidMCPRequestBody)
+				return
+			}
+			require.NoError(t, err)
+			assert.Equal(t, tt.wantScope, scope)
 		})
 	}
 }

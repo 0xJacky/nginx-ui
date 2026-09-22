@@ -103,6 +103,33 @@ Copy `enterprise.mmdb` to the configured location and restart Nginx UI after cha
 
 The GeoLite2 settings page displays the configured custom database filename and hides the re-download action while `IndexCustomMMDB` is nonempty. This indicator reflects the configured path; database selection still follows the precedence described above.
 
+### GeoMapPath
+
+- Type: `string`
+- Default: empty (effective runtime fallback is `maps`)
+- Environment Variable: `NGINX_UI_NGINX_LOG_GEO_MAP_PATH`
+
+Specifies the directory for China/province boundary GeoJSON files. File names should follow `100000_full.json` and `<province_adcode>_full.json`.
+
+- If an absolute path is configured, it is used directly.
+- If a relative path is configured, it is resolved relative to the directory containing `app.ini`.
+- If the value is empty, runtime boundary loading falls back to `maps`.
+- The dashboard can still show the China map entry in Chinese locales. Boundary files are loaded from local API and/or CDN depending on availability.
+
+Example:
+
+```ini
+[nginx_log]
+GeoMapPath = /etc/nginx-ui/maps
+```
+
+Windows example:
+
+```ini
+[nginx_log]
+GeoMapPath = D:/OpCon/GIT/nginx-ui/maps
+```
+
 ## System Requirements
 
 ### Minimum Requirements

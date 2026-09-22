@@ -7,6 +7,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { dnsApi } from '@/api/dns'
 import FooterToolBar from '@/components/FooterToolbar'
 import { useDnsStore } from '@/pinia/moudule/dns'
+import { toUnicodeDomain } from '@/utils/idnDomain'
 import DNSRecordFilter from '@/views/dns/components/DNSRecordFilter.vue'
 import DNSRecordForm from '@/views/dns/components/DNSRecordForm.vue'
 import DNSRecordTable from '@/views/dns/components/DNSRecordTable.vue'
@@ -78,7 +79,9 @@ const contentSuggestions = computed(() => {
 })
 
 const pageTitle = computed(() => {
-  return store.currentDomain?.domain ?? $gettext('DNS Records')
+  const domain = store.currentDomain?.domain
+  // Zones are stored as punycode; show the readable spelling in the heading.
+  return domain ? toUnicodeDomain(domain) : $gettext('DNS Records')
 })
 
 async function initData() {

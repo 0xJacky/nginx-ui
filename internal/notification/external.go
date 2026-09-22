@@ -2,6 +2,7 @@ package notification
 
 import (
 	"context"
+	"strings"
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/translation"
@@ -36,6 +37,45 @@ func RegisterExternalNotifier(name string, handler ExternalNotifierHandlerFunc) 
 
 type ExternalMessage struct {
 	Notification *model.Notification
+}
+
+type ExternalMessageTemplateData struct {
+	Title                 string
+	Content               string
+	NotificationType      string
+	NotificationTypeI18n  string
+	NotificationTypeLabel string
+	GoToURL               string
+}
+
+func notificationTypeCode(value model.NotificationType) string {
+	switch value {
+	case model.NotificationError:
+		return "error"
+	case model.NotificationWarning:
+		return "warning"
+	case model.NotificationInfo:
+		return "info"
+	case model.NotificationSuccess:
+		return "success"
+	default:
+		return "info"
+	}
+}
+
+func notificationTypeI18nKey(value model.NotificationType) string {
+	switch value {
+	case model.NotificationError:
+		return "Error"
+	case model.NotificationWarning:
+		return "Warning"
+	case model.NotificationInfo:
+		return "Info"
+	case model.NotificationSuccess:
+		return "Success"
+	default:
+		return "Info"
+	}
 }
 
 func (n *ExternalMessage) Send() {
@@ -101,6 +141,57 @@ func (n *ExternalMessage) SendWithConfigContext(
 	}
 
 	return notifier(ctx, externalNotify, n)
+}
+
+func (n *ExternalMessage) GetType() string {
+	if n.Notification == nil {
+		return notificationTypeCode(model.NotificationInfo)
+	}
+
+	return notificationTypeCode(n.Notification.Type)
+}
+
+func (n *ExternalMessage) GetTypeI18nKey() string {
+	if n.Notification == nil {
+		return notificationTypeI18nKey(model.NotificationInfo)
+	}
+
+	return notificationTypeI18nKey(n.Notification.Type)
+}
+
+func (n *ExternalMessage) GetTypeLabel(lang string) string {
+	key := n.GetTypeI18nKey()
+
+	dict, ok := translation.Dict[lang]
+	if !ok {
+		dict = translation.Dict["en"]
+	}
+
+	label, err := dict.Translate(key)
+	if err != nil {
+		return key
+	}
+
+	return label
+}
+
+func (n *ExternalMessage) GetGoToURL() string {
+	if n.Notification == nil {
+		return ""
+	}
+
+	return strings.TrimSpace(n.Notification.URL)
+}
+
+func (n *ExternalMessage) GetTemplateData(lang string) ExternalMessageTemplateData {
+	return ExternalMessageTemplateData{
+		Title:                 n.GetTitle(lang),
+		Content:               n.GetContent(lang),
+		NotificationType:      n.GetType(),
+		NotificationTypeI18n:  n.GetTypeI18nKey(),
+		NotificationTypeLabel: n.GetTypeLabel(lang),
+		GoToURL:               n.GetGoToURL(),
+	}
 }
 
 func (n *ExternalMessage) GetTitle(lang string) string {

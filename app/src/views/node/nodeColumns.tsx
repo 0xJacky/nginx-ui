@@ -145,18 +145,13 @@ const columns: StdTableColumn[] = [{
     const template: JSX.Element[] = []
     const { text } = args
     if (args.record.enabled) {
-      if (text === true || text > 0) {
-        template.push(<Badge status="success" />)
-        template.push(<span>{$gettext('Online')}</span>)
-      }
-      else {
-        template.push(<Badge status="error" />)
-        template.push(<span>{$gettext('Offline')}</span>)
-      }
+      if (text === true || text > 0)
+        template.push(<Badge status="success" text={$gettext('Online')} />)
+      else
+        template.push(<Badge status="error" text={$gettext('Offline')} />)
     }
     else {
-      template.push(<Badge status="default" />)
-      template.push(<span>{$gettext('Disabled')}</span>)
+      template.push(<Badge status="default" text={$gettext('Disabled')} />)
     }
 
     if (args.record.connection_error)
@@ -166,7 +161,9 @@ const columns: StdTableColumn[] = [{
   },
   sorter: true,
   pure: true,
-  width: 120,
+  // The label now carries Badge's own 8px gap, so the longest state
+  // ("Disabled" plus the connection-error icon) needs more than 120px.
+  width: 140,
 }, {
   title: () => $gettext('Enabled'),
   dataIndex: 'enabled',

@@ -142,3 +142,8 @@ func TestCtlPasswordLimitCountsUnicodeCharacters(t *testing.T) {
 	_, err = normalizeCtlPassword([]byte(strings.Repeat("密", 21)))
 	require.ErrorContains(t, err, "20 characters")
 }
+
+func TestUserCreationRejectsServiceTokenLocally(t *testing.T) {
+	require.ErrorContains(t, requireInteractiveAdministratorToken("nui_pat_public.secret"), "service tokens cannot manage users")
+	require.NoError(t, requireInteractiveAdministratorToken("interactive-user-jwt"))
+}

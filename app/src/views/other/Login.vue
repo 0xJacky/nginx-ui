@@ -138,12 +138,29 @@ async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
     window.history.replaceState(null, '', newUrl)
   }
 
-  const next = (route.query?.next || '').toString() || '/'
-  await router.push(next)
+  const next = (route.query?.next || '').toString()
+  await router.push(next && next !== '/' ? next : '/dashboard/server')
 }
 
-function onSubmit() {
-  formRef.value?.validate().then(async () => {
+async function onSubmit() {
+  if (loading.value)
+    return
+
+  if (!enabled2FA.value) {
+    if (!formRef.value)
+      return
+    try {
+      await formRef.value.validate()
+    }
+    catch {
+      return
+    }
+  }
+
+  if (loading.value)
+    return
+
+  try {
     loading.value = true
 
     await auth.login(modelRef.username, modelRef.password, passcode.value, recoveryCode.value).then(async r => {
@@ -182,16 +199,18 @@ function onSubmit() {
         refOTP.value?.clearInput()
       }
     })
+  }
+  finally {
     loading.value = false
-  })
+  }
 }
 
 const user = useUserStore()
 
 if (user.isLogin) {
-  const next = (route.query?.next || '').toString() || '/dashboard'
+  const next = (route.query?.next || '').toString()
 
-  router.push(next)
+  router.push(next && next !== '/' ? next : '/dashboard/server')
 }
 
 watch(() => gettext.current, () => {
@@ -232,8 +251,24 @@ const searchParams = new URLSearchParams(window.location.search)
 const query = route.query
 const code = query?.code?.toString() ?? searchParams.get('code')
 const state = query?.state?.toString() ?? searchParams.get('state')
+const oidcToken = query?.oidc_token?.toString() ?? searchParams.get('oidc_token')
+const ssoError = query?.sso_error?.toString() ?? searchParams.get('sso_error')
 
-if (code && state) {
+if (ssoError) {
+  message.error($gettext(ssoError))
+  if (window.location.search) {
+    const newUrl = window.location.pathname + window.location.hash
+    window.history.replaceState(null, '', newUrl)
+  }
+}
+
+if (oidcToken) {
+  loading.value = true
+  handleLoginSuccess({ token: oidcToken }).finally(() => {
+    loading.value = false
+  })
+}
+else if (code && state) {
   loading.value = true
   if (state.startsWith('nginx-ui-oidc_')) {
     auth.oidc_login(code, state).then(async () => {

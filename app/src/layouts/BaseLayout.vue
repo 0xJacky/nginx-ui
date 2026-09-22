@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import settings from '@/api/settings'
 import PageHeader from '@/components/PageHeader'
 import { useRouteHashScroll } from '@/composables/useRouteHashScroll'
-import { useSettingsStore, useUserStore } from '@/pinia'
+import { useSettingsStore, useUserStore, useWebSocketEventBusStore } from '@/pinia'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 import { useProxyAvailabilityStore } from '@/pinia/moudule/proxyAvailability'
 import FooterLayout from './FooterLayout.vue'
@@ -40,9 +40,12 @@ settings.get_server_name().then(r => {
   server_name.value = r.name
 })
 
-// Initialize stores monitoring after user is logged in and layout is mounted
+// Initialize stores monitoring after user is logged in and layout is mounted.
+// Upstream availability is not started here: the pages that render it subscribe
+// through useProxyAvailability(), so the socket only exists while it is needed.
 const proxyAvailabilityStore = useProxyAvailabilityStore()
 const nodeAvailabilityStore = useNodeAvailabilityStore()
+const websocketEventBus = useWebSocketEventBusStore()
 const userStore = useUserStore()
 
 onMounted(() => {
@@ -50,9 +53,6 @@ onMounted(() => {
   init()
 
   void userStore.refreshTwoFAStatus()
-
-  // Start monitoring for upstream availability
-  proxyAvailabilityStore.startMonitoring()
 
   // Start monitoring for node availability
   nodeAvailabilityStore.startMonitoring()
@@ -62,9 +62,12 @@ onUnmounted(() => {
   // Remove resize listener
   removeEventListener('resize', init)
 
-  // Stop monitoring when layout is unmounted
-  proxyAvailabilityStore.stopMonitoring()
+  // Leaving the authenticated layout (logout) closes every session-bound
+  // socket right away instead of leaving them streaming for a session that
+  // has ended.
+  proxyAvailabilityStore.shutdownMonitoring()
   nodeAvailabilityStore.stopMonitoring()
+  websocketEventBus.disconnect()
 })
 
 const breadList = ref([])
@@ -138,21 +141,33 @@ provide('breadList', breadList)
 </style>
 
 <style lang="less">
+// The collapse trigger is position: fixed at the bottom of the viewport, so the
+// sticky sidebar has to stop above it. Keep in sync with the Layout
+// `triggerHeight` theme token.
+@sider-trigger-height: 48px;
+
 .layout-sider .sidebar {
-  ul.ant-menu-inline.ant-menu-root {
-    height: calc(100vh - 160px);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - @sider-trigger-height);
+
+  > .logo, > .indicator {
+    flex: none;
+  }
+
+  // Let the menu take whatever is left below the logo and the node indicator
+  // rather than subtracting a fixed offset, which hides the last entries as
+  // soon as either of them changes height. ant-menu-root also covers the
+  // collapsed menu, which renders as ant-menu-vertical.
+  > ul.ant-menu-root {
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
 
     .ant-menu-item {
       width: unset;
     }
-  }
-
-  ul.ant-menu-inline-collapsed {
-    height: calc(100vh - 200px);
-    overflow-y: auto;
-    overflow-x: hidden;
   }
 }
 </style>
@@ -226,6 +241,7 @@ body {
     }
     position: relative;
   }
+
 }
 
 .ant-layout-footer {

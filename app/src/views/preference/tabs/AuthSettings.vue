@@ -89,17 +89,20 @@ function removeBannedIP(ip: string) {
     <h3>{{ $gettext('Throttle') }}</h3>
     <AForm
       layout="horizontal"
+      class="max-w-150"
     >
       <AFormItem :label="$gettext('Ban Threshold Minutes')">
         <AInputNumber
           v-model:value="data.auth.ban_threshold_minutes"
           min="1"
+          class="w-30"
         />
       </AFormItem>
       <AFormItem :label="$gettext('Max Attempts')">
         <AInputNumber
           v-model:value="data.auth.max_attempts"
           min="1"
+          class="w-30"
         />
       </AFormItem>
     </AForm>

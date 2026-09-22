@@ -1,109 +1,181 @@
 <div align="center">
-      <img src="resources/logo.png" alt="Logotipo de la interfaz de usuario de Nginx">
+      <img src="../logo.png" alt="Nginx UI Logo">
 </div>
 
-# Interfaz de usuario (UI) de Nginx
+# Nginx UI
+Otra interfaz web para Nginx, desarrollada por [0xJacky](https://jackyu.cn/), [Hintay](https://blog.kugeek.com/) y [Akino](https://github.com/akinoccc).
 
-Otra UI web de Nginx, desarrollada por [0xJacky](https://jackyu.cn/), [Hintay](https://blog.kugeek.com/) y [Akino](https://github.com/akinoccc).
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-0xJacky%2Fnginx--ui-blue.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAAAAXNSR0IArs4c6QAAA05JREFUaEPtmUtyEzEQhtWTQyQLHNak2AB7ZnyXZMEjXMGeK/AIi+QuHrMnbChYY7MIh8g01fJoopFb0uhhEqqcbWTp06/uv1saEDv4O3n3dV60RfP947Mm9/SQc0ICFQgzfc4CYZoTPAswgSJCCUJUnAAoRHOAUOcATwbmVLWdGoH//PB8mnKqScAhsD0kYP3j/Yt5LPQe2KvcXmGvRHcDnpxfL2zOYJ1mFwrryWTz0advv1Ut4CJgf5uhDuDj5eUcAUoahrdY/56ebRWeraTjMt/00Sh3UDtjgHtQNHwcRGOC98BJEAEymycmYcWwOprTgcB6VZ5JK5TAJ+fXGLBm3FDAmn6oPPjR4rKCAoJCal2eAiQp2x0vxTPB3ALO2CRkwmDy5WohzBDwSEFKRwPbknEggCPB/imwrycgxX2NzoMCHhPkDwqYMr9tRcP5qNrMZHkVnOjRMWwLCcr8ohBVb1OMjxLwGCvjTikrsBOiA6fNyCrm8V1rP93iVPpwaE+gO0SsWmPiXB+jikdf6SizrT5qKasx5j8ABbHpFTx+vFXp9EnYQmLx02h1QTTrl6eDqxLnGjporxl3NL3agEvXdT0WmEost648sQOYAeJS9Q7bfUVoMGnjo4AZdUMQku50McDcMWcBPvr0SzbTAFDfvJqwLzgxwATnCgnp4wDl6Aa+Ax283gghmj+vj7feE2KBBRMW3FzOpLOADl0Isb5587h/U4gGvkt5v60Z1VLG8BhYjbzRwyQZemwAd6cCR5/XFWLYZRIMpX39AR0tjaGGiGzLVyhse5C9RKC6ai42ppWPKiBagOvaYk8lO7DajerabOZP46Lby5wKjw1HCRx7p9sVMOWGzb/vA1hwiWc6jm3MvQDTogQkiqIhJV0nBQBTU+3okKCFDy9WwferkHjtxib7t3xIUQtHxnIwtx4mpg26/HfwVNVDb4oI9RHmx5WGelRVlrtiw43zboCLaxv46AZeB3IlTkwouebTr1y2NjSpHz68WNFjHvupy3q8TFn3Hos2IAk4Ju5dCo8B3wP7VPr/FGaKiG+T+v+TQqIrOqMTL1VdWV1DdmcbO8KXBz6esmYWYKPwDL5b5FA1a0hwapHiom0r/cKaoqr+27/XcrS5UwSMbQAAAABJRU5ErkJggg==)](https://deepwiki.com/0xJacky/nginx-ui)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/0xJacky/nginx-ui)
+
+[![Documentation](https://img.shields.io/badge/Documentation-nginxui.com-1f6feb?logo=readthedocs&logoColor=white)](https://nginxui.com)
+
+<p>
+  <a href="https://atomgit.com/uozi/nginx-ui" target="_blank" title="Este proyecto forma parte del programa AtomGit G-Star">
+    <img src="../atomgit-logo.svg" alt="AtomGit" height="20" align="middle">
+  </a>
+  &nbsp;Alojado con orgullo en <a href="https://atomgit.com/uozi/nginx-ui">AtomGit</a> — parte del programa <b>G-Star</b>.
+</p>
+
+[![AtomGit Stars](https://atomgit.com/uozi/nginx-ui/star/badge.svg)](https://atomgit.com/uozi/nginx-ui)
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
+[![GitHub license](https://img.shields.io/github/license/0xJacky/nginx-ui?label=License&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
+[![Release Version](https://img.shields.io/github/release/0xJacky/nginx-ui?include_prereleases&label=Release&logo=github)](https://github.com/0xJacky/nginx-ui/releases/latest "Click to view the repo on Github")
+[![GitHub Star](https://img.shields.io/github/stars/0xJacky/nginx-ui?label=Stars&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
+[![GitHub Fork](https://img.shields.io/github/forks/0xJacky/nginx-ui?label=Forks&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
+[![Repo Size](https://img.shields.io/github/repo-size/0xJacky/nginx-ui?label=Size&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
+[![GitHub Fork](https://img.shields.io/github/issues-closed-raw/0xJacky/nginx-ui?label=Closed%20Issue&logo=github)](https://github.com/0xJacky/nginx-ui/issues "Click to view the repo on Github")
+
+[![Docker Stars](https://img.shields.io/docker/stars/uozi/nginx-ui?label=Stars&logo=docker)](https://hub.docker.com/r/uozi/nginx-ui "Click to view the image on Docker Hub")
+[![Docker Pulls](https://img.shields.io/docker/pulls/uozi/nginx-ui?label=Pulls&logo=docker)](https://hub.docker.com/r/uozi/nginx-ui "Click to view the image on Docker Hub")
+[![Image Size](https://img.shields.io/docker/image-size/uozi/nginx-ui/latest?label=Image%20Size&logo=docker)](https://hub.docker.com/r/uozi/nginx-ui "Click to view the image on Docker Hub")
+
+[![Featured｜HelloGitHub](https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=86f3a8f779934748a34fe6f1b5cd442f&claim_uid=MOFqadzAShCBeQj&theme=small)](https://hellogithub.com/repository/86f3a8f779934748a34fe6f1b5cd442f)
 
 ## Documentación
 Para consultar la documentación, visite [nginxui.com](https://nginxui.com).
+
+## Patrocinio
+
+Si este proyecto le resulta útil, considere patrocinarnos para apoyar el desarrollo y el mantenimiento continuos.
+
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsors-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white)](https://github.com/sponsors/nginxui)
+[![Afdian](https://img.shields.io/badge/爱发电-Support-946ce6?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K)](https://afdian.com/a/nginxui)
+
+### Patrocinadores
+
+<a href="https://www.axisnow.io/" target="_blank">
+  <img src="../axisnow-logo.png" alt="AxisNow" width="220px">
+</a>
+
+Proteja y acelere sitios web y API con un rendimiento de acceso consistente en China continental y en todo el mundo, y extienda la aceleración y la seguridad a aplicaciones nativas y móviles mediante SDK de cliente — **CDN privada autoalojada｜CDN anti-DDoS por suscripción｜Una red CDN autogestionada y flexible.**
+
+### Grupo oficial de la comunidad
+
+Únase al grupo oficial de la comunidad de Nginx UI en WeChat para hablar con otros usuarios sobre uso, despliegue y resolución de problemas.
+
+Escanee el siguiente código QR para agregarnos en WeChat e incluya `Nginx UI Community Group` en su solicitud. Un administrador le invitará al grupo oficial de la comunidad.
+
+<p align="center">
+  <img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+</p>
+
+Su apoyo nos ayuda a:
+- 🚀 Acelerar el desarrollo de nuevas funciones
+- 🐛 Corregir errores y mejorar la estabilidad
+- 📚 Mejorar la documentación y los tutoriales
+- 🌐 Ofrecer un mejor soporte comunitario
+- 💻 Mantener la infraestructura y los servidores de demostración
+
+### Soporte de herramientas
+
+<a href="https://www.jetbrains.com/?from=nginx-ui" target="_blank">
+  <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" alt="JetBrains Logo" width="200px">
+</a>
+
+Gracias a [JetBrains](https://www.jetbrains.com/?from=nginx-ui) por apoyarnos con licencias open source gratuitas.
+
 
 ## Stargazers en el tiempo
 
 [![Stargazers over time](https://cloud.nginxui.com/stars/0xJacky/nginx-ui.svg)](https://cloud.nginxui.com/stars/0xJacky/nginx-ui.svg)
 
-
-[English](../../README.md) | Español | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md)
+[English](../../README.md) | Español | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | [Tiếng Việt](README-vi_VN.md) | [日本語](README-ja_JP.md)
 
 <details>
-  <summary>Tabla de Contenidos</summary>
+  <summary>Tabla de contenidos</summary>
   <ol>
     <li>
-      <a href="#about-the-project">Sobre el proyecto</a>
+      <a href="#sobre-el-proyecto">Sobre el proyecto</a>
       <ul>
-        <li><a href="#demo">Demostración</a></li>
-        <li><a href="#features">Características</a></li>
-        <li><a href="#internationalization">Internacionalización</a></li>
+        <li><a href="#demostración">Demostración</a></li>
+        <li><a href="#características">Características</a></li>
+        <li><a href="#internacionalización">Internacionalización</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Cómo empezar</a>
+      <a href="#cómo-empezar">Cómo empezar</a>
       <ul>
-        <li><a href="#before-use">Antes de usar</a></li>
-        <li><a href="#installation">Instalación</a></li>
+        <li><a href="#antes-de-usar">Antes de usar</a></li>
+        <li><a href="#instalación">Instalación</a></li>
         <li>
-          <a href="#usage">Uso</a>
+          <a href="#uso">Uso</a>
           <ul>
-            <li><a href="#from-executable">Desde el ejecutable</a></li>
-            <li><a href="#with-systemd">Con Systemd</a></li>
-            <li><a href="#with-docker">Con Docker</a></li>
+            <li><a href="#desde-el-ejecutable">Desde el ejecutable</a></li>
+            <li><a href="#con-systemd">Con Systemd</a></li>
+            <li><a href="#con-docker">Con Docker</a></li>
           </ul>
         </li>
       </ul>
     </li>
     <li>
-      <a href="#manual-build">Compilación manual</a>
+      <a href="#compilación-manual">Compilación manual</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisitos</a></li>
-        <li><a href="#build-app">Compilación del Frontend</a></li>
-        <li><a href="#build-backend">Compilación del Backend</a></li>
+        <li><a href="#prerrequisitos">Prerrequisitos</a></li>
+        <li><a href="#compilación-del-frontend">Compilación del Frontend</a></li>
+        <li><a href="#compilación-del-backend">Compilación del Backend</a></li>
       </ul>
     </li>
     <li>
-      <a href="#script-for-linux">Script para Linux</a>
+      <a href="#script-para-linux">Script para Linux</a>
       <ul>
-        <li><a href="#basic-usage">Uso Básico</a></li>
-        <li><a href="#more-usage">Uso Avanzado</a></li>
+        <li><a href="#uso-básico">Uso básico</a></li>
+        <li><a href="#uso-avanzado">Uso avanzado</a></li>
       </ul>
     </li>
-    <li><a href="#example-of-nginx-reverse-proxy-configuration">Ejemplo de configuración de proxy reverso de Nginx</a></li>
-    <li><a href="#contributing">Contribuir</a></li>
-    <li><a href="#license">Licencia</a></li>
+    <li><a href="#ejemplo-de-configuración-de-proxy-reverso-de-nginx">Ejemplo de configuración de proxy reverso de Nginx</a></li>
+    <li><a href="#contribuir">Contribuir</a></li>
+    <li><a href="#licencia">Licencia</a></li>
   </ol>
 </details>
 
-
 ## Sobre el proyecto
 
-![Dashboard](resources/screenshots/dashboard_es.png)
+![Dashboard](../screenshots/dashboard_es.png)
 
 ### Demostración
-URL：[https://demo.nginxui.com](https://demo.nginxui.com)
+URL: [https://demo.nginxui.com](https://demo.nginxui.com)
 - Nombre de usuario: admin
 - Contraseña: admin
 
 ### Características
 
-- Estadísticas en línea para los indicadores del servidor, como el uso de la CPU, el uso de la memoria, el promedio de carga y el uso del disco.
-- Asistente de ChatGPT en línea
-- Despliegue con un solo clic y renovación automática de certificados Let's Encrypt.
-- Edición de las configuraciones de sitios web con nuestro **NgxConfigEditor** de diseño propio, que es un editor de bloques fácil de usar para configuraciones de nginx o con el **Editor de código Ace** que admite resaltar la sintaxis de configuración de nginx.
-- Visualización en línea los registros de Nginx
-- Escrito en Go y Vue, distribuído en un único binario ejecutable.
-- Prueba automática del archivo de configuración y recarga de nginx después de guardar la configuración.
-- Terminal Web
+- Estadísticas en línea de indicadores del servidor como uso de CPU, memoria, promedio de carga y uso de disco
+- Copia de seguridad automática tras cambios de configuración, con comparación de versiones y restauración
+- Gestión de clústeres con operaciones de espejo hacia múltiples nodos, para administrar fácilmente entornos multi-servidor
+- Exportación cifrada de configuraciones de Nginx / Nginx UI para un despliegue y recuperación rápidos en nuevos entornos
+- Asistente **ChatGPT** en línea mejorado, compatible con múltiples modelos, incluida la visualización de la cadena de pensamiento de Deepseek-R1 para comprender y optimizar mejor las configuraciones
+- **MCP** (Model Context Protocol) ofrece interfaces especiales para que agentes de IA interactúen con Nginx UI, permitiendo la gestión automatizada de configuraciones y el control de servicios
+- Despliegue con un clic y renovación automática de certificados Let's Encrypt
+- Edición en línea de configuraciones de sitios con nuestro editor de bloques **NgxConfigEditor**, o con **Ace Code Editor**, que admite **completado de código por LLM** y resaltado de sintaxis de nginx
+- Visualización en línea de los registros de Nginx
+- Escrito en Go y Vue; la distribución es un único binario ejecutable
+- Prueba automática del archivo de configuración y recarga de nginx tras guardar
+- Terminal web
 - Modo oscuro
 - Diseño web adaptable
 
 ### Internacionalización
 
-- Inglés
-- Chino Simplificado
-- Chino Tradicional
+Ofrecemos soporte oficial para:
 
-Aceptamos traducciones a cualquier idioma.
+- Inglés
+- Chino simplificado
+- Chino tradicional
+
+Como hablantes no nativos de inglés, nos esforzamos por la precisión, pero siempre hay margen de mejora. Si detecta algún problema, ¡agradezcamos sus comentarios!
+
+Gracias a la comunidad, también hay más idiomas disponibles. Explore y contribuya a las traducciones en [Weblate](https://weblate.nginxui.com).
 
 
 ## Cómo empezar
 
 ### Antes de usar
 
-La UI de Nginx sigue la configuración estándar de archivos de un servidor web de Debian. Los archivos de configuración del sitio creados se colocarán en la carpeta `sites-available` que se encuentra dentro de la carpeta de configuración de Nginx (detectada automáticamente). Los archivos de configuración para un sitio habilitado crearán un soft link en la carpeta `sites-enabled`. Es posible que deba ajustar la forma en que se organizan los archivos de configuración.
+Nginx UI sigue el estándar de archivos de configuración de servidores web de Debian. Los archivos de configuración de sitios creados se colocan en la carpeta `sites-available` dentro del directorio de configuración de Nginx (detectado automáticamente). Los sitios habilitados crean un enlace simbólico en `sites-enabled`. Es posible que deba ajustar la organización de sus archivos de configuración.
 
-Para sistemas que no sean Debian (y Ubuntu), es posible que deba cambiar el contenido del archivo de configuración `nginx.conf` al estilo Debian como se muestra a continuación.
+En sistemas que no sean Debian (ni Ubuntu), es posible que deba cambiar el contenido de `nginx.conf` al estilo Debian, como se muestra a continuación.
 
 ```nginx
 http {
@@ -113,74 +185,79 @@ http {
 }
 ```
 
-Para más información: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/-/blob/debian/latest/debian/conf/nginx.conf#L60-L61)
+Más información: [debian/conf/nginx.conf](https://salsa.debian.org/nginx-team/nginx/-/blob/debian/latest/debian/conf/nginx.conf#L60-L61)
 
 ### Instalación
 
-La UI de Nginx está disponible en las siguientes plataformas:
+Nginx UI está disponible en las siguientes plataformas:
 
-- macOS 11 Big Sur y posterior (amd64 / arm64)
-- Windows 10 y posterior (x86 /amd64 / arm64)
-- Linux 2.6.23 y posterior (x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64)
-  - Incluyendo pero no limitado a Debian 7 / 8, Ubuntu 12.04 / 14.04 y posterior, CentOS 6 / 7, Arch Linux
+- macOS 11 Big Sur y posteriores (amd64 / arm64)
+- Windows 10 y posteriores (amd64 / arm64)
+- Linux 2.6.23 y posteriores (x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64)
+  - Incluyendo, entre otros, Debian 7 / 8, Ubuntu 12.04 / 14.04 y posteriores, CentOS 6 / 7, Arch Linux
 - FreeBSD
 - OpenBSD
 - Dragonfly BSD
 - Openwrt
 
-Puede visitar [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) para descargar la última distribución, o simplemente usar los [scripts de instalación para Linux](#script-for-linux).
+Puede visitar [la última versión](https://github.com/0xJacky/nginx-ui/releases/latest) para descargar la distribución más reciente, o usar el [script de instalación para Linux](#script-para-linux).
 
 ### Uso
 
-Al ejecutar por primera vez la UI de Nginx, visite en su navegador `http://<your_server_ip>:<listen_port>` para completar las configuraciones posteriores.
+En la primera ejecución de Nginx UI, visite `http://<your_server_ip>:<listen_port>` en su navegador para completar la configuración inicial.
 
 #### Desde el ejecutable
-**Ejecutar UI Nginx en la terminal**
+**Ejecutar Nginx UI en la terminal**
 
 ```shell
 nginx-ui -config app.ini
 ```
-Presione `Control+C` en la terminal para salir de la UI de Nginx.
+Pulse `Control+C` en la terminal para salir de Nginx UI.
 
-**Ejecutar UI Nginx en Segundo plano**
+**Ejecutar Nginx UI en segundo plano**
 
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
-Detenga la UI de Nginx con el siguiente comando.
+Detenga Nginx UI con el siguiente comando:
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
-#### Con Systemd
-Si está utilizando el [script de instalación para Linux](#script-for-linux), la UI de Nginx se instalará como el servicio `nginx-ui` en systemd. Utilice el comando `systemctl` para controlarlo.
 
-**Iniciar UI Nginx**
+#### Con Systemd
+Si utiliza el [script de instalación para Linux](#script-para-linux), Nginx UI se instalará como el servicio `nginx-ui` en systemd. Use el comando `systemctl` para controlarlo.
+
+**Iniciar Nginx UI**
 
 ```shell
 systemctl start nginx-ui
 ```
-**Detener UI Nginx**
+**Detener Nginx UI**
 
 ```shell
 systemctl stop nginx-ui
 ```
-**Reiniciar UI Nginx**
+**Reiniciar Nginx UI**
 
 ```shell
 systemctl restart nginx-ui
 ```
 
 #### Con Docker
-Nuestra imagen dpcker [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx-ui) se basa en la última imagen nginx y se puede usar para reemplazar Nginx en el host. Puede realizar el cambio fácilmente publicando los puertos 80 y 443 del contenedor en el host.
-
+Nuestra imagen de Docker [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx-ui) se basa en la última imagen de nginx y puede usarse para reemplazar Nginx en el host. Al publicar los puertos 80 y 443 del contenedor en el host, puede realizar el cambio fácilmente.
 
 ##### Nota
-1. Cuando utilice este contenedor por primera vez, asegúrese de que el volumen mapeado a /etc/nginx esté vacío.
-2. Si desea incluir archivos estáticos, puede mapear directorios al contenedor.
-3. If you are upgrading from an older image, see the [Docker WebSocket fix guide](https://nginxui.com/guide/docker-websocket-fix.html) for required `conf.d/nginx-ui.conf` updates.
+1. Al usar este contenedor por primera vez, asegúrese de que el volumen mapeado a `/etc/nginx` esté vacío.
+2. Si desea alojar archivos estáticos, puede mapear directorios al contenedor.
+3. Si actualiza desde una imagen antigua, consulte la [guía de corrección de WebSocket en Docker](https://nginxui.com/guide/docker-websocket-fix.html) para actualizar `conf.d/nginx-ui.conf`.
 
-**Ejemplo de desplegado Docker**
+<details>
+<summary><b>Desplegar con Docker</b></summary>
+
+1. [Instale Docker.](https://docs.docker.com/install/)
+
+2. Luego despliegue nginx-ui así:
 
 ```bash
 docker run -dit \
@@ -189,17 +266,57 @@ docker run -dit \
   -e TZ=Asia/Shanghai \
   -v /mnt/user/appdata/nginx:/etc/nginx \
   -v /mnt/user/appdata/nginx-ui:/etc/nginx-ui \
-  -v /var/www:/var/www \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -p 8080:80 -p 8443:443 \
   uozi/nginx-ui:latest
 ```
 
+3. Cuando el contenedor esté en ejecución, acceda al panel en `http://<your_server_ip>:8080/install`.
+   Si cambia el mapeo de puertos, acceda a Nginx UI a través del puerto del host mapeado al puerto `80` del contenedor.
+</details>
+
+<details>
+<summary><b>Desplegar con Docker Compose</b></summary>
+
+1. [Instale Docker Compose.](https://docs.docker.com/compose/install/)
+
+2. Cree un archivo `docker-compose.yml` como este:
+
+```yml
+services:
+    nginx-ui:
+        stdin_open: true
+        tty: true
+        container_name: nginx-ui
+        restart: always
+        environment:
+            - TZ=Asia/Shanghai
+        volumes:
+            - '/mnt/user/appdata/nginx:/etc/nginx'
+            - '/mnt/user/appdata/nginx-ui:/etc/nginx-ui'
+            - '/var/www:/var/www'
+            - '/var/run/docker.sock:/var/run/docker.sock'
+        ports:
+            - 8080:80
+            - 8443:443
+        image: 'uozi/nginx-ui:latest'
+```
+
+3. Luego cree el contenedor con:
+```bash
+docker compose up -d
+```
+
+4. Cuando el contenedor esté en ejecución, acceda al panel en `http://<your_server_ip>:8080/install`.
+   Si cambia el mapeo de puertos, acceda a Nginx UI a través del puerto del host mapeado al puerto `80` del contenedor.
+
+</details>
+
 ## Compilación manual
 
-En plataformas que no tienen una versión de compilación oficial, pueden compilarse manualmente.
+En plataformas sin una versión de compilación oficial, puede compilarse manualmente.
 
-### Prerequisitos
+### Prerrequisitos
 
 - Make
 
@@ -222,7 +339,7 @@ bun run build
 
 ### Compilación del Backend
 
-Primero compile la interfaz y luego ejecute el siguiente comando en el directorio raíz del proyecto.
+Primero compile el frontend y luego ejecute el siguiente comando en el directorio raíz del proyecto.
 
 ```shell
 go generate
@@ -233,16 +350,16 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 
 ### Uso básico
 
-**Instalar and Actualizar**
+**Instalar y actualizar**
 
 ```shell
 bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install
 ```
-El puerto de escucha predeterminado es `9000` y el puerto de Desafío HTTP predeterminado es `9180`.
-Si hay un conflicto de puertos, modifique manualmente `/usr/local/etc/nginx-ui/app.ini`,
-luego use `systemctl restart nginx-ui` para recargar el servicio de UI de Nginx.
+El puerto de escucha predeterminado es `9000` y el puerto de desafío HTTP predeterminado es `9180`.
+Si hay un conflicto de puertos, modifique manualmente `/usr/local/etc/nginx-ui/app.ini`
+y luego use `systemctl restart nginx-ui` para recargar el servicio de Nginx UI.
 
-**Eliminar UI Nginx UI, excepto los archivos de configuración y la base de datos**
+**Eliminar Nginx UI, excepto los archivos de configuración y la base de datos**
 
 ```shell
 bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove
@@ -295,26 +412,16 @@ server {
 
 ## Contribuir
 
-Las contribuciones son lo que hace que la comunidad de código abierto sea un lugar increíble para aprender, inspirar y crear. Cualquier contribución que hagas es **muy apreciada**.
+Las contribuciones hacen que la comunidad de código abierto sea un lugar increíble para aprender, inspirar y crear. Cualquier contribución que haga es **muy apreciada**.
 
-Si tiene una sugerencia que mejoraría este proyecto, bifurque el repositorio y cree un pull request. También puede simplemente abrir un issue con la etiqueta "enhancement". ¡No olvides darle una estrella al proyecto! ¡Gracias de nuevo!
+Si tiene una sugerencia para mejorar este proyecto, bifurque el repositorio y cree un pull request. También puede abrir un issue con la etiqueta «enhancement». ¡No olvide darle una estrella al proyecto! ¡Gracias de nuevo!
 
 1. Bifurcar el proyecto
-2. Crea un branch de mejora (`git checkout -b feature/AmazingFeature`)
-3. Commit de tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push al branch (`git push origin feature/AmazingFeature`)
+2. Crear su rama de función (`git checkout -b feature/AmazingFeature`)
+3. Confirmar los cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Enviar la rama (`git push origin feature/AmazingFeature`)
 5. Abrir un Pull Request
-
-## Comunidad
-
-Únete al grupo oficial de la comunidad de Nginx UI en WeChat para hablar con otros usuarios sobre uso, despliegue y resolución de problemas.
-
-Escanea el siguiente código QR para agregarnos en WeChat e incluye `Nginx UI Community Group` en tu solicitud. Un administrador te invitará al grupo oficial de la comunidad.
-
-<p align="center">
-  <img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
-</p>
 
 ## Licencia
 
-Este proyecto se proporciona bajo una licencia GNU Affero General Public License v3.0 que se puede encontrar en el archivo [LICENCIA](LICENSE). Al usar, distribuir o contribuir a este proyecto, acepta los términos y condiciones de esta licencia.
+Este proyecto se proporciona bajo la licencia GNU Affero General Public License v3.0, que puede encontrarse en el archivo [LICENSE](../../LICENSE). Al usar, distribuir o contribuir a este proyecto, acepta los términos y condiciones de esta licencia.

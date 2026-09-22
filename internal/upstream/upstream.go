@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"maps"
 	"net"
+	"strings"
 	"sync"
 	"time"
 )
@@ -213,8 +214,12 @@ func testUnixSocketLatency(wg *sync.WaitGroup, socket string, status *Status) {
 	defer func() {
 		wg.Done()
 	}()
+	// nginx spells a unix socket upstream as `unix:/run/php-fpm.sock`, and the
+	// parsed target carries that spelling through to here, so the scheme prefix
+	// has to be dropped before the rest is used as a filesystem path.
+	path := strings.TrimPrefix(socket, "unix:")
 	start := time.Now()
-	conn, err := net.DialTimeout("unix", socket, MaxTimeout)
+	conn, err := net.DialTimeout("unix", path, MaxTimeout)
 
 	if err != nil {
 		return

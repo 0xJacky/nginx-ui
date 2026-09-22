@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	cSettings "github.com/uozi-tech/cosy/settings"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -202,6 +203,60 @@ func TestIssueLoginTokenRequiresPasskeyProofForPasskeyOnlyUser(t *testing.T) {
 	assert.Zero(t, count, "password verification must not persist a token before passkey proof")
 
 	token, err = IssueLoginToken(testUser, LoginProofPasskey)
+	require.NoError(t, err)
+	assert.NotEmpty(t, token.Token)
+}
+
+func TestIssueLoginTokenFailsClosedWhenPasskeyLookupFails(t *testing.T) {
+	db, testUser, _ := setupTokenAuthTest(t)
+	DeleteUserTokens(testUser.ID)
+	require.NoError(t, db.Create(&model.Passkey{
+		UserID: testUser.ID,
+		Name:   "security-key",
+		RawID:  "credential-id",
+	}).Error)
+	require.NoError(t, db.Migrator().DropTable(&model.Passkey{}))
+
+	token, err := IssueLoginToken(testUser, LoginProofPassword)
+	require.Error(t, err)
+	assert.Nil(t, token)
+	assert.ErrorContains(t, err, "check whether user")
+
+	var count int64
+	require.NoError(t, db.Model(&model.AuthToken{}).Where("user_id = ?", testUser.ID).Count(&count).Error)
+	assert.Zero(t, count, "a failed passkey lookup must not persist a token")
+}
+
+func TestPasswordLoginFailsClosedWhenPasskeyLookupFails(t *testing.T) {
+	db, testUser, _ := setupTokenAuthTest(t)
+	DeleteUserTokens(testUser.ID)
+
+	password := "correct-password"
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+	require.NoError(t, err)
+	require.NoError(t, db.Model(testUser).Update("password", string(passwordHash)).Error)
+	require.NoError(t, db.Create(&model.Passkey{
+		UserID: testUser.ID,
+		Name:   "security-key",
+		RawID:  "credential-id",
+	}).Error)
+	require.NoError(t, db.Migrator().DropTable(&model.Passkey{}))
+
+	authenticatedUser, err := Login(testUser.Name, password)
+	require.Error(t, err)
+	assert.Nil(t, authenticatedUser)
+	assert.ErrorContains(t, err, "check whether user")
+
+	var count int64
+	require.NoError(t, db.Model(&model.AuthToken{}).Where("user_id = ?", testUser.ID).Count(&count).Error)
+	assert.Zero(t, count, "password login must not persist a token when passkey state is unknown")
+}
+
+func TestIssueLoginTokenAllowsPasswordForUserWithoutPasskey(t *testing.T) {
+	_, testUser, _ := setupTokenAuthTest(t)
+	DeleteUserTokens(testUser.ID)
+
+	token, err := IssueLoginToken(testUser, LoginProofPassword)
 	require.NoError(t, err)
 	assert.NotEmpty(t, token.Token)
 }

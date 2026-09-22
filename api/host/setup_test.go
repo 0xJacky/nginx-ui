@@ -20,6 +20,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	gossh "golang.org/x/crypto/ssh"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 func generatePublicHostKey(t *testing.T) gossh.PublicKey {
@@ -451,7 +453,22 @@ func setDemoMode(t *testing.T, enabled bool) {
 
 // newInteractiveUserRouter serves the setup routes as a logged-in user with no
 // second factor, which is the weakest session that reaches the group.
-func newInteractiveUserRouter() *gin.Engine {
+func newInteractiveUserRouter(t *testing.T) *gin.Engine {
+	t.Helper()
+
+	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = database.AutoMigrate(&model.User{}, &model.Passkey{}); err != nil {
+		t.Fatal(err)
+	}
+	previousDB := model.UseDB()
+	model.Use(database)
+	t.Cleanup(func() {
+		model.Use(previousDB)
+	})
+
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
 	router.Use(func(c *gin.Context) {
@@ -467,7 +484,7 @@ func newInteractiveUserRouter() *gin.Engine {
 // arbitrary addresses from the demo container.
 func TestSetupRoutesAreRejectedInDemoMode(t *testing.T) {
 	setDemoMode(t, true)
-	router := newInteractiveUserRouter()
+	router := newInteractiveUserRouter(t)
 
 	for _, tt := range []struct {
 		method string
@@ -501,7 +518,7 @@ func TestSetupRoutesAreRejectedInDemoMode(t *testing.T) {
 // RequireSecureSession, so the group needs its own check.
 func TestMutatingSetupRoutesRequireVerifiedTwoFactor(t *testing.T) {
 	setDemoMode(t, false)
-	router := newInteractiveUserRouter()
+	router := newInteractiveUserRouter(t)
 
 	for _, tt := range []struct {
 		method string

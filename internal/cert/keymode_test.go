@@ -102,3 +102,37 @@ func TestConfigPayloadWriteFileTightensExistingPrivateKeyMode(t *testing.T) {
 		t.Fatalf("private key = %q, want %q", key, "new key")
 	}
 }
+
+func TestConfigPayloadWriteFilePreservesGroupReadablePrivateKeyMode(t *testing.T) {
+	logger.Init("debug")
+
+	dir := filepath.Join(t.TempDir(), "example.com_2048")
+	if err := os.MkdirAll(dir, 0755); err != nil {
+		t.Fatalf("create certificate dir: %v", err)
+	}
+	keyPath := filepath.Join(dir, "private.key")
+	if err := os.WriteFile(keyPath, []byte("old key"), 0640); err != nil {
+		t.Fatalf("write old private key: %v", err)
+	}
+	certPath := filepath.Join(dir, "fullchain.cer")
+	if err := os.WriteFile(certPath, []byte("old cert"), 0644); err != nil {
+		t.Fatalf("write old certificate: %v", err)
+	}
+
+	payload := newTestPayload(dir, []byte("new cert"), []byte("new key"))
+	l := NewLogger()
+	defer l.Close()
+
+	if err := payload.WriteFile(l); err != nil {
+		t.Fatalf("WriteFile: %v", err)
+	}
+
+	assertFileMode(t, keyPath, 0640)
+	key, err := os.ReadFile(keyPath)
+	if err != nil {
+		t.Fatalf("read private key: %v", err)
+	}
+	if string(key) != "new key" {
+		t.Fatalf("private key = %q, want %q", key, "new key")
+	}
+}

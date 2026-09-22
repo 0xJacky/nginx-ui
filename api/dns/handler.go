@@ -2,12 +2,16 @@ package dns
 
 import (
 	"net/http"
+	"slices"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/samber/lo"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
+	cosyModel "github.com/uozi-tech/cosy/model"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	dnsService "github.com/0xJacky/Nginx-UI/internal/dns"
@@ -17,8 +21,74 @@ import (
 func ListDomains(c *gin.Context) {
 	cosy.Core[model.DnsDomain](c).
 		SetPreloads("DnsCredential").
-		SetFussy("domain", "description").
+		SetFussy("description").
+		GormScope(domainSearchScope(c)).
 		PagingList()
+}
+
+// domainSearchScope filters the domain column the way cosy's fuzzy search does,
+// and additionally matches the punycode spelling of a term entered in Unicode.
+// Domains are persisted as punycode, so a search for "例" would otherwise never
+// match the stored "xn--fsq.example.com" the list renders as "例.example.com".
+//
+// The term is read from the request here rather than rewritten before cosy runs
+// because authentication middleware has already populated gin's query cache by
+// then, which would silently discard an edit to the raw query string.
+func domainSearchScope(c *gin.Context) func(tx *gorm.DB) *gorm.DB {
+	return func(tx *gorm.DB) *gorm.DB {
+		values := c.QueryArray("domain[]")
+		if len(values) == 0 {
+			if single := c.Query("domain"); single != "" {
+				values = []string{single}
+			}
+		}
+
+		terms := expandDomainSearchTerms(values)
+		if len(terms) == 0 {
+			return tx
+		}
+
+		stmt := tx.Statement
+		var column strings.Builder
+		stmt.QuoteTo(&column, clause.Column{Table: stmt.Table, Name: "domain"})
+		column.WriteString(fuzzyLikeClause())
+
+		// A fresh builder off the same session groups the alternatives into a single
+		// parenthesised OR, leaving any other filter on the query untouched.
+		db := tx.Session(&gorm.Session{NewDB: true})
+		for _, term := range terms {
+			db = db.Or(column.String(), "%"+term+"%")
+		}
+
+		return tx.Where(db)
+	}
+}
+
+// expandDomainSearchTerms returns each search term together with its punycode
+// spelling, skipping blanks and duplicates. A partial term converts too: "例"
+// becomes "xn--fsq", which still matches "xn--fsq.example.com" under a LIKE.
+func expandDomainSearchTerms(values []string) []string {
+	terms := make([]string, 0, len(values)*2)
+	for _, value := range values {
+		if value == "" {
+			continue
+		}
+		if !slices.Contains(terms, value) {
+			terms = append(terms, value)
+		}
+		if ascii := dnsService.ToASCIIName(value); ascii != "" && !slices.Contains(terms, ascii) {
+			terms = append(terms, ascii)
+		}
+	}
+	return terms
+}
+
+// fuzzyLikeClause mirrors the dialect handling of cosy's own fuzzy filter.
+func fuzzyLikeClause() string {
+	if cosyModel.DialectName() == "postgres" {
+		return " ILIKE ?"
+	}
+	return " LIKE ?"
 }
 
 func GetDomain(c *gin.Context) {

@@ -1,6 +1,7 @@
 package site
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -15,8 +16,9 @@ import (
 )
 
 type syncRequestCounts struct {
-	save   [2]int32
-	enable [2]int32
+	save      [2]int32
+	enable    [2]int32
+	namespace [2]string
 }
 
 func TestSyncSaveEnablesEachSuccessfulNodeOnce(t *testing.T) {
@@ -25,6 +27,7 @@ func TestSyncSaveEnablesEachSuccessfulNodeOnce(t *testing.T) {
 	for index := range counts.save {
 		require.EqualValues(t, 1, counts.save[index], "node %d save requests", index+1)
 		require.EqualValues(t, 1, counts.enable[index], "node %d enable requests", index+1)
+		require.Equal(t, "all-node", counts.namespace[index], "node %d namespace", index+1)
 	}
 }
 
@@ -58,12 +61,18 @@ func runSyncSaveRequestCountTest(t *testing.T, saveStatuses [2]int) syncRequestC
 
 	var saveRequests [2]atomic.Int32
 	var enableRequests [2]atomic.Int32
+	var namespaces [2]atomic.Value
 	newNodeServer := func(index int) *httptest.Server {
 		return httptest.NewServer(http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
 			response.Header().Set("Content-Type", "application/json")
 			switch request.URL.Path {
 			case "/api/sites/storm.example.com":
 				saveRequests[index].Add(1)
+				var payload struct {
+					Namespace string `json:"namespace"`
+				}
+				_ = json.NewDecoder(request.Body).Decode(&payload)
+				namespaces[index].Store(payload.Namespace)
 				response.WriteHeader(saveStatuses[index])
 			case "/api/sites/storm.example.com/enable":
 				enableRequests[index].Add(1)
@@ -124,6 +133,9 @@ func runSyncSaveRequestCountTest(t *testing.T, saveStatuses [2]int) syncRequestC
 	for index := range servers {
 		counts.save[index] = saveRequests[index].Load()
 		counts.enable[index] = enableRequests[index].Load()
+		if namespace := namespaces[index].Load(); namespace != nil {
+			counts.namespace[index] = namespace.(string)
+		}
 	}
 	return counts
 }

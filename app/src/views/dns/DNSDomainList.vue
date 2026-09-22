@@ -12,6 +12,7 @@ import auto_cert from '@/api/auto_cert'
 import { dnsApi } from '@/api/dns'
 import dns_credential from '@/api/dns_credential'
 import { filterAllowedDnsProviders } from '@/constants/dns_providers'
+import { isIdnDomain, toUnicodeDomain } from '@/utils/idnDomain'
 
 const router = useRouter()
 
@@ -127,6 +128,20 @@ function renderDnsDomainClarification() {
 const columns: StdTableColumn[] = [{
   title: () => $gettext('DNS Zone'),
   dataIndex: 'domain',
+  // Internationalized zones are stored as punycode. Show the readable form and
+  // keep the stored one visible underneath so it stays copyable.
+  customRender: ({ record }: CustomRenderArgs & { record: DNSDomain }) => {
+    const domain = record.domain ?? ''
+    if (!isIdnDomain(domain))
+      return domain || '--'
+
+    return (
+      <div class="flex flex-col">
+        <span>{toUnicodeDomain(domain)}</span>
+        <span class="text-xs opacity-45">{domain}</span>
+      </div>
+    )
+  },
   sorter: true,
   search: true,
   edit: {

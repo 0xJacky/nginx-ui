@@ -35,6 +35,7 @@ func newNotification(db *gorm.DB, opts ...gen.DOOption) notification {
 	_notification.Type = field.NewInt(tableName, "type")
 	_notification.Title = field.NewString(tableName, "title")
 	_notification.Content = field.NewString(tableName, "content")
+	_notification.URL = field.NewString(tableName, "url")
 	_notification.Details = field.NewField(tableName, "details")
 
 	_notification.fillFieldMap()
@@ -53,6 +54,7 @@ type notification struct {
 	Type      field.Int
 	Title     field.String
 	Content   field.String
+	URL       field.String
 	Details   field.Field
 
 	fieldMap map[string]field.Expr
@@ -77,6 +79,7 @@ func (n *notification) updateTableName(table string) *notification {
 	n.Type = field.NewInt(table, "type")
 	n.Title = field.NewString(table, "title")
 	n.Content = field.NewString(table, "content")
+	n.URL = field.NewString(table, "url")
 	n.Details = field.NewField(table, "details")
 
 	n.fillFieldMap()
@@ -94,7 +97,7 @@ func (n *notification) GetFieldByName(fieldName string) (field.OrderExpr, bool) 
 }
 
 func (n *notification) fillFieldMap() {
-	n.fieldMap = make(map[string]field.Expr, 8)
+	n.fieldMap = make(map[string]field.Expr, 9)
 	n.fieldMap["id"] = n.ID
 	n.fieldMap["created_at"] = n.CreatedAt
 	n.fieldMap["updated_at"] = n.UpdatedAt
@@ -102,6 +105,7 @@ func (n *notification) fillFieldMap() {
 	n.fieldMap["type"] = n.Type
 	n.fieldMap["title"] = n.Title
 	n.fieldMap["content"] = n.Content
+	n.fieldMap["url"] = n.URL
 	n.fieldMap["details"] = n.Details
 }
 

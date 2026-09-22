@@ -3,6 +3,7 @@ import { http } from '@uozi-admin/request'
 
 export interface SiteInfo {
   id: number // primary identifier for API operations
+  index: number // stable site index shared with site list records
   health_check_enabled: boolean // whether health check is enabled
   host: string // host:port format
   port: number
@@ -14,6 +15,7 @@ export interface SiteInfo {
   status: SiteStatusType
   status_code: number
   response_time: number
+  cert_days_remaining?: number
   favicon_url: string
   favicon_data: string
   title: string

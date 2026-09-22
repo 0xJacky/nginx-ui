@@ -20,7 +20,7 @@ var (
 	teamsTokenURLTemplate = "https://login.microsoftonline.com/%s/oauth2/v2.0/token"
 )
 
-// @external_notifier(Microsoft Teams（Power Automate webhook）)
+// @external_notifier(Teams|Microsoft Teams（Power Automate webhook）)
 type Teams struct {
 	TenantID           string `json:"tenant_id" title:"Tenant ID"`
 	ClientID           string `json:"client_id" title:"Client ID"`
@@ -74,9 +74,10 @@ func init() {
 			return err
 		}
 
+		templateData := msg.GetTemplateData(n.Language)
+
 		payload, err := buildTeamsWorkflowPayload(
-			msg.GetTitle(n.Language),
-			msg.GetContent(n.Language),
+			templateData,
 			teamsConfig.MessageBody,
 		)
 		if err != nil {
@@ -100,22 +101,30 @@ func teamsHTTPClient() (*http.Client, error) {
 	return &http.Client{Transport: httpTransport}, nil
 }
 
-func buildTeamsWorkflowPayload(title, content, messageBody string) (map[string]any, error) {
+func buildTeamsWorkflowPayload(data ExternalMessageTemplateData, messageBody string) (map[string]any, error) {
 	body := strings.TrimSpace(messageBody)
+	levelColor := teamsLevelColorByType(data.NotificationType)
 	var bodyBlocks []any
 
 	if body == "" {
-		bodyBlocks = defaultTeamsWorkflowBody(title, content)
+		bodyBlocks = defaultTeamsWorkflowBody(data, levelColor)
 	} else {
 		if err := json.Unmarshal([]byte(body), &bodyBlocks); err != nil {
 			return nil, ErrInvalidNotifierConfig
 		}
-		bodyBlocks = replaceTeamsPayloadPlaceholders(bodyBlocks, title, content).([]any)
+		bodyBlocks = replaceTeamsPayloadPlaceholders(bodyBlocks, teamsTemplateReplacements(data, levelColor)).([]any)
 		bodyBlocks = normalizeAdaptiveCardBodyColors(bodyBlocks).([]any)
 	}
 
 	return map[string]any{
-		"type": "message",
+		"type":                       "message",
+		"title":                      data.Title,
+		"content":                    data.Content,
+		"notification_type":          data.NotificationType,
+		"notification_type_i18n_key": data.NotificationTypeI18n,
+		"notification_type_label":    data.NotificationTypeLabel,
+		"notification_level_color":   levelColor,
+		"go_to_url":                  data.GoToURL,
 		"attachments": []any{
 			map[string]any{
 				"contentType": "application/vnd.microsoft.card.adaptive",
@@ -130,21 +139,51 @@ func buildTeamsWorkflowPayload(title, content, messageBody string) (map[string]a
 	}, nil
 }
 
-func replaceTeamsPayloadPlaceholders(value any, title, content string) any {
+func teamsTemplateReplacements(data ExternalMessageTemplateData, levelColor string) map[string]string {
+	return map[string]string{
+		"{{title}}":             data.Title,
+		"{{content}}":           data.Content,
+		"{{type}}":              data.NotificationType,
+		"{{notification_type}}": data.NotificationType,
+		"{{type_i18n_key}}":     data.NotificationTypeI18n,
+		"{{type_label}}":        data.NotificationTypeLabel,
+		"{{level_color}}":       levelColor,
+		"{{go_to_url}}":         data.GoToURL,
+	}
+}
+
+func teamsLevelColorByType(notificationType string) string {
+	switch strings.ToLower(strings.TrimSpace(notificationType)) {
+	case "error":
+		return "Attention"
+	case "warning":
+		return "Warning"
+	case "info":
+		return "Accent"
+	case "success":
+		return "Good"
+	default:
+		return "Accent"
+	}
+}
+
+func replaceTeamsPayloadPlaceholders(value any, replacements map[string]string) any {
 	switch typed := value.(type) {
 	case map[string]any:
 		for key, item := range typed {
-			typed[key] = replaceTeamsPayloadPlaceholders(item, title, content)
+			typed[key] = replaceTeamsPayloadPlaceholders(item, replacements)
 		}
 		return typed
 	case []any:
 		for index, item := range typed {
-			typed[index] = replaceTeamsPayloadPlaceholders(item, title, content)
+			typed[index] = replaceTeamsPayloadPlaceholders(item, replacements)
 		}
 		return typed
 	case string:
-		replaced := strings.ReplaceAll(typed, "{{title}}", title)
-		replaced = strings.ReplaceAll(replaced, "{{content}}", content)
+		replaced := typed
+		for placeholder, actual := range replacements {
+			replaced = strings.ReplaceAll(replaced, placeholder, actual)
+		}
 		return replaced
 	default:
 		return value
@@ -219,10 +258,18 @@ func normalizeAdaptiveCardColor(raw string) string {
 	return raw
 }
 
-func defaultTeamsWorkflowBody(title, content string) []any {
-	title = strings.TrimSpace(title)
+func defaultTeamsWorkflowBody(data ExternalMessageTemplateData, levelColor string) []any {
+	title := strings.TrimSpace(data.Title)
 	if title == "" {
 		title = "Nginx UI Notification"
+	}
+
+	facts := []any{
+		map[string]any{"title": "Type", "value": data.NotificationTypeLabel},
+		map[string]any{"title": "Content", "value": data.Content},
+	}
+	if strings.TrimSpace(data.GoToURL) != "" {
+		facts = append(facts, map[string]any{"title": "Go To", "value": data.GoToURL})
 	}
 
 	return []any{
@@ -231,13 +278,11 @@ func defaultTeamsWorkflowBody(title, content string) []any {
 			"text":   title,
 			"weight": "Bolder",
 			"size":   "Large",
-			"color":  "Attention",
+			"color":  levelColor,
 		},
 		map[string]any{
-			"type": "FactSet",
-			"facts": []any{
-				map[string]any{"title": "Content", "value": content},
-			},
+			"type":  "FactSet",
+			"facts": facts,
 		},
 	}
 }

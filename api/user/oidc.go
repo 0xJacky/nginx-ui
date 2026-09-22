@@ -6,9 +6,11 @@ import (
 	"encoding/hex"
 	"errors"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/coreos/go-oidc/v3/oidc"
@@ -24,8 +26,47 @@ type OIDCLoginUser struct {
 	State string `form:"state" json:"state" uri:"state" binding:"max=255"`
 }
 
+func newOIDCRequestContext(ctx context.Context) (context.Context, error) {
+	if strings.TrimSpace(settings.HTTPSettings.HTTPProxy) == "" {
+		return ctx, nil
+	}
+
+	httpTransport, err := transport.NewTransport(transport.WithProxy(settings.HTTPSettings.HTTPProxy))
+	if err != nil {
+		return nil, err
+	}
+
+	httpClient := &http.Client{Transport: httpTransport}
+
+	return context.WithValue(ctx, oauth2.HTTPClient, httpClient), nil
+}
+
+func respondOIDCError(c *gin.Context, redirectUri string, status int, message string, extra gin.H) {
+	if c.Request.Method == http.MethodGet {
+		c.Redirect(http.StatusFound, buildOIDCFrontendLoginErrorRedirect(redirectUri, message))
+		return
+	}
+
+	payload := gin.H{"message": message}
+	for key, value := range extra {
+		payload[key] = value
+	}
+
+	c.JSON(status, payload)
+}
+
+func respondOIDCCosyError(c *gin.Context, redirectUri string, err error) {
+	if c.Request.Method == http.MethodGet {
+		c.Redirect(http.StatusFound, buildOIDCFrontendLoginErrorRedirect(redirectUri, "SSO login failed"))
+		return
+	}
+
+	cosy.ErrHandler(c, err)
+}
+
 func OIDCCallback(c *gin.Context) {
 	var loginUser OIDCLoginUser
+	redirectUri := settings.OIDCSettings.RedirectUri
 
 	if err := c.ShouldBind(&loginUser); err != nil {
 		loginUser.Code = c.Query("code")
@@ -33,24 +74,18 @@ func OIDCCallback(c *gin.Context) {
 	}
 
 	if loginUser.Code == "" || loginUser.State == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Missing code or state",
-		})
+		respondOIDCError(c, redirectUri, http.StatusBadRequest, "Missing code or state", nil)
 		return
 	}
 
 	state, err := c.Cookie("oidc_state")
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "State cookie not found",
-		})
+		respondOIDCError(c, redirectUri, http.StatusBadRequest, "State cookie not found", nil)
 		return
 	}
 
 	if state != loginUser.State {
-		c.JSON(http.StatusForbidden, gin.H{
-			"message": "State mismatch",
-		})
+		respondOIDCError(c, redirectUri, http.StatusForbidden, "State mismatch", nil)
 		return
 	}
 
@@ -59,19 +94,22 @@ func OIDCCallback(c *gin.Context) {
 	endpoint := settings.OIDCSettings.Endpoint
 	clientId := settings.OIDCSettings.ClientId
 	clientSecret := settings.OIDCSettings.ClientSecret
-	redirectUri := settings.OIDCSettings.RedirectUri
 
 	if endpoint == "" || clientId == "" || clientSecret == "" || redirectUri == "" {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "OIDC is not configured",
-		})
+		respondOIDCError(c, redirectUri, http.StatusInternalServerError, "OIDC is not configured", nil)
 		return
 	}
 
 	ctx := context.Background()
+	ctx, err = newOIDCRequestContext(ctx)
+	if err != nil {
+		respondOIDCCosyError(c, redirectUri, err)
+		return
+	}
+
 	provider, err := oidc.NewProvider(ctx, endpoint)
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		respondOIDCCosyError(c, redirectUri, err)
 		return
 	}
 
@@ -90,29 +128,27 @@ func OIDCCallback(c *gin.Context) {
 
 	oauth2Token, err := oauth2Config.Exchange(ctx, loginUser.Code)
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		respondOIDCCosyError(c, redirectUri, err)
 		return
 	}
 
 	rawIDToken, ok := oauth2Token.Extra("id_token").(string)
 	if !ok {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "No id_token field in oauth2 token",
-		})
+		respondOIDCError(c, redirectUri, http.StatusInternalServerError, "No id_token field in oauth2 token", nil)
 		return
 	}
 
 	idTokenVerifier := provider.Verifier(&oidc.Config{ClientID: clientId})
 	idToken, err := idTokenVerifier.Verify(ctx, rawIDToken)
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		respondOIDCCosyError(c, redirectUri, err)
 		return
 	}
 
 	var claims map[string]interface{}
 
 	if err := idToken.Claims(&claims); err != nil {
-		cosy.ErrHandler(c, err)
+		respondOIDCCosyError(c, redirectUri, err)
 		return
 	}
 
@@ -142,30 +178,94 @@ func OIDCCallback(c *gin.Context) {
 		}
 	}
 
+	resolvedBy := ""
+	if settings.OIDCSettings.Identifier != "" {
+		if _, ok := claims[settings.OIDCSettings.Identifier]; ok {
+			resolvedBy = settings.OIDCSettings.Identifier
+		}
+	}
+	if resolvedBy == "" {
+		for _, fallback := range []string{"email", "name", "sub"} {
+			if _, ok := claims[fallback]; ok {
+				resolvedBy = fallback
+				break
+			}
+		}
+	}
+
 	u, err := user.GetUser(username)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			c.JSON(http.StatusForbidden, gin.H{
-				"message": "User not exist",
+			respondOIDCError(c, redirectUri, http.StatusForbidden, "User not exist", gin.H{
+				"identifier":        settings.OIDCSettings.Identifier,
+				"resolved_by":       resolvedBy,
+				"resolved_username": username,
 			})
 		} else {
-			cosy.ErrHandler(c, err)
+			respondOIDCCosyError(c, redirectUri, err)
 		}
 		return
 	}
 
 	userToken, err := user.IssueLoginToken(u, user.LoginProofExternal)
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		respondOIDCCosyError(c, redirectUri, err)
 		return
 	}
 
 	middleware.EnsureSecureSessionCookie(c)
 
+	if c.Request.Method == http.MethodGet {
+		c.Redirect(http.StatusFound, buildOIDCFrontendLoginRedirect(redirectUri, userToken.Token))
+		return
+	}
+
 	c.JSON(http.StatusOK, LoginResponse{
 		Message:            "ok",
 		AccessTokenPayload: userToken,
 	})
+}
+
+func buildOIDCFrontendLoginRedirect(redirectUri string, token string) string {
+	parsed, err := url.Parse(redirectUri)
+	if err != nil {
+		return "/#/login?oidc_token=" + url.QueryEscape(token)
+	}
+
+	basePath := strings.TrimSuffix(parsed.Path, "/api/oidc_callback")
+	if basePath == "" {
+		basePath = "/"
+	}
+
+	query := url.Values{}
+	query.Set("oidc_token", token)
+
+	parsed.Path = basePath
+	parsed.RawQuery = ""
+	parsed.Fragment = "/login?" + query.Encode()
+
+	return parsed.String()
+}
+
+func buildOIDCFrontendLoginErrorRedirect(redirectUri string, message string) string {
+	parsed, err := url.Parse(redirectUri)
+	if err != nil {
+		return "/#/login?sso_error=" + url.QueryEscape(message)
+	}
+
+	basePath := strings.TrimSuffix(parsed.Path, "/api/oidc_callback")
+	if basePath == "" {
+		basePath = "/"
+	}
+
+	query := url.Values{}
+	query.Set("sso_error", message)
+
+	parsed.Path = basePath
+	parsed.RawQuery = ""
+	parsed.Fragment = "/login?" + query.Encode()
+
+	return parsed.String()
 }
 
 func GetOIDCUri(c *gin.Context) {
@@ -182,6 +282,12 @@ func GetOIDCUri(c *gin.Context) {
 	}
 
 	ctx := context.Background()
+	ctx, err := newOIDCRequestContext(ctx)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
 	provider, err := oidc.NewProvider(ctx, endpoint)
 	if err != nil {
 		cosy.ErrHandler(c, err)

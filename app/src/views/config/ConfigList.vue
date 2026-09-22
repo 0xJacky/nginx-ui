@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { StarFilled, StarOutlined } from '@antdv-next/icons'
 import { StdTable } from '@uozi-admin/curd'
 import config from '@/api/config'
 import FooterToolBar from '@/components/FooterToolbar'
 import InspectConfig from '@/components/InspectConfig'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
+import { useConfigFavorites } from '@/composables/useConfigFavorites'
 import { isProtectedPath } from '@/views/config/configUtils'
 import Delete from './components/Delete.vue'
 import Deploy from './components/Deploy.vue'
@@ -38,6 +40,8 @@ watch(getParams, () => {
 const refInspectConfig = useTemplateRef('refInspectConfig')
 const breadcrumbs = useBreadcrumbs()
 
+const { isFavorite, toggleFavorite } = useConfigFavorites()
+
 function updateBreadcrumbs() {
   const filteredPath = basePath.value
     .split('/')
@@ -66,9 +70,9 @@ function updateBreadcrumbs() {
   })
 
   breadcrumbs.value = [{
-    name: 'Dashboard',
-    translatedName: () => $gettext('Dashboard'),
-    path: '/dashboard',
+    name: 'Home',
+    translatedName: () => $gettext('Home'),
+    path: '/',
     hasChildren: false,
   }, {
     name: 'Manage Configs',
@@ -160,6 +164,16 @@ function isProtected(name: string) {
     >
       <template #beforeActions="{ record }">
         <AButton
+          v-if="!record.is_dir"
+          type="link"
+          size="small"
+          :title="isFavorite(basePath, record.name) ? $gettext('Unfavorite') : $gettext('Favorite')"
+          @click="() => toggleFavorite(basePath, record.name)"
+        >
+          <StarFilled v-if="isFavorite(basePath, record.name)" class="favorite-on" />
+          <StarOutlined v-else />
+        </AButton>
+        <AButton
           type="link"
           size="small"
           @click="() => {
@@ -237,5 +251,7 @@ function isProtected(name: string) {
 </template>
 
 <style scoped>
-
+.favorite-on {
+  color: var(--ant-color-warning);
+}
 </style>

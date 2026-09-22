@@ -8,6 +8,8 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
+	"github.com/go-acme/lego/v5/acme"
+	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/go-acme/lego/v5/lego"
 	legolog "github.com/go-acme/lego/v5/log"
 	"github.com/pkg/errors"
@@ -50,6 +52,16 @@ func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string,
 
 	// Create client for communication with CA server
 	certLogger.Info(translation.C("[Nginx UI] Preparing for certificate revocation"))
+
+	// An expired certificate is no longer trusted by anyone, so there is
+	// nothing left to revoke and no reason to contact the CA.
+	if certificateExpired(payload) {
+		certLogger.Info(translation.C("[Nginx UI] Certificate has already expired, no revocation needed"))
+		// Wait for logs to be written
+		time.Sleep(2 * time.Second)
+		return
+	}
+
 	user, err := payload.GetACMEUser()
 	if err != nil {
 		errChan <- errors.Wrap(err, "get ACME user error")
@@ -79,6 +91,7 @@ func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string,
 
 	err = revoke(payload, client, certLogger)
 	if err != nil {
+		errChan <- err
 		return
 	}
 
@@ -99,10 +112,30 @@ func RevokeCert(payload *ConfigPayload, certLogger *Logger, logChan chan string,
 func revoke(payload *ConfigPayload, client *lego.Client, l *Logger) error {
 	l.Info(translation.C("[Nginx UI] Revoking certificate"))
 	err := client.Certificate.Revoke(context.Background(), payload.Resource.Certificate)
+	// Check the problem type before WrapErrorWithParams flattens the error.
+	var problem *acme.ProblemDetails
+	if errors.As(err, &problem) && problem.Type == acme.AlreadyRevokedErrorType {
+		l.Info(translation.C("[Nginx UI] Certificate was already revoked by the CA"))
+		return nil
+	}
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrRevokeCert, err.Error())
 	}
 
 	l.Info(translation.C("[Nginx UI] Certificate successfully revoked"))
 	return nil
+}
+
+// certificateExpired reports whether the leaf certificate in the payload is
+// past its NotAfter date. A certificate that cannot be parsed is left to the
+// CA to judge.
+func certificateExpired(payload *ConfigPayload) bool {
+	if payload.Resource == nil {
+		return false
+	}
+	cert, err := certcrypto.ParsePEMCertificate(payload.Resource.Certificate)
+	if err != nil {
+		return false
+	}
+	return time.Now().After(cert.NotAfter)
 }

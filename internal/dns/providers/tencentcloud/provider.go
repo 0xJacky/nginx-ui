@@ -195,8 +195,9 @@ func (p *provider) ListRecords(ctx context.Context, domain string, filter dns.Re
 	result := make([]dns.Record, 0)
 	for offset := uint64(0); ; offset += maxRecordsPageSize {
 		request := recordListRequest{
-			Domain:     domain,
-			Subdomain:  strings.TrimSpace(filter.Name),
+			// DNSPod keys an internationalized domain by its punycode spelling.
+			Domain:     dns.ToASCIIName(domain),
+			Subdomain:  dns.ToASCIIName(filter.Name),
 			RecordType: strings.ToUpper(strings.TrimSpace(filter.Type)),
 			Offset:     offset,
 			Limit:      maxRecordsPageSize,
@@ -249,7 +250,7 @@ func (p *provider) DeleteRecord(ctx context.Context, domain string, recordID str
 	if err != nil {
 		return fmt.Errorf("tencentcloud: invalid record id: %w", err)
 	}
-	request := recordReferenceRequest{Domain: domain, RecordID: id}
+	request := recordReferenceRequest{Domain: dns.ToASCIIName(domain), RecordID: id}
 	if err := p.client.Call(ctx, "DeleteRecord", request, nil); err != nil {
 		return fmt.Errorf("tencentcloud: delete record: %w", err)
 	}
@@ -261,7 +262,7 @@ func (p *provider) describeRecord(ctx context.Context, domain string, recordID s
 	if err != nil {
 		return dns.Record{}, fmt.Errorf("tencentcloud: invalid record id: %w", err)
 	}
-	request := recordReferenceRequest{Domain: domain, RecordID: id}
+	request := recordReferenceRequest{Domain: dns.ToASCIIName(domain), RecordID: id}
 	var response describeRecordResponse
 	if err := p.client.Call(ctx, "DescribeRecord", request, &response); err != nil {
 		return dns.Record{}, fmt.Errorf("tencentcloud: describe record: %w", err)
@@ -274,7 +275,7 @@ func (p *provider) describeRecord(ctx context.Context, domain string, recordID s
 
 func newRecordMutationRequest(domain string, recordID uint64, input dns.RecordInput) recordMutationRequest {
 	request := recordMutationRequest{
-		Domain:     domain,
+		Domain:     dns.ToASCIIName(domain),
 		RecordID:   recordID,
 		Subdomain:  normalizeSubDomain(input.Name),
 		RecordType: strings.ToUpper(strings.TrimSpace(input.Type)),
@@ -320,7 +321,8 @@ func (r recordInfo) toDNSRecord(recordID string) dns.Record {
 }
 
 func normalizeSubDomain(name string) string {
-	name = strings.TrimSpace(name)
+	// An internationalized label travels as punycode, matching the zone spelling.
+	name = dns.ToASCIIName(name)
 	if name == "" || name == "@" {
 		return "@"
 	}

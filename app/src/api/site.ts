@@ -21,6 +21,7 @@ export interface SiteDNSRecord {
 }
 
 export interface Site extends ModelBase {
+  index: number
   modified_at: string
   path: string
   advanced: boolean

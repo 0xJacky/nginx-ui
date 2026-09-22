@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { TerminalSessionCallbacks } from '@/composables/useTerminalSession'
+import type { TerminalTab } from '@/pinia/moudule/terminal'
 import { theme } from 'antdv-next'
-import use2FAModal from '@/components/TwoFA/use2FAModal'
+import use2FAModal, { TwoFACancelledError } from '@/components/TwoFA/use2FAModal'
 import { useDemoTerminalSession } from '@/composables/useDemoTerminalSession'
 import { useTerminalSession } from '@/composables/useTerminalSession'
 import { useGlobalStore, useTerminalStore } from '@/pinia'
@@ -111,7 +112,9 @@ async function createNewTerminal() {
   }
   catch (error) {
     console.error('Failed to create terminal session:', error)
-    terminalStore.closeTab(tab.id)
+    if (!(error instanceof TwoFACancelledError)) {
+      terminalStore.closeTab(tab.id)
+    }
   }
 }
 
@@ -119,11 +122,45 @@ function getTerminalContainerId(tabId: string): string {
   return `container-${tabId}`
 }
 
-function switchTab(tabId: string) {
+function hasSession(tabId: string) {
+  if (isDemoTerminal.value) {
+    return demoSession.hasSession(tabId)
+  }
+  return liveSession.hasSession(tabId)
+}
+
+async function ensureSession(tab: TerminalTab) {
+  if (hasSession(tab.id)) {
+    return
+  }
+
+  if (isDemoTerminal.value) {
+    await nextTick()
+    demoSession.createSession(tab, getTerminalContainerId(tab.id), sessionCallbacks)
+    return
+  }
+
+  const secureSessionId = await openOtpModal()
+  await nextTick()
+  await liveSession.createSession(tab, getTerminalContainerId(tab.id), secureSessionId, sessionCallbacks)
+}
+
+async function switchTab(tabId: string) {
   terminalStore.setActiveTab(tabId)
-  nextTick(() => {
-    focusSession(tabId)
-  })
+
+  await nextTick()
+
+  try {
+    const tab = terminalStore.tabs.find(item => item.id === tabId)
+    if (tab) {
+      await ensureSession(tab)
+    }
+  }
+  catch (error) {
+    console.error('Failed to switch terminal tab:', error)
+  }
+
+  focusSession(tabId)
 }
 
 function closeTab(tabId: string) {
@@ -141,7 +178,19 @@ onMounted(async () => {
   await globalStore.ensureDemoFlag()
 
   if (!terminalStore.hasActiveTabs) {
-    createNewTerminal()
+    await createNewTerminal()
+    return
+  }
+
+  const activeTab = terminalStore.activeTab
+  if (activeTab) {
+    try {
+      await ensureSession(activeTab)
+    }
+    catch (error) {
+      console.error('Failed to restore terminal session:', error)
+    }
+    focusSession(activeTab.id)
   }
 })
 

@@ -64,3 +64,35 @@ func TestExternalMessageGetContentInterpolatesMissingTranslationKey(t *testing.T
 		t.Fatalf("GetContent() = %q, want %q", got, want)
 	}
 }
+
+func TestExternalMessageGetTemplateDataIncludesTypeAndGoToURL(t *testing.T) {
+	withTranslationDict(t, map[string]pofile.Dict{
+		"zh_CN": {
+			"Error": "Error CN",
+		},
+		"en": {},
+	})
+
+	msg := &ExternalMessage{
+		Notification: &model.Notification{
+			Type:    model.NotificationError,
+			Title:   "External Notification Test",
+			Content: "This is a test message",
+			URL:     "#/notifications",
+		},
+	}
+
+	data := msg.GetTemplateData("zh_CN")
+	if data.NotificationType != "error" {
+		t.Fatalf("NotificationType = %q, want error", data.NotificationType)
+	}
+	if data.NotificationTypeI18n != "Error" {
+		t.Fatalf("NotificationTypeI18n = %q, want Error", data.NotificationTypeI18n)
+	}
+	if data.NotificationTypeLabel != "Error CN" {
+		t.Fatalf("NotificationTypeLabel = %q, want Error CN", data.NotificationTypeLabel)
+	}
+	if data.GoToURL != "#/notifications" {
+		t.Fatalf("GoToURL = %q, want #/notifications", data.GoToURL)
+	}
+}

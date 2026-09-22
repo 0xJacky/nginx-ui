@@ -21,14 +21,26 @@ const teamsMessageBodyTemplate = `[
     "text": "{{title}}",
     "weight": "Bolder",
     "size": "Large",
-    "color": "red"
+    "color": "{{level_color}}"
   },
   {
     "type": "FactSet",
     "facts": [
       {
+        "title": "Type",
+        "value": "{{type_label}} ({{type}} / {{type_i18n_key}})"
+      },
+      {
+        "title": "LevelColor",
+        "value": "{{level_color}}"
+      },
+      {
         "title": "Content",
         "value": "{{content}}"
+      },
+      {
+        "title": "Go To",
+        "value": "{{go_to_url}}"
       }
     ]
   },
@@ -40,6 +52,31 @@ const teamsMessageBodyTemplate = `[
   }
 ]
 `
+
+const teamsPlaceholderHints = [
+  '{{title}}',
+  '{{content}}',
+  '{{type}}',
+  '{{type_label}}',
+  '{{type_i18n_key}}',
+  '{{level_color}}',
+  '{{go_to_url}}',
+]
+
+const emailPlaceholderHints = [
+  '{{.Title}}',
+  '{{.Content}}',
+  '{{.Type}}',
+  '{{.LevelColor}}',
+  '{{.TypeLabel}}',
+  '{{.TypeI18nKey}}',
+  '{{.GoToURL}}',
+]
+
+interface PlaceholderDoc {
+  key: string
+  description: string
+}
 
 const currentConfig = computed<ExternalNotifyConfig | undefined>(() => {
   return configMap[props.type?.toLowerCase() ?? '']
@@ -155,6 +192,88 @@ const columns = computed<StdTableColumn[]>(() => {
 
 const loading = ref(false)
 
+const placeholderHintText = computed<string>(() => {
+  if (props.type?.toLowerCase() === 'teams') {
+    return teamsPlaceholderHints.join(', ')
+  }
+
+  if (props.type?.toLowerCase() === 'email') {
+    return emailPlaceholderHints.join(', ')
+  }
+
+  return ''
+})
+
+const placeholderDocs = computed<PlaceholderDoc[]>(() => {
+  if (props.type?.toLowerCase() === 'teams') {
+    return [
+      {
+        key: '{{title}}',
+        description: $gettext('Notification title text'),
+      },
+      {
+        key: '{{content}}',
+        description: $gettext('Notification content text'),
+      },
+      {
+        key: '{{type}}',
+        description: $gettext('Notification type code, such as error, warning, info, or success'),
+      },
+      {
+        key: '{{type_label}}',
+        description: $gettext('Localized notification type label for the current language'),
+      },
+      {
+        key: '{{type_i18n_key}}',
+        description: $gettext('Translation key of the notification type, such as Error or Warning'),
+      },
+      {
+        key: '{{level_color}}',
+        description: $gettext('Teams notification level color enum: Error=Attention, Warning=Warning, Info=Accent, Success=Good'),
+      },
+      {
+        key: '{{go_to_url}}',
+        description: $gettext('Full go-to URL generated from WebAuthn RPOrigins and route path'),
+      },
+    ]
+  }
+
+  if (props.type?.toLowerCase() === 'email') {
+    return [
+      {
+        key: '{{.Title}}',
+        description: $gettext('Notification title text'),
+      },
+      {
+        key: '{{.Content}}',
+        description: $gettext('Notification content text (HTML-escaped in the default template)'),
+      },
+      {
+        key: '{{.Type}}',
+        description: $gettext('Notification type code, such as error, warning, info, or success'),
+      },
+      {
+        key: '{{.LevelColor}}',
+        description: $gettext('Email notification level color, fixed to #1f2937'),
+      },
+      {
+        key: '{{.TypeLabel}}',
+        description: $gettext('Localized notification type label for the current language'),
+      },
+      {
+        key: '{{.TypeI18nKey}}',
+        description: $gettext('Translation key of the notification type, such as Error or Warning'),
+      },
+      {
+        key: '{{.GoToURL}}',
+        description: $gettext('Full go-to URL generated from WebAuthn RPOrigins and route path'),
+      },
+    ]
+  }
+
+  return []
+})
+
 async function handleSendTestMessage() {
   if (!props.type) {
     message.error($gettext('Please select a notification type'))
@@ -213,7 +332,7 @@ async function handleSendTestMessage() {
           rel="noopener noreferrer"
           class="ml-2"
         >
-          [Teams Request Example]
+          [{{ $gettext('Teams Request Example') }}]
         </a>
       </template>
       <ATextarea
@@ -229,12 +348,46 @@ async function handleSendTestMessage() {
         :disable-code-completion="true"
       />
       <AAlert
+        v-if="item.key === 'message_body' && placeholderHintText"
+        class="mt-2"
+        type="info"
+        show-icon
+        :message="$gettext('Available placeholders')"
+      >
+        <template #description>
+          <div
+            v-for="doc in placeholderDocs"
+            :key="`msg-${doc.key}`"
+            class="mt-1"
+          >
+            <strong>{{ doc.key }}</strong>: {{ doc.description }}
+          </div>
+        </template>
+      </AAlert>
+      <AAlert
         v-if="item.key === 'message_body' && messageBodyJsonError"
         class="mt-2"
         type="error"
         show-icon
         :message="messageBodyJsonErrorText"
       />
+      <AAlert
+        v-if="item.key === 'html_template' && placeholderHintText"
+        class="mt-2"
+        type="info"
+        show-icon
+        :message="$gettext('Available placeholders')"
+      >
+        <template #description>
+          <div
+            v-for="doc in placeholderDocs"
+            :key="`html-${doc.key}`"
+            class="mt-1"
+          >
+            <strong>{{ doc.key }}</strong>: {{ doc.description }}
+          </div>
+        </template>
+      </AAlert>
     </AFormItem>
 
     <div>

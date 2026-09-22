@@ -15,6 +15,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/site"
+	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -141,6 +142,15 @@ func setSiteDNSRecords(siteModel *model.Site, domainID *int, records []model.Sit
 	siteModel.DNSRecordName = &firstRecord.Name
 	siteModel.DNSRecordType = &firstRecord.Type
 	siteModel.DNSRecordExists = &firstRecord.Exists
+}
+
+func refreshSiteNavigationIfRunning() {
+	sitecheck.ReconcileSiteConfigSiteIDsIfDirty()
+
+	service := sitecheck.GetService()
+	if service != nil && service.IsRunning() {
+		service.RefreshSites()
+	}
 }
 
 func GetSite(c *gin.Context) {
@@ -315,6 +325,8 @@ func SaveSite(c *gin.Context) {
 		}
 	}
 
+	refreshSiteNavigationIfRunning()
+
 	GetSite(c)
 }
 
@@ -339,6 +351,8 @@ func RenameSite(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+
+	refreshSiteNavigationIfRunning()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
@@ -415,6 +429,8 @@ func EnableSite(c *gin.Context) {
 		return
 	}
 
+	refreshSiteNavigationIfRunning()
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
@@ -431,6 +447,8 @@ func DisableSite(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+
+	refreshSiteNavigationIfRunning()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
@@ -457,6 +475,8 @@ func BatchEnableSites(c *gin.Context) {
 		}
 	}
 
+	refreshSiteNavigationIfRunning()
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
@@ -477,6 +497,8 @@ func BatchDisableSites(c *gin.Context) {
 			return
 		}
 	}
+
+	refreshSiteNavigationIfRunning()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
@@ -514,6 +536,8 @@ func BatchEnableMaintenanceSites(c *gin.Context) {
 		}
 	}
 
+	refreshSiteNavigationIfRunning()
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
@@ -530,6 +554,8 @@ func DeleteSite(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+
+	refreshSiteNavigationIfRunning()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
@@ -565,6 +591,8 @@ func BatchUpdateSites(c *gin.Context) {
 			}
 			ctx.BatchEffectedIDs = effectedPath
 		}).BatchModify()
+
+	refreshSiteNavigationIfRunning()
 }
 
 func isInvalidSiteName(name string) bool {
@@ -602,6 +630,8 @@ func EnableMaintenanceSite(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+
+	refreshSiteNavigationIfRunning()
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",

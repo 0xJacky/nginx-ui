@@ -1,0 +1,17 @@
+export default {
+  510001: () => $gettext('Ssh connect failed: {0}'),
+  510002: () => $gettext('Ssh authentication failed: {0}'),
+  510003: () => $gettext('Host key verification failed: expected {0}, got {1}'),
+  510004: () => $gettext('Sudo requires a password; check /etc/sudoers.d/nginx-ui'),
+  510005: () => $gettext('Systemctl not found on remote host'),
+  510006: () => $gettext('Remote command timed out after {0}'),
+  510007: () => $gettext('Failed to open ssh session: {0}'),
+  510014: () => $gettext('Ssh client was closed after a settings change'),
+  510008: () => $gettext('Failed to read known_hosts: {0}'),
+  510009: () => $gettext('Failed to write known_hosts: {0}'),
+  510010: () => $gettext('Failed to parse public key: {0}'),
+  510011: () => $gettext('Known_hosts entry not found: {0}'),
+  510012: () => $gettext('Host key operation requires explicit confirmation'),
+  510013: () => $gettext('Failed to scan host key: {0}'),
+  510015: () => $gettext('Host key algorithm mismatch: expected {0}, got {1}'),
+}

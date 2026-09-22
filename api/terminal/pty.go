@@ -40,13 +40,19 @@ func Pty(c *gin.Context) {
 
 	defer p.Close()
 
-	errorChan := make(chan error, 1)
+	// Each pump reports exactly once. Stop its peer on the first completion,
+	// then collect both results so a normal close cannot hide a real failure.
+	errorChan := make(chan error, 2)
 	go p.ReadPtyAndWriteWs(errorChan)
 	go p.ReadWsAndWritePty(errorChan)
 
 	err = <-errorChan
+	p.Close()
 
 	if err != nil {
+		logger.Error(err)
+	}
+	if err = <-errorChan; err != nil {
 		logger.Error(err)
 	}
 }

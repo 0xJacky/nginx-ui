@@ -181,3 +181,77 @@ func TestRequireSecureSessionAppliesToPasskeyOnlyUsers(t *testing.T) {
 	router.ServeHTTP(w, req)
 	require.Equal(t, http.StatusOK, w.Code)
 }
+
+func TestRequireSecureSessionFailsClosedWhenPasskeyLookupFails(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	dbName := fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())
+	db, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
+	require.NoError(t, err)
+	require.NoError(t, db.AutoMigrate(&model.User{}, &model.Passkey{}))
+	model.Use(db)
+
+	passkeyUser := &model.User{Model: model.Model{ID: 1}, Name: "passkey", Status: true}
+	require.NoError(t, db.Create(passkeyUser).Error)
+	require.NoError(t, db.Create(&model.Passkey{UserID: passkeyUser.ID, Name: "key"}).Error)
+	require.NoError(t, db.Migrator().DropTable(&model.Passkey{}))
+
+	handlerCalled := false
+	router := gin.New()
+	router.POST("/sensitive", func(c *gin.Context) {
+		c.Set("user", passkeyUser)
+		c.Next()
+	}, RequireSecureSession(), func(c *gin.Context) {
+		handlerCalled = true
+		c.Status(http.StatusNoContent)
+	})
+
+	req := httptest.NewRequest(http.MethodPost, "/sensitive", nil)
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusInternalServerError, w.Code)
+	assert.False(t, handlerCalled)
+}
+
+func TestRequireSecureSessionAllowsUserWithoutPasskey(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	dbName := fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())
+	db, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
+	require.NoError(t, err)
+	require.NoError(t, db.AutoMigrate(&model.User{}, &model.Passkey{}))
+	model.Use(db)
+
+	userWithoutPasskey := &model.User{Model: model.Model{ID: 1}, Name: "password-only", Status: true}
+	require.NoError(t, db.Create(userWithoutPasskey).Error)
+
+	router := gin.New()
+	router.POST("/sensitive", func(c *gin.Context) {
+		c.Set("user", userWithoutPasskey)
+		c.Next()
+	}, RequireSecureSession(), func(c *gin.Context) {
+		c.Status(http.StatusNoContent)
+	})
+
+	req := httptest.NewRequest(http.MethodPost, "/sensitive", nil)
+	w := httptest.NewRecorder()
+	router.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusNoContent, w.Code)
+}
+
+func TestUserNeedsSecureSessionFailsClosedWithoutDatabase(t *testing.T) {
+	previousDB := model.UseDB()
+	model.Use(nil)
+	t.Cleanup(func() {
+		model.Use(previousDB)
+	})
+
+	needsSecureSession, err := userNeedsSecureSession(&model.User{
+		Model: model.Model{ID: 1},
+	})
+
+	require.NoError(t, err)
+	assert.True(t, needsSecureSession)
+}

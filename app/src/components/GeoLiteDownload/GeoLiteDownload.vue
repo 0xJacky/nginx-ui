@@ -178,9 +178,10 @@ defineExpose({
       type="success"
       show-icon
       :icon="h(CheckCircleOutlined)"
-      class="mb-3"
       banner
     />
+
+    <br>
 
     <div class="space-y-3">
       <!-- Download Button -->

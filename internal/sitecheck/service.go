@@ -40,6 +40,10 @@ var (
 func Init(ctx context.Context) {
 	service := NewService(ctx, DefaultCheckOptions())
 
+	// Run one immediate reconciliation pass so pre-existing legacy site_config
+	// data is upgraded on startup without waiting for periodic collection or API writes.
+	ReconcileSiteConfigSiteIDsIfDirty()
+
 	globalServiceMu.Lock()
 	globalService = service
 	if globalUpdateCallback != nil {

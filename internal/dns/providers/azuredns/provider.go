@@ -325,7 +325,8 @@ func getRecordSet(ctx context.Context, client *armdns.RecordSetsClient, zone zon
 			if recordSet == nil || recordSet.Name == nil {
 				continue
 			}
-			if strings.EqualFold(strings.TrimSuffix(*recordSet.Name, "."), name) {
+			// Azure may report a record set created elsewhere in Unicode.
+			if dns.ToASCIIName(*recordSet.Name) == dns.ToASCIIName(name) {
 				return *recordSet, *recordSet.Name, nil
 			}
 		}

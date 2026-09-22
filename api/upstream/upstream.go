@@ -1,7 +1,6 @@
 package upstream
 
 import (
-	"context"
 	"net/http"
 	"sync"
 	"time"
@@ -41,6 +40,10 @@ func GetUpstreamDefinitions(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+// availabilityPushInterval is how often availability results are pushed while
+// a WebSocket client is connected.
+const availabilityPushInterval = 5 * time.Second
+
 // AvailabilityWebSocket handles WebSocket connections for real-time availability monitoring
 func AvailabilityWebSocket(c *gin.Context) {
 	var upGrader = websocket.Upgrader{
@@ -55,9 +58,11 @@ func AvailabilityWebSocket(c *gin.Context) {
 	}
 	defer ws.Close()
 
-	// Use context to manage goroutine lifecycle
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
+	// This handler only pushes. The keepalive owns the reader, so a peer that
+	// vanished without a close frame ends the session within the pong wait
+	// instead of holding a wsConnections slot until TCP gives up.
+	keepalive := helper.StartWebSocketKeepaliveReader(ws)
+	defer keepalive.Stop()
 
 	// Register this connection and increase check frequency
 	registerWebSocketConnection()
@@ -65,54 +70,43 @@ func AvailabilityWebSocket(c *gin.Context) {
 
 	// Send initial results immediately
 	service := upstream.GetUpstreamService()
-	initialResults := service.GetAvailabilityMap()
-	if err := ws.WriteJSON(initialResults); err != nil {
-		logger.Error("Failed to send initial results:", err)
+	if !writeAvailability(ws, service.GetAvailabilityMap()) {
 		return
 	}
 
-	// Create ticker for periodic updates (every 5 seconds when WebSocket is connected)
-	ticker := time.NewTicker(5 * time.Second)
+	ticker := time.NewTicker(availabilityPushInterval)
 	defer ticker.Stop()
 
-	// Monitor for incoming messages (ping/pong or close)
-	go func() {
-		defer cancel()
-		for {
-			// Read message (we don't expect any specific data, just use it for connection health)
-			_, _, err := ws.ReadMessage()
-			if err != nil {
-				if helper.IsUnexpectedWebsocketError(err) {
-					logger.Error("WebSocket read error:", err)
-				}
-				return
-			}
-		}
-	}()
-
-	// Main loop to send periodic updates
 	for {
 		select {
-		case <-ctx.Done():
-			logger.Debug("WebSocket connection closed")
+		case <-keepalive.Done():
+			logger.Debug("AvailabilityWebSocket: peer disconnected, closing WebSocket")
 			return
 
 		case <-ticker.C:
-			// Get latest results from service
-			results := service.GetAvailabilityMap()
-
-			// Send results via WebSocket
-			if err := ws.WriteJSON(results); err != nil {
-				logger.Error("Failed to send WebSocket update:", err)
-				if helper.IsUnexpectedWebsocketError(err) {
-					return
-				}
+			if !writeAvailability(ws, service.GetAvailabilityMap()) {
+				return
 			}
+
 		case <-kernel.Context.Done():
 			logger.Debug("AvailabilityWebSocket: Context cancelled, closing WebSocket")
 			return
 		}
 	}
+}
+
+// writeAvailability pushes one availability snapshot and reports whether the
+// handler should keep pushing. A failed or timed-out write leaves the
+// connection unusable, so every error ends the session.
+func writeAvailability(ws *websocket.Conn, results map[string]*upstream.Status) bool {
+	_ = ws.SetWriteDeadline(time.Now().Add(helper.WebSocketWriteWait))
+	if err := ws.WriteJSON(results); err != nil {
+		if helper.IsUnexpectedWebsocketError(err) {
+			logger.Error("Failed to send WebSocket update:", err)
+		}
+		return false
+	}
+	return true
 }
 
 // WebSocket connection tracking for managing check frequency

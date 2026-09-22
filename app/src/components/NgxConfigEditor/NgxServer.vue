@@ -40,8 +40,10 @@ const serverTabItems = computed(() => ngxConfig.value.servers?.map((server, inde
 })) ?? [])
 
 watch(serversLength, () => {
+  // An empty config, e.g. while another site is loading, must not park the tab
+  // index on -1.
   if (curServerIdx.value >= serversLength.value)
-    curServerIdx.value = serversLength.value - 1
+    curServerIdx.value = Math.max(serversLength.value - 1, 0)
   else if (curServerIdx.value < 0)
     curServerIdx.value = 0
 })

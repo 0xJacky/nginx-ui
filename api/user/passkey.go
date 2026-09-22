@@ -26,8 +26,15 @@ import (
 const passkeyTimeout = 30 * time.Second
 const currentPasswordHeader = "X-Current-Password"
 
+const (
+	passkeyRegistrationCachePrefix  = "passkey:registration:"
+	passkeyPreAuthCachePrefix       = "passkey:pre-auth:"
+	passkeyLoginCachePrefix         = "passkey:login:"
+	passkeySecureSessionCachePrefix = "passkey:secure-session:"
+)
+
 func buildCachePasskeyRegKey(id uint64) string {
-	return fmt.Sprintf("passkey-reg-%d", id)
+	return fmt.Sprintf("%s%d", passkeyRegistrationCachePrefix, id)
 }
 
 type passkeyPreAuthSession struct {
@@ -36,7 +43,44 @@ type passkeyPreAuthSession struct {
 }
 
 func buildPasskeyPreAuthKey(id string) string {
-	return "passkey-preauth-" + id
+	return passkeyPreAuthCachePrefix + id
+}
+
+func buildPasskeyLoginKey(id string) string {
+	return passkeyLoginCachePrefix + id
+}
+
+func buildPasskeySecureSessionKey(id string) string {
+	return passkeySecureSessionCachePrefix + id
+}
+
+func isCanonicalSessionID(sessionID string) bool {
+	parsed, err := uuid.Parse(sessionID)
+	return err == nil && parsed.String() == sessionID
+}
+
+func takeWebAuthnSession(sessionID string, buildKey func(string) string) (*webauthn.SessionData, bool) {
+	if !isCanonicalSessionID(sessionID) {
+		return nil, false
+	}
+
+	sessionValue, ok := cache.Take(buildKey(sessionID))
+	if !ok {
+		return nil, false
+	}
+
+	sessionData, ok := sessionValue.(*webauthn.SessionData)
+	return sessionData, ok && sessionData != nil
+}
+
+func takePasskeyRegistrationSession(userID uint64) (*webauthn.SessionData, bool) {
+	sessionValue, ok := cache.Take(buildCachePasskeyRegKey(userID))
+	if !ok {
+		return nil, false
+	}
+
+	sessionData, ok := sessionValue.(*webauthn.SessionData)
+	return sessionData, ok && sessionData != nil
 }
 
 func beginPasskeyPreAuthentication(c *gin.Context, currentUser *model.User) {
@@ -110,7 +154,7 @@ func FinishPasskeyPreAuthentication(c *gin.Context) {
 }
 
 func takePasskeyPreAuthSession(preAuthID string) (*passkeyPreAuthSession, bool) {
-	if preAuthID == "" {
+	if !isCanonicalSessionID(preAuthID) {
 		return nil, false
 	}
 	key := buildPasskeyPreAuthKey(preAuthID)
@@ -150,13 +194,12 @@ func BeginPasskeyRegistration(c *gin.Context) {
 func FinishPasskeyRegistration(c *gin.Context) {
 	cUser := api.CurrentUser(c)
 	webauthnInstance := passkey.GetInstance()
-	sessionDataBytes, ok := cache.Take(buildCachePasskeyRegKey(cUser.ID))
+	sessionData, ok := takePasskeyRegistrationSession(cUser.ID)
 	if !ok {
 		cosy.ErrHandler(c, user.ErrSessionNotFound)
 		return
 	}
 
-	sessionData := sessionDataBytes.(*webauthn.SessionData)
 	credential, err := webauthnInstance.FinishRegistration(cUser, *sessionData, c.Request)
 	if err != nil {
 		cosy.ErrHandler(c, err)
@@ -194,7 +237,7 @@ func BeginPasskeyLogin(c *gin.Context) {
 		return
 	}
 	sessionID := uuid.NewString()
-	cache.Set(sessionID, sessionData, passkeyTimeout)
+	cache.Set(buildPasskeyLoginKey(sessionID), sessionData, passkeyTimeout)
 
 	c.JSON(http.StatusOK, gin.H{
 		"session_id": sessionID,
@@ -207,14 +250,13 @@ func FinishPasskeyLogin(c *gin.Context) {
 		cosy.ErrHandler(c, user.ErrWebAuthnNotConfigured)
 		return
 	}
-	sessionId := c.GetHeader("X-Passkey-Session-ID")
-	sessionDataBytes, ok := cache.Take(sessionId)
+	sessionID := c.GetHeader("X-Passkey-Session-ID")
+	sessionData, ok := takeWebAuthnSession(sessionID, buildPasskeyLoginKey)
 	if !ok {
 		cosy.ErrHandler(c, user.ErrSessionNotFound)
 		return
 	}
 	webauthnInstance := passkey.GetInstance()
-	sessionData := sessionDataBytes.(*webauthn.SessionData)
 	var outUser *model.User
 	_, err := webauthnInstance.FinishDiscoverableLogin(
 		func(rawID, userHandle []byte) (user webauthn.User, err error) {

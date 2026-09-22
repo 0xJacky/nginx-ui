@@ -1,6 +1,8 @@
 package certificate
 
 import (
+	"errors"
+
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
@@ -36,9 +38,12 @@ func handleRevokeCertLogChan(writer *helper.SafeWebSocketWriter, logChan chan st
 	}
 }
 
-// RevokeCert handles certificate revocation through websocket connection
+// RevokeCert handles certificate revocation through websocket connection.
+// With delete_on_failure=true the record is removed even if the CA did not
+// revoke the certificate, and the outcome is reported as a warning.
 func RevokeCert(c *gin.Context) {
 	id := cast.ToUint64(c.Param("id"))
+	deleteOnFailure := cast.ToBool(c.Query("delete_on_failure"))
 
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: middleware.CheckWebSocketOrigin,
@@ -94,18 +99,22 @@ func RevokeCert(c *gin.Context) {
 	go handleRevokeCertLogChan(wsWriter, logChan)
 
 	// block, until errChan closes
+	var revokeErr error
 	for err = range errChan {
 		logger.Error(err)
-		err = wsWriter.WriteJSON(RevokeCertResponse{
+		revokeErr = errors.Join(revokeErr, err)
+	}
+
+	// The CA did not revoke the certificate, so keep the record unless the
+	// user asked to remove it anyway.
+	if revokeErr != nil && !deleteOnFailure {
+		_ = wsWriter.WriteJSON(RevokeCertResponse{
 			Status: Error,
 			Container: translation.C("Failed to revoke certificate: %{error}", map[string]any{
-				"error": err.Error(),
+				"error": revokeErr.Error(),
 			}),
 		})
-		if err != nil {
-			logger.Error(err)
-			return
-		}
+		return
 	}
 
 	// Update certificate status in database
@@ -116,6 +125,16 @@ func RevokeCert(c *gin.Context) {
 			Status: Error,
 			Container: translation.C("Failed to delete certificate from database: %{error}", map[string]any{
 				"error": err.Error(),
+			}),
+		})
+		return
+	}
+
+	if revokeErr != nil {
+		_ = wsWriter.WriteJSON(RevokeCertResponse{
+			Status: Warning,
+			Container: translation.C("Certificate deleted, but revocation failed: %{error}", map[string]any{
+				"error": revokeErr.Error(),
 			}),
 		})
 		return

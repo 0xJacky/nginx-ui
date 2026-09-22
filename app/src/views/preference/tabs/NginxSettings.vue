@@ -165,9 +165,9 @@ async function openSSHSetup() {
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm layout="vertical" class="max-w-150">
     <AFormItem :label="$gettext('Stub Status Port')">
-      <AInputNumber v-model:value="data.nginx.stub_status_port" />
+      <AInputNumber v-model:value="data.nginx.stub_status_port" class="w-30" />
     </AFormItem>
     <AFormItem :label="$gettext('Maintenance host')">
       <AInput
@@ -182,6 +182,7 @@ async function openSSHSetup() {
       <AInput
         v-model:value="data.nginx.maintenance_bypass_ip"
         :placeholder="$gettext('203.0.113.10')"
+        class="max-w-100"
       />
       <div class="text-secondary mt-1">
         {{ $gettext('Requests from this IPv4 or IPv6 address continue to use the original site while maintenance mode is active.') }}
@@ -191,6 +192,7 @@ async function openSSHSetup() {
       <AInput
         v-model:value="data.nginx.maintenance_template"
         :placeholder="$gettext('maintenance.html')"
+        class="max-w-100"
       />
       <div class="text-secondary mt-1">
         {{ $gettext('Mounted directory') }}: {{ data.nginx.maintenance_dir }}
@@ -302,7 +304,7 @@ async function openSSHSetup() {
       :validate-status="hasContainerNameError ? 'error' : undefined"
       :help="hasContainerNameError ? $gettext('This field is required') : undefined"
     >
-      <AInput v-model:value="containerName" placeholder="nginx" />
+      <AInput v-model:value="containerName" placeholder="nginx" class="max-w-100" />
     </AFormItem>
 
     <div v-if="isEditingControl" class="mb-6 flex flex-wrap gap-2">

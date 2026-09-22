@@ -2,6 +2,7 @@ package sitecheck
 
 import (
 	"context"
+	"crypto/tls"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -11,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -20,14 +22,34 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
+	"gorm.io/gorm"
 )
+
+func calculateCertDaysRemaining(state *tls.ConnectionState) *int64 {
+	if state == nil || len(state.PeerCertificates) == 0 {
+		return nil
+	}
+
+	remaining := state.PeerCertificates[0].NotAfter.Sub(time.Now())
+	day := 24 * time.Hour
+
+	var days int64
+	if remaining >= 0 {
+		days = int64((remaining + day - time.Nanosecond) / day)
+	} else {
+		days = -int64(((-remaining) + day - time.Nanosecond) / day)
+	}
+
+	return &days
+}
 
 // Site config cache with expiration
 var (
-	siteConfigCache = make(map[string]*siteConfigCacheEntry)
-	siteConfigMutex sync.RWMutex
-	cacheExpiry     = 5 * time.Minute // Cache entries expire after 5 minutes
-	lastBatchLoad   time.Time
+	siteConfigCache   = make(map[string]*siteConfigCacheEntry)
+	siteConfigMutex   sync.RWMutex
+	cacheExpiry       = 5 * time.Minute // Cache entries expire after 5 minutes
+	lastBatchLoad     time.Time
+	linkReconcileOnce sync.Once
 )
 
 type siteConfigCacheEntry struct {
@@ -81,6 +103,9 @@ func (sc *SiteChecker) SetUpdateCallback(callback func([]*SiteInfo)) {
 
 // CollectSites collects URLs from enabled indexed sites only
 func (sc *SiteChecker) CollectSites() {
+	reconcileSiteConfigSiteIDsOnce()
+	reconcileSiteConfigSiteIDsIfDirty()
+
 	sc.mu.Lock()
 	defer sc.mu.Unlock()
 
@@ -132,6 +157,7 @@ func (sc *SiteChecker) CollectSites() {
 					siteInfo.LastChecked = previous.LastChecked
 					siteInfo.Error = previous.Error
 					siteInfo.ErrorType = previous.ErrorType
+					siteInfo.CertDaysRemaining = previous.CertDaysRemaining
 				}
 				if !settings.SiteCheckSettings.Enabled {
 					siteInfo.HealthCheckDisabledReason = "global"
@@ -244,10 +270,14 @@ func InvalidateSiteConfigCacheForHost(host string) {
 	logger.Debugf("Site config cache invalidated for host: %s", host)
 }
 
-func canonicalSiteKey(siteName, rawURL string) string {
+func canonicalSiteKeyWithIndex(siteIndex uint64, siteName, rawURL string) string {
 	parsed, err := url.Parse(rawURL)
 	if err != nil || parsed.Hostname() == "" {
-		return strings.TrimSpace(siteName) + "|" + strings.TrimSpace(rawURL)
+		prefix := strings.TrimSpace(siteName)
+		if siteIndex > 0 {
+			prefix = fmt.Sprintf("#%d", siteIndex)
+		}
+		return prefix + "|" + strings.TrimSpace(rawURL)
 	}
 
 	host := strings.ToLower(parsed.Hostname())
@@ -261,7 +291,509 @@ func canonicalSiteKey(siteName, rawURL string) string {
 		}
 	}
 
-	return strings.TrimSpace(siteName) + "|" + strings.ToLower(parsed.Scheme) + "://" + net.JoinHostPort(host, port)
+	prefix := strings.TrimSpace(siteName)
+	if siteIndex > 0 {
+		prefix = fmt.Sprintf("#%d", siteIndex)
+	}
+
+	return prefix + "|" + strings.ToLower(parsed.Scheme) + "://" + net.JoinHostPort(host, port)
+}
+
+func canonicalSiteKey(siteName, rawURL string) string {
+	return canonicalSiteKeyWithIndex(0, siteName, rawURL)
+}
+
+func resolveSiteIndexByName(siteName string) uint64 {
+	siteName = strings.TrimSpace(siteName)
+	if siteName == "" {
+		return 0
+	}
+
+	path, err := site.ResolveAvailablePath(siteName)
+	if err != nil {
+		return 0
+	}
+
+	s := query.Site
+	siteModel, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
+	if err != nil {
+		logger.Warnf("Failed to resolve site index for %s: %v", siteName, err)
+		return 0
+	}
+
+	return siteModel.ID
+}
+
+func countSiteConfigsWithEmptyIndex() int64 {
+	var count int64
+	err := model.UseDB().Model(&model.SiteConfig{}).
+		Where("site_index IS NULL OR site_index = 0").
+		Count(&count).Error
+	if err != nil {
+		logger.Errorf("Failed to count site configs with empty index: %v", err)
+		return 0
+	}
+	return count
+}
+
+func countDuplicatedSiteIndexes() int64 {
+	var count int64
+	err := model.UseDB().Model(&model.SiteConfig{}).
+		Select("site_index").
+		Where("site_index > 0").
+		Group("site_index").
+		Having("COUNT(*) > 1").
+		Count(&count).Error
+	if err != nil {
+		logger.Errorf("Failed to count duplicated site_index groups: %v", err)
+		return 0
+	}
+	return count
+}
+
+func duplicatedSiteIndexes(db *gorm.DB) ([]uint64, error) {
+	type duplicateIndexRow struct {
+		SiteIndex uint64
+	}
+
+	var rows []duplicateIndexRow
+	err := db.Model(&model.SiteConfig{}).
+		Select("site_index").
+		Where("site_index > 0").
+		Group("site_index").
+		Having("COUNT(*) > 1").
+		Scan(&rows).Error
+	if err != nil {
+		return nil, err
+	}
+
+	indexes := make([]uint64, 0, len(rows))
+	for _, row := range rows {
+		indexes = append(indexes, row.SiteIndex)
+	}
+
+	return indexes, nil
+}
+
+func markSiteConfigsDeletedByIndexes(db *gorm.DB, indexes []uint64) (int64, error) {
+	if len(indexes) == 0 {
+		return 0, nil
+	}
+
+	result := db.Where("site_index IN ?", indexes).Delete(&model.SiteConfig{})
+	if result.Error != nil {
+		return 0, result.Error
+	}
+
+	return result.RowsAffected, nil
+}
+
+func resetAllSiteCheckTables(reason string) error {
+	db := model.UseDB()
+	tx := db.Begin()
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+			panic(r)
+		}
+	}()
+
+	if err := tx.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&model.SiteConfig{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err := tx.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&model.SiteHealthAlertState{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err := tx.Commit().Error; err != nil {
+		return err
+	}
+
+	InvalidateSiteConfigCache()
+	logger.Warnf("Sitecheck tables reset: reason=%s", reason)
+	return nil
+}
+
+func buildIndexedSiteHostLookup() map[string]string {
+	lookup := make(map[string]string)
+	indexedSites := site.GetAllIndexedSites()
+
+	for siteName, indexedSite := range indexedSites {
+		for _, rawURL := range indexedSite.Urls {
+			if strings.TrimSpace(rawURL) == "" {
+				continue
+			}
+
+			tmp := &model.SiteConfig{}
+			if err := tmp.SetFromURL(rawURL); err != nil {
+				continue
+			}
+			if tmp.Host == "" {
+				continue
+			}
+
+			if _, exists := lookup[tmp.Host]; !exists {
+				lookup[tmp.Host] = siteName
+			}
+		}
+	}
+
+	return lookup
+}
+
+func deduplicateSiteConfigs(tx *gorm.DB) (int, error) {
+	type duplicateIndexHost struct {
+		SiteIndex uint64
+		Host      string
+		Scheme    string
+	}
+	type duplicateSiteKey struct {
+		SiteKey string
+	}
+
+	idsToDelete := make(map[uint64]struct{})
+
+	markStaleRows := func(where string, args ...any) error {
+		var rows []model.SiteConfig
+		if err := tx.Where(where, args...).Order("updated_at desc, id desc").Find(&rows).Error; err != nil {
+			return err
+		}
+		for i := 1; i < len(rows); i++ {
+			idsToDelete[rows[i].ID] = struct{}{}
+		}
+		return nil
+	}
+
+	var indexHostGroups []duplicateIndexHost
+	if err := tx.Model(&model.SiteConfig{}).
+		Select("site_index, host, scheme").
+		Where("site_index > 0 AND host <> ''").
+		Group("site_index, host, scheme").
+		Having("COUNT(*) > 1").
+		Scan(&indexHostGroups).Error; err != nil {
+		return 0, err
+	}
+
+	for _, group := range indexHostGroups {
+		if err := markStaleRows("site_index = ? AND host = ? AND scheme = ?", group.SiteIndex, group.Host, group.Scheme); err != nil {
+			return 0, err
+		}
+	}
+
+	var siteKeyGroups []duplicateSiteKey
+	if err := tx.Model(&model.SiteConfig{}).
+		Select("site_key").
+		Where("site_key <> ''").
+		Group("site_key").
+		Having("COUNT(*) > 1").
+		Scan(&siteKeyGroups).Error; err != nil {
+		return 0, err
+	}
+
+	for _, group := range siteKeyGroups {
+		if err := markStaleRows("site_key = ?", group.SiteKey); err != nil {
+			return 0, err
+		}
+	}
+
+	if len(idsToDelete) == 0 {
+		return 0, nil
+	}
+
+	ids := make([]uint64, 0, len(idsToDelete))
+	for id := range idsToDelete {
+		ids = append(ids, id)
+	}
+
+	if err := tx.Where("id IN ?", ids).Delete(&model.SiteConfig{}).Error; err != nil {
+		return 0, err
+	}
+
+	return len(ids), nil
+}
+
+// updateSiteListFieldsOnly persists only sitelist-linked columns for an
+// existing site config, so health-check configuration columns are never
+// overwritten during reconciliation.
+func updateSiteListFieldsOnly(db *gorm.DB, cfg *model.SiteConfig, fields map[string]any) error {
+	if cfg == nil || cfg.ID == 0 || len(fields) == 0 {
+		return nil
+	}
+
+	fieldNames := make([]string, 0, len(fields))
+	for field := range fields {
+		fieldNames = append(fieldNames, field)
+	}
+	sort.Strings(fieldNames)
+	logger.Debugf("Site config sitelist-field update: id=%d fields=%s", cfg.ID, strings.Join(fieldNames, ","))
+
+	if err := db.Model(&model.SiteConfig{}).Where("id = ?", cfg.ID).Updates(fields).Error; err != nil {
+		return err
+	}
+
+	if v, ok := fields["site_key"].(string); ok {
+		cfg.SiteKey = v
+	}
+	if v, ok := fields["site_name"].(string); ok {
+		cfg.SiteName = v
+	}
+	if v, ok := fields["site_id"].(uint64); ok {
+		cfg.SiteID = v
+	}
+	if v, ok := fields["site_index"].(uint64); ok {
+		cfg.SiteIndex = v
+	}
+	if v, ok := fields["host"].(string); ok {
+		cfg.Host = v
+	}
+	if v, ok := fields["scheme"].(string); ok {
+		cfg.Scheme = v
+	}
+	if v, ok := fields["display_url"].(string); ok {
+		cfg.DisplayURL = v
+	}
+	if v, ok := fields["port"].(int); ok {
+		cfg.Port = v
+	}
+
+	return nil
+}
+
+func upgradeSiteConfigAssociations() (updated int, deduplicated int, unresolved int, err error) {
+	tx := model.UseDB().Begin()
+	if tx.Error != nil {
+		return 0, 0, 0, tx.Error
+	}
+
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+			panic(r)
+		}
+	}()
+
+	var configs []model.SiteConfig
+	if err = tx.Find(&configs).Error; err != nil {
+		tx.Rollback()
+		return 0, 0, 0, err
+	}
+
+	hostLookup := buildIndexedSiteHostLookup()
+
+	for i := range configs {
+		cfg := &configs[i]
+		fieldsToUpdate := map[string]any{}
+
+		siteName := strings.TrimSpace(cfg.SiteName)
+		if siteName == "" {
+			if inferred, ok := hostLookup[cfg.Host]; ok {
+				siteName = inferred
+				fieldsToUpdate["site_name"] = inferred
+			}
+		}
+
+		targetIndex := cfg.SiteIndex
+		if siteName != "" {
+			if resolved := resolveSiteIndexByName(siteName); resolved > 0 {
+				targetIndex = resolved
+			}
+		}
+
+		if targetIndex > 0 {
+			if cfg.SiteIndex != targetIndex {
+				fieldsToUpdate["site_index"] = targetIndex
+			}
+			if cfg.SiteID != targetIndex {
+				fieldsToUpdate["site_id"] = targetIndex
+			}
+		} else {
+			unresolved++
+		}
+
+		displayURL := strings.TrimSpace(cfg.DisplayURL)
+		if displayURL == "" {
+			displayURL = cfg.GetURL()
+		}
+		expectedSiteKey := canonicalSiteKeyWithIndex(targetIndex, siteName, displayURL)
+		if cfg.SiteKey != expectedSiteKey {
+			fieldsToUpdate["site_key"] = expectedSiteKey
+		}
+
+		if len(fieldsToUpdate) > 0 {
+			if err = updateSiteListFieldsOnly(tx, cfg, fieldsToUpdate); err != nil {
+				tx.Rollback()
+				return 0, 0, 0, err
+			}
+			updated++
+		}
+	}
+
+	deduplicated, err = deduplicateSiteConfigs(tx)
+	if err != nil {
+		tx.Rollback()
+		return 0, 0, 0, err
+	}
+
+	if err = tx.Commit().Error; err != nil {
+		return 0, 0, 0, err
+	}
+
+	return updated, deduplicated, unresolved, nil
+}
+
+func reconcileSiteConfigSiteIDsIfDirty() {
+	if query.SiteConfig == nil || query.Site == nil {
+		return
+	}
+
+	emptyCount := countSiteConfigsWithEmptyIndex()
+	duplicatedGroups := countDuplicatedSiteIndexes()
+	if emptyCount == 0 && duplicatedGroups == 0 {
+		return
+	}
+
+	if duplicatedGroups > 0 {
+		indexes, idxErr := duplicatedSiteIndexes(model.UseDB())
+		if idxErr != nil {
+			logger.Errorf("Failed to query duplicated site_index values before reset: %v", idxErr)
+		} else {
+			deleted, delErr := markSiteConfigsDeletedByIndexes(model.UseDB(), indexes)
+			if delErr != nil {
+				logger.Errorf("Failed to batch mark duplicated site_index rows deleted before reset: %v", delErr)
+			} else if deleted > 0 {
+				logger.Warnf("Batch marked duplicated site_index rows deleted before reset: groups=%d rows=%d", duplicatedGroups, deleted)
+			}
+		}
+
+		reason := fmt.Sprintf("duplicate_site_index_groups=%d empty_index_rows=%d", duplicatedGroups, emptyCount)
+		if err := resetAllSiteCheckTables(reason); err != nil {
+			logger.Errorf("Failed to reset sitecheck tables for duplicated site_index groups: %v", err)
+		}
+		return
+	}
+
+	updated, deduplicated, unresolved, err := upgradeSiteConfigAssociations()
+	if err != nil {
+		reason := fmt.Sprintf("upgrade_failed empty_index_rows=%d error=%v", emptyCount, err)
+		logger.Warnf("Site config auto-upgrade failed, fallback reset starts: %s", reason)
+		if resetErr := resetAllSiteCheckTables(reason); resetErr != nil {
+			logger.Errorf("Failed to reset sitecheck tables after upgrade failure: %v", resetErr)
+		}
+		return
+	}
+
+	if updated > 0 || deduplicated > 0 {
+		InvalidateSiteConfigCache()
+	}
+
+	if unresolved > 0 {
+		logger.Warnf("Site config auto-upgrade finished with unresolved records: unresolved=%d", unresolved)
+	}
+
+	remainingEmpty := countSiteConfigsWithEmptyIndex()
+	if remainingEmpty > 0 {
+		logger.Warnf("Site config auto-upgrade could not resolve all empty indexes: remaining=%d", remainingEmpty)
+	}
+
+	if updated > 0 || deduplicated > 0 || unresolved > 0 {
+		logger.Infof("Site config auto-upgrade summary: updated=%d deduplicated=%d unresolved=%d", updated, deduplicated, unresolved)
+	}
+}
+
+// ReconcileSiteConfigSiteIDsIfDirty runs the reconciliation flow when site
+// config records are dirty (empty or duplicated indexes). This is used by
+// write APIs to trigger cleanup immediately instead of waiting for periodic
+// site collection.
+func ReconcileSiteConfigSiteIDsIfDirty() {
+	reconcileSiteConfigSiteIDsIfDirty()
+}
+
+func reconcileSiteConfigSiteIDsOnce() {
+	linkReconcileOnce.Do(reconcileSiteConfigSiteIDsIfDirty)
+}
+
+func splitHostAndPort(hostport string) (string, string) {
+	hostport = strings.TrimSpace(hostport)
+	if hostport == "" {
+		return "", ""
+	}
+	h, p, err := net.SplitHostPort(hostport)
+	if err != nil {
+		return strings.ToLower(hostport), ""
+	}
+	return strings.ToLower(h), p
+}
+
+func findSiteConfigByIndex(siteIndex uint64, siteName, host, scheme string) (*model.SiteConfig, error) {
+	if siteIndex == 0 {
+		return nil, fmt.Errorf("invalid site index")
+	}
+
+	var duplicateCount int64
+	if err := model.UseDB().Model(&model.SiteConfig{}).Where("site_index = ?", siteIndex).Count(&duplicateCount).Error; err != nil {
+		return nil, err
+	}
+	if duplicateCount > 1 {
+		deleted, delErr := markSiteConfigsDeletedByIndexes(model.UseDB(), []uint64{siteIndex})
+		if delErr != nil {
+			logger.Errorf("Failed to batch mark duplicated site_index rows deleted during lookup: index=%d err=%v", siteIndex, delErr)
+		} else if deleted > 0 {
+			logger.Warnf("Batch marked duplicated site_index rows deleted during lookup: index=%d rows=%d", siteIndex, deleted)
+		}
+
+		if err := resetAllSiteCheckTables(fmt.Sprintf("duplicate site_index detected during lookup: %d", siteIndex)); err != nil {
+			return nil, err
+		}
+		return nil, fmt.Errorf("site check tables reset due to duplicate site index")
+	}
+
+	var candidates []model.SiteConfig
+	q := model.UseDB().Where("site_index = ?", siteIndex)
+	if strings.TrimSpace(siteName) != "" {
+		q = q.Where("site_name = ?", siteName)
+	}
+	err := q.Order("updated_at desc, id desc").Find(&candidates).Error
+	if err != nil {
+		return nil, err
+	}
+
+	if len(candidates) == 0 && strings.TrimSpace(siteName) != "" {
+		err = model.UseDB().Where("site_index = ?", siteIndex).Order("updated_at desc, id desc").Find(&candidates).Error
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	if len(candidates) == 0 {
+		return nil, fmt.Errorf("site config not found by index")
+	}
+
+	targetHost, _ := splitHostAndPort(host)
+	targetScheme := strings.ToLower(strings.TrimSpace(scheme))
+
+	for i := range candidates {
+		if strings.EqualFold(candidates[i].Host, host) {
+			return &candidates[i], nil
+		}
+	}
+
+	for i := range candidates {
+		candidateHost, _ := splitHostAndPort(candidates[i].Host)
+		if candidateHost == targetHost {
+			if targetScheme == "" || strings.EqualFold(candidates[i].Scheme, targetScheme) {
+				return &candidates[i], nil
+			}
+		}
+	}
+
+	return &candidates[0], nil
 }
 
 // getOrCreateSiteConfigForURL gets or creates a site config for the given URL.
@@ -271,10 +803,46 @@ func getOrCreateSiteConfigForURL(siteName, rawURL string) *model.SiteConfig {
 	tempConfig := &model.SiteConfig{}
 	tempConfig.SetFromURL(rawURL)
 	tempConfig.SiteName = siteName
-	tempConfig.SiteKey = canonicalSiteKey(siteName, rawURL)
+	tempConfig.SiteIndex = resolveSiteIndexByName(siteName)
+	tempConfig.SiteID = tempConfig.SiteIndex
+	tempConfig.SiteKey = canonicalSiteKeyWithIndex(tempConfig.SiteIndex, siteName, rawURL)
+	legacySiteKey := canonicalSiteKey(siteName, rawURL)
 
 	// Try to get from cache first
 	if config, found := getCachedSiteConfig(tempConfig.SiteKey); found {
+		fieldsToUpdate := map[string]any{}
+		if tempConfig.SiteIndex > 0 && config.SiteIndex != tempConfig.SiteIndex {
+			fieldsToUpdate["site_index"] = tempConfig.SiteIndex
+		}
+		if tempConfig.SiteID > 0 && config.SiteID != tempConfig.SiteID {
+			fieldsToUpdate["site_id"] = tempConfig.SiteID
+		}
+		if strings.TrimSpace(siteName) != "" && strings.TrimSpace(config.SiteName) != strings.TrimSpace(siteName) {
+			fieldsToUpdate["site_name"] = siteName
+		}
+		if len(fieldsToUpdate) > 0 {
+			_ = updateSiteListFieldsOnly(model.UseDB(), config, fieldsToUpdate)
+		}
+		return config
+	}
+	if config, found := getCachedSiteConfig(legacySiteKey); found {
+		fieldsToUpdate := map[string]any{}
+		if config.SiteKey != tempConfig.SiteKey {
+			fieldsToUpdate["site_key"] = tempConfig.SiteKey
+		}
+		if tempConfig.SiteIndex > 0 && config.SiteIndex != tempConfig.SiteIndex {
+			fieldsToUpdate["site_index"] = tempConfig.SiteIndex
+		}
+		if tempConfig.SiteID > 0 && config.SiteID != tempConfig.SiteID {
+			fieldsToUpdate["site_id"] = tempConfig.SiteID
+		}
+		if strings.TrimSpace(siteName) != "" && strings.TrimSpace(config.SiteName) != strings.TrimSpace(siteName) {
+			fieldsToUpdate["site_name"] = siteName
+		}
+		if len(fieldsToUpdate) > 0 {
+			_ = updateSiteListFieldsOnly(model.UseDB(), config, fieldsToUpdate)
+		}
+		setCachedSiteConfig(tempConfig.SiteKey, config)
 		return config
 	}
 
@@ -282,12 +850,36 @@ func getOrCreateSiteConfigForURL(siteName, rawURL string) *model.SiteConfig {
 	sc := query.SiteConfig
 	siteConfig, err := sc.Where(sc.SiteKey.Eq(tempConfig.SiteKey)).First()
 	if err != nil {
+		siteConfig, err = sc.Where(sc.SiteKey.Eq(legacySiteKey)).First()
+	}
+	if err != nil {
+		if tempConfig.SiteIndex > 0 {
+			siteConfig, err = findSiteConfigByIndex(tempConfig.SiteIndex, siteName, tempConfig.Host, tempConfig.Scheme)
+			if err != nil {
+				siteConfig, err = findSiteConfigByIndex(tempConfig.SiteIndex, siteName, "", tempConfig.Scheme)
+			}
+		}
+	}
+	if err != nil && strings.TrimSpace(siteName) != "" {
+		siteConfig, err = sc.Where(sc.Host.Eq(tempConfig.Host), sc.SiteName.Eq(siteName)).First()
+	}
+	if err != nil {
 		// Lazily adopt a legacy record when it still has no stable key.
 		siteConfig, err = sc.Where(sc.Host.Eq(tempConfig.Host), sc.SiteKey.Eq("")).First()
 		if err == nil {
-			siteConfig.SiteKey = tempConfig.SiteKey
-			siteConfig.SiteName = siteName
-			if saveErr := sc.Save(siteConfig); saveErr != nil {
+			fieldsToUpdate := map[string]any{
+				"site_key": tempConfig.SiteKey,
+			}
+			if strings.TrimSpace(siteName) != "" {
+				fieldsToUpdate["site_name"] = siteName
+			}
+			if tempConfig.SiteIndex > 0 {
+				fieldsToUpdate["site_index"] = tempConfig.SiteIndex
+			}
+			if tempConfig.SiteID > 0 {
+				fieldsToUpdate["site_id"] = tempConfig.SiteID
+			}
+			if saveErr := updateSiteListFieldsOnly(model.UseDB(), siteConfig, fieldsToUpdate); saveErr != nil {
 				logger.Errorf("Failed to migrate legacy site config for %s: %v", rawURL, saveErr)
 			}
 			setCachedSiteConfig(tempConfig.SiteKey, siteConfig)
@@ -298,6 +890,8 @@ func getOrCreateSiteConfigForURL(siteName, rawURL string) *model.SiteConfig {
 		newConfig := &model.SiteConfig{
 			SiteKey:            tempConfig.SiteKey,
 			SiteName:           siteName,
+			SiteID:             tempConfig.SiteID,
+			SiteIndex:          tempConfig.SiteIndex,
 			Host:               tempConfig.Host,
 			Port:               tempConfig.Port,
 			Scheme:             tempConfig.Scheme,
@@ -324,12 +918,37 @@ func getOrCreateSiteConfigForURL(siteName, rawURL string) *model.SiteConfig {
 		return newConfig
 	}
 
-	// Record exists, ensure it has the correct URL information
-	if siteConfig.DisplayURL == "" {
-		siteConfig.DisplayURL = rawURL
-		siteConfig.SetFromURL(rawURL)
-		// Try to save the updated config, but don't fail if it doesn't work
-		sc.Save(siteConfig)
+	// Record exists, update only sitelist-linked fields.
+	fieldsToUpdate := map[string]any{}
+	if strings.TrimSpace(siteConfig.DisplayURL) != strings.TrimSpace(rawURL) {
+		fieldsToUpdate["display_url"] = rawURL
+	}
+
+	if siteConfig.Host != tempConfig.Host || siteConfig.Port != tempConfig.Port || siteConfig.Scheme != tempConfig.Scheme {
+		fieldsToUpdate["host"] = tempConfig.Host
+		fieldsToUpdate["port"] = tempConfig.Port
+		fieldsToUpdate["scheme"] = tempConfig.Scheme
+	}
+
+	if siteConfig.SiteKey != tempConfig.SiteKey {
+		fieldsToUpdate["site_key"] = tempConfig.SiteKey
+	}
+
+	if strings.TrimSpace(siteConfig.SiteName) != strings.TrimSpace(siteName) {
+		fieldsToUpdate["site_name"] = siteName
+	}
+
+	if tempConfig.SiteIndex > 0 && siteConfig.SiteIndex != tempConfig.SiteIndex {
+		fieldsToUpdate["site_index"] = tempConfig.SiteIndex
+	}
+
+	if tempConfig.SiteID > 0 && siteConfig.SiteID != tempConfig.SiteID {
+		fieldsToUpdate["site_id"] = tempConfig.SiteID
+	}
+
+	if len(fieldsToUpdate) > 0 {
+		// Try to persist sitelist-linked fields only, but don't fail the request if update fails.
+		_ = updateSiteListFieldsOnly(model.UseDB(), siteConfig, fieldsToUpdate)
 	}
 
 	// Cache the config
@@ -418,6 +1037,7 @@ func (sc *SiteChecker) checkSite(ctx context.Context, siteName, siteURL string) 
 			siteInfo.LastChecked = existing.LastChecked
 			siteInfo.Error = existing.Error
 			siteInfo.ErrorType = existing.ErrorType
+			siteInfo.CertDaysRemaining = existing.CertDaysRemaining
 			if siteInfo.Title == "" {
 				siteInfo.Title = existing.Title
 			}
@@ -514,11 +1134,12 @@ func (sc *SiteChecker) checkSiteBasic(ctx context.Context, siteName, siteURL str
 	siteConfig := getOrCreateSiteConfigForURL(siteName, siteURL)
 
 	siteInfo := &SiteInfo{
-		SiteConfig:   *siteConfig,
-		Name:         extractDomainName(siteURL),
-		StatusCode:   resp.StatusCode,
-		ResponseTime: responseTime,
-		LastChecked:  time.Now().Unix(),
+		SiteConfig:        *siteConfig,
+		Name:              extractDomainName(siteURL),
+		StatusCode:        resp.StatusCode,
+		ResponseTime:      responseTime,
+		CertDaysRemaining: calculateCertDaysRemaining(resp.TLS),
+		LastChecked:       time.Now().Unix(),
 	}
 
 	// Determine status based on status code

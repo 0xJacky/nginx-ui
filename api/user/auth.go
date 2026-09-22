@@ -102,9 +102,16 @@ func Login(c *gin.Context) {
 		secureSessionID = user.SetSecureSessionID(u.ID)
 		secureSessionTTL = int(user.SecureSessionDuration().Seconds())
 		loginProof = user.LoginProofOTP
-	} else if u.EnabledPasskey() {
-		beginPasskeyPreAuthentication(c, u)
-		return
+	} else {
+		enabledPasskey, passkeyErr := u.EnabledPasskey()
+		if passkeyErr != nil {
+			cosy.ErrHandler(c, passkeyErr)
+			return
+		}
+		if enabledPasskey {
+			beginPasskeyPreAuthentication(c, u)
+			return
+		}
 	}
 
 	// login success, clear banned record

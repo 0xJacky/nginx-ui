@@ -38,6 +38,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Set up Go
         uses: actions/setup-go@v7
@@ -48,12 +50,65 @@ jobs:
         run: >-
           go test -tags=unembed -race -cover -count=1 ./...
 
+  windows-terminal:
+    name: Windows terminal (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-2022, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      GOWORK: "off"
+      CGO_ENABLED: "1"
+      CC: gcc
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+
+      - name: Set up C compiler for the race detector
+        uses: msys2/setup-msys2@66cd2cce69caa17b53920067426061ca1de3a884 # v2
+        with:
+          msystem: UCRT64
+          install: mingw-w64-ucrt-x86_64-gcc
+          path-type: inherit
+
+      - name: Test native Windows terminals
+        shell: msys2 {0}
+        env:
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          EVENT_SHA: ${{ github.sha }}
+        run: |
+          set -o pipefail
+          {
+            printf 'Checked out SHA: %s\nPR base SHA: %s\nPR head SHA: %s\nEvent SHA: %s\n' "$(git rev-parse HEAD)" "$PR_BASE_SHA" "$PR_HEAD_SHA" "$EVENT_SHA"
+            go test -tags=unembed -race -cover -count=3 -timeout=10m -v ./settings ./api/terminal ./internal/pty
+          } 2>&1 | tee windows-terminal.log
+
+      - name: Preserve native terminal test logs
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: terminal-${{ matrix.os }}-${{ github.event.pull_request.head.sha || github.sha }}
+          path: windows-terminal.log
+          if-no-files-found: warn
+
   openwrt-install:
     name: OpenWrt installer
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Test installer detection and paths
         run: bash tests/install_openwrt_test.sh

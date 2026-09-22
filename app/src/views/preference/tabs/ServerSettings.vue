@@ -17,7 +17,7 @@ function handleCertChange(certs: Cert[]) {
 </script>
 
 <template>
-  <AForm v-if="data?.server" layout="vertical">
+  <AForm v-if="data?.server" layout="vertical" class="max-w-150">
     <AFormItem :label="$gettext('Host')">
       <p>{{ data.server.host }}</p>
     </AFormItem>

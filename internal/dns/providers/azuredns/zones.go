@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns"
+
+	"github.com/0xJacky/Nginx-UI/internal/dns"
 )
 
 const (
@@ -178,9 +180,11 @@ func resourceGroupFromResourceID(id string) string {
 	return ""
 }
 
-// normalizeZoneName lowercases a zone name and strips the trailing root label.
+// normalizeZoneName lowercases a zone name, strips the trailing root label, and
+// reduces it to its canonical ASCII form so the Unicode and punycode spellings of
+// an internationalized zone compare equal.
 func normalizeZoneName(value string) string {
-	return strings.Trim(strings.ToLower(strings.TrimSpace(value)), ".")
+	return dns.ToASCIIName(value)
 }
 
 // zoneCacheKey scopes a cached zone to everything that can change where a zone

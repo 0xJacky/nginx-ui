@@ -7,12 +7,12 @@ const { data, errors } = storeToRefs(systemSettingsStore)
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm layout="vertical" class="max-w-150">
     <AFormItem :label="$gettext('Node Secret')">
       <SensitiveString path="node.secret" :value="data.node.secret" />
     </AFormItem>
     <AFormItem :label="$gettext('Instance ID')">
-      <AInput :value="data.node.instance_id" readonly />
+      <AInput :value="data.node.instance_id" readonly class="max-w-100" />
     </AFormItem>
     <AFormItem
       :label="$gettext('Node name')"
@@ -21,7 +21,7 @@ const { data, errors } = storeToRefs(systemSettingsStore)
         ? $gettext('The node name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
         : $gettext('Customize the name of local node to be displayed in the environment indicator.')"
     >
-      <AInput v-model:value="data.node.name" />
+      <AInput v-model:value="data.node.name" class="max-w-100" />
     </AFormItem>
     <AFormItem :label="$gettext('Skip Installation')">
       <ATag :color="data.node.skip_installation ? 'green' : 'red'">
@@ -43,6 +43,7 @@ const { data, errors } = storeToRefs(systemSettingsStore)
       <AInput
         v-model:value="data.node.icp_number"
         :placeholder="$gettext('For Chinese user')"
+        class="max-w-100"
       />
     </AFormItem>
     <AFormItem
@@ -55,6 +56,7 @@ const { data, errors } = storeToRefs(systemSettingsStore)
       <AInput
         v-model:value="data.node.public_security_number"
         :placeholder="$gettext('For Chinese user')"
+        class="max-w-100"
       />
     </AFormItem>
   </AForm>

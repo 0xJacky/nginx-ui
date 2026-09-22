@@ -261,6 +261,28 @@ func executeCtlRequest(ctx context.Context, command *cli.Command, method, apiPat
 	return writeCLIResponse(client.stdout, body)
 }
 
+func executeInteractiveCtlRequest(ctx context.Context, command *cli.Command, method, apiPath string, payload any) error {
+	client, err := newCtlClient(command)
+	if err != nil {
+		return err
+	}
+	if err = requireInteractiveAdministratorToken(client.token); err != nil {
+		return err
+	}
+	body, err := client.do(ctx, method, apiPath, payload)
+	if err != nil {
+		return err
+	}
+	return writeCLIResponse(client.stdout, body)
+}
+
+func requireInteractiveAdministratorToken(token string) error {
+	if strings.HasPrefix(token, "nui_pat_") {
+		return errors.New("this operation requires an interactive administrator token; service tokens cannot manage users")
+	}
+	return nil
+}
+
 func executeCtlRequestRedactingFields(
 	ctx context.Context,
 	command *cli.Command,
@@ -366,7 +388,7 @@ func ctlUsersCommand() *cli.Command {
 				},
 			},
 			{
-				Name: "create", Usage: "Create a user",
+				Name: "create", Usage: "Create a user with an interactive administrator token",
 				Flags: []cli.Flag{
 					&cli.StringFlag{Name: "name", Required: true, Usage: "user name"},
 					&cli.BoolFlag{Name: "password-stdin", Usage: "read the password from standard input"},
@@ -377,7 +399,7 @@ func ctlUsersCommand() *cli.Command {
 					if err != nil {
 						return err
 					}
-					return executeCtlRequest(ctx, command, http.MethodPost, "users", map[string]any{
+					return executeInteractiveCtlRequest(ctx, command, http.MethodPost, "users", map[string]any{
 						"name": command.String("name"), "password": password, "status": true,
 					})
 				},

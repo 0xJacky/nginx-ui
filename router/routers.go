@@ -72,6 +72,7 @@ func InitRouter() {
 		crypto.InitPublicRouter(root)
 		user.InitAuthRouter(root)
 		license.InitRouter(root)
+		nginxLog.InitPublicRouter(root)
 
 		system.InitPublicRouter(root)
 		backup.InitRouter(root)

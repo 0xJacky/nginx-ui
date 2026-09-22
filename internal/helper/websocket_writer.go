@@ -23,7 +23,7 @@ func (w *SafeWebSocketWriter) WriteJSON(v interface{}) error {
 	w.mutex.Lock()
 	defer w.mutex.Unlock()
 
-	w.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
+	w.conn.SetWriteDeadline(time.Now().Add(WebSocketWriteWait))
 	return w.conn.WriteJSON(v)
 }
 
@@ -32,6 +32,6 @@ func (w *SafeWebSocketWriter) WriteMessage(messageType int, data []byte) error {
 	w.mutex.Lock()
 	defer w.mutex.Unlock()
 
-	w.conn.SetWriteDeadline(time.Now().Add(10 * time.Second))
+	w.conn.SetWriteDeadline(time.Now().Add(WebSocketWriteWait))
 	return w.conn.WriteMessage(messageType, data)
 }

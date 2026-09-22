@@ -16,7 +16,10 @@ import (
 	appsettings "github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	cSettings "github.com/uozi-tech/cosy/settings"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 // TestMain registers the custom gin binding validators used by settings.Auth
@@ -300,6 +303,15 @@ func TestGetProtectedSetting(t *testing.T) {
 	})
 
 	t.Run("rejects users without 2fa", func(t *testing.T) {
+		database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+		require.NoError(t, err)
+		require.NoError(t, database.AutoMigrate(&model.User{}, &model.Passkey{}))
+		previousDB := model.UseDB()
+		model.Use(database)
+		t.Cleanup(func() {
+			model.Use(previousDB)
+		})
+
 		r := gin.New()
 		r.GET("/api/settings/protected", func(c *gin.Context) {
 			c.Set("user", &model.User{

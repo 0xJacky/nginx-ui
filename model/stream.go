@@ -12,6 +12,11 @@ type Stream struct {
 	RemoteEnabled bool `json:"remote_enabled"`
 }
 
+// GetID implements ConfigEntity interface
+func (s *Stream) GetID() uint64 {
+	return s.ID
+}
+
 // GetPath implements ConfigEntity interface
 func (s *Stream) GetPath() string {
 	return s.Path

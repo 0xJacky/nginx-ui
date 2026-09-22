@@ -6,7 +6,7 @@ const { data, errors } = storeToRefs(systemSettingsStore)
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm layout="vertical" class="max-w-150">
     <AFormItem
       :label="$gettext('Github Proxy')"
       :validate-status="errors?.http?.github_proxy ? 'error' : ''"

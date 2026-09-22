@@ -1,6 +1,9 @@
 package model
 
 import (
+	"errors"
+	"fmt"
+
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/spf13/cast"
@@ -29,7 +32,7 @@ type User struct {
 
 	Name          string        `json:"name" cosy:"add:max=20;update:omitempty,max=20;list:fussy;db_unique"`
 	Password      string        `json:"-" cosy:"json:password;add:required,max=20;update:omitempty,max=20"`
-	Status        bool          `json:"status" gorm:"default:1"`
+	Status        bool          `json:"status" cosy:"update:omitempty" gorm:"default:1"`
 	OTPSecret     []byte        `json:"-" gorm:"type:blob"`
 	RecoveryCodes RecoveryCodes `json:"-" gorm:"serializer:json[aes]"`
 	EnabledTwoFA  bool          `json:"enabled_2fa" gorm:"-"`
@@ -47,8 +50,13 @@ func (u *User) TableName() string {
 	return "users"
 }
 
-func (u *User) AfterFind(_ *gorm.DB) error {
-	u.EnabledTwoFA = u.Enabled2FA()
+func (u *User) AfterFind(tx *gorm.DB) error {
+	enabled, err := u.enabled2FA(tx)
+	if err != nil {
+		return err
+	}
+
+	u.EnabledTwoFA = enabled
 	return nil
 }
 
@@ -68,14 +76,41 @@ func (u *User) RecoveryCodeViewed() bool {
 	return u.RecoveryCodes.LastViewed != nil
 }
 
-func (u *User) EnabledPasskey() bool {
-	var passkeys Passkey
-	db.Where("user_id", u.ID).Limit(1).Find(&passkeys)
-	return passkeys.ID != 0
+func (u *User) EnabledPasskey() (bool, error) {
+	return u.enabledPasskey(UseDB())
 }
 
-func (u *User) Enabled2FA() bool {
-	return u.EnabledOTP() || u.EnabledPasskey()
+func (u *User) enabledPasskey(tx *gorm.DB) (bool, error) {
+	if u.ID == 0 {
+		return false, nil
+	}
+	if tx == nil {
+		return false, errors.New("database is not initialized")
+	}
+
+	var passkey Passkey
+	result := tx.Session(&gorm.Session{NewDB: true}).
+		Select("id").
+		Where("user_id = ?", u.ID).
+		Limit(1).
+		Find(&passkey)
+	if result.Error != nil {
+		return false, fmt.Errorf("check whether user %d has a passkey: %w", u.ID, result.Error)
+	}
+
+	return result.RowsAffected > 0, nil
+}
+
+func (u *User) Enabled2FA() (bool, error) {
+	return u.enabled2FA(UseDB())
+}
+
+func (u *User) enabled2FA(tx *gorm.DB) (bool, error) {
+	if u.EnabledOTP() {
+		return true, nil
+	}
+
+	return u.enabledPasskey(tx)
 }
 
 func (u *User) WebAuthnID() []byte {

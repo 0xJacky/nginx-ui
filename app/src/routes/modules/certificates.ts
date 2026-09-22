@@ -6,12 +6,20 @@ export const certificatesRoutes: RouteRecordRaw[] = [
     path: 'certificates',
     name: 'Certificates',
     component: () => import('@/layouts/BaseRouterView.vue'),
-    redirect: '/certificates/list',
     meta: {
       name: () => $gettext('Certificates'),
       icon: SafetyCertificateOutlined,
     },
     children: [
+      {
+        path: '',
+        name: 'Certificates Home',
+        component: () => import('@/views/certificate/index.vue'),
+        meta: {
+          name: () => $gettext('Certificates'),
+          hiddenInSidebar: true,
+        },
+      },
       {
         path: 'acme_users',
         name: 'ACME User',

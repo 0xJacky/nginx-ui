@@ -81,9 +81,17 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Sync Config Error'),
     content: (args: any) => $gettext('Sync config %{config_name} to %{node_name} failed', args),
   },
+  'Sync Config Error_1': {
+    title: () => $gettext('Sync Config Error'),
+    content: (args: any) => $gettext('User %{user_name} failed to sync config %{config_name} to %{node_name}', args),
+  },
   'Sync Config Success': {
     title: () => $gettext('Sync Config Success'),
     content: (args: any) => $gettext('Sync config %{config_name} to %{node_name} successfully', args),
+  },
+  'Sync Config Success_1': {
+    title: () => $gettext('Sync Config Success'),
+    content: (args: any) => $gettext('User %{user_name} synced config %{config_name} to %{node_name} successfully', args),
   },
   'Rename Remote Config Error': {
     title: () => $gettext('Rename Remote Config Error'),
@@ -176,6 +184,14 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
   'Save Remote Site Success': {
     title: () => $gettext('Save Remote Site Success'),
     content: (args: any) => $gettext('Save site %{name} to %{node} successfully', args),
+  },
+  'Site Health Check Failed': {
+    title: () => $gettext('Site Health Check Failed'),
+    content: (args: any) => $gettext('Site %{site} on node %{node} failed its health check for %{failure_count} consecutive attempts: %{error}', args),
+  },
+  'Site Health Check Recovered': {
+    title: () => $gettext('Site Health Check Recovered'),
+    content: (args: any) => $gettext('Site %{site} on node %{node} recovered. Target: %{target}', args),
   },
   'Delete Remote Stream Error': {
     title: () => $gettext('Delete Remote Stream Error'),

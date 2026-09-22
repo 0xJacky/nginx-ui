@@ -1,10 +1,23 @@
 <div align="center">
-      <img src="resources/logo.png" alt="Nginx UI Logo">
+      <img src="../logo.png" alt="Nginx UI Logo">
 </div>
 
 # Nginx UI
-
 Yet another Nginx Web UI, được phát triển bởi [0xJacky](https://jackyu.cn/), [Hintay](https://blog.kugeek.com/) và [Akino](https://github.com/akinoccc).
+
+[![DeepWiki](https://img.shields.io/badge/DeepWiki-0xJacky%2Fnginx--ui-blue.svg?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAyCAYAAAAnWDnqAAAAAXNSR0IArs4c6QAAA05JREFUaEPtmUtyEzEQhtWTQyQLHNak2AB7ZnyXZMEjXMGeK/AIi+QuHrMnbChYY7MIh8g01fJoopFb0uhhEqqcbWTp06/uv1saEDv4O3n3dV60RfP947Mm9/SQc0ICFQgzfc4CYZoTPAswgSJCCUJUnAAoRHOAUOcATwbmVLWdGoH//PB8mnKqScAhsD0kYP3j/Yt5LPQe2KvcXmGvRHcDnpxfL2zOYJ1mFwrryWTz0advv1Ut4CJgf5uhDuDj5eUcAUoahrdY/56ebRWeraTjMt/00Sh3UDtjgHtQNHwcRGOC98BJEAEymycmYcWwOprTgcB6VZ5JK5TAJ+fXGLBm3FDAmn6oPPjR4rKCAoJCal2eAiQp2x0vxTPB3ALO2CRkwmDy5WohzBDwSEFKRwPbknEggCPB/imwrycgxX2NzoMCHhPkDwqYMr9tRcP5qNrMZHkVnOjRMWwLCcr8ohBVb1OMjxLwGCvjTikrsBOiA6fNyCrm8V1rP93iVPpwaE+gO0SsWmPiXB+jikdf6SizrT5qKasx5j8ABbHpFTx+vFXp9EnYQmLx02h1QTTrl6eDqxLnGjporxl3NL3agEvXdT0WmEost648sQOYAeJS9Q7bfUVoMGnjo4AZdUMQku50McDcMWcBPvr0SzbTAFDfvJqwLzgxwATnCgnp4wDl6Aa+Ax283gghmj+vj7feE2KBBRMW3FzOpLOADl0Isb5587h/U4gGvkt5v60Z1VLG8BhYjbzRwyQZemwAd6cCR5/XFWLYZRIMpX39AR0tjaGGiGzLVyhse5C9RKC6ai42ppWPKiBagOvaYk8lO7DajerabOZP46Lby5wKjw1HCRx7p9sVMOWGzb/vA1hwiWc6jm3MvQDTogQkiqIhJV0nBQBTU+3okKCFDy9WwferkHjtxib7t3xIUQtHxnIwtx4mpg26/HfwVNVDb4oI9RHmx5WGelRVlrtiw43zboCLaxv46AZeB3IlTkwouebTr1y2NjSpHz68WNFjHvupy3q8TFn3Hos2IAk4Ju5dCo8B3wP7VPr/FGaKiG+T+v+TQqIrOqMTL1VdWV1DdmcbO8KXBz6esmYWYKPwDL5b5FA1a0hwapHiom0r/cKaoqr+27/XcrS5UwSMbQAAAABJRU5ErkJggg==)](https://deepwiki.com/0xJacky/nginx-ui)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/0xJacky/nginx-ui)
+
+[![Documentation](https://img.shields.io/badge/Documentation-nginxui.com-1f6feb?logo=readthedocs&logoColor=white)](https://nginxui.com)
+
+<p>
+  <a href="https://atomgit.com/uozi/nginx-ui" target="_blank" title="Dự án này là một phần của chương trình AtomGit G-Star">
+    <img src="../atomgit-logo.svg" alt="AtomGit" height="20" align="middle">
+  </a>
+  &nbsp;Tự hào được lưu trữ trên <a href="https://atomgit.com/uozi/nginx-ui">AtomGit</a> — thành viên chương trình <b>G-Star</b>.
+</p>
+
+[![AtomGit Stars](https://atomgit.com/uozi/nginx-ui/star/badge.svg)](https://atomgit.com/uozi/nginx-ui)
 
 [![Build and Publish](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml/badge.svg)](https://github.com/0xJacky/nginx-ui/actions/workflows/build.yml)
 [![GitHub license](https://img.shields.io/github/license/0xJacky/nginx-ui?label=License&logo=github)](https://github.com/0xJacky/nginx-ui "Click to view the repo on Github")
@@ -18,106 +31,151 @@ Yet another Nginx Web UI, được phát triển bởi [0xJacky](https://jackyu.
 [![Docker Pulls](https://img.shields.io/docker/pulls/uozi/nginx-ui?label=Pulls&logo=docker)](https://hub.docker.com/r/uozi/nginx-ui "Click to view the image on Docker Hub")
 [![Image Size](https://img.shields.io/docker/image-size/uozi/nginx-ui/latest?label=Image%20Size&logo=docker)](https://hub.docker.com/r/uozi/nginx-ui "Click to view the image on Docker Hub")
 
+[![Featured｜HelloGitHub](https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=86f3a8f779934748a34fe6f1b5cd442f&claim_uid=MOFqadzAShCBeQj&theme=small)](https://hellogithub.com/repository/86f3a8f779934748a34fe6f1b5cd442f)
+
 ## Tài liệu
 Để xem tài liệu, hãy truy cập [nginxui.com](https://nginxui.com).
+
+## Tài trợ
+
+Nếu bạn thấy dự án này hữu ích, hãy cân nhắc tài trợ để hỗ trợ phát triển và bảo trì liên tục.
+
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsors-ea4aaa?style=for-the-badge&logo=github-sponsors&logoColor=white)](https://github.com/sponsors/nginxui)
+[![Afdian](https://img.shields.io/badge/爱发电-Support-946ce6?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K)](https://afdian.com/a/nginxui)
+
+### Nhà tài trợ
+
+<a href="https://www.axisnow.io/" target="_blank">
+  <img src="../axisnow-logo.png" alt="AxisNow" width="220px">
+</a>
+
+Bảo vệ và tăng tốc website cùng API với hiệu năng truy cập ổn định tại Trung Quốc đại lục và toàn cầu, đồng thời mở rộng tăng tốc và bảo mật tới ứng dụng native/mobile qua SDK phía client — **CDN riêng tự triển khai｜CDN chống DDoS theo thuê bao｜Mạng CDN tự chủ, linh hoạt kết hợp.**
+
+### Nhóm cộng đồng chính thức
+
+Hãy tham gia nhóm cộng đồng WeChat chính thức của Nginx UI để trao đổi với người dùng khác về cách sử dụng, triển khai và xử lý sự cố.
+
+Quét mã QR bên dưới để thêm WeChat và ghi `Nginx UI Community Group` trong lời mời kết bạn. Quản trị viên sẽ mời bạn vào nhóm cộng đồng chính thức.
+
+<p align="center">
+  <img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
+</p>
+
+Sự hỗ trợ của bạn giúp chúng tôi:
+- 🚀 Đẩy nhanh phát triển tính năng mới
+- 🐛 Sửa lỗi và cải thiện độ ổn định
+- 📚 Nâng cao tài liệu và hướng dẫn
+- 🌐 Cung cấp hỗ trợ cộng đồng tốt hơn
+- 💻 Duy trì hạ tầng và máy chủ demo
+
+### Hỗ trợ công cụ
+
+<a href="https://www.jetbrains.com/?from=nginx-ui" target="_blank">
+  <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" alt="JetBrains Logo" width="200px">
+</a>
+
+Cảm ơn [JetBrains](https://www.jetbrains.com/?from=nginx-ui) đã hỗ trợ chúng tôi bằng giấy phép mã nguồn mở miễn phí.
+
 
 ## Stargazers over time
 
 [![Stargazers over time](https://cloud.nginxui.com/stars/0xJacky/nginx-ui.svg)](https://cloud.nginxui.com/stars/0xJacky/nginx-ui.svg)
 
-[English](../../README.md) | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | [Tiếng Việt](README-vi_VN.md)
+[English](../../README.md) | [Español](README-es.md) | [简体中文](README-zh_CN.md) | [繁體中文](README-zh_TW.md) | Tiếng Việt | [日本語](README-ja_JP.md)
 
 <details>
   <summary>Mục lục</summary>
   <ol>
     <li>
-      <a href="#about-the-project">Thông tin dự án</a>
+      <a href="#về-dự-án">Về dự án</a>
       <ul>
         <li><a href="#demo">Demo</a></li>
-        <li><a href="#features">Tính năng</a></li>
-        <li><a href="#internationalization">Ngôn ngữ hiển thị</a></li>
+        <li><a href="#tính-năng">Tính năng</a></li>
+        <li><a href="#đa-ngôn-ngữ">Đa ngôn ngữ</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Bắt đầu</a>
+      <a href="#bắt-đầu">Bắt đầu</a>
       <ul>
-        <li><a href="#before-use">Lưu ý trước khi sử dụng</a></li>
-        <li><a href="#installation">Cài đặt</a></li>
+        <li><a href="#lưu-ý-trước-khi-sử-dụng">Lưu ý trước khi sử dụng</a></li>
+        <li><a href="#cài-đặt">Cài đặt</a></li>
         <li>
-          <a href="#usage">Cách dùng</a>
+          <a href="#cách-dùng">Cách dùng</a>
           <ul>
-            <li><a href="#from-executable">Sử dụng với Executable</a></li>
-            <li><a href="#with-systemd">Sử dụng với Systemd</a></li>
-            <li><a href="#with-docker">Sử dụng với Docker</a></li>
+            <li><a href="#chạy-với-executable">Chạy với Executable</a></li>
+            <li><a href="#chạy-với-systemd">Chạy với Systemd</a></li>
+            <li><a href="#sử-dụng-với-docker">Sử dụng với Docker</a></li>
           </ul>
         </li>
       </ul>
     </li>
     <li>
-      <a href="#manual-build">Build từ mã nguồn</a>
+      <a href="#xây-dựng-thủ-công">Xây dựng thủ công</a>
       <ul>
-        <li><a href="#prerequisites">Điều kiện cần</a></li>
-        <li><a href="#build-app">Build Frontend</a></li>
+        <li><a href="#điều-kiện-cần">Điều kiện cần</a></li>
+        <li><a href="#build-frontend">Build Frontend</a></li>
         <li><a href="#build-backend">Build Backend</a></li>
       </ul>
     </li>
     <li>
-      <a href="#script-for-linux">Script cho Linux</a>
+      <a href="#tập-lệnh-cho-linux">Tập lệnh cho Linux</a>
       <ul>
-        <li><a href="#basic-usage">Sử dụng cơ bản</a></li>
-        <li><a href="#more-usage">Sử dụng nâng cao</a></li>
+        <li><a href="#cách-sử-dụng-cơ-bản">Cách sử dụng cơ bản</a></li>
+        <li><a href="#trợ-giúp">Trợ giúp</a></li>
       </ul>
     </li>
-    <li><a href="#example-of-nginx-reverse-proxy-configuration">Ví dụ về cấu hình Nginx Reverse Proxy</a></li>
-    <li><a href="#contributing">Đóng góp</a></li>
-    <li><a href="#license">Giấy phép</a></li>
+    <li><a href="#ví-dụ-về-cấu-hình-nginx-reverse-proxy">Ví dụ về cấu hình Nginx Reverse Proxy</a></li>
+    <li><a href="#đóng-góp">Đóng góp</a></li>
+    <li><a href="#giấy-phép">Giấy phép</a></li>
   </ol>
 </details>
 
 ## Về dự án
 
-![Dashboard](resources/screenshots/dashboard_en.png)
+![Dashboard](../screenshots/dashboard_en.png)
 
 ### Demo
-URL：[https://demo.nginxui.com](https://demo.nginxui.com)
-- Username：admin
-- Password：admin
+URL: [https://demo.nginxui.com](https://demo.nginxui.com)
+- Username: admin
+- Password: admin
 
 ### Tính năng
 
-- Thống kê trực tuyến cho các chỉ số máy chủ như mức sử dụng CPU, mức sử dụng bộ nhớ, mức tải trung bình và mức sử dụng ổ đĩa.
-- Chat với trợ lý ChatGPT
-- Triển khai bằng một cú nhấp chuột và tự động gia hạn chứng chỉ Let's Encrypt.
-- Chỉnh sửa cấu hình Nginx từ UI với **NgxConfigEditor** tự thiết kế của chúng tôi, một trình chỉnh sửa khối thân thiện với người dùng cho cấu hình nginx hoặc **Ace Code Editor** hỗ trợ làm nổi bật cú pháp cấu hình nginx.
-- Xem Nginx logs
-- Được viết bằng Go và Vue, và được phân phối với một tệp nhị phân thực thi duy nhất.
-- Tự động kiểm tra file cấu hình và tải lại nginx sau khi lưu cấu hình.
+- Thống kê trực tuyến các chỉ số máy chủ như mức sử dụng CPU, bộ nhớ, tải trung bình và ổ đĩa
+- Tự động sao lưu sau khi thay đổi cấu hình, hỗ trợ so sánh phiên bản và khôi phục
+- Quản lý cụm với thao tác phản chiếu tới nhiều nút, giúp dễ dàng quản lý môi trường nhiều máy chủ
+- Xuất cấu hình Nginx / Nginx UI đã mã hóa để triển khai và phục hồi nhanh sang môi trường mới
+- Trợ lý **ChatGPT** trực tuyến nâng cao, hỗ trợ nhiều mô hình, bao gồm hiển thị chuỗi suy nghĩ Deepseek-R1 để hiểu và tối ưu cấu hình tốt hơn
+- **MCP** (Model Context Protocol) cung cấp giao diện chuyên dụng cho agent AI tương tác với Nginx UI, cho phép quản lý cấu hình và điều khiển dịch vụ tự động
+- Triển khai một cú nhấp và tự động gia hạn chứng chỉ Let's Encrypt
+- Chỉnh sửa cấu hình website trực tuyến bằng trình chỉnh sửa khối **NgxConfigEditor** tự thiết kế, hoặc **Ace Code Editor** hỗ trợ **bổ sung mã LLM** và tô sáng cú pháp nginx
+- Xem nhật ký Nginx trực tuyến
+- Viết bằng Go và Vue, phân phối dưới dạng một tệp nhị phân thực thi duy nhất
+- Tự động kiểm tra tệp cấu hình và tải lại nginx sau khi lưu
 - Web Terminal
-- Dark Mode
-- Responsive Web Design
+- Chế độ tối
+- Thiết kế web đáp ứng
 
-### Ngôn ngữ hiển thị
+### Đa ngôn ngữ
 
-- Tiếng Việt
+Chúng tôi chính thức hỗ trợ:
+
 - Tiếng Anh
-- Tiếng Nga
-- Tiếng Pháp
-- Tiếng Tây Ban Nha
 - Tiếng Trung giản thể
 - Tiếng Trung phồn thể
 
-Chúng tôi hoan nghênh bản dịch sang bất kỳ ngôn ngữ nào.
+Vì không phải người bản ngữ tiếng Anh, chúng tôi cố gắng đảm bảo độ chính xác nhưng vẫn có thể cải thiện. Nếu phát hiện vấn đề, rất mong nhận được phản hồi của bạn!
+
+Nhờ cộng đồng, nhiều ngôn ngữ khác cũng đã sẵn sàng. Khám phá và đóng góp bản dịch trên [Weblate](https://weblate.nginxui.com).
 
 
 ## Bắt đầu
 
 ### Lưu ý trước khi sử dụng
 
-Máy chủ của bạn sẽ cần phải cài Nginx trước khi cài đặt Nginx UI
+Nginx UI tuân theo tiêu chuẩn tệp cấu hình máy chủ web Debian. Các tệp cấu hình trang web đã tạo sẽ được đặt trong thư mục `sites-available` dưới thư mục cấu hình Nginx (được phát hiện tự động). Các trang web đã bật sẽ tạo symlink tới thư mục `sites-enabled`. Bạn có thể cần điều chỉnh cách tổ chức tệp cấu hình.
 
-Nginx UI tuân theo tiêu chuẩn tệp cấu hình máy chủ web Debian. Các tệp cấu hình trang web đã tạo sẽ được đặt trong thư mục /etc/nginx/sites-available (được phát hiện tự động). Các tệp cấu hình cho một trang web được kích hoạt sẽ tạo một symlink đến thư mục /etc/nginx/sites-enabled. Bạn có thể cần điều chỉnh cách sắp xếp các tệp cấu hình của mình.
-
-Đối với các hệ thống không phải Debian (và Ubuntu), bạn có thể cần thay đổi nội dung của tệp cấu hình nginx.conf thành kiểu Debian như hiển thị bên dưới.
+Đối với các hệ thống không phải Debian (và Ubuntu), bạn có thể cần đổi nội dung `nginx.conf` sang kiểu Debian như bên dưới.
 
 ```nginx
 http {
@@ -131,75 +189,75 @@ http {
 
 ### Cài đặt
 
-Giao diện người dùng Nginx có sẵn trên các nền tảng sau:
+Nginx UI có sẵn trên các nền tảng sau:
 
-- macOS 11 Big Sur and later (amd64 / arm64)
-- Windows 10 and later (x86 /amd64 / arm64)
-- Linux 2.6.23 và sau đó (x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64)
-  - Bao gồm nhưng không giới hạn Debian 7/8, Ubuntu 12.04/14.04 trở lên, CentOS 6/7, Arch Linux
+- macOS 11 Big Sur trở lên (amd64 / arm64)
+- Windows 10 trở lên (amd64 / arm64)
+- Linux 2.6.23 trở lên (x86 / amd64 / arm64 / armv5 / armv6 / armv7 / mips32 / mips64 / riscv64 / loongarch64)
+  - Bao gồm nhưng không giới hạn ở Debian 7 / 8, Ubuntu 12.04 / 14.04 trở lên, CentOS 6 / 7, Arch Linux
 - FreeBSD
 - OpenBSD
 - Dragonfly BSD
 - Openwrt
 
-Bạn có thể truy cập [latest release](https://github.com/0xJacky/nginx-ui/releases/latest) để tải xuống bản phân phối mới nhất hoặc sử dụng [Tập lệnh cài đặt cho Linux](#script-for-linux).
+Bạn có thể truy cập [bản phát hành mới nhất](https://github.com/0xJacky/nginx-ui/releases/latest) để tải xuống, hoặc sử dụng [tập lệnh cài đặt cho Linux](#tập-lệnh-cho-linux).
 
-### Sử dụng
+### Cách dùng
 
-Trong lần chạy đầu tiên, vui lòng truy cập `http://<your_server_ip>:<listen_port>` bằng trình duyệt của bạn để hoàn tất các cấu hình.
+Trong lần chạy đầu tiên, vui lòng truy cập `http://<your_server_ip>:<listen_port>` bằng trình duyệt để hoàn tất cấu hình.
 
 #### Chạy với Executable
-**Chạy giao diện người dùng Nginx trong Terminal**
+**Chạy Nginx UI trong Terminal**
 
 ```shell
 nginx-ui -config app.ini
 ```
-Bấm `Ctrl + C` vào terminal để thoát Nginx UI.
+Nhấn `Control+C` trong terminal để thoát Nginx UI.
 
 **Chạy nền (Background)**
 
 ```shell
 nohup ./nginx-ui -config app.ini &
 ```
-Dừng Nginx UI bằng lệnh sau.
+Dừng Nginx UI bằng lệnh sau:
 
 ```shell
 kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
 ```
 
 #### Chạy với Systemd
-Nếu bạn sử dụng [tập lệnh cài đặt cho Linux](#script-for-linux), Nginx UI sẽ được cài đặt dưới dạng `nginx-ui` service trong systemd. Hãy sử dụng `systemctl` để điều khiển nó.
+Nếu bạn sử dụng [tập lệnh cài đặt cho Linux](#tập-lệnh-cho-linux), Nginx UI sẽ được cài đặt dưới dạng dịch vụ `nginx-ui` trong systemd. Hãy dùng `systemctl` để điều khiển.
 
-**Start Nginx UI**
+**Khởi động Nginx UI**
 
 ```shell
 systemctl start nginx-ui
 ```
-**Stop Nginx UI**
+**Dừng Nginx UI**
 
 ```shell
 systemctl stop nginx-ui
 ```
-**Restart Nginx UI**
+**Khởi động lại Nginx UI**
 
 ```shell
 systemctl restart nginx-ui
 ```
 
 #### Sử dụng với Docker
-Docker image của chúng tôi [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx-ui) dựa trên nginx image mới nhất và có thể được sử dụng để thay thế Nginx trên máy chủ. Bằng cách xuất bản cổng 80 và 443 của container, bạn có thể dễ dàng thực hiện chuyển đổi.
+Docker image của chúng tôi [uozi/nginx-ui:latest](https://hub.docker.com/r/uozi/nginx-ui) dựa trên nginx image mới nhất và có thể dùng để thay thế Nginx trên máy chủ. Bằng cách xuất bản cổng 80 và 443 của container lên host, bạn có thể dễ dàng chuyển đổi.
 
 ##### Ghi chú
-1. Khi khởi chạy container lần đầu tiên, hãy chắc chắn thư mục /etc/nginx trên máy host là rỗng.
-2. Nếu bạn muốn lưu trữ các tệp tĩnh, bạn có thể mount các thư mục vào container.
-3. If you are upgrading from an older image, see the [Docker WebSocket fix guide](https://nginxui.com/guide/docker-websocket-fix.html) for required `conf.d/nginx-ui.conf` updates.
+1. Khi khởi chạy container lần đầu, hãy đảm bảo volume gắn với `/etc/nginx` là thư mục trống.
+2. Nếu muốn lưu trữ tệp tĩnh, bạn có thể mount các thư mục vào container.
+3. Nếu nâng cấp từ image cũ, xem [hướng dẫn sửa Docker WebSocket](https://nginxui.com/guide/docker-websocket-fix.html) để cập nhật `conf.d/nginx-ui.conf`.
 
 <details>
 <summary><b>Triển khai với Docker</b></summary>
 
 1. [Cài đặt Docker.](https://docs.docker.com/install/)
 
-2. Sau đó triển khai nginx-ui như thế sau:
+2. Sau đó triển khai nginx-ui như sau:
 
 ```bash
 docker run -dit \
@@ -213,15 +271,16 @@ docker run -dit \
   uozi/nginx-ui:latest
 ```
 
-3. Khi container đã hoạt động, truy cập vào trang quản trị nginx-ui theo liên kết `http://<your_server_ip>:8080/install`.
+3. Khi container đã chạy, truy cập `http://<your_server_ip>:8080/install`.
+   Nếu bạn đổi ánh xạ cổng, hãy truy cập Nginx UI qua cổng host được ánh xạ tới cổng `80` của container.
 </details>
 
 <details>
-<summary><b>Triển khai với Docker-Compose</b></summary>
+<summary><b>Triển khai với Docker Compose</b></summary>
 
-1. [Cài đặt Docker-Compose.](https://docs.docker.com/compose/install/)
+1. [Cài đặt Docker Compose.](https://docs.docker.com/compose/install/)
 
-2. Tạo tệp docker-compose.yml:
+2. Tạo tệp `docker-compose.yml`:
 
 ```yml
 services:
@@ -243,23 +302,26 @@ services:
         image: 'uozi/nginx-ui:latest'
 ```
 
-3. Sau đó tạo container bằng lệnh:
+3. Tạo và khởi chạy container:
 ```bash
 docker compose up -d
 ```
 
-4. Khi container đã hoạt động, truy cập vào trang quản trị nginx-ui theo liên kết `http://<your_server_ip>:8080/install`.
+4. Khi container đã chạy, truy cập `http://<your_server_ip>:8080/install`.
+   Nếu bạn đổi ánh xạ cổng, hãy truy cập Nginx UI qua cổng host được ánh xạ tới cổng `80` của container.
 
 </details>
 
 ## Xây dựng thủ công
 
-Trên các nền tảng không có phiên bản xây dựng chính thức, chúng có thể được xây dựng thủ công.
+Trên các nền tảng không có bản dựng chính thức, bạn có thể tự xây dựng.
 
 ### Điều kiện cần
 
 - Make
+
 - Golang 1.23+
+
 - node.js 21+
 
   ```shell
@@ -293,20 +355,14 @@ go build -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/sett
 ```shell
 bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ install
 ```
-Port mặc định để truy cập UI là `9000`, port HTTP Challenge mặc định để xác thực SSL là `9180`.
-Nếu có xung đột port, vui lòng sửa đổi trong file `/usr/local/etc/nginx-ui/app.ini`,
-hãy nhớ restart nginx-ui bằng lệnh `systemctl restart nginx-ui` mỗi khi bạn sửa đổi file app.ini.
+Cổng lắng nghe mặc định là `9000`, cổng HTTP Challenge mặc định là `9180`.
+Nếu bị xung đột cổng, hãy sửa `/usr/local/etc/nginx-ui/app.ini` thủ công,
+rồi dùng `systemctl restart nginx-ui` để tải lại dịch vụ Nginx UI.
 
-**Gỡ bỏ Nginx UI nhưng giữ lại các tệp cấu hình và cơ sở dữ liệu**
+**Gỡ Nginx UI nhưng giữ lại cấu hình và cơ sở dữ liệu**
 
 ```shell
 bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove
-```
-
-**Gỡ bỏ Nginx UI đồng thời xoá các tệp cấu hình, cơ sở dữ liệu**
-
-```shell
-bash -c "$(curl -L https://cloud.nginxui.com/install.sh)" @ remove --purge
 ```
 
 ### Trợ giúp
@@ -356,26 +412,16 @@ server {
 
 ## Đóng góp
 
-Đóng góp là điều khiến cộng đồng nguồn mở trở thành một nơi tuyệt vời để học hỏi, truyền cảm hứng và sáng tạo. Bất kỳ đóng góp nào bạn thực hiện đều được **đánh giá cao**.
+Đóng góp giúp cộng đồng mã nguồn mở trở thành nơi tuyệt vời để học hỏi, truyền cảm hứng và sáng tạo. Mọi đóng góp của bạn đều được **đánh giá cao**.
 
-Nếu bạn có đề xuất giúp dự án tốt hơn, vui lòng phân nhánh repo và tạo pull request. Bạn cũng có thể mở một issue mới với thẻ "enhancement" để đề xuất tính năng. Đừng quên cho dự án một Star! Cảm ơn một lần nữa!
+Nếu bạn có đề xuất giúp dự án tốt hơn, hãy fork repo và tạo pull request. Bạn cũng có thể mở issue với thẻ «enhancement». Đừng quên gắn Star cho dự án! Cảm ơn một lần nữa!
 
 1. Fork dự án
-2. Tạo Branch (`git checkout -b feature/AmazingFeature`)
+2. Tạo nhánh tính năng (`git checkout -b feature/AmazingFeature`)
 3. Commit thay đổi (`git commit -m 'Add some AmazingFeature'`)
-4. Đẩy code lên Branch (`git push origin feature/AmazingFeature`)
-5. Mở một Pull Request
-
-## Cộng đồng
-
-Hãy tham gia nhóm cộng đồng WeChat chính thức của Nginx UI để trao đổi với những người dùng khác về cách sử dụng, triển khai và xử lý sự cố.
-
-Quét mã QR bên dưới để thêm WeChat và ghi `Nginx UI Community Group` trong lời mời kết bạn. Quản trị viên sẽ mời bạn vào nhóm cộng đồng chính thức.
-
-<p align="center">
-  <img src="../../docs/public/assets/wechat-community-qr.png" alt="Nginx UI WeChat Community QR Code" width="320">
-</p>
+4. Đẩy lên nhánh (`git push origin feature/AmazingFeature`)
+5. Mở Pull Request
 
 ## Giấy phép
 
-Dự án này được cung cấp theo giấy phép GNU Affero General Public License v3.0 có thể tìm thấy trong tệp [LICENSE](LICENSE). Bằng cách sử dụng, phân phối hoặc đóng góp cho dự án này, bạn đồng ý với các điều khoản và điều kiện của giấy phép này.
+Dự án này được cung cấp theo giấy phép GNU Affero General Public License v3.0, xem trong tệp [LICENSE](../../LICENSE). Bằng cách sử dụng, phân phối hoặc đóng góp cho dự án này, bạn đồng ý với các điều khoản và điều kiện của giấy phép.

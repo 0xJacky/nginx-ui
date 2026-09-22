@@ -7,6 +7,8 @@ import WorldMapChart from './WorldMapChart'
 const props = defineProps<{
   worldData: WorldMapData[] | null
   chinaData: ChinaMapData[] | null
+  enableChinaMap?: boolean
+  geoMapPathConfigured?: boolean
   loading: boolean
   logPath: string
   startTime: number
@@ -21,9 +23,10 @@ const { isChineseLocale } = useGeoTranslation()
 
 // Map type selection - default to global, only allow china for Chinese locales
 const mapType = ref<'global' | 'china'>('global')
+const canShowChinaMap = computed(() => isChineseLocale.value && Boolean(props.enableChinaMap))
 
 // Watch language changes and reset to global if switching from Chinese to non-Chinese
-watch(isChineseLocale, newVal => {
+watch(canShowChinaMap, newVal => {
   if (!newVal && mapType.value === 'china') {
     mapType.value = 'global'
   }
@@ -33,7 +36,7 @@ watch(isChineseLocale, newVal => {
 const segmentOptions = computed(() => {
   const options = [{ label: $gettext('Global Map'), value: 'global' }]
 
-  if (isChineseLocale.value) {
+  if (canShowChinaMap.value) {
     options.push({ label: $gettext('China Map'), value: 'china' })
   }
 
@@ -42,7 +45,7 @@ const segmentOptions = computed(() => {
 
 // Show segment switcher only if there are multiple options
 const showSegment = computed(() => {
-  return isChineseLocale.value
+  return canShowChinaMap.value
 })
 
 // Card title
@@ -72,7 +75,7 @@ const cardTitle = computed(() => {
           :loading="props.loading"
           :hide-card="true"
           @refresh="emit('refresh')"
-          @drill-china="mapType = 'china'"
+          @drill-china="canShowChinaMap && (mapType = 'china')"
         />
       </div>
 
@@ -82,6 +85,7 @@ const cardTitle = computed(() => {
           :data="props.chinaData"
           :loading="props.loading"
           :hide-card="true"
+          :geo-map-path-configured="props.geoMapPathConfigured"
           :log-path="props.logPath"
           :start-time="props.startTime"
           :end-time="props.endTime"

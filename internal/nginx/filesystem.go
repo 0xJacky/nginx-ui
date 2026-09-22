@@ -38,6 +38,7 @@ type targetFilesystem interface {
 	MkdirAll(string, os.FileMode) error
 	Open(string) (targetFile, error)
 	OpenFile(string, int, os.FileMode) (targetFile, error)
+	Chown(string, int, int) error
 	Chmod(string, os.FileMode) error
 	Chtimes(string, time.Time, time.Time) error
 	Glob(string) ([]string, error)
@@ -71,6 +72,9 @@ func (localTargetFilesystem) MkdirAll(path string, mode os.FileMode) error {
 func (localTargetFilesystem) Open(path string) (targetFile, error) { return os.Open(path) }
 func (localTargetFilesystem) OpenFile(path string, flag int, mode os.FileMode) (targetFile, error) {
 	return os.OpenFile(path, flag, mode)
+}
+func (localTargetFilesystem) Chown(path string, uid, gid int) error {
+	return os.Chown(path, uid, gid)
 }
 func (localTargetFilesystem) Chmod(path string, mode os.FileMode) error {
 	return os.Chmod(path, mode)
@@ -245,6 +249,13 @@ func (fs sftpTargetFilesystem) OpenFile(path string, flag int, _ os.FileMode) (t
 		return nil, err
 	}
 	return client.OpenFile(path, flag)
+}
+func (fs sftpTargetFilesystem) Chown(path string, uid, gid int) error {
+	client, err := fs.client()
+	if err != nil {
+		return err
+	}
+	return client.Chown(path, uid, gid)
 }
 func (fs sftpTargetFilesystem) Chmod(path string, mode os.FileMode) error {
 	client, err := fs.client()
@@ -459,6 +470,14 @@ func OpenFile(path string, flag int, mode os.FileMode) (targetFile, error) {
 		return nil, err
 	}
 	return fs.OpenFile(path, flag, mode)
+}
+
+func Chown(path string, uid, gid int) error {
+	fs, err := targetFS()
+	if err != nil {
+		return err
+	}
+	return fs.Chown(path, uid, gid)
 }
 
 func Chmod(path string, mode os.FileMode) error {

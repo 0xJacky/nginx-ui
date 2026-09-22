@@ -133,6 +133,11 @@ func SetSecureSessionID(userId uint64) (sessionId string) {
 }
 
 func VerifySecureSessionID(sessionId string, userId uint64) bool {
+	parsedSessionID, err := uuid.Parse(sessionId)
+	if err != nil || parsedSessionID.String() != sessionId {
+		return false
+	}
+
 	storedUserID, ok := lookupSecureSession(sessionId)
 	return ok && storedUserID == userId
 }
@@ -144,10 +149,14 @@ func setCachedSecureSession(sessionId string, userId uint64, ttl time.Duration) 
 }
 
 func lookupCachedSecureSession(sessionId string) (uint64, bool) {
-	v, ok := cache.Get(secureSessionIDCacheKey(sessionId))
+	key := secureSessionIDCacheKey(sessionId)
+	v, ok := cache.Get(key)
 	if !ok {
 		return 0, false
 	}
 	userId, ok := v.(uint64)
+	if !ok {
+		cache.Del(key)
+	}
 	return userId, ok
 }

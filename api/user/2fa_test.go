@@ -33,7 +33,8 @@ func TestGet2FAStatusRequiresRecoveryCodeMigrationForLegacyOTPUser(t *testing.T)
 	c, _ := gin.CreateTestContext(w)
 	c.Set("user", &model.User{OTPSecret: []byte("encrypted-secret")})
 
-	status := get2FAStatus(c)
+	status, err := get2FAStatus(c)
+	require.NoError(t, err)
 
 	assert.True(t, status.OTPStatus)
 	assert.False(t, status.RecoveryCodesGenerated)
@@ -52,9 +53,26 @@ func TestGet2FAStatusDoesNotRequireMigrationWhenRecoveryCodesExist(t *testing.T)
 		},
 	})
 
-	status := get2FAStatus(c)
+	status, err := get2FAStatus(c)
+	require.NoError(t, err)
 
 	assert.True(t, status.OTPStatus)
 	assert.True(t, status.RecoveryCodesGenerated)
 	assert.False(t, status.RecoveryCodesMigrationRequired)
+}
+
+func TestGet2FAStatusPropagatesPasskeyLookupError(t *testing.T) {
+	db := setup2FAStatusTestDB(t)
+	require.NoError(t, db.Migrator().DropTable(&model.Passkey{}))
+
+	gin.SetMode(gin.TestMode)
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
+	c.Set("user", &model.User{Model: model.Model{ID: 1}, Name: "passkey-user"})
+
+	status, err := get2FAStatus(c)
+
+	require.Error(t, err)
+	assert.False(t, status.Enabled)
+	assert.ErrorContains(t, err, "check whether user")
 }

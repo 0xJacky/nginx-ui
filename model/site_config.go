@@ -52,6 +52,8 @@ type SiteConfig struct {
 	Model
 	SiteKey            string                 `gorm:"index" json:"site_key" cosy:"all:omitempty"`
 	SiteName           string                 `gorm:"index" json:"site_name" cosy:"all:omitempty"`
+	SiteID             uint64                 `gorm:"index" json:"site_id" cosy:"all:omitempty"`
+	SiteIndex          uint64                 `gorm:"index" json:"index" cosy:"all:omitempty"`
 	Host               string                 `gorm:"index" json:"host" cosy:"all:omitempty"`            // host:port format
 	Port               int                    `gorm:"index" json:"port" cosy:"all:omitempty"`            // port number
 	Scheme             string                 `gorm:"default:'http'" json:"scheme" cosy:"all:omitempty"` // http, https, grpc, grpcs

@@ -291,3 +291,101 @@ type roundTripFunc func(*http.Request) (*http.Response, error)
 func (f roundTripFunc) RoundTrip(request *http.Request) (*http.Response, error) {
 	return f(request)
 }
+
+func TestProviderResolvesInternationalizedZone(t *testing.T) {
+	t.Parallel()
+
+	var mu sync.Mutex
+	var zoneQueries []string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.URL.Path {
+		case "/zones":
+			name := r.URL.Query().Get("name")
+			mu.Lock()
+			zoneQueries = append(zoneQueries, name)
+			mu.Unlock()
+			// Cloudflare keeps an internationalized zone under its Unicode name and
+			// the filter only matches that spelling.
+			if name != "例.example.com" {
+				writeCloudflareResponse(t, w, []map[string]any{}, true)
+				return
+			}
+			writeCloudflareResponse(t, w, []map[string]any{{"id": "zone-idn", "name": "例.example.com"}}, true)
+		case "/zones/zone-idn/dns_records":
+			assert.Equal(t, "www.xn--fsq.example.com", r.URL.Query().Get("name.exact"))
+			// The records pager keeps asking for pages until one comes back empty.
+			if page := r.URL.Query().Get("page"); page != "" && page != "1" {
+				writeCloudflareResponse(t, w, []map[string]any{}, true)
+				return
+			}
+			writeCloudflareResponse(t, w, []map[string]any{{
+				"id": "record-1", "type": "A", "name": "www.例.example.com",
+				"content": "203.0.113.10", "ttl": 300, "proxied": false,
+			}}, true)
+		default:
+			http.Error(w, "unexpected request", http.StatusNotFound)
+		}
+	}))
+	t.Cleanup(server.Close)
+
+	createdProvider, err := newProvider(&dns.Credential{
+		Values:     map[string]string{"CF_DNS_API_TOKEN": "test-token"},
+		Additional: map[string]string{"CF_BASE_URL": server.URL},
+	})
+	require.NoError(t, err)
+
+	// The domain is stored in its canonical punycode form, which is what every
+	// provider call receives.
+	records, err := createdProvider.ListRecords(t.Context(), "xn--fsq.example.com", dns.RecordFilter{Name: "www"})
+	require.NoError(t, err)
+	require.Len(t, records, 1)
+	// The record name comes back in Unicode and must still strip to a relative label.
+	assert.Equal(t, "www", records[0].Name)
+	assert.Equal(t, "203.0.113.10", records[0].Content)
+
+	mu.Lock()
+	defer mu.Unlock()
+	assert.Equal(t, []string{"xn--fsq.example.com", "例.example.com"}, zoneQueries,
+		"the punycode spelling is tried first and the Unicode spelling is the fallback")
+}
+
+func TestProviderAcceptsUnicodeDomainForZoneMatching(t *testing.T) {
+	t.Parallel()
+
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.URL.Path {
+		case "/zones":
+			assert.Equal(t, "xn--fsq.example.com", r.URL.Query().Get("name"))
+			// Cloudflare matched the punycode filter but answers in Unicode.
+			writeCloudflareResponse(t, w, []map[string]any{{"id": "zone-idn", "name": "例.example.com"}}, true)
+		case "/zones/zone-idn/dns_records":
+			// The records pager keeps asking for pages until one comes back empty.
+			if page := r.URL.Query().Get("page"); page != "" && page != "1" {
+				writeCloudflareResponse(t, w, []map[string]any{}, true)
+				return
+			}
+			writeCloudflareResponse(t, w, []map[string]any{{
+				"id": "record-1", "type": "A", "name": "例.example.com",
+				"content": "203.0.113.10", "ttl": 300, "proxied": false,
+			}}, true)
+		default:
+			http.Error(w, "unexpected request", http.StatusNotFound)
+		}
+	}))
+	t.Cleanup(server.Close)
+
+	createdProvider, err := newProvider(&dns.Credential{
+		Values:     map[string]string{"CF_DNS_API_TOKEN": "test-token"},
+		Additional: map[string]string{"CF_BASE_URL": server.URL},
+	})
+	require.NoError(t, err)
+
+	// A domain persisted in Unicode form, as produced by the workaround in the bug
+	// report, resolves to the same zone without any extra request.
+	records, err := createdProvider.ListRecords(t.Context(), "例.example.com", dns.RecordFilter{})
+	require.NoError(t, err)
+	require.Len(t, records, 1)
+	assert.Equal(t, "@", records[0].Name)
+}

@@ -36,7 +36,7 @@ func setupInstallHandlerTest(t *testing.T) string {
 	dbPath := filepath.Join(confDir, "install.db")
 	db, err := gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
 	require.NoError(t, err)
-	require.NoError(t, db.AutoMigrate(&model.User{}))
+	require.NoError(t, db.AutoMigrate(&model.User{}, &model.Passkey{}))
 	model.Use(db)
 	query.Use(db)
 	query.SetDefault(db)

@@ -24,22 +24,51 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
   const ngxConfigStore = useNgxConfigStore()
   const { ngxConfig, configText, curServerIdx, curServer, curServerDirectives, curDirectivesMap } = storeToRefs(ngxConfigStore)
 
+  // This store is a singleton, so opening another stream reuses the state left
+  // behind by the previous one. Every init() run takes a ticket and only the
+  // newest one may write, otherwise a slow response for the stream the operator
+  // just left would land on top of the one now on screen.
+  let loadSeq = 0
+
+  function reset() {
+    name.value = ''
+    advanceMode.value = false
+    parseErrorStatus.value = false
+    parseErrorMessage.value = ''
+    data.value = {} as Stream
+    autoCert.value = false
+    certInfoMap.value = {}
+    filename.value = ''
+    filepath.value = ''
+    status.value = ConfigStatus.Disabled
+    ngxConfigStore.reset()
+  }
+
   async function init(_name: string) {
+    const seq = ++loadSeq
     loading.value = true
+    reset()
     name.value = _name
     await nextTick()
+    if (seq !== loadSeq)
+      return
 
     if (name.value) {
       try {
         const r = await stream.getItem(encodeURIComponent(name.value))
+        if (seq !== loadSeq)
+          return
         handleResponse(r)
       }
       catch (error) {
+        if (seq !== loadSeq)
+          return
         handleParseError(error as { error?: string, message: string })
       }
     }
 
-    loading.value = false
+    if (seq === loadSeq)
+      loading.value = false
   }
 
   async function buildConfig() {
@@ -87,8 +116,11 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     console.error(e)
     parseErrorStatus.value = true
     parseErrorMessage.value = e.message
-    config.getItem(`streams-available/${encodeURIComponent(name.value)}`).then(r => {
-      configText.value = r.content
+    const target = name.value
+    config.getItem(`streams-available/${encodeURIComponent(target)}`).then(r => {
+      // Another stream may have taken over the store while this was in flight.
+      if (name.value === target)
+        configText.value = r.content
     })
   }
 
@@ -103,9 +135,6 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     filepath.value = r.filepath
     configText.value = r.config
     data.value = r
-    Object.assign(ngxConfig, r.tokenized)
-
-    const ngxConfigStore = useNgxConfigStore()
 
     if (r.tokenized)
       ngxConfigStore.setNgxConfig(r.tokenized)
@@ -121,13 +150,8 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
         await buildConfig()
       }
       else {
-        let r = await stream.getItem(encodeURIComponent(name.value))
+        const r = await stream.getItem(encodeURIComponent(name.value))
         await handleResponse(r)
-        r = await ngx.tokenize_config(configText.value)
-        Object.assign(ngxConfig, {
-          ...r,
-          name: name.value,
-        })
       }
     }
     // eslint-disable-next-line ts/no-explicit-any
@@ -158,6 +182,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
     configText,
     status,
     init,
+    reset,
     save,
     handleModeChange,
   }

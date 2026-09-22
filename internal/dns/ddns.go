@@ -191,7 +191,12 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 				continue
 			}
 
-			if namedRecords := recordsByName[strings.ToLower(trimmed)]; len(namedRecords) > 0 {
+			// Past the ID lookup the value is a record name, which the provider
+			// reports and stores as punycode. An ID stays verbatim because it is
+			// opaque and may be case sensitive.
+			name := ToASCIIName(trimmed)
+
+			if namedRecords := recordsByName[name]; len(namedRecords) > 0 {
 				createdTargets, err := collectDDNSTargetsForNamedRecords(namedRecords, version, seenTargetIDs)
 				if err != nil {
 					return nil, err
@@ -210,7 +215,7 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 				ipSnapshot = &snapshot
 			}
 
-			createdTargets, err := createDDNSRecordsForMissingName(ctx, provider, domain.Domain, trimmed, version, *ipSnapshot)
+			createdTargets, err := createDDNSRecordsForMissingName(ctx, provider, domain.Domain, name, version, *ipSnapshot)
 			if err != nil {
 				rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
 				return nil, err
@@ -847,7 +852,7 @@ func indexRecordsByID(records []Record) map[string]Record {
 func indexRecordsByName(records []Record) map[string][]Record {
 	result := make(map[string][]Record, len(records))
 	for _, record := range records {
-		name := strings.ToLower(record.Name)
+		name := ToASCIIName(record.Name)
 		result[name] = append(result[name], record)
 	}
 	return result
@@ -856,7 +861,7 @@ func indexRecordsByName(records []Record) map[string][]Record {
 func indexRecordsByNameAndType(records []Record) map[string]map[string]Record {
 	result := make(map[string]map[string]Record, len(records))
 	for _, record := range records {
-		name := strings.ToLower(record.Name)
+		name := ToASCIIName(record.Name)
 		recordType := strings.ToUpper(record.Type)
 		if _, ok := result[name]; !ok {
 			result[name] = map[string]Record{}
@@ -873,7 +878,7 @@ func collectUniqueLowercaseNames(targets []model.DDNSRecordTarget) []string {
 	seen := make(map[string]struct{}, len(targets))
 	names := make([]string, 0, len(targets))
 	for _, t := range targets {
-		key := strings.ToLower(t.Name)
+		key := ToASCIIName(t.Name)
 		if _, ok := seen[key]; ok {
 			continue
 		}
@@ -884,8 +889,9 @@ func collectUniqueLowercaseNames(targets []model.DDNSRecordTarget) []string {
 }
 
 func containsTargetForName(targets []model.DDNSRecordTarget, name, recordType string) bool {
+	canonical := ToASCIIName(name)
 	for _, t := range targets {
-		if strings.EqualFold(t.Name, name) && strings.EqualFold(t.Type, recordType) {
+		if ToASCIIName(t.Name) == canonical && strings.EqualFold(t.Type, recordType) {
 			return true
 		}
 	}

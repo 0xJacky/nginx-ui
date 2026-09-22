@@ -156,7 +156,7 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 }
 
 func syncSave(name string, content string) {
-	nodes, postSyncAction := getSyncData(name)
+	nodes, postSyncAction, namespaceName := getSyncData(name)
 
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nodes))
@@ -180,6 +180,7 @@ func syncSave(name string, content string) {
 					"content":     content,
 					"overwrite":   true,
 					"post_action": postSyncAction,
+					"namespace":   namespaceName,
 				}).
 				Post(fmt.Sprintf("/api/sites/%s", name))
 			if err != nil {

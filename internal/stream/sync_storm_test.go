@@ -1,6 +1,7 @@
 package stream
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -35,12 +36,18 @@ func TestSyncSaveEnablesEachSuccessfulNodeOnce(t *testing.T) {
 
 	var saveRequests [2]atomic.Int32
 	var enableRequests [2]atomic.Int32
+	var namespaces [2]atomic.Value
 	newNodeServer := func(index int) *httptest.Server {
 		return httptest.NewServer(http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
 			response.Header().Set("Content-Type", "application/json")
 			switch request.URL.Path {
 			case "/api/streams/storm-stream":
 				saveRequests[index].Add(1)
+				var payload struct {
+					Namespace string `json:"namespace"`
+				}
+				_ = json.NewDecoder(request.Body).Decode(&payload)
+				namespaces[index].Store(payload.Namespace)
 			case "/api/streams/storm-stream/enable":
 				enableRequests[index].Add(1)
 			default:
@@ -99,5 +106,6 @@ func TestSyncSaveEnablesEachSuccessfulNodeOnce(t *testing.T) {
 	for index := range servers {
 		require.EqualValues(t, 1, saveRequests[index].Load(), "node %d save requests", index+1)
 		require.EqualValues(t, 1, enableRequests[index].Load(), "node %d enable requests", index+1)
+		require.Equal(t, "all-node", namespaces[index].Load(), "node %d namespace", index+1)
 	}
 }

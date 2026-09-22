@@ -50,9 +50,11 @@ const quickSetupOpen = ref(false)
 // Use Vue 3.4+ useTemplateRef for InspectConfig component
 const inspectConfigRef = useTemplateRef<InstanceType<typeof InspectConfig>>('inspectConfig')
 
-onMounted(() => {
-  editorStore.init(name.value)
-})
+// Vue Router can reuse this component when only the site name changes, so reload
+// on the route parameter instead of on mount alone.
+watch(name, value => {
+  editorStore.init(value)
+}, { immediate: true })
 
 async function save() {
   try {
