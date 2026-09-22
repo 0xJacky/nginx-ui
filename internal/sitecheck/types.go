@@ -1,6 +1,7 @@
 package sitecheck
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
@@ -30,6 +31,16 @@ type SiteInfo struct {
 	ErrorType                   string `json:"error_type,omitempty"` // failure category for Error, see errorclass.go
 	EffectiveHealthCheckEnabled bool   `json:"effective_health_check_enabled"`
 	HealthCheckDisabledReason   string `json:"health_check_disabled_reason,omitempty"`
+}
+
+// MarshalJSON leaves the probe values out. They may hold credentials and the
+// site list is broadcast to every dashboard; the health check editor reads
+// them from the site config endpoint instead.
+func (s SiteInfo) MarshalJSON() ([]byte, error) {
+	type plain SiteInfo
+	out := plain(s)
+	out.ProbeConfig = nil
+	return json.Marshal(out)
 }
 
 // CheckOptions represents options for site checking

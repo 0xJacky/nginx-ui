@@ -63,6 +63,19 @@ var alignments = []alignment{
 	{reflect.TypeFor[protocol.HTTPUser](), "HTTPUser"},
 	{reflect.TypeFor[protocol.HTTPHandleResult](), "HTTPHandleResponse"},
 
+	// notify.go
+	{reflect.TypeFor[protocol.NotifySendParams](), "NotifySendRequest"},
+	{reflect.TypeFor[protocol.NotifyValidateParams](), "NotifyValidateRequest"},
+
+	// probe.go
+	{reflect.TypeFor[protocol.ProbeCheckParams](), "ProbeCheckRequest"},
+	{reflect.TypeFor[protocol.ProbeCheckResult](), "ProbeCheckResponse"},
+
+	// mcp.go
+	{reflect.TypeFor[protocol.MCPCallParams](), "MCPCallRequest"},
+	{reflect.TypeFor[protocol.MCPCallResult](), "MCPCallResponse"},
+	{reflect.TypeFor[protocol.MCPContent](), "MCPContent"},
+
 	// events.go
 	{reflect.TypeFor[protocol.EventNotification](), "EventsOnRequest"},
 
@@ -86,6 +99,14 @@ var alignments = []alignment{
 	{reflect.TypeFor[protocol.SettingsSchema](), "SettingsSchema"},
 	{reflect.TypeFor[protocol.SettingsField](), "SettingsField"},
 	{reflect.TypeFor[protocol.SettingsOption](), "SettingsOption"},
+	{reflect.TypeFor[protocol.ManifestNotify](), "ManifestNotify"},
+	{reflect.TypeFor[protocol.NotifyChannel](), "NotifyChannel"},
+	{reflect.TypeFor[protocol.ManifestProbe](), "ManifestProbe"},
+	{reflect.TypeFor[protocol.ProbeKind](), "ProbeKind"},
+	{reflect.TypeFor[protocol.ConfigurationSchema](), "ConfigurationSchema"},
+	{reflect.TypeFor[protocol.ConfigurationField](), "ConfigurationField"},
+	{reflect.TypeFor[protocol.ManifestMCP](), "ManifestMCP"},
+	{reflect.TypeFor[protocol.MCPTool](), "MCPTool"},
 }
 
 // TestProtoAlignment asserts that the json tag names of every hand-written
@@ -165,6 +186,10 @@ func TestMethodNamesMatchProto(t *testing.T) {
 		protocol.MethodDNS01Check,
 		protocol.MethodDNS01Validate,
 		protocol.MethodHTTPHandle,
+		protocol.MethodNotifySend,
+		protocol.MethodNotifyValidate,
+		protocol.MethodProbeCheck,
+		protocol.MethodMCPCall,
 		protocol.MethodHostLog,
 		protocol.MethodHostKVGet,
 		protocol.MethodHostKVSet,

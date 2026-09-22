@@ -21,6 +21,10 @@ export const SiteError = {
   STATUS_CODE: 'status_code',
   CONTENT: 'content',
   REQUEST: 'request',
+  // A plugin probe reported the target down, or could not run
+  PROBE: 'probe',
+  // A plugin probe reported a problem; the site stays online
+  DEGRADED: 'degraded',
 } as const
 
 // Type for site error category
