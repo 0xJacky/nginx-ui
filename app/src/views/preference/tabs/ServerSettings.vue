@@ -6,6 +6,8 @@ import useSystemSettingsStore from '../store'
 const systemSettingsStore = useSystemSettingsStore()
 const { data } = storeToRefs(systemSettingsStore)
 
+const isUnixListener = computed(() => !!data.value?.listener?.unix_socket)
+
 function handleCertChange(certs: Cert[]) {
   if (certs.length > 0 && data.value?.server) {
     data.value.server.ssl_cert = certs[0].ssl_certificate_path
@@ -21,6 +23,9 @@ function handleCertChange(certs: Cert[]) {
     </AFormItem>
     <AFormItem :label="$gettext('Port')">
       <p>{{ data.server.port }}</p>
+    </AFormItem>
+    <AFormItem v-if="isUnixListener" :label="$gettext('Unix Socket')" :help="$gettext('Nginx UI listens on this Unix socket instead of the TCP host and port.')">
+      <p>{{ data.listener?.unix_socket }}</p>
     </AFormItem>
     <AFormItem :label="$gettext('Run Mode')">
       <p>{{ data.server.run_mode }}</p>
@@ -53,8 +58,13 @@ function handleCertChange(certs: Cert[]) {
         <ASwitch v-model:checked="data.server.enable_h2" />
       </AFormItem>
 
-      <AFormItem :label="$gettext('Enable HTTP/3')" :help="$gettext('Enables HTTP/3 support based on QUIC protocol for best performance')">
-        <ASwitch v-model:checked="data.server.enable_h3" />
+      <AFormItem
+        :label="$gettext('Enable HTTP/3')"
+        :help="isUnixListener
+          ? $gettext('HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on a Unix socket.')
+          : $gettext('Enables HTTP/3 support based on QUIC protocol for best performance')"
+      >
+        <ASwitch v-model:checked="data.server.enable_h3" :disabled="isUnixListener" />
       </AFormItem>
     </div>
   </AForm>

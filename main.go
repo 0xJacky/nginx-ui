@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"crypto/tls"
-	"fmt"
 	"net"
 	"os"
 	"os/signal"
@@ -152,6 +151,27 @@ func main() {
 	confPath := appCmd.String("config")
 	settings.Init(confPath)
 
+	configuredNetwork, configuredAddress, err := settings.ListenerSettings.Address(*cSettings.ServerSettings)
+	if err != nil {
+		logger.Fatalf("Invalid listener configuration: %v", err)
+		return
+	}
+	// After a graceful restart the parent process keeps the public listener,
+	// so a child must follow the parent's transport even if app.ini changed.
+	network, address, firstProcess, listenerChanged := process.ResolveActiveListener(configuredNetwork, configuredAddress)
+	if listenerChanged {
+		logger.Warnf("Listener configuration changed to %s %s, but the running parent keeps %s %s; stop and start Nginx UI to apply the new listener",
+			configuredNetwork, configuredAddress, network, address)
+	}
+	socketMode, _ := settings.ListenerSettings.Mode()
+	if firstProcess && network == "unix" {
+		if err := process.PrepareUnixSocket(address); err != nil {
+			logger.Fatalf("Prepare listener socket: %v", err)
+			return
+		}
+	}
+	process.ConfigureProxyProtocol(network)
+
 	mainCtx, mainCancel := signal.NotifyContext(context.Background(), syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM)
 	defer mainCancel()
 
@@ -167,8 +187,15 @@ func main() {
 
 	var programCancel context.CancelFunc
 
-	err := risefront.New(mainCtx, risefront.Config{
+	err = risefront.New(mainCtx, risefront.Config{
 		Run: func(l []net.Listener) error {
+			// The socket inherits the process umask when risefront binds it;
+			// apply the configured mode so the reverse proxy user can connect.
+			if network == "unix" {
+				if err := process.ApplyUnixSocketMode(address, socketMode); err != nil {
+					logger.Errorf("Apply listener socket mode: %v", err)
+				}
+			}
 			// Create a new context for the program itself, derived from the main context.
 			programCtx, cancel := context.WithCancel(mainCtx)
 			// Store the cancel function so the Shutdown callback can use it.
@@ -192,7 +219,8 @@ func main() {
 			}
 		},
 		Name:      "nginx-ui",
-		Addresses: []string{fmt.Sprintf("%s:%d", cSettings.ServerSettings.Host, cSettings.ServerSettings.Port)},
+		Network:   network,
+		Addresses: []string{address},
 		LogHandler: func(loglevel risefront.LogLevel, kind string, args ...any) {
 			logger := logger.GetLogger()
 			args = append([]any{kind}, args...)

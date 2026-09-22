@@ -19,6 +19,64 @@ Changing the default hostname can be useful for improving the security of Nginx 
 This option is used to configure the port on which the Nginx UI server listens for incoming
 HTTP requests. Changing the default port can be useful for avoiding port conflicts or enhancing security.
 
+## Unix domain socket
+
+To listen only on a Unix domain socket instead of TCP, configure the optional
+`UnixSocket` key in the **`[listener]` section**:
+
+```ini
+[listener]
+UnixSocket = /run/nginx-ui/nginx-ui.sock
+```
+
+The equivalent environment variable is `NGINX_UI_LISTENER_UNIX_SOCKET`. An empty
+value (the default) keeps the existing `[server]` `Host` and `Port` behavior. A
+nonempty value must be an absolute path and replaces the TCP listener. The path
+may only contain letters, digits and `/ . _ - + @ ~`, because it is written as a
+literal upstream into generated Nginx configurations. This mode is not supported
+on Windows or with `EnableH3`, which requires UDP; the settings API rejects
+enabling HTTP/3 while a Unix socket is configured. `EnableHTTPS` still applies to
+the socket, and the built-in Nginx UI template and maintenance configurations use
+`https://unix:` accordingly.
+
+### SocketMode
+
+- Type: `string`
+- Default: `0666`
+
+Octal permission bits applied to the socket right after it is bound (environment
+variable `NGINX_UI_LISTENER_SOCKET_MODE`). Connecting to a Unix socket requires
+write permission, and the reverse proxy usually runs as another user (for example
+the `nginx` worker user), so the default is world-writable. Restrict access with a
+stricter mode such as `0660` together with the parent directory's ownership and
+permissions.
+
+Create the parent directory before starting Nginx UI. For systemd deployments,
+`RuntimeDirectory=nginx-ui` can manage it. On startup Nginx UI removes a leftover
+socket file from an unclean exit when nothing is listening on it; a socket that is
+still in use, or a regular file at that path, aborts startup with an error.
+
+The socket stays bound through graceful application handover and is removed when
+the owning parent process shuts down. Changing the transport or socket path
+requires a full stop and start of Nginx UI: a graceful reload keeps the parent's
+existing listener, and the restarted program logs a warning and keeps using it
+until the next full restart.
+
+A reverse proxy location can use:
+
+```nginx
+location / {
+    proxy_pass http://unix:/run/nginx-ui/nginx-ui.sock:;
+}
+```
+
+See the [reverse-proxy guide](./nginx-proxy-example.md) for headers and WebSocket
+configuration. Unix socket peers are trusted for forwarded client IP headers, so
+restrict socket access to trusted local processes and configure the reverse proxy
+to overwrite those headers. A client that connects to the socket directly without
+forwarded headers is treated as `127.0.0.1`, the same as a direct loopback TCP
+client.
+
 ## RunMode
 
 - Type: `string`

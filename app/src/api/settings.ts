@@ -21,6 +21,13 @@ export interface ServerSettings {
   enable_h3: boolean
 }
 
+// Read-only: the listener can only be changed in app.ini or by environment
+// variables, because switching it requires a full stop and start.
+export interface ListenerSettings {
+  unix_socket: string
+  socket_mode: string
+}
+
 export interface DatabaseSettings {
   name: string
 }
@@ -191,6 +198,7 @@ export interface OIDCSettings {
 export interface Settings {
   app: AppSettings
   server: ServerSettings
+  listener?: ListenerSettings
   database: DatabaseSettings
   auth: AuthSettings
   casdoor: CasdoorSettings

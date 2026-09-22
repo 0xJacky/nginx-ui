@@ -22,6 +22,10 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       enable_h2: false,
       enable_h3: false,
     },
+    listener: {
+      unix_socket: '',
+      socket_mode: '',
+    },
     database: {
       name: '',
     },
