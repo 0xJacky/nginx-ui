@@ -33,6 +33,8 @@ type fakeSyncNode struct {
 	apiVersions []int
 	// marketplaceStatus lets a test simulate an offline catalog.
 	marketplaceStatus int
+	// platform is what GET /api/plugins/spec reports, empty for an older node.
+	platform string
 
 	uploaded      []byte
 	uploadEnable  string
@@ -55,7 +57,7 @@ func newFakeSyncNode(t *testing.T) *fakeSyncNode {
 
 	mux.HandleFunc("/api/plugins/spec", func(w http.ResponseWriter, _ *http.Request) {
 		node.mu.Lock()
-		spec := Spec{APIVersions: node.apiVersions, WebappAPIVersion: protocol.APIVersion}
+		spec := Spec{APIVersions: node.apiVersions, WebappAPIVersion: protocol.APIVersion, Platform: node.platform}
 		node.mu.Unlock()
 		writeSyncJSON(w, spec)
 	})

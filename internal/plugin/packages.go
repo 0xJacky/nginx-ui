@@ -1,8 +1,12 @@
 package plugin
 
 import (
+	"archive/tar"
 	"context"
+	"encoding/json"
+	"io"
 	"os"
+	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -33,6 +37,8 @@ type LocalPackage struct {
 	// SignaturePath is the sibling .minisig, empty when there is none.
 	SignaturePath string
 	Manifest      *protocol.Manifest
+	// Platforms lists what the package runs on, see packagePlatforms.
+	Platforms []string
 }
 
 // PackagesDir is the directory an operator drops packages into for an offline
@@ -100,8 +106,10 @@ func (m *Manager) InstallLocalPackage(ctx context.Context, id string, opts Insta
 	return info, nil
 }
 
-// localPackages lists the readable archives in the offline directory, newest
-// version of each plugin last so a later install wins.
+// localPackages lists the readable archives in the offline directory that run
+// on this node, newest version of each plugin last so a later install wins.
+// Packages built for another platform stay where they are: cluster sync pushes
+// them to the nodes that run that platform.
 func (m *Manager) localPackages() ([]LocalPackage, error) {
 	dir := m.PackagesDir()
 	items, err := os.ReadDir(dir)
@@ -112,19 +120,29 @@ func (m *Manager) localPackages() ([]LocalPackage, error) {
 		return nil, err
 	}
 
+	host := HostPlatform()
 	packages := make([]LocalPackage, 0, len(items))
 	for _, item := range items {
 		name := item.Name()
 		if item.IsDir() || !strings.HasSuffix(name, packageSuffix) {
 			continue
 		}
+		// The file name already tells a foreign per-platform package apart,
+		// which saves reading it on every boot.
+		if parsed, ok := ParsePackageFileName(name); ok && parsed.Platform != "" && parsed.Platform != host {
+			continue
+		}
 		archive := filepath.Join(dir, name)
-		manifest, err := peekPackageManifest(archive)
+		manifest, platforms, err := peekPackage(archive)
 		if err != nil {
 			m.log.Warnf("Skip local package %s: %v", name, err)
 			continue
 		}
-		pkg := LocalPackage{Path: archive, Manifest: manifest}
+		if !platformsCover(platforms, host) {
+			m.log.Warnf("Skip local package %s: it has no build for %s", name, host)
+			continue
+		}
+		pkg := LocalPackage{Path: archive, Manifest: manifest, Platforms: platforms}
 		if signature := archive + signatureSuffix; fileExists(signature) {
 			pkg.SignaturePath = signature
 		}
@@ -201,11 +219,19 @@ func (m *Manager) archiveLocalPackage(pkg *LocalPackage) {
 	}
 }
 
-// FetchPackage downloads one catalog release and its signature into destDir so
-// it can be carried to an offline node. It returns the archive path.
-func (mp *Marketplace) FetchPackage(ctx context.Context, id, wantVersion, destDir string) (string, error) {
+// FetchPackage downloads the package one catalog release ships for platform,
+// together with its signature, into destDir so it can be carried to an offline
+// node. An empty platform means this node. It returns the archive path, named
+// after the package form the catalog served.
+func (mp *Marketplace) FetchPackage(ctx context.Context, id, wantVersion, platform, destDir string) (string, error) {
 	if !IsValidID(id) {
 		return "", ErrPluginNotFound
+	}
+	if platform == "" {
+		platform = HostPlatform()
+	}
+	if platform != anyPlatform && !IsValidPlatform(platform) {
+		return "", cosy.WrapErrorWithParams(ErrPlatformPackageMissing, platform)
 	}
 
 	entries, err := mp.Catalog(ctx, false)
@@ -216,56 +242,179 @@ func (mp *Marketplace) FetchPackage(ctx context.Context, id, wantVersion, destDi
 	if entry == nil {
 		return "", ErrMarketplaceNotFound
 	}
-	release, err := mp.resolveRelease(entry, wantVersion)
+	release, err := mp.resolveRelease(entry, wantVersion, platform)
 	if err != nil {
 		return "", err
 	}
-	if err = mp.checkPolicy(entry, release); err != nil {
+	return mp.fetchRelease(ctx, entry, release, platform, destDir)
+}
+
+// FetchTargets resolves "every platform" for one release: the version it
+// picked and one platform per distinct package, which is what
+// "plugin fetch --platform all" downloads. A platform the portable package
+// serves is listed once for all of them.
+func (mp *Marketplace) FetchTargets(ctx context.Context, id, wantVersion string) (string, []string, error) {
+	entries, err := mp.Catalog(ctx, false)
+	if err != nil {
+		return "", nil, err
+	}
+	entry := findEntry(entries, id, "")
+	if entry == nil {
+		return "", nil, ErrMarketplaceNotFound
+	}
+	release := findRelease(entry, wantVersion)
+	if release == nil {
+		return "", nil, ErrReleaseNotFound
+	}
+
+	seen := map[string]bool{}
+	targets := make([]string, 0, len(release.Downloads)+1)
+	for _, platform := range release.AvailablePlatforms() {
+		_, key, ok := release.DownloadFor(platform)
+		if !ok || seen[key] {
+			continue
+		}
+		seen[key] = true
+		targets = append(targets, platform)
+	}
+	return release.Version, targets, nil
+}
+
+// fetchRelease downloads the package a release resolves to on platform into
+// destDir, checks its digest and signature and keeps the signature next to
+// it. Nothing is published on the event bus: the caller is not an install.
+func (mp *Marketplace) fetchRelease(ctx context.Context, entry *CatalogEntry, release *CatalogRelease,
+	platform, destDir string,
+) (string, error) {
+	download, key, ok := release.DownloadFor(platform)
+	if !ok {
+		return "", cosy.WrapErrorWithParams(ErrPlatformPackageMissing, platform)
+	}
+	if err := mp.checkPolicy(entry, download.URL); err != nil {
 		return "", err
 	}
-	if err = os.MkdirAll(destDir, 0o755); err != nil {
+	if err := os.MkdirAll(destDir, 0o755); err != nil {
 		return "", err
 	}
 
-	archive := filepath.Join(destDir, id+"-"+release.Version+packageSuffix)
-	if err = mp.download(ctx, id, proxiedURL(release.DownloadURL), archive); err != nil {
-		return "", err
-	}
-	if err = verifyDigest(archive, release.SHA256); err != nil {
-		return "", err
-	}
+	archive := filepath.Join(destDir, PackageFileName(entry.ID, release.Version, key))
+	// The archive only takes its final name once it is verified, so a failed
+	// download never leaves something the package scanner would pick up.
+	partial := archive + ".partial"
+	defer os.Remove(partial)
 
-	signatureURL := release.SignatureURL
-	if signatureURL == "" {
-		signatureURL = release.DownloadURL + signatureSuffix
+	if err := mp.download(ctx, proxiedURL(download.URL), partial, nil); err != nil {
+		return "", err
 	}
-	signature, err := fetchText(ctx, proxiedURL(signatureURL), maxReadmeBytes)
-	switch {
-	case err != nil || strings.TrimSpace(signature) == "":
-		if isOfficialSource(entry.Source) || settings.PluginSettings.RequireSignature {
-			return "", ErrSignatureMissing
-		}
-	default:
-		if _, err = pkgsign.VerifyFile(archive, []byte(signature), mp.trustedKeys(entry, release)); err != nil {
-			return "", cosy.WrapErrorWithParams(ErrSignatureInvalid, err.Error())
-		}
-		if err = os.WriteFile(archive+signatureSuffix, []byte(signature), 0o644); err != nil {
-			return "", err
-		}
+	if err := verifyDigest(partial, download.SHA256); err != nil {
+		return "", err
+	}
+	signature, err := mp.verifySignature(ctx, entry, release, download, partial)
+	if err != nil {
+		return "", err
+	}
+	if err = os.Rename(partial, archive); err != nil {
+		return "", err
+	}
+	if signature == "" {
+		_ = os.Remove(archive + signatureSuffix)
+		return archive, nil
+	}
+	if err = os.WriteFile(archive+signatureSuffix, []byte(signature), 0o644); err != nil {
+		return "", err
 	}
 	return archive, nil
+}
+
+// findRelease returns one version of an entry, or the newest release that is
+// not yanked when wantVersion is empty.
+func findRelease(entry *CatalogEntry, wantVersion string) *CatalogRelease {
+	var best *CatalogRelease
+	for i := range entry.Releases {
+		release := &entry.Releases[i]
+		if wantVersion != "" {
+			if release.Version == wantVersion {
+				return release
+			}
+			continue
+		}
+		if release.Yanked {
+			continue
+		}
+		if best == nil || CompareVersions(release.Version, best.Version) > 0 {
+			best = release
+		}
+	}
+	return best
 }
 
 // peekPackageManifest reads the manifest of an archive without unpacking it
 // into the plugin directory.
 func peekPackageManifest(archivePath string) (*protocol.Manifest, error) {
-	staging, err := os.MkdirTemp("", "nginx-ui-plugin-peek-")
-	if err != nil {
-		return nil, err
-	}
-	defer os.RemoveAll(staging)
+	manifest, _, err := peekPackage(archivePath)
+	return manifest, err
+}
 
-	return ExtractPackage(archivePath, filepath.Join(staging, "payload"))
+// peekPackage reads the manifest of an archive and the platforms it runs on
+// in one pass over the archive, without writing anything to disk. A broken
+// package fails the way ExtractPackage fails.
+func peekPackage(archivePath string) (*protocol.Manifest, []string, error) {
+	var (
+		scan prefixScan
+		// files holds the regular entries, dirs the directories including the
+		// implied parents.
+		files     = map[string]bool{}
+		dirs      = map[string]bool{}
+		manifests = map[string][]byte{}
+	)
+	err := walkPackage(archivePath, func(header *tar.Header, name string, reader io.Reader) error {
+		scan.add(name)
+		for parent := path.Dir(name); parent != "."; parent = path.Dir(parent) {
+			dirs[parent] = true
+		}
+		if header.Typeflag == tar.TypeDir {
+			dirs[name] = true
+			return nil
+		}
+		files[name] = true
+		if path.Base(name) != ManifestFileName || strings.Count(name, "/") > 1 {
+			return nil
+		}
+		// walkPackage already holds the entry to the package size budget.
+		data, err := io.ReadAll(reader)
+		if err != nil {
+			return invalidPackage("read entry %q: %v", header.Name, err)
+		}
+		manifests[name] = data
+		return nil
+	})
+	if err != nil {
+		return nil, nil, err
+	}
+	prefix, err := scan.prefix()
+	if err != nil {
+		return nil, nil, err
+	}
+
+	data, ok := manifests[prefix+ManifestFileName]
+	if !ok {
+		return nil, nil, invalidManifest("read %s: not a regular file", ManifestFileName)
+	}
+	manifest := &protocol.Manifest{}
+	if err = json.Unmarshal(data, manifest); err != nil {
+		return nil, nil, invalidManifest("decode %s: %v", ManifestFileName, err)
+	}
+	if err = ValidateManifest(manifest); err != nil {
+		return nil, nil, err
+	}
+	// markExecutables refuses the same package on extraction.
+	for _, rel := range manifestExecutables(manifest) {
+		if dirs[prefix+rel] {
+			return nil, nil, invalidPackage("executable %q is not a regular file", rel)
+		}
+	}
+	platforms := packagePlatformsWith(manifest, func(rel string) bool { return files[prefix+rel] })
+	return manifest, platforms, nil
 }
 
 func fileExists(path string) bool {
