@@ -8,6 +8,7 @@ import AutoCertManagement from './components/AutoCertManagement.vue'
 import CertificateActions from './components/CertificateActions.vue'
 import CertificateBasicInfo from './components/CertificateBasicInfo.vue'
 import CertificateContentEditor from './components/CertificateContentEditor.vue'
+import CertificateDeployTargets from './components/CertificateDeployTargets.vue'
 import SelfSignedCertManagement from './components/SelfSignedCertManagement.vue'
 import { useCertStore } from './store'
 
@@ -46,6 +47,8 @@ function reconnectLayoutObserver() {
   layoutObserver = new ResizeObserver(scheduleLogHeightUpdate)
   layoutObserver.observe(leftElement)
   layoutObserver.observe(cardElement)
+  if (cardElement.parentElement)
+    layoutObserver.observe(cardElement.parentElement)
 }
 
 const isManaged = computed(() => {
@@ -318,7 +321,10 @@ function updateLogContentHeight() {
   if (!leftElement || !cardElement)
     return
 
-  const totalHeight = leftElement.getBoundingClientRect().height
+  // The deploy targets card sits above the log card in the same column.
+  const leftRect = leftElement.getBoundingClientRect()
+  const offset = Math.max(0, cardElement.getBoundingClientRect().top - leftRect.top)
+  const totalHeight = leftRect.height - offset
   const head = cardElement.querySelector('.ant-card-head') as HTMLElement | null
   const body = cardElement.querySelector('.ant-card-body') as HTMLElement | null
   const headHeight = head?.getBoundingClientRect().height ?? 0
@@ -423,14 +429,17 @@ onBeforeUnmount(() => {
         </div>
       </ACol>
 
-      <!-- Log Column for Auto Cert -->
+      <!-- Deploy Targets and Log Column -->
       <ACol
-        v-if="data.auto_cert === AutoCertState.Enable || data.auto_cert === AutoCertState.Paused"
+        v-if="id > 0"
         :sm="24"
         :lg="10"
         class="log-col"
       >
+        <CertificateDeployTargets :cert-id="id" />
+
         <ACard
+          v-if="data.auto_cert === AutoCertState.Enable || data.auto_cert === AutoCertState.Paused"
           ref="logCardRef"
           size="small"
           :title="$gettext('Log')"
@@ -482,14 +491,15 @@ onBeforeUnmount(() => {
 
 .log-col {
   display: flex;
+  flex-direction: column;
   min-height: 0;
 }
 
 .log-card {
   display: flex;
+  flex: 1;
   flex-direction: column;
   width: 100%;
-  height: 100%;
   min-height: 0;
   overflow: hidden;
 }

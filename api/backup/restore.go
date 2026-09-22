@@ -119,6 +119,12 @@ func RestoreBackup(c *gin.Context) {
 		defer os.RemoveAll(restoreDir)
 	}
 
+	finishRestore(c, restoreNginx, restoreNginxUI, result)
+}
+
+// finishRestore restarts what a restore replaced and answers with its
+// outcome. It is shared by the upload and the stored backup restore.
+func finishRestore(c *gin.Context, restoreNginx, restoreNginxUI bool, result backup.RestoreResult) {
 	if restoreNginx {
 		go func() {
 			time.Sleep(2 * time.Second)

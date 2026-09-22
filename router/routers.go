@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/analytic"
 	"github.com/0xJacky/Nginx-UI/api/audit"
 	"github.com/0xJacky/Nginx-UI/api/backup"
+	"github.com/0xJacky/Nginx-UI/api/cert_deploy"
 	"github.com/0xJacky/Nginx-UI/api/certificate"
 	"github.com/0xJacky/Nginx-UI/api/cluster"
 	"github.com/0xJacky/Nginx-UI/api/config"
@@ -128,6 +129,7 @@ func InitRouter() {
 			certificate.InitCertificateRouter(g)
 			certificate.InitDNSCredentialRouter(g)
 			certificate.InitAcmeUserRouter(g)
+			cert_deploy.InitRouter(g)
 			dnsapi.InitRouter(g)
 			system.InitPrivateRouter(g)
 			settings.InitRouter(g)

@@ -8,12 +8,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// capabilityManifest declares the notify, probe and mcp capabilities with one
-// entry each.
+// capabilityManifest declares the notify, probe, mcp, storage and cert.deploy
+// capabilities with one or two entries each.
 func capabilityManifest() *protocol.Manifest {
 	m := validManifest()
-	m.Capabilities = []string{protocol.CapabilityNotify, protocol.CapabilityProbe, protocol.CapabilityMCP}
-	m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP}
+	m.Capabilities = []string{
+		protocol.CapabilityNotify, protocol.CapabilityProbe, protocol.CapabilityMCP,
+		protocol.CapabilityStorage, protocol.CapabilityCertDeploy,
+	}
+	m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP, protocol.PermissionCertDeploy}
 	m.DNS01 = nil
 	m.Notify = &protocol.ManifestNotify{Channels: []protocol.NotifyChannel{{
 		Code: "mychat",
@@ -38,6 +41,22 @@ func capabilityManifest() *protocol.Manifest {
 	}, {
 		Name:        "list-zones",
 		Description: "List zones.",
+	}}}
+	m.Storage = &protocol.ManifestStorage{Backends: []protocol.StorageBackend{{
+		Code: "webdav",
+		Name: "WebDAV",
+		Configuration: &protocol.ConfigurationSchema{Fields: []protocol.ConfigurationField{
+			{Key: "url", DisplayName: "Server URL", Required: true},
+			{Key: "password", DisplayName: "Password", Secret: true},
+		}},
+	}}}
+	m.Deploy = &protocol.ManifestDeploy{Targets: []protocol.DeployTarget{{
+		Code: "mycdn",
+		Name: "MyCDN",
+		Configuration: &protocol.ConfigurationSchema{Fields: []protocol.ConfigurationField{
+			{Key: "zone_id", DisplayName: "Zone ID", Required: true},
+			{Key: "api_token", DisplayName: "API token", Secret: true},
+		}},
 	}}}
 	return m
 }
@@ -90,6 +109,27 @@ func TestValidateManifestCapabilityBlocks(t *testing.T) {
 		{"mcp schema of another type", func(m *protocol.Manifest) {
 			m.MCP.Tools[0].InputSchema = map[string]any{"type": "array"}
 		}, "type object"},
+		{"storage without block", func(m *protocol.Manifest) { m.Storage = nil }, "at least one backend"},
+		{"storage code with dot", func(m *protocol.Manifest) { m.Storage.Backends[0].Code = "web.dav" }, "storage backend code"},
+		{"duplicate storage code", func(m *protocol.Manifest) {
+			m.Storage.Backends = append(m.Storage.Backends, protocol.StorageBackend{Code: "webdav", Name: "Again"})
+		}, "declared twice"},
+		{"storage backend without name", func(m *protocol.Manifest) { m.Storage.Backends[0].Name = "" }, "name is required"},
+		{"storage field of unknown type", func(m *protocol.Manifest) {
+			m.Storage.Backends[0].Configuration.Fields[0].Type = "file"
+		}, "unknown type"},
+		{"deploy without block", func(m *protocol.Manifest) { m.Deploy = nil }, "at least one target"},
+		{"deploy without permission", func(m *protocol.Manifest) {
+			m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP}
+		}, "requires the cert.deploy permission"},
+		{"deploy code too short", func(m *protocol.Manifest) { m.Deploy.Targets[0].Code = "x" }, "deploy target code"},
+		{"duplicate deploy code", func(m *protocol.Manifest) {
+			m.Deploy.Targets = append(m.Deploy.Targets, protocol.DeployTarget{Code: "mycdn", Name: "Again"})
+		}, "declared twice"},
+		{"deploy target without name", func(m *protocol.Manifest) { m.Deploy.Targets[0].Name = "" }, "name is required"},
+		{"deploy field without key", func(m *protocol.Manifest) {
+			m.Deploy.Targets[0].Configuration.Fields[1].Key = ""
+		}, "field key is required"},
 	}
 
 	for _, tc := range tests {
@@ -106,11 +146,12 @@ func TestValidateManifestCapabilityBlocks(t *testing.T) {
 
 func TestValidateManifestAcceptsTheMCPPermissionAlone(t *testing.T) {
 	m := validManifest()
-	m.Permissions = append(m.Permissions, protocol.PermissionMCP)
+	m.Permissions = append(m.Permissions, protocol.PermissionMCP, protocol.PermissionCertDeploy)
 	assert.NoError(t, ValidateManifest(m))
 }
 
-// lintCapabilityManifest is goodManifest serving the three capabilities.
+// lintCapabilityManifest is goodManifest serving the capabilities of
+// capabilityManifest.
 func lintCapabilityManifest() *protocol.Manifest {
 	m := goodManifest()
 	blocks := capabilityManifest()
@@ -120,6 +161,8 @@ func lintCapabilityManifest() *protocol.Manifest {
 	m.Notify = blocks.Notify
 	m.Probe = blocks.Probe
 	m.MCP = blocks.MCP
+	m.Storage = blocks.Storage
+	m.Deploy = blocks.Deploy
 	return m
 }
 
@@ -163,6 +206,30 @@ func TestLintCapabilityBlocks(t *testing.T) {
 		}, LevelWarning, "SEC-3"},
 		{"mcp permission without capability", func(m *protocol.Manifest) {
 			m.Capabilities = []string{protocol.CapabilityNotify}
+		}, LevelWarning, "SEC-5"},
+		{"storage without block", func(m *protocol.Manifest) { m.Storage = nil }, LevelError, "MAN-34"},
+		{"bad storage code", func(m *protocol.Manifest) { m.Storage.Backends[0].Code = "Web DAV" }, LevelError, "STORAGE-2"},
+		{"storage backend without name", func(m *protocol.Manifest) { m.Storage.Backends[0].Name = "" }, LevelError, "STORAGE-3"},
+		{"storage field without display name", func(m *protocol.Manifest) {
+			m.Storage.Backends[0].Configuration.Fields[0].DisplayName = ""
+		}, LevelError, "STORAGE-3"},
+		{"deploy without permission", func(m *protocol.Manifest) {
+			m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP}
+		}, LevelError, "MAN-35"},
+		{"deploy without targets", func(m *protocol.Manifest) { m.Deploy = nil }, LevelError, "MAN-35"},
+		{"duplicate deploy code", func(m *protocol.Manifest) {
+			m.Deploy.Targets = append(m.Deploy.Targets, protocol.DeployTarget{Code: "mycdn", Name: "Again"})
+		}, LevelError, "DEPLOY-2"},
+		{"deploy target without name", func(m *protocol.Manifest) { m.Deploy.Targets[0].Name = "" }, LevelError, "DEPLOY-3"},
+		{"deploy field of unknown type", func(m *protocol.Manifest) {
+			m.Deploy.Targets[0].Configuration.Fields[0].Type = "select"
+		}, LevelError, "DEPLOY-3"},
+		{"storage without network", func(m *protocol.Manifest) {
+			m.Capabilities = []string{protocol.CapabilityStorage}
+			m.Permissions = nil
+		}, LevelWarning, "SEC-3"},
+		{"deploy permission without capability", func(m *protocol.Manifest) {
+			m.Capabilities = []string{protocol.CapabilityStorage}
 		}, LevelWarning, "SEC-5"},
 	}
 

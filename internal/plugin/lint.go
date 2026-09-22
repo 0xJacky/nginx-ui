@@ -377,6 +377,62 @@ func lintCapabilities(m *protocol.Manifest, report *LintReport) {
 	} else if slices.Contains(m.Permissions, protocol.PermissionMCP) {
 		report.add(LevelWarning, "SEC-5", "permission %q is requested but capability %q is not declared, so it grants nothing", protocol.PermissionMCP, protocol.CapabilityMCP)
 	}
+	if _, ok := seen[protocol.CapabilityStorage]; ok {
+		lintStorage(m.Storage, report)
+		lintNetworkPermission(m, protocol.CapabilityStorage, report)
+	}
+	if _, ok := seen[protocol.CapabilityCertDeploy]; ok {
+		lintDeploy(m, report)
+		lintNetworkPermission(m, protocol.CapabilityCertDeploy, report)
+	} else if slices.Contains(m.Permissions, protocol.PermissionCertDeploy) {
+		report.add(LevelWarning, "SEC-5", "permission %q is requested but capability %q is not declared, so it grants nothing", protocol.PermissionCertDeploy, protocol.CapabilityCertDeploy)
+	}
+}
+
+// lintStorage checks storage.backends (MAN-34, STORAGE-2 and STORAGE-3).
+func lintStorage(s *protocol.ManifestStorage, report *LintReport) {
+	if s == nil || len(s.Backends) == 0 {
+		report.add(LevelError, "MAN-34", "capability storage requires at least one backend")
+		return
+	}
+	seen := make(map[string]struct{}, len(s.Backends))
+	for _, b := range s.Backends {
+		if !capabilityCodePattern.MatchString(b.Code) {
+			report.add(LevelError, "STORAGE-2", "storage backend code %q must match %s", b.Code, capabilityCodePattern)
+		} else if _, dup := seen[b.Code]; dup {
+			report.add(LevelError, "STORAGE-2", "storage backend code %q is declared twice", b.Code)
+		}
+		seen[b.Code] = struct{}{}
+		if b.Name == "" {
+			report.add(LevelError, "STORAGE-3", "storage backend %q is missing a name", b.Code)
+		}
+		lintConfigurationSchema(fmt.Sprintf("storage backend %q", b.Code), "STORAGE-3", b.Configuration, report)
+	}
+}
+
+// lintDeploy checks deploy.targets and the cert.deploy permission (MAN-35,
+// DEPLOY-2 and DEPLOY-3).
+func lintDeploy(m *protocol.Manifest, report *LintReport) {
+	if !slices.Contains(m.Permissions, protocol.PermissionCertDeploy) {
+		report.add(LevelError, "MAN-35", "capability cert.deploy requires the %q permission", protocol.PermissionCertDeploy)
+	}
+	if m.Deploy == nil || len(m.Deploy.Targets) == 0 {
+		report.add(LevelError, "MAN-35", "capability cert.deploy requires at least one target")
+		return
+	}
+	seen := make(map[string]struct{}, len(m.Deploy.Targets))
+	for _, t := range m.Deploy.Targets {
+		if !capabilityCodePattern.MatchString(t.Code) {
+			report.add(LevelError, "DEPLOY-2", "deploy target code %q must match %s", t.Code, capabilityCodePattern)
+		} else if _, dup := seen[t.Code]; dup {
+			report.add(LevelError, "DEPLOY-2", "deploy target code %q is declared twice", t.Code)
+		}
+		seen[t.Code] = struct{}{}
+		if t.Name == "" {
+			report.add(LevelError, "DEPLOY-3", "deploy target %q is missing a name", t.Code)
+		}
+		lintConfigurationSchema(fmt.Sprintf("deploy target %q", t.Code), "DEPLOY-3", t.Configuration, report)
+	}
 }
 
 // lintNotify checks notify.channels (MAN-31, NOTIFY-2 through NOTIFY-4).
@@ -421,8 +477,8 @@ func lintProbe(p *protocol.ManifestProbe, report *LintReport) {
 	}
 }
 
-// lintConfigurationSchema checks the form of a notify channel or a probe kind
-// (NOTIFY-4, which PROBE-3 refers to).
+// lintConfigurationSchema checks the form of a capability entry (NOTIFY-4,
+// which PROBE-3, STORAGE-3 and DEPLOY-3 refer to).
 func lintConfigurationSchema(owner, rule string, schema *protocol.ConfigurationSchema, report *LintReport) {
 	if schema == nil {
 		return

@@ -15,6 +15,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	certdeploy "github.com/0xJacky/Nginx-UI/internal/cert/deploy"
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/demo"
@@ -261,11 +262,15 @@ func CheckAndCleanupOTA() {
 }
 
 // initPluginCapabilities connects the plugin manager to the core registries
-// that accept plugin provided implementations.
-func initPluginCapabilities(context.Context) {
+// that accept plugin provided implementations, and starts pushing issued
+// certificates to their deploy targets.
+func initPluginCapabilities(ctx context.Context) {
 	manager := plugin.GetManager()
 	capability.RegisterDNS01(manager)
 	capability.RegisterNotify(manager)
 	capability.RegisterProbe(manager)
 	capability.RegisterMCP(manager)
+	capability.RegisterStorage(manager)
+	capability.RegisterDeploy(manager)
+	certdeploy.Start(ctx)
 }

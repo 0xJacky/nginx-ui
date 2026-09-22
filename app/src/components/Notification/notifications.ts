@@ -73,6 +73,10 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Certificate Expiring Soon'),
     content: (args: any) => $gettext('Certificate %{name} will expire in %{days} days', args),
   },
+  'Deploy Certificate Error': {
+    title: () => $gettext('Deploy Certificate Error'),
+    content: (args: any) => $gettext('Failed to deploy certificate %{cert_name} to %{target_name}: %{error}', args),
+  },
   'Sync Certificate Error': {
     title: () => $gettext('Sync Certificate Error'),
     content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{node_name} failed', args),

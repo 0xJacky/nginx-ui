@@ -15,6 +15,8 @@ var Migrations = []*gormigrate.Migration{
 	RepairCertDomainsJSON,
 	BackfillCertChallengeConfig,
 	AddProbeKindToSiteConfigs,
+	AddStorageConfigToAutoBackups,
+	CreateCertDeployTables,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{

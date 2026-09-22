@@ -1,4 +1,5 @@
 import type { ModelBase } from '@/api/curd'
+import type { ConfigurationField } from '@/api/plugin'
 import { http, useCurdApi } from '@uozi-admin/request'
 
 /**
@@ -42,12 +43,18 @@ function getRestorePath(options?: RestoreAccessOptions) {
 }
 
 /**
+ * Where an auto backup stores its runs: the built-in local or S3 storage, or
+ * a backend a storage plugin provides, stored as "plugin:<code>".
+ */
+export type StorageType = 'local' | 's3' | `plugin:${string}`
+
+/**
  * Interface for auto backup configuration
  */
 export interface AutoBackup extends ModelBase {
   name: string
-  backup_type: 'nginx_config' | 'nginx_ui_config' | 'both_config' | 'custom_dir'
-  storage_type: 'local' | 's3'
+  backup_type: 'nginx_config' | 'nginx_ui_config' | 'both_config' | 'custom_dir' | 'nginx_and_nginx_ui'
+  storage_type: StorageType
   backup_path?: string
   storage_path: string
   cron_expression: string
@@ -60,6 +67,35 @@ export interface AutoBackup extends ModelBase {
   s3_secret_access_key?: string
   s3_bucket?: string
   s3_region?: string
+  /** Form values of a plugin storage backend. */
+  storage_config?: Record<string, string>
+  /** How many runs a plugin storage backend keeps, 0 keeps all. */
+  retention_count?: number
+}
+
+/** A storage type an auto backup can use, with the form of a plugin backend. */
+export interface StorageBackend {
+  type: string
+  name: string
+  builtin?: boolean
+  plugin_id?: string
+  fields: ConfigurationField[]
+}
+
+/** One run a plugin storage backend keeps for a task. */
+export interface StoredBackup {
+  key: string
+  key_file?: string
+  size: number
+  created_at: string
+  modified_at?: string
+}
+
+export interface RestoreStoredOptions {
+  key: string
+  restore_nginx: boolean
+  restore_nginx_ui: boolean
+  verify_hash: boolean
 }
 
 const backup = {
@@ -113,6 +149,31 @@ export function runAutoBackup(id: number) {
   return http.post(`/auto_backup/${id}/run`, undefined, {
     skipErrHandling: true,
   })
+}
+
+/** Lists the built-in storage and the backends storage plugins provide. */
+export function listStorageBackends(): Promise<{ data: StorageBackend[] }> {
+  return http.get('/auto_backup/storage_backends')
+}
+
+/** Validates a plugin storage backend configuration and lists its key prefix. */
+export function testPluginStorage(config: AutoBackup): Promise<{ message: string, stored: number }> {
+  return http.post('/auto_backup/test_storage', config)
+}
+
+/** Lists the runs the plugin storage backend of a task keeps, newest first. */
+export function listStoredBackups(id: number): Promise<{ data: StoredBackup[] }> {
+  return http.get(`/auto_backup/${id}/stored`)
+}
+
+/** Removes one stored run, its archive and its key file. */
+export function deleteStoredBackup(id: number, key: string) {
+  return http.delete(`/auto_backup/${id}/stored`, { params: { key } })
+}
+
+/** Fetches one stored run from its plugin backend and restores it. */
+export function restoreStoredBackup(id: number, options: RestoreStoredOptions): Promise<RestoreResponse> {
+  return http.post(`/auto_backup/${id}/stored/restore`, options)
 }
 
 // Auto backup CRUD API

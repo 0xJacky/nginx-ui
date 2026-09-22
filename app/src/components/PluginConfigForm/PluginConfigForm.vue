@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { ConfigurationField } from '@/api/plugin'
 
-// Renders the form a plugin declares for a notify channel or a probe kind.
+// Renders the form a plugin declares for a notify channel, a probe kind, a
+// storage backend or a deploy target.
 // It only renders form items, so it must sit inside an AForm of the caller.
 // Every value is a string, as on the wire: numbers in decimal, booleans as
 // "true" or "false".
