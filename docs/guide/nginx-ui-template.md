@@ -188,6 +188,7 @@ In addition to the variables defined in the template header, we also provide mac
 |:-------------:|:-------------------------:|
 |   HTTPPORT    |  Nginx UI configured TCP port  |
 | UNIXSOCKET | Nginx UI Unix socket path, or empty when using TCP |
+| NGINXUIUPSTREAM | Full `proxy_pass` target for the local Nginx UI, e.g. `http://127.0.0.1:9000` or `https://unix:/run/nginx-ui/nginx-ui.sock:` |
 |  HTTP01PORT   | Port for HTTP01 Challenge |
 
 The variables above can be used directly in the configuration part without definition in the header.

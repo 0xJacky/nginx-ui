@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/process"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
 	"github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -210,6 +211,7 @@ func buildSettingsResponse() gin.H {
 	return gin.H{
 		"app":            app,
 		"server":         cSettings.ServerSettings,
+		"listener":       settings.ListenerSettings,
 		"database":       settings.DatabaseSettings,
 		"auth":           cloneRedactedSettingsSection(settings.AuthSettings),
 		"casdoor":        cloneRedactedSettingsSection(settings.CasdoorSettings),
@@ -329,6 +331,20 @@ func SaveSettings(c *gin.Context) {
 	if json.Server.EnableH3 && !json.Server.EnableHTTPS {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "HTTP/3 requires HTTPS to be enabled",
+		})
+		return
+	}
+
+	// HTTP/3 needs a UDP listener, which a Unix socket cannot provide. The
+	// startup validation would otherwise refuse to boot after the restart
+	// this save triggers, taking the UI down until app.ini is edited by hand.
+	// Check the active listener too: after a graceful restart the running
+	// program may have loaded a TCP configuration while the parent process
+	// still owns a Unix socket, and the next restart re-reads app.ini.
+	activeNetwork, _ := process.ActiveListener()
+	if json.Server.EnableH3 && (settings.ListenerSettings.UnixSocket != "" || activeNetwork == "unix") {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "HTTP/3 cannot be enabled while Nginx UI listens on a Unix socket",
 		})
 		return
 	}

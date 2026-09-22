@@ -43,6 +43,8 @@ func InitRouter() {
 
 	r.GET("/healthz", public.Healthz)
 
+	// Must run before anything that reads the client IP, including audit.
+	r.Use(middleware.UnixPeerAddr())
 	r.Use(audit.LoggingMiddleware())
 
 	if err := configureTrustedProxies(r); err != nil {

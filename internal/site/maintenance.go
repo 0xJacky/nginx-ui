@@ -304,14 +304,9 @@ func createMaintenanceConfig(conf *config.Config, baseDir string, siteName strin
 }
 
 func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, siteName string, payload MaintenancePayload) string {
-	nginxUIPort := cSettings.ServerSettings.Port
-	schema := "http"
-	if cSettings.ServerSettings.EnableHTTPS {
-		schema = "https"
-	}
-	maintenanceProxyPass := nginxUIProxyPass(schema, nginxUIPort)
+	pageProxyPass, metaProxyPass := maintenanceProxyPassDirectives()
 	if bypassIP := settings.NginxSettings.GetMaintenanceBypassIP(); bypassIP != "" {
-		if content, ok := createBypassMaintenanceConfig(conf, siteName, payload, bypassIP, maintenanceProxyPass); ok {
+		if content, ok := createBypassMaintenanceConfig(conf, siteName, payload, bypassIP, pageProxyPass, metaProxyPass); ok {
 			return content
 		}
 	}
@@ -383,7 +378,7 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceAdditionalInfoHeaderKey, escapeNginxQuotedValue(payload.AdditionInformation)))
 		}
 		locationContent.WriteString("rewrite ^ /pages/maintenance break;\n")
-		locationContent.WriteString(maintenanceProxyPass)
+		locationContent.WriteString(pageProxyPass)
 
 		location.Content = locationContent.String()
 		ngxServer.Locations = append(ngxServer.Locations, location)
@@ -412,7 +407,7 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 		if payload.AdditionInformation != "" {
 			locationContent.WriteString(fmt.Sprintf("proxy_set_header %s \"%s\";\n", maintenanceAdditionalInfoHeaderKey, escapeNginxQuotedValue(payload.AdditionInformation)))
 		}
-		locationContent.WriteString(maintenanceProxyPass)
+		locationContent.WriteString(metaProxyPass)
 		maintenanceMetaLocation.Content = locationContent.String()
 		ngxServer.Locations = append(ngxServer.Locations, maintenanceMetaLocation)
 
@@ -430,7 +425,7 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 	return content
 }
 
-func createBypassMaintenanceConfig(conf *config.Config, siteName string, payload MaintenancePayload, bypassIP, maintenanceProxyPass string) (string, bool) {
+func createBypassMaintenanceConfig(conf *config.Config, siteName string, payload MaintenancePayload, bypassIP, pageProxyPass, metaProxyPass string) (string, bool) {
 	original := dumper.DumpConfig(conf, dumper.IndentedStyle)
 	ngxConfig, err := nginx.ParseNgxConfigByContent(original)
 	if err != nil {
@@ -463,12 +458,12 @@ map "$%s:$uri" $%s {
 		)
 		server.Locations = append(server.Locations, &nginx.NgxLocation{
 			Path:    locationName,
-			Content: buildMaintenanceProxyContent(siteName, payload, maintenanceProxyPass, true),
+			Content: buildMaintenanceProxyContent(siteName, payload, pageProxyPass, true),
 		})
 		if !hasMaintenanceLocation(server, "/pages/maintenance/meta") {
 			server.Locations = append(server.Locations, &nginx.NgxLocation{
 				Path:    "= /pages/maintenance/meta",
-				Content: buildMaintenanceProxyContent(siteName, payload, maintenanceProxyPass, false),
+				Content: buildMaintenanceProxyContent(siteName, payload, metaProxyPass, false),
 			})
 		}
 		if !hasMaintenanceLocation(server, "/.well-known/acme-challenge") {
@@ -524,17 +519,15 @@ func buildMaintenanceProxyContent(siteName string, payload MaintenancePayload, p
 	return content.String()
 }
 
-func nginxUIProxyPass(schema string, port uint) string {
-	localHost := fmt.Sprintf("%s://127.0.0.1:%d", schema, port)
-	if settings.ListenerSettings.UnixSocket != "" {
-		localHost = schema + "://unix:" + settings.ListenerSettings.UnixSocket + ":"
-	}
-
-	maintenanceHost := settings.NginxSettings.GetMaintenanceHost(localHost)
-	if maintenanceHost == localHost && settings.ListenerSettings.UnixSocket != "" {
-		maintenanceHost = fmt.Sprintf("%q", maintenanceHost)
-	}
-	return fmt.Sprintf("proxy_pass %s;\n", maintenanceHost)
+// maintenanceProxyPassDirectives returns the proxy_pass lines for the
+// maintenance page and for its metadata endpoint. The page may be served by a
+// custom MaintenanceHost; the metadata endpoint is an API of this Nginx UI
+// instance and always targets the local listener, whether TCP or Unix socket.
+func maintenanceProxyPassDirectives() (page, meta string) {
+	local := settings.ListenerSettings.LocalUpstream(*cSettings.ServerSettings)
+	meta = fmt.Sprintf("proxy_pass %s;\n", local)
+	page = fmt.Sprintf("proxy_pass %s;\n", settings.NginxSettings.GetMaintenanceHost(local))
+	return page, meta
 }
 
 // escapeNginxQuotedValue escapes a value embedded in a double quoted nginx parameter.

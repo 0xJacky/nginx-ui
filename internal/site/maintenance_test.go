@@ -143,6 +143,9 @@ func TestCreateMaintenanceConfig_UsesConfiguredMaintenanceHost(t *testing.T) {
 	if !strings.Contains(content, "proxy_pass https://maintenance.internal:9443;") {
 		t.Fatalf("maintenance config = %q, want configured maintenance host", content)
 	}
+	if !strings.Contains(content, "proxy_pass http://127.0.0.1:9000;") {
+		t.Fatalf("maintenance config = %q, want metadata endpoint to stay on the local listener", content)
+	}
 }
 
 // TestDisableMaintenanceRestoresMaintenanceConfigWhenReloadFails guards against
@@ -1107,7 +1110,7 @@ func TestCreateMaintenanceConfigUnixSocket(t *testing.T) {
 		t.Run("bypass="+bypassIP, func(t *testing.T) {
 			setupMaintenanceTestSettings(t, "")
 			settings.NginxSettings.MaintenanceBypassIP = bypassIP
-			settings.ListenerSettings.UnixSocket = "/tmp/nginx ui.sock"
+			settings.ListenerSettings.UnixSocket = "/run/nginx-ui/nginx-ui.sock"
 			p := parser.NewStringParser(`server { listen 80; server_name example.com; }`, parser.WithSkipValidDirectivesErr())
 			conf, err := p.Parse()
 			if err != nil {
@@ -1120,9 +1123,12 @@ func TestCreateMaintenanceConfigUnixSocket(t *testing.T) {
 					scheme = "https"
 				}
 				content := createMaintenanceConfig(conf, "", "example.com")
-				want := fmt.Sprintf("proxy_pass %q;", scheme+"://unix:/tmp/nginx ui.sock:")
-				if strings.Count(content, want) != 2 || strings.Contains(content, "127.0.0.1:9000") {
-					t.Fatalf("maintenance config = %q, want %q and no TCP backend", content, want)
+				// Both the page and the metadata endpoint reach the local
+				// Unix listener, written unquoted because the path charset
+				// is restricted by settings.Listener.Address.
+				want := "proxy_pass " + scheme + "://unix:/run/nginx-ui/nginx-ui.sock:;"
+				if strings.Count(content, want) != 2 || strings.Contains(content, "127.0.0.1:9000") || strings.Contains(content, `"`+scheme+"://unix") {
+					t.Fatalf("maintenance config = %q, want %q twice and no TCP backend", content, want)
 				}
 				if !strings.Contains(content, "proxy_pass http://127.0.0.1:9180;") {
 					t.Fatal("ACME challenge listener changed")
@@ -1132,12 +1138,15 @@ func TestCreateMaintenanceConfigUnixSocket(t *testing.T) {
 	}
 }
 
+// A custom MaintenanceHost only replaces the page upstream. The metadata
+// endpoint is served by this Nginx UI instance and must keep targeting the
+// local listener, otherwise the page loses its site specific information.
 func TestCreateMaintenanceConfigUnixSocketRespectsMaintenanceHost(t *testing.T) {
 	for _, bypassIP := range []string{"", "203.0.113.10"} {
 		t.Run("bypass="+bypassIP, func(t *testing.T) {
 			setupMaintenanceTestSettings(t, "")
 			settings.NginxSettings.MaintenanceBypassIP = bypassIP
-			settings.ListenerSettings.UnixSocket = "/tmp/nginx-ui.sock"
+			settings.ListenerSettings.UnixSocket = "/run/nginx-ui/nginx-ui.sock"
 			settings.NginxSettings.MaintenanceHost = "https://maintenance.internal:9443"
 			p := parser.NewStringParser(`server { listen 80; server_name example.com; }`, parser.WithSkipValidDirectivesErr())
 			conf, err := p.Parse()
@@ -1146,8 +1155,11 @@ func TestCreateMaintenanceConfigUnixSocketRespectsMaintenanceHost(t *testing.T) 
 			}
 
 			content := createMaintenanceConfig(conf, "", "example.com")
-			if strings.Count(content, "proxy_pass https://maintenance.internal:9443;") != 2 || strings.Contains(content, "unix:/tmp/nginx-ui.sock") {
-				t.Fatalf("maintenance config = %q, want configured maintenance host instead of local Unix listener", content)
+			if strings.Count(content, "proxy_pass https://maintenance.internal:9443;") != 1 {
+				t.Fatalf("maintenance config = %q, want configured maintenance host for the page only", content)
+			}
+			if strings.Count(content, "proxy_pass http://unix:/run/nginx-ui/nginx-ui.sock:;") != 1 {
+				t.Fatalf("maintenance config = %q, want local Unix listener for the metadata endpoint", content)
 			}
 		})
 	}
@@ -1158,7 +1170,7 @@ func TestCreateMaintenanceConfigUnixSocketRejectsInvalidMaintenanceHost(t *testi
 		t.Run("bypass="+bypassIP, func(t *testing.T) {
 			setupMaintenanceTestSettings(t, "")
 			settings.NginxSettings.MaintenanceBypassIP = bypassIP
-			settings.ListenerSettings.UnixSocket = "/tmp/nginx ui.sock"
+			settings.ListenerSettings.UnixSocket = "/run/nginx-ui/nginx-ui.sock"
 			settings.NginxSettings.MaintenanceHost = "http://host; return 200"
 			p := parser.NewStringParser(`server { listen 80; server_name example.com; }`, parser.WithSkipValidDirectivesErr())
 			conf, err := p.Parse()
@@ -1167,7 +1179,7 @@ func TestCreateMaintenanceConfigUnixSocketRejectsInvalidMaintenanceHost(t *testi
 			}
 
 			content := createMaintenanceConfig(conf, "", "example.com")
-			want := `proxy_pass "http://unix:/tmp/nginx ui.sock:";`
+			want := "proxy_pass http://unix:/run/nginx-ui/nginx-ui.sock:;"
 			if strings.Count(content, want) != 2 || strings.Contains(content, "return 200") {
 				t.Fatalf("maintenance config = %q, want safe local Unix fallback %q", content, want)
 			}
