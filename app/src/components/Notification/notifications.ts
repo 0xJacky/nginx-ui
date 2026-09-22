@@ -185,6 +185,14 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Save Remote Site Success'),
     content: (args: any) => $gettext('Save site %{name} to %{node} successfully', args),
   },
+  'Site Health Check Failed': {
+    title: () => $gettext('Site Health Check Failed'),
+    content: (args: any) => $gettext('Site %{site} on node %{node} failed its health check for %{failure_count} consecutive attempts: %{error}', args),
+  },
+  'Site Health Check Recovered': {
+    title: () => $gettext('Site Health Check Recovered'),
+    content: (args: any) => $gettext('Site %{site} on node %{node} recovered. Target: %{target}', args),
+  },
   'Delete Remote Stream Error': {
     title: () => $gettext('Delete Remote Stream Error'),
     content: (args: any) => $gettext('Delete stream %{name} from %{node} failed', args),
