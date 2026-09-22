@@ -46,6 +46,32 @@ func TestImportExistingCertificatePreservesDomainsJSON(t *testing.T) {
 	require.True(t, json.Valid([]byte(rawDomains)), "domains must be valid JSON: %q", rawDomains)
 }
 
+func TestImportNewCertificateStoresDomainsJSON(t *testing.T) {
+	db := setupTestDB(t)
+	confDir := withImportTestNginxConfigDir(t)
+	name := "new.internal"
+
+	dir := filepath.Join(confDir, "ssl", name)
+	writeImportTestPair(t, dir, []string{"fullchain.pem"}, []string{"privkey.pem"})
+	imported, err := ImportExistingCertificate(ImportCertificateOptions{
+		Name:     name,
+		CertPath: filepath.Join(dir, "fullchain.pem"),
+		KeyPath:  filepath.Join(dir, "privkey.pem"),
+	})
+	require.NoError(t, err)
+	require.NotZero(t, imported.ID)
+	require.Equal(t, []string{name}, imported.Domains)
+	require.Equal(t, model.AutoCertDisabled, imported.AutoCert)
+
+	var count int64
+	require.NoError(t, db.Model(&model.Cert{}).Where("name = ?", name).Count(&count).Error)
+	require.EqualValues(t, 1, count)
+
+	var rawDomains string
+	require.NoError(t, db.Raw("SELECT domains FROM certs WHERE id = ?", imported.ID).Scan(&rawDomains).Error)
+	require.JSONEq(t, `["new.internal"]`, rawDomains)
+}
+
 func withImportTestNginxConfigDir(t *testing.T) string {
 	t.Helper()
 

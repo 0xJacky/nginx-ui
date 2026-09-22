@@ -72,53 +72,38 @@ func ImportExistingCertificate(opts ImportCertificateOptions) (*model.Cert, erro
 	if err != nil {
 		return nil, err
 	}
+
+	// Always write through a typed struct so GORM applies the JSON serializer for
+	// Domains; map-based writes store it as plain text or drop it entirely.
+	imported := &model.Cert{
+		Name:                  name,
+		Domains:               domainsFromInfo(pair.CertificateInfo),
+		SSLCertificatePath:    pair.SSLCertificatePath,
+		SSLCertificateKeyPath: pair.SSLCertificateKeyPath,
+		Fingerprint:           pair.Fingerprint,
+		KeyType:               pair.KeyType,
+		AutoCert:              model.AutoCertDisabled,
+	}
+
 	if certModel == nil {
-		certModel = &model.Cert{Name: name}
-	}
-
-	updates := map[string]interface{}{
-		"name":                     name,
-		"domains":                  domainsFromInfo(pair.CertificateInfo),
-		"ssl_certificate_path":     pair.SSLCertificatePath,
-		"ssl_certificate_key_path": pair.SSLCertificateKeyPath,
-		"fingerprint":              pair.Fingerprint,
-		"key_type":                 pair.KeyType,
-		"auto_cert":                model.AutoCertDisabled,
-	}
-
-	if certModel.ID > 0 {
-		// Use a struct so GORM applies the JSON serializer for Domains.
-		existingUpdates := &model.Cert{
-			Name:                  name,
-			Domains:               domainsFromInfo(pair.CertificateInfo),
-			SSLCertificatePath:    pair.SSLCertificatePath,
-			SSLCertificateKeyPath: pair.SSLCertificateKeyPath,
-			Fingerprint:           pair.Fingerprint,
-			KeyType:               pair.KeyType,
-			AutoCert:              model.AutoCertDisabled,
-		}
-		if err := db.Model(certModel).
-			Select(
-				"name",
-				"domains",
-				"ssl_certificate_path",
-				"ssl_certificate_key_path",
-				"fingerprint",
-				"key_type",
-				"auto_cert",
-			).
-			Updates(existingUpdates).Error; err != nil {
+		if err := db.Create(imported).Error; err != nil {
 			return nil, err
 		}
-		if err := db.First(certModel, certModel.ID).Error; err != nil {
-			return nil, err
-		}
-		return certModel, nil
-	}
-
-	if err := db.Assign(updates).FirstOrCreate(certModel, model.Cert{Name: name}).Error; err != nil {
+		certModel = imported
+	} else if err := db.Model(certModel).
+		Select(
+			"name",
+			"domains",
+			"ssl_certificate_path",
+			"ssl_certificate_key_path",
+			"fingerprint",
+			"key_type",
+			"auto_cert",
+		).
+		Updates(imported).Error; err != nil {
 		return nil, err
 	}
+
 	if err := db.First(certModel, certModel.ID).Error; err != nil {
 		return nil, err
 	}
