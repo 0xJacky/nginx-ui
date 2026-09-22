@@ -50,26 +50,24 @@ type SelfSignedCertConfig struct {
 
 type Cert struct {
 	Model
-	Name                              string               `json:"name"`
-	Domains                           []string             `json:"domains" gorm:"serializer:json"`
-	Filename                          string               `json:"filename"`
-	SSLCertificatePath                string               `json:"ssl_certificate_path"`
-	SSLCertificateKeyPath             string               `json:"ssl_certificate_key_path"`
-	Fingerprint                       string               `json:"fingerprint" gorm:"index"`
-	AutoCert                          int                  `json:"auto_cert"`
-	ChallengeMethod                   string               `json:"challenge_method"`
-	Profile                           string               `json:"profile"`
-	DnsCredentialID                   uint64               `json:"dns_credential_id"`
-	DnsCredential                     *DnsCredential       `json:"dns_credential,omitempty"`
-	ACMEUserID                        uint64               `json:"acme_user_id"`
-	ACMEUser                          *AcmeUser            `json:"acme_user,omitempty"`
-	KeyType                           certcrypto.KeyType   `json:"key_type"`
-	Log                               string               `json:"log"`
-	Resource                          *CertificateResource `json:"-" gorm:"serializer:json[aes]"`
-	SyncNodeIds                       []uint64             `json:"sync_node_ids" gorm:"serializer:json"`
-	MustStaple                        bool                 `json:"must_staple"`
-	LegoDisableCNAMESupport           bool                 `json:"lego_disable_cname_support"`
-	DisableAuthoritativeNSPropagation bool                 `json:"disable_authoritative_ns_propagation"`
+	Name                  string               `json:"name"`
+	Domains               []string             `json:"domains" gorm:"serializer:json"`
+	Filename              string               `json:"filename"`
+	SSLCertificatePath    string               `json:"ssl_certificate_path"`
+	SSLCertificateKeyPath string               `json:"ssl_certificate_key_path"`
+	Fingerprint           string               `json:"fingerprint" gorm:"index"`
+	AutoCert              int                  `json:"auto_cert"`
+	ChallengeMethod       string               `json:"challenge_method"`
+	Profile               string               `json:"profile"`
+	DnsCredentialID       uint64               `json:"dns_credential_id"`
+	DnsCredential         *DnsCredential       `json:"dns_credential,omitempty"`
+	ACMEUserID            uint64               `json:"acme_user_id"`
+	ACMEUser              *AcmeUser            `json:"acme_user,omitempty"`
+	KeyType               certcrypto.KeyType   `json:"key_type"`
+	Log                   string               `json:"log"`
+	Resource              *CertificateResource `json:"-" gorm:"serializer:json[aes]"`
+	SyncNodeIds           []uint64             `json:"sync_node_ids" gorm:"serializer:json"`
+	MustStaple            bool                 `json:"must_staple"`
 	// ChallengeConfig holds challenge specific options produced by the plugin
 	// that owns the challenge method. Opaque to the core.
 	ChallengeConfig              map[string]any        `json:"challenge_config" gorm:"serializer:json"`
