@@ -4,11 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"os"
+	"slices"
 	"testing"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -36,8 +38,17 @@ func (integrationBackend) CronUnregister(string, string) error                  
 func (integrationBackend) Notify(string, protocol.HostNotifyParams) error             { return nil }
 func (integrationBackend) MetricsSnapshot() (any, error)                              { return nil, nil }
 
+// integrationOutcome is what one transport answered, compared across the
+// transports at the end.
+type integrationOutcome struct {
+	options  protocol.DNS01OptionsResult
+	validate *protocol.Error
+	unknown  int
+}
+
 // TestIntegrationRealPlugin drives a real plugin binary through the handshake
-// and the dns01 capability methods that need no network.
+// and the dns01 capability methods that need no network, once per transport,
+// and checks both transports answer the same.
 func TestIntegrationRealPlugin(t *testing.T) {
 	dir := os.Getenv(integrationDirEnv)
 	if dir == "" {
@@ -50,6 +61,26 @@ func TestIntegrationRealPlugin(t *testing.T) {
 	argv, err := ResolveExecutable(manifest, dir)
 	require.NoError(t, err)
 
+	outcomes := map[string]integrationOutcome{}
+	for _, transport := range []string{protocol.TransportStdio, protocol.TransportGRPC} {
+		t.Run(transport, func(t *testing.T) {
+			outcome, ok := runIntegration(t, dir, manifest, argv, transport)
+			if ok {
+				outcomes[transport] = outcome
+			}
+		})
+	}
+
+	stdio, okStdio := outcomes[protocol.TransportStdio]
+	grpc, okGRPC := outcomes[protocol.TransportGRPC]
+	if okStdio && okGRPC {
+		assert.Equal(t, stdio, grpc, "both transports must answer the same")
+	}
+}
+
+// runIntegration runs the plugin with capability calls on one transport. ok
+// is false when the transport was skipped.
+func runIntegration(t *testing.T, dir string, manifest *protocol.Manifest, argv []string, transport string) (integrationOutcome, bool) {
 	sup := NewSupervisor(SupervisorConfig{
 		PluginID:    manifest.ID,
 		Dir:         dir,
@@ -66,6 +97,10 @@ func TestIntegrationRealPlugin(t *testing.T) {
 			RegisterHostHandlers(conn, manifest.ID, manifest.Permissions, integrationBackend{})
 		},
 	})
+	if transport == protocol.TransportStdio {
+		// The Go SDK serves gRPC by default; this keeps the plugin on stdio.
+		sup.extraEnv = []string{"NGINX_UI_PLUGIN_DISABLE_GRPC=1"}
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
@@ -80,12 +115,19 @@ func TestIntegrationRealPlugin(t *testing.T) {
 	require.Equal(t, protocol.APIVersion, init.APIVersion)
 	require.Contains(t, init.Capabilities, protocol.CapabilityDNS01)
 
-	var options protocol.DNS01OptionsResult
+	if transport == protocol.TransportGRPC && !slices.Contains(init.Transports, protocol.TransportGRPC) {
+		require.NoError(t, sup.Stop(ctx))
+		t.Skipf("the plugin does not advertise grpc (transports %v)", init.Transports)
+		return integrationOutcome{}, false
+	}
+	require.Equal(t, transport, sup.Transport())
+
+	var outcome integrationOutcome
 	require.NoError(t, caller.Call(ctx, protocol.MethodDNS01Options, protocol.DNS01OptionsParams{
 		Provider: "manual", Config: map[string]string{},
-	}, &options))
-	require.Greater(t, options.PropagationTimeoutSeconds, 0)
-	require.Greater(t, options.PollingIntervalSeconds, 0)
+	}, &outcome.options))
+	require.Greater(t, outcome.options.PropagationTimeoutSeconds, 0)
+	require.Greater(t, outcome.options.PollingIntervalSeconds, 0)
 
 	err = caller.Call(ctx, protocol.MethodDNS01Validate, protocol.DNS01ValidateParams{
 		Provider: "cloudflare", Config: map[string]string{},
@@ -94,10 +136,16 @@ func TestIntegrationRealPlugin(t *testing.T) {
 	pErr, ok := jsonrpc.AsProtocolError(err)
 	require.True(t, ok, "expected a protocol error, got %v", err)
 	require.Equal(t, protocol.CodeInvalidConfig, pErr.Code)
+	outcome.validate = pErr
 
 	err = caller.Call(ctx, "dns01.nonexistent", nil, nil)
 	require.True(t, jsonrpc.IsMethodNotFound(err), "got %v", err)
+	outcome.unknown = protocol.CodeMethodNotFound
+
+	// The capability calls above must not have knocked gRPC over.
+	require.Equal(t, transport, sup.Transport())
 
 	require.NoError(t, sup.Stop(ctx))
 	require.Equal(t, StateStopped, sup.State())
+	return outcome, true
 }
