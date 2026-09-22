@@ -1156,7 +1156,6 @@ jobs:
       - name: Checkout homebrew-tools repository
         uses: actions/checkout@v7
         with:
-          persist-credentials: false
           repository: 0xJacky/homebrew-tools
           path: homebrew-tools
           token: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
