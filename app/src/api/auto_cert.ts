@@ -46,8 +46,6 @@ export interface AutoCertOptions {
   provider?: string
   provider_code?: string
   must_staple?: boolean
-  lego_disable_cname_support?: boolean
-  disable_authoritative_ns_propagation?: boolean
   enable_common_name?: boolean
   revoke_old?: boolean
   /** Free-form payload owned by the plugin that implements the challenge method. */
