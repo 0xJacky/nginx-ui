@@ -30,6 +30,13 @@ var (
 	ErrSettingsInvalid            = e.New(55018, "plugin setting {0} is invalid")
 	ErrHostVersionTooOld          = e.New(55019, "plugin needs nginx-ui {0} or newer, this node runs {1}")
 	ErrPluginIDMismatch           = e.New(55020, "plugin package declares another id")
+
+	// Capability errors continue at 55201, apart from the lifecycle and the
+	// marketplace codes.
+	ErrStorageBackendUnavailable = e.New(55201, "storage backend {0} is not available")
+	ErrStorageConfigInvalid      = e.New(55202, "storage config field {0} is invalid: {1}")
+	ErrDeployKindUnavailable     = e.New(55203, "deploy target kind {0} is not available")
+	ErrDeployConfigInvalid       = e.New(55204, "deploy target config field {0} is invalid: {1}")
 )
 
 // rpcError carries both the cosy error the API layer reports and the original

@@ -16,6 +16,8 @@ var Migrations = []*gormigrate.Migration{
 	CollapseBanIPRows,
 	BackfillCertChallengeConfig,
 	AddProbeKindToSiteConfigs,
+	AddStorageConfigToAutoBackups,
+	CreateCertDeployTables,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{
