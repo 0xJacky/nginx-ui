@@ -242,7 +242,7 @@ defineExpose({
       <AFormItem :label="$gettext('Lego disable CNAME Support')">
         <template #help>
           <p>
-            {{ $gettext('If your domain has CNAME records and you cannot obtain certificates,you need to enable this option.') }}
+            {{ $gettext('If your domain has CNAME records and you cannot obtain certificates, you need to enable this option.') }}
           </p>
         </template>
         <ASwitch v-model:checked="data.lego_disable_cname_support" />
