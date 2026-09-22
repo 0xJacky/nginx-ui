@@ -418,7 +418,10 @@ func LoadSiteConfig(siteName, siteURL string) (*model.SiteConfig, error) {
 	// Parse URL to get host:port
 	tempConfig := &model.SiteConfig{}
 	tempConfig.SetFromURL(siteURL)
-	tempConfig.SiteKey = canonicalSiteKey(siteName, siteURL)
+	tempConfig.SiteIndex = resolveSiteIndexByName(siteName)
+	tempConfig.SiteID = tempConfig.SiteIndex
+	tempConfig.SiteKey = canonicalSiteKeyWithIndex(tempConfig.SiteIndex, siteName, siteURL)
+	legacySiteKey := canonicalSiteKey(siteName, siteURL)
 
 	// Try to get from cache first
 	if config, found := getCachedSiteConfig(tempConfig.SiteKey); found {
@@ -433,16 +436,58 @@ func LoadSiteConfig(siteName, siteURL string) (*model.SiteConfig, error) {
 		}
 		return config, nil
 	}
+	if config, found := getCachedSiteConfig(legacySiteKey); found {
+		fieldsToUpdate := map[string]any{}
+		if config.SiteKey != tempConfig.SiteKey {
+			fieldsToUpdate["site_key"] = tempConfig.SiteKey
+		}
+		if tempConfig.SiteIndex > 0 && config.SiteIndex != tempConfig.SiteIndex {
+			fieldsToUpdate["site_index"] = tempConfig.SiteIndex
+		}
+		if tempConfig.SiteID > 0 && config.SiteID != tempConfig.SiteID {
+			fieldsToUpdate["site_id"] = tempConfig.SiteID
+		}
+		if strings.TrimSpace(siteName) != "" && strings.TrimSpace(config.SiteName) != strings.TrimSpace(siteName) {
+			fieldsToUpdate["site_name"] = siteName
+		}
+		if len(fieldsToUpdate) > 0 {
+			_ = updateSiteListFieldsOnly(model.UseDB(), config, fieldsToUpdate)
+		}
+		setCachedSiteConfig(tempConfig.SiteKey, config)
+		if config.HealthCheckConfig == nil {
+			config.HealthCheckConfig = &model.HealthCheckConfig{
+				Protocol:       "http",
+				Method:         "GET",
+				Path:           "/",
+				ExpectedStatus: []int{200},
+			}
+		}
+		return config, nil
+	}
 
 	// Not in cache, query database
 	sc := query.SiteConfig
 	config, err := sc.Where(sc.SiteKey.Eq(tempConfig.SiteKey)).First()
+	if err != nil {
+		config, err = sc.Where(sc.SiteKey.Eq(legacySiteKey)).First()
+	}
+	if err != nil && tempConfig.SiteIndex > 0 {
+		config, err = findSiteConfigByIndex(tempConfig.SiteIndex, siteName, tempConfig.Host, tempConfig.Scheme)
+		if err != nil {
+			config, err = findSiteConfigByIndex(tempConfig.SiteIndex, siteName, "", tempConfig.Scheme)
+		}
+	}
+	if err != nil && strings.TrimSpace(siteName) != "" {
+		config, err = sc.Where(sc.Host.Eq(tempConfig.Host), sc.SiteName.Eq(siteName)).First()
+	}
 	if err != nil && siteName == "" {
 		config, err = sc.Where(sc.Host.Eq(tempConfig.Host)).First()
 	}
 	if err != nil {
 		// Return default config if not found
 		defaultConfig := &model.SiteConfig{
+			SiteID:             tempConfig.SiteID,
+			SiteIndex:          tempConfig.SiteIndex,
 			HealthCheckEnabled: true,
 			CheckInterval:      300,
 			Timeout:            10,
@@ -465,6 +510,31 @@ func LoadSiteConfig(siteName, siteURL string) (*model.SiteConfig, error) {
 			Path:           "/",
 			ExpectedStatus: []int{200},
 		}
+	}
+
+	fieldsToUpdate := map[string]any{}
+	if config.SiteKey != tempConfig.SiteKey {
+		fieldsToUpdate["site_key"] = tempConfig.SiteKey
+	}
+	if tempConfig.SiteIndex > 0 && config.SiteIndex != tempConfig.SiteIndex {
+		fieldsToUpdate["site_index"] = tempConfig.SiteIndex
+	}
+	if tempConfig.SiteID > 0 && config.SiteID != tempConfig.SiteID {
+		fieldsToUpdate["site_id"] = tempConfig.SiteID
+	}
+	if strings.TrimSpace(siteName) != "" && strings.TrimSpace(config.SiteName) != strings.TrimSpace(siteName) {
+		fieldsToUpdate["site_name"] = siteName
+	}
+	if strings.TrimSpace(config.DisplayURL) != strings.TrimSpace(siteURL) {
+		fieldsToUpdate["display_url"] = siteURL
+	}
+	if config.Host != tempConfig.Host || config.Port != tempConfig.Port || config.Scheme != tempConfig.Scheme {
+		fieldsToUpdate["host"] = tempConfig.Host
+		fieldsToUpdate["port"] = tempConfig.Port
+		fieldsToUpdate["scheme"] = tempConfig.Scheme
+	}
+	if len(fieldsToUpdate) > 0 {
+		_ = updateSiteListFieldsOnly(model.UseDB(), config, fieldsToUpdate)
 	}
 
 	// Cache the config

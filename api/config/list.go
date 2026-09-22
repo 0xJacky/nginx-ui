@@ -17,9 +17,15 @@ import (
 
 // FileEntity represents a generic configuration file entity
 type FileEntity struct {
+	id          uint64
 	path        string
 	namespaceID uint64
 	namespace   *model.Namespace
+}
+
+// GetID implements Entity interface
+func (c *FileEntity) GetID() uint64 {
+	return c.id
 }
 
 // GetPath implements Entity interface
@@ -121,8 +127,9 @@ func GetConfigs(c *gin.Context) {
 
 // createConfigBuilder creates a custom config builder for generic config files
 func createConfigBuilder(dir string) config.Builder {
-	return func(fileName string, fileInfo os.FileInfo, status config.Status, namespaceID uint64, namespace *model.Namespace) config.Config {
+	return func(fileName string, fileInfo os.FileInfo, status config.Status, index uint64, namespaceID uint64, namespace *model.Namespace) config.Config {
 		return config.Config{
+			Index:       index,
 			Name:        fileName,
 			ModifiedAt:  fileInfo.ModTime(),
 			Size:        fileInfo.Size(),

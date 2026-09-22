@@ -8,6 +8,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/query"
+	"gorm.io/gorm/clause"
 )
 
 // ListOptions represents the options for listing sites
@@ -50,20 +52,76 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 	}
 
 	configs = applyRemoteStatus(configs, sites, options.Status)
-	return applySiteDescriptions(configs, sites), nil
+	return attachSiteMetadata(configs, sites)
 }
 
+// applySiteDescriptions maps DB site descriptions to config entries by basename.
 func applySiteDescriptions(configs []config.Config, sites []*model.Site) []config.Config {
-	descriptions := make(map[string]string, len(sites))
+	sitesByName := make(map[string]*model.Site, len(sites))
 	for _, siteModel := range sites {
-		if siteModel.Description != "" {
-			descriptions[filepath.Base(siteModel.Path)] = siteModel.Description
+		sitesByName[filepath.Base(siteModel.Path)] = siteModel
+	}
+
+	for i := range configs {
+		if siteModel, ok := sitesByName[configs[i].Name]; ok {
+			configs[i].Description = siteModel.Description
 		}
 	}
-	for i := range configs {
-		configs[i].Description = descriptions[configs[i].Name]
-	}
+
 	return configs
+}
+
+func attachSiteMetadata(configs []config.Config, sites []*model.Site) ([]config.Config, error) {
+	sitesByName := make(map[string]*model.Site, len(sites))
+	for _, siteModel := range sites {
+		sitesByName[filepath.Base(siteModel.Path)] = siteModel
+	}
+
+	missingPathsSet := make(map[string]struct{})
+	for _, cfg := range configs {
+		if _, ok := sitesByName[cfg.Name]; ok {
+			continue
+		}
+		path, err := ResolveAvailablePath(cfg.Name)
+		if err != nil {
+			continue
+		}
+		missingPathsSet[path] = struct{}{}
+	}
+
+	if len(missingPathsSet) > 0 {
+		missingPaths := make([]string, 0, len(missingPathsSet))
+		records := make([]*model.Site, 0, len(missingPathsSet))
+		for path := range missingPathsSet {
+			missingPaths = append(missingPaths, path)
+			records = append(records, &model.Site{Path: path})
+		}
+
+		s := query.Site
+		if err := s.Clauses(clause.OnConflict{DoNothing: true}).Create(records...); err != nil {
+			return nil, err
+		}
+
+		var created []*model.Site
+		if err := model.UseDB().Where("path IN ?", missingPaths).Find(&created).Error; err != nil {
+			return nil, err
+		}
+
+		for _, siteModel := range created {
+			sitesByName[filepath.Base(siteModel.Path)] = siteModel
+		}
+	}
+
+	for i := range configs {
+		siteModel := sitesByName[configs[i].Name]
+		if siteModel == nil {
+			continue
+		}
+		configs[i].Index = siteModel.ID
+		configs[i].Description = siteModel.Description
+	}
+
+	return configs, nil
 }
 
 // applyRemoteStatus overrides the filesystem derived status for sites owned by a
@@ -94,7 +152,7 @@ func applyRemoteStatus(configs []config.Config, sites []*model.Site, statusFilte
 }
 
 // buildConfig creates a config.Config from file information with site-specific data
-func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, namespaceID uint64, namespace *model.Namespace) config.Config {
+func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, index uint64, namespaceID uint64, namespace *model.Namespace) config.Config {
 	indexedSite := GetIndexedSite(fileName)
 
 	// Convert proxy targets, expanding upstream references
@@ -123,6 +181,7 @@ func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, na
 	}
 
 	return config.Config{
+		Index:        index,
 		Name:         fileName,
 		ModifiedAt:   fileInfo.ModTime(),
 		Size:         fileInfo.Size(),

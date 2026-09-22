@@ -392,6 +392,28 @@ function getTestUrl(): string {
   return props.site.display_url || props.site.url || ''
 }
 
+function getSiteListDisplayName(): string {
+  if (!props.site)
+    return '-'
+
+  const baseName = props.site.site_name || props.site.name || '-'
+  if (Number.isFinite(props.site.index) && props.site.index > 0)
+    return `${baseName} [${props.site.index}]`
+
+  return baseName
+}
+
+function getServerNameDisplay(): string {
+  if (!props.site)
+    return '-'
+
+  return props.site.name || '-'
+}
+
+function getModalTitle(): string {
+  return `${$gettext('Health Check Configuration')} - ${getSiteListDisplayName()}`
+}
+
 function addHeader() {
   formData.value.headers.push({ name: '', value: '' })
 }
@@ -529,10 +551,17 @@ async function handleTest() {
 
 <template>
   <AModal
-    v-model:open="visible" :title="`${$gettext('Health Check Configuration')} - ${site?.name || getTestUrl()}`"
+    v-model:open="visible" :title="getModalTitle()"
     width="800px" @cancel="handleCancel"
   >
     <div>
+      <div class="mb-4 rounded-md bg-gray-50 p-3 text-sm text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+        <div>
+          <span class="font-medium">{{ $gettext('Server Name') }}:</span>
+          <span class="ml-1">{{ getServerNameDisplay() }}</span>
+        </div>
+      </div>
+
       <AForm :model="formData" layout="vertical" :label-col="{ span: 24 }" :wrapper-col="{ span: 24 }">
         <div>
           <!-- Enable/Disable Health Check -->
@@ -572,7 +601,7 @@ async function handleTest() {
             <AInput
               v-model:value="formData.targetURL"
               data-testid="health-check-target-url"
-              placeholder="https://127.0.0.1:8443"
+              :placeholder="getTestUrl() || 'https://127.0.0.1:8443'"
             />
           </AFormItem>
 

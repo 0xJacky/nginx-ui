@@ -80,7 +80,7 @@ func applyRemoteStatus(configs []config.Config, streams []*model.Stream, statusF
 }
 
 // buildConfig creates a config.Config from file information with stream-specific data
-func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, namespaceID uint64, namespace *model.Namespace) config.Config {
+func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, index uint64, namespaceID uint64, namespace *model.Namespace) config.Config {
 	indexedStream := GetIndexedStream(fileName)
 
 	// Convert proxy targets, expanding upstream references
@@ -109,6 +109,7 @@ func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, na
 	}
 
 	return config.Config{
+		Index:        index,
 		Name:         fileName,
 		ModifiedAt:   fileInfo.ModTime(),
 		Size:         fileInfo.Size(),
