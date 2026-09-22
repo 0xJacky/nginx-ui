@@ -23,7 +23,7 @@ const visible = ref(false)
 const name = ref('')
 const filterText = ref('')
 
-type Source = 'all' | 'custom' | 'builtin'
+type Source = 'all' | 'custom' | 'plugin' | 'builtin'
 const source = ref<Source>('all')
 
 function getBlockList() {
@@ -37,7 +37,7 @@ getBlockList()
 function view(item: Template) {
   visible.value = true
   name.value = item.filename
-  template.get_block(item.filename, item.origin).then(r => {
+  template.get_block(item.filename, item).then(r => {
     data.value = r
   })
 }
@@ -46,12 +46,30 @@ function isCustom(item: Template) {
   return item.origin === 'custom'
 }
 
-const customCount = computed(() => blocks.value.filter(isCustom).length)
+// A template an enabled plugin contributes is tagged with the plugin.
+function isFromPlugin(item: Template) {
+  return item.origin === 'plugin' && !!item.plugin_id
+}
+
+function sourceOf(item: Template): Exclude<Source, 'all'> {
+  if (isCustom(item))
+    return 'custom'
+  return isFromPlugin(item) ? 'plugin' : 'builtin'
+}
+
+const sourceCounts = computed(() => {
+  const counts = { custom: 0, plugin: 0, builtin: 0 }
+  blocks.value.forEach(item => counts[sourceOf(item)]++)
+  return counts
+})
+
+const hasOtherSources = computed(() => sourceCounts.value.custom > 0 || sourceCounts.value.plugin > 0)
 
 const sourceOptions = computed(() => [
   { label: `${$gettext('All')} ${blocks.value.length}`, value: 'all' },
-  { label: `${$gettext('Snippets')} ${customCount.value}`, value: 'custom' },
-  { label: `${$gettext('Built-in')} ${blocks.value.length - customCount.value}`, value: 'builtin' },
+  ...(sourceCounts.value.custom > 0 ? [{ label: `${$gettext('Snippets')} ${sourceCounts.value.custom}`, value: 'custom' }] : []),
+  ...(sourceCounts.value.plugin > 0 ? [{ label: `${$gettext('Plugins')} ${sourceCounts.value.plugin}`, value: 'plugin' }] : []),
+  { label: `${$gettext('Built-in')} ${sourceCounts.value.builtin}`, value: 'builtin' },
 ])
 
 // A snippet without variables is the same file on every use, so a site can
@@ -73,7 +91,7 @@ const transDescription = computed(() => {
 const filteredBlocks = computed(() => {
   const searchText = filterText.value.toLowerCase()
   return blocks.value
-    .filter(item => source.value === 'all' || (source.value === 'custom') === isCustom(item))
+    .filter(item => source.value === 'all' || source.value === sourceOf(item))
     .filter(item => !searchText
       || displayName(item).toLowerCase().includes(searchText)
       || item.author?.toLowerCase().includes(searchText)
@@ -115,7 +133,7 @@ function include() {
         </template>
       </AInput>
       <ASegmented
-        v-if="customCount > 0"
+        v-if="hasOtherSources"
         v-model:value="source"
         :options="sourceOptions"
         block
@@ -130,6 +148,15 @@ function include() {
                 <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
                   <span>{{ displayName(item) }}</span>
                   <ATag
+                    v-if="isFromPlugin(item)"
+                    class="m-0"
+                    color="blue"
+                    :bordered="false"
+                  >
+                    {{ $gettext('From plugin %{id}', { id: item.plugin_id ?? '' }) }}
+                  </ATag>
+                  <ATag
+                    v-else
                     class="m-0"
                     :color="isCustom(item) ? 'green' : 'default'"
                     :bordered="false"
@@ -177,6 +204,13 @@ function include() {
         type="info"
         show-icon
         :title="$gettext('Include keeps the site linked to snippets/%{file}, so later changes of the snippet apply to it. Insert copies the content into the site instead.', { file: data.filename })"
+      />
+      <AAlert
+        v-if="isFromPlugin(data)"
+        class="mb-4"
+        type="info"
+        show-icon
+        :title="$gettext('This template comes from the plugin %{id}. Review the directives before adding them.', { id: data.plugin_id ?? '' })"
       />
       <p v-if="data.author">
         {{ $gettext('Author') }}: {{ data.author }}

@@ -23,14 +23,16 @@ type Manifest struct {
 	Cron                 []ManifestCron        `json:"cron,omitempty"`
 	NetworkHosts         []string              `json:"network_hosts,omitempty"`
 
-	DNS01          *ManifestDNS01   `json:"dns01,omitempty"`
-	HTTP           *ManifestHTTP    `json:"http,omitempty"`
-	SettingsSchema *SettingsSchema  `json:"settings_schema,omitempty"`
-	Notify         *ManifestNotify  `json:"notify,omitempty"`
-	Probe          *ManifestProbe   `json:"probe,omitempty"`
-	MCP            *ManifestMCP     `json:"mcp,omitempty"`
-	Storage        *ManifestStorage `json:"storage,omitempty"`
-	Deploy         *ManifestDeploy  `json:"deploy,omitempty"`
+	DNS01          *ManifestDNS01     `json:"dns01,omitempty"`
+	HTTP           *ManifestHTTP      `json:"http,omitempty"`
+	SettingsSchema *SettingsSchema    `json:"settings_schema,omitempty"`
+	Notify         *ManifestNotify    `json:"notify,omitempty"`
+	Probe          *ManifestProbe     `json:"probe,omitempty"`
+	MCP            *ManifestMCP       `json:"mcp,omitempty"`
+	Storage        *ManifestStorage   `json:"storage,omitempty"`
+	Deploy         *ManifestDeploy    `json:"deploy,omitempty"`
+	Blocklist      *ManifestBlocklist `json:"blocklist,omitempty"`
+	Discovery      *ManifestDiscovery `json:"discovery,omitempty"`
 }
 
 // ManifestServer describes how to start the plugin process.
@@ -63,8 +65,10 @@ type ManifestPage struct {
 
 // ManifestContent declares process-less contributions.
 type ManifestContent struct {
+	// Templates is the directory holding conf/ and block/ config templates.
 	Templates string `json:"templates,omitempty"`
-	Locales   string `json:"locales,omitempty"`
+	// Locales is the directory holding one <lang>.po file per language.
+	Locales string `json:"locales,omitempty"`
 }
 
 // ManifestRequirement is a hard dependency on another plugin.
@@ -166,8 +170,47 @@ type DeployTarget struct {
 	Configuration *ConfigurationSchema `json:"configuration,omitempty"`
 }
 
+// ManifestBlocklist is the metadata block for the security.blocklist
+// capability.
+type ManifestBlocklist struct {
+	Sources []BlocklistSource `json:"sources"`
+}
+
+// BlocklistSource describes one kind of source a plugin can fetch a list of
+// addresses to deny from.
+type BlocklistSource struct {
+	// Code is shared across every installed security.blocklist plugin.
+	Code          string               `json:"code"`
+	Name          string               `json:"name"`
+	Configuration *ConfigurationSchema `json:"configuration,omitempty"`
+	// RefreshSeconds is the default refresh interval of a source of this
+	// kind. 0 means DefaultBlocklistRefreshSeconds.
+	RefreshSeconds int `json:"refresh_seconds,omitempty"`
+}
+
+// Refresh intervals of a blocklist source kind, in seconds.
+const (
+	DefaultBlocklistRefreshSeconds = 3600
+	MinBlocklistRefreshSeconds     = 60
+)
+
+// ManifestDiscovery is the metadata block for the upstream.discovery
+// capability.
+type ManifestDiscovery struct {
+	Providers []DiscoveryProvider `json:"providers"`
+}
+
+// DiscoveryProvider describes one place a plugin can resolve services from.
+type DiscoveryProvider struct {
+	// Code is shared across every installed upstream.discovery plugin.
+	Code          string               `json:"code"`
+	Name          string               `json:"name"`
+	Configuration *ConfigurationSchema `json:"configuration,omitempty"`
+}
+
 // ConfigurationSchema drives the form of a notify channel, a probe kind, a
-// storage backend or a deploy target. The values travel as a map of strings.
+// storage backend, a deploy target, a blocklist source or a discovery
+// provider. The values travel as a map of strings.
 type ConfigurationSchema struct {
 	Fields []ConfigurationField `json:"fields,omitempty"`
 }

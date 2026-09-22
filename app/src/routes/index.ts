@@ -17,6 +17,7 @@ import { nginxLogRoutes } from './modules/nginx_log'
 import { nodesRoutes } from './modules/nodes'
 import { notificationsRoutes } from './modules/notifications'
 import { preferenceRoutes } from './modules/preference'
+import { securityRoutes } from './modules/security'
 import { sitesRoutes } from './modules/sites'
 import { streamsRoutes } from './modules/streams'
 import { systemRoutes } from './modules/system'
@@ -42,6 +43,7 @@ const mainLayoutChildren: RouteRecordRaw[] = [
   ...upstreamRoutes,
   ...ingressRoutes,
   ...accessListsRoutes,
+  ...securityRoutes,
   ...configRoutes,
   ...certificatesRoutes,
   ...dnsRoutes,

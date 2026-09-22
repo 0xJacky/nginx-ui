@@ -40,6 +40,20 @@ type DeployTargetEntry struct {
 	Target   protocol.DeployTarget `json:"target"`
 }
 
+// BlocklistSourceEntry is one blocklist source kind offered by one enabled
+// plugin.
+type BlocklistSourceEntry struct {
+	PluginID string                   `json:"plugin_id"`
+	Source   protocol.BlocklistSource `json:"source"`
+}
+
+// DiscoveryProviderEntry is one discovery provider offered by one enabled
+// plugin.
+type DiscoveryProviderEntry struct {
+	PluginID string                     `json:"plugin_id"`
+	Provider protocol.DiscoveryProvider `json:"provider"`
+}
+
 // declaredCodes lists the codes a manifest claims for a capability whose
 // entries are addressed by code.
 func declaredCodes(manifest *protocol.Manifest, capability string) []string {
@@ -77,6 +91,18 @@ func declaredCodes(manifest *protocol.Manifest, capability string) []string {
 		if manifest.Deploy != nil && slices.Contains(manifest.Permissions, protocol.PermissionCertDeploy) {
 			for _, target := range manifest.Deploy.Targets {
 				codes = append(codes, target.Code)
+			}
+		}
+	case protocol.CapabilitySecurityBlocklist:
+		if manifest.Blocklist != nil {
+			for _, source := range manifest.Blocklist.Sources {
+				codes = append(codes, source.Code)
+			}
+		}
+	case protocol.CapabilityUpstreamDiscovery:
+		if manifest.Discovery != nil {
+			for _, provider := range manifest.Discovery.Providers {
+				codes = append(codes, provider.Code)
 			}
 		}
 	}
@@ -213,6 +239,54 @@ func (m *Manager) DeployTargets() []DeployTargetEntry {
 		return targets[i].PluginID < targets[j].PluginID
 	})
 	return targets
+}
+
+// BlocklistSources lists every source kind offered by an enabled
+// security.blocklist plugin, ordered by plugin id and code.
+func (m *Manager) BlocklistSources() []BlocklistSourceEntry {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+
+	var sources []BlocklistSourceEntry
+	for _, item := range m.entries {
+		if !enabledWithCapabilityLocked(item, protocol.CapabilitySecurityBlocklist) || item.manifest.Blocklist == nil {
+			continue
+		}
+		for _, source := range item.manifest.Blocklist.Sources {
+			sources = append(sources, BlocklistSourceEntry{PluginID: item.id, Source: source})
+		}
+	}
+	sort.Slice(sources, func(i, j int) bool {
+		if sources[i].PluginID == sources[j].PluginID {
+			return sources[i].Source.Code < sources[j].Source.Code
+		}
+		return sources[i].PluginID < sources[j].PluginID
+	})
+	return sources
+}
+
+// DiscoveryProviders lists every provider offered by an enabled
+// upstream.discovery plugin, ordered by plugin id and code.
+func (m *Manager) DiscoveryProviders() []DiscoveryProviderEntry {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+
+	var providers []DiscoveryProviderEntry
+	for _, item := range m.entries {
+		if !enabledWithCapabilityLocked(item, protocol.CapabilityUpstreamDiscovery) || item.manifest.Discovery == nil {
+			continue
+		}
+		for _, provider := range item.manifest.Discovery.Providers {
+			providers = append(providers, DiscoveryProviderEntry{PluginID: item.id, Provider: provider})
+		}
+	}
+	sort.Slice(providers, func(i, j int) bool {
+		if providers[i].PluginID == providers[j].PluginID {
+			return providers[i].Provider.Code < providers[j].Provider.Code
+		}
+		return providers[i].PluginID < providers[j].PluginID
+	})
+	return providers
 }
 
 // mcpToolSeparator joins the plugin prefix and the tool name. Plugin ids never

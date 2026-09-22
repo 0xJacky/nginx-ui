@@ -19,6 +19,7 @@ import (
 	"errors"
 	"fmt"
 	"math/big"
+	"net/netip"
 	"os"
 	"path/filepath"
 	"slices"
@@ -127,6 +128,19 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 	}
 	defer cleanup()
 
+	if manifest.Server == nil {
+		// A plugin without a server block has no process: only the static
+		// checks apply (spec CONF-13).
+		record := func(rule, name string, status CaseStatus, dur time.Duration, format string, args ...any) {
+			report.Cases = append(report.Cases, CaseResult{
+				Rule: rule, Name: name, Status: status, Duration: dur, Message: fmt.Sprintf(format, args...),
+			})
+		}
+		checkContent(dir, manifest, record)
+		checkWebapp(dir, manifest, record)
+		return report, nil
+	}
+
 	argv, err := ResolveExecutable(manifest, dir)
 	if err != nil {
 		return nil, fmt.Errorf("resolve executable: %w", err)
@@ -225,6 +239,7 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 		_ = grpcClient.Close()
 	}
 
+	checkContent(dir, manifest, record)
 	checkWebapp(dir, manifest, record)
 
 	stopStarted := time.Now()
@@ -254,6 +269,8 @@ type conformanceTargets struct {
 	mcpUnknownTool string
 	storage        *protocol.StorageBackend
 	deploy         *protocol.DeployTarget
+	blocklist      *protocol.BlocklistSource
+	discovery      *protocol.DiscoveryProvider
 }
 
 // conformanceTargetsOf picks the targets of the capabilities being tested.
@@ -279,6 +296,14 @@ func conformanceTargetsOf(manifest *protocol.Manifest, capabilities []string) co
 	if slices.Contains(capabilities, protocol.CapabilityCertDeploy) && manifest.Deploy != nil && len(manifest.Deploy.Targets) > 0 {
 		target := manifest.Deploy.Targets[0]
 		targets.deploy = &target
+	}
+	if slices.Contains(capabilities, protocol.CapabilitySecurityBlocklist) && manifest.Blocklist != nil && len(manifest.Blocklist.Sources) > 0 {
+		source := manifest.Blocklist.Sources[0]
+		targets.blocklist = &source
+	}
+	if slices.Contains(capabilities, protocol.CapabilityUpstreamDiscovery) && manifest.Discovery != nil && len(manifest.Discovery.Providers) > 0 {
+		provider := manifest.Discovery.Providers[0]
+		targets.discovery = &provider
 	}
 	return targets
 }
@@ -319,6 +344,12 @@ func runCapabilityCases(ctx context.Context, caller jsonrpc.Caller, targets conf
 	if targets.deploy != nil {
 		runDeployValidate(ctx, caller, *targets.deploy, record)
 		runDeployDryRun(ctx, caller, *targets.deploy, record)
+	}
+	if targets.blocklist != nil {
+		runBlocklistFetch(ctx, caller, *targets.blocklist, record)
+	}
+	if targets.discovery != nil {
+		runDiscoveryResolve(ctx, caller, *targets.discovery, record)
 	}
 }
 
@@ -492,6 +523,27 @@ func runTransportParity(ctx context.Context, stdio, grpc jsonrpc.Caller, targets
 			name:   protocol.MethodDeployValidate,
 			method: protocol.MethodDeployValidate,
 			params: protocol.DeployValidateParams{Kind: targets.deploy.Code, Config: map[string]string{}},
+		})
+	}
+	// A fetch or a resolution without a required field is answered from the
+	// config alone; with none it may reach a live source whose answer
+	// changes between the two calls, so it is not compared.
+	if targets.blocklist != nil && requiredConfigurationField(targets.blocklist.Configuration) != "" {
+		probes = append(probes, parityProbe{
+			name:   protocol.MethodBlocklistFetch,
+			method: protocol.MethodBlocklistFetch,
+			params: protocol.BlocklistFetchParams{Source: targets.blocklist.Code, Config: map[string]string{}},
+			result: func() any { return &protocol.BlocklistFetchResult{} },
+		})
+	}
+	if targets.discovery != nil && requiredConfigurationField(targets.discovery.Configuration) != "" {
+		probes = append(probes, parityProbe{
+			name:   protocol.MethodDiscoveryResolve,
+			method: protocol.MethodDiscoveryResolve,
+			params: protocol.DiscoveryResolveParams{
+				Provider: targets.discovery.Code, Config: map[string]string{}, Service: conformanceDiscoveryService,
+			},
+			result: func() any { return &protocol.DiscoveryResolveResult{} },
 		})
 	}
 	probes = append(probes, parityProbe{
@@ -1058,6 +1110,157 @@ func conformanceCertificate() (protocol.DeployCertificate, error) {
 		PrivateKeyPEM:  string(pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: keyDER})),
 		NotAfter:       notAfter.Format(time.RFC3339),
 	}, nil
+}
+
+// conformanceDiscoveryService is a service no provider is expected to know.
+const conformanceDiscoveryService = "nginx-ui-conformance"
+
+// runBlocklistFetch checks BLOCKLIST-5 and BLOCKLIST-6 against the
+// manifest's first source kind: with an empty config it answers in time,
+// with -32003 and data.field when the kind has a required field, and
+// otherwise with a list whose entries parse as addresses or networks, or
+// with -32003 naming a field.
+func runBlocklistFetch(ctx context.Context, caller jsonrpc.Caller, source protocol.BlocklistSource, record recorder) {
+	callCtx, cancel := context.WithTimeout(ctx, 60*time.Second)
+	defer cancel()
+	started := time.Now()
+	var result json.RawMessage
+	err := caller.Call(callCtx, protocol.MethodBlocklistFetch, protocol.BlocklistFetchParams{
+		Source: source.Code,
+		Config: map[string]string{},
+	}, &result)
+	elapsed := time.Since(started)
+	required := requiredConfigurationField(source.Configuration)
+
+	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
+		record("BLOCKLIST-5", "blocklist.fetch", StatusFail, elapsed, "no answer within 60 seconds")
+		return
+	}
+	if field, invalid := invalidConfigFieldOf(err); invalid {
+		if field == "" {
+			record("BLOCKLIST-6", "blocklist.fetch", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
+			return
+		}
+		record("BLOCKLIST-6", "blocklist.fetch", StatusPass, elapsed, "an empty config for source kind %s was rejected with -32003 naming %s", source.Code, field)
+		return
+	}
+	if err != nil {
+		record("BLOCKLIST-6", "blocklist.fetch", StatusFail, elapsed, "expected a list or -32003, got %v", err)
+		return
+	}
+	if required != "" {
+		record("BLOCKLIST-6", "blocklist.fetch", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
+		return
+	}
+	var fetched struct {
+		Entries *[]protocol.BlocklistEntry `json:"entries"`
+	}
+	if err = json.Unmarshal(result, &fetched); err != nil {
+		record("BLOCKLIST-5", "blocklist.fetch", StatusFail, elapsed, "entries is not a list of entries: %v", err)
+		return
+	}
+	var entries []protocol.BlocklistEntry
+	if fetched.Entries != nil {
+		entries = *fetched.Entries
+	}
+	for _, entry := range entries {
+		if !isAddressOrNetwork(entry.CIDR) {
+			record("BLOCKLIST-5", "blocklist.fetch", StatusFail, elapsed, "entry %q is not an address or a CIDR network", entry.CIDR)
+			return
+		}
+	}
+	record("BLOCKLIST-5", "blocklist.fetch", StatusPass, elapsed, "source kind %s listed %d entries", source.Code, len(entries))
+}
+
+// runDiscoveryResolve checks DISCOVERY-5 and DISCOVERY-6 against the
+// manifest's first provider: with an empty config and a service nobody
+// knows it answers in time, with -32003 and data.field when the provider has
+// a required field, and otherwise with a list of targets whose ports are
+// valid, or with -32003 naming a field.
+func runDiscoveryResolve(ctx context.Context, caller jsonrpc.Caller, provider protocol.DiscoveryProvider, record recorder) {
+	callCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+	started := time.Now()
+	var result json.RawMessage
+	err := caller.Call(callCtx, protocol.MethodDiscoveryResolve, protocol.DiscoveryResolveParams{
+		Provider: provider.Code,
+		Config:   map[string]string{},
+		Service:  conformanceDiscoveryService,
+	}, &result)
+	elapsed := time.Since(started)
+	required := requiredConfigurationField(provider.Configuration)
+
+	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
+		record("DISCOVERY-5", "discovery.resolve", StatusFail, elapsed, "no answer within 30 seconds")
+		return
+	}
+	if field, invalid := invalidConfigFieldOf(err); invalid {
+		if field == "" {
+			record("DISCOVERY-6", "discovery.resolve", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
+			return
+		}
+		record("DISCOVERY-6", "discovery.resolve", StatusPass, elapsed, "an empty config for provider %s was rejected with -32003 naming %s", provider.Code, field)
+		return
+	}
+	if err != nil {
+		record("DISCOVERY-6", "discovery.resolve", StatusFail, elapsed, "expected a target list or -32003, got %v", err)
+		return
+	}
+	if required != "" {
+		record("DISCOVERY-6", "discovery.resolve", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
+		return
+	}
+	var resolved struct {
+		Targets *[]protocol.DiscoveryTarget `json:"targets"`
+	}
+	if err = json.Unmarshal(result, &resolved); err != nil {
+		record("DISCOVERY-5", "discovery.resolve", StatusFail, elapsed, "targets is not a list of targets: %v", err)
+		return
+	}
+	var targets []protocol.DiscoveryTarget
+	if resolved.Targets != nil {
+		targets = *resolved.Targets
+	}
+	for _, target := range targets {
+		if target.Address == "" || target.Port < 1 || target.Port > 65535 || target.Weight < 0 {
+			record("DISCOVERY-5", "discovery.resolve", StatusFail, elapsed, "target %s:%d (weight %d) is not valid", target.Address, target.Port, target.Weight)
+			return
+		}
+	}
+	record("DISCOVERY-5", "discovery.resolve", StatusPass, elapsed, "provider %s resolved %s to %d targets", provider.Code, conformanceDiscoveryService, len(targets))
+}
+
+// isAddressOrNetwork reports whether value is an IP address or a CIDR
+// network without a zone.
+func isAddressOrNetwork(value string) bool {
+	if prefix, err := netip.ParsePrefix(value); err == nil {
+		return prefix.Addr().Zone() == ""
+	}
+	addr, err := netip.ParseAddr(value)
+	return err == nil && addr.Zone() == ""
+}
+
+// checkContent reports the static content checks (CONTENT-2, CONTENT-3,
+// CONTENT-6 and CONTENT-7). It needs no running plugin process.
+func checkContent(dir string, manifest *protocol.Manifest, record recorder) {
+	if manifest.Content == nil {
+		return
+	}
+	failed := map[string]bool{}
+	for _, problem := range CheckContent(manifest, dir) {
+		status := StatusWarn
+		if problem.Level == LevelError {
+			status = StatusFail
+			failed[problem.Rule] = true
+		}
+		record(problem.Rule, "content", status, 0, "%s", problem.String())
+	}
+	if manifest.Content.Templates != "" && !failed["CONTENT-2"] && !failed["CONTENT-3"] {
+		record("CONTENT-3", "content templates", StatusPass, 0, "every template in %s parses and renders with its default values", manifest.Content.Templates)
+	}
+	if manifest.Content.Locales != "" && !failed["CONTENT-6"] && !failed["CONTENT-7"] {
+		record("CONTENT-7", "content locales", StatusPass, 0, "every translation file in %s is a host language and parses", manifest.Content.Locales)
+	}
 }
 
 // conformanceDeployDomain is unroutable, so a dry run touches nothing real.

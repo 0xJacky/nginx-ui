@@ -74,6 +74,9 @@ func TestCronDefinitionUnderstandsBothSyntaxes(t *testing.T) {
 	assert.Error(t, err)
 	_, err = cronDefinition("@every nonsense")
 	assert.Error(t, err)
+	// Sub-second periods would turn a task into a busy loop.
+	_, err = cronDefinition("@every 500ms")
+	assert.Error(t, err)
 	_, err = cronDefinition("* * * *")
 	assert.Error(t, err)
 }

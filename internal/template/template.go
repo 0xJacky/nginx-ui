@@ -3,6 +3,12 @@ package template
 import (
 	"bufio"
 	"bytes"
+	"io"
+	"io/fs"
+	dirPath "path"
+	"regexp"
+	"strings"
+	"text/template"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -13,12 +19,6 @@ import (
 	"github.com/tufanbarisyildirim/gonginx/parser"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
-
-	"io"
-	dirPath "path"
-	"regexp"
-	"strings"
-	"text/template"
 )
 
 // Marker lines of the template format.
@@ -32,6 +32,7 @@ const (
 // Origins of a template.
 const (
 	OriginBuiltin = "builtin"
+	OriginPlugin  = "plugin"
 	// OriginCustom is a snippet the user keeps in the snippets directory.
 	OriginCustom = "custom"
 )
@@ -49,55 +50,113 @@ type ConfigInfoItem struct {
 	NameI18n    map[string]string   `json:"name_i18n,omitempty" toml:"-"`
 	Description map[string]string   `json:"description"`
 	Author      string              `json:"author"`
-	Filename    string              `json:"filename"`
+	Filename    string              `json:"filename" toml:"-"`
 	Variables   map[string]Variable `json:"variables"`
-	// Origin is OriginBuiltin or OriginCustom.
+	// Origin is OriginBuiltin, OriginPlugin or OriginCustom.
 	Origin string `json:"origin" toml:"-"`
+	// PluginID names the plugin a template comes from.
+	PluginID string `json:"plugin_id,omitempty" toml:"-"`
 }
 
-func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
-	configListItem = ConfigInfoItem{
-		Description: make(map[string]string),
-		Filename:    name,
-		Origin:      OriginBuiltin,
-	}
+// location is where a template file lives.
+type location struct {
+	fsys     fs.FS
+	origin   string
+	pluginID string
+}
 
-	file, err := templ.DistFS.Open(dirPath.Join(path, name))
-	if err != nil {
-		logger.Error(err)
-		return
-	}
+var builtin = location{fsys: templ.DistFS, origin: OriginBuiltin}
 
-	defer file.Close()
-
-	r := bufio.NewReader(file)
-	lineBytes, _, err := r.ReadLine()
-	if err == io.EOF {
-		return
-	}
-	line := strings.TrimSpace(string(lineBytes))
-
-	if line != HeaderStart {
-		return
-	}
-	var content string
-	for {
-		lineBytes, _, err = r.ReadLine()
-		if err == io.EOF {
-			break
-		}
-		line = strings.TrimSpace(string(lineBytes))
-		if line == HeaderEnd {
-			break
-		}
-		content += line + "\n"
-	}
-
-	_, err = toml.Decode(content, &configListItem)
+// GetTemplateInfo reads the header of a built-in template. A header that
+// does not parse is logged and leaves the fields it would have set empty.
+func GetTemplateInfo(path, name string) ConfigInfoItem {
+	info, err := readInfo(builtin, path, name)
 	if err != nil {
 		logger.Error(name, err)
 	}
-	return
+	return info
+}
+
+// GetPluginTemplateInfo reads the header of a template of an enabled plugin.
+func GetPluginTemplateInfo(pluginID, path, name string) (ConfigInfoItem, error) {
+	loc, err := pluginLocation(pluginID)
+	if err != nil {
+		return ConfigInfoItem{}, err
+	}
+	if !IsValidFileName(name) {
+		return ConfigInfoItem{}, ErrTemplateNotFound
+	}
+	if err = checkPluginFile(loc.fsys, path, name); err != nil {
+		return ConfigInfoItem{}, err
+	}
+	return readInfo(loc, path, name)
+}
+
+// readInfo decodes the header of one template. The fields that identify the
+// file are set after decoding, so a header cannot change them.
+func readInfo(loc location, path, name string) (info ConfigInfoItem, err error) {
+	info = ConfigInfoItem{Description: map[string]string{}}
+	defer func() {
+		info.Filename = name
+		info.Origin = loc.origin
+		info.PluginID = loc.pluginID
+	}()
+
+	file, err := loc.fsys.Open(dirPath.Join(path, name))
+	if err != nil {
+		return info, err
+	}
+	defer file.Close()
+
+	var header string
+	header, _, err = splitHeader(io.LimitReader(file, maxTemplateSize))
+	if err != nil {
+		return info, err
+	}
+	if _, err = toml.Decode(header, &info); err != nil {
+		return info, errors.Wrap(err, "decode template header")
+	}
+	if info.Description == nil {
+		info.Description = map[string]string{}
+	}
+	return info, nil
+}
+
+// splitHeader returns the TOML header between the marker lines and the rest
+// of the file.
+func splitHeader(r io.Reader) (header, body string, err error) {
+	scanner := bufio.NewScanner(r)
+	scanner.Buffer(make([]byte, 0, 64*1024), maxTemplateSize)
+	if !scanner.Scan() || strings.TrimSpace(scanner.Text()) != HeaderStart {
+		if scanner.Err() != nil {
+			return "", "", scanner.Err()
+		}
+		return "", "", errors.Errorf("the first line must be %q", HeaderStart)
+	}
+
+	var headerBuf, bodyBuf strings.Builder
+	inHeader := true
+	for scanner.Scan() {
+		line := scanner.Text()
+		if inHeader {
+			if strings.TrimSpace(line) == HeaderEnd {
+				inHeader = false
+				continue
+			}
+			headerBuf.WriteString(strings.TrimSpace(line))
+			headerBuf.WriteString("\n")
+			continue
+		}
+		bodyBuf.WriteString(line)
+		bodyBuf.WriteString("\n")
+	}
+	if err = scanner.Err(); err != nil {
+		return "", "", err
+	}
+	if inHeader {
+		return "", "", errors.Errorf("the line %q is missing", HeaderEnd)
+	}
+	return headerBuf.String(), bodyBuf.String(), nil
 }
 
 type ConfigDetail struct {
@@ -105,15 +164,39 @@ type ConfigDetail struct {
 	nginx.NgxServer
 }
 
+// ParseTemplate renders a built-in template with the given variables.
 func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDetail, err error) {
-	file, err := templ.DistFS.Open(dirPath.Join(path, name))
+	return parseTemplate(builtin, path, name, bindData)
+}
+
+// ParsePluginTemplate renders a template of an enabled plugin.
+func ParsePluginTemplate(pluginID, path, name string, bindData map[string]Variable) (ConfigDetail, error) {
+	loc, err := pluginLocation(pluginID)
+	if err != nil {
+		return ConfigDetail{}, err
+	}
+	if !IsValidFileName(name) {
+		return ConfigDetail{}, ErrTemplateNotFound
+	}
+	if err = checkPluginFile(loc.fsys, path, name); err != nil {
+		return ConfigDetail{}, err
+	}
+	return parseTemplate(loc, path, name, bindData)
+}
+
+func parseTemplate(loc location, path, name string, bindData map[string]Variable) (c ConfigDetail, err error) {
+	file, err := loc.fsys.Open(dirPath.Join(path, name))
 	if err != nil {
 		err = errors.Wrap(err, "error tokenized template")
 		return
 	}
 	defer file.Close()
 
-	return parseContent(name, file, bindData)
+	// A plugin template is untrusted input, so it may only use the actions
+	// and functions the built-in templates need, and its output is bounded.
+	restricted := loc.origin == OriginPlugin
+
+	return parseContent(name, io.LimitReader(file, maxTemplateSize), bindData, restricted)
 }
 
 // RenderBlock renders a block template held in memory, such as a snippet of
@@ -122,7 +205,7 @@ func RenderBlock(name string, content []byte, bindData map[string]Variable) (Con
 	if !bytes.Contains(content, []byte(HeaderEnd)) {
 		content = append([]byte(HeaderStart+"\n"+HeaderEnd+"\n"), content...)
 	}
-	return parseContent(name, bytes.NewReader(content), bindData)
+	return parseContent(name, bytes.NewReader(content), bindData, false)
 }
 
 // templateData is what a template is rendered with: the values every
@@ -188,7 +271,7 @@ func RenderText(name, content string, bindData map[string]Variable) (string, err
 	return rendered, nil
 }
 
-func parseContent(name string, source io.Reader, bindData map[string]Variable) (c ConfigDetail, err error) {
+func parseContent(name string, source io.Reader, bindData map[string]Variable, restricted bool) (c ConfigDetail, err error) {
 	r := bufio.NewReader(source)
 	var flag bool
 	custom := ""
@@ -214,44 +297,23 @@ func parseContent(name string, source io.Reader, bindData map[string]Variable) (
 
 	data := templateData(bindData)
 
-	t, err := template.New(name).Parse(custom)
+	custom, err = render(name, custom, data, restricted)
 	if err != nil {
 		err = errors.Wrap(err, "error parse template.custom")
 		return
 	}
-
-	var buf bytes.Buffer
-
-	err = t.Execute(&buf, data)
-	if err != nil {
-		err = errors.Wrap(err, "error execute template")
-		return
-	}
-
-	custom = strings.TrimSpace(buf.String())
+	custom = strings.TrimSpace(custom)
 
 	templatePart := strings.Split(content, HeaderEnd)
 	if len(templatePart) < 2 {
 		return
 	}
 
-	content = templatePart[1]
-
-	t, err = template.New(name).Parse(content)
+	content, err = render(name, templatePart[1], data, restricted)
 	if err != nil {
 		err = errors.Wrap(err, "error parse template")
 		return
 	}
-
-	buf.Reset()
-
-	err = t.Execute(&buf, data)
-	if err != nil {
-		err = errors.Wrap(err, "error execute template")
-		return
-	}
-
-	content = buf.String()
 
 	p := parser.NewStringParser(content, parser.WithSkipValidDirectivesErr())
 	config, err := p.Parse()
@@ -304,6 +366,31 @@ func BuiltinBlockSource(name string) (ConfigInfoItem, string, error) {
 	return info, strings.TrimLeft(body, "\r\n"), nil
 }
 
+// render parses and executes one template section.
+func render(name, text string, data gin.H, restricted bool) (string, error) {
+	t, err := template.New(name).Parse(text)
+	if err != nil {
+		return "", err
+	}
+	if restricted {
+		if err = checkRestricted(t); err != nil {
+			return "", err
+		}
+	}
+
+	var buf bytes.Buffer
+	var out io.Writer = &buf
+	if restricted {
+		out = &limitedWriter{w: &buf, left: maxRenderedSize}
+	}
+	if err = t.Execute(out, data); err != nil {
+		return "", errors.Wrap(err, "error execute template")
+	}
+	return buf.String(), nil
+}
+
+// GetTemplateList lists the built-in templates of a kind ("conf" or
+// "block") followed by the templates every enabled plugin contributes.
 func GetTemplateList(path string) (configList []ConfigInfoItem, err error) {
 	configs, err := templ.DistFS.ReadDir(path)
 	if err != nil {
@@ -315,5 +402,6 @@ func GetTemplateList(path string) (configList []ConfigInfoItem, err error) {
 		configList = append(configList, GetTemplateInfo(path, config.Name()))
 	}
 
+	configList = append(configList, pluginTemplateList(path)...)
 	return
 }

@@ -102,6 +102,11 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 	if !platformsCover(packagePlatforms(manifest, staged), HostPlatform()) {
 		return nil, ErrNoExecutableForPlatform
 	}
+	// Templates and translation files are read like the built-in ones, so a
+	// file that does not parse is refused before it is installed.
+	if err = validateContentFiles(manifest, staged); err != nil {
+		return nil, err
+	}
 	if missing := m.missingRequirements(manifest); len(missing) > 0 {
 		return nil, cosy.WrapErrorWithParams(ErrDependencyMissing, requirementList(missing))
 	}

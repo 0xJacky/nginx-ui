@@ -55,6 +55,16 @@ const (
 	MethodDeployPush     = "deploy.push"
 )
 
+// Capability security.blocklist methods (host -> plugin).
+const (
+	MethodBlocklistFetch = "blocklist.fetch"
+)
+
+// Capability upstream.discovery methods (host -> plugin).
+const (
+	MethodDiscoveryResolve = "discovery.resolve"
+)
+
 // Event and cron delivery (host -> plugin).
 const (
 	MethodEventsOn = "events.on" // notification
@@ -87,6 +97,10 @@ const (
 	CapabilityStorage = "storage"
 	// CapabilityCertDeploy pushes certificates to external targets.
 	CapabilityCertDeploy = "cert.deploy"
+	// CapabilitySecurityBlocklist fetches lists of addresses to deny.
+	CapabilitySecurityBlocklist = "security.blocklist"
+	// CapabilityUpstreamDiscovery resolves services into upstream servers.
+	CapabilityUpstreamDiscovery = "upstream.discovery"
 )
 
 // Permission names a plugin may request in its manifest.

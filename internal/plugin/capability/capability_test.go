@@ -21,12 +21,15 @@ type capabilityHost struct {
 	acquired   []string
 	releases   int
 
-	channels []plugin.NotifyChannelEntry
-	kinds    []plugin.ProbeKindEntry
-	tools    []plugin.MCPToolEntry
-	backends []plugin.StorageBackendEntry
-	targets  []plugin.DeployTargetEntry
-	dataDirs map[string]string
+	channels  []plugin.NotifyChannelEntry
+	kinds     []plugin.ProbeKindEntry
+	tools     []plugin.MCPToolEntry
+	backends  []plugin.StorageBackendEntry
+	targets   []plugin.DeployTargetEntry
+	sources   []plugin.BlocklistSourceEntry
+	providers []plugin.DiscoveryProviderEntry
+	content   []plugin.ContentEntry
+	dataDirs  map[string]string
 }
 
 func newCapabilityHost() *capabilityHost {
@@ -81,6 +84,24 @@ func (h *capabilityHost) ProbeKinds() []plugin.ProbeKindEntry           { return
 func (h *capabilityHost) StorageBackends() []plugin.StorageBackendEntry { return h.backends }
 func (h *capabilityHost) DeployTargets() []plugin.DeployTargetEntry     { return h.targets }
 func (h *capabilityHost) DataDir(pluginID string) string                { return h.dataDirs[pluginID] }
+func (h *capabilityHost) BlocklistSources() []plugin.BlocklistSourceEntry {
+	return h.sources
+}
+func (h *capabilityHost) DiscoveryProviders() []plugin.DiscoveryProviderEntry {
+	return h.providers
+}
+
+func (h *capabilityHost) ContentEntries() []plugin.ContentEntry {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	return append([]plugin.ContentEntry(nil), h.content...)
+}
+
+func (h *capabilityHost) setContent(entries []plugin.ContentEntry) {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	h.content = entries
+}
 
 // handlerCaller runs a function for every call, so a test can act like the
 // plugin, for example on the files of the exchange directory.
