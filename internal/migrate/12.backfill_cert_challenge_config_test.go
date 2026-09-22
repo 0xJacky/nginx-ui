@@ -9,19 +9,34 @@ import (
 	"gorm.io/gorm"
 )
 
+// legacyCertColumns re-creates the DNS-01 boolean columns that the Cert model
+// no longer declares, so the migration has something to read.
+type legacyCertColumns struct {
+	ID                                uint64 `gorm:"column:id;primaryKey"`
+	LegoDisableCNAMESupport           bool   `gorm:"column:lego_disable_cname_support"`
+	DisableAuthoritativeNSPropagation bool   `gorm:"column:disable_authoritative_ns_propagation"`
+}
+
+func (legacyCertColumns) TableName() string {
+	return "certs"
+}
+
 func TestBackfillCertChallengeConfig(t *testing.T) {
-	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("file:migrate10?mode=memory&cache=shared"), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.Cert{}))
+	require.NoError(t, db.AutoMigrate(&legacyCertColumns{}))
 
 	legacy := &model.Cert{
-		Name:                              "legacy",
-		ChallengeMethod:                   model.CertChallengeMethodDNS01,
-		DnsCredentialID:                   7,
-		LegoDisableCNAMESupport:           true,
-		DisableAuthoritativeNSPropagation: true,
+		Name:            "legacy",
+		ChallengeMethod: model.CertChallengeMethodDNS01,
+		DnsCredentialID: 7,
 	}
 	require.NoError(t, db.Create(legacy).Error)
+	require.NoError(t, db.Exec(
+		"UPDATE certs SET lego_disable_cname_support = ?, disable_authoritative_ns_propagation = ? WHERE id = ?",
+		true, true, legacy.ID).Error)
+
 	already := &model.Cert{
 		Name:            "already",
 		ChallengeMethod: model.CertChallengeMethodDNS01,

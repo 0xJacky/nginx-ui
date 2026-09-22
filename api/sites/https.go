@@ -265,17 +265,16 @@ func issueHTTPSCertificate(_ context.Context, req site.HTTPSIssueRequest, logf f
 // IssueCert must not run a second probe against the staged configuration.
 func httpsIssuePayload(req site.HTTPSIssueRequest) *cert.ConfigPayload {
 	payload := &cert.ConfigPayload{
-		ServerName:                        append([]string(nil), req.Domains...),
-		ChallengeMethod:                   req.ChallengeMethod,
-		DNSCredentialID:                   req.DNSCredentialID,
-		ACMEUserID:                        req.ACMEUserID,
-		KeyType:                           req.KeyType,
-		Profile:                           req.Profile,
-		MustStaple:                        req.MustStaple,
-		LegoDisableCNAMESupport:           req.LegoDisableCNAMESupport,
-		DisableAuthoritativeNSPropagation: req.DisableAuthoritativeNSPropagation,
-		EnableCommonName:                  req.EnableCommonName,
-		RevokeOld:                         req.RevokeOld,
+		ServerName:       append([]string(nil), req.Domains...),
+		ChallengeMethod:  req.ChallengeMethod,
+		DNSCredentialID:  req.DNSCredentialID,
+		ACMEUserID:       req.ACMEUserID,
+		KeyType:          req.KeyType,
+		Profile:          req.Profile,
+		MustStaple:       req.MustStaple,
+		ChallengeConfig:  req.ChallengeConfig,
+		EnableCommonName: req.EnableCommonName,
+		RevokeOld:        req.RevokeOld,
 	}
 	payload.KeyType = payload.GetKeyType()
 	return payload
