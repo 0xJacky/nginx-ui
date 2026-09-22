@@ -114,6 +114,9 @@ type process struct {
 	// hung records that the ping loop gave up on this process.
 	hung       atomic.Bool
 	initResult protocol.InitializeResult
+	// grpc carries capability calls when the plugin serves gRPC. It is set
+	// before the process is published.
+	grpc *grpcRoute
 }
 
 // Supervisor runs one plugin process, keeps it alive and exposes a client for
@@ -151,6 +154,7 @@ type Supervisor struct {
 	crashLimit       int
 	backoff          []time.Duration
 	extraEnv         []string
+	grpcDialTimeout  time.Duration
 }
 
 // NewSupervisor prepares a supervisor. Nothing is spawned until Start runs.
@@ -183,6 +187,7 @@ func NewSupervisor(cfg SupervisorConfig) *Supervisor {
 		crashWindow:      defaultCrashWindow,
 		crashLimit:       defaultCrashLimit,
 		backoff:          slices.Clone(defaultBackoff),
+		grpcDialTimeout:  defaultGRPCDialTimeout,
 	}
 }
 
@@ -284,6 +289,8 @@ func (s *Supervisor) Stop(ctx context.Context) error {
 	}
 	s.mu.Unlock()
 
+	// The plugin closes its gRPC listener while it stops, which is expected.
+	p.grpc.markStopping()
 	shutdownCtx, cancel := context.WithTimeout(ctx, s.shutdownTimeout)
 	if err := p.conn.Call(shutdownCtx, protocol.MethodShutdown, nil, nil); err != nil {
 		s.log.Debugf("[plugin:%s] shutdown request failed: %v", s.cfg.PluginID, err)
@@ -329,7 +336,7 @@ func (s *Supervisor) Client() (jsonrpc.Caller, error) {
 	if s.proc == nil || s.state != StateRunning {
 		return nil, ErrPluginNotRunning
 	}
-	return &timeoutCaller{conn: s.proc.conn, timeout: s.callTimeout}, nil
+	return &timeoutCaller{conn: s.proc.conn, timeout: s.callTimeout, route: s.proc.grpc}, nil
 }
 
 // Acquire returns a caller and the matching release function. An on_demand
@@ -428,6 +435,7 @@ func (s *Supervisor) spawn(ctx context.Context) error {
 		_ = p.cmd.Wait()
 		return err
 	}
+	s.connectGRPC(ctx, p)
 
 	s.mu.Lock()
 	s.proc = p
@@ -494,6 +502,7 @@ func (s *Supervisor) handshake(ctx context.Context, p *process) error {
 func (s *Supervisor) waitProcess(p *process) {
 	waitErr := p.cmd.Wait()
 	_ = p.conn.Close()
+	p.grpc.close()
 	s.handleExit(p, waitErr)
 	close(p.done)
 }
@@ -709,30 +718,6 @@ func exitCause(p *process, waitErr error) error {
 		return waitErr
 	}
 	return errors.New("plugin exited unexpectedly")
-}
-
-// timeoutCaller applies the default per call timeout to callers that did not
-// set a deadline of their own.
-type timeoutCaller struct {
-	conn    *jsonrpc.Conn
-	timeout time.Duration
-}
-
-func (c *timeoutCaller) Call(ctx context.Context, method string, params any, result any) error {
-	if _, ok := ctx.Deadline(); !ok && c.timeout > 0 {
-		var cancel context.CancelFunc
-		ctx, cancel = context.WithTimeout(ctx, c.timeout)
-		defer cancel()
-	}
-	err := c.conn.Call(ctx, method, params, result)
-	if errors.Is(err, context.DeadlineExceeded) {
-		return ErrCallTimeout
-	}
-	return err
-}
-
-func (c *timeoutCaller) Notify(ctx context.Context, method string, params any) error {
-	return c.conn.Notify(ctx, method, params)
 }
 
 // logRing keeps the last n stderr lines of a plugin.

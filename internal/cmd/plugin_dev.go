@@ -33,6 +33,7 @@ func init() {
 			Flags: []cli.Flag{
 				&cli.StringFlag{Name: "capability", Usage: "limit the capability specific cases to this one, e.g. dns01"},
 				&cli.DurationFlag{Name: "timeout", Value: 90 * time.Second, Usage: "overall time budget for the run"},
+				&cli.StringFlag{Name: "transport", Usage: "run the cases over stdio, grpc or both (default: both when the plugin advertises grpc, stdio otherwise)"},
 			},
 		},
 		&cli.Command{
@@ -92,7 +93,10 @@ func ConformancePlugin(ctx context.Context, command *cli.Command) error {
 		return fmt.Errorf("usage: nginx-ui plugin conformance <path>")
 	}
 
-	opts := plugin.ConformanceOptions{Timeout: command.Duration("timeout")}
+	opts := plugin.ConformanceOptions{
+		Timeout:   command.Duration("timeout"),
+		Transport: command.String("transport"),
+	}
 	if capability := command.String("capability"); capability != "" {
 		opts.Capabilities = []string{capability}
 	}
@@ -103,9 +107,13 @@ func ConformancePlugin(ctx context.Context, command *cli.Command) error {
 	}
 
 	writer := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-	fmt.Fprintln(writer, "STATUS\tRULE\tCASE\tDURATION\tMESSAGE")
+	fmt.Fprintln(writer, "STATUS\tRULE\tTRANSPORT\tCASE\tDURATION\tMESSAGE")
 	for _, c := range report.Cases {
-		fmt.Fprintf(writer, "%s\t%s\t%s\t%s\t%s\n", c.Status, c.Rule, c.Name, c.Duration.Round(time.Millisecond), c.Message)
+		transport := c.Transport
+		if transport == "" {
+			transport = "-"
+		}
+		fmt.Fprintf(writer, "%s\t%s\t%s\t%s\t%s\t%s\n", c.Status, c.Rule, transport, c.Name, c.Duration.Round(time.Millisecond), c.Message)
 	}
 	if err := writer.Flush(); err != nil {
 		return err
