@@ -85,6 +85,10 @@ var (
 	ErrAutoBackupWriteKeyFile       = e.New(4908, "Failed to write security key file: {0}")
 	ErrAutoBackupS3Upload           = e.New(4909, "S3 upload failed: {0}")
 	ErrAutoBackupInvalidFilename    = e.New(4917, "Invalid auto backup filename: {0}")
+	ErrStoredBackupNotFound         = e.New(4918, "Stored backup {0} does not belong to this backup task")
+	ErrStoredBackupNotRestorable    = e.New(4919, "Only Nginx and Nginx UI backups can be restored")
+	ErrPluginStorageRequired        = e.New(4920, "This action needs a plugin storage backend")
+	ErrInvalidStorageKeyPrefix      = e.New(4921, "Invalid storage key prefix: {0}")
 
 	ErrInvalidPath            = e.New(4910, "Invalid path: {0}")
 	ErrPathNotInGrantedAccess = e.New(4911, "Path not in granted access paths: {0}. Add it to [backup] GrantedAccessPath in app.ini and restart.")

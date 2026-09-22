@@ -61,6 +61,41 @@ func TestManagerListsCapabilityEntries(t *testing.T) {
 	assert.False(t, ok)
 	_, ok = m.OwnerOf(protocol.CapabilityMCP, "purge_cache")
 	assert.False(t, ok, "mcp tools are addressed by their published name, not by owner")
+
+	backends := m.StorageBackends()
+	require.Len(t, backends, 2)
+	assert.Equal(t, "io.github.a.plugin", backends[0].PluginID)
+	assert.Equal(t, "webdav", backends[0].Backend.Code)
+	owner, ok = m.OwnerOf(protocol.CapabilityStorage, "webdav")
+	assert.True(t, ok)
+	assert.Equal(t, "io.github.a.plugin", owner)
+
+	targets := m.DeployTargets()
+	require.Len(t, targets, 2)
+	assert.Equal(t, "mycdn", targets[0].Target.Code)
+	owner, ok = m.OwnerOf(protocol.CapabilityCertDeploy, "mycdn")
+	assert.True(t, ok)
+	assert.Equal(t, "io.github.a.plugin", owner)
+}
+
+func TestManagerDeployTargetsNeedThePermission(t *testing.T) {
+	m := newManager(t.TempDir())
+
+	// A manifest that lost the permission (hand edited on disk) offers no
+	// target kind and owns no code, even though it was approved as it is.
+	manifest := capabilityPluginManifest("io.github.nodeploy.plugin")
+	manifest.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP}
+	addCapabilityEntry(m, manifest, true, true)
+	assert.Empty(t, m.DeployTargets())
+	_, ok := m.OwnerOf(protocol.CapabilityCertDeploy, "mycdn")
+	assert.False(t, ok)
+
+	// An approval that no longer matches the manifest serves nothing.
+	addCapabilityEntry(m, capabilityPluginManifest("io.github.stale.plugin"), true, false)
+	assert.Empty(t, m.DeployTargets())
+	backends := m.StorageBackends()
+	require.Len(t, backends, 1)
+	assert.Equal(t, "io.github.nodeploy.plugin", backends[0].PluginID)
 }
 
 func TestManagerMCPToolsNeedTheCapabilityAndThePermission(t *testing.T) {

@@ -81,6 +81,10 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Certificate Relocated'),
     content: (args: any) => $gettext('Certificate %{name} is now stored in %{path}, point the sites that load %{previous_path} to it', args),
   },
+  'Deploy Certificate Error': {
+    title: () => $gettext('Deploy Certificate Error'),
+    content: (args: any) => $gettext('Failed to deploy certificate %{cert_name} to %{target_name}: %{error}', args),
+  },
   'Sync Certificate Error': {
     title: () => $gettext('Sync Certificate Error'),
     content: (args: any) => $gettext('Sync Certificate %{cert_name} to %{node_name} failed', args),
