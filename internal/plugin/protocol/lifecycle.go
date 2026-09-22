@@ -29,6 +29,9 @@ type InitializeResult struct {
 	// a loopback port instead of a Unix socket.
 	RPCPort  int    `json:"rpc_port,omitempty"`
 	RPCToken string `json:"rpc_token,omitempty"`
+	// RPCSocket is the absolute path of the Unix socket the gRPC transport
+	// listens on. Empty means <NGINX_UI_PLUGIN_DATA_DIR>/rpc.sock.
+	RPCSocket string `json:"rpc_socket,omitempty"`
 }
 
 // ConfigureParams is the payload of plugin.configure.

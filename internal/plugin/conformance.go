@@ -19,6 +19,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/plugin/grpcbridge"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 )
@@ -35,12 +36,22 @@ const (
 
 // CaseResult is the outcome of one numbered requirement Conformance checked.
 type CaseResult struct {
-	Rule     string
-	Name     string
-	Status   CaseStatus
-	Message  string
-	Duration time.Duration
+	Rule string
+	Name string
+	// Transport is "stdio" or "grpc" for a case that ran over that
+	// transport, empty for one that does not depend on it.
+	Transport string
+	Status    CaseStatus
+	Message   string
+	Duration  time.Duration
 }
+
+// Values of ConformanceOptions.Transport.
+const (
+	TransportFlagStdio = "stdio"
+	TransportFlagGRPC  = "grpc"
+	TransportFlagBoth  = "both"
+)
 
 // ConformanceOptions configures Conformance.
 type ConformanceOptions struct {
@@ -51,6 +62,10 @@ type ConformanceOptions struct {
 	// Timeout bounds the whole run, including starting and stopping the
 	// plugin process. Zero uses defaultConformanceTimeout.
 	Timeout time.Duration
+	// Transport selects which transports the protocol and capability cases
+	// run over: TransportFlagStdio, TransportFlagGRPC or TransportFlagBoth.
+	// Empty runs both when the plugin advertises grpc, stdio otherwise.
+	Transport string
 }
 
 // ConformanceReport lists every case Conformance checked, in the order they
@@ -85,6 +100,12 @@ type recorder func(rule, name string, status CaseStatus, dur time.Duration, form
 // that misbehaves once running is reported as failed cases, not an error.
 func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*ConformanceReport, error) {
 	report := &ConformanceReport{}
+
+	switch opts.Transport {
+	case "", TransportFlagStdio, TransportFlagGRPC, TransportFlagBoth:
+	default:
+		return nil, fmt.Errorf("unknown transport %q, want stdio, grpc or both", opts.Transport)
+	}
 
 	timeout := opts.Timeout
 	if timeout <= 0 {
@@ -128,15 +149,18 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 		},
 	})
 
-	var record recorder = func(rule, name string, status CaseStatus, dur time.Duration, format string, args ...any) {
-		report.Cases = append(report.Cases, CaseResult{
-			Rule: rule, Name: name, Status: status, Duration: dur,
-			Message: fmt.Sprintf(format, args...),
-		})
+	recordOn := func(transport string) recorder {
+		return func(rule, name string, status CaseStatus, dur time.Duration, format string, args ...any) {
+			report.Cases = append(report.Cases, CaseResult{
+				Rule: rule, Name: name, Transport: transport, Status: status, Duration: dur,
+				Message: fmt.Sprintf(format, args...),
+			})
+		}
 	}
+	record := recordOn("")
 
 	started := time.Now()
-	caller, release, err := sup.Acquire(runCtx)
+	_, release, err := sup.Acquire(runCtx)
 	handshakeElapsed := time.Since(started)
 	if err != nil {
 		record("LIFE-1", "handshake", StatusFail, handshakeElapsed, "plugin.initialize failed: %v", err)
@@ -161,17 +185,41 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 			"handshake reported %v, manifest declares %v", init.Capabilities, manifest.Capabilities)
 	}
 
-	runPing(runCtx, caller, record)
-	runUnknownMethod(runCtx, caller, record)
-	runNotificationThenPing(runCtx, caller, record)
-	runConcurrentPings(runCtx, caller, record)
-	runStdoutHygiene(sup, record)
-
+	var dns01Code string
 	effective := effectiveCapabilities(manifest, opts)
 	if slices.Contains(effective, protocol.CapabilityDNS01) && manifest.DNS01 != nil && len(manifest.DNS01.Providers) > 0 {
-		code := manifest.DNS01.Providers[0].Code
-		runInvalidParams(runCtx, caller, record)
-		runDNS01Cases(runCtx, caller, code, record)
+		dns01Code = manifest.DNS01.Providers[0].Code
+	}
+
+	advertised := slices.Contains(init.Transports, protocol.TransportGRPC)
+	runStdio := opts.Transport != TransportFlagGRPC
+	runGRPC := opts.Transport == TransportFlagGRPC || opts.Transport == TransportFlagBoth ||
+		(opts.Transport == "" && advertised)
+
+	var stdioCaller jsonrpc.Caller
+	if runStdio {
+		stdioCaller, err = sup.stdioClient()
+		if err != nil {
+			record("LIFE-1", "handshake", StatusFail, 0, "the plugin stopped right after the handshake: %v", err)
+			return report, nil
+		}
+		runStdioCases(runCtx, sup, stdioCaller, dns01Code, recordOn(protocol.TransportStdio))
+	}
+
+	var grpcClient *grpcbridge.Client
+	if runGRPC {
+		grpcRecord := recordOn(protocol.TransportGRPC)
+		grpcClient = connectConformanceGRPC(runCtx, sup, init, dataDir, grpcRecord)
+		if grpcClient != nil {
+			runGRPCCases(runCtx, grpcClient, dns01Code, grpcRecord)
+		}
+	}
+
+	if stdioCaller != nil && grpcClient != nil {
+		runTransportParity(runCtx, stdioCaller, &grpcConformanceCaller{client: grpcClient}, dns01Code, record)
+	}
+	if grpcClient != nil {
+		_ = grpcClient.Close()
 	}
 
 	checkWebapp(dir, manifest, record)
@@ -189,6 +237,204 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 	}
 
 	return report, nil
+}
+
+// runStdioCases runs the protocol and capability cases over stdio.
+func runStdioCases(ctx context.Context, sup *Supervisor, caller jsonrpc.Caller, dns01Code string, record recorder) {
+	runPing(ctx, caller, record)
+	runUnknownMethod(ctx, caller, record)
+	runNotificationThenPing(ctx, caller, record)
+	runConcurrentPings(ctx, caller, record)
+	runStdoutHygiene(sup, record)
+
+	if dns01Code != "" {
+		runInvalidParams(ctx, caller, record)
+		runDNS01Cases(ctx, caller, dns01Code, record)
+	}
+}
+
+// connectConformanceGRPC checks WIRE-11: the plugin advertises grpc and its
+// endpoint answers plugin.ping. It dials a client of its own, so the gRPC
+// cases fail instead of silently falling back to stdio.
+func connectConformanceGRPC(ctx context.Context, sup *Supervisor, init protocol.InitializeResult, dataDir string, record recorder) *grpcbridge.Client {
+	endpoint, ok := grpcbridge.EndpointFor(init, dataDir)
+	if !ok {
+		record("WIRE-11", "grpc transport", StatusFail, 0,
+			"the plugin does not list grpc in transports (got %v)", init.Transports)
+		return nil
+	}
+
+	dialCtx, cancel := context.WithTimeout(ctx, defaultGRPCDialTimeout)
+	defer cancel()
+	started := time.Now()
+	client, err := grpcbridge.Dial(dialCtx, endpoint)
+	if err == nil {
+		if err = client.Call(dialCtx, protocol.MethodPing, nil, nil); err != nil {
+			_ = client.Close()
+		}
+	}
+	elapsed := time.Since(started)
+	if err != nil {
+		record("WIRE-11", "grpc transport", StatusFail, elapsed, "cannot use the advertised endpoint %s: %v", endpoint, err)
+		return nil
+	}
+
+	record("WIRE-11", "grpc transport", StatusPass, elapsed,
+		"%s answered plugin.ping; the host routes capability calls over %s", endpoint, sup.Transport())
+	return client
+}
+
+// runGRPCCases runs the protocol and capability cases over gRPC. The
+// notification and stdout cases are stdio only.
+func runGRPCCases(ctx context.Context, client *grpcbridge.Client, dns01Code string, record recorder) {
+	caller := &grpcConformanceCaller{client: client}
+	runPing(ctx, caller, record)
+	runUnknownMethod(ctx, caller, record)
+	runConcurrentPings(ctx, caller, record)
+
+	if dns01Code != "" {
+		runGRPCInvalidParams(ctx, client, record)
+		runDNS01Cases(ctx, caller, dns01Code, record)
+	}
+}
+
+// unknownGRPCMethod is a gRPC path outside the contract.
+const unknownGRPCMethod = "/nginxui.plugin.v1.Conformance/DoesNotExist"
+
+// grpcConformanceCaller sends every call over gRPC, including the lifecycle
+// ones the production router keeps on stdio. A method outside the contract
+// has no gRPC path, so it is sent to unknownGRPCMethod and the plugin answers
+// for itself.
+type grpcConformanceCaller struct {
+	client *grpcbridge.Client
+}
+
+func (c *grpcConformanceCaller) Call(ctx context.Context, method string, params any, result any) error {
+	if _, ok := grpcbridge.Lookup(method); ok {
+		return c.client.Call(ctx, method, params, result)
+	}
+	_, err := c.client.Invoke(ctx, unknownGRPCMethod, nil)
+	if err == nil {
+		return fmt.Errorf("%s answered without an error", unknownGRPCMethod)
+	}
+	return grpcbridge.FromStatus(ctx, err, false)
+}
+
+func (c *grpcConformanceCaller) Notify(context.Context, string, any) error {
+	return errors.New("notifications travel on stdio")
+}
+
+// runGRPCInvalidParams checks WIRE-6 over gRPC: request bytes that are no
+// valid message answer INVALID_ARGUMENT or INTERNAL instead of hanging.
+func runGRPCInvalidParams(ctx context.Context, client *grpcbridge.Client, record recorder) {
+	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	m, _ := grpcbridge.Lookup(protocol.MethodDNS01Options)
+	_, err := client.Invoke(callCtx, m.FullMethod, []byte{0xff, 0xff, 0xff})
+	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
+		record("WIRE-6", "invalid params", StatusFail, 0, "the call hung instead of answering")
+		return
+	}
+	if err == nil {
+		record("WIRE-6", "invalid params", StatusFail, 0, "a malformed request message was accepted")
+		return
+	}
+	err = grpcbridge.FromStatus(callCtx, err, true)
+	if perr, ok := jsonrpc.AsProtocolError(err); ok && (perr.Code == protocol.CodeInvalidParams || perr.Code == protocol.CodeInternalError) {
+		record("WIRE-6", "invalid params", StatusPass, 0, "a malformed request message answered with code %d", perr.Code)
+		return
+	}
+	if isOptionalUnimplemented(err) {
+		record("WIRE-6", "invalid params", StatusSkip, 0, "dns01.options is not implemented, cannot exercise this case")
+		return
+	}
+	record("WIRE-6", "invalid params", StatusFail, 0, "expected -32602 or -32000, got %v", err)
+}
+
+// parityProbe is one call TRANSPORT-1 sends over both transports.
+type parityProbe struct {
+	name   string
+	method string
+	params any
+	// result returns a fresh value to decode a success into, nil to ignore it.
+	result func() any
+	// ignoreMessage skips the error message, which names the transport
+	// specific method path.
+	ignoreMessage bool
+}
+
+// runTransportParity checks TRANSPORT-1: the same calls produce the same
+// result or error on stdio and on gRPC.
+func runTransportParity(ctx context.Context, stdio, grpc jsonrpc.Caller, dns01Code string, record recorder) {
+	probes := []parityProbe{}
+	if dns01Code != "" {
+		probes = append(probes,
+			parityProbe{
+				name:   protocol.MethodDNS01Options,
+				method: protocol.MethodDNS01Options,
+				params: protocol.DNS01OptionsParams{Provider: dns01Code, Config: map[string]string{}},
+				result: func() any { return &protocol.DNS01OptionsResult{} },
+			},
+			parityProbe{
+				name:   protocol.MethodDNS01Validate,
+				method: protocol.MethodDNS01Validate,
+				params: protocol.DNS01ValidateParams{Provider: dns01Code, Config: map[string]string{}},
+			},
+		)
+	}
+	probes = append(probes, parityProbe{
+		name:          "unknown method",
+		method:        "nginx-ui.conformance.does-not-exist",
+		ignoreMessage: true,
+	})
+
+	started := time.Now()
+	var names, diffs []string
+	for _, probe := range probes {
+		names = append(names, probe.name)
+		onStdio := parityOutcome(ctx, stdio, probe)
+		onGRPC := parityOutcome(ctx, grpc, probe)
+		if onStdio != onGRPC {
+			diffs = append(diffs, fmt.Sprintf("%s: stdio %s, grpc %s", probe.name, onStdio, onGRPC))
+		}
+	}
+	elapsed := time.Since(started)
+
+	if len(diffs) > 0 {
+		record("TRANSPORT-1", "identical results", StatusFail, elapsed, "%s", strings.Join(diffs, "; "))
+		return
+	}
+	record("TRANSPORT-1", "identical results", StatusPass, elapsed,
+		"%s answer the same on stdio and gRPC", strings.Join(names, ", "))
+}
+
+// parityOutcome runs one probe and renders the result or the error as
+// normalized JSON: a result decoded into its Go type and encoded again, an
+// error as its code, data and, unless ignored, message.
+func parityOutcome(ctx context.Context, caller jsonrpc.Caller, probe parityProbe) string {
+	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+
+	var result any
+	if probe.result != nil {
+		result = probe.result()
+	}
+	err := caller.Call(callCtx, probe.method, probe.params, result)
+	if err == nil {
+		encoded, _ := json.Marshal(result)
+		return "result " + string(encoded)
+	}
+
+	perr, ok := jsonrpc.AsProtocolError(err)
+	if !ok {
+		return "failure " + err.Error()
+	}
+	normalized := map[string]any{"code": perr.Code, "data": perr.Data}
+	if !probe.ignoreMessage {
+		normalized["message"] = perr.Message
+	}
+	encoded, _ := json.Marshal(normalized)
+	return "error " + string(encoded)
 }
 
 // loadPluginForConformance resolves path to a directory and a validated
