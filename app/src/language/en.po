@@ -212,6 +212,7 @@ msgstr ""
 
 #: src/components/CertInfo/CertInfo.vue:32
 #: src/views/certificate/CertificateList/certColumns.tsx:127
+#: src/views/dashboard/components/SiteCard.vue:131
 #: src/views/preference/tabs/AccessTokens.vue:149
 msgid "Expired"
 msgstr ""
@@ -354,7 +355,7 @@ msgstr ""
 #: src/components/InspectConfig/InspectConfig.vue:38 src/constants/index.ts:24
 #: src/views/nginx_log/NginxLogList.vue:210
 #: src/views/nginx_log/NginxLogList.vue:250
-#: src/views/notification/notificationColumns.tsx:14
+#: src/views/notification/notificationColumns.tsx:33
 msgid "Error"
 msgstr ""
 
@@ -391,7 +392,7 @@ msgid "Nginx failed to validate the configuration."
 msgstr ""
 
 #: src/components/InspectConfig/InspectConfig.vue:103 src/lib/http/error.ts:36
-#: src/views/certificate/CertificateEditor.vue:104
+#: src/views/certificate/CertificateEditor.vue:120
 msgid "Server error"
 msgstr ""
 
@@ -413,7 +414,7 @@ msgstr ""
 
 #: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:25
 #: src/views/backup/components/BackupCreator.vue:138
-#: src/views/notification/notificationColumns.tsx:21
+#: src/views/notification/notificationColumns.tsx:40
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
 #: src/views/preference/components/NginxHostSetup/checks.ts:121
 msgid "Warning"
@@ -437,23 +438,23 @@ msgstr ""
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:835
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:864
 #: src/views/dns/DDNSManager.vue:474 src/views/dns/DNSRecordManager.vue:253
 #: src/views/preference/components/AuthSettings/Passkey.vue:132
 #: src/views/preference/Preference.vue:104
 #: src/views/preference/tabs/NginxSettings.vue:318
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:208
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:210
 #: src/views/stream/components/ConfigName.vue:52
 #: src/views/stream/components/StreamEditor.vue:154
 msgid "Save"
 msgstr ""
 
 #: src/components/LLM/ChatMessage.vue:257
-#: src/components/NgxConfigEditor/NgxServer.vue:74
+#: src/components/NgxConfigEditor/NgxServer.vue:76
 #: src/components/NgxConfigEditor/NgxUpstream.vue:43 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:101
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:832
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:861
 #: src/views/dns/DDNSManager.vue:471 src/views/dns/DNSGroupList.vue:241
 #: src/views/dns/DNSGroupList.vue:286
 #: src/views/dns/DNSGroupRecordManager.vue:1532
@@ -493,12 +494,13 @@ msgstr ""
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:81
+#: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteList.vue:267 src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr ""
 
 #: src/components/LLM/ChatMessageInput.vue:62
-#: src/components/NgxConfigEditor/NgxServer.vue:73
+#: src/components/NgxConfigEditor/NgxServer.vue:75
 #: src/components/NgxConfigEditor/NgxUpstream.vue:42
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
@@ -567,9 +569,9 @@ msgstr ""
 
 #: src/components/LLM/LLMSessionTabs.vue:300
 #: src/components/LLM/LLMSessionTabs.vue:402
-#: src/components/NgxConfigEditor/NgxServer.vue:86
+#: src/components/NgxConfigEditor/NgxServer.vue:88
 #: src/components/NgxConfigEditor/NgxUpstream.vue:60 src/language/curd.ts:9
-#: src/views/certificate/components/RemoveCert.vue:112
+#: src/views/certificate/components/RemoveCert.vue:122
 #: src/views/config/components/Delete.vue:67
 #: src/views/config/components/Delete.vue:100
 #: src/views/config/ConfigList.vue:228
@@ -654,8 +656,8 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:65
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:111 src/views/node/nodeColumns.tsx:150
-#: src/views/upstream/SocketList.vue:49
+#: src/views/dashboard/Nodes.vue:111 src/views/node/nodeColumns.tsx:149
+#: src/views/upstream/SocketList.vue:51
 msgid "Online"
 msgstr ""
 
@@ -663,8 +665,8 @@ msgstr ""
 #: src/components/NodeCard/NodeCard.vue:59
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:118 src/views/node/nodeColumns.tsx:154
-#: src/views/upstream/SocketList.vue:49
+#: src/views/dashboard/Nodes.vue:118 src/views/node/nodeColumns.tsx:151
+#: src/views/upstream/SocketList.vue:51
 msgid "Offline"
 msgstr ""
 
@@ -749,17 +751,13 @@ msgstr ""
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:54
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:110
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:60
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/stream/components/StreamEditor.vue:30
 msgid "Saved successfully"
 msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:105
 msgid "Server name is controlled by linked DNS record"
-msgstr ""
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:560
-msgid "Server Name"
 msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:125
@@ -773,7 +771,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:153
 #: src/components/NgxConfigEditor/LocationEditor.vue:142
 #: src/components/NgxConfigEditor/LocationEditor.vue:173
-#: src/components/NgxConfigEditor/NgxServer.vue:143
+#: src/components/NgxConfigEditor/NgxServer.vue:145
 msgid "Comments"
 msgstr ""
 
@@ -800,7 +798,7 @@ msgstr ""
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:127
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:588
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:617
 #: src/views/nginx_log/NginxLogList.vue:165
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:536
 msgid "Path"
@@ -848,8 +846,8 @@ msgstr ""
 
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:31
-#: src/views/dashboard/NginxDashBoard.vue:120
-#: src/views/dashboard/NginxDashBoard.vue:139
+#: src/views/dashboard/NginxDashBoard.vue:216
+#: src/views/dashboard/NginxDashBoard.vue:246
 msgid "Nginx is not running"
 msgstr ""
 
@@ -859,19 +857,19 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: src/components/NgxConfigEditor/NgxServer.vue:70
+#: src/components/NgxConfigEditor/NgxServer.vue:72
 msgid "Do you want to remove this server?"
 msgstr ""
 
-#: src/components/NgxConfigEditor/NgxServer.vue:100
+#: src/components/NgxConfigEditor/NgxServer.vue:102
 msgid "No servers configured"
 msgstr ""
 
-#: src/components/NgxConfigEditor/NgxServer.vue:115
+#: src/components/NgxConfigEditor/NgxServer.vue:117
 msgid "Add Server"
 msgstr ""
 
-#: src/components/NgxConfigEditor/NgxServer.vue:164
+#: src/components/NgxConfigEditor/NgxServer.vue:166
 #: src/components/NgxConfigEditor/NgxUpstream.vue:130 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:55
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:120
@@ -887,16 +885,16 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:114
 #: src/views/backup/AutoBackup/AutoBackup.vue:193
 #: src/views/backup/AutoBackup/AutoBackup.vue:203
-#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:171
-#: src/views/node/nodeColumns.tsx:177
+#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:168
+#: src/views/node/nodeColumns.tsx:174
 #: src/views/preference/components/ExternalNotify/columns.tsx:60
 #: src/views/preference/tabs/HTTPSettings.vue:36
 #: src/views/preference/tabs/LogrotateSettings.vue:16
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:40
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:78
-#: src/views/site/site_list/columns.tsx:143 src/views/stream/columns.tsx:108
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:80
+#: src/views/site/site_list/columns.tsx:149 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:49
 #: src/views/user/userColumns.tsx:36
@@ -941,7 +939,7 @@ msgstr ""
 #: src/views/preference/tabs/AccessTokens.vue:50
 #: src/views/preference/tabs/AccessTokens.vue:266
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
-#: src/views/site/site_list/columns.tsx:30
+#: src/views/site/site_list/columns.tsx:36
 #: src/views/site/site_list/SiteDuplicate.vue:84
 #: src/views/stream/columns.tsx:26
 #: src/views/stream/components/RightPanel/Basic.vue:31
@@ -1334,91 +1332,109 @@ msgid "Save site %{name} to %{node} successfully"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:189
-msgid "Delete Remote Stream Error"
+msgid "Site Health Check Failed"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:190
-msgid "Delete stream %{name} from %{node} failed"
+msgid ""
+"Site %{site} on node %{node} failed its health check for %{failure_count} "
+"consecutive attempts: %{error}"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:193
-msgid "Delete Remote Stream Success"
+msgid "Site Health Check Recovered"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:194
-msgid "Delete stream %{name} from %{node} successfully"
+msgid "Site %{site} on node %{node} recovered. Target: %{target}"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:197
-msgid "Disable Remote Stream Error"
+msgid "Delete Remote Stream Error"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:198
-msgid "Disable stream %{name} from %{node} failed"
+msgid "Delete stream %{name} from %{node} failed"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:201
-msgid "Disable Remote Stream Success"
+msgid "Delete Remote Stream Success"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:202
-msgid "Disable stream %{name} from %{node} successfully"
+msgid "Delete stream %{name} from %{node} successfully"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:205
-msgid "Enable Remote Stream Error"
+msgid "Disable Remote Stream Error"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:206
-msgid "Enable stream %{name} on %{node} failed"
+msgid "Disable stream %{name} from %{node} failed"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:209
-msgid "Enable Remote Stream Success"
+msgid "Disable Remote Stream Success"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:210
-msgid "Enable stream %{name} on %{node} successfully"
+msgid "Disable stream %{name} from %{node} successfully"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:213
-msgid "Rename Remote Stream Error"
+msgid "Enable Remote Stream Error"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:214
-msgid "Rename stream %{name} to %{new_name} on %{node} failed"
+msgid "Enable stream %{name} on %{node} failed"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:217
-msgid "Rename Remote Stream Success"
+msgid "Enable Remote Stream Success"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:218
-msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
+msgid "Enable stream %{name} on %{node} successfully"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:221
-msgid "Save Remote Stream Error"
+msgid "Rename Remote Stream Error"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:222
-msgid "Save stream %{name} to %{node} failed"
+msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:225
-msgid "Save Remote Stream Success"
+msgid "Rename Remote Stream Success"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:226
-msgid "Save stream %{name} to %{node} successfully"
+msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr ""
 
 #: src/components/Notification/notifications.ts:229
+msgid "Save Remote Stream Error"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:230
+msgid "Save stream %{name} to %{node} failed"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:233
+msgid "Save Remote Stream Success"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:234
+msgid "Save stream %{name} to %{node} successfully"
+msgstr ""
+
+#: src/components/Notification/notifications.ts:237
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr ""
 
-#: src/components/Notification/notifications.ts:230
+#: src/components/Notification/notifications.ts:238
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to prevent "
@@ -1449,7 +1465,7 @@ msgstr ""
 #: src/views/node/nodeColumns.tsx:142
 #: src/views/preference/tabs/AccessTokens.vue:54
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
-#: src/views/site/site_list/columns.tsx:126 src/views/stream/columns.tsx:87
+#: src/views/site/site_list/columns.tsx:132 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr ""
 
@@ -1865,7 +1881,7 @@ msgid "N/A"
 msgstr ""
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
-#: src/composables/useUpstreamStatus.ts:146
+#: src/composables/useUpstreamStatus.ts:148
 msgid "Main Node"
 msgstr ""
 
@@ -1882,21 +1898,21 @@ msgid "Synchronization finished with %{count} failures"
 msgstr ""
 
 #: src/composables/useGeoTranslation.ts:165
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:312
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:339
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:134
 msgid "High"
 msgstr ""
 
 #: src/composables/useGeoTranslation.ts:166
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:312
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:339
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:134
 msgid "Low"
 msgstr ""
 
 #: src/composables/useGeoTranslation.ts:167
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:209
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:298
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:323
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:236
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:325
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:350
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:117
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:145
@@ -1906,8 +1922,8 @@ msgstr ""
 
 #: src/composables/useGeoTranslation.ts:168
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:26
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:217
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:299
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:244
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:326
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:25
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
@@ -1917,8 +1933,8 @@ msgid "Percentage"
 msgstr ""
 
 #: src/composables/useGeoTranslation.ts:169
-#: src/views/dashboard/NginxDashBoard.vue:188
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:304
+#: src/views/dashboard/NginxDashBoard.vue:295
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:331
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:126
 msgid "No data"
 msgstr ""
@@ -2021,7 +2037,7 @@ msgstr ""
 msgid "Maximum number of connections per worker process"
 msgstr ""
 
-#: src/composables/useUpstreamStatus.ts:122
+#: src/composables/useUpstreamStatus.ts:124
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/certificate/CertificateList/Certificate.vue:44
 #: src/views/config/components/Delete.vue:125
@@ -2031,18 +2047,18 @@ msgstr ""
 #: src/views/dns/components/DNSRecordTable.vue:45
 #: src/views/dns/DNSGroupRecordManager.vue:126
 #: src/views/nginx_log/NginxLogList.vue:147
-#: src/views/notification/notificationColumns.tsx:8
+#: src/views/notification/notificationColumns.tsx:27
 #: src/views/preference/components/ExternalNotify/columns.tsx:25
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:57
 msgid "Type"
 msgstr ""
 
-#: src/composables/useUpstreamStatus.ts:122 src/routes/modules/upstream.ts:10
-#: src/views/home/Home.vue:80 src/views/upstream/SocketList.vue:25
+#: src/composables/useUpstreamStatus.ts:124 src/routes/modules/upstream.ts:10
+#: src/views/home/Home.vue:80 src/views/upstream/SocketList.vue:27
 msgid "Upstream"
 msgstr ""
 
-#: src/composables/useUpstreamStatus.ts:122
+#: src/composables/useUpstreamStatus.ts:124
 msgid "Proxy Pass"
 msgstr ""
 
@@ -3414,13 +3430,13 @@ msgid ""
 "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr ""
 
-#: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:28
+#: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:47
 msgid "Info"
 msgstr ""
 
 #: src/constants/index.ts:27 src/views/backup/AutoBackup/AutoBackup.vue:224
 #: src/views/backup/AutoBackup/AutoBackup.vue:249
-#: src/views/notification/notificationColumns.tsx:35
+#: src/views/notification/notificationColumns.tsx:54
 msgid "Success"
 msgstr ""
 
@@ -3582,6 +3598,7 @@ msgid "item(s)"
 msgstr ""
 
 #: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:532
+#: src/views/notification/notificationColumns.tsx:101
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:109
 #: src/views/system/Licenses.vue:187
 msgid "View"
@@ -3668,10 +3685,10 @@ msgstr ""
 msgid "Batch Modify"
 msgstr ""
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
+#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:113
 #: src/views/certificate/components/RenewCert.vue:21
 #: src/views/preference/NginxHostSetup.vue:84
-#: src/views/preference/store/index.ts:180
+#: src/views/preference/store/index.ts:181
 #: src/views/preference/tabs/NginxSettings.vue:138
 msgid "Save successfully"
 msgstr ""
@@ -3772,14 +3789,18 @@ msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
 msgstr ""
 
 #: src/language/generate.ts:5
-msgid "Certificate not found: %{error}"
+msgid "Certificate deleted, but revocation failed: %{error}"
 msgstr ""
 
 #: src/language/generate.ts:6
-msgid "Certificate revoked successfully"
+msgid "Certificate not found: %{error}"
 msgstr ""
 
 #: src/language/generate.ts:7
+msgid "Certificate revoked successfully"
+msgstr ""
+
+#: src/language/generate.ts:8
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
 "Docker Image, please make sure the docker socket is mounted like this: `-v /"
@@ -3792,7 +3813,7 @@ msgid ""
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:9
 msgid ""
 "Check if Nginx UI can write a temporary file to the configured Nginx "
 "directory and the external Nginx container can see it at the same path. "
@@ -3801,7 +3822,7 @@ msgid ""
 "matching paths."
 msgstr ""
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:10
 msgid ""
 "Check if the GeoLite2 database is available when log indexing is enabled. "
 "The GeoLite2 database is required for geographic IP analysis in log "
@@ -3809,12 +3830,12 @@ msgid ""
 "GeoLite2-City.mmdb in the same directory as app.ini"
 msgstr ""
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:11
 msgid ""
 "Check if the conf.d directory is under the nginx configuration directory"
 msgstr ""
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:12
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
@@ -3823,7 +3844,7 @@ msgid ""
 "config-nginx.html#pidpath"
 msgstr ""
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:13
 msgid ""
 "Check if the nginx access log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
@@ -3833,15 +3854,15 @@ msgid ""
 "config-nginx.html#accesslogpath"
 msgstr ""
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:14
 msgid "Check if the nginx configuration directory exists"
 msgstr ""
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:15
 msgid "Check if the nginx configuration entry file exists"
 msgstr ""
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:16
 msgid ""
 "Check if the nginx error log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
@@ -3851,110 +3872,110 @@ msgid ""
 "nginx.html#errorlogpath"
 msgstr ""
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:17
 msgid "Check if the nginx sbin path exists"
 msgstr ""
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:18
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr ""
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:19
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr ""
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:20
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr ""
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:21
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
 msgstr ""
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:22
 msgid ""
 "Check if the streams-available and streams-enabled directories are under the "
 "nginx configuration directory"
 msgstr ""
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:23
 msgid "Conf.d directory exists"
 msgstr ""
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:24
 msgid "Docker socket exists"
 msgstr ""
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:25
 msgid "External Nginx configuration directory is shared"
 msgstr ""
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:26
 msgid "Failed to delete certificate from database: %{error}"
 msgstr ""
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:27
 msgid "Failed to revoke certificate: %{error}"
 msgstr ""
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:28
 msgid "GeoLite2 database available"
 msgstr ""
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:29
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
 "nginx-log.html for more information."
 msgstr ""
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:30
 msgid "Nginx PID path exists"
 msgstr ""
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:31
 msgid "Nginx access log path exists"
 msgstr ""
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:32
 msgid "Nginx configuration directory exists"
 msgstr ""
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:33
 msgid "Nginx configuration entry file exists"
 msgstr ""
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:34
 msgid "Nginx error log path exists"
 msgstr ""
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:35
 msgid "Nginx sbin path exists"
 msgstr ""
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:36
 msgid "Nginx.conf includes conf.d directory"
 msgstr ""
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:37
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr ""
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:38
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr ""
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:39
 msgid "Sites directory exists"
 msgstr ""
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:40
 msgid "Streams directory exists"
 msgstr ""
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:41
 msgid ""
 "When the container is behind an outer reverse proxy that terminates TLS "
 "(e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust "
@@ -3963,88 +3984,96 @@ msgid ""
 "unfixed version."
 msgstr ""
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:42
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:43
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr ""
 
-#: src/language/generate.ts:43
-msgid "[Nginx UI] Certificate renewed successfully"
-msgstr ""
-
 #: src/language/generate.ts:44
-msgid "[Nginx UI] Certificate successfully revoked"
+msgid "[Nginx UI] Certificate has already expired, no revocation needed"
 msgstr ""
 
 #: src/language/generate.ts:45
+msgid "[Nginx UI] Certificate renewed successfully"
+msgstr ""
+
+#: src/language/generate.ts:46
+msgid "[Nginx UI] Certificate successfully revoked"
+msgstr ""
+
+#: src/language/generate.ts:47
+msgid "[Nginx UI] Certificate was already revoked by the CA"
+msgstr ""
+
+#: src/language/generate.ts:48
 msgid ""
 "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:49
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr ""
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:50
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr ""
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Finished"
 msgstr ""
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:52
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr ""
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:53
 msgid "[Nginx UI] Obtaining certificate"
 msgstr ""
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:54
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr ""
 
-#: src/language/generate.ts:52
+#: src/language/generate.ts:55
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr ""
 
-#: src/language/generate.ts:53
+#: src/language/generate.ts:56
 msgid "[Nginx UI] Reloading nginx"
 msgstr ""
 
-#: src/language/generate.ts:54
+#: src/language/generate.ts:57
 msgid "[Nginx UI] Revocation completed"
 msgstr ""
 
-#: src/language/generate.ts:55
+#: src/language/generate.ts:58
 msgid "[Nginx UI] Revoking certificate"
 msgstr ""
 
-#: src/language/generate.ts:56
+#: src/language/generate.ts:59
 msgid "[Nginx UI] Revoking old certificate"
 msgstr ""
 
-#: src/language/generate.ts:57
+#: src/language/generate.ts:60
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr ""
 
-#: src/language/generate.ts:58
+#: src/language/generate.ts:61
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr ""
 
-#: src/language/generate.ts:59
+#: src/language/generate.ts:62
 msgid "[Nginx UI] Setting environment variables"
 msgstr ""
 
-#: src/language/generate.ts:60
+#: src/language/generate.ts:63
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr ""
 
-#: src/language/generate.ts:61
+#: src/language/generate.ts:64
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr ""
 
@@ -4107,12 +4136,12 @@ msgid "Certificates List"
 msgstr ""
 
 #: src/routes/modules/certificates.ts:44
-#: src/views/certificate/CertificateEditor.vue:132
+#: src/views/certificate/CertificateEditor.vue:148
 msgid "Modify Certificate"
 msgstr ""
 
 #: src/routes/modules/certificates.ts:54
-#: src/views/certificate/CertificateEditor.vue:132
+#: src/views/certificate/CertificateEditor.vue:148
 #: src/views/certificate/index.vue:17
 msgid "Import Certificate"
 msgstr ""
@@ -4339,15 +4368,15 @@ msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
-#: src/views/dashboard/components/SiteCard.vue:162
-#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:159
-#: src/views/node/nodeColumns.tsx:180
+#: src/views/dashboard/components/SiteCard.vue:189
+#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:154
+#: src/views/node/nodeColumns.tsx:177
 #: src/views/preference/tabs/HTTPSettings.vue:36
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:44
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:84
-#: src/views/site/site_list/columns.tsx:147 src/views/stream/columns.tsx:112
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:86
+#: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:55
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -4377,7 +4406,7 @@ msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:258
 #: src/views/namespace/columns.ts:110
-#: src/views/notification/notificationColumns.tsx:51
+#: src/views/notification/notificationColumns.tsx:70
 #: src/views/preference/components/AuthSettings/Passkey.vue:97
 #: src/views/preference/components/ExternalNotify/columns.tsx:93
 #: src/views/user/userColumns.tsx:46
@@ -4389,9 +4418,9 @@ msgstr ""
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:255 src/views/dns/DNSGroupList.vue:34
-#: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:191
+#: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:188
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:47
-#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:80
+#: src/views/site/site_list/columns.tsx:125 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -4433,11 +4462,11 @@ msgstr ""
 #: src/views/dns/DNSGroupRecordManager.vue:146
 #: src/views/dns/DNSGroupRecordManager.vue:1363
 #: src/views/namespace/columns.ts:122 src/views/nginx_log/NginxLogList.vue:339
-#: src/views/node/nodeColumns.tsx:198
-#: src/views/notification/notificationColumns.tsx:72
+#: src/views/node/nodeColumns.tsx:195
+#: src/views/notification/notificationColumns.tsx:106
 #: src/views/preference/components/ExternalNotify/columns.tsx:98
 #: src/views/preference/components/ExternalNotify/labels.ts:7
-#: src/views/site/site_list/columns.tsx:161 src/views/stream/columns.tsx:123
+#: src/views/site/site_list/columns.tsx:167 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr ""
@@ -4749,23 +4778,23 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:71
+#: src/views/certificate/CertificateEditor.vue:87
 #: src/views/certificate/components/DNSIssueCertificate.vue:140
 #: src/views/certificate/components/SelfSignedCertForm.vue:47
 msgid "Please enter a name for the certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:75
+#: src/views/certificate/CertificateEditor.vue:91
 #: src/views/certificate/components/DNSIssueCertificate.vue:144
 #: src/views/certificate/components/SelfSignedCertForm.vue:51
 msgid "Please enter at least one domain or IP address"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:94
+#: src/views/certificate/CertificateEditor.vue:110
 msgid "Saved certificate response is missing an ID"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:197
 msgid "Log"
 msgstr ""
 
@@ -4906,7 +4935,7 @@ msgstr[1] ""
 #: src/views/preference/NginxHostSetup.vue:129
 #: src/views/preference/NginxHostSetup.vue:147
 #: src/views/site/site_add/SiteAdd.vue:325
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:201
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:203
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
 msgstr ""
@@ -5140,53 +5169,57 @@ msgstr ""
 msgid "Retry"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:38
-#: src/views/certificate/components/RemoveCert.vue:120
+#: src/views/certificate/components/RemoveCert.vue:46
+#: src/views/certificate/components/RemoveCert.vue:130
 msgid "Revoke"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:39
+#: src/views/certificate/components/RemoveCert.vue:47
 msgid "Please type \"Revoke\" to confirm"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:64
-#: src/views/certificate/components/RemoveCert.vue:84
+#: src/views/certificate/components/RemoveCert.vue:73
+#: src/views/certificate/components/RemoveCert.vue:95
 msgid "Certificate removed successfully"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:71
+#: src/views/certificate/components/RemoveCert.vue:82
 msgid "Failed to revoke certificate"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:77
+#: src/views/certificate/components/RemoveCert.vue:88
 msgid "WebSocket connection error"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:89
+#: src/views/certificate/components/RemoveCert.vue:98
 msgid "Failed to delete certificate"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:117
+#: src/views/certificate/components/RemoveCert.vue:127
 msgid "Delete Certificate"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:128
+#: src/views/certificate/components/RemoveCert.vue:138
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:134
+#: src/views/certificate/components/RemoveCert.vue:144
 msgid "Revoke this certificate"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:142
+#: src/views/certificate/components/RemoveCert.vue:148
+msgid "Delete the certificate even if revocation fails"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:157
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:146
+#: src/views/certificate/components/RemoveCert.vue:161
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr ""
 
@@ -5276,7 +5309,7 @@ msgid "Format successfully"
 msgstr ""
 
 #: src/views/config/components/ConfigLeftPanel.vue:255
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:103
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:105
 #: src/views/stream/components/StreamEditor.vue:68
 msgid "History"
 msgstr ""
@@ -5918,32 +5951,36 @@ msgid ""
 "processes"
 msgstr ""
 
-#: src/views/dashboard/components/SiteCard.vue:93
+#: src/views/dashboard/components/SiteCard.vue:94
 msgid "TLS certificate not trusted"
 msgstr ""
 
-#: src/views/dashboard/components/SiteCard.vue:95
+#: src/views/dashboard/components/SiteCard.vue:96
 msgid "Hostname could not be resolved"
 msgstr ""
 
-#: src/views/dashboard/components/SiteCard.vue:97
+#: src/views/dashboard/components/SiteCard.vue:98
 msgid "Connection refused"
 msgstr ""
 
-#: src/views/dashboard/components/SiteCard.vue:99
+#: src/views/dashboard/components/SiteCard.vue:100
 msgid "Connection timed out"
 msgstr ""
 
-#: src/views/dashboard/components/SiteCard.vue:101
+#: src/views/dashboard/components/SiteCard.vue:102
 msgid "Network unreachable"
 msgstr ""
 
-#: src/views/dashboard/components/SiteCard.vue:103
+#: src/views/dashboard/components/SiteCard.vue:104
 msgid "Invalid health check request"
 msgstr ""
 
-#: src/views/dashboard/components/SiteCard.vue:170
-#: src/views/upstream/SocketList.vue:42
+#: src/views/dashboard/components/SiteCard.vue:133
+msgid "%{days}d"
+msgstr ""
+
+#: src/views/dashboard/components/SiteCard.vue:197
+#: src/views/upstream/SocketList.vue:44
 msgid "Paused"
 msgstr ""
 
@@ -5967,217 +6004,222 @@ msgstr ""
 msgid "Server Error Responses (5xx)"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:464
-msgid "Health check configuration saved successfully"
-msgstr ""
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:467
-msgid "Saved locally, but failed to synchronize %{count} node(s)"
-msgstr ""
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
-msgid "Failed to save health check configuration"
-msgstr ""
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:514
-msgid "Test successful! Response time: %{response_time}ms"
-msgstr ""
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
-msgid "Test failed: %{error}"
-msgstr ""
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:522
-msgid "Test failed: Unable to perform health check"
-msgstr ""
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:532
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:414
 msgid "Health Check Configuration"
 msgstr ""
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:486
+msgid "Health check configuration saved successfully"
+msgstr ""
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:489
+msgid "Saved locally, but failed to synchronize %{count} node(s)"
+msgstr ""
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:499
+msgid "Failed to save health check configuration"
+msgstr ""
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:536
+msgid "Test successful! Response time: %{response_time}ms"
+msgstr ""
+
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:539
+msgid "Test failed: %{error}"
+msgstr ""
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:544
+msgid "Test failed: Unable to perform health check"
+msgstr ""
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:560
+msgid "Server Name"
+msgstr ""
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:568
 msgid "Enable Health Check"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:543
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:572
 msgid "Health check is enabled"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:543
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:572
 msgid "Health check is disabled"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:551
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:580
 msgid "Protocol"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:569
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:598
 msgid "Custom Health Check Target"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:570
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
 "Optional absolute URL. Use it when the public address differs from the "
 "actual upstream host or port."
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:583
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:612
 msgid "HTTP Method"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:594
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:623
 msgid "Custom Headers"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:609
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:638
 msgid "Add Header"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:614
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
 msgid "Request Body"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:618
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:647
 msgid "Expected Status Codes"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:659
 msgid "Expected Text"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:635
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Not Expected Text"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:647
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:676
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:648
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:677
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:651
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:680
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:656
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:685
 msgid "Service Name"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:661
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:690
 msgid "Method Name"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:669
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:698
 msgid "Advanced Settings"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:673
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:702
 msgid "Check Interval (seconds)"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:707
 msgid "Timeout (seconds)"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:684
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:691
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:720
 msgid "Max Redirects"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:698
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:727
 msgid "Follow Redirects"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:706
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:735
 msgid "Validate SSL Certificate"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:712
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:741
 msgid "Verify Hostname"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:718
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:747
 msgid "Check Favicon"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:726
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:755
 msgid "DNS Resolver"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:731
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:760
 msgid "Source IP"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:740
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:769
 msgid "Client Certificate"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:745
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:774
 msgid "Client Key"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:756
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:785
 msgid "Failure Notifications"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:760
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:789
 msgid "Notifications are enabled"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:760
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:789
 msgid "Notifications are disabled"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:766
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:795
 msgid "Failure Status Codes"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:772
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:801
 msgid "Select status codes"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:779
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:808
 msgid "Notify on connection, DNS, and timeout errors"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:785
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:814
 msgid "Consecutive Failures"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:796
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:825
 msgid "Reminder Cooldown (seconds)"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:810
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:839
 msgid "Notify when the site recovers"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:814
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:843
 msgid "Notification Channels"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:820
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:849
 msgid "Select notification channels"
 msgstr ""
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:838
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:867
 #: src/views/preference/tabs/ExternalNotify.vue:111
 msgid "Test"
 msgstr ""
 
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:36
+#: src/views/dashboard/NginxDashBoard.vue:236
 msgid "Disconnected"
 msgstr ""
 
@@ -6201,55 +6243,55 @@ msgstr ""
 msgid "Navigate configured sites and monitor availability and health checks."
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:56
+#: src/views/dashboard/NginxDashBoard.vue:162
 msgid "Toggle failed"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:86
-msgid "Connection error, trying to reconnect..."
-msgstr ""
-
-#: src/views/dashboard/NginxDashBoard.vue:120
+#: src/views/dashboard/NginxDashBoard.vue:216
 msgid "Nginx is running"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:124
+#: src/views/dashboard/NginxDashBoard.vue:221
 msgid "Last update"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:140
+#: src/views/dashboard/NginxDashBoard.vue:237
+msgid "Connection error, trying to reconnect..."
+msgstr ""
+
+#: src/views/dashboard/NginxDashBoard.vue:247
 msgid "Cannot get performance data in this state"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:149
+#: src/views/dashboard/NginxDashBoard.vue:256
 msgid "Get data failed"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:158
+#: src/views/dashboard/NginxDashBoard.vue:265
 msgid "Enable stub_status module"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:161
+#: src/views/dashboard/NginxDashBoard.vue:268
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:181
+#: src/views/dashboard/NginxDashBoard.vue:288
 msgid "Need to enable the stub_status module"
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:182
+#: src/views/dashboard/NginxDashBoard.vue:289
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:186
+#: src/views/dashboard/NginxDashBoard.vue:293
 msgid "Loading data..."
 msgstr ""
 
-#: src/views/dashboard/NginxDashBoard.vue:193
+#: src/views/dashboard/NginxDashBoard.vue:300
 msgid "Performance Metrics"
 msgstr ""
 
@@ -6847,7 +6889,7 @@ msgstr ""
 
 #: src/views/dns/DNSGroupRecordManager.vue:165
 #: src/views/dns/DNSGroupRecordManager.vue:186
-#: src/views/notification/notificationColumns.tsx:66
+#: src/views/notification/notificationColumns.tsx:85
 msgid "Details"
 msgstr ""
 
@@ -7467,7 +7509,7 @@ msgid ""
 msgstr ""
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:179
-#: src/views/preference/tabs/GeoLiteSettings.vue:36
+#: src/views/preference/tabs/GeoLiteSettings.vue:39
 msgid "GeoLite2 Database"
 msgstr ""
 
@@ -7596,45 +7638,45 @@ msgstr ""
 msgid "Browser Statistics"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:96
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:124
 msgid "Failed to load China map data"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:148
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:175
 msgid "Failed to load city map data"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:184
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:211
 msgid "Province / Region"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:187
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:214
 msgid "City / C1 / C2 / C3 / C4"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:188
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:215
 msgid "City"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:193
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:220
 msgid "Top 10 Provinces / Regions"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:196
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:223
 msgid "Top 10 City Labels (City + C1 + C2 + C3 + C4)"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:197
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:224
 msgid "Top 10 Cities"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:387
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:50
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:414
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:53
 msgid "China Access Map"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:403
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:441
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:430
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:468
 msgid "No China geographic data available"
 msgstr ""
 
@@ -7697,15 +7739,15 @@ msgstr ""
 msgid "Device Statistics"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:34
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:37
 msgid "Global Map"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:37
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:40
 msgid "China Map"
 msgstr ""
 
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:50
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:53
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:258
 msgid "Global Access Map"
 msgstr ""
@@ -8502,8 +8544,12 @@ msgstr ""
 msgid "Notification"
 msgstr ""
 
-#: src/views/notification/notificationColumns.tsx:58
+#: src/views/notification/notificationColumns.tsx:77
 msgid "Title"
+msgstr ""
+
+#: src/views/notification/notificationColumns.tsx:91
+msgid "Go To"
 msgstr ""
 
 #: src/views/other/Error.vue:8
@@ -8815,28 +8861,80 @@ msgstr ""
 msgid "Failed to update status"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:116
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
 msgid "Invalid JSON at line"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:116
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
 msgid "column"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:160
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:212
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:245
+msgid "Notification title text"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:216
+msgid "Notification content text"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:220
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:253
+msgid "Notification type code, such as error, warning, info, or success"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:224
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:261
+msgid "Localized notification type label for the current language"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:228
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:265
+msgid "Translation key of the notification type, such as Error or Warning"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:232
+msgid ""
+"Teams notification level color enum: Error=Attention, Warning=Warning, "
+"Info=Accent, Success=Good"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:236
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:269
+msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:249
+msgid "Notification content text (HTML-escaped in the default template)"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:257
+msgid "Email notification level color, fixed to #1f2937"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:279
 msgid "Please select a notification type"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:176
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:295
 #: src/views/preference/tabs/ExternalNotify.vue:37
 msgid "Test message sent successfully"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:207
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:326
 msgid "Microsoft Docs"
 msgstr ""
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:247
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:335
+msgid "Teams Request Example"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:355
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:379
+msgid "Available placeholders"
+msgstr ""
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:400
 msgid "Send test message"
 msgstr ""
 
@@ -10145,7 +10243,7 @@ msgstr ""
 msgid "External Notify"
 msgstr ""
 
-#: src/views/preference/Preference.vue:61 src/views/upstream/SocketList.vue:64
+#: src/views/preference/Preference.vue:61 src/views/upstream/SocketList.vue:66
 msgid "Health Check"
 msgstr ""
 
@@ -10435,18 +10533,38 @@ msgstr ""
 msgid "Failed to send test message"
 msgstr ""
 
-#: src/views/preference/tabs/GeoLiteSettings.vue:27
+#: src/views/preference/tabs/GeoLiteSettings.vue:30
 msgid "Custom MMDB is currently enabled"
 msgstr ""
 
-#: src/views/preference/tabs/GeoLiteSettings.vue:31
+#: src/views/preference/tabs/GeoLiteSettings.vue:34
 msgid "IndexCustomMMDB File Name"
 msgstr ""
 
-#: src/views/preference/tabs/GeoLiteSettings.vue:38
+#: src/views/preference/tabs/GeoLiteSettings.vue:41
 msgid ""
 "The GeoLite2 database provides geographic information for IP addresses. This "
 "is used for offline geographic analysis in log analytics."
+msgstr ""
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:46
+msgid "Map Boundary Directory"
+msgstr ""
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:51
+msgid ""
+"Configured from [nginx_log].GeoMapPath. Keep files with names like "
+"100000_full.json in this directory."
+msgstr ""
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:55
+msgid ""
+"Only the world map is provided by default. Please download China and "
+"province boundary files yourself and place them in this directory."
+msgstr ""
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:64
+msgid "Template reference"
 msgstr ""
 
 #: src/views/preference/tabs/HealthCheckSettings.vue:14
@@ -10474,7 +10592,7 @@ msgid "Seconds"
 msgstr ""
 
 #: src/views/preference/tabs/HealthCheckSettings.vue:37
-#: src/views/site/site_list/columns.tsx:84 src/views/stream/columns.tsx:46
+#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:46
 msgid "Proxy Targets"
 msgstr ""
 
@@ -10965,8 +11083,8 @@ msgstr ""
 
 #: src/views/site/components/SiteStatusSelect.vue:48
 #: src/views/site/components/SiteStatusSelect.vue:181
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:90
-#: src/views/site/site_list/columns.tsx:151
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:92
+#: src/views/site/site_list/columns.tsx:157
 #: src/views/site/site_list/SiteList.vue:158
 #: src/views/site/site_list/SiteList.vue:325
 msgid "Maintenance"
@@ -11173,7 +11291,7 @@ msgstr ""
 
 #: src/views/site/site_add/SiteAdd.vue:217
 #: src/views/site/site_edit/components/QuickSetupModal.vue:76
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:112
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:114
 msgid "Quick Setup"
 msgstr ""
 
@@ -11357,7 +11475,7 @@ msgid "Generate Config"
 msgstr ""
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:50
-#: src/views/site/site_list/columns.tsx:97 src/views/stream/columns.tsx:58
+#: src/views/site/site_list/columns.tsx:103 src/views/stream/columns.tsx:58
 #: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Namespace"
 msgstr ""
@@ -11445,22 +11563,22 @@ msgstr ""
 msgid "Port Scanner"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:73
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
 #: src/views/stream/components/StreamEditor.vue:44
 msgid "Edit %{n}"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:125
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:127
 #: src/views/stream/components/StreamEditor.vue:80
 msgid "Advance Mode"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:128
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:130
 #: src/views/stream/components/StreamEditor.vue:83
 msgid "Basic Mode"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:153
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:155
 #: src/views/stream/components/StreamEditor.vue:105
 msgid "Nginx Configuration Parse Error"
 msgstr ""
@@ -11695,47 +11813,47 @@ msgstr ""
 msgid "Connection lost for this terminal. Please refresh if needed."
 msgstr ""
 
-#: src/views/terminal/Terminal.vue:249
+#: src/views/terminal/Terminal.vue:298
 msgid ""
 "This is a simulated terminal running entirely in your browser. Commands are "
 "answered locally and never reach a server."
 msgstr ""
 
-#: src/views/terminal/Terminal.vue:256
+#: src/views/terminal/Terminal.vue:305
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a non-"
 "localhost domain. This may expose sensitive information."
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:19
+#: src/views/upstream/SocketList.vue:21
 msgid "Socket"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:31
+#: src/views/upstream/SocketList.vue:33
 msgid "Direct"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:37
+#: src/views/upstream/SocketList.vue:39
 msgid "Health Status"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:45
+#: src/views/upstream/SocketList.vue:47
 msgid "No Data"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:55
+#: src/views/upstream/SocketList.vue:57
 msgid "Last Check"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:138
+#: src/views/upstream/SocketList.vue:132
 msgid "Upstream Sockets"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:153
+#: src/views/upstream/SocketList.vue:147
 msgid "Upstream health checks are globally paused"
 msgstr ""
 
-#: src/views/upstream/SocketList.vue:154
+#: src/views/upstream/SocketList.vue:148
 msgid ""
 "Per-target selections are preserved. Resume probes from Health Check "
 "preferences."
@@ -11791,65 +11909,3 @@ msgstr ""
 #~ msgstr ""
 #~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent "
 #~ "Cloud DNS, and Cloudflare only."
-
-#: src/language/generate.ts:5
-msgid "Certificate deleted, but revocation failed: %{error}"
-msgstr ""
-
-#: src/views/certificate/components/RemoveCert.vue:148
-msgid "Delete the certificate even if revocation fails"
-msgstr ""
-
-#: src/views/notification/notificationColumns.tsx:91
-msgid "Go To"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:212
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:245
-msgid "Notification title text"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:216
-msgid "Notification content text"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:220
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:253
-msgid "Notification type code, such as error, warning, info, or success"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:224
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:261
-msgid "Localized notification type label for the current language"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:228
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:265
-msgid "Translation key of the notification type, such as Error or Warning"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:232
-msgid "Teams notification level color enum: Error=Attention, Warning=Warning, Info=Accent, Success=Good"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:236
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:269
-msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:249
-msgid "Notification content text (HTML-escaped in the default template)"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:257
-msgid "Email notification level color, fixed to #1f2937"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:335
-msgid "Teams Request Example"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:355
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:379
-msgid "Available placeholders"
-msgstr ""

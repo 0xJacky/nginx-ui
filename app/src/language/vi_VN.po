@@ -224,6 +224,7 @@ msgstr "Hợp lệ"
 
 #: src/components/CertInfo/CertInfo.vue:32
 #: src/views/certificate/CertificateList/certColumns.tsx:127
+#: src/views/dashboard/components/SiteCard.vue:131
 #: src/views/preference/tabs/AccessTokens.vue:149
 msgid "Expired"
 msgstr "Đã hết hạn"
@@ -372,7 +373,7 @@ msgstr "Xác thực sandbox thất bại"
 #: src/components/InspectConfig/InspectConfig.vue:38 src/constants/index.ts:24
 #: src/views/nginx_log/NginxLogList.vue:210
 #: src/views/nginx_log/NginxLogList.vue:250
-#: src/views/notification/notificationColumns.tsx:14
+#: src/views/notification/notificationColumns.tsx:33
 msgid "Error"
 msgstr "Lỗi"
 
@@ -413,7 +414,7 @@ msgid "Nginx failed to validate the configuration."
 msgstr "Nginx không thể xác thực cấu hình."
 
 #: src/components/InspectConfig/InspectConfig.vue:103 src/lib/http/error.ts:36
-#: src/views/certificate/CertificateEditor.vue:104
+#: src/views/certificate/CertificateEditor.vue:120
 msgid "Server error"
 msgstr "Lỗi máy chủ"
 
@@ -435,7 +436,7 @@ msgstr "Tệp cấu hình được kiểm tra thành công"
 
 #: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:25
 #: src/views/backup/components/BackupCreator.vue:138
-#: src/views/notification/notificationColumns.tsx:21
+#: src/views/notification/notificationColumns.tsx:40
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
 #: src/views/preference/components/NginxHostSetup/checks.ts:121
 msgid "Warning"
@@ -459,23 +460,23 @@ msgstr "Sửa đổi"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:835
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:864
 #: src/views/dns/DDNSManager.vue:474 src/views/dns/DNSRecordManager.vue:253
 #: src/views/preference/components/AuthSettings/Passkey.vue:132
 #: src/views/preference/Preference.vue:104
 #: src/views/preference/tabs/NginxSettings.vue:318
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:208
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:210
 #: src/views/stream/components/ConfigName.vue:52
 #: src/views/stream/components/StreamEditor.vue:154
 msgid "Save"
 msgstr "Lưu"
 
 #: src/components/LLM/ChatMessage.vue:257
-#: src/components/NgxConfigEditor/NgxServer.vue:74
+#: src/components/NgxConfigEditor/NgxServer.vue:76
 #: src/components/NgxConfigEditor/NgxUpstream.vue:43 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:101
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:832
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:861
 #: src/views/dns/DDNSManager.vue:471 src/views/dns/DNSGroupList.vue:241
 #: src/views/dns/DNSGroupList.vue:286
 #: src/views/dns/DNSGroupRecordManager.vue:1532
@@ -515,12 +516,13 @@ msgstr "Tải lại"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:81
+#: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteList.vue:267 src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr "Không"
 
 #: src/components/LLM/ChatMessageInput.vue:62
-#: src/components/NgxConfigEditor/NgxServer.vue:73
+#: src/components/NgxConfigEditor/NgxServer.vue:75
 #: src/components/NgxConfigEditor/NgxUpstream.vue:42
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
@@ -589,9 +591,9 @@ msgstr "Nhân bản"
 
 #: src/components/LLM/LLMSessionTabs.vue:300
 #: src/components/LLM/LLMSessionTabs.vue:402
-#: src/components/NgxConfigEditor/NgxServer.vue:86
+#: src/components/NgxConfigEditor/NgxServer.vue:88
 #: src/components/NgxConfigEditor/NgxUpstream.vue:60 src/language/curd.ts:9
-#: src/views/certificate/components/RemoveCert.vue:112
+#: src/views/certificate/components/RemoveCert.vue:122
 #: src/views/config/components/Delete.vue:67
 #: src/views/config/components/Delete.vue:100
 #: src/views/config/ConfigList.vue:228
@@ -676,8 +678,8 @@ msgstr "Khởi động lại Nginx"
 #: src/components/NodeSelector/NodeSelector.vue:65
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:111 src/views/node/nodeColumns.tsx:150
-#: src/views/upstream/SocketList.vue:49
+#: src/views/dashboard/Nodes.vue:111 src/views/node/nodeColumns.tsx:149
+#: src/views/upstream/SocketList.vue:51
 msgid "Online"
 msgstr "Trực tuyến"
 
@@ -685,8 +687,8 @@ msgstr "Trực tuyến"
 #: src/components/NodeCard/NodeCard.vue:59
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:118 src/views/node/nodeColumns.tsx:154
-#: src/views/upstream/SocketList.vue:49
+#: src/views/dashboard/Nodes.vue:118 src/views/node/nodeColumns.tsx:151
+#: src/views/upstream/SocketList.vue:51
 msgid "Offline"
 msgstr "Ngoại tuyến"
 
@@ -771,7 +773,7 @@ msgstr "Directives"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:54
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:110
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:60
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/stream/components/StreamEditor.vue:30
 msgid "Saved successfully"
 msgstr "Lưu thành công"
@@ -793,7 +795,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:153
 #: src/components/NgxConfigEditor/LocationEditor.vue:142
 #: src/components/NgxConfigEditor/LocationEditor.vue:173
-#: src/components/NgxConfigEditor/NgxServer.vue:143
+#: src/components/NgxConfigEditor/NgxServer.vue:145
 msgid "Comments"
 msgstr "Bình luận"
 
@@ -820,7 +822,7 @@ msgstr "Location"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:127
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:588
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:617
 #: src/views/nginx_log/NginxLogList.vue:165
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:536
 msgid "Path"
@@ -870,8 +872,8 @@ msgstr "Phân tích lưu lượng truy cập"
 
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:31
-#: src/views/dashboard/NginxDashBoard.vue:120
-#: src/views/dashboard/NginxDashBoard.vue:139
+#: src/views/dashboard/NginxDashBoard.vue:216
+#: src/views/dashboard/NginxDashBoard.vue:246
 msgid "Nginx is not running"
 msgstr "Nginx không đang chạy"
 
@@ -881,19 +883,19 @@ msgstr "Nginx không đang chạy"
 msgid "Custom"
 msgstr "Tuỳ chỉnh"
 
-#: src/components/NgxConfigEditor/NgxServer.vue:70
+#: src/components/NgxConfigEditor/NgxServer.vue:72
 msgid "Do you want to remove this server?"
 msgstr "Bạn có muốn xóa máy chủ này không?"
 
-#: src/components/NgxConfigEditor/NgxServer.vue:100
+#: src/components/NgxConfigEditor/NgxServer.vue:102
 msgid "No servers configured"
 msgstr "Không có máy chủ nào được cấu hình"
 
-#: src/components/NgxConfigEditor/NgxServer.vue:115
+#: src/components/NgxConfigEditor/NgxServer.vue:117
 msgid "Add Server"
 msgstr "Thêm máy chủ"
 
-#: src/components/NgxConfigEditor/NgxServer.vue:164
+#: src/components/NgxConfigEditor/NgxServer.vue:166
 #: src/components/NgxConfigEditor/NgxUpstream.vue:130 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:55
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:120
@@ -909,16 +911,16 @@ msgstr "Bạn có muốn xóa upstream này không?"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:114
 #: src/views/backup/AutoBackup/AutoBackup.vue:193
 #: src/views/backup/AutoBackup/AutoBackup.vue:203
-#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:171
-#: src/views/node/nodeColumns.tsx:177
+#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:168
+#: src/views/node/nodeColumns.tsx:174
 #: src/views/preference/components/ExternalNotify/columns.tsx:60
 #: src/views/preference/tabs/HTTPSettings.vue:36
 #: src/views/preference/tabs/LogrotateSettings.vue:16
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:40
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:78
-#: src/views/site/site_list/columns.tsx:143 src/views/stream/columns.tsx:108
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:80
+#: src/views/site/site_list/columns.tsx:149 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:49
 #: src/views/user/userColumns.tsx:36
@@ -963,7 +965,7 @@ msgstr "Tên Upstream"
 #: src/views/preference/tabs/AccessTokens.vue:50
 #: src/views/preference/tabs/AccessTokens.vue:266
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
-#: src/views/site/site_list/columns.tsx:30
+#: src/views/site/site_list/columns.tsx:36
 #: src/views/site/site_list/SiteDuplicate.vue:84
 #: src/views/stream/columns.tsx:26
 #: src/views/stream/components/RightPanel/Basic.vue:31
@@ -1363,91 +1365,111 @@ msgid "Save site %{name} to %{node} successfully"
 msgstr "Đã lưu trang %{name} vào %{node} thành công"
 
 #: src/components/Notification/notifications.ts:189
+msgid "Site Health Check Failed"
+msgstr "Kiểm tra sức khỏe trang web thất bại"
+
+#: src/components/Notification/notifications.ts:190
+msgid ""
+"Site %{site} on node %{node} failed its health check for %{failure_count} "
+"consecutive attempts: %{error}"
+msgstr ""
+"Trang %{site} trên nút %{node} đã không vượt qua kiểm tra sức khỏe trong "
+"%{failure_count} lần liên tiếp: %{error}"
+
+#: src/components/Notification/notifications.ts:193
+msgid "Site Health Check Recovered"
+msgstr "Kiểm tra sức khỏe trang web đã khôi phục"
+
+#: src/components/Notification/notifications.ts:194
+msgid "Site %{site} on node %{node} recovered. Target: %{target}"
+msgstr "Trang %{site} trên nút %{node} đã được khôi phục. Mục tiêu: %{target}"
+
+#: src/components/Notification/notifications.ts:197
 msgid "Delete Remote Stream Error"
 msgstr "Lỗi xóa luồng từ xa"
 
-#: src/components/Notification/notifications.ts:190
+#: src/components/Notification/notifications.ts:198
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "Xóa luồng %{name} từ %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:193
+#: src/components/Notification/notifications.ts:201
 msgid "Delete Remote Stream Success"
 msgstr "Xóa luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:194
+#: src/components/Notification/notifications.ts:202
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "Đã xóa luồng %{name} từ %{node} thành công"
 
-#: src/components/Notification/notifications.ts:197
+#: src/components/Notification/notifications.ts:205
 msgid "Disable Remote Stream Error"
 msgstr "Lỗi tắt luồng từ xa"
 
-#: src/components/Notification/notifications.ts:198
+#: src/components/Notification/notifications.ts:206
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "Không thể tắt luồng %{name} từ %{node}"
 
-#: src/components/Notification/notifications.ts:201
+#: src/components/Notification/notifications.ts:209
 msgid "Disable Remote Stream Success"
 msgstr "Vô hiệu hóa luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:202
+#: src/components/Notification/notifications.ts:210
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "Đã vô hiệu hóa luồng %{name} từ %{node} thành công"
 
-#: src/components/Notification/notifications.ts:205
+#: src/components/Notification/notifications.ts:213
 msgid "Enable Remote Stream Error"
 msgstr "Lỗi bật luồng từ xa"
 
-#: src/components/Notification/notifications.ts:206
+#: src/components/Notification/notifications.ts:214
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "Không thể bật luồng %{name} trên %{node}"
 
-#: src/components/Notification/notifications.ts:209
+#: src/components/Notification/notifications.ts:217
 msgid "Enable Remote Stream Success"
 msgstr "Bật luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:210
+#: src/components/Notification/notifications.ts:218
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "Đã bật luồng %{name} trên %{node} thành công"
 
-#: src/components/Notification/notifications.ts:213
+#: src/components/Notification/notifications.ts:221
 msgid "Rename Remote Stream Error"
 msgstr "Lỗi đổi tên luồng từ xa"
 
-#: src/components/Notification/notifications.ts:214
+#: src/components/Notification/notifications.ts:222
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "Đổi tên luồng %{name} thành %{new_name} trên %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:217
+#: src/components/Notification/notifications.ts:225
 msgid "Rename Remote Stream Success"
 msgstr "Đổi tên luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:218
+#: src/components/Notification/notifications.ts:226
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "Đổi tên luồng %{name} thành %{new_name} trên %{node} thành công"
 
-#: src/components/Notification/notifications.ts:221
+#: src/components/Notification/notifications.ts:229
 msgid "Save Remote Stream Error"
 msgstr "Lỗi lưu luồng từ xa"
 
-#: src/components/Notification/notifications.ts:222
+#: src/components/Notification/notifications.ts:230
 msgid "Save stream %{name} to %{node} failed"
 msgstr "Lưu luồng %{name} vào %{node} thất bại"
 
-#: src/components/Notification/notifications.ts:225
+#: src/components/Notification/notifications.ts:233
 msgid "Save Remote Stream Success"
 msgstr "Lưu luồng từ xa thành công"
 
-#: src/components/Notification/notifications.ts:226
+#: src/components/Notification/notifications.ts:234
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "Đã lưu luồng %{name} vào %{node} thành công"
 
-#: src/components/Notification/notifications.ts:229
+#: src/components/Notification/notifications.ts:237
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "Tất cả mã khôi phục đã được sử dụng"
 
-#: src/components/Notification/notifications.ts:230
+#: src/components/Notification/notifications.ts:238
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -1480,7 +1502,7 @@ msgstr "Cổng"
 #: src/views/node/nodeColumns.tsx:142
 #: src/views/preference/tabs/AccessTokens.vue:54
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
-#: src/views/site/site_list/columns.tsx:126 src/views/stream/columns.tsx:87
+#: src/views/site/site_list/columns.tsx:132 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr "Trạng thái"
 
@@ -1923,7 +1945,7 @@ msgid "N/A"
 msgstr "Không có"
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
-#: src/composables/useUpstreamStatus.ts:146
+#: src/composables/useUpstreamStatus.ts:148
 msgid "Main Node"
 msgstr "Nút chính"
 
@@ -1940,21 +1962,21 @@ msgid "Synchronization finished with %{count} failures"
 msgstr "Đồng bộ hoàn tất với %{count} lỗi"
 
 #: src/composables/useGeoTranslation.ts:165
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:312
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:339
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:134
 msgid "High"
 msgstr "Cao"
 
 #: src/composables/useGeoTranslation.ts:166
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:312
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:339
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:134
 msgid "Low"
 msgstr "Thấp"
 
 #: src/composables/useGeoTranslation.ts:167
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:209
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:298
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:323
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:236
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:325
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:350
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:117
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:145
@@ -1964,8 +1986,8 @@ msgstr "Lượt truy cập"
 
 #: src/composables/useGeoTranslation.ts:168
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:26
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:217
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:299
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:244
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:326
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:25
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
@@ -1975,8 +1997,8 @@ msgid "Percentage"
 msgstr "Phần trăm"
 
 #: src/composables/useGeoTranslation.ts:169
-#: src/views/dashboard/NginxDashBoard.vue:188
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:304
+#: src/views/dashboard/NginxDashBoard.vue:295
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:331
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:126
 msgid "No data"
 msgstr "Không có dữ liệu"
@@ -2079,7 +2101,7 @@ msgstr "Mức sử dụng bộ nhớ Nginx"
 msgid "Maximum number of connections per worker process"
 msgstr "Số kết nối tối đa trên mỗi tiến trình worker"
 
-#: src/composables/useUpstreamStatus.ts:122
+#: src/composables/useUpstreamStatus.ts:124
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/certificate/CertificateList/Certificate.vue:44
 #: src/views/config/components/Delete.vue:125
@@ -2089,18 +2111,18 @@ msgstr "Số kết nối tối đa trên mỗi tiến trình worker"
 #: src/views/dns/components/DNSRecordTable.vue:45
 #: src/views/dns/DNSGroupRecordManager.vue:126
 #: src/views/nginx_log/NginxLogList.vue:147
-#: src/views/notification/notificationColumns.tsx:8
+#: src/views/notification/notificationColumns.tsx:27
 #: src/views/preference/components/ExternalNotify/columns.tsx:25
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:57
 msgid "Type"
 msgstr "Loại"
 
-#: src/composables/useUpstreamStatus.ts:122 src/routes/modules/upstream.ts:10
-#: src/views/home/Home.vue:80 src/views/upstream/SocketList.vue:25
+#: src/composables/useUpstreamStatus.ts:124 src/routes/modules/upstream.ts:10
+#: src/views/home/Home.vue:80 src/views/upstream/SocketList.vue:27
 msgid "Upstream"
 msgstr "Ngược dòng"
 
-#: src/composables/useUpstreamStatus.ts:122
+#: src/composables/useUpstreamStatus.ts:124
 msgid "Proxy Pass"
 msgstr "Chuyển tiếp Proxy"
 
@@ -3489,13 +3511,13 @@ msgstr "Trường này phải là một tên máy chủ hợp lệ"
 msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "Trường này chỉ được chứa chữ cái, ký tự Unicode, số và -_."
 
-#: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:28
+#: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:47
 msgid "Info"
 msgstr "Thông tin"
 
 #: src/constants/index.ts:27 src/views/backup/AutoBackup/AutoBackup.vue:224
 #: src/views/backup/AutoBackup/AutoBackup.vue:249
-#: src/views/notification/notificationColumns.tsx:35
+#: src/views/notification/notificationColumns.tsx:54
 msgid "Success"
 msgstr "Thành công"
 
@@ -3657,6 +3679,7 @@ msgid "item(s)"
 msgstr "mục"
 
 #: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:532
+#: src/views/notification/notificationColumns.tsx:101
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:109
 #: src/views/system/Licenses.vue:187
 msgid "View"
@@ -3743,10 +3766,10 @@ msgstr "Vui lòng chọn ít nhất một mục"
 msgid "Batch Modify"
 msgstr "Chỉnh sửa hàng loạt"
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
+#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:113
 #: src/views/certificate/components/RenewCert.vue:21
 #: src/views/preference/NginxHostSetup.vue:84
-#: src/views/preference/store/index.ts:180
+#: src/views/preference/store/index.ts:181
 #: src/views/preference/tabs/NginxSettings.vue:138
 msgid "Save successfully"
 msgstr "Lưu thành công"
@@ -3847,14 +3870,18 @@ msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
 msgstr "Tệp nginx-ui.conf đi kèm có bản sửa lỗi cho proxy ngược WebSocket"
 
 #: src/language/generate.ts:5
+msgid "Certificate deleted, but revocation failed: %{error}"
+msgstr "Đã xóa chứng chỉ, nhưng thu hồi thất bại: %{error}"
+
+#: src/language/generate.ts:6
 msgid "Certificate not found: %{error}"
 msgstr "Không tìm thấy chứng chỉ: %{error}"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:7
 msgid "Certificate revoked successfully"
 msgstr "Hủy chứng chỉ thành công"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:8
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
@@ -3877,7 +3904,7 @@ msgstr ""
 "này, hãy thêm biến môi trường NGINX_UI_IGNORE_DOCKER_SOCKET=true vào "
 "container."
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:9
 msgid ""
 "Check if Nginx UI can write a temporary file to the configured Nginx "
 "directory and the external Nginx container can see it at the same path. "
@@ -3891,7 +3918,7 @@ msgstr ""
 "khiển; các thư mục cấu hình và nhật ký phải được gắn vào cả hai container "
 "với các đường dẫn khớp nhau."
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:10
 msgid ""
 "Check if the GeoLite2 database is available when log indexing is enabled. "
 "The GeoLite2 database is required for geographic IP analysis in log "
@@ -3903,11 +3930,11 @@ msgstr ""
 "mục nhật ký. Bạn có thể tải nó từ trang Tùy chọn hoặc đặt tệp "
 "GeoLite2-City.mmdb vào cùng thư mục với app.ini một cách thủ công"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:11
 msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr "Kiểm tra xem thư mục conf.d có nằm trong thư mục cấu hình nginx không"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:12
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
@@ -3921,7 +3948,7 @@ msgstr ""
 "định đường dẫn PID của Nginx. Tham khảo tài liệu để biết thêm chi tiết: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:13
 msgid ""
 "Check if the nginx access log path exists. By default, this path is "
 "obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
@@ -3937,15 +3964,15 @@ msgstr ""
 "định đường dẫn nhật ký truy cập. Tham khảo tài liệu để biết thêm chi tiết: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:14
 msgid "Check if the nginx configuration directory exists"
 msgstr "Kiểm tra xem thư mục cấu hình nginx có tồn tại không"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:15
 msgid "Check if the nginx configuration entry file exists"
 msgstr "Kiểm tra xem tệp cấu hình đầu vào của nginx có tồn tại không"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:16
 msgid ""
 "Check if the nginx error log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
@@ -3961,23 +3988,23 @@ msgstr ""
 "định đường dẫn nhật ký lỗi. Tham khảo tài liệu để biết thêm chi tiết: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:17
 msgid "Check if the nginx sbin path exists"
 msgstr "Kiểm tra xem đường dẫn sbin của nginx có tồn tại không"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:18
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:19
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:20
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:21
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
@@ -3985,7 +4012,7 @@ msgstr ""
 "Kiểm tra xem các thư mục sites-available và sites-enabled có nằm trong thư "
 "mục cấu hình nginx không"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:22
 msgid ""
 "Check if the streams-available and streams-enabled directories are under "
 "the nginx configuration directory"
@@ -3993,31 +4020,31 @@ msgstr ""
 "Kiểm tra xem các thư mục streams-available và streams-enabled có nằm trong "
 "thư mục cấu hình nginx không"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:23
 msgid "Conf.d directory exists"
 msgstr "Thư mục conf.d tồn tại"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:24
 msgid "Docker socket exists"
 msgstr "Ổ cắm Docker tồn tại"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:25
 msgid "External Nginx configuration directory is shared"
 msgstr "Thư mục cấu hình Nginx bên ngoài được chia sẻ."
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:26
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Xóa chứng chỉ từ cơ sở dữ liệu thất bại: %{error}"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:27
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Không thể thu hồi chứng chỉ: %{error}"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:28
 msgid "GeoLite2 database available"
 msgstr "Cơ sở dữ liệu GeoLite2 có sẵn"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:29
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to "
@@ -4028,51 +4055,51 @@ msgstr ""
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html để biết thêm thông "
 "tin."
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:30
 msgid "Nginx PID path exists"
 msgstr "Đường dẫn PID của Nginx tồn tại"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:31
 msgid "Nginx access log path exists"
 msgstr "Đường dẫn nhật ký truy cập Nginx tồn tại"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:32
 msgid "Nginx configuration directory exists"
 msgstr "Thư mục cấu hình Nginx tồn tại"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:33
 msgid "Nginx configuration entry file exists"
 msgstr "Tập tin cấu hình đầu vào Nginx tồn tại"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:34
 msgid "Nginx error log path exists"
 msgstr "Đường dẫn nhật ký lỗi Nginx tồn tại"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:35
 msgid "Nginx sbin path exists"
 msgstr "Đường dẫn sbin của Nginx tồn tại"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:36
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Nginx.conf bao gồm thư mục conf.d"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:37
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Nginx.conf bao gồm thư mục sites-enabled"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:38
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf bao gồm thư mục streams-enabled"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:39
 msgid "Sites directory exists"
 msgstr "Thư mục trang web tồn tại"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:40
 msgid "Streams directory exists"
 msgstr "Thư mục Streams tồn tại"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:41
 msgid ""
 "When the container is behind an outer reverse proxy that terminates TLS "
 "(e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust "
@@ -4086,89 +4113,97 @@ msgstr ""
 "nguồn gốc WebSocket sẽ thất bại. Các triển khai cũ đã duy trì /etc/nginx có "
 "thể vẫn dùng phiên bản chưa được sửa."
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:42
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:43
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] Đang sao lưu chứng chỉ hiện tại để thu hồi sau này"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:44
+msgid "[Nginx UI] Certificate has already expired, no revocation needed"
+msgstr "[Nginx UI] Chứng chỉ đã hết hạn, không cần thu hồi"
+
+#: src/language/generate.ts:45
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "[Nginx UI] Gia hạn chứng chỉ thành công"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:46
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Hủy chứng chỉ thành công"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:47
+msgid "[Nginx UI] Certificate was already revoked by the CA"
+msgstr "[Nginx UI] Chứng chỉ đã bị thu hồi bởi CA trước đó"
+
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ "
 "TLS của máy chủ"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:49
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] Tạo máy khách để tạo điều kiện giao tiếp với máy chủ CA"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:50
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "[Nginx UI] Đã dọn dẹp biến môi trường"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Đã hoàn thành"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:52
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "[Nginx UI] Đã cấp chứng chỉ thành công"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:53
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] Đang lấy chứng chỉ"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:54
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Chuẩn bị thu hồi chứng chỉ"
 
-#: src/language/generate.ts:52
+#: src/language/generate.ts:55
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Đang chuẩn bị cấu hình lego"
 
-#: src/language/generate.ts:53
+#: src/language/generate.ts:56
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Đang tải lại nginx"
 
-#: src/language/generate.ts:54
+#: src/language/generate.ts:57
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Đã hoàn tất thu hồi"
 
-#: src/language/generate.ts:55
+#: src/language/generate.ts:58
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ"
 
-#: src/language/generate.ts:56
+#: src/language/generate.ts:59
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ cũ"
 
-#: src/language/generate.ts:57
+#: src/language/generate.ts:60
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách DNS01"
 
-#: src/language/generate.ts:58
+#: src/language/generate.ts:61
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách HTTP01"
 
-#: src/language/generate.ts:59
+#: src/language/generate.ts:62
 msgid "[Nginx UI] Setting environment variables"
 msgstr "[Nginx UI] Đang thiết lập biến môi trường"
 
-#: src/language/generate.ts:60
+#: src/language/generate.ts:63
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] Đang ghi khóa riêng của chứng chỉ vào ổ đĩa"
 
-#: src/language/generate.ts:61
+#: src/language/generate.ts:64
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
 
@@ -4231,12 +4266,12 @@ msgid "Certificates List"
 msgstr "Danh sách chứng chỉ"
 
 #: src/routes/modules/certificates.ts:44
-#: src/views/certificate/CertificateEditor.vue:132
+#: src/views/certificate/CertificateEditor.vue:148
 msgid "Modify Certificate"
 msgstr "Sửa đổi chứng chỉ"
 
 #: src/routes/modules/certificates.ts:54
-#: src/views/certificate/CertificateEditor.vue:132
+#: src/views/certificate/CertificateEditor.vue:148
 #: src/views/certificate/index.vue:17
 msgid "Import Certificate"
 msgstr "Nhập chứng chỉ"
@@ -4463,15 +4498,15 @@ msgstr "Hàng tháng vào ngày %{day} lúc %{time}"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
-#: src/views/dashboard/components/SiteCard.vue:162
-#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:159
-#: src/views/node/nodeColumns.tsx:180
+#: src/views/dashboard/components/SiteCard.vue:189
+#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:154
+#: src/views/node/nodeColumns.tsx:177
 #: src/views/preference/tabs/HTTPSettings.vue:36
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:44
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:84
-#: src/views/site/site_list/columns.tsx:147 src/views/stream/columns.tsx:112
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:86
+#: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:55
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -4501,7 +4536,7 @@ msgstr "Thất bại"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:258
 #: src/views/namespace/columns.ts:110
-#: src/views/notification/notificationColumns.tsx:51
+#: src/views/notification/notificationColumns.tsx:70
 #: src/views/preference/components/AuthSettings/Passkey.vue:97
 #: src/views/preference/components/ExternalNotify/columns.tsx:93
 #: src/views/user/userColumns.tsx:46
@@ -4513,9 +4548,9 @@ msgstr "Ngày tạo"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:255 src/views/dns/DNSGroupList.vue:34
-#: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:191
+#: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:188
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:47
-#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:80
+#: src/views/site/site_list/columns.tsx:125 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -4557,11 +4592,11 @@ msgstr "Vùng S3"
 #: src/views/dns/DNSGroupRecordManager.vue:146
 #: src/views/dns/DNSGroupRecordManager.vue:1363
 #: src/views/namespace/columns.ts:122 src/views/nginx_log/NginxLogList.vue:339
-#: src/views/node/nodeColumns.tsx:198
-#: src/views/notification/notificationColumns.tsx:72
+#: src/views/node/nodeColumns.tsx:195
+#: src/views/notification/notificationColumns.tsx:106
 #: src/views/preference/components/ExternalNotify/columns.tsx:98
 #: src/views/preference/components/ExternalNotify/labels.ts:7
-#: src/views/site/site_list/columns.tsx:161 src/views/stream/columns.tsx:123
+#: src/views/site/site_list/columns.tsx:167 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "Hành động"
@@ -4884,23 +4919,23 @@ msgstr "Trạng thái đăng ký"
 msgid "Register"
 msgstr "Đăng ký"
 
-#: src/views/certificate/CertificateEditor.vue:71
+#: src/views/certificate/CertificateEditor.vue:87
 #: src/views/certificate/components/DNSIssueCertificate.vue:140
 #: src/views/certificate/components/SelfSignedCertForm.vue:47
 msgid "Please enter a name for the certificate"
 msgstr "Vui lòng nhập tên cho chứng chỉ"
 
-#: src/views/certificate/CertificateEditor.vue:75
+#: src/views/certificate/CertificateEditor.vue:91
 #: src/views/certificate/components/DNSIssueCertificate.vue:144
 #: src/views/certificate/components/SelfSignedCertForm.vue:51
 msgid "Please enter at least one domain or IP address"
 msgstr "Vui lòng nhập ít nhất một tên miền hoặc địa chỉ IP"
 
-#: src/views/certificate/CertificateEditor.vue:94
+#: src/views/certificate/CertificateEditor.vue:110
 msgid "Saved certificate response is missing an ID"
 msgstr "Phản hồi chứng chỉ đã lưu bị thiếu ID."
 
-#: src/views/certificate/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:197
 msgid "Log"
 msgstr "Nhật ký"
 
@@ -5042,7 +5077,7 @@ msgstr[0] "Trạng thái chứng chỉ"
 #: src/views/preference/NginxHostSetup.vue:129
 #: src/views/preference/NginxHostSetup.vue:147
 #: src/views/site/site_add/SiteAdd.vue:325
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:201
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:203
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
 msgstr "Quay lại"
@@ -5278,37 +5313,37 @@ msgstr "Tiếp theo"
 msgid "Retry"
 msgstr "Thử lại"
 
-#: src/views/certificate/components/RemoveCert.vue:38
-#: src/views/certificate/components/RemoveCert.vue:120
+#: src/views/certificate/components/RemoveCert.vue:46
+#: src/views/certificate/components/RemoveCert.vue:130
 msgid "Revoke"
 msgstr "Thu hồi"
 
-#: src/views/certificate/components/RemoveCert.vue:39
+#: src/views/certificate/components/RemoveCert.vue:47
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Vui lòng nhập \"Thu hồi\" để xác nhận"
 
-#: src/views/certificate/components/RemoveCert.vue:64
-#: src/views/certificate/components/RemoveCert.vue:84
+#: src/views/certificate/components/RemoveCert.vue:73
+#: src/views/certificate/components/RemoveCert.vue:95
 msgid "Certificate removed successfully"
 msgstr "Đã xóa chứng chỉ thành công"
 
-#: src/views/certificate/components/RemoveCert.vue:71
+#: src/views/certificate/components/RemoveCert.vue:82
 msgid "Failed to revoke certificate"
 msgstr "Không thể thu hồi chứng chỉ"
 
-#: src/views/certificate/components/RemoveCert.vue:77
+#: src/views/certificate/components/RemoveCert.vue:88
 msgid "WebSocket connection error"
 msgstr "Lỗi kết nối WebSocket"
 
-#: src/views/certificate/components/RemoveCert.vue:89
+#: src/views/certificate/components/RemoveCert.vue:98
 msgid "Failed to delete certificate"
 msgstr "Xóa chứng chỉ không thành công"
 
-#: src/views/certificate/components/RemoveCert.vue:117
+#: src/views/certificate/components/RemoveCert.vue:127
 msgid "Delete Certificate"
 msgstr "Xóa chứng chỉ"
 
-#: src/views/certificate/components/RemoveCert.vue:128
+#: src/views/certificate/components/RemoveCert.vue:138
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
@@ -5316,11 +5351,15 @@ msgstr ""
 "Thao tác này sẽ chỉ xóa chứng chỉ khỏi cơ sở dữ liệu. Các tệp chứng chỉ "
 "trên hệ thống tệp sẽ không bị xóa."
 
-#: src/views/certificate/components/RemoveCert.vue:134
+#: src/views/certificate/components/RemoveCert.vue:144
 msgid "Revoke this certificate"
 msgstr "Thu hồi chứng chỉ này"
 
-#: src/views/certificate/components/RemoveCert.vue:142
+#: src/views/certificate/components/RemoveCert.vue:148
+msgid "Delete the certificate even if revocation fails"
+msgstr "Xóa chứng chỉ ngay cả khi thu hồi thất bại"
+
+#: src/views/certificate/components/RemoveCert.vue:157
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
@@ -5328,7 +5367,7 @@ msgstr ""
 "Việc thu hồi chứng chỉ sẽ ảnh hưởng đến bất kỳ dịch vụ nào hiện đang sử "
 "dụng nó. Hành động này không thể hoàn tác."
 
-#: src/views/certificate/components/RemoveCert.vue:146
+#: src/views/certificate/components/RemoveCert.vue:161
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr "Để xác nhận thu hồi, vui lòng nhập \"Thu hồi\" vào trường bên dưới:"
 
@@ -5422,7 +5461,7 @@ msgid "Format successfully"
 msgstr "Định dạng thành công"
 
 #: src/views/config/components/ConfigLeftPanel.vue:255
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:103
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:105
 #: src/views/stream/components/StreamEditor.vue:68
 msgid "History"
 msgstr "Lịch sử"
@@ -6075,32 +6114,36 @@ msgstr ""
 "lý, bao gồm tất cả bộ nhớ thư viện dùng chung, sẽ được tính toán lặp lại "
 "cho nhiều tiến trình"
 
-#: src/views/dashboard/components/SiteCard.vue:93
+#: src/views/dashboard/components/SiteCard.vue:94
 msgid "TLS certificate not trusted"
 msgstr "Chứng chỉ TLS không đáng tin cậy"
 
-#: src/views/dashboard/components/SiteCard.vue:95
+#: src/views/dashboard/components/SiteCard.vue:96
 msgid "Hostname could not be resolved"
 msgstr "Không thể phân giải tên máy chủ"
 
-#: src/views/dashboard/components/SiteCard.vue:97
+#: src/views/dashboard/components/SiteCard.vue:98
 msgid "Connection refused"
 msgstr "Kết nối bị từ chối"
 
-#: src/views/dashboard/components/SiteCard.vue:99
+#: src/views/dashboard/components/SiteCard.vue:100
 msgid "Connection timed out"
 msgstr "Hết thời gian chờ kết nối"
 
-#: src/views/dashboard/components/SiteCard.vue:101
+#: src/views/dashboard/components/SiteCard.vue:102
 msgid "Network unreachable"
 msgstr "Không thể truy cập mạng"
 
-#: src/views/dashboard/components/SiteCard.vue:103
+#: src/views/dashboard/components/SiteCard.vue:104
 msgid "Invalid health check request"
 msgstr "Yêu cầu kiểm tra tình trạng không hợp lệ"
 
-#: src/views/dashboard/components/SiteCard.vue:170
-#: src/views/upstream/SocketList.vue:42
+#: src/views/dashboard/components/SiteCard.vue:133
+msgid "%{days}d"
+msgstr "%{days}ng"
+
+#: src/views/dashboard/components/SiteCard.vue:197
+#: src/views/upstream/SocketList.vue:44
 msgid "Paused"
 msgstr "Đã tạm dừng"
 
@@ -6124,55 +6167,59 @@ msgstr "Phản hồi lỗi từ máy khách (4xx)"
 msgid "Server Error Responses (5xx)"
 msgstr "Phản hồi lỗi máy chủ (5xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:464
-msgid "Health check configuration saved successfully"
-msgstr "Cấu hình kiểm tra sức khỏe đã được lưu thành công"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:467
-msgid "Saved locally, but failed to synchronize %{count} node(s)"
-msgstr "Đã lưu cục bộ, nhưng không đồng bộ được %{count} nút"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
-msgid "Failed to save health check configuration"
-msgstr "Không thể lưu cấu hình kiểm tra trạng thái"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:514
-msgid "Test successful! Response time: %{response_time}ms"
-msgstr "Kiểm tra thành công! Thời gian phản hồi: %{response_time}ms"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
-msgid "Test failed: %{error}"
-msgstr "Kiểm tra thất bại: %{error}"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:522
-msgid "Test failed: Unable to perform health check"
-msgstr "Kiểm tra thất bại: Không thể thực hiện kiểm tra tình trạng"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:532
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:414
 msgid "Health Check Configuration"
 msgstr "Cấu hình kiểm tra trạng thái"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:486
+msgid "Health check configuration saved successfully"
+msgstr "Cấu hình kiểm tra sức khỏe đã được lưu thành công"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:489
+msgid "Saved locally, but failed to synchronize %{count} node(s)"
+msgstr "Đã lưu cục bộ, nhưng không đồng bộ được %{count} nút"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:499
+msgid "Failed to save health check configuration"
+msgstr "Không thể lưu cấu hình kiểm tra trạng thái"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:536
+msgid "Test successful! Response time: %{response_time}ms"
+msgstr "Kiểm tra thành công! Thời gian phản hồi: %{response_time}ms"
+
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:539
+msgid "Test failed: %{error}"
+msgstr "Kiểm tra thất bại: %{error}"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:544
+msgid "Test failed: Unable to perform health check"
+msgstr "Kiểm tra thất bại: Không thể thực hiện kiểm tra tình trạng"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:560
+msgid "Server Name"
+msgstr "Tên máy chủ"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:568
 msgid "Enable Health Check"
 msgstr "Bật kiểm tra tình trạng"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:543
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:572
 msgid "Health check is enabled"
 msgstr "Kiểm tra tình trạng đã được bật"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:543
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:572
 msgid "Health check is disabled"
 msgstr "Kiểm tra trạng thái đã bị vô hiệu hóa"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:551
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:580
 msgid "Protocol"
 msgstr "Giao thức"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:569
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:598
 msgid "Custom Health Check Target"
 msgstr "Đích kiểm tra sức khoẻ tuỳ chỉnh"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:570
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
 "Optional absolute URL. Use it when the public address differs from the "
 "actual upstream host or port."
@@ -6180,35 +6227,35 @@ msgstr ""
 "URL tuyệt đối tuỳ chọn. Dùng khi địa chỉ công khai khác với host hoặc cổng "
 "upstream thực tế."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:583
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:612
 msgid "HTTP Method"
 msgstr "Phương thức HTTP"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:594
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:623
 msgid "Custom Headers"
 msgstr "Tiêu đề tùy chỉnh"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:609
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:638
 msgid "Add Header"
 msgstr "Thêm tiêu đề"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:614
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
 msgid "Request Body"
 msgstr "Nội dung Yêu cầu"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:618
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:647
 msgid "Expected Status Codes"
 msgstr "Mã trạng thái mong đợi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:659
 msgid "Expected Text"
 msgstr "Văn bản mong đợi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:635
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Not Expected Text"
 msgstr "Văn bản không mong muốn"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:647
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:676
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
@@ -6216,7 +6263,7 @@ msgstr ""
 "gRPCS sử dụng mã hóa TLS. Máy chủ phải triển khai dịch vụ kiểm tra sức khỏe "
 "gRPC. Để kiểm tra, xác thực SSL bị vô hiệu hóa theo mặc định."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:648
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:677
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
@@ -6224,7 +6271,7 @@ msgstr ""
 "Kiểm tra sức khỏe gRPC yêu cầu máy chủ triển khai dịch vụ kiểm tra sức khỏe "
 "gRPC (grpc.health.v1.Health)."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:651
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:680
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -6232,117 +6279,118 @@ msgstr ""
 "Lưu ý: Nếu máy chủ không hỗ trợ gRPC Reflection, việc kiểm tra tình trạng "
 "có thể thất bại. Hãy đảm bảo rằng máy chủ gRPC của bạn đã bật Reflection."
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:656
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:685
 msgid "Service Name"
 msgstr "Tên dịch vụ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:661
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:690
 msgid "Method Name"
 msgstr "Tên phương thức"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:669
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:698
 msgid "Advanced Settings"
 msgstr "Cài đặt nâng cao"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:673
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:702
 msgid "Check Interval (seconds)"
 msgstr "Khoảng thời gian kiểm tra (giây)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:707
 msgid "Timeout (seconds)"
 msgstr "Thời gian chờ (giây)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:684
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "Trình duyệt người dùng"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:691
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:720
 msgid "Max Redirects"
 msgstr "Chuyển hướng tối đa"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:698
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:727
 msgid "Follow Redirects"
 msgstr "Theo dõi chuyển hướng"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:706
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:735
 msgid "Validate SSL Certificate"
 msgstr "Xác thực chứng chỉ SSL"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:712
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:741
 msgid "Verify Hostname"
 msgstr "Xác minh tên máy chủ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:718
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:747
 msgid "Check Favicon"
 msgstr "Kiểm tra favicon"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:726
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:755
 msgid "DNS Resolver"
 msgstr "Bộ phân giải DNS"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:731
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:760
 msgid "Source IP"
 msgstr "IP nguồn"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:740
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:769
 msgid "Client Certificate"
 msgstr "Chứng chỉ khách hàng"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:745
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:774
 msgid "Client Key"
 msgstr "Khóa khách hàng"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:756
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:785
 msgid "Failure Notifications"
 msgstr "Thông báo lỗi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:760
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:789
 msgid "Notifications are enabled"
 msgstr "Thông báo đang bật"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:760
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:789
 msgid "Notifications are disabled"
 msgstr "Thông báo đang tắt"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:766
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:795
 msgid "Failure Status Codes"
 msgstr "Mã trạng thái lỗi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:772
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:801
 msgid "Select status codes"
 msgstr "Chọn mã trạng thái"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:779
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:808
 msgid "Notify on connection, DNS, and timeout errors"
 msgstr "Thông báo khi có lỗi kết nối, DNS và hết thời gian chờ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:785
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:814
 msgid "Consecutive Failures"
 msgstr "Số lần lỗi liên tiếp"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:796
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:825
 msgid "Reminder Cooldown (seconds)"
 msgstr "Thời gian chờ nhắc lại (giây)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:810
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:839
 msgid "Notify when the site recovers"
 msgstr "Thông báo khi site phục hồi"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:814
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:843
 msgid "Notification Channels"
 msgstr "Kênh thông báo"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:820
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:849
 msgid "Select notification channels"
 msgstr "Chọn kênh thông báo"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:838
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:867
 #: src/views/preference/tabs/ExternalNotify.vue:111
 msgid "Test"
 msgstr "Kiểm tra"
 
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:36
+#: src/views/dashboard/NginxDashBoard.vue:236
 msgid "Disconnected"
 msgstr "Ngắt kết nối"
 
@@ -6372,35 +6420,35 @@ msgstr ""
 "Duyệt qua các trang web đã cấu hình và theo dõi tính khả dụng cùng kiểm tra "
 "sức khỏe."
 
-#: src/views/dashboard/NginxDashBoard.vue:56
+#: src/views/dashboard/NginxDashBoard.vue:162
 msgid "Toggle failed"
 msgstr "Chuyển đổi thất bại"
 
-#: src/views/dashboard/NginxDashBoard.vue:86
-msgid "Connection error, trying to reconnect..."
-msgstr "Lỗi kết nối, đang thử kết nối lại..."
-
-#: src/views/dashboard/NginxDashBoard.vue:120
+#: src/views/dashboard/NginxDashBoard.vue:216
 msgid "Nginx is running"
 msgstr "Nginx đang chạy"
 
-#: src/views/dashboard/NginxDashBoard.vue:124
+#: src/views/dashboard/NginxDashBoard.vue:221
 msgid "Last update"
 msgstr "Cập nhật cuối cùng"
 
-#: src/views/dashboard/NginxDashBoard.vue:140
+#: src/views/dashboard/NginxDashBoard.vue:237
+msgid "Connection error, trying to reconnect..."
+msgstr "Lỗi kết nối, đang thử kết nối lại..."
+
+#: src/views/dashboard/NginxDashBoard.vue:247
 msgid "Cannot get performance data in this state"
 msgstr "Không thể nhận được dữ liệu hiệu suất ở trạng thái này"
 
-#: src/views/dashboard/NginxDashBoard.vue:149
+#: src/views/dashboard/NginxDashBoard.vue:256
 msgid "Get data failed"
 msgstr "Không thể lấy dữ liệu"
 
-#: src/views/dashboard/NginxDashBoard.vue:158
+#: src/views/dashboard/NginxDashBoard.vue:265
 msgid "Enable stub_status module"
 msgstr "Bật module stub_status"
 
-#: src/views/dashboard/NginxDashBoard.vue:161
+#: src/views/dashboard/NginxDashBoard.vue:268
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
@@ -6408,11 +6456,11 @@ msgstr ""
 "Mô-đun này cung cấp dữ liệu như thống kê yêu cầu Nginx, số lượng kết nối, "
 "v.v. Sau khi bật, bạn có thể xem thống kê hiệu suất"
 
-#: src/views/dashboard/NginxDashBoard.vue:181
+#: src/views/dashboard/NginxDashBoard.vue:288
 msgid "Need to enable the stub_status module"
 msgstr "Cần bật module stub_status"
 
-#: src/views/dashboard/NginxDashBoard.vue:182
+#: src/views/dashboard/NginxDashBoard.vue:289
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
@@ -6420,11 +6468,11 @@ msgstr ""
 "Vui lòng bật module stub_status để nhận thống kê yêu cầu, số lượng kết nối, "
 "v.v."
 
-#: src/views/dashboard/NginxDashBoard.vue:186
+#: src/views/dashboard/NginxDashBoard.vue:293
 msgid "Loading data..."
 msgstr "Đang tải dữ liệu..."
 
-#: src/views/dashboard/NginxDashBoard.vue:193
+#: src/views/dashboard/NginxDashBoard.vue:300
 msgid "Performance Metrics"
 msgstr "Chỉ số hiệu suất"
 
@@ -7039,7 +7087,7 @@ msgstr "Hành động"
 
 #: src/views/dns/DNSGroupRecordManager.vue:165
 #: src/views/dns/DNSGroupRecordManager.vue:186
-#: src/views/notification/notificationColumns.tsx:66
+#: src/views/notification/notificationColumns.tsx:85
 msgid "Details"
 msgstr "Chi tiết"
 
@@ -7691,7 +7739,7 @@ msgstr ""
 "`nginx_log` trong cấu hình giao diện Nginx."
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:179
-#: src/views/preference/tabs/GeoLiteSettings.vue:36
+#: src/views/preference/tabs/GeoLiteSettings.vue:39
 msgid "GeoLite2 Database"
 msgstr "Cơ sở dữ liệu GeoLite2"
 
@@ -7827,45 +7875,45 @@ msgstr "Số lượng"
 msgid "Browser Statistics"
 msgstr "Thống kê trình duyệt"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:96
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:124
 msgid "Failed to load China map data"
 msgstr "Không thể tải dữ liệu bản đồ Trung Quốc"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:148
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:175
 msgid "Failed to load city map data"
 msgstr "Không thể tải dữ liệu bản đồ thành phố"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:184
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:211
 msgid "Province / Region"
 msgstr "Tỉnh / Vùng"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:187
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:214
 msgid "City / C1 / C2 / C3 / C4"
 msgstr "Thành phố / C1 / C2 / C3 / C4"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:188
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:215
 msgid "City"
 msgstr "Thành phố"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:193
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:220
 msgid "Top 10 Provinces / Regions"
 msgstr "Top 10 Tỉnh / Vùng"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:196
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:223
 msgid "Top 10 City Labels (City + C1 + C2 + C3 + C4)"
 msgstr "Top 10 nhãn thành phố (Thành phố + C1 + C2 + C3 + C4)"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:197
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:224
 msgid "Top 10 Cities"
 msgstr "Top 10 thành phố"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:387
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:50
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:414
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:53
 msgid "China Access Map"
 msgstr "Bản đồ Truy cập Trung Quốc"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:403
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:441
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:430
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:468
 msgid "No China geographic data available"
 msgstr "Không có dữ liệu địa lý Trung Quốc"
 
@@ -7928,15 +7976,15 @@ msgstr "Loại thiết bị"
 msgid "Device Statistics"
 msgstr "Thống kê thiết bị"
 
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:34
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:37
 msgid "Global Map"
 msgstr "Bản đồ Thế giới"
 
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:37
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:40
 msgid "China Map"
 msgstr "Bản đồ Trung Quốc"
 
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:50
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:53
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:258
 msgid "Global Access Map"
 msgstr "Bản đồ Truy cập Toàn cầu"
@@ -8768,9 +8816,13 @@ msgstr "Streams"
 msgid "Notification"
 msgstr "Thông báo"
 
-#: src/views/notification/notificationColumns.tsx:58
+#: src/views/notification/notificationColumns.tsx:77
 msgid "Title"
 msgstr "Tiêu đề"
+
+#: src/views/notification/notificationColumns.tsx:91
+msgid "Go To"
+msgstr "Đi tới"
 
 #: src/views/other/Error.vue:8
 msgid "File Not Found"
@@ -9106,28 +9158,82 @@ msgstr "Cập nhật trạng thái thành công"
 msgid "Failed to update status"
 msgstr "Cập nhật trạng thái thất bại"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:116
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
 msgid "Invalid JSON at line"
 msgstr "JSON không hợp lệ ở dòng"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:116
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
 msgid "column"
 msgstr "cột"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:160
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:212
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:245
+msgid "Notification title text"
+msgstr "Văn bản tiêu đề thông báo"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:216
+msgid "Notification content text"
+msgstr "Nội dung văn bản thông báo"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:220
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:253
+msgid "Notification type code, such as error, warning, info, or success"
+msgstr "Mã loại thông báo, ví dụ: error, warning, info hoặc success"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:224
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:261
+msgid "Localized notification type label for the current language"
+msgstr "Nhãn loại thông báo đã bản địa hóa cho ngôn ngữ hiện tại"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:228
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:265
+msgid "Translation key of the notification type, such as Error or Warning"
+msgstr "Khóa dịch của loại thông báo, chẳng hạn như Error hoặc Warning"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:232
+msgid ""
+"Teams notification level color enum: Error=Attention, Warning=Warning, "
+"Info=Accent, Success=Good"
+msgstr ""
+"Enum màu cấp độ thông báo Teams: Error=Attention, Warning=Warning, "
+"Info=Accent, Success=Good"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:236
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:269
+msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
+msgstr "URL chuyển hướng đầy đủ được tạo từ WebAuthn RPOrigins và đường dẫn lộ trình"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:249
+msgid "Notification content text (HTML-escaped in the default template)"
+msgstr "Nội dung văn bản thông báo (được thoát ký tự HTML trong mẫu mặc định)"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:257
+msgid "Email notification level color, fixed to #1f2937"
+msgstr "Màu sắc cấp độ thông báo qua email, cố định ở #1f2937"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:279
 msgid "Please select a notification type"
 msgstr "Vui lòng chọn loại thông báo"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:176
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:295
 #: src/views/preference/tabs/ExternalNotify.vue:37
 msgid "Test message sent successfully"
 msgstr "Gửi tin nhắn kiểm tra thành công"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:207
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:326
 msgid "Microsoft Docs"
 msgstr "Tài liệu Microsoft"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:247
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:335
+msgid "Teams Request Example"
+msgstr "Ví dụ yêu cầu Teams"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:355
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:379
+msgid "Available placeholders"
+msgstr "Các chỗ giữ có sẵn"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:400
 msgid "Send test message"
 msgstr "Gửi tin nhắn kiểm tra"
 
@@ -10525,7 +10631,7 @@ msgstr "Ứng dụng"
 msgid "External Notify"
 msgstr "Thông báo bên ngoài"
 
-#: src/views/preference/Preference.vue:61 src/views/upstream/SocketList.vue:64
+#: src/views/preference/Preference.vue:61 src/views/upstream/SocketList.vue:66
 msgid "Health Check"
 msgstr "Kiểm tra sức khỏe"
 
@@ -10829,21 +10935,45 @@ msgstr "Thông báo này đã bị vô hiệu hóa"
 msgid "Failed to send test message"
 msgstr "Gửi tin nhắn kiểm tra thất bại"
 
-#: src/views/preference/tabs/GeoLiteSettings.vue:27
+#: src/views/preference/tabs/GeoLiteSettings.vue:30
 msgid "Custom MMDB is currently enabled"
 msgstr "MMDB tùy chỉnh hiện đang được bật"
 
-#: src/views/preference/tabs/GeoLiteSettings.vue:31
+#: src/views/preference/tabs/GeoLiteSettings.vue:34
 msgid "IndexCustomMMDB File Name"
 msgstr "Tên tệp IndexCustomMMDB"
 
-#: src/views/preference/tabs/GeoLiteSettings.vue:38
+#: src/views/preference/tabs/GeoLiteSettings.vue:41
 msgid ""
 "The GeoLite2 database provides geographic information for IP addresses. "
 "This is used for offline geographic analysis in log analytics."
 msgstr ""
 "Cơ sở dữ liệu GeoLite2 cung cấp thông tin địa lý cho các địa chỉ IP. Điều "
 "này được sử dụng để phân tích địa lý ngoại tuyến trong phân tích nhật ký."
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:46
+msgid "Map Boundary Directory"
+msgstr "Thư mục ranh giới bản đồ"
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:51
+msgid ""
+"Configured from [nginx_log].GeoMapPath. Keep files with names like "
+"100000_full.json in this directory."
+msgstr ""
+"Được cấu hình từ [nginx_log].GeoMapPath. Giữ các tệp có tên như "
+"100000_full.json trong thư mục này."
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:55
+msgid ""
+"Only the world map is provided by default. Please download China and "
+"province boundary files yourself and place them in this directory."
+msgstr ""
+"Chỉ có bản đồ thế giới được cung cấp mặc định. Vui lòng tự tải xuống các "
+"tệp ranh giới của Trung Quốc và các tỉnh và đặt vào thư mục này."
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:64
+msgid "Template reference"
+msgstr "Tham chiếu mẫu"
 
 #: src/views/preference/tabs/HealthCheckSettings.vue:14
 msgid "Global health check controls"
@@ -10873,7 +11003,7 @@ msgid "Seconds"
 msgstr "Giây"
 
 #: src/views/preference/tabs/HealthCheckSettings.vue:37
-#: src/views/site/site_list/columns.tsx:84 src/views/stream/columns.tsx:46
+#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:46
 msgid "Proxy Targets"
 msgstr "Mục tiêu proxy"
 
@@ -11401,8 +11531,8 @@ msgstr "Chuyển hướng HTTP sang HTTPS"
 
 #: src/views/site/components/SiteStatusSelect.vue:48
 #: src/views/site/components/SiteStatusSelect.vue:181
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:90
-#: src/views/site/site_list/columns.tsx:151
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:92
+#: src/views/site/site_list/columns.tsx:157
 #: src/views/site/site_list/SiteList.vue:158
 #: src/views/site/site_list/SiteList.vue:325
 msgid "Maintenance"
@@ -11613,7 +11743,7 @@ msgstr "Bản ghi DNS đã được tạo và liên kết thành công"
 
 #: src/views/site/site_add/SiteAdd.vue:217
 #: src/views/site/site_edit/components/QuickSetupModal.vue:76
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:112
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:114
 msgid "Quick Setup"
 msgstr "Thiết lập nhanh"
 
@@ -11801,7 +11931,7 @@ msgid "Generate Config"
 msgstr "Tạo cấu hình"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:50
-#: src/views/site/site_list/columns.tsx:97 src/views/stream/columns.tsx:58
+#: src/views/site/site_list/columns.tsx:103 src/views/stream/columns.tsx:58
 #: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Namespace"
 msgstr "Không gian tên"
@@ -11895,22 +12025,22 @@ msgstr "Mẫu cấu hình"
 msgid "Port Scanner"
 msgstr "Trình quét cổng"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:73
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
 #: src/views/stream/components/StreamEditor.vue:44
 msgid "Edit %{n}"
 msgstr "Sửa %{n}"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:125
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:127
 #: src/views/stream/components/StreamEditor.vue:80
 msgid "Advance Mode"
 msgstr "Nâng cao"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:128
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:130
 #: src/views/stream/components/StreamEditor.vue:83
 msgid "Basic Mode"
 msgstr "Cơ bản"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:153
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:155
 #: src/views/stream/components/StreamEditor.vue:105
 msgid "Nginx Configuration Parse Error"
 msgstr "Lỗi phân tích cấu hình Nginx"
@@ -12151,7 +12281,7 @@ msgstr "Hiển thị trợ lý"
 msgid "Connection lost for this terminal. Please refresh if needed."
 msgstr "Mất kết nối với thiết bị đầu cuối này. Vui lòng làm mới nếu cần."
 
-#: src/views/terminal/Terminal.vue:249
+#: src/views/terminal/Terminal.vue:298
 msgid ""
 "This is a simulated terminal running entirely in your browser. Commands are "
 "answered locally and never reach a server."
@@ -12159,7 +12289,7 @@ msgstr ""
 "Đây là một terminal mô phỏng chạy hoàn toàn trong trình duyệt của bạn. Các "
 "lệnh được xử lý cục bộ và không bao giờ gửi đến máy chủ."
 
-#: src/views/terminal/Terminal.vue:256
+#: src/views/terminal/Terminal.vue:305
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -12168,35 +12298,35 @@ msgstr ""
 "toàn trên một miền không phải localhost. Điều này có thể làm lộ thông tin "
 "nhạy cảm."
 
-#: src/views/upstream/SocketList.vue:19
+#: src/views/upstream/SocketList.vue:21
 msgid "Socket"
 msgstr "Socket"
 
-#: src/views/upstream/SocketList.vue:31
+#: src/views/upstream/SocketList.vue:33
 msgid "Direct"
 msgstr "Trực tiếp"
 
-#: src/views/upstream/SocketList.vue:37
+#: src/views/upstream/SocketList.vue:39
 msgid "Health Status"
 msgstr "Trạng thái sức khỏe"
 
-#: src/views/upstream/SocketList.vue:45
+#: src/views/upstream/SocketList.vue:47
 msgid "No Data"
 msgstr "Không có dữ liệu"
 
-#: src/views/upstream/SocketList.vue:55
+#: src/views/upstream/SocketList.vue:57
 msgid "Last Check"
 msgstr "Lần kiểm tra cuối"
 
-#: src/views/upstream/SocketList.vue:138
+#: src/views/upstream/SocketList.vue:132
 msgid "Upstream Sockets"
 msgstr "Các cổng Upstream"
 
-#: src/views/upstream/SocketList.vue:153
+#: src/views/upstream/SocketList.vue:147
 msgid "Upstream health checks are globally paused"
 msgstr "Kiểm tra sức khoẻ upstream đang tạm dừng toàn cục"
 
-#: src/views/upstream/SocketList.vue:154
+#: src/views/upstream/SocketList.vue:148
 msgid ""
 "Per-target selections are preserved. Resume probes from Health Check "
 "preferences."
@@ -12841,10 +12971,6 @@ msgstr "Cập nhật mật khẩu"
 #~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
 
 #, fuzzy
-#~ msgid "Save site %{site} to %{node} error, response: %{resp}"
-#~ msgstr "Nhân bản %{conf_name} thành %{node_name} thành công"
-
-#, fuzzy
 #~ msgid ""
 #~ "Sync Certificate %{cert_name} to %{env_name} failed, please upgrade the "
 #~ "remote Nginx UI to the latest version"
@@ -12910,65 +13036,3 @@ msgstr "Cập nhật mật khẩu"
 #~ msgstr ""
 #~ "Hiện tại, quản lý bản ghi DNS chỉ hỗ trợ Alibaba Cloud DNS, Tencent Cloud "
 #~ "DNS và Cloudflare."
-
-#: src/language/generate.ts:5
-msgid "Certificate deleted, but revocation failed: %{error}"
-msgstr ""
-
-#: src/views/certificate/components/RemoveCert.vue:148
-msgid "Delete the certificate even if revocation fails"
-msgstr ""
-
-#: src/views/notification/notificationColumns.tsx:91
-msgid "Go To"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:212
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:245
-msgid "Notification title text"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:216
-msgid "Notification content text"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:220
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:253
-msgid "Notification type code, such as error, warning, info, or success"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:224
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:261
-msgid "Localized notification type label for the current language"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:228
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:265
-msgid "Translation key of the notification type, such as Error or Warning"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:232
-msgid "Teams notification level color enum: Error=Attention, Warning=Warning, Info=Accent, Success=Good"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:236
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:269
-msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:249
-msgid "Notification content text (HTML-escaped in the default template)"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:257
-msgid "Email notification level color, fixed to #1f2937"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:335
-msgid "Teams Request Example"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:355
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:379
-msgid "Available placeholders"
-msgstr ""

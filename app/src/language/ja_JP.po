@@ -215,6 +215,7 @@ msgstr "有効"
 
 #: src/components/CertInfo/CertInfo.vue:32
 #: src/views/certificate/CertificateList/certColumns.tsx:127
+#: src/views/dashboard/components/SiteCard.vue:131
 #: src/views/preference/tabs/AccessTokens.vue:149
 msgid "Expired"
 msgstr "期限切れ"
@@ -361,7 +362,7 @@ msgstr "サンドボックスの検証に失敗しました"
 #: src/components/InspectConfig/InspectConfig.vue:38 src/constants/index.ts:24
 #: src/views/nginx_log/NginxLogList.vue:210
 #: src/views/nginx_log/NginxLogList.vue:250
-#: src/views/notification/notificationColumns.tsx:14
+#: src/views/notification/notificationColumns.tsx:33
 msgid "Error"
 msgstr "エラー"
 
@@ -396,7 +397,7 @@ msgid "Nginx failed to validate the configuration."
 msgstr "Nginx は設定の検証に失敗しました。"
 
 #: src/components/InspectConfig/InspectConfig.vue:103 src/lib/http/error.ts:36
-#: src/views/certificate/CertificateEditor.vue:104
+#: src/views/certificate/CertificateEditor.vue:120
 msgid "Server error"
 msgstr "サーバーエラー"
 
@@ -418,7 +419,7 @@ msgstr "正常に設定ファイルをテストしました"
 
 #: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:25
 #: src/views/backup/components/BackupCreator.vue:138
-#: src/views/notification/notificationColumns.tsx:21
+#: src/views/notification/notificationColumns.tsx:40
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
 #: src/views/preference/components/NginxHostSetup/checks.ts:121
 msgid "Warning"
@@ -442,23 +443,23 @@ msgstr "変更"
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:835
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:864
 #: src/views/dns/DDNSManager.vue:474 src/views/dns/DNSRecordManager.vue:253
 #: src/views/preference/components/AuthSettings/Passkey.vue:132
 #: src/views/preference/Preference.vue:104
 #: src/views/preference/tabs/NginxSettings.vue:318
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:208
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:210
 #: src/views/stream/components/ConfigName.vue:52
 #: src/views/stream/components/StreamEditor.vue:154
 msgid "Save"
 msgstr "保存"
 
 #: src/components/LLM/ChatMessage.vue:257
-#: src/components/NgxConfigEditor/NgxServer.vue:74
+#: src/components/NgxConfigEditor/NgxServer.vue:76
 #: src/components/NgxConfigEditor/NgxUpstream.vue:43 src/language/curd.ts:37
 #: src/views/config/components/Delete.vue:101
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:832
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:861
 #: src/views/dns/DDNSManager.vue:471 src/views/dns/DNSGroupList.vue:241
 #: src/views/dns/DNSGroupList.vue:286
 #: src/views/dns/DNSGroupRecordManager.vue:1532
@@ -498,12 +499,13 @@ msgstr "再読み込み"
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:81
+#: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteList.vue:267 src/views/stream/StreamList.vue:99
 msgid "No"
 msgstr "いいえ"
 
 #: src/components/LLM/ChatMessageInput.vue:62
-#: src/components/NgxConfigEditor/NgxServer.vue:73
+#: src/components/NgxConfigEditor/NgxServer.vue:75
 #: src/components/NgxConfigEditor/NgxUpstream.vue:42
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
 #: src/views/backup/components/BackupCreator.vue:149
@@ -572,9 +574,9 @@ msgstr "複製"
 
 #: src/components/LLM/LLMSessionTabs.vue:300
 #: src/components/LLM/LLMSessionTabs.vue:402
-#: src/components/NgxConfigEditor/NgxServer.vue:86
+#: src/components/NgxConfigEditor/NgxServer.vue:88
 #: src/components/NgxConfigEditor/NgxUpstream.vue:60 src/language/curd.ts:9
-#: src/views/certificate/components/RemoveCert.vue:112
+#: src/views/certificate/components/RemoveCert.vue:122
 #: src/views/config/components/Delete.vue:67
 #: src/views/config/components/Delete.vue:100
 #: src/views/config/ConfigList.vue:228
@@ -659,8 +661,8 @@ msgstr "Nginx を再起動"
 #: src/components/NodeSelector/NodeSelector.vue:65
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:111 src/views/node/nodeColumns.tsx:150
-#: src/views/upstream/SocketList.vue:49
+#: src/views/dashboard/Nodes.vue:111 src/views/node/nodeColumns.tsx:149
+#: src/views/upstream/SocketList.vue:51
 msgid "Online"
 msgstr "オンライン"
 
@@ -668,8 +670,8 @@ msgstr "オンライン"
 #: src/components/NodeCard/NodeCard.vue:59
 #: src/components/NodeSelector/NodeSelector.vue:85
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:118 src/views/node/nodeColumns.tsx:154
-#: src/views/upstream/SocketList.vue:49
+#: src/views/dashboard/Nodes.vue:118 src/views/node/nodeColumns.tsx:151
+#: src/views/upstream/SocketList.vue:51
 msgid "Offline"
 msgstr "オフライン"
 
@@ -752,7 +754,7 @@ msgstr "ディレクティブ"
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:54
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:110
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:60
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
 #: src/views/stream/components/StreamEditor.vue:30
 msgid "Saved successfully"
 msgstr "正常に保存されました"
@@ -772,7 +774,7 @@ msgstr "DNSがリンクされている間はserver_nameを削除できません�
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:153
 #: src/components/NgxConfigEditor/LocationEditor.vue:142
 #: src/components/NgxConfigEditor/LocationEditor.vue:173
-#: src/components/NgxConfigEditor/NgxServer.vue:143
+#: src/components/NgxConfigEditor/NgxServer.vue:145
 msgid "Comments"
 msgstr "コメント"
 
@@ -799,7 +801,7 @@ msgstr "ロケーション"
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:127
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:588
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:617
 #: src/views/nginx_log/NginxLogList.vue:165
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:536
 msgid "Path"
@@ -847,8 +849,8 @@ msgstr "トラフィック分析"
 
 #: src/components/NgxConfigEditor/NginxStatusAlert.vue:15
 #: src/composables/useNginxPerformance.ts:31
-#: src/views/dashboard/NginxDashBoard.vue:120
-#: src/views/dashboard/NginxDashBoard.vue:139
+#: src/views/dashboard/NginxDashBoard.vue:216
+#: src/views/dashboard/NginxDashBoard.vue:246
 msgid "Nginx is not running"
 msgstr "Nginx は実行されていません"
 
@@ -858,19 +860,19 @@ msgstr "Nginx は実行されていません"
 msgid "Custom"
 msgstr "カスタム"
 
-#: src/components/NgxConfigEditor/NgxServer.vue:70
+#: src/components/NgxConfigEditor/NgxServer.vue:72
 msgid "Do you want to remove this server?"
 msgstr "このサーバーを削除しますか？"
 
-#: src/components/NgxConfigEditor/NgxServer.vue:100
+#: src/components/NgxConfigEditor/NgxServer.vue:102
 msgid "No servers configured"
 msgstr "サーバーが設定されていません"
 
-#: src/components/NgxConfigEditor/NgxServer.vue:115
+#: src/components/NgxConfigEditor/NgxServer.vue:117
 msgid "Add Server"
 msgstr "サーバーを追加"
 
-#: src/components/NgxConfigEditor/NgxServer.vue:164
+#: src/components/NgxConfigEditor/NgxServer.vue:166
 #: src/components/NgxConfigEditor/NgxUpstream.vue:130 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:55
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:120
@@ -886,16 +888,16 @@ msgstr "このアップストリームを削除しますか？"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:114
 #: src/views/backup/AutoBackup/AutoBackup.vue:193
 #: src/views/backup/AutoBackup/AutoBackup.vue:203
-#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:171
-#: src/views/node/nodeColumns.tsx:177
+#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:168
+#: src/views/node/nodeColumns.tsx:174
 #: src/views/preference/components/ExternalNotify/columns.tsx:60
 #: src/views/preference/tabs/HTTPSettings.vue:36
 #: src/views/preference/tabs/LogrotateSettings.vue:16
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:40
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:78
-#: src/views/site/site_list/columns.tsx:143 src/views/stream/columns.tsx:108
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:80
+#: src/views/site/site_list/columns.tsx:149 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:49
 #: src/views/user/userColumns.tsx:36
@@ -940,7 +942,7 @@ msgstr "アップストリーム名"
 #: src/views/preference/tabs/AccessTokens.vue:50
 #: src/views/preference/tabs/AccessTokens.vue:266
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:36
-#: src/views/site/site_list/columns.tsx:30
+#: src/views/site/site_list/columns.tsx:36
 #: src/views/site/site_list/SiteDuplicate.vue:84
 #: src/views/stream/columns.tsx:26
 #: src/views/stream/components/RightPanel/Basic.vue:31
@@ -1330,91 +1332,109 @@ msgid "Save site %{name} to %{node} successfully"
 msgstr "サイト %{name} を %{node} に正常に保存しました"
 
 #: src/components/Notification/notifications.ts:189
+msgid "Site Health Check Failed"
+msgstr "サイトのヘルスチェックに失敗しました"
+
+#: src/components/Notification/notifications.ts:190
+msgid ""
+"Site %{site} on node %{node} failed its health check for %{failure_count} "
+"consecutive attempts: %{error}"
+msgstr "ノード %{node} 上のサイト %{site} は %{failure_count} 回連続でヘルスチェックに失敗しました：%{error}"
+
+#: src/components/Notification/notifications.ts:193
+msgid "Site Health Check Recovered"
+msgstr "サイトヘルスチェックが復旧しました"
+
+#: src/components/Notification/notifications.ts:194
+msgid "Site %{site} on node %{node} recovered. Target: %{target}"
+msgstr "ノード %{node} 上のサイト %{site} が復旧しました。ターゲット: %{target}"
+
+#: src/components/Notification/notifications.ts:197
 msgid "Delete Remote Stream Error"
 msgstr "リモートストリーム削除エラー"
 
-#: src/components/Notification/notifications.ts:190
+#: src/components/Notification/notifications.ts:198
 msgid "Delete stream %{name} from %{node} failed"
 msgstr "%{node} からのストリーム %{name} の削除に失敗しました"
 
-#: src/components/Notification/notifications.ts:193
+#: src/components/Notification/notifications.ts:201
 msgid "Delete Remote Stream Success"
 msgstr "リモートストリームの削除に成功しました"
 
-#: src/components/Notification/notifications.ts:194
+#: src/components/Notification/notifications.ts:202
 msgid "Delete stream %{name} from %{node} successfully"
 msgstr "ストリーム %{name} を %{node} から削除しました"
 
-#: src/components/Notification/notifications.ts:197
+#: src/components/Notification/notifications.ts:205
 msgid "Disable Remote Stream Error"
 msgstr "リモートストリーム無効化エラー"
 
-#: src/components/Notification/notifications.ts:198
+#: src/components/Notification/notifications.ts:206
 msgid "Disable stream %{name} from %{node} failed"
 msgstr "ノード %{node} からのストリーム %{name} の無効化に失敗しました"
 
-#: src/components/Notification/notifications.ts:201
+#: src/components/Notification/notifications.ts:209
 msgid "Disable Remote Stream Success"
 msgstr "リモートストリームの無効化に成功しました"
 
-#: src/components/Notification/notifications.ts:202
+#: src/components/Notification/notifications.ts:210
 msgid "Disable stream %{name} from %{node} successfully"
 msgstr "ストリーム %{name} を %{node} から無効化しました"
 
-#: src/components/Notification/notifications.ts:205
+#: src/components/Notification/notifications.ts:213
 msgid "Enable Remote Stream Error"
 msgstr "リモートストリームの有効化エラー"
 
-#: src/components/Notification/notifications.ts:206
+#: src/components/Notification/notifications.ts:214
 msgid "Enable stream %{name} on %{node} failed"
 msgstr "ストリーム %{name} を %{node} で有効化できませんでした"
 
-#: src/components/Notification/notifications.ts:209
+#: src/components/Notification/notifications.ts:217
 msgid "Enable Remote Stream Success"
 msgstr "リモートストリームの有効化成功"
 
-#: src/components/Notification/notifications.ts:210
+#: src/components/Notification/notifications.ts:218
 msgid "Enable stream %{name} on %{node} successfully"
 msgstr "ストリーム %{name} を %{node} で有効化しました"
 
-#: src/components/Notification/notifications.ts:213
+#: src/components/Notification/notifications.ts:221
 msgid "Rename Remote Stream Error"
 msgstr "リモートストリームの名前変更エラー"
 
-#: src/components/Notification/notifications.ts:214
+#: src/components/Notification/notifications.ts:222
 msgid "Rename stream %{name} to %{new_name} on %{node} failed"
 msgstr "ストリーム %{name} を %{new_name} にリネームする際に %{node} で失敗しました"
 
-#: src/components/Notification/notifications.ts:217
+#: src/components/Notification/notifications.ts:225
 msgid "Rename Remote Stream Success"
 msgstr "リモートストリームの名前変更成功"
 
-#: src/components/Notification/notifications.ts:218
+#: src/components/Notification/notifications.ts:226
 msgid "Rename stream %{name} to %{new_name} on %{node} successfully"
 msgstr "ストリーム %{name} を %{new_name} に名前変更しました（%{node}）"
 
-#: src/components/Notification/notifications.ts:221
+#: src/components/Notification/notifications.ts:229
 msgid "Save Remote Stream Error"
 msgstr "リモートストリームの保存エラー"
 
-#: src/components/Notification/notifications.ts:222
+#: src/components/Notification/notifications.ts:230
 msgid "Save stream %{name} to %{node} failed"
 msgstr "ストリーム %{name} を %{node} に保存できませんでした"
 
-#: src/components/Notification/notifications.ts:225
+#: src/components/Notification/notifications.ts:233
 msgid "Save Remote Stream Success"
 msgstr "リモートストリームの保存に成功しました"
 
-#: src/components/Notification/notifications.ts:226
+#: src/components/Notification/notifications.ts:234
 msgid "Save stream %{name} to %{node} successfully"
 msgstr "ストリーム %{name} を %{node} に正常に保存しました"
 
-#: src/components/Notification/notifications.ts:229
+#: src/components/Notification/notifications.ts:237
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "すべてのリカバリーコードが使用済みです"
 
-#: src/components/Notification/notifications.ts:230
+#: src/components/Notification/notifications.ts:238
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -1445,7 +1465,7 @@ msgstr "ポート"
 #: src/views/node/nodeColumns.tsx:142
 #: src/views/preference/tabs/AccessTokens.vue:54
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:29
-#: src/views/site/site_list/columns.tsx:126 src/views/stream/columns.tsx:87
+#: src/views/site/site_list/columns.tsx:132 src/views/stream/columns.tsx:87
 msgid "Status"
 msgstr "ステータス"
 
@@ -1864,7 +1884,7 @@ msgid "N/A"
 msgstr "該当なし"
 
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:51
-#: src/composables/useUpstreamStatus.ts:146
+#: src/composables/useUpstreamStatus.ts:148
 msgid "Main Node"
 msgstr "メインノード"
 
@@ -1881,21 +1901,21 @@ msgid "Synchronization finished with %{count} failures"
 msgstr "同期が完了しましたが %{count} 件が失敗しました"
 
 #: src/composables/useGeoTranslation.ts:165
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:312
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:339
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:134
 msgid "High"
 msgstr "高い"
 
 #: src/composables/useGeoTranslation.ts:166
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:312
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:339
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:134
 msgid "Low"
 msgstr "低い"
 
 #: src/composables/useGeoTranslation.ts:167
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:209
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:298
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:323
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:236
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:325
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:350
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:19
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:117
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:145
@@ -1905,8 +1925,8 @@ msgstr "訪問数"
 
 #: src/composables/useGeoTranslation.ts:168
 #: src/views/nginx_log/dashboard/components/BrowserStatsTable.vue:26
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:217
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:299
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:244
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:326
 #: src/views/nginx_log/dashboard/components/DeviceStatsTable.vue:25
 #: src/views/nginx_log/dashboard/components/OSStatsTable.vue:26
 #: src/views/nginx_log/dashboard/components/TopUrlsTable.vue:27
@@ -1916,8 +1936,8 @@ msgid "Percentage"
 msgstr "パーセンテージ"
 
 #: src/composables/useGeoTranslation.ts:169
-#: src/views/dashboard/NginxDashBoard.vue:188
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:304
+#: src/views/dashboard/NginxDashBoard.vue:295
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:331
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:126
 msgid "No data"
 msgstr "データなし"
@@ -2020,7 +2040,7 @@ msgstr "Nginxメモリ使用量"
 msgid "Maximum number of connections per worker process"
 msgstr "ワーカープロセスあたりの最大接続数"
 
-#: src/composables/useUpstreamStatus.ts:122
+#: src/composables/useUpstreamStatus.ts:124
 #: src/views/certificate/CertificateList/certColumns.tsx:24
 #: src/views/certificate/CertificateList/Certificate.vue:44
 #: src/views/config/components/Delete.vue:125
@@ -2030,18 +2050,18 @@ msgstr "ワーカープロセスあたりの最大接続数"
 #: src/views/dns/components/DNSRecordTable.vue:45
 #: src/views/dns/DNSGroupRecordManager.vue:126
 #: src/views/nginx_log/NginxLogList.vue:147
-#: src/views/notification/notificationColumns.tsx:8
+#: src/views/notification/notificationColumns.tsx:27
 #: src/views/preference/components/ExternalNotify/columns.tsx:25
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:57
 msgid "Type"
 msgstr "タイプ"
 
-#: src/composables/useUpstreamStatus.ts:122 src/routes/modules/upstream.ts:10
-#: src/views/home/Home.vue:80 src/views/upstream/SocketList.vue:25
+#: src/composables/useUpstreamStatus.ts:124 src/routes/modules/upstream.ts:10
+#: src/views/home/Home.vue:80 src/views/upstream/SocketList.vue:27
 msgid "Upstream"
 msgstr "アップストリーム"
 
-#: src/composables/useUpstreamStatus.ts:122
+#: src/composables/useUpstreamStatus.ts:124
 msgid "Proxy Pass"
 msgstr "プロキシパス"
 
@@ -3420,13 +3440,13 @@ msgstr "このフィールドは有効なホスト名である必要がありま
 msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "このフィールドには、文字、Unicode 文字、数字、および -_ のみを含める必要があります。"
 
-#: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:28
+#: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:47
 msgid "Info"
 msgstr "情報"
 
 #: src/constants/index.ts:27 src/views/backup/AutoBackup/AutoBackup.vue:224
 #: src/views/backup/AutoBackup/AutoBackup.vue:249
-#: src/views/notification/notificationColumns.tsx:35
+#: src/views/notification/notificationColumns.tsx:54
 msgid "Success"
 msgstr "成功"
 
@@ -3588,6 +3608,7 @@ msgid "item(s)"
 msgstr "アイテム"
 
 #: src/language/curd.ts:7 src/views/nginx_log/NginxLogList.vue:532
+#: src/views/notification/notificationColumns.tsx:101
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:109
 #: src/views/system/Licenses.vue:187
 msgid "View"
@@ -3674,10 +3695,10 @@ msgstr "少なくとも1つの項目を選択してください"
 msgid "Batch Modify"
 msgstr "一括変更"
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:97
+#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:113
 #: src/views/certificate/components/RenewCert.vue:21
 #: src/views/preference/NginxHostSetup.vue:84
-#: src/views/preference/store/index.ts:180
+#: src/views/preference/store/index.ts:181
 #: src/views/preference/tabs/NginxSettings.vue:138
 msgid "Save successfully"
 msgstr "保存に成功しました"
@@ -3778,14 +3799,18 @@ msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
 msgstr "バンドルされている nginx-ui.conf には WebSocket リバースプロキシの修正が含まれています"
 
 #: src/language/generate.ts:5
+msgid "Certificate deleted, but revocation failed: %{error}"
+msgstr "証明書は削除されましたが、失効に失敗しました: %{error}"
+
+#: src/language/generate.ts:6
 msgid "Certificate not found: %{error}"
 msgstr "証明書が見つかりません: %{error}"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:7
 msgid "Certificate revoked successfully"
 msgstr "証明書の失効に成功しました"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:8
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
@@ -3805,7 +3830,7 @@ msgstr ""
 "アップグレード時にバイナリの置き換えではなくコンテナの置き換えを実行するために使用され、コンテナの依存関係もアップグレードされるようにします。この機能が"
 "必要ない場合は、環境変数 NGINX_UI_IGNORE_DOCKER_SOCKET=true をコンテナに追加してください。"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:9
 msgid ""
 "Check if Nginx UI can write a temporary file to the configured Nginx "
 "directory and the external Nginx container can see it at the same path. "
@@ -3817,7 +3842,7 @@ msgstr ""
 "コンテナが同じパスでそれを確認できるかどうかを確認します。Docker ソケットアクセスと ContainerName "
 "は制御コマンドのルーティングのみを行います。設定ディレクトリとログディレクトリは、一致するパスで両方のコンテナにマウントする必要があります。"
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:10
 msgid ""
 "Check if the GeoLite2 database is available when log indexing is enabled. "
 "The GeoLite2 database is required for geographic IP analysis in log "
@@ -3828,11 +3853,11 @@ msgstr ""
 "データベースは、ログインデックスの地理的 IP 分析に必要です。設定ページからダウンロードするか、app.ini と同じディレクトリに "
 "GeoLite2-City.mmdb を手動で配置できます"
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:11
 msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr "conf.d ディレクトリが nginx の設定ディレクトリの下にあるか確認してください"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:12
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
@@ -3845,7 +3870,7 @@ msgstr ""
 "から取得されます。取得できない場合、エラーが報告されます。この場合、設定ファイルを変更してNginxのPIDパスを指定する必要があります。詳細はドキュメ"
 "ントを参照してください: https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:13
 msgid ""
 "Check if the nginx access log path exists. By default, this path is "
 "obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
@@ -3859,15 +3884,15 @@ msgstr ""
 "クセスログのパスを指定する必要があります。詳細についてはドキュメントを参照してください: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:14
 msgid "Check if the nginx configuration directory exists"
 msgstr "nginxの設定ディレクトリが存在するか確認する"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:15
 msgid "Check if the nginx configuration entry file exists"
 msgstr "nginxの設定エントリファイルが存在するか確認する"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:16
 msgid ""
 "Check if the nginx error log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
@@ -3881,59 +3906,59 @@ msgstr ""
 "ラーログのパスを指定する必要があります。詳細についてはドキュメントを参照してください: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:17
 msgid "Check if the nginx sbin path exists"
 msgstr "nginx の sbin パスが存在するか確認してください"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:18
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "nginx.conf に conf.d ディレクトリが含まれているか確認する"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:19
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "nginx.conf に sites-enabled ディレクトリが含まれているか確認する"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:20
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "nginx.conf に streams-enabled ディレクトリが含まれているか確認する"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:21
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
 msgstr "nginx の設定ディレクトリに sites-available と sites-enabled ディレクトリがあるか確認する"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:22
 msgid ""
 "Check if the streams-available and streams-enabled directories are under "
 "the nginx configuration directory"
 msgstr "nginxの設定ディレクトリにstreams-availableとstreams-enabledディレクトリがあるか確認する"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:23
 msgid "Conf.d directory exists"
 msgstr "conf.d ディレクトリが存在します"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:24
 msgid "Docker socket exists"
 msgstr "Docker ソケットが存在します"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:25
 msgid "External Nginx configuration directory is shared"
 msgstr "外部の Nginx 設定ディレクトリが共有されています。"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:26
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "データベースから証明書の削除に失敗しました: %{error}"
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:27
 msgid "Failed to revoke certificate: %{error}"
 msgstr "証明書の失効に失敗しました: %{error}"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:28
 msgid "GeoLite2 database available"
 msgstr "GeoLite2 データベースが利用可能です"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:29
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to "
@@ -3942,51 +3967,51 @@ msgstr ""
 "ログファイル %{log_path} は通常のファイルではありません。Docker コンテナで nginx-ui を使用している場合は、詳細について "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html を参照してください。"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:30
 msgid "Nginx PID path exists"
 msgstr "Nginx PID パスが存在します"
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:31
 msgid "Nginx access log path exists"
 msgstr "Nginx アクセスログのパスが存在します"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:32
 msgid "Nginx configuration directory exists"
 msgstr "Nginx 設定ディレクトリが存在します"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:33
 msgid "Nginx configuration entry file exists"
 msgstr "Nginx 設定エントリファイルが存在します"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:34
 msgid "Nginx error log path exists"
 msgstr "Nginxエラーログのパスが存在します"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:35
 msgid "Nginx sbin path exists"
 msgstr "Nginx の Sbin パスが存在します"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:36
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Nginx.conf は conf.d ディレクトリを含んでいます"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:37
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Nginx.conf は sites-enabled ディレクトリを含んでいます"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:38
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf には streams-enabled ディレクトリが含まれています"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:39
 msgid "Sites directory exists"
 msgstr "サイトディレクトリが存在します"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:40
 msgid "Streams directory exists"
 msgstr "ストリームディレクトリが存在します"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:41
 msgid ""
 "When the container is behind an outer reverse proxy that terminates TLS "
 "(e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust "
@@ -3999,87 +4024,95 @@ msgstr ""
 "WebSocket オリジンチェックが失敗します。/etc/nginx "
 "を永続化している古いデプロイメントでは、未修正のバージョンが残っている可能性があります。"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:42
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] ACME ユーザー: %{name}、メール: %{email}、CA ディレクトリ: %{caDir}"
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:43
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] 現在の証明書を後で失効させるためにバックアップ中"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:44
+msgid "[Nginx UI] Certificate has already expired, no revocation needed"
+msgstr "[Nginx UI] 証明書は既に有効期限切れのため、失効処理は不要です"
+
+#: src/language/generate.ts:45
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "[Nginx UI] 証明書の更新が成功しました"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:46
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] 証明書の失効に成功しました"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:47
+msgid "[Nginx UI] Certificate was already revoked by the CA"
+msgstr "[Nginx UI] 証明書は既に CA によって失効されています"
+
+#: src/language/generate.ts:48
 msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] サーバーで証明書が使用されました、サーバーのTLS 証明書を再読み込み中"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:49
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] CA サーバーとの通信を容易にするクライアントを作成中"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:50
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "[Nginx UI] 環境変数をクリーンアップしました"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:51
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 完了しました"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:52
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "[Nginx UI] 証明書の発行に成功しました"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:53
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] 証明書を取得中"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:54
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] 証明書の失効準備中"
 
-#: src/language/generate.ts:52
+#: src/language/generate.ts:55
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Lego 設定の準備中"
 
-#: src/language/generate.ts:53
+#: src/language/generate.ts:56
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Nginx を再読み込み中"
 
-#: src/language/generate.ts:54
+#: src/language/generate.ts:57
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] 失効が完了しました"
 
-#: src/language/generate.ts:55
+#: src/language/generate.ts:58
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] 証明書を失効中"
 
-#: src/language/generate.ts:56
+#: src/language/generate.ts:59
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] 古い証明書を失効中"
 
-#: src/language/generate.ts:57
+#: src/language/generate.ts:60
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] DNS01 チャレンジプロバイダーを設定中"
 
-#: src/language/generate.ts:58
+#: src/language/generate.ts:61
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] HTTP01 チャレンジプロバイダーの設定"
 
-#: src/language/generate.ts:59
+#: src/language/generate.ts:62
 msgid "[Nginx UI] Setting environment variables"
 msgstr "[Nginx UI] 環境変数の設定"
 
-#: src/language/generate.ts:60
+#: src/language/generate.ts:63
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] 証明書の秘密鍵をディスクに書き込んでいます"
 
-#: src/language/generate.ts:61
+#: src/language/generate.ts:64
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 証明書をディスクに書き込み中"
 
@@ -4142,12 +4175,12 @@ msgid "Certificates List"
 msgstr "証明書リスト"
 
 #: src/routes/modules/certificates.ts:44
-#: src/views/certificate/CertificateEditor.vue:132
+#: src/views/certificate/CertificateEditor.vue:148
 msgid "Modify Certificate"
 msgstr "証明書を変更"
 
 #: src/routes/modules/certificates.ts:54
-#: src/views/certificate/CertificateEditor.vue:132
+#: src/views/certificate/CertificateEditor.vue:148
 #: src/views/certificate/index.vue:17
 msgid "Import Certificate"
 msgstr "証明書をインポート"
@@ -4374,15 +4407,15 @@ msgstr "毎月%{day}日%{time}に"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:194
 #: src/views/backup/AutoBackup/AutoBackup.vue:204
-#: src/views/dashboard/components/SiteCard.vue:162
-#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:159
-#: src/views/node/nodeColumns.tsx:180
+#: src/views/dashboard/components/SiteCard.vue:189
+#: src/views/dns/DDNSManager.vue:356 src/views/node/nodeColumns.tsx:154
+#: src/views/node/nodeColumns.tsx:177
 #: src/views/preference/tabs/HTTPSettings.vue:36
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:44
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:84
-#: src/views/site/site_list/columns.tsx:147 src/views/stream/columns.tsx:112
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:86
+#: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:55
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
@@ -4412,7 +4445,7 @@ msgstr "失敗"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:258
 #: src/views/namespace/columns.ts:110
-#: src/views/notification/notificationColumns.tsx:51
+#: src/views/notification/notificationColumns.tsx:70
 #: src/views/preference/components/AuthSettings/Passkey.vue:97
 #: src/views/preference/components/ExternalNotify/columns.tsx:93
 #: src/views/user/userColumns.tsx:46
@@ -4424,9 +4457,9 @@ msgstr "作成日時"
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
 #: src/views/dns/DNSDomainList.vue:255 src/views/dns/DNSGroupList.vue:34
-#: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:191
+#: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:188
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:47
-#: src/views/site/site_list/columns.tsx:119 src/views/stream/columns.tsx:80
+#: src/views/site/site_list/columns.tsx:125 src/views/stream/columns.tsx:80
 #: src/views/stream/components/RightPanel/Basic.vue:35
 #: src/views/user/userColumns.tsx:52
 msgid "Updated at"
@@ -4468,11 +4501,11 @@ msgstr "S3リージョン"
 #: src/views/dns/DNSGroupRecordManager.vue:146
 #: src/views/dns/DNSGroupRecordManager.vue:1363
 #: src/views/namespace/columns.ts:122 src/views/nginx_log/NginxLogList.vue:339
-#: src/views/node/nodeColumns.tsx:198
-#: src/views/notification/notificationColumns.tsx:72
+#: src/views/node/nodeColumns.tsx:195
+#: src/views/notification/notificationColumns.tsx:106
 #: src/views/preference/components/ExternalNotify/columns.tsx:98
 #: src/views/preference/components/ExternalNotify/labels.ts:7
-#: src/views/site/site_list/columns.tsx:161 src/views/stream/columns.tsx:123
+#: src/views/site/site_list/columns.tsx:167 src/views/stream/columns.tsx:123
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "操作"
@@ -4783,23 +4816,23 @@ msgstr "登録ステータス"
 msgid "Register"
 msgstr "登録"
 
-#: src/views/certificate/CertificateEditor.vue:71
+#: src/views/certificate/CertificateEditor.vue:87
 #: src/views/certificate/components/DNSIssueCertificate.vue:140
 #: src/views/certificate/components/SelfSignedCertForm.vue:47
 msgid "Please enter a name for the certificate"
 msgstr "証明書の名前を入力してください"
 
-#: src/views/certificate/CertificateEditor.vue:75
+#: src/views/certificate/CertificateEditor.vue:91
 #: src/views/certificate/components/DNSIssueCertificate.vue:144
 #: src/views/certificate/components/SelfSignedCertForm.vue:51
 msgid "Please enter at least one domain or IP address"
 msgstr "少なくとも1つのドメインまたはIPアドレスを入力してください"
 
-#: src/views/certificate/CertificateEditor.vue:94
+#: src/views/certificate/CertificateEditor.vue:110
 msgid "Saved certificate response is missing an ID"
 msgstr "保存された証明書の応答に ID がありません"
 
-#: src/views/certificate/CertificateEditor.vue:181
+#: src/views/certificate/CertificateEditor.vue:197
 msgid "Log"
 msgstr "ログ"
 
@@ -4939,7 +4972,7 @@ msgstr[0] "証明書のステータス"
 #: src/views/preference/NginxHostSetup.vue:129
 #: src/views/preference/NginxHostSetup.vue:147
 #: src/views/site/site_add/SiteAdd.vue:325
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:201
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:203
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
 msgstr "戻る"
@@ -5173,53 +5206,57 @@ msgstr "次へ"
 msgid "Retry"
 msgstr "再試行"
 
-#: src/views/certificate/components/RemoveCert.vue:38
-#: src/views/certificate/components/RemoveCert.vue:120
+#: src/views/certificate/components/RemoveCert.vue:46
+#: src/views/certificate/components/RemoveCert.vue:130
 msgid "Revoke"
 msgstr "取り消す"
 
-#: src/views/certificate/components/RemoveCert.vue:39
+#: src/views/certificate/components/RemoveCert.vue:47
 msgid "Please type \"Revoke\" to confirm"
 msgstr "確認のために「取り消す」と入力してください"
 
-#: src/views/certificate/components/RemoveCert.vue:64
-#: src/views/certificate/components/RemoveCert.vue:84
+#: src/views/certificate/components/RemoveCert.vue:73
+#: src/views/certificate/components/RemoveCert.vue:95
 msgid "Certificate removed successfully"
 msgstr "証明書の削除に成功しました"
 
-#: src/views/certificate/components/RemoveCert.vue:71
+#: src/views/certificate/components/RemoveCert.vue:82
 msgid "Failed to revoke certificate"
 msgstr "証明書の失効に失敗しました"
 
-#: src/views/certificate/components/RemoveCert.vue:77
+#: src/views/certificate/components/RemoveCert.vue:88
 msgid "WebSocket connection error"
 msgstr "WebSocket 接続エラー"
 
-#: src/views/certificate/components/RemoveCert.vue:89
+#: src/views/certificate/components/RemoveCert.vue:98
 msgid "Failed to delete certificate"
 msgstr "証明書の削除に失敗しました"
 
-#: src/views/certificate/components/RemoveCert.vue:117
+#: src/views/certificate/components/RemoveCert.vue:127
 msgid "Delete Certificate"
 msgstr "証明書を削除"
 
-#: src/views/certificate/components/RemoveCert.vue:128
+#: src/views/certificate/components/RemoveCert.vue:138
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
 msgstr "この操作はデータベースから証明書を削除するのみです。ファイルシステム上の証明書ファイルは削除されません。"
 
-#: src/views/certificate/components/RemoveCert.vue:134
+#: src/views/certificate/components/RemoveCert.vue:144
 msgid "Revoke this certificate"
 msgstr "この証明書を失効させる"
 
-#: src/views/certificate/components/RemoveCert.vue:142
+#: src/views/certificate/components/RemoveCert.vue:148
+msgid "Delete the certificate even if revocation fails"
+msgstr "失効に失敗した場合でも証明書を削除する"
+
+#: src/views/certificate/components/RemoveCert.vue:157
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
 msgstr "証明書を失効させると、現在それを使用しているすべてのサービスに影響します。この操作は元に戻せません。"
 
-#: src/views/certificate/components/RemoveCert.vue:146
+#: src/views/certificate/components/RemoveCert.vue:161
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr "失効を確認するには、下の欄に「失効」と入力してください："
 
@@ -5309,7 +5346,7 @@ msgid "Format successfully"
 msgstr "フォーマットが成功しました"
 
 #: src/views/config/components/ConfigLeftPanel.vue:255
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:103
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:105
 #: src/views/stream/components/StreamEditor.vue:68
 msgid "History"
 msgstr "履歴"
@@ -5953,32 +5990,36 @@ msgid ""
 "processes"
 msgstr "Resident Set Size: 物理メモリに実際に存在するメモリで、共有ライブラリのメモリを含み、複数のプロセスに対して繰り返し計算されます"
 
-#: src/views/dashboard/components/SiteCard.vue:93
+#: src/views/dashboard/components/SiteCard.vue:94
 msgid "TLS certificate not trusted"
 msgstr "TLS 証明書は信頼されていません"
 
-#: src/views/dashboard/components/SiteCard.vue:95
+#: src/views/dashboard/components/SiteCard.vue:96
 msgid "Hostname could not be resolved"
 msgstr "ホスト名を解決できませんでした"
 
-#: src/views/dashboard/components/SiteCard.vue:97
+#: src/views/dashboard/components/SiteCard.vue:98
 msgid "Connection refused"
 msgstr "接続が拒否されました"
 
-#: src/views/dashboard/components/SiteCard.vue:99
+#: src/views/dashboard/components/SiteCard.vue:100
 msgid "Connection timed out"
 msgstr "接続がタイムアウトしました"
 
-#: src/views/dashboard/components/SiteCard.vue:101
+#: src/views/dashboard/components/SiteCard.vue:102
 msgid "Network unreachable"
 msgstr "ネットワークに到達できません"
 
-#: src/views/dashboard/components/SiteCard.vue:103
+#: src/views/dashboard/components/SiteCard.vue:104
 msgid "Invalid health check request"
 msgstr "無効なヘルスチェックリクエスト"
 
-#: src/views/dashboard/components/SiteCard.vue:170
-#: src/views/upstream/SocketList.vue:42
+#: src/views/dashboard/components/SiteCard.vue:133
+msgid "%{days}d"
+msgstr "%{days}日"
+
+#: src/views/dashboard/components/SiteCard.vue:197
+#: src/views/upstream/SocketList.vue:44
 msgid "Paused"
 msgstr "一時停止中"
 
@@ -6002,89 +6043,93 @@ msgstr "クライアントエラーレスポンス (4xx)"
 msgid "Server Error Responses (5xx)"
 msgstr "サーバーエラーレスポンス (5xx)"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:464
-msgid "Health check configuration saved successfully"
-msgstr "ヘルスチェック設定が正常に保存されました"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:467
-msgid "Saved locally, but failed to synchronize %{count} node(s)"
-msgstr "ローカルには保存しましたが、%{count} 個のノードへの同期に失敗しました"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:477
-msgid "Failed to save health check configuration"
-msgstr "ヘルスチェック設定の保存に失敗しました"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:514
-msgid "Test successful! Response time: %{response_time}ms"
-msgstr "テスト成功！ 応答時間: %{response_time}ms"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:517
-msgid "Test failed: %{error}"
-msgstr "テスト失敗: %{error}"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:522
-msgid "Test failed: Unable to perform health check"
-msgstr "テスト失敗: ヘルスチェックを実行できませんでした"
-
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:532
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:414
 msgid "Health Check Configuration"
 msgstr "ヘルスチェック設定"
 
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:486
+msgid "Health check configuration saved successfully"
+msgstr "ヘルスチェック設定が正常に保存されました"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:489
+msgid "Saved locally, but failed to synchronize %{count} node(s)"
+msgstr "ローカルには保存しましたが、%{count} 個のノードへの同期に失敗しました"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:499
+msgid "Failed to save health check configuration"
+msgstr "ヘルスチェック設定の保存に失敗しました"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:536
+msgid "Test successful! Response time: %{response_time}ms"
+msgstr "テスト成功！ 応答時間: %{response_time}ms"
+
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:539
+msgid "Test failed: %{error}"
+msgstr "テスト失敗: %{error}"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:544
+msgid "Test failed: Unable to perform health check"
+msgstr "テスト失敗: ヘルスチェックを実行できませんでした"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:560
+msgid "Server Name"
+msgstr "サーバー名"
+
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:568
 msgid "Enable Health Check"
 msgstr "ヘルスチェックを有効にする"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:543
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:572
 msgid "Health check is enabled"
 msgstr "ヘルスチェックが有効です"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:543
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:572
 msgid "Health check is disabled"
 msgstr "ヘルスチェックは無効です"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:551
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:580
 msgid "Protocol"
 msgstr "プロトコル"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:569
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:598
 msgid "Custom Health Check Target"
 msgstr "カスタムヘルスチェック対象"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:570
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:599
 msgid ""
 "Optional absolute URL. Use it when the public address differs from the "
 "actual upstream host or port."
 msgstr "任意の絶対 URL です。公開アドレスが実際のアップストリームのホストやポートと異なる場合に使用します。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:583
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:612
 msgid "HTTP Method"
 msgstr "HTTPメソッド"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:594
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:623
 msgid "Custom Headers"
 msgstr "カスタムヘッダー"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:609
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:638
 msgid "Add Header"
 msgstr "ヘッダーを追加"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:614
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:643
 msgid "Request Body"
 msgstr "リクエストボディ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:618
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:647
 msgid "Expected Status Codes"
 msgstr "予期されるステータスコード"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:630
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:659
 msgid "Expected Text"
 msgstr "予期されるテキスト"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:635
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:664
 msgid "Not Expected Text"
 msgstr "予期しないテキスト"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:647
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:676
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
@@ -6092,13 +6137,13 @@ msgstr ""
 "gRPCSはTLS 暗号化を使用します。サーバーはgRPCヘルスチェックサービスを実装する必要があります。テストでは、SSL "
 "検証はデフォルトで無効になっています。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:648
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:677
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
 msgstr "gRPCヘルスチェックでは、サーバーがgRPCヘルスチェックサービス（grpc.health.v1.Health）を実装している必要があります。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:651
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:680
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
@@ -6106,117 +6151,118 @@ msgstr ""
 "注: サーバーが gRPC リフレクションをサポートしていない場合、ヘルスチェックが失敗する可能性があります。gRPC "
 "サーバーでリフレクションが有効になっていることを確認してください。"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:656
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:685
 msgid "Service Name"
 msgstr "サービス名"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:661
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:690
 msgid "Method Name"
 msgstr "メソッド名"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:669
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:698
 msgid "Advanced Settings"
 msgstr "詳細設定"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:673
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:702
 msgid "Check Interval (seconds)"
 msgstr "チェック間隔（秒）"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:678
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:707
 msgid "Timeout (seconds)"
 msgstr "タイムアウト（秒）"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:684
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:713
 #: src/views/nginx_log/structured/components/SearchFilters.vue:200
 msgid "User Agent"
 msgstr "ユーザーエージェント"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:691
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:720
 msgid "Max Redirects"
 msgstr "最大リダイレクト数"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:698
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:727
 msgid "Follow Redirects"
 msgstr "リダイレクトをフォロー"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:706
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:735
 msgid "Validate SSL Certificate"
 msgstr "SSL 証明書を検証"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:712
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:741
 msgid "Verify Hostname"
 msgstr "ホスト名を確認"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:718
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:747
 msgid "Check Favicon"
 msgstr "ファビコンをチェック"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:726
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:755
 msgid "DNS Resolver"
 msgstr "DNSリゾルバ"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:731
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:760
 msgid "Source IP"
 msgstr "送信元 IP"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:740
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:769
 msgid "Client Certificate"
 msgstr "クライアント証明書"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:745
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:774
 msgid "Client Key"
 msgstr "クライアントキー"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:756
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:785
 msgid "Failure Notifications"
 msgstr "失敗通知"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:760
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:789
 msgid "Notifications are enabled"
 msgstr "通知は有効です"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:760
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:789
 msgid "Notifications are disabled"
 msgstr "通知は無効です"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:766
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:795
 msgid "Failure Status Codes"
 msgstr "失敗とみなすステータスコード"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:772
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:801
 msgid "Select status codes"
 msgstr "ステータスコードを選択"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:779
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:808
 msgid "Notify on connection, DNS, and timeout errors"
 msgstr "接続・DNS・タイムアウトのエラー時に通知する"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:785
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:814
 msgid "Consecutive Failures"
 msgstr "連続失敗回数"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:796
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:825
 msgid "Reminder Cooldown (seconds)"
 msgstr "再通知の待機時間（秒）"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:810
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:839
 msgid "Notify when the site recovers"
 msgstr "サイトが復旧したときに通知する"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:814
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:843
 msgid "Notification Channels"
 msgstr "通知チャンネル"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:820
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:849
 msgid "Select notification channels"
 msgstr "通知チャンネルを選択"
 
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:838
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:867
 #: src/views/preference/tabs/ExternalNotify.vue:111
 msgid "Test"
 msgstr "テスト"
 
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:36
+#: src/views/dashboard/NginxDashBoard.vue:236
 msgid "Disconnected"
 msgstr "切断されました"
 
@@ -6240,55 +6286,55 @@ msgstr "Nginx のパフォーマンス指標とプロセスレベルの洞察を
 msgid "Navigate configured sites and monitor availability and health checks."
 msgstr "設定済みサイトを閲覧し、可用性とヘルスチェックを監視します。"
 
-#: src/views/dashboard/NginxDashBoard.vue:56
+#: src/views/dashboard/NginxDashBoard.vue:162
 msgid "Toggle failed"
 msgstr "切り替えに失敗しました"
 
-#: src/views/dashboard/NginxDashBoard.vue:86
-msgid "Connection error, trying to reconnect..."
-msgstr "接続エラー、再接続を試みています..."
-
-#: src/views/dashboard/NginxDashBoard.vue:120
+#: src/views/dashboard/NginxDashBoard.vue:216
 msgid "Nginx is running"
 msgstr "Nginx は実行中です"
 
-#: src/views/dashboard/NginxDashBoard.vue:124
+#: src/views/dashboard/NginxDashBoard.vue:221
 msgid "Last update"
 msgstr "最終更新"
 
-#: src/views/dashboard/NginxDashBoard.vue:140
+#: src/views/dashboard/NginxDashBoard.vue:237
+msgid "Connection error, trying to reconnect..."
+msgstr "接続エラー、再接続を試みています..."
+
+#: src/views/dashboard/NginxDashBoard.vue:247
 msgid "Cannot get performance data in this state"
 msgstr "この状態でパフォーマンスデータを取得できません"
 
-#: src/views/dashboard/NginxDashBoard.vue:149
+#: src/views/dashboard/NginxDashBoard.vue:256
 msgid "Get data failed"
 msgstr "データの取得に失敗しました"
 
-#: src/views/dashboard/NginxDashBoard.vue:158
+#: src/views/dashboard/NginxDashBoard.vue:265
 msgid "Enable stub_status module"
 msgstr "stub_status モジュールを有効にする"
 
-#: src/views/dashboard/NginxDashBoard.vue:161
+#: src/views/dashboard/NginxDashBoard.vue:268
 msgid ""
 "This module provides Nginx request statistics, connection count, etc. data. "
 "After enabling it, you can view performance statistics"
 msgstr "このモジュールは、Nginxのリクエスト統計、接続数などのデータを提供します。有効にすると、パフォーマンス統計を表示できます"
 
-#: src/views/dashboard/NginxDashBoard.vue:181
+#: src/views/dashboard/NginxDashBoard.vue:288
 msgid "Need to enable the stub_status module"
 msgstr "stub_statusモジュールを有効にする必要があります"
 
-#: src/views/dashboard/NginxDashBoard.vue:182
+#: src/views/dashboard/NginxDashBoard.vue:289
 msgid ""
 "Please enable the stub_status module to get request statistics, connection "
 "count, etc."
 msgstr "リクエスト統計や接続数などを取得するには、stub_statusモジュールを有効にしてください。"
 
-#: src/views/dashboard/NginxDashBoard.vue:186
+#: src/views/dashboard/NginxDashBoard.vue:293
 msgid "Loading data..."
 msgstr "データを読み込んでいます..."
 
-#: src/views/dashboard/NginxDashBoard.vue:193
+#: src/views/dashboard/NginxDashBoard.vue:300
 msgid "Performance Metrics"
 msgstr "パフォーマンスメトリクス"
 
@@ -6881,7 +6927,7 @@ msgstr "操作"
 
 #: src/views/dns/DNSGroupRecordManager.vue:165
 #: src/views/dns/DNSGroupRecordManager.vue:186
-#: src/views/notification/notificationColumns.tsx:66
+#: src/views/notification/notificationColumns.tsx:85
 msgid "Details"
 msgstr "詳細"
 
@@ -7509,7 +7555,7 @@ msgid ""
 msgstr "保存場所を変更したい場合は、Nginx UI 設定の `nginx_log` セクションの `IndexPath` を設定できます。"
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:179
-#: src/views/preference/tabs/GeoLiteSettings.vue:36
+#: src/views/preference/tabs/GeoLiteSettings.vue:39
 msgid "GeoLite2 Database"
 msgstr "GeoLite2 データベース"
 
@@ -7642,45 +7688,45 @@ msgstr "カウント"
 msgid "Browser Statistics"
 msgstr "ブラウザ統計"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:96
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:124
 msgid "Failed to load China map data"
 msgstr "中国地図データの読み込みに失敗しました"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:148
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:175
 msgid "Failed to load city map data"
 msgstr "都市地図データの読み込みに失敗しました"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:184
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:211
 msgid "Province / Region"
 msgstr "省 / 地域"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:187
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:214
 msgid "City / C1 / C2 / C3 / C4"
 msgstr "都市 / C1 / C2 / C3 / C4"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:188
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:215
 msgid "City"
 msgstr "都市"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:193
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:220
 msgid "Top 10 Provinces / Regions"
 msgstr "トップ10の省・地域"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:196
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:223
 msgid "Top 10 City Labels (City + C1 + C2 + C3 + C4)"
 msgstr "トップ10 都市ラベル（都市 + C1 + C2 + C3 + C4）"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:197
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:224
 msgid "Top 10 Cities"
 msgstr "トップ10 都市"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:387
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:50
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:414
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:53
 msgid "China Access Map"
 msgstr "中国アクセスマップ"
 
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:403
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:441
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:430
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:468
 msgid "No China geographic data available"
 msgstr "中国の地理データが利用できません"
 
@@ -7743,15 +7789,15 @@ msgstr "デバイスタイプ"
 msgid "Device Statistics"
 msgstr "デバイス統計"
 
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:34
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:37
 msgid "Global Map"
 msgstr "世界地図"
 
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:37
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:40
 msgid "China Map"
 msgstr "中国地図"
 
-#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:50
+#: src/views/nginx_log/dashboard/components/GeoMapChart.vue:53
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:258
 msgid "Global Access Map"
 msgstr "グローバルアクセスマップ"
@@ -8544,9 +8590,13 @@ msgstr "Stream"
 msgid "Notification"
 msgstr "通知"
 
-#: src/views/notification/notificationColumns.tsx:58
+#: src/views/notification/notificationColumns.tsx:77
 msgid "Title"
 msgstr "タイトル"
+
+#: src/views/notification/notificationColumns.tsx:91
+msgid "Go To"
+msgstr "移動先"
 
 #: src/views/other/Error.vue:8
 msgid "File Not Found"
@@ -8860,28 +8910,80 @@ msgstr "ステータスが正常に更新されました"
 msgid "Failed to update status"
 msgstr "ステータスの更新に失敗しました"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:116
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
 msgid "Invalid JSON at line"
 msgstr "無効な JSON（行"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:116
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
 msgid "column"
 msgstr "列"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:160
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:212
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:245
+msgid "Notification title text"
+msgstr "通知タイトルテキスト"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:216
+msgid "Notification content text"
+msgstr "通知コンテンツテキスト"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:220
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:253
+msgid "Notification type code, such as error, warning, info, or success"
+msgstr "通知タイプのコード。例：error、warning、info、success"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:224
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:261
+msgid "Localized notification type label for the current language"
+msgstr "現在の言語でローカライズされた通知タイプのラベル"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:228
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:265
+msgid "Translation key of the notification type, such as Error or Warning"
+msgstr "通知タイプの翻訳キー。Error や Warning など"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:232
+msgid ""
+"Teams notification level color enum: Error=Attention, Warning=Warning, "
+"Info=Accent, Success=Good"
+msgstr "Teams 通知レベルカラーアンサム: Error=Attention、Warning=Warning、Info=Accent、Success=Good"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:236
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:269
+msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
+msgstr "WebAuthn RPOrigins とルートパスから生成された完全な遷移先 URL"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:249
+msgid "Notification content text (HTML-escaped in the default template)"
+msgstr "通知内容テキスト（デフォルトテンプレートでは HTML エスケープされます）"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:257
+msgid "Email notification level color, fixed to #1f2937"
+msgstr "メール通知のレベル色は #1f2937 に固定"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:279
 msgid "Please select a notification type"
 msgstr "通知タイプを選択してください"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:176
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:295
 #: src/views/preference/tabs/ExternalNotify.vue:37
 msgid "Test message sent successfully"
 msgstr "テストメッセージが正常に送信されました"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:207
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:326
 msgid "Microsoft Docs"
 msgstr "Microsoft ドキュメント"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:247
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:335
+msgid "Teams Request Example"
+msgstr "Teams リクエスト例"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:355
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:379
+msgid "Available placeholders"
+msgstr "利用可能なプレースホルダー"
+
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:400
 msgid "Send test message"
 msgstr "テストメッセージを送信"
 
@@ -10208,7 +10310,7 @@ msgstr "アプリ"
 msgid "External Notify"
 msgstr "外部通知"
 
-#: src/views/preference/Preference.vue:61 src/views/upstream/SocketList.vue:64
+#: src/views/preference/Preference.vue:61 src/views/upstream/SocketList.vue:66
 msgid "Health Check"
 msgstr "ヘルスチェック"
 
@@ -10498,19 +10600,41 @@ msgstr "この通知は無効です"
 msgid "Failed to send test message"
 msgstr "テストメッセージの送信に失敗しました"
 
-#: src/views/preference/tabs/GeoLiteSettings.vue:27
+#: src/views/preference/tabs/GeoLiteSettings.vue:30
 msgid "Custom MMDB is currently enabled"
 msgstr "カスタム MMDB は現在有効です"
 
-#: src/views/preference/tabs/GeoLiteSettings.vue:31
+#: src/views/preference/tabs/GeoLiteSettings.vue:34
 msgid "IndexCustomMMDB File Name"
 msgstr "IndexCustomMMDB ファイル名"
 
-#: src/views/preference/tabs/GeoLiteSettings.vue:38
+#: src/views/preference/tabs/GeoLiteSettings.vue:41
 msgid ""
 "The GeoLite2 database provides geographic information for IP addresses. "
 "This is used for offline geographic analysis in log analytics."
 msgstr "GeoLite2 データベースは、IP アドレスの地理情報を提供します。これはログ分析でのオフライン地理分析に使用されます。"
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:46
+msgid "Map Boundary Directory"
+msgstr "地図境界ディレクトリ"
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:51
+msgid ""
+"Configured from [nginx_log].GeoMapPath. Keep files with names like "
+"100000_full.json in this directory."
+msgstr ""
+"[nginx_log].GeoMapPath から設定されています。100000_full.json "
+"のような名前のファイルをこのディレクトリに保管してください。"
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:55
+msgid ""
+"Only the world map is provided by default. Please download China and "
+"province boundary files yourself and place them in this directory."
+msgstr "デフォルトでは世界地図のみが提供されています。中国と各地方の境界ファイルをご自身でダウンロードし、このディレクトリに配置してください。"
+
+#: src/views/preference/tabs/GeoLiteSettings.vue:64
+msgid "Template reference"
+msgstr "テンプレートの参照"
 
 #: src/views/preference/tabs/HealthCheckSettings.vue:14
 msgid "Global health check controls"
@@ -10539,7 +10663,7 @@ msgid "Seconds"
 msgstr "秒"
 
 #: src/views/preference/tabs/HealthCheckSettings.vue:37
-#: src/views/site/site_list/columns.tsx:84 src/views/stream/columns.tsx:46
+#: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:46
 msgid "Proxy Targets"
 msgstr "プロキシターゲット"
 
@@ -11043,8 +11167,8 @@ msgstr "HTTP を HTTPS にリダイレクトする"
 
 #: src/views/site/components/SiteStatusSelect.vue:48
 #: src/views/site/components/SiteStatusSelect.vue:181
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:90
-#: src/views/site/site_list/columns.tsx:151
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:92
+#: src/views/site/site_list/columns.tsx:157
 #: src/views/site/site_list/SiteList.vue:158
 #: src/views/site/site_list/SiteList.vue:325
 msgid "Maintenance"
@@ -11253,7 +11377,7 @@ msgstr "DNSレコードが正常に作成され、リンクされました"
 
 #: src/views/site/site_add/SiteAdd.vue:217
 #: src/views/site/site_edit/components/QuickSetupModal.vue:76
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:112
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:114
 msgid "Quick Setup"
 msgstr "クイックセットアップ"
 
@@ -11435,7 +11559,7 @@ msgid "Generate Config"
 msgstr "設定を生成"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:50
-#: src/views/site/site_list/columns.tsx:97 src/views/stream/columns.tsx:58
+#: src/views/site/site_list/columns.tsx:103 src/views/stream/columns.tsx:58
 #: src/views/stream/components/RightPanel/Basic.vue:39
 msgid "Namespace"
 msgstr "名前空間"
@@ -11523,22 +11647,22 @@ msgstr "設定テンプレート"
 msgid "Port Scanner"
 msgstr "ポートスキャナー"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:73
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
 #: src/views/stream/components/StreamEditor.vue:44
 msgid "Edit %{n}"
 msgstr "%{n} を編集"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:125
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:127
 #: src/views/stream/components/StreamEditor.vue:80
 msgid "Advance Mode"
 msgstr "アドバンスモード"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:128
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:130
 #: src/views/stream/components/StreamEditor.vue:83
 msgid "Basic Mode"
 msgstr "基本モード"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:153
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:155
 #: src/views/stream/components/StreamEditor.vue:105
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 設定解析エラー"
@@ -11773,13 +11897,13 @@ msgstr "アシスタントを表示"
 msgid "Connection lost for this terminal. Please refresh if needed."
 msgstr "この端末との接続が失われました。必要に応じて更新してください。"
 
-#: src/views/terminal/Terminal.vue:249
+#: src/views/terminal/Terminal.vue:298
 msgid ""
 "This is a simulated terminal running entirely in your browser. Commands are "
 "answered locally and never reach a server."
 msgstr "これは、ブラウザー内で完全に動作するシミュレートされたターミナルです。コマンドはローカルで処理され、サーバーに到達することはありません。"
 
-#: src/views/terminal/Terminal.vue:256
+#: src/views/terminal/Terminal.vue:305
 msgid ""
 "You are accessing this terminal over an insecure HTTP connection on a "
 "non-localhost domain. This may expose sensitive information."
@@ -11787,35 +11911,35 @@ msgstr ""
 "あなたは非 localhostドメインで安全でないHTTP "
 "接続を介してこのターミナルにアクセスしています。これにより機密情報が漏洩する可能性があります。"
 
-#: src/views/upstream/SocketList.vue:19
+#: src/views/upstream/SocketList.vue:21
 msgid "Socket"
 msgstr "ソケット"
 
-#: src/views/upstream/SocketList.vue:31
+#: src/views/upstream/SocketList.vue:33
 msgid "Direct"
 msgstr "ダイレクト"
 
-#: src/views/upstream/SocketList.vue:37
+#: src/views/upstream/SocketList.vue:39
 msgid "Health Status"
 msgstr "健康状態"
 
-#: src/views/upstream/SocketList.vue:45
+#: src/views/upstream/SocketList.vue:47
 msgid "No Data"
 msgstr "データなし"
 
-#: src/views/upstream/SocketList.vue:55
+#: src/views/upstream/SocketList.vue:57
 msgid "Last Check"
 msgstr "最終確認"
 
-#: src/views/upstream/SocketList.vue:138
+#: src/views/upstream/SocketList.vue:132
 msgid "Upstream Sockets"
 msgstr "アップストリーム ソケット"
 
-#: src/views/upstream/SocketList.vue:153
+#: src/views/upstream/SocketList.vue:147
 msgid "Upstream health checks are globally paused"
 msgstr "アップストリームのヘルスチェックは全体で一時停止しています"
 
-#: src/views/upstream/SocketList.vue:154
+#: src/views/upstream/SocketList.vue:148
 msgid ""
 "Per-target selections are preserved. Resume probes from Health Check "
 "preferences."
@@ -12387,65 +12511,3 @@ msgstr "パスワードを更新"
 #~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent Cloud "
 #~ "DNS, and Cloudflare only."
 #~ msgstr "現在、DNS レコード管理は Alibaba Cloud DNS、Tencent Cloud DNS、Cloudflare のみをサポートしています。"
-
-#: src/language/generate.ts:5
-msgid "Certificate deleted, but revocation failed: %{error}"
-msgstr ""
-
-#: src/views/certificate/components/RemoveCert.vue:148
-msgid "Delete the certificate even if revocation fails"
-msgstr ""
-
-#: src/views/notification/notificationColumns.tsx:91
-msgid "Go To"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:212
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:245
-msgid "Notification title text"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:216
-msgid "Notification content text"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:220
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:253
-msgid "Notification type code, such as error, warning, info, or success"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:224
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:261
-msgid "Localized notification type label for the current language"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:228
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:265
-msgid "Translation key of the notification type, such as Error or Warning"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:232
-msgid "Teams notification level color enum: Error=Attention, Warning=Warning, Info=Accent, Success=Good"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:236
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:269
-msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:249
-msgid "Notification content text (HTML-escaped in the default template)"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:257
-msgid "Email notification level color, fixed to #1f2937"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:335
-msgid "Teams Request Example"
-msgstr ""
-
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:355
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:379
-msgid "Available placeholders"
-msgstr ""
