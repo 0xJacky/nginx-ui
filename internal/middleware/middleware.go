@@ -23,7 +23,7 @@ import (
 // must not authorize management API requests because they enable CSRF and leak
 // tokens through URLs.
 func getToken(c *gin.Context) (token string) {
-	return authorizationToken(c.GetHeader("Authorization"))
+	return AuthorizationToken(c.GetHeader("Authorization"))
 }
 
 // getTokenWS reads token from header or query only (no cookie fallback).
@@ -31,7 +31,7 @@ func getToken(c *gin.Context) (token string) {
 // browsers cannot silently authenticate WebSocket upgrades via cookies.
 func getTokenWS(c *gin.Context) (token string) {
 	if token = c.GetHeader("Authorization"); token != "" {
-		return authorizationToken(token)
+		return AuthorizationToken(token)
 	}
 
 	if token = c.Query("token"); token != "" {
@@ -51,7 +51,8 @@ func getTokenWS(c *gin.Context) (token string) {
 	return ""
 }
 
-func authorizationToken(authorization string) string {
+// AuthorizationToken extracts a raw token from either supported header form.
+func AuthorizationToken(authorization string) string {
 	authorization = strings.TrimSpace(authorization)
 	if len(authorization) > len("Bearer ") && strings.EqualFold(authorization[:len("Bearer ")], "Bearer ") {
 		return strings.TrimSpace(authorization[len("Bearer "):])
@@ -280,25 +281,15 @@ func AuthRequired() gin.HandlerFunc {
 			return
 		}
 
-		var (
-			u  *model.User
-			ok bool
-		)
-
 		if len(token) <= 16 {
-			// Short token (16 characters)
-			u, ok = user.GetTokenUserByShortToken(token)
-			if !ok {
-				abortWithAuthFailure()
-				return
-			}
-		} else {
-			// Long JWT token
-			u, ok = user.GetTokenUser(token)
-			if !ok {
-				abortWithAuthFailure()
-				return
-			}
+			// Short tokens are only valid on AuthRequiredWS routes.
+			abortWithAuthFailure()
+			return
+		}
+		u, ok := user.GetTokenUser(token)
+		if !ok {
+			abortWithAuthFailure()
+			return
 		}
 
 		c.Set("user", u)

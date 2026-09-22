@@ -1,8 +1,11 @@
 package user
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -128,12 +131,10 @@ func TestDeleteUserTokensClearsTokenAndUserCaches(t *testing.T) {
 func TestDeleteUserTokensClearsStandaloneShortTokenCache(t *testing.T) {
 	db, testUser, _ := setupTokenAuthTest(t)
 
-	shortToken, err := GenerateShortToken(testUser.ID)
-	require.NoError(t, err)
-
-	loadedUser, ok := GetTokenUserByShortToken(shortToken)
-	require.True(t, ok)
-	require.NotNil(t, loadedUser)
+	shortToken := "legacyshorttoken"
+	legacy := &model.AuthToken{UserID: testUser.ID, ShortToken: shortToken, ExpiredAt: time.Now().Add(time.Hour).Unix()}
+	require.NoError(t, db.Create(legacy).Error)
+	CacheToken(legacy)
 
 	_, found := GetCachedShortTokenData(shortToken)
 	require.True(t, found)
@@ -155,34 +156,86 @@ func TestDeleteUserTokensClearsStandaloneShortTokenCache(t *testing.T) {
 	assert.Nil(t, resurrectedUser)
 }
 
-func TestExpiredStandaloneShortTokenDoesNotDeleteOtherStandaloneShortTokens(t *testing.T) {
-	db, testUser, _ := setupTokenAuthTest(t)
+func TestLegacyStandaloneShortTokenFailsClosedWithoutDeletingOtherSessions(t *testing.T) {
+	db, testUser, parent := setupTokenAuthTest(t)
+	legacy := &model.AuthToken{UserID: testUser.ID, ShortToken: "legacyshorttoken", ExpiredAt: time.Now().Add(time.Hour).Unix()}
+	require.NoError(t, db.Create(legacy).Error)
+	CacheToken(legacy)
 
-	expiredShortToken, err := GenerateShortToken(testUser.ID)
+	_, ok := GetTokenUserByShortToken(legacy.ShortToken)
+	require.False(t, ok)
+	var count int64
+	require.NoError(t, db.Model(&model.AuthToken{}).Where("short_token = ?", legacy.ShortToken).Count(&count).Error)
+	require.Zero(t, count)
+	_, cached := GetCachedShortTokenData(legacy.ShortToken)
+	require.False(t, cached)
+	_, ok = GetTokenUser(parent.Token)
+	require.True(t, ok)
+
+	cache.InitInMemoryCache()
+	InitTokenCache(context.Background())
+	_, ok = GetTokenUserByShortToken(legacy.ShortToken)
+	require.False(t, ok)
+}
+
+func TestSessionShortTokenFailsClosedAfterParentRevocationAndCacheReload(t *testing.T) {
+	db, testUser, parent := setupTokenAuthTest(t)
+	shortToken, err := GenerateShortTokenForSession(testUser.ID, parent.Token)
 	require.NoError(t, err)
-	validShortToken, err := GenerateShortToken(testUser.ID)
+
+	cache.InitInMemoryCache()
+	InitTokenCache(context.Background())
+	loadedUser, ok := GetTokenUserByShortToken(shortToken)
+	require.True(t, ok)
+	require.Equal(t, testUser.ID, loadedUser.ID)
+
+	require.NoError(t, RevokeSessionToken(parent.Token))
+	cache.InitInMemoryCache()
+	InitTokenCache(context.Background())
+	_, ok = GetTokenUserByShortToken(shortToken)
+	require.False(t, ok)
+	var count int64
+	require.NoError(t, db.Model(&model.AuthToken{}).Where("short_token = ?", shortToken).Count(&count).Error)
+	require.Zero(t, count)
+}
+
+func TestSessionLookupErrorDoesNotRevokeValidLogin(t *testing.T) {
+	db, testUser, parent := setupTokenAuthTest(t)
+	shortToken, err := GenerateShortTokenForSession(testUser.ID, parent.Token)
 	require.NoError(t, err)
 
-	require.NoError(t, db.Model(&model.AuthToken{}).
-		Where("short_token = ?", expiredShortToken).
-		Update("expired_at", int64(1)).Error)
-	InvalidateShortTokenCache(expiredShortToken)
+	callbackName := "test:fail_session_lookup"
+	require.NoError(t, db.Callback().Query().Before("gorm:query").Register(callbackName, func(tx *gorm.DB) {
+		if _, ok := tx.Statement.Dest.(*int64); ok {
+			tx.AddError(errors.New("temporary session lookup failure"))
+		}
+	}))
+	_, ok := GetTokenUserByShortToken(shortToken)
+	require.False(t, ok)
+	require.NoError(t, db.Callback().Query().Remove(callbackName))
 
-	expiredUser, ok := GetTokenUserByShortToken(expiredShortToken)
-	assert.False(t, ok)
-	assert.Nil(t, expiredUser)
+	_, ok = GetTokenUser(parent.Token)
+	require.True(t, ok)
+	_, ok = GetTokenUserByShortToken(shortToken)
+	require.True(t, ok)
+}
 
-	var expiredCount int64
-	require.NoError(t, db.Model(&model.AuthToken{}).Where("short_token = ?", expiredShortToken).Count(&expiredCount).Error)
-	assert.Zero(t, expiredCount)
+func TestAuthTokenSessionHashMigrationPreservesLegacyRows(t *testing.T) {
+	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s-migration?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	require.NoError(t, err)
+	require.NoError(t, db.Exec("CREATE TABLE auth_tokens (user_id integer, token text, short_token text, expired_at integer)").Error)
+	require.NoError(t, db.Exec("INSERT INTO auth_tokens (user_id, token, short_token, expired_at) VALUES (?, ?, ?, ?)", 7, "legacy-jwt", "legacy-short", int64(123)).Error)
 
-	var validCount int64
-	require.NoError(t, db.Model(&model.AuthToken{}).Where("short_token = ?", validShortToken).Count(&validCount).Error)
-	assert.Equal(t, int64(1), validCount)
-
-	validUser, ok := GetTokenUserByShortToken(validShortToken)
-	assert.True(t, ok)
-	assert.NotNil(t, validUser)
+	require.NoError(t, db.AutoMigrate(&model.AuthToken{}))
+	require.True(t, db.Migrator().HasColumn(&model.AuthToken{}, "session_hash"))
+	require.True(t, db.Migrator().HasIndex(&model.AuthToken{}, "idx_auth_tokens_token"))
+	require.True(t, db.Migrator().HasIndex(&model.AuthToken{}, "idx_auth_tokens_short_token"))
+	require.True(t, db.Migrator().HasIndex(&model.AuthToken{}, "idx_auth_tokens_session_hash"))
+	var legacy model.AuthToken
+	require.NoError(t, db.Where("token = ?", "legacy-jwt").Take(&legacy).Error)
+	require.Equal(t, uint64(7), legacy.UserID)
+	require.Equal(t, "legacy-short", legacy.ShortToken)
+	require.Empty(t, legacy.SessionHash)
 }
 
 func TestIssueLoginTokenRequiresPasskeyProofForPasskeyOnlyUser(t *testing.T) {

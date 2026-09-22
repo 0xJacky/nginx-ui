@@ -40,10 +40,11 @@ type User struct {
 }
 
 type AuthToken struct {
-	UserID     uint64 `json:"user_id"`
-	Token      string `json:"token"`
-	ShortToken string `json:"short_token"`
-	ExpiredAt  int64  `json:"expired_at" gorm:"default:0"`
+	UserID      uint64 `json:"user_id"`
+	Token       string `json:"token" gorm:"index:idx_auth_tokens_token,length:191"`
+	ShortToken  string `json:"short_token" gorm:"index:idx_auth_tokens_short_token,length:16"`
+	SessionHash string `json:"-" gorm:"type:varchar(64);index:idx_auth_tokens_session_hash"`
+	ExpiredAt   int64  `json:"expired_at" gorm:"default:0"`
 }
 
 func (u *User) TableName() string {

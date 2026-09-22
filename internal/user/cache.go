@@ -24,11 +24,12 @@ const (
 
 // TokenCacheData stores token information in cache
 type TokenCacheData struct {
-	UserID     uint64    `json:"user_id"`
-	Token      string    `json:"token"`
-	ShortToken string    `json:"short_token"`
-	ExpiredAt  int64     `json:"expired_at"`
-	CreatedAt  time.Time `json:"created_at"`
+	UserID      uint64    `json:"user_id"`
+	Token       string    `json:"token"`
+	ShortToken  string    `json:"short_token"`
+	SessionHash string    `json:"session_hash"`
+	ExpiredAt   int64     `json:"expired_at"`
+	CreatedAt   time.Time `json:"created_at"`
 }
 
 // UserCacheData stores user information in cache
@@ -58,11 +59,12 @@ func InitTokenCache(ctx context.Context) {
 	loaded := 0
 	for _, authToken := range authTokens {
 		cacheData := &TokenCacheData{
-			UserID:     authToken.UserID,
-			Token:      authToken.Token,
-			ShortToken: authToken.ShortToken,
-			ExpiredAt:  authToken.ExpiredAt,
-			CreatedAt:  time.Now(),
+			UserID:      authToken.UserID,
+			Token:       authToken.Token,
+			ShortToken:  authToken.ShortToken,
+			SessionHash: authToken.SessionHash,
+			ExpiredAt:   authToken.ExpiredAt,
+			CreatedAt:   time.Now(),
 		}
 
 		// Cache by token
@@ -93,11 +95,12 @@ func CacheToken(authToken *model.AuthToken) {
 	defer cacheMutex.Unlock()
 
 	cacheData := &TokenCacheData{
-		UserID:     authToken.UserID,
-		Token:      authToken.Token,
-		ShortToken: authToken.ShortToken,
-		ExpiredAt:  authToken.ExpiredAt,
-		CreatedAt:  time.Now(),
+		UserID:      authToken.UserID,
+		Token:       authToken.Token,
+		ShortToken:  authToken.ShortToken,
+		SessionHash: authToken.SessionHash,
+		ExpiredAt:   authToken.ExpiredAt,
+		CreatedAt:   time.Now(),
 	}
 
 	// Cache by token

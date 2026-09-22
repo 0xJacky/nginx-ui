@@ -44,7 +44,7 @@ func EnsureSecureSessionCookie(c *gin.Context) {
 }
 
 // SecureSessionCookie sets an HttpOnly SameSite=Lax cookie when serving the SPA.
-// This cookie acts as a CSRF-proof session binding for the short token endpoint.
+// The short-token endpoint also requires an authenticated JWT in its header.
 func SecureSessionCookie() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ensureSecureSessionCookie(c)

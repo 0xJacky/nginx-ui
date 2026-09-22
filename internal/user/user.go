@@ -2,16 +2,19 @@ package user
 
 import (
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"errors"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 const ExpiredTime = 24 * time.Hour
@@ -33,31 +36,76 @@ func GetUser(name string) (user *model.User, err error) {
 }
 
 func DeleteToken(token string) {
+	if err := RevokeSessionToken(token); err != nil {
+		logger.Error(err)
+	}
+}
+
+func sessionTokenHash(token string) string {
+	sum := sha256.Sum256([]byte(token))
+	return hex.EncodeToString(sum[:])
+}
+
+// RevokeSessionToken removes a JWT and only the short tokens bound to that login.
+func RevokeSessionToken(token string) error {
 	if token == "" {
-		return
+		return nil
+	}
+	db := model.UseDB()
+	if db == nil {
+		return errors.New("database is not initialized")
 	}
 
-	// Remove from cache first
-	InvalidateTokenCache(token)
+	hash := sessionTokenHash(token)
+	var shortTokens []string
+	err := db.Transaction(func(tx *gorm.DB) error {
+		var parent model.AuthToken
+		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("token = ?", token).Take(&parent).Error; err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+		match := tx.Where("token = ? OR (session_hash = ? AND token = ?)", token, hash, "")
+		if err := match.Model(&model.AuthToken{}).Pluck("short_token", &shortTokens).Error; err != nil {
+			return err
+		}
+		return tx.Where("token = ? OR (session_hash = ? AND token = ?)", token, hash, "").Delete(&model.AuthToken{}).Error
+	})
+	if err != nil {
+		return err
+	}
 
-	// Remove from database
-	q := query.AuthToken
-	_, _ = q.Where(q.Token.Eq(token)).Delete()
+	InvalidateTokenCache(token)
+	for _, shortToken := range shortTokens {
+		InvalidateShortTokenCache(shortToken)
+	}
+	return nil
+}
+
+// RevokeShortToken removes one WebSocket credential. A login-paired short
+// token revokes its JWT session as well.
+func RevokeShortToken(shortToken string) error {
+	if shortToken == "" {
+		return nil
+	}
+	db := model.UseDB()
+	if db == nil {
+		return errors.New("database is not initialized")
+	}
+	var authToken model.AuthToken
+	if err := db.Where("short_token = ?", shortToken).Take(&authToken).Error; err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+	if authToken.Token != "" {
+		return RevokeSessionToken(authToken.Token)
+	}
+	if err := db.Where("short_token = ?", shortToken).Delete(&model.AuthToken{}).Error; err != nil {
+		return err
+	}
+	InvalidateShortTokenCache(shortToken)
+	return nil
 }
 
 func DeleteShortToken(shortToken string) {
-	if shortToken == "" {
-		return
-	}
-
-	InvalidateShortTokenCache(shortToken)
-
-	db := model.UseDB()
-	if db == nil {
-		return
-	}
-
-	if err := db.Where("short_token = ?", shortToken).Delete(&model.AuthToken{}).Error; err != nil {
+	if err := RevokeShortToken(shortToken); err != nil {
 		logger.Error(err)
 	}
 }
@@ -117,15 +165,14 @@ func GetTokenUser(token string) (*model.User, bool) {
 		return nil, false
 	}
 
-	// Try to get from cache first
-	if tokenData, found := GetCachedTokenData(token); found {
-		return getActiveUserByID(tokenData.UserID)
+	// Check the database even if this process has a cached token: logout can
+	// revoke a session through another application instance.
+	db := model.UseDB()
+	if db == nil {
+		return nil, false
 	}
-
-	// Not in cache, load from database
-	q := query.AuthToken
-	authToken, err := q.Where(q.Token.Eq(token)).First()
-	if err != nil {
+	var authToken model.AuthToken
+	if err := db.Where("token = ?", token).Take(&authToken).Error; err != nil {
 		return nil, false
 	}
 
@@ -133,9 +180,6 @@ func GetTokenUser(token string) (*model.User, bool) {
 		DeleteToken(token)
 		return nil, false
 	}
-
-	// Cache the token data
-	CacheToken(authToken)
 
 	return getActiveUserByID(authToken.UserID)
 }
@@ -145,15 +189,14 @@ func GetTokenUserByShortToken(shortToken string) (*model.User, bool) {
 		return nil, false
 	}
 
-	// Try to get from cache first
-	if tokenData, found := GetCachedShortTokenData(shortToken); found {
-		return getActiveUserByID(tokenData.UserID)
-	}
-
-	// Not in cache, load from database
+	// A cached short token is not sufficient: another application instance may
+	// have deleted its row during logout or selective revocation.
 	db := model.UseDB()
+	if db == nil {
+		return nil, false
+	}
 	var authToken model.AuthToken
-	err := db.Where("short_token = ?", shortToken).First(&authToken).Error
+	err := db.Where("short_token = ?", shortToken).Take(&authToken).Error
 	if err != nil {
 		return nil, false
 	}
@@ -166,11 +209,38 @@ func GetTokenUserByShortToken(shortToken string) (*model.User, bool) {
 		}
 		return nil, false
 	}
-
-	// Cache the token data
-	CacheToken(&authToken)
+	if authToken.Token == "" && authToken.SessionHash == "" {
+		DeleteShortToken(shortToken)
+		return nil, false
+	}
+	if !shortTokenSessionActive(authToken.Token, authToken.SessionHash) {
+		InvalidateShortTokenCache(shortToken)
+		return nil, false
+	}
 
 	return getActiveUserByID(authToken.UserID)
+}
+
+func shortTokenSessionActive(token, sessionHash string) bool {
+	if token == "" && sessionHash == "" {
+		return false
+	}
+	db := model.UseDB()
+	if db == nil {
+		return false
+	}
+	var count int64
+	lookup := db.Model(&model.AuthToken{}).Where("expired_at >= ?", time.Now().Unix())
+	if token != "" {
+		lookup = lookup.Where("token = ?", token)
+	} else {
+		lookup = lookup.Where("session_hash = ? AND token <> ?", sessionHash, "")
+	}
+	if err := lookup.Count(&count).Error; err != nil {
+		logger.Error(err)
+		return false
+	}
+	return count > 0
 }
 
 type AccessTokenPayload struct {
@@ -214,6 +284,10 @@ func GenerateJWT(user *model.User) (*AccessTokenPayload, error) {
 }
 
 func generateJWT(user *model.User) (*AccessTokenPayload, error) {
+	sessionID := make([]byte, 16)
+	if _, err := rand.Read(sessionID); err != nil {
+		return nil, err
+	}
 	now := time.Now()
 	claims := JWTClaims{
 		Name:   user.Name,
@@ -224,7 +298,7 @@ func generateJWT(user *model.User) (*AccessTokenPayload, error) {
 			NotBefore: jwt.NewNumericDate(now),
 			Issuer:    "Nginx UI",
 			Subject:   user.Name,
-			ID:        cast.ToString(user.ID),
+			ID:        hex.EncodeToString(sessionID),
 		},
 	}
 
@@ -244,10 +318,11 @@ func generateJWT(user *model.User) (*AccessTokenPayload, error) {
 	shortToken := base64.URLEncoding.EncodeToString(shortTokenBytes)[:16]
 
 	authToken := &model.AuthToken{
-		UserID:     user.ID,
-		Token:      signedToken,
-		ShortToken: shortToken,
-		ExpiredAt:  now.Add(ExpiredTime).Unix(),
+		UserID:      user.ID,
+		Token:       signedToken,
+		ShortToken:  shortToken,
+		SessionHash: sessionTokenHash(signedToken),
+		ExpiredAt:   now.Add(ExpiredTime).Unix(),
 	}
 
 	q := query.AuthToken
@@ -265,30 +340,48 @@ func generateJWT(user *model.User) (*AccessTokenPayload, error) {
 	}, nil
 }
 
-// GenerateShortToken creates a standalone short token for WebSocket authentication.
-// The short token is stored in a new AuthToken row with no associated JWT.
-func GenerateShortToken(userID uint64) (string, error) {
+// GenerateShortTokenForSession binds a WebSocket token to the issuing JWT.
+func GenerateShortTokenForSession(userID uint64, token string) (string, error) {
+	claims, err := ValidateJWT(token)
+	if err != nil || claims.UserID != userID {
+		return "", ErrInvalidClaimsType
+	}
+
 	shortTokenBytes := make([]byte, 16)
-	_, err := rand.Read(shortTokenBytes)
-	if err != nil {
+	if _, err := rand.Read(shortTokenBytes); err != nil {
 		return "", err
 	}
 	shortToken := base64.URLEncoding.EncodeToString(shortTokenBytes)[:16]
-
-	now := time.Now()
-	authToken := &model.AuthToken{
-		UserID:     userID,
-		ShortToken: shortToken,
-		ExpiredAt:  now.Add(ExpiredTime).Unix(),
+	hash := sessionTokenHash(token)
+	now := time.Now().Unix()
+	db := model.UseDB()
+	if db == nil {
+		return "", errors.New("database is not initialized")
 	}
 
-	q := query.AuthToken
-	err = q.Create(authToken)
+	err = db.Transaction(func(tx *gorm.DB) error {
+		var parent model.AuthToken
+		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
+			Where("token = ? AND user_id = ? AND expired_at >= ?", token, userID, now).
+			Take(&parent).Error; err != nil {
+			return err
+		}
+		if err := tx.Model(&model.AuthToken{}).
+			Where("token = ? AND user_id = ?", token, userID).
+			Update("session_hash", hash).Error; err != nil {
+			return err
+		}
+		return tx.Create(&model.AuthToken{
+			UserID:      userID,
+			ShortToken:  shortToken,
+			SessionHash: hash,
+			ExpiredAt:   parent.ExpiredAt,
+		}).Error
+	})
 	if err != nil {
 		return "", err
 	}
-
-	CacheToken(authToken)
+	// The first WebSocket use loads the row. Avoid caching after a concurrent logout.
 	return shortToken, nil
 }
 
