@@ -76,6 +76,23 @@ var alignments = []alignment{
 	{reflect.TypeFor[protocol.MCPCallResult](), "MCPCallResponse"},
 	{reflect.TypeFor[protocol.MCPContent](), "MCPContent"},
 
+	// storage.go
+	{reflect.TypeFor[protocol.StorageValidateParams](), "StorageValidateRequest"},
+	{reflect.TypeFor[protocol.StoragePutParams](), "StoragePutRequest"},
+	{reflect.TypeFor[protocol.StorageSizeResult](), "StoragePutResponse"},
+	{reflect.TypeFor[protocol.StorageGetParams](), "StorageGetRequest"},
+	{reflect.TypeFor[protocol.StorageSizeResult](), "StorageGetResponse"},
+	{reflect.TypeFor[protocol.StorageListParams](), "StorageListRequest"},
+	{reflect.TypeFor[protocol.StorageListResult](), "StorageListResponse"},
+	{reflect.TypeFor[protocol.StorageObject](), "StorageObject"},
+	{reflect.TypeFor[protocol.StorageDeleteParams](), "StorageDeleteRequest"},
+
+	// deploy.go
+	{reflect.TypeFor[protocol.DeployValidateParams](), "DeployValidateRequest"},
+	{reflect.TypeFor[protocol.DeployPushParams](), "DeployPushRequest"},
+	{reflect.TypeFor[protocol.DeployCertificate](), "DeployCertificate"},
+	{reflect.TypeFor[protocol.DeployPushResult](), "DeployPushResponse"},
+
 	// events.go
 	{reflect.TypeFor[protocol.EventNotification](), "EventsOnRequest"},
 
@@ -107,6 +124,10 @@ var alignments = []alignment{
 	{reflect.TypeFor[protocol.ConfigurationField](), "ConfigurationField"},
 	{reflect.TypeFor[protocol.ManifestMCP](), "ManifestMCP"},
 	{reflect.TypeFor[protocol.MCPTool](), "MCPTool"},
+	{reflect.TypeFor[protocol.ManifestStorage](), "ManifestStorage"},
+	{reflect.TypeFor[protocol.StorageBackend](), "StorageBackend"},
+	{reflect.TypeFor[protocol.ManifestDeploy](), "ManifestDeploy"},
+	{reflect.TypeFor[protocol.DeployTarget](), "DeployTarget"},
 }
 
 // TestProtoAlignment asserts that the json tag names of every hand-written
@@ -190,6 +211,13 @@ func TestMethodNamesMatchProto(t *testing.T) {
 		protocol.MethodNotifyValidate,
 		protocol.MethodProbeCheck,
 		protocol.MethodMCPCall,
+		protocol.MethodStorageValidate,
+		protocol.MethodStoragePut,
+		protocol.MethodStorageGet,
+		protocol.MethodStorageList,
+		protocol.MethodStorageDelete,
+		protocol.MethodDeployValidate,
+		protocol.MethodDeployPush,
 		protocol.MethodHostLog,
 		protocol.MethodHostKVGet,
 		protocol.MethodHostKVSet,
@@ -359,6 +387,13 @@ func compatibleSingular(t reflect.Type, fd protoreflect.FieldDescriptor, aligned
 		return t.Kind() == reflect.String
 	case protoreflect.BoolKind:
 		return t.Kind() == reflect.Bool
+	case protoreflect.DoubleKind, protoreflect.FloatKind:
+		// A byte size is a double on the wire and a whole number in Go.
+		switch t.Kind() {
+		case reflect.Float32, reflect.Float64, reflect.Int64, reflect.Uint64:
+			return true
+		}
+		return false
 	case protoreflect.Int32Kind, protoreflect.Sint32Kind, protoreflect.Sfixed32Kind,
 		protoreflect.Uint32Kind, protoreflect.Fixed32Kind:
 		switch t.Kind() {

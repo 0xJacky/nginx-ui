@@ -23,12 +23,14 @@ type Manifest struct {
 	Cron                 []ManifestCron        `json:"cron,omitempty"`
 	NetworkHosts         []string              `json:"network_hosts,omitempty"`
 
-	DNS01          *ManifestDNS01  `json:"dns01,omitempty"`
-	HTTP           *ManifestHTTP   `json:"http,omitempty"`
-	SettingsSchema *SettingsSchema `json:"settings_schema,omitempty"`
-	Notify         *ManifestNotify `json:"notify,omitempty"`
-	Probe          *ManifestProbe  `json:"probe,omitempty"`
-	MCP            *ManifestMCP    `json:"mcp,omitempty"`
+	DNS01          *ManifestDNS01   `json:"dns01,omitempty"`
+	HTTP           *ManifestHTTP    `json:"http,omitempty"`
+	SettingsSchema *SettingsSchema  `json:"settings_schema,omitempty"`
+	Notify         *ManifestNotify  `json:"notify,omitempty"`
+	Probe          *ManifestProbe   `json:"probe,omitempty"`
+	MCP            *ManifestMCP     `json:"mcp,omitempty"`
+	Storage        *ManifestStorage `json:"storage,omitempty"`
+	Deploy         *ManifestDeploy  `json:"deploy,omitempty"`
 }
 
 // ManifestServer describes how to start the plugin process.
@@ -137,8 +139,35 @@ type ProbeKind struct {
 	Configuration *ConfigurationSchema `json:"configuration,omitempty"`
 }
 
-// ConfigurationSchema drives the form of a notify channel or a probe kind.
-// The values travel as a map of strings.
+// ManifestStorage is the metadata block for the storage capability.
+type ManifestStorage struct {
+	Backends []StorageBackend `json:"backends"`
+}
+
+// StorageBackend describes one place a plugin can keep host files.
+type StorageBackend struct {
+	// Code is shared across every installed storage plugin.
+	Code          string               `json:"code"`
+	Name          string               `json:"name"`
+	Configuration *ConfigurationSchema `json:"configuration,omitempty"`
+}
+
+// ManifestDeploy is the metadata block for the cert.deploy capability.
+type ManifestDeploy struct {
+	Targets []DeployTarget `json:"targets"`
+}
+
+// DeployTarget describes one kind of external target a plugin can push
+// certificates to.
+type DeployTarget struct {
+	// Code is shared across every installed cert.deploy plugin.
+	Code          string               `json:"code"`
+	Name          string               `json:"name"`
+	Configuration *ConfigurationSchema `json:"configuration,omitempty"`
+}
+
+// ConfigurationSchema drives the form of a notify channel, a probe kind, a
+// storage backend or a deploy target. The values travel as a map of strings.
 type ConfigurationSchema struct {
 	Fields []ConfigurationField `json:"fields,omitempty"`
 }

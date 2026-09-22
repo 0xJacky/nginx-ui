@@ -106,12 +106,15 @@ func (b *hostBackend) KVDelete(pluginID, key string) error {
 	return err
 }
 
-// KVList returns the keys of a plugin, optionally narrowed by a prefix.
+// KVList returns the keys of a plugin, optionally narrowed by a prefix. The
+// databases disagree on how LIKE escapes its pattern characters and on case,
+// so LIKE only narrows the scan for a prefix without them and Go decides the
+// match.
 func (b *hostBackend) KVList(pluginID, prefix string) ([]string, error) {
 	q := query.PluginKV.WithContext(b.manager.context()).
 		Where(query.PluginKV.PluginID.Eq(pluginID))
-	if prefix != "" {
-		q = q.Where(query.PluginKV.Key.Like(escapeLikePrefix(prefix) + "%"))
+	if prefix != "" && !strings.ContainsAny(prefix, `%_\`) {
+		q = q.Where(query.PluginKV.Key.Like(prefix + "%"))
 	}
 	rows, err := q.Order(query.PluginKV.Key).Find()
 	if err != nil {
@@ -119,15 +122,11 @@ func (b *hostBackend) KVList(pluginID, prefix string) ([]string, error) {
 	}
 	keys := make([]string, 0, len(rows))
 	for _, row := range rows {
-		keys = append(keys, row.Key)
+		if strings.HasPrefix(row.Key, prefix) {
+			keys = append(keys, row.Key)
+		}
 	}
 	return keys, nil
-}
-
-// escapeLikePrefix keeps a literal prefix from being read as a LIKE pattern.
-func escapeLikePrefix(prefix string) string {
-	replacer := strings.NewReplacer(`\`, `\\`, `%`, `\%`, `_`, `\_`)
-	return replacer.Replace(prefix)
 }
 
 func (b *hostBackend) kvRow(pluginID, key string) (*model.PluginKV, error) {
