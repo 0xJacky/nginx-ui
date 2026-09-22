@@ -1,25 +1,23 @@
 <script setup lang="ts">
 import type { PluginInfo, PluginLogLine } from '@/api/plugin'
 import { CopyOutlined, ReloadOutlined } from '@antdv-next/icons'
-import { useClipboard, useIntervalFn, useWindowSize } from '@vueuse/core'
+import { useClipboard, useIntervalFn } from '@vueuse/core'
 import pluginApi from '@/api/plugin'
 import { getErrorMessage } from '@/lib/http'
 
 const props = defineProps<{
   plugin?: PluginInfo
+  /** Lines are fetched and tailed only while the panel is visible. */
+  active: boolean
 }>()
 
-const open = defineModel<boolean>('open', { default: false })
-
-const { message } = App.useApp()
+const { message } = useGlobalApp()
 const { copy, isSupported: isClipboardSupported } = useClipboard()
-
-const { width: windowWidth } = useWindowSize()
-const drawerSize = computed(() => Math.min(720, windowWidth.value))
 
 const loading = ref(false)
 const error = ref('')
 const lines = ref<PluginLogLine[]>([])
+const follow = ref(true)
 const viewport = useTemplateRef<HTMLElement>('viewport')
 
 const text = computed(() => lines.value.map(item => `${item.time} ${item.line}`).join('\n'))
@@ -38,7 +36,7 @@ async function load(showSpinner = false) {
     error.value = ''
     await nextTick()
     // Keep the newest line in view, the way a tail would.
-    if (viewport.value)
+    if (follow.value && viewport.value)
       viewport.value.scrollTop = viewport.value.scrollHeight
   }
   catch (e) {
@@ -61,28 +59,27 @@ async function copyLogs() {
   }
 }
 
-watch(open, value => {
-  if (value) {
+watch(() => [props.active, props.plugin?.id] as const, ([active, id]) => {
+  if (active && id) {
     lines.value = []
-    load(true)
+    void load(true)
     resume()
   }
   else {
     pause()
   }
-})
+}, { immediate: true })
 
 onUnmounted(pause)
 </script>
 
 <template>
-  <ADrawer
-    v-model:open="open"
-    :title="$gettext('Logs: %{name}', { name: props.plugin?.name ?? '' })"
-    :size="drawerSize"
-    placement="right"
-  >
-    <template #extra>
+  <div class="logs-panel">
+    <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2 text-sm">
+        <ASwitch v-model:checked="follow" size="small" />
+        <span>{{ $gettext('Follow new lines') }}</span>
+      </div>
       <ASpace>
         <AButton size="small" :loading="loading" @click="load(true)">
           <template #icon>
@@ -102,13 +99,13 @@ onUnmounted(pause)
           {{ $gettext('Copy') }}
         </AButton>
       </ASpace>
-    </template>
+    </div>
 
     <AAlert
       v-if="error"
       type="error"
       show-icon
-      class="mb-4"
+      class="mb-3"
       :title="error"
     />
 
@@ -118,15 +115,16 @@ onUnmounted(pause)
         <AEmpty v-else :description="$gettext('No log output yet')" />
       </div>
     </ASpin>
-  </ADrawer>
+  </div>
 </template>
 
 <style lang="less" scoped>
 .log-viewport {
-  height: calc(100vh - 160px);
+  height: calc(100vh - 280px);
+  min-height: 320px;
   overflow: auto;
   padding: 12px;
-  border-radius: 6px;
+  border-radius: var(--ant-border-radius);
   background-color: var(--ant-color-fill-quaternary);
 }
 
