@@ -5,15 +5,17 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
+	"github.com/uozi-tech/cosy"
 )
 
-// PluginTypePrefix marks a notifier type or a probe kind that a plugin
-// provides. It keeps the plugin codes apart from the names of the built-in
-// notifiers and checks, so a plugin can neither replace a built-in one nor be
-// shadowed by one added later (spec NOTIFY-9, PROBE-7).
+// PluginTypePrefix marks a notifier type, a probe kind, a storage backend or
+// a deploy target kind that a plugin provides. It keeps the plugin codes
+// apart from the names of the built-in notifiers, checks and storage, so a
+// plugin can neither replace a built-in one nor be shadowed by one added
+// later (spec NOTIFY-9, PROBE-7, STORAGE-12, DEPLOY-10).
 const PluginTypePrefix = "plugin:"
 
-// PluginType is the host side name of a plugin channel or probe kind code.
+// PluginType is the host side name of a plugin capability entry code.
 func PluginType(code string) string {
 	return PluginTypePrefix + code
 }
@@ -42,6 +44,17 @@ func invalidConfigField(err error) (field, message string, ok bool) {
 		}
 	}
 	return field, perr.Message, true
+}
+
+// sameCosyError reports whether err carries the code of target. A cosy error
+// wrapped with parameters is a new value, so errors.Is does not match it.
+func sameCosyError(err, target error) bool {
+	got, ok := errors.AsType[*cosy.Error](err)
+	if !ok {
+		return false
+	}
+	want, ok := errors.AsType[*cosy.Error](target)
+	return ok && got.Scope == want.Scope && got.Code == want.Code
 }
 
 // rpcMessage is the peer message of a JSON-RPC error, or the error text.

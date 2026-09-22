@@ -63,6 +63,8 @@ func GenerateAllModel() []any {
 		AccessList{},
 		Plugin{},
 		PluginKV{},
+		CertDeployTarget{},
+		CertDeployment{},
 	}
 }
 

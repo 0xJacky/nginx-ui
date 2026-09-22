@@ -27,6 +27,19 @@ type MCPToolEntry struct {
 	Tool     protocol.MCPTool `json:"tool"`
 }
 
+// StorageBackendEntry is one storage backend offered by one enabled plugin.
+type StorageBackendEntry struct {
+	PluginID string                  `json:"plugin_id"`
+	Backend  protocol.StorageBackend `json:"backend"`
+}
+
+// DeployTargetEntry is one deploy target kind offered by one enabled plugin
+// that was granted the cert.deploy permission.
+type DeployTargetEntry struct {
+	PluginID string                `json:"plugin_id"`
+	Target   protocol.DeployTarget `json:"target"`
+}
+
 // declaredCodes lists the codes a manifest claims for a capability whose
 // entries are addressed by code.
 func declaredCodes(manifest *protocol.Manifest, capability string) []string {
@@ -51,6 +64,19 @@ func declaredCodes(manifest *protocol.Manifest, capability string) []string {
 		if manifest.Probe != nil {
 			for _, kind := range manifest.Probe.Kinds {
 				codes = append(codes, kind.Code)
+			}
+		}
+	case protocol.CapabilityStorage:
+		if manifest.Storage != nil {
+			for _, backend := range manifest.Storage.Backends {
+				codes = append(codes, backend.Code)
+			}
+		}
+	case protocol.CapabilityCertDeploy:
+		// A target kind is only served while the key may be handed over.
+		if manifest.Deploy != nil && slices.Contains(manifest.Permissions, protocol.PermissionCertDeploy) {
+			for _, target := range manifest.Deploy.Targets {
+				codes = append(codes, target.Code)
 			}
 		}
 	}
@@ -133,6 +159,60 @@ func (m *Manager) MCPTools() []MCPToolEntry {
 		return tools[i].PluginID < tools[j].PluginID
 	})
 	return tools
+}
+
+// StorageBackends lists every backend offered by an enabled storage plugin,
+// ordered by plugin id and code.
+func (m *Manager) StorageBackends() []StorageBackendEntry {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+
+	var backends []StorageBackendEntry
+	for _, item := range m.entries {
+		if !enabledWithCapabilityLocked(item, protocol.CapabilityStorage) || item.manifest.Storage == nil {
+			continue
+		}
+		for _, backend := range item.manifest.Storage.Backends {
+			backends = append(backends, StorageBackendEntry{PluginID: item.id, Backend: backend})
+		}
+	}
+	sort.Slice(backends, func(i, j int) bool {
+		if backends[i].PluginID == backends[j].PluginID {
+			return backends[i].Backend.Code < backends[j].Backend.Code
+		}
+		return backends[i].PluginID < backends[j].PluginID
+	})
+	return backends
+}
+
+// DeployTargets lists every target kind of an enabled cert.deploy plugin
+// whose approved permissions include cert.deploy, ordered by plugin id and
+// code.
+func (m *Manager) DeployTargets() []DeployTargetEntry {
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+
+	var targets []DeployTargetEntry
+	for _, item := range m.entries {
+		if !enabledWithCapabilityLocked(item, protocol.CapabilityCertDeploy) || item.manifest.Deploy == nil {
+			continue
+		}
+		// enabledWithCapabilityLocked already requires the approved set to
+		// match the manifest, so the manifest permission is the granted one.
+		if !slices.Contains(item.manifest.Permissions, protocol.PermissionCertDeploy) {
+			continue
+		}
+		for _, target := range item.manifest.Deploy.Targets {
+			targets = append(targets, DeployTargetEntry{PluginID: item.id, Target: target})
+		}
+	}
+	sort.Slice(targets, func(i, j int) bool {
+		if targets[i].PluginID == targets[j].PluginID {
+			return targets[i].Target.Code < targets[j].Target.Code
+		}
+		return targets[i].PluginID < targets[j].PluginID
+	})
+	return targets
 }
 
 // mcpToolSeparator joins the plugin prefix and the tool name. Plugin ids never
