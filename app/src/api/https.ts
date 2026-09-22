@@ -28,8 +28,8 @@ export interface HTTPSRequest {
   acme_user_id: number
   profile: string
   must_staple: boolean
-  lego_disable_cname_support: boolean
-  disable_authoritative_ns_propagation: boolean
+  /** Free-form payload owned by the plugin that implements the challenge method. */
+  challenge_config?: Record<string, unknown>
   enable_common_name: boolean
   revoke_old: boolean
   // A certificate record from the certificate manager to use instead of

@@ -19,6 +19,7 @@ import { breakpointsAntDesign, useBreakpoints, useLocalStorage, watchDebounced }
 import dayjs from 'dayjs'
 import certApi from '@/api/cert'
 import DNSChallenge from '@/components/AutoCertForm/DNSChallenge.vue'
+import PluginSlot from '@/components/PluginSlot'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
 import { isIPAddress, splitCertificateIdentifiers } from '@/utils/certificate'
 import ACMEUserSelector from '@/views/certificate/components/ACMEUserSelector.vue'
@@ -94,8 +95,6 @@ const options = ref<AutoCertOptions>({
   acme_user_id: undefined,
   profile: '',
   must_staple: false,
-  lego_disable_cname_support: false,
-  disable_authoritative_ns_propagation: false,
   enable_common_name: false,
   revoke_old: false,
 })
@@ -744,7 +743,9 @@ defineExpose({
 
         <!-- DNS credential -->
         <div v-if="method === 'dns01'" class="max-w-100">
-          <DNSChallenge v-model:options="options" />
+          <PluginSlot name="certificate.challenge.form:dns01" :context="{ options }">
+            <DNSChallenge v-model:options="options" />
+          </PluginSlot>
         </div>
 
         <ACheckbox v-model:checked="redirectHTTPToHTTPS" :disabled="formLocked">
@@ -780,19 +781,6 @@ defineExpose({
                   :help="$gettext('OCSP Must Staple may cause errors for some users on first access using Firefox.')"
                 >
                   <ASwitch v-model:checked="options.must_staple" />
-                </AFormItem>
-                <AFormItem
-                  :label="$gettext('Lego disable CNAME Support')"
-                  :help="$gettext('If your domain has CNAME records and you cannot obtain certificates, you need to enable this option.')"
-                >
-                  <ASwitch v-model:checked="options.lego_disable_cname_support" />
-                </AFormItem>
-                <AFormItem
-                  v-if="method === 'dns01'"
-                  :label="$gettext('Disable Authoritative DNS Propagation Check')"
-                  :help="$gettext('Skip local DNS propagation checks and wait 60 seconds before asking the certificate authority to validate the record.')"
-                >
-                  <ASwitch v-model:checked="options.disable_authoritative_ns_propagation" />
                 </AFormItem>
                 <AFormItem
                   :label="$gettext('Enable Common Name')"

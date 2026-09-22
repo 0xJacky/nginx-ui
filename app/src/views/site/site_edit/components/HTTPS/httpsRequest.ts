@@ -33,8 +33,7 @@ export function buildHTTPSRequest(form: HTTPSRequestForm): HTTPSRequest {
     acme_user_id: o.acme_user_id ?? 0,
     profile: o.profile ?? '',
     must_staple: !!o.must_staple,
-    lego_disable_cname_support: !!o.lego_disable_cname_support,
-    disable_authoritative_ns_propagation: challengeMethod === 'dns01' && !!o.disable_authoritative_ns_propagation,
+    challenge_config: challengeMethod === 'dns01' ? o.challenge_config : undefined,
     enable_common_name: !!o.enable_common_name,
     revoke_old: !!o.revoke_old,
   }

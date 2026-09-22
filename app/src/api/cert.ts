@@ -40,8 +40,8 @@ export interface Cert extends ModelBase {
   deployment_status: CertificateDeploymentStatus
   sync_node_ids: number[]
   must_staple: boolean
-  lego_disable_cname_support: boolean
-  disable_authoritative_ns_propagation: boolean
+  /** Free-form payload owned by the plugin that implements the challenge method. */
+  challenge_config?: Record<string, unknown>
   enable_common_name: boolean
   revoke_old: boolean
   status: CertStatusType

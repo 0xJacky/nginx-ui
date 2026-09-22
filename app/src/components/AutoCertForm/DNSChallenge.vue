@@ -54,6 +54,11 @@ function applyCredentialMeta(item?: DnsCredential) {
   data.value.code = item.code
   data.value.provider = item.provider
   data.value.provider_code = item.provider_code || item.code
+  // The dns01 plugin reads the selected credential from challenge_config.
+  data.value.challenge_config = {
+    ...data.value.challenge_config,
+    credential_id: String(item.id),
+  }
 }
 
 function onCredentialChange(value?: number) {
@@ -128,27 +133,6 @@ function filterOption(input: string, option?: DefaultOptionType) {
   return label.includes(needle) || value.includes(needle)
 }
 
-/**
- * Mirror the DNS-01 specific fields into `challenge_config`, the payload the
- * challenge provider actually receives. A plugin replacing this slot writes
- * the same key with its own shape.
- */
-watch(
-  () => [
-    data.value.dns_credential_id,
-    data.value.lego_disable_cname_support,
-    data.value.disable_authoritative_ns_propagation,
-  ],
-  () => {
-    data.value.challenge_config = {
-      credential_id: data.value.dns_credential_id ?? null,
-      disable_cname: Boolean(data.value.lego_disable_cname_support),
-      disable_authoritative_ns_propagation: Boolean(data.value.disable_authoritative_ns_propagation),
-    }
-  },
-  { immediate: true },
-)
-
 onMounted(async () => {
   await loadCredentials()
 })
@@ -180,24 +164,6 @@ onMounted(async () => {
       <AButton type="link" size="small" class="px-0" @click="goToCredentialPage">
         {{ $gettext('Go to DNS > Credentials to create or manage credentials') }}
       </AButton>
-    </AFormItem>
-    <AFormItem :label="$gettext('Lego disable CNAME Support')">
-      <template #help>
-        <p>
-          {{ $gettext('If your domain has CNAME records and you cannot obtain certificates, '
-            + 'you need to enable this option.') }}
-        </p>
-      </template>
-      <ASwitch v-model:checked="data.lego_disable_cname_support" />
-    </AFormItem>
-    <AFormItem :label="$gettext('Disable Authoritative DNS Propagation Check')">
-      <template #help>
-        <p>
-          {{ $gettext('Skip local DNS propagation checks and wait 60 seconds before asking '
-            + 'the certificate authority to validate the record.') }}
-        </p>
-      </template>
-      <ASwitch v-model:checked="data.disable_authoritative_ns_propagation" />
     </AFormItem>
   </AForm>
 </template>

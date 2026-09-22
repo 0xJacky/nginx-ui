@@ -1,6 +1,11 @@
 package model
 
-import "testing"
+import (
+	"testing"
+
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+)
 
 func TestNodeGetWebSocketURL(t *testing.T) {
 	tests := []struct {
@@ -76,5 +81,45 @@ func TestNodeGetURLPreservesEscapedComponents(t *testing.T) {
 	want := "https://node.example.com/nginx%20ui/api/configs?name=folder%2Fsite+copy"
 	if got != want {
 		t.Fatalf("GetUrl() = %q, want %q", got, want)
+	}
+}
+
+// nodeWithoutAcceptPluginSync mirrors the nodes table as it looked before the
+// accept_plugin_sync column was introduced.
+type nodeWithoutAcceptPluginSync struct {
+	Model
+	Name    string `json:"name"`
+	URL     string `json:"url"`
+	Enabled bool   `json:"enabled" gorm:"default:false"`
+}
+
+func (nodeWithoutAcceptPluginSync) TableName() string {
+	return "nodes"
+}
+
+func TestAutoMigrateDefaultsAcceptPluginSyncForExistingNodes(t *testing.T) {
+	db, err := gorm.Open(sqlite.Open("file:node_accept_plugin_sync?mode=memory&cache=shared"), &gorm.Config{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := db.AutoMigrate(&nodeWithoutAcceptPluginSync{}); err != nil {
+		t.Fatal(err)
+	}
+
+	existing := &nodeWithoutAcceptPluginSync{Name: "legacy", URL: "https://node.example.com", Enabled: true}
+	if err := db.Create(existing).Error; err != nil {
+		t.Fatal(err)
+	}
+
+	if err := db.AutoMigrate(&Node{}); err != nil {
+		t.Fatal(err)
+	}
+
+	var got Node
+	if err := db.First(&got, existing.ID).Error; err != nil {
+		t.Fatal(err)
+	}
+	if !got.AcceptPluginSync {
+		t.Fatal("AcceptPluginSync = false, want true for a row that predates the column")
 	}
 }

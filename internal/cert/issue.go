@@ -146,9 +146,6 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 		}
 
 		code := credential.ProviderCode
-		if code == "" {
-			code = credential.Config.Code
-		}
 
 		certLogger.Info(translation.C("[Nginx UI] Setting DNS01 challenge provider"))
 		// Every vendor call, the propagation check and the CNAME delegation
