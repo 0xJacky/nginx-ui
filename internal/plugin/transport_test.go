@@ -44,7 +44,8 @@ var testPluginGRPC struct {
 }
 
 func isGRPCMode(mode string) bool {
-	return mode == pluginModeGRPC || mode == pluginModeGRPCDefault || mode == pluginModeGRPCBroken
+	return mode == pluginModeGRPC || mode == pluginModeGRPCDefault || mode == pluginModeGRPCBroken ||
+		mode == pluginModeAllCaps
 }
 
 // extendTestInitialize opens the gRPC listener of the gRPC modes and
@@ -116,7 +117,7 @@ func testPluginCapability(method string, params json.RawMessage) (any, error, bo
 	case protocol.MethodDNS01Validate:
 		return nil, &protocol.Error{Code: protocol.CodeInvalidConfig, Message: "TOKEN is required", Data: protocol.InvalidConfigData{Field: "TOKEN"}}, true
 	default:
-		return nil, nil, false
+		return testPluginNewCapability(method, params)
 	}
 }
 

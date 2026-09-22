@@ -1,0 +1,113 @@
+package plugin
+
+import (
+	"testing"
+
+	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
+	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+)
+
+// addCapabilityEntry registers a plugin in memory. approved controls whether
+// the stored approval matches the manifest permissions.
+func addCapabilityEntry(m *Manager, manifest *protocol.Manifest, enabled, approved bool) {
+	row := &model.Plugin{PluginID: manifest.ID, Enabled: enabled}
+	if approved {
+		row.ApprovedPermissionsHash = PermissionsHash(manifest)
+	} else {
+		row.ApprovedPermissionsHash = "stale"
+	}
+	m.entries[manifest.ID] = m.newEntry(manifest.ID, manifest, row)
+}
+
+func capabilityPluginManifest(id string) *protocol.Manifest {
+	m := capabilityManifest()
+	m.ID = id
+	return m
+}
+
+func TestManagerListsCapabilityEntries(t *testing.T) {
+	m := newManager(t.TempDir())
+	addCapabilityEntry(m, capabilityPluginManifest("io.github.b.plugin"), true, true)
+	addCapabilityEntry(m, capabilityPluginManifest("io.github.a.plugin"), true, true)
+	addCapabilityEntry(m, capabilityPluginManifest("io.github.disabled.plugin"), false, true)
+	addCapabilityEntry(m, capabilityPluginManifest("io.github.unapproved.plugin"), true, false)
+
+	channels := m.NotifyChannels()
+	require.Len(t, channels, 2)
+	assert.Equal(t, "io.github.a.plugin", channels[0].PluginID)
+	assert.Equal(t, "mychat", channels[0].Channel.Code)
+	assert.Equal(t, "io.github.b.plugin", channels[1].PluginID)
+
+	kinds := m.ProbeKinds()
+	require.Len(t, kinds, 2)
+	assert.Equal(t, "tcp-banner", kinds[0].Kind.Code)
+
+	tools := m.MCPTools()
+	require.Len(t, tools, 4)
+	assert.Equal(t, "io.github.a.plugin", tools[0].PluginID)
+	assert.Equal(t, "list-zones", tools[0].Tool.Name)
+	assert.Equal(t, "purge_cache", tools[1].Tool.Name)
+
+	// The lowest plugin id owns a code several plugins declare.
+	owner, ok := m.OwnerOf(protocol.CapabilityNotify, "mychat")
+	assert.True(t, ok)
+	assert.Equal(t, "io.github.a.plugin", owner)
+	owner, ok = m.OwnerOf(protocol.CapabilityProbe, "tcp-banner")
+	assert.True(t, ok)
+	assert.Equal(t, "io.github.a.plugin", owner)
+	_, ok = m.OwnerOf(protocol.CapabilityNotify, "unknown")
+	assert.False(t, ok)
+	_, ok = m.OwnerOf(protocol.CapabilityMCP, "purge_cache")
+	assert.False(t, ok, "mcp tools are addressed by their published name, not by owner")
+}
+
+func TestManagerMCPToolsNeedTheCapabilityAndThePermission(t *testing.T) {
+	m := newManager(t.TempDir())
+
+	// A manifest that lost the permission (hand edited on disk) publishes
+	// nothing even though it was approved as it is.
+	manifest := capabilityPluginManifest("io.github.nomcp.plugin")
+	manifest.Permissions = []string{protocol.PermissionNetwork}
+	addCapabilityEntry(m, manifest, true, true)
+	assert.Empty(t, m.MCPTools())
+
+	withoutCapability := capabilityPluginManifest("io.github.nocap.plugin")
+	withoutCapability.Capabilities = []string{protocol.CapabilityNotify}
+	addCapabilityEntry(m, withoutCapability, true, true)
+	assert.Empty(t, m.MCPTools())
+}
+
+func TestOwnerOfPrefersTheOfficialDNS01Plugin(t *testing.T) {
+	m := newManager(t.TempDir())
+	official := pluginManifest(OfficialDNS01PluginID)
+	other := pluginManifest("aaa.dns")
+	addCapabilityEntry(m, official, true, true)
+	addCapabilityEntry(m, other, true, true)
+
+	owner, ok := m.OwnerOf(protocol.CapabilityDNS01, "test")
+	assert.True(t, ok)
+	assert.Equal(t, OfficialDNS01PluginID, owner)
+}
+
+func TestMCPToolName(t *testing.T) {
+	name := MCPToolName("io.github.example-org.cdn", "purge_cache")
+	assert.Equal(t, "io_github_example-org_cdn__purge_cache", name)
+
+	pluginID, tool, ok := ParseMCPToolName(name)
+	assert.True(t, ok)
+	assert.Equal(t, "io.github.example-org.cdn", pluginID)
+	assert.Equal(t, "purge_cache", tool)
+
+	// A tool name may itself contain a double underscore.
+	pluginID, tool, ok = ParseMCPToolName(MCPToolName("com.example.x", "a__b"))
+	assert.True(t, ok)
+	assert.Equal(t, "com.example.x", pluginID)
+	assert.Equal(t, "a__b", tool)
+
+	for _, bad := range []string{"reload_nginx", "__tool", "com_example__", "Com_Example__tool"} {
+		_, _, ok = ParseMCPToolName(bad)
+		assert.False(t, ok, bad)
+	}
+}

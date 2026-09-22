@@ -363,6 +363,121 @@ func lintCapabilities(m *protocol.Manifest, report *LintReport) {
 			report.add(LevelError, "MAN-22", "http.listen %q must be one of %s", m.HTTP.Listen, strings.Join(knownHTTPListenModes, ", "))
 		}
 	}
+	if _, ok := seen[protocol.CapabilityNotify]; ok {
+		lintNotify(m.Notify, report)
+		lintNetworkPermission(m, protocol.CapabilityNotify, report)
+	}
+	if _, ok := seen[protocol.CapabilityProbe]; ok {
+		lintProbe(m.Probe, report)
+		lintNetworkPermission(m, protocol.CapabilityProbe, report)
+	}
+	_, hasMCP := seen[protocol.CapabilityMCP]
+	if hasMCP {
+		lintMCP(m, report)
+	} else if slices.Contains(m.Permissions, protocol.PermissionMCP) {
+		report.add(LevelWarning, "SEC-5", "permission %q is requested but capability %q is not declared, so it grants nothing", protocol.PermissionMCP, protocol.CapabilityMCP)
+	}
+}
+
+// lintNotify checks notify.channels (MAN-31, NOTIFY-2 through NOTIFY-4).
+func lintNotify(n *protocol.ManifestNotify, report *LintReport) {
+	if n == nil || len(n.Channels) == 0 {
+		report.add(LevelError, "MAN-31", "capability notify requires at least one channel")
+		return
+	}
+	seen := make(map[string]struct{}, len(n.Channels))
+	for _, c := range n.Channels {
+		if !capabilityCodePattern.MatchString(c.Code) {
+			report.add(LevelError, "NOTIFY-2", "notify channel code %q must match %s", c.Code, capabilityCodePattern)
+		} else if _, dup := seen[c.Code]; dup {
+			report.add(LevelError, "NOTIFY-2", "notify channel code %q is declared twice", c.Code)
+		}
+		seen[c.Code] = struct{}{}
+		if c.Name == "" {
+			report.add(LevelError, "NOTIFY-3", "notify channel %q is missing a name", c.Code)
+		}
+		lintConfigurationSchema(fmt.Sprintf("notify channel %q", c.Code), "NOTIFY-4", c.Configuration, report)
+	}
+}
+
+// lintProbe checks probe.kinds (MAN-32, PROBE-2 and PROBE-3).
+func lintProbe(p *protocol.ManifestProbe, report *LintReport) {
+	if p == nil || len(p.Kinds) == 0 {
+		report.add(LevelError, "MAN-32", "capability probe requires at least one kind")
+		return
+	}
+	seen := make(map[string]struct{}, len(p.Kinds))
+	for _, k := range p.Kinds {
+		if !capabilityCodePattern.MatchString(k.Code) {
+			report.add(LevelError, "PROBE-2", "probe kind code %q must match %s", k.Code, capabilityCodePattern)
+		} else if _, dup := seen[k.Code]; dup {
+			report.add(LevelError, "PROBE-2", "probe kind code %q is declared twice", k.Code)
+		}
+		seen[k.Code] = struct{}{}
+		if k.Name == "" {
+			report.add(LevelError, "PROBE-3", "probe kind %q is missing a name", k.Code)
+		}
+		lintConfigurationSchema(fmt.Sprintf("probe kind %q", k.Code), "PROBE-3", k.Configuration, report)
+	}
+}
+
+// lintConfigurationSchema checks the form of a notify channel or a probe kind
+// (NOTIFY-4, which PROBE-3 refers to).
+func lintConfigurationSchema(owner, rule string, schema *protocol.ConfigurationSchema, report *LintReport) {
+	if schema == nil {
+		return
+	}
+	seen := make(map[string]struct{}, len(schema.Fields))
+	for _, field := range schema.Fields {
+		if field.Key == "" {
+			report.add(LevelError, rule, "%s has a configuration field without a key", owner)
+			continue
+		}
+		if _, dup := seen[field.Key]; dup {
+			report.add(LevelError, rule, "%s declares the configuration key %q twice", owner, field.Key)
+		}
+		seen[field.Key] = struct{}{}
+		if !slices.Contains(knownConfigurationFieldTypes, field.Type) {
+			report.add(LevelError, rule, "%s configuration key %q has unknown type %q", owner, field.Key, field.Type)
+		}
+		if field.DisplayName == "" {
+			report.add(LevelError, rule, "%s configuration key %q needs a display_name", owner, field.Key)
+		}
+	}
+}
+
+// lintNetworkPermission warns when a capability that talks to the outside
+// world does not tell the person installing it so (SEC-3).
+func lintNetworkPermission(m *protocol.Manifest, capability string, report *LintReport) {
+	if !slices.Contains(m.Permissions, protocol.PermissionNetwork) {
+		report.add(LevelWarning, "SEC-3", "capability %s usually reaches a vendor or a target, but permission %q is not requested", capability, protocol.PermissionNetwork)
+	}
+}
+
+// lintMCP checks mcp.tools and the mcp permission (MAN-33, MCP-2, MCP-3).
+func lintMCP(m *protocol.Manifest, report *LintReport) {
+	if !slices.Contains(m.Permissions, protocol.PermissionMCP) {
+		report.add(LevelError, "MAN-33", "capability mcp requires the %q permission", protocol.PermissionMCP)
+	}
+	if m.MCP == nil || len(m.MCP.Tools) == 0 {
+		report.add(LevelError, "MAN-33", "capability mcp requires at least one tool")
+		return
+	}
+	seen := make(map[string]struct{}, len(m.MCP.Tools))
+	for _, tool := range m.MCP.Tools {
+		if !mcpToolNamePattern.MatchString(tool.Name) {
+			report.add(LevelError, "MCP-2", "mcp tool name %q must match %s", tool.Name, mcpToolNamePattern)
+		} else if _, dup := seen[tool.Name]; dup {
+			report.add(LevelError, "MCP-2", "mcp tool %q is declared twice", tool.Name)
+		}
+		seen[tool.Name] = struct{}{}
+		if tool.Description == "" {
+			report.add(LevelError, "MCP-2", "mcp tool %q needs a description", tool.Name)
+		}
+		if !isObjectSchema(tool.InputSchema) {
+			report.add(LevelError, "MCP-3", "mcp tool %q input_schema must have type \"object\"", tool.Name)
+		}
+	}
 }
 
 // lintDNS01 checks dns01.providers (MAN-21, DNS01-1 through DNS01-3).

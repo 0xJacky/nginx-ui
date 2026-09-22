@@ -1,6 +1,8 @@
 // Package capability adapts the plugin capabilities to the core interfaces
-// that consume them. The dns01 capability is exposed as a dns.Source, so the
-// certificate code never learns that a provider lives in another process.
+// that consume them, so the core never learns that an implementation lives
+// in another process. The dns01 capability is exposed as a dns.Source, notify
+// as a notification.ExternalNotifierSource, probe as a sitecheck.ProbeSource
+// and mcp as tools on the MCP server.
 package capability
 
 import (
