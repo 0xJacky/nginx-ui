@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { StdTableColumn } from '@uozi-admin/curd'
 import type { ExternalNotifyConfig } from './types'
-import { StdForm } from '@uozi-admin/curd'
 import { testMessage } from '@/api/external_notify'
 import CodeEditor from '@/components/CodeEditor'
+import { SensitiveInput } from '@/components/SensitiveString'
 import gettext from '@/gettext'
 import configMap from './index'
 
@@ -15,6 +14,10 @@ const { message } = App.useApp()
 
 const modelValue = defineModel<Record<string, string>>({ default: () => ({}) })
 const multilineConfigKeys = new Set(['html_template', 'message_body'])
+const sensitiveConfigKeysByType: Record<string, Set<string>> = {
+  email: new Set(['password']),
+  teams: new Set(['client_secret']),
+}
 const teamsMessageBodyTemplate = `[
   {
     "type": "TextBlock",
@@ -85,6 +88,22 @@ const currentConfig = computed<ExternalNotifyConfig | undefined>(() => {
 const allowedConfigKeys = computed<string[]>(() => {
   return currentConfig.value?.config.map(item => item.key) ?? []
 })
+
+const singleLineConfigItems = computed(() => {
+  if (!currentConfig.value)
+    return []
+
+  return currentConfig.value.config.filter(item => !multilineConfigKeys.has(item.key))
+})
+
+function isSensitiveConfigKey(key: string): boolean {
+  const type = props.type?.toLowerCase() ?? ''
+  return sensitiveConfigKeysByType[type]?.has(key) ?? false
+}
+
+function resolveSensitiveConfigValue(key: string) {
+  return async () => modelValue.value[key] ?? ''
+}
 
 interface JsonValidationError {
   line: number
@@ -172,23 +191,6 @@ watch([() => props.type, allowedConfigKeys], () => {
     modelValue.value = nextConfig
   }
 }, { immediate: true })
-
-const columns = computed<StdTableColumn[]>(() => {
-  if (!currentConfig.value)
-    return []
-
-  return currentConfig.value.config.filter(item => !multilineConfigKeys.has(item.key)).map(item => ({
-    title: $gettext(item.label),
-    dataIndex: item.key,
-    key: item.key,
-    edit: {
-      type: 'input',
-      formItem: {
-        label: $gettext(item.label),
-      },
-    },
-  }))
-})
 
 const loading = ref(false)
 
@@ -305,10 +307,21 @@ async function handleSendTestMessage() {
 
 <template>
   <div v-if="currentConfig">
-    <StdForm
-      v-model:data="modelValue"
-      :columns
-    />
+    <AFormItem
+      v-for="item in singleLineConfigItems"
+      :key="item.key"
+      :label="$gettext(item.label)"
+    >
+      <SensitiveInput
+        v-if="isSensitiveConfigKey(item.key)"
+        v-model="modelValue[item.key]"
+        :resolve="resolveSensitiveConfigValue(item.key)"
+      />
+      <AInput
+        v-else
+        v-model:value="modelValue[item.key]"
+      />
+    </AFormItem>
 
     <AFormItem
       v-for="item in currentConfig.config.filter(item => multilineConfigKeys.has(item.key))"
