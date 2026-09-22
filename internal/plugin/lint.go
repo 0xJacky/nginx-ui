@@ -114,7 +114,8 @@ func Lint(path string) (*LintReport, error) {
 	}
 	lintServer(manifest.Server, dir, report)
 	lintWebapp(manifest.Webapp, dir, report)
-	lintContent(manifest.Content, dir, report)
+	lintContent(manifest, dir, report)
+	lintProcessless(manifest, report)
 	lintCapabilities(manifest, report)
 	lintPermissions(manifest.Permissions, report)
 	lintRequires(manifest.Requires, report)
@@ -306,36 +307,39 @@ func lintFileExists(path, rule, what string, report *LintReport) {
 	}
 }
 
-// lintContent checks the content block (MAN-18) and that the declared
-// directories exist.
-func lintContent(c *protocol.ManifestContent, dir string, report *LintReport) {
+// lintContent checks the content block (MAN-18) and the templates and
+// translation files it points at (CONTENT-2, CONTENT-3, CONTENT-6 and
+// CONTENT-7).
+func lintContent(m *protocol.Manifest, dir string, report *LintReport) {
+	c := m.Content
 	if c == nil {
 		return
 	}
-	if c.Templates != "" {
-		if !isSafeRelPath(c.Templates) {
-			report.add(LevelError, "MAN-18", "content.templates %q must be a safe relative path", c.Templates)
-		} else {
-			lintDirExists(filepath.Join(dir, filepath.FromSlash(c.Templates)), "content.templates", report)
-		}
+	if c.Templates != "" && !isSafeRelPath(c.Templates) {
+		report.add(LevelError, "MAN-18", "content.templates %q must be a safe relative path", c.Templates)
 	}
-	if c.Locales != "" {
-		if !isSafeRelPath(c.Locales) {
-			report.add(LevelError, "MAN-18", "content.locales %q must be a safe relative path", c.Locales)
-		} else {
-			lintDirExists(filepath.Join(dir, filepath.FromSlash(c.Locales)), "content.locales", report)
-		}
+	if c.Locales != "" && !isSafeRelPath(c.Locales) {
+		report.add(LevelError, "MAN-18", "content.locales %q must be a safe relative path", c.Locales)
+	}
+	for _, problem := range CheckContent(m, dir) {
+		report.add(problem.Level, problem.Rule, "%s", problem.String())
 	}
 }
 
-func lintDirExists(path, what string, report *LintReport) {
-	info, err := os.Stat(path)
-	if err != nil {
-		report.add(LevelError, "MAN-18", "%s points at a missing directory: %s", what, path)
+// lintProcessless checks that a manifest without a server block declares
+// nothing only a process can serve (CONTENT-1).
+func lintProcessless(m *protocol.Manifest, report *LintReport) {
+	if m.Server != nil {
 		return
 	}
-	if !info.IsDir() {
-		report.add(LevelError, "MAN-18", "%s must be a directory: %s", what, path)
+	if len(m.Capabilities) > 0 {
+		report.add(LevelError, "CONTENT-1", "capabilities %v need a server block, a plugin without one has no process", m.Capabilities)
+	}
+	if len(m.Cron) > 0 {
+		report.add(LevelError, "CONTENT-1", "cron entries need a server block, a plugin without one has no process")
+	}
+	if len(m.Events) > 0 {
+		report.add(LevelError, "CONTENT-1", "events need a server block, a plugin without one has no process")
 	}
 }
 
@@ -386,6 +390,66 @@ func lintCapabilities(m *protocol.Manifest, report *LintReport) {
 		lintNetworkPermission(m, protocol.CapabilityCertDeploy, report)
 	} else if slices.Contains(m.Permissions, protocol.PermissionCertDeploy) {
 		report.add(LevelWarning, "SEC-5", "permission %q is requested but capability %q is not declared, so it grants nothing", protocol.PermissionCertDeploy, protocol.CapabilityCertDeploy)
+	}
+	if _, ok := seen[protocol.CapabilitySecurityBlocklist]; ok {
+		lintBlocklist(m, report)
+	}
+	if _, ok := seen[protocol.CapabilityUpstreamDiscovery]; ok {
+		lintDiscovery(m, report)
+	}
+}
+
+// lintBlocklist checks blocklist.sources and the network permission
+// (MAN-36, BLOCKLIST-2 and BLOCKLIST-3).
+func lintBlocklist(m *protocol.Manifest, report *LintReport) {
+	if !slices.Contains(m.Permissions, protocol.PermissionNetwork) {
+		report.add(LevelError, "MAN-36", "capability security.blocklist requires the %q permission", protocol.PermissionNetwork)
+	}
+	if m.Blocklist == nil || len(m.Blocklist.Sources) == 0 {
+		report.add(LevelError, "MAN-36", "capability security.blocklist requires at least one source")
+		return
+	}
+	seen := make(map[string]struct{}, len(m.Blocklist.Sources))
+	for _, source := range m.Blocklist.Sources {
+		if !capabilityCodePattern.MatchString(source.Code) {
+			report.add(LevelError, "BLOCKLIST-2", "blocklist source code %q must match %s", source.Code, capabilityCodePattern)
+		} else if _, dup := seen[source.Code]; dup {
+			report.add(LevelError, "BLOCKLIST-2", "blocklist source code %q is declared twice", source.Code)
+		}
+		seen[source.Code] = struct{}{}
+		if source.Name == "" {
+			report.add(LevelError, "BLOCKLIST-3", "blocklist source %q is missing a name", source.Code)
+		}
+		if !validBlocklistRefresh(source.RefreshSeconds) {
+			report.add(LevelError, "BLOCKLIST-3", "blocklist source %q refresh_seconds %d must be 0 or at least %d",
+				source.Code, source.RefreshSeconds, protocol.MinBlocklistRefreshSeconds)
+		}
+		lintConfigurationSchema(fmt.Sprintf("blocklist source %q", source.Code), "BLOCKLIST-3", source.Configuration, report)
+	}
+}
+
+// lintDiscovery checks discovery.providers and the network permission
+// (MAN-37, DISCOVERY-2 and DISCOVERY-3).
+func lintDiscovery(m *protocol.Manifest, report *LintReport) {
+	if !slices.Contains(m.Permissions, protocol.PermissionNetwork) {
+		report.add(LevelError, "MAN-37", "capability upstream.discovery requires the %q permission", protocol.PermissionNetwork)
+	}
+	if m.Discovery == nil || len(m.Discovery.Providers) == 0 {
+		report.add(LevelError, "MAN-37", "capability upstream.discovery requires at least one provider")
+		return
+	}
+	seen := make(map[string]struct{}, len(m.Discovery.Providers))
+	for _, provider := range m.Discovery.Providers {
+		if !capabilityCodePattern.MatchString(provider.Code) {
+			report.add(LevelError, "DISCOVERY-2", "discovery provider code %q must match %s", provider.Code, capabilityCodePattern)
+		} else if _, dup := seen[provider.Code]; dup {
+			report.add(LevelError, "DISCOVERY-2", "discovery provider code %q is declared twice", provider.Code)
+		}
+		seen[provider.Code] = struct{}{}
+		if provider.Name == "" {
+			report.add(LevelError, "DISCOVERY-3", "discovery provider %q is missing a name", provider.Code)
+		}
+		lintConfigurationSchema(fmt.Sprintf("discovery provider %q", provider.Code), "DISCOVERY-3", provider.Configuration, report)
 	}
 }
 
@@ -478,7 +542,7 @@ func lintProbe(p *protocol.ManifestProbe, report *LintReport) {
 }
 
 // lintConfigurationSchema checks the form of a capability entry (NOTIFY-4,
-// which PROBE-3, STORAGE-3 and DEPLOY-3 refer to).
+// which PROBE-3, STORAGE-3, DEPLOY-3, BLOCKLIST-3 and DISCOVERY-3 refer to).
 func lintConfigurationSchema(owner, rule string, schema *protocol.ConfigurationSchema, report *LintReport) {
 	if schema == nil {
 		return

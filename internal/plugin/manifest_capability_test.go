@@ -8,13 +8,15 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// capabilityManifest declares the notify, probe, mcp, storage and cert.deploy
-// capabilities with one or two entries each.
+// capabilityManifest declares the notify, probe, mcp, storage, cert.deploy,
+// security.blocklist and upstream.discovery capabilities with one or two
+// entries each.
 func capabilityManifest() *protocol.Manifest {
 	m := validManifest()
 	m.Capabilities = []string{
 		protocol.CapabilityNotify, protocol.CapabilityProbe, protocol.CapabilityMCP,
 		protocol.CapabilityStorage, protocol.CapabilityCertDeploy,
+		protocol.CapabilitySecurityBlocklist, protocol.CapabilityUpstreamDiscovery,
 	}
 	m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP, protocol.PermissionCertDeploy}
 	m.DNS01 = nil
@@ -56,6 +58,23 @@ func capabilityManifest() *protocol.Manifest {
 		Configuration: &protocol.ConfigurationSchema{Fields: []protocol.ConfigurationField{
 			{Key: "zone_id", DisplayName: "Zone ID", Required: true},
 			{Key: "api_token", DisplayName: "API token", Secret: true},
+		}},
+	}}}
+	m.Blocklist = &protocol.ManifestBlocklist{Sources: []protocol.BlocklistSource{{
+		Code:           "threatfeed",
+		Name:           "ThreatFeed",
+		RefreshSeconds: 900,
+		Configuration: &protocol.ConfigurationSchema{Fields: []protocol.ConfigurationField{
+			{Key: "api_key", DisplayName: "API key", Required: true, Secret: true},
+			{Key: "min_score", Type: protocol.ConfigurationFieldNumber, DisplayName: "Minimum score"},
+		}},
+	}}}
+	m.Discovery = &protocol.ManifestDiscovery{Providers: []protocol.DiscoveryProvider{{
+		Code: "registry",
+		Name: "Service registry",
+		Configuration: &protocol.ConfigurationSchema{Fields: []protocol.ConfigurationField{
+			{Key: "address", DisplayName: "Registry address", Required: true},
+			{Key: "token", DisplayName: "Token", Secret: true},
 		}},
 	}}}
 	return m
@@ -130,6 +149,32 @@ func TestValidateManifestCapabilityBlocks(t *testing.T) {
 		{"deploy field without key", func(m *protocol.Manifest) {
 			m.Deploy.Targets[0].Configuration.Fields[1].Key = ""
 		}, "field key is required"},
+		{"blocklist without block", func(m *protocol.Manifest) { m.Blocklist = nil }, "at least one source"},
+		{"blocklist without network", func(m *protocol.Manifest) {
+			m.Permissions = []string{protocol.PermissionMCP, protocol.PermissionCertDeploy}
+		}, "security.blocklist requires the network permission"},
+		{"blocklist code with space", func(m *protocol.Manifest) { m.Blocklist.Sources[0].Code = "threat feed" }, "blocklist source code"},
+		{"duplicate blocklist code", func(m *protocol.Manifest) {
+			m.Blocklist.Sources = append(m.Blocklist.Sources, protocol.BlocklistSource{Code: "threatfeed", Name: "Again"})
+		}, "declared twice"},
+		{"blocklist source without name", func(m *protocol.Manifest) { m.Blocklist.Sources[0].Name = "" }, "name is required"},
+		{"blocklist refresh too short", func(m *protocol.Manifest) { m.Blocklist.Sources[0].RefreshSeconds = 30 }, "refresh_seconds"},
+		{"blocklist refresh negative", func(m *protocol.Manifest) { m.Blocklist.Sources[0].RefreshSeconds = -1 }, "refresh_seconds"},
+		{"blocklist field of unknown type", func(m *protocol.Manifest) {
+			m.Blocklist.Sources[0].Configuration.Fields[0].Type = "select"
+		}, "unknown type"},
+		{"discovery without block", func(m *protocol.Manifest) { m.Discovery = nil }, "at least one provider"},
+		{"discovery without network", func(m *protocol.Manifest) {
+			m.Capabilities = []string{protocol.CapabilityUpstreamDiscovery}
+			m.Permissions = nil
+		}, "upstream.discovery requires the network permission"},
+		{"discovery code too long", func(m *protocol.Manifest) {
+			m.Discovery.Providers[0].Code = "a-very-long-discovery-provider-code-that-overflows"
+		}, "discovery provider code"},
+		{"duplicate discovery code", func(m *protocol.Manifest) {
+			m.Discovery.Providers = append(m.Discovery.Providers, protocol.DiscoveryProvider{Code: "registry", Name: "Again"})
+		}, "declared twice"},
+		{"discovery provider without name", func(m *protocol.Manifest) { m.Discovery.Providers[0].Name = "" }, "name is required"},
 	}
 
 	for _, tc := range tests {
@@ -163,6 +208,8 @@ func lintCapabilityManifest() *protocol.Manifest {
 	m.MCP = blocks.MCP
 	m.Storage = blocks.Storage
 	m.Deploy = blocks.Deploy
+	m.Blocklist = blocks.Blocklist
+	m.Discovery = blocks.Discovery
 	return m
 }
 
@@ -231,6 +278,27 @@ func TestLintCapabilityBlocks(t *testing.T) {
 		{"deploy permission without capability", func(m *protocol.Manifest) {
 			m.Capabilities = []string{protocol.CapabilityStorage}
 		}, LevelWarning, "SEC-5"},
+		{"blocklist without network", func(m *protocol.Manifest) {
+			m.Permissions = []string{protocol.PermissionMCP, protocol.PermissionCertDeploy}
+		}, LevelError, "MAN-36"},
+		{"blocklist without sources", func(m *protocol.Manifest) { m.Blocklist = nil }, LevelError, "MAN-36"},
+		{"bad blocklist code", func(m *protocol.Manifest) { m.Blocklist.Sources[0].Code = "Threat" }, LevelError, "BLOCKLIST-2"},
+		{"blocklist source without name", func(m *protocol.Manifest) { m.Blocklist.Sources[0].Name = "" }, LevelError, "BLOCKLIST-3"},
+		{"blocklist refresh too short", func(m *protocol.Manifest) { m.Blocklist.Sources[0].RefreshSeconds = 59 }, LevelError, "BLOCKLIST-3"},
+		{"blocklist field without key", func(m *protocol.Manifest) {
+			m.Blocklist.Sources[0].Configuration.Fields[1].Key = ""
+		}, LevelError, "BLOCKLIST-3"},
+		{"discovery without network", func(m *protocol.Manifest) {
+			m.Capabilities = []string{protocol.CapabilityUpstreamDiscovery}
+			m.Permissions = nil
+		}, LevelError, "MAN-37"},
+		{"discovery without providers", func(m *protocol.Manifest) { m.Discovery = nil }, LevelError, "MAN-37"},
+		{"duplicate discovery code", func(m *protocol.Manifest) {
+			m.Discovery.Providers = append(m.Discovery.Providers, protocol.DiscoveryProvider{Code: "registry", Name: "Again"})
+		}, LevelError, "DISCOVERY-2"},
+		{"discovery field without display name", func(m *protocol.Manifest) {
+			m.Discovery.Providers[0].Configuration.Fields[0].DisplayName = ""
+		}, LevelError, "DISCOVERY-3"},
 	}
 
 	for _, tc := range tests {
@@ -242,4 +310,12 @@ func TestLintCapabilityBlocks(t *testing.T) {
 			assertHasFinding(t, report, tc.level, tc.rule)
 		})
 	}
+}
+
+func TestValidateManifestAcceptsTheDefaultBlocklistRefresh(t *testing.T) {
+	m := capabilityManifest()
+	m.Blocklist.Sources[0].RefreshSeconds = 0
+	assert.NoError(t, ValidateManifest(m))
+	m.Blocklist.Sources[0].RefreshSeconds = protocol.MinBlocklistRefreshSeconds
+	assert.NoError(t, ValidateManifest(m))
 }

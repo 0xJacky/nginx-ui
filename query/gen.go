@@ -22,6 +22,7 @@ var (
 	AuthToken                *authToken
 	AutoBackup               *autoBackup
 	BanIP                    *banIP
+	BlocklistSource          *blocklistSource
 	Cert                     *cert
 	CertDeployTarget         *certDeployTarget
 	CertDeployment           *certDeployment
@@ -47,6 +48,7 @@ var (
 	SiteHealthAlertState     *siteHealthAlertState
 	Stream                   *stream
 	UpstreamConfig           *upstreamConfig
+	UpstreamDiscovery        *upstreamDiscovery
 	User                     *user
 )
 
@@ -57,6 +59,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	AuthToken = &Q.AuthToken
 	AutoBackup = &Q.AutoBackup
 	BanIP = &Q.BanIP
+	BlocklistSource = &Q.BlocklistSource
 	Cert = &Q.Cert
 	CertDeployTarget = &Q.CertDeployTarget
 	CertDeployment = &Q.CertDeployment
@@ -82,6 +85,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	SiteHealthAlertState = &Q.SiteHealthAlertState
 	Stream = &Q.Stream
 	UpstreamConfig = &Q.UpstreamConfig
+	UpstreamDiscovery = &Q.UpstreamDiscovery
 	User = &Q.User
 }
 
@@ -93,6 +97,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		AuthToken:                newAuthToken(db, opts...),
 		AutoBackup:               newAutoBackup(db, opts...),
 		BanIP:                    newBanIP(db, opts...),
+		BlocklistSource:          newBlocklistSource(db, opts...),
 		Cert:                     newCert(db, opts...),
 		CertDeployTarget:         newCertDeployTarget(db, opts...),
 		CertDeployment:           newCertDeployment(db, opts...),
@@ -118,6 +123,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		SiteHealthAlertState:     newSiteHealthAlertState(db, opts...),
 		Stream:                   newStream(db, opts...),
 		UpstreamConfig:           newUpstreamConfig(db, opts...),
+		UpstreamDiscovery:        newUpstreamDiscovery(db, opts...),
 		User:                     newUser(db, opts...),
 	}
 }
@@ -130,6 +136,7 @@ type Query struct {
 	AuthToken                authToken
 	AutoBackup               autoBackup
 	BanIP                    banIP
+	BlocklistSource          blocklistSource
 	Cert                     cert
 	CertDeployTarget         certDeployTarget
 	CertDeployment           certDeployment
@@ -155,6 +162,7 @@ type Query struct {
 	SiteHealthAlertState     siteHealthAlertState
 	Stream                   stream
 	UpstreamConfig           upstreamConfig
+	UpstreamDiscovery        upstreamDiscovery
 	User                     user
 }
 
@@ -170,6 +178,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		AuthToken:                q.AuthToken.clone(db),
 		AutoBackup:               q.AutoBackup.clone(db),
 		BanIP:                    q.BanIP.clone(db),
+		BlocklistSource:          q.BlocklistSource.clone(db),
 		Cert:                     q.Cert.clone(db),
 		CertDeployTarget:         q.CertDeployTarget.clone(db),
 		CertDeployment:           q.CertDeployment.clone(db),
@@ -195,6 +204,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		SiteHealthAlertState:     q.SiteHealthAlertState.clone(db),
 		Stream:                   q.Stream.clone(db),
 		UpstreamConfig:           q.UpstreamConfig.clone(db),
+		UpstreamDiscovery:        q.UpstreamDiscovery.clone(db),
 		User:                     q.User.clone(db),
 	}
 }
@@ -215,6 +225,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		AuthToken:                q.AuthToken.replaceDB(db),
 		AutoBackup:               q.AutoBackup.replaceDB(db),
 		BanIP:                    q.BanIP.replaceDB(db),
+		BlocklistSource:          q.BlocklistSource.replaceDB(db),
 		Cert:                     q.Cert.replaceDB(db),
 		CertDeployTarget:         q.CertDeployTarget.replaceDB(db),
 		CertDeployment:           q.CertDeployment.replaceDB(db),
@@ -240,6 +251,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		SiteHealthAlertState:     q.SiteHealthAlertState.replaceDB(db),
 		Stream:                   q.Stream.replaceDB(db),
 		UpstreamConfig:           q.UpstreamConfig.replaceDB(db),
+		UpstreamDiscovery:        q.UpstreamDiscovery.replaceDB(db),
 		User:                     q.User.replaceDB(db),
 	}
 }
@@ -250,6 +262,7 @@ type queryCtx struct {
 	AuthToken                *authTokenDo
 	AutoBackup               *autoBackupDo
 	BanIP                    *banIPDo
+	BlocklistSource          *blocklistSourceDo
 	Cert                     *certDo
 	CertDeployTarget         *certDeployTargetDo
 	CertDeployment           *certDeploymentDo
@@ -275,6 +288,7 @@ type queryCtx struct {
 	SiteHealthAlertState     *siteHealthAlertStateDo
 	Stream                   *streamDo
 	UpstreamConfig           *upstreamConfigDo
+	UpstreamDiscovery        *upstreamDiscoveryDo
 	User                     *userDo
 }
 
@@ -285,6 +299,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		AuthToken:                q.AuthToken.WithContext(ctx),
 		AutoBackup:               q.AutoBackup.WithContext(ctx),
 		BanIP:                    q.BanIP.WithContext(ctx),
+		BlocklistSource:          q.BlocklistSource.WithContext(ctx),
 		Cert:                     q.Cert.WithContext(ctx),
 		CertDeployTarget:         q.CertDeployTarget.WithContext(ctx),
 		CertDeployment:           q.CertDeployment.WithContext(ctx),
@@ -310,6 +325,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		SiteHealthAlertState:     q.SiteHealthAlertState.WithContext(ctx),
 		Stream:                   q.Stream.WithContext(ctx),
 		UpstreamConfig:           q.UpstreamConfig.WithContext(ctx),
+		UpstreamDiscovery:        q.UpstreamDiscovery.WithContext(ctx),
 		User:                     q.User.WithContext(ctx),
 	}
 }

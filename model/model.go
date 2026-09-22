@@ -65,6 +65,8 @@ func GenerateAllModel() []any {
 		PluginKV{},
 		CertDeployTarget{},
 		CertDeployment{},
+		BlocklistSource{},
+		UpstreamDiscovery{},
 	}
 }
 
