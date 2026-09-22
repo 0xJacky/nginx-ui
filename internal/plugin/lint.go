@@ -85,9 +85,11 @@ func Lint(path string) (*LintReport, error) {
 	}
 
 	dir := path
+	archiveName := ""
 	if info.IsDir() {
 		lintDirLimits(dir, report)
 	} else {
+		archiveName = filepath.Base(path)
 		extracted, ok := lintExtractArchive(path, report)
 		if !ok {
 			return report, nil
@@ -104,6 +106,9 @@ func Lint(path string) (*LintReport, error) {
 	}
 
 	lintIdentity(manifest, report)
+	if archiveName != "" {
+		lintPackageName(archiveName, manifest, report)
+	}
 	if manifest.Server == nil && manifest.Webapp == nil && manifest.Content == nil {
 		report.add(LevelError, "MAN-7", "at least one of server, webapp or content is required")
 	}
@@ -206,6 +211,37 @@ func lintServer(s *protocol.ManifestServer, dir string, report *LintReport) {
 		if _, err := exec.LookPath(s.Command[0]); err != nil {
 			report.add(LevelWarning, "MAN-12", "server.command[0] %q was not found on PATH: %v", s.Command[0], err)
 		}
+	}
+}
+
+// lintPackageName checks an archive file name against its manifest. A name
+// that follows neither package form (an upload saved under another name) is
+// not checked at all. PKG-1 wants the id and version in the name to match the
+// manifest, PKG-12 wants a per-platform package to declare exactly the
+// platform its name carries, so the platform a catalog serves it for is the
+// one it runs on. PKG-9 still requires every declared executable to exist.
+func lintPackageName(name string, m *protocol.Manifest, report *LintReport) {
+	parsed, ok := ParsePackageFileName(name)
+	if !ok {
+		return
+	}
+	if parsed.ID != m.ID || parsed.Version != m.Version {
+		report.add(LevelWarning, "PKG-1", "file name %s does not match the manifest id %q and version %q", name, m.ID, m.Version)
+	}
+	if parsed.Platform == "" {
+		return
+	}
+
+	declared := []string{}
+	if m.Server != nil {
+		for platform := range m.Server.Executables {
+			declared = append(declared, platform)
+		}
+	}
+	sort.Strings(declared)
+	if len(declared) != 1 || declared[0] != parsed.Platform {
+		report.add(LevelError, "PKG-12", "file name %s targets %s, but server.executables declares [%s]; a per-platform package must declare exactly its own platform",
+			name, parsed.Platform, strings.Join(declared, ", "))
 	}
 }
 
@@ -537,7 +573,8 @@ func lintExtractArchive(archivePath string, report *LintReport) (dir string, ok 
 			if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
 				return err
 			}
-			return writePackageFile(target, header, reader)
+			// Keep the packed mode so PKG-9 can report a missing executable bit.
+			return writePackageFile(target, header, reader, packedMode(header))
 		default:
 			return invalidPackage("entry %q has an unsupported type", header.Name)
 		}

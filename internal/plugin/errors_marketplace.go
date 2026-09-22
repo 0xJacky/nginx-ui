@@ -16,4 +16,6 @@ var (
 	ErrCatalogInvalid       = e.New(55111, "plugin catalog is invalid: {0}")
 	ErrMarketplaceNotFound  = e.New(55112, "plugin is not in the marketplace catalog")
 	ErrLocalPackageNotFound = e.New(55113, "no local package found for this plugin")
+	// ErrPlatformPackageMissing names the platform nothing was found for.
+	ErrPlatformPackageMissing = e.New(55114, "no plugin package is available for {0}")
 )

@@ -53,6 +53,9 @@ async function loadNodes() {
 const manifest = computed(() => inspect.value?.manifest)
 const permissions = computed(() => inspect.value?.permissions ?? [])
 const requiresMissing = computed(() => inspect.value?.requires_missing ?? [])
+const platforms = computed(() => inspect.value?.platforms ?? [])
+// An older node does not report the field, so only an explicit false blocks.
+const platformUnsupported = computed(() => inspect.value?.platform_supported === false)
 
 function reset() {
   file.value = undefined
@@ -69,6 +72,7 @@ function reset() {
 // explicit selection has to carry at least one node.
 const canInstall = computed(() => Boolean(file.value)
   && requiresMissing.value.length === 0
+  && !platformUnsupported.value
   && !inspecting.value
   && (nodeTarget.value !== 'selected' || targetNodeIds.value.length > 0))
 
@@ -224,7 +228,27 @@ watch(open, value => {
             </div>
             <span v-else class="text-gray-400">{{ $gettext('None') }}</span>
           </ADescriptionsItem>
+          <ADescriptionsItem v-if="platforms.length > 0" :label="$gettext('Platforms')">
+            <div class="flex flex-wrap gap-1">
+              <ATag
+                v-for="platform in platforms"
+                :key="platform"
+                :color="platform === inspect?.host_platform ? 'blue' : undefined"
+              >
+                {{ platform === 'any' ? $gettext('Any') : platform }}
+              </ATag>
+            </div>
+          </ADescriptionsItem>
         </ADescriptions>
+
+        <AAlert
+          v-if="platformUnsupported"
+          type="error"
+          show-icon
+          class="mt-4"
+          :title="$gettext('This package has no build for this node (%{platform})', { platform: inspect?.host_platform ?? '' })"
+          :description="$gettext('Download the package built for this platform, or the portable package, and try again.')"
+        />
 
         <AAlert
           v-if="requiresMissing.length > 0"

@@ -170,6 +170,12 @@ export interface PluginInspect {
   permissions_changed: boolean
   installed_version?: string
   requires_missing: PluginRequirement[]
+  /** "<goos>-<goarch>" builds the package ships, "any" when it runs everywhere. */
+  platforms?: string[]
+  /** "<goos>-<goarch>" of this node. */
+  host_platform?: string
+  /** Whether the package runs on this node. */
+  platform_supported?: boolean
 }
 
 export interface PluginSettingsResponse {
@@ -207,6 +213,8 @@ export interface PluginSpec {
   webapp_api_version: number
   capabilities: string[]
   transports: string[]
+  /** "<goos>-<goarch>" a package must cover to run on this node. */
+  platform?: string
 }
 
 const multipartHeaders = {

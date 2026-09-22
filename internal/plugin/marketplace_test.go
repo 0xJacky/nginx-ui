@@ -231,6 +231,32 @@ func TestMarketplaceCatalogComputesInstallableState(t *testing.T) {
 	assert.Nil(t, findEntry(entries, "com.example.gamma", "").InstallableRelease)
 }
 
+func TestMarketplaceCatalogCapsTheTrustOfUnsignedCustomSources(t *testing.T) {
+	manager := newTestManager(t)
+	server := newCatalogServer(t)
+	useMarketplace(t, server.catalogURL())
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, nil)
+
+	// Without the signature policy a custom source cannot vouch for its
+	// entries, whatever they claim.
+	entries, err := manager.Marketplace().Catalog(context.Background(), true)
+	require.NoError(t, err)
+	assert.Equal(t, TrustCommunity, findEntry(entries, "com.example.alpha", "").Trust)
+
+	// With it the pinned release keys back the claim at install time.
+	settings.PluginSettings.RequireSignature = true
+	entries, err = manager.Marketplace().Catalog(context.Background(), true)
+	require.NoError(t, err)
+	assert.Equal(t, TrustOfficial, findEntry(entries, "com.example.alpha", "").Trust)
+
+	// The official source always requires signatures, and an unknown level
+	// is community so the policy gate stays in front of it.
+	settings.PluginSettings.RequireSignature = false
+	assert.Equal(t, TrustVerified, effectiveTrust(settings.DefaultPluginMarketplaceSource, TrustVerified))
+	assert.Equal(t, TrustCommunity, effectiveTrust(settings.DefaultPluginMarketplaceSource, "partner"))
+	assert.Equal(t, TrustCommunity, effectiveTrust(server.catalogURL(), ""))
+}
+
 func TestMarketplaceCatalogMergesSourcesFirstWins(t *testing.T) {
 	manager := newTestManager(t)
 	primary := newCatalogServer(t)
@@ -330,6 +356,81 @@ func TestMarketplaceDetailProxiesReadme(t *testing.T) {
 
 	_, _, err = manager.Marketplace().Detail(context.Background(), "com.example.missing", "")
 	assert.ErrorIs(t, err, ErrMarketplaceNotFound)
+}
+
+func TestMarketplaceDetailSkipsAReadmeOnAnotherHost(t *testing.T) {
+	manager := newTestManager(t)
+	server := newCatalogServer(t)
+	useMarketplace(t, server.catalogURL())
+
+	var hits atomic.Int64
+	internal := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		hits.Add(1)
+		_, _ = w.Write([]byte("internal"))
+	}))
+	t.Cleanup(internal.Close)
+
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, func(entry *CatalogEntry, _ *CatalogRelease) {
+		entry.ReadmeURL = internal.URL + "/readme.md"
+	})
+
+	entry, readme, err := manager.Marketplace().Detail(context.Background(), "com.example.alpha", "")
+	require.NoError(t, err)
+	require.NotNil(t, entry)
+	assert.Empty(t, readme)
+	assert.Zero(t, hits.Load(), "the readme host must not be contacted")
+}
+
+func TestCheckReadmeURL(t *testing.T) {
+	useMarketplace(t)
+	settings.PluginSettings.AllowInsecureDownloadURL = false
+
+	entry := &CatalogEntry{
+		Source: "https://catalog.example/index.json",
+		InstallableRelease: &CatalogRelease{
+			Downloads: map[string]ReleaseDownload{HostPlatform(): {URL: "https://cdn.example/pkg.tar.gz"}},
+		},
+	}
+	allowed := []string{
+		"https://catalog.example/readme.md",
+		"https://CATALOG.example/docs/README.md",
+		"https://cdn.example/readme.md",
+		"https://raw.githubusercontent.com/example/plugin/main/README.md",
+		"https://github.com/example/plugin/raw/main/README.md",
+	}
+	for _, raw := range allowed {
+		entry.ReadmeURL = raw
+		assert.NoError(t, checkReadmeURL(entry), raw)
+	}
+
+	refused := []string{
+		"http://catalog.example/readme.md",
+		"https://169.254.169.254/latest/meta-data/",
+		"https://localhost/readme.md",
+		"https://catalog.example:8443/readme.md",
+		"https://raw.githubusercontent.com:8443/readme.md",
+		"https://catalog.example.evil.test/readme.md",
+		"file:///etc/passwd",
+		"ftp://catalog.example/readme.md",
+		"https:///readme.md",
+		"://catalog.example/readme.md",
+	}
+	for _, raw := range refused {
+		entry.ReadmeURL = raw
+		assert.Error(t, checkReadmeURL(entry), raw)
+	}
+
+	// Plain http passes once insecure downloads are allowed.
+	settings.PluginSettings.AllowInsecureDownloadURL = true
+	entry.ReadmeURL = "http://catalog.example/readme.md"
+	assert.NoError(t, checkReadmeURL(entry))
+
+	// The portable package host counts as well.
+	entry.InstallableRelease = &CatalogRelease{DownloadURL: "https://portable.example/pkg.tar.gz"}
+	entry.ReadmeURL = "https://portable.example/readme.md"
+	assert.NoError(t, checkReadmeURL(entry))
+	entry.ReadmeURL = "https://cdn.example/readme.md"
+	assert.Error(t, checkReadmeURL(entry))
 }
 
 func TestMarketplaceInstallVerifiesSignature(t *testing.T) {
@@ -571,10 +672,19 @@ func TestMarketplaceUpdatesFlagsPermissionChanges(t *testing.T) {
 }
 
 func TestReleaseRunsHere(t *testing.T) {
-	assert.True(t, releaseRunsHere(&CatalogRelease{APIVersion: protocol.APIVersion}))
-	assert.True(t, releaseRunsHere(&CatalogRelease{APIVersion: protocol.APIVersion, Platforms: []string{anyPlatform}}))
-	assert.False(t, releaseRunsHere(&CatalogRelease{APIVersion: protocol.APIVersion + 1}))
-	assert.False(t, releaseRunsHere(&CatalogRelease{APIVersion: protocol.APIVersion, Platforms: []string{"plan9-386"}}))
+	releaseRunsHere := func(release *CatalogRelease) bool { return releaseRunsOn(release, HostPlatform()) }
+	const portable = "https://example.com/pkg.tar.gz"
+	assert.True(t, releaseRunsHere(&CatalogRelease{APIVersion: protocol.APIVersion, DownloadURL: portable}))
+	assert.True(t, releaseRunsHere(&CatalogRelease{APIVersion: protocol.APIVersion, DownloadURL: portable,
+		Platforms: []string{anyPlatform}}))
+	assert.False(t, releaseRunsHere(&CatalogRelease{APIVersion: protocol.APIVersion + 1, DownloadURL: portable}))
+	assert.False(t, releaseRunsHere(&CatalogRelease{APIVersion: protocol.APIVersion, DownloadURL: portable,
+		Platforms: []string{"plan9-386"}}))
+	// A release without any package cannot be installed anywhere.
+	assert.False(t, releaseRunsHere(&CatalogRelease{APIVersion: protocol.APIVersion}))
+	// A per-platform download is enough on its own.
+	assert.True(t, releaseRunsHere(&CatalogRelease{APIVersion: protocol.APIVersion,
+		Downloads: map[string]ReleaseDownload{HostPlatform(): {URL: portable}}}))
 }
 
 func TestProxiedURLOnlyRewritesGithub(t *testing.T) {

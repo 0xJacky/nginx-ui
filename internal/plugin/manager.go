@@ -112,6 +112,8 @@ type Spec struct {
 	WebappAPIVersion int      `json:"webapp_api_version"`
 	Capabilities     []string `json:"capabilities"`
 	Transports       []string `json:"transports"`
+	// Platform is the "<goos>-<goarch>" key a package must cover to run here.
+	Platform string `json:"platform,omitempty"`
 }
 
 // InstallOptions controls one install or upgrade.
@@ -129,6 +131,13 @@ type InspectResult struct {
 	PermissionsChanged bool                           `json:"permissions_changed"`
 	InstalledVersion   string                         `json:"installed_version,omitempty"`
 	RequiresMissing    []protocol.ManifestRequirement `json:"requires_missing"`
+	// Platforms lists the "<goos>-<goarch>" keys whose executable ships in the
+	// package, plus "any" when the plugin needs no executable of its own.
+	Platforms []string `json:"platforms"`
+	// HostPlatform is the "<goos>-<goarch>" key of this node.
+	HostPlatform string `json:"host_platform"`
+	// PlatformSupported reports whether the package runs on this node.
+	PlatformSupported bool `json:"platform_supported"`
 }
 
 // entry is one plugin the manager knows about. A missing plugin has a row but
@@ -491,6 +500,7 @@ func (m *Manager) Spec() Spec {
 		WebappAPIVersion: protocol.APIVersion,
 		Capabilities:     slices.Clone(knownCapabilities),
 		Transports:       []string{protocol.TransportStdio},
+		Platform:         HostPlatform(),
 	}
 }
 

@@ -3,11 +3,13 @@ package plugin
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"slices"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 
@@ -15,7 +17,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
-	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-resty/resty/v2"
@@ -404,6 +405,8 @@ func (s *Syncer) syncPlugin(ctx context.Context, id string, nodeIDs []uint64, ma
 
 	archive, cleanup, archiveErr := s.manager.EnsureArchive(id)
 	defer cleanup()
+	own := &ownArchive{path: archive, err: archiveErr, platforms: s.manager.installedPlatforms(id)}
+	statuses := nodeStatusSnapshot()
 
 	results := make([]NodeResult, len(nodes))
 	wg := &sync.WaitGroup{}
@@ -411,7 +414,7 @@ func (s *Syncer) syncPlugin(ctx context.Context, id string, nodeIDs []uint64, ma
 	for index, node := range nodes {
 		go func(index int, node *model.Node) {
 			defer wg.Done()
-			results[index] = s.syncNode(ctx, node, info, row, archive, archiveErr)
+			results[index] = s.syncNode(ctx, node, info, row, own, statusPlatform(statuses, node.ID))
 		}(index, node)
 	}
 	wg.Wait()
@@ -423,14 +426,15 @@ func (s *Syncer) syncPlugin(ctx context.Context, id string, nodeIDs []uint64, ma
 }
 
 // syncNode aligns one plugin on one node. Every step reports through the
-// result instead of aborting the whole run.
+// result instead of aborting the whole run. platform is what the node monitor
+// reported, the node spec overrides it when the node advertises one.
 func (s *Syncer) syncNode(
 	ctx context.Context,
 	node *model.Node,
 	info *Info,
 	row *model.Plugin,
-	archive string,
-	archiveErr error,
+	own *ownArchive,
+	platform string,
 ) NodeResult {
 	result := NodeResult{
 		NodeID:   node.ID,
@@ -460,6 +464,9 @@ func (s *Syncer) syncNode(
 		result.Error = fmt.Sprintf("node speaks plugin api versions %v", spec.APIVersions)
 		return result
 	}
+	if spec.Platform != "" {
+		platform = spec.Platform
+	}
 
 	infos, err := client.listPlugins(nodeCtx)
 	if err != nil {
@@ -474,8 +481,11 @@ func (s *Syncer) syncNode(
 		if remote != nil {
 			action = "updated"
 		}
-		if err = installOnNode(nodeCtx, client, info, archive, archiveErr); err != nil {
+		if err = s.installOnNode(nodeCtx, client, info, own, platform); err != nil {
 			result.State = SyncStateError
+			if errors.Is(err, errNoPlatformPackage) {
+				result.State = SyncStateUnsupportedPlatform
+			}
 			result.Error = err.Error()
 			return result
 		}
@@ -507,17 +517,19 @@ func (s *Syncer) syncNode(
 	return result
 }
 
-// installOnNode prefers the marketplace so the node fetches the package from
-// the catalog, and falls back to pushing the bytes the controller installed.
-func installOnNode(ctx context.Context, client *nodeClient, info *Info, archive string, archiveErr error) error {
+// installOnNode prefers the marketplace so the node fetches the package that
+// matches its own platform from the catalog, and falls back to pushing a
+// package for that platform, see pushArchive.
+func (s *Syncer) installOnNode(ctx context.Context, client *nodeClient, info *Info, own *ownArchive, platform string) error {
 	marketplaceErr := client.marketplaceInstall(ctx, info.ID, info.Version, info.Enabled)
 	if marketplaceErr == nil {
 		return nil
 	}
-	if archiveErr != nil {
-		return fmt.Errorf("marketplace install failed (%v) and no package is available: %w", marketplaceErr, archiveErr)
+	archive, err := s.manager.pushArchive(ctx, info, own, platform)
+	if err != nil {
+		return fmt.Errorf("marketplace install failed (%v) and no package is available: %w", marketplaceErr, err)
 	}
-	if err := client.uploadPackage(ctx, archive, info.Enabled); err != nil {
+	if err = client.uploadPackage(ctx, archive, info.Enabled); err != nil {
 		return fmt.Errorf("marketplace install failed (%v) and pushing the package failed: %w", marketplaceErr, err)
 	}
 	return nil
@@ -624,6 +636,10 @@ func (s *Syncer) Matrix(ctx context.Context) (*Matrix, error) {
 	columns := make([]MatrixNode, len(nodes))
 	states := make([]nodeInventory, len(nodes))
 
+	// The catalog tells whether a node on another platform can still get a
+	// package. It is only read when such a node shows up.
+	catalog := &lazyCatalog{load: func() []CatalogEntry { return s.manager.matrixCatalog(ctx) }}
+
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nodes))
 	for index, node := range nodes {
@@ -647,6 +663,17 @@ func (s *Syncer) Matrix(ctx context.Context) (*Matrix, error) {
 	}
 	wg.Wait()
 
+	// A node the monitor has not described yet still names its platform in
+	// the plugin spec.
+	for index := range columns {
+		if columns[index].platform() != "" || states[index].spec == nil {
+			continue
+		}
+		if goos, goarch, ok := strings.Cut(states[index].spec.Platform, "-"); ok {
+			columns[index].OS, columns[index].Arch = goos, goarch
+		}
+	}
+
 	infos := s.manager.List()
 	rows := make([]MatrixRow, 0, len(infos))
 	for _, info := range infos {
@@ -662,8 +689,9 @@ func (s *Syncer) Matrix(ctx context.Context) (*Matrix, error) {
 			SyncSettings: info.SyncSettings,
 			Cells:        make([]MatrixCell, 0, len(columns)),
 		}
+		availability := s.manager.newPlatformAvailability(info, manifest, catalog)
 		for index, column := range columns {
-			row.Cells = append(row.Cells, s.cellOf(info, manifest, column, states[index]))
+			row.Cells = append(row.Cells, s.cellOf(info, availability, column, states[index]))
 		}
 		rows = append(rows, row)
 	}
@@ -706,7 +734,7 @@ func inspectNode(ctx context.Context, node *model.Node, column MatrixNode) nodeI
 }
 
 // cellOf folds one node answer and the local plugin into a matrix cell.
-func (s *Syncer) cellOf(info Info, manifest *protocol.Manifest, column MatrixNode, inventory nodeInventory) MatrixCell {
+func (s *Syncer) cellOf(info Info, availability *platformAvailability, column MatrixNode, inventory nodeInventory) MatrixCell {
 	cell := MatrixCell{NodeID: column.ID}
 	switch {
 	case inventory.optedOut:
@@ -721,10 +749,18 @@ func (s *Syncer) cellOf(info Info, manifest *protocol.Manifest, column MatrixNod
 		return cell
 	}
 
-	if reason, unsupported := unsupportedPlatform(manifest, column); unsupported {
-		cell.State = SyncStateUnsupportedPlatform
-		cell.Message = reason
-		return cell
+	remote := findInfo(inventory.infos, info.ID)
+	// A node already running this version evidently has a build for it.
+	if remote == nil || remote.Version != info.Version {
+		platform := column.platform()
+		if inventory.spec != nil && inventory.spec.Platform != "" {
+			platform = inventory.spec.Platform
+		}
+		if reason, unsupported := availability.unsupported(platform); unsupported {
+			cell.State = SyncStateUnsupportedPlatform
+			cell.Message = reason
+			return cell
+		}
 	}
 	if inventory.spec != nil && info.APIVersion != 0 && len(inventory.spec.APIVersions) > 0 &&
 		!slices.Contains(inventory.spec.APIVersions, info.APIVersion) {
@@ -733,7 +769,6 @@ func (s *Syncer) cellOf(info Info, manifest *protocol.Manifest, column MatrixNod
 		return cell
 	}
 
-	remote := findInfo(inventory.infos, info.ID)
 	if remote == nil {
 		cell.State = SyncStateMissing
 		if result, ok := s.lastResult(info.ID, column.ID); ok && !result.Success {
@@ -758,24 +793,4 @@ func (s *Syncer) cellOf(info Info, manifest *protocol.Manifest, column MatrixNod
 		cell.Message = result.Error
 	}
 	return cell
-}
-
-// unsupportedPlatform reports whether the plugin ships no server executable for
-// the operating system and architecture the node runs.
-func unsupportedPlatform(manifest *protocol.Manifest, column MatrixNode) (string, bool) {
-	if manifest == nil || manifest.Server == nil || column.OS == "" || column.Arch == "" {
-		return "", false
-	}
-	if len(manifest.Server.Executables) == 0 {
-		// An interpreted plugin runs wherever its interpreter does.
-		return "", false
-	}
-	platform := column.OS + "-" + column.Arch
-	if manifest.Server.Executables[platform] != "" {
-		return "", false
-	}
-	if len(manifest.Server.Command) > 0 {
-		return "", false
-	}
-	return "no executable for " + platform, true
 }

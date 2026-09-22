@@ -20,12 +20,16 @@ const maxMarketplaceSources = 16
 type marketplaceListResponse struct {
 	Plugins []plugin.CatalogEntry `json:"plugins"`
 	Sources []string              `json:"sources"`
+	// HostPlatform is the "<goos>-<goarch>" key installable_release was
+	// resolved for.
+	HostPlatform string `json:"host_platform"`
 }
 
 // marketplaceDetailResponse pairs one entry with its proxied readme.
 type marketplaceDetailResponse struct {
-	Plugin *plugin.CatalogEntry `json:"plugin"`
-	Readme string               `json:"readme"`
+	Plugin       *plugin.CatalogEntry `json:"plugin"`
+	Readme       string               `json:"readme"`
+	HostPlatform string               `json:"host_platform"`
 }
 
 // marketplaceSourcesResponse is the body of both source endpoints.
@@ -68,8 +72,9 @@ func GetMarketplaceList(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, marketplaceListResponse{
-		Plugins: entries,
-		Sources: marketplace.Sources(),
+		Plugins:      entries,
+		Sources:      marketplace.Sources(),
+		HostPlatform: plugin.HostPlatform(),
 	})
 }
 
@@ -85,7 +90,7 @@ func GetMarketplacePlugin(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, marketplaceDetailResponse{Plugin: entry, Readme: readme})
+	c.JSON(http.StatusOK, marketplaceDetailResponse{Plugin: entry, Readme: readme, HostPlatform: plugin.HostPlatform()})
 }
 
 // InstallFromMarketplace downloads, verifies and installs a catalog release.
@@ -106,7 +111,7 @@ func InstallFromMarketplace(c *gin.Context) {
 		return
 	}
 
-	info, err := plugin.GetManager().Marketplace().Install(c, body.ID, body.Version, body.Source,
+	info, err := plugin.GetManager().Marketplace().Install(detach(c), body.ID, body.Version, body.Source,
 		plugin.InstallOptions{Enable: body.Enable, ApprovePermissions: body.ApprovePermissions})
 	if err != nil {
 		cosy.ErrHandler(c, err)
@@ -140,7 +145,7 @@ func UpdatePlugin(c *gin.Context) {
 	// The UI sends an empty body when it takes the newest release as is.
 	_ = c.ShouldBindJSON(&body)
 
-	info, err := plugin.GetManager().Marketplace().Update(c, id, body.Version, body.ApprovePermissions)
+	info, err := plugin.GetManager().Marketplace().Update(detach(c), id, body.Version, body.ApprovePermissions)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
