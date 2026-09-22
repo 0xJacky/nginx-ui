@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 	"text/tabwriter"
 
@@ -23,6 +24,10 @@ func init() {
 			Flags: []cli.Flag{
 				&cli.StringFlag{Name: "version", Usage: "download this version instead of the newest one"},
 				&cli.StringFlag{Name: "out", Usage: "destination directory", Value: "."},
+				&cli.StringFlag{
+					Name:  "platform",
+					Usage: `"<goos>-<goarch>" to download the package for, a comma separated list, or "all"; defaults to this node`,
+				},
 			},
 		},
 		&cli.Command{
@@ -61,13 +66,49 @@ func FetchPlugin(ctx context.Context, command *cli.Command) error {
 		destination = "."
 	}
 
-	archive, err := manager.Marketplace().FetchPackage(ctx, id, command.String("version"), destination)
-	if err != nil {
-		return err
+	marketplace := manager.Marketplace()
+	wantVersion := command.String("version")
+	platforms := splitPlatforms(command.String("platform"))
+	if len(platforms) == 1 && platforms[0] == "all" {
+		// Every platform comes from the same release, even when a newer one
+		// exists for some of them only.
+		wantVersion, platforms, err = marketplace.FetchTargets(ctx, id, wantVersion)
+		if err != nil {
+			return err
+		}
 	}
 
-	fmt.Printf("downloaded %s\n", archive)
+	for _, platform := range platforms {
+		archive, err := marketplace.FetchPackage(ctx, id, wantVersion, platform, destination)
+		if err != nil {
+			if platform == "" {
+				return err
+			}
+			return fmt.Errorf("%s: %w", platform, err)
+		}
+		fmt.Printf("downloaded %s\n", archive)
+	}
 	return nil
+}
+
+// splitPlatforms reads the --platform flag. An empty flag is one empty entry,
+// which FetchPackage takes as the platform of this node.
+func splitPlatforms(value string) []string {
+	platforms := make([]string, 0, 4)
+	for _, item := range strings.Split(value, ",") {
+		item = strings.ToLower(strings.TrimSpace(item))
+		if item == "" || slices.Contains(platforms, item) {
+			continue
+		}
+		platforms = append(platforms, item)
+	}
+	if len(platforms) == 0 {
+		return []string{""}
+	}
+	if slices.Contains(platforms, "all") {
+		return []string{"all"}
+	}
+	return platforms
 }
 
 // ListMarketplacePlugins prints the merged catalog.

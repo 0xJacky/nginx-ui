@@ -51,7 +51,7 @@ func SyncPluginToNodes(c *gin.Context) {
 	// The UI sends an empty body when it syncs the configured target set.
 	_ = c.ShouldBindJSON(&body)
 
-	results, err := plugin.GetManager().Syncer().SyncPlugin(c, id, body.NodeIDs)
+	results, err := plugin.GetManager().Syncer().SyncPlugin(detach(c), id, body.NodeIDs)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -79,7 +79,7 @@ func SetPluginSyncPolicy(c *gin.Context) {
 	}
 
 	manager := plugin.GetManager()
-	if err := manager.Syncer().SetPolicy(c, id, body.SyncPolicy, body.SyncNodeIDs, body.SyncSettings); err != nil {
+	if err := manager.Syncer().SetPolicy(detach(c), id, body.SyncPolicy, body.SyncNodeIDs, body.SyncSettings); err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}

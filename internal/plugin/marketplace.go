@@ -5,13 +5,13 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
-	"runtime"
 	"slices"
 	"sort"
 	"strings"
@@ -82,20 +82,86 @@ var githubHosts = []string{
 	"codeload.github.com",
 }
 
+// ReleaseDownload is one package file of a release.
+type ReleaseDownload struct {
+	URL          string `json:"url"`
+	SHA256       string `json:"sha256,omitempty"`
+	SignatureURL string `json:"signature_url,omitempty"`
+}
+
+// signatureURL is the detached signature of the package, which defaults to
+// the package URL plus ".minisig".
+func (d ReleaseDownload) signatureURL() string {
+	if d.SignatureURL != "" || d.URL == "" {
+		return d.SignatureURL
+	}
+	return d.URL + signatureSuffix
+}
+
 // CatalogRelease is one downloadable version of a catalog entry.
 type CatalogRelease struct {
-	Version           string             `json:"version"`
-	ReleasedAt        string             `json:"released_at,omitempty"`
-	APIVersion        int                `json:"api_version"`
-	MinNginxUIVersion string             `json:"min_nginx_ui_version,omitempty"`
-	Platforms         []string           `json:"platforms,omitempty"`
-	DownloadURL       string             `json:"download_url"`
-	SHA256            string             `json:"sha256,omitempty"`
-	SignatureURL      string             `json:"signature_url,omitempty"`
-	SignedBy          string             `json:"signed_by,omitempty"`
-	ReleaseNotesURL   string             `json:"release_notes_url,omitempty"`
-	Yanked            bool               `json:"yanked,omitempty"`
-	Manifest          *protocol.Manifest `json:"manifest,omitempty"`
+	Version           string `json:"version"`
+	ReleasedAt        string `json:"released_at,omitempty"`
+	APIVersion        int    `json:"api_version"`
+	MinNginxUIVersion string `json:"min_nginx_ui_version,omitempty"`
+	// Platforms summarises where the release installs: the keys of Downloads
+	// plus the platforms the portable package covers. An empty list keeps its
+	// original meaning, the portable package runs everywhere.
+	Platforms []string `json:"platforms,omitempty"`
+	// Downloads maps "<goos>-<goarch>" or "any" to a package built for it.
+	Downloads map[string]ReleaseDownload `json:"downloads,omitempty"`
+	// DownloadURL, SHA256 and SignatureURL describe the portable package, the
+	// fallback for every platform Downloads does not name.
+	DownloadURL     string             `json:"download_url"`
+	SHA256          string             `json:"sha256,omitempty"`
+	SignatureURL    string             `json:"signature_url,omitempty"`
+	SignedBy        string             `json:"signed_by,omitempty"`
+	ReleaseNotesURL string             `json:"release_notes_url,omitempty"`
+	Yanked          bool               `json:"yanked,omitempty"`
+	Manifest        *protocol.Manifest `json:"manifest,omitempty"`
+}
+
+// DownloadFor resolves the package a node running platform installs:
+// downloads[platform], then downloads["any"], then the portable package when
+// the platforms summary lists the platform or "any". key is the downloads key
+// that matched, empty for the portable package. ok is false when the release
+// ships nothing for the platform.
+func (r *CatalogRelease) DownloadFor(platform string) (download ReleaseDownload, key string, ok bool) {
+	for _, candidate := range []string{platform, anyPlatform} {
+		if download, found := r.Downloads[candidate]; found && download.URL != "" {
+			return download, candidate, true
+		}
+	}
+	if r.DownloadURL == "" {
+		return ReleaseDownload{}, "", false
+	}
+	if len(r.Platforms) > 0 && !platformsCover(r.Platforms, platform) {
+		return ReleaseDownload{}, "", false
+	}
+	return ReleaseDownload{URL: r.DownloadURL, SHA256: r.SHA256, SignatureURL: r.SignatureURL}, "", true
+}
+
+// AvailablePlatforms lists every platform key a release can be installed on,
+// sorted, for messages and the UI.
+func (r *CatalogRelease) AvailablePlatforms() []string {
+	platforms := make([]string, 0, len(r.Downloads)+len(r.Platforms))
+	for key, download := range r.Downloads {
+		if download.URL != "" {
+			platforms = append(platforms, key)
+		}
+	}
+	if r.DownloadURL != "" {
+		if len(r.Platforms) == 0 {
+			platforms = append(platforms, anyPlatform)
+		}
+		for _, platform := range r.Platforms {
+			if !slices.Contains(platforms, platform) {
+				platforms = append(platforms, platform)
+			}
+		}
+	}
+	sort.Strings(platforms)
+	return slices.Compact(platforms)
 }
 
 // CatalogEntry is one plugin as the catalog describes it, plus the state this
@@ -161,6 +227,9 @@ type InstallProgress struct {
 	Status   string  `json:"status"`
 	Progress float64 `json:"progress"`
 	Message  string  `json:"message"`
+	// Platform is the downloads key of the package being installed, "any",
+	// or empty for the portable package.
+	Platform string `json:"platform,omitempty"`
 }
 
 // sourceCache keeps one fetched source for catalogTTL.
@@ -213,6 +282,7 @@ func (mp *Marketplace) Catalog(ctx context.Context, refresh bool) ([]CatalogEntr
 			}
 			seen[entry.ID] = struct{}{}
 			entry.Source = source
+			entry.Trust = effectiveTrust(source, entry.Trust)
 			mp.decorate(&entry)
 			merged = append(merged, entry)
 		}
@@ -264,14 +334,54 @@ func (mp *Marketplace) Detail(ctx context.Context, id, source string) (*CatalogE
 
 	readme := ""
 	if entry.ReadmeURL != "" {
-		body, err := fetchText(ctx, proxiedURL(entry.ReadmeURL), maxReadmeBytes)
-		if err != nil {
+		if err = checkReadmeURL(entry); err != nil {
+			mp.manager.log.Debugf("Skip plugin readme %s: %v", entry.ReadmeURL, err)
+		} else if body, err := fetchText(ctx, proxiedURL(entry.ReadmeURL), maxReadmeBytes); err != nil {
 			mp.manager.log.Warnf("Plugin readme %s: %v", entry.ReadmeURL, err)
 		} else {
 			readme = body
 		}
 	}
 	return entry, readme, nil
+}
+
+// checkReadmeURL decides whether the host may fetch the readme of an entry.
+// The URL comes from the catalog, so it must use https, or http when insecure
+// downloads are allowed, and live on the catalog source host, the host of the
+// package this node installs, or GitHub.
+func checkReadmeURL(entry *CatalogEntry) error {
+	parsed, err := url.Parse(entry.ReadmeURL)
+	if err != nil || parsed.Host == "" {
+		return fmt.Errorf("%q is not a valid url", entry.ReadmeURL)
+	}
+	switch parsed.Scheme {
+	case "https":
+	case "http":
+		if !settings.PluginSettings.AllowInsecureDownloadURL {
+			return errors.New("plain http is not allowed")
+		}
+	default:
+		return fmt.Errorf("scheme %q is not allowed", parsed.Scheme)
+	}
+
+	host := strings.ToLower(parsed.Host)
+	if slices.Contains(githubHosts, host) {
+		return nil
+	}
+	allowed := []string{entry.Source}
+	if release := entry.InstallableRelease; release != nil {
+		download, _, ok := release.DownloadFor(HostPlatform())
+		if !ok {
+			download.URL = release.DownloadURL
+		}
+		allowed = append(allowed, download.URL)
+	}
+	for _, raw := range allowed {
+		if other, err := url.Parse(raw); err == nil && other.Host != "" && strings.ToLower(other.Host) == host {
+			return nil
+		}
+	}
+	return fmt.Errorf("host %s is not the catalog, package or GitHub host", parsed.Host)
 }
 
 // Install downloads, verifies and installs one catalog release together with
@@ -368,11 +478,16 @@ func (mp *Marketplace) installEntry(ctx context.Context, entries []CatalogEntry,
 	if entry == nil {
 		return nil, ErrMarketplaceNotFound
 	}
-	release, err := mp.resolveRelease(entry, wantVersion)
+	platform := HostPlatform()
+	release, err := mp.resolveRelease(entry, wantVersion, platform)
 	if err != nil {
 		return nil, err
 	}
-	if err = mp.checkPolicy(entry, release); err != nil {
+	download, key, ok := release.DownloadFor(platform)
+	if !ok {
+		return nil, ErrPlatformUnsupported
+	}
+	if err = mp.checkPolicy(entry, download.URL); err != nil {
 		return nil, err
 	}
 
@@ -386,16 +501,19 @@ func (mp *Marketplace) installEntry(ctx context.Context, entries []CatalogEntry,
 	}
 	defer os.RemoveAll(staging)
 
-	archive := filepath.Join(staging, entry.ID+".tar.gz")
-	if err = mp.download(ctx, entry.ID, proxiedURL(release.DownloadURL), archive); err != nil {
+	archive := filepath.Join(staging, PackageFileName(entry.ID, release.Version, key))
+	progress := func(status string, percent float64) {
+		publishPlatformProgress(entry.ID, status, percent, key)
+	}
+	if err = mp.download(ctx, proxiedURL(download.URL), archive, progress); err != nil {
 		return nil, err
 	}
 
-	publishInstallProgress(entry.ID, InstallStatusVerifying, 90, "")
-	if err = verifyDigest(archive, release.SHA256); err != nil {
+	progress(InstallStatusVerifying, 90)
+	if err = verifyDigest(archive, download.SHA256); err != nil {
 		return nil, err
 	}
-	if err = mp.verifySignature(ctx, entry, release, archive); err != nil {
+	if _, err = mp.verifySignature(ctx, entry, release, download, archive); err != nil {
 		return nil, err
 	}
 
@@ -413,7 +531,7 @@ func (mp *Marketplace) installEntry(ctx context.Context, entries []CatalogEntry,
 			fmt.Sprintf("%s ships %s, the catalog promised %s", entry.ID, inspected.Manifest.Version, release.Version))
 	}
 
-	publishInstallProgress(entry.ID, InstallStatusInstalling, 95, "")
+	progress(InstallStatusInstalling, 95)
 	return mp.manager.Install(ctx, archive, opts)
 }
 
@@ -433,7 +551,7 @@ func (mp *Marketplace) installRequirements(ctx context.Context, entries []Catalo
 		if dependency == nil {
 			return cosy.WrapErrorWithParams(ErrDependencyMissing, requirement.ID)
 		}
-		candidate := pickRelease(dependency, requirement.Version)
+		candidate := pickRelease(dependency, requirement.Version, HostPlatform())
 		if candidate == nil {
 			return cosy.WrapErrorWithParams(ErrDependencyMissing, requirement.ID+"@"+requirement.Version)
 		}
@@ -455,13 +573,20 @@ func (mp *Marketplace) requirementSatisfied(requirement protocol.ManifestRequire
 	return requirement.Version == "" || VersionSatisfies(info.Version, requirement.Version)
 }
 
-// resolveRelease picks the requested version, or the newest installable one.
-func (mp *Marketplace) resolveRelease(entry *CatalogEntry, wantVersion string) (*CatalogRelease, error) {
+// resolveRelease picks the requested version, or the newest one that installs
+// on platform.
+func (mp *Marketplace) resolveRelease(entry *CatalogEntry, wantVersion, platform string) (*CatalogRelease, error) {
 	if wantVersion == "" {
-		if entry.InstallableRelease == nil {
-			return nil, ErrPlatformUnsupported
+		if platform == HostPlatform() {
+			if entry.InstallableRelease == nil {
+				return nil, ErrPlatformUnsupported
+			}
+			return entry.InstallableRelease, nil
 		}
-		return entry.InstallableRelease, nil
+		if release := pickRelease(entry, "", platform); release != nil {
+			return release, nil
+		}
+		return nil, ErrPlatformUnsupported
 	}
 	for i := range entry.Releases {
 		release := &entry.Releases[i]
@@ -471,7 +596,7 @@ func (mp *Marketplace) resolveRelease(entry *CatalogEntry, wantVersion string) (
 		if release.Yanked {
 			return nil, ErrReleaseYanked
 		}
-		if !releaseRunsHere(release) {
+		if !releaseRunsOn(release, platform) {
 			return nil, ErrPlatformUnsupported
 		}
 		return release, nil
@@ -479,14 +604,15 @@ func (mp *Marketplace) resolveRelease(entry *CatalogEntry, wantVersion string) (
 	return nil, ErrReleaseNotFound
 }
 
-// checkPolicy applies the node wide install policy to one release.
-func (mp *Marketplace) checkPolicy(entry *CatalogEntry, release *CatalogRelease) error {
+// checkPolicy applies the node wide install policy to the package a release
+// resolved to.
+func (mp *Marketplace) checkPolicy(entry *CatalogEntry, downloadURL string) error {
 	if entry.Trust == TrustCommunity && !settings.PluginSettings.AllowCommunityPlugins {
 		return ErrCommunityNotAllowed
 	}
-	parsed, err := url.Parse(release.DownloadURL)
+	parsed, err := url.Parse(downloadURL)
 	if err != nil || parsed.Host == "" {
-		return cosy.WrapErrorWithParams(ErrCatalogInvalid, "download_url is not a valid url")
+		return cosy.WrapErrorWithParams(ErrCatalogInvalid, "download url is not a valid url")
 	}
 	if parsed.Scheme != "https" && !settings.PluginSettings.AllowInsecureDownloadURL {
 		return ErrInsecureURL
@@ -494,9 +620,13 @@ func (mp *Marketplace) checkPolicy(entry *CatalogEntry, release *CatalogRelease)
 	return nil
 }
 
-// download streams a package to disk, publishing progress on the event bus.
-func (mp *Marketplace) download(ctx context.Context, pluginID, rawURL, target string) error {
-	publishInstallProgress(pluginID, InstallStatusDownloading, 0, "")
+// download streams a package to disk. progress, when set, receives the
+// downloading phase so the caller can publish it.
+func (mp *Marketplace) download(ctx context.Context, rawURL, target string, progress func(status string, percent float64)) error {
+	if progress == nil {
+		progress = func(string, float64) {}
+	}
+	progress(InstallStatusDownloading, 0)
 
 	client, err := newHTTPClient(downloadTimeout)
 	if err != nil {
@@ -524,7 +654,7 @@ func (mp *Marketplace) download(ctx context.Context, pluginID, rawURL, target st
 	writer := &progressWriter{
 		writer:   file,
 		total:    response.ContentLength,
-		pluginID: pluginID,
+		progress: progress,
 	}
 	if _, err = io.Copy(writer, io.LimitReader(response.Body, int64(MaxPackageSize)+1)); err != nil {
 		return err
@@ -535,28 +665,27 @@ func (mp *Marketplace) download(ctx context.Context, pluginID, rawURL, target st
 	return nil
 }
 
-// verifySignature enforces the signature policy: the official source always
-// requires one, a custom source only when RequireSignature is set.
-func (mp *Marketplace) verifySignature(ctx context.Context, entry *CatalogEntry, release *CatalogRelease, archive string) error {
-	signatureURL := release.SignatureURL
-	if signatureURL == "" && release.DownloadURL != "" {
-		signatureURL = release.DownloadURL + ".minisig"
-	}
-
+// verifySignature enforces the signature policy on the downloaded package: the
+// official source always requires one, a custom source only when
+// RequireSignature is set. It returns the verified signature, empty when an
+// unsigned package was accepted.
+func (mp *Marketplace) verifySignature(ctx context.Context, entry *CatalogEntry, release *CatalogRelease,
+	download ReleaseDownload, archive string,
+) (string, error) {
 	required := isOfficialSource(entry.Source) || settings.PluginSettings.RequireSignature
-	signature, err := fetchText(ctx, proxiedURL(signatureURL), maxReadmeBytes)
+	signature, err := fetchText(ctx, proxiedURL(download.signatureURL()), maxReadmeBytes)
 	if err != nil || strings.TrimSpace(signature) == "" {
 		if required {
-			return ErrSignatureMissing
+			return "", ErrSignatureMissing
 		}
-		mp.manager.log.Warnf("[plugin:%s] installing %s without a signature", entry.ID, release.Version)
-		return nil
+		mp.manager.log.Warnf("[plugin:%s] accepting %s without a signature", entry.ID, release.Version)
+		return "", nil
 	}
 
 	if _, err = pkgsign.VerifyFile(archive, []byte(signature), mp.trustedKeys(entry, release)); err != nil {
-		return cosy.WrapErrorWithParams(ErrSignatureInvalid, err.Error())
+		return "", cosy.WrapErrorWithParams(ErrSignatureInvalid, err.Error())
 	}
-	return nil
+	return signature, nil
 }
 
 // trustedKeys is the release key set accepted for one entry. A community
@@ -619,7 +748,7 @@ func (mp *Marketplace) ClearCache() {
 
 // decorate computes the node specific fields of one entry.
 func (mp *Marketplace) decorate(entry *CatalogEntry) {
-	entry.InstallableRelease = pickRelease(entry, "")
+	entry.InstallableRelease = pickRelease(entry, "", HostPlatform())
 	if info, err := mp.manager.Get(entry.ID); err == nil {
 		entry.InstalledVersion = info.Version
 	}
@@ -672,14 +801,14 @@ func (mp *Marketplace) runMaintenance(ctx context.Context) {
 	}
 }
 
-// progressWriter publishes download progress, throttled so a fast link does
+// progressWriter reports download progress, throttled so a fast link does
 // not flood the event bus.
 type progressWriter struct {
 	writer   io.Writer
 	total    int64
 	written  int64
 	reported float64
-	pluginID string
+	progress func(status string, percent float64)
 }
 
 func (p *progressWriter) Write(chunk []byte) (int, error) {
@@ -692,7 +821,7 @@ func (p *progressWriter) Write(chunk []byte) (int, error) {
 	percent := float64(p.written) / float64(p.total) * 85
 	if percent-p.reported >= progressStep || p.written >= p.total {
 		p.reported = percent
-		publishInstallProgress(p.pluginID, InstallStatusDownloading, percent, "")
+		p.progress(InstallStatusDownloading, percent)
 	}
 	return n, err
 }
@@ -706,6 +835,20 @@ func publishInstallProgress(pluginID, status string, progress float64, message s
 			Status:   status,
 			Progress: progress,
 			Message:  message,
+		},
+	})
+}
+
+// publishPlatformProgress is publishInstallProgress for the phases that know
+// which package of the release is being installed.
+func publishPlatformProgress(pluginID, status string, progress float64, platform string) {
+	event.Publish(event.Event{
+		Type: EventTypeInstallProgress,
+		Data: InstallProgress{
+			PluginID: pluginID,
+			Status:   status,
+			Progress: progress,
+			Platform: platform,
 		},
 	})
 }
@@ -800,6 +943,23 @@ func isOfficialSource(source string) bool {
 	return strings.EqualFold(strings.TrimSpace(source), settings.DefaultPluginMarketplaceSource)
 }
 
+// effectiveTrust is the trust level this node grants an entry. The level is a
+// claim about who published the plugin and the release signature is its
+// proof, so a custom source whose packages are not held to the signature
+// policy cannot vouch for more than community. An unknown level is community
+// as well, which keeps the community policy gate in front of it.
+func effectiveTrust(source, claimed string) string {
+	switch claimed {
+	case TrustOfficial, TrustVerified:
+	default:
+		return TrustCommunity
+	}
+	if isOfficialSource(source) || settings.PluginSettings.RequireSignature {
+		return claimed
+	}
+	return TrustCommunity
+}
+
 // verifyDigest checks the sha256 the catalog promised, when it promised one.
 func verifyDigest(path, expected string) error {
 	expected = strings.TrimSpace(strings.ToLower(expected))
@@ -836,13 +996,13 @@ func findEntry(entries []CatalogEntry, id, source string) *CatalogEntry {
 	return nil
 }
 
-// pickRelease returns the newest installable release, optionally restricted to
-// a semver range.
-func pickRelease(entry *CatalogEntry, versionRange string) *CatalogRelease {
+// pickRelease returns the newest release that installs on platform,
+// optionally restricted to a semver range.
+func pickRelease(entry *CatalogEntry, versionRange, platform string) *CatalogRelease {
 	var best *CatalogRelease
 	for i := range entry.Releases {
 		release := &entry.Releases[i]
-		if release.Yanked || !releaseRunsHere(release) {
+		if release.Yanked || !releaseRunsOn(release, platform) {
 			continue
 		}
 		if versionRange != "" && !VersionSatisfies(release.Version, versionRange) {
@@ -855,8 +1015,10 @@ func pickRelease(entry *CatalogEntry, versionRange string) *CatalogRelease {
 	return best
 }
 
-// releaseRunsHere reports whether this node can install a release at all.
-func releaseRunsHere(release *CatalogRelease) bool {
+// releaseRunsOn reports whether a node running this nginx-ui build on
+// platform can install a release: the api version matches, the host is recent
+// enough and the release ships a package for the platform.
+func releaseRunsOn(release *CatalogRelease, platform string) bool {
 	if release.APIVersion != protocol.APIVersion {
 		return false
 	}
@@ -867,11 +1029,8 @@ func releaseRunsHere(release *CatalogRelease) bool {
 			return false
 		}
 	}
-	if len(release.Platforms) == 0 {
-		return true
-	}
-	platform := runtime.GOOS + "-" + runtime.GOARCH
-	return slices.Contains(release.Platforms, platform) || slices.Contains(release.Platforms, anyPlatform)
+	_, _, ok := release.DownloadFor(platform)
+	return ok
 }
 
 // isVersionYanked reports whether the catalog withdrew a version.
