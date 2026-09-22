@@ -12,6 +12,7 @@ var Migrations = []*gormigrate.Migration{
 	AddProviderCodeToDnsCredentials,
 	EncryptSensitiveJSONFields,
 	DropLegacyRenamedTableIndexes,
+	RepairCertDomainsJSON,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{
