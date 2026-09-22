@@ -67,7 +67,9 @@ func ExtractPackage(archivePath, destDir string) (manifest *protocol.Manifest, e
 			if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
 				return err
 			}
-			return writePackageFile(target, header, reader)
+			// Packed modes are ignored, markExecutables sets the bit on the
+			// files the manifest runs.
+			return writePackageFile(target, header, reader, 0o644)
 		default:
 			return invalidPackage("entry %q has an unsupported type", header.Name)
 		}
@@ -160,36 +162,49 @@ func BuildPackage(srcDir, archivePath string) error {
 // packagePrefix scans the archive once to find where plugin.json lives and to
 // enforce the entry limits before anything is written to disk.
 func packagePrefix(archivePath string) (string, error) {
-	var (
-		rootManifest bool
-		topLevel     []string
-		candidates   []string
-	)
-	err := walkPackage(archivePath, func(header *tar.Header, name string, _ io.Reader) error {
-		top, _, _ := strings.Cut(name, "/")
-		if top != "" && !slices.Contains(topLevel, top) {
-			topLevel = append(topLevel, top)
-		}
-		switch name {
-		case ManifestFileName:
-			rootManifest = true
-		default:
-			if path.Base(name) == ManifestFileName && strings.Count(name, "/") == 1 {
-				candidates = append(candidates, path.Dir(name)+"/")
-			}
-		}
+	var scan prefixScan
+	err := walkPackage(archivePath, func(_ *tar.Header, name string, _ io.Reader) error {
+		scan.add(name)
 		return nil
 	})
 	if err != nil {
 		return "", err
 	}
-	if rootManifest {
+	return scan.prefix()
+}
+
+// prefixScan collects what packagePrefix needs from the entry names.
+type prefixScan struct {
+	rootManifest bool
+	topLevel     []string
+	candidates   []string
+}
+
+// add records one entry name.
+func (s *prefixScan) add(name string) {
+	top, _, _ := strings.Cut(name, "/")
+	if top != "" && !slices.Contains(s.topLevel, top) {
+		s.topLevel = append(s.topLevel, top)
+	}
+	switch name {
+	case ManifestFileName:
+		s.rootManifest = true
+	default:
+		if path.Base(name) == ManifestFileName && strings.Count(name, "/") == 1 {
+			s.candidates = append(s.candidates, path.Dir(name)+"/")
+		}
+	}
+}
+
+// prefix is the directory that holds plugin.json, empty for the archive root.
+func (s *prefixScan) prefix() (string, error) {
+	if s.rootManifest {
 		return "", nil
 	}
 	// A single top level directory is stripped, which is what archives created
 	// by "tar czf pkg.tgz plugin-dir" look like.
-	if len(topLevel) == 1 && slices.Contains(candidates, topLevel[0]+"/") {
-		return topLevel[0] + "/", nil
+	if len(s.topLevel) == 1 && slices.Contains(s.candidates, s.topLevel[0]+"/") {
+		return s.topLevel[0] + "/", nil
 	}
 	return "", invalidPackage("%s is missing at the package root", ManifestFileName)
 }
@@ -270,12 +285,8 @@ func packageEntryName(raw string) (string, error) {
 	return name, nil
 }
 
-// writePackageFile writes one regular entry, keeping the executable bit.
-func writePackageFile(target string, header *tar.Header, reader io.Reader) error {
-	mode := os.FileMode(0o644)
-	if header.FileInfo().Mode().Perm()&0o111 != 0 {
-		mode = 0o755
-	}
+// writePackageFile writes one regular entry with mode.
+func writePackageFile(target string, header *tar.Header, reader io.Reader, mode os.FileMode) error {
 	file, err := os.OpenFile(target, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, mode)
 	if err != nil {
 		return err
@@ -291,8 +302,17 @@ func writePackageFile(target string, header *tar.Header, reader io.Reader) error
 	return nil
 }
 
-// markExecutables makes every binary the manifest points at runnable.
-func markExecutables(m *protocol.Manifest, root string) error {
+// packedMode is the mode an entry was packed with, either 0644 or 0755.
+func packedMode(header *tar.Header) os.FileMode {
+	if header.FileInfo().Mode().Perm()&0o111 != 0 {
+		return 0o755
+	}
+	return 0o644
+}
+
+// manifestExecutables lists the files the manifest runs: every
+// server.executables value and server.command[0] when it is a path.
+func manifestExecutables(m *protocol.Manifest) []string {
 	if m.Server == nil {
 		return nil
 	}
@@ -303,7 +323,13 @@ func markExecutables(m *protocol.Manifest, root string) error {
 	if len(m.Server.Command) > 0 && hasPathSeparator(m.Server.Command[0]) {
 		paths = append(paths, m.Server.Command[0])
 	}
-	for _, rel := range paths {
+	return paths
+}
+
+// markExecutables makes every binary the manifest points at runnable. It is
+// the only place an extracted file gets the executable bit.
+func markExecutables(m *protocol.Manifest, root string) error {
+	for _, rel := range manifestExecutables(m) {
 		target := filepath.Join(root, filepath.FromSlash(rel))
 		if !isInside(root, target) {
 			return invalidPackage("executable %q escapes the plugin directory", rel)

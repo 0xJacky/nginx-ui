@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"archive/tar"
 	"context"
 	"os"
 	"path/filepath"
@@ -104,6 +105,36 @@ func TestInstallLocalPackagePicksTheNewestBuild(t *testing.T) {
 	assert.ErrorIs(t, err, ErrLocalPackageNotFound)
 }
 
+func TestPeekPackageReadsWithoutUnpacking(t *testing.T) {
+	native := filepath.Join(t.TempDir(), "native.tar.gz")
+	require.NoError(t, os.WriteFile(native,
+		buildPlatformPackage(t, platformManifest("com.example.native", "1.0.0", foreignPlatform())), 0o644))
+	wrapped := writeArchive(t, []tarEntry{
+		{header: tar.Header{Name: "cloudflare/", Typeflag: tar.TypeDir, Mode: 0o755}},
+		{header: tar.Header{Name: "cloudflare/" + ManifestFileName, Typeflag: tar.TypeReg}, body: manifestJSON(t)},
+		{header: tar.Header{Name: "cloudflare/bin/plugin", Typeflag: tar.TypeReg}, body: "binary"},
+	})
+
+	// TMPDIR points at a missing directory, so unpacking into a temporary
+	// directory would fail.
+	missing := filepath.Join(t.TempDir(), "missing")
+	t.Setenv("TMPDIR", missing)
+
+	manifest, platforms, err := peekPackage(native)
+	require.NoError(t, err)
+	assert.Equal(t, "com.example.native", manifest.ID)
+	assert.Equal(t, "1.0.0", manifest.Version)
+	assert.Equal(t, []string{foreignPlatform()}, platforms)
+
+	// A wrapper directory is stripped the way ExtractPackage strips it.
+	manifest, platforms, err = peekPackage(wrapped)
+	require.NoError(t, err)
+	assert.Equal(t, "official.cloudflare", manifest.ID)
+	assert.Equal(t, []string{"linux-amd64"}, platforms)
+
+	assert.NoDirExists(t, missing, "peeking must not unpack the archive")
+}
+
 func TestFetchPackageWritesArchiveAndSignature(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
@@ -115,7 +146,7 @@ func TestFetchPackageWritesArchiveAndSignature(t *testing.T) {
 	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), &private, nil)
 
 	destination := t.TempDir()
-	archive, err := manager.Marketplace().FetchPackage(context.Background(), "com.example.alpha", "", destination)
+	archive, err := manager.Marketplace().FetchPackage(context.Background(), "com.example.alpha", "", "", destination)
 	require.NoError(t, err)
 	assert.Equal(t, filepath.Join(destination, "com.example.alpha-1.0.0"+packageSuffix), archive)
 	assert.FileExists(t, archive)
@@ -135,6 +166,6 @@ func TestFetchPackageRefusesAnUnsignedRelease(t *testing.T) {
 
 	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, nil)
 
-	_, err := manager.Marketplace().FetchPackage(context.Background(), "com.example.alpha", "", t.TempDir())
+	_, err := manager.Marketplace().FetchPackage(context.Background(), "com.example.alpha", "", "", t.TempDir())
 	assert.ErrorIs(t, err, ErrSignatureMissing)
 }

@@ -44,6 +44,7 @@ const enableAfterInstall = ref(true)
 const progress = ref(0)
 const phase = ref<PluginInstallStatus>('downloading')
 const activeId = ref('')
+const activePlatform = ref('')
 const receivedEvent = ref(false)
 const polling = ref(false)
 
@@ -77,7 +78,10 @@ const phaseLabels: Record<PluginInstallStatus, () => string> = {
 }
 
 const phaseLabel = computed(() => {
-  const label = phaseLabels[phase.value]?.() ?? ''
+  let label = phaseLabels[phase.value]?.() ?? ''
+  // The catalog serves one package per platform, name the one being fetched.
+  if (activePlatform.value && phase.value !== 'done' && phase.value !== 'error')
+    label = `${label} (${activePlatform.value})`
   if (activeId.value && activeId.value !== targetId.value)
     return $gettext('%{phase}: %{plugin}', { phase: label, plugin: activeId.value })
   return label
@@ -119,6 +123,7 @@ function onProgress(data: PluginInstallProgress) {
 
   receivedEvent.value = true
   activeId.value = data.plugin_id
+  activePlatform.value = data.platform ?? ''
   phase.value = data.status
   if (data.status !== 'error')
     progress.value = Math.max(progress.value, Math.min(100, Math.round(data.progress)))
@@ -140,6 +145,7 @@ function unsubscribe() {
 function resetProgress() {
   progress.value = 0
   phase.value = 'downloading'
+  activePlatform.value = ''
   activeId.value = ''
   receivedEvent.value = false
   polling.value = false

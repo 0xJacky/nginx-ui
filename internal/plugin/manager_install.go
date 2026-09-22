@@ -33,15 +33,20 @@ func (m *Manager) Inspect(archivePath string) (*InspectResult, error) {
 	}
 	defer os.RemoveAll(staging)
 
-	manifest, err := ExtractPackage(archivePath, filepath.Join(staging, "payload"))
+	payload := filepath.Join(staging, "payload")
+	manifest, err := ExtractPackage(archivePath, payload)
 	if err != nil {
 		return nil, err
 	}
 
+	platforms := packagePlatforms(manifest, payload)
 	result := &InspectResult{
-		Manifest:        manifest,
-		Permissions:     manifest.Permissions,
-		RequiresMissing: m.missingRequirements(manifest),
+		Manifest:          manifest,
+		Permissions:       manifest.Permissions,
+		RequiresMissing:   m.missingRequirements(manifest),
+		Platforms:         platforms,
+		HostPlatform:      HostPlatform(),
+		PlatformSupported: platformsCover(platforms, HostPlatform()),
 	}
 	if result.Permissions == nil {
 		result.Permissions = []string{}
@@ -91,6 +96,11 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 	}
 	if err = checkHostVersion(manifest); err != nil {
 		return nil, err
+	}
+	// A per-platform package built for another node would install fine and
+	// then never start, so it is refused up front.
+	if !platformsCover(packagePlatforms(manifest, staged), HostPlatform()) {
+		return nil, ErrNoExecutableForPlatform
 	}
 	if missing := m.missingRequirements(manifest); len(missing) > 0 {
 		return nil, cosy.WrapErrorWithParams(ErrDependencyMissing, requirementList(missing))

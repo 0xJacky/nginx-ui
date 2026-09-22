@@ -84,6 +84,37 @@ func TestBuildAndExtractPackage(t *testing.T) {
 	assert.Equal(t, os.FileMode(0o755), info.Mode().Perm(), "the manifest executable must be runnable")
 }
 
+func TestExtractPackageOnlyMarksManifestExecutables(t *testing.T) {
+	source := t.TempDir()
+	require.NoError(t, os.MkdirAll(filepath.Join(source, "bin"), 0o755))
+	require.NoError(t, os.MkdirAll(filepath.Join(source, "webapp"), 0o755))
+	// Everything is packed 0755, as a Windows mount or some CI images do.
+	for rel, body := range map[string]string{
+		ManifestFileName: manifestJSON(t),
+		"bin/plugin":     "#!/bin/sh\n",
+		"webapp/main.js": "export default {}",
+	} {
+		require.NoError(t, os.WriteFile(filepath.Join(source, filepath.FromSlash(rel)), []byte(body), 0o755))
+	}
+
+	archivePath := filepath.Join(t.TempDir(), "plugin.tar.gz")
+	require.NoError(t, BuildPackage(source, archivePath))
+
+	dest := filepath.Join(t.TempDir(), "installed")
+	_, err := ExtractPackage(archivePath, dest)
+	require.NoError(t, err)
+
+	for rel, want := range map[string]os.FileMode{
+		ManifestFileName: 0o644,
+		"webapp/main.js": 0o644,
+		"bin/plugin":     0o755,
+	} {
+		info, err := os.Stat(filepath.Join(dest, filepath.FromSlash(rel)))
+		require.NoError(t, err)
+		assert.Equal(t, want, info.Mode().Perm(), rel)
+	}
+}
+
 func TestExtractPackageStripsWrapperDirectory(t *testing.T) {
 	archivePath := writeArchive(t, []tarEntry{
 		{header: tar.Header{Name: "cloudflare/", Typeflag: tar.TypeDir, Mode: 0o755}},
@@ -168,6 +199,29 @@ func TestExtractPackageRejections(t *testing.T) {
 			},
 			target: ErrManifestInvalid,
 		},
+		{
+			name: "undecodable manifest",
+			entries: []tarEntry{
+				{header: tar.Header{Name: ManifestFileName, Typeflag: tar.TypeReg}, body: `{not json`},
+			},
+			target: ErrManifestInvalid,
+		},
+		{
+			name: "executable is a directory",
+			entries: []tarEntry{
+				{header: tar.Header{Name: ManifestFileName, Typeflag: tar.TypeReg}, body: manifest},
+				{header: tar.Header{Name: "bin/plugin/", Typeflag: tar.TypeDir, Mode: 0o755}},
+			},
+			target: ErrPackageInvalid,
+		},
+		{
+			name: "executable is an implied directory",
+			entries: []tarEntry{
+				{header: tar.Header{Name: ManifestFileName, Typeflag: tar.TypeReg}, body: manifest},
+				{header: tar.Header{Name: "bin/plugin/inner", Typeflag: tar.TypeReg}, body: "x"},
+			},
+			target: ErrPackageInvalid,
+		},
 	}
 
 	for _, tc := range tests {
@@ -178,6 +232,10 @@ func TestExtractPackageRejections(t *testing.T) {
 			require.Error(t, err)
 			assert.ErrorIs(t, err, tc.target)
 			assert.NoDirExists(t, dest, "a failed extraction must not leave anything behind")
+
+			// Peeking refuses the same package with the same error.
+			_, _, err = peekPackage(archivePath)
+			assert.ErrorIs(t, err, tc.target)
 		})
 	}
 }
@@ -199,6 +257,9 @@ func TestExtractPackageRefusesTooManyFiles(t *testing.T) {
 	_, err := ExtractPackage(archivePath, dest)
 	assert.ErrorIs(t, err, ErrPackageTooLarge)
 	assert.NoDirExists(t, dest)
+
+	_, _, err = peekPackage(archivePath)
+	assert.ErrorIs(t, err, ErrPackageTooLarge)
 }
 
 func TestExtractPackageRefusesOversizeEntry(t *testing.T) {
@@ -221,6 +282,9 @@ func TestExtractPackageRefusesOversizeEntry(t *testing.T) {
 	dest := filepath.Join(t.TempDir(), "installed")
 	_, err = ExtractPackage(archivePath, dest)
 	assert.ErrorIs(t, err, ErrPackageTooLarge)
+
+	_, _, err = peekPackage(archivePath)
+	assert.ErrorIs(t, err, ErrPackageTooLarge)
 }
 
 func TestExtractPackageRejectsBrokenArchive(t *testing.T) {
@@ -229,9 +293,13 @@ func TestExtractPackageRejectsBrokenArchive(t *testing.T) {
 
 	_, err := ExtractPackage(archivePath, filepath.Join(t.TempDir(), "installed"))
 	assert.ErrorIs(t, err, ErrPackageInvalid)
+	_, _, err = peekPackage(archivePath)
+	assert.ErrorIs(t, err, ErrPackageInvalid)
 
 	_, err = ExtractPackage(filepath.Join(t.TempDir(), "missing.tar.gz"), t.TempDir())
 	assert.Error(t, err)
+	_, _, err = peekPackage(filepath.Join(t.TempDir(), "missing.tar.gz"))
+	assert.ErrorIs(t, err, os.ErrNotExist)
 }
 
 func TestBuildPackageSkipsLinks(t *testing.T) {
