@@ -30,6 +30,7 @@ var (
 	ErrSettingsInvalid            = e.New(55018, "plugin setting {0} is invalid")
 	ErrHostVersionTooOld          = e.New(55019, "plugin needs nginx-ui {0} or newer, this node runs {1}")
 	ErrPluginIDMismatch           = e.New(55020, "plugin package declares another id")
+	ErrContentInvalid             = e.New(55021, "plugin content {0} is invalid: {1}")
 
 	// Capability errors continue at 55201, apart from the lifecycle and the
 	// marketplace codes.
@@ -37,6 +38,15 @@ var (
 	ErrStorageConfigInvalid      = e.New(55202, "storage config field {0} is invalid: {1}")
 	ErrDeployKindUnavailable     = e.New(55203, "deploy target kind {0} is not available")
 	ErrDeployConfigInvalid       = e.New(55204, "deploy target config field {0} is invalid: {1}")
+	ErrBlocklistKindUnavailable  = e.New(55205, "blocklist source kind {0} is not available")
+	ErrBlocklistConfigInvalid    = e.New(55206, "blocklist source config field {0} is invalid: {1}")
+	ErrDiscoveryKindUnavailable  = e.New(55207, "discovery provider {0} is not available")
+	ErrDiscoveryConfigInvalid    = e.New(55208, "discovery provider config field {0} is invalid: {1}")
+	ErrRefreshIntervalInvalid    = e.New(55209, "refresh interval must be at least {0} seconds")
+	ErrUpstreamNameInvalid       = e.New(55210, "upstream name {0} is invalid")
+	ErrUpstreamNameTaken         = e.New(55211, "upstream name {0} is already bound to another service")
+	ErrExtraDirectivesInvalid    = e.New(55212, "extra directives must not contain braces")
+	ErrGeneratedFileIncluded     = e.New(55213, "{0} is still included by the nginx configuration: {1}")
 )
 
 // rpcError carries both the cosy error the API layer reports and the original

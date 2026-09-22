@@ -17,6 +17,8 @@ var Migrations = []*gormigrate.Migration{
 	AddProbeKindToSiteConfigs,
 	AddStorageConfigToAutoBackups,
 	CreateCertDeployTables,
+	CreateBlocklistSourcesTable,
+	CreateUpstreamDiscoveriesTable,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{

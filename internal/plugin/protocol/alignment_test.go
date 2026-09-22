@@ -93,6 +93,16 @@ var alignments = []alignment{
 	{reflect.TypeFor[protocol.DeployCertificate](), "DeployCertificate"},
 	{reflect.TypeFor[protocol.DeployPushResult](), "DeployPushResponse"},
 
+	// blocklist.go
+	{reflect.TypeFor[protocol.BlocklistFetchParams](), "BlocklistFetchRequest"},
+	{reflect.TypeFor[protocol.BlocklistFetchResult](), "BlocklistFetchResponse"},
+	{reflect.TypeFor[protocol.BlocklistEntry](), "BlocklistEntry"},
+
+	// discovery.go
+	{reflect.TypeFor[protocol.DiscoveryResolveParams](), "DiscoveryResolveRequest"},
+	{reflect.TypeFor[protocol.DiscoveryResolveResult](), "DiscoveryResolveResponse"},
+	{reflect.TypeFor[protocol.DiscoveryTarget](), "DiscoveryTarget"},
+
 	// events.go
 	{reflect.TypeFor[protocol.EventNotification](), "EventsOnRequest"},
 
@@ -128,6 +138,10 @@ var alignments = []alignment{
 	{reflect.TypeFor[protocol.StorageBackend](), "StorageBackend"},
 	{reflect.TypeFor[protocol.ManifestDeploy](), "ManifestDeploy"},
 	{reflect.TypeFor[protocol.DeployTarget](), "DeployTarget"},
+	{reflect.TypeFor[protocol.ManifestBlocklist](), "ManifestBlocklist"},
+	{reflect.TypeFor[protocol.BlocklistSource](), "BlocklistSource"},
+	{reflect.TypeFor[protocol.ManifestDiscovery](), "ManifestDiscovery"},
+	{reflect.TypeFor[protocol.DiscoveryProvider](), "DiscoveryProvider"},
 }
 
 // TestProtoAlignment asserts that the json tag names of every hand-written
@@ -218,6 +232,8 @@ func TestMethodNamesMatchProto(t *testing.T) {
 		protocol.MethodStorageDelete,
 		protocol.MethodDeployValidate,
 		protocol.MethodDeployPush,
+		protocol.MethodBlocklistFetch,
+		protocol.MethodDiscoveryResolve,
 		protocol.MethodHostLog,
 		protocol.MethodHostKVGet,
 		protocol.MethodHostKVSet,

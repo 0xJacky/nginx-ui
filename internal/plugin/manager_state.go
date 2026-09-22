@@ -63,8 +63,13 @@ func (m *Manager) bringUp(ctx context.Context, item *entry) error {
 	if err != nil {
 		return err
 	}
+	if supervisor == nil {
+		// A plugin without a server block has no process: there is nothing
+		// to start and nothing to schedule (spec CONTENT-1).
+		return nil
+	}
 	m.registerManifestCron(item)
-	if supervisor == nil || supervisor.Lifecycle() == protocol.LifecycleOnDemand {
+	if supervisor.Lifecycle() == protocol.LifecycleOnDemand {
 		return nil
 	}
 	return supervisor.Start(ctx)
