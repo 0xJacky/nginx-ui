@@ -1,218 +1,151 @@
 <script setup lang="ts">
-import type { BadgeProps } from 'antdv-next'
-import type { PluginInfo, PluginStatus } from '@/api/plugin'
-import type { PluginNodeResult } from '@/api/plugin_sync'
-import { AppstoreOutlined, ExperimentOutlined, PlusOutlined, ReloadOutlined } from '@antdv-next/icons'
-import { useIntervalFn } from '@vueuse/core'
-import nodeApi from '@/api/node'
+import type { InstalledFilter, PluginDrawerTab } from './presets'
+import type { PluginInfo } from '@/api/plugin'
+import { AppstoreOutlined, ReloadOutlined, SearchOutlined, ShopOutlined, UploadOutlined } from '@antdv-next/icons'
 import pluginApi from '@/api/plugin'
-import { syncPlugin } from '@/api/plugin_sync'
-import NodeSelector from '@/components/NodeSelector'
 import { getErrorMessage } from '@/lib/http'
-import { usePluginLoader, usePluginStore } from '@/plugin'
-import InstallModal from './InstallModal.vue'
-import LogsDrawer from './LogsDrawer.vue'
+import { usePluginLoader } from '@/plugin'
+import InstalledPluginCard from './InstalledPluginCard.vue'
+import { usePluginInventory } from './inventory'
 import PermissionApprovalModal from './PermissionApprovalModal.vue'
-import SettingsDrawer from './SettingsDrawer.vue'
-import SyncPolicyEditor from './SyncPolicyEditor.vue'
+import PluginDrawer from './PluginDrawer.vue'
+import { matchesFilter, matchesKeyword, needsAttention } from './presets'
+import SyncNodesModal from './SyncNodesModal.vue'
 
-const { message } = App.useApp()
-const pluginStore = usePluginStore()
+const emit = defineEmits<{
+  install: []
+  browse: []
+}>()
 
-const loading = ref(false)
-const plugins = ref<PluginInfo[]>([])
+const filter = defineModel<InstalledFilter>('filter', { default: 'all' })
+
+const route = useRoute()
+const router = useRouter()
+const { message, modal } = useGlobalApp()
+const inventory = usePluginInventory()
+const { plugins, loading, error, hasNodes } = inventory
+const pluginLoader = usePluginLoader()
+
+const keyword = ref('')
 const togglingId = ref('')
 const approving = ref(false)
 
-const installOpen = ref(false)
-const settingsOpen = ref(false)
-const logsOpen = ref(false)
+// The drawer follows the list, so a reload never shows stale data in it.
+const selectedId = ref('')
+const selected = computed(() => plugins.value.find(item => item.id === selectedId.value))
+const drawerOpen = ref(false)
+const drawerTab = ref<PluginDrawerTab>('overview')
+const syncOpen = ref(false)
 const approvalOpen = ref(false)
-const devUrlOpen = ref(false)
-
-const selected = ref<PluginInfo>()
 const pendingApproval = ref<PluginInfo>()
-const devUrlDraft = ref('')
 
-// The cluster columns only make sense once this instance has a child node.
-const hasNodes = ref(false)
+const counts = computed<Record<InstalledFilter, number>>(() => ({
+  all: plugins.value.length,
+  enabled: plugins.value.filter(item => item.enabled).length,
+  disabled: plugins.value.filter(item => !item.enabled).length,
+  attention: plugins.value.filter(needsAttention).length,
+}))
 
-const columns = computed(() => [
-  { title: $gettext('Plugin'), dataIndex: 'name' },
-  { title: $gettext('Version'), dataIndex: 'version', width: 110 },
-  { title: $gettext('Capabilities'), dataIndex: 'capabilities' },
-  { title: $gettext('Status'), dataIndex: 'status', width: 150 },
-  { title: $gettext('Enabled'), dataIndex: 'enabled', width: 100 },
-  ...(hasNodes.value
-    ? [{ title: $gettext('Auto install to nodes'), dataIndex: 'sync_policy', width: 220 }]
-    : []),
-  { title: $gettext('Action'), dataIndex: 'action', width: hasNodes.value ? 300 : 220 },
+const filterOptions = computed(() => [
+  { value: 'all', label: $gettext('All') },
+  { value: 'enabled', label: $gettext('Enabled') },
+  { value: 'disabled', label: $gettext('Disabled') },
+  { value: 'attention', label: $gettext('Needs attention') },
 ])
 
-const syncOpen = ref(false)
-const syncing = ref(false)
-const syncTarget = ref<PluginInfo>()
-const syncNodeIds = ref<number[]>([])
-const syncResults = ref<PluginNodeResult[]>([])
+const visible = computed(() => plugins.value.filter(item =>
+  matchesFilter(item, filter.value) && matchesKeyword(item, keyword.value)))
 
-async function loadNodes() {
-  try {
-    const { data } = await nodeApi.getList({ enabled: true })
-    hasNodes.value = data.length > 0
-  }
-  catch {
-    hasNodes.value = false
-  }
+const isEmptyInventory = computed(() => !loading.value && !error.value && plugins.value.length === 0)
+
+function openDrawer(plugin: PluginInfo, tab: PluginDrawerTab) {
+  selectedId.value = plugin.id
+  drawerTab.value = tab
+  drawerOpen.value = true
 }
 
-function openSync(record: PluginInfo) {
-  syncTarget.value = record
-  syncNodeIds.value = [...(record.sync_node_ids ?? [])]
-  syncResults.value = []
+// The open drawer lives in the URL, so a link can point straight at one plugin.
+watch(drawerOpen, open => {
+  const { plugin: _plugin, ...rest } = route.query
+  router.replace({ query: open ? { ...rest, plugin: selectedId.value } : rest })
+})
+
+// A link may point straight at one plugin. It is honoured once the list is
+// there, and again whenever the query changes while the page stays mounted.
+watch([plugins, () => route.query.plugin], ([list, id]) => {
+  if (typeof id !== 'string' || list.length === 0)
+    return
+  if (drawerOpen.value && selectedId.value === id)
+    return
+
+  const plugin = list.find(item => item.id === id)
+  if (plugin)
+    openDrawer(plugin, 'overview')
+}, { immediate: true })
+
+function openSync(plugin: PluginInfo) {
+  selectedId.value = plugin.id
   syncOpen.value = true
 }
 
-async function runSync() {
-  const record = syncTarget.value
-  if (!record)
-    return
-
-  syncing.value = true
+async function enablePlugin(plugin: PluginInfo, approvePermissions?: boolean) {
+  togglingId.value = plugin.id
   try {
-    const { results } = await syncPlugin(record.id, syncNodeIds.value)
-    syncResults.value = results
-    if (results.every(result => result.success))
-      message.success($gettext('Plugin synchronized to %{count} node(s)', { count: String(results.length) }))
-    else
-      message.warning($gettext('Some nodes could not be synchronized'))
-  }
-  catch (error) {
-    message.error(getErrorMessage(error, $gettext('Failed to synchronize the plugin')))
-  }
-  finally {
-    syncing.value = false
-  }
-}
-
-interface StatusPreset {
-  badge: BadgeProps['status']
-  label: () => string
-}
-
-const statusPresets: Record<PluginStatus, StatusPreset> = {
-  installed: { badge: 'default', label: () => $gettext('Installed') },
-  starting: { badge: 'processing', label: () => $gettext('Starting') },
-  running: { badge: 'success', label: () => $gettext('Running') },
-  stopped: { badge: 'default', label: () => $gettext('Stopped') },
-  error: { badge: 'error', label: () => $gettext('Error') },
-  missing: { badge: 'error', label: () => $gettext('Missing') },
-  incompatible: { badge: 'error', label: () => $gettext('Incompatible') },
-  needs_approval: { badge: 'warning', label: () => $gettext('Needs approval') },
-}
-
-function statusOf(record: PluginInfo): StatusPreset {
-  return statusPresets[record.status] ?? { badge: 'default', label: () => record.status }
-}
-
-/** A plugin the host cannot run at all must not offer a toggle. */
-function isToggleDisabled(record: PluginInfo) {
-  return record.status === 'incompatible' || record.status === 'missing'
-}
-
-const pluginLoader = usePluginLoader()
-
-// A freshly installed bundle is picked up without a page reload.
-async function onInstalled() {
-  await loadPlugins()
-  await pluginLoader.loadNew()
-}
-
-async function loadPlugins(showSpinner = true) {
-  if (showSpinner)
-    loading.value = true
-
-  try {
-    plugins.value = await pluginApi.getList()
-  }
-  catch (error) {
-    message.error(getErrorMessage(error, $gettext('Failed to load the plugin list')))
-  }
-  finally {
-    loading.value = false
-  }
-}
-
-// A plugin that is still starting settles within a few seconds, so poll until
-// nothing is in flight instead of asking the user to refresh.
-const hasTransientState = computed(() => plugins.value.some(item => item.status === 'starting'))
-
-const { pause, resume } = useIntervalFn(() => loadPlugins(false), 5000, { immediate: false })
-
-watch(hasTransientState, value => {
-  if (value)
-    resume()
-  else
-    pause()
-})
-
-async function enablePlugin(record: PluginInfo, approvePermissions?: boolean) {
-  togglingId.value = record.id
-  try {
-    await pluginApi.enable(record.id, approvePermissions)
+    await pluginApi.enable(plugin.id, approvePermissions)
     message.success($gettext('Plugin enabled'))
-    await loadPlugins(false)
+    await inventory.reload(true)
     await pluginLoader.loadNew()
   }
-  catch (error) {
-    message.error(getErrorMessage(error, $gettext('Failed to enable the plugin')))
-    await loadPlugins(false)
+  catch (e) {
+    message.error(getErrorMessage(e, $gettext('Failed to enable the plugin')))
+    await inventory.reload(true)
   }
   finally {
     togglingId.value = ''
   }
 }
 
-async function disablePlugin(record: PluginInfo) {
-  togglingId.value = record.id
+async function disablePlugin(plugin: PluginInfo) {
+  togglingId.value = plugin.id
   try {
-    await pluginApi.disable(record.id)
+    await pluginApi.disable(plugin.id)
     message.success($gettext('Plugin disabled'))
-    await loadPlugins(false)
+    await inventory.reload(true)
   }
-  catch (error) {
-    message.error(getErrorMessage(error, $gettext('Failed to disable the plugin')))
-    await loadPlugins(false)
+  catch (e) {
+    message.error(getErrorMessage(e, $gettext('Failed to disable the plugin')))
+    await inventory.reload(true)
   }
   finally {
     togglingId.value = ''
   }
 }
 
-function toggle(record: PluginInfo, checked: boolean) {
+function toggle(plugin: PluginInfo, checked: boolean) {
   if (!checked) {
-    disablePlugin(record)
+    void disablePlugin(plugin)
     return
   }
 
   // Enabling a plugin whose permissions are not approved yet has to go through
   // the approval dialog first.
-  if (record.status === 'needs_approval') {
-    pendingApproval.value = record
+  if (plugin.status === 'needs_approval') {
+    pendingApproval.value = plugin
     approvalOpen.value = true
     return
   }
 
-  enablePlugin(record)
+  void enablePlugin(plugin)
 }
 
 async function approvePermissions() {
-  const record = pendingApproval.value
-  if (!record)
+  const plugin = pendingApproval.value
+  if (!plugin)
     return
 
   approving.value = true
   try {
-    await enablePlugin(record, true)
+    await enablePlugin(plugin, true)
     approvalOpen.value = false
     pendingApproval.value = undefined
   }
@@ -221,241 +154,134 @@ async function approvePermissions() {
   }
 }
 
-async function uninstall(record: PluginInfo) {
-  try {
-    await pluginApi.uninstall(record.id)
-    message.success($gettext('Plugin uninstalled'))
-    await loadPlugins(false)
-  }
-  catch (error) {
-    message.error(getErrorMessage(error, $gettext('Failed to uninstall the plugin')))
-  }
+function confirmUninstall(plugin: PluginInfo) {
+  modal.confirm({
+    title: $gettext('Uninstall %{name}?', { name: plugin.name }),
+    content: $gettext('Its files, data and settings are removed from this node. Other nodes are not touched.'),
+    okText: $gettext('Uninstall'),
+    okButtonProps: { danger: true },
+    cancelText: $gettext('Cancel'),
+    async onOk() {
+      try {
+        await pluginApi.uninstall(plugin.id)
+        message.success($gettext('Plugin uninstalled'))
+        drawerOpen.value = false
+        await inventory.reload(true)
+      }
+      catch (e) {
+        message.error(getErrorMessage(e, $gettext('Failed to uninstall the plugin')))
+      }
+    },
+  })
 }
-
-function openSettings(record: PluginInfo) {
-  selected.value = record
-  settingsOpen.value = true
-}
-
-function openLogs(record: PluginInfo) {
-  selected.value = record
-  logsOpen.value = true
-}
-
-function openDevUrl(open: boolean) {
-  devUrlOpen.value = open
-  if (open)
-    devUrlDraft.value = pluginStore.devPluginUrl
-}
-
-function saveDevUrl() {
-  pluginStore.devPluginUrl = devUrlDraft.value.trim()
-  devUrlOpen.value = false
-  message.success($gettext('Reload the page to apply the development plugin URL'))
-}
-
-function clearDevUrl() {
-  devUrlDraft.value = ''
-  pluginStore.devPluginUrl = ''
-  devUrlOpen.value = false
-  message.success($gettext('Reload the page to apply the development plugin URL'))
-}
-
-onMounted(() => {
-  loadPlugins()
-  loadNodes()
-})
-onUnmounted(pause)
 </script>
 
 <template>
   <div>
-    <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
-      <p class="mb-0 max-w-2xl text-gray-500">
-        {{ $gettext('Plugins extend Nginx UI with extra capabilities. Only install bundles from authors you trust.') }}
-      </p>
+    <div class="installed-toolbar">
+      <AInput
+        v-model:value="keyword"
+        class="installed-search"
+        :placeholder="$gettext('Search installed plugins')"
+        allow-clear
+      >
+        <template #prefix>
+          <SearchOutlined class="text-gray-400" />
+        </template>
+      </AInput>
 
-      <ASpace wrap>
-        <APopover
-          :open="devUrlOpen"
-          trigger="click"
-          placement="bottomRight"
-          :title="$gettext('Development plugin URL')"
-          @open-change="openDevUrl"
-        >
-          <template #content>
-            <div class="dev-url-popover">
-              <p class="mb-2 text-gray-500">
-                {{ $gettext('Address of a plugin.json served by any static server. The plugin is loaded in addition to the installed ones.') }}
-              </p>
-              <AInput
-                v-model:value="devUrlDraft"
-                placeholder="http://localhost:5173/plugin.json"
-                allow-clear
-                @press-enter="saveDevUrl"
-              />
-              <div class="mt-2 flex justify-end gap-2">
-                <AButton size="small" @click="clearDevUrl">
-                  {{ $gettext('Clear') }}
-                </AButton>
-                <AButton size="small" type="primary" @click="saveDevUrl">
-                  {{ $gettext('Save') }}
-                </AButton>
-              </div>
-            </div>
+      <div class="installed-filter">
+        <ASegmented v-model:value="filter" :options="filterOptions">
+          <template #labelRender="option">
+            <span class="filter-label">
+              {{ option.label }}
+              <span class="filter-count">{{ counts[option.value as InstalledFilter] }}</span>
+            </span>
           </template>
-          <AButton :type="pluginStore.devPluginUrl ? 'primary' : 'default'" ghost>
-            <template #icon>
-              <ExperimentOutlined />
-            </template>
-            {{ $gettext('Dev plugin') }}
-          </AButton>
-        </APopover>
+        </ASegmented>
+      </div>
 
-        <AButton :loading="loading" @click="loadPlugins()">
-          <template #icon>
-            <ReloadOutlined />
-          </template>
-          {{ $gettext('Refresh') }}
-        </AButton>
-
-        <AButton type="primary" @click="installOpen = true">
-          <template #icon>
-            <PlusOutlined />
-          </template>
-          {{ $gettext('Install') }}
-        </AButton>
-      </ASpace>
+      <AButton class="ml-auto" :loading="loading" @click="inventory.reload()">
+        <template #icon>
+          <ReloadOutlined />
+        </template>
+        {{ $gettext('Refresh') }}
+      </AButton>
     </div>
 
-    <ATable
-      :columns="columns"
-      :data-source="plugins"
-      :loading="loading"
-      row-key="id"
-      size="small"
-      :pagination="false"
-      :scroll="{ x: 900 }"
-    >
-      <template #emptyText>
-        <AEmpty :description="$gettext('No plugins installed')" />
-      </template>
-      <template #bodyCell="{ column, record }">
-        <template v-if="column.dataIndex === 'name'">
-          <div class="flex items-center gap-2">
-            <img
-              v-if="record.icon_url"
-              :src="record.icon_url"
-              class="plugin-icon"
-              alt=""
-            >
-            <AppstoreOutlined v-else class="text-gray-400" />
-            <div class="min-w-0">
-              <div class="font-medium">
-                {{ record.name }}
-              </div>
-              <div class="truncate font-mono text-xs text-gray-400">
-                {{ record.id }}
-              </div>
-            </div>
-          </div>
-        </template>
+    <AAlert
+      v-if="error"
+      type="error"
+      show-icon
+      class="mb-4"
+      :title="error"
+    />
 
-        <template v-else-if="column.dataIndex === 'capabilities'">
-          <div v-if="record.capabilities?.length" class="flex flex-wrap gap-1">
-            <ATag v-for="capability in record.capabilities" :key="capability">
-              {{ capability }}
-            </ATag>
-          </div>
-          <span v-else class="text-gray-400">-</span>
-        </template>
-
-        <template v-else-if="column.dataIndex === 'status'">
-          <ATooltip :title="record.last_error || undefined">
-            <ABadge :status="statusOf(record).badge" :text="statusOf(record).label()" />
-          </ATooltip>
-        </template>
-
-        <template v-else-if="column.dataIndex === 'enabled'">
-          <ASwitch
-            :checked="record.enabled"
-            :disabled="isToggleDisabled(record)"
-            :loading="togglingId === record.id"
-            @change="checked => toggle(record, Boolean(checked))"
-          />
-        </template>
-
-        <template v-else-if="column.dataIndex === 'sync_policy'">
-          <SyncPolicyEditor :plugin="record" @updated="loadPlugins(false)" />
-        </template>
-
-        <template v-else-if="column.dataIndex === 'action'">
-          <ASpace :size="0" wrap>
-            <AButton type="link" size="small" @click="openSettings(record)">
-              {{ $gettext('Settings') }}
-            </AButton>
-            <AButton type="link" size="small" @click="openLogs(record)">
-              {{ $gettext('Logs') }}
-            </AButton>
-            <AButton
-              v-if="hasNodes"
-              type="link"
-              size="small"
-              @click="openSync(record)"
-            >
-              {{ $gettext('Sync to nodes') }}
-            </AButton>
-            <APopconfirm
-              :title="$gettext('Uninstall %{name}? Its data and settings are removed.', { name: record.name })"
-              :ok-text="$gettext('Uninstall')"
-              :cancel-text="$gettext('Cancel')"
-              @confirm="uninstall(record)"
-            >
-              <AButton type="link" size="small" danger>
-                {{ $gettext('Uninstall') }}
-              </AButton>
-            </APopconfirm>
-          </ASpace>
-        </template>
-      </template>
-    </ATable>
-
-    <AModal
-      v-model:open="syncOpen"
-      :title="$gettext('Sync %{name} to nodes', { name: syncTarget?.name ?? '' })"
-      :width="640"
-      :ok-text="$gettext('Sync')"
-      :cancel-text="$gettext('Close')"
-      :confirm-loading="syncing"
-      @ok="runSync"
-    >
-      <p class="mb-2 text-gray-500">
-        {{ $gettext('Leave every node unchecked to sync to all child nodes.') }}
-      </p>
-      <NodeSelector v-model:target="syncNodeIds" hidden-local />
-
-      <div v-if="syncResults.length > 0" class="sync-results mt-4">
-        <div
-          v-for="result in syncResults"
-          :key="result.node_id"
-          class="sync-result-row"
-        >
-          <span class="font-medium">{{ result.node }}</span>
-          <ATag v-if="result.success" color="green">
-            {{ result.actions.length > 0 ? result.actions.join(', ') : $gettext('Already in sync') }}
-          </ATag>
-          <ATooltip v-else :title="result.error">
-            <ATag color="red">
-              {{ $gettext('Failed') }}
-            </ATag>
-          </ATooltip>
+    <ASpin :spinning="loading">
+      <div v-if="isEmptyInventory" class="installed-empty">
+        <span class="installed-empty-icon">
+          <AppstoreOutlined />
+        </span>
+        <h3 class="installed-empty-title">
+          {{ $gettext('No plugins installed yet') }}
+        </h3>
+        <p class="installed-empty-text">
+          {{ $gettext('Pick one from the marketplace or upload a bundle you built yourself.') }}
+        </p>
+        <div class="flex flex-wrap justify-center gap-2">
+          <AButton type="primary" @click="emit('browse')">
+            <template #icon>
+              <ShopOutlined />
+            </template>
+            {{ $gettext('Browse marketplace') }}
+          </AButton>
+          <AButton @click="emit('install')">
+            <template #icon>
+              <UploadOutlined />
+            </template>
+            {{ $gettext('Install from file') }}
+          </AButton>
         </div>
       </div>
-    </AModal>
 
-    <InstallModal v-model:open="installOpen" @installed="onInstalled" />
-    <SettingsDrawer v-model:open="settingsOpen" :plugin="selected" />
-    <LogsDrawer v-model:open="logsOpen" :plugin="selected" />
+      <div v-else-if="visible.length > 0" class="plugin-card-grid">
+        <InstalledPluginCard
+          v-for="plugin in visible"
+          :key="plugin.id"
+          :plugin="plugin"
+          :has-nodes="hasNodes"
+          :toggling="togglingId === plugin.id"
+          @open="tab => openDrawer(plugin, tab)"
+          @toggle="checked => toggle(plugin, checked)"
+          @sync="openSync(plugin)"
+          @uninstall="confirmUninstall(plugin)"
+          @updated="inventory.reload(true)"
+        />
+      </div>
+
+      <AEmpty
+        v-else-if="!loading"
+        class="py-8"
+        :description="$gettext('No plugins match the current filter')"
+      />
+    </ASpin>
+
+    <PluginDrawer
+      v-model:open="drawerOpen"
+      v-model:tab="drawerTab"
+      :plugin="selected"
+      :has-nodes="hasNodes"
+      :toggling="Boolean(selected) && togglingId === selected?.id"
+      @toggle="checked => selected && toggle(selected, checked)"
+      @sync="syncOpen = true"
+      @uninstall="selected && confirmUninstall(selected)"
+      @updated="inventory.reload(true)"
+    />
+    <SyncNodesModal
+      v-model:open="syncOpen"
+      :plugin="selected"
+      @synced="inventory.reload(true)"
+    />
     <PermissionApprovalModal
       v-model:open="approvalOpen"
       :plugin="pendingApproval"
@@ -466,33 +292,75 @@ onUnmounted(pause)
 </template>
 
 <style lang="less" scoped>
-.sync-results {
-  border: 1px solid var(--ant-color-border-secondary);
-  border-radius: var(--ant-border-radius);
-  overflow: hidden;
-}
+@import './plugin-card.less';
 
-.sync-result-row {
+.installed-toolbar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 6px 12px;
-
-  & + & {
-    border-top: 1px solid var(--ant-color-border-secondary);
-  }
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.plugin-icon {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  border-radius: 4px;
+.installed-search {
+  width: 100%;
+  max-width: 280px;
 }
 
-.dev-url-popover {
-  width: 320px;
-  max-width: 70vw;
+// A phone cannot fit every filter, so the control scrolls instead of clipping.
+.installed-filter {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-count {
+  padding: 0 6px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  line-height: 16px;
+  color: var(--ant-color-text-secondary);
+  background: var(--ant-color-fill-secondary);
+  border-radius: 999px;
+}
+
+.installed-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 16px;
+  text-align: center;
+  border: 1px dashed var(--ant-color-border);
+  border-radius: var(--ant-border-radius-lg);
+}
+
+.installed-empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 16px;
+  font-size: 26px;
+  color: var(--ant-color-primary);
+  background: var(--ant-color-primary-bg);
+  border-radius: 16px;
+}
+
+.installed-empty-title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.installed-empty-text {
+  max-width: 420px;
+  margin: 0 0 20px;
+  color: var(--ant-color-text-secondary);
 }
 </style>
