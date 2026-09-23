@@ -99,7 +99,7 @@ function filterOption(input: string, option?: DefaultOptionType) {
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <div class="dns-challenge-form">
     <AFormItem :label="$gettext('DNS Provider')">
       <ASelect
         v-model:value="data.code"
@@ -154,7 +154,7 @@ function filterOption(input: string, option?: DefaultOptionType) {
         <AInput v-model:value="data.configuration.additional[k]" />
       </AFormItem>
     </template>
-  </AForm>
+  </div>
 </template>
 
 <style lang="less" scoped>
