@@ -38,6 +38,14 @@ var file_nginxui_plugin_v1_options_proto_extTypes = []protoimpl.ExtensionInfo{
 		Tag:           "varint,52102,opt,name=notification",
 		Filename:      "nginxui/plugin/v1/options.proto",
 	},
+	{
+		ExtendedType:  (*descriptorpb.MethodOptions)(nil),
+		ExtensionType: (*bool)(nil),
+		Field:         52103,
+		Name:          "nginxui.plugin.v1.streaming",
+		Tag:           "varint,52103,opt,name=streaming",
+		Filename:      "nginxui/plugin/v1/options.proto",
+	},
 }
 
 // Extension fields to descriptorpb.MethodOptions.
@@ -54,6 +62,15 @@ var (
 	//
 	// optional bool notification = 52102;
 	E_Notification = &file_nginxui_plugin_v1_options_proto_extTypes[1]
+	// Marks a client streaming rpc: the caller sends any number of request
+	// messages and the callee answers once, with the response message, after
+	// the stream ended. Such an rpc has no JSON-RPC form. It travels on gRPC
+	// only and a peer answers -32601 for its rpc_name on stdio
+	// (spec/03-wire-protocol.md WIRE-12). The rpc MUST also be declared with
+	// a streamed request in the proto.
+	//
+	// optional bool streaming = 52103;
+	E_Streaming = &file_nginxui_plugin_v1_options_proto_extTypes[2]
 )
 
 var File_nginxui_plugin_v1_options_proto protoreflect.FileDescriptor
@@ -62,7 +79,8 @@ const file_nginxui_plugin_v1_options_proto_rawDesc = "" +
 	"\n" +
 	"\x1fnginxui/plugin/v1/options.proto\x12\x11nginxui.plugin.v1\x1a google/protobuf/descriptor.proto:;\n" +
 	"\brpc_name\x12\x1e.google.protobuf.MethodOptions\x18\x85\x97\x03 \x01(\tR\arpcName:D\n" +
-	"\fnotification\x12\x1e.google.protobuf.MethodOptions\x18\x86\x97\x03 \x01(\bR\fnotificationBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\fnotification\x12\x1e.google.protobuf.MethodOptions\x18\x86\x97\x03 \x01(\bR\fnotification:>\n" +
+	"\tstreaming\x12\x1e.google.protobuf.MethodOptions\x18\x87\x97\x03 \x01(\bR\tstreamingBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var file_nginxui_plugin_v1_options_proto_goTypes = []any{
 	(*descriptorpb.MethodOptions)(nil), // 0: google.protobuf.MethodOptions
@@ -70,10 +88,11 @@ var file_nginxui_plugin_v1_options_proto_goTypes = []any{
 var file_nginxui_plugin_v1_options_proto_depIdxs = []int32{
 	0, // 0: nginxui.plugin.v1.rpc_name:extendee -> google.protobuf.MethodOptions
 	0, // 1: nginxui.plugin.v1.notification:extendee -> google.protobuf.MethodOptions
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	0, // [0:2] is the sub-list for extension extendee
+	0, // 2: nginxui.plugin.v1.streaming:extendee -> google.protobuf.MethodOptions
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	0, // [0:3] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -89,7 +108,7 @@ func file_nginxui_plugin_v1_options_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nginxui_plugin_v1_options_proto_rawDesc), len(file_nginxui_plugin_v1_options_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
-			NumExtensions: 2,
+			NumExtensions: 3,
 			NumServices:   0,
 		},
 		GoTypes:           file_nginxui_plugin_v1_options_proto_goTypes,

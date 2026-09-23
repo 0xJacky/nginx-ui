@@ -103,6 +103,11 @@ var alignments = []alignment{
 	{reflect.TypeFor[protocol.DiscoveryResolveResult](), "DiscoveryResolveResponse"},
 	{reflect.TypeFor[protocol.DiscoveryTarget](), "DiscoveryTarget"},
 
+	// logsink.go
+	{reflect.TypeFor[protocol.LogSinkPushParams](), "LogSinkPushRequest"},
+	{reflect.TypeFor[protocol.LogEntry](), "LogEntry"},
+	{reflect.TypeFor[protocol.LogSinkPushResult](), "LogSinkPushResponse"},
+
 	// events.go
 	{reflect.TypeFor[protocol.EventNotification](), "EventsOnRequest"},
 
@@ -113,6 +118,7 @@ var alignments = []alignment{
 	// manifest.go
 	{reflect.TypeFor[protocol.Manifest](), "Manifest"},
 	{reflect.TypeFor[protocol.ManifestServer](), "ManifestServer"},
+	{reflect.TypeFor[protocol.ManifestResources](), "ManifestResources"},
 	{reflect.TypeFor[protocol.ManifestWebapp](), "ManifestWebapp"},
 	{reflect.TypeFor[protocol.ManifestPage](), "ManifestPage"},
 	{reflect.TypeFor[protocol.ManifestContent](), "ManifestContent"},
@@ -142,6 +148,7 @@ var alignments = []alignment{
 	{reflect.TypeFor[protocol.BlocklistSource](), "BlocklistSource"},
 	{reflect.TypeFor[protocol.ManifestDiscovery](), "ManifestDiscovery"},
 	{reflect.TypeFor[protocol.DiscoveryProvider](), "DiscoveryProvider"},
+	{reflect.TypeFor[protocol.ManifestLogSink](), "ManifestLogSink"},
 }
 
 // TestProtoAlignment asserts that the json tag names of every hand-written
@@ -208,7 +215,7 @@ func TestEveryProtoMessageIsAligned(t *testing.T) {
 }
 
 // TestMethodNamesMatchProto asserts that the method constants are exactly the
-// rpc_name options of the contract, notifications included.
+// rpc_name options of the contract, notifications and streams included.
 func TestMethodNamesMatchProto(t *testing.T) {
 	requests := []string{
 		protocol.MethodInitialize,
@@ -252,8 +259,11 @@ func TestMethodNamesMatchProto(t *testing.T) {
 		protocol.MethodExit,
 		protocol.MethodEventsOn,
 	}
+	streams := []string{
+		protocol.MethodLogPush,
+	}
 
-	var protoRequests, protoNotifications []string
+	var protoRequests, protoNotifications, protoStreams []string
 	for _, file := range contractFiles(t) {
 		services := file.Services()
 		for i := range services.Len() {
@@ -261,9 +271,16 @@ func TestMethodNamesMatchProto(t *testing.T) {
 			for j := range rpcs.Len() {
 				md := rpcs.Get(j)
 				name := proto.GetExtension(md.Options(), pluginv1.E_RpcName).(string)
-				if proto.GetExtension(md.Options(), pluginv1.E_Notification).(bool) {
+				streaming := proto.GetExtension(md.Options(), pluginv1.E_Streaming).(bool)
+				if streaming != md.IsStreamingClient() {
+					t.Errorf("%s: the streaming option does not match the streamed request", name)
+				}
+				switch {
+				case streaming:
+					protoStreams = append(protoStreams, name)
+				case proto.GetExtension(md.Options(), pluginv1.E_Notification).(bool):
 					protoNotifications = append(protoNotifications, name)
-				} else {
+				default:
 					protoRequests = append(protoRequests, name)
 				}
 			}
@@ -281,6 +298,12 @@ func TestMethodNamesMatchProto(t *testing.T) {
 	}
 	for _, name := range missing(protoNotifications, notifications) {
 		t.Errorf("notification rpc %s has no method constant", name)
+	}
+	for _, name := range missing(streams, protoStreams) {
+		t.Errorf("stream %s is not a streaming rpc of the proto", name)
+	}
+	for _, name := range missing(protoStreams, streams) {
+		t.Errorf("streaming rpc %s has no method constant", name)
 	}
 }
 

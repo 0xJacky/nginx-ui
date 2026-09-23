@@ -90,6 +90,14 @@ type Info struct {
 	// Transport is how capability calls reach the running process, "stdio" or
 	// "grpc". Empty when no process is running.
 	Transport string `json:"transport,omitempty"`
+	// The access log lines a log.sink plugin accepted, rejected and lost
+	// since the host started (spec LOGSINK-11).
+	StreamedLogEntries int64 `json:"streamed_log_entries"`
+	RejectedLogEntries int64 `json:"rejected_log_entries"`
+	DroppedLogEntries  int64 `json:"dropped_log_entries"`
+	// Resources are the limits of the plugin process, absent for a plugin
+	// without one (spec LIFE-16).
+	Resources *ResourceStatus `json:"resources,omitempty"`
 }
 
 // WebappEntry tells the browser runtime what to load for one plugin. The URLs
@@ -162,6 +170,10 @@ type entry struct {
 	drained  chan struct{}
 	dropped  atomic.Int64
 	cronJobs map[string]gocron.Job
+
+	// logSink streams the access log to a log.sink plugin, see logsink.go.
+	logSink     *logSink
+	logCounters logSinkCounters
 }
 
 // Manager owns every installed plugin: the files, the database rows, the
@@ -187,6 +199,14 @@ type Manager struct {
 	scheduler   gocron.Scheduler
 	unsubscribe func()
 	log         *zap.SugaredLogger
+
+	// logMu guards the log sink list and the feed subscription.
+	logMu          sync.Mutex
+	logFeed        LogFeed
+	logUnsubscribe func()
+	logSinkList    []*logSink
+	// logSinks is the list the feed goroutine reads without a lock.
+	logSinks atomic.Pointer[[]*logSink]
 }
 
 var (
@@ -526,6 +546,9 @@ func (m *Manager) infoLocked(item *entry) Info {
 		SyncNodeIDs:          []uint64{},
 		Status:               statusOf(item),
 		DroppedEvents:        item.dropped.Load(),
+		StreamedLogEntries:   item.logCounters.streamed.Load(),
+		RejectedLogEntries:   item.logCounters.rejected.Load(),
+		DroppedLogEntries:    item.logCounters.dropped.Load(),
 	}
 
 	if row := item.row; row != nil {
@@ -550,6 +573,16 @@ func (m *Manager) infoLocked(item *entry) Info {
 	if manifest == nil {
 		info.Name = item.id
 		return info
+	}
+
+	if manifest.Server != nil {
+		var resources ResourceStatus
+		if item.supervisor != nil {
+			resources = item.supervisor.Resources()
+		} else {
+			resources = resourceStatus(EffectiveResources(hostResourceLimits(), manifest), false)
+		}
+		info.Resources = &resources
 	}
 
 	info.Name = manifest.Name

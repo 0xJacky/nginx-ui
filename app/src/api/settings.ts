@@ -196,6 +196,26 @@ export interface OIDCSettings {
   identifier: string
 }
 
+export interface PluginSettings {
+  enabled: boolean
+  dir: string
+  default_sync_policy: string
+  marketplace_enabled: boolean
+  marketplace_sources: string[]
+  trusted_public_keys: string[]
+  require_signature: boolean
+  allow_community_plugins: boolean
+  allow_insecure_download_url: boolean
+  allow_uploads: boolean
+  auto_update: boolean
+  /** Memory limit of every plugin process in MiB, 0 means unlimited. */
+  memory_limit_mb: number
+  /** CPU limit of every plugin process in percent of one core, 0 means unlimited. */
+  cpu_percent: number
+  /** cgroup v2 mount point the limits are enforced under, read only. */
+  cgroup_root: string
+}
+
 export interface Settings {
   app: AppSettings
   server: ServerSettings
@@ -215,6 +235,8 @@ export interface Settings {
   webauthn: WebauthnSettings
   site_check: SiteCheckSettings
   upstream_check: UpstreamCheckSettings
+  /** Optional so a payload without it keeps the stored values. */
+  plugin?: PluginSettings
 }
 
 // Sections the server saves on their own through POST /settings/:section.

@@ -273,7 +273,7 @@ func TestConformanceChecksContentPluginsStatically(t *testing.T) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
-	report, err := Conformance(ctx, dir, ConformanceOptions{})
+	report, err := Conformance(ctx, dir, ConformanceOptions{HandshakeTimeout: testHandshakeTimeout})
 	require.NoError(t, err)
 	assert.True(t, report.Passed(), "%+v", report.Cases)
 
@@ -288,7 +288,7 @@ func TestConformanceChecksContentPluginsStatically(t *testing.T) {
 	files := contentFiles()
 	files["locales/de_DE.po"] = "broken\n"
 	dir = writeContentDir(t, manifest, files)
-	report, err = Conformance(ctx, dir, ConformanceOptions{})
+	report, err = Conformance(ctx, dir, ConformanceOptions{HandshakeTimeout: testHandshakeTimeout})
 	require.NoError(t, err)
 	assert.False(t, report.Passed())
 }

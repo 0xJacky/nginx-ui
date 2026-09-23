@@ -48,6 +48,41 @@ const lifecycleLabel = computed(() => {
 
 const transportLabel = computed(() => props.plugin?.transport === 'grpc' ? 'gRPC' : 'stdio')
 
+const hasLogSink = computed(() => props.plugin?.capabilities?.includes('log.sink') ?? false)
+
+const logSinkCounters = computed(() => [
+  { key: 'streamed', label: $gettext('Streamed'), value: props.plugin?.streamed_log_entries ?? 0 },
+  { key: 'rejected', label: $gettext('Rejected'), value: props.plugin?.rejected_log_entries ?? 0 },
+  { key: 'dropped', label: $gettext('Dropped'), value: props.plugin?.dropped_log_entries ?? 0 },
+])
+
+const resourceLimits = computed(() => {
+  const resources = props.plugin?.resources
+  if (!resources)
+    return undefined
+  return [
+    {
+      key: 'memory',
+      label: $gettext('Memory'),
+      value: resources.memory_limit_mb > 0 ? `${resources.memory_limit_mb} MB` : $gettext('Unlimited'),
+    },
+    {
+      key: 'cpu',
+      label: $gettext('CPU'),
+      value: resources.cpu_percent > 0 ? `${resources.cpu_percent}%` : $gettext('Unlimited'),
+    },
+  ]
+})
+
+const hasResourceLimits = computed(() => {
+  const resources = props.plugin?.resources
+  return !!resources && (resources.memory_limit_mb > 0 || resources.cpu_percent > 0)
+})
+
+function formatCount(value: number) {
+  return value.toLocaleString()
+}
+
 const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
 </script>
 
@@ -129,6 +164,34 @@ const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
             </ADescriptionsItem>
             <ADescriptionsItem v-if="props.plugin.transport" :label="$gettext('Transport')">
               {{ transportLabel }}
+            </ADescriptionsItem>
+            <ADescriptionsItem v-if="resourceLimits" :label="$gettext('Resource limits')">
+              <div class="drawer-stats">
+                <span v-for="limit in resourceLimits" :key="limit.key">
+                  <span class="drawer-stat-label">{{ limit.label }}</span>
+                  {{ limit.value }}
+                </span>
+                <ATooltip
+                  v-if="hasResourceLimits"
+                  :title="props.plugin.resources?.enforced
+                    ? $gettext('The running process is confined to these limits.')
+                    : $gettext('The plugin is not running, or this node cannot confine processes: that needs Linux with a writable cgroup v2 hierarchy.')"
+                >
+                  <ATag class="m-0" :color="props.plugin.resources?.enforced ? 'success' : 'default'">
+                    {{ props.plugin.resources?.enforced ? $gettext('Enforced') : $gettext('Not enforced') }}
+                  </ATag>
+                </ATooltip>
+              </div>
+            </ADescriptionsItem>
+            <ADescriptionsItem v-if="hasLogSink" :label="$gettext('Access log stream')">
+              <div class="drawer-stats">
+                <span v-for="counter in logSinkCounters" :key="counter.key">
+                  <span class="drawer-stat-label">{{ counter.label }}</span>
+                  <span :class="{ 'drawer-stat-warning': counter.key === 'dropped' && counter.value > 0 }">
+                    {{ formatCount(counter.value) }}
+                  </span>
+                </span>
+              </div>
             </ADescriptionsItem>
             <ADescriptionsItem :label="$gettext('Capabilities')">
               <div v-if="props.plugin.capabilities?.length" class="flex flex-wrap gap-1">
@@ -308,5 +371,21 @@ const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
 
 .drawer-danger {
   border-color: var(--ant-color-error-border);
+}
+
+.drawer-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+}
+
+.drawer-stat-label {
+  margin-right: 6px;
+  color: var(--ant-color-text-tertiary);
+}
+
+.drawer-stat-warning {
+  color: var(--ant-color-warning-text);
 }
 </style>
