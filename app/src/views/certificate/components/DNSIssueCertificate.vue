@@ -26,6 +26,8 @@ const certType = ref<CertType>('wildcard')
 const customDomains = ref<string[]>([''])
 const errored = ref(false)
 const selfSignedLoading = ref(false)
+const modalVisible = ref(false)
+const modalClosable = ref(true)
 
 const certTypeOptions = computed<SelectProps['options']>(() => [
   {
@@ -80,9 +82,6 @@ function open() {
 defineExpose({
   open,
 })
-
-const modalVisible = ref(false)
-const modalClosable = ref(true)
 
 const refObtainCertLive = useTemplateRef('refObtainCertLive')
 

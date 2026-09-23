@@ -242,53 +242,53 @@ defineExpose({
 
     <ACard size="small" class="cert-config-card" :title="$gettext('Special Settings')">
       <AForm layout="vertical">
-      <AFormItem :label="$gettext('OCSP Must Staple')">
-        <template #help>
-          <p>
-            {{ $gettext('Do not enable this option unless you are sure that you need it.') }}
-            {{ $gettext('OCSP Must Staple may cause errors for some users on first access using Firefox.') }}
-            <a href="https://github.com/0xJacky/nginx-ui/issues/322">#322</a>
-          </p>
-        </template>
-        <ASwitch v-model:checked="data.must_staple" />
-      </AFormItem>
-      <AFormItem :label="$gettext('Lego disable CNAME Support')">
-        <template #help>
-          <p>
-            {{ $gettext('If your domain has CNAME records and you cannot obtain certificates, '
-              + 'you need to enable this option.') }}
-          </p>
-        </template>
-        <ASwitch v-model:checked="data.lego_disable_cname_support" />
-      </AFormItem>
-      <AFormItem
-        v-if="data.challenge_method === 'dns01'"
-        :label="$gettext('Disable Authoritative DNS Propagation Check')"
-      >
-        <template #help>
-          <p>
-            {{ $gettext('Skip local DNS propagation checks and wait 60 seconds before asking '
-              + 'the certificate authority to validate the record.') }}
-          </p>
-        </template>
-        <ASwitch v-model:checked="data.disable_authoritative_ns_propagation" />
-      </AFormItem>
-      <AFormItem :label="$gettext('Enable Common Name')">
-        <template #help>
-          <p>
-            {{ $gettext('Enable the certificate Common Name field for private CAs that still require it.') }}
-          </p>
-        </template>
-        <ASwitch v-model:checked="data.enable_common_name" />
-      </AFormItem>
-      <AFormItem :label="$gettext('Revoke Old Certificate')">
-        <template #help>
-          <p>
-            {{ $gettext('If you want to automatically revoke the old certificate, please enable this option.') }}
-          </p>
-        </template>
-        <ASwitch v-model:checked="data.revoke_old" />
-      </AFormItem>
+        <AFormItem :label="$gettext('OCSP Must Staple')">
+          <template #help>
+            <p>
+              {{ $gettext('Do not enable this option unless you are sure that you need it.') }}
+              {{ $gettext('OCSP Must Staple may cause errors for some users on first access using Firefox.') }}
+              <a href="https://github.com/0xJacky/nginx-ui/issues/322">#322</a>
+            </p>
+          </template>
+          <ASwitch v-model:checked="data.must_staple" />
+        </AFormItem>
+        <AFormItem :label="$gettext('Lego disable CNAME Support')">
+          <template #help>
+            <p>
+              {{ $gettext('If your domain has CNAME records and you cannot obtain certificates, '
+                + 'you need to enable this option.') }}
+            </p>
+          </template>
+          <ASwitch v-model:checked="data.lego_disable_cname_support" />
+        </AFormItem>
+        <AFormItem
+          v-if="data.challenge_method === 'dns01'"
+          :label="$gettext('Disable Authoritative DNS Propagation Check')"
+        >
+          <template #help>
+            <p>
+              {{ $gettext('Skip local DNS propagation checks and wait 60 seconds before asking '
+                + 'the certificate authority to validate the record.') }}
+            </p>
+          </template>
+          <ASwitch v-model:checked="data.disable_authoritative_ns_propagation" />
+        </AFormItem>
+        <AFormItem :label="$gettext('Enable Common Name')">
+          <template #help>
+            <p>
+              {{ $gettext('Enable the certificate Common Name field for private CAs that still require it.') }}
+            </p>
+          </template>
+          <ASwitch v-model:checked="data.enable_common_name" />
+        </AFormItem>
+        <AFormItem :label="$gettext('Revoke Old Certificate')">
+          <template #help>
+            <p>
+              {{ $gettext('If you want to automatically revoke the old certificate, please enable this option.') }}
+            </p>
+          </template>
+          <ASwitch v-model:checked="data.revoke_old" />
+        </AFormItem>
       </AForm>
     </ACard>
   </div>
@@ -304,5 +304,4 @@ defineExpose({
     padding: 14px;
   }
 }
-
 </style>

@@ -114,5 +114,4 @@ async function copyToClipboard(text: string, label: string) {
 .sync-target-card :deep(.ant-card-body) {
   padding: 12px;
 }
-
 </style>

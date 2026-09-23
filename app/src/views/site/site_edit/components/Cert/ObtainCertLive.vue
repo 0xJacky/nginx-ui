@@ -73,7 +73,7 @@ function applyKeywordLineBreaks(raw: string) {
 }
 
 function applyDomainListValueLineBreaks(raw: string) {
-  return raw.replace(/(域名列表|domains|網域列表)=("([^"]*)"|([^\s\n]+))/g, (_, key: string, full: string, quoted: string | undefined, plain: string | undefined) => {
+  return raw.replace(/(域名列表|domains|網域列表)=("([^"]*)"|(\S+))/g, (_, key: string, full: string, quoted: string | undefined, plain: string | undefined) => {
     const value = (quoted ?? plain ?? '').trim()
     const domains = value
       .split(/[\s,，;；]+/)

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { CertificateInfo } from '@/api/cert'
 import { CopyOutlined } from '@antdv-next/icons'
-import dayjs from 'dayjs'
 import { useClipboard } from '@vueuse/core'
+import dayjs from 'dayjs'
 
 const props = defineProps<{
   cert?: CertificateInfo
@@ -117,7 +117,6 @@ async function copyToClipboard(text: string, label: string) {
         <CopyOutlined />
       </AButton>
     </div>
-
   </ACard>
 </template>
 
@@ -152,5 +151,4 @@ async function copyToClipboard(text: string, label: string) {
   justify-content: space-between;
   gap: 8px;
 }
-
 </style>

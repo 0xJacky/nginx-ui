@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import certApi from '@/api/cert'
 import type { Cert } from '@/api/cert'
 import { DownloadOutlined } from '@antdv-next/icons'
+import certApi from '@/api/cert'
 
 interface Props {
   data: Cert
@@ -122,7 +122,7 @@ async function downloadCertificateFiles() {
 </script>
 
 <template>
-  <div v-if="canDownloadCertificates" :class="['certificate-download', { 'is-inline': inline }]">
+  <div v-if="canDownloadCertificates" class="certificate-download" :class="[{ 'is-inline': inline }]">
     <AButton
       type="primary"
       ghost

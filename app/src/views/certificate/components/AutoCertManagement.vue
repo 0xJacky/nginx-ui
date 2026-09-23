@@ -125,5 +125,4 @@ function handleRenewed() {
 .settings-form {
   width: 100%;
 }
-
 </style>
