@@ -417,6 +417,9 @@ msgstr "禁用"
 msgid "Maintenance"
 msgstr "维护模式"
 
+msgid "Include line copied to clipboard"
+msgstr "Include 行已复制到剪贴板"
+
 msgid "Starting download..."
 msgstr "开始下载..."
 
@@ -1046,6 +1049,12 @@ msgstr "证书 %{name} 将在 %{days} 天后过期"
 msgid "Certificate Expiring Soon"
 msgstr "证书即将过期"
 
+msgid "Deploy Certificate Error"
+msgstr "证书部署错误"
+
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr "部署证书 %{cert_name} 到 %{target_name} 失败：%{error}"
+
 msgid "Sync Certificate Error"
 msgstr "同步证书错误"
 
@@ -1428,6 +1437,18 @@ msgstr "已拷贝"
 
 msgid "Copy"
 msgstr "拷贝"
+
+msgid "%{n} d"
+msgstr "%{n} 天"
+
+msgid "%{n} h"
+msgstr "%{n} 小时"
+
+msgid "%{n} min"
+msgstr "%{n} 分钟"
+
+msgid "%{n} s"
+msgstr "%{n} 秒"
 
 msgid "Hide"
 msgstr "隐藏"
@@ -2021,6 +2042,18 @@ msgstr "S3 上传失败：{0}"
 msgid "Invalid auto backup filename: {0}"
 msgstr "无效的自动备份文件名： {0}"
 
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr "存储的备份 {0} 不属于此备份任务"
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr "仅可还原 Nginx 和 Nginx UI 的备份"
+
+msgid "This action needs a plugin storage backend"
+msgstr "此操作需要插件存储后端"
+
+msgid "Invalid storage key prefix: {0}"
+msgstr "无效的存储 Key 前缀：{0}"
+
 msgid "Invalid path: {0}"
 msgstr "无效路径: {0}"
 
@@ -2598,6 +2631,9 @@ msgstr "未找到外部通知配置"
 msgid "Invalid Telegram Chat ID: cannot be zero"
 msgstr "无效的 Telegram 聊天 ID：不能为零"
 
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr "通知配置字段 {0} 无效：{1}"
+
 msgid "Stub_status is not enabled"
 msgstr "未启用 stub_status"
 
@@ -2685,6 +2721,48 @@ msgstr "插件需要 nginx-ui {0} 或更高版本，而该节点运行的是 {1}
 
 msgid "Plugin package declares another id"
 msgstr "插件包声明了另一个 ID"
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr "插件内容 {0} 无效：{1}"
+
+msgid "Storage backend {0} is not available"
+msgstr "存储后端 {0} 不可用"
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr "存储配置字段 {0} 无效：{1}"
+
+msgid "Deploy target kind {0} is not available"
+msgstr "部署目标类型 {0} 不可用"
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr "部署目标配置字段 {0} 无效：{1}"
+
+msgid "Blocklist source kind {0} is not available"
+msgstr "封锁列表来源类型 {0} 不可用"
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr "封锁列表来源配置字段 {0} 无效：{1}"
+
+msgid "Discovery provider {0} is not available"
+msgstr "发现提供商 {0} 不可用"
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr "发现提供商配置字段 {0} 无效：{1}"
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr "刷新间隔必须至少为 {0} 秒"
+
+msgid "Upstream name {0} is invalid"
+msgstr "Upstream 名称 {0} 无效"
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr "Upstream 名称 {0} 已绑定到另一个服务"
+
+msgid "Extra directives must not contain braces"
+msgstr "附加指令不能包含大括号"
+
+msgid "{0} is still included by the nginx configuration: {1}"
+msgstr "{0} 仍被 nginx 配置包含：{1}"
 
 msgid "Task not found"
 msgstr "未找到任务"
@@ -2848,6 +2926,9 @@ msgstr "SSL 密钥文件必须位于 Nginx 配置目录下：{0}"
 
 msgid "SSL certificate and key do not form a valid pair: {0}"
 msgstr "SSL 证书和密钥未形成有效对：{0}"
+
+msgid "Template not found"
+msgstr "未找到模板"
 
 msgid "Upgrader core downloadUrl is empty"
 msgstr "升级器核心下载 URL 为空"
@@ -3876,6 +3957,9 @@ msgstr "ACME 用户"
 msgid "Certificates List"
 msgstr "证书列表"
 
+msgid "Deploy Targets"
+msgstr "部署目标"
+
 msgid "Modify Certificate"
 msgstr "修改证书"
 
@@ -3944,6 +4028,9 @@ msgstr "偏好设置"
 
 msgid "Host SSH Setup"
 msgstr "宿主机 SSH 设置"
+
+msgid "Blocklists"
+msgstr "封锁列表"
 
 msgid "Manage Sites"
 msgstr "网站管理"
@@ -4187,8 +4274,14 @@ msgstr "S3 存储桶"
 msgid "S3 Region"
 msgstr "S3 区域"
 
+msgid "Keep Latest Backups"
+msgstr "保留最新备份数"
+
 msgid "Backup Now"
 msgstr "立即备份"
+
+msgid "Stored Backups"
+msgstr "已存储的备份"
 
 msgid "Daily"
 msgstr "每日"
@@ -4259,6 +4352,12 @@ msgstr "例如：0 0 * * *（每天午夜）"
 msgid "Format: minute hour day month weekday"
 msgstr "格式：分钟 小时 日 月 星期"
 
+msgid "Please fill in %{field}"
+msgstr "请填写 %{field}"
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr "存储测试成功，找到 %{count} 个已存储的备份"
+
 msgid "Please fill in required S3 configuration fields"
 msgstr "请填写必填的 S3 配置字段"
 
@@ -4309,6 +4408,33 @@ msgstr "S3 区域（例如 us-east-1）"
 
 msgid "Test S3 Connection"
 msgstr "测试 S3 连接"
+
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr "提供此存储的插件未启用。备份将失败，直到重新启用该插件。"
+
+msgid "Key Prefix"
+msgstr "Key 前缀"
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr "备份将存储在此前缀下，例如 nginx-ui/daily。使用 / 表示根目录。"
+
+msgid "Key prefix is required"
+msgstr "Key 前缀为必填项"
+
+msgid "nginx-ui/backups"
+msgstr "nginx-ui/backups"
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr "每次运行后会删除该存储中较旧的备份。设为 0 表示保留所有备份。"
+
+msgid "Test Storage"
+msgstr "测试存储"
 
 msgid "Create system backups and restore from saved snapshots when needed."
 msgstr "创建系统备份，并在需要时从已保存快照恢复。"
@@ -4602,6 +4728,30 @@ msgstr "输入的内容不是 SSL 证书密钥"
 msgid "Drop private key file here"
 msgstr "将私钥文件拖放到此处"
 
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr "已部署到 %{ok} 个目标，%{failed} 个失败"
+
+msgid "Deployed to %{ok} targets"
+msgstr "已部署到 %{ok} 个目标"
+
+msgid "Manage"
+msgstr "管理"
+
+msgid "Deploy Now"
+msgstr "立即部署"
+
+msgid "This certificate is not pushed to any external target."
+msgstr "此证书尚未推送到任何外部目标。"
+
+msgid "Plugin unavailable"
+msgstr "插件不可用"
+
+msgid "Never deployed"
+msgstr "从未部署"
+
+msgid "%{count} attempts"
+msgstr "%{count} 次尝试"
+
 msgid "Certificate content and private key content cannot be empty"
 msgstr "证书内容和私钥内容不能为空"
 
@@ -4838,11 +4988,25 @@ msgid ""
 "automatically."
 msgstr "此自签名证书由 Nginx UI 管理并自动续期。"
 
+msgid "No certificate is bound to this target"
+msgstr "此目标未绑定任何证书"
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr "已部署 %{ok} 个证书，%{failed} 个失败"
+
+msgid "Deployed %{ok} certificates"
+msgstr "已部署 %{ok} 个证书"
+
 msgid "View all issued and imported certificates with expiration and status."
 msgstr "查看全部已签发和已导入证书及其到期时间与状态。"
 
 msgid "Manage ACME accounts for automated certificate issuance and renewal."
 msgstr "管理 ACME 账户以自动签发和续期证书。"
+
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
+msgstr "每次续期后将证书推送到 CDN、负载均衡器和其他服务器。"
 
 msgid "Import an existing certificate and key pair into the certificate store."
 msgstr "将现有证书与密钥对导入证书库。"
@@ -4912,6 +5076,20 @@ msgstr "文件夹"
 
 msgid "File"
 msgstr "文件"
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr "备份保存在 %{storage} 的 %{prefix} 下"
+
+msgid "Delete this backup from the storage?"
+msgstr "确定要从存储中删除此备份吗？"
+
+msgid "Restore Backup"
+msgstr "还原备份"
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr "还原操作将替换当前配置，随后 Nginx 和 Nginx UI 将重新启动。"
 
 msgid "Type %{delete} to confirm"
 msgstr "输入 %{delete} 以确认"
@@ -5330,6 +5508,12 @@ msgstr "%{days}天"
 msgid "Paused"
 msgstr "已暂停"
 
+msgid "Built-in HTTP / gRPC check"
+msgstr "内置 HTTP / gRPC 检查"
+
+msgid "%{kind} (unavailable)"
+msgstr "%{kind}（不可用）"
+
 msgid "Informational Responses (1xx)"
 msgstr "信息响应 (1xx)"
 
@@ -5377,6 +5561,16 @@ msgstr "健康检查已启用"
 
 msgid "Health check is disabled"
 msgstr "健康检查已禁用"
+
+msgid "Check Method"
+msgstr "检查方式"
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
+msgstr ""
+"提供此检查的插件未启用。在重新启用该插件或选择其他检查方式之前，该站点将被报"
+"告为错误状态。"
 
 msgid "Protocol"
 msgstr "协议"
@@ -7162,6 +7356,38 @@ msgstr "自动重试时间"
 
 msgid "Attempts"
 msgstr "尝试次数"
+
+msgid "Deploy History of %{name}"
+msgstr "%{name} 的部署历史"
+
+msgid "All certificates"
+msgstr "所有证书"
+
+msgid "Dry run successful"
+msgstr "试运行成功"
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+"没有已启用的插件提供部署目标。请先安装并启用具有 cert.deploy 能力的插件。"
+
+msgid "Target Type"
+msgstr "目标类型"
+
+msgid "Select a target type"
+msgstr "选择目标类型"
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr "提供此目标类型的插件未启用。推送将失败，直到重新启用该插件。"
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr "证书在每次签发和续期后都会推送到此目标。"
+
+msgid "Dry Run"
+msgstr "试运行"
 
 msgid "Technical details"
 msgstr "技术详情"
@@ -9440,6 +9666,24 @@ msgid ""
 msgstr ""
 "协议配置仅在直接连接时生效。如果使用反向代理，请在反向代理中单独配置协议。"
 
+msgid "Refreshed"
+msgstr "已刷新"
+
+msgid "Refresh failed"
+msgstr "刷新失败"
+
+msgid "Source Type"
+msgstr "来源类型"
+
+msgid "Refresh Interval"
+msgstr "刷新间隔"
+
+msgid "Entries"
+msgstr "条目"
+
+msgid "Last Result"
+msgstr "最近结果"
+
 msgid "End time must be later than start time"
 msgstr "结束时间必须晚于开始时间"
 
@@ -9784,8 +10028,16 @@ msgstr "生成自签名证书"
 msgid "Search templates"
 msgstr "搜索模板"
 
+msgid "From plugin %{id}"
+msgstr "来自插件 %{id}"
+
 msgid "Author"
 msgstr "作者"
+
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
+msgstr "此模板来自插件 %{id}。添加这些指令前请先检查。"
 
 msgid "Do you want to enable TLS?"
 msgstr "你想启用 TLS 吗？"
@@ -10543,6 +10795,14 @@ msgstr "发布日期"
 msgid "Platforms"
 msgstr "平台"
 
+msgid "This package has no build for this node (%{platform})"
+msgstr "此安装包没有适用于该节点的构建版本（%{platform}）"
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr "请下载适用于此平台的安装包，或下载便携版安装包后重试。"
+
 msgid "Failed to load the plugin details"
 msgstr "加载插件详情失败"
 
@@ -10551,6 +10811,9 @@ msgstr "已安装版本"
 
 msgid "Versions"
 msgstr "版本"
+
+msgid "This node runs %{platform}, its build is highlighted."
+msgstr "此节点运行 %{platform}，对应的构建已高亮显示。"
 
 msgid "Yanked"
 msgstr "已撤回"
@@ -10651,6 +10914,22 @@ msgstr "读取本节点的 CPU、内存、网络及 Nginx 状态指标。"
 msgid "Call the Nginx UI management API with your permissions."
 msgstr "以您的权限调用 Nginx UI 管理 API。"
 
+msgid ""
+"Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+"can then run them."
+msgstr "通过 MCP 将其工具提供给连接到 Nginx UI 的 AI 助手，供其调用。"
+
+msgid ""
+"Receive certificates and their private keys in order to push them to "
+"external targets."
+msgstr "接收证书及其私钥，以便将其推送到外部目标。"
+
+msgid ""
+"Receive every parsed nginx access log line while enabled, including client "
+"addresses and requested URLs."
+msgstr ""
+"在启用期间接收每一条解析后的 nginx 访问日志，包括客户端地址和请求的 URL。"
+
 msgid "Unknown permission. Only grant it if you trust the plugin author."
 msgstr "未知权限，请仅在信任插件作者时授予。"
 
@@ -10666,6 +10945,18 @@ msgstr "按需启动"
 msgid "Resident"
 msgstr "常驻"
 
+msgid "Streamed"
+msgstr "已发送"
+
+msgid "Rejected"
+msgstr "已拒绝"
+
+msgid "Dropped"
+msgstr "已丢弃"
+
+msgid "Unlimited"
+msgstr "无限制"
+
 msgid "Last error"
 msgstr "最近的错误"
 
@@ -10680,6 +10971,31 @@ msgstr "API 版本"
 
 msgid "Needs Nginx UI %{version} or newer"
 msgstr "需要 Nginx UI %{version} 或更高版本"
+
+msgid "Transport"
+msgstr "传输方式"
+
+msgid "Resource limits"
+msgstr "资源限制"
+
+msgid "The running process is confined to these limits."
+msgstr "运行中的进程被限制在这些限额内。"
+
+msgid ""
+"The plugin is not running, or this node cannot confine processes: that needs "
+"Linux with a writable cgroup v2 hierarchy."
+msgstr ""
+"该插件未在运行，或此节点无法对进程施加限制：这需要具备可写 cgroup v2 层级结构"
+"的 Linux 系统。"
+
+msgid "Enforced"
+msgstr "已强制"
+
+msgid "Not enforced"
+msgstr "未强制"
+
+msgid "Access log stream"
+msgstr "访问日志流"
 
 msgid "Depends on"
 msgstr "依赖"
@@ -10850,6 +11166,14 @@ msgid ""
 msgstr ""
 "您正在通过非本地主机域上的不安全 HTTP 连接访问此终端。这可能会暴露敏感信息。"
 
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr "nginx 用于识别该 upstream 的名称：仅限字母、数字、点、连字符和下划线。"
+
+msgid "Service"
+msgstr "服务"
+
 msgid "Round Robin (default)"
 msgstr "Round Robin（默认）"
 
@@ -10888,6 +11212,48 @@ msgstr "一致性哈希"
 
 msgid "Servers"
 msgstr "服务器"
+
+msgid "Service Discovery"
+msgstr "服务发现"
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr ""
+"没有已启用的插件提供服务发现。请先安装并启用具有 upstream.discovery 能力的插"
+"件。"
+
+msgid "Select a provider"
+msgstr "选择提供商"
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr "提供此提供商的插件未启用。该 upstream 将被保留，但不再刷新。"
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr "按提供商的命名方式指定要解析的服务。"
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr ""
+"以秒为单位设置服务重新解析的频率。仅当服务器列表发生变化时才会重载 Nginx。"
+
+msgid "Extra Directives"
+msgstr "附加指令"
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr "追加在 upstream 块内，每行一条指令，例如 keepalive 32;"
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
+msgstr ""
+"将此行添加到 http 块中（例如站点配置的顶部），然后通过其名称将请求代理到该 "
+"upstream。"
 
 msgid "Address"
 msgstr "地址"
@@ -11205,9 +11571,45 @@ msgstr "引用会让网站与 snippets/%{file} 保持关联，之后对片段的
 msgid "Insert"
 msgstr "插入"
 
-#: src/views/snippet/SnippetList.vue:26
 msgid "Include"
-msgstr "引用"
+msgstr "Include 行"
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+"封锁列表来源会从插件获取待拒绝的地址列表，并将其写入各自专属的文件作为拒绝规"
+"则。在您将某个来源的 Include 行添加到 server 或 location 块之前，不会阻止任何"
+"内容。"
+
+msgid "Refresh Now"
+msgstr "立即刷新"
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+"没有已启用的插件提供封锁列表来源。请先安装并启用具有 security.blocklist 能力"
+"的插件。"
+
+msgid "Select a source type"
+msgstr "选择来源类型"
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr "提供此来源类型的插件未启用。列表将被保留，但不再刷新。"
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr "以秒为单位设置列表重新获取的频率。仅当列表发生变化时才会重载 Nginx。"
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
+msgstr "将此行添加到 server 或 location 块中，以在该处拒绝列出的地址。"
 
 #: src/views/snippet/SnippetList.vue:3
 msgid "Snippet %{name} saved"

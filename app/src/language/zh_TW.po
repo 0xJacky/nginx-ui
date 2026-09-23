@@ -421,6 +421,9 @@ msgstr "停用"
 msgid "Maintenance"
 msgstr "維護"
 
+msgid "Include line copied to clipboard"
+msgstr "Include 行已複製到剪貼簿"
+
 msgid "Starting download..."
 msgstr "開始下載..."
 
@@ -1050,6 +1053,12 @@ msgstr "憑證 %{name} 將在 %{days} 天後過期"
 msgid "Certificate Expiring Soon"
 msgstr "憑證即將到期"
 
+msgid "Deploy Certificate Error"
+msgstr "憑證部署錯誤"
+
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr "部署憑證 %{cert_name} 到 %{target_name} 失敗：%{error}"
+
 msgid "Sync Certificate Error"
 msgstr "同步憑證錯誤"
 
@@ -1432,6 +1441,18 @@ msgstr "已複製"
 
 msgid "Copy"
 msgstr "複製"
+
+msgid "%{n} d"
+msgstr "%{n} 天"
+
+msgid "%{n} h"
+msgstr "%{n} 小時"
+
+msgid "%{n} min"
+msgstr "%{n} 分鐘"
+
+msgid "%{n} s"
+msgstr "%{n} 秒"
 
 msgid "Hide"
 msgstr "隱藏"
@@ -2025,6 +2046,18 @@ msgstr "S3 上傳失敗：{0}"
 msgid "Invalid auto backup filename: {0}"
 msgstr "無效的自動備份檔案名稱： {0}"
 
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr "儲存的備份 {0} 不屬於此備份任務"
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr "僅可還原 Nginx 和 Nginx UI 的備份"
+
+msgid "This action needs a plugin storage backend"
+msgstr "此操作需要外掛儲存後端"
+
+msgid "Invalid storage key prefix: {0}"
+msgstr "無效的儲存 Key 前綴：{0}"
+
 msgid "Invalid path: {0}"
 msgstr "無效路徑: {0}"
 
@@ -2602,6 +2635,9 @@ msgstr "未找到外部通知配置"
 msgid "Invalid Telegram Chat ID: cannot be zero"
 msgstr "無效的 Telegram 聊天 ID：不能為零"
 
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr "通知器設定欄位 {0} 無效：{1}"
+
 msgid "Stub_status is not enabled"
 msgstr "未啟用 stub_status"
 
@@ -2689,6 +2725,48 @@ msgstr "外掛需要 nginx-ui {0} 或更新版本，而此節點執行的是 {1}
 
 msgid "Plugin package declares another id"
 msgstr "外掛套件宣告了另一個 ID"
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr "外掛內容 {0} 無效：{1}"
+
+msgid "Storage backend {0} is not available"
+msgstr "儲存後端 {0} 不可用"
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr "儲存設定欄位 {0} 無效：{1}"
+
+msgid "Deploy target kind {0} is not available"
+msgstr "部署目標類型 {0} 不可用"
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr "部署目標設定欄位 {0} 無效：{1}"
+
+msgid "Blocklist source kind {0} is not available"
+msgstr "封鎖清單來源類型 {0} 不可用"
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr "封鎖清單來源設定欄位 {0} 無效：{1}"
+
+msgid "Discovery provider {0} is not available"
+msgstr "探索提供商 {0} 不可用"
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr "探索提供商設定欄位 {0} 無效：{1}"
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr "重新整理間隔必須至少為 {0} 秒"
+
+msgid "Upstream name {0} is invalid"
+msgstr "Upstream 名稱 {0} 無效"
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr "Upstream 名稱 {0} 已綁定至另一個服務"
+
+msgid "Extra directives must not contain braces"
+msgstr "額外指令不得包含大括號"
+
+msgid "{0} is still included by the nginx configuration: {1}"
+msgstr "{0} 仍被 nginx 設定包含：{1}"
 
 msgid "Task not found"
 msgstr "找不到任務"
@@ -2852,6 +2930,9 @@ msgstr "SSL 金鑰檔案必須位於 Nginx 設定目錄下：{0}"
 
 msgid "SSL certificate and key do not form a valid pair: {0}"
 msgstr "SSL 憑證和密鑰未形成有效對：{0}"
+
+msgid "Template not found"
+msgstr "找不到範本"
 
 msgid "Upgrader core downloadUrl is empty"
 msgstr "升級器核心下載 URL 為空"
@@ -3882,6 +3963,9 @@ msgstr "ACME 使用者"
 msgid "Certificates List"
 msgstr "憑證列表"
 
+msgid "Deploy Targets"
+msgstr "部署目標"
+
 msgid "Modify Certificate"
 msgstr "修改憑證"
 
@@ -3950,6 +4034,9 @@ msgstr "偏好設定"
 
 msgid "Host SSH Setup"
 msgstr "主機 SSH 設定"
+
+msgid "Blocklists"
+msgstr "封鎖清單"
 
 msgid "Manage Sites"
 msgstr "管理網站"
@@ -4193,8 +4280,14 @@ msgstr "S3 儲存桶"
 msgid "S3 Region"
 msgstr "S3 區域"
 
+msgid "Keep Latest Backups"
+msgstr "保留最新備份數"
+
 msgid "Backup Now"
 msgstr "立即備份"
+
+msgid "Stored Backups"
+msgstr "已儲存的備份"
 
 msgid "Daily"
 msgstr "每日"
@@ -4265,6 +4358,12 @@ msgstr "例如：0 0 * * *（每天午夜）"
 msgid "Format: minute hour day month weekday"
 msgstr "格式：分鐘 小時 日 月 星期"
 
+msgid "Please fill in %{field}"
+msgstr "請填寫 %{field}"
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr "儲存測試成功，找到 %{count} 個已儲存的備份"
+
 msgid "Please fill in required S3 configuration fields"
 msgstr "請填寫必填的 S3 配置欄位"
 
@@ -4315,6 +4414,33 @@ msgstr "S3 區域（例如 us-east-1）"
 
 msgid "Test S3 Connection"
 msgstr "測試 S3 連接"
+
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr "提供此儲存的外掛未啟用。備份會失敗，直到重新啟用該外掛為止。"
+
+msgid "Key Prefix"
+msgstr "Key 前綴"
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr "備份會儲存在此前綴之下，例如 nginx-ui/daily。使用 / 代表根目錄。"
+
+msgid "Key prefix is required"
+msgstr "Key 前綴為必填項"
+
+msgid "nginx-ui/backups"
+msgstr "nginx-ui/backups"
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr "每次執行後會刪除該儲存中較舊的備份。設為 0 表示保留所有備份。"
+
+msgid "Test Storage"
+msgstr "測試儲存"
 
 msgid "Create system backups and restore from saved snapshots when needed."
 msgstr "建立系統備份，並在需要時從已儲存快照還原。"
@@ -4608,6 +4734,30 @@ msgstr "輸入的不是 SSL 憑證金鑰"
 msgid "Drop private key file here"
 msgstr "將私鑰檔案拖放到此處"
 
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr "已部署到 %{ok} 個目標，%{failed} 個失敗"
+
+msgid "Deployed to %{ok} targets"
+msgstr "已部署到 %{ok} 個目標"
+
+msgid "Manage"
+msgstr "管理"
+
+msgid "Deploy Now"
+msgstr "立即部署"
+
+msgid "This certificate is not pushed to any external target."
+msgstr "此憑證尚未推送至任何外部目標。"
+
+msgid "Plugin unavailable"
+msgstr "外掛不可用"
+
+msgid "Never deployed"
+msgstr "從未部署"
+
+msgid "%{count} attempts"
+msgstr "%{count} 次嘗試"
+
 msgid "Certificate content and private key content cannot be empty"
 msgstr "證書內容和私鑰內容不能為空"
 
@@ -4844,11 +4994,25 @@ msgid ""
 "automatically."
 msgstr "此自簽名憑證由 Nginx UI 管理並自動續期。"
 
+msgid "No certificate is bound to this target"
+msgstr "此目標未繫結任何憑證"
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr "已部署 %{ok} 個憑證，%{failed} 個失敗"
+
+msgid "Deployed %{ok} certificates"
+msgstr "已部署 %{ok} 個憑證"
+
 msgid "View all issued and imported certificates with expiration and status."
 msgstr "檢視所有已簽發與已匯入憑證及其到期時間與狀態。"
 
 msgid "Manage ACME accounts for automated certificate issuance and renewal."
 msgstr "管理 ACME 帳戶以自動簽發與續期憑證。"
+
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
+msgstr "每次續期後將憑證推送到 CDN、負載平衡器和其他伺服器。"
 
 msgid "Import an existing certificate and key pair into the certificate store."
 msgstr "將現有憑證與金鑰配對匯入憑證庫。"
@@ -4918,6 +5082,20 @@ msgstr "資料夾"
 
 msgid "File"
 msgstr "檔案"
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr "備份保存在 %{storage} 的 %{prefix} 之下"
+
+msgid "Delete this backup from the storage?"
+msgstr "確定要從儲存中刪除此備份嗎？"
+
+msgid "Restore Backup"
+msgstr "還原備份"
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr "還原操作將取代目前設定，隨後 Nginx 與 Nginx UI 將重新啟動。"
 
 msgid "Type %{delete} to confirm"
 msgstr "輸入 %{delete} 以確認"
@@ -5337,6 +5515,12 @@ msgstr "%{days}天"
 msgid "Paused"
 msgstr "已暫停"
 
+msgid "Built-in HTTP / gRPC check"
+msgstr "內建 HTTP / gRPC 檢查"
+
+msgid "%{kind} (unavailable)"
+msgstr "%{kind}（不可用）"
+
 msgid "Informational Responses (1xx)"
 msgstr "資訊回應 (1xx)"
 
@@ -5384,6 +5568,16 @@ msgstr "健康檢查已啟用"
 
 msgid "Health check is disabled"
 msgstr "健康檢查已停用"
+
+msgid "Check Method"
+msgstr "檢查方式"
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
+msgstr ""
+"提供此檢查的外掛未啟用。在重新啟用該外掛或選擇其他檢查方式之前，該網站將被回"
+"報為錯誤狀態。"
 
 msgid "Protocol"
 msgstr "協定"
@@ -7169,6 +7363,38 @@ msgstr "自動重試時間"
 
 msgid "Attempts"
 msgstr "嘗試次數"
+
+msgid "Deploy History of %{name}"
+msgstr "%{name} 的部署歷史"
+
+msgid "All certificates"
+msgstr "所有憑證"
+
+msgid "Dry run successful"
+msgstr "試運行成功"
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+"沒有已啟用的外掛提供部署目標。請先安裝並啟用具有 cert.deploy 能力的外掛。"
+
+msgid "Target Type"
+msgstr "目標類型"
+
+msgid "Select a target type"
+msgstr "選擇目標類型"
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr "提供此目標類型的外掛未啟用。推送會失敗，直到重新啟用該外掛為止。"
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr "憑證在每次簽發與續期後都會推送到此目標。"
+
+msgid "Dry Run"
+msgstr "試運行"
 
 msgid "Technical details"
 msgstr "技術詳細"
@@ -9450,6 +9676,24 @@ msgid ""
 msgstr ""
 "協議配置僅在直接連接時生效。如果使用反向代理，請在反向代理中單獨配置協議。"
 
+msgid "Refreshed"
+msgstr "已重新整理"
+
+msgid "Refresh failed"
+msgstr "重新整理失敗"
+
+msgid "Source Type"
+msgstr "來源類型"
+
+msgid "Refresh Interval"
+msgstr "重新整理間隔"
+
+msgid "Entries"
+msgstr "項目"
+
+msgid "Last Result"
+msgstr "最近結果"
+
 msgid "End time must be later than start time"
 msgstr "結束時間必須晚於開始時間"
 
@@ -9794,8 +10038,16 @@ msgstr "產生自簽名憑證"
 msgid "Search templates"
 msgstr "搜尋模板"
 
+msgid "From plugin %{id}"
+msgstr "來自外掛 %{id}"
+
 msgid "Author"
 msgstr "作者"
+
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
+msgstr "此範本來自外掛 %{id}。加入這些指令前請先檢查。"
 
 msgid "Do you want to enable TLS?"
 msgstr "您想啟用 TLS 嗎？"
@@ -10552,6 +10804,14 @@ msgstr "發布日期"
 msgid "Platforms"
 msgstr "平台"
 
+msgid "This package has no build for this node (%{platform})"
+msgstr "此安裝包沒有適用於該節點的建置版本（%{platform}）"
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr "請下載適用於此平台的安裝包，或下載可攜式安裝包後重試。"
+
 msgid "Failed to load the plugin details"
 msgstr "載入外掛詳情失敗"
 
@@ -10560,6 +10820,9 @@ msgstr "已安裝版本"
 
 msgid "Versions"
 msgstr "版本"
+
+msgid "This node runs %{platform}, its build is highlighted."
+msgstr "此節點執行 %{platform}，對應的建置已醒目提示。"
 
 msgid "Yanked"
 msgstr "已撤回"
@@ -10659,6 +10922,22 @@ msgstr "讀取此節點的 CPU、記憶體、網路及 Nginx 狀態指標。"
 msgid "Call the Nginx UI management API with your permissions."
 msgstr "以您的權限呼叫 Nginx UI 管理 API。"
 
+msgid ""
+"Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+"can then run them."
+msgstr "透過 MCP 將其工具提供給連線至 Nginx UI 的 AI 助理，供其執行。"
+
+msgid ""
+"Receive certificates and their private keys in order to push them to "
+"external targets."
+msgstr "接收憑證及其私鑰，以便將其推送至外部目標。"
+
+msgid ""
+"Receive every parsed nginx access log line while enabled, including client "
+"addresses and requested URLs."
+msgstr ""
+"在啟用期間接收每一筆解析後的 nginx 存取日誌，包括用戶端位址和請求的 URL。"
+
 msgid "Unknown permission. Only grant it if you trust the plugin author."
 msgstr "未知權限，請僅在信任外掛作者時授予。"
 
@@ -10674,6 +10953,18 @@ msgstr "按需啟動"
 msgid "Resident"
 msgstr "常駐"
 
+msgid "Streamed"
+msgstr "已傳送"
+
+msgid "Rejected"
+msgstr "已拒絕"
+
+msgid "Dropped"
+msgstr "已捨棄"
+
+msgid "Unlimited"
+msgstr "無限制"
+
 msgid "Last error"
 msgstr "最近的錯誤"
 
@@ -10688,6 +10979,31 @@ msgstr "API 版本"
 
 msgid "Needs Nginx UI %{version} or newer"
 msgstr "需要 Nginx UI %{version} 或更新版本"
+
+msgid "Transport"
+msgstr "傳輸方式"
+
+msgid "Resource limits"
+msgstr "資源限制"
+
+msgid "The running process is confined to these limits."
+msgstr "執行中的行程被限制在這些限額內。"
+
+msgid ""
+"The plugin is not running, or this node cannot confine processes: that needs "
+"Linux with a writable cgroup v2 hierarchy."
+msgstr ""
+"該外掛未在執行，或此節點無法對行程施加限制：這需要具備可寫入 cgroup v2 階層結"
+"構的 Linux 系統。"
+
+msgid "Enforced"
+msgstr "已強制"
+
+msgid "Not enforced"
+msgstr "未強制"
+
+msgid "Access log stream"
+msgstr "存取日誌串流"
 
 msgid "Depends on"
 msgstr "相依"
@@ -10860,6 +11176,14 @@ msgstr ""
 "您正在透過非本地主機域上的不安全 HTTP 連線存取此終端機。這可能會暴露敏感資"
 "訊。"
 
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr "nginx 用來識別該 upstream 的名稱：僅限字母、數字、點、連字號與底線。"
+
+msgid "Service"
+msgstr "服務"
+
 msgid "Round Robin (default)"
 msgstr "Round Robin（預設）"
 
@@ -10898,6 +11222,49 @@ msgstr "一致性雜湊"
 
 msgid "Servers"
 msgstr "伺服器"
+
+msgid "Service Discovery"
+msgstr "服務探索"
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr ""
+"沒有已啟用的外掛提供服務探索。請先安裝並啟用具有 upstream.discovery 能力的外"
+"掛。"
+
+msgid "Select a provider"
+msgstr "選擇提供商"
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr "提供此提供商的外掛未啟用。該 upstream 會被保留，但不再重新整理。"
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr "依提供商的命名方式指定要解析的服務。"
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr ""
+"以秒為單位設定服務重新解析的頻率。僅當伺服器清單發生變化時才會重新載入 "
+"Nginx。"
+
+msgid "Extra Directives"
+msgstr "額外指令"
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr "附加在 upstream 區塊內，每行一條指令，例如 keepalive 32;"
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
+msgstr ""
+"將此行加入 http 區塊（例如站台設定的頂端），然後透過其名稱將請求代理至該 "
+"upstream。"
 
 msgid "Address"
 msgstr "地址"
@@ -11216,9 +11583,46 @@ msgstr "引用會讓網站與 snippets/%{file} 保持關聯，之後對片段的
 msgid "Insert"
 msgstr "插入"
 
-#: src/views/snippet/SnippetList.vue:26
 msgid "Include"
-msgstr "引用"
+msgstr "Include 行"
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+"封鎖清單來源會從外掛取得要拒絕的位址清單，並將其寫入各自專屬的檔案作為拒絕規"
+"則。在您將某個來源的 Include 行加入 server 或 location 區塊之前，不會封鎖任何"
+"內容。"
+
+msgid "Refresh Now"
+msgstr "立即重新整理"
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+"沒有已啟用的外掛提供封鎖清單來源。請先安裝並啟用具有 security.blocklist 能力"
+"的外掛。"
+
+msgid "Select a source type"
+msgstr "選擇來源類型"
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr "提供此來源類型的外掛未啟用。清單會被保留，但不再重新整理。"
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr ""
+"以秒為單位設定清單重新取得的頻率。僅當清單發生變化時才會重新載入 Nginx。"
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
+msgstr "將此行加入 server 或 location 區塊，以在該處拒絕清單中的位址。"
 
 #: src/views/snippet/SnippetList.vue:3
 msgid "Snippet %{name} saved"

@@ -11057,6 +11057,451 @@ msgstr "更新あり"
 msgid "Idle"
 msgstr "アイドル"
 
+msgid "Include line copied to clipboard"
+msgstr "インクルード行をクリップボードにコピーしました"
+
+msgid "%{n} d"
+msgstr "%{n} 日"
+
+msgid "%{n} h"
+msgstr "%{n} 時間"
+
+msgid "%{n} min"
+msgstr "%{n} 分"
+
+msgid "%{n} s"
+msgstr "%{n} 秒"
+
+msgid "Deploy Certificate Error"
+msgstr "証明書のデプロイエラー"
+
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr ""
+"証明書 %{cert_name} を %{target_name} へデプロイできませんでした: %{error}"
+
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr ""
+"保存されているバックアップ {0} はこのバックアップタスクに属していません"
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr "復元できるのは Nginx と Nginx UI のバックアップのみです"
+
+msgid "This action needs a plugin storage backend"
+msgstr "この操作にはプラグインのストレージバックエンドが必要です"
+
+msgid "Invalid storage key prefix: {0}"
+msgstr "無効なストレージキーのプレフィックスです: {0}"
+
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr "通知設定のフィールド {0} が無効です: {1}"
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr "プラグインの内容 {0} が無効です: {1}"
+
+msgid "Storage backend {0} is not available"
+msgstr "ストレージバックエンド {0} は利用できません"
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr "ストレージ設定のフィールド {0} が無効です: {1}"
+
+msgid "Deploy target kind {0} is not available"
+msgstr "デプロイ先の種類 {0} は利用できません"
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr "デプロイ先設定のフィールド {0} が無効です: {1}"
+
+msgid "Blocklist source kind {0} is not available"
+msgstr "ブロックリストソースの種類 {0} は利用できません"
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr "ブロックリストソース設定のフィールド {0} が無効です: {1}"
+
+msgid "Discovery provider {0} is not available"
+msgstr "ディスカバリプロバイダー {0} は利用できません"
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr "ディスカバリプロバイダー設定のフィールド {0} が無効です: {1}"
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr "更新間隔は最低 {0} 秒必要です"
+
+msgid "Upstream name {0} is invalid"
+msgstr "アップストリーム名 {0} が無効です"
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr "アップストリーム名 {0} は既に別のサービスに紐付けられています"
+
+msgid "Extra directives must not contain braces"
+msgstr "追加ディレクティブに中括弧を含めることはできません"
+
+msgid "{0} is still included by the nginx configuration: {1}"
+msgstr "{0} は今も nginx の設定に include されています: {1}"
+
+msgid "Template not found"
+msgstr "テンプレートが見つかりません"
+
+msgid "Deploy Targets"
+msgstr "デプロイ先"
+
+msgid "Blocklists"
+msgstr "ブロックリスト"
+
+msgid "Keep Latest Backups"
+msgstr "保持する最新バックアップ数"
+
+msgid "Stored Backups"
+msgstr "保存済みバックアップ"
+
+msgid "Please fill in %{field}"
+msgstr "%{field} を入力してください"
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr ""
+"ストレージのテストに成功しました。%{count} 件の保存済みバックアップが見つかり"
+"ました"
+
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr ""
+"このストレージを提供するプラグインが無効になっています。再度有効にするまで"
+"バックアップは失敗します。"
+
+msgid "Key Prefix"
+msgstr "キープレフィックス"
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr ""
+"バックアップはこのプレフィックス配下に保存されます（例: nginx-ui/daily）。"
+"ルートには / を使用してください。"
+
+msgid "Key prefix is required"
+msgstr "キープレフィックスは必須です"
+
+msgid "nginx-ui/backups"
+msgstr "nginx-ui/backups"
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr ""
+"実行のたびに、このストレージ内の古いバックアップが削除されます。0 に設定する"
+"とすべてのバックアップを保持します。"
+
+msgid "Test Storage"
+msgstr "ストレージをテスト"
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr "%{storage} の %{prefix} 配下に保存されたバックアップ"
+
+msgid "Delete this backup from the storage?"
+msgstr "このバックアップをストレージから削除しますか？"
+
+msgid "Restore Backup"
+msgstr "バックアップを復元"
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr ""
+"復元すると現在の設定が置き換えられます。その後 Nginx と Nginx UI が再起動しま"
+"す。"
+
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr "%{ok} 件のデプロイ先に配信し、%{failed} 件失敗しました"
+
+msgid "Deployed to %{ok} targets"
+msgstr "%{ok} 件のデプロイ先に配信しました"
+
+msgid "Manage"
+msgstr "管理"
+
+msgid "Deploy Now"
+msgstr "今すぐデプロイ"
+
+msgid "This certificate is not pushed to any external target."
+msgstr "この証明書はまだどの外部デプロイ先にもプッシュされていません。"
+
+msgid "Plugin unavailable"
+msgstr "プラグインが利用できません"
+
+msgid "Never deployed"
+msgstr "デプロイ未実行"
+
+msgid "%{count} attempts"
+msgstr "%{count} 回の試行"
+
+msgid "Deploy History of %{name}"
+msgstr "%{name} のデプロイ履歴"
+
+msgid "All certificates"
+msgstr "すべての証明書"
+
+msgid "Dry run successful"
+msgstr "ドライランに成功しました"
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+"デプロイ先を提供する有効なプラグインがありません。まず cert.deploy 機能を持つ"
+"プラグインをインストールして有効にしてください。"
+
+msgid "Target Type"
+msgstr "デプロイ先の種類"
+
+msgid "Select a target type"
+msgstr "デプロイ先の種類を選択"
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr ""
+"このデプロイ先の種類を提供するプラグインが無効になっています。再度有効にする"
+"までプッシュは失敗します。"
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr "この証明書は、発行および更新のたびにこのデプロイ先へプッシュされます。"
+
+msgid "Dry Run"
+msgstr "ドライラン"
+
+msgid "No certificate is bound to this target"
+msgstr "このデプロイ先には証明書が紐付けられていません"
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr "%{ok} 件の証明書をデプロイし、%{failed} 件失敗しました"
+
+msgid "Deployed %{ok} certificates"
+msgstr "%{ok} 件の証明書をデプロイしました"
+
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
+msgstr ""
+"更新のたびに、証明書を CDN やロードバランサー、その他のサーバーへプッシュしま"
+"す。"
+
+msgid "Built-in HTTP / gRPC check"
+msgstr "組み込みの HTTP / gRPC チェック"
+
+msgid "%{kind} (unavailable)"
+msgstr "%{kind}（利用不可）"
+
+msgid "Check Method"
+msgstr "チェック方法"
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
+msgstr ""
+"このチェックを提供するプラグインが無効になっています。再度有効にするか、別の"
+"チェック方法を選択するまで、このサイトはエラーとして報告されます。"
+
+msgid "Refreshed"
+msgstr "更新しました"
+
+msgid "Refresh failed"
+msgstr "更新に失敗しました"
+
+msgid "Source Type"
+msgstr "ソースの種類"
+
+msgid "Refresh Interval"
+msgstr "更新間隔"
+
+msgid "Entries"
+msgstr "エントリ"
+
+msgid "Last Result"
+msgstr "直近の結果"
+
+msgid "Include"
+msgstr "インクルード行"
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+"ブロックリストソースはプラグインから拒否対象アドレスのリストを取得し、専用の"
+"ファイルに拒否ルールとして書き込みます。ソースのインクルード行を server ブ"
+"ロックまたは location ブロックに追加するまでは、何もブロックされません。"
+
+msgid "Refresh Now"
+msgstr "今すぐ更新"
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+"ブロックリストソースを提供する有効なプラグインがありません。まず "
+"security.blocklist 機能を持つプラグインをインストールして有効にしてください。"
+
+msgid "Select a source type"
+msgstr "ソースの種類を選択"
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr ""
+"このソースの種類を提供するプラグインが無効になっています。リストは保持されま"
+"すが、更新されなくなります。"
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr ""
+"リストを再取得する間隔（秒）です。リストが変化した場合にのみ Nginx が再読み込"
+"みされます。"
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
+msgstr ""
+"この行を server ブロックまたは location ブロックに追加すると、そこでリスト内"
+"のアドレスを拒否できます。"
+
+msgid "From plugin %{id}"
+msgstr "プラグイン %{id} 提供"
+
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
+msgstr ""
+"このテンプレートはプラグイン %{id} から提供されています。追加する前にディレク"
+"ティブを確認してください。"
+
+msgid "This package has no build for this node (%{platform})"
+msgstr "このパッケージには、このノード（%{platform}）向けのビルドがありません"
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr ""
+"このプラットフォーム向けにビルドされたパッケージ、またはポータブル版パッケー"
+"ジをダウンロードしてから、もう一度お試しください。"
+
+msgid "This node runs %{platform}, its build is highlighted."
+msgstr ""
+"このノードは %{platform} で動作しており、該当するビルドがハイライト表示されて"
+"います。"
+
+msgid ""
+"Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+"can then run them."
+msgstr ""
+"MCP を通じて、Nginx UI に接続された AI アシスタントにツールを提供し、実行でき"
+"るようにします。"
+
+msgid ""
+"Receive certificates and their private keys in order to push them to "
+"external targets."
+msgstr "証明書とその秘密鍵を受け取り、外部のデプロイ先へプッシュします。"
+
+msgid ""
+"Receive every parsed nginx access log line while enabled, including client "
+"addresses and requested URLs."
+msgstr ""
+"有効な間、クライアントアドレスやリクエストされた URL を含む、解析済みの "
+"nginx アクセスログをすべて受け取ります。"
+
+msgid "Streamed"
+msgstr "送信済み"
+
+msgid "Rejected"
+msgstr "拒否済み"
+
+msgid "Dropped"
+msgstr "破棄済み"
+
+msgid "Unlimited"
+msgstr "無制限"
+
+msgid "Transport"
+msgstr "トランスポート"
+
+msgid "Resource limits"
+msgstr "リソース制限"
+
+msgid "The running process is confined to these limits."
+msgstr "実行中のプロセスはこれらの制限内に収まるよう制御されています。"
+
+msgid ""
+"The plugin is not running, or this node cannot confine processes: that needs "
+"Linux with a writable cgroup v2 hierarchy."
+msgstr ""
+"プラグインが実行されていないか、このノードではプロセスを制限できません。これ"
+"には書き込み可能な cgroup v2 階層を持つ Linux が必要です。"
+
+msgid "Enforced"
+msgstr "強制適用"
+
+msgid "Not enforced"
+msgstr "未適用"
+
+msgid "Access log stream"
+msgstr "アクセスログストリーム"
+
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr ""
+"nginx がこのアップストリームを識別する名前です。使用できるのは英数字、ピリオ"
+"ド、ハイフン、アンダースコアのみです。"
+
+msgid "Service"
+msgstr "サービス"
+
+msgid "Service Discovery"
+msgstr "サービスディスカバリ"
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr ""
+"サービスディスカバリを提供する有効なプラグインがありません。まず "
+"upstream.discovery 機能を持つプラグインをインストールして有効にしてください。"
+
+msgid "Select a provider"
+msgstr "プロバイダーを選択"
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr ""
+"このプロバイダーを提供するプラグインが無効になっています。アップストリームは"
+"保持されますが、更新されなくなります。"
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr "解決対象のサービスを、プロバイダーの用語で指定します。"
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr ""
+"サービスを再解決する間隔（秒）です。サーバーが変化した場合にのみ Nginx が再読"
+"み込みされます。"
+
+msgid "Extra Directives"
+msgstr "追加ディレクティブ"
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr ""
+"upstream ブロック内に追記されます。1 行に 1 つのディレクティブを記述してくだ"
+"さい（例: keepalive 32;）。"
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
+msgstr ""
+"この行を http ブロック（例えばサイト設定の先頭）に追加し、その名前でアップス"
+"トリームへプロキシしてください。"
+
 #~ msgid "Webauthn"
 #~ msgstr "WebAuthn"
 
