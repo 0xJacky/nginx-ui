@@ -91,6 +91,7 @@ export interface CertificateInfo {
   issuer_name: string
   not_after: string
   not_before: string
+  subject_alt_names?: string[]
 }
 
 export interface CertificateResult {
