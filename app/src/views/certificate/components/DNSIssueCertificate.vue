@@ -55,6 +55,14 @@ function emptySelfSignedPayload(): SelfSignedCertPayload {
 
 const selfSignedPayload = ref<SelfSignedCertPayload>(emptySelfSignedPayload())
 
+function closeModal() {
+  visible.value = false
+  modalVisible.value = false
+  modalClosable.value = true
+  errored.value = false
+  step.value = 0
+}
+
 function open() {
   visible.value = true
   step.value = 0
@@ -180,6 +188,7 @@ async function submitSelfSigned() {
       :mask-closable="modalClosable"
       :closable="modalClosable"
       force-render
+      @cancel="closeModal"
     >
       <template v-if="step === 0">
         <AForm layout="vertical">
