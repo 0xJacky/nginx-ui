@@ -41,6 +41,9 @@ const keyTypeOptions: SelectProps['options'] = PrivateKeyTypeList.map(t => ({
   label: t.name,
 }))
 
+const compactLabelCol = { flex: '170px' }
+const compactWrapperCol = { flex: 'auto' }
+
 onMounted(() => {
   if (!data.value.key_type)
     data.value.key_type = PrivateKeyTypeEnum.P256
@@ -142,93 +145,103 @@ defineExpose({
         </p>
       </template>
     </AAlert>
-    <AForm layout="vertical" :model="{ manualIpAddress }">
-      <!-- IP Address Input for IP certificates without explicit IP -->
-      <AFormItem
-        v-if="needsManualIpInput"
-        name="manualIpAddress"
-        :label="$gettext('Server IP Address')"
-        :rules="[{ validator: validateIpAddress, trigger: 'blur' }]"
+    <ACard size="small" class="cert-config-card mb-4" :title="$gettext('Required Settings')">
+      <AForm
+        layout="horizontal"
+        label-align="left"
+        :label-col="compactLabelCol"
+        :wrapper-col="compactWrapperCol"
+        :model="{ manualIpAddress }"
       >
-        <AInput
-          v-model:value="manualIpAddress"
-          :placeholder="$gettext('Enter server IP address (e.g., 203.0.113.1 or 2001:db8::1)')"
-        />
-        <template #help>
-          <div class="space-y-2">
-            <p>
-              {{ $gettext('For IP-based certificates, please specify the server IP address that will be included in the certificate.') }}
-            </p>
-            <div class="text-xs text-gray-600">
-              <p class="font-medium">
-                {{ $gettext('Public CA Requirements:') }}
-              </p>
-              <ul class="ml-4 list-disc space-y-1">
-                <li>
-                  {{ $gettext('Must be a public IP address accessible from the internet') }}
-                </li>
-                <li>
-                  {{ $gettext('Port 80 must be open for HTTP-01 challenge validation') }}
-                </li>
-                <li>
-                  {{ $gettext('Private IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x) will fail') }}
-                </li>
-              </ul>
-              <p class="mt-2 font-medium">
-                {{ $gettext('Private CA:') }}
-              </p>
-              <p class="ml-4">
-                {{ $gettext('Any reachable IP address can be used with private Certificate Authorities') }}
-              </p>
-            </div>
-          </div>
-        </template>
-      </AFormItem>
-
-      <AFormItem
-        v-if="!forceDnsChallenge"
-        :label="$gettext('Challenge Method')"
-      >
-        <ASelect
-          v-model:value="data.challenge_method"
-          :options="challengeMethodOptions"
+        <!-- IP Address Input for IP certificates without explicit IP -->
+        <AFormItem
+          v-if="needsManualIpInput"
+          name="manualIpAddress"
+          :label="$gettext('Server IP Address')"
+          :rules="[{ validator: validateIpAddress, trigger: 'blur' }]"
         >
-          <template #optionRender="{ option }">
-            {{ option.data.label }}
-            <span
-              v-if="option.data.value === AutoCertChallengeMethod.dns01 && (isIpCertificate || needsManualIpInput)"
-              class="text-gray-400 ml-2"
-            >
-              ({{ $gettext('Not supported for IP certificates') }})
-            </span>
+          <AInput
+            v-model:value="manualIpAddress"
+            :placeholder="$gettext('Enter server IP address (e.g., 203.0.113.1 or 2001:db8::1)')"
+          />
+          <template #help>
+            <div class="space-y-2">
+              <p>
+                {{ $gettext('For IP-based certificates, please specify the server IP address that will be included in the certificate.') }}
+              </p>
+              <div class="text-xs text-gray-600">
+                <p class="font-medium">
+                  {{ $gettext('Public CA Requirements:') }}
+                </p>
+                <ul class="ml-4 list-disc space-y-1">
+                  <li>
+                    {{ $gettext('Must be a public IP address accessible from the internet') }}
+                  </li>
+                  <li>
+                    {{ $gettext('Port 80 must be open for HTTP-01 challenge validation') }}
+                  </li>
+                  <li>
+                    {{ $gettext('Private IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x) will fail') }}
+                  </li>
+                </ul>
+                <p class="mt-2 font-medium">
+                  {{ $gettext('Private CA:') }}
+                </p>
+                <p class="ml-4">
+                  {{ $gettext('Any reachable IP address can be used with private Certificate Authorities') }}
+                </p>
+              </div>
+            </div>
           </template>
-          <template #labelRender="{ label, value }">
-            {{ label }}
-            <span
-              v-if="value === AutoCertChallengeMethod.dns01 && (isIpCertificate || needsManualIpInput)"
-              class="text-gray-400 ml-2"
-            >
-              ({{ $gettext('Not supported for IP certificates') }})
-            </span>
-          </template>
-        </ASelect>
-      </AFormItem>
-      <AFormItem
-        :label="$gettext('Key Type')"
-      >
-        <ASelect
-          v-model:value="data.key_type"
-          :disabled="keyTypeReadOnly"
-          :options="keyTypeOptions"
-        />
-      </AFormItem>
-    </AForm>
-    <ACMEUserSelector v-model:options="data" />
-    <DNSChallenge
-      v-if="data.challenge_method === 'dns01'"
-      v-model:options="data"
-    />
-    <AForm layout="vertical">
+        </AFormItem>
+
+        <AFormItem
+          v-if="!forceDnsChallenge"
+          :label="$gettext('Challenge Method')"
+        >
+          <ASelect
+            v-model:value="data.challenge_method"
+            :options="challengeMethodOptions"
+          >
+            <template #optionRender="{ option }">
+              {{ option.data.label }}
+              <span
+                v-if="option.data.value === AutoCertChallengeMethod.dns01 && (isIpCertificate || needsManualIpInput)"
+                class="text-gray-400 ml-2"
+              >
+                ({{ $gettext('Not supported for IP certificates') }})
+              </span>
+            </template>
+            <template #labelRender="{ label, value }">
+              {{ label }}
+              <span
+                v-if="value === AutoCertChallengeMethod.dns01 && (isIpCertificate || needsManualIpInput)"
+                class="text-gray-400 ml-2"
+              >
+                ({{ $gettext('Not supported for IP certificates') }})
+              </span>
+            </template>
+          </ASelect>
+        </AFormItem>
+        <AFormItem
+          :label="$gettext('Key Type')"
+        >
+          <ASelect
+            v-model:value="data.key_type"
+            :disabled="keyTypeReadOnly"
+            :options="keyTypeOptions"
+          />
+        </AFormItem>
+      </AForm>
+
+      <ACMEUserSelector v-model:options="data" compact />
+      <div v-if="data.challenge_method === 'dns01'" class="mt-4">
+        <DNSChallenge v-model:options="data" compact />
+      </div>
+    </ACard>
+
+    <ACard size="small" class="cert-config-card" :title="$gettext('Special Settings')">
+      <AForm layout="vertical">
       <AFormItem :label="$gettext('OCSP Must Staple')">
         <template #help>
           <p>
@@ -276,10 +289,20 @@ defineExpose({
         </template>
         <ASwitch v-model:checked="data.revoke_old" />
       </AFormItem>
-    </AForm>
+      </AForm>
+    </ACard>
   </div>
 </template>
 
 <style lang="less" scoped>
+.cert-config-card {
+  :deep(.ant-card-head) {
+    min-height: 40px;
+  }
+
+  :deep(.ant-card-body) {
+    padding: 14px;
+  }
+}
 
 </style>

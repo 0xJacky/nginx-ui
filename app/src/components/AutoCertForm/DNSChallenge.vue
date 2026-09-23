@@ -6,6 +6,15 @@ import { InfoCircleOutlined } from '@antdv-next/icons'
 import { useRouter } from 'vue-router'
 import dns_credential from '@/api/dns_credential'
 
+const props = withDefaults(defineProps<{
+  compact?: boolean
+}>(), {
+  compact: false,
+})
+
+const compactLabelCol = { flex: '170px' }
+const compactWrapperCol = { flex: 'auto' }
+
 interface DefaultOptionType {
   label?: string
   value?: string
@@ -125,7 +134,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <AForm layout="vertical" :model="data">
+  <AForm
+    :layout="props.compact ? 'horizontal' : 'vertical'"
+    :label-align="props.compact ? 'left' : undefined"
+    :label-col="props.compact ? compactLabelCol : undefined"
+    :wrapper-col="props.compact ? compactWrapperCol : undefined"
+    :model="data"
+  >
     <AFormItem name="dns_credential_id" :rules="[{ required: true }]">
       <template #label>
         <span>{{ $gettext('Credential') }}</span>
