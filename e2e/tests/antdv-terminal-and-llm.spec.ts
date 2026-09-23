@@ -155,6 +155,12 @@ test('terminal and assistant controls keep migrated components populated', async
   // The visible session tab exposes another Dropdown with its popupRender menu.
   const visibleSessionTab = sessionTabs.first()
   await visibleSessionTab.hover()
+  // Hover reveals the actions with a transform transition. Clicking mid-transition
+  // fails the stability check, and Playwright's retry scrolls the button under the
+  // sticky header, which drops the hover and hides the button for good.
+  const sessionActions = visibleSessionTab.locator('.tab-actions')
+  await expect(sessionActions).toBeVisible()
+  await sessionActions.evaluate(element => Promise.all(element.getAnimations().map(animation => animation.finished)))
   const sessionMenu = await expectDropdownMenu(page, visibleSessionTab.locator('.tab-action-btn'))
   await dismissOverlay(page)
   await expect(sessionMenu).toBeHidden()

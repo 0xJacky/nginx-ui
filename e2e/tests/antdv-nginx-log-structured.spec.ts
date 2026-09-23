@@ -95,6 +95,11 @@ test('structured nginx logs keep migrated controls and custom table renderers', 
     if (selectClass.includes('ant-pagination-options-size-changer')) {
       expect(closedLabel, `Pagination Select ${index} shows a raw page-size value`).not.toMatch(/^\d+$/)
     }
+    else if (selectClass.includes('font-mono')) {
+      // The log file picker labels each option with its path, so the closed
+      // label is expected to be one of the option labels.
+      expect(optionLabels, `Log file Select ${index} shows a path that is not an option`).toContain(closedLabel)
+    }
     else {
       expect(optionLabels, `Select ${index} closed on an option value instead of a label`).not.toContain(closedLabel)
     }
