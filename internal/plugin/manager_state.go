@@ -69,6 +69,8 @@ func (m *Manager) bringUp(ctx context.Context, item *entry) error {
 		return nil
 	}
 	m.registerManifestCron(item)
+	// An on_demand log sink is started by its first stream.
+	m.startLogSink(item, supervisor)
 	if supervisor.Lifecycle() == protocol.LifecycleOnDemand {
 		return nil
 	}
@@ -120,6 +122,8 @@ func (m *Manager) ensureSupervisor(item *entry) (*Supervisor, error) {
 		Locale:           backend.Locale(),
 		Settings:         mergedSettings(manifest, row),
 		Permissions:      permissions,
+		Resources:        EffectiveResources(hostResourceLimits(), manifest),
+		CgroupRoot:       settings.PluginSettings.GetCgroupRoot(),
 		HandshakeTimeout: m.handshakeTimeout,
 		HostHandlers: func(conn *jsonrpc.Conn) {
 			RegisterHostHandlers(conn, id, permissions, backend)
@@ -138,6 +142,8 @@ func (m *Manager) ensureSupervisor(item *entry) (*Supervisor, error) {
 // the buffered logs stay visible.
 func (m *Manager) stopEntry(ctx context.Context, item *entry) {
 	m.unregisterCron(item)
+	// The last stream is answered before the process is asked to stop.
+	m.stopLogSink(item)
 
 	m.mu.RLock()
 	supervisor := item.supervisor

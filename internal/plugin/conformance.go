@@ -30,6 +30,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/plugin/grpcbridge"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
+	pluginv1 "github.com/0xJacky/Nginx-UI/internal/plugin/protocol/pb"
+	"google.golang.org/protobuf/proto"
 )
 
 // CaseStatus is the outcome of one conformance case.
@@ -235,6 +237,10 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 		}
 	}
 
+	if targets.logSink {
+		runLogSinkCases(runCtx, stdioCaller, grpcClient, advertised, runGRPC, recordOn)
+	}
+
 	if stdioCaller != nil && grpcClient != nil {
 		runTransportParity(runCtx, stdioCaller, &grpcConformanceCaller{client: grpcClient}, targets, record)
 	}
@@ -274,6 +280,8 @@ type conformanceTargets struct {
 	deploy         *protocol.DeployTarget
 	blocklist      *protocol.BlocklistSource
 	discovery      *protocol.DiscoveryProvider
+	// logSink runs the log.sink cases.
+	logSink bool
 }
 
 // conformanceTargetsOf picks the targets of the capabilities being tested.
@@ -308,6 +316,7 @@ func conformanceTargetsOf(manifest *protocol.Manifest, capabilities []string) co
 		provider := manifest.Discovery.Providers[0]
 		targets.discovery = &provider
 	}
+	targets.logSink = slices.Contains(capabilities, protocol.CapabilityLogSink)
 	return targets
 }
 
@@ -1231,6 +1240,132 @@ func runDiscoveryResolve(ctx context.Context, caller jsonrpc.Caller, provider pr
 		}
 	}
 	record("DISCOVERY-5", "discovery.resolve", StatusPass, elapsed, "provider %s resolved %s to %d targets", provider.Code, conformanceDiscoveryService, len(targets))
+}
+
+// conformanceLogPath is the log path of the entries LOGSINK-5 streams.
+const conformanceLogPath = "/var/log/nginx/conformance.log"
+
+// conformanceLogEntries are the entries LOGSINK-5 streams.
+func conformanceLogEntries() []protocol.LogSinkPushParams {
+	entries := make([]protocol.LogSinkPushParams, 0, 3)
+	for i, uri := range []string{"/", "/index.html", "/favicon.ico"} {
+		status := 200
+		if i == 2 {
+			status = 404
+		}
+		entries = append(entries, protocol.LogSinkPushParams{
+			LogPath: conformanceLogPath,
+			Entry: protocol.LogEntry{
+				Timestamp:     fmt.Sprintf("2026-09-23T08:15:0%dZ", i),
+				RemoteAddr:    "192.0.2.1",
+				RequestMethod: "GET",
+				RequestURI:    uri,
+				Protocol:      "HTTP/1.1",
+				Status:        status,
+				BodyBytesSent: 612,
+				UserAgent:     "nginx-ui-conformance",
+				RequestTime:   0.001,
+				Raw: fmt.Sprintf(`192.0.2.1 - - [23/Sep/2026:08:15:0%d +0000] "GET %s HTTP/1.1" %d 612 "-" "nginx-ui-conformance" 0.001`,
+					i, uri, status),
+				Format: protocol.LogFormatCombined,
+			},
+		})
+	}
+	return entries
+}
+
+// runLogSinkCases checks the log.sink capability (spec CONF-16): the stream
+// has no stdio form and a stream of three entries is accepted over gRPC.
+func runLogSinkCases(ctx context.Context, stdioCaller jsonrpc.Caller, client *grpcbridge.Client, advertised, grpcRequested bool, recordOn func(string) recorder) {
+	if !advertised {
+		recordOn("")("LOGSINK-4", "log.sink transport", StatusFail, 0,
+			"a log.sink plugin must list grpc in transports, log.push travels on gRPC only")
+	}
+	if stdioCaller != nil {
+		runLogPushOnStdio(ctx, stdioCaller, recordOn(protocol.TransportStdio))
+	}
+
+	record := recordOn(protocol.TransportGRPC)
+	switch {
+	case client != nil:
+		runLogPushStream(ctx, client, record)
+	case !grpcRequested && advertised:
+		record("LOGSINK-5", "log.push stream", StatusSkip, 0, "log.push travels on gRPC only, run with --transport grpc or both")
+	default:
+		record("LOGSINK-5", "log.push stream", StatusFail, 0, "no gRPC channel to stream log.push over")
+	}
+}
+
+// runLogPushOnStdio checks LOGSINK-4: log.push on stdio is an unknown method.
+func runLogPushOnStdio(ctx context.Context, caller jsonrpc.Caller, record recorder) {
+	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	started := time.Now()
+	err := caller.Call(callCtx, protocol.MethodLogPush, conformanceLogEntries()[0], nil)
+	elapsed := time.Since(started)
+
+	if perr, ok := jsonrpc.AsProtocolError(err); ok && perr.Code == protocol.CodeMethodNotFound {
+		record("LOGSINK-4", "log.push on stdio", StatusPass, elapsed, "stdio answered -32601, the stream has no JSON-RPC form")
+		return
+	}
+	if err == nil {
+		record("LOGSINK-4", "log.push on stdio", StatusFail, elapsed, "stdio answered log.push, which must be served on gRPC only")
+		return
+	}
+	record("LOGSINK-4", "log.push on stdio", StatusFail, elapsed, "expected -32601, got %v", err)
+}
+
+// logPushStreamer is the part of a gRPC client runLogPushStream needs.
+type logPushStreamer interface {
+	OpenStream(ctx context.Context, method string) (*grpcbridge.ClientStream, error)
+}
+
+// runLogPushStream checks LOGSINK-5: a stream of three entries is answered
+// with accepted 3.
+func runLogPushStream(ctx context.Context, client logPushStreamer, record recorder) {
+	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
+	defer cancel()
+	started := time.Now()
+
+	accepted, rejected, err := pushConformanceEntries(callCtx, client)
+	elapsed := time.Since(started)
+	switch {
+	case errors.Is(callCtx.Err(), context.DeadlineExceeded):
+		record("LOGSINK-5", "log.push stream", StatusFail, elapsed, "no answer within 10 seconds")
+	case err != nil:
+		record("LOGSINK-5", "log.push stream", StatusFail, elapsed, "the stream failed: %v", err)
+	case accepted != 3:
+		record("LOGSINK-5", "log.push stream", StatusFail, elapsed, "accepted %d and rejected %d of 3 entries, want 3 accepted", accepted, rejected)
+	default:
+		record("LOGSINK-5", "log.push stream", StatusPass, elapsed, "a stream of 3 entries was accepted")
+	}
+}
+
+// pushConformanceEntries streams the conformance entries once.
+func pushConformanceEntries(ctx context.Context, client logPushStreamer) (accepted, rejected uint32, err error) {
+	stream, err := client.OpenStream(ctx, protocol.MethodLogPush)
+	if err != nil {
+		return 0, 0, err
+	}
+	for _, entry := range conformanceLogEntries() {
+		in, err := marshalLogSinkEntry(&entry)
+		if err != nil {
+			return 0, 0, err
+		}
+		if err = stream.Send(in); err != nil {
+			// The peer ended the stream, CloseAndRecv says why.
+			break
+		}
+	}
+	out, err := stream.CloseAndRecv()
+	if err != nil {
+		return 0, 0, err
+	}
+	var res pluginv1.LogSinkPushResponse
+	if err = proto.Unmarshal(out, &res); err != nil {
+		return 0, 0, fmt.Errorf("decode the answer: %w", err)
+	}
+	return res.GetAccepted(), res.GetRejected(), nil
 }
 
 // isAddressOrNetwork reports whether value is an IP address or a CIDR
