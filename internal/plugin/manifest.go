@@ -53,6 +53,7 @@ var knownCapabilities = []string{
 	protocol.CapabilityCertDeploy,
 	protocol.CapabilitySecurityBlocklist,
 	protocol.CapabilityUpstreamDiscovery,
+	protocol.CapabilityLogSink,
 }
 
 // knownPermissions lists the fixed permission names. Credential permissions
@@ -66,7 +67,11 @@ var knownPermissions = []string{
 	protocol.PermissionCoreAPI,
 	protocol.PermissionMCP,
 	protocol.PermissionCertDeploy,
+	protocol.PermissionLogRead,
 }
+
+// knownLogFormats lists the line formats a log.sink plugin may ask for.
+var knownLogFormats = []string{protocol.LogFormatCombined, protocol.LogFormatRaw}
 
 // knownSettingsTypes lists the field types the settings form can render.
 var knownSettingsTypes = []string{"text", "bool", "number", "select", "secret", "textarea"}
@@ -184,6 +189,9 @@ func validateServer(s *protocol.ManifestServer) error {
 	}
 	if s.IdleTimeoutSeconds < 0 {
 		return invalidManifest("server.idle_timeout_seconds must not be negative")
+	}
+	if r := s.Resources; r != nil && (r.MemoryMB < 0 || r.CPUPercent < 0) {
+		return invalidManifest("server.resources must not be negative")
 	}
 	for platform, rel := range s.Executables {
 		if !isSafeRelPath(rel) {
@@ -312,7 +320,42 @@ func validateCapabilities(m *protocol.Manifest) error {
 			return err
 		}
 	}
+	if _, ok := seen[protocol.CapabilityLogSink]; ok && !slices.Contains(m.Permissions, protocol.PermissionLogRead) {
+		return invalidManifest("capability log.sink requires the %s permission", protocol.PermissionLogRead)
+	}
+	return validateLogSink(m.LogSink)
+}
+
+// validateLogSink checks the optional log_sink block (MAN-38).
+func validateLogSink(l *protocol.ManifestLogSink) error {
+	if l == nil {
+		return nil
+	}
+	if !validLogSinkBatchSize(l.BatchSize) {
+		return invalidManifest("log_sink.batch_size must be between 0 and %d", protocol.MaxLogSinkBatchSize)
+	}
+	if !validLogSinkFlushInterval(l.FlushIntervalMS) {
+		return invalidManifest("log_sink.flush_interval_ms must be 0 or at least %d", protocol.MinLogSinkFlushIntervalMS)
+	}
+	seen := make(map[string]struct{}, len(l.Formats))
+	for _, format := range l.Formats {
+		if !slices.Contains(knownLogFormats, format) {
+			return invalidManifest("log_sink.formats: unknown format %q", format)
+		}
+		if _, dup := seen[format]; dup {
+			return invalidManifest("log_sink.formats: %q is listed twice", format)
+		}
+		seen[format] = struct{}{}
+	}
 	return nil
+}
+
+func validLogSinkBatchSize(size int) bool {
+	return size >= 0 && size <= protocol.MaxLogSinkBatchSize
+}
+
+func validLogSinkFlushInterval(ms int) bool {
+	return ms == 0 || ms >= protocol.MinLogSinkFlushIntervalMS
 }
 
 func validateBlocklist(m *protocol.Manifest) error {

@@ -58,6 +58,15 @@ export interface PluginManifestServer {
   command?: string[]
   lifecycle?: PluginLifecycle
   idle_timeout_seconds?: number
+  /** Resource hints, capped by the limits of the host. */
+  resources?: PluginManifestResources
+}
+
+export interface PluginManifestResources {
+  /** Memory in MiB, 0 means no hint. */
+  memory_mb?: number
+  /** CPU time in percent of one core, 0 means no hint. */
+  cpu_percent?: number
 }
 
 export interface PluginManifestPage {
@@ -211,6 +220,18 @@ export interface PluginManifestDiscovery {
   providers: ManifestDiscoveryProvider[]
 }
 
+/** Line formats a log.sink plugin may ask for. */
+export type LogSinkFormat = 'combined' | 'raw'
+
+export interface PluginManifestLogSink {
+  /** Most entries of one stream, 0 means 256. */
+  batch_size?: number
+  /** Longest time a stream stays open in milliseconds, 0 means 500. */
+  flush_interval_ms?: number
+  /** Formats the plugin wants, empty means every line. */
+  formats?: LogSinkFormat[]
+}
+
 export interface PluginManifest {
   id: string
   name: string
@@ -240,6 +261,7 @@ export interface PluginManifest {
   deploy?: PluginManifestDeploy
   blocklist?: PluginManifestBlocklist
   discovery?: PluginManifestDiscovery
+  log_sink?: PluginManifestLogSink
 }
 
 export interface PluginInfo {
@@ -268,6 +290,24 @@ export interface PluginInfo {
   updated_at?: string
   /** Transport of capability calls, absent while no process is running. */
   transport?: PluginTransport
+  dropped_events?: number
+  /** Access log lines a log.sink plugin accepted since the host started. */
+  streamed_log_entries?: number
+  /** Access log lines a log.sink plugin received and discarded. */
+  rejected_log_entries?: number
+  /** Access log lines the host dropped before they reached the plugin. */
+  dropped_log_entries?: number
+  /** Limits of the plugin process, absent for a plugin without one. */
+  resources?: PluginResources
+}
+
+export interface PluginResources {
+  /** Memory limit in MiB, 0 when unlimited. */
+  memory_limit_mb: number
+  /** CPU limit in percent of one core, 0 when unlimited. */
+  cpu_percent: number
+  /** Whether the running process is confined to the limits. */
+  enforced: boolean
 }
 
 export interface PluginInspect {

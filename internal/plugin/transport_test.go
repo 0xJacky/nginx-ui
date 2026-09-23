@@ -41,11 +41,13 @@ var testPluginGRPC struct {
 	mu     sync.Mutex
 	server *grpc.Server
 	calls  atomic.Int64
+	// logEntries counts the log.push entries the plugin accepted.
+	logEntries atomic.Int64
 }
 
 func isGRPCMode(mode string) bool {
 	return mode == pluginModeGRPC || mode == pluginModeGRPCDefault || mode == pluginModeGRPCBroken ||
-		mode == pluginModeAllCaps
+		mode == pluginModeAllCaps || mode == pluginModeLogSink
 }
 
 // extendTestInitialize opens the gRPC listener of the gRPC modes and
@@ -85,7 +87,7 @@ func startTestGRPC(socket string) bool {
 	if err != nil {
 		return false
 	}
-	server := bridgetest.NewServer(func(_ context.Context, method string, params json.RawMessage) (any, error) {
+	server := bridgetest.NewStreamServer(func(_ context.Context, method string, params json.RawMessage) (any, error) {
 		testPluginGRPC.calls.Add(1)
 		if method == protocol.MethodPing {
 			return protocol.EmptyResult{}, nil
@@ -94,7 +96,7 @@ func startTestGRPC(socket string) bool {
 			return result, err
 		}
 		return nil, &protocol.Error{Code: protocol.CodeMethodNotFound, Message: "unknown method " + method}
-	})
+	}, testPluginLogPush)
 	testPluginGRPC.mu.Lock()
 	testPluginGRPC.server = server
 	testPluginGRPC.mu.Unlock()
@@ -129,6 +131,8 @@ func handleTestPluginMethod(mode, method string, params json.RawMessage) (any, e
 	switch method {
 	case testMethodGRPCCalls:
 		return map[string]int64{"calls": testPluginGRPC.calls.Load()}, nil, true
+	case testMethodLogEntries:
+		return map[string]int64{"entries": testPluginGRPC.logEntries.Load()}, nil, true
 	case testMethodGRPCStop:
 		testPluginGRPC.mu.Lock()
 		server := testPluginGRPC.server
@@ -295,7 +299,7 @@ func TestConformanceRunsBothTransports(t *testing.T) {
 	defer cancel()
 
 	// The default runs both transports when the plugin advertises gRPC.
-	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 50 * time.Second})
+	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 50 * time.Second, HandshakeTimeout: testHandshakeTimeout})
 	require.NoError(t, err)
 	assert.True(t, report.Passed(), "%+v", report.Cases)
 
@@ -320,7 +324,7 @@ func TestConformanceRunsBothTransports(t *testing.T) {
 	assert.False(t, stdioOnly, "notifications are a stdio case")
 
 	// Asking for one transport runs only that one.
-	report, err = Conformance(ctx, dir, ConformanceOptions{Timeout: 50 * time.Second, Transport: TransportFlagStdio})
+	report, err = Conformance(ctx, dir, ConformanceOptions{Timeout: 50 * time.Second, Transport: TransportFlagStdio, HandshakeTimeout: testHandshakeTimeout})
 	require.NoError(t, err)
 	assert.True(t, report.Passed(), "%+v", report.Cases)
 	for _, c := range report.Cases {
@@ -338,7 +342,7 @@ func TestConformanceFailsGRPCForAStdioPlugin(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 25 * time.Second, Transport: TransportFlagGRPC})
+	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 25 * time.Second, Transport: TransportFlagGRPC, HandshakeTimeout: testHandshakeTimeout})
 	require.NoError(t, err)
 	assert.False(t, report.Passed())
 	c, ok := casesByKey(report)["grpc|WIRE-11:grpc transport"]
@@ -346,7 +350,7 @@ func TestConformanceFailsGRPCForAStdioPlugin(t *testing.T) {
 	assert.Equal(t, StatusFail, c.Status)
 
 	// Without an explicit request a stdio plugin only runs the stdio cases.
-	report, err = Conformance(ctx, dir, ConformanceOptions{Timeout: 25 * time.Second})
+	report, err = Conformance(ctx, dir, ConformanceOptions{Timeout: 25 * time.Second, HandshakeTimeout: testHandshakeTimeout})
 	require.NoError(t, err)
 	assert.True(t, report.Passed(), "%+v", report.Cases)
 	for _, c := range report.Cases {

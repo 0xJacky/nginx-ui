@@ -264,9 +264,9 @@ func CheckAndCleanupOTA() {
 }
 
 // initPluginCapabilities connects the plugin manager to the core registries
-// that accept plugin provided implementations, starts pushing issued
-// certificates to their deploy targets and starts refreshing the generated
-// blocklists and upstreams.
+// that accept plugin provided implementations and to the access log feed,
+// starts pushing issued certificates to their deploy targets and starts
+// refreshing the generated blocklists and upstreams.
 func initPluginCapabilities(ctx context.Context) {
 	manager := plugin.GetManager()
 	capability.RegisterDNS01(manager)
@@ -278,6 +278,7 @@ func initPluginCapabilities(ctx context.Context) {
 	capability.RegisterBlocklist(manager)
 	capability.RegisterDiscovery(manager)
 	capability.RegisterContent(manager)
+	capability.RegisterLogSink(manager)
 	certdeploy.Start(ctx)
 	blocklist.Start(ctx)
 	discovery.Start(ctx)
