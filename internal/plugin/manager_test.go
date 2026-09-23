@@ -193,6 +193,43 @@ func TestManagerDiscoveryAlignsTheDatabase(t *testing.T) {
 	assert.Len(t, rows, 3)
 }
 
+func TestInfoAndInspectCarryTranslations(t *testing.T) {
+	m := newTestManager(t)
+	ctx := context.Background()
+
+	manifest := pluginManifest("official.alpha")
+	manifest.Description = "Alpha plugin"
+	manifest.I18n = map[string]protocol.ManifestI18n{
+		"zh_CN": {Name: "阿尔法", Description: "阿尔法插件"},
+		"ja_JP": {Name: "アルファ"},
+		"zh_TW": {},
+	}
+	writePluginDir(t, filepath.Join(m.Dir(), "official.alpha"), manifest)
+	writePluginDir(t, filepath.Join(m.Dir(), "official.beta"), pluginManifest("official.beta"))
+	require.NoError(t, m.LoadOffline(ctx))
+
+	infos := m.List()
+	alpha, ok := infoOfID(infos, "official.alpha")
+	require.True(t, ok)
+	assert.Equal(t, "official.alpha", alpha.Name)
+	assert.Equal(t, map[string]string{"zh_CN": "阿尔法", "ja_JP": "アルファ"}, alpha.NameI18n)
+	assert.Equal(t, map[string]string{"zh_CN": "阿尔法插件"}, alpha.DescriptionI18n)
+
+	// Without translations the fields stay out of the JSON.
+	beta, ok := infoOfID(infos, "official.beta")
+	require.True(t, ok)
+	encoded, err := json.Marshal(beta)
+	require.NoError(t, err)
+	assert.NotContains(t, string(encoded), "name_i18n")
+	assert.NotContains(t, string(encoded), "description_i18n")
+
+	result, err := m.Inspect(buildTestPackage(t, manifest, nil))
+	require.NoError(t, err)
+	assert.Equal(t, alpha.NameI18n, result.NameI18n)
+	assert.Equal(t, alpha.DescriptionI18n, result.DescriptionI18n)
+	assert.Equal(t, manifest.I18n, result.Manifest.I18n)
+}
+
 func TestManagerInstallEnableDisableUninstall(t *testing.T) {
 	usePluginProcesses(t, pluginModeNormal)
 	m := newTestManager(t)

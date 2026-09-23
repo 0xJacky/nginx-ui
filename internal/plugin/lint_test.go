@@ -157,6 +157,33 @@ func TestLintBadIDIsError(t *testing.T) {
 	assertHasFinding(t, report, LevelError, "MAN-2")
 }
 
+func TestLintI18nLocales(t *testing.T) {
+	m := goodManifest()
+	m.I18n = map[string]protocol.ManifestI18n{
+		"zh_CN": {Name: "MyDNS 验证"},
+		"ja_JP": {Description: "MyDNS で検証する"},
+	}
+	report, err := Lint(writeLintFixture(t, lintFixture{manifest: m}))
+	require.NoError(t, err)
+	assert.Empty(t, report.Findings, "%+v", report.Findings)
+
+	m.I18n["zh"] = protocol.ManifestI18n{Name: "MyDNS"}
+	m.I18n["pt-BR"] = protocol.ManifestI18n{Name: "MyDNS"}
+	report, err = Lint(writeLintFixture(t, lintFixture{manifest: m}))
+	require.NoError(t, err)
+	assert.True(t, report.HasErrors())
+	var locales []string
+	for _, f := range report.Findings {
+		if f.Rule == "MAN-40" {
+			assert.Equal(t, LevelError, f.Level)
+			locales = append(locales, f.Message)
+		}
+	}
+	require.Len(t, locales, 2)
+	assert.Contains(t, locales[0], `"pt-BR"`)
+	assert.Contains(t, locales[1], `"zh"`)
+}
+
 func TestLintReservedNamespaceWarns(t *testing.T) {
 	m := goodManifest()
 	m.ID = "com.nginxui.example"

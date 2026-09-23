@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { PluginInfo } from '@/api/plugin'
+import { localizedPluginName } from '@/api/plugin'
+import gettext from '@/gettext'
 import PermissionList from './PermissionList.vue'
 
 const props = defineProps<{
@@ -14,6 +16,7 @@ const emit = defineEmits<{
 const open = defineModel<boolean>('open', { default: false })
 
 const permissions = computed(() => props.plugin?.permissions ?? [])
+const name = computed(() => (props.plugin ? localizedPluginName(props.plugin, gettext.current) : ''))
 </script>
 
 <template>
@@ -30,7 +33,7 @@ const permissions = computed(() => props.plugin?.permissions ?? [])
       type="warning"
       show-icon
       class="mb-4"
-      :title="$gettext('%{name} needs your approval before it can run.', { name: props.plugin?.name ?? '' })"
+      :title="$gettext('%{name} needs your approval before it can run.', { name })"
       :description="$gettext('Approve only if you trust the author. The approval is recorded and asked again whenever the requested permissions change.')"
     />
 

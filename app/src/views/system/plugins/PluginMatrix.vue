@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import type { PluginMatrix, PluginMatrixCell, PluginMatrixNode, PluginMatrixRow, PluginSyncState } from '@/api/plugin_sync'
 import { CloudServerOutlined, MoreOutlined, ReloadOutlined } from '@antdv-next/icons'
+import { localizedPluginName } from '@/api/plugin'
 import { getMatrix, syncPlugin } from '@/api/plugin_sync'
+import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
+import { usePluginInventory } from './inventory'
 
 const { message } = useGlobalApp()
+const inventory = usePluginInventory()
 
 const loading = ref(false)
 const syncingKey = ref('')
@@ -63,6 +67,15 @@ const summary = computed(() => {
     failing: cells.filter(cell => cell.state === 'error' || cell.state === 'offline').length,
   }
 })
+
+// A row lists a plugin of this node, so its translations come from the
+// installed list.
+const installedById = computed(() => new Map(inventory.plugins.value.map(item => [item.id, item])))
+
+function rowName(row: PluginMatrixRow) {
+  const installed = installedById.value.get(row.plugin_id)
+  return installed ? localizedPluginName(installed, gettext.current) : row.name
+}
 
 function nodeIdOf(dataIndex: string) {
   return Number(dataIndex.slice('node:'.length))
@@ -247,7 +260,7 @@ onMounted(() => load())
         <template v-if="column.dataIndex === 'plugin'">
           <div class="min-w-0">
             <div class="flex items-center gap-2">
-              <span class="truncate font-medium">{{ record.name }}</span>
+              <span class="truncate font-medium">{{ rowName(record) }}</span>
               <span class="matrix-version">v{{ record.version }}</span>
             </div>
             <div class="matrix-plugin-meta">
