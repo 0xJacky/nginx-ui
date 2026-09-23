@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"maps"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -28,6 +29,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 )
 
 // Level is the severity of one Finding.
@@ -106,6 +108,7 @@ func Lint(path string) (*LintReport, error) {
 	}
 
 	lintIdentity(manifest, report)
+	lintI18n(manifest.I18n, report)
 	if archiveName != "" {
 		lintPackageName(archiveName, manifest, report)
 	}
@@ -160,6 +163,17 @@ func lintIdentity(m *protocol.Manifest, report *LintReport) {
 
 	if m.IconPath != "" && !isSafeRelPath(m.IconPath) {
 		report.add(LevelError, "MAN-8", "icon_path %q must be a safe relative path", m.IconPath)
+	}
+}
+
+// lintI18n checks that every key of the i18n block is a language of the
+// host (MAN-40).
+func lintI18n(i18n map[string]protocol.ManifestI18n, report *LintReport) {
+	for _, locale := range slices.Sorted(maps.Keys(i18n)) {
+		if !translation.IsLanguage(locale) {
+			report.add(LevelError, "MAN-40", "i18n: %q is not a language of the host (%s)",
+				locale, strings.Join(translation.Languages(), ", "))
+		}
 	}
 }
 

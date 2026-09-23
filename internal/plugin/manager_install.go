@@ -51,6 +51,7 @@ func (m *Manager) Inspect(archivePath string) (*InspectResult, error) {
 	if result.Permissions == nil {
 		result.Permissions = []string{}
 	}
+	result.NameI18n, result.DescriptionI18n = i18nMaps(manifest)
 
 	if item, ok := m.lookup(manifest.ID); ok {
 		m.mu.RLock()

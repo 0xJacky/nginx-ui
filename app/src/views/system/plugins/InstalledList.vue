@@ -2,7 +2,8 @@
 import type { InstalledFilter, PluginDrawerTab } from './presets'
 import type { PluginInfo } from '@/api/plugin'
 import { AppstoreOutlined, ReloadOutlined, SearchOutlined, ShopOutlined, UploadOutlined } from '@antdv-next/icons'
-import pluginApi from '@/api/plugin'
+import pluginApi, { localizedPluginName } from '@/api/plugin'
+import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { usePluginLoader } from '@/plugin'
 import InstalledPluginCard from './InstalledPluginCard.vue'
@@ -156,7 +157,7 @@ async function approvePermissions() {
 
 function confirmUninstall(plugin: PluginInfo) {
   modal.confirm({
-    title: $gettext('Uninstall %{name}?', { name: plugin.name }),
+    title: $gettext('Uninstall %{name}?', { name: localizedPluginName(plugin, gettext.current) }),
     content: $gettext('Its files, data and settings are removed from this node. Other nodes are not touched.'),
     okText: $gettext('Uninstall'),
     okButtonProps: { danger: true },

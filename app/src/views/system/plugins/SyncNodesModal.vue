@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { PluginInfo } from '@/api/plugin'
 import type { PluginNodeResult } from '@/api/plugin_sync'
+import { localizedPluginName } from '@/api/plugin'
 import { syncPlugin } from '@/api/plugin_sync'
 import NodeSelector from '@/components/NodeSelector'
+import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import SyncResultList from './SyncResultList.vue'
 
@@ -18,6 +20,7 @@ const open = defineModel<boolean>('open', { default: false })
 
 const { message } = useGlobalApp()
 
+const name = computed(() => (props.plugin ? localizedPluginName(props.plugin, gettext.current) : ''))
 const syncing = ref(false)
 const nodeIds = ref<number[]>([])
 const results = ref<PluginNodeResult[]>([])
@@ -58,7 +61,7 @@ watch(open, value => {
 <template>
   <AModal
     v-model:open="open"
-    :title="$gettext('Sync %{name} to nodes', { name: props.plugin?.name ?? '' })"
+    :title="$gettext('Sync %{name} to nodes', { name })"
     :width="640"
     :ok-text="$gettext('Sync')"
     :cancel-text="$gettext('Close')"

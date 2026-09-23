@@ -3,6 +3,8 @@ import type { PluginDrawerTab } from './presets'
 import type { PluginInfo } from '@/api/plugin'
 import { CloudSyncOutlined, DeleteOutlined, LinkOutlined } from '@antdv-next/icons'
 import { useWindowSize } from '@vueuse/core'
+import { localizedPluginDescription, localizedPluginName } from '@/api/plugin'
+import gettext from '@/gettext'
 import { formatDateTime } from '@/lib/helper'
 import LogsPanel from './LogsPanel.vue'
 import PermissionList from './PermissionList.vue'
@@ -31,6 +33,8 @@ const { width: windowWidth } = useWindowSize()
 // A phone gets the whole screen instead of an unusable sliver.
 const drawerSize = computed(() => Math.min(760, windowWidth.value))
 
+const name = computed(() => (props.plugin ? localizedPluginName(props.plugin, gettext.current) : ''))
+const description = computed(() => (props.plugin ? localizedPluginDescription(props.plugin, gettext.current) : ''))
 const status = computed(() => (props.plugin ? statusOf(props.plugin) : undefined))
 const toggleDisabled = computed(() => (props.plugin ? isToggleDisabled(props.plugin) : true))
 
@@ -98,7 +102,7 @@ const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
         <PluginIcon :src="props.plugin.icon_url" :size="36" />
         <div class="min-w-0">
           <div class="flex items-center gap-2">
-            <span class="truncate font-semibold">{{ props.plugin.name }}</span>
+            <span class="truncate font-semibold">{{ name }}</span>
             <span class="drawer-version">v{{ props.plugin.version }}</span>
           </div>
           <div class="drawer-id truncate">
@@ -141,8 +145,8 @@ const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
             :description="$gettext('Turn it on to review the requested permissions.')"
           />
 
-          <p v-if="props.plugin.description" class="drawer-description">
-            {{ props.plugin.description }}
+          <p v-if="description" class="drawer-description">
+            {{ description }}
           </p>
 
           <ADescriptions

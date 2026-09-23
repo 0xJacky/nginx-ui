@@ -3,6 +3,12 @@
   "name": {{json .Name}},
   "version": "0.1.0",
   "description": {{json (printf "%s DNS-01 challenge plugin" .Name)}},
+  "i18n": {
+    "zh_CN": {
+      "name": {{json .Name}},
+      "description": {{json (printf "%s DNS-01 验证插件" .Name)}}
+    }
+  },
   "api_version": 1,
   "server": {
     "command": ["python3", "server/main.py"],

@@ -232,11 +232,19 @@ export interface PluginManifestLogSink {
   formats?: LogSinkFormat[]
 }
 
+/** Translation of the display fields of a manifest into one language. */
+export interface PluginManifestI18n {
+  name?: string
+  description?: string
+}
+
 export interface PluginManifest {
   id: string
   name: string
   version: string
   description?: string
+  /** Locale code to the translated name and description, see spec MAN-40. */
+  i18n?: Record<string, PluginManifestI18n>
   homepage_url?: string
   icon_path?: string
   api_version: number
@@ -299,6 +307,10 @@ export interface PluginInfo {
   dropped_log_entries?: number
   /** Limits of the plugin process, absent for a plugin without one. */
   resources?: PluginResources
+  /** Locale code to translated name, `name` is the fallback. */
+  name_i18n?: Record<string, string>
+  /** Locale code to translated description, `description` is the fallback. */
+  description_i18n?: Record<string, string>
 }
 
 export interface PluginResources {
@@ -323,6 +335,10 @@ export interface PluginInspect {
   host_platform?: string
   /** Whether the package runs on this node. */
   platform_supported?: boolean
+  /** Locale code to translated name, taken from `manifest.i18n`. */
+  name_i18n?: Record<string, string>
+  /** Locale code to translated description, taken from `manifest.i18n`. */
+  description_i18n?: Record<string, string>
 }
 
 export interface PluginSettingsResponse {
@@ -362,6 +378,64 @@ export interface PluginSpec {
   transports: string[]
   /** "<goos>-<goarch>" a package must cover to run on this node. */
   platform?: string
+}
+
+/**
+ * Picks the value for a language: the exact locale, then its base language,
+ * then English, then the fallback, then any other translation.
+ */
+export function localizedText(values: Record<string, string> | undefined, language: string, fallback = ''): string {
+  const base = language.split(/[-_]/)[0]
+  for (const candidate of [language, base, 'en']) {
+    const value = values?.[candidate]
+    if (value)
+      return value
+  }
+  if (fallback)
+    return fallback
+
+  return Object.values(values ?? {}).find(Boolean) ?? ''
+}
+
+/**
+ * The display fields of an installed plugin (`PluginInfo`) or of a manifest
+ * (`PluginManifest`), whichever carries the translations.
+ */
+export interface LocalizablePlugin {
+  name: string
+  description?: string
+  name_i18n?: Record<string, string>
+  description_i18n?: Record<string, string>
+  i18n?: Record<string, PluginManifestI18n>
+}
+
+type LocalizedField = 'name' | 'description'
+
+/** Non-empty translations of one field, from either shape. */
+function translationsOf(plugin: LocalizablePlugin, field: LocalizedField): Record<string, string> {
+  const values: Record<string, string> = {}
+  for (const [locale, translated] of Object.entries(plugin.i18n ?? {})) {
+    const value = translated?.[field]
+    if (value)
+      values[locale] = value
+  }
+
+  const flat = field === 'name' ? plugin.name_i18n : plugin.description_i18n
+  for (const [locale, value] of Object.entries(flat ?? {})) {
+    if (value)
+      values[locale] = value
+  }
+  return values
+}
+
+/** Display name of a plugin in the given language, the manifest name as fallback. */
+export function localizedPluginName(plugin: LocalizablePlugin, language: string): string {
+  return localizedText(translationsOf(plugin, 'name'), language, plugin.name)
+}
+
+/** Description of a plugin in the given language, the manifest description as fallback. */
+export function localizedPluginDescription(plugin: LocalizablePlugin, language: string): string {
+  return localizedText(translationsOf(plugin, 'description'), language, plugin.description ?? '')
 }
 
 const multipartHeaders = {

@@ -1,5 +1,6 @@
 import type { PluginInfo, PluginManifest } from '@/api/plugin'
 import { http } from '@uozi-admin/request'
+import { localizedText } from '@/api/plugin'
 
 /** How much the node trusts the publisher of a catalog entry. */
 export type PluginTrust = 'official' | 'verified' | 'community'
@@ -207,27 +208,10 @@ export function releasePlatforms(release: CatalogRelease): string[] {
 
 /** Display name of a catalog entry in the active language, English fallback. */
 export function catalogEntryName(entry: CatalogEntry, language: string): string {
-  return localized(entry.name, language) || entry.id
+  return localizedText(entry.name, language) || entry.id
 }
 
 /** Description of a catalog entry in the active language, English fallback. */
 export function catalogEntryDescription(entry: CatalogEntry, language: string): string {
-  return localized(entry.description, language)
-}
-
-function localized(values: Record<string, string> | undefined, language: string): string {
-  if (!values)
-    return ''
-
-  // Exact locale, then the base language, then English, then anything.
-  const base = language.split(/[-_]/)[0]
-  const candidates = [language, base, 'en']
-  for (const candidate of candidates) {
-    const value = values[candidate]
-    if (value)
-      return value
-  }
-
-  const first = Object.values(values).find(Boolean)
-  return first ?? ''
+  return localizedText(entry.description, language)
 }

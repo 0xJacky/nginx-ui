@@ -98,6 +98,12 @@ func TestValidateManifest(t *testing.T) {
 		{"version with v prefix", func(m *protocol.Manifest) { m.Version = "v1.2.3" }, "semantic version"},
 		{"missing api version", func(m *protocol.Manifest) { m.APIVersion = 0 }, "api_version is required"},
 		{"absolute icon path", func(m *protocol.Manifest) { m.IconPath = "/etc/passwd" }, "relative path"},
+		{"unknown i18n locale", func(m *protocol.Manifest) {
+			m.I18n = map[string]protocol.ManifestI18n{"zh_CN": {Name: "Cloudflare"}, "klingon": {Name: "Cloudflare"}}
+		}, `i18n: "klingon" is not a language of the host`},
+		{"i18n locale in another spelling", func(m *protocol.Manifest) {
+			m.I18n = map[string]protocol.ManifestI18n{"zh-CN": {Name: "Cloudflare"}}
+		}, `i18n: "zh-CN"`},
 		{"nothing to contribute", func(m *protocol.Manifest) { m.Server = nil }, "at least one of server"},
 		{"unknown lifecycle", func(m *protocol.Manifest) { m.Server.Lifecycle = "forever" }, "server.lifecycle"},
 		{"escaping executable", func(m *protocol.Manifest) {
@@ -155,6 +161,37 @@ func TestValidateManifest(t *testing.T) {
 			assert.Contains(t, err.Error(), tc.reason)
 		})
 	}
+}
+
+func TestValidateManifestAcceptsI18n(t *testing.T) {
+	m := validManifest()
+	m.I18n = map[string]protocol.ManifestI18n{
+		"en":    {Name: "Cloudflare"},
+		"zh_CN": {Name: "Cloudflare 验证", Description: "通过 Cloudflare 完成验证"},
+		"ja_JP": {Description: "Cloudflare で検証する"},
+		"zh_TW": {},
+	}
+	assert.NoError(t, ValidateManifest(m))
+}
+
+func TestI18nMaps(t *testing.T) {
+	names, descriptions := i18nMaps(validManifest())
+	assert.Nil(t, names)
+	assert.Nil(t, descriptions)
+
+	m := validManifest()
+	m.I18n = map[string]protocol.ManifestI18n{
+		"zh_CN": {Name: "名称", Description: "描述"},
+		"ja_JP": {Description: "説明"},
+		"zh_TW": {},
+	}
+	names, descriptions = i18nMaps(m)
+	assert.Equal(t, map[string]string{"zh_CN": "名称"}, names)
+	assert.Equal(t, map[string]string{"zh_CN": "描述", "ja_JP": "説明"}, descriptions)
+
+	names, descriptions = i18nMaps(nil)
+	assert.Nil(t, names)
+	assert.Nil(t, descriptions)
 }
 
 func TestValidateManifestAcceptsHTTPAndWebapp(t *testing.T) {

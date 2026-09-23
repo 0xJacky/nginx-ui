@@ -11,6 +11,10 @@ type Manifest struct {
 	APIVersion        int    `json:"api_version"`
 	MinNginxUIVersion string `json:"min_nginx_ui_version,omitempty"`
 
+	// I18n translates Name and Description, keyed by host locale code. The
+	// top level fields stay the fallback.
+	I18n map[string]ManifestI18n `json:"i18n,omitempty"`
+
 	Server  *ManifestServer  `json:"server,omitempty"`
 	Webapp  *ManifestWebapp  `json:"webapp,omitempty"`
 	Content *ManifestContent `json:"content,omitempty"`
@@ -34,6 +38,13 @@ type Manifest struct {
 	Blocklist      *ManifestBlocklist `json:"blocklist,omitempty"`
 	Discovery      *ManifestDiscovery `json:"discovery,omitempty"`
 	LogSink        *ManifestLogSink   `json:"log_sink,omitempty"`
+}
+
+// ManifestI18n translates the display fields of a manifest into one
+// language. An empty string means no translation for that field.
+type ManifestI18n struct {
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
 }
 
 // ManifestServer describes how to start the plugin process.

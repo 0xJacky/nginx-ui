@@ -117,6 +117,7 @@ var alignments = []alignment{
 
 	// manifest.go
 	{reflect.TypeFor[protocol.Manifest](), "Manifest"},
+	{reflect.TypeFor[protocol.ManifestI18n](), "ManifestI18n"},
 	{reflect.TypeFor[protocol.ManifestServer](), "ManifestServer"},
 	{reflect.TypeFor[protocol.ManifestResources](), "ManifestResources"},
 	{reflect.TypeFor[protocol.ManifestWebapp](), "ManifestWebapp"},
