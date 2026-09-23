@@ -93,6 +93,9 @@ type SupervisorConfig struct {
 	Permissions []string
 	// Lifecycle overrides the manifest lifecycle when it is not empty.
 	Lifecycle string
+	// HandshakeTimeout replaces the default when positive. Test binaries
+	// built with the race detector need far longer than a real plugin.
+	HandshakeTimeout time.Duration
 	// IdleTimeout applies to on_demand plugins only.
 	IdleTimeout time.Duration
 	// OnStateChange is called outside the internal lock on every transition.
@@ -171,12 +174,16 @@ func NewSupervisor(cfg SupervisorConfig) *Supervisor {
 			idle = defaultIdleTimeout
 		}
 	}
+	handshakeTimeout := defaultHandshakeTimeout
+	if cfg.HandshakeTimeout > 0 {
+		handshakeTimeout = cfg.HandshakeTimeout
+	}
 	return &Supervisor{
 		cfg:              cfg,
 		log:              log,
 		state:            StateStopped,
 		ring:             newLogRing(stderrRingSize),
-		handshakeTimeout: defaultHandshakeTimeout,
+		handshakeTimeout: handshakeTimeout,
 		callTimeout:      defaultCallTimeout,
 		pingInterval:     defaultPingInterval,
 		pingTimeout:      defaultPingTimeout,
