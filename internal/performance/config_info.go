@@ -114,25 +114,25 @@ func GetNginxWorkerConfigInfo() (*NginxConfigInfo, error) {
 	}
 
 	// Parse client_max_body_size with any unit (k, m, g)
-	cmaxRe := regexp.MustCompile(`client_max_body_size\s+(\d+[kmg]?);`)
+	cmaxRe := regexp.MustCompile(`client_max_body_size\s+(\d+[kmgKMG]?);`)
 	if matches := cmaxRe.FindStringSubmatch(outputStr); len(matches) > 1 {
 		result.ClientMaxBodySize = matches[1]
 	}
 
 	// Parse server_names_hash_bucket_size
-	hashRe := regexp.MustCompile(`server_names_hash_bucket_size\s+(\d+[kmg]?);`)
+	hashRe := regexp.MustCompile(`server_names_hash_bucket_size\s+(\d+[kmgKMG]?);`)
 	if matches := hashRe.FindStringSubmatch(outputStr); len(matches) > 1 {
 		result.ServerNamesHashBucketSize = matches[1]
 	}
 
 	// Parse client_header_buffer_size with any unit (k, m, g)
-	headerRe := regexp.MustCompile(`client_header_buffer_size\s+(\d+[kmg]?);`)
+	headerRe := regexp.MustCompile(`client_header_buffer_size\s+(\d+[kmgKMG]?);`)
 	if matches := headerRe.FindStringSubmatch(outputStr); len(matches) > 1 {
 		result.ClientHeaderBufferSize = matches[1]
 	}
 
 	// Parse client_body_buffer_size with any unit (k, m, g)
-	bodyRe := regexp.MustCompile(`client_body_buffer_size\s+(\d+[kmg]?);`)
+	bodyRe := regexp.MustCompile(`client_body_buffer_size\s+(\d+[kmgKMG]?);`)
 	if matches := bodyRe.FindStringSubmatch(outputStr); len(matches) > 1 {
 		result.ClientBodyBufferSize = matches[1]
 	}
