@@ -35,9 +35,8 @@ const { processingStatus } = storeToRefs(globalStore)
 <template>
   <div>
     <AButton
-      type="primary"
-      ghost
-      class="mb-6"
+      type="default"
+      class="mb-6 renew-warning-btn"
       :disabled="processingStatus.auto_cert_processing"
       @click="issueCert"
     >
@@ -53,3 +52,27 @@ const { processingStatus } = storeToRefs(globalStore)
     />
   </div>
 </template>
+
+<style scoped lang="less">
+.renew-warning-btn {
+  color: #ffd666;
+  border-color: #ffd666;
+
+  &:hover,
+  &:focus {
+    color: #ffc53d;
+    border-color: #ffc53d;
+  }
+
+  &:active {
+    color: #faad14;
+    border-color: #faad14;
+  }
+}
+
+.renew-warning-btn.ant-btn[disabled],
+.renew-warning-btn.ant-btn-disabled {
+  color: rgb(0 0 0 / 40%);
+  border-color: #ffe7ba;
+}
+</style>

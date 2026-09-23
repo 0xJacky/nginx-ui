@@ -3,6 +3,15 @@ import type { AcmeUser } from '@/api/acme_user'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import acme_user from '@/api/acme_user'
 
+const props = withDefaults(defineProps<{
+  compact?: boolean
+}>(), {
+  compact: false,
+})
+
+const compactLabelCol = { flex: '170px' }
+const compactWrapperCol = { flex: 'auto' }
+
 const data = defineModel<AutoCertOptions>('options', {
   required: true,
 })
@@ -59,7 +68,12 @@ const value = computed({
 </script>
 
 <template>
-  <AForm layout="vertical">
+  <AForm
+    :layout="props.compact ? 'horizontal' : 'vertical'"
+    :label-align="props.compact ? 'left' : undefined"
+    :label-col="props.compact ? compactLabelCol : undefined"
+    :wrapper-col="props.compact ? compactWrapperCol : undefined"
+  >
     <AFormItem :label="$gettext('ACME User')">
       <ASelect
         v-model:value="value"

@@ -4,6 +4,7 @@ import { DownloadOutlined } from '@antdv-next/icons'
 
 interface Props {
   data: Cert
+  inline?: boolean
 }
 
 const props = defineProps<Props>()
@@ -81,10 +82,11 @@ async function downloadCertificateFiles() {
 </script>
 
 <template>
-  <div v-if="canDownloadCertificates" class="certificate-download">
+  <div v-if="canDownloadCertificates" :class="['certificate-download', { 'is-inline': inline }]">
     <AButton
       type="primary"
-      size="small"
+      ghost
+      size="middle"
       :loading="isDownloading"
       @click="downloadCertificateFiles"
     >
@@ -99,5 +101,9 @@ async function downloadCertificateFiles() {
 <style scoped lang="less">
 .certificate-download {
   margin-bottom: 12px;
+}
+
+.certificate-download.is-inline {
+  margin-bottom: 0;
 }
 </style>

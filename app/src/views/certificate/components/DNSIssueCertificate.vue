@@ -126,7 +126,9 @@ function issueCert() {
       message.success($gettext('Issued successfully'))
       emit('issued')
     })
-    .catch(() => {
+    .catch((error: unknown) => {
+      const detail = error instanceof Error ? error.message : String(error)
+      message.error(detail || $gettext('Fail to obtain certificate'))
       errored.value = true
     })
 }
