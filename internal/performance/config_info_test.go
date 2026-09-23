@@ -142,6 +142,47 @@ func TestGetNginxWorkerConfigInfo_DebianGzipBlock(t *testing.T) {
 	}
 }
 
+// uppercaseSizeUnits uses uppercase size suffixes, which nginx accepts but the
+// parsing regexes previously missed. When a directive was not matched, the
+// default was returned instead and silently written back on save, shrinking
+// limits the admin had intentionally raised.
+const uppercaseSizeUnits = `
+worker_processes 2;
+
+events {
+	worker_connections 512;
+}
+
+http {
+	keepalive_timeout 30;
+	gzip on;
+	client_max_body_size 50M;
+	client_header_buffer_size 4K;
+	client_body_buffer_size 16K;
+}
+`
+
+func TestGetNginxWorkerConfigInfo_UppercaseSizeUnits(t *testing.T) {
+	writeConf(t, uppercaseSizeUnits)
+
+	info, err := GetNginxWorkerConfigInfo()
+	if err != nil {
+		t.Fatalf("GetNginxWorkerConfigInfo() error = %v", err)
+	}
+
+	if info.ClientMaxBodySize != "50M" {
+		t.Errorf("ClientMaxBodySize = %q, want %q", info.ClientMaxBodySize, "50M")
+	}
+
+	if info.ClientHeaderBufferSize != "4K" {
+		t.Errorf("ClientHeaderBufferSize = %q, want %q", info.ClientHeaderBufferSize, "4K")
+	}
+
+	if info.ClientBodyBufferSize != "16K" {
+		t.Errorf("ClientBodyBufferSize = %q, want %q", info.ClientBodyBufferSize, "16K")
+	}
+}
+
 func TestStripComments(t *testing.T) {
 	tests := []struct {
 		name    string
