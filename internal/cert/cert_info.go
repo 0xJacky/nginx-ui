@@ -4,6 +4,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"fmt"
+	"net"
 	"strings"
 	"time"
 
@@ -48,10 +49,11 @@ func CertificateCoversNames(sslCertificatePath string, names []string) error {
 }
 
 type Info struct {
-	SubjectName string    `json:"subject_name"`
-	IssuerName  string    `json:"issuer_name"`
-	NotAfter    time.Time `json:"not_after"`
-	NotBefore   time.Time `json:"not_before"`
+	SubjectName     string    `json:"subject_name"`
+	IssuerName      string    `json:"issuer_name"`
+	NotAfter        time.Time `json:"not_after"`
+	NotBefore       time.Time `json:"not_before"`
+	SubjectAltNames []string  `json:"subject_alt_names,omitempty"`
 }
 
 func GetCertInfo(sslCertificatePath string) (info *Info, err error) {
@@ -91,11 +93,53 @@ func certificateInfo(cert *x509.Certificate) *Info {
 	}
 
 	return &Info{
-		SubjectName: certificateSubjectName(cert),
-		IssuerName:  cert.Issuer.CommonName,
-		NotAfter:    cert.NotAfter,
-		NotBefore:   cert.NotBefore,
+		SubjectName:     certificateSubjectName(cert),
+		IssuerName:      cert.Issuer.CommonName,
+		NotAfter:        cert.NotAfter,
+		NotBefore:       cert.NotBefore,
+		SubjectAltNames: certificateSubjectAltNames(cert),
 	}
+}
+
+func certificateSubjectAltNames(cert *x509.Certificate) []string {
+	if cert == nil {
+		return nil
+	}
+
+	subject := certificateSubjectName(cert)
+	seen := map[string]struct{}{}
+	result := make([]string, 0, len(cert.DNSNames)+len(cert.IPAddresses))
+
+	appendIfAlias := func(name string) {
+		trimmed := strings.TrimSpace(name)
+		if trimmed == "" || strings.EqualFold(trimmed, subject) {
+			return
+		}
+
+		key := strings.ToLower(trimmed)
+		if ip := net.ParseIP(trimmed); ip != nil {
+			key = ip.String()
+		}
+
+		if _, exists := seen[key]; exists {
+			return
+		}
+
+		seen[key] = struct{}{}
+		result = append(result, trimmed)
+	}
+
+	for _, dnsName := range cert.DNSNames {
+		appendIfAlias(dnsName)
+	}
+
+	for _, ip := range cert.IPAddresses {
+		if ip != nil {
+			appendIfAlias(ip.String())
+		}
+	}
+
+	return result
 }
 
 func certificateSubjectName(cert *x509.Certificate) string {
