@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"maps"
 	"os"
 	"path"
 	"path/filepath"
@@ -15,6 +16,7 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 )
 
 // ManifestFileName is the manifest every plugin package carries at its root.
@@ -130,6 +132,9 @@ func ValidateManifest(m *protocol.Manifest) error {
 	if err := validateIdentity(m); err != nil {
 		return err
 	}
+	if err := validateI18n(m.I18n); err != nil {
+		return err
+	}
 	if m.Server == nil && m.Webapp == nil && m.Content == nil {
 		return invalidManifest("at least one of server, webapp or content is required")
 	}
@@ -175,6 +180,41 @@ func validateIdentity(m *protocol.Manifest) error {
 		return invalidManifest("icon_path %q must be a relative path inside the plugin", m.IconPath)
 	}
 	return nil
+}
+
+// validateI18n checks that every key of the i18n block is a language of the
+// host (spec MAN-40).
+func validateI18n(i18n map[string]protocol.ManifestI18n) error {
+	for _, locale := range slices.Sorted(maps.Keys(i18n)) {
+		if !translation.IsLanguage(locale) {
+			return invalidManifest("i18n: %q is not a language of the host (%s)",
+				locale, strings.Join(translation.Languages(), ", "))
+		}
+	}
+	return nil
+}
+
+// i18nMaps splits the i18n block into one locale map per field and leaves
+// out empty translations. A field without any translation yields nil.
+func i18nMaps(m *protocol.Manifest) (names, descriptions map[string]string) {
+	if m == nil {
+		return nil, nil
+	}
+	for locale, translated := range m.I18n {
+		if translated.Name != "" {
+			if names == nil {
+				names = make(map[string]string, len(m.I18n))
+			}
+			names[locale] = translated.Name
+		}
+		if translated.Description != "" {
+			if descriptions == nil {
+				descriptions = make(map[string]string, len(m.I18n))
+			}
+			descriptions[locale] = translated.Description
+		}
+	}
+	return names, descriptions
 }
 
 func validateServer(s *protocol.ManifestServer) error {

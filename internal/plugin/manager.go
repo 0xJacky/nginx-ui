@@ -98,6 +98,10 @@ type Info struct {
 	// Resources are the limits of the plugin process, absent for a plugin
 	// without one (spec LIFE-16).
 	Resources *ResourceStatus `json:"resources,omitempty"`
+	// NameI18n and DescriptionI18n translate Name and Description, keyed by
+	// host locale code (spec MAN-40). Name and Description are the fallback.
+	NameI18n        map[string]string `json:"name_i18n,omitempty"`
+	DescriptionI18n map[string]string `json:"description_i18n,omitempty"`
 }
 
 // WebappEntry tells the browser runtime what to load for one plugin. The URLs
@@ -149,6 +153,10 @@ type InspectResult struct {
 	HostPlatform string `json:"host_platform"`
 	// PlatformSupported reports whether the package runs on this node.
 	PlatformSupported bool `json:"platform_supported"`
+	// NameI18n and DescriptionI18n are the non-empty translations of the
+	// manifest i18n block, keyed by host locale code (spec MAN-40).
+	NameI18n        map[string]string `json:"name_i18n,omitempty"`
+	DescriptionI18n map[string]string `json:"description_i18n,omitempty"`
 }
 
 // entry is one plugin the manager knows about. A missing plugin has a row but
@@ -588,6 +596,7 @@ func (m *Manager) infoLocked(item *entry) Info {
 	info.Name = manifest.Name
 	info.Version = manifest.Version
 	info.Description = manifest.Description
+	info.NameI18n, info.DescriptionI18n = i18nMaps(manifest)
 	info.HomepageURL = manifest.HomepageURL
 	info.APIVersion = manifest.APIVersion
 	info.MinNginxUIVersion = manifest.MinNginxUIVersion

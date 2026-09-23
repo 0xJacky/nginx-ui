@@ -11,6 +11,7 @@ import type {
 import type { PluginManifest } from '@/api/plugin'
 import { http } from '@uozi-admin/request'
 import axios from 'axios'
+import { localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
 import { applyAuthHeaders } from '@/lib/http/interceptors'
 import { useSettingsStore, useUserStore } from '@/pinia'
@@ -66,7 +67,7 @@ export function createRegistry(pluginId: string, manifest: PluginManifest): Plug
   function registerRoute(route: RouteRecordRaw, options: RegisterRouteOptions = {}) {
     const meta: RouteMeta = {
       ...(route.meta ?? {}),
-      name: route.meta?.name ?? (() => manifest.name || pluginId),
+      name: route.meta?.name ?? (() => localizedPluginName(manifest, gettext.current) || pluginId),
       pluginId,
       pluginParent: options.parent,
       pluginOrder: options.order ?? 0,
