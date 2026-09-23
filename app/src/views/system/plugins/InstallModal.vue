@@ -4,9 +4,10 @@ import type { PluginInspect } from '@/api/plugin'
 import type { PluginNodeResult } from '@/api/plugin_sync'
 import { InboxOutlined } from '@antdv-next/icons'
 import nodeApi from '@/api/node'
-import pluginApi from '@/api/plugin'
+import pluginApi, { localizedPluginDescription, localizedPluginName } from '@/api/plugin'
 import { setSyncPolicy, syncPlugin } from '@/api/plugin_sync'
 import NodeSelector from '@/components/NodeSelector'
+import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import PermissionList from './PermissionList.vue'
 
@@ -51,6 +52,8 @@ async function loadNodes() {
 }
 
 const manifest = computed(() => inspect.value?.manifest)
+const manifestName = computed(() => (manifest.value ? localizedPluginName(manifest.value, gettext.current) : ''))
+const manifestDescription = computed(() => (manifest.value ? localizedPluginDescription(manifest.value, gettext.current) : ''))
 const permissions = computed(() => inspect.value?.permissions ?? [])
 const requiresMissing = computed(() => inspect.value?.requires_missing ?? [])
 const platforms = computed(() => inspect.value?.platforms ?? [])
@@ -206,7 +209,7 @@ watch(open, value => {
           bordered
         >
           <ADescriptionsItem :label="$gettext('Name')">
-            {{ manifest.name }}
+            {{ manifestName }}
           </ADescriptionsItem>
           <ADescriptionsItem :label="$gettext('ID')">
             <span class="font-mono text-xs">{{ manifest.id }}</span>
@@ -217,8 +220,8 @@ watch(open, value => {
               {{ $gettext('(replaces %{version})', { version: inspect.installed_version }) }}
             </span>
           </ADescriptionsItem>
-          <ADescriptionsItem v-if="manifest.description" :label="$gettext('Description')">
-            {{ manifest.description }}
+          <ADescriptionsItem v-if="manifestDescription" :label="$gettext('Description')">
+            {{ manifestDescription }}
           </ADescriptionsItem>
           <ADescriptionsItem :label="$gettext('Capabilities')">
             <div v-if="manifest.capabilities?.length" class="flex flex-wrap gap-1">

@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import type { PluginInfo, PluginManifest, WebappEntry, WebappEntryPage } from '@/api/plugin'
+import type { PluginInfo, PluginManifest, PluginManifestI18n, WebappEntry, WebappEntryPage } from '@/api/plugin'
 import pluginApi from '@/api/plugin'
 import gettext from '@/gettext'
 import router from '@/routes'
@@ -64,6 +64,17 @@ function checkSharedRuntime(entry: WebappEntry): string {
   return ''
 }
 
+/** Rebuilds the manifest i18n block from the flat maps of the plugin list. */
+function manifestI18nFromInfo(info: PluginInfo): Record<string, PluginManifestI18n> | undefined {
+  const i18n: Record<string, PluginManifestI18n> = {}
+  for (const [locale, name] of Object.entries(info.name_i18n ?? {}))
+    i18n[locale] = { ...i18n[locale], name }
+  for (const [locale, description] of Object.entries(info.description_i18n ?? {}))
+    i18n[locale] = { ...i18n[locale], description }
+
+  return Object.keys(i18n).length > 0 ? i18n : undefined
+}
+
 /** Fills in the manifest fields the plugin list already knows about. */
 function manifestFromInfo(entry: WebappEntry, info?: PluginInfo): PluginManifest {
   return {
@@ -71,6 +82,7 @@ function manifestFromInfo(entry: WebappEntry, info?: PluginInfo): PluginManifest
     name: info?.name ?? entry.id,
     version: info?.version ?? entry.version,
     description: info?.description,
+    i18n: info ? manifestI18nFromInfo(info) : undefined,
     homepage_url: info?.homepage_url,
     api_version: info?.api_version ?? 0,
     min_nginx_ui_version: info?.min_nginx_ui_version,
