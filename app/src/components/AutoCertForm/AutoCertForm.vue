@@ -100,20 +100,16 @@ defineExpose({
     >
       <template #description>
         <p v-if="isDefaultServer">
-          {{ $gettext('This site is configured as a default server (default_server) for HTTPS (port 443). '
-            + 'IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers.') }}
+          {{ $gettext('This site is configured as a default server (default_server) for HTTPS (port 443). IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers.') }}
         </p>
         <p v-else-if="hasWildcardServerName">
-          {{ $gettext('This site uses wildcard server name (_) which typically indicates an IP-based certificate. '
-            + 'IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers.') }}
+          {{ $gettext('This site uses wildcard server name (_) which typically indicates an IP-based certificate. IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers.') }}
         </p>
         <p v-if="needsManualIpInput">
-          {{ $gettext('No specific IP address found in server_name configuration. '
-            + 'Please specify the server IP address below for the certificate.') }}
+          {{ $gettext('No specific IP address found in server_name configuration. Please specify the server IP address below for the certificate.') }}
         </p>
         <p>
-          {{ $gettext('For IP-based certificate configurations, only HTTP-01 challenge method is supported. '
-            + 'DNS-01 challenge is not compatible with IP-based certificates.') }}
+          {{ $gettext('For IP-based certificate configurations, only HTTP-01 challenge method is supported. DNS-01 challenge is not compatible with IP-based certificates.') }}
         </p>
       </template>
     </AAlert>
@@ -127,21 +123,16 @@ defineExpose({
     >
       <template #description>
         <p>
-          {{ $gettext('The server_name'
-            + ' in the current configuration must be the domain name you need to get the certificate, support'
-            + 'multiple domains.') }}
+          {{ $gettext('The server_name in the current configuration must be the domain name you need to get the certificate, support multiple domains.') }}
         </p>
         <p>
           {{ $gettext('The certificate for the domain is checked every 30 minutes and renewed when its remaining validity reaches the threshold configured in settings.') }}
         </p>
         <p v-if="data.challenge_method === 'http01'">
-          {{ $gettext('Make sure you have configured a reverse proxy for .well-known '
-            + 'directory to HTTPChallengePort before obtaining the certificate.') }}
+          {{ $gettext('Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort before obtaining the certificate.') }}
         </p>
         <p v-else-if="data.challenge_method === 'dns01'">
-          {{ $gettext('Please first add credentials in Certification > DNS Credentials, '
-            + 'and then select one of the credentials'
-            + 'below to request the API of the DNS provider.') }}
+          {{ $gettext('Please first add credentials in Certification > DNS Credentials, and then select one of the credentials below to request the API of the DNS provider.') }}
         </p>
       </template>
     </AAlert>
@@ -255,8 +246,7 @@ defineExpose({
         <AFormItem :label="$gettext('Lego disable CNAME Support')">
           <template #help>
             <p>
-              {{ $gettext('If your domain has CNAME records and you cannot obtain certificates, '
-                + 'you need to enable this option.') }}
+              {{ $gettext('If your domain has CNAME records and you cannot obtain certificates, you need to enable this option.') }}
             </p>
           </template>
           <ASwitch v-model:checked="data.lego_disable_cname_support" />
@@ -267,8 +257,7 @@ defineExpose({
         >
           <template #help>
             <p>
-              {{ $gettext('Skip local DNS propagation checks and wait 60 seconds before asking '
-                + 'the certificate authority to validate the record.') }}
+              {{ $gettext('Skip local DNS propagation checks and wait 60 seconds before asking the certificate authority to validate the record.') }}
             </p>
           </template>
           <ASwitch v-model:checked="data.disable_authoritative_ns_propagation" />
