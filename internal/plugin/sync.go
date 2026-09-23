@@ -2,6 +2,8 @@ package plugin
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -54,6 +56,12 @@ const (
 	// so a dropped request is picked up by the next reconcile pass.
 	jobQueueSize = 64
 )
+
+// settingsRepushInterval is how long a reconcile pass trusts an unchanged
+// settings push. After it the settings go out again, which repairs a node
+// whose settings were edited locally or restored from a backup. Tests
+// shorten it.
+var settingsRepushInterval = time.Hour
 
 // MatrixNode is one column of the matrix.
 type MatrixNode struct {
@@ -237,6 +245,10 @@ type Syncer struct {
 	// runLocks serialises the runs of one plugin, so a manual sync and the
 	// engine never push the same plugin to the same node at the same time.
 	runLocks sync.Map
+	// pushed remembers, per plugin and node, the last settings push, so a
+	// reconcile pass leaves a node alone until the settings change or the
+	// push is older than settingsRepushInterval.
+	pushed map[string]map[uint64]settingsPush
 
 	jobs chan syncJob
 
@@ -250,6 +262,7 @@ func newSyncer(manager *Manager) *Syncer {
 	return &Syncer{
 		manager: manager,
 		results: map[string]map[uint64]NodeResult{},
+		pushed:  map[string]map[uint64]settingsPush{},
 		jobs:    make(chan syncJob, jobQueueSize),
 	}
 }
@@ -414,7 +427,7 @@ func (s *Syncer) syncPlugin(ctx context.Context, id string, nodeIDs []uint64, ma
 	for index, node := range nodes {
 		go func(index int, node *model.Node) {
 			defer wg.Done()
-			results[index] = s.syncNode(ctx, node, info, row, own, statusPlatform(statuses, node.ID))
+			results[index] = s.syncNode(ctx, node, info, row, own, statusPlatform(statuses, node.ID), manual)
 		}(index, node)
 	}
 	wg.Wait()
@@ -427,7 +440,8 @@ func (s *Syncer) syncPlugin(ctx context.Context, id string, nodeIDs []uint64, ma
 
 // syncNode aligns one plugin on one node. Every step reports through the
 // result instead of aborting the whole run. platform is what the node monitor
-// reported, the node spec overrides it when the node advertises one.
+// reported, the node spec overrides it when the node advertises one. A manual
+// run pushes the settings even when nothing changed since the last push.
 func (s *Syncer) syncNode(
 	ctx context.Context,
 	node *model.Node,
@@ -435,6 +449,7 @@ func (s *Syncer) syncNode(
 	row *model.Plugin,
 	own *ownArchive,
 	platform string,
+	manual bool,
 ) NodeResult {
 	result := NodeResult{
 		NodeID:   node.ID,
@@ -475,6 +490,9 @@ func (s *Syncer) syncNode(
 		return result
 	}
 	remote := findInfo(infos, info.ID)
+	// A node that only now gets the package holds no settings of the plugin,
+	// whatever was pushed to it before.
+	installedNow := remote == nil
 
 	if remote == nil || remote.Version != info.Version {
 		action := "installed"
@@ -504,12 +522,16 @@ func (s *Syncer) syncNode(
 	}
 
 	if row.SyncSettings && len(row.Settings) > 0 {
-		if err = client.saveSettings(nodeCtx, info.ID, row.Settings); err != nil {
-			result.State = SyncStateError
-			result.Error = err.Error()
-			return result
+		digest := settingsDigest(row.Settings)
+		if manual || installedNow || digest == "" || s.settingsPushDue(info.ID, node.ID, digest) {
+			if err = client.saveSettings(nodeCtx, info.ID, row.Settings); err != nil {
+				result.State = SyncStateError
+				result.Error = err.Error()
+				return result
+			}
+			s.rememberPushed(info.ID, node.ID, digest)
+			result.Actions = append(result.Actions, "settings")
 		}
-		result.Actions = append(result.Actions, "settings")
 	}
 
 	result.State = SyncStateInSync
@@ -585,6 +607,43 @@ func (s *Syncer) storeResults(id string, results []NodeResult) {
 		byNode[result.NodeID] = result
 	}
 	s.results[id] = byNode
+}
+
+// settingsDigest fingerprints a settings map. json sorts the keys, so equal
+// maps always produce the same digest.
+func settingsDigest(values map[string]any) string {
+	encoded, err := json.Marshal(values)
+	if err != nil {
+		return ""
+	}
+	sum := sha256.Sum256(encoded)
+	return hex.EncodeToString(sum[:])
+}
+
+// settingsPush is one successful settings push to a node.
+type settingsPush struct {
+	digest string
+	at     time.Time
+}
+
+// settingsPushDue reports whether a background pass pushes the settings to a
+// node: they changed since the last push, or that push is too old.
+func (s *Syncer) settingsPushDue(id string, nodeID uint64, digest string) bool {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	last, ok := s.pushed[id][nodeID]
+	return !ok || last.digest != digest || time.Since(last.at) >= settingsRepushInterval
+}
+
+func (s *Syncer) rememberPushed(id string, nodeID uint64, digest string) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	byNode, ok := s.pushed[id]
+	if !ok {
+		byNode = map[uint64]settingsPush{}
+		s.pushed[id] = byNode
+	}
+	byNode[nodeID] = settingsPush{digest: digest, at: time.Now()}
 }
 
 func (s *Syncer) lastResult(id string, nodeID uint64) (NodeResult, bool) {

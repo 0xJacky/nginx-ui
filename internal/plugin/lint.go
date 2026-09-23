@@ -178,6 +178,14 @@ func lintServer(s *protocol.ManifestServer, dir string, report *LintReport) {
 	if s.IdleTimeoutSeconds < 0 {
 		report.add(LevelError, "MAN-11", "server.idle_timeout_seconds must not be negative")
 	}
+	if r := s.Resources; r != nil {
+		if r.MemoryMB < 0 {
+			report.add(LevelError, "MAN-39", "server.resources.memory_mb must not be negative")
+		}
+		if r.CPUPercent < 0 {
+			report.add(LevelError, "MAN-39", "server.resources.cpu_percent must not be negative")
+		}
+	}
 	if len(s.Executables) == 0 && len(s.Command) == 0 {
 		report.add(LevelError, "MAN-9", "server needs executables or command")
 	}
@@ -396,6 +404,39 @@ func lintCapabilities(m *protocol.Manifest, report *LintReport) {
 	}
 	if _, ok := seen[protocol.CapabilityUpstreamDiscovery]; ok {
 		lintDiscovery(m, report)
+	}
+	_, hasLogSink := seen[protocol.CapabilityLogSink]
+	if hasLogSink && !slices.Contains(m.Permissions, protocol.PermissionLogRead) {
+		report.add(LevelError, "MAN-38", "capability log.sink requires the %q permission", protocol.PermissionLogRead)
+	}
+	if !hasLogSink && slices.Contains(m.Permissions, protocol.PermissionLogRead) {
+		report.add(LevelWarning, "SEC-5", "permission %q is requested but capability %q is not declared, so it grants nothing", protocol.PermissionLogRead, protocol.CapabilityLogSink)
+	}
+	if !hasLogSink && m.LogSink != nil {
+		report.add(LevelWarning, "LOGSINK-1", "the log_sink block has no effect without capability %q", protocol.CapabilityLogSink)
+	}
+	lintLogSink(m.LogSink, report)
+}
+
+// lintLogSink checks the optional log_sink block (LOGSINK-2, LOGSINK-3).
+func lintLogSink(l *protocol.ManifestLogSink, report *LintReport) {
+	if l == nil {
+		return
+	}
+	if !validLogSinkBatchSize(l.BatchSize) {
+		report.add(LevelError, "LOGSINK-2", "log_sink.batch_size %d must be between 0 and %d", l.BatchSize, protocol.MaxLogSinkBatchSize)
+	}
+	if !validLogSinkFlushInterval(l.FlushIntervalMS) {
+		report.add(LevelError, "LOGSINK-2", "log_sink.flush_interval_ms %d must be 0 or at least %d", l.FlushIntervalMS, protocol.MinLogSinkFlushIntervalMS)
+	}
+	seen := make(map[string]struct{}, len(l.Formats))
+	for _, format := range l.Formats {
+		if !slices.Contains(knownLogFormats, format) {
+			report.add(LevelError, "LOGSINK-3", "log_sink.formats: unknown format %q, want one of %s", format, strings.Join(knownLogFormats, ", "))
+		} else if _, dup := seen[format]; dup {
+			report.add(LevelError, "LOGSINK-3", "log_sink.formats: %q is listed twice", format)
+		}
+		seen[format] = struct{}{}
 	}
 }
 

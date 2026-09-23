@@ -65,6 +65,13 @@ const (
 	MethodDiscoveryResolve = "discovery.resolve"
 )
 
+// Capability log.sink methods (host -> plugin). log.push is a client stream
+// on the gRPC transport only: it has no JSON-RPC form and stdio answers
+// -32601 for it (spec WIRE-12).
+const (
+	MethodLogPush = "log.push"
+)
+
 // Event and cron delivery (host -> plugin).
 const (
 	MethodEventsOn = "events.on" // notification
@@ -101,6 +108,9 @@ const (
 	CapabilitySecurityBlocklist = "security.blocklist"
 	// CapabilityUpstreamDiscovery resolves services into upstream servers.
 	CapabilityUpstreamDiscovery = "upstream.discovery"
+	// CapabilityLogSink receives the nginx access log lines as they are
+	// written.
+	CapabilityLogSink = "log.sink"
 )
 
 // Permission names a plugin may request in its manifest.
@@ -116,6 +126,9 @@ const (
 	// PermissionCertDeploy lets the host send certificates and their private
 	// keys to the cert.deploy capability.
 	PermissionCertDeploy = "cert.deploy"
+	// PermissionLogRead lets the host stream the access log lines to the
+	// log.sink capability.
+	PermissionLogRead = "log.read"
 	// PermissionCredentialsReadPrefix is followed by the credential kind, e.g. "credentials.read:dns".
 	PermissionCredentialsReadPrefix = "credentials.read:"
 )

@@ -18,6 +18,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 	"go.uber.org/zap"
 )
@@ -41,6 +42,9 @@ const (
 	// exhaust the host memory.
 	stderrMaxLineSize = 1 << 20
 )
+
+// defaultCgroupRoot is where cgroup v2 is usually mounted.
+const defaultCgroupRoot = "/sys/fs/cgroup"
 
 // defaultBackoff is the delay before restart attempt n after a crash.
 var defaultBackoff = []time.Duration{
@@ -93,6 +97,12 @@ type SupervisorConfig struct {
 	Permissions []string
 	// Lifecycle overrides the manifest lifecycle when it is not empty.
 	Lifecycle string
+	// Resources limits the process, see EffectiveResources. The zero value
+	// runs it without limits.
+	Resources ResourceLimits
+	// CgroupRoot is the cgroup v2 mount point the limits are enforced
+	// under. Empty means /sys/fs/cgroup.
+	CgroupRoot string
 	// HandshakeTimeout replaces the default when positive. Test binaries
 	// built with the race detector need far longer than a real plugin.
 	HandshakeTimeout time.Duration
@@ -120,6 +130,8 @@ type process struct {
 	// grpc carries capability calls when the plugin serves gRPC. It is set
 	// before the process is published.
 	grpc *grpcRoute
+	// cgroup confines the process, nil when it runs without limits.
+	cgroup *pluginCgroup
 }
 
 // Supervisor runs one plugin process, keeps it alive and exposes a client for
@@ -232,6 +244,23 @@ func (s *Supervisor) InitializeResult() (protocol.InitializeResult, bool) {
 		return protocol.InitializeResult{}, false
 	}
 	return s.proc.initResult, true
+}
+
+// Resources reports the limits of the plugin process and whether the running
+// process is confined to them.
+func (s *Supervisor) Resources() ResourceStatus {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	enforced := s.proc != nil && s.proc.cgroup != nil
+	return resourceStatus(s.cfg.Resources, enforced)
+}
+
+// cgroupRoot is the configured cgroup root or the default one.
+func (s *Supervisor) cgroupRoot() string {
+	if s.cfg.CgroupRoot != "" {
+		return s.cfg.CgroupRoot
+	}
+	return defaultCgroupRoot
 }
 
 // Lifecycle reports the effective lifecycle of the plugin.
@@ -419,14 +448,15 @@ func (s *Supervisor) spawn(ctx context.Context) error {
 	}
 	cmd.Stdin, cmd.Stdout, cmd.Stderr = stdinR, stdoutW, stderrW
 
-	if err = cmd.Start(); err != nil {
+	cmd, cg, err := s.startProcess(cmd)
+	if err != nil {
 		closeAll(stdinR, stdinW, stdoutR, stdoutW, stderrR, stderrW)
 		return err
 	}
 	// The child owns its ends now, the parent keeps only the other half.
 	closeAll(stdinR, stdoutW, stderrW)
 
-	p := &process{cmd: cmd, stdin: stdinW, stdout: stdoutR, done: make(chan struct{})}
+	p := &process{cmd: cmd, stdin: stdinW, stdout: stdoutR, done: make(chan struct{}), cgroup: cg}
 	p.conn = jsonrpc.NewConn(stdoutR, stdinW, jsonrpc.WithLogger(s.log))
 	if s.cfg.HostHandlers != nil {
 		s.cfg.HostHandlers(p.conn)
@@ -440,6 +470,7 @@ func (s *Supervisor) spawn(ctx context.Context) error {
 			_ = p.cmd.Process.Kill()
 		}
 		_ = p.cmd.Wait()
+		s.releaseCgroup(p)
 		return err
 	}
 	s.connectGRPC(ctx, p)
@@ -510,8 +541,19 @@ func (s *Supervisor) waitProcess(p *process) {
 	waitErr := p.cmd.Wait()
 	_ = p.conn.Close()
 	p.grpc.close()
+	s.releaseCgroup(p)
 	s.handleExit(p, waitErr)
 	close(p.done)
+}
+
+// releaseCgroup removes the group of a process that exited.
+func (s *Supervisor) releaseCgroup(p *process) {
+	if p.cgroup == nil {
+		return
+	}
+	if err := p.cgroup.remove(); err != nil {
+		s.log.Debugf("[plugin:%s] remove cgroup %s: %v", s.cfg.PluginID, p.cgroup.dir, err)
+	}
 }
 
 // handleExit decides what a finished process means: an expected stop, a
@@ -649,7 +691,9 @@ var hostOnlyEnv = []string{
 	"LEGO_DISABLE_CNAME_SUPPORT",
 }
 
-// env builds the child environment. Credentials never travel this way.
+// env builds the child environment. Credentials never travel this way: the
+// host configuration variables, which carry the node secret among others,
+// are dropped along with hostOnlyEnv.
 func (s *Supervisor) env() []string {
 	parent := os.Environ()
 	env := make([]string, 0, len(parent)+4+len(s.extraEnv))
@@ -673,7 +717,7 @@ func isHostOnlyEnv(entry string) bool {
 	if !ok {
 		return false
 	}
-	return slices.Contains(hostOnlyEnv, key)
+	return strings.HasPrefix(key, settings.EnvPrefix) || slices.Contains(hostOnlyEnv, key)
 }
 
 func (s *Supervisor) notify(state State, err error) {

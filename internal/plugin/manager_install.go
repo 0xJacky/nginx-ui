@@ -217,6 +217,9 @@ func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest
 	m.mu.Lock()
 	if previous, ok := m.entries[manifest.ID]; ok {
 		item.dropped.Store(previous.dropped.Load())
+		item.logCounters.streamed.Store(previous.logCounters.streamed.Load())
+		item.logCounters.rejected.Store(previous.logCounters.rejected.Load())
+		item.logCounters.dropped.Store(previous.logCounters.dropped.Load())
 	}
 	m.entries[manifest.ID] = item
 	offline := m.offline
