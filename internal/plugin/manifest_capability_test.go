@@ -9,17 +9,19 @@ import (
 )
 
 // capabilityManifest declares the notify, probe, mcp, storage, cert.deploy,
-// security.blocklist and upstream.discovery capabilities with one or two
-// entries each.
+// security.blocklist, upstream.discovery and log.sink capabilities with one
+// or two entries each.
 func capabilityManifest() *protocol.Manifest {
 	m := validManifest()
 	m.Capabilities = []string{
 		protocol.CapabilityNotify, protocol.CapabilityProbe, protocol.CapabilityMCP,
 		protocol.CapabilityStorage, protocol.CapabilityCertDeploy,
 		protocol.CapabilitySecurityBlocklist, protocol.CapabilityUpstreamDiscovery,
+		protocol.CapabilityLogSink,
 	}
-	m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP, protocol.PermissionCertDeploy}
+	m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP, protocol.PermissionCertDeploy, protocol.PermissionLogRead}
 	m.DNS01 = nil
+	m.LogSink = &protocol.ManifestLogSink{BatchSize: 512, FlushIntervalMS: 1000, Formats: []string{protocol.LogFormatCombined}}
 	m.Notify = &protocol.ManifestNotify{Channels: []protocol.NotifyChannel{{
 		Code: "mychat",
 		Name: "MyChat",
@@ -175,6 +177,22 @@ func TestValidateManifestCapabilityBlocks(t *testing.T) {
 			m.Discovery.Providers = append(m.Discovery.Providers, protocol.DiscoveryProvider{Code: "registry", Name: "Again"})
 		}, "declared twice"},
 		{"discovery provider without name", func(m *protocol.Manifest) { m.Discovery.Providers[0].Name = "" }, "name is required"},
+		{"log.sink without log.read", func(m *protocol.Manifest) {
+			m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP, protocol.PermissionCertDeploy}
+		}, "log.sink requires the log.read permission"},
+		{"log_sink batch too large", func(m *protocol.Manifest) { m.LogSink.BatchSize = protocol.MaxLogSinkBatchSize + 1 }, "log_sink.batch_size"},
+		{"log_sink batch negative", func(m *protocol.Manifest) { m.LogSink.BatchSize = -1 }, "log_sink.batch_size"},
+		{"log_sink flush too short", func(m *protocol.Manifest) { m.LogSink.FlushIntervalMS = 49 }, "log_sink.flush_interval_ms"},
+		{"log_sink unknown format", func(m *protocol.Manifest) { m.LogSink.Formats = []string{"json"} }, "unknown format"},
+		{"log_sink duplicate format", func(m *protocol.Manifest) {
+			m.LogSink.Formats = []string{protocol.LogFormatRaw, protocol.LogFormatRaw}
+		}, "listed twice"},
+		{"negative memory hint", func(m *protocol.Manifest) {
+			m.Server.Resources = &protocol.ManifestResources{MemoryMB: -1}
+		}, "server.resources"},
+		{"negative cpu hint", func(m *protocol.Manifest) {
+			m.Server.Resources = &protocol.ManifestResources{CPUPercent: -5}
+		}, "server.resources"},
 	}
 
 	for _, tc := range tests {
@@ -210,6 +228,8 @@ func lintCapabilityManifest() *protocol.Manifest {
 	m.Deploy = blocks.Deploy
 	m.Blocklist = blocks.Blocklist
 	m.Discovery = blocks.Discovery
+	m.LogSink = blocks.LogSink
+	m.Server.Resources = &protocol.ManifestResources{MemoryMB: 128, CPUPercent: 50}
 	return m
 }
 
@@ -299,6 +319,23 @@ func TestLintCapabilityBlocks(t *testing.T) {
 		{"discovery field without display name", func(m *protocol.Manifest) {
 			m.Discovery.Providers[0].Configuration.Fields[0].DisplayName = ""
 		}, LevelError, "DISCOVERY-3"},
+		{"log.sink without log.read", func(m *protocol.Manifest) {
+			m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP, protocol.PermissionCertDeploy}
+		}, LevelError, "MAN-38"},
+		{"log.read without log.sink", func(m *protocol.Manifest) {
+			m.Capabilities = []string{protocol.CapabilityStorage}
+		}, LevelWarning, "SEC-5"},
+		{"log_sink block without log.sink", func(m *protocol.Manifest) {
+			m.Capabilities = []string{protocol.CapabilityStorage}
+		}, LevelWarning, "LOGSINK-1"},
+		{"log_sink batch too large", func(m *protocol.Manifest) { m.LogSink.BatchSize = 5000 }, LevelError, "LOGSINK-2"},
+		{"log_sink flush too short", func(m *protocol.Manifest) { m.LogSink.FlushIntervalMS = 10 }, LevelError, "LOGSINK-2"},
+		{"log_sink unknown format", func(m *protocol.Manifest) { m.LogSink.Formats = []string{"ltsv"} }, LevelError, "LOGSINK-3"},
+		{"log_sink duplicate format", func(m *protocol.Manifest) {
+			m.LogSink.Formats = []string{protocol.LogFormatCombined, protocol.LogFormatCombined}
+		}, LevelError, "LOGSINK-3"},
+		{"negative memory hint", func(m *protocol.Manifest) { m.Server.Resources.MemoryMB = -1 }, LevelError, "MAN-39"},
+		{"negative cpu hint", func(m *protocol.Manifest) { m.Server.Resources.CPUPercent = -1 }, LevelError, "MAN-39"},
 	}
 
 	for _, tc := range tests {
@@ -317,5 +354,16 @@ func TestValidateManifestAcceptsTheDefaultBlocklistRefresh(t *testing.T) {
 	m.Blocklist.Sources[0].RefreshSeconds = 0
 	assert.NoError(t, ValidateManifest(m))
 	m.Blocklist.Sources[0].RefreshSeconds = protocol.MinBlocklistRefreshSeconds
+	assert.NoError(t, ValidateManifest(m))
+}
+
+func TestValidateManifestAcceptsLogSinkDefaults(t *testing.T) {
+	m := capabilityManifest()
+	m.LogSink = nil
+	assert.NoError(t, ValidateManifest(m), "the log_sink block is optional")
+	m.LogSink = &protocol.ManifestLogSink{BatchSize: protocol.MaxLogSinkBatchSize, FlushIntervalMS: protocol.MinLogSinkFlushIntervalMS,
+		Formats: []string{protocol.LogFormatRaw, protocol.LogFormatCombined}}
+	assert.NoError(t, ValidateManifest(m))
+	m.Server.Resources = &protocol.ManifestResources{MemoryMB: 64, CPUPercent: 250}
 	assert.NoError(t, ValidateManifest(m))
 }

@@ -21,7 +21,7 @@ import (
 // testPluginModeEnv turns the test binary into a plugin process. TestMain
 // checks it before any test runs, which gives the supervisor a real child
 // process to talk to without shipping a second binary.
-const testPluginModeEnv = "NGINX_UI_TEST_PLUGIN_MODE"
+const testPluginModeEnv = "PLUGIN_TEST_MODE"
 
 // Plugin behaviours the supervisor tests need.
 const (
@@ -66,6 +66,9 @@ func runTestPlugin(mode string) {
 			}
 			if mode == pluginModeAllCaps {
 				capabilities = allTestCapabilities
+			}
+			if mode == pluginModeLogSink || mode == pluginModeLogSinkStdio {
+				capabilities = []string{protocol.CapabilityLogSink}
 			}
 			apiVersion := protocol.APIVersion
 			if mode == pluginModeBadAPI {

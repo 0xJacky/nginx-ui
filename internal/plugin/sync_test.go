@@ -361,6 +361,83 @@ func TestSyncPluginAlignsEnabledStateAndPushesSettings(t *testing.T) {
 	assert.Equal(t, "s3cret", fake.settingsCalls[0]["token"])
 }
 
+func TestReconcilePushesSettingsOnlyWhenTheyChange(t *testing.T) {
+	m, syncer := newSyncTestManager(t)
+	ctx := context.Background()
+	installSyncTestPlugin(t, m, "official.alpha", "1.0.0", true)
+	require.NoError(t, m.SaveSettings(ctx, "official.alpha", map[string]any{"endpoint": "https://plugin.example"}))
+	require.NoError(t, m.setSyncPolicy(ctx, "official.alpha", model.PluginSyncPolicyAuto, nil, true))
+
+	fake := newFakeSyncNode(t)
+	fake.inventory = []Info{{ID: "official.alpha", Version: "1.0.0", Enabled: true}}
+	node := addSyncTestNode(t, "node-a", fake.server.URL, true)
+	useFakeSyncCluster(t, map[uint64]bool{node.ID: true})
+
+	// A background pass pushes once and then leaves the node alone.
+	for range 2 {
+		results, err := syncer.syncPlugin(ctx, "official.alpha", nil, false)
+		require.NoError(t, err)
+		require.Len(t, results, 1)
+		assert.True(t, results[0].Success)
+	}
+	fake.mu.Lock()
+	assert.Len(t, fake.settingsCalls, 1)
+	fake.mu.Unlock()
+
+	// Changed settings are pushed again, and a manual run always pushes.
+	require.NoError(t, m.SaveSettings(ctx, "official.alpha", map[string]any{"endpoint": "https://other.example"}))
+	_, err := syncer.syncPlugin(ctx, "official.alpha", nil, false)
+	require.NoError(t, err)
+	_, err = syncer.SyncPlugin(ctx, "official.alpha", nil)
+	require.NoError(t, err)
+	fake.mu.Lock()
+	assert.Len(t, fake.settingsCalls, 3)
+	assert.Equal(t, "https://other.example", fake.settingsCalls[1]["endpoint"])
+	fake.mu.Unlock()
+}
+
+func TestReconcileRepeatsAnOldSettingsPush(t *testing.T) {
+	m, syncer := newSyncTestManager(t)
+	ctx := context.Background()
+	installSyncTestPlugin(t, m, "official.alpha", "1.0.0", true)
+	require.NoError(t, m.SaveSettings(ctx, "official.alpha", map[string]any{"endpoint": "https://plugin.example"}))
+	require.NoError(t, m.setSyncPolicy(ctx, "official.alpha", model.PluginSyncPolicyAuto, nil, true))
+
+	fake := newFakeSyncNode(t)
+	fake.inventory = []Info{{ID: "official.alpha", Version: "1.0.0", Enabled: true}}
+	node := addSyncTestNode(t, "node-a", fake.server.URL, true)
+	useFakeSyncCluster(t, map[uint64]bool{node.ID: true})
+
+	reconcile := func() {
+		t.Helper()
+		results, err := syncer.syncPlugin(ctx, "official.alpha", nil, false)
+		require.NoError(t, err)
+		require.Len(t, results, 1)
+		assert.True(t, results[0].Success)
+	}
+	settingsCalls := func() []map[string]any {
+		fake.mu.Lock()
+		defer fake.mu.Unlock()
+		return append([]map[string]any(nil), fake.settingsCalls...)
+	}
+
+	// A recent push is trusted.
+	reconcile()
+	reconcile()
+	assert.Len(t, settingsCalls(), 1)
+
+	// A zero interval makes every earlier push old, so the unchanged settings
+	// go out again and repair whatever the node holds.
+	previous := settingsRepushInterval
+	settingsRepushInterval = 0
+	t.Cleanup(func() { settingsRepushInterval = previous })
+
+	reconcile()
+	calls := settingsCalls()
+	require.Len(t, calls, 2)
+	assert.Equal(t, "https://plugin.example", calls[1]["endpoint"])
+}
+
 func TestSyncPluginSkipsAnOptedOutNode(t *testing.T) {
 	m, syncer := newSyncTestManager(t)
 	installSyncTestPlugin(t, m, "official.alpha", "1.0.0", true)

@@ -31,7 +31,7 @@ func init() {
 			ArgsUsage: "<path>",
 			Action:    ConformancePlugin,
 			Flags: []cli.Flag{
-				&cli.StringFlag{Name: "capability", Usage: "limit the capability specific cases to this one: dns01, notify, probe, mcp, storage, cert.deploy, security.blocklist or upstream.discovery"},
+				&cli.StringFlag{Name: "capability", Usage: "limit the capability specific cases to this one: dns01, notify, probe, mcp, storage, cert.deploy, security.blocklist, upstream.discovery or log.sink"},
 				&cli.DurationFlag{Name: "timeout", Value: 90 * time.Second, Usage: "overall time budget for the run"},
 				&cli.StringFlag{Name: "transport", Usage: "run the cases over stdio, grpc or both (default: both when the plugin advertises grpc, stdio otherwise)"},
 			},

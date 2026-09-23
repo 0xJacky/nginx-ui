@@ -132,6 +132,9 @@ func (c *Client) Call(ctx context.Context, method string, params any, result any
 	if !ok {
 		return fmt.Errorf("%w: %s", ErrNotInContract, method)
 	}
+	if m.Streaming {
+		return fmt.Errorf("%w: %s", ErrStreamingMethod, method)
+	}
 
 	in, err := EncodeJSON(m.Input, params)
 	if err != nil {

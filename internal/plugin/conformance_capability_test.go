@@ -24,6 +24,7 @@ var allTestCapabilities = []string{
 	protocol.CapabilityCertDeploy,
 	protocol.CapabilitySecurityBlocklist,
 	protocol.CapabilityUpstreamDiscovery,
+	protocol.CapabilityLogSink,
 }
 
 // testPluginNewCapability answers the notify, probe, mcp, storage,
@@ -87,7 +88,7 @@ func testPluginNewCapability(method string, params json.RawMessage) (any, error,
 func allCapsManifest(id string) *protocol.Manifest {
 	manifest := pluginManifest(id)
 	manifest.Capabilities = allTestCapabilities
-	manifest.Permissions = []string{protocol.PermissionMCP, protocol.PermissionCertDeploy, protocol.PermissionNetwork}
+	manifest.Permissions = []string{protocol.PermissionMCP, protocol.PermissionCertDeploy, protocol.PermissionNetwork, protocol.PermissionLogRead}
 	manifest.Notify = &protocol.ManifestNotify{Channels: []protocol.NotifyChannel{{
 		Code: "mychat",
 		Name: "MyChat",
@@ -128,7 +129,7 @@ func TestConformanceRunsTheNewCapabilityCases(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
 	defer cancel()
 
-	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 50 * time.Second})
+	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 50 * time.Second, HandshakeTimeout: testHandshakeTimeout})
 	require.NoError(t, err)
 	assert.True(t, report.Passed(), "%+v", report.Cases)
 
@@ -151,6 +152,15 @@ func TestConformanceRunsTheNewCapabilityCases(t *testing.T) {
 			}
 		}
 	}
+	logOnStdio, ok := byKey["stdio|LOGSINK-4:log.push on stdio"]
+	if assert.True(t, ok, "missing LOGSINK-4 in %+v", report.Cases) {
+		assert.Equal(t, StatusPass, logOnStdio.Status, logOnStdio.Message)
+	}
+	logStream, ok := byKey["grpc|LOGSINK-5:log.push stream"]
+	if assert.True(t, ok, "missing LOGSINK-5 in %+v", report.Cases) {
+		assert.Equal(t, StatusPass, logStream.Status, logStream.Message)
+	}
+
 	parity, ok := byKey["|TRANSPORT-1:identical results"]
 	require.True(t, ok)
 	assert.Equal(t, StatusPass, parity.Status, parity.Message)
@@ -163,7 +173,8 @@ func TestConformanceRunsTheNewCapabilityCases(t *testing.T) {
 
 	// Limiting the run to one capability skips the others.
 	report, err = Conformance(ctx, dir, ConformanceOptions{
-		Timeout: 50 * time.Second, Transport: TransportFlagStdio, Capabilities: []string{protocol.CapabilityProbe},
+		HandshakeTimeout: testHandshakeTimeout,
+		Timeout:          50 * time.Second, Transport: TransportFlagStdio, Capabilities: []string{protocol.CapabilityProbe},
 	})
 	require.NoError(t, err)
 	byKey = casesByKey(report)

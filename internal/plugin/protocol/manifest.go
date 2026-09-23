@@ -33,6 +33,7 @@ type Manifest struct {
 	Deploy         *ManifestDeploy    `json:"deploy,omitempty"`
 	Blocklist      *ManifestBlocklist `json:"blocklist,omitempty"`
 	Discovery      *ManifestDiscovery `json:"discovery,omitempty"`
+	LogSink        *ManifestLogSink   `json:"log_sink,omitempty"`
 }
 
 // ManifestServer describes how to start the plugin process.
@@ -44,6 +45,18 @@ type ManifestServer struct {
 	// Lifecycle is "resident" (default) or "on_demand".
 	Lifecycle          string `json:"lifecycle,omitempty"`
 	IdleTimeoutSeconds int    `json:"idle_timeout_seconds,omitempty"`
+	// Resources are hints a host that confines plugin processes applies,
+	// capped by its own limits.
+	Resources *ManifestResources `json:"resources,omitempty"`
+}
+
+// ManifestResources are the resources a plugin process needs at most. 0
+// means no hint.
+type ManifestResources struct {
+	// MemoryMB is memory in MiB.
+	MemoryMB int `json:"memory_mb,omitempty"`
+	// CPUPercent is CPU time in percent of one core, 100 being one core.
+	CPUPercent int `json:"cpu_percent,omitempty"`
 }
 
 // ManifestWebapp describes the optional browser bundle.
@@ -207,6 +220,27 @@ type DiscoveryProvider struct {
 	Name          string               `json:"name"`
 	Configuration *ConfigurationSchema `json:"configuration,omitempty"`
 }
+
+// ManifestLogSink tunes the log.sink capability. Every field is optional.
+type ManifestLogSink struct {
+	// BatchSize is the most entries of one log.push stream. 0 means
+	// DefaultLogSinkBatchSize.
+	BatchSize int `json:"batch_size,omitempty"`
+	// FlushIntervalMS is the longest time a stream stays open once its first
+	// entry was sent. 0 means DefaultLogSinkFlushIntervalMS.
+	FlushIntervalMS int `json:"flush_interval_ms,omitempty"`
+	// Formats lists the LogFormat values the plugin wants. Empty means every
+	// line.
+	Formats []string `json:"formats,omitempty"`
+}
+
+// Bounds of ManifestLogSink.
+const (
+	DefaultLogSinkBatchSize       = 256
+	MaxLogSinkBatchSize           = 4096
+	DefaultLogSinkFlushIntervalMS = 500
+	MinLogSinkFlushIntervalMS     = 50
+)
 
 // ConfigurationSchema drives the form of a notify channel, a probe kind, a
 // storage backend, a deploy target, a blocklist source or a discovery

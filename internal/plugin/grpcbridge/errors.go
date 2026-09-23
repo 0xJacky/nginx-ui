@@ -23,6 +23,10 @@ var ErrUnavailable = errors.New("grpcbridge: transport unavailable")
 // and therefore has no gRPC path.
 var ErrNotInContract = errors.New("grpcbridge: method is not an rpc of the plugin contract")
 
+// ErrStreamingMethod is returned when a streaming rpc is used as a unary call
+// or a unary rpc is opened as a stream.
+var ErrStreamingMethod = errors.New("grpcbridge: streaming and unary rpcs are not interchangeable")
+
 // FromStatus maps the error of a gRPC call back onto what the same call
 // returns on stdio (WIRE-11): the PluginError detail when present, otherwise
 // the status code table. The caller's context wins, so a deadline or a

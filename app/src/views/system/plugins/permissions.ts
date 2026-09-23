@@ -26,6 +26,8 @@ export function describePermission(permission: string): string {
       return $gettext('Offer its tools to AI assistants connected to Nginx UI through MCP, which can then run them.')
     case 'cert.deploy':
       return $gettext('Receive certificates and their private keys in order to push them to external targets.')
+    case 'log.read':
+      return $gettext('Receive every parsed nginx access log line while enabled, including client addresses and requested URLs.')
     default:
       return $gettext('Unknown permission. Only grant it if you trust the plugin author.')
   }

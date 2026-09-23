@@ -12,7 +12,7 @@ import (
 // TestConformanceAgainstFakePlugin drives Conformance against the package's
 // own fake plugin (see supervisor_test.go's runTestPlugin / TestMain),
 // launched the same way manager_test.go does: a run.sh launcher that
-// re-execs this test binary with NGINX_UI_TEST_PLUGIN_MODE set.
+// re-execs this test binary with PLUGIN_TEST_MODE set.
 func TestConformanceAgainstFakePlugin(t *testing.T) {
 	usePluginProcesses(t, pluginModeNormal)
 

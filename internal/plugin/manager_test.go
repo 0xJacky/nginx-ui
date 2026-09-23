@@ -23,7 +23,7 @@ import (
 
 // testPluginBinEnv points the launcher script at the test binary, which
 // TestMain turns into a JSON-RPC peer.
-const testPluginBinEnv = "NGINX_UI_TEST_PLUGIN_BIN"
+const testPluginBinEnv = "PLUGIN_TEST_BIN"
 
 // testLauncherName is the executable every generated test plugin ships.
 const testLauncherName = "run.sh"
