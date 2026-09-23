@@ -36,6 +36,12 @@ func TestInitProducesLintCleanRepositories(t *testing.T) {
 				t.Errorf("unexpected finding for lang %s: %+v", lang, f)
 			}
 			assert.False(t, report.HasErrors(), "%+v", report.Findings)
+
+			// The manifest shows how to translate the name and description.
+			manifest, err := plugin.LoadManifest(dir)
+			require.NoError(t, err)
+			assert.Equal(t, "Demo", manifest.I18n["zh_CN"].Name)
+			assert.NotEmpty(t, manifest.I18n["zh_CN"].Description)
 		})
 	}
 }
