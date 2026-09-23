@@ -126,6 +126,18 @@ msgstr "任何可訪問的 IP 地址均可用於私有證書頒發機構"
 msgid "Challenge Method"
 msgstr "驗證方式"
 
+#: src/components/AutoCertForm/AutoCertForm.vue:146
+msgid "Required Settings"
+msgstr "必要設定"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:238
+msgid "DNS Challenge Credential"
+msgstr "DNS 驗證憑證"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:244
+msgid "Special Settings"
+msgstr "特殊設定"
+
 #: src/views/certificate/components/DNSIssueCertificate.vue:230
 msgid "Challenge Method Reminder"
 msgstr "驗證方式提醒"
@@ -232,6 +244,82 @@ msgstr "前往 DNS > 憑證 以建立或管理憑證"
 msgid "Valid"
 msgstr "有效"
 
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:137
+msgid "Certificate issuance failed"
+msgstr "憑證簽發失敗"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Trying renewal."
+msgstr "正在嘗試續簽。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Obtaining bundled SAN certificate."
+msgstr "正在申請 SAN 憑證。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Use solver."
+msgstr "正在使用驗證器。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "http01: Trying to solve HTTP-01."
+msgstr "http01：正在進行 HTTP-01 驗證。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "The server validated our request."
+msgstr "伺服器已驗證我們的請求。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Validations succeeded; requesting certificates."
+msgstr "驗證成功，正在請求憑證。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Waiting for certificates."
+msgstr "正在等待憑證。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Server responded with a certificate."
+msgstr "伺服器已回傳憑證。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:30
+msgid "level"
+msgstr "層級"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:31
+msgid "msg"
+msgstr "訊息"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:28
+msgid "Debug"
+msgstr "除錯"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:31
+msgid "time"
+msgstr "時間"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "domain"
+msgstr "網域"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:35
+msgid "domains"
+msgstr "網域列表"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:36
+msgid "type"
+msgstr "類型"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:37
+msgid "timeout"
+msgstr "逾時"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:38
+msgid "interval"
+msgstr "間隔"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:39
+msgid "hoursRemaining"
+msgstr "剩餘小時"
+
 #: src/components/CertInfo/CertInfo.vue:32
 #: src/views/certificate/CertificateList/certColumns.tsx:127
 #: src/views/dashboard/components/SiteCard.vue:131
@@ -242,6 +330,18 @@ msgstr "已過期"
 #: src/components/CertInfo/CertInfo.vue:36
 msgid "Issuer: %{issuer}"
 msgstr "簽發者：%{issuer}"
+
+#: src/components/CertInfo/CertInfo.vue:28
+msgid "Name: %{name}"
+msgstr "名稱：%{name}"
+
+#: src/components/CertInfo/CertInfo.vue:31
+msgid "Status:"
+msgstr "狀態："
+
+#: src/components/CertInfo/CertInfo.vue:45
+msgid "SAN Aliases: %{aliases}"
+msgstr "SAN 別名：%{aliases}"
 
 #: src/components/CertInfo/CertInfo.vue:39
 msgid "Expires At: %{date}"
