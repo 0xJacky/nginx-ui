@@ -402,6 +402,9 @@ msgstr ""
 msgid "Maintenance"
 msgstr ""
 
+msgid "Include line copied to clipboard"
+msgstr ""
+
 msgid "Starting download..."
 msgstr ""
 
@@ -1027,6 +1030,12 @@ msgstr ""
 msgid "Certificate Expiring Soon"
 msgstr ""
 
+msgid "Deploy Certificate Error"
+msgstr ""
+
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr ""
+
 msgid "Sync Certificate Error"
 msgstr ""
 
@@ -1405,6 +1414,18 @@ msgid "Copied"
 msgstr ""
 
 msgid "Copy"
+msgstr ""
+
+msgid "%{n} d"
+msgstr ""
+
+msgid "%{n} h"
+msgstr ""
+
+msgid "%{n} min"
+msgstr ""
+
+msgid "%{n} s"
 msgstr ""
 
 msgid "Hide"
@@ -1993,6 +2014,18 @@ msgstr ""
 msgid "Invalid auto backup filename: {0}"
 msgstr ""
 
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr ""
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr ""
+
+msgid "This action needs a plugin storage backend"
+msgstr ""
+
+msgid "Invalid storage key prefix: {0}"
+msgstr ""
+
 msgid "Invalid path: {0}"
 msgstr ""
 
@@ -2564,6 +2597,9 @@ msgstr ""
 msgid "Invalid Telegram Chat ID: cannot be zero"
 msgstr ""
 
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr ""
+
 msgid "Stub_status is not enabled"
 msgstr ""
 
@@ -2650,6 +2686,48 @@ msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
 msgstr ""
 
 msgid "Plugin package declares another id"
+msgstr ""
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr ""
+
+msgid "Storage backend {0} is not available"
+msgstr ""
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Deploy target kind {0} is not available"
+msgstr ""
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Blocklist source kind {0} is not available"
+msgstr ""
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Discovery provider {0} is not available"
+msgstr ""
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr ""
+
+msgid "Upstream name {0} is invalid"
+msgstr ""
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr ""
+
+msgid "Extra directives must not contain braces"
+msgstr ""
+
+msgid "{0} is still included by the nginx configuration: {1}"
 msgstr ""
 
 msgid "Task not found"
@@ -2812,6 +2890,9 @@ msgid "SSL key file must be under Nginx configuration directory: {0}"
 msgstr ""
 
 msgid "SSL certificate and key do not form a valid pair: {0}"
+msgstr ""
+
+msgid "Template not found"
 msgstr ""
 
 msgid "Upgrader core downloadUrl is empty"
@@ -3777,6 +3858,9 @@ msgstr ""
 msgid "Certificates List"
 msgstr ""
 
+msgid "Deploy Targets"
+msgstr ""
+
 msgid "Modify Certificate"
 msgstr ""
 
@@ -3844,6 +3928,9 @@ msgid "Preference"
 msgstr ""
 
 msgid "Host SSH Setup"
+msgstr ""
+
+msgid "Blocklists"
 msgstr ""
 
 msgid "Manage Sites"
@@ -4084,7 +4171,13 @@ msgstr ""
 msgid "S3 Region"
 msgstr ""
 
+msgid "Keep Latest Backups"
+msgstr ""
+
 msgid "Backup Now"
+msgstr ""
+
+msgid "Stored Backups"
 msgstr ""
 
 msgid "Daily"
@@ -4156,6 +4249,12 @@ msgstr ""
 msgid "Format: minute hour day month weekday"
 msgstr ""
 
+msgid "Please fill in %{field}"
+msgstr ""
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr ""
+
 msgid "Please fill in required S3 configuration fields"
 msgstr ""
 
@@ -4205,6 +4304,33 @@ msgid "S3 region (e.g., us-east-1)"
 msgstr ""
 
 msgid "Test S3 Connection"
+msgstr ""
+
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr ""
+
+msgid "Key Prefix"
+msgstr ""
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr ""
+
+msgid "Key prefix is required"
+msgstr ""
+
+msgid "nginx-ui/backups"
+msgstr ""
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr ""
+
+msgid "Test Storage"
 msgstr ""
 
 msgid "Create system backups and restore from saved snapshots when needed."
@@ -4497,6 +4623,30 @@ msgstr ""
 msgid "Drop private key file here"
 msgstr ""
 
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr ""
+
+msgid "Deployed to %{ok} targets"
+msgstr ""
+
+msgid "Manage"
+msgstr ""
+
+msgid "Deploy Now"
+msgstr ""
+
+msgid "This certificate is not pushed to any external target."
+msgstr ""
+
+msgid "Plugin unavailable"
+msgstr ""
+
+msgid "Never deployed"
+msgstr ""
+
+msgid "%{count} attempts"
+msgstr ""
+
 msgid "Certificate content and private key content cannot be empty"
 msgstr ""
 
@@ -4738,10 +4888,24 @@ msgid ""
 "automatically."
 msgstr ""
 
+msgid "No certificate is bound to this target"
+msgstr ""
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr ""
+
+msgid "Deployed %{ok} certificates"
+msgstr ""
+
 msgid "View all issued and imported certificates with expiration and status."
 msgstr ""
 
 msgid "Manage ACME accounts for automated certificate issuance and renewal."
+msgstr ""
+
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
 msgstr ""
 
 msgid "Import an existing certificate and key pair into the certificate store."
@@ -4811,6 +4975,20 @@ msgid "Folder"
 msgstr ""
 
 msgid "File"
+msgstr ""
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr ""
+
+msgid "Delete this backup from the storage?"
+msgstr ""
+
+msgid "Restore Backup"
+msgstr ""
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
 msgstr ""
 
 msgid "Type %{delete} to confirm"
@@ -5223,6 +5401,12 @@ msgstr ""
 msgid "Paused"
 msgstr ""
 
+msgid "Built-in HTTP / gRPC check"
+msgstr ""
+
+msgid "%{kind} (unavailable)"
+msgstr ""
+
 msgid "Informational Responses (1xx)"
 msgstr ""
 
@@ -5269,6 +5453,14 @@ msgid "Health check is enabled"
 msgstr ""
 
 msgid "Health check is disabled"
+msgstr ""
+
+msgid "Check Method"
+msgstr ""
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
 msgstr ""
 
 msgid "Protocol"
@@ -7028,6 +7220,37 @@ msgid "Automatic retry after"
 msgstr ""
 
 msgid "Attempts"
+msgstr ""
+
+msgid "Deploy History of %{name}"
+msgstr ""
+
+msgid "All certificates"
+msgstr ""
+
+msgid "Dry run successful"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+
+msgid "Target Type"
+msgstr ""
+
+msgid "Select a target type"
+msgstr ""
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr ""
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr ""
+
+msgid "Dry Run"
 msgstr ""
 
 msgid "Technical details"
@@ -9227,6 +9450,24 @@ msgid ""
 "reverse proxy, please configure the protocol separately in the reverse proxy."
 msgstr ""
 
+msgid "Refreshed"
+msgstr ""
+
+msgid "Refresh failed"
+msgstr ""
+
+msgid "Source Type"
+msgstr ""
+
+msgid "Refresh Interval"
+msgstr ""
+
+msgid "Entries"
+msgstr ""
+
+msgid "Last Result"
+msgstr ""
+
 msgid "End time must be later than start time"
 msgstr ""
 
@@ -9569,7 +9810,15 @@ msgstr ""
 msgid "Search templates"
 msgstr ""
 
+msgid "From plugin %{id}"
+msgstr ""
+
 msgid "Author"
+msgstr ""
+
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
 msgstr ""
 
 msgid "Do you want to enable TLS?"
@@ -10317,6 +10566,14 @@ msgstr ""
 msgid "Platforms"
 msgstr ""
 
+msgid "This package has no build for this node (%{platform})"
+msgstr ""
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr ""
+
 msgid "Failed to load the plugin details"
 msgstr ""
 
@@ -10324,6 +10581,9 @@ msgid "Installed version"
 msgstr ""
 
 msgid "Versions"
+msgstr ""
+
+msgid "This node runs %{platform}, its build is highlighted."
 msgstr ""
 
 msgid "Yanked"
@@ -10422,6 +10682,21 @@ msgstr ""
 msgid "Call the Nginx UI management API with your permissions."
 msgstr ""
 
+msgid ""
+"Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+"can then run them."
+msgstr ""
+
+msgid ""
+"Receive certificates and their private keys in order to push them to "
+"external targets."
+msgstr ""
+
+msgid ""
+"Receive every parsed nginx access log line while enabled, including client "
+"addresses and requested URLs."
+msgstr ""
+
 msgid "Unknown permission. Only grant it if you trust the plugin author."
 msgstr ""
 
@@ -10437,6 +10712,18 @@ msgstr ""
 msgid "Resident"
 msgstr ""
 
+msgid "Streamed"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Dropped"
+msgstr ""
+
+msgid "Unlimited"
+msgstr ""
+
 msgid "Last error"
 msgstr ""
 
@@ -10450,6 +10737,29 @@ msgid "API version"
 msgstr ""
 
 msgid "Needs Nginx UI %{version} or newer"
+msgstr ""
+
+msgid "Transport"
+msgstr ""
+
+msgid "Resource limits"
+msgstr ""
+
+msgid "The running process is confined to these limits."
+msgstr ""
+
+msgid ""
+"The plugin is not running, or this node cannot confine processes: that needs "
+"Linux with a writable cgroup v2 hierarchy."
+msgstr ""
+
+msgid "Enforced"
+msgstr ""
+
+msgid "Not enforced"
+msgstr ""
+
+msgid "Access log stream"
 msgstr ""
 
 msgid "Depends on"
@@ -10616,6 +10926,14 @@ msgid ""
 "localhost domain. This may expose sensitive information."
 msgstr ""
 
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr ""
+
+msgid "Service"
+msgstr ""
+
 msgid "Round Robin (default)"
 msgstr ""
 
@@ -10653,6 +10971,43 @@ msgid "Consistent Hashing"
 msgstr ""
 
 msgid "Servers"
+msgstr ""
+
+msgid "Service Discovery"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr ""
+
+msgid "Select a provider"
+msgstr ""
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr ""
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr ""
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr ""
+
+msgid "Extra Directives"
+msgstr ""
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr ""
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
 msgstr ""
 
 msgid "Address"
@@ -10895,6 +11250,38 @@ msgid "Insert"
 msgstr ""
 
 msgid "Include"
+msgstr ""
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+
+msgid "Refresh Now"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+
+msgid "Select a source type"
+msgstr ""
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr ""
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr ""
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
 msgstr ""
 
 msgid "Snippet %{name} saved"
