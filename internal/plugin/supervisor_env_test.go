@@ -8,7 +8,8 @@ import (
 
 func TestSupervisorEnvDropsHostOnlyVariables(t *testing.T) {
 	t.Setenv("LEGO_DISABLE_CNAME_SUPPORT", "true")
-	t.Setenv("NGINX_UI_ENV_PROBE", "kept")
+	t.Setenv("NGINX_UI_NODE_SECRET", "hidden")
+	t.Setenv("PLUGIN_ENV_PROBE", "kept")
 
 	s := NewSupervisor(SupervisorConfig{
 		PluginID:    "com.example.dns",
@@ -18,13 +19,17 @@ func TestSupervisorEnvDropsHostOnlyVariables(t *testing.T) {
 
 	env := s.env()
 	for _, entry := range env {
-		if strings.HasPrefix(entry, "LEGO_DISABLE_CNAME_SUPPORT=") {
-			t.Fatalf("the plugin inherited %q", entry)
+		for _, hidden := range []string{"LEGO_DISABLE_CNAME_SUPPORT=", "NGINX_UI_NODE_SECRET="} {
+			if strings.HasPrefix(entry, hidden) {
+				t.Fatalf("the plugin inherited %q", entry)
+			}
 		}
 	}
-	if !slices.Contains(env, "NGINX_UI_ENV_PROBE=kept") {
+	if !slices.Contains(env, "PLUGIN_ENV_PROBE=kept") {
 		t.Fatal("the plugin lost an unrelated environment variable")
 	}
+	// The variables the host sets for the plugin itself share the prefix
+	// and must still be there.
 	if !slices.Contains(env, EnvPluginID+"=com.example.dns") {
 		t.Fatal("the plugin id is missing from the environment")
 	}

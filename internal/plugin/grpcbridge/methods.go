@@ -36,13 +36,16 @@ type Method struct {
 	Input        protoreflect.MessageDescriptor
 	Output       protoreflect.MessageDescriptor
 	Notification bool
+	// Streaming marks a client streaming rpc (spec WIRE-12). It has no
+	// JSON-RPC form and is opened with Client.OpenStream only.
+	Streaming bool
 }
 
-// IsCapability reports whether the rpc is a host to plugin capability
+// IsCapability reports whether the rpc is a unary host to plugin capability
 // request. Only those are routed over gRPC; lifecycle methods, host API calls
-// and notifications stay on stdio.
+// and notifications stay on stdio, and a stream is never routed at all.
 func (m *Method) IsCapability() bool {
-	return !m.Notification && m.Service != lifecycleService && m.Service != hostService
+	return !m.Notification && !m.Streaming && m.Service != lifecycleService && m.Service != hostService
 }
 
 type index struct {
@@ -62,7 +65,8 @@ var methods = sync.OnceValue(func() index {
 			rpcs := sd.Methods()
 			for j := range rpcs.Len() {
 				md := rpcs.Get(j)
-				if md.IsStreamingClient() || md.IsStreamingServer() {
+				// Only client streams are part of the contract.
+				if md.IsStreamingServer() {
 					continue
 				}
 				name, _ := proto.GetExtension(md.Options(), pluginv1.E_RpcName).(string)
@@ -70,6 +74,7 @@ var methods = sync.OnceValue(func() index {
 					continue
 				}
 				notification, _ := proto.GetExtension(md.Options(), pluginv1.E_Notification).(bool)
+				streaming, _ := proto.GetExtension(md.Options(), pluginv1.E_Streaming).(bool)
 				m := &Method{
 					RPCName:      name,
 					FullMethod:   fmt.Sprintf("/%s/%s", sd.FullName(), md.Name()),
@@ -77,6 +82,7 @@ var methods = sync.OnceValue(func() index {
 					Input:        md.Input(),
 					Output:       md.Output(),
 					Notification: notification,
+					Streaming:    streaming || md.IsStreamingClient(),
 				}
 				idx.byName[m.RPCName] = m
 				idx.byPath[m.FullMethod] = m
@@ -99,8 +105,16 @@ func LookupFullMethod(fullMethod string) (*Method, bool) {
 	return m, ok
 }
 
-// IsCapability reports whether rpcName is a capability rpc of the contract.
+// IsCapability reports whether rpcName is a unary capability rpc of the
+// contract.
 func IsCapability(rpcName string) bool {
 	m, ok := Lookup(rpcName)
 	return ok && m.IsCapability()
+}
+
+// IsStreaming reports whether rpcName is a streaming rpc of the contract,
+// which travels on gRPC only.
+func IsStreaming(rpcName string) bool {
+	m, ok := Lookup(rpcName)
+	return ok && m.Streaming
 }
