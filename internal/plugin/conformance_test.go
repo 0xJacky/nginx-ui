@@ -23,7 +23,7 @@ func TestConformanceAgainstFakePlugin(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 25 * time.Second})
+	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 25 * time.Second, HandshakeTimeout: testHandshakeTimeout})
 	require.NoError(t, err)
 	require.NotEmpty(t, report.Cases)
 	assert.True(t, report.Passed(), "%+v", report.Cases)
@@ -85,7 +85,7 @@ func TestConformanceCapabilitiesFilter(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 25 * time.Second, Capabilities: []string{"http"}})
+	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 25 * time.Second, Capabilities: []string{"http"}, HandshakeTimeout: testHandshakeTimeout})
 	require.NoError(t, err)
 
 	for _, c := range report.Cases {
