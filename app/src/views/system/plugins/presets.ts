@@ -54,13 +54,23 @@ export function matchesFilter(plugin: PluginInfo, filter: InstalledFilter) {
   }
 }
 
-/** Case-insensitive match on the fields a user is likely to remember. */
+/**
+ * Case-insensitive match on the fields a user is likely to remember. The name
+ * and description match in every language the plugin ships.
+ */
 export function matchesKeyword(plugin: PluginInfo, keyword: string) {
   const needle = keyword.trim().toLowerCase()
   if (!needle)
     return true
 
-  const haystack = [plugin.name, plugin.id, plugin.description ?? '', ...(plugin.capabilities ?? [])]
+  const haystack = [
+    plugin.name,
+    plugin.id,
+    plugin.description ?? '',
+    ...Object.values(plugin.name_i18n ?? {}),
+    ...Object.values(plugin.description_i18n ?? {}),
+    ...(plugin.capabilities ?? []),
+  ]
   return haystack.some(value => value.toLowerCase().includes(needle))
 }
 

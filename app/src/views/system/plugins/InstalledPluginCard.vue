@@ -11,6 +11,8 @@ import {
   SettingOutlined,
   WarningOutlined,
 } from '@antdv-next/icons'
+import { localizedPluginDescription, localizedPluginName } from '@/api/plugin'
+import gettext from '@/gettext'
 import PluginIcon from './PluginIcon.vue'
 import { isToggleDisabled, needsAttention, statusOf } from './presets'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
@@ -29,6 +31,8 @@ const emit = defineEmits<{
   updated: []
 }>()
 
+const name = computed(() => localizedPluginName(props.plugin, gettext.current))
+const description = computed(() => localizedPluginDescription(props.plugin, gettext.current))
 const status = computed(() => statusOf(props.plugin))
 const attention = computed(() => needsAttention(props.plugin))
 const toggleDisabled = computed(() => isToggleDisabled(props.plugin))
@@ -83,7 +87,7 @@ function onMenuClick({ key }: { key: string | number }) {
       <PluginIcon :src="plugin.icon_url" :size="40" />
       <div class="plugin-card-body">
         <div class="plugin-card-title">
-          <span class="plugin-card-name">{{ plugin.name }}</span>
+          <span class="plugin-card-name">{{ name }}</span>
           <span class="plugin-card-version">v{{ plugin.version }}</span>
         </div>
         <div class="plugin-card-id">
@@ -103,7 +107,7 @@ function onMenuClick({ key }: { key: string | number }) {
     </div>
 
     <p class="plugin-card-description">
-      {{ plugin.description || $gettext('No description provided.') }}
+      {{ description || $gettext('No description provided.') }}
     </p>
 
     <div class="plugin-card-meta">
