@@ -101,7 +101,7 @@ const computedMainDomain = computed(() => {
 })
 
 function issueCert() {
-  if (!data.value.dns_credential_id) {
+  if (data.value.challenge_method === 'dns01' && !data.value.dns_credential_id) {
     message.error($gettext('Please select a DNS credential'))
     return
   }
@@ -217,11 +217,31 @@ async function submitSelfSigned() {
         </AForm>
 
         <template v-if="certType !== 'self_signed'">
+          <AAlert
+            type="info"
+            show-icon
+            class="mb-4"
+          >
+            <template #message>
+              {{ $gettext('Challenge Method Reminder') }}
+            </template>
+            <template #description>
+              <p>
+                {{ $gettext('If you use HTTP-01 challenge, the DNS credential field is hidden and not required.') }}
+              </p>
+              <p>
+                {{ $gettext('If you use DNS-01 challenge, you must select a DNS credential.') }}
+              </p>
+              <p>
+                {{ $gettext('Wildcard certificates usually require DNS-01 challenge.') }}
+              </p>
+            </template>
+          </AAlert>
+
           <AutoCertForm
             v-model:options="data"
             style="max-width: 600px"
             hide-note
-            force-dns-challenge
           />
 
           <div class="flex justify-end">
