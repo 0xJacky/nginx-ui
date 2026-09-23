@@ -179,7 +179,9 @@ type Manager struct {
 	// offline keeps the manager from spawning processes and background
 	// workers, which is what the command line tools need.
 	offline bool
-	ctx     context.Context
+	// handshakeTimeout is handed to every supervisor; zero keeps the default.
+	handshakeTimeout time.Duration
+	ctx              context.Context
 
 	backend     *hostBackend
 	scheduler   gocron.Scheduler

@@ -46,6 +46,11 @@ func setupPluginTestDB(t *testing.T) *gorm.DB {
 
 // usePluginProcesses points the generated plugins at the test binary. Only the
 // tests that actually spawn a plugin need it.
+// testHandshakeTimeout replaces the ten second default for the fake plugin,
+// which is this race instrumented test binary and can take that long to start
+// while the whole suite runs.
+const testHandshakeTimeout = 60 * time.Second
+
 func usePluginProcesses(t *testing.T, mode string) {
 	t.Helper()
 	if runtime.GOOS == "windows" {
@@ -63,6 +68,7 @@ func newTestManager(t *testing.T) *Manager {
 	t.Helper()
 	setupPluginTestDB(t)
 	m := newManager(t.TempDir())
+	m.handshakeTimeout = testHandshakeTimeout
 	t.Cleanup(func() { m.Stop(context.Background()) })
 	return m
 }
