@@ -74,6 +74,8 @@ type ConformanceOptions struct {
 	// run over: TransportFlagStdio, TransportFlagGRPC or TransportFlagBoth.
 	// Empty runs both when the plugin advertises grpc, stdio otherwise.
 	Transport string
+	// HandshakeTimeout replaces the supervisor default when positive.
+	HandshakeTimeout time.Duration
 }
 
 // ConformanceReport lists every case Conformance checked, in the order they
@@ -154,17 +156,18 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 
 	backend := &conformanceBackend{}
 	sup := NewSupervisor(SupervisorConfig{
-		PluginID:    manifest.ID,
-		Dir:         dir,
-		DataDir:     dataDir,
-		Manifest:    manifest,
-		Argv:        argv,
-		HostVersion: "0.0.0-conformance",
-		Locale:      "en",
-		Settings:    map[string]any{},
-		Permissions: manifest.Permissions,
-		Lifecycle:   protocol.LifecycleOnDemand,
-		IdleTimeout: timeout,
+		PluginID:         manifest.ID,
+		Dir:              dir,
+		DataDir:          dataDir,
+		Manifest:         manifest,
+		Argv:             argv,
+		HostVersion:      "0.0.0-conformance",
+		Locale:           "en",
+		Settings:         map[string]any{},
+		Permissions:      manifest.Permissions,
+		Lifecycle:        protocol.LifecycleOnDemand,
+		IdleTimeout:      timeout,
+		HandshakeTimeout: opts.HandshakeTimeout,
 		HostHandlers: func(conn *jsonrpc.Conn) {
 			RegisterHostHandlers(conn, manifest.ID, manifest.Permissions, backend)
 		},

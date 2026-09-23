@@ -111,15 +111,16 @@ func (m *Manager) ensureSupervisor(item *entry) (*Supervisor, error) {
 	permissions := slices.Clone(manifest.Permissions)
 	backend := m.hostBackend()
 	supervisor := NewSupervisor(SupervisorConfig{
-		PluginID:    id,
-		Dir:         dir,
-		DataDir:     dataDir,
-		Manifest:    manifest,
-		Argv:        argv,
-		HostVersion: version.GetVersionInfo().Version,
-		Locale:      backend.Locale(),
-		Settings:    mergedSettings(manifest, row),
-		Permissions: permissions,
+		PluginID:         id,
+		Dir:              dir,
+		DataDir:          dataDir,
+		Manifest:         manifest,
+		Argv:             argv,
+		HostVersion:      version.GetVersionInfo().Version,
+		Locale:           backend.Locale(),
+		Settings:         mergedSettings(manifest, row),
+		Permissions:      permissions,
+		HandshakeTimeout: m.handshakeTimeout,
 		HostHandlers: func(conn *jsonrpc.Conn) {
 			RegisterHostHandlers(conn, id, permissions, backend)
 		},
