@@ -173,7 +173,7 @@ const columns = [
     title: $gettext('Domain'),
     dataIndex: 'domain',
     key: 'domain',
-    customRender: ({ record }: { record: DDNSDomainItem }) => toUnicodeDomain(record.domain),
+    render: (_value: unknown, record: DDNSDomainItem) => toUnicodeDomain(record.domain),
   },
   {
     title: $gettext('Credential'),

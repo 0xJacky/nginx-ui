@@ -260,8 +260,7 @@ const performUpgradeBtnText = computed(() => {
       <template v-if="getReleaseError">
         <AAlert
           type="error"
-          :title="$gettext('Get release information error')"
-          :description="getReleaseError"
+          :title="getReleaseError"
           banner
         />
       </template>

@@ -34,13 +34,15 @@ const { data, errors } = storeToRefs(systemSettingsStore)
       :label="$gettext('Certificate Renewal Threshold')"
       :help="$gettext('Renew certificates when their remaining validity is less than or equal to this value.')"
     >
-      <AInputNumber
-        v-model:value="data.cert.renewal_interval"
-        :min="1"
-        :max="90"
-        :suffix="$gettext('Days')"
-        class="w-40"
-      />
+      <ASpaceCompact>
+        <AInputNumber
+          v-model:value="data.cert.renewal_interval"
+          :min="1"
+          :max="90"
+          class="w-30"
+        />
+        <ASpaceAddon>{{ $gettext('Days') }}</ASpaceAddon>
+      </ASpaceCompact>
     </AFormItem>
     <AFormItem
       :help="$gettext('Set the recursive nameservers to override the systems nameservers '

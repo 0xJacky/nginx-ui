@@ -365,7 +365,7 @@ async function handleSendTestMessage() {
         class="mt-2"
         type="info"
         show-icon
-        :message="$gettext('Available placeholders')"
+        :title="$gettext('Available placeholders')"
       >
         <template #description>
           <div
@@ -382,14 +382,14 @@ async function handleSendTestMessage() {
         class="mt-2"
         type="error"
         show-icon
-        :message="messageBodyJsonErrorText"
+        :title="messageBodyJsonErrorText"
       />
       <AAlert
         v-if="item.key === 'html_template' && placeholderHintText"
         class="mt-2"
         type="info"
         show-icon
-        :message="$gettext('Available placeholders')"
+        :title="$gettext('Available placeholders')"
       >
         <template #description>
           <div

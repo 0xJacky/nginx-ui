@@ -25,12 +25,14 @@ const { data } = storeToRefs(systemSettingsStore)
       <AInputNumber v-model:value="data.site_check.concurrency" :min="1" :max="20" class="w-30" />
     </AFormItem>
     <AFormItem :label="$gettext('Interval')">
-      <AInputNumber
-        v-model:value="data.site_check.interval_seconds"
-        :min="30"
-        :suffix="$gettext('Seconds')"
-        class="w-40"
-      />
+      <ASpaceCompact>
+        <AInputNumber
+          v-model:value="data.site_check.interval_seconds"
+          :min="30"
+          class="w-30"
+        />
+        <ASpaceAddon>{{ $gettext('Seconds') }}</ASpaceAddon>
+      </ASpaceCompact>
     </AFormItem>
 
     <ADivider title-placement="start">
@@ -40,12 +42,14 @@ const { data } = storeToRefs(systemSettingsStore)
       <ASwitch v-model:checked="data.upstream_check.enabled" data-testid="upstream-check-global-enabled" />
     </AFormItem>
     <AFormItem :label="$gettext('Interval')">
-      <AInputNumber
-        v-model:value="data.upstream_check.interval_seconds"
-        :min="5"
-        :suffix="$gettext('Seconds')"
-        class="w-40"
-      />
+      <ASpaceCompact>
+        <AInputNumber
+          v-model:value="data.upstream_check.interval_seconds"
+          :min="5"
+          class="w-30"
+        />
+        <ASpaceAddon>{{ $gettext('Seconds') }}</ASpaceAddon>
+      </ASpaceCompact>
     </AFormItem>
   </AForm>
 </template>

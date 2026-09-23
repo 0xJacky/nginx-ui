@@ -67,12 +67,15 @@ function filterOption(inputValue: string, option: { label: string }) {
           />
           <ASpaceCompact
             v-else
+            block
+            class="min-w-0 flex-1"
           >
             <AAutoComplete
               v-model:value="directive.directive"
               :options="nginxDirectivesOptions"
               style="width: 30%"
               :filter-option="filterOption"
+              :popup-match-select-width="240"
               :placeholder="$gettext('Directive')"
             />
             <AInput

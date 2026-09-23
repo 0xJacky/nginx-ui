@@ -248,9 +248,9 @@ onActivated(() => {
       </template>
     </ACollapse>
 
-    <List v-if="result" :data-source="result.keys">
+    <List v-if="result?.keys.length" :data-source="result.keys">
       <template #renderItem="{ item }">
-        <ListItem>
+        <ListItem class="!px-0">
           <ACard class="w-full" size="small">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <strong>{{ item.algorithm }}</strong>
@@ -311,7 +311,7 @@ onActivated(() => {
       <template #contentRender>
         <List :data-source="result.stale_keys">
           <template #renderItem="{ item }">
-            <ListItem>
+            <ListItem class="!px-0">
               <div class="w-full">
                 <ATag color="warning" variant="filled">
                   {{ $gettext('Stale') }}

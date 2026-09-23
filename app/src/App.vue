@@ -61,7 +61,7 @@ loadTranslations(route)
       algorithm: is_theme_dark ? theme.darkAlgorithm : theme.defaultAlgorithm,
     }"
     :locale="lang"
-    :auto-insert-space-in-button="false"
+    :button="{ autoInsertSpace: false }"
   >
     <AApp>
       <AppProvider>

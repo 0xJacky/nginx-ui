@@ -344,7 +344,7 @@ defineExpose({
             @change="onRecordSelect"
           >
             <template #optionRender="{ option }">
-              <ATag :color="option.data.recordType === 'A' ? 'blue' : option.data.recordType === 'AAAA' ? 'green' : 'orange'">
+              <ATag :color="option.data.recordType === 'A' ? 'blue' : option.data.recordType === 'AAAA' ? 'green' : 'orange'" class="mr-2">
                 {{ option.data.recordType }}
               </ATag>
               {{ option.data.recordName === '@' ? findDomainById(selectedDomainId)?.domain : option.data.recordName }}
@@ -355,7 +355,7 @@ defineExpose({
             </template>
             <template #labelRender="{ label, value }">
               <template v-if="findRecordById(value)">
-                <ATag :color="findRecordById(value)?.type === 'A' ? 'blue' : findRecordById(value)?.type === 'AAAA' ? 'green' : 'orange'">
+                <ATag :color="findRecordById(value)?.type === 'A' ? 'blue' : findRecordById(value)?.type === 'AAAA' ? 'green' : 'orange'" class="mr-2">
                   {{ findRecordById(value)?.type }}
                 </ATag>
                 {{ findRecordById(value)?.name === '@' ? findDomainById(selectedDomainId)?.domain : findRecordById(value)?.name }}

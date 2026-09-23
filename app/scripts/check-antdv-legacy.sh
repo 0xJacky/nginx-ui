@@ -36,5 +36,7 @@ check "Typography copyable tooltip (is tooltips)" ":copyable=\"\\{[^\"]*tooltip:
 check "removed components"                  "<AList|<AListItem|<AComment|<AStep[^s]|<AIcon"
 check ".ant-modal-content (not sizing box)" "\.ant-modal-content"
 check "Form.useForm / validateInfos"        "Form\.useForm|validateInfos"
+check "auto-insert-space-in-button (ignored; use :button)" "auto-insert-space-in-button|autoInsertSpaceInButton"
+check "Modal footer false (use null)"       ":footer=\"false\"|footer=\\{false\\}"
 if [ "$found" = 0 ]; then echo "clean: no legacy antdv APIs found"; fi
 exit $found

@@ -306,7 +306,7 @@ test('site editor preserves migrated antdv-next controls and content', async ({ 
   await assertHistoryTable(historyModal)
   await closeModal(historyModal)
 
-  const quickSetupButton = siteEditor.locator('.ant-card-extra .ant-btn-primary').first()
+  const quickSetupButton = siteEditor.locator('.ant-card-extra button:has(.anticon-thunderbolt)').first()
   await expect(quickSetupButton).toBeVisible()
   await quickSetupButton.click()
   const quickSetupModal = page.locator('.ant-modal:visible').last()

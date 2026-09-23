@@ -167,7 +167,7 @@ async function performUpgrade() {
   <AModal
     v-model:open="visible"
     :title="$gettext('Batch Upgrade')"
-    :footer="false"
+    :footer="null"
     :mask="false"
     width="800px"
   >
@@ -187,8 +187,7 @@ async function performUpgrade() {
       <AAlert
         v-if="getReleaseError"
         type="error"
-        :title="$gettext('Get release information error')"
-        :description="getReleaseError"
+        :title="getReleaseError"
         banner
       />
       <template v-else>

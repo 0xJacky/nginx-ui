@@ -270,6 +270,35 @@ onMounted(() => {
 </template>
 
 <style lang="less" scoped>
+// Reproduces the ant-design-vue 4 Comment look; antdv-next no longer ships Comment styles
+.ant-comment {
+  padding: 16px 0;
+}
+
+.ant-comment-avatar {
+  margin-inline-end: 12px;
+}
+
+.ant-comment-content-author {
+  margin-bottom: 4px;
+  color: var(--ant-color-text-tertiary);
+}
+
+.ant-comment-actions {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--ant-color-text-tertiary);
+
+  span {
+    cursor: pointer;
+    transition: color .3s;
+
+    &:hover {
+      color: var(--ant-color-text-secondary);
+    }
+  }
+}
+
 .content {
   width: 100%;
   position: relative;

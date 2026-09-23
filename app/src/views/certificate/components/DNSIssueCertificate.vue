@@ -190,11 +190,13 @@ async function submitSelfSigned() {
 
           <template v-if="certType === 'wildcard'">
             <AFormItem :label="$gettext('Domain')">
-              <AInput
-                v-model:value="domain"
-                prefix="*."
-                :placeholder="$gettext('Enter your domain')"
-              />
+              <ASpaceCompact block>
+                <ASpaceAddon>*.</ASpaceAddon>
+                <AInput
+                  v-model:value="domain"
+                  :placeholder="$gettext('Enter your domain')"
+                />
+              </ASpaceCompact>
             </AFormItem>
           </template>
 

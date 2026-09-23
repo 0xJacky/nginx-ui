@@ -27,7 +27,7 @@ const isCustomMMDBEnabled = computed(() => customMMDBPath.value.length > 0)
       class="mb-4"
       type="info"
       show-icon
-      :message="$gettext('Custom MMDB is currently enabled')"
+      :title="$gettext('Custom MMDB is currently enabled')"
     >
       <template #description>
         <div>

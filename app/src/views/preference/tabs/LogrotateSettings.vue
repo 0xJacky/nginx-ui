@@ -20,12 +20,14 @@ const { data } = storeToRefs(systemSettingsStore)
       {{ data.logrotate.cmd }}
     </AFormItem>
     <AFormItem :label="$gettext('Interval')">
-      <AInputNumber
-        v-model:value="data.logrotate.interval"
-        :min="1"
-        :suffix="$gettext('Minutes')"
-        class="w-40"
-      />
+      <ASpaceCompact>
+        <AInputNumber
+          v-model:value="data.logrotate.interval"
+          :min="1"
+          class="w-30"
+        />
+        <ASpaceAddon>{{ $gettext('Minutes') }}</ASpaceAddon>
+      </ASpaceCompact>
     </AFormItem>
   </AForm>
 </template>

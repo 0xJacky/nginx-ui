@@ -43,7 +43,7 @@ const allPassed = computed(() => props.rows.length > 0 && failed.value.length ==
 
     <List :data-source="rows">
       <template #renderItem="{ item }">
-        <ListItem>
+        <ListItem class="!px-0">
           <ASpace orientation="vertical" size="small" class="w-full">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <ASpace :size="8">
