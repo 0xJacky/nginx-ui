@@ -136,9 +136,16 @@ func Login(c *gin.Context) {
 }
 
 func Logout(c *gin.Context) {
-	token := c.GetHeader("Authorization")
-	if token != "" {
-		user.DeleteToken(token)
+	token := middleware.AuthorizationToken(c.GetHeader("Authorization"))
+	var err error
+	if len(token) <= 16 {
+		err = user.RevokeShortToken(token)
+	} else {
+		err = user.RevokeSessionToken(token)
+	}
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
 	}
 	c.JSON(http.StatusNoContent, nil)
 }
