@@ -98,6 +98,7 @@ function handleCopy(copy) {
       width="550"
       @ok="handleCloseModal"
     >
+
       <div class="security-token-info py-2">
         <p class="mb-4">
           {{ $gettext('Please save this security token, you will need it for restoration:') }}
