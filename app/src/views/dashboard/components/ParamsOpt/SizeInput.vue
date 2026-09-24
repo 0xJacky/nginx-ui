@@ -18,10 +18,11 @@ watch(modelValue, val => {
     unitValue.value = 'm'
     return
   }
-  const match = val.match(/^(\d+)([kmg])$/)
+  // nginx size suffixes are case-insensitive, so accept both 50M and 50m
+  const match = val.match(/^(\d+)([kmg])$/i)
   if (match) {
     numberValue.value = Number.parseInt(match[1])
-    unitValue.value = match[2]
+    unitValue.value = match[2].toLowerCase()
   }
 }, { immediate: true })
 
