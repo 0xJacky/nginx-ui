@@ -176,7 +176,8 @@ test('config file browser and editor preserve rendered rows, tabs, selects, and 
   const fileRows = rows.filter({ has: page.locator('.i-tabler-file') })
   await expect.poll(() => fileRows.count()).toBeGreaterThan(0)
   const fileRow = fileRows.first()
-  await fileRow.getByRole('button').first().click()
+  // File rows lead with a favorite toggle, so target Modify by name.
+  await fileRow.getByRole('button', { name: 'Modify', exact: true }).click()
 
   const codeEditor = page.locator('.ace_editor').first()
   await expect(codeEditor).toBeVisible()
@@ -204,7 +205,7 @@ test('NgxConfigEditor preserves Collapse panels, directive handles, tabs, lists,
   const issues = collectBrowserIssues(page)
   await page.setViewportSize({ width: 1920, height: 1000 })
 
-  await gotoRoute(page, '/sites')
+  await gotoRoute(page, '/sites/list')
   const siteRows = await expectTableRows(page, 1)
   const firstSiteRow = siteRows.first()
   let siteName = (await firstSiteRow.getAttribute('data-row-key'))?.trim() ?? ''

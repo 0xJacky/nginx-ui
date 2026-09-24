@@ -146,9 +146,3 @@ function reset2FA() {
     </template>
   </div>
 </template>
-
-<style scoped lang="less">
-:deep(.ant-input-group.ant-input-group-compact) {
-  display: flex;
-}
-</style>

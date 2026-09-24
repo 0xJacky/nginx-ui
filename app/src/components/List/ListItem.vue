@@ -26,8 +26,9 @@ defineSlots<{
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+  // Matches ant-design-vue 4's List item padding (paddingContentVertical / paddingContentHorizontalLG)
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--ant-color-split);
 
   &:last-child {
     border-bottom: none;
@@ -44,9 +45,7 @@ defineSlots<{
   align-items: center;
   gap: 16px;
   flex-shrink: 0;
-}
-
-.dark .nui-list-item {
-  border-bottom-color: rgba(253, 253, 253, 0.12);
+  // With the item's 16px gap this restores ant-design-vue 4's 48px (marginXXL) action offset
+  margin-inline-start: 32px;
 }
 </style>

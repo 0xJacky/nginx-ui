@@ -146,10 +146,10 @@ function getLocationExtra(index: number) {
                 />
               </AFormItem>
               <AFormItem :label="$gettext('Path')">
-                <AInput
-                  v-model:value="v.path"
-                  prefix="location"
-                />
+                <ASpaceCompact block>
+                  <ASpaceAddon>location</ASpaceAddon>
+                  <AInput v-model:value="v.path" />
+                </ASpaceCompact>
               </AFormItem>
               <AFormItem :label="$gettext('Content')">
                 <CodeEditor
@@ -174,10 +174,10 @@ function getLocationExtra(index: number) {
           <ATextarea v-model:value="location.comments" />
         </AFormItem>
         <AFormItem :label="$gettext('Path')">
-          <AInput
-            v-model:value="location.path"
-            prefix="location"
-          />
+          <ASpaceCompact block>
+            <ASpaceAddon>location</ASpaceAddon>
+            <AInput v-model:value="location.path" />
+          </ASpaceCompact>
         </AFormItem>
         <AFormItem :label="$gettext('Content')">
           <CodeEditor

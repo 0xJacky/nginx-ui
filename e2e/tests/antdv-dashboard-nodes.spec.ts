@@ -138,7 +138,7 @@ test('dashboard nodes and site cards retain migrated component content', async (
     await expect.poll(async () => (await tooltip.boundingBox())?.width ?? 0).toBeGreaterThan(0)
   }
 
-  const settingsButton = page.locator('.action .ant-btn').filter({ has: page.locator('.anticon-setting') }).first()
+  const settingsButton = page.locator('.site-navigation-header .ant-btn').filter({ has: page.locator('.anticon-setting') }).first()
   await expect(settingsButton).toBeVisible()
   await settingsButton.click()
   await expect(page.locator('.site-card.settings-mode')).toHaveCount(siteCount)

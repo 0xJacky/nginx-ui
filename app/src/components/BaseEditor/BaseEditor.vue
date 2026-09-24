@@ -69,18 +69,30 @@ const loading = computed(() =>
   padding: 0;
 }
 
-:deep(.ant-spin) {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  max-height: 100% !important;
-  border-radius: 8px;
+// antdv-next renders the Spin root as .ant-spin and masks the content with
+// .ant-spin-container::after, so the frosted overlay lives on that pseudo element
+.base-editor-spin.ant-spin-spinning {
+  > :deep(.ant-spin-section) {
+    z-index: 11;
+  }
+
+  > :deep(.ant-spin-container)::after {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 8px;
+    opacity: 1;
+  }
 }
 </style>
 
 <style lang="less">
 .dark {
   .base-editor-spin {
+    background: rgba(30, 30, 30, 0.8);
+  }
+
+  .base-editor-spin.ant-spin-spinning > .ant-spin-container::after {
     background: rgba(30, 30, 30, 0.8);
   }
 }

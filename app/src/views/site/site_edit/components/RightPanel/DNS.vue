@@ -98,8 +98,8 @@ const recordOptions = computed<SelectProps['options']>(() => selectableRecords.v
     label: h(Fragment, null, [
       h(Tag, {
         color: record.type === 'A' ? 'blue' : record.type === 'AAAA' ? 'green' : 'orange',
+        class: 'mr-2',
       }, { default: () => record.type }),
-      ' ',
       record.name === '@'
         ? availableDomains.value.find(domain => domain.id === selectedDomainId.value)?.domain
         : record.name,
@@ -570,7 +570,7 @@ async function recreateRecord(linkedRecord: LinkedDNSRecord) {
             :key="linkedRecord.record.id"
             class="text-xs text-gray-600 not-last:mb-2"
           >
-            <ATag :color="linkedRecord.record.type === 'A' ? 'blue' : linkedRecord.record.type === 'AAAA' ? 'green' : 'orange'">
+            <ATag :color="linkedRecord.record.type === 'A' ? 'blue' : linkedRecord.record.type === 'AAAA' ? 'green' : 'orange'" class="mr-2">
               {{ linkedRecord.record.type }}
             </ATag>
             {{ linkedRecord.record.name === '@' ? linkedRecord.domain.domain : linkedRecord.record.name }}
@@ -591,7 +591,7 @@ async function recreateRecord(linkedRecord: LinkedDNSRecord) {
               {{ $gettext('DNS Record Missing') }}
             </div>
             <div class="text-xs text-gray-600 mb-2">
-              <ATag :color="linkedRecord.record.type === 'A' ? 'blue' : linkedRecord.record.type === 'AAAA' ? 'green' : 'orange'">
+              <ATag :color="linkedRecord.record.type === 'A' ? 'blue' : linkedRecord.record.type === 'AAAA' ? 'green' : 'orange'" class="mr-2">
                 {{ linkedRecord.record.type }}
               </ATag>
               {{ linkedRecord.record.name === '@' ? linkedRecord.domain.domain : linkedRecord.record.name }}

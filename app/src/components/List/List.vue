@@ -4,6 +4,8 @@
  * antdv-next dropped List entirely, so we ship only the subset this project uses:
  * data-source + renderItem slot, plain default slot, header slot and the bordered variant.
  */
+import { Empty } from 'antdv-next'
+
 defineProps<{
   dataSource?: T[]
   itemLayout?: 'horizontal' | 'vertical'
@@ -24,7 +26,10 @@ defineSlots<{
     </div>
     <div class="nui-list-items">
       <template v-if="dataSource && $slots.renderItem">
-        <template v-for="(item, index) in dataSource" :key="index">
+        <div v-if="!dataSource.length" class="nui-list-empty">
+          <Empty :image="Empty.PRESENTED_IMAGE_SIMPLE" />
+        </div>
+        <template v-for="(item, index) in dataSource" v-else :key="index">
           <slot name="renderItem" :item="item" :index="index" />
         </template>
       </template>
@@ -40,29 +45,19 @@ defineSlots<{
 
 .nui-list-header {
   padding: 12px 0;
-  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+  border-bottom: 1px solid var(--ant-color-split);
+}
+
+.nui-list-empty {
+  padding: 16px;
 }
 
 .nui-list-bordered {
-  border: 1px solid rgba(5, 5, 5, 0.06);
+  border: 1px solid var(--ant-color-border);
   border-radius: 8px;
 
   .nui-list-header {
     padding: 12px 24px;
-  }
-
-  :deep(.nui-list-item) {
-    padding: 12px 24px;
-  }
-}
-
-.dark {
-  .nui-list-header {
-    border-bottom-color: rgba(253, 253, 253, 0.12);
-  }
-
-  .nui-list-bordered {
-    border-color: rgba(253, 253, 253, 0.12);
   }
 }
 </style>

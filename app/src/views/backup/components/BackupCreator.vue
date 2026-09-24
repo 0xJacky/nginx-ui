@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import { CheckOutlined, CopyOutlined, InfoCircleFilled, WarningOutlined } from '@antdv-next/icons'
+import { CheckOutlined, CopyOutlined, WarningOutlined } from '@antdv-next/icons'
 import { UseClipboard } from '@vueuse/components'
 import backup from '@/api/backup'
 
@@ -91,16 +91,13 @@ function handleCopy(copy) {
     <!-- Security Token Modal Component -->
     <AModal
       v-model:open="showSecurityModal"
+      :title="$gettext('Security Token Information')"
       :mask-closable="false"
       :centered="true"
       class="backup-token-modal"
       width="550"
       @ok="handleCloseModal"
     >
-      <template #title>
-        <InfoCircleFilled style="color: #1677ff; font-size: 22px" />
-        {{ $gettext('Security Token Information') }}
-      </template>
 
       <div class="security-token-info py-2">
         <p class="mb-4">
@@ -153,7 +150,7 @@ function handleCopy(copy) {
   </ACard>
 </template>
 
-<style scoped>
+<style scoped lang="less">
 .security-token-info {
   text-align: left;
 }
@@ -163,40 +160,6 @@ function handleCopy(copy) {
 }
 .token-text {
   line-height: 1.6;
-}
-
-/* Dark mode optimization */
-:deep(.backup-token-modal) {
-  /* Modal background */
-  .ant-modal-container {
-    background-color: #1f1f1f;
-  }
-
-  /* Modal title */
-  .ant-modal-header {
-    background-color: #1f1f1f;
-    border-bottom: 1px solid #303030;
-  }
-
-  .ant-modal-title {
-    color: #e6e6e6;
-  }
-
-  /* Modal content */
-  .ant-modal-body {
-    color: #e6e6e6;
-  }
-
-  /* Modal footer */
-  .ant-modal-footer {
-    border-top: 1px solid #303030;
-    background-color: #1f1f1f;
-  }
-
-  /* Close button */
-  .ant-modal-close-x {
-    color: #e6e6e6;
-  }
 }
 
 /* Token container dark mode styles */
@@ -212,27 +175,6 @@ function handleCopy(copy) {
   }
 
   /* Warning box dark mode */
-  .warning-box {
-    background-color: rgba(255, 77, 79, 0.1);
-    border-color: rgba(255, 77, 79, 0.3);
-
-    p {
-      color: #ff7875;
-    }
-  }
-}
-
-/* Dark mode support via media query */
-@media (prefers-color-scheme: dark) {
-  .token-container {
-    background-color: #262626 !important;
-    border-color: #303030 !important;
-  }
-
-  .token-text {
-    color: #d9d9d9;
-  }
-
   .warning-box {
     background-color: rgba(255, 77, 79, 0.1);
     border-color: rgba(255, 77, 79, 0.3);

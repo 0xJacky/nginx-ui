@@ -50,8 +50,10 @@ async function assertSelectHasOptions(page: Page, select: Locator, index: number
 }
 
 async function assertRenderedNotificationRow(row: Locator) {
+  // Type, Created at, Title, Details, Go To, Actions. Go To is blank when the
+  // notification carries no link, so only the first four cells must have text.
   const cells = row.locator('td.ant-table-cell')
-  await expect(cells).toHaveCount(5)
+  await expect(cells).toHaveCount(6)
 
   for (const index of [0, 1, 2, 3]) {
     await expect(cells.nth(index)).toBeVisible()
@@ -98,7 +100,7 @@ test('notification page and header popover render migrated antdv-next content', 
   const table = main.locator('.ant-table')
   await expect(table).toBeVisible()
   const headers = table.locator('.ant-table-thead > tr').first().locator('th')
-  await expect(headers).toHaveCount(5)
+  await expect(headers).toHaveCount(6)
   for (const header of await headers.all())
     await expect(header).toContainText(/\S/)
 

@@ -105,7 +105,7 @@ async function save() {
           {{ $gettext('History') }}
         </AButton>
         <AButton
-          type="primary"
+          type="link"
           @click="quickSetupOpen = true"
         >
           <template #icon>

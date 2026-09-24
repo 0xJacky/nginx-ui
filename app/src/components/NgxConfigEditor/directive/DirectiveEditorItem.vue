@@ -90,35 +90,40 @@ const isInputReadonly = computed(() => {
         />
       </div>
 
-      <AInput
+      <ASpaceCompact
         v-else
-        v-model:value="directive.params"
-        :readonly="isInputReadonly"
-        @click="curIdx = index"
+        block
+        class="min-w-0 flex-1"
       >
-        <template #prefix>
-          <HolderOutlined />
+        <ASpaceAddon class="whitespace-nowrap">
+          <HolderOutlined class="mr-1" />
           {{ directive.directive }}
-        </template>
-        <template #suffix>
-          <!-- DNS Lock Indicator -->
-          <ATooltip v-if="isDNSLinkedServerName" :title="$gettext('Server name is controlled by linked DNS record')">
-            <LockOutlined class="text-blue-500 mr-2" />
-          </ATooltip>
+        </ASpaceAddon>
+        <AInput
+          v-model:value="directive.params"
+          :readonly="isInputReadonly"
+          @click="curIdx = index"
+        >
+          <template #suffix>
+            <!-- DNS Lock Indicator -->
+            <ATooltip v-if="isDNSLinkedServerName" :title="$gettext('Server name is controlled by linked DNS record')">
+              <LockOutlined class="text-blue-500 mr-2" />
+            </ATooltip>
 
-          <slot
-            name="suffix"
-            :directive="directive"
-          />
+            <slot
+              name="suffix"
+              :directive="directive"
+            />
 
-          <!-- Comments Entry -->
-          <Transition name="fade">
-            <div v-show="onHover" class="ml-3 cursor-pointer" @click="showComment = !showComment">
-              <InfoCircleOutlined />
-            </div>
-          </Transition>
-        </template>
-      </AInput>
+            <!-- Comments Entry -->
+            <Transition name="fade">
+              <div v-show="onHover" class="ml-3 cursor-pointer" @click="showComment = !showComment">
+                <InfoCircleOutlined />
+              </div>
+            </Transition>
+          </template>
+        </AInput>
+      </ASpaceCompact>
 
       <APopconfirm
         v-if="!readonly && !isDNSLinkedServerName"

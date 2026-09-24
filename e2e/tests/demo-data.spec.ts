@@ -191,7 +191,7 @@ test('sites list is populated and navigation cards include healthy and failing s
     })
   })
 
-  await gotoRoute(page, '/sites')
+  await gotoRoute(page, '/sites/list')
   const siteRows = await expectTableRows(page, 2)
   await expect(siteRows.filter({ hasText: 'ojbk.me' }).first()).toBeVisible()
   await expect(siteRows.filter({ hasText: 'Prime Sponsor' }).first()).toBeVisible()
@@ -277,7 +277,7 @@ test('config and node screens render their real bundled fixtures', async ({ page
 })
 
 test('certificate and namespace screens render clean empty states', async ({ page }) => {
-  await gotoRoute(page, '/certificates')
+  await gotoRoute(page, '/certificates/list')
   await expect(page.getByText('Certificates', { exact: true }).first()).toBeVisible()
   await expectEmptyTable(page)
 

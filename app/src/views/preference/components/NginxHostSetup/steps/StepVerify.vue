@@ -31,7 +31,7 @@ const { isVerificationPassed } = useHostSetupWizard()
         v-if="hasFailed('nginx_test')"
         type="warning"
         show-icon
-        :message="$gettext('The nginx configuration on the host failed validation')"
+        :title="$gettext('The nginx configuration on the host failed validation')"
       >
         <template #description>
           <p class="mb-2">
