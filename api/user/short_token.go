@@ -11,7 +11,7 @@ import (
 )
 
 // IssueShortToken creates a short token for WebSocket authentication.
-// Requires both JWT (via AuthRequired) and the session-binding cookie.
+// Requires a JWT (via AuthRequired) and the browser session cookie.
 func IssueShortToken(c *gin.Context) {
 	sessionCookie, err := c.Cookie(middleware.SecureSessionCookieName)
 	if err != nil || sessionCookie == "" {
@@ -22,7 +22,8 @@ func IssueShortToken(c *gin.Context) {
 	}
 
 	u := api.CurrentUser(c)
-	shortToken, err := user.GenerateShortToken(u.ID)
+	token := middleware.AuthorizationToken(c.GetHeader("Authorization"))
+	shortToken, err := user.GenerateShortTokenForSession(u.ID, token)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
