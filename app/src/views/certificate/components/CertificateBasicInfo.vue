@@ -8,9 +8,12 @@ interface Props {
   data: Cert
   errors?: Record<string, string>
   isManaged: boolean
+  showNameField?: boolean
 }
 
-defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  showNameField: true,
+})
 
 const { message } = App.useApp()
 
@@ -42,7 +45,7 @@ async function copyToClipboard(text: string, label: string) {
     class="basic-info-form"
   >
     <AFormItem
-      v-if="!isManaged"
+      v-if="props.showNameField && !isManaged"
       name="name"
       :label="$gettext('Name')"
       :validate-status="errors?.name ? 'error' : ''"

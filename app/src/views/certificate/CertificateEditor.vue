@@ -338,7 +338,17 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <ACard :title="id > 0 ? $gettext('Modify Certificate') : $gettext('Import Certificate')">
+  <ACard>
+    <template #title>
+      <div v-if="!isSelfSigned" class="editor-title-name">
+        <AInput
+          v-model:value="data.name"
+          class="editor-title-input"
+          :disabled="isManaged"
+        />
+      </div>
+      <span v-else>{{ id > 0 ? $gettext('Modify Certificate') : $gettext('Import Certificate') }}</span>
+    </template>
     <template #extra>
       <ATag v-if="isManaged" color="success" class="managed-cert-tag">
         {{ $gettext('This certificate is managed by Nginx UI') }}
@@ -373,6 +383,7 @@ onBeforeUnmount(() => {
               v-model:data="data"
               :errors="errors"
               :is-managed="isManaged"
+              :show-name-field="false"
             />
           </AForm>
         </div>
@@ -419,6 +430,16 @@ onBeforeUnmount(() => {
 <style scoped lang="less">
 .main-top-row {
   align-items: stretch;
+}
+
+.editor-title-name {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.editor-title-input {
+  max-width: 560px;
 }
 
 .left-top-content {
