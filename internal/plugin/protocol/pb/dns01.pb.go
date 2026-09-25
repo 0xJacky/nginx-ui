@@ -799,7 +799,7 @@ const file_nginxui_plugin_v1_dns01_proto_rawDesc = "" +
 	"\aCleanup\x12&.nginxui.plugin.v1.DNS01CleanupRequest\x1a'.nginxui.plugin.v1.DNS01CleanupResponse\"\x11\xaa\xb8\x19\rdns01.cleanup\x12m\n" +
 	"\aOptions\x12&.nginxui.plugin.v1.DNS01OptionsRequest\x1a'.nginxui.plugin.v1.DNS01OptionsResponse\"\x11\xaa\xb8\x19\rdns01.options\x12e\n" +
 	"\x05Check\x12$.nginxui.plugin.v1.DNS01CheckRequest\x1a%.nginxui.plugin.v1.DNS01CheckResponse\"\x0f\xaa\xb8\x19\vdns01.check\x12q\n" +
-	"\bValidate\x12'.nginxui.plugin.v1.DNS01ValidateRequest\x1a(.nginxui.plugin.v1.DNS01ValidateResponse\"\x12\xaa\xb8\x19\x0edns01.validateBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\bValidate\x12'.nginxui.plugin.v1.DNS01ValidateRequest\x1a(.nginxui.plugin.v1.DNS01ValidateResponse\"\x12\xaa\xb8\x19\x0edns01.validateBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_dns01_proto_rawDescOnce sync.Once

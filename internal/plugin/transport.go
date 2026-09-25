@@ -1,7 +1,7 @@
 package plugin
 
 // This file routes capability calls over the optional gRPC transport
-// (nginx-ui-plugin-spec/spec/03-wire-protocol.md WIRE-11). stdio stays the
+// (plugin-spec/spec/03-wire-protocol.md WIRE-11). stdio stays the
 // baseline: the handshake, lifecycle methods, host API calls, logs and
 // notifications never leave it, and every capability call falls back to it
 // when the gRPC channel cannot be reached.

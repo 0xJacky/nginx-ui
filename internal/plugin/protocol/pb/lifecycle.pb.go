@@ -687,7 +687,7 @@ const file_nginxui_plugin_v1_lifecycle_proto_rawDesc = "" +
 	"\tConfigure\x12).nginxui.plugin.v1.PluginConfigureRequest\x1a*.nginxui.plugin.v1.PluginConfigureResponse\"\x14\xaa\xb8\x19\x10plugin.configure\x12d\n" +
 	"\x04Ping\x12$.nginxui.plugin.v1.PluginPingRequest\x1a%.nginxui.plugin.v1.PluginPingResponse\"\x0f\xaa\xb8\x19\vplugin.ping\x12t\n" +
 	"\bShutdown\x12(.nginxui.plugin.v1.PluginShutdownRequest\x1a).nginxui.plugin.v1.PluginShutdownResponse\"\x13\xaa\xb8\x19\x0fplugin.shutdown\x12h\n" +
-	"\x04Exit\x12$.nginxui.plugin.v1.PluginExitRequest\x1a%.nginxui.plugin.v1.PluginExitResponse\"\x13\xaa\xb8\x19\vplugin.exit\xb0\xb8\x19\x01BKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x04Exit\x12$.nginxui.plugin.v1.PluginExitRequest\x1a%.nginxui.plugin.v1.PluginExitResponse\"\x13\xaa\xb8\x19\vplugin.exit\xb0\xb8\x19\x01BBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_lifecycle_proto_rawDescOnce sync.Once
