@@ -1,4 +1,5 @@
 export { usePluginLoader } from './loader'
+export { isLoopbackUrl } from './loopback'
 export { createRegistry } from './registry'
 export { compareVersions, parseVersion, satisfies } from './semver'
 export { installSharedRuntime, takePendingPlugin } from './shared'
