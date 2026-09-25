@@ -4,6 +4,7 @@ import { CloudSyncOutlined, DeleteOutlined, LinkOutlined } from '@antdv-next/ico
 import { localizedPluginDescription } from '@/api/plugin'
 import gettext from '@/gettext'
 import { formatDateTime } from '@/lib/helper'
+import { packageTrustPreset } from './marketplace/trust'
 import PermissionList from './PermissionList.vue'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
 
@@ -19,6 +20,7 @@ const emit = defineEmits<{
 }>()
 
 const description = computed(() => localizedPluginDescription(props.plugin, gettext.current))
+const trust = computed(() => packageTrustPreset(props.plugin.trust))
 
 const processLabel = computed(() => {
   if (!props.plugin.has_server)
@@ -113,9 +115,16 @@ function formatCount(value: number) {
       :description="$gettext('Turn it on to review the requested permissions.')"
     />
 
-    <p v-if="description" class="overview-description">
-      {{ description }}
-    </p>
+    <div v-if="trust || description" class="flex flex-col gap-2">
+      <div v-if="trust" class="pill-row">
+        <ATooltip :title="trust.hint()">
+          <span class="pill" :class="trust.tone">{{ trust.label() }}</span>
+        </ATooltip>
+      </div>
+      <p v-if="description" class="overview-description">
+        {{ description }}
+      </p>
+    </div>
 
     <div class="fact-grid">
       <div

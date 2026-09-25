@@ -1,3 +1,4 @@
+import type { PluginTrust } from '@/api/plugin_marketplace'
 import type { HttpConfig } from '@/lib/http/types'
 import { http } from '@uozi-admin/request'
 
@@ -312,6 +313,10 @@ export interface PluginInfo {
   name_i18n?: Record<string, string>
   /** Locale code to translated description, `description` is the fallback. */
   description_i18n?: Record<string, string>
+  /** Trust level of the installed package, absent on an older node. */
+  trust?: PluginTrust
+  /** Signer id in 16 hex characters, empty or absent when unsigned. */
+  signer?: string
 }
 
 export interface PluginResources {
@@ -345,6 +350,10 @@ export interface PluginInspect {
    * does not upload it again. Absent on a node that does not keep uploads.
    */
   upload_id?: string
+  /** Trust level derived from the package, absent on an older node. */
+  trust?: PluginTrust
+  /** Signer id in 16 hex characters, empty or absent when unsigned. */
+  signer?: string
 }
 
 /** What an install reads the package from: the file or an inspected upload. */
