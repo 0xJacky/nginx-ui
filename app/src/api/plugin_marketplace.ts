@@ -2,8 +2,11 @@ import type { PluginInfo, PluginManifest } from '@/api/plugin'
 import { http } from '@uozi-admin/request'
 import { localizedText } from '@/api/plugin'
 
-/** How much the node trusts the publisher of a catalog entry. */
-export type PluginTrust = 'official' | 'verified' | 'community'
+/**
+ * How much the node trusts the publisher of a catalog entry or a package.
+ * 'unsigned' marks a package that carries no signature.
+ */
+export type PluginTrust = 'official' | 'verified' | 'community' | 'unsigned'
 
 /** Who signed a release: the nginx-ui release key or the plugin author. */
 export type PluginSignedBy = 'official' | 'author'
