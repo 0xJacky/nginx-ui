@@ -1,7 +1,7 @@
 package settings
 
 // DefaultPluginMarketplaceSource is the official static catalog.
-const DefaultPluginMarketplaceSource = "https://raw.githubusercontent.com/0xJacky/nginx-ui-plugins/main/v1/index.json"
+const DefaultPluginMarketplaceSource = "https://plugins.nginxui.com/v1/index.json"
 
 // DefaultPluginCgroupRoot is the usual mount point of the cgroup v2 hierarchy.
 const DefaultPluginCgroupRoot = "/sys/fs/cgroup"
