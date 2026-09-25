@@ -135,6 +135,9 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 	info, err := m.finishInstall(ctx, manifest, opts, upgrading)
 	if err != nil {
 		restore(false)
+		if upgrading {
+			m.resume(ctx, item)
+		}
 		return nil, err
 	}
 	restore(true)
@@ -153,6 +156,27 @@ func checkExpected(manifest *protocol.Manifest, opts InstallOptions) error {
 		return cosy.WrapErrorWithParams(ErrPluginVersionMismatch, manifest.Version, opts.ExpectedVersion)
 	}
 	return nil
+}
+
+// resume brings the previous version back up after a failed upgrade put its
+// files back. The entry never left the inventory, only its process and its
+// event queue were taken down for the upgrade.
+func (m *Manager) resume(ctx context.Context, item *entry) {
+	m.mu.RLock()
+	offline := m.offline
+	ready := runnableLocked(item)
+	m.mu.RUnlock()
+	if offline {
+		return
+	}
+	m.startEventPump(item)
+	if !ready {
+		return
+	}
+	if err := m.bringUp(ctx, item); err != nil {
+		m.log.Errorf("[plugin:%s] restart after a failed upgrade: %v", item.id, err)
+		m.recordError(item, err)
+	}
 }
 
 // moveIntoPlace swaps a staged directory in, keeping the previous version as
