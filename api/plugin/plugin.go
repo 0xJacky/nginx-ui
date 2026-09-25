@@ -5,7 +5,9 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
 	plugin "github.com/0xJacky/Nginx-UI/internal/plugin"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -75,13 +77,23 @@ func InspectPlugin(c *gin.Context) {
 }
 
 // InstallPlugin installs or upgrades a plugin from an uploaded package, or
-// from the package an earlier inspect kept under upload_id.
+// from the package an earlier inspect kept under upload_id. A controller that
+// pushes a community package names the key that signed it in
+// author_public_key, since this node has no catalog entry to find it in.
 func InstallPlugin(c *gin.Context) {
 	if !settings.PluginSettings.AllowUploads {
 		cosy.ErrHandler(c, plugin.ErrUploadsDisabled)
 		return
 	}
 	sweepUploads()
+
+	authorKey := strings.TrimSpace(c.PostForm("author_public_key"))
+	if authorKey != "" {
+		if _, err := pkgsign.ParseTrustedKeys([]string{authorKey}); err != nil {
+			cosy.ErrHandler(c, cosy.WrapErrorWithParams(plugin.ErrSignatureInvalid, "author_public_key: "+err.Error()))
+			return
+		}
+	}
 
 	var (
 		archivePath string
@@ -100,7 +112,8 @@ func InstallPlugin(c *gin.Context) {
 	defer cleanup()
 
 	info, err := plugin.GetManager().Install(detach(c), archivePath, plugin.InstallOptions{
-		Enable: c.PostForm("enable") == "true",
+		Enable:          c.PostForm("enable") == "true",
+		AuthorPublicKey: authorKey,
 	})
 	if err != nil {
 		cosy.ErrHandler(c, err)

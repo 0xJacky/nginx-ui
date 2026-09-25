@@ -20,24 +20,11 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
-	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
-	"github.com/0xJacky/Nginx-UI/internal/releasesign"
 	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy"
 )
-
-// Trust levels a catalog entry can declare.
-const (
-	TrustOfficial  = "official"
-	TrustVerified  = "verified"
-	TrustCommunity = "community"
-)
-
-// SignedByAuthor marks a release signed with the author key instead of the
-// release key pinned in this binary.
-const SignedByAuthor = "author"
 
 // Install progress phases published on the event bus.
 const (
@@ -84,18 +71,8 @@ var githubHosts = []string{
 
 // ReleaseDownload is one package file of a release.
 type ReleaseDownload struct {
-	URL          string `json:"url"`
-	SHA256       string `json:"sha256,omitempty"`
-	SignatureURL string `json:"signature_url,omitempty"`
-}
-
-// signatureURL is the detached signature of the package, which defaults to
-// the package URL plus ".minisig".
-func (d ReleaseDownload) signatureURL() string {
-	if d.SignatureURL != "" || d.URL == "" {
-		return d.SignatureURL
-	}
-	return d.URL + signatureSuffix
+	URL    string `json:"url"`
+	SHA256 string `json:"sha256,omitempty"`
 }
 
 // CatalogRelease is one downloadable version of a catalog entry.
@@ -110,12 +87,10 @@ type CatalogRelease struct {
 	Platforms []string `json:"platforms,omitempty"`
 	// Downloads maps "<goos>-<goarch>" or "any" to a package built for it.
 	Downloads map[string]ReleaseDownload `json:"downloads,omitempty"`
-	// DownloadURL, SHA256 and SignatureURL describe the portable package, the
-	// fallback for every platform Downloads does not name.
+	// DownloadURL and SHA256 describe the portable package, the fallback for
+	// every platform Downloads does not name.
 	DownloadURL     string             `json:"download_url"`
 	SHA256          string             `json:"sha256,omitempty"`
-	SignatureURL    string             `json:"signature_url,omitempty"`
-	SignedBy        string             `json:"signed_by,omitempty"`
 	ReleaseNotesURL string             `json:"release_notes_url,omitempty"`
 	Yanked          bool               `json:"yanked,omitempty"`
 	Manifest        *protocol.Manifest `json:"manifest,omitempty"`
@@ -138,7 +113,7 @@ func (r *CatalogRelease) DownloadFor(platform string) (download ReleaseDownload,
 	if len(r.Platforms) > 0 && !platformsCover(r.Platforms, platform) {
 		return ReleaseDownload{}, "", false
 	}
-	return ReleaseDownload{URL: r.DownloadURL, SHA256: r.SHA256, SignatureURL: r.SignatureURL}, "", true
+	return ReleaseDownload{URL: r.DownloadURL, SHA256: r.SHA256}, "", true
 }
 
 // AvailablePlatforms lists every platform key a release can be installed on,
@@ -165,7 +140,9 @@ func (r *CatalogRelease) AvailablePlatforms() []string {
 }
 
 // CatalogEntry is one plugin as the catalog describes it, plus the state this
-// node computed for it.
+// node computed for it. Trust is what the catalog declares and is only shown
+// in the listing: the install derives the level from the package signature,
+// and AuthorPublicKey is the key that makes a package community trust.
 type CatalogEntry struct {
 	ID              string            `json:"id"`
 	Name            map[string]string `json:"name,omitempty"`
@@ -282,7 +259,7 @@ func (mp *Marketplace) Catalog(ctx context.Context, refresh bool) ([]CatalogEntr
 			}
 			seen[entry.ID] = struct{}{}
 			entry.Source = source
-			entry.Trust = effectiveTrust(source, entry.Trust)
+			entry.Trust = effectiveTrust(entry.Trust)
 			mp.decorate(&entry)
 			merged = append(merged, entry)
 		}
@@ -454,6 +431,12 @@ func (mp *Marketplace) Updates(ctx context.Context) ([]UpdateInfo, error) {
 // Update upgrades one installed plugin, keeping its enabled state and its
 // stored settings.
 func (mp *Marketplace) Update(ctx context.Context, id, wantVersion string, approve bool) (*Info, error) {
+	return mp.update(ctx, id, wantVersion, approve, "")
+}
+
+// update is Update with a floor for the trust of the new package, which the
+// automatic flows set.
+func (mp *Marketplace) update(ctx context.Context, id, wantVersion string, approve bool, minTrust string) (*Info, error) {
 	current, err := mp.manager.Get(id)
 	if err != nil {
 		return nil, err
@@ -461,6 +444,7 @@ func (mp *Marketplace) Update(ctx context.Context, id, wantVersion string, appro
 	return mp.Install(ctx, id, wantVersion, "", InstallOptions{
 		Enable:             current.Enabled,
 		ApprovePermissions: approve,
+		MinTrust:           minTrust,
 	})
 }
 
@@ -491,7 +475,7 @@ func (mp *Marketplace) installEntry(ctx context.Context, entries []CatalogEntry,
 		return nil, err
 	}
 
-	if err = mp.installRequirements(ctx, entries, release, seen); err != nil {
+	if err = mp.installRequirements(ctx, entries, release, opts.MinTrust, seen); err != nil {
 		return nil, err
 	}
 
@@ -513,23 +497,21 @@ func (mp *Marketplace) installEntry(ctx context.Context, entries []CatalogEntry,
 	if err = verifyDigest(archive, download.SHA256); err != nil {
 		return nil, err
 	}
-	if _, err = mp.verifySignature(ctx, entry, release, download, archive); err != nil {
-		return nil, err
-	}
 
 	progress(InstallStatusInstalling, 95)
 	// The package must be what the catalog promised, otherwise a compromised
 	// mirror could swap a well known id for something else. The install
-	// checks it on the one extraction it needs anyway.
+	// checks it, and the embedded signature, on the one extraction it needs.
 	opts.ExpectedID = entry.ID
 	opts.ExpectedVersion = release.Version
+	opts.AuthorPublicKey = entry.AuthorPublicKey
 	return mp.manager.Install(ctx, archive, opts)
 }
 
 // installRequirements installs every dependency the manifest declares that is
-// not already satisfied on this node.
+// not already satisfied on this node, held to the same trust floor.
 func (mp *Marketplace) installRequirements(ctx context.Context, entries []CatalogEntry,
-	release *CatalogRelease, seen map[string]bool,
+	release *CatalogRelease, minTrust string, seen map[string]bool,
 ) error {
 	if release.Manifest == nil {
 		return nil
@@ -547,7 +529,7 @@ func (mp *Marketplace) installRequirements(ctx context.Context, entries []Catalo
 			return cosy.WrapErrorWithParams(ErrDependencyMissing, requirement.ID+"@"+requirement.Version)
 		}
 		if _, err := mp.installEntry(ctx, entries, dependency.ID, candidate.Version, dependency.Source,
-			InstallOptions{Enable: true, ApprovePermissions: true}, seen); err != nil {
+			InstallOptions{Enable: true, ApprovePermissions: true, MinTrust: minTrust}, seen); err != nil {
 			return err
 		}
 	}
@@ -596,7 +578,8 @@ func (mp *Marketplace) resolveRelease(entry *CatalogEntry, wantVersion, platform
 }
 
 // checkPolicy applies the node wide install policy to the package a release
-// resolved to.
+// resolved to. The community gate is only a pre filter on the catalog claim,
+// the install applies it again to the trust the signature proves.
 func (mp *Marketplace) checkPolicy(entry *CatalogEntry, downloadURL string) error {
 	if entry.Trust == TrustCommunity && !settings.PluginSettings.AllowCommunityPlugins {
 		return ErrCommunityNotAllowed
@@ -654,40 +637,6 @@ func (mp *Marketplace) download(ctx context.Context, rawURL, target string, prog
 		return ErrPackageTooLarge
 	}
 	return nil
-}
-
-// verifySignature enforces the signature policy on the downloaded package: the
-// official source always requires one, a custom source only when
-// RequireSignature is set. It returns the verified signature, empty when an
-// unsigned package was accepted.
-func (mp *Marketplace) verifySignature(ctx context.Context, entry *CatalogEntry, release *CatalogRelease,
-	download ReleaseDownload, archive string,
-) (string, error) {
-	required := isOfficialSource(entry.Source) || settings.PluginSettings.RequireSignature
-	signature, err := fetchText(ctx, proxiedURL(download.signatureURL()), maxReadmeBytes)
-	if err != nil || strings.TrimSpace(signature) == "" {
-		if required {
-			return "", ErrSignatureMissing
-		}
-		mp.manager.log.Warnf("[plugin:%s] accepting %s without a signature", entry.ID, release.Version)
-		return "", nil
-	}
-
-	if _, err = pkgsign.VerifyFile(archive, []byte(signature), mp.trustedKeys(entry, release)); err != nil {
-		return "", cosy.WrapErrorWithParams(ErrSignatureInvalid, err.Error())
-	}
-	return signature, nil
-}
-
-// trustedKeys is the release key set accepted for one entry. A community
-// plugin may additionally be signed with the author key the catalog pins.
-func (mp *Marketplace) trustedKeys(entry *CatalogEntry, release *CatalogRelease) []string {
-	keys := releasesign.TrustedPublicKeys()
-	keys = append(keys, settings.PluginSettings.TrustedPublicKeys...)
-	if release.SignedBy == SignedByAuthor && entry.Trust == TrustCommunity && entry.AuthorPublicKey != "" {
-		keys = append(keys, entry.AuthorPublicKey)
-	}
-	return keys
 }
 
 // permissionsChanged reports whether a release asks for more than the user
@@ -778,15 +727,17 @@ func (mp *Marketplace) runMaintenance(ctx context.Context) {
 		return
 	}
 	for _, update := range updates {
-		// Only vetted plugins update themselves, and only while the permission
-		// set the user approved still covers the new version.
-		if update.Trust != TrustOfficial && update.Trust != TrustVerified {
+		// Only plugins installed from an official or verified signature update
+		// themselves, never to a package signed with less, and only while the
+		// permission set the user approved still covers the new version.
+		installed, err := mp.manager.Get(update.ID)
+		if err != nil || (installed.Trust != TrustOfficial && installed.Trust != TrustVerified) {
 			continue
 		}
 		if update.PermissionsChanged {
 			continue
 		}
-		if _, err = mp.Update(ctx, update.ID, update.LatestVersion, false); err != nil {
+		if _, err = mp.update(ctx, update.ID, update.LatestVersion, false, installed.Trust); err != nil {
 			mp.manager.log.Warnf("[plugin:%s] auto update: %v", update.ID, err)
 		}
 	}
@@ -928,27 +879,17 @@ func proxiedURL(rawURL string) string {
 	return version.GetUrl(rawURL)
 }
 
-// isOfficialSource reports whether a source URL is the catalog shipped with
-// this binary, which always requires signed packages.
-func isOfficialSource(source string) bool {
-	return strings.EqualFold(strings.TrimSpace(source), settings.DefaultPluginMarketplaceSource)
-}
-
-// effectiveTrust is the trust level this node grants an entry. The level is a
-// claim about who published the plugin and the release signature is its
-// proof, so a custom source whose packages are not held to the signature
-// policy cannot vouch for more than community. An unknown level is community
-// as well, which keeps the community policy gate in front of it.
-func effectiveTrust(source, claimed string) string {
+// effectiveTrust normalises the trust level a catalog entry declares. It is
+// only shown in the listing, the install derives the level from the package
+// signature. An unknown level is community, which keeps the community pre
+// filter in front of it.
+func effectiveTrust(claimed string) string {
 	switch claimed {
-	case TrustOfficial, TrustVerified:
+	case TrustOfficial, TrustVerified, TrustCommunity:
+		return claimed
 	default:
 		return TrustCommunity
 	}
-	if isOfficialSource(source) || settings.PluginSettings.RequireSignature {
-		return claimed
-	}
-	return TrustCommunity
 }
 
 // verifyDigest checks the sha256 the catalog promised, when it promised one.

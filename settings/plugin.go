@@ -20,8 +20,8 @@ type Plugin struct {
 	MarketplaceSources []string `json:"marketplace_sources" ini:",,allowshadow"`
 	// TrustedPublicKeys are extra minisign public keys accepted for package signatures.
 	TrustedPublicKeys []string `json:"trusted_public_keys" ini:",,allowshadow"`
-	// RequireSignature rejects unsigned packages from custom sources. Official sources always require it.
-	RequireSignature bool `json:"require_signature"`
+	// DeveloperMode permits installing packages without a known signature, on every install path.
+	DeveloperMode bool `json:"developer_mode"`
 	// AllowCommunityPlugins permits installing community trust level plugins after confirmation.
 	AllowCommunityPlugins bool `json:"allow_community_plugins"`
 	// AllowInsecureDownloadURL permits plain http download URLs.
@@ -49,7 +49,6 @@ var PluginSettings = &Plugin{
 	MarketplaceEnabled:    true,
 	MarketplaceSources:    []string{},
 	TrustedPublicKeys:     []string{},
-	RequireSignature:      true,
 	AllowCommunityPlugins: true,
 	AllowUploads:          true,
 	CgroupRoot:            DefaultPluginCgroupRoot,

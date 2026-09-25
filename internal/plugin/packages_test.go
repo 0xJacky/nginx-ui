@@ -15,22 +15,18 @@ import (
 )
 
 // dropPackage copies a built archive into the offline package directory,
-// optionally with a detached signature.
+// signed when signer is set.
 func dropPackage(t *testing.T, m *Manager, id, pluginVersion string, signer *minisign.PrivateKey) string {
 	t.Helper()
 
-	archive := buildTestPackage(t, marketplaceManifest(id, pluginVersion),
-		map[string]string{"webapp/main.js": "export default {}"})
+	archive := buildSignedTestPackage(t, marketplaceManifest(id, pluginVersion),
+		map[string]string{"webapp/main.js": "export default {}"}, signer)
 	body, err := os.ReadFile(archive)
 	require.NoError(t, err)
 
 	require.NoError(t, os.MkdirAll(m.PackagesDir(), 0o755))
 	target := filepath.Join(m.PackagesDir(), id+"-"+pluginVersion+packageSuffix)
 	require.NoError(t, os.WriteFile(target, body, 0o644))
-
-	if signer != nil {
-		require.NoError(t, os.WriteFile(target+signatureSuffix, signPackage(t, body, *signer), 0o644))
-	}
 	return target
 }
 
@@ -69,12 +65,14 @@ func TestScanLocalPackagesUpgradesOnlyNewerVersions(t *testing.T) {
 func TestScanLocalPackagesVerifiesSignatures(t *testing.T) {
 	manager := newTestManager(t)
 	useMarketplace(t)
-	settings.PluginSettings.RequireSignature = true
+	settings.PluginSettings.DeveloperMode = false
 
-	dropPackage(t, manager, "com.example.offline", "1.0.0", nil)
+	// An unsigned package stays where it is while developer mode is off.
+	unsigned := dropPackage(t, manager, "com.example.offline", "1.0.0", nil)
 	require.NoError(t, manager.ScanLocalPackages(context.Background()))
 	_, err := manager.Get("com.example.offline")
 	assert.ErrorIs(t, err, ErrPluginNotFound)
+	assert.FileExists(t, unsigned)
 
 	public, private := newSigningKey(t)
 	trustKey(t, public)
@@ -84,8 +82,21 @@ func TestScanLocalPackagesVerifiesSignatures(t *testing.T) {
 	info, err := manager.Get("com.example.signed")
 	require.NoError(t, err)
 	assert.Equal(t, "1.0.0", info.Version)
-	assert.FileExists(t, filepath.Join(manager.PackagesDir(), installedDirName,
-		"com.example.signed-1.0.0"+packageSuffix+signatureSuffix))
+	assert.Equal(t, TrustCommunity, info.Trust)
+	assert.Equal(t, keyID(&private), info.Signer)
+	// Only the archive moves, there is no detached signature any more.
+	installed := filepath.Join(manager.PackagesDir(), installedDirName)
+	assert.FileExists(t, filepath.Join(installed, "com.example.signed-1.0.0"+packageSuffix))
+	assert.NoFileExists(t, filepath.Join(installed, "com.example.signed-1.0.0"+packageSuffix+".minisig"))
+
+	// Developer mode lets the unsigned package in on the next scan.
+	settings.PluginSettings.DeveloperMode = true
+	require.NoError(t, manager.ScanLocalPackages(context.Background()))
+	info, err = manager.Get("com.example.offline")
+	require.NoError(t, err)
+	assert.Equal(t, TrustUnsigned, info.Trust)
+	assert.Empty(t, info.Signer)
+	assert.NoFileExists(t, unsigned)
 }
 
 func TestInstallLocalPackagePicksTheNewestBuild(t *testing.T) {
@@ -135,37 +146,42 @@ func TestPeekPackageReadsWithoutUnpacking(t *testing.T) {
 	assert.NoDirExists(t, missing, "peeking must not unpack the archive")
 }
 
-func TestFetchPackageWritesArchiveAndSignature(t *testing.T) {
+func TestFetchPackageWritesOnlyTheArchive(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
+	settings.PluginSettings.DeveloperMode = false
 
-	public, private := newSigningKey(t)
-	trustKey(t, public)
-	settings.PluginSettings.RequireSignature = true
-	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), &private, nil)
+	signer := useReleaseKey(t)
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), signer, nil)
 
 	destination := t.TempDir()
 	archive, err := manager.Marketplace().FetchPackage(context.Background(), "com.example.alpha", "", "", destination)
 	require.NoError(t, err)
 	assert.Equal(t, filepath.Join(destination, "com.example.alpha-1.0.0"+packageSuffix), archive)
 	assert.FileExists(t, archive)
-	assert.FileExists(t, archive+signatureSuffix)
+	assert.NoFileExists(t, archive+".minisig")
 
-	// The fetched archive is a valid package for an offline install.
-	manifest, err := peekPackageManifest(archive)
+	// The fetched archive carries its signature to the offline node.
+	dir := filepath.Join(t.TempDir(), "payload")
+	_, err = ExtractPackage(archive, dir)
 	require.NoError(t, err)
-	assert.Equal(t, "1.0.0", manifest.Version)
+	trust, err := verifyPackageSignature(dir, "")
+	require.NoError(t, err)
+	assert.Equal(t, TrustOfficial, trust.Trust)
 }
 
-func TestFetchPackageRefusesAnUnsignedRelease(t *testing.T) {
+func TestFetchPackageLeavesTheSignatureToTheInstall(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
-	settings.PluginSettings.RequireSignature = true
+	settings.PluginSettings.DeveloperMode = false
 
 	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, nil)
 
-	_, err := manager.Marketplace().FetchPackage(context.Background(), "com.example.alpha", "", "", t.TempDir())
-	assert.ErrorIs(t, err, ErrSignatureMissing)
+	// Fetching an unsigned package works, installing it needs developer mode.
+	archive, err := manager.Marketplace().FetchPackage(context.Background(), "com.example.alpha", "", "", t.TempDir())
+	require.NoError(t, err)
+	_, err = manager.Install(context.Background(), archive, InstallOptions{})
+	assert.ErrorIs(t, err, ErrUnsignedPackage)
 }
