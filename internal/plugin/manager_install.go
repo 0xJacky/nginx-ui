@@ -92,6 +92,9 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 	if err != nil {
 		return nil, err
 	}
+	if err = checkExpected(manifest, opts); err != nil {
+		return nil, err
+	}
 	if !IsCompatible(manifest) {
 		return nil, ErrIncompatibleAPIVersion
 	}
@@ -139,6 +142,17 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 	// is kept next to the plugins instead of being rebuilt from the files.
 	m.keepArchive(manifest.ID, manifest.Version, archivePath)
 	return info, nil
+}
+
+// checkExpected refuses a package that is not what the caller was promised.
+func checkExpected(manifest *protocol.Manifest, opts InstallOptions) error {
+	if opts.ExpectedID != "" && manifest.ID != opts.ExpectedID {
+		return ErrPluginIDMismatch
+	}
+	if opts.ExpectedVersion != "" && manifest.Version != opts.ExpectedVersion {
+		return cosy.WrapErrorWithParams(ErrPluginVersionMismatch, manifest.Version, opts.ExpectedVersion)
+	}
+	return nil
 }
 
 // moveIntoPlace swaps a staged directory in, keeping the previous version as

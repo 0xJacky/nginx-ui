@@ -31,6 +31,7 @@ var (
 	ErrHostVersionTooOld          = e.New(55019, "plugin needs nginx-ui {0} or newer, this node runs {1}")
 	ErrPluginIDMismatch           = e.New(55020, "plugin package declares another id")
 	ErrContentInvalid             = e.New(55021, "plugin content {0} is invalid: {1}")
+	ErrPluginVersionMismatch      = e.New(55022, "plugin package declares version {0}, {1} was expected")
 
 	// Capability errors continue at 55201, apart from the lifecycle and the
 	// marketplace codes.
