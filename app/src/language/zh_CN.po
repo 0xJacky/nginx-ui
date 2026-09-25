@@ -7516,6 +7516,28 @@ msgid ""
 "this value."
 msgstr "当证书剩余有效期小于或等于此值时续签证书。"
 
+msgid "Plugin System"
+msgstr "插件系统"
+
+msgid ""
+"Turning it off stops every plugin and hides the plugin pages. Takes effect "
+"after a restart."
+msgstr "关闭后会停止所有插件并隐藏插件页面，重启后生效。"
+
+msgid "Plugin Directory"
+msgstr "插件目录"
+
+msgid "Default Sync Policy"
+msgstr "默认同步策略"
+
+msgid ""
+"Applied to newly installed plugins. Automatic keeps the plugin installed on "
+"the child nodes."
+msgstr "应用于新安装的插件。自动会让插件始终安装在子节点上。"
+
+msgid "Enable Marketplace"
+msgstr "启用市场"
+
 msgid "Stub Status Port"
 msgstr "Stub 状态端口"
 
@@ -9027,6 +9049,13 @@ msgstr "前往证书"
 msgid "Paths, commands, maintenance page and control mode of the managed Nginx."
 msgstr "所管理 Nginx 的路径、命令、维护页面与控制模式。"
 
+msgid ""
+"Plugin system, marketplace, packages and resource limits of plugin processes."
+msgstr "插件系统、市场、安装包以及插件进程的资源限制。"
+
+msgid "Go to plugins"
+msgstr "前往插件"
+
 msgid "LLM"
 msgstr "LLM"
 
@@ -9434,6 +9463,9 @@ msgstr "与聊天模型相同"
 
 msgid "Advanced"
 msgstr "高级"
+
+msgid "The plugins directory under the configuration directory"
+msgstr "配置目录下的 plugins 目录"
 
 msgid "Listen Address"
 msgstr "监听地址"
@@ -10506,6 +10538,76 @@ msgstr "所有来源"
 msgid "Sources"
 msgstr "来源"
 
+msgid "Managed on the marketplace page. Empty means the official catalog."
+msgstr "在市场页面管理，为空表示使用官方目录。"
+
+msgid "Allow Community Plugins"
+msgstr "允许社区插件"
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr "社区插件由第三方发布，安装前会要求确认。"
+
+msgid "Automatic Updates"
+msgstr "自动更新"
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr "在所需权限不变时自动更新官方与合作伙伴插件。"
+
+msgid "Allow Insecure Download URLs"
+msgstr "允许不安全的下载地址"
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr "接受纯 http 的目录与下载地址，仅用于可信网络中的私有目录。"
+
+msgid "Allow Uploads"
+msgstr "允许上传"
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr "允许安装从浏览器或命令行上传的安装包。"
+
+msgid "Developer Mode"
+msgstr "开发者模式"
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
+msgstr "允许安装未签名的插件，仅在开发插件时开启。"
+
+msgid "Trusted Keys"
+msgstr "可信密钥"
+
+msgid ""
+"Packages signed with one of these keys install as community plugins. One key "
+"per line."
+msgstr "用这些密钥签名的安装包按社区插件安装，每行一个密钥。"
+
+msgid "Memory Limit"
+msgstr "内存限制"
+
+msgid ""
+"Applies to every plugin process. 0 means unlimited, a plugin can only lower "
+"its own limit."
+msgstr "应用于每个插件进程。0 表示不限制，插件只能调低自己的限制。"
+
+msgid "CPU Limit"
+msgstr "CPU 限制"
+
+msgid "Percent of one core for every plugin process. 0 means unlimited."
+msgstr "每个插件进程可用的单核百分比，0 表示不限制。"
+
+msgid "cgroup Root"
+msgstr "cgroup 根目录"
+
+msgid "Limits are enforced on Linux with cgroup v2 only."
+msgstr "仅在使用 cgroup v2 的 Linux 上强制执行。"
+
 msgid "%{count} installed plugin has a newer release."
 msgid_plural "%{count} installed plugins have a newer release."
 msgstr[0] "%{count} 个已安装的插件有新版本。"
@@ -10867,6 +10969,18 @@ msgstr "可更新"
 
 msgid "Marketplace"
 msgstr "市场"
+
+msgid "Official catalog"
+msgstr "官方目录"
+
+msgid "Packages"
+msgstr "安装包"
+
+msgid "Paste public keys here"
+msgstr "在此粘贴公钥"
+
+msgid "Resources"
+msgstr "资源"
 
 msgid "%{field} is required"
 msgstr "%{field} 为必填项"
