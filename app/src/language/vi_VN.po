@@ -1511,6 +1511,21 @@ msgstr "Đang tải..."
 msgid "Show"
 msgstr "Hiển thị"
 
+msgid "Change it in the %{section} section of app.ini."
+msgstr ""
+
+msgid "Unsaved"
+msgstr ""
+
+msgid "Restart required"
+msgstr ""
+
+msgid "Config file"
+msgstr ""
+
+msgid "Not set"
+msgstr ""
+
 msgid "Remove"
 msgstr "Xóa"
 
@@ -7475,6 +7490,341 @@ msgstr "Đăng nhập OIDC"
 msgid "Sign in with a passkey"
 msgstr "Đăng nhập bằng khóa truy cập"
 
+msgid "Unix Socket"
+msgstr "Unix Socket"
+
+msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgstr "Nginx UI lắng nghe trên Unix socket này thay vì TCP host và port."
+
+msgid "Run Mode"
+msgstr "Chế độ chạy"
+
+msgid "Enable HTTPS"
+msgstr "Bật HTTPS"
+
+msgid ""
+"Serves the web interface over HTTPS. Saving this change restarts Nginx UI "
+"and reloads the page."
+msgstr ""
+
+msgid "SSL Key Path"
+msgstr "Đường dẫn khóa SSL"
+
+msgid "Enable HTTP/2"
+msgstr "Bật HTTP/2"
+
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr "Bật hỗ trợ HTTP/2 với khả năng ghép kênh và đẩy dữ liệu từ máy chủ"
+
+msgid "Enable HTTP/3"
+msgstr "Bật HTTP/3"
+
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr "Bật hỗ trợ HTTP/3 dựa trên giao thức QUIC để có hiệu suất tốt nhất"
+
+msgid "Jwt Secret"
+msgstr "Mật khẩu JWT"
+
+msgid "Page Size"
+msgstr "Kích thước trang"
+
+msgid "Instance ID"
+msgstr "ID phiên bản"
+
+msgid "Node name"
+msgstr "Tên nút"
+
+msgid ""
+"Customize the name of local node to be displayed in the environment "
+"indicator."
+msgstr "Tùy chỉnh tên nút cục bộ để hiển thị trong chỉ báo môi trường."
+
+msgid "Skip Installation"
+msgstr "Bỏ qua cài đặt"
+
+msgid "Demo"
+msgstr "Bản demo"
+
+msgid "ICP Number"
+msgstr "Số ICP"
+
+msgid ""
+"Shown in the page footer. Only needed for sites hosted in mainland China."
+msgstr ""
+
+msgid "Public Security Number"
+msgstr "Số An ninh Công cộng"
+
+msgid "Github Proxy"
+msgstr "Proxy Github"
+
+msgid ""
+"Used for downloads from GitHub, such as upgrades and the GeoLite database."
+msgstr ""
+
+msgid "HTTP Proxy"
+msgstr "HTTP Proxy"
+
+msgid "Used for other outgoing requests made by Nginx UI."
+msgstr ""
+
+msgid "Insecure Skip Verify"
+msgstr "Bỏ qua xác minh không an toàn"
+
+msgid "RPID"
+msgstr "RPID"
+
+msgid "RP Display Name"
+msgstr "Tên hiển thị RP"
+
+msgid "RP Origins"
+msgstr "Nguồn gốc RP"
+
+msgid "Ban Threshold Minutes"
+msgstr "Phút Ngưỡng Cấm"
+
+msgid "Window in which failed sign-in attempts from one address are counted."
+msgstr ""
+
+msgid "Max Attempts"
+msgstr "Số lần thử tối đa"
+
+msgid ""
+"Failed attempts allowed inside the window before the address is banned for a "
+"while."
+msgstr ""
+
+msgid "Banned IPs"
+msgstr "Danh sách IP bị cấm"
+
+msgid "Addresses that are currently blocked from signing in."
+msgstr ""
+
+msgid "Access Tokens"
+msgstr "Mã thông báo truy cập"
+
+msgid ""
+"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
+"Tokens are shown only once."
+msgstr ""
+"Tạo thông tin xác thực theo phạm vi cho Nginx UI CLI, tự động hoá và ứng "
+"dụng MCP. Mã thông báo chỉ hiển thị một lần."
+
+msgid "Contact address registered with the certificate authority."
+msgstr ""
+
+msgid "HTTP Challenge Port"
+msgstr "Cổng thử thách HTTP"
+
+msgid ""
+"Port that answers validation requests while a certificate is being issued."
+msgstr ""
+
+msgid "CADir"
+msgstr "CADir"
+
+msgid "Service that issues certificates. Leave empty to use the default."
+msgstr ""
+
+msgid "Certificate Renewal Threshold"
+msgstr "Ngưỡng gia hạn chứng chỉ"
+
+msgid ""
+"Renew certificates when their remaining validity is less than or equal to "
+"this value."
+msgstr ""
+"Gia hạn chứng chỉ khi thời gian hiệu lực còn lại nhỏ hơn hoặc bằng giá trị "
+"này."
+
+msgid "Recursive Nameservers"
+msgstr "Máy chủ tên đệ quy"
+
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
+msgstr ""
+
+msgid "Stub Status Port"
+msgstr "Cổng trạng thái stub"
+
+msgid "Local port used to read Nginx connection statistics."
+msgstr ""
+
+msgid "Maintenance host"
+msgstr "Máy chủ bảo trì"
+
+msgid ""
+"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
+"to use this Nginx UI instance."
+msgstr ""
+"Nguồn HTTP hoặc HTTPS tùy chọn phục vụ trang bảo trì. Để trống để sử dụng "
+"thể hiện Nginx UI này."
+
+msgid "Maintenance bypass IP"
+msgstr "IP bỏ qua bảo trì"
+
+msgid ""
+"Requests from this IPv4 or IPv6 address continue to use the original site "
+"while maintenance mode is active."
+msgstr ""
+"Các yêu cầu từ địa chỉ IPv4 hoặc IPv6 này vẫn tiếp tục sử dụng trang gốc "
+"trong khi chế độ bảo trì đang hoạt động."
+
+msgid "Maintenance template (filename only)"
+msgstr "Mẫu bảo trì (chỉ tên tệp)"
+
+msgid ""
+"The file named <site name>.<filename> is used first; if it does not exist, "
+"the generic <filename> is used; if neither exists, the built-in Nginx UI "
+"maintenance page is used."
+msgstr ""
+"Tệp có tên <site name>.<filename> được sử dụng trước; nếu không tồn tại, tệp "
+"<filename> chung được sử dụng; nếu cả hai đều không tồn tại, trang bảo trì "
+"tích hợp của Nginx UI sẽ được sử dụng."
+
+msgid "Nginx Control Mode"
+msgstr "Chế độ điều khiển Nginx"
+
+msgid "How Nginx UI reaches the Nginx it manages."
+msgstr ""
+
+msgid "Nginx Access Log Path"
+msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
+
+msgid "Nginx Error Log Path"
+msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
+
+msgid "Nginx Configurations Directory"
+msgstr "Thư mục cấu hình Nginx"
+
+msgid "Nginx Configuration Path"
+msgstr "Đường dẫn cấu hình Nginx"
+
+msgid "Nginx Log Directory Whitelist"
+msgstr "Danh sách trắng thư mục nhật ký Nginx"
+
+msgid "Nginx PID Path"
+msgstr "Đường dẫn PID của Nginx"
+
+msgid "Nginx Test Config Command"
+msgstr "Lệnh kiểm tra cấu hình Nginx"
+
+msgid "Nginx Reload Command"
+msgstr "Lệnh Tải lại Nginx"
+
+msgid "Nginx Restart Command"
+msgstr "Lệnh khởi động lại Nginx"
+
+msgid "API Base Url"
+msgstr "URL Cơ sở API"
+
+msgid "API Token"
+msgstr "Mã API"
+
+msgid "API Proxy"
+msgstr "API Proxy"
+
+msgid "API Type"
+msgstr "Loại API"
+
+msgid "Assistant models"
+msgstr "Mô hình trợ lý"
+
+msgid "The models to choose from in the assistant."
+msgstr "Các mô hình có thể chọn trong trợ lý."
+
+msgid "Default model"
+msgstr "Mô hình mặc định"
+
+msgid "Used for new chats, chat titles and, unless set below, code completion."
+msgstr ""
+"Dùng cho các cuộc trò chuyện mới, tiêu đề cuộc trò chuyện và,除非 được thiết "
+"lập bên dưới, hoàn thành mã."
+
+msgid ""
+"How each model switches its thinking levels. Pick the convention of your "
+"provider, or edit the request fields."
+msgstr ""
+"Cách mỗi mô hình chuyển đổi các cấp độ suy nghĩ của nó. Chọn quy ước của nhà "
+"cung cấp hoặc chỉnh sửa các trường yêu cầu."
+
+msgid "Enable Code Completion"
+msgstr "Bật hoàn thành mã"
+
+msgid "Code Completion Model"
+msgstr "Mô hình hoàn thành mã"
+
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
+msgstr ""
+"Mô hình được sử dụng để hoàn thành mã, nếu không được đặt, mô hình trò "
+"chuyện sẽ được sử dụng."
+
+msgid "Enable site health checks"
+msgstr "Bật kiểm tra sức khoẻ site"
+
+msgid "Concurrency"
+msgstr "Số luồng đồng thời"
+
+msgid "Sites checked at the same time."
+msgstr ""
+
+msgid "Time between two checks of the same site."
+msgstr ""
+
+msgid "Enable upstream health checks"
+msgstr "Bật kiểm tra sức khoẻ upstream"
+
+msgid "Proxy Targets"
+msgstr "Mục tiêu proxy"
+
+msgid "Time between two checks of the same proxy target."
+msgstr ""
+
+msgid "External Notify"
+msgstr "Thông báo bên ngoài"
+
+msgid "Channels that receive notifications from Nginx UI."
+msgstr ""
+
+msgid "Terminal Start Command"
+msgstr "Lệnh Khởi động Terminal"
+
+msgid "Enable Logrotate"
+msgstr ""
+
+msgid ""
+"Runs the rotation command on a schedule from Nginx UI. Mainly needed inside "
+"a Docker container."
+msgstr ""
+
+msgid "Command"
+msgstr "Lệnh"
+
+msgid "Minutes between two runs."
+msgstr ""
+
+msgid ""
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
+msgstr ""
+"Cơ sở dữ liệu GeoLite2 cung cấp thông tin địa lý cho các địa chỉ IP. Điều "
+"này được sử dụng để phân tích địa lý ngoại tuyến trong phân tích nhật ký."
+
+msgid "Custom MMDB"
+msgstr ""
+
+msgid "A custom database replaces the GeoLite2 download."
+msgstr ""
+
+msgid "Map Boundary Directory"
+msgstr "Thư mục ranh giới bản đồ"
+
+msgid ""
+"Keep files with names like 100000_full.json in this directory. Only the "
+"world map is provided by default."
+msgstr ""
+
 msgid "Register passkey successfully"
 msgstr "Đăng ký khóa truy cập thành công"
 
@@ -7804,9 +8154,6 @@ msgstr "HTML"
 
 msgid "HTML Template (Optional)"
 msgstr "Mẫu HTML (không bắt buộc)"
-
-msgid "HTTP Proxy"
-msgstr "HTTP Proxy"
 
 msgid "Message Body (JSON)"
 msgstr "Nội dung tin nhắn (JSON)"
@@ -8872,6 +9219,22 @@ msgstr "Trước đó"
 msgid "Save configuration"
 msgstr "Lưu cấu hình"
 
+msgid "%{count} unsaved change"
+msgid_plural "%{count} unsaved changes"
+msgstr[0] ""
+
+msgid "Discard"
+msgstr ""
+
+msgid "Keep editing"
+msgstr ""
+
+msgid "Search settings"
+msgstr ""
+
+msgid "No matching settings"
+msgstr ""
+
 msgid "Check the format of the API Base Url and API Proxy."
 msgstr "Kiểm tra định dạng của API Base Url và API Proxy."
 
@@ -8908,38 +9271,98 @@ msgstr "Cài đặt 2FA"
 msgid "Unable to open SSH setup"
 msgstr "Không thể mở thiết lập SSH"
 
+msgid "Basics"
+msgstr ""
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr ""
+
+msgid "Address, protocol and certificate used to reach this Nginx UI instance."
+msgstr ""
+
 msgid "App"
 msgstr "Ứng dụng"
 
-msgid "External Notify"
-msgstr "Thông báo bên ngoài"
-
-msgid "Health Check"
-msgstr "Kiểm tra sức khỏe"
+msgid "Sign-in session and list display of the web interface."
+msgstr ""
 
 msgid "Node"
 msgstr "Nút"
 
+msgid "Identity and display details of this node."
+msgstr ""
+
+msgid "Go to nodes"
+msgstr ""
+
 msgid "HTTP"
 msgstr "HTTP"
+
+msgid "Proxies used when Nginx UI connects to the internet."
+msgstr ""
 
 msgid "Auth"
 msgstr "Xác thực"
 
-msgid "Access Tokens"
-msgstr "Mã thông báo truy cập"
+msgid "Sign-in throttling, banned addresses and passkey origin."
+msgstr ""
+
+msgid "Credentials for the command line, automation and MCP clients."
+msgstr ""
 
 msgid "Cert"
 msgstr "Chứng chỉ"
 
+msgid ""
+"Contact, issuing service and renewal of certificates requested by Nginx UI."
+msgstr ""
+
+msgid "Go to certificates"
+msgstr ""
+
+msgid ""
+"Paths, commands, maintenance page and control mode of the managed Nginx."
+msgstr ""
+
 msgid "LLM"
 msgstr "LLM"
+
+msgid "Model and endpoint used by the assistant and code completion."
+msgstr ""
+
+msgid "Health Check"
+msgstr "Kiểm tra sức khỏe"
+
+msgid "Global switches and intervals for site and proxy target checks."
+msgstr ""
+
+msgid "Go to sites"
+msgstr ""
+
+msgid "Go to notifications"
+msgstr ""
+
+msgid "Shell started by the web terminal."
+msgstr ""
+
+msgid "Go to terminal"
+msgstr ""
 
 msgid "Logrotate"
 msgstr "Logrotate"
 
+msgid "Scheduled rotation of Nginx log files."
+msgstr ""
+
 msgid "GeoLite"
 msgstr "GeoLite"
+
+msgid "Geographic database and map files used by log analytics."
+msgstr ""
+
+msgid "Go to logs"
+msgstr ""
 
 msgid "Invalid settings: %{fields}"
 msgstr "Cài đặt không hợp lệ: %{fields}"
@@ -9006,12 +9429,8 @@ msgstr "Không sao chép được mã thông báo truy cập"
 msgid "Active"
 msgstr "Đang hoạt động"
 
-msgid ""
-"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
-"Tokens are shown only once."
+msgid "Tokens"
 msgstr ""
-"Tạo thông tin xác thực theo phạm vi cho Nginx UI CLI, tự động hoá và ứng "
-"dụng MCP. Mã thông báo chỉ hiển thị một lần."
 
 msgid "Create Token"
 msgstr "Tạo mã thông báo"
@@ -9067,76 +9486,40 @@ msgstr ""
 msgid "I have saved the token"
 msgstr "Tôi đã lưu mã thông báo"
 
-msgid "Jwt Secret"
-msgstr "Mật khẩu JWT"
-
-msgid "Page Size"
-msgstr "Kích thước trang"
+msgid "General"
+msgstr ""
 
 msgid "Banned Until"
 msgstr "Bị cấm đến"
 
-msgid "Webauthn"
-msgstr "WebAuthn"
-
-msgid "RPID"
-msgstr "RPID"
-
-msgid "RP Display Name"
-msgstr "Tên hiển thị RP"
-
-msgid "RP Origins"
-msgstr "Nguồn gốc RP"
+msgid "Passkeys"
+msgstr ""
 
 msgid "Throttle"
 msgstr "Hạn chế"
 
-msgid "Ban Threshold Minutes"
-msgstr "Phút Ngưỡng Cấm"
-
-msgid "Max Attempts"
-msgstr "Số lần thử tối đa"
-
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
-"ban threshold minutes,"
+"ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
-"Nếu số lần thử đăng nhập thất bại từ một IP đạt đến số lần tối đa trong "
-"khoảng thời gian ngưỡng cấm (phút),"
-
-msgid "Banned IPs"
-msgstr "Danh sách IP bị cấm"
 
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Bạn có chắc chắn muốn xóa IP bị cấm này ngay lập tức không?"
 
-msgid "HTTP Challenge Port"
-msgstr "Cổng thử thách HTTP"
-
-msgid "CADir"
-msgstr "CADir"
+msgid "Issuing"
+msgstr ""
 
 msgid "The url is invalid"
 msgstr "URL không hợp lệ"
 
-msgid "Certificate Renewal Threshold"
-msgstr "Ngưỡng gia hạn chứng chỉ"
-
-msgid ""
-"Renew certificates when their remaining validity is less than or equal to "
-"this value."
+msgid "Renewal"
 msgstr ""
-"Gia hạn chứng chỉ khi thời gian hiệu lực còn lại nhỏ hơn hoặc bằng giá trị "
-"này."
 
 msgid "Days"
 msgstr "Ngày"
 
-msgid "Set the recursive nameservers to override the systems nameservers "
-msgstr "Đặt máy chủ tên đệ quy để ghi đè máy chủ tên hệ thống"
-
-msgid "Recursive Nameservers"
-msgstr "Máy chủ tên đệ quy"
+msgid "DNS Challenge"
+msgstr ""
 
 msgid "Are you sure you want to remove this item?"
 msgstr "Bạn có chắc chắn muốn xóa mục này không?"
@@ -9147,41 +9530,19 @@ msgstr "Thông báo này đã bị vô hiệu hóa"
 msgid "Failed to send test message"
 msgstr "Gửi tin nhắn kiểm tra thất bại"
 
-msgid "Custom MMDB is currently enabled"
-msgstr "MMDB tùy chỉnh hiện đang được bật"
+msgid "Database"
+msgstr ""
 
-msgid "IndexCustomMMDB File Name"
-msgstr "Tên tệp IndexCustomMMDB"
+msgid "Maps"
+msgstr ""
 
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This "
-"is used for offline geographic analysis in log analytics."
+"Please download China and province boundary files yourself and place them in "
+"this directory."
 msgstr ""
-"Cơ sở dữ liệu GeoLite2 cung cấp thông tin địa lý cho các địa chỉ IP. Điều "
-"này được sử dụng để phân tích địa lý ngoại tuyến trong phân tích nhật ký."
-
-msgid "Map Boundary Directory"
-msgstr "Thư mục ranh giới bản đồ"
-
-msgid ""
-"Configured from [nginx_log].GeoMapPath. Keep files with names like "
-"100000_full.json in this directory."
-msgstr ""
-"Được cấu hình từ [nginx_log].GeoMapPath. Giữ các tệp có tên như "
-"100000_full.json trong thư mục này."
-
-msgid ""
-"Only the world map is provided by default. Please download China and "
-"province boundary files yourself and place them in this directory."
-msgstr ""
-"Chỉ có bản đồ thế giới được cung cấp mặc định. Vui lòng tự tải xuống các tệp "
-"ranh giới của Trung Quốc và các tỉnh và đặt vào thư mục này."
 
 msgid "Template reference"
 msgstr "Tham chiếu mẫu"
-
-msgid "Global health check controls"
-msgstr "Điều khiển kiểm tra sức khoẻ toàn cục"
 
 msgid ""
 "A global pause stops network probes without changing individual site or "
@@ -9192,29 +9553,14 @@ msgstr ""
 "site hay upstream. Chức năng khám phá vẫn hoạt động nên các đích đã cấu hình "
 "vẫn hiển thị."
 
-msgid "Enable site health checks"
-msgstr "Bật kiểm tra sức khoẻ site"
-
-msgid "Concurrency"
-msgstr "Số luồng đồng thời"
-
 msgid "Seconds"
 msgstr "Giây"
 
-msgid "Proxy Targets"
-msgstr "Mục tiêu proxy"
-
-msgid "Enable upstream health checks"
-msgstr "Bật kiểm tra sức khoẻ upstream"
-
-msgid "Github Proxy"
-msgstr "Proxy Github"
+msgid "Proxies"
+msgstr ""
 
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Dành cho người dùng Trung Quốc: https://cloud.nginxui.com/"
-
-msgid "Insecure Skip Verify"
-msgstr "Bỏ qua xác minh không an toàn"
 
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
@@ -9231,88 +9577,26 @@ msgstr ""
 "này. Bộ lập lịch tác vụ crontab của Nginx UI sẽ thực thi lệnh logrotate theo "
 "khoảng thời gian bạn đặt (tính bằng phút)."
 
-msgid "Command"
-msgstr "Lệnh"
-
 msgid "Minutes"
 msgstr "Phút"
 
-msgid "Stub Status Port"
-msgstr "Cổng trạng thái stub"
-
-msgid "Maintenance host"
-msgstr "Máy chủ bảo trì"
+msgid "Maintenance Page"
+msgstr ""
 
 msgid "http://127.0.0.1:9000"
 msgstr "http://127.0.0.1:9000"
 
-msgid ""
-"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
-"to use this Nginx UI instance."
-msgstr ""
-"Nguồn HTTP hoặc HTTPS tùy chọn phục vụ trang bảo trì. Để trống để sử dụng "
-"thể hiện Nginx UI này."
-
-msgid "Maintenance bypass IP"
-msgstr "IP bỏ qua bảo trì"
-
 msgid "203.0.113.10"
 msgstr "203.0.113.10"
-
-msgid ""
-"Requests from this IPv4 or IPv6 address continue to use the original site "
-"while maintenance mode is active."
-msgstr ""
-"Các yêu cầu từ địa chỉ IPv4 hoặc IPv6 này vẫn tiếp tục sử dụng trang gốc "
-"trong khi chế độ bảo trì đang hoạt động."
-
-msgid "Maintenance template (filename only)"
-msgstr "Mẫu bảo trì (chỉ tên tệp)"
-
-msgid "maintenance.html"
-msgstr "maintenance.html"
 
 msgid "Mounted directory"
 msgstr "Thư mục được gắn kết"
 
-msgid ""
-"The file named <site name>.<filename> is used first; if it does not exist, "
-"the generic <filename> is used; if neither exists, the built-in Nginx UI "
-"maintenance page is used."
+msgid "maintenance.html"
+msgstr "maintenance.html"
+
+msgid "Control Mode"
 msgstr ""
-"Tệp có tên <site name>.<filename> được sử dụng trước; nếu không tồn tại, tệp "
-"<filename> chung được sử dụng; nếu cả hai đều không tồn tại, trang bảo trì "
-"tích hợp của Nginx UI sẽ được sử dụng."
-
-msgid "Nginx Access Log Path"
-msgstr "Vị trí lưu log truy cập (Access log) của Nginx"
-
-msgid "Nginx Error Log Path"
-msgstr "Vị trí lưu log lỗi (Error log) của Nginx"
-
-msgid "Nginx Configurations Directory"
-msgstr "Thư mục cấu hình Nginx"
-
-msgid "Nginx Configuration Path"
-msgstr "Đường dẫn cấu hình Nginx"
-
-msgid "Nginx Log Directory Whitelist"
-msgstr "Danh sách trắng thư mục nhật ký Nginx"
-
-msgid "Nginx PID Path"
-msgstr "Đường dẫn PID của Nginx"
-
-msgid "Nginx Test Config Command"
-msgstr "Lệnh kiểm tra cấu hình Nginx"
-
-msgid "Nginx Reload Command"
-msgstr "Lệnh Tải lại Nginx"
-
-msgid "Nginx Restart Command"
-msgstr "Lệnh khởi động lại Nginx"
-
-msgid "Nginx Control Mode"
-msgstr "Chế độ điều khiển Nginx"
 
 msgid "Host via SSH"
 msgstr "Host qua SSH"
@@ -9344,11 +9628,11 @@ msgstr "Container bên ngoài"
 msgid "Open SSH setup wizard"
 msgstr "Mở trình hướng dẫn thiết lập SSH"
 
-msgid "Instance ID"
-msgstr "ID phiên bản"
+msgid "Paths and Commands"
+msgstr ""
 
-msgid "Node name"
-msgstr "Tên nút"
+msgid "Identity"
+msgstr ""
 
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
@@ -9357,19 +9641,8 @@ msgstr ""
 "Tên nút chỉ được chứa chữ cái, unicode, số, dấu gạch ngang, dấu gạch dài, "
 "dấu hai chấm và dấu chấm."
 
-msgid ""
-"Customize the name of local node to be displayed in the environment "
-"indicator."
-msgstr "Tùy chỉnh tên nút cục bộ để hiển thị trong chỉ báo môi trường."
-
-msgid "Skip Installation"
-msgstr "Bỏ qua cài đặt"
-
-msgid "Demo"
-msgstr "Bản demo"
-
-msgid "ICP Number"
-msgstr "Số ICP"
+msgid "Footer"
+msgstr ""
 
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
@@ -9380,9 +9653,6 @@ msgstr ""
 
 msgid "For Chinese user"
 msgstr "Dành cho người dùng Trung Quốc"
-
-msgid "Public Security Number"
-msgstr "Số An ninh Công cộng"
 
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
@@ -9473,71 +9743,26 @@ msgstr ""
 msgid "Connection"
 msgstr "Kết nối"
 
-msgid "API Base Url"
-msgstr "URL Cơ sở API"
-
 msgid "Regional endpoints"
 msgstr "Điểm cuối khu vực"
 
 msgid "Documentation"
 msgstr "Tài liệu"
 
-msgid "API Token"
-msgstr "Mã API"
-
 msgid "Token is not valid"
 msgstr "Mã thông báo không hợp lệ"
-
-msgid "Advanced"
-msgstr "Nâng cao"
-
-msgid "API Proxy"
-msgstr "API Proxy"
-
-msgid "API Type"
-msgstr "Loại API"
 
 msgid "Models"
 msgstr "Mô hình"
 
-msgid "Assistant models"
-msgstr "Mô hình trợ lý"
-
-msgid "The models to choose from in the assistant."
-msgstr "Các mô hình có thể chọn trong trợ lý."
-
 msgid "Choose one or more models"
 msgstr "Chọn một hoặc nhiều mô hình"
-
-msgid "Default model"
-msgstr "Mô hình mặc định"
-
-msgid "Used for new chats, chat titles and, unless set below, code completion."
-msgstr ""
-"Dùng cho các cuộc trò chuyện mới, tiêu đề cuộc trò chuyện và,除非 được thiết "
-"lập bên dưới, hoàn thành mã."
 
 msgid "Choose the assistant models first"
 msgstr "Hãy chọn các mô hình trợ lý trước"
 
-msgid ""
-"How each model switches its thinking levels. Pick the convention of your "
-"provider, or edit the request fields."
+msgid "Code Completion"
 msgstr ""
-"Cách mỗi mô hình chuyển đổi các cấp độ suy nghĩ của nó. Chọn quy ước của nhà "
-"cung cấp hoặc chỉnh sửa các trường yêu cầu."
-
-msgid "Enable Code Completion"
-msgstr "Bật hoàn thành mã"
-
-msgid "Code Completion Model"
-msgstr "Mô hình hoàn thành mã"
-
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
-msgstr ""
-"Mô hình được sử dụng để hoàn thành mã, nếu không được đặt, mô hình trò "
-"chuyện sẽ được sử dụng."
 
 msgid "Same as the chat model (%{model})"
 msgstr "Trùng với mô hình chat (%{model})"
@@ -9545,36 +9770,23 @@ msgstr "Trùng với mô hình chat (%{model})"
 msgid "Same as the chat model"
 msgstr "Cùng với mô hình chat"
 
-msgid "Unix Socket"
-msgstr "Unix Socket"
+msgid "Advanced"
+msgstr "Nâng cao"
 
-msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
-msgstr "Nginx UI lắng nghe trên Unix socket này thay vì TCP host và port."
-
-msgid "Run Mode"
-msgstr "Chế độ chạy"
-
-msgid "Enable HTTPS"
-msgstr "Bật HTTPS"
-
-msgid "SSL Key Path"
-msgstr "Đường dẫn khóa SSL"
-
-msgid ""
-"Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
+msgid "Listen Address"
 msgstr ""
-"Cấu hình giao thức chỉ có hiệu lực khi kết nối trực tiếp. Nếu sử dụng proxy "
-"ngược, vui lòng cấu hình giao thức riêng trong proxy ngược."
 
-msgid "Enable HTTP/2"
-msgstr "Bật HTTP/2"
+msgid "All interfaces"
+msgstr ""
 
-msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
-msgstr "Bật hỗ trợ HTTP/2 với khả năng ghép kênh và đẩy dữ liệu từ máy chủ"
+msgid "HTTPS"
+msgstr "HTTPS"
 
-msgid "Enable HTTP/3"
-msgstr "Bật HTTP/3"
+msgid "Certificate"
+msgstr "Chứng chỉ"
+
+msgid "Pick the certificate that secures the web interface."
+msgstr ""
 
 msgid ""
 "HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on "
@@ -9583,11 +9795,12 @@ msgstr ""
 "HTTP/3 yêu cầu một UDP listener và không khả dụng khi Nginx UI đang lắng "
 "nghe trên Unix socket."
 
-msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
-msgstr "Bật hỗ trợ HTTP/3 dựa trên giao thức QUIC để có hiệu suất tốt nhất"
-
-msgid "Terminal Start Command"
-msgstr "Lệnh Khởi động Terminal"
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse proxy."
+msgstr ""
+"Cấu hình giao thức chỉ có hiệu lực khi kết nối trực tiếp. Nếu sử dụng proxy "
+"ngược, vui lòng cấu hình giao thức riêng trong proxy ngược."
 
 msgid "End time must be later than start time"
 msgstr "Thời gian kết thúc phải sau thời gian bắt đầu"
@@ -9621,9 +9834,6 @@ msgstr "Thông tin bổ sung"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Ví dụ: kế hoạch khôi phục dự kiến hoặc tham chiếu sự cố"
-
-msgid "HTTPS"
-msgstr "HTTPS"
 
 msgid "Configuration Name"
 msgstr "Tên cấu hình"
@@ -10092,9 +10302,6 @@ msgstr "Thêm ít nhất một tên miền hoặc địa chỉ IP."
 
 msgid "e.g. example.com www.example.com"
 msgstr "ví dụ: example.com www.example.com"
-
-msgid "Certificate"
-msgstr "Chứng chỉ"
 
 msgid "Recommended"
 msgstr "Khuyến nghị"
@@ -10735,3 +10942,39 @@ msgstr "Một ô đơn"
 
 msgid "Split view"
 msgstr "Chia đôi màn hình"
+
+#~ msgid "Webauthn"
+#~ msgstr "WebAuthn"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts "
+#~ "in ban threshold minutes,"
+#~ msgstr ""
+#~ "Nếu số lần thử đăng nhập thất bại từ một IP đạt đến số lần tối đa trong "
+#~ "khoảng thời gian ngưỡng cấm (phút),"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr "Đặt máy chủ tên đệ quy để ghi đè máy chủ tên hệ thống"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "MMDB tùy chỉnh hiện đang được bật"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "Tên tệp IndexCustomMMDB"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "Được cấu hình từ [nginx_log].GeoMapPath. Giữ các tệp có tên như "
+#~ "100000_full.json trong thư mục này."
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "Chỉ có bản đồ thế giới được cung cấp mặc định. Vui lòng tự tải xuống các "
+#~ "tệp ranh giới của Trung Quốc và các tỉnh và đặt vào thư mục này."
+
+#~ msgid "Global health check controls"
+#~ msgstr "Điều khiển kiểm tra sức khoẻ toàn cục"

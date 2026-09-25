@@ -1526,6 +1526,21 @@ msgstr "読み込み中..."
 msgid "Show"
 msgstr "表示"
 
+msgid "Change it in the %{section} section of app.ini."
+msgstr ""
+
+msgid "Unsaved"
+msgstr ""
+
+msgid "Restart required"
+msgstr ""
+
+msgid "Config file"
+msgstr ""
+
+msgid "Not set"
+msgstr ""
+
 msgid "Remove"
 msgstr "削除"
 
@@ -7491,6 +7506,343 @@ msgstr "OIDCログイン"
 msgid "Sign in with a passkey"
 msgstr "パスキーでサインイン"
 
+msgid "Unix Socket"
+msgstr "Unix ソケット"
+
+msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgstr ""
+"Nginx UI は TCP のホストとポートの代わりに、この Unix ソケットでリッスンしま"
+"す。"
+
+msgid "Run Mode"
+msgstr "実行モード"
+
+msgid "Enable HTTPS"
+msgstr "HTTPS を有効にする"
+
+msgid ""
+"Serves the web interface over HTTPS. Saving this change restarts Nginx UI "
+"and reloads the page."
+msgstr ""
+
+msgid "SSL Key Path"
+msgstr "SSLキーのパス"
+
+msgid "Enable HTTP/2"
+msgstr "HTTP/2 を有効にする"
+
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr "多重化とサーバープッシュ機能を備えたHTTP/2サポートを有効にします"
+
+msgid "Enable HTTP/3"
+msgstr "HTTP/3 を有効にする"
+
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr ""
+"最高のパフォーマンスを得るためにQUICプロトコルに基づくHTTP/3サポートを有効に"
+"します"
+
+msgid "Jwt Secret"
+msgstr "JWT シークレット"
+
+msgid "Page Size"
+msgstr "ページサイズ"
+
+msgid "Instance ID"
+msgstr "インスタンス ID"
+
+msgid "Node name"
+msgstr "ノード名"
+
+msgid ""
+"Customize the name of local node to be displayed in the environment "
+"indicator."
+msgstr "環境インジケーターに表示するローカルノードの名前をカスタマイズします。"
+
+msgid "Skip Installation"
+msgstr "インストールをスキップ"
+
+msgid "Demo"
+msgstr "デモ"
+
+msgid "ICP Number"
+msgstr "ICP 番号"
+
+msgid ""
+"Shown in the page footer. Only needed for sites hosted in mainland China."
+msgstr ""
+
+msgid "Public Security Number"
+msgstr "公安番号"
+
+msgid "Github Proxy"
+msgstr "Githubプロキシ"
+
+msgid ""
+"Used for downloads from GitHub, such as upgrades and the GeoLite database."
+msgstr ""
+
+msgid "HTTP Proxy"
+msgstr "HTTP プロキシ"
+
+msgid "Used for other outgoing requests made by Nginx UI."
+msgstr ""
+
+msgid "Insecure Skip Verify"
+msgstr "安全でない確認をスキップ"
+
+msgid "RPID"
+msgstr "RPID"
+
+msgid "RP Display Name"
+msgstr "RP 表示名"
+
+msgid "RP Origins"
+msgstr "RP オリジン"
+
+msgid "Ban Threshold Minutes"
+msgstr "制限閾値（分）"
+
+msgid "Window in which failed sign-in attempts from one address are counted."
+msgstr ""
+
+msgid "Max Attempts"
+msgstr "最大試行回数"
+
+msgid ""
+"Failed attempts allowed inside the window before the address is banned for a "
+"while."
+msgstr ""
+
+msgid "Banned IPs"
+msgstr "IPアドレス制限"
+
+msgid "Addresses that are currently blocked from signing in."
+msgstr ""
+
+msgid "Access Tokens"
+msgstr "アクセストークン"
+
+msgid ""
+"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
+"Tokens are shown only once."
+msgstr ""
+"Nginx UI CLI、自動化、MCP クライアント向けにスコープ付き資格情報を作成しま"
+"す。トークンは一度しか表示されません。"
+
+msgid "Contact address registered with the certificate authority."
+msgstr ""
+
+msgid "HTTP Challenge Port"
+msgstr "HTTPチャレンジポート"
+
+msgid ""
+"Port that answers validation requests while a certificate is being issued."
+msgstr ""
+
+msgid "CADir"
+msgstr "CADir"
+
+msgid "Service that issues certificates. Leave empty to use the default."
+msgstr ""
+
+msgid "Certificate Renewal Threshold"
+msgstr "証明書の更新しきい値"
+
+msgid ""
+"Renew certificates when their remaining validity is less than or equal to "
+"this value."
+msgstr "証明書の残存有効期間がこの値以下の場合に証明書を更新します。"
+
+msgid "Recursive Nameservers"
+msgstr "再帰的ネームサーバー"
+
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
+msgstr ""
+
+msgid "Stub Status Port"
+msgstr "スタブステータスポート"
+
+msgid "Local port used to read Nginx connection statistics."
+msgstr ""
+
+msgid "Maintenance host"
+msgstr "メンテナンスホスト"
+
+msgid ""
+"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
+"to use this Nginx UI instance."
+msgstr ""
+"メンテナンスページを提供するオプションの HTTP または HTTPS ソース。この "
+"Nginx UI インスタンスを使用する場合は空欄にしてください。"
+
+msgid "Maintenance bypass IP"
+msgstr "メンテナンスバイパス IP"
+
+msgid ""
+"Requests from this IPv4 or IPv6 address continue to use the original site "
+"while maintenance mode is active."
+msgstr ""
+"この IPv4 または IPv6 アドレスからのリクエストは、メンテナンスモードが有効な"
+"間も引き続き元のサイトを使用します。"
+
+msgid "Maintenance template (filename only)"
+msgstr "メンテナンステンプレート (ファイル名のみ)"
+
+msgid ""
+"The file named <site name>.<filename> is used first; if it does not exist, "
+"the generic <filename> is used; if neither exists, the built-in Nginx UI "
+"maintenance page is used."
+msgstr ""
+"<site name>.<filename> という名前のファイルが最初に使用されます。それが存在し"
+"ない場合は、汎用の <filename> が使用されます。どちらも存在しない場合は、組み"
+"込みの Nginx UI メンテナンスページが使用されます。"
+
+msgid "Nginx Control Mode"
+msgstr "Nginx 制御モード"
+
+msgid "How Nginx UI reaches the Nginx it manages."
+msgstr ""
+
+msgid "Nginx Access Log Path"
+msgstr "Nginx アクセスログパス"
+
+msgid "Nginx Error Log Path"
+msgstr "Nginx エラーログのパス"
+
+msgid "Nginx Configurations Directory"
+msgstr "Nginx 設定ディレクトリ"
+
+msgid "Nginx Configuration Path"
+msgstr "Nginx 設定ファイルのパス"
+
+msgid "Nginx Log Directory Whitelist"
+msgstr "Nginx ログディレクトリホワイトリスト"
+
+msgid "Nginx PID Path"
+msgstr "Nginx PID パス"
+
+msgid "Nginx Test Config Command"
+msgstr "Nginx 設定テストコマンド"
+
+msgid "Nginx Reload Command"
+msgstr "Nginx リロードコマンド"
+
+msgid "Nginx Restart Command"
+msgstr "Nginx 再起動コマンド"
+
+msgid "API Base Url"
+msgstr "APIベースURL"
+
+msgid "API Token"
+msgstr "APIトークン"
+
+msgid "API Proxy"
+msgstr "APIプロキシ"
+
+msgid "API Type"
+msgstr "APIタイプ"
+
+msgid "Assistant models"
+msgstr "アシスタントモデル"
+
+msgid "The models to choose from in the assistant."
+msgstr "アシスタントで選択できるモデルです。"
+
+msgid "Default model"
+msgstr "デフォルトモデル"
+
+msgid "Used for new chats, chat titles and, unless set below, code completion."
+msgstr ""
+"新しいチャット、チャットのタイトル、および下で設定しない場合はコード補完に使"
+"用されます。"
+
+msgid ""
+"How each model switches its thinking levels. Pick the convention of your "
+"provider, or edit the request fields."
+msgstr ""
+"各モデルが思考レベルを切り替える方法です。プロバイダーの慣行を選択するか、リ"
+"クエストフィールドを編集してください。"
+
+msgid "Enable Code Completion"
+msgstr "コード補完を有効にする"
+
+msgid "Code Completion Model"
+msgstr "コード補完モデル"
+
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
+msgstr ""
+"コード補完に使用されるモデル。設定されていない場合は、チャットモデルが使用さ"
+"れます。"
+
+msgid "Enable site health checks"
+msgstr "サイトのヘルスチェックを有効にする"
+
+msgid "Concurrency"
+msgstr "同時実行数"
+
+msgid "Sites checked at the same time."
+msgstr ""
+
+msgid "Time between two checks of the same site."
+msgstr ""
+
+msgid "Enable upstream health checks"
+msgstr "アップストリームのヘルスチェックを有効にする"
+
+msgid "Proxy Targets"
+msgstr "プロキシターゲット"
+
+msgid "Time between two checks of the same proxy target."
+msgstr ""
+
+msgid "External Notify"
+msgstr "外部通知"
+
+msgid "Channels that receive notifications from Nginx UI."
+msgstr ""
+
+msgid "Terminal Start Command"
+msgstr "ターミナル起動コマンド"
+
+msgid "Enable Logrotate"
+msgstr ""
+
+msgid ""
+"Runs the rotation command on a schedule from Nginx UI. Mainly needed inside "
+"a Docker container."
+msgstr ""
+
+msgid "Command"
+msgstr "コマンド"
+
+msgid "Minutes between two runs."
+msgstr ""
+
+msgid ""
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
+msgstr ""
+"GeoLite2 データベースは、IP アドレスの地理情報を提供します。これはログ分析で"
+"のオフライン地理分析に使用されます。"
+
+msgid "Custom MMDB"
+msgstr ""
+
+msgid "A custom database replaces the GeoLite2 download."
+msgstr ""
+
+msgid "Map Boundary Directory"
+msgstr "地図境界ディレクトリ"
+
+msgid ""
+"Keep files with names like 100000_full.json in this directory. Only the "
+"world map is provided by default."
+msgstr ""
+
 msgid "Register passkey successfully"
 msgstr "パスキーの登録に成功しました"
 
@@ -7814,9 +8166,6 @@ msgstr "HTML"
 
 msgid "HTML Template (Optional)"
 msgstr "HTML テンプレート（任意）"
-
-msgid "HTTP Proxy"
-msgstr "HTTP プロキシ"
 
 msgid "Message Body (JSON)"
 msgstr "メッセージ本文 (JSON)"
@@ -8899,6 +9248,22 @@ msgstr "前へ"
 msgid "Save configuration"
 msgstr "設定を保存"
 
+msgid "%{count} unsaved change"
+msgid_plural "%{count} unsaved changes"
+msgstr[0] ""
+
+msgid "Discard"
+msgstr ""
+
+msgid "Keep editing"
+msgstr ""
+
+msgid "Search settings"
+msgstr ""
+
+msgid "No matching settings"
+msgstr ""
+
 msgid "Check the format of the API Base Url and API Proxy."
 msgstr "API Base Url と API Proxy の形式を確認してください。"
 
@@ -8934,38 +9299,98 @@ msgstr "ニ要素認証設定"
 msgid "Unable to open SSH setup"
 msgstr "SSH セットアップを開けません"
 
+msgid "Basics"
+msgstr ""
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr ""
+
+msgid "Address, protocol and certificate used to reach this Nginx UI instance."
+msgstr ""
+
 msgid "App"
 msgstr "アプリ"
 
-msgid "External Notify"
-msgstr "外部通知"
-
-msgid "Health Check"
-msgstr "ヘルスチェック"
+msgid "Sign-in session and list display of the web interface."
+msgstr ""
 
 msgid "Node"
 msgstr "ノード"
 
+msgid "Identity and display details of this node."
+msgstr ""
+
+msgid "Go to nodes"
+msgstr ""
+
 msgid "HTTP"
 msgstr "HTTP"
+
+msgid "Proxies used when Nginx UI connects to the internet."
+msgstr ""
 
 msgid "Auth"
 msgstr "認証"
 
-msgid "Access Tokens"
-msgstr "アクセストークン"
+msgid "Sign-in throttling, banned addresses and passkey origin."
+msgstr ""
+
+msgid "Credentials for the command line, automation and MCP clients."
+msgstr ""
 
 msgid "Cert"
 msgstr "証明書"
 
+msgid ""
+"Contact, issuing service and renewal of certificates requested by Nginx UI."
+msgstr ""
+
+msgid "Go to certificates"
+msgstr ""
+
+msgid ""
+"Paths, commands, maintenance page and control mode of the managed Nginx."
+msgstr ""
+
 msgid "LLM"
 msgstr "LLM"
+
+msgid "Model and endpoint used by the assistant and code completion."
+msgstr ""
+
+msgid "Health Check"
+msgstr "ヘルスチェック"
+
+msgid "Global switches and intervals for site and proxy target checks."
+msgstr ""
+
+msgid "Go to sites"
+msgstr ""
+
+msgid "Go to notifications"
+msgstr ""
+
+msgid "Shell started by the web terminal."
+msgstr ""
+
+msgid "Go to terminal"
+msgstr ""
 
 msgid "Logrotate"
 msgstr "ログローテート"
 
+msgid "Scheduled rotation of Nginx log files."
+msgstr ""
+
 msgid "GeoLite"
 msgstr "GeoLite"
+
+msgid "Geographic database and map files used by log analytics."
+msgstr ""
+
+msgid "Go to logs"
+msgstr ""
 
 msgid "Invalid settings: %{fields}"
 msgstr "無効な設定: %{fields}"
@@ -9032,12 +9457,8 @@ msgstr "アクセストークンをコピーできませんでした"
 msgid "Active"
 msgstr "有効"
 
-msgid ""
-"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
-"Tokens are shown only once."
+msgid "Tokens"
 msgstr ""
-"Nginx UI CLI、自動化、MCP クライアント向けにスコープ付き資格情報を作成しま"
-"す。トークンは一度しか表示されません。"
 
 msgid "Create Token"
 msgstr "トークンを作成"
@@ -9094,75 +9515,40 @@ msgstr ""
 msgid "I have saved the token"
 msgstr "トークンを保存しました"
 
-msgid "Jwt Secret"
-msgstr "JWT シークレット"
-
-msgid "Page Size"
-msgstr "ページサイズ"
+msgid "General"
+msgstr ""
 
 msgid "Banned Until"
 msgstr "ブロック期限"
 
-msgid "Webauthn"
-msgstr "WebAuthn"
-
-msgid "RPID"
-msgstr "RPID"
-
-msgid "RP Display Name"
-msgstr "RP 表示名"
-
-msgid "RP Origins"
-msgstr "RP オリジン"
+msgid "Passkeys"
+msgstr ""
 
 msgid "Throttle"
 msgstr "スロットル"
 
-msgid "Ban Threshold Minutes"
-msgstr "制限閾値（分）"
-
-msgid "Max Attempts"
-msgstr "最大試行回数"
-
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
-"ban threshold minutes,"
+"ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
-"1 つの IP からのログイン失敗回数が、禁止しきい値時間（分）内に最大試行回数に"
-"達した場合、"
-
-msgid "Banned IPs"
-msgstr "IPアドレス制限"
 
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "このIPアドレス制限を削除してもよろしいですか？"
 
-msgid "HTTP Challenge Port"
-msgstr "HTTPチャレンジポート"
-
-msgid "CADir"
-msgstr "CADir"
+msgid "Issuing"
+msgstr ""
 
 msgid "The url is invalid"
 msgstr "URLが無効です"
 
-msgid "Certificate Renewal Threshold"
-msgstr "証明書の更新しきい値"
-
-msgid ""
-"Renew certificates when their remaining validity is less than or equal to "
-"this value."
-msgstr "証明書の残存有効期間がこの値以下の場合に証明書を更新します。"
+msgid "Renewal"
+msgstr ""
 
 msgid "Days"
 msgstr "日"
 
-msgid "Set the recursive nameservers to override the systems nameservers "
+msgid "DNS Challenge"
 msgstr ""
-"再帰的なネームサーバーを設定して、システムのネームサーバーを上書きします"
-
-msgid "Recursive Nameservers"
-msgstr "再帰的ネームサーバー"
 
 msgid "Are you sure you want to remove this item?"
 msgstr "このアイテムを削除してもよろしいですか？"
@@ -9173,41 +9559,19 @@ msgstr "この通知は無効です"
 msgid "Failed to send test message"
 msgstr "テストメッセージの送信に失敗しました"
 
-msgid "Custom MMDB is currently enabled"
-msgstr "カスタム MMDB は現在有効です"
+msgid "Database"
+msgstr ""
 
-msgid "IndexCustomMMDB File Name"
-msgstr "IndexCustomMMDB ファイル名"
+msgid "Maps"
+msgstr ""
 
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This "
-"is used for offline geographic analysis in log analytics."
+"Please download China and province boundary files yourself and place them in "
+"this directory."
 msgstr ""
-"GeoLite2 データベースは、IP アドレスの地理情報を提供します。これはログ分析で"
-"のオフライン地理分析に使用されます。"
-
-msgid "Map Boundary Directory"
-msgstr "地図境界ディレクトリ"
-
-msgid ""
-"Configured from [nginx_log].GeoMapPath. Keep files with names like "
-"100000_full.json in this directory."
-msgstr ""
-"[nginx_log].GeoMapPath から設定されています。100000_full.json のような名前の"
-"ファイルをこのディレクトリに保管してください。"
-
-msgid ""
-"Only the world map is provided by default. Please download China and "
-"province boundary files yourself and place them in this directory."
-msgstr ""
-"デフォルトでは世界地図のみが提供されています。中国と各地方の境界ファイルをご"
-"自身でダウンロードし、このディレクトリに配置してください。"
 
 msgid "Template reference"
 msgstr "テンプレートの参照"
-
-msgid "Global health check controls"
-msgstr "ヘルスチェックの全体設定"
 
 msgid ""
 "A global pause stops network probes without changing individual site or "
@@ -9218,29 +9582,14 @@ msgstr ""
 "ワーク検査だけを停止します。検出は有効なままなので、設定済みの対象は表示され"
 "続けます。"
 
-msgid "Enable site health checks"
-msgstr "サイトのヘルスチェックを有効にする"
-
-msgid "Concurrency"
-msgstr "同時実行数"
-
 msgid "Seconds"
 msgstr "秒"
 
-msgid "Proxy Targets"
-msgstr "プロキシターゲット"
-
-msgid "Enable upstream health checks"
-msgstr "アップストリームのヘルスチェックを有効にする"
-
-msgid "Github Proxy"
-msgstr "Githubプロキシ"
+msgid "Proxies"
+msgstr ""
 
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "中国のユーザー向け: https://cloud.nginxui.com/"
-
-msgid "Insecure Skip Verify"
-msgstr "安全でない確認をスキップ"
 
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
@@ -9257,88 +9606,26 @@ msgstr ""
 "ることができます。Nginx UI の crontab タスクスケジューラは、設定した間隔（分"
 "単位）で logrotate コマンドを実行します。"
 
-msgid "Command"
-msgstr "コマンド"
-
 msgid "Minutes"
 msgstr "分"
 
-msgid "Stub Status Port"
-msgstr "スタブステータスポート"
-
-msgid "Maintenance host"
-msgstr "メンテナンスホスト"
+msgid "Maintenance Page"
+msgstr ""
 
 msgid "http://127.0.0.1:9000"
 msgstr "http://127.0.0.1:9000"
 
-msgid ""
-"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
-"to use this Nginx UI instance."
-msgstr ""
-"メンテナンスページを提供するオプションの HTTP または HTTPS ソース。この "
-"Nginx UI インスタンスを使用する場合は空欄にしてください。"
-
-msgid "Maintenance bypass IP"
-msgstr "メンテナンスバイパス IP"
-
 msgid "203.0.113.10"
 msgstr "203.0.113.10"
-
-msgid ""
-"Requests from this IPv4 or IPv6 address continue to use the original site "
-"while maintenance mode is active."
-msgstr ""
-"この IPv4 または IPv6 アドレスからのリクエストは、メンテナンスモードが有効な"
-"間も引き続き元のサイトを使用します。"
-
-msgid "Maintenance template (filename only)"
-msgstr "メンテナンステンプレート (ファイル名のみ)"
-
-msgid "maintenance.html"
-msgstr "maintenance.html"
 
 msgid "Mounted directory"
 msgstr "マウントされたディレクトリ"
 
-msgid ""
-"The file named <site name>.<filename> is used first; if it does not exist, "
-"the generic <filename> is used; if neither exists, the built-in Nginx UI "
-"maintenance page is used."
+msgid "maintenance.html"
+msgstr "maintenance.html"
+
+msgid "Control Mode"
 msgstr ""
-"<site name>.<filename> という名前のファイルが最初に使用されます。それが存在し"
-"ない場合は、汎用の <filename> が使用されます。どちらも存在しない場合は、組み"
-"込みの Nginx UI メンテナンスページが使用されます。"
-
-msgid "Nginx Access Log Path"
-msgstr "Nginx アクセスログパス"
-
-msgid "Nginx Error Log Path"
-msgstr "Nginx エラーログのパス"
-
-msgid "Nginx Configurations Directory"
-msgstr "Nginx 設定ディレクトリ"
-
-msgid "Nginx Configuration Path"
-msgstr "Nginx 設定ファイルのパス"
-
-msgid "Nginx Log Directory Whitelist"
-msgstr "Nginx ログディレクトリホワイトリスト"
-
-msgid "Nginx PID Path"
-msgstr "Nginx PID パス"
-
-msgid "Nginx Test Config Command"
-msgstr "Nginx 設定テストコマンド"
-
-msgid "Nginx Reload Command"
-msgstr "Nginx リロードコマンド"
-
-msgid "Nginx Restart Command"
-msgstr "Nginx 再起動コマンド"
-
-msgid "Nginx Control Mode"
-msgstr "Nginx 制御モード"
 
 msgid "Host via SSH"
 msgstr "SSH 経由のホスト"
@@ -9370,11 +9657,11 @@ msgstr "外部コンテナ"
 msgid "Open SSH setup wizard"
 msgstr "SSH セットアップウィザードを開く"
 
-msgid "Instance ID"
-msgstr "インスタンス ID"
+msgid "Paths and Commands"
+msgstr ""
 
-msgid "Node name"
-msgstr "ノード名"
+msgid "Identity"
+msgstr ""
 
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
@@ -9383,19 +9670,8 @@ msgstr ""
 "ノード名には、文字、Unicode、数字、ハイフン、ダッシュ、コロン、およびドットの"
 "みを含める必要があります。"
 
-msgid ""
-"Customize the name of local node to be displayed in the environment "
-"indicator."
-msgstr "環境インジケーターに表示するローカルノードの名前をカスタマイズします。"
-
-msgid "Skip Installation"
-msgstr "インストールをスキップ"
-
-msgid "Demo"
-msgstr "デモ"
-
-msgid "ICP Number"
-msgstr "ICP 番号"
+msgid "Footer"
+msgstr ""
 
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
@@ -9406,9 +9682,6 @@ msgstr ""
 
 msgid "For Chinese user"
 msgstr "中国ユーザー向け"
-
-msgid "Public Security Number"
-msgstr "公安番号"
 
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
@@ -9501,71 +9774,26 @@ msgstr ""
 msgid "Connection"
 msgstr "接続"
 
-msgid "API Base Url"
-msgstr "APIベースURL"
-
 msgid "Regional endpoints"
 msgstr "リージョン別エンドポイント"
 
 msgid "Documentation"
 msgstr "ドキュメント"
 
-msgid "API Token"
-msgstr "APIトークン"
-
 msgid "Token is not valid"
 msgstr "トークンが無効です"
-
-msgid "Advanced"
-msgstr "詳細"
-
-msgid "API Proxy"
-msgstr "APIプロキシ"
-
-msgid "API Type"
-msgstr "APIタイプ"
 
 msgid "Models"
 msgstr "モデル"
 
-msgid "Assistant models"
-msgstr "アシスタントモデル"
-
-msgid "The models to choose from in the assistant."
-msgstr "アシスタントで選択できるモデルです。"
-
 msgid "Choose one or more models"
 msgstr "1 つ以上のモデルを選択してください"
-
-msgid "Default model"
-msgstr "デフォルトモデル"
-
-msgid "Used for new chats, chat titles and, unless set below, code completion."
-msgstr ""
-"新しいチャット、チャットのタイトル、および下で設定しない場合はコード補完に使"
-"用されます。"
 
 msgid "Choose the assistant models first"
 msgstr "まずアシスタントのモデルを選択してください"
 
-msgid ""
-"How each model switches its thinking levels. Pick the convention of your "
-"provider, or edit the request fields."
+msgid "Code Completion"
 msgstr ""
-"各モデルが思考レベルを切り替える方法です。プロバイダーの慣行を選択するか、リ"
-"クエストフィールドを編集してください。"
-
-msgid "Enable Code Completion"
-msgstr "コード補完を有効にする"
-
-msgid "Code Completion Model"
-msgstr "コード補完モデル"
-
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
-msgstr ""
-"コード補完に使用されるモデル。設定されていない場合は、チャットモデルが使用さ"
-"れます。"
 
 msgid "Same as the chat model (%{model})"
 msgstr "チャットモデルと同じ (%{model})"
@@ -9573,38 +9801,23 @@ msgstr "チャットモデルと同じ (%{model})"
 msgid "Same as the chat model"
 msgstr "チャットと同じモデル"
 
-msgid "Unix Socket"
-msgstr "Unix ソケット"
+msgid "Advanced"
+msgstr "詳細"
 
-msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgid "Listen Address"
 msgstr ""
-"Nginx UI は TCP のホストとポートの代わりに、この Unix ソケットでリッスンしま"
-"す。"
 
-msgid "Run Mode"
-msgstr "実行モード"
-
-msgid "Enable HTTPS"
-msgstr "HTTPS を有効にする"
-
-msgid "SSL Key Path"
-msgstr "SSLキーのパス"
-
-msgid ""
-"Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
+msgid "All interfaces"
 msgstr ""
-"プロトコル設定は直接接続時にのみ有効です。リバースプロキシを使用している場合"
-"は、リバースプロキシで個別にプロトコルを設定してください。"
 
-msgid "Enable HTTP/2"
-msgstr "HTTP/2 を有効にする"
+msgid "HTTPS"
+msgstr "HTTPS"
 
-msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
-msgstr "多重化とサーバープッシュ機能を備えたHTTP/2サポートを有効にします"
+msgid "Certificate"
+msgstr "証明書"
 
-msgid "Enable HTTP/3"
-msgstr "HTTP/3 を有効にする"
+msgid "Pick the certificate that secures the web interface."
+msgstr ""
 
 msgid ""
 "HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on "
@@ -9613,13 +9826,12 @@ msgstr ""
 "HTTP/3 には UDP リスナーが必要であり、Nginx UI が Unix socket でリッスンして"
 "いる間は利用できません。"
 
-msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse proxy."
 msgstr ""
-"最高のパフォーマンスを得るためにQUICプロトコルに基づくHTTP/3サポートを有効に"
-"します"
-
-msgid "Terminal Start Command"
-msgstr "ターミナル起動コマンド"
+"プロトコル設定は直接接続時にのみ有効です。リバースプロキシを使用している場合"
+"は、リバースプロキシで個別にプロトコルを設定してください。"
 
 msgid "End time must be later than start time"
 msgstr "終了時刻は開始時刻より後でなければなりません"
@@ -9653,9 +9865,6 @@ msgstr "追加情報"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "例: 予定される復旧計画またはインシデント参照"
-
-msgid "HTTPS"
-msgstr "HTTPS"
 
 msgid "Configuration Name"
 msgstr "設定名"
@@ -10116,9 +10325,6 @@ msgstr "少なくとも 1 つのドメインまたは IP アドレスを追加�
 
 msgid "e.g. example.com www.example.com"
 msgstr "例: example.com www.example.com"
-
-msgid "Certificate"
-msgstr "証明書"
 
 msgid "Recommended"
 msgstr ""
@@ -10751,3 +10957,40 @@ msgstr "シングルペイン"
 
 msgid "Split view"
 msgstr "分割表示"
+
+#~ msgid "Webauthn"
+#~ msgstr "WebAuthn"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts "
+#~ "in ban threshold minutes,"
+#~ msgstr ""
+#~ "1 つの IP からのログイン失敗回数が、禁止しきい値時間（分）内に最大試行回数"
+#~ "に達した場合、"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr ""
+#~ "再帰的なネームサーバーを設定して、システムのネームサーバーを上書きします"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "カスタム MMDB は現在有効です"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "IndexCustomMMDB ファイル名"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "[nginx_log].GeoMapPath から設定されています。100000_full.json のような名前"
+#~ "のファイルをこのディレクトリに保管してください。"
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "デフォルトでは世界地図のみが提供されています。中国と各地方の境界ファイルを"
+#~ "ご自身でダウンロードし、このディレクトリに配置してください。"
+
+#~ msgid "Global health check controls"
+#~ msgstr "ヘルスチェックの全体設定"

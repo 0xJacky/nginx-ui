@@ -1564,6 +1564,21 @@ msgstr "Chargement..."
 msgid "Show"
 msgstr "Afficher"
 
+msgid "Change it in the %{section} section of app.ini."
+msgstr ""
+
+msgid "Unsaved"
+msgstr ""
+
+msgid "Restart required"
+msgstr ""
+
+msgid "Config file"
+msgstr ""
+
+msgid "Not set"
+msgstr ""
+
 msgid "Remove"
 msgstr "Supprimer"
 
@@ -7706,6 +7721,350 @@ msgstr "Connexion OIDC"
 msgid "Sign in with a passkey"
 msgstr "Se connecter avec une clé d'accès"
 
+msgid "Unix Socket"
+msgstr "Socket Unix"
+
+msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgstr "Nginx UI écoute sur ce socket Unix au lieu de l'hôte et du port TCP."
+
+msgid "Run Mode"
+msgstr "Mode d'exécution"
+
+msgid "Enable HTTPS"
+msgstr "Activer HTTPS"
+
+msgid ""
+"Serves the web interface over HTTPS. Saving this change restarts Nginx UI "
+"and reloads the page."
+msgstr ""
+
+msgid "SSL Key Path"
+msgstr "Chemin de la clé SSL"
+
+msgid "Enable HTTP/2"
+msgstr "Activer HTTP/2"
+
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr ""
+"Active la prise en charge de HTTP/2 avec multiplexage et capacités de push "
+"serveur"
+
+msgid "Enable HTTP/3"
+msgstr "Activer HTTP/3"
+
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr ""
+"Active la prise en charge de HTTP/3 basée sur le protocole QUIC pour des "
+"performances optimales"
+
+msgid "Jwt Secret"
+msgstr "Secret Jwt"
+
+msgid "Page Size"
+msgstr "Taille de page"
+
+msgid "Instance ID"
+msgstr "ID d'instance"
+
+msgid "Node name"
+msgstr "Nom du nœud"
+
+msgid ""
+"Customize the name of local node to be displayed in the environment "
+"indicator."
+msgstr ""
+"Personnalisez le nom du nœud local à afficher dans l'indicateur "
+"d'environnement."
+
+msgid "Skip Installation"
+msgstr "Ignorer l'installation"
+
+msgid "Demo"
+msgstr "Démo"
+
+msgid "ICP Number"
+msgstr "Numéro ICP"
+
+msgid ""
+"Shown in the page footer. Only needed for sites hosted in mainland China."
+msgstr ""
+
+msgid "Public Security Number"
+msgstr "Numéro de sécurité publique"
+
+msgid "Github Proxy"
+msgstr "Proxy Github"
+
+msgid ""
+"Used for downloads from GitHub, such as upgrades and the GeoLite database."
+msgstr ""
+
+msgid "HTTP Proxy"
+msgstr "Proxy HTTP"
+
+msgid "Used for other outgoing requests made by Nginx UI."
+msgstr ""
+
+msgid "Insecure Skip Verify"
+msgstr "Ignorer la vérification (non sécurisé)"
+
+msgid "RPID"
+msgstr "RPID"
+
+msgid "RP Display Name"
+msgstr "Nom d'affichage RP"
+
+msgid "RP Origins"
+msgstr "Origines RP"
+
+msgid "Ban Threshold Minutes"
+msgstr "Minutes seuil de bannissement"
+
+msgid "Window in which failed sign-in attempts from one address are counted."
+msgstr ""
+
+msgid "Max Attempts"
+msgstr "Tentatives maximum"
+
+msgid ""
+"Failed attempts allowed inside the window before the address is banned for a "
+"while."
+msgstr ""
+
+msgid "Banned IPs"
+msgstr "IPs bannies"
+
+msgid "Addresses that are currently blocked from signing in."
+msgstr ""
+
+msgid "Access Tokens"
+msgstr "Jetons d'accès"
+
+msgid ""
+"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
+"Tokens are shown only once."
+msgstr ""
+"Créez des identifiants à portée limitée pour la CLI Nginx UI, "
+"l'automatisation et les clients MCP. Les jetons ne sont affichés qu'une "
+"seule fois."
+
+msgid "Contact address registered with the certificate authority."
+msgstr ""
+
+msgid "HTTP Challenge Port"
+msgstr "Port de challenge HTTP"
+
+msgid ""
+"Port that answers validation requests while a certificate is being issued."
+msgstr ""
+
+msgid "CADir"
+msgstr "CADir"
+
+msgid "Service that issues certificates. Leave empty to use the default."
+msgstr ""
+
+msgid "Certificate Renewal Threshold"
+msgstr "Seuil de renouvellement du certificat"
+
+msgid ""
+"Renew certificates when their remaining validity is less than or equal to "
+"this value."
+msgstr ""
+"Renouveler les certificats lorsque leur validité restante est inférieure ou "
+"égale à cette valeur."
+
+msgid "Recursive Nameservers"
+msgstr "Serveurs de noms récursifs"
+
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
+msgstr ""
+
+msgid "Stub Status Port"
+msgstr "Port d'état stub"
+
+msgid "Local port used to read Nginx connection statistics."
+msgstr ""
+
+msgid "Maintenance host"
+msgstr "Hôte de maintenance"
+
+msgid ""
+"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
+"to use this Nginx UI instance."
+msgstr ""
+"Origine HTTP ou HTTPS optionnelle servant la page de maintenance. Laissez "
+"vide pour utiliser cette instance de Nginx UI."
+
+msgid "Maintenance bypass IP"
+msgstr "IP de contournement de maintenance"
+
+msgid ""
+"Requests from this IPv4 or IPv6 address continue to use the original site "
+"while maintenance mode is active."
+msgstr ""
+"Les requêtes provenant de cette adresse IPv4 ou IPv6 continuent d'utiliser "
+"le site original lorsque le mode maintenance est actif."
+
+msgid "Maintenance template (filename only)"
+msgstr "Modèle de maintenance (nom de fichier uniquement)"
+
+msgid ""
+"The file named <site name>.<filename> is used first; if it does not exist, "
+"the generic <filename> is used; if neither exists, the built-in Nginx UI "
+"maintenance page is used."
+msgstr ""
+"Le fichier nommé <site name>.<filename> est utilisé en premier ; s'il "
+"n'existe pas, le fichier générique <filename> est utilisé ; si aucun des "
+"deux n'existe, la page de maintenance intégrée de l'interface Nginx est "
+"utilisée."
+
+msgid "Nginx Control Mode"
+msgstr "Mode de contrôle Nginx"
+
+msgid "How Nginx UI reaches the Nginx it manages."
+msgstr ""
+
+msgid "Nginx Access Log Path"
+msgstr "Chemin du journal d'accès Nginx"
+
+msgid "Nginx Error Log Path"
+msgstr "Chemin du journal des erreurs Nginx"
+
+msgid "Nginx Configurations Directory"
+msgstr "Répertoire des configurations Nginx"
+
+msgid "Nginx Configuration Path"
+msgstr "Chemin de configuration de Nginx"
+
+msgid "Nginx Log Directory Whitelist"
+msgstr "Liste blanche des répertoires de journaux Nginx"
+
+msgid "Nginx PID Path"
+msgstr "Chemin du PID de Nginx"
+
+msgid "Nginx Test Config Command"
+msgstr "Commande de test de configuration Nginx"
+
+msgid "Nginx Reload Command"
+msgstr "Commande de rechargement de Nginx"
+
+msgid "Nginx Restart Command"
+msgstr "Commande de redémarrage de Nginx"
+
+msgid "API Base Url"
+msgstr "URL de base de l'API"
+
+msgid "API Token"
+msgstr "Jeton API"
+
+msgid "API Proxy"
+msgstr "Proxy d'API"
+
+msgid "API Type"
+msgstr "Type d'API"
+
+msgid "Assistant models"
+msgstr "Modèles de l'assistant"
+
+msgid "The models to choose from in the assistant."
+msgstr "Les modèles parmi lesquels choisir dans l'assistant."
+
+msgid "Default model"
+msgstr "Modèle par défaut"
+
+msgid "Used for new chats, chat titles and, unless set below, code completion."
+msgstr ""
+"Utilisé pour les nouvelles conversations, les titres de conversation et, "
+"sauf si défini ci-dessous, la complétion de code."
+
+msgid ""
+"How each model switches its thinking levels. Pick the convention of your "
+"provider, or edit the request fields."
+msgstr ""
+"Comment chaque modèle bascule entre ses niveaux de réflexion. Choisissez la "
+"convention de votre fournisseur, ou modifiez les champs de la requête."
+
+msgid "Enable Code Completion"
+msgstr "Activer la complétion de code"
+
+msgid "Code Completion Model"
+msgstr "Modèle de complétion de code"
+
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
+msgstr ""
+"Le modèle utilisé pour la complétion de code, s'il n'est pas défini, le "
+"modèle de chat sera utilisé."
+
+msgid "Enable site health checks"
+msgstr "Activer les vérifications d'état des sites"
+
+msgid "Concurrency"
+msgstr "Concurrence"
+
+msgid "Sites checked at the same time."
+msgstr ""
+
+msgid "Time between two checks of the same site."
+msgstr ""
+
+msgid "Enable upstream health checks"
+msgstr "Activer les vérifications d'état des upstreams"
+
+msgid "Proxy Targets"
+msgstr "Cibles du proxy"
+
+msgid "Time between two checks of the same proxy target."
+msgstr ""
+
+msgid "External Notify"
+msgstr "Notification Externe"
+
+msgid "Channels that receive notifications from Nginx UI."
+msgstr ""
+
+msgid "Terminal Start Command"
+msgstr "Commande de démarrage du terminal"
+
+msgid "Enable Logrotate"
+msgstr ""
+
+msgid ""
+"Runs the rotation command on a schedule from Nginx UI. Mainly needed inside "
+"a Docker container."
+msgstr ""
+
+msgid "Command"
+msgstr "Commande"
+
+msgid "Minutes between two runs."
+msgstr ""
+
+msgid ""
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
+msgstr ""
+"La base de données GeoLite2 fournit des informations géographiques pour les "
+"adresses IP. Elle est utilisée pour l'analyse géographique hors ligne dans "
+"l'analyse des journaux."
+
+msgid "Custom MMDB"
+msgstr ""
+
+msgid "A custom database replaces the GeoLite2 download."
+msgstr ""
+
+msgid "Map Boundary Directory"
+msgstr "Répertoire des limites cartographiques"
+
+msgid ""
+"Keep files with names like 100000_full.json in this directory. Only the "
+"world map is provided by default."
+msgstr ""
+
 msgid "Register passkey successfully"
 msgstr "Clé d'accès enregistrée avec succès"
 
@@ -8050,9 +8409,6 @@ msgstr "HTML"
 
 msgid "HTML Template (Optional)"
 msgstr "Modèle HTML (facultatif)"
-
-msgid "HTTP Proxy"
-msgstr "Proxy HTTP"
 
 msgid "Message Body (JSON)"
 msgstr "Corps du message (JSON)"
@@ -9156,6 +9512,23 @@ msgstr "Précédent"
 msgid "Save configuration"
 msgstr "Enregistrer la configuration"
 
+msgid "%{count} unsaved change"
+msgid_plural "%{count} unsaved changes"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Discard"
+msgstr ""
+
+msgid "Keep editing"
+msgstr ""
+
+msgid "Search settings"
+msgstr ""
+
+msgid "No matching settings"
+msgstr ""
+
 msgid "Check the format of the API Base Url and API Proxy."
 msgstr "Vérifiez le format de l'API Base Url et de l'API Proxy."
 
@@ -9193,38 +9566,98 @@ msgstr "Options 2FA"
 msgid "Unable to open SSH setup"
 msgstr "Impossible d’ouvrir la configuration SSH"
 
+msgid "Basics"
+msgstr ""
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr ""
+
+msgid "Address, protocol and certificate used to reach this Nginx UI instance."
+msgstr ""
+
 msgid "App"
 msgstr "Application"
 
-msgid "External Notify"
-msgstr "Notification Externe"
-
-msgid "Health Check"
-msgstr "Vérification de santé"
+msgid "Sign-in session and list display of the web interface."
+msgstr ""
 
 msgid "Node"
 msgstr "Nœud"
 
+msgid "Identity and display details of this node."
+msgstr ""
+
+msgid "Go to nodes"
+msgstr ""
+
 msgid "HTTP"
 msgstr "HTTP"
+
+msgid "Proxies used when Nginx UI connects to the internet."
+msgstr ""
 
 msgid "Auth"
 msgstr "Authentification"
 
-msgid "Access Tokens"
-msgstr "Jetons d'accès"
+msgid "Sign-in throttling, banned addresses and passkey origin."
+msgstr ""
+
+msgid "Credentials for the command line, automation and MCP clients."
+msgstr ""
 
 msgid "Cert"
 msgstr "Certificat"
 
+msgid ""
+"Contact, issuing service and renewal of certificates requested by Nginx UI."
+msgstr ""
+
+msgid "Go to certificates"
+msgstr ""
+
+msgid ""
+"Paths, commands, maintenance page and control mode of the managed Nginx."
+msgstr ""
+
 msgid "LLM"
 msgstr "LLM"
+
+msgid "Model and endpoint used by the assistant and code completion."
+msgstr ""
+
+msgid "Health Check"
+msgstr "Vérification de santé"
+
+msgid "Global switches and intervals for site and proxy target checks."
+msgstr ""
+
+msgid "Go to sites"
+msgstr ""
+
+msgid "Go to notifications"
+msgstr ""
+
+msgid "Shell started by the web terminal."
+msgstr ""
+
+msgid "Go to terminal"
+msgstr ""
 
 msgid "Logrotate"
 msgstr "Logrotate"
 
+msgid "Scheduled rotation of Nginx log files."
+msgstr ""
+
 msgid "GeoLite"
 msgstr "GeoLite"
+
+msgid "Geographic database and map files used by log analytics."
+msgstr ""
+
+msgid "Go to logs"
+msgstr ""
 
 msgid "Invalid settings: %{fields}"
 msgstr "Paramètres invalides : %{fields}"
@@ -9292,13 +9725,8 @@ msgstr "Échec de la copie du jeton d'accès"
 msgid "Active"
 msgstr "Actif"
 
-msgid ""
-"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
-"Tokens are shown only once."
+msgid "Tokens"
 msgstr ""
-"Créez des identifiants à portée limitée pour la CLI Nginx UI, "
-"l'automatisation et les clients MCP. Les jetons ne sont affichés qu'une "
-"seule fois."
 
 msgid "Create Token"
 msgstr "Créer le jeton"
@@ -9354,79 +9782,40 @@ msgstr ""
 msgid "I have saved the token"
 msgstr "J'ai enregistré le jeton"
 
-msgid "Jwt Secret"
-msgstr "Secret Jwt"
-
-msgid "Page Size"
-msgstr "Taille de page"
+msgid "General"
+msgstr ""
 
 msgid "Banned Until"
 msgstr "Banni durant"
 
-msgid "Webauthn"
-msgstr "Webauthn"
-
-msgid "RPID"
-msgstr "RPID"
-
-msgid "RP Display Name"
-msgstr "Nom d'affichage RP"
-
-msgid "RP Origins"
-msgstr "Origines RP"
+msgid "Passkeys"
+msgstr ""
 
 msgid "Throttle"
 msgstr "Limitation"
 
-msgid "Ban Threshold Minutes"
-msgstr "Minutes seuil de bannissement"
-
-msgid "Max Attempts"
-msgstr "Tentatives maximum"
-
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
-"ban threshold minutes,"
+"ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
-"Si le nombre de tentatives de connexion échouées depuis une adresse IP "
-"atteint le nombre maximal de tentatives autorisé pendant la durée de "
-"restriction,"
-
-msgid "Banned IPs"
-msgstr "IPs bannies"
 
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Êtes-vous sûr de vouloir supprimer immédiatement cette IP bannie ?"
 
-msgid "HTTP Challenge Port"
-msgstr "Port de challenge HTTP"
-
-msgid "CADir"
-msgstr "CADir"
+msgid "Issuing"
+msgstr ""
 
 msgid "The url is invalid"
 msgstr "L'URL est invalide"
 
-msgid "Certificate Renewal Threshold"
-msgstr "Seuil de renouvellement du certificat"
-
-msgid ""
-"Renew certificates when their remaining validity is less than or equal to "
-"this value."
+msgid "Renewal"
 msgstr ""
-"Renouveler les certificats lorsque leur validité restante est inférieure ou "
-"égale à cette valeur."
 
 msgid "Days"
 msgstr "Jours"
 
-msgid "Set the recursive nameservers to override the systems nameservers "
+msgid "DNS Challenge"
 msgstr ""
-"Définissez les serveurs de noms récursifs pour remplacer les serveurs de "
-"noms du système"
-
-msgid "Recursive Nameservers"
-msgstr "Serveurs de noms récursifs"
 
 msgid "Are you sure you want to remove this item?"
 msgstr "Êtes-vous sûr de vouloir supprimer cet élément ?"
@@ -9437,43 +9826,19 @@ msgstr "Cette notification est désactivée"
 msgid "Failed to send test message"
 msgstr "Échec de l'envoi du message de test"
 
-msgid "Custom MMDB is currently enabled"
-msgstr "La MMDB personnalisée est actuellement activée"
+msgid "Database"
+msgstr ""
 
-msgid "IndexCustomMMDB File Name"
-msgstr "Nom du fichier IndexCustomMMDB"
+msgid "Maps"
+msgstr ""
 
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This "
-"is used for offline geographic analysis in log analytics."
+"Please download China and province boundary files yourself and place them in "
+"this directory."
 msgstr ""
-"La base de données GeoLite2 fournit des informations géographiques pour les "
-"adresses IP. Elle est utilisée pour l'analyse géographique hors ligne dans "
-"l'analyse des journaux."
-
-msgid "Map Boundary Directory"
-msgstr "Répertoire des limites cartographiques"
-
-msgid ""
-"Configured from [nginx_log].GeoMapPath. Keep files with names like "
-"100000_full.json in this directory."
-msgstr ""
-"Configuré depuis [nginx_log].GeoMapPath. Conservez les fichiers avec des "
-"noms tels que 100000_full.json dans ce répertoire."
-
-msgid ""
-"Only the world map is provided by default. Please download China and "
-"province boundary files yourself and place them in this directory."
-msgstr ""
-"Seule la carte du monde est fournie par défaut. Veuillez télécharger vous-"
-"même les fichiers de délimitation de la Chine et des provinces et les placer "
-"dans ce répertoire."
 
 msgid "Template reference"
 msgstr "Référence de modèle"
-
-msgid "Global health check controls"
-msgstr "Contrôles globaux des vérifications d'état"
 
 msgid ""
 "A global pause stops network probes without changing individual site or "
@@ -9484,29 +9849,14 @@ msgstr ""
 "individuelles de sites ou d'upstreams. La découverte reste active, les "
 "cibles configurées restent donc visibles."
 
-msgid "Enable site health checks"
-msgstr "Activer les vérifications d'état des sites"
-
-msgid "Concurrency"
-msgstr "Concurrence"
-
 msgid "Seconds"
 msgstr "Secondes"
 
-msgid "Proxy Targets"
-msgstr "Cibles du proxy"
-
-msgid "Enable upstream health checks"
-msgstr "Activer les vérifications d'état des upstreams"
-
-msgid "Github Proxy"
-msgstr "Proxy Github"
+msgid "Proxies"
+msgstr ""
 
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Pour les utilisateurs chinois : https://cloud.nginxui.com/"
-
-msgid "Insecure Skip Verify"
-msgstr "Ignorer la vérification (non sécurisé)"
 
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
@@ -9524,89 +9874,26 @@ msgstr ""
 "tâches crontab de Nginx UI exécutera la commande logrotate à l'intervalle "
 "que vous avez défini en minutes."
 
-msgid "Command"
-msgstr "Commande"
-
 msgid "Minutes"
 msgstr "Minutes"
 
-msgid "Stub Status Port"
-msgstr "Port d'état stub"
-
-msgid "Maintenance host"
-msgstr "Hôte de maintenance"
+msgid "Maintenance Page"
+msgstr ""
 
 msgid "http://127.0.0.1:9000"
 msgstr "http://127.0.0.1:9000"
 
-msgid ""
-"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
-"to use this Nginx UI instance."
-msgstr ""
-"Origine HTTP ou HTTPS optionnelle servant la page de maintenance. Laissez "
-"vide pour utiliser cette instance de Nginx UI."
-
-msgid "Maintenance bypass IP"
-msgstr "IP de contournement de maintenance"
-
 msgid "203.0.113.10"
 msgstr "203.0.113.10"
-
-msgid ""
-"Requests from this IPv4 or IPv6 address continue to use the original site "
-"while maintenance mode is active."
-msgstr ""
-"Les requêtes provenant de cette adresse IPv4 ou IPv6 continuent d'utiliser "
-"le site original lorsque le mode maintenance est actif."
-
-msgid "Maintenance template (filename only)"
-msgstr "Modèle de maintenance (nom de fichier uniquement)"
-
-msgid "maintenance.html"
-msgstr "maintenance.html"
 
 msgid "Mounted directory"
 msgstr "Répertoire monté"
 
-msgid ""
-"The file named <site name>.<filename> is used first; if it does not exist, "
-"the generic <filename> is used; if neither exists, the built-in Nginx UI "
-"maintenance page is used."
+msgid "maintenance.html"
+msgstr "maintenance.html"
+
+msgid "Control Mode"
 msgstr ""
-"Le fichier nommé <site name>.<filename> est utilisé en premier ; s'il "
-"n'existe pas, le fichier générique <filename> est utilisé ; si aucun des "
-"deux n'existe, la page de maintenance intégrée de l'interface Nginx est "
-"utilisée."
-
-msgid "Nginx Access Log Path"
-msgstr "Chemin du journal d'accès Nginx"
-
-msgid "Nginx Error Log Path"
-msgstr "Chemin du journal des erreurs Nginx"
-
-msgid "Nginx Configurations Directory"
-msgstr "Répertoire des configurations Nginx"
-
-msgid "Nginx Configuration Path"
-msgstr "Chemin de configuration de Nginx"
-
-msgid "Nginx Log Directory Whitelist"
-msgstr "Liste blanche des répertoires de journaux Nginx"
-
-msgid "Nginx PID Path"
-msgstr "Chemin du PID de Nginx"
-
-msgid "Nginx Test Config Command"
-msgstr "Commande de test de configuration Nginx"
-
-msgid "Nginx Reload Command"
-msgstr "Commande de rechargement de Nginx"
-
-msgid "Nginx Restart Command"
-msgstr "Commande de redémarrage de Nginx"
-
-msgid "Nginx Control Mode"
-msgstr "Mode de contrôle Nginx"
 
 msgid "Host via SSH"
 msgstr "Hôte via SSH"
@@ -9638,11 +9925,11 @@ msgstr "Conteneur externe"
 msgid "Open SSH setup wizard"
 msgstr "Ouvrir l’assistant de configuration SSH"
 
-msgid "Instance ID"
-msgstr "ID d'instance"
+msgid "Paths and Commands"
+msgstr ""
 
-msgid "Node name"
-msgstr "Nom du nœud"
+msgid "Identity"
+msgstr ""
 
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
@@ -9651,21 +9938,8 @@ msgstr ""
 "Le nom du nœud ne doit contenir que des lettres, unicode, des chiffres, des "
 "traits d'union, des tirets, des deux-points et des points."
 
-msgid ""
-"Customize the name of local node to be displayed in the environment "
-"indicator."
+msgid "Footer"
 msgstr ""
-"Personnalisez le nom du nœud local à afficher dans l'indicateur "
-"d'environnement."
-
-msgid "Skip Installation"
-msgstr "Ignorer l'installation"
-
-msgid "Demo"
-msgstr "Démo"
-
-msgid "ICP Number"
-msgstr "Numéro ICP"
 
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
@@ -9676,9 +9950,6 @@ msgstr ""
 
 msgid "For Chinese user"
 msgstr "Pour utilisateur chinois"
-
-msgid "Public Security Number"
-msgstr "Numéro de sécurité publique"
 
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
@@ -9771,71 +10042,26 @@ msgstr ""
 msgid "Connection"
 msgstr "Connexion"
 
-msgid "API Base Url"
-msgstr "URL de base de l'API"
-
 msgid "Regional endpoints"
 msgstr "Points de terminaison régionaux"
 
 msgid "Documentation"
 msgstr "Documentation"
 
-msgid "API Token"
-msgstr "Jeton API"
-
 msgid "Token is not valid"
 msgstr "Le jeton n'est pas valide"
-
-msgid "Advanced"
-msgstr "Avancé"
-
-msgid "API Proxy"
-msgstr "Proxy d'API"
-
-msgid "API Type"
-msgstr "Type d'API"
 
 msgid "Models"
 msgstr "Modèles"
 
-msgid "Assistant models"
-msgstr "Modèles de l'assistant"
-
-msgid "The models to choose from in the assistant."
-msgstr "Les modèles parmi lesquels choisir dans l'assistant."
-
 msgid "Choose one or more models"
 msgstr "Choisissez un ou plusieurs modèles"
-
-msgid "Default model"
-msgstr "Modèle par défaut"
-
-msgid "Used for new chats, chat titles and, unless set below, code completion."
-msgstr ""
-"Utilisé pour les nouvelles conversations, les titres de conversation et, "
-"sauf si défini ci-dessous, la complétion de code."
 
 msgid "Choose the assistant models first"
 msgstr "Choisissez d'abord les modèles de l'assistant"
 
-msgid ""
-"How each model switches its thinking levels. Pick the convention of your "
-"provider, or edit the request fields."
+msgid "Code Completion"
 msgstr ""
-"Comment chaque modèle bascule entre ses niveaux de réflexion. Choisissez la "
-"convention de votre fournisseur, ou modifiez les champs de la requête."
-
-msgid "Enable Code Completion"
-msgstr "Activer la complétion de code"
-
-msgid "Code Completion Model"
-msgstr "Modèle de complétion de code"
-
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
-msgstr ""
-"Le modèle utilisé pour la complétion de code, s'il n'est pas défini, le "
-"modèle de chat sera utilisé."
 
 msgid "Same as the chat model (%{model})"
 msgstr "Identique au modèle de chat (%{model})"
@@ -9843,39 +10069,23 @@ msgstr "Identique au modèle de chat (%{model})"
 msgid "Same as the chat model"
 msgstr "Identique au modèle de chat"
 
-msgid "Unix Socket"
-msgstr "Socket Unix"
+msgid "Advanced"
+msgstr "Avancé"
 
-msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
-msgstr "Nginx UI écoute sur ce socket Unix au lieu de l'hôte et du port TCP."
-
-msgid "Run Mode"
-msgstr "Mode d'exécution"
-
-msgid "Enable HTTPS"
-msgstr "Activer HTTPS"
-
-msgid "SSL Key Path"
-msgstr "Chemin de la clé SSL"
-
-msgid ""
-"Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
+msgid "Listen Address"
 msgstr ""
-"La configuration du protocole ne prend effet que lors d'une connexion "
-"directe. Si vous utilisez un proxy inverse, veuillez configurer le protocole "
-"séparément dans le proxy inverse."
 
-msgid "Enable HTTP/2"
-msgstr "Activer HTTP/2"
-
-msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgid "All interfaces"
 msgstr ""
-"Active la prise en charge de HTTP/2 avec multiplexage et capacités de push "
-"serveur"
 
-msgid "Enable HTTP/3"
-msgstr "Activer HTTP/3"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgid "Certificate"
+msgstr "Certificat"
+
+msgid "Pick the certificate that secures the web interface."
+msgstr ""
 
 msgid ""
 "HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on "
@@ -9884,13 +10094,13 @@ msgstr ""
 "HTTP/3 nécessite un listener UDP et n'est pas disponible tant que Nginx UI "
 "écoute sur un Unix socket."
 
-msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse proxy."
 msgstr ""
-"Active la prise en charge de HTTP/3 basée sur le protocole QUIC pour des "
-"performances optimales"
-
-msgid "Terminal Start Command"
-msgstr "Commande de démarrage du terminal"
+"La configuration du protocole ne prend effet que lors d'une connexion "
+"directe. Si vous utilisez un proxy inverse, veuillez configurer le protocole "
+"séparément dans le proxy inverse."
 
 msgid "End time must be later than start time"
 msgstr "L'heure de fin doit être postérieure à l'heure de début"
@@ -9924,9 +10134,6 @@ msgstr "Informations supplémentaires"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Par exemple : plan de reprise attendu ou référence d'incident"
-
-msgid "HTTPS"
-msgstr "HTTPS"
 
 msgid "Configuration Name"
 msgstr "Nom de la configuration"
@@ -10404,9 +10611,6 @@ msgstr "Ajoutez au moins un nom de domaine ou une adresse IP."
 
 msgid "e.g. example.com www.example.com"
 msgstr "p. ex. example.com www.example.com"
-
-msgid "Certificate"
-msgstr "Certificat"
 
 msgid "Recommended"
 msgstr "Recommandé"
@@ -11055,3 +11259,43 @@ msgstr "Panneau unique"
 
 msgid "Split view"
 msgstr "Vue partagée"
+
+#~ msgid "Webauthn"
+#~ msgstr "Webauthn"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts "
+#~ "in ban threshold minutes,"
+#~ msgstr ""
+#~ "Si le nombre de tentatives de connexion échouées depuis une adresse IP "
+#~ "atteint le nombre maximal de tentatives autorisé pendant la durée de "
+#~ "restriction,"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr ""
+#~ "Définissez les serveurs de noms récursifs pour remplacer les serveurs de "
+#~ "noms du système"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "La MMDB personnalisée est actuellement activée"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "Nom du fichier IndexCustomMMDB"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "Configuré depuis [nginx_log].GeoMapPath. Conservez les fichiers avec des "
+#~ "noms tels que 100000_full.json dans ce répertoire."
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "Seule la carte du monde est fournie par défaut. Veuillez télécharger vous-"
+#~ "même les fichiers de délimitation de la Chine et des provinces et les "
+#~ "placer dans ce répertoire."
+
+#~ msgid "Global health check controls"
+#~ msgstr "Contrôles globaux des vérifications d'état"

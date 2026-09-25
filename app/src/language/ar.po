@@ -1486,6 +1486,21 @@ msgstr "جاري التحميل..."
 msgid "Show"
 msgstr "عرض"
 
+msgid "Change it in the %{section} section of app.ini."
+msgstr ""
+
+msgid "Unsaved"
+msgstr ""
+
+msgid "Restart required"
+msgstr ""
+
+msgid "Config file"
+msgstr ""
+
+msgid "Not set"
+msgstr ""
+
 msgid "Remove"
 msgstr "إزالة"
 
@@ -7357,6 +7372,340 @@ msgstr "تسجيل الدخول باستخدام OIDC"
 msgid "Sign in with a passkey"
 msgstr "تسجيل الدخول باستخدام مفتاح المرور"
 
+msgid "Unix Socket"
+msgstr "Unix Socket"
+
+msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgstr "يستمع Nginx UI إلى مقبس Unix هذا بدلاً من مضيف TCP والمنفذ."
+
+msgid "Run Mode"
+msgstr "وضع التشغيل"
+
+msgid "Enable HTTPS"
+msgstr "تمكين HTTPS"
+
+msgid ""
+"Serves the web interface over HTTPS. Saving this change restarts Nginx UI "
+"and reloads the page."
+msgstr ""
+
+msgid "SSL Key Path"
+msgstr "مسار مفتاح SSL"
+
+msgid "Enable HTTP/2"
+msgstr "تمكين HTTP/2"
+
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr "تمكين دعم HTTP/2 مع إمكانية تعدد الإرسال ودفع الخادم"
+
+msgid "Enable HTTP/3"
+msgstr "تمكين HTTP/3"
+
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr "تمكين دعم HTTP/3 بناءً على بروتوكول QUIC لأفضل أداء"
+
+msgid "Jwt Secret"
+msgstr "سر JWT"
+
+msgid "Page Size"
+msgstr "حجم الصفحة"
+
+msgid "Instance ID"
+msgstr "معرف المثيل"
+
+msgid "Node name"
+msgstr "اسم العقدة"
+
+msgid ""
+"Customize the name of local node to be displayed in the environment "
+"indicator."
+msgstr "قم بتخصيص اسم العقدة المحلية ليتم عرضها في مؤشر البيئة."
+
+msgid "Skip Installation"
+msgstr "تخطي التثبيت"
+
+msgid "Demo"
+msgstr "عرض تجريبي"
+
+msgid "ICP Number"
+msgstr "رقم ICP"
+
+msgid ""
+"Shown in the page footer. Only needed for sites hosted in mainland China."
+msgstr ""
+
+msgid "Public Security Number"
+msgstr "رقم الأمن العام"
+
+msgid "Github Proxy"
+msgstr "وكيل Github"
+
+msgid ""
+"Used for downloads from GitHub, such as upgrades and the GeoLite database."
+msgstr ""
+
+msgid "HTTP Proxy"
+msgstr "بروكسي HTTP"
+
+msgid "Used for other outgoing requests made by Nginx UI."
+msgstr ""
+
+msgid "Insecure Skip Verify"
+msgstr "تخطي التحقق غير الآمن"
+
+msgid "RPID"
+msgstr "معرّف الجهاز عن بُعد"
+
+msgid "RP Display Name"
+msgstr "اسم العرض RP"
+
+msgid "RP Origins"
+msgstr "أصول RP"
+
+msgid "Ban Threshold Minutes"
+msgstr "دقائق حد الحظر"
+
+msgid "Window in which failed sign-in attempts from one address are counted."
+msgstr ""
+
+msgid "Max Attempts"
+msgstr "الحد الأقصى للمحاولات"
+
+msgid ""
+"Failed attempts allowed inside the window before the address is banned for a "
+"while."
+msgstr ""
+
+msgid "Banned IPs"
+msgstr "عناوين IP المحظورة"
+
+msgid "Addresses that are currently blocked from signing in."
+msgstr ""
+
+msgid "Access Tokens"
+msgstr "رموز الوصول"
+
+msgid ""
+"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
+"Tokens are shown only once."
+msgstr ""
+"أنشئ بيانات اعتماد محددة النطاق لواجهة Nginx UI السطرية والأتمتة وعملاء MCP. "
+"تُعرض الرموز مرة واحدة فقط."
+
+msgid "Contact address registered with the certificate authority."
+msgstr ""
+
+msgid "HTTP Challenge Port"
+msgstr "منفذ تحدي HTTP"
+
+msgid ""
+"Port that answers validation requests while a certificate is being issued."
+msgstr ""
+
+msgid "CADir"
+msgstr "مجلد سلطة التصديق"
+
+msgid "Service that issues certificates. Leave empty to use the default."
+msgstr ""
+
+msgid "Certificate Renewal Threshold"
+msgstr "حد تجديد الشهادة"
+
+msgid ""
+"Renew certificates when their remaining validity is less than or equal to "
+"this value."
+msgstr ""
+"تجديد الشهادات عندما تكون صلاحيتها المتبقية أقل من أو تساوي هذه القيمة."
+
+msgid "Recursive Nameservers"
+msgstr "خوادم الأسماء التكرارية"
+
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
+msgstr ""
+
+msgid "Stub Status Port"
+msgstr "منفذ حالة ستاب"
+
+msgid "Local port used to read Nginx connection statistics."
+msgstr ""
+
+msgid "Maintenance host"
+msgstr "مضيف الصيانة"
+
+msgid ""
+"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
+"to use this Nginx UI instance."
+msgstr ""
+"مصدر HTTP أو HTTPS اختياري لصفحة الصيانة. اتركه فارغًا لاستخدام مثيل Nginx UI "
+"هذا."
+
+msgid "Maintenance bypass IP"
+msgstr "IP لتجاوز الصيانة"
+
+msgid ""
+"Requests from this IPv4 or IPv6 address continue to use the original site "
+"while maintenance mode is active."
+msgstr ""
+"تستمر الطلبات الواردة من عنوان IPv4 أو IPv6 هذا في استخدام الموقع الأصلي "
+"أثناء تفعيل وضع الصيانة."
+
+msgid "Maintenance template (filename only)"
+msgstr "قالب الصيانة (اسم الملف فقط)"
+
+msgid ""
+"The file named <site name>.<filename> is used first; if it does not exist, "
+"the generic <filename> is used; if neither exists, the built-in Nginx UI "
+"maintenance page is used."
+msgstr ""
+"يتم استخدام الملف المسمى <site name>.<filename> أولاً؛ إذا لم يكن موجوداً، يتم "
+"استخدام الملف العام <filename>؛ إذا لم يوجد أي منهما، يتم استخدام صفحة "
+"الصيانة المدمجة في Nginx UI."
+
+msgid "Nginx Control Mode"
+msgstr "وضع التحكم في Nginx"
+
+msgid "How Nginx UI reaches the Nginx it manages."
+msgstr ""
+
+msgid "Nginx Access Log Path"
+msgstr "مسار سجل الوصول لـ Nginx"
+
+msgid "Nginx Error Log Path"
+msgstr "مسار سجل أخطاء Nginx"
+
+msgid "Nginx Configurations Directory"
+msgstr "مجلد تكوينات Nginx"
+
+msgid "Nginx Configuration Path"
+msgstr "مسار تكوين Nginx"
+
+msgid "Nginx Log Directory Whitelist"
+msgstr "قائمة السماح لمجلد سجلات Nginx"
+
+msgid "Nginx PID Path"
+msgstr "مسار PID لـ Nginx"
+
+msgid "Nginx Test Config Command"
+msgstr "أمر اختبار تكوين Nginx"
+
+msgid "Nginx Reload Command"
+msgstr "أمر إعادة تحميل Nginx"
+
+msgid "Nginx Restart Command"
+msgstr "أمر إعادة تشغيل Nginx"
+
+msgid "API Base Url"
+msgstr "عنوان URL الأساسي لAPI"
+
+msgid "API Token"
+msgstr "رمز API"
+
+msgid "API Proxy"
+msgstr "وسيط API"
+
+msgid "API Type"
+msgstr "نوع API"
+
+msgid "Assistant models"
+msgstr "نماذج المساعد"
+
+msgid "The models to choose from in the assistant."
+msgstr "النماذج المتاحة للاختيار منها في المساعد."
+
+msgid "Default model"
+msgstr "النموذج الافتراضي"
+
+msgid "Used for new chats, chat titles and, unless set below, code completion."
+msgstr ""
+"يُستخدم للمحادثات الجديدة، وعناوين المحادثات، وإكمال الكود (إلا إذا تم ضبطه "
+"أدناه)."
+
+msgid ""
+"How each model switches its thinking levels. Pick the convention of your "
+"provider, or edit the request fields."
+msgstr ""
+"كيف يبدّل كل نموذج بين مستويات التفكير الخاصة به. اختر الاتفاقيات المتبعة لدى "
+"مزوّدك أو عدّل حقول الطلب."
+
+msgid "Enable Code Completion"
+msgstr "تمكين إكمال التعليمات البرمجية"
+
+msgid "Code Completion Model"
+msgstr "نموذج إكمال التعليمات البرمجية"
+
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
+msgstr ""
+"النموذج المستخدم لإكمال التعليمات البرمجية، إذا لم يتم تعيينه، سيتم استخدام "
+"نموذج الدردشة."
+
+msgid "Enable site health checks"
+msgstr "تفعيل فحوصات سلامة المواقع"
+
+msgid "Concurrency"
+msgstr "التزامن"
+
+msgid "Sites checked at the same time."
+msgstr ""
+
+msgid "Time between two checks of the same site."
+msgstr ""
+
+msgid "Enable upstream health checks"
+msgstr "تفعيل فحوصات سلامة الخوادم العليا"
+
+msgid "Proxy Targets"
+msgstr "أهداف الوكيل"
+
+msgid "Time between two checks of the same proxy target."
+msgstr ""
+
+msgid "External Notify"
+msgstr "إشعار خارجي"
+
+msgid "Channels that receive notifications from Nginx UI."
+msgstr ""
+
+msgid "Terminal Start Command"
+msgstr "أمر البدء في المحطة الطرفية"
+
+msgid "Enable Logrotate"
+msgstr ""
+
+msgid ""
+"Runs the rotation command on a schedule from Nginx UI. Mainly needed inside "
+"a Docker container."
+msgstr ""
+
+msgid "Command"
+msgstr "أمر"
+
+msgid "Minutes between two runs."
+msgstr ""
+
+msgid ""
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
+msgstr ""
+"قاعدة بيانات GeoLite2 تقدم معلومات جغرافية عن عناوين IP. يتم استخدامها "
+"للتحليل الجغرافي غير المتصل في تحليل السجلات."
+
+msgid "Custom MMDB"
+msgstr ""
+
+msgid "A custom database replaces the GeoLite2 download."
+msgstr ""
+
+msgid "Map Boundary Directory"
+msgstr "دليل حدود الخريطة"
+
+msgid ""
+"Keep files with names like 100000_full.json in this directory. Only the "
+"world map is provided by default."
+msgstr ""
+
 msgid "Register passkey successfully"
 msgstr "تم تسجيل مفتاح المرور بنجاح"
 
@@ -7676,9 +8025,6 @@ msgstr "HTML"
 
 msgid "HTML Template (Optional)"
 msgstr "قالب HTML (اختياري)"
-
-msgid "HTTP Proxy"
-msgstr "بروكسي HTTP"
 
 msgid "Message Body (JSON)"
 msgstr "جسم الرسالة (JSON)"
@@ -8713,6 +9059,27 @@ msgstr "السابق"
 msgid "Save configuration"
 msgstr "حفظ التكوين"
 
+msgid "%{count} unsaved change"
+msgid_plural "%{count} unsaved changes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+msgid "Discard"
+msgstr ""
+
+msgid "Keep editing"
+msgstr ""
+
+msgid "Search settings"
+msgstr ""
+
+msgid "No matching settings"
+msgstr ""
+
 msgid "Check the format of the API Base Url and API Proxy."
 msgstr "تحقق من صيغة API Base Url و API Proxy."
 
@@ -8748,38 +9115,98 @@ msgstr "إعدادات المصادقة الثنائية"
 msgid "Unable to open SSH setup"
 msgstr "تعذّر فتح إعداد SSH"
 
+msgid "Basics"
+msgstr ""
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr ""
+
+msgid "Address, protocol and certificate used to reach this Nginx UI instance."
+msgstr ""
+
 msgid "App"
 msgstr "التطبيق"
 
-msgid "External Notify"
-msgstr "إشعار خارجي"
-
-msgid "Health Check"
-msgstr "فحص الصحة"
+msgid "Sign-in session and list display of the web interface."
+msgstr ""
 
 msgid "Node"
 msgstr "العقدة"
 
+msgid "Identity and display details of this node."
+msgstr ""
+
+msgid "Go to nodes"
+msgstr ""
+
 msgid "HTTP"
 msgstr "HTTP"
+
+msgid "Proxies used when Nginx UI connects to the internet."
+msgstr ""
 
 msgid "Auth"
 msgstr "مصادقة"
 
-msgid "Access Tokens"
-msgstr "رموز الوصول"
+msgid "Sign-in throttling, banned addresses and passkey origin."
+msgstr ""
+
+msgid "Credentials for the command line, automation and MCP clients."
+msgstr ""
 
 msgid "Cert"
 msgstr "شهادة"
 
+msgid ""
+"Contact, issuing service and renewal of certificates requested by Nginx UI."
+msgstr ""
+
+msgid "Go to certificates"
+msgstr ""
+
+msgid ""
+"Paths, commands, maintenance page and control mode of the managed Nginx."
+msgstr ""
+
 msgid "LLM"
 msgstr "LLM"
+
+msgid "Model and endpoint used by the assistant and code completion."
+msgstr ""
+
+msgid "Health Check"
+msgstr "فحص الصحة"
+
+msgid "Global switches and intervals for site and proxy target checks."
+msgstr ""
+
+msgid "Go to sites"
+msgstr ""
+
+msgid "Go to notifications"
+msgstr ""
+
+msgid "Shell started by the web terminal."
+msgstr ""
+
+msgid "Go to terminal"
+msgstr ""
 
 msgid "Logrotate"
 msgstr "تدوير السجلات"
 
+msgid "Scheduled rotation of Nginx log files."
+msgstr ""
+
 msgid "GeoLite"
 msgstr "جيو لايت"
+
+msgid "Geographic database and map files used by log analytics."
+msgstr ""
+
+msgid "Go to logs"
+msgstr ""
 
 msgid "Invalid settings: %{fields}"
 msgstr "إعدادات غير صالحة: %{fields}"
@@ -8846,12 +9273,8 @@ msgstr "تعذّر نسخ رمز الوصول"
 msgid "Active"
 msgstr "نشط"
 
-msgid ""
-"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
-"Tokens are shown only once."
+msgid "Tokens"
 msgstr ""
-"أنشئ بيانات اعتماد محددة النطاق لواجهة Nginx UI السطرية والأتمتة وعملاء MCP. "
-"تُعرض الرموز مرة واحدة فقط."
 
 msgid "Create Token"
 msgstr "إنشاء رمز"
@@ -8903,75 +9326,40 @@ msgstr ""
 msgid "I have saved the token"
 msgstr "لقد حفظت الرمز"
 
-msgid "Jwt Secret"
-msgstr "سر JWT"
-
-msgid "Page Size"
-msgstr "حجم الصفحة"
+msgid "General"
+msgstr ""
 
 msgid "Banned Until"
 msgstr "محظور حتى"
 
-msgid "Webauthn"
-msgstr "ويب أوثن"
-
-msgid "RPID"
-msgstr "معرّف الجهاز عن بُعد"
-
-msgid "RP Display Name"
-msgstr "اسم العرض RP"
-
-msgid "RP Origins"
-msgstr "أصول RP"
+msgid "Passkeys"
+msgstr ""
 
 msgid "Throttle"
 msgstr "كبح"
 
-msgid "Ban Threshold Minutes"
-msgstr "دقائق حد الحظر"
-
-msgid "Max Attempts"
-msgstr "الحد الأقصى للمحاولات"
-
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
-"ban threshold minutes,"
+"ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
-"إذا وصل عدد محاولات تسجيل الدخول الفاشلة من عنوان IP إلى الحد الأقصى خلال "
-"دقائق حد الحظر،"
-
-msgid "Banned IPs"
-msgstr "عناوين IP المحظورة"
 
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "هل أنت متأكد من حذف عنوان IP المحظور هذا على الفور؟"
 
-msgid "HTTP Challenge Port"
-msgstr "منفذ تحدي HTTP"
-
-msgid "CADir"
-msgstr "مجلد سلطة التصديق"
+msgid "Issuing"
+msgstr ""
 
 msgid "The url is invalid"
 msgstr "عنوان URL غير صالح"
 
-msgid "Certificate Renewal Threshold"
-msgstr "حد تجديد الشهادة"
-
-msgid ""
-"Renew certificates when their remaining validity is less than or equal to "
-"this value."
+msgid "Renewal"
 msgstr ""
-"تجديد الشهادات عندما تكون صلاحيتها المتبقية أقل من أو تساوي هذه القيمة."
 
 msgid "Days"
 msgstr "أيام"
 
-msgid "Set the recursive nameservers to override the systems nameservers "
-msgstr "قم بتعيين مُخدّمات الأسماء التكرارية لتجاوز مُخدّمات أسماء النظام"
-
-msgid "Recursive Nameservers"
-msgstr "خوادم الأسماء التكرارية"
+msgid "DNS Challenge"
+msgstr ""
 
 msgid "Are you sure you want to remove this item?"
 msgstr "هل أنت متأكد أنك تريد إزالة هذا العنصر؟"
@@ -8982,41 +9370,19 @@ msgstr "هذا الإشعار معطل"
 msgid "Failed to send test message"
 msgstr "فشل إرسال رسالة الاختبار"
 
-msgid "Custom MMDB is currently enabled"
-msgstr "MMDB المخصص مفعّل حاليًا"
+msgid "Database"
+msgstr ""
 
-msgid "IndexCustomMMDB File Name"
-msgstr "اسم ملف IndexCustomMMDB"
+msgid "Maps"
+msgstr ""
 
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This "
-"is used for offline geographic analysis in log analytics."
+"Please download China and province boundary files yourself and place them in "
+"this directory."
 msgstr ""
-"قاعدة بيانات GeoLite2 تقدم معلومات جغرافية عن عناوين IP. يتم استخدامها "
-"للتحليل الجغرافي غير المتصل في تحليل السجلات."
-
-msgid "Map Boundary Directory"
-msgstr "دليل حدود الخريطة"
-
-msgid ""
-"Configured from [nginx_log].GeoMapPath. Keep files with names like "
-"100000_full.json in this directory."
-msgstr ""
-"تم التهيئة من [nginx_log].GeoMapPath. احتفظ بالملفات ذات الأسماء مثل "
-"100000_full.json في هذا الدليل."
-
-msgid ""
-"Only the world map is provided by default. Please download China and "
-"province boundary files yourself and place them in this directory."
-msgstr ""
-"يتم توفير خريطة العالم فقط افتراضيًا. يرجى تنزيل ملفات حدود الصين والمقاطعات "
-"بنفسك ووضعها في هذا الدليل."
 
 msgid "Template reference"
 msgstr "مرجع القالب"
-
-msgid "Global health check controls"
-msgstr "عناصر التحكم العامة بفحوصات السلامة"
 
 msgid ""
 "A global pause stops network probes without changing individual site or "
@@ -9026,29 +9392,14 @@ msgstr ""
 "الإيقاف المؤقت العام يوقف فحوصات الشبكة دون تغيير اختيارات المواقع أو "
 "الخوادم العليا الفردية. يظل الاكتشاف نشطًا لتبقى الأهداف المُعدّة ظاهرة."
 
-msgid "Enable site health checks"
-msgstr "تفعيل فحوصات سلامة المواقع"
-
-msgid "Concurrency"
-msgstr "التزامن"
-
 msgid "Seconds"
 msgstr "ثوانٍ"
 
-msgid "Proxy Targets"
-msgstr "أهداف الوكيل"
-
-msgid "Enable upstream health checks"
-msgstr "تفعيل فحوصات سلامة الخوادم العليا"
-
-msgid "Github Proxy"
-msgstr "وكيل Github"
+msgid "Proxies"
+msgstr ""
 
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "للمستخدمين الصين: /https://cloud.nginxui.com"
-
-msgid "Insecure Skip Verify"
-msgstr "تخطي التحقق غير الآمن"
 
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
@@ -9065,88 +9416,26 @@ msgstr ""
 "مجدول المهام crontab الخاص بواجهة Nginx UI بتنفيذ أمر تدوير السجلات في "
 "الفاصل الزمني الذي تحدده بالدقائق."
 
-msgid "Command"
-msgstr "أمر"
-
 msgid "Minutes"
 msgstr "دقائق"
 
-msgid "Stub Status Port"
-msgstr "منفذ حالة ستاب"
-
-msgid "Maintenance host"
-msgstr "مضيف الصيانة"
+msgid "Maintenance Page"
+msgstr ""
 
 msgid "http://127.0.0.1:9000"
 msgstr "http://127.0.0.1:9000"
 
-msgid ""
-"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
-"to use this Nginx UI instance."
-msgstr ""
-"مصدر HTTP أو HTTPS اختياري لصفحة الصيانة. اتركه فارغًا لاستخدام مثيل Nginx UI "
-"هذا."
-
-msgid "Maintenance bypass IP"
-msgstr "IP لتجاوز الصيانة"
-
 msgid "203.0.113.10"
 msgstr "203.0.113.10"
-
-msgid ""
-"Requests from this IPv4 or IPv6 address continue to use the original site "
-"while maintenance mode is active."
-msgstr ""
-"تستمر الطلبات الواردة من عنوان IPv4 أو IPv6 هذا في استخدام الموقع الأصلي "
-"أثناء تفعيل وضع الصيانة."
-
-msgid "Maintenance template (filename only)"
-msgstr "قالب الصيانة (اسم الملف فقط)"
-
-msgid "maintenance.html"
-msgstr "maintenance.html"
 
 msgid "Mounted directory"
 msgstr "الدليل المُثبَّت"
 
-msgid ""
-"The file named <site name>.<filename> is used first; if it does not exist, "
-"the generic <filename> is used; if neither exists, the built-in Nginx UI "
-"maintenance page is used."
+msgid "maintenance.html"
+msgstr "maintenance.html"
+
+msgid "Control Mode"
 msgstr ""
-"يتم استخدام الملف المسمى <site name>.<filename> أولاً؛ إذا لم يكن موجوداً، يتم "
-"استخدام الملف العام <filename>؛ إذا لم يوجد أي منهما، يتم استخدام صفحة "
-"الصيانة المدمجة في Nginx UI."
-
-msgid "Nginx Access Log Path"
-msgstr "مسار سجل الوصول لـ Nginx"
-
-msgid "Nginx Error Log Path"
-msgstr "مسار سجل أخطاء Nginx"
-
-msgid "Nginx Configurations Directory"
-msgstr "مجلد تكوينات Nginx"
-
-msgid "Nginx Configuration Path"
-msgstr "مسار تكوين Nginx"
-
-msgid "Nginx Log Directory Whitelist"
-msgstr "قائمة السماح لمجلد سجلات Nginx"
-
-msgid "Nginx PID Path"
-msgstr "مسار PID لـ Nginx"
-
-msgid "Nginx Test Config Command"
-msgstr "أمر اختبار تكوين Nginx"
-
-msgid "Nginx Reload Command"
-msgstr "أمر إعادة تحميل Nginx"
-
-msgid "Nginx Restart Command"
-msgstr "أمر إعادة تشغيل Nginx"
-
-msgid "Nginx Control Mode"
-msgstr "وضع التحكم في Nginx"
 
 msgid "Host via SSH"
 msgstr "المضيف عبر SSH"
@@ -9177,11 +9466,11 @@ msgstr "حاوية خارجية"
 msgid "Open SSH setup wizard"
 msgstr "فتح معالج إعداد SSH"
 
-msgid "Instance ID"
-msgstr "معرف المثيل"
+msgid "Paths and Commands"
+msgstr ""
 
-msgid "Node name"
-msgstr "اسم العقدة"
+msgid "Identity"
+msgstr ""
 
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
@@ -9189,19 +9478,8 @@ msgid ""
 msgstr ""
 "يجب أن يحتوي اسم العقدة على أحرف، يونيكود، أرقام، شرطات، نقاط، ونقطتين فقط."
 
-msgid ""
-"Customize the name of local node to be displayed in the environment "
-"indicator."
-msgstr "قم بتخصيص اسم العقدة المحلية ليتم عرضها في مؤشر البيئة."
-
-msgid "Skip Installation"
-msgstr "تخطي التثبيت"
-
-msgid "Demo"
-msgstr "عرض تجريبي"
-
-msgid "ICP Number"
-msgstr "رقم ICP"
+msgid "Footer"
+msgstr ""
 
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
@@ -9211,9 +9489,6 @@ msgstr ""
 
 msgid "For Chinese user"
 msgstr "للمستخدمين الصينيين"
-
-msgid "Public Security Number"
-msgstr "رقم الأمن العام"
 
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
@@ -9304,71 +9579,26 @@ msgstr ""
 msgid "Connection"
 msgstr "اتصال"
 
-msgid "API Base Url"
-msgstr "عنوان URL الأساسي لAPI"
-
 msgid "Regional endpoints"
 msgstr "نقاط النهاية الإقليمية"
 
 msgid "Documentation"
 msgstr "الوثائق"
 
-msgid "API Token"
-msgstr "رمز API"
-
 msgid "Token is not valid"
 msgstr "الرمز غير صالح"
-
-msgid "Advanced"
-msgstr "متقدم"
-
-msgid "API Proxy"
-msgstr "وسيط API"
-
-msgid "API Type"
-msgstr "نوع API"
 
 msgid "Models"
 msgstr "النماذج"
 
-msgid "Assistant models"
-msgstr "نماذج المساعد"
-
-msgid "The models to choose from in the assistant."
-msgstr "النماذج المتاحة للاختيار منها في المساعد."
-
 msgid "Choose one or more models"
 msgstr "اختر نموذجًا واحدًا أو أكثر"
-
-msgid "Default model"
-msgstr "النموذج الافتراضي"
-
-msgid "Used for new chats, chat titles and, unless set below, code completion."
-msgstr ""
-"يُستخدم للمحادثات الجديدة، وعناوين المحادثات، وإكمال الكود (إلا إذا تم ضبطه "
-"أدناه)."
 
 msgid "Choose the assistant models first"
 msgstr "اختر نماذج المساعد أولاً"
 
-msgid ""
-"How each model switches its thinking levels. Pick the convention of your "
-"provider, or edit the request fields."
+msgid "Code Completion"
 msgstr ""
-"كيف يبدّل كل نموذج بين مستويات التفكير الخاصة به. اختر الاتفاقيات المتبعة لدى "
-"مزوّدك أو عدّل حقول الطلب."
-
-msgid "Enable Code Completion"
-msgstr "تمكين إكمال التعليمات البرمجية"
-
-msgid "Code Completion Model"
-msgstr "نموذج إكمال التعليمات البرمجية"
-
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
-msgstr ""
-"النموذج المستخدم لإكمال التعليمات البرمجية، إذا لم يتم تعيينه، سيتم استخدام "
-"نموذج الدردشة."
 
 msgid "Same as the chat model (%{model})"
 msgstr "نفس نموذج الدردشة (%{model})"
@@ -9376,36 +9606,23 @@ msgstr "نفس نموذج الدردشة (%{model})"
 msgid "Same as the chat model"
 msgstr "نفس نموذج الدردشة"
 
-msgid "Unix Socket"
-msgstr "Unix Socket"
+msgid "Advanced"
+msgstr "متقدم"
 
-msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
-msgstr "يستمع Nginx UI إلى مقبس Unix هذا بدلاً من مضيف TCP والمنفذ."
-
-msgid "Run Mode"
-msgstr "وضع التشغيل"
-
-msgid "Enable HTTPS"
-msgstr "تمكين HTTPS"
-
-msgid "SSL Key Path"
-msgstr "مسار مفتاح SSL"
-
-msgid ""
-"Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
+msgid "Listen Address"
 msgstr ""
-"إعدادات البروتوكول تتأثر فقط عند الاتصال المباشر. إذا كنت تستخدم خادم وكيل "
-"عكسي، يرجى تكوين البروتوكول بشكل منفصل في خادم الوكيل العكسي."
 
-msgid "Enable HTTP/2"
-msgstr "تمكين HTTP/2"
+msgid "All interfaces"
+msgstr ""
 
-msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
-msgstr "تمكين دعم HTTP/2 مع إمكانية تعدد الإرسال ودفع الخادم"
+msgid "HTTPS"
+msgstr "HTTPS"
 
-msgid "Enable HTTP/3"
-msgstr "تمكين HTTP/3"
+msgid "Certificate"
+msgstr "الشهادة"
+
+msgid "Pick the certificate that secures the web interface."
+msgstr ""
 
 msgid ""
 "HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on "
@@ -9414,11 +9631,12 @@ msgstr ""
 "يتطلب HTTP/3 مستمعًا من نوع UDP وغير متاح أثناء استماع Nginx UI على Unix "
 "socket."
 
-msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
-msgstr "تمكين دعم HTTP/3 بناءً على بروتوكول QUIC لأفضل أداء"
-
-msgid "Terminal Start Command"
-msgstr "أمر البدء في المحطة الطرفية"
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse proxy."
+msgstr ""
+"إعدادات البروتوكول تتأثر فقط عند الاتصال المباشر. إذا كنت تستخدم خادم وكيل "
+"عكسي، يرجى تكوين البروتوكول بشكل منفصل في خادم الوكيل العكسي."
 
 msgid "End time must be later than start time"
 msgstr "يجب أن يكون وقت الانتهاء لاحقًا لوقت البدء"
@@ -9452,9 +9670,6 @@ msgstr "معلومات إضافية"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "على سبيل المثال: خطة التعافي المتوقعة أو مرجع الحادث"
-
-msgid "HTTPS"
-msgstr "HTTPS"
 
 msgid "Configuration Name"
 msgstr "اسم التكوين"
@@ -9913,9 +10128,6 @@ msgstr "أضف نطاقًا واحدًا على الأقل أو عنوان IP."
 
 msgid "e.g. example.com www.example.com"
 msgstr "مثالًا: example.com www.example.com"
-
-msgid "Certificate"
-msgstr "الشهادة"
 
 msgid "Recommended"
 msgstr ""
@@ -10534,3 +10746,39 @@ msgstr "لوحة واحدة"
 
 msgid "Split view"
 msgstr "عرض مقسّم"
+
+#~ msgid "Webauthn"
+#~ msgstr "ويب أوثن"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts "
+#~ "in ban threshold minutes,"
+#~ msgstr ""
+#~ "إذا وصل عدد محاولات تسجيل الدخول الفاشلة من عنوان IP إلى الحد الأقصى خلال "
+#~ "دقائق حد الحظر،"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr "قم بتعيين مُخدّمات الأسماء التكرارية لتجاوز مُخدّمات أسماء النظام"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "MMDB المخصص مفعّل حاليًا"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "اسم ملف IndexCustomMMDB"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "تم التهيئة من [nginx_log].GeoMapPath. احتفظ بالملفات ذات الأسماء مثل "
+#~ "100000_full.json في هذا الدليل."
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "يتم توفير خريطة العالم فقط افتراضيًا. يرجى تنزيل ملفات حدود الصين "
+#~ "والمقاطعات بنفسك ووضعها في هذا الدليل."
+
+#~ msgid "Global health check controls"
+#~ msgstr "عناصر التحكم العامة بفحوصات السلامة"
