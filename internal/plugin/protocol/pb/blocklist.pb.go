@@ -206,7 +206,7 @@ const file_nginxui_plugin_v1_blocklist_proto_rawDesc = "" +
 	"\x04cidr\x18\x01 \x01(\tR\x04cidr\x12\x16\n" +
 	"\x06reason\x18\x02 \x01(\tR\x06reason2~\n" +
 	"\tBlocklist\x12q\n" +
-	"\x05Fetch\x12(.nginxui.plugin.v1.BlocklistFetchRequest\x1a).nginxui.plugin.v1.BlocklistFetchResponse\"\x13\xaa\xb8\x19\x0fblocklist.fetchBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x05Fetch\x12(.nginxui.plugin.v1.BlocklistFetchRequest\x1a).nginxui.plugin.v1.BlocklistFetchResponse\"\x13\xaa\xb8\x19\x0fblocklist.fetchBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_blocklist_proto_rawDescOnce sync.Once

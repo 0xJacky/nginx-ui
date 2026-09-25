@@ -1,6 +1,6 @@
 // Package sink hands the nginx access log lines to subscribers while nginx
 // writes them. It feeds the log.sink plugin capability
-// (nginx-ui-plugin-spec/spec/20-capabilities-logsink.md).
+// (plugin-spec/spec/20-capabilities-logsink.md).
 //
 // The rest of the log pipeline parses lines only while it indexes, in batches
 // every few minutes and only with advanced indexing on, and it reads rotated
