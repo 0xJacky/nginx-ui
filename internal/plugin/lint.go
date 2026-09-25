@@ -27,6 +27,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 )
@@ -98,7 +99,7 @@ func Lint(path string) (*LintReport, error) {
 		defer os.RemoveAll(extracted)
 		dir = extracted
 	}
-	lintSums(dir, report)
+	lintSums(dir, lintPartnerCertificate(dir, report), report)
 
 	manifest, err := LoadManifest(dir)
 	if err != nil {
@@ -897,12 +898,32 @@ func packageErrorRule(err error) string {
 	}
 }
 
+// lintPartnerCertificate checks the partner certificate files: both belong
+// together (PKG-25), a release key verifies them and the trusted comment
+// parses (PKG-26), and a certificate with an expiry has not expired by the
+// UTC date of the linter clock (PKG-27). It returns the certificate when it is valid.
+// The linter reads no keyring, so revocations are not checked.
+func lintPartnerCertificate(dir string, report *LintReport) *partnerCertificate {
+	certificate, err := readPartnerCertificate(dir, nil)
+	switch {
+	case errors.Is(err, errPartnerIncomplete):
+		report.add(LevelWarning, "PKG-25", "%v, the certificate is ignored", err)
+	case errors.Is(err, errPartnerExpired):
+		report.add(LevelWarning, "PKG-27", "%v, the certificate is ignored", err)
+	case err != nil:
+		report.add(LevelWarning, "PKG-26", "the partner certificate does not verify and is ignored: %v", err)
+	}
+	return certificate
+}
+
 // lintSums checks the embedded signature files: plugin.sums has to follow
 // PKG-19 and match the files (PKG-21) whether or not the package is signed,
-// both files belong together (PKG-20), and a signature the keys pinned in
-// this binary do not verify is only a warning (SEC-18), since a community
-// key is named by a catalog entry or an operator.
-func lintSums(dir string, report *LintReport) {
+// both files belong together (PKG-20), a valid partner certificate has to
+// name the key that signed plugin.sums (PKG-27), and a signature neither the
+// release keys pinned in this binary nor the certificate key verify is only
+// a warning (SEC-18), since a community key is named by a catalog entry or
+// an operator.
+func lintSums(dir string, certificate *partnerCertificate, report *LintReport) {
 	sums, err := readRootFile(dir, SumsFileName)
 	if err != nil {
 		report.add(LevelError, "PKG-19", "read %s: %v", SumsFileName, err)
@@ -912,6 +933,10 @@ func lintSums(dir string, report *LintReport) {
 	if err != nil {
 		report.add(LevelError, "PKG-20", "read %s: %v", SumsSignatureFileName, err)
 		return
+	}
+
+	if certificate != nil && signature == nil {
+		report.add(LevelWarning, "PKG-27", "%s is missing, the key %s the partner certificate names signs nothing", SumsSignatureFileName, certificate.KeyID)
 	}
 
 	switch {
@@ -933,11 +958,19 @@ func lintSums(dir string, report *LintReport) {
 		return
 	}
 
-	trust, err := signatureTrust(sums, signature, pinnedTiers())
+	var partners []partnerCertificate
+	if certificate != nil {
+		partners = append(partners, *certificate)
+		if keyID, err := pkgsign.KeyID(signature); err == nil && fmt.Sprintf("%016X", keyID) != certificate.KeyID {
+			report.add(LevelWarning, "PKG-27", "%s is signed by key %016X, not by the key %s the partner certificate names",
+				SumsSignatureFileName, keyID, certificate.KeyID)
+		}
+	}
+	trust, err := signatureTrust(sums, signature, partnerTiers(partners, nil))
 	switch {
 	case err != nil:
 		report.add(LevelError, "PKG-21", "%s: %v", SumsSignatureFileName, err)
 	case trust.Trust == TrustUnsigned:
-		report.add(LevelWarning, "SEC-18", "%s does not verify with the release or partner keys pinned in this binary (expected for a community plugin)", SumsSignatureFileName)
+		report.add(LevelWarning, "SEC-18", "%s does not verify with the release keys pinned in this binary or a partner certificate key (expected for a community plugin)", SumsSignatureFileName)
 	}
 }
