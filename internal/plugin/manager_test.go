@@ -292,6 +292,43 @@ func TestManagerInstallEnableDisableUninstall(t *testing.T) {
 	require.NoError(t, m.hostBackend().KVSet("official.alpha", "state", json.RawMessage(`2`)))
 }
 
+func TestManagerFailedUpgradeRestartsThePreviousVersion(t *testing.T) {
+	usePluginProcesses(t, pluginModeNormal)
+	m := newTestManager(t)
+	ctx := context.Background()
+	m.Start(ctx)
+
+	_, err := m.Install(ctx, buildTestPackage(t, pluginManifest("official.alpha"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+
+	// The row update fails once the new files are in place.
+	db := query.Plugin.WithContext(ctx).UnderlyingDB()
+	require.NoError(t, db.Migrator().DropTable(&model.Plugin{}))
+
+	second := pluginManifest("official.alpha")
+	second.Version = "2.0.0"
+	_, err = m.Install(ctx, buildTestPackage(t, second, nil), InstallOptions{Enable: true})
+	require.Error(t, err)
+
+	// The previous version is back, running and answering calls, with its
+	// event queue restored.
+	info, err := m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.Equal(t, "1.0.0", info.Version)
+	assert.Equal(t, StatusRunning, info.Status)
+
+	client, release, err := m.Acquire(ctx, "official.alpha")
+	require.NoError(t, err)
+	defer release()
+	require.NoError(t, client.Call(ctx, "echo.hello", map[string]string{"text": "hi"}, nil))
+
+	item, ok := m.lookup("official.alpha")
+	require.True(t, ok)
+	m.mu.RLock()
+	assert.NotNil(t, item.events)
+	m.mu.RUnlock()
+}
+
 func TestManagerUpgradeKeepsSettingsAndRollsBack(t *testing.T) {
 	m := newTestManager(t)
 	ctx := context.Background()
