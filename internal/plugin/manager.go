@@ -137,6 +137,12 @@ type InstallOptions struct {
 	Enable bool
 	// ApprovePermissions records the manifest permission set as approved.
 	ApprovePermissions bool
+	// ExpectedID and ExpectedVersion, when set, refuse a package whose
+	// manifest names another plugin or version. The marketplace passes what
+	// the catalog promised, so a swapped package is caught by the one
+	// extraction the install needs anyway.
+	ExpectedID      string
+	ExpectedVersion string
 }
 
 // InspectResult describes a package without installing it.
