@@ -252,6 +252,7 @@ export const SAVABLE_SETTINGS_SECTIONS = [
   'oidc',
   'site_check',
   'upstream_check',
+  'plugin',
 ] as const satisfies readonly (keyof Settings)[]
 
 export type SavableSettingsSection = typeof SAVABLE_SETTINGS_SECTIONS[number]

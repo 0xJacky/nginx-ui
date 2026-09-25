@@ -7650,6 +7650,28 @@ msgid ""
 "this value."
 msgstr "當憑證剩餘有效期小於或等於此值時續簽憑證。"
 
+msgid "Plugin System"
+msgstr "外掛系統"
+
+msgid ""
+"Turning it off stops every plugin and hides the plugin pages. Takes effect "
+"after a restart."
+msgstr "關閉後會停止所有外掛並隱藏外掛頁面，重新啟動後生效。"
+
+msgid "Plugin Directory"
+msgstr "外掛目錄"
+
+msgid "Default Sync Policy"
+msgstr "預設同步策略"
+
+msgid ""
+"Applied to newly installed plugins. Automatic keeps the plugin installed on "
+"the child nodes."
+msgstr "套用於新安裝的外掛。自動會讓外掛始終安裝在子節點上。"
+
+msgid "Enable Marketplace"
+msgstr "啟用市集"
+
 msgid "Stub Status Port"
 msgstr "存根狀態端口"
 
@@ -9241,6 +9263,13 @@ msgid ""
 "Paths, commands, maintenance page and control mode of the managed Nginx."
 msgstr "所管理 Nginx 的路徑、命令、維護頁面與控制模式。"
 
+msgid ""
+"Plugin system, marketplace, packages and resource limits of plugin processes."
+msgstr "外掛系統、市集、安裝套件以及外掛程序的資源限制。"
+
+msgid "Go to plugins"
+msgstr "前往外掛"
+
 msgid "LLM"
 msgstr "LLM"
 
@@ -9658,6 +9687,9 @@ msgstr "與聊天模型相同"
 
 msgid "Advanced"
 msgstr "進階"
+
+msgid "The plugins directory under the configuration directory"
+msgstr "設定目錄下的 plugins 目錄"
 
 msgid "Listen Address"
 msgstr "監聽位址"
@@ -10745,6 +10777,76 @@ msgstr "所有來源"
 msgid "Sources"
 msgstr "來源"
 
+msgid "Managed on the marketplace page. Empty means the official catalog."
+msgstr "在市集頁面管理，為空表示使用官方目錄。"
+
+msgid "Allow Community Plugins"
+msgstr "允許社群外掛"
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr "社群外掛由第三方發布，安裝前會要求確認。"
+
+msgid "Automatic Updates"
+msgstr "自動更新"
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr "在所需權限不變時自動更新官方與合作夥伴外掛。"
+
+msgid "Allow Insecure Download URLs"
+msgstr "允許不安全的下載位址"
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr "接受純 http 的目錄與下載位址，僅用於可信網路中的私有目錄。"
+
+msgid "Allow Uploads"
+msgstr "允許上傳"
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr "允許安裝從瀏覽器或命令列上傳的安裝套件。"
+
+msgid "Developer Mode"
+msgstr "開發者模式"
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
+msgstr "允許安裝未簽署的外掛，僅在開發外掛時開啟。"
+
+msgid "Trusted Keys"
+msgstr "可信金鑰"
+
+msgid ""
+"Packages signed with one of these keys install as community plugins. One key "
+"per line."
+msgstr "用這些金鑰簽署的安裝套件按社群外掛安裝，每行一個金鑰。"
+
+msgid "Memory Limit"
+msgstr "記憶體限制"
+
+msgid ""
+"Applies to every plugin process. 0 means unlimited, a plugin can only lower "
+"its own limit."
+msgstr "套用於每個外掛程序。0 表示不限制，外掛只能調低自己的限制。"
+
+msgid "CPU Limit"
+msgstr "CPU 限制"
+
+msgid "Percent of one core for every plugin process. 0 means unlimited."
+msgstr "每個外掛程序可用的單核百分比，0 表示不限制。"
+
+msgid "cgroup Root"
+msgstr "cgroup 根目錄"
+
+msgid "Limits are enforced on Linux with cgroup v2 only."
+msgstr "僅在使用 cgroup v2 的 Linux 上強制執行。"
+
 msgid "%{count} installed plugin has a newer release."
 msgid_plural "%{count} installed plugins have a newer release."
 msgstr[0] "%{count} 個已安裝的外掛有新版本。"
@@ -11105,6 +11207,18 @@ msgstr "可更新"
 
 msgid "Marketplace"
 msgstr "市集"
+
+msgid "Official catalog"
+msgstr "官方目錄"
+
+msgid "Packages"
+msgstr "安裝套件"
+
+msgid "Paste public keys here"
+msgstr "在此貼上公鑰"
+
+msgid "Resources"
+msgstr "資源"
 
 msgid "%{field} is required"
 msgstr "%{field} 為必填項目"

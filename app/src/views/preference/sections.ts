@@ -13,6 +13,7 @@ export type PreferenceSectionKey
     | 'access_tokens'
     | 'cert'
     | 'nginx'
+    | 'plugin'
     | 'openai'
     | 'health_check'
     | 'external_notify'
@@ -113,6 +114,14 @@ export function buildPreferenceSections(): PreferenceSection[] {
       pathPrefixes: ['nginx'],
     },
     {
+      key: 'plugin',
+      group: 'features',
+      label: $gettext('Plugins'),
+      description: $gettext('Plugin system, marketplace, packages and resource limits of plugin processes.'),
+      link: { label: $gettext('Go to plugins'), to: '/system/plugins' },
+      pathPrefixes: ['plugin'],
+    },
+    {
       key: 'openai',
       group: 'features',
       label: $gettext('LLM'),
@@ -178,6 +187,7 @@ const settingsSectionTab: Record<SavableSettingsSection, PreferenceSectionKey> =
   openai: 'openai',
   logrotate: 'logrotate',
   nginx: 'nginx',
+  plugin: 'plugin',
   site_check: 'health_check',
   upstream_check: 'health_check',
 }
