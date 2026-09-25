@@ -1,3 +1,4 @@
+import type { HttpConfig } from '@/lib/http/types'
 import { http } from '@uozi-admin/request'
 
 /**
@@ -339,7 +340,15 @@ export interface PluginInspect {
   name_i18n?: Record<string, string>
   /** Locale code to translated description, taken from `manifest.i18n`. */
   description_i18n?: Record<string, string>
+  /**
+   * Id of the inspected package the node keeps for a while, so the install
+   * does not upload it again. Absent on a node that does not keep uploads.
+   */
+  upload_id?: string
 }
+
+/** What an install reads the package from: the file or an inspected upload. */
+export type PluginInstallSource = { file: File } | { uploadId: string }
 
 export interface PluginSettingsResponse {
   schema: SettingsSchema | null
@@ -460,12 +469,15 @@ const plugin = {
   },
 
   /** Installs a new plugin or upgrades an existing one from the same bundle. */
-  install(file: File, enable = true): Promise<PluginInfo> {
+  install(source: PluginInstallSource, enable = true, config?: HttpConfig): Promise<PluginInfo> {
     const formData = new FormData()
-    formData.append('file', file)
+    if ('uploadId' in source)
+      formData.append('upload_id', source.uploadId)
+    else
+      formData.append('file', source.file)
     formData.append('enable', enable ? 'true' : 'false')
 
-    return http.post('/plugins', formData, { headers: multipartHeaders })
+    return http.post('/plugins', formData, { ...config, headers: multipartHeaders })
   },
 
   uninstall(id: string): Promise<unknown> {

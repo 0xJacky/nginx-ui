@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 // defaultLogLines is how much of the stderr tail the UI asks for.
@@ -43,12 +44,14 @@ func GetWebappEntries(c *gin.Context) {
 	c.JSON(http.StatusOK, plugin.GetManager().WebappEntries())
 }
 
-// InspectPlugin reads an uploaded package without installing it.
+// InspectPlugin reads an uploaded package without installing it. The package
+// is kept for a while so the install can refer to it by id.
 func InspectPlugin(c *gin.Context) {
 	if !settings.PluginSettings.AllowUploads {
 		cosy.ErrHandler(c, plugin.ErrUploadsDisabled)
 		return
 	}
+	sweepUploads()
 
 	archivePath, cleanup, err := saveUpload(c)
 	if err != nil {
@@ -62,17 +65,34 @@ func InspectPlugin(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	// Without an id the install just takes a second upload.
+	if id, err := keepUpload(archivePath); err != nil {
+		logger.Warn("Keep inspected plugin upload: ", err)
+	} else {
+		result.UploadID = id
+	}
 	c.JSON(http.StatusOK, result)
 }
 
-// InstallPlugin installs or upgrades a plugin from an uploaded package.
+// InstallPlugin installs or upgrades a plugin from an uploaded package, or
+// from the package an earlier inspect kept under upload_id.
 func InstallPlugin(c *gin.Context) {
 	if !settings.PluginSettings.AllowUploads {
 		cosy.ErrHandler(c, plugin.ErrUploadsDisabled)
 		return
 	}
+	sweepUploads()
 
-	archivePath, cleanup, err := saveUpload(c)
+	var (
+		archivePath string
+		cleanup     func()
+		err         error
+	)
+	if uploadID := c.PostForm("upload_id"); uploadID != "" {
+		archivePath, cleanup, err = takeUpload(uploadID)
+	} else {
+		archivePath, cleanup, err = saveUpload(c)
+	}
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
