@@ -3,6 +3,8 @@ package plugin
 import (
 	"archive/tar"
 	"compress/gzip"
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"io"
@@ -12,7 +14,9 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+	"time"
 
+	"aead.dev/minisign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 )
 
@@ -91,9 +95,55 @@ func ExtractPackage(archivePath, destDir string) (manifest *protocol.Manifest, e
 	return manifest, nil
 }
 
-// BuildPackage writes srcDir into a .tar.gz package. It is used by the tests
-// and by the plugin CLI.
+// BuildPackage writes srcDir into an unsigned .tar.gz package. A plugin.sums
+// or plugin.sums.minisig in srcDir is left out. It is used by the tests and by
+// the plugin CLI.
 func BuildPackage(srcDir, archivePath string) error {
+	return buildPackage(srcDir, archivePath, nil)
+}
+
+// BuildSignedPackage is BuildPackage plus the embedded signature: plugin.sums
+// over the files as packed and its minisign signature, the last two entries.
+func BuildSignedPackage(srcDir, archivePath string, key minisign.PrivateKey) error {
+	return buildPackage(srcDir, archivePath, &key)
+}
+
+// SignPackage signs an existing package in place. It is unpacked and built
+// again with the embedded signature, which replaces a previous one.
+func SignPackage(archivePath string, key minisign.PrivateKey) error {
+	staging, err := os.MkdirTemp("", "nginx-ui-plugin-sign-")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(staging)
+
+	payload := filepath.Join(staging, "payload")
+	if _, err = ExtractPackage(archivePath, payload); err != nil {
+		return err
+	}
+	// The new archive is built next to the old one so the swap is a rename.
+	partial, err := os.CreateTemp(filepath.Dir(archivePath), ".sign-*"+packageSuffix)
+	if err != nil {
+		return err
+	}
+	partialPath := partial.Name()
+	_ = partial.Close()
+	defer os.Remove(partialPath)
+
+	if err = BuildSignedPackage(payload, partialPath, key); err != nil {
+		return err
+	}
+	// CreateTemp makes the file private, the package keeps its own mode.
+	if info, err := os.Stat(archivePath); err == nil {
+		if err = os.Chmod(partialPath, info.Mode().Perm()); err != nil {
+			return err
+		}
+	}
+	return os.Rename(partialPath, archivePath)
+}
+
+// buildPackage packs srcDir and, when key is set, signs what it packed.
+func buildPackage(srcDir, archivePath string, key *minisign.PrivateKey) error {
 	root, err := filepath.Abs(srcDir)
 	if err != nil {
 		return err
@@ -106,6 +156,7 @@ func BuildPackage(srcDir, archivePath string) error {
 
 	gz := gzip.NewWriter(out)
 	tw := tar.NewWriter(gz)
+	digests := map[string]string{}
 
 	err = filepath.WalkDir(root, func(current string, entry fs.DirEntry, err error) error {
 		if err != nil {
@@ -119,6 +170,13 @@ func BuildPackage(srcDir, archivePath string) error {
 			return nil
 		}
 		name := filepath.ToSlash(rel)
+		if isSignatureFile(name) {
+			// A stale signature never ships, a signed build writes a new one.
+			if entry.IsDir() {
+				return fs.SkipDir
+			}
+			return nil
+		}
 		info, err := entry.Info()
 		if err != nil {
 			return err
@@ -135,16 +193,12 @@ func BuildPackage(srcDir, archivePath string) error {
 				Size:     info.Size(),
 				ModTime:  info.ModTime(),
 			}
-			if err = tw.WriteHeader(header); err != nil {
-				return err
-			}
-			file, err := os.Open(current)
+			digest, err := packFile(tw, header, current)
 			if err != nil {
 				return err
 			}
-			defer file.Close()
-			_, err = io.Copy(tw, file)
-			return err
+			digests[name] = digest
+			return nil
 		default:
 			// Links and devices never make it into a package.
 			return nil
@@ -153,10 +207,69 @@ func BuildPackage(srcDir, archivePath string) error {
 	if err != nil {
 		return err
 	}
+	if key != nil {
+		if err = packSignature(tw, digests, *key); err != nil {
+			return err
+		}
+	}
 	if err = tw.Close(); err != nil {
 		return err
 	}
-	return gz.Close()
+	if err = gz.Close(); err != nil {
+		return err
+	}
+	return out.Close()
+}
+
+// packFile writes one regular file and returns the sha256 of the bytes that
+// went into the archive.
+func packFile(tw *tar.Writer, header *tar.Header, path string) (string, error) {
+	file, err := os.Open(path)
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	if err = tw.WriteHeader(header); err != nil {
+		return "", err
+	}
+	digest := sha256.New()
+	if _, err = io.Copy(io.MultiWriter(tw, digest), file); err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(digest.Sum(nil)), nil
+}
+
+// packSignature appends plugin.sums and plugin.sums.minisig.
+func packSignature(tw *tar.Writer, digests map[string]string, key minisign.PrivateKey) error {
+	sums := formatSums(digests)
+	signature, err := signSums(sums, key)
+	if err != nil {
+		return err
+	}
+	now := time.Now()
+	for _, file := range []struct {
+		name string
+		body []byte
+	}{
+		{name: SumsFileName, body: sums},
+		{name: SumsSignatureFileName, body: signature},
+	} {
+		header := &tar.Header{
+			Name:     file.name,
+			Typeflag: tar.TypeReg,
+			Mode:     0o644,
+			Size:     int64(len(file.body)),
+			ModTime:  now,
+		}
+		if err = tw.WriteHeader(header); err != nil {
+			return err
+		}
+		if _, err = tw.Write(file.body); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // packagePrefix scans the archive once to find where plugin.json lives and to

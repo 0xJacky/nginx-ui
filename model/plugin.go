@@ -19,6 +19,13 @@ type Plugin struct {
 	// A different hash after an upgrade blocks enabling until re-approved.
 	ApprovedPermissionsHash string `json:"approved_permissions_hash"`
 	LastError               string `json:"last_error"`
+	// Trust is the level derived from the package signature at install time.
+	Trust string `json:"trust"`
+	// Signer is the minisign key id that signed the package, empty when unsigned.
+	Signer string `json:"signer"`
+	// AuthorPublicKey is the key that verified a community package, which a
+	// cluster push hands on to the node. Empty for any other trust.
+	AuthorPublicKey string `json:"-"`
 	// Cluster sync, same pattern as Site.SyncNodeIDs.
 	SyncPolicy   string   `json:"sync_policy"`
 	SyncNodeIDs  []uint64 `json:"sync_node_ids" gorm:"serializer:json"`
