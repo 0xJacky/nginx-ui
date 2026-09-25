@@ -199,140 +199,139 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
 <template>
   <div class="certificate-content-editor">
     <!-- SSL Certificate Content -->
-    <AFormItem
-      :validate-status="errors?.ssl_certificate ? 'error' : ''"
-      :help="errors?.ssl_certificate === 'certificate'
-        ? $gettext('The input is not a SSL Certificate') : ''"
-    >
-      <template #label>
-        <div class="label-with-copy">
-          <span class="label-text">{{ $gettext('SSL Certificate Content') }}</span>
-          <AButton
-            v-if="data.ssl_certificate"
-            type="text"
-            size="small"
-            @click="copyToClipboard(data.ssl_certificate, $gettext('SSL Certificate Content'))"
-          >
-            <CopyOutlined />
-          </AButton>
-        </div>
+    <ACard size="small" class="content-card" :title="$gettext('SSL Certificate Content')">
+      <template #extra>
+        <AButton
+          v-if="data.ssl_certificate"
+          type="text"
+          size="small"
+          @click="copyToClipboard(data.ssl_certificate, $gettext('SSL Certificate Content'))"
+        >
+          <CopyOutlined />
+        </AButton>
       </template>
-      <!-- Certificate File Upload -->
-      <CertificateFileUpload
-        v-if="!readonly"
-        type="certificate"
-        @upload="(content, fileName) => handleCertificateUpload(content, fileName)"
-      />
-
-      <div
-        v-if="!readonly"
-        class="code-editor-container"
-        @dragenter.prevent="(e) => handleDragEnter(e, 'certificate')"
-        @dragover.prevent="handleDragOver"
-        @dragleave.prevent="(e) => handleDragLeave(e, 'certificate')"
-        @drop.prevent="(e) => handleDrop(e, 'certificate')"
+      <AFormItem
+        :validate-status="errors?.ssl_certificate ? 'error' : ''"
+        :help="errors?.ssl_certificate === 'certificate'
+          ? $gettext('The input is not a SSL Certificate') : ''"
       >
+        <!-- Certificate File Upload -->
+        <CertificateFileUpload
+          v-if="!readonly"
+          type="certificate"
+          @upload="(content, fileName) => handleCertificateUpload(content, fileName)"
+        />
+
+        <div
+          v-if="!readonly"
+          class="code-editor-container"
+          @dragenter.prevent="(e) => handleDragEnter(e, 'certificate')"
+          @dragover.prevent="handleDragOver"
+          @dragleave.prevent="(e) => handleDragLeave(e, 'certificate')"
+          @drop.prevent="(e) => handleDrop(e, 'certificate')"
+        >
+          <CodeEditor
+            v-model:content="data.ssl_certificate"
+            default-height="300px"
+            :readonly="readonly"
+            disable-code-completion
+            :placeholder="$gettext('Leave blank will not change anything')"
+          />
+          <div
+            v-if="isDragOverCert"
+            class="drag-overlay"
+          >
+            <div class="drag-content">
+              <InboxOutlined class="drag-icon" />
+              <p>{{ $gettext('Drop certificate file here') }}</p>
+            </div>
+          </div>
+        </div>
         <CodeEditor
+          v-else
           v-model:content="data.ssl_certificate"
           default-height="300px"
           :readonly="readonly"
           disable-code-completion
           :placeholder="$gettext('Leave blank will not change anything')"
         />
-        <div
-          v-if="isDragOverCert"
-          class="drag-overlay"
-        >
-          <div class="drag-content">
-            <InboxOutlined class="drag-icon" />
-            <p>{{ $gettext('Drop certificate file here') }}</p>
-          </div>
-        </div>
-      </div>
-      <CodeEditor
-        v-else
-        v-model:content="data.ssl_certificate"
-        default-height="300px"
-        :readonly="readonly"
-        disable-code-completion
-        :placeholder="$gettext('Leave blank will not change anything')"
-      />
-    </AFormItem>
+      </AFormItem>
+    </ACard>
 
     <!-- SSL Certificate Key Content -->
-    <AFormItem
-      :validate-status="errors?.ssl_certificate_key ? 'error' : ''"
-      :help="errors?.ssl_certificate_key === 'privatekey'
-        ? $gettext('The input is not a SSL Certificate Key') : ''"
-    >
-      <template #label>
-        <div class="label-with-copy">
-          <span class="label-text">{{ $gettext('SSL Certificate Key Content') }}</span>
-          <AButton
-            v-if="data.ssl_certificate_key"
-            type="text"
-            size="small"
-            @click="copyToClipboard(data.ssl_certificate_key, $gettext('SSL Certificate Key Content'))"
-          >
-            <CopyOutlined />
-          </AButton>
-        </div>
+    <ACard size="small" class="content-card" :title="$gettext('SSL Certificate Key Content')">
+      <template #extra>
+        <AButton
+          v-if="data.ssl_certificate_key"
+          type="text"
+          size="small"
+          @click="copyToClipboard(data.ssl_certificate_key, $gettext('SSL Certificate Key Content'))"
+        >
+          <CopyOutlined />
+        </AButton>
       </template>
-      <!-- Private Key File Upload -->
-      <CertificateFileUpload
-        v-if="!readonly"
-        type="key"
-        @upload="(content, fileName) => handlePrivateKeyUpload(content, fileName)"
-      />
-
-      <div
-        v-if="!readonly"
-        class="code-editor-container"
-        @dragenter.prevent="(e) => handleDragEnter(e, 'key')"
-        @dragover.prevent="handleDragOver"
-        @dragleave.prevent="(e) => handleDragLeave(e, 'key')"
-        @drop.prevent="(e) => handleDrop(e, 'key')"
+      <AFormItem
+        :validate-status="errors?.ssl_certificate_key ? 'error' : ''"
+        :help="errors?.ssl_certificate_key === 'privatekey'
+          ? $gettext('The input is not a SSL Certificate Key') : ''"
       >
+        <!-- Private Key File Upload -->
+        <CertificateFileUpload
+          v-if="!readonly"
+          type="key"
+          @upload="(content, fileName) => handlePrivateKeyUpload(content, fileName)"
+        />
+
+        <div
+          v-if="!readonly"
+          class="code-editor-container"
+          @dragenter.prevent="(e) => handleDragEnter(e, 'key')"
+          @dragover.prevent="handleDragOver"
+          @dragleave.prevent="(e) => handleDragLeave(e, 'key')"
+          @drop.prevent="(e) => handleDrop(e, 'key')"
+        >
+          <CodeEditor
+            v-model:content="data.ssl_certificate_key"
+            default-height="300px"
+            :readonly="readonly"
+            disable-code-completion
+            :placeholder="$gettext('Leave blank will not change anything')"
+          />
+          <div
+            v-if="isDragOverKey"
+            class="drag-overlay"
+          >
+            <div class="drag-content">
+              <InboxOutlined class="drag-icon" />
+              <p>{{ $gettext('Drop private key file here') }}</p>
+            </div>
+          </div>
+        </div>
         <CodeEditor
+          v-else
           v-model:content="data.ssl_certificate_key"
           default-height="300px"
           :readonly="readonly"
           disable-code-completion
           :placeholder="$gettext('Leave blank will not change anything')"
         />
-        <div
-          v-if="isDragOverKey"
-          class="drag-overlay"
-        >
-          <div class="drag-content">
-            <InboxOutlined class="drag-icon" />
-            <p>{{ $gettext('Drop private key file here') }}</p>
-          </div>
-        </div>
-      </div>
-      <CodeEditor
-        v-else
-        v-model:content="data.ssl_certificate_key"
-        default-height="300px"
-        :readonly="readonly"
-        disable-code-completion
-        :placeholder="$gettext('Leave blank will not change anything')"
-      />
-    </AFormItem>
+      </AFormItem>
+    </ACard>
   </div>
 </template>
 
 <style scoped lang="less">
 .certificate-content-editor {
-  .label-with-copy {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
 
-    .label-text {
-      color: rgba(0, 0, 0, 0.85);
-    }
+  .content-card :deep(.ant-card-body) {
+    padding: 12px;
+  }
+
+  .content-card :deep(.ant-form-item) {
+    margin-bottom: 0;
   }
 
   .code-editor-container {
@@ -372,15 +371,15 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
   }
 }
 
+@media (max-width: 991px) {
+  .certificate-content-editor {
+    grid-template-columns: 1fr;
+  }
+}
+
 // 暗夜模式适配
 .dark {
   .certificate-content-editor {
-    .label-with-copy {
-      .label-text {
-        color: rgba(255, 255, 255, 0.85);
-      }
-    }
-
     .code-editor-container {
       .drag-overlay {
         background-color: rgba(64, 169, 255, 0.15);

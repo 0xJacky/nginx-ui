@@ -126,6 +126,34 @@ msgstr "任何可訪問的 IP 地址均可用於私有證書頒發機構"
 msgid "Challenge Method"
 msgstr "驗證方式"
 
+#: src/components/AutoCertForm/AutoCertForm.vue:146
+msgid "Required Settings"
+msgstr "必要設定"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:238
+msgid "DNS Challenge Credential"
+msgstr "DNS 驗證憑證"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:244
+msgid "Special Settings"
+msgstr "特殊設定"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:230
+msgid "Challenge Method Reminder"
+msgstr "驗證方式提醒"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:234
+msgid "If you use HTTP-01 challenge, the DNS credential field is hidden and not required."
+msgstr "如果使用 HTTP-01 驗證，DNS 憑證欄位會隱藏且無需填寫。"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:238
+msgid "If you use DNS-01 challenge, you must select a DNS credential."
+msgstr "如果使用 DNS-01 驗證，必須選擇一個 DNS 憑證。"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:242
+msgid "Wildcard certificates usually require DNS-01 challenge."
+msgstr "萬用字元憑證通常需要使用 DNS-01 驗證。"
+
 #: src/components/AutoCertForm/AutoCertForm.vue:202
 #: src/components/AutoCertForm/AutoCertForm.vue:211
 msgid "Not supported for IP certificates"
@@ -156,20 +184,16 @@ msgid "Lego disable CNAME Support"
 msgstr "Lego 停用 CNAME 支援"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:245
-msgid ""
-"If your domain has CNAME records and you cannot obtain certificates, you "
-"need to enable this option."
-msgstr "如果您的網域有 CNAME 記錄且無法取得憑證，您需要啟用此選項。"
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "如果您的域名有 CNAME 記錄且無法獲取證書，"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:253
 msgid "Disable Authoritative DNS Propagation Check"
 msgstr "停用權威 DNS 傳播檢查"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:257
-msgid ""
-"Skip local DNS propagation checks and wait 60 seconds before asking the "
-"certificate authority to validate the record."
-msgstr "略過本機 DNS 傳播檢查，並在要求憑證授權單位驗證記錄前等待 60 秒。"
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr "跳過本地 DNS 傳播檢查，並在請求前等待 60 秒。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:263
 msgid "Enable Common Name"
@@ -220,6 +244,82 @@ msgstr "前往 DNS > 憑證 以建立或管理憑證"
 msgid "Valid"
 msgstr "有效"
 
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:137
+msgid "Certificate issuance failed"
+msgstr "憑證簽發失敗"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Trying renewal."
+msgstr "正在嘗試續簽。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Obtaining bundled SAN certificate."
+msgstr "正在申請 SAN 憑證。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Use solver."
+msgstr "正在使用驗證器。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "http01: Trying to solve HTTP-01."
+msgstr "http01：正在進行 HTTP-01 驗證。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "The server validated our request."
+msgstr "伺服器已驗證我們的請求。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Validations succeeded; requesting certificates."
+msgstr "驗證成功，正在請求憑證。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Waiting for certificates."
+msgstr "正在等待憑證。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "Server responded with a certificate."
+msgstr "伺服器已回傳憑證。"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:30
+msgid "level"
+msgstr "層級"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:31
+msgid "msg"
+msgstr "訊息"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:28
+msgid "Debug"
+msgstr "除錯"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:31
+msgid "time"
+msgstr "時間"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:34
+msgid "domain"
+msgstr "網域"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:35
+msgid "domains"
+msgstr "網域列表"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:36
+msgid "type"
+msgstr "類型"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:37
+msgid "timeout"
+msgstr "逾時"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:38
+msgid "interval"
+msgstr "間隔"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:39
+msgid "hoursRemaining"
+msgstr "剩餘小時"
+
 #: src/components/CertInfo/CertInfo.vue:32
 #: src/views/certificate/CertificateList/certColumns.tsx:127
 #: src/views/dashboard/components/SiteCard.vue:131
@@ -230,6 +330,18 @@ msgstr "已過期"
 #: src/components/CertInfo/CertInfo.vue:36
 msgid "Issuer: %{issuer}"
 msgstr "簽發者：%{issuer}"
+
+#: src/components/CertInfo/CertInfo.vue:28
+msgid "Name: %{name}"
+msgstr "名稱：%{name}"
+
+#: src/components/CertInfo/CertInfo.vue:31
+msgid "Status:"
+msgstr "狀態："
+
+#: src/components/CertInfo/CertInfo.vue:45
+msgid "SAN Aliases: %{aliases}"
+msgstr "SAN 別名：%{aliases}"
 
 #: src/components/CertInfo/CertInfo.vue:39
 msgid "Expires At: %{date}"
@@ -6733,6 +6845,58 @@ msgstr "請填寫您的 DNS 供應商提供的 API 認證憑據。"
 #: src/views/dns/DNSCredential.vue:96
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "請注意，以下時間設定單位均為秒。"
+
+#: src/views/dns/DNSCredential.vue:83
+msgid "Name cannot be empty"
+msgstr "名稱不能為空"
+
+#: src/views/dns/DNSCredential.vue:88
+msgid "Please select DNS provider"
+msgstr "請選擇 DNS 供應商"
+
+#: src/views/dns/DNSCredential.vue:206
+msgid "Add DNS Credential"
+msgstr "新增 DNS 憑證"
+
+#: src/views/dns/DNSCredential.vue:206
+msgid "Modify DNS Credential"
+msgstr "修改 DNS 憑證"
+
+#: src/views/certificate/components/CertificateDownload.vue:60
+msgid "Please select at least one download format"
+msgstr "請至少選擇一種下載格式"
+
+#: src/views/certificate/components/CertificateDownload.vue:92
+msgid "Certificate ID cannot be empty"
+msgstr "憑證 ID 不能為空"
+
+#: src/views/certificate/components/CertificateDownload.vue:135
+msgid "Download Format"
+msgstr "下載格式"
+
+#: src/views/certificate/components/CertificateDownload.vue:140
+msgid "Certificate (.crt)"
+msgstr "憑證（.crt）"
+
+#: src/views/certificate/components/CertificateDownload.vue:143
+msgid "Private Key (.key)"
+msgstr "私鑰（.key）"
+
+#: src/views/certificate/components/CertificateDownload.vue:146
+msgid "PFX (.pfx, CRT + KEY for Windows import)"
+msgstr "PFX（.pfx，CRT + KEY 二合一，適用於 Windows 匯入）"
+
+#: src/views/certificate/components/CertificateDownload.vue:153
+msgid "PFX Password"
+msgstr "PFX 密碼"
+
+#: src/views/certificate/components/CertificateDownload.vue:154
+msgid "Leave empty if you do not want to set a password"
+msgstr "若不需要設定密碼可留空"
+
+#: src/views/certificate/components/CertificateDownload.vue:158
+msgid "Enter PFX password"
+msgstr "請輸入 PFX 密碼"
 
 #: src/views/dns/DNSDomainList.vue:110
 msgid "DNS record management only"

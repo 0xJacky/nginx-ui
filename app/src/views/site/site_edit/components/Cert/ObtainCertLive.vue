@@ -24,13 +24,113 @@ const progressStrokeColor = {
 
 const progressPercent = ref(0)
 const progressStatus = ref('active') as Ref<'success' | 'active' | 'normal' | 'exception'>
+const failureDetail = ref('')
 
 const logContainer = useTemplateRef('logContainer')
+
+const logLevelLabels: Record<string, string> = {
+  INFO: 'Info',
+  WARN: 'Warning',
+  ERROR: 'Error',
+  DEBUG: 'Debug',
+}
+
+const structuredLogKeys = [
+  'time',
+  'level',
+  'msg',
+  'domain',
+  'domains',
+  'type',
+  'timeout',
+  'interval',
+  'hoursRemaining',
+]
+
+function localizeStructuredFieldKeys(raw: string) {
+  let localized = raw
+  for (const key of structuredLogKeys) {
+    const translatedKey = $gettext(key)
+    if (translatedKey === key)
+      continue
+
+    const pattern = new RegExp(`(^|\\s)${key}=`, 'g')
+    localized = localized.replace(pattern, `$1${translatedKey}=`)
+  }
+
+  return localized
+}
+
+function localizeStructuredLevelValue(raw: string) {
+  return raw.replace(/(^|\s)(level|等级|層級)=([A-Z]+)/g, (_, prefix: string, key: string, level: string) => {
+    const mapped = logLevelLabels[level] || level
+    return `${prefix}${key}=${$gettext(mapped)}`
+  })
+}
+
+function applyKeywordLineBreaks(raw: string) {
+  return raw.replace(/\s+(消息|msg|訊息|域名列表|domains|網域列表|域名|domain|網域)=/g, '\n$1=')
+}
+
+function applyDomainListValueLineBreaks(raw: string) {
+  return raw.replace(/(域名列表|domains|網域列表)=("([^"]*)"|(\S+))/g, (_, key: string, full: string, quoted: string | undefined, plain: string | undefined) => {
+    const value = (quoted ?? plain ?? '').trim()
+    const domains = value
+      .split(/[\s,，;；]+/)
+      .map(item => item.trim())
+      .filter(Boolean)
+
+    if (domains.length <= 1)
+      return `${key}：${full}`
+
+    return `${key}：\n${domains.map(domain => `- ${domain}`).join('\n')}`
+  })
+}
+
+function applyNginxUILineBreaks(raw: string) {
+  // Keep the Nginx UI prefix on the first line and split long ACME user lines.
+  return raw
+    .replace(/，邮箱：/g, '\n邮箱：')
+    .replace(/,\s*Email:/g, '\nEmail:')
+    .replace(/，CA 目录：/g, '\nCA 目录：')
+    .replace(/,\s*CA Dir:/g, '\nCA Dir:')
+}
+
+function localizeLogLine(raw: string) {
+  if (raw.includes('[Nginx UI]'))
+    return applyNginxUILineBreaks(raw)
+
+  const translatedWhole = $gettext(raw)
+  if (translatedWhole !== raw)
+    return translatedWhole
+
+  // lego emits structured logs like:
+  // time=... level=INFO msg="Trying renewal." domains="..."
+  // Translate structured keys and level values while preserving dynamic values.
+  let localized = localizeStructuredFieldKeys(raw)
+  localized = localizeStructuredLevelValue(localized)
+
+  const match = raw.match(/msg="([^"]+)"/)
+  if (!match)
+    return localized
+
+  const originalMessage = match[1]
+  const translatedMessage = $gettext(originalMessage)
+
+  if (translatedMessage !== originalMessage) {
+    localized = localized.replace(`msg="${originalMessage}"`, `msg="${translatedMessage}"`)
+    localized = localized.replace(`消息="${originalMessage}"`, `消息="${translatedMessage}"`)
+    localized = localized.replace(`訊息="${originalMessage}"`, `訊息="${translatedMessage}"`)
+  }
+
+  localized = applyKeywordLineBreaks(localized)
+  return applyDomainListValueLineBreaks(localized)
+}
 
 function log(msg: string) {
   const para = document.createElement('p')
 
-  para.appendChild(document.createTextNode($gettext(msg)))
+  para.appendChild(document.createTextNode(localizeLogLine(msg)))
 
   logContainer.value!.appendChild(para)
 
@@ -42,6 +142,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
 
   return new Promise<CertificateResult>((resolve, reject) => {
     progressStatus.value = 'active'
+    failureDetail.value = ''
     modalClosable.value = false
     modalVisible.value = true
     progressPercent.value = 0
@@ -62,10 +163,11 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
       isSettled = true
       if (message)
         log(message)
+      failureDetail.value = message || ''
       modalClosable.value = true
       progressStatus.value = 'exception'
       issuingCert.value = false
-      reject($gettext('Fail to obtain certificate'))
+      reject(new Error(message || $gettext('Fail to obtain certificate')))
     }
 
     socket.onopen = () => {
@@ -99,7 +201,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
           }
           break
         case 'error':
-          fail()
+          fail(r?.message)
           break
         default:
           // If it is a nginx ui log, increase the percent.
@@ -126,6 +228,15 @@ defineExpose({
 
 <template>
   <div>
+    <AAlert
+      v-if="progressStatus === 'exception' && failureDetail"
+      class="mb-3"
+      type="error"
+      show-icon
+      :message="$gettext('Certificate issuance failed')"
+      :description="failureDetail"
+    />
+
     <AProgress
       :stroke-color="progressStrokeColor"
       :percent="progressPercent"
@@ -148,7 +259,8 @@ defineExpose({
 
 .issue-cert-log-container {
   height: 320px;
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   background-color: #f3f3f3;
   border-radius: 4px;
   margin-top: 15px;
@@ -156,7 +268,11 @@ defineExpose({
 
   p {
     font-size: 12px;
-    line-height: 1.3;
+    line-height: 1.5;
+    margin: 10px 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 }
 </style>

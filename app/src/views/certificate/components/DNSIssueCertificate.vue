@@ -26,6 +26,8 @@ const certType = ref<CertType>('wildcard')
 const customDomains = ref<string[]>([''])
 const errored = ref(false)
 const selfSignedLoading = ref(false)
+const modalVisible = ref(false)
+const modalClosable = ref(true)
 
 const certTypeOptions = computed<SelectProps['options']>(() => [
   {
@@ -55,6 +57,14 @@ function emptySelfSignedPayload(): SelfSignedCertPayload {
 
 const selfSignedPayload = ref<SelfSignedCertPayload>(emptySelfSignedPayload())
 
+function closeModal() {
+  visible.value = false
+  modalVisible.value = false
+  modalClosable.value = true
+  errored.value = false
+  step.value = 0
+}
+
 function open() {
   visible.value = true
   step.value = 0
@@ -72,9 +82,6 @@ function open() {
 defineExpose({
   open,
 })
-
-const modalVisible = ref(false)
-const modalClosable = ref(true)
 
 const refObtainCertLive = useTemplateRef('refObtainCertLive')
 
@@ -101,7 +108,7 @@ const computedMainDomain = computed(() => {
 })
 
 function issueCert() {
-  if (!data.value.dns_credential_id) {
+  if (data.value.challenge_method === 'dns01' && !data.value.dns_credential_id) {
     message.error($gettext('Please select a DNS credential'))
     return
   }
@@ -126,7 +133,9 @@ function issueCert() {
       message.success($gettext('Issued successfully'))
       emit('issued')
     })
-    .catch(() => {
+    .catch((error: unknown) => {
+      const detail = error instanceof Error ? error.message : String(error)
+      message.error(detail || $gettext('Fail to obtain certificate'))
       errored.value = true
     })
 }
@@ -178,6 +187,7 @@ async function submitSelfSigned() {
       :mask-closable="modalClosable"
       :closable="modalClosable"
       force-render
+      @cancel="closeModal"
     >
       <template v-if="step === 0">
         <AForm layout="vertical">
@@ -219,11 +229,31 @@ async function submitSelfSigned() {
         </AForm>
 
         <template v-if="certType !== 'self_signed'">
+          <AAlert
+            type="info"
+            show-icon
+            class="mb-4"
+          >
+            <template #message>
+              {{ $gettext('Challenge Method Reminder') }}
+            </template>
+            <template #description>
+              <p>
+                {{ $gettext('If you use HTTP-01 challenge, the DNS credential field is hidden and not required.') }}
+              </p>
+              <p>
+                {{ $gettext('If you use DNS-01 challenge, you must select a DNS credential.') }}
+              </p>
+              <p>
+                {{ $gettext('Wildcard certificates usually require DNS-01 challenge.') }}
+              </p>
+            </template>
+          </AAlert>
+
           <AutoCertForm
             v-model:options="data"
             style="max-width: 600px"
             hide-note
-            force-dns-challenge
           />
 
           <div class="flex justify-end">

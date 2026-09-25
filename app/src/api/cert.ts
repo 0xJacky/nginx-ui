@@ -91,6 +91,7 @@ export interface CertificateInfo {
   issuer_name: string
   not_after: string
   not_before: string
+  subject_alt_names?: string[]
 }
 
 export interface CertificateResult {
@@ -107,6 +108,11 @@ export interface SelfSignedCertPayload {
   key_type: string
   validity_days: number
   sync_node_ids?: number[]
+}
+
+export interface CertificateDownloadPayload {
+  format: 'crt' | 'key' | 'pfx'
+  pfx_password?: string
 }
 
 // toSelfSignedPayload maps a persisted Cert to an editable self-signed payload.
@@ -141,6 +147,9 @@ const cert = extendCurdApi(useCurdApi<Cert>('/certs'), {
   },
   modify_self_signed(id: number, payload: SelfSignedCertPayload): Promise<Cert> {
     return http.post(`/self_signed_cert/${id}`, payload)
+  },
+  download_file(id: number, payload: CertificateDownloadPayload): Promise<Blob> {
+    return http.post(`/certs/${id}/download`, payload, { responseType: 'blob' })
   },
 })
 

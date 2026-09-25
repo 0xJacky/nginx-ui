@@ -117,7 +117,10 @@ const columns: StdTableColumn[] = [{
       && !dayjs().isBefore(info.not_before)
       && !dayjs().isAfter(info.not_after)
     if (valid) {
-      return h(Tag, { color: 'green' }, () => $gettext('Valid'))
+      return h('div', [
+        h(Badge, { status: 'success' }),
+        h('span', $gettext('Valid')),
+      ])
     }
     return h('div', [
       h(Badge, { status: 'error' }),

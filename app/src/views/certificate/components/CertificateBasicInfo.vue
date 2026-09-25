@@ -8,9 +8,12 @@ interface Props {
   data: Cert
   errors?: Record<string, string>
   isManaged: boolean
+  showNameField?: boolean
 }
 
-defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  showNameField: true,
+})
 
 const { message } = App.useApp()
 
@@ -39,9 +42,10 @@ async function copyToClipboard(text: string, label: string) {
   <AForm
     layout="vertical"
     :model="data"
-    style="max-width: 600px"
+    class="basic-info-form"
   >
     <AFormItem
+      v-if="props.showNameField && !isManaged"
       name="name"
       :label="$gettext('Name')"
       :validate-status="errors?.name ? 'error' : ''"
@@ -49,20 +53,7 @@ async function copyToClipboard(text: string, label: string) {
         ? $gettext('This field is required')
         : ''"
     >
-      <div v-if="isManaged" class="copy-container">
-        <p class="copy-text">
-          {{ data.name }}
-        </p>
-        <AButton
-          v-if="data.name"
-          type="text"
-          size="small"
-          @click="copyToClipboard(data.name, $gettext('Name'))"
-        >
-          <CopyOutlined />
-        </AButton>
-      </div>
-      <div v-else class="input-with-copy">
+      <div class="input-with-copy">
         <AInput v-model:value="data.name" />
         <AButton
           v-if="data.name"
@@ -76,86 +67,22 @@ async function copyToClipboard(text: string, label: string) {
       </div>
     </AFormItem>
 
-    <AFormItem
-      name="ssl_certificate_path"
-      :label="$gettext('SSL Certificate Path')"
-      :validate-status="errors?.ssl_certificate_path ? 'error' : ''"
-      :help="errors?.ssl_certificate_path?.includes('required') ? $gettext('This field is required')
-        : errors?.ssl_certificate_path?.includes('certificate_path')
-          ? $gettext('The path exists, but the file is not a certificate') : ''"
-    >
-      <div v-if="isManaged" class="copy-container">
-        <p class="copy-text">
-          {{ data.ssl_certificate_path }}
-        </p>
-        <AButton
-          v-if="data.ssl_certificate_path"
-          type="text"
-          size="small"
-          @click="copyToClipboard(data.ssl_certificate_path, $gettext('SSL Certificate Path'))"
-        >
-          <CopyOutlined />
-        </AButton>
-      </div>
-      <div v-else class="input-with-copy">
-        <AInput v-model:value="data.ssl_certificate_path" />
-        <AButton
-          v-if="data.ssl_certificate_path"
-          type="text"
-          size="small"
-          class="copy-button"
-          @click="copyToClipboard(data.ssl_certificate_path, $gettext('SSL Certificate Path'))"
-        >
-          <CopyOutlined />
-        </AButton>
-      </div>
-    </AFormItem>
-
-    <AFormItem
-      name="ssl_certificate_key_path"
-      :label="$gettext('SSL Certificate Key Path')"
-      :validate-status="errors?.ssl_certificate_key_path ? 'error' : ''"
-      :help="errors?.ssl_certificate_key_path?.includes('required') ? $gettext('This field is required')
-        : errors?.ssl_certificate_key_path?.includes('privatekey_path')
-          ? $gettext('The path exists, but the file is not a private key') : ''"
-    >
-      <div v-if="isManaged" class="copy-container">
-        <p class="copy-text">
-          {{ data.ssl_certificate_key_path }}
-        </p>
-        <AButton
-          v-if="data.ssl_certificate_key_path"
-          type="text"
-          size="small"
-          @click="copyToClipboard(data.ssl_certificate_key_path, $gettext('SSL Certificate Key Path'))"
-        >
-          <CopyOutlined />
-        </AButton>
-      </div>
-      <div v-else class="input-with-copy">
-        <AInput v-model:value="data.ssl_certificate_key_path" />
-        <AButton
-          v-if="data.ssl_certificate_key_path"
-          type="text"
-          size="small"
-          class="copy-button"
-          @click="copyToClipboard(data.ssl_certificate_key_path, $gettext('SSL Certificate Key Path'))"
-        >
-          <CopyOutlined />
-        </AButton>
-      </div>
-    </AFormItem>
-
-    <AFormItem :label="$gettext('Sync to')">
-      <NodeSelector
-        v-model:target="data.sync_node_ids"
-        hidden-local
-      />
-    </AFormItem>
+    <ACard size="small" class="sync-target-card" :title="$gettext('Sync to')">
+      <AFormItem class="mb-0">
+        <NodeSelector
+          v-model:target="data.sync_node_ids"
+          hidden-local
+        />
+      </AFormItem>
+    </ACard>
   </AForm>
 </template>
 
 <style scoped lang="less">
+.basic-info-form {
+  width: 100%;
+}
+
 .copy-container {
   display: flex;
   align-items: center;
@@ -180,5 +107,14 @@ async function copyToClipboard(text: string, label: string) {
   .copy-button {
     flex-shrink: 0;
   }
+}
+
+.sync-target-card {
+  margin-top: 4px;
+  width: 100%;
+}
+
+.sync-target-card :deep(.ant-card-body) {
+  padding: 12px;
 }
 </style>

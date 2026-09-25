@@ -8,7 +8,6 @@ import AutoCertManagement from './components/AutoCertManagement.vue'
 import CertificateActions from './components/CertificateActions.vue'
 import CertificateBasicInfo from './components/CertificateBasicInfo.vue'
 import CertificateContentEditor from './components/CertificateContentEditor.vue'
-import CertificateDownload from './components/CertificateDownload.vue'
 import SelfSignedCertManagement from './components/SelfSignedCertManagement.vue'
 import { useCertStore } from './store'
 
@@ -24,6 +23,30 @@ const id = computed(() => {
 })
 
 const { data } = storeToRefs(certStore)
+const leftTopContent = useTemplateRef('leftTopContent')
+const logCardRef = useTemplateRef('logCardRef')
+const logContentHeight = ref<number | null>(null)
+
+let layoutObserver: ResizeObserver | null = null
+let handleWindowResize: (() => void) | null = null
+
+function scheduleLogHeightUpdate() {
+  requestAnimationFrame(updateLogContentHeight)
+}
+
+function reconnectLayoutObserver() {
+  layoutObserver?.disconnect()
+  layoutObserver = null
+
+  const leftElement = resolveHTMLElement(leftTopContent.value)
+  const cardElement = resolveHTMLElement(logCardRef.value)
+  if (!leftElement || !cardElement)
+    return
+
+  layoutObserver = new ResizeObserver(scheduleLogHeightUpdate)
+  layoutObserver.observe(leftElement)
+  layoutObserver.observe(cardElement)
+}
 
 const isManaged = computed(() => {
   return data.value.auto_cert === AutoCertState.Enable || data.value.auto_cert === AutoCertState.Sync
@@ -125,83 +148,276 @@ function handleBack() {
   router.push('/certificates/list')
 }
 
+const logLevelLabels: Record<string, string> = {
+  INFO: 'Info',
+  WARN: 'Warning',
+  ERROR: 'Error',
+  DEBUG: 'Debug',
+}
+
+const structuredLogKeys = [
+  'time',
+  'level',
+  'msg',
+  'domain',
+  'domains',
+  'type',
+  'timeout',
+  'interval',
+  'hoursRemaining',
+]
+
+function localizeStructuredFieldKeys(raw: string) {
+  let localized = raw
+  for (const key of structuredLogKeys) {
+    const translatedKey = $gettext(key)
+    if (translatedKey === key)
+      continue
+
+    const pattern = new RegExp(`(^|\\s)${key}=`, 'g')
+    localized = localized.replace(pattern, `$1${translatedKey}=`)
+  }
+
+  return localized
+}
+
+function localizeStructuredLevelValue(raw: string) {
+  return raw.replace(/(^|\s)(level|等级|層級)=([A-Z]+)/g, (_, prefix: string, key: string, level: string) => {
+    const mapped = logLevelLabels[level] || level
+    return `${prefix}${key}=${$gettext(mapped)}`
+  })
+}
+
+function applyKeywordLineBreaks(raw: string) {
+  return raw.replace(/\s+(消息|msg|訊息|域名列表|domains|網域列表|域名|domain|網域)=/g, '\n$1=')
+}
+
+function applyDomainListValueLineBreaks(raw: string) {
+  return raw.replace(/(域名列表|domains|網域列表)=("([^"]*)"|(\S+))/g, (_, key: string, full: string, quoted: string | undefined, plain: string | undefined) => {
+    const value = (quoted ?? plain ?? '').trim()
+    const domains = value
+      .split(/[\s,，;；]+/)
+      .map(item => item.trim())
+      .filter(Boolean)
+
+    if (domains.length <= 1)
+      return `${key}：${full}`
+
+    return `${key}：\n${domains.map(domain => `- ${domain}`).join('\n')}`
+  })
+}
+
+function applyNginxUILineBreaks(raw: string) {
+  return raw
+    .replace(/，邮箱：/g, '\n邮箱：')
+    .replace(/,\s*Email:/g, '\nEmail:')
+    .replace(/，CA 目录：/g, '\nCA 目录：')
+    .replace(/,\s*CA Dir:/g, '\nCA Dir:')
+}
+
+function localizeStructuredLogLine(raw: string) {
+  const translatedWhole = $gettext(raw)
+  if (translatedWhole !== raw)
+    return translatedWhole
+
+  let localized = localizeStructuredFieldKeys(raw)
+  localized = localizeStructuredLevelValue(localized)
+
+  const match = raw.match(/msg="([^"]+)"/)
+  if (!match)
+    return localized
+
+  const originalMessage = match[1]
+  const translatedMessage = $gettext(originalMessage)
+
+  if (translatedMessage !== originalMessage) {
+    localized = localized.replace(`msg="${originalMessage}"`, `msg="${translatedMessage}"`)
+    localized = localized.replace(`消息="${originalMessage}"`, `消息="${translatedMessage}"`)
+    localized = localized.replace(`訊息="${originalMessage}"`, `訊息="${translatedMessage}"`)
+  }
+
+  localized = applyKeywordLineBreaks(localized)
+  return applyDomainListValueLineBreaks(localized)
+}
+
+function renderLocalizedLogMessage(raw: string) {
+  const matches = raw.match(/\[Nginx UI\] (.*)/)
+  if (matches?.[1])
+    return applyNginxUILineBreaks(raw.replaceAll(matches[1], $gettext(matches[1])))
+
+  return localizeStructuredLogLine(raw)
+}
+
 const log = computed(() => {
   if (!data.value.log)
     return ''
 
   return data.value.log.split('\n').map(line => {
     try {
-      return T(JSON.parse(line))
+      return renderLocalizedLogMessage(T(JSON.parse(line)))
     }
     catch {
-      // fallback to legacy log format
-      const matches = line.match(/\[Nginx UI\] (.*)/)
-      if (matches?.[1])
-        return line.replaceAll(matches[1], $gettext(matches[1]))
-      return line
+      return renderLocalizedLogMessage(line)
     }
-  }).join('\n')
+  }).join('\n\n')
+})
+
+function resolveHTMLElement(target: unknown): HTMLElement | null {
+  if (!target)
+    return null
+
+  if (target instanceof HTMLElement)
+    return target
+
+  const maybeEl = (target as { $el?: unknown }).$el
+  if (maybeEl instanceof HTMLElement)
+    return maybeEl
+
+  return null
+}
+
+function parsePx(value: string) {
+  const n = Number.parseFloat(value)
+  return Number.isFinite(n) ? n : 0
+}
+
+function updateLogContentHeight() {
+  const leftElement = resolveHTMLElement(leftTopContent.value)
+  const cardElement = resolveHTMLElement(logCardRef.value)
+  if (!leftElement || !cardElement)
+    return
+
+  const totalHeight = leftElement.getBoundingClientRect().height
+  const head = cardElement.querySelector('.ant-card-head') as HTMLElement | null
+  const body = cardElement.querySelector('.ant-card-body') as HTMLElement | null
+  const headHeight = head?.getBoundingClientRect().height ?? 0
+
+  let bodyPadding = 0
+  if (body) {
+    const styles = window.getComputedStyle(body)
+    bodyPadding = parsePx(styles.paddingTop) + parsePx(styles.paddingBottom)
+  }
+
+  const next = Math.floor(totalHeight - headHeight - bodyPadding)
+  if (next > 0)
+    logContentHeight.value = next
+}
+
+onMounted(() => {
+  scheduleLogHeightUpdate()
+  reconnectLayoutObserver()
+
+  handleWindowResize = scheduleLogHeightUpdate
+  window.addEventListener('resize', handleWindowResize)
+})
+
+watch(
+  () => data.value.auto_cert,
+  async autoCertState => {
+    if (autoCertState !== AutoCertState.Enable) {
+      layoutObserver?.disconnect()
+      layoutObserver = null
+      logContentHeight.value = null
+      return
+    }
+
+    await nextTick()
+    reconnectLayoutObserver()
+    scheduleLogHeightUpdate()
+  },
+  { immediate: true },
+)
+
+onBeforeUnmount(() => {
+  layoutObserver?.disconnect()
+  layoutObserver = null
+  if (handleWindowResize)
+    window.removeEventListener('resize', handleWindowResize)
+  handleWindowResize = null
 })
 </script>
 
 <template>
-  <ACard :title="id > 0 ? $gettext('Modify Certificate') : $gettext('Import Certificate')">
-    <ARow :gutter="[16, 16]">
+  <ACard>
+    <template #title>
+      <div v-if="!isSelfSigned" class="editor-title-name">
+        <AInput
+          v-model:value="data.name"
+          class="editor-title-input"
+          :disabled="isManaged"
+        />
+      </div>
+      <span v-else>{{ id > 0 ? $gettext('Modify Certificate') : $gettext('Import Certificate') }}</span>
+    </template>
+    <template #extra>
+      <ATag v-if="isManaged" color="success" class="managed-cert-tag">
+        {{ $gettext('This certificate is managed by Nginx UI') }}
+      </ATag>
+    </template>
+
+    <ARow :gutter="[16, 16]" class="main-top-row">
       <ACol
         :sm="24"
-        :lg="12"
+        :lg="14"
       >
-        <!-- Self-signed Certificate Management -->
-        <SelfSignedCertManagement
-          v-if="isSelfSigned && selfSignedPayload"
-          v-model:value="selfSignedPayload"
-          :certificate-info="data.certificate_info"
-        />
+        <div ref="leftTopContent" class="left-top-content">
+          <!-- Self-signed Certificate Management -->
+          <SelfSignedCertManagement
+            v-if="isSelfSigned && selfSignedPayload"
+            v-model:value="selfSignedPayload"
+            :certificate-info="data.certificate_info"
+          />
 
-        <!-- Auto Certificate Management -->
-        <AutoCertManagement
-          v-else
-          v-model:data="data"
-          :is-managed="isManaged"
-          @renewed="init"
-        />
-
-        <AForm layout="vertical">
-          <!-- Certificate Basic Information -->
-          <CertificateBasicInfo
-            v-if="!isSelfSigned"
+          <!-- Auto Certificate Management -->
+          <AutoCertManagement
+            v-else
             v-model:data="data"
-            :errors="errors"
             :is-managed="isManaged"
+            @renewed="init"
           />
 
-          <!-- Download Certificate Files -->
-          <CertificateDownload :data="data" />
-
-          <!-- Certificate Content Editor -->
-          <CertificateContentEditor
-            v-model:data="data"
-            :errors="errors"
-            :readonly="isManaged || isSelfSigned"
-            class="max-w-600px"
-          />
-        </AForm>
+          <AForm layout="vertical">
+            <!-- Certificate Basic Information -->
+            <CertificateBasicInfo
+              v-if="!isSelfSigned"
+              v-model:data="data"
+              :errors="errors"
+              :is-managed="isManaged"
+              :show-name-field="false"
+            />
+          </AForm>
+        </div>
       </ACol>
 
       <!-- Log Column for Auto Cert -->
       <ACol
         v-if="data.auto_cert === AutoCertState.Enable"
         :sm="24"
-        :lg="12"
+        :lg="10"
+        class="log-col"
       >
-        <ACard size="small" :title="$gettext('Log')">
+        <ACard
+          ref="logCardRef"
+          size="small"
+          :title="$gettext('Log')"
+          class="log-card"
+        >
           <pre
             v-dompurify-html="log"
             class="log-container"
+            :style="logContentHeight ? { height: `${logContentHeight}px` } : undefined"
           />
         </ACard>
       </ACol>
     </ARow>
+
+    <div class="content-editor-bottom">
+      <CertificateContentEditor
+        v-model:data="data"
+        :errors="errors"
+        :readonly="isManaged || isSelfSigned"
+      />
+    </div>
 
     <!-- Certificate Actions -->
     <CertificateActions
@@ -212,13 +428,66 @@ const log = computed(() => {
 </template>
 
 <style scoped lang="less">
+.main-top-row {
+  align-items: stretch;
+}
+
+.editor-title-name {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.editor-title-input {
+  max-width: 560px;
+}
+
+.left-top-content {
+  width: 100%;
+}
+
+.log-col {
+  display: flex;
+  min-height: 0;
+}
+
+.log-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.log-card :deep(.ant-card-body) {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .log-container {
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 5px;
-  margin-bottom: 0;
+  margin: 0;
 
   font-size: 12px;
-  line-height: 2;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.managed-cert-tag {
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.content-editor-bottom {
+  margin-top: 16px;
 }
 
 .code-editor-container {

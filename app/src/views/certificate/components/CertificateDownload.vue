@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
 import { DownloadOutlined } from '@antdv-next/icons'
+import certApi from '@/api/cert'
 
 interface Props {
   data: Cert
+  inline?: boolean
 }
 
 const props = defineProps<Props>()
@@ -12,6 +14,9 @@ const { message } = App.useApp()
 
 // Download state
 const isDownloading = ref(false)
+const modalVisible = ref(false)
+const selectedFormats = ref<Array<'crt' | 'key' | 'pfx'>>(['crt', 'key'])
+const pfxPassword = ref('')
 
 // Check if certificate files can be downloaded
 const canDownloadCertificates = computed(() => {
@@ -31,10 +36,34 @@ function downloadFile(content: string, filename: string, mimeType = 'text/plain'
   URL.revokeObjectURL(url)
 }
 
-// Download certificate files
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+}
+
+function openDownloadModal() {
+  selectedFormats.value = ['crt', 'key']
+  pfxPassword.value = ''
+  modalVisible.value = true
+}
+
+const requiresPfxPasswordInput = computed(() => selectedFormats.value.includes('pfx'))
+
+// Download selected certificate files
 async function downloadCertificateFiles() {
   if (!canDownloadCertificates.value) {
     message.error($gettext('Certificate content and private key content cannot be empty'))
+    return
+  }
+
+  if (selectedFormats.value.length === 0) {
+    message.error($gettext('Please select at least one download format'))
     return
   }
 
@@ -60,14 +89,26 @@ async function downloadCertificateFiles() {
       return
     }
 
-    // Download certificate file
-    downloadFile(certContent, `${props.data.name}.crt`, 'application/x-x509-ca-cert')
+    if (selectedFormats.value.includes('crt'))
+      downloadFile(certContent, `${props.data.name}.crt`, 'application/x-x509-ca-cert')
 
-    // Download private key file with a small delay
-    setTimeout(() => {
+    if (selectedFormats.value.includes('key'))
       downloadFile(keyContent, `${props.data.name}.key`, 'application/x-pem-file')
-    }, 100)
 
+    if (selectedFormats.value.includes('pfx')) {
+      if (!props.data.id) {
+        message.error($gettext('Certificate ID cannot be empty'))
+        return
+      }
+
+      const pfxBlob = await certApi.download_file(props.data.id, {
+        format: 'pfx',
+        pfx_password: pfxPassword.value,
+      })
+      downloadBlob(pfxBlob, `${props.data.name}.pfx`)
+    }
+
+    modalVisible.value = false
     message.success($gettext('Certificate files downloaded successfully'))
   }
   catch (error) {
@@ -81,23 +122,63 @@ async function downloadCertificateFiles() {
 </script>
 
 <template>
-  <div v-if="canDownloadCertificates" class="certificate-download">
+  <div v-if="canDownloadCertificates" class="certificate-download" :class="[{ 'is-inline': inline }]">
     <AButton
       type="primary"
-      size="small"
-      :loading="isDownloading"
-      @click="downloadCertificateFiles"
+      ghost
+      size="middle"
+      @click="openDownloadModal"
     >
       <template #icon>
         <DownloadOutlined />
       </template>
       {{ $gettext('Download Certificate Files') }}
     </AButton>
+
+    <AModal
+      v-model:open="modalVisible"
+      :title="$gettext('Download Certificate Files')"
+      :confirm-loading="isDownloading"
+      @ok="downloadCertificateFiles"
+    >
+      <AForm layout="vertical">
+        <AFormItem :label="$gettext('Download Format')">
+          <ACheckboxGroup v-model:value="selectedFormats">
+            <div class="flex flex-col gap-2">
+              <ACheckbox value="crt">
+                {{ $gettext('Certificate (.crt)') }}
+              </ACheckbox>
+              <ACheckbox value="key">
+                {{ $gettext('Private Key (.key)') }}
+              </ACheckbox>
+              <ACheckbox value="pfx">
+                {{ $gettext('PFX (.pfx, CRT + KEY for Windows import)') }}
+              </ACheckbox>
+            </div>
+          </ACheckboxGroup>
+        </AFormItem>
+
+        <AFormItem
+          v-if="requiresPfxPasswordInput"
+          :label="$gettext('PFX Password')"
+          :extra="$gettext('Leave empty if you do not want to set a password')"
+        >
+          <AInputPassword
+            v-model:value="pfxPassword"
+            :placeholder="$gettext('Enter PFX password')"
+          />
+        </AFormItem>
+      </AForm>
+    </AModal>
   </div>
 </template>
 
 <style scoped lang="less">
 .certificate-download {
   margin-bottom: 12px;
+}
+
+.certificate-download.is-inline {
+  margin-bottom: 0;
 }
 </style>

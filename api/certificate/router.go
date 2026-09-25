@@ -19,6 +19,7 @@ func InitDNSCredentialRouter(r *gin.RouterGroup) {
 func InitCertificateRouter(r *gin.RouterGroup) {
 	r.GET("certs", GetCertList)
 	r.GET("certs/:id", GetCert)
+	r.POST("certs/:id/download", DownloadCert)
 	r.GET("certificate/dns_providers", GetDNSProvidersList)
 	r.GET("certificate/dns_provider/:code", GetDNSProvider)
 	o := r.Group("", middleware.RequireSecureSession())
