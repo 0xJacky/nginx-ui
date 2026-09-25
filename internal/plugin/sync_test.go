@@ -38,6 +38,7 @@ type fakeSyncNode struct {
 
 	uploaded      []byte
 	uploadEnable  string
+	uploadAuthor  string
 	uploadCalls   int
 	marketCalls   int
 	enableCalls   []string
@@ -96,6 +97,7 @@ func newFakeSyncNode(t *testing.T) *fakeSyncNode {
 		node.uploadCalls++
 		node.uploaded = payload
 		node.uploadEnable = r.FormValue("enable")
+		node.uploadAuthor = r.FormValue("author_public_key")
 		node.mu.Unlock()
 		writeSyncJSON(w, Info{})
 	})
@@ -183,6 +185,7 @@ func setupSyncTestDB(t *testing.T) *gorm.DB {
 func newSyncTestManager(t *testing.T) (*Manager, *Syncer) {
 	t.Helper()
 	setupSyncTestDB(t)
+	useDeveloperMode(t, true)
 	m := newManager(t.TempDir())
 	m.offline = true
 	require.NoError(t, m.discover(context.Background()))
@@ -309,6 +312,36 @@ func TestSyncPluginUploadsThePackageWhenTheMarketplaceIsUnavailable(t *testing.T
 	assert.Equal(t, 1, fake.uploadCalls)
 	assert.Equal(t, "true", fake.uploadEnable)
 	assert.NotEmpty(t, fake.uploaded)
+	// An unsigned package has no author key to hand on.
+	assert.Empty(t, fake.uploadAuthor)
+}
+
+func TestSyncPluginPushesTheAuthorKeyOfACommunityPackage(t *testing.T) {
+	m, syncer := newSyncTestManager(t)
+	authorPublic, author := newSigningKey(t)
+	authorKey := encodeKey(t, authorPublic)
+
+	// The controller installed the package from a catalog entry naming the
+	// author key, which the node does not have.
+	archive := buildSignedTestPackage(t, webappOnlyManifest("com.example.community", "1.0.0"),
+		map[string]string{"webapp/main.js": "export default {}"}, &author)
+	info, err := m.Install(context.Background(), archive, InstallOptions{Enable: true, AuthorPublicKey: authorKey})
+	require.NoError(t, err)
+	require.Equal(t, TrustCommunity, info.Trust)
+
+	fake := newFakeSyncNode(t)
+	node := addSyncTestNode(t, "node-a", fake.server.URL, true)
+	useFakeSyncCluster(t, map[uint64]bool{node.ID: true})
+
+	results, err := syncer.SyncPlugin(context.Background(), "com.example.community", nil)
+	require.NoError(t, err)
+	require.Len(t, results, 1)
+	assert.True(t, results[0].Success, results[0].Error)
+
+	fake.mu.Lock()
+	defer fake.mu.Unlock()
+	assert.Equal(t, 1, fake.uploadCalls)
+	assert.Equal(t, authorKey, fake.uploadAuthor)
 }
 
 func TestSyncPluginPrefersTheMarketplace(t *testing.T) {

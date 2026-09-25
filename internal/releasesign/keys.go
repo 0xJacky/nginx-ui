@@ -12,3 +12,12 @@ RWQyULqCZhSZ4LTBwQQlPCm5HS4qjbxPv75e56lU2y3cc9kviWsNqW4v`,
 func TrustedPublicKeys() []string {
 	return append([]string(nil), trustedPublicKeys...)
 }
+
+// partnerPublicKeys contains the keys of the partners whose plugin packages
+// are shown as verified. Partners are added here.
+var partnerPublicKeys = []string{}
+
+// PartnerPublicKeys returns an isolated copy of the pinned partner keys.
+func PartnerPublicKeys() []string {
+	return append([]string(nil), partnerPublicKeys...)
+}

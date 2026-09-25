@@ -56,9 +56,10 @@ func (m *Manager) EnsureDNS01Plugin(ctx context.Context) {
 }
 
 // installDNS01Plugin prefers a package the operator already placed on the
-// node, then falls back to the marketplace.
+// node, then falls back to the marketplace. Either way only a package signed
+// with a release key is installed without the user asking.
 func (m *Manager) installDNS01Plugin(ctx context.Context) (*Info, error) {
-	opts := InstallOptions{Enable: true, ApprovePermissions: true}
+	opts := InstallOptions{Enable: true, ApprovePermissions: true, MinTrust: TrustOfficial}
 
 	info, err := m.InstallLocalPackage(ctx, OfficialDNS01PluginID, opts)
 	if err == nil {
@@ -80,7 +81,7 @@ func (m *Manager) installDNS01Plugin(ctx context.Context) (*Info, error) {
 	if entry == nil {
 		return nil, ErrMarketplaceNotFound
 	}
-	// Nothing but the official build is installed without the user asking.
+	// A pre filter on the catalog claim, MinTrust checks the signature.
 	if entry.Trust != TrustOfficial {
 		return nil, ErrCommunityNotAllowed
 	}
@@ -106,7 +107,8 @@ func seedSettings(manifest *protocol.Manifest, row *model.Plugin) {
 }
 
 // repairIncompatiblePlugins upgrades the vetted plugins a core upgrade left
-// behind, so a node does not lose a capability after an update.
+// behind, so a node does not lose a capability after an update. The new
+// package has to be signed with a release key.
 func (m *Manager) repairIncompatiblePlugins(ctx context.Context) {
 	if !settings.PluginSettings.MarketplaceEnabled {
 		return
@@ -134,7 +136,7 @@ func (m *Manager) repairIncompatiblePlugins(ctx context.Context) {
 		if entry == nil || entry.Trust != TrustOfficial || entry.InstallableRelease == nil {
 			continue
 		}
-		if _, err = marketplace.Update(ctx, id, entry.InstallableRelease.Version, true); err != nil {
+		if _, err = marketplace.update(ctx, id, entry.InstallableRelease.Version, true, TrustOfficial); err != nil {
 			m.log.Warnf("[plugin:%s] repair after core upgrade: %v", id, err)
 			continue
 		}

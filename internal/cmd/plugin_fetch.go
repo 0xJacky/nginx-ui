@@ -18,7 +18,7 @@ func init() {
 	PluginCommand.Commands = append(PluginCommand.Commands,
 		&cli.Command{
 			Name:      "fetch",
-			Usage:     "Download a plugin package and its signature for an offline install",
+			Usage:     "Download a plugin package for an offline install",
 			ArgsUsage: "<plugin-id>",
 			Action:    FetchPlugin,
 			Flags: []cli.Flag{

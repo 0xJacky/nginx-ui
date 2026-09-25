@@ -87,6 +87,10 @@ type Info struct {
 	SyncSettings         bool                           `json:"sync_settings"`
 	UpdatedAt            time.Time                      `json:"updated_at"`
 	DroppedEvents        int64                          `json:"dropped_events"`
+	// Trust is derived from the package signature at install time, see
+	// signature.go. Signer is the minisign key id, empty when unsigned.
+	Trust  string `json:"trust"`
+	Signer string `json:"signer"`
 	// Transport is how capability calls reach the running process, "stdio" or
 	// "grpc". Empty when no process is running.
 	Transport string `json:"transport,omitempty"`
@@ -143,6 +147,11 @@ type InstallOptions struct {
 	// extraction the install needs anyway.
 	ExpectedID      string
 	ExpectedVersion string
+	// AuthorPublicKey is the key of the catalog entry the package came from,
+	// a signature by it makes the package community trust.
+	AuthorPublicKey string
+	// MinTrust refuses a package whose derived trust ranks below it.
+	MinTrust string
 }
 
 // InspectResult describes a package without installing it.
@@ -165,6 +174,10 @@ type InspectResult struct {
 	DescriptionI18n map[string]string `json:"description_i18n,omitempty"`
 	// UploadID names the kept upload an install can reuse, set by the API layer.
 	UploadID string `json:"upload_id,omitempty"`
+	// Trust and Signer are derived from the embedded signature with the keys
+	// of this node, an upload has no catalog author key.
+	Trust  string `json:"trust"`
+	Signer string `json:"signer"`
 }
 
 // entry is one plugin the manager knows about. A missing plugin has a row but
@@ -561,6 +574,7 @@ func (m *Manager) infoLocked(item *entry) Info {
 		RequiresCapabilities: []string{},
 		SyncNodeIDs:          []uint64{},
 		Status:               statusOf(item),
+		Trust:                TrustUnsigned,
 		DroppedEvents:        item.dropped.Load(),
 		StreamedLogEntries:   item.logCounters.streamed.Load(),
 		RejectedLogEntries:   item.logCounters.rejected.Load(),
@@ -573,6 +587,10 @@ func (m *Manager) infoLocked(item *entry) Info {
 		info.SyncPolicy = row.SyncPolicy
 		info.SyncSettings = row.SyncSettings
 		info.UpdatedAt = row.UpdatedAt
+		if row.Trust != "" {
+			info.Trust = row.Trust
+		}
+		info.Signer = row.Signer
 		if len(row.SyncNodeIDs) > 0 {
 			info.SyncNodeIDs = row.SyncNodeIDs
 		}

@@ -55,19 +55,19 @@ func newMarketplaceFixture(t *testing.T) *marketplaceFixture {
 
 	previousSources := settings.PluginSettings.MarketplaceSources
 	previousEnabled := settings.PluginSettings.MarketplaceEnabled
-	previousSignature := settings.PluginSettings.RequireSignature
+	previousDeveloperMode := settings.PluginSettings.DeveloperMode
 	previousInsecure := settings.PluginSettings.AllowInsecureDownloadURL
 	t.Cleanup(func() {
 		settings.PluginSettings.MarketplaceSources = previousSources
 		settings.PluginSettings.MarketplaceEnabled = previousEnabled
-		settings.PluginSettings.RequireSignature = previousSignature
+		settings.PluginSettings.DeveloperMode = previousDeveloperMode
 		settings.PluginSettings.AllowInsecureDownloadURL = previousInsecure
 		plugin.GetManager().Marketplace().ClearCache()
 	})
 
 	settings.PluginSettings.MarketplaceSources = []string{fixture.server.URL + "/index.json"}
 	settings.PluginSettings.MarketplaceEnabled = true
-	settings.PluginSettings.RequireSignature = false
+	settings.PluginSettings.DeveloperMode = true
 	settings.PluginSettings.AllowInsecureDownloadURL = true
 	// The manager is process wide, so a catalog from another test must go.
 	plugin.GetManager().Marketplace().ClearCache()

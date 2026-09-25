@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
@@ -334,4 +335,92 @@ func TestMarkExecutablesIgnoresMissingPlatforms(t *testing.T) {
 	info, err := os.Stat(filepath.Join(dir, "bin", "plugin-linux"))
 	require.NoError(t, err)
 	assert.Equal(t, os.FileMode(0o755), info.Mode().Perm())
+}
+
+func TestBuildSignedPackageEmbedsSumsAndSignature(t *testing.T) {
+	signer := useReleaseKey(t)
+	archive := signedWebappPackage(t, "com.example.alpha", signer)
+
+	body, err := os.ReadFile(archive)
+	require.NoError(t, err)
+	entries := readPackageEntries(t, body)
+	require.GreaterOrEqual(t, len(entries), 2)
+	// The two signature files are the last entries.
+	assert.Equal(t, SumsFileName, entries[len(entries)-2].header.Name)
+	assert.Equal(t, SumsSignatureFileName, entries[len(entries)-1].header.Name)
+
+	sums := entries[len(entries)-2].body
+	lines := strings.Split(strings.TrimSuffix(sums, "\n"), "\n")
+	names := make([]string, 0, len(lines))
+	for _, line := range lines {
+		digest, name, ok := strings.Cut(line, "  ")
+		require.True(t, ok, line)
+		assert.Len(t, digest, 64)
+		names = append(names, name)
+	}
+	// Every regular file, sorted bytewise, directories and the signature
+	// files left out.
+	assert.Equal(t, []string{"README.md", ManifestFileName, "webapp/main.js"}, names)
+	assert.True(t, strings.HasSuffix(sums, "\n"))
+
+	trust, err := extractedTrust(t, archive, "")
+	require.NoError(t, err)
+	assert.Equal(t, TrustOfficial, trust.Trust)
+	assert.Equal(t, keyID(signer), trust.Signer)
+}
+
+func TestBuildPackageDropsAStaleSignature(t *testing.T) {
+	signer := useReleaseKey(t)
+	signed := signedWebappPackage(t, "com.example.alpha", signer)
+	source := filepath.Join(t.TempDir(), "source")
+	_, err := ExtractPackage(signed, source)
+	require.NoError(t, err)
+	require.FileExists(t, filepath.Join(source, SumsFileName))
+
+	// Packing the extracted copy yields an unsigned package.
+	unsigned := filepath.Join(t.TempDir(), "unsigned.tar.gz")
+	require.NoError(t, BuildPackage(source, unsigned))
+	body, err := os.ReadFile(unsigned)
+	require.NoError(t, err)
+	for _, entry := range readPackageEntries(t, body) {
+		assert.False(t, isSignatureFile(entry.header.Name), entry.header.Name)
+	}
+
+	// Signing it again with another key replaces the signature.
+	other := usePartnerKey(t)
+	resigned := filepath.Join(t.TempDir(), "resigned.tar.gz")
+	require.NoError(t, BuildSignedPackage(source, resigned, *other))
+	trust, err := extractedTrust(t, resigned, "")
+	require.NoError(t, err)
+	assert.Equal(t, TrustVerified, trust.Trust)
+	assert.Equal(t, keyID(other), trust.Signer)
+}
+
+func TestSignPackageSignsInPlace(t *testing.T) {
+	signer := useReleaseKey(t)
+	archive := signedWebappPackage(t, "com.example.alpha", nil)
+	require.NoError(t, os.Chmod(archive, 0o640))
+
+	trust, err := extractedTrust(t, archive, "")
+	require.NoError(t, err)
+	assert.Equal(t, TrustUnsigned, trust.Trust)
+
+	require.NoError(t, SignPackage(archive, *signer))
+	trust, err = extractedTrust(t, archive, "")
+	require.NoError(t, err)
+	assert.Equal(t, TrustOfficial, trust.Trust)
+	assert.Equal(t, keyID(signer), trust.Signer)
+
+	info, err := os.Stat(archive)
+	require.NoError(t, err)
+	assert.Equal(t, os.FileMode(0o640), info.Mode().Perm())
+	// No temporary file is left next to the package.
+	items, err := os.ReadDir(filepath.Dir(archive))
+	require.NoError(t, err)
+	assert.Len(t, items, 1)
+
+	// A package that is not one is refused and left alone.
+	broken := filepath.Join(t.TempDir(), "broken.tar.gz")
+	require.NoError(t, os.WriteFile(broken, []byte("not a package"), 0o644))
+	assert.ErrorIs(t, SignPackage(broken, *signer), ErrPackageInvalid)
 }

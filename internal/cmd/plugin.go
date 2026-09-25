@@ -7,6 +7,7 @@ import (
 	"strings"
 	"text/tabwriter"
 
+	"aead.dev/minisign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin"
 	"github.com/urfave/cli/v3"
 )
@@ -64,12 +65,28 @@ var PluginCommand = &cli.Command{
 		},
 		{
 			Name:      "pack",
-			Usage:     "Build a plugin package from a directory",
+			Usage:     "Build a plugin package from a directory, signed when a key is given",
 			ArgsUsage: "<plugin-dir> <package.tar.gz>",
 			Action:    PackPlugin,
+			Flags: []cli.Flag{
+				&cli.StringFlag{Name: "key", Usage: "minisign secret key file to sign the package with"},
+			},
+		},
+		{
+			Name:      "sign",
+			Usage:     "Sign an existing plugin package in place",
+			ArgsUsage: "<package.tar.gz>",
+			Action:    SignPlugin,
+			Flags: []cli.Flag{
+				&cli.StringFlag{Name: "key", Usage: "minisign secret key file to sign the package with", Required: true},
+			},
 		},
 	},
 }
+
+// signPasswordEnv holds the password of the minisign secret key, empty for a
+// key without one.
+const signPasswordEnv = "NGINX_UI_PLUGIN_SIGN_PASSWORD"
 
 // ListPlugins prints the plugin inventory of this node.
 func ListPlugins(ctx context.Context, command *cli.Command) error {
@@ -79,10 +96,10 @@ func ListPlugins(ctx context.Context, command *cli.Command) error {
 	}
 
 	writer := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-	fmt.Fprintln(writer, "ID\tVERSION\tSTATUS\tENABLED\tCAPABILITIES")
+	fmt.Fprintln(writer, "ID\tVERSION\tSTATUS\tENABLED\tTRUST\tCAPABILITIES")
 	for _, info := range manager.List() {
-		fmt.Fprintf(writer, "%s\t%s\t%s\t%t\t%s\n",
-			info.ID, info.Version, info.Status, info.Enabled, strings.Join(info.Capabilities, ","))
+		fmt.Fprintf(writer, "%s\t%s\t%s\t%t\t%s\t%s\n",
+			info.ID, info.Version, info.Status, info.Enabled, info.Trust, strings.Join(info.Capabilities, ","))
 	}
 	return writer.Flush()
 }
@@ -195,6 +212,10 @@ func InspectPlugin(ctx context.Context, command *cli.Command) error {
 	fmt.Printf("name: %s\n", manifest.Name)
 	fmt.Printf("version: %s\n", manifest.Version)
 	fmt.Printf("api version: %d\n", manifest.APIVersion)
+	fmt.Printf("trust: %s\n", result.Trust)
+	if result.Signer != "" {
+		fmt.Printf("signer: %s\n", result.Signer)
+	}
 	if manifest.MinNginxUIVersion != "" {
 		fmt.Printf("min nginx-ui version: %s\n", manifest.MinNginxUIVersion)
 	}
@@ -212,8 +233,8 @@ func InspectPlugin(ctx context.Context, command *cli.Command) error {
 	return nil
 }
 
-// PackPlugin builds a distributable package from a plugin directory. It needs
-// neither settings nor a database.
+// PackPlugin builds a distributable package from a plugin directory, signed
+// when --key is given. It needs neither settings nor a database.
 func PackPlugin(_ context.Context, command *cli.Command) error {
 	sourceDir := command.Args().Get(0)
 	archivePath := command.Args().Get(1)
@@ -228,12 +249,65 @@ func PackPlugin(_ context.Context, command *cli.Command) error {
 	if err = plugin.ValidateManifest(manifest); err != nil {
 		return err
 	}
-	if err = plugin.BuildPackage(sourceDir, archivePath); err != nil {
-		return err
+
+	keyPath := command.String("key")
+	if keyPath == "" {
+		if err = plugin.BuildPackage(sourceDir, archivePath); err != nil {
+			return err
+		}
+		fmt.Printf("packed %s %s into %s, unsigned\n", manifest.ID, manifest.Version, archivePath)
+		return nil
 	}
 
-	fmt.Printf("packed %s %s into %s\n", manifest.ID, manifest.Version, archivePath)
+	key, err := loadSigningKey(keyPath)
+	if err != nil {
+		return err
+	}
+	if err = plugin.BuildSignedPackage(sourceDir, archivePath, key); err != nil {
+		return err
+	}
+	fmt.Printf("packed %s %s into %s, signed with key %016X\n", manifest.ID, manifest.Version, archivePath, key.ID())
 	return nil
+}
+
+// SignPlugin signs an existing package in place, replacing any previous
+// signature. It needs neither settings nor a database.
+func SignPlugin(_ context.Context, command *cli.Command) error {
+	archivePath := command.Args().Get(0)
+	if archivePath == "" {
+		return plugin.ErrPackageInvalid
+	}
+
+	key, err := loadSigningKey(command.String("key"))
+	if err != nil {
+		return err
+	}
+	if err = plugin.SignPackage(archivePath, key); err != nil {
+		return err
+	}
+	fmt.Printf("signed %s with key %016X\n", archivePath, key.ID())
+	return nil
+}
+
+// loadSigningKey reads a minisign secret key file. An encrypted key is
+// decrypted with the password from NGINX_UI_PLUGIN_SIGN_PASSWORD.
+func loadSigningKey(path string) (minisign.PrivateKey, error) {
+	encoded, err := os.ReadFile(path)
+	if err != nil {
+		return minisign.PrivateKey{}, err
+	}
+	if minisign.IsEncrypted(encoded) {
+		key, err := minisign.PrivateKeyFromFile(os.Getenv(signPasswordEnv), path)
+		if err != nil {
+			return minisign.PrivateKey{}, fmt.Errorf("decrypt %s: %w", path, err)
+		}
+		return key, nil
+	}
+	var key minisign.PrivateKey
+	if err = key.UnmarshalText(encoded); err != nil {
+		return minisign.PrivateKey{}, fmt.Errorf("read %s: %w", path, err)
+	}
+	return key, nil
 }
 
 // loadPluginManager boots the settings and the database, then reads the plugin

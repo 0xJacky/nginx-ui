@@ -32,6 +32,8 @@ var (
 	ErrPluginIDMismatch           = e.New(55020, "plugin package declares another id")
 	ErrContentInvalid             = e.New(55021, "plugin content {0} is invalid: {1}")
 	ErrPluginVersionMismatch      = e.New(55022, "plugin package declares version {0}, {1} was expected")
+	ErrUnsignedPackage            = e.New(55023, "plugin package is not signed and developer mode is off")
+	ErrTrustDowngrade             = e.New(55024, "plugin package trust {0} is below the installed {1}")
 
 	// Capability errors continue at 55201, apart from the lifecycle and the
 	// marketplace codes.

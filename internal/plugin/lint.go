@@ -27,7 +27,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 )
@@ -98,8 +97,8 @@ func Lint(path string) (*LintReport, error) {
 		}
 		defer os.RemoveAll(extracted)
 		dir = extracted
-		lintSignature(path, report)
 	}
+	lintSums(dir, report)
 
 	manifest, err := LoadManifest(dir)
 	if err != nil {
@@ -898,16 +897,47 @@ func packageErrorRule(err error) string {
 	}
 }
 
-// lintSignature checks a .minisig sibling of the original archive path, if
-// one exists, against the pinned release keys. This CLI has no way to know
-// a community plugin's own signing key, so a failure here is only a warning.
-func lintSignature(archivePath string, report *LintReport) {
-	sigPath := archivePath + ".minisig"
-	data, err := os.ReadFile(sigPath)
+// lintSums checks the embedded signature files: plugin.sums has to follow
+// PKG-19 and match the files (PKG-21) whether or not the package is signed,
+// both files belong together (PKG-20), and a signature the keys pinned in
+// this binary do not verify is only a warning (SEC-18), since a community
+// key is named by a catalog entry or an operator.
+func lintSums(dir string, report *LintReport) {
+	sums, err := readRootFile(dir, SumsFileName)
 	if err != nil {
+		report.add(LevelError, "PKG-19", "read %s: %v", SumsFileName, err)
 		return
 	}
-	if _, err := pkgsign.VerifyFileWithReleaseKeys(archivePath, data); err != nil {
-		report.add(LevelWarning, "SEC-12", "%s does not verify with the pinned nginx-ui release keys (expected for a community plugin): %v", sigPath, err)
+	signature, err := readRootFile(dir, SumsSignatureFileName)
+	if err != nil {
+		report.add(LevelError, "PKG-20", "read %s: %v", SumsSignatureFileName, err)
+		return
+	}
+
+	switch {
+	case sums == nil && signature == nil:
+		return
+	case sums == nil:
+		report.add(LevelWarning, "PKG-20", "%s is present without %s, the package is unsigned", SumsSignatureFileName, SumsFileName)
+		return
+	case signature == nil:
+		report.add(LevelWarning, "PKG-20", "%s is present without %s, the package is unsigned", SumsFileName, SumsSignatureFileName)
+	}
+
+	if listed, err := parseSums(sums); err != nil {
+		report.add(LevelError, "PKG-19", "%v", err)
+	} else if err = matchSums(dir, listed); err != nil {
+		report.add(LevelError, "PKG-21", "%v", err)
+	}
+	if signature == nil {
+		return
+	}
+
+	trust, err := signatureTrust(sums, signature, pinnedTiers())
+	switch {
+	case err != nil:
+		report.add(LevelError, "PKG-21", "%s: %v", SumsSignatureFileName, err)
+	case trust.Trust == TrustUnsigned:
+		report.add(LevelWarning, "SEC-18", "%s does not verify with the release or partner keys pinned in this binary (expected for a community plugin)", SumsSignatureFileName)
 	}
 }

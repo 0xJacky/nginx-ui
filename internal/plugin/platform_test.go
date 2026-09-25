@@ -48,11 +48,17 @@ func platformManifest(id, pluginVersion string, platforms ...string) *protocol.M
 // buildPlatformPackage packs a plugin with every executable it declares.
 func buildPlatformPackage(t *testing.T, manifest *protocol.Manifest) []byte {
 	t.Helper()
+	return buildSignedPlatformPackage(t, manifest, nil)
+}
+
+// buildSignedPlatformPackage is buildPlatformPackage, signed when signer is set.
+func buildSignedPlatformPackage(t *testing.T, manifest *protocol.Manifest, signer *minisign.PrivateKey) []byte {
+	t.Helper()
 	files := map[string]string{"webapp/main.js": "export default {}"}
 	for platform, rel := range manifest.Server.Executables {
 		files[rel] = "#!/bin/sh\n# " + platform + "\nexit 0\n"
 	}
-	body, err := os.ReadFile(buildTestPackage(t, manifest, files))
+	body, err := os.ReadFile(buildSignedTestPackage(t, manifest, files, signer))
 	require.NoError(t, err)
 	return body
 }
@@ -74,15 +80,11 @@ func (cs *catalogServer) publishPlatforms(t *testing.T, id, pluginVersion string
 		Manifest:   platformManifest(id, pluginVersion, platforms...),
 	}
 	for _, platform := range platforms {
-		body := buildPlatformPackage(t, platformManifest(id, pluginVersion, platform))
+		body := buildSignedPlatformPackage(t, platformManifest(id, pluginVersion, platform), signer)
 		name := "/pkg/" + PackageFileName(id, pluginVersion, platform)
 		cs.serve(name, body)
 		digest := sha256.Sum256(body)
 		download := ReleaseDownload{URL: cs.URL + name, SHA256: hex.EncodeToString(digest[:])}
-		if signer != nil {
-			// The signature sits at the default location, <url>.minisig.
-			cs.serve(name+signatureSuffix, signPackage(t, body, *signer))
-		}
 		release.Downloads[platform] = download
 		bodies[platform] = body
 	}
@@ -156,7 +158,7 @@ func TestReleaseDownloadForSelectsByPlatform(t *testing.T) {
 		Platforms: []string{linux, darwin, windows},
 		Downloads: map[string]ReleaseDownload{
 			linux:  {URL: "https://example.com/linux.tar.gz", SHA256: "aa"},
-			darwin: {URL: "https://example.com/darwin.tar.gz", SHA256: "bb", SignatureURL: "https://example.com/d.sig"},
+			darwin: {URL: "https://example.com/darwin.tar.gz", SHA256: "bb"},
 			// An entry without a url is ignored.
 			"freebsd-amd64": {},
 		},
@@ -170,11 +172,10 @@ func TestReleaseDownloadForSelectsByPlatform(t *testing.T) {
 	assert.Equal(t, linux, key)
 	assert.Equal(t, "https://example.com/linux.tar.gz", download.URL)
 	assert.Equal(t, "aa", download.SHA256)
-	assert.Equal(t, "https://example.com/linux.tar.gz.minisig", download.signatureURL())
 
 	download, _, ok = perPlatform.DownloadFor(darwin)
 	require.True(t, ok)
-	assert.Equal(t, "https://example.com/d.sig", download.signatureURL())
+	assert.Equal(t, "bb", download.SHA256)
 
 	// A platform only the summary lists falls back to the portable package.
 	download, key, ok = perPlatform.DownloadFor(windows)
@@ -262,13 +263,11 @@ func TestMarketplaceInstallPicksTheHostDownload(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
-
-	public, private := newSigningKey(t)
-	trustKey(t, public)
-	settings.PluginSettings.RequireSignature = true
+	settings.PluginSettings.DeveloperMode = false
+	signer := useReleaseKey(t)
 
 	host, foreign := HostPlatform(), foreignPlatform()
-	server.publishPlatforms(t, "com.example.native", "1.0.0", &private, host, foreign)
+	server.publishPlatforms(t, "com.example.native", "1.0.0", signer, host, foreign)
 
 	var (
 		mu        sync.Mutex
@@ -294,6 +293,7 @@ func TestMarketplaceInstallPicksTheHostDownload(t *testing.T) {
 	info, err := manager.Marketplace().Install(context.Background(), "com.example.native", "", "", InstallOptions{})
 	require.NoError(t, err)
 	assert.Equal(t, "1.0.0", info.Version)
+	assert.Equal(t, TrustOfficial, info.Trust)
 
 	// The installed copy is the host package: its manifest names the host
 	// only and its executable is there.
@@ -349,20 +349,18 @@ func TestFetchPackageDownloadsTheRequestedPlatform(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
-
-	public, private := newSigningKey(t)
-	trustKey(t, public)
-	settings.PluginSettings.RequireSignature = true
+	signer := useReleaseKey(t)
 
 	host, foreign := HostPlatform(), foreignPlatform()
-	bodies := server.publishPlatforms(t, "com.example.native", "1.0.0", &private, host, foreign)
+	bodies := server.publishPlatforms(t, "com.example.native", "1.0.0", signer, host, foreign)
 	marketplace := manager.Marketplace()
 	destination := t.TempDir()
 
 	archive, err := marketplace.FetchPackage(context.Background(), "com.example.native", "", foreign, destination)
 	require.NoError(t, err)
 	assert.Equal(t, filepath.Join(destination, PackageFileName("com.example.native", "1.0.0", foreign)), archive)
-	assert.FileExists(t, archive+signatureSuffix)
+	// The package is carried as served, its signature is inside.
+	assert.NoFileExists(t, archive+".minisig")
 	body, err := os.ReadFile(archive)
 	require.NoError(t, err)
 	assert.Equal(t, bodies[foreign], body)
@@ -481,7 +479,7 @@ func TestLintPerPlatformPackageMustDeclareItsPlatform(t *testing.T) {
 func TestEnsureDNS01PluginInstallsTheHostDownload(t *testing.T) {
 	manager := newCertAwareManager(t)
 	server := newCatalogServer(t)
-	signer := useSignedMarketplace(t, server.catalogURL())
+	signer := useOfficialMarketplace(t, server.catalogURL())
 
 	addDNS01Cert(t)
 	host := HostPlatform()
