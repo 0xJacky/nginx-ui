@@ -163,6 +163,8 @@ type InspectResult struct {
 	// manifest i18n block, keyed by host locale code (spec MAN-40).
 	NameI18n        map[string]string `json:"name_i18n,omitempty"`
 	DescriptionI18n map[string]string `json:"description_i18n,omitempty"`
+	// UploadID names the kept upload an install can reuse, set by the API layer.
+	UploadID string `json:"upload_id,omitempty"`
 }
 
 // entry is one plugin the manager knows about. A missing plugin has a row but
