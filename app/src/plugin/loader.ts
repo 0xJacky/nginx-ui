@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import type { PluginInfo, PluginManifest, PluginManifestI18n, WebappEntry, WebappEntryPage } from '@/api/plugin'
 import pluginApi from '@/api/plugin'
 import gettext from '@/gettext'
-import router from '@/routes'
+import router, { NOT_FOUND_ROUTE_NAME } from '@/routes'
 import { isLoopbackUrl } from './loopback'
 import { createRegistry } from './registry'
 import { satisfies } from './semver'
@@ -10,6 +10,9 @@ import { takePendingPlugin } from './shared'
 import { usePluginStore } from './store'
 
 const IFRAME_PAGE_COMPONENT = () => import('@/views/plugin/IframePage.vue')
+
+/** Initial load in flight, shared by every caller of `load()`. */
+let initialLoad: Promise<void> | undefined
 
 /** Injects a stylesheet once and resolves as soon as it is applied. */
 function injectStyle(url: string): Promise<void> {
@@ -165,6 +168,23 @@ async function fetchDevEntry(url: string): Promise<{ entry: WebappEntry, manifes
   }
 }
 
+/**
+ * A plugin URL opened before its route existed was claimed by the catch-all
+ * route. Moves to the real route once the loader added it.
+ */
+async function leaveNotFound() {
+  const current = router.currentRoute.value
+  if (current.name !== NOT_FOUND_ROUTE_NAME || router.resolve(current.fullPath).name === NOT_FOUND_ROUTE_NAME)
+    return
+
+  try {
+    await router.replace(current.fullPath)
+  }
+  catch (error) {
+    console.error(`[plugin] could not open ${current.fullPath}`, error)
+  }
+}
+
 export function usePluginLoader() {
   const store = usePluginStore()
 
@@ -234,13 +254,8 @@ export function usePluginLoader() {
     }
   }
 
-  /**
-   * Loads every enabled webapp bundle, then the dev plugin if one is set.
-   * Runs once per page load; the sidebar and the slots render as soon as
-   * `ready` flips.
-   */
-  async function load() {
-    if (store.ready || store.loading)
+  async function loadAll() {
+    if (store.loading)
       return
 
     store.loading = true
@@ -272,6 +287,23 @@ export function usePluginLoader() {
   }
 
   /**
+   * Loads every enabled webapp bundle, then the dev plugin if one is set.
+   * Runs once per page load; the sidebar and the slots render as soon as
+   * `ready` flips. A call made while the load is in flight waits for it, and
+   * the returned promise never rejects.
+   */
+  function load(): Promise<void> {
+    if (store.ready)
+      return Promise.resolve()
+
+    initialLoad ??= loadAll().finally(() => {
+      initialLoad = undefined
+    })
+
+    return initialLoad
+  }
+
+  /**
    * Loads bundles of plugins enabled after the page was loaded. Entries that
    * already went through the loader are left alone, because a bundle cannot
    * be evaluated twice on the same page.
@@ -295,6 +327,8 @@ export function usePluginLoader() {
 
       for (const entry of pending)
         await loadEntrySafely(entry, manifestFromInfo(entry, infoById.get(entry.id)))
+
+      await leaveNotFound()
     }
     finally {
       store.loading = false
