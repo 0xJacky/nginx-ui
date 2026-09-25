@@ -340,7 +340,7 @@ const file_nginxui_plugin_v1_log_proto_rawDesc = "" +
 	"\baccepted\x18\x01 \x01(\rR\baccepted\x12\x1a\n" +
 	"\brejected\x18\x02 \x01(\rR\brejected2t\n" +
 	"\aLogSink\x12i\n" +
-	"\x04Push\x12%.nginxui.plugin.v1.LogSinkPushRequest\x1a&.nginxui.plugin.v1.LogSinkPushResponse\"\x10\xaa\xb8\x19\blog.push\xb8\xb8\x19\x01(\x01BKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x04Push\x12%.nginxui.plugin.v1.LogSinkPushRequest\x1a&.nginxui.plugin.v1.LogSinkPushResponse\"\x10\xaa\xb8\x19\blog.push\xb8\xb8\x19\x01(\x01BBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_log_proto_rawDescOnce sync.Once

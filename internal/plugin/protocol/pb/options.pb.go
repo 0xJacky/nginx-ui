@@ -80,7 +80,7 @@ const file_nginxui_plugin_v1_options_proto_rawDesc = "" +
 	"\x1fnginxui/plugin/v1/options.proto\x12\x11nginxui.plugin.v1\x1a google/protobuf/descriptor.proto:;\n" +
 	"\brpc_name\x12\x1e.google.protobuf.MethodOptions\x18\x85\x97\x03 \x01(\tR\arpcName:D\n" +
 	"\fnotification\x12\x1e.google.protobuf.MethodOptions\x18\x86\x97\x03 \x01(\bR\fnotification:>\n" +
-	"\tstreaming\x12\x1e.google.protobuf.MethodOptions\x18\x87\x97\x03 \x01(\bR\tstreamingBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\tstreaming\x12\x1e.google.protobuf.MethodOptions\x18\x87\x97\x03 \x01(\bR\tstreamingBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var file_nginxui_plugin_v1_options_proto_goTypes = []any{
 	(*descriptorpb.MethodOptions)(nil), // 0: google.protobuf.MethodOptions

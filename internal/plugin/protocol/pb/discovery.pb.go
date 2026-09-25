@@ -236,7 +236,7 @@ const file_nginxui_plugin_v1_discovery_proto_rawDesc = "" +
 	"\x06weight\x18\x03 \x01(\x05R\x06weight\x12\x12\n" +
 	"\x04tags\x18\x04 \x03(\tR\x04tags2\x86\x01\n" +
 	"\tDiscovery\x12y\n" +
-	"\aResolve\x12*.nginxui.plugin.v1.DiscoveryResolveRequest\x1a+.nginxui.plugin.v1.DiscoveryResolveResponse\"\x15\xaa\xb8\x19\x11discovery.resolveBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\aResolve\x12*.nginxui.plugin.v1.DiscoveryResolveRequest\x1a+.nginxui.plugin.v1.DiscoveryResolveResponse\"\x15\xaa\xb8\x19\x11discovery.resolveBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_discovery_proto_rawDescOnce sync.Once

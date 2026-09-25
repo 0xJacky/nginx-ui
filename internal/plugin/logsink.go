@@ -1,7 +1,7 @@
 package plugin
 
 // This file is the host side of the log.sink capability
-// (nginx-ui-plugin-spec/spec/20-capabilities-logsink.md). The access log
+// (plugin-spec/spec/20-capabilities-logsink.md). The access log
 // feed hands every batch of new lines to dispatchLogEntries, which offers it
 // to the queue of every running log sink without blocking. One goroutine per
 // plugin drains its queue into log.push client streams over the plugin's

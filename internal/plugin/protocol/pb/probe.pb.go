@@ -178,7 +178,7 @@ const file_nginxui_plugin_v1_probe_proto_rawDesc = "" +
 	"latency_ms\x18\x02 \x01(\x05R\tlatencyMs\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage2n\n" +
 	"\x05Probe\x12e\n" +
-	"\x05Check\x12$.nginxui.plugin.v1.ProbeCheckRequest\x1a%.nginxui.plugin.v1.ProbeCheckResponse\"\x0f\xaa\xb8\x19\vprobe.checkBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x05Check\x12$.nginxui.plugin.v1.ProbeCheckRequest\x1a%.nginxui.plugin.v1.ProbeCheckResponse\"\x0f\xaa\xb8\x19\vprobe.checkBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_probe_proto_rawDescOnce sync.Once
