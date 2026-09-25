@@ -20,6 +20,7 @@ export default {
   55019: () => $gettext('Plugin needs nginx-ui {0} or newer, this node runs {1}'),
   55020: () => $gettext('Plugin package declares another id'),
   55021: () => $gettext('Plugin content {0} is invalid: {1}'),
+  55022: () => $gettext('Plugin package declares version {0}, {1} was expected'),
   55201: () => $gettext('Storage backend {0} is not available'),
   55202: () => $gettext('Storage config field {0} is invalid: {1}'),
   55203: () => $gettext('Deploy target kind {0} is not available'),

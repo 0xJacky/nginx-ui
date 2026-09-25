@@ -517,21 +517,12 @@ func (mp *Marketplace) installEntry(ctx context.Context, entries []CatalogEntry,
 		return nil, err
 	}
 
-	// The package must be what the catalog promised, otherwise a compromised
-	// mirror could swap a well known id for something else.
-	inspected, err := mp.manager.Inspect(archive)
-	if err != nil {
-		return nil, err
-	}
-	if inspected.Manifest.ID != entry.ID {
-		return nil, ErrPluginIDMismatch
-	}
-	if inspected.Manifest.Version != release.Version {
-		return nil, cosy.WrapErrorWithParams(ErrCatalogInvalid,
-			fmt.Sprintf("%s ships %s, the catalog promised %s", entry.ID, inspected.Manifest.Version, release.Version))
-	}
-
 	progress(InstallStatusInstalling, 95)
+	// The package must be what the catalog promised, otherwise a compromised
+	// mirror could swap a well known id for something else. The install
+	// checks it on the one extraction it needs anyway.
+	opts.ExpectedID = entry.ID
+	opts.ExpectedVersion = release.Version
 	return mp.manager.Install(ctx, archive, opts)
 }
 
