@@ -52,8 +52,6 @@ const links = computed(() => [
   { key: 'release_notes', icon: LinkOutlined, label: $gettext('Release notes'), url: current.value?.installable_release?.release_notes_url },
 ].filter(link => Boolean(link.url)))
 
-const trustTone: Record<string, string> = { blue: 'is-accent', green: 'is-success', orange: 'is-warning' }
-
 const facts = computed(() => {
   const entry = current.value
   if (!entry)
@@ -145,7 +143,7 @@ watch(open, value => {
             <div class="min-w-0 flex-1">
               <div class="pill-row mb-2">
                 <ATooltip :title="trust.hint()">
-                  <span class="pill" :class="trustTone[trust.color] ?? 'is-muted'">{{ trust.label() }}</span>
+                  <span class="pill" :class="trust.tone">{{ trust.label() }}</span>
                 </ATooltip>
                 <span
                   v-for="capability in current.capabilities ?? []"

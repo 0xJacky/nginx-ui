@@ -1,4 +1,4 @@
-import type { InjectionKey, Ref } from 'vue'
+import type { ComputedRef, InjectionKey, MaybeRefOrGetter, Ref } from 'vue'
 import type { PluginInfo } from '@/api/plugin'
 import type { PluginUpdateInfo } from '@/api/plugin_marketplace'
 import { useIntervalFn } from '@vueuse/core'
@@ -98,4 +98,41 @@ export function usePluginInventory(): PluginInventory {
     throw new Error('usePluginInventory must be called inside the plugins page')
 
   return inventory
+}
+
+/**
+ * The installed plugin with the given id. Reads the inventory of the plugins
+ * page, or fetches the plugin list when the caller lives outside of it. An
+ * empty id skips the lookup.
+ */
+export function useInstalledPlugin(pluginId: MaybeRefOrGetter<string | undefined>): ComputedRef<PluginInfo | undefined> {
+  const inventory = inject(inventoryKey, undefined)
+  const fetched = shallowRef<PluginInfo>()
+
+  if (!inventory) {
+    watch(() => toValue(pluginId), async id => {
+      fetched.value = undefined
+      if (!id)
+        return
+
+      try {
+        const list = await pluginApi.getList()
+        // Drop a late answer for an id that is no longer asked for.
+        if (toValue(pluginId) === id)
+          fetched.value = list.find(item => item.id === id)
+      }
+      catch {
+        // Only hints depend on it, so a failed lookup shows none.
+      }
+    }, { immediate: true })
+  }
+
+  return computed(() => {
+    const id = toValue(pluginId)
+    if (!id)
+      return undefined
+    return inventory
+      ? inventory.plugins.value.find(item => item.id === id)
+      : fetched.value
+  })
 }
