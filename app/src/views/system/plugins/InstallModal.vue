@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { UploadProps } from 'antdv-next'
-import type { PluginInspect } from '@/api/plugin'
+import type { PluginInfo, PluginInspect } from '@/api/plugin'
 import type { PluginNodeResult } from '@/api/plugin_sync'
 import { InboxOutlined } from '@antdv-next/icons'
 import nodeApi from '@/api/node'
@@ -16,6 +16,9 @@ const emit = defineEmits<{
 }>()
 
 const open = defineModel<boolean>('open', { default: false })
+
+/** Backend code for an unreadable package, also sent for an expired or unknown upload id. */
+const PACKAGE_INVALID_CODE = 55007
 
 const { message } = App.useApp()
 
@@ -119,6 +122,38 @@ const beforeUpload: UploadProps['beforeUpload'] = async rawFile => {
   return false
 }
 
+function isPackageInvalid(e: unknown): boolean {
+  const data = (e as { response?: { data?: { code?: unknown } } } | undefined)?.response?.data
+  return Number(data?.code) === PACKAGE_INVALID_CODE
+}
+
+/**
+ * Installs from the upload the inspect kept, so the package is not sent twice.
+ * The node answers PACKAGE_INVALID_CODE when that upload expired or when it
+ * does not know upload ids, and then the file is sent once instead.
+ */
+async function installPackage(packageFile: File, enable: boolean): Promise<PluginInfo> {
+  const uploadId = inspect.value?.upload_id
+  if (!uploadId)
+    return pluginApi.install({ file: packageFile }, enable)
+
+  try {
+    // Quiet, so an expired upload does not flash an error before the fallback.
+    return await pluginApi.install({ uploadId }, enable, { skipErrHandling: true })
+  }
+  catch (e) {
+    if (!isPackageInvalid(e)) {
+      // Show the toast the global handler skipped for this request.
+      const text = getErrorMessage(e, $gettext('Failed to install the plugin'))
+      if (text)
+        message.error(text)
+      throw e
+    }
+  }
+
+  return pluginApi.install({ file: packageFile }, enable)
+}
+
 async function install() {
   if (!file.value)
     return
@@ -126,7 +161,7 @@ async function install() {
   installing.value = true
   syncResults.value = []
   try {
-    const info = await pluginApi.install(file.value, enableAfterInstall.value)
+    const info = await installPackage(file.value, enableAfterInstall.value)
     message.success($gettext('Plugin installed'))
     emit('installed')
 
