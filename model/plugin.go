@@ -23,6 +23,8 @@ type Plugin struct {
 	Trust string `json:"trust"`
 	// Signer is the minisign key id that signed the package, empty when unsigned.
 	Signer string `json:"signer"`
+	// Partner is the partner name of a verified package, empty otherwise.
+	Partner string `json:"partner"`
 	// AuthorPublicKey is the key that verified a community package, which a
 	// cluster push hands on to the node. Empty for any other trust.
 	AuthorPublicKey string `json:"-"`

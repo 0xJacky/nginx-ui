@@ -89,8 +89,10 @@ type Info struct {
 	DroppedEvents        int64                          `json:"dropped_events"`
 	// Trust is derived from the package signature at install time, see
 	// signature.go. Signer is the minisign key id, empty when unsigned.
-	Trust  string `json:"trust"`
-	Signer string `json:"signer"`
+	// Partner is the partner name of a verified package, empty otherwise.
+	Trust   string `json:"trust"`
+	Signer  string `json:"signer"`
+	Partner string `json:"partner"`
 	// Transport is how capability calls reach the running process, "stdio" or
 	// "grpc". Empty when no process is running.
 	Transport string `json:"transport,omitempty"`
@@ -175,9 +177,11 @@ type InspectResult struct {
 	// UploadID names the kept upload an install can reuse, set by the API layer.
 	UploadID string `json:"upload_id,omitempty"`
 	// Trust and Signer are derived from the embedded signature with the keys
-	// of this node, an upload has no catalog author key.
-	Trust  string `json:"trust"`
-	Signer string `json:"signer"`
+	// of this node, an upload has no catalog author key. Partner is the
+	// partner name of a verified package, empty otherwise.
+	Trust   string `json:"trust"`
+	Signer  string `json:"signer"`
+	Partner string `json:"partner"`
 }
 
 // entry is one plugin the manager knows about. A missing plugin has a row but
@@ -236,6 +240,9 @@ type Manager struct {
 	logSinkList    []*logSink
 	// logSinks is the list the feed goroutine reads without a lock.
 	logSinks atomic.Pointer[[]*logSink]
+
+	// partners is the signed partner keyring, see partners.go.
+	partners partnerStore
 }
 
 var (
@@ -324,6 +331,7 @@ func (m *Manager) Start(ctx context.Context) {
 	if err := os.MkdirAll(filepath.Join(m.Dir(), DataDirName), 0o700); err != nil {
 		m.log.Errorf("Create plugin data directory: %v", err)
 	}
+	m.loadPartnerCache()
 
 	if err := m.discover(ctx); err != nil {
 		m.log.Errorf("Plugin discovery: %v", err)
@@ -458,6 +466,7 @@ func (m *Manager) LoadOffline(ctx context.Context) error {
 	if err := os.MkdirAll(m.Dir(), 0o755); err != nil {
 		return err
 	}
+	m.loadPartnerCache()
 	return m.discover(ctx)
 }
 
@@ -591,6 +600,7 @@ func (m *Manager) infoLocked(item *entry) Info {
 			info.Trust = row.Trust
 		}
 		info.Signer = row.Signer
+		info.Partner = row.Partner
 		if len(row.SyncNodeIDs) > 0 {
 			info.SyncNodeIDs = row.SyncNodeIDs
 		}

@@ -37,8 +37,11 @@ func TestMain(m *testing.M) {
 	settings.PluginSettings.Dir = dir
 	// The test packages are unsigned.
 	settings.PluginSettings.DeveloperMode = true
+	// No test reaches the real partner keyring.
+	restore := plugin.SetOfficialSourceForTesting("")
 
 	code := m.Run()
+	restore()
 	_ = os.RemoveAll(dir)
 	os.Exit(code)
 }

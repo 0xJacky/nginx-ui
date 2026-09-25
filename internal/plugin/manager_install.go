@@ -39,7 +39,7 @@ func (m *Manager) Inspect(archivePath string) (*InspectResult, error) {
 		return nil, err
 	}
 
-	trust, err := verifyPackageSignature(payload, "")
+	trust, err := verifyPackageSignature(payload, "", m.partnerKeyring())
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,7 @@ func (m *Manager) Inspect(archivePath string) (*InspectResult, error) {
 		PlatformSupported: platformsCover(platforms, HostPlatform()),
 		Trust:             trust.Trust,
 		Signer:            trust.Signer,
+		Partner:           trust.Partner,
 	}
 	if result.Permissions == nil {
 		result.Permissions = []string{}
@@ -104,7 +105,7 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 	}
 	// Nothing is moved before the signature is verified and the policy has
 	// accepted the trust it proves.
-	trust, err := checkPackageTrust(staged, opts)
+	trust, err := checkPackageTrust(staged, opts, m.partnerKeyring())
 	if err != nil {
 		return nil, err
 	}
@@ -254,6 +255,7 @@ func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest
 	row.Version = manifest.Version
 	row.Trust = trust.Trust
 	row.Signer = trust.Signer
+	row.Partner = trust.Partner
 	row.AuthorPublicKey = trust.AuthorKey
 	row.LastError = ""
 	if row.SyncPolicy == "" {

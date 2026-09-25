@@ -38,17 +38,19 @@ func (m *Manager) Marketplace() *Marketplace {
 	return created
 }
 
-// StartMarketplace runs the marketplace side of the boot sequence: it installs
-// whatever was dropped into the offline package directory, schedules the daily
-// catalog maintenance and makes sure the DNS-01 plugin is there when a
-// certificate needs it. It returns immediately, the work happens in the
-// background.
+// StartMarketplace runs the marketplace side of the boot sequence: it refreshes
+// the partner keyring, installs whatever was dropped into the offline package
+// directory, schedules the daily catalog maintenance and makes sure the DNS-01
+// plugin is there when a certificate needs it. It returns immediately, the
+// work happens in the background.
 func (m *Manager) StartMarketplace(ctx context.Context) {
 	if !settings.PluginSettings.Enabled {
 		return
 	}
 
 	m.scheduleMaintenance()
+
+	go m.refreshPartners(ctx)
 
 	go func() {
 		if err := m.ScanLocalPackages(ctx); err != nil {

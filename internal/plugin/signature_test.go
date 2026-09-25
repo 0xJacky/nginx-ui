@@ -74,13 +74,13 @@ func signedWebappPackage(t *testing.T, id string, signer *minisign.PrivateKey) s
 		map[string]string{"webapp/main.js": "export default {}", "README.md": "# readme\n"}, signer)
 }
 
-// extractedTrust unpacks a package and derives its trust.
-func extractedTrust(t *testing.T, archive, authorKey string) (packageTrust, error) {
+// extractedTrust unpacks a package and derives its trust with keyring.
+func extractedTrust(t *testing.T, archive, authorKey string, keyring *partnerKeyring) (packageTrust, error) {
 	t.Helper()
 	dir := filepath.Join(t.TempDir(), "payload")
 	_, err := ExtractPackage(archive, dir)
 	require.NoError(t, err)
-	return verifyPackageSignature(dir, authorKey)
+	return verifyPackageSignature(dir, authorKey, keyring)
 }
 
 func TestTrustRank(t *testing.T) {
@@ -95,7 +95,7 @@ func TestTrustRank(t *testing.T) {
 func TestVerifyPackageSignatureDerivesTheTrust(t *testing.T) {
 	useMarketplace(t)
 	official := useReleaseKey(t)
-	partner := usePartnerKey(t)
+	partner, keyring := usePartnerKey(t)
 	userPublic, user := newSigningKey(t)
 	trustKey(t, userPublic)
 	authorPublic, author := newSigningKey(t)
@@ -107,9 +107,11 @@ func TestVerifyPackageSignatureDerivesTheTrust(t *testing.T) {
 		want      string
 		// wantKey is the key recorded for a community package.
 		wantKey string
+		// wantPartner is the partner name recorded for a verified package.
+		wantPartner string
 	}{
 		"release key": {signer: official, want: TrustOfficial},
-		"partner key": {signer: partner, want: TrustVerified},
+		"partner key": {signer: partner, want: TrustVerified, wantPartner: "example"},
 		"user key":    {signer: &user, want: TrustCommunity, wantKey: encodeKey(t, userPublic)},
 		"catalog author key": {signer: &author, authorKey: encodeKey(t, authorPublic), want: TrustCommunity,
 			wantKey: encodeKey(t, authorPublic)},
@@ -119,10 +121,11 @@ func TestVerifyPackageSignatureDerivesTheTrust(t *testing.T) {
 		"broken author key":   {signer: official, authorKey: "garbage", want: TrustOfficial},
 	} {
 		t.Run(name, func(t *testing.T) {
-			trust, err := extractedTrust(t, signedWebappPackage(t, "com.example.alpha", testCase.signer), testCase.authorKey)
+			trust, err := extractedTrust(t, signedWebappPackage(t, "com.example.alpha", testCase.signer), testCase.authorKey, keyring)
 			require.NoError(t, err)
 			assert.Equal(t, testCase.want, trust.Trust)
 			assert.Equal(t, testCase.wantKey, trust.AuthorKey)
+			assert.Equal(t, testCase.wantPartner, trust.Partner)
 			if testCase.want == TrustUnsigned {
 				assert.Empty(t, trust.Signer)
 			} else {
@@ -165,7 +168,7 @@ func TestVerifyPackageSignatureRefusesATamperedPackage(t *testing.T) {
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
-			_, err := extractedTrust(t, rewritePackage(t, archive, mutate), "")
+			_, err := extractedTrust(t, rewritePackage(t, archive, mutate), "", nil)
 			assertPluginError(t, err, ErrSignatureInvalid)
 		})
 	}
@@ -177,7 +180,7 @@ func TestVerifyPackageSignatureRefusesATamperedPackage(t *testing.T) {
 			entry.header.Name = ""
 		}
 	})
-	trust, err := extractedTrust(t, stripped, "")
+	trust, err := extractedTrust(t, stripped, "", nil)
 	require.NoError(t, err)
 	assert.Equal(t, TrustUnsigned, trust.Trust)
 }

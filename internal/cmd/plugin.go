@@ -4,11 +4,14 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 	"text/tabwriter"
 
 	"aead.dev/minisign"
+	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin"
+	"github.com/0xJacky/Nginx-UI/internal/releasesign"
 	"github.com/urfave/cli/v3"
 )
 
@@ -79,6 +82,18 @@ var PluginCommand = &cli.Command{
 			Action:    SignPlugin,
 			Flags: []cli.Flag{
 				&cli.StringFlag{Name: "key", Usage: "minisign secret key file to sign the package with", Required: true},
+			},
+		},
+		{
+			Name:      "certify",
+			Usage:     "Issue a partner certificate with a release key",
+			ArgsUsage: "<partner-public-key-file>",
+			Action:    CertifyPartner,
+			Flags: []cli.Flag{
+				&cli.StringFlag{Name: "key", Usage: "release minisign secret key file to sign the certificate with", Required: true},
+				&cli.StringFlag{Name: "name", Usage: "partner name: letters, digits, dots and hyphens", Required: true},
+				&cli.StringFlag{Name: "expires", Usage: "last day the certificate is valid, YYYY-MM-DD in UTC; without it only a keyring revocation ends the certificate"},
+				&cli.StringFlag{Name: "out", Value: ".", Usage: "directory to write plugin.partner and plugin.partner.minisig into"},
 			},
 		},
 	},
@@ -216,6 +231,9 @@ func InspectPlugin(ctx context.Context, command *cli.Command) error {
 	if result.Signer != "" {
 		fmt.Printf("signer: %s\n", result.Signer)
 	}
+	if result.Partner != "" {
+		fmt.Printf("partner: %s\n", result.Partner)
+	}
 	if manifest.MinNginxUIVersion != "" {
 		fmt.Printf("min nginx-ui version: %s\n", manifest.MinNginxUIVersion)
 	}
@@ -287,6 +305,62 @@ func SignPlugin(_ context.Context, command *cli.Command) error {
 	}
 	fmt.Printf("signed %s with key %016X\n", archivePath, key.ID())
 	return nil
+}
+
+// CertifyPartner writes a partner certificate for a partner public key: the
+// two files a partner puts at the root of its plugin before packing it. It
+// needs neither settings nor a database.
+func CertifyPartner(_ context.Context, command *cli.Command) error {
+	keyPath := command.Args().Get(0)
+	if keyPath == "" {
+		return fmt.Errorf("usage: nginx-ui plugin certify <partner-public-key-file> --key <release-key> --name <name> [--expires <YYYY-MM-DD>]")
+	}
+	partnerKey, err := os.ReadFile(keyPath)
+	if err != nil {
+		return err
+	}
+	releaseKey, err := loadSigningKey(command.String("key"))
+	if err != nil {
+		return err
+	}
+	name := command.String("name")
+	expires := command.String("expires")
+	partner, signature, err := plugin.NewPartnerCertificate(partnerKey, name, expires, releaseKey)
+	if err != nil {
+		return err
+	}
+
+	out := command.String("out")
+	if err = os.MkdirAll(out, 0o755); err != nil {
+		return err
+	}
+	if err = os.WriteFile(filepath.Join(out, plugin.PartnerFileName), partner, 0o644); err != nil {
+		return err
+	}
+	if err = os.WriteFile(filepath.Join(out, plugin.PartnerSignatureFileName), signature, 0o644); err != nil {
+		return err
+	}
+
+	if !isReleaseKey(releaseKey.ID()) {
+		fmt.Fprintf(os.Stderr, "warning: key %016X is not a release key of this build, hosts will ignore the certificate\n", releaseKey.ID())
+	}
+	validity := "until " + expires
+	if expires == "" {
+		validity = "with no expiry"
+	}
+	fmt.Printf("certified partner %s %s, signed with key %016X, wrote %s and %s into %s\n",
+		name, validity, releaseKey.ID(), plugin.PartnerFileName, plugin.PartnerSignatureFileName, out)
+	return nil
+}
+
+// isReleaseKey reports whether a key id belongs to a release key of this build.
+func isReleaseKey(keyID uint64) bool {
+	keys, err := pkgsign.ParseTrustedKeys(releasesign.TrustedPublicKeys())
+	if err != nil {
+		return false
+	}
+	_, ok := keys[keyID]
+	return ok
 }
 
 // loadSigningKey reads a minisign secret key file. An encrypted key is

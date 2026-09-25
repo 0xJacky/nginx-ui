@@ -237,8 +237,12 @@ func (mp *Marketplace) Sources() []string {
 }
 
 // Catalog fetches every configured source and merges them by id, first source
-// wins. Each source is cached for an hour unless refresh is set.
+// wins. Each source is cached for an hour unless refresh is set, which also
+// refreshes the partner keyring of the official source.
 func (mp *Marketplace) Catalog(ctx context.Context, refresh bool) ([]CatalogEntry, error) {
+	if refresh {
+		mp.manager.refreshPartners(ctx)
+	}
 	sources := mp.Sources()
 	merged := make([]CatalogEntry, 0, 32)
 	seen := make(map[string]struct{}, 32)
@@ -697,8 +701,8 @@ func (mp *Marketplace) decorate(entry *CatalogEntry) {
 	}
 }
 
-// runMaintenance is the daily job: refresh the catalog, tell the user about
-// pending updates and apply the automatic ones.
+// runMaintenance is the daily job: refresh the catalog and the partner
+// keyring, tell the user about pending updates and apply the automatic ones.
 func (mp *Marketplace) runMaintenance(ctx context.Context) {
 	if !settings.PluginSettings.Enabled || !settings.PluginSettings.MarketplaceEnabled {
 		return

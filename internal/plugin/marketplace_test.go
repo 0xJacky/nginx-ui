@@ -30,13 +30,15 @@ type catalogServer struct {
 	mu       sync.Mutex
 	document CatalogDocument
 	files    map[string][]byte
+	// requests counts the requests for every path besides the catalog.
+	requests map[string]int
 	hits     atomic.Int64
 }
 
 func newCatalogServer(t *testing.T) *catalogServer {
 	t.Helper()
 
-	server := &catalogServer{files: map[string][]byte{}}
+	server := &catalogServer{files: map[string][]byte{}, requests: map[string]int{}}
 	server.document = CatalogDocument{SchemaVersion: CatalogSchemaVersion, UpdatedAt: "2026-01-01T00:00:00Z"}
 
 	mux := http.NewServeMux()
@@ -50,6 +52,7 @@ func newCatalogServer(t *testing.T) *catalogServer {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		server.mu.Lock()
 		body, ok := server.files[r.URL.Path]
+		server.requests[r.URL.Path]++
 		server.mu.Unlock()
 		if !ok {
 			http.NotFound(w, r)
@@ -179,6 +182,11 @@ func useMarketplace(t *testing.T, sources ...string) {
 	settings.PluginSettings.AllowInsecureDownloadURL = true
 	settings.PluginSettings.DeveloperMode = true
 	settings.PluginSettings.TrustedPublicKeys = nil
+
+	// No test reaches the real partner keyring.
+	previousOfficial := officialSource
+	officialSource = ""
+	t.Cleanup(func() { officialSource = previousOfficial })
 }
 
 // encodeKey is the minisign text form of a public key.
@@ -208,16 +216,31 @@ func useReleaseKey(t *testing.T) *minisign.PrivateKey {
 	return &private
 }
 
-// usePartnerKey pins a test key as the only partner key, so the packages it
-// signs are verified.
-func usePartnerKey(t *testing.T) *minisign.PrivateKey {
+// usePartnerKey returns a key and a keyring that lists it as partner
+// "example", so the packages it signs are verified with that keyring.
+func usePartnerKey(t *testing.T) (*minisign.PrivateKey, *partnerKeyring) {
 	t.Helper()
 	public, private := newSigningKey(t)
-	encoded := encodeKey(t, public)
-	previous := partnerKeys
-	partnerKeys = func() []string { return []string{encoded} }
-	t.Cleanup(func() { partnerKeys = previous })
-	return &private
+	return &private, partnerKeyringOf(t, public)
+}
+
+// partnerKeyringOf builds a keyring listing keys as partners "example",
+// "example2" and so on, without the signature a fetched one carries.
+func partnerKeyringOf(t *testing.T, keys ...minisign.PublicKey) *partnerKeyring {
+	t.Helper()
+	keyring := &partnerKeyring{updatedAt: now(), revoked: map[string]struct{}{}}
+	for i, key := range keys {
+		name := "example"
+		if i > 0 {
+			name = fmt.Sprintf("example%d", i+1)
+		}
+		keyring.partners = append(keyring.partners, partnerCertificate{
+			Name:  name,
+			KeyID: fmt.Sprintf("%016X", key.ID()),
+			Key:   encodeKey(t, key),
+		})
+	}
+	return keyring
 }
 
 // keyID is the signer a key leaves on an installed plugin.
@@ -484,7 +507,8 @@ func TestMarketplaceInstallDerivesTheTrustFromTheSigner(t *testing.T) {
 	useMarketplace(t, server.catalogURL())
 	settings.PluginSettings.DeveloperMode = false
 
-	partner := usePartnerKey(t)
+	partner, keyring := usePartnerKey(t)
+	manager.setPartnerKeyring(keyring)
 	userPublic, user := newSigningKey(t)
 	trustKey(t, userPublic)
 	authorPublic, author := newSigningKey(t)
@@ -498,23 +522,26 @@ func TestMarketplaceInstallDerivesTheTrustFromTheSigner(t *testing.T) {
 		})
 
 	for id, want := range map[string]struct {
-		trust  string
-		signer string
+		trust   string
+		signer  string
+		partner string
 	}{
-		"com.example.partner": {TrustVerified, keyID(partner)},
-		"com.example.user":    {TrustCommunity, keyID(&user)},
-		"com.example.author":  {TrustCommunity, keyID(&author)},
+		"com.example.partner": {TrustVerified, keyID(partner), "example"},
+		"com.example.user":    {TrustCommunity, keyID(&user), ""},
+		"com.example.author":  {TrustCommunity, keyID(&author), ""},
 	} {
 		info, err := manager.Marketplace().Install(context.Background(), id, "", "", InstallOptions{})
 		require.NoError(t, err, id)
 		assert.Equal(t, want.trust, info.Trust, id)
 		assert.Equal(t, want.signer, info.Signer, id)
+		assert.Equal(t, want.partner, info.Partner, id)
 
 		// The trust is stored with the row, not recomputed.
 		row, err := query.Plugin.WithContext(context.Background()).Where(query.Plugin.PluginID.Eq(id)).First()
 		require.NoError(t, err)
 		assert.Equal(t, want.trust, row.Trust, id)
 		assert.Equal(t, want.signer, row.Signer, id)
+		assert.Equal(t, want.partner, row.Partner, id)
 	}
 }
 

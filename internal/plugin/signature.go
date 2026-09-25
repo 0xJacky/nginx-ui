@@ -13,12 +13,14 @@ import (
 	"path/filepath"
 	"slices"
 	"strings"
+	"time"
 
 	"aead.dev/minisign"
 	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
 	"github.com/0xJacky/Nginx-UI/internal/releasesign"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 // A package is signed by two files at its root: plugin.sums lists the sha256
@@ -30,7 +32,9 @@ const (
 )
 
 // Trust levels, derived from the key that signed a package. A catalog entry
-// declares one as well, which is only shown in the listing.
+// declares one as well, which is only shown in the listing. Verified comes
+// from a partner key: one a partner certificate in the package proves, or
+// one the signed partner keyring lists, see partners.go.
 const (
 	TrustOfficial  = "official"
 	TrustVerified  = "verified"
@@ -38,10 +42,11 @@ const (
 	TrustUnsigned  = "unsigned"
 )
 
-// The keys pinned in the binary, behind variables so the tests can swap them.
+// The release keys pinned in the binary and the clock the expiry checks use,
+// behind variables so the tests can swap them.
 var (
 	releaseKeys = releasesign.TrustedPublicKeys
-	partnerKeys = releasesign.PartnerPublicKeys
+	now         = time.Now
 )
 
 // packageTrust is what the embedded signature of a package proves.
@@ -52,6 +57,8 @@ type packageTrust struct {
 	// AuthorKey is the public key that verified a community signature, which
 	// a cluster push hands on to the node. Empty for any other trust.
 	AuthorKey string
+	// Partner is the partner name of a verified signature, empty otherwise.
+	Partner string
 }
 
 var unsignedTrust = packageTrust{Trust: TrustUnsigned}
@@ -78,26 +85,60 @@ type trustTier struct {
 
 // trustTiers lists the known keys from the highest trust down. authorKey is
 // the catalog key of the entry a package came from, empty on other paths.
-func trustTiers(authorKey string) []trustTier {
+// partners are the certificate and keyring keys of the verified tier.
+func trustTiers(authorKey string, partners []partnerCertificate, keyring *partnerKeyring) []trustTier {
 	community := slices.Clone(settings.PluginSettings.TrustedPublicKeys)
 	if strings.TrimSpace(authorKey) != "" {
 		community = append(community, authorKey)
 	}
-	return append(pinnedTiers(), trustTier{trust: TrustCommunity, keys: community})
+	return append(partnerTiers(partners, keyring), trustTier{trust: TrustCommunity, keys: community})
 }
 
-// pinnedTiers are the keys pinned in the binary, all the linter knows.
-func pinnedTiers() []trustTier {
+// partnerTiers are the release keys and the partner keys the keyring did not
+// revoke. Without the community keys it is all the linter knows.
+func partnerTiers(partners []partnerCertificate, keyring *partnerKeyring) []trustTier {
+	verified := make([]string, 0, len(partners))
+	for _, partner := range partners {
+		if !keyring.isRevoked(partner.KeyID) {
+			verified = append(verified, partner.Key)
+		}
+	}
 	return []trustTier{
 		{trust: TrustOfficial, keys: releaseKeys()},
-		{trust: TrustVerified, keys: partnerKeys()},
+		{trust: TrustVerified, keys: verified},
 	}
+}
+
+// packagePartners lists the partner keys for one extracted package: the key
+// of a valid certificate first, then the keyring keys. A certificate that
+// does not hold up is ignored with a debug log.
+func packagePartners(root string, keyring *partnerKeyring) []partnerCertificate {
+	partners := keyring.partnerKeys()
+	certificate, err := readPartnerCertificate(root, keyring)
+	if err != nil {
+		logger.Debugf("Ignore the plugin partner certificate: %v", err)
+		return partners
+	}
+	if certificate == nil {
+		return partners
+	}
+	return append([]partnerCertificate{*certificate}, partners...)
+}
+
+// partnerName is the name a partner key id was issued to.
+func partnerName(partners []partnerCertificate, keyID string) string {
+	for _, partner := range partners {
+		if partner.KeyID == keyID {
+			return partner.Name
+		}
+	}
+	return ""
 }
 
 // checkPackageTrust verifies the embedded signature of an extracted package
 // and applies the node policy and the caller's floor to the derived trust.
-func checkPackageTrust(root string, opts InstallOptions) (packageTrust, error) {
-	trust, err := verifyPackageSignature(root, opts.AuthorPublicKey)
+func checkPackageTrust(root string, opts InstallOptions, keyring *partnerKeyring) (packageTrust, error) {
+	trust, err := verifyPackageSignature(root, opts.AuthorPublicKey, keyring)
 	if err != nil {
 		return trust, err
 	}
@@ -120,8 +161,8 @@ func checkPackageTrust(root string, opts InstallOptions) (packageTrust, error) {
 // verifyPackageSignature derives the trust of an extracted package. Missing
 // signature files or an unknown signer make it unsigned. A signature a known
 // key does not verify, or sums that do not match the files, are refused with
-// ErrSignatureInvalid.
-func verifyPackageSignature(root, authorKey string) (packageTrust, error) {
+// ErrSignatureInvalid. keyring is the partner keyring, nil for none.
+func verifyPackageSignature(root, authorKey string, keyring *partnerKeyring) (packageTrust, error) {
 	sums, err := readRootFile(root, SumsFileName)
 	if err != nil {
 		return unsignedTrust, err
@@ -134,12 +175,16 @@ func verifyPackageSignature(root, authorKey string) (packageTrust, error) {
 		return unsignedTrust, nil
 	}
 
-	trust, err := signatureTrust(sums, signature, trustTiers(authorKey))
+	partners := packagePartners(root, keyring)
+	trust, err := signatureTrust(sums, signature, trustTiers(authorKey, partners, keyring))
 	if err != nil || trust.Trust == TrustUnsigned {
 		return unsignedTrust, err
 	}
 	if err = checkSums(root, sums); err != nil {
 		return unsignedTrust, cosy.WrapErrorWithParams(ErrSignatureInvalid, err.Error())
+	}
+	if trust.Trust == TrustVerified {
+		trust.Partner = partnerName(partners, trust.Signer)
 	}
 	return trust, nil
 }
