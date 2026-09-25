@@ -3,6 +3,7 @@ import type { PluginInfo, PluginManifest, PluginManifestI18n, WebappEntry, Webap
 import pluginApi from '@/api/plugin'
 import gettext from '@/gettext'
 import router from '@/routes'
+import { isLoopbackUrl } from './loopback'
 import { createRegistry } from './registry'
 import { satisfies } from './semver'
 import { takePendingPlugin } from './shared'
@@ -142,14 +143,22 @@ async function fetchDevEntry(url: string): Promise<{ entry: WebappEntry, manifes
 
   // Bundle and stylesheet live next to the manifest that points at them.
   const base = new URL(url, window.location.href)
+  const bundleUrl = webapp.bundle_path ? new URL(webapp.bundle_path, base).toString() : ''
+  const styleUrl = webapp.style_path ? new URL(webapp.style_path, base).toString() : undefined
+
+  // An absolute path in the manifest must not lead off the loopback host either.
+  for (const assetUrl of [bundleUrl, styleUrl]) {
+    if (assetUrl && !isLoopbackUrl(assetUrl))
+      throw new Error(`${assetUrl} is not a localhost address`)
+  }
 
   return {
     manifest,
     entry: {
       id: manifest.id,
       version: manifest.version ?? String(Date.now()),
-      bundle_url: webapp.bundle_path ? new URL(webapp.bundle_path, base).toString() : '',
-      style_url: webapp.style_path ? new URL(webapp.style_path, base).toString() : undefined,
+      bundle_url: bundleUrl,
+      style_url: styleUrl,
       shared: webapp.shared,
       pages: webapp.pages,
     },
@@ -207,6 +216,13 @@ export function usePluginLoader() {
     const url = store.devPluginUrl.trim()
     if (!url)
       return
+
+    // The URL is persisted, so a value stored before the check existed or
+    // written by hand must not load a remote script.
+    if (!isLoopbackUrl(url)) {
+      console.warn(`[plugin] dev plugin URL ${url} ignored, only localhost addresses are accepted`)
+      return
+    }
 
     try {
       const dev = await fetchDevEntry(url)
