@@ -13,8 +13,10 @@ import {
 import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { useWebSocketEventBusStore } from '@/pinia'
+import { useInstalledPlugin } from '../inventory'
 import PermissionList from '../PermissionList.vue'
 import { isCommunityTrust, trustPreset } from './trust'
+import TrustDowngradeAlert from './TrustDowngradeAlert.vue'
 
 const props = defineProps<{
   /** Entry to install. When absent it is fetched from pluginId. */
@@ -68,10 +70,12 @@ const requires = computed(() => release.value?.manifest?.requires ?? [])
 const trust = computed(() => trustPreset(entry.value?.trust))
 const showCommunityWarning = computed(() => Boolean(entry.value) && isCommunityTrust(entry.value?.trust))
 const isUpgrade = computed(() => Boolean(entry.value?.installed_version))
+// Looked up while the dialog is open, and only for an upgrade.
+const installedPlugin = useInstalledPlugin(() => (open.value && isUpgrade.value ? entry.value?.id : undefined))
 
 const phaseLabels: Record<PluginInstallStatus, () => string> = {
   downloading: () => $gettext('Downloading the package'),
-  verifying: () => $gettext('Verifying the signature'),
+  verifying: () => $gettext('Checking the package'),
   installing: () => $gettext('Installing'),
   done: () => $gettext('Done'),
   error: () => $gettext('Failed'),
@@ -282,6 +286,12 @@ onUnmounted(() => {
           <span class="break-all text-xs text-gray-500">{{ entry.source }}</span>
         </ADescriptionsItem>
       </ADescriptions>
+
+      <TrustDowngradeAlert
+        class="mt-4"
+        :next="entry?.trust"
+        :installed="installedPlugin?.trust"
+      />
 
       <AAlert
         v-if="showCommunityWarning"
