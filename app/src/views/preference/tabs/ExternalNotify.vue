@@ -81,7 +81,7 @@ async function handleCopy(record: ExternalNotify) {
 <template>
   <StdCurd
     ref="table"
-    :title="$gettext('External Notify')"
+    hide-title
     :columns="columns"
     :api="externalNotify"
     :custom-query-params="{

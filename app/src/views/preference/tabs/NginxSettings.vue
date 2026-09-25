@@ -2,11 +2,13 @@
 import type { NginxControlMode, NginxSettings } from '@/api/settings'
 import { ArrowRightOutlined, CloseOutlined, EditOutlined, SaveOutlined } from '@antdv-next/icons'
 import settingsApi from '@/api/settings'
+import { SettingPanel, SettingRow } from '@/components/SettingPanel'
 import { TwoFACancelledError, use2FAModal } from '@/components/TwoFA'
 import {
   applyNginxControlSettings,
   buildNginxControlPayload,
   cloneNginxSettings,
+  NGINX_CONTROL_PATHS,
   resolveNginxControlMode,
 } from '../nginxControl'
 import useSystemSettingsStore from '../store'
@@ -131,6 +133,7 @@ async function saveControlSettings() {
       buildNginxControlPayload(data.value.nginx, selectedMode.value, containerName.value),
     )
     applyNginxControlSettings(data.value.nginx, saved)
+    systemSettingsStore.markSaved(NGINX_CONTROL_PATHS)
     selectedMode.value = saved.mode
     containerName.value = saved.container_name
     controlSnapshot = null
@@ -165,166 +168,230 @@ async function openSSHSetup() {
 </script>
 
 <template>
-  <AForm layout="vertical" class="max-w-150">
-    <AFormItem :label="$gettext('Stub Status Port')">
-      <AInputNumber v-model:value="data.nginx.stub_status_port" class="w-30" />
-    </AFormItem>
-    <AFormItem :label="$gettext('Maintenance host')">
-      <AInput
-        v-model:value="data.nginx.maintenance_host"
-        :placeholder="$gettext('http://127.0.0.1:9000')"
-      />
-      <div class="text-secondary mt-1">
-        {{ $gettext('Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty to use this Nginx UI instance.') }}
-      </div>
-    </AFormItem>
-    <AFormItem :label="$gettext('Maintenance bypass IP')">
-      <AInput
-        v-model:value="data.nginx.maintenance_bypass_ip"
-        :placeholder="$gettext('203.0.113.10')"
-        class="max-w-100"
-      />
-      <div class="text-secondary mt-1">
-        {{ $gettext('Requests from this IPv4 or IPv6 address continue to use the original site while maintenance mode is active.') }}
-      </div>
-    </AFormItem>
-    <AFormItem :label="$gettext('Maintenance template (filename only)')">
-      <AInput
-        v-model:value="data.nginx.maintenance_template"
-        :placeholder="$gettext('maintenance.html')"
-        class="max-w-100"
-      />
-      <div class="text-secondary mt-1">
-        {{ $gettext('Mounted directory') }}: {{ data.nginx.maintenance_dir }}
-      </div>
-      <div class="text-secondary mt-1">
-        {{ $gettext('The file named <site name>.<filename> is used first; if it does not exist, the generic <filename> is used; if neither exists, the built-in Nginx UI maintenance page is used.') }}
-      </div>
-    </AFormItem>
-    <AFormItem :label="$gettext('Nginx Access Log Path')">
-      {{ data.nginx.access_log_path }}
-    </AFormItem>
-    <AFormItem :label="$gettext('Nginx Error Log Path')">
-      {{ data.nginx.error_log_path }}
-    </AFormItem>
-    <AFormItem :label="$gettext('Nginx Configurations Directory')">
-      {{ data.nginx.config_dir }}
-    </AFormItem>
-    <AFormItem :label="$gettext('Nginx Configuration Path')">
-      <p>{{ data.nginx.config_path }}</p>
-    </AFormItem>
-    <AFormItem :label="$gettext('Nginx Log Directory Whitelist')">
-      <div
-        v-for="dir in data.nginx.log_dir_white_list"
-        :key="dir"
-        class="mb-2"
+  <div>
+    <SettingPanel :title="$gettext('Status')">
+      <SettingRow
+        :title="$gettext('Stub Status Port')"
+        :description="$gettext('Local port used to read Nginx connection statistics.')"
+        path="nginx.stub_status_port"
       >
-        {{ dir }}
-      </div>
-    </AFormItem>
-    <AFormItem :label="$gettext('Nginx PID Path')">
-      {{ data.nginx.pid_path }}
-    </AFormItem>
-    <AFormItem :label="$gettext('Nginx Test Config Command')">
-      <p>{{ data.nginx.test_config_cmd }}</p>
-    </AFormItem>
-    <AFormItem :label="$gettext('Nginx Reload Command')">
-      {{ data.nginx.reload_cmd }}
-    </AFormItem>
-    <AFormItem :label="$gettext('Nginx Restart Command')">
-      {{ data.nginx.restart_cmd }}
-    </AFormItem>
-    <AFormItem :label="$gettext('Nginx Control Mode')">
-      <div v-if="!isEditingControl" class="flex flex-wrap items-center gap-2">
-        <ATag v-if="currentMode === 'host_via_ssh'" color="orange">
-          {{ $gettext('Host via SSH') }}
-        </ATag>
-        <ATag v-else-if="currentMode === 'external_container'" color="blue">
-          {{ $gettext('External Docker Container') }}
-        </ATag>
-        <ATag v-else color="green">
-          {{ $gettext('Local') }}
-        </ATag>
-        <span v-if="currentMode === 'external_container'">
-          {{ data.nginx.container_name }}
-        </span>
-        <ATag v-if="currentMode === 'host_via_ssh' && data.nginx.host_access_mode === 'sftp'" color="blue">
-          {{ $gettext('Compatibility (SFTP)') }}
-        </ATag>
-        <ATag v-else-if="currentMode === 'host_via_ssh' && data.nginx.host_access_mode === 'mounted'" color="green">
-          {{ $gettext('High performance (mounted)') }}
-        </ATag>
-        <AButton size="small" @click="beginControlEdit">
-          <EditOutlined />
-          {{ $gettext('Edit') }}
-        </AButton>
-      </div>
-      <AAlert
-        v-if="!isEditingControl && currentMode === 'host_via_ssh' && data.nginx.host_access_mode === 'sftp'"
-        type="info"
-        show-icon
-        class="mt-3"
-        :title="$gettext('High-performance mode is available')"
-        :description="$gettext('Compatibility mode works entirely over SSH. For lower file-access latency, configure bind mounts and switch to high-performance mode after recreating the container.')"
+        <AInputNumber v-model:value="data.nginx.stub_status_port" class="w-30" />
+      </SettingRow>
+    </SettingPanel>
+
+    <SettingPanel :title="$gettext('Maintenance Page')">
+      <SettingRow
+        :title="$gettext('Maintenance host')"
+        :description="$gettext('Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty to use this Nginx UI instance.')"
+        path="nginx.maintenance_host"
       >
-        <template #action>
-          <AButton size="small" @click="openSSHSetup">
-            {{ $gettext('Review high-performance setup') }}
+        <AInput
+          v-model:value="data.nginx.maintenance_host"
+          :placeholder="$gettext('http://127.0.0.1:9000')"
+          class="w-60"
+        />
+      </SettingRow>
+      <SettingRow
+        :title="$gettext('Maintenance bypass IP')"
+        :description="$gettext('Requests from this IPv4 or IPv6 address continue to use the original site while maintenance mode is active.')"
+        path="nginx.maintenance_bypass_ip"
+      >
+        <AInput
+          v-model:value="data.nginx.maintenance_bypass_ip"
+          :placeholder="$gettext('203.0.113.10')"
+          class="w-60"
+        />
+      </SettingRow>
+      <SettingRow
+        :title="$gettext('Maintenance template (filename only)')"
+        path="nginx.maintenance_template"
+      >
+        <template #description>
+          <div>
+            {{ $gettext('The file named <site name>.<filename> is used first; if it does not exist, the generic <filename> is used; if neither exists, the built-in Nginx UI maintenance page is used.') }}
+          </div>
+          <div>
+            {{ $gettext('Mounted directory') }}: {{ data.nginx.maintenance_dir }}
+          </div>
+        </template>
+        <AInput
+          v-model:value="data.nginx.maintenance_template"
+          :placeholder="$gettext('maintenance.html')"
+          class="w-60"
+        />
+      </SettingRow>
+    </SettingPanel>
+
+    <SettingPanel :title="$gettext('Control Mode')">
+      <SettingRow
+        :title="$gettext('Nginx Control Mode')"
+        :description="$gettext('How Nginx UI reaches the Nginx it manages.')"
+        path="nginx.host_mode"
+        stacked
+      >
+        <div v-if="!isEditingControl" class="flex flex-wrap items-center gap-2">
+          <ATag v-if="currentMode === 'host_via_ssh'" color="orange">
+            {{ $gettext('Host via SSH') }}
+          </ATag>
+          <ATag v-else-if="currentMode === 'external_container'" color="blue">
+            {{ $gettext('External Docker Container') }}
+          </ATag>
+          <ATag v-else color="green">
+            {{ $gettext('Local') }}
+          </ATag>
+          <span v-if="currentMode === 'external_container'">
+            {{ data.nginx.container_name }}
+          </span>
+          <ATag v-if="currentMode === 'host_via_ssh' && data.nginx.host_access_mode === 'sftp'" color="blue">
+            {{ $gettext('Compatibility (SFTP)') }}
+          </ATag>
+          <ATag v-else-if="currentMode === 'host_via_ssh' && data.nginx.host_access_mode === 'mounted'" color="green">
+            {{ $gettext('High performance (mounted)') }}
+          </ATag>
+          <AButton size="small" @click="beginControlEdit">
+            <EditOutlined />
+            {{ $gettext('Edit') }}
+          </AButton>
+        </div>
+        <AAlert
+          v-if="!isEditingControl && currentMode === 'host_via_ssh' && data.nginx.host_access_mode === 'sftp'"
+          type="info"
+          show-icon
+          class="mt-3"
+          :title="$gettext('High-performance mode is available')"
+          :description="$gettext('Compatibility mode works entirely over SSH. For lower file-access latency, configure bind mounts and switch to high-performance mode after recreating the container.')"
+        >
+          <template #action>
+            <AButton size="small" @click="openSSHSetup">
+              {{ $gettext('Review high-performance setup') }}
+              <ArrowRightOutlined />
+            </AButton>
+          </template>
+        </AAlert>
+        <template v-if="isEditingControl">
+          <ARadioGroup
+            :value="selectedMode"
+            @update:value="onModeChange"
+          >
+            <ARadio value="local">
+              {{ $gettext('Local / Bundled') }}
+            </ARadio>
+            <ARadio value="external_container">
+              {{ $gettext('External Container') }}
+            </ARadio>
+            <ARadio value="host_via_ssh">
+              {{ $gettext('Host via SSH') }}
+            </ARadio>
+          </ARadioGroup>
+        </template>
+        <div v-if="isEditingControl && selectedMode === 'host_via_ssh'" class="mt-3">
+          <AButton type="primary" @click="openSSHSetup">
+            {{ $gettext('Open SSH setup wizard') }}
             <ArrowRightOutlined />
           </AButton>
-        </template>
-      </AAlert>
-      <template v-if="isEditingControl">
-        <ARadioGroup
-          :value="selectedMode"
-          @update:value="onModeChange"
+        </div>
+        <SettingRow
+          v-if="isEditingControl && selectedMode === 'external_container'"
+          :title="$gettext('External Docker Container')"
+          :error="hasContainerNameError ? $gettext('This field is required') : undefined"
+          class="mt-3"
         >
-          <ARadio value="local">
-            {{ $gettext('Local / Bundled') }}
-          </ARadio>
-          <ARadio value="external_container">
-            {{ $gettext('External Container') }}
-          </ARadio>
-          <ARadio value="host_via_ssh">
-            {{ $gettext('Host via SSH') }}
-          </ARadio>
-        </ARadioGroup>
-      </template>
-      <div v-if="isEditingControl && selectedMode === 'host_via_ssh'" class="mt-3">
-        <AButton type="primary" @click="openSSHSetup">
-          {{ $gettext('Open SSH setup wizard') }}
-          <ArrowRightOutlined />
-        </AButton>
-      </div>
-    </AFormItem>
+          <AInput
+            v-model:value="containerName"
+            placeholder="nginx"
+            :status="hasContainerNameError ? 'error' : undefined"
+            class="w-60"
+          />
+        </SettingRow>
+        <div v-if="isEditingControl" class="mt-3 flex flex-wrap gap-2">
+          <AButton
+            v-if="selectedMode !== 'host_via_ssh'"
+            type="primary"
+            :loading="isSavingControl"
+            @click="saveControlSettings"
+          >
+            <SaveOutlined />
+            {{ $gettext('Save') }}
+          </AButton>
+          <AButton :disabled="isSavingControl" @click="cancelControlEdit">
+            <CloseOutlined />
+            {{ $gettext('Cancel') }}
+          </AButton>
+        </div>
+      </SettingRow>
+    </SettingPanel>
 
-    <AFormItem
-      v-if="isEditingControl && selectedMode === 'external_container'"
-      :label="$gettext('External Docker Container')"
-      :validate-status="hasContainerNameError ? 'error' : undefined"
-      :help="hasContainerNameError ? $gettext('This field is required') : undefined"
-    >
-      <AInput v-model:value="containerName" placeholder="nginx" class="max-w-100" />
-    </AFormItem>
-
-    <div v-if="isEditingControl" class="mb-6 flex flex-wrap gap-2">
-      <AButton
-        v-if="selectedMode !== 'host_via_ssh'"
-        type="primary"
-        :loading="isSavingControl"
-        @click="saveControlSettings"
+    <SettingPanel :title="$gettext('Paths and Commands')">
+      <SettingRow
+        :title="$gettext('Nginx Access Log Path')"
+        path="nginx.access_log_path"
+        config-file="nginx"
+        :value="data.nginx.access_log_path"
+      />
+      <SettingRow
+        :title="$gettext('Nginx Error Log Path')"
+        path="nginx.error_log_path"
+        config-file="nginx"
+        :value="data.nginx.error_log_path"
+      />
+      <SettingRow
+        :title="$gettext('Nginx Configurations Directory')"
+        path="nginx.config_dir"
+        config-file="nginx"
+        :value="data.nginx.config_dir"
+      />
+      <SettingRow
+        :title="$gettext('Nginx Configuration Path')"
+        path="nginx.config_path"
+        config-file="nginx"
+        :value="data.nginx.config_path"
+      />
+      <SettingRow
+        v-if="data.nginx.log_dir_white_list?.length"
+        :title="$gettext('Nginx Log Directory Whitelist')"
+        path="nginx.log_dir_white_list"
+        config-file="nginx"
       >
-        <SaveOutlined />
-        {{ $gettext('Save') }}
-      </AButton>
-      <AButton :disabled="isSavingControl" @click="cancelControlEdit">
-        <CloseOutlined />
-        {{ $gettext('Cancel') }}
-      </AButton>
-    </div>
-  </AForm>
+        <div class="text-right text-gray-500">
+          <div
+            v-for="dir in data.nginx.log_dir_white_list"
+            :key="dir"
+          >
+            {{ dir }}
+          </div>
+        </div>
+      </SettingRow>
+      <SettingRow
+        v-else
+        :title="$gettext('Nginx Log Directory Whitelist')"
+        path="nginx.log_dir_white_list"
+        config-file="nginx"
+        :value="null"
+      />
+      <SettingRow
+        :title="$gettext('Nginx PID Path')"
+        path="nginx.pid_path"
+        config-file="nginx"
+        :value="data.nginx.pid_path"
+      />
+      <SettingRow
+        :title="$gettext('Nginx Test Config Command')"
+        path="nginx.test_config_cmd"
+        config-file="nginx"
+        :value="data.nginx.test_config_cmd"
+      />
+      <SettingRow
+        :title="$gettext('Nginx Reload Command')"
+        path="nginx.reload_cmd"
+        config-file="nginx"
+        :value="data.nginx.reload_cmd"
+      />
+      <SettingRow
+        :title="$gettext('Nginx Restart Command')"
+        path="nginx.restart_cmd"
+        config-file="nginx"
+        :value="data.nginx.restart_cmd"
+      />
+    </SettingPanel>
+  </div>
 </template>
-
-<style lang="less" scoped>
-
-</style>

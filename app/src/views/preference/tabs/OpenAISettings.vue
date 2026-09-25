@@ -2,9 +2,10 @@
 import type { SelectProps } from 'antdv-next'
 import type { LLMChatModel } from '@/api/llm'
 import { DownOutlined, ReloadOutlined, RightOutlined } from '@antdv-next/icons'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isEqual } from 'lodash'
 import llm from '@/api/llm'
 import { SensitiveInput } from '@/components/SensitiveString'
+import { SETTING_ROW_CONTEXT, SettingPanel, SettingRow } from '@/components/SettingPanel'
 import { LLM_PROVIDER_BASE_URLS, LLM_PROVIDERS, suggestThinkingPreset } from '@/constants/llm'
 import { translateError } from '@/lib/http/error'
 import { normalizeHttpError } from '@/lib/http/normalizeError'
@@ -19,9 +20,16 @@ const { data, errors, isLoaded } = storeToRefs(systemSettingsStore)
 // The models offered in the assistant. They are stored apart from the
 // settings file and saved with this tab.
 const chatModels = ref<LLMChatModel[]>([])
+// Copy of the models as loaded or last saved, for the unsaved changes bar.
+const savedChatModels = ref<LLMChatModel[]>([])
+
+function setSavedChatModels(models: LLMChatModel[]) {
+  chatModels.value = models
+  savedChatModels.value = cloneDeep(models)
+}
 
 llm.get_chat_models().then(r => {
-  chatModels.value = r.models ?? []
+  setSavedChatModels(r.models ?? [])
 })
 
 const chatModelNames = computed({
@@ -51,15 +59,22 @@ const defaultModelOptions = computed(() => chatModelNames.value.map(name => ({
   value: name,
 })))
 
-onScopeDispose(systemSettingsStore.registerTabSaver('openai', async () => {
-  try {
-    const r = await llm.save_chat_models(chatModels.value)
-    chatModels.value = r.models ?? []
-    return undefined
-  }
-  catch (err) {
-    return translateError(normalizeHttpError(err))
-  }
+onScopeDispose(systemSettingsStore.registerTabSaver('openai', {
+  path: 'openai.chat_models',
+  isDirty: () => !isEqual(chatModels.value, savedChatModels.value),
+  discard: () => {
+    chatModels.value = cloneDeep(savedChatModels.value)
+  },
+  save: async () => {
+    try {
+      const r = await llm.save_chat_models(chatModels.value)
+      setSavedChatModels(r.models ?? [])
+      return undefined
+    }
+    catch (err) {
+      return translateError(normalizeHttpError(err))
+    }
+  },
 }))
 
 const openai = computed(() => data.value?.openai)
@@ -109,6 +124,13 @@ watch(hasAdvancedErrors, hasErrors => {
 }, { immediate: true })
 watch(() => data.value?.openai.proxy, proxy => {
   if (proxy)
+    isAdvancedOpen.value = true
+}, { immediate: true })
+
+// Open the advanced rows when the settings search points at one of them.
+const settingRowContext = inject(SETTING_ROW_CONTEXT, undefined)
+watch(() => settingRowContext?.highlightedPath.value, path => {
+  if (path === 'openai.proxy' || path === 'openai.api_type')
     isAdvancedOpen.value = true
 }, { immediate: true })
 
@@ -250,165 +272,135 @@ watch(
 </script>
 
 <template>
-  <AForm layout="vertical" class="max-w-150">
-    <h3 class="mb-4 mt-0 text-base font-medium">
-      {{ $gettext('Connection') }}
-    </h3>
-    <AFormItem
-      :label="$gettext('Provider')"
-      :validate-status="errors?.openai?.provider ? 'error' : ''"
-    >
-      <ASelect
-        v-model:value="data.openai.provider"
-        :options="providerOptions"
-        class="max-w-100"
-      />
-    </AFormItem>
-    <AFormItem
-      :label="$gettext('API Base Url')"
-      :validate-status="errors?.openai?.base_url ? 'error' : ''"
-      :help="baseUrlHelp"
-    >
-      <AAutoComplete
-        v-model:value="data.openai.base_url"
-        :placeholder="baseUrlPlaceholder"
-        :options="baseUrlOptions"
-        :filter-option="filterBaseUrlOption"
-        :default-active-first-option="false"
-      />
-    </AFormItem>
-    <AAlert
-      v-if="selectedProviderPreset?.endpoints?.length"
-      type="info"
-      show-icon
-      class="mb-6"
-    >
-      <template #title>
-        {{ $gettext('Regional endpoints') }}
-      </template>
-      <template #description>
-        <div
-          v-for="endpoint in selectedProviderPreset.endpoints"
-          :key="endpoint.region"
-          class="mb-1 last:mb-0"
-        >
-          <strong>{{ formatRegion(endpoint.region) }}:</strong>
-          OpenAI-compatible: {{ endpoint.openaiBaseUrl }} ·
-          Anthropic-compatible: {{ endpoint.anthropicBaseUrl }} ·
-          <a
-            :href="endpoint.docsUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {{ $gettext('Documentation') }}
-          </a>
-        </div>
-      </template>
-    </AAlert>
-    <AFormItem
-      :label="$gettext('API Token')"
-      :validate-status="errors?.openai?.token || discoveryStatus === 'unauthorized' ? 'error' : ''"
-      :help="errors?.openai?.token === 'safety_text'
-        ? $gettext('Token is not valid')
-        : ''"
-    >
-      <SensitiveInput
-        v-model="data.openai.token"
-        path="openai.token"
-      />
-    </AFormItem>
-    <AAlert
-      v-if="discoveryAlert"
-      :type="discoveryAlert.type"
-      :title="discoveryAlert.title"
-      :description="discoveryAlert.description"
-      show-icon
-      class="mb-4"
-    >
-      <template
-        v-if="discoveryStatus !== 'missing_token'"
-        #action
-      >
-        <AButton
-          size="small"
-          type="link"
-          :loading="discoveryStatus === 'loading'"
-          @click="refreshModels"
-        >
-          <template #icon>
-            <ReloadOutlined />
-          </template>
-          {{ discoveryStatus === 'success' ? $gettext('Refresh') : $gettext('Retry') }}
-        </AButton>
-      </template>
-    </AAlert>
-    <AButton
-      type="link"
-      class="mb-4 px-0"
-      @click="isAdvancedOpen = !isAdvancedOpen"
-    >
-      <template #icon>
-        <DownOutlined v-if="isAdvancedOpen" />
-        <RightOutlined v-else />
-      </template>
-      {{ $gettext('Advanced') }}
-    </AButton>
-    <div v-show="isAdvancedOpen">
-      <AFormItem
-        :label="$gettext('API Proxy')"
-        :validate-status="errors?.openai?.proxy ? 'error' : ''"
-        :help="errors?.openai?.proxy === 'url'
-          ? $gettext('The url is invalid.')
-          : ''"
-      >
-        <AInput
-          v-model:value="data.openai.proxy"
-          placeholder="http://127.0.0.1:1087"
-        />
-      </AFormItem>
-      <AFormItem
-        :label="$gettext('API Type')"
-        :validate-status="errors?.openai?.api_type ? 'error' : ''"
+  <div v-if="data?.openai">
+    <SettingPanel :title="$gettext('Connection')">
+      <SettingRow
+        :title="$gettext('Provider')"
+        path="openai.provider"
       >
         <ASelect
-          v-model:value="data.openai.api_type"
-          :options="apiTypeOptions"
-          class="max-w-100"
+          v-model:value="data.openai.provider"
+          :options="providerOptions"
+          :status="errors?.openai?.provider ? 'error' : undefined"
+          class="w-60"
         />
-      </AFormItem>
-    </div>
+      </SettingRow>
+      <SettingRow
+        :title="$gettext('API Base Url')"
+        :description="baseUrlHelp"
+        path="openai.base_url"
+        stacked
+      >
+        <AAutoComplete
+          v-model:value="data.openai.base_url"
+          :placeholder="baseUrlPlaceholder"
+          :options="baseUrlOptions"
+          :filter-option="filterBaseUrlOption"
+          :default-active-first-option="false"
+          :status="errors?.openai?.base_url ? 'error' : undefined"
+          class="w-full"
+        />
+      </SettingRow>
+      <AAlert
+        v-if="selectedProviderPreset?.endpoints?.length"
+        type="info"
+        show-icon
+        class="mb-3"
+      >
+        <template #title>
+          {{ $gettext('Regional endpoints') }}
+        </template>
+        <template #description>
+          <div
+            v-for="endpoint in selectedProviderPreset.endpoints"
+            :key="endpoint.region"
+            class="mb-1 last:mb-0"
+          >
+            <strong>{{ formatRegion(endpoint.region) }}:</strong>
+            OpenAI-compatible: {{ endpoint.openaiBaseUrl }} ·
+            Anthropic-compatible: {{ endpoint.anthropicBaseUrl }} ·
+            <a
+              :href="endpoint.docsUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ $gettext('Documentation') }}
+            </a>
+          </div>
+        </template>
+      </AAlert>
+      <SettingRow
+        :title="$gettext('API Token')"
+        path="openai.token"
+        :error="errors?.openai?.token === 'safety_text' ? $gettext('Token is not valid') : undefined"
+      >
+        <SensitiveInput
+          v-model="data.openai.token"
+          path="openai.token"
+          class="w-80"
+        />
+      </SettingRow>
+      <AAlert
+        v-if="discoveryAlert"
+        :type="discoveryAlert.type"
+        :title="discoveryAlert.title"
+        :description="discoveryAlert.description"
+        show-icon
+        class="mb-3"
+      >
+        <template
+          v-if="discoveryStatus !== 'missing_token'"
+          #action
+        >
+          <AButton
+            size="small"
+            type="link"
+            :loading="discoveryStatus === 'loading'"
+            @click="refreshModels"
+          >
+            <template #icon>
+              <ReloadOutlined />
+            </template>
+            {{ discoveryStatus === 'success' ? $gettext('Refresh') : $gettext('Retry') }}
+          </AButton>
+        </template>
+      </AAlert>
+    </SettingPanel>
 
-    <h3 class="mb-4 mt-2 text-base font-medium">
-      {{ $gettext('Models') }}
-    </h3>
-    <AFormItem
-      :label="$gettext('Assistant models')"
-      :help="$gettext('The models to choose from in the assistant.')"
-    >
-      <LLMModelSelect
-        v-model:value="chatModelNames"
-        multiple
-        :models="discoveredModels"
-        :presets="selectedProviderPreset?.models"
-        :loading="discoveryStatus === 'loading'"
-        :placeholder="$gettext('Choose one or more models')"
-      />
-    </AFormItem>
-    <AFormItem
-      :label="$gettext('Default model')"
-      :validate-status="errors?.openai?.model ? 'error' : ''"
-      :help="modelHelp || $gettext('Used for new chats, chat titles and, unless set below, code completion.')"
-    >
-      <ASelect
-        v-model:value="data.openai.model"
-        :options="defaultModelOptions"
-        :disabled="!defaultModelOptions.length"
-        :placeholder="$gettext('Choose the assistant models first')"
-        class="max-w-100"
-      />
+    <SettingPanel :title="$gettext('Models')">
+      <SettingRow
+        :title="$gettext('Assistant models')"
+        :description="$gettext('The models to choose from in the assistant.')"
+        path="openai.chat_models"
+        stacked
+      >
+        <LLMModelSelect
+          v-model:value="chatModelNames"
+          multiple
+          :models="discoveredModels"
+          :presets="selectedProviderPreset?.models"
+          :loading="discoveryStatus === 'loading'"
+          :placeholder="$gettext('Choose one or more models')"
+        />
+      </SettingRow>
+      <SettingRow
+        :title="$gettext('Default model')"
+        :description="$gettext('Used for new chats, chat titles and, unless set below, code completion.')"
+        path="openai.model"
+        :error="modelHelp || undefined"
+      >
+        <ASelect
+          v-model:value="data.openai.model"
+          :options="defaultModelOptions"
+          :disabled="!defaultModelOptions.length"
+          :placeholder="$gettext('Choose the assistant models first')"
+          :status="errors?.openai?.model ? 'error' : undefined"
+          class="w-60"
+        />
+      </SettingRow>
       <div
         v-if="selectedModelCapabilities.length"
-        class="mt-2 flex flex-wrap gap-1"
+        class="flex flex-wrap gap-1 pb-3"
       >
         <ATag
           v-for="capability in selectedModelCapabilities"
@@ -418,42 +410,86 @@ watch(
           {{ capability }}
         </ATag>
       </div>
-    </AFormItem>
-    <AFormItem
-      v-if="chatModels.length"
-      :label="$gettext('Thinking')"
-      :help="$gettext('How each model switches its thinking levels. Pick the convention of your provider, or edit the request fields.')"
-    >
-      <LLMChatModelThinking v-model:models="chatModels" />
-    </AFormItem>
-    <AFormItem
-      :label="$gettext('Enable Code Completion')"
-    >
-      <ASwitch v-model:checked="data.openai.enable_code_completion" />
-    </AFormItem>
-    <AFormItem
-      v-if="data.openai.enable_code_completion"
-      :label="$gettext('Code Completion Model')"
-      :validate-status="errors?.openai?.code_completion_model ? 'error' : ''"
-      :help="errors?.openai?.code_completion_model === 'safety_text'
-        ? $gettext('The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
-        : $gettext('The model used for code completion, if not set, the chat model will be used.')"
-    >
-      <LLMModelSelect
-        v-model:value="data.openai.code_completion_model"
-        :models="discoveredModels"
-        :presets="selectedProviderPreset?.models"
-        :loading="discoveryStatus === 'loading'"
-        :placeholder="data.openai.model
-          ? $gettext('Same as the chat model (%{model})', { model: data.openai.model })
-          : $gettext('Same as the chat model')"
-        :status="errors?.openai?.code_completion_model ? 'error' : ''"
-        allow-clear
-      />
-    </AFormItem>
-  </AForm>
+      <SettingRow
+        v-if="chatModels.length"
+        :title="$gettext('Thinking')"
+        :description="$gettext('How each model switches its thinking levels. Pick the convention of your provider, or edit the request fields.')"
+        path="openai.thinking"
+        stacked
+      >
+        <LLMChatModelThinking v-model:models="chatModels" />
+      </SettingRow>
+    </SettingPanel>
+
+    <SettingPanel :title="$gettext('Code Completion')">
+      <SettingRow
+        :title="$gettext('Enable Code Completion')"
+        path="openai.enable_code_completion"
+      >
+        <ASwitch v-model:checked="data.openai.enable_code_completion" />
+      </SettingRow>
+      <SettingRow
+        v-if="data.openai.enable_code_completion"
+        :title="$gettext('Code Completion Model')"
+        :description="$gettext('The model used for code completion, if not set, the chat model will be used.')"
+        path="openai.code_completion_model"
+        :error="errors?.openai?.code_completion_model === 'safety_text'
+          ? $gettext('The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
+          : undefined"
+        stacked
+      >
+        <LLMModelSelect
+          v-model:value="data.openai.code_completion_model"
+          :models="discoveredModels"
+          :presets="selectedProviderPreset?.models"
+          :loading="discoveryStatus === 'loading'"
+          :placeholder="data.openai.model
+            ? $gettext('Same as the chat model (%{model})', { model: data.openai.model })
+            : $gettext('Same as the chat model')"
+          :status="errors?.openai?.code_completion_model ? 'error' : ''"
+          allow-clear
+        />
+      </SettingRow>
+    </SettingPanel>
+
+    <SettingPanel>
+      <template #title>
+        <AButton
+          type="link"
+          class="px-0"
+          @click="isAdvancedOpen = !isAdvancedOpen"
+        >
+          <template #icon>
+            <DownOutlined v-if="isAdvancedOpen" />
+            <RightOutlined v-else />
+          </template>
+          {{ $gettext('Advanced') }}
+        </AButton>
+      </template>
+      <template v-if="isAdvancedOpen">
+        <SettingRow
+          :title="$gettext('API Proxy')"
+          path="openai.proxy"
+          :error="errors?.openai?.proxy === 'url' ? $gettext('The url is invalid.') : undefined"
+        >
+          <AInput
+            v-model:value="data.openai.proxy"
+            placeholder="http://127.0.0.1:1087"
+            class="w-80"
+          />
+        </SettingRow>
+        <SettingRow
+          :title="$gettext('API Type')"
+          path="openai.api_type"
+        >
+          <ASelect
+            v-model:value="data.openai.api_type"
+            :options="apiTypeOptions"
+            :status="errors?.openai?.api_type ? 'error' : undefined"
+            class="w-60"
+          />
+        </SettingRow>
+      </template>
+    </SettingPanel>
+  </div>
 </template>
-
-<style lang="less" scoped>
-
-</style>
