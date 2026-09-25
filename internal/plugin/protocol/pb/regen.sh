@@ -1,14 +1,14 @@
 #!/bin/sh
-# Copies the generated contract package from the nginx-ui-plugin-spec
+# Copies the generated contract package from the plugin-spec
 # repository, which is the source of truth. The files are verbatim copies.
 #
 # Usage: ./regen.sh [--check]
 #   --check  only report files that differ from the spec repository
-# SPEC_DIR overrides the path of the nginx-ui-plugin-spec checkout.
+# SPEC_DIR overrides the path of the plugin-spec checkout.
 set -eu
 
 here=$(cd "$(dirname "$0")" && pwd)
-spec=${SPEC_DIR:-$here/../../../../../nginx-ui-plugin-spec}
+spec=${SPEC_DIR:-$here/../../../../../plugin-spec}
 if ! src=$(cd "$spec/gen/go/nginxui/plugin/v1" 2>/dev/null && pwd); then
 	echo "regen.sh: $spec/gen/go/nginxui/plugin/v1 not found, set SPEC_DIR" >&2
 	exit 1

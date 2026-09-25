@@ -256,7 +256,7 @@ const file_nginxui_plugin_v1_notify_proto_rawDesc = "" +
 	"\x16NotifyValidateResponse2\xe4\x01\n" +
 	"\x06Notify\x12d\n" +
 	"\x04Send\x12$.nginxui.plugin.v1.NotifySendRequest\x1a%.nginxui.plugin.v1.NotifySendResponse\"\x0f\xaa\xb8\x19\vnotify.send\x12t\n" +
-	"\bValidate\x12(.nginxui.plugin.v1.NotifyValidateRequest\x1a).nginxui.plugin.v1.NotifyValidateResponse\"\x13\xaa\xb8\x19\x0fnotify.validateBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\bValidate\x12(.nginxui.plugin.v1.NotifyValidateRequest\x1a).nginxui.plugin.v1.NotifyValidateResponse\"\x13\xaa\xb8\x19\x0fnotify.validateBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_notify_proto_rawDescOnce sync.Once

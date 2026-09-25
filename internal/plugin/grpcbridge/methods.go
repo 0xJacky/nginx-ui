@@ -1,5 +1,5 @@
 // Package grpcbridge carries JSON-RPC shaped plugin calls over the optional
-// gRPC transport (nginx-ui-plugin-spec/spec/03-wire-protocol.md WIRE-11).
+// gRPC transport (plugin-spec/spec/03-wire-protocol.md WIRE-11).
 //
 // Callers keep speaking in JSON-RPC terms: a method name, params and a result
 // value. The bridge resolves the method through the proto descriptors of the

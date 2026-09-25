@@ -7,7 +7,7 @@ package plugin
 // missing docs, package limits) that those functions do not perform.
 //
 // Every Finding is tagged with the spec requirement it maps to (see
-// nginx-ui-plugin-spec/spec/*.md), e.g. "MAN-2" or "PKG-8". A handful of
+// plugin-spec/spec/*.md), e.g. "MAN-2" or "PKG-8". A handful of
 // checks have no numbered requirement of their own (PATH lookups, README
 // section headings, signature verification); those still use the closest
 // spec section as the rule id since that is what a reader would look up.

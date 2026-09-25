@@ -355,7 +355,7 @@ const file_nginxui_plugin_v1_deploy_proto_rawDesc = "" +
 	"\amessage\x18\x01 \x01(\tR\amessage2\xe4\x01\n" +
 	"\x06Deploy\x12t\n" +
 	"\bValidate\x12(.nginxui.plugin.v1.DeployValidateRequest\x1a).nginxui.plugin.v1.DeployValidateResponse\"\x13\xaa\xb8\x19\x0fdeploy.validate\x12d\n" +
-	"\x04Push\x12$.nginxui.plugin.v1.DeployPushRequest\x1a%.nginxui.plugin.v1.DeployPushResponse\"\x0f\xaa\xb8\x19\vdeploy.pushBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x04Push\x12$.nginxui.plugin.v1.DeployPushRequest\x1a%.nginxui.plugin.v1.DeployPushResponse\"\x0f\xaa\xb8\x19\vdeploy.pushBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_deploy_proto_rawDescOnce sync.Once

@@ -204,7 +204,7 @@ const file_nginxui_plugin_v1_mcp_proto_rawDesc = "" +
 	"\x04type\x18\x01 \x01(\tR\x04type\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text2b\n" +
 	"\x03MCP\x12[\n" +
-	"\x04Call\x12!.nginxui.plugin.v1.MCPCallRequest\x1a\".nginxui.plugin.v1.MCPCallResponse\"\f\xaa\xb8\x19\bmcp.callBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x04Call\x12!.nginxui.plugin.v1.MCPCallRequest\x1a\".nginxui.plugin.v1.MCPCallResponse\"\f\xaa\xb8\x19\bmcp.callBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_mcp_proto_rawDescOnce sync.Once

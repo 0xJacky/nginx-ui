@@ -235,7 +235,7 @@ const file_nginxui_plugin_v1_errors_proto_rawDesc = "" +
 	"\x19ERROR_CODE_INTERNAL_ERROR\x10\x80\x86\xfe\xff\xff\xff\xff\xff\xff\x01\x12)\n" +
 	"\x1cERROR_CODE_PERMISSION_DENIED\x10\xff\x85\xfe\xff\xff\xff\xff\xff\xff\x01\x12#\n" +
 	"\x16ERROR_CODE_UNSUPPORTED\x10\xfe\x85\xfe\xff\xff\xff\xff\xff\xff\x01\x12&\n" +
-	"\x19ERROR_CODE_INVALID_CONFIG\x10\xfd\x85\xfe\xff\xff\xff\xff\xff\xff\x01BKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x19ERROR_CODE_INVALID_CONFIG\x10\xfd\x85\xfe\xff\xff\xff\xff\xff\xff\x01BBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_errors_proto_rawDescOnce sync.Once

@@ -2,7 +2,7 @@
 // processes. Every type here maps one to one onto a JSON-RPC 2.0 method
 // exchanged as NDJSON over the plugin's stdin and stdout.
 //
-// The source of truth is the proto contract in the nginx-ui-plugin-spec
+// The source of truth is the proto contract in the plugin-spec
 // repository (proto/nginxui/plugin/v1). The JSON form of a message is its
 // protobuf JSON mapping with proto field names, so every json tag here equals
 // a proto field name. Package pb holds a verbatim copy of the generated Go

@@ -690,7 +690,7 @@ const file_nginxui_plugin_v1_storage_proto_rawDesc = "" +
 	"\x03Put\x12$.nginxui.plugin.v1.StoragePutRequest\x1a%.nginxui.plugin.v1.StoragePutResponse\"\x0f\xaa\xb8\x19\vstorage.put\x12c\n" +
 	"\x03Get\x12$.nginxui.plugin.v1.StorageGetRequest\x1a%.nginxui.plugin.v1.StorageGetResponse\"\x0f\xaa\xb8\x19\vstorage.get\x12g\n" +
 	"\x04List\x12%.nginxui.plugin.v1.StorageListRequest\x1a&.nginxui.plugin.v1.StorageListResponse\"\x10\xaa\xb8\x19\fstorage.list\x12o\n" +
-	"\x06Delete\x12'.nginxui.plugin.v1.StorageDeleteRequest\x1a(.nginxui.plugin.v1.StorageDeleteResponse\"\x12\xaa\xb8\x19\x0estorage.deleteBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x06Delete\x12'.nginxui.plugin.v1.StorageDeleteRequest\x1a(.nginxui.plugin.v1.StorageDeleteResponse\"\x12\xaa\xb8\x19\x0estorage.deleteBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_storage_proto_rawDescOnce sync.Once
