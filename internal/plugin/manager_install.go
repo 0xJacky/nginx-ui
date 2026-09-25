@@ -39,6 +39,11 @@ func (m *Manager) Inspect(archivePath string) (*InspectResult, error) {
 		return nil, err
 	}
 
+	trust, err := verifyPackageSignature(payload, "")
+	if err != nil {
+		return nil, err
+	}
+
 	platforms := packagePlatforms(manifest, payload)
 	result := &InspectResult{
 		Manifest:          manifest,
@@ -47,6 +52,8 @@ func (m *Manager) Inspect(archivePath string) (*InspectResult, error) {
 		Platforms:         platforms,
 		HostPlatform:      HostPlatform(),
 		PlatformSupported: platformsCover(platforms, HostPlatform()),
+		Trust:             trust.Trust,
+		Signer:            trust.Signer,
 	}
 	if result.Permissions == nil {
 		result.Permissions = []string{}
@@ -95,6 +102,12 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 	if err = checkExpected(manifest, opts); err != nil {
 		return nil, err
 	}
+	// Nothing is moved before the signature is verified and the policy has
+	// accepted the trust it proves.
+	trust, err := checkPackageTrust(staged, opts)
+	if err != nil {
+		return nil, err
+	}
 	if !IsCompatible(manifest) {
 		return nil, ErrIncompatibleAPIVersion
 	}
@@ -132,7 +145,7 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 		return nil, err
 	}
 
-	info, err := m.finishInstall(ctx, manifest, opts, upgrading)
+	info, err := m.finishInstall(ctx, manifest, trust, opts, upgrading)
 	if err != nil {
 		restore(false)
 		if upgrading {
@@ -213,7 +226,9 @@ func moveIntoPlace(staged, target string) (func(commit bool), error) {
 }
 
 // finishInstall updates the database row and brings the plugin up.
-func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest, opts InstallOptions, upgrading bool) (*Info, error) {
+func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest, trust packageTrust,
+	opts InstallOptions, upgrading bool,
+) (*Info, error) {
 	row, created, err := m.loadOrCreateRow(ctx, manifest.ID)
 	if err != nil {
 		return nil, err
@@ -237,6 +252,9 @@ func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest
 	}
 
 	row.Version = manifest.Version
+	row.Trust = trust.Trust
+	row.Signer = trust.Signer
+	row.AuthorPublicKey = trust.AuthorKey
 	row.LastError = ""
 	if row.SyncPolicy == "" {
 		row.SyncPolicy = settings.PluginSettings.GetDefaultSyncPolicy()

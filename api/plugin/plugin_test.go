@@ -35,6 +35,8 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 	settings.PluginSettings.Dir = dir
+	// The test packages are unsigned.
+	settings.PluginSettings.DeveloperMode = true
 
 	code := m.Run()
 	_ = os.RemoveAll(dir)

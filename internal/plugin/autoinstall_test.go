@@ -21,6 +21,7 @@ func newCertAwareManager(t *testing.T) *Manager {
 
 	db := setupPluginTestDB(t)
 	require.NoError(t, db.AutoMigrate(&model.Cert{}))
+	useDeveloperMode(t, true)
 
 	m := newManager(t.TempDir())
 	t.Cleanup(func() { m.Stop(context.Background()) })
@@ -48,21 +49,19 @@ func dns01Manifest(pluginVersion string) *protocol.Manifest {
 	return manifest
 }
 
-// useSignedMarketplace points the settings at a test catalog whose packages
-// must be signed, which is what lets a custom source vouch for its entries.
-func useSignedMarketplace(t *testing.T, source string) *minisign.PrivateKey {
+// useOfficialMarketplace points the settings at a test catalog with developer
+// mode off and returns a key whose packages are official.
+func useOfficialMarketplace(t *testing.T, source string) *minisign.PrivateKey {
 	t.Helper()
 	useMarketplace(t, source)
-	public, private := newSigningKey(t)
-	trustKey(t, public)
-	settings.PluginSettings.RequireSignature = true
-	return &private
+	settings.PluginSettings.DeveloperMode = false
+	return useReleaseKey(t)
 }
 
 func TestEnsureDNS01PluginInstallsFromTheMarketplace(t *testing.T) {
 	manager := newCertAwareManager(t)
 	server := newCatalogServer(t)
-	signer := useSignedMarketplace(t, server.catalogURL())
+	signer := useOfficialMarketplace(t, server.catalogURL())
 
 	previous := settings.CertSettings.RecursiveNameservers
 	settings.CertSettings.RecursiveNameservers = []string{"8.8.8.8:53", "1.1.1.1:53"}
@@ -77,6 +76,7 @@ func TestEnsureDNS01PluginInstallsFromTheMarketplace(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, "1.0.0", info.Version)
 	assert.True(t, info.Enabled)
+	assert.Equal(t, TrustOfficial, info.Trust)
 
 	// The deprecated core resolver list moved into the plugin settings.
 	_, values, err := manager.Settings(OfficialDNS01PluginID)
@@ -86,10 +86,10 @@ func TestEnsureDNS01PluginInstallsFromTheMarketplace(t *testing.T) {
 
 func TestEnsureDNS01PluginPrefersALocalPackage(t *testing.T) {
 	manager := newCertAwareManager(t)
-	useMarketplace(t, "http://127.0.0.1:1/index.json")
+	signer := useOfficialMarketplace(t, "http://127.0.0.1:1/index.json")
 
 	addDNS01Cert(t)
-	archive := dropPackage(t, manager, OfficialDNS01PluginID, "1.0.0", nil)
+	archive := dropPackage(t, manager, OfficialDNS01PluginID, "1.0.0", signer)
 
 	manager.EnsureDNS01Plugin(context.Background())
 
@@ -114,7 +114,7 @@ func TestEnsureDNS01PluginSkipsWhenNoCertificateNeedsIt(t *testing.T) {
 func TestEnsureDNS01PluginRefusesACommunityImpostor(t *testing.T) {
 	manager := newCertAwareManager(t)
 	server := newCatalogServer(t)
-	signer := useSignedMarketplace(t, server.catalogURL())
+	signer := useOfficialMarketplace(t, server.catalogURL())
 
 	addDNS01Cert(t)
 	server.publish(t, dns01Manifest("1.0.0"), signer, func(entry *CatalogEntry, _ *CatalogRelease) {
@@ -127,11 +127,36 @@ func TestEnsureDNS01PluginRefusesACommunityImpostor(t *testing.T) {
 	assert.ErrorIs(t, err, ErrPluginNotFound)
 }
 
-func TestEnsureDNS01PluginIgnoresAnOfficialClaimFromAnUnsignedSource(t *testing.T) {
+func TestEnsureDNS01PluginRefusesACommunitySignedImpostor(t *testing.T) {
 	manager := newCertAwareManager(t)
 	server := newCatalogServer(t)
-	// Without the signature policy the source cannot vouch for anything,
-	// whatever trust level its entries claim.
+	useOfficialMarketplace(t, server.catalogURL())
+	public, impostor := newSigningKey(t)
+	trustKey(t, public)
+
+	// Both the local package and the catalog entry claim to be the official
+	// plugin, but a community key signed them.
+	addDNS01Cert(t)
+	local := dropPackage(t, manager, OfficialDNS01PluginID, "1.0.0", &impostor)
+	server.publish(t, dns01Manifest("1.0.0"), &impostor, nil)
+
+	opts := InstallOptions{Enable: true, ApprovePermissions: true, MinTrust: TrustOfficial}
+	_, err := manager.InstallLocalPackage(context.Background(), OfficialDNS01PluginID, opts)
+	assertPluginError(t, err, ErrTrustDowngrade)
+	_, err = manager.Marketplace().Install(context.Background(), OfficialDNS01PluginID, "", "", opts)
+	assertPluginError(t, err, ErrTrustDowngrade)
+
+	manager.EnsureDNS01Plugin(context.Background())
+
+	_, err = manager.Get(OfficialDNS01PluginID)
+	assert.ErrorIs(t, err, ErrPluginNotFound)
+	assert.FileExists(t, local)
+}
+
+func TestEnsureDNS01PluginIgnoresAnOfficialClaimOfAnUnsignedPackage(t *testing.T) {
+	manager := newCertAwareManager(t)
+	server := newCatalogServer(t)
+	// Even in developer mode the automatic install wants a release key.
 	useMarketplace(t, server.catalogURL())
 
 	addDNS01Cert(t)
@@ -172,12 +197,16 @@ func TestInstallSeedsTheOfficialDNS01PluginWithTheCoreResolvers(t *testing.T) {
 func TestRepairIncompatiblePluginsUpgradesOfficialOnes(t *testing.T) {
 	manager := newCertAwareManager(t)
 	server := newCatalogServer(t)
-	signer := useSignedMarketplace(t, server.catalogURL())
+	signer := useOfficialMarketplace(t, server.catalogURL())
+	public, community := newSigningKey(t)
+	trustKey(t, public)
 
-	// A core upgrade left a plugin built for another protocol version behind.
-	stale := marketplaceManifest("com.example.alpha", "1.0.0")
-	stale.APIVersion = protocol.APIVersion + 1
-	writePluginDir(t, manager.Dir()+"/"+stale.ID, stale)
+	// A core upgrade left plugins built for another protocol version behind.
+	for _, id := range []string{"com.example.alpha", "com.example.beta"} {
+		stale := marketplaceManifest(id, "1.0.0")
+		stale.APIVersion = protocol.APIVersion + 1
+		writePluginDir(t, manager.Dir()+"/"+stale.ID, stale)
+	}
 	manager.offline = true
 	require.NoError(t, manager.discover(context.Background()))
 
@@ -185,11 +214,18 @@ func TestRepairIncompatiblePluginsUpgradesOfficialOnes(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, StatusIncompatible, current.Status)
 
+	// Both entries claim official, only one package is signed like it.
 	server.publish(t, marketplaceManifest("com.example.alpha", "1.1.0"), signer, nil)
+	server.publish(t, marketplaceManifest("com.example.beta", "1.1.0"), &community, nil)
 	manager.repairIncompatiblePlugins(context.Background())
 
 	repaired, err := manager.Get("com.example.alpha")
 	require.NoError(t, err)
 	assert.Equal(t, "1.1.0", repaired.Version)
 	assert.NotEqual(t, StatusIncompatible, repaired.Status)
+	assert.Equal(t, TrustOfficial, repaired.Trust)
+
+	skipped, err := manager.Get("com.example.beta")
+	require.NoError(t, err)
+	assert.Equal(t, StatusIncompatible, skipped.Status)
 }
