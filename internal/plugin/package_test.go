@@ -363,7 +363,7 @@ func TestBuildSignedPackageEmbedsSumsAndSignature(t *testing.T) {
 	assert.Equal(t, []string{"README.md", ManifestFileName, "webapp/main.js"}, names)
 	assert.True(t, strings.HasSuffix(sums, "\n"))
 
-	trust, err := extractedTrust(t, archive, "")
+	trust, err := extractedTrust(t, archive, "", nil)
 	require.NoError(t, err)
 	assert.Equal(t, TrustOfficial, trust.Trust)
 	assert.Equal(t, keyID(signer), trust.Signer)
@@ -387,10 +387,10 @@ func TestBuildPackageDropsAStaleSignature(t *testing.T) {
 	}
 
 	// Signing it again with another key replaces the signature.
-	other := usePartnerKey(t)
+	other, keyring := usePartnerKey(t)
 	resigned := filepath.Join(t.TempDir(), "resigned.tar.gz")
 	require.NoError(t, BuildSignedPackage(source, resigned, *other))
-	trust, err := extractedTrust(t, resigned, "")
+	trust, err := extractedTrust(t, resigned, "", keyring)
 	require.NoError(t, err)
 	assert.Equal(t, TrustVerified, trust.Trust)
 	assert.Equal(t, keyID(other), trust.Signer)
@@ -401,12 +401,12 @@ func TestSignPackageSignsInPlace(t *testing.T) {
 	archive := signedWebappPackage(t, "com.example.alpha", nil)
 	require.NoError(t, os.Chmod(archive, 0o640))
 
-	trust, err := extractedTrust(t, archive, "")
+	trust, err := extractedTrust(t, archive, "", nil)
 	require.NoError(t, err)
 	assert.Equal(t, TrustUnsigned, trust.Trust)
 
 	require.NoError(t, SignPackage(archive, *signer))
-	trust, err = extractedTrust(t, archive, "")
+	trust, err = extractedTrust(t, archive, "", nil)
 	require.NoError(t, err)
 	assert.Equal(t, TrustOfficial, trust.Trust)
 	assert.Equal(t, keyID(signer), trust.Signer)

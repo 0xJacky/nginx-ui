@@ -166,7 +166,7 @@ func TestFetchPackageWritesOnlyTheArchive(t *testing.T) {
 	dir := filepath.Join(t.TempDir(), "payload")
 	_, err = ExtractPackage(archive, dir)
 	require.NoError(t, err)
-	trust, err := verifyPackageSignature(dir, "")
+	trust, err := verifyPackageSignature(dir, "", nil)
 	require.NoError(t, err)
 	assert.Equal(t, TrustOfficial, trust.Trust)
 }
