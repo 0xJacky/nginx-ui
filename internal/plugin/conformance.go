@@ -1,7 +1,7 @@
 package plugin
 
 // This file drives a real plugin process through the numbered conformance
-// cases in nginx-ui-plugin-spec/spec/09-conformance.md, for
+// cases in plugin-spec/spec/09-conformance.md, for
 // "nginx-ui plugin conformance". It reuses the production Supervisor and
 // RegisterHostHandlers exactly as the plugin manager does, so a pass here is
 // evidence the plugin works against the real host, not a reimplementation of

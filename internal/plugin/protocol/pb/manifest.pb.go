@@ -2493,7 +2493,7 @@ const file_nginxui_plugin_v1_manifest_proto_rawDesc = "" +
 	"\brequired\x18\a \x01(\bR\brequired\"<\n" +
 	"\x0eSettingsOption\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\x12\x14\n" +
-	"\x05label\x18\x02 \x01(\tR\x05labelBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x05label\x18\x02 \x01(\tR\x05labelBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_manifest_proto_rawDescOnce sync.Once

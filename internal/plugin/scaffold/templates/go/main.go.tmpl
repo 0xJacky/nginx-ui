@@ -1,7 +1,7 @@
 // Package main implements the {{.Name}} nginx-ui plugin: a dns01 challenge
 // solver for the "{{.ProviderCode}}" provider.
 //
-// TODO: pin a released version of github.com/0xJacky/nginx-ui-plugin-sdk-go
+// TODO: pin a released version of github.com/nginxui/plugin-sdk-go
 // once one is tagged (see the TODO in go.mod), and replace the illustrative
 // SDK calls below with whatever that SDK's real API turns out to be.
 package main
@@ -9,7 +9,7 @@ package main
 import (
 	"context"
 
-	pluginsdk "github.com/0xJacky/nginx-ui-plugin-sdk-go"
+	pluginsdk "github.com/nginxui/plugin-sdk-go"
 )
 
 // {{.GoTypeName}} implements the dns01 capability for the "{{.ProviderCode}}" provider.
