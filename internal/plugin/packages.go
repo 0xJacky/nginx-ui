@@ -11,9 +11,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
-	"github.com/0xJacky/Nginx-UI/internal/releasesign"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy"
 )
@@ -26,17 +24,14 @@ const (
 	installedDirName = "installed"
 	// packageSuffix is the only archive extension the scanner picks up.
 	packageSuffix = ".tar.gz"
-	// signatureSuffix is the detached minisign signature next to an archive.
-	signatureSuffix = ".minisig"
 )
 
-// LocalPackage is one archive found in the offline package directory.
+// LocalPackage is one archive found in the offline package directory. Its
+// signature is embedded, Install verifies it.
 type LocalPackage struct {
 	// Path is the archive on disk.
-	Path string
-	// SignaturePath is the sibling .minisig, empty when there is none.
-	SignaturePath string
-	Manifest      *protocol.Manifest
+	Path     string
+	Manifest *protocol.Manifest
 	// Platforms lists what the package runs on, see packagePlatforms.
 	Platforms []string
 }
@@ -95,9 +90,6 @@ func (m *Manager) InstallLocalPackage(ctx context.Context, id string, opts Insta
 		return nil, ErrLocalPackageNotFound
 	}
 
-	if err = m.verifyLocalPackage(best); err != nil {
-		return nil, err
-	}
 	info, err := m.Install(ctx, best.Path, opts)
 	if err != nil {
 		return nil, err
@@ -142,11 +134,7 @@ func (m *Manager) localPackages() ([]LocalPackage, error) {
 			m.log.Warnf("Skip local package %s: it has no build for %s", name, host)
 			continue
 		}
-		pkg := LocalPackage{Path: archive, Manifest: manifest, Platforms: platforms}
-		if signature := archive + signatureSuffix; fileExists(signature) {
-			pkg.SignaturePath = signature
-		}
-		packages = append(packages, pkg)
+		packages = append(packages, LocalPackage{Path: archive, Manifest: manifest, Platforms: platforms})
 	}
 
 	sort.Slice(packages, func(i, j int) bool {
@@ -169,60 +157,31 @@ func (m *Manager) applyLocalPackage(ctx context.Context, pkg LocalPackage, opts 
 		opts.Enable = opts.Enable || current.Enabled
 	}
 
-	if err := m.verifyLocalPackage(&pkg); err != nil {
-		return false, err
-	}
 	if _, err := m.Install(ctx, pkg.Path, opts); err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-// verifyLocalPackage checks the detached signature when there is one, or when
-// the node refuses unsigned packages. There is no digest to check here, the
-// archive is the only artifact.
-func (m *Manager) verifyLocalPackage(pkg *LocalPackage) error {
-	if pkg.SignaturePath == "" {
-		if settings.PluginSettings.RequireSignature {
-			return ErrSignatureMissing
-		}
-		return nil
-	}
-
-	signature, err := os.ReadFile(pkg.SignaturePath)
-	if err != nil {
-		return err
-	}
-	keys := append(releasesign.TrustedPublicKeys(), settings.PluginSettings.TrustedPublicKeys...)
-	if _, err = pkgsign.VerifyFile(pkg.Path, signature, keys); err != nil {
-		return cosy.WrapErrorWithParams(ErrSignatureInvalid, err.Error())
-	}
-	return nil
-}
-
-// archiveLocalPackage moves an archive and its signature out of the scan path.
+// archiveLocalPackage moves an archive out of the scan path.
 func (m *Manager) archiveLocalPackage(pkg *LocalPackage) {
 	target := filepath.Join(m.PackagesDir(), installedDirName)
 	if err := os.MkdirAll(target, 0o755); err != nil {
 		m.log.Warnf("Create %s: %v", target, err)
 		return
 	}
-	for _, source := range []string{pkg.Path, pkg.SignaturePath} {
-		if source == "" {
-			continue
-		}
-		destination := filepath.Join(target, filepath.Base(source))
-		_ = os.Remove(destination)
-		if err := os.Rename(source, destination); err != nil {
-			m.log.Warnf("Archive %s: %v", filepath.Base(source), err)
-		}
+	destination := filepath.Join(target, filepath.Base(pkg.Path))
+	_ = os.Remove(destination)
+	if err := os.Rename(pkg.Path, destination); err != nil {
+		m.log.Warnf("Archive %s: %v", filepath.Base(pkg.Path), err)
 	}
 }
 
-// FetchPackage downloads the package one catalog release ships for platform,
-// together with its signature, into destDir so it can be carried to an offline
-// node. An empty platform means this node. It returns the archive path, named
-// after the package form the catalog served.
+// FetchPackage downloads the package one catalog release ships for platform
+// into destDir so it can be carried to an offline node. The signature is
+// embedded, the node that installs it verifies it. An empty platform means
+// this node. It returns the archive path, named after the package form the
+// catalog served.
 func (mp *Marketplace) FetchPackage(ctx context.Context, id, wantVersion, platform, destDir string) (string, error) {
 	if !IsValidID(id) {
 		return "", ErrPluginNotFound
@@ -281,8 +240,8 @@ func (mp *Marketplace) FetchTargets(ctx context.Context, id, wantVersion string)
 }
 
 // fetchRelease downloads the package a release resolves to on platform into
-// destDir, checks its digest and signature and keeps the signature next to
-// it. Nothing is published on the event bus: the caller is not an install.
+// destDir and checks its digest. Nothing is published on the event bus: the
+// caller is not an install.
 func (mp *Marketplace) fetchRelease(ctx context.Context, entry *CatalogEntry, release *CatalogRelease,
 	platform, destDir string,
 ) (string, error) {
@@ -309,18 +268,7 @@ func (mp *Marketplace) fetchRelease(ctx context.Context, entry *CatalogEntry, re
 	if err := verifyDigest(partial, download.SHA256); err != nil {
 		return "", err
 	}
-	signature, err := mp.verifySignature(ctx, entry, release, download, partial)
-	if err != nil {
-		return "", err
-	}
-	if err = os.Rename(partial, archive); err != nil {
-		return "", err
-	}
-	if signature == "" {
-		_ = os.Remove(archive + signatureSuffix)
-		return archive, nil
-	}
-	if err = os.WriteFile(archive+signatureSuffix, []byte(signature), 0o644); err != nil {
+	if err := os.Rename(partial, archive); err != nil {
 		return "", err
 	}
 	return archive, nil

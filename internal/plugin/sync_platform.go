@@ -118,25 +118,17 @@ func (m *Manager) platformPackage(ctx context.Context, id, version, platform str
 // localPlatformPackage looks for a usable package in the offline directory,
 // the applied packages and the platform cache.
 func (m *Manager) localPlatformPackage(id, version, platform string) (string, bool) {
-	sources := []struct {
-		dir string
-		// trusted skips the signature check for files this node verified
-		// itself when it fetched them.
-		trusted bool
-	}{
-		{dir: m.PackagesDir()},
-		{dir: filepath.Join(m.PackagesDir(), installedDirName)},
-		{dir: m.platformCacheDir(), trusted: true},
-	}
+	// The node verifies the embedded signature when it installs the package.
+	dirs := []string{m.PackagesDir(), filepath.Join(m.PackagesDir(), installedDirName), m.platformCacheDir()}
 	names := []string{PackageFileName(id, version, platform), PackageFileName(id, version, "")}
 
-	for _, source := range sources {
+	for _, dir := range dirs {
 		for _, name := range names {
-			path := filepath.Join(source.dir, name)
+			path := filepath.Join(dir, name)
 			if !fileExists(path) {
 				continue
 			}
-			if err := m.checkPlatformPackage(path, id, version, platform, !source.trusted); err != nil {
+			if err := m.checkPlatformPackage(path, id, version, platform); err != nil {
 				m.log.Warnf("[plugin:%s] skip %s for %s: %v", id, path, platform, err)
 				continue
 			}
@@ -147,18 +139,8 @@ func (m *Manager) localPlatformPackage(id, version, platform string) (string, bo
 }
 
 // checkPlatformPackage makes sure a file on disk is the wanted plugin version
-// and runs on platform, optionally verifying its detached signature.
-func (m *Manager) checkPlatformPackage(path, id, version, platform string, verifySignature bool) error {
-	if verifySignature {
-		pkg := LocalPackage{Path: path}
-		if signature := path + signatureSuffix; fileExists(signature) {
-			pkg.SignaturePath = signature
-		}
-		if err := m.verifyLocalPackage(&pkg); err != nil {
-			return err
-		}
-	}
-
+// and runs on platform.
+func (m *Manager) checkPlatformPackage(path, id, version, platform string) error {
 	manifest, platforms, err := peekPackage(path)
 	if err != nil {
 		return err
@@ -193,8 +175,7 @@ func (m *Manager) pruneCachedPackages(id, keepVersion string) {
 		return
 	}
 	for _, item := range items {
-		name := strings.TrimSuffix(item.Name(), signatureSuffix)
-		parsed, ok := ParsePackageFileName(name)
+		parsed, ok := ParsePackageFileName(item.Name())
 		if item.IsDir() || !ok || parsed.ID != id || parsed.Version == keepVersion {
 			continue
 		}
@@ -229,9 +210,8 @@ func (mp *Marketplace) cachePlatformPackage(ctx context.Context, id, version, pl
 		return "", err
 	}
 	// The catalog promised this version for this platform, hold it to that.
-	if err = mp.manager.checkPlatformPackage(archive, id, version, platform, false); err != nil {
+	if err = mp.manager.checkPlatformPackage(archive, id, version, platform); err != nil {
 		_ = os.Remove(archive)
-		_ = os.Remove(archive + signatureSuffix)
 		return "", cosy.WrapErrorWithParams(ErrCatalogInvalid, err.Error())
 	}
 	mp.manager.pruneCachedPackages(id, version)

@@ -1,13 +1,12 @@
 package plugin
 
 import (
-	"bytes"
 	"context"
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"io"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -17,13 +16,14 @@ import (
 
 	"aead.dev/minisign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
+	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-// catalogServer serves a static catalog, the packages it points at and their
-// detached signatures, which is everything the installer talks to.
+// catalogServer serves a static catalog and the packages it points at, which
+// is everything the installer talks to.
 type catalogServer struct {
 	*httptest.Server
 
@@ -86,14 +86,15 @@ func (cs *catalogServer) serve(path string, body []byte) {
 	cs.mu.Unlock()
 }
 
-// publish builds a package for the manifest, registers it and adds the release
-// to the catalog. mutate can adjust the entry and the release afterwards.
+// publish builds a package for the manifest, signed when signer is set,
+// registers it and adds the release to the catalog. mutate can adjust the
+// entry and the release afterwards.
 func (cs *catalogServer) publish(t *testing.T, manifest *protocol.Manifest, signer *minisign.PrivateKey,
 	mutate func(entry *CatalogEntry, release *CatalogRelease),
 ) {
 	t.Helper()
 
-	archive := buildTestPackage(t, manifest, map[string]string{"webapp/main.js": "export default {}"})
+	archive := buildSignedTestPackage(t, manifest, map[string]string{"webapp/main.js": "export default {}"}, signer)
 	body, err := os.ReadFile(archive)
 	require.NoError(t, err)
 
@@ -109,10 +110,6 @@ func (cs *catalogServer) publish(t *testing.T, manifest *protocol.Manifest, sign
 		DownloadURL: cs.URL + name,
 		SHA256:      hex.EncodeToString(digest[:]),
 		Manifest:    manifest,
-	}
-	if signer != nil {
-		cs.serve(name+".minisig", signPackage(t, body, *signer))
-		release.SignatureURL = release.DownloadURL + ".minisig"
 	}
 
 	cs.mu.Lock()
@@ -158,16 +155,6 @@ func marketplaceManifest(id, pluginVersion string) *protocol.Manifest {
 	}
 }
 
-// signPackage produces the prehashed signature pkgsign verifies. The reader
-// has to see the whole archive before the signature is taken.
-func signPackage(t *testing.T, body []byte, key minisign.PrivateKey) []byte {
-	t.Helper()
-	reader := minisign.NewReader(bytes.NewReader(body))
-	_, err := io.Copy(io.Discard, reader)
-	require.NoError(t, err)
-	return reader.Sign(key)
-}
-
 // newSigningKey returns a throwaway minisign key pair.
 func newSigningKey(t *testing.T) (minisign.PublicKey, minisign.PrivateKey) {
 	t.Helper()
@@ -177,6 +164,7 @@ func newSigningKey(t *testing.T) (minisign.PublicKey, minisign.PrivateKey) {
 }
 
 // useMarketplace points the settings at a test catalog and restores them.
+// Developer mode stays on, most tests publish unsigned packages.
 func useMarketplace(t *testing.T, sources ...string) {
 	t.Helper()
 
@@ -189,16 +177,52 @@ func useMarketplace(t *testing.T, sources ...string) {
 	settings.PluginSettings.AllowCommunityPlugins = true
 	// httptest only speaks plain http.
 	settings.PluginSettings.AllowInsecureDownloadURL = true
-	settings.PluginSettings.RequireSignature = false
+	settings.PluginSettings.DeveloperMode = true
 	settings.PluginSettings.TrustedPublicKeys = nil
 }
 
-// trustKey adds a test public key to the node trust store.
-func trustKey(t *testing.T, key minisign.PublicKey) {
+// encodeKey is the minisign text form of a public key.
+func encodeKey(t *testing.T, key minisign.PublicKey) string {
 	t.Helper()
 	encoded, err := key.MarshalText()
 	require.NoError(t, err)
-	settings.PluginSettings.TrustedPublicKeys = append(settings.PluginSettings.TrustedPublicKeys, string(encoded))
+	return string(encoded)
+}
+
+// trustKey adds a test public key to the node trust store, which makes the
+// packages it signs community trust.
+func trustKey(t *testing.T, key minisign.PublicKey) {
+	t.Helper()
+	settings.PluginSettings.TrustedPublicKeys = append(settings.PluginSettings.TrustedPublicKeys, encodeKey(t, key))
+}
+
+// useReleaseKey pins a test key as the only release key, so the packages it
+// signs are official.
+func useReleaseKey(t *testing.T) *minisign.PrivateKey {
+	t.Helper()
+	public, private := newSigningKey(t)
+	encoded := encodeKey(t, public)
+	previous := releaseKeys
+	releaseKeys = func() []string { return []string{encoded} }
+	t.Cleanup(func() { releaseKeys = previous })
+	return &private
+}
+
+// usePartnerKey pins a test key as the only partner key, so the packages it
+// signs are verified.
+func usePartnerKey(t *testing.T) *minisign.PrivateKey {
+	t.Helper()
+	public, private := newSigningKey(t)
+	encoded := encodeKey(t, public)
+	previous := partnerKeys
+	partnerKeys = func() []string { return []string{encoded} }
+	t.Cleanup(func() { partnerKeys = previous })
+	return &private
+}
+
+// keyID is the signer a key leaves on an installed plugin.
+func keyID(key *minisign.PrivateKey) string {
+	return fmt.Sprintf("%016X", key.ID())
 }
 
 func TestMarketplaceCatalogComputesInstallableState(t *testing.T) {
@@ -231,30 +255,27 @@ func TestMarketplaceCatalogComputesInstallableState(t *testing.T) {
 	assert.Nil(t, findEntry(entries, "com.example.gamma", "").InstallableRelease)
 }
 
-func TestMarketplaceCatalogCapsTheTrustOfUnsignedCustomSources(t *testing.T) {
+func TestMarketplaceCatalogOnlyNormalisesTheDeclaredTrust(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
 	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, nil)
+	server.publish(t, marketplaceManifest("com.example.beta", "1.0.0"), nil, func(entry *CatalogEntry, _ *CatalogRelease) {
+		entry.Trust = "partner"
+	})
 
-	// Without the signature policy a custom source cannot vouch for its
-	// entries, whatever they claim.
+	// The declared level is only shown in the listing, the install derives
+	// the real one from the package signature.
 	entries, err := manager.Marketplace().Catalog(context.Background(), true)
 	require.NoError(t, err)
-	assert.Equal(t, TrustCommunity, findEntry(entries, "com.example.alpha", "").Trust)
-
-	// With it the pinned release keys back the claim at install time.
-	settings.PluginSettings.RequireSignature = true
-	entries, err = manager.Marketplace().Catalog(context.Background(), true)
-	require.NoError(t, err)
 	assert.Equal(t, TrustOfficial, findEntry(entries, "com.example.alpha", "").Trust)
+	// An unknown level is community, so the community pre filter applies.
+	assert.Equal(t, TrustCommunity, findEntry(entries, "com.example.beta", "").Trust)
 
-	// The official source always requires signatures, and an unknown level
-	// is community so the policy gate stays in front of it.
-	settings.PluginSettings.RequireSignature = false
-	assert.Equal(t, TrustVerified, effectiveTrust(settings.DefaultPluginMarketplaceSource, TrustVerified))
-	assert.Equal(t, TrustCommunity, effectiveTrust(settings.DefaultPluginMarketplaceSource, "partner"))
-	assert.Equal(t, TrustCommunity, effectiveTrust(server.catalogURL(), ""))
+	assert.Equal(t, TrustVerified, effectiveTrust(TrustVerified))
+	assert.Equal(t, TrustCommunity, effectiveTrust(TrustCommunity))
+	assert.Equal(t, TrustCommunity, effectiveTrust(TrustUnsigned))
+	assert.Equal(t, TrustCommunity, effectiveTrust(""))
 }
 
 func TestMarketplaceCatalogMergesSourcesFirstWins(t *testing.T) {
@@ -433,15 +454,14 @@ func TestCheckReadmeURL(t *testing.T) {
 	assert.Error(t, checkReadmeURL(entry))
 }
 
-func TestMarketplaceInstallVerifiesSignature(t *testing.T) {
+func TestMarketplaceInstallTrustsTheReleaseKey(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
+	settings.PluginSettings.DeveloperMode = false
 
-	public, private := newSigningKey(t)
-	trustKey(t, public)
-	settings.PluginSettings.RequireSignature = true
-	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), &private, nil)
+	signer := useReleaseKey(t)
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), signer, nil)
 
 	info, err := manager.Marketplace().Install(context.Background(), "com.example.alpha", "", "",
 		InstallOptions{Enable: true, ApprovePermissions: true})
@@ -449,6 +469,8 @@ func TestMarketplaceInstallVerifiesSignature(t *testing.T) {
 	assert.Equal(t, "com.example.alpha", info.ID)
 	assert.Equal(t, "1.0.0", info.Version)
 	assert.True(t, info.Enabled)
+	assert.Equal(t, TrustOfficial, info.Trust)
+	assert.Equal(t, keyID(signer), info.Signer)
 
 	// The catalog now reports the installed state.
 	entries, err := manager.Marketplace().Catalog(context.Background(), true)
@@ -456,36 +478,158 @@ func TestMarketplaceInstallVerifiesSignature(t *testing.T) {
 	assert.Equal(t, "1.0.0", findEntry(entries, "com.example.alpha", "").InstalledVersion)
 }
 
-func TestMarketplaceInstallRejectsUnsignedWhenRequired(t *testing.T) {
+func TestMarketplaceInstallDerivesTheTrustFromTheSigner(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
-	settings.PluginSettings.RequireSignature = true
+	settings.PluginSettings.DeveloperMode = false
+
+	partner := usePartnerKey(t)
+	userPublic, user := newSigningKey(t)
+	trustKey(t, userPublic)
+	authorPublic, author := newSigningKey(t)
+
+	// Every entry claims official, the signature decides.
+	server.publish(t, marketplaceManifest("com.example.partner", "1.0.0"), partner, nil)
+	server.publish(t, marketplaceManifest("com.example.user", "1.0.0"), &user, nil)
+	server.publish(t, marketplaceManifest("com.example.author", "1.0.0"), &author,
+		func(entry *CatalogEntry, _ *CatalogRelease) {
+			entry.AuthorPublicKey = encodeKey(t, authorPublic)
+		})
+
+	for id, want := range map[string]struct {
+		trust  string
+		signer string
+	}{
+		"com.example.partner": {TrustVerified, keyID(partner)},
+		"com.example.user":    {TrustCommunity, keyID(&user)},
+		"com.example.author":  {TrustCommunity, keyID(&author)},
+	} {
+		info, err := manager.Marketplace().Install(context.Background(), id, "", "", InstallOptions{})
+		require.NoError(t, err, id)
+		assert.Equal(t, want.trust, info.Trust, id)
+		assert.Equal(t, want.signer, info.Signer, id)
+
+		// The trust is stored with the row, not recomputed.
+		row, err := query.Plugin.WithContext(context.Background()).Where(query.Plugin.PluginID.Eq(id)).First()
+		require.NoError(t, err)
+		assert.Equal(t, want.trust, row.Trust, id)
+		assert.Equal(t, want.signer, row.Signer, id)
+	}
+}
+
+func TestMarketplaceInstallRejectsUnsignedWithoutDeveloperMode(t *testing.T) {
+	manager := newTestManager(t)
+	server := newCatalogServer(t)
+	useMarketplace(t, server.catalogURL())
+	settings.PluginSettings.DeveloperMode = false
 
 	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, nil)
 
 	_, err := manager.Marketplace().Install(context.Background(), "com.example.alpha", "", "", InstallOptions{})
-	assert.ErrorIs(t, err, ErrSignatureMissing)
+	assert.ErrorIs(t, err, ErrUnsignedPackage)
+	_, err = manager.Get("com.example.alpha")
+	assert.ErrorIs(t, err, ErrPluginNotFound)
 
-	// The same package installs once the node accepts unsigned sources.
-	settings.PluginSettings.RequireSignature = false
-	_, err = manager.Marketplace().Install(context.Background(), "com.example.alpha", "", "", InstallOptions{})
+	// The same package installs in developer mode, as unsigned.
+	settings.PluginSettings.DeveloperMode = true
+	info, err := manager.Marketplace().Install(context.Background(), "com.example.alpha", "", "", InstallOptions{})
 	require.NoError(t, err)
+	assert.Equal(t, TrustUnsigned, info.Trust)
+	assert.Empty(t, info.Signer)
 }
 
-func TestMarketplaceInstallRejectsForeignSignature(t *testing.T) {
+func TestMarketplaceInstallCountsAnUnknownSignerAsUnsigned(t *testing.T) {
+	manager := newTestManager(t)
+	server := newCatalogServer(t)
+	useMarketplace(t, server.catalogURL())
+	settings.PluginSettings.DeveloperMode = false
+
+	// The key that signed the package is known nowhere.
+	_, private := newSigningKey(t)
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), &private, nil)
+
+	_, err := manager.Marketplace().Install(context.Background(), "com.example.alpha", "", "", InstallOptions{})
+	assert.ErrorIs(t, err, ErrUnsignedPackage)
+
+	settings.PluginSettings.DeveloperMode = true
+	info, err := manager.Marketplace().Install(context.Background(), "com.example.alpha", "", "", InstallOptions{})
+	require.NoError(t, err)
+	assert.Equal(t, TrustUnsigned, info.Trust)
+	assert.Empty(t, info.Signer)
+}
+
+func TestMarketplaceInstallRejectsATamperedPackage(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
 
-	_, private := newSigningKey(t)
-	// The key that signed the package is never added to the trust store.
-	settings.PluginSettings.RequireSignature = true
-	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), &private, nil)
+	signer := useReleaseKey(t)
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), signer, nil)
+
+	// A mirror swaps a file and fixes the catalog digest, the embedded
+	// signature still catches it, developer mode or not.
+	name := "/pkg/com.example.alpha-1.0.0.tar.gz"
+	server.mu.Lock()
+	original := server.files[name]
+	server.mu.Unlock()
+	tampered := rewritePackageBytes(t, original, func(entry *tarEntry) {
+		if entry.header.Name == "webapp/main.js" {
+			entry.body = "alert(1)"
+		}
+	})
+	server.serve(name, tampered)
+	digest := sha256.Sum256(tampered)
+	server.mu.Lock()
+	server.document.Plugins[0].Releases[0].SHA256 = hex.EncodeToString(digest[:])
+	server.mu.Unlock()
 
 	_, err := manager.Marketplace().Install(context.Background(), "com.example.alpha", "", "", InstallOptions{})
-	require.Error(t, err)
-	assert.Contains(t, err.Error(), "signature")
+	assertPluginError(t, err, ErrSignatureInvalid)
+	_, err = manager.Get("com.example.alpha")
+	assert.ErrorIs(t, err, ErrPluginNotFound)
+}
+
+func TestMarketplaceUpdatesAutomaticallyOnlyToTheSameTrust(t *testing.T) {
+	manager := newTestManager(t)
+	server := newCatalogServer(t)
+	useMarketplace(t, server.catalogURL())
+	settings.PluginSettings.AutoUpdate = true
+
+	official := useReleaseKey(t)
+	userPublic, user := newSigningKey(t)
+	trustKey(t, userPublic)
+	ctx := context.Background()
+	marketplace := manager.Marketplace()
+
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), official, nil)
+	server.publish(t, marketplaceManifest("com.example.dev", "1.0.0"), nil, nil)
+	for _, id := range []string{"com.example.alpha", "com.example.dev"} {
+		_, err := marketplace.Install(ctx, id, "", "", InstallOptions{Enable: true, ApprovePermissions: true})
+		require.NoError(t, err)
+	}
+
+	// A community signed update of an official plugin is refused, and an
+	// unsigned plugin never updates itself.
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.1.0"), &user, nil)
+	server.publish(t, marketplaceManifest("com.example.dev", "1.1.0"), official, nil)
+	marketplace.runMaintenance(ctx)
+
+	alpha, err := manager.Get("com.example.alpha")
+	require.NoError(t, err)
+	assert.Equal(t, "1.0.0", alpha.Version)
+	dev, err := manager.Get("com.example.dev")
+	require.NoError(t, err)
+	assert.Equal(t, "1.0.0", dev.Version)
+
+	// An official update goes through.
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.2.0"), official, nil)
+	marketplace.runMaintenance(ctx)
+
+	alpha, err = manager.Get("com.example.alpha")
+	require.NoError(t, err)
+	assert.Equal(t, "1.2.0", alpha.Version)
+	assert.Equal(t, TrustOfficial, alpha.Trust)
 }
 
 func TestMarketplaceInstallRejectsDigestMismatch(t *testing.T) {

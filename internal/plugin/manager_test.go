@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"aead.dev/minisign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -63,10 +64,11 @@ func usePluginProcesses(t *testing.T, mode string) {
 }
 
 // newTestManager returns a manager rooted at a fresh directory, wired to a
-// fresh database.
+// fresh database. The test packages are unsigned, so developer mode is on.
 func newTestManager(t *testing.T) *Manager {
 	t.Helper()
 	setupPluginTestDB(t)
+	useDeveloperMode(t, true)
 	m := newManager(t.TempDir())
 	m.handshakeTimeout = testHandshakeTimeout
 	t.Cleanup(func() { m.Stop(context.Background()) })
@@ -106,8 +108,25 @@ func writePluginDir(t *testing.T, dir string, manifest *protocol.Manifest) strin
 	return dir
 }
 
+// useDeveloperMode switches developer mode for one test.
+func useDeveloperMode(t *testing.T, enabled bool) {
+	t.Helper()
+	previous := settings.PluginSettings.DeveloperMode
+	settings.PluginSettings.DeveloperMode = enabled
+	t.Cleanup(func() { settings.PluginSettings.DeveloperMode = previous })
+}
+
 // buildTestPackage writes a plugin into a staging directory and packs it.
 func buildTestPackage(t *testing.T, manifest *protocol.Manifest, extra map[string]string) string {
+	t.Helper()
+	return buildSignedTestPackage(t, manifest, extra, nil)
+}
+
+// buildSignedTestPackage is buildTestPackage with an embedded signature when
+// signer is set.
+func buildSignedTestPackage(t *testing.T, manifest *protocol.Manifest, extra map[string]string,
+	signer *minisign.PrivateKey,
+) string {
 	t.Helper()
 	staging := filepath.Join(t.TempDir(), manifest.ID)
 	writePluginDir(t, staging, manifest)
@@ -118,6 +137,10 @@ func buildTestPackage(t *testing.T, manifest *protocol.Manifest, extra map[strin
 	}
 
 	archive := filepath.Join(t.TempDir(), manifest.ID+".tar.gz")
+	if signer != nil {
+		require.NoError(t, BuildSignedPackage(staging, archive, *signer))
+		return archive
+	}
 	require.NoError(t, BuildPackage(staging, archive))
 	return archive
 }
