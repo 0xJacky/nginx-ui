@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExperimentOutlined } from '@antdv-next/icons'
-import { usePluginStore } from '@/plugin'
+import { isLoopbackUrl, usePluginStore } from '@/plugin'
 
 const { message } = useGlobalApp()
 const pluginStore = usePluginStore()
@@ -17,7 +17,15 @@ function onOpenChange(value: boolean) {
 }
 
 function apply(url: string) {
-  pluginStore.devPluginUrl = url.trim()
+  const value = url.trim()
+
+  // The loader injects this script on every visit, so only this computer may serve it.
+  if (value && !isLoopbackUrl(value)) {
+    message.error($gettext('Only localhost addresses are accepted'))
+    return
+  }
+
+  pluginStore.devPluginUrl = value
   open.value = false
   message.success($gettext('Reload the page to apply the development plugin URL'))
 }
@@ -34,7 +42,7 @@ function apply(url: string) {
     <template #content>
       <div class="dev-plugin-popover">
         <p class="mb-2 text-gray-500">
-          {{ $gettext('Address of a plugin.json served by any static server. The plugin is loaded in addition to the installed ones.') }}
+          {{ $gettext('Address of a plugin.json served by a static server on this computer. Only localhost addresses are accepted. The plugin is loaded in addition to the installed ones.') }}
         </p>
         <AInput
           v-model:value="draft"

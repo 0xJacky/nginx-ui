@@ -19,8 +19,9 @@ export const usePluginStore = defineStore('plugin', () => {
   const slots = shallowRef<Record<string, SlotRegistration[]>>({})
   const settingsPanels = shallowRef<Record<string, Component>>({})
   /**
-   * Address of a plugin.json served by any static server, used to load a
-   * plugin straight from its build output while developing it.
+   * Address of a plugin.json served on a loopback host, used to load a plugin
+   * straight from its build output while developing it. The loader ignores
+   * any other address.
    */
   const devPluginUrl = ref('')
 
