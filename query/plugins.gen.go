@@ -40,6 +40,7 @@ func newPlugin(db *gorm.DB, opts ...gen.DOOption) plugin {
 	_plugin.LastError = field.NewString(tableName, "last_error")
 	_plugin.Trust = field.NewString(tableName, "trust")
 	_plugin.Signer = field.NewString(tableName, "signer")
+	_plugin.Partner = field.NewString(tableName, "partner")
 	_plugin.AuthorPublicKey = field.NewString(tableName, "author_public_key")
 	_plugin.SyncPolicy = field.NewString(tableName, "sync_policy")
 	_plugin.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
@@ -66,6 +67,7 @@ type plugin struct {
 	LastError               field.String
 	Trust                   field.String
 	Signer                  field.String
+	Partner                 field.String
 	AuthorPublicKey         field.String
 	SyncPolicy              field.String
 	SyncNodeIDs             field.Field
@@ -98,6 +100,7 @@ func (p *plugin) updateTableName(table string) *plugin {
 	p.LastError = field.NewString(table, "last_error")
 	p.Trust = field.NewString(table, "trust")
 	p.Signer = field.NewString(table, "signer")
+	p.Partner = field.NewString(table, "partner")
 	p.AuthorPublicKey = field.NewString(table, "author_public_key")
 	p.SyncPolicy = field.NewString(table, "sync_policy")
 	p.SyncNodeIDs = field.NewField(table, "sync_node_ids")
@@ -118,7 +121,7 @@ func (p *plugin) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *plugin) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 16)
+	p.fieldMap = make(map[string]field.Expr, 17)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["created_at"] = p.CreatedAt
 	p.fieldMap["updated_at"] = p.UpdatedAt
@@ -131,6 +134,7 @@ func (p *plugin) fillFieldMap() {
 	p.fieldMap["last_error"] = p.LastError
 	p.fieldMap["trust"] = p.Trust
 	p.fieldMap["signer"] = p.Signer
+	p.fieldMap["partner"] = p.Partner
 	p.fieldMap["author_public_key"] = p.AuthorPublicKey
 	p.fieldMap["sync_policy"] = p.SyncPolicy
 	p.fieldMap["sync_node_ids"] = p.SyncNodeIDs

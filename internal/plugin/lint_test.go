@@ -10,6 +10,7 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+	"time"
 
 	"aead.dev/minisign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
@@ -317,12 +318,11 @@ func TestLintChecksTheEmbeddedSignature(t *testing.T) {
 		return report
 	}
 	release := useReleaseKey(t)
-	partner := usePartnerKey(t)
 	_, community := newSigningKey(t)
 
-	// A release or partner signature is clean.
+	// A release signature is clean, a partner one is covered by
+	// TestLintChecksThePartnerCertificate.
 	assert.Empty(t, lintSigned(t, *release, nil).Findings)
-	assert.Empty(t, lintSigned(t, *partner, nil).Findings)
 
 	// A key the linter does not know is only a warning.
 	report := lintSigned(t, community, nil)
@@ -369,4 +369,109 @@ func TestLintChecksTheEmbeddedSignature(t *testing.T) {
 		assertHasFinding(t, report, LevelWarning, "PKG-20")
 		assert.False(t, report.HasErrors(), "%+v", report.Findings)
 	}
+}
+
+// warningRules lists the rules of a report, which must all be warnings.
+func warningRules(t *testing.T, report *LintReport) []string {
+	t.Helper()
+	rules := make([]string, 0, len(report.Findings))
+	for _, finding := range report.Findings {
+		assert.Equal(t, LevelWarning, finding.Level, "%+v", finding)
+		rules = append(rules, finding.Rule)
+	}
+	return rules
+}
+
+func TestLintChecksThePartnerCertificate(t *testing.T) {
+	release := useReleaseKey(t)
+	partnerPublic, partner := newSigningKey(t)
+	_, stranger := newSigningKey(t)
+	certificate := certify(t, partnerPublic, release, "example", "2099-12-31")
+
+	// fixture writes a clean plugin directory plus files at its root.
+	fixture := func(t *testing.T, files map[string]string) string {
+		t.Helper()
+		dir := writeLintFixture(t, lintFixture{manifest: goodManifest()})
+		for name, body := range files {
+			require.NoError(t, os.WriteFile(filepath.Join(dir, name), []byte(body), 0o644))
+		}
+		return dir
+	}
+	lintSigned := func(t *testing.T, dir string, key minisign.PrivateKey) *LintReport {
+		t.Helper()
+		archive := filepath.Join(t.TempDir(), "plugin.tar.gz")
+		require.NoError(t, BuildSignedPackage(dir, archive, key))
+		report, err := Lint(archive)
+		require.NoError(t, err)
+		return report
+	}
+	notAKey := "not a key\n"
+
+	for name, testCase := range map[string]struct {
+		files  map[string]string
+		signer minisign.PrivateKey
+		want   []string
+	}{
+		"valid certificate and partner signature": {files: certificate, signer: partner},
+		"only plugin.partner": {
+			files: map[string]string{PartnerFileName: certificate[PartnerFileName]}, signer: partner,
+			want: []string{"PKG-25", "SEC-18"},
+		},
+		"only plugin.partner.minisig": {
+			files: map[string]string{PartnerSignatureFileName: certificate[PartnerSignatureFileName]}, signer: partner,
+			want: []string{"PKG-25", "SEC-18"},
+		},
+		"signed by a key that is not a release key": {
+			files: certify(t, partnerPublic, &stranger, "example", "2099-12-31"), signer: partner,
+			want: []string{"PKG-26", "SEC-18"},
+		},
+		"plugin.partner is no public key": {
+			files: map[string]string{
+				PartnerFileName:          notAKey,
+				PartnerSignatureFileName: string(minisign.SignWithComments(*release, []byte(notAKey), "partner:example;expires:2099-12-31", "")),
+			},
+			signer: partner,
+			want:   []string{"PKG-26", "SEC-18"},
+		},
+		"trusted comment breaks the format": {
+			files: map[string]string{
+				PartnerFileName:          certificate[PartnerFileName],
+				PartnerSignatureFileName: string(minisign.Sign(*release, []byte(certificate[PartnerFileName]))),
+			},
+			signer: partner,
+			want:   []string{"PKG-26", "SEC-18"},
+		},
+		"release signature with a certificate": {files: certificate, signer: *release, want: []string{"PKG-27"}},
+		"another key than the certificate names": {
+			files: certificate, signer: stranger,
+			want: []string{"PKG-27", "SEC-18"},
+		},
+	} {
+		t.Run(name, func(t *testing.T) {
+			report := lintSigned(t, fixture(t, testCase.files), testCase.signer)
+			assert.ElementsMatch(t, testCase.want, warningRules(t, report), "%+v", report.Findings)
+		})
+	}
+
+	// A valid certificate in an unsigned directory signs nothing.
+	report, err := Lint(fixture(t, certificate))
+	require.NoError(t, err)
+	assert.Equal(t, []string{"PKG-27"}, warningRules(t, report))
+
+	// Expiry follows the UTC date of the linter clock.
+	certified := fixture(t, certificate)
+	useNow(t, time.Date(2099, 12, 31, 23, 59, 59, 0, time.UTC))
+	assert.Empty(t, lintSigned(t, certified, partner).Findings)
+	useNow(t, time.Date(2100, 1, 1, 0, 0, 0, 0, time.UTC))
+	report = lintSigned(t, certified, partner)
+	assert.ElementsMatch(t, []string{"PKG-27", "SEC-18"}, warningRules(t, report), "%+v", report.Findings)
+	for _, finding := range report.Findings {
+		if finding.Rule == "PKG-27" {
+			assert.Contains(t, finding.Message, "expired")
+		}
+	}
+
+	// A certificate without an expiry never expires for the linter.
+	lasting := fixture(t, certify(t, partnerPublic, release, "example", ""))
+	assert.Empty(t, lintSigned(t, lasting, partner).Findings)
 }
