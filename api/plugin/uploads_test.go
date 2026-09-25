@@ -2,6 +2,7 @@ package plugin
 
 import (
 	"bytes"
+	"crypto/rand"
 	"encoding/json"
 	"mime/multipart"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 	"testing"
 	"time"
 
+	"aead.dev/minisign"
 	plugin "github.com/0xJacky/Nginx-UI/internal/plugin"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -202,4 +204,81 @@ func TestSweepUploadsDropsOnlyExpiredPackages(t *testing.T) {
 	assert.NoFileExists(t, expired)
 	assert.FileExists(t, fresh)
 	assert.FileExists(t, foreign)
+}
+
+func TestInstallPluginRefusesAnUnsignedUploadWithoutDeveloperMode(t *testing.T) {
+	setupManager(t)
+	useUploadStore(t)
+	previous := settings.PluginSettings.DeveloperMode
+	t.Cleanup(func() { settings.PluginSettings.DeveloperMode = previous })
+	settings.PluginSettings.DeveloperMode = false
+
+	// Inspect shows the package as unsigned, the install refuses it.
+	result := inspectUpload(t, buildTestPackage(t, webappManifest("official.alpha"), nil))
+	assert.Equal(t, plugin.TrustUnsigned, result.Trust)
+	assert.Empty(t, result.Signer)
+
+	recorder := installUpload(t, result.UploadID)
+	assert.NotEqual(t, http.StatusOK, recorder.Code)
+	assert.Contains(t, recorder.Body.String(), "55023")
+
+	// Developer mode lets the same upload in.
+	settings.PluginSettings.DeveloperMode = true
+	result = inspectUpload(t, buildTestPackage(t, webappManifest("official.alpha"), nil))
+	recorder = installUpload(t, result.UploadID)
+	require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	var info plugin.Info
+	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &info))
+	assert.Equal(t, plugin.TrustUnsigned, info.Trust)
+}
+
+// buildSignedUploadPackage packs a webapp plugin signed with a fresh key and
+// returns it together with the public key text.
+func buildSignedUploadPackage(t *testing.T, id string) (string, string) {
+	t.Helper()
+	public, private, err := minisign.GenerateKey(rand.Reader)
+	require.NoError(t, err)
+	encoded, err := public.MarshalText()
+	require.NoError(t, err)
+
+	archive := buildTestPackage(t, webappManifest(id), nil)
+	require.NoError(t, plugin.SignPackage(archive, private))
+	return archive, string(encoded)
+}
+
+// installWithAuthorKey runs the install endpoint on a direct upload.
+func installWithAuthorKey(t *testing.T, archive, authorKey string) *httptest.ResponseRecorder {
+	t.Helper()
+	fields := map[string]string{"enable": "true"}
+	if authorKey != "" {
+		fields["author_public_key"] = authorKey
+	}
+	c, recorder := newUploadContext(t, "/api/plugins", fields, archive)
+	InstallPlugin(c)
+	return recorder
+}
+
+func TestInstallPluginTakesTheAuthorKeyOfAPush(t *testing.T) {
+	setupManager(t)
+	useUploadStore(t)
+	archive, authorKey := buildSignedUploadPackage(t, "official.alpha")
+
+	// Without the key the signer is unknown here, which is unsigned.
+	recorder := installWithAuthorKey(t, archive, "")
+	require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	var info plugin.Info
+	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &info))
+	assert.Equal(t, plugin.TrustUnsigned, info.Trust)
+
+	// With it the package is community, as on the controller.
+	recorder = installWithAuthorKey(t, archive, authorKey)
+	require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &info))
+	assert.Equal(t, plugin.TrustCommunity, info.Trust)
+	assert.NotEmpty(t, info.Signer)
+
+	// A value that is not a public key is refused.
+	recorder = installWithAuthorKey(t, archive, "not a key")
+	assert.NotEqual(t, http.StatusOK, recorder.Code)
+	assert.Contains(t, recorder.Body.String(), "55107")
 }

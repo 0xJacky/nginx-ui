@@ -184,17 +184,23 @@ func (n *nodeClient) marketplaceInstall(ctx context.Context, id, version string,
 	return decode(resp, err, "/api/plugins/marketplace/install", nil)
 }
 
-// uploadPackage pushes the package the controller installed.
-func (n *nodeClient) uploadPackage(ctx context.Context, archivePath string, enable bool) error {
+// uploadPackage pushes the package the controller installed. authorKey is the
+// key that made it community trust here, the node has no catalog entry to
+// find it in.
+func (n *nodeClient) uploadPackage(ctx context.Context, archivePath string, enable bool, authorKey string) error {
 	file, err := os.Open(archivePath)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
+	form := map[string]string{"enable": boolText(enable)}
+	if authorKey != "" {
+		form["author_public_key"] = authorKey
+	}
 	resp, err := n.client.R().SetContext(ctx).
 		SetFileReader("file", "package.tar.gz", file).
-		SetFormData(map[string]string{"enable": boolText(enable)}).
+		SetFormData(form).
 		Post("/api/plugins")
 	return decode(resp, err, "/api/plugins", nil)
 }
@@ -499,7 +505,7 @@ func (s *Syncer) syncNode(
 		if remote != nil {
 			action = "updated"
 		}
-		if err = s.installOnNode(nodeCtx, client, info, own, platform); err != nil {
+		if err = s.installOnNode(nodeCtx, client, info, row.AuthorPublicKey, own, platform); err != nil {
 			result.State = SyncStateError
 			if errors.Is(err, errNoPlatformPackage) {
 				result.State = SyncStateUnsupportedPlatform
@@ -541,8 +547,10 @@ func (s *Syncer) syncNode(
 
 // installOnNode prefers the marketplace so the node fetches the package that
 // matches its own platform from the catalog, and falls back to pushing a
-// package for that platform, see pushArchive.
-func (s *Syncer) installOnNode(ctx context.Context, client *nodeClient, info *Info, own *ownArchive, platform string) error {
+// package for that platform, see pushArchive, together with the author key.
+func (s *Syncer) installOnNode(ctx context.Context, client *nodeClient, info *Info, authorKey string,
+	own *ownArchive, platform string,
+) error {
 	marketplaceErr := client.marketplaceInstall(ctx, info.ID, info.Version, info.Enabled)
 	if marketplaceErr == nil {
 		return nil
@@ -551,7 +559,7 @@ func (s *Syncer) installOnNode(ctx context.Context, client *nodeClient, info *In
 	if err != nil {
 		return fmt.Errorf("marketplace install failed (%v) and no package is available: %w", marketplaceErr, err)
 	}
-	if err = client.uploadPackage(ctx, archive, info.Enabled); err != nil {
+	if err = client.uploadPackage(ctx, archive, info.Enabled, authorKey); err != nil {
 		return fmt.Errorf("marketplace install failed (%v) and pushing the package failed: %w", marketplaceErr, err)
 	}
 	return nil

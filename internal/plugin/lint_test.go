@@ -8,8 +8,10 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 
+	"aead.dev/minisign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -299,4 +301,72 @@ func writeArchiveWithSymlink(t *testing.T, srcDir, archivePath string) {
 
 	require.NoError(t, tw.Close())
 	require.NoError(t, gz.Close())
+}
+
+func TestLintChecksTheEmbeddedSignature(t *testing.T) {
+	dir := writeLintFixture(t, lintFixture{manifest: goodManifest()})
+	lintSigned := func(t *testing.T, key minisign.PrivateKey, mutate func(entry *tarEntry)) *LintReport {
+		t.Helper()
+		archive := filepath.Join(t.TempDir(), "plugin.tar.gz")
+		require.NoError(t, BuildSignedPackage(dir, archive, key))
+		if mutate != nil {
+			archive = rewritePackage(t, archive, mutate)
+		}
+		report, err := Lint(archive)
+		require.NoError(t, err)
+		return report
+	}
+	release := useReleaseKey(t)
+	partner := usePartnerKey(t)
+	_, community := newSigningKey(t)
+
+	// A release or partner signature is clean.
+	assert.Empty(t, lintSigned(t, *release, nil).Findings)
+	assert.Empty(t, lintSigned(t, *partner, nil).Findings)
+
+	// A key the linter does not know is only a warning.
+	report := lintSigned(t, community, nil)
+	assertHasFinding(t, report, LevelWarning, "SEC-18")
+	assert.False(t, report.HasErrors(), "%+v", report.Findings)
+
+	// A file changed after signing no longer matches plugin.sums.
+	report = lintSigned(t, community, func(entry *tarEntry) {
+		if entry.header.Name == "LICENSE" {
+			entry.body = "changed"
+		}
+	})
+	assertHasFinding(t, report, LevelError, "PKG-21")
+
+	// A line that breaks the layout.
+	report = lintSigned(t, *release, func(entry *tarEntry) {
+		if entry.header.Name == SumsFileName {
+			entry.body = strings.TrimSuffix(entry.body, "\n")
+		}
+	})
+	assertHasFinding(t, report, LevelError, "PKG-19")
+
+	// A signature that does not parse, or that a known key fails.
+	report = lintSigned(t, *release, func(entry *tarEntry) {
+		if entry.header.Name == SumsSignatureFileName {
+			entry.body = "untrusted comment: nothing\n"
+		}
+	})
+	assertHasFinding(t, report, LevelError, "PKG-21")
+	report = lintSigned(t, *release, func(entry *tarEntry) {
+		if entry.header.Name == SumsSignatureFileName {
+			entry.body = string(minisign.Sign(*release, []byte("something else")))
+		}
+	})
+	assertHasFinding(t, report, LevelError, "PKG-21")
+
+	// Only one of the two files leaves the package unsigned.
+	for _, name := range []string{SumsFileName, SumsSignatureFileName} {
+		report = lintSigned(t, *release, func(entry *tarEntry) {
+			if entry.header.Name == name {
+				entry.header.Name = ""
+			}
+		})
+		assertHasFinding(t, report, LevelWarning, "PKG-20")
+		assert.False(t, report.HasErrors(), "%+v", report.Findings)
+	}
 }

@@ -24,34 +24,65 @@ var (
 // trusted public keys (minisign text form). It returns the key id that
 // produced the signature.
 func VerifyFile(path string, signature []byte, trustedKeys []string) (uint64, error) {
-	var parsed minisign.Signature
-	if err := parsed.UnmarshalText(signature); err != nil {
-		return 0, fmt.Errorf("%w: %v", ErrSignatureInvalid, err)
-	}
-
-	keys, err := ParseTrustedKeys(trustedKeys)
+	keyID, publicKey, err := signerKey(signature, trustedKeys)
 	if err != nil {
-		return 0, err
-	}
-	publicKey, ok := keys[parsed.KeyID]
-	if !ok {
-		return parsed.KeyID, fmt.Errorf("%w: %016X", ErrSignatureKeyUnknown, parsed.KeyID)
+		return keyID, err
 	}
 
 	f, err := os.Open(path)
 	if err != nil {
-		return parsed.KeyID, err
+		return keyID, err
 	}
 	defer f.Close()
 
 	reader := minisign.NewReader(f)
 	if _, err = io.Copy(io.Discard, reader); err != nil {
-		return parsed.KeyID, err
+		return keyID, err
 	}
 	if !reader.Verify(publicKey, signature) {
-		return parsed.KeyID, ErrSignatureInvalid
+		return keyID, ErrSignatureInvalid
+	}
+	return keyID, nil
+}
+
+// VerifyBytes checks signature against message using the given trusted
+// public keys (minisign text form). Both the legacy and the prehashed
+// algorithm are accepted. It returns the key id that produced the signature.
+func VerifyBytes(message, signature []byte, trustedKeys []string) (uint64, error) {
+	keyID, publicKey, err := signerKey(signature, trustedKeys)
+	if err != nil {
+		return keyID, err
+	}
+	if !minisign.Verify(publicKey, message, signature) {
+		return keyID, ErrSignatureInvalid
+	}
+	return keyID, nil
+}
+
+// KeyID returns the id of the key a minisign signature names.
+func KeyID(signature []byte) (uint64, error) {
+	var parsed minisign.Signature
+	if err := parsed.UnmarshalText(signature); err != nil {
+		return 0, fmt.Errorf("%w: %v", ErrSignatureInvalid, err)
 	}
 	return parsed.KeyID, nil
+}
+
+// signerKey finds the trusted key a signature names.
+func signerKey(signature []byte, trustedKeys []string) (uint64, minisign.PublicKey, error) {
+	keyID, err := KeyID(signature)
+	if err != nil {
+		return 0, minisign.PublicKey{}, err
+	}
+	keys, err := ParseTrustedKeys(trustedKeys)
+	if err != nil {
+		return keyID, minisign.PublicKey{}, err
+	}
+	publicKey, ok := keys[keyID]
+	if !ok {
+		return keyID, minisign.PublicKey{}, fmt.Errorf("%w: %016X", ErrSignatureKeyUnknown, keyID)
+	}
+	return keyID, publicKey, nil
 }
 
 // VerifyFileWithReleaseKeys verifies against the release keys pinned in the binary.
