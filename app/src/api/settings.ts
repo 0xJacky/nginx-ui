@@ -201,11 +201,12 @@ export interface PluginSettings {
   marketplace_enabled: boolean
   marketplace_sources: string[]
   trusted_public_keys: string[]
-  require_signature: boolean
   allow_community_plugins: boolean
   allow_insecure_download_url: boolean
   allow_uploads: boolean
   auto_update: boolean
+  /** Allows installing unsigned packages, off by default. */
+  developer_mode: boolean
   /** Memory limit of every plugin process in MiB, 0 means unlimited. */
   memory_limit_mb: number
   /** CPU limit of every plugin process in percent of one core, 0 means unlimited. */

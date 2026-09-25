@@ -2728,6 +2728,12 @@ msgstr "插件内容 {0} 无效：{1}"
 msgid "Plugin package declares version {0}, {1} was expected"
 msgstr "插件包声明的版本为 {0}，预期为 {1}"
 
+msgid "Plugin package is not signed and developer mode is off"
+msgstr "插件包未签名，且开发者模式未开启"
+
+msgid "Plugin package trust {0} is below the installed {1}"
+msgstr "插件包的信任等级 {0} 低于已安装的 {1}"
+
 msgid "Storage backend {0} is not available"
 msgstr "存储后端 {0} 不可用"
 
@@ -10629,6 +10635,9 @@ msgstr "所有子节点"
 msgid "Selected nodes"
 msgstr "已选节点"
 
+msgid "This plugin is not signed"
+msgstr "此插件未签名"
+
 msgid "Failed to read the plugin bundle"
 msgstr "读取插件包失败"
 
@@ -10748,8 +10757,8 @@ msgstr "目录为空"
 msgid "Downloading the package"
 msgstr "正在下载安装包"
 
-msgid "Verifying the signature"
-msgstr "正在验证签名"
+msgid "Checking the package"
+msgstr "正在检查安装包"
 
 msgid "Installing"
 msgstr "正在安装"
@@ -10857,14 +10866,14 @@ msgstr "添加官方目录"
 msgid "Official"
 msgstr "官方"
 
-msgid "Built and signed by the Nginx UI maintainers."
-msgstr "由 Nginx UI 维护者构建并签名。"
+msgid "Published by the Nginx UI project."
+msgstr "由 Nginx UI 项目发布。"
 
 msgid "Verified"
 msgstr "已验证"
 
-msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
-msgstr "经 Nginx UI 维护者审核，并使用发布密钥签名。"
+msgid "Published by a partner of the Nginx UI project."
+msgstr "由 Nginx UI 项目的合作伙伴发布。"
 
 msgid "Community"
 msgstr "社区"
@@ -10874,6 +10883,20 @@ msgid ""
 "you grant it, so only install it if you trust the author."
 msgstr ""
 "由第三方发布，未经审核。它将以您授予的权限运行，请仅在信任其作者时安装。"
+
+msgid "Unsigned"
+msgstr "未签名"
+
+msgid ""
+"Not signed, so its publisher cannot be confirmed. Installing it requires "
+"developer mode."
+msgstr "未签名，无法确认发布者。安装需要开启开发者模式。"
+
+msgid "This package is trusted less than the version already installed"
+msgstr "此安装包的信任等级低于已安装的版本"
+
+msgid "Installed version: %{installed}. This package: %{package}."
+msgstr "已安装版本：%{installed}。此安装包：%{package}。"
 
 msgid "Approve permissions"
 msgstr "批准权限"
@@ -11466,6 +11489,15 @@ msgstr "单窗格"
 
 msgid "Split view"
 msgstr "分屏视图"
+
+#~ msgid "Verifying the signature"
+#~ msgstr "正在验证签名"
+
+#~ msgid "Built and signed by the Nginx UI maintainers."
+#~ msgstr "由 Nginx UI 维护者构建并签名。"
+
+#~ msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+#~ msgstr "经 Nginx UI 维护者审核，并使用发布密钥签名。"
 
 #~ msgid ""
 #~ "Address of a plugin.json served by any static server. The plugin is "

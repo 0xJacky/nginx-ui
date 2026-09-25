@@ -21,6 +21,8 @@ export default {
   55020: () => $gettext('Plugin package declares another id'),
   55021: () => $gettext('Plugin content {0} is invalid: {1}'),
   55022: () => $gettext('Plugin package declares version {0}, {1} was expected'),
+  55023: () => $gettext('Plugin package is not signed and developer mode is off'),
+  55024: () => $gettext('Plugin package trust {0} is below the installed {1}'),
   55201: () => $gettext('Storage backend {0} is not available'),
   55202: () => $gettext('Storage config field {0} is invalid: {1}'),
   55203: () => $gettext('Deploy target kind {0} is not available'),

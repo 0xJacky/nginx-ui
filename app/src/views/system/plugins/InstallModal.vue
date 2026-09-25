@@ -8,7 +8,10 @@ import pluginApi, { localizedPluginDescription, localizedPluginName } from '@/ap
 import { setSyncPolicy, syncPlugin } from '@/api/plugin_sync'
 import NodeSelector from '@/components/NodeSelector'
 import gettext from '@/gettext'
-import { getErrorMessage } from '@/lib/http'
+import { getErrorMessage, resolveErrorMessage } from '@/lib/http'
+import { useInstalledPlugin } from './inventory'
+import { isCommunityTrust, isUnsignedTrust, packageTrustPreset } from './marketplace/trust'
+import TrustDowngradeAlert from './marketplace/TrustDowngradeAlert.vue'
 import PermissionList from './PermissionList.vue'
 
 const emit = defineEmits<{
@@ -62,6 +65,18 @@ const requiresMissing = computed(() => inspect.value?.requires_missing ?? [])
 const platforms = computed(() => inspect.value?.platforms ?? [])
 // An older node does not report the field, so only an explicit false blocks.
 const platformUnsupported = computed(() => inspect.value?.platform_supported === false)
+// An older node reports no trust level, and then nothing is shown.
+const trust = computed(() => packageTrustPreset(inspect.value?.trust))
+const trustWarning = computed(() => {
+  const level = inspect.value?.trust
+  if (isUnsignedTrust(level))
+    return $gettext('This plugin is not signed')
+  if (level && isCommunityTrust(level))
+    return $gettext('This is a community plugin')
+  return ''
+})
+// Only an upgrade has an installed version to compare the trust with.
+const installedPlugin = useInstalledPlugin(() => (inspect.value?.installed_version ? manifest.value?.id : undefined))
 
 function reset() {
   file.value = undefined
@@ -144,7 +159,7 @@ async function installPackage(packageFile: File, enable: boolean): Promise<Plugi
   catch (e) {
     if (!isPackageInvalid(e)) {
       // Show the toast the global handler skipped for this request.
-      const text = getErrorMessage(e, $gettext('Failed to install the plugin'))
+      const text = await resolveErrorMessage(e, $gettext('Failed to install the plugin'))
       if (text)
         message.error(text)
       throw e
@@ -183,7 +198,7 @@ async function install() {
     reset()
   }
   catch (e) {
-    error.value = getErrorMessage(e, $gettext('Failed to install the plugin'))
+    error.value = await resolveErrorMessage(e, $gettext('Failed to install the plugin'))
   }
   finally {
     installing.value = false
@@ -244,7 +259,14 @@ watch(open, value => {
           bordered
         >
           <ADescriptionsItem :label="$gettext('Name')">
-            {{ manifestName }}
+            <div class="flex flex-wrap items-center gap-2">
+              <span>{{ manifestName }}</span>
+              <ATooltip v-if="trust" :title="trust.hint()">
+                <ATag :color="trust.color" class="m-0">
+                  {{ trust.label() }}
+                </ATag>
+              </ATooltip>
+            </div>
           </ADescriptionsItem>
           <ADescriptionsItem :label="$gettext('ID')">
             <span class="font-mono text-xs">{{ manifest.id }}</span>
@@ -304,6 +326,21 @@ watch(open, value => {
             </ul>
           </template>
         </AAlert>
+
+        <TrustDowngradeAlert
+          class="mt-4"
+          :next="inspect?.trust"
+          :installed="installedPlugin?.trust"
+        />
+
+        <AAlert
+          v-if="trust && trustWarning"
+          type="warning"
+          show-icon
+          class="mt-4"
+          :title="trustWarning"
+          :description="trust.hint()"
+        />
 
         <AAlert
           v-if="inspect?.permissions_changed"

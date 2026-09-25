@@ -13,6 +13,7 @@ import {
 } from '@antdv-next/icons'
 import { localizedPluginDescription, localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
+import { packageTrustPreset } from './marketplace/trust'
 import PluginIcon from './PluginIcon.vue'
 import { isToggleDisabled, needsAttention, statusOf } from './presets'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
@@ -36,6 +37,7 @@ const description = computed(() => localizedPluginDescription(props.plugin, gett
 const status = computed(() => statusOf(props.plugin))
 const attention = computed(() => needsAttention(props.plugin))
 const toggleDisabled = computed(() => isToggleDisabled(props.plugin))
+const trust = computed(() => packageTrustPreset(props.plugin.trust))
 
 const toggleHint = computed(() => {
   if (toggleDisabled.value)
@@ -112,6 +114,12 @@ function onMenuClick({ key }: { key: string | number }) {
 
     <div class="plugin-card-meta">
       <ABadge :status="status.badge" :text="status.label()" />
+      <!-- Outlined, so the trust level stands apart from the capability tags. -->
+      <ATooltip v-if="trust" :title="trust.hint()">
+        <ATag :color="trust.color" class="m-0" variant="outlined">
+          {{ trust.label() }}
+        </ATag>
+      </ATooltip>
       <ATag
         v-for="capability in plugin.capabilities"
         :key="capability"
