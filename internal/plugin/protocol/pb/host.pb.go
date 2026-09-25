@@ -1226,7 +1226,7 @@ const file_nginxui_plugin_v1_host_proto_rawDesc = "" +
 	"\fCronRegister\x12*.nginxui.plugin.v1.HostCronRegisterRequest\x1a+.nginxui.plugin.v1.HostCronRegisterResponse\"\x16\xaa\xb8\x19\x12host.cron.register\x12\x87\x01\n" +
 	"\x0eCronUnregister\x12,.nginxui.plugin.v1.HostCronUnregisterRequest\x1a-.nginxui.plugin.v1.HostCronUnregisterResponse\"\x18\xaa\xb8\x19\x14host.cron.unregister\x12f\n" +
 	"\x06Notify\x12$.nginxui.plugin.v1.HostNotifyRequest\x1a%.nginxui.plugin.v1.HostNotifyResponse\"\x0f\xaa\xb8\x19\vhost.notify\x12\x8b\x01\n" +
-	"\x0fMetricsSnapshot\x12-.nginxui.plugin.v1.HostMetricsSnapshotRequest\x1a..nginxui.plugin.v1.HostMetricsSnapshotResponse\"\x19\xaa\xb8\x19\x15host.metrics.snapshotBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x0fMetricsSnapshot\x12-.nginxui.plugin.v1.HostMetricsSnapshotRequest\x1a..nginxui.plugin.v1.HostMetricsSnapshotResponse\"\x19\xaa\xb8\x19\x15host.metrics.snapshotBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_host_proto_rawDescOnce sync.Once

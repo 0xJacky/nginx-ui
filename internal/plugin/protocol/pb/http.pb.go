@@ -258,7 +258,7 @@ const file_nginxui_plugin_v1_http_proto_rawDesc = "" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x120\n" +
 	"\x05value\x18\x02 \x01(\v2\x1a.google.protobuf.ListValueR\x05value:\x028\x012n\n" +
 	"\x04HTTP\x12f\n" +
-	"\x06Handle\x12$.nginxui.plugin.v1.HTTPHandleRequest\x1a%.nginxui.plugin.v1.HTTPHandleResponse\"\x0f\xaa\xb8\x19\vhttp.handleBKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x06Handle\x12$.nginxui.plugin.v1.HTTPHandleRequest\x1a%.nginxui.plugin.v1.HTTPHandleResponse\"\x0f\xaa\xb8\x19\vhttp.handleBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_http_proto_rawDescOnce sync.Once

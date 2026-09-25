@@ -137,7 +137,7 @@ const file_nginxui_plugin_v1_events_proto_rawDesc = "" +
 	"\x02ts\x18\x03 \x01(\rR\x02ts\"\x12\n" +
 	"\x10EventsOnResponse2j\n" +
 	"\x06Events\x12`\n" +
-	"\x02On\x12\".nginxui.plugin.v1.EventsOnRequest\x1a#.nginxui.plugin.v1.EventsOnResponse\"\x11\xaa\xb8\x19\tevents.on\xb0\xb8\x19\x01BKZIgithub.com/0xJacky/nginx-ui-plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x02On\x12\".nginxui.plugin.v1.EventsOnRequest\x1a#.nginxui.plugin.v1.EventsOnResponse\"\x11\xaa\xb8\x19\tevents.on\xb0\xb8\x19\x01BBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_events_proto_rawDescOnce sync.Once
