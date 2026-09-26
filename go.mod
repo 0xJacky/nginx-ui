@@ -25,16 +25,16 @@ require (
 	github.com/elliotchance/orderedmap/v3 v3.1.1
 	github.com/fsnotify/fsnotify v1.10.1
 	github.com/gabriel-vasile/mimetype v1.4.15
-	github.com/gin-contrib/cors v1.7.8
-	github.com/gin-contrib/static v1.1.7
+	github.com/gin-contrib/cors v1.7.9
+	github.com/gin-contrib/static v1.1.8
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-acme/lego/v5 v5.5.1
 	github.com/go-co-op/gocron/v2 v2.22.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.7
-	github.com/go-playground/validator/v10 v10.30.4
+	github.com/go-playground/validator/v10 v10.30.5
 	github.com/go-resty/resty/v2 v2.17.2
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
-	github.com/go-webauthn/webauthn v0.18.1
+	github.com/go-webauthn/webauthn v0.18.2
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
@@ -58,12 +58,12 @@ require (
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.12.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.182
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.185
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
-	github.com/ulikunitz/xz v0.5.16
-	github.com/uozi-tech/cosy v1.35.1
+	github.com/ulikunitz/xz v0.5.17
+	github.com/uozi-tech/cosy v1.35.3
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.2
-	github.com/urfave/cli/v3 v3.12.0
+	github.com/urfave/cli/v3 v3.13.0
 	go.etcd.io/bbolt v1.5.0
 	go.uber.org/zap v1.28.0
 	golang.org/x/crypto v0.57.0
@@ -77,6 +77,7 @@ require (
 	gorm.io/gen v0.3.29
 	gorm.io/gorm v1.31.2
 	gorm.io/plugin/dbresolver v1.6.2
+	software.sslmate.com/src/go-pkcs12 v0.7.3
 )
 
 require (
@@ -162,7 +163,7 @@ require (
 	github.com/fatih/color v1.19.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/felixge/httpsnoop v1.1.0 // indirect
-	github.com/fxamacker/cbor/v2 v2.9.3 // indirect
+	github.com/fxamacker/cbor/v2 v2.9.4 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-contrib/pprof v1.5.5 // indirect
 	github.com/gin-contrib/sse v1.1.1 // indirect
@@ -273,7 +274,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.4.3 // indirect
 	github.com/peterhellberg/link v1.2.0 // indirect
 	github.com/philhofer/fwd v1.2.0 // indirect
-	github.com/pierrec/lz4/v4 v4.1.29 // indirect
+	github.com/pierrec/lz4/v4 v4.1.30 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
@@ -360,7 +361,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.6.0 // indirect
 	gorm.io/hints v1.1.2 // indirect
-	software.sslmate.com/src/go-pkcs12 v0.7.3 // indirect
 )
 
 // v0.11.2 sends the create-only subname field in PATCH requests.
