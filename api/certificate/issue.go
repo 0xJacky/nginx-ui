@@ -1,14 +1,14 @@
 package certificate
 
 import (
-	"strings"
+	"context"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/acmehint"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
-	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/gorilla/websocket"
@@ -29,6 +29,33 @@ type IssueCertResponse struct {
 	SSLCertificateKey string             `json:"ssl_certificate_key,omitempty"`
 	KeyType           certcrypto.KeyType `json:"key_type,omitempty"`
 	Profile           string             `json:"profile,omitempty"`
+	// Hint explains an issuance failure in actionable terms. Only set on errors.
+	Hint *acmehint.Hint `json:"hint,omitempty"`
+}
+
+// issueHintDiagnoseTimeout bounds the DNS evidence collection that runs after
+// a failed issuance, so a slow resolver cannot delay the error response.
+const issueHintDiagnoseTimeout = 4 * time.Second
+
+// diagnoseForHint is a seam for tests.
+var diagnoseForHint = acmehint.Diagnose
+
+// issueFailureHint classifies an issuance error. For HTTP-01 it first
+// resolves the identifiers so the classifier can tell "DNS points to another
+// server" apart from "this server did not route the challenge".
+func issueFailureHint(ctx context.Context, payload *cert.ConfigPayload, err error) *acmehint.Hint {
+	if err == nil {
+		return nil
+	}
+	var ev acmehint.Evidence
+	if payload.ChallengeMethod == "" || payload.ChallengeMethod == cert.HTTP01 {
+		dctx, cancel := context.WithTimeout(ctx, issueHintDiagnoseTimeout)
+		defer cancel()
+		ev = acmehint.EvidenceFromDiagnostics(diagnoseForHint(dctx, payload.ServerName, acmehint.Options{
+			LookupTimeout: issueHintDiagnoseTimeout / 2,
+		}))
+	}
+	return acmehint.Classify(err, ev)
 }
 
 func IssueCert(c *gin.Context) {
@@ -61,59 +88,23 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
-	certModel, err := persistCertDraft(name, payload)
-	if err != nil {
+	payload.ConfigName = name
+
+	log := cert.NewLogger()
+	log.SetWebSocket(wsWriter)
+	defer log.Close()
+
+	certModel, err := cert.IssueWithRecord(name, payload, log)
+	if certModel == nil && err != nil {
 		logger.Error(err)
 		_ = wsWriter.WriteJSON(IssueCertResponse{Status: Error, Message: err.Error()})
 		return
 	}
-
-	payload.CertID = certModel.ID
-
-	// Defer guard: if the function returns while still pending (panic / unexpected path),
-	// the record would otherwise be orphaned. Convert to failure with a generic message.
-	defer func() {
-		var current model.Cert
-		db := model.UseDB()
-		if db == nil {
-			return
-		}
-		if e := db.Where("id = ?", certModel.ID).First(&current).Error; e != nil {
-			return
-		}
-		if current.Status == model.CertStatusPending {
-			markCertFailure(certModel.ID, "Issuance interrupted before completion.")
-		}
-	}()
-
-	// Hydrate payload.Resource from the existing cert (for renewal path).
-	if certModel.SSLCertificatePath != "" {
-		certInfo, _ := cert.GetCertInfo(certModel.SSLCertificatePath)
-		if certInfo != nil {
-			payload.Resource = certModel.Resource
-			payload.NotBefore = certInfo.NotBefore
-		}
-	}
-
-	// Reissue over the files this record already owns. The certificate
-	// management page renews without touching any site configuration, so a
-	// path derived from the current identifiers and key type would leave every
-	// vhost referencing the previous, expiring files.
-	payload.UseExistingCertificatePaths(certModel.SSLCertificatePath, certModel.SSLCertificateKeyPath)
-
-	log := cert.NewLogger()
-	log.SetCertModel(certModel)
-	log.SetWebSocket(wsWriter)
-	defer log.Close()
-
-	if err := cert.IssueCert(payload, log); err != nil {
-		log.Error(err)
-		markCertFailure(certModel.ID, shortError(err))
-		_ = wsWriter.WriteJSON(IssueCertResponse{Status: Error, Message: err.Error()})
+	if err != nil {
+		hint := issueFailureHint(c.Request.Context(), payload, err)
+		_ = wsWriter.WriteJSON(IssueCertResponse{Status: Error, Message: err.Error(), Hint: hint})
 		return
 	}
-
-	markCertSuccess(certModel.ID, payload.GetCertificatePath(), payload.GetCertificateKeyPath(), payload.Resource, payload.Profile)
 
 	if err := wsWriter.WriteJSON(IssueCertResponse{
 		Status:            Success,
@@ -129,150 +120,11 @@ func IssueCert(c *gin.Context) {
 	}
 }
 
-// persistCertDraft inserts or updates a Cert row representing an in-flight issuance.
-// The row is keyed by (name, filename, key_type). All user-submitted config is captured
-// up-front so a failure preserves enough state for a one-click retry.
-func persistCertDraft(name string, payload *cert.ConfigPayload) (*model.Cert, error) {
-	db := model.UseDB()
-	normalizedKeyType := helper.GetKeyType(payload.GetKeyType())
-	keyTypeAliases := helper.GetKeyTypeAliasStrings(normalizedKeyType)
-	certificateName := cert.CertificateName(name, payload.ServerName)
-
-	now := time.Now()
-
-	seed := &model.Cert{
-		Name:                              certificateName,
-		Filename:                          name,
-		KeyType:                           normalizedKeyType,
-		Domains:                           payload.ServerName,
-		ChallengeMethod:                   payload.ChallengeMethod,
-		Profile:                           payload.Profile,
-		DnsCredentialID:                   payload.DNSCredentialID,
-		ACMEUserID:                        payload.ACMEUserID,
-		AutoCert:                          model.AutoCertEnabled,
-		MustStaple:                        payload.MustStaple,
-		LegoDisableCNAMESupport:           payload.LegoDisableCNAMESupport,
-		DisableAuthoritativeNSPropagation: payload.DisableAuthoritativeNSPropagation,
-		EnableCommonName:                  payload.EnableCommonName,
-		RevokeOld:                         payload.RevokeOld,
-		Status:                            model.CertStatusPending,
-		LastError:                         "",
-		LastAttemptAt:                     &now,
-	}
-
-	// FirstOrCreate by (filename, key_type). Name is the certificate identifier,
-	// while Filename keeps the association with the site configuration.
-	// When the row exists,
-	// `seed` is hydrated with the existing record (preserving SSLCertificatePath,
-	// Resource, etc.) so we can read those fields on the renewal path below.
-	if err := db.Where("filename = ? AND key_type IN ?", name, keyTypeAliases).
-		FirstOrCreate(seed).Error; err != nil {
-		return nil, err
-	}
-	if payload.Profile == "" {
-		payload.Profile = seed.Profile
-		if payload.Profile == "" && seed.Resource != nil && seed.Resource.Resource != nil {
-			payload.Profile = seed.Resource.Profile
-		}
-	}
-
-	// Refresh all user-submitted config and reset issuance state to pending.
-	// Use struct + Select so GORM applies the `serializer:json` tag for Domains
-	// AND writes the zero-valued LastError ("") instead of skipping it.
-	updates := &model.Cert{
-		Name:                              certificateName,
-		Domains:                           payload.ServerName,
-		ChallengeMethod:                   payload.ChallengeMethod,
-		Profile:                           payload.Profile,
-		DnsCredentialID:                   payload.DNSCredentialID,
-		ACMEUserID:                        payload.ACMEUserID,
-		AutoCert:                          model.AutoCertEnabled,
-		MustStaple:                        payload.MustStaple,
-		LegoDisableCNAMESupport:           payload.LegoDisableCNAMESupport,
-		DisableAuthoritativeNSPropagation: payload.DisableAuthoritativeNSPropagation,
-		EnableCommonName:                  payload.EnableCommonName,
-		RevokeOld:                         payload.RevokeOld,
-		Status:                            model.CertStatusPending,
-		LastError:                         "",
-		LastAttemptAt:                     &now,
-	}
-	if err := db.Model(&model.Cert{}).Where("id = ?", seed.ID).
-		Select(
-			"name", "domains", "challenge_method", "profile", "dns_credential_id", "acme_user_id",
-			"auto_cert", "must_staple", "lego_disable_cname_support",
-			"disable_authoritative_ns_propagation", "enable_common_name",
-			"revoke_old", "status", "last_error", "last_attempt_at",
-		).
-		Updates(updates).Error; err != nil {
-		return nil, err
-	}
-
-	// Re-read so the caller has the fully-populated struct (Resource, paths, etc.).
-	var fresh model.Cert
-	if err := db.Where("id = ?", seed.ID).First(&fresh).Error; err != nil {
-		return nil, err
-	}
-	return &fresh, nil
-}
-
-// markCertFailure updates only the failure-related columns. It explicitly
-// avoids touching SSLCertificatePath / SSLCertificateKeyPath / Resource so
-// a renew failure does not destroy the previously-issued certificate.
-// Map-based Updates is safe here because neither column has a serializer tag.
-func markCertFailure(id uint64, lastError string) {
-	db := model.UseDB()
-	if db == nil {
-		return
-	}
-	if err := db.Model(&model.Cert{}).Where("id = ?", id).Updates(map[string]any{
-		"status":     model.CertStatusFailure,
-		"last_error": lastError,
-	}).Error; err != nil {
-		logger.Errorf("markCertFailure: %v", err)
-	}
-}
-
-// markCertSuccess updates the cert with the freshly-issued paths and Resource,
-// flips status to success, and clears any prior last_error. Uses struct + Select
-// so GORM applies the `serializer:json[aes]` tag for Resource AND writes the
-// zero-valued LastError ("").
-func markCertSuccess(id uint64, sslCertificatePath, sslCertificateKeyPath string,
-	resource *model.CertificateResource, profile string) {
-	db := model.UseDB()
-	if db == nil {
-		return
-	}
-	updates := &model.Cert{
-		SSLCertificatePath:    sslCertificatePath,
-		SSLCertificateKeyPath: sslCertificateKeyPath,
-		Resource:              resource,
-		Profile:               profile,
-		Status:                model.CertStatusSuccess,
-		LastError:             "",
-	}
-	cols := []string{"ssl_certificate_path", "ssl_certificate_key_path", "profile", "status", "last_error"}
-	if resource != nil {
-		cols = append(cols, "resource")
-	}
-	if err := db.Model(&model.Cert{}).Where("id = ?", id).
-		Select(cols).Updates(updates).Error; err != nil {
-		logger.Errorf("markCertSuccess: %v", err)
-	}
-}
-
-// shortError trims and truncates an error for UI display in last_error.
-// Returns "" for nil so a successful retry can clear the prior error.
-// Truncation is rune-aware so non-ASCII error messages (e.g. localized
-// ACME or DNS provider errors) cannot be split mid-rune.
-func shortError(err error) string {
-	if err == nil {
-		return ""
-	}
-	msg := strings.TrimSpace(err.Error())
-	const maxRunes = 500
-	runes := []rune(msg)
-	if len(runes) > maxRunes {
-		msg = string(runes[:maxRunes]) + "…"
-	}
-	return msg
-}
+// The cert record bookkeeping lives in internal/cert so the HTTPS onboarding
+// orchestrator shares it with this endpoint.
+var (
+	persistCertDraft = cert.PersistCertDraft
+	markCertFailure  = cert.MarkCertFailure
+	markCertSuccess  = cert.MarkCertSuccess
+	shortError       = cert.ShortError
+)
