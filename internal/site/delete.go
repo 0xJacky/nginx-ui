@@ -13,29 +13,17 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// Delete deletes a site by removing the file in sites-available
+// syncDelete dispatches the delete request to the site's sync nodes. It is a
+// variable so tests can observe whether a delete reached the remote nodes.
+var syncDelete = dispatchSyncDelete
+
+// Delete deletes a site by removing the file in sites-available. Every refusal
+// check runs before any side effect, so a refused delete leaves the database
+// record, the certificate record, the file and the remote nodes untouched.
 func Delete(name string) (err error) {
 	availablePath, err := ResolveAvailablePath(name)
 	if err != nil {
 		return err
-	}
-
-	// Remote namespaces keep the enablement flag in the database, so refuse the
-	// deletion the same way an enabled local site is refused.
-	if IsRemoteDeploy(name) {
-		s := query.Site
-		siteModel, err := s.Where(s.Path.Eq(availablePath)).First()
-		if err == nil && siteModel.RemoteEnabled {
-			return ErrSiteIsEnabled
-		}
-	}
-
-	syncDelete(name)
-
-	s := query.Site
-	_, err = s.Where(s.Path.Eq(availablePath)).Unscoped().Delete(&model.Site{})
-	if err != nil {
-		return
 	}
 
 	enabledPath, err := ResolveEnabledPath(name)
@@ -72,18 +60,33 @@ func Delete(name string) (err error) {
 		return ErrSiteIsInMaintenance
 	}
 
-	certModel := model.Cert{Filename: name}
-	_ = certModel.Remove()
+	s := query.Site
 
-	err = nginx.Remove(availablePath)
+	// Remote namespaces keep the enablement flag in the database, so refuse the
+	// deletion the same way an enabled local site is refused.
+	if IsRemoteDeploy(name) {
+		siteModel, err := s.Where(s.Path.Eq(availablePath)).First()
+		if err == nil && siteModel.RemoteEnabled {
+			return ErrSiteIsEnabled
+		}
+	}
+
+	// The sync nodes are resolved from the site record, so dispatch before the
+	// record is deleted.
+	syncDelete(name)
+
+	_, err = s.Where(s.Path.Eq(availablePath)).Unscoped().Delete(&model.Site{})
 	if err != nil {
 		return
 	}
 
-	return
+	certModel := model.Cert{Filename: name}
+	_ = certModel.Remove()
+
+	return nginx.Remove(availablePath)
 }
 
-func syncDelete(name string) {
+func dispatchSyncDelete(name string) {
 	nodes := getSyncNodes(name)
 
 	for _, node := range nodes {
