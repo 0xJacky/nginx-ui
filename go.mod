@@ -28,7 +28,7 @@ require (
 	github.com/gin-contrib/cors v1.7.9
 	github.com/gin-contrib/static v1.1.8
 	github.com/gin-gonic/gin v1.12.0
-	github.com/go-acme/lego/v5 v5.5.1
+	github.com/go-acme/lego/v5 v5.5.2
 	github.com/go-co-op/gocron/v2 v2.22.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.7
 	github.com/go-playground/validator/v10 v10.30.5
@@ -39,7 +39,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.216
-	github.com/mark3labs/mcp-go v1.1.0
+	github.com/mark3labs/mcp-go v1.1.1
 	github.com/miekg/dns v1.1.73
 	github.com/minio/minio-go/v7 v7.3.0
 	github.com/minio/selfupdate v0.6.0
