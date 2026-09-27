@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { Modal } from 'antdv-next'
-import template from '@/api/template'
+import site from '@/api/site'
 import { useGlobalStore } from '@/pinia'
 import { useSiteEditorStore } from '@/views/site/site_edit/components/SiteEditor/store'
-import ObtainCert from './ObtainCert.vue'
+import { isHTTPChallengeLocation } from '../../composables/useHTTPSRedirect'
+import EditorHTTPSCard from '../HTTPS/EditorHTTPSCard.vue'
+import { extractServerDomains, sameStringList } from '../HTTPS/siteHTTPSState'
 
+const props = defineProps<{
+  configName: string
+}>()
+
+const { message } = useGlobalApp()
 const editorStore = useSiteEditorStore()
-const { ngxConfig, issuingCert, curServerIdx, curDirectivesMap, autoCert } = storeToRefs(editorStore)
+const { ngxConfig, curServer, curDirectivesMap, autoCert } = storeToRefs(editorStore)
 
 const [modal, ContextHolder] = Modal.useModal()
-
-const obtainCert = useTemplateRef('obtainCert')
 
 const noServerName = computed(() => {
   if (!curDirectivesMap.value.server_name)
@@ -23,56 +28,80 @@ watch(noServerName, () => {
   autoCert.value = false
 })
 
-const update = ref(0)
+const domains = computed<string[]>(previous => {
+  const next = extractServerDomains([curServer.value])
+  return previous && sameStringList(previous, next) ? previous : next
+})
 
-function isTLSServer(serverIndex: number) {
-  return ngxConfig.value.servers[serverIndex]?.directives?.some(v => v.directive === 'listen' && v.params?.includes('ssl')) ?? false
+// ---- Enable / reissue ---------------------------------------------------
+
+const modalOpen = ref(false)
+const issued = ref(false)
+const httpsCard = useTemplateRef('httpsCard')
+const httpsRunning = computed(() => httpsCard.value?.running ?? false)
+
+function openHTTPSModal() {
+  if (!httpsRunning.value)
+    httpsCard.value?.reset()
+  issued.value = false
+  modalOpen.value = true
 }
 
-function getChallengeServerIndex() {
-  const httpServerIndex = ngxConfig.value.servers.findIndex((_, serverIndex) => !isTLSServer(serverIndex))
-
-  if (httpServerIndex >= 0)
-    return httpServerIndex
-
-  return curServerIdx.value
+function onIssued() {
+  issued.value = true
 }
 
-async function onchange() {
-  update.value++
-  await nextTick()
+// The backend rewrote the site file and enabled auto-renewal, so reload the
+// site (config and certificate info) once the operator closes the dialog.
+watch(modalOpen, open => {
+  if (!open && issued.value) {
+    issued.value = false
+    editorStore.init(props.configName)
+  }
+})
+
+// ---- Disable auto-renewal -----------------------------------------------
+
+const disabling = ref(false)
+
+async function disableAutoCert() {
+  disabling.value = true
+  try {
+    ngxConfig.value.servers.forEach(server => {
+      server.locations = server.locations?.filter(location => !isHTTPChallengeLocation(location))
+    })
+    // Skip syncing the response: the certificate record still has auto-renewal
+    // enabled until remove_auto_cert returns; the reload below picks up both.
+    await editorStore.save({ syncResponse: false })
+    await site.remove_auto_cert(props.configName)
+    message.success($gettext('Auto-renewal disabled for %{name}', { name: props.configName }))
+  }
+  catch (e) {
+    const error = e as { message?: string }
+    message.error(error?.message ?? $gettext('Disable auto-renewal failed for %{name}', { name: props.configName }))
+  }
+  finally {
+    disabling.value = false
+  }
+
+  await editorStore.init(props.configName)
+}
+
+function onchange() {
+  if (!autoCert.value) {
+    openHTTPSModal()
+    return
+  }
 
   modal.confirm({
-    title: $gettext('Do you want to enable TLS?'),
-    content: $gettext('To make sure the certification auto-renewal can work normally, '
-      + 'we need to add a location which can proxy the request from authority to backend, '
-      + 'and we need to save this file and reload the Nginx. Are you sure you want to continue?'),
-    mask: false,
-    centered: true,
+    title: $gettext('Do you want to disable auto-cert renewal?'),
+    content: $gettext('We will remove the HTTPChallenge configuration from '
+      + 'this file and reload the Nginx. Are you sure you want to continue?'),
     okText: $gettext('OK'),
     cancelText: $gettext('Cancel'),
-    async onOk() {
-      await template.get_block('letsencrypt.conf').then(async r => {
-        const challengeServer = ngxConfig.value.servers[getChallengeServerIndex()]
-
-        if (!challengeServer.locations)
-          challengeServer.locations = []
-        else
-          challengeServer.locations = challengeServer.locations.filter(l => !l.path.includes('/.well-known/acme-challenge'))
-
-        await nextTick()
-
-        challengeServer.locations.push(...r.locations!)
-      })
-      await editorStore.save({
-        omitIncompleteTLSServers: true,
-        syncResponse: false,
-      })
-
-      await nextTick()
-
-      obtainCert.value!.toggle(autoCert.value)
-    },
+    mask: false,
+    centered: true,
+    onOk: disableAutoCert,
   })
 }
 
@@ -83,17 +112,39 @@ const { processingStatus } = storeToRefs(globalStore)
 <template>
   <div>
     <ContextHolder />
-    <ObtainCert
-      ref="obtainCert"
-      :key="update"
-      v-model:auto-cert="autoCert"
-      :no-server-name="noServerName"
-      :config-name="ngxConfig.name"
-    />
+    <AModal
+      v-model:open="modalOpen"
+      :title="$gettext('Obtain certificate')"
+      :mask-closable="false"
+      :closable="!httpsRunning"
+      :keyboard="!httpsRunning"
+      :footer="null"
+      :width="640"
+    >
+      <!-- This dialog obtains a Let's Encrypt certificate; picking an existing
+           one is Change Certificate's job. -->
+      <EditorHTTPSCard
+        ref="httpsCard"
+        compact
+        :existing-certificate="false"
+        :domains
+        @success="onIssued"
+      >
+        <template #actions>
+          <AButton
+            v-if="issued"
+            type="primary"
+            @click="modalOpen = false"
+          >
+            {{ $gettext('Done') }}
+          </AButton>
+        </template>
+      </EditorHTTPSCard>
+    </AModal>
     <div class="issue-cert">
       <AFormItem :label="$gettext('Encrypt website with Let\'s Encrypt')">
         <ASwitch
-          :loading="issuingCert"
+          :loading="disabling"
           :checked="autoCert"
           :disabled="noServerName || processingStatus.auto_cert_processing"
           @change="onchange"
@@ -107,22 +158,7 @@ const { processingStatus } = storeToRefs(globalStore)
 </template>
 
 <style lang="less" scoped>
-.ant-tag {
-  margin: 0;
-}
-
 .issue-cert {
   margin: 15px 0;
-}
-
-.switch-wrapper {
-  position: relative;
-
-  .text {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    margin-left: 10px;
-  }
 }
 </style>

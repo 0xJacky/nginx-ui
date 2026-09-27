@@ -3,6 +3,12 @@ import type { CheckedType } from '@/types'
 import { Modal } from 'antdv-next'
 import template from '@/api/template'
 import { useSiteEditorStore } from '@/views/site/site_edit/components/SiteEditor/store'
+import { ensureHTTPChallengeLocation } from '../../composables/useHTTPChallenge'
+import { buildTLSServerFromHTTPServer } from '../../composables/useHTTPSRedirect'
+
+// The classic "Enable TLS" switch for sites the HTTPS card does not cover
+// (e.g. a disabled site). Using an existing certificate is one of the HTTPS
+// card's methods, so there is no separate "own certificate" action here.
 
 const [modal, ContextHolder] = Modal.useModal()
 
@@ -22,14 +28,9 @@ function confirmChangeTLS(status: CheckedType) {
     async onOk() {
       await template.get_block('letsencrypt.conf').then(async r => {
         const first = ngxConfig.value.servers[0]
-        if (!first.locations)
-          first.locations = []
-        else
-          first.locations = first.locations.filter(l => !l.path.includes('/.well-known/acme-challenge'))
+        ensureHTTPChallengeLocation(first, r.locations!)
 
         await nextTick()
-
-        first.locations?.push(...r.locations!)
       })
       await editorStore.save()
 
@@ -40,31 +41,11 @@ function confirmChangeTLS(status: CheckedType) {
 
 function changeTLS(status: CheckedType) {
   if (status) {
-    // deep copy servers[0] to servers[1]
-    const server = JSON.parse(JSON.stringify(ngxConfig.value.servers[0]))
+    // Copy servers[0] into a 443 server without its HTTPS redirect, which
+    // would otherwise make HTTPS redirect to itself.
+    ngxConfig.value.servers.push(buildTLSServerFromHTTPServer(ngxConfig.value.servers[0]))
 
-    ngxConfig.value.servers.push(server)
-
-    curServerIdx.value = 1
-
-    const servers = ngxConfig.value.servers
-
-    let i = 0
-    while (i < (servers?.[1].directives?.length ?? 0)) {
-      const v = servers?.[1]?.directives?.[i]
-      if (v?.directive === 'listen')
-        servers[1]?.directives?.splice(i, 1)
-      else
-        i++
-    }
-
-    servers?.[1]?.directives?.splice(0, 0, {
-      directive: 'listen',
-      params: '443 ssl',
-    }, {
-      directive: 'listen',
-      params: '[::]:443 ssl',
-    })
+    curServerIdx.value = ngxConfig.value.servers.length - 1
   }
   else {
     // remove servers[1]

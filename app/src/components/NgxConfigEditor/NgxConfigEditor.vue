@@ -14,7 +14,17 @@ const { ngxConfig, curServerIdx } = storeToRefs(ngxConfigStore)
 const route = useRoute()
 
 onMounted(() => {
-  curServerIdx.value = Number.parseInt((route.query?.server_idx ?? 0) as string)
+  // Only restore the tab from the URL when it names one; otherwise keep the
+  // index the caller selected (e.g. the TLS server in the add-site wizard).
+  // setNgxConfig() clamps the index again once a config is loaded.
+  const serverIdx = Number(route.query?.server_idx)
+  const serverCount = ngxConfig.value.servers?.length ?? 0
+  const isValidIdx = route.query?.server_idx !== undefined
+    && Number.isInteger(serverIdx)
+    && serverIdx >= 0
+    && (serverCount === 0 || serverIdx < serverCount)
+  if (isValidIdx)
+    curServerIdx.value = serverIdx
 })
 
 const activeKey = ref(['3'])

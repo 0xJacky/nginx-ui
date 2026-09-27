@@ -1,5 +1,5 @@
 import type { CertificateInfo } from '@/api/cert'
-import type { NgxConfig, NgxServer } from '@/api/ngx'
+import type { NgxConfig } from '@/api/ngx'
 import type { Site } from '@/api/site'
 import type { CosyError } from '@/lib/http/types'
 import type { CheckedType } from '@/types'
@@ -9,6 +9,7 @@ import site from '@/api/site'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { translateError } from '@/lib/http/error'
 import { isIPAddress, splitCertificateIdentifiers } from '@/utils/certificate'
+import { hasDirectiveWithValue, hasSSLListen, stageServersForPendingTLS } from '../../composables/useHTTPSRedirect'
 
 interface SaveOptions {
   omitIncompleteTLSServers?: boolean
@@ -23,14 +24,6 @@ interface TLSServerIssue {
 
 function cloneNgxConfig(config: NgxConfig): NgxConfig {
   return JSON.parse(JSON.stringify(config))
-}
-
-function hasSSLListen(server?: NgxServer) {
-  return server?.directives?.some(v => v.directive === 'listen' && v.params?.includes('ssl')) ?? false
-}
-
-function hasDirectiveWithValue(server: NgxServer | undefined, directive: string) {
-  return server?.directives?.some(v => v.directive === directive && v.params?.trim()) ?? false
 }
 
 export const useSiteEditorStore = defineStore('siteEditor', () => {
@@ -71,6 +64,10 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
   let loadSeq = 0
 
   function reset() {
+    // Invalidate any in-flight init() so its response cannot land on top of
+    // whatever the store is reset for (another site or a new one).
+    loadSeq++
+    loading.value = false
     advanceMode.value = false
     parseErrorStatus.value = false
     parseErrorMessage.value = ''
@@ -86,9 +83,9 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
   }
 
   async function init(_name: string) {
-    const seq = ++loadSeq
-    loading.value = true
     reset()
+    const seq = loadSeq
+    loading.value = true
     await nextTick()
     if (seq !== loadSeq)
       return
@@ -136,13 +133,10 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
   function getConfigWithoutIncompleteTLSServers(config: NgxConfig = ngxConfig.value) {
     const clonedConfig = cloneNgxConfig(config)
 
-    const servers = clonedConfig.servers?.filter(server => {
-      if (!hasSSLListen(server))
-        return true
-
-      return hasDirectiveWithValue(server, 'ssl_certificate')
-        && hasDirectiveWithValue(server, 'ssl_certificate_key')
-    }) ?? []
+    // Pending TLS servers are left out, and a port-80 server that would only
+    // redirect to them serves their application instead, so the staged site
+    // never redirects to an HTTPS listener that does not exist yet.
+    const servers = stageServersForPendingTLS(clonedConfig.servers ?? [])
 
     if (servers.length === 0)
       return clonedConfig

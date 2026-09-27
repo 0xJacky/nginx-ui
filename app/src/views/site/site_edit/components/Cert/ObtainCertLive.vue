@@ -10,6 +10,17 @@ const props = defineProps<{
   options: AutoCertOptions
 }>()
 
+const emit = defineEmits<{
+  retry: []
+}>()
+
+// Optional actionable hint the backend attaches to an issuance error.
+interface IssueHint {
+  code: string
+  message: string
+  params?: Record<string, string>
+}
+
 const modalVisible = defineModel<boolean>('modalVisible')
 const modalClosable = defineModel<boolean>('modalClosable')
 
@@ -27,6 +38,9 @@ const progressStatus = ref('active') as Ref<'success' | 'active' | 'normal' | 'e
 const failureDetail = ref('')
 
 const logContainer = useTemplateRef('logContainer')
+
+const hint = ref<IssueHint>()
+const hasFailed = computed(() => progressStatus.value === 'exception')
 
 const logLevelLabels: Record<string, string> = {
   INFO: 'Info',
@@ -146,6 +160,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
     modalClosable.value = false
     modalVisible.value = true
     progressPercent.value = 0
+    hint.value = undefined
     logContainer.value!.innerHTML = ''
 
     log($gettext('Getting the certificate, please wait...'))
@@ -201,6 +216,8 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
           }
           break
         case 'error':
+          if (r.hint?.message)
+            hint.value = r.hint
           fail(r?.message)
           break
         default:
@@ -228,12 +245,13 @@ defineExpose({
 
 <template>
   <div>
+    <!-- One alert for the failure: the backend's hint when it has one, with the raw error below. -->
     <AAlert
-      v-if="progressStatus === 'exception' && failureDetail"
+      v-if="hasFailed && (hint || failureDetail)"
       class="mb-3"
-      type="error"
+      :type="hint ? 'warning' : 'error'"
       show-icon
-      :message="$gettext('Certificate issuance failed')"
+      :title="hint?.message || $gettext('Certificate issuance failed')"
       :description="failureDetail"
     />
 
@@ -247,6 +265,19 @@ defineExpose({
       ref="logContainer"
       class="issue-cert-log-container"
     />
+
+    <div
+      v-if="hasFailed"
+      class="mt-4 flex justify-end"
+    >
+      <AButton
+        type="primary"
+        :loading="issuingCert"
+        @click="emit('retry')"
+      >
+        {{ $gettext('Retry') }}
+      </AButton>
+    </div>
   </div>
 </template>
 

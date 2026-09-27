@@ -1,22 +1,24 @@
 <script setup lang="ts">
+import type { WizardMode } from './wizardSteps'
 import type { DNSDomain, DNSRecord } from '@/api/dns'
-import type { NgxDirective, NgxServer } from '@/api/ngx'
+import type { NgxConfig, NgxDirective, NgxServer } from '@/api/ngx'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import NgxConfigEditor, { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { ConfigStatus } from '@/constants'
 import QuickSetupForm from '../components/QuickSetup/QuickSetupForm.vue'
 import { useQuickConfig } from '../components/QuickSetup/useQuickConfig'
-import Cert from '../site_edit/components/Cert'
-import EnableTLS from '../site_edit/components/EnableTLS'
+import { extractSiteDomains, HTTPSCard, sameStringList, serializeNgxConfig } from '../site_edit/components/HTTPS'
 import { useSiteEditorStore } from '../site_edit/components/SiteEditor/store'
 import DNSRecordIntegration from './components/DNSRecordIntegration.vue'
+import { staleDraftAction, staleDraftName } from './draftCleanup'
+import { defaultEditorPanelKeys, EDITOR_PANEL_KEY, isModeLocked, SSL_STEP, sslStepTLSState } from './wizardSteps'
 
 const currentStep = ref(0)
 const { message } = useGlobalApp()
 
 // Quick setup mode
-const currentMode = ref<'quick' | 'advanced'>('quick')
+const currentMode = ref<WizardMode>('quick')
 const quickMode = computed(() => currentMode.value === 'quick')
 const quick = useQuickConfig()
 const { quickGenerating, quickFormValid } = quick
@@ -31,6 +33,15 @@ const selectedDNSRecordNames = computed(() => {
     .join(', ')
 })
 
+// Configure SSL step state, reset by init().
+const createdSiteName = ref('')
+// Canonical form of the config written by the last draft save.
+const draftSnapshot = ref<string>()
+const editorKeys = ref<string[]>([])
+// Name of the disabled draft this wizard last wrote. Unlike the step state it
+// survives init() on a mode switch, so a renamed site can still clean it up.
+const draftName = ref('')
+
 onMounted(() => {
   init()
 })
@@ -38,60 +49,79 @@ onMounted(() => {
 const ngxConfigStore = useNgxConfigStore()
 const editorStore = useSiteEditorStore()
 const { ngxConfig, curServerDirectives, curServerLocations } = storeToRefs(ngxConfigStore)
-const { curSupportSSL } = storeToRefs(editorStore)
+const route = useRoute()
+const router = useRouter()
 
 function init() {
   currentStep.value = 0
   selectedDNSRecords.value = null
-  ngxConfigStore.reset()
+  createdSiteName.value = ''
+  draftSnapshot.value = undefined
+  editorKeys.value = []
+  // The site editor store is a singleton: without a reset, autoCert and the
+  // certificate state of the last opened site would leak into this new one.
+  editorStore.reset()
+  // A server tab remembered in the URL (e.g. after "Create Another" reloads
+  // the page) would override the TLS server the SSL step selects.
+  if (route.query.server_idx !== undefined)
+    router.replace({ query: {} })
 
   site.get_default_template().then(r => {
     ngxConfigStore.setNgxConfig(r.tokenized)
   })
 }
 
-const quickTLSMissingCert = computed(() => {
-  if (!quickMode.value || quick.state.type === 'redirect')
-    return false
-  return editorStore.getTLSServerIssues().length > 0
+// ---- Configure SSL step --------------------------------------------------
+//
+// The step is the same for both modes, with or without a TLS server: entering
+// it saves the site as a draft (not enabled), keeping a TLS server that still
+// waits for its certificate. The HTTPS card is the only entry point: it lets
+// the backend stage, verify, issue (or use an existing certificate) and switch
+// the draft to HTTPS in one run, generating the TLS server when there is none,
+// so the wizard never writes the file again after a successful run. "Skip for
+// now" saves and enables the site without HTTPS.
+
+const tlsState = computed(() => sslStepTLSState(ngxConfig.value))
+const hasPendingTLS = computed(() => tlsState.value === 'pending')
+
+// Keep the same array while the names are unchanged so the card does not
+// reset domains the operator added.
+const siteDomains = computed<string[]>(previous => {
+  const next = extractSiteDomains(ngxConfig.value)
+  return previous && sameStringList(previous, next) ? previous : next
 })
 
-async function next() {
-  if (quickMode.value && currentStep.value === 0) {
-    const r = await quick.generate()
-    ngxConfigStore.setNgxConfig(r.tokenized)
-    ngxConfig.value.name = quick.state.name.trim()
-    // Select the TLS server so the certificate flow targets the 443 block.
-    if (r.tokenized.servers.length > 1)
-      ngxConfigStore.curServerIdx = 1
-  }
-  // Block leaving the SSL step until a certificate is issued for the TLS server.
-  if (currentStep.value === 2 && quickTLSMissingCert.value) {
-    message.warning($gettext('Issue a certificate to enable TLS before continuing.'))
-    return
-  }
-  // Only save on the final step (step 2 -> step 3)
-  if (currentStep.value === 2) {
-    await save()
-  }
-  currentStep.value++
-}
+const draftSaving = ref(false)
+const finishing = ref(false)
 
-function onModeChange(mode: string | number) {
-  currentMode.value = mode as 'quick' | 'advanced'
-  selectedDNSRecords.value = null
+const draftSaved = computed(() => draftSnapshot.value !== undefined)
+const draftDirty = computed(() => draftSaved.value && serializeNgxConfig(ngxConfig.value) !== draftSnapshot.value)
+// The backend reads the saved file, so the card waits for an up-to-date draft.
+const httpsBlocked = computed(() => draftSaving.value || !draftSaved.value || draftDirty.value)
 
-  if (currentStep.value === 0)
-    init()
-}
+const httpsCard = useTemplateRef('httpsCard')
+const httpsRunning = computed(() => httpsCard.value?.running ?? false)
 
-async function save() {
-  const r = await ngx.build_config(ngxConfig.value)
+const editorItems = computed(() => [{ key: EDITOR_PANEL_KEY, label: $gettext('Edit configuration file') }])
+
+// Skipping keeps a TLS server that already has its certificate, so it does not
+// mean "without HTTPS" there.
+const skipDescription = computed(() => tlsState.value === 'configured'
+  ? $gettext('Save and enable the site with the HTTPS server block it already has.')
+  : undefined)
+const skipActionLabel = computed(() => tlsState.value === 'configured'
+  ? $gettext('Save and enable')
+  : undefined)
+
+async function writeSite(config: NgxConfig) {
+  const r = await ngx.build_config(config)
 
   const payload: Record<string, unknown> = {
     name: ngxConfig.value.name,
     content: r.content,
     overwrite: true, // Always overwrite to avoid conflicts during multi-step process
+    // Nginx is only tested and reloaded when the site is enabled.
+    post_action: 'reload_nginx',
   }
 
   // Include DNS information if a record was selected/created in step 1
@@ -105,20 +135,173 @@ async function save() {
     }))
   }
 
-  await site.updateItem(ngxConfig.value.name, payload)
+  return site.updateItem(ngxConfig.value.name, payload)
+}
 
-  message.success($gettext('Saved successfully'))
+async function isSiteEnabled(name: string) {
+  try {
+    const r = await site.getItem(encodeURIComponent(name))
+    return r.status !== ConfigStatus.Disabled
+  }
+  catch {
+    return false
+  }
+}
 
-  await site.enable(ngxConfig.value.name)
-  message.success($gettext('Enabled successfully'))
+// Removes the draft left under the old name after the operator went back and
+// renamed the site. Call it once the file under the new name is written.
+async function discardStaleDraft(staleName: string | undefined) {
+  if (!staleName)
+    return
 
+  let status: string | undefined
+  try {
+    status = (await site.getItem(encodeURIComponent(staleName), undefined, { skipErrHandling: true })).status
+  }
+  catch {
+    // Already gone, or it cannot be checked; never delete what was not verified.
+    return
+  }
+
+  if (staleDraftAction(status) === 'keep') {
+    message.warning($gettext('The previous draft %{name} is enabled, so it was kept. Remove it from the site list if you no longer need it.', { name: staleName }))
+    return
+  }
+
+  try {
+    await site.deleteItem(encodeURIComponent(staleName), undefined, { skipErrHandling: true })
+    message.info($gettext('Removed the previous draft %{name}', { name: staleName }))
+  }
+  catch {
+    message.warning($gettext('The previous draft %{name} could not be removed. Remove it from the site list if you no longer need it.', { name: staleName }))
+  }
+}
+
+// The in-flight draft save, so finishing the wizard can wait for it.
+let draftRequest: Promise<void> | undefined
+
+function saveDraft(): Promise<void> {
+  draftRequest ??= writeDraft().finally(() => {
+    draftRequest = undefined
+  })
+  return draftRequest
+}
+
+async function writeDraft() {
+  const name = ngxConfig.value.name
+  if (!name)
+    return
+
+  draftSaving.value = true
+  try {
+    const snapshot = serializeNgxConfig(ngxConfig.value)
+    const staleName = staleDraftName(draftName.value, name)
+    // A failed HTTPS run leaves the site enabled with its HTTP-only staged
+    // config. Nginx rejects a TLS server without certificate there, so the
+    // pending one stays out; the backend builds it again from the HTTP server.
+    const enabled = draftSaved.value && hasPendingTLS.value && await isSiteEnabled(name)
+    const config = enabled ? editorStore.getConfigWithoutIncompleteTLSServers(ngxConfig.value) : ngxConfig.value
+
+    const r = await writeSite(config)
+    // Later editor saves (e.g. Enable TLS) reuse the DNS link and namespace.
+    editorStore.data = r
+    createdSiteName.value = name
+    draftName.value = name
+    draftSnapshot.value = snapshot
+    await discardStaleDraft(staleName)
+  }
+  catch {
+    // The request layer reports the error; the step offers another save.
+  }
+  finally {
+    draftSaving.value = false
+  }
+}
+
+// The backend reads the saved file, so every site is saved as a draft on
+// entering the step, with or without a TLS server.
+watch(currentStep, step => {
+  if (step !== SSL_STEP)
+    return
+
+  editorKeys.value = defaultEditorPanelKeys(currentMode.value)
+  saveDraft()
+})
+
+function finish(name: string) {
+  createdSiteName.value = name
+  currentStep.value = 3
   window.scroll({ top: 0, left: 0, behavior: 'smooth' })
 }
 
-const router = useRouter()
+// "Skip for now": plain HTTP sites, or sites whose TLS servers all have a certificate.
+async function saveAndEnable() {
+  if (finishing.value)
+    return
+
+  finishing.value = true
+  try {
+    // A draft save still running would otherwise race this write.
+    await draftRequest
+    const name = ngxConfig.value.name
+    // A TLS server without certificate would fail nginx -t, so it is left out
+    // and a port-80 server that only redirected to it serves the app instead.
+    const config = hasPendingTLS.value
+      ? editorStore.getConfigWithoutIncompleteTLSServers(ngxConfig.value)
+      : ngxConfig.value
+    const staleName = staleDraftName(draftName.value, name)
+
+    await writeSite(config)
+    message.success($gettext('Saved successfully'))
+    draftName.value = name
+    await discardStaleDraft(staleName)
+
+    await site.enable(name)
+    message.success($gettext('Enabled successfully'))
+
+    finish(name)
+  }
+  catch {
+    // The request layer reports the error.
+  }
+  finally {
+    finishing.value = false
+  }
+}
+
+async function onHTTPSSuccess() {
+  const name = createdSiteName.value || ngxConfig.value.name
+  message.success($gettext('HTTPS is enabled'))
+  finish(name)
+  // The backend wrote the final config and enabled the site; load it instead
+  // of keeping the stale draft in memory.
+  await editorStore.init(name)
+}
+
+async function next() {
+  if (quickMode.value && currentStep.value === 0) {
+    const r = await quick.generate()
+    ngxConfigStore.setNgxConfig(r.tokenized)
+    ngxConfig.value.name = quick.state.name.trim()
+    // Open the TLS server tab for anyone expanding the editor.
+    if (r.tokenized.servers.length > 1)
+      ngxConfigStore.curServerIdx = 1
+  }
+
+  currentStep.value++
+}
+
+function onModeChange(mode: string | number) {
+  if (isModeLocked(currentStep.value))
+    return
+
+  currentMode.value = mode as WizardMode
+  selectedDNSRecords.value = null
+  init()
+}
 
 function gotoModify() {
-  router.push(`/sites/${ngxConfig.value.name}`)
+  router.push(`/sites/${encodeURIComponent(createdSiteName.value || ngxConfig.value.name)}`)
 }
 
 function createAnother() {
@@ -211,12 +394,14 @@ function onDNSRecordCleared() {
 <template>
   <ACard :title="$gettext('Add Site')">
     <div class="domain-add-container">
+      <!-- Locked after the first step, but still shows the mode in use. -->
       <ASegmented
         :value="currentMode"
         :options="[
           { label: $gettext('Quick Setup'), value: 'quick' },
           { label: $gettext('Advanced'), value: 'advanced' },
         ]"
+        :disabled="isModeLocked(currentStep)"
         class="mb-6"
         block
         @change="onModeChange"
@@ -276,29 +461,51 @@ function onDNSRecordCleared() {
         />
       </div>
 
-      <template v-else-if="currentStep === 2">
+      <ASpin v-else-if="currentStep === SSL_STEP" :spinning="finishing">
         <AAlert
-          v-if="quickTLSMissingCert"
+          v-if="httpsBlocked && !draftSaving && !httpsRunning"
           type="warning"
           class="mb-4"
           show-icon
-          :title="$gettext('Issue a certificate to enable TLS before continuing.')"
+          :title="draftSaved
+            ? $gettext('Save the edited configuration before enabling HTTPS.')
+            : $gettext('The site draft is not saved yet.')"
+        >
+          <template #description>
+            <div class="ssl-step-guidance">
+              <span>{{ $gettext('HTTPS setup reads the saved draft of this site.') }}</span>
+              <AButton type="primary" size="small" :loading="draftSaving" @click="saveDraft">
+                {{ $gettext('Save draft') }}
+              </AButton>
+            </div>
+          </template>
+        </AAlert>
+
+        <!-- The single entry point for HTTPS in both modes, with or without a
+             TLS server in the configuration. -->
+        <HTTPSCard
+          ref="httpsCard"
+          class="mb-4"
+          :config-name="ngxConfig.name"
+          :domains="siteDomains"
+          :has-pending-t-l-s-server="hasPendingTLS"
+          :disabled="httpsBlocked"
+          :skip-description
+          :skip-action-label
+          @success="onHTTPSSuccess"
+          @skip="saveAndEnable"
         />
 
-        <EnableTLS />
-
-        <NgxConfigEditor>
-          <template v-if="curSupportSSL" #tab-content>
-            <Cert
-              class="mb-4"
-              :site-status="ConfigStatus.Enabled"
-              :config-name="ngxConfig.name"
-            />
+        <ACollapse
+          v-model:active-key="editorKeys"
+          class="mb-6"
+          :items="editorItems"
+        >
+          <template #contentRender>
+            <NgxConfigEditor />
           </template>
-        </NgxConfigEditor>
-
-        <br>
-      </template>
+        </ACollapse>
+      </ASpin>
 
       <ASpace v-if="currentStep < 3">
         <AButton
@@ -310,16 +517,17 @@ function onDNSRecordCleared() {
         >
           {{ $gettext('Next') }}
         </AButton>
+        <!-- On the SSL step the HTTPS card finishes the wizard. -->
         <AButton
-          v-else
+          v-else-if="currentStep !== SSL_STEP"
           type="primary"
-          :disabled="currentStep === 2 && quickTLSMissingCert"
           @click="next"
         >
           {{ $gettext('Next') }}
         </AButton>
         <AButton
-          v-if="currentStep === 1"
+          v-if="currentStep > 0"
+          :disabled="finishing || httpsRunning"
           @click="currentStep--"
         >
           {{ $gettext('Back') }}
@@ -355,5 +563,12 @@ function onDNSRecordCleared() {
 .domain-add-container {
   max-width: 800px;
   margin: 0 auto
+}
+
+.ssl-step-guidance {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 </style>

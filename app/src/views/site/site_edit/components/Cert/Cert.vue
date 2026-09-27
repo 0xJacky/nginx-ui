@@ -3,6 +3,8 @@ import type { Cert, CertificateInfo } from '@/api/cert'
 import type { SiteStatus } from '@/api/site'
 import CertInfo from '@/components/CertInfo/CertInfo.vue'
 import { ConfigStatus } from '@/constants'
+import EditorHTTPSCard from '../HTTPS/EditorHTTPSCard.vue'
+import { extractServerDomains, isPendingTLSServer, sameStringList } from '../HTTPS/siteHTTPSState'
 import { useSiteEditorStore } from '../SiteEditor/store'
 import ChangeCert from './ChangeCert.vue'
 import IssueCert from './IssueCert.vue'
@@ -15,7 +17,24 @@ const props = defineProps<{
 }>()
 
 const editorStore = useSiteEditorStore()
-const { curServerDirectives } = storeToRefs(editorStore)
+const { curServer, curServerDirectives } = storeToRefs(editorStore)
+
+const isSiteActive = computed(() => props.siteStatus === ConfigStatus.Enabled || props.siteStatus === ConfigStatus.Maintenance)
+
+// A TLS server without certificate is set up by the backend-orchestrated
+// HTTPS flow instead of the Let's Encrypt switch.
+const isPendingTLS = computed(() => isPendingTLSServer(curServer.value))
+// Keep the same array while the names are unchanged so the card does not
+// reset domains the operator added.
+const serverDomains = computed<string[]>(previous => {
+  const next = extractServerDomains([curServer.value])
+  return previous && sameStringList(previous, next) ? previous : next
+})
+
+function onHTTPSEnabled() {
+  // The backend rewrote the site file; reload config and certificate info.
+  editorStore.init(props.configName)
+}
 
 const changedCerts: Ref<Cert[]> = ref([])
 
@@ -55,11 +74,12 @@ function handleCertChange(certs: Cert[]) {
 
 <template>
   <div>
-    <h3>
+    <h3 v-if="certInfo?.length">
       {{ $ngettext('Certificate Status', 'Certificates Status', certInfo?.length || 1) }}
     </h3>
 
     <ARow
+      v-if="certInfo?.length"
       :gutter="[16, 16]"
       class="mb-4"
     >
@@ -92,15 +112,26 @@ function handleCertChange(certs: Cert[]) {
       </ARow>
     </template>
 
-    <ChangeCert @change="handleCertChange" />
+    <EditorHTTPSCard
+      v-if="isSiteActive && isPendingTLS"
+      class="mb-4"
+      compact
+      :domains="serverDomains"
+      @success="onHTTPSEnabled"
+    />
+
+    <!-- The HTTPS card's "Existing certificate" method already picks one for
+         a pending TLS server of an active site. -->
+    <ChangeCert
+      v-if="!(isSiteActive && isPendingTLS)"
+      @change="handleCertChange"
+    />
 
     <IssueCert
-      v-if="siteStatus === ConfigStatus.Enabled || siteStatus === ConfigStatus.Maintenance"
+      v-if="isSiteActive && !isPendingTLS"
       :config-name
     />
-    <SelfSignedCert
-      v-if="siteStatus === ConfigStatus.Enabled || siteStatus === ConfigStatus.Maintenance"
-    />
+    <SelfSignedCert v-if="isSiteActive" />
   </div>
 </template>
 

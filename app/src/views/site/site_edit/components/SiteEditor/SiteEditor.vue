@@ -9,6 +9,8 @@ import UpstreamCards from '@/components/UpstreamCards/UpstreamCards.vue'
 import { ConfigStatus } from '@/constants'
 import Cert from '@/views/site/site_edit/components/Cert'
 import EnableTLS from '@/views/site/site_edit/components/EnableTLS'
+import EditorHTTPSCard from '@/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue'
+import { extractSiteDomains, hasTLSServer, sameStringList } from '@/views/site/site_edit/components/HTTPS/siteHTTPSState'
 import QuickSetupModal from '@/views/site/site_edit/components/QuickSetupModal.vue'
 import { useSiteEditorStore } from './store'
 
@@ -32,7 +34,38 @@ const {
   curSupportSSL,
   dnsLinked,
   linkedDNSName,
+  ngxConfig,
 } = storeToRefs(editorStore)
+
+// A site without any TLS server gets the HTTPS onboarding card; TLS servers
+// are handled per server tab by the Cert component.
+const showHTTPSOnboarding = computed(() => {
+  const status = data.value.status
+  return (status === ConfigStatus.Enabled || status === ConfigStatus.Maintenance)
+    && (ngxConfig.value.servers?.length ?? 0) > 0
+    && !hasTLSServer(ngxConfig.value)
+})
+
+// Keep the same array while the names are unchanged so the card does not
+// reset domains the operator added.
+const siteDomains = computed<string[]>(previous => {
+  const next = extractSiteDomains(ngxConfig.value)
+  return previous && sameStringList(previous, next) ? previous : next
+})
+
+const httpsCardWrapper = useTemplateRef('httpsCardWrapper')
+
+// Quick setup saved the site without its pending TLS server; bring the card
+// that finishes HTTPS into view once it renders.
+async function focusHTTPSCard() {
+  await nextTick()
+  httpsCardWrapper.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+function onHTTPSEnabled() {
+  // The backend rewrote the site file; reload config and certificate info.
+  editorStore.init(name.value)
+}
 
 // Provide DNS link status to child components
 provide('dnsLinked', dnsLinked)
@@ -171,7 +204,16 @@ async function save() {
           key="basic"
           class="domain-edit-container"
         >
-          <EnableTLS />
+          <!-- One entry point for a site without TLS: the HTTPS card, which
+               also covers using an existing certificate. -->
+          <div v-if="showHTTPSOnboarding" ref="httpsCardWrapper" class="mb-4 px-6">
+            <EditorHTTPSCard
+              compact
+              :domains="siteDomains"
+              @success="onHTTPSEnabled"
+            />
+          </div>
+          <EnableTLS v-else />
 
           <!-- Upstream Cards Display -->
           <UpstreamCards
@@ -218,7 +260,10 @@ async function save() {
       :filepath="filepath"
     />
 
-    <QuickSetupModal v-model:open="quickSetupOpen" />
+    <QuickSetupModal
+      v-model:open="quickSetupOpen"
+      @https-pending="focusHTTPSCard"
+    />
   </ACard>
 </template>
 
