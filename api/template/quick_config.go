@@ -234,8 +234,12 @@ func buildQuickConfig(r *QuickConfigRequest) (ngxConfig *nginx.NgxConfig, err er
 		tlsServer.Locations = append(tlsServer.Locations, challengeLocation)
 
 		if r.RedirectHTTPToHTTPS {
-			port80.Directives = append(port80.Directives,
-				&nginx.NgxDirective{Directive: "return", Params: "301 https://$host$request_uri"})
+			// A server-level return runs before location selection and would
+			// redirect ACME HTTP-01 challenges before they reach the proxy.
+			port80.Locations = append(port80.Locations, &nginx.NgxLocation{
+				Path:    "/",
+				Content: "return 301 https://$host$request_uri;",
+			})
 			port80.Locations = append(port80.Locations, challengeLocation)
 		} else {
 			port80.Directives = append(port80.Directives, app.directives...)
@@ -392,8 +396,11 @@ func analyzeNgxConfig(ngxConfig *nginx.NgxConfig) (req QuickConfigRequest) {
 				continue
 			}
 			content := location.Content
+			if strings.Contains(content, "return 301 https://$host$request_uri") {
+				redirectHTTPToHTTPS = true
+			}
 
-			if m := reReturn.FindStringSubmatch(content); m != nil && m[2] != "https://$host$request_uri" {
+			if m := reReturn.FindStringSubmatch(content); m != nil && cleanParam(m[2]) != "https://$host$request_uri" {
 				redirectStatus = cleanParam(m[1])
 				redirectTarget = cleanParam(m[2])
 			}

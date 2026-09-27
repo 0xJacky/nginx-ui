@@ -29,11 +29,9 @@ func TestBuildQuickConfigReverseProxy(t *testing.T) {
 	assert.Equal(t, "example.com", cfg.Name)
 
 	port80 := cfg.Servers[0]
-	// HTTP -> HTTPS redirect
-	returnDirectives := findServerDirectives(port80, "return")
-	if assert.Len(t, returnDirectives, 1) {
-		assert.Equal(t, "301 https://$host$request_uri", returnDirectives[0].Params)
-	}
+	// Redirect only after location selection so the challenge can bypass it.
+	assert.Empty(t, findServerDirectives(port80, "return"))
+	assert.Contains(t, findLocation(port80, "/").Content, "return 301 https://$host$request_uri;")
 	// Challenge location must be available on port 80 for HTTP-01.
 	assertLocation(t, port80, "~ /.well-known/acme-challenge")
 
