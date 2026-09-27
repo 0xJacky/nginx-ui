@@ -316,7 +316,11 @@ test('site editor preserves migrated antdv-next controls and content', async ({ 
   await assertVisibleSelects(page, quickSetupModal, 'quick setup')
   await closeModal(quickSetupModal)
 
-  const mainCollapse = siteEditor.locator('.ant-collapse').first()
+  // HTTP-only sites show the HTTPS card (with its own collapse) above the
+  // configuration editor, so pick the editor's collapse by its Upstream section.
+  const mainCollapse = siteEditor.locator('.ant-collapse').filter({
+    has: page.locator(':scope > .ant-collapse-item > .ant-collapse-header', { hasText: 'Upstream' }),
+  }).first()
   await expect(mainCollapse).toBeVisible()
   const collapseItems = mainCollapse.locator(':scope > .ant-collapse-item')
   await expect(collapseItems).toHaveCount(3)

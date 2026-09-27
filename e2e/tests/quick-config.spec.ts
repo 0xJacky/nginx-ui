@@ -61,12 +61,16 @@ test('quick setup reverse proxy without TLS saves a site end to end', async ({ p
 
   await expect(page.locator('.ant-steps-item-active')).toContainText('DNS Record')
 
+  // Entering the SSL step saves the site as a disabled draft.
+  const draftPromise = waitForApiResponse(page, `/api/sites/${name}`, 'POST')
   await page.getByRole('button', { name: 'Next', exact: true }).click()
   await expect(page.locator('.ant-steps-item-active')).toContainText('Configure SSL')
-  await expect(page.getByText('Issue a certificate to enable TLS before continuing.')).not.toBeVisible()
+  expect((await draftPromise).ok()).toBe(true)
 
+  // The HTTPS card is the only way forward; skipping it saves and enables the site.
+  await page.getByText('Skip for now', { exact: true }).click()
   const savePromise = waitForApiResponse(page, `/api/sites/${name}`, 'POST')
-  await page.getByRole('button', { name: 'Next', exact: true }).click()
+  await page.getByRole('button', { name: 'Continue without HTTPS', exact: true }).click()
   const saveResponse = await savePromise
   expect(saveResponse.ok()).toBe(true)
 
@@ -79,7 +83,7 @@ test('quick setup reverse proxy without TLS saves a site end to end', async ({ p
   expect(deleteResponse.ok()).toBe(true)
 })
 
-test('quick setup reverse proxy with TLS emits redirect, websocket and acme-challenge blocks and gates on a missing certificate', async ({ page }) => {
+test('quick setup reverse proxy with TLS emits redirect, websocket and acme-challenge blocks and leads with the HTTPS card', async ({ page }) => {
   await gotoRoute(page, '/sites/add')
   await fillFormItem(page, 'Configuration Name', 'e2e-rp-tls')
   await fillFormItem(page, 'Domains', 'e2e-rp-tls.example.com www.e2e-rp-tls.example.com')
@@ -96,11 +100,20 @@ test('quick setup reverse proxy with TLS emits redirect, websocket and acme-chal
 
   await expect(page.locator('.ant-steps-item-active')).toContainText('DNS Record')
 
+  // Entering the SSL step saves the site as a disabled draft for the HTTPS card.
+  const draftPromise = waitForApiResponse(page, '/api/sites/e2e-rp-tls', 'POST')
   await page.getByRole('button', { name: 'Next', exact: true }).click()
   await expect(page.locator('.ant-steps-item-active')).toContainText('Configure SSL')
+  expect((await draftPromise).ok()).toBe(true)
 
-  await expect(page.getByText('Issue a certificate to enable TLS before continuing.', { exact: true })).toBeVisible()
-  await expect(page.getByRole('button', { name: 'Next', exact: true })).toBeDisabled()
+  // The mode is fixed once the wizard leaves the first step.
+  await expect(page.locator('.ant-segmented').first()).toHaveClass(/ant-segmented-disabled/)
+  // The HTTPS card is the only way forward: no Next button on this step.
+  await expect(page.getByRole('button', { name: 'Issue and enable HTTPS', exact: true })).toBeEnabled()
+  await expect(page.getByRole('button', { name: 'Next', exact: true })).toHaveCount(0)
+
+  const deleteResponse = await page.request.delete('/api/sites/e2e-rp-tls', { headers: await authHeaders(page) })
+  expect(deleteResponse.ok()).toBe(true)
 })
 
 test('quick setup static site emits root, index and SPA fallback', async ({ page }) => {

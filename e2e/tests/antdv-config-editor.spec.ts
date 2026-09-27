@@ -216,7 +216,11 @@ test('NgxConfigEditor preserves Collapse panels, directive handles, tabs, lists,
   await gotoRoute(page, `/sites/${encodeURIComponent(siteName)}`)
 
   const editor = page.locator('.site-edit-container').first()
-  const collapse = editor.locator('.ant-collapse').first()
+  // HTTP-only sites show the HTTPS card (with its own collapse) above the
+  // configuration editor, so pick the editor's collapse by its Upstream section.
+  const collapse = editor.locator('.ant-collapse').filter({
+    has: page.locator(':scope > .ant-collapse-item > .ant-collapse-header', { hasText: 'Upstream' }),
+  }).first()
   await expect(collapse).toBeVisible()
   const collapseItems = collapse.locator('.ant-collapse-item')
   await expect.poll(() => collapseItems.count()).toBeGreaterThan(0)
