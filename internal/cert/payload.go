@@ -17,6 +17,7 @@ import (
 )
 
 type ConfigPayload struct {
+	ConfigName                        string                     `json:"-"`
 	CertID                            uint64                     `json:"cert_id"`
 	ServerName                        []string                   `json:"server_name"`
 	ChallengeMethod                   string                     `json:"challenge_method"`

@@ -1,9 +1,11 @@
 package cert
 
 import (
+	"context"
 	"log/slog"
 	"os"
 	"runtime"
+	"strings"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
@@ -28,6 +30,10 @@ const (
 	DNS01  = "dns01"
 
 	disabledAuthoritativeNSPropagationWait = time.Minute
+
+	// http01ProbeOverallTimeout bounds the whole HTTP-01 route probe; each
+	// request is bounded separately by http01ProbeRequestTimeout.
+	http01ProbeOverallTimeout = 30 * time.Second
 )
 
 func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
@@ -43,6 +49,11 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 	payload.KeyType = payload.GetKeyType()
 	if err := NormalizeAndValidateIdentifiers(payload); err != nil {
 		return err
+	}
+	if isHTTP01ChallengeMethod(payload.ChallengeMethod) && payload.ConfigName != "" {
+		if err := verifyHTTP01ChallengeRoute(payload, certLogger); err != nil {
+			return err
+		}
 	}
 
 	// initial a channelWriter to receive logs
@@ -239,6 +250,56 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 	time.Sleep(2 * time.Second)
 
 	return nil
+}
+
+// isHTTP01ChallengeMethod reports whether method selects HTTP-01, which is
+// also the default when no method is recorded.
+func isHTTP01ChallengeMethod(method string) bool {
+	return method == "" || method == HTTP01
+}
+
+// verifyHTTP01ChallengeRoute runs the active loopback probe while IssueCert
+// holds the certificate lock. A route failure aborts issuance before the CA
+// is contacted; the static analyzer only contributes a possible cause. A
+// warning (redirect to a host served elsewhere) and a skipped probe let
+// issuance continue.
+func verifyHTTP01ChallengeRoute(payload *ConfigPayload, certLogger *Logger) error {
+	certLogger.Info(translation.C("[Nginx UI] Checking HTTP01 challenge route for %{domains}", map[string]any{
+		"domains": strings.Join(payload.ServerName, ", "),
+	}))
+
+	ctx, cancel := context.WithTimeout(context.Background(), http01ProbeOverallTimeout)
+	defer cancel()
+	results, err := probeHTTP01Routes(ctx, payload.ServerName, WithHTTP01ProbeConfigName(payload.ConfigName))
+	if err != nil {
+		return err
+	}
+	if HTTP01ProbeSkipped(results) {
+		certLogger.Info(translation.C("[Nginx UI] HTTP01 challenge route check skipped: %{reason}", map[string]any{
+			"reason": results[0].SkipReason,
+		}))
+		return nil
+	}
+	for _, result := range results {
+		switch result.Status {
+		case HTTP01ProbeStatusSuccess:
+			certLogger.Info(translation.C("[Nginx UI] HTTP01 challenge route reachable for %{domain} via %{target}", map[string]any{
+				"domain": result.Domain,
+				"target": result.Target,
+			}))
+		case HTTP01ProbeStatusWarning:
+			certLogger.Info(translation.C("[Nginx UI] HTTP01 challenge route cannot be verified locally for %{domain}: %{reason}", map[string]any{
+				"domain": result.Domain,
+				"reason": describeHTTP01ProbeFailure(result),
+			}))
+		default:
+			certLogger.Info(translation.C("[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}", map[string]any{
+				"domain": result.Domain,
+				"error":  describeHTTP01ProbeFailure(result),
+			}))
+		}
+	}
+	return HTTP01RouteCheckError(results, payload.ConfigName)
 }
 
 func dns01ChallengeOptions(payload *ConfigPayload) []dns01.ChallengeOption {

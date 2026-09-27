@@ -1,7 +1,9 @@
 package cert
 
 import (
+	"context"
 	stderrors "errors"
+	"strings"
 	"testing"
 	"time"
 
@@ -136,6 +138,66 @@ func TestNewAutoRenewPayloadPreservesAuthoritativePropagationOption(t *testing.T
 	}
 	if payload.ReplacesCertID != "aki.serial" {
 		t.Fatalf("ReplacesCertID = %q, want aki.serial", payload.ReplacesCertID)
+	}
+}
+
+func TestNewAutoRenewPayloadSkipsPreIssuanceRouteCheck(t *testing.T) {
+	certModel := &model.Cert{Filename: "example.com", Domains: []string{"example.com"}}
+
+	payload := newAutoRenewPayload(certModel, &Info{}, "")
+
+	// A non-empty ConfigName would make IssueCert run the HTTP-01 route check
+	// before renewing, and a false negative there must never block renewal.
+	if payload.ConfigName != "" {
+		t.Fatalf("ConfigName = %q, want empty for auto-renew", payload.ConfigName)
+	}
+}
+
+func TestAppendHTTP01ProbeSummaryAfterRenewalFailure(t *testing.T) {
+	previous := autoRenewHTTP01Probe
+	t.Cleanup(func() { autoRenewHTTP01Probe = previous })
+
+	var gotDomains []string
+	autoRenewHTTP01Probe = func(_ context.Context, domains []string, _ ...HTTP01ProbeOption) ([]HTTP01ProbeResult, error) {
+		gotDomains = domains
+		return []HTTP01ProbeResult{{
+			Domain:     "example.com",
+			Status:     HTTP01ProbeStatusFailure,
+			Target:     "127.0.0.1:80",
+			StatusCode: 404,
+			Error:      "unexpected status 404",
+		}}, nil
+	}
+	renewErr := cosy.WrapErrorWithParams(ErrRenewCert, "acme: error: 403")
+
+	err := appendHTTP01ProbeSummary(renewErr, []string{"example.com"}, "example.com", nil)
+
+	if len(gotDomains) != 1 || gotDomains[0] != "example.com" {
+		t.Fatalf("probe domains = %v", gotDomains)
+	}
+	if !stderrors.Is(err, renewErr) {
+		t.Fatalf("original error is not wrapped: %v", err)
+	}
+	if !strings.Contains(err.Error(), "HTTP-01 route check: example.com: unexpected status 404 (via 127.0.0.1:80)") {
+		t.Fatalf("summary missing from error: %s", err.Error())
+	}
+	response, ok := buildAutoRenewNotificationDetails("example.com", err)["response"].(*cosy.Error)
+	if !ok || response.Code != 50018 {
+		t.Fatalf("notification response lost the cosy error: %#v", response)
+	}
+}
+
+func TestAppendHTTP01ProbeSummaryWhenProbeCannotRun(t *testing.T) {
+	previous := autoRenewHTTP01Probe
+	t.Cleanup(func() { autoRenewHTTP01Probe = previous })
+	autoRenewHTTP01Probe = func(context.Context, []string, ...HTTP01ProbeOption) ([]HTTP01ProbeResult, error) {
+		return nil, NewHTTP01ChallengePortUnavailableError("9180", "address already in use")
+	}
+
+	err := appendHTTP01ProbeSummary(stderrors.New("renew failed"), []string{"example.com"}, "", nil)
+
+	if !strings.Contains(err.Error(), "HTTP-01 route check: not run: HTTP-01 challenge port 9180 is unavailable") {
+		t.Fatalf("unexpected error text: %s", err.Error())
 	}
 }
 

@@ -1,12 +1,15 @@
 package cert
 
 import (
+	"context"
 	stderrors "errors"
+	"fmt"
 	"runtime"
 	"strings"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/notification"
+	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	pkgerrors "github.com/pkg/errors"
@@ -109,6 +112,9 @@ func autoCert(certModel *model.Cert) {
 
 	err = IssueCert(payload, log)
 	if err != nil {
+		if isHTTP01ChallengeMethod(payload.ChallengeMethod) {
+			err = appendHTTP01ProbeSummary(err, certModel.Domains, certModel.Filename, log)
+		}
 		handleAutoRenewFailure(certModel, log, targetName, err)
 		return
 	}
@@ -125,6 +131,10 @@ func autoCert(certModel *model.Cert) {
 	}
 }
 
+// newAutoRenewPayload deliberately leaves ConfigName empty: renewals must
+// never be blocked by a pre-issuance route check, because a false negative
+// would let a working certificate expire. The route is probed only after a
+// failed renewal, to explain the failure.
 func newAutoRenewPayload(certModel *model.Cert, certInfo *Info, replacesCertID string) *ConfigPayload {
 	return &ConfigPayload{
 		CertID:                            certModel.ID,
@@ -143,6 +153,39 @@ func newAutoRenewPayload(certModel *model.Cert, certInfo *Info, replacesCertID s
 		ReplacesCertID:                    replacesCertID,
 	}
 }
+
+// appendHTTP01ProbeSummary probes the HTTP-01 route after a failed renewal
+// (IssueCert has released the lock and the challenge port by then) and
+// appends a short summary to the error, so the notification and the stored
+// last renewal error say whether the challenge route itself is broken.
+// The probe is best effort and never replaces the original error.
+func appendHTTP01ProbeSummary(err error, domains []string, configName string, log *Logger) error {
+	if err == nil || len(domains) == 0 {
+		return err
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), http01ProbeOverallTimeout)
+	defer cancel()
+
+	var summary string
+	// No reload happened just before this probe, so there is nothing to
+	// wait for: a single round (plus the confirmation of a success) suffices.
+	results, probeErr := autoRenewHTTP01Probe(ctx, domains,
+		WithHTTP01ProbeConfigName(configName), WithHTTP01ProbeSettleTimeout(0))
+	if probeErr != nil {
+		summary = "not run: " + probeErr.Error()
+	} else {
+		summary = SummarizeHTTP01ProbeResults(results)
+	}
+	if log != nil {
+		log.Info(translation.C("[Nginx UI] HTTP01 challenge route check after renewal failure: %{summary}", map[string]any{
+			"summary": summary,
+		}))
+	}
+	return fmt.Errorf("%w (HTTP-01 route check: %s)", err, summary)
+}
+
+// autoRenewHTTP01Probe is a test seam for the post-failure route probe.
+var autoRenewHTTP01Probe = ProbeHTTP01Routes
 
 func shouldRenewACMECertificate(info *Info, now time.Time, renewalThresholdDays int) bool {
 	return shouldRenewCertificate(info, now, renewalThresholdDays)

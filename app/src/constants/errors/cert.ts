@@ -48,4 +48,7 @@ export default {
   50054: () => $gettext('Certificate profile is not available from the selected ACME server: {0}'),
   50055: () => $gettext('Wildcard domains and IP addresses cannot be requested in the same certificate'),
   50056: () => $gettext('Persist certificate record error: {0}'),
+  50057: () => $gettext('HTTP-01 challenge preflight failed: {0}'),
+  50058: () => $gettext('HTTP-01 challenge route check failed for {0}: {1}'),
+  50059: () => $gettext('HTTP-01 challenge port {0} is unavailable: {1}'),
 }

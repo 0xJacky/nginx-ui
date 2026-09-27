@@ -53,10 +53,30 @@ var (
 	ErrCertificateProfileUnavailable     = e.New(50054, "certificate profile is not available from the selected ACME server: {0}")
 	ErrWildcardIPCertificateConflict     = e.New(50055, "wildcard domains and IP addresses cannot be requested in the same certificate")
 	ErrPersistCertificateRecord          = e.New(50056, "persist certificate record error: {0}")
+	ErrHTTP01ChallengePreflight          = e.New(50057, "HTTP-01 challenge preflight failed: {0}")
+	ErrHTTP01ChallengeRouteCheck         = e.New(50058, "HTTP-01 challenge route check failed for {0}: {1}")
+	ErrHTTP01ChallengePortUnavailable    = e.New(50059, "HTTP-01 challenge port {0} is unavailable: {1}")
 )
 
 func NewInvalidKeyTypeError(keyType string) error {
 	return e.NewWithParams(50039, ErrInvalidKeyType.Error(), keyType)
+}
+
+func NewHTTP01ChallengePreflightError(reason string) error {
+	return e.NewWithParams(50057, ErrHTTP01ChallengePreflight.Error(), reason)
+}
+
+// NewHTTP01ChallengeRouteCheckError reports that the active loopback probe
+// could not fetch the challenge token for identifier through Nginx.
+func NewHTTP01ChallengeRouteCheckError(identifier, reason string) error {
+	return e.NewWithParams(50058, ErrHTTP01ChallengeRouteCheck.Error(), identifier, reason)
+}
+
+// NewHTTP01ChallengePortUnavailableError reports that nginx-ui could not bind
+// the HTTP-01 challenge port, which is an environment problem rather than a
+// routing problem in the site configuration.
+func NewHTTP01ChallengePortUnavailableError(port, reason string) error {
+	return e.NewWithParams(50059, ErrHTTP01ChallengePortUnavailable.Error(), port, reason)
 }
 
 func NewInvalidCertificateIdentifierError(identifier string) error {
