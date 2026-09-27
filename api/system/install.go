@@ -1,8 +1,10 @@
 package system
 
 import (
+	"context"
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/internal/cert"
 	internalSystem "github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -27,6 +29,12 @@ func InstallLockCheck(c *gin.Context) {
 		"timeout": timeout,
 	})
 }
+
+// registerDefaultACMEUser registers the ACME account for the email entered
+// during installation. Boot only registers it when nginx-ui starts, so without
+// this the first issuance after installation would find no default user.
+// Test seam.
+var registerDefaultACMEUser = cert.InitRegister
 
 type InstallJson struct {
 	Email    string `json:"email" binding:"required,email"`
@@ -84,6 +92,11 @@ func InstallNginxUI(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+
+	// Registration talks to the CA, which may be slow or unreachable: run it
+	// in the background so it never delays the install response. Failures
+	// are logged, and issuance registers the user lazily if it is missing.
+	go registerDefaultACMEUser(context.Background())
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
