@@ -22,6 +22,19 @@ type NotificationCall struct {
 	Path    string
 }
 
+// notificationFuncs lists the notification package functions whose first two
+// arguments are the title and content. Keep it in sync with
+// internal/notification/notification.go, otherwise regeneration drops entries.
+var notificationFuncs = map[string]bool{
+	"Info":      true,
+	"Error":     true,
+	"Warning":   true,
+	"Success":   true,
+	"WarningTo": true,
+	"SuccessTo": true,
+	"Define":    true,
+}
+
 // Directories to exclude
 var excludeDirs = []string{
 	".devcontainer", ".github", ".idea", ".bun",
@@ -114,13 +127,13 @@ func findNotificationCalls(filePath string, calls *[]NotificationCall) {
 		if selExpr, ok := callExpr.Fun.(*ast.SelectorExpr); ok {
 			if xident, ok := selExpr.X.(*ast.Ident); ok && xident.Name == "notification" {
 				funcName = selExpr.Sel.Name
-				isTargetCall = funcName == "Info" || funcName == "Error" || funcName == "Warning" || funcName == "Success" || funcName == "Define"
+				isTargetCall = notificationFuncs[funcName]
 			}
 		} else if isNotificationPackage {
 			// Check if it's a direct function call within the notification package (Info, Error, etc.)
 			if ident, ok := callExpr.Fun.(*ast.Ident); ok {
 				funcName = ident.Name
-				isTargetCall = funcName == "Info" || funcName == "Error" || funcName == "Warning" || funcName == "Success" || funcName == "Define"
+				isTargetCall = notificationFuncs[funcName]
 			}
 		}
 
