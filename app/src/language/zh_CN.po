@@ -12083,10 +12083,6 @@ msgstr "更新密码"
 #~ msgid "The current IndexCustomMMDB setting is read-only here."
 #~ msgstr "当前 IndexCustomMMDB 配置在此处为只读。"
 
-#~ msgid ""
-#~ "Skip local DNS propagation checks and wait 60 seconds before asking the "
-#~ "certificate authority to validate the record."
-#~ msgstr "跳过本地 DNS 传播检查，并在请求证书颁发机构验证记录前等待 60 秒。"
 
 #~ msgid "Legacy secret"
 #~ msgstr "旧版密钥"
@@ -12949,3 +12945,533 @@ msgstr "更新密码"
 #~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent Cloud "
 #~ "DNS, and Cloudflare only."
 #~ msgstr "目前，DNS 记录管理仅支持阿里云 DNS、腾讯云 DNS 和 Cloudflare。"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:103
+msgid "This site is configured as a default server (default_server) for HTTPS (port 443). IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers."
+msgstr "此站点配置为 HTTPS 的默认服务器（default_server）（端口 443）。IP 证书需要证书颁发机构（CA）支持，并非所有 ACME 提供商都可用。"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:106
+msgid "This site uses wildcard server name (_) which typically indicates an IP-based certificate. IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers."
+msgstr "此站点使用了通配符服务器名称（_），这通常表示这是一个基于 IP 的证书。IP 证书需要证书颁发机构（CA）支持，并非所有 ACME 提供商都可用。"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:109
+msgid "No specific IP address found in server_name configuration. Please specify the server IP address below for the certificate."
+msgstr "在 server_name 配置中未找到指定的 IP 地址。请在下方为证书指定服务器 IP 地址。"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:112
+msgid "For IP-based certificate configurations, only HTTP-01 challenge method is supported. DNS-01 challenge is not compatible with IP-based certificates."
+msgstr "对于基于 IP 的证书配置，仅支持 HTTP-01 验证方式。DNS-01 验证不适用于基于 IP 的证书。"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:126
+msgid "The server_name in the current configuration must be the domain name you need to get the certificate, support multiple domains."
+msgstr "当前配置中的 server_name 必须是需要申请证书的域名，支持多个域名。"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:132
+msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort before obtaining the certificate."
+msgstr "请确保您已为 .well-known 目录配置了指向 HTTPChallengePort 的反向代理，然后再获取证书。"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:135
+msgid "Please first add credentials in Certification > DNS Credentials, and then select one of the credentials below to request the API of the DNS provider."
+msgstr "请先在“证书” > “DNS 凭证”中添加凭证，然后在下方选择一个凭证以调用 DNS 提供商的 API。"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:249
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:620
+msgid "If your domain has CNAME records and you cannot obtain certificates, you need to enable this option."
+msgstr "如果您的域名有 CNAME 记录且无法获取证书，则需要启用此选项。"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:260
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:627
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking the certificate authority to validate the record."
+msgstr "跳过本地 DNS 传播检查，并在请求证书颁发机构验证记录前等待 60 秒。"
+
+#: src/constants/errors/cert.ts:51
+msgid "HTTP-01 challenge preflight failed: {0}"
+msgstr "HTTP-01 验证预检失败：{0}"
+
+#: src/constants/errors/cert.ts:52
+msgid "HTTP-01 challenge route check failed for {0}: {1}"
+msgstr "{0} 的 HTTP-01 验证路由检查失败：{1}"
+
+#: src/constants/errors/cert.ts:53
+msgid "HTTP-01 challenge port {0} is unavailable: {1}"
+msgstr "HTTP-01 验证端口 {0} 不可用：{1}"
+
+#: src/language/generate.ts:4
+msgid "A CAA record on the domain does not allow this certificate authority; add a CAA issue record for the certificate authority or remove the restrictive record."
+msgstr "该域名的 CAA 记录不允许此证书颁发机构；请为该证书颁发机构添加 CAA issue 记录，或删除限制性记录。"
+
+#: src/language/generate.ts:5
+msgid "A CAA record on the domain does not authorize the selected certificate authority; add a CAA issue record for it or issuance will fail."
+msgstr "该域名的 CAA 记录未授权所选的证书颁发机构；请为其添加 CAA issue 记录，否则签发将会失败。"
+
+#: src/language/generate.ts:6
+msgid "An existing certificate is used"
+msgstr "使用已有证书"
+
+#: src/language/generate.ts:7
+msgid "Applying the HTTP configuration for validation"
+msgstr "正在应用用于验证的 HTTP 配置"
+
+#: src/language/generate.ts:10
+msgid "Certificate issuance failed; check the log for the response of the certificate authority."
+msgstr "证书签发失败；请查看日志中证书颁发机构的响应。"
+
+#: src/language/generate.ts:28
+msgid "Checking the HTTP challenge route"
+msgstr "正在检查 HTTP 验证路由"
+
+#: src/language/generate.ts:31
+msgid "Enabling HTTPS in the site configuration"
+msgstr "正在站点配置中启用 HTTPS"
+
+#: src/language/generate.ts:36
+msgid "HTTP challenge route is reachable"
+msgstr "HTTP 验证路由可访问"
+
+#: src/language/generate.ts:37
+msgid "HTTP challenge route probe is unavailable"
+msgstr "HTTP 验证路由探测不可用"
+
+#: src/language/generate.ts:38
+msgid "HTTP configuration applied"
+msgstr "HTTP 配置已应用"
+
+#: src/language/generate.ts:39
+msgid "HTTP configuration restored"
+msgstr "HTTP 配置已恢复"
+
+#: src/language/generate.ts:40
+msgid "HTTPS configuration planned"
+msgstr "HTTPS 配置已规划"
+
+#: src/language/generate.ts:41
+msgid "HTTPS enabled"
+msgstr "HTTPS 已启用"
+
+#: src/language/generate.ts:42
+msgid "Issuing the certificate"
+msgstr "正在签发证书"
+
+#: src/language/generate.ts:45
+msgid "Nginx UI could not listen on the HTTP challenge port; make sure no other process uses it, or change the HTTP challenge port in the certificate settings."
+msgstr "Nginx UI 无法监听 HTTP 验证端口；请确保没有其他进程占用该端口，或在证书设置中更改 HTTP 验证端口。"
+
+#: src/language/generate.ts:54
+msgid "No DNS problem found"
+msgstr "未发现 DNS 问题"
+
+#: src/language/generate.ts:55
+msgid "Original site configuration restored"
+msgstr "原站点配置已恢复"
+
+#: src/language/generate.ts:56
+msgid "Planning the HTTPS configuration"
+msgstr "正在规划 HTTPS 配置"
+
+#: src/language/generate.ts:57
+msgid "Resolve the site configuration problem first"
+msgstr "请先解决站点配置问题"
+
+#: src/language/generate.ts:58
+msgid "Restoring the HTTP configuration"
+msgstr "正在恢复 HTTP 配置"
+
+#: src/language/generate.ts:59
+msgid "Restoring the original site configuration"
+msgstr "正在恢复原站点配置"
+
+#: src/language/generate.ts:62
+msgid "The DNS challenge does not use the HTTP challenge route"
+msgstr "DNS 验证不使用 HTTP 验证路由"
+
+#: src/language/generate.ts:63
+msgid "The DNS lookup for the domain failed; make sure its name servers are answering."
+msgstr "该域名的 DNS 查询失败；请确保其域名服务器正常响应。"
+
+#: src/language/generate.ts:64
+msgid "The certificate %{name} covers the domains and is valid until %{not_after}"
+msgstr "证书 %{name} 覆盖所有域名，有效期至 %{not_after}"
+
+#: src/language/generate.ts:65
+msgid "The certificate %{name} does not cover any of the domains: %{uncovered}"
+msgstr "证书 %{name} 未覆盖任何域名：%{uncovered}"
+
+#: src/language/generate.ts:66
+msgid "The certificate %{name} does not cover some of the domains; they are left out of HTTPS: %{uncovered}"
+msgstr "证书 %{name} 未覆盖部分域名，这些域名不会启用 HTTPS：%{uncovered}"
+
+#: src/language/generate.ts:67
+msgid "The certificate %{name} expired on %{not_after}; renew it or choose another certificate"
+msgstr "证书 %{name} 已于 %{not_after} 过期；请续期或选择其他证书"
+
+#: src/language/generate.ts:68
+msgid "The certificate authority could not connect to port 80 of this domain; open TCP port 80 in the firewall or cloud security group and make sure any NAT or port forwarding sends it to this server."
+msgstr "证书颁发机构无法连接到该域名的 80 端口；请在防火墙或云安全组中放行 TCP 80 端口，并确保 NAT 或端口转发将其转发到此服务器。"
+
+#: src/language/generate.ts:69
+msgid "The certificate authority could not resolve the domain; create an A or AAAA record that points at this server and wait for DNS to propagate."
+msgstr "证书颁发机构无法解析该域名；请创建指向此服务器的 A 或 AAAA 记录，并等待 DNS 生效。"
+
+#: src/language/generate.ts:70
+msgid "The certificate authority followed a redirect, but the redirected request did not reach the challenge route; make sure the HTTPS server for this host also proxies /.well-known/acme-challenge/ to the challenge port, and that the redirect stays on the same host and on port 80 or 443."
+msgstr "证书颁发机构跟随了重定向，但重定向后的请求未到达验证路由；请确保该主机的 HTTPS server 也将 /.well-known/acme-challenge/ 代理到验证端口，并且重定向保持在同一主机的 80 或 443 端口上。"
+
+#: src/language/generate.ts:71
+msgid "The certificate authority rate limit was reached; wait until the retry time before trying again, and test configuration changes against the staging environment."
+msgstr "已达到证书颁发机构的速率限制；请等到可重试时间后再试，并在测试（staging）环境中测试配置更改。"
+
+#: src/language/generate.ts:72
+msgid "The certificate authority reached a server that did not return the challenge file, and the domain resolves to an address that is not on this server; point the domain's A/AAAA records at this server, or, behind NAT or a CDN, make sure port 80 is forwarded to it."
+msgstr "证书颁发机构访问到的服务器未返回验证文件，且该域名解析到的地址不属于此服务器；请将域名的 A/AAAA 记录指向此服务器，若位于 NAT 或 CDN 之后，请确保 80 端口已转发到此服务器。"
+
+#: src/language/generate.ts:73
+msgid "The certificate authority reached the server but the challenge file was not served; make sure the port 80 server block for this domain is enabled and routes /.well-known/acme-challenge/ to Nginx UI, and that no other server block or proxy answers first."
+msgstr "证书颁发机构已访问到服务器，但未获取到验证文件；请确保该域名监听 80 端口的 server 块已启用，并将 /.well-known/acme-challenge/ 路由到 Nginx UI，且没有其他 server 块或代理抢先响应。"
+
+#: src/language/generate.ts:74
+msgid "The certificate authority refuses to issue a certificate for this name; use a publicly resolvable domain name that the certificate authority supports."
+msgstr "证书颁发机构拒绝为此名称签发证书；请使用该证书颁发机构支持且可公开解析的域名。"
+
+#: src/language/generate.ts:75
+msgid "The certificate or key file of %{name} is missing or cannot be read; fix it in the certificate manager or choose another certificate"
+msgstr "%{name} 的证书或私钥文件缺失或无法读取；请在证书管理中修复，或选择其他证书"
+
+#: src/language/generate.ts:76
+msgid "The domain has DNS address records, but the local addresses of this server could not be compared."
+msgstr "该域名存在 DNS 地址记录，但无法与此服务器的本地地址进行比较。"
+
+#: src/language/generate.ts:77
+msgid "The domain has an AAAA record but the site does not listen on IPv6; Let's Encrypt prefers IPv6, so add an IPv6 listen directive on port 80 or remove the AAAA record."
+msgstr "该域名存在 AAAA 记录，但站点未监听 IPv6；Let's Encrypt 会优先使用 IPv6，请添加监听 80 端口的 IPv6 listen 指令，或删除 AAAA 记录。"
+
+#: src/language/generate.ts:78
+msgid "The domain has no A or AAAA record; create one that points at this server before requesting a certificate."
+msgstr "该域名没有 A 或 AAAA 记录；请在申请证书前创建一条指向此服务器的记录。"
+
+#: src/language/generate.ts:79
+msgid "The domain resolves to an address assigned to this server."
+msgstr "该域名解析到分配给此服务器的地址。"
+
+#: src/language/generate.ts:80
+msgid "The domain resolves to an address that is not assigned to this server; this can be expected behind NAT, a load balancer, or a CDN, otherwise update the domain's A/AAAA records."
+msgstr "该域名解析到的地址未分配给此服务器；位于 NAT、负载均衡器或 CDN 之后时属正常情况，否则请更新域名的 A/AAAA 记录。"
+
+#: src/language/generate.ts:81
+msgid "The selected certificate does not exist any more; choose another certificate"
+msgstr "所选证书已不存在，请选择其他证书"
+
+#: src/language/generate.ts:82
+msgid "The site already serves the required HTTP configuration"
+msgstr "站点已提供所需的 HTTP 配置"
+
+#: src/language/generate.ts:83
+msgid "The site configuration can be updated automatically"
+msgstr "站点配置可以自动更新"
+
+#: src/language/generate.ts:84
+msgid "Using the existing certificate %{name}"
+msgstr "使用已有证书 %{name}"
+
+#: src/language/generate.ts:85
+msgid "Verified after the site is staged"
+msgstr "将在站点配置预置后验证"
+
+#: src/language/generate.ts:94
+msgid "[Nginx UI] Checking HTTP01 challenge route for %{domains}"
+msgstr "[Nginx UI] 正在检查 %{domains} 的 HTTP01 验证路由"
+
+#: src/language/generate.ts:98
+msgid "[Nginx UI] HTTP01 challenge route cannot be verified locally for %{domain}: %{reason}"
+msgstr "[Nginx UI] 无法在本地验证 %{domain} 的 HTTP01 验证路由：%{reason}"
+
+#: src/language/generate.ts:99
+msgid "[Nginx UI] HTTP01 challenge route check after renewal failure: %{summary}"
+msgstr "[Nginx UI] 续期失败后的 HTTP01 验证路由检查：%{summary}"
+
+#: src/language/generate.ts:100
+msgid "[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}"
+msgstr "[Nginx UI] %{domain} 的 HTTP01 验证路由检查失败：%{error}"
+
+#: src/language/generate.ts:101
+msgid "[Nginx UI] HTTP01 challenge route check skipped: %{reason}"
+msgstr "[Nginx UI] 已跳过 HTTP01 验证路由检查：%{reason}"
+
+#: src/language/generate.ts:102
+msgid "[Nginx UI] HTTP01 challenge route reachable for %{domain} via %{target}"
+msgstr "[Nginx UI] %{domain} 的 HTTP01 验证路由可通过 %{target} 访问"
+
+#: src/views/certificate/CertificateList/certColumns.tsx:45
+msgid "Renewal paused"
+msgstr "已暂停续期"
+
+#: src/views/preference/tabs/ServerSettings.vue:27
+msgid "Unix Socket"
+msgstr "Unix Socket"
+
+#: src/views/preference/tabs/ServerSettings.vue:27
+msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgstr "Nginx UI 将监听此 Unix Socket，而不是 TCP 主机和端口。"
+
+#: src/views/preference/tabs/ServerSettings.vue:64
+msgid "HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on a Unix socket."
+msgstr "HTTP/3 需要 UDP 监听器，Nginx UI 监听 Unix Socket 时不可用。"
+
+#: src/views/site/site_add/SiteAdd.vue:105
+msgid "Edit configuration file"
+msgstr "编辑配置文件"
+
+#: src/views/site/site_add/SiteAdd.vue:110
+msgid "Save and enable the site with the HTTPS server block it already has."
+msgstr "保存并启用站点，沿用已有的 HTTPS server 块。"
+
+#: src/views/site/site_add/SiteAdd.vue:113
+msgid "Save and enable"
+msgstr "保存并启用"
+
+#: src/views/site/site_add/SiteAdd.vue:167
+msgid "The previous draft %{name} is enabled, so it was kept. Remove it from the site list if you no longer need it."
+msgstr "之前的草稿 %{name} 已启用，因此已保留。如果不再需要，请从站点列表中删除。"
+
+#: src/views/site/site_add/SiteAdd.vue:173
+msgid "Removed the previous draft %{name}"
+msgstr "已删除之前的草稿 %{name}"
+
+#: src/views/site/site_add/SiteAdd.vue:176
+msgid "The previous draft %{name} could not be removed. Remove it from the site list if you no longer need it."
+msgstr "无法删除之前的草稿 %{name}。如果不再需要，请从站点列表中删除。"
+
+#: src/views/site/site_add/SiteAdd.vue:274
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:44
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:721
+msgid "HTTPS is enabled"
+msgstr "HTTPS 已启用"
+
+#: src/views/site/site_add/SiteAdd.vue:471
+msgid "Save the edited configuration before enabling HTTPS."
+msgstr "启用 HTTPS 前，请先保存已编辑的配置。"
+
+#: src/views/site/site_add/SiteAdd.vue:472
+msgid "The site draft is not saved yet."
+msgstr "站点草稿尚未保存。"
+
+#: src/views/site/site_add/SiteAdd.vue:476
+msgid "HTTPS setup reads the saved draft of this site."
+msgstr "HTTPS 设置会读取此站点已保存的草稿。"
+
+#: src/views/site/site_add/SiteAdd.vue:478
+msgid "Save draft"
+msgstr "保存草稿"
+
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:139
+msgid "Done"
+msgstr "完成"
+
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:72
+msgid "Save your changes before enabling HTTPS"
+msgstr "启用 HTTPS 前请先保存更改"
+
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:76
+msgid "HTTPS setup rewrites the saved site configuration, so unsaved edits would be lost."
+msgstr "HTTPS 设置会重写已保存的站点配置，未保存的编辑将会丢失。"
+
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:92
+msgid "HTTPS setup builds the HTTPS server block from the saved configuration. Unsaved edits to that block are not used."
+msgstr "HTTPS 设置会根据已保存的配置生成 HTTPS server 块，该块中未保存的编辑不会被使用。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:122
+msgid "Not a valid domain name or IP address: %{value}"
+msgstr "不是有效的域名或 IP 地址：%{value}"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:147
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:148
+msgid "DNS-01"
+msgstr "DNS-01"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:149
+msgid "Existing certificate"
+msgstr "已有证书"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:150
+msgid "Skip for now"
+msgstr "暂时跳过"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:159
+msgid "The certificate authority validates each domain over port 80, so the domains must resolve to this server."
+msgstr "证书颁发机构会通过 80 端口验证每个域名，因此这些域名必须解析到此服务器。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:161
+msgid "Validation uses a DNS TXT record created with the selected DNS credential. Required for wildcard domains."
+msgstr "使用所选 DNS 凭证创建的 DNS TXT 记录进行验证。通配符域名必须使用此方式。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:163
+msgid "Use a certificate from the certificate manager. Nothing is requested from a certificate authority, and the certificate keeps its own renewal settings."
+msgstr "使用证书管理中的证书。不会向证书颁发机构申请，证书保留原有的续期设置。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:165
+msgid "Continue without HTTPS. You can enable it later from the site editor."
+msgstr "不启用 HTTPS 继续。之后可以在站点编辑器中启用。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:224
+msgid "This certificate expired on %{date}. Choose another certificate or renew this one first."
+msgstr "此证书已于 %{date} 过期。请选择其他证书，或先续期此证书。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:228
+msgid "This certificate record lists no domains. The pre-flight check reads them from the certificate file."
+msgstr "此证书记录未列出域名，预检会从证书文件中读取。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:230
+msgid "This certificate does not cover any of the domains: %{domains}"
+msgstr "此证书未覆盖任何域名：%{domains}"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:232
+msgid "This certificate does not cover %{domains}. HTTPS is only enabled for the names it covers."
+msgstr "此证书未覆盖 %{domains}，只有其覆盖的域名会启用 HTTPS。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:238
+msgid "IP address certificates only support HTTP-01 validation."
+msgstr "IP 地址证书仅支持 HTTP-01 验证。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:240
+msgid "Wildcard domains require DNS-01 validation."
+msgstr "通配符域名需要 DNS-01 验证。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:307
+msgid "Plan the configuration changes"
+msgstr "规划配置更改"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:309
+msgid "Stage the HTTP configuration"
+msgstr "预置 HTTP 配置"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:311
+msgid "Verify the challenge route"
+msgstr "检查验证路由"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:313
+msgid "Issue the certificate"
+msgstr "签发证书"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:317
+msgid "Roll back the changes"
+msgstr "回滚更改"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:362
+msgid "Passed"
+msgstr "已通过"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:370
+msgid "Waiting"
+msgstr "等待中"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:385
+msgid "The connection closed before HTTPS setup finished. Retry to run it again."
+msgstr "HTTPS 设置完成前连接已关闭。请重试以重新运行。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:386
+msgid "HTTPS setup failed"
+msgstr "HTTPS 设置失败"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:418
+msgid "Certificate options"
+msgstr "证书选项"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:446
+msgid "Nginx UI stages the challenge route, verifies it, requests the certificate and switches the site to HTTPS in one run. If a step fails, the site keeps serving plain HTTP."
+msgstr "Nginx UI 会一次性完成预置验证路由、验证路由、申请证书并将站点切换到 HTTPS。如果某一步失败，站点将继续以普通 HTTP 提供服务。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:486
+msgid "Add at least one domain or IP address."
+msgstr "请至少添加一个域名或 IP 地址。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:497
+msgid "e.g. example.com www.example.com"
+msgstr "例如 example.com www.example.com"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:520
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:725
+msgid "Certificate"
+msgstr "证书"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:534
+msgid "Expired on %{date}"
+msgstr "已于 %{date} 过期"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:535
+msgid "Expires on %{date}"
+msgstr "将于 %{date} 过期"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:543
+msgid "Change"
+msgstr "更换"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:568
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:792
+msgid "Select certificate"
+msgstr "选择证书"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:585
+msgid "Redirect HTTP to HTTPS after the certificate is ready"
+msgstr "证书就绪后将 HTTP 重定向到 HTTPS"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:589
+msgid "The HTTPS server block without a certificate is left out until the certificate is issued, then enabled with it."
+msgstr "没有证书的 HTTPS server 块会先被忽略，待证书签发后再与证书一起启用。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
+msgid "Pre-flight check"
+msgstr "预检"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
+msgid "Progress"
+msgstr "进度"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:658
+msgid "Checking..."
+msgstr "检查中..."
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:660
+msgid "Run \"Check only\" to verify the configuration and the certificate without changing anything."
+msgstr "运行“仅检查”以验证配置和证书，不会进行任何更改。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:661
+msgid "Run \"Check only\" to verify the configuration and DNS without changing anything."
+msgstr "运行“仅检查”以验证配置和 DNS，不会进行任何更改。"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:708
+msgid "Failed step: %{step}"
+msgstr "失败的步骤：%{step}"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:734
+msgid "Private Key"
+msgstr "私钥"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:766
+msgid "Check only"
+msgstr "仅检查"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:776
+msgid "Issue and enable HTTPS"
+msgstr "签发证书并启用 HTTPS"
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:784
+msgid "Continue without HTTPS"
+msgstr "不启用 HTTPS 继续"
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:84
+msgid "Configuration saved. Enable HTTPS from the HTTPS card."
+msgstr "配置已保存。请在 HTTPS 卡片中启用 HTTPS。"
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:110
+msgid "The generated configuration will replace the current one and is saved right away without its HTTPS server. Any custom directives or locations will be lost."
+msgstr "生成的配置将替换当前配置，并立即保存（不含 HTTPS server）。所有自定义指令或 Location 都将丢失。"
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:112
+msgid "Replace and save"
+msgstr "替换并保存"
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:149
+msgid "The configuration is saved without its HTTPS server first. Then enable HTTPS from the HTTPS card on this page."
+msgstr "配置会先在不含 HTTPS server 的情况下保存，然后请在本页的 HTTPS 卡片中启用 HTTPS。"
