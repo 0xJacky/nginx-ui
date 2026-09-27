@@ -1,0 +1,102 @@
+# Real HTTP-01 issuance against Pebble, a test ACME CA.
+#
+# Start it through scripts/up.sh, which exports every variable below with the
+# defaults from scripts/env.sh. The official image seeds /etc/nginx only when
+# that directory is empty. A plain named volume would be pre-populated from the
+# image (conf.d/nginx-ui.conf would then never appear), so the volumes use
+# nocopy. They are volumes rather than bind mounts because re-creating a bind
+# mount source at the same path proved flaky on Docker for Mac, and container
+# files in a bind mount are root-owned on Linux runners.
+#
+# Addresses inside ${E2E_ACME_SUBNET_PREFIX}.0/24:
+#   .2  pebble        ACME directory at https://<prefix>.2:14000/dir
+#   .3  challtestsrv  DNS for pebble; every name resolves to nginx-ui unless a
+#                     test overrides it through the management API (/add-a)
+#   .10 nginx-ui      the system under test; Pebble validates on its port 80
+#   .20 backend       plain nginx, used as a reverse-proxy target and as the
+#                     "DNS points elsewhere" host
+name: ${E2E_ACME_PROJECT:-nginxui-acme-e2e-suite}
+
+networks:
+  acme:
+    ipam:
+      config:
+        - subnet: ${E2E_ACME_SUBNET_PREFIX:-10.31.0}.0/24
+
+services:
+  pebble:
+    image: ${PEBBLE_IMAGE:-ghcr.io/letsencrypt/pebble:latest}
+    command: -config /cfg/pebble-config.json -dnsserver ${E2E_ACME_SUBNET_PREFIX:-10.31.0}.3:8053
+    environment:
+      # No random validation delay and no bad-nonce injection: keep runs fast
+      # and deterministic.
+      PEBBLE_VA_NOSLEEP: "1"
+      PEBBLE_WFE_NONCEREJECT: "0"
+    volumes:
+      - ./pebble-config.json:/cfg/pebble-config.json:ro
+    networks:
+      acme:
+        ipv4_address: ${E2E_ACME_SUBNET_PREFIX:-10.31.0}.2
+
+  challtestsrv:
+    image: ${CHALLTESTSRV_IMAGE:-ghcr.io/letsencrypt/pebble-challtestsrv:latest}
+    # Only the DNS server and the management API are needed; the built-in
+    # challenge responders stay off so nginx-ui answers every HTTP-01 request.
+    # DNS on :8053 for Pebble and on :53 for nginx-ui (Docker cannot point a
+    # container at a resolver on another port).
+    command: -defaultIPv6 "" -defaultIPv4 ${E2E_ACME_SUBNET_PREFIX:-10.31.0}.10 -dnsserver ":8053,:53" -http01 "" -https01 "" -tlsalpn01 "" -doh ""
+    networks:
+      acme:
+        ipv4_address: ${E2E_ACME_SUBNET_PREFIX:-10.31.0}.3
+    ports:
+      - "127.0.0.1:${E2E_ACME_CHALLTESTSRV_PORT:-18056}:8055"
+
+  backend:
+    image: ${BACKEND_IMAGE:-nginx:latest}
+    networks:
+      acme:
+        ipv4_address: ${E2E_ACME_SUBNET_PREFIX:-10.31.0}.20
+
+  nginx-ui:
+    image: ${NGINX_UI_IMAGE:-nginx-ui-acme-e2e:local}
+    platform: linux/amd64
+    depends_on:
+      - pebble
+      - challtestsrv
+      - backend
+    environment:
+      NGINX_UI_CERT_CA_DIR: https://${E2E_ACME_SUBNET_PREFIX:-10.31.0}.2:14000/dir
+      # tests/install.setup.ts installs with the same address: the default
+      # ACME account is registered at boot for this email only.
+      NGINX_UI_CERT_EMAIL: acme@e2e.test
+      # Pebble serves its directory with a self-signed certificate.
+      NGINX_UI_HTTP_INSECURE_SKIP_VERIFY: "true"
+      NGINX_UI_IGNORE_DOCKER_SOCKET: "true"
+      NGINX_UI_HTTP_WEBSOCKET_TRUSTED_ORIGINS: http://127.0.0.1:${E2E_ACME_UI_PORT:-18181},http://localhost:${E2E_ACME_UI_PORT:-18181}
+    volumes:
+      # nocopy keeps the volumes empty on first mount, so init-config seeds
+      # /etc/nginx exactly like an empty bind mount on a fresh install.
+      - type: volume
+        source: etc-nginx
+        target: /etc/nginx
+        volume:
+          nocopy: true
+      - type: volume
+        source: etc-nginx-ui
+        target: /etc/nginx-ui
+        volume:
+          nocopy: true
+    # Resolve names like Pebble does, so nginx-ui's own DNS diagnostics see
+    # the same answers as the CA (challtestsrv answers every name).
+    dns:
+      - ${E2E_ACME_SUBNET_PREFIX:-10.31.0}.3
+    networks:
+      acme:
+        ipv4_address: ${E2E_ACME_SUBNET_PREFIX:-10.31.0}.10
+    ports:
+      - "127.0.0.1:${E2E_ACME_UI_PORT:-18181}:80"
+
+# Removed by scripts/down.sh (docker compose down --volumes).
+volumes:
+  etc-nginx:
+  etc-nginx-ui:

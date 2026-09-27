@@ -7,7 +7,11 @@
     "install:browser": "playwright install chromium",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
-    "test:ui": "playwright test --ui"
+    "test:ui": "playwright test --ui",
+    "test:acme": "playwright test -c acme/playwright.config.ts",
+    "acme:build": "sh acme/scripts/build-image.sh",
+    "acme:up": "sh acme/scripts/up.sh",
+    "acme:down": "sh acme/scripts/down.sh"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0"
