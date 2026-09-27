@@ -17,56 +17,69 @@ msgstr "HTTP01"
 msgid "DNS01"
 msgstr "DNS01"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:67
+#: src/components/AutoCertForm/AutoCertForm.vue:70
 msgid "Please enter the server IP address"
 msgstr "Vui lòng nhập địa chỉ IP của máy chủ"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:72
+#: src/components/AutoCertForm/AutoCertForm.vue:75
 msgid "Please enter a valid IPv4 or IPv6 address"
 msgstr "Vui lòng nhập địa chỉ IPv4 hoặc IPv6 hợp lệ"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:95
+#: src/components/AutoCertForm/AutoCertForm.vue:98
 msgid "IP Certificate Notice"
 msgstr "Thông báo chứng chỉ IP"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:100
+#: src/components/AutoCertForm/AutoCertForm.vue:103
 msgid ""
 "This site is configured as a default server (default_server) for HTTPS "
-"(port 443). "
+"(port 443). IP certificates require Certificate Authority (CA) support and "
+"may not be available with all ACME providers."
 msgstr ""
-"Trang web này được cấu hình làm máy chủ mặc định (default_server) cho HTTPS "
-"(cổng 443)."
+"Trang này được cấu hình làm máy chủ mặc định (default_server) cho HTTPS "
+"(cổng 443). Chứng chỉ IP yêu cầu sự hỗ trợ của Cơ quan Chứng nhận (CA) và "
+"có thể không khả dụng với tất cả các nhà cung cấp ACME."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:104
+#: src/components/AutoCertForm/AutoCertForm.vue:106
 msgid ""
 "This site uses wildcard server name (_) which typically indicates an "
-"IP-based certificate. "
+"IP-based certificate. IP certificates require Certificate Authority (CA) "
+"support and may not be available with all ACME providers."
 msgstr ""
-"Trang web này sử dụng tên máy chủ wildcard (_) thường biểu thị chứng chỉ "
-"dựa trên IP."
+"Trang web này sử dụng tên máy chủ ký tự đại diện (_) thường cho thấy một "
+"chứng chỉ dựa trên IP. Các chứng chỉ IP yêu cầu hỗ trợ từ Tổ chức Chứng "
+"nhận (CA) và có thể không có sẵn ở tất cả các nhà cung cấp ACME."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:108
-msgid "No specific IP address found in server_name configuration. "
-msgstr "Không tìm thấy địa chỉ IP cụ thể trong cấu hình server_name."
+#: src/components/AutoCertForm/AutoCertForm.vue:109
+msgid ""
+"No specific IP address found in server_name configuration. Please specify "
+"the server IP address below for the certificate."
+msgstr ""
+"Không tìm thấy địa chỉ IP cụ thể trong cấu hình server_name. Vui lòng chỉ "
+"định địa chỉ IP của máy chủ bên dưới cho chứng chỉ."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:112
 msgid ""
 "For IP-based certificate configurations, only HTTP-01 challenge method is "
-"supported. "
+"supported. DNS-01 challenge is not compatible with IP-based certificates."
 msgstr ""
 "Đối với cấu hình chứng chỉ dựa trên IP, chỉ phương thức thử thách HTTP-01 "
-"được hỗ trợ."
+"được hỗ trợ. Thử thách DNS-01 không tương thích với các chứng chỉ dựa trên "
+"IP."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:122
-#: src/views/dns/DNSCredential.vue:89
+#: src/components/AutoCertForm/AutoCertForm.vue:121
+#: src/views/dns/DNSCredential.vue:168 src/views/dns/DNSCredential.vue:196
 msgid "Note"
 msgstr "Ghi chú"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:127
-msgid "The server_name"
-msgstr "server_name"
+#: src/components/AutoCertForm/AutoCertForm.vue:126
+msgid ""
+"The server_name in the current configuration must be the domain name you "
+"need to get the certificate, support multiple domains."
+msgstr ""
+"server_name trong cấu hình hiện tại phải là tên miền mà bạn cần lấy chứng "
+"chỉ; hỗ trợ nhiều tên miền."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:132
+#: src/components/AutoCertForm/AutoCertForm.vue:129
 msgid ""
 "The certificate for the domain is checked every 30 minutes and renewed when "
 "its remaining validity reaches the threshold configured in settings."
@@ -74,23 +87,36 @@ msgstr ""
 "Chứng chỉ cho tên miền được kiểm tra mỗi 30 phút và được gia hạn khi thời "
 "hạn hiệu lực còn lại đạt đến ngưỡng đã được cấu hình trong cài đặt."
 
+#: src/components/AutoCertForm/AutoCertForm.vue:132
+msgid ""
+"Make sure you have configured a reverse proxy for .well-known directory to "
+"HTTPChallengePort before obtaining the certificate."
+msgstr ""
+"Hãy đảm bảo bạn đã cấu hình reverse proxy cho thư mục .well-known tới "
+"HTTPChallengePort trước khi lấy chứng chỉ."
+
 #: src/components/AutoCertForm/AutoCertForm.vue:135
-msgid "Make sure you have configured a reverse proxy for .well-known "
-msgstr "Đảm bảo bạn đã cấu hình proxy ngược cho .well-known"
+msgid ""
+"Please first add credentials in Certification > DNS Credentials, and then "
+"select one of the credentials below to request the API of the DNS provider."
+msgstr ""
+"Vui lòng trước tiên thêm thông tin xác thực trong Chứng nhận > Thông tin "
+"xác thực DNS, sau đó chọn một trong các thông tin xác thực bên dưới để yêu "
+"cầu API của nhà cung cấp DNS."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:139
-msgid "Please first add credentials in Certification > DNS Credentials, "
-msgstr "Vui lòng thêm thông tin xác thực trước tại Certification > DNS Credentials, "
+msgid "Required Settings"
+msgstr "Cài đặt bắt buộc"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:150
+#: src/components/AutoCertForm/AutoCertForm.vue:151
 msgid "Server IP Address"
 msgstr "Địa chỉ IP máy chủ"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:155
+#: src/components/AutoCertForm/AutoCertForm.vue:156
 msgid "Enter server IP address (e.g., 203.0.113.1 or 2001:db8::1)"
 msgstr "Nhập địa chỉ IP máy chủ (ví dụ: 203.0.113.1 hoặc 2001:db8::1)"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:160
+#: src/components/AutoCertForm/AutoCertForm.vue:161
 msgid ""
 "For IP-based certificates, please specify the server IP address that will "
 "be included in the certificate."
@@ -98,56 +124,63 @@ msgstr ""
 "Đối với chứng chỉ dựa trên IP, vui lòng chỉ định địa chỉ IP của máy chủ sẽ "
 "được đưa vào chứng chỉ."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:164
+#: src/components/AutoCertForm/AutoCertForm.vue:165
 msgid "Public CA Requirements:"
 msgstr "Yêu cầu của CA công cộng:"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:168
+#: src/components/AutoCertForm/AutoCertForm.vue:169
 msgid "Must be a public IP address accessible from the internet"
 msgstr "Phải là địa chỉ IP công cộng có thể truy cập từ internet"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:171
+#: src/components/AutoCertForm/AutoCertForm.vue:172
 msgid "Port 80 must be open for HTTP-01 challenge validation"
 msgstr "Cổng 80 phải được mở để xác thực thử thách HTTP-01"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:174
+#: src/components/AutoCertForm/AutoCertForm.vue:175
 msgid "Private IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x) will fail"
 msgstr "IP riêng (192.168.x.x, 10.x.x.x, 172.16-31.x.x) sẽ thất bại"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:178
+#: src/components/AutoCertForm/AutoCertForm.vue:179
 msgid "Private CA:"
 msgstr "CA riêng:"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:181
+#: src/components/AutoCertForm/AutoCertForm.vue:182
 msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr ""
 "Bất kỳ địa chỉ IP có thể truy cập nào đều có thể được sử dụng với các cơ "
 "quan cấp chứng chỉ riêng tư"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:190
+#: src/components/AutoCertForm/AutoCertForm.vue:191
 msgid "Challenge Method"
 msgstr "Phương pháp xác thực"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:202
-#: src/components/AutoCertForm/AutoCertForm.vue:211
+#: src/components/AutoCertForm/AutoCertForm.vue:203
+#: src/components/AutoCertForm/AutoCertForm.vue:212
 msgid "Not supported for IP certificates"
 msgstr "Không hỗ trợ cho chứng chỉ IP"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:217
-#: src/views/certificate/CertificateList/certColumns.tsx:65
+#: src/components/AutoCertForm/AutoCertForm.vue:218
+#: src/views/certificate/CertificateList/certColumns.tsx:75
 #: src/views/certificate/components/SelfSignedCertFields.vue:56
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:602
 msgid "Key Type"
 msgstr "Loại khóa"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:232
+#: src/components/AutoCertForm/AutoCertForm.vue:234
+msgid "Special Settings"
+msgstr "Cài đặt đặc biệt"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:236
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:613
 msgid "OCSP Must Staple"
 msgstr "OCSP Must Staple"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:235
+#: src/components/AutoCertForm/AutoCertForm.vue:239
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "Không bật tùy chọn này trừ khi bạn chắc chắn cần đến nó."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:236
+#: src/components/AutoCertForm/AutoCertForm.vue:240
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:614
 msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
 "Firefox."
@@ -155,27 +188,41 @@ msgstr ""
 "OCSP Must Staple có thể gây ra lỗi cho một số người dùng khi truy cập lần "
 "đầu bằng Firefox."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:242
+#: src/components/AutoCertForm/AutoCertForm.vue:246
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:619
 msgid "Lego disable CNAME Support"
 msgstr "Lego tắt hỗ trợ CNAME"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:245
-msgid "If your domain has CNAME records and you cannot obtain certificates, "
-msgstr "Nếu tên miền của bạn có bản ghi CNAME và bạn không thể nhận chứng chỉ,"
+#: src/components/AutoCertForm/AutoCertForm.vue:249
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:620
+msgid ""
+"If your domain has CNAME records and you cannot obtain certificates, you "
+"need to enable this option."
+msgstr ""
+"Nếu tên miền của bạn có bản ghi CNAME và bạn không thể lấy được chứng chỉ, "
+"bạn cần bật tùy chọn này."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:253
+#: src/components/AutoCertForm/AutoCertForm.vue:256
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:626
 msgid "Disable Authoritative DNS Propagation Check"
 msgstr "Tắt kiểm tra lan truyền DNS có thẩm quyền"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:257
-msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
-msgstr "Bỏ qua kiểm tra lan truyền DNS cục bộ và đợi 60 giây trước khi yêu cầu "
+#: src/components/AutoCertForm/AutoCertForm.vue:260
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:627
+msgid ""
+"Skip local DNS propagation checks and wait 60 seconds before asking the "
+"certificate authority to validate the record."
+msgstr ""
+"Bỏ qua các kiểm tra lan truyền DNS cục bộ và chờ 60 giây trước khi yêu cầu "
+"cơ quan chứng thực xác minh bản ghi."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:263
+#: src/components/AutoCertForm/AutoCertForm.vue:265
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:632
 msgid "Enable Common Name"
 msgstr "Bật tên thường gọi"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:266
+#: src/components/AutoCertForm/AutoCertForm.vue:268
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:633
 msgid ""
 "Enable the certificate Common Name field for private CAs that still require "
 "it."
@@ -183,63 +230,150 @@ msgstr ""
 "Bật trường Common Name của chứng chỉ cho các CA riêng vẫn còn yêu cầu "
 "trường này."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:271
+#: src/components/AutoCertForm/AutoCertForm.vue:273
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:638
 msgid "Revoke Old Certificate"
 msgstr "Thu hồi chứng chỉ cũ"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:274
+#: src/components/AutoCertForm/AutoCertForm.vue:276
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:639
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
 msgstr "Nếu bạn muốn tự động thu hồi chứng chỉ cũ, vui lòng bật tùy chọn này."
 
-#: src/components/AutoCertForm/DNSChallenge.vue:25
+#: src/components/AutoCertForm/DNSChallenge.vue:34
 msgid "Unknown Provider"
 msgstr "Nhà cung cấp không xác định"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:131
+#: src/components/AutoCertForm/DNSChallenge.vue:146
 #: src/views/dns/DDNSManager.vue:179 src/views/dns/DNSDomainList.vue:158
 #: src/views/dns/DNSDomainList.vue:204
 msgid "Credential"
 msgstr "Chứng chỉ"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:132
+#: src/components/AutoCertForm/DNSChallenge.vue:147
 msgid "Please create DNS credentials first in DNS > Credentials"
 msgstr "Vui lòng tạo thông tin xác thực DNS trước trong DNS > Thông tin xác thực"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:139
+#: src/components/AutoCertForm/DNSChallenge.vue:154
 #: src/language/constants.ts:68 src/views/dns/DNSDomainList.vue:208
 msgid "Select Credential"
 msgstr "Chọn thông tin xác thực"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:145
+#: src/components/AutoCertForm/DNSChallenge.vue:160
 msgid "Go to DNS > Credentials to create or manage credentials"
 msgstr "Đi tới DNS > Thông tin xác thực để tạo hoặc quản lý thông tin xác thực"
 
-#: src/components/CertInfo/CertInfo.vue:25
+#: src/components/CertInfo/CertInfo.vue:21
+#: src/views/certificate/components/CertificateBasicInfo.vue:27
+#: src/views/certificate/components/CertificateContentEditor.vue:105
+msgid "Nothing to copy"
+msgstr "Không có gì để sao chép"
+
+#: src/components/CertInfo/CertInfo.vue:26
+#: src/views/certificate/components/CertificateBasicInfo.vue:32
+#: src/views/certificate/components/CertificateContentEditor.vue:110
+msgid "{label} copied to clipboard"
+msgstr "{label} đã được sao chép vào bảng nhớ tạm"
+
+#: src/components/CertInfo/CertInfo.vue:30
+#: src/views/certificate/components/CertificateBasicInfo.vue:36
+#: src/views/certificate/components/CertificateContentEditor.vue:114
+msgid "Failed to copy to clipboard"
+msgstr "Sao chép vào bộ nhớ tạm thất bại"
+
+#: src/components/CertInfo/CertInfo.vue:42
+#: src/views/certificate/components/SelfSignedCertManagement.vue:25
+#: src/views/site/site_edit/components/Cert/Cert.vue:78
+msgid "Certificate Status"
+msgid_plural "Certificates Status"
+msgstr[0] "Trạng thái chứng chỉ"
+
+#: src/components/CertInfo/CertInfo.vue:50
+msgid "Name: %{name}"
+msgstr "Tên: %{name}"
+
+#: src/components/CertInfo/CertInfo.vue:56
+#: src/components/NgxConfigEditor/NgxUpstream.vue:163
+#: src/views/backup/AutoBackup/AutoBackup.vue:40
+#: src/views/certificate/ACMEUser.vue:14
+#: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/CertificateList/Certificate.vue:40
+#: src/views/certificate/components/CertificateBasicInfo.vue:50
+#: src/views/certificate/components/CertificateBasicInfo.vue:63
+#: src/views/certificate/components/SelfSignedCertFields.vue:34
+#: src/views/config/components/ConfigRightPanel/Basic.vue:34
+#: src/views/config/components/Delete.vue:126
+#: src/views/config/components/Mkdir.vue:64
+#: src/views/config/configColumns.tsx:17
+#: src/views/dns/components/DNSRecordForm.vue:91
+#: src/views/dns/components/DNSRecordTable.vue:41
+#: src/views/dns/components/DNSRecordTable.vue:344
+#: src/views/dns/DNSCredential.vue:93 src/views/dns/DNSCredential.vue:209
+#: src/views/dns/DNSGroupRecordManager.vue:157
+#: src/views/dns/DNSGroupRecordManager.vue:174
+#: src/views/dns/DNSGroupRecordManager.vue:1358
+#: src/views/namespace/columns.ts:9 src/views/nginx_log/NginxLogList.vue:156
+#: src/views/node/nodeColumns.tsx:83
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:84
+#: src/views/preference/tabs/AccessTokens.vue:50
+#: src/views/preference/tabs/AccessTokens.vue:266
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:36
+#: src/views/site/site_list/columns.tsx:36
+#: src/views/site/site_list/SiteDuplicate.vue:84
+#: src/views/stream/columns.tsx:26
+#: src/views/stream/components/RightPanel/Basic.vue:31
+#: src/views/stream/components/StreamDuplicate.vue:76
+#: src/views/stream/StreamList.vue:123 src/views/system/Licenses.vue:13
+msgid "Name"
+msgstr "Tên"
+
+#: src/components/CertInfo/CertInfo.vue:66
+msgid "Status:"
+msgstr "Trạng thái:"
+
+#: src/components/CertInfo/CertInfo.vue:72
 #: src/views/certificate/ACMEUser.vue:70 src/views/certificate/ACMEUser.vue:152
-#: src/views/certificate/CertificateList/certColumns.tsx:122
+#: src/views/certificate/CertificateList/certColumns.tsx:132
 msgid "Valid"
 msgstr "Hợp lệ"
 
-#: src/components/CertInfo/CertInfo.vue:32
-#: src/views/certificate/CertificateList/certColumns.tsx:127
+#: src/components/CertInfo/CertInfo.vue:79
+#: src/views/certificate/CertificateList/certColumns.tsx:137
 #: src/views/dashboard/components/SiteCard.vue:131
 #: src/views/preference/tabs/AccessTokens.vue:149
 msgid "Expired"
 msgstr "Đã hết hạn"
 
-#: src/components/CertInfo/CertInfo.vue:36
+#: src/components/CertInfo/CertInfo.vue:83
+msgid "SAN Aliases: %{aliases}"
+msgstr "Bí danh SAN: %{aliases}"
+
+#: src/components/CertInfo/CertInfo.vue:86
 msgid "Issuer: %{issuer}"
 msgstr "Nhà phát hành: %{issuer}"
 
-#: src/components/CertInfo/CertInfo.vue:39
+#: src/components/CertInfo/CertInfo.vue:89
 msgid "Expires At: %{date}"
 msgstr "Hết hạn vào: %{date}"
 
-#: src/components/CertInfo/CertInfo.vue:42
+#: src/components/CertInfo/CertInfo.vue:92
 msgid "Not Valid Before: %{date}"
 msgstr "Không hợp lệ trước: %{date}"
+
+#: src/components/CertInfo/CertInfo.vue:97
+#: src/components/CertInfo/CertInfo.vue:102
+#: src/views/certificate/CertificateList/Certificate.vue:52
+#: src/views/preference/tabs/ServerSettings.vue:42
+msgid "SSL Certificate Path"
+msgstr "Đường dẫn chứng chỉ SSL"
+
+#: src/components/CertInfo/CertInfo.vue:110
+#: src/components/CertInfo/CertInfo.vue:115
+#: src/views/certificate/CertificateList/Certificate.vue:57
+msgid "SSL Certificate Key Path"
+msgstr "Đường dẫn khóa chứng chỉ SSL"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:54
 msgid "Modified At"
@@ -266,6 +400,7 @@ msgid "Configuration History"
 msgstr "Lịch sử cấu hình"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:180 src/language/curd.ts:14
+#: src/views/dns/DNSCredential.vue:220
 #: src/views/dns/DNSGroupRecordManager.vue:1626
 msgid "Close"
 msgstr "Đóng"
@@ -370,7 +505,7 @@ msgstr "Đã bỏ qua kiểm tra sandbox"
 msgid "Sandbox validation failed"
 msgstr "Xác thực sandbox thất bại"
 
-#: src/components/InspectConfig/InspectConfig.vue:38 src/constants/index.ts:24
+#: src/components/InspectConfig/InspectConfig.vue:38 src/constants/index.ts:27
 #: src/views/nginx_log/NginxLogList.vue:210
 #: src/views/nginx_log/NginxLogList.vue:250
 #: src/views/notification/notificationColumns.tsx:33
@@ -414,7 +549,8 @@ msgid "Nginx failed to validate the configuration."
 msgstr "Nginx không thể xác thực cấu hình."
 
 #: src/components/InspectConfig/InspectConfig.vue:103 src/lib/http/error.ts:36
-#: src/views/certificate/CertificateEditor.vue:120
+#: src/views/certificate/CertificateEditor.vue:145
+#: src/views/dns/DNSCredential.vue:85
 msgid "Server error"
 msgstr "Lỗi máy chủ"
 
@@ -434,11 +570,12 @@ msgstr "Tệp cấu hình đã được kiểm tra thành công trong môi trư�
 msgid "Configuration file is test successful"
 msgstr "Tệp cấu hình được kiểm tra thành công"
 
-#: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:25
-#: src/views/backup/components/BackupCreator.vue:138
+#: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:28
+#: src/views/backup/components/BackupCreator.vue:135
 #: src/views/notification/notificationColumns.tsx:40
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
 #: src/views/preference/components/NginxHostSetup/checks.ts:121
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:364
 msgid "Warning"
 msgstr "Lưu ý"
 
@@ -455,18 +592,20 @@ msgid "Modify"
 msgstr "Sửa đổi"
 
 #: src/components/LLM/ChatMessage.vue:256
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:167
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:172
 #: src/language/curd.ts:18
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:864
-#: src/views/dns/DDNSManager.vue:474 src/views/dns/DNSRecordManager.vue:253
+#: src/views/dns/DDNSManager.vue:474 src/views/dns/DNSCredential.vue:223
+#: src/views/dns/DNSRecordManager.vue:253
 #: src/views/preference/components/AuthSettings/Passkey.vue:132
 #: src/views/preference/Preference.vue:104
 #: src/views/preference/tabs/NginxSettings.vue:318
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:210
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:83
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:252
 #: src/views/stream/components/ConfigName.vue:52
 #: src/views/stream/components/StreamEditor.vue:154
 msgid "Save"
@@ -492,11 +631,10 @@ msgstr "Lưu"
 #: src/views/site/components/MaintenanceConfigModal.vue:64
 #: src/views/site/components/SiteStatusSelect.vue:156
 #: src/views/site/components/SiteStatusSelect.vue:182
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:53
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:166
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
-#: src/views/site/site_edit/components/QuickSetupModal.vue:55
-#: src/views/site/site_edit/components/QuickSetupModal.vue:97
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:101
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:27
+#: src/views/site/site_edit/components/QuickSetupModal.vue:113
+#: src/views/site/site_edit/components/QuickSetupModal.vue:160
 #: src/views/site/site_list/SiteList.vue:173
 #: src/views/stream/components/StreamStatusSelect.vue:62
 msgid "Cancel"
@@ -510,12 +648,12 @@ msgstr "Tải lại"
 #: src/components/LLM/ChatMessageInput.vue:61
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:127
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
 #: src/components/NgxConfigEditor/LocationEditor.vue:86
 #: src/components/Notification/Notification.vue:115 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:131
-#: src/views/preference/tabs/CertSettings.vue:81
+#: src/views/preference/tabs/CertSettings.vue:83
 #: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteList.vue:267 src/views/stream/StreamList.vue:99
 msgid "No"
@@ -525,13 +663,12 @@ msgstr "Không"
 #: src/components/NgxConfigEditor/NgxServer.vue:75
 #: src/components/NgxConfigEditor/NgxUpstream.vue:42
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
-#: src/views/backup/components/BackupCreator.vue:149
+#: src/views/backup/components/BackupCreator.vue:146
 #: src/views/notification/Notification.vue:39
 #: src/views/preference/components/NginxHostSetup/checks.ts:119
 #: src/views/site/components/SiteStatusSelect.vue:155
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:52
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:165
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:100
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:26
 #: src/views/site/site_list/SiteList.vue:268
 #: src/views/stream/components/StreamStatusSelect.vue:61
 #: src/views/stream/StreamList.vue:100
@@ -593,7 +730,7 @@ msgstr "Nhân bản"
 #: src/components/LLM/LLMSessionTabs.vue:402
 #: src/components/NgxConfigEditor/NgxServer.vue:88
 #: src/components/NgxConfigEditor/NgxUpstream.vue:60 src/language/curd.ts:9
-#: src/views/certificate/components/RemoveCert.vue:122
+#: src/views/certificate/components/RemoveCert.vue:123
 #: src/views/config/components/Delete.vue:67
 #: src/views/config/components/Delete.vue:100
 #: src/views/config/ConfigList.vue:228
@@ -611,12 +748,12 @@ msgid "Post-sync Action"
 msgstr "Hành động sau đồng bộ"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:41
-#: src/constants/index.ts:38
+#: src/constants/index.ts:41
 msgid "No Action"
 msgstr "Không hành động"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:146 src/constants/index.ts:39
+#: src/components/NamespaceTabs/NamespaceTabs.vue:146 src/constants/index.ts:42
 #: src/views/node/Node.vue:238 src/views/node/Node.vue:246
 msgid "Reload Nginx"
 msgstr "Tải lại Nginx"
@@ -641,8 +778,8 @@ msgstr "Yêu cầu khởi động lại thất bại, vui lòng kiểm tra kết
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:124
 #: src/components/NodeIndicator/NodeIndicator.vue:38
-#: src/components/NodeSelector/NodeSelector.vue:62 src/constants/index.ts:43
-#: src/constants/index.ts:49 src/views/backup/AutoBackup/AutoBackup.vue:103
+#: src/components/NodeSelector/NodeSelector.vue:62 src/constants/index.ts:46
+#: src/constants/index.ts:52 src/views/backup/AutoBackup/AutoBackup.vue:103
 #: src/views/backup/AutoBackup/AutoBackup.vue:112
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:50
 #: src/views/preference/tabs/NginxSettings.vue:246
@@ -655,12 +792,12 @@ msgstr "Bạn có chắc chắn muốn tải lại Nginx trên các nút đồng
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:140
 #: src/components/NamespaceTabs/NamespaceTabs.vue:152
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:126
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:131
 #: src/components/NgxConfigEditor/LocationEditor.vue:85
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/tabs/AuthSettings.vue:130
-#: src/views/preference/tabs/CertSettings.vue:80
+#: src/views/preference/tabs/CertSettings.vue:82
 msgid "Yes"
 msgstr "Có"
 
@@ -717,6 +854,7 @@ msgid "Nginx Control"
 msgstr "Điều khiển Nginx"
 
 #: src/components/NginxControl/NginxControl.vue:164
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:360
 msgid "Running"
 msgstr "Running"
 
@@ -744,25 +882,25 @@ msgstr "Single Directive"
 msgid "Multi-line Directive"
 msgstr "Chỉ thị nhiều dòng"
 
-#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:76
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:79
 msgid "Directive"
 msgstr "Directive"
 
-#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:81
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:84
 msgid "Params"
 msgstr "Tham số"
 
-#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:92
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:95
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "Tài liệu"
 
-#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:106
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:109
 msgid "Add Directive Below"
 msgstr "Thêm Directive"
 
-#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:116
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:119
 msgid "Save Directive"
 msgstr "Lưu Directive"
 
@@ -772,34 +910,35 @@ msgstr "Directives"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:54
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
-#: src/views/site/site_add/SiteAdd.vue:110
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
+#: src/views/site/site_add/SiteAdd.vue:255
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:53
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:95
 #: src/views/stream/components/StreamEditor.vue:30
 msgid "Saved successfully"
 msgstr "Lưu thành công"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:105
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:109
 msgid "Server name is controlled by linked DNS record"
 msgstr "Tên máy chủ được kiểm soát bởi bản ghi DNS được liên kết"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:125
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:130
 msgid "Are you sure you want to remove this directive?"
 msgstr "Bạn chắc chắn muốn xoá directive này ?"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:138
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:143
 msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr ""
 "Không thể xóa server_name khi DNS đang được liên kết. Hãy xóa liên kết DNS "
 "trước."
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:153
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:158
 #: src/components/NgxConfigEditor/LocationEditor.vue:142
 #: src/components/NgxConfigEditor/LocationEditor.vue:173
 #: src/components/NgxConfigEditor/NgxServer.vue:145
 msgid "Comments"
 msgstr "Bình luận"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:158
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:163
 #: src/components/NgxConfigEditor/LocationEditor.vue:154
 #: src/components/NgxConfigEditor/LocationEditor.vue:182
 msgid "Content"
@@ -877,7 +1016,7 @@ msgstr "Phân tích lưu lượng truy cập"
 msgid "Nginx is not running"
 msgstr "Nginx không đang chạy"
 
-#: src/components/NgxConfigEditor/NgxConfigEditor.vue:31
+#: src/components/NgxConfigEditor/NgxConfigEditor.vue:41
 #: src/views/backup/AutoBackup/components/CronEditor.vue:22
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:130
 msgid "Custom"
@@ -897,8 +1036,9 @@ msgstr "Thêm máy chủ"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:166
 #: src/components/NgxConfigEditor/NgxUpstream.vue:130 src/language/curd.ts:19
-#: src/views/preference/tabs/CertSettings.vue:55
+#: src/views/preference/tabs/CertSettings.vue:57
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:120
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:502
 #: src/views/site/site_list/SiteList.vue:243 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "Thêm"
@@ -919,7 +1059,7 @@ msgstr "Bạn có muốn xóa upstream này không?"
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:40
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:80
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:113
 #: src/views/site/site_list/columns.tsx:149 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:49
@@ -938,41 +1078,6 @@ msgstr "Thêm upstream"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:158
 msgid "Upstream Name"
 msgstr "Tên Upstream"
-
-#: src/components/NgxConfigEditor/NgxUpstream.vue:163
-#: src/views/backup/AutoBackup/AutoBackup.vue:40
-#: src/views/certificate/ACMEUser.vue:14
-#: src/views/certificate/CertificateList/certColumns.tsx:9
-#: src/views/certificate/CertificateList/Certificate.vue:40
-#: src/views/certificate/components/CertificateBasicInfo.vue:46
-#: src/views/certificate/components/CertificateBasicInfo.vue:60
-#: src/views/certificate/components/CertificateBasicInfo.vue:72
-#: src/views/certificate/components/SelfSignedCertFields.vue:34
-#: src/views/config/components/ConfigRightPanel/Basic.vue:34
-#: src/views/config/components/Delete.vue:126
-#: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:17
-#: src/views/dns/components/DNSRecordForm.vue:91
-#: src/views/dns/components/DNSRecordTable.vue:41
-#: src/views/dns/components/DNSRecordTable.vue:344
-#: src/views/dns/DNSCredential.vue:17
-#: src/views/dns/DNSGroupRecordManager.vue:157
-#: src/views/dns/DNSGroupRecordManager.vue:174
-#: src/views/dns/DNSGroupRecordManager.vue:1358
-#: src/views/namespace/columns.ts:9 src/views/nginx_log/NginxLogList.vue:156
-#: src/views/node/nodeColumns.tsx:83
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:84
-#: src/views/preference/tabs/AccessTokens.vue:50
-#: src/views/preference/tabs/AccessTokens.vue:266
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:36
-#: src/views/site/site_list/columns.tsx:36
-#: src/views/site/site_list/SiteDuplicate.vue:84
-#: src/views/stream/columns.tsx:26
-#: src/views/stream/components/RightPanel/Basic.vue:31
-#: src/views/stream/components/StreamDuplicate.vue:76
-#: src/views/stream/StreamList.vue:123 src/views/system/Licenses.vue:13
-msgid "Name"
-msgstr "Tên"
 
 #: src/components/Notification/detailRender.tsx:70
 msgid "Translating error..."
@@ -1484,7 +1589,7 @@ msgstr "Chữ số %{position} của mã dùng một lần"
 
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/components/ExternalNotify/labels.ts:28
-#: src/views/preference/tabs/ServerSettings.vue:22
+#: src/views/preference/tabs/ServerSettings.vue:24
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:100
 msgid "Port"
 msgstr "Cổng"
@@ -1492,7 +1597,7 @@ msgstr "Cổng"
 #: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/backup/AutoBackup/AutoBackup.vue:189
 #: src/views/certificate/ACMEUser.vue:66
-#: src/views/certificate/CertificateList/certColumns.tsx:71
+#: src/views/certificate/CertificateList/certColumns.tsx:81
 #: src/views/dashboard/components/ModulesTable.vue:75
 #: src/views/dns/DDNSManager.vue:189
 #: src/views/dns/DNSGroupRecordManager.vue:142
@@ -1586,7 +1691,7 @@ msgstr ""
 #: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:45
 #: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:69
 #: src/language/curd.ts:17
-#: src/views/certificate/components/DNSIssueCertificate.vue:246
+#: src/views/certificate/components/DNSIssueCertificate.vue:278
 #: src/views/certificate/components/SelfSignedCertForm.vue:82
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:205
 msgid "Generate"
@@ -1672,7 +1777,7 @@ msgstr "Đã sao chép"
 
 #: src/components/SensitiveString/SensitiveInput.vue:91
 #: src/components/SensitiveString/SensitiveString.vue:100
-#: src/views/backup/components/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:125
 #: src/views/preference/components/NginxHostSetup/CodeBlock.vue:51
 #: src/views/preference/tabs/AccessTokens.vue:319
 #: src/views/preference/tabs/ExternalNotify.vue:103
@@ -2646,6 +2751,18 @@ msgstr ""
 msgid "Persist certificate record error: {0}"
 msgstr "Lỗi khi lưu bản ghi chứng chỉ: {0}"
 
+#: src/constants/errors/cert.ts:51
+msgid "HTTP-01 challenge preflight failed: {0}"
+msgstr "Kiểm tra thử thách HTTP-01 sơ bộ không thành công: {0}"
+
+#: src/constants/errors/cert.ts:52
+msgid "HTTP-01 challenge route check failed for {0}: {1}"
+msgstr "Kiểm tra tuyến đường thách thức HTTP-01 không thành công cho {0}: {1}"
+
+#: src/constants/errors/cert.ts:53
+msgid "HTTP-01 challenge port {0} is unavailable: {1}"
+msgstr "Cổng HTTP-01 challenge {0} không khả dụng: {1}"
+
 #: src/constants/errors/cluster_sync.ts:2
 msgid "Path is not under the nginx conf dir"
 msgstr "Đường dẫn không nằm trong thư mục cấu hình Nginx"
@@ -3511,30 +3628,30 @@ msgstr "Trường này phải là một tên máy chủ hợp lệ"
 msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "Trường này chỉ được chứa chữ cái, ký tự Unicode, số và -_."
 
-#: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:47
+#: src/constants/index.ts:29 src/views/notification/notificationColumns.tsx:47
 msgid "Info"
 msgstr "Thông tin"
 
-#: src/constants/index.ts:27 src/views/backup/AutoBackup/AutoBackup.vue:224
+#: src/constants/index.ts:30 src/views/backup/AutoBackup/AutoBackup.vue:224
 #: src/views/backup/AutoBackup/AutoBackup.vue:249
 #: src/views/notification/notificationColumns.tsx:54
 msgid "Success"
 msgstr "Thành công"
 
-#: src/constants/index.ts:44 src/constants/index.ts:50
+#: src/constants/index.ts:47 src/constants/index.ts:53
 msgid "Remote"
 msgstr "Từ xa"
 
-#: src/constants/index.ts:45
+#: src/constants/index.ts:48
 msgid "Mirror"
 msgstr "Gương"
 
-#: src/constants/index.ts:54
+#: src/constants/index.ts:57
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
 msgid "Manual"
 msgstr "Thủ công"
 
-#: src/constants/index.ts:55
+#: src/constants/index.ts:58
 msgid "Automatic"
 msgstr "Tự động"
 
@@ -3602,7 +3719,7 @@ msgstr "Ghi Private Key vào disk"
 msgid "Reloading nginx"
 msgstr "Tải lại nginx"
 
-#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:232
+#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:417
 msgid "Finished"
 msgstr "Đã hoàn thành"
 
@@ -3766,10 +3883,11 @@ msgstr "Vui lòng chọn ít nhất một mục"
 msgid "Batch Modify"
 msgstr "Chỉnh sửa hàng loạt"
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:113
+#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:138
 #: src/views/certificate/components/RenewCert.vue:21
+#: src/views/dns/DNSCredential.vue:79
 #: src/views/preference/NginxHostSetup.vue:84
-#: src/views/preference/store/index.ts:181
+#: src/views/preference/store/index.ts:185
 #: src/views/preference/tabs/NginxSettings.vue:138
 msgid "Save successfully"
 msgstr "Lưu thành công"
@@ -3866,22 +3984,56 @@ msgid "Expand"
 msgstr "Mở rộng"
 
 #: src/language/generate.ts:4
+msgid ""
+"A CAA record on the domain does not allow this certificate authority; add a "
+"CAA issue record for the certificate authority or remove the restrictive "
+"record."
+msgstr ""
+"Bản ghi CAA trên tên miền không cho phép cơ quan chứng nhận này; hãy thêm "
+"bản ghi CAA issue cho cơ quan chứng nhận hoặc xóa bản ghi hạn chế."
+
+#: src/language/generate.ts:5
+msgid ""
+"A CAA record on the domain does not authorize the selected certificate "
+"authority; add a CAA issue record for it or issuance will fail."
+msgstr ""
+"Bản ghi CAA trên miền không ủy quyền cho tổ chức cấp chứng chỉ đã chọn; hãy "
+"thêm bản ghi CAA issue cho tổ chức đó, nếu không việc cấp chứng chỉ sẽ thất "
+"bại."
+
+#: src/language/generate.ts:6
+msgid "An existing certificate is used"
+msgstr "Một chứng chỉ hiện có đang được sử dụng"
+
+#: src/language/generate.ts:7
+msgid "Applying the HTTP configuration for validation"
+msgstr "Đang áp dụng cấu hình HTTP để xác minh"
+
+#: src/language/generate.ts:8
 msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
 msgstr "Tệp nginx-ui.conf đi kèm có bản sửa lỗi cho proxy ngược WebSocket"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:9
 msgid "Certificate deleted, but revocation failed: %{error}"
 msgstr "Đã xóa chứng chỉ, nhưng thu hồi thất bại: %{error}"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:10
+msgid ""
+"Certificate issuance failed; check the log for the response of the "
+"certificate authority."
+msgstr ""
+"Cấp chứng chỉ thất bại; hãy kiểm tra nhật ký để xem phản hồi từ cơ quan cấp "
+"chứng chỉ."
+
+#: src/language/generate.ts:11
 msgid "Certificate not found: %{error}"
 msgstr "Không tìm thấy chứng chỉ: %{error}"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:12
 msgid "Certificate revoked successfully"
 msgstr "Hủy chứng chỉ thành công"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:13
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
@@ -3904,7 +4056,7 @@ msgstr ""
 "này, hãy thêm biến môi trường NGINX_UI_IGNORE_DOCKER_SOCKET=true vào "
 "container."
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:14
 msgid ""
 "Check if Nginx UI can write a temporary file to the configured Nginx "
 "directory and the external Nginx container can see it at the same path. "
@@ -3918,7 +4070,7 @@ msgstr ""
 "khiển; các thư mục cấu hình và nhật ký phải được gắn vào cả hai container "
 "với các đường dẫn khớp nhau."
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:15
 msgid ""
 "Check if the GeoLite2 database is available when log indexing is enabled. "
 "The GeoLite2 database is required for geographic IP analysis in log "
@@ -3930,11 +4082,11 @@ msgstr ""
 "mục nhật ký. Bạn có thể tải nó từ trang Tùy chọn hoặc đặt tệp "
 "GeoLite2-City.mmdb vào cùng thư mục với app.ini một cách thủ công"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:16
 msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr "Kiểm tra xem thư mục conf.d có nằm trong thư mục cấu hình nginx không"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:17
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
@@ -3948,7 +4100,7 @@ msgstr ""
 "định đường dẫn PID của Nginx. Tham khảo tài liệu để biết thêm chi tiết: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:18
 msgid ""
 "Check if the nginx access log path exists. By default, this path is "
 "obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
@@ -3964,15 +4116,15 @@ msgstr ""
 "định đường dẫn nhật ký truy cập. Tham khảo tài liệu để biết thêm chi tiết: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:19
 msgid "Check if the nginx configuration directory exists"
 msgstr "Kiểm tra xem thư mục cấu hình nginx có tồn tại không"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:20
 msgid "Check if the nginx configuration entry file exists"
 msgstr "Kiểm tra xem tệp cấu hình đầu vào của nginx có tồn tại không"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:21
 msgid ""
 "Check if the nginx error log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
@@ -3988,23 +4140,23 @@ msgstr ""
 "định đường dẫn nhật ký lỗi. Tham khảo tài liệu để biết thêm chi tiết: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:22
 msgid "Check if the nginx sbin path exists"
 msgstr "Kiểm tra xem đường dẫn sbin của nginx có tồn tại không"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:23
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục conf.d không"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:24
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục sites-enabled không"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:25
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "Kiểm tra xem tệp nginx.conf có bao gồm thư mục streams-enabled không"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:26
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
@@ -4012,7 +4164,7 @@ msgstr ""
 "Kiểm tra xem các thư mục sites-available và sites-enabled có nằm trong thư "
 "mục cấu hình nginx không"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:27
 msgid ""
 "Check if the streams-available and streams-enabled directories are under "
 "the nginx configuration directory"
@@ -4020,31 +4172,67 @@ msgstr ""
 "Kiểm tra xem các thư mục streams-available và streams-enabled có nằm trong "
 "thư mục cấu hình nginx không"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:28
+msgid "Checking the HTTP challenge route"
+msgstr "Đang kiểm tra tuyến đường thử thách HTTP"
+
+#: src/language/generate.ts:29
 msgid "Conf.d directory exists"
 msgstr "Thư mục conf.d tồn tại"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:30
 msgid "Docker socket exists"
 msgstr "Ổ cắm Docker tồn tại"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:31
+msgid "Enabling HTTPS in the site configuration"
+msgstr "Đang bật HTTPS trong cấu hình trang web"
+
+#: src/language/generate.ts:32
 msgid "External Nginx configuration directory is shared"
 msgstr "Thư mục cấu hình Nginx bên ngoài được chia sẻ."
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:33
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "Xóa chứng chỉ từ cơ sở dữ liệu thất bại: %{error}"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:34
 msgid "Failed to revoke certificate: %{error}"
 msgstr "Không thể thu hồi chứng chỉ: %{error}"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:35
 msgid "GeoLite2 database available"
 msgstr "Cơ sở dữ liệu GeoLite2 có sẵn"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:36
+msgid "HTTP challenge route is reachable"
+msgstr "Tuyến đường thử thách HTTP có thể truy cập được"
+
+#: src/language/generate.ts:37
+msgid "HTTP challenge route probe is unavailable"
+msgstr "Không thể kiểm tra tuyến đường thử thách HTTP"
+
+#: src/language/generate.ts:38
+msgid "HTTP configuration applied"
+msgstr "Đã áp dụng cấu hình HTTP"
+
+#: src/language/generate.ts:39
+msgid "HTTP configuration restored"
+msgstr "Đã khôi phục cấu hình HTTP"
+
+#: src/language/generate.ts:40
+msgid "HTTPS configuration planned"
+msgstr "Đã lập kế hoạch cấu hình HTTPS"
+
+#: src/language/generate.ts:41
+msgid "HTTPS enabled"
+msgstr "HTTPS đã được bật"
+
+#: src/language/generate.ts:42
+msgid "Issuing the certificate"
+msgstr "Đang cấp chứng chỉ"
+
+#: src/language/generate.ts:43
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to "
@@ -4055,51 +4243,261 @@ msgstr ""
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html để biết thêm thông "
 "tin."
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:44
 msgid "Nginx PID path exists"
 msgstr "Đường dẫn PID của Nginx tồn tại"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:45
+msgid ""
+"Nginx UI could not listen on the HTTP challenge port; make sure no other "
+"process uses it, or change the HTTP challenge port in the certificate "
+"settings."
+msgstr ""
+"Nginx UI không thể lắng nghe trên cổng HTTP challenge; hãy đảm bảo không có "
+"tiến trình nào khác sử dụng nó, hoặc thay đổi cổng HTTP challenge trong cài "
+"đặt chứng chỉ."
+
+#: src/language/generate.ts:46
 msgid "Nginx access log path exists"
 msgstr "Đường dẫn nhật ký truy cập Nginx tồn tại"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:47
 msgid "Nginx configuration directory exists"
 msgstr "Thư mục cấu hình Nginx tồn tại"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:48
 msgid "Nginx configuration entry file exists"
 msgstr "Tập tin cấu hình đầu vào Nginx tồn tại"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:49
 msgid "Nginx error log path exists"
 msgstr "Đường dẫn nhật ký lỗi Nginx tồn tại"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:50
 msgid "Nginx sbin path exists"
 msgstr "Đường dẫn sbin của Nginx tồn tại"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:51
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Nginx.conf bao gồm thư mục conf.d"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:52
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Nginx.conf bao gồm thư mục sites-enabled"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:53
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf bao gồm thư mục streams-enabled"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:54
+msgid "No DNS problem found"
+msgstr "Không tìm thấy vấn đề DNS"
+
+#: src/language/generate.ts:55
+msgid "Original site configuration restored"
+msgstr "Đã khôi phục cấu hình gốc của trang web"
+
+#: src/language/generate.ts:56
+msgid "Planning the HTTPS configuration"
+msgstr "Đang lên kế hoạch cấu hình HTTPS"
+
+#: src/language/generate.ts:57
+msgid "Resolve the site configuration problem first"
+msgstr "Giải quyết vấn đề cấu hình trang web trước"
+
+#: src/language/generate.ts:58
+msgid "Restoring the HTTP configuration"
+msgstr "Đang khôi phục cấu hình HTTP"
+
+#: src/language/generate.ts:59
+msgid "Restoring the original site configuration"
+msgstr "Đang khôi phục cấu hình gốc của trang web"
+
+#: src/language/generate.ts:60
 msgid "Sites directory exists"
 msgstr "Thư mục trang web tồn tại"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:61
 msgid "Streams directory exists"
 msgstr "Thư mục Streams tồn tại"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:62
+msgid "The DNS challenge does not use the HTTP challenge route"
+msgstr "Thử thách DNS không sử dụng tuyến đường thử thách HTTP"
+
+#: src/language/generate.ts:63
+msgid ""
+"The DNS lookup for the domain failed; make sure its name servers are "
+"answering."
+msgstr ""
+"Tra cứu DNS cho tên miền thất bại; hãy đảm bảo các máy chủ tên của nó đang "
+"phản hồi."
+
+#: src/language/generate.ts:64
+msgid "The certificate %{name} covers the domains and is valid until %{not_after}"
+msgstr "Chứng chỉ %{name} bao gồm các tên miền và có hiệu lực đến %{not_after}"
+
+#: src/language/generate.ts:65
+msgid "The certificate %{name} does not cover any of the domains: %{uncovered}"
+msgstr "Chứng chỉ %{name} không bao phủ bất kỳ tên miền nào: %{uncovered}"
+
+#: src/language/generate.ts:66
+msgid ""
+"The certificate %{name} does not cover some of the domains; they are left "
+"out of HTTPS: %{uncovered}"
+msgstr ""
+"Chứng chỉ %{name} không bao gồm một số miền; các miền này bị loại khỏi "
+"HTTPS: %{uncovered}"
+
+#: src/language/generate.ts:67
+msgid ""
+"The certificate %{name} expired on %{not_after}; renew it or choose another "
+"certificate"
+msgstr ""
+"Chứng chỉ %{name} đã hết hạn vào %{not_after}; hãy gia hạn hoặc chọn chứng "
+"chỉ khác"
+
+#: src/language/generate.ts:68
+msgid ""
+"The certificate authority could not connect to port 80 of this domain; open "
+"TCP port 80 in the firewall or cloud security group and make sure any NAT "
+"or port forwarding sends it to this server."
+msgstr ""
+"Cơ quan chứng thực không thể kết nối đến cổng 80 của miền này; hãy mở cổng "
+"TCP 80 trong tường lửa hoặc nhóm bảo mật đám mây và đảm bảo mọi NAT hoặc "
+"chuyển hướng cổng đều chuyển đến máy chủ này."
+
+#: src/language/generate.ts:69
+msgid ""
+"The certificate authority could not resolve the domain; create an A or AAAA "
+"record that points at this server and wait for DNS to propagate."
+msgstr ""
+"Cơ quan chứng thực không thể phân giải tên miền; hãy tạo bản ghi A hoặc "
+"AAAA trỏ đến máy chủ này và đợi DNS lan truyền."
+
+#: src/language/generate.ts:70
+msgid ""
+"The certificate authority followed a redirect, but the redirected request "
+"did not reach the challenge route; make sure the HTTPS server for this host "
+"also proxies /.well-known/acme-challenge/ to the challenge port, and that "
+"the redirect stays on the same host and on port 80 or 443."
+msgstr ""
+"Cơ quan chứng thực đã theo dõi một chuyển hướng, nhưng yêu cầu được chuyển "
+"hướng đã không đến được tuyến đường xác minh; hãy đảm bảo rằng máy chủ "
+"HTTPS của máy chủ này cũng chuyển tiếp /.well-known/acme-challenge/ đến "
+"cổng xác minh, và chuyển hướng vẫn ở trên cùng máy chủ và cổng 80 hoặc 443."
+
+#: src/language/generate.ts:71
+msgid ""
+"The certificate authority rate limit was reached; wait until the retry time "
+"before trying again, and test configuration changes against the staging "
+"environment."
+msgstr ""
+"Đã đạt giới hạn tốc độ của cơ quan chứng chỉ; hãy đợi đến thời gian thử lại "
+"trước khi thử lại, và kiểm tra các thay đổi cấu hình trên môi trường "
+"staging."
+
+#: src/language/generate.ts:72
+msgid ""
+"The certificate authority reached a server that did not return the "
+"challenge file, and the domain resolves to an address that is not on this "
+"server; point the domain's A/AAAA records at this server, or, behind NAT or "
+"a CDN, make sure port 80 is forwarded to it."
+msgstr ""
+"Cơ quan chứng chỉ đã kết nối đến một máy chủ không trả về tệp xác minh và "
+"tên miền được phân giải tới một địa chỉ không nằm trên máy chủ này; hãy trỏ "
+"các bản ghi A/AAAA của tên miền tới máy chủ này, hoặc nếu ở sau NAT hoặc "
+"CDN, hãy đảm bảo cổng 80 được chuyển tiếp tới máy chủ này."
+
+#: src/language/generate.ts:73
+msgid ""
+"The certificate authority reached the server but the challenge file was not "
+"served; make sure the port 80 server block for this domain is enabled and "
+"routes /.well-known/acme-challenge/ to Nginx UI, and that no other server "
+"block or proxy answers first."
+msgstr ""
+"Cơ quan chứng thực đã kết nối đến máy chủ nhưng tệp thử thách không được "
+"cung cấp; hãy đảm bảo rằng khối máy chủ cổng 80 cho tên miền này đã được "
+"kích hoạt và định tuyến /.well-known/acme-challenge/ đến Nginx UI, đồng "
+"thời không có khối máy chủ nào khác hoặc proxy trả lời trước."
+
+#: src/language/generate.ts:74
+msgid ""
+"The certificate authority refuses to issue a certificate for this name; use "
+"a publicly resolvable domain name that the certificate authority supports."
+msgstr ""
+"Cơ quan chứng thực từ chối cấp chứng chỉ cho tên này; hãy sử dụng một tên "
+"miền có thể phân giải công khai mà cơ quan chứng thực hỗ trợ."
+
+#: src/language/generate.ts:75
+msgid ""
+"The certificate or key file of %{name} is missing or cannot be read; fix it "
+"in the certificate manager or choose another certificate"
+msgstr ""
+"Tệp chứng chỉ hoặc khóa của %{name} bị thiếu hoặc không thể đọc được; hãy "
+"sửa trong trình quản lý chứng chỉ hoặc chọn chứng chỉ khác"
+
+#: src/language/generate.ts:76
+msgid ""
+"The domain has DNS address records, but the local addresses of this server "
+"could not be compared."
+msgstr ""
+"Tên miền có các bản ghi địa chỉ DNS, nhưng không thể so sánh các địa chỉ "
+"cục bộ của máy chủ này."
+
+#: src/language/generate.ts:77
+msgid ""
+"The domain has an AAAA record but the site does not listen on IPv6; Let's "
+"Encrypt prefers IPv6, so add an IPv6 listen directive on port 80 or remove "
+"the AAAA record."
+msgstr ""
+"Miền có bản ghi AAAA nhưng trang không lắng nghe trên IPv6; Let's Encrypt "
+"ưu tiên IPv6, vì vậy hãy thêm chỉ thị IPv6 listen trên cổng 80 hoặc xóa bản "
+"ghi AAAA."
+
+#: src/language/generate.ts:78
+msgid ""
+"The domain has no A or AAAA record; create one that points at this server "
+"before requesting a certificate."
+msgstr ""
+"Miền không có bản ghi A hoặc AAAA; hãy tạo bản ghi trỏ đến máy chủ này "
+"trước khi yêu cầu chứng chỉ."
+
+#: src/language/generate.ts:79
+msgid "The domain resolves to an address assigned to this server."
+msgstr "Tên miền được phân giải tới một địa chỉ được gán cho máy chủ này."
+
+#: src/language/generate.ts:80
+msgid ""
+"The domain resolves to an address that is not assigned to this server; this "
+"can be expected behind NAT, a load balancer, or a CDN, otherwise update the "
+"domain's A/AAAA records."
+msgstr ""
+"Tên miền phân giải tới một địa chỉ không được gán cho máy chủ này; điều này "
+"có thể xảy ra khi đứng sau NAT, cân bằng tải hoặc CDN, nếu không hãy cập "
+"nhật bản ghi A/AAAA của tên miền."
+
+#: src/language/generate.ts:81
+msgid "The selected certificate does not exist any more; choose another certificate"
+msgstr "Chứng chỉ được chọn không còn tồn tại; hãy chọn chứng chỉ khác."
+
+#: src/language/generate.ts:82
+msgid "The site already serves the required HTTP configuration"
+msgstr "Trang web đã cung cấp cấu hình HTTP cần thiết"
+
+#: src/language/generate.ts:83
+msgid "The site configuration can be updated automatically"
+msgstr "Cấu hình trang web có thể được cập nhật tự động"
+
+#: src/language/generate.ts:84
+msgid "Using the existing certificate %{name}"
+msgstr "Đang sử dụng chứng chỉ hiện có %{name}"
+
+#: src/language/generate.ts:85
+msgid "Verified after the site is staged"
+msgstr "Đã xác minh sau khi trang web được triển khai"
+
+#: src/language/generate.ts:86
 msgid ""
 "When the container is behind an outer reverse proxy that terminates TLS "
 "(e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust "
@@ -4113,97 +4511,131 @@ msgstr ""
 "nguồn gốc WebSocket sẽ thất bại. Các triển khai cũ đã duy trì /etc/nginx có "
 "thể vẫn dùng phiên bản chưa được sửa."
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:87
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] Người dùng ACME: %{name}, Email: %{email}, Thư mục CA: %{caDir}"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:88
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] Đang sao lưu chứng chỉ hiện tại để thu hồi sau này"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:89
 msgid "[Nginx UI] Certificate has already expired, no revocation needed"
 msgstr "[Nginx UI] Chứng chỉ đã hết hạn, không cần thu hồi"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:90
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "[Nginx UI] Gia hạn chứng chỉ thành công"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:91
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] Hủy chứng chỉ thành công"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:92
 msgid "[Nginx UI] Certificate was already revoked by the CA"
 msgstr "[Nginx UI] Chứng chỉ đã bị thu hồi bởi CA trước đó"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:93
 msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr ""
 "[Nginx UI] Chứng chỉ đã được sử dụng cho máy chủ, đang tải lại chứng chỉ "
 "TLS của máy chủ"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:94
+msgid "[Nginx UI] Checking HTTP01 challenge route for %{domains}"
+msgstr "[Nginx UI] Đang kiểm tra tuyến đường thách thức HTTP01 cho %{domains}"
+
+#: src/language/generate.ts:95
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] Tạo máy khách để tạo điều kiện giao tiếp với máy chủ CA"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:96
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "[Nginx UI] Đã dọn dẹp biến môi trường"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:97
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] Đã hoàn thành"
 
-#: src/language/generate.ts:52
+#: src/language/generate.ts:98
+msgid ""
+"[Nginx UI] HTTP01 challenge route cannot be verified locally for %{domain}: "
+"%{reason}"
+msgstr ""
+"[Nginx UI] Không thể xác minh tuyến thách thức HTTP01 cục bộ cho %{domain}: "
+"%{reason}"
+
+#: src/language/generate.ts:99
+msgid "[Nginx UI] HTTP01 challenge route check after renewal failure: %{summary}"
+msgstr ""
+"[Nginx UI] Kiểm tra đường dẫn challenge HTTP01 sau khi gia hạn thất bại: "
+"%{summary}"
+
+#: src/language/generate.ts:100
+msgid "[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}"
+msgstr ""
+"[Nginx UI] Kiểm tra tuyến đường thử thách HTTP01 cho %{domain} thất bại: "
+"%{error}"
+
+#: src/language/generate.ts:101
+msgid "[Nginx UI] HTTP01 challenge route check skipped: %{reason}"
+msgstr "[Nginx UI] Đã bỏ qua kiểm tra tuyến đường thử thách HTTP01: %{reason}"
+
+#: src/language/generate.ts:102
+msgid "[Nginx UI] HTTP01 challenge route reachable for %{domain} via %{target}"
+msgstr ""
+"[Nginx UI] Tuyến đường thử thách HTTP01 có thể truy cập cho %{domain} qua "
+"%{target}"
+
+#: src/language/generate.ts:103
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "[Nginx UI] Đã cấp chứng chỉ thành công"
 
-#: src/language/generate.ts:53
+#: src/language/generate.ts:104
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] Đang lấy chứng chỉ"
 
-#: src/language/generate.ts:54
+#: src/language/generate.ts:105
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] Chuẩn bị thu hồi chứng chỉ"
 
-#: src/language/generate.ts:55
+#: src/language/generate.ts:106
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] Đang chuẩn bị cấu hình lego"
 
-#: src/language/generate.ts:56
+#: src/language/generate.ts:107
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Đang tải lại nginx"
 
-#: src/language/generate.ts:57
+#: src/language/generate.ts:108
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] Đã hoàn tất thu hồi"
 
-#: src/language/generate.ts:58
+#: src/language/generate.ts:109
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ"
 
-#: src/language/generate.ts:59
+#: src/language/generate.ts:110
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] Đang thu hồi chứng chỉ cũ"
 
-#: src/language/generate.ts:60
+#: src/language/generate.ts:111
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách DNS01"
 
-#: src/language/generate.ts:61
+#: src/language/generate.ts:112
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] Đang thiết lập nhà cung cấp thử thách HTTP01"
 
-#: src/language/generate.ts:62
+#: src/language/generate.ts:113
 msgid "[Nginx UI] Setting environment variables"
 msgstr "[Nginx UI] Đang thiết lập biến môi trường"
 
-#: src/language/generate.ts:63
+#: src/language/generate.ts:114
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] Đang ghi khóa riêng của chứng chỉ vào ổ đĩa"
 
-#: src/language/generate.ts:64
+#: src/language/generate.ts:115
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] Đang ghi chứng chỉ vào ổ đĩa"
 
@@ -4256,7 +4688,7 @@ msgid "Certificates"
 msgstr "Chứng chỉ"
 
 #: src/routes/modules/certificates.ts:28 src/views/certificate/ACMEUser.vue:140
-#: src/views/certificate/components/ACMEUserSelector.vue:63
+#: src/views/certificate/components/ACMEUserSelector.vue:77
 #: src/views/certificate/index.vue:12
 msgid "ACME User"
 msgstr "Người dùng ACME"
@@ -4266,12 +4698,12 @@ msgid "Certificates List"
 msgstr "Danh sách chứng chỉ"
 
 #: src/routes/modules/certificates.ts:44
-#: src/views/certificate/CertificateEditor.vue:148
+#: src/views/certificate/CertificateEditor.vue:352
 msgid "Modify Certificate"
 msgstr "Sửa đổi chứng chỉ"
 
 #: src/routes/modules/certificates.ts:54
-#: src/views/certificate/CertificateEditor.vue:148
+#: src/views/certificate/CertificateEditor.vue:352
 #: src/views/certificate/index.vue:17
 msgid "Import Certificate"
 msgstr "Nhập chứng chỉ"
@@ -4393,7 +4825,7 @@ msgid "Sites List"
 msgstr "Danh sách Website"
 
 #: src/routes/modules/sites.ts:33 src/views/site/index.vue:12
-#: src/views/site/site_add/SiteAdd.vue:212
+#: src/views/site/site_add/SiteAdd.vue:395
 msgid "Add Site"
 msgstr "Thêm Website"
 
@@ -4505,7 +4937,7 @@ msgstr "Hàng tháng vào ngày %{day} lúc %{time}"
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:44
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:86
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:119
 #: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:55
 #: src/views/user/userColumns.tsx:39
@@ -4527,10 +4959,11 @@ msgstr "Đang chờ"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:225
 #: src/views/backup/AutoBackup/AutoBackup.vue:250
-#: src/views/certificate/CertificateList/certColumns.tsx:87
+#: src/views/certificate/CertificateList/certColumns.tsx:97
 #: src/views/dns/DNSGroupRecordManager.vue:1185
 #: src/views/preference/components/NginxHostSetup/checks.ts:123
 #: src/views/preference/tabs/ExternalNotify.vue:73
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:366
 msgid "Failed"
 msgstr "Thất bại"
 
@@ -4546,7 +4979,7 @@ msgstr "Ngày tạo"
 #: src/views/backup/AutoBackup/AutoBackup.vue:265
 #: src/views/certificate/ACMEUser.vue:115
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
+#: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:141
 #: src/views/dns/DNSDomainList.vue:255 src/views/dns/DNSGroupList.vue:34
 #: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:188
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:47
@@ -4583,11 +5016,11 @@ msgstr "Vùng S3"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:302
 #: src/views/certificate/ACMEUser.vue:122
-#: src/views/certificate/CertificateList/certColumns.tsx:137
+#: src/views/certificate/CertificateList/certColumns.tsx:147
 #: src/views/config/configColumns.tsx:51
 #: src/views/dns/components/DNSRecordTable.vue:65
 #: src/views/dns/components/DNSRecordTable.vue:355
-#: src/views/dns/DDNSManager.vue:205 src/views/dns/DNSCredential.vue:71
+#: src/views/dns/DDNSManager.vue:205 src/views/dns/DNSCredential.vue:147
 #: src/views/dns/DNSDomainList.vue:261 src/views/dns/DNSGroupList.vue:38
 #: src/views/dns/DNSGroupRecordManager.vue:146
 #: src/views/dns/DNSGroupRecordManager.vue:1363
@@ -4798,19 +5231,19 @@ msgstr ""
 msgid "Create Backup"
 msgstr "Tạo bản sao lưu"
 
-#: src/views/backup/components/BackupCreator.vue:102
+#: src/views/backup/components/BackupCreator.vue:94
 msgid "Security Token Information"
 msgstr "Thông tin mã bảo mật"
 
-#: src/views/backup/components/BackupCreator.vue:107
+#: src/views/backup/components/BackupCreator.vue:104
 msgid "Please save this security token, you will need it for restoration:"
 msgstr "Vui lòng lưu token bảo mật này, bạn sẽ cần nó để khôi phục:"
 
-#: src/views/backup/components/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:125
 msgid "Copied!"
 msgstr "Đã sao chép!"
 
-#: src/views/backup/components/BackupCreator.vue:141
+#: src/views/backup/components/BackupCreator.vue:138
 msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
@@ -4919,23 +5352,28 @@ msgstr "Trạng thái đăng ký"
 msgid "Register"
 msgstr "Đăng ký"
 
-#: src/views/certificate/CertificateEditor.vue:87
-#: src/views/certificate/components/DNSIssueCertificate.vue:140
+#: src/views/certificate/CertificateEditor.vue:112
+#: src/views/certificate/components/DNSIssueCertificate.vue:149
 #: src/views/certificate/components/SelfSignedCertForm.vue:47
 msgid "Please enter a name for the certificate"
 msgstr "Vui lòng nhập tên cho chứng chỉ"
 
-#: src/views/certificate/CertificateEditor.vue:91
-#: src/views/certificate/components/DNSIssueCertificate.vue:144
+#: src/views/certificate/CertificateEditor.vue:116
+#: src/views/certificate/components/DNSIssueCertificate.vue:153
 #: src/views/certificate/components/SelfSignedCertForm.vue:51
 msgid "Please enter at least one domain or IP address"
 msgstr "Vui lòng nhập ít nhất một tên miền hoặc địa chỉ IP"
 
-#: src/views/certificate/CertificateEditor.vue:110
+#: src/views/certificate/CertificateEditor.vue:135
 msgid "Saved certificate response is missing an ID"
 msgstr "Phản hồi chứng chỉ đã lưu bị thiếu ID."
 
-#: src/views/certificate/CertificateEditor.vue:197
+#: src/views/certificate/CertificateEditor.vue:356
+msgid "This certificate is managed by Nginx UI"
+msgstr "Chứng chỉ này được quản lý bởi Nginx UI"
+
+#: src/views/certificate/CertificateEditor.vue:404
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:417
 msgid "Log"
 msgstr "Nhật ký"
 
@@ -4953,53 +5391,42 @@ msgid "General Certificate"
 msgstr "Chứng chỉ chung"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:31
-#: src/views/certificate/components/DNSIssueCertificate.vue:41
+#: src/views/certificate/components/DNSIssueCertificate.vue:43
 msgid "Self-signed Certificate"
 msgstr "Chứng chỉ tự ký"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:79
+#: src/views/certificate/CertificateList/certColumns.tsx:45
+msgid "Renewal paused"
+msgstr "Gia hạn đã tạm dừng"
+
+#: src/views/certificate/CertificateList/certColumns.tsx:89
 msgid "Issuing..."
 msgstr "Đang phát hành..."
 
-#: src/views/certificate/CertificateList/certColumns.tsx:83
+#: src/views/certificate/CertificateList/certColumns.tsx:93
 msgid "Issuance failed"
 msgstr "Phát hành thất bại"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:93
+#: src/views/certificate/CertificateList/certColumns.tsx:103
 msgid "Automatic migration pending"
 msgstr "Đang chờ di chuyển tự động"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:94
+#: src/views/certificate/CertificateList/certColumns.tsx:104
 msgid "Configuration mismatch"
 msgstr "Cấu hình không khớp"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:97
+#: src/views/certificate/CertificateList/certColumns.tsx:107
 msgid "Configured path: %{configured}; managed path: %{managed}"
 msgstr "Đường dẫn đã cấu hình: %{configured}; đường dẫn được quản lý: %{managed}"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:111
+#: src/views/certificate/CertificateList/certColumns.tsx:121
 msgid "Unable to verify deployment"
 msgstr "Không thể xác minh việc triển khai"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:131
+#: src/views/certificate/CertificateList/certColumns.tsx:141
 #: src/views/certificate/CertificateList/Certificate.vue:62
 msgid "Not After"
 msgstr "Không phải sau khi"
-
-#: src/views/certificate/CertificateList/Certificate.vue:52
-#: src/views/certificate/components/CertificateBasicInfo.vue:81
-#: src/views/certificate/components/CertificateBasicInfo.vue:95
-#: src/views/certificate/components/CertificateBasicInfo.vue:107
-#: src/views/preference/tabs/ServerSettings.vue:37
-msgid "SSL Certificate Path"
-msgstr "Đường dẫn chứng chỉ SSL"
-
-#: src/views/certificate/CertificateList/Certificate.vue:57
-#: src/views/certificate/components/CertificateBasicInfo.vue:116
-#: src/views/certificate/components/CertificateBasicInfo.vue:130
-#: src/views/certificate/components/CertificateBasicInfo.vue:142
-msgid "SSL Certificate Key Path"
-msgstr "Đường dẫn khóa chứng chỉ SSL"
 
 #: src/views/certificate/CertificateList/Certificate.vue:80
 msgid "Failed to scan certificates"
@@ -5044,30 +5471,19 @@ msgstr "Nhập mục đã chọn"
 msgid "Scan"
 msgstr "Quét"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:66
+#: src/views/certificate/components/ACMEUserSelector.vue:80
 msgid "System Initial User"
 msgstr "Người dùng ban đầu của hệ thống"
 
-#: src/views/certificate/components/AutoCertManagement.vue:35
-msgid "This certificate is managed by Nginx UI"
-msgstr "Chứng chỉ này được quản lý bởi Nginx UI"
-
-#: src/views/certificate/components/AutoCertManagement.vue:45
+#: src/views/certificate/components/AutoCertManagement.vue:39
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "Mục Chứng chỉ tự động này không hợp lệ, vui lòng xóa nó"
 
-#: src/views/certificate/components/AutoCertManagement.vue:55
+#: src/views/certificate/components/AutoCertManagement.vue:49
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 "Danh sách tên miền rỗng, hãy thử mở lại chức năng Tạo chứng chỉ tự động cho "
 "%{config}"
-
-#: src/views/certificate/components/AutoCertManagement.vue:67
-#: src/views/certificate/components/SelfSignedCertManagement.vue:25
-#: src/views/site/site_edit/components/Cert/Cert.vue:59
-msgid "Certificate Status"
-msgid_plural "Certificates Status"
-msgstr[0] "Trạng thái chứng chỉ"
 
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
@@ -5076,44 +5492,19 @@ msgstr[0] "Trạng thái chứng chỉ"
 #: src/views/dns/DNSRecordManager.vue:261 src/views/nginx_log/NginxLog.vue:281
 #: src/views/preference/NginxHostSetup.vue:129
 #: src/views/preference/NginxHostSetup.vue:147
-#: src/views/site/site_add/SiteAdd.vue:325
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:203
+#: src/views/site/site_add/SiteAdd.vue:533
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:245
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
 msgstr "Quay lại"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:24
-#: src/views/certificate/components/CertificateContentEditor.vue:105
-msgid "Nothing to copy"
-msgstr "Không có gì để sao chép"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:29
-#: src/views/certificate/components/CertificateContentEditor.vue:110
-msgid "{label} copied to clipboard"
-msgstr "{label} đã được sao chép vào bảng nhớ tạm"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:33
-#: src/views/certificate/components/CertificateContentEditor.vue:114
-msgid "Failed to copy to clipboard"
-msgstr "Sao chép vào bộ nhớ tạm thất bại"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:49
-#: src/views/certificate/components/CertificateBasicInfo.vue:83
-#: src/views/certificate/components/CertificateBasicInfo.vue:118
+#: src/views/certificate/components/CertificateBasicInfo.vue:53
 #: src/views/preference/components/NginxHostSetup/PathField.vue:60
 #: src/views/preference/tabs/NginxSettings.vue:305
 msgid "This field is required"
 msgstr "Trường này là bắt buộc"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:85
-msgid "The path exists, but the file is not a certificate"
-msgstr "Đường dẫn tồn tại, nhưng tệp không phải là chứng chỉ"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:120
-msgid "The path exists, but the file is not a private key"
-msgstr "Đường dẫn tồn tại, nhưng tệp không phải là khóa riêng tư"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:149
+#: src/views/certificate/components/CertificateBasicInfo.vue:70
 #: src/views/certificate/components/SelfSignedCertFields.vue:74
 msgid "Sync to"
 msgstr "Đồng bộ tới"
@@ -5122,68 +5513,105 @@ msgstr "Đồng bộ tới"
 msgid "Failed to load nginx configuration path"
 msgstr "Không thể tải đường dẫn cấu hình nginx"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:205
-msgid "The input is not a SSL Certificate"
-msgstr "Đầu vào không phải là Chứng chỉ SSL"
-
-#: src/views/certificate/components/CertificateContentEditor.vue:209
-#: src/views/certificate/components/CertificateContentEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:202
+#: src/views/certificate/components/CertificateContentEditor.vue:208
 msgid "SSL Certificate Content"
 msgstr "Nội dung chứng chỉ SSL"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:240
-#: src/views/certificate/components/CertificateContentEditor.vue:258
-#: src/views/certificate/components/CertificateContentEditor.vue:301
-#: src/views/certificate/components/CertificateContentEditor.vue:319
+#: src/views/certificate/components/CertificateContentEditor.vue:216
+msgid "The input is not a SSL Certificate"
+msgstr "Đầu vào không phải là Chứng chỉ SSL"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:238
+#: src/views/certificate/components/CertificateContentEditor.vue:256
+#: src/views/certificate/components/CertificateContentEditor.vue:298
+#: src/views/certificate/components/CertificateContentEditor.vue:316
 msgid "Leave blank will not change anything"
 msgstr "Để trống sẽ không thay đổi bất cứ điều gì"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:248
+#: src/views/certificate/components/CertificateContentEditor.vue:246
 msgid "Drop certificate file here"
 msgstr "Thả tệp chứng chỉ vào đây"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:266
-msgid "The input is not a SSL Certificate Key"
-msgstr "Đầu vào không phải là Khóa Chứng chỉ SSL"
-
-#: src/views/certificate/components/CertificateContentEditor.vue:270
-#: src/views/certificate/components/CertificateContentEditor.vue:275
+#: src/views/certificate/components/CertificateContentEditor.vue:262
+#: src/views/certificate/components/CertificateContentEditor.vue:268
 msgid "SSL Certificate Key Content"
 msgstr "Nội dung khóa chứng chỉ SSL"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:309
+#: src/views/certificate/components/CertificateContentEditor.vue:276
+msgid "The input is not a SSL Certificate Key"
+msgstr "Đầu vào không phải là Khóa Chứng chỉ SSL"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:306
 msgid "Drop private key file here"
 msgstr "Thả tệp khóa riêng tư vào đây"
 
-#: src/views/certificate/components/CertificateDownload.vue:37
+#: src/views/certificate/components/CertificateDownload.vue:61
 msgid "Certificate content and private key content cannot be empty"
 msgstr "Nội dung chứng chỉ và khóa riêng tư không thể để trống"
 
-#: src/views/certificate/components/CertificateDownload.vue:42
+#: src/views/certificate/components/CertificateDownload.vue:66
+msgid "Please select at least one download format"
+msgstr "Vui lòng chọn ít nhất một định dạng tải xuống"
+
+#: src/views/certificate/components/CertificateDownload.vue:71
 msgid "Certificate name cannot be empty"
 msgstr "Tên chứng chỉ không được để trống"
 
-#: src/views/certificate/components/CertificateDownload.vue:54
+#: src/views/certificate/components/CertificateDownload.vue:83
 #: src/views/certificate/components/CertificateFileUpload.vue:88
 msgid "Invalid certificate format"
 msgstr "Định dạng chứng chỉ không hợp lệ"
 
-#: src/views/certificate/components/CertificateDownload.vue:59
+#: src/views/certificate/components/CertificateDownload.vue:88
 #: src/views/certificate/components/CertificateFileUpload.vue:94
 msgid "Invalid private key format"
 msgstr "Định dạng khóa riêng không hợp lệ"
 
-#: src/views/certificate/components/CertificateDownload.vue:71
+#: src/views/certificate/components/CertificateDownload.vue:100
+msgid "Certificate ID cannot be empty"
+msgstr "Mã chứng chỉ không được để trống"
+
+#: src/views/certificate/components/CertificateDownload.vue:112
 msgid "Certificate files downloaded successfully"
 msgstr "Tải xuống tệp chứng chỉ thành công"
 
-#: src/views/certificate/components/CertificateDownload.vue:75
+#: src/views/certificate/components/CertificateDownload.vue:116
 msgid "Failed to download certificate files"
 msgstr "Tải xuống tệp chứng chỉ thất bại"
 
-#: src/views/certificate/components/CertificateDownload.vue:94
+#: src/views/certificate/components/CertificateDownload.vue:135
+#: src/views/certificate/components/CertificateDownload.vue:140
 msgid "Download Certificate Files"
 msgstr "Tải xuống tệp chứng chỉ"
+
+#: src/views/certificate/components/CertificateDownload.vue:145
+msgid "Download Format"
+msgstr "Định dạng tải xuống"
+
+#: src/views/certificate/components/CertificateDownload.vue:149
+msgid "Certificate (.crt)"
+msgstr "Chứng chỉ (.crt)"
+
+#: src/views/certificate/components/CertificateDownload.vue:152
+msgid "Private Key (.key)"
+msgstr "Khóa riêng tư (.key)"
+
+#: src/views/certificate/components/CertificateDownload.vue:155
+msgid "PFX (.pfx, CRT + KEY for Windows import)"
+msgstr "PFX (.pfx, CRT + KEY để nhập vào Windows)"
+
+#: src/views/certificate/components/CertificateDownload.vue:163
+msgid "PFX Password"
+msgstr "Mật khẩu PFX"
+
+#: src/views/certificate/components/CertificateDownload.vue:164
+msgid "Leave empty if you do not want to set a password"
+msgstr "Để trống nếu bạn không muốn đặt mật khẩu"
+
+#: src/views/certificate/components/CertificateDownload.vue:168
+msgid "Enter PFX password"
+msgstr "Nhập mật khẩu PFX"
 
 #: src/views/certificate/components/CertificateFileUpload.vue:45
 #: src/views/certificate/components/CertificateFileUpload.vue:121
@@ -5223,45 +5651,50 @@ msgstr "Tải lên tệp %{type}"
 msgid "or drag file to editor below"
 msgstr "hoặc kéo tệp vào trình soạn thảo bên dưới"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:33
+#: src/views/certificate/components/DNSIssueCertificate.vue:35
 msgid "Wildcard Certificate"
 msgstr "Chứng Chỉ Wildcard"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:37
+#: src/views/certificate/components/DNSIssueCertificate.vue:39
 msgid "Custom Domains Certificate"
 msgstr "Chứng chỉ Tên miền Tùy chỉnh"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:105
+#: src/views/certificate/components/DNSIssueCertificate.vue:112
 msgid "Please select a DNS credential"
 msgstr "Vui lòng chọn thông tin xác thực DNS"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:112
+#: src/views/certificate/components/DNSIssueCertificate.vue:119
 msgid "Please enter at least one domain"
 msgstr "Vui lòng nhập ít nhất một tên miền"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:126
+#: src/views/certificate/components/DNSIssueCertificate.vue:133
 msgid "Issued successfully"
 msgstr "Đã cấp thành công"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:156
+#: src/views/certificate/components/DNSIssueCertificate.vue:138
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:185
+msgid "Fail to obtain certificate"
+msgstr "Không thể lấy chứng chỉ"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:165
 #: src/views/certificate/components/SelfSignedCertForm.vue:63
 msgid "Self-signed certificate generated"
 msgstr "Đã tạo chứng chỉ tự ký"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:162
+#: src/views/certificate/components/DNSIssueCertificate.vue:171
 #: src/views/certificate/components/SelfSignedCertForm.vue:69
 msgid "Failed to generate self-signed certificate"
 msgstr "Không thể tạo chứng chỉ tự ký"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:175
+#: src/views/certificate/components/DNSIssueCertificate.vue:184
 msgid "Issue Certificate"
 msgstr "Cấp chứng chỉ"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:184
+#: src/views/certificate/components/DNSIssueCertificate.vue:194
 msgid "Certificate Type"
 msgstr "Loại chứng chỉ"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:192
+#: src/views/certificate/components/DNSIssueCertificate.vue:202
 #: src/views/dns/DDNSManager.vue:173
 #: src/views/dns/DNSGroupRecordManager.vue:153
 #: src/views/dns/DNSGroupRecordManager.vue:170
@@ -5269,25 +5702,25 @@ msgstr "Loại chứng chỉ"
 msgid "Domain"
 msgstr "Tên miền"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:196
+#: src/views/certificate/components/DNSIssueCertificate.vue:207
 msgid "Enter your domain"
 msgstr "Nhập tên miền của bạn"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:202
+#: src/views/certificate/components/DNSIssueCertificate.vue:214
 msgid "Custom Domains"
 msgstr "Tên miền tùy chỉnh"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:205
+#: src/views/certificate/components/DNSIssueCertificate.vue:217
 #: src/views/certificate/components/SelfSignedCertFields.vue:45
 msgid "Enter domain name"
 msgstr "Nhập tên miền"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:206
+#: src/views/certificate/components/DNSIssueCertificate.vue:218
 #: src/views/certificate/components/SelfSignedCertFields.vue:46
 msgid "Add Domain"
 msgstr "Thêm tên miền"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:209
+#: src/views/certificate/components/DNSIssueCertificate.vue:221
 msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
@@ -5295,55 +5728,76 @@ msgstr ""
 "Tất cả các tên miền phụ được chọn phải thuộc cùng một Nhà cung cấp DNS, nếu "
 "không, việc xin cấp chứng chỉ sẽ thất bại."
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:232
+#: src/views/certificate/components/DNSIssueCertificate.vue:238
+msgid "Challenge Method Reminder"
+msgstr "Nhắc nhở về phương thức xác thực"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:242
+msgid ""
+"If you use HTTP-01 challenge, the DNS credential field is hidden and not "
+"required."
+msgstr ""
+"Nếu bạn sử dụng xác minh HTTP-01, trường thông tin xác thực DNS sẽ bị ẩn và "
+"không bắt buộc."
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:245
+msgid "If you use DNS-01 challenge, you must select a DNS credential."
+msgstr "Nếu bạn sử dụng thách thức DNS-01, bạn phải chọn một thông tin xác thực DNS."
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:248
+msgid "Wildcard certificates usually require DNS-01 challenge."
+msgstr "Chứng chỉ wildcard thường yêu cầu thử thách DNS-01."
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:264
 #: src/views/install/components/InstallView.vue:206
 #: src/views/preference/components/NginxHostSetup/Wizard.vue:97
 #: src/views/site/components/SiteStatusSelect.vue:202
-#: src/views/site/site_add/SiteAdd.vue:311
-#: src/views/site/site_add/SiteAdd.vue:319
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:261
+#: src/views/site/site_add/SiteAdd.vue:518
+#: src/views/site/site_add/SiteAdd.vue:526
 #: src/views/site/site_list/SiteList.vue:292
 msgid "Next"
 msgstr "Tiếp theo"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:268
+#: src/views/certificate/components/DNSIssueCertificate.vue:300
 #: src/views/certificate/components/RetryCert.vue:53
 #: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:103
 #: src/views/preference/NginxHostSetup.vue:144
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:278
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:775
 msgid "Retry"
 msgstr "Thử lại"
 
-#: src/views/certificate/components/RemoveCert.vue:46
-#: src/views/certificate/components/RemoveCert.vue:130
+#: src/views/certificate/components/RemoveCert.vue:47
+#: src/views/certificate/components/RemoveCert.vue:131
 msgid "Revoke"
 msgstr "Thu hồi"
 
-#: src/views/certificate/components/RemoveCert.vue:47
+#: src/views/certificate/components/RemoveCert.vue:48
 msgid "Please type \"Revoke\" to confirm"
 msgstr "Vui lòng nhập \"Thu hồi\" để xác nhận"
 
-#: src/views/certificate/components/RemoveCert.vue:73
-#: src/views/certificate/components/RemoveCert.vue:95
+#: src/views/certificate/components/RemoveCert.vue:74
+#: src/views/certificate/components/RemoveCert.vue:96
 msgid "Certificate removed successfully"
 msgstr "Đã xóa chứng chỉ thành công"
 
-#: src/views/certificate/components/RemoveCert.vue:82
+#: src/views/certificate/components/RemoveCert.vue:83
 msgid "Failed to revoke certificate"
 msgstr "Không thể thu hồi chứng chỉ"
 
-#: src/views/certificate/components/RemoveCert.vue:88
+#: src/views/certificate/components/RemoveCert.vue:89
 msgid "WebSocket connection error"
 msgstr "Lỗi kết nối WebSocket"
 
-#: src/views/certificate/components/RemoveCert.vue:98
+#: src/views/certificate/components/RemoveCert.vue:99
 msgid "Failed to delete certificate"
 msgstr "Xóa chứng chỉ không thành công"
 
-#: src/views/certificate/components/RemoveCert.vue:127
+#: src/views/certificate/components/RemoveCert.vue:128
 msgid "Delete Certificate"
 msgstr "Xóa chứng chỉ"
 
-#: src/views/certificate/components/RemoveCert.vue:138
+#: src/views/certificate/components/RemoveCert.vue:139
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
@@ -5351,15 +5805,15 @@ msgstr ""
 "Thao tác này sẽ chỉ xóa chứng chỉ khỏi cơ sở dữ liệu. Các tệp chứng chỉ "
 "trên hệ thống tệp sẽ không bị xóa."
 
-#: src/views/certificate/components/RemoveCert.vue:144
+#: src/views/certificate/components/RemoveCert.vue:145
 msgid "Revoke this certificate"
 msgstr "Thu hồi chứng chỉ này"
 
-#: src/views/certificate/components/RemoveCert.vue:148
+#: src/views/certificate/components/RemoveCert.vue:149
 msgid "Delete the certificate even if revocation fails"
 msgstr "Xóa chứng chỉ ngay cả khi thu hồi thất bại"
 
-#: src/views/certificate/components/RemoveCert.vue:157
+#: src/views/certificate/components/RemoveCert.vue:158
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
@@ -5367,7 +5821,7 @@ msgstr ""
 "Việc thu hồi chứng chỉ sẽ ảnh hưởng đến bất kỳ dịch vụ nào hiện đang sử "
 "dụng nó. Hành động này không thể hoàn tác."
 
-#: src/views/certificate/components/RemoveCert.vue:161
+#: src/views/certificate/components/RemoveCert.vue:162
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr "Để xác nhận thu hồi, vui lòng nhập \"Thu hồi\" vào trường bên dưới:"
 
@@ -5375,13 +5829,13 @@ msgstr "Để xác nhận thu hồi, vui lòng nhập \"Thu hồi\" vào trườ
 msgid "Renew successfully"
 msgstr "Gia hạn thành công"
 
-#: src/views/certificate/components/RenewCert.vue:44
-#: src/views/certificate/components/RenewCert.vue:51
+#: src/views/certificate/components/RenewCert.vue:43
+#: src/views/certificate/components/RenewCert.vue:50
 msgid "Renew Certificate"
 msgstr "Gia hạn chứng chỉ"
 
-#: src/views/certificate/components/RenewCert.vue:47
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:102
+#: src/views/certificate/components/RenewCert.vue:46
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:153
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert đang chạy, vui lòng chờ..."
 
@@ -5409,6 +5863,7 @@ msgstr "Nhập tên chứng chỉ"
 #: src/views/certificate/components/SelfSignedCertFields.vue:42
 #: src/views/dns/DNSGroupList.vue:31 src/views/dns/DNSGroupList.vue:267
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:75
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:472
 msgid "Domains"
 msgstr "Tên miền"
 
@@ -5461,7 +5916,7 @@ msgid "Format successfully"
 msgstr "Định dạng thành công"
 
 #: src/views/config/components/ConfigLeftPanel.vue:255
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:105
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:138
 #: src/views/stream/components/StreamEditor.vue:68
 msgid "History"
 msgstr "Lịch sử"
@@ -6516,7 +6971,7 @@ msgstr "Hệ điều hành:"
 #: src/views/dns/components/DNSRecordFilter.vue:48
 #: src/views/preference/components/ExternalNotify/labels.ts:23
 #: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:196
-#: src/views/preference/tabs/ServerSettings.vue:19
+#: src/views/preference/tabs/ServerSettings.vue:21
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:93
 msgid "Host"
 msgstr "Máy chủ"
@@ -6779,7 +7234,7 @@ msgstr ""
 "Các bản ghi A có cùng tên không được quản lý trong chế độ chỉ IPv6. Chúng "
 "vẫn không thay đổi trong DNS."
 
-#: src/views/dns/DDNSManager.vue:184 src/views/dns/DNSCredential.vue:26
+#: src/views/dns/DDNSManager.vue:184 src/views/dns/DNSCredential.vue:102
 #: src/views/dns/DNSDomainList.vue:227 src/views/dns/DNSDomainList.vue:248
 #: src/views/preference/tabs/OpenAISettings.vue:137
 msgid "Provider"
@@ -6787,7 +7242,7 @@ msgstr "Nhà cung cấp"
 
 #: src/views/dns/DDNSManager.vue:193
 #: src/views/preference/tabs/HealthCheckSettings.vue:27
-#: src/views/preference/tabs/HealthCheckSettings.vue:42
+#: src/views/preference/tabs/HealthCheckSettings.vue:44
 #: src/views/preference/tabs/LogrotateSettings.vue:22
 msgid "Interval"
 msgstr "Khoảng thời gian"
@@ -6884,23 +7339,35 @@ msgstr "Chọn các bản ghi A/AAAA để cập nhật"
 msgid "Interval (seconds)"
 msgstr "Khoảng thời gian (giây)"
 
-#: src/views/dns/DNSCredential.vue:52
+#: src/views/dns/DNSCredential.vue:60
+msgid "Name cannot be empty"
+msgstr "Tên không được để trống"
+
+#: src/views/dns/DNSCredential.vue:65
+msgid "Please select DNS provider"
+msgstr "Vui lòng chọn nhà cung cấp DNS"
+
+#: src/views/dns/DNSCredential.vue:128 src/views/dns/DNSCredential.vue:213
 msgid "Configuration"
 msgstr "Cấu hình"
 
-#: src/views/dns/DNSCredential.vue:79
+#: src/views/dns/DNSCredential.vue:156
 msgid "DNS Credentials"
 msgstr "Xác thực DNS"
 
-#: src/views/dns/DNSCredential.vue:93
+#: src/views/dns/DNSCredential.vue:172 src/views/dns/DNSCredential.vue:200
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
 msgstr "Vui lòng điền thông tin xác thực API do nhà cung cấp DNS của bạn cung cấp"
 
-#: src/views/dns/DNSCredential.vue:96
+#: src/views/dns/DNSCredential.vue:175 src/views/dns/DNSCredential.vue:203
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "Lưu ý đơn vị cấu hình thời gian bên dưới được tính bằng giây."
+
+#: src/views/dns/DNSCredential.vue:184
+msgid "Modify DNS Credential"
+msgstr "Sửa thông tin xác thực DNS"
 
 #: src/views/dns/DNSDomainList.vue:110
 msgid "DNS record management only"
@@ -7211,6 +7678,7 @@ msgid "Succeeded"
 msgstr "Thành công"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1186
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:368
 msgid "Skipped"
 msgstr "Bỏ qua"
 
@@ -8248,6 +8716,7 @@ msgstr "Tìm kiếm trong nội dung nhật ký..."
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:535
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:452
 msgid "Method"
 msgstr "Phương pháp"
 
@@ -8270,7 +8739,7 @@ msgstr "Nhập hoặc chọn trình duyệt"
 #: src/views/nginx_log/structured/components/SearchFilters.vue:153
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:292
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:540
-#: src/views/system/Upgrade.vue:269
+#: src/views/system/Upgrade.vue:268
 msgid "OS"
 msgstr "Hệ điều hành"
 
@@ -8461,13 +8930,13 @@ msgstr "Đặt lại tìm kiếm"
 msgid "Log file not available"
 msgstr "Tệp nhật ký không có sẵn"
 
-#: src/views/node/BatchUpgrader.vue:19 src/views/node/BatchUpgrader.vue:227
-#: src/views/system/Upgrade.vue:31 src/views/system/Upgrade.vue:329
+#: src/views/node/BatchUpgrader.vue:19 src/views/node/BatchUpgrader.vue:226
+#: src/views/system/Upgrade.vue:31 src/views/system/Upgrade.vue:328
 msgid "Stable"
 msgstr "Ổn định"
 
-#: src/views/node/BatchUpgrader.vue:23 src/views/node/BatchUpgrader.vue:233
-#: src/views/system/Upgrade.vue:35 src/views/system/Upgrade.vue:335
+#: src/views/node/BatchUpgrader.vue:23 src/views/node/BatchUpgrader.vue:232
+#: src/views/system/Upgrade.vue:35 src/views/system/Upgrade.vue:334
 msgid "Pre-release"
 msgstr "Bản phát hành trước"
 
@@ -8487,29 +8956,25 @@ msgstr "Nâng cấp Nginx UI trên %{node} thành công 🎉"
 msgid "Batch Upgrade"
 msgstr "Nâng cấp hàng loạt"
 
-#: src/views/node/BatchUpgrader.vue:176 src/views/system/Upgrade.vue:282
+#: src/views/node/BatchUpgrader.vue:176 src/views/system/Upgrade.vue:281
 msgid "Channel"
 msgstr "Kênh"
 
-#: src/views/node/BatchUpgrader.vue:190 src/views/system/Upgrade.vue:263
-msgid "Get release information error"
-msgstr "Lỗi lấy thông tin phát hành"
-
-#: src/views/node/BatchUpgrader.vue:195
+#: src/views/node/BatchUpgrader.vue:194
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr ""
 "Thao tác này sẽ nâng cấp hoặc cài đặt lại Nginx UI trên %{nodeNames} lên "
 "phiên bản %{version}."
 
-#: src/views/node/BatchUpgrader.vue:201 src/views/system/Upgrade.vue:305
+#: src/views/node/BatchUpgrader.vue:200 src/views/system/Upgrade.vue:304
 msgid "Dry run mode enabled"
 msgstr "Đã bật chế độ Dry run"
 
-#: src/views/node/BatchUpgrader.vue:244 src/views/system/Upgrade.vue:347
+#: src/views/node/BatchUpgrader.vue:243 src/views/system/Upgrade.vue:346
 msgid "View on GitHub"
 msgstr "Xem trên GitHub"
 
-#: src/views/node/BatchUpgrader.vue:254
+#: src/views/node/BatchUpgrader.vue:253
 msgid "Perform"
 msgstr "Thực hiện"
 
@@ -9158,39 +9623,39 @@ msgstr "Cập nhật trạng thái thành công"
 msgid "Failed to update status"
 msgstr "Cập nhật trạng thái thất bại"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:172
 msgid "Invalid JSON at line"
 msgstr "JSON không hợp lệ ở dòng"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:172
 msgid "column"
 msgstr "cột"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:212
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:245
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:214
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:247
 msgid "Notification title text"
 msgstr "Văn bản tiêu đề thông báo"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:216
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:218
 msgid "Notification content text"
 msgstr "Nội dung văn bản thông báo"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:220
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:253
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:222
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:255
 msgid "Notification type code, such as error, warning, info, or success"
 msgstr "Mã loại thông báo, ví dụ: error, warning, info hoặc success"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:224
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:261
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:226
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:263
 msgid "Localized notification type label for the current language"
 msgstr "Nhãn loại thông báo đã bản địa hóa cho ngôn ngữ hiện tại"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:228
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:265
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:230
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:267
 msgid "Translation key of the notification type, such as Error or Warning"
 msgstr "Khóa dịch của loại thông báo, chẳng hạn như Error hoặc Warning"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:232
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:234
 msgid ""
 "Teams notification level color enum: Error=Attention, Warning=Warning, "
 "Info=Accent, Success=Good"
@@ -9198,42 +9663,42 @@ msgstr ""
 "Enum màu cấp độ thông báo Teams: Error=Attention, Warning=Warning, "
 "Info=Accent, Success=Good"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:236
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:269
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:238
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:271
 msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
 msgstr "URL chuyển hướng đầy đủ được tạo từ WebAuthn RPOrigins và đường dẫn lộ trình"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:249
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:251
 msgid "Notification content text (HTML-escaped in the default template)"
 msgstr "Nội dung văn bản thông báo (được thoát ký tự HTML trong mẫu mặc định)"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:257
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:259
 msgid "Email notification level color, fixed to #1f2937"
 msgstr "Màu sắc cấp độ thông báo qua email, cố định ở #1f2937"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:279
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:281
 msgid "Please select a notification type"
 msgstr "Vui lòng chọn loại thông báo"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:295
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:297
 #: src/views/preference/tabs/ExternalNotify.vue:37
 msgid "Test message sent successfully"
 msgstr "Gửi tin nhắn kiểm tra thành công"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:326
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:339
 msgid "Microsoft Docs"
 msgstr "Tài liệu Microsoft"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:335
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:348
 msgid "Teams Request Example"
 msgstr "Ví dụ yêu cầu Teams"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:355
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:379
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:368
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:392
 msgid "Available placeholders"
 msgstr "Các chỗ giữ có sẵn"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:400
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:413
 msgid "Send test message"
 msgstr "Gửi tin nhắn kiểm tra"
 
@@ -9387,7 +9852,7 @@ msgid "WeCom"
 msgstr "WeCom"
 
 #: src/views/preference/components/NginxHostSetup/CheckPanel.vue:77
-#: src/views/system/Upgrade.vue:279
+#: src/views/system/Upgrade.vue:278
 msgid "Check again"
 msgstr "Kiểm tra lại"
 
@@ -10911,19 +11376,19 @@ msgstr ""
 "Gia hạn chứng chỉ khi thời gian hiệu lực còn lại nhỏ hơn hoặc bằng giá trị "
 "này."
 
-#: src/views/preference/tabs/CertSettings.vue:41
+#: src/views/preference/tabs/CertSettings.vue:44
 msgid "Days"
 msgstr "Ngày"
 
-#: src/views/preference/tabs/CertSettings.vue:46
+#: src/views/preference/tabs/CertSettings.vue:48
 msgid "Set the recursive nameservers to override the systems nameservers "
 msgstr "Đặt máy chủ tên đệ quy để ghi đè máy chủ tên hệ thống"
 
-#: src/views/preference/tabs/CertSettings.vue:50
+#: src/views/preference/tabs/CertSettings.vue:52
 msgid "Recursive Nameservers"
 msgstr "Máy chủ tên đệ quy"
 
-#: src/views/preference/tabs/CertSettings.vue:79
+#: src/views/preference/tabs/CertSettings.vue:81
 msgid "Are you sure you want to remove this item?"
 msgstr "Bạn có chắc chắn muốn xóa mục này không?"
 
@@ -10997,17 +11462,17 @@ msgstr "Bật kiểm tra sức khoẻ site"
 msgid "Concurrency"
 msgstr "Số luồng đồng thời"
 
-#: src/views/preference/tabs/HealthCheckSettings.vue:31
-#: src/views/preference/tabs/HealthCheckSettings.vue:46
+#: src/views/preference/tabs/HealthCheckSettings.vue:34
+#: src/views/preference/tabs/HealthCheckSettings.vue:51
 msgid "Seconds"
 msgstr "Giây"
 
-#: src/views/preference/tabs/HealthCheckSettings.vue:37
+#: src/views/preference/tabs/HealthCheckSettings.vue:39
 #: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:46
 msgid "Proxy Targets"
 msgstr "Mục tiêu proxy"
 
-#: src/views/preference/tabs/HealthCheckSettings.vue:39
+#: src/views/preference/tabs/HealthCheckSettings.vue:41
 msgid "Enable upstream health checks"
 msgstr "Bật kiểm tra sức khoẻ upstream"
 
@@ -11043,7 +11508,7 @@ msgstr ""
 msgid "Command"
 msgstr "Lệnh"
 
-#: src/views/preference/tabs/LogrotateSettings.vue:26
+#: src/views/preference/tabs/LogrotateSettings.vue:29
 msgid "Minutes"
 msgstr "Phút"
 
@@ -11386,19 +11851,29 @@ msgstr ""
 "Mô hình được sử dụng để hoàn thành mã, nếu không được đặt, mô hình trò "
 "chuyện sẽ được sử dụng."
 
-#: src/views/preference/tabs/ServerSettings.vue:25
+#: src/views/preference/tabs/ServerSettings.vue:27
+msgid "Unix Socket"
+msgstr "Unix Socket"
+
+#: src/views/preference/tabs/ServerSettings.vue:27
+msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgstr "Nginx UI lắng nghe trên Unix socket này thay vì TCP host và port."
+
+#: src/views/preference/tabs/ServerSettings.vue:30
 msgid "Run Mode"
 msgstr "Chế độ chạy"
 
-#: src/views/preference/tabs/ServerSettings.vue:30
+#: src/views/preference/tabs/ServerSettings.vue:35
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:315
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:776
 msgid "Enable HTTPS"
 msgstr "Bật HTTPS"
 
-#: src/views/preference/tabs/ServerSettings.vue:41
+#: src/views/preference/tabs/ServerSettings.vue:46
 msgid "SSL Key Path"
 msgstr "Đường dẫn khóa SSL"
 
-#: src/views/preference/tabs/ServerSettings.vue:47
+#: src/views/preference/tabs/ServerSettings.vue:52
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
 "reverse proxy, please configure the protocol separately in the reverse "
@@ -11407,19 +11882,27 @@ msgstr ""
 "Cấu hình giao thức chỉ có hiệu lực khi kết nối trực tiếp. Nếu sử dụng proxy "
 "ngược, vui lòng cấu hình giao thức riêng trong proxy ngược."
 
-#: src/views/preference/tabs/ServerSettings.vue:52
+#: src/views/preference/tabs/ServerSettings.vue:57
 msgid "Enable HTTP/2"
 msgstr "Bật HTTP/2"
 
-#: src/views/preference/tabs/ServerSettings.vue:52
+#: src/views/preference/tabs/ServerSettings.vue:57
 msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
 msgstr "Bật hỗ trợ HTTP/2 với khả năng ghép kênh và đẩy dữ liệu từ máy chủ"
 
-#: src/views/preference/tabs/ServerSettings.vue:56
+#: src/views/preference/tabs/ServerSettings.vue:62
 msgid "Enable HTTP/3"
 msgstr "Bật HTTP/3"
 
-#: src/views/preference/tabs/ServerSettings.vue:56
+#: src/views/preference/tabs/ServerSettings.vue:64
+msgid ""
+"HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on "
+"a Unix socket."
+msgstr ""
+"HTTP/3 yêu cầu một UDP listener và không khả dụng khi Nginx UI đang lắng "
+"nghe trên Unix socket."
+
+#: src/views/preference/tabs/ServerSettings.vue:65
 msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
 msgstr "Bật hỗ trợ HTTP/3 dựa trên giao thức QUIC để có hiệu suất tốt nhất"
 
@@ -11472,11 +11955,12 @@ msgid "For example: expected recovery plan or incident reference"
 msgstr "Ví dụ: kế hoạch khôi phục dự kiến hoặc tham chiếu sự cố"
 
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:23
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:440
 msgid "HTTPS"
 msgstr "HTTPS"
 
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:48
-#: src/views/site/site_add/SiteAdd.vue:244
+#: src/views/site/site_add/SiteAdd.vue:429
 msgid "Configuration Name"
 msgstr "Tên cấu hình"
 
@@ -11521,7 +12005,7 @@ msgid "Status Code"
 msgstr "Mã trạng thái"
 
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:155
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:97
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:78
 msgid "Enable TLS"
 msgstr "Bật TLS"
 
@@ -11531,7 +12015,7 @@ msgstr "Chuyển hướng HTTP sang HTTPS"
 
 #: src/views/site/components/SiteStatusSelect.vue:48
 #: src/views/site/components/SiteStatusSelect.vue:181
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:92
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:125
 #: src/views/site/site_list/columns.tsx:157
 #: src/views/site/site_list/SiteList.vue:158
 #: src/views/site/site_list/SiteList.vue:325
@@ -11539,7 +12023,7 @@ msgid "Maintenance"
 msgstr "Bảo trì"
 
 #: src/views/site/components/SiteStatusSelect.vue:80
-#: src/views/site/site_add/SiteAdd.vue:113
+#: src/views/site/site_add/SiteAdd.vue:260
 #: src/views/stream/components/StreamStatusSelect.vue:27
 msgid "Enabled successfully"
 msgstr "Đã bật"
@@ -11654,7 +12138,7 @@ msgid "Select DNS domain"
 msgstr "Chọn tên miền DNS"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:332
-#: src/views/site/site_add/SiteAdd.vue:230
+#: src/views/site/site_add/SiteAdd.vue:415
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:660
 msgid "DNS Record"
 msgstr "Bản ghi DNS"
@@ -11728,132 +12212,157 @@ msgstr "Không có tên miền DNS nào khả dụng"
 msgid "Please add a DNS domain first in the DNS management section."
 msgstr "Vui lòng thêm tên miền DNS trước trong phần quản lý DNS"
 
-#: src/views/site/site_add/SiteAdd.vue:70
-#: src/views/site/site_add/SiteAdd.vue:285
-msgid "Issue a certificate to enable TLS before continuing."
-msgstr "Cấp chứng chỉ để bật TLS trước khi tiếp tục."
+#: src/views/site/site_add/SiteAdd.vue:105
+msgid "Edit configuration file"
+msgstr "Chỉnh sửa tệp cấu hình"
 
-#: src/views/site/site_add/SiteAdd.vue:194
+#: src/views/site/site_add/SiteAdd.vue:110
+msgid "Save and enable the site with the HTTPS server block it already has."
+msgstr "Lưu và kích hoạt trang web với khối máy chủ HTTPS mà nó đã có."
+
+#: src/views/site/site_add/SiteAdd.vue:113
+msgid "Save and enable"
+msgstr "Lưu và kích hoạt"
+
+#: src/views/site/site_add/SiteAdd.vue:167
+msgid ""
+"The previous draft %{name} is enabled, so it was kept. Remove it from the "
+"site list if you no longer need it."
+msgstr ""
+"Bản nháp trước đó %{name} đã được bật, vì vậy nó đã được giữ lại. Hãy xóa "
+"nó khỏi danh sách trang web nếu bạn không còn cần đến."
+
+#: src/views/site/site_add/SiteAdd.vue:173
+msgid "Removed the previous draft %{name}"
+msgstr "Đã xóa bản nháp trước %{name}"
+
+#: src/views/site/site_add/SiteAdd.vue:176
+msgid ""
+"The previous draft %{name} could not be removed. Remove it from the site "
+"list if you no longer need it."
+msgstr ""
+"Không thể xóa bản nháp trước %{name}. Hãy xóa nó khỏi danh sách trang web "
+"nếu bạn không còn cần đến."
+
+#: src/views/site/site_add/SiteAdd.vue:274
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:44
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:721
+msgid "HTTPS is enabled"
+msgstr "HTTPS đã được bật"
+
+#: src/views/site/site_add/SiteAdd.vue:377
 msgid "DNS record selected: %{name}"
 msgstr "Đã chọn bản ghi DNS: %{name}"
 
-#: src/views/site/site_add/SiteAdd.vue:202
+#: src/views/site/site_add/SiteAdd.vue:385
 msgid "DNS record created and linked successfully"
 msgstr "Bản ghi DNS đã được tạo và liên kết thành công"
 
-#: src/views/site/site_add/SiteAdd.vue:217
-#: src/views/site/site_edit/components/QuickSetupModal.vue:76
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:114
+#: src/views/site/site_add/SiteAdd.vue:401
+#: src/views/site/site_edit/components/QuickSetupModal.vue:139
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:147
 msgid "Quick Setup"
 msgstr "Thiết lập nhanh"
 
-#: src/views/site/site_add/SiteAdd.vue:218
+#: src/views/site/site_add/SiteAdd.vue:402
 msgid "Advanced"
 msgstr "Nâng cao"
 
-#: src/views/site/site_add/SiteAdd.vue:229
+#: src/views/site/site_add/SiteAdd.vue:414
 msgid "Base information"
 msgstr "Thông tin"
 
-#: src/views/site/site_add/SiteAdd.vue:231
+#: src/views/site/site_add/SiteAdd.vue:416
 msgid "Configure SSL"
 msgstr "Cấu hình SSL"
 
-#: src/views/site/site_add/SiteAdd.vue:254
+#: src/views/site/site_add/SiteAdd.vue:439
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:543
 msgid "The parameter of server_name is required"
 msgstr "Tham số của server_name là bắt buộc"
 
-#: src/views/site/site_add/SiteAdd.vue:331
+#: src/views/site/site_add/SiteAdd.vue:471
+msgid "Save the edited configuration before enabling HTTPS."
+msgstr "Lưu cấu hình đã chỉnh sửa trước khi bật HTTPS."
+
+#: src/views/site/site_add/SiteAdd.vue:472
+msgid "The site draft is not saved yet."
+msgstr "Bản nháp trang web chưa được lưu."
+
+#: src/views/site/site_add/SiteAdd.vue:476
+msgid "HTTPS setup reads the saved draft of this site."
+msgstr "Thiết lập HTTPS đọc bản nháp đã lưu của trang này."
+
+#: src/views/site/site_add/SiteAdd.vue:478
+msgid "Save draft"
+msgstr "Lưu bản nháp"
+
+#: src/views/site/site_add/SiteAdd.vue:539
 msgid "Site Config Created Successfully"
 msgstr "Cấu hình trang web đã được tạo thành công"
 
-#: src/views/site/site_add/SiteAdd.vue:332
+#: src/views/site/site_add/SiteAdd.vue:540
 msgid "DNS record has been linked: %{name}"
 msgstr "Bản ghi DNS đã được liên kết: %{name}"
 
-#: src/views/site/site_add/SiteAdd.vue:339
+#: src/views/site/site_add/SiteAdd.vue:547
 msgid "Modify Config"
 msgstr "Sửa cấu hình"
 
-#: src/views/site/site_add/SiteAdd.vue:342
+#: src/views/site/site_add/SiteAdd.vue:550
 msgid "Create Another"
 msgstr "Tạo thêm"
 
-#: src/views/site/site_edit/components/Cert/Cert.vue:78
+#: src/views/site/site_edit/components/Cert/Cert.vue:98
 msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "Chứng chỉ đã thay đổi"
 
-#: src/views/site/site_edit/components/Cert/ChangeCert.vue:51
-#: src/views/site/site_edit/components/Cert/ChangeCert.vue:55
+#: src/views/site/site_edit/components/Cert/ChangeCert.vue:36
+#: src/views/site/site_edit/components/Cert/ChangeCert.vue:40
 msgid "Change Certificate"
 msgstr "Thay đổi chứng chỉ"
 
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:46
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:14
-msgid "Do you want to enable TLS?"
-msgstr "Bạn có muốn bật TLS không?"
-
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:47
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
-msgid "To make sure the certification auto-renewal can work normally, "
-msgstr ""
-"Để đảm bảo rằng việc gia hạn chứng chỉ tự động có thể hoạt động bình "
-"thường, "
-
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:94
-msgid "Encrypt website with Let's Encrypt"
-msgstr "Bảo mật trang web với Let's Encrypt"
-
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:71
-msgid "Certificate issuance component is not ready"
-msgstr "Thành phần cấp chứng chỉ chưa sẵn sàng"
-
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:109
-msgid "Auto-renewal enabled for %{name}"
-msgstr "Đã bật tự động gia hạn SSL cho %{name}"
-
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:111
-msgid "Enable auto-renewal failed for %{name}"
-msgstr "Không thể bật tự động gia hạn SSL cho %{name}"
-
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:116
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:77
 msgid "Auto-renewal disabled for %{name}"
 msgstr "Đã tắt tự động gia hạn SSL cho %{name}"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:118
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:81
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "Vô hiệu hóa gia hạn tự động thất bại cho %{name}"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:146
-msgid "server_name not found in directives"
-msgstr "không tìm thấy server_name trong directives"
-
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:162
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:97
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "Bạn muốn tắt tự động gia hạn chứng chỉ SSL ?"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:163
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:98
 msgid "We will remove the HTTPChallenge configuration from "
 msgstr "Chúng tôi sẽ xóa cấu hình HTTPChallenge khỏi "
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:226
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:117
 msgid "Obtain certificate"
 msgstr "Nhận chứng chỉ"
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:50
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:139
+msgid "Done"
+msgstr "Hoàn tất"
+
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:145
+msgid "Encrypt website with Let's Encrypt"
+msgstr "Bảo mật trang web với Let's Encrypt"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:166
 msgid "Getting the certificate, please wait..."
 msgstr "Đang lấy chứng chỉ, vui lòng đợi..."
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:68
-msgid "Fail to obtain certificate"
-msgstr "Không thể lấy chứng chỉ"
-
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:113
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:117
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:232
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:236
 msgid "Certificate issuance connection closed before completion."
 msgstr "Kết nối cấp chứng chỉ đã bị đóng trước khi hoàn tất."
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:254
+msgid "Certificate issuance failed"
+msgstr ""
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:31
 msgid "Save the site configuration now?"
@@ -11902,11 +12411,251 @@ msgstr "Tìm kiếm mẫu"
 msgid "Author"
 msgstr "Tác giả"
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:52
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
+msgid "Do you want to enable TLS?"
+msgstr "Bạn có muốn bật TLS không?"
+
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
+msgid "To make sure the certification auto-renewal can work normally, "
+msgstr ""
+"Để đảm bảo rằng việc gia hạn chứng chỉ tự động có thể hoạt động bình "
+"thường, "
+
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:72
+msgid "Save your changes before enabling HTTPS"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:76
+msgid ""
+"HTTPS setup rewrites the saved site configuration, so unsaved edits would "
+"be lost."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:92
+msgid ""
+"HTTPS setup builds the HTTPS server block from the saved configuration. "
+"Unsaved edits to that block are not used."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:122
+msgid "Not a valid domain name or IP address: %{value}"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:147
+msgid "HTTP-01"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:148
+msgid "DNS-01"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:149
+msgid "Existing certificate"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:150
+msgid "Skip for now"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:159
+msgid ""
+"The certificate authority validates each domain over port 80, so the "
+"domains must resolve to this server."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:161
+msgid ""
+"Validation uses a DNS TXT record created with the selected DNS credential. "
+"Required for wildcard domains."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:163
+msgid ""
+"Use a certificate from the certificate manager. Nothing is requested from a "
+"certificate authority, and the certificate keeps its own renewal settings."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:165
+msgid "Continue without HTTPS. You can enable it later from the site editor."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:224
+msgid ""
+"This certificate expired on %{date}. Choose another certificate or renew "
+"this one first."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:228
+msgid ""
+"This certificate record lists no domains. The pre-flight check reads them "
+"from the certificate file."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:230
+msgid "This certificate does not cover any of the domains: %{domains}"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:232
+msgid ""
+"This certificate does not cover %{domains}. HTTPS is only enabled for the "
+"names it covers."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:238
+msgid "IP address certificates only support HTTP-01 validation."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:240
+msgid "Wildcard domains require DNS-01 validation."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:307
+msgid "Plan the configuration changes"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:309
+msgid "Stage the HTTP configuration"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:311
+msgid "Verify the challenge route"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:313
+msgid "Issue the certificate"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:317
+msgid "Roll back the changes"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:362
+msgid "Passed"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:370
+msgid "Waiting"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:385
+msgid "The connection closed before HTTPS setup finished. Retry to run it again."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:386
+msgid "HTTPS setup failed"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:418
+msgid "Certificate options"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:446
+msgid ""
+"Nginx UI stages the challenge route, verifies it, requests the certificate "
+"and switches the site to HTTPS in one run. If a step fails, the site keeps "
+"serving plain HTTP."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:486
+msgid "Add at least one domain or IP address."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:497
+msgid "e.g. example.com www.example.com"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:520
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:725
+msgid "Certificate"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:534
+msgid "Expired on %{date}"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:535
+msgid "Expires on %{date}"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:543
+msgid "Change"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:568
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:792
+msgid "Select certificate"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:585
+msgid "Redirect HTTP to HTTPS after the certificate is ready"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:589
+msgid ""
+"The HTTPS server block without a certificate is left out until the "
+"certificate is issued, then enabled with it."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
+msgid "Pre-flight check"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
+msgid "Progress"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:658
+msgid "Checking..."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:660
+msgid ""
+"Run \"Check only\" to verify the configuration and the certificate without "
+"changing anything."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:661
+msgid ""
+"Run \"Check only\" to verify the configuration and DNS without changing "
+"anything."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:708
+msgid "Failed step: %{step}"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:734
+msgid "Private Key"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:766
+msgid "Check only"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:776
+msgid "Issue and enable HTTPS"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:784
+msgid "Continue without HTTPS"
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:84
+msgid "Configuration saved. Enable HTTPS from the HTTPS card."
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:108
 msgid "Replace configuration?"
 msgstr "Thay thế cấu hình?"
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:53
+#: src/views/site/site_edit/components/QuickSetupModal.vue:110
+msgid ""
+"The generated configuration will replace the current one and is saved right "
+"away without its HTTPS server. Any custom directives or locations will be "
+"lost."
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:111
 msgid ""
 "The generated configuration will replace the current one. Any custom "
 "directives or locations will be lost."
@@ -11914,19 +12663,25 @@ msgstr ""
 "Cấu hình được tạo sẽ thay thế cấu hình hiện tại. Mọi chỉ dẫn hoặc vị trí "
 "tùy chỉnh sẽ bị mất."
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:54
+#: src/views/site/site_edit/components/QuickSetupModal.vue:112
+msgid "Replace and save"
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:112
 msgid "Replace"
 msgstr "Thay thế"
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:67
+#: src/views/site/site_edit/components/QuickSetupModal.vue:130
 msgid "Configuration regenerated"
 msgstr "Cấu hình đã được tạo lại"
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:86
-msgid "Issue a certificate to enable TLS before saving."
-msgstr "Cấp chứng chỉ để bật TLS trước khi lưu."
+#: src/views/site/site_edit/components/QuickSetupModal.vue:149
+msgid ""
+"The configuration is saved without its HTTPS server first. Then enable "
+"HTTPS from the HTTPS card on this page."
+msgstr ""
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:105
+#: src/views/site/site_edit/components/QuickSetupModal.vue:168
 msgid "Generate Config"
 msgstr "Tạo cấu hình"
 
@@ -12025,22 +12780,22 @@ msgstr "Mẫu cấu hình"
 msgid "Port Scanner"
 msgstr "Trình quét cổng"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:108
 #: src/views/stream/components/StreamEditor.vue:44
 msgid "Edit %{n}"
 msgstr "Sửa %{n}"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:127
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:160
 #: src/views/stream/components/StreamEditor.vue:80
 msgid "Advance Mode"
 msgstr "Nâng cao"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:130
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:163
 #: src/views/stream/components/StreamEditor.vue:83
 msgid "Basic Mode"
 msgstr "Cơ bản"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:155
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:188
 #: src/views/stream/components/StreamEditor.vue:105
 msgid "Nginx Configuration Parse Error"
 msgstr "Lỗi phân tích cấu hình Nginx"
@@ -12245,27 +13000,27 @@ msgstr "Bạn có thể kiểm tra nâng cấp Nginx UI tại trang này"
 msgid "Current Version"
 msgstr "Phiên bản hiện tại"
 
-#: src/views/system/Upgrade.vue:270
+#: src/views/system/Upgrade.vue:269
 msgid "Arch"
 msgstr "Kiến trúc"
 
-#: src/views/system/Upgrade.vue:271
+#: src/views/system/Upgrade.vue:270
 msgid "Executable Path"
 msgstr "Đường dẫn thực thi"
 
-#: src/views/system/Upgrade.vue:273
+#: src/views/system/Upgrade.vue:272
 msgid "Last checked at"
 msgstr "Kiểm tra lần cuối lúc"
 
-#: src/views/system/Upgrade.vue:292
+#: src/views/system/Upgrade.vue:291
 msgid "You are using the latest version"
 msgstr "Bạn đang sử dụng phiên bản mới nhất"
 
-#: src/views/system/Upgrade.vue:298
+#: src/views/system/Upgrade.vue:297
 msgid "New version released"
 msgstr "Đã có phiên bản mới"
 
-#: src/views/system/Upgrade.vue:339
+#: src/views/system/Upgrade.vue:338
 msgid "Release Note"
 msgstr "Ghi chú phát hành"
 
@@ -12377,6 +13132,72 @@ msgstr "Xác nhận mật khẩu mới"
 #: src/views/user/UserProfile.vue:216
 msgid "Update Password"
 msgstr "Cập nhật mật khẩu"
+
+#~ msgid ""
+#~ "This site is configured as a default server (default_server) for HTTPS "
+#~ "(port 443). "
+#~ msgstr ""
+#~ "Trang web này được cấu hình làm máy chủ mặc định (default_server) cho HTTPS "
+#~ "(cổng 443)."
+
+#~ msgid ""
+#~ "This site uses wildcard server name (_) which typically indicates an "
+#~ "IP-based certificate. "
+#~ msgstr ""
+#~ "Trang web này sử dụng tên máy chủ wildcard (_) thường biểu thị chứng chỉ "
+#~ "dựa trên IP."
+
+#~ msgid "No specific IP address found in server_name configuration. "
+#~ msgstr "Không tìm thấy địa chỉ IP cụ thể trong cấu hình server_name."
+
+#~ msgid ""
+#~ "For IP-based certificate configurations, only HTTP-01 challenge method is "
+#~ "supported. "
+#~ msgstr ""
+#~ "Đối với cấu hình chứng chỉ dựa trên IP, chỉ phương thức thử thách HTTP-01 "
+#~ "được hỗ trợ."
+
+#~ msgid "The server_name"
+#~ msgstr "server_name"
+
+#~ msgid "Make sure you have configured a reverse proxy for .well-known "
+#~ msgstr "Đảm bảo bạn đã cấu hình proxy ngược cho .well-known"
+
+#~ msgid "Please first add credentials in Certification > DNS Credentials, "
+#~ msgstr "Vui lòng thêm thông tin xác thực trước tại Certification > DNS Credentials, "
+
+#~ msgid "If your domain has CNAME records and you cannot obtain certificates, "
+#~ msgstr "Nếu tên miền của bạn có bản ghi CNAME và bạn không thể nhận chứng chỉ,"
+
+#~ msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+#~ msgstr "Bỏ qua kiểm tra lan truyền DNS cục bộ và đợi 60 giây trước khi yêu cầu "
+
+#~ msgid "The path exists, but the file is not a certificate"
+#~ msgstr "Đường dẫn tồn tại, nhưng tệp không phải là chứng chỉ"
+
+#~ msgid "The path exists, but the file is not a private key"
+#~ msgstr "Đường dẫn tồn tại, nhưng tệp không phải là khóa riêng tư"
+
+#~ msgid "Get release information error"
+#~ msgstr "Lỗi lấy thông tin phát hành"
+
+#~ msgid "Issue a certificate to enable TLS before continuing."
+#~ msgstr "Cấp chứng chỉ để bật TLS trước khi tiếp tục."
+
+#~ msgid "Certificate issuance component is not ready"
+#~ msgstr "Thành phần cấp chứng chỉ chưa sẵn sàng"
+
+#~ msgid "Auto-renewal enabled for %{name}"
+#~ msgstr "Đã bật tự động gia hạn SSL cho %{name}"
+
+#~ msgid "Enable auto-renewal failed for %{name}"
+#~ msgstr "Không thể bật tự động gia hạn SSL cho %{name}"
+
+#~ msgid "server_name not found in directives"
+#~ msgstr "không tìm thấy server_name trong directives"
+
+#~ msgid "Issue a certificate to enable TLS before saving."
+#~ msgstr "Cấp chứng chỉ để bật TLS trước khi lưu."
 
 #~ msgid "DingTalk"
 #~ msgstr "DingTalk"
@@ -13036,621 +13857,3 @@ msgstr "Cập nhật mật khẩu"
 #~ msgstr ""
 #~ "Hiện tại, quản lý bản ghi DNS chỉ hỗ trợ Alibaba Cloud DNS, Tencent Cloud "
 #~ "DNS và Cloudflare."
-
-#: src/components/AutoCertForm/AutoCertForm.vue:103
-msgid "This site is configured as a default server (default_server) for HTTPS (port 443). IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:106
-msgid "This site uses wildcard server name (_) which typically indicates an IP-based certificate. IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:109
-msgid "No specific IP address found in server_name configuration. Please specify the server IP address below for the certificate."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:112
-msgid "For IP-based certificate configurations, only HTTP-01 challenge method is supported. DNS-01 challenge is not compatible with IP-based certificates."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:126
-msgid "The server_name in the current configuration must be the domain name you need to get the certificate, support multiple domains."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:132
-msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort before obtaining the certificate."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:135
-msgid "Please first add credentials in Certification > DNS Credentials, and then select one of the credentials below to request the API of the DNS provider."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:139
-msgid "Required Settings"
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:234
-msgid "Special Settings"
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:249
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:620
-msgid "If your domain has CNAME records and you cannot obtain certificates, you need to enable this option."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:260
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:627
-msgid "Skip local DNS propagation checks and wait 60 seconds before asking the certificate authority to validate the record."
-msgstr ""
-
-#: src/components/CertInfo/CertInfo.vue:50
-msgid "Name: %{name}"
-msgstr ""
-
-#: src/components/CertInfo/CertInfo.vue:66
-msgid "Status:"
-msgstr ""
-
-#: src/components/CertInfo/CertInfo.vue:83
-msgid "SAN Aliases: %{aliases}"
-msgstr ""
-
-#: src/constants/errors/cert.ts:51
-msgid "HTTP-01 challenge preflight failed: {0}"
-msgstr ""
-
-#: src/constants/errors/cert.ts:52
-msgid "HTTP-01 challenge route check failed for {0}: {1}"
-msgstr ""
-
-#: src/constants/errors/cert.ts:53
-msgid "HTTP-01 challenge port {0} is unavailable: {1}"
-msgstr ""
-
-#: src/language/generate.ts:4
-msgid "A CAA record on the domain does not allow this certificate authority; add a CAA issue record for the certificate authority or remove the restrictive record."
-msgstr ""
-
-#: src/language/generate.ts:5
-msgid "A CAA record on the domain does not authorize the selected certificate authority; add a CAA issue record for it or issuance will fail."
-msgstr ""
-
-#: src/language/generate.ts:6
-msgid "An existing certificate is used"
-msgstr ""
-
-#: src/language/generate.ts:7
-msgid "Applying the HTTP configuration for validation"
-msgstr ""
-
-#: src/language/generate.ts:10
-msgid "Certificate issuance failed; check the log for the response of the certificate authority."
-msgstr ""
-
-#: src/language/generate.ts:28
-msgid "Checking the HTTP challenge route"
-msgstr ""
-
-#: src/language/generate.ts:31
-msgid "Enabling HTTPS in the site configuration"
-msgstr ""
-
-#: src/language/generate.ts:36
-msgid "HTTP challenge route is reachable"
-msgstr ""
-
-#: src/language/generate.ts:37
-msgid "HTTP challenge route probe is unavailable"
-msgstr ""
-
-#: src/language/generate.ts:38
-msgid "HTTP configuration applied"
-msgstr ""
-
-#: src/language/generate.ts:39
-msgid "HTTP configuration restored"
-msgstr ""
-
-#: src/language/generate.ts:40
-msgid "HTTPS configuration planned"
-msgstr ""
-
-#: src/language/generate.ts:41
-msgid "HTTPS enabled"
-msgstr ""
-
-#: src/language/generate.ts:42
-msgid "Issuing the certificate"
-msgstr ""
-
-#: src/language/generate.ts:45
-msgid "Nginx UI could not listen on the HTTP challenge port; make sure no other process uses it, or change the HTTP challenge port in the certificate settings."
-msgstr ""
-
-#: src/language/generate.ts:54
-msgid "No DNS problem found"
-msgstr ""
-
-#: src/language/generate.ts:55
-msgid "Original site configuration restored"
-msgstr ""
-
-#: src/language/generate.ts:56
-msgid "Planning the HTTPS configuration"
-msgstr ""
-
-#: src/language/generate.ts:57
-msgid "Resolve the site configuration problem first"
-msgstr ""
-
-#: src/language/generate.ts:58
-msgid "Restoring the HTTP configuration"
-msgstr ""
-
-#: src/language/generate.ts:59
-msgid "Restoring the original site configuration"
-msgstr ""
-
-#: src/language/generate.ts:62
-msgid "The DNS challenge does not use the HTTP challenge route"
-msgstr ""
-
-#: src/language/generate.ts:63
-msgid "The DNS lookup for the domain failed; make sure its name servers are answering."
-msgstr ""
-
-#: src/language/generate.ts:64
-msgid "The certificate %{name} covers the domains and is valid until %{not_after}"
-msgstr ""
-
-#: src/language/generate.ts:65
-msgid "The certificate %{name} does not cover any of the domains: %{uncovered}"
-msgstr ""
-
-#: src/language/generate.ts:66
-msgid "The certificate %{name} does not cover some of the domains; they are left out of HTTPS: %{uncovered}"
-msgstr ""
-
-#: src/language/generate.ts:67
-msgid "The certificate %{name} expired on %{not_after}; renew it or choose another certificate"
-msgstr ""
-
-#: src/language/generate.ts:68
-msgid "The certificate authority could not connect to port 80 of this domain; open TCP port 80 in the firewall or cloud security group and make sure any NAT or port forwarding sends it to this server."
-msgstr ""
-
-#: src/language/generate.ts:69
-msgid "The certificate authority could not resolve the domain; create an A or AAAA record that points at this server and wait for DNS to propagate."
-msgstr ""
-
-#: src/language/generate.ts:70
-msgid "The certificate authority followed a redirect, but the redirected request did not reach the challenge route; make sure the HTTPS server for this host also proxies /.well-known/acme-challenge/ to the challenge port, and that the redirect stays on the same host and on port 80 or 443."
-msgstr ""
-
-#: src/language/generate.ts:71
-msgid "The certificate authority rate limit was reached; wait until the retry time before trying again, and test configuration changes against the staging environment."
-msgstr ""
-
-#: src/language/generate.ts:72
-msgid "The certificate authority reached a server that did not return the challenge file, and the domain resolves to an address that is not on this server; point the domain's A/AAAA records at this server, or, behind NAT or a CDN, make sure port 80 is forwarded to it."
-msgstr ""
-
-#: src/language/generate.ts:73
-msgid "The certificate authority reached the server but the challenge file was not served; make sure the port 80 server block for this domain is enabled and routes /.well-known/acme-challenge/ to Nginx UI, and that no other server block or proxy answers first."
-msgstr ""
-
-#: src/language/generate.ts:74
-msgid "The certificate authority refuses to issue a certificate for this name; use a publicly resolvable domain name that the certificate authority supports."
-msgstr ""
-
-#: src/language/generate.ts:75
-msgid "The certificate or key file of %{name} is missing or cannot be read; fix it in the certificate manager or choose another certificate"
-msgstr ""
-
-#: src/language/generate.ts:76
-msgid "The domain has DNS address records, but the local addresses of this server could not be compared."
-msgstr ""
-
-#: src/language/generate.ts:77
-msgid "The domain has an AAAA record but the site does not listen on IPv6; Let's Encrypt prefers IPv6, so add an IPv6 listen directive on port 80 or remove the AAAA record."
-msgstr ""
-
-#: src/language/generate.ts:78
-msgid "The domain has no A or AAAA record; create one that points at this server before requesting a certificate."
-msgstr ""
-
-#: src/language/generate.ts:79
-msgid "The domain resolves to an address assigned to this server."
-msgstr ""
-
-#: src/language/generate.ts:80
-msgid "The domain resolves to an address that is not assigned to this server; this can be expected behind NAT, a load balancer, or a CDN, otherwise update the domain's A/AAAA records."
-msgstr ""
-
-#: src/language/generate.ts:81
-msgid "The selected certificate does not exist any more; choose another certificate"
-msgstr ""
-
-#: src/language/generate.ts:82
-msgid "The site already serves the required HTTP configuration"
-msgstr ""
-
-#: src/language/generate.ts:83
-msgid "The site configuration can be updated automatically"
-msgstr ""
-
-#: src/language/generate.ts:84
-msgid "Using the existing certificate %{name}"
-msgstr ""
-
-#: src/language/generate.ts:85
-msgid "Verified after the site is staged"
-msgstr ""
-
-#: src/language/generate.ts:94
-msgid "[Nginx UI] Checking HTTP01 challenge route for %{domains}"
-msgstr ""
-
-#: src/language/generate.ts:98
-msgid "[Nginx UI] HTTP01 challenge route cannot be verified locally for %{domain}: %{reason}"
-msgstr ""
-
-#: src/language/generate.ts:99
-msgid "[Nginx UI] HTTP01 challenge route check after renewal failure: %{summary}"
-msgstr ""
-
-#: src/language/generate.ts:100
-msgid "[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}"
-msgstr ""
-
-#: src/language/generate.ts:101
-msgid "[Nginx UI] HTTP01 challenge route check skipped: %{reason}"
-msgstr ""
-
-#: src/language/generate.ts:102
-msgid "[Nginx UI] HTTP01 challenge route reachable for %{domain} via %{target}"
-msgstr ""
-
-#: src/views/certificate/CertificateList/certColumns.tsx:45
-msgid "Renewal paused"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:66
-msgid "Please select at least one download format"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:100
-msgid "Certificate ID cannot be empty"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:145
-msgid "Download Format"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:149
-msgid "Certificate (.crt)"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:152
-msgid "Private Key (.key)"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:155
-msgid "PFX (.pfx, CRT + KEY for Windows import)"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:163
-msgid "PFX Password"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:164
-msgid "Leave empty if you do not want to set a password"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:168
-msgid "Enter PFX password"
-msgstr ""
-
-#: src/views/certificate/components/DNSIssueCertificate.vue:238
-msgid "Challenge Method Reminder"
-msgstr ""
-
-#: src/views/certificate/components/DNSIssueCertificate.vue:242
-msgid "If you use HTTP-01 challenge, the DNS credential field is hidden and not required."
-msgstr ""
-
-#: src/views/certificate/components/DNSIssueCertificate.vue:245
-msgid "If you use DNS-01 challenge, you must select a DNS credential."
-msgstr ""
-
-#: src/views/certificate/components/DNSIssueCertificate.vue:248
-msgid "Wildcard certificates usually require DNS-01 challenge."
-msgstr ""
-
-#: src/views/dns/DNSCredential.vue:60
-msgid "Name cannot be empty"
-msgstr ""
-
-#: src/views/dns/DNSCredential.vue:65
-msgid "Please select DNS provider"
-msgstr ""
-
-#: src/views/dns/DNSCredential.vue:184
-msgid "Modify DNS Credential"
-msgstr ""
-
-#: src/views/preference/tabs/ServerSettings.vue:27
-msgid "Unix Socket"
-msgstr ""
-
-#: src/views/preference/tabs/ServerSettings.vue:27
-msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
-msgstr ""
-
-#: src/views/preference/tabs/ServerSettings.vue:64
-msgid "HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on a Unix socket."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:105
-msgid "Edit configuration file"
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:110
-msgid "Save and enable the site with the HTTPS server block it already has."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:113
-msgid "Save and enable"
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:167
-msgid "The previous draft %{name} is enabled, so it was kept. Remove it from the site list if you no longer need it."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:173
-msgid "Removed the previous draft %{name}"
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:176
-msgid "The previous draft %{name} could not be removed. Remove it from the site list if you no longer need it."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:274
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:44
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:721
-msgid "HTTPS is enabled"
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:471
-msgid "Save the edited configuration before enabling HTTPS."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:472
-msgid "The site draft is not saved yet."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:476
-msgid "HTTPS setup reads the saved draft of this site."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:478
-msgid "Save draft"
-msgstr ""
-
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:139
-msgid "Done"
-msgstr ""
-
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:254
-msgid "Certificate issuance failed"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:72
-msgid "Save your changes before enabling HTTPS"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:76
-msgid "HTTPS setup rewrites the saved site configuration, so unsaved edits would be lost."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:92
-msgid "HTTPS setup builds the HTTPS server block from the saved configuration. Unsaved edits to that block are not used."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:122
-msgid "Not a valid domain name or IP address: %{value}"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:147
-msgid "HTTP-01"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:148
-msgid "DNS-01"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:149
-msgid "Existing certificate"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:150
-msgid "Skip for now"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:159
-msgid "The certificate authority validates each domain over port 80, so the domains must resolve to this server."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:161
-msgid "Validation uses a DNS TXT record created with the selected DNS credential. Required for wildcard domains."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:163
-msgid "Use a certificate from the certificate manager. Nothing is requested from a certificate authority, and the certificate keeps its own renewal settings."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:165
-msgid "Continue without HTTPS. You can enable it later from the site editor."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:224
-msgid "This certificate expired on %{date}. Choose another certificate or renew this one first."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:228
-msgid "This certificate record lists no domains. The pre-flight check reads them from the certificate file."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:230
-msgid "This certificate does not cover any of the domains: %{domains}"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:232
-msgid "This certificate does not cover %{domains}. HTTPS is only enabled for the names it covers."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:238
-msgid "IP address certificates only support HTTP-01 validation."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:240
-msgid "Wildcard domains require DNS-01 validation."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:307
-msgid "Plan the configuration changes"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:309
-msgid "Stage the HTTP configuration"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:311
-msgid "Verify the challenge route"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:313
-msgid "Issue the certificate"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:317
-msgid "Roll back the changes"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:362
-msgid "Passed"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:370
-msgid "Waiting"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:385
-msgid "The connection closed before HTTPS setup finished. Retry to run it again."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:386
-msgid "HTTPS setup failed"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:418
-msgid "Certificate options"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:446
-msgid "Nginx UI stages the challenge route, verifies it, requests the certificate and switches the site to HTTPS in one run. If a step fails, the site keeps serving plain HTTP."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:486
-msgid "Add at least one domain or IP address."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:497
-msgid "e.g. example.com www.example.com"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:520
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:725
-msgid "Certificate"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:534
-msgid "Expired on %{date}"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:535
-msgid "Expires on %{date}"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:543
-msgid "Change"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:568
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:792
-msgid "Select certificate"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:585
-msgid "Redirect HTTP to HTTPS after the certificate is ready"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:589
-msgid "The HTTPS server block without a certificate is left out until the certificate is issued, then enabled with it."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
-msgid "Pre-flight check"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
-msgid "Progress"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:658
-msgid "Checking..."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:660
-msgid "Run \"Check only\" to verify the configuration and the certificate without changing anything."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:661
-msgid "Run \"Check only\" to verify the configuration and DNS without changing anything."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:708
-msgid "Failed step: %{step}"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:734
-msgid "Private Key"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:766
-msgid "Check only"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:776
-msgid "Issue and enable HTTPS"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:784
-msgid "Continue without HTTPS"
-msgstr ""
-
-#: src/views/site/site_edit/components/QuickSetupModal.vue:84
-msgid "Configuration saved. Enable HTTPS from the HTTPS card."
-msgstr ""
-
-#: src/views/site/site_edit/components/QuickSetupModal.vue:110
-msgid "The generated configuration will replace the current one and is saved right away without its HTTPS server. Any custom directives or locations will be lost."
-msgstr ""
-
-#: src/views/site/site_edit/components/QuickSetupModal.vue:112
-msgid "Replace and save"
-msgstr ""
-
-#: src/views/site/site_edit/components/QuickSetupModal.vue:149
-msgid "The configuration is saved without its HTTPS server first. Then enable HTTPS from the HTTPS card on this page."
-msgstr ""

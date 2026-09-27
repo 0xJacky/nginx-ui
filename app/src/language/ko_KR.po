@@ -22,213 +22,337 @@ msgstr "HTTP01"
 msgid "DNS01"
 msgstr "DNS01"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:67
+#: src/components/AutoCertForm/AutoCertForm.vue:70
 msgid "Please enter the server IP address"
 msgstr "서버 IP 주소를 입력해 주세요"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:72
+#: src/components/AutoCertForm/AutoCertForm.vue:75
 msgid "Please enter a valid IPv4 or IPv6 address"
 msgstr "유효한 IPv4 또는 IPv6 주소를 입력하세요"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:95
+#: src/components/AutoCertForm/AutoCertForm.vue:98
 msgid "IP Certificate Notice"
 msgstr "IP 인증서 알림"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:100
+#: src/components/AutoCertForm/AutoCertForm.vue:103
 msgid ""
 "This site is configured as a default server (default_server) for HTTPS "
-"(port 443). "
-msgstr "이 사이트는 HTTPS(443 포트)의 기본 서버(default_server)로 구성되어 있습니다."
+"(port 443). IP certificates require Certificate Authority (CA) support and "
+"may not be available with all ACME providers."
+msgstr ""
+"이 사이트는 HTTPS(포트 443)의 기본 서버(default_server)로 구성되어 있습니다. IP 인증서에는 인증 기관(CA) "
+"지원이 필요하며, 모든 ACME 공급자에서 사용할 수 있는 것은 아닙니다."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:104
+#: src/components/AutoCertForm/AutoCertForm.vue:106
 msgid ""
 "This site uses wildcard server name (_) which typically indicates an "
-"IP-based certificate. "
-msgstr "이 사이트는 와일드카드 서버 이름 (_)을 사용하며, 이는 일반적으로 IP 기반 인증서를 나타냅니다."
+"IP-based certificate. IP certificates require Certificate Authority (CA) "
+"support and may not be available with all ACME providers."
+msgstr ""
+"이 사이트는 와일드카드 서버 이름(_)을 사용하며, 이는 일반적으로 IP 기반 인증서를 나타냅니다. IP 인증서는 인증 기관(CA)의 "
+"지원이 필요하며 모든 ACME 공급자에서 사용 가능하지 않을 수 있습니다."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:108
-msgid "No specific IP address found in server_name configuration. "
-msgstr "server_name 구성에서 특정 IP 주소를 찾을 수 없습니다."
+#: src/components/AutoCertForm/AutoCertForm.vue:109
+msgid ""
+"No specific IP address found in server_name configuration. Please specify "
+"the server IP address below for the certificate."
+msgstr "server_name 구성에서 특정 IP 주소를 찾을 수 없습니다. 인증서에 사용할 서버 IP 주소를 아래에 지정해 주세요."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:112
 msgid ""
 "For IP-based certificate configurations, only HTTP-01 challenge method is "
-"supported. "
-msgstr "IP 기반 인증서 구성에서는 HTTP-01 챌린지 방식만 지원됩니다."
+"supported. DNS-01 challenge is not compatible with IP-based certificates."
+msgstr "IP 기반 인증서 구성에서는 HTTP-01 챌린지 방법만 지원됩니다. DNS-01 챌린지는 IP 기반 인증서와 호환되지 않습니다."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:122
-#: src/views/dns/DNSCredential.vue:89
+#: src/components/AutoCertForm/AutoCertForm.vue:121
+#: src/views/dns/DNSCredential.vue:168 src/views/dns/DNSCredential.vue:196
 msgid "Note"
 msgstr "참고"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:127
-msgid "The server_name"
-msgstr "server_name"
+#: src/components/AutoCertForm/AutoCertForm.vue:126
+msgid ""
+"The server_name in the current configuration must be the domain name you "
+"need to get the certificate, support multiple domains."
+msgstr "현재 구성의 server_name 은 인증서를 발급받을 도메인이어야 하며, 여러 도메인을 지원합니다."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:132
+#: src/components/AutoCertForm/AutoCertForm.vue:129
 msgid ""
 "The certificate for the domain is checked every 30 minutes and renewed when "
 "its remaining validity reaches the threshold configured in settings."
 msgstr "도메인의 인증서는 30분마다 확인되며 남은 유효 기간이 설정에서 구성된 임계값에 도달하면 갱신됩니다."
 
+#: src/components/AutoCertForm/AutoCertForm.vue:132
+msgid ""
+"Make sure you have configured a reverse proxy for .well-known directory to "
+"HTTPChallengePort before obtaining the certificate."
+msgstr ""
+"인증서를 받기 전에 .well-known 디렉터리에 대한 reverse proxy를 HTTPChallengePort 로 구성했는지 "
+"확인하세요."
+
 #: src/components/AutoCertForm/AutoCertForm.vue:135
-msgid "Make sure you have configured a reverse proxy for .well-known "
-msgstr " .well-known에 대한 리버스 프록시를 구성했는지 확인하세요."
+msgid ""
+"Please first add credentials in Certification > DNS Credentials, and then "
+"select one of the credentials below to request the API of the DNS provider."
+msgstr "먼저 인증 > DNS 자격 증명에서 자격 증명을 추가한 후, 아래에서 자격 증명 중 하나를 선택하여 DNS 공급자의 API를 요청하세요."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:139
-msgid "Please first add credentials in Certification > DNS Credentials, "
-msgstr "먼저 Certification > DNS Credentials에서 자격 증명을 추가하십시오, "
+msgid "Required Settings"
+msgstr "필수 설정"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:150
+#: src/components/AutoCertForm/AutoCertForm.vue:151
 msgid "Server IP Address"
 msgstr "서버 IP 주소"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:155
+#: src/components/AutoCertForm/AutoCertForm.vue:156
 msgid "Enter server IP address (e.g., 203.0.113.1 or 2001:db8::1)"
 msgstr "서버 IP 주소 입력 (예: 203.0.113.1 또는 2001:db8::1)"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:160
+#: src/components/AutoCertForm/AutoCertForm.vue:161
 msgid ""
 "For IP-based certificates, please specify the server IP address that will "
 "be included in the certificate."
 msgstr "IP 기반 인증서의 경우 인증서에 포함될 서버 IP 주소를 지정해 주세요."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:164
+#: src/components/AutoCertForm/AutoCertForm.vue:165
 msgid "Public CA Requirements:"
 msgstr "공개 CA 요구 사항:"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:168
+#: src/components/AutoCertForm/AutoCertForm.vue:169
 msgid "Must be a public IP address accessible from the internet"
 msgstr "인터넷에서 접근 가능한 공인 IP 주소여야 합니다"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:171
+#: src/components/AutoCertForm/AutoCertForm.vue:172
 msgid "Port 80 must be open for HTTP-01 challenge validation"
 msgstr "HTTP-01 챌린지 검증을 위해 포트 80이 열려 있어야 합니다"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:174
+#: src/components/AutoCertForm/AutoCertForm.vue:175
 msgid "Private IPs (192.168.x.x, 10.x.x.x, 172.16-31.x.x) will fail"
 msgstr "사설 IP(192.168.x.x, 10.x.x.x, 172.16-31.x.x)는 실패합니다"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:178
+#: src/components/AutoCertForm/AutoCertForm.vue:179
 msgid "Private CA:"
 msgstr "개인 CA:"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:181
+#: src/components/AutoCertForm/AutoCertForm.vue:182
 msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "도달 가능한 모든 IP 주소는 개인 인증 기관과 함께 사용할 수 있습니다"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:190
+#: src/components/AutoCertForm/AutoCertForm.vue:191
 msgid "Challenge Method"
 msgstr "인증 방법"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:202
-#: src/components/AutoCertForm/AutoCertForm.vue:211
+#: src/components/AutoCertForm/AutoCertForm.vue:203
+#: src/components/AutoCertForm/AutoCertForm.vue:212
 msgid "Not supported for IP certificates"
 msgstr "IP 인증서는 지원되지 않습니다"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:217
-#: src/views/certificate/CertificateList/certColumns.tsx:65
+#: src/components/AutoCertForm/AutoCertForm.vue:218
+#: src/views/certificate/CertificateList/certColumns.tsx:75
 #: src/views/certificate/components/SelfSignedCertFields.vue:56
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:602
 msgid "Key Type"
 msgstr "키 유형"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:232
+#: src/components/AutoCertForm/AutoCertForm.vue:234
+msgid "Special Settings"
+msgstr "특별 설정"
+
+#: src/components/AutoCertForm/AutoCertForm.vue:236
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:613
 msgid "OCSP Must Staple"
 msgstr "OCSP Must Staple"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:235
+#: src/components/AutoCertForm/AutoCertForm.vue:239
 msgid "Do not enable this option unless you are sure that you need it."
 msgstr "이 옵션은 필요한 경우가 아니라면 활성화하지 마세요."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:236
+#: src/components/AutoCertForm/AutoCertForm.vue:240
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:614
 msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
 "Firefox."
 msgstr "OCSP Must Staple은 Firefox를 사용한 첫 접속 시 일부 사용자에게 오류를 일으킬 수 있습니다."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:242
+#: src/components/AutoCertForm/AutoCertForm.vue:246
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:619
 msgid "Lego disable CNAME Support"
 msgstr "Lego CNAME 지원 비활성화"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:245
-msgid "If your domain has CNAME records and you cannot obtain certificates, "
-msgstr "도메인에 CNAME 레코드가 있고 인증서를 발급받을 수 없는 경우,"
+#: src/components/AutoCertForm/AutoCertForm.vue:249
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:620
+msgid ""
+"If your domain has CNAME records and you cannot obtain certificates, you "
+"need to enable this option."
+msgstr "도메인에 CNAME 레코드가 있고 인증서를 발급받을 수 없는 경우 이 옵션을 활성화해야 합니다."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:253
+#: src/components/AutoCertForm/AutoCertForm.vue:256
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:626
 msgid "Disable Authoritative DNS Propagation Check"
 msgstr "권위 DNS 전파 확인 비활성화"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:257
-msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
-msgstr "로컬 DNS 전파 검사를 건너뛰고 요청하기 전에 60초를 기다립니다."
+#: src/components/AutoCertForm/AutoCertForm.vue:260
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:627
+msgid ""
+"Skip local DNS propagation checks and wait 60 seconds before asking the "
+"certificate authority to validate the record."
+msgstr "로컬 DNS 전파 확인을 건너뛰고 인증 기관에 레코드 검증을 요청하기 전에 60초를 기다립니다."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:263
+#: src/components/AutoCertForm/AutoCertForm.vue:265
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:632
 msgid "Enable Common Name"
 msgstr "공통 이름 사용"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:266
+#: src/components/AutoCertForm/AutoCertForm.vue:268
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:633
 msgid ""
 "Enable the certificate Common Name field for private CAs that still require "
 "it."
 msgstr "아직 Common Name을 요구하는 사설 CA를 위해 인증서 Common Name 필드를 활성화합니다."
 
-#: src/components/AutoCertForm/AutoCertForm.vue:271
+#: src/components/AutoCertForm/AutoCertForm.vue:273
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:638
 msgid "Revoke Old Certificate"
 msgstr "이전 인증서 취소"
 
-#: src/components/AutoCertForm/AutoCertForm.vue:274
+#: src/components/AutoCertForm/AutoCertForm.vue:276
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:639
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
 msgstr "기존 인증서를 자동으로 취소하려면 이 옵션을 활성화하세요."
 
-#: src/components/AutoCertForm/DNSChallenge.vue:25
+#: src/components/AutoCertForm/DNSChallenge.vue:34
 msgid "Unknown Provider"
 msgstr "알 수 없는 제공자"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:131
+#: src/components/AutoCertForm/DNSChallenge.vue:146
 #: src/views/dns/DDNSManager.vue:179 src/views/dns/DNSDomainList.vue:158
 #: src/views/dns/DNSDomainList.vue:204
 msgid "Credential"
 msgstr "인증 정보"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:132
+#: src/components/AutoCertForm/DNSChallenge.vue:147
 msgid "Please create DNS credentials first in DNS > Credentials"
 msgstr "먼저 DNS > 자격 증명에서 DNS 자격 증명을 생성하세요"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:139
+#: src/components/AutoCertForm/DNSChallenge.vue:154
 #: src/language/constants.ts:68 src/views/dns/DNSDomainList.vue:208
 msgid "Select Credential"
 msgstr "자격 증명 선택"
 
-#: src/components/AutoCertForm/DNSChallenge.vue:145
+#: src/components/AutoCertForm/DNSChallenge.vue:160
 msgid "Go to DNS > Credentials to create or manage credentials"
 msgstr "DNS > 자격 증명으로 이동하여 자격 증명을 생성하거나 관리하세요"
 
-#: src/components/CertInfo/CertInfo.vue:25
+#: src/components/CertInfo/CertInfo.vue:21
+#: src/views/certificate/components/CertificateBasicInfo.vue:27
+#: src/views/certificate/components/CertificateContentEditor.vue:105
+msgid "Nothing to copy"
+msgstr "복사할 내용이 없습니다"
+
+#: src/components/CertInfo/CertInfo.vue:26
+#: src/views/certificate/components/CertificateBasicInfo.vue:32
+#: src/views/certificate/components/CertificateContentEditor.vue:110
+msgid "{label} copied to clipboard"
+msgstr "{label}이(가) 클립보드에 복사되었습니다"
+
+#: src/components/CertInfo/CertInfo.vue:30
+#: src/views/certificate/components/CertificateBasicInfo.vue:36
+#: src/views/certificate/components/CertificateContentEditor.vue:114
+msgid "Failed to copy to clipboard"
+msgstr "클립보드에 복사하지 못했습니다"
+
+#: src/components/CertInfo/CertInfo.vue:42
+#: src/views/certificate/components/SelfSignedCertManagement.vue:25
+#: src/views/site/site_edit/components/Cert/Cert.vue:78
+msgid "Certificate Status"
+msgid_plural "Certificates Status"
+msgstr[0] "인증서 상태"
+
+#: src/components/CertInfo/CertInfo.vue:50
+msgid "Name: %{name}"
+msgstr "이름: %{name}"
+
+#: src/components/CertInfo/CertInfo.vue:56
+#: src/components/NgxConfigEditor/NgxUpstream.vue:163
+#: src/views/backup/AutoBackup/AutoBackup.vue:40
+#: src/views/certificate/ACMEUser.vue:14
+#: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/CertificateList/Certificate.vue:40
+#: src/views/certificate/components/CertificateBasicInfo.vue:50
+#: src/views/certificate/components/CertificateBasicInfo.vue:63
+#: src/views/certificate/components/SelfSignedCertFields.vue:34
+#: src/views/config/components/ConfigRightPanel/Basic.vue:34
+#: src/views/config/components/Delete.vue:126
+#: src/views/config/components/Mkdir.vue:64
+#: src/views/config/configColumns.tsx:17
+#: src/views/dns/components/DNSRecordForm.vue:91
+#: src/views/dns/components/DNSRecordTable.vue:41
+#: src/views/dns/components/DNSRecordTable.vue:344
+#: src/views/dns/DNSCredential.vue:93 src/views/dns/DNSCredential.vue:209
+#: src/views/dns/DNSGroupRecordManager.vue:157
+#: src/views/dns/DNSGroupRecordManager.vue:174
+#: src/views/dns/DNSGroupRecordManager.vue:1358
+#: src/views/namespace/columns.ts:9 src/views/nginx_log/NginxLogList.vue:156
+#: src/views/node/nodeColumns.tsx:83
+#: src/views/preference/components/AuthSettings/AddPasskey.vue:84
+#: src/views/preference/tabs/AccessTokens.vue:50
+#: src/views/preference/tabs/AccessTokens.vue:266
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:36
+#: src/views/site/site_list/columns.tsx:36
+#: src/views/site/site_list/SiteDuplicate.vue:84
+#: src/views/stream/columns.tsx:26
+#: src/views/stream/components/RightPanel/Basic.vue:31
+#: src/views/stream/components/StreamDuplicate.vue:76
+#: src/views/stream/StreamList.vue:123 src/views/system/Licenses.vue:13
+msgid "Name"
+msgstr "이름"
+
+#: src/components/CertInfo/CertInfo.vue:66
+msgid "Status:"
+msgstr "상태:"
+
+#: src/components/CertInfo/CertInfo.vue:72
 #: src/views/certificate/ACMEUser.vue:70 src/views/certificate/ACMEUser.vue:152
-#: src/views/certificate/CertificateList/certColumns.tsx:122
+#: src/views/certificate/CertificateList/certColumns.tsx:132
 msgid "Valid"
 msgstr "유효함"
 
-#: src/components/CertInfo/CertInfo.vue:32
-#: src/views/certificate/CertificateList/certColumns.tsx:127
+#: src/components/CertInfo/CertInfo.vue:79
+#: src/views/certificate/CertificateList/certColumns.tsx:137
 #: src/views/dashboard/components/SiteCard.vue:131
 #: src/views/preference/tabs/AccessTokens.vue:149
 msgid "Expired"
 msgstr "만료됨"
 
-#: src/components/CertInfo/CertInfo.vue:36
+#: src/components/CertInfo/CertInfo.vue:83
+msgid "SAN Aliases: %{aliases}"
+msgstr "SAN 별칭: %{aliases}"
+
+#: src/components/CertInfo/CertInfo.vue:86
 msgid "Issuer: %{issuer}"
 msgstr "발급자: %{issuer}"
 
-#: src/components/CertInfo/CertInfo.vue:39
+#: src/components/CertInfo/CertInfo.vue:89
 msgid "Expires At: %{date}"
 msgstr "만료일: %{date}"
 
-#: src/components/CertInfo/CertInfo.vue:42
+#: src/components/CertInfo/CertInfo.vue:92
 msgid "Not Valid Before: %{date}"
 msgstr "유효 시작일: %{date}"
+
+#: src/components/CertInfo/CertInfo.vue:97
+#: src/components/CertInfo/CertInfo.vue:102
+#: src/views/certificate/CertificateList/Certificate.vue:52
+#: src/views/preference/tabs/ServerSettings.vue:42
+msgid "SSL Certificate Path"
+msgstr "SSL 인증서 경로"
+
+#: src/components/CertInfo/CertInfo.vue:110
+#: src/components/CertInfo/CertInfo.vue:115
+#: src/views/certificate/CertificateList/Certificate.vue:57
+msgid "SSL Certificate Key Path"
+msgstr "SSL 인증서 키 경로"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:54
 msgid "Modified At"
@@ -255,6 +379,7 @@ msgid "Configuration History"
 msgstr "구성 기록"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:180 src/language/curd.ts:14
+#: src/views/dns/DNSCredential.vue:220
 #: src/views/dns/DNSGroupRecordManager.vue:1626
 msgid "Close"
 msgstr "닫기"
@@ -357,7 +482,7 @@ msgstr "샌드박스 검증 건너뜀"
 msgid "Sandbox validation failed"
 msgstr "샌드박스 검증 실패"
 
-#: src/components/InspectConfig/InspectConfig.vue:38 src/constants/index.ts:24
+#: src/components/InspectConfig/InspectConfig.vue:38 src/constants/index.ts:27
 #: src/views/nginx_log/NginxLogList.vue:210
 #: src/views/nginx_log/NginxLogList.vue:250
 #: src/views/notification/notificationColumns.tsx:33
@@ -395,7 +520,8 @@ msgid "Nginx failed to validate the configuration."
 msgstr "Nginx가 구성을 검증하지 못했습니다."
 
 #: src/components/InspectConfig/InspectConfig.vue:103 src/lib/http/error.ts:36
-#: src/views/certificate/CertificateEditor.vue:120
+#: src/views/certificate/CertificateEditor.vue:145
+#: src/views/dns/DNSCredential.vue:85
 msgid "Server error"
 msgstr "서버 오류"
 
@@ -415,11 +541,12 @@ msgstr "구성 파일이 격리된 샌드박스에서 테스트에 성공했습�
 msgid "Configuration file is test successful"
 msgstr "구성 파일 테스트 성공"
 
-#: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:25
-#: src/views/backup/components/BackupCreator.vue:138
+#: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:28
+#: src/views/backup/components/BackupCreator.vue:135
 #: src/views/notification/notificationColumns.tsx:40
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
 #: src/views/preference/components/NginxHostSetup/checks.ts:121
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:364
 msgid "Warning"
 msgstr "경고"
 
@@ -436,18 +563,20 @@ msgid "Modify"
 msgstr "수정"
 
 #: src/components/LLM/ChatMessage.vue:256
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:167
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:172
 #: src/language/curd.ts:18
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:864
-#: src/views/dns/DDNSManager.vue:474 src/views/dns/DNSRecordManager.vue:253
+#: src/views/dns/DDNSManager.vue:474 src/views/dns/DNSCredential.vue:223
+#: src/views/dns/DNSRecordManager.vue:253
 #: src/views/preference/components/AuthSettings/Passkey.vue:132
 #: src/views/preference/Preference.vue:104
 #: src/views/preference/tabs/NginxSettings.vue:318
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:210
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:83
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:252
 #: src/views/stream/components/ConfigName.vue:52
 #: src/views/stream/components/StreamEditor.vue:154
 msgid "Save"
@@ -473,11 +602,10 @@ msgstr "저장"
 #: src/views/site/components/MaintenanceConfigModal.vue:64
 #: src/views/site/components/SiteStatusSelect.vue:156
 #: src/views/site/components/SiteStatusSelect.vue:182
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:53
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:166
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
-#: src/views/site/site_edit/components/QuickSetupModal.vue:55
-#: src/views/site/site_edit/components/QuickSetupModal.vue:97
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:101
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:27
+#: src/views/site/site_edit/components/QuickSetupModal.vue:113
+#: src/views/site/site_edit/components/QuickSetupModal.vue:160
 #: src/views/site/site_list/SiteList.vue:173
 #: src/views/stream/components/StreamStatusSelect.vue:62
 msgid "Cancel"
@@ -491,12 +619,12 @@ msgstr "리로드"
 #: src/components/LLM/ChatMessageInput.vue:61
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:127
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
 #: src/components/NgxConfigEditor/LocationEditor.vue:86
 #: src/components/Notification/Notification.vue:115 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:131
-#: src/views/preference/tabs/CertSettings.vue:81
+#: src/views/preference/tabs/CertSettings.vue:83
 #: src/views/site/site_list/columns.tsx:30
 #: src/views/site/site_list/SiteList.vue:267 src/views/stream/StreamList.vue:99
 msgid "No"
@@ -506,13 +634,12 @@ msgstr "아니요"
 #: src/components/NgxConfigEditor/NgxServer.vue:75
 #: src/components/NgxConfigEditor/NgxUpstream.vue:42
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
-#: src/views/backup/components/BackupCreator.vue:149
+#: src/views/backup/components/BackupCreator.vue:146
 #: src/views/notification/Notification.vue:39
 #: src/views/preference/components/NginxHostSetup/checks.ts:119
 #: src/views/site/components/SiteStatusSelect.vue:155
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:52
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:165
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:100
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:26
 #: src/views/site/site_list/SiteList.vue:268
 #: src/views/stream/components/StreamStatusSelect.vue:61
 #: src/views/stream/StreamList.vue:100
@@ -574,7 +701,7 @@ msgstr "복제"
 #: src/components/LLM/LLMSessionTabs.vue:402
 #: src/components/NgxConfigEditor/NgxServer.vue:88
 #: src/components/NgxConfigEditor/NgxUpstream.vue:60 src/language/curd.ts:9
-#: src/views/certificate/components/RemoveCert.vue:122
+#: src/views/certificate/components/RemoveCert.vue:123
 #: src/views/config/components/Delete.vue:67
 #: src/views/config/components/Delete.vue:100
 #: src/views/config/ConfigList.vue:228
@@ -592,12 +719,12 @@ msgid "Post-sync Action"
 msgstr "동기화 후 작업"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:41
-#: src/constants/index.ts:38
+#: src/constants/index.ts:41
 msgid "No Action"
 msgstr "작업 없음"
 
 #: src/components/NamespaceRender/NamespaceRender.vue:44
-#: src/components/NamespaceTabs/NamespaceTabs.vue:146 src/constants/index.ts:39
+#: src/components/NamespaceTabs/NamespaceTabs.vue:146 src/constants/index.ts:42
 #: src/views/node/Node.vue:238 src/views/node/Node.vue:246
 msgid "Reload Nginx"
 msgstr "Nginx 다시 로드"
@@ -622,8 +749,8 @@ msgstr "재시작 요청이 실패했습니다. 네트워크 연결을 확인해
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:124
 #: src/components/NodeIndicator/NodeIndicator.vue:38
-#: src/components/NodeSelector/NodeSelector.vue:62 src/constants/index.ts:43
-#: src/constants/index.ts:49 src/views/backup/AutoBackup/AutoBackup.vue:103
+#: src/components/NodeSelector/NodeSelector.vue:62 src/constants/index.ts:46
+#: src/constants/index.ts:52 src/views/backup/AutoBackup/AutoBackup.vue:103
 #: src/views/backup/AutoBackup/AutoBackup.vue:112
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:50
 #: src/views/preference/tabs/NginxSettings.vue:246
@@ -636,12 +763,12 @@ msgstr "다음 동기화 노드에서 Nginx를 다시 로드하시겠습니까?"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:140
 #: src/components/NamespaceTabs/NamespaceTabs.vue:152
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:126
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:131
 #: src/components/NgxConfigEditor/LocationEditor.vue:85
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/tabs/AuthSettings.vue:130
-#: src/views/preference/tabs/CertSettings.vue:80
+#: src/views/preference/tabs/CertSettings.vue:82
 msgid "Yes"
 msgstr "예"
 
@@ -696,6 +823,7 @@ msgid "Nginx Control"
 msgstr "Nginx 제어"
 
 #: src/components/NginxControl/NginxControl.vue:164
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:360
 msgid "Running"
 msgstr "실행 중"
 
@@ -723,25 +851,25 @@ msgstr "단일 지시문"
 msgid "Multi-line Directive"
 msgstr "여러 줄 지시문"
 
-#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:76
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:79
 msgid "Directive"
 msgstr "지시문"
 
-#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:81
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:84
 msgid "Params"
 msgstr "파라미터"
 
-#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:92
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:95
 #: src/components/NgxConfigEditor/directive/DirectiveDocuments.vue:16
 msgid "Document"
 msgid_plural "Documents"
 msgstr[0] "문서"
 
-#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:106
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:109
 msgid "Add Directive Below"
 msgstr "아래에 지시문 추가"
 
-#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:116
+#: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:119
 msgid "Save Directive"
 msgstr "지시문 저장"
 
@@ -751,32 +879,33 @@ msgstr "지시문들"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:54
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
-#: src/views/site/site_add/SiteAdd.vue:110
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:62
+#: src/views/site/site_add/SiteAdd.vue:255
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:53
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:95
 #: src/views/stream/components/StreamEditor.vue:30
 msgid "Saved successfully"
 msgstr "성공적으로 저장됨"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:105
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:109
 msgid "Server name is controlled by linked DNS record"
 msgstr "서버 이름은 연결된 DNS 레코드에 의해 제어됩니다"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:125
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:130
 msgid "Are you sure you want to remove this directive?"
 msgstr "이 지시문을 제거하시겠습니까?"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:138
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:143
 msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr "DNS가 연결된 상태에서는 server_name을 삭제할 수 없습니다. 먼저 DNS 연결을 해제하세요."
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:153
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:158
 #: src/components/NgxConfigEditor/LocationEditor.vue:142
 #: src/components/NgxConfigEditor/LocationEditor.vue:173
 #: src/components/NgxConfigEditor/NgxServer.vue:145
 msgid "Comments"
 msgstr "댓글"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:158
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:163
 #: src/components/NgxConfigEditor/LocationEditor.vue:154
 #: src/components/NgxConfigEditor/LocationEditor.vue:182
 msgid "Content"
@@ -852,7 +981,7 @@ msgstr "트래픽 분석"
 msgid "Nginx is not running"
 msgstr "Nginx가 실행 중이 아닙니다"
 
-#: src/components/NgxConfigEditor/NgxConfigEditor.vue:31
+#: src/components/NgxConfigEditor/NgxConfigEditor.vue:41
 #: src/views/backup/AutoBackup/components/CronEditor.vue:22
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:130
 msgid "Custom"
@@ -872,8 +1001,9 @@ msgstr "서버 추가"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:166
 #: src/components/NgxConfigEditor/NgxUpstream.vue:130 src/language/curd.ts:19
-#: src/views/preference/tabs/CertSettings.vue:55
+#: src/views/preference/tabs/CertSettings.vue:57
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:120
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:502
 #: src/views/site/site_list/SiteList.vue:243 src/views/stream/StreamList.vue:81
 msgid "Add"
 msgstr "추가"
@@ -894,7 +1024,7 @@ msgstr "이 업스트림을 제거하시겠습니까?"
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:40
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:80
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:113
 #: src/views/site/site_list/columns.tsx:149 src/views/stream/columns.tsx:108
 #: src/views/stream/components/RightPanel/Basic.vue:24
 #: src/views/stream/components/StreamEditor.vue:49
@@ -913,41 +1043,6 @@ msgstr "업스트림 추가"
 #: src/components/NgxConfigEditor/NgxUpstream.vue:158
 msgid "Upstream Name"
 msgstr "업스트림 이름"
-
-#: src/components/NgxConfigEditor/NgxUpstream.vue:163
-#: src/views/backup/AutoBackup/AutoBackup.vue:40
-#: src/views/certificate/ACMEUser.vue:14
-#: src/views/certificate/CertificateList/certColumns.tsx:9
-#: src/views/certificate/CertificateList/Certificate.vue:40
-#: src/views/certificate/components/CertificateBasicInfo.vue:46
-#: src/views/certificate/components/CertificateBasicInfo.vue:60
-#: src/views/certificate/components/CertificateBasicInfo.vue:72
-#: src/views/certificate/components/SelfSignedCertFields.vue:34
-#: src/views/config/components/ConfigRightPanel/Basic.vue:34
-#: src/views/config/components/Delete.vue:126
-#: src/views/config/components/Mkdir.vue:64
-#: src/views/config/configColumns.tsx:17
-#: src/views/dns/components/DNSRecordForm.vue:91
-#: src/views/dns/components/DNSRecordTable.vue:41
-#: src/views/dns/components/DNSRecordTable.vue:344
-#: src/views/dns/DNSCredential.vue:17
-#: src/views/dns/DNSGroupRecordManager.vue:157
-#: src/views/dns/DNSGroupRecordManager.vue:174
-#: src/views/dns/DNSGroupRecordManager.vue:1358
-#: src/views/namespace/columns.ts:9 src/views/nginx_log/NginxLogList.vue:156
-#: src/views/node/nodeColumns.tsx:83
-#: src/views/preference/components/AuthSettings/AddPasskey.vue:84
-#: src/views/preference/tabs/AccessTokens.vue:50
-#: src/views/preference/tabs/AccessTokens.vue:266
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:36
-#: src/views/site/site_list/columns.tsx:36
-#: src/views/site/site_list/SiteDuplicate.vue:84
-#: src/views/stream/columns.tsx:26
-#: src/views/stream/components/RightPanel/Basic.vue:31
-#: src/views/stream/components/StreamDuplicate.vue:76
-#: src/views/stream/StreamList.vue:123 src/views/system/Licenses.vue:13
-msgid "Name"
-msgstr "이름"
 
 #: src/components/Notification/detailRender.tsx:70
 msgid "Translating error..."
@@ -1445,7 +1540,7 @@ msgstr "일회용 코드의 %{position} 번째 숫자"
 
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/components/ExternalNotify/labels.ts:28
-#: src/views/preference/tabs/ServerSettings.vue:22
+#: src/views/preference/tabs/ServerSettings.vue:24
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:100
 msgid "Port"
 msgstr "포트"
@@ -1453,7 +1548,7 @@ msgstr "포트"
 #: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/backup/AutoBackup/AutoBackup.vue:189
 #: src/views/certificate/ACMEUser.vue:66
-#: src/views/certificate/CertificateList/certColumns.tsx:71
+#: src/views/certificate/CertificateList/certColumns.tsx:81
 #: src/views/dashboard/components/ModulesTable.vue:75
 #: src/views/dns/DDNSManager.vue:189
 #: src/views/dns/DNSGroupRecordManager.vue:142
@@ -1545,7 +1640,7 @@ msgstr "기존 복구 코드는 더 이상 사용되지 않습니다. 계정 복
 #: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:45
 #: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:69
 #: src/language/curd.ts:17
-#: src/views/certificate/components/DNSIssueCertificate.vue:246
+#: src/views/certificate/components/DNSIssueCertificate.vue:278
 #: src/views/certificate/components/SelfSignedCertForm.vue:82
 #: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:205
 msgid "Generate"
@@ -1627,7 +1722,7 @@ msgstr "복사됨"
 
 #: src/components/SensitiveString/SensitiveInput.vue:91
 #: src/components/SensitiveString/SensitiveString.vue:100
-#: src/views/backup/components/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:125
 #: src/views/preference/components/NginxHostSetup/CodeBlock.vue:51
 #: src/views/preference/tabs/AccessTokens.vue:319
 #: src/views/preference/tabs/ExternalNotify.vue:103
@@ -2579,6 +2674,18 @@ msgstr "와일드카드 도메인과 IP 주소는 동일한 인증서에 요청�
 msgid "Persist certificate record error: {0}"
 msgstr "인증서 레코드 저장 오류: {0}"
 
+#: src/constants/errors/cert.ts:51
+msgid "HTTP-01 challenge preflight failed: {0}"
+msgstr "HTTP-01 챌린지 사전 검사 실패: {0}"
+
+#: src/constants/errors/cert.ts:52
+msgid "HTTP-01 challenge route check failed for {0}: {1}"
+msgstr "{0}에 대한 HTTP-01 챌린지 경로 확인이 실패했습니다: {1}"
+
+#: src/constants/errors/cert.ts:53
+msgid "HTTP-01 challenge port {0} is unavailable: {1}"
+msgstr "HTTP-01 challenge 포트 {0}를 사용할 수 없습니다: {1}"
+
 #: src/constants/errors/cluster_sync.ts:2
 msgid "Path is not under the nginx conf dir"
 msgstr "경로가 Nginx 설정 디렉터리 안에 없습니다"
@@ -3438,30 +3545,30 @@ msgstr "이 필드는 유효한 호스트 이름이어야 합니다"
 msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "이 필드에는 문자, 유니코드 문자, 숫자 및 -_만 포함되어야 합니다."
 
-#: src/constants/index.ts:26 src/views/notification/notificationColumns.tsx:47
+#: src/constants/index.ts:29 src/views/notification/notificationColumns.tsx:47
 msgid "Info"
 msgstr "정보"
 
-#: src/constants/index.ts:27 src/views/backup/AutoBackup/AutoBackup.vue:224
+#: src/constants/index.ts:30 src/views/backup/AutoBackup/AutoBackup.vue:224
 #: src/views/backup/AutoBackup/AutoBackup.vue:249
 #: src/views/notification/notificationColumns.tsx:54
 msgid "Success"
 msgstr "성공"
 
-#: src/constants/index.ts:44 src/constants/index.ts:50
+#: src/constants/index.ts:47 src/constants/index.ts:53
 msgid "Remote"
 msgstr "원격"
 
-#: src/constants/index.ts:45
+#: src/constants/index.ts:48
 msgid "Mirror"
 msgstr "미러"
 
-#: src/constants/index.ts:54
+#: src/constants/index.ts:57
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:32
 msgid "Manual"
 msgstr "수동"
 
-#: src/constants/index.ts:55
+#: src/constants/index.ts:58
 msgid "Automatic"
 msgstr "자동"
 
@@ -3529,7 +3636,7 @@ msgstr "인증서 개인 키를 디스크에 쓰기"
 msgid "Reloading nginx"
 msgstr "Nginx 리로딩 중"
 
-#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:232
+#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:417
 msgid "Finished"
 msgstr "완료됨"
 
@@ -3693,10 +3800,11 @@ msgstr "최소한 하나의 항목을 선택해 주세요"
 msgid "Batch Modify"
 msgstr "일괄 수정"
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:113
+#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:138
 #: src/views/certificate/components/RenewCert.vue:21
+#: src/views/dns/DNSCredential.vue:79
 #: src/views/preference/NginxHostSetup.vue:84
-#: src/views/preference/store/index.ts:181
+#: src/views/preference/store/index.ts:185
 #: src/views/preference/tabs/NginxSettings.vue:138
 msgid "Save successfully"
 msgstr "성공적으로 저장되었습니다"
@@ -3793,22 +3901,51 @@ msgid "Expand"
 msgstr "확장"
 
 #: src/language/generate.ts:4
+msgid ""
+"A CAA record on the domain does not allow this certificate authority; add a "
+"CAA issue record for the certificate authority or remove the restrictive "
+"record."
+msgstr "도메인의 CAA 레코드가 이 인증 기관을 허용하지 않습니다. 인증 기관의 CAA issue 레코드를 추가하거나 제한 레코드를 제거하세요."
+
+#: src/language/generate.ts:5
+msgid ""
+"A CAA record on the domain does not authorize the selected certificate "
+"authority; add a CAA issue record for it or issuance will fail."
+msgstr ""
+"도메인의 CAA 레코드가 선택한 인증 기관을 승인하지 않습니다. 해당 인증 기관에 대한 CAA issue 레코드를 추가하지 않으면 "
+"발급이 실패합니다."
+
+#: src/language/generate.ts:6
+msgid "An existing certificate is used"
+msgstr "기존 인증서가 사용됩니다"
+
+#: src/language/generate.ts:7
+msgid "Applying the HTTP configuration for validation"
+msgstr "검증을 위해 HTTP 설정을 적용하는 중"
+
+#: src/language/generate.ts:8
 msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
 msgstr "번들로 제공되는 nginx-ui.conf 에는 WebSocket 리버스 프록시 수정 사항이 포함되어 있습니다"
 
-#: src/language/generate.ts:5
+#: src/language/generate.ts:9
 msgid "Certificate deleted, but revocation failed: %{error}"
 msgstr "인증서가 삭제되었지만 폐기에 실패했습니다: %{error}"
 
-#: src/language/generate.ts:6
+#: src/language/generate.ts:10
+msgid ""
+"Certificate issuance failed; check the log for the response of the "
+"certificate authority."
+msgstr "인증서 발급에 실패했습니다. 인증 기관의 응답을 로그에서 확인하세요."
+
+#: src/language/generate.ts:11
 msgid "Certificate not found: %{error}"
 msgstr "인증서를 찾을 수 없음: %{error}"
 
-#: src/language/generate.ts:7
+#: src/language/generate.ts:12
 msgid "Certificate revoked successfully"
 msgstr "인증서가 성공적으로 취소되었습니다"
 
-#: src/language/generate.ts:8
+#: src/language/generate.ts:13
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
 "Docker Image, please make sure the docker socket is mounted like this: `-v "
@@ -3827,7 +3964,7 @@ msgstr ""
 "대신 컨테이너 교체를 수행하여 컨테이너 종속성도 업그레이드되도록 하는 데 사용됩니다. 이 기능이 필요하지 않다면 컨테이너에 환경 변수 "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true를 추가하세요."
 
-#: src/language/generate.ts:9
+#: src/language/generate.ts:14
 msgid ""
 "Check if Nginx UI can write a temporary file to the configured Nginx "
 "directory and the external Nginx container can see it at the same path. "
@@ -3839,7 +3976,7 @@ msgstr ""
 "수 있는지 확인하십시오. Docker 소켓 접근과 ContainerName 은 제어 명령만 라우팅합니다. 구성 및 로그 디렉터리는 "
 "일치하는 경로로 두 컨테이너에 모두 마운트되어야 합니다."
 
-#: src/language/generate.ts:10
+#: src/language/generate.ts:15
 msgid ""
 "Check if the GeoLite2 database is available when log indexing is enabled. "
 "The GeoLite2 database is required for geographic IP analysis in log "
@@ -3850,11 +3987,11 @@ msgstr ""
 "지리적 IP 분석에 필요합니다. 설정 페이지에서 다운로드하거나 app.ini와 같은 디렉토리에 GeoLite2-City.mmdb를 "
 "수동으로 배치할 수 있습니다"
 
-#: src/language/generate.ts:11
+#: src/language/generate.ts:16
 msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr "conf.d 디렉터리가 nginx 구성 디렉터리 아래에 있는지 확인하세요"
 
-#: src/language/generate.ts:12
+#: src/language/generate.ts:17
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
@@ -3866,7 +4003,7 @@ msgstr ""
 "보고됩니다. 이 경우 구성 파일을 수정하여 Nginx PID 경로를 지정해야 합니다. 자세한 내용은 문서를 참조하세요: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
-#: src/language/generate.ts:13
+#: src/language/generate.ts:18
 msgid ""
 "Check if the nginx access log path exists. By default, this path is "
 "obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
@@ -3880,15 +4017,15 @@ msgstr ""
 "자세한 내용은 문서를 참조하세요: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
-#: src/language/generate.ts:14
+#: src/language/generate.ts:19
 msgid "Check if the nginx configuration directory exists"
 msgstr "nginx 설정 디렉터리가 존재하는지 확인"
 
-#: src/language/generate.ts:15
+#: src/language/generate.ts:20
 msgid "Check if the nginx configuration entry file exists"
 msgstr "nginx 구성 항목 파일이 존재하는지 확인하세요"
 
-#: src/language/generate.ts:16
+#: src/language/generate.ts:21
 msgid ""
 "Check if the nginx error log path exists. By default, this path is obtained "
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
@@ -3902,59 +4039,95 @@ msgstr ""
 "내용은 문서를 참조하세요: "
 "https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 
-#: src/language/generate.ts:17
+#: src/language/generate.ts:22
 msgid "Check if the nginx sbin path exists"
 msgstr "nginx sbin 경로가 존재하는지 확인하세요"
 
-#: src/language/generate.ts:18
+#: src/language/generate.ts:23
 msgid "Check if the nginx.conf includes the conf.d directory"
 msgstr "nginx.conf에 conf.d 디렉터리가 포함되어 있는지 확인"
 
-#: src/language/generate.ts:19
+#: src/language/generate.ts:24
 msgid "Check if the nginx.conf includes the sites-enabled directory"
 msgstr "nginx.conf에 sites-enabled 디렉토리가 포함되어 있는지 확인"
 
-#: src/language/generate.ts:20
+#: src/language/generate.ts:25
 msgid "Check if the nginx.conf includes the streams-enabled directory"
 msgstr "nginx.conf에 streams-enabled 디렉토리가 포함되어 있는지 확인"
 
-#: src/language/generate.ts:21
+#: src/language/generate.ts:26
 msgid ""
 "Check if the sites-available and sites-enabled directories are under the "
 "nginx configuration directory"
 msgstr "nginx 설정 디렉터리에 sites-available 및 sites-enabled 디렉터리가 있는지 확인"
 
-#: src/language/generate.ts:22
+#: src/language/generate.ts:27
 msgid ""
 "Check if the streams-available and streams-enabled directories are under "
 "the nginx configuration directory"
 msgstr "nginx 구성 디렉터리 아래에 streams-available 및 streams-enabled 디렉터리가 있는지 확인하세요"
 
-#: src/language/generate.ts:23
+#: src/language/generate.ts:28
+msgid "Checking the HTTP challenge route"
+msgstr "HTTP 챌린지 경로를 확인하는 중"
+
+#: src/language/generate.ts:29
 msgid "Conf.d directory exists"
 msgstr "conf.d 디렉터리가 존재합니다"
 
-#: src/language/generate.ts:24
+#: src/language/generate.ts:30
 msgid "Docker socket exists"
 msgstr "Docker 소켓이 존재합니다"
 
-#: src/language/generate.ts:25
+#: src/language/generate.ts:31
+msgid "Enabling HTTPS in the site configuration"
+msgstr "사이트 구성에서 HTTPS 활성화 중"
+
+#: src/language/generate.ts:32
 msgid "External Nginx configuration directory is shared"
 msgstr "외부 Nginx 구성 디렉터리가 공유되었습니다."
 
-#: src/language/generate.ts:26
+#: src/language/generate.ts:33
 msgid "Failed to delete certificate from database: %{error}"
 msgstr "데이터베이스에서 인증서 삭제 실패: %{error}"
 
-#: src/language/generate.ts:27
+#: src/language/generate.ts:34
 msgid "Failed to revoke certificate: %{error}"
 msgstr "인증서 취소 실패: %{error}"
 
-#: src/language/generate.ts:28
+#: src/language/generate.ts:35
 msgid "GeoLite2 database available"
 msgstr "GeoLite2 데이터베이스 사용 가능"
 
-#: src/language/generate.ts:29
+#: src/language/generate.ts:36
+msgid "HTTP challenge route is reachable"
+msgstr "HTTP 챌린지 경로에 접근 가능"
+
+#: src/language/generate.ts:37
+msgid "HTTP challenge route probe is unavailable"
+msgstr "HTTP 챌린지 경로 프로브를 사용할 수 없습니다"
+
+#: src/language/generate.ts:38
+msgid "HTTP configuration applied"
+msgstr "HTTP 구성이 적용되었습니다"
+
+#: src/language/generate.ts:39
+msgid "HTTP configuration restored"
+msgstr "HTTP 구성이 복원되었습니다"
+
+#: src/language/generate.ts:40
+msgid "HTTPS configuration planned"
+msgstr "HTTPS 구성이 계획되었습니다"
+
+#: src/language/generate.ts:41
+msgid "HTTPS enabled"
+msgstr "HTTPS 활성화됨"
+
+#: src/language/generate.ts:42
+msgid "Issuing the certificate"
+msgstr "인증서 발급 중"
+
+#: src/language/generate.ts:43
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to "
@@ -3963,51 +4136,234 @@ msgstr ""
 "로그 파일 %{log_path}은(는) 일반 파일이 아닙니다. Docker 컨테이너에서 nginx-ui를 사용 중이라면 자세한 내용은 "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html을 참조하십시오."
 
-#: src/language/generate.ts:30
+#: src/language/generate.ts:44
 msgid "Nginx PID path exists"
 msgstr "Nginx PID 경로가 존재합니다"
 
-#: src/language/generate.ts:31
+#: src/language/generate.ts:45
+msgid ""
+"Nginx UI could not listen on the HTTP challenge port; make sure no other "
+"process uses it, or change the HTTP challenge port in the certificate "
+"settings."
+msgstr ""
+"Nginx UI가 HTTP 챌린지 포트에서 대기할 수 없습니다. 다른 프로세스가 사용하고 있지 않은지 확인하거나 인증서 설정에서 "
+"HTTP 챌린지 포트를 변경하세요."
+
+#: src/language/generate.ts:46
 msgid "Nginx access log path exists"
 msgstr "Nginx 접근 로그 경로가 존재합니다"
 
-#: src/language/generate.ts:32
+#: src/language/generate.ts:47
 msgid "Nginx configuration directory exists"
 msgstr "Nginx 설정 디렉터리가 존재합니다"
 
-#: src/language/generate.ts:33
+#: src/language/generate.ts:48
 msgid "Nginx configuration entry file exists"
 msgstr "Nginx 구성 진입 파일이 존재합니다"
 
-#: src/language/generate.ts:34
+#: src/language/generate.ts:49
 msgid "Nginx error log path exists"
 msgstr "Nginx 오류 로그 경로가 존재합니다"
 
-#: src/language/generate.ts:35
+#: src/language/generate.ts:50
 msgid "Nginx sbin path exists"
 msgstr "Nginx Sbin 경로가 존재합니다"
 
-#: src/language/generate.ts:36
+#: src/language/generate.ts:51
 msgid "Nginx.conf includes conf.d directory"
 msgstr "Nginx.conf는 conf.d 디렉토리를 포함합니다"
 
-#: src/language/generate.ts:37
+#: src/language/generate.ts:52
 msgid "Nginx.conf includes sites-enabled directory"
 msgstr "Nginx.conf에 sites-enabled 디렉터리가 포함되어 있습니다"
 
-#: src/language/generate.ts:38
+#: src/language/generate.ts:53
 msgid "Nginx.conf includes streams-enabled directory"
 msgstr "Nginx.conf에는 streams-enabled 디렉토리가 포함됩니다"
 
-#: src/language/generate.ts:39
+#: src/language/generate.ts:54
+msgid "No DNS problem found"
+msgstr "DNS 문제가 발견되지 않았습니다"
+
+#: src/language/generate.ts:55
+msgid "Original site configuration restored"
+msgstr "원래 사이트 구성이 복원되었습니다"
+
+#: src/language/generate.ts:56
+msgid "Planning the HTTPS configuration"
+msgstr "HTTPS 구성을 계획하는 중"
+
+#: src/language/generate.ts:57
+msgid "Resolve the site configuration problem first"
+msgstr "먼저 사이트 구성 문제를 해결하세요"
+
+#: src/language/generate.ts:58
+msgid "Restoring the HTTP configuration"
+msgstr "HTTP 구성 복원 중"
+
+#: src/language/generate.ts:59
+msgid "Restoring the original site configuration"
+msgstr "원래 사이트 설정 복원 중"
+
+#: src/language/generate.ts:60
 msgid "Sites directory exists"
 msgstr "사이트 디렉터리가 존재합니다"
 
-#: src/language/generate.ts:40
+#: src/language/generate.ts:61
 msgid "Streams directory exists"
 msgstr "스트림 디렉터리가 존재합니다"
 
-#: src/language/generate.ts:41
+#: src/language/generate.ts:62
+msgid "The DNS challenge does not use the HTTP challenge route"
+msgstr "DNS 챌린지는 HTTP 챌린지 경로를 사용하지 않습니다"
+
+#: src/language/generate.ts:63
+msgid ""
+"The DNS lookup for the domain failed; make sure its name servers are "
+"answering."
+msgstr "도메인의 DNS 조회에 실패했습니다. 네임 서버가 응답하고 있는지 확인하세요."
+
+#: src/language/generate.ts:64
+msgid "The certificate %{name} covers the domains and is valid until %{not_after}"
+msgstr "인증서 %{name} 은 도메인을 포함하며 %{not_after} 까지 유효합니다"
+
+#: src/language/generate.ts:65
+msgid "The certificate %{name} does not cover any of the domains: %{uncovered}"
+msgstr "인증서 %{name}이(가) 다음 도메인을 포함하지 않습니다: %{uncovered}"
+
+#: src/language/generate.ts:66
+msgid ""
+"The certificate %{name} does not cover some of the domains; they are left "
+"out of HTTPS: %{uncovered}"
+msgstr "인증서 %{name}은(는) 일부 도메인을 포함하지 않습니다. 해당 도메인은 HTTPS에서 제외됩니다: %{uncovered}"
+
+#: src/language/generate.ts:67
+msgid ""
+"The certificate %{name} expired on %{not_after}; renew it or choose another "
+"certificate"
+msgstr "인증서 %{name}이(가) %{not_after}에 만료되었습니다. 갱신하거나 다른 인증서를 선택하세요"
+
+#: src/language/generate.ts:68
+msgid ""
+"The certificate authority could not connect to port 80 of this domain; open "
+"TCP port 80 in the firewall or cloud security group and make sure any NAT "
+"or port forwarding sends it to this server."
+msgstr ""
+"인증 기관이 이 도메인의 포트 80에 연결할 수 없습니다. 방화벽 또는 클라우드 보안 그룹에서 TCP 포트 80을 열고 NAT 또는 "
+"포트 전달이 이 서버로 트래픽을 전송하도록 설정하세요."
+
+#: src/language/generate.ts:69
+msgid ""
+"The certificate authority could not resolve the domain; create an A or AAAA "
+"record that points at this server and wait for DNS to propagate."
+msgstr "인증 기관이 도메인을 확인할 수 없습니다. 이 서버를 가리키는 A 또는 AAAA 레코드를 생성하고 DNS 전파를 기다리십시오."
+
+#: src/language/generate.ts:70
+msgid ""
+"The certificate authority followed a redirect, but the redirected request "
+"did not reach the challenge route; make sure the HTTPS server for this host "
+"also proxies /.well-known/acme-challenge/ to the challenge port, and that "
+"the redirect stays on the same host and on port 80 or 443."
+msgstr ""
+"인증 기관이 리디렉션을 따라갔지만 리디렉션된 요청이 챌린지 경로에 도달하지 못했습니다. 이 호스트의 HTTPS 서버가 "
+"/.well-known/acme-challenge/ 를 챌린지 포트로 프록시하도록 설정하고, 리디렉션이 동일한 호스트의 포트 80 또는 "
+"443에 유지되도록 하세요."
+
+#: src/language/generate.ts:71
+msgid ""
+"The certificate authority rate limit was reached; wait until the retry time "
+"before trying again, and test configuration changes against the staging "
+"environment."
+msgstr "인증 기관의 속도 제한에 도달했습니다. 재시도 시간까지 기다린 후 다시 시도하고, 구성 변경 사항을 스테이징 환경에서 테스트하세요."
+
+#: src/language/generate.ts:72
+msgid ""
+"The certificate authority reached a server that did not return the "
+"challenge file, and the domain resolves to an address that is not on this "
+"server; point the domain's A/AAAA records at this server, or, behind NAT or "
+"a CDN, make sure port 80 is forwarded to it."
+msgstr ""
+"인증 기관이 챌린지 파일을 반환하지 않는 서버에 도달했으며, 도메인이 이 서버에 없는 주소로 해석됩니다. 도메인의 A/AAAA 레코드가 "
+"이 서버를 가리키도록 설정하거나, NAT 또는 CDN 뒤에 있는 경우 포트 80이 이 서버로 전달되도록 하세요."
+
+#: src/language/generate.ts:73
+msgid ""
+"The certificate authority reached the server but the challenge file was not "
+"served; make sure the port 80 server block for this domain is enabled and "
+"routes /.well-known/acme-challenge/ to Nginx UI, and that no other server "
+"block or proxy answers first."
+msgstr ""
+"인증 기관이 서버에 도달했지만 챌린지 파일이 제공되지 않았습니다. 이 도메인의 포트 80 서버 블록이 활성화되어 "
+"/.well-known/acme-challenge/를 Nginx UI로 라우팅하는지, 그리고 다른 서버 블록이나 프록시가 먼저 응답하지 "
+"않는지 확인하세요."
+
+#: src/language/generate.ts:74
+msgid ""
+"The certificate authority refuses to issue a certificate for this name; use "
+"a publicly resolvable domain name that the certificate authority supports."
+msgstr "인증 기관이 이 이름에 대한 인증서 발급을 거부했습니다. 인증 기관이 지원하는 공개적으로 조회 가능한 도메인 이름을 사용하세요."
+
+#: src/language/generate.ts:75
+msgid ""
+"The certificate or key file of %{name} is missing or cannot be read; fix it "
+"in the certificate manager or choose another certificate"
+msgstr "%{name}의 인증서 또는 키 파일이 없거나 읽을 수 없습니다. 인증서 관리자에서 수정하거나 다른 인증서를 선택하세요"
+
+#: src/language/generate.ts:76
+msgid ""
+"The domain has DNS address records, but the local addresses of this server "
+"could not be compared."
+msgstr "도메인에 DNS 주소 레코드가 있지만 이 서버의 로컬 주소를 비교할 수 없었습니다."
+
+#: src/language/generate.ts:77
+msgid ""
+"The domain has an AAAA record but the site does not listen on IPv6; Let's "
+"Encrypt prefers IPv6, so add an IPv6 listen directive on port 80 or remove "
+"the AAAA record."
+msgstr ""
+"도메인에 AAAA 레코드가 있지만 사이트가 IPv6에서 수신 대기하지 않습니다. Let's Encrypt는 IPv6를 우선하므로 포트 "
+"80에 IPv6 listen 지시문을 추가하거나 AAAA 레코드를 제거하세요."
+
+#: src/language/generate.ts:78
+msgid ""
+"The domain has no A or AAAA record; create one that points at this server "
+"before requesting a certificate."
+msgstr "이 도메인에 A 또는 AAAA 레코드가 없습니다. 인증서를 요청하기 전에 이 서버를 가리키는 레코드를 생성하세요."
+
+#: src/language/generate.ts:79
+msgid "The domain resolves to an address assigned to this server."
+msgstr "도메인이 이 서버에 할당된 주소로 해석됩니다."
+
+#: src/language/generate.ts:80
+msgid ""
+"The domain resolves to an address that is not assigned to this server; this "
+"can be expected behind NAT, a load balancer, or a CDN, otherwise update the "
+"domain's A/AAAA records."
+msgstr ""
+"도메인이 이 서버에 할당되지 않은 주소로 해석됩니다. NAT, 로드 밸런서 또는 CDN 뒤에 있는 경우 이는 예상된 상황일 수 "
+"있습니다. 그렇지 않으면 도메인의 A/AAAA 레코드를 업데이트하세요."
+
+#: src/language/generate.ts:81
+msgid "The selected certificate does not exist any more; choose another certificate"
+msgstr "선택한 인증서가 더 이상 존재하지 않습니다. 다른 인증서를 선택하세요."
+
+#: src/language/generate.ts:82
+msgid "The site already serves the required HTTP configuration"
+msgstr "사이트에서 이미 필요한 HTTP 구성을 제공하고 있습니다"
+
+#: src/language/generate.ts:83
+msgid "The site configuration can be updated automatically"
+msgstr "사이트 구성을 자동으로 업데이트할 수 있습니다"
+
+#: src/language/generate.ts:84
+msgid "Using the existing certificate %{name}"
+msgstr "기존 인증서 %{name} 사용 중"
+
+#: src/language/generate.ts:85
+msgid "Verified after the site is staged"
+msgstr "사이트가 배포된 후 검증되었습니다"
+
+#: src/language/generate.ts:86
 msgid ""
 "When the container is behind an outer reverse proxy that terminates TLS "
 "(e.g. host nginx, Cloudflare), the bundled conf.d/nginx-ui.conf must trust "
@@ -4019,95 +4375,121 @@ msgstr ""
 "conf.d/nginx-ui.conf는 인바운드 X-Forwarded-Proto/Host 헤더를 신뢰해야 합니다. 그렇지 않으면 "
 "WebSocket 원본 검사가 실패합니다. /etc/nginx를 유지한 이전 배포에는 아직 수정되지 않은 버전이 남아 있을 수 있습니다."
 
-#: src/language/generate.ts:42
+#: src/language/generate.ts:87
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] ACME 사용자: %{name}, 이메일: %{email}, CA 디렉터리: %{caDir}"
 
-#: src/language/generate.ts:43
+#: src/language/generate.ts:88
 msgid "[Nginx UI] Backing up current certificate for later revocation"
 msgstr "[Nginx UI] 현재 인증서를 나중에 취소하기 위해 백업 중"
 
-#: src/language/generate.ts:44
+#: src/language/generate.ts:89
 msgid "[Nginx UI] Certificate has already expired, no revocation needed"
 msgstr "[Nginx UI] 인증서가 이미 만료되어 폐기가 필요하지 않습니다"
 
-#: src/language/generate.ts:45
+#: src/language/generate.ts:90
 msgid "[Nginx UI] Certificate renewed successfully"
 msgstr "[Nginx UI] 인증서 갱신 성공"
 
-#: src/language/generate.ts:46
+#: src/language/generate.ts:91
 msgid "[Nginx UI] Certificate successfully revoked"
 msgstr "[Nginx UI] 인증서가 성공적으로 취소되었습니다"
 
-#: src/language/generate.ts:47
+#: src/language/generate.ts:92
 msgid "[Nginx UI] Certificate was already revoked by the CA"
 msgstr "[Nginx UI] 인증서가 이미 CA에 의해 폐기되었습니다"
 
-#: src/language/generate.ts:48
+#: src/language/generate.ts:93
 msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] 서버에 인증서가 사용되었습니다, 서버 TLS 인증서 다시 불러오는 중"
 
-#: src/language/generate.ts:49
+#: src/language/generate.ts:94
+msgid "[Nginx UI] Checking HTTP01 challenge route for %{domains}"
+msgstr "[Nginx UI] %{domains}에 대한 HTTP01 챌린지 경로를 확인하는 중"
+
+#: src/language/generate.ts:95
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] CA 서버와의 통신을 용이하게 하는 클라이언트 생성"
 
-#: src/language/generate.ts:50
+#: src/language/generate.ts:96
 msgid "[Nginx UI] Environment variables cleaned"
 msgstr "[Nginx UI] 환경 변수가 정리되었습니다"
 
-#: src/language/generate.ts:51
+#: src/language/generate.ts:97
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 완료됨"
 
-#: src/language/generate.ts:52
+#: src/language/generate.ts:98
+msgid ""
+"[Nginx UI] HTTP01 challenge route cannot be verified locally for %{domain}: "
+"%{reason}"
+msgstr "[Nginx UI] %{domain}에 대한 HTTP01 챌린지 경로를 로컬에서 확인할 수 없습니다: %{reason}"
+
+#: src/language/generate.ts:99
+msgid "[Nginx UI] HTTP01 challenge route check after renewal failure: %{summary}"
+msgstr "[Nginx UI] 갱신 실패 후 HTTP01 챌린지 경로 확인: %{summary}"
+
+#: src/language/generate.ts:100
+msgid "[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}"
+msgstr "[Nginx UI] %{domain}의 HTTP01 챌린지 경로 확인에 실패했습니다: %{error}"
+
+#: src/language/generate.ts:101
+msgid "[Nginx UI] HTTP01 challenge route check skipped: %{reason}"
+msgstr "[Nginx UI] HTTP01 챌린지 경로 확인 건너뜀: %{reason}"
+
+#: src/language/generate.ts:102
+msgid "[Nginx UI] HTTP01 challenge route reachable for %{domain} via %{target}"
+msgstr "[Nginx UI] %{domain}의 HTTP01 챌린지 경로가 %{target}을(를) 통해 접근 가능"
+
+#: src/language/generate.ts:103
 msgid "[Nginx UI] Issued certificate successfully"
 msgstr "[Nginx UI] 인증서가 성공적으로 발급되었습니다"
 
-#: src/language/generate.ts:53
+#: src/language/generate.ts:104
 msgid "[Nginx UI] Obtaining certificate"
 msgstr "[Nginx UI] 인증서 획득 중"
 
-#: src/language/generate.ts:54
+#: src/language/generate.ts:105
 msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr "[Nginx UI] 인증서 해지 준비 중"
 
-#: src/language/generate.ts:55
+#: src/language/generate.ts:106
 msgid "[Nginx UI] Preparing lego configurations"
 msgstr "[Nginx UI] 레고 구성 준비 중"
 
-#: src/language/generate.ts:56
+#: src/language/generate.ts:107
 msgid "[Nginx UI] Reloading nginx"
 msgstr "[Nginx UI] Nginx 다시 로드 중"
 
-#: src/language/generate.ts:57
+#: src/language/generate.ts:108
 msgid "[Nginx UI] Revocation completed"
 msgstr "[Nginx UI] 해지 완료"
 
-#: src/language/generate.ts:58
+#: src/language/generate.ts:109
 msgid "[Nginx UI] Revoking certificate"
 msgstr "[Nginx UI] 인증서 취소 중"
 
-#: src/language/generate.ts:59
+#: src/language/generate.ts:110
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] 이전 인증서 취소 중"
 
-#: src/language/generate.ts:60
+#: src/language/generate.ts:111
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] DNS01 챌린지 공급자 설정 중"
 
-#: src/language/generate.ts:61
+#: src/language/generate.ts:112
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] HTTP01 챌린지 공급자 설정 중"
 
-#: src/language/generate.ts:62
+#: src/language/generate.ts:113
 msgid "[Nginx UI] Setting environment variables"
 msgstr "[Nginx UI] 환경 변수 설정 중"
 
-#: src/language/generate.ts:63
+#: src/language/generate.ts:114
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] 인증서 개인 키를 디스크에 기록 중"
 
-#: src/language/generate.ts:64
+#: src/language/generate.ts:115
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr "[Nginx UI] 인증서를 디스크에 작성 중"
 
@@ -4160,7 +4542,7 @@ msgid "Certificates"
 msgstr "인증서"
 
 #: src/routes/modules/certificates.ts:28 src/views/certificate/ACMEUser.vue:140
-#: src/views/certificate/components/ACMEUserSelector.vue:63
+#: src/views/certificate/components/ACMEUserSelector.vue:77
 #: src/views/certificate/index.vue:12
 msgid "ACME User"
 msgstr "ACME 사용자"
@@ -4170,12 +4552,12 @@ msgid "Certificates List"
 msgstr "인증서 목록"
 
 #: src/routes/modules/certificates.ts:44
-#: src/views/certificate/CertificateEditor.vue:148
+#: src/views/certificate/CertificateEditor.vue:352
 msgid "Modify Certificate"
 msgstr "인증서 수정"
 
 #: src/routes/modules/certificates.ts:54
-#: src/views/certificate/CertificateEditor.vue:148
+#: src/views/certificate/CertificateEditor.vue:352
 #: src/views/certificate/index.vue:17
 msgid "Import Certificate"
 msgstr "인증서 가져오기"
@@ -4297,7 +4679,7 @@ msgid "Sites List"
 msgstr "사이트 목록"
 
 #: src/routes/modules/sites.ts:33 src/views/site/index.vue:12
-#: src/views/site/site_add/SiteAdd.vue:212
+#: src/views/site/site_add/SiteAdd.vue:395
 msgid "Add Site"
 msgstr "사이트 추가"
 
@@ -4409,7 +4791,7 @@ msgstr "매월 %{day}일 %{time}에"
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
 #: src/views/site/components/SiteStatusSelect.vue:44
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:86
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:119
 #: src/views/site/site_list/columns.tsx:153 src/views/stream/columns.tsx:112
 #: src/views/stream/components/StreamEditor.vue:55
 #: src/views/user/userColumns.tsx:39
@@ -4431,10 +4813,11 @@ msgstr "대기 중"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:225
 #: src/views/backup/AutoBackup/AutoBackup.vue:250
-#: src/views/certificate/CertificateList/certColumns.tsx:87
+#: src/views/certificate/CertificateList/certColumns.tsx:97
 #: src/views/dns/DNSGroupRecordManager.vue:1185
 #: src/views/preference/components/NginxHostSetup/checks.ts:123
 #: src/views/preference/tabs/ExternalNotify.vue:73
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:366
 msgid "Failed"
 msgstr "실패"
 
@@ -4450,7 +4833,7 @@ msgstr "생성 시간"
 #: src/views/backup/AutoBackup/AutoBackup.vue:265
 #: src/views/certificate/ACMEUser.vue:115
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:65
+#: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:141
 #: src/views/dns/DNSDomainList.vue:255 src/views/dns/DNSGroupList.vue:34
 #: src/views/namespace/columns.ts:116 src/views/node/nodeColumns.tsx:188
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:47
@@ -4487,11 +4870,11 @@ msgstr "S3 리전"
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:302
 #: src/views/certificate/ACMEUser.vue:122
-#: src/views/certificate/CertificateList/certColumns.tsx:137
+#: src/views/certificate/CertificateList/certColumns.tsx:147
 #: src/views/config/configColumns.tsx:51
 #: src/views/dns/components/DNSRecordTable.vue:65
 #: src/views/dns/components/DNSRecordTable.vue:355
-#: src/views/dns/DDNSManager.vue:205 src/views/dns/DNSCredential.vue:71
+#: src/views/dns/DDNSManager.vue:205 src/views/dns/DNSCredential.vue:147
 #: src/views/dns/DNSDomainList.vue:261 src/views/dns/DNSGroupList.vue:38
 #: src/views/dns/DNSGroupRecordManager.vue:146
 #: src/views/dns/DNSGroupRecordManager.vue:1363
@@ -4700,19 +5083,19 @@ msgstr "Nginx 구성 및 Nginx UI 설정을 포함한 시스템 백업을 생성
 msgid "Create Backup"
 msgstr "백업 생성"
 
-#: src/views/backup/components/BackupCreator.vue:102
+#: src/views/backup/components/BackupCreator.vue:94
 msgid "Security Token Information"
 msgstr "보안 토큰 정보"
 
-#: src/views/backup/components/BackupCreator.vue:107
+#: src/views/backup/components/BackupCreator.vue:104
 msgid "Please save this security token, you will need it for restoration:"
 msgstr "이 보안 토큰을 저장해 두세요. 복원 시 필요합니다:"
 
-#: src/views/backup/components/BackupCreator.vue:128
+#: src/views/backup/components/BackupCreator.vue:125
 msgid "Copied!"
 msgstr "복사 완료!"
 
-#: src/views/backup/components/BackupCreator.vue:141
+#: src/views/backup/components/BackupCreator.vue:138
 msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
@@ -4811,23 +5194,28 @@ msgstr "등록 상태"
 msgid "Register"
 msgstr "등록"
 
-#: src/views/certificate/CertificateEditor.vue:87
-#: src/views/certificate/components/DNSIssueCertificate.vue:140
+#: src/views/certificate/CertificateEditor.vue:112
+#: src/views/certificate/components/DNSIssueCertificate.vue:149
 #: src/views/certificate/components/SelfSignedCertForm.vue:47
 msgid "Please enter a name for the certificate"
 msgstr "인증서 이름을 입력하세요"
 
-#: src/views/certificate/CertificateEditor.vue:91
-#: src/views/certificate/components/DNSIssueCertificate.vue:144
+#: src/views/certificate/CertificateEditor.vue:116
+#: src/views/certificate/components/DNSIssueCertificate.vue:153
 #: src/views/certificate/components/SelfSignedCertForm.vue:51
 msgid "Please enter at least one domain or IP address"
 msgstr "도메인 또는 IP 주소를 하나 이상 입력하세요"
 
-#: src/views/certificate/CertificateEditor.vue:110
+#: src/views/certificate/CertificateEditor.vue:135
 msgid "Saved certificate response is missing an ID"
 msgstr "저장된 인증서 응답에 ID 가 없습니다"
 
-#: src/views/certificate/CertificateEditor.vue:197
+#: src/views/certificate/CertificateEditor.vue:356
+msgid "This certificate is managed by Nginx UI"
+msgstr "이 인증서는 Nginx UI에서 관리됩니다"
+
+#: src/views/certificate/CertificateEditor.vue:404
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:417
 msgid "Log"
 msgstr "로그"
 
@@ -4845,53 +5233,42 @@ msgid "General Certificate"
 msgstr "일반 인증서"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:31
-#: src/views/certificate/components/DNSIssueCertificate.vue:41
+#: src/views/certificate/components/DNSIssueCertificate.vue:43
 msgid "Self-signed Certificate"
 msgstr "자체 서명 인증서"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:79
+#: src/views/certificate/CertificateList/certColumns.tsx:45
+msgid "Renewal paused"
+msgstr "갱신 일시 중지됨"
+
+#: src/views/certificate/CertificateList/certColumns.tsx:89
 msgid "Issuing..."
 msgstr "발급 중..."
 
-#: src/views/certificate/CertificateList/certColumns.tsx:83
+#: src/views/certificate/CertificateList/certColumns.tsx:93
 msgid "Issuance failed"
 msgstr "발급 실패"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:93
+#: src/views/certificate/CertificateList/certColumns.tsx:103
 msgid "Automatic migration pending"
 msgstr "자동 마이그레이션 대기 중"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:94
+#: src/views/certificate/CertificateList/certColumns.tsx:104
 msgid "Configuration mismatch"
 msgstr "구성 불일치"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:97
+#: src/views/certificate/CertificateList/certColumns.tsx:107
 msgid "Configured path: %{configured}; managed path: %{managed}"
 msgstr "구성된 경로: %{configured}; 관리 경로: %{managed}"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:111
+#: src/views/certificate/CertificateList/certColumns.tsx:121
 msgid "Unable to verify deployment"
 msgstr "배포를 검증할 수 없습니다"
 
-#: src/views/certificate/CertificateList/certColumns.tsx:131
+#: src/views/certificate/CertificateList/certColumns.tsx:141
 #: src/views/certificate/CertificateList/Certificate.vue:62
 msgid "Not After"
 msgstr "만료일"
-
-#: src/views/certificate/CertificateList/Certificate.vue:52
-#: src/views/certificate/components/CertificateBasicInfo.vue:81
-#: src/views/certificate/components/CertificateBasicInfo.vue:95
-#: src/views/certificate/components/CertificateBasicInfo.vue:107
-#: src/views/preference/tabs/ServerSettings.vue:37
-msgid "SSL Certificate Path"
-msgstr "SSL 인증서 경로"
-
-#: src/views/certificate/CertificateList/Certificate.vue:57
-#: src/views/certificate/components/CertificateBasicInfo.vue:116
-#: src/views/certificate/components/CertificateBasicInfo.vue:130
-#: src/views/certificate/components/CertificateBasicInfo.vue:142
-msgid "SSL Certificate Key Path"
-msgstr "SSL 인증서 키 경로"
 
 #: src/views/certificate/CertificateList/Certificate.vue:80
 msgid "Failed to scan certificates"
@@ -4936,28 +5313,17 @@ msgstr "선택 항목 가져오기"
 msgid "Scan"
 msgstr "스캔"
 
-#: src/views/certificate/components/ACMEUserSelector.vue:66
+#: src/views/certificate/components/ACMEUserSelector.vue:80
 msgid "System Initial User"
 msgstr "시스템 초기 사용자"
 
-#: src/views/certificate/components/AutoCertManagement.vue:35
-msgid "This certificate is managed by Nginx UI"
-msgstr "이 인증서는 Nginx UI에서 관리됩니다"
-
-#: src/views/certificate/components/AutoCertManagement.vue:45
+#: src/views/certificate/components/AutoCertManagement.vue:39
 msgid "This Auto Cert item is invalid, please remove it."
 msgstr "이 자동 인증 항목이 유효하지 않습니다. 제거해주세요."
 
-#: src/views/certificate/components/AutoCertManagement.vue:55
+#: src/views/certificate/components/AutoCertManagement.vue:49
 msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr "도메인 목록이 비어 있습니다. %{config}에 대한 자동 인증서를 다시 열어보세요"
-
-#: src/views/certificate/components/AutoCertManagement.vue:67
-#: src/views/certificate/components/SelfSignedCertManagement.vue:25
-#: src/views/site/site_edit/components/Cert/Cert.vue:59
-msgid "Certificate Status"
-msgid_plural "Certificates Status"
-msgstr[0] "인증서 상태"
 
 #: src/views/certificate/components/CertificateActions.vue:22
 #: src/views/config/components/ConfigLeftPanel.vue:274
@@ -4966,44 +5332,19 @@ msgstr[0] "인증서 상태"
 #: src/views/dns/DNSRecordManager.vue:261 src/views/nginx_log/NginxLog.vue:281
 #: src/views/preference/NginxHostSetup.vue:129
 #: src/views/preference/NginxHostSetup.vue:147
-#: src/views/site/site_add/SiteAdd.vue:325
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:203
+#: src/views/site/site_add/SiteAdd.vue:533
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:245
 #: src/views/stream/components/StreamEditor.vue:147
 msgid "Back"
 msgstr "뒤로"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:24
-#: src/views/certificate/components/CertificateContentEditor.vue:105
-msgid "Nothing to copy"
-msgstr "복사할 내용이 없습니다"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:29
-#: src/views/certificate/components/CertificateContentEditor.vue:110
-msgid "{label} copied to clipboard"
-msgstr "{label}이(가) 클립보드에 복사되었습니다"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:33
-#: src/views/certificate/components/CertificateContentEditor.vue:114
-msgid "Failed to copy to clipboard"
-msgstr "클립보드에 복사하지 못했습니다"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:49
-#: src/views/certificate/components/CertificateBasicInfo.vue:83
-#: src/views/certificate/components/CertificateBasicInfo.vue:118
+#: src/views/certificate/components/CertificateBasicInfo.vue:53
 #: src/views/preference/components/NginxHostSetup/PathField.vue:60
 #: src/views/preference/tabs/NginxSettings.vue:305
 msgid "This field is required"
 msgstr "이 필드는 필수입니다"
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:85
-msgid "The path exists, but the file is not a certificate"
-msgstr "경로는 존재하지만, 파일이 인증서가 아닙니다"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:120
-msgid "The path exists, but the file is not a private key"
-msgstr "경로는 존재하지만 파일은 개인 키가 아닙니다"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:149
+#: src/views/certificate/components/CertificateBasicInfo.vue:70
 #: src/views/certificate/components/SelfSignedCertFields.vue:74
 msgid "Sync to"
 msgstr "동기화 대상"
@@ -5012,68 +5353,105 @@ msgstr "동기화 대상"
 msgid "Failed to load nginx configuration path"
 msgstr "nginx 구성 경로를 로드하지 못했습니다"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:205
-msgid "The input is not a SSL Certificate"
-msgstr "입력이 SSL 인증서가 아닙니다"
-
-#: src/views/certificate/components/CertificateContentEditor.vue:209
-#: src/views/certificate/components/CertificateContentEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:202
+#: src/views/certificate/components/CertificateContentEditor.vue:208
 msgid "SSL Certificate Content"
 msgstr "SSL 인증서 내용"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:240
-#: src/views/certificate/components/CertificateContentEditor.vue:258
-#: src/views/certificate/components/CertificateContentEditor.vue:301
-#: src/views/certificate/components/CertificateContentEditor.vue:319
+#: src/views/certificate/components/CertificateContentEditor.vue:216
+msgid "The input is not a SSL Certificate"
+msgstr "입력이 SSL 인증서가 아닙니다"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:238
+#: src/views/certificate/components/CertificateContentEditor.vue:256
+#: src/views/certificate/components/CertificateContentEditor.vue:298
+#: src/views/certificate/components/CertificateContentEditor.vue:316
 msgid "Leave blank will not change anything"
 msgstr "비워 두면 아무것도 변경되지 않습니다"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:248
+#: src/views/certificate/components/CertificateContentEditor.vue:246
 msgid "Drop certificate file here"
 msgstr "인증서 파일을 여기에 놓으세요"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:266
-msgid "The input is not a SSL Certificate Key"
-msgstr "입력한 내용이 SSL 인증서 키가 아닙니다"
-
-#: src/views/certificate/components/CertificateContentEditor.vue:270
-#: src/views/certificate/components/CertificateContentEditor.vue:275
+#: src/views/certificate/components/CertificateContentEditor.vue:262
+#: src/views/certificate/components/CertificateContentEditor.vue:268
 msgid "SSL Certificate Key Content"
 msgstr "SSL 인증서키 콘텐츠"
 
-#: src/views/certificate/components/CertificateContentEditor.vue:309
+#: src/views/certificate/components/CertificateContentEditor.vue:276
+msgid "The input is not a SSL Certificate Key"
+msgstr "입력한 내용이 SSL 인증서 키가 아닙니다"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:306
 msgid "Drop private key file here"
 msgstr "개인 키 파일을 여기에 놓으세요"
 
-#: src/views/certificate/components/CertificateDownload.vue:37
+#: src/views/certificate/components/CertificateDownload.vue:61
 msgid "Certificate content and private key content cannot be empty"
 msgstr "인증서 내용과 개인 키 내용은 비워둘 수 없습니다"
 
-#: src/views/certificate/components/CertificateDownload.vue:42
+#: src/views/certificate/components/CertificateDownload.vue:66
+msgid "Please select at least one download format"
+msgstr "다운로드 형식을 하나 이상 선택하세요"
+
+#: src/views/certificate/components/CertificateDownload.vue:71
 msgid "Certificate name cannot be empty"
 msgstr "인증서 이름은 비워둘 수 없습니다"
 
-#: src/views/certificate/components/CertificateDownload.vue:54
+#: src/views/certificate/components/CertificateDownload.vue:83
 #: src/views/certificate/components/CertificateFileUpload.vue:88
 msgid "Invalid certificate format"
 msgstr "잘못된 인증서 형식"
 
-#: src/views/certificate/components/CertificateDownload.vue:59
+#: src/views/certificate/components/CertificateDownload.vue:88
 #: src/views/certificate/components/CertificateFileUpload.vue:94
 msgid "Invalid private key format"
 msgstr "잘못된 개인 키 형식"
 
-#: src/views/certificate/components/CertificateDownload.vue:71
+#: src/views/certificate/components/CertificateDownload.vue:100
+msgid "Certificate ID cannot be empty"
+msgstr "인증서 ID는 비어 있을 수 없습니다"
+
+#: src/views/certificate/components/CertificateDownload.vue:112
 msgid "Certificate files downloaded successfully"
 msgstr "인증서 파일이 성공적으로 다운로드되었습니다"
 
-#: src/views/certificate/components/CertificateDownload.vue:75
+#: src/views/certificate/components/CertificateDownload.vue:116
 msgid "Failed to download certificate files"
 msgstr "인증서 파일 다운로드 실패"
 
-#: src/views/certificate/components/CertificateDownload.vue:94
+#: src/views/certificate/components/CertificateDownload.vue:135
+#: src/views/certificate/components/CertificateDownload.vue:140
 msgid "Download Certificate Files"
 msgstr "인증서 파일 다운로드"
+
+#: src/views/certificate/components/CertificateDownload.vue:145
+msgid "Download Format"
+msgstr "다운로드 형식"
+
+#: src/views/certificate/components/CertificateDownload.vue:149
+msgid "Certificate (.crt)"
+msgstr "인증서 (.crt)"
+
+#: src/views/certificate/components/CertificateDownload.vue:152
+msgid "Private Key (.key)"
+msgstr "개인 키 (.key)"
+
+#: src/views/certificate/components/CertificateDownload.vue:155
+msgid "PFX (.pfx, CRT + KEY for Windows import)"
+msgstr "PFX (.pfx, Windows 가져오기용 CRT + KEY)"
+
+#: src/views/certificate/components/CertificateDownload.vue:163
+msgid "PFX Password"
+msgstr "PFX 비밀번호"
+
+#: src/views/certificate/components/CertificateDownload.vue:164
+msgid "Leave empty if you do not want to set a password"
+msgstr "비밀번호를 설정하지 않으려면 비워 두세요"
+
+#: src/views/certificate/components/CertificateDownload.vue:168
+msgid "Enter PFX password"
+msgstr "PFX 비밀번호 입력"
 
 #: src/views/certificate/components/CertificateFileUpload.vue:45
 #: src/views/certificate/components/CertificateFileUpload.vue:121
@@ -5113,45 +5491,50 @@ msgstr "%{type} 파일 업로드"
 msgid "or drag file to editor below"
 msgstr "또는 파일을 아래 편집기로 드래그하세요"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:33
+#: src/views/certificate/components/DNSIssueCertificate.vue:35
 msgid "Wildcard Certificate"
 msgstr "와일드카드 인증서"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:37
+#: src/views/certificate/components/DNSIssueCertificate.vue:39
 msgid "Custom Domains Certificate"
 msgstr "사용자 정의 도메인 인증서"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:105
+#: src/views/certificate/components/DNSIssueCertificate.vue:112
 msgid "Please select a DNS credential"
 msgstr "DNS 자격 증명을 선택하세요"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:112
+#: src/views/certificate/components/DNSIssueCertificate.vue:119
 msgid "Please enter at least one domain"
 msgstr "최소 하나의 도메인을 입력해 주세요"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:126
+#: src/views/certificate/components/DNSIssueCertificate.vue:133
 msgid "Issued successfully"
 msgstr "발급 성공"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:156
+#: src/views/certificate/components/DNSIssueCertificate.vue:138
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:185
+msgid "Fail to obtain certificate"
+msgstr "인증서 획득 실패"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:165
 #: src/views/certificate/components/SelfSignedCertForm.vue:63
 msgid "Self-signed certificate generated"
 msgstr "자체 서명 인증서 생성됨"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:162
+#: src/views/certificate/components/DNSIssueCertificate.vue:171
 #: src/views/certificate/components/SelfSignedCertForm.vue:69
 msgid "Failed to generate self-signed certificate"
 msgstr "자체 서명 인증서 생성 실패"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:175
+#: src/views/certificate/components/DNSIssueCertificate.vue:184
 msgid "Issue Certificate"
 msgstr "인증서 발급"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:184
+#: src/views/certificate/components/DNSIssueCertificate.vue:194
 msgid "Certificate Type"
 msgstr "인증서 유형"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:192
+#: src/views/certificate/components/DNSIssueCertificate.vue:202
 #: src/views/dns/DDNSManager.vue:173
 #: src/views/dns/DNSGroupRecordManager.vue:153
 #: src/views/dns/DNSGroupRecordManager.vue:170
@@ -5159,99 +5542,118 @@ msgstr "인증서 유형"
 msgid "Domain"
 msgstr "도메인"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:196
+#: src/views/certificate/components/DNSIssueCertificate.vue:207
 msgid "Enter your domain"
 msgstr "도메인을 입력하세요"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:202
+#: src/views/certificate/components/DNSIssueCertificate.vue:214
 msgid "Custom Domains"
 msgstr "사용자 정의 도메인"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:205
+#: src/views/certificate/components/DNSIssueCertificate.vue:217
 #: src/views/certificate/components/SelfSignedCertFields.vue:45
 msgid "Enter domain name"
 msgstr "도메인 이름 입력"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:206
+#: src/views/certificate/components/DNSIssueCertificate.vue:218
 #: src/views/certificate/components/SelfSignedCertFields.vue:46
 msgid "Add Domain"
 msgstr "도메인 추가"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:209
+#: src/views/certificate/components/DNSIssueCertificate.vue:221
 msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
 msgstr "선택한 모든 서브도메인은 동일한 DNS 공급자에 속해야 합니다. 그렇지 않으면 인증서 신청이 실패합니다."
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:232
+#: src/views/certificate/components/DNSIssueCertificate.vue:238
+msgid "Challenge Method Reminder"
+msgstr "챌린지 방식 안내"
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:242
+msgid ""
+"If you use HTTP-01 challenge, the DNS credential field is hidden and not "
+"required."
+msgstr "HTTP-01 챌린지를 사용하는 경우 DNS 자격 증명 필드는 숨겨지며 필수 사항이 아닙니다."
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:245
+msgid "If you use DNS-01 challenge, you must select a DNS credential."
+msgstr "DNS-01 챌린지를 사용하는 경우 DNS 자격 증명을 선택해야 합니다."
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:248
+msgid "Wildcard certificates usually require DNS-01 challenge."
+msgstr "와일드카드 인증서는 일반적으로 DNS-01 챌린지가 필요합니다."
+
+#: src/views/certificate/components/DNSIssueCertificate.vue:264
 #: src/views/install/components/InstallView.vue:206
 #: src/views/preference/components/NginxHostSetup/Wizard.vue:97
 #: src/views/site/components/SiteStatusSelect.vue:202
-#: src/views/site/site_add/SiteAdd.vue:311
-#: src/views/site/site_add/SiteAdd.vue:319
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:261
+#: src/views/site/site_add/SiteAdd.vue:518
+#: src/views/site/site_add/SiteAdd.vue:526
 #: src/views/site/site_list/SiteList.vue:292
 msgid "Next"
 msgstr "다음"
 
-#: src/views/certificate/components/DNSIssueCertificate.vue:268
+#: src/views/certificate/components/DNSIssueCertificate.vue:300
 #: src/views/certificate/components/RetryCert.vue:53
 #: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:103
 #: src/views/preference/NginxHostSetup.vue:144
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:278
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:775
 msgid "Retry"
 msgstr "재시도"
 
-#: src/views/certificate/components/RemoveCert.vue:46
-#: src/views/certificate/components/RemoveCert.vue:130
+#: src/views/certificate/components/RemoveCert.vue:47
+#: src/views/certificate/components/RemoveCert.vue:131
 msgid "Revoke"
 msgstr "취소"
 
-#: src/views/certificate/components/RemoveCert.vue:47
+#: src/views/certificate/components/RemoveCert.vue:48
 msgid "Please type \"Revoke\" to confirm"
 msgstr "확인하려면 \"Revoke\"를 입력하세요"
 
-#: src/views/certificate/components/RemoveCert.vue:73
-#: src/views/certificate/components/RemoveCert.vue:95
+#: src/views/certificate/components/RemoveCert.vue:74
+#: src/views/certificate/components/RemoveCert.vue:96
 msgid "Certificate removed successfully"
 msgstr "인증서가 성공적으로 제거되었습니다"
 
-#: src/views/certificate/components/RemoveCert.vue:82
+#: src/views/certificate/components/RemoveCert.vue:83
 msgid "Failed to revoke certificate"
 msgstr "인증서 취소에 실패했습니다"
 
-#: src/views/certificate/components/RemoveCert.vue:88
+#: src/views/certificate/components/RemoveCert.vue:89
 msgid "WebSocket connection error"
 msgstr "WebSocket 연결 오류"
 
-#: src/views/certificate/components/RemoveCert.vue:98
+#: src/views/certificate/components/RemoveCert.vue:99
 msgid "Failed to delete certificate"
 msgstr "인증서 삭제 실패"
 
-#: src/views/certificate/components/RemoveCert.vue:127
+#: src/views/certificate/components/RemoveCert.vue:128
 msgid "Delete Certificate"
 msgstr "인증서 삭제"
 
-#: src/views/certificate/components/RemoveCert.vue:138
+#: src/views/certificate/components/RemoveCert.vue:139
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
 msgstr "이 작업은 데이터베이스에서만 인증서를 제거합니다. 파일 시스템의 인증서 파일은 삭제되지 않습니다."
 
-#: src/views/certificate/components/RemoveCert.vue:144
+#: src/views/certificate/components/RemoveCert.vue:145
 msgid "Revoke this certificate"
 msgstr "이 인증서 취소"
 
-#: src/views/certificate/components/RemoveCert.vue:148
+#: src/views/certificate/components/RemoveCert.vue:149
 msgid "Delete the certificate even if revocation fails"
 msgstr "해제에 실패해도 인증서를 삭제합니다"
 
-#: src/views/certificate/components/RemoveCert.vue:157
+#: src/views/certificate/components/RemoveCert.vue:158
 msgid ""
 "Revoking a certificate will affect any services currently using it. This "
 "action cannot be undone."
 msgstr "인증서를 취소하면 현재 이를 사용 중인 모든 서비스에 영향을 미칩니다. 이 작업은 취소할 수 없습니다."
 
-#: src/views/certificate/components/RemoveCert.vue:161
+#: src/views/certificate/components/RemoveCert.vue:162
 msgid "To confirm revocation, please type \"Revoke\" in the field below:"
 msgstr "취소를 확인하려면 아래 필드에 \"취소\"를 입력하세요:"
 
@@ -5259,13 +5661,13 @@ msgstr "취소를 확인하려면 아래 필드에 \"취소\"를 입력하세요
 msgid "Renew successfully"
 msgstr "성공적으로 갱신됨"
 
-#: src/views/certificate/components/RenewCert.vue:44
-#: src/views/certificate/components/RenewCert.vue:51
+#: src/views/certificate/components/RenewCert.vue:43
+#: src/views/certificate/components/RenewCert.vue:50
 msgid "Renew Certificate"
 msgstr "인증서 갱신"
 
-#: src/views/certificate/components/RenewCert.vue:47
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:102
+#: src/views/certificate/components/RenewCert.vue:46
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:153
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert가 실행 중입니다. 잠시 기다려 주세요..."
 
@@ -5291,6 +5693,7 @@ msgstr "인증서 이름 입력"
 #: src/views/certificate/components/SelfSignedCertFields.vue:42
 #: src/views/dns/DNSGroupList.vue:31 src/views/dns/DNSGroupList.vue:267
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:75
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:472
 msgid "Domains"
 msgstr "도메인"
 
@@ -5341,7 +5744,7 @@ msgid "Format successfully"
 msgstr "형식화 성공"
 
 #: src/views/config/components/ConfigLeftPanel.vue:255
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:105
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:138
 #: src/views/stream/components/StreamEditor.vue:68
 msgid "History"
 msgstr "기록"
@@ -6375,7 +6778,7 @@ msgstr "OS:"
 #: src/views/dns/components/DNSRecordFilter.vue:48
 #: src/views/preference/components/ExternalNotify/labels.ts:23
 #: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:196
-#: src/views/preference/tabs/ServerSettings.vue:19
+#: src/views/preference/tabs/ServerSettings.vue:21
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:93
 msgid "Host"
 msgstr "호스트"
@@ -6628,7 +7031,7 @@ msgid ""
 "unchanged in DNS."
 msgstr "IPv6 전용 모드에서는 동일한 이름의 A 레코드가 관리되지 않습니다. DNS에서 변경되지 않고 그대로 유지됩니다."
 
-#: src/views/dns/DDNSManager.vue:184 src/views/dns/DNSCredential.vue:26
+#: src/views/dns/DDNSManager.vue:184 src/views/dns/DNSCredential.vue:102
 #: src/views/dns/DNSDomainList.vue:227 src/views/dns/DNSDomainList.vue:248
 #: src/views/preference/tabs/OpenAISettings.vue:137
 msgid "Provider"
@@ -6636,7 +7039,7 @@ msgstr "제공자"
 
 #: src/views/dns/DDNSManager.vue:193
 #: src/views/preference/tabs/HealthCheckSettings.vue:27
-#: src/views/preference/tabs/HealthCheckSettings.vue:42
+#: src/views/preference/tabs/HealthCheckSettings.vue:44
 #: src/views/preference/tabs/LogrotateSettings.vue:22
 msgid "Interval"
 msgstr "간격"
@@ -6731,23 +7134,35 @@ msgstr "업데이트할 A/AAAA 레코드를 선택하세요"
 msgid "Interval (seconds)"
 msgstr "간격(초)"
 
-#: src/views/dns/DNSCredential.vue:52
+#: src/views/dns/DNSCredential.vue:60
+msgid "Name cannot be empty"
+msgstr "이름은 비워둘 수 없습니다"
+
+#: src/views/dns/DNSCredential.vue:65
+msgid "Please select DNS provider"
+msgstr "DNS 제공업체를 선택해 주세요"
+
+#: src/views/dns/DNSCredential.vue:128 src/views/dns/DNSCredential.vue:213
 msgid "Configuration"
 msgstr "구성"
 
-#: src/views/dns/DNSCredential.vue:79
+#: src/views/dns/DNSCredential.vue:156
 msgid "DNS Credentials"
 msgstr "DNS 인증 정보"
 
-#: src/views/dns/DNSCredential.vue:93
+#: src/views/dns/DNSCredential.vue:172 src/views/dns/DNSCredential.vue:200
 msgid ""
 "Please fill in the API authentication credentials provided by your DNS "
 "provider."
 msgstr "DNS 제공자가 제공한 API 인증 자격 증명을 입력해주세요."
 
-#: src/views/dns/DNSCredential.vue:96
+#: src/views/dns/DNSCredential.vue:175 src/views/dns/DNSCredential.vue:203
 msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "아래의 시간 설정 단위는 모두 초 단위임을 유의해주세요."
+
+#: src/views/dns/DNSCredential.vue:184
+msgid "Modify DNS Credential"
+msgstr "DNS 자격 증명 수정"
 
 #: src/views/dns/DNSDomainList.vue:110
 msgid "DNS record management only"
@@ -7048,6 +7463,7 @@ msgid "Succeeded"
 msgstr "성공"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1186
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:368
 msgid "Skipped"
 msgstr "건너뜀"
 
@@ -8047,6 +8463,7 @@ msgstr "로그 내용 검색..."
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:535
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:452
 msgid "Method"
 msgstr "방법"
 
@@ -8069,7 +8486,7 @@ msgstr "브라우저 입력 또는 선택"
 #: src/views/nginx_log/structured/components/SearchFilters.vue:153
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:292
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:540
-#: src/views/system/Upgrade.vue:269
+#: src/views/system/Upgrade.vue:268
 msgid "OS"
 msgstr "운영 체제"
 
@@ -8252,13 +8669,13 @@ msgstr "검색 초기화"
 msgid "Log file not available"
 msgstr "로그 파일을 사용할 수 없음"
 
-#: src/views/node/BatchUpgrader.vue:19 src/views/node/BatchUpgrader.vue:227
-#: src/views/system/Upgrade.vue:31 src/views/system/Upgrade.vue:329
+#: src/views/node/BatchUpgrader.vue:19 src/views/node/BatchUpgrader.vue:226
+#: src/views/system/Upgrade.vue:31 src/views/system/Upgrade.vue:328
 msgid "Stable"
 msgstr "안정적"
 
-#: src/views/node/BatchUpgrader.vue:23 src/views/node/BatchUpgrader.vue:233
-#: src/views/system/Upgrade.vue:35 src/views/system/Upgrade.vue:335
+#: src/views/node/BatchUpgrader.vue:23 src/views/node/BatchUpgrader.vue:232
+#: src/views/system/Upgrade.vue:35 src/views/system/Upgrade.vue:334
 msgid "Pre-release"
 msgstr "사전 출시"
 
@@ -8278,27 +8695,23 @@ msgstr "%{node}에서 Nginx UI 업그레이드 성공 🎉"
 msgid "Batch Upgrade"
 msgstr "배치 업그레이드"
 
-#: src/views/node/BatchUpgrader.vue:176 src/views/system/Upgrade.vue:282
+#: src/views/node/BatchUpgrader.vue:176 src/views/system/Upgrade.vue:281
 msgid "Channel"
 msgstr "채널"
 
-#: src/views/node/BatchUpgrader.vue:190 src/views/system/Upgrade.vue:263
-msgid "Get release information error"
-msgstr "릴리스 정보 가져오기 오류"
-
-#: src/views/node/BatchUpgrader.vue:195
+#: src/views/node/BatchUpgrader.vue:194
 msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "이 작업은 %{nodeNames}의 Nginx UI를 %{version}으로 업그레이드하거나 재설치합니다."
 
-#: src/views/node/BatchUpgrader.vue:201 src/views/system/Upgrade.vue:305
+#: src/views/node/BatchUpgrader.vue:200 src/views/system/Upgrade.vue:304
 msgid "Dry run mode enabled"
 msgstr "드라이런 모드 활성화됨"
 
-#: src/views/node/BatchUpgrader.vue:244 src/views/system/Upgrade.vue:347
+#: src/views/node/BatchUpgrader.vue:243 src/views/system/Upgrade.vue:346
 msgid "View on GitHub"
 msgstr "GitHub에서 보기"
 
-#: src/views/node/BatchUpgrader.vue:254
+#: src/views/node/BatchUpgrader.vue:253
 msgid "Perform"
 msgstr "실행"
 
@@ -8903,39 +9316,39 @@ msgstr "상태가 성공적으로 업데이트되었습니다"
 msgid "Failed to update status"
 msgstr "상태 업데이트 실패"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:172
 msgid "Invalid JSON at line"
 msgstr "잘못된 JSON(줄"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:153
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:172
 msgid "column"
 msgstr "열"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:212
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:245
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:214
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:247
 msgid "Notification title text"
 msgstr "알림 제목 텍스트"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:216
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:218
 msgid "Notification content text"
 msgstr "알림 내용 텍스트"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:220
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:253
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:222
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:255
 msgid "Notification type code, such as error, warning, info, or success"
 msgstr "알림 유형 코드 (예: error, warning, info, success)"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:224
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:261
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:226
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:263
 msgid "Localized notification type label for the current language"
 msgstr "현재 언어로 현지화된 알림 유형 레이블"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:228
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:265
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:230
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:267
 msgid "Translation key of the notification type, such as Error or Warning"
 msgstr "알림 유형의 번역 키 (예: Error 또는 Warning)"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:232
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:234
 msgid ""
 "Teams notification level color enum: Error=Attention, Warning=Warning, "
 "Info=Accent, Success=Good"
@@ -8943,42 +9356,42 @@ msgstr ""
 "Teams 알림 수준 색상 열거형: Error=Attention, Warning=Warning, Info=Accent, "
 "Success=Good"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:236
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:269
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:238
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:271
 msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
 msgstr "WebAuthn RPOrigins 및 경로에서 생성된 전체 이동 URL"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:249
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:251
 msgid "Notification content text (HTML-escaped in the default template)"
 msgstr "알림 내용 텍스트 (기본 템플릿에서 HTML 이스케이프 처리됨)"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:257
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:259
 msgid "Email notification level color, fixed to #1f2937"
 msgstr "이메일 알림 수준 색상, #1f2937 로 고정됨"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:279
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:281
 msgid "Please select a notification type"
 msgstr "알림 유형을 선택해 주세요"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:295
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:297
 #: src/views/preference/tabs/ExternalNotify.vue:37
 msgid "Test message sent successfully"
 msgstr "테스트 메시지가 성공적으로 전송되었습니다"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:326
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:339
 msgid "Microsoft Docs"
 msgstr "Microsoft 문서"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:335
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:348
 msgid "Teams Request Example"
 msgstr "Teams 요청 예시"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:355
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:379
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:368
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:392
 msgid "Available placeholders"
 msgstr "사용 가능한 플레이스홀더"
 
-#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:400
+#: src/views/preference/components/ExternalNotify/ExternalNotifyEditor.vue:413
 msgid "Send test message"
 msgstr "테스트 메시지 전송"
 
@@ -9132,7 +9545,7 @@ msgid "WeCom"
 msgstr "위컴"
 
 #: src/views/preference/components/NginxHostSetup/CheckPanel.vue:77
-#: src/views/system/Upgrade.vue:279
+#: src/views/system/Upgrade.vue:278
 msgid "Check again"
 msgstr "다시 확인"
 
@@ -10570,19 +10983,19 @@ msgid ""
 "this value."
 msgstr "인증서의 남은 유효 기간이 이 값 이하일 때 인증서를 갱신합니다."
 
-#: src/views/preference/tabs/CertSettings.vue:41
+#: src/views/preference/tabs/CertSettings.vue:44
 msgid "Days"
 msgstr "일"
 
-#: src/views/preference/tabs/CertSettings.vue:46
+#: src/views/preference/tabs/CertSettings.vue:48
 msgid "Set the recursive nameservers to override the systems nameservers "
 msgstr "재귀 네임 서버를 설정하여 시스템 네임 서버를 재정의합니다"
 
-#: src/views/preference/tabs/CertSettings.vue:50
+#: src/views/preference/tabs/CertSettings.vue:52
 msgid "Recursive Nameservers"
 msgstr "재귀적 네임서버"
 
-#: src/views/preference/tabs/CertSettings.vue:79
+#: src/views/preference/tabs/CertSettings.vue:81
 msgid "Are you sure you want to remove this item?"
 msgstr "이 항목을 제거하시겠습니까?"
 
@@ -10649,17 +11062,17 @@ msgstr "사이트 상태 검사 사용"
 msgid "Concurrency"
 msgstr "동시 실행 수"
 
-#: src/views/preference/tabs/HealthCheckSettings.vue:31
-#: src/views/preference/tabs/HealthCheckSettings.vue:46
+#: src/views/preference/tabs/HealthCheckSettings.vue:34
+#: src/views/preference/tabs/HealthCheckSettings.vue:51
 msgid "Seconds"
 msgstr "초"
 
-#: src/views/preference/tabs/HealthCheckSettings.vue:37
+#: src/views/preference/tabs/HealthCheckSettings.vue:39
 #: src/views/site/site_list/columns.tsx:90 src/views/stream/columns.tsx:46
 msgid "Proxy Targets"
 msgstr "프록시 대상"
 
-#: src/views/preference/tabs/HealthCheckSettings.vue:39
+#: src/views/preference/tabs/HealthCheckSettings.vue:41
 msgid "Enable upstream health checks"
 msgstr "업스트림 상태 검사 사용"
 
@@ -10692,7 +11105,7 @@ msgstr ""
 msgid "Command"
 msgstr "명령어"
 
-#: src/views/preference/tabs/LogrotateSettings.vue:26
+#: src/views/preference/tabs/LogrotateSettings.vue:29
 msgid "Minutes"
 msgstr "분"
 
@@ -11015,38 +11428,54 @@ msgstr "코드 완성 모델"
 msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr "코드 완성에 사용되는 모델입니다. 설정되지 않은 경우 채팅 모델이 사용됩니다."
 
-#: src/views/preference/tabs/ServerSettings.vue:25
+#: src/views/preference/tabs/ServerSettings.vue:27
+msgid "Unix Socket"
+msgstr "Unix 소켓"
+
+#: src/views/preference/tabs/ServerSettings.vue:27
+msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgstr "Nginx UI는 TCP 호스트 및 포트 대신 이 Unix 소켓에서 리스닝합니다."
+
+#: src/views/preference/tabs/ServerSettings.vue:30
 msgid "Run Mode"
 msgstr "실행 모드"
 
-#: src/views/preference/tabs/ServerSettings.vue:30
+#: src/views/preference/tabs/ServerSettings.vue:35
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:315
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:776
 msgid "Enable HTTPS"
 msgstr "HTTPS 활성화"
 
-#: src/views/preference/tabs/ServerSettings.vue:41
+#: src/views/preference/tabs/ServerSettings.vue:46
 msgid "SSL Key Path"
 msgstr "SSL 키 경로"
 
-#: src/views/preference/tabs/ServerSettings.vue:47
+#: src/views/preference/tabs/ServerSettings.vue:52
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
 "reverse proxy, please configure the protocol separately in the reverse "
 "proxy."
 msgstr "프로토콜 설정은 직접 연결할 때만 적용됩니다. 리버스 프록시를 사용하는 경우 리버스 프록시에서 별도로 프로토콜을 구성하세요."
 
-#: src/views/preference/tabs/ServerSettings.vue:52
+#: src/views/preference/tabs/ServerSettings.vue:57
 msgid "Enable HTTP/2"
 msgstr "HTTP/2 활성화"
 
-#: src/views/preference/tabs/ServerSettings.vue:52
+#: src/views/preference/tabs/ServerSettings.vue:57
 msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
 msgstr "멀티플렉싱 및 서버 푸시 기능을 갖춘 HTTP/2 지원을 활성화합니다"
 
-#: src/views/preference/tabs/ServerSettings.vue:56
+#: src/views/preference/tabs/ServerSettings.vue:62
 msgid "Enable HTTP/3"
 msgstr "HTTP/3 활성화"
 
-#: src/views/preference/tabs/ServerSettings.vue:56
+#: src/views/preference/tabs/ServerSettings.vue:64
+msgid ""
+"HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on "
+"a Unix socket."
+msgstr "HTTP/3 은 UDP 리스너가 필요하며, Nginx UI 가 Unix socket 에서 리스닝하는 동안에는 사용할 수 없습니다."
+
+#: src/views/preference/tabs/ServerSettings.vue:65
 msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
 msgstr "최상의 성능을 위해 QUIC 프로토콜 기반의 HTTP/3 지원을 활성화합니다"
 
@@ -11099,11 +11528,12 @@ msgid "For example: expected recovery plan or incident reference"
 msgstr "예시: 예상 복구 계획 또는 인시던트 참조"
 
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:23
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:440
 msgid "HTTPS"
 msgstr "HTTPS"
 
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:48
-#: src/views/site/site_add/SiteAdd.vue:244
+#: src/views/site/site_add/SiteAdd.vue:429
 msgid "Configuration Name"
 msgstr "구성 이름"
 
@@ -11148,7 +11578,7 @@ msgid "Status Code"
 msgstr "상태 코드"
 
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:155
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:97
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:78
 msgid "Enable TLS"
 msgstr "TLS 활성화"
 
@@ -11158,7 +11588,7 @@ msgstr "HTTP 를 HTTPS 로 리다이렉트"
 
 #: src/views/site/components/SiteStatusSelect.vue:48
 #: src/views/site/components/SiteStatusSelect.vue:181
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:92
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:125
 #: src/views/site/site_list/columns.tsx:157
 #: src/views/site/site_list/SiteList.vue:158
 #: src/views/site/site_list/SiteList.vue:325
@@ -11166,7 +11596,7 @@ msgid "Maintenance"
 msgstr "유지보수"
 
 #: src/views/site/components/SiteStatusSelect.vue:80
-#: src/views/site/site_add/SiteAdd.vue:113
+#: src/views/site/site_add/SiteAdd.vue:260
 #: src/views/stream/components/StreamStatusSelect.vue:27
 msgid "Enabled successfully"
 msgstr "성공적으로 활성화됨"
@@ -11279,7 +11709,7 @@ msgid "Select DNS domain"
 msgstr "DNS 도메인 선택"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:332
-#: src/views/site/site_add/SiteAdd.vue:230
+#: src/views/site/site_add/SiteAdd.vue:415
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:660
 msgid "DNS Record"
 msgstr "DNS 레코드"
@@ -11353,130 +11783,153 @@ msgstr "사용 가능한 DNS 도메인이 없습니다"
 msgid "Please add a DNS domain first in the DNS management section."
 msgstr "DNS 관리 섹션에서 먼저 DNS 도메인을 추가하세요"
 
-#: src/views/site/site_add/SiteAdd.vue:70
-#: src/views/site/site_add/SiteAdd.vue:285
-msgid "Issue a certificate to enable TLS before continuing."
-msgstr "계속하기 전에 TLS 활성화를 위해 인증서를 발급하십시오."
+#: src/views/site/site_add/SiteAdd.vue:105
+msgid "Edit configuration file"
+msgstr "설정 파일 편집"
 
-#: src/views/site/site_add/SiteAdd.vue:194
+#: src/views/site/site_add/SiteAdd.vue:110
+msgid "Save and enable the site with the HTTPS server block it already has."
+msgstr "이미 가지고 있는 HTTPS 서버 블록으로 사이트를 저장하고 활성화합니다."
+
+#: src/views/site/site_add/SiteAdd.vue:113
+msgid "Save and enable"
+msgstr "저장 및 활성화"
+
+#: src/views/site/site_add/SiteAdd.vue:167
+msgid ""
+"The previous draft %{name} is enabled, so it was kept. Remove it from the "
+"site list if you no longer need it."
+msgstr "이전 초안 %{name}이(가) 활성화되어 있어 유지되었습니다. 더 이상 필요하지 않으면 사이트 목록에서 제거하세요."
+
+#: src/views/site/site_add/SiteAdd.vue:173
+msgid "Removed the previous draft %{name}"
+msgstr "이전 초안 %{name}을(를) 제거했습니다"
+
+#: src/views/site/site_add/SiteAdd.vue:176
+msgid ""
+"The previous draft %{name} could not be removed. Remove it from the site "
+"list if you no longer need it."
+msgstr "이전 초안 %{name}을(를) 제거할 수 없습니다. 더 이상 필요하지 않다면 사이트 목록에서 제거하세요."
+
+#: src/views/site/site_add/SiteAdd.vue:274
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:44
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:721
+msgid "HTTPS is enabled"
+msgstr "HTTPS가 활성화되었습니다"
+
+#: src/views/site/site_add/SiteAdd.vue:377
 msgid "DNS record selected: %{name}"
 msgstr "DNS 레코드 선택됨: %{name}"
 
-#: src/views/site/site_add/SiteAdd.vue:202
+#: src/views/site/site_add/SiteAdd.vue:385
 msgid "DNS record created and linked successfully"
 msgstr "DNS 레코드가 성공적으로 생성 및 연결되었습니다"
 
-#: src/views/site/site_add/SiteAdd.vue:217
-#: src/views/site/site_edit/components/QuickSetupModal.vue:76
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:114
+#: src/views/site/site_add/SiteAdd.vue:401
+#: src/views/site/site_edit/components/QuickSetupModal.vue:139
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:147
 msgid "Quick Setup"
 msgstr "빠른 설정"
 
-#: src/views/site/site_add/SiteAdd.vue:218
+#: src/views/site/site_add/SiteAdd.vue:402
 msgid "Advanced"
 msgstr "고급"
 
-#: src/views/site/site_add/SiteAdd.vue:229
+#: src/views/site/site_add/SiteAdd.vue:414
 msgid "Base information"
 msgstr "기본 정보"
 
-#: src/views/site/site_add/SiteAdd.vue:231
+#: src/views/site/site_add/SiteAdd.vue:416
 msgid "Configure SSL"
 msgstr "SSL 구성하기"
 
-#: src/views/site/site_add/SiteAdd.vue:254
+#: src/views/site/site_add/SiteAdd.vue:439
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:543
 msgid "The parameter of server_name is required"
 msgstr "server_name 매개변수가 필요합니다"
 
-#: src/views/site/site_add/SiteAdd.vue:331
+#: src/views/site/site_add/SiteAdd.vue:471
+msgid "Save the edited configuration before enabling HTTPS."
+msgstr "HTTPS를 활성화하기 전에 편집한 설정을 저장하세요."
+
+#: src/views/site/site_add/SiteAdd.vue:472
+msgid "The site draft is not saved yet."
+msgstr "사이트 초안이 아직 저장되지 않았습니다."
+
+#: src/views/site/site_add/SiteAdd.vue:476
+msgid "HTTPS setup reads the saved draft of this site."
+msgstr "HTTPS 설정은 이 사이트의 저장된 초안을 읽습니다."
+
+#: src/views/site/site_add/SiteAdd.vue:478
+msgid "Save draft"
+msgstr "초안 저장"
+
+#: src/views/site/site_add/SiteAdd.vue:539
 msgid "Site Config Created Successfully"
 msgstr "사이트 설정이 성공적으로 생성되었습니다"
 
-#: src/views/site/site_add/SiteAdd.vue:332
+#: src/views/site/site_add/SiteAdd.vue:540
 msgid "DNS record has been linked: %{name}"
 msgstr "DNS 레코드가 연결되었습니다: %{name}"
 
-#: src/views/site/site_add/SiteAdd.vue:339
+#: src/views/site/site_add/SiteAdd.vue:547
 msgid "Modify Config"
 msgstr "설정 수정"
 
-#: src/views/site/site_add/SiteAdd.vue:342
+#: src/views/site/site_add/SiteAdd.vue:550
 msgid "Create Another"
 msgstr "다른 것 생성하기"
 
-#: src/views/site/site_edit/components/Cert/Cert.vue:78
+#: src/views/site/site_edit/components/Cert/Cert.vue:98
 msgid "Changed Certificate"
 msgid_plural "Changed Certificates"
 msgstr[0] "변경된 인증서"
 
-#: src/views/site/site_edit/components/Cert/ChangeCert.vue:51
-#: src/views/site/site_edit/components/Cert/ChangeCert.vue:55
+#: src/views/site/site_edit/components/Cert/ChangeCert.vue:36
+#: src/views/site/site_edit/components/Cert/ChangeCert.vue:40
 msgid "Change Certificate"
 msgstr "인증서 변경"
 
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:46
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:14
-msgid "Do you want to enable TLS?"
-msgstr "TLS를 활성화하시겠습니까?"
-
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:47
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:15
-msgid "To make sure the certification auto-renewal can work normally, "
-msgstr "인증서 자동 갱신이 정상적으로 작동하도록 하려면, "
-
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:94
-msgid "Encrypt website with Let's Encrypt"
-msgstr "Let's Encrypt로 웹사이트 암호화"
-
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:71
-msgid "Certificate issuance component is not ready"
-msgstr "인증서 발급 컴포넌트가 준비되지 않았습니다"
-
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:109
-msgid "Auto-renewal enabled for %{name}"
-msgstr "%{name}에 대한 자동 갱신 활성화됨"
-
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:111
-msgid "Enable auto-renewal failed for %{name}"
-msgstr "%{name}에 대한 자동 갱신 활성화 실패"
-
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:116
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:77
 msgid "Auto-renewal disabled for %{name}"
 msgstr "%{name}에 대한 자동 갱신 비활성화됨"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:118
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:81
 msgid "Disable auto-renewal failed for %{name}"
 msgstr "%{name}의 자동 갱신 비활성화 실패"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:146
-msgid "server_name not found in directives"
-msgstr "directives에서 server_name을 찾을 수 없습니다"
-
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:162
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:97
 msgid "Do you want to disable auto-cert renewal?"
 msgstr "자동 인증서 갱신을 비활성화하시겠습니까?"
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:163
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:98
 msgid "We will remove the HTTPChallenge configuration from "
 msgstr "HTTPChallenge 구성을 삭제합니다. 파일: "
 
-#: src/views/site/site_edit/components/Cert/ObtainCert.vue:226
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:117
 msgid "Obtain certificate"
 msgstr "인증서 획득"
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:50
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:139
+msgid "Done"
+msgstr "완료"
+
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:145
+msgid "Encrypt website with Let's Encrypt"
+msgstr "Let's Encrypt로 웹사이트 암호화"
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:166
 msgid "Getting the certificate, please wait..."
 msgstr "인증서를 가져오는 중입니다. 잠시 기다려 주세요..."
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:68
-msgid "Fail to obtain certificate"
-msgstr "인증서 획득 실패"
-
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:113
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:117
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:232
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:236
 msgid "Certificate issuance connection closed before completion."
 msgstr "인증서 발급 연결이 완료되기 전에 닫혔습니다."
+
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:254
+msgid "Certificate issuance failed"
+msgstr ""
 
 #: src/views/site/site_edit/components/Cert/SelfSignedCert.vue:31
 msgid "Save the site configuration now?"
@@ -11523,29 +11976,273 @@ msgstr "템플릿 검색"
 msgid "Author"
 msgstr "저자"
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:52
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:20
+msgid "Do you want to enable TLS?"
+msgstr "TLS를 활성화하시겠습니까?"
+
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:21
+msgid "To make sure the certification auto-renewal can work normally, "
+msgstr "인증서 자동 갱신이 정상적으로 작동하도록 하려면, "
+
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:72
+msgid "Save your changes before enabling HTTPS"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:76
+msgid ""
+"HTTPS setup rewrites the saved site configuration, so unsaved edits would "
+"be lost."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:92
+msgid ""
+"HTTPS setup builds the HTTPS server block from the saved configuration. "
+"Unsaved edits to that block are not used."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:122
+msgid "Not a valid domain name or IP address: %{value}"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:147
+msgid "HTTP-01"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:148
+msgid "DNS-01"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:149
+msgid "Existing certificate"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:150
+msgid "Skip for now"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:159
+msgid ""
+"The certificate authority validates each domain over port 80, so the "
+"domains must resolve to this server."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:161
+msgid ""
+"Validation uses a DNS TXT record created with the selected DNS credential. "
+"Required for wildcard domains."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:163
+msgid ""
+"Use a certificate from the certificate manager. Nothing is requested from a "
+"certificate authority, and the certificate keeps its own renewal settings."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:165
+msgid "Continue without HTTPS. You can enable it later from the site editor."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:224
+msgid ""
+"This certificate expired on %{date}. Choose another certificate or renew "
+"this one first."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:228
+msgid ""
+"This certificate record lists no domains. The pre-flight check reads them "
+"from the certificate file."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:230
+msgid "This certificate does not cover any of the domains: %{domains}"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:232
+msgid ""
+"This certificate does not cover %{domains}. HTTPS is only enabled for the "
+"names it covers."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:238
+msgid "IP address certificates only support HTTP-01 validation."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:240
+msgid "Wildcard domains require DNS-01 validation."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:307
+msgid "Plan the configuration changes"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:309
+msgid "Stage the HTTP configuration"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:311
+msgid "Verify the challenge route"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:313
+msgid "Issue the certificate"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:317
+msgid "Roll back the changes"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:362
+msgid "Passed"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:370
+msgid "Waiting"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:385
+msgid "The connection closed before HTTPS setup finished. Retry to run it again."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:386
+msgid "HTTPS setup failed"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:418
+msgid "Certificate options"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:446
+msgid ""
+"Nginx UI stages the challenge route, verifies it, requests the certificate "
+"and switches the site to HTTPS in one run. If a step fails, the site keeps "
+"serving plain HTTP."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:486
+msgid "Add at least one domain or IP address."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:497
+msgid "e.g. example.com www.example.com"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:520
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:725
+msgid "Certificate"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:534
+msgid "Expired on %{date}"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:535
+msgid "Expires on %{date}"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:543
+msgid "Change"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:568
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:792
+msgid "Select certificate"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:585
+msgid "Redirect HTTP to HTTPS after the certificate is ready"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:589
+msgid ""
+"The HTTPS server block without a certificate is left out until the "
+"certificate is issued, then enabled with it."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
+msgid "Pre-flight check"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
+msgid "Progress"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:658
+msgid "Checking..."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:660
+msgid ""
+"Run \"Check only\" to verify the configuration and the certificate without "
+"changing anything."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:661
+msgid ""
+"Run \"Check only\" to verify the configuration and DNS without changing "
+"anything."
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:708
+msgid "Failed step: %{step}"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:734
+msgid "Private Key"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:766
+msgid "Check only"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:776
+msgid "Issue and enable HTTPS"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:784
+msgid "Continue without HTTPS"
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:84
+msgid "Configuration saved. Enable HTTPS from the HTTPS card."
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:108
 msgid "Replace configuration?"
 msgstr "구성을 교체하시겠습니까?"
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:53
+#: src/views/site/site_edit/components/QuickSetupModal.vue:110
+msgid ""
+"The generated configuration will replace the current one and is saved right "
+"away without its HTTPS server. Any custom directives or locations will be "
+"lost."
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:111
 msgid ""
 "The generated configuration will replace the current one. Any custom "
 "directives or locations will be lost."
 msgstr "생성된 구성은 현재 구성을 대체합니다. 맞춤 지시문 또는 위치는 모두 손실됩니다."
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:54
+#: src/views/site/site_edit/components/QuickSetupModal.vue:112
+msgid "Replace and save"
+msgstr ""
+
+#: src/views/site/site_edit/components/QuickSetupModal.vue:112
 msgid "Replace"
 msgstr "교체"
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:67
+#: src/views/site/site_edit/components/QuickSetupModal.vue:130
 msgid "Configuration regenerated"
 msgstr "구성이 재생성되었습니다"
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:86
-msgid "Issue a certificate to enable TLS before saving."
-msgstr "저장하기 전에 TLS를 활성화하는 인증서를 발급하십시오."
+#: src/views/site/site_edit/components/QuickSetupModal.vue:149
+msgid ""
+"The configuration is saved without its HTTPS server first. Then enable "
+"HTTPS from the HTTPS card on this page."
+msgstr ""
 
-#: src/views/site/site_edit/components/QuickSetupModal.vue:105
+#: src/views/site/site_edit/components/QuickSetupModal.vue:168
 msgid "Generate Config"
 msgstr "구성 생성"
 
@@ -11638,22 +12335,22 @@ msgstr "설정 템플릿"
 msgid "Port Scanner"
 msgstr "포트 스캐너"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:75
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:108
 #: src/views/stream/components/StreamEditor.vue:44
 msgid "Edit %{n}"
 msgstr "%{n} 편집"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:127
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:160
 #: src/views/stream/components/StreamEditor.vue:80
 msgid "Advance Mode"
 msgstr "고급 모드"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:130
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:163
 #: src/views/stream/components/StreamEditor.vue:83
 msgid "Basic Mode"
 msgstr "기본 모드"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:155
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:188
 #: src/views/stream/components/StreamEditor.vue:105
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 구성 분석 오류"
@@ -11852,27 +12549,27 @@ msgstr "이 페이지에서 Nginx UI 업그레이드를 확인할 수 있습니�
 msgid "Current Version"
 msgstr "현재 버전"
 
-#: src/views/system/Upgrade.vue:270
+#: src/views/system/Upgrade.vue:269
 msgid "Arch"
 msgstr "아키텍처"
 
-#: src/views/system/Upgrade.vue:271
+#: src/views/system/Upgrade.vue:270
 msgid "Executable Path"
 msgstr "실행 가능 경로"
 
-#: src/views/system/Upgrade.vue:273
+#: src/views/system/Upgrade.vue:272
 msgid "Last checked at"
 msgstr "마지막 확인 시간"
 
-#: src/views/system/Upgrade.vue:292
+#: src/views/system/Upgrade.vue:291
 msgid "You are using the latest version"
 msgstr "최신 버전을 사용하고 있습니다"
 
-#: src/views/system/Upgrade.vue:298
+#: src/views/system/Upgrade.vue:297
 msgid "New version released"
 msgstr "새 버전 출시"
 
-#: src/views/system/Upgrade.vue:339
+#: src/views/system/Upgrade.vue:338
 msgid "Release Note"
 msgstr "릴리스 노트"
 
@@ -11979,6 +12676,66 @@ msgstr "새 비밀번호 확인"
 #: src/views/user/UserProfile.vue:216
 msgid "Update Password"
 msgstr "비밀번호 업데이트"
+
+#~ msgid ""
+#~ "This site is configured as a default server (default_server) for HTTPS "
+#~ "(port 443). "
+#~ msgstr "이 사이트는 HTTPS(443 포트)의 기본 서버(default_server)로 구성되어 있습니다."
+
+#~ msgid ""
+#~ "This site uses wildcard server name (_) which typically indicates an "
+#~ "IP-based certificate. "
+#~ msgstr "이 사이트는 와일드카드 서버 이름 (_)을 사용하며, 이는 일반적으로 IP 기반 인증서를 나타냅니다."
+
+#~ msgid "No specific IP address found in server_name configuration. "
+#~ msgstr "server_name 구성에서 특정 IP 주소를 찾을 수 없습니다."
+
+#~ msgid ""
+#~ "For IP-based certificate configurations, only HTTP-01 challenge method is "
+#~ "supported. "
+#~ msgstr "IP 기반 인증서 구성에서는 HTTP-01 챌린지 방식만 지원됩니다."
+
+#~ msgid "The server_name"
+#~ msgstr "server_name"
+
+#~ msgid "Make sure you have configured a reverse proxy for .well-known "
+#~ msgstr " .well-known에 대한 리버스 프록시를 구성했는지 확인하세요."
+
+#~ msgid "Please first add credentials in Certification > DNS Credentials, "
+#~ msgstr "먼저 Certification > DNS Credentials에서 자격 증명을 추가하십시오, "
+
+#~ msgid "If your domain has CNAME records and you cannot obtain certificates, "
+#~ msgstr "도메인에 CNAME 레코드가 있고 인증서를 발급받을 수 없는 경우,"
+
+#~ msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+#~ msgstr "로컬 DNS 전파 검사를 건너뛰고 요청하기 전에 60초를 기다립니다."
+
+#~ msgid "The path exists, but the file is not a certificate"
+#~ msgstr "경로는 존재하지만, 파일이 인증서가 아닙니다"
+
+#~ msgid "The path exists, but the file is not a private key"
+#~ msgstr "경로는 존재하지만 파일은 개인 키가 아닙니다"
+
+#~ msgid "Get release information error"
+#~ msgstr "릴리스 정보 가져오기 오류"
+
+#~ msgid "Issue a certificate to enable TLS before continuing."
+#~ msgstr "계속하기 전에 TLS 활성화를 위해 인증서를 발급하십시오."
+
+#~ msgid "Certificate issuance component is not ready"
+#~ msgstr "인증서 발급 컴포넌트가 준비되지 않았습니다"
+
+#~ msgid "Auto-renewal enabled for %{name}"
+#~ msgstr "%{name}에 대한 자동 갱신 활성화됨"
+
+#~ msgid "Enable auto-renewal failed for %{name}"
+#~ msgstr "%{name}에 대한 자동 갱신 활성화 실패"
+
+#~ msgid "server_name not found in directives"
+#~ msgstr "directives에서 server_name을 찾을 수 없습니다"
+
+#~ msgid "Issue a certificate to enable TLS before saving."
+#~ msgstr "저장하기 전에 TLS를 활성화하는 인증서를 발급하십시오."
 
 #~ msgid "DingTalk"
 #~ msgstr "딩톡"
@@ -12637,621 +13394,3 @@ msgstr "비밀번호 업데이트"
 #~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent Cloud "
 #~ "DNS, and Cloudflare only."
 #~ msgstr "현재 DNS 레코드 관리는 Alibaba Cloud DNS, Tencent Cloud DNS 및 Cloudflare만 지원합니다."
-
-#: src/components/AutoCertForm/AutoCertForm.vue:103
-msgid "This site is configured as a default server (default_server) for HTTPS (port 443). IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:106
-msgid "This site uses wildcard server name (_) which typically indicates an IP-based certificate. IP certificates require Certificate Authority (CA) support and may not be available with all ACME providers."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:109
-msgid "No specific IP address found in server_name configuration. Please specify the server IP address below for the certificate."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:112
-msgid "For IP-based certificate configurations, only HTTP-01 challenge method is supported. DNS-01 challenge is not compatible with IP-based certificates."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:126
-msgid "The server_name in the current configuration must be the domain name you need to get the certificate, support multiple domains."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:132
-msgid "Make sure you have configured a reverse proxy for .well-known directory to HTTPChallengePort before obtaining the certificate."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:135
-msgid "Please first add credentials in Certification > DNS Credentials, and then select one of the credentials below to request the API of the DNS provider."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:139
-msgid "Required Settings"
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:234
-msgid "Special Settings"
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:249
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:620
-msgid "If your domain has CNAME records and you cannot obtain certificates, you need to enable this option."
-msgstr ""
-
-#: src/components/AutoCertForm/AutoCertForm.vue:260
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:627
-msgid "Skip local DNS propagation checks and wait 60 seconds before asking the certificate authority to validate the record."
-msgstr ""
-
-#: src/components/CertInfo/CertInfo.vue:50
-msgid "Name: %{name}"
-msgstr ""
-
-#: src/components/CertInfo/CertInfo.vue:66
-msgid "Status:"
-msgstr ""
-
-#: src/components/CertInfo/CertInfo.vue:83
-msgid "SAN Aliases: %{aliases}"
-msgstr ""
-
-#: src/constants/errors/cert.ts:51
-msgid "HTTP-01 challenge preflight failed: {0}"
-msgstr ""
-
-#: src/constants/errors/cert.ts:52
-msgid "HTTP-01 challenge route check failed for {0}: {1}"
-msgstr ""
-
-#: src/constants/errors/cert.ts:53
-msgid "HTTP-01 challenge port {0} is unavailable: {1}"
-msgstr ""
-
-#: src/language/generate.ts:4
-msgid "A CAA record on the domain does not allow this certificate authority; add a CAA issue record for the certificate authority or remove the restrictive record."
-msgstr ""
-
-#: src/language/generate.ts:5
-msgid "A CAA record on the domain does not authorize the selected certificate authority; add a CAA issue record for it or issuance will fail."
-msgstr ""
-
-#: src/language/generate.ts:6
-msgid "An existing certificate is used"
-msgstr ""
-
-#: src/language/generate.ts:7
-msgid "Applying the HTTP configuration for validation"
-msgstr ""
-
-#: src/language/generate.ts:10
-msgid "Certificate issuance failed; check the log for the response of the certificate authority."
-msgstr ""
-
-#: src/language/generate.ts:28
-msgid "Checking the HTTP challenge route"
-msgstr ""
-
-#: src/language/generate.ts:31
-msgid "Enabling HTTPS in the site configuration"
-msgstr ""
-
-#: src/language/generate.ts:36
-msgid "HTTP challenge route is reachable"
-msgstr ""
-
-#: src/language/generate.ts:37
-msgid "HTTP challenge route probe is unavailable"
-msgstr ""
-
-#: src/language/generate.ts:38
-msgid "HTTP configuration applied"
-msgstr ""
-
-#: src/language/generate.ts:39
-msgid "HTTP configuration restored"
-msgstr ""
-
-#: src/language/generate.ts:40
-msgid "HTTPS configuration planned"
-msgstr ""
-
-#: src/language/generate.ts:41
-msgid "HTTPS enabled"
-msgstr ""
-
-#: src/language/generate.ts:42
-msgid "Issuing the certificate"
-msgstr ""
-
-#: src/language/generate.ts:45
-msgid "Nginx UI could not listen on the HTTP challenge port; make sure no other process uses it, or change the HTTP challenge port in the certificate settings."
-msgstr ""
-
-#: src/language/generate.ts:54
-msgid "No DNS problem found"
-msgstr ""
-
-#: src/language/generate.ts:55
-msgid "Original site configuration restored"
-msgstr ""
-
-#: src/language/generate.ts:56
-msgid "Planning the HTTPS configuration"
-msgstr ""
-
-#: src/language/generate.ts:57
-msgid "Resolve the site configuration problem first"
-msgstr ""
-
-#: src/language/generate.ts:58
-msgid "Restoring the HTTP configuration"
-msgstr ""
-
-#: src/language/generate.ts:59
-msgid "Restoring the original site configuration"
-msgstr ""
-
-#: src/language/generate.ts:62
-msgid "The DNS challenge does not use the HTTP challenge route"
-msgstr ""
-
-#: src/language/generate.ts:63
-msgid "The DNS lookup for the domain failed; make sure its name servers are answering."
-msgstr ""
-
-#: src/language/generate.ts:64
-msgid "The certificate %{name} covers the domains and is valid until %{not_after}"
-msgstr ""
-
-#: src/language/generate.ts:65
-msgid "The certificate %{name} does not cover any of the domains: %{uncovered}"
-msgstr ""
-
-#: src/language/generate.ts:66
-msgid "The certificate %{name} does not cover some of the domains; they are left out of HTTPS: %{uncovered}"
-msgstr ""
-
-#: src/language/generate.ts:67
-msgid "The certificate %{name} expired on %{not_after}; renew it or choose another certificate"
-msgstr ""
-
-#: src/language/generate.ts:68
-msgid "The certificate authority could not connect to port 80 of this domain; open TCP port 80 in the firewall or cloud security group and make sure any NAT or port forwarding sends it to this server."
-msgstr ""
-
-#: src/language/generate.ts:69
-msgid "The certificate authority could not resolve the domain; create an A or AAAA record that points at this server and wait for DNS to propagate."
-msgstr ""
-
-#: src/language/generate.ts:70
-msgid "The certificate authority followed a redirect, but the redirected request did not reach the challenge route; make sure the HTTPS server for this host also proxies /.well-known/acme-challenge/ to the challenge port, and that the redirect stays on the same host and on port 80 or 443."
-msgstr ""
-
-#: src/language/generate.ts:71
-msgid "The certificate authority rate limit was reached; wait until the retry time before trying again, and test configuration changes against the staging environment."
-msgstr ""
-
-#: src/language/generate.ts:72
-msgid "The certificate authority reached a server that did not return the challenge file, and the domain resolves to an address that is not on this server; point the domain's A/AAAA records at this server, or, behind NAT or a CDN, make sure port 80 is forwarded to it."
-msgstr ""
-
-#: src/language/generate.ts:73
-msgid "The certificate authority reached the server but the challenge file was not served; make sure the port 80 server block for this domain is enabled and routes /.well-known/acme-challenge/ to Nginx UI, and that no other server block or proxy answers first."
-msgstr ""
-
-#: src/language/generate.ts:74
-msgid "The certificate authority refuses to issue a certificate for this name; use a publicly resolvable domain name that the certificate authority supports."
-msgstr ""
-
-#: src/language/generate.ts:75
-msgid "The certificate or key file of %{name} is missing or cannot be read; fix it in the certificate manager or choose another certificate"
-msgstr ""
-
-#: src/language/generate.ts:76
-msgid "The domain has DNS address records, but the local addresses of this server could not be compared."
-msgstr ""
-
-#: src/language/generate.ts:77
-msgid "The domain has an AAAA record but the site does not listen on IPv6; Let's Encrypt prefers IPv6, so add an IPv6 listen directive on port 80 or remove the AAAA record."
-msgstr ""
-
-#: src/language/generate.ts:78
-msgid "The domain has no A or AAAA record; create one that points at this server before requesting a certificate."
-msgstr ""
-
-#: src/language/generate.ts:79
-msgid "The domain resolves to an address assigned to this server."
-msgstr ""
-
-#: src/language/generate.ts:80
-msgid "The domain resolves to an address that is not assigned to this server; this can be expected behind NAT, a load balancer, or a CDN, otherwise update the domain's A/AAAA records."
-msgstr ""
-
-#: src/language/generate.ts:81
-msgid "The selected certificate does not exist any more; choose another certificate"
-msgstr ""
-
-#: src/language/generate.ts:82
-msgid "The site already serves the required HTTP configuration"
-msgstr ""
-
-#: src/language/generate.ts:83
-msgid "The site configuration can be updated automatically"
-msgstr ""
-
-#: src/language/generate.ts:84
-msgid "Using the existing certificate %{name}"
-msgstr ""
-
-#: src/language/generate.ts:85
-msgid "Verified after the site is staged"
-msgstr ""
-
-#: src/language/generate.ts:94
-msgid "[Nginx UI] Checking HTTP01 challenge route for %{domains}"
-msgstr ""
-
-#: src/language/generate.ts:98
-msgid "[Nginx UI] HTTP01 challenge route cannot be verified locally for %{domain}: %{reason}"
-msgstr ""
-
-#: src/language/generate.ts:99
-msgid "[Nginx UI] HTTP01 challenge route check after renewal failure: %{summary}"
-msgstr ""
-
-#: src/language/generate.ts:100
-msgid "[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}"
-msgstr ""
-
-#: src/language/generate.ts:101
-msgid "[Nginx UI] HTTP01 challenge route check skipped: %{reason}"
-msgstr ""
-
-#: src/language/generate.ts:102
-msgid "[Nginx UI] HTTP01 challenge route reachable for %{domain} via %{target}"
-msgstr ""
-
-#: src/views/certificate/CertificateList/certColumns.tsx:45
-msgid "Renewal paused"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:66
-msgid "Please select at least one download format"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:100
-msgid "Certificate ID cannot be empty"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:145
-msgid "Download Format"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:149
-msgid "Certificate (.crt)"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:152
-msgid "Private Key (.key)"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:155
-msgid "PFX (.pfx, CRT + KEY for Windows import)"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:163
-msgid "PFX Password"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:164
-msgid "Leave empty if you do not want to set a password"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:168
-msgid "Enter PFX password"
-msgstr ""
-
-#: src/views/certificate/components/DNSIssueCertificate.vue:238
-msgid "Challenge Method Reminder"
-msgstr ""
-
-#: src/views/certificate/components/DNSIssueCertificate.vue:242
-msgid "If you use HTTP-01 challenge, the DNS credential field is hidden and not required."
-msgstr ""
-
-#: src/views/certificate/components/DNSIssueCertificate.vue:245
-msgid "If you use DNS-01 challenge, you must select a DNS credential."
-msgstr ""
-
-#: src/views/certificate/components/DNSIssueCertificate.vue:248
-msgid "Wildcard certificates usually require DNS-01 challenge."
-msgstr ""
-
-#: src/views/dns/DNSCredential.vue:60
-msgid "Name cannot be empty"
-msgstr ""
-
-#: src/views/dns/DNSCredential.vue:65
-msgid "Please select DNS provider"
-msgstr ""
-
-#: src/views/dns/DNSCredential.vue:184
-msgid "Modify DNS Credential"
-msgstr ""
-
-#: src/views/preference/tabs/ServerSettings.vue:27
-msgid "Unix Socket"
-msgstr ""
-
-#: src/views/preference/tabs/ServerSettings.vue:27
-msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
-msgstr ""
-
-#: src/views/preference/tabs/ServerSettings.vue:64
-msgid "HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on a Unix socket."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:105
-msgid "Edit configuration file"
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:110
-msgid "Save and enable the site with the HTTPS server block it already has."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:113
-msgid "Save and enable"
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:167
-msgid "The previous draft %{name} is enabled, so it was kept. Remove it from the site list if you no longer need it."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:173
-msgid "Removed the previous draft %{name}"
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:176
-msgid "The previous draft %{name} could not be removed. Remove it from the site list if you no longer need it."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:274
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:44
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:721
-msgid "HTTPS is enabled"
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:471
-msgid "Save the edited configuration before enabling HTTPS."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:472
-msgid "The site draft is not saved yet."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:476
-msgid "HTTPS setup reads the saved draft of this site."
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:478
-msgid "Save draft"
-msgstr ""
-
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:139
-msgid "Done"
-msgstr ""
-
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:254
-msgid "Certificate issuance failed"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:72
-msgid "Save your changes before enabling HTTPS"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:76
-msgid "HTTPS setup rewrites the saved site configuration, so unsaved edits would be lost."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:92
-msgid "HTTPS setup builds the HTTPS server block from the saved configuration. Unsaved edits to that block are not used."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:122
-msgid "Not a valid domain name or IP address: %{value}"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:147
-msgid "HTTP-01"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:148
-msgid "DNS-01"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:149
-msgid "Existing certificate"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:150
-msgid "Skip for now"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:159
-msgid "The certificate authority validates each domain over port 80, so the domains must resolve to this server."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:161
-msgid "Validation uses a DNS TXT record created with the selected DNS credential. Required for wildcard domains."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:163
-msgid "Use a certificate from the certificate manager. Nothing is requested from a certificate authority, and the certificate keeps its own renewal settings."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:165
-msgid "Continue without HTTPS. You can enable it later from the site editor."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:224
-msgid "This certificate expired on %{date}. Choose another certificate or renew this one first."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:228
-msgid "This certificate record lists no domains. The pre-flight check reads them from the certificate file."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:230
-msgid "This certificate does not cover any of the domains: %{domains}"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:232
-msgid "This certificate does not cover %{domains}. HTTPS is only enabled for the names it covers."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:238
-msgid "IP address certificates only support HTTP-01 validation."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:240
-msgid "Wildcard domains require DNS-01 validation."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:307
-msgid "Plan the configuration changes"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:309
-msgid "Stage the HTTP configuration"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:311
-msgid "Verify the challenge route"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:313
-msgid "Issue the certificate"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:317
-msgid "Roll back the changes"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:362
-msgid "Passed"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:370
-msgid "Waiting"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:385
-msgid "The connection closed before HTTPS setup finished. Retry to run it again."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:386
-msgid "HTTPS setup failed"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:418
-msgid "Certificate options"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:446
-msgid "Nginx UI stages the challenge route, verifies it, requests the certificate and switches the site to HTTPS in one run. If a step fails, the site keeps serving plain HTTP."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:486
-msgid "Add at least one domain or IP address."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:497
-msgid "e.g. example.com www.example.com"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:520
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:725
-msgid "Certificate"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:534
-msgid "Expired on %{date}"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:535
-msgid "Expires on %{date}"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:543
-msgid "Change"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:568
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:792
-msgid "Select certificate"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:585
-msgid "Redirect HTTP to HTTPS after the certificate is ready"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:589
-msgid "The HTTPS server block without a certificate is left out until the certificate is issued, then enabled with it."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
-msgid "Pre-flight check"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
-msgid "Progress"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:658
-msgid "Checking..."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:660
-msgid "Run \"Check only\" to verify the configuration and the certificate without changing anything."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:661
-msgid "Run \"Check only\" to verify the configuration and DNS without changing anything."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:708
-msgid "Failed step: %{step}"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:734
-msgid "Private Key"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:766
-msgid "Check only"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:776
-msgid "Issue and enable HTTPS"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:784
-msgid "Continue without HTTPS"
-msgstr ""
-
-#: src/views/site/site_edit/components/QuickSetupModal.vue:84
-msgid "Configuration saved. Enable HTTPS from the HTTPS card."
-msgstr ""
-
-#: src/views/site/site_edit/components/QuickSetupModal.vue:110
-msgid "The generated configuration will replace the current one and is saved right away without its HTTPS server. Any custom directives or locations will be lost."
-msgstr ""
-
-#: src/views/site/site_edit/components/QuickSetupModal.vue:112
-msgid "Replace and save"
-msgstr ""
-
-#: src/views/site/site_edit/components/QuickSetupModal.vue:149
-msgid "The configuration is saved without its HTTPS server first. Then enable HTTPS from the HTTPS card on this page."
-msgstr ""
