@@ -48,10 +48,14 @@ func InitRouter(r *gin.RouterGroup) {
 		o.POST("sites/:name/duplicate", DuplicateSite)
 		// enable maintenance mode for site
 		o.POST("sites/:name/maintenance", EnableMaintenanceSite)
+		// HTTPS onboarding pre-flight check. It probes the local challenge
+		// port and resolves DNS, so demo visitors do not get it.
+		o.POST("sites/:name/https/check", middleware.RejectInDemo(), CheckSiteHTTPS)
 	}
 }
 
-// InitWebSocketRouter registers the site navigation WebSocket endpoint.
+// InitWebSocketRouter registers the site WebSocket endpoints (site navigation
+// and HTTPS onboarding).
 //
 // It must be mounted on the WebSocket router group (AuthRequiredWS + ProxyWs).
 // Browsers cannot attach an Authorization header to a WebSocket handshake, so
@@ -63,4 +67,12 @@ func InitWebSocketRouter(r *gin.RouterGroup) {
 	InitWebSocketNotifications()
 
 	r.GET("site_navigation_ws", SiteNavigationWebSocket)
+
+	// HTTPS onboarding issues a certificate from a real ACME CA and rewrites
+	// the site configuration, so it needs a secure session and stays closed
+	// in demo mode, like the certificate issuance websocket.
+	o := r.Group("", middleware.RequireSecureSession(), middleware.RejectInDemo())
+	{
+		o.GET("sites/:name/https", EnableSiteHTTPS)
+	}
 }
