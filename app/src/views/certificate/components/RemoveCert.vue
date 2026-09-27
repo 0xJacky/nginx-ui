@@ -22,9 +22,10 @@ const shouldRevoke = ref(false)
 const deleteOnRevokeFailure = ref(true)
 const revokeInput = ref('')
 
-// Check if it's a managed certificate (auto_cert === AutoCertState.Enable)
+// Managed certificates renew through ACME, including ones whose renewal is paused
 const isManagedCertificate = computed(() => {
   return props.certificate?.auto_cert === AutoCertState.Enable
+    || props.certificate?.auto_cert === AutoCertState.Paused
 })
 
 // Handle certificate deletion

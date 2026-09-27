@@ -49,7 +49,9 @@ function reconnectLayoutObserver() {
 }
 
 const isManaged = computed(() => {
-  return data.value.auto_cert === AutoCertState.Enable || data.value.auto_cert === AutoCertState.Sync
+  return data.value.auto_cert === AutoCertState.Enable
+    || data.value.auto_cert === AutoCertState.Paused
+    || data.value.auto_cert === AutoCertState.Sync
 })
 
 const isSelfSigned = computed(() => {
@@ -391,7 +393,7 @@ onBeforeUnmount(() => {
 
       <!-- Log Column for Auto Cert -->
       <ACol
-        v-if="data.auto_cert === AutoCertState.Enable"
+        v-if="data.auto_cert === AutoCertState.Enable || data.auto_cert === AutoCertState.Paused"
         :sm="24"
         :lg="10"
         class="log-col"

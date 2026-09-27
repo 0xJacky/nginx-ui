@@ -70,6 +70,12 @@ func Enable(name string) (err error) {
 		})
 	}
 
+	// The configuration is live again, so certificates paused by Disable renew
+	// again. A failure here must not report the enable itself as failed.
+	if err := model.ResumeAutoCert(name); err != nil {
+		logger.Errorf("Resume certificate auto-renewal failed: name=%q error=%v", name, err)
+	}
+
 	go syncEnable(name)
 
 	return

@@ -7,6 +7,9 @@ export enum ConfigStatus {
 }
 
 export enum AutoCertState {
+  // Auto-renewal paused because the certificate's site or stream is disabled;
+  // enabling it again resumes renewal.
+  Paused = -2,
   Disable = -1,
   Enable = 1,
   Sync = 2,

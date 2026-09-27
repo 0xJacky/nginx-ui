@@ -26,6 +26,10 @@ const (
 	CertStatusFailure = "failure"
 )
 
+// AutoCertPaused marks a certificate whose renewal was switched off because its
+// configuration was disabled; enabling the configuration resumes it.
+const AutoCertPaused = -2
+
 type CertDomains []string
 
 type CertificateResource struct {
@@ -156,6 +160,29 @@ func (c *Cert) Remove() error {
 	}
 
 	return db.Where("filename", c.Filename).Delete(c).Error
+}
+
+// PauseAutoCert stops auto-renewal for the certificates of a configuration
+// that is being disabled. Only renewing records are paused, so a renewal the
+// user switched off stays off when the configuration is enabled again.
+func PauseAutoCert(filename string) error {
+	return switchAutoCert(filename, AutoCertEnabled, AutoCertPaused)
+}
+
+// ResumeAutoCert turns auto-renewal back on for the certificates paused by
+// PauseAutoCert when their configuration is enabled again.
+func ResumeAutoCert(filename string) error {
+	return switchAutoCert(filename, AutoCertPaused, AutoCertEnabled)
+}
+
+func switchAutoCert(filename string, from, to int) error {
+	if db == nil || filename == "" {
+		return nil
+	}
+
+	return db.Model(&Cert{}).
+		Where("filename = ? AND auto_cert = ?", filename, from).
+		Update("auto_cert", to).Error
 }
 
 func (c *Cert) GetKeyType() certcrypto.KeyType {

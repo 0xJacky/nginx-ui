@@ -47,9 +47,9 @@ func Disable(name string) (err error) {
 		return
 	}
 
-	// delete auto cert record
-	certModel := model.Cert{Filename: name}
-	err = certModel.Remove()
+	// Keep the certificate records so the certificates stay reusable; only
+	// their renewal pauses until the configuration is enabled again.
+	err = model.PauseAutoCert(name)
 	if err != nil {
 		return
 	}

@@ -36,6 +36,16 @@ const columns: StdTableColumn[] = [{
         </Tag>,
       )
     }
+    else if (text === AutoCertState.Paused) {
+      template.push(
+        <Tag variant="filled" color="processing">
+          {managed}
+        </Tag>,
+        <Tag variant="filled" color="default">
+          {$gettext('Renewal paused')}
+        </Tag>,
+      )
+    }
     else if (text === AutoCertState.Sync) {
       template.push(
         <Tag variant="filled" color="success">
