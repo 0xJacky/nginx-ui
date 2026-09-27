@@ -13,30 +13,17 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// Delete deletes a site by removing the file in sites-available
+// syncDelete dispatches the delete request to the stream's sync nodes. It is a
+// variable so tests can observe whether a delete reached the remote nodes.
+var syncDelete = dispatchSyncDelete
+
+// Delete deletes a stream by removing the file in streams-available. Every
+// refusal check runs before any side effect, so a refused delete leaves the
+// database record, the file and the remote nodes untouched.
 func Delete(name string) (err error) {
 	availablePath, err := ResolveAvailablePath(name)
 	if err != nil {
 		return err
-	}
-
-	s := query.Stream
-
-	// Remote namespaces keep the enablement flag in the database, so refuse the
-	// deletion the same way an enabled local stream is refused.
-	remoteDeploy := IsRemoteDeploy(name)
-	if remoteDeploy {
-		streamModel, err := s.Where(s.Path.Eq(availablePath)).First()
-		if err == nil && streamModel.RemoteEnabled {
-			return ErrStreamIsEnabled
-		}
-	}
-
-	syncDelete(name)
-
-	_, err = s.Where(s.Path.Eq(availablePath)).Unscoped().Delete(&model.Stream{})
-	if err != nil {
-		return
 	}
 
 	enabledPath, err := ResolveEnabledPath(name)
@@ -52,9 +39,18 @@ func Delete(name string) (err error) {
 		return ErrStreamNotFound
 	}
 
-	if !remoteDeploy {
-		var enabledExists bool
-		enabledExists, err = nginx.Exists(enabledPath)
+	s := query.Stream
+
+	// Remote namespaces keep the enablement flag in the database instead of a
+	// streams-enabled symlink, so refuse the deletion the same way an enabled
+	// local stream is refused.
+	if IsRemoteDeploy(name) {
+		streamModel, err := s.Where(s.Path.Eq(availablePath)).First()
+		if err == nil && streamModel.RemoteEnabled {
+			return ErrStreamIsEnabled
+		}
+	} else {
+		enabledExists, err := nginx.Exists(enabledPath)
 		if err != nil {
 			return err
 		}
@@ -63,18 +59,22 @@ func Delete(name string) (err error) {
 		}
 	}
 
-	certModel := model.Cert{Filename: name}
-	_ = certModel.Remove()
+	// The sync nodes are resolved from the stream record, so dispatch before the
+	// record is deleted.
+	syncDelete(name)
 
-	err = nginx.Remove(availablePath)
+	_, err = s.Where(s.Path.Eq(availablePath)).Unscoped().Delete(&model.Stream{})
 	if err != nil {
 		return
 	}
 
-	return
+	certModel := model.Cert{Filename: name}
+	_ = certModel.Remove()
+
+	return nginx.Remove(availablePath)
 }
 
-func syncDelete(name string) {
+func dispatchSyncDelete(name string) {
 	nodes := getSyncNodes(name)
 
 	for _, node := range nodes {
