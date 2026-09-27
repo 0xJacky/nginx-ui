@@ -31,6 +31,7 @@ func newAuthToken(db *gorm.DB, opts ...gen.DOOption) authToken {
 	_authToken.UserID = field.NewUint64(tableName, "user_id")
 	_authToken.Token = field.NewString(tableName, "token")
 	_authToken.ShortToken = field.NewString(tableName, "short_token")
+	_authToken.SessionHash = field.NewString(tableName, "session_hash")
 	_authToken.ExpiredAt = field.NewInt64(tableName, "expired_at")
 
 	_authToken.fillFieldMap()
@@ -41,11 +42,12 @@ func newAuthToken(db *gorm.DB, opts ...gen.DOOption) authToken {
 type authToken struct {
 	authTokenDo
 
-	ALL        field.Asterisk
-	UserID     field.Uint64
-	Token      field.String
-	ShortToken field.String
-	ExpiredAt  field.Int64
+	ALL         field.Asterisk
+	UserID      field.Uint64
+	Token       field.String
+	ShortToken  field.String
+	SessionHash field.String
+	ExpiredAt   field.Int64
 
 	fieldMap map[string]field.Expr
 }
@@ -65,6 +67,7 @@ func (a *authToken) updateTableName(table string) *authToken {
 	a.UserID = field.NewUint64(table, "user_id")
 	a.Token = field.NewString(table, "token")
 	a.ShortToken = field.NewString(table, "short_token")
+	a.SessionHash = field.NewString(table, "session_hash")
 	a.ExpiredAt = field.NewInt64(table, "expired_at")
 
 	a.fillFieldMap()
@@ -82,10 +85,11 @@ func (a *authToken) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *authToken) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 4)
+	a.fieldMap = make(map[string]field.Expr, 5)
 	a.fieldMap["user_id"] = a.UserID
 	a.fieldMap["token"] = a.Token
 	a.fieldMap["short_token"] = a.ShortToken
+	a.fieldMap["session_hash"] = a.SessionHash
 	a.fieldMap["expired_at"] = a.ExpiredAt
 }
 

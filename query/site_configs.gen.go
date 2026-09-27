@@ -34,6 +34,8 @@ func newSiteConfig(db *gorm.DB, opts ...gen.DOOption) siteConfig {
 	_siteConfig.DeletedAt = field.NewField(tableName, "deleted_at")
 	_siteConfig.SiteKey = field.NewString(tableName, "site_key")
 	_siteConfig.SiteName = field.NewString(tableName, "site_name")
+	_siteConfig.SiteID = field.NewUint64(tableName, "site_id")
+	_siteConfig.SiteIndex = field.NewUint64(tableName, "site_index")
 	_siteConfig.Host = field.NewString(tableName, "host")
 	_siteConfig.Port = field.NewInt(tableName, "port")
 	_siteConfig.Scheme = field.NewString(tableName, "scheme")
@@ -64,6 +66,8 @@ type siteConfig struct {
 	DeletedAt          field.Field
 	SiteKey            field.String
 	SiteName           field.String
+	SiteID             field.Uint64
+	SiteIndex          field.Uint64
 	Host               field.String
 	Port               field.Int
 	Scheme             field.String
@@ -100,6 +104,8 @@ func (s *siteConfig) updateTableName(table string) *siteConfig {
 	s.DeletedAt = field.NewField(table, "deleted_at")
 	s.SiteKey = field.NewString(table, "site_key")
 	s.SiteName = field.NewString(table, "site_name")
+	s.SiteID = field.NewUint64(table, "site_id")
+	s.SiteIndex = field.NewUint64(table, "site_index")
 	s.Host = field.NewString(table, "host")
 	s.Port = field.NewInt(table, "port")
 	s.Scheme = field.NewString(table, "scheme")
@@ -130,13 +136,15 @@ func (s *siteConfig) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *siteConfig) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 20)
+	s.fieldMap = make(map[string]field.Expr, 22)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
 	s.fieldMap["deleted_at"] = s.DeletedAt
 	s.fieldMap["site_key"] = s.SiteKey
 	s.fieldMap["site_name"] = s.SiteName
+	s.fieldMap["site_id"] = s.SiteID
+	s.fieldMap["site_index"] = s.SiteIndex
 	s.fieldMap["host"] = s.Host
 	s.fieldMap["port"] = s.Port
 	s.fieldMap["scheme"] = s.Scheme
