@@ -1214,10 +1214,13 @@ jobs:
           echo "Updated Homebrew Formula:"
           cat homebrew-tools/Formula/nginx-ui.rb
 
+      # Leave `token` unset: setup-homebrew writes it as a global git
+      # extraheader for the rest of the job, and create-pull-request then adds
+      # its own, so the tap push fails with a duplicate Authorization header.
+      # `brew style` only needs `brew-gh-api-token`, which defaults to
+      # github.token.
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@1e34f2e2acaa766b7efacb8c26352e6abbb023f9 # 2026.09.13.1
-        with:
-          token: ${{ github.token }}
 
       - name: Verify Formula
         run: |
