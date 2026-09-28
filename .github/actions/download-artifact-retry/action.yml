@@ -1,0 +1,74 @@
+name: Download artifact with retry
+description: >
+  Runs actions/download-artifact up to three times. The artifact service
+  intermittently answers with transient errors (for example
+  `403 Error from intermediary` on ListArtifacts) that the action itself
+  treats as non-retryable.
+inputs:
+  name:
+    description: Name of the artifact to download. Downloads all artifacts of the run when empty.
+    required: false
+    default: ''
+  path:
+    description: Destination path. Defaults to $GITHUB_WORKSPACE.
+    required: false
+    default: ''
+  pattern:
+    description: Glob pattern of the artifacts to download. Ignored when name is set.
+    required: false
+    default: ''
+  merge-multiple:
+    description: Extract all matched artifacts into the same directory.
+    required: false
+    default: 'false'
+outputs:
+  download-path:
+    description: Path of the artifact download.
+    value: ${{ steps.attempt1.outputs.download-path || steps.attempt2.outputs.download-path || steps.attempt3.outputs.download-path }}
+runs:
+  using: composite
+  steps:
+    - name: Download artifact
+      id: attempt1
+      continue-on-error: true
+      uses: actions/download-artifact@v8
+      with:
+        name: ${{ inputs.name }}
+        path: ${{ inputs.path }}
+        pattern: ${{ inputs.pattern }}
+        merge-multiple: ${{ inputs.merge-multiple }}
+
+    - name: Wait before retrying
+      if: steps.attempt1.outcome == 'failure'
+      shell: bash
+      run: |
+        echo "::warning::Artifact download failed, retrying in 15s"
+        sleep 15
+
+    - name: Download artifact (retry 1)
+      id: attempt2
+      if: steps.attempt1.outcome == 'failure'
+      continue-on-error: true
+      uses: actions/download-artifact@v8
+      with:
+        name: ${{ inputs.name }}
+        path: ${{ inputs.path }}
+        pattern: ${{ inputs.pattern }}
+        merge-multiple: ${{ inputs.merge-multiple }}
+
+    - name: Wait before retrying
+      if: steps.attempt2.outcome == 'failure'
+      shell: bash
+      run: |
+        echo "::warning::Artifact download failed again, retrying in 45s"
+        sleep 45
+
+    - name: Download artifact (retry 2)
+      id: attempt3
+      if: steps.attempt2.outcome == 'failure'
+      uses: actions/download-artifact@v8
+      with:
+        name: ${{ inputs.name }}
+        path: ${{ inputs.path }}
+        pattern: ${{ inputs.pattern }}
+        merge-multiple: ${{ inputs.merge-multiple }}

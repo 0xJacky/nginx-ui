@@ -16,6 +16,8 @@ on:
       - "go.mod"
       - "go.sum"
       - ".github/workflows/build*.yml"
+      - ".github/actions/**"
+      - ".github/scripts/**"
       - "resources/docker/**"
       - "resources/development/*"
       - "resources/demo/*"
@@ -36,6 +38,8 @@ on:
       - "go.mod"
       - "go.sum"
       - ".github/workflows/*.yml"
+      - ".github/actions/**"
+      - ".github/scripts/**"
       - "resources/docker/**"
       - "resources/development/*"
       - "resources/demo/*"
@@ -84,7 +88,7 @@ jobs:
           bun run build
 
       - name: Archive app artifacts
-        uses: actions/upload-artifact@v7
+        uses: ./.github/actions/upload-artifact-retry
         with:
           name: app-dist
           path: |
@@ -207,8 +211,11 @@ jobs:
           restore-keys: |
               go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
 
+      - name: Download Go modules
+        run: bash .github/scripts/retry.sh -- go mod download
+
       - name: Download app artifacts
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-artifact-retry
         with:
           name: app-dist
           path: frontend-dist
@@ -231,18 +238,49 @@ jobs:
           GOARCH: amd64
         run: go generate cmd/version/generate.go
 
+      # The toolchain comes from a GitHub release asset that intermittently
+      # answers 5xx; retry the whole action twice with a growing pause.
       - name: Install musl cross compiler
         if: env.GOOS == 'linux'
         uses: nginxui/musl-cross-compilers@57f4de0b40cd0b53b1dc02fb8b317d87f78f3483 # v1
         id: musl
+        continue-on-error: true
+        with:
+          target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
+          variant: ${{ env.GOARCH == 'loong64' && 'userdocs/qbt-musl-cross-make' || 'richfelker/musl-cross-make' }}
+
+      - name: Wait before retrying musl cross compiler
+        if: env.GOOS == 'linux' && steps.musl.outcome == 'failure'
+        run: sleep 30
+
+      - name: Install musl cross compiler (retry 1)
+        if: env.GOOS == 'linux' && steps.musl.outcome == 'failure'
+        uses: nginxui/musl-cross-compilers@57f4de0b40cd0b53b1dc02fb8b317d87f78f3483 # v1
+        id: musl_retry1
+        continue-on-error: true
+        with:
+          target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
+          variant: ${{ env.GOARCH == 'loong64' && 'userdocs/qbt-musl-cross-make' || 'richfelker/musl-cross-make' }}
+
+      - name: Wait before retrying musl cross compiler again
+        if: env.GOOS == 'linux' && steps.musl_retry1.outcome == 'failure'
+        run: sleep 90
+
+      - name: Install musl cross compiler (retry 2)
+        if: env.GOOS == 'linux' && steps.musl_retry1.outcome == 'failure'
+        uses: nginxui/musl-cross-compilers@57f4de0b40cd0b53b1dc02fb8b317d87f78f3483 # v1
+        id: musl_retry2
         with:
           target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
           variant: ${{ env.GOARCH == 'loong64' && 'userdocs/qbt-musl-cross-make' || 'richfelker/musl-cross-make' }}
 
       - name: Post install musl cross compiler
         if: env.GOOS == 'linux'
+        env:
+          MUSL_PATH: ${{ steps.musl.outputs.path || steps.musl_retry1.outputs.path || steps.musl_retry2.outputs.path }}
         run: |
-          echo "PATH=${{ steps.musl.outputs.path }}:$PATH" >> $GITHUB_ENV
+          test -n "$MUSL_PATH"
+          echo "PATH=$MUSL_PATH:$PATH" >> $GITHUB_ENV
           echo "CC=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-gcc" >> $GITHUB_ENV
           echo "CXX=${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}-g++" >> $GITHUB_ENV
           echo "LD_FLAGS=-w --extldflags '-static'" >> $GITHUB_ENV
@@ -287,7 +325,7 @@ jobs:
           go build -trimpath -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
 
       - name: Archive backend artifacts
-        uses: actions/upload-artifact@v7
+        uses: ./.github/actions/upload-artifact-retry
         with:
           name: ${{ env.ARTIFACT }}
           path: dist/${{ env.BINARY_NAME }}
@@ -399,8 +437,11 @@ jobs:
           restore-keys: |
               go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
 
+      - name: Download Go modules
+        run: bash .github/scripts/retry.sh -- go mod download
+
       - name: Download app artifacts
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-artifact-retry
         with:
           name: app-dist
           path: frontend-dist
@@ -452,7 +493,7 @@ jobs:
           go build -trimpath -tags=jsoniter -ldflags "$LD_FLAGS -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
 
       - name: Archive backend artifacts
-        uses: actions/upload-artifact@v7
+        uses: ./.github/actions/upload-artifact-retry
         with:
           name: ${{ env.ARTIFACT }}
           path: dist/${{ env.BINARY_NAME }}
@@ -543,8 +584,11 @@ jobs:
           restore-keys: |
             go-${{ runner.os }}-${{ runner.arch }}-${{ env.CACHE_NAME }}-
 
+      - name: Download Go modules
+        run: bash .github/scripts/retry.sh -- go mod download
+
       - name: Download app artifacts
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-artifact-retry
         with:
           name: app-dist
           path: frontend-dist
@@ -570,7 +614,7 @@ jobs:
           go build -trimpath -tags=jsoniter -ldflags "-w -X 'github.com/0xJacky/Nginx-UI/settings.buildTime=$(date +%s)'" -o dist/$BINARY_NAME -v main.go
 
       - name: Archive backend artifacts
-        uses: actions/upload-artifact@v7
+        uses: ./.github/actions/upload-artifact-retry
         with:
           name: ${{ env.ARTIFACT }}
           path: dist/${{ env.BINARY_NAME }}
@@ -643,7 +687,7 @@ jobs:
             type=raw,value=latest,enable=${{ github.event_name == 'release' && !github.event.release.prerelease }}
 
       - name: Download artifacts
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-artifact-retry
         with:
           path: ./dist
 
@@ -935,7 +979,7 @@ jobs:
             file wget zstd
 
       - name: Download release binary
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-artifact-retry
         with:
           name: ${{ matrix.binary_artifact }}
           path: release-binary
@@ -1032,7 +1076,7 @@ jobs:
           cp public-key.pem "$output_dir/public-key.pem"
 
       - name: Upload repository artifact
-        uses: actions/upload-artifact@v7
+        uses: ./.github/actions/upload-artifact-retry
         with:
           name: openwrt-${{ matrix.feed_arch }}
           path: openwrt-artifact
@@ -1044,8 +1088,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-openwrt
     steps:
+      - name: Checkout retry actions
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/actions
+
       - name: Download repository artifacts
-        uses: actions/download-artifact@v8
+        uses: ./.github/actions/download-artifact-retry
         with:
           pattern: openwrt-*
           path: openwrt-repository
