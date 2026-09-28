@@ -733,6 +733,21 @@ func TestHTTPSProbeOutcome(t *testing.T) {
 		assert.Equal(t, cert.SummarizeHTTP01ProbeResults(results), result.Message)
 	})
 
+	t.Run("connection-level problems are a warning, not a failure", func(t *testing.T) {
+		results := []cert.HTTP01ProbeResult{
+			{Domain: "a.example.com", Status: cert.HTTP01ProbeStatusWarning, Target: "127.0.0.1:80",
+				Error: "the local Nginx did not answer (connect: connection refused), so the route cannot be verified locally"},
+			{Domain: "b.example.com", Status: cert.HTTP01ProbeStatusWarning,
+				Error: "no server block listens on port 80 for b.example.com; the certificate authority may reach it through a load balancer or port mapping"},
+		}
+		result, err := httpsProbeOutcome("site", results, nil)
+
+		require.NoError(t, err)
+		assert.Equal(t, site.HTTPSStatusWarning, result.Status)
+		assert.Contains(t, result.Message, "a.example.com: cannot verify locally")
+		assert.Contains(t, result.Message, "no server block listens on port 80 for b.example.com")
+	})
+
 	t.Run("success", func(t *testing.T) {
 		result, err := httpsProbeOutcome("", []cert.HTTP01ProbeResult{
 			{Domain: "a.example.com", Status: cert.HTTP01ProbeStatusSuccess, Target: "http://127.0.0.1:80"},

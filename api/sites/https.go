@@ -155,14 +155,21 @@ func httpsCADir(acmeUserID uint64) string {
 	return settings.CertSettings.GetCADir()
 }
 
-// probeHTTPSChallengeRoute runs the active loopback probe for the site.
+// probeHTTPSChallengeRoute runs the active loopback probe for the site's
+// domains. The probe discovers the endpoints of every domain from the
+// effective configuration; the site name is only a fallback source of listen
+// addresses when nginx -T cannot be read.
 func probeHTTPSChallengeRoute(ctx context.Context, name string, domains []string) (site.HTTPSProbeResult, error) {
 	results, err := probeHTTP01Routes(ctx, domains, cert.WithHTTP01ProbeConfigName(name))
 	return httpsProbeOutcome(name, results, err)
 }
 
 // httpsProbeOutcome maps the loopback probe results to the orchestrator's
-// probe result. Failures carry a hint through *site.HTTPSHintError.
+// probe result. Only failures, which always carry HTTP evidence (the local
+// Nginx answered without the token), stop the run with a hint through
+// *site.HTTPSHintError. Connection-level problems (refused, timeout, TLS
+// handshake), a domain without a port-80 server block and an unreadable
+// configuration are warnings, and the run continues.
 func httpsProbeOutcome(name string, results []cert.HTTP01ProbeResult, err error) (site.HTTPSProbeResult, error) {
 	if err != nil {
 		if cosyErr, ok := matchCosyError(err, cert.ErrHTTP01ChallengePortUnavailable); ok {

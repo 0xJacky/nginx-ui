@@ -2,6 +2,7 @@ package cert
 
 import (
 	"context"
+	"errors"
 	"log/slog"
 	"os"
 	"runtime"
@@ -259,10 +260,10 @@ func isHTTP01ChallengeMethod(method string) bool {
 }
 
 // verifyHTTP01ChallengeRoute runs the active loopback probe while IssueCert
-// holds the certificate lock. A route failure aborts issuance before the CA
-// is contacted; the static analyzer only contributes a possible cause. A
-// warning (redirect to a host served elsewhere) and a skipped probe let
-// issuance continue.
+// holds the certificate lock and logs one line per domain. It never blocks
+// issuance on a route result: the probe can only see the local Nginx, while
+// the CA verifies the route itself. The only error it returns is an
+// unbindable challenge port (50059), because lego would fail the same way.
 func verifyHTTP01ChallengeRoute(payload *ConfigPayload, certLogger *Logger) error {
 	certLogger.Info(translation.C("[Nginx UI] Checking HTTP01 challenge route for %{domains}", map[string]any{
 		"domains": strings.Join(payload.ServerName, ", "),
@@ -272,7 +273,13 @@ func verifyHTTP01ChallengeRoute(payload *ConfigPayload, certLogger *Logger) erro
 	defer cancel()
 	results, err := probeHTTP01Routes(ctx, payload.ServerName, WithHTTP01ProbeConfigName(payload.ConfigName))
 	if err != nil {
-		return err
+		if isHTTP01ChallengePortUnavailable(err) {
+			return err
+		}
+		certLogger.Info(translation.C("[Nginx UI] HTTP01 challenge route check could not run: %{error}", map[string]any{
+			"error": err.Error(),
+		}))
+		return nil
 	}
 	if HTTP01ProbeSkipped(results) {
 		certLogger.Info(translation.C("[Nginx UI] HTTP01 challenge route check skipped: %{reason}", map[string]any{
@@ -293,13 +300,23 @@ func verifyHTTP01ChallengeRoute(payload *ConfigPayload, certLogger *Logger) erro
 				"reason": describeHTTP01ProbeFailure(result),
 			}))
 		default:
-			certLogger.Info(translation.C("[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}", map[string]any{
+			certLogger.Info(translation.C("[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}. Issuance continues; the certificate authority will verify the route itself", map[string]any{
 				"domain": result.Domain,
-				"error":  describeHTTP01ProbeFailure(result),
+				"error":  describeHTTP01ProbeFailureWithCause(result),
 			}))
 		}
 	}
-	return HTTP01RouteCheckError(results, payload.ConfigName)
+	return nil
+}
+
+// isHTTP01ChallengePortUnavailable reports whether err is the 50059 error of
+// a challenge port the probe could not bind.
+func isHTTP01ChallengePortUnavailable(err error) bool {
+	var got, want *cosy.Error
+	if !errors.As(err, &got) || !errors.As(ErrHTTP01ChallengePortUnavailable, &want) {
+		return false
+	}
+	return got.Scope == want.Scope && got.Code == want.Code
 }
 
 func dns01ChallengeOptions(payload *ConfigPayload) []dns01.ChallengeOption {

@@ -28,22 +28,38 @@ import (
 // of the site file, it follows whatever Nginx really does: include files,
 // "proxy_pass http://localhost:<port>", regex server names, upstream blocks.
 //
+// Endpoints: for every domain, the probe reads the effective configuration
+// (nginx -T) and asks which listening sockets on port 80 serve the domain,
+// by name or as the default server. Each socket becomes one local target: a
+// specific listen address is dialed as is, a wildcard IPv4 socket through
+// 127.0.0.1 and a wildcard IPv6 socket through [::1]. The name of a site or
+// certificate plays no role, so a certificate whose SANs live in several
+// server blocks is covered too.
+//
 // Redirects are followed the way the Let's Encrypt validator follows them:
 // at most 10, only to http/https URLs on ports 80 or 443, never to IP-address
 // hosts, and without certificate verification on HTTPS. Every hop is sent to
-// the local Nginx again (port 80 -> the endpoint's HTTP address, port 443 ->
-// its HTTPS address) with Host and SNI set to the redirect host.
+// the local Nginx again, to the sockets that serve the redirect host on the
+// redirect port, with Host and SNI set to the redirect host.
+//
+// Outcomes: a domain fails only on HTTP evidence, i.e. the local Nginx
+// answered, but not with the token (unexpected status, wrong body, a redirect
+// the CA refuses). Anything that yields no HTTP answer at all (connection
+// refused, timeout, TLS handshake error, no server block listening on port 80
+// for the domain, an unreadable configuration) is a warning: the CA may reach
+// the domain in a way this host cannot reproduce, for example through a load
+// balancer or a port mapping.
 //
 // Limits:
 //   - It only runs when Nginx is controlled locally. In external container or
 //     SSH host mode, the loopback address of nginx-ui is not the one of Nginx,
 //     so the probe reports HTTP01ProbeStatusSkipped.
-//   - It targets the loopback addresses and the explicit port-80 listen
-//     addresses of the site (when a config name is given). It cannot see a
-//     firewall, NAT, CDN or DNS record between the CA and this host.
-//   - A domain passes when any target serves the token, so a server bound to
-//     a public address that is not listed in the site file (for example in an
-//     include) is only covered through the loopback targets.
+//   - It cannot see a firewall, NAT, CDN or DNS record between the CA and
+//     this host.
+//   - When nginx -T cannot be read, it falls back to the explicit listen
+//     addresses of the enabled site (when a config name is given) and to the
+//     loopback addresses. Without the configuration it cannot tell which
+//     server block answered, so a wrong answer is only a warning then.
 //   - A redirect to another host that the local Nginx does not answer for is
 //     reported as HTTP01ProbeStatusWarning: that host may live elsewhere.
 //
@@ -51,13 +67,15 @@ import (
 // signalled, before the new workers accept connections. For a short window
 // the old workers keep answering with the previous configuration, so a probe
 // sent right after a site was saved or enabled can see the old routing (for
-// example the default server's 404). The probe therefore polls every domain
-// until it passes or the settle deadline expires, keeping the challenge
+// example the default server's 404). The probe therefore polls every failing
+// domain until it passes or the settle deadline expires, keeping the challenge
 // server up for the whole window, and only reports the last observed result
-// after the deadline. A domain passes only after http01ProbeRequiredSuccesses
-// consecutive successes on fresh connections, so an old and a new worker
-// that briefly accept side by side cannot produce a false pass: once the
-// probe succeeds, the CA's validation requests hit the new configuration.
+// after the deadline. Warnings are not polled again: a reload keeps the
+// listening sockets open, so a missing answer is not caused by it. A domain
+// passes only after http01ProbeRequiredSuccesses consecutive successes on
+// fresh connections, so an old and a new worker that briefly accept side by
+// side cannot produce a false pass: once the probe succeeds, the CA's
+// validation requests hit the new configuration.
 
 const (
 	http01ProbePathPrefix   = "/.well-known/acme-challenge/"
@@ -76,11 +94,15 @@ type HTTP01ProbeStatus string
 const (
 	// HTTP01ProbeStatusSuccess means the token was served through Nginx.
 	HTTP01ProbeStatusSuccess HTTP01ProbeStatus = "success"
-	// HTTP01ProbeStatusFailure means the CA would fail the same way.
+	// HTTP01ProbeStatusFailure means the local Nginx answered, but not with
+	// the token (unexpected status, wrong body, a redirect the CA refuses),
+	// so the CA would fail the same way.
 	HTTP01ProbeStatusFailure HTTP01ProbeStatus = "failure"
-	// HTTP01ProbeStatusWarning means the route leaves this host (a redirect
-	// to another host the local Nginx does not serve the token for), so it
-	// cannot be verified locally. Issuance is not blocked.
+	// HTTP01ProbeStatusWarning means the route cannot be verified locally: no
+	// HTTP answer came back (connection refused, timeout, TLS handshake
+	// error), no server block listens on port 80 for the domain, the local
+	// configuration could not be read, or the route leaves this host through
+	// a redirect. Issuance is not blocked.
 	HTTP01ProbeStatusWarning HTTP01ProbeStatus = "warning"
 	// HTTP01ProbeStatusSkipped means the probe did not run (Nginx not local).
 	HTTP01ProbeStatusSkipped HTTP01ProbeStatus = "skipped"
@@ -97,11 +119,18 @@ type HTTP01ProbeAttempt struct {
 	// Redirects lists the absolute URLs that were followed, in order.
 	Redirects []string `json:"redirects,omitempty"`
 	Error     string   `json:"error,omitempty"`
+
+	// socket is the port-80 socket of the first request, hop the socket
+	// that answered the last request of a redirect chain; both are nil when
+	// the configuration is unknown. They explain a failure.
+	socket *nginx.ServerSocket
+	hop    *http01HopTarget
 }
 
 // HTTP01ProbeResult is the probe outcome for one domain. Target, StatusCode,
-// Location, Redirects and Error describe the deciding attempt: the successful
-// one, otherwise the most informative one. Attempts lists every endpoint tried.
+// Location, Redirects and Error describe the deciding attempt (see
+// aggregateHTTP01Attempts): the first failure, else the first success, else
+// the most informative warning. Attempts lists every endpoint tried.
 type HTTP01ProbeResult struct {
 	Domain     string            `json:"domain"`
 	Status     HTTP01ProbeStatus `json:"status"`
@@ -120,6 +149,11 @@ type HTTP01ProbeResult struct {
 	// final marks a result that no amount of waiting can change (e.g. a
 	// wildcard identifier), so the domain is not probed again.
 	final bool
+	// cause is the static explanation of a failure, derived from the server
+	// block Nginx selects for the domain on the socket that failed.
+	cause string
+	// deciding is the attempt the result was taken from.
+	deciding HTTP01ProbeAttempt
 }
 
 // HTTP01ProbeOption customizes a probe run.
@@ -130,9 +164,10 @@ type http01ProbeConfig struct {
 	settleTimeout time.Duration
 }
 
-// WithHTTP01ProbeConfigName adds the explicit port-80 listen addresses of the
-// enabled site configName (e.g. "listen 192.0.2.10:80;") to the probe
-// targets, so servers that do not listen on the wildcard address are covered.
+// WithHTTP01ProbeConfigName names the enabled site whose explicit port-80
+// listen addresses (e.g. "listen 192.0.2.10:80;") are probed when the
+// effective configuration (nginx -T) cannot be read. Endpoint discovery
+// otherwise works per domain and does not need it.
 func WithHTTP01ProbeConfigName(configName string) HTTP01ProbeOption {
 	return func(c *http01ProbeConfig) {
 		c.configName = configName
@@ -150,10 +185,19 @@ func WithHTTP01ProbeSettleTimeout(timeout time.Duration) HTTP01ProbeOption {
 }
 
 // http01ProbeEndpoint is one local address pair of Nginx: HTTP receives the
-// requests the CA sends to port 80, HTTPS the ones redirected to port 443.
+// requests the CA sends to port 80, HTTPS the ones redirected to port 443
+// when the configuration is unknown (otherwise port-443 hops go to the
+// sockets that serve the redirect host).
 type http01ProbeEndpoint struct {
 	HTTP  string
 	HTTPS string
+	// socket is the port-80 socket HTTP reaches, nil when the configuration
+	// is unknown.
+	socket *nginx.ServerSocket
+	// guessed marks a loopback default probed without knowing the
+	// configuration: its answer may come from another server block than the
+	// one the CA reaches, so it can only prove success.
+	guessed bool
 }
 
 // Test seams. Production code never reassigns them.
@@ -165,15 +209,22 @@ var (
 	http01ProbeChallengePort = func() string {
 		return settings.CertSettings.HTTPChallengePort
 	}
-	// http01ProbeDefaultEndpoints are the addresses Nginx is expected to
-	// accept traffic on. IPv6 loopback covers IPv6-only listeners.
+	// http01ProbeServerBlocks reads the server blocks of the effective
+	// configuration (nginx -T).
+	http01ProbeServerBlocks = nginx.GetServerBlocks
+	// http01ProbeSocketAddress maps a listening socket to the address the
+	// probe dials to reach it.
+	http01ProbeSocketAddress = http01SocketDialAddress
+	// http01ProbeDefaultEndpoints are the last resort when the configuration
+	// cannot be read. IPv6 loopback covers IPv6-only listeners.
 	http01ProbeDefaultEndpoints = func() []http01ProbeEndpoint {
 		return []http01ProbeEndpoint{
 			{HTTP: "127.0.0.1:80", HTTPS: "127.0.0.1:443"},
 			{HTTP: "[::1]:80", HTTPS: "[::1]:443"},
 		}
 	}
-	// http01ProbeSiteEndpoints derives extra endpoints from the enabled site.
+	// http01ProbeSiteEndpoints derives endpoints from the enabled site when
+	// the configuration cannot be read.
 	http01ProbeSiteEndpoints = enabledSiteHTTPListenEndpoints
 	// http01ProbeSkipReason returns a non-empty reason when the loopback of
 	// nginx-ui is not the loopback of Nginx.
@@ -191,6 +242,10 @@ var (
 	// http01ProbeSettleInterval is the pause between two probe rounds.
 	http01ProbeSettleInterval = 250 * time.Millisecond
 )
+
+// http01ProbeConfigUnreadable is the warning reported for a domain when the
+// effective configuration cannot be read and no address is left to probe.
+const http01ProbeConfigUnreadable = "the local Nginx configuration could not be read"
 
 // ProbeHTTP01Routes verifies through the local Nginx that the HTTP-01 route of
 // every domain reaches the nginx-ui challenge port. It takes the certificate
@@ -265,17 +320,26 @@ func probeHTTP01Routes(ctx context.Context, domains []string, opts ...HTTP01Prob
 	// right after this function returns.
 	defer server.Close()
 
-	endpoints := http01ProbeEndpoints(cfg)
+	routing := newHTTP01ProbeRouting(cfg)
 	results := settleHTTP01Probe(ctx, domains, cfg.settleTimeout, func(domain string) HTTP01ProbeResult {
-		return probeHTTP01Domain(ctx, endpoints, domain, path, body)
+		return probeHTTP01Domain(ctx, routing, domain, path, body)
 	})
+	if routing.configKnown() {
+		for i := range results {
+			if results[i].Status == HTTP01ProbeStatusFailure {
+				results[i].cause = explainHTTP01AttemptFailure(routing.blocks, port, results[i].Domain, results[i].deciding)
+			}
+		}
+	}
 	return results, nil
 }
 
 // settleHTTP01Probe probes every domain in rounds until each one has passed
 // http01ProbeRequiredSuccesses consecutive rounds, ended with a result that
 // waiting cannot change (a warning or a final failure), or the settle
-// deadline expired. A failure resets the success streak. A domain whose last
+// deadline expired. Only failures, which carry HTTP evidence, are probed
+// again: a reload keeps the listening sockets open, so a warning is not
+// caused by it. A failure resets the success streak. A domain whose last
 // round succeeded when the deadline expires still gets its confirmation
 // round, so a success reported after the deadline has been confirmed too;
 // ctx bounds everything. Each domain reports its last observed result.
@@ -304,7 +368,7 @@ func settleHTTP01Probe(ctx context.Context, domains []string, settle time.Durati
 				streaks[i]++
 				done[i] = streaks[i] >= http01ProbeRequiredSuccesses
 				confirming = confirming || !done[i]
-			case result.Status == HTTP01ProbeStatusWarning || result.final:
+			case result.Status != HTTP01ProbeStatusFailure || result.final:
 				done[i] = true
 			default:
 				streaks[i] = 0
@@ -330,19 +394,18 @@ func settleHTTP01Probe(ctx context.Context, domains []string, settle time.Durati
 }
 
 // HTTP01RouteCheckError returns nil when no result failed. Otherwise it
-// returns a cosy error (code 50058) for the first failing domain. When
-// configName is set, the static analyzer's view of the enabled site is
-// appended as a possible cause. Warnings and skipped results never fail.
+// returns a cosy error (code 50058) for the first failing domain, with the
+// static explanation of the server block Nginx selects for the domain
+// appended as a possible cause when the probe could read the configuration.
+// Warnings and skipped results never fail. configName is kept for
+// compatibility and no longer used.
 func HTTP01RouteCheckError(results []HTTP01ProbeResult, configName string) error {
+	_ = configName
 	for _, result := range results {
 		if result.Status != HTTP01ProbeStatusFailure {
 			continue
 		}
-		reason := describeHTTP01ProbeFailure(result)
-		if cause := explainHTTP01RouteFailure(configName, result.Domain); cause != "" {
-			reason += "; possible cause: " + cause
-		}
-		return NewHTTP01ChallengeRouteCheckError(result.Domain, reason)
+		return NewHTTP01ChallengeRouteCheckError(result.Domain, describeHTTP01ProbeFailureWithCause(result))
 	}
 	return nil
 }
@@ -369,7 +432,7 @@ func SummarizeHTTP01ProbeResults(results []HTTP01ProbeResult) string {
 		case HTTP01ProbeStatusWarning:
 			parts = append(parts, fmt.Sprintf("%s: cannot verify locally: %s", result.Domain, describeHTTP01ProbeFailure(result)))
 		default:
-			parts = append(parts, fmt.Sprintf("%s: %s", result.Domain, describeHTTP01ProbeFailure(result)))
+			parts = append(parts, fmt.Sprintf("%s: %s", result.Domain, describeHTTP01ProbeFailureWithCause(result)))
 		}
 	}
 	return strings.Join(parts, "; ")
@@ -380,6 +443,14 @@ func describeHTTP01ProbeFailure(result HTTP01ProbeResult) string {
 		return result.Error
 	}
 	return fmt.Sprintf("%s (via %s)", result.Error, result.Target)
+}
+
+func describeHTTP01ProbeFailureWithCause(result HTTP01ProbeResult) string {
+	reason := describeHTTP01ProbeFailure(result)
+	if result.cause != "" {
+		reason += "; possible cause: " + result.cause
+	}
+	return reason
 }
 
 func skippedHTTP01ProbeResults(domains []string, reason string) []HTTP01ProbeResult {
@@ -415,20 +486,117 @@ func randomHTTP01ProbeString() (string, error) {
 	return hex.EncodeToString(buf), nil
 }
 
-// newHTTP01ProbeClient returns a client that sends every request, whatever
-// its URL host, to the local endpoint: port 443 to endpoint.HTTPS and every
-// other port to endpoint.HTTP. Redirects are handled by the caller.
-func newHTTP01ProbeClient(endpoint http01ProbeEndpoint) *http.Client {
-	dialer := &net.Dialer{Timeout: http01ProbeRequestTimeout}
-	dial := func(ctx context.Context, _ string, address string) (net.Conn, error) {
+// http01ProbeRouting knows where the local Nginx accepts the requests of one
+// probe run. blocks is nil when the effective configuration could not be
+// read; fallback then lists the addresses to try instead.
+type http01ProbeRouting struct {
+	blocks   []nginx.ServerBlock
+	fallback []http01ProbeEndpoint
+}
+
+// newHTTP01ProbeRouting reads the effective configuration once per run.
+func newHTTP01ProbeRouting(cfg *http01ProbeConfig) *http01ProbeRouting {
+	blocks, err := http01ProbeServerBlocks()
+	if err == nil && len(blocks) > 0 {
+		return &http01ProbeRouting{blocks: blocks}
+	}
+	return &http01ProbeRouting{fallback: http01ProbeEndpoints(cfg)}
+}
+
+func (r *http01ProbeRouting) configKnown() bool {
+	return r != nil && r.blocks != nil
+}
+
+// http01HopTarget is a local address a request is dialed to, with the
+// socket (and the host it was resolved for) behind it when known.
+type http01HopTarget struct {
+	address string
+	host    string
+	socket  *nginx.ServerSocket
+}
+
+// targets returns the dial targets of the deciding sockets on port for host
+// (see decidingServerSockets), without duplicate addresses.
+func (r *http01ProbeRouting) targets(host, port string) []http01HopTarget {
+	var targets []http01HopTarget
+	seen := map[string]bool{}
+	for _, socket := range decidingServerSockets(r.blocks, host, port) {
+		address := http01ProbeSocketAddress(socket.Listen)
+		if address == "" || seen[address] {
+			continue
+		}
+		seen[address] = true
+		selected := socket
+		targets = append(targets, http01HopTarget{address: address, host: host, socket: &selected})
+	}
+	return targets
+}
+
+// endpoints returns the local targets for domain, or a warning reason when
+// there is nothing the CA's request could be reproduced against.
+func (r *http01ProbeRouting) endpoints(domain string) ([]http01ProbeEndpoint, string) {
+	if !r.configKnown() {
+		if r == nil || len(r.fallback) == 0 {
+			return nil, http01ProbeConfigUnreadable
+		}
+		return r.fallback, ""
+	}
+	targets := r.targets(domain, "80")
+	if len(targets) == 0 {
+		return nil, fmt.Sprintf("no server block listens on port 80 for %s; the certificate authority may reach it through a load balancer or port mapping", domain)
+	}
+	endpoints := make([]http01ProbeEndpoint, 0, len(targets))
+	for _, target := range targets {
+		endpoint := http01ProbeEndpoint{HTTP: target.address, socket: target.socket}
+		if host, _, err := net.SplitHostPort(target.address); err == nil {
+			endpoint.HTTPS = net.JoinHostPort(host, "443")
+		}
+		endpoints = append(endpoints, endpoint)
+	}
+	return endpoints, ""
+}
+
+// http01NoSocketError reports a redirect hop that no local socket serves.
+type http01NoSocketError struct {
+	Host string
+	Port string
+}
+
+func (e *http01NoSocketError) Error() string {
+	return fmt.Sprintf("no server block listens on port %s for %s", e.Port, e.Host)
+}
+
+// hopTargets returns the local targets a redirect hop to host:port is sent
+// to. A hop back to the probed domain on port 80 stays on the endpoint's own
+// socket; any other hop goes to the deciding sockets of its host and port,
+// or to the endpoint's fixed addresses when the configuration is unknown.
+func (r *http01ProbeRouting) hopTargets(endpoint http01ProbeEndpoint, domain, host, port string) ([]http01HopTarget, error) {
+	if port == "80" && strings.EqualFold(host, domain) {
+		return []http01HopTarget{{address: endpoint.HTTP, host: host, socket: endpoint.socket}}, nil
+	}
+	if !r.configKnown() {
 		local := endpoint.HTTP
-		if _, port, err := net.SplitHostPort(address); err == nil && port == "443" {
+		if port == "443" {
 			local = endpoint.HTTPS
 		}
 		if local == "" {
-			return nil, fmt.Errorf("no local address for %s", address)
+			return nil, &http01NoSocketError{Host: host, Port: port}
 		}
-		return dialer.DialContext(ctx, "tcp", local)
+		return []http01HopTarget{{address: local, host: host}}, nil
+	}
+	targets := r.targets(host, port)
+	if len(targets) == 0 {
+		return nil, &http01NoSocketError{Host: host, Port: port}
+	}
+	return targets, nil
+}
+
+// newHTTP01ProbeClient returns a client that sends every request, whatever
+// its URL host, to the local address. Redirects are handled by the caller.
+func newHTTP01ProbeClient(address string) *http.Client {
+	dialer := &net.Dialer{Timeout: http01ProbeRequestTimeout}
+	dial := func(ctx context.Context, _ string, _ string) (net.Conn, error) {
+		return dialer.DialContext(ctx, "tcp", address)
 	}
 	return &http.Client{
 		Timeout: http01ProbeRequestTimeout,
@@ -448,8 +616,10 @@ func newHTTP01ProbeClient(endpoint http01ProbeEndpoint) *http.Client {
 	}
 }
 
-// http01ProbeEndpoints returns the site's explicit listen addresses first,
-// then the default loopback endpoints, without duplicates.
+// http01ProbeEndpoints returns the fallback targets used when the effective
+// configuration cannot be read: the site's explicit listen addresses first,
+// then the default loopback endpoints (marked as guessed), without
+// duplicates.
 func http01ProbeEndpoints(cfg *http01ProbeConfig) []http01ProbeEndpoint {
 	var endpoints []http01ProbeEndpoint
 	seen := map[string]bool{}
@@ -466,53 +636,89 @@ func http01ProbeEndpoints(cfg *http01ProbeConfig) []http01ProbeEndpoint {
 		}
 	}
 	for _, endpoint := range http01ProbeDefaultEndpoints() {
+		endpoint.guessed = true
 		add(endpoint)
 	}
 	return endpoints
 }
 
-func probeHTTP01Domain(ctx context.Context, endpoints []http01ProbeEndpoint, domain, path, body string) HTTP01ProbeResult {
+// http01SocketDialAddress maps a listening socket to the address the probe
+// dials: a specific address as is (IPv6 bracketed), the wildcard IPv4 socket
+// through 127.0.0.1 and the wildcard IPv6 socket through [::1]. UNIX sockets
+// yield "".
+func http01SocketDialAddress(listen nginx.ServerListen) string {
+	host := strings.TrimSpace(listen.Addr)
+	if strings.HasPrefix(host, "unix:") {
+		return ""
+	}
+	host = strings.TrimSuffix(strings.TrimPrefix(host, "["), "]")
+	port := strings.TrimSpace(listen.Port)
+	if port == "" {
+		port = "80"
+	}
+	switch host {
+	case "", "*", "0.0.0.0", "::":
+		if listen.IPv6 || host == "::" {
+			host = "::1"
+		} else {
+			host = "127.0.0.1"
+		}
+	}
+	return net.JoinHostPort(host, port)
+}
+
+// probeHTTP01Domain probes every deciding port-80 socket of domain. The CA
+// may reach any of them (the probe cannot know which address family or IP
+// it uses), so they are all probed and aggregated.
+func probeHTTP01Domain(ctx context.Context, routing *http01ProbeRouting, domain, path, body string) HTTP01ProbeResult {
 	result := HTTP01ProbeResult{Domain: domain, Status: HTTP01ProbeStatusFailure}
 	if strings.HasPrefix(domain, "*.") {
 		result.Error = "wildcard identifiers cannot be validated with HTTP-01"
 		result.final = true
 		return result
 	}
-	if len(endpoints) == 0 {
-		result.Error = "no local Nginx address to probe"
+	endpoints, warning := routing.endpoints(domain)
+	if warning != "" {
+		result.Status = HTTP01ProbeStatusWarning
+		result.Error = warning
 		result.final = true
 		return result
 	}
 
 	for _, endpoint := range endpoints {
-		attempt := probeHTTP01Endpoint(ctx, endpoint, domain, path, body)
-		result.Attempts = append(result.Attempts, attempt)
-		if attempt.Status == HTTP01ProbeStatusSuccess || ctx.Err() != nil {
+		result.Attempts = append(result.Attempts, probeHTTP01Endpoint(ctx, routing, endpoint, domain, path, body))
+		if ctx.Err() != nil {
 			break
 		}
 	}
 
-	deciding := decidingHTTP01Attempt(result.Attempts)
+	deciding := aggregateHTTP01Attempts(result.Attempts)
 	result.Status = deciding.Status
 	result.Target = deciding.Target
 	result.StatusCode = deciding.StatusCode
 	result.Location = deciding.Location
 	result.Redirects = deciding.Redirects
 	result.Error = deciding.Error
+	result.deciding = deciding
 	return result
 }
 
-// decidingHTTP01Attempt picks a success, else a warning, else the first
-// failure that got an HTTP answer: "404 from 127.0.0.1:80" says more than
-// "connection refused on [::1]:80".
-func decidingHTTP01Attempt(attempts []HTTP01ProbeAttempt) HTTP01ProbeAttempt {
+// aggregateHTTP01Attempts combines the attempts of the sockets the CA may
+// reach: the first failure wins, because HTTP evidence of a wrong route on
+// any of them can fail the validation; else the first success, because a
+// connection-level warning on one socket does not hide a working route on
+// another; else the first warning that got an HTTP answer, else the first
+// warning.
+func aggregateHTTP01Attempts(attempts []HTTP01ProbeAttempt) HTTP01ProbeAttempt {
 	rank := func(attempt HTTP01ProbeAttempt) int {
 		switch {
+		case attempt.Status == HTTP01ProbeStatusFailure:
+			return 4
 		case attempt.Status == HTTP01ProbeStatusSuccess:
 			return 3
-		case attempt.Status == HTTP01ProbeStatusWarning:
+		case attempt.Status == HTTP01ProbeStatusWarning && attempt.StatusCode != 0:
 			return 2
-		case attempt.StatusCode != 0:
+		case attempt.Status == HTTP01ProbeStatusWarning:
 			return 1
 		default:
 			return 0
@@ -527,69 +733,175 @@ func decidingHTTP01Attempt(attempts []HTTP01ProbeAttempt) HTTP01ProbeAttempt {
 	return deciding
 }
 
+// http01ProbeWalk follows the redirect chain of one endpoint under the CA's
+// rules. A hop served by several local sockets fans out to each of them and
+// the branches are aggregated like the endpoints of a domain.
+type http01ProbeWalk struct {
+	ctx      context.Context
+	routing  *http01ProbeRouting
+	endpoint http01ProbeEndpoint
+	domain   string
+	body     string
+	initial  string
+}
+
 // probeHTTP01Endpoint fetches the token for domain through one local
 // endpoint, following redirects under the CA's rules.
-func probeHTTP01Endpoint(ctx context.Context, endpoint http01ProbeEndpoint, domain, path, body string) HTTP01ProbeAttempt {
-	attempt := HTTP01ProbeAttempt{Target: endpoint.HTTP, Status: HTTP01ProbeStatusFailure}
-	client := newHTTP01ProbeClient(endpoint)
+func probeHTTP01Endpoint(ctx context.Context, routing *http01ProbeRouting, endpoint http01ProbeEndpoint, domain, path, body string) HTTP01ProbeAttempt {
+	start := &url.URL{Scheme: "http", Host: http01ProbeHostHeader(domain), Path: path}
+	walk := &http01ProbeWalk{
+		ctx:      ctx,
+		routing:  routing,
+		endpoint: endpoint,
+		domain:   domain,
+		body:     body,
+		initial:  start.String(),
+	}
+	first := http01HopTarget{address: endpoint.HTTP, host: domain, socket: endpoint.socket}
+	return walk.run(start, first, nil, map[string]bool{walk.initial: true})
+}
+
+func (w *http01ProbeWalk) run(current *url.URL, target http01HopTarget, redirects []string, visited map[string]bool) HTTP01ProbeAttempt {
+	attempt := HTTP01ProbeAttempt{
+		Target:    w.endpoint.HTTP,
+		Status:    HTTP01ProbeStatusFailure,
+		Redirects: redirects,
+		socket:    w.endpoint.socket,
+	}
+	if len(redirects) > 0 {
+		attempt.hop = &target
+	}
+
+	client := newHTTP01ProbeClient(target.address)
 	defer client.CloseIdleConnections()
+	statusCode, location, gotBody, err := fetchHTTP01Probe(w.ctx, client, current)
+	if err != nil {
+		attempt.StatusCode = statusCode
+		attempt.Error = err.Error()
+		return w.finish(attempt, current, err, statusCode == 0, false)
+	}
+	attempt.StatusCode = statusCode
 
-	current := &url.URL{Scheme: "http", Host: http01ProbeHostHeader(domain), Path: path}
-	initial := current.String()
-	visited := map[string]bool{initial: true}
+	if statusCode >= 300 && statusCode < 400 {
+		attempt.Location = location
+		next, reason := nextHTTP01ProbeRedirect(current, location, len(redirects), visited)
+		if reason != "" {
+			// The CA refuses this redirect as well.
+			attempt.Error = reason
+			return w.finish(attempt, current, nil, false, true)
+		}
+		nextRedirects := append(append([]string(nil), redirects...), next.String())
+		nextVisited := make(map[string]bool, len(visited)+1)
+		for key := range visited {
+			nextVisited[key] = true
+		}
+		nextVisited[next.String()] = true
 
+		hops, hopErr := w.routing.hopTargets(w.endpoint, w.domain, next.Hostname(), http01ProbeURLPort(next))
+		if hopErr != nil {
+			attempt.Redirects = nextRedirects
+			attempt.Error = hopErr.Error()
+			attempt.hop = nil
+			return w.finish(attempt, next, hopErr, true, false)
+		}
+		branches := make([]HTTP01ProbeAttempt, 0, len(hops))
+		for _, hop := range hops {
+			branches = append(branches, w.run(next, hop, nextRedirects, nextVisited))
+			if w.ctx.Err() != nil {
+				break
+			}
+		}
+		return aggregateHTTP01Attempts(branches)
+	}
+
+	switch {
+	case statusCode != http.StatusOK:
+		attempt.Error = fmt.Sprintf("unexpected status %d", statusCode)
+	// ACME servers ignore trailing whitespace in the key authorization.
+	case strings.TrimRight(gotBody, " \t\r\n") != w.body:
+		attempt.Error = "status 200 but the response body is not the challenge token, so the request did not reach the nginx-ui challenge server"
+	default:
+		attempt.Status = HTTP01ProbeStatusSuccess
+		return attempt
+	}
+	return w.finish(attempt, current, nil, false, false)
+}
+
+// finish classifies an attempt that did not get the token. noAnswer means
+// the last request got no HTTP response at all; refused means the CA would
+// refuse the last redirect.
+func (w *http01ProbeWalk) finish(attempt HTTP01ProbeAttempt, current *url.URL, fetchErr error, noAnswer, refused bool) HTTP01ProbeAttempt {
 	withChain := func(message string) string {
 		if len(attempt.Redirects) == 0 {
 			return message
 		}
-		chain := append([]string{initial}, attempt.Redirects...)
+		chain := append([]string{w.initial}, attempt.Redirects...)
 		return fmt.Sprintf("%s (redirect chain: %s)", message, strings.Join(chain, " -> "))
 	}
 
-	for {
-		statusCode, location, gotBody, err := fetchHTTP01Probe(ctx, client, current)
-		if err != nil {
-			attempt.Error = err.Error()
-			break
-		}
-		attempt.StatusCode = statusCode
-
-		if statusCode >= 300 && statusCode < 400 {
-			attempt.Location = location
-			next, reason := nextHTTP01ProbeRedirect(current, location, len(attempt.Redirects), visited)
-			if reason != "" {
-				// The CA refuses this redirect as well: a real failure.
-				attempt.Error = withChain(reason)
-				return attempt
-			}
-			visited[next.String()] = true
-			attempt.Redirects = append(attempt.Redirects, next.String())
-			current = next
-			continue
-		}
-
-		switch {
-		case statusCode != http.StatusOK:
-			attempt.Error = fmt.Sprintf("unexpected status %d", statusCode)
-		// ACME servers ignore trailing whitespace in the key authorization.
-		case strings.TrimRight(gotBody, " \t\r\n") != body:
-			attempt.Error = "status 200 but the response body is not the challenge token, so the request did not reach the nginx-ui challenge server"
-		default:
-			attempt.Status = HTTP01ProbeStatusSuccess
-			return attempt
-		}
-		break
-	}
-
-	if host := current.Hostname(); len(attempt.Redirects) > 0 && !strings.EqualFold(host, domain) {
+	if host := current.Hostname(); !refused && len(attempt.Redirects) > 0 && !strings.EqualFold(host, w.domain) {
 		attempt.Status = HTTP01ProbeStatusWarning
 		attempt.Error = withChain(fmt.Sprintf(
 			"redirected to %s, which the local Nginx did not answer for (%s); the CA will contact that host directly, so the route cannot be verified locally",
 			host, attempt.Error))
 		return attempt
 	}
-	attempt.Error = withChain(attempt.Error)
+
+	var noSocket *http01NoSocketError
+	switch {
+	case noAnswer && errors.As(fetchErr, &noSocket):
+		attempt.Status = HTTP01ProbeStatusWarning
+		attempt.Error = withChain(fmt.Sprintf(
+			"%s; the certificate authority may reach it through a load balancer or port mapping, so the route cannot be verified locally",
+			noSocket.Error()))
+	case noAnswer && w.endpoint.guessed:
+		attempt.Status = HTTP01ProbeStatusWarning
+		attempt.Error = withChain(fmt.Sprintf(
+			"%s and the local Nginx did not answer (%s), so the route cannot be verified locally",
+			http01ProbeConfigUnreadable, attempt.Error))
+	case noAnswer:
+		attempt.Status = HTTP01ProbeStatusWarning
+		attempt.Error = withChain(fmt.Sprintf(
+			"the local Nginx did not answer (%s), so the route cannot be verified locally",
+			attempt.Error))
+	case w.endpoint.guessed:
+		// Without the configuration the answer may come from another server
+		// block than the one the CA reaches.
+		attempt.Status = HTTP01ProbeStatusWarning
+		attempt.Error = withChain(fmt.Sprintf(
+			"%s; %s, so this answer may come from another server block than the one the certificate authority reaches and the route cannot be verified locally",
+			attempt.Error, http01ProbeConfigUnreadable))
+	default:
+		attempt.Error = withChain(attempt.Error)
+	}
 	return attempt
+}
+
+// http01ProbeURLPort returns the explicit or scheme-default port of u.
+func http01ProbeURLPort(u *url.URL) string {
+	if port := u.Port(); port != "" {
+		return port
+	}
+	if u.Scheme == "https" {
+		return "443"
+	}
+	return "80"
+}
+
+// explainHTTP01AttemptFailure explains a failed attempt from the socket that
+// produced it: the port-80 socket of its first request, then, when that
+// block looks right, the socket that answered the last redirect hop.
+func explainHTTP01AttemptFailure(blocks []nginx.ServerBlock, challengePort, domain string, attempt HTTP01ProbeAttempt) string {
+	if attempt.socket == nil {
+		return ""
+	}
+	if cause := explainHTTP01Socket(blocks, challengePort, domain, *attempt.socket); cause != "" {
+		return cause
+	}
+	if attempt.hop != nil && attempt.hop.socket != nil {
+		return explainHTTP01Socket(blocks, challengePort, attempt.hop.host, *attempt.hop.socket)
+	}
+	return ""
 }
 
 func fetchHTTP01Probe(ctx context.Context, client *http.Client, target *url.URL) (statusCode int, location, body string, err error) {
@@ -660,8 +972,9 @@ func http01ProbeHostHeader(domain string) string {
 	return domain
 }
 
-// enabledSiteHTTPListenEndpoints reads the enabled configuration of
-// configName and returns an endpoint for every explicit, non-wildcard
+// enabledSiteHTTPListenEndpoints is the fallback source of endpoints when the
+// effective configuration (nginx -T) cannot be read. It reads the enabled
+// configuration of configName and returns an endpoint for every explicit, non-wildcard
 // port-80 listen address; its HTTPS side is the same host on port 443.
 // Wildcard listeners are covered by the default loopback endpoints.
 // Unreadable files yield no extra endpoints.

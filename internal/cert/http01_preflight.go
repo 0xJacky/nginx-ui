@@ -1,7 +1,6 @@
 package cert
 
 import (
-	"errors"
 	"fmt"
 	"net"
 	"regexp"
@@ -10,56 +9,24 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/uozi-tech/cosy"
 )
 
 const maintenanceConfigSuffix = "_nginx_ui_maintenance"
 
-// ValidateHTTP01ChallengeConfig verifies the configuration that Nginx has
-// enabled for a site before lego contacts the ACME server. This keeps a stale
-// editor state or a missing symlink from becoming an opaque CA-side 404.
+// ValidateHTTP01ChallengeConfig statically checks the effective Nginx
+// configuration (nginx -T) for every identifier: the server block Nginx
+// selects for it on each port-80 socket must route
+// /.well-known/acme-challenge/ to the challenge port, directly or behind a
+// redirect to an HTTPS server block that routes it.
 //
-// It is advisory: it cannot follow include files, upstream names or
-// hostnames in proxy_pass, so issuance is gated by the active probe in
-// http01_probe.go and this function only explains a failed probe.
-func ValidateHTTP01ChallengeConfig(configName string, identifiers []string) error {
-	if strings.TrimSpace(configName) == "" {
-		return NewHTTP01ChallengePreflightError("site configuration name is empty")
+// It is advisory: it cannot follow upstream names or hostnames in
+// proxy_pass, so it only explains a failed active probe (http01_probe.go).
+func ValidateHTTP01ChallengeConfig(identifiers []string) error {
+	blocks, err := http01ProbeServerBlocks()
+	if err != nil || len(blocks) == 0 {
+		return NewHTTP01ChallengePreflightError(http01ProbeConfigUnreadable)
 	}
-
-	candidates, err := enabledSiteConfigCandidates(configName)
-	if err != nil {
-		return NewHTTP01ChallengePreflightError("site configuration path is invalid")
-	}
-
-	var sawEnabledConfig bool
-	var routeError error
-	for _, candidate := range candidates {
-		exists, existsErr := nginx.Exists(candidate)
-		if existsErr != nil {
-			return NewHTTP01ChallengePreflightError("enabled site configuration cannot be checked")
-		}
-		if !exists {
-			continue
-		}
-		sawEnabledConfig = true
-		parsed, parseErr := nginx.ParseNgxConfig(candidate)
-		if parseErr != nil {
-			return NewHTTP01ChallengePreflightError("enabled site configuration cannot be parsed")
-		}
-		routeError = validateHTTP01ChallengeConfig(parsed, settings.CertSettings.HTTPChallengePort, identifiers)
-		if routeError == nil {
-			return nil
-		}
-	}
-
-	if !sawEnabledConfig {
-		return NewHTTP01ChallengePreflightError("site is not enabled in Nginx")
-	}
-	if routeError != nil {
-		return routeError
-	}
-	return NewHTTP01ChallengePreflightError(fmt.Sprintf("active configuration has no HTTP-01 proxy to port %s", settings.CertSettings.HTTPChallengePort))
+	return validateHTTP01ChallengeConfig(blocks, settings.CertSettings.HTTPChallengePort, identifiers)
 }
 
 // enabledSiteConfigCandidates returns the sites-enabled paths Nginx may load
@@ -75,211 +42,133 @@ func enabledSiteConfigCandidates(configName string) ([]string, error) {
 	}, nil
 }
 
-// validateHTTP01ChallengeConfig statically looks for a port-80 server per
-// identifier whose acme-challenge location proxies to the challenge port,
-// directly or behind a redirect to an HTTPS server that routes it.
-// It only understands the layout nginx-ui generates itself (no include
-// files, no upstream names, no regex server_name), so callers must treat a
-// failure as a possible explanation, never as proof that the route is broken.
-func validateHTTP01ChallengeConfig(config *nginx.NgxConfig, challengePort string, identifiers []string) error {
-	if config == nil || strings.TrimSpace(challengePort) == "" {
+// validateHTTP01ChallengeConfig is the pure part of
+// ValidateHTTP01ChallengeConfig: it explains, per identifier, why the server
+// blocks would not route the challenge, and returns nil when they all do.
+func validateHTTP01ChallengeConfig(blocks []nginx.ServerBlock, challengePort string, identifiers []string) error {
+	if strings.TrimSpace(challengePort) == "" {
 		return NewHTTP01ChallengePreflightError("HTTP-01 challenge port is not configured")
 	}
-
-	proxyPattern := regexp.MustCompile(`(?m)\bproxy_pass\s+http://127\.0\.0\.1:` + regexp.QuoteMeta(challengePort) + `(?:/)?\s*;`)
+	if len(identifiers) == 0 {
+		return NewHTTP01ChallengePreflightError("no identifiers to check")
+	}
 	for _, identifier := range identifiers {
-		if reason := diagnoseHTTP01Route(config, proxyPattern, challengePort, identifier); reason != "" {
+		if reason := explainHTTP01RouteBlocks(blocks, challengePort, identifier); reason != "" {
 			return NewHTTP01ChallengePreflightError(fmt.Sprintf("HTTP-01 route is unavailable for %s on port 80: %s", identifier, reason))
 		}
 	}
-	if len(identifiers) > 0 {
-		return nil
-	}
-
-	return NewHTTP01ChallengePreflightError("active configuration has no HTTP-01 proxy location")
+	return nil
 }
 
 var (
-	httpsRedirectReturnPattern   = regexp.MustCompile(`^\s*30[1278]\s+"?https://`)
-	httpsRedirectLocationPattern = regexp.MustCompile(`(?m)^\s*return\s+30[1278]\s+"?https://`)
+	httpsRedirectReturnPattern = regexp.MustCompile(`^\s*30[1278]\s+"?https://`)
 )
 
-// diagnoseHTTP01Route returns an empty string when a port-80 server for
-// identifier routes the challenge to the challenge port, otherwise the most
-// specific reason it can find.
+// decidingServerSockets returns the sockets on port whose selected server
+// block decides how host is answered. When any socket selects a block by
+// server_name, only those sockets count: a socket where host merely falls
+// through to an unrelated default server (for example an IPv6-only default
+// next to the domain's IPv4 block) says nothing about the domain's route.
+// Only when no socket matches by name do the default-server sockets decide.
+func decidingServerSockets(blocks []nginx.ServerBlock, host, port string) []nginx.ServerSocket {
+	sockets := nginx.ResolveServerSockets(blocks, host, port)
+	var byName []nginx.ServerSocket
+	for _, socket := range sockets {
+		if socket.ByName {
+			byName = append(byName, socket)
+		}
+	}
+	if len(byName) > 0 {
+		return byName
+	}
+	return sockets
+}
+
+// explainHTTP01RouteBlocks returns an empty string when, on every deciding
+// port-80 socket, the server block Nginx selects for identifier routes the challenge
+// to the challenge port. Otherwise it returns the reason for the first socket
+// that does not.
 //
 // ACME validators follow redirects to HTTPS without checking the certificate,
-// so a port-80 server that redirects to HTTPS is fine as long as an HTTPS
-// server for the same name routes the challenge location.
-func diagnoseHTTP01Route(config *nginx.NgxConfig, proxyPattern *regexp.Regexp, challengePort, identifier string) string {
-	var matched []*nginx.NgxServer
-	for _, server := range config.Servers {
-		if server != nil && serverMatchesIdentifier(server, identifier) {
-			matched = append(matched, server)
-		}
+// so a port-80 block that redirects to HTTPS is fine as long as a server
+// block Nginx selects for the same name on port 443 routes the challenge.
+func explainHTTP01RouteBlocks(blocks []nginx.ServerBlock, challengePort, identifier string) string {
+	sockets := decidingServerSockets(blocks, identifier, "80")
+	if len(sockets) == 0 {
+		return fmt.Sprintf("no server block listens on port 80 for %s", identifier)
 	}
-
-	httpsRoutesChallenge := false
-	for _, server := range matched {
-		if hasHTTPSListen(server) && serverReturnParams(server) == "" && routesChallenge(server, proxyPattern) {
-			httpsRoutesChallenge = true
-		}
-	}
-
-	var (
-		matchedNonHTTP   bool
-		matchedHTTP      bool
-		hasPlainReturn   bool
-		redirectsToHTTPS bool
-		hasInclude       bool
-		hasChallengePath bool
-	)
-	for _, server := range matched {
-		if !hasHTTPListen(server) {
-			matchedNonHTTP = true
-			continue
-		}
-		matchedHTTP = true
-		if params := serverReturnParams(server); params != "" {
-			// A server-level return answers before any location is reached.
-			if httpsRedirectReturnPattern.MatchString(params) {
-				if httpsRoutesChallenge {
-					return ""
-				}
-				redirectsToHTTPS = true
-			} else {
-				hasPlainReturn = true
-			}
-			continue
-		}
-		hasInclude = hasInclude || serverHasDirective(server, "include")
-		var hasChallengeLocation bool
-		for _, location := range server.Locations {
-			if !strings.Contains(location.Path, "acme-challenge") {
-				continue
-			}
-			hasChallengeLocation = true
-			hasChallengePath = true
-			if proxyPattern.MatchString(location.Content) {
-				return ""
-			}
-		}
-		if !hasChallengeLocation && rootLocationRedirectsToHTTPS(server) {
-			if httpsRoutesChallenge {
-				return ""
-			}
-			redirectsToHTTPS = true
-		}
-	}
-
-	switch {
-	case !matchedHTTP && matchedNonHTTP:
-		return "no server listening on port 80 matches this name, only servers on other ports do"
-	case !matchedHTTP:
-		return "no port-80 server with this server_name was found in the enabled configuration"
-	case hasChallengePath:
-		return fmt.Sprintf("the acme-challenge location does not proxy_pass to http://127.0.0.1:%s", challengePort)
-	case redirectsToHTTPS:
-		return fmt.Sprintf("the port-80 server redirects to HTTPS, but no HTTPS server for this name has an acme-challenge location that proxies to http://127.0.0.1:%s", challengePort)
-	case hasPlainReturn && !hasInclude:
-		return "the port-80 server has a server-level return, which answers before any location is reached"
-	case hasInclude:
-		return "the port-80 server has no acme-challenge location (an included file may define one)"
-	default:
-		return "the port-80 server has no /.well-known/acme-challenge/ location"
-	}
-}
-
-func serverMatchesIdentifier(server *nginx.NgxServer, identifier string) bool {
-	var names []string
-	var isDefault bool
-	for _, directive := range server.Directives {
-		switch directive.Directive {
-		case "server_name":
-			names = append(names, strings.Fields(directive.Params)...)
-		case "listen":
-			isDefault = isDefault || strings.Contains(directive.Params, "default_server")
-		}
-	}
-	return containsIdentifier(names, identifier) || (isDefault && net.ParseIP(identifier) != nil)
-}
-
-func serverReturnParams(server *nginx.NgxServer) string {
-	for _, directive := range server.Directives {
-		if directive.Directive == "return" {
-			if params := strings.TrimSpace(directive.Params); params != "" {
-				return params
-			}
-			return "return"
+	for _, socket := range sockets {
+		if reason := explainHTTP01Socket(blocks, challengePort, identifier, socket); reason != "" {
+			return reason
 		}
 	}
 	return ""
 }
 
-func serverHasDirective(server *nginx.NgxServer, name string) bool {
-	for _, directive := range server.Directives {
-		if directive.Directive == name {
-			return true
+func explainHTTP01Socket(blocks []nginx.ServerBlock, challengePort, identifier string, socket nginx.ServerSocket) string {
+	block := socket.Block
+	subject := fmt.Sprintf("the server block for %s on %s in %s", identifier, serverListenLabel(socket.Listen), serverBlockFile(block))
+	if !socket.ByName {
+		subject = fmt.Sprintf("no server_name matches %s on %s, so Nginx answers with the default server block in %s, which",
+			identifier, serverListenLabel(socket.Listen), serverBlockFile(block))
+	}
+	target := net.JoinHostPort("127.0.0.1", challengePort)
+	httpsUnrouted := fmt.Sprintf("no HTTPS server block for %s routes /.well-known/acme-challenge/ to %s", identifier, target)
+
+	if block.Return != "" {
+		// A server-level return answers before any location is reached.
+		if httpsRedirectReturnPattern.MatchString(block.Return) {
+			if httpsRoutesHTTP01Challenge(blocks, challengePort, identifier) {
+				return ""
+			}
+			return fmt.Sprintf("%s redirects to HTTPS at server level (return %s), and %s", subject, block.Return, httpsUnrouted)
 		}
+		return fmt.Sprintf("%s has a server-level return (return %s), which answers before any location is reached", subject, block.Return)
 	}
-	return false
-}
 
-func routesChallenge(server *nginx.NgxServer, proxyPattern *regexp.Regexp) bool {
-	for _, location := range server.Locations {
-		if strings.Contains(location.Path, "acme-challenge") && proxyPattern.MatchString(location.Content) {
-			return true
-		}
-	}
-	return false
-}
-
-func rootLocationRedirectsToHTTPS(server *nginx.NgxServer) bool {
-	for _, location := range server.Locations {
-		if strings.TrimSpace(location.Path) == "/" && httpsRedirectLocationPattern.MatchString(location.Content) {
-			return true
-		}
-	}
-	return false
-}
-
-// explainHTTP01RouteFailure runs the static analyzer for one identifier and
-// returns its reason, or an empty string when it found nothing suspicious.
-func explainHTTP01RouteFailure(configName, identifier string) string {
-	if strings.TrimSpace(configName) == "" {
-		return ""
-	}
-	err := ValidateHTTP01ChallengeConfig(configName, []string{identifier})
-	if err == nil {
-		return ""
-	}
-	var cosyErr *cosy.Error
-	if errors.As(err, &cosyErr) && len(cosyErr.Params) > 0 {
-		return cosyErr.Params[0]
-	}
-	return err.Error()
-}
-
-func containsIdentifier(names []string, identifier string) bool {
-	for _, name := range names {
-		if strings.EqualFold(name, identifier) {
-			return true
-		}
-	}
-	return false
-}
-
-func hasHTTPListen(server *nginx.NgxServer) bool {
-	if server == nil {
-		return false
-	}
-	for _, directive := range server.Directives {
-		if directive.Directive != "listen" {
+	var challenge *nginx.ServerLocation
+	for i := range block.Locations {
+		location := block.Locations[i]
+		if !isHTTP01ChallengeLocation(location) {
 			continue
 		}
-		for _, token := range strings.Fields(directive.Params) {
-			token = strings.TrimSuffix(token, ";")
-			if token == "80" || strings.HasSuffix(token, ":80") {
+		if location.Return == "" && proxiesToHTTP01ChallengePort(location.ProxyPass, challengePort) {
+			return ""
+		}
+		if challenge == nil {
+			challenge = &block.Locations[i]
+		}
+	}
+	if challenge != nil {
+		detail := "no proxy_pass"
+		switch {
+		case challenge.Return != "":
+			detail = "return " + challenge.Return
+		case challenge.ProxyPass != "":
+			detail = "proxy_pass " + challenge.ProxyPass
+		}
+		return fmt.Sprintf("%s has a %s location that does not proxy to %s (%s)", subject, challenge.Path, target, detail)
+	}
+
+	if rootLocationRedirectsToHTTPS(block) {
+		if httpsRoutesHTTP01Challenge(blocks, challengePort, identifier) {
+			return ""
+		}
+		return fmt.Sprintf("%s redirects to HTTPS in location /, and %s", subject, httpsUnrouted)
+	}
+	return fmt.Sprintf("%s has no /.well-known/acme-challenge location proxying to %s", subject, target)
+}
+
+// httpsRoutesHTTP01Challenge reports whether a server block Nginx selects for
+// identifier on port 443 routes the challenge location to the challenge port.
+func httpsRoutesHTTP01Challenge(blocks []nginx.ServerBlock, challengePort, identifier string) bool {
+	for _, socket := range decidingServerSockets(blocks, identifier, "443") {
+		if socket.Block.Return != "" {
+			continue
+		}
+		for _, location := range socket.Block.Locations {
+			if isHTTP01ChallengeLocation(location) && location.Return == "" &&
+				proxiesToHTTP01ChallengePort(location.ProxyPass, challengePort) {
 				return true
 			}
 		}
@@ -287,20 +176,59 @@ func hasHTTPListen(server *nginx.NgxServer) bool {
 	return false
 }
 
-func hasHTTPSListen(server *nginx.NgxServer) bool {
-	if server == nil {
+func isHTTP01ChallengeLocation(location nginx.ServerLocation) bool {
+	return strings.Contains(location.Path, "acme-challenge") || strings.Contains(location.Path, "/.well-known")
+}
+
+// proxiesToHTTP01ChallengePort reports whether a proxy_pass target is the
+// plain-HTTP challenge server on a loopback address.
+func proxiesToHTTP01ChallengePort(proxyPass, challengePort string) bool {
+	target := strings.TrimSuffix(strings.TrimSpace(proxyPass), ";")
+	if !strings.HasPrefix(strings.ToLower(target), "http://") {
 		return false
 	}
-	for _, directive := range server.Directives {
-		if directive.Directive != "listen" {
-			continue
-		}
-		for _, token := range strings.Fields(directive.Params) {
-			token = strings.TrimSuffix(token, ";")
-			if token == "443" || token == "ssl" || strings.HasSuffix(token, ":443") {
-				return true
-			}
+	hostPort := target[len("http://"):]
+	if i := strings.IndexByte(hostPort, '/'); i >= 0 {
+		hostPort = hostPort[:i]
+	}
+	host, port, err := net.SplitHostPort(hostPort)
+	if err != nil || port != challengePort {
+		return false
+	}
+	switch strings.ToLower(host) {
+	case "127.0.0.1", "localhost", "::1":
+		return true
+	}
+	return false
+}
+
+func rootLocationRedirectsToHTTPS(block nginx.ServerBlock) bool {
+	for _, location := range block.Locations {
+		if strings.TrimSpace(location.Path) == "/" && httpsRedirectReturnPattern.MatchString(location.Return) {
+			return true
 		}
 	}
 	return false
+}
+
+func serverBlockFile(block nginx.ServerBlock) string {
+	if block.File == "" {
+		return "the Nginx configuration"
+	}
+	return block.File
+}
+
+func serverListenLabel(listen nginx.ServerListen) string {
+	port := listen.Port
+	if port == "" {
+		port = "80"
+	}
+	switch {
+	case listen.Addr != "":
+		return net.JoinHostPort(strings.Trim(listen.Addr, "[]"), port)
+	case listen.IPv6:
+		return "[::]:" + port
+	default:
+		return "*:" + port
+	}
 }

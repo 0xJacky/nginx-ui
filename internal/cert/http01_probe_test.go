@@ -9,15 +9,13 @@ import (
 	"net/http/httptest"
 	"net/http/httputil"
 	"net/url"
-	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
 	"sync/atomic"
 	"testing"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/uozi-tech/cosy"
@@ -44,15 +42,42 @@ func freeTCPPort(t *testing.T) string {
 	return port
 }
 
+// fakeHTTP01Blocks is a catch-all default server listening on the wildcard
+// sockets of ports 80 and 443, the layout the fake Nginx plays by default.
+func fakeHTTP01Blocks() []nginx.ServerBlock {
+	return []nginx.ServerBlock{{
+		File:        "/etc/nginx/conf.d/default.conf",
+		ServerNames: []string{"_"},
+		Listens: []nginx.ServerListen{
+			{Port: "80", DefaultServer: true},
+			{Port: "443", SSL: true, DefaultServer: true},
+		},
+	}}
+}
+
+// useHTTP01Blocks makes the probe discover blocks and dial every socket
+// through addresses, keyed by serverListenLabel (e.g. "*:80",
+// "192.0.2.10:80"). Sockets missing from addresses are not dialable.
+func useHTTP01Blocks(blocks []nginx.ServerBlock, addresses map[string]string) {
+	http01ProbeServerBlocks = func() ([]nginx.ServerBlock, error) { return blocks, nil }
+	http01ProbeSocketAddress = func(listen nginx.ServerListen) string {
+		return addresses[serverListenLabel(listen)]
+	}
+}
+
 // setupHTTP01Probe points the probe at a free loopback challenge port and a
-// fake Nginx. routes maps Host to a handler for plain HTTP, tlsRoutes for
-// HTTPS; the special handler value nil means "proxy to the challenge port".
+// fake Nginx whose wildcard sockets on ports 80 and 443 are served by the
+// fake's HTTP and HTTPS servers. routes maps Host to a handler for plain
+// HTTP, tlsRoutes for HTTPS; the special handler value nil means "proxy to
+// the challenge port".
 func setupHTTP01Probe(t *testing.T, routes, tlsRoutes map[string]http.Handler) (*fakeNginx, string) {
 	t.Helper()
 	port := freeTCPPort(t)
 
 	previousHost := http01ProbeListenHost
 	previousPort := http01ProbeChallengePort
+	previousBlocks := http01ProbeServerBlocks
+	previousSocket := http01ProbeSocketAddress
 	previousEndpoints := http01ProbeDefaultEndpoints
 	previousSite := http01ProbeSiteEndpoints
 	previousSkip := http01ProbeSkipReason
@@ -62,6 +87,8 @@ func setupHTTP01Probe(t *testing.T, routes, tlsRoutes map[string]http.Handler) (
 	t.Cleanup(func() {
 		http01ProbeListenHost = previousHost
 		http01ProbeChallengePort = previousPort
+		http01ProbeServerBlocks = previousBlocks
+		http01ProbeSocketAddress = previousSocket
 		http01ProbeDefaultEndpoints = previousEndpoints
 		http01ProbeSiteEndpoints = previousSite
 		http01ProbeSkipReason = previousSkip
@@ -99,7 +126,16 @@ func setupHTTP01Probe(t *testing.T, routes, tlsRoutes map[string]http.Handler) (
 
 	http01ProbeListenHost = "127.0.0.1"
 	http01ProbeChallengePort = func() string { return port }
-	http01ProbeDefaultEndpoints = func() []http01ProbeEndpoint { return []http01ProbeEndpoint{fake.endpoint()} }
+	useHTTP01Blocks(fakeHTTP01Blocks(), map[string]string{
+		"*:80":  fake.endpoint().HTTP,
+		"*:443": fake.endpoint().HTTPS,
+	})
+	// The loopback defaults must not be needed while the configuration is
+	// readable; point them at a closed port so a regression shows up.
+	closed := net.JoinHostPort("127.0.0.1", freeTCPPort(t))
+	http01ProbeDefaultEndpoints = func() []http01ProbeEndpoint {
+		return []http01ProbeEndpoint{{HTTP: closed, HTTPS: closed}}
+	}
 	http01ProbeSiteEndpoints = func(string) []http01ProbeEndpoint { return nil }
 	http01ProbeSkipReason = func() string { return "" }
 	http01ProbeRequestTimeout = 2 * time.Second
@@ -301,34 +337,58 @@ func TestProbeHTTP01RoutesMultipleDomainsOneFailing(t *testing.T) {
 	assert.Contains(t, summary, "missing.example.com: unexpected status 404")
 }
 
+// twoSocketBlocks serves domain from a block on a specific-address socket
+// and from a block on the wildcard socket.
+func twoSocketBlocks(domain string) []nginx.ServerBlock {
+	return []nginx.ServerBlock{
+		{
+			File:        "/etc/nginx/sites-enabled/specific",
+			ServerNames: []string{domain},
+			Listens:     []nginx.ServerListen{{Addr: "192.0.2.10", Port: "80"}},
+		},
+		{
+			File:        "/etc/nginx/sites-enabled/wildcard",
+			ServerNames: []string{domain},
+			Listens:     []nginx.ServerListen{{Port: "80"}, {Port: "443", SSL: true}},
+		},
+	}
+}
+
 func TestProbeHTTP01RoutesTriesNextEndpoint(t *testing.T) {
 	fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
 	closed := net.JoinHostPort("127.0.0.1", freeTCPPort(t))
-	http01ProbeDefaultEndpoints = func() []http01ProbeEndpoint {
-		return []http01ProbeEndpoint{{HTTP: closed, HTTPS: closed}, fake.endpoint()}
-	}
+	useHTTP01Blocks(twoSocketBlocks("ok.example.com"), map[string]string{
+		"192.0.2.10:80": closed,
+		"*:80":          fake.endpoint().HTTP,
+	})
 
 	results := probe(t, "ok.example.com")
 
 	assert.Equal(t, HTTP01ProbeStatusSuccess, results[0].Status)
 	assert.Equal(t, fake.endpoint().HTTP, results[0].Target)
 	require.Len(t, results[0].Attempts, 2)
-	assert.Equal(t, HTTP01ProbeStatusFailure, results[0].Attempts[0].Status)
-	assert.NotEmpty(t, results[0].Attempts[0].Error)
+	assert.Equal(t, closed, results[0].Attempts[0].Target)
+	assert.Equal(t, HTTP01ProbeStatusWarning, results[0].Attempts[0].Status)
+	assert.Contains(t, results[0].Attempts[0].Error, "cannot be verified locally")
 }
 
 func TestProbeHTTP01RoutesPrefersHTTPAnswerOverConnectionError(t *testing.T) {
 	fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"missing.example.com": http.NotFoundHandler()}, nil)
 	closed := net.JoinHostPort("127.0.0.1", freeTCPPort(t))
-	http01ProbeDefaultEndpoints = func() []http01ProbeEndpoint {
-		return []http01ProbeEndpoint{{HTTP: closed, HTTPS: closed}, fake.endpoint()}
-	}
+	useHTTP01Blocks(twoSocketBlocks("missing.example.com"), map[string]string{
+		"192.0.2.10:80": closed,
+		"*:80":          fake.endpoint().HTTP,
+	})
 
 	results := probe(t, "missing.example.com")
 
+	// The 404 is HTTP evidence and outranks the refused connection.
 	assert.Equal(t, HTTP01ProbeStatusFailure, results[0].Status)
 	assert.Equal(t, fake.endpoint().HTTP, results[0].Target)
 	assert.Equal(t, http.StatusNotFound, results[0].StatusCode)
+	require.Len(t, results[0].Attempts, 2)
+	assert.Equal(t, HTTP01ProbeStatusWarning, results[0].Attempts[0].Status)
+	requireCosyCode(t, HTTP01RouteCheckError(results, ""), 50058)
 }
 
 func TestProbeHTTP01RoutesSkippedWhenNginxIsNotLocal(t *testing.T) {
@@ -508,53 +568,331 @@ func TestProbeHTTP01RoutesWildcardFails(t *testing.T) {
 }
 
 func TestHTTP01RouteCheckErrorAddsStaticExplanation(t *testing.T) {
-	setupHTTP01Probe(t, map[string]http.Handler{"example.com": redirectTo("https://example.com%s")}, nil)
-
-	configDir := t.TempDir()
-	previousConfigDir := settings.NginxSettings.ConfigDir
-	previousChallengePort := settings.CertSettings.HTTPChallengePort
-	settings.NginxSettings.ConfigDir = configDir
-	settings.CertSettings.HTTPChallengePort = "9180"
-	t.Cleanup(func() {
-		settings.NginxSettings.ConfigDir = previousConfigDir
-		settings.CertSettings.HTTPChallengePort = previousChallengePort
+	fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"example.com": redirectTo("https://example.com%s")}, nil)
+	useHTTP01Blocks([]nginx.ServerBlock{
+		{
+			File:        "/etc/nginx/sites-enabled/example.com",
+			ServerNames: []string{"example.com"},
+			Listens:     []nginx.ServerListen{{Port: "80"}},
+			Return:      "301 https://$host$request_uri",
+		},
+		{
+			File:        "/etc/nginx/sites-enabled/example.com",
+			ServerNames: []string{"example.com"},
+			Listens:     []nginx.ServerListen{{Port: "443", SSL: true}},
+			Locations:   []nginx.ServerLocation{{Path: "/", ProxyPass: "http://127.0.0.1:3000"}},
+		},
+	}, map[string]string{
+		"*:80":  fake.endpoint().HTTP,
+		"*:443": fake.endpoint().HTTPS,
 	})
-	availableDir := filepath.Join(configDir, "sites-available")
-	enabledDir := filepath.Join(configDir, "sites-enabled")
-	require.NoError(t, os.MkdirAll(availableDir, 0755))
-	require.NoError(t, os.MkdirAll(enabledDir, 0755))
-	availablePath := filepath.Join(availableDir, "example.com")
-	require.NoError(t, os.WriteFile(availablePath, []byte(`server {
-	listen 80;
-	server_name example.com;
-	return 301 https://$host$request_uri;
-}`), 0644))
-	require.NoError(t, os.Symlink(availablePath, filepath.Join(enabledDir, "example.com")))
 
 	results := probe(t, "example.com")
 	require.Equal(t, HTTP01ProbeStatusFailure, results[0].Status)
 
-	err := HTTP01RouteCheckError(results, "example.com")
+	// The configuration name no longer matters for the explanation.
+	err := HTTP01RouteCheckError(results, "unrelated-certificate-name")
 	requireCosyCode(t, err, 50058)
 	assert.Contains(t, err.Error(), "possible cause:")
-	assert.Contains(t, err.Error(), "no HTTPS server for this name")
+	assert.Contains(t, err.Error(), "the server block for example.com on *:80 in /etc/nginx/sites-enabled/example.com redirects to HTTPS")
+	assert.Contains(t, err.Error(), "no HTTPS server block for example.com")
+	assert.NotContains(t, err.Error(), "not enabled")
 }
 
-func TestVerifyHTTP01ChallengeRouteBlocksIssuanceOnFailure(t *testing.T) {
-	setupHTTP01Probe(t, map[string]http.Handler{
-		"ok.example.com":      nil,
-		"missing.example.com": http.NotFoundHandler(),
+func TestProbeHTTP01RoutesOneToManyCertificate(t *testing.T) {
+	// A certificate named "shared-cert" covers three SANs served by two
+	// blocks; api.example.com only listens on a specific address.
+	fake, port := setupHTTP01Probe(t, map[string]http.Handler{
+		"a.example.com": nil,
+		"b.example.com": nil,
 	}, nil)
-	log := NewLogger()
-	defer log.Close()
+	// Only the specific-address socket serves api.example.com by name; the
+	// wildcard socket would answer it with the default server's 404.
+	specific := httptest.NewServer(challengeProxy(port))
+	t.Cleanup(specific.Close)
+	var loopbackHits atomic.Int32
+	loopback := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		loopbackHits.Add(1)
+		http.NotFound(w, r)
+	}))
+	t.Cleanup(loopback.Close)
 
-	err := verifyHTTP01ChallengeRoute(&ConfigPayload{ServerName: []string{"ok.example.com"}, ConfigName: "none"}, log)
-	assert.NoError(t, err)
+	useHTTP01Blocks([]nginx.ServerBlock{
+		{
+			File:        "/etc/nginx/conf.d/default.conf",
+			ServerNames: []string{"_"},
+			Listens:     []nginx.ServerListen{{Port: "80", DefaultServer: true}},
+		},
+		{
+			File:        "/etc/nginx/sites-enabled/www",
+			ServerNames: []string{"a.example.com", "b.example.com"},
+			Listens:     []nginx.ServerListen{{Port: "80"}},
+		},
+		{
+			File:        "/etc/nginx/sites-enabled/api",
+			ServerNames: []string{"api.example.com"},
+			Listens:     []nginx.ServerListen{{Addr: "192.0.2.10", Port: "80"}},
+		},
+	}, map[string]string{
+		"*:80":          fake.endpoint().HTTP,
+		"192.0.2.10:80": specific.Listener.Addr().String(),
+	})
+	http01ProbeDefaultEndpoints = func() []http01ProbeEndpoint {
+		return []http01ProbeEndpoint{{HTTP: loopback.Listener.Addr().String()}}
+	}
 
-	err = verifyHTTP01ChallengeRoute(&ConfigPayload{ServerName: []string{"ok.example.com", "missing.example.com"}, ConfigName: "none"}, log)
-	requireCosyCode(t, err, 50058)
-	assert.Contains(t, log.ToString(), "HTTP01 challenge route reachable")
-	assert.Contains(t, log.ToString(), "HTTP01 challenge route check failed")
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	results, err := ProbeHTTP01Routes(ctx, []string{"a.example.com", "b.example.com", "api.example.com"},
+		WithHTTP01ProbeConfigName("shared-cert"))
+	require.NoError(t, err)
+
+	for _, result := range results {
+		assert.Equal(t, HTTP01ProbeStatusSuccess, result.Status, "%s: %s", result.Domain, result.Error)
+	}
+	assert.Equal(t, fake.endpoint().HTTP, results[0].Target)
+	assert.Equal(t, fake.endpoint().HTTP, results[1].Target)
+	// api.example.com passes through its specific-address socket; the
+	// wildcard socket only reaches it through the unrelated default server,
+	// so it does not decide and is not probed.
+	assert.Equal(t, specific.Listener.Addr().String(), results[2].Target)
+	require.Len(t, results[2].Attempts, 1)
+	assert.Zero(t, loopbackHits.Load(), "loopback defaults must not be used when nginx -T is readable")
+	assert.NoError(t, HTTP01RouteCheckError(results, "shared-cert"))
+}
+
+func TestProbeHTTP01RoutesNginxOnlyOnNonLoopbackAddress(t *testing.T) {
+	fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
+	useHTTP01Blocks([]nginx.ServerBlock{{
+		File:        "/etc/nginx/sites-enabled/ok",
+		ServerNames: []string{"ok.example.com"},
+		Listens:     []nginx.ServerListen{{Addr: "203.0.113.7", Port: "80"}},
+	}}, map[string]string{"203.0.113.7:80": fake.endpoint().HTTP})
+
+	results := probe(t, "ok.example.com")
+
+	assert.Equal(t, HTTP01ProbeStatusSuccess, results[0].Status, results[0].Error)
+	require.Len(t, results[0].Attempts, 1)
+	assert.Equal(t, fake.endpoint().HTTP, results[0].Target)
+}
+
+func TestProbeHTTP01RoutesNoPort80SocketIsWarning(t *testing.T) {
+	setupHTTP01Probe(t, nil, nil)
+	useHTTP01Blocks([]nginx.ServerBlock{{
+		ServerNames: []string{"tls.example.com"},
+		Listens:     []nginx.ServerListen{{Port: "443", SSL: true}},
+	}}, nil)
+	http01ProbeSettleTimeout = time.Minute
+
+	results := probe(t, "tls.example.com")
+
+	assert.Equal(t, HTTP01ProbeStatusWarning, results[0].Status)
+	assert.Equal(t, "no server block listens on port 80 for tls.example.com; the certificate authority may reach it through a load balancer or port mapping", results[0].Error)
+	assert.Equal(t, 1, results[0].Rounds)
+	assert.NoError(t, HTTP01RouteCheckError(results, ""))
+}
+
+func TestProbeHTTP01RoutesConnectionRefusedEverywhereIsWarning(t *testing.T) {
+	setupHTTP01Probe(t, nil, nil)
+	closedV4 := net.JoinHostPort("127.0.0.1", freeTCPPort(t))
+	closedV6 := net.JoinHostPort("127.0.0.1", freeTCPPort(t))
+	useHTTP01Blocks([]nginx.ServerBlock{{
+		ServerNames: []string{"down.example.com"},
+		Listens:     []nginx.ServerListen{{Port: "80"}, {Port: "80", IPv6: true}},
+	}}, map[string]string{"*:80": closedV4, "[::]:80": closedV6})
+	http01ProbeSettleTimeout = time.Minute
+
+	results := probe(t, "down.example.com")
+
+	assert.Equal(t, HTTP01ProbeStatusWarning, results[0].Status)
+	assert.Contains(t, results[0].Error, "the local Nginx did not answer")
+	assert.Contains(t, results[0].Error, "cannot be verified locally")
+	require.Len(t, results[0].Attempts, 2)
+	// Connection errors are not caused by a reload, so they are not retried.
+	assert.Equal(t, 1, results[0].Rounds)
+	assert.NoError(t, HTTP01RouteCheckError(results, ""))
+}
+
+func TestProbeHTTP01RoutesHTTPSHopWithoutSocketIsWarning(t *testing.T) {
+	fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"secure.example.com": redirectTo("https://secure.example.com%s")}, nil)
+	useHTTP01Blocks([]nginx.ServerBlock{{
+		ServerNames: []string{"secure.example.com"},
+		Listens:     []nginx.ServerListen{{Port: "80"}},
+		Return:      "301 https://$host$request_uri",
+	}}, map[string]string{"*:80": fake.endpoint().HTTP})
+
+	results := probe(t, "secure.example.com")
+
+	assert.Equal(t, HTTP01ProbeStatusWarning, results[0].Status)
+	assert.Contains(t, results[0].Error, "no server block listens on port 443 for secure.example.com")
+	assert.Contains(t, results[0].Error, "redirect chain:")
+	assert.NoError(t, HTTP01RouteCheckError(results, ""))
+}
+
+func TestProbeHTTP01RoutesTLSHandshakeErrorIsWarning(t *testing.T) {
+	// A plain HTTP server on the HTTPS socket fails the TLS handshake.
+	fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"secure.example.com": redirectTo("https://secure.example.com%s")}, nil)
+	useHTTP01Blocks(fakeHTTP01Blocks(), map[string]string{
+		"*:80":  fake.endpoint().HTTP,
+		"*:443": fake.endpoint().HTTP,
+	})
+
+	results := probe(t, "secure.example.com")
+
+	assert.Equal(t, HTTP01ProbeStatusWarning, results[0].Status)
+	assert.Contains(t, results[0].Error, "cannot be verified locally")
+	assert.NoError(t, HTTP01RouteCheckError(results, ""))
+}
+
+func TestProbeHTTP01RoutesConfigUnreadable(t *testing.T) {
+	t.Run("no address left is a warning", func(t *testing.T) {
+		setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
+		http01ProbeServerBlocks = func() ([]nginx.ServerBlock, error) { return nil, nginx.ErrNginxTOutputEmpty }
+		http01ProbeDefaultEndpoints = func() []http01ProbeEndpoint { return nil }
+
+		results := probe(t, "ok.example.com")
+
+		assert.Equal(t, HTTP01ProbeStatusWarning, results[0].Status)
+		assert.Equal(t, "the local Nginx configuration could not be read", results[0].Error)
+		assert.NoError(t, HTTP01RouteCheckError(results, ""))
+	})
+
+	t.Run("loopback success still passes", func(t *testing.T) {
+		fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
+		http01ProbeServerBlocks = func() ([]nginx.ServerBlock, error) { return nil, nginx.ErrNginxTOutputEmpty }
+		http01ProbeDefaultEndpoints = func() []http01ProbeEndpoint { return []http01ProbeEndpoint{fake.endpoint()} }
+
+		results := probe(t, "ok.example.com")
+
+		assert.Equal(t, HTTP01ProbeStatusSuccess, results[0].Status, results[0].Error)
+	})
+
+	t.Run("loopback 404 is only a warning", func(t *testing.T) {
+		fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"missing.example.com": http.NotFoundHandler()}, nil)
+		http01ProbeServerBlocks = func() ([]nginx.ServerBlock, error) { return nil, nginx.ErrNginxTOutputEmpty }
+		http01ProbeDefaultEndpoints = func() []http01ProbeEndpoint { return []http01ProbeEndpoint{fake.endpoint()} }
+
+		results := probe(t, "missing.example.com")
+
+		assert.Equal(t, HTTP01ProbeStatusWarning, results[0].Status)
+		assert.Equal(t, http.StatusNotFound, results[0].StatusCode)
+		assert.Contains(t, results[0].Error, "the local Nginx configuration could not be read")
+		assert.NoError(t, HTTP01RouteCheckError(results, ""))
+	})
+
+	t.Run("loopback refused is a warning", func(t *testing.T) {
+		setupHTTP01Probe(t, nil, nil)
+		http01ProbeServerBlocks = func() ([]nginx.ServerBlock, error) { return nil, nginx.ErrNginxTOutputEmpty }
+
+		results := probe(t, "ok.example.com")
+
+		assert.Equal(t, HTTP01ProbeStatusWarning, results[0].Status)
+		assert.Contains(t, results[0].Error, "the local Nginx configuration could not be read")
+	})
+
+	t.Run("site listen address is evidence", func(t *testing.T) {
+		fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"missing.example.com": http.NotFoundHandler()}, nil)
+		http01ProbeServerBlocks = func() ([]nginx.ServerBlock, error) { return nil, nginx.ErrNginxTOutputEmpty }
+		http01ProbeSiteEndpoints = func(name string) []http01ProbeEndpoint {
+			assert.Equal(t, "example.com", name)
+			return []http01ProbeEndpoint{fake.endpoint()}
+		}
+
+		ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+		defer cancel()
+		results, err := ProbeHTTP01Routes(ctx, []string{"missing.example.com"}, WithHTTP01ProbeConfigName("example.com"))
+		require.NoError(t, err)
+
+		assert.Equal(t, HTTP01ProbeStatusFailure, results[0].Status)
+		assert.Equal(t, fake.endpoint().HTTP, results[0].Target)
+		requireCosyCode(t, HTTP01RouteCheckError(results, "example.com"), 50058)
+	})
+}
+
+func TestVerifyHTTP01ChallengeRouteNeverBlocksOnRouteResults(t *testing.T) {
+	t.Run("HTTP failure is logged and issuance continues", func(t *testing.T) {
+		setupHTTP01Probe(t, map[string]http.Handler{
+			"ok.example.com":      nil,
+			"missing.example.com": http.NotFoundHandler(),
+		}, nil)
+		log := NewLogger()
+		defer log.Close()
+
+		err := verifyHTTP01ChallengeRoute(&ConfigPayload{ServerName: []string{"ok.example.com", "missing.example.com"}, ConfigName: "none"}, log)
+
+		assert.NoError(t, err)
+		assert.Contains(t, log.ToString(), "HTTP01 challenge route reachable")
+		assert.Contains(t, log.ToString(), "HTTP01 challenge route check failed for %{domain}: %{error}. Issuance continues; the certificate authority will verify the route itself")
+		assert.Contains(t, log.ToString(), "missing.example.com")
+
+		// The HTTPS card orchestrator still gets the 50058 error for the
+		// same HTTP evidence.
+		results := probe(t, "ok.example.com", "missing.example.com")
+		requireCosyCode(t, HTTP01RouteCheckError(results, ""), 50058)
+	})
+
+	t.Run("connection refused everywhere is a warning", func(t *testing.T) {
+		setupHTTP01Probe(t, nil, nil)
+		closed := net.JoinHostPort("127.0.0.1", freeTCPPort(t))
+		useHTTP01Blocks(fakeHTTP01Blocks(), map[string]string{"*:80": closed, "*:443": closed})
+		log := NewLogger()
+		defer log.Close()
+
+		err := verifyHTTP01ChallengeRoute(&ConfigPayload{ServerName: []string{"down.example.com"}, ConfigName: "down.example.com"}, log)
+
+		assert.NoError(t, err)
+		assert.Contains(t, log.ToString(), "HTTP01 challenge route cannot be verified locally for %{domain}: %{reason}")
+		assert.NotContains(t, log.ToString(), "check failed")
+	})
+
+	t.Run("unreadable configuration is a warning", func(t *testing.T) {
+		setupHTTP01Probe(t, nil, nil)
+		http01ProbeServerBlocks = func() ([]nginx.ServerBlock, error) { return nil, nginx.ErrNginxTOutputEmpty }
+		log := NewLogger()
+		defer log.Close()
+
+		err := verifyHTTP01ChallengeRoute(&ConfigPayload{ServerName: []string{"ok.example.com"}, ConfigName: "cert-name"}, log)
+
+		assert.NoError(t, err)
+		assert.Contains(t, log.ToString(), "cannot be verified locally")
+		assert.Contains(t, log.ToString(), "the local Nginx configuration could not be read")
+	})
+
+	t.Run("busy challenge port still blocks", func(t *testing.T) {
+		_, port := setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
+		busy, err := net.Listen("tcp", net.JoinHostPort("127.0.0.1", port))
+		require.NoError(t, err)
+		t.Cleanup(func() { _ = busy.Close() })
+		log := NewLogger()
+		defer log.Close()
+
+		err = verifyHTTP01ChallengeRoute(&ConfigPayload{ServerName: []string{"ok.example.com"}, ConfigName: "ok"}, log)
+
+		requireCosyCode(t, err, 50059)
+	})
+}
+
+func TestHTTP01SocketDialAddress(t *testing.T) {
+	tests := []struct {
+		listen nginx.ServerListen
+		want   string
+	}{
+		{nginx.ServerListen{Port: "80"}, "127.0.0.1:80"},
+		{nginx.ServerListen{Addr: "*", Port: "80"}, "127.0.0.1:80"},
+		{nginx.ServerListen{Addr: "0.0.0.0", Port: "80"}, "127.0.0.1:80"},
+		{nginx.ServerListen{Port: "80", IPv6: true}, "[::1]:80"},
+		{nginx.ServerListen{Addr: "::", Port: "80", IPv6: true}, "[::1]:80"},
+		{nginx.ServerListen{Addr: "192.0.2.10", Port: "80"}, "192.0.2.10:80"},
+		{nginx.ServerListen{Addr: "2001:db8::1", Port: "80", IPv6: true}, "[2001:db8::1]:80"},
+		{nginx.ServerListen{Addr: "[2001:db8::1]", Port: "443", IPv6: true, SSL: true}, "[2001:db8::1]:443"},
+		{nginx.ServerListen{Addr: "192.0.2.10"}, "192.0.2.10:80"},
+		{nginx.ServerListen{Addr: "unix:/run/nginx.sock"}, ""},
+	}
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("%+v", tt.listen), func(t *testing.T) {
+			assert.Equal(t, tt.want, http01SocketDialAddress(tt.listen))
+		})
+	}
 }
 
 func TestHTTPListenTarget(t *testing.T) {
@@ -583,7 +921,7 @@ func TestHTTPListenTarget(t *testing.T) {
 	}
 }
 
-func TestHTTP01ProbeEndpointsPutsSiteAddressesFirst(t *testing.T) {
+func TestHTTP01ProbeFallbackEndpointsPutSiteAddressesFirst(t *testing.T) {
 	previousSite := http01ProbeSiteEndpoints
 	previousDefaults := http01ProbeDefaultEndpoints
 	t.Cleanup(func() {
@@ -606,4 +944,200 @@ func TestHTTP01ProbeEndpointsPutsSiteAddressesFirst(t *testing.T) {
 	assert.Equal(t, "192.0.2.10:80", endpoints[0].HTTP)
 	assert.Equal(t, "127.0.0.1:80", endpoints[1].HTTP)
 	assert.Equal(t, "[::1]:80", endpoints[2].HTTP)
+	// Only the loopback defaults are guesses; the site's own listen address
+	// can still produce HTTP evidence.
+	assert.False(t, endpoints[0].guessed)
+	assert.False(t, endpoints[1].guessed, "a site address wins over the identical default")
+	assert.True(t, endpoints[2].guessed)
+}
+
+// serveHTTP01Socket starts a fake Nginx socket with handler and returns its
+// address.
+func serveHTTP01Socket(t *testing.T, handler http.Handler, useTLS bool) string {
+	t.Helper()
+	var server *httptest.Server
+	if useTLS {
+		server = httptest.NewTLSServer(handler)
+	} else {
+		server = httptest.NewServer(handler)
+	}
+	t.Cleanup(server.Close)
+	return server.Listener.Addr().String()
+}
+
+// unrelatedIPv6DefaultBlocks is the E2E layout: d.example.com is only served
+// by an IPv4 wildcard block, and another site owns the IPv6 default server.
+func unrelatedIPv6DefaultBlocks(port string) []nginx.ServerBlock {
+	return []nginx.ServerBlock{
+		{
+			File:        "/etc/nginx/sites-enabled/d",
+			ServerNames: []string{"d.example.com"},
+			Listens:     []nginx.ServerListen{{Port: "80"}},
+		},
+		{
+			File:        "/etc/nginx/sites-enabled/other",
+			ServerNames: []string{"other.example.com"},
+			Listens:     []nginx.ServerListen{{Port: "80", IPv6: true, DefaultServer: true}},
+			Locations:   []nginx.ServerLocation{http01ChallengeLocation("http://127.0.0.1:" + port)},
+		},
+	}
+}
+
+func TestProbeHTTP01RoutesIgnoresUnrelatedIPv6DefaultServer(t *testing.T) {
+	t.Run("name-matched 404 is not hidden by a default-server success", func(t *testing.T) {
+		_, port := setupHTTP01Probe(t, nil, nil)
+		v4 := serveHTTP01Socket(t, http.NotFoundHandler(), false)
+		v6 := serveHTTP01Socket(t, challengeProxy(port), false)
+		useHTTP01Blocks(unrelatedIPv6DefaultBlocks(port), map[string]string{"*:80": v4, "[::]:80": v6})
+
+		results := probe(t, "d.example.com")
+
+		assert.Equal(t, HTTP01ProbeStatusFailure, results[0].Status, results[0].Error)
+		assert.Equal(t, v4, results[0].Target)
+		require.Len(t, results[0].Attempts, 1, "the IPv6 default server does not decide for d.example.com")
+		err := HTTP01RouteCheckError(results, "")
+		requireCosyCode(t, err, 50058)
+		assert.Contains(t, err.Error(), "possible cause: the server block for d.example.com on *:80 in /etc/nginx/sites-enabled/d has no /.well-known/acme-challenge location")
+		assert.NotContains(t, err.Error(), "sites-enabled/other")
+	})
+
+	t.Run("name-matched success is not failed by a default-server 404", func(t *testing.T) {
+		_, port := setupHTTP01Probe(t, nil, nil)
+		v4 := serveHTTP01Socket(t, challengeProxy(port), false)
+		v6 := serveHTTP01Socket(t, http.NotFoundHandler(), false)
+		useHTTP01Blocks(unrelatedIPv6DefaultBlocks(port), map[string]string{"*:80": v4, "[::]:80": v6})
+
+		results := probe(t, "d.example.com")
+
+		assert.Equal(t, HTTP01ProbeStatusSuccess, results[0].Status, results[0].Error)
+		assert.Equal(t, v4, results[0].Target)
+		assert.NoError(t, HTTP01RouteCheckError(results, ""))
+	})
+
+	t.Run("default servers decide when no socket matches by name", func(t *testing.T) {
+		_, port := setupHTTP01Probe(t, nil, nil)
+		v4 := serveHTTP01Socket(t, http.NotFoundHandler(), false)
+		v6 := serveHTTP01Socket(t, challengeProxy(port), false)
+		useHTTP01Blocks(unrelatedIPv6DefaultBlocks(port), map[string]string{"*:80": v4, "[::]:80": v6})
+
+		results := probe(t, "unknown.example.com")
+
+		// Both sockets answer the name with their default server; the CA
+		// may reach either, so the 404 decides.
+		assert.Equal(t, HTTP01ProbeStatusFailure, results[0].Status)
+		assert.Len(t, results[0].Attempts, 2)
+	})
+}
+
+func TestProbeHTTP01RoutesAnyNameMatchedFailureFails(t *testing.T) {
+	_, port := setupHTTP01Probe(t, nil, nil)
+	ok := serveHTTP01Socket(t, challengeProxy(port), false)
+	missing := serveHTTP01Socket(t, http.NotFoundHandler(), false)
+	useHTTP01Blocks([]nginx.ServerBlock{{
+		File:        "/etc/nginx/sites-enabled/d",
+		ServerNames: []string{"d.example.com"},
+		Listens:     []nginx.ServerListen{{Port: "80"}, {Port: "80", IPv6: true}},
+	}}, map[string]string{"*:80": ok, "[::]:80": missing})
+
+	results := probe(t, "d.example.com")
+
+	// The CA may use either address family, so the 404 on one socket fails
+	// the domain although the other one serves the token.
+	assert.Equal(t, HTTP01ProbeStatusFailure, results[0].Status)
+	assert.Equal(t, missing, results[0].Target)
+	require.Len(t, results[0].Attempts, 2)
+	assert.Equal(t, HTTP01ProbeStatusSuccess, results[0].Attempts[0].Status)
+	requireCosyCode(t, HTTP01RouteCheckError(results, ""), 50058)
+}
+
+func TestProbeHTTP01RoutesCauseNamesFailingSocket(t *testing.T) {
+	// The first socket in config order is statically broken too, but it
+	// does not answer; the cause must describe the socket that returned 404.
+	_, port := setupHTTP01Probe(t, nil, nil)
+	closed := net.JoinHostPort("127.0.0.1", freeTCPPort(t))
+	wrongPort := serveHTTP01Socket(t, http.NotFoundHandler(), false)
+	useHTTP01Blocks([]nginx.ServerBlock{
+		{
+			File:        "/etc/nginx/sites-enabled/d-public",
+			ServerNames: []string{"d.example.com"},
+			Listens:     []nginx.ServerListen{{Addr: "10.31.0.10", Port: "80"}},
+		},
+		{
+			File:        "/etc/nginx/sites-enabled/d",
+			ServerNames: []string{"d.example.com"},
+			Listens:     []nginx.ServerListen{{Port: "80"}},
+			Locations:   []nginx.ServerLocation{http01ChallengeLocation("http://127.0.0.1:1")},
+		},
+	}, map[string]string{"10.31.0.10:80": closed, "*:80": wrongPort})
+
+	results := probe(t, "d.example.com")
+
+	require.Equal(t, HTTP01ProbeStatusFailure, results[0].Status)
+	assert.Equal(t, wrongPort, results[0].Target)
+	err := HTTP01RouteCheckError(results, "")
+	requireCosyCode(t, err, 50058)
+	assert.Contains(t, err.Error(), "possible cause: the server block for d.example.com on *:80 in /etc/nginx/sites-enabled/d has a /.well-known/acme-challenge location that does not proxy to 127.0.0.1:"+port)
+	assert.NotContains(t, err.Error(), "10.31.0.10")
+}
+
+func TestProbeHTTP01RoutesRedirectHopUsesDecidingSockets(t *testing.T) {
+	redirect := redirectTo("https://d.example.com%s")
+	hopBlocks := func(port string) []nginx.ServerBlock {
+		return []nginx.ServerBlock{
+			{
+				File:        "/etc/nginx/sites-enabled/d",
+				ServerNames: []string{"d.example.com"},
+				Listens:     []nginx.ServerListen{{Port: "80"}, {Port: "443", SSL: true}},
+				Return:      "301 https://$host$request_uri",
+			},
+			{
+				File:        "/etc/nginx/sites-enabled/other",
+				ServerNames: []string{"other.example.com"},
+				Listens:     []nginx.ServerListen{{Port: "443", IPv6: true, SSL: true, DefaultServer: true}},
+				Locations:   []nginx.ServerLocation{http01ChallengeLocation("http://127.0.0.1:" + port)},
+			},
+		}
+	}
+
+	t.Run("name-matched 404 on the HTTPS hop fails", func(t *testing.T) {
+		_, port := setupHTTP01Probe(t, nil, nil)
+		http80 := serveHTTP01Socket(t, redirect, false)
+		named := serveHTTP01Socket(t, http.NotFoundHandler(), true)
+		other := serveHTTP01Socket(t, challengeProxy(port), true)
+		useHTTP01Blocks(hopBlocks(port), map[string]string{"*:80": http80, "*:443": named, "[::]:443": other})
+
+		results := probe(t, "d.example.com")
+
+		assert.Equal(t, HTTP01ProbeStatusFailure, results[0].Status, results[0].Error)
+		assert.Equal(t, http.StatusNotFound, results[0].StatusCode)
+		err := HTTP01RouteCheckError(results, "")
+		assert.Contains(t, err.Error(), "the server block for d.example.com on *:80 in /etc/nginx/sites-enabled/d redirects to HTTPS")
+	})
+
+	t.Run("any name-matched HTTPS socket failing fails", func(t *testing.T) {
+		_, port := setupHTTP01Probe(t, nil, nil)
+		http80 := serveHTTP01Socket(t, redirect, false)
+		good := serveHTTP01Socket(t, challengeProxy(port), true)
+		bad := serveHTTP01Socket(t, http.NotFoundHandler(), true)
+		blocks := hopBlocks(port)
+		blocks[0].Listens = append(blocks[0].Listens, nginx.ServerListen{Port: "443", IPv6: true, SSL: true})
+		useHTTP01Blocks(blocks, map[string]string{"*:80": http80, "*:443": good, "[::]:443": bad})
+
+		results := probe(t, "d.example.com")
+
+		assert.Equal(t, HTTP01ProbeStatusFailure, results[0].Status, results[0].Error)
+		assert.Equal(t, http.StatusNotFound, results[0].StatusCode)
+	})
+
+	t.Run("name-matched HTTPS success is not failed by a default server", func(t *testing.T) {
+		_, port := setupHTTP01Probe(t, nil, nil)
+		http80 := serveHTTP01Socket(t, redirect, false)
+		named := serveHTTP01Socket(t, challengeProxy(port), true)
+		other := serveHTTP01Socket(t, http.NotFoundHandler(), true)
+		useHTTP01Blocks(hopBlocks(port), map[string]string{"*:80": http80, "*:443": named, "[::]:443": other})
+
+		results := probe(t, "d.example.com")
+
+		assert.Equal(t, HTTP01ProbeStatusSuccess, results[0].Status, results[0].Error)
+	})
 }

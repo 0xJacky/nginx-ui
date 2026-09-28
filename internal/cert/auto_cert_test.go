@@ -3,10 +3,12 @@ package cert
 import (
 	"context"
 	stderrors "errors"
+	"net/http"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/uozi-tech/cosy"
 )
@@ -147,7 +149,7 @@ func TestNewAutoRenewPayloadSkipsPreIssuanceRouteCheck(t *testing.T) {
 	payload := newAutoRenewPayload(certModel, &Info{}, "")
 
 	// A non-empty ConfigName would make IssueCert run the HTTP-01 route check
-	// before renewing, and a false negative there must never block renewal.
+	// before renewing; unattended renewals only probe after a failure.
 	if payload.ConfigName != "" {
 		t.Fatalf("ConfigName = %q, want empty for auto-renew", payload.ConfigName)
 	}
@@ -198,6 +200,24 @@ func TestAppendHTTP01ProbeSummaryWhenProbeCannotRun(t *testing.T) {
 
 	if !strings.Contains(err.Error(), "HTTP-01 route check: not run: HTTP-01 challenge port 9180 is unavailable") {
 		t.Fatalf("unexpected error text: %s", err.Error())
+	}
+}
+
+func TestAppendHTTP01ProbeSummaryDiscoversEndpointsPerDomain(t *testing.T) {
+	// The real probe runs: the certificate file name matches no site, and
+	// the SAN is served by a block on a specific address only.
+	fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"api.example.com": http.NotFoundHandler()}, nil)
+	useHTTP01Blocks([]nginx.ServerBlock{{
+		File:        "/etc/nginx/sites-enabled/api",
+		ServerNames: []string{"api.example.com"},
+		Listens:     []nginx.ServerListen{{Addr: "192.0.2.10", Port: "80"}},
+	}}, map[string]string{"192.0.2.10:80": fake.endpoint().HTTP})
+
+	err := appendHTTP01ProbeSummary(stderrors.New("renew failed"), []string{"api.example.com"}, "shared-cert", nil)
+
+	want := "api.example.com: unexpected status 404 (via " + fake.endpoint().HTTP + "); possible cause: the server block for api.example.com on 192.0.2.10:80 in /etc/nginx/sites-enabled/api has no /.well-known/acme-challenge location"
+	if !strings.Contains(err.Error(), want) {
+		t.Fatalf("summary does not come from the discovered endpoint: %s", err.Error())
 	}
 }
 

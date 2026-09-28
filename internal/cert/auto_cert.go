@@ -131,10 +131,10 @@ func autoCert(certModel *model.Cert) {
 	}
 }
 
-// newAutoRenewPayload deliberately leaves ConfigName empty: renewals must
-// never be blocked by a pre-issuance route check, because a false negative
-// would let a working certificate expire. The route is probed only after a
-// failed renewal, to explain the failure.
+// newAutoRenewPayload deliberately leaves ConfigName empty, so IssueCert runs
+// no pre-issuance route check for renewals: the check never blocks issuance
+// anyway, and unattended renewals do not need its log. The route is probed
+// only after a failed renewal, to explain the failure.
 func newAutoRenewPayload(certModel *model.Cert, certInfo *Info, replacesCertID string) *ConfigPayload {
 	return &ConfigPayload{
 		CertID:                            certModel.ID,
@@ -158,7 +158,10 @@ func newAutoRenewPayload(certModel *model.Cert, certInfo *Info, replacesCertID s
 // (IssueCert has released the lock and the challenge port by then) and
 // appends a short summary to the error, so the notification and the stored
 // last renewal error say whether the challenge route itself is broken.
-// The probe is best effort and never replaces the original error.
+// The probe is best effort and never replaces the original error. Like
+// every probe run, it discovers the endpoints of each domain from the
+// effective configuration; configName (the certificate file name) is only a
+// fallback source of listen addresses when nginx -T cannot be read.
 func appendHTTP01ProbeSummary(err error, domains []string, configName string, log *Logger) error {
 	if err == nil || len(domains) == 0 {
 		return err
