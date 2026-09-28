@@ -3,6 +3,7 @@ import type { NgxConfig } from '@/api/ngx'
 import { AreaChartOutlined, FileExclamationOutlined, FileTextOutlined } from '@antdv-next/icons'
 import { message } from 'antdv-next'
 import nginxLog from '@/api/nginx_log'
+import { toLogFileBaseName } from './logFileName'
 import { useNgxConfigStore } from './store'
 
 const props = withDefaults(defineProps<{
@@ -72,7 +73,7 @@ const logFileBaseName = computed(() => {
 
   const candidate = fromConfigName || fromServerName || ''
 
-  return candidate.replace(/[^\w.-]/g, '_').replace(/^\.+/, '') || 'site'
+  return toLogFileBaseName(candidate)
 })
 
 const togglingAccessLog = ref(false)
