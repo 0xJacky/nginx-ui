@@ -144,3 +144,17 @@ func TestLastUserMessagePicksTheMostRecent(t *testing.T) {
 	assert.Equal(t, "second", lastUserMessage(strings.NewReader(string(body))))
 	assert.Empty(t, lastUserMessage(strings.NewReader("not json")))
 }
+
+func TestLLMDoerListsDemoModels(t *testing.T) {
+	req, err := http.NewRequest(http.MethodGet, "https://api.openai.com/v1/models", nil)
+	require.NoError(t, err)
+
+	resp, err := llmDoer{}.Do(req)
+	require.NoError(t, err)
+	defer resp.Body.Close()
+
+	var decoded openai.ModelsList
+	require.NoError(t, json.NewDecoder(resp.Body).Decode(&decoded))
+	require.NotEmpty(t, decoded.Models)
+	assert.Equal(t, "nginx-ui-demo", decoded.Models[0].ID)
+}

@@ -108,7 +108,18 @@ func isStreaming(body []byte) bool {
 	return probe.Stream
 }
 
+// demoModels is what the settings page discovers on the demo instance.
+var demoModels = []openai.Model{
+	{ID: "nginx-ui-demo", Object: "model", OwnedBy: "nginx-ui"},
+	{ID: "nginx-ui-demo-mini", Object: "model", OwnedBy: "nginx-ui"},
+	{ID: "text-embedding-demo", Object: "model", OwnedBy: "nginx-ui"},
+}
+
 func (llmDoer) Do(req *http.Request) (*http.Response, error) {
+	if req.Method == http.MethodGet && strings.HasSuffix(req.URL.Path, "/models") {
+		return modelsResponse(req)
+	}
+
 	var body []byte
 	if req.Body != nil {
 		body, _ = io.ReadAll(req.Body)
@@ -122,6 +133,21 @@ func (llmDoer) Do(req *http.Request) (*http.Response, error) {
 		return jsonResponse(req, reply)
 	}
 	return streamResponse(req, reply)
+}
+
+func modelsResponse(req *http.Request) (*http.Response, error) {
+	payload, err := json.Marshal(openai.ModelsList{Models: demoModels})
+	if err != nil {
+		return nil, err
+	}
+
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Status:     "200 OK",
+		Header:     http.Header{"Content-Type": []string{"application/json"}},
+		Body:       io.NopCloser(strings.NewReader(string(payload))),
+		Request:    req,
+	}, nil
 }
 
 func jsonResponse(req *http.Request, reply string) (*http.Response, error) {

@@ -32,7 +32,31 @@ export interface LLMSessionResponse {
   updated_at: string
 }
 
+export type LLMModelKind = 'chat' | 'embedding' | 'audio' | 'image' | 'moderation'
+
+export interface LLMModel {
+  id: string
+  owned_by: string
+  kind: LLMModelKind
+}
+
+export interface LLMModelListRequest {
+  provider: string
+  base_url: string
+  token: string
+  proxy: string
+  api_type: string
+}
+
 const llm = {
+  // Lists the models of the provider on the settings form, saved or not.
+  // Errors are left to the caller, which shows them next to the connection.
+  list_models(data: LLMModelListRequest, signal?: AbortSignal) {
+    return http.post<{ models: LLMModel[] }>('/llm/models', data, {
+      skipErrHandling: true,
+      signal,
+    })
+  },
   get_messages(path: string) {
     return http.get(`/llm_messages`, { params: { path } })
   },

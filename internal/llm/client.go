@@ -21,16 +21,23 @@ func SetHTTPDoer(doer openai.HTTPDoer) {
 }
 
 func GetClient() (*openai.Client, error) {
+	return NewClient(settings.OpenAISettings)
+}
+
+// NewClient builds a client for the given provider settings, which need not
+// be the saved ones: the settings page lists models with the values the user
+// is still editing.
+func NewClient(options *settings.OpenAI) (*openai.Client, error) {
 	var config openai.ClientConfig
-	baseURL := settings.OpenAISettings.GetBaseURL()
-	if openai.APIType(settings.OpenAISettings.APIType) == openai.APITypeAzure {
-		config = openai.DefaultAzureConfig(settings.OpenAISettings.Token, baseURL)
+	baseURL := options.GetBaseURL()
+	if openai.APIType(options.APIType) == openai.APITypeAzure {
+		config = openai.DefaultAzureConfig(options.Token, baseURL)
 	} else {
-		config = openai.DefaultConfig(settings.OpenAISettings.Token)
+		config = openai.DefaultConfig(options.Token)
 	}
 
-	if settings.OpenAISettings.Proxy != "" {
-		t, err := transport.NewTransport(transport.WithProxy(settings.OpenAISettings.Proxy))
+	if options.Proxy != "" {
+		t, err := transport.NewTransport(transport.WithProxy(options.Proxy))
 		if err != nil {
 			return nil, err
 		}

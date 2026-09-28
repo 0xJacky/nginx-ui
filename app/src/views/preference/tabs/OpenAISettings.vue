@@ -1,15 +1,68 @@
 <script setup lang="ts">
 import type { SelectProps } from 'antdv-next'
+import { DownOutlined, ReloadOutlined, RightOutlined } from '@antdv-next/icons'
 import { SensitiveInput } from '@/components/SensitiveString'
-import { LLM_MODELS, LLM_PROVIDER_BASE_URLS, LLM_PROVIDERS } from '@/constants/llm'
+import { LLM_PROVIDER_BASE_URLS, LLM_PROVIDERS } from '@/constants/llm'
+import LLMModelSelect from '../components/LLMModelSelect.vue'
+import { useLLMModelDiscovery } from '../composables/useLLMModelDiscovery'
 import useSystemSettingsStore from '../store'
 
 const systemSettingsStore = useSystemSettingsStore()
-const { data, errors } = storeToRefs(systemSettingsStore)
+const { data, errors, isLoaded } = storeToRefs(systemSettingsStore)
 
-const modelOptions = LLM_MODELS.map(model => ({
-  value: model,
-}))
+const openai = computed(() => data.value?.openai)
+const {
+  status: discoveryStatus,
+  models: discoveredModels,
+  errorMessage: discoveryError,
+  refresh: refreshModels,
+} = useLLMModelDiscovery(openai, isLoaded)
+
+const discoveryAlert = computed(() => {
+  switch (discoveryStatus.value) {
+    case 'missing_token':
+      return { type: 'info' as const, title: $gettext('Enter the API token to list the available models') }
+    case 'loading':
+      return { type: 'info' as const, title: $gettext('Fetching the model list...') }
+    case 'success':
+      return {
+        type: 'success' as const,
+        title: $ngettext(
+          'Connected, %{count} model available',
+          'Connected, %{count} models available',
+          discoveredModels.value?.length ?? 0,
+          { count: String(discoveredModels.value?.length ?? 0) },
+        ),
+      }
+    case 'unsupported':
+      return {
+        type: 'warning' as const,
+        title: discoveryError.value,
+        description: $gettext('Type the model name below instead.'),
+      }
+    case 'unauthorized':
+    case 'timeout':
+    case 'error':
+      return { type: 'error' as const, title: discoveryError.value }
+    default:
+      return undefined
+  }
+})
+
+const hasAdvancedErrors = computed(() => !!(errors.value?.openai?.proxy || errors.value?.openai?.api_type))
+const isAdvancedOpen = ref(false)
+watch(hasAdvancedErrors, hasErrors => {
+  if (hasErrors)
+    isAdvancedOpen.value = true
+}, { immediate: true })
+watch(() => data.value?.openai.proxy, proxy => {
+  if (proxy)
+    isAdvancedOpen.value = true
+}, { immediate: true })
+
+const modelHelp = computed(() => errors.value?.openai?.model === 'safety_text'
+  ? $gettext('The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
+  : '')
 
 const providerOptions: SelectProps['options'] = LLM_PROVIDERS.map(provider => ({
   label: provider.label,
@@ -38,6 +91,19 @@ const selectedProviderPreset = computed(() => LLM_PROVIDERS.find(
 const selectedModelPreset = computed(() => selectedProviderPreset.value?.models?.find(
   model => model.value === data.value?.openai.model,
 ))
+
+const selectedModelCapabilities = computed(() => {
+  const preset = selectedModelPreset.value
+  if (!preset)
+    return []
+
+  return [
+    `${$gettext('Context window')}: ${preset.contextWindow.toLocaleString()} ${$gettext('tokens')}`,
+    `${$gettext('Input modalities')}: ${preset.inputModalities.map(formatCapability).join(', ')}`,
+    `${$gettext('Thinking modes')}: ${preset.thinkingModes.map(formatCapability).join(', ')}`,
+    `${$gettext('Pricing per million tokens')}: ${formatPricing()}`,
+  ]
+})
 
 function filterBaseUrlOption(inputValue: string, option?: { value?: string }) {
   return option?.value?.toLowerCase().includes(inputValue.toLowerCase()) ?? false
@@ -133,6 +199,9 @@ watch(
 
 <template>
   <AForm layout="vertical" class="max-w-150">
+    <h3 class="mb-4 mt-0 text-base font-medium">
+      {{ $gettext('Connection') }}
+    </h3>
     <AFormItem
       :label="$gettext('Provider')"
       :validate-status="errors?.openai?.provider ? 'error' : ''"
@@ -143,47 +212,6 @@ watch(
         class="max-w-100"
       />
     </AFormItem>
-    <AFormItem
-      :label="$gettext('Model')"
-      :validate-status="errors?.openai?.model ? 'error' : ''"
-      :help="errors?.openai?.model === 'safety_text'
-        ? $gettext('The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
-        : ''"
-    >
-      <AAutoComplete
-        v-model:value="data.openai.model"
-        :options="modelOptions"
-        class="max-w-100"
-      />
-    </AFormItem>
-    <AAlert
-      v-if="selectedModelPreset"
-      type="info"
-      show-icon
-      class="mb-6"
-    >
-      <template #title>
-        {{ $gettext('Model capabilities') }}
-      </template>
-      <template #description>
-        <div>
-          <strong>{{ $gettext('Context window') }}:</strong>
-          {{ selectedModelPreset.contextWindow.toLocaleString() }} {{ $gettext('tokens') }}
-        </div>
-        <div>
-          <strong>{{ $gettext('Input modalities') }}:</strong>
-          {{ selectedModelPreset.inputModalities.map(formatCapability).join(', ') }}
-        </div>
-        <div>
-          <strong>{{ $gettext('Thinking modes') }}:</strong>
-          {{ selectedModelPreset.thinkingModes.map(formatCapability).join(', ') }}
-        </div>
-        <div>
-          <strong>{{ $gettext('Pricing per million tokens') }}:</strong>
-          {{ formatPricing() }}
-        </div>
-      </template>
-    </AAlert>
     <AFormItem
       :label="$gettext('API Base Url')"
       :validate-status="errors?.openai?.base_url ? 'error' : ''"
@@ -226,20 +254,8 @@ watch(
       </template>
     </AAlert>
     <AFormItem
-      :label="$gettext('API Proxy')"
-      :validate-status="errors?.openai?.proxy ? 'error' : ''"
-      :help="errors?.openai?.proxy === 'url'
-        ? $gettext('The url is invalid.')
-        : ''"
-    >
-      <AInput
-        v-model:value="data.openai.proxy"
-        placeholder="http://127.0.0.1:1087"
-      />
-    </AFormItem>
-    <AFormItem
       :label="$gettext('API Token')"
-      :validate-status="errors?.openai?.token ? 'error' : ''"
+      :validate-status="errors?.openai?.token || discoveryStatus === 'unauthorized' ? 'error' : ''"
       :help="errors?.openai?.token === 'safety_text'
         ? $gettext('Token is not valid')
         : ''"
@@ -249,15 +265,94 @@ watch(
         path="openai.token"
       />
     </AFormItem>
-    <AFormItem
-      :label="$gettext('API Type')"
-      :validate-status="errors?.openai?.apt_type ? 'error' : ''"
+    <AAlert
+      v-if="discoveryAlert"
+      :type="discoveryAlert.type"
+      :title="discoveryAlert.title"
+      :description="discoveryAlert.description"
+      show-icon
+      class="mb-4"
     >
-      <ASelect
-        v-model:value="data.openai.api_type"
-        :options="apiTypeOptions"
-        class="max-w-100"
+      <template
+        v-if="discoveryStatus !== 'missing_token'"
+        #action
+      >
+        <AButton
+          size="small"
+          type="link"
+          :loading="discoveryStatus === 'loading'"
+          @click="refreshModels"
+        >
+          <template #icon>
+            <ReloadOutlined />
+          </template>
+          {{ discoveryStatus === 'success' ? $gettext('Refresh') : $gettext('Retry') }}
+        </AButton>
+      </template>
+    </AAlert>
+    <AButton
+      type="link"
+      class="mb-4 px-0"
+      @click="isAdvancedOpen = !isAdvancedOpen"
+    >
+      <template #icon>
+        <DownOutlined v-if="isAdvancedOpen" />
+        <RightOutlined v-else />
+      </template>
+      {{ $gettext('Advanced') }}
+    </AButton>
+    <div v-show="isAdvancedOpen">
+      <AFormItem
+        :label="$gettext('API Proxy')"
+        :validate-status="errors?.openai?.proxy ? 'error' : ''"
+        :help="errors?.openai?.proxy === 'url'
+          ? $gettext('The url is invalid.')
+          : ''"
+      >
+        <AInput
+          v-model:value="data.openai.proxy"
+          placeholder="http://127.0.0.1:1087"
+        />
+      </AFormItem>
+      <AFormItem
+        :label="$gettext('API Type')"
+        :validate-status="errors?.openai?.api_type ? 'error' : ''"
+      >
+        <ASelect
+          v-model:value="data.openai.api_type"
+          :options="apiTypeOptions"
+          class="max-w-100"
+        />
+      </AFormItem>
+    </div>
+
+    <h3 class="mb-4 mt-2 text-base font-medium">
+      {{ $gettext('Models') }}
+    </h3>
+    <AFormItem
+      :label="$gettext('Model')"
+      :validate-status="errors?.openai?.model ? 'error' : ''"
+      :help="modelHelp"
+    >
+      <LLMModelSelect
+        v-model:value="data.openai.model"
+        :models="discoveredModels"
+        :presets="selectedProviderPreset?.models"
+        :loading="discoveryStatus === 'loading'"
+        :status="errors?.openai?.model ? 'error' : ''"
       />
+      <div
+        v-if="selectedModelCapabilities.length"
+        class="mt-2 flex flex-wrap gap-1"
+      >
+        <ATag
+          v-for="capability in selectedModelCapabilities"
+          :key="capability"
+          class="m-0"
+        >
+          {{ capability }}
+        </ATag>
+      </div>
     </AFormItem>
     <AFormItem
       :label="$gettext('Enable Code Completion')"
@@ -272,10 +367,16 @@ watch(
         ? $gettext('The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots.')
         : $gettext('The model used for code completion, if not set, the chat model will be used.')"
     >
-      <AAutoComplete
+      <LLMModelSelect
         v-model:value="data.openai.code_completion_model"
-        :options="modelOptions"
-        class="max-w-100"
+        :models="discoveredModels"
+        :presets="selectedProviderPreset?.models"
+        :loading="discoveryStatus === 'loading'"
+        :placeholder="data.openai.model
+          ? $gettext('Same as the chat model (%{model})', { model: data.openai.model })
+          : $gettext('Same as the chat model')"
+        :status="errors?.openai?.code_completion_model ? 'error' : ''"
+        allow-clear
       />
     </AFormItem>
   </AForm>

@@ -21,6 +21,8 @@ func InitLocalRouter(r *gin.RouterGroup) {
 	// LLM endpoints that should only run on main node
 	r.POST("llm", MakeChatCompletionRequest)
 	r.GET("code_completion/enabled", GetCodeCompletionEnabledStatus)
+	// List the models of the provider on the settings form
+	r.POST("llm/models", ListModels)
 	// Generate title from messages - uses local LLM config
 	r.POST("generate_title", GenerateTitle)
 }
