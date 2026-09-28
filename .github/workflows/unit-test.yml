@@ -15,6 +15,7 @@ on:
       - "packaging/openwrt/**"
       - ".github/workflows/build.yml"
       - ".github/workflows/unit-test.yml"
+      - ".github/scripts/**"
   pull_request:
     paths:
       - "**/*.go"
@@ -27,6 +28,7 @@ on:
       - "packaging/openwrt/**"
       - ".github/workflows/build.yml"
       - ".github/workflows/unit-test.yml"
+      - ".github/scripts/**"
 
 permissions:
   contents: read
@@ -45,6 +47,9 @@ jobs:
         uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
+
+      - name: Download Go modules
+        run: bash .github/scripts/retry.sh -- go mod download
 
       - name: Run unit tests
         run: >-
@@ -72,6 +77,10 @@ jobs:
         uses: actions/setup-go@v7
         with:
           go-version-file: go.mod
+
+      - name: Download Go modules
+        shell: bash
+        run: bash .github/scripts/retry.sh -- go mod download
 
       - name: Set up C compiler for the race detector
         uses: msys2/setup-msys2@66cd2cce69caa17b53920067426061ca1de3a884 # v2
