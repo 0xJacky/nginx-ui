@@ -37,6 +37,11 @@ type Server struct {
 	// Params keeps server parameters this form does not model (max_conns,
 	// slow_start, resolve, ...) so a round trip does not drop them.
 	Params string `json:"params,omitempty"`
+	// Socket is the key the availability checker reports this server under,
+	// for example "web.internal:80" for "web.internal". It is derived from the
+	// server line when a Detail is built, empty when the server is never
+	// probed, and ignored on input.
+	Socket string `json:"socket"`
 }
 
 // Upstream is the structured form of a managed upstream group.
@@ -133,6 +138,8 @@ func (u *Upstream) Normalize() {
 		s.Address = strings.TrimSpace(s.Address)
 		s.FailTimeout = strings.TrimSpace(s.FailTimeout)
 		s.Params = strings.Join(strings.Fields(s.Params), " ")
+		// Derived on output only; a value echoed back by a client means nothing.
+		s.Socket = ""
 	}
 }
 

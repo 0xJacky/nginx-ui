@@ -105,11 +105,13 @@ func classify(path string) (Source, string) {
 func toServer(line ServerLine) Server {
 	return Server{
 		Address: line.Address,
-		Socket:  upstream.SocketAddress(line.Address),
-		Down:    line.Down(),
-		Backup:  line.Backup(),
-		Weight:  line.Weight(),
-		Params:  line.OtherParams(),
+		// The whole line, so a service discovery entry gets the same key the
+		// scanner registers it under.
+		Socket: upstream.SocketAddress(strings.Join(append([]string{line.Address}, line.Params...), " ")),
+		Down:   line.Down(),
+		Backup: line.Backup(),
+		Weight: line.Weight(),
+		Params: line.OtherParams(),
 	}
 }
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TableColumnsType } from 'antdv-next'
 import type { RouteLocationRaw } from 'vue-router'
+import type { ServerHealthState } from './serverHealth'
 import type {
   ExternalUpstream,
   ManagedUpstreamDetail,
@@ -17,6 +18,7 @@ import { useProxyAvailability } from '@/composables/useProxyAvailability'
 import UpstreamEditor from './components/UpstreamEditor.vue'
 import UpstreamServerLine from './components/UpstreamServerLine.vue'
 import { disablesLastPrimary, filterUpstreams, normalizeKeyword } from './serverFilter'
+import { serverHealth } from './serverHealth'
 
 const { message, modal } = App.useApp()
 
@@ -124,27 +126,31 @@ function openEdit(name: string) {
 
 type ServerStatus = 'success' | 'error' | 'default' | 'warning'
 
-// Health of a server from the shared availability results. Managed groups key
-// by address, other upstream blocks by the host:port socket the backend
-// resolved; a disabled server is shown neutral whatever its probe says.
-function serverStatus(isDown: boolean, socket: string): ServerStatus {
-  if (isDown)
-    return 'default'
-  const result = proxyAvailabilityStore.availabilityResults[socket]
-  if (!result)
-    return 'default'
-  return result.online ? 'success' : 'error'
+// Both tables look health up by the socket the backend resolved for each
+// server, the key the health checker uses; see serverHealth.
+const healthBadges: Record<ServerHealthState, ServerStatus> = {
+  disabled: 'default',
+  unknown: 'default',
+  online: 'success',
+  offline: 'error',
 }
 
-function serverTitle(isDown: boolean, socket: string) {
-  if (isDown)
-    return $gettext('Disabled')
-  const result = proxyAvailabilityStore.availabilityResults[socket]
-  if (!result)
-    return $gettext('No Data')
-  return result.online
-    ? `${$gettext('Online')} · ${result.latency.toFixed(2)}ms`
-    : $gettext('Offline')
+function serverStatus(isDown: boolean, socket: string | undefined): ServerStatus {
+  return healthBadges[serverHealth(isDown, socket, proxyAvailabilityStore.availabilityResults).state]
+}
+
+function serverTitle(isDown: boolean, socket: string | undefined) {
+  const health = serverHealth(isDown, socket, proxyAvailabilityStore.availabilityResults)
+  switch (health.state) {
+    case 'disabled':
+      return $gettext('Disabled')
+    case 'online':
+      return `${$gettext('Online')} · ${health.result!.latency.toFixed(2)}ms`
+    case 'offline':
+      return $gettext('Offline')
+    default:
+      return $gettext('No Data')
+  }
 }
 
 const sourceColors: Record<UpstreamSource['type'], string> = {
@@ -313,8 +319,8 @@ function confirmDelete(record: ManagedUpstreamDetail) {
           :is-down="server.down"
           :is-backup="server.backup"
           :weight="server.weight"
-          :status="serverStatus(server.down, server.address)"
-          :status-title="serverTitle(server.down, server.address)"
+          :status="serverStatus(server.down, server.socket)"
+          :status-title="serverTitle(server.down, server.socket)"
           :is-toggling="isToggling({ upstream: record.name, configPath: record.path }, server.address)"
           @toggle="isEnabled => requestToggle({ upstream: record.name, configPath: record.path }, server.address, isEnabled)"
         />

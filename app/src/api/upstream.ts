@@ -55,6 +55,11 @@ export interface ManagedUpstreamServer {
   down: boolean
   // Server parameters the form does not model, kept for round trips.
   params?: string
+  // Key of the availability results for this server, resolved by the backend
+  // the same way the health checker registers it (`web.internal` ->
+  // `web.internal:80`). Only present on responses; empty when the server is
+  // never probed.
+  socket?: string
 }
 
 export interface ManagedUpstream {
