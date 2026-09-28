@@ -1,7 +1,8 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { JSXElements } from '@/types'
+import { SyncOutlined } from '@antdv-next/icons'
 import { datetimeRender } from '@uozi-admin/curd'
-import { Badge, Tag, Tooltip } from 'antdv-next'
+import { Tag, Tooltip } from 'antdv-next'
 import dayjs from 'dayjs'
 import { AutoCertState, formatPrivateKeyType } from '@/constants'
 
@@ -84,18 +85,12 @@ const columns: StdTableColumn[] = [{
   customRender: (args: CustomRenderArgs) => {
     const { record } = args
     if (record.status === 'pending') {
-      return h('div', [
-        h(Badge, { status: 'processing' }),
-        h('span', $gettext('Issuing...')),
-      ])
+      return h(Tag, { color: 'processing', icon: h(SyncOutlined, { spin: true }) }, () => $gettext('Issuing...'))
     }
     if (record.status === 'failure') {
       const errorMsg = record.last_error || $gettext('Issuance failed')
       return h(Tooltip, { title: errorMsg }, () =>
-        h('div', [
-          h(Badge, { status: 'error' }),
-          h('span', $gettext('Failed')),
-        ]))
+        h(Tag, { color: 'error' }, () => $gettext('Failed')))
     }
     const deployment = record.deployment_status
     if (deployment?.state === 'legacy_drift' || deployment?.state === 'mismatch') {
@@ -109,33 +104,21 @@ const columns: StdTableColumn[] = [{
         managed: managedPath,
       })
       return h(Tooltip, { title }, () =>
-        h('div', [
-          h(Badge, { status: 'warning' }),
-          h('span', label),
-        ]))
+        h(Tag, { color: 'warning' }, () => label))
     }
     if (deployment?.state === 'unreadable' && deployment.error) {
       return h(Tooltip, { title: deployment.error }, () =>
-        h('div', [
-          h(Badge, { status: 'warning' }),
-          h('span', $gettext('Unable to verify deployment')),
-        ]))
+        h(Tag, { color: 'warning' }, () => $gettext('Unable to verify deployment')))
     }
     const info = record.certificate_info
     const valid = info?.not_before
       && info?.not_after
       && !dayjs().isBefore(info.not_before)
       && !dayjs().isAfter(info.not_after)
-    if (valid) {
-      return h('div', [
-        h(Badge, { status: 'success' }),
-        h('span', $gettext('Valid')),
-      ])
-    }
-    return h('div', [
-      h(Badge, { status: 'error' }),
-      h('span', $gettext('Expired')),
-    ])
+    if (valid)
+      return h(Tag, { color: 'success' }, () => $gettext('Valid'))
+
+    return h(Tag, { color: 'error' }, () => $gettext('Expired'))
   },
 }, {
   title: () => $gettext('Not After'),

@@ -40,12 +40,13 @@ const switchLabel = computed(() => props.isDown
       data-testid="upstream-server-switch"
       @change="checked => emit('toggle', Boolean(checked))"
     />
-    <ABadge
-      :status
-      :text="address"
-      class="font-mono break-all"
+    <ATag
+      :color="status"
+      class="me-0 font-mono break-all"
       :class="{ 'line-through opacity-60': isDown }"
-    />
+    >
+      {{ address }}
+    </ATag>
     <ATag
       v-if="weight && weight !== 1"
       color="blue"
