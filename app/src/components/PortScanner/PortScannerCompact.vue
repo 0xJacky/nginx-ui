@@ -44,7 +44,7 @@ const columns = [
         open: { color: 'blue', text: $gettext('Open') },
         closed: { color: 'green', text: $gettext('Closed') },
       }
-      const status = statusMap[value as keyof typeof statusMap] || { status: 'error', text: $gettext('Unknown') }
+      const status = statusMap[value as keyof typeof statusMap] || { color: 'red', text: $gettext('Unknown') }
       return h(Badge, {
         color: status.color,
         text: h('span', { style: 'font-size: 11px;' }, status.text),
