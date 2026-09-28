@@ -22,18 +22,21 @@ on:
       - '.plumber.yaml'
   # Some of what Plumber reads lives outside the tree and changes without a commit: a tag
   # that moves under an unpinned action, a new advisory against one already in use, the
-  # branch protection settings. The weekly run is what catches those.
+  # branch protection settings. The weekly run is what catches those, and it is also what
+  # keeps the README badge current between workflow changes.
   schedule:
     - cron: '17 6 * * 1'
 
+# The work is the same on either path and only the token grant differs, which is why this
+# is two jobs rather than one. Publishing the score needs an OIDC token, and a job that
+# runs on a pull request has no use for one, so it is not granted there.
 jobs:
   score:
     name: Plumber Score
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      # Read the tree to scan it, and write the findings to code scanning. Nothing else:
-      # the scan makes no change to the repository.
       contents: read
       security-events: write
     steps:
@@ -46,3 +49,28 @@ jobs:
         uses: getplumber/plumber@dbaaf7384c4d5708ed07744eaa3d2d94b0aebfd9 # v0.5.12
         with:
           soft-fail: true
+
+  publish:
+    name: Plumber Score (publish)
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      security-events: write
+      # Minted for score-push below and used for nothing else. The score service
+      # authenticates the run with this token instead of a stored secret.
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Plumber Score
+        uses: getplumber/plumber@dbaaf7384c4d5708ed07744eaa3d2d94b0aebfd9 # v0.5.12
+        with:
+          soft-fail: true
+          # Publishes this repository's score, and its name, to the public badge
+          # service that backs the README badge. Only the default branch is shown.
+          score-push: true
