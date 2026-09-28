@@ -227,7 +227,7 @@ test('sites list is populated and navigation cards include healthy and failing s
 
 test('upstream targets render and include the deliberately offline socket', async ({ page }) => {
   const socketsResponsePromise = waitForApiResponse(page, '/api/upstream/sockets', 'GET')
-  await gotoRoute(page, '/upstream')
+  await gotoRoute(page, '/upstream/sockets')
 
   const socketsResponse = await socketsResponsePromise
   expect(socketsResponse.ok()).toBe(true)

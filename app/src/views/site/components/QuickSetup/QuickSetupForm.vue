@@ -2,6 +2,7 @@
 import type { SelectProps } from 'antdv-next'
 import type { QuickConfig } from './useQuickConfig'
 import { computed } from 'vue'
+import { useManagedUpstreams } from '@/composables/useManagedUpstreams'
 
 defineOptions({ name: 'QuickSetupForm' })
 
@@ -13,6 +14,8 @@ const props = withDefaults(defineProps<{
 })
 
 const { state, quickDerivedName, quickNameTouched } = props.quick
+
+const { options: upstreamOptions, isLoading: isUpstreamsLoading } = useManagedUpstreams()
 
 const schemeOptions = computed<SelectProps['options']>(() => [
   {
@@ -89,19 +92,65 @@ const statusCodeOptions: SelectProps['options'] = [
         />
       </AFormItem>
 
-      <AFormItem
-        :label="$gettext('Host')"
-        required
-      >
-        <AInput v-model:value="state.rpHost" />
+      <AFormItem :label="$gettext('Proxy Target')">
+        <ARadioGroup
+          v-model:value="state.rpTarget"
+          button-style="solid"
+          data-testid="quick-setup-proxy-target"
+        >
+          <ARadioButton value="address">
+            {{ $gettext('Host and Port') }}
+          </ARadioButton>
+          <ARadioButton value="upstream">
+            {{ $gettext('Upstream') }}
+          </ARadioButton>
+        </ARadioGroup>
       </AFormItem>
 
-      <AFormItem
-        :label="$gettext('Port')"
-        required
-      >
-        <AInput v-model:value="state.rpPort" />
-      </AFormItem>
+      <template v-if="state.rpTarget === 'upstream'">
+        <AFormItem
+          :label="$gettext('Upstream')"
+          required
+        >
+          <ASelect
+            v-model:value="state.rpUpstream"
+            :options="upstreamOptions"
+            :loading="isUpstreamsLoading"
+            :placeholder="$gettext('Select an upstream')"
+            data-testid="quick-setup-upstream-select"
+          />
+          <template #extra>
+            <span
+              v-if="upstreamOptions.length === 0 && !isUpstreamsLoading"
+              class="mr-1"
+            >
+              {{ $gettext('No upstream groups yet.') }}
+            </span>
+            <RouterLink
+              to="/upstream/list"
+              target="_blank"
+            >
+              {{ $gettext('Manage upstream groups') }}
+            </RouterLink>
+          </template>
+        </AFormItem>
+      </template>
+
+      <template v-else>
+        <AFormItem
+          :label="$gettext('Host')"
+          required
+        >
+          <AInput v-model:value="state.rpHost" />
+        </AFormItem>
+
+        <AFormItem
+          :label="$gettext('Port')"
+          required
+        >
+          <AInput v-model:value="state.rpPort" />
+        </AFormItem>
+      </template>
 
       <AFormItem :label="$gettext('Enable WebSocket')">
         <ASwitch v-model:checked="state.rpWebSocket" />

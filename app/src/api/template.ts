@@ -31,6 +31,8 @@ export interface QuickConfigRequest {
   scheme?: 'http' | 'https'
   host?: string
   port?: string
+  // Name of a managed upstream group; replaces host and port when set.
+  upstream?: string
   enable_websocket?: boolean
   client_max_body_size?: string
   // static
