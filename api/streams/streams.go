@@ -2,6 +2,7 @@ package streams
 
 import (
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/clustersync"
@@ -268,7 +269,7 @@ func RenameStream(c *gin.Context) {
 func BatchUpdateStreams(c *gin.Context) {
 	cosy.Core[model.Stream](c).SetValidRules(gin.H{
 		"namespace_id": "required",
-	}).SetItemKey("path").
+	}).
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Stream]) {
 			effectedPath := make([]string, len(ctx.BatchEffectedIDs))
 			var streams []*model.Stream
@@ -292,6 +293,19 @@ func BatchUpdateStreams(c *gin.Context) {
 				ctx.AbortWithError(err)
 				return
 			}
-			ctx.BatchEffectedIDs = effectedPath
+
+			// The client picks streams by name, but cosy casts every batch id to
+			// the numeric primary key before building "WHERE <key> IN ?", so a
+			// path item key matches no row. Hand it the row ids instead.
+			rows, err := s.Select(s.ID).Where(s.Path.In(effectedPath...)).Find()
+			if err != nil {
+				ctx.AbortWithError(err)
+				return
+			}
+			ids := make([]string, len(rows))
+			for i, row := range rows {
+				ids[i] = strconv.FormatUint(row.ID, 10)
+			}
+			ctx.BatchEffectedIDs = ids
 		}).BatchModify()
 }

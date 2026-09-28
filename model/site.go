@@ -12,7 +12,7 @@ type Site struct {
 	Path        string     `json:"path" gorm:"uniqueIndex"`
 	Description string     `json:"description"`
 	Advanced    bool       `json:"advanced"`
-	NamespaceID uint64     `json:"namespace_id"`
+	NamespaceID uint64     `json:"namespace_id" cosy:"batch"` // editable by the list page batch edit
 	Namespace   *Namespace `json:"namespace,omitempty"`
 	SyncNodeIDs []uint64   `json:"sync_node_ids" gorm:"serializer:json"`
 	// RemoteEnabled records the deployment intent for namespaces using

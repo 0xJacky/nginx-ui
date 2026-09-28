@@ -4,6 +4,7 @@ import type { Stream } from '@/api/stream'
 import type { JSXElements } from '@/types'
 import { datetimeRender } from '@uozi-admin/curd'
 import namespace from '@/api/namespace'
+import ConfigStatusTag from '@/components/ConfigStatusTag'
 import NamespaceRender from '@/components/NamespaceRender'
 import ProxyTargets from '@/components/ProxyTargets'
 import namespaceColumns from '@/views/namespace/columns'
@@ -86,8 +87,12 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
-  customRender: (args: CustomRenderArgs<Stream>) => {
+  customRender: (args: CustomRenderArgs<Stream>, source) => {
     const { record } = args
+    // Read-only views (e.g. the batch edit preview) must not offer a switch.
+    if (source === 'detail')
+      return h(ConfigStatusTag, { status: record.status })
+
     return h(StreamStatusSelect, {
       'status': record.status,
       'streamName': record.name,

@@ -3,6 +3,7 @@ import type { SelectProps, SelectValue } from 'antdv-next'
 import type { MaintenancePayload, SiteStatus } from '@/api/site'
 import { Modal } from 'antdv-next'
 import site from '@/api/site'
+import { configStatusColors, configStatusLabel } from '@/components/ConfigStatusTag'
 import { ConfigStatus } from '@/constants'
 import MaintenanceConfigModal from '@/views/site/components/MaintenanceConfigModal.vue'
 
@@ -35,43 +36,23 @@ function restoreDisplayStatus(statusValue: SiteStatus) {
 }
 
 const statusOptions = computed<SelectProps['options']>(() => [
-  {
-    value: ConfigStatus.Enabled,
-    label: $gettext('Enabled'),
-  },
-  {
-    value: ConfigStatus.Disabled,
-    label: $gettext('Disabled'),
-  },
-  {
-    value: ConfigStatus.Maintenance,
-    label: $gettext('Maintenance'),
-  },
-])
+  ConfigStatus.Enabled,
+  ConfigStatus.Disabled,
+  ConfigStatus.Maintenance,
+].map(value => ({ value, label: configStatusLabel(value) })))
 
 // Computed property for select style based on current status
 const selectStyle = computed(() => {
-  const statusStyles = {
-    [ConfigStatus.Enabled]: {
-      '--ant-select-bg': '#1890ff',
-      '--ant-select-border': '#1890ff',
-      '--ant-select-color': '#ffffff',
-      'color': '#ffffff',
-    },
-    [ConfigStatus.Disabled]: {
-      '--ant-select-bg': '#ff4d4f',
-      '--ant-select-border': '#ff4d4f',
-      '--ant-select-color': '#ffffff',
-      'color': '#ffffff',
-    },
-    [ConfigStatus.Maintenance]: {
-      '--ant-select-bg': '#faad14',
-      '--ant-select-border': '#faad14',
-      '--ant-select-color': '#ffffff',
-      'color': '#ffffff',
-    },
+  const color = configStatusColors[displayStatus.value]
+  if (!color)
+    return {}
+
+  return {
+    '--ant-select-bg': color,
+    '--ant-select-border': color,
+    '--ant-select-color': '#ffffff',
+    'color': '#ffffff',
   }
-  return statusStyles[displayStatus.value] || {}
 })
 
 // Enable the site
