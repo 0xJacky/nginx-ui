@@ -21,6 +21,7 @@ func InitHTTPRouter(r *gin.RouterGroup) {
 		o.POST("/upstreams", CreateManagedUpstream)
 		o.POST("/upstreams/:name", UpdateManagedUpstream)
 		o.DELETE("/upstreams/:name", DeleteManagedUpstream)
+		o.POST("/upstream/server_state", SetUpstreamServerState)
 	}
 }
 

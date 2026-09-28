@@ -513,6 +513,24 @@ func (s *Service) GetAllUpstreamDefinitions() map[string]*Definition {
 	return result
 }
 
+// GetUpstreamConfigPaths returns every config file known to define at least
+// one upstream block, sorted and without duplicates.
+func (s *Service) GetUpstreamConfigPaths() []string {
+	s.upstreamsMutex.RLock()
+	defer s.upstreamsMutex.RUnlock()
+
+	seen := make(map[string]bool, len(s.configUpstreams)+len(s.Upstreams))
+	for path := range s.configUpstreams {
+		seen[path] = true
+	}
+	for _, upstream := range s.Upstreams {
+		if upstream.ConfigPath != "" {
+			seen[upstream.ConfigPath] = true
+		}
+	}
+	return slices.Sorted(maps.Keys(seen))
+}
+
 // IsUpstreamName checks if a given name is a known upstream
 func (s *Service) IsUpstreamName(name string) bool {
 	s.upstreamsMutex.RLock()

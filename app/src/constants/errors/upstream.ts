@@ -21,4 +21,7 @@ export default {
   40904: () => $gettext('{0} is not an upstream file managed by Nginx UI'),
   40905: () => $gettext('The shared memory zone {0} is already used by another directive; nginx reported: {1}'),
   50001: () => $gettext('The nginx conf.d directory is not available: {0}'),
+  40016: () => $gettext('An upstream name, a config file and a server address are required'),
+  40402: () => $gettext('Upstream {0} is not defined in {1}'),
+  40403: () => $gettext('Server {0} was not found in upstream {1}'),
 }
