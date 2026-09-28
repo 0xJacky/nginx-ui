@@ -1,0 +1,54 @@
+nginx: the configuration file C:\nginx/conf/nginx.conf syntax is ok
+nginx: configuration file C:\nginx/conf/nginx.conf test is successful
+# configuration file C:\nginx/conf/nginx.conf:
+worker_processes  1;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    server {
+        listen       80;
+        server_name  localhost;
+        location / {
+            root   html;
+        }
+    }
+
+    include C:\Nginx\Conf\sites-enabled\*;
+    include conf.d/*.conf;
+}
+
+stream {
+    include streams-enabled/*;
+}
+
+# configuration file C:\nginx/conf/mime.types:
+types {
+    text/html  html htm shtml;
+}
+
+# configuration file C:\nginx/conf/sites-enabled/shop.conf:
+server {
+    listen 192.168.1.20:80;
+    server_name shop.example.com www.shop.example.com;
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+    }
+}
+
+# configuration file C:\nginx/conf/conf.d/extra.conf:
+server {
+    listen 8080;
+    server_name extra.example.com;
+}
+
+# configuration file C:\Nginx/Conf/Streams-Enabled/rdp.conf:
+server {
+    listen 3389;
+    proxy_pass 10.0.0.2:3389;
+}

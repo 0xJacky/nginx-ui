@@ -1,0 +1,156 @@
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+# configuration file /etc/nginx/nginx.conf:
+user  nginx;
+worker_processes  auto;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    map $http_upgrade $connection_upgrade {
+        default upgrade;
+        ''      close;
+        server  keep;
+    }
+
+    upstream backend {
+        server 127.0.0.1:9000;
+        server unix:/run/app.sock;
+    }
+
+    # server { listen 81; server_name commented.example.com; }
+
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        server_name _;
+        return 444;
+    }
+
+    include conf.d/*.conf;
+    include sites-enabled/*;
+}
+
+stream {
+    include streams-enabled/*;
+}
+
+# configuration file /etc/nginx/mime.types:
+types {
+    text/html                                        html htm shtml;
+    application/javascript                           js;
+}
+
+# configuration file /etc/nginx/conf.d/default.conf:
+server {
+    listen       80;
+    server_name  localhost;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+}
+
+# configuration file /etc/nginx/sites-enabled/multi.conf:
+# One certificate, several names spread over several blocks.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name a.example.com b.example.com;
+    include snippets/acme.conf;
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    http2 on;
+    listen 443 quic reuseport;
+    server_name a.example.com b.example.com;
+    ssl_certificate /etc/nginx/ssl/multi/fullchain.cer;
+    location / {
+        proxy_pass http://backend;
+    }
+}
+
+server {
+    listen 10.0.0.5:80;
+    server_name c.example.com;
+    location "/{quoted}" {
+        add_header X-Brace "}{";
+        return 200 'it\'s } fine';
+    }
+    location /app/ {
+        location /app/nested/ {
+            proxy_pass http://nested;
+        }
+        if ($request_method = POST) {
+            return 405;
+        }
+        proxy_pass http://app${suffix};
+    }
+}
+
+# configuration file /etc/nginx/snippets/acme.conf:
+location ^~ /.well-known/acme-challenge/ {
+    proxy_pass http://127.0.0.1:9180;
+}
+
+# configuration file /etc/nginx/sites-enabled/wildcards.conf:
+server {
+    listen 80;
+    server_name *.example.org;
+    return 200 leading-short;
+}
+server {
+    listen 80;
+    server_name *.api.example.org;
+    return 200 leading-long;
+}
+server {
+    listen 80;
+    server_name www.example.*;
+    return 200 trailing;
+}
+server {
+    listen 80;
+    server_name ~^(?<sub>[a-z]+)\.regex\.example\.net$ "~^second\.regex\.example\.net$";
+    return 200 regex-first;
+}
+server {
+    listen 80;
+    server_name ~^.+\.regex\.example\.net$ ~[invalid;
+    return 200 regex-second;
+}
+server {
+    listen 80;
+    server_name .dot.example.com;
+    return 200 dot;
+}
+server {
+    listen unix:/run/nginx-internal.sock;
+    server_name internal.example.com;
+}
+
+# configuration file /etc/nginx/streams-enabled/mysql.conf:
+server {
+    listen 3306;
+    proxy_pass 10.0.0.9:3306;
+}
+
+# configuration file /etc/nginx/orphan.conf:
+server {
+    listen 8081;
+    proxy_pass 10.0.0.9:8081;
+}
+server {
+    listen 8082;
+    server_name orphan.example.com;
+}
