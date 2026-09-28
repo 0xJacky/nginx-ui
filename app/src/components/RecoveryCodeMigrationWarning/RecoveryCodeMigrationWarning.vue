@@ -23,6 +23,12 @@ const shouldHideAlert = computed(() => props.availableWidth !== undefined
   && alertWidth.value > 0
   && alertWidth.value > props.availableWidth)
 
+// The header centers the banners only while one shows the full alert; a lone
+// icon stays next to the header icons.
+const isExpanded = computed(() => hasMigrationWarning.value && !shouldHideAlert.value)
+
+defineExpose({ isExpanded })
+
 function openRecoveryCodes() {
   router.push('/profile')
 }

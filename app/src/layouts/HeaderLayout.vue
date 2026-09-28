@@ -47,6 +47,7 @@ const breadcrumbRef = useTemplateRef('breadcrumbRef')
 const toolRef = useTemplateRef('toolRef')
 const userWrapperRef = useTemplateRef('userWrapperRef')
 const selfCheckRef = useTemplateRef('selfCheckRef')
+const recoveryRef = useTemplateRef('recoveryRef')
 
 // Inside a workspace pane the header is a slim bar: theme, language, home,
 // logout and the workspace entry live in the workspace top bar instead.
@@ -64,6 +65,7 @@ const { width: userWrapperWidth } = useElementSize(userWrapperRef)
 const { width: selfCheckWidth } = useElementSize(selfCheckRef)
 const { width: breadcrumbSlotWidth } = useElementSize(breadcrumbSlotRef)
 const { width: toolWidth } = useElementSize(toolRef)
+const { width: recoveryWidth } = useElementSize(recoveryRef)
 
 // What is left for the banners once the breadcrumb and the icons are placed:
 // a banner sits between the two, one gap on each side. The banners collapse to
@@ -74,6 +76,19 @@ const bannerSpace = computed(() => {
 })
 const recoveryBannerSpace = computed(() => bannerSpace.value - (selfCheckWidth.value ? selfCheckWidth.value + ITEM_GAP : 0))
 
+// A full alert is centered in the header, like the page title bar of a desktop
+// window. Both sides then grow from zero so the banners sit in the middle, and
+// the breadcrumb keeps all the room it can get, pushing the banners off center
+// rather than being clipped. A collapsed icon stays next to the header icons.
+const isBannerCentered = computed(() => !!(selfCheckRef.value?.isExpanded || recoveryRef.value?.isExpanded))
+const breadcrumbMinWidth = computed(() => {
+  const toolSpace = props.isMobile ? toolWidth.value + ITEM_GAP : 0
+  const bannerCount = (selfCheckWidth.value ? 1 : 0) + (recoveryWidth.value ? 1 : 0)
+  const rest = headerWidth.value - toolSpace - userWrapperWidth.value
+    - selfCheckWidth.value - recoveryWidth.value - ITEM_GAP * (bannerCount + 1)
+  return Math.max(0, Math.min(breadcrumbWidth.value, rest))
+})
+
 const isBreadcrumbClipped = computed(() => breadcrumbWidth.value > breadcrumbSlotWidth.value + 0.5)
 </script>
 
@@ -83,7 +98,12 @@ const isBreadcrumbClipped = computed(() => breadcrumbWidth.value > breadcrumbSlo
       <MenuUnfoldOutlined @click="emit('clickUnFold')" />
     </span>
 
-    <div ref="breadcrumbSlotRef" class="breadcrumb-slot" :class="{ overflowing: isBreadcrumbClipped }">
+    <div
+      ref="breadcrumbSlotRef"
+      class="breadcrumb-slot"
+      :class="{ overflowing: isBreadcrumbClipped, centering: isBannerCentered }"
+      :style="isBannerCentered ? { minWidth: `${breadcrumbMinWidth}px` } : undefined"
+    >
       <div v-if="!isMobile" ref="breadcrumbRef" class="breadcrumb-measure">
         <Breadcrumb :show-node="showNode" />
       </div>
@@ -96,45 +116,48 @@ const isBreadcrumbClipped = computed(() => breadcrumbWidth.value > breadcrumbSlo
     />
 
     <RecoveryCodeMigrationWarning
+      ref="recoveryRef"
       class="header-banner"
       :available-width="recoveryBannerSpace"
     />
 
-    <ASpace
-      ref="userWrapperRef"
-      class="user-wrapper"
-      :size="isMobile || isWorkspace ? 16 : 24"
-    >
-      <template v-if="!isWorkspace">
-        <SetLanguage class="set_lang" />
+    <div class="user-slot" :class="{ centering: isBannerCentered }">
+      <ASpace
+        ref="userWrapperRef"
+        class="user-wrapper"
+        :size="isMobile || isWorkspace ? 16 : 24"
+      >
+        <template v-if="!isWorkspace">
+          <SetLanguage class="set_lang" />
 
-        <SwitchAppearance />
+          <SwitchAppearance />
 
-        <div class="workspace-entry">
-          <RouterLink :to="workspaceLink">
-            <ATooltip :title="$gettext('Workspace')">
-              <DesktopOutlined />
-            </ATooltip>
-          </RouterLink>
-        </div>
+          <div class="workspace-entry">
+            <RouterLink :to="workspaceLink">
+              <ATooltip :title="$gettext('Workspace')">
+                <DesktopOutlined />
+              </ATooltip>
+            </RouterLink>
+          </div>
 
-        <ProcessingStatus />
-      </template>
+          <ProcessingStatus />
+        </template>
 
-      <Notification :header-ref="headerRef" />
+        <Notification :header-ref="headerRef" />
 
-      <NginxControl />
+        <NginxControl />
 
-      <template v-if="!isWorkspace">
-        <a href="/">
-          <HomeOutlined />
-        </a>
+        <template v-if="!isWorkspace">
+          <a href="/">
+            <HomeOutlined />
+          </a>
 
-        <a @click="logout">
-          <LogoutOutlined />
-        </a>
-      </template>
-    </ASpace>
+          <a @click="logout">
+            <LogoutOutlined />
+          </a>
+        </template>
+      </ASpace>
+    </div>
   </div>
 </template>
 
@@ -193,6 +216,10 @@ const isBreadcrumbClipped = computed(() => breadcrumbWidth.value > breadcrumbSlo
   &.overflowing {
     mask-image: linear-gradient(to right, #000 calc(100% - 32px), transparent);
   }
+
+  &.centering {
+    flex: 1 1 0;
+  }
 }
 
 .breadcrumb-measure {
@@ -209,9 +236,19 @@ const isBreadcrumbClipped = computed(() => breadcrumbWidth.value > breadcrumbSlo
   }
 }
 
+.user-slot {
+  flex: none;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+
+  &.centering {
+    flex: 1 1 0;
+  }
+}
+
 .user-wrapper {
   flex: none;
-  margin-left: auto;
 }
 
 .set_lang {
