@@ -238,11 +238,20 @@ func parseProxyPassURL(passURL, passType string) ProxyTarget {
 	return ProxyTarget{}
 }
 
-// SocketAddress returns the host:port key the availability results use for
-// the address of an upstream `server` directive, for example "10.0.0.1:80" for
-// "10.0.0.1" and "[::1]:8080" for "[::1]:8080".
-func SocketAddress(address string) string {
-	target := parseAddressOnly(strings.TrimSpace(address))
+// SocketAddress returns the key the availability results use for an upstream
+// `server` directive. server is what follows `server` as written: the address
+// alone or followed by its parameters, for example "web.internal",
+// "10.0.0.1:8080 weight=2" or "[::1]". It goes through the same parsing the
+// config scanner registers targets with, so a server without a port gets the
+// port 80 the checker probes ("web.internal" -> "web.internal:80", "[::1]" ->
+// "[::1]:80"), a unix socket keeps its spelling ("unix:/run/app.sock") and a
+// service discovery entry gets its dynamic key. It returns "" for a server
+// the scanner never registers, such as one built from nginx variables.
+func SocketAddress(server string) string {
+	target := parseServerAddress(server, "upstream", nil)
+	if target.Host == "" {
+		return ""
+	}
 	return formatSocketAddress(target.Host, target.Port)
 }
 

@@ -157,12 +157,7 @@ func List() ([]*Detail, error) {
 			logger.Debugf("skip upstream file %s: %v", entry.Name(), err)
 			continue
 		}
-		result = append(result, &Detail{
-			Upstream:   *u,
-			Path:       path,
-			Content:    content,
-			References: idx.find(name, path),
-		})
+		result = append(result, newDetail(u, path, content, idx.find(name, path)))
 	}
 
 	sort.Slice(result, func(i, j int) bool { return result[i].Name < result[j].Name })
@@ -179,7 +174,21 @@ func Get(name string) (*Detail, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Detail{Upstream: *u, Path: path, Content: content, References: refs}, nil
+	return newDetail(u, path, content, refs), nil
+}
+
+// newDetail wraps a parsed upstream for the API and resolves the socket of
+// every server: the availability checker probes and reports each server under
+// that key (port 80 filled in when the address has none), so the upstream
+// list must look health up by it rather than by the address as written.
+func newDetail(u *Upstream, path, content string, refs []Reference) *Detail {
+	detail := &Detail{Upstream: *u, Path: path, Content: content, References: refs}
+	detail.Servers = make([]Server, len(u.Servers))
+	for i, server := range u.Servers {
+		server.Socket = upstream.SocketAddress(renderServer(server))
+		detail.Servers[i] = server
+	}
+	return detail
 }
 
 // Prepare normalizes and validates u and returns the file content it renders to.
