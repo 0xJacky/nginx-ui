@@ -268,7 +268,7 @@ function getSiteTitle(site: SiteInfo): string {
 }
 
 .site-card.clickable {
-  @apply cursor-pointer hover:scale-105;
+  @apply cursor-pointer;
 }
 
 .site-card.non-clickable {
@@ -278,10 +278,6 @@ function getSiteTitle(site: SiteInfo): string {
 
 .site-card.settings-mode {
   @apply cursor-move;
-}
-
-.site-card.settings-mode:hover {
-  @apply scale-100;
 }
 
 .site-card-header {
