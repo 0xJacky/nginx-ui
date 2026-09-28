@@ -52,12 +52,40 @@ func Dir() string {
 	return nginx.GetConfPath("conf.d")
 }
 
-// Path returns the absolute path of the managed upstream file for name.
+// Path returns the absolute path of the managed upstream file for name. The
+// name comes from the request URL or body, so it is checked by the name
+// pattern and then confined to conf.d by confinedPath.
 func Path(name string) (string, error) {
 	if err := ValidateName(name); err != nil {
 		return "", err
 	}
-	return filepath.Join(Dir(), FileName(name)), nil
+	return confinedPath(name)
+}
+
+// confinedPath builds the managed file path for name and proves it cannot
+// leave conf.d. It does not rely on ValidateName: path separators and ".."
+// are rejected explicitly, and the joined path is resolved through
+// config.ResolveConfPathInDir, which refuses anything outside the directory
+// (following symlinks), the same boundary the site and config editors use.
+func confinedPath(name string) (string, error) {
+	if name == "" || strings.Contains(name, "..") {
+		return "", ErrInvalidName
+	}
+	if strings.ContainsAny(name, `/\`) || !filepath.IsLocal(name) {
+		return "", ErrInvalidName
+	}
+
+	path, err := config.ResolveConfPathInDir("conf.d", FileName(name))
+	if err != nil {
+		return "", err
+	}
+
+	dir := filepath.Clean(Dir())
+	path = filepath.Clean(path)
+	if filepath.Dir(path) != dir || !strings.HasPrefix(path, dir+string(os.PathSeparator)) {
+		return "", cosy.WrapErrorWithParams(config.ErrPathIsNotUnderTheNginxConfDir, path, dir)
+	}
+	return path, nil
 }
 
 // nameFromFile extracts the upstream name from a managed file name.

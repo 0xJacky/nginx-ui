@@ -303,3 +303,40 @@ func TestSaveWritesZone(t *testing.T) {
 	require.NoError(t, err)
 	assert.Contains(t, string(content), "    zone zoned 64k;\n")
 }
+
+func TestPathIsConfinedToConfD(t *testing.T) {
+	confDir := setupStoreTest(t)
+
+	path, err := Path("backend_pool")
+	require.NoError(t, err)
+	assert.Equal(t, filepath.Join(confDir, "conf.d", "upstream-backend_pool.conf"), path)
+
+	traversal := []string{
+		"../../etc/passwd",
+		"..",
+		"../conf.d/x",
+		"a/../../b",
+		"a/b",
+		`a\b`,
+		"/etc/passwd",
+		"",
+	}
+	for _, name := range traversal {
+		_, err := Path(name)
+		assert.Error(t, err, name)
+
+		// The confinement holds on its own, without the name pattern.
+		_, err = confinedPath(name)
+		assert.Error(t, err, name)
+	}
+
+	// Nothing escapes conf.d through the store entry points either.
+	_, err = Save(&Upstream{Name: "../../escape", Servers: []Server{{Address: "127.0.0.1:80"}}}, true, "")
+	require.Error(t, err)
+	require.Error(t, Delete("../../etc/passwd"))
+	_, _, _, err = Read("../upstream-x")
+	require.Error(t, err)
+	assert.False(t, Exists("../../etc/passwd"))
+	_, err = os.Stat(filepath.Join(confDir, "escape.conf"))
+	assert.True(t, os.IsNotExist(err))
+}
