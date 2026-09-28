@@ -14,6 +14,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gorilla/websocket"
@@ -389,6 +390,23 @@ func equalNodeConfigs(a, b []*model.Node) bool {
 	return true
 }
 
+// newNodeWebSocketDialer derives the analytic WebSocket dialer from the same
+// transport the HTTP probe uses, so [http] InsecureSkipVerify and the proxy
+// settings apply to both legs of a node connection. A dialer with its own TLS
+// config lets the probe succeed and the WebSocket still fail verification.
+func newNodeWebSocketDialer() (*websocket.Dialer, error) {
+	base, err := transport.NewTransport()
+	if err != nil {
+		return nil, err
+	}
+
+	return &websocket.Dialer{
+		Proxy:            base.Proxy,
+		TLSClientConfig:  base.TLSClientConfig,
+		HandshakeTimeout: 5 * time.Second,
+	}, nil
+}
+
 func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 	scopeCtx, cancel := context.WithCancel(ctx)
 	defer cancel()
@@ -432,9 +450,9 @@ func nodeAnalyticRecord(nodeModel *model.Node, ctx context.Context) error {
 		return fmt.Errorf("sign node WebSocket request: %w", err)
 	}
 
-	dial := &websocket.Dialer{
-		Proxy:            http.ProxyFromEnvironment,
-		HandshakeTimeout: 5 * time.Second,
+	dial, err := newNodeWebSocketDialer()
+	if err != nil {
+		return fmt.Errorf("build node WebSocket dialer: %w", err)
 	}
 
 	c, _, err := dial.DialContext(scopeCtx, u, header)
