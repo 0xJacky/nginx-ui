@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import settings, { PROTECTED_VALUE_PLACEHOLDER } from '@/api/settings'
 import { use2FAModal } from '@/components/TwoFA'
+import { copyText } from '@/lib/helper'
 
 const props = defineProps<{
   /** Protected settings path to reveal from. Ignored when `resolve` is given. */
@@ -62,8 +63,14 @@ async function toggleShow() {
 
 async function copyValue() {
   const value = show.value ? model.value : await ensureRevealedValue()
-  await navigator.clipboard.writeText(value)
-  message.success($gettext('Copied'))
+  try {
+    await copyText(value)
+    message.success($gettext('Copied'))
+  }
+  catch (error) {
+    console.error(error)
+    message.error($gettext('Failed to copy to clipboard'))
+  }
 }
 
 function updateValue(value: string) {

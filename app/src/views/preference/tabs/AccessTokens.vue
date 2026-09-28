@@ -2,16 +2,14 @@
 import type { Dayjs } from 'dayjs'
 import type { ServiceToken, ServiceTokenScope } from '@/api/service_token'
 import { CopyOutlined, DeleteOutlined, KeyOutlined, PlusOutlined, SyncOutlined } from '@antdv-next/icons'
-import { useClipboard } from '@vueuse/core'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import serviceToken from '@/api/service_token'
-import { formatDateTime } from '@/lib/helper'
+import { copyText, formatDateTime } from '@/lib/helper'
 
 dayjs.extend(relativeTime)
 
 const { message } = App.useApp()
-const { copy, isSupported: isClipboardSupported } = useClipboard()
 
 const isLoading = ref(false)
 const isCreating = ref(false)
@@ -125,7 +123,7 @@ async function revokeToken(record: Record<string, unknown>) {
 
 async function copyToken() {
   try {
-    await copy(oneTimeToken.value)
+    await copyText(oneTimeToken.value)
     message.success($gettext('Access token copied to clipboard'))
   }
   catch {
@@ -314,7 +312,7 @@ onMounted(loadTokens)
       />
       <ASpaceCompact class="flex">
         <AInput :value="oneTimeToken" readonly class="min-w-0 flex-1 font-mono" />
-        <AButton :disabled="!isClipboardSupported" @click="copyToken">
+        <AButton @click="copyToken">
           <CopyOutlined />
           {{ $gettext('Copy') }}
         </AButton>

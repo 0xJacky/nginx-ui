@@ -74,5 +74,6 @@ export {
   urlJoin,
 }
 
+export { copyText } from './clipboard'
 export { clearFingerprintCache, getBrowserFingerprint } from './fingerprint'
 export { getBrowserLanguage } from './i18n'

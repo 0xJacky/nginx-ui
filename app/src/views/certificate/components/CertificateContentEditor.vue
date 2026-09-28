@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
 import { CopyOutlined, InboxOutlined } from '@antdv-next/icons'
-import { useClipboard } from '@vueuse/core'
 import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor'
+import { copyText } from '@/lib/helper'
 import CertificateFileUpload from './CertificateFileUpload.vue'
 
 interface Props {
@@ -18,8 +18,6 @@ const { message } = App.useApp()
 
 // Use defineModel for two-way binding
 const data = defineModel<Cert>('data', { required: true })
-
-const { copy } = useClipboard()
 
 // Lazy load nginx config base path
 const nginxBasePath = ref<string>('')
@@ -106,7 +104,7 @@ async function copyToClipboard(text: string, label: string) {
     return
   }
   try {
-    await copy(text)
+    await copyText(text)
     message.success($gettext(`{label} copied to clipboard`).replace('{label}', label))
   }
   catch (error) {

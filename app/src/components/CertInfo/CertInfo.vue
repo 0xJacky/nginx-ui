@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { CertificateInfo } from '@/api/cert'
 import { CopyOutlined } from '@antdv-next/icons'
-import { useClipboard } from '@vueuse/core'
 import dayjs from 'dayjs'
+import { copyText } from '@/lib/helper'
 
 const props = defineProps<{
   cert?: CertificateInfo
@@ -14,7 +14,6 @@ const isValid = computed(() => dayjs().isAfter(props.cert?.not_before) && dayjs(
 const sanAliases = computed(() => props.cert?.subject_alt_names ?? [])
 
 const { message } = App.useApp()
-const { copy } = useClipboard()
 
 async function copyToClipboard(text: string, label: string) {
   if (!text) {
@@ -22,7 +21,7 @@ async function copyToClipboard(text: string, label: string) {
     return
   }
   try {
-    await copy(text)
+    await copyText(text)
     message.success($gettext(`{label} copied to clipboard`).replace('{label}', label))
   }
   catch (error) {
