@@ -68,7 +68,6 @@ watch(advanceMode, val => {
         :styles="{
           header: {
             margin: '0',
-            padding: '0 24px',
             height: '55px',
           },
           content: {
@@ -77,6 +76,14 @@ watch(advanceMode, val => {
           },
         }"
       >
+        <!-- Inline gutters live in extra slots: the tab overflow math measures the
+        nav's offsetWidth, so header padding would hide tabs behind the "more" button -->
+        <template #leftExtra>
+          <div class="w-6" />
+        </template>
+        <template #rightExtra>
+          <div class="w-6" />
+        </template>
         <template #contentRender="{ item }">
           <Basic v-if="item.key === 'basic'" />
           <DNS v-else-if="item.key === 'dns'" />
