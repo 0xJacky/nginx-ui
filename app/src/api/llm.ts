@@ -5,6 +5,8 @@ export interface ChatComplicationMessage {
   role: string
   content: string
   name?: string
+  // Thinking process of a reasoning model, shown but not sent back
+  reasoning_content?: string
 }
 
 export interface CodeCompletionRequest {

@@ -2,6 +2,7 @@
 import type { ChatComplicationMessage } from '@/api/llm'
 import { ListItem } from '@/components/List'
 import { useAnimationCoordinator } from './animationCoordinator'
+import ChatMessageReasoning from './ChatMessageReasoning.vue'
 import { useLLMStore } from './llm'
 import { marked } from './markdown'
 import { transformText } from './utils'
@@ -227,6 +228,11 @@ onMounted(() => {
             {{ message.role === 'assistant' ? $gettext('Assistant') : $gettext('User') }}
           </div>
           <div class="ant-comment-content-detail">
+            <ChatMessageReasoning
+              v-if="message.role === 'assistant' && message.reasoning_content"
+              :reasoning="message.reasoning_content"
+              :thinking="streamingMessageIndex === index && !message.content"
+            />
             <div
               v-if="message.role === 'assistant' || !isEditing"
               class="content"

@@ -2,11 +2,8 @@ package llm
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"io"
-	"strings"
-	"time"
 
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/llm"
@@ -15,14 +12,6 @@ import (
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
-
-func getStreamDeltaContent(response openai.ChatCompletionStreamResponse) string {
-	if len(response.Choices) == 0 {
-		return ""
-	}
-
-	return response.Choices[0].Delta.Content
-}
 
 func MakeChatCompletionRequest(c *gin.Context) {
 	var json struct {
@@ -74,6 +63,12 @@ func MakeChatCompletionRequest(c *gin.Context) {
 		}
 	}
 
+	// Earlier reasoning is shown in the chat but not sent back: providers
+	// such as DeepSeek reject assistant messages that carry it.
+	for i := range json.Messages {
+		json.Messages[i].ReasoningContent = ""
+	}
+
 	messages = append(messages, json.Messages...)
 
 	// SSE server
@@ -123,76 +118,11 @@ func MakeChatCompletionRequest(c *gin.Context) {
 		return
 	}
 	defer stream.Close()
-	msgChan := make(chan string)
-	go func() {
-		defer close(msgChan)
-		messageCh := make(chan string)
 
-		// 消息接收协程
-		go func() {
-			defer close(messageCh)
-			for {
-				response, err := stream.Recv()
-				if errors.Is(err, io.EOF) {
-					return
-				}
-				if err != nil {
-					messageCh <- fmt.Sprintf("error: %v", err)
-					logger.Errorf("Stream error: %v\n", err)
-					return
-				}
-				content := getStreamDeltaContent(response)
-				if content == "" {
-					continue
-				}
-				messageCh <- content
-			}
-		}()
-
-		ticker := time.NewTicker(500 * time.Millisecond)
-		defer ticker.Stop()
-
-		var buffer strings.Builder
-
-		for {
-			select {
-			case msg, ok := <-messageCh:
-				if !ok {
-					if buffer.Len() > 0 {
-						msgChan <- buffer.String()
-					}
-					return
-				}
-				if strings.HasPrefix(msg, "error: ") {
-					msgChan <- msg
-					return
-				}
-				buffer.WriteString(msg)
-			case <-ticker.C:
-				if buffer.Len() > 0 {
-					msgChan <- buffer.String()
-					buffer.Reset()
-				}
-			}
-		}
-	}()
-
-	c.Stream(func(w io.Writer) bool {
-		m, ok := <-msgChan
-		if !ok {
-			return false
-		}
-		if strings.HasPrefix(m, "error: ") {
-			c.SSEvent("message", gin.H{
-				"type":    "error",
-				"content": strings.TrimPrefix(m, "error: "),
-			})
-			return false
-		}
+	c.Stream(relayChatStream(stream, func(event streamEvent) {
 		c.SSEvent("message", gin.H{
-			"type":    "message",
-			"content": m,
+			"type":    event.kind,
+			"content": event.text,
 		})
-		return true
-	})
+	}))
 }

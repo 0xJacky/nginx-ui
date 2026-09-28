@@ -146,10 +146,12 @@ export const useLLMStore = defineStore('llm', () => {
   }
 
   // Update the last assistant message content (for streaming)
-  function updateLastAssistantMessage(content: string) {
+  function updateLastAssistantMessage(content: string, reasoning?: string) {
     const lastMessage = messages.value.at(-1)
     if (lastMessage && lastMessage.role === 'assistant') {
       lastMessage.content = content
+      if (reasoning)
+        lastMessage.reasoning_content = reasoning
     }
   }
 
@@ -378,7 +380,7 @@ export const useLLMStore = defineStore('llm', () => {
         messages.value.slice(0, -1), // Exclude the empty assistant message
         message => {
           // Update the current assistant message in real-time
-          updateLastAssistantMessage(message.content)
+          updateLastAssistantMessage(message.content, message.reasoning_content)
         },
         language,
         nginxConfig.value,
@@ -388,7 +390,7 @@ export const useLLMStore = defineStore('llm', () => {
       )
 
       // Update the final content
-      updateLastAssistantMessage(assistantMessage.content)
+      updateLastAssistantMessage(assistantMessage.content, assistantMessage.reasoning_content)
 
       // If no typing animation starts within a reasonable time, end streaming
       // This handles cases where content is too short for typewriter effect
