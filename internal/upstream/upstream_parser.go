@@ -238,6 +238,14 @@ func parseProxyPassURL(passURL, passType string) ProxyTarget {
 	return ProxyTarget{}
 }
 
+// SocketAddress returns the host:port key the availability results use for
+// the address of an upstream `server` directive, for example "10.0.0.1:80" for
+// "10.0.0.1" and "[::1]:8080" for "[::1]:8080".
+func SocketAddress(address string) string {
+	target := parseAddressOnly(strings.TrimSpace(address))
+	return formatSocketAddress(target.Host, target.Port)
+}
+
 // parseServerAddress parses upstream server address with upstream context
 func parseServerAddress(serverAddr string, targetType string, ctx *TheUpstreamContext) ProxyTarget {
 	serverAddr = strings.TrimSpace(serverAddr)

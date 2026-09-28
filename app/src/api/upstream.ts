@@ -82,10 +82,43 @@ export interface ManagedUpstreamDetail extends ManagedUpstream {
   references: UpstreamReference[]
 }
 
-export interface ExternalUpstream {
+export type UpstreamSourceType = 'managed' | 'site' | 'stream' | 'config'
+
+// The file an upstream block lives in: a site or stream name, the managed
+// group name, or a path relative to the nginx configuration directory.
+export interface UpstreamSource {
+  type: UpstreamSourceType
   name: string
-  servers: Array<{ host: string, port: string, type: string }>
+}
+
+// State of one `server` line of an upstream block.
+export interface UpstreamServerState {
+  address: string
+  // host:port key of the availability results
+  socket: string
+  down: boolean
+  backup: boolean
+  weight?: number
+  params?: string
+}
+
+export interface UpstreamGroupState {
+  name: string
   config_path: string
+  source: UpstreamSource
+  servers: UpstreamServerState[]
+}
+
+export interface ExternalUpstream extends UpstreamGroupState {
+  // Set when the file could not be read back; its servers cannot be toggled.
+  read_only: boolean
+}
+
+export interface UpstreamServerStateRequest {
+  upstream: string
+  config_path: string
+  address: string
+  enabled: boolean
 }
 
 export interface ManagedUpstreamListResponse {
@@ -141,6 +174,12 @@ const upstream = {
 
   deleteManaged(name: string) {
     return http.delete(`/upstreams/${encodeURIComponent(name)}`)
+  },
+
+  // Switch one server of any upstream block on or off (`down` parameter). The
+  // file is saved like its own editor saves it: nginx -t, reload, rollback.
+  setServerState(data: UpstreamServerStateRequest): Promise<UpstreamGroupState> {
+    return http.post('/upstream/server_state', data)
   },
 
   // Validation errors are shown inline by the form, so the global error toast

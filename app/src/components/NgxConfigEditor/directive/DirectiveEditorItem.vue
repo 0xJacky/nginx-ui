@@ -115,12 +115,16 @@ const isInputReadonly = computed(() => {
               :directive="directive"
             />
 
-            <!-- Comments Entry -->
-            <Transition name="fade">
-              <div v-show="onHover" class="ml-3 cursor-pointer" @click="showComment = !showComment">
-                <InfoCircleOutlined />
-              </div>
-            </Transition>
+            <!-- Comments Entry. It keeps its space while hidden: showing it
+                 on hover must not shift the suffix controls (such as the
+                 upstream server switch) away from the pointer. -->
+            <div
+              class="comment-entry ml-3 cursor-pointer"
+              :class="{ 'is-visible': onHover }"
+              @click="showComment = !showComment"
+            >
+              <InfoCircleOutlined />
+            </div>
           </template>
         </AInput>
       </ASpaceCompact>
@@ -222,12 +226,14 @@ const isInputReadonly = computed(() => {
   align-items: center;
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: all .16s ease-in-out;
-}
-
-.fade-enter-from, .fade-enter-to, .fade-leave-to
-  /* .fade-leave-active for below version 2.1.8 */ {
+.comment-entry {
   opacity: 0;
+  visibility: hidden;
+  transition: opacity .16s ease-in-out, visibility .16s ease-in-out;
+
+  &.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
 }
 </style>
