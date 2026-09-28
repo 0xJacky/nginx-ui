@@ -149,6 +149,18 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
   const isSaving = ref(false)
   const isLoaded = ref(false)
 
+  // Saves a tab runs besides its settings sections, for data stored outside
+  // the settings file. Each resolves to an error message, or undefined.
+  const tabSavers = new Map<string, () => Promise<string | undefined>>()
+
+  function registerTabSaver(tab: string, saver: () => Promise<string | undefined>) {
+    tabSavers.set(tab, saver)
+    return () => {
+      if (tabSavers.get(tab) === saver)
+        tabSavers.delete(tab)
+    }
+  }
+
   async function getSettings(): Promise<boolean> {
     try {
       const r = await settings.get()
@@ -222,8 +234,14 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
 
     isSaving.value = true
     try {
-      const results = await Promise.all(sections.map(saveSection))
+      const tabSaver = tabSavers.get(tab)
+      const [results, tabSaverError] = await Promise.all([
+        Promise.all(sections.map(saveSection)),
+        tabSaver?.(),
+      ])
       const failed = results.filter(result => result.error !== undefined)
+      if (tabSaverError !== undefined)
+        failed.push({ section: sections[0], error: tabSaverError })
 
       // A dismissed 2FA prompt is not an error worth reporting
       if (failed.some(result => result.error === ''))
@@ -263,6 +281,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     errors,
     isSaving,
     isLoaded,
+    registerTabSaver,
     getSettings,
     save,
   }

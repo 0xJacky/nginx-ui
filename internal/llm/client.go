@@ -56,5 +56,7 @@ func NewClient(options *settings.OpenAI) (*openai.Client, error) {
 		config.HTTPClient = doer
 	}
 
+	config.HTTPClient = extraBodyDoer{next: config.HTTPClient}
+
 	return openai.NewClientWithConfig(config), nil
 }

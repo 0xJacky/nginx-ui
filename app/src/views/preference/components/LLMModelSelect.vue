@@ -24,9 +24,11 @@ const props = defineProps<{
   placeholder?: string
   allowClear?: boolean
   status?: '' | 'error'
+  // Pick several models, value is then a list of model names
+  multiple?: boolean
 }>()
 
-const value = defineModel<string>('value', { default: '' })
+const value = defineModel<string | string[]>('value', { default: '' })
 
 const searchValue = ref('')
 const showAllModels = ref(false)
@@ -121,6 +123,7 @@ function toggleAllModels(event: MouseEvent) {
   <ASelect
     v-model:value="value"
     show-search
+    :mode="multiple ? 'multiple' : undefined"
     :options="groups"
     :filter-option="false"
     :loading="loading"
@@ -128,7 +131,7 @@ function toggleAllModels(event: MouseEvent) {
     :allow-clear="allowClear"
     :status="status"
     :not-found-content="loading ? $gettext('Fetching models...') : $gettext('Type a model name to use it')"
-    class="max-w-100"
+    :class="multiple ? 'w-full' : 'max-w-100'"
     @search="onSearch"
     @select="onSelect"
   >

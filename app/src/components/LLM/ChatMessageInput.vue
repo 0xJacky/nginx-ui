@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { LoadingOutlined, SendOutlined } from '@antdv-next/icons'
+import { BulbOutlined, LoadingOutlined, SendOutlined } from '@antdv-next/icons'
 import { useElementSize } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
+import { thinkingLevelLabel } from '@/constants/llm'
 import { useSettingsStore } from '@/pinia'
 import { useLLMStore } from './llm'
 
@@ -10,7 +11,33 @@ const props = defineProps<{
   osInfo?: string
 }>()
 const llmStore = useLLMStore()
-const { loading, askBuffer, messages } = storeToRefs(llmStore)
+const {
+  loading,
+  askBuffer,
+  messages,
+  chatModels,
+  selectedModel,
+  thinkingLevel,
+  activeModel,
+  availableThinkingLevels,
+} = storeToRefs(llmStore)
+
+onMounted(llmStore.loadChatModels)
+
+const modelOptions = computed(() => chatModels.value.map(model => ({
+  label: model.name,
+  value: model.name,
+})))
+
+const thinkingOptions = computed(() => [
+  { label: thinkingLevelLabel(''), value: '' },
+  ...availableThinkingLevels.value.map(level => ({ label: thinkingLevelLabel(level), value: level })),
+])
+
+// A level the model does not offer falls back to the provider default
+const currentThinkingLevel = computed(() => availableThinkingLevels.value.includes(thinkingLevel.value as never)
+  ? thinkingLevel.value
+  : '')
 const { language: currentLanguage } = storeToRefs(useSettingsStore())
 
 // Get input container height for spacer
@@ -55,7 +82,41 @@ function handleButtonClick() {
 
 <template>
   <div ref="inputContainerRef" class="input-msg">
-    <div class="control-btn">
+    <div
+      class="control-btn"
+      :class="{ 'has-options': modelOptions.length > 1 || availableThinkingLevels.length }"
+    >
+      <ASpace
+        v-if="modelOptions.length > 1 || availableThinkingLevels.length"
+        size="small"
+        wrap
+      >
+        <ASelect
+          v-if="modelOptions.length > 1"
+          :value="activeModel?.name"
+          :options="modelOptions"
+          :popup-match-select-width="false"
+          :title="$gettext('Model')"
+          size="small"
+          variant="borderless"
+          class="max-w-44"
+          @update:value="value => selectedModel = value as string"
+        />
+        <ASelect
+          v-if="availableThinkingLevels.length"
+          :value="currentThinkingLevel"
+          :options="thinkingOptions"
+          :popup-match-select-width="false"
+          :title="$gettext('Thinking')"
+          size="small"
+          variant="borderless"
+          @update:value="value => thinkingLevel = value as typeof thinkingLevel"
+        >
+          <template #prefix>
+            <BulbOutlined />
+          </template>
+        </ASelect>
+      </ASpace>
       <ASpace v-show="!loading">
         <APopconfirm
           :cancel-text="$gettext('No')"
@@ -113,7 +174,13 @@ function handleButtonClick() {
 
   .control-btn {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    gap: 4px;
+
+    &.has-options {
+      justify-content: space-between;
+    }
   }
 
   :deep(.ant-input) {

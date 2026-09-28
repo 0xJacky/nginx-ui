@@ -39,6 +39,7 @@ func GenerateAllModel() []any {
 		AuthToken{},
 		Cert{},
 		LLMSession{},
+		LLMModel{},
 		Site{},
 		Stream{},
 		DnsCredential{},

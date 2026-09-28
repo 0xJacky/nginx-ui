@@ -1,3 +1,4 @@
+import type { LLMThinkingParams } from '@/constants/llm'
 import { http } from '@uozi-admin/request'
 
 export interface ChatComplicationMessage {
@@ -40,6 +41,17 @@ export interface LLMModel {
   kind: LLMModelKind
 }
 
+export interface LLMChatModel {
+  name: string
+  thinking_preset: string
+  thinking_params?: LLMThinkingParams | null
+}
+
+export interface LLMChatModels {
+  default_model: string
+  models: LLMChatModel[]
+}
+
 export interface LLMModelListRequest {
   provider: string
   base_url: string
@@ -62,6 +74,12 @@ const llm = {
   },
   store_messages(data: { file_name?: string, messages?: ChatComplicationMessage[] }) {
     return http.post('/llm_messages', data)
+  },
+  get_chat_models() {
+    return http.get<LLMChatModels>('/llm/chat_models')
+  },
+  save_chat_models(models: LLMChatModel[]) {
+    return http.put<LLMChatModels>('/llm/chat_models', { models }, { skipErrHandling: true })
   },
   codeCompletionWebSocketUrl: '/api/code_completion',
   get_code_completion_enabled_status() {

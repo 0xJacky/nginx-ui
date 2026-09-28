@@ -1,6 +1,9 @@
 package llm
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/gin-gonic/gin"
+)
 
 func InitRouter(r *gin.RouterGroup) {
 	// LLM Session endpoints
@@ -23,6 +26,9 @@ func InitLocalRouter(r *gin.RouterGroup) {
 	r.GET("code_completion/enabled", GetCodeCompletionEnabledStatus)
 	// List the models of the provider on the settings form
 	r.POST("llm/models", ListModels)
+	// Models offered in the assistant, with their thinking levels
+	r.GET("llm/chat_models", GetChatModels)
+	r.PUT("llm/chat_models", middleware.RequireSecureSession(), middleware.RejectInDemo(), SaveChatModels)
 	// Generate title from messages - uses local LLM config
 	r.POST("generate_title", GenerateTitle)
 }

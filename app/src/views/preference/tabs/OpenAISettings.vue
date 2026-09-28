@@ -1,14 +1,66 @@
 <script setup lang="ts">
 import type { SelectProps } from 'antdv-next'
+import type { LLMChatModel } from '@/api/llm'
 import { DownOutlined, ReloadOutlined, RightOutlined } from '@antdv-next/icons'
+import { cloneDeep } from 'lodash'
+import llm from '@/api/llm'
 import { SensitiveInput } from '@/components/SensitiveString'
-import { LLM_PROVIDER_BASE_URLS, LLM_PROVIDERS } from '@/constants/llm'
+import { LLM_PROVIDER_BASE_URLS, LLM_PROVIDERS, suggestThinkingPreset } from '@/constants/llm'
+import { translateError } from '@/lib/http/error'
+import { normalizeHttpError } from '@/lib/http/normalizeError'
+import LLMChatModelThinking from '../components/LLMChatModelThinking.vue'
 import LLMModelSelect from '../components/LLMModelSelect.vue'
 import { useLLMModelDiscovery } from '../composables/useLLMModelDiscovery'
 import useSystemSettingsStore from '../store'
 
 const systemSettingsStore = useSystemSettingsStore()
 const { data, errors, isLoaded } = storeToRefs(systemSettingsStore)
+
+// The models offered in the assistant. They are stored apart from the
+// settings file and saved with this tab.
+const chatModels = ref<LLMChatModel[]>([])
+
+llm.get_chat_models().then(r => {
+  chatModels.value = r.models ?? []
+})
+
+const chatModelNames = computed({
+  get: () => chatModels.value.map(model => model.name),
+  set: (names: string[]) => {
+    const existing = new Map(chatModels.value.map(model => [model.name, model]))
+    chatModels.value = names.map(name => {
+      const model = existing.get(name)
+      if (model)
+        return model
+
+      const preset = suggestThinkingPreset(name, data.value.openai.base_url)
+      return {
+        name,
+        thinking_preset: preset.value,
+        thinking_params: cloneDeep(preset.params) ?? {},
+      }
+    })
+
+    if (!names.includes(data.value.openai.model))
+      data.value.openai.model = names[0] ?? ''
+  },
+})
+
+const defaultModelOptions = computed(() => chatModelNames.value.map(name => ({
+  label: name,
+  value: name,
+})))
+
+onScopeDispose(systemSettingsStore.registerTabSaver('openai', async () => {
+  try {
+    const r = await llm.save_chat_models(chatModels.value)
+    chatModels.value = r.models ?? []
+    return undefined
+  }
+  catch (err) {
+    return translateError(normalizeHttpError(err))
+  }
+}))
 
 const openai = computed(() => data.value?.openai)
 const {
@@ -330,16 +382,29 @@ watch(
       {{ $gettext('Models') }}
     </h3>
     <AFormItem
-      :label="$gettext('Model')"
-      :validate-status="errors?.openai?.model ? 'error' : ''"
-      :help="modelHelp"
+      :label="$gettext('Assistant models')"
+      :help="$gettext('The models to choose from in the assistant.')"
     >
       <LLMModelSelect
-        v-model:value="data.openai.model"
+        v-model:value="chatModelNames"
+        multiple
         :models="discoveredModels"
         :presets="selectedProviderPreset?.models"
         :loading="discoveryStatus === 'loading'"
-        :status="errors?.openai?.model ? 'error' : ''"
+        :placeholder="$gettext('Choose one or more models')"
+      />
+    </AFormItem>
+    <AFormItem
+      :label="$gettext('Default model')"
+      :validate-status="errors?.openai?.model ? 'error' : ''"
+      :help="modelHelp || $gettext('Used for new chats, chat titles and, unless set below, code completion.')"
+    >
+      <ASelect
+        v-model:value="data.openai.model"
+        :options="defaultModelOptions"
+        :disabled="!defaultModelOptions.length"
+        :placeholder="$gettext('Choose the assistant models first')"
+        class="max-w-100"
       />
       <div
         v-if="selectedModelCapabilities.length"
@@ -353,6 +418,13 @@ watch(
           {{ capability }}
         </ATag>
       </div>
+    </AFormItem>
+    <AFormItem
+      v-if="chatModels.length"
+      :label="$gettext('Thinking')"
+      :help="$gettext('How each model switches its thinking levels. Pick the convention of your provider, or edit the request fields.')"
+    >
+      <LLMChatModelThinking v-model:models="chatModels" />
     </AFormItem>
     <AFormItem
       :label="$gettext('Enable Code Completion')"

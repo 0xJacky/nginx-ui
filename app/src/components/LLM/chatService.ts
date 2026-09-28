@@ -55,6 +55,8 @@ export class ChatService {
     language?: string,
     nginxConfig?: string,
     osInfo?: string,
+    model?: string,
+    thinking?: string,
   ): Promise<ChatComplicationMessage> {
     // Reset buffer flags each time
     this.buffer = ''
@@ -82,6 +84,8 @@ export class ChatService {
         language,
         nginx_config: nginxConfig,
         os_info: osInfo,
+        model: model || undefined,
+        thinking: thinking || undefined,
       }),
     })
 

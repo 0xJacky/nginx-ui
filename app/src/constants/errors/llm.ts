@@ -6,4 +6,9 @@ export default {
   40104: () => $gettext('The endpoint returned an error: {0}'),
   40105: () => $gettext('Unable to reach the endpoint: {0}'),
   40106: () => $gettext('Enter the API token again to list models from a different endpoint'),
+  40201: () => $gettext('Model {0} is not enabled for the assistant'),
+  40202: () => $gettext('Thinking level {0} is not configured for model {1}'),
+  40203: () => $gettext('Model {0} is listed more than once'),
+  40204: () => $gettext('Unknown thinking preset: {0}'),
+  40205: () => $gettext('Unknown thinking level: {0}'),
 }

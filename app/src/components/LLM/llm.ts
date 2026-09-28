@@ -1,5 +1,8 @@
-import type { ChatComplicationMessage } from '@/api/llm'
+import type { ChatComplicationMessage, LLMChatModel } from '@/api/llm'
+import type { LLMThinkingLevel } from '@/constants/llm'
+import { useLocalStorage } from '@vueuse/core'
 import llm from '@/api/llm'
+import { LLM_THINKING_LEVELS } from '@/constants/llm'
 import { animationCoordinator } from './animationCoordinator'
 import { ChatService } from './chatService'
 import { useLLMSessionStore } from './sessionStore'
@@ -18,6 +21,33 @@ export const useLLMStore = defineStore('llm', () => {
   const streamingMessageIndex = ref(-1)
   const userScrolledUp = ref(false)
   const messageTypingCompleted = ref(false)
+
+  // The model and thinking level the next message is sent with. An empty
+  // value leaves the choice to the server: its default model, or the
+  // provider's default thinking.
+  const chatModels = ref<LLMChatModel[]>([])
+  const defaultModel = ref('')
+  const selectedModel = useLocalStorage('llm_chat_model', '')
+  const thinkingLevel = useLocalStorage<LLMThinkingLevel | ''>('llm_chat_thinking', '')
+
+  const activeModel = computed(() => chatModels.value.find(model => model.name === selectedModel.value)
+    ?? chatModels.value.find(model => model.name === defaultModel.value)
+    ?? chatModels.value[0])
+
+  const availableThinkingLevels = computed(() => LLM_THINKING_LEVELS.filter(
+    level => activeModel.value?.thinking_params?.[level],
+  ))
+
+  async function loadChatModels() {
+    try {
+      const r = await llm.get_chat_models()
+      chatModels.value = r.models ?? []
+      defaultModel.value = r.default_model
+    }
+    catch (error) {
+      console.error('Failed to load chat models:', error)
+    }
+  }
 
   // Getters
   const isEditing = computed(() => editingIdx.value !== -1)
@@ -353,6 +383,8 @@ export const useLLMStore = defineStore('llm', () => {
         language,
         nginxConfig.value,
         osInfo,
+        activeModel.value?.name,
+        availableThinkingLevels.value.includes(thinkingLevel.value as LLMThinkingLevel) ? thinkingLevel.value : '',
       )
 
       // Update the final content
@@ -513,6 +545,12 @@ export const useLLMStore = defineStore('llm', () => {
     userScrolledUp,
     messageTypingCompleted,
     assistantType,
+    chatModels,
+    defaultModel,
+    selectedModel,
+    thinkingLevel,
+    activeModel,
+    availableThinkingLevels,
 
     // Getters
     isEditing,
@@ -520,6 +558,7 @@ export const useLLMStore = defineStore('llm', () => {
     hasMessages,
 
     // Actions
+    loadChatModels,
     initMessages,
     setNginxConfig,
     switchSession,

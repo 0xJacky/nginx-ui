@@ -10,7 +10,6 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/llm"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/sashabaranov/go-openai"
 	"github.com/uozi-tech/cosy"
@@ -32,6 +31,8 @@ func MakeChatCompletionRequest(c *gin.Context) {
 		Language    string                         `json:"language,omitempty"`
 		NginxConfig string                         `json:"nginx_config,omitempty"` // Separate field for nginx configuration content
 		OSInfo      string                         `json:"os_info,omitempty"`      // Operating system information
+		Model       string                         `json:"model,omitempty"`        // Empty for the default model
+		Thinking    string                         `json:"thinking,omitempty"`     // Empty for the provider default
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -78,6 +79,18 @@ func MakeChatCompletionRequest(c *gin.Context) {
 	// SSE server
 	api.SetSSEHeaders(c)
 
+	modelName, extraBody, err := llm.ChatRequestOptions(json.Model, json.Thinking)
+	if err != nil {
+		c.Stream(func(w io.Writer) bool {
+			c.SSEvent("message", gin.H{
+				"type":    "error",
+				"content": err.Error(),
+			})
+			return false
+		})
+		return
+	}
+
 	openaiClient, err := llm.GetClient()
 	if err != nil {
 		c.Stream(func(w io.Writer) bool {
@@ -90,10 +103,10 @@ func MakeChatCompletionRequest(c *gin.Context) {
 		return
 	}
 
-	ctx := context.Background()
+	ctx := llm.WithExtraBody(context.Background(), extraBody)
 
 	req := openai.ChatCompletionRequest{
-		Model:    settings.OpenAISettings.Model,
+		Model:    modelName,
 		Messages: messages,
 		Stream:   true,
 	}
