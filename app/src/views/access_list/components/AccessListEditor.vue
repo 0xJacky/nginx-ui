@@ -270,7 +270,7 @@ async function save() {
               <span />
               <span>{{ $gettext('Action') }}</span>
               <span>{{ $gettext('Address or list') }}</span>
-              <span>{{ $gettext('Note') }}</span>
+              <span>{{ $pgettext('Access list rule', 'Note') }}</span>
               <span />
             </div>
             <Draggable
@@ -305,8 +305,8 @@ async function save() {
                   />
                   <AInput
                     v-model:value="rule.note"
-                    :placeholder="$gettext('Note')"
-                    :aria-label="$gettext('Note')"
+                    :placeholder="$pgettext('Access list rule', 'Note')"
+                    :aria-label="$pgettext('Access list rule', 'Note')"
                   />
                   <AButton
                     type="text"

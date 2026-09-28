@@ -96,12 +96,13 @@ msgstr ""
 
 #: src/components/AccessControl/BatchAccessModal.vue:66
 #: src/language/curd.ts:65
+#: src/views/preference/components/LLMChatModelThinking.vue:114
 msgid "Apply"
 msgstr ""
 
 #: src/components/AccessControl/BatchAccessModal.vue:67
 #: src/components/AccessControl/LocationAccessSelect.vue:101
-#: src/components/LLM/ChatMessage.vue:257
+#: src/components/LLM/ChatMessage.vue:263
 #: src/components/NgxConfigEditor/NgxServer.vue:76
 #: src/components/NgxConfigEditor/NgxUpstream.vue:43
 #: src/language/curd.ts:37
@@ -132,7 +133,8 @@ msgstr ""
 #: src/views/site/site_list/SiteList.vue:175
 #: src/views/stream/components/StreamStatusSelect.vue:62
 #: src/views/upstream/components/UpstreamEditor.vue:425
-#: src/views/upstream/UpstreamList.vue:133
+#: src/views/upstream/UpstreamList.vue:267
+#: src/views/upstream/UpstreamList.vue:300
 msgid "Cancel"
 msgstr ""
 
@@ -253,9 +255,6 @@ msgid "For IP-based certificate configurations, only HTTP-01 challenge method is
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:121
-#: src/views/access_list/components/AccessListEditor.vue:273
-#: src/views/access_list/components/AccessListEditor.vue:308
-#: src/views/access_list/components/AccessListEditor.vue:309
 #: src/views/dns/DNSCredential.vue:168
 #: src/views/dns/DNSCredential.vue:196
 msgid "Note"
@@ -507,8 +506,8 @@ msgstr ""
 #: src/views/stream/StreamList.vue:134
 #: src/views/system/Licenses.vue:13
 #: src/views/upstream/components/UpstreamEditor.vue:194
-#: src/views/upstream/UpstreamList.vue:33
-#: src/views/upstream/UpstreamList.vue:41
+#: src/views/upstream/UpstreamList.vue:56
+#: src/views/upstream/UpstreamList.vue:66
 msgid "Name"
 msgstr ""
 
@@ -658,7 +657,7 @@ msgstr ""
 #: src/views/site/site_list/columns.tsx:168
 #: src/views/stream/columns.tsx:127
 #: src/views/stream/components/StreamEditor.vue:65
-#: src/views/upstream/UpstreamList.vue:88
+#: src/views/upstream/UpstreamList.vue:146
 #: src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr ""
@@ -792,7 +791,7 @@ msgstr ""
 
 #: src/components/InspectConfig/InspectConfig.vue:195
 #: src/constants/index.ts:28
-#: src/views/backup/components/BackupCreator.vue:135
+#: src/views/backup/components/BackupCreator.vue:134
 #: src/views/notification/notificationColumns.tsx:40
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
 #: src/views/preference/components/NginxHostSetup/checks.ts:121
@@ -800,21 +799,21 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:227
+#: src/components/LLM/ChatMessage.vue:228
 msgid "Assistant"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:227
+#: src/components/LLM/ChatMessage.vue:228
 msgid "User"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:253
+#: src/components/LLM/ChatMessage.vue:259
 #: src/views/config/ConfigList.vue:203
 msgid "Modify"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:256
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:172
+#: src/components/LLM/ChatMessage.vue:262
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:176
 #: src/language/curd.ts:18
 #: src/views/access_list/components/AccessListEditor.vue:429
 #: src/views/certificate/components/CertificateActions.vue:29
@@ -825,7 +824,7 @@ msgstr ""
 #: src/views/dns/DNSCredential.vue:223
 #: src/views/dns/DNSRecordManager.vue:253
 #: src/views/preference/components/AuthSettings/Passkey.vue:132
-#: src/views/preference/Preference.vue:104
+#: src/views/preference/Preference.vue:105
 #: src/views/preference/tabs/NginxSettings.vue:318
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:83
@@ -836,17 +835,26 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: src/components/LLM/ChatMessage.vue:263
+#: src/components/LLM/ChatMessage.vue:269
 #: src/components/NginxControl/NginxControl.vue:199
 #: src/views/access_list/AccessListList.vue:96
-#: src/views/upstream/UpstreamList.vue:149
+#: src/views/upstream/UpstreamList.vue:398
 msgid "Reload"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:61
+#: src/components/LLM/ChatMessageInput.vue:99
+msgid "Model"
+msgstr ""
+
+#: src/components/LLM/ChatMessageInput.vue:110
+#: src/views/preference/tabs/OpenAISettings.vue:424
+msgid "Thinking"
+msgstr ""
+
+#: src/components/LLM/ChatMessageInput.vue:122
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:136
 #: src/components/NgxConfigEditor/LocationEditor.vue:101
 #: src/components/Notification/Notification.vue:115
 #: src/language/curd.ts:40
@@ -859,13 +867,13 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:62
+#: src/components/LLM/ChatMessageInput.vue:123
 #: src/components/NgxConfigEditor/NgxServer.vue:75
 #: src/components/NgxConfigEditor/NgxUpstream.vue:42
 #: src/components/Notification/Notification.vue:116
 #: src/language/curd.ts:15
 #: src/views/access_list/AccessListList.vue:70
-#: src/views/backup/components/BackupCreator.vue:146
+#: src/views/backup/components/BackupCreator.vue:145
 #: src/views/notification/Notification.vue:39
 #: src/views/preference/components/NginxHostSetup/checks.ts:119
 #: src/views/site/components/SiteStatusSelect.vue:136
@@ -874,27 +882,35 @@ msgstr ""
 #: src/views/site/site_list/SiteList.vue:270
 #: src/views/stream/components/StreamStatusSelect.vue:61
 #: src/views/stream/StreamList.vue:111
-#: src/views/upstream/UpstreamList.vue:123
+#: src/views/upstream/UpstreamList.vue:290
 msgid "OK"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:63
+#: src/components/LLM/ChatMessageInput.vue:124
 msgid "Are you sure you want to clear the record of chat?"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:67
+#: src/components/LLM/ChatMessageInput.vue:128
 #: src/components/Notification/Notification.vue:122
 #: src/views/notification/Notification.vue:45
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:565
 msgid "Clear"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:74
+#: src/components/LLM/ChatMessageInput.vue:135
 msgid "Regenerate response"
 msgstr ""
 
-#: src/components/LLM/ChatMessageInput.vue:81
+#: src/components/LLM/ChatMessageInput.vue:142
 msgid "Type your message here..."
+msgstr ""
+
+#: src/components/LLM/ChatMessageReasoning.vue:40
+msgid "Thinking..."
+msgstr ""
+
+#: src/components/LLM/ChatMessageReasoning.vue:40
+msgid "Thought process"
 msgstr ""
 
 #: src/components/LLM/LLM.vue:58
@@ -946,8 +962,8 @@ msgstr ""
 #: src/views/dns/DNSGroupList.vue:245
 #: src/views/site/site_list/SiteList.vue:280
 #: src/views/stream/StreamList.vue:121
-#: src/views/upstream/UpstreamList.vue:131
-#: src/views/upstream/UpstreamList.vue:277
+#: src/views/upstream/UpstreamList.vue:298
+#: src/views/upstream/UpstreamList.vue:347
 msgid "Delete"
 msgstr ""
 
@@ -994,7 +1010,7 @@ msgstr ""
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:140
 #: src/components/NamespaceTabs/NamespaceTabs.vue:152
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:131
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:135
 #: src/components/NgxConfigEditor/LocationEditor.vue:100
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
@@ -1021,7 +1037,7 @@ msgstr ""
 #: src/views/dashboard/Nodes.vue:112
 #: src/views/node/nodeColumns.tsx:149
 #: src/views/upstream/SocketList.vue:51
-#: src/views/upstream/UpstreamList.vue:93
+#: src/views/upstream/UpstreamList.vue:148
 msgid "Online"
 msgstr ""
 
@@ -1033,7 +1049,7 @@ msgstr ""
 #: src/views/dashboard/Nodes.vue:119
 #: src/views/node/nodeColumns.tsx:151
 #: src/views/upstream/SocketList.vue:51
-#: src/views/upstream/UpstreamList.vue:94
+#: src/views/upstream/UpstreamList.vue:150
 msgid "Offline"
 msgstr ""
 
@@ -1129,22 +1145,22 @@ msgstr ""
 msgid "Server name is controlled by linked DNS record"
 msgstr ""
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:130
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:134
 msgid "Are you sure you want to remove this directive?"
 msgstr ""
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:143
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:147
 msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr ""
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:158
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:162
 #: src/components/NgxConfigEditor/LocationEditor.vue:158
 #: src/components/NgxConfigEditor/LocationEditor.vue:204
 #: src/components/NgxConfigEditor/NgxServer.vue:145
 msgid "Comments"
 msgstr ""
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:163
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:167
 #: src/components/NgxConfigEditor/LocationEditor.vue:185
 #: src/components/NgxConfigEditor/LocationEditor.vue:225
 msgid "Content"
@@ -1237,6 +1253,7 @@ msgid "Nginx is not running"
 msgstr ""
 
 #: src/components/NgxConfigEditor/NgxConfigEditor.vue:41
+#: src/constants/llm.ts:205
 #: src/views/backup/AutoBackup/components/CronEditor.vue:22
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:130
 msgid "Custom"
@@ -1997,7 +2014,7 @@ msgstr ""
 
 #: src/components/SensitiveString/SensitiveInput.vue:96
 #: src/components/SensitiveString/SensitiveString.vue:107
-#: src/views/backup/components/BackupCreator.vue:125
+#: src/views/backup/components/BackupCreator.vue:124
 #: src/views/preference/components/NginxHostSetup/CodeBlock.vue:51
 #: src/views/preference/tabs/AccessTokens.vue:317
 #: src/views/preference/tabs/ExternalNotify.vue:103
@@ -2006,6 +2023,7 @@ msgstr ""
 
 #: src/components/SensitiveString/SensitiveInput.vue:99
 #: src/components/SensitiveString/SensitiveString.vue:109
+#: src/views/preference/components/LLMModelSelect.vue:176
 msgid "Hide"
 msgstr ""
 
@@ -2018,6 +2036,7 @@ msgstr ""
 
 #: src/components/SensitiveString/SensitiveInput.vue:99
 #: src/components/SensitiveString/SensitiveString.vue:109
+#: src/views/preference/components/LLMModelSelect.vue:176
 msgid "Show"
 msgstr ""
 
@@ -2255,12 +2274,14 @@ msgid "Synchronization finished with %{count} failures"
 msgstr ""
 
 #: src/composables/useGeoTranslation.ts:165
+#: src/constants/llm.ts:116
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:339
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:134
 msgid "High"
 msgstr ""
 
 #: src/composables/useGeoTranslation.ts:166
+#: src/constants/llm.ts:112
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:339
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:134
 msgid "Low"
@@ -2410,6 +2431,7 @@ msgstr ""
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:105
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:112
 #: src/views/upstream/SocketList.vue:27
+#: src/views/upstream/UpstreamList.vue:51
 msgid "Upstream"
 msgstr ""
 
@@ -3309,6 +3331,50 @@ msgstr ""
 msgid "Code completion is not enabled"
 msgstr ""
 
+#: src/constants/errors/llm.ts:3
+msgid "The provider rejected the API token"
+msgstr ""
+
+#: src/constants/errors/llm.ts:4
+msgid "The endpoint does not provide a model list"
+msgstr ""
+
+#: src/constants/errors/llm.ts:5
+msgid "Timed out connecting to the endpoint"
+msgstr ""
+
+#: src/constants/errors/llm.ts:6
+msgid "The endpoint returned an error: {0}"
+msgstr ""
+
+#: src/constants/errors/llm.ts:7
+msgid "Unable to reach the endpoint: {0}"
+msgstr ""
+
+#: src/constants/errors/llm.ts:8
+msgid "Enter the API token again to list models from a different endpoint"
+msgstr ""
+
+#: src/constants/errors/llm.ts:9
+msgid "Model {0} is not enabled for the assistant"
+msgstr ""
+
+#: src/constants/errors/llm.ts:10
+msgid "Thinking level {0} is not configured for model {1}"
+msgstr ""
+
+#: src/constants/errors/llm.ts:11
+msgid "Model {0} is listed more than once"
+msgstr ""
+
+#: src/constants/errors/llm.ts:12
+msgid "Unknown thinking preset: {0}"
+msgstr ""
+
+#: src/constants/errors/llm.ts:13
+msgid "Unknown thinking level: {0}"
+msgstr ""
+
 #: src/constants/errors/middleware.ts:2
 msgid "Invalid request format"
 msgstr ""
@@ -3637,6 +3703,22 @@ msgstr ""
 msgid "Failed to verify external Nginx configuration directory {0}: {1}"
 msgstr ""
 
+#: src/constants/errors/settings.ts:2
+msgid "HTTP/2 requires HTTPS to be enabled"
+msgstr ""
+
+#: src/constants/errors/settings.ts:3
+msgid "HTTP/3 requires HTTPS to be enabled"
+msgstr ""
+
+#: src/constants/errors/settings.ts:4
+msgid "HTTP/3 cannot be enabled while Nginx UI listens on a Unix socket"
+msgstr ""
+
+#: src/constants/errors/settings.ts:5
+msgid "Unknown settings section: {0}"
+msgstr ""
+
 #: src/constants/errors/site.ts:2
 msgid "Site not found"
 msgstr ""
@@ -3855,6 +3937,18 @@ msgstr ""
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr ""
 
+#: src/constants/errors/upstream.ts:24
+msgid "An upstream name, a config file and a server address are required"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:25
+msgid "Upstream {0} is not defined in {1}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:26
+msgid "Server {0} was not found in upstream {1}"
+msgstr ""
+
 #: src/constants/errors/user.ts:2
 msgid "Password incorrect"
 msgstr ""
@@ -3984,6 +4078,27 @@ msgstr ""
 
 #: src/constants/index.ts:58
 msgid "Automatic"
+msgstr ""
+
+#: src/constants/llm.ts:110
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:73
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:164
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:381
+msgid "Off"
+msgstr ""
+
+#: src/constants/llm.ts:114
+msgid "Medium"
+msgstr ""
+
+#: src/constants/llm.ts:118
+#: src/views/dns/components/DNSRecordForm.vue:44
+#: src/views/dns/DNSGroupRecordManager.vue:760
+msgid "Default"
+msgstr ""
+
+#: src/constants/llm.ts:144
+msgid "No thinking control"
 msgstr ""
 
 #: src/language/constants.ts:2
@@ -4134,7 +4249,7 @@ msgstr ""
 #: src/views/dns/components/DNSRecordTable.vue:325
 #: src/views/dns/components/DNSRecordTable.vue:376
 #: src/views/preference/tabs/NginxSettings.vue:259
-#: src/views/upstream/UpstreamList.vue:268
+#: src/views/upstream/UpstreamList.vue:338
 msgid "Edit"
 msgstr ""
 
@@ -4221,7 +4336,7 @@ msgstr ""
 #: src/views/certificate/components/RenewCert.vue:21
 #: src/views/dns/DNSCredential.vue:79
 #: src/views/preference/NginxHostSetup.vue:84
-#: src/views/preference/store/index.ts:185
+#: src/views/preference/store/index.ts:272
 #: src/views/preference/tabs/NginxSettings.vue:138
 msgid "Save successfully"
 msgstr ""
@@ -4306,6 +4421,7 @@ msgstr ""
 #: src/views/dns/DNSGroupList.vue:181
 #: src/views/dns/DNSGroupRecordManager.vue:1276
 #: src/views/dns/DNSRecordManager.vue:203
+#: src/views/preference/tabs/OpenAISettings.vue:341
 msgid "Refresh"
 msgstr ""
 
@@ -4877,13 +4993,13 @@ msgstr ""
 
 #: src/routes/modules/dashboard.ts:28
 #: src/views/dashboard/index.vue:7
-#: src/views/preference/Preference.vue:58
+#: src/views/preference/Preference.vue:60
 msgid "Server"
 msgstr ""
 
 #: src/routes/modules/dashboard.ts:36
 #: src/views/dashboard/index.vue:12
-#: src/views/preference/Preference.vue:70
+#: src/views/preference/Preference.vue:72
 msgid "Nginx"
 msgstr ""
 
@@ -4961,7 +5077,7 @@ msgstr ""
 
 #: src/routes/modules/preference.ts:10
 #: src/views/home/Home.vue:122
-#: src/views/preference/Preference.vue:53
+#: src/views/preference/Preference.vue:55
 msgid "Preference"
 msgstr ""
 
@@ -5022,13 +5138,13 @@ msgstr ""
 
 #: src/routes/modules/terminal.ts:10
 #: src/views/home/Home.vue:137
-#: src/views/preference/Preference.vue:65
+#: src/views/preference/Preference.vue:67
 msgid "Terminal"
 msgstr ""
 
 #: src/routes/modules/upstream.ts:28
 #: src/views/upstream/index.vue:7
-#: src/views/upstream/UpstreamList.vue:144
+#: src/views/upstream/UpstreamList.vue:311
 msgid "Upstream Groups"
 msgstr ""
 
@@ -5102,7 +5218,7 @@ msgstr ""
 #: src/views/preference/components/ExternalNotify/labels.ts:7
 #: src/views/site/site_list/columns.tsx:182
 #: src/views/stream/columns.tsx:138
-#: src/views/upstream/UpstreamList.vue:37
+#: src/views/upstream/UpstreamList.vue:60
 #: src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr ""
@@ -5159,7 +5275,7 @@ msgid "Allow"
 msgstr ""
 
 #: src/views/access_list/AccessListList.vue:170
-#: src/views/upstream/UpstreamList.vue:256
+#: src/views/upstream/UpstreamList.vue:521
 msgid "Not used"
 msgstr ""
 
@@ -5173,10 +5289,12 @@ msgid "Deny (403)"
 msgstr ""
 
 #: src/views/access_list/components/AccessListEditor.vue:198
+#: src/views/upstream/UpstreamList.vue:169
 msgid "Site"
 msgstr ""
 
 #: src/views/access_list/components/AccessListEditor.vue:198
+#: src/views/upstream/UpstreamList.vue:170
 msgid "Stream"
 msgstr ""
 
@@ -5217,6 +5335,13 @@ msgstr ""
 #: src/views/access_list/components/AccessListEditor.vue:296
 #: src/views/access_list/components/AccessListEditor.vue:303
 msgid "Address or list"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:273
+#: src/views/access_list/components/AccessListEditor.vue:308
+#: src/views/access_list/components/AccessListEditor.vue:309
+msgctxt "Access list rule"
+msgid "Note"
 msgstr ""
 
 #: src/views/access_list/components/AccessListEditor.vue:295
@@ -5564,15 +5689,15 @@ msgstr ""
 msgid "Security Token Information"
 msgstr ""
 
-#: src/views/backup/components/BackupCreator.vue:104
+#: src/views/backup/components/BackupCreator.vue:103
 msgid "Please save this security token, you will need it for restoration:"
 msgstr ""
 
-#: src/views/backup/components/BackupCreator.vue:125
+#: src/views/backup/components/BackupCreator.vue:124
 msgid "Copied!"
 msgstr ""
 
-#: src/views/backup/components/BackupCreator.vue:138
+#: src/views/backup/components/BackupCreator.vue:137
 msgid "This token will only be shown once and cannot be retrieved later. Please make sure to save it in a secure location."
 msgstr ""
 
@@ -6065,6 +6190,7 @@ msgstr ""
 #: src/views/certificate/components/RetryCert.vue:53
 #: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:103
 #: src/views/preference/NginxHostSetup.vue:144
+#: src/views/preference/tabs/OpenAISettings.vue:341
 #: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:276
 #: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:775
 msgid "Retry"
@@ -6465,12 +6591,6 @@ msgstr ""
 msgid "On"
 msgstr ""
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:73
-#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:164
-#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:381
-msgid "Off"
-msgstr ""
-
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:80
 msgid "GZIP Min Length"
 msgstr ""
@@ -6547,7 +6667,7 @@ msgstr ""
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:146
 #: src/views/upstream/components/UpstreamEditor.vue:324
 #: src/views/upstream/components/UpstreamEditor.vue:334
-#: src/views/upstream/UpstreamList.vue:204
+#: src/views/upstream/UpstreamList.vue:491
 msgid "Shared Memory Zone"
 msgstr ""
 
@@ -7327,11 +7447,6 @@ msgstr ""
 msgid "Host, e.g. @ or www"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordForm.vue:44
-#: src/views/dns/DNSGroupRecordManager.vue:760
-msgid "Default"
-msgstr ""
-
 #: src/views/dns/components/DNSRecordForm.vue:92
 msgid "Use @ for root"
 msgstr ""
@@ -7449,7 +7564,7 @@ msgstr ""
 #: src/views/dns/DNSCredential.vue:102
 #: src/views/dns/DNSDomainList.vue:227
 #: src/views/dns/DNSDomainList.vue:248
-#: src/views/preference/tabs/OpenAISettings.vue:137
+#: src/views/preference/tabs/OpenAISettings.vue:258
 msgid "Provider"
 msgstr ""
 
@@ -8773,6 +8888,7 @@ msgstr ""
 #: src/views/nginx_log/NginxLogList.vue:419
 #: src/views/site/site_list/SiteList.vue:159
 #: src/views/site/site_list/SiteList.vue:318
+#: src/views/upstream/UpstreamList.vue:265
 msgid "Disable"
 msgstr ""
 
@@ -9609,6 +9725,7 @@ msgid "Language"
 msgstr ""
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:71
+#: src/views/upstream/UpstreamList.vue:171
 msgid "Config"
 msgstr ""
 
@@ -9847,6 +9964,70 @@ msgstr ""
 #: src/views/preference/components/ExternalNotify/wecom.ts:5
 msgid "WeCom"
 msgstr ""
+
+#: src/views/preference/components/LLMChatModelThinking.vue:55
+msgid "Enter a JSON object, such as {\"reasoning_effort\": \"high\"}"
+msgstr ""
+
+#: src/views/preference/components/LLMChatModelThinking.vue:60
+msgid "This is not valid JSON"
+msgstr ""
+
+#: src/views/preference/components/LLMChatModelThinking.vue:106
+msgid "Set request fields"
+msgstr ""
+
+#: src/views/preference/components/LLMChatModelThinking.vue:113
+msgid "Thinking levels of %{model}"
+msgstr ""
+
+#: src/views/preference/components/LLMChatModelThinking.vue:120
+msgid "Each level adds these fields to the chat request body, like extra_body in the OpenAI SDK. Leave a level empty to hide it in the assistant."
+msgstr ""
+
+#: src/views/preference/components/LLMModelSelect.vue:61
+msgid "Custom model"
+msgstr ""
+
+#: src/views/preference/components/LLMModelSelect.vue:69
+msgid "Chat models from the endpoint (%{count})"
+msgstr ""
+
+#: src/views/preference/components/LLMModelSelect.vue:76
+msgid "Other models (embedding, audio, image)"
+msgstr ""
+
+#: src/views/preference/components/LLMModelSelect.vue:84
+msgid "Presets"
+msgstr ""
+
+#: src/views/preference/components/LLMModelSelect.vue:133
+msgid "Fetching models..."
+msgstr ""
+
+#: src/views/preference/components/LLMModelSelect.vue:133
+msgid "Type a model name to use it"
+msgstr ""
+
+#: src/views/preference/components/LLMModelSelect.vue:143
+msgid "Use custom model \"%{model}\""
+msgstr ""
+
+#: src/views/preference/components/LLMModelSelect.vue:154
+msgid "%{size} context"
+msgstr ""
+
+#: src/views/preference/components/LLMModelSelect.vue:167
+msgid "Showing %{count} non-chat model"
+msgid_plural "Showing %{count} non-chat models"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/views/preference/components/LLMModelSelect.vue:168
+msgid "%{count} non-chat model hidden"
+msgid_plural "%{count} non-chat models hidden"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/views/preference/components/NginxHostSetup/CheckPanel.vue:77
 #: src/views/system/Upgrade.vue:278
@@ -10856,6 +11037,10 @@ msgstr ""
 msgid "Save configuration"
 msgstr ""
 
+#: src/views/preference/composables/useLLMModelDiscovery.ts:92
+msgid "Check the format of the API Base Url and API Proxy."
+msgstr ""
+
 #: src/views/preference/NginxHostSetup.vue:51
 msgid "Failed to load settings"
 msgstr ""
@@ -10896,52 +11081,56 @@ msgstr ""
 msgid "Unable to open SSH setup"
 msgstr ""
 
-#: src/views/preference/Preference.vue:59
+#: src/views/preference/Preference.vue:61
 msgid "App"
 msgstr ""
 
-#: src/views/preference/Preference.vue:60
+#: src/views/preference/Preference.vue:62
 #: src/views/preference/tabs/ExternalNotify.vue:84
 msgid "External Notify"
 msgstr ""
 
-#: src/views/preference/Preference.vue:61
+#: src/views/preference/Preference.vue:63
 #: src/views/upstream/SocketList.vue:66
 msgid "Health Check"
 msgstr ""
 
-#: src/views/preference/Preference.vue:62
+#: src/views/preference/Preference.vue:64
 msgid "Node"
 msgstr ""
 
-#: src/views/preference/Preference.vue:63
+#: src/views/preference/Preference.vue:65
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:22
 msgid "HTTP"
 msgstr ""
 
-#: src/views/preference/Preference.vue:67
+#: src/views/preference/Preference.vue:69
 msgid "Auth"
 msgstr ""
 
-#: src/views/preference/Preference.vue:68
+#: src/views/preference/Preference.vue:70
 #: src/views/preference/tabs/AccessTokens.vue:163
 msgid "Access Tokens"
 msgstr ""
 
-#: src/views/preference/Preference.vue:69
+#: src/views/preference/Preference.vue:71
 msgid "Cert"
 msgstr ""
 
-#: src/views/preference/Preference.vue:71
+#: src/views/preference/Preference.vue:73
 msgid "LLM"
 msgstr ""
 
-#: src/views/preference/Preference.vue:72
+#: src/views/preference/Preference.vue:74
 msgid "Logrotate"
 msgstr ""
 
-#: src/views/preference/Preference.vue:73
+#: src/views/preference/Preference.vue:75
 msgid "GeoLite"
+msgstr ""
+
+#: src/views/preference/store/index.ts:206
+msgid "Invalid settings: %{fields}"
 msgstr ""
 
 #: src/views/preference/tabs/AccessTokens.vue:27
@@ -11430,122 +11619,169 @@ msgstr ""
 msgid "The Public Security Number should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:48
-msgid "Global"
+#: src/views/preference/tabs/OpenAISettings.vue:76
+msgid "Enter the API token to list the available models"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:51
-msgid "China"
+#: src/views/preference/tabs/OpenAISettings.vue:78
+msgid "Fetching the model list..."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:58
-msgid "Always on"
+#: src/views/preference/tabs/OpenAISettings.vue:82
+msgid "Connected, %{count} model available"
+msgid_plural "Connected, %{count} models available"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:93
+msgid "Type the model name below instead."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:69
-msgid "Input"
-msgstr ""
-
-#: src/views/preference/tabs/OpenAISettings.vue:91
-msgid "Leave blank to use the MiniMax global OpenAI-compatible endpoint: https://api.minimax.io/v1"
-msgstr ""
-
-#: src/views/preference/tabs/OpenAISettings.vue:94
-msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
-msgstr ""
-
-#: src/views/preference/tabs/OpenAISettings.vue:96
-msgid "Leave blank for the default: https://api.openai.com/"
-msgstr ""
-
-#: src/views/preference/tabs/OpenAISettings.vue:101
-#: src/views/preference/tabs/OpenAISettings.vue:232
-msgid "The url is invalid."
-msgstr ""
-
-#: src/views/preference/tabs/OpenAISettings.vue:104
-msgid "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global service or https://api.minimaxi.com/v1 for China service. For Anthropic-compatible clients, use https://api.minimax.io/anthropic or https://api.minimaxi.com/anthropic."
-msgstr ""
-
-#: src/views/preference/tabs/OpenAISettings.vue:108
-msgid "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an Atlas Cloud API key."
-msgstr ""
-
-#: src/views/preference/tabs/OpenAISettings.vue:111
-msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
-msgstr ""
-
-#: src/views/preference/tabs/OpenAISettings.vue:147
-msgid "Model"
-msgstr ""
-
-#: src/views/preference/tabs/OpenAISettings.vue:150
-#: src/views/preference/tabs/OpenAISettings.vue:272
+#: src/views/preference/tabs/OpenAISettings.vue:116
+#: src/views/preference/tabs/OpenAISettings.vue:439
 msgid "The model name should only contain letters, unicode, numbers, hyphens, dashes, colons, and dots."
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:166
-msgid "Model capabilities"
-msgstr ""
-
-#: src/views/preference/tabs/OpenAISettings.vue:170
+#: src/views/preference/tabs/OpenAISettings.vue:153
 msgid "Context window"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:171
+#: src/views/preference/tabs/OpenAISettings.vue:153
 msgid "tokens"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:174
-msgid "Input modalities"
+#: src/views/preference/tabs/OpenAISettings.vue:166
+msgid "Global"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:178
-msgid "Thinking modes"
+#: src/views/preference/tabs/OpenAISettings.vue:169
+msgid "China"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:182
-msgid "Pricing per million tokens"
+#: src/views/preference/tabs/OpenAISettings.vue:176
+msgid "Always on"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:188
-msgid "API Base Url"
+#: src/views/preference/tabs/OpenAISettings.vue:187
+msgid "Input"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:207
-msgid "Regional endpoints"
+#: src/views/preference/tabs/OpenAISettings.vue:209
+msgid "Leave blank to use the MiniMax global OpenAI-compatible endpoint: https://api.minimax.io/v1"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:223
-msgid "Documentation"
+#: src/views/preference/tabs/OpenAISettings.vue:212
+msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:214
+msgid "Leave blank for the default: https://api.openai.com/"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:219
+#: src/views/preference/tabs/OpenAISettings.vue:361
+msgid "The url is invalid."
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:222
+msgid "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global service or https://api.minimaxi.com/v1 for China service. For Anthropic-compatible clients, use https://api.minimax.io/anthropic or https://api.minimaxi.com/anthropic."
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:226
+msgid "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an Atlas Cloud API key."
 msgstr ""
 
 #: src/views/preference/tabs/OpenAISettings.vue:229
-msgid "API Proxy"
+msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:241
+#: src/views/preference/tabs/OpenAISettings.vue:255
+msgid "Connection"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:268
+msgid "API Base Url"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:287
+msgid "Regional endpoints"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:303
+msgid "Documentation"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:309
 msgid "API Token"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:244
+#: src/views/preference/tabs/OpenAISettings.vue:312
 msgid "Token is not valid"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:253
+#: src/views/preference/tabs/OpenAISettings.vue:354
+#: src/views/site/site_add/SiteAdd.vue:402
+msgid "Advanced"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:358
+msgid "API Proxy"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:370
 msgid "API Type"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:263
+#: src/views/preference/tabs/OpenAISettings.vue:382
+msgid "Models"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:385
+msgid "Assistant models"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:386
+msgid "The models to choose from in the assistant."
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:394
+msgid "Choose one or more models"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:398
+msgid "Default model"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:400
+msgid "Used for new chats, chat titles and, unless set below, code completion."
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:406
+msgid "Choose the assistant models first"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:425
+msgid "How each model switches its thinking levels. Pick the convention of your provider, or edit the request fields."
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:430
 msgid "Enable Code Completion"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:269
+#: src/views/preference/tabs/OpenAISettings.vue:436
 msgid "Code Completion Model"
 msgstr ""
 
-#: src/views/preference/tabs/OpenAISettings.vue:273
+#: src/views/preference/tabs/OpenAISettings.vue:440
 msgid "The model used for code completion, if not set, the chat model will be used."
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:448
+msgid "Same as the chat model (%{model})"
+msgstr ""
+
+#: src/views/preference/tabs/OpenAISettings.vue:449
+msgid "Same as the chat model"
 msgstr ""
 
 #: src/views/preference/tabs/ServerSettings.vue:27
@@ -11943,10 +12179,6 @@ msgstr ""
 #: src/views/site/site_edit/components/QuickSetupModal.vue:139
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:164
 msgid "Quick Setup"
-msgstr ""
-
-#: src/views/site/site_add/SiteAdd.vue:402
-msgid "Advanced"
 msgstr ""
 
 #: src/views/site/site_add/SiteAdd.vue:414
@@ -12703,7 +12935,7 @@ msgid "Edit Upstream %{name}"
 msgstr ""
 
 #: src/views/upstream/components/UpstreamEditor.vue:186
-#: src/views/upstream/UpstreamList.vue:164
+#: src/views/upstream/UpstreamList.vue:413
 msgid "Create Upstream"
 msgstr ""
 
@@ -12724,8 +12956,8 @@ msgid "Consistent Hashing"
 msgstr ""
 
 #: src/views/upstream/components/UpstreamEditor.vue:238
-#: src/views/upstream/UpstreamList.vue:35
-#: src/views/upstream/UpstreamList.vue:43
+#: src/views/upstream/UpstreamList.vue:58
+#: src/views/upstream/UpstreamList.vue:67
 msgid "Servers"
 msgstr ""
 
@@ -12777,7 +13009,7 @@ msgid "One directive per line, for example keepalive_timeout or keepalive_reques
 msgstr ""
 
 #: src/views/upstream/components/UpstreamEditor.vue:379
-#: src/views/upstream/UpstreamList.vue:36
+#: src/views/upstream/UpstreamList.vue:59
 msgid "Referenced By"
 msgstr ""
 
@@ -12787,6 +13019,14 @@ msgstr ""
 
 #: src/views/upstream/components/UpstreamEditor.vue:402
 msgid "Configuration Preview"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamServerLine.vue:20
+msgid "Enable server %{address}"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamServerLine.vue:21
+msgid "Disable server %{address}"
 msgstr ""
 
 #: src/views/upstream/index.vue:8
@@ -12810,7 +13050,7 @@ msgid "Health Status"
 msgstr ""
 
 #: src/views/upstream/SocketList.vue:47
-#: src/views/upstream/UpstreamList.vue:91
+#: src/views/upstream/UpstreamList.vue:152
 msgid "No Data"
 msgstr ""
 
@@ -12826,68 +13066,104 @@ msgstr ""
 msgid "Per-target selections are preserved. Resume probes from Health Check preferences."
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:25
+#: src/views/upstream/UpstreamList.vue:39
 msgid "Round Robin"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:26
+#: src/views/upstream/UpstreamList.vue:40
 msgid "Least Connections"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:27
+#: src/views/upstream/UpstreamList.vue:41
 msgid "IP Hash"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:28
+#: src/views/upstream/UpstreamList.vue:42
 msgid "Hash"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:29
+#: src/views/upstream/UpstreamList.vue:43
 msgid "Random"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:34
+#: src/views/upstream/UpstreamList.vue:57
 msgid "Load Balancing"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:47
+#: src/views/upstream/UpstreamList.vue:68
 msgid "Defined In"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:118
+#: src/views/upstream/UpstreamList.vue:96
+msgid "Matched upstreams: %{groups}, servers: %{servers}"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:168
+msgid "Upstream Group"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:247
+msgid "Server %{address} enabled"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:248
+msgid "Server %{address} disabled"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:263
+msgid "Disable the last active server of %{name}?"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:264
+msgid "No other primary server of this upstream is enabled. Requests will fail unless a backup server takes over."
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:285
 msgid "Upstream %{name} is still in use"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:120
+#: src/views/upstream/UpstreamList.vue:287
 msgid "Point these configurations at another upstream before deleting it:"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:129
+#: src/views/upstream/UpstreamList.vue:296
 msgid "Delete upstream %{name}?"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:130
+#: src/views/upstream/UpstreamList.vue:297
 msgid "%{path} will be removed and Nginx reloaded."
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:136
+#: src/views/upstream/UpstreamList.vue:303
 msgid "Upstream %{name} deleted"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:170
+#: src/views/upstream/UpstreamList.vue:419
 msgid "An upstream group shares its servers and load balancing method across sites. Choose it as the proxy target when setting up a site; later changes here apply to every site that uses it."
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:172
+#: src/views/upstream/UpstreamList.vue:421
 msgid "Files are stored in %{dir}."
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:286
+#: src/views/upstream/UpstreamList.vue:435
+msgid "Search by name or IP:port"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:436
+msgid "Search upstreams by name or server address"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:456
+msgid "No upstream group matches the search"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:533
 msgid "Upstreams Defined in Other Files"
 msgstr ""
 
-#: src/views/upstream/UpstreamList.vue:289
-msgid "These upstream blocks live inside site or other configuration files. Edit them in their own file."
+#: src/views/upstream/UpstreamList.vue:536
+msgid "These upstream blocks live inside site or other configuration files. Edit their settings in their own file; servers can be switched on and off here."
 msgstr ""
 
 #: src/views/user/userColumns.tsx:30

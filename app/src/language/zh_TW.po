@@ -112,12 +112,13 @@ msgid "Set access for selected streams"
 msgstr "為選取的串流設定存取權限"
 
 #: src/components/AccessControl/BatchAccessModal.vue:66 src/language/curd.ts:65
+#: src/views/preference/components/LLMChatModelThinking.vue:114
 msgid "Apply"
 msgstr "應用"
 
 #: src/components/AccessControl/BatchAccessModal.vue:67
 #: src/components/AccessControl/LocationAccessSelect.vue:101
-#: src/components/LLM/ChatMessage.vue:257
+#: src/components/LLM/ChatMessage.vue:263
 #: src/components/NgxConfigEditor/NgxServer.vue:76
 #: src/components/NgxConfigEditor/NgxUpstream.vue:43 src/language/curd.ts:37
 #: src/views/access_list/AccessListList.vue:80
@@ -146,7 +147,8 @@ msgstr "應用"
 #: src/views/site/site_list/SiteList.vue:175
 #: src/views/stream/components/StreamStatusSelect.vue:62
 #: src/views/upstream/components/UpstreamEditor.vue:425
-#: src/views/upstream/UpstreamList.vue:133
+#: src/views/upstream/UpstreamList.vue:267
+#: src/views/upstream/UpstreamList.vue:300
 msgid "Cancel"
 msgstr "取消"
 
@@ -204,8 +206,7 @@ msgstr "公開，與伺服器相同。"
 
 #: src/components/AccessControl/LocationAccessSelect.vue:89
 #: src/views/site/site_list/columns.tsx:134
-#: src/views/site/site_list/SiteList.vue:334
-#: src/views/stream/columns.tsx:89
+#: src/views/site/site_list/SiteList.vue:334 src/views/stream/columns.tsx:89
 #: src/views/stream/StreamList.vue:154
 msgid "Access"
 msgstr "存取"
@@ -283,9 +284,6 @@ msgid ""
 msgstr "對於基於 IP 的憑證設定，僅支援 HTTP-01 驗證方式。DNS-01 驗證不適用於基於 IP 的憑證。"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:121
-#: src/views/access_list/components/AccessListEditor.vue:273
-#: src/views/access_list/components/AccessListEditor.vue:308
-#: src/views/access_list/components/AccessListEditor.vue:309
 #: src/views/dns/DNSCredential.vue:168 src/views/dns/DNSCredential.vue:196
 msgid "Note"
 msgstr "備註"
@@ -547,8 +545,8 @@ msgstr "名稱：%{name}"
 #: src/views/stream/components/StreamDuplicate.vue:76
 #: src/views/stream/StreamList.vue:134 src/views/system/Licenses.vue:13
 #: src/views/upstream/components/UpstreamEditor.vue:194
-#: src/views/upstream/UpstreamList.vue:33
-#: src/views/upstream/UpstreamList.vue:41
+#: src/views/upstream/UpstreamList.vue:56
+#: src/views/upstream/UpstreamList.vue:66
 msgid "Name"
 msgstr "名稱"
 
@@ -692,7 +690,7 @@ msgstr "已啟用"
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:136
 #: src/views/site/site_list/columns.tsx:168 src/views/stream/columns.tsx:127
 #: src/views/stream/components/StreamEditor.vue:65
-#: src/views/upstream/UpstreamList.vue:88 src/views/user/userColumns.tsx:39
+#: src/views/upstream/UpstreamList.vue:146 src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "停用"
 
@@ -830,7 +828,7 @@ msgid "Configuration file is test successful"
 msgstr "設定檔案測試成功"
 
 #: src/components/InspectConfig/InspectConfig.vue:195 src/constants/index.ts:28
-#: src/views/backup/components/BackupCreator.vue:135
+#: src/views/backup/components/BackupCreator.vue:134
 #: src/views/notification/notificationColumns.tsx:40
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
 #: src/views/preference/components/NginxHostSetup/checks.ts:121
@@ -838,20 +836,20 @@ msgstr "設定檔案測試成功"
 msgid "Warning"
 msgstr "警告"
 
-#: src/components/LLM/ChatMessage.vue:227
+#: src/components/LLM/ChatMessage.vue:228
 msgid "Assistant"
 msgstr "助理"
 
-#: src/components/LLM/ChatMessage.vue:227
+#: src/components/LLM/ChatMessage.vue:228
 msgid "User"
 msgstr "使用者名稱"
 
-#: src/components/LLM/ChatMessage.vue:253 src/views/config/ConfigList.vue:203
+#: src/components/LLM/ChatMessage.vue:259 src/views/config/ConfigList.vue:203
 msgid "Modify"
 msgstr "修改"
 
-#: src/components/LLM/ChatMessage.vue:256
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:172
+#: src/components/LLM/ChatMessage.vue:262
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:176
 #: src/language/curd.ts:18
 #: src/views/access_list/components/AccessListEditor.vue:429
 #: src/views/certificate/components/CertificateActions.vue:29
@@ -861,7 +859,7 @@ msgstr "修改"
 #: src/views/dns/DDNSManager.vue:477 src/views/dns/DNSCredential.vue:223
 #: src/views/dns/DNSRecordManager.vue:253
 #: src/views/preference/components/AuthSettings/Passkey.vue:132
-#: src/views/preference/Preference.vue:104
+#: src/views/preference/Preference.vue:105
 #: src/views/preference/tabs/NginxSettings.vue:318
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:83
@@ -872,17 +870,26 @@ msgstr "修改"
 msgid "Save"
 msgstr "儲存"
 
-#: src/components/LLM/ChatMessage.vue:263
+#: src/components/LLM/ChatMessage.vue:269
 #: src/components/NginxControl/NginxControl.vue:199
 #: src/views/access_list/AccessListList.vue:96
-#: src/views/upstream/UpstreamList.vue:149
+#: src/views/upstream/UpstreamList.vue:398
 msgid "Reload"
 msgstr "重新載入"
 
-#: src/components/LLM/ChatMessageInput.vue:61
+#: src/components/LLM/ChatMessageInput.vue:99
+msgid "Model"
+msgstr "模型"
+
+#: src/components/LLM/ChatMessageInput.vue:110
+#: src/views/preference/tabs/OpenAISettings.vue:424
+msgid "Thinking"
+msgstr "思考"
+
+#: src/components/LLM/ChatMessageInput.vue:122
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:136
 #: src/components/NgxConfigEditor/LocationEditor.vue:101
 #: src/components/Notification/Notification.vue:115 src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
@@ -894,12 +901,12 @@ msgstr "重新載入"
 msgid "No"
 msgstr "取消"
 
-#: src/components/LLM/ChatMessageInput.vue:62
+#: src/components/LLM/ChatMessageInput.vue:123
 #: src/components/NgxConfigEditor/NgxServer.vue:75
 #: src/components/NgxConfigEditor/NgxUpstream.vue:42
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
 #: src/views/access_list/AccessListList.vue:70
-#: src/views/backup/components/BackupCreator.vue:146
+#: src/views/backup/components/BackupCreator.vue:145
 #: src/views/notification/Notification.vue:39
 #: src/views/preference/components/NginxHostSetup/checks.ts:119
 #: src/views/site/components/SiteStatusSelect.vue:136
@@ -907,28 +914,36 @@ msgstr "取消"
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:26
 #: src/views/site/site_list/SiteList.vue:270
 #: src/views/stream/components/StreamStatusSelect.vue:61
-#: src/views/stream/StreamList.vue:111 src/views/upstream/UpstreamList.vue:123
+#: src/views/stream/StreamList.vue:111 src/views/upstream/UpstreamList.vue:290
 msgid "OK"
 msgstr "確定"
 
-#: src/components/LLM/ChatMessageInput.vue:63
+#: src/components/LLM/ChatMessageInput.vue:124
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "您確定要清除聊天記錄嗎？"
 
-#: src/components/LLM/ChatMessageInput.vue:67
+#: src/components/LLM/ChatMessageInput.vue:128
 #: src/components/Notification/Notification.vue:122
 #: src/views/notification/Notification.vue:45
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:565
 msgid "Clear"
 msgstr "清除"
 
-#: src/components/LLM/ChatMessageInput.vue:74
+#: src/components/LLM/ChatMessageInput.vue:135
 msgid "Regenerate response"
 msgstr "重新產生回應"
 
-#: src/components/LLM/ChatMessageInput.vue:81
+#: src/components/LLM/ChatMessageInput.vue:142
 msgid "Type your message here..."
 msgstr "在此輸入您的訊息..."
+
+#: src/components/LLM/ChatMessageReasoning.vue:40
+msgid "Thinking..."
+msgstr "思考中..."
+
+#: src/components/LLM/ChatMessageReasoning.vue:40
+msgid "Thought process"
+msgstr "思考過程"
 
 #: src/components/LLM/LLM.vue:58
 msgid "New Chat"
@@ -976,8 +991,8 @@ msgstr "複製"
 #: src/views/dns/components/DNSRecordTable.vue:383
 #: src/views/dns/DDNSManager.vue:399 src/views/dns/DNSGroupList.vue:245
 #: src/views/site/site_list/SiteList.vue:280
-#: src/views/stream/StreamList.vue:121 src/views/upstream/UpstreamList.vue:131
-#: src/views/upstream/UpstreamList.vue:277
+#: src/views/stream/StreamList.vue:121 src/views/upstream/UpstreamList.vue:298
+#: src/views/upstream/UpstreamList.vue:347
 msgid "Delete"
 msgstr "刪除"
 
@@ -1021,7 +1036,7 @@ msgstr "您確定要在以下同步節點上重新載入 Nginx 嗎？"
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:140
 #: src/components/NamespaceTabs/NamespaceTabs.vue:152
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:131
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:135
 #: src/components/NgxConfigEditor/LocationEditor.vue:100
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
@@ -1045,7 +1060,7 @@ msgstr "重新啟動 Nginx"
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:112 src/views/node/nodeColumns.tsx:149
-#: src/views/upstream/SocketList.vue:51 src/views/upstream/UpstreamList.vue:93
+#: src/views/upstream/SocketList.vue:51 src/views/upstream/UpstreamList.vue:148
 msgid "Online"
 msgstr "線上"
 
@@ -1055,7 +1070,7 @@ msgstr "線上"
 #: src/components/NodeSwitcher/NodeSwitcher.vue:53
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:119 src/views/node/nodeColumns.tsx:151
-#: src/views/upstream/SocketList.vue:51 src/views/upstream/UpstreamList.vue:94
+#: src/views/upstream/SocketList.vue:51 src/views/upstream/UpstreamList.vue:150
 msgid "Offline"
 msgstr "離線"
 
@@ -1149,22 +1164,22 @@ msgstr "儲存成功"
 msgid "Server name is controlled by linked DNS record"
 msgstr "伺服器名稱由關聯的 DNS 記錄控制"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:130
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:134
 msgid "Are you sure you want to remove this directive?"
 msgstr "您確定要刪除這條指令嗎？"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:143
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:147
 msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr "DNS 連結時無法刪除 server_name。請先清除 DNS 連結。"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:158
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:162
 #: src/components/NgxConfigEditor/LocationEditor.vue:158
 #: src/components/NgxConfigEditor/LocationEditor.vue:204
 #: src/components/NgxConfigEditor/NgxServer.vue:145
 msgid "Comments"
 msgstr "備註"
 
-#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:163
+#: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:167
 #: src/components/NgxConfigEditor/LocationEditor.vue:185
 #: src/components/NgxConfigEditor/LocationEditor.vue:225
 msgid "Content"
@@ -1258,6 +1273,7 @@ msgid "Nginx is not running"
 msgstr "Nginx 未執行"
 
 #: src/components/NgxConfigEditor/NgxConfigEditor.vue:41
+#: src/constants/llm.ts:205
 #: src/views/backup/AutoBackup/components/CronEditor.vue:22
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:130
 msgid "Custom"
@@ -2016,7 +2032,7 @@ msgstr "已複製"
 
 #: src/components/SensitiveString/SensitiveInput.vue:96
 #: src/components/SensitiveString/SensitiveString.vue:107
-#: src/views/backup/components/BackupCreator.vue:125
+#: src/views/backup/components/BackupCreator.vue:124
 #: src/views/preference/components/NginxHostSetup/CodeBlock.vue:51
 #: src/views/preference/tabs/AccessTokens.vue:317
 #: src/views/preference/tabs/ExternalNotify.vue:103
@@ -2025,6 +2041,7 @@ msgstr "複製"
 
 #: src/components/SensitiveString/SensitiveInput.vue:99
 #: src/components/SensitiveString/SensitiveString.vue:109
+#: src/views/preference/components/LLMModelSelect.vue:176
 msgid "Hide"
 msgstr "隱藏"
 
@@ -2037,6 +2054,7 @@ msgstr "載入中..."
 
 #: src/components/SensitiveString/SensitiveInput.vue:99
 #: src/components/SensitiveString/SensitiveString.vue:109
+#: src/views/preference/components/LLMModelSelect.vue:176
 msgid "Show"
 msgstr "顯示"
 
@@ -2289,13 +2307,13 @@ msgstr "已成功同步 %{count} 項"
 msgid "Synchronization finished with %{count} failures"
 msgstr "同步完成，其中 %{count} 項失敗"
 
-#: src/composables/useGeoTranslation.ts:165
+#: src/composables/useGeoTranslation.ts:165 src/constants/llm.ts:116
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:339
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:134
 msgid "High"
 msgstr "高"
 
-#: src/composables/useGeoTranslation.ts:166
+#: src/composables/useGeoTranslation.ts:166 src/constants/llm.ts:112
 #: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:339
 #: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:134
 msgid "Low"
@@ -2442,7 +2460,7 @@ msgstr "類型"
 #: src/routes/modules/upstream.ts:19 src/views/home/Home.vue:80
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:105
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:112
-#: src/views/upstream/SocketList.vue:27
+#: src/views/upstream/SocketList.vue:27 src/views/upstream/UpstreamList.vue:51
 msgid "Upstream"
 msgstr "上游"
 
@@ -3349,6 +3367,50 @@ msgstr "主機金鑰演算法不相符：預期 {0}，實際為 {1}"
 msgid "Code completion is not enabled"
 msgstr "程式碼補全未啟用"
 
+#: src/constants/errors/llm.ts:3
+msgid "The provider rejected the API token"
+msgstr "提供者拒絕了 API 令牌"
+
+#: src/constants/errors/llm.ts:4
+msgid "The endpoint does not provide a model list"
+msgstr "該端點未提供模型列表"
+
+#: src/constants/errors/llm.ts:5
+msgid "Timed out connecting to the endpoint"
+msgstr "連線端點逾時"
+
+#: src/constants/errors/llm.ts:6
+msgid "The endpoint returned an error: {0}"
+msgstr "端點回傳了一個錯誤：{0}"
+
+#: src/constants/errors/llm.ts:7
+msgid "Unable to reach the endpoint: {0}"
+msgstr "無法連接到端點：{0}"
+
+#: src/constants/errors/llm.ts:8
+msgid "Enter the API token again to list models from a different endpoint"
+msgstr "重新輸入 API token 以列出不同端點的模型"
+
+#: src/constants/errors/llm.ts:9
+msgid "Model {0} is not enabled for the assistant"
+msgstr "模型 {0} 未為助手啟用"
+
+#: src/constants/errors/llm.ts:10
+msgid "Thinking level {0} is not configured for model {1}"
+msgstr "模型 {1} 未配置思考級別 {0}"
+
+#: src/constants/errors/llm.ts:11
+msgid "Model {0} is listed more than once"
+msgstr "模型 {0} 被重複列出"
+
+#: src/constants/errors/llm.ts:12
+msgid "Unknown thinking preset: {0}"
+msgstr "未知的思考預設：{0}"
+
+#: src/constants/errors/llm.ts:13
+msgid "Unknown thinking level: {0}"
+msgstr "未知的思考等級：{0}"
+
 #: src/constants/errors/middleware.ts:2
 msgid "Invalid request format"
 msgstr "無效的請求格式"
@@ -3689,6 +3751,22 @@ msgstr "Nginx 設定目錄未與位於 {0} 的外部容器共用"
 msgid "Failed to verify external Nginx configuration directory {0}: {1}"
 msgstr "驗證外部 Nginx 設定目錄 {0} 失敗：{1}"
 
+#: src/constants/errors/settings.ts:2
+msgid "HTTP/2 requires HTTPS to be enabled"
+msgstr "HTTP/2 需要啟用 HTTPS"
+
+#: src/constants/errors/settings.ts:3
+msgid "HTTP/3 requires HTTPS to be enabled"
+msgstr "HTTP/3 需要啟用 HTTPS"
+
+#: src/constants/errors/settings.ts:4
+msgid "HTTP/3 cannot be enabled while Nginx UI listens on a Unix socket"
+msgstr "當 Nginx UI 監聽 Unix socket 時，無法啟用 HTTP/3"
+
+#: src/constants/errors/settings.ts:5
+msgid "Unknown settings section: {0}"
+msgstr "未知的設定區塊：{0}"
+
 #: src/constants/errors/site.ts:2
 msgid "Site not found"
 msgstr "站點未找到"
@@ -3913,6 +3991,18 @@ msgstr "共享記憶體區域 {0} 已被其他指令使用；nginx 報告：{1}"
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "nginx conf.d 目錄不可用: {0}"
 
+#: src/constants/errors/upstream.ts:24
+msgid "An upstream name, a config file and a server address are required"
+msgstr "必須提供 upstream 名稱、設定檔案和伺服器位址"
+
+#: src/constants/errors/upstream.ts:25
+msgid "Upstream {0} is not defined in {1}"
+msgstr "上游 {0} 未在 {1} 中定義"
+
+#: src/constants/errors/upstream.ts:26
+msgid "Server {0} was not found in upstream {1}"
+msgstr "未在 upstream {1} 中找到伺服器 {0}"
+
 #: src/constants/errors/user.ts:2
 msgid "Password incorrect"
 msgstr "密碼錯誤"
@@ -4035,6 +4125,26 @@ msgstr "手動"
 #: src/constants/index.ts:58
 msgid "Automatic"
 msgstr "自動"
+
+#: src/constants/llm.ts:110
+#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:73
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:164
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:381
+msgid "Off"
+msgstr "關"
+
+#: src/constants/llm.ts:114
+msgid "Medium"
+msgstr "中"
+
+#: src/constants/llm.ts:118 src/views/dns/components/DNSRecordForm.vue:44
+#: src/views/dns/DNSGroupRecordManager.vue:760
+msgid "Default"
+msgstr "預設"
+
+#: src/constants/llm.ts:144
+msgid "No thinking control"
+msgstr "不控制思考"
 
 #: src/language/constants.ts:2
 msgid "The username or password is incorrect"
@@ -4179,7 +4289,7 @@ msgstr "檢視"
 #: src/views/dns/components/DNSRecordTable.vue:325
 #: src/views/dns/components/DNSRecordTable.vue:376
 #: src/views/preference/tabs/NginxSettings.vue:259
-#: src/views/upstream/UpstreamList.vue:268
+#: src/views/upstream/UpstreamList.vue:338
 msgid "Edit"
 msgstr "編輯"
 
@@ -4262,7 +4372,7 @@ msgstr "批次修改"
 #: src/views/certificate/components/RenewCert.vue:21
 #: src/views/dns/DNSCredential.vue:79
 #: src/views/preference/NginxHostSetup.vue:84
-#: src/views/preference/store/index.ts:185
+#: src/views/preference/store/index.ts:272
 #: src/views/preference/tabs/NginxSettings.vue:138
 msgid "Save successfully"
 msgstr "儲存成功"
@@ -4343,6 +4453,7 @@ msgstr "確認刪除"
 #: src/views/dns/DNSGroupList.vue:181
 #: src/views/dns/DNSGroupRecordManager.vue:1276
 #: src/views/dns/DNSRecordManager.vue:203
+#: src/views/preference/tabs/OpenAISettings.vue:341
 msgid "Refresh"
 msgstr "重新整理"
 
@@ -5035,12 +5146,12 @@ msgid "Dashboard"
 msgstr "儀錶板"
 
 #: src/routes/modules/dashboard.ts:28 src/views/dashboard/index.vue:7
-#: src/views/preference/Preference.vue:58
+#: src/views/preference/Preference.vue:60
 msgid "Server"
 msgstr "伺服器"
 
 #: src/routes/modules/dashboard.ts:36 src/views/dashboard/index.vue:12
-#: src/views/preference/Preference.vue:70
+#: src/views/preference/Preference.vue:72
 msgid "Nginx"
 msgstr "Nginx"
 
@@ -5105,7 +5216,7 @@ msgid "Log List"
 msgstr "日誌列表"
 
 #: src/routes/modules/preference.ts:10 src/views/home/Home.vue:122
-#: src/views/preference/Preference.vue:53
+#: src/views/preference/Preference.vue:55
 msgid "Preference"
 msgstr "偏好設定"
 
@@ -5155,13 +5266,12 @@ msgid "Third-party Components"
 msgstr "第三方組件"
 
 #: src/routes/modules/terminal.ts:10 src/views/home/Home.vue:137
-#: src/views/preference/Preference.vue:65
+#: src/views/preference/Preference.vue:67
 msgid "Terminal"
 msgstr "終端"
 
-#: src/routes/modules/upstream.ts:28
-#: src/views/upstream/index.vue:7
-#: src/views/upstream/UpstreamList.vue:144
+#: src/routes/modules/upstream.ts:28 src/views/upstream/index.vue:7
+#: src/views/upstream/UpstreamList.vue:311
 msgid "Upstream Groups"
 msgstr "Upstream 群組"
 
@@ -5224,7 +5334,7 @@ msgstr "更新時間"
 #: src/views/preference/components/ExternalNotify/columns.tsx:98
 #: src/views/preference/components/ExternalNotify/labels.ts:7
 #: src/views/site/site_list/columns.tsx:182 src/views/stream/columns.tsx:138
-#: src/views/upstream/UpstreamList.vue:37 src/views/user/userColumns.tsx:58
+#: src/views/upstream/UpstreamList.vue:60 src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "操作"
 
@@ -5285,7 +5395,7 @@ msgid "Allow"
 msgstr "允許"
 
 #: src/views/access_list/AccessListList.vue:170
-#: src/views/upstream/UpstreamList.vue:256
+#: src/views/upstream/UpstreamList.vue:521
 msgid "Not used"
 msgstr "未使用"
 
@@ -5299,10 +5409,12 @@ msgid "Deny (403)"
 msgstr "拒絕 (403)"
 
 #: src/views/access_list/components/AccessListEditor.vue:198
+#: src/views/upstream/UpstreamList.vue:169
 msgid "Site"
 msgstr "站點"
 
 #: src/views/access_list/components/AccessListEditor.vue:198
+#: src/views/upstream/UpstreamList.vue:170
 msgid "Stream"
 msgstr "串流"
 
@@ -5696,15 +5808,15 @@ msgstr "建立備份"
 msgid "Security Token Information"
 msgstr "安全代碼資訊"
 
-#: src/views/backup/components/BackupCreator.vue:104
+#: src/views/backup/components/BackupCreator.vue:103
 msgid "Please save this security token, you will need it for restoration:"
 msgstr "請儲存此安全令牌，您將需要它進行恢復："
 
-#: src/views/backup/components/BackupCreator.vue:125
+#: src/views/backup/components/BackupCreator.vue:124
 msgid "Copied!"
 msgstr "已複製！"
 
-#: src/views/backup/components/BackupCreator.vue:138
+#: src/views/backup/components/BackupCreator.vue:137
 msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
@@ -6207,6 +6319,7 @@ msgstr "下一步"
 #: src/views/certificate/components/RetryCert.vue:53
 #: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:103
 #: src/views/preference/NginxHostSetup.vue:144
+#: src/views/preference/tabs/OpenAISettings.vue:341
 #: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:276
 #: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:775
 msgid "Retry"
@@ -6613,12 +6726,6 @@ msgstr "啟用內容傳輸壓縮"
 msgid "On"
 msgstr "開啟"
 
-#: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:73
-#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:164
-#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:381
-msgid "Off"
-msgstr "關"
-
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:80
 msgid "GZIP Min Length"
 msgstr "GZIP 最小長度"
@@ -6695,7 +6802,7 @@ msgstr "快取子目錄層級結構，例如 1:2"
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:146
 #: src/views/upstream/components/UpstreamEditor.vue:324
 #: src/views/upstream/components/UpstreamEditor.vue:334
-#: src/views/upstream/UpstreamList.vue:204
+#: src/views/upstream/UpstreamList.vue:491
 msgid "Shared Memory Zone"
 msgstr "共享記憶體區域"
 
@@ -7504,11 +7611,6 @@ msgstr "全部"
 msgid "Host, e.g. @ or www"
 msgstr "主機，例如 @ 或 www"
 
-#: src/views/dns/components/DNSRecordForm.vue:44
-#: src/views/dns/DNSGroupRecordManager.vue:760
-msgid "Default"
-msgstr "預設"
-
 #: src/views/dns/components/DNSRecordForm.vue:92
 msgid "Use @ for root"
 msgstr "使用 @ 表示根域名"
@@ -7630,7 +7732,7 @@ msgstr "未選擇的同名記錄不會被管理。它們在 DNS 中保持不變�
 
 #: src/views/dns/DDNSManager.vue:187 src/views/dns/DNSCredential.vue:102
 #: src/views/dns/DNSDomainList.vue:227 src/views/dns/DNSDomainList.vue:248
-#: src/views/preference/tabs/OpenAISettings.vue:137
+#: src/views/preference/tabs/OpenAISettings.vue:258
 msgid "Provider"
 msgstr "供應商"
 
@@ -9000,6 +9102,7 @@ msgstr "進階記錄索引將會停止，結構化記錄分析將無法使用。
 #: src/views/nginx_log/NginxLogList.vue:419
 #: src/views/site/site_list/SiteList.vue:159
 #: src/views/site/site_list/SiteList.vue:318
+#: src/views/upstream/UpstreamList.vue:265
 msgid "Disable"
 msgstr "停用"
 
@@ -9873,6 +9976,7 @@ msgid "Language"
 msgstr "語言"
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:71
+#: src/views/upstream/UpstreamList.vue:171
 msgid "Config"
 msgstr "配置"
 
@@ -10113,6 +10217,70 @@ msgstr "Telegram"
 #: src/views/preference/components/ExternalNotify/wecom.ts:5
 msgid "WeCom"
 msgstr "企業微信"
+
+#: src/views/preference/components/LLMChatModelThinking.vue:55
+msgid "Enter a JSON object, such as {\"reasoning_effort\": \"high\"}"
+msgstr "請輸入一個 JSON 物件，例如 {\"reasoning_effort\": \"high\"}"
+
+#: src/views/preference/components/LLMChatModelThinking.vue:60
+msgid "This is not valid JSON"
+msgstr "這不是有效的 JSON"
+
+#: src/views/preference/components/LLMChatModelThinking.vue:106
+msgid "Set request fields"
+msgstr "設定請求欄位"
+
+#: src/views/preference/components/LLMChatModelThinking.vue:113
+msgid "Thinking levels of %{model}"
+msgstr "%{model} 的思考級別"
+
+#: src/views/preference/components/LLMChatModelThinking.vue:120
+msgid ""
+"Each level adds these fields to the chat request body, like extra_body in "
+"the OpenAI SDK. Leave a level empty to hide it in the assistant."
+msgstr "每個級別會將這些欄位加入到聊天請求主體中，類似於 OpenAI SDK 中的 extra_body。留空某個級別即可在助手中隱藏該級別。"
+
+#: src/views/preference/components/LLMModelSelect.vue:61
+msgid "Custom model"
+msgstr "自訂模型"
+
+#: src/views/preference/components/LLMModelSelect.vue:69
+msgid "Chat models from the endpoint (%{count})"
+msgstr "端點的聊天模型（%{count}）"
+
+#: src/views/preference/components/LLMModelSelect.vue:76
+msgid "Other models (embedding, audio, image)"
+msgstr "其他模型（embedding、音訊、圖像）"
+
+#: src/views/preference/components/LLMModelSelect.vue:84
+msgid "Presets"
+msgstr "預設"
+
+#: src/views/preference/components/LLMModelSelect.vue:133
+msgid "Fetching models..."
+msgstr "正在取得模型..."
+
+#: src/views/preference/components/LLMModelSelect.vue:133
+msgid "Type a model name to use it"
+msgstr "輸入模型名稱以使用"
+
+#: src/views/preference/components/LLMModelSelect.vue:143
+msgid "Use custom model \"%{model}\""
+msgstr "使用自訂模型「%{model}」"
+
+#: src/views/preference/components/LLMModelSelect.vue:154
+msgid "%{size} context"
+msgstr "%{size} 上下文"
+
+#: src/views/preference/components/LLMModelSelect.vue:167
+msgid "Showing %{count} non-chat model"
+msgid_plural "Showing %{count} non-chat models"
+msgstr[0] "顯示 %{count} 個非對話模型"
+
+#: src/views/preference/components/LLMModelSelect.vue:168
+msgid "%{count} non-chat model hidden"
+msgid_plural "%{count} non-chat models hidden"
+msgstr[0] "%{count} 個非聊天模型已隱藏"
 
 #: src/views/preference/components/NginxHostSetup/CheckPanel.vue:77
 #: src/views/system/Upgrade.vue:278
@@ -11212,6 +11380,10 @@ msgstr "上一步"
 msgid "Save configuration"
 msgstr "儲存設定"
 
+#: src/views/preference/composables/useLLMModelDiscovery.ts:92
+msgid "Check the format of the API Base Url and API Proxy."
+msgstr "請檢查 API Base Url 和 API Proxy 的格式。"
+
 #: src/views/preference/NginxHostSetup.vue:51
 msgid "Failed to load settings"
 msgstr "載入設定失敗"
@@ -11254,52 +11426,56 @@ msgstr "多重要素驗證設定"
 msgid "Unable to open SSH setup"
 msgstr "無法開啟 SSH 設定"
 
-#: src/views/preference/Preference.vue:59
+#: src/views/preference/Preference.vue:61
 msgid "App"
 msgstr "應用"
 
-#: src/views/preference/Preference.vue:60
+#: src/views/preference/Preference.vue:62
 #: src/views/preference/tabs/ExternalNotify.vue:84
 msgid "External Notify"
 msgstr "外部通知"
 
-#: src/views/preference/Preference.vue:61 src/views/upstream/SocketList.vue:66
+#: src/views/preference/Preference.vue:63 src/views/upstream/SocketList.vue:66
 msgid "Health Check"
 msgstr "健康檢查"
 
-#: src/views/preference/Preference.vue:62
+#: src/views/preference/Preference.vue:64
 msgid "Node"
 msgstr "節點"
 
-#: src/views/preference/Preference.vue:63
+#: src/views/preference/Preference.vue:65
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:22
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/views/preference/Preference.vue:67
+#: src/views/preference/Preference.vue:69
 msgid "Auth"
 msgstr "身份驗證"
 
-#: src/views/preference/Preference.vue:68
+#: src/views/preference/Preference.vue:70
 #: src/views/preference/tabs/AccessTokens.vue:163
 msgid "Access Tokens"
 msgstr "存取權杖"
 
-#: src/views/preference/Preference.vue:69
+#: src/views/preference/Preference.vue:71
 msgid "Cert"
 msgstr "證書"
 
-#: src/views/preference/Preference.vue:71
+#: src/views/preference/Preference.vue:73
 msgid "LLM"
 msgstr "LLM"
 
-#: src/views/preference/Preference.vue:72
+#: src/views/preference/Preference.vue:74
 msgid "Logrotate"
 msgstr "Logrotate"
 
-#: src/views/preference/Preference.vue:73
+#: src/views/preference/Preference.vue:75
 msgid "GeoLite"
 msgstr "GeoLite"
+
+#: src/views/preference/store/index.ts:206
+msgid "Invalid settings: %{fields}"
+msgstr "無效設定：%{fields}"
 
 #: src/views/preference/tabs/AccessTokens.vue:27
 msgid "Management API: Read"
@@ -11834,42 +12010,74 @@ msgid ""
 "hyphens, dashes, colons, and dots."
 msgstr "公安編號僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
 
-#: src/views/preference/tabs/OpenAISettings.vue:48
+#: src/views/preference/tabs/OpenAISettings.vue:76
+msgid "Enter the API token to list the available models"
+msgstr "輸入 API token 以列出可用模型"
+
+#: src/views/preference/tabs/OpenAISettings.vue:78
+msgid "Fetching the model list..."
+msgstr "正在取得模型清單…"
+
+#: src/views/preference/tabs/OpenAISettings.vue:82
+msgid "Connected, %{count} model available"
+msgid_plural "Connected, %{count} models available"
+msgstr[0] "已連線，%{count} 個模型可用"
+
+#: src/views/preference/tabs/OpenAISettings.vue:93
+msgid "Type the model name below instead."
+msgstr "請在下方手動輸入模型名稱。"
+
+#: src/views/preference/tabs/OpenAISettings.vue:116
+#: src/views/preference/tabs/OpenAISettings.vue:439
+msgid ""
+"The model name should only contain letters, unicode, numbers, hyphens, "
+"dashes, colons, and dots."
+msgstr "模型名稱僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
+
+#: src/views/preference/tabs/OpenAISettings.vue:153
+msgid "Context window"
+msgstr "上下文視窗"
+
+#: src/views/preference/tabs/OpenAISettings.vue:153
+msgid "tokens"
+msgstr "Token"
+
+#: src/views/preference/tabs/OpenAISettings.vue:166
 msgid "Global"
 msgstr "全球"
 
-#: src/views/preference/tabs/OpenAISettings.vue:51
+#: src/views/preference/tabs/OpenAISettings.vue:169
 msgid "China"
 msgstr "中國"
 
-#: src/views/preference/tabs/OpenAISettings.vue:58
+#: src/views/preference/tabs/OpenAISettings.vue:176
 msgid "Always on"
 msgstr "一律開啟"
 
-#: src/views/preference/tabs/OpenAISettings.vue:69
+#: src/views/preference/tabs/OpenAISettings.vue:187
 msgid "Input"
 msgstr "輸入"
 
-#: src/views/preference/tabs/OpenAISettings.vue:91
+#: src/views/preference/tabs/OpenAISettings.vue:209
 msgid ""
 "Leave blank to use the MiniMax global OpenAI-compatible endpoint: "
 "https://api.minimax.io/v1"
 msgstr "留空以使用 MiniMax 全球 OpenAI 相容端點：https://api.minimax.io/v1"
 
-#: src/views/preference/tabs/OpenAISettings.vue:94
+#: src/views/preference/tabs/OpenAISettings.vue:212
 msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
 msgstr "留空則使用 Atlas Cloud 端點：https://api.atlascloud.ai/v1"
 
-#: src/views/preference/tabs/OpenAISettings.vue:96
+#: src/views/preference/tabs/OpenAISettings.vue:214
 msgid "Leave blank for the default: https://api.openai.com/"
 msgstr "預設留空：https://api.openai.com/"
 
-#: src/views/preference/tabs/OpenAISettings.vue:101
-#: src/views/preference/tabs/OpenAISettings.vue:232
+#: src/views/preference/tabs/OpenAISettings.vue:219
+#: src/views/preference/tabs/OpenAISettings.vue:361
 msgid "The url is invalid."
 msgstr "網址無效。"
 
-#: src/views/preference/tabs/OpenAISettings.vue:104
+#: src/views/preference/tabs/OpenAISettings.vue:222
 msgid ""
 "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global "
 "service or https://api.minimaxi.com/v1 for China service. For "
@@ -11880,90 +12088,106 @@ msgstr ""
 "https://api.minimaxi.com/v1。對於相容 Anthropic 的用戶端，請使用 "
 "https://api.minimax.io/anthropic 或 https://api.minimaxi.com/anthropic。"
 
-#: src/views/preference/tabs/OpenAISettings.vue:108
+#: src/views/preference/tabs/OpenAISettings.vue:226
 msgid ""
 "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an "
 "Atlas Cloud API key."
 msgstr "Atlas Cloud 相容 OpenAI。使用 https://api.atlascloud.ai/v1 和 Atlas Cloud API 金鑰。"
 
-#: src/views/preference/tabs/OpenAISettings.vue:111
+#: src/views/preference/tabs/OpenAISettings.vue:229
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
 msgstr "要使用本地大模型，請使用 ollama 、 vllm 或 lmdeploy 部署。"
 
-#: src/views/preference/tabs/OpenAISettings.vue:147
-msgid "Model"
-msgstr "模型"
+#: src/views/preference/tabs/OpenAISettings.vue:255
+msgid "Connection"
+msgstr "連線"
 
-#: src/views/preference/tabs/OpenAISettings.vue:150
-#: src/views/preference/tabs/OpenAISettings.vue:272
-msgid ""
-"The model name should only contain letters, unicode, numbers, hyphens, "
-"dashes, colons, and dots."
-msgstr "模型名稱僅能包含字母、Unicode 字元、數字、連字號、破折號、冒號和句點。"
-
-#: src/views/preference/tabs/OpenAISettings.vue:166
-msgid "Model capabilities"
-msgstr "模型能力"
-
-#: src/views/preference/tabs/OpenAISettings.vue:170
-msgid "Context window"
-msgstr "上下文視窗"
-
-#: src/views/preference/tabs/OpenAISettings.vue:171
-msgid "tokens"
-msgstr "Token"
-
-#: src/views/preference/tabs/OpenAISettings.vue:174
-msgid "Input modalities"
-msgstr "輸入模態"
-
-#: src/views/preference/tabs/OpenAISettings.vue:178
-msgid "Thinking modes"
-msgstr "思考模式"
-
-#: src/views/preference/tabs/OpenAISettings.vue:182
-msgid "Pricing per million tokens"
-msgstr "每百萬 token 價格"
-
-#: src/views/preference/tabs/OpenAISettings.vue:188
+#: src/views/preference/tabs/OpenAISettings.vue:268
 msgid "API Base Url"
 msgstr "API 基礎網址"
 
-#: src/views/preference/tabs/OpenAISettings.vue:207
+#: src/views/preference/tabs/OpenAISettings.vue:287
 msgid "Regional endpoints"
 msgstr "區域端點"
 
-#: src/views/preference/tabs/OpenAISettings.vue:223
+#: src/views/preference/tabs/OpenAISettings.vue:303
 msgid "Documentation"
 msgstr "文件"
 
-#: src/views/preference/tabs/OpenAISettings.vue:229
-msgid "API Proxy"
-msgstr "API 代理"
-
-#: src/views/preference/tabs/OpenAISettings.vue:241
+#: src/views/preference/tabs/OpenAISettings.vue:309
 msgid "API Token"
 msgstr "API 令牌"
 
-#: src/views/preference/tabs/OpenAISettings.vue:244
+#: src/views/preference/tabs/OpenAISettings.vue:312
 msgid "Token is not valid"
 msgstr "令牌無效"
 
-#: src/views/preference/tabs/OpenAISettings.vue:253
+#: src/views/preference/tabs/OpenAISettings.vue:354
+#: src/views/site/site_add/SiteAdd.vue:402
+msgid "Advanced"
+msgstr "進階"
+
+#: src/views/preference/tabs/OpenAISettings.vue:358
+msgid "API Proxy"
+msgstr "API 代理"
+
+#: src/views/preference/tabs/OpenAISettings.vue:370
 msgid "API Type"
 msgstr "API 類型"
 
-#: src/views/preference/tabs/OpenAISettings.vue:263
+#: src/views/preference/tabs/OpenAISettings.vue:382
+msgid "Models"
+msgstr "模型"
+
+#: src/views/preference/tabs/OpenAISettings.vue:385
+msgid "Assistant models"
+msgstr "助手模型"
+
+#: src/views/preference/tabs/OpenAISettings.vue:386
+msgid "The models to choose from in the assistant."
+msgstr "在助手中可供選擇的模型。"
+
+#: src/views/preference/tabs/OpenAISettings.vue:394
+msgid "Choose one or more models"
+msgstr "選擇一個或多個模型"
+
+#: src/views/preference/tabs/OpenAISettings.vue:398
+msgid "Default model"
+msgstr "預設模型"
+
+#: src/views/preference/tabs/OpenAISettings.vue:400
+msgid "Used for new chats, chat titles and, unless set below, code completion."
+msgstr "用於新對話、對話標題以及程式碼補全（除非在下方另行設定）。"
+
+#: src/views/preference/tabs/OpenAISettings.vue:406
+msgid "Choose the assistant models first"
+msgstr "請先選擇助手模型"
+
+#: src/views/preference/tabs/OpenAISettings.vue:425
+msgid ""
+"How each model switches its thinking levels. Pick the convention of your "
+"provider, or edit the request fields."
+msgstr "每個模型切換思維層級的方式。選擇您提供商的約定，或編輯請求欄位。"
+
+#: src/views/preference/tabs/OpenAISettings.vue:430
 msgid "Enable Code Completion"
 msgstr "啟用代碼補全"
 
-#: src/views/preference/tabs/OpenAISettings.vue:269
+#: src/views/preference/tabs/OpenAISettings.vue:436
 msgid "Code Completion Model"
 msgstr "程式碼補全模型"
 
-#: src/views/preference/tabs/OpenAISettings.vue:273
+#: src/views/preference/tabs/OpenAISettings.vue:440
 msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr "用於代碼補全的模型，如果未設置，將使用聊天模型。"
+
+#: src/views/preference/tabs/OpenAISettings.vue:448
+msgid "Same as the chat model (%{model})"
+msgstr "與對話模型相同（%{model}）"
+
+#: src/views/preference/tabs/OpenAISettings.vue:449
+msgid "Same as the chat model"
+msgstr "與聊天模型相同"
 
 #: src/views/preference/tabs/ServerSettings.vue:27
 msgid "Unix Socket"
@@ -12372,10 +12596,6 @@ msgstr "DNS 記錄已成功創建並連結"
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:164
 msgid "Quick Setup"
 msgstr "快速設定"
-
-#: src/views/site/site_add/SiteAdd.vue:402
-msgid "Advanced"
-msgstr "進階"
 
 #: src/views/site/site_add/SiteAdd.vue:414
 msgid "Base information"
@@ -13172,7 +13392,7 @@ msgid "Edit Upstream %{name}"
 msgstr "編輯 Upstream %{name}"
 
 #: src/views/upstream/components/UpstreamEditor.vue:186
-#: src/views/upstream/UpstreamList.vue:164
+#: src/views/upstream/UpstreamList.vue:413
 msgid "Create Upstream"
 msgstr "建立 Upstream"
 
@@ -13193,8 +13413,8 @@ msgid "Consistent Hashing"
 msgstr "一致性雜湊"
 
 #: src/views/upstream/components/UpstreamEditor.vue:238
-#: src/views/upstream/UpstreamList.vue:35
-#: src/views/upstream/UpstreamList.vue:43
+#: src/views/upstream/UpstreamList.vue:58
+#: src/views/upstream/UpstreamList.vue:67
 msgid "Servers"
 msgstr "伺服器"
 
@@ -13255,7 +13475,7 @@ msgid "One directive per line, for example keepalive_timeout or keepalive_reques
 msgstr "每行一條指令，例如 keepalive_timeout 或 keepalive_requests。"
 
 #: src/views/upstream/components/UpstreamEditor.vue:379
-#: src/views/upstream/UpstreamList.vue:36
+#: src/views/upstream/UpstreamList.vue:59
 msgid "Referenced By"
 msgstr "被引用"
 
@@ -13266,6 +13486,14 @@ msgstr "目前還沒有站台使用此 upstream。"
 #: src/views/upstream/components/UpstreamEditor.vue:402
 msgid "Configuration Preview"
 msgstr "設定預覽"
+
+#: src/views/upstream/components/UpstreamServerLine.vue:20
+msgid "Enable server %{address}"
+msgstr "啟用伺服器 %{address}"
+
+#: src/views/upstream/components/UpstreamServerLine.vue:21
+msgid "Disable server %{address}"
+msgstr "停用伺服器 %{address}"
 
 #: src/views/upstream/index.vue:8
 msgid ""
@@ -13289,7 +13517,7 @@ msgstr "直接"
 msgid "Health Status"
 msgstr "健康狀態"
 
-#: src/views/upstream/SocketList.vue:47 src/views/upstream/UpstreamList.vue:91
+#: src/views/upstream/SocketList.vue:47 src/views/upstream/UpstreamList.vue:152
 msgid "No Data"
 msgstr "無資料"
 
@@ -13307,74 +13535,112 @@ msgid ""
 "preferences."
 msgstr "各目標的選擇會保留。可在健康檢查偏好設定中恢復探測。"
 
-#: src/views/upstream/UpstreamList.vue:25
+#: src/views/upstream/UpstreamList.vue:39
 msgid "Round Robin"
 msgstr "輪詢"
 
-#: src/views/upstream/UpstreamList.vue:26
+#: src/views/upstream/UpstreamList.vue:40
 msgid "Least Connections"
 msgstr "最少連接"
 
-#: src/views/upstream/UpstreamList.vue:27
+#: src/views/upstream/UpstreamList.vue:41
 msgid "IP Hash"
 msgstr "IP 雜湊"
 
-#: src/views/upstream/UpstreamList.vue:28
+#: src/views/upstream/UpstreamList.vue:42
 msgid "Hash"
 msgstr "雜湊"
 
-#: src/views/upstream/UpstreamList.vue:29
+#: src/views/upstream/UpstreamList.vue:43
 msgid "Random"
 msgstr "隨機"
 
-#: src/views/upstream/UpstreamList.vue:34
+#: src/views/upstream/UpstreamList.vue:57
 msgid "Load Balancing"
 msgstr "負載平衡"
 
-#: src/views/upstream/UpstreamList.vue:47
+#: src/views/upstream/UpstreamList.vue:68
 msgid "Defined In"
 msgstr "定義於"
 
-#: src/views/upstream/UpstreamList.vue:118
+#: src/views/upstream/UpstreamList.vue:96
+msgid "Matched upstreams: %{groups}, servers: %{servers}"
+msgstr "匹配的 upstream：%{groups}，伺服器：%{servers}"
+
+#: src/views/upstream/UpstreamList.vue:168
+msgid "Upstream Group"
+msgstr "上游群組"
+
+#: src/views/upstream/UpstreamList.vue:247
+msgid "Server %{address} enabled"
+msgstr "伺服器 %{address} 已啟用"
+
+#: src/views/upstream/UpstreamList.vue:248
+msgid "Server %{address} disabled"
+msgstr "伺服器 %{address} 已停用"
+
+#: src/views/upstream/UpstreamList.vue:263
+msgid "Disable the last active server of %{name}?"
+msgstr "停用 %{name} 的最後一個活躍伺服器？"
+
+#: src/views/upstream/UpstreamList.vue:264
+msgid ""
+"No other primary server of this upstream is enabled. Requests will fail "
+"unless a backup server takes over."
+msgstr "該上游群組沒有其他啟用的主要伺服器。除非備用伺服器接管，否則請求將會失敗。"
+
+#: src/views/upstream/UpstreamList.vue:285
 msgid "Upstream %{name} is still in use"
 msgstr "Upstream %{name} 仍在使用中"
 
-#: src/views/upstream/UpstreamList.vue:120
+#: src/views/upstream/UpstreamList.vue:287
 msgid "Point these configurations at another upstream before deleting it:"
 msgstr "請先將這些設定指向其他 upstream，然後再刪除："
 
-#: src/views/upstream/UpstreamList.vue:129
+#: src/views/upstream/UpstreamList.vue:296
 msgid "Delete upstream %{name}?"
 msgstr "刪除 upstream %{name}？"
 
-#: src/views/upstream/UpstreamList.vue:130
+#: src/views/upstream/UpstreamList.vue:297
 msgid "%{path} will be removed and Nginx reloaded."
 msgstr "%{path} 將被刪除，Nginx 將重新載入。"
 
-#: src/views/upstream/UpstreamList.vue:136
+#: src/views/upstream/UpstreamList.vue:303
 msgid "Upstream %{name} deleted"
 msgstr "Upstream %{name} 已刪除"
 
-#: src/views/upstream/UpstreamList.vue:170
+#: src/views/upstream/UpstreamList.vue:419
 msgid ""
 "An upstream group shares its servers and load balancing method across "
 "sites. Choose it as the proxy target when setting up a site; later changes "
 "here apply to every site that uses it."
 msgstr "上游群組在各站點之間共享其伺服器和負載平衡方式。在設定站點時可選擇它作為代理目標；此處的後續變更將套用至所有使用它的站點。"
 
-#: src/views/upstream/UpstreamList.vue:172
+#: src/views/upstream/UpstreamList.vue:421
 msgid "Files are stored in %{dir}."
 msgstr "檔案儲存在 %{dir} 中。"
 
-#: src/views/upstream/UpstreamList.vue:286
+#: src/views/upstream/UpstreamList.vue:435
+msgid "Search by name or IP:port"
+msgstr "按名稱或 IP:port 搜尋"
+
+#: src/views/upstream/UpstreamList.vue:436
+msgid "Search upstreams by name or server address"
+msgstr "按名稱或伺服器位址搜尋上游"
+
+#: src/views/upstream/UpstreamList.vue:456
+msgid "No upstream group matches the search"
+msgstr "沒有符合搜尋條件的上游群組"
+
+#: src/views/upstream/UpstreamList.vue:533
 msgid "Upstreams Defined in Other Files"
 msgstr "其他檔案中定義的 Upstream"
 
-#: src/views/upstream/UpstreamList.vue:289
+#: src/views/upstream/UpstreamList.vue:536
 msgid ""
 "These upstream blocks live inside site or other configuration files. Edit "
-"them in their own file."
-msgstr "這些 upstream 區塊位於站台或其他設定檔中。請在各自的檔案中進行編輯。"
+"their settings in their own file; servers can be switched on and off here."
+msgstr "這些 upstream 個區塊位於站台或其他設定檔中。請在對應的檔案中修改其設定；伺服器可以在這裡啟用或停用。"
 
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
@@ -13424,26 +13690,38 @@ msgstr "更新密碼"
 msgid "Node %{name} cannot be opened"
 msgstr "無法開啟節點 %{name}"
 
-#: src/views/workspace/WorkSpace.vue:284
-#: src/views/workspace/WorkSpace.vue:288
+#: src/views/workspace/WorkSpace.vue:284 src/views/workspace/WorkSpace.vue:288
 msgid "Exit workspace"
 msgstr "退出工作區"
 
-#: src/views/workspace/WorkSpace.vue:311
-#: src/views/workspace/WorkSpace.vue:312
+#: src/views/workspace/WorkSpace.vue:311 src/views/workspace/WorkSpace.vue:312
 #: src/views/workspace/WorkSpace.vue:379
 msgid "New tab"
 msgstr "新建分頁"
 
-#: src/views/workspace/WorkSpace.vue:324
-#: src/views/workspace/WorkSpace.vue:325
+#: src/views/workspace/WorkSpace.vue:324 src/views/workspace/WorkSpace.vue:325
 msgid "Single pane"
 msgstr "單窗格"
 
-#: src/views/workspace/WorkSpace.vue:335
-#: src/views/workspace/WorkSpace.vue:336
+#: src/views/workspace/WorkSpace.vue:335 src/views/workspace/WorkSpace.vue:336
 msgid "Split view"
 msgstr "分割檢視"
+
+#: src/views/access_list/components/AccessListEditor.vue:273
+#: src/views/access_list/components/AccessListEditor.vue:308
+#: src/views/access_list/components/AccessListEditor.vue:309
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "備註"
+
+#~ msgid "Model capabilities"
+#~ msgstr "模型能力"
+
+#~ msgid "Input modalities"
+#~ msgstr "輸入模態"
+
+#~ msgid "Pricing per million tokens"
+#~ msgstr "每百萬 token 價格"
 
 #~ msgid "[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}"
 #~ msgstr "[Nginx UI] %{domain} 的 HTTP01 驗證路由檢查失敗：%{error}"
@@ -14222,10 +14500,6 @@ msgstr "分割檢視"
 #, fuzzy
 #~ msgid "Subject Name: %{subject}"
 #~ msgstr "主體名稱：%{name}"
-
-#, fuzzy
-#~ msgid "The url is not valid"
-#~ msgstr "此功能在演示中無法使用。"
 
 #~ msgid "ChatGPT Model"
 #~ msgstr "ChatGPT 模型"

@@ -5,7 +5,7 @@ go 1.27.1
 require (
 	aead.dev/minisign v0.3.0
 	code.pfad.fr/risefront v1.0.0
-	github.com/0xJacky/pofile v1.1.1
+	github.com/0xJacky/pofile v1.1.2
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.1
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns v1.2.0
