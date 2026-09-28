@@ -604,6 +604,7 @@ function confirmDelete(record: ManagedUpstreamDetail) {
       v-model:open="isConvertOpen"
       :site="convertTarget.source.name"
       :upstream="convertTarget.name"
+      :declared-zone="convertTarget.zone"
       @converted="loadData"
     />
   </ACard>

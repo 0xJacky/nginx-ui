@@ -32,6 +32,18 @@ import (
 type Request struct {
 	Site     string `json:"site"`
 	Upstream string `json:"upstream"`
+	// Zone gives a block that declares no zone the shared memory zone new
+	// groups get (`zone <name> <size>;`), so every worker process balances
+	// with the same state. Omitted means on; a block with a zone directive of
+	// its own keeps it either way.
+	Zone *bool `json:"zone,omitempty"`
+	// ZoneSize is the size of that zone; empty means the default size.
+	ZoneSize string `json:"zone_size,omitempty"`
+}
+
+// zoneEnabled reports whether the request wants a shared memory zone.
+func (r Request) zoneEnabled() bool {
+	return r.Zone == nil || *r.Zone
 }
 
 // plan is a validated conversion that has not touched the disk yet.
@@ -41,6 +53,12 @@ type plan struct {
 	managedPath    string
 	managedContent string
 	siteContent    string
+	// group is the upstream the group file renders, used to explain an
+	// nginx -t failure about its zone.
+	group *managed.Upstream
+	// mirror is the request sent to the nodes that receive the site, with the
+	// zone choice spelled out.
+	mirror Request
 }
 
 // Convert moves the upstream block req.Upstream out of the site req.Site into
@@ -58,14 +76,17 @@ func Convert(ctx context.Context, req Request, userName string) (*managed.Detail
 	}
 
 	if err := apply(p); err != nil {
-		return nil, err
+		// Both files are back at this point; a zone name that another
+		// directive already uses gets the same readable error as a group
+		// saved from the Upstream Groups page.
+		return nil, managed.ExplainZoneConflict(p.group, err)
 	}
 
 	cfg := managedConfigRecord(p.managedPath)
 	rescan(p)
-	startSync(ctx, p, cfg, req.Upstream, userName)
+	startSync(ctx, p, cfg, userName)
 
-	return managed.Get(req.Upstream)
+	return managed.Get(p.group.Name)
 }
 
 // prepare reads the site, locates the block and renders both new files.
@@ -115,6 +136,7 @@ func prepare(req Request) (*plan, error) {
 	if err != nil {
 		return nil, err
 	}
+	applyZoneChoice(u, req)
 	managedContent, err := managed.Prepare(u)
 	if err != nil {
 		return nil, err
@@ -135,7 +157,35 @@ func prepare(req Request) (*plan, error) {
 		managedPath:    managedPath,
 		managedContent: managedContent,
 		siteContent:    siteContent,
+		group:          u,
+		mirror:         mirrorRequest(siteName, name, req),
 	}, nil
+}
+
+// applyZoneChoice gives a block without a zone directive the shared memory
+// zone new groups get, unless the request turned it off. A block that already
+// has one keeps it as it is: its own zone is in the zone fields, and a zone of
+// another name, or `zone other;` joining a zone declared elsewhere, stays in
+// the additional directives, since an upstream holds a single zone.
+func applyZoneChoice(u *managed.Upstream, req Request) {
+	if u.Zone || managed.HasZoneDirective(u.ExtraDirectives) || !req.zoneEnabled() {
+		return
+	}
+	u.Zone = true
+	// Normalize fills in the default size when this is empty.
+	u.ZoneSize = strings.TrimSpace(req.ZoneSize)
+}
+
+// mirrorRequest is the request replayed on the nodes that receive the site.
+// The zone choice is always explicit, so a node converts the same way
+// whatever its own default is.
+func mirrorRequest(siteName, name string, req Request) Request {
+	zone := req.zoneEnabled()
+	mirror := Request{Site: siteName, Upstream: name, Zone: &zone}
+	if zone {
+		mirror.ZoneSize = strings.TrimSpace(req.ZoneSize)
+	}
+	return mirror
 }
 
 // resolveSitePath maps a site name onto its file in sites-available and

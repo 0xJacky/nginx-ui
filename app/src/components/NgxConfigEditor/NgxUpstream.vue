@@ -5,6 +5,7 @@ import { breakpointsAntDesign, useBreakpoints } from '@vueuse/core'
 import { Modal } from 'antdv-next'
 import { DirectiveEditor, useNgxConfigStore } from '.'
 import ConvertUpstreamModal from './ConvertUpstreamModal.vue'
+import { findDeclaredZone } from './convertZone'
 import { siteUpstreamContextKey } from './siteUpstreamContext'
 import {
   hasUpstreamServerAddress,
@@ -48,6 +49,11 @@ const ngxConfigStore = useNgxConfigStore()
 const { ngxConfig } = storeToRefs(ngxConfigStore)
 
 const currentUpstreamIdx = ref('0')
+
+// The zone the block being converted already declares, which the group keeps.
+const convertDeclaredZone = computed(() => findDeclaredZone(
+  ngxConfig.value.upstreams?.find(u => u.name === convertTarget.value)?.directives,
+))
 
 const upstreamTabItems = computed(() => ngxConfig.value.upstreams?.map((upstream, index) => ({
   key: String(index),
@@ -279,6 +285,7 @@ function renameOK() {
       v-model:open="isConvertOpen"
       :site="siteContext.siteName.value"
       :upstream="convertTarget"
+      :declared-zone="convertDeclaredZone"
       :context="siteContext"
       @converted="onConverted"
     />

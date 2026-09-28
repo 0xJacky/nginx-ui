@@ -69,9 +69,9 @@ func siteSyncNodes(p *plan) []*model.Node {
 //
 // A conversion another node replicated here is not mirrored again: that node
 // already reached every target, and mirroring it back would loop.
-func startSync(ctx context.Context, p *plan, cfg *model.Config, name, userName string) {
+func startSync(ctx context.Context, p *plan, cfg *model.Config, userName string) {
 	if nodeauth.IsReplicated(ctx) {
-		logger.Infof("Skipping upstream conversion sync for a replicated change: site=%q upstream=%q", p.siteName, name)
+		logger.Infof("Skipping upstream conversion sync for a replicated change: site=%q upstream=%q", p.siteName, p.mirror.Upstream)
 		return
 	}
 
@@ -85,7 +85,8 @@ func startSync(ctx context.Context, p *plan, cfg *model.Config, name, userName s
 		logger.Error(err)
 	}
 
-	req := Request{Site: p.siteName, Upstream: name}
+	// The nodes convert with the same zone choice as this one.
+	req := p.mirror
 	for _, node := range nodes {
 		pendingSyncs.Add(1)
 		go func(node *model.Node) {

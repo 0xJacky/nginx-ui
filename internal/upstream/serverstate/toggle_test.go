@@ -297,3 +297,16 @@ func TestListReportsEveryUpstreamOnce(t *testing.T) {
 	assert.Equal(t, "127.0.0.1:8082", second.Socket)
 	assert.Equal(t, "max_fails=2", second.Params)
 }
+
+func TestListReportsTheZoneDirective(t *testing.T) {
+	confDir := setupToggleTest(t)
+	enabledSite(t, confDir, "zoned.test", "upstream own_pool {\n    zone own_pool 128k;\n    server 127.0.0.1:8081;\n}\n"+
+		"upstream joined_pool {\n    zone shared;\n    server 127.0.0.1:8082;\n}\n"+
+		"upstream plain_pool {\n    server 127.0.0.1:8083;\n}\n")
+
+	zones := map[string]string{}
+	for _, group := range List() {
+		zones[group.Name] = group.Zone
+	}
+	assert.Equal(t, map[string]string{"own_pool": "own_pool 128k", "joined_pool": "shared", "plain_pool": ""}, zones)
+}

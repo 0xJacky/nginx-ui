@@ -44,6 +44,9 @@ type Group struct {
 	ConfigPath string   `json:"config_path"`
 	Source     Source   `json:"source"`
 	Servers    []Server `json:"servers"`
+	// Zone holds the parameters of the block's zone directive as written, for
+	// example "backend 64k" or "shared"; empty when the block has none.
+	Zone string `json:"zone,omitempty"`
 }
 
 // resolvePath follows symlinks so a site reached through sites-enabled and
@@ -115,6 +118,16 @@ func toServer(line ServerLine) Server {
 	}
 }
 
+// zoneParams returns the parameters of the first zone directive of block.
+func zoneParams(block Block) string {
+	for _, d := range block.Directives {
+		if d.Name == "zone" {
+			return strings.Join(d.RawArgs, " ")
+		}
+	}
+	return ""
+}
+
 func toGroups(content, path string, source Source) []Group {
 	blocks := ParseBlocks(content)
 	groups := make([]Group, 0, len(blocks))
@@ -128,6 +141,7 @@ func toGroups(content, path string, source Source) []Group {
 			ConfigPath: path,
 			Source:     source,
 			Servers:    servers,
+			Zone:       zoneParams(block),
 		})
 	}
 	return groups

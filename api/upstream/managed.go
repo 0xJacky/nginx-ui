@@ -23,6 +23,9 @@ type ExternalUpstream struct {
 	Servers    []serverstate.Server `json:"servers"`
 	ConfigPath string               `json:"config_path"`
 	Source     serverstate.Source   `json:"source"`
+	// Zone holds the parameters of the block's zone directive, which a
+	// conversion keeps; empty when the block has none.
+	Zone string `json:"zone,omitempty"`
 	// ReadOnly is set when the file could not be read back, so the servers
 	// come from the scanner and cannot be toggled.
 	ReadOnly bool `json:"read_only"`
@@ -54,6 +57,7 @@ func ListManagedUpstreams(c *gin.Context) {
 			Servers:    group.Servers,
 			ConfigPath: group.ConfigPath,
 			Source:     group.Source,
+			Zone:       group.Zone,
 		})
 	}
 

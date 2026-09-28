@@ -112,6 +112,9 @@ export interface UpstreamGroupState {
   config_path: string
   source: UpstreamSource
   servers: UpstreamServerState[]
+  // Parameters of the block's zone directive as written, for example
+  // `backend 64k` or `shared`; absent when the block has none.
+  zone?: string
 }
 
 export interface ExternalUpstream extends UpstreamGroupState {
@@ -135,6 +138,10 @@ export interface ManagedUpstreamListResponse {
 export interface ConvertSiteUpstreamRequest {
   site: string
   upstream: string
+  // Shared memory zone for a block that declares none; omitted means on. A
+  // block with a zone directive of its own keeps it either way.
+  zone?: boolean
+  zone_size?: string
 }
 
 export interface UpstreamPreviewResponse {

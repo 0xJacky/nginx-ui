@@ -266,7 +266,7 @@ func Save(u *Upstream, create bool, userName string) (*Detail, error) {
 	}
 
 	if err := config.Save(context.Background(), path, content, nil, userName); err != nil {
-		return nil, explainZoneConflict(u, err)
+		return nil, ExplainZoneConflict(u, err)
 	}
 
 	// Refresh the availability service right away instead of waiting for the
@@ -278,15 +278,16 @@ func Save(u *Upstream, create bool, userName string) (*Detail, error) {
 	return Get(u.Name)
 }
 
-// explainZoneConflict turns the nginx -t failure for a zone name that another
+// ExplainZoneConflict turns the nginx -t failure for a zone name that another
 // directive (limit_req_zone, proxy_cache_path, ...) already declared into a
-// readable error. config.Save has rolled the file back at this point. Other
+// readable error. The caller has rolled the files back at this point. Other
 // upstream blocks may share the zone, so that case never reaches here.
-func explainZoneConflict(u *Upstream, err error) error {
-	if !u.Zone {
+func ExplainZoneConflict(u *Upstream, err error) error {
+	zone := u.ZoneName()
+	if err == nil || zone == "" {
 		return err
 	}
-	marker := `shared memory zone "` + u.Name + `" is already declared`
+	marker := `shared memory zone "` + zone + `" is already declared`
 	msg := err.Error()
 	if !strings.Contains(msg, marker) {
 		return err
@@ -296,7 +297,7 @@ func explainZoneConflict(u *Upstream, err error) error {
 			if i := strings.Index(line, "[emerg] "); i >= 0 {
 				line = line[i+len("[emerg] "):]
 			}
-			return cosy.WrapErrorWithParams(ErrZoneNameConflict, u.Name, strings.TrimSpace(line))
+			return cosy.WrapErrorWithParams(ErrZoneNameConflict, zone, strings.TrimSpace(line))
 		}
 	}
 	return err
