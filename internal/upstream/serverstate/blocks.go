@@ -20,6 +20,7 @@ const (
 	tokenSemicolon
 	tokenOpenBrace
 	tokenCloseBrace
+	tokenComment
 )
 
 // token is one lexical element of an nginx configuration file together with
@@ -49,9 +50,15 @@ func tokenize(content string) []token {
 		case isSpace(c):
 			i++
 		case c == '#':
+			start := i
 			for i < n && content[i] != '\n' {
 				i++
 			}
+			end := i
+			for end > start && content[end-1] == '\r' {
+				end--
+			}
+			tokens = append(tokens, token{kind: tokenComment, value: content[start:end], start: start, end: end})
 		case c == ';':
 			tokens = append(tokens, token{kind: tokenSemicolon, start: i, end: i + 1})
 			i++
@@ -165,18 +172,47 @@ func (s ServerLine) OtherParams() string {
 	return strings.Join(other, " ")
 }
 
+// Directive is one simple directive (ending with `;`) directly inside an
+// upstream block.
+type Directive struct {
+	Name string
+	// Args are the unquoted parameter values.
+	Args []string
+	// RawArgs are the parameters exactly as written, quotes and escapes
+	// included, so a directive can be copied without changing its meaning.
+	RawArgs []string
+}
+
 // Block is one upstream block of a configuration file.
 type Block struct {
 	Name    string
 	Servers []ServerLine
+	// Directives lists every simple directive of the block in file order,
+	// the server lines included.
+	Directives []Directive
+	// Comments holds the comments inside the block, `#` included, in file
+	// order.
+	Comments []string
+	// NestedBlocks names the blocks opened inside the upstream block, which
+	// the stock upstream module does not have.
+	NestedBlocks []string
+	// Parent is the directive of the block enclosing the upstream block, for
+	// example "http" or "stream"; empty at the top level of the file.
+	Parent string
+	// Start and End are the byte offsets of the whole block in the source,
+	// from the `upstream` keyword to the closing brace. End is 0 when the
+	// block is not closed.
+	Start int
+	End   int
 }
 
 // ParseBlocks returns the upstream blocks of content in file order. Blocks in
-// comments are ignored because the tokenizer drops comments.
+// comments are ignored because comments never form directives.
 func ParseBlocks(content string) []Block {
 	tokens := tokenize(content)
 
 	type frame struct {
+		name     string
 		upstream int // index into blocks, -1 for any other block
 	}
 	var (
@@ -190,12 +226,38 @@ func ParseBlocks(content string) []Block {
 		}
 		return stack[len(stack)-1].upstream
 	}
+	// enclosing returns the innermost upstream block the parser is in, even
+	// inside a block nested in it.
+	enclosing := func() int {
+		for i := len(stack) - 1; i >= 0; i-- {
+			if stack[i].upstream >= 0 {
+				return stack[i].upstream
+			}
+		}
+		return -1
+	}
 
 	for _, tok := range tokens {
 		switch tok.kind {
+		case tokenComment:
+			if idx := enclosing(); idx >= 0 {
+				blocks[idx].Comments = append(blocks[idx].Comments, tok.value)
+			}
 		case tokenWord:
 			directive = append(directive, tok)
 		case tokenSemicolon:
+			if idx := current(); idx >= 0 && len(directive) >= 1 {
+				d := Directive{
+					Name:    directive[0].value,
+					Args:    make([]string, 0, len(directive)-1),
+					RawArgs: make([]string, 0, len(directive)-1),
+				}
+				for _, arg := range directive[1:] {
+					d.Args = append(d.Args, arg.value)
+					d.RawArgs = append(d.RawArgs, content[arg.start:arg.end])
+				}
+				blocks[idx].Directives = append(blocks[idx].Directives, d)
+			}
 			if idx := current(); idx >= 0 && len(directive) >= 2 && directive[0].value == "server" {
 				args := append([]token(nil), directive[1:]...)
 				params := make([]string, 0, len(args)-1)
@@ -210,15 +272,34 @@ func ParseBlocks(content string) []Block {
 			}
 			directive = directive[:0]
 		case tokenOpenBrace:
-			f := frame{upstream: -1}
-			if len(directive) == 2 && directive[0].value == "upstream" {
-				blocks = append(blocks, Block{Name: directive[1].value, Servers: []ServerLine{}})
+			name := ""
+			if len(directive) > 0 {
+				name = directive[0].value
+			}
+			f := frame{name: name, upstream: -1}
+			if idx := enclosing(); idx >= 0 {
+				blocks[idx].NestedBlocks = append(blocks[idx].NestedBlocks, name)
+			} else if len(directive) == 2 && directive[0].value == "upstream" {
+				parent := ""
+				if len(stack) > 0 {
+					parent = stack[len(stack)-1].name
+				}
+				blocks = append(blocks, Block{
+					Name:       directive[1].value,
+					Servers:    []ServerLine{},
+					Directives: []Directive{},
+					Parent:     parent,
+					Start:      directive[0].start,
+				})
 				f.upstream = len(blocks) - 1
 			}
 			stack = append(stack, f)
 			directive = directive[:0]
 		case tokenCloseBrace:
 			if len(stack) > 0 {
+				if idx := stack[len(stack)-1].upstream; idx >= 0 {
+					blocks[idx].End = tok.end
+				}
 				stack = stack[:len(stack)-1]
 			}
 			directive = directive[:0]

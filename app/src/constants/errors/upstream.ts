@@ -1,4 +1,13 @@
 export default {
+  40017: () => $gettext('A site name and an upstream name are required'),
+  40018: () => $gettext('Upstream {0} contains a nested {1} block, which an upstream group cannot hold'),
+  40019: () => $gettext('The {0} directive of upstream {1} has a value that spans several lines, which an upstream group cannot hold'),
+  40020: () => $gettext('A comment inside upstream {0} contains braces, which an upstream group cannot hold; edit the comment first'),
+  40021: () => $gettext('Upstream {0} is defined inside a {1} block; only upstream blocks of the http context can become an upstream group'),
+  40022: () => $gettext('Invalid site name: {0}'),
+  40404: () => $gettext('Site not found: {0}'),
+  40906: () => $gettext('An upstream group named {0} already exists; rename this upstream before converting it'),
+  40907: () => $gettext('Upstream {0} is defined more than once in {1}'),
   40001: () => $gettext('Invalid upstream name: use letters, digits, underscores and hyphens, starting with a letter or underscore (max 64 characters)'),
   40002: () => $gettext('Unsupported load balancing method: {0}'),
   40003: () => $gettext('The hash method needs a key'),

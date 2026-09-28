@@ -8,6 +8,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
+	"github.com/0xJacky/Nginx-UI/internal/upstream/convert"
 	"github.com/0xJacky/Nginx-UI/internal/upstream/managed"
 	"github.com/0xJacky/Nginx-UI/internal/upstream/serverstate"
 	"github.com/gin-gonic/gin"
@@ -180,4 +181,21 @@ func SetUpstreamServerState(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, group)
+}
+
+// ConvertSiteUpstream moves an upstream block defined inside a site file into
+// a managed upstream group of the same name. Both files are applied with one
+// nginx test and reload and rolled back together on failure.
+func ConvertSiteUpstream(c *gin.Context) {
+	var req convert.Request
+	if !cosy.BindAndValid(c, &req) {
+		return
+	}
+
+	detail, err := convert.Convert(req, api.CurrentUser(c).Name)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, detail)
 }

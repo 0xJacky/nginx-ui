@@ -367,14 +367,32 @@ func Parse(name, content string) (*Upstream, error) {
 		return nil, cosy.WrapErrorWithParams(ErrUpstreamFileNotManaged, FileName(name))
 	}
 
+	directives := make([]Directive, 0, len(cfg.Upstreams[0].Directives))
+	for _, d := range cfg.Upstreams[0].Directives {
+		directives = append(directives, Directive{Name: d.Directive, Params: d.Params})
+	}
+	return FromDirectives(name, directives), nil
+}
+
+// Directive is one directive of an upstream block: its name and its
+// parameters separated by spaces.
+type Directive struct {
+	Name   string
+	Params string
+}
+
+// FromDirectives maps the directives of an upstream block called name onto
+// the structured form. Directives the form has no field for, and repeated
+// ones, are kept verbatim in ExtraDirectives, so nothing is dropped.
+func FromDirectives(name string, directives []Directive) *Upstream {
 	u := &Upstream{Name: name, Servers: make([]Server, 0)}
 	var extra []string
-	for _, d := range cfg.Upstreams[0].Directives {
+	for _, d := range directives {
 		params := strings.TrimSpace(d.Params)
-		switch d.Directive {
+		switch d.Name {
 		case MethodLeastConn, MethodIPHash:
 			if params == "" && u.Method == MethodRoundRobin {
-				u.Method = d.Directive
+				u.Method = d.Name
 				continue
 			}
 		case MethodRandom:
@@ -393,7 +411,7 @@ func Parse(name, content string) (*Upstream, error) {
 				continue
 			}
 		case "keepalive":
-			if n, err := strconv.Atoi(params); err == nil && u.Keepalive == 0 {
+			if n, err := strconv.Atoi(params); err == nil && n > 0 && u.Keepalive == 0 {
 				u.Keepalive = n
 				continue
 			}
@@ -411,12 +429,12 @@ func Parse(name, content string) (*Upstream, error) {
 				continue
 			}
 		}
-		line := d.Directive
+		line := d.Name
 		if params != "" {
 			line += " " + params
 		}
 		extra = append(extra, line+";")
 	}
 	u.ExtraDirectives = strings.Join(extra, "\n")
-	return u, nil
+	return u
 }
