@@ -35,6 +35,8 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/), [Hintay](h
 
 [![Featured｜HelloGitHub](https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=86f3a8f779934748a34fe6f1b5cd442f&claim_uid=MOFqadzAShCBeQj&theme=small)](https://hellogithub.com/repository/86f3a8f779934748a34fe6f1b5cd442f)
 
+[![Plumber Score](https://score.getplumber.io/github.com/0xJacky/nginx-ui.svg)](https://score.getplumber.io/github.com/0xJacky/nginx-ui)
+
 ## Documentation
 To check out docs, visit [nginxui.com](https://nginxui.com).
 
