@@ -63,6 +63,12 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
   // just left would land on top of the one now on screen.
   let loadSeq = 0
 
+  // What the file held when it was last loaded or saved, to tell whether the
+  // editor has unsaved changes. The structured form is cloned before the
+  // editor gets it, because the editor mutates the objects it is handed.
+  let savedText = ''
+  let savedConfig: NgxConfig | null = null
+
   function reset() {
     // Invalidate any in-flight init() so its response cannot land on top of
     // whatever the store is reset for (another site or a new one).
@@ -79,6 +85,8 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     issuingCert.value = false
     dnsLinked.value = false
     linkedDNSName.value = ''
+    savedText = ''
+    savedConfig = null
     ngxConfigStore.reset()
   }
 
@@ -218,7 +226,27 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     })
   }
 
+  /**
+   * Whether the editor differs from the file as last loaded or saved. In basic
+   * mode both versions are rendered by the backend and compared, so fields the
+   * editor adds for its own bookkeeping do not count as changes.
+   */
+  async function hasUnsavedChanges() {
+    if (advanceMode.value || parseErrorStatus.value)
+      return configText.value !== savedText
+    if (!savedConfig)
+      return false
+    const [current, saved] = await Promise.all([
+      buildConfig(ngxConfig.value, false),
+      buildConfig(savedConfig, false),
+    ])
+    return current !== saved
+  }
+
   async function handleResponse(r: Site) {
+    savedText = r.config
+    savedConfig = r.tokenized ? cloneNgxConfig(r.tokenized) : null
+
     if (r.advanced)
       advanceMode.value = true
 
@@ -336,6 +364,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     init,
     reset,
     save,
+    hasUnsavedChanges,
     handleModeChange,
   }
 })

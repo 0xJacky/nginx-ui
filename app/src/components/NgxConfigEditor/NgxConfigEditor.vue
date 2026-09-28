@@ -55,6 +55,7 @@ const activeKey = ref(['3'])
         </div>
         <NgxUpstream
           v-else-if="item.key === '2'"
+          :context
         />
         <NgxServer
           v-else-if="item.key === '3'"

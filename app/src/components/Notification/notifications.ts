@@ -233,6 +233,14 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Save Remote Stream Success'),
     content: (args: any) => $gettext('Save stream %{name} to %{node} successfully', args),
   },
+  'Convert Remote Upstream Error': {
+    title: () => $gettext('Convert Remote Upstream Error'),
+    content: (args: any) => $gettext('Convert upstream %{upstream} of site %{site} on %{node} failed', args),
+  },
+  'Convert Remote Upstream Success': {
+    title: () => $gettext('Convert Remote Upstream Success'),
+    content: (args: any) => $gettext('Convert upstream %{upstream} of site %{site} on %{node} successfully', args),
+  },
   'All Recovery Codes Have Been Used': {
     title: () => $gettext('All Recovery Codes Have Been Used'),
     content: (args: any) => $gettext('Please generate new recovery codes in the preferences immediately to prevent lockout.', args),

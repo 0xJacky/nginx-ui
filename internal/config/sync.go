@@ -15,6 +15,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
+	"github.com/samber/lo"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -26,6 +27,12 @@ type SyncConfigPayload struct {
 }
 
 func SyncToRemoteServer(c *model.Config, userName string) (err error) {
+	return SyncToRemoteServerExcept(c, userName, nil)
+}
+
+// SyncToRemoteServerExcept replicates the file like SyncToRemoteServer but
+// leaves out the nodes in skipNodeIDs, which the caller updates another way.
+func SyncToRemoteServerExcept(c *model.Config, userName string, skipNodeIDs []uint64) (err error) {
 	if c == nil || c.Filepath == "" {
 		return
 	}
@@ -33,6 +40,7 @@ func SyncToRemoteServer(c *model.Config, userName string) (err error) {
 	// A file below a deployed directory inherits the directory targets, so the
 	// whole tree keeps replicating without configuring every file separately.
 	syncNodeIds, syncOverwrite := EffectiveSyncTargets(c)
+	syncNodeIds = lo.Without(syncNodeIds, skipNodeIDs...)
 	if len(syncNodeIds) == 0 {
 		return
 	}

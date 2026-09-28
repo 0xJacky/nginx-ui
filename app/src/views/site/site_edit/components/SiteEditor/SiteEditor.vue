@@ -6,6 +6,7 @@ import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
 import InspectConfig from '@/components/InspectConfig'
 import NgxConfigEditor from '@/components/NgxConfigEditor'
+import { siteUpstreamContextKey } from '@/components/NgxConfigEditor/siteUpstreamContext'
 import UpstreamCards from '@/components/UpstreamCards/UpstreamCards.vue'
 import { ConfigStatus } from '@/constants'
 import Cert from '@/views/site/site_edit/components/Cert'
@@ -71,6 +72,19 @@ function onHTTPSEnabled() {
 // Provide DNS link status to child components
 provide('dnsLinked', dnsLinked)
 provide('linkedDNSName', linkedDNSName)
+
+// Lets the Upstream section turn one of this site's upstream blocks into a
+// shared group; that rewrites the site file, so the editor saves or drops its
+// changes first and reloads the file afterwards.
+provide(siteUpstreamContextKey, {
+  siteName: name,
+  hasUnsavedChanges: () => editorStore.hasUnsavedChanges(),
+  async save() {
+    await editorStore.save()
+    message.success($gettext('Saved successfully'))
+  },
+  reload: () => editorStore.init(name.value),
+})
 
 // Get upstream targets from backend API data
 const upstreamTargets = computed(() => {

@@ -1,6 +1,7 @@
 package serverstate
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -132,4 +133,28 @@ func TestSetDownIgnoresCommentedServers(t *testing.T) {
 	_, matched, changed := SetDown(content, "a", "10.0.0.2:80", true)
 	assert.Equal(t, 0, matched)
 	assert.False(t, changed)
+}
+
+func TestParseBlocksReportsDirectivesCommentsAndOffsets(t *testing.T) {
+	content := "http {\n    upstream pool {\n        hash \"$request_uri\" consistent; # sticky\n" +
+		"        server 127.0.0.1:8081;\n        check { interval 3; }\n    }\n}\n"
+	blocks := ParseBlocks(content)
+	require.Len(t, blocks, 1)
+
+	block := blocks[0]
+	assert.Equal(t, "http", block.Parent)
+	assert.Equal(t, []string{"check"}, block.NestedBlocks)
+	assert.Equal(t, []string{"# sticky"}, block.Comments)
+	require.Len(t, block.Directives, 2)
+	assert.Equal(t, Directive{
+		Name:    "hash",
+		Args:    []string{"$request_uri", "consistent"},
+		RawArgs: []string{`"$request_uri"`, "consistent"},
+	}, block.Directives[0])
+	assert.Equal(t, "server", block.Directives[1].Name)
+	// Directives of the nested block do not belong to the upstream.
+	require.Len(t, block.Servers, 1)
+
+	assert.True(t, strings.HasPrefix(content[block.Start:], "upstream pool {"))
+	assert.True(t, strings.HasSuffix(content[:block.End], "interval 3; }\n    }"))
 }

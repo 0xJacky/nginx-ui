@@ -29,6 +29,8 @@ var notificationURLByTitle = map[string]string{
 	"Sync Certificate Success":                "#/certificates/list",
 	"Sync Config Error":                       "#/config",
 	"Sync Config Success":                     "#/config",
+	"Convert Remote Upstream Error":           "#/upstream/list",
+	"Convert Remote Upstream Success":         "#/upstream/list",
 	"Rename Remote Config Error":              "#/config",
 	"Rename Remote Config Success":            "#/config",
 	"Delete Remote Config Error":              "#/config",
