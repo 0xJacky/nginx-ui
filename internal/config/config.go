@@ -35,4 +35,8 @@ type Config struct {
 	ProxyTargets  []ProxyTarget    `json:"proxy_targets,omitempty"`
 	SyncNodeIds   []uint64         `json:"sync_node_ids,omitempty"`
 	SyncOverwrite bool             `json:"sync_overwrite"`
+	// AccessMode and AccessList summarise the access lists the server blocks
+	// of a site or stream use.
+	AccessMode string `json:"access_mode,omitempty"`
+	AccessList string `json:"access_list,omitempty"`
 }

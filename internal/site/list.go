@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/0xJacky/Nginx-UI/internal/access_list"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -180,7 +181,11 @@ func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, in
 		}
 	}
 
+	accessMode, accessList := access_list.Summarize(indexedSite.Content)
+
 	return config.Config{
+		AccessMode:   accessMode,
+		AccessList:   accessList,
 		Index:        index,
 		Name:         fileName,
 		ModifiedAt:   fileInfo.ModTime(),

@@ -75,3 +75,8 @@ func (s *SyncResult) SetNewName(name string) *SyncResult {
 	s.NewName = name
 	return s
 }
+
+// GetSyncNodes returns the nodes a stream is replicated to.
+func GetSyncNodes(name string) []*model.Node {
+	return getSyncNodes(name)
+}

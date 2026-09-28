@@ -1186,3 +1186,49 @@ func TestCreateMaintenanceConfigUnixSocketRejectsInvalidMaintenanceHost(t *testi
 		})
 	}
 }
+
+func TestCreateMaintenanceConfig_KeepsAccessListInclude(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+
+	p := parser.NewStringParser(`server {
+    listen 80;
+    server_name nas.example.com;
+    include nginx-ui/access/lan.conf;
+    root /srv/nas;
+}`, parser.WithSkipValidDirectivesErr())
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+
+	content := createMaintenanceConfig(conf, "", "nas.example.com")
+	if !strings.Contains(content, "include nginx-ui/access/lan.conf;") {
+		t.Fatalf("maintenance config dropped the access list include:\n%s", content)
+	}
+	acme := content[strings.Index(content, "acme-challenge"):]
+	acme = acme[:strings.Index(acme, "}")]
+	if !strings.Contains(acme, "allow all;") {
+		t.Fatalf("ACME challenge location is not kept reachable:\n%s", content)
+	}
+	if strings.Contains(content, "root /srv/nas;") {
+		t.Fatalf("maintenance config kept a regular directive:\n%s", content)
+	}
+}
+
+func TestCreateMaintenanceConfig_PublicSiteHasNoAccessException(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+
+	p := parser.NewStringParser(`server {
+    listen 80;
+    server_name blog.example.com;
+}`, parser.WithSkipValidDirectivesErr())
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+
+	content := createMaintenanceConfig(conf, "", "blog.example.com")
+	if strings.Contains(content, "allow all;") {
+		t.Fatalf("public site got an access exception:\n%s", content)
+	}
+}

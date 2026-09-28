@@ -59,6 +59,7 @@ func GenerateAllModel() []any {
 		SiteHealthAlertState{},
 		NginxLogIndex{},
 		UpstreamConfig{},
+		AccessList{},
 	}
 }
 
