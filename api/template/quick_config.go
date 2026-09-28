@@ -9,6 +9,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	internalTemplate "github.com/0xJacky/Nginx-UI/internal/template"
+	"github.com/0xJacky/Nginx-UI/internal/upstream/managed"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/uozi-tech/cosy"
@@ -27,9 +28,12 @@ type QuickConfigRequest struct {
 	RedirectHTTPToHTTPS bool     `json:"redirect_http_to_https"`
 
 	// Reverse proxy
-	Scheme            string `json:"scheme"`
-	Host              string `json:"host"`
-	Port              string `json:"port"`
+	Scheme string `json:"scheme"`
+	Host   string `json:"host"`
+	Port   string `json:"port"`
+	// Upstream, when set, proxies to a managed upstream group instead of
+	// Host and Port, e.g. `proxy_pass http://backend_pool/;`.
+	Upstream          string `json:"upstream,omitempty"`
 	EnableWebSocket   bool   `json:"enable_websocket"`
 	ClientMaxBodySize string `json:"client_max_body_size"`
 
@@ -82,6 +86,15 @@ func (r *QuickConfigRequest) validate() error {
 	case QuickConfigTypeReverseProxy:
 		if r.Scheme != "http" && r.Scheme != "https" {
 			return errors.New("scheme must be http or https")
+		}
+		if r.Upstream != "" {
+			if managed.ValidateName(r.Upstream) != nil {
+				return errors.New("upstream must be a valid upstream name")
+			}
+			if !reNginxSize.MatchString(r.ClientMaxBodySize) {
+				return errors.New("client_max_body_size must be a non-negative integer with an optional k, m, or g suffix")
+			}
+			break
 		}
 		if !isSafeNginxToken(r.Host) {
 			return errors.New("host contains invalid characters")
@@ -153,6 +166,7 @@ func buildQuickApp(r *QuickConfigRequest) (app *quickApp, err error) {
 			"scheme":            {Value: r.Scheme},
 			"host":              {Value: r.Host},
 			"port":              {Value: r.Port},
+			"upstream":          {Value: r.Upstream},
 		})
 		if err != nil {
 			return nil, err
@@ -328,6 +342,13 @@ func serverListensSSL(directives []*nginx.NgxDirective) bool {
 	return false
 }
 
+// isKnownUpstream reports whether a proxy_pass host names a managed upstream
+// group, so the quick-setup form reopens with the upstream picker selected.
+// Upstream blocks inside the site file itself are not offered: regenerating
+// the site from the form would drop them. It is a variable so tests can run
+// without a configuration directory.
+var isKnownUpstream = managed.Exists
+
 func parseProxyPass(raw string) (scheme, host, port string) {
 	m := reProxyPassURL.FindStringSubmatch(raw)
 	if m == nil {
@@ -409,6 +430,10 @@ func analyzeNgxConfig(ngxConfig *nginx.NgxConfig) (req QuickConfigRequest) {
 				if m := reProxyPass.FindStringSubmatch(content); m != nil {
 					rpProxyPass = true
 					req.Scheme, req.Host, req.Port = parseProxyPass(cleanParam(m[1]))
+					if req.Port == "" && req.Host != "" && managed.ValidateName(req.Host) == nil && isKnownUpstream(req.Host) {
+						req.Upstream = req.Host
+						req.Host = ""
+					}
 				}
 			}
 

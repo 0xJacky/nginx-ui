@@ -4,6 +4,8 @@ import { CopyOutlined, DeleteOutlined, HolderOutlined } from '@antdv-next/icons'
 import { cloneDeep } from 'lodash'
 import Draggable from 'vuedraggable'
 import CodeEditor from '@/components/CodeEditor'
+import { useManagedUpstreams } from '@/composables/useManagedUpstreams'
+import { getProxyPassUpstream, setProxyPassUpstream } from './proxyPassUpstream'
 
 defineProps<{
   readonly?: boolean
@@ -23,6 +25,19 @@ const location = reactive({
 })
 
 const adding = ref(false)
+
+// Upstream groups managed from the Upstream page; a location can proxy to one
+// by name instead of repeating the backend addresses in every site.
+const { options: upstreamOptions, names: upstreamNames } = useManagedUpstreams()
+
+function locationUpstream(loc: { content: string }) {
+  return getProxyPassUpstream(loc.content ?? '', upstreamNames.value)
+}
+
+function setLocationUpstream(loc: { content: string }, name: unknown) {
+  if (typeof name === 'string' && name)
+    loc.content = setProxyPassUpstream(loc.content ?? '', name)
+}
 
 function add() {
   adding.value = true
@@ -151,6 +166,20 @@ function getLocationExtra(index: number) {
                   <AInput v-model:value="v.path" />
                 </ASpaceCompact>
               </AFormItem>
+              <AFormItem
+                v-if="upstreamOptions.length > 0 && !readonly"
+                :label="$gettext('Proxy to upstream')"
+                :extra="$gettext('Sets proxy_pass to the selected upstream group; its servers are managed on the Upstream page.')"
+              >
+                <ASelect
+                  class="w-full max-w-100"
+                  :value="locationUpstream(v)"
+                  :options="upstreamOptions"
+                  :placeholder="$gettext('Select an upstream')"
+                  data-testid="location-upstream-select"
+                  @change="name => setLocationUpstream(v, name)"
+                />
+              </AFormItem>
               <AFormItem :label="$gettext('Content')">
                 <CodeEditor
                   v-model:content="v.content"
@@ -178,6 +207,18 @@ function getLocationExtra(index: number) {
             <ASpaceAddon>location</ASpaceAddon>
             <AInput v-model:value="location.path" />
           </ASpaceCompact>
+        </AFormItem>
+        <AFormItem
+          v-if="upstreamOptions.length > 0"
+          :label="$gettext('Proxy to upstream')"
+        >
+          <ASelect
+            class="w-full max-w-100"
+            :value="locationUpstream(location)"
+            :options="upstreamOptions"
+            :placeholder="$gettext('Select an upstream')"
+            @change="name => setLocationUpstream(location, name)"
+          />
         </AFormItem>
         <AFormItem :label="$gettext('Content')">
           <CodeEditor

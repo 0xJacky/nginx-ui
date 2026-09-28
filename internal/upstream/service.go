@@ -109,6 +109,13 @@ func scanForProxyTargets(configPath string, content []byte) error {
 	return nil
 }
 
+// ScanConfig refreshes the proxy targets and upstream definitions of a single
+// config file right away instead of waiting for the file watcher. Empty
+// content removes everything the file contributed.
+func ScanConfig(configPath string, content []byte) error {
+	return scanForProxyTargets(configPath, content)
+}
+
 // updateTargetsFromConfig updates proxy targets from a specific config file
 func (s *Service) updateTargetsFromConfig(configPath string, targets []ProxyTarget) {
 	s.targetsMutex.Lock()

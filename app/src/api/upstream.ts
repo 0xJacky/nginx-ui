@@ -44,6 +44,61 @@ export interface UpdateSocketConfigRequest {
   enabled: boolean
 }
 
+export type UpstreamMethod = '' | 'least_conn' | 'ip_hash' | 'hash' | 'random'
+
+export interface ManagedUpstreamServer {
+  address: string
+  weight?: number | null
+  max_fails?: number | null
+  fail_timeout?: string
+  backup: boolean
+  down: boolean
+  // Server parameters the form does not model, kept for round trips.
+  params?: string
+}
+
+export interface ManagedUpstream {
+  name: string
+  method: UpstreamMethod
+  hash_key?: string
+  consistent: boolean
+  keepalive: number
+  // Shared memory zone named after the group: `zone <name> <zone_size>;`
+  zone: boolean
+  zone_size?: string
+  servers: ManagedUpstreamServer[]
+  extra_directives?: string
+}
+
+export interface UpstreamReference {
+  type: 'site' | 'config'
+  name: string
+  path: string
+}
+
+export interface ManagedUpstreamDetail extends ManagedUpstream {
+  path: string
+  content: string
+  references: UpstreamReference[]
+}
+
+export interface ExternalUpstream {
+  name: string
+  servers: Array<{ host: string, port: string, type: string }>
+  config_path: string
+}
+
+export interface ManagedUpstreamListResponse {
+  data: ManagedUpstreamDetail[]
+  external: ExternalUpstream[]
+  dir: string
+}
+
+export interface UpstreamPreviewResponse {
+  content: string
+  file_name: string
+}
+
 const upstream = {
   // HTTP GET interface to get all upstream availability results
   getAvailability(): Promise<UpstreamAvailabilityResponse> {
@@ -65,6 +120,33 @@ const upstream = {
   // Update socket configuration
   updateSocketConfig(socket: string, data: UpdateSocketConfigRequest) {
     return http.put(`/upstream/socket/${encodeURIComponent(socket)}`, data)
+  },
+
+  // Standalone upstream groups managed by Nginx UI (conf.d/upstream-<name>.conf)
+  getManagedList(): Promise<ManagedUpstreamListResponse> {
+    return http.get('/upstreams')
+  },
+
+  getManaged(name: string): Promise<ManagedUpstreamDetail> {
+    return http.get(`/upstreams/${encodeURIComponent(name)}`)
+  },
+
+  createManaged(data: ManagedUpstream): Promise<ManagedUpstreamDetail> {
+    return http.post('/upstreams', data)
+  },
+
+  updateManaged(name: string, data: ManagedUpstream): Promise<ManagedUpstreamDetail> {
+    return http.post(`/upstreams/${encodeURIComponent(name)}`, data)
+  },
+
+  deleteManaged(name: string) {
+    return http.delete(`/upstreams/${encodeURIComponent(name)}`)
+  },
+
+  // Validation errors are shown inline by the form, so the global error toast
+  // is skipped here.
+  previewManaged(data: ManagedUpstream): Promise<UpstreamPreviewResponse> {
+    return http.post('/upstream/preview', data, { skipErrHandling: true })
   },
 }
 

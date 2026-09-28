@@ -8,6 +8,10 @@ export interface QuickConfigState {
   enableTLS: boolean
   redirectHTTPToHTTPS: boolean
   rpScheme: 'http' | 'https'
+  // Proxy to a host and port, or to an upstream group managed on the
+  // Upstream page.
+  rpTarget: 'address' | 'upstream'
+  rpUpstream: string
   rpHost: string
   rpPort: string
   rpWebSocket: boolean
@@ -27,6 +31,8 @@ export function createDefaultQuickConfigState(): QuickConfigState {
     enableTLS: false,
     redirectHTTPToHTTPS: true,
     rpScheme: 'http',
+    rpTarget: 'address',
+    rpUpstream: '',
     rpHost: '127.0.0.1',
     rpPort: '9000',
     rpWebSocket: true,
@@ -59,6 +65,8 @@ export function useQuickConfig() {
 
     switch (state.type) {
       case 'reverse_proxy':
+        if (state.rpTarget === 'upstream')
+          return state.rpUpstream !== ''
         return state.rpHost.trim() !== '' && state.rpPort.trim() !== ''
       case 'static':
         return state.stWebRoot.trim() !== ''
@@ -85,8 +93,13 @@ export function useQuickConfig() {
 
     if (state.type === 'reverse_proxy') {
       payload.scheme = state.rpScheme
-      payload.host = state.rpHost.trim()
-      payload.port = state.rpPort.trim()
+      if (state.rpTarget === 'upstream') {
+        payload.upstream = state.rpUpstream
+      }
+      else {
+        payload.host = state.rpHost.trim()
+        payload.port = state.rpPort.trim()
+      }
       payload.enable_websocket = state.rpWebSocket
       payload.client_max_body_size = state.rpMaxBodySize.trim()
     }
@@ -124,7 +137,9 @@ export function useQuickConfig() {
     state.redirectHTTPToHTTPS = !!initial.redirect_http_to_https
 
     state.rpScheme = initial.scheme ?? 'http'
-    state.rpHost = initial.host ?? ''
+    state.rpTarget = initial.upstream ? 'upstream' : 'address'
+    state.rpUpstream = initial.upstream ?? ''
+    state.rpHost = initial.host || '127.0.0.1'
     state.rpPort = initial.port ?? ''
     state.rpWebSocket = !!initial.enable_websocket
     state.rpMaxBodySize = initial.client_max_body_size ?? '1000m'

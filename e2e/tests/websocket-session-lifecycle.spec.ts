@@ -75,7 +75,7 @@ test('store-owned sockets follow the session across logout and login', async ({ 
 
   await page.goto(routeUrl('/login'), { waitUntil: 'domcontentloaded' })
   await loginThroughUi(page)
-  await openRouteInApp(page, '/upstream')
+  await openRouteInApp(page, '/upstream/sockets')
   await expectDeliveringSockets(sockets)
 
   const firstSession = sockets.filter(tracked =>
@@ -103,7 +103,7 @@ test('store-owned sockets follow the session across logout and login', async ({ 
 
   const secondSessionStart = sockets.length
   await loginThroughUi(page)
-  await openRouteInApp(page, '/upstream')
+  await openRouteInApp(page, '/upstream/sockets')
 
   expect(
     await page.evaluate(() => (window as unknown as { __sameDocument?: boolean }).__sameDocument),
