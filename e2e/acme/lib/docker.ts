@@ -72,9 +72,13 @@ export interface HTTPProbe {
 // All probes run inside the nginx-ui container against its own Nginx, so the
 // host never needs to resolve the test domains.
 
-/** GET http://<domain><path> through the local Nginx without following redirects. */
-export function httpGet(domain: string, path = '/'): HTTPProbe {
-  return curlProbe(`--resolve ${shellQuote(`${domain}:80:127.0.0.1`)} ${shellQuote(`http://${domain}${path}`)}`)
+/**
+ * GET http://<domain><path> through the local Nginx without following
+ * redirects. `address` picks the local address to connect to (loopback by
+ * default), for servers that only listen on a specific address.
+ */
+export function httpGet(domain: string, path = '/', address = '127.0.0.1'): HTTPProbe {
+  return curlProbe(`--resolve ${shellQuote(`${domain}:80:${address}`)} ${shellQuote(`http://${domain}${path}`)}`)
 }
 
 /** GET https://<domain><path> through the local Nginx, ignoring trust (Pebble roots are random). */
@@ -96,6 +100,14 @@ function curlProbe(args: string): HTTPProbe {
   }
 }
 
+/** DNS names in the subjectAltName of the certificate the local Nginx presents for <domain> on :443. */
+export function servedCertificateDNSNames(domain: string): string[] {
+  const text = inContainer(
+    `openssl s_client -connect 127.0.0.1:443 -servername ${shellQuote(domain)} </dev/null 2>/dev/null | openssl x509 -noout -text`,
+  ).stdout
+  return [...text.matchAll(/DNS:([^,\s]+)/g)].map(match => match[1]!).sort()
+}
+
 /** Issuer of the certificate the local Nginx presents for <domain> on :443. */
 export function servedCertificateIssuer(domain: string): string {
   return inContainer(
@@ -112,19 +124,22 @@ export function readSiteConfig(name: string): string {
  * before the new workers take over, so a request sent right after a save or
  * enable can still reach the old configuration.
  */
-export async function waitForHTTP(domain: string, accept: (probe: HTTPProbe) => boolean, path = '/', timeoutMs = 15_000): Promise<HTTPProbe> {
+export async function waitForHTTP(domain: string, accept: (probe: HTTPProbe) => boolean, path = '/', timeoutMs = 15_000, address = '127.0.0.1'): Promise<HTTPProbe> {
   const deadline = Date.now() + timeoutMs
-  let probe = httpGet(domain, path)
+  let probe = httpGet(domain, path, address)
   while (!accept(probe)) {
     if (Date.now() > deadline)
-      throw new Error(`http://${domain}${path} never matched; last answer ${probe.status} ${probe.location}\n${probe.body}`)
+      throw new Error(`http://${domain}${path} (via ${address}) never matched; last answer ${probe.status} ${probe.location}\n${probe.body}`)
     await new Promise(resolve => setTimeout(resolve, 250))
-    probe = httpGet(domain, path)
+    probe = httpGet(domain, path, address)
   }
   return probe
 }
 
-/** Wait until the local Nginx answers <domain> with a body containing <marker>. */
-export function waitForMarker(domain: string, marker: string) {
-  return waitForHTTP(domain, probe => probe.status === 200 && probe.body.includes(marker))
+/**
+ * Wait until the local Nginx answers <domain> with a body containing <marker>,
+ * connecting to `address` (loopback by default).
+ */
+export function waitForMarker(domain: string, marker: string, address = '127.0.0.1') {
+  return waitForHTTP(domain, probe => probe.status === 200 && probe.body.includes(marker), '/', 15_000, address)
 }

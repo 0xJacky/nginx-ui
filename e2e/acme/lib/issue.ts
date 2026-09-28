@@ -8,11 +8,21 @@ export interface IssueHint {
   params?: Record<string, unknown>
 }
 
+/** The structured cosy error the legacy socket attaches to an error message. */
+export interface IssueError {
+  scope?: string
+  code?: number
+  message?: string
+  params?: string[]
+}
+
 export interface IssueResult {
   /** success / error from the final message, or closed / timeout when none arrived. */
   status: 'success' | 'error' | 'closed' | 'timeout'
   message: string
   hint?: IssueHint
+  /** Structured error of a failed legacy issuance, when the backend sends one. */
+  error?: IssueError
   sslCertificate?: string
   sslCertificateKey?: string
   /** Certificate record id, reported by the HTTPS orchestrator. */
@@ -134,6 +144,7 @@ async function runSocket(page: Page, path: string, payload: Record<string, unkno
     status: final.status === 'success' ? 'success' : 'error',
     message: String(final.message ?? ''),
     hint: final.hint as IssueHint | undefined,
+    error: final.error as IssueError | undefined,
     sslCertificate: final.ssl_certificate as string | undefined,
     sslCertificateKey: final.ssl_certificate_key as string | undefined,
     certId: typeof final.cert_id === 'number' ? final.cert_id : undefined,
@@ -141,8 +152,29 @@ async function runSocket(page: Page, path: string, payload: Record<string, unkno
   }
 }
 
+/**
+ * The text of a socket message with its translation arguments filled in. Log
+ * lines arrive as translation containers: {message: "... %{domain} ...",
+ * args: {domain: "..."}}.
+ */
+export function renderMessage(message: Record<string, unknown>): string {
+  let text = String(message.message ?? '')
+  const args = message.args
+  if (args && typeof args === 'object') {
+    for (const [key, value] of Object.entries(args as Record<string, unknown>))
+      text = text.replaceAll(`%{${key}}`, String(value))
+  }
+  return text
+}
+
+/** Every message of the transcript, rendered. */
+export function renderedMessages(result: IssueResult): string[] {
+  return result.messages.map(renderMessage)
+}
+
 /** A compact transcript for assertion messages. */
 export function describeIssue(result: IssueResult): string {
-  const log = result.messages.map(m => `  [${String(m.status ?? m.type ?? '')}] ${String(m.message ?? '')}`).join('\n')
-  return `status=${result.status} message=${result.message} hint=${JSON.stringify(result.hint)}\n${log}`
+  const log = result.messages.map(m => `  [${String(m.status ?? m.type ?? '')}] ${renderMessage(m)}`).join('\n')
+  const error = result.error ? ` error=${JSON.stringify(result.error)}` : ''
+  return `status=${result.status} message=${result.message} hint=${JSON.stringify(result.hint)}${error}\n${log}`
 }

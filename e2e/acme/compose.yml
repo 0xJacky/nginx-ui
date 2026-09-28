@@ -32,6 +32,9 @@ services:
       # and deterministic.
       PEBBLE_VA_NOSLEEP: "1"
       PEBBLE_WFE_NONCEREJECT: "0"
+      # Always validate: a reused authorization skips the challenge and hides
+      # routing failures that a spec expects to see.
+      PEBBLE_AUTHZREUSE: "0"
     volumes:
       - ./pebble-config.json:/cfg/pebble-config.json:ro
     networks:
