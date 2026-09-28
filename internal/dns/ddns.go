@@ -231,7 +231,16 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 		}
 
 		// §6.2-6.3 — Completion phase: dual-stack mode with cleanup on only.
+		//
+		// It only runs on names DDNS owns, i.e. names where every existing A/AAAA
+		// record is selected. A record the user left unselected is an explicit
+		// choice, so a name that has one keeps exactly the selected records:
+		// nothing there is paired, created or deleted (#1968).
+		var ownedNames []string
 		if isDualStackMode(version) && input.CleanupConflictingRecords {
+			ownedNames = collectOwnedDDNSNames(targets, records)
+		}
+		if len(ownedNames) > 0 {
 			if ipSnapshot == nil {
 				snap, _ := resolvePublicIPs(ctx, version)
 				ipSnapshot = &snap
@@ -247,27 +256,23 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 			}
 			policy := getDDNSIPVersionPolicy(version)
 			recordsByNameType := indexRecordsByNameAndType(records)
-			managedNames := collectUniqueLowercaseNames(targets)
 
-			for _, name := range managedNames {
+			for _, name := range ownedNames {
 				for _, family := range policy.families {
 					recordType, ipValue := familyToTypeAndIP(family, *ipSnapshot)
 					if recordType == "" {
 						continue
 					}
-					existing, hasExisting := lookupRecord(recordsByNameType, name, recordType)
 
 					if ipValue != "" {
-						// Family detected. Skip if user already covered it; otherwise pair/create.
+						// Family detected. Skip if the selection already covers it.
+						// An owned name has no unselected A/AAAA record, so the
+						// existence check is only a guard against creating a
+						// duplicate; the missing sibling is created otherwise.
 						if containsTargetForName(targets, name, recordType) {
 							continue
 						}
-						if hasExisting {
-							targets = append(targets, model.DDNSRecordTarget{
-								ID:   existing.ID,
-								Name: existing.Name,
-								Type: recordType,
-							})
+						if _, hasExisting := lookupRecord(recordsByNameType, name, recordType); hasExisting {
 							continue
 						}
 						ctxTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
@@ -286,20 +291,23 @@ func (s *Service) UpdateDDNSConfigWithDetails(ctx context.Context, domainID uint
 						}
 						createdRecords = append(createdRecords, createdTarget)
 						targets = append(targets, createdTarget)
-					} else if hasExisting {
-						// Family undetected and a record exists at this name — delete it,
-						// removing the corresponding target if it was already selected.
+						continue
+					}
+
+					// Family undetected — delete the selected records of that family
+					// at this name so they stop pointing at a stale address.
+					for _, target := range findTargetsForName(targets, name, recordType) {
 						ctxTimeout, cancel := context.WithTimeout(ctx, providerTimeout)
-						err := provider.DeleteRecord(ctxTimeout, domain.Domain, existing.ID)
+						err := provider.DeleteRecord(ctxTimeout, domain.Domain, target.ID)
 						cancel()
 						if err != nil {
 							rollbackCreatedDDNSRecords(ctx, provider, domain.Domain, createdRecords)
 							return nil, cosy.WrapErrorWithParams(ErrDDNSRecordDeleteFailed, name, err.Error())
 						}
-						targets = removeTargetByID(targets, existing.ID)
+						targets = removeTargetByID(targets, target.ID)
 						deletedRecords = append(deletedRecords, model.DDNSRecordTarget{
-							ID:   existing.ID,
-							Name: existing.Name,
+							ID:   target.ID,
+							Name: target.Name,
 							Type: recordType,
 						})
 					}
@@ -886,6 +894,51 @@ func collectUniqueLowercaseNames(targets []model.DDNSRecordTarget) []string {
 		names = append(names, key)
 	}
 	return names
+}
+
+// collectOwnedDDNSNames returns the canonical names of the selected targets
+// that DDNS may complete during save: names where every A/AAAA record the
+// provider reports is part of the selection. A name that still has an
+// unselected A/AAAA record is left out, so its unselected records are never
+// adopted, replaced or deleted.
+func collectOwnedDDNSNames(targets []model.DDNSRecordTarget, records []Record) []string {
+	selected := make(map[string]struct{}, len(targets))
+	for _, t := range targets {
+		selected[t.ID] = struct{}{}
+	}
+
+	shared := map[string]struct{}{}
+	for _, record := range records {
+		recordType := strings.ToUpper(record.Type)
+		if recordType != "A" && recordType != "AAAA" {
+			continue
+		}
+		if _, ok := selected[record.ID]; !ok {
+			shared[ToASCIIName(record.Name)] = struct{}{}
+		}
+	}
+
+	names := collectUniqueLowercaseNames(targets)
+	owned := names[:0]
+	for _, name := range names {
+		if _, ok := shared[name]; ok {
+			continue
+		}
+		owned = append(owned, name)
+	}
+	return owned
+}
+
+// findTargetsForName returns a copy of the targets at name with recordType.
+func findTargetsForName(targets []model.DDNSRecordTarget, name, recordType string) []model.DDNSRecordTarget {
+	canonical := ToASCIIName(name)
+	var matched []model.DDNSRecordTarget
+	for _, t := range targets {
+		if ToASCIIName(t.Name) == canonical && strings.EqualFold(t.Type, recordType) {
+			matched = append(matched, t)
+		}
+	}
+	return matched
 }
 
 func containsTargetForName(targets []model.DDNSRecordTarget, name, recordType string) bool {
