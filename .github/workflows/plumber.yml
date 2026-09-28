@@ -1,0 +1,48 @@
+# Plumber checks the repository's own GitHub Actions workflows for CI/CD supply-chain
+# issues: unpinned third-party actions, tokens granted more than a job needs, checkout
+# credentials left readable by later steps, and similar. Findings land in the Security tab
+# next to CodeQL's, as SARIF.
+#
+# It does not fail the build. soft-fail below means a finding is reported and never blocks
+# a merge, which is the right setting while the score is still moving. Once it has settled,
+# `min-score: <letter>` turns this into a ratchet: the build then fails only if a change
+# makes the score worse than it is today.
+name: Plumber
+
+on:
+  push:
+    branches: [ "dev" ]
+    paths:
+      - '.github/workflows/**'
+      - '.plumber.yaml'
+  pull_request:
+    branches: [ "dev" ]
+    paths:
+      - '.github/workflows/**'
+      - '.plumber.yaml'
+  # Some of what Plumber reads lives outside the tree and changes without a commit: a tag
+  # that moves under an unpinned action, a new advisory against one already in use, the
+  # branch protection settings. The weekly run is what catches those.
+  schedule:
+    - cron: '17 6 * * 1'
+
+jobs:
+  score:
+    name: Plumber Score
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      # Read the tree to scan it, and write the findings to code scanning. Nothing else:
+      # the scan makes no change to the repository.
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Plumber Score
+        uses: getplumber/plumber@dbaaf7384c4d5708ed07744eaa3d2d94b0aebfd9 # v0.5.12
+        with:
+          soft-fail: true
