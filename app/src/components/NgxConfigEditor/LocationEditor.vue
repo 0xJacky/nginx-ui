@@ -151,6 +151,7 @@ function getLocationExtra(index: number) {
             <HolderOutlined />
             {{ $gettext('Location') }}
             {{ v.path }}
+            <slot name="label-extra" :location="v" :index="index" />
           </template>
           <template #contentRender>
             <AForm layout="vertical">
@@ -166,6 +167,7 @@ function getLocationExtra(index: number) {
                   <AInput v-model:value="v.path" />
                 </ASpaceCompact>
               </AFormItem>
+              <slot name="form-extra" :location="v" :index="index" />
               <AFormItem
                 v-if="upstreamOptions.length > 0 && !readonly"
                 :label="$gettext('Proxy to upstream')"

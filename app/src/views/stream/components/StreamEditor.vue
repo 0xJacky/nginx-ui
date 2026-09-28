@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { HistoryOutlined, LoadingOutlined } from '@antdv-next/icons'
+import { AccessControlCard, useAccessControlStore } from '@/components/AccessControl'
 import CodeEditor from '@/components/CodeEditor'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -23,6 +24,15 @@ const inspectConfigRef = useTemplateRef<InstanceType<typeof InspectConfig>>('ins
 const upstreamTargets = computed(() => {
   return data.value.proxy_targets || []
 })
+
+// The access control card and the right panel read the access state of the
+// open stream from this store.
+const accessControl = useAccessControlStore()
+watch(advanceMode, value => {
+  accessControl.advanced = value
+}, { immediate: true })
+onMounted(() => accessControl.activate())
+onBeforeUnmount(() => accessControl.deactivate())
 
 async function save() {
   try {
@@ -130,7 +140,11 @@ async function save() {
             <NgxConfigEditor
               :enabled="status === ConfigStatus.Enabled"
               context="stream"
-            />
+            >
+              <template #tab-content="{ tabIdx }">
+                <AccessControlCard :server-idx="tabIdx" context="stream" />
+              </template>
+            </NgxConfigEditor>
           </div>
         </Transition>
       </div>

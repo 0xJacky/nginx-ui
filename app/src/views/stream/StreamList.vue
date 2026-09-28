@@ -1,6 +1,8 @@
 <script setup lang="tsx">
 import { StdCurd } from '@uozi-admin/curd'
 import stream from '@/api/stream'
+import { BatchAccessModal } from '@/components/AccessControl'
+import FooterToolBar from '@/components/FooterToolbar'
 import InspectConfig from '@/components/InspectConfig'
 import NamespaceTabs from '@/components/NamespaceTabs'
 import columns from './columns'
@@ -12,6 +14,14 @@ const { message } = useGlobalApp()
 
 const curd = ref()
 const inspect_config = ref()
+const selectedStreamNames = ref<string[]>([])
+const isBatchAccessOpen = ref(false)
+
+function refreshAfterBatchAccess() {
+  selectedStreamNames.value = []
+  curd.value.refresh()
+  inspect_config.value?.test()
+}
 
 const namespaceId = ref(Number.parseInt(route.query.namespace_id as string) || 0)
 
@@ -56,6 +66,7 @@ function handleAddStream() {
   <div>
     <StdCurd
       ref="curd"
+      v-model:selected-row-keys="selectedStreamNames"
       :title="$gettext('Manage Streams')"
       :api="stream"
       :columns="columns"
@@ -130,6 +141,25 @@ function handleAddStream() {
       v-model:visible="showDuplicator"
       :name="target"
       @duplicated="() => curd.refresh()"
+    />
+
+    <FooterToolBar v-if="selectedStreamNames.length > 0">
+      <template #extra>
+        {{ $gettext('%{count} streams selected', { count: String(selectedStreamNames.length) }) }}
+      </template>
+      <AButton
+        data-testid="batch-access"
+        @click="isBatchAccessOpen = true"
+      >
+        {{ $gettext('Access') }}
+      </AButton>
+    </FooterToolBar>
+
+    <BatchAccessModal
+      v-model:open="isBatchAccessOpen"
+      kind="stream"
+      :names="selectedStreamNames"
+      @done="refreshAfterBatchAccess"
     />
   </div>
 </template>

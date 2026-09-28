@@ -4,6 +4,7 @@ import type { Stream } from '@/api/stream'
 import type { JSXElements } from '@/types'
 import { datetimeRender } from '@uozi-admin/curd'
 import namespace from '@/api/namespace'
+import AccessSummaryTag from '@/components/AccessControl/AccessSummaryTag.vue'
 import ConfigStatusTag from '@/components/ConfigStatusTag'
 import NamespaceRender from '@/components/NamespaceRender'
 import ProxyTargets from '@/components/ProxyTargets'
@@ -84,6 +85,15 @@ const columns: StdTableColumn[] = [{
   sorter: true,
   pure: true,
   width: 150,
+}, {
+  title: () => $gettext('Access'),
+  dataIndex: 'access_mode',
+  customRender: ({ record }: CustomRenderArgs<Stream>) => h(AccessSummaryTag, {
+    mode: record.access_mode,
+    slug: record.access_list,
+  }),
+  pure: true,
+  width: 120,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
