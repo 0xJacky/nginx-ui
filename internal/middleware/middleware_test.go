@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -120,4 +121,42 @@ func TestNodeAuthenticationFailureLogExcludesCredentials(t *testing.T) {
 	assert.Equal(t, "node signature is expired", failure.Reason)
 	assert.NotContains(t, failure.Path, secret)
 	assert.NotContains(t, failure.Reason, secret)
+}
+
+func TestAuthenticateNodeRequestHonorsReplicatedFromOnlyForNodes(t *testing.T) {
+	originalSecret := settings.NodeSettings.Secret
+	t.Cleanup(func() {
+		settings.NodeSettings.Secret = originalSecret
+	})
+	settings.NodeSettings.Secret = "matching-legacy-secret"
+
+	for _, testCase := range []struct {
+		name           string
+		secret         string
+		replicatedFrom string
+		wantHandled    bool
+		wantReplicated bool
+	}{
+		{name: "node sync", secret: "matching-legacy-secret", replicatedFrom: `"origin-instance"`, wantHandled: true, wantReplicated: true},
+		{name: "node without marker", secret: "matching-legacy-secret", wantHandled: true},
+		{name: "malformed marker", secret: "matching-legacy-secret", replicatedFrom: "origin-instance", wantHandled: true},
+		// A browser cannot switch off the synchronization of its own change.
+		{name: "unauthenticated marker", replicatedFrom: `"origin-instance"`},
+	} {
+		t.Run(testCase.name, func(t *testing.T) {
+			c := newTestGinContext(t, http.MethodPost, "/api/sites/example.com", nil)
+			if testCase.secret != "" {
+				c.Request.Header.Set("X-Node-Secret", testCase.secret)
+			}
+			if testCase.replicatedFrom != "" {
+				c.Request.Header.Set(nodeauth.ReplicatedFromHeader, testCase.replicatedFrom)
+			}
+
+			handled, err := authenticateNodeRequest(c)
+
+			require.NoError(t, err)
+			assert.Equal(t, testCase.wantHandled, handled)
+			assert.Equal(t, testCase.wantReplicated, nodeauth.IsReplicated(c.Request.Context()))
+		})
+	}
 }

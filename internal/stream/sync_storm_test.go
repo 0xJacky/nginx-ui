@@ -1,6 +1,7 @@
 package stream
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -16,6 +17,31 @@ import (
 )
 
 func TestSyncSaveEnablesEachSuccessfulNodeOnce(t *testing.T) {
+	saves, enables, namespaces := runStreamSyncSave(t, context.Background())
+
+	for index := range saves {
+		require.EqualValues(t, 1, saves[index], "node %d save requests", index+1)
+		require.EqualValues(t, 1, enables[index], "node %d enable requests", index+1)
+		require.Equal(t, "all-node", namespaces[index], "node %d namespace", index+1)
+	}
+}
+
+// A node that receives a replicated save must not forward it: when the peer
+// lists this node as a sync target too, forwarding bounces the save forever.
+func TestSyncSaveSkipsReplicatedChange(t *testing.T) {
+	request := httptest.NewRequest(http.MethodPost, "/api/streams/storm-stream", nil)
+	request.Header.Set(nodeauth.ReplicatedFromHeader, `"11111111-1111-4111-8111-111111111111"`)
+	request = nodeauth.WithPrincipal(request, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodLegacy})
+
+	saves, enables, _ := runStreamSyncSave(t, request.Context())
+
+	require.EqualValues(t, [2]int32{0, 0}, saves)
+	require.EqualValues(t, [2]int32{0, 0}, enables)
+}
+
+func runStreamSyncSave(t *testing.T, ctx context.Context) (saves, enables [2]int32, namespaces [2]any) {
+	t.Helper()
+
 	confDir, _ := setupStreamMutationTest(t)
 	database := model.UseDB()
 	require.NoError(t, database.AutoMigrate(
@@ -36,7 +62,7 @@ func TestSyncSaveEnablesEachSuccessfulNodeOnce(t *testing.T) {
 
 	var saveRequests [2]atomic.Int32
 	var enableRequests [2]atomic.Int32
-	var namespaces [2]atomic.Value
+	var receivedNamespaces [2]atomic.Value
 	newNodeServer := func(index int) *httptest.Server {
 		return httptest.NewServer(http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
 			response.Header().Set("Content-Type", "application/json")
@@ -47,7 +73,7 @@ func TestSyncSaveEnablesEachSuccessfulNodeOnce(t *testing.T) {
 					Namespace string `json:"namespace"`
 				}
 				_ = json.NewDecoder(request.Body).Decode(&payload)
-				namespaces[index].Store(payload.Namespace)
+				receivedNamespaces[index].Store(payload.Namespace)
 			case "/api/streams/storm-stream/enable":
 				enableRequests[index].Add(1)
 			default:
@@ -101,11 +127,12 @@ func TestSyncSaveEnablesEachSuccessfulNodeOnce(t *testing.T) {
 		RemoteEnabled: true,
 	}).Error)
 
-	syncSave(name, content)
+	syncSave(ctx, name, content)
 
 	for index := range servers {
-		require.EqualValues(t, 1, saveRequests[index].Load(), "node %d save requests", index+1)
-		require.EqualValues(t, 1, enableRequests[index].Load(), "node %d enable requests", index+1)
-		require.Equal(t, "all-node", namespaces[index].Load(), "node %d namespace", index+1)
+		saves[index] = saveRequests[index].Load()
+		enables[index] = enableRequests[index].Load()
+		namespaces[index] = receivedNamespaces[index].Load()
 	}
+	return saves, enables, namespaces
 }

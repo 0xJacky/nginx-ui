@@ -300,6 +300,9 @@ func configureProxyDirector(proxy *httputil.ReverseProxy, requireIdentityEncodin
 		query.Del("x_node_id")
 		req.URL.RawQuery = query.Encode()
 		req.Header.Del("X-Node-ID")
+		// Only a node's own synchronization may mark a request as replicated;
+		// a change a person makes on the target node must still fan out there.
+		req.Header.Del(nodeauth.ReplicatedFromHeader)
 		if requireIdentityEncoding {
 			req.Header.Set("Accept-Encoding", "identity")
 		}

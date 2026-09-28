@@ -89,7 +89,7 @@ func tryAcquireHTTPSOnboarding(key string) (release func(), ok bool) {
 // same way Save does after a successful write. It is a variable so tests can
 // observe the replication without real nodes.
 var resyncSiteSave = func(name, content string) {
-	startSyncSave(name, content)
+	startSyncSave(context.Background(), name, content)
 }
 
 // HTTPSRequest is the message a client sends to start an HTTPS onboarding run.
@@ -566,7 +566,7 @@ func advancedConfigError(err error) error {
 // and enables the site.
 func (o *HTTPSOnboarding) stage(state *httpsRunState) error {
 	if state.stagedContent != state.originalBuilt {
-		if err := Save(o.Name, state.stagedContent, true, state.namespaceID, state.syncNodeIDs,
+		if err := Save(context.Background(), o.Name, state.stagedContent, true, state.namespaceID, state.syncNodeIDs,
 			model.PostSyncActionReloadNginx); err != nil {
 			return err
 		}
@@ -574,7 +574,7 @@ func (o *HTTPSOnboarding) stage(state *httpsRunState) error {
 		state.expectedRaw = []byte(state.stagedContent)
 	}
 	if !state.wasEnabled {
-		if err := Enable(o.Name); err != nil {
+		if err := Enable(context.Background(), o.Name); err != nil {
 			return err
 		}
 	}
@@ -692,7 +692,7 @@ func (o *HTTPSOnboarding) finalize(state *httpsRunState, result HTTPSIssueResult
 		return nil, configChangedError()
 	}
 
-	if err := Save(o.Name, content, true, state.namespaceID, state.syncNodeIDs, model.PostSyncActionReloadNginx); err != nil {
+	if err := Save(context.Background(), o.Name, content, true, state.namespaceID, state.syncNodeIDs, model.PostSyncActionReloadNginx); err != nil {
 		return func() error {
 			return o.restoreStaged(state.path, before, beforeRaw)
 		}, err

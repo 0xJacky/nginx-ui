@@ -1,6 +1,7 @@
 package serverstate
 
 import (
+	"context"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
@@ -136,7 +137,7 @@ func apply(source Source, path, content, userName string) error {
 				record = found[0]
 			}
 		}
-		return site.Save(source.Name, content, true, record.NamespaceID, record.SyncNodeIDs,
+		return site.Save(context.Background(), source.Name, content, true, record.NamespaceID, record.SyncNodeIDs,
 			model.PostSyncActionReloadNginx)
 	case SourceStream:
 		record := &model.Stream{}
@@ -146,9 +147,9 @@ func apply(source Source, path, content, userName string) error {
 				record = found[0]
 			}
 		}
-		return stream.Save(source.Name, content, true, record.SyncNodeIDs, model.PostSyncActionReloadNginx)
+		return stream.Save(context.Background(), source.Name, content, true, record.SyncNodeIDs, model.PostSyncActionReloadNginx)
 	default:
-		return config.Save(path, content, nil, userName)
+		return config.Save(context.Background(), path, content, nil, userName)
 	}
 }
 

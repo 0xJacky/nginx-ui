@@ -1,6 +1,7 @@
 package stream
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"runtime"
@@ -15,7 +16,7 @@ import (
 )
 
 // Enable enables a site by creating a symlink in sites-enabled
-func Enable(name string) (err error) {
+func Enable(ctx context.Context, name string) (err error) {
 	configFilePath, err := ResolveAvailablePath(name)
 	if err != nil {
 		return err
@@ -38,7 +39,7 @@ func Enable(name string) (err error) {
 			return
 		}
 
-		go syncEnable(name)
+		go syncEnable(ctx, name)
 
 		return
 	}
@@ -79,13 +80,13 @@ func Enable(name string) (err error) {
 		logger.Errorf("Resume certificate auto-renewal failed: name=%q error=%v", name, err)
 	}
 
-	go syncEnable(name)
+	go syncEnable(ctx, name)
 
 	return
 }
 
-func syncEnable(name string) {
-	nodes := getSyncNodes(name)
+func syncEnable(ctx context.Context, name string) {
+	nodes := getSyncNodes(ctx, name)
 
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nodes))

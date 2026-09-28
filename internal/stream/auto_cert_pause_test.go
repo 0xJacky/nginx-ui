@@ -1,6 +1,7 @@
 package stream
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"sync/atomic"
@@ -52,13 +53,13 @@ func TestDisablePausesAndEnableResumesStreamAutoCert(t *testing.T) {
 	certModel := &model.Cert{Name: name, Filename: name, AutoCert: model.AutoCertEnabled}
 	require.NoError(t, model.UseDB().Create(certModel).Error)
 
-	require.NoError(t, Disable(name))
+	require.NoError(t, Disable(context.Background(), name))
 
 	var paused model.Cert
 	require.NoError(t, model.UseDB().First(&paused, certModel.ID).Error)
 	assert.Equal(t, model.AutoCertPaused, paused.AutoCert)
 
-	require.NoError(t, Enable(name))
+	require.NoError(t, Enable(context.Background(), name))
 
 	var resumed model.Cert
 	require.NoError(t, model.UseDB().First(&resumed, certModel.ID).Error)

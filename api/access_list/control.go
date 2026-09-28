@@ -1,6 +1,7 @@
 package access_list
 
 import (
+	"context"
 	"net/http"
 
 	internalaccess "github.com/0xJacky/Nginx-UI/internal/access_list"
@@ -137,7 +138,7 @@ func BatchApplyAccessControl(c *gin.Context) {
 
 	results := make([]batchResult, 0, len(json.Names))
 	for _, name := range json.Names {
-		err := batchApplyOne(json.Kind, name, json.Mode, json.Slug)
+		err := batchApplyOne(c.Request.Context(), json.Kind, name, json.Mode, json.Slug)
 		result := batchResult{Name: name, Success: err == nil}
 		if err != nil {
 			result.Error = err.Error()
@@ -148,7 +149,7 @@ func BatchApplyAccessControl(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"results": results})
 }
 
-func batchApplyOne(kind, name, mode, slug string) error {
+func batchApplyOne(ctx context.Context, kind, name, mode, slug string) error {
 	resolve := site.ResolveAvailablePath
 	if kind == internalaccess.RefKindStream {
 		resolve = stream.ResolveAvailablePath
@@ -188,7 +189,7 @@ func batchApplyOne(kind, name, mode, slug string) error {
 		if record, err := s.Where(s.Path.Eq(path)).First(); err == nil {
 			syncNodeIDs = record.SyncNodeIDs
 		}
-		return stream.Save(name, updated, true, syncNodeIDs, model.PostSyncActionReloadNginx)
+		return stream.Save(ctx, name, updated, true, syncNodeIDs, model.PostSyncActionReloadNginx)
 	}
 
 	s := query.Site
@@ -198,5 +199,5 @@ func batchApplyOne(kind, name, mode, slug string) error {
 		namespaceID = record.NamespaceID
 		syncNodeIDs = record.SyncNodeIDs
 	}
-	return site.Save(name, updated, true, namespaceID, syncNodeIDs, model.PostSyncActionReloadNginx)
+	return site.Save(ctx, name, updated, true, namespaceID, syncNodeIDs, model.PostSyncActionReloadNginx)
 }

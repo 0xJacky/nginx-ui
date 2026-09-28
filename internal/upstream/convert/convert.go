@@ -9,6 +9,7 @@
 package convert
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"strings"
@@ -45,7 +46,7 @@ type plan struct {
 // Convert moves the upstream block req.Upstream out of the site req.Site into
 // a managed upstream group, then tests and reloads nginx once. It returns the
 // new group.
-func Convert(req Request, userName string) (*managed.Detail, error) {
+func Convert(ctx context.Context, req Request, userName string) (*managed.Detail, error) {
 	// Hold the apply lock from reading the site to reloading nginx, so no
 	// other save can change either file in between.
 	release := config.LockApply()
@@ -62,7 +63,7 @@ func Convert(req Request, userName string) (*managed.Detail, error) {
 
 	cfg := managedConfigRecord(p.managedPath)
 	rescan(p)
-	startSync(p, cfg, req.Upstream, userName)
+	startSync(ctx, p, cfg, req.Upstream, userName)
 
 	return managed.Get(req.Upstream)
 }

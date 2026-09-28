@@ -116,7 +116,7 @@ func AddConfig(c *gin.Context) {
 		return
 	}
 
-	err = config.SyncToRemoteServer(cfg, api.CurrentUser(c).Name)
+	err = config.SyncToRemoteServer(c.Request.Context(), cfg, api.CurrentUser(c).Name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

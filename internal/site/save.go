@@ -1,6 +1,7 @@
 package site
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"runtime"
@@ -17,7 +18,7 @@ import (
 )
 
 // Save saves a site configuration file
-func Save(name string, content string, overwrite bool, namespaceId uint64, syncNodeIds []uint64, postAction string) (err error) {
+func Save(ctx context.Context, name string, content string, overwrite bool, namespaceId uint64, syncNodeIds []uint64, postAction string) (err error) {
 	path, err := ResolveAvailablePath(name)
 	if err != nil {
 		return err
@@ -151,7 +152,7 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		}
 	}
 
-	startSyncSave(name, content)
+	startSyncSave(ctx, name, content)
 
 	return
 }
@@ -160,11 +161,11 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 // that swap global settings (tests) can wait for them to finish first.
 var pendingSyncs sync.WaitGroup
 
-func startSyncSave(name, content string) {
+func startSyncSave(ctx context.Context, name, content string) {
 	pendingSyncs.Add(1)
 	go func() {
 		defer pendingSyncs.Done()
-		syncSave(name, content)
+		syncSave(ctx, name, content)
 	}()
 }
 
@@ -174,8 +175,8 @@ func WaitForSync() {
 	pendingSyncs.Wait()
 }
 
-func syncSave(name string, content string) {
-	nodes, postSyncAction, namespaceName := getSyncData(name)
+func syncSave(ctx context.Context, name string, content string) {
+	nodes, postSyncAction, namespaceName := getSyncData(ctx, name)
 	clustersync.PushAccessListsToNodes(content, nodes)
 
 	wg := &sync.WaitGroup{}

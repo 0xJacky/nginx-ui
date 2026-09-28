@@ -1,6 +1,7 @@
 package site
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -159,7 +160,7 @@ func TestDisableMaintenanceRestoresMaintenanceConfigWhenReloadFails(t *testing.T
 		t.Fatalf("failed to write available config: %v", err)
 	}
 
-	if err := EnableMaintenance("example.com"); err != nil {
+	if err := EnableMaintenance(context.Background(), "example.com"); err != nil {
 		t.Fatalf("EnableMaintenance() error = %v", err)
 	}
 
@@ -181,7 +182,7 @@ func TestDisableMaintenanceRestoresMaintenanceConfigWhenReloadFails(t *testing.T
 	settings.NginxSettings.ReloadCmd = fmt.Sprintf(
 		"if [ ! -e %q ]; then touch %q; exit 1; fi", reloadMarker, reloadMarker)
 
-	if err := DisableMaintenance("example.com"); err == nil {
+	if err := DisableMaintenance(context.Background(), "example.com"); err == nil {
 		t.Fatalf("DisableMaintenance() error = nil, want reload failure")
 	}
 

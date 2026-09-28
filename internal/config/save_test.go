@@ -1,6 +1,7 @@
 package config
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -75,7 +76,7 @@ func TestSaveKeepsPreviousContentWhenNginxTestFails(t *testing.T) {
 	settings.NginxSettings.TestConfigCmd = failingTestConfigCmd
 	settings.NginxSettings.ReloadCmd = fmt.Sprintf("touch %q", reloadMarker)
 
-	err := Save(absPath, "server {\n    bogus_directive;\n}\n", nil)
+	err := Save(context.Background(), absPath, "server {\n    bogus_directive;\n}\n", nil)
 
 	if err == nil {
 		t.Fatal("Save expected an error when nginx test fails")
@@ -103,7 +104,7 @@ func TestSaveRemovesCreatedFileWhenNginxTestFails(t *testing.T) {
 	absPath := filepath.Join(confDir, "conf.d", "created.conf")
 	settings.NginxSettings.TestConfigCmd = failingTestConfigCmd
 
-	err := Save(absPath, "server {\n    bogus_directive;\n}\n", nil)
+	err := Save(context.Background(), absPath, "server {\n    bogus_directive;\n}\n", nil)
 
 	if err == nil {
 		t.Fatal("Save expected an error when nginx test fails")
@@ -127,7 +128,7 @@ func TestSaveRestoresPreviousContentWhenReloadFails(t *testing.T) {
 	settings.NginxSettings.ReloadCmd = fmt.Sprintf(
 		"if [ ! -e %q ]; then touch %q; exit 1; fi", reloadMarker, reloadMarker)
 
-	err := Save(absPath, "server {\n    listen 81;\n}\n", nil)
+	err := Save(context.Background(), absPath, "server {\n    listen 81;\n}\n", nil)
 
 	if err == nil {
 		t.Fatal("Save expected an error when nginx reload fails")
@@ -156,7 +157,7 @@ func TestSaveWritesContentWhenNginxAcceptsIt(t *testing.T) {
 	absPath := filepath.Join(confDir, "conf.d", "app.conf")
 	newContent := "server {\n    listen 8080;\n}\n"
 
-	if err := Save(absPath, newContent, nil); err != nil {
+	if err := Save(context.Background(), absPath, newContent, nil); err != nil {
 		t.Fatalf("Save returned error: %v", err)
 	}
 

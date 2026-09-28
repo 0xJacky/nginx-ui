@@ -1,6 +1,7 @@
 package site
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -16,29 +17,45 @@ import (
 )
 
 type syncRequestCounts struct {
-	save      [2]int32
-	enable    [2]int32
-	namespace [2]string
+	save           [2]int32
+	enable         [2]int32
+	namespace      [2]string
+	replicatedFrom [2]string
 }
 
 func TestSyncSaveEnablesEachSuccessfulNodeOnce(t *testing.T) {
-	counts := runSyncSaveRequestCountTest(t, [2]int{http.StatusOK, http.StatusOK})
+	counts := runSyncSaveRequestCountTest(t, context.Background(), [2]int{http.StatusOK, http.StatusOK})
 
 	for index := range counts.save {
 		require.EqualValues(t, 1, counts.save[index], "node %d save requests", index+1)
 		require.EqualValues(t, 1, counts.enable[index], "node %d enable requests", index+1)
 		require.Equal(t, "all-node", counts.namespace[index], "node %d namespace", index+1)
+		require.Equal(t, `"11111111-1111-4111-8111-111111111111"`, counts.replicatedFrom[index],
+			"node %d must see the save as replicated", index+1)
 	}
 }
 
+// A node that receives a replicated save must not forward it: when the peer
+// lists this node as a sync target too, forwarding bounces the save forever.
+func TestSyncSaveSkipsReplicatedChange(t *testing.T) {
+	request := httptest.NewRequest(http.MethodPost, "/api/sites/storm.example.com", nil)
+	request.Header.Set(nodeauth.ReplicatedFromHeader, `"22222222-2222-4222-8222-222222222222"`)
+	request = nodeauth.WithPrincipal(request, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodLegacy})
+
+	counts := runSyncSaveRequestCountTest(t, request.Context(), [2]int{http.StatusOK, http.StatusOK})
+
+	require.EqualValues(t, [2]int32{0, 0}, counts.save)
+	require.EqualValues(t, [2]int32{0, 0}, counts.enable)
+}
+
 func TestSyncSaveDoesNotEnableNodeWhoseSaveFailed(t *testing.T) {
-	counts := runSyncSaveRequestCountTest(t, [2]int{http.StatusOK, http.StatusInternalServerError})
+	counts := runSyncSaveRequestCountTest(t, context.Background(), [2]int{http.StatusOK, http.StatusInternalServerError})
 
 	require.EqualValues(t, [2]int32{1, 1}, counts.save)
 	require.EqualValues(t, [2]int32{1, 0}, counts.enable)
 }
 
-func runSyncSaveRequestCountTest(t *testing.T, saveStatuses [2]int) syncRequestCounts {
+func runSyncSaveRequestCountTest(t *testing.T, ctx context.Context, saveStatuses [2]int) syncRequestCounts {
 	t.Helper()
 
 	confDir, _ := setupSiteMutationTest(t)
@@ -62,12 +79,14 @@ func runSyncSaveRequestCountTest(t *testing.T, saveStatuses [2]int) syncRequestC
 	var saveRequests [2]atomic.Int32
 	var enableRequests [2]atomic.Int32
 	var namespaces [2]atomic.Value
+	var replicatedFrom [2]atomic.Value
 	newNodeServer := func(index int) *httptest.Server {
 		return httptest.NewServer(http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
 			response.Header().Set("Content-Type", "application/json")
 			switch request.URL.Path {
 			case "/api/sites/storm.example.com":
 				saveRequests[index].Add(1)
+				replicatedFrom[index].Store(request.Header.Get(nodeauth.ReplicatedFromHeader))
 				var payload struct {
 					Namespace string `json:"namespace"`
 				}
@@ -127,7 +146,7 @@ func runSyncSaveRequestCountTest(t *testing.T, saveStatuses [2]int) syncRequestC
 		RemoteEnabled: true,
 	}).Error)
 
-	syncSave(name, content)
+	syncSave(ctx, name, content)
 
 	counts := syncRequestCounts{}
 	for index := range servers {
@@ -135,6 +154,9 @@ func runSyncSaveRequestCountTest(t *testing.T, saveStatuses [2]int) syncRequestC
 		counts.enable[index] = enableRequests[index].Load()
 		if namespace := namespaces[index].Load(); namespace != nil {
 			counts.namespace[index] = namespace.(string)
+		}
+		if value := replicatedFrom[index].Load(); value != nil {
+			counts.replicatedFrom[index] = value.(string)
 		}
 	}
 	return counts

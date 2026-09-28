@@ -1,8 +1,10 @@
 package site
 
 import (
+	"context"
 	"encoding/json"
 
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -12,7 +14,14 @@ import (
 )
 
 // getSyncData returns the nodes and namespace metadata that need to be synchronized by site name.
-func getSyncData(name string) (nodes []*model.Node, postSyncAction, namespaceName string) {
+// A change that another node replicated here has no targets: the node where
+// it was made already fanned it out, and forwarding it again would loop.
+func getSyncData(ctx context.Context, name string) (nodes []*model.Node, postSyncAction, namespaceName string) {
+	if nodeauth.IsReplicated(ctx) {
+		logger.Infof("Skipping site sync for a replicated change: site=%q", name)
+		return
+	}
+
 	configFilePath, err := ResolveAvailablePath(name)
 	if err != nil {
 		logger.Error(err)
@@ -46,8 +55,8 @@ func getSyncData(name string) (nodes []*model.Node, postSyncAction, namespaceNam
 }
 
 // getSyncNodes returns the nodes that need to be synchronized by site name (for backward compatibility)
-func getSyncNodes(name string) (nodes []*model.Node) {
-	nodes, _, _ = getSyncData(name)
+func getSyncNodes(ctx context.Context, name string) (nodes []*model.Node) {
+	nodes, _, _ = getSyncData(ctx, name)
 	return
 }
 
@@ -55,7 +64,7 @@ func getSyncNodes(name string) (nodes []*model.Node) {
 // Callers use this to synchronize metadata that belongs to the logical site
 // but is stored outside the Nginx configuration file.
 func GetSyncNodes(name string) []*model.Node {
-	return getSyncNodes(name)
+	return getSyncNodes(context.Background(), name)
 }
 
 type SyncResult struct {

@@ -1,6 +1,7 @@
 package stream
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -53,7 +54,7 @@ func setupDeleteTest(t *testing.T) *deleteTestEnv {
 	env.db = database
 
 	originalSyncDelete := syncDelete
-	syncDelete = func(name string) {
+	syncDelete = func(_ context.Context, name string) {
 		env.syncedNames = append(env.syncedNames, name)
 	}
 	t.Cleanup(func() {
@@ -88,7 +89,7 @@ func (env *deleteTestEnv) assertRefusedWithoutSideEffects(t *testing.T, name str
 	t.Helper()
 
 	if !errors.Is(err, want) {
-		t.Fatalf("Delete(%q) error = %v, want %v", name, err, want)
+		t.Fatalf("Delete(context.Background(), %q) error = %v, want %v", name, err, want)
 	}
 	if len(env.syncedNames) != 0 {
 		t.Fatalf("refused delete dispatched sync delete for %v", env.syncedNames)
@@ -115,7 +116,7 @@ func TestDeleteEnabledStreamKeepsRecordAndSkipsSync(t *testing.T) {
 		t.Fatalf("failed to enable stream: %v", err)
 	}
 
-	err := Delete(name)
+	err := Delete(context.Background(), name)
 	env.assertRefusedWithoutSideEffects(t, name, streamModel, err, ErrStreamIsEnabled)
 }
 
@@ -130,7 +131,7 @@ func TestDeleteRemoteEnabledStreamKeepsRecordAndSkipsSync(t *testing.T) {
 	const name = "remote.conf"
 	streamModel := env.addStream(t, name, namespace.ID, true)
 
-	err := Delete(name)
+	err := Delete(context.Background(), name)
 	env.assertRefusedWithoutSideEffects(t, name, streamModel, err, ErrStreamIsEnabled)
 }
 
@@ -143,9 +144,9 @@ func TestDeleteMissingStreamKeepsRecordAndSkipsSync(t *testing.T) {
 		t.Fatalf("failed to remove stream file: %v", err)
 	}
 
-	err := Delete(name)
+	err := Delete(context.Background(), name)
 	if !errors.Is(err, ErrStreamNotFound) {
-		t.Fatalf("Delete(%q) error = %v, want %v", name, err, ErrStreamNotFound)
+		t.Fatalf("Delete(context.Background(), %q) error = %v, want %v", name, err, ErrStreamNotFound)
 	}
 	if len(env.syncedNames) != 0 {
 		t.Fatalf("refused delete dispatched sync delete for %v", env.syncedNames)
@@ -161,8 +162,8 @@ func TestDeleteDisabledStreamRemovesEverything(t *testing.T) {
 	const name = "disabled.conf"
 	streamModel := env.addStream(t, name, 0, false)
 
-	if err := Delete(name); err != nil {
-		t.Fatalf("Delete(%q) error = %v", name, err)
+	if err := Delete(context.Background(), name); err != nil {
+		t.Fatalf("Delete(context.Background(), %q) error = %v", name, err)
 	}
 	if len(env.syncedNames) != 1 || env.syncedNames[0] != name {
 		t.Fatalf("sync delete calls = %v, want [%s]", env.syncedNames, name)

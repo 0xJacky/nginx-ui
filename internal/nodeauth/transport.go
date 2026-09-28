@@ -130,14 +130,14 @@ func NewHTTPClient(node *model.Node, timeout time.Duration) (*http.Client, error
 		return nil, err
 	}
 	return &http.Client{
-		Transport: NewTransport(node, base),
+		Transport: newReplicationTransport(node.ID, NewTransport(node, base)),
 		Timeout:   timeout,
 	}, nil
 }
 
 func NewRestyClient(node *model.Node) *resty.Client {
 	base, _ := internalTransport.NewTransport()
-	return resty.New().SetTransport(NewTransport(node, base))
+	return resty.New().SetTransport(newReplicationTransport(node.ID, NewTransport(node, base)))
 }
 
 func SignWebSocketHeaders(node *model.Node, rawURL string, header http.Header) error {

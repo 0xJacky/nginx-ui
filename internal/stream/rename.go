@@ -1,6 +1,7 @@
 package stream
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"runtime"
@@ -14,7 +15,7 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-func Rename(oldName string, newName string) (err error) {
+func Rename(ctx context.Context, oldName string, newName string) (err error) {
 	oldPath, err := ResolveAvailablePath(oldName)
 	if err != nil {
 		return err
@@ -109,13 +110,13 @@ func Rename(oldName string, newName string) (err error) {
 		"name":     newName,
 	})
 
-	go syncRename(oldName, newName)
+	go syncRename(ctx, oldName, newName)
 
 	return
 }
 
-func syncRename(oldName, newName string) {
-	nodes := getSyncNodes(newName)
+func syncRename(ctx context.Context, oldName, newName string) {
+	nodes := getSyncNodes(ctx, newName)
 
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nodes))

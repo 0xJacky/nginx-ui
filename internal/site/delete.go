@@ -1,6 +1,7 @@
 package site
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"runtime"
@@ -20,7 +21,7 @@ var syncDelete = dispatchSyncDelete
 // Delete deletes a site by removing the file in sites-available. Every refusal
 // check runs before any side effect, so a refused delete leaves the database
 // record, the certificate record, the file and the remote nodes untouched.
-func Delete(name string) (err error) {
+func Delete(ctx context.Context, name string) (err error) {
 	availablePath, err := ResolveAvailablePath(name)
 	if err != nil {
 		return err
@@ -73,7 +74,7 @@ func Delete(name string) (err error) {
 
 	// The sync nodes are resolved from the site record, so dispatch before the
 	// record is deleted.
-	syncDelete(name)
+	syncDelete(ctx, name)
 
 	_, err = s.Where(s.Path.Eq(availablePath)).Unscoped().Delete(&model.Site{})
 	if err != nil {
@@ -86,8 +87,8 @@ func Delete(name string) (err error) {
 	return nginx.Remove(availablePath)
 }
 
-func dispatchSyncDelete(name string) {
-	nodes := getSyncNodes(name)
+func dispatchSyncDelete(ctx context.Context, name string) {
+	nodes := getSyncNodes(ctx, name)
 
 	for _, node := range nodes {
 		go func() {

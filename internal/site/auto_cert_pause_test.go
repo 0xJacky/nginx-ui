@@ -1,6 +1,7 @@
 package site
 
 import (
+	"context"
 	"os"
 	"testing"
 
@@ -31,7 +32,7 @@ func TestDisablePausesAndEnableResumesAutoCert(t *testing.T) {
 	}).Error)
 
 	require.NoError(t, os.Symlink(f.availablePath, f.enabledPath))
-	require.NoError(t, Disable(onboardingSiteName))
+	require.NoError(t, Disable(context.Background(), onboardingSiteName))
 
 	// The records stay, so the certificates remain reusable; only renewal pauses.
 	assert.Equal(t, map[string]int{
@@ -40,7 +41,7 @@ func TestDisablePausesAndEnableResumesAutoCert(t *testing.T) {
 		"other-site":   model.AutoCertEnabled,
 	}, autoCertStates(t))
 
-	require.NoError(t, Enable(onboardingSiteName))
+	require.NoError(t, Enable(context.Background(), onboardingSiteName))
 
 	// A renewal the user switched off stays off.
 	assert.Equal(t, map[string]int{
@@ -61,7 +62,7 @@ func TestPausedAutoCertIsNotRenewed(t *testing.T) {
 	require.NoError(t, os.Symlink(f.availablePath, f.enabledPath))
 	require.Len(t, model.GetAutoCertList(), 1)
 
-	require.NoError(t, Disable(onboardingSiteName))
+	require.NoError(t, Disable(context.Background(), onboardingSiteName))
 
 	// DNS-01 certificates renew regardless of the site's symlink, so the paused
 	// state is what keeps a disabled site's certificate from renewing.

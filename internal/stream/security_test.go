@@ -1,6 +1,7 @@
 package stream
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -93,7 +94,7 @@ func setupStreamMutationTest(t *testing.T) (string, func()) {
 func TestSaveAllowsManagedStreamName(t *testing.T) {
 	confDir, waitForSyncQuery := setupStreamMutationTest(t)
 
-	err := Save("tcp_proxy", "server {\n    listen 8080;\n}\n", true, nil, "")
+	err := Save(context.Background(), "tcp_proxy", "server {\n    listen 8080;\n}\n", true, nil, "")
 	if err != nil {
 		t.Fatalf("Save returned error: %v", err)
 	}
@@ -107,7 +108,7 @@ func TestSaveAllowsManagedStreamName(t *testing.T) {
 func TestSaveRejectsDangerousStreamExtension(t *testing.T) {
 	setupStreamMutationTest(t)
 
-	err := Save("evil.sh", "server {\n}\n", true, nil, "")
+	err := Save(context.Background(), "evil.sh", "server {\n}\n", true, nil, "")
 	if err == nil {
 		t.Fatal("Save expected validation error")
 	}
@@ -124,7 +125,7 @@ func TestRenameAllowsManagedStreamName(t *testing.T) {
 		t.Fatalf("failed to seed stream config: %v", err)
 	}
 
-	err := Rename("tcp_proxy", "tcp_proxy_new")
+	err := Rename(context.Background(), "tcp_proxy", "tcp_proxy_new")
 	if err != nil {
 		t.Fatalf("Rename returned error: %v", err)
 	}
@@ -148,12 +149,12 @@ func TestRenameThenDeleteRemovesStreamRecord(t *testing.T) {
 		t.Fatalf("failed to seed stream record: %v", err)
 	}
 
-	if err := Rename("tcp_proxy", "tcp_proxy_new"); err != nil {
+	if err := Rename(context.Background(), "tcp_proxy", "tcp_proxy_new"); err != nil {
 		t.Fatalf("Rename returned error: %v", err)
 	}
 	waitForSyncQuery()
 
-	if err := Delete("tcp_proxy_new"); err != nil {
+	if err := Delete(context.Background(), "tcp_proxy_new"); err != nil {
 		t.Fatalf("Delete returned error: %v", err)
 	}
 
@@ -174,7 +175,7 @@ func TestRenameRejectsDangerousStreamExtension(t *testing.T) {
 		t.Fatalf("failed to seed stream config: %v", err)
 	}
 
-	err := Rename("tcp_proxy", "evil.sh")
+	err := Rename(context.Background(), "tcp_proxy", "evil.sh")
 	if err == nil {
 		t.Fatal("Rename expected validation error")
 	}
@@ -233,7 +234,7 @@ func TestRenameRelinksRegularFileInEnabledDir(t *testing.T) {
 		t.Fatalf("failed to seed enabled copy: %v", err)
 	}
 
-	if err := Rename("tcp_proxy", "tcp_proxy_new"); err != nil {
+	if err := Rename(context.Background(), "tcp_proxy", "tcp_proxy_new"); err != nil {
 		t.Fatalf("Rename returned error: %v", err)
 	}
 	waitForSyncQuery()

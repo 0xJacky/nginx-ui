@@ -283,7 +283,7 @@ func SaveSite(c *gin.Context) {
 		namespaceID = clustersync.ResolveNamespaceIDByName(json.Namespace)
 	}
 
-	err := site.Save(name, json.Content, json.Overwrite, namespaceID, json.SyncNodeIDs, json.PostAction)
+	err := site.Save(c.Request.Context(), name, json.Content, json.Overwrite, namespaceID, json.SyncNodeIDs, json.PostAction)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -347,7 +347,7 @@ func RenameSite(c *gin.Context) {
 		return
 	}
 
-	err := site.Rename(oldName, json.NewName)
+	err := site.Rename(c.Request.Context(), oldName, json.NewName)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -360,7 +360,7 @@ func RenameSite(c *gin.Context) {
 	})
 }
 
-func disableMaintenanceIfExists(name string) error {
+func disableMaintenanceIfExists(ctx context.Context, name string) error {
 	// Check if the site is in maintenance mode, if yes, disable maintenance mode first
 	maintenanceConfigPath, err := site.ResolveEnabledMaintenancePath(name)
 	if err != nil {
@@ -373,7 +373,7 @@ func disableMaintenanceIfExists(name string) error {
 	}
 	if maintenanceExists {
 		// Site is in maintenance mode, disable it first
-		err := site.DisableMaintenance(name)
+		err := site.DisableMaintenance(ctx, name)
 		if err != nil {
 			return err
 		}
@@ -382,23 +382,23 @@ func disableMaintenanceIfExists(name string) error {
 	return nil
 }
 
-func enableSiteByName(name string) error {
-	if err := disableMaintenanceIfExists(name); err != nil {
+func enableSiteByName(ctx context.Context, name string) error {
+	if err := disableMaintenanceIfExists(ctx, name); err != nil {
 		return err
 	}
 
-	return site.Enable(name)
+	return site.Enable(ctx, name)
 }
 
-func disableSiteByName(name string) error {
-	if err := disableMaintenanceIfExists(name); err != nil {
+func disableSiteByName(ctx context.Context, name string) error {
+	if err := disableMaintenanceIfExists(ctx, name); err != nil {
 		return err
 	}
 
-	return site.Disable(name)
+	return site.Disable(ctx, name)
 }
 
-func enableMaintenanceByName(name string, payload *site.MaintenancePayload) error {
+func enableMaintenanceByName(ctx context.Context, name string, payload *site.MaintenancePayload) error {
 	// If site is already enabled, disable the normal site first.
 	enabledConfigPath, err := site.ResolveEnabledPath(name)
 	if err != nil {
@@ -410,12 +410,12 @@ func enableMaintenanceByName(name string, payload *site.MaintenancePayload) erro
 		return err
 	}
 	if enabledExists {
-		if err := site.Disable(name); err != nil {
+		if err := site.Disable(ctx, name); err != nil {
 			return err
 		}
 	}
 
-	return site.EnableMaintenanceWithPayload(name, payload)
+	return site.EnableMaintenanceWithPayload(ctx, name, payload)
 }
 
 func EnableSite(c *gin.Context) {
@@ -424,7 +424,7 @@ func EnableSite(c *gin.Context) {
 		return
 	}
 
-	err := enableSiteByName(name)
+	err := enableSiteByName(c.Request.Context(), name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -443,7 +443,7 @@ func DisableSite(c *gin.Context) {
 		return
 	}
 
-	err := disableSiteByName(name)
+	err := disableSiteByName(c.Request.Context(), name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -470,7 +470,7 @@ func BatchEnableSites(c *gin.Context) {
 		if rejectInvalidSiteName(c, name) {
 			return
 		}
-		if err := enableSiteByName(name); err != nil {
+		if err := enableSiteByName(c.Request.Context(), name); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
@@ -493,7 +493,7 @@ func BatchDisableSites(c *gin.Context) {
 		if rejectInvalidSiteName(c, name) {
 			return
 		}
-		if err := disableSiteByName(name); err != nil {
+		if err := disableSiteByName(c.Request.Context(), name); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
@@ -531,7 +531,7 @@ func BatchEnableMaintenanceSites(c *gin.Context) {
 		if rejectInvalidSiteName(c, name) {
 			return
 		}
-		if err := enableMaintenanceByName(name, payload); err != nil {
+		if err := enableMaintenanceByName(c.Request.Context(), name, payload); err != nil {
 			cosy.ErrHandler(c, err)
 			return
 		}
@@ -550,7 +550,7 @@ func DeleteSite(c *gin.Context) {
 		return
 	}
 
-	err := site.Delete(name)
+	err := site.Delete(c.Request.Context(), name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -639,7 +639,7 @@ func EnableMaintenanceSite(c *gin.Context) {
 		return
 	}
 
-	err = enableMaintenanceByName(name, &req)
+	err = enableMaintenanceByName(c.Request.Context(), name, &req)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

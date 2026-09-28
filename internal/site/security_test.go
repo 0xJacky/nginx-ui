@@ -1,6 +1,7 @@
 package site
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -91,7 +92,7 @@ func setupSiteMutationTest(t *testing.T) (string, func()) {
 func TestSaveAllowsManagedSiteHostname(t *testing.T) {
 	confDir, waitForSyncQuery := setupSiteMutationTest(t)
 
-	err := Save("example.com", "server {\n    listen 80;\n}\n", true, 0, nil, "")
+	err := Save(context.Background(), "example.com", "server {\n    listen 80;\n}\n", true, 0, nil, "")
 	if err != nil {
 		t.Fatalf("Save returned error: %v", err)
 	}
@@ -105,7 +106,7 @@ func TestSaveAllowsManagedSiteHostname(t *testing.T) {
 func TestSaveRejectsDangerousSiteExtension(t *testing.T) {
 	setupSiteMutationTest(t)
 
-	err := Save("evil.pl", "server {\n}\n", true, 0, nil, "")
+	err := Save(context.Background(), "evil.pl", "server {\n}\n", true, 0, nil, "")
 	if err == nil {
 		t.Fatal("Save expected validation error")
 	}
@@ -122,7 +123,7 @@ func TestRenameAllowsManagedSiteHostname(t *testing.T) {
 		t.Fatalf("failed to seed site config: %v", err)
 	}
 
-	err := Rename("old.example.com", "new.example.com")
+	err := Rename(context.Background(), "old.example.com", "new.example.com")
 	if err != nil {
 		t.Fatalf("Rename returned error: %v", err)
 	}
@@ -140,7 +141,7 @@ func TestRenameRejectsDangerousSiteExtension(t *testing.T) {
 		t.Fatalf("failed to seed site config: %v", err)
 	}
 
-	err := Rename("old.example.com", "evil.pl")
+	err := Rename(context.Background(), "old.example.com", "evil.pl")
 	if err == nil {
 		t.Fatal("Rename expected validation error")
 	}
@@ -199,7 +200,7 @@ func TestRenameRelinksRegularFileInEnabledDir(t *testing.T) {
 		t.Fatalf("failed to seed enabled copy: %v", err)
 	}
 
-	if err := Rename("old.example.com", "new.example.com"); err != nil {
+	if err := Rename(context.Background(), "old.example.com", "new.example.com"); err != nil {
 		t.Fatalf("Rename returned error: %v", err)
 	}
 	waitForSyncQuery()

@@ -1,6 +1,7 @@
 package config
 
 import (
+	"context"
 	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -11,7 +12,7 @@ import (
 	"gorm.io/gen/field"
 )
 
-func Save(absPath string, content string, cfg *model.Config, userNames ...string) (err error) {
+func Save(ctx context.Context, absPath string, content string, cfg *model.Config, userNames ...string) (err error) {
 	q := query.Config
 	if cfg == nil {
 		cfg, err = q.Assign(field.Attrs(&model.Config{
@@ -58,7 +59,7 @@ func Save(absPath string, content string, cfg *model.Config, userNames ...string
 	if len(userNames) > 0 {
 		userName = userNames[0]
 	}
-	err = SyncToRemoteServer(cfg, userName)
+	err = SyncToRemoteServer(ctx, cfg, userName)
 	if err != nil {
 		return
 	}

@@ -1,6 +1,7 @@
 package site
 
 import (
+	"context"
 	"crypto/sha256"
 	"fmt"
 	"net/http"
@@ -87,13 +88,13 @@ func normalizeMaintenancePayload(payload *MaintenancePayload) MaintenancePayload
 }
 
 // EnableMaintenance enables maintenance mode for a site
-func EnableMaintenance(name string) (err error) {
-	return EnableMaintenanceWithPayload(name, nil)
+func EnableMaintenance(ctx context.Context, name string) (err error) {
+	return EnableMaintenanceWithPayload(ctx, name, nil)
 }
 
 // EnableMaintenanceWithPayload enables maintenance mode for a site and injects
 // custom metadata used by maintenance pages.
-func EnableMaintenanceWithPayload(name string, payload *MaintenancePayload) (err error) {
+func EnableMaintenanceWithPayload(ctx context.Context, name string, payload *MaintenancePayload) (err error) {
 	normalizedPayload := normalizeMaintenancePayload(payload)
 
 	if err = validateSiteName(name); err != nil {
@@ -133,7 +134,7 @@ func EnableMaintenanceWithPayload(name string, payload *MaintenancePayload) (err
 	// Remote namespaces have no local Nginx to switch into maintenance mode, so
 	// the request is only dispatched to the member nodes.
 	if IsRemoteDeploy(name) {
-		go syncEnableMaintenance(name, normalizedPayload)
+		go syncEnableMaintenance(ctx, name, normalizedPayload)
 
 		return
 	}
@@ -204,20 +205,20 @@ func EnableMaintenanceWithPayload(name string, payload *MaintenancePayload) (err
 	}
 
 	// Synchronize with other nodes
-	go syncEnableMaintenance(name, normalizedPayload)
+	go syncEnableMaintenance(ctx, name, normalizedPayload)
 
 	return nil
 }
 
 // DisableMaintenance disables maintenance mode for a site
-func DisableMaintenance(name string) (err error) {
+func DisableMaintenance(ctx context.Context, name string) (err error) {
 	if err = validateSiteName(name); err != nil {
 		return err
 	}
 
 	// Remote namespaces have no local maintenance configuration to restore.
 	if IsRemoteDeploy(name) {
-		go syncDisableMaintenance(name)
+		go syncDisableMaintenance(ctx, name)
 
 		return
 	}
@@ -291,7 +292,7 @@ func DisableMaintenance(name string) (err error) {
 	}
 
 	// Synchronize with other nodes
-	go syncDisableMaintenance(name)
+	go syncDisableMaintenance(ctx, name)
 
 	return nil
 }
@@ -872,8 +873,8 @@ func extractParams(directive config.IDirective) []string {
 }
 
 // syncEnableMaintenance synchronizes enabling maintenance mode with other nodes
-func syncEnableMaintenance(name string, payload MaintenancePayload) {
-	nodes := getSyncNodes(name)
+func syncEnableMaintenance(ctx context.Context, name string, payload MaintenancePayload) {
+	nodes := getSyncNodes(ctx, name)
 
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nodes))
@@ -910,8 +911,8 @@ func syncEnableMaintenance(name string, payload MaintenancePayload) {
 }
 
 // syncDisableMaintenance synchronizes disabling maintenance mode with other nodes
-func syncDisableMaintenance(name string) {
-	nodes := getSyncNodes(name)
+func syncDisableMaintenance(ctx context.Context, name string) {
+	nodes := getSyncNodes(ctx, name)
 
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nodes))

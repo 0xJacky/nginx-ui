@@ -14,12 +14,12 @@ import (
 
 // UpstreamInfo represents an upstream with its configuration and health status
 type UpstreamInfo struct {
-	Name       string                     `json:"name"`
-	Servers    []upstream.ProxyTarget     `json:"servers"`
-	ConfigPath string                     `json:"config_path"`
-	LastSeen   string                     `json:"last_seen"`
+	Name       string                      `json:"name"`
+	Servers    []upstream.ProxyTarget      `json:"servers"`
+	ConfigPath string                      `json:"config_path"`
+	LastSeen   string                      `json:"last_seen"`
 	Status     map[string]*upstream.Status `json:"status"`
-	Enabled    bool                       `json:"enabled"`
+	Enabled    bool                        `json:"enabled"`
 }
 
 // GetUpstreamList returns all upstreams with their configuration and health status
@@ -135,4 +135,3 @@ func UpdateUpstreamConfig(c *gin.Context) {
 		"message": "Upstream config updated successfully",
 	})
 }
-

@@ -1,6 +1,7 @@
 package site
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"runtime"
@@ -14,7 +15,7 @@ import (
 )
 
 // Disable disables a site by removing the symlink in sites-enabled
-func Disable(name string) (err error) {
+func Disable(ctx context.Context, name string) (err error) {
 	enabledConfigFilePath, err := resolveEnabledSymlinkPath(name)
 	if err != nil {
 		return err
@@ -27,7 +28,7 @@ func Disable(name string) (err error) {
 			return
 		}
 
-		go syncDisable(name)
+		go syncDisable(ctx, name)
 
 		return
 	}
@@ -59,13 +60,13 @@ func Disable(name string) (err error) {
 		return res.GetError()
 	}
 
-	go syncDisable(name)
+	go syncDisable(ctx, name)
 
 	return
 }
 
-func syncDisable(name string) {
-	nodes := getSyncNodes(name)
+func syncDisable(ctx context.Context, name string) {
+	nodes := getSyncNodes(ctx, name)
 
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nodes))

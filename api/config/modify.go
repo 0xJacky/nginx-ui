@@ -78,7 +78,7 @@ func EditConfig(c *gin.Context) {
 	cfg.SyncNodeIds = json.SyncNodeIds
 	cfg.SyncOverwrite = json.SyncOverwrite
 
-	err = config.Save(absPath, content, cfg, api.CurrentUser(c).Name)
+	err = config.Save(c.Request.Context(), absPath, content, cfg, api.CurrentUser(c).Name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

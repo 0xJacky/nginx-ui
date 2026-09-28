@@ -1,6 +1,7 @@
 package site
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"os"
@@ -53,7 +54,7 @@ func setupDeleteTest(t *testing.T) *deleteTestEnv {
 	env.db = database
 
 	originalSyncDelete := syncDelete
-	syncDelete = func(name string) {
+	syncDelete = func(_ context.Context, name string) {
 		env.syncedNames = append(env.syncedNames, name)
 	}
 	t.Cleanup(func() {
@@ -88,7 +89,7 @@ func (env *deleteTestEnv) assertRefusedWithoutSideEffects(t *testing.T, name str
 	t.Helper()
 
 	if !errors.Is(err, want) {
-		t.Fatalf("Delete(%q) error = %v, want %v", name, err, want)
+		t.Fatalf("Delete(context.Background(), %q) error = %v, want %v", name, err, want)
 	}
 	if len(env.syncedNames) != 0 {
 		t.Fatalf("refused delete dispatched sync delete for %v", env.syncedNames)
@@ -115,7 +116,7 @@ func TestDeleteEnabledSiteKeepsRecordAndSkipsSync(t *testing.T) {
 		t.Fatalf("failed to enable site: %v", err)
 	}
 
-	err := Delete(name)
+	err := Delete(context.Background(), name)
 	env.assertRefusedWithoutSideEffects(t, name, siteModel, err, ErrSiteIsEnabled)
 }
 
@@ -129,7 +130,7 @@ func TestDeleteSiteInMaintenanceKeepsRecordAndSkipsSync(t *testing.T) {
 		t.Fatalf("failed to write maintenance file: %v", err)
 	}
 
-	err := Delete(name)
+	err := Delete(context.Background(), name)
 	env.assertRefusedWithoutSideEffects(t, name, siteModel, err, ErrSiteIsInMaintenance)
 }
 
@@ -144,7 +145,7 @@ func TestDeleteRemoteEnabledSiteKeepsRecordAndSkipsSync(t *testing.T) {
 	const name = "remote.conf"
 	siteModel := env.addSite(t, name, namespace.ID, true)
 
-	err := Delete(name)
+	err := Delete(context.Background(), name)
 	env.assertRefusedWithoutSideEffects(t, name, siteModel, err, ErrSiteIsEnabled)
 }
 
@@ -157,9 +158,9 @@ func TestDeleteMissingSiteKeepsRecordAndSkipsSync(t *testing.T) {
 		t.Fatalf("failed to remove site file: %v", err)
 	}
 
-	err := Delete(name)
+	err := Delete(context.Background(), name)
 	if !errors.Is(err, ErrSiteNotFound) {
-		t.Fatalf("Delete(%q) error = %v, want %v", name, err, ErrSiteNotFound)
+		t.Fatalf("Delete(context.Background(), %q) error = %v, want %v", name, err, ErrSiteNotFound)
 	}
 	if len(env.syncedNames) != 0 {
 		t.Fatalf("refused delete dispatched sync delete for %v", env.syncedNames)
@@ -175,8 +176,8 @@ func TestDeleteDisabledSiteRemovesEverything(t *testing.T) {
 	const name = "disabled.conf"
 	siteModel := env.addSite(t, name, 0, false)
 
-	if err := Delete(name); err != nil {
-		t.Fatalf("Delete(%q) error = %v", name, err)
+	if err := Delete(context.Background(), name); err != nil {
+		t.Fatalf("Delete(context.Background(), %q) error = %v", name, err)
 	}
 	if len(env.syncedNames) != 1 || env.syncedNames[0] != name {
 		t.Fatalf("sync delete calls = %v, want [%s]", env.syncedNames, name)

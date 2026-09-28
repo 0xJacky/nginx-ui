@@ -1,6 +1,7 @@
 package managed
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -264,7 +265,7 @@ func Save(u *Upstream, create bool, userName string) (*Detail, error) {
 		return nil, cosy.WrapErrorWithParams(ErrConfDirUnavailable, err.Error())
 	}
 
-	if err := config.Save(path, content, nil, userName); err != nil {
+	if err := config.Save(context.Background(), path, content, nil, userName); err != nil {
 		return nil, explainZoneConflict(u, err)
 	}
 
@@ -362,7 +363,7 @@ func Delete(name string) error {
 		logger.Error(err)
 	}
 	if len(syncNodeIDs) > 0 {
-		if err := config.SyncDeleteOnRemoteServer(path, syncNodeIDs); err != nil {
+		if err := config.SyncDeleteOnRemoteServer(context.Background(), path, syncNodeIDs); err != nil {
 			logger.Error(err)
 		}
 	}

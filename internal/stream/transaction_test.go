@@ -1,6 +1,7 @@
 package stream
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -18,7 +19,7 @@ func TestEnableRollsBackLinkWhenConfigTestFails(t *testing.T) {
 	require.NoError(t, os.WriteFile(availablePath, []byte("server {\n    listen 8080;\n}\n"), 0o644))
 	appsettings.NginxSettings.TestConfigCmd = "false"
 
-	err := Enable("tcp_proxy")
+	err := Enable(context.Background(), "tcp_proxy")
 
 	require.Error(t, err)
 	_, statErr := os.Lstat(enabledPath)
@@ -36,7 +37,7 @@ func TestEnableRestoresDisabledStateWhenReloadFails(t *testing.T) {
 	appsettings.NginxSettings.ReloadCmd = fmt.Sprintf(
 		"if [ ! -e %q ]; then touch %q; exit 1; fi", reloadMarker, reloadMarker)
 
-	err := Enable("tcp_proxy")
+	err := Enable(context.Background(), "tcp_proxy")
 
 	require.Error(t, err)
 	_, statErr := os.Lstat(enabledPath)

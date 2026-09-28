@@ -65,7 +65,7 @@ func DeleteConfig(c *gin.Context) {
 
 	// Sync deletion to remote servers if configured
 	if len(json.SyncNodeIds) > 0 {
-		err = config.SyncDeleteOnRemoteServer(fullPath, json.SyncNodeIds)
+		err = config.SyncDeleteOnRemoteServer(c.Request.Context(), fullPath, json.SyncNodeIds)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return

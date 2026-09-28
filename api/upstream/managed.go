@@ -192,7 +192,7 @@ func ConvertSiteUpstream(c *gin.Context) {
 		return
 	}
 
-	detail, err := convert.Convert(req, api.CurrentUser(c).Name)
+	detail, err := convert.Convert(c.Request.Context(), req, api.CurrentUser(c).Name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

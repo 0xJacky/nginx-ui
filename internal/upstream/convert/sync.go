@@ -1,6 +1,7 @@
 package convert
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"runtime"
@@ -65,14 +66,22 @@ func siteSyncNodes(p *plan) []*model.Node {
 // on the node, because in between the upstream is either defined twice or not
 // at all. Nodes that only receive conf.d get the new group file, as a
 // managed upstream save would send it.
-func startSync(p *plan, cfg *model.Config, name, userName string) {
+//
+// A conversion another node replicated here is not mirrored again: that node
+// already reached every target, and mirroring it back would loop.
+func startSync(ctx context.Context, p *plan, cfg *model.Config, name, userName string) {
+	if nodeauth.IsReplicated(ctx) {
+		logger.Infof("Skipping upstream conversion sync for a replicated change: site=%q upstream=%q", p.siteName, name)
+		return
+	}
+
 	nodes := siteSyncNodes(p)
 	nodeIDs := make([]uint64, 0, len(nodes))
 	for _, node := range nodes {
 		nodeIDs = append(nodeIDs, node.ID)
 	}
 
-	if err := config.SyncToRemoteServerExcept(cfg, userName, nodeIDs); err != nil {
+	if err := config.SyncToRemoteServerExcept(ctx, cfg, userName, nodeIDs); err != nil {
 		logger.Error(err)
 	}
 

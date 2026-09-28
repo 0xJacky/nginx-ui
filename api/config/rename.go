@@ -117,7 +117,7 @@ func Rename(c *gin.Context) {
 	})
 
 	if len(json.SyncNodeIds) > 0 {
-		err = config.SyncRenameOnRemoteServer(origFullPath, newFullPath, json.SyncNodeIds)
+		err = config.SyncRenameOnRemoteServer(c.Request.Context(), origFullPath, newFullPath, json.SyncNodeIds)
 		if err != nil {
 			cosy.ErrHandler(c, err)
 			return

@@ -2,6 +2,7 @@ package config
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"io"
 	"net/http"
@@ -26,14 +27,25 @@ type SyncConfigPayload struct {
 	Overwrite bool   `json:"overwrite"`
 }
 
-func SyncToRemoteServer(c *model.Config, userName string) (err error) {
-	return SyncToRemoteServerExcept(c, userName, nil)
+// isReplicatedChange reports whether ctx carries a change another node
+// replicated here. The node where it was made already fanned it out, so it is
+// applied locally only; forwarding it again would loop between the nodes.
+func isReplicatedChange(ctx context.Context, path string) bool {
+	if !nodeauth.IsReplicated(ctx) {
+		return false
+	}
+	logger.Infof("Skipping config sync for a replicated change: path=%q", path)
+	return true
+}
+
+func SyncToRemoteServer(ctx context.Context, c *model.Config, userName string) (err error) {
+	return SyncToRemoteServerExcept(ctx, c, userName, nil)
 }
 
 // SyncToRemoteServerExcept replicates the file like SyncToRemoteServer but
 // leaves out the nodes in skipNodeIDs, which the caller updates another way.
-func SyncToRemoteServerExcept(c *model.Config, userName string, skipNodeIDs []uint64) (err error) {
-	if c == nil || c.Filepath == "" {
+func SyncToRemoteServerExcept(ctx context.Context, c *model.Config, userName string, skipNodeIDs []uint64) (err error) {
+	if c == nil || c.Filepath == "" || isReplicatedChange(ctx, c.Filepath) {
 		return
 	}
 
@@ -80,8 +92,8 @@ func SyncToRemoteServerExcept(c *model.Config, userName string, skipNodeIDs []ui
 	return
 }
 
-func SyncRenameOnRemoteServer(origPath, newPath string, syncNodeIds []uint64) (err error) {
-	if origPath == "" || newPath == "" || len(syncNodeIds) == 0 {
+func SyncRenameOnRemoteServer(ctx context.Context, origPath, newPath string, syncNodeIds []uint64) (err error) {
+	if origPath == "" || newPath == "" || len(syncNodeIds) == 0 || isReplicatedChange(ctx, origPath) {
 		return
 	}
 
@@ -248,8 +260,8 @@ func (p *RenameConfigPayload) rename(node *model.Node) (err error) {
 	return
 }
 
-func SyncDeleteOnRemoteServer(deletePath string, syncNodeIds []uint64) (err error) {
-	if deletePath == "" || len(syncNodeIds) == 0 {
+func SyncDeleteOnRemoteServer(ctx context.Context, deletePath string, syncNodeIds []uint64) (err error) {
+	if deletePath == "" || len(syncNodeIds) == 0 || isReplicatedChange(ctx, deletePath) {
 		return
 	}
 

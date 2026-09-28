@@ -195,7 +195,7 @@ func SaveStream(c *gin.Context) {
 		namespaceID = clustersync.ResolveNamespaceIDByName(json.Namespace)
 	}
 
-	err := stream.SaveStreamConfig(name, json.Content, namespaceID, json.SyncNodeIDs, json.Overwrite, json.PostAction)
+	err := stream.SaveStreamConfig(c.Request.Context(), name, json.Content, namespaceID, json.SyncNodeIDs, json.Overwrite, json.PostAction)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -207,7 +207,7 @@ func SaveStream(c *gin.Context) {
 
 func EnableStream(c *gin.Context) {
 	// Enable the stream by creating a symlink in streams-enabled directory
-	err := stream.Enable(helper.UnescapeURL(c.Param("name")))
+	err := stream.Enable(c.Request.Context(), helper.UnescapeURL(c.Param("name")))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -220,7 +220,7 @@ func EnableStream(c *gin.Context) {
 
 func DisableStream(c *gin.Context) {
 	// Disable the stream by removing the symlink from streams-enabled directory
-	err := stream.Disable(helper.UnescapeURL(c.Param("name")))
+	err := stream.Disable(c.Request.Context(), helper.UnescapeURL(c.Param("name")))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -233,7 +233,7 @@ func DisableStream(c *gin.Context) {
 
 func DeleteStream(c *gin.Context) {
 	// Delete the stream configuration file and its symbolic link if exists
-	err := stream.Delete(helper.UnescapeURL(c.Param("name")))
+	err := stream.Delete(c.Request.Context(), helper.UnescapeURL(c.Param("name")))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -255,7 +255,7 @@ func RenameStream(c *gin.Context) {
 	}
 
 	// Rename the stream configuration file
-	err := stream.Rename(oldName, json.NewName)
+	err := stream.Rename(c.Request.Context(), oldName, json.NewName)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

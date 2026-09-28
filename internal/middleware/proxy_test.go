@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"go.uber.org/zap"
@@ -25,12 +26,15 @@ func TestConfigureProxyDirectorUsesTargetHost(t *testing.T) {
 
 	request := httptest.NewRequest(http.MethodGet, "https://dashboard.example.com/api/self_check?x_node_id=42&check=true", nil)
 	request.Header.Set("X-Node-ID", "42")
+	request.Header.Set(nodeauth.ReplicatedFromHeader, `"spoofed"`)
 	proxy.Director(request)
 
 	assert.Equal(t, "node.example.com:8443", request.Host)
 	assert.Equal(t, "true", request.URL.Query().Get("check"))
 	assert.Empty(t, request.URL.Query().Get("x_node_id"))
 	assert.Empty(t, request.Header.Get("X-Node-ID"))
+	// A change made through the proxy must still fan out on the target node.
+	assert.Empty(t, request.Header.Get(nodeauth.ReplicatedFromHeader))
 }
 
 func TestConfigureProxyDirectorRequestsIdentityEncodingForRedaction(t *testing.T) {

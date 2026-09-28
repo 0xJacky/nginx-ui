@@ -1,6 +1,7 @@
 package convert
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -183,7 +184,7 @@ func TestConvertMovesBlockIntoManagedGroup(t *testing.T) {
 	confDir := setupConvertTest(t)
 	sitePath := enabledSite(t, confDir, "legacy.test", legacySite)
 
-	detail, err := Convert(Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
+	detail, err := Convert(context.Background(), Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
 	require.NoError(t, err)
 
 	// The group file has the shape the Upstream Groups editor generates.
@@ -240,7 +241,7 @@ server { listen 80; location / { proxy_pass http://hashed/api/; } }
 `
 	sitePath := enabledSite(t, confDir, "hash.test", content)
 
-	detail, err := Convert(Request{Site: "hash.test", Upstream: "hashed"}, "admin")
+	detail, err := Convert(context.Background(), Request{Site: "hash.test", Upstream: "hashed"}, "admin")
 	require.NoError(t, err)
 	assert.Equal(t, managed.MethodHash, detail.Method)
 	assert.Equal(t, "$request_uri", detail.HashKey)
@@ -262,7 +263,7 @@ func TestConvertKeepsNamespaceAndSyncSettings(t *testing.T) {
 	require.NoError(t, query.Namespace.Create(namespace))
 	require.NoError(t, query.Site.Create(&model.Site{Path: sitePath, NamespaceID: namespace.ID, SyncNodeIDs: []uint64{}}))
 
-	_, err := Convert(Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
+	_, err := Convert(context.Background(), Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
 	require.NoError(t, err)
 
 	record, err := query.Site.Where(query.Site.Path.Eq(sitePath)).First()
@@ -314,7 +315,7 @@ func TestConvertMirrorsToSyncNodes(t *testing.T) {
 	require.NoError(t, db.Model(node).Update("encrypted_legacy_secret", secret).Error)
 	require.NoError(t, query.Site.Create(&model.Site{Path: sitePath, SyncNodeIDs: []uint64{node.ID}}))
 
-	_, err = Convert(Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
+	_, err = Convert(context.Background(), Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
 	require.NoError(t, err)
 	WaitForSync()
 
@@ -334,7 +335,7 @@ func TestConvertRollsBackBothFilesWhenTestFails(t *testing.T) {
 	sitePath := enabledSite(t, confDir, "legacy.test", legacySite)
 	settings.NginxSettings.TestConfigCmd = failingTestConfigCmd
 
-	_, err := Convert(Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
+	_, err := Convert(context.Background(), Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "brokn")
 
@@ -353,7 +354,7 @@ func TestConvertRollsBackBothFilesWhenReloadFails(t *testing.T) {
 	sitePath := enabledSite(t, confDir, "legacy.test", legacySite)
 	settings.NginxSettings.ReloadCmd = "false"
 
-	_, err := Convert(Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
+	_, err := Convert(context.Background(), Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
 	require.Error(t, err)
 
 	assert.Equal(t, legacySite, readFile(t, sitePath))
@@ -450,7 +451,7 @@ func TestConvertRefusals(t *testing.T) {
 			before, err := os.ReadDir(filepath.Join(confDir, "conf.d"))
 			require.NoError(t, err)
 
-			_, err = Convert(Request{Site: tc.site, Upstream: tc.upstream}, "admin")
+			_, err = Convert(context.Background(), Request{Site: tc.site, Upstream: tc.upstream}, "admin")
 			requireCosyCode(t, err, tc.code)
 
 			assert.Equal(t, tc.content, readFile(t, sitePath), "the site must stay untouched")
@@ -467,7 +468,7 @@ func TestConvertAllowsStreamUpstreamWithSameName(t *testing.T) {
 	writeConfig(t, filepath.Join(confDir, "streams-available", "dns"),
 		"upstream legacy_pool {\n    server 127.0.0.1:5353;\n}\nserver { listen 53 udp; proxy_pass legacy_pool; }\n")
 
-	_, err := Convert(Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
+	_, err := Convert(context.Background(), Request{Site: "legacy.test", Upstream: "legacy_pool"}, "admin")
 	require.NoError(t, err)
 	assert.Equal(t, legacySiteAfter, readFile(t, sitePath))
 }

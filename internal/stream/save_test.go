@@ -1,6 +1,7 @@
 package stream
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"strings"
@@ -30,7 +31,7 @@ func TestSaveRestoresEnabledStreamWhenTestFails(t *testing.T) {
 	}
 	appsettings.NginxSettings.TestConfigCmd = failingTestConfigCmd
 
-	err := Save("tcp_proxy", "server {\n    bogus_directive;\n}\n", true, nil, "")
+	err := Save(context.Background(), "tcp_proxy", "server {\n    bogus_directive;\n}\n", true, nil, "")
 
 	if err == nil {
 		t.Fatal("Save expected an error when nginx test fails")

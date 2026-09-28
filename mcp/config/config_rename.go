@@ -114,7 +114,7 @@ func handleNginxConfigRename(ctx context.Context, request mcpgo.CallToolRequest)
 	})
 
 	if len(syncNodeIds) > 0 {
-		err = config.SyncRenameOnRemoteServer(origFullPath, newFullPath, syncNodeIds)
+		err = config.SyncRenameOnRemoteServer(ctx, origFullPath, newFullPath, syncNodeIds)
 		if err != nil {
 			return nil, err
 		}

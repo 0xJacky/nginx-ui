@@ -1,6 +1,7 @@
 package site
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -35,7 +36,7 @@ func TestEnableRollsBackLinkWhenConfigTestFails(t *testing.T) {
 	require.NoError(t, os.WriteFile(availablePath, []byte("server {}\n"), 0o644))
 	appsettings.NginxSettings.TestConfigCmd = "false"
 
-	err := Enable("example.com")
+	err := Enable(context.Background(), "example.com")
 
 	require.Error(t, err)
 	_, statErr := os.Lstat(enabledPath)
@@ -52,7 +53,7 @@ func TestEnableRestoresDisabledStateWhenReloadFails(t *testing.T) {
 	appsettings.NginxSettings.ReloadCmd = fmt.Sprintf(
 		"if [ ! -e %q ]; then touch %q; exit 1; fi", reloadMarker, reloadMarker)
 
-	err := Enable("example.com")
+	err := Enable(context.Background(), "example.com")
 
 	require.Error(t, err)
 	_, statErr := os.Lstat(enabledPath)
@@ -70,7 +71,7 @@ func TestSaveRestoresEnabledConfigWhenTestFails(t *testing.T) {
 	require.NoError(t, os.Symlink(availablePath, enabledPath))
 	appsettings.NginxSettings.TestConfigCmd = "false"
 
-	err := Save("example.com", "server { listen 81; }\n", true, 0, nil, "")
+	err := Save(context.Background(), "example.com", "server { listen 81; }\n", true, 0, nil, "")
 
 	require.Error(t, err)
 	content, readErr := os.ReadFile(availablePath)
@@ -93,7 +94,7 @@ func TestSaveRestoresAndReloadsPreviousConfigWhenReloadFails(t *testing.T) {
 	appsettings.NginxSettings.ReloadCmd = fmt.Sprintf(
 		"if [ ! -e %q ]; then touch %q; exit 1; fi", reloadMarker, reloadMarker)
 
-	err := Save("example.com", "server { listen 81; }\n", true, 0, nil, model.PostSyncActionReloadNginx)
+	err := Save(context.Background(), "example.com", "server { listen 81; }\n", true, 0, nil, model.PostSyncActionReloadNginx)
 
 	require.Error(t, err)
 	content, readErr := os.ReadFile(availablePath)

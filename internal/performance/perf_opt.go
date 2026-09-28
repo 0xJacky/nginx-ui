@@ -1,6 +1,7 @@
 package performance
 
 import (
+	"context"
 	"os"
 	"sort"
 
@@ -77,7 +78,7 @@ func UpdatePerfOpt(opt *PerfOpt) error {
 	// Dump the updated configuration
 	updatedConf := dumper.DumpBlock(conf.Block, dumper.IndentedStyle)
 
-	return ngxConfig.Save(confPath, updatedConf, nil)
+	return ngxConfig.Save(context.Background(), confPath, updatedConf, nil)
 
 }
 
