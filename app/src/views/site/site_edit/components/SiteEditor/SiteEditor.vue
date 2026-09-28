@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { HistoryOutlined, ThunderboltOutlined } from '@antdv-next/icons'
+import { AccessControlCard, LocationAccessSelect, LocationAccessTag, useAccessControlStore } from '@/components/AccessControl'
 import CodeEditor from '@/components/CodeEditor/CodeEditor.vue'
 import ConfigHistory from '@/components/ConfigHistory'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -83,6 +84,15 @@ const quickSetupOpen = ref(false)
 // Use Vue 3.4+ useTemplateRef for InspectConfig component
 const inspectConfigRef = useTemplateRef<InstanceType<typeof InspectConfig>>('inspectConfig')
 
+// The access control card, the location selects and the right panel read the
+// access state of the open site from this store.
+const accessControl = useAccessControlStore()
+watch(advanceMode, value => {
+  accessControl.advanced = value
+}, { immediate: true })
+onMounted(() => accessControl.activate())
+onBeforeUnmount(() => accessControl.deactivate())
+
 // Vue Router can reuse this component when only the site name changes, so reload
 // on the route parameter instead of on mount alone.
 watch(name, value => {
@@ -103,7 +113,14 @@ async function save() {
 </script>
 
 <template>
-  <ACard class="site-edit-container overflow-hidden" variant="borderless">
+  <!-- The body style goes through the semantic prop: a :deep(.ant-card-body)
+       rule would also strip the padding of every card nested in the editor,
+       such as the HTTPS card. -->
+  <ACard
+    class="site-edit-container overflow-hidden"
+    variant="borderless"
+    :styles="{ body: { maxHeight: '100%', overflowY: 'scroll', padding: 0 } }"
+  >
     <template #title>
       <span style="margin-right: 10px">{{ $gettext('Edit %{n}', { n: name }) }}</span>
       <ATag
@@ -233,6 +250,13 @@ async function save() {
                 :config-name="name"
                 :cert-info="certInfoMap?.[tabIdx]"
               />
+              <AccessControlCard :server-idx="tabIdx" />
+            </template>
+            <template #location-label="{ serverIdx, locationIdx }">
+              <LocationAccessTag :server-idx="serverIdx" :location-idx="locationIdx" />
+            </template>
+            <template #location-form="{ serverIdx, locationIdx }">
+              <LocationAccessSelect :server-idx="serverIdx" :location-idx="locationIdx" />
             </template>
           </NgxConfigEditor>
         </div>
@@ -286,11 +310,6 @@ async function save() {
 
 .site-edit-container {
   height: 100%;
-  :deep(.ant-card-body) {
-    max-height: 100%;
-    overflow-y: scroll;
-    padding: 0;
-  }
 }
 
 .domain-edit-container {

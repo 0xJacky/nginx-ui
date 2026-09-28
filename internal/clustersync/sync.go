@@ -133,6 +133,15 @@ func buildItems(scope Scope, namespace *model.Namespace) ([]item, error) {
 		managedItems = append(managedItems, streamItems...)
 	}
 
+	// Sites and streams may include access lists. A full config sync already
+	// carries them; otherwise they go first, since a node without them rejects
+	// every site that includes one in its Nginx test.
+	if !scope.Configs {
+		if accessItem, ok := accessListItem(includedAccessLists(managedFiles)); ok {
+			items = append(items, accessItem)
+		}
+	}
+
 	// Staging creates the destination files before the resource endpoints see
 	// them, so it is only compatible with overwrite syncs. A non-overwrite sync
 	// must leave the existing per-resource create-or-reject semantics untouched.

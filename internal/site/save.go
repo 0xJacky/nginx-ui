@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"sync"
 
+	"github.com/0xJacky/Nginx-UI/internal/clustersync"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
@@ -175,6 +176,7 @@ func WaitForSync() {
 
 func syncSave(name string, content string) {
 	nodes, postSyncAction, namespaceName := getSyncData(name)
+	clustersync.PushAccessListsToNodes(content, nodes)
 
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nodes))

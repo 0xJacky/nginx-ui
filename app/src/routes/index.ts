@@ -2,6 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useNProgress } from '@/lib/nprogress/nprogress'
 import { useUserStore } from '@/pinia'
+import { accessListsRoutes } from './modules/access_lists'
 import { authRoutes } from './modules/auth'
 
 import { backupRoutes } from './modules/backup'
@@ -38,6 +39,7 @@ const mainLayoutChildren: RouteRecordRaw[] = [
   ...sitesRoutes,
   ...streamsRoutes,
   ...upstreamRoutes,
+  ...accessListsRoutes,
   ...configRoutes,
   ...certificatesRoutes,
   ...dnsRoutes,

@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 
+	accesslist "github.com/0xJacky/Nginx-UI/api/access_list"
 	"github.com/0xJacky/Nginx-UI/api/analytic"
 	"github.com/0xJacky/Nginx-UI/api/audit"
 	"github.com/0xJacky/Nginx-UI/api/backup"
@@ -109,6 +110,7 @@ func InitRouter() {
 			user.InitManageUserRouter(g)
 			nginx.InitRouter(g)
 			sites.InitRouter(g)
+			accesslist.InitRouter(g)
 			streams.InitRouter(g)
 			config.InitRouter(g)
 			template.InitRouter(g)

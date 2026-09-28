@@ -152,7 +152,14 @@ function getServerMenuItems(index: number) {
           <LocationEditor
             v-if="context === Http"
             v-model:locations="item.server.locations"
-          />
+          >
+            <template #label-extra="{ index: locationIdx }">
+              <slot name="location-label" :server-idx="index" :location-idx="locationIdx" />
+            </template>
+            <template #form-extra="{ index: locationIdx }">
+              <slot name="location-form" :server-idx="index" :location-idx="locationIdx" />
+            </template>
+          </LocationEditor>
         </div>
       </template>
 

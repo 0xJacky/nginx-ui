@@ -17,6 +17,7 @@ import (
 
 var (
 	Q                        = new(Query)
+	AccessList               *accessList
 	AcmeUser                 *acmeUser
 	AuthToken                *authToken
 	AutoBackup               *autoBackup
@@ -46,6 +47,7 @@ var (
 
 func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	*Q = *Use(db, opts...)
+	AccessList = &Q.AccessList
 	AcmeUser = &Q.AcmeUser
 	AuthToken = &Q.AuthToken
 	AutoBackup = &Q.AutoBackup
@@ -76,6 +78,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 	return &Query{
 		db:                       db,
+		AccessList:               newAccessList(db, opts...),
 		AcmeUser:                 newAcmeUser(db, opts...),
 		AuthToken:                newAuthToken(db, opts...),
 		AutoBackup:               newAutoBackup(db, opts...),
@@ -107,6 +110,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 type Query struct {
 	db *gorm.DB
 
+	AccessList               accessList
 	AcmeUser                 acmeUser
 	AuthToken                authToken
 	AutoBackup               autoBackup
@@ -141,6 +145,7 @@ func (q *Query) UnderlyingDB() *gorm.DB { return q.db }
 func (q *Query) clone(db *gorm.DB) *Query {
 	return &Query{
 		db:                       db,
+		AccessList:               q.AccessList.clone(db),
 		AcmeUser:                 q.AcmeUser.clone(db),
 		AuthToken:                q.AuthToken.clone(db),
 		AutoBackup:               q.AutoBackup.clone(db),
@@ -180,6 +185,7 @@ func (q *Query) WriteDB() *Query {
 func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 	return &Query{
 		db:                       db,
+		AccessList:               q.AccessList.replaceDB(db),
 		AcmeUser:                 q.AcmeUser.replaceDB(db),
 		AuthToken:                q.AuthToken.replaceDB(db),
 		AutoBackup:               q.AutoBackup.replaceDB(db),
@@ -209,6 +215,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 }
 
 type queryCtx struct {
+	AccessList               *accessListDo
 	AcmeUser                 *acmeUserDo
 	AuthToken                *authTokenDo
 	AutoBackup               *autoBackupDo
@@ -238,6 +245,7 @@ type queryCtx struct {
 
 func (q *Query) WithContext(ctx context.Context) *queryCtx {
 	return &queryCtx{
+		AccessList:               q.AccessList.WithContext(ctx),
 		AcmeUser:                 q.AcmeUser.WithContext(ctx),
 		AuthToken:                q.AuthToken.WithContext(ctx),
 		AutoBackup:               q.AutoBackup.WithContext(ctx),

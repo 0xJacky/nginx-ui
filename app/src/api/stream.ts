@@ -1,4 +1,5 @@
 import type { Namespace } from './namespace'
+import type { AccessSummaryMode } from '@/api/access_list'
 import type { ChatComplicationMessage } from '@/api/llm'
 import type { NgxConfig } from '@/api/ngx'
 import type { ProxyTarget, SiteStatus } from '@/api/site'
@@ -17,6 +18,8 @@ export interface Stream {
   namespace?: Namespace
   sync_node_ids: number[]
   proxy_targets?: ProxyTarget[]
+  access_mode?: AccessSummaryMode
+  access_list?: string
 }
 
 const baseUrl = '/streams'

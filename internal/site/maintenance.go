@@ -10,6 +10,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/0xJacky/Nginx-UI/internal/access_list"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
@@ -346,7 +347,7 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 		locationContent.WriteString("proxy_set_header X-Real-IP $remote_addr;\n")
 		locationContent.WriteString("proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n")
 		locationContent.WriteString(fmt.Sprintf("proxy_pass http://127.0.0.1:%s;\n", settings.CertSettings.HTTPChallengePort))
-		acmeChallengeLocation.Content = locationContent.String()
+		acmeChallengeLocation.Content = maintenanceACMEAccess(ngxServer) + locationContent.String()
 
 		ngxServer.Locations = append(ngxServer.Locations, acmeChallengeLocation)
 
@@ -469,7 +470,8 @@ map "$%s:$uri" $%s {
 		if !hasMaintenanceLocation(server, "/.well-known/acme-challenge") {
 			server.Locations = append(server.Locations, &nginx.NgxLocation{
 				Path: "^~ /.well-known/acme-challenge",
-				Content: "proxy_set_header Host $host;\n" +
+				Content: maintenanceACMEAccess(server) +
+					"proxy_set_header Host $host;\n" +
 					"proxy_set_header X-Real-IP $remote_addr;\n" +
 					"proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n" +
 					fmt.Sprintf("proxy_pass http://127.0.0.1:%s;\n", settings.CertSettings.HTTPChallengePort),
@@ -618,6 +620,13 @@ func (e *maintenanceIncludeExpander) extractServerDirective(directive config.IDi
 	}
 
 	if name == "include" {
+		// An access list include keeps restricting the site while it shows the
+		// maintenance page, so it is carried over instead of expanded.
+		if params := extractParams(directive); len(params) == 1 {
+			if _, ok := access_list.SlugFromInclude(strings.Trim(params[0], `"'`)); ok {
+				return []config.IDirective{directive}
+			}
+		}
 		return e.extractIncludeDirective(directive, baseDir, depth)
 	}
 
@@ -935,4 +944,19 @@ func syncDisableMaintenance(name string) {
 	}
 
 	wg.Wait()
+}
+
+// maintenanceACMEAccess keeps the ACME challenge location of a generated
+// maintenance server reachable when the server uses an access list, the same
+// way the site editor does for regular sites.
+func maintenanceACMEAccess(server *nginx.NgxServer) string {
+	for _, directive := range server.Directives {
+		if directive.Directive != "include" {
+			continue
+		}
+		if _, ok := access_list.SlugFromInclude(strings.Trim(strings.TrimSpace(directive.Params), `"'`)); ok {
+			return access_list.ACMEMarker + "\nallow all;\n"
+		}
+	}
+	return ""
 }

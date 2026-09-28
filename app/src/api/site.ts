@@ -1,3 +1,4 @@
+import type { AccessSummaryMode } from '@/api/access_list'
 import type { CertificateInfo } from '@/api/cert'
 import type { ModelBase } from '@/api/curd'
 import type { Namespace } from '@/api/namespace'
@@ -38,6 +39,8 @@ export interface Site extends ModelBase {
   urls?: string[]
   proxy_targets?: ProxyTarget[]
   status: SiteStatus
+  access_mode?: AccessSummaryMode
+  access_list?: string
   dns_domain_id?: number | null
   dns_records?: SiteDNSRecord[] | null
   // Legacy single-record fields are kept for backward compatibility.

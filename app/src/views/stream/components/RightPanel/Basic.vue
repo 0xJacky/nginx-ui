@@ -3,6 +3,7 @@ import { InfoCircleOutlined } from '@antdv-next/icons'
 import { StdSelector } from '@uozi-admin/curd'
 import { storeToRefs } from 'pinia'
 import namespace from '@/api/namespace'
+import { AccessSummary } from '@/components/AccessControl'
 import NodeSelector from '@/components/NodeSelector'
 import SyncNodesPreview from '@/components/SyncNodesPreview'
 import { formatDateTime } from '@/lib/helper'
@@ -44,6 +45,9 @@ const showSync = computed(() => !settings.is_remote)
         display-key="name"
         selection-type="radio"
       />
+    </AFormItem>
+    <AFormItem :label="$gettext('Access Control')">
+      <AccessSummary />
     </AFormItem>
     <!-- Synchronization Section -->
     <div v-if="showSync" class="mt-4">

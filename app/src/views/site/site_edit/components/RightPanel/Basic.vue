@@ -3,6 +3,7 @@ import type { SiteStatus } from '@/api/site'
 import { InfoCircleOutlined } from '@antdv-next/icons'
 import { StdSelector } from '@uozi-admin/curd'
 import namespace from '@/api/namespace'
+import { AccessSummary } from '@/components/AccessControl'
 import NodeSelector from '@/components/NodeSelector'
 import SyncNodesPreview from '@/components/SyncNodesPreview'
 import { formatDateTime } from '@/lib/helper'
@@ -55,6 +56,9 @@ function handleStatusChanged(event: { status: SiteStatus }) {
             display-key="name"
             selection-type="radio"
           />
+        </AFormItem>
+        <AFormItem :label="$gettext('Access Control')">
+          <AccessSummary />
         </AFormItem>
       </AForm>
     </div>

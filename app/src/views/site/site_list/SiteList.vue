@@ -4,6 +4,7 @@ import { StdCurd } from '@uozi-admin/curd'
 import { message, Modal } from 'antdv-next'
 import nginxLog from '@/api/nginx_log'
 import site from '@/api/site'
+import { BatchAccessModal } from '@/components/AccessControl'
 import FooterToolBar from '@/components/FooterToolbar'
 import InspectConfig from '@/components/InspectConfig'
 import NamespaceTabs from '@/components/NamespaceTabs'
@@ -25,6 +26,7 @@ const loadingMaintenance = ref(false)
 const [modal, ContextHolder] = Modal.useModal()
 const maintenanceModalOpen = ref(false)
 const pendingMaintenanceNames = ref<string[]>([])
+const isBatchAccessOpen = ref(false)
 
 const namespaceId = ref(Number.parseInt(route.query.namespace_id as string) || 0)
 
@@ -324,8 +326,22 @@ function onMaintenanceConfirm(payload: MaintenancePayload) {
         >
           {{ $gettext('Maintenance') }}
         </AButton>
+
+        <AButton
+          data-testid="batch-access"
+          @click="isBatchAccessOpen = true"
+        >
+          {{ $gettext('Access') }}
+        </AButton>
       </ASpace>
     </FooterToolBar>
+
+    <BatchAccessModal
+      v-model:open="isBatchAccessOpen"
+      kind="site"
+      :names="selectedSiteNames"
+      @done="refreshAfterBatchStatusChanged"
+    />
   </div>
 </template>
 
