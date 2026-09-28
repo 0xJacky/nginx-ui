@@ -2,6 +2,220 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
+#: src/components/AccessControl/AccessControlCard.vue:21
+#: src/components/AccessControl/AccessSummary.vue:18
+#: src/components/AccessControl/AccessSummaryTag.vue:18
+#: src/components/AccessControl/BatchAccessModal.vue:25
+#: src/components/AccessControl/LocationAccessSelect.vue:34
+#: src/components/AccessControl/LocationAccessTag.vue:20
+#: src/components/AccessControl/options.ts:30
+msgid "Public"
+msgstr ""
+
+#: src/components/AccessControl/AccessControlCard.vue:27
+msgid "Everyone can reach this server."
+msgstr ""
+
+#: src/components/AccessControl/AccessControlCard.vue:30
+msgid "Only addresses allowed by %{name} can connect."
+msgstr ""
+
+#: src/components/AccessControl/AccessControlCard.vue:31
+msgid "Only addresses allowed by %{name} can reach this server. Locations can inherit it, open up or use another list."
+msgstr ""
+
+#: src/components/AccessControl/AccessControlCard.vue:47
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:60
+#: src/views/stream/components/RightPanel/Basic.vue:49
+msgid "Access Control"
+msgstr ""
+
+#: src/components/AccessControl/AccessControlCard.vue:50
+msgid "Manage access lists"
+msgstr ""
+
+#: src/components/AccessControl/AccessControlCard.vue:59
+msgid "The access state could not be read"
+msgstr ""
+
+#: src/components/AccessControl/AccessControlCard.vue:67
+msgid "This server has allow or deny rules that were not written by Nginx UI"
+msgstr ""
+
+#: src/components/AccessControl/AccessControlCard.vue:68
+msgid "Remove them from the directives to manage access with an access list."
+msgstr ""
+
+#: src/components/AccessControl/AccessControlCard.vue:75
+#: src/components/AccessControl/AccessSummaryTag.vue:16
+#: src/components/AccessControl/LocationAccessSelect.vue:113
+#: src/components/AccessControl/LocationAccessTag.vue:24
+#: src/components/AccessControl/options.ts:28
+msgid "Custom rules"
+msgstr ""
+
+#: src/components/AccessControl/AccessSummary.vue:49
+msgid "Server %{index}"
+msgstr ""
+
+#: src/components/AccessControl/AccessSummary.vue:56
+msgid "%{count} location set separately"
+msgid_plural "%{count} locations set separately"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/components/AccessControl/AccessSummary.vue:69
+msgid "Use for all servers"
+msgstr ""
+
+#: src/components/AccessControl/AccessSummary.vue:69
+msgid "Change access"
+msgstr ""
+
+#: src/components/AccessControl/AccessSummaryTag.vue:14
+#: src/views/dns/components/DNSRecordTable.vue:267
+#: src/views/dns/components/DNSRecordTable.vue:280
+#: src/views/dns/components/DNSRecordTable.vue:299
+#: src/views/dns/components/DNSRecordTable.vue:308
+msgid "Mixed"
+msgstr ""
+
+#: src/components/AccessControl/BatchAccessModal.vue:51
+msgid "Access updated for %{count} item"
+msgid_plural "Access updated for %{count} items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/components/AccessControl/BatchAccessModal.vue:65
+msgid "Set access for selected sites"
+msgstr ""
+
+#: src/components/AccessControl/BatchAccessModal.vue:65
+msgid "Set access for selected streams"
+msgstr ""
+
+#: src/components/AccessControl/BatchAccessModal.vue:66
+#: src/language/curd.ts:65
+msgid "Apply"
+msgstr ""
+
+#: src/components/AccessControl/BatchAccessModal.vue:67
+#: src/components/AccessControl/LocationAccessSelect.vue:101
+#: src/components/LLM/ChatMessage.vue:257
+#: src/components/NgxConfigEditor/NgxServer.vue:76
+#: src/components/NgxConfigEditor/NgxUpstream.vue:43
+#: src/language/curd.ts:37
+#: src/views/access_list/AccessListList.vue:80
+#: src/views/access_list/components/AccessListEditor.vue:421
+#: src/views/config/components/Delete.vue:101
+#: src/views/dashboard/components/SiteHealthCheckModal.vue:861
+#: src/views/dns/DDNSManager.vue:474
+#: src/views/dns/DNSGroupList.vue:241
+#: src/views/dns/DNSGroupList.vue:286
+#: src/views/dns/DNSGroupRecordManager.vue:1532
+#: src/views/dns/DNSRecordManager.vue:250
+#: src/views/nginx_log/components/IndexingSettingsModal.vue:102
+#: src/views/nginx_log/indexing/IndexManagement.vue:33
+#: src/views/nginx_log/indexing/IndexManagement.vue:59
+#: src/views/nginx_log/NginxLogList.vue:421
+#: src/views/preference/components/AuthSettings/Passkey.vue:143
+#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:292
+#: src/views/preference/tabs/NginxSettings.vue:46
+#: src/views/preference/tabs/NginxSettings.vue:322
+#: src/views/site/components/MaintenanceConfigModal.vue:64
+#: src/views/site/components/SiteStatusSelect.vue:137
+#: src/views/site/components/SiteStatusSelect.vue:163
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:101
+#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:27
+#: src/views/site/site_edit/components/QuickSetupModal.vue:113
+#: src/views/site/site_edit/components/QuickSetupModal.vue:160
+#: src/views/site/site_list/SiteList.vue:175
+#: src/views/stream/components/StreamStatusSelect.vue:62
+#: src/views/upstream/components/UpstreamEditor.vue:425
+#: src/views/upstream/UpstreamList.vue:133
+msgid "Cancel"
+msgstr ""
+
+#: src/components/AccessControl/BatchAccessModal.vue:74
+msgid "Every server block of the selected items uses the choice below. Locations with their own setting keep it. Each file is tested and Nginx reloaded."
+msgstr ""
+
+#: src/components/AccessControl/BatchAccessModal.vue:85
+msgid "Select an access list"
+msgstr ""
+
+#: src/components/AccessControl/BatchAccessModal.vue:93
+msgid "Some items were not changed"
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:33
+msgid "Inherit from server"
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:46
+msgid "Kept public so certificate renewals can reach the ACME challenge."
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:48
+msgid "This location has allow or deny rules that were not written by Nginx UI."
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:51
+msgid "Public: overrides %{name} of the server and is reachable from anywhere."
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:52
+msgid "Public."
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:56
+msgid "Only %{name} applies here. %{server} of the server does not apply to this location."
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:57
+msgid "Only %{name} applies here."
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:61
+msgid "Uses %{name} from the server."
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:62
+msgid "Public, like the server."
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:89
+#: src/views/site/site_list/columns.tsx:134
+#: src/views/site/site_list/SiteList.vue:334
+#: src/views/stream/columns.tsx:89
+#: src/views/stream/StreamList.vue:154
+msgid "Access"
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:95
+msgid "Public (ACME challenge)"
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:99
+msgid "Restrict this location? Certificate renewals over HTTP-01 will fail."
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:100
+msgid "Restrict"
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessSelect.vue:105
+msgid "Restrict anyway"
+msgstr ""
+
+#: src/components/AccessControl/LocationAccessTag.vue:22
+msgid "ACME"
+msgstr ""
+
+#: src/components/AccessControl/options.ts:19
+msgid "%{slug} (missing)"
+msgstr ""
+
 #: src/components/AutoCertForm/AutoCertForm.vue:29
 msgid "HTTP01"
 msgstr ""
@@ -39,6 +253,9 @@ msgid "For IP-based certificate configurations, only HTTP-01 challenge method is
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:121
+#: src/views/access_list/components/AccessListEditor.vue:273
+#: src/views/access_list/components/AccessListEditor.vue:308
+#: src/views/access_list/components/AccessListEditor.vue:309
 #: src/views/dns/DNSCredential.vue:168
 #: src/views/dns/DNSCredential.vue:196
 msgid "Note"
@@ -110,7 +327,7 @@ msgid "Not supported for IP certificates"
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:218
-#: src/views/certificate/CertificateList/certColumns.tsx:75
+#: src/views/certificate/CertificateList/certColumns.tsx:76
 #: src/views/certificate/components/SelfSignedCertFields.vue:56
 #: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:602
 msgid "Key Type"
@@ -179,7 +396,7 @@ msgid "Unknown Provider"
 msgstr ""
 
 #: src/components/AutoCertForm/DNSChallenge.vue:146
-#: src/views/dns/DDNSManager.vue:179
+#: src/views/dns/DDNSManager.vue:182
 #: src/views/dns/DNSDomainList.vue:158
 #: src/views/dns/DNSDomainList.vue:204
 msgid "Credential"
@@ -199,25 +416,48 @@ msgstr ""
 msgid "Go to DNS > Credentials to create or manage credentials"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:21
-#: src/views/certificate/components/CertificateBasicInfo.vue:27
-#: src/views/certificate/components/CertificateContentEditor.vue:105
+#: src/components/Breadcrumb/Breadcrumb.vue:119
+#: src/components/NamespaceTabs/NamespaceTabs.vue:124
+#: src/components/NodeIndicator/NodeIndicator.vue:13
+#: src/components/NodeSelector/NodeSelector.vue:62
+#: src/components/NodeSwitcher/NodeSwitcher.vue:44
+#: src/components/NodeSwitcher/NodeSwitcher.vue:156
+#: src/constants/index.ts:46
+#: src/constants/index.ts:52
+#: src/views/backup/AutoBackup/AutoBackup.vue:103
+#: src/views/backup/AutoBackup/AutoBackup.vue:112
+#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:50
+#: src/views/preference/tabs/NginxSettings.vue:246
+#: src/views/workspace/WorkSpace.vue:40
+msgid "Local"
+msgstr ""
+
+#: src/components/Breadcrumb/Breadcrumb.vue:148
+#: src/language/curd.ts:72
+msgid "Expand"
+msgstr ""
+
+#: src/components/CertInfo/CertInfo.vue:20
+#: src/views/certificate/components/CertificateBasicInfo.vue:25
+#: src/views/certificate/components/CertificateContentEditor.vue:103
 msgid "Nothing to copy"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:26
-#: src/views/certificate/components/CertificateBasicInfo.vue:32
-#: src/views/certificate/components/CertificateContentEditor.vue:110
+#: src/components/CertInfo/CertInfo.vue:25
+#: src/views/certificate/components/CertificateBasicInfo.vue:30
+#: src/views/certificate/components/CertificateContentEditor.vue:108
 msgid "{label} copied to clipboard"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:30
-#: src/views/certificate/components/CertificateBasicInfo.vue:36
-#: src/views/certificate/components/CertificateContentEditor.vue:114
+#: src/components/CertInfo/CertInfo.vue:29
+#: src/components/SensitiveString/SensitiveInput.vue:72
+#: src/components/SensitiveString/SensitiveString.vue:77
+#: src/views/certificate/components/CertificateBasicInfo.vue:34
+#: src/views/certificate/components/CertificateContentEditor.vue:112
 msgid "Failed to copy to clipboard"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:42
+#: src/components/CertInfo/CertInfo.vue:41
 #: src/views/certificate/components/SelfSignedCertManagement.vue:25
 #: src/views/site/site_edit/components/Cert/Cert.vue:78
 msgid "Certificate Status"
@@ -225,18 +465,20 @@ msgid_plural "Certificates Status"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/components/CertInfo/CertInfo.vue:50
+#: src/components/CertInfo/CertInfo.vue:49
 msgid "Name: %{name}"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:56
+#: src/components/CertInfo/CertInfo.vue:55
 #: src/components/NgxConfigEditor/NgxUpstream.vue:163
+#: src/views/access_list/AccessListList.vue:18
+#: src/views/access_list/components/AccessListEditor.vue:237
 #: src/views/backup/AutoBackup/AutoBackup.vue:40
 #: src/views/certificate/ACMEUser.vue:14
-#: src/views/certificate/CertificateList/certColumns.tsx:9
+#: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/CertificateList/Certificate.vue:40
-#: src/views/certificate/components/CertificateBasicInfo.vue:50
-#: src/views/certificate/components/CertificateBasicInfo.vue:63
+#: src/views/certificate/components/CertificateBasicInfo.vue:48
+#: src/views/certificate/components/CertificateBasicInfo.vue:61
 #: src/views/certificate/components/SelfSignedCertFields.vue:34
 #: src/views/config/components/ConfigRightPanel/Basic.vue:34
 #: src/views/config/components/Delete.vue:126
@@ -254,62 +496,65 @@ msgstr ""
 #: src/views/nginx_log/NginxLogList.vue:156
 #: src/views/node/nodeColumns.tsx:83
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:84
-#: src/views/preference/tabs/AccessTokens.vue:50
-#: src/views/preference/tabs/AccessTokens.vue:266
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:36
-#: src/views/site/site_list/columns.tsx:36
+#: src/views/preference/tabs/AccessTokens.vue:48
+#: src/views/preference/tabs/AccessTokens.vue:264
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:37
+#: src/views/site/site_list/columns.tsx:38
 #: src/views/site/site_list/SiteDuplicate.vue:84
-#: src/views/stream/columns.tsx:26
-#: src/views/stream/components/RightPanel/Basic.vue:31
+#: src/views/stream/columns.tsx:28
+#: src/views/stream/components/RightPanel/Basic.vue:32
 #: src/views/stream/components/StreamDuplicate.vue:76
-#: src/views/stream/StreamList.vue:123
+#: src/views/stream/StreamList.vue:134
 #: src/views/system/Licenses.vue:13
+#: src/views/upstream/components/UpstreamEditor.vue:194
+#: src/views/upstream/UpstreamList.vue:33
+#: src/views/upstream/UpstreamList.vue:41
 msgid "Name"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:66
+#: src/components/CertInfo/CertInfo.vue:65
 msgid "Status:"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:72
+#: src/components/CertInfo/CertInfo.vue:71
 #: src/views/certificate/ACMEUser.vue:70
 #: src/views/certificate/ACMEUser.vue:152
-#: src/views/certificate/CertificateList/certColumns.tsx:132
+#: src/views/certificate/CertificateList/certColumns.tsx:119
 msgid "Valid"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:79
-#: src/views/certificate/CertificateList/certColumns.tsx:137
+#: src/components/CertInfo/CertInfo.vue:78
+#: src/views/certificate/CertificateList/certColumns.tsx:121
 #: src/views/dashboard/components/SiteCard.vue:131
-#: src/views/preference/tabs/AccessTokens.vue:149
+#: src/views/preference/tabs/AccessTokens.vue:147
 msgid "Expired"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:83
+#: src/components/CertInfo/CertInfo.vue:82
 msgid "SAN Aliases: %{aliases}"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:86
+#: src/components/CertInfo/CertInfo.vue:85
 msgid "Issuer: %{issuer}"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:89
+#: src/components/CertInfo/CertInfo.vue:88
 msgid "Expires At: %{date}"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:92
+#: src/components/CertInfo/CertInfo.vue:91
 msgid "Not Valid Before: %{date}"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:97
-#: src/components/CertInfo/CertInfo.vue:102
+#: src/components/CertInfo/CertInfo.vue:96
+#: src/components/CertInfo/CertInfo.vue:101
 #: src/views/certificate/CertificateList/Certificate.vue:52
 #: src/views/preference/tabs/ServerSettings.vue:42
 msgid "SSL Certificate Path"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:110
-#: src/components/CertInfo/CertInfo.vue:115
+#: src/components/CertInfo/CertInfo.vue:109
+#: src/components/CertInfo/CertInfo.vue:114
 #: src/views/certificate/CertificateList/Certificate.vue:57
 msgid "SSL Certificate Key Path"
 msgstr ""
@@ -342,6 +587,7 @@ msgstr ""
 #: src/language/curd.ts:14
 #: src/views/dns/DNSCredential.vue:220
 #: src/views/dns/DNSGroupRecordManager.vue:1626
+#: src/views/workspace/components/WorkspaceTabs.vue:103
 msgid "Close"
 msgstr ""
 
@@ -372,6 +618,58 @@ msgstr ""
 #: src/components/ConfigHistory/DiffViewer.vue:400
 #: src/components/ConfigHistory/DiffViewer.vue:413
 msgid "Restore this version"
+msgstr ""
+
+#: src/components/ConfigStatusTag/configStatus.ts:13
+#: src/components/NgxConfigEditor/NgxUpstream.vue:110
+#: src/components/NgxConfigEditor/NgxUpstream.vue:114
+#: src/views/backup/AutoBackup/AutoBackup.vue:193
+#: src/views/backup/AutoBackup/AutoBackup.vue:203
+#: src/views/dns/DDNSManager.vue:359
+#: src/views/node/nodeColumns.tsx:168
+#: src/views/node/nodeColumns.tsx:174
+#: src/views/preference/components/ExternalNotify/columns.tsx:60
+#: src/views/preference/tabs/HTTPSettings.vue:36
+#: src/views/preference/tabs/LogrotateSettings.vue:16
+#: src/views/preference/tabs/NodeSettings.vue:28
+#: src/views/preference/tabs/NodeSettings.vue:33
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:130
+#: src/views/site/site_list/columns.tsx:164
+#: src/views/stream/columns.tsx:123
+#: src/views/stream/components/RightPanel/Basic.vue:25
+#: src/views/stream/components/StreamEditor.vue:59
+#: src/views/upstream/components/UpstreamEditor.vue:248
+#: src/views/upstream/components/UpstreamEditor.vue:293
+#: src/views/user/userColumns.tsx:36
+msgid "Enabled"
+msgstr ""
+
+#: src/components/ConfigStatusTag/configStatus.ts:14
+#: src/views/backup/AutoBackup/AutoBackup.vue:194
+#: src/views/backup/AutoBackup/AutoBackup.vue:204
+#: src/views/dashboard/components/SiteCard.vue:189
+#: src/views/dns/DDNSManager.vue:359
+#: src/views/node/nodeColumns.tsx:154
+#: src/views/node/nodeColumns.tsx:177
+#: src/views/preference/tabs/HTTPSettings.vue:36
+#: src/views/preference/tabs/NodeSettings.vue:28
+#: src/views/preference/tabs/NodeSettings.vue:33
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:136
+#: src/views/site/site_list/columns.tsx:168
+#: src/views/stream/columns.tsx:127
+#: src/views/stream/components/StreamEditor.vue:65
+#: src/views/upstream/UpstreamList.vue:88
+#: src/views/user/userColumns.tsx:39
+msgid "Disabled"
+msgstr ""
+
+#: src/components/ConfigStatusTag/configStatus.ts:15
+#: src/views/site/components/SiteStatusSelect.vue:162
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:142
+#: src/views/site/site_list/columns.tsx:172
+#: src/views/site/site_list/SiteList.vue:160
+#: src/views/site/site_list/SiteList.vue:327
+msgid "Maintenance"
 msgstr ""
 
 #: src/components/GeoLiteDownload/GeoLiteDownload.vue:62
@@ -518,11 +816,12 @@ msgstr ""
 #: src/components/LLM/ChatMessage.vue:256
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:172
 #: src/language/curd.ts:18
+#: src/views/access_list/components/AccessListEditor.vue:429
 #: src/views/certificate/components/CertificateActions.vue:29
 #: src/views/config/components/ConfigLeftPanel.vue:283
 #: src/views/config/components/ConfigName.vue:58
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:864
-#: src/views/dns/DDNSManager.vue:474
+#: src/views/dns/DDNSManager.vue:477
 #: src/views/dns/DNSCredential.vue:223
 #: src/views/dns/DNSRecordManager.vue:253
 #: src/views/preference/components/AuthSettings/Passkey.vue:132
@@ -530,45 +829,17 @@ msgstr ""
 #: src/views/preference/tabs/NginxSettings.vue:318
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:83
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:252
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:276
 #: src/views/stream/components/ConfigName.vue:52
-#: src/views/stream/components/StreamEditor.vue:154
+#: src/views/stream/components/StreamEditor.vue:168
+#: src/views/upstream/components/UpstreamEditor.vue:433
 msgid "Save"
-msgstr ""
-
-#: src/components/LLM/ChatMessage.vue:257
-#: src/components/NgxConfigEditor/NgxServer.vue:76
-#: src/components/NgxConfigEditor/NgxUpstream.vue:43
-#: src/language/curd.ts:37
-#: src/views/config/components/Delete.vue:101
-#: src/views/dashboard/components/SiteHealthCheckModal.vue:861
-#: src/views/dns/DDNSManager.vue:471
-#: src/views/dns/DNSGroupList.vue:241
-#: src/views/dns/DNSGroupList.vue:286
-#: src/views/dns/DNSGroupRecordManager.vue:1532
-#: src/views/dns/DNSRecordManager.vue:250
-#: src/views/nginx_log/components/IndexingSettingsModal.vue:102
-#: src/views/nginx_log/indexing/IndexManagement.vue:33
-#: src/views/nginx_log/indexing/IndexManagement.vue:59
-#: src/views/nginx_log/NginxLogList.vue:421
-#: src/views/preference/components/AuthSettings/Passkey.vue:143
-#: src/views/preference/components/NginxHostSetup/steps/AuthenticationMethod.vue:292
-#: src/views/preference/tabs/NginxSettings.vue:46
-#: src/views/preference/tabs/NginxSettings.vue:322
-#: src/views/site/components/MaintenanceConfigModal.vue:64
-#: src/views/site/components/SiteStatusSelect.vue:156
-#: src/views/site/components/SiteStatusSelect.vue:182
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:101
-#: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:27
-#: src/views/site/site_edit/components/QuickSetupModal.vue:113
-#: src/views/site/site_edit/components/QuickSetupModal.vue:160
-#: src/views/site/site_list/SiteList.vue:173
-#: src/views/stream/components/StreamStatusSelect.vue:62
-msgid "Cancel"
 msgstr ""
 
 #: src/components/LLM/ChatMessage.vue:263
 #: src/components/NginxControl/NginxControl.vue:199
+#: src/views/access_list/AccessListList.vue:96
+#: src/views/upstream/UpstreamList.vue:149
 msgid "Reload"
 msgstr ""
 
@@ -576,15 +847,15 @@ msgstr ""
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:132
-#: src/components/NgxConfigEditor/LocationEditor.vue:86
+#: src/components/NgxConfigEditor/LocationEditor.vue:101
 #: src/components/Notification/Notification.vue:115
 #: src/language/curd.ts:40
 #: src/views/notification/Notification.vue:38
 #: src/views/preference/tabs/AuthSettings.vue:131
 #: src/views/preference/tabs/CertSettings.vue:83
-#: src/views/site/site_list/columns.tsx:30
-#: src/views/site/site_list/SiteList.vue:267
-#: src/views/stream/StreamList.vue:99
+#: src/views/site/site_list/columns.tsx:32
+#: src/views/site/site_list/SiteList.vue:269
+#: src/views/stream/StreamList.vue:110
 msgid "No"
 msgstr ""
 
@@ -593,15 +864,17 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:42
 #: src/components/Notification/Notification.vue:116
 #: src/language/curd.ts:15
+#: src/views/access_list/AccessListList.vue:70
 #: src/views/backup/components/BackupCreator.vue:146
 #: src/views/notification/Notification.vue:39
 #: src/views/preference/components/NginxHostSetup/checks.ts:119
-#: src/views/site/components/SiteStatusSelect.vue:155
+#: src/views/site/components/SiteStatusSelect.vue:136
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:100
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:26
-#: src/views/site/site_list/SiteList.vue:268
+#: src/views/site/site_list/SiteList.vue:270
 #: src/views/stream/components/StreamStatusSelect.vue:61
-#: src/views/stream/StreamList.vue:100
+#: src/views/stream/StreamList.vue:111
+#: src/views/upstream/UpstreamList.vue:123
 msgid "OK"
 msgstr ""
 
@@ -650,9 +923,9 @@ msgstr ""
 #: src/components/LLM/LLMSessionTabs.vue:290
 #: src/components/LLM/LLMSessionTabs.vue:392
 #: src/views/site/site_list/SiteDuplicate.vue:72
-#: src/views/site/site_list/SiteList.vue:264
+#: src/views/site/site_list/SiteList.vue:266
 #: src/views/stream/components/StreamDuplicate.vue:64
-#: src/views/stream/StreamList.vue:96
+#: src/views/stream/StreamList.vue:107
 msgid "Duplicate"
 msgstr ""
 
@@ -661,16 +934,20 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxServer.vue:88
 #: src/components/NgxConfigEditor/NgxUpstream.vue:60
 #: src/language/curd.ts:9
+#: src/views/access_list/AccessListList.vue:78
+#: src/views/access_list/AccessListList.vue:194
 #: src/views/certificate/components/RemoveCert.vue:123
 #: src/views/config/components/Delete.vue:67
 #: src/views/config/components/Delete.vue:100
 #: src/views/config/ConfigList.vue:228
 #: src/views/dns/components/DNSRecordTable.vue:332
 #: src/views/dns/components/DNSRecordTable.vue:383
-#: src/views/dns/DDNSManager.vue:396
+#: src/views/dns/DDNSManager.vue:399
 #: src/views/dns/DNSGroupList.vue:245
-#: src/views/site/site_list/SiteList.vue:278
-#: src/views/stream/StreamList.vue:110
+#: src/views/site/site_list/SiteList.vue:280
+#: src/views/stream/StreamList.vue:121
+#: src/views/upstream/UpstreamList.vue:131
+#: src/views/upstream/UpstreamList.vue:277
 msgid "Delete"
 msgstr ""
 
@@ -711,18 +988,6 @@ msgstr ""
 msgid "Restart request failed, please check your network connection"
 msgstr ""
 
-#: src/components/NamespaceTabs/NamespaceTabs.vue:124
-#: src/components/NodeIndicator/NodeIndicator.vue:38
-#: src/components/NodeSelector/NodeSelector.vue:62
-#: src/constants/index.ts:46
-#: src/constants/index.ts:52
-#: src/views/backup/AutoBackup/AutoBackup.vue:103
-#: src/views/backup/AutoBackup/AutoBackup.vue:112
-#: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:50
-#: src/views/preference/tabs/NginxSettings.vue:246
-msgid "Local"
-msgstr ""
-
 #: src/components/NamespaceTabs/NamespaceTabs.vue:139
 msgid "Are you sure you want to reload Nginx on the following sync nodes?"
 msgstr ""
@@ -730,7 +995,7 @@ msgstr ""
 #: src/components/NamespaceTabs/NamespaceTabs.vue:140
 #: src/components/NamespaceTabs/NamespaceTabs.vue:152
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:131
-#: src/components/NgxConfigEditor/LocationEditor.vue:85
+#: src/components/NgxConfigEditor/LocationEditor.vue:100
 #: src/views/nginx_log/indexing/IndexManagement.vue:31
 #: src/views/nginx_log/indexing/IndexManagement.vue:57
 #: src/views/preference/tabs/AuthSettings.vue:130
@@ -753,19 +1018,22 @@ msgstr ""
 #: src/components/NodeSelector/NodeSelector.vue:65
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:111
+#: src/views/dashboard/Nodes.vue:112
 #: src/views/node/nodeColumns.tsx:149
 #: src/views/upstream/SocketList.vue:51
+#: src/views/upstream/UpstreamList.vue:93
 msgid "Online"
 msgstr ""
 
 #: src/components/NamespaceTabs/NamespaceTabs.vue:169
 #: src/components/NodeCard/NodeCard.vue:59
 #: src/components/NodeSelector/NodeSelector.vue:85
+#: src/components/NodeSwitcher/NodeSwitcher.vue:53
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
-#: src/views/dashboard/Nodes.vue:118
+#: src/views/dashboard/Nodes.vue:119
 #: src/views/node/nodeColumns.tsx:151
 #: src/views/upstream/SocketList.vue:51
+#: src/views/upstream/UpstreamList.vue:94
 msgid "Offline"
 msgstr ""
 
@@ -852,8 +1120,8 @@ msgstr ""
 #: src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:255
 #: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:53
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:95
-#: src/views/stream/components/StreamEditor.vue:30
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:105
+#: src/views/stream/components/StreamEditor.vue:40
 msgid "Saved successfully"
 msgstr ""
 
@@ -870,32 +1138,32 @@ msgid "Cannot delete server_name while DNS is linked. Clear DNS link first."
 msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:158
-#: src/components/NgxConfigEditor/LocationEditor.vue:142
-#: src/components/NgxConfigEditor/LocationEditor.vue:173
+#: src/components/NgxConfigEditor/LocationEditor.vue:158
+#: src/components/NgxConfigEditor/LocationEditor.vue:204
 #: src/components/NgxConfigEditor/NgxServer.vue:145
 msgid "Comments"
 msgstr ""
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:163
-#: src/components/NgxConfigEditor/LocationEditor.vue:154
-#: src/components/NgxConfigEditor/LocationEditor.vue:182
+#: src/components/NgxConfigEditor/LocationEditor.vue:185
+#: src/components/NgxConfigEditor/LocationEditor.vue:225
 msgid "Content"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LocationEditor.vue:84
+#: src/components/NgxConfigEditor/LocationEditor.vue:99
 msgid "Are you sure you want to remove this location?"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LocationEditor.vue:110
+#: src/components/NgxConfigEditor/LocationEditor.vue:125
 msgid "Locations"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LocationEditor.vue:137
+#: src/components/NgxConfigEditor/LocationEditor.vue:152
 msgid "Location"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LocationEditor.vue:148
-#: src/components/NgxConfigEditor/LocationEditor.vue:176
+#: src/components/NgxConfigEditor/LocationEditor.vue:164
+#: src/components/NgxConfigEditor/LocationEditor.vue:207
 #: src/language/curd.ts:61
 #: src/views/config/components/ConfigRightPanel/Basic.vue:41
 #: src/views/config/components/Delete.vue:127
@@ -905,8 +1173,23 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
-#: src/components/NgxConfigEditor/LocationEditor.vue:169
-#: src/components/NgxConfigEditor/LocationEditor.vue:196
+#: src/components/NgxConfigEditor/LocationEditor.vue:173
+#: src/components/NgxConfigEditor/LocationEditor.vue:215
+msgid "Proxy to upstream"
+msgstr ""
+
+#: src/components/NgxConfigEditor/LocationEditor.vue:174
+msgid "Sets proxy_pass to the selected upstream group; its servers are managed on the Upstream page."
+msgstr ""
+
+#: src/components/NgxConfigEditor/LocationEditor.vue:180
+#: src/components/NgxConfigEditor/LocationEditor.vue:221
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:119
+msgid "Select an upstream"
+msgstr ""
+
+#: src/components/NgxConfigEditor/LocationEditor.vue:200
+#: src/components/NgxConfigEditor/LocationEditor.vue:239
 msgid "Add Location"
 msgstr ""
 
@@ -968,44 +1251,23 @@ msgid "No servers configured"
 msgstr ""
 
 #: src/components/NgxConfigEditor/NgxServer.vue:117
+#: src/views/upstream/components/UpstreamEditor.vue:318
 msgid "Add Server"
 msgstr ""
 
-#: src/components/NgxConfigEditor/NgxServer.vue:166
+#: src/components/NgxConfigEditor/NgxServer.vue:173
 #: src/components/NgxConfigEditor/NgxUpstream.vue:130
 #: src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:57
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:120
 #: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:502
-#: src/views/site/site_list/SiteList.vue:243
-#: src/views/stream/StreamList.vue:81
+#: src/views/site/site_list/SiteList.vue:245
+#: src/views/stream/StreamList.vue:92
 msgid "Add"
 msgstr ""
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:39
 msgid "Do you want to remove this upstream?"
-msgstr ""
-
-#: src/components/NgxConfigEditor/NgxUpstream.vue:110
-#: src/components/NgxConfigEditor/NgxUpstream.vue:114
-#: src/views/backup/AutoBackup/AutoBackup.vue:193
-#: src/views/backup/AutoBackup/AutoBackup.vue:203
-#: src/views/dns/DDNSManager.vue:356
-#: src/views/node/nodeColumns.tsx:168
-#: src/views/node/nodeColumns.tsx:174
-#: src/views/preference/components/ExternalNotify/columns.tsx:60
-#: src/views/preference/tabs/HTTPSettings.vue:36
-#: src/views/preference/tabs/LogrotateSettings.vue:16
-#: src/views/preference/tabs/NodeSettings.vue:28
-#: src/views/preference/tabs/NodeSettings.vue:33
-#: src/views/site/components/SiteStatusSelect.vue:40
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:113
-#: src/views/site/site_list/columns.tsx:149
-#: src/views/stream/columns.tsx:108
-#: src/views/stream/components/RightPanel/Basic.vue:24
-#: src/views/stream/components/StreamEditor.vue:49
-#: src/views/user/userColumns.tsx:36
-msgid "Enabled"
 msgstr ""
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:136
@@ -1018,6 +1280,52 @@ msgstr ""
 
 #: src/components/NgxConfigEditor/NgxUpstream.vue:158
 msgid "Upstream Name"
+msgstr ""
+
+#: src/components/NodeSwitcher/NodeSwitcher.vue:57
+#: src/components/PortScanner/PortScannerCompact.vue:47
+#: src/composables/useNginxPerformance.ts:19
+msgid "Unknown"
+msgstr ""
+
+#: src/components/NodeSwitcher/NodeSwitcher.vue:141
+#: src/language/constants.ts:62
+#: src/language/curd.ts:12
+#: src/views/config/configColumns.tsx:5
+#: src/views/dns/components/DNSRecordFilter.vue:65
+#: src/views/nginx_log/structured/components/SearchFilters.vue:217
+#: src/views/site/site_list/columns.tsx:19
+#: src/views/stream/columns.tsx:15
+msgid "Search"
+msgstr ""
+
+#: src/components/NodeSwitcher/NodeSwitcher.vue:163
+#: src/components/NodeSwitcher/NodeSwitcher.vue:164
+#: src/components/NodeSwitcher/NodeSwitcher.vue:210
+#: src/components/NodeSwitcher/NodeSwitcher.vue:211
+msgid "Open in split view"
+msgstr ""
+
+#: src/components/NodeSwitcher/NodeSwitcher.vue:172
+#: src/components/NodeSwitcher/NodeSwitcher.vue:234
+#: src/routes/modules/nodes.ts:11
+#: src/views/dashboard/Nodes.vue:91
+#: src/views/home/Home.vue:117
+#: src/views/node/Node.vue:151
+msgid "Nodes"
+msgstr ""
+
+#: src/components/NodeSwitcher/NodeSwitcher.vue:180
+#: src/views/dashboard/components/NodeAnalyticItem.vue:91
+msgid "The remote Nginx UI version is not compatible with the local Nginx UI version. "
+msgstr ""
+
+#: src/components/NodeSwitcher/NodeSwitcher.vue:223
+#: src/composables/useGeoTranslation.ts:169
+#: src/views/dashboard/NginxDashBoard.vue:295
+#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:331
+#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:126
+msgid "No data"
 msgstr ""
 
 #: src/components/Notification/detailRender.tsx:70
@@ -1519,25 +1827,25 @@ msgstr ""
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/components/ExternalNotify/labels.ts:28
 #: src/views/preference/tabs/ServerSettings.vue:24
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:100
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:148
 msgid "Port"
 msgstr ""
 
 #: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/backup/AutoBackup/AutoBackup.vue:189
 #: src/views/certificate/ACMEUser.vue:66
-#: src/views/certificate/CertificateList/certColumns.tsx:81
+#: src/views/certificate/CertificateList/certColumns.tsx:82
 #: src/views/dashboard/components/ModulesTable.vue:75
-#: src/views/dns/DDNSManager.vue:189
+#: src/views/dns/DDNSManager.vue:192
 #: src/views/dns/DNSGroupRecordManager.vue:142
 #: src/views/nginx_log/structured/components/SearchFilters.vue:106
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:260
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:537
 #: src/views/node/nodeColumns.tsx:142
-#: src/views/preference/tabs/AccessTokens.vue:54
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:29
-#: src/views/site/site_list/columns.tsx:132
-#: src/views/stream/columns.tsx:87
+#: src/views/preference/tabs/AccessTokens.vue:52
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:30
+#: src/views/site/site_list/columns.tsx:143
+#: src/views/stream/columns.tsx:98
 msgid "Status"
 msgstr ""
 
@@ -1551,11 +1859,6 @@ msgstr ""
 
 #: src/components/PortScanner/PortScannerCompact.vue:45
 msgid "Closed"
-msgstr ""
-
-#: src/components/PortScanner/PortScannerCompact.vue:47
-#: src/composables/useNginxPerformance.ts:19
-msgid "Unknown"
 msgstr ""
 
 #: src/components/PortScanner/PortScannerCompact.vue:55
@@ -1611,13 +1914,13 @@ msgstr ""
 msgid "Nginx Log Indexing..."
 msgstr ""
 
-#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:41
-#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:65
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:37
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:60
 msgid "Legacy recovery code is deprecated. Generate new recovery codes to keep account recovery secure."
 msgstr ""
 
-#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:45
-#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:69
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:41
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:64
 #: src/language/curd.ts:17
 #: src/views/certificate/components/DNSIssueCertificate.vue:278
 #: src/views/certificate/components/SelfSignedCertForm.vue:82
@@ -1643,32 +1946,32 @@ msgstr ""
 msgid "Attempt to fix"
 msgstr ""
 
-#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:35
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:31
 msgid "Fix"
 msgstr ""
 
-#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:35
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:31
 msgid "Check"
 msgstr ""
 
-#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:46
-#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:69
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:42
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:64
 msgid "Self check failed, Nginx UI may not work properly"
 msgstr ""
 
-#: src/components/SelfCheck/store.ts:18
+#: src/components/SelfCheck/store.ts:19
 msgid "Install Secret"
 msgstr ""
 
-#: src/components/SelfCheck/store.ts:19
+#: src/components/SelfCheck/store.ts:20
 msgid "Frontend debug mode is active. Secret verification is mocked locally and no backend request is sent."
 msgstr ""
 
-#: src/components/SelfCheck/store.ts:24
+#: src/components/SelfCheck/store.ts:25
 msgid "Install Flow Preview"
 msgstr ""
 
-#: src/components/SelfCheck/store.ts:25
+#: src/components/SelfCheck/store.ts:26
 msgid "This mode only previews the installation UI flow and does not change any server state."
 msgstr ""
 
@@ -1684,43 +1987,45 @@ msgstr ""
 msgid "Support communication with the backend through the WebSocket protocol. "
 msgstr ""
 
-#: src/components/SensitiveString/SensitiveInput.vue:67
-#: src/components/SensitiveString/SensitiveString.vue:71
+#: src/components/SensitiveString/SensitiveInput.vue:68
+#: src/components/SensitiveString/SensitiveString.vue:73
 #: src/views/preference/components/AuthSettings/RecoveryCodes.vue:125
 #: src/views/preference/components/NginxHostSetup/CodeBlock.vue:51
 #: src/views/preference/tabs/ExternalNotify.vue:68
 msgid "Copied"
 msgstr ""
 
-#: src/components/SensitiveString/SensitiveInput.vue:91
-#: src/components/SensitiveString/SensitiveString.vue:100
+#: src/components/SensitiveString/SensitiveInput.vue:96
+#: src/components/SensitiveString/SensitiveString.vue:107
 #: src/views/backup/components/BackupCreator.vue:125
 #: src/views/preference/components/NginxHostSetup/CodeBlock.vue:51
-#: src/views/preference/tabs/AccessTokens.vue:319
+#: src/views/preference/tabs/AccessTokens.vue:317
 #: src/views/preference/tabs/ExternalNotify.vue:103
 msgid "Copy"
 msgstr ""
 
-#: src/components/SensitiveString/SensitiveInput.vue:94
-#: src/components/SensitiveString/SensitiveString.vue:102
+#: src/components/SensitiveString/SensitiveInput.vue:99
+#: src/components/SensitiveString/SensitiveString.vue:109
 msgid "Hide"
 msgstr ""
 
-#: src/components/SensitiveString/SensitiveInput.vue:94
-#: src/components/SensitiveString/SensitiveString.vue:102
+#: src/components/SensitiveString/SensitiveInput.vue:99
+#: src/components/SensitiveString/SensitiveString.vue:109
 #: src/views/nginx_log/components/LoadingState.vue:41
 #: src/views/nginx_log/components/LoadingState.vue:78
 msgid "Loading..."
 msgstr ""
 
-#: src/components/SensitiveString/SensitiveInput.vue:94
-#: src/components/SensitiveString/SensitiveString.vue:102
+#: src/components/SensitiveString/SensitiveInput.vue:99
+#: src/components/SensitiveString/SensitiveString.vue:109
 msgid "Show"
 msgstr ""
 
 #: src/components/StringListInput/StringListInput.vue:38
 #: src/components/StringListInput/StringListInput.vue:41
+#: src/views/access_list/components/AccessListEditor.vue:314
 #: src/views/preference/tabs/AuthSettings.vue:136
+#: src/views/upstream/components/UpstreamEditor.vue:301
 msgid "Remove"
 msgstr ""
 
@@ -1984,13 +2289,6 @@ msgstr ""
 msgid "Percentage"
 msgstr ""
 
-#: src/composables/useGeoTranslation.ts:169
-#: src/views/dashboard/NginxDashBoard.vue:295
-#: src/views/nginx_log/dashboard/components/ChinaMapChart/ChinaMapChart.vue:331
-#: src/views/nginx_log/dashboard/components/WorldMapChart/WorldMapChart.vue:126
-msgid "No data"
-msgstr ""
-
 #: src/composables/useNginxPerformance.ts:51
 msgid "Failed to get performance data"
 msgstr ""
@@ -2090,7 +2388,7 @@ msgid "Maximum number of connections per worker process"
 msgstr ""
 
 #: src/composables/useUpstreamStatus.ts:124
-#: src/views/certificate/CertificateList/certColumns.tsx:24
+#: src/views/certificate/CertificateList/certColumns.tsx:25
 #: src/views/certificate/CertificateList/Certificate.vue:44
 #: src/views/config/components/Delete.vue:125
 #: src/views/dashboard/components/ModulesTable.vue:62
@@ -2101,19 +2399,105 @@ msgstr ""
 #: src/views/nginx_log/NginxLogList.vue:147
 #: src/views/notification/notificationColumns.tsx:27
 #: src/views/preference/components/ExternalNotify/columns.tsx:25
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:57
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:60
 msgid "Type"
 msgstr ""
 
 #: src/composables/useUpstreamStatus.ts:124
 #: src/routes/modules/upstream.ts:10
+#: src/routes/modules/upstream.ts:19
 #: src/views/home/Home.vue:80
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:105
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:112
 #: src/views/upstream/SocketList.vue:27
 msgid "Upstream"
 msgstr ""
 
 #: src/composables/useUpstreamStatus.ts:124
 msgid "Proxy Pass"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:2
+msgid "Access list name is required and must be a single line"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:3
+msgid "Identifier must use lowercase letters, digits and hyphens, and start with a letter or digit"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:4
+msgid "Identifier {0} is already used by another access list"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:5
+msgid "Unknown fallback {0}"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:6
+msgid "Rule {0} has an unknown type"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:7
+msgid "Rule {0}: {1} is not an IP address, CIDR, all or unix:"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:8
+msgid "Rule {0} references an access list that does not exist"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:9
+msgid "Rule {0} references the list itself"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:10
+msgid "Circular reference: {0}"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:11
+msgid "Access list not found"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:12
+msgid "Access list is still used by {0}"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:13
+msgid "Access list {0} does not exist"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:14
+msgid "The configuration could not be parsed"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:15
+msgid "Server block {0} not found"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:16
+msgid "Location {0} not found in server block {1}"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:17
+msgid "{0} contains allow or deny rules that were not written by Nginx UI; remove them first"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:18
+msgid "Unknown access mode {0}"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:19
+msgid "Rule {0}: the note must be a single line"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:20
+#: src/constants/errors/config.ts:8
+#: src/constants/errors/site.ts:6
+#: src/constants/errors/stream.ts:5
+msgid "Nginx test failed: {0}"
+msgstr ""
+
+#: src/constants/errors/access_list.ts:21
+msgid "Failed to write access list file: {0}"
 msgstr ""
 
 #: src/constants/errors/analytic.ts:2
@@ -2672,12 +3056,6 @@ msgstr ""
 
 #: src/constants/errors/config.ts:7
 msgid "Destination file: {0} already exists"
-msgstr ""
-
-#: src/constants/errors/config.ts:8
-#: src/constants/errors/site.ts:6
-#: src/constants/errors/stream.ts:5
-msgid "Nginx test failed: {0}"
 msgstr ""
 
 #: src/constants/errors/config.ts:9
@@ -3389,6 +3767,94 @@ msgstr ""
 msgid "Upgrader core platform is unsupported"
 msgstr ""
 
+#: src/constants/errors/upstream.ts:2
+msgid "Invalid upstream name: use letters, digits, underscores and hyphens, starting with a letter or underscore (max 64 characters)"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:3
+msgid "Unsupported load balancing method: {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:4
+msgid "The hash method needs a key"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:5
+msgid "Invalid hash key: {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:6
+msgid "An upstream needs at least one server"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:7
+msgid "Invalid server address: {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:8
+msgid "Server weight must be at least 1: {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:9
+msgid "Server max_fails must not be negative: {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:10
+msgid "Invalid server fail_timeout: {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:11
+msgid "Backup servers cannot be used with the {0} method"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:12
+msgid "Keepalive must not be negative"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:13
+msgid "Additional directives must not contain blocks or braces"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:14
+msgid "Invalid server parameters: {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:15
+msgid "Invalid shared memory zone size: {0}; use a number with a k or m suffix, at least 32k"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:16
+msgid "The shared memory zone is set by the zone switch; remove the zone directive from the additional directives"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:17
+msgid "Upstream not found: {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:18
+msgid "Upstream already exists: {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:19
+msgid "An upstream with this name is already defined in {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:20
+msgid "Upstream is still referenced by: {0}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:21
+msgid "{0} is not an upstream file managed by Nginx UI"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:22
+msgid "The shared memory zone {0} is already used by another directive; nginx reported: {1}"
+msgstr ""
+
+#: src/constants/errors/upstream.ts:23
+msgid "The nginx conf.d directory is not available: {0}"
+msgstr ""
+
 #: src/constants/errors/user.ts:2
 msgid "Password incorrect"
 msgstr ""
@@ -3637,16 +4103,6 @@ msgstr ""
 msgid "Search module name"
 msgstr ""
 
-#: src/language/constants.ts:62
-#: src/language/curd.ts:12
-#: src/views/config/configColumns.tsx:5
-#: src/views/dns/components/DNSRecordFilter.vue:65
-#: src/views/nginx_log/structured/components/SearchFilters.vue:217
-#: src/views/site/site_list/columns.tsx:17
-#: src/views/stream/columns.tsx:13
-msgid "Search"
-msgstr ""
-
 #: src/language/constants.ts:65
 #: src/views/nginx_log/NginxLogList.vue:150
 msgid "Error Log"
@@ -3674,9 +4130,11 @@ msgid "View"
 msgstr ""
 
 #: src/language/curd.ts:8
+#: src/views/access_list/AccessListList.vue:185
 #: src/views/dns/components/DNSRecordTable.vue:325
 #: src/views/dns/components/DNSRecordTable.vue:376
 #: src/views/preference/tabs/NginxSettings.vue:259
+#: src/views/upstream/UpstreamList.vue:268
 msgid "Edit"
 msgstr ""
 
@@ -3720,8 +4178,8 @@ msgid "Please fill all fields correctly"
 msgstr ""
 
 #: src/language/curd.ts:25
-#: src/views/site/site_list/SiteList.vue:269
-#: src/views/stream/StreamList.vue:101
+#: src/views/site/site_list/SiteList.vue:271
+#: src/views/stream/StreamList.vue:112
 msgid "Are you sure you want to delete?"
 msgstr ""
 
@@ -3830,10 +4288,6 @@ msgstr ""
 msgid "Column Settings"
 msgstr ""
 
-#: src/language/curd.ts:65
-msgid "Apply"
-msgstr ""
-
 #: src/language/curd.ts:66
 msgid "Confirm Delete"
 msgstr ""
@@ -3848,7 +4302,7 @@ msgid "to confirm deletion"
 msgstr ""
 
 #: src/language/curd.ts:70
-#: src/views/dns/DDNSManager.vue:332
+#: src/views/dns/DDNSManager.vue:335
 #: src/views/dns/DNSGroupList.vue:181
 #: src/views/dns/DNSGroupRecordManager.vue:1276
 #: src/views/dns/DNSRecordManager.vue:203
@@ -3857,10 +4311,6 @@ msgstr ""
 
 #: src/language/curd.ts:71
 msgid "Collapse"
-msgstr ""
-
-#: src/language/curd.ts:72
-msgid "Expand"
 msgstr ""
 
 #: src/language/generate.ts:4
@@ -4248,85 +4698,93 @@ msgid "[Nginx UI] HTTP01 challenge route check after renewal failure: %{summary}
 msgstr ""
 
 #: src/language/generate.ts:100
-msgid "[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}"
+msgid "[Nginx UI] HTTP01 challenge route check could not run: %{error}"
 msgstr ""
 
 #: src/language/generate.ts:101
-msgid "[Nginx UI] HTTP01 challenge route check skipped: %{reason}"
+msgid "[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}. Issuance continues; the certificate authority will verify the route itself"
 msgstr ""
 
 #: src/language/generate.ts:102
-msgid "[Nginx UI] HTTP01 challenge route reachable for %{domain} via %{target}"
+msgid "[Nginx UI] HTTP01 challenge route check skipped: %{reason}"
 msgstr ""
 
 #: src/language/generate.ts:103
-msgid "[Nginx UI] Issued certificate successfully"
+msgid "[Nginx UI] HTTP01 challenge route reachable for %{domain} via %{target}"
 msgstr ""
 
 #: src/language/generate.ts:104
-msgid "[Nginx UI] Obtaining certificate"
+msgid "[Nginx UI] Issued certificate successfully"
 msgstr ""
 
 #: src/language/generate.ts:105
-msgid "[Nginx UI] Preparing for certificate revocation"
+msgid "[Nginx UI] Obtaining certificate"
 msgstr ""
 
 #: src/language/generate.ts:106
-msgid "[Nginx UI] Preparing lego configurations"
+msgid "[Nginx UI] Preparing for certificate revocation"
 msgstr ""
 
 #: src/language/generate.ts:107
-msgid "[Nginx UI] Reloading nginx"
+msgid "[Nginx UI] Preparing lego configurations"
 msgstr ""
 
 #: src/language/generate.ts:108
-msgid "[Nginx UI] Revocation completed"
+msgid "[Nginx UI] Reloading nginx"
 msgstr ""
 
 #: src/language/generate.ts:109
-msgid "[Nginx UI] Revoking certificate"
+msgid "[Nginx UI] Revocation completed"
 msgstr ""
 
 #: src/language/generate.ts:110
-msgid "[Nginx UI] Revoking old certificate"
+msgid "[Nginx UI] Revoking certificate"
 msgstr ""
 
 #: src/language/generate.ts:111
-msgid "[Nginx UI] Setting DNS01 challenge provider"
+msgid "[Nginx UI] Revoking old certificate"
 msgstr ""
 
 #: src/language/generate.ts:112
-msgid "[Nginx UI] Setting HTTP01 challenge provider"
+msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr ""
 
 #: src/language/generate.ts:113
-msgid "[Nginx UI] Setting environment variables"
+msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr ""
 
 #: src/language/generate.ts:114
-msgid "[Nginx UI] Writing certificate private key to disk"
+msgid "[Nginx UI] Setting environment variables"
 msgstr ""
 
 #: src/language/generate.ts:115
+msgid "[Nginx UI] Writing certificate private key to disk"
+msgstr ""
+
+#: src/language/generate.ts:116
 msgid "[Nginx UI] Writing certificate to disk"
 msgstr ""
 
-#: src/layouts/HeaderLayout.vue:22
+#: src/layouts/HeaderLayout.vue:38
 msgid "Logout successful"
 msgstr ""
 
-#: src/layouts/HeaderLayout.vue:67
-#: src/routes/index.ts:71
-#: src/views/workspace/WorkSpace.vue:54
+#: src/layouts/HeaderLayout.vue:115
+#: src/routes/index.ts:73
 msgid "Workspace"
 msgstr ""
 
-#: src/routes/index.ts:33
-#: src/routes/index.ts:62
+#: src/routes/index.ts:34
+#: src/routes/index.ts:64
 #: src/views/config/components/ConfigLeftPanel.vue:109
 #: src/views/config/components/ConfigLeftPanel.vue:159
 #: src/views/config/ConfigList.vue:74
 msgid "Home"
+msgstr ""
+
+#: src/routes/modules/access_lists.ts:10
+#: src/views/access_list/AccessListList.vue:91
+msgid "Access Lists"
 msgstr ""
 
 #: src/routes/modules/auth.ts:8
@@ -4349,6 +4807,9 @@ msgstr ""
 #: src/routes/modules/backup.ts:28
 #: src/views/backup/BackupHome.vue:7
 #: src/views/home/Home.vue:127
+#: src/views/upstream/components/UpstreamEditor.vue:247
+#: src/views/upstream/components/UpstreamEditor.vue:286
+#: src/views/upstream/components/UpstreamEditor.vue:288
 msgid "Backup"
 msgstr ""
 
@@ -4498,13 +4959,6 @@ msgstr ""
 msgid "Log List"
 msgstr ""
 
-#: src/routes/modules/nodes.ts:11
-#: src/views/dashboard/Nodes.vue:90
-#: src/views/home/Home.vue:117
-#: src/views/node/Node.vue:151
-msgid "Nodes"
-msgstr ""
-
 #: src/routes/modules/preference.ts:10
 #: src/views/home/Home.vue:122
 #: src/views/preference/Preference.vue:53
@@ -4518,7 +4972,7 @@ msgstr ""
 #: src/routes/modules/sites.ts:10
 #: src/routes/modules/sites.ts:18
 #: src/views/home/Home.vue:60
-#: src/views/site/site_list/SiteList.vue:215
+#: src/views/site/site_list/SiteList.vue:217
 msgid "Manage Sites"
 msgstr ""
 
@@ -4539,7 +4993,7 @@ msgstr ""
 
 #: src/routes/modules/streams.ts:10
 #: src/views/home/Home.vue:85
-#: src/views/stream/StreamList.vue:59
+#: src/views/stream/StreamList.vue:70
 msgid "Manage Streams"
 msgstr ""
 
@@ -4572,6 +5026,18 @@ msgstr ""
 msgid "Terminal"
 msgstr ""
 
+#: src/routes/modules/upstream.ts:28
+#: src/views/upstream/index.vue:7
+#: src/views/upstream/UpstreamList.vue:144
+msgid "Upstream Groups"
+msgstr ""
+
+#: src/routes/modules/upstream.ts:36
+#: src/views/upstream/index.vue:12
+#: src/views/upstream/SocketList.vue:132
+msgid "Upstream Sockets"
+msgstr ""
+
 #: src/routes/modules/user.ts:10
 #: src/views/user/User.vue:10
 msgid "Manage Users"
@@ -4580,6 +5046,209 @@ msgstr ""
 #: src/routes/modules/user.ts:19
 #: src/views/preference/tabs/NginxSettings.vue:44
 msgid "User Profile"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:19
+#: src/views/access_list/components/AccessListEditor.vue:265
+msgid "Rules"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:20
+#: src/views/access_list/components/AccessListEditor.vue:352
+msgid "Everything else"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:21
+#: src/views/access_list/components/AccessListEditor.vue:393
+msgid "Used By"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:22
+#: src/views/backup/AutoBackup/AutoBackup.vue:265
+#: src/views/certificate/ACMEUser.vue:115
+#: src/views/config/components/ConfigRightPanel/Basic.vue:54
+#: src/views/config/configColumns.tsx:44
+#: src/views/dns/DNSCredential.vue:141
+#: src/views/dns/DNSDomainList.vue:255
+#: src/views/dns/DNSGroupList.vue:34
+#: src/views/namespace/columns.ts:116
+#: src/views/node/nodeColumns.tsx:188
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:48
+#: src/views/site/site_list/columns.tsx:127
+#: src/views/stream/columns.tsx:82
+#: src/views/stream/components/RightPanel/Basic.vue:36
+#: src/views/user/userColumns.tsx:52
+msgid "Updated at"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:23
+#: src/views/backup/AutoBackup/AutoBackup.vue:302
+#: src/views/certificate/ACMEUser.vue:122
+#: src/views/certificate/CertificateList/certColumns.tsx:130
+#: src/views/config/configColumns.tsx:51
+#: src/views/dns/components/DNSRecordTable.vue:65
+#: src/views/dns/components/DNSRecordTable.vue:355
+#: src/views/dns/DDNSManager.vue:208
+#: src/views/dns/DNSCredential.vue:147
+#: src/views/dns/DNSDomainList.vue:261
+#: src/views/dns/DNSGroupList.vue:38
+#: src/views/dns/DNSGroupRecordManager.vue:146
+#: src/views/dns/DNSGroupRecordManager.vue:1363
+#: src/views/namespace/columns.ts:122
+#: src/views/nginx_log/NginxLogList.vue:339
+#: src/views/node/nodeColumns.tsx:195
+#: src/views/notification/notificationColumns.tsx:106
+#: src/views/preference/components/ExternalNotify/columns.tsx:98
+#: src/views/preference/components/ExternalNotify/labels.ts:7
+#: src/views/site/site_list/columns.tsx:182
+#: src/views/stream/columns.tsx:138
+#: src/views/upstream/UpstreamList.vue:37
+#: src/views/user/userColumns.tsx:58
+msgid "Actions"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:59
+#: src/views/access_list/components/AccessListEditor.vue:399
+msgid "List %{name}"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:68
+msgid "Access list %{name} is still in use"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:69
+msgid "Open the list to see which lists, sites and streams use it, and switch them to another list first."
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:76
+msgid "Delete access list %{name}?"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:77
+msgid "nginx-ui/access/%{slug}.conf will be removed."
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:83
+msgid "Access list %{name} deleted"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:111
+#: src/views/access_list/components/AccessListEditor.vue:229
+msgid "Create Access List"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:117
+msgid "An access list keeps IP addresses in one place. Choose it for a server or a location in the site editor; changing the list here updates every site that uses it."
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:157
+msgid "+%{count} more"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:164
+#: src/views/access_list/components/AccessListEditor.vue:75
+#: src/views/access_list/components/AccessListEditor.vue:335
+msgid "Deny"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:164
+#: src/views/access_list/components/AccessListEditor.vue:74
+#: src/views/access_list/components/AccessListEditor.vue:81
+#: src/views/access_list/components/AccessListEditor.vue:329
+msgid "Allow"
+msgstr ""
+
+#: src/views/access_list/AccessListList.vue:170
+#: src/views/upstream/UpstreamList.vue:256
+msgid "Not used"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:76
+#: src/views/access_list/components/AccessListEditor.vue:345
+msgid "Use list"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:80
+msgid "Deny (403)"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:198
+msgid "Site"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:198
+msgid "Stream"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:213
+msgid "Access list %{name} saved"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:229
+msgid "Edit Access List %{name}"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:246
+msgid "Identifier"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:250
+msgid "Fixed after creation, so sites keep working when the list is renamed."
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:251
+msgid "Names the file; lowercase letters, digits and hyphens."
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:266
+msgid "Checked from top to bottom; the first rule that matches decides. A list rule expands the rules of that list in place."
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:271
+#: src/views/access_list/components/AccessListEditor.vue:288
+#: src/views/dns/DNSGroupRecordManager.vue:161
+#: src/views/dns/DNSGroupRecordManager.vue:178
+#: src/views/preference/tabs/AccessTokens.vue:53
+#: src/views/preference/tabs/AuthSettings.vue:27
+msgid "Action"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:272
+#: src/views/access_list/components/AccessListEditor.vue:296
+#: src/views/access_list/components/AccessListEditor.vue:303
+msgid "Address or list"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:295
+msgid "Select a list"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:353
+msgid "Applies to requests no rule matched. Lists used by this list do not add their own."
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:383
+msgid "File Preview"
+msgstr ""
+
+#: src/views/access_list/components/AccessListEditor.vue:412
+msgid "Nothing uses this list yet."
+msgstr ""
+
+#: src/views/access_list/warnings.ts:7
+msgid "Rule %{rule} matches every address, so the rules below it never apply."
+msgstr ""
+
+#: src/views/access_list/warnings.ts:9
+msgid "Rule %{rule} sets bits below the prefix; Nginx ignores them."
+msgstr ""
+
+#: src/views/access_list/warnings.ts:11
+msgid "This list allows every address."
+msgstr ""
+
+#: src/views/access_list/warnings.ts:13
+msgid "This list has no rules; only \"Everything else\" applies."
 msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:27
@@ -4641,24 +5310,6 @@ msgstr ""
 msgid "Monthly on day %{day} at %{time}"
 msgstr ""
 
-#: src/views/backup/AutoBackup/AutoBackup.vue:194
-#: src/views/backup/AutoBackup/AutoBackup.vue:204
-#: src/views/dashboard/components/SiteCard.vue:189
-#: src/views/dns/DDNSManager.vue:356
-#: src/views/node/nodeColumns.tsx:154
-#: src/views/node/nodeColumns.tsx:177
-#: src/views/preference/tabs/HTTPSettings.vue:36
-#: src/views/preference/tabs/NodeSettings.vue:28
-#: src/views/preference/tabs/NodeSettings.vue:33
-#: src/views/site/components/SiteStatusSelect.vue:44
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:119
-#: src/views/site/site_list/columns.tsx:153
-#: src/views/stream/columns.tsx:112
-#: src/views/stream/components/StreamEditor.vue:55
-#: src/views/user/userColumns.tsx:39
-msgid "Disabled"
-msgstr ""
-
 #: src/views/backup/AutoBackup/AutoBackup.vue:212
 msgid "Last Backup Time"
 msgstr ""
@@ -4674,7 +5325,7 @@ msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:225
 #: src/views/backup/AutoBackup/AutoBackup.vue:250
-#: src/views/certificate/CertificateList/certColumns.tsx:97
+#: src/views/certificate/CertificateList/certColumns.tsx:93
 #: src/views/dns/DNSGroupRecordManager.vue:1185
 #: src/views/preference/components/NginxHostSetup/checks.ts:123
 #: src/views/preference/tabs/ExternalNotify.vue:73
@@ -4689,23 +5340,6 @@ msgstr ""
 #: src/views/preference/components/ExternalNotify/columns.tsx:93
 #: src/views/user/userColumns.tsx:46
 msgid "Created at"
-msgstr ""
-
-#: src/views/backup/AutoBackup/AutoBackup.vue:265
-#: src/views/certificate/ACMEUser.vue:115
-#: src/views/config/components/ConfigRightPanel/Basic.vue:54
-#: src/views/config/configColumns.tsx:44
-#: src/views/dns/DNSCredential.vue:141
-#: src/views/dns/DNSDomainList.vue:255
-#: src/views/dns/DNSGroupList.vue:34
-#: src/views/namespace/columns.ts:116
-#: src/views/node/nodeColumns.tsx:188
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:47
-#: src/views/site/site_list/columns.tsx:125
-#: src/views/stream/columns.tsx:80
-#: src/views/stream/components/RightPanel/Basic.vue:35
-#: src/views/user/userColumns.tsx:52
-msgid "Updated at"
 msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:272
@@ -4731,30 +5365,6 @@ msgstr ""
 #: src/views/backup/AutoBackup/AutoBackup.vue:296
 #: src/views/backup/AutoBackup/components/StorageConfigEditor.vue:112
 msgid "S3 Region"
-msgstr ""
-
-#: src/views/backup/AutoBackup/AutoBackup.vue:302
-#: src/views/certificate/ACMEUser.vue:122
-#: src/views/certificate/CertificateList/certColumns.tsx:147
-#: src/views/config/configColumns.tsx:51
-#: src/views/dns/components/DNSRecordTable.vue:65
-#: src/views/dns/components/DNSRecordTable.vue:355
-#: src/views/dns/DDNSManager.vue:205
-#: src/views/dns/DNSCredential.vue:147
-#: src/views/dns/DNSDomainList.vue:261
-#: src/views/dns/DNSGroupList.vue:38
-#: src/views/dns/DNSGroupRecordManager.vue:146
-#: src/views/dns/DNSGroupRecordManager.vue:1363
-#: src/views/namespace/columns.ts:122
-#: src/views/nginx_log/NginxLogList.vue:339
-#: src/views/node/nodeColumns.tsx:195
-#: src/views/notification/notificationColumns.tsx:106
-#: src/views/preference/components/ExternalNotify/columns.tsx:98
-#: src/views/preference/components/ExternalNotify/labels.ts:7
-#: src/views/site/site_list/columns.tsx:167
-#: src/views/stream/columns.tsx:123
-#: src/views/user/userColumns.tsx:58
-msgid "Actions"
 msgstr ""
 
 #: src/views/backup/AutoBackup/AutoBackup.vue:324
@@ -5078,53 +5688,53 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:28
+#: src/views/certificate/CertificateList/certColumns.tsx:29
 msgid "Sync Certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:29
+#: src/views/certificate/CertificateList/certColumns.tsx:30
 msgid "Managed Certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:30
+#: src/views/certificate/CertificateList/certColumns.tsx:31
 #: src/views/certificate/CertificateList/Certificate.vue:47
 msgid "General Certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:31
+#: src/views/certificate/CertificateList/certColumns.tsx:32
 #: src/views/certificate/components/DNSIssueCertificate.vue:43
 msgid "Self-signed Certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:45
+#: src/views/certificate/CertificateList/certColumns.tsx:46
 msgid "Renewal paused"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:89
+#: src/views/certificate/CertificateList/certColumns.tsx:88
 msgid "Issuing..."
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:93
+#: src/views/certificate/CertificateList/certColumns.tsx:91
 msgid "Issuance failed"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:103
+#: src/views/certificate/CertificateList/certColumns.tsx:98
 msgid "Automatic migration pending"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:104
+#: src/views/certificate/CertificateList/certColumns.tsx:99
 msgid "Configuration mismatch"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:107
+#: src/views/certificate/CertificateList/certColumns.tsx:102
 msgid "Configured path: %{configured}; managed path: %{managed}"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:121
+#: src/views/certificate/CertificateList/certColumns.tsx:111
 msgid "Unable to verify deployment"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:141
+#: src/views/certificate/CertificateList/certColumns.tsx:124
 #: src/views/certificate/CertificateList/Certificate.vue:62
 msgid "Not After"
 msgstr ""
@@ -5194,56 +5804,56 @@ msgstr ""
 #: src/views/preference/NginxHostSetup.vue:129
 #: src/views/preference/NginxHostSetup.vue:147
 #: src/views/site/site_add/SiteAdd.vue:533
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:245
-#: src/views/stream/components/StreamEditor.vue:147
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:269
+#: src/views/stream/components/StreamEditor.vue:161
 msgid "Back"
 msgstr ""
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:53
+#: src/views/certificate/components/CertificateBasicInfo.vue:51
 #: src/views/preference/components/NginxHostSetup/PathField.vue:60
 #: src/views/preference/tabs/NginxSettings.vue:305
 msgid "This field is required"
 msgstr ""
 
-#: src/views/certificate/components/CertificateBasicInfo.vue:70
+#: src/views/certificate/components/CertificateBasicInfo.vue:68
 #: src/views/certificate/components/SelfSignedCertFields.vue:74
 msgid "Sync to"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:39
+#: src/views/certificate/components/CertificateContentEditor.vue:37
 msgid "Failed to load nginx configuration path"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:202
-#: src/views/certificate/components/CertificateContentEditor.vue:208
+#: src/views/certificate/components/CertificateContentEditor.vue:200
+#: src/views/certificate/components/CertificateContentEditor.vue:206
 msgid "SSL Certificate Content"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:216
+#: src/views/certificate/components/CertificateContentEditor.vue:214
 msgid "The input is not a SSL Certificate"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:238
-#: src/views/certificate/components/CertificateContentEditor.vue:256
-#: src/views/certificate/components/CertificateContentEditor.vue:298
-#: src/views/certificate/components/CertificateContentEditor.vue:316
+#: src/views/certificate/components/CertificateContentEditor.vue:236
+#: src/views/certificate/components/CertificateContentEditor.vue:254
+#: src/views/certificate/components/CertificateContentEditor.vue:296
+#: src/views/certificate/components/CertificateContentEditor.vue:314
 msgid "Leave blank will not change anything"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:246
+#: src/views/certificate/components/CertificateContentEditor.vue:244
 msgid "Drop certificate file here"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:262
-#: src/views/certificate/components/CertificateContentEditor.vue:268
+#: src/views/certificate/components/CertificateContentEditor.vue:260
+#: src/views/certificate/components/CertificateContentEditor.vue:266
 msgid "SSL Certificate Key Content"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:276
+#: src/views/certificate/components/CertificateContentEditor.vue:274
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:306
+#: src/views/certificate/components/CertificateContentEditor.vue:304
 msgid "Drop private key file here"
 msgstr ""
 
@@ -5373,7 +5983,7 @@ msgid "Issued successfully"
 msgstr ""
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:138
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:185
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:181
 msgid "Fail to obtain certificate"
 msgstr ""
 
@@ -5396,7 +6006,7 @@ msgid "Certificate Type"
 msgstr ""
 
 #: src/views/certificate/components/DNSIssueCertificate.vue:202
-#: src/views/dns/DDNSManager.vue:173
+#: src/views/dns/DDNSManager.vue:176
 #: src/views/dns/DNSGroupRecordManager.vue:153
 #: src/views/dns/DNSGroupRecordManager.vue:170
 #: src/views/preference/components/ExternalNotify/labels.ts:16
@@ -5444,10 +6054,10 @@ msgstr ""
 #: src/views/certificate/components/DNSIssueCertificate.vue:264
 #: src/views/install/components/InstallView.vue:206
 #: src/views/preference/components/NginxHostSetup/Wizard.vue:97
-#: src/views/site/components/SiteStatusSelect.vue:202
+#: src/views/site/components/SiteStatusSelect.vue:183
 #: src/views/site/site_add/SiteAdd.vue:518
 #: src/views/site/site_add/SiteAdd.vue:526
-#: src/views/site/site_list/SiteList.vue:292
+#: src/views/site/site_list/SiteList.vue:294
 msgid "Next"
 msgstr ""
 
@@ -5455,7 +6065,7 @@ msgstr ""
 #: src/views/certificate/components/RetryCert.vue:53
 #: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:103
 #: src/views/preference/NginxHostSetup.vue:144
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:278
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:276
 #: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:775
 msgid "Retry"
 msgstr ""
@@ -5543,7 +6153,7 @@ msgstr ""
 #: src/views/certificate/components/SelfSignedCertFields.vue:42
 #: src/views/dns/DNSGroupList.vue:31
 #: src/views/dns/DNSGroupList.vue:267
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:75
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:78
 #: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:472
 msgid "Domains"
 msgstr ""
@@ -5593,8 +6203,8 @@ msgid "Format successfully"
 msgstr ""
 
 #: src/views/config/components/ConfigLeftPanel.vue:255
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:138
-#: src/views/stream/components/StreamEditor.vue:68
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:155
+#: src/views/stream/components/StreamEditor.vue:78
 msgid "History"
 msgstr ""
 
@@ -5742,8 +6352,8 @@ msgid "New name"
 msgstr ""
 
 #: src/views/config/configColumns.tsx:10
-#: src/views/site/site_list/columns.tsx:22
-#: src/views/stream/columns.tsx:18
+#: src/views/site/site_list/columns.tsx:24
+#: src/views/stream/columns.tsx:20
 msgid "Name or content"
 msgstr ""
 
@@ -5804,20 +6414,16 @@ msgstr ""
 msgid "Refresh Modules Cache"
 msgstr ""
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:82
-#: src/views/dashboard/components/NodeAnalyticItem.vue:99
-#: src/views/dashboard/components/NodeAnalyticItem.vue:109
+#: src/views/dashboard/components/NodeAnalyticItem.vue:83
+#: src/views/dashboard/components/NodeAnalyticItem.vue:100
+#: src/views/dashboard/components/NodeAnalyticItem.vue:110
 msgid "Link"
 msgstr ""
 
-#: src/views/dashboard/components/NodeAnalyticItem.vue:82
+#: src/views/dashboard/components/NodeAnalyticItem.vue:83
 #: src/views/dashboard/components/SiteNavigationToolbar.vue:36
 #: src/views/preference/components/NginxHostSetup/steps/ConnectionTest.vue:58
 msgid "Connected"
-msgstr ""
-
-#: src/views/dashboard/components/NodeAnalyticItem.vue:90
-msgid "The remote Nginx UI version is not compatible with the local Nginx UI version. "
 msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:26
@@ -5890,7 +6496,7 @@ msgid "Server names hash table size"
 msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:110
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:159
 msgid "Client Max Body Size"
 msgstr ""
 
@@ -5939,6 +6545,9 @@ msgid "Cache subdirectory levels structure, e.g. 1:2"
 msgstr ""
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:146
+#: src/views/upstream/components/UpstreamEditor.vue:324
+#: src/views/upstream/components/UpstreamEditor.vue:334
+#: src/views/upstream/UpstreamList.vue:204
 msgid "Shared Memory Zone"
 msgstr ""
 
@@ -6599,7 +7208,7 @@ msgstr ""
 #: src/views/preference/components/ExternalNotify/labels.ts:23
 #: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:196
 #: src/views/preference/tabs/ServerSettings.vue:21
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:93
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:141
 msgid "Host"
 msgstr ""
 
@@ -6749,6 +7358,8 @@ msgstr ""
 
 #: src/views/dns/components/DNSRecordForm.vue:122
 #: src/views/dns/components/DNSRecordTable.vue:61
+#: src/views/upstream/components/UpstreamEditor.vue:244
+#: src/views/upstream/components/UpstreamEditor.vue:268
 msgid "Weight"
 msgstr ""
 
@@ -6789,13 +7400,6 @@ msgstr ""
 msgid "%{count} more"
 msgstr ""
 
-#: src/views/dns/components/DNSRecordTable.vue:267
-#: src/views/dns/components/DNSRecordTable.vue:280
-#: src/views/dns/components/DNSRecordTable.vue:299
-#: src/views/dns/components/DNSRecordTable.vue:308
-msgid "Mixed"
-msgstr ""
-
 #: src/views/dns/components/DNSRecordTable.vue:311
 #: src/views/dns/components/DNSRecordTable.vue:370
 #: src/views/dns/DNSGroupRecordManager.vue:641
@@ -6829,15 +7433,19 @@ msgstr ""
 msgid "IPv6 then IPv4"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:107
+#: src/views/dns/DDNSManager.vue:108
 msgid "AAAA records at the same names are not managed in IPv4 only mode. They remain unchanged in DNS."
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:108
+#: src/views/dns/DDNSManager.vue:110
 msgid "A records at the same names are not managed in IPv6 only mode. They remain unchanged in DNS."
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:184
+#: src/views/dns/DDNSManager.vue:111
+msgid "Unselected records at the same names are not managed. They remain unchanged in DNS."
+msgstr ""
+
+#: src/views/dns/DDNSManager.vue:187
 #: src/views/dns/DNSCredential.vue:102
 #: src/views/dns/DNSDomainList.vue:227
 #: src/views/dns/DNSDomainList.vue:248
@@ -6845,90 +7453,90 @@ msgstr ""
 msgid "Provider"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:193
+#: src/views/dns/DDNSManager.vue:196
 #: src/views/preference/tabs/HealthCheckSettings.vue:27
 #: src/views/preference/tabs/HealthCheckSettings.vue:44
 #: src/views/preference/tabs/LogrotateSettings.vue:22
 msgid "Interval"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:197
+#: src/views/dns/DDNSManager.vue:200
 msgid "Targets"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:201
+#: src/views/dns/DDNSManager.vue:204
 msgid "Last run"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:216
+#: src/views/dns/DDNSManager.vue:219
 msgid "Not run yet"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:264
+#: src/views/dns/DDNSManager.vue:267
 msgid "DDNS saved"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:268
+#: src/views/dns/DDNSManager.vue:271
 msgid "Removed %{count} conflicting record(s): %{names}"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:291
+#: src/views/dns/DDNSManager.vue:294
 msgid "DDNS config deleted"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:313
+#: src/views/dns/DDNSManager.vue:316
 msgid "DDNS Overview"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:321
+#: src/views/dns/DDNSManager.vue:324
 msgid "Search domain, provider or target"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:341
+#: src/views/dns/DDNSManager.vue:344
 msgid "DDNS updates records within a DNS zone"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:342
+#: src/views/dns/DDNSManager.vue:345
 msgid "Configure a zone, then select the A/AAAA records to update. For ddns.example.com, select the ddns record under example.com."
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:382
+#: src/views/dns/DDNSManager.vue:385
 msgid "Configure"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:385
+#: src/views/dns/DDNSManager.vue:388
 msgid "Are you sure to delete this DDNS config?"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:407
+#: src/views/dns/DDNSManager.vue:410
 msgid "Configure DDNS"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:414
+#: src/views/dns/DDNSManager.vue:417
 msgid "Enable DDNS"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:417
+#: src/views/dns/DDNSManager.vue:420
 msgid "IP Version"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:426
+#: src/views/dns/DDNSManager.vue:429
 msgid "Clean up conflicting records"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:433
-msgid "When enabled, DDNS owns the selected names: it auto-pairs sibling family records, creates missing records, and removes records whose IP family is unreachable. Disable to manage only the records you explicitly selected and keep all other DNS state untouched."
+#: src/views/dns/DDNSManager.vue:436
+msgid "When enabled, DDNS completes names whose A/AAAA records are all selected: it creates the missing sibling record and removes selected records whose IP family is unreachable. Records you leave unselected are never changed. Disable to update only the selected records and never create or delete any."
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:436
+#: src/views/dns/DDNSManager.vue:439
 msgid "Records to update"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:443
+#: src/views/dns/DDNSManager.vue:446
 msgid "Select A/AAAA records to update"
 msgstr ""
 
-#: src/views/dns/DDNSManager.vue:459
+#: src/views/dns/DDNSManager.vue:462
 msgid "Interval (seconds)"
 msgstr ""
 
@@ -7094,7 +7702,7 @@ msgstr ""
 #: src/views/preference/components/ExternalNotify/columns.tsx:39
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:100
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:124
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:39
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:40
 msgid "Description"
 msgstr ""
 
@@ -7116,13 +7724,6 @@ msgstr ""
 
 #: src/views/dns/DNSGroupRecordManager.vue:138
 msgid "Coverage"
-msgstr ""
-
-#: src/views/dns/DNSGroupRecordManager.vue:161
-#: src/views/dns/DNSGroupRecordManager.vue:178
-#: src/views/preference/tabs/AccessTokens.vue:55
-#: src/views/preference/tabs/AuthSettings.vue:27
-msgid "Action"
 msgstr ""
 
 #: src/views/dns/DNSGroupRecordManager.vue:165
@@ -7219,7 +7820,7 @@ msgid "Record already matches"
 msgstr ""
 
 #: src/views/dns/DNSGroupRecordManager.vue:1009
-#: src/views/preference/tabs/AccessTokens.vue:262
+#: src/views/preference/tabs/AccessTokens.vue:260
 msgid "Create"
 msgstr ""
 
@@ -8170,8 +8771,8 @@ msgid "Advanced log indexing will stop and structured log analytics will be unav
 msgstr ""
 
 #: src/views/nginx_log/NginxLogList.vue:419
-#: src/views/site/site_list/SiteList.vue:157
-#: src/views/site/site_list/SiteList.vue:316
+#: src/views/site/site_list/SiteList.vue:159
+#: src/views/site/site_list/SiteList.vue:318
 msgid "Disable"
 msgstr ""
 
@@ -8530,7 +9131,7 @@ msgstr ""
 
 #: src/views/node/NodeAuthStatus.vue:44
 #: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:81
-#: src/views/preference/tabs/AccessTokens.vue:147
+#: src/views/preference/tabs/AccessTokens.vue:145
 msgid "Revoked"
 msgstr ""
 
@@ -8999,7 +9600,7 @@ msgid "Bark"
 msgstr ""
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:126
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:175
 msgid "Index"
 msgstr ""
 
@@ -10314,7 +10915,7 @@ msgid "Node"
 msgstr ""
 
 #: src/views/preference/Preference.vue:63
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:19
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:22
 msgid "HTTP"
 msgstr ""
 
@@ -10323,7 +10924,7 @@ msgid "Auth"
 msgstr ""
 
 #: src/views/preference/Preference.vue:68
-#: src/views/preference/tabs/AccessTokens.vue:165
+#: src/views/preference/tabs/AccessTokens.vue:163
 msgid "Access Tokens"
 msgstr ""
 
@@ -10343,145 +10944,145 @@ msgstr ""
 msgid "GeoLite"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:29
+#: src/views/preference/tabs/AccessTokens.vue:27
 msgid "Management API: Read"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:30
+#: src/views/preference/tabs/AccessTokens.vue:28
 msgid "Read resources and runtime status through the management API."
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:34
+#: src/views/preference/tabs/AccessTokens.vue:32
 msgid "Management API: Write"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:35
+#: src/views/preference/tabs/AccessTokens.vue:33
 msgid "Create, update, and delete resources and run Nginx control operations. Includes API read access."
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:39
+#: src/views/preference/tabs/AccessTokens.vue:37
 msgid "MCP: Read"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:40
+#: src/views/preference/tabs/AccessTokens.vue:38
 msgid "Use read-only Nginx UI MCP tools."
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:44
+#: src/views/preference/tabs/AccessTokens.vue:42
 msgid "MCP: Write"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:45
+#: src/views/preference/tabs/AccessTokens.vue:43
 msgid "Use mutating Nginx UI MCP tools. Includes MCP read access."
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:51
-#: src/views/preference/tabs/AccessTokens.vue:274
+#: src/views/preference/tabs/AccessTokens.vue:49
+#: src/views/preference/tabs/AccessTokens.vue:272
 msgid "Scopes"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:52
+#: src/views/preference/tabs/AccessTokens.vue:50
 msgid "Last used"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:53
+#: src/views/preference/tabs/AccessTokens.vue:51
 msgid "Expires"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:89
+#: src/views/preference/tabs/AccessTokens.vue:87
 msgid "Token name is required"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:93
+#: src/views/preference/tabs/AccessTokens.vue:91
 msgid "Select at least one scope"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:106
+#: src/views/preference/tabs/AccessTokens.vue:104
 msgid "Access token created"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:117
+#: src/views/preference/tabs/AccessTokens.vue:115
 msgid "Access token rotated"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:123
+#: src/views/preference/tabs/AccessTokens.vue:121
 msgid "Access token revoked"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:129
+#: src/views/preference/tabs/AccessTokens.vue:127
 msgid "Access token copied to clipboard"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:132
+#: src/views/preference/tabs/AccessTokens.vue:130
 msgid "Failed to copy access token"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:150
+#: src/views/preference/tabs/AccessTokens.vue:148
 msgid "Active"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:168
+#: src/views/preference/tabs/AccessTokens.vue:166
 msgid "Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. Tokens are shown only once."
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:175
+#: src/views/preference/tabs/AccessTokens.vue:173
 msgid "Create Token"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:183
+#: src/views/preference/tabs/AccessTokens.vue:181
 msgid "Use the smallest required scope and set an expiration date for automation credentials."
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:196
+#: src/views/preference/tabs/AccessTokens.vue:194
 msgid "No access tokens"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:223
-#: src/views/preference/tabs/AccessTokens.vue:227
+#: src/views/preference/tabs/AccessTokens.vue:221
+#: src/views/preference/tabs/AccessTokens.vue:225
 msgid "Never"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:238
+#: src/views/preference/tabs/AccessTokens.vue:236
 msgid "Rotate this token? The current token will stop working immediately."
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:241
+#: src/views/preference/tabs/AccessTokens.vue:239
 msgid "Rotate token"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:246
+#: src/views/preference/tabs/AccessTokens.vue:244
 msgid "Revoke this token? This action cannot be undone."
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:249
+#: src/views/preference/tabs/AccessTokens.vue:247
 msgid "Revoke token"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:260
+#: src/views/preference/tabs/AccessTokens.vue:258
 msgid "Create Access Token"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:270
+#: src/views/preference/tabs/AccessTokens.vue:268
 msgid "For example: production deployment"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:291
+#: src/views/preference/tabs/AccessTokens.vue:289
 msgid "Expires At"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:297
+#: src/views/preference/tabs/AccessTokens.vue:295
 msgid "No expiration"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:305
+#: src/views/preference/tabs/AccessTokens.vue:303
 msgid "Save Your Access Token"
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:313
+#: src/views/preference/tabs/AccessTokens.vue:311
 msgid "This token is shown only once. Store it in a secure secret manager before closing this dialog."
 msgstr ""
 
-#: src/views/preference/tabs/AccessTokens.vue:324
+#: src/views/preference/tabs/AccessTokens.vue:322
 msgid "I have saved the token"
 msgstr ""
 
@@ -10633,8 +11234,8 @@ msgid "Seconds"
 msgstr ""
 
 #: src/views/preference/tabs/HealthCheckSettings.vue:39
-#: src/views/site/site_list/columns.tsx:90
-#: src/views/stream/columns.tsx:46
+#: src/views/site/site_list/columns.tsx:92
+#: src/views/stream/columns.tsx:48
 msgid "Proxy Targets"
 msgstr ""
 
@@ -11041,134 +11642,141 @@ msgstr ""
 msgid "For example: expected recovery plan or incident reference"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:23
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:26
 #: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:440
 msgid "HTTPS"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:48
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:51
 #: src/views/site/site_add/SiteAdd.vue:429
 msgid "Configuration Name"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:63
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:66
 msgid "Reverse Proxy"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:66
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:69
 msgid "Static Site"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:69
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:72
 msgid "Redirect"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:80
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:83
 msgid "example.com www.example.com"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:85
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:88
 msgid "Scheme"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:106
-msgid "Enable WebSocket"
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:95
+msgid "Proxy Target"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:117
-msgid "Web Root"
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:102
+msgid "Host and Port"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:130
-msgid "Single Page Application Fallback"
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:127
+msgid "No upstream groups yet."
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:137
-msgid "Target URL"
-msgstr ""
-
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:146
-msgid "Status Code"
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:133
+msgid "Manage upstream groups"
 msgstr ""
 
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:155
+msgid "Enable WebSocket"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:166
+msgid "Web Root"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:179
+msgid "Single Page Application Fallback"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:186
+msgid "Target URL"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:195
+msgid "Status Code"
+msgstr ""
+
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:204
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:78
 msgid "Enable TLS"
 msgstr ""
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:161
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:210
 msgid "Redirect HTTP to HTTPS"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:48
-#: src/views/site/components/SiteStatusSelect.vue:181
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:125
-#: src/views/site/site_list/columns.tsx:157
-#: src/views/site/site_list/SiteList.vue:158
-#: src/views/site/site_list/SiteList.vue:325
-msgid "Maintenance"
-msgstr ""
-
-#: src/views/site/components/SiteStatusSelect.vue:80
+#: src/views/site/components/SiteStatusSelect.vue:61
 #: src/views/site/site_add/SiteAdd.vue:260
 #: src/views/stream/components/StreamStatusSelect.vue:27
 msgid "Enabled successfully"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:86
+#: src/views/site/components/SiteStatusSelect.vue:67
 #: src/views/stream/components/StreamStatusSelect.vue:33
 msgid "Failed to enable %{msg}"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:93
+#: src/views/site/components/SiteStatusSelect.vue:74
 #: src/views/stream/components/StreamStatusSelect.vue:40
 msgid "Disabled successfully"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:99
+#: src/views/site/components/SiteStatusSelect.vue:80
 #: src/views/stream/components/StreamStatusSelect.vue:46
 msgid "Failed to disable %{msg}"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:106
+#: src/views/site/components/SiteStatusSelect.vue:87
 msgid "Maintenance mode enabled successfully"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:112
+#: src/views/site/components/SiteStatusSelect.vue:93
 msgid "Failed to enable maintenance mode %{msg}"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:119
+#: src/views/site/components/SiteStatusSelect.vue:100
 msgid "Maintenance mode disabled successfully"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:125
+#: src/views/site/components/SiteStatusSelect.vue:106
 msgid "Failed to disable maintenance mode %{msg}"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:146
+#: src/views/site/components/SiteStatusSelect.vue:127
 #: src/views/stream/components/StreamStatusSelect.vue:55
 msgid "enable"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:147
+#: src/views/site/components/SiteStatusSelect.vue:128
 #: src/views/stream/components/StreamStatusSelect.vue:55
 msgid "disable"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:148
+#: src/views/site/components/SiteStatusSelect.vue:129
 msgid "set to maintenance mode"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:152
+#: src/views/site/components/SiteStatusSelect.vue:133
 msgid "Do you want to %{action} this site?"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:178
+#: src/views/site/components/SiteStatusSelect.vue:159
 msgid "Do you want to set this site to maintenance mode?"
 msgstr ""
 
-#: src/views/site/components/SiteStatusSelect.vue:201
+#: src/views/site/components/SiteStatusSelect.vue:182
 msgid "Set maintenance information for this site"
 msgstr ""
 
@@ -11333,7 +11941,7 @@ msgstr ""
 
 #: src/views/site/site_add/SiteAdd.vue:401
 #: src/views/site/site_edit/components/QuickSetupModal.vue:139
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:147
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:164
 msgid "Quick Setup"
 msgstr ""
 
@@ -11425,16 +12033,16 @@ msgstr ""
 msgid "Encrypt website with Let's Encrypt"
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:166
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:162
 msgid "Getting the certificate, please wait..."
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:232
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:236
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:230
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:234
 msgid "Certificate issuance connection closed before completion."
 msgstr ""
 
-#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:254
+#: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:252
 msgid "Certificate issuance failed"
 msgstr ""
 
@@ -11721,32 +12329,32 @@ msgstr ""
 msgid "Generate Config"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:50
-#: src/views/site/site_list/columns.tsx:103
-#: src/views/stream/columns.tsx:58
-#: src/views/stream/components/RightPanel/Basic.vue:39
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:51
+#: src/views/site/site_list/columns.tsx:105
+#: src/views/stream/columns.tsx:60
+#: src/views/stream/components/RightPanel/Basic.vue:40
 msgid "Namespace"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:65
-#: src/views/stream/components/RightPanel/Basic.vue:52
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:69
+#: src/views/stream/components/RightPanel/Basic.vue:56
 msgid "Synchronization"
 msgstr ""
 
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:67
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:80
-#: src/views/stream/components/RightPanel/Basic.vue:54
-#: src/views/stream/components/RightPanel/Basic.vue:67
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:71
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:84
+#: src/views/stream/components/RightPanel/Basic.vue:58
+#: src/views/stream/components/RightPanel/Basic.vue:71
 msgid "Sync strategy"
-msgstr ""
-
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:70
-#: src/views/stream/components/RightPanel/Basic.vue:57
-msgid "When you enable/disable, delete, or save this site, "
 msgstr ""
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:74
 #: src/views/stream/components/RightPanel/Basic.vue:61
+msgid "When you enable/disable, delete, or save this site, "
+msgstr ""
+
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:78
+#: src/views/stream/components/RightPanel/Basic.vue:65
 msgid "Note, if the configuration file include other configurations or certificates, "
 msgstr ""
 
@@ -11803,23 +12411,23 @@ msgstr ""
 msgid "Port Scanner"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:108
-#: src/views/stream/components/StreamEditor.vue:44
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:125
+#: src/views/stream/components/StreamEditor.vue:54
 msgid "Edit %{n}"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:160
-#: src/views/stream/components/StreamEditor.vue:80
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:177
+#: src/views/stream/components/StreamEditor.vue:90
 msgid "Advance Mode"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:163
-#: src/views/stream/components/StreamEditor.vue:83
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:180
+#: src/views/stream/components/StreamEditor.vue:93
 msgid "Basic Mode"
 msgstr ""
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:188
-#: src/views/stream/components/StreamEditor.vue:105
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:205
+#: src/views/stream/components/StreamEditor.vue:115
 msgid "Nginx Configuration Parse Error"
 msgstr ""
 
@@ -11833,81 +12441,81 @@ msgstr ""
 msgid "Duplicate to local successfully"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:38
+#: src/views/site/site_list/SiteList.vue:40
 msgid "Delete site: %{site_name}"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:61
+#: src/views/site/site_list/SiteList.vue:63
 msgid "No valid access log path found for this site"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:66
+#: src/views/site/site_list/SiteList.vue:68
 msgid "This site uses the default access log, which may contain traffic from other sites"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:112
+#: src/views/site/site_list/SiteList.vue:114
 msgid "Sites enabled successfully"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:113
+#: src/views/site/site_list/SiteList.vue:115
 msgid "Sites disabled successfully"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:114
+#: src/views/site/site_list/SiteList.vue:116
 msgid "Sites switched to maintenance mode successfully"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:137
+#: src/views/site/site_list/SiteList.vue:139
 msgid "Please select at least one site to enable"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:138
+#: src/views/site/site_list/SiteList.vue:140
 msgid "Please select at least one site to disable"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:139
-#: src/views/site/site_list/SiteList.vue:188
+#: src/views/site/site_list/SiteList.vue:141
+#: src/views/site/site_list/SiteList.vue:190
 msgid "Please select at least one site to switch to maintenance mode"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:146
+#: src/views/site/site_list/SiteList.vue:148
 msgid "Do you want to enable selected sites?"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:147
+#: src/views/site/site_list/SiteList.vue:149
 msgid "Do you want to disable selected sites?"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:148
+#: src/views/site/site_list/SiteList.vue:150
 msgid "Do you want to switch selected sites to maintenance mode?"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:151
+#: src/views/site/site_list/SiteList.vue:153
 msgid "The following sites will be enabled:"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:152
+#: src/views/site/site_list/SiteList.vue:154
 msgid "The following sites will be disabled:"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:153
+#: src/views/site/site_list/SiteList.vue:155
 msgid "The following sites will be switched to maintenance mode:"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:156
-#: src/views/site/site_list/SiteList.vue:308
+#: src/views/site/site_list/SiteList.vue:158
+#: src/views/site/site_list/SiteList.vue:310
 msgid "Enable"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:257
+#: src/views/site/site_list/SiteList.vue:259
 msgid "Analytics"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:291
+#: src/views/site/site_list/SiteList.vue:293
 msgid "Set maintenance information for selected sites"
 msgstr ""
 
-#: src/views/site/site_list/SiteList.vue:299
+#: src/views/site/site_list/SiteList.vue:301
 msgid "%{count} sites selected"
 msgstr ""
 
@@ -11915,16 +12523,20 @@ msgstr ""
 msgid "Do you want to %{action} this stream?"
 msgstr ""
 
-#: src/views/stream/StreamList.vue:25
+#: src/views/stream/StreamList.vue:35
 msgid "Delete stream: %{stream_name}"
 msgstr ""
 
-#: src/views/stream/StreamList.vue:50
+#: src/views/stream/StreamList.vue:60
 msgid "Added successfully"
 msgstr ""
 
-#: src/views/stream/StreamList.vue:118
+#: src/views/stream/StreamList.vue:129
 msgid "Add Stream"
+msgstr ""
+
+#: src/views/stream/StreamList.vue:148
+msgid "%{count} streams selected"
 msgstr ""
 
 #: src/views/system/About.vue:28
@@ -12062,6 +12674,129 @@ msgstr ""
 msgid "You are accessing this terminal over an insecure HTTP connection on a non-localhost domain. This may expose sensitive information."
 msgstr ""
 
+#: src/views/upstream/components/UpstreamEditor.vue:65
+msgid "Round Robin (default)"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:66
+msgid "Least Connections (least_conn)"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:67
+msgid "IP Hash (ip_hash)"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:68
+msgid "Hash (hash)"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:69
+msgid "Random (random)"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:170
+msgid "Upstream %{name} saved and Nginx reloaded"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:186
+msgid "Edit Upstream %{name}"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:186
+#: src/views/upstream/UpstreamList.vue:164
+msgid "Create Upstream"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:196
+msgid "Sites use it as proxy_pass http://%{name};"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:207
+msgid "Load Balancing Method"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:223
+msgid "Hash Key"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:232
+msgid "Consistent Hashing"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:238
+#: src/views/upstream/UpstreamList.vue:35
+#: src/views/upstream/UpstreamList.vue:43
+msgid "Servers"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:243
+#: src/views/upstream/components/UpstreamEditor.vue:260
+msgid "Address"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:245
+#: src/views/upstream/components/UpstreamEditor.vue:275
+msgid "Max Fails"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:246
+#: src/views/upstream/components/UpstreamEditor.vue:280
+msgid "Fail Timeout"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:282
+msgid "Not available with this load balancing method"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:325
+msgid "Keeps the group's state in shared memory as zone %{name}, so every worker process balances across the same servers and shares their failure counts. Without it each worker balances on its own."
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:343
+msgid "Zone Size"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:352
+msgid "Keepalive"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:353
+msgid "Idle connections to keep open per worker; 0 disables it. Proxied sites also need proxy_http_version 1.1 and an empty Connection header."
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:361
+msgid "Connections"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:366
+msgid "Additional Directives"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:367
+msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:379
+#: src/views/upstream/UpstreamList.vue:36
+msgid "Referenced By"
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:397
+msgid "No site uses this upstream yet."
+msgstr ""
+
+#: src/views/upstream/components/UpstreamEditor.vue:402
+msgid "Configuration Preview"
+msgstr ""
+
+#: src/views/upstream/index.vue:8
+msgid "Create shared upstream groups with load balancing and reuse them across sites."
+msgstr ""
+
+#: src/views/upstream/index.vue:13
+msgid "Monitor the health of every proxy target and toggle its health check."
+msgstr ""
+
 #: src/views/upstream/SocketList.vue:21
 msgid "Socket"
 msgstr ""
@@ -12075,15 +12810,12 @@ msgid "Health Status"
 msgstr ""
 
 #: src/views/upstream/SocketList.vue:47
+#: src/views/upstream/UpstreamList.vue:91
 msgid "No Data"
 msgstr ""
 
 #: src/views/upstream/SocketList.vue:57
 msgid "Last Check"
-msgstr ""
-
-#: src/views/upstream/SocketList.vue:132
-msgid "Upstream Sockets"
 msgstr ""
 
 #: src/views/upstream/SocketList.vue:147
@@ -12092,6 +12824,70 @@ msgstr ""
 
 #: src/views/upstream/SocketList.vue:148
 msgid "Per-target selections are preserved. Resume probes from Health Check preferences."
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:25
+msgid "Round Robin"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:26
+msgid "Least Connections"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:27
+msgid "IP Hash"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:28
+msgid "Hash"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:29
+msgid "Random"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:34
+msgid "Load Balancing"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:47
+msgid "Defined In"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:118
+msgid "Upstream %{name} is still in use"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:120
+msgid "Point these configurations at another upstream before deleting it:"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:129
+msgid "Delete upstream %{name}?"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:130
+msgid "%{path} will be removed and Nginx reloaded."
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:136
+msgid "Upstream %{name} deleted"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:170
+msgid "An upstream group shares its servers and load balancing method across sites. Choose it as the proxy target when setting up a site; later changes here apply to every site that uses it."
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:172
+msgid "Files are stored in %{dir}."
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:286
+msgid "Upstreams Defined in Other Files"
+msgstr ""
+
+#: src/views/upstream/UpstreamList.vue:289
+msgid "These upstream blocks live inside site or other configuration files. Edit them in their own file."
 msgstr ""
 
 #: src/views/user/userColumns.tsx:30
@@ -12138,10 +12934,27 @@ msgstr ""
 msgid "Update Password"
 msgstr ""
 
-#: src/language/generate.ts:100
-msgid "[Nginx UI] HTTP01 challenge route check could not run: %{error}"
+#: src/views/workspace/WorkSpace.vue:227
+msgid "Node %{name} cannot be opened"
 msgstr ""
 
-#: src/language/generate.ts:101
-msgid "[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}. Issuance continues; the certificate authority will verify the route itself"
+#: src/views/workspace/WorkSpace.vue:284
+#: src/views/workspace/WorkSpace.vue:288
+msgid "Exit workspace"
+msgstr ""
+
+#: src/views/workspace/WorkSpace.vue:311
+#: src/views/workspace/WorkSpace.vue:312
+#: src/views/workspace/WorkSpace.vue:379
+msgid "New tab"
+msgstr ""
+
+#: src/views/workspace/WorkSpace.vue:324
+#: src/views/workspace/WorkSpace.vue:325
+msgid "Single pane"
+msgstr ""
+
+#: src/views/workspace/WorkSpace.vue:335
+#: src/views/workspace/WorkSpace.vue:336
+msgid "Split view"
 msgstr ""
