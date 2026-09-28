@@ -83,11 +83,10 @@ const isDualStackMode = computed(() =>
   || ddnsForm.value.ip_version === 'ipv6_ipv4',
 )
 
+// A/AAAA records that share a name with a selected record but are not selected
+// themselves. DDNS never changes them, whatever the IP version or cleanup mode.
 const unmanagedSiblingRecords = computed(() => {
-  const mode = ddnsForm.value.ip_version
-  if (mode !== 'ipv4' && mode !== 'ipv6')
-    return []
-  const otherType = mode === 'ipv4' ? 'AAAA' : 'A'
+  const selectedIds = new Set(ddnsForm.value.record_ids)
   const managedNames = new Set<string>()
   ddnsForm.value.record_ids.forEach(id => {
     const rec
@@ -96,17 +95,21 @@ const unmanagedSiblingRecords = computed(() => {
     if (rec)
       managedNames.add(rec.name.toLowerCase())
   })
-  return records.value.filter(r =>
-    normalizeRecordType(r.type) === otherType
-    && managedNames.has(r.name.toLowerCase()),
-  )
+  return records.value.filter(r => {
+    const type = normalizeRecordType(r.type)
+    return (type === 'A' || type === 'AAAA')
+      && !selectedIds.has(r.id)
+      && managedNames.has(r.name.toLowerCase())
+  })
 })
 
-const siblingNoticeText = computed(() =>
-  ddnsForm.value.ip_version === 'ipv4'
-    ? $gettext('AAAA records at the same names are not managed in IPv4 only mode. They remain unchanged in DNS.')
-    : $gettext('A records at the same names are not managed in IPv6 only mode. They remain unchanged in DNS.'),
-)
+const siblingNoticeText = computed(() => {
+  if (ddnsForm.value.ip_version === 'ipv4')
+    return $gettext('AAAA records at the same names are not managed in IPv4 only mode. They remain unchanged in DNS.')
+  if (ddnsForm.value.ip_version === 'ipv6')
+    return $gettext('A records at the same names are not managed in IPv6 only mode. They remain unchanged in DNS.')
+  return $gettext('Unselected records at the same names are not managed. They remain unchanged in DNS.')
+})
 
 const recordOptions = computed(() => {
   const opts = new Map<string, { value: string, label: string }>()
@@ -430,7 +433,7 @@ watch(() => ddnsForm.value.ip_version, handleIPVersionChange)
               :disabled="!ddnsForm.enabled"
             />
             <div class="text-xs text-gray-500 mt-1">
-              {{ $gettext('When enabled, DDNS owns the selected names: it auto-pairs sibling family records, creates missing records, and removes records whose IP family is unreachable. Disable to manage only the records you explicitly selected and keep all other DNS state untouched.') }}
+              {{ $gettext('When enabled, DDNS completes names whose A/AAAA records are all selected: it creates the missing sibling record and removes selected records whose IP family is unreachable. Records you leave unselected are never changed. Disable to update only the selected records and never create or delete any.') }}
             </div>
           </AFormItem>
           <AFormItem :label="$gettext('Records to update')">

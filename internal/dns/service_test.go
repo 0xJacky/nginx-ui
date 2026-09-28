@@ -525,7 +525,9 @@ func TestUpdateDDNSConfigSilentlySkipsRecordsOutsideIPVersionPolicy(t *testing.T
 	require.Equal(t, "A", cfg.Targets[0].Type)
 }
 
-func TestUpdateDDNSConfigAutoPairsSiblingRecordWhenIPv6Available(t *testing.T) {
+// An existing sibling the user left unselected is an explicit choice: cleanup
+// must neither adopt it as a target nor create a duplicate next to it (#1968).
+func TestUpdateDDNSConfigDoesNotAdoptUnselectedSiblingRecord(t *testing.T) {
 	registerMockProvider()
 	setMockRecords([]dnsSvc.Record{
 		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
@@ -562,11 +564,10 @@ func TestUpdateDDNSConfigAutoPairsSiblingRecordWhenIPv6Available(t *testing.T) {
 		RecordIDs:                 []string{"a-record"},
 	})
 	require.NoError(t, err)
-	require.Len(t, cfg.Targets, 2)
-
-	ids := []string{cfg.Targets[0].ID, cfg.Targets[1].ID}
-	require.ElementsMatch(t, []string{"a-record", "aaaa-record"}, ids)
-	require.Empty(t, getMockCreatedRecords(), "no records should have been created (auto-pair only)")
+	require.Len(t, cfg.Targets, 1)
+	require.Equal(t, "a-record", cfg.Targets[0].ID)
+	require.Empty(t, getMockCreatedRecords(), "the unselected AAAA must not be duplicated")
+	require.Empty(t, getMockDeletedRecordIDs())
 }
 
 func TestUpdateDDNSConfigAutoCreatesSiblingRecordWhenAbsent(t *testing.T) {
@@ -614,7 +615,7 @@ func TestUpdateDDNSConfigAutoCreatesSiblingRecordWhenAbsent(t *testing.T) {
 	require.Equal(t, "2001:db8::20", created[0].Content)
 }
 
-func TestUpdateDDNSConfigDeletesSiblingRecordWhenFamilyUnavailable(t *testing.T) {
+func TestUpdateDDNSConfigDeletesSelectedRecordWhenFamilyUnavailable(t *testing.T) {
 	registerMockProvider()
 	setMockRecords([]dnsSvc.Record{
 		{ID: "a-record", Type: "A", Name: "home", Content: "198.51.100.10", TTL: 600},
@@ -644,7 +645,7 @@ func TestUpdateDDNSConfigDeletesSiblingRecordWhenFamilyUnavailable(t *testing.T)
 		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
 		IPVersion:                 "ipv4_ipv6",
 		CleanupConflictingRecords: true,
-		RecordIDs:                 []string{"a-record"},
+		RecordIDs:                 []string{"a-record", "aaaa-record"},
 	})
 	require.NoError(t, err)
 	require.Len(t, result.Config.Targets, 1)
@@ -1432,7 +1433,7 @@ func TestUpdateDDNSConfigDeleteFailureReturnsSpecificError(t *testing.T) {
 		IntervalSeconds:           dnsSvc.DefaultDDNSInterval(),
 		IPVersion:                 "ipv4_ipv6",
 		CleanupConflictingRecords: true,
-		RecordIDs:                 []string{"a-record"},
+		RecordIDs:                 []string{"a-record", "aaaa-record"},
 	})
 	require.Error(t, err)
 	// cosy.WrapErrorWithParams returns a new *cosy.Error instance (no Unwrap),
