@@ -70,6 +70,7 @@ var (
 	reZoneSize    = regexp.MustCompile(`^(\d+)([kKmM]?)$`)
 	reZoneLine    = regexp.MustCompile(`^zone\s+(\S+)\s+([^\s;]+)\s*;?$`)
 	reZoneAny     = regexp.MustCompile(`(?m)^\s*zone(\s|;|$)`)
+	reZoneName    = regexp.MustCompile(`(?m)^\s*zone\s+([^\s;]+)`)
 )
 
 // DefaultZoneSize is the shared memory size given to new upstream groups. It
@@ -165,6 +166,26 @@ func (u *Upstream) liftZoneFromExtra() {
 		kept = append(kept, line)
 	}
 	u.ExtraDirectives = strings.TrimSpace(strings.Join(kept, "\n"))
+}
+
+// HasZoneDirective reports whether additional directives already hold a zone
+// directive, for example `zone other 64k;` or `zone shared;`, which joins a
+// zone declared by another upstream block.
+func HasZoneDirective(extra string) bool {
+	return reZoneAny.MatchString(extra)
+}
+
+// ZoneName returns the shared memory zone the group declares or joins: its
+// own zone when the zone switch is on, otherwise the zone named by a zone
+// directive in the additional directives. It is empty without either.
+func (u *Upstream) ZoneName() string {
+	if u.Zone {
+		return u.Name
+	}
+	if m := reZoneName.FindStringSubmatch(u.ExtraDirectives); m != nil {
+		return m[1]
+	}
+	return ""
 }
 
 // Validate checks every field that ends up in the generated configuration.

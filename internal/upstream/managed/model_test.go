@@ -301,3 +301,38 @@ func TestZoneValidation(t *testing.T) {
 	_, err = Prepare(u)
 	assert.NoError(t, err)
 }
+
+func TestZoneNameAndHasZoneDirective(t *testing.T) {
+	own := &Upstream{Name: "pool", Zone: true, ZoneSize: "64k", ExtraDirectives: "keepalive_timeout 60s;"}
+	assert.Equal(t, "pool", own.ZoneName())
+
+	foreign := &Upstream{Name: "pool", ExtraDirectives: "keepalive_timeout 60s;\nzone shared 128k;"}
+	assert.Equal(t, "shared", foreign.ZoneName())
+	assert.True(t, HasZoneDirective(foreign.ExtraDirectives))
+
+	joined := &Upstream{Name: "pool", ExtraDirectives: "zone shared;"}
+	assert.Equal(t, "shared", joined.ZoneName())
+	assert.True(t, HasZoneDirective(joined.ExtraDirectives))
+
+	// A comment that mentions a zone is not a zone directive.
+	none := &Upstream{Name: "pool", ExtraDirectives: "# zone shared 64k;\nkeepalive_timeout 60s;"}
+	assert.Empty(t, none.ZoneName())
+	assert.False(t, HasZoneDirective(none.ExtraDirectives))
+}
+
+func TestExplainZoneConflictNamesTheDeclaredZone(t *testing.T) {
+	nginxErr := errors.New("nginx: [emerg] the shared memory zone \"shared\" is already declared for a different use in /etc/nginx/conf.d/limits.conf:1\n" +
+		"nginx: configuration file /etc/nginx/nginx.conf test failed")
+
+	foreign := &Upstream{Name: "pool", ExtraDirectives: "zone shared 64k;"}
+	err := ExplainZoneConflict(foreign, nginxErr)
+	assertCosyError(t, err, ErrZoneNameConflict)
+	var cErr *cosy.Error
+	require.ErrorAs(t, err, &cErr)
+	assert.Equal(t, []string{"shared", `the shared memory zone "shared" is already declared for a different use in /etc/nginx/conf.d/limits.conf:1`}, cErr.Params)
+
+	// A group without a zone, or with another zone, keeps the nginx output.
+	assert.Equal(t, nginxErr, ExplainZoneConflict(&Upstream{Name: "pool"}, nginxErr))
+	assert.Equal(t, nginxErr, ExplainZoneConflict(&Upstream{Name: "pool", Zone: true}, nginxErr))
+	assert.NoError(t, ExplainZoneConflict(foreign, nil))
+}

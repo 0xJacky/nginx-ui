@@ -17,6 +17,7 @@ func TestReplicatedConversionIsNotMirrored(t *testing.T) {
 	request.Header.Set(nodeauth.ReplicatedFromHeader, `"origin-instance"`)
 	request = nodeauth.WithPrincipal(request, &nodeauth.Principal{AuthMethod: model.NodeAuthMethodLegacy})
 
-	startSync(request.Context(), &plan{siteName: "legacy.test"}, &model.Config{Filepath: "/nowhere.conf"}, "legacy_pool", "admin")
+	p := &plan{siteName: "legacy.test", mirror: Request{Site: "legacy.test", Upstream: "legacy_pool"}}
+	startSync(request.Context(), p, &model.Config{Filepath: "/nowhere.conf"}, "admin")
 	WaitForSync()
 }

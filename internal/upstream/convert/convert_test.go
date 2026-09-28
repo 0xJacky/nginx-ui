@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"sync"
 	"testing"
 
@@ -84,6 +85,7 @@ const legacyGroup = "# Managed by Nginx UI: edit this upstream from the Upstream
 	"# Sites reference it with `proxy_pass http://legacy_pool;`.\n" +
 	`upstream legacy_pool {
     least_conn;
+    zone legacy_pool 64k;
     server 127.0.0.1:8081 weight=2 max_fails=3 fail_timeout=10s;
     server 127.0.0.1:8082 max_conns=100;
     server 127.0.0.1:8083 backup;
@@ -93,6 +95,9 @@ const legacyGroup = "# Managed by Nginx UI: edit this upstream from the Upstream
     # server 127.0.0.1:8084;
 }
 `
+
+// legacyGroupNoZone is legacyGroup converted with the zone switch off.
+var legacyGroupNoZone = strings.Replace(legacyGroup, "    zone legacy_pool 64k;\n", "", 1)
 
 // setupConvertTest points nginx at an isolated configuration tree whose test
 // and reload commands succeed, with an in-memory database.
@@ -196,7 +201,9 @@ func TestConvertMovesBlockIntoManagedGroup(t *testing.T) {
 	assert.Equal(t, "legacy_pool", detail.Name)
 	assert.Equal(t, managed.MethodLeastConn, detail.Method)
 	assert.Equal(t, 16, detail.Keepalive)
-	assert.False(t, detail.Zone)
+	// A block without a zone gets the one new groups get.
+	assert.True(t, detail.Zone)
+	assert.Equal(t, managed.DefaultZoneSize, detail.ZoneSize)
 	require.Len(t, detail.Servers, 3)
 	assert.Equal(t, 2, *detail.Servers[0].Weight)
 	assert.Equal(t, 3, *detail.Servers[0].MaxFails)
@@ -323,7 +330,9 @@ func TestConvertMirrorsToSyncNodes(t *testing.T) {
 	defer mu.Unlock()
 	// The node converts its own copy instead of receiving the two files.
 	assert.Equal(t, []string{"/api/upstream/convert"}, paths)
-	assert.Equal(t, []Request{{Site: "legacy.test", Upstream: "legacy_pool"}}, received)
+	// The zone choice is spelled out, so the node converts the same way.
+	on := true
+	assert.Equal(t, []Request{{Site: "legacy.test", Upstream: "legacy_pool", Zone: &on}}, received)
 
 	record, err := query.Site.Where(query.Site.Path.Eq(sitePath)).First()
 	require.NoError(t, err)
