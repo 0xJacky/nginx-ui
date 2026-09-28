@@ -2,7 +2,7 @@
 import { throttle } from 'lodash'
 import { storeToRefs } from 'pinia'
 import settings from '@/api/settings'
-import PageHeader from '@/components/PageHeader'
+import Breadcrumb from '@/components/Breadcrumb'
 import { useRouteHashScroll } from '@/composables/useRouteHashScroll'
 import { useSettingsStore, useUserStore, useWebSocketEventBusStore } from '@/pinia'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
@@ -102,11 +102,17 @@ provide('breadList', breadList)
 
     <ALayout class="main-container">
       <ALayoutHeader :style="{ position: 'sticky', top: '0', zIndex: 10, width: '100%' }">
-        <HeaderLayout @click-un-fold="drawerVisible = true" />
+        <HeaderLayout
+          :show-node="collapsed || hideLayoutSidebar"
+          :is-mobile="hideLayoutSidebar"
+          @click-un-fold="drawerVisible = true"
+        />
       </ALayoutHeader>
 
       <ALayoutContent>
-        <PageHeader />
+        <div v-if="hideLayoutSidebar" class="mobile-breadcrumb">
+          <Breadcrumb show-node compact />
+        </div>
         <div class="router-view">
           <RouterView v-slot="{ Component, route }">
             <Transition name="slide-fade" @after-enter="handleRouteEnter">
@@ -137,6 +143,23 @@ provide('breadList', breadList)
   @media (min-width: 600px) {
     display: none;
   }
+}
+
+// Phone headers are full of icons, so the breadcrumb gets its own slim row.
+.mobile-breadcrumb {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 20px;
+  overflow: hidden;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+// Same surface the old page header used.
+.dark .mobile-breadcrumb {
+  background: #090909;
+  border-bottom-color: transparent;
 }
 </style>
 

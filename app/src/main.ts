@@ -8,6 +8,8 @@ import VueDOMPurifyHTML from 'vue-dompurify-html'
 import { getBrowserLanguage } from '@/lib/helper'
 import { setupInterceptors } from '@/lib/http/interceptors'
 import { initPWAThemeColor, watchThemeChanges } from '@/lib/pwa'
+import { installPaneBridge } from '@/lib/workspace/bridge'
+import { paneTabId } from '@/lib/workspace/env'
 import { useSettingsStore } from '@/pinia'
 import i18n from '../i18n.json'
 import App from './App.vue'
@@ -78,6 +80,10 @@ else {
 }
 
 app.use(router).use(autoAnimatePlugin).mount('#app')
+
+// Inside the workspace, keep the shell informed about this pane.
+if (paneTabId !== null)
+  installPaneBridge(paneTabId, router)
 
 // Initialize PWA theme color functionality after app is mounted
 nextTick(() => {

@@ -1,6 +1,7 @@
 import type { NgxModule } from '@/api/ngx'
 import type { NginxStatus } from '@/constants'
 import publicApi from '@/api/public'
+import { nodeScopeGeneration, onNodeScopeReset } from '@/lib/node/nodeScope'
 
 interface ProcessingStatus {
   index_scanning: boolean
@@ -42,15 +43,33 @@ export const useGlobalStore = defineStore('global', () => {
    * is the conservative answer (behave like a normal install).
    */
   function ensureDemoFlag(): Promise<boolean> {
+    const generation = nodeScopeGeneration()
     demoProbe ??= publicApi.getICP()
       .then(info => {
-        isDemo.value = info.demo === true
-        return isDemo.value
+        const isDemoNode = info.demo === true
+        if (generation === nodeScopeGeneration())
+          isDemo.value = isDemoNode
+        return isDemoNode
       })
       .catch(() => false)
 
     return demoProbe
   }
+
+  // Everything here describes the selected node: its modules, its background
+  // jobs and whether it is a demo.
+  onNodeScopeReset(() => {
+    processingStatus.value = {
+      index_scanning: false,
+      auto_cert_processing: false,
+      nginx_log_indexing: false,
+    }
+    nginxLogStatus.value = { indexing: false }
+    modules.value = []
+    modulesMap.value = {}
+    isDemo.value = false
+    demoProbe = null
+  })
 
   return {
     nginxStatus,

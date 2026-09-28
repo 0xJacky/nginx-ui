@@ -2,6 +2,7 @@ import type { AnalyticNode, Node } from '@/api/node'
 import { useEventListener } from '@vueuse/core'
 import analytic from '@/api/analytic'
 import nodeApi from '@/api/node'
+import { nodeScopeGeneration, onNodeScopeReset } from '@/lib/node/nodeScope'
 import { useStoreWebSocket } from '@/lib/websocket'
 import { useConnectionSupervisor } from '@/lib/websocket/useConnectionSupervisor'
 
@@ -105,8 +106,13 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
   }
 
   async function loadNodes() {
+    const generation = nodeScopeGeneration()
     try {
       const response = await nodeApi.getList({ enabled: true })
+      // The node changed while this was in flight: it describes the old one.
+      if (generation !== nodeScopeGeneration())
+        return
+
       const nodeMap: Record<string, Partial<AnalyticNode>> = {}
       const cachedNodes = readCachedNodes()
 
@@ -136,9 +142,24 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
       console.error('Failed to initialize node data:', error)
     }
     finally {
-      isInitialized.value = true
+      if (generation === nodeScopeGeneration())
+        isInitialized.value = true
     }
   }
+
+  // The list is fetched through the selected node, so switching nodes means
+  // starting over, including the tab-wide snapshot.
+  onNodeScopeReset(() => {
+    nodes.value = {}
+    isInitialized.value = false
+    lastUpdateTime.value = ''
+    initializing = undefined
+    try {
+      window.sessionStorage.removeItem(cacheKey)
+    }
+    catch {
+    }
+  })
 
   // Connect to WebSocket for real-time updates
   function connectWebSocket() {

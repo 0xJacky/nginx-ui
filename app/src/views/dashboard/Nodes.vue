@@ -8,6 +8,7 @@ import logo from '@/assets/img/logo.png'
 import pulse from '@/assets/svg/pulse.svg?component'
 import { List, ListItem, ListItemMeta } from '@/components/List'
 import NamespaceTabs from '@/components/NamespaceTabs'
+import { useNodeSwitch } from '@/composables/useNodeSwitch'
 import { formatDateTime } from '@/lib/helper'
 import { useSettingsStore } from '@/pinia'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
@@ -69,10 +70,10 @@ onMounted(() => {
 
 const settingsStore = useSettingsStore()
 const { node } = storeToRefs(settingsStore)
+const { switchNode } = useNodeSwitch()
 
 function linkStart(n: Node) {
-  node.value.id = n.id
-  node.value.name = n.name
+  switchNode({ id: n.id, name: n.name })
 }
 
 const visible = computed(() => {

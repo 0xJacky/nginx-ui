@@ -238,8 +238,9 @@ const settings = {
       skipErrHandling: true,
     })
   },
+  /** Name of this server, even while a remote node is selected. */
   get_server_name(): Promise<{ name: string }> {
-    return http.get('/settings/server/name')
+    return http.get('/settings/server/name', { skipNodeProxy: true })
   },
   get_banned_ips(): Promise<BannedIP[]> {
     return http.get('/settings/auth/banned_ips')

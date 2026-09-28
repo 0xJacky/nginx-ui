@@ -17,6 +17,7 @@ export interface HttpConfig extends AxiosRequestConfig {
   crypto?: boolean
   skipAuthRedirect?: boolean
   skipErrHandling?: boolean
+  skipNodeProxy?: boolean
 }
 
 // Extend InternalAxiosRequestConfig type
@@ -26,6 +27,9 @@ declare module 'axios' {
     crypto?: boolean
     skipAuthRedirect?: boolean
     skipErrHandling?: boolean
+    // Send the request to this server even while a remote node is selected,
+    // instead of proxying it through X-Node-ID.
+    skipNodeProxy?: boolean
     // Internal markers used by interceptors to safely retry a request after
     // a 2FA step-up challenge. Only FormData (the restore-backup endpoint)
     // is snapshotted — JSON callers with `crypto: true` are all pre-auth

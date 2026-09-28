@@ -5,6 +5,7 @@ import cpu from '@/assets/svg/cpu.svg?component'
 import memory from '@/assets/svg/memory.svg?component'
 import UsageProgressLine from '@/components/Chart/UsageProgressLine.vue'
 import { bytesToSize } from '@/lib/helper'
+import { getNodeVersionState } from '@/lib/node/switch'
 
 const props = defineProps<{
   item: AnalyticNode
@@ -13,9 +14,9 @@ const props = defineProps<{
   onLinkStart?: (item: AnalyticNode) => void
 }>()
 
-const hasKnownVersions = computed(() => !!props.item.version && !!props.localVersion)
-const isVersionCompatible = computed(() => hasKnownVersions.value && props.item.version === props.localVersion)
-const isVersionIncompatible = computed(() => hasKnownVersions.value && props.item.version !== props.localVersion)
+const versionState = computed(() => getNodeVersionState(props.item, props.localVersion ?? ''))
+const isVersionCompatible = computed(() => versionState.value === 'compatible')
+const isVersionIncompatible = computed(() => versionState.value === 'mismatch')
 </script>
 
 <template>

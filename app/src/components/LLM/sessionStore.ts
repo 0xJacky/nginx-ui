@@ -1,5 +1,6 @@
 import type { ChatComplicationMessage, LLMSessionResponse } from '@/api/llm'
 import llm from '@/api/llm'
+import { nodeScopeGeneration, onNodeScopeReset } from '@/lib/node/nodeScope'
 import { animationCoordinator } from './animationCoordinator'
 
 export const useLLMSessionStore = defineStore('llm-session', () => {
@@ -28,9 +29,11 @@ export const useLLMSessionStore = defineStore('llm-session', () => {
   // Actions
   async function loadSessions(pathOrType?: string, isType?: boolean) {
     loading.value = true
+    const generation = nodeScopeGeneration()
     try {
       const response = await llm.get_sessions(pathOrType, isType)
-      sessions.value = response
+      if (generation === nodeScopeGeneration())
+        sessions.value = response
     }
     catch (error) {
       console.error('Failed to load sessions:', error)
@@ -39,6 +42,14 @@ export const useLLMSessionStore = defineStore('llm-session', () => {
       loading.value = false
     }
   }
+
+  // Chat sessions are stored on the selected node.
+  onNodeScopeReset(() => {
+    sessions.value = []
+    activeSessionId.value = null
+    loading.value = false
+    sessionDrawerVisible.value = false
+  })
 
   async function createSession(title: string, path?: string, type?: string) {
     try {

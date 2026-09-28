@@ -3,6 +3,7 @@ import type { UpstreamAvailabilityResponse, UpstreamStatus } from '@/api/upstrea
 import type { SubscriptionToken } from '@/lib/websocket/sharedConnection'
 import { useEventListener } from '@vueuse/core'
 import upstream from '@/api/upstream'
+import { nodeScopeGeneration, onNodeScopeReset } from '@/lib/node/nodeScope'
 import { useStoreWebSocket } from '@/lib/websocket'
 import { createSharedConnection } from '@/lib/websocket/sharedConnection'
 import { useConnectionSupervisor } from '@/lib/websocket/useConnectionSupervisor'
@@ -106,8 +107,12 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
       return
     }
 
+    const generation = nodeScopeGeneration()
     try {
       const response = await upstream.getAvailability()
+      if (generation !== nodeScopeGeneration())
+        return
+
       const data = response as UpstreamAvailabilityResponse
 
       availabilityResults.value = data.results || {}
@@ -120,6 +125,15 @@ export const useProxyAvailabilityStore = defineStore('proxyAvailability', () => 
       console.error('Failed to initialize proxy availability:', error)
     }
   }
+
+  // Upstream targets and their results belong to the selected node.
+  onNodeScopeReset(() => {
+    availabilityResults.value = {}
+    upstreamStatusMap.value = {}
+    isInitialized.value = false
+    lastUpdateTime.value = ''
+    targetCount.value = 0
+  })
 
   // Connect to WebSocket for real-time updates
   function connectWebSocket() {

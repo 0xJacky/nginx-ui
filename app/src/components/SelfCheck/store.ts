@@ -2,6 +2,7 @@ import type { TaskReport } from './tasks'
 import type { SelfCheckAccessOptions } from '@/api/self_check'
 import { debounce } from 'lodash'
 import selfCheck, { ReportStatus } from '@/api/self_check'
+import { nodeScopeGeneration, onNodeScopeReset } from '@/lib/node/nodeScope'
 import frontendTasks from './tasks/frontend'
 
 export const useSelfCheckStore = defineStore('selfCheck', () => {
@@ -48,6 +49,7 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
 
     loading.value = true
     accessError.value = ''
+    const generation = nodeScopeGeneration()
     try {
       const backendReports = (await selfCheck.run(options)).map(r => {
         return {
@@ -72,10 +74,17 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
           }
         }),
       )
+      // Checked the previous node; the new one runs its own check.
+      if (generation !== nodeScopeGeneration())
+        return
+
       data.value = [...backendReports, ...frontendReports]
       checked.value = true
     }
     catch (error) {
+      if (generation !== nodeScopeGeneration())
+        return
+
       console.error(error)
       data.value = []
       checked.value = false
@@ -84,7 +93,8 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
         : ((error as { message?: string })?.message || String(error))
     }
     finally {
-      loading.value = false
+      if (generation === nodeScopeGeneration())
+        loading.value = false
     }
   }
 
@@ -98,6 +108,15 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
   })
 
   const fixing = ref<Record<string, boolean>>({})
+
+  onNodeScopeReset(() => {
+    data.value = []
+    loading.value = false
+    checked.value = false
+    accessError.value = ''
+    // The header checks again on mount; do not let the debounce swallow it.
+    check.cancel()
+  })
 
   async function fix(taskName: string, options?: SelfCheckAccessOptions) {
     if (fixing.value[taskName])

@@ -4,8 +4,8 @@ import { useElementSize } from '@vueuse/core'
 import { useUserStore } from '@/pinia'
 
 const props = defineProps<{
-  headerWeight?: number
-  userWrapperWidth?: number
+  /** Room left in the header once the breadcrumb and the icons are placed. */
+  availableWidth?: number
 }>()
 
 const router = useRouter()
@@ -17,15 +17,11 @@ const { width: alertWidth } = useElementSize(alertEl)
 
 const hasMigrationWarning = computed(() => twoFAStatus.value.recovery_codes_migration_required)
 
-const shouldHideAlert = computed(() => {
-  if (!props.headerWeight || !props.userWrapperWidth || !alertWidth.value)
-    return false
-  return (props.headerWeight - props.userWrapperWidth - alertWidth.value - 60) < props.userWrapperWidth
-})
-
-const iconRightPosition = computed(() => {
-  return props.userWrapperWidth ? `${props.userWrapperWidth + 82}px` : '82px'
-})
+// The full alert stays rendered while collapsed, taken out of the flow, so its
+// width is still known when deciding whether it fits again.
+const shouldHideAlert = computed(() => props.availableWidth !== undefined
+  && alertWidth.value > 0
+  && alertWidth.value > props.availableWidth)
 
 function openRecoveryCodes() {
   router.push('/profile')
@@ -34,7 +30,7 @@ function openRecoveryCodes() {
 
 <template>
   <div v-show="hasMigrationWarning">
-    <div ref="alertEl" class="migration-alert" :style="{ visibility: shouldHideAlert ? 'hidden' : 'visible' }">
+    <div ref="alertEl" class="migration-alert" :class="{ measuring: shouldHideAlert }">
       <AAlert
         type="warning"
         show-icon
@@ -55,7 +51,6 @@ function openRecoveryCodes() {
     >
       <WarningOutlined
         class="warning-icon"
-        :style="{ right: iconRightPosition }"
         @click="openRecoveryCodes"
       />
       <template #content>
@@ -76,17 +71,15 @@ function openRecoveryCodes() {
 </template>
 
 <style lang="less" scoped>
-.migration-alert {
+.migration-alert.measuring {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  visibility: hidden;
+  pointer-events: none;
 }
 
 .warning-icon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  display: flex;
+  font-size: 16px;
   color: #faad14;
   cursor: pointer;
 }

@@ -1,5 +1,5 @@
 import type { SyncScope, SyncSummary } from '@/api/cluster_sync'
-import type { ModelBase } from '@/api/curd'
+import type { GetListResponse, ModelBase } from '@/api/curd'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
 export interface Node extends ModelBase {
@@ -91,11 +91,32 @@ function syncConfigs(nodeIds: number[], scope: SyncScope = {}) {
   return http.post<SyncSummary>(`${baseUrl}/sync`, { node_ids: nodeIds, ...scope })
 }
 
+/**
+ * Lists the enabled nodes registered on this server. It bypasses the node
+ * proxy, so it still returns the local list while a remote node is selected.
+ */
+async function getLocalList() {
+  const nodes: AnalyticNode[] = []
+
+  for (let page = 1; ; page++) {
+    const response = await http.get<GetListResponse<AnalyticNode>>(baseUrl, {
+      params: { enabled: true, page, page_size: 100 },
+      skipNodeProxy: true,
+    })
+    nodes.push(...response.data)
+
+    const pagination = response.pagination
+    if (!pagination || pagination.current_page >= pagination.total_pages)
+      return nodes
+  }
+}
+
 const nodeApi = extendCurdApi(useCurdApi<Node>(baseUrl), {
   load_from_settings: () => http.post(`${baseUrl}/load_from_settings`),
   reloadNginx,
   restartNginx,
   syncConfigs,
+  getLocalList,
   getSecret: (id: number) => http.get<{ value: string }>(`${baseUrl}/${id}/secret`),
   rotateCredential: (id: number) => http.post(`${baseUrl}/${id}/credentials/rotate`),
   retryAuthUpgrade: (id: number) => http.post<Node>(`${baseUrl}/${id}/auth-upgrade/retry`),

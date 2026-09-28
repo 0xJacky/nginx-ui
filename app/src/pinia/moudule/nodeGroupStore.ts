@@ -1,5 +1,6 @@
 import type { Namespace } from '@/api/namespace'
 import namespace from '@/api/namespace'
+import { nodeScopeGeneration, onNodeScopeReset } from '@/lib/node/nodeScope'
 
 export const useNodeGroupStore = defineStore('nodeGroup', () => {
   const namespaces = ref<Namespace[]>([])
@@ -14,8 +15,10 @@ export const useNodeGroupStore = defineStore('nodeGroup', () => {
       return
     }
 
+    const generation = nodeScopeGeneration()
     await loadAll()
-    isInitialized.value = true
+    if (generation === nodeScopeGeneration())
+      isInitialized.value = true
   }
 
   // Load all environment groups by cycling through pages
@@ -25,6 +28,7 @@ export const useNodeGroupStore = defineStore('nodeGroup', () => {
     }
 
     isLoading.value = true
+    const generation = nodeScopeGeneration()
 
     try {
       const allGroups: Namespace[] = []
@@ -36,6 +40,10 @@ export const useNodeGroupStore = defineStore('nodeGroup', () => {
           page: currentPage,
           page_size: 100, // Use a reasonable page size
         })
+
+        // Namespaces belong to the selected node; drop the old node's pages.
+        if (generation !== nodeScopeGeneration())
+          return
 
         const pageData = response.data || []
         allGroups.push(...pageData)
@@ -63,9 +71,18 @@ export const useNodeGroupStore = defineStore('nodeGroup', () => {
       console.error('Failed to load environment groups:', error)
     }
     finally {
-      isLoading.value = false
+      if (generation === nodeScopeGeneration())
+        isLoading.value = false
     }
   }
+
+  onNodeScopeReset(() => {
+    namespaces.value = []
+    namespaceMap.value = {}
+    isLoading.value = false
+    isInitialized.value = false
+    lastUpdateTime.value = ''
+  })
 
   // Get environment group by ID
   function getGroupById(id: number): Namespace | undefined {

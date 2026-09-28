@@ -5,6 +5,7 @@ import zh_CN from 'antdv-next/locale/zh_CN'
 import zh_TW from 'antdv-next/locale/zh_TW'
 import loadTranslations from '@/api/translations'
 import AppProvider from '@/components/AppProvider'
+import { isNodeSwitching } from '@/composables/useNodeSwitch'
 import { useSessionExpiry } from '@/composables/useSessionExpiry'
 import gettext from '@/gettext'
 import { useSettingsStore } from '@/pinia'
@@ -65,7 +66,12 @@ loadTranslations(route)
   >
     <AApp>
       <AppProvider>
-        <RouterView />
+        <!-- Keyed by node: switching nodes remounts the whole layout, so every
+             page, socket and store subscriber starts over against the new node.
+             It stays unmounted until the switch reaches its landing page. -->
+        <RouterView v-slot="{ Component }">
+          <component :is="Component" v-if="!isNodeSwitching" :key="settings.node.id" />
+        </RouterView>
       </AppProvider>
     </AApp>
   </AConfigProvider>

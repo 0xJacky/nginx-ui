@@ -118,7 +118,7 @@ export function setupRequestInterceptor() {
         config.headers.Authorization = token.value
       }
 
-      if (settings.node.id) {
+      if (settings.node.id && !config.skipNodeProxy) {
         config.headers['X-Node-ID'] = settings.node.id
       }
 

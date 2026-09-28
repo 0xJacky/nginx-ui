@@ -1,66 +1,47 @@
 <script setup lang="ts">
-import { CloseOutlined, DashboardOutlined, DatabaseOutlined } from '@antdv-next/icons'
+import { DatabaseOutlined, DownOutlined } from '@antdv-next/icons'
 import { storeToRefs } from 'pinia'
+import NodeSwitcher from '@/components/NodeSwitcher'
 import { useSettingsStore } from '@/pinia'
 
 const settingsStore = useSettingsStore()
+const { node, server_name } = storeToRefs(settingsStore)
 
-const { node } = storeToRefs(settingsStore)
-const router = useRouter()
+const open = ref(false)
 
-async function clear_node() {
-  await router.push('/dashboard')
-  settingsStore.clear_node()
-}
-
-const isLocal = computed(() => {
-  return node.value.id === 0
-})
-
-const nodeId = computed(() => node.value.id)
-
-watch(nodeId, async () => {
-  await router.push('/dashboard')
-  location.reload()
-})
-
-const { server_name } = storeToRefs(useSettingsStore())
+const isLocal = computed(() => node.value.id === 0)
+const currentName = computed(() => isLocal.value ? (server_name.value || $gettext('Local')) : node.value.name)
 </script>
 
 <template>
   <div class="indicator">
-    <div class="container">
-      <DatabaseOutlined />
-      <span
-        v-if="isLocal"
-        class="node-name"
+    <NodeSwitcher v-model:open="open">
+      <button
+        type="button"
+        class="container"
+        :class="{ remote: !isLocal }"
+        :aria-expanded="open"
       >
-        {{ server_name || $gettext('Local') }}
-      </span>
-      <span
-        v-else
-        class="node-name"
-      >
-        {{ node.name }}
-      </span>
-      <ATag variant="outlined" @click="clear_node">
-        <DashboardOutlined v-if="isLocal" />
-        <CloseOutlined v-else />
-      </ATag>
-    </div>
+        <DatabaseOutlined />
+        <span class="node-name">{{ currentName }}</span>
+        <DownOutlined class="chevron" :class="{ open }" />
+      </button>
+    </NodeSwitcher>
   </div>
 </template>
 
 <style scoped lang="less">
-.ant-layout-sider-collapsed {
-  .ant-tag, .node-name {
-    display: none;
-  }
+// Keep in sync with the alignment variables in NodeSwitcher.
+@pill-inset: 15px;
+@pill-gap: 8px;
+@icon-size: 14px;
 
-  .indicator {
-    .container {
-      justify-content: center;
-    }
+// Nested as deep as the `> .anticon` rule below so it still wins over it.
+.ant-layout-sider-collapsed .indicator .container {
+  justify-content: center;
+
+  .node-name, > .chevron {
+    display: none;
   }
 }
 
@@ -68,37 +49,89 @@ const { server_name } = storeToRefs(useSettingsStore())
   padding: 20px 20px 16px 20px;
 
   .container {
+    width: 100%;
     border-radius: 16px;
     border: 1px solid #91d5ff;
     background: #e6f7ff;
-    padding: 5px 15px;
+    height: 32px;
+    // Symmetric insets and equal-width icons on both ends put the name in the
+    // middle of the pill, not just between the two icons.
+    padding: 0 @pill-inset;
     color: #096dd9;
-
+    font: inherit;
+    cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: @pill-gap;
+    transition: border-color 0.2s;
+
+    &:hover {
+      border-color: #1677ff;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #1677ff;
+      outline-offset: 1px;
+    }
+
+    &.remote {
+      border-color: #ffd591;
+      background: #fff7e6;
+      color: #d46b08;
+
+      &:hover {
+        border-color: #fa8c16;
+      }
+    }
+
+    // Icons are inline-flex by default and sit on the text baseline; as flex
+    // items they center on the box instead.
+    > .anticon {
+      display: flex;
+    }
 
     .node-name {
-      max-width: 85px;
+      flex: 1;
+      min-width: 0;
+      text-align: center;
       text-overflow: ellipsis;
       white-space: nowrap;
-      line-height: 1em;
+      line-height: 20px;
       overflow: hidden;
     }
 
-    .ant-tag {
-      cursor: pointer;
-      margin-right: 0;
-      padding: 0 5px;
+    .chevron {
+      width: @icon-size;
+      justify-content: center;
+      font-size: 10px;
+      opacity: 0.7;
+      transition: transform 0.2s;
+
+      &.open {
+        transform: rotate(180deg);
+      }
     }
   }
 }
 
 .dark {
-  .container {
+  .indicator .container {
     border: 1px solid #545454;
     background: transparent;
     color: #bebebe;
+
+    &:hover {
+      border-color: #8c8c8c;
+    }
+
+    &.remote {
+      border-color: rgba(216, 150, 20, 0.5);
+      color: #d89614;
+
+      &:hover {
+        border-color: #d89614;
+      }
+    }
   }
 }
 </style>
