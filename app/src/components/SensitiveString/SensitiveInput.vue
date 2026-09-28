@@ -25,14 +25,13 @@ watch(model, value => {
   }
 })
 
+// While hidden, the real value must never reach the DOM: the blur below is
+// purely cosmetic, and selecting or copying the input would expose it.
 const displayValue = computed(() => {
   if (show.value)
     return revealedValue.value || model.value
 
-  if (model.value === PROTECTED_VALUE_PLACEHOLDER)
-    return 'Sensitive value hidden'
-
-  return model.value
+  return model.value ? 'Sensitive value hidden' : ''
 })
 
 async function ensureRevealedValue() {
@@ -80,7 +79,6 @@ function updateValue(value: string) {
     <AInput
       :value="displayValue"
       :readonly="!show"
-      :type="show ? 'text' : 'text'"
       :placeholder="placeholder"
       :classes="{ root: 'sensitive-input-root', input: 'sensitive-input-input' }"
       @update:value="updateValue"
