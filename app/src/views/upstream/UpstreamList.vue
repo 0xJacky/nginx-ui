@@ -14,6 +14,7 @@ import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@antdv-next/icons'
 import { breakpointsAntDesign, createReusableTemplate, useBreakpoints, watchDebounced } from '@vueuse/core'
 import { useRouteQuery } from '@vueuse/router'
 import upstream from '@/api/upstream'
+import ConvertUpstreamModal from '@/components/NgxConfigEditor/ConvertUpstreamModal.vue'
 import { useProxyAvailability } from '@/composables/useProxyAvailability'
 import UpstreamEditor from './components/UpstreamEditor.vue'
 import UpstreamServerLine from './components/UpstreamServerLine.vue'
@@ -122,6 +123,19 @@ function openCreate() {
 function openEdit(name: string) {
   editingName.value = name
   isEditorOpen.value = true
+}
+
+// An upstream block inside a site can become a shared group of the same name.
+const convertTarget = ref<ExternalUpstream>()
+const isConvertOpen = ref(false)
+
+function canConvert(record: ExternalUpstream) {
+  return record.source.type === 'site' && !record.read_only
+}
+
+function openConvert(record: ExternalUpstream) {
+  convertTarget.value = record
+  isConvertOpen.value = true
 }
 
 type ServerStatus = 'success' | 'error' | 'default' | 'warning'
@@ -388,6 +402,15 @@ function confirmDelete(record: ManagedUpstreamDetail) {
         >
           {{ record.config_path }}
         </span>
+        <AButton
+          v-if="canConvert(record)"
+          type="link"
+          size="small"
+          :data-testid="`upstream-convert-${record.name}`"
+          @click="openConvert(record)"
+        >
+          {{ $gettext('Convert to Shared Group') }}
+        </AButton>
       </div>
     </DefineExternalSource>
 
@@ -533,7 +556,7 @@ function confirmDelete(record: ManagedUpstreamDetail) {
         {{ $gettext('Upstreams Defined in Other Files') }}
       </h3>
       <p class="mt-0 mb-4 text-gray-500 dark:text-gray-400">
-        {{ $gettext('These upstream blocks live inside site or other configuration files. Edit their settings in their own file; servers can be switched on and off here.') }}
+        {{ $gettext('These upstream blocks live inside site or other configuration files. Edit their settings in their own file; servers can be switched on and off here. A block inside a site can be converted to a shared group that other sites can use too.') }}
       </p>
       <ATable
         :columns="externalColumns"
@@ -574,6 +597,14 @@ function confirmDelete(record: ManagedUpstreamDetail) {
       v-model:open="isEditorOpen"
       :name="editingName"
       @saved="loadData"
+    />
+
+    <ConvertUpstreamModal
+      v-if="convertTarget"
+      v-model:open="isConvertOpen"
+      :site="convertTarget.source.name"
+      :upstream="convertTarget.name"
+      @converted="loadData"
     />
   </ACard>
 </template>

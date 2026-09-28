@@ -132,6 +132,11 @@ export interface ManagedUpstreamListResponse {
   dir: string
 }
 
+export interface ConvertSiteUpstreamRequest {
+  site: string
+  upstream: string
+}
+
 export interface UpstreamPreviewResponse {
   content: string
   file_name: string
@@ -185,6 +190,13 @@ const upstream = {
   // file is saved like its own editor saves it: nginx -t, reload, rollback.
   setServerState(data: UpstreamServerStateRequest): Promise<UpstreamGroupState> {
     return http.post('/upstream/server_state', data)
+  },
+
+  // Move an upstream block defined inside a site file into a managed group of
+  // the same name. The group file and the site are applied together: one
+  // nginx -t and reload, both files restored on failure.
+  convertSiteUpstream(data: ConvertSiteUpstreamRequest): Promise<ManagedUpstreamDetail> {
+    return http.post('/upstream/convert', data)
   },
 
   // Validation errors are shown inline by the form, so the global error toast
