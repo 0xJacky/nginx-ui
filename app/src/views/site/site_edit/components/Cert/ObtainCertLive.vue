@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
+import type { IssueHint } from './issueFailure'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { CertificateResult } from '@/api/cert'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { useWebSocket } from '@/lib/websocket'
 import { useSiteEditorStore } from '../SiteEditor/store'
+import { issueFailureDetail, issueHintTitle } from './issueFailure'
 
 const props = defineProps<{
   options: AutoCertOptions
@@ -13,13 +15,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   retry: []
 }>()
-
-// Optional actionable hint the backend attaches to an issuance error.
-interface IssueHint {
-  code: string
-  message: string
-  params?: Record<string, string>
-}
 
 const modalVisible = defineModel<boolean>('modalVisible')
 const modalClosable = defineModel<boolean>('modalClosable')
@@ -40,6 +35,7 @@ const failureDetail = ref('')
 const logContainer = useTemplateRef('logContainer')
 
 const hint = ref<IssueHint>()
+const hintTitle = computed(() => issueHintTitle(hint.value))
 const hasFailed = computed(() => progressStatus.value === 'exception')
 
 const logLevelLabels: Record<string, string> = {
@@ -196,7 +192,9 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
     socket.onmessage = async m => {
       const r = JSON.parse(m.data)
 
-      log(T(r))
+      // The terminal error is logged once by fail(), translated.
+      if (r.status !== 'error')
+        log(T(r))
 
       switch (r.status) {
         case 'success':
@@ -218,7 +216,7 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
         case 'error':
           if (r.hint?.message)
             hint.value = r.hint
-          fail(r?.message)
+          fail(issueFailureDetail(r))
           break
         default:
           // If it is a nginx ui log, increase the percent.
@@ -245,13 +243,13 @@ defineExpose({
 
 <template>
   <div>
-    <!-- One alert for the failure: the backend's hint when it has one, with the raw error below. -->
+    <!-- One alert for the failure: the backend's hint when it has one, with the translated error below. -->
     <AAlert
       v-if="hasFailed && (hint || failureDetail)"
       class="mb-3"
-      :type="hint ? 'warning' : 'error'"
+      :type="hintTitle ? 'warning' : 'error'"
       show-icon
-      :title="hint?.message || $gettext('Certificate issuance failed')"
+      :title="hintTitle || $gettext('Certificate issuance failed')"
       :description="failureDetail"
     />
 

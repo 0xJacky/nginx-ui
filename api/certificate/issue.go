@@ -2,6 +2,7 @@ package certificate
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/acmehint"
@@ -12,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/gorilla/websocket"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -31,6 +33,23 @@ type IssueCertResponse struct {
 	Profile           string             `json:"profile,omitempty"`
 	// Hint explains an issuance failure in actionable terms. Only set on errors.
 	Hint *acmehint.Hint `json:"hint,omitempty"`
+	// Error is the structured cosy error behind a failure, so the frontend can
+	// translate it by scope and code. Only set on errors that are, or wrap, a
+	// *cosy.Error; Message keeps the rendered English text as a fallback.
+	Error *cosy.Error `json:"error,omitempty"`
+}
+
+// issueErrorResponse builds the terminal error message of the stream. The
+// error is not logged through the cert Logger here: IssueWithRecord already
+// persisted it in the cert log, and the Logger never streams errors, so this
+// message is the only copy the websocket carries.
+func issueErrorResponse(err error, hint *acmehint.Hint) IssueCertResponse {
+	resp := IssueCertResponse{Status: Error, Message: err.Error(), Hint: hint}
+	var cErr *cosy.Error
+	if errors.As(err, &cErr) {
+		resp.Error = cErr
+	}
+	return resp
 }
 
 // issueHintDiagnoseTimeout bounds the DNS evidence collection that runs after
@@ -84,7 +103,7 @@ func IssueCert(c *gin.Context) {
 	payload.KeyType = payload.GetKeyType()
 	if err := cert.NormalizeAndValidateIdentifiers(payload); err != nil {
 		logger.Error(err)
-		_ = wsWriter.WriteJSON(IssueCertResponse{Status: Error, Message: err.Error()})
+		_ = wsWriter.WriteJSON(issueErrorResponse(err, nil))
 		return
 	}
 
@@ -97,12 +116,12 @@ func IssueCert(c *gin.Context) {
 	certModel, err := cert.IssueWithRecord(name, payload, log)
 	if certModel == nil && err != nil {
 		logger.Error(err)
-		_ = wsWriter.WriteJSON(IssueCertResponse{Status: Error, Message: err.Error()})
+		_ = wsWriter.WriteJSON(issueErrorResponse(err, nil))
 		return
 	}
 	if err != nil {
 		hint := issueFailureHint(c.Request.Context(), payload, err)
-		_ = wsWriter.WriteJSON(IssueCertResponse{Status: Error, Message: err.Error(), Hint: hint})
+		_ = wsWriter.WriteJSON(issueErrorResponse(err, hint))
 		return
 	}
 
