@@ -7,6 +7,8 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/site"
+	"github.com/0xJacky/Nginx-UI/internal/stream"
 	internalUpstream "github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -31,6 +33,12 @@ func TestServerStateRouteIsRegistered(t *testing.T) {
 func serverStateAPI(t *testing.T) (*gin.Engine, string) {
 	t.Helper()
 	router, confDir := managedAPI(t)
+	// Registered after managedAPI's settings restore, so it runs first: the
+	// background replication of site.Save / stream.Save reads those settings.
+	t.Cleanup(func() {
+		site.WaitForSync()
+		stream.WaitForSync()
+	})
 	require.NoError(t, model.UseDB().AutoMigrate(&model.Site{}, &model.Stream{}, &model.Namespace{}))
 	for _, dir := range []string{"sites-enabled", "streams-available", "streams-enabled"} {
 		require.NoError(t, os.MkdirAll(filepath.Join(confDir, dir), 0o755))

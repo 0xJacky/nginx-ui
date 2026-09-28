@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/site"
+	"github.com/0xJacky/Nginx-UI/internal/stream"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/internal/upstream/managed"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -52,7 +54,13 @@ func setupToggleTest(t *testing.T) string {
 	settings.NginxSettings.RestartCmd = "true"
 	settings.NginxSettings.TestConfigCmd = "true"
 	require.NoError(t, os.WriteFile(settings.NginxSettings.PIDPath, []byte(strconv.Itoa(os.Getpid())), 0o644))
-	t.Cleanup(func() { *settings.NginxSettings = original })
+	t.Cleanup(func() {
+		// site.Save and stream.Save replicate in the background and read the
+		// nginx settings while doing so; let them finish before restoring.
+		site.WaitForSync()
+		stream.WaitForSync()
+		*settings.NginxSettings = original
+	})
 
 	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
 	require.NoError(t, err)

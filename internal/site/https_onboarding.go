@@ -89,7 +89,7 @@ func tryAcquireHTTPSOnboarding(key string) (release func(), ok bool) {
 // same way Save does after a successful write. It is a variable so tests can
 // observe the replication without real nodes.
 var resyncSiteSave = func(name, content string) {
-	go syncSave(name, content)
+	startSyncSave(name, content)
 }
 
 // HTTPSRequest is the message a client sends to start an HTTPS onboarding run.

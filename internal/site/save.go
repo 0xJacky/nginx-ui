@@ -150,9 +150,27 @@ func Save(name string, content string, overwrite bool, namespaceId uint64, syncN
 		}
 	}
 
-	go syncSave(name, content)
+	startSyncSave(name, content)
 
 	return
+}
+
+// pendingSyncs tracks the background replications started by Save so callers
+// that swap global settings (tests) can wait for them to finish first.
+var pendingSyncs sync.WaitGroup
+
+func startSyncSave(name, content string) {
+	pendingSyncs.Add(1)
+	go func() {
+		defer pendingSyncs.Done()
+		syncSave(name, content)
+	}()
+}
+
+// WaitForSync blocks until every background replication started by Save has
+// returned.
+func WaitForSync() {
+	pendingSyncs.Wait()
 }
 
 func syncSave(name string, content string) {
