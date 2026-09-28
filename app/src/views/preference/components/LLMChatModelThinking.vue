@@ -2,6 +2,7 @@
 import type { LLMChatModel } from '@/api/llm'
 import type { LLMThinkingLevel, LLMThinkingParams } from '@/constants/llm'
 import { cloneDeep, isEqual } from 'lodash'
+import CodeEditor from '@/components/CodeEditor'
 import { LLM_THINKING_LEVELS, LLM_THINKING_PRESETS, thinkingLevelLabel } from '@/constants/llm'
 
 const models = defineModel<LLMChatModel[]>('models', { required: true })
@@ -91,7 +92,7 @@ function saveEditor() {
         :value="model.thinking_preset"
         :options="presetOptions"
         size="small"
-        class="w-72 max-w-full"
+        :style="{ width: '16rem', maxWidth: '100%' }"
         :popup-match-select-width="false"
         @update:value="value => applyPreset(model, value as string)"
       />
@@ -127,10 +128,11 @@ function saveEditor() {
         :validate-status="draftErrors[level] ? 'error' : ''"
         :help="draftErrors[level]"
       >
-        <ATextarea
-          v-model:value="draft[level]"
-          :auto-size="{ minRows: 1, maxRows: 6 }"
-          class="font-mono text-[13px]"
+        <CodeEditor
+          v-model:content="draft[level]"
+          lang="json"
+          default-height="76px"
+          disable-code-completion
           placeholder="{}"
         />
       </AFormItem>
