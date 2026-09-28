@@ -7,6 +7,7 @@ import type { JSXElements } from '@/types'
 import { datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'antdv-next'
 import namespace from '@/api/namespace'
+import ConfigStatusTag from '@/components/ConfigStatusTag'
 import NamespaceRender from '@/components/NamespaceRender'
 import ProxyTargets from '@/components/ProxyTargets'
 import { ConfigStatus } from '@/constants'
@@ -131,8 +132,12 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
-  customRender: (args: CustomRenderArgs<Site>) => {
+  customRender: (args: CustomRenderArgs<Site>, source) => {
     const { text, record } = args
+    // Read-only views (e.g. the batch edit preview) must not offer a switcher.
+    if (source === 'detail')
+      return h(ConfigStatusTag, { status: text as SiteStatus })
+
     return h(SiteStatusSelect, {
       status: text as SiteStatus,
       siteName: record.name,

@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -565,7 +566,7 @@ func DeleteSite(c *gin.Context) {
 func BatchUpdateSites(c *gin.Context) {
 	cosy.Core[model.Site](c).SetValidRules(gin.H{
 		"namespace_id": "required",
-	}).SetItemKey("path").
+	}).
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Site]) {
 			effectedPath := make([]string, len(ctx.BatchEffectedIDs))
 			var sites []*model.Site
@@ -589,7 +590,20 @@ func BatchUpdateSites(c *gin.Context) {
 				ctx.AbortWithError(err)
 				return
 			}
-			ctx.BatchEffectedIDs = effectedPath
+
+			// The client picks sites by name, but cosy casts every batch id to
+			// the numeric primary key before building "WHERE <key> IN ?", so a
+			// path item key matches no row. Hand it the row ids instead.
+			rows, err := s.Select(s.ID).Where(s.Path.In(effectedPath...)).Find()
+			if err != nil {
+				ctx.AbortWithError(err)
+				return
+			}
+			ids := make([]string, len(rows))
+			for i, row := range rows {
+				ids[i] = strconv.FormatUint(row.ID, 10)
+			}
+			ctx.BatchEffectedIDs = ids
 		}).BatchModify()
 
 	refreshSiteNavigationIfRunning()
