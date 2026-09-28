@@ -216,6 +216,24 @@ export interface Settings {
   upstream_check: UpstreamCheckSettings
 }
 
+// Sections the server saves on their own through POST /settings/:section.
+export const SAVABLE_SETTINGS_SECTIONS = [
+  'app',
+  'server',
+  'auth',
+  'cert',
+  'http',
+  'node',
+  'openai',
+  'logrotate',
+  'nginx',
+  'oidc',
+  'site_check',
+  'upstream_check',
+] as const satisfies readonly (keyof Settings)[]
+
+export type SavableSettingsSection = typeof SAVABLE_SETTINGS_SECTIONS[number]
+
 const settings = {
   get(): Promise<Settings> {
     return http.get('/settings')
@@ -227,6 +245,13 @@ const settings = {
   },
   save(data: Settings, config?: AxiosRequestConfig): Promise<Settings> {
     return http.post('/settings', data, config)
+  },
+  saveSection<S extends SavableSettingsSection>(
+    section: S,
+    data: Settings[S],
+    config?: AxiosRequestConfig,
+  ): Promise<Settings[S]> {
+    return http.post(`/settings/${section}`, data, config)
   },
   saveNginxControl(data: NginxControlSettings, config?: AxiosRequestConfig): Promise<NginxControlSettings> {
     return http.post('/settings/nginx/control', data, config)

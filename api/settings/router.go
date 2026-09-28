@@ -13,6 +13,9 @@ func InitRouter(r *gin.RouterGroup) {
 	// a settings write can repoint the ACME CA away from staging, swap the
 	// OpenAI base URL, or change the log directory whitelist.
 	r.POST("settings", middleware.RequireSecureSession(), middleware.RejectInDemo(), SaveSettings)
+	// Each section can also be saved on its own, so the preference page can
+	// save the groups it changed in parallel and report errors per group.
+	r.POST("settings/:section", middleware.RequireSecureSession(), middleware.RejectInDemo(), SaveSettingsSection)
 	// The nginx control target and its private key decide which machine the
 	// nginx commands run on, so they get the same guards as the settings write.
 	r.POST("settings/nginx/control", middleware.RequireSecureSession(), middleware.RejectInDemo(), SaveNginxControlSettings)

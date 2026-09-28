@@ -17,9 +17,11 @@ import {
   ServerSettings,
   TerminalSettings,
 } from '@/views/preference/tabs'
+import { tabSettingsSections } from './sections'
 import useSystemSettingsStore from './store'
 
 const systemSettingsStore = useSystemSettingsStore()
+const { isSaving } = storeToRefs(systemSettingsStore)
 const globalStore = useGlobalStore()
 const isDemoResolved = ref(false)
 
@@ -92,14 +94,13 @@ onMounted(async () => {
       </ATabs>
     </div>
     <FooterToolBar
-      v-if="activeKey !== 'external_notify'
-        && activeKey !== 'geolite'
-        && activeKey !== 'access_tokens'
+      v-if="tabSettingsSections(activeKey).length
         && !(activeKey === 'nginx' && isNginxControlEditing)"
     >
       <AButton
         type="primary"
-        @click="systemSettingsStore.save"
+        :loading="isSaving"
+        @click="systemSettingsStore.save(activeKey)"
       >
         {{ $gettext('Save') }}
       </AButton>

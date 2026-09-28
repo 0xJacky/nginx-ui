@@ -7,17 +7,10 @@ import (
 	"reflect"
 	"strings"
 
-	"code.pfad.fr/risefront"
-	"github.com/0xJacky/Nginx-UI/internal/cert"
-	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/internal/process"
-	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
-	"github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
@@ -200,34 +193,61 @@ func getProtectedSettingValue(path string) (any, bool) {
 	return nil, false
 }
 
+// settingsResponseBuilders renders each section of the GET /settings response.
+// A section save answers with its own entry only, so a request never reads
+// sections that a concurrent save of another group may be writing.
+var settingsResponseBuilders = map[string]func() any{
+	"app": func() any {
+		return cloneRedactedSettingsSection(cSettings.AppSettings, "jwt_secret")
+	},
+	"server":   func() any { return cSettings.ServerSettings },
+	"listener": func() any { return settings.ListenerSettings },
+	"database": func() any { return settings.DatabaseSettings },
+	"auth":     func() any { return cloneRedactedSettingsSection(settings.AuthSettings) },
+	"casdoor":  func() any { return cloneRedactedSettingsSection(settings.CasdoorSettings) },
+	"oidc":     func() any { return cloneRedactedSettingsSection(settings.OIDCSettings) },
+	"cert":     func() any { return cloneRedactedSettingsSection(settings.CertSettings) },
+	"http":     func() any { return cloneRedactedSettingsSection(settings.HTTPSettings) },
+	"logrotate": func() any {
+		return cloneRedactedSettingsSection(settings.LogrotateSettings)
+	},
+	"nginx":     func() any { return buildNginxSettingsResponse() },
+	"nginx_log": func() any { return cloneRedactedSettingsSection(settings.NginxLogSettings) },
+	"node":      func() any { return cloneRedactedSettingsSection(settings.NodeSettings) },
+	"openai":    func() any { return buildOpenAISettingsResponse() },
+	"terminal":  func() any { return cloneRedactedSettingsSection(settings.TerminalSettings) },
+	"webauthn":  func() any { return settings.WebAuthnSettings },
+	"site_check": func() any {
+		return settings.SiteCheckSettings
+	},
+	"upstream_check": func() any {
+		return settings.UpstreamCheckSettings
+	},
+}
+
 func buildSettingsResponse() gin.H {
-	app := cloneRedactedSettingsSection(cSettings.AppSettings, "jwt_secret")
+	response := make(gin.H, len(settingsResponseBuilders))
+	for name, build := range settingsResponseBuilders {
+		response[name] = build()
+	}
+	return response
+}
+
+func buildSettingsSectionResponse(name string) any {
+	build, ok := settingsResponseBuilders[name]
+	if !ok {
+		return gin.H{}
+	}
+	return build()
+}
+
+func buildOpenAISettingsResponse() gin.H {
 	openai := cloneRedactedSettingsSection(settings.OpenAISettings)
 	openai["provider"] = settings.OpenAISettings.GetProvider()
 	if baseURL := settings.OpenAISettings.GetBaseURL(); openai["base_url"] == "" && baseURL != "" {
 		openai["base_url"] = baseURL
 	}
-
-	return gin.H{
-		"app":            app,
-		"server":         cSettings.ServerSettings,
-		"listener":       settings.ListenerSettings,
-		"database":       settings.DatabaseSettings,
-		"auth":           cloneRedactedSettingsSection(settings.AuthSettings),
-		"casdoor":        cloneRedactedSettingsSection(settings.CasdoorSettings),
-		"oidc":           cloneRedactedSettingsSection(settings.OIDCSettings),
-		"cert":           cloneRedactedSettingsSection(settings.CertSettings),
-		"http":           cloneRedactedSettingsSection(settings.HTTPSettings),
-		"logrotate":      cloneRedactedSettingsSection(settings.LogrotateSettings),
-		"nginx":          buildNginxSettingsResponse(),
-		"nginx_log":      cloneRedactedSettingsSection(settings.NginxLogSettings),
-		"node":           cloneRedactedSettingsSection(settings.NodeSettings),
-		"openai":         openai,
-		"terminal":       cloneRedactedSettingsSection(settings.TerminalSettings),
-		"webauthn":       settings.WebAuthnSettings,
-		"site_check":     settings.SiteCheckSettings,
-		"upstream_check": settings.UpstreamCheckSettings,
-	}
+	return openai
 }
 
 func buildNginxSettingsResponse() gin.H {
@@ -259,17 +279,9 @@ func buildNginxSettingsResponse() gin.H {
 }
 
 func restoreRedactedSensitiveSettings(payload *saveSettingsPayload) {
-	if payload.App.JwtSecret == redactedSensitiveValue {
-		payload.App.JwtSecret = cSettings.AppSettings.JwtSecret
-	}
-
-	if payload.Node.Secret == redactedSensitiveValue {
-		payload.Node.Secret = settings.NodeSettings.Secret
-	}
-
-	if payload.Openai.Token == redactedSensitiveValue {
-		payload.Openai.Token = settings.OpenAISettings.Token
-	}
+	appSection.restore(&payload.App)
+	nodeSection.restore(&payload.Node)
+	openAISection.restore(&payload.Openai)
 }
 
 func GetServerName(c *gin.Context) {
@@ -282,6 +294,9 @@ func GetSettings(c *gin.Context) {
 	c.JSON(http.StatusOK, buildSettingsResponse())
 }
 
+// SaveSettings saves every writable section at once. The preference page saves
+// each section through SaveSettingsSection instead; this combined endpoint
+// stays for API clients and scripts that post the whole document.
 func SaveSettings(c *gin.Context) {
 	var json saveSettingsPayload
 
@@ -289,116 +304,28 @@ func SaveSettings(c *gin.Context) {
 		return
 	}
 
-	restoreRedactedSensitiveSettings(&json)
-
-	siteCheckChanged := *settings.SiteCheckSettings != json.SiteCheck
-	upstreamCheckChanged := *settings.UpstreamCheckSettings != json.UpstreamCheck
-
-	if settings.LogrotateSettings.Enabled != json.Logrotate.Enabled ||
-		settings.LogrotateSettings.Interval != json.Logrotate.Interval {
-		go cron.RestartLogrotate()
+	saves := []*sectionSave{
+		appSection.bind(&json.App),
+		serverSection.bind(&json.Server),
+		authSection.bind(&json.Auth),
+		certSection.bind(&json.Cert),
+		httpSection.bind(&json.Http),
+		nodeSection.bind(&json.Node),
+		openAISection.bind(&json.Openai),
+		logrotateSection.bind(&json.Logrotate),
+		nginxSection.bind(&json.Nginx),
+		oidcSection.bind(&json.Oidc),
+		siteCheckSection.bind(&json.SiteCheck),
+		upstreamCheckSection.bind(&json.UpstreamCheck),
 	}
 
-	// Validate SSL certificates if HTTPS is enabled
-	needReloadCert := false
-	needRestartProgram := false
-	if json.Server.EnableHTTPS != cSettings.ServerSettings.EnableHTTPS {
-		needReloadCert = true
-		needRestartProgram = true
-	}
-
-	if json.Server.SSLCert != cSettings.ServerSettings.SSLCert ||
-		json.Server.SSLKey != cSettings.ServerSettings.SSLKey {
-		needReloadCert = true
-	}
-
-	if json.Server.EnableHTTPS {
-		err := system.ValidateSSLCertificates(json.Server.SSLCert, json.Server.SSLKey)
-		if err != nil {
-			cosy.ErrHandler(c, err)
-			return
-		}
-	}
-
-	// Validate HTTP/2 and HTTP/3 configuration
-	if json.Server.EnableH2 && !json.Server.EnableHTTPS {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "HTTP/2 requires HTTPS to be enabled",
-		})
+	if !persistSections(c, saves...) {
 		return
 	}
-
-	if json.Server.EnableH3 && !json.Server.EnableHTTPS {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "HTTP/3 requires HTTPS to be enabled",
-		})
-		return
-	}
-
-	// HTTP/3 needs a UDP listener, which a Unix socket cannot provide. The
-	// startup validation would otherwise refuse to boot after the restart
-	// this save triggers, taking the UI down until app.ini is edited by hand.
-	// Check the active listener too: after a graceful restart the running
-	// program may have loaded a TCP configuration while the parent process
-	// still owns a Unix socket, and the next restart re-reads app.ini.
-	activeNetwork, _ := process.ActiveListener()
-	if json.Server.EnableH3 && (settings.ListenerSettings.UnixSocket != "" || activeNetwork == "unix") {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "HTTP/3 cannot be enabled while Nginx UI listens on a Unix socket",
-		})
-		return
-	}
-
-	err := settings.Update(func() {
-		cSettings.ProtectedFill(cSettings.AppSettings, &json.App)
-		cSettings.ProtectedFill(cSettings.ServerSettings, &json.Server)
-		cSettings.ProtectedFill(settings.AuthSettings, &json.Auth)
-		cSettings.ProtectedFill(settings.CertSettings, &json.Cert)
-		cSettings.ProtectedFill(settings.HTTPSettings, &json.Http)
-		cSettings.ProtectedFill(settings.NodeSettings, &json.Node)
-		cSettings.ProtectedFill(settings.OpenAISettings, &json.Openai)
-		cSettings.ProtectedFill(settings.LogrotateSettings, &json.Logrotate)
-		cSettings.ProtectedFill(settings.NginxSettings, &json.Nginx)
-		cSettings.ProtectedFill(settings.OIDCSettings, &json.Oidc)
-		cSettings.ProtectedFill(settings.SiteCheckSettings, &json.SiteCheck)
-		cSettings.ProtectedFill(settings.UpstreamCheckSettings, &json.UpstreamCheck)
-	})
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
-	// If host SSH settings changed, invalidate the cached SSH client so
-	// the next nginx command re-dials with the new config.
-	nginx.ResetHostNginxState()
 
 	GetSettings(c)
 
-	if needReloadCert {
-		go func() {
-			cert.ReloadServerTLSCertificate()
-		}()
-	}
-
-	if needRestartProgram {
-		go func() {
-			risefront.Restart()
-		}()
-	}
-
-	if siteCheckChanged {
-		if service := sitecheck.GetService(); service != nil {
-			service.SettingsChanged()
-		}
-	}
-
-	if upstreamCheckChanged {
-		go func() {
-			if err := cron.RestartUpstreamAvailabilityJob(); err != nil {
-				// The settings have already been saved. Surface restart failures in
-				// server logs so the next scheduled reload can recover.
-				logger.Errorf("Failed to restart upstream availability job: %v", err)
-			}
-		}()
+	for _, save := range saves {
+		save.afterSave()
 	}
 }

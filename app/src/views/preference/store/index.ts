@@ -1,8 +1,27 @@
-import type { Settings } from '@/api/settings'
+import type { SavableSettingsSection, Settings } from '@/api/settings'
+import type { CosyError } from '@/lib/http/types'
 import settings from '@/api/settings'
 import { use2FAModal } from '@/components/TwoFA'
 import { useGlobalApp } from '@/composables/useGlobalApp'
+import { isTwoFactorCancelled, translateError } from '@/lib/http/error'
+import { normalizeHttpError } from '@/lib/http/normalizeError'
 import { useSettingsStore } from '@/pinia'
+import { tabSettingsSections } from '../sections'
+
+// Flattens a validation error map such as {ip_white_list: {0: "ip"}} into the
+// paths of the invalid fields.
+function invalidFieldPaths(errors: unknown, prefix = ''): string[] {
+  if (!errors || typeof errors !== 'object')
+    return prefix ? [prefix] : []
+
+  return Object.entries(errors).flatMap(([key, value]) =>
+    invalidFieldPaths(value, prefix ? `${prefix}.${key}` : key))
+}
+
+interface SectionSaveResult {
+  section: SavableSettingsSection
+  error?: string
+}
 
 const useSystemSettingsStore = defineStore('systemSettings', () => {
   const { message } = useGlobalApp()
@@ -127,6 +146,8 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
   })
   const errors = ref<Record<string, Record<string, string>>>({})
   const savedEnableHTTPS = ref(false)
+  const isSaving = ref(false)
+  const isLoaded = ref(false)
 
   async function getSettings(): Promise<boolean> {
     try {
@@ -134,6 +155,8 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       r.cert.recursive_nameservers ||= []
       savedEnableHTTPS.value = r.server.enable_https
       data.value = r
+      errors.value = {}
+      isLoaded.value = true
       return true
     }
     catch (err) {
@@ -142,16 +165,47 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     }
   }
 
-  async function save() {
-    if (!data.value)
-      return
-
-    // fix type
+  function normalizeBeforeSave() {
     data.value.cert.http_challenge_port = data.value.cert.http_challenge_port.toString()
     data.value.cert.recursive_nameservers = (data.value.cert.recursive_nameservers ?? [])
       .map(nameserver => nameserver.trim())
       .filter(Boolean)
-    const hasHTTPSChanged = data.value.server.enable_https !== savedEnableHTTPS.value
+  }
+
+  async function saveSection(section: SavableSettingsSection): Promise<SectionSaveResult> {
+    try {
+      const r = await settings.saveSection(section, data.value[section], { skipErrHandling: true })
+      if (section === 'cert')
+        (r as Settings['cert']).recursive_nameservers ||= []
+      data.value[section] = r as never
+      delete errors.value[section]
+      return { section }
+    }
+    catch (err) {
+      if (isTwoFactorCancelled(err))
+        return { section, error: '' }
+
+      const cosyError = normalizeHttpError(err) as CosyError & { errors?: Record<string, string> }
+      errors.value[section] = cosyError.errors ?? {}
+
+      // Not every tab shows field errors inline, so name the fields
+      const fields = invalidFieldPaths(cosyError.errors)
+      if (fields.length)
+        return { section, error: $gettext('Invalid settings: %{fields}', { fields: fields.join(', ') }) }
+
+      return { section, error: await translateError(cosyError) }
+    }
+  }
+
+  // Saves the settings edited on one preference tab. Each section on the tab
+  // is its own request, so a failure is reported against the fields it
+  // belongs to; changes left on other tabs are not touched.
+  async function save(tab: string) {
+    const sections = tabSettingsSections(tab)
+    if (!data.value || isSaving.value || sections.length === 0)
+      return
+
+    normalizeBeforeSave()
 
     const otpModal = use2FAModal()
 
@@ -163,35 +217,55 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       return
     }
 
+    const hasHTTPSChanged = sections.includes('server')
+      && data.value.server.enable_https !== savedEnableHTTPS.value
+
+    isSaving.value = true
     try {
-      const r = await settings.save(data.value!)
+      const results = await Promise.all(sections.map(saveSection))
+      const failed = results.filter(result => result.error !== undefined)
+
+      // A dismissed 2FA prompt is not an error worth reporting
+      if (failed.some(result => result.error === ''))
+        return
+
+      if (failed.length) {
+        failed.forEach(result => message.error(result.error!))
+        return
+      }
+
       const settingsStore = useSettingsStore()
       const { server_name } = storeToRefs(settingsStore)
-      if (!settingsStore.is_remote)
-        server_name.value = r?.server?.name ?? ''
-      r.cert.recursive_nameservers ||= []
-      savedEnableHTTPS.value = r.server.enable_https
-      data.value = r
-      errors.value = {}
+      if (sections.includes('node') && !settingsStore.is_remote)
+        server_name.value = data.value.node.name
 
-      const expectedProtocol = r.server.enable_https ? 'https:' : 'http:'
-      if (hasHTTPSChanged && window.location.protocol !== expectedProtocol) {
-        const redirectURL = new URL(window.location.href)
-        redirectURL.protocol = expectedProtocol
-        window.location.replace(redirectURL)
-        return
+      if (sections.includes('server')) {
+        savedEnableHTTPS.value = data.value.server.enable_https
+
+        const expectedProtocol = data.value.server.enable_https ? 'https:' : 'http:'
+        if (hasHTTPSChanged && window.location.protocol !== expectedProtocol) {
+          const redirectURL = new URL(window.location.href)
+          redirectURL.protocol = expectedProtocol
+          window.location.replace(redirectURL)
+          return
+        }
       }
 
       message.success($gettext('Save successfully'))
     }
-    catch (err) {
-      // The HTTP interceptor already surfaces the error via handleApiError,
-      // so we only log here to avoid a duplicate toast.
-      console.error('Failed to save settings:', err)
+    finally {
+      isSaving.value = false
     }
   }
 
-  return { data, errors, getSettings, save }
+  return {
+    data,
+    errors,
+    isSaving,
+    isLoaded,
+    getSettings,
+    save,
+  }
 })
 
 export default useSystemSettingsStore
