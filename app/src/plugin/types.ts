@@ -20,6 +20,25 @@ export interface SharedRuntime {
   http: typeof http
   /** Resolved versions of the shared libraries, keyed by package name. */
   versions: Record<string, string>
+  /** Host dialogs a plugin may open. Older hosts do not have it, so check before use. */
+  ui: SharedUI
+}
+
+/** A DNS credential created from `SharedUI.openDnsCredentialEditor`. */
+export interface SharedDnsCredential {
+  id: number
+  name: string
+  code: string
+  provider?: string
+  provider_code?: string
+}
+
+export interface SharedUI {
+  /**
+   * Opens the host DNS credential form in a modal on top of the current page.
+   * Resolves with the created credential, or undefined when it is cancelled.
+   */
+  openDnsCredentialEditor: () => Promise<SharedDnsCredential | undefined>
 }
 
 export interface NginxUIGlobal {

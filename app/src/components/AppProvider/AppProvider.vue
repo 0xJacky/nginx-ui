@@ -3,6 +3,7 @@ import type { MessageInstance } from 'antdv-next/dist/message/interface'
 import type { HookAPI } from 'antdv-next/dist/modal/useModal/types'
 import type { NotificationInstance } from 'antdv-next/dist/notification/interface'
 import { App } from 'antdv-next'
+import { DnsCredentialEditorHost } from '@/components/DnsCredentialEditor'
 import { useAppStore } from '@/pinia'
 
 const appStore = useAppStore()
@@ -30,4 +31,5 @@ onUnmounted(() => {
 
 <template>
   <slot />
+  <DnsCredentialEditorHost />
 </template>

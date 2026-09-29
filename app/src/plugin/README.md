@@ -26,6 +26,12 @@ window.NginxUI = {
     gettext,        // the host vue3-gettext instance
     http,           // the host API client, baseURL ./api
     versions,       // { vue, 'vue-router', pinia, 'antdv-next', '@vueuse/core' }
+    ui: {
+      // Opens the host DNS credential form in a modal. Resolves with
+      // { id, name, code, provider?, provider_code? } or undefined on cancel.
+      // Older hosts lack `ui`, so check for it before calling.
+      openDnsCredentialEditor,
+    },
   },
   registerPlugin,   // (id, { setup, teardown? }) => void
 }
