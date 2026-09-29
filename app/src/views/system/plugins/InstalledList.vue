@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { InstalledFilter, PluginDrawerTab } from './presets'
-import type { PluginInfo } from '@/api/plugin'
+import type { PluginInfo, PluginUsage } from '@/api/plugin'
 import { AppstoreOutlined, ReloadOutlined, SearchOutlined, ShopOutlined, UploadOutlined } from '@antdv-next/icons'
 import pluginApi, { localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
@@ -12,6 +12,7 @@ import PermissionApprovalModal from './PermissionApprovalModal.vue'
 import PluginDrawer from './PluginDrawer.vue'
 import { matchesFilter, matchesKeyword, needsAttention } from './presets'
 import SyncNodesModal from './SyncNodesModal.vue'
+import { certificateUsageText, formatUsagePreview, previewUsage } from './usage'
 
 const emit = defineEmits<{
   install: []
@@ -40,22 +41,36 @@ const syncOpen = ref(false)
 const approvalOpen = ref(false)
 const pendingApproval = ref<PluginInfo>()
 
+const updateIds = computed(() => new Set(inventory.updates.value.map(item => item.id)))
+
 const counts = computed<Record<InstalledFilter, number>>(() => ({
   all: plugins.value.length,
   enabled: plugins.value.filter(item => item.enabled).length,
   disabled: plugins.value.filter(item => !item.enabled).length,
   attention: plugins.value.filter(needsAttention).length,
+  updates: plugins.value.filter(item => updateIds.value.has(item.id)).length,
 }))
 
-const filterOptions = computed(() => [
-  { value: 'all', label: $gettext('All') },
-  { value: 'enabled', label: $gettext('Enabled') },
-  { value: 'disabled', label: $gettext('Disabled') },
-  { value: 'attention', label: $gettext('Needs attention') },
-])
+const filterOptions = computed(() => {
+  const options: { value: InstalledFilter, label: string }[] = [
+    { value: 'all', label: $gettext('All') },
+    { value: 'enabled', label: $gettext('Enabled') },
+    { value: 'disabled', label: $gettext('Disabled') },
+    { value: 'attention', label: $gettext('Needs attention') },
+  ]
+  if (counts.value.updates > 0)
+    options.push({ value: 'updates', label: $gettext('Updates available') })
+  return options
+})
+
+// The updates entry disappears once everything is current.
+watch(() => counts.value.updates, count => {
+  if (count === 0 && filter.value === 'updates')
+    filter.value = 'all'
+})
 
 const visible = computed(() => plugins.value.filter(item =>
-  matchesFilter(item, filter.value) && matchesKeyword(item, keyword.value)))
+  matchesFilter(item, filter.value, updateIds.value) && matchesKeyword(item, keyword.value)))
 
 const isEmptyInventory = computed(() => !loading.value && !error.value && plugins.value.length === 0)
 
@@ -122,9 +137,46 @@ async function disablePlugin(plugin: PluginInfo) {
   }
 }
 
+/**
+ * Turning a plugin off is immediate unless something on this node depends on
+ * it, in which case the user sees what stops working first.
+ */
+async function requestDisable(plugin: PluginInfo) {
+  togglingId.value = plugin.id
+  let usage: PluginUsage | undefined
+  try {
+    usage = await pluginApi.getUsage(plugin.id)
+  }
+  catch {
+    // An older node has no usage report, it is disabled as before.
+  }
+  finally {
+    togglingId.value = ''
+  }
+
+  if (!usage || usage.total === 0) {
+    await disablePlugin(plugin)
+    return
+  }
+
+  const secondary = { style: { margin: 0, color: 'var(--ant-color-text-secondary)' } }
+  modal.confirm({
+    title: $gettext('Disable %{name}?', { name: localizedPluginName(plugin, gettext.current) }),
+    content: h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } }, [
+      h('p', { style: { margin: 0 } }, certificateUsageText(usage.total)),
+      h('p', secondary, formatUsagePreview(previewUsage(usage))),
+      h('p', secondary, $gettext('Renewal resumes when you turn it back on.')),
+    ]),
+    okText: $gettext('Disable'),
+    okButtonProps: { danger: true },
+    cancelText: $gettext('Cancel'),
+    onOk: () => disablePlugin(plugin),
+  })
+}
+
 function toggle(plugin: PluginInfo, checked: boolean) {
   if (!checked) {
-    void disablePlugin(plugin)
+    void requestDisable(plugin)
     return
   }
 
@@ -191,6 +243,13 @@ function confirmUninstall(plugin: PluginInfo) {
         </template>
       </AInput>
 
+      <AButton class="installed-refresh" :loading="loading" @click="inventory.reload()">
+        <template #icon>
+          <ReloadOutlined />
+        </template>
+        {{ $gettext('Refresh') }}
+      </AButton>
+
       <div class="installed-filter">
         <ASegmented v-model:value="filter" :options="filterOptions">
           <template #labelRender="option">
@@ -201,13 +260,6 @@ function confirmUninstall(plugin: PluginInfo) {
           </template>
         </ASegmented>
       </div>
-
-      <AButton class="ml-auto" :loading="loading" @click="inventory.reload()">
-        <template #icon>
-          <ReloadOutlined />
-        </template>
-        {{ $gettext('Refresh') }}
-      </AButton>
     </div>
 
     <AAlert
@@ -303,15 +355,38 @@ function confirmUninstall(plugin: PluginInfo) {
   margin-bottom: 16px;
 }
 
+// On a phone the search and refresh share the first row and the filter
+// scrolls below them. Wider screens put the filter between the two.
 .installed-search {
-  width: 100%;
-  max-width: 280px;
+  flex: 1 1 0;
+  min-width: 0;
+
+  @media (min-width: 768px) {
+    flex: 0 1 280px;
+  }
 }
 
-// A phone cannot fit every filter, so the control scrolls instead of clipping.
+.installed-refresh {
+  flex: none;
+
+  @media (min-width: 768px) {
+    order: 3;
+    margin-left: auto;
+  }
+}
+
+// A phone cannot fit every filter, so the control scrolls instead of wrapping.
 .installed-filter {
-  max-width: 100%;
+  flex: 1 1 100%;
+  min-width: 0;
   overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+
+  @media (min-width: 768px) {
+    flex: 0 1 auto;
+    order: 2;
+  }
 }
 
 .filter-label {
