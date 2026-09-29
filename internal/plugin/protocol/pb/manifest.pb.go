@@ -889,15 +889,16 @@ type DNS01Provider struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Name  string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Vendor code, shared across every installed dns01 plugin.
-	Code          string               `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
-	Configuration *DNS01ProviderConfig `protobuf:"bytes,3,opt,name=configuration,proto3" json:"configuration,omitempty"`
-	Links         *DNS01ProviderLinks  `protobuf:"bytes,4,opt,name=links,proto3" json:"links,omitempty"`
+	Code  string              `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Links *DNS01ProviderLinks `protobuf:"bytes,4,opt,name=links,proto3" json:"links,omitempty"`
 	// Default used when the plugin does not implement dns01.options.
 	PropagationTimeoutSeconds int32 `protobuf:"varint,5,opt,name=propagation_timeout_seconds,json=propagationTimeoutSeconds,proto3" json:"propagation_timeout_seconds,omitempty"`
 	// Default used when the plugin does not implement dns01.options.
 	PollingIntervalSeconds int32 `protobuf:"varint,6,opt,name=polling_interval_seconds,json=pollingIntervalSeconds,proto3" json:"polling_interval_seconds,omitempty"`
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	// Credential form, see DNS01-14. Required.
+	Form          *DNS01ProviderForm `protobuf:"bytes,7,opt,name=form,proto3" json:"form,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DNS01Provider) Reset() {
@@ -944,13 +945,6 @@ func (x *DNS01Provider) GetCode() string {
 	return ""
 }
 
-func (x *DNS01Provider) GetConfiguration() *DNS01ProviderConfig {
-	if x != nil {
-		return x.Configuration
-	}
-	return nil
-}
-
 func (x *DNS01Provider) GetLinks() *DNS01ProviderLinks {
 	if x != nil {
 		return x.Links
@@ -972,57 +966,9 @@ func (x *DNS01Provider) GetPollingIntervalSeconds() int32 {
 	return 0
 }
 
-// DNS01ProviderConfig lists credential and additional fields with help text.
-type DNS01ProviderConfig struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Credential field name to help text.
-	Credentials map[string]string `protobuf:"bytes,1,rep,name=credentials,proto3" json:"credentials,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	// Additional field name to help text.
-	Additional    map[string]string `protobuf:"bytes,2,rep,name=additional,proto3" json:"additional,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DNS01ProviderConfig) Reset() {
-	*x = DNS01ProviderConfig{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DNS01ProviderConfig) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DNS01ProviderConfig) ProtoMessage() {}
-
-func (x *DNS01ProviderConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[11]
+func (x *DNS01Provider) GetForm() *DNS01ProviderForm {
 	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DNS01ProviderConfig.ProtoReflect.Descriptor instead.
-func (*DNS01ProviderConfig) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *DNS01ProviderConfig) GetCredentials() map[string]string {
-	if x != nil {
-		return x.Credentials
-	}
-	return nil
-}
-
-func (x *DNS01ProviderConfig) GetAdditional() map[string]string {
-	if x != nil {
-		return x.Additional
+		return x.Form
 	}
 	return nil
 }
@@ -1031,14 +977,13 @@ func (x *DNS01ProviderConfig) GetAdditional() map[string]string {
 type DNS01ProviderLinks struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Api           string                 `protobuf:"bytes,1,opt,name=api,proto3" json:"api,omitempty"`
-	GoClient      string                 `protobuf:"bytes,2,opt,name=go_client,json=goClient,proto3" json:"go_client,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *DNS01ProviderLinks) Reset() {
 	*x = DNS01ProviderLinks{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[12]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1050,7 +995,7 @@ func (x *DNS01ProviderLinks) String() string {
 func (*DNS01ProviderLinks) ProtoMessage() {}
 
 func (x *DNS01ProviderLinks) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[12]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1063,7 +1008,7 @@ func (x *DNS01ProviderLinks) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DNS01ProviderLinks.ProtoReflect.Descriptor instead.
 func (*DNS01ProviderLinks) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{12}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *DNS01ProviderLinks) GetApi() string {
@@ -1073,11 +1018,239 @@ func (x *DNS01ProviderLinks) GetApi() string {
 	return ""
 }
 
-func (x *DNS01ProviderLinks) GetGoClient() string {
+// DNS01ProviderForm describes how a host lays out the credential form.
+type DNS01ProviderForm struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Fields in display order.
+	Fields []*DNS01ProviderField `protobuf:"bytes,1,rep,name=fields,proto3" json:"fields,omitempty"`
+	// Ways to sign in, present only when there is more than one.
+	Methods       []*DNS01ProviderMethod `protobuf:"bytes,2,rep,name=methods,proto3" json:"methods,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DNS01ProviderForm) Reset() {
+	*x = DNS01ProviderForm{}
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DNS01ProviderForm) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DNS01ProviderForm) ProtoMessage() {}
+
+func (x *DNS01ProviderForm) ProtoReflect() protoreflect.Message {
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[12]
 	if x != nil {
-		return x.GoClient
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DNS01ProviderForm.ProtoReflect.Descriptor instead.
+func (*DNS01ProviderForm) Descriptor() ([]byte, []int) {
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *DNS01ProviderForm) GetFields() []*DNS01ProviderField {
+	if x != nil {
+		return x.Fields
+	}
+	return nil
+}
+
+func (x *DNS01ProviderForm) GetMethods() []*DNS01ProviderMethod {
+	if x != nil {
+		return x.Methods
+	}
+	return nil
+}
+
+// DNS01ProviderField is one input of the credential form.
+type DNS01ProviderField struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Config key the value is stored and sent under.
+	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	// Short plain English label, a gettext msgid.
+	Label string `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
+	// Optional plain English sentence, a gettext msgid.
+	Help string `protobuf:"bytes,3,opt,name=help,proto3" json:"help,omitempty"`
+	// "credential" or "setting".
+	Group    string `protobuf:"bytes,4,opt,name=group,proto3" json:"group,omitempty"`
+	Optional bool   `protobuf:"varint,5,opt,name=optional,proto3" json:"optional,omitempty"`
+	// Rendered as a password input.
+	Secret bool `protobuf:"varint,6,opt,name=secret,proto3" json:"secret,omitempty"`
+	// Value used when the field is left empty, shown as a placeholder.
+	Default string `protobuf:"bytes,7,opt,name=default,proto3" json:"default,omitempty"`
+	// "seconds" or empty.
+	Unit string `protobuf:"bytes,8,opt,name=unit,proto3" json:"unit,omitempty"`
+	// Documentation URL for the field.
+	Link          string `protobuf:"bytes,9,opt,name=link,proto3" json:"link,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DNS01ProviderField) Reset() {
+	*x = DNS01ProviderField{}
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DNS01ProviderField) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DNS01ProviderField) ProtoMessage() {}
+
+func (x *DNS01ProviderField) ProtoReflect() protoreflect.Message {
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DNS01ProviderField.ProtoReflect.Descriptor instead.
+func (*DNS01ProviderField) Descriptor() ([]byte, []int) {
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *DNS01ProviderField) GetKey() string {
+	if x != nil {
+		return x.Key
 	}
 	return ""
+}
+
+func (x *DNS01ProviderField) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
+func (x *DNS01ProviderField) GetHelp() string {
+	if x != nil {
+		return x.Help
+	}
+	return ""
+}
+
+func (x *DNS01ProviderField) GetGroup() string {
+	if x != nil {
+		return x.Group
+	}
+	return ""
+}
+
+func (x *DNS01ProviderField) GetOptional() bool {
+	if x != nil {
+		return x.Optional
+	}
+	return false
+}
+
+func (x *DNS01ProviderField) GetSecret() bool {
+	if x != nil {
+		return x.Secret
+	}
+	return false
+}
+
+func (x *DNS01ProviderField) GetDefault() string {
+	if x != nil {
+		return x.Default
+	}
+	return ""
+}
+
+func (x *DNS01ProviderField) GetUnit() string {
+	if x != nil {
+		return x.Unit
+	}
+	return ""
+}
+
+func (x *DNS01ProviderField) GetLink() string {
+	if x != nil {
+		return x.Link
+	}
+	return ""
+}
+
+// DNS01ProviderMethod is one way to sign in to the vendor.
+type DNS01ProviderMethod struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Plain English name, a gettext msgid.
+	Name        string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Recommended bool   `protobuf:"varint,2,opt,name=recommended,proto3" json:"recommended,omitempty"`
+	// Credential field keys this method uses.
+	Fields        []string `protobuf:"bytes,3,rep,name=fields,proto3" json:"fields,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DNS01ProviderMethod) Reset() {
+	*x = DNS01ProviderMethod{}
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DNS01ProviderMethod) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DNS01ProviderMethod) ProtoMessage() {}
+
+func (x *DNS01ProviderMethod) ProtoReflect() protoreflect.Message {
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DNS01ProviderMethod.ProtoReflect.Descriptor instead.
+func (*DNS01ProviderMethod) Descriptor() ([]byte, []int) {
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *DNS01ProviderMethod) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *DNS01ProviderMethod) GetRecommended() bool {
+	if x != nil {
+		return x.Recommended
+	}
+	return false
+}
+
+func (x *DNS01ProviderMethod) GetFields() []string {
+	if x != nil {
+		return x.Fields
+	}
+	return nil
 }
 
 // ManifestHTTP is the metadata block of the http capability.
@@ -1091,7 +1264,7 @@ type ManifestHTTP struct {
 
 func (x *ManifestHTTP) Reset() {
 	*x = ManifestHTTP{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[13]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1103,7 +1276,7 @@ func (x *ManifestHTTP) String() string {
 func (*ManifestHTTP) ProtoMessage() {}
 
 func (x *ManifestHTTP) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[13]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1116,7 +1289,7 @@ func (x *ManifestHTTP) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManifestHTTP.ProtoReflect.Descriptor instead.
 func (*ManifestHTTP) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{13}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ManifestHTTP) GetListen() string {
@@ -1136,7 +1309,7 @@ type ManifestNotify struct {
 
 func (x *ManifestNotify) Reset() {
 	*x = ManifestNotify{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[14]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[16]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1148,7 +1321,7 @@ func (x *ManifestNotify) String() string {
 func (*ManifestNotify) ProtoMessage() {}
 
 func (x *ManifestNotify) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[14]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[16]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1161,7 +1334,7 @@ func (x *ManifestNotify) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManifestNotify.ProtoReflect.Descriptor instead.
 func (*ManifestNotify) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{14}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ManifestNotify) GetChannels() []*NotifyChannel {
@@ -1186,7 +1359,7 @@ type NotifyChannel struct {
 
 func (x *NotifyChannel) Reset() {
 	*x = NotifyChannel{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[15]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[17]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1198,7 +1371,7 @@ func (x *NotifyChannel) String() string {
 func (*NotifyChannel) ProtoMessage() {}
 
 func (x *NotifyChannel) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[15]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[17]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1211,7 +1384,7 @@ func (x *NotifyChannel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NotifyChannel.ProtoReflect.Descriptor instead.
 func (*NotifyChannel) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{15}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *NotifyChannel) GetCode() string {
@@ -1245,7 +1418,7 @@ type ManifestProbe struct {
 
 func (x *ManifestProbe) Reset() {
 	*x = ManifestProbe{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[16]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1257,7 +1430,7 @@ func (x *ManifestProbe) String() string {
 func (*ManifestProbe) ProtoMessage() {}
 
 func (x *ManifestProbe) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[16]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1270,7 +1443,7 @@ func (x *ManifestProbe) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManifestProbe.ProtoReflect.Descriptor instead.
 func (*ManifestProbe) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{16}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ManifestProbe) GetKinds() []*ProbeKind {
@@ -1294,7 +1467,7 @@ type ProbeKind struct {
 
 func (x *ProbeKind) Reset() {
 	*x = ProbeKind{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[17]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[19]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1306,7 +1479,7 @@ func (x *ProbeKind) String() string {
 func (*ProbeKind) ProtoMessage() {}
 
 func (x *ProbeKind) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[17]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[19]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1319,7 +1492,7 @@ func (x *ProbeKind) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProbeKind.ProtoReflect.Descriptor instead.
 func (*ProbeKind) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{17}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ProbeKind) GetCode() string {
@@ -1353,7 +1526,7 @@ type ManifestStorage struct {
 
 func (x *ManifestStorage) Reset() {
 	*x = ManifestStorage{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[18]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1365,7 +1538,7 @@ func (x *ManifestStorage) String() string {
 func (*ManifestStorage) ProtoMessage() {}
 
 func (x *ManifestStorage) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[18]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1378,7 +1551,7 @@ func (x *ManifestStorage) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManifestStorage.ProtoReflect.Descriptor instead.
 func (*ManifestStorage) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{18}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ManifestStorage) GetBackends() []*StorageBackend {
@@ -1402,7 +1575,7 @@ type StorageBackend struct {
 
 func (x *StorageBackend) Reset() {
 	*x = StorageBackend{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[19]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1414,7 +1587,7 @@ func (x *StorageBackend) String() string {
 func (*StorageBackend) ProtoMessage() {}
 
 func (x *StorageBackend) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[19]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1427,7 +1600,7 @@ func (x *StorageBackend) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StorageBackend.ProtoReflect.Descriptor instead.
 func (*StorageBackend) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{19}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *StorageBackend) GetCode() string {
@@ -1461,7 +1634,7 @@ type ManifestDeploy struct {
 
 func (x *ManifestDeploy) Reset() {
 	*x = ManifestDeploy{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[20]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1473,7 +1646,7 @@ func (x *ManifestDeploy) String() string {
 func (*ManifestDeploy) ProtoMessage() {}
 
 func (x *ManifestDeploy) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[20]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1486,7 +1659,7 @@ func (x *ManifestDeploy) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManifestDeploy.ProtoReflect.Descriptor instead.
 func (*ManifestDeploy) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{20}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *ManifestDeploy) GetTargets() []*DeployTarget {
@@ -1511,7 +1684,7 @@ type DeployTarget struct {
 
 func (x *DeployTarget) Reset() {
 	*x = DeployTarget{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[21]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1523,7 +1696,7 @@ func (x *DeployTarget) String() string {
 func (*DeployTarget) ProtoMessage() {}
 
 func (x *DeployTarget) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[21]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1536,7 +1709,7 @@ func (x *DeployTarget) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeployTarget.ProtoReflect.Descriptor instead.
 func (*DeployTarget) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{21}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *DeployTarget) GetCode() string {
@@ -1571,7 +1744,7 @@ type ManifestBlocklist struct {
 
 func (x *ManifestBlocklist) Reset() {
 	*x = ManifestBlocklist{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[22]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1583,7 +1756,7 @@ func (x *ManifestBlocklist) String() string {
 func (*ManifestBlocklist) ProtoMessage() {}
 
 func (x *ManifestBlocklist) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[22]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1596,7 +1769,7 @@ func (x *ManifestBlocklist) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManifestBlocklist.ProtoReflect.Descriptor instead.
 func (*ManifestBlocklist) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{22}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *ManifestBlocklist) GetSources() []*BlocklistSource {
@@ -1625,7 +1798,7 @@ type BlocklistSource struct {
 
 func (x *BlocklistSource) Reset() {
 	*x = BlocklistSource{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[23]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1637,7 +1810,7 @@ func (x *BlocklistSource) String() string {
 func (*BlocklistSource) ProtoMessage() {}
 
 func (x *BlocklistSource) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[23]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1650,7 +1823,7 @@ func (x *BlocklistSource) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BlocklistSource.ProtoReflect.Descriptor instead.
 func (*BlocklistSource) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{23}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *BlocklistSource) GetCode() string {
@@ -1692,7 +1865,7 @@ type ManifestDiscovery struct {
 
 func (x *ManifestDiscovery) Reset() {
 	*x = ManifestDiscovery{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[24]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1704,7 +1877,7 @@ func (x *ManifestDiscovery) String() string {
 func (*ManifestDiscovery) ProtoMessage() {}
 
 func (x *ManifestDiscovery) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[24]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1717,7 +1890,7 @@ func (x *ManifestDiscovery) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManifestDiscovery.ProtoReflect.Descriptor instead.
 func (*ManifestDiscovery) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{24}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ManifestDiscovery) GetProviders() []*DiscoveryProvider {
@@ -1741,7 +1914,7 @@ type DiscoveryProvider struct {
 
 func (x *DiscoveryProvider) Reset() {
 	*x = DiscoveryProvider{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[25]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1753,7 +1926,7 @@ func (x *DiscoveryProvider) String() string {
 func (*DiscoveryProvider) ProtoMessage() {}
 
 func (x *DiscoveryProvider) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[25]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1766,7 +1939,7 @@ func (x *DiscoveryProvider) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DiscoveryProvider.ProtoReflect.Descriptor instead.
 func (*DiscoveryProvider) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{25}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *DiscoveryProvider) GetCode() string {
@@ -1808,7 +1981,7 @@ type ManifestLogSink struct {
 
 func (x *ManifestLogSink) Reset() {
 	*x = ManifestLogSink{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[26]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1820,7 +1993,7 @@ func (x *ManifestLogSink) String() string {
 func (*ManifestLogSink) ProtoMessage() {}
 
 func (x *ManifestLogSink) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[26]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1833,7 +2006,7 @@ func (x *ManifestLogSink) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManifestLogSink.ProtoReflect.Descriptor instead.
 func (*ManifestLogSink) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{26}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ManifestLogSink) GetBatchSize() int32 {
@@ -1869,7 +2042,7 @@ type ConfigurationSchema struct {
 
 func (x *ConfigurationSchema) Reset() {
 	*x = ConfigurationSchema{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[27]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1881,7 +2054,7 @@ func (x *ConfigurationSchema) String() string {
 func (*ConfigurationSchema) ProtoMessage() {}
 
 func (x *ConfigurationSchema) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[27]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1894,7 +2067,7 @@ func (x *ConfigurationSchema) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigurationSchema.ProtoReflect.Descriptor instead.
 func (*ConfigurationSchema) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{27}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *ConfigurationSchema) GetFields() []*ConfigurationField {
@@ -1922,7 +2095,7 @@ type ConfigurationField struct {
 
 func (x *ConfigurationField) Reset() {
 	*x = ConfigurationField{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[28]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1934,7 +2107,7 @@ func (x *ConfigurationField) String() string {
 func (*ConfigurationField) ProtoMessage() {}
 
 func (x *ConfigurationField) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[28]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1947,7 +2120,7 @@ func (x *ConfigurationField) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ConfigurationField.ProtoReflect.Descriptor instead.
 func (*ConfigurationField) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{28}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ConfigurationField) GetKey() string {
@@ -2002,7 +2175,7 @@ type ManifestMCP struct {
 
 func (x *ManifestMCP) Reset() {
 	*x = ManifestMCP{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[29]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2014,7 +2187,7 @@ func (x *ManifestMCP) String() string {
 func (*ManifestMCP) ProtoMessage() {}
 
 func (x *ManifestMCP) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[29]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2027,7 +2200,7 @@ func (x *ManifestMCP) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ManifestMCP.ProtoReflect.Descriptor instead.
 func (*ManifestMCP) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{29}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ManifestMCP) GetTools() []*MCPTool {
@@ -2052,7 +2225,7 @@ type MCPTool struct {
 
 func (x *MCPTool) Reset() {
 	*x = MCPTool{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[30]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2064,7 +2237,7 @@ func (x *MCPTool) String() string {
 func (*MCPTool) ProtoMessage() {}
 
 func (x *MCPTool) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[30]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2077,7 +2250,7 @@ func (x *MCPTool) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MCPTool.ProtoReflect.Descriptor instead.
 func (*MCPTool) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{30}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *MCPTool) GetName() string {
@@ -2113,7 +2286,7 @@ type SettingsSchema struct {
 
 func (x *SettingsSchema) Reset() {
 	*x = SettingsSchema{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[31]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2125,7 +2298,7 @@ func (x *SettingsSchema) String() string {
 func (*SettingsSchema) ProtoMessage() {}
 
 func (x *SettingsSchema) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[31]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2138,7 +2311,7 @@ func (x *SettingsSchema) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SettingsSchema.ProtoReflect.Descriptor instead.
 func (*SettingsSchema) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{31}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *SettingsSchema) GetHeader() string {
@@ -2181,7 +2354,7 @@ type SettingsField struct {
 
 func (x *SettingsField) Reset() {
 	*x = SettingsField{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[32]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2193,7 +2366,7 @@ func (x *SettingsField) String() string {
 func (*SettingsField) ProtoMessage() {}
 
 func (x *SettingsField) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[32]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2206,7 +2379,7 @@ func (x *SettingsField) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SettingsField.ProtoReflect.Descriptor instead.
 func (*SettingsField) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{32}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *SettingsField) GetKey() string {
@@ -2269,7 +2442,7 @@ type SettingsOption struct {
 
 func (x *SettingsOption) Reset() {
 	*x = SettingsOption{}
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[33]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2281,7 +2454,7 @@ func (x *SettingsOption) String() string {
 func (*SettingsOption) ProtoMessage() {}
 
 func (x *SettingsOption) ProtoReflect() protoreflect.Message {
-	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[33]
+	mi := &file_nginxui_plugin_v1_manifest_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2294,7 +2467,7 @@ func (x *SettingsOption) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SettingsOption.ProtoReflect.Descriptor instead.
 func (*SettingsOption) Descriptor() ([]byte, []int) {
-	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{33}
+	return file_nginxui_plugin_v1_manifest_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *SettingsOption) GetValue() string {
@@ -2398,28 +2571,33 @@ const file_nginxui_plugin_v1_manifest_proto_rawDesc = "" +
 	"\bschedule\x18\x02 \x01(\tR\bschedule\x12\x16\n" +
 	"\x06method\x18\x03 \x01(\tR\x06method\"O\n" +
 	"\rManifestDNS01\x12>\n" +
-	"\tproviders\x18\x01 \x03(\v2 .nginxui.plugin.v1.DNS01ProviderR\tproviders\"\xbc\x02\n" +
+	"\tproviders\x18\x01 \x03(\v2 .nginxui.plugin.v1.DNS01ProviderR\tproviders\"\xbd\x02\n" +
 	"\rDNS01Provider\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
-	"\x04code\x18\x02 \x01(\tR\x04code\x12L\n" +
-	"\rconfiguration\x18\x03 \x01(\v2&.nginxui.plugin.v1.DNS01ProviderConfigR\rconfiguration\x12;\n" +
+	"\x04code\x18\x02 \x01(\tR\x04code\x12;\n" +
 	"\x05links\x18\x04 \x01(\v2%.nginxui.plugin.v1.DNS01ProviderLinksR\x05links\x12>\n" +
 	"\x1bpropagation_timeout_seconds\x18\x05 \x01(\x05R\x19propagationTimeoutSeconds\x128\n" +
-	"\x18polling_interval_seconds\x18\x06 \x01(\x05R\x16pollingIntervalSeconds\"\xc7\x02\n" +
-	"\x13DNS01ProviderConfig\x12Y\n" +
-	"\vcredentials\x18\x01 \x03(\v27.nginxui.plugin.v1.DNS01ProviderConfig.CredentialsEntryR\vcredentials\x12V\n" +
-	"\n" +
-	"additional\x18\x02 \x03(\v26.nginxui.plugin.v1.DNS01ProviderConfig.AdditionalEntryR\n" +
-	"additional\x1a>\n" +
-	"\x10CredentialsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a=\n" +
-	"\x0fAdditionalEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"C\n" +
+	"\x18polling_interval_seconds\x18\x06 \x01(\x05R\x16pollingIntervalSeconds\x128\n" +
+	"\x04form\x18\a \x01(\v2$.nginxui.plugin.v1.DNS01ProviderFormR\x04formJ\x04\b\x03\x10\x04R\rconfiguration\"7\n" +
 	"\x12DNS01ProviderLinks\x12\x10\n" +
-	"\x03api\x18\x01 \x01(\tR\x03api\x12\x1b\n" +
-	"\tgo_client\x18\x02 \x01(\tR\bgoClient\"&\n" +
+	"\x03api\x18\x01 \x01(\tR\x03apiJ\x04\b\x02\x10\x03R\tgo_client\"\x94\x01\n" +
+	"\x11DNS01ProviderForm\x12=\n" +
+	"\x06fields\x18\x01 \x03(\v2%.nginxui.plugin.v1.DNS01ProviderFieldR\x06fields\x12@\n" +
+	"\amethods\x18\x02 \x03(\v2&.nginxui.plugin.v1.DNS01ProviderMethodR\amethods\"\xdc\x01\n" +
+	"\x12DNS01ProviderField\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05label\x18\x02 \x01(\tR\x05label\x12\x12\n" +
+	"\x04help\x18\x03 \x01(\tR\x04help\x12\x14\n" +
+	"\x05group\x18\x04 \x01(\tR\x05group\x12\x1a\n" +
+	"\boptional\x18\x05 \x01(\bR\boptional\x12\x16\n" +
+	"\x06secret\x18\x06 \x01(\bR\x06secret\x12\x18\n" +
+	"\adefault\x18\a \x01(\tR\adefault\x12\x12\n" +
+	"\x04unit\x18\b \x01(\tR\x04unit\x12\x12\n" +
+	"\x04link\x18\t \x01(\tR\x04link\"c\n" +
+	"\x13DNS01ProviderMethod\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
+	"\vrecommended\x18\x02 \x01(\bR\vrecommended\x12\x16\n" +
+	"\x06fields\x18\x03 \x03(\tR\x06fields\"&\n" +
 	"\fManifestHTTP\x12\x16\n" +
 	"\x06listen\x18\x01 \x01(\tR\x06listen\"N\n" +
 	"\x0eManifestNotify\x12<\n" +
@@ -2520,35 +2698,35 @@ var file_nginxui_plugin_v1_manifest_proto_goTypes = []any{
 	(*ManifestCron)(nil),        // 8: nginxui.plugin.v1.ManifestCron
 	(*ManifestDNS01)(nil),       // 9: nginxui.plugin.v1.ManifestDNS01
 	(*DNS01Provider)(nil),       // 10: nginxui.plugin.v1.DNS01Provider
-	(*DNS01ProviderConfig)(nil), // 11: nginxui.plugin.v1.DNS01ProviderConfig
-	(*DNS01ProviderLinks)(nil),  // 12: nginxui.plugin.v1.DNS01ProviderLinks
-	(*ManifestHTTP)(nil),        // 13: nginxui.plugin.v1.ManifestHTTP
-	(*ManifestNotify)(nil),      // 14: nginxui.plugin.v1.ManifestNotify
-	(*NotifyChannel)(nil),       // 15: nginxui.plugin.v1.NotifyChannel
-	(*ManifestProbe)(nil),       // 16: nginxui.plugin.v1.ManifestProbe
-	(*ProbeKind)(nil),           // 17: nginxui.plugin.v1.ProbeKind
-	(*ManifestStorage)(nil),     // 18: nginxui.plugin.v1.ManifestStorage
-	(*StorageBackend)(nil),      // 19: nginxui.plugin.v1.StorageBackend
-	(*ManifestDeploy)(nil),      // 20: nginxui.plugin.v1.ManifestDeploy
-	(*DeployTarget)(nil),        // 21: nginxui.plugin.v1.DeployTarget
-	(*ManifestBlocklist)(nil),   // 22: nginxui.plugin.v1.ManifestBlocklist
-	(*BlocklistSource)(nil),     // 23: nginxui.plugin.v1.BlocklistSource
-	(*ManifestDiscovery)(nil),   // 24: nginxui.plugin.v1.ManifestDiscovery
-	(*DiscoveryProvider)(nil),   // 25: nginxui.plugin.v1.DiscoveryProvider
-	(*ManifestLogSink)(nil),     // 26: nginxui.plugin.v1.ManifestLogSink
-	(*ConfigurationSchema)(nil), // 27: nginxui.plugin.v1.ConfigurationSchema
-	(*ConfigurationField)(nil),  // 28: nginxui.plugin.v1.ConfigurationField
-	(*ManifestMCP)(nil),         // 29: nginxui.plugin.v1.ManifestMCP
-	(*MCPTool)(nil),             // 30: nginxui.plugin.v1.MCPTool
-	(*SettingsSchema)(nil),      // 31: nginxui.plugin.v1.SettingsSchema
-	(*SettingsField)(nil),       // 32: nginxui.plugin.v1.SettingsField
-	(*SettingsOption)(nil),      // 33: nginxui.plugin.v1.SettingsOption
-	nil,                         // 34: nginxui.plugin.v1.Manifest.I18nEntry
-	nil,                         // 35: nginxui.plugin.v1.ManifestServer.ExecutablesEntry
-	nil,                         // 36: nginxui.plugin.v1.ManifestWebapp.SharedEntry
-	nil,                         // 37: nginxui.plugin.v1.ManifestPage.TitleEntry
-	nil,                         // 38: nginxui.plugin.v1.DNS01ProviderConfig.CredentialsEntry
-	nil,                         // 39: nginxui.plugin.v1.DNS01ProviderConfig.AdditionalEntry
+	(*DNS01ProviderLinks)(nil),  // 11: nginxui.plugin.v1.DNS01ProviderLinks
+	(*DNS01ProviderForm)(nil),   // 12: nginxui.plugin.v1.DNS01ProviderForm
+	(*DNS01ProviderField)(nil),  // 13: nginxui.plugin.v1.DNS01ProviderField
+	(*DNS01ProviderMethod)(nil), // 14: nginxui.plugin.v1.DNS01ProviderMethod
+	(*ManifestHTTP)(nil),        // 15: nginxui.plugin.v1.ManifestHTTP
+	(*ManifestNotify)(nil),      // 16: nginxui.plugin.v1.ManifestNotify
+	(*NotifyChannel)(nil),       // 17: nginxui.plugin.v1.NotifyChannel
+	(*ManifestProbe)(nil),       // 18: nginxui.plugin.v1.ManifestProbe
+	(*ProbeKind)(nil),           // 19: nginxui.plugin.v1.ProbeKind
+	(*ManifestStorage)(nil),     // 20: nginxui.plugin.v1.ManifestStorage
+	(*StorageBackend)(nil),      // 21: nginxui.plugin.v1.StorageBackend
+	(*ManifestDeploy)(nil),      // 22: nginxui.plugin.v1.ManifestDeploy
+	(*DeployTarget)(nil),        // 23: nginxui.plugin.v1.DeployTarget
+	(*ManifestBlocklist)(nil),   // 24: nginxui.plugin.v1.ManifestBlocklist
+	(*BlocklistSource)(nil),     // 25: nginxui.plugin.v1.BlocklistSource
+	(*ManifestDiscovery)(nil),   // 26: nginxui.plugin.v1.ManifestDiscovery
+	(*DiscoveryProvider)(nil),   // 27: nginxui.plugin.v1.DiscoveryProvider
+	(*ManifestLogSink)(nil),     // 28: nginxui.plugin.v1.ManifestLogSink
+	(*ConfigurationSchema)(nil), // 29: nginxui.plugin.v1.ConfigurationSchema
+	(*ConfigurationField)(nil),  // 30: nginxui.plugin.v1.ConfigurationField
+	(*ManifestMCP)(nil),         // 31: nginxui.plugin.v1.ManifestMCP
+	(*MCPTool)(nil),             // 32: nginxui.plugin.v1.MCPTool
+	(*SettingsSchema)(nil),      // 33: nginxui.plugin.v1.SettingsSchema
+	(*SettingsField)(nil),       // 34: nginxui.plugin.v1.SettingsField
+	(*SettingsOption)(nil),      // 35: nginxui.plugin.v1.SettingsOption
+	nil,                         // 36: nginxui.plugin.v1.Manifest.I18nEntry
+	nil,                         // 37: nginxui.plugin.v1.ManifestServer.ExecutablesEntry
+	nil,                         // 38: nginxui.plugin.v1.ManifestWebapp.SharedEntry
+	nil,                         // 39: nginxui.plugin.v1.ManifestPage.TitleEntry
 	(*structpb.Struct)(nil),     // 40: google.protobuf.Struct
 	(*structpb.Value)(nil),      // 41: google.protobuf.Value
 }
@@ -2559,45 +2737,45 @@ var file_nginxui_plugin_v1_manifest_proto_depIdxs = []int32{
 	7,  // 3: nginxui.plugin.v1.Manifest.requires:type_name -> nginxui.plugin.v1.ManifestRequirement
 	8,  // 4: nginxui.plugin.v1.Manifest.cron:type_name -> nginxui.plugin.v1.ManifestCron
 	9,  // 5: nginxui.plugin.v1.Manifest.dns01:type_name -> nginxui.plugin.v1.ManifestDNS01
-	13, // 6: nginxui.plugin.v1.Manifest.http:type_name -> nginxui.plugin.v1.ManifestHTTP
-	31, // 7: nginxui.plugin.v1.Manifest.settings_schema:type_name -> nginxui.plugin.v1.SettingsSchema
-	14, // 8: nginxui.plugin.v1.Manifest.notify:type_name -> nginxui.plugin.v1.ManifestNotify
-	16, // 9: nginxui.plugin.v1.Manifest.probe:type_name -> nginxui.plugin.v1.ManifestProbe
-	29, // 10: nginxui.plugin.v1.Manifest.mcp:type_name -> nginxui.plugin.v1.ManifestMCP
-	18, // 11: nginxui.plugin.v1.Manifest.storage:type_name -> nginxui.plugin.v1.ManifestStorage
-	20, // 12: nginxui.plugin.v1.Manifest.deploy:type_name -> nginxui.plugin.v1.ManifestDeploy
-	22, // 13: nginxui.plugin.v1.Manifest.blocklist:type_name -> nginxui.plugin.v1.ManifestBlocklist
-	24, // 14: nginxui.plugin.v1.Manifest.discovery:type_name -> nginxui.plugin.v1.ManifestDiscovery
-	26, // 15: nginxui.plugin.v1.Manifest.log_sink:type_name -> nginxui.plugin.v1.ManifestLogSink
-	34, // 16: nginxui.plugin.v1.Manifest.i18n:type_name -> nginxui.plugin.v1.Manifest.I18nEntry
-	35, // 17: nginxui.plugin.v1.ManifestServer.executables:type_name -> nginxui.plugin.v1.ManifestServer.ExecutablesEntry
+	15, // 6: nginxui.plugin.v1.Manifest.http:type_name -> nginxui.plugin.v1.ManifestHTTP
+	33, // 7: nginxui.plugin.v1.Manifest.settings_schema:type_name -> nginxui.plugin.v1.SettingsSchema
+	16, // 8: nginxui.plugin.v1.Manifest.notify:type_name -> nginxui.plugin.v1.ManifestNotify
+	18, // 9: nginxui.plugin.v1.Manifest.probe:type_name -> nginxui.plugin.v1.ManifestProbe
+	31, // 10: nginxui.plugin.v1.Manifest.mcp:type_name -> nginxui.plugin.v1.ManifestMCP
+	20, // 11: nginxui.plugin.v1.Manifest.storage:type_name -> nginxui.plugin.v1.ManifestStorage
+	22, // 12: nginxui.plugin.v1.Manifest.deploy:type_name -> nginxui.plugin.v1.ManifestDeploy
+	24, // 13: nginxui.plugin.v1.Manifest.blocklist:type_name -> nginxui.plugin.v1.ManifestBlocklist
+	26, // 14: nginxui.plugin.v1.Manifest.discovery:type_name -> nginxui.plugin.v1.ManifestDiscovery
+	28, // 15: nginxui.plugin.v1.Manifest.log_sink:type_name -> nginxui.plugin.v1.ManifestLogSink
+	36, // 16: nginxui.plugin.v1.Manifest.i18n:type_name -> nginxui.plugin.v1.Manifest.I18nEntry
+	37, // 17: nginxui.plugin.v1.ManifestServer.executables:type_name -> nginxui.plugin.v1.ManifestServer.ExecutablesEntry
 	3,  // 18: nginxui.plugin.v1.ManifestServer.resources:type_name -> nginxui.plugin.v1.ManifestResources
-	36, // 19: nginxui.plugin.v1.ManifestWebapp.shared:type_name -> nginxui.plugin.v1.ManifestWebapp.SharedEntry
+	38, // 19: nginxui.plugin.v1.ManifestWebapp.shared:type_name -> nginxui.plugin.v1.ManifestWebapp.SharedEntry
 	5,  // 20: nginxui.plugin.v1.ManifestWebapp.pages:type_name -> nginxui.plugin.v1.ManifestPage
-	37, // 21: nginxui.plugin.v1.ManifestPage.title:type_name -> nginxui.plugin.v1.ManifestPage.TitleEntry
+	39, // 21: nginxui.plugin.v1.ManifestPage.title:type_name -> nginxui.plugin.v1.ManifestPage.TitleEntry
 	10, // 22: nginxui.plugin.v1.ManifestDNS01.providers:type_name -> nginxui.plugin.v1.DNS01Provider
-	11, // 23: nginxui.plugin.v1.DNS01Provider.configuration:type_name -> nginxui.plugin.v1.DNS01ProviderConfig
-	12, // 24: nginxui.plugin.v1.DNS01Provider.links:type_name -> nginxui.plugin.v1.DNS01ProviderLinks
-	38, // 25: nginxui.plugin.v1.DNS01ProviderConfig.credentials:type_name -> nginxui.plugin.v1.DNS01ProviderConfig.CredentialsEntry
-	39, // 26: nginxui.plugin.v1.DNS01ProviderConfig.additional:type_name -> nginxui.plugin.v1.DNS01ProviderConfig.AdditionalEntry
-	15, // 27: nginxui.plugin.v1.ManifestNotify.channels:type_name -> nginxui.plugin.v1.NotifyChannel
-	27, // 28: nginxui.plugin.v1.NotifyChannel.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	17, // 29: nginxui.plugin.v1.ManifestProbe.kinds:type_name -> nginxui.plugin.v1.ProbeKind
-	27, // 30: nginxui.plugin.v1.ProbeKind.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	19, // 31: nginxui.plugin.v1.ManifestStorage.backends:type_name -> nginxui.plugin.v1.StorageBackend
-	27, // 32: nginxui.plugin.v1.StorageBackend.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	21, // 33: nginxui.plugin.v1.ManifestDeploy.targets:type_name -> nginxui.plugin.v1.DeployTarget
-	27, // 34: nginxui.plugin.v1.DeployTarget.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	23, // 35: nginxui.plugin.v1.ManifestBlocklist.sources:type_name -> nginxui.plugin.v1.BlocklistSource
-	27, // 36: nginxui.plugin.v1.BlocklistSource.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	25, // 37: nginxui.plugin.v1.ManifestDiscovery.providers:type_name -> nginxui.plugin.v1.DiscoveryProvider
-	27, // 38: nginxui.plugin.v1.DiscoveryProvider.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	28, // 39: nginxui.plugin.v1.ConfigurationSchema.fields:type_name -> nginxui.plugin.v1.ConfigurationField
-	30, // 40: nginxui.plugin.v1.ManifestMCP.tools:type_name -> nginxui.plugin.v1.MCPTool
+	11, // 23: nginxui.plugin.v1.DNS01Provider.links:type_name -> nginxui.plugin.v1.DNS01ProviderLinks
+	12, // 24: nginxui.plugin.v1.DNS01Provider.form:type_name -> nginxui.plugin.v1.DNS01ProviderForm
+	13, // 25: nginxui.plugin.v1.DNS01ProviderForm.fields:type_name -> nginxui.plugin.v1.DNS01ProviderField
+	14, // 26: nginxui.plugin.v1.DNS01ProviderForm.methods:type_name -> nginxui.plugin.v1.DNS01ProviderMethod
+	17, // 27: nginxui.plugin.v1.ManifestNotify.channels:type_name -> nginxui.plugin.v1.NotifyChannel
+	29, // 28: nginxui.plugin.v1.NotifyChannel.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	19, // 29: nginxui.plugin.v1.ManifestProbe.kinds:type_name -> nginxui.plugin.v1.ProbeKind
+	29, // 30: nginxui.plugin.v1.ProbeKind.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	21, // 31: nginxui.plugin.v1.ManifestStorage.backends:type_name -> nginxui.plugin.v1.StorageBackend
+	29, // 32: nginxui.plugin.v1.StorageBackend.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	23, // 33: nginxui.plugin.v1.ManifestDeploy.targets:type_name -> nginxui.plugin.v1.DeployTarget
+	29, // 34: nginxui.plugin.v1.DeployTarget.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	25, // 35: nginxui.plugin.v1.ManifestBlocklist.sources:type_name -> nginxui.plugin.v1.BlocklistSource
+	29, // 36: nginxui.plugin.v1.BlocklistSource.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	27, // 37: nginxui.plugin.v1.ManifestDiscovery.providers:type_name -> nginxui.plugin.v1.DiscoveryProvider
+	29, // 38: nginxui.plugin.v1.DiscoveryProvider.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	30, // 39: nginxui.plugin.v1.ConfigurationSchema.fields:type_name -> nginxui.plugin.v1.ConfigurationField
+	32, // 40: nginxui.plugin.v1.ManifestMCP.tools:type_name -> nginxui.plugin.v1.MCPTool
 	40, // 41: nginxui.plugin.v1.MCPTool.input_schema:type_name -> google.protobuf.Struct
-	32, // 42: nginxui.plugin.v1.SettingsSchema.settings:type_name -> nginxui.plugin.v1.SettingsField
+	34, // 42: nginxui.plugin.v1.SettingsSchema.settings:type_name -> nginxui.plugin.v1.SettingsField
 	41, // 43: nginxui.plugin.v1.SettingsField.default:type_name -> google.protobuf.Value
-	33, // 44: nginxui.plugin.v1.SettingsField.options:type_name -> nginxui.plugin.v1.SettingsOption
+	35, // 44: nginxui.plugin.v1.SettingsField.options:type_name -> nginxui.plugin.v1.SettingsOption
 	1,  // 45: nginxui.plugin.v1.Manifest.I18nEntry.value:type_name -> nginxui.plugin.v1.ManifestI18n
 	46, // [46:46] is the sub-list for method output_type
 	46, // [46:46] is the sub-list for method input_type

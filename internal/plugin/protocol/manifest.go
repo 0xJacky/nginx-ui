@@ -115,24 +115,61 @@ type ManifestDNS01 struct {
 
 // DNS01Provider describes one vendor a plugin can solve DNS-01 for.
 type DNS01Provider struct {
-	Name                      string               `json:"name"`
-	Code                      string               `json:"code"`
-	Configuration             *DNS01ProviderConfig `json:"configuration,omitempty"`
-	Links                     *DNS01ProviderLinks  `json:"links,omitempty"`
-	PropagationTimeoutSeconds int                  `json:"propagation_timeout_seconds,omitempty"`
-	PollingIntervalSeconds    int                  `json:"polling_interval_seconds,omitempty"`
+	Name                      string              `json:"name"`
+	Code                      string              `json:"code"`
+	Links                     *DNS01ProviderLinks `json:"links,omitempty"`
+	PropagationTimeoutSeconds int                 `json:"propagation_timeout_seconds,omitempty"`
+	PollingIntervalSeconds    int                 `json:"polling_interval_seconds,omitempty"`
+	// Form is the credential form. Required.
+	Form *DNS01ProviderForm `json:"form"`
 }
 
-// DNS01ProviderConfig lists credential and additional fields with help text.
-type DNS01ProviderConfig struct {
-	Credentials map[string]string `json:"credentials,omitempty"`
-	Additional  map[string]string `json:"additional,omitempty"`
+// DNS01ProviderForm is the structured credential form of one provider.
+type DNS01ProviderForm struct {
+	// Fields are in display order.
+	Fields []DNS01ProviderField `json:"fields,omitempty"`
+	// Methods lists the ways to sign in when there is more than one.
+	Methods []DNS01ProviderMethod `json:"methods,omitempty"`
+}
+
+// Field groups of a DNS01ProviderField.
+const (
+	DNS01FieldGroupCredential = "credential"
+	DNS01FieldGroupSetting    = "setting"
+)
+
+// DNS01FieldUnitSeconds marks a field whose value is a number of seconds.
+const DNS01FieldUnitSeconds = "seconds"
+
+// DNS01ProviderField is one input of the credential form.
+type DNS01ProviderField struct {
+	// Key is the stored configuration key.
+	Key string `json:"key"`
+	// Label and Help are English msgids translated by the host.
+	Label string `json:"label,omitempty"`
+	Help  string `json:"help,omitempty"`
+	// Group is "credential" or "setting".
+	Group    string `json:"group,omitempty"`
+	Optional bool   `json:"optional,omitempty"`
+	Secret   bool   `json:"secret,omitempty"`
+	// Default is shown as the placeholder.
+	Default string `json:"default,omitempty"`
+	// Unit is "seconds" or empty.
+	Unit string `json:"unit,omitempty"`
+	// Link points at documentation about the field.
+	Link string `json:"link,omitempty"`
+}
+
+// DNS01ProviderMethod is one way to sign in, naming the credential fields it uses.
+type DNS01ProviderMethod struct {
+	Name        string   `json:"name"`
+	Recommended bool     `json:"recommended,omitempty"`
+	Fields      []string `json:"fields,omitempty"`
 }
 
 // DNS01ProviderLinks points at vendor documentation.
 type DNS01ProviderLinks struct {
-	API      string `json:"api,omitempty"`
-	GoClient string `json:"go_client,omitempty"`
+	API string `json:"api,omitempty"`
 }
 
 // ManifestHTTP is the metadata block for the http capability.

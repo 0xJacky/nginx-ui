@@ -17,9 +17,6 @@ const data = defineModel<DnsCredential>('data', { required: true })
         <p class="m-0">
           {{ $gettext('Please fill in the API authentication credentials provided by your DNS provider.') }}
         </p>
-        <p class="m-0 mt-1">
-          {{ $gettext('Please note that the unit of time configurations below are all in seconds.') }}
-        </p>
       </template>
     </AAlert>
 

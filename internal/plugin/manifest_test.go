@@ -32,8 +32,8 @@ func validManifest() *protocol.Manifest {
 		},
 		DNS01: &protocol.ManifestDNS01{
 			Providers: []protocol.DNS01Provider{
-				{Name: "Cloudflare", Code: "cloudflare"},
-				{Name: "Cloudflare DNS", Code: "cf-dns"},
+				{Name: "Cloudflare", Code: "cloudflare", Form: &protocol.DNS01ProviderForm{Fields: []protocol.DNS01ProviderField{{Key: "CF_DNS_API_TOKEN", Label: "API token", Group: "credential", Secret: true}}}},
+				{Name: "Cloudflare DNS", Code: "cf-dns", Form: &protocol.DNS01ProviderForm{Fields: []protocol.DNS01ProviderField{{Key: "CF_DNS_API_TOKEN", Label: "API token", Group: "credential", Secret: true}}}},
 			},
 		},
 		SettingsSchema: &protocol.SettingsSchema{

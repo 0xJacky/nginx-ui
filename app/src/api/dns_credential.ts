@@ -1,4 +1,4 @@
-import type { DNSProvider } from '@/api/auto_cert'
+import type { DNSCredentialConfiguration, DNSProvider } from '@/api/auto_cert'
 import type { ModelBase } from '@/api/curd'
 import { useCurdApi } from '@uozi-admin/request'
 
@@ -8,7 +8,7 @@ export interface DnsCredential extends ModelBase {
   provider: string
   provider_code?: string
   code: string
-  configuration: DNSProvider['configuration']
+  configuration: DNSCredentialConfiguration
 }
 
 const baseUrl = '/dns_credentials'

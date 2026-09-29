@@ -59,7 +59,7 @@ func TestBuiltinProvidersAreRegistered(t *testing.T) {
 		if !p.RecordManagement || p.DNS01 {
 			t.Fatalf("builtin provider %s flags = (record %v, dns01 %v), want (true, false)", p.Code, p.RecordManagement, p.DNS01)
 		}
-		if p.Configuration != nil || p.Links != nil {
+		if p.Form != nil || p.Links != nil {
 			t.Fatalf("builtin provider %s still carries its schema in the list", p.Code)
 		}
 	}
@@ -73,27 +73,32 @@ func TestBuiltinProviderSchemaIsNotShared(t *testing.T) {
 	if !ok {
 		t.Fatal("cloudflare provider is missing")
 	}
-	first.Configuration.Credentials["CF_API_KEY"] = "mutated"
+	first.Form.Fields[0].Label = "mutated"
+	first.Form.Methods[0].Fields[0] = "mutated"
 
 	second, _ := GetProvider("cloudflare")
-	if second.Configuration.Credentials["CF_API_KEY"] == "mutated" {
+	if second.Form.Fields[0].Label == "mutated" || second.Form.Methods[0].Fields[0] == "mutated" {
 		t.Fatal("the builtin schema is shared between lookups")
 	}
 }
 
 func TestGetProvidersListMergesByCode(t *testing.T) {
 	builtin := &fakeSource{providers: []ProviderInfo{{
-		Config:           Config{Name: "Builtin Cloudflare", Code: "cloudflare", Configuration: &Configuration{Credentials: map[string]string{"CF_API_KEY": "from builtin"}}},
+		Name:             "Builtin Cloudflare",
+		Code:             "cloudflare",
+		Form:             &Form{Fields: []FormField{{Key: "CF_API_KEY", Label: "from builtin"}}},
 		RecordManagement: true,
 	}}}
 	pluginSource := &fakeSource{providers: []ProviderInfo{
 		{
-			Config:   Config{Name: "Cloudflare", Code: "cloudflare", Configuration: &Configuration{Credentials: map[string]string{"CF_DNS_API_TOKEN": "from plugin"}}},
+			Name:     "Cloudflare",
+			Code:     "cloudflare",
+			Form:     &Form{Fields: []FormField{{Key: "CF_DNS_API_TOKEN", Label: "from plugin"}}},
 			PluginID: "com.nginxui.dns01",
 			DNS01:    true,
 		},
 		{
-			Config:   Config{Name: "ACME DNS", Code: "acmedns"},
+			Name: "ACME DNS", Code: "acmedns",
 			PluginID: "com.nginxui.dns01",
 			DNS01:    true,
 		},
@@ -123,8 +128,8 @@ func TestGetProvidersListMergesByCode(t *testing.T) {
 	if !ok {
 		t.Fatal("GetProvider(cloudflare) = false")
 	}
-	if full.Configuration == nil || full.Configuration.Credentials["CF_DNS_API_TOKEN"] != "from plugin" {
-		t.Fatalf("the plugin schema did not win: %#v", full.Configuration)
+	if full.Form == nil || full.Form.Fields[0].Label != "from plugin" {
+		t.Fatalf("the plugin schema did not win: %#v", full.Form)
 	}
 	if !HasDNS01Providers() {
 		t.Fatal("HasDNS01Providers with a plugin source = false, want true")
@@ -144,11 +149,11 @@ func TestGetProvidersListSortedByName(t *testing.T) {
 
 func TestNewChallengeProviderDispatchesToTheOwner(t *testing.T) {
 	builtin := &fakeSource{providers: []ProviderInfo{{
-		Config:           Config{Name: "Cloudflare", Code: "cloudflare"},
+		Name: "Cloudflare", Code: "cloudflare",
 		RecordManagement: true,
 	}}}
 	owner := &fakeSource{
-		providers: []ProviderInfo{{Config: Config{Name: "Cloudflare", Code: "cloudflare"}, PluginID: "com.nginxui.dns01", DNS01: true}},
+		providers: []ProviderInfo{{Name: "Cloudflare", Code: "cloudflare", PluginID: "com.nginxui.dns01", DNS01: true}},
 		provider:  stubProvider{},
 		opts:      []dns01.ChallengeOption{func(*dns01.Challenge) error { return nil }},
 	}
@@ -175,7 +180,7 @@ func TestNewChallengeProviderDispatchesToTheOwner(t *testing.T) {
 
 func TestNewChallengeProviderWithoutOwner(t *testing.T) {
 	withSources(t, &fakeSource{providers: []ProviderInfo{{
-		Config:           Config{Name: "Cloudflare", Code: "cloudflare"},
+		Name: "Cloudflare", Code: "cloudflare",
 		RecordManagement: true,
 	}}})
 
@@ -191,7 +196,7 @@ func TestNewChallengeProviderWithoutOwner(t *testing.T) {
 
 func TestNewChallengeProviderReleasesOnError(t *testing.T) {
 	failing := &fakeSource{
-		providers: []ProviderInfo{{Config: Config{Name: "Cloudflare", Code: "cloudflare"}, PluginID: "com.nginxui.dns01", DNS01: true}},
+		providers: []ProviderInfo{{Name: "Cloudflare", Code: "cloudflare", PluginID: "com.nginxui.dns01", DNS01: true}},
 		err:       errors.New("plugin is not running"),
 	}
 	withSources(t, failing)
