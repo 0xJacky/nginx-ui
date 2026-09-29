@@ -9,6 +9,7 @@ import PluginIcon from './PluginIcon.vue'
 import PluginOverview from './PluginOverview.vue'
 import { isToggleDisabled, statusOf } from './presets'
 import SettingsPanel from './SettingsPanel.vue'
+import TrustTag from './TrustTag.vue'
 
 const props = defineProps<{
   plugin?: PluginInfo
@@ -52,11 +53,17 @@ const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
   >
     <template #title>
       <div v-if="props.plugin" class="drawer-title">
-        <PluginIcon :src="props.plugin.icon_url" :size="36" />
+        <PluginIcon
+          :src="props.plugin.icon_url"
+          :name="name"
+          :size="36"
+          :muted="!props.plugin.enabled"
+        />
         <div class="min-w-0">
           <div class="flex items-center gap-2">
             <span class="truncate font-semibold">{{ name }}</span>
             <span class="drawer-version">v{{ props.plugin.version }}</span>
+            <TrustTag :plugin="props.plugin" />
           </div>
           <div class="drawer-id truncate">
             {{ props.plugin.id }}
@@ -67,7 +74,7 @@ const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
 
     <template #extra>
       <div v-if="props.plugin && status" class="flex items-center gap-3">
-        <ATooltip :title="props.plugin.last_error || undefined">
+        <ATooltip :title="props.plugin.last_error || status.hint?.() || undefined">
           <ABadge :status="status.badge" :text="status.label()" />
         </ATooltip>
         <ASwitch

@@ -180,6 +180,14 @@ export function updatePlugin(id: string, payload: PluginUpdatePayload = {}): Pro
   return http.post(pluginPath(id, '/update'), payload)
 }
 
+/**
+ * Replaces an installed plugin with the more trusted package the marketplace
+ * offers, even at the same version. Settings, data and the enabled state stay.
+ */
+export function replacePlugin(id: string, source?: string): Promise<PluginInfo> {
+  return http.post(pluginPath(id, '/replace'), { source })
+}
+
 export function getMarketplaceSources(): Promise<MarketplaceSourcesResponse> {
   return http.get('/plugins/marketplace/sources')
 }

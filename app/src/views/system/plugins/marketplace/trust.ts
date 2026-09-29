@@ -1,4 +1,4 @@
-import type { PluginTrust } from '@/api/plugin_marketplace'
+import type { CatalogEntry, PluginTrust } from '@/api/plugin_marketplace'
 
 interface TrustPreset {
   /** Tag colour. */
@@ -71,4 +71,44 @@ export function isTrustDowngrade(next?: PluginTrust, installed?: PluginTrust): b
   if (!next || !installed || !(next in trustRank) || !(installed in trustRank))
     return false
   return trustRank[next] < trustRank[installed]
+}
+
+/** What the Unsigned tag means, in plain words. */
+export function unsignedExplanation(): string {
+  return $gettext('This version was not published by the official team or a partner. It may be a development build or a repackaged copy.')
+}
+
+/** A more trusted package of an installed plugin the marketplace offers. */
+export interface TrustedOffer {
+  entry: CatalogEntry
+  trust: 'official' | 'verified'
+  version: string
+}
+
+/**
+ * The marketplace entry that can replace an installed package: it must be
+ * official or from a partner while the installed one is unsigned or community.
+ */
+export function findTrustedOffer(installed: PluginTrust | undefined, entry: CatalogEntry | undefined): TrustedOffer | undefined {
+  if (!entry?.installable_release)
+    return undefined
+  if (installed !== 'unsigned' && installed !== 'community')
+    return undefined
+  if (entry.trust !== 'official' && entry.trust !== 'verified')
+    return undefined
+  return { entry, trust: entry.trust, version: entry.installable_release.version }
+}
+
+/** Button text of an offer. */
+export function trustedOfferAction(offer: TrustedOffer): string {
+  return offer.trust === 'official'
+    ? $gettext('Install the official version')
+    : $gettext('Install the partner version')
+}
+
+/** One line telling what the marketplace has instead. */
+export function trustedOfferSummary(offer: TrustedOffer): string {
+  return offer.trust === 'official'
+    ? $gettext('The marketplace has the official version %{version}.', { version: offer.version })
+    : $gettext('The marketplace has the partner version %{version}.', { version: offer.version })
 }
