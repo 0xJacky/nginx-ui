@@ -91,6 +91,8 @@ const (
 	MethodHostCronUnregister  = "host.cron.unregister"
 	MethodHostNotify          = "host.notify"
 	MethodHostMetricsSnapshot = "host.metrics.snapshot"
+	MethodHostLogsList        = "host.logs.list"
+	MethodHostActivitySet     = "host.activity.set"
 )
 
 // Capability names a plugin may declare in its manifest.
@@ -129,6 +131,9 @@ const (
 	// PermissionLogRead lets the host stream the access log lines to the
 	// log.sink capability.
 	PermissionLogRead = "log.read"
+	// PermissionLogFiles lets a plugin list the nginx log files with
+	// host.logs.list, read them itself and receive log.paths_changed.
+	PermissionLogFiles = "log.files"
 	// PermissionCredentialsReadPrefix is followed by the credential kind, e.g. "credentials.read:dns".
 	PermissionCredentialsReadPrefix = "credentials.read:"
 )

@@ -27,6 +27,10 @@ type fakeHostBackend struct {
 	logged   []protocol.HostLogParams
 	onLog    func(protocol.HostLogParams)
 	failKV   error
+
+	logFiles    []protocol.HostLogFile
+	activity    []protocol.HostActivitySetParams
+	activityErr error
 }
 
 func (f *fakeHostBackend) Log(pluginID string, p protocol.HostLogParams) {
@@ -122,6 +126,19 @@ func (f *fakeHostBackend) MetricsSnapshot() (any, error) {
 	return map[string]any{"cpu": 12.5}, nil
 }
 
+func (f *fakeHostBackend) LogsList(pluginID string) []protocol.HostLogFile {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	return f.logFiles
+}
+
+func (f *fakeHostBackend) ActivitySet(pluginID string, p protocol.HostActivitySetParams) error {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.activity = append(f.activity, p)
+	return f.activityErr
+}
+
 // hostPipe puts the host API on one end of an in-memory pipe pair and returns
 // the caller a plugin would use.
 func hostPipe(t *testing.T, permissions []string, backend HostBackend) *jsonrpc.Conn {
@@ -191,6 +208,7 @@ func TestHostAPIWithoutPermissions(t *testing.T) {
 		{protocol.MethodHostCronUnregister, protocol.HostCronUnregisterParams{ID: "a"}},
 		{protocol.MethodHostNotify, protocol.HostNotifyParams{Level: "info", Title: "t"}},
 		{protocol.MethodHostMetricsSnapshot, nil},
+		{protocol.MethodHostLogsList, nil},
 	}
 	for _, call := range denied {
 		err := client.Call(ctx, call.method, call.params, nil)
@@ -315,6 +333,83 @@ func TestHostAPIRejectsMalformedParams(t *testing.T) {
 	ctx := testContext(t)
 
 	err := client.Call(ctx, protocol.MethodHostKVGet, []string{"not an object"}, nil)
+	perr, ok := jsonrpc.AsProtocolError(err)
+	require.True(t, ok)
+	assert.Equal(t, protocol.CodeInvalidParams, perr.Code)
+}
+
+func TestHostAPILogsList(t *testing.T) {
+	backend := &fakeHostBackend{logFiles: []protocol.HostLogFile{
+		{Path: "/var/log/nginx/access.log", Type: "access", Source: "default"},
+		{Path: "/var/log/nginx/a.error.log", Type: "error", Source: "config", ConfigFile: "/etc/nginx/sites-enabled/a.conf"},
+	}}
+
+	// Without log.files the call is refused and nothing is listed.
+	denied := hostPipe(t, []string{protocol.PermissionKV}, backend)
+	err := denied.Call(testContext(t), protocol.MethodHostLogsList, nil, nil)
+	perr, ok := jsonrpc.AsProtocolError(err)
+	require.True(t, ok)
+	assert.Equal(t, protocol.CodePermissionDenied, perr.Code)
+
+	client := hostPipe(t, []string{protocol.PermissionLogFiles}, backend)
+	var result protocol.HostLogsListResult
+	require.NoError(t, client.Call(testContext(t), protocol.MethodHostLogsList, nil, &result))
+	assert.Equal(t, backend.logFiles, result.Logs)
+
+	// An empty list is an array, never null.
+	empty := hostPipe(t, []string{protocol.PermissionLogFiles}, &fakeHostBackend{})
+	var raw json.RawMessage
+	require.NoError(t, empty.Call(testContext(t), protocol.MethodHostLogsList, nil, &raw))
+	assert.JSONEq(t, `{"logs":[]}`, string(raw))
+}
+
+func TestHostAPIActivitySet(t *testing.T) {
+	backend := &fakeHostBackend{}
+	// No permission is needed.
+	client := hostPipe(t, nil, backend)
+	ctx := testContext(t)
+
+	var raw json.RawMessage
+	require.NoError(t, client.Call(ctx, protocol.MethodHostActivitySet,
+		protocol.HostActivitySetParams{Key: "indexing", Label: "Nginx Log Indexing...", Active: true}, &raw))
+	assert.JSONEq(t, `{}`, string(raw))
+	// A removal ignores the label.
+	require.NoError(t, client.Call(ctx, protocol.MethodHostActivitySet,
+		protocol.HostActivitySetParams{Key: "indexing", Active: false}, nil))
+	backend.mu.Lock()
+	assert.Len(t, backend.activity, 2)
+	backend.mu.Unlock()
+
+	invalid := []protocol.HostActivitySetParams{
+		{Key: "", Label: "x", Active: true},
+		{Key: strings.Repeat("a", 65), Label: "x", Active: true},
+		{Key: "Upper", Label: "x", Active: true},
+		{Key: "has space", Label: "x", Active: true},
+		{Key: "slash/key", Label: "x", Active: true},
+		{Key: "ok", Label: "", Active: true},
+		{Key: "ok", Label: strings.Repeat("l", 129), Active: true},
+		{Key: "", Active: false},
+	}
+	for _, p := range invalid {
+		err := client.Call(ctx, protocol.MethodHostActivitySet, p, nil)
+		perr, ok := jsonrpc.AsProtocolError(err)
+		require.True(t, ok, "%+v", p)
+		assert.Equal(t, protocol.CodeInvalidParams, perr.Code, "%+v", p)
+	}
+	backend.mu.Lock()
+	assert.Len(t, backend.activity, 2, "invalid calls never reach the backend")
+	backend.mu.Unlock()
+
+	// 128 characters count as characters, not bytes.
+	require.NoError(t, client.Call(ctx, protocol.MethodHostActivitySet,
+		protocol.HostActivitySetParams{Key: "a.b_c-1", Label: strings.Repeat("é", 128), Active: true}, nil))
+
+	// A backend refusal such as the entry limit is passed on.
+	backend.mu.Lock()
+	backend.activityErr = jsonrpc.Errorf(protocol.CodeInvalidParams, "too many")
+	backend.mu.Unlock()
+	err := client.Call(ctx, protocol.MethodHostActivitySet,
+		protocol.HostActivitySetParams{Key: "more", Label: "x", Active: true}, nil)
 	perr, ok := jsonrpc.AsProtocolError(err)
 	require.True(t, ok)
 	assert.Equal(t, protocol.CodeInvalidParams, perr.Code)

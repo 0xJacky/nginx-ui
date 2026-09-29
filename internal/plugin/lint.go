@@ -120,6 +120,7 @@ func Lint(path string) (*LintReport, error) {
 	lintContent(manifest, dir, report)
 	lintProcessless(manifest, report)
 	lintCapabilities(manifest, report)
+	lintEvents(manifest, report)
 	lintPermissions(manifest.Permissions, report)
 	lintRequires(manifest.Requires, report)
 	lintSettingsSchema(manifest.SettingsSchema, report)
@@ -309,6 +310,7 @@ func lintWebapp(w *protocol.ManifestWebapp, dir string, report *LintReport) {
 			lintFileExists(filepath.Join(dir, filepath.FromSlash(w.StylePath)), "MAN-15", "webapp.style_path", report)
 		}
 	}
+	lintChunks(w, dir, report)
 	for _, p := range w.Pages {
 		if p.Path == "" {
 			report.add(LevelError, "MAN-16", "webapp.pages[].path is required")
@@ -318,6 +320,53 @@ func lintWebapp(w *protocol.ManifestWebapp, dir string, report *LintReport) {
 			continue
 		}
 		lintFileExists(filepath.Join(dir, filepath.FromSlash(p.File)), "MAN-16", fmt.Sprintf("webapp.pages[%q].file", p.Path), report)
+	}
+}
+
+// lintChunks checks webapp.chunks (MAN-41, WEB-13): the declaration itself and
+// that every chunk file is in the package and not empty. A chunk outside the
+// directory of the bundle is not reachable through the webapp route of this
+// host, which is reported as a warning.
+func lintChunks(w *protocol.ManifestWebapp, dir string, report *LintReport) {
+	if len(w.Chunks) == 0 {
+		return
+	}
+	if problem := chunksProblem(w); problem != "" {
+		report.add(LevelError, "MAN-41", "%s", problem)
+	}
+
+	names := make([]string, 0, len(w.Chunks))
+	for name := range w.Chunks {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+
+	root := webappDir(&protocol.Manifest{Webapp: w})
+	for _, name := range names {
+		file := w.Chunks[name]
+		if !isSafeRelPath(file) {
+			continue
+		}
+		what := fmt.Sprintf("webapp.chunks[%q]", name)
+		full := filepath.Join(dir, filepath.FromSlash(file))
+		if info, err := os.Stat(full); err == nil && info.Mode().IsRegular() && info.Size() == 0 {
+			report.add(LevelError, "WEB-13", "%s points at an empty file: %s", what, file)
+		} else {
+			lintFileExists(full, "MAN-41", what, report)
+		}
+		if w.BundlePath != "" && root != "" && !strings.HasPrefix(file, root+"/") {
+			report.add(LevelWarning, "WEB-13", "%s is outside %s, the directory this host serves the bundle from, so it cannot be loaded", what, root)
+		}
+	}
+}
+
+// lintEvents checks the events array against the permissions that gate an
+// event (HOST-18).
+func lintEvents(m *protocol.Manifest, report *LintReport) {
+	for _, eventType := range m.Events {
+		if permission := eventPermission(eventType); permission != "" && !slices.Contains(m.Permissions, permission) {
+			report.add(LevelWarning, "HOST-18", "event %q is listed without the %q permission, so it is never delivered", eventType, permission)
+		}
 	}
 }
 

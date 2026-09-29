@@ -8,7 +8,7 @@ import type {
   RegisterSlotOptions,
   SlotName,
 } from './types'
-import type { PluginManifest } from '@/api/plugin'
+import type { PluginManifest, WebappEntry } from '@/api/plugin'
 import { http } from '@uozi-admin/request'
 import axios from 'axios'
 import { localizedPluginName } from '@/api/plugin'
@@ -16,6 +16,7 @@ import gettext from '@/gettext'
 import { applyAuthHeaders } from '@/lib/http/interceptors'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
+import { chunkLoader } from './chunks'
 import { usePluginStore } from './store'
 
 /** Route name plugin routes are attached to, i.e. the authenticated layout. */
@@ -59,7 +60,11 @@ function createHostState(): PluginHostState {
  * Everything a plugin registers is tagged with its id so the host can tell
  * contributions apart when one of them misbehaves.
  */
-export function createRegistry(pluginId: string, manifest: PluginManifest): PluginRegistry {
+export function createRegistry(
+  pluginId: string,
+  manifest: PluginManifest,
+  webapp?: Pick<WebappEntry, 'version' | 'chunks'>,
+): PluginRegistry {
   const store = usePluginStore()
   const pluginHttp = createPluginHttp(pluginId)
   const host = createHostState()
@@ -99,11 +104,20 @@ export function createRegistry(pluginId: string, manifest: PluginManifest): Plug
     store.setSettingsPanel(pluginId, component)
   }
 
+  function loadChunk(name: string) {
+    return chunkLoader.loadChunk({
+      pluginId,
+      version: webapp?.version ?? manifest.version,
+      chunks: webapp?.chunks,
+    }, name)
+  }
+
   return {
     registerRoute,
     registerSlot,
     registerTranslations,
     registerSettingsPanel,
+    loadChunk,
     http: pluginHttp,
     coreHttp: http,
     manifest,

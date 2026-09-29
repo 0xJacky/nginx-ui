@@ -28,6 +28,8 @@ export function describePermission(permission: string): string {
       return $gettext('Receive issued certificates, including the parts that must stay secret, to push them to other services.')
     case 'log.read':
       return $gettext('Receive every access log entry while it is on, including visitor addresses and requested URLs.')
+    case 'log.files':
+      return $gettext('Read the Nginx log files of this node, including visitor addresses and requested URLs.')
     default:
       return $gettext('Unknown permission. Only grant it if you trust the plugin author.')
   }
@@ -60,6 +62,8 @@ export function permissionLabel(permission: string): string {
       return $gettext('Certificates')
     case 'log.read':
       return $gettext('Access logs')
+    case 'log.files':
+      return $gettext('Log files')
     default:
       return $gettext('Unknown permission')
   }

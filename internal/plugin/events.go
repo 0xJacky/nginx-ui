@@ -47,6 +47,10 @@ func (m *Manager) dispatchEvent(published event.Event) {
 		if !slices.Contains(item.manifest.Events, eventType) {
 			continue
 		}
+		if permission := eventPermission(eventType); permission != "" &&
+			!slices.Contains(item.manifest.Permissions, permission) {
+			continue
+		}
 		// An idle on_demand plugin is never started just to see an event.
 		if item.state != StateRunning {
 			continue
@@ -63,6 +67,16 @@ func (m *Manager) dispatchEvent(published event.Event) {
 			targets[i].dropped.Add(1)
 		}
 	}
+}
+
+// eventPermission returns the permission an event needs on top of being listed
+// in the manifest, empty when it needs none (spec HOST-18). The approved set
+// equals the manifest set for a plugin that runs, see wantsLogSinkLocked.
+func eventPermission(eventType string) string {
+	if eventType == protocol.EventLogPathsChanged {
+		return protocol.PermissionLogFiles
+	}
+	return ""
 }
 
 // startEventPump gives one plugin its delivery queue and the goroutine that
