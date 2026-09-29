@@ -74,6 +74,30 @@ export const usePluginStore = defineStore('plugin', () => {
     loaded.value[pluginId] = state
   }
 
+  /**
+   * Drops everything one plugin contributed and forgets its load state, so a
+   * later load treats it as new. Each collection is replaced, not mutated.
+   */
+  function removePlugin(pluginId: string) {
+    routes.value = routes.value.filter(route => route.meta?.pluginId !== pluginId)
+
+    const nextSlots: Record<string, SlotRegistration[]> = {}
+    for (const [name, registrations] of Object.entries(slots.value)) {
+      const kept = registrations.filter(registration => registration.pluginId !== pluginId)
+      if (kept.length > 0)
+        nextSlots[name] = kept
+    }
+    slots.value = nextSlots
+
+    const { [pluginId]: _panel, ...panels } = settingsPanels.value
+    settingsPanels.value = panels
+
+    entries.value = entries.value.filter(entry => entry.id !== pluginId)
+
+    const { [pluginId]: _state, ...states } = loaded.value
+    loaded.value = states
+  }
+
   return {
     ready,
     loading,
@@ -89,6 +113,7 @@ export const usePluginStore = defineStore('plugin', () => {
     slotsByPrefix,
     setSettingsPanel,
     setLoadState,
+    removePlugin,
   }
 }, {
   persist: {
