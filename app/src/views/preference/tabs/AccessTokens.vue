@@ -5,6 +5,7 @@ import { CopyOutlined, DeleteOutlined, KeyOutlined, PlusOutlined, SyncOutlined }
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import serviceToken from '@/api/service_token'
+import { SettingPanel } from '@/components/SettingPanel'
 import { copyText, formatDateTime } from '@/lib/helper'
 
 dayjs.extend(relativeTime)
@@ -157,101 +158,97 @@ onMounted(loadTokens)
 
 <template>
   <div>
-    <div class="mb-5 flex flex-wrap items-start justify-between gap-4">
-      <div class="max-w-2xl">
-        <h3 class="mb-1">
-          {{ $gettext('Access Tokens') }}
-        </h3>
-        <p class="mb-0 text-gray-500">
-          {{ $gettext('Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. Tokens are shown only once.') }}
-        </p>
+    <SettingPanel :title="$gettext('Tokens')">
+      <template #extra>
+        <AButton type="primary" @click="openCreateModal">
+          <template #icon>
+            <PlusOutlined />
+          </template>
+          {{ $gettext('Create Token') }}
+        </AButton>
+      </template>
+
+      <AAlert
+        class="my-3"
+        show-icon
+        type="info"
+        :title="$gettext('Use the smallest required scope and set an expiration date for automation credentials.')"
+      />
+
+      <div class="py-3">
+        <ATable
+          :columns="columns"
+          :data-source="tokens"
+          :loading="isLoading"
+          row-key="id"
+          size="small"
+          :pagination="false"
+          :scroll="{ x: 760 }"
+        >
+          <template #emptyText>
+            <AEmpty :description="$gettext('No access tokens')" />
+          </template>
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.dataIndex === 'name'">
+              <div class="flex items-center gap-2">
+                <KeyOutlined class="text-gray-400" />
+                <div>
+                  <div class="font-medium">
+                    {{ record.name }}
+                  </div>
+                  <div class="font-mono text-xs text-gray-400">
+                    {{ record.id }}
+                  </div>
+                </div>
+              </div>
+            </template>
+            <template v-else-if="column.dataIndex === 'scopes'">
+              <div class="flex flex-wrap gap-1">
+                <ATag v-for="scope in record.scopes" :key="scope">
+                  {{ scopeLabel(scope) }}
+                </ATag>
+              </div>
+            </template>
+            <template v-else-if="column.dataIndex === 'last_used_at'">
+              <ATooltip v-if="record.last_used_at" :title="formatDateTime(record.last_used_at)">
+                {{ dayjs(record.last_used_at).fromNow() }}
+              </ATooltip>
+              <span v-else class="text-gray-400">{{ $gettext('Never') }}</span>
+            </template>
+            <template v-else-if="column.dataIndex === 'expires_at'">
+              <span v-if="record.expires_at">{{ formatDateTime(record.expires_at) }}</span>
+              <span v-else class="text-gray-400">{{ $gettext('Never') }}</span>
+            </template>
+            <template v-else-if="column.dataIndex === 'status'">
+              <ATag :color="tokenStatus(record).color">
+                {{ tokenStatus(record).text }}
+              </ATag>
+            </template>
+            <template v-else-if="column.dataIndex === 'action'">
+              <div v-if="!record.revoked_at" class="flex">
+                <APopconfirm
+                  v-if="!isTokenExpired(record)"
+                  :title="$gettext('Rotate this token? The current token will stop working immediately.')"
+                  @confirm="rotateToken(record)"
+                >
+                  <AButton type="link" size="small" :aria-label="$gettext('Rotate token')">
+                    <SyncOutlined />
+                  </AButton>
+                </APopconfirm>
+                <APopconfirm
+                  :title="$gettext('Revoke this token? This action cannot be undone.')"
+                  @confirm="revokeToken(record)"
+                >
+                  <AButton type="link" danger size="small" :aria-label="$gettext('Revoke token')">
+                    <DeleteOutlined />
+                  </AButton>
+                </APopconfirm>
+              </div>
+            </template>
+          </template>
+        </ATable>
       </div>
-      <AButton type="primary" @click="openCreateModal">
-        <template #icon>
-          <PlusOutlined />
-        </template>
-        {{ $gettext('Create Token') }}
-      </AButton>
-    </div>
-
-    <AAlert
-      class="mb-4"
-      show-icon
-      type="info"
-      :title="$gettext('Use the smallest required scope and set an expiration date for automation credentials.')"
-    />
-
-    <ATable
-      :columns="columns"
-      :data-source="tokens"
-      :loading="isLoading"
-      row-key="id"
-      size="small"
-      :pagination="false"
-      :scroll="{ x: 760 }"
-    >
-      <template #emptyText>
-        <AEmpty :description="$gettext('No access tokens')" />
-      </template>
-      <template #bodyCell="{ column, record }">
-        <template v-if="column.dataIndex === 'name'">
-          <div class="flex items-center gap-2">
-            <KeyOutlined class="text-gray-400" />
-            <div>
-              <div class="font-medium">
-                {{ record.name }}
-              </div>
-              <div class="font-mono text-xs text-gray-400">
-                {{ record.id }}
-              </div>
-            </div>
-          </div>
-        </template>
-        <template v-else-if="column.dataIndex === 'scopes'">
-          <div class="flex flex-wrap gap-1">
-            <ATag v-for="scope in record.scopes" :key="scope">
-              {{ scopeLabel(scope) }}
-            </ATag>
-          </div>
-        </template>
-        <template v-else-if="column.dataIndex === 'last_used_at'">
-          <ATooltip v-if="record.last_used_at" :title="formatDateTime(record.last_used_at)">
-            {{ dayjs(record.last_used_at).fromNow() }}
-          </ATooltip>
-          <span v-else class="text-gray-400">{{ $gettext('Never') }}</span>
-        </template>
-        <template v-else-if="column.dataIndex === 'expires_at'">
-          <span v-if="record.expires_at">{{ formatDateTime(record.expires_at) }}</span>
-          <span v-else class="text-gray-400">{{ $gettext('Never') }}</span>
-        </template>
-        <template v-else-if="column.dataIndex === 'status'">
-          <ATag :color="tokenStatus(record).color">
-            {{ tokenStatus(record).text }}
-          </ATag>
-        </template>
-        <template v-else-if="column.dataIndex === 'action'">
-          <div v-if="!record.revoked_at" class="flex">
-            <APopconfirm
-              v-if="!isTokenExpired(record)"
-              :title="$gettext('Rotate this token? The current token will stop working immediately.')"
-              @confirm="rotateToken(record)"
-            >
-              <AButton type="link" size="small" :aria-label="$gettext('Rotate token')">
-                <SyncOutlined />
-              </AButton>
-            </APopconfirm>
-            <APopconfirm
-              :title="$gettext('Revoke this token? This action cannot be undone.')"
-              @confirm="revokeToken(record)"
-            >
-              <AButton type="link" danger size="small" :aria-label="$gettext('Revoke token')">
-                <DeleteOutlined />
-              </AButton>
-            </APopconfirm>
-          </div>
-        </template>
-      </template>
-    </ATable>
+    </SettingPanel>
 
     <AModal
       v-model:open="isCreateModalOpen"

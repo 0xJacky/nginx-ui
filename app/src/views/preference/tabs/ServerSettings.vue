@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
+import { SettingPanel, SettingRow } from '@/components/SettingPanel'
 import ChangeCert from '@/views/site/site_edit/components/Cert/ChangeCert.vue'
 import useSystemSettingsStore from '../store'
 
@@ -17,57 +18,92 @@ function handleCertChange(certs: Cert[]) {
 </script>
 
 <template>
-  <AForm v-if="data?.server" layout="vertical" class="max-w-150">
-    <AFormItem :label="$gettext('Host')">
-      <p>{{ data.server.host }}</p>
-    </AFormItem>
-    <AFormItem :label="$gettext('Port')">
-      <p>{{ data.server.port }}</p>
-    </AFormItem>
-    <AFormItem v-if="isUnixListener" :label="$gettext('Unix Socket')" :help="$gettext('Nginx UI listens on this Unix socket instead of the TCP host and port.')">
-      <p>{{ data.listener?.unix_socket }}</p>
-    </AFormItem>
-    <AFormItem :label="$gettext('Run Mode')">
-      <p>{{ data.server.run_mode }}</p>
-    </AFormItem>
-
-    <!-- HTTPS Settings -->
-    <AFormItem :label="$gettext('Enable HTTPS')">
-      <ASwitch v-model:checked="data.server.enable_https" />
-    </AFormItem>
-
-    <div v-if="data.server.enable_https">
-      <ChangeCert class="mb-6" selection-type="radio" @change="handleCertChange" />
-
-      <AFormItem :label="$gettext('SSL Certificate Path')">
-        <p>{{ data.server.ssl_cert }}</p>
-      </AFormItem>
-
-      <AFormItem :label="$gettext('SSL Key Path')">
-        <p>{{ data.server.ssl_key }}</p>
-      </AFormItem>
-
-      <AAlert
-        type="info"
-        :title="$gettext('Protocol configuration only takes effect when directly connecting. If using reverse proxy, please configure the protocol separately in the reverse proxy.')"
-        show-icon
-        class="mb-4"
+  <div v-if="data?.server">
+    <SettingPanel :title="$gettext('Listen Address')">
+      <SettingRow
+        :title="$gettext('Host')"
+        path="server.host"
+        config-file="server"
+        :value="data.server.host || $gettext('All interfaces')"
       />
+      <SettingRow
+        :title="$gettext('Port')"
+        path="server.port"
+        config-file="server"
+        :value="data.server.port"
+      />
+      <SettingRow
+        v-if="isUnixListener"
+        :title="$gettext('Unix Socket')"
+        :description="$gettext('Nginx UI listens on this Unix socket instead of the TCP host and port.')"
+        path="listener.unix_socket"
+        config-file="listener"
+        :value="data.listener?.unix_socket"
+      />
+      <SettingRow
+        :title="$gettext('Run Mode')"
+        path="server.run_mode"
+        config-file="server"
+        :value="data.server.run_mode"
+      />
+    </SettingPanel>
 
-      <AFormItem :label="$gettext('Enable HTTP/2')" :help="$gettext('Enables HTTP/2 support with multiplexing and server push capabilities')">
-        <ASwitch v-model:checked="data.server.enable_h2" />
-      </AFormItem>
-
-      <AFormItem
-        :label="$gettext('Enable HTTP/3')"
-        :help="isUnixListener
-          ? $gettext('HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on a Unix socket.')
-          : $gettext('Enables HTTP/3 support based on QUIC protocol for best performance')"
+    <SettingPanel :title="$gettext('HTTPS')">
+      <SettingRow
+        :title="$gettext('Enable HTTPS')"
+        :description="$gettext('Serves the web interface over HTTPS. Saving this change restarts Nginx UI and reloads the page.')"
+        path="server.enable_https"
       >
-        <ASwitch v-model:checked="data.server.enable_h3" :disabled="isUnixListener" />
-      </AFormItem>
-    </div>
-  </AForm>
-</template>
+        <ASwitch v-model:checked="data.server.enable_https" />
+      </SettingRow>
 
-<style lang="less" scoped></style>
+      <template v-if="data.server.enable_https">
+        <SettingRow
+          :title="$gettext('Certificate')"
+          :description="$gettext('Pick the certificate that secures the web interface.')"
+          stacked
+        >
+          <ChangeCert
+            selection-type="radio"
+            @change="handleCertChange"
+          />
+        </SettingRow>
+        <SettingRow
+          :title="$gettext('SSL Certificate Path')"
+          path="server.ssl_cert"
+          :value="data.server.ssl_cert"
+        />
+        <SettingRow
+          :title="$gettext('SSL Key Path')"
+          path="server.ssl_key"
+          :value="data.server.ssl_key"
+        />
+        <SettingRow
+          :title="$gettext('Enable HTTP/2')"
+          :description="$gettext('Enables HTTP/2 support with multiplexing and server push capabilities')"
+          path="server.enable_h2"
+        >
+          <ASwitch v-model:checked="data.server.enable_h2" />
+        </SettingRow>
+        <SettingRow
+          :title="$gettext('Enable HTTP/3')"
+          :description="isUnixListener
+            ? $gettext('HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on a Unix socket.')
+            : $gettext('Enables HTTP/3 support based on QUIC protocol for best performance')"
+          path="server.enable_h3"
+        >
+          <ASwitch
+            v-model:checked="data.server.enable_h3"
+            :disabled="isUnixListener"
+          />
+        </SettingRow>
+        <AAlert
+          type="info"
+          :title="$gettext('Protocol configuration only takes effect when directly connecting. If using reverse proxy, please configure the protocol separately in the reverse proxy.')"
+          show-icon
+          class="my-3"
+        />
+      </template>
+    </SettingPanel>
+  </div>
+</template>

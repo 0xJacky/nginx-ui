@@ -1,12 +1,31 @@
 import type { SavableSettingsSection, Settings } from '@/api/settings'
 import type { CosyError } from '@/lib/http/types'
-import settings from '@/api/settings'
+import settings, { SAVABLE_SETTINGS_SECTIONS } from '@/api/settings'
 import { use2FAModal } from '@/components/TwoFA'
 import { useGlobalApp } from '@/composables/useGlobalApp'
 import { isTwoFactorCancelled, translateError } from '@/lib/http/error'
 import { normalizeHttpError } from '@/lib/http/normalizeError'
 import { useSettingsStore } from '@/pinia'
+import { collectChangedPaths, copyPaths } from '@/utils/changedPaths'
 import { tabSettingsSections } from '../sections'
+
+// Settings are plain JSON, so a JSON round trip is a safe deep clone.
+function cloneSettings<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value))
+}
+
+function isSavableSection(value: string): value is SavableSettingsSection {
+  return (SAVABLE_SETTINGS_SECTIONS as readonly string[]).includes(value)
+}
+
+// Data a tab stores outside the settings file, saved together with it.
+interface TabSaver {
+  save: () => Promise<string | undefined>
+  // Dot path reported as changed while isDirty is true, such as openai.chat_models.
+  path?: string
+  isDirty?: () => boolean
+  discard?: () => void
+}
 
 // Flattens a validation error map such as {ip_white_list: {0: "ip"}} into the
 // paths of the invalid fields.
@@ -148,18 +167,43 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
   const savedEnableHTTPS = ref(false)
   const isSaving = ref(false)
   const isLoaded = ref(false)
+  // Copy of the settings as loaded or last saved, used to find unsaved changes.
+  const snapshot = ref<Settings>()
 
   // Saves a tab runs besides its settings sections, for data stored outside
   // the settings file. Each resolves to an error message, or undefined.
-  const tabSavers = new Map<string, () => Promise<string | undefined>>()
+  const tabSavers = shallowReactive(new Map<string, TabSaver>())
 
-  function registerTabSaver(tab: string, saver: () => Promise<string | undefined>) {
-    tabSavers.set(tab, saver)
+  function registerTabSaver(tab: string, saver: TabSaver | TabSaver['save']) {
+    const entry = typeof saver === 'function' ? { save: saver } : saver
+    tabSavers.set(tab, entry)
     return () => {
-      if (tabSavers.get(tab) === saver)
+      if (tabSavers.get(tab) === entry)
         tabSavers.delete(tab)
     }
   }
+
+  const dirtyTabSavers = computed(() => [...tabSavers.entries()]
+    .filter(([, saver]) => saver.isDirty?.()))
+
+  const changedPaths = computed(() => {
+    const paths = snapshot.value ? collectChangedPaths(snapshot.value, data.value) : []
+    for (const [tab, saver] of dirtyTabSavers.value)
+      paths.push(saver.path ?? tab)
+    return paths
+  })
+  const isDirty = computed(() => changedPaths.value.length > 0)
+
+  // Savable sections that hold at least one unsaved change.
+  const dirtySections = computed(() => {
+    const sections = new Set<SavableSettingsSection>()
+    for (const path of changedPaths.value) {
+      const section = path.split('.')[0]
+      if (isSavableSection(section))
+        sections.add(section)
+    }
+    return [...sections]
+  })
 
   async function getSettings(): Promise<boolean> {
     try {
@@ -167,6 +211,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       r.cert.recursive_nameservers ||= []
       savedEnableHTTPS.value = r.server.enable_https
       data.value = r
+      snapshot.value = cloneSettings(r)
       errors.value = {}
       isLoaded.value = true
       return true
@@ -190,6 +235,8 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       if (section === 'cert')
         (r as Settings['cert']).recursive_nameservers ||= []
       data.value[section] = r as never
+      if (snapshot.value)
+        snapshot.value[section] = cloneSettings(r) as never
       delete errors.value[section]
       return { section }
     }
@@ -209,12 +256,15 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     }
   }
 
-  // Saves the settings edited on one preference tab. Each section on the tab
-  // is its own request, so a failure is reported against the fields it
-  // belongs to; changes left on other tabs are not touched.
-  async function save(tab: string) {
-    const sections = tabSettingsSections(tab)
-    if (!data.value || isSaving.value || sections.length === 0)
+  // Saves the given sections, or every section with unsaved changes. Each
+  // section is its own request, so a failure is reported against the fields
+  // it belongs to and the sections that did save stay saved.
+  async function save(tab?: string) {
+    const sections = tab ? tabSettingsSections(tab) : dirtySections.value
+    const savers = tab
+      ? [tabSavers.get(tab)].filter((saver): saver is TabSaver => !!saver)
+      : dirtyTabSavers.value.map(([, saver]) => saver)
+    if (!data.value || isSaving.value || (sections.length === 0 && savers.length === 0))
       return
 
     normalizeBeforeSave()
@@ -234,14 +284,15 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
 
     isSaving.value = true
     try {
-      const tabSaver = tabSavers.get(tab)
-      const [results, tabSaverError] = await Promise.all([
+      const [results, saverErrors] = await Promise.all([
         Promise.all(sections.map(saveSection)),
-        tabSaver?.(),
+        Promise.all(savers.map(saver => saver.save())),
       ])
-      const failed = results.filter(result => result.error !== undefined)
-      if (tabSaverError !== undefined)
-        failed.push({ section: sections[0], error: tabSaverError })
+      const failed: { error?: string }[] = results.filter(result => result.error !== undefined)
+      for (const error of saverErrors) {
+        if (error !== undefined)
+          failed.push({ error })
+      }
 
       // A dismissed 2FA prompt is not an error worth reporting
       if (failed.some(result => result.error === ''))
@@ -276,14 +327,37 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     }
   }
 
+  // Drops every unsaved change and restores the loaded values.
+  function discard() {
+    if (!snapshot.value)
+      return
+    data.value = cloneSettings(snapshot.value)
+    for (const saver of tabSavers.values())
+      saver.discard?.()
+    errors.value = {}
+  }
+
+  // Marks the given paths as saved after a flow that stores them on its own,
+  // such as the nginx control editor, without hiding other pending changes.
+  function markSaved(paths: string[]) {
+    if (!snapshot.value)
+      return
+    copyPaths(snapshot.value, data.value, paths)
+  }
+
   return {
     data,
     errors,
+    snapshot,
     isSaving,
     isLoaded,
+    changedPaths,
+    isDirty,
     registerTabSaver,
     getSettings,
     save,
+    discard,
+    markSaved,
   }
 })
 

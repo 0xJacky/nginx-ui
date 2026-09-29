@@ -1572,6 +1572,21 @@ msgstr "Завантаження..."
 msgid "Show"
 msgstr "Показати"
 
+msgid "Change it in the %{section} section of app.ini."
+msgstr ""
+
+msgid "Unsaved"
+msgstr ""
+
+msgid "Restart required"
+msgstr ""
+
+msgid "Config file"
+msgstr ""
+
+msgid "Not set"
+msgstr ""
+
 msgid "Remove"
 msgstr "Видалити"
 
@@ -7620,6 +7635,346 @@ msgstr "Вхід через OIDC"
 msgid "Sign in with a passkey"
 msgstr "Увійти за допомогою ключа доступу"
 
+msgid "Unix Socket"
+msgstr "Unix-сокет"
+
+msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgstr "Nginx UI слухає на цьому Unix-сокеті замість TCP-хоста та порту."
+
+msgid "Run Mode"
+msgstr "Режим роботи"
+
+msgid "Enable HTTPS"
+msgstr "Увімкнути HTTPS"
+
+msgid ""
+"Serves the web interface over HTTPS. Saving this change restarts Nginx UI "
+"and reloads the page."
+msgstr ""
+
+msgid "SSL Key Path"
+msgstr "Шлях до SSL-ключа"
+
+msgid "Enable HTTP/2"
+msgstr "Увімкнути HTTP/2"
+
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr ""
+"Увімкнення підтримки HTTP/2 з можливістю мультиплексування та push-"
+"повідомлень сервера"
+
+msgid "Enable HTTP/3"
+msgstr "Увімкнути HTTP/3"
+
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr ""
+"Увімкнути підтримку HTTP/3 на основі протоколу QUIC для найкращої "
+"продуктивності"
+
+msgid "Jwt Secret"
+msgstr "JWT Секрет"
+
+msgid "Page Size"
+msgstr "Розмір сторінки"
+
+msgid "Instance ID"
+msgstr "Ідентифікатор екземпляра"
+
+msgid "Node name"
+msgstr "Ім’я вузла"
+
+msgid ""
+"Customize the name of local node to be displayed in the environment "
+"indicator."
+msgstr ""
+"Налаштуйте назву локального вузла для відображення в індикаторі середовища."
+
+msgid "Skip Installation"
+msgstr "Пропустити встановлення"
+
+msgid "Demo"
+msgstr "Демо"
+
+msgid "ICP Number"
+msgstr "Номер ICP"
+
+msgid ""
+"Shown in the page footer. Only needed for sites hosted in mainland China."
+msgstr ""
+
+msgid "Public Security Number"
+msgstr "Номер громадської безпеки"
+
+msgid "Github Proxy"
+msgstr "Github Проксі"
+
+msgid ""
+"Used for downloads from GitHub, such as upgrades and the GeoLite database."
+msgstr ""
+
+msgid "HTTP Proxy"
+msgstr "HTTP-проксі"
+
+msgid "Used for other outgoing requests made by Nginx UI."
+msgstr ""
+
+msgid "Insecure Skip Verify"
+msgstr "Небезпечне пропускання перевірки"
+
+msgid "RPID"
+msgstr "RPID"
+
+msgid "RP Display Name"
+msgstr "Відображуване ім’я RP"
+
+msgid "RP Origins"
+msgstr "Джерела RP"
+
+msgid "Ban Threshold Minutes"
+msgstr "Хвилини до блокування"
+
+msgid "Window in which failed sign-in attempts from one address are counted."
+msgstr ""
+
+msgid "Max Attempts"
+msgstr "Максимальна кількість спроб"
+
+msgid ""
+"Failed attempts allowed inside the window before the address is banned for a "
+"while."
+msgstr ""
+
+msgid "Banned IPs"
+msgstr "Заблоковані IP-адреси"
+
+msgid "Addresses that are currently blocked from signing in."
+msgstr ""
+
+msgid "Access Tokens"
+msgstr "Токени доступу"
+
+msgid ""
+"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
+"Tokens are shown only once."
+msgstr ""
+"Створюйте облікові дані з обмеженою областю дії для Nginx UI CLI, "
+"автоматизації та клієнтів MCP. Токени показуються лише один раз."
+
+msgid "Contact address registered with the certificate authority."
+msgstr ""
+
+msgid "HTTP Challenge Port"
+msgstr "Порт HTTP-запиту"
+
+msgid ""
+"Port that answers validation requests while a certificate is being issued."
+msgstr ""
+
+msgid "CADir"
+msgstr "CADir"
+
+msgid "Service that issues certificates. Leave empty to use the default."
+msgstr ""
+
+msgid "Certificate Renewal Threshold"
+msgstr "Поріг оновлення сертифіката"
+
+msgid ""
+"Renew certificates when their remaining validity is less than or equal to "
+"this value."
+msgstr ""
+"Оновлювати сертифікати, коли залишковий термін їх дії менший або дорівнює "
+"цьому значенню."
+
+msgid "Recursive Nameservers"
+msgstr "Рекурсивні сервери імен"
+
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
+msgstr ""
+
+msgid "Stub Status Port"
+msgstr "Порт статусу Stub"
+
+msgid "Local port used to read Nginx connection statistics."
+msgstr ""
+
+msgid "Maintenance host"
+msgstr "Хост обслуговування"
+
+msgid ""
+"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
+"to use this Nginx UI instance."
+msgstr ""
+"Необов'язкове джерело HTTP або HTTPS, яке обслуговує сторінку "
+"обслуговування. Залиште порожнім, щоб використовувати цей екземпляр Nginx UI."
+
+msgid "Maintenance bypass IP"
+msgstr "IP для обходу обслуговування"
+
+msgid ""
+"Requests from this IPv4 or IPv6 address continue to use the original site "
+"while maintenance mode is active."
+msgstr ""
+"Запити з цієї адреси IPv4 або IPv6 продовжують використовувати оригінальний "
+"сайт, поки активний режим обслуговування."
+
+msgid "Maintenance template (filename only)"
+msgstr "Шаблон обслуговування (лише ім'я файлу)"
+
+msgid ""
+"The file named <site name>.<filename> is used first; if it does not exist, "
+"the generic <filename> is used; if neither exists, the built-in Nginx UI "
+"maintenance page is used."
+msgstr ""
+"Спочатку використовується файл із назвою <site name>.<filename>; якщо його "
+"не існує, використовується загальний файл <filename>; якщо жодного не існує, "
+"використовується вбудована сторінка технічного обслуговування Nginx UI."
+
+msgid "Nginx Control Mode"
+msgstr "Режим керування Nginx"
+
+msgid "How Nginx UI reaches the Nginx it manages."
+msgstr ""
+
+msgid "Nginx Access Log Path"
+msgstr "Шлях до журналу доступу Nginx"
+
+msgid "Nginx Error Log Path"
+msgstr "Шлях до журналу помилок Nginx"
+
+msgid "Nginx Configurations Directory"
+msgstr "Каталог конфігурацій Nginx"
+
+msgid "Nginx Configuration Path"
+msgstr "Шлях до конфігурації Nginx"
+
+msgid "Nginx Log Directory Whitelist"
+msgstr "Білий список каталогів журналів Nginx"
+
+msgid "Nginx PID Path"
+msgstr "Шлях до PID Nginx"
+
+msgid "Nginx Test Config Command"
+msgstr "Команда тестування конфігурації Nginx"
+
+msgid "Nginx Reload Command"
+msgstr "Команда перезавантаження Nginx"
+
+msgid "Nginx Restart Command"
+msgstr "Команда перезавантаження Nginx"
+
+msgid "API Base Url"
+msgstr "Базова URL-адреса API"
+
+msgid "API Token"
+msgstr "API-токен"
+
+msgid "API Proxy"
+msgstr "API Проксі"
+
+msgid "API Type"
+msgstr "API Тип"
+
+msgid "Assistant models"
+msgstr "Моделі асистента"
+
+msgid "The models to choose from in the assistant."
+msgstr "Моделі, з яких можна вибирати в асистенті."
+
+msgid "Default model"
+msgstr "Модель за замовчуванням"
+
+msgid "Used for new chats, chat titles and, unless set below, code completion."
+msgstr ""
+"Використовується для нових чатів, назв чатів і, якщо не задано нижче, "
+"автодоповнення коду."
+
+msgid ""
+"How each model switches its thinking levels. Pick the convention of your "
+"provider, or edit the request fields."
+msgstr ""
+"Як кожна модель перемикає рівні мислення. Виберіть конвенцію вашого "
+"провайдера або відредагуйте поля запиту."
+
+msgid "Enable Code Completion"
+msgstr "Увімкнути автодоповнення коду"
+
+msgid "Code Completion Model"
+msgstr "Модель автодоповнення коду"
+
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
+msgstr ""
+"Модель, яка використовується для завершення коду. Якщо вона не встановлена, "
+"буде використовуватися модель чату."
+
+msgid "Enable site health checks"
+msgstr "Увімкнути перевірки стану сайтів"
+
+msgid "Concurrency"
+msgstr "Паралелізм"
+
+msgid "Sites checked at the same time."
+msgstr ""
+
+msgid "Time between two checks of the same site."
+msgstr ""
+
+msgid "Enable upstream health checks"
+msgstr "Увімкнути перевірки стану upstream"
+
+msgid "Proxy Targets"
+msgstr "Цілі проксі"
+
+msgid "Time between two checks of the same proxy target."
+msgstr ""
+
+msgid "External Notify"
+msgstr "Зовнішнє сповіщення"
+
+msgid "Channels that receive notifications from Nginx UI."
+msgstr ""
+
+msgid "Terminal Start Command"
+msgstr "Команда запуску терміналу"
+
+msgid "Enable Logrotate"
+msgstr ""
+
+msgid ""
+"Runs the rotation command on a schedule from Nginx UI. Mainly needed inside "
+"a Docker container."
+msgstr ""
+
+msgid "Command"
+msgstr "Команда"
+
+msgid "Minutes between two runs."
+msgstr ""
+
+msgid ""
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
+msgstr ""
+"База даних GeoLite2 надає географічну інформацію для IP-адрес. Вона "
+"використовується для офлайн-географічного аналізу в аналізі журналів."
+
+msgid "Custom MMDB"
+msgstr ""
+
+msgid "A custom database replaces the GeoLite2 download."
+msgstr ""
+
+msgid "Map Boundary Directory"
+msgstr "Каталог меж карт"
+
+msgid ""
+"Keep files with names like 100000_full.json in this directory. Only the "
+"world map is provided by default."
+msgstr ""
+
 msgid "Register passkey successfully"
 msgstr "Ключ доступу успішно зареєстровано"
 
@@ -7957,9 +8312,6 @@ msgstr "HTML"
 
 msgid "HTML Template (Optional)"
 msgstr "HTML-шаблон (необов’язково)"
-
-msgid "HTTP Proxy"
-msgstr "HTTP-проксі"
 
 msgid "Message Body (JSON)"
 msgstr "Тіло повідомлення (JSON)"
@@ -9042,6 +9394,24 @@ msgstr "Назад"
 msgid "Save configuration"
 msgstr "Зберегти конфігурацію"
 
+msgid "%{count} unsaved change"
+msgid_plural "%{count} unsaved changes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Discard"
+msgstr ""
+
+msgid "Keep editing"
+msgstr ""
+
+msgid "Search settings"
+msgstr ""
+
+msgid "No matching settings"
+msgstr ""
+
 msgid "Check the format of the API Base Url and API Proxy."
 msgstr "Перевірте формат API Base Url та API Proxy."
 
@@ -9079,38 +9449,98 @@ msgstr "2FA Налаштування"
 msgid "Unable to open SSH setup"
 msgstr "Не вдалося відкрити налаштування SSH"
 
+msgid "Basics"
+msgstr ""
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr ""
+
+msgid "Address, protocol and certificate used to reach this Nginx UI instance."
+msgstr ""
+
 msgid "App"
 msgstr "Додаток"
 
-msgid "External Notify"
-msgstr "Зовнішнє сповіщення"
-
-msgid "Health Check"
-msgstr "Перевірка стану"
+msgid "Sign-in session and list display of the web interface."
+msgstr ""
 
 msgid "Node"
 msgstr "Вузол"
 
+msgid "Identity and display details of this node."
+msgstr ""
+
+msgid "Go to nodes"
+msgstr ""
+
 msgid "HTTP"
 msgstr "HTTP"
+
+msgid "Proxies used when Nginx UI connects to the internet."
+msgstr ""
 
 msgid "Auth"
 msgstr "Авторизація"
 
-msgid "Access Tokens"
-msgstr "Токени доступу"
+msgid "Sign-in throttling, banned addresses and passkey origin."
+msgstr ""
+
+msgid "Credentials for the command line, automation and MCP clients."
+msgstr ""
 
 msgid "Cert"
 msgstr "Сертифікат"
 
+msgid ""
+"Contact, issuing service and renewal of certificates requested by Nginx UI."
+msgstr ""
+
+msgid "Go to certificates"
+msgstr ""
+
+msgid ""
+"Paths, commands, maintenance page and control mode of the managed Nginx."
+msgstr ""
+
 msgid "LLM"
 msgstr "LLM"
+
+msgid "Model and endpoint used by the assistant and code completion."
+msgstr ""
+
+msgid "Health Check"
+msgstr "Перевірка стану"
+
+msgid "Global switches and intervals for site and proxy target checks."
+msgstr ""
+
+msgid "Go to sites"
+msgstr ""
+
+msgid "Go to notifications"
+msgstr ""
+
+msgid "Shell started by the web terminal."
+msgstr ""
+
+msgid "Go to terminal"
+msgstr ""
 
 msgid "Logrotate"
 msgstr "Logrotate"
 
+msgid "Scheduled rotation of Nginx log files."
+msgstr ""
+
 msgid "GeoLite"
 msgstr "GeoLite"
+
+msgid "Geographic database and map files used by log analytics."
+msgstr ""
+
+msgid "Go to logs"
+msgstr ""
 
 msgid "Invalid settings: %{fields}"
 msgstr "Недопустимі налаштування: %{fields}"
@@ -9178,12 +9608,8 @@ msgstr "Не вдалося скопіювати токен доступу"
 msgid "Active"
 msgstr "Активний"
 
-msgid ""
-"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
-"Tokens are shown only once."
+msgid "Tokens"
 msgstr ""
-"Створюйте облікові дані з обмеженою областю дії для Nginx UI CLI, "
-"автоматизації та клієнтів MCP. Токени показуються лише один раз."
 
 msgid "Create Token"
 msgstr "Створити токен"
@@ -9238,77 +9664,40 @@ msgstr ""
 msgid "I have saved the token"
 msgstr "Я зберіг токен"
 
-msgid "Jwt Secret"
-msgstr "JWT Секрет"
-
-msgid "Page Size"
-msgstr "Розмір сторінки"
+msgid "General"
+msgstr ""
 
 msgid "Banned Until"
 msgstr "Заблоковано до"
 
-msgid "Webauthn"
-msgstr "WebAuthn"
-
-msgid "RPID"
-msgstr "RPID"
-
-msgid "RP Display Name"
-msgstr "Відображуване ім’я RP"
-
-msgid "RP Origins"
-msgstr "Джерела RP"
+msgid "Passkeys"
+msgstr ""
 
 msgid "Throttle"
 msgstr "Обмеження"
 
-msgid "Ban Threshold Minutes"
-msgstr "Хвилини до блокування"
-
-msgid "Max Attempts"
-msgstr "Максимальна кількість спроб"
-
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
-"ban threshold minutes,"
+"ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
-"Якщо кількість невдалих спроб входу з IP-адреси досягає максимуму протягом "
-"порогових хвилин блокування,"
-
-msgid "Banned IPs"
-msgstr "Заблоковані IP-адреси"
 
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Ви впевнені, що хочите видалити цю заборонену IP-адресу?"
 
-msgid "HTTP Challenge Port"
-msgstr "Порт HTTP-запиту"
-
-msgid "CADir"
-msgstr "CADir"
+msgid "Issuing"
+msgstr ""
 
 msgid "The url is invalid"
 msgstr "URL недійсний"
 
-msgid "Certificate Renewal Threshold"
-msgstr "Поріг оновлення сертифіката"
-
-msgid ""
-"Renew certificates when their remaining validity is less than or equal to "
-"this value."
+msgid "Renewal"
 msgstr ""
-"Оновлювати сертифікати, коли залишковий термін їх дії менший або дорівнює "
-"цьому значенню."
 
 msgid "Days"
 msgstr "Дні"
 
-msgid "Set the recursive nameservers to override the systems nameservers "
+msgid "DNS Challenge"
 msgstr ""
-"Встановіть рекурсивні сервери імен, щоб перевизначити системні сервери імен"
-
-msgid "Recursive Nameservers"
-msgstr "Рекурсивні сервери імен"
 
 msgid "Are you sure you want to remove this item?"
 msgstr "Ви впевнені, що хочете видалити цей елемент?"
@@ -9319,41 +9708,19 @@ msgstr "Це сповіщення вимкнено"
 msgid "Failed to send test message"
 msgstr "Не вдалося надіслати тестове повідомлення"
 
-msgid "Custom MMDB is currently enabled"
-msgstr "Користувацька MMDB зараз увімкнена"
+msgid "Database"
+msgstr ""
 
-msgid "IndexCustomMMDB File Name"
-msgstr "Ім'я файлу IndexCustomMMDB"
+msgid "Maps"
+msgstr ""
 
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This "
-"is used for offline geographic analysis in log analytics."
+"Please download China and province boundary files yourself and place them in "
+"this directory."
 msgstr ""
-"База даних GeoLite2 надає географічну інформацію для IP-адрес. Вона "
-"використовується для офлайн-географічного аналізу в аналізі журналів."
-
-msgid "Map Boundary Directory"
-msgstr "Каталог меж карт"
-
-msgid ""
-"Configured from [nginx_log].GeoMapPath. Keep files with names like "
-"100000_full.json in this directory."
-msgstr ""
-"Налаштовано з [nginx_log].GeoMapPath. Зберігайте файли з назвами на кшталт "
-"100000_full.json у цій теці."
-
-msgid ""
-"Only the world map is provided by default. Please download China and "
-"province boundary files yourself and place them in this directory."
-msgstr ""
-"За замовчуванням надається лише карта світу. Будь ласка, завантажте файли "
-"меж Китаю та провінцій самостійно та розмістіть їх у цьому каталозі."
 
 msgid "Template reference"
 msgstr "Посилання на шаблон"
-
-msgid "Global health check controls"
-msgstr "Глобальне керування перевірками стану"
 
 msgid ""
 "A global pause stops network probes without changing individual site or "
@@ -9364,29 +9731,14 @@ msgstr ""
 "чи upstream. Виявлення залишається активним, тому налаштовані цілі лишаються "
 "видимими."
 
-msgid "Enable site health checks"
-msgstr "Увімкнути перевірки стану сайтів"
-
-msgid "Concurrency"
-msgstr "Паралелізм"
-
 msgid "Seconds"
 msgstr "Секунди"
 
-msgid "Proxy Targets"
-msgstr "Цілі проксі"
-
-msgid "Enable upstream health checks"
-msgstr "Увімкнути перевірки стану upstream"
-
-msgid "Github Proxy"
-msgstr "Github Проксі"
+msgid "Proxies"
+msgstr ""
 
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Для китайських користувачів: https://cloud.nginxui.com/"
-
-msgid "Insecure Skip Verify"
-msgstr "Небезпечне пропускання перевірки"
 
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
@@ -9403,88 +9755,26 @@ msgstr ""
 "можете вручну активувати цю опцію. Планувальник завдань crontab у Nginx UI "
 "виконуватиме команду logrotate з інтервалом, який ви встановите у хвилинах."
 
-msgid "Command"
-msgstr "Команда"
-
 msgid "Minutes"
 msgstr "Хвилини"
 
-msgid "Stub Status Port"
-msgstr "Порт статусу Stub"
-
-msgid "Maintenance host"
-msgstr "Хост обслуговування"
+msgid "Maintenance Page"
+msgstr ""
 
 msgid "http://127.0.0.1:9000"
 msgstr "http://127.0.0.1:9000"
 
-msgid ""
-"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
-"to use this Nginx UI instance."
-msgstr ""
-"Необов'язкове джерело HTTP або HTTPS, яке обслуговує сторінку "
-"обслуговування. Залиште порожнім, щоб використовувати цей екземпляр Nginx UI."
-
-msgid "Maintenance bypass IP"
-msgstr "IP для обходу обслуговування"
-
 msgid "203.0.113.10"
 msgstr "203.0.113.10"
-
-msgid ""
-"Requests from this IPv4 or IPv6 address continue to use the original site "
-"while maintenance mode is active."
-msgstr ""
-"Запити з цієї адреси IPv4 або IPv6 продовжують використовувати оригінальний "
-"сайт, поки активний режим обслуговування."
-
-msgid "Maintenance template (filename only)"
-msgstr "Шаблон обслуговування (лише ім'я файлу)"
-
-msgid "maintenance.html"
-msgstr "maintenance.html"
 
 msgid "Mounted directory"
 msgstr "Змонтований каталог"
 
-msgid ""
-"The file named <site name>.<filename> is used first; if it does not exist, "
-"the generic <filename> is used; if neither exists, the built-in Nginx UI "
-"maintenance page is used."
+msgid "maintenance.html"
+msgstr "maintenance.html"
+
+msgid "Control Mode"
 msgstr ""
-"Спочатку використовується файл із назвою <site name>.<filename>; якщо його "
-"не існує, використовується загальний файл <filename>; якщо жодного не існує, "
-"використовується вбудована сторінка технічного обслуговування Nginx UI."
-
-msgid "Nginx Access Log Path"
-msgstr "Шлях до журналу доступу Nginx"
-
-msgid "Nginx Error Log Path"
-msgstr "Шлях до журналу помилок Nginx"
-
-msgid "Nginx Configurations Directory"
-msgstr "Каталог конфігурацій Nginx"
-
-msgid "Nginx Configuration Path"
-msgstr "Шлях до конфігурації Nginx"
-
-msgid "Nginx Log Directory Whitelist"
-msgstr "Білий список каталогів журналів Nginx"
-
-msgid "Nginx PID Path"
-msgstr "Шлях до PID Nginx"
-
-msgid "Nginx Test Config Command"
-msgstr "Команда тестування конфігурації Nginx"
-
-msgid "Nginx Reload Command"
-msgstr "Команда перезавантаження Nginx"
-
-msgid "Nginx Restart Command"
-msgstr "Команда перезавантаження Nginx"
-
-msgid "Nginx Control Mode"
-msgstr "Режим керування Nginx"
 
 msgid "Host via SSH"
 msgstr "Хост через SSH"
@@ -9516,11 +9806,11 @@ msgstr "Зовнішній контейнер"
 msgid "Open SSH setup wizard"
 msgstr "Відкрити майстер налаштування SSH"
 
-msgid "Instance ID"
-msgstr "Ідентифікатор екземпляра"
+msgid "Paths and Commands"
+msgstr ""
 
-msgid "Node name"
-msgstr "Ім’я вузла"
+msgid "Identity"
+msgstr ""
 
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
@@ -9529,20 +9819,8 @@ msgstr ""
 "Ім'я вузла має містити лише літери, unicode, цифри, дефіси, тире, двокрапки "
 "та крапки."
 
-msgid ""
-"Customize the name of local node to be displayed in the environment "
-"indicator."
+msgid "Footer"
 msgstr ""
-"Налаштуйте назву локального вузла для відображення в індикаторі середовища."
-
-msgid "Skip Installation"
-msgstr "Пропустити встановлення"
-
-msgid "Demo"
-msgstr "Демо"
-
-msgid "ICP Number"
-msgstr "Номер ICP"
 
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
@@ -9553,9 +9831,6 @@ msgstr ""
 
 msgid "For Chinese user"
 msgstr "Для китайських користувачів"
-
-msgid "Public Security Number"
-msgstr "Номер громадської безпеки"
 
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
@@ -9649,71 +9924,26 @@ msgstr ""
 msgid "Connection"
 msgstr "Підключення"
 
-msgid "API Base Url"
-msgstr "Базова URL-адреса API"
-
 msgid "Regional endpoints"
 msgstr "Регіональні кінцеві точки"
 
 msgid "Documentation"
 msgstr "Документація"
 
-msgid "API Token"
-msgstr "API-токен"
-
 msgid "Token is not valid"
 msgstr "Токен недійсний"
-
-msgid "Advanced"
-msgstr "Розширене"
-
-msgid "API Proxy"
-msgstr "API Проксі"
-
-msgid "API Type"
-msgstr "API Тип"
 
 msgid "Models"
 msgstr "Моделі"
 
-msgid "Assistant models"
-msgstr "Моделі асистента"
-
-msgid "The models to choose from in the assistant."
-msgstr "Моделі, з яких можна вибирати в асистенті."
-
 msgid "Choose one or more models"
 msgstr "Виберіть одну або кілька моделей"
-
-msgid "Default model"
-msgstr "Модель за замовчуванням"
-
-msgid "Used for new chats, chat titles and, unless set below, code completion."
-msgstr ""
-"Використовується для нових чатів, назв чатів і, якщо не задано нижче, "
-"автодоповнення коду."
 
 msgid "Choose the assistant models first"
 msgstr "Спочатку виберіть моделі асистента"
 
-msgid ""
-"How each model switches its thinking levels. Pick the convention of your "
-"provider, or edit the request fields."
+msgid "Code Completion"
 msgstr ""
-"Як кожна модель перемикає рівні мислення. Виберіть конвенцію вашого "
-"провайдера або відредагуйте поля запиту."
-
-msgid "Enable Code Completion"
-msgstr "Увімкнути автодоповнення коду"
-
-msgid "Code Completion Model"
-msgstr "Модель автодоповнення коду"
-
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
-msgstr ""
-"Модель, яка використовується для завершення коду. Якщо вона не встановлена, "
-"буде використовуватися модель чату."
 
 msgid "Same as the chat model (%{model})"
 msgstr "Та сама модель, що й для чату (%{model})"
@@ -9721,39 +9951,23 @@ msgstr "Та сама модель, що й для чату (%{model})"
 msgid "Same as the chat model"
 msgstr "Те саме, що й модель чату"
 
-msgid "Unix Socket"
-msgstr "Unix-сокет"
+msgid "Advanced"
+msgstr "Розширене"
 
-msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
-msgstr "Nginx UI слухає на цьому Unix-сокеті замість TCP-хоста та порту."
-
-msgid "Run Mode"
-msgstr "Режим роботи"
-
-msgid "Enable HTTPS"
-msgstr "Увімкнути HTTPS"
-
-msgid "SSL Key Path"
-msgstr "Шлях до SSL-ключа"
-
-msgid ""
-"Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
+msgid "Listen Address"
 msgstr ""
-"Налаштування протоколу діє лише при прямому підключенні. Якщо ви "
-"використовуєте зворотний проксі, налаштуйте протокол окремо у зворотному "
-"проксі."
 
-msgid "Enable HTTP/2"
-msgstr "Увімкнути HTTP/2"
-
-msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgid "All interfaces"
 msgstr ""
-"Увімкнення підтримки HTTP/2 з можливістю мультиплексування та push-"
-"повідомлень сервера"
 
-msgid "Enable HTTP/3"
-msgstr "Увімкнути HTTP/3"
+msgid "HTTPS"
+msgstr "HTTPS"
+
+msgid "Certificate"
+msgstr "Сертифікат"
+
+msgid "Pick the certificate that secures the web interface."
+msgstr ""
 
 msgid ""
 "HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on "
@@ -9762,13 +9976,13 @@ msgstr ""
 "HTTP/3 потребує UDP-слухача і недоступний, доки Nginx UI слухає через Unix "
 "socket."
 
-msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse proxy."
 msgstr ""
-"Увімкнути підтримку HTTP/3 на основі протоколу QUIC для найкращої "
-"продуктивності"
-
-msgid "Terminal Start Command"
-msgstr "Команда запуску терміналу"
+"Налаштування протоколу діє лише при прямому підключенні. Якщо ви "
+"використовуєте зворотний проксі, налаштуйте протокол окремо у зворотному "
+"проксі."
 
 msgid "End time must be later than start time"
 msgstr "Час закінчення повинен бути пізнішим за час початку"
@@ -9802,9 +10016,6 @@ msgstr "Додаткова інформація"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Наприклад: очікуваний план відновлення або посилання на інцидент"
-
-msgid "HTTPS"
-msgstr "HTTPS"
 
 msgid "Configuration Name"
 msgstr "Назва конфігурації"
@@ -10274,9 +10485,6 @@ msgstr "Додайте принаймні один домен або IP-адре
 
 msgid "e.g. example.com www.example.com"
 msgstr "напр. example.com www.example.com"
-
-msgid "Certificate"
-msgstr "Сертифікат"
 
 msgid "Recommended"
 msgstr ""
@@ -10923,3 +11131,41 @@ msgstr "Одна панель"
 
 msgid "Split view"
 msgstr "Розділений вигляд"
+
+#~ msgid "Webauthn"
+#~ msgstr "WebAuthn"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts "
+#~ "in ban threshold minutes,"
+#~ msgstr ""
+#~ "Якщо кількість невдалих спроб входу з IP-адреси досягає максимуму "
+#~ "протягом порогових хвилин блокування,"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr ""
+#~ "Встановіть рекурсивні сервери імен, щоб перевизначити системні сервери "
+#~ "імен"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "Користувацька MMDB зараз увімкнена"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "Ім'я файлу IndexCustomMMDB"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "Налаштовано з [nginx_log].GeoMapPath. Зберігайте файли з назвами на "
+#~ "кшталт 100000_full.json у цій теці."
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "За замовчуванням надається лише карта світу. Будь ласка, завантажте файли "
+#~ "меж Китаю та провінцій самостійно та розмістіть їх у цьому каталозі."
+
+#~ msgid "Global health check controls"
+#~ msgstr "Глобальне керування перевірками стану"

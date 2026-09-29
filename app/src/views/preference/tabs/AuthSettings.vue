@@ -4,6 +4,7 @@ import type { Ref } from 'vue'
 import type { BannedIP } from '@/api/settings'
 import dayjs from 'dayjs'
 import setting from '@/api/settings'
+import { SettingPanel, SettingRow } from '@/components/SettingPanel'
 import useSystemSettingsStore from '../store'
 
 const { message } = App.useApp()
@@ -52,97 +53,99 @@ function removeBannedIP(ip: string) {
 
 <template>
   <div>
-    <div
+    <SettingPanel
       v-if="data.webauthn.rpid
         && data.webauthn.rp_display_name
         && data.webauthn.rp_origins?.length > 0"
-      class="mb-4"
+      :title="$gettext('Passkeys')"
     >
-      <h3>
-        {{ $gettext('Webauthn') }}
-      </h3>
-      <div class="mb-4">
-        <h4>
-          {{ $gettext('RPID') }}
-        </h4>
-        <p>{{ data.webauthn.rpid }}</p>
-      </div>
-      <div class="mb-4">
-        <h4>
-          {{ $gettext('RP Display Name') }}
-        </h4>
-        <p>{{ data.webauthn.rp_display_name }}</p>
-      </div>
-      <div>
-        <h4>
-          {{ $gettext('RP Origins') }}
-        </h4>
-        <div
-          v-for="origin in data.webauthn.rp_origins"
-          :key="origin"
-          class="mb-4"
-        >
-          {{ origin }}
+      <SettingRow
+        :title="$gettext('RPID')"
+        path="webauthn.rpid"
+        config-file="webauthn"
+        :value="data.webauthn.rpid"
+      />
+      <SettingRow
+        :title="$gettext('RP Display Name')"
+        path="webauthn.rp_display_name"
+        config-file="webauthn"
+        :value="data.webauthn.rp_display_name"
+      />
+      <SettingRow
+        :title="$gettext('RP Origins')"
+        path="webauthn.rp_origins"
+        config-file="webauthn"
+      >
+        <div class="text-right text-gray-500">
+          <div
+            v-for="origin in data.webauthn.rp_origins"
+            :key="origin"
+          >
+            {{ origin }}
+          </div>
         </div>
-      </div>
-    </div>
-    <h3>{{ $gettext('Throttle') }}</h3>
-    <AForm
-      layout="horizontal"
-      class="max-w-150"
+      </SettingRow>
+    </SettingPanel>
+
+    <SettingPanel
+      :title="$gettext('Throttle')"
+      :description="$gettext('If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes, the ip will be banned for a period of time.')"
     >
-      <AFormItem :label="$gettext('Ban Threshold Minutes')">
+      <SettingRow
+        :title="$gettext('Ban Threshold Minutes')"
+        :description="$gettext('Window in which failed sign-in attempts from one address are counted.')"
+        path="auth.ban_threshold_minutes"
+      >
         <AInputNumber
           v-model:value="data.auth.ban_threshold_minutes"
-          min="1"
+          :min="1"
           class="w-30"
         />
-      </AFormItem>
-      <AFormItem :label="$gettext('Max Attempts')">
+      </SettingRow>
+      <SettingRow
+        :title="$gettext('Max Attempts')"
+        :description="$gettext('Failed attempts allowed inside the window before the address is banned for a while.')"
+        path="auth.max_attempts"
+      >
         <AInputNumber
           v-model:value="data.auth.max_attempts"
-          min="1"
+          :min="1"
           class="w-30"
         />
-      </AFormItem>
-    </AForm>
-    <AAlert
-      class="mb-6"
-      show-icon
-      :title="$gettext('If the number of login failed attempts from a ip reach the max attempts in ban threshold minutes,'
-        + ' the ip will be banned for a period of time.')"
-      type="info"
-    />
-    <h3 class="mb-4">
-      {{ $gettext('Banned IPs') }}
-    </h3>
-    <div class="mb-6">
-      <ATable
-        :columns="bannedIPColumns"
-        row-key="ip"
-        :data-source="bannedIPs"
-        size="small"
+      </SettingRow>
+    </SettingPanel>
+
+    <SettingPanel
+      :title="$gettext('Banned IPs')"
+      :description="$gettext('Addresses that are currently blocked from signing in.')"
+    >
+      <div
+        class="pb-3"
+        data-setting-path="auth.banned_ips"
       >
-        <template #bodyCell="{ column, record }">
-          <template v-if="column.dataIndex === 'action'">
-            <APopconfirm
-              :title="$gettext('Are you sure to delete this banned IP immediately?')"
-              :ok-text="$gettext('Yes')"
-              :cancel-text="$gettext('No')"
-              placement="bottom"
-              @confirm="() => removeBannedIP(record.ip)"
-            >
-              <a>
-                {{ $gettext('Remove') }}
-              </a>
-            </APopconfirm>
+        <ATable
+          :columns="bannedIPColumns"
+          row-key="ip"
+          :data-source="bannedIPs"
+          size="small"
+        >
+          <template #bodyCell="{ column, record }">
+            <template v-if="column.dataIndex === 'action'">
+              <APopconfirm
+                :title="$gettext('Are you sure to delete this banned IP immediately?')"
+                :ok-text="$gettext('Yes')"
+                :cancel-text="$gettext('No')"
+                placement="bottom"
+                @confirm="() => removeBannedIP(record.ip)"
+              >
+                <a>
+                  {{ $gettext('Remove') }}
+                </a>
+              </APopconfirm>
+            </template>
           </template>
-        </template>
-      </ATable>
-    </div>
+        </ATable>
+      </div>
+    </SettingPanel>
   </div>
 </template>
-
-<style lang="less" scoped>
-
-</style>

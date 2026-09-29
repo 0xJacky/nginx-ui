@@ -1544,6 +1544,21 @@ msgstr "Yükleniyor..."
 msgid "Show"
 msgstr "Göster"
 
+msgid "Change it in the %{section} section of app.ini."
+msgstr ""
+
+msgid "Unsaved"
+msgstr ""
+
+msgid "Restart required"
+msgstr ""
+
+msgid "Config file"
+msgstr ""
+
+msgid "Not set"
+msgstr ""
+
 msgid "Remove"
 msgstr "Kaldır"
 
@@ -7568,6 +7583,344 @@ msgstr "OIDC Girişi"
 msgid "Sign in with a passkey"
 msgstr "Bir anahtarla oturum aç"
 
+msgid "Unix Socket"
+msgstr "Unix Socket"
+
+msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgstr ""
+"Nginx UI, TCP ana bilgisayar ve bağlantı noktası yerine bu Unix soketinde "
+"dinler."
+
+msgid "Run Mode"
+msgstr "Çalışma Modu"
+
+msgid "Enable HTTPS"
+msgstr "HTTPS'yi Etkinleştir"
+
+msgid ""
+"Serves the web interface over HTTPS. Saving this change restarts Nginx UI "
+"and reloads the page."
+msgstr ""
+
+msgid "SSL Key Path"
+msgstr "SSL Anahtar Yolu"
+
+msgid "Enable HTTP/2"
+msgstr "HTTP/2'yi Etkinleştir"
+
+msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
+msgstr "Çoklama ve sunucu itme özellikleri ile HTTP/2 desteğini etkinleştirir"
+
+msgid "Enable HTTP/3"
+msgstr "HTTP/3'ü Etkinleştir"
+
+msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgstr ""
+"En iyi performans için QUIC protokolüne dayalı HTTP/3 desteğini etkinleştirir"
+
+msgid "Jwt Secret"
+msgstr "Jwt Secret"
+
+msgid "Page Size"
+msgstr "Sayfa Boyutu"
+
+msgid "Instance ID"
+msgstr "Örnek Kimliği"
+
+msgid "Node name"
+msgstr "Düğüm adı"
+
+msgid ""
+"Customize the name of local node to be displayed in the environment "
+"indicator."
+msgstr "Ortam göstergesinde görüntülenecek yerel düğüm adını özelleştirin."
+
+msgid "Skip Installation"
+msgstr "Kurulumu atla"
+
+msgid "Demo"
+msgstr "Demo"
+
+msgid "ICP Number"
+msgstr "ICP Numarası"
+
+msgid ""
+"Shown in the page footer. Only needed for sites hosted in mainland China."
+msgstr ""
+
+msgid "Public Security Number"
+msgstr "Kamu Güvenlik Numarası"
+
+msgid "Github Proxy"
+msgstr "Github Proxy"
+
+msgid ""
+"Used for downloads from GitHub, such as upgrades and the GeoLite database."
+msgstr ""
+
+msgid "HTTP Proxy"
+msgstr "HTTP Proxy"
+
+msgid "Used for other outgoing requests made by Nginx UI."
+msgstr ""
+
+msgid "Insecure Skip Verify"
+msgstr "Güvensiz Doğrulamayı Atla"
+
+msgid "RPID"
+msgstr "RPID"
+
+msgid "RP Display Name"
+msgstr "RP Görünen Adı"
+
+msgid "RP Origins"
+msgstr "RP Kökenleri"
+
+msgid "Ban Threshold Minutes"
+msgstr "Yasaklama Eşiği Süresi (Dakika)"
+
+msgid "Window in which failed sign-in attempts from one address are counted."
+msgstr ""
+
+msgid "Max Attempts"
+msgstr "Maksimum Deneme Sayısı"
+
+msgid ""
+"Failed attempts allowed inside the window before the address is banned for a "
+"while."
+msgstr ""
+
+msgid "Banned IPs"
+msgstr "Yasaklı IP'ler"
+
+msgid "Addresses that are currently blocked from signing in."
+msgstr ""
+
+msgid "Access Tokens"
+msgstr "Erişim Belirteçleri"
+
+msgid ""
+"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
+"Tokens are shown only once."
+msgstr ""
+"Nginx UI CLI, otomasyon ve MCP istemcileri için kapsamlı kimlik bilgileri "
+"oluşturun. Belirteçler yalnızca bir kez gösterilir."
+
+msgid "Contact address registered with the certificate authority."
+msgstr ""
+
+msgid "HTTP Challenge Port"
+msgstr "HTTP Doğrulama Bağlantı Noktası"
+
+msgid ""
+"Port that answers validation requests while a certificate is being issued."
+msgstr ""
+
+msgid "CADir"
+msgstr "CADir"
+
+msgid "Service that issues certificates. Leave empty to use the default."
+msgstr ""
+
+msgid "Certificate Renewal Threshold"
+msgstr "Sertifika Yenileme Eşiği"
+
+msgid ""
+"Renew certificates when their remaining validity is less than or equal to "
+"this value."
+msgstr ""
+"Kalan geçerlilik süresi bu değere eşit veya daha az olduğunda sertifikaları "
+"yenileyin."
+
+msgid "Recursive Nameservers"
+msgstr "Özyinelemeli İsim Sunucuları"
+
+msgid ""
+"Set the recursive nameservers to override the systems nameservers for the "
+"step of DNS challenge."
+msgstr ""
+
+msgid "Stub Status Port"
+msgstr "Stub Durum Portu"
+
+msgid "Local port used to read Nginx connection statistics."
+msgstr ""
+
+msgid "Maintenance host"
+msgstr "Bakım sunucusu"
+
+msgid ""
+"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
+"to use this Nginx UI instance."
+msgstr ""
+"Bakım sayfasını sunan isteğe bağlı HTTP veya HTTPS kaynağı. Bu Nginx UI "
+"örneğini kullanmak için boş bırakın."
+
+msgid "Maintenance bypass IP"
+msgstr "Bakım atlama IP'si"
+
+msgid ""
+"Requests from this IPv4 or IPv6 address continue to use the original site "
+"while maintenance mode is active."
+msgstr ""
+"Bu IPv4 veya IPv6 adresinden gelen istekler, bakım modu etkinken orijinal "
+"siteyi kullanmaya devam eder."
+
+msgid "Maintenance template (filename only)"
+msgstr "Bakım şablonu (yalnızca dosya adı)"
+
+msgid ""
+"The file named <site name>.<filename> is used first; if it does not exist, "
+"the generic <filename> is used; if neither exists, the built-in Nginx UI "
+"maintenance page is used."
+msgstr ""
+"<site name>.<filename> adlı dosya ilk olarak kullanılır; yoksa, genel "
+"<filename> dosyası kullanılır; hiçbiri yoksa, yerleşik Nginx UI bakım "
+"sayfası kullanılır."
+
+msgid "Nginx Control Mode"
+msgstr "Nginx Kontrol Modu"
+
+msgid "How Nginx UI reaches the Nginx it manages."
+msgstr ""
+
+msgid "Nginx Access Log Path"
+msgstr "Nginx Erişim Günlüğü Yolu"
+
+msgid "Nginx Error Log Path"
+msgstr "Nginx Hata Günlüğü Yolu"
+
+msgid "Nginx Configurations Directory"
+msgstr "Nginx Yapılandırma Dizini"
+
+msgid "Nginx Configuration Path"
+msgstr "Nginx Yapılandırma Dosyası Yolu"
+
+msgid "Nginx Log Directory Whitelist"
+msgstr "Nginx Günlük Dizin Beyaz Listesi"
+
+msgid "Nginx PID Path"
+msgstr "Nginx PID Yolu"
+
+msgid "Nginx Test Config Command"
+msgstr "Nginx Yapılandırma Test Komutu"
+
+msgid "Nginx Reload Command"
+msgstr "Nginx Yeniden Yükleme Komutu"
+
+msgid "Nginx Restart Command"
+msgstr "Nginx Yeniden Başlatma Komutu"
+
+msgid "API Base Url"
+msgstr "API Temel Bağlantı Adresi"
+
+msgid "API Token"
+msgstr "API Anahtarı"
+
+msgid "API Proxy"
+msgstr "API Proxy"
+
+msgid "API Type"
+msgstr "API Türü"
+
+msgid "Assistant models"
+msgstr "Asistan modelleri"
+
+msgid "The models to choose from in the assistant."
+msgstr "Asistende seçilebilecek modeller."
+
+msgid "Default model"
+msgstr "Varsayılan model"
+
+msgid "Used for new chats, chat titles and, unless set below, code completion."
+msgstr ""
+"Yeni sohbetler, sohbet başlıkları ve aşağıda ayarlanmadığı durumda kod "
+"tamamlama için kullanılır."
+
+msgid ""
+"How each model switches its thinking levels. Pick the convention of your "
+"provider, or edit the request fields."
+msgstr ""
+"Her modelin düşünce seviyelerini nasıl değiştirdiği. Sağlayıcınızın kuralını "
+"seçin veya istek alanlarını düzenleyin."
+
+msgid "Enable Code Completion"
+msgstr "Kod Tamamlamayı Etkinleştir"
+
+msgid "Code Completion Model"
+msgstr "Kod Tamamlama Modeli"
+
+msgid ""
+"The model used for code completion, if not set, the chat model will be used."
+msgstr ""
+"Kod tamamlama için kullanılan model. Ayarlanmamışsa sohbet modeli "
+"kullanılacaktır."
+
+msgid "Enable site health checks"
+msgstr "Site sağlık denetimlerini etkinleştir"
+
+msgid "Concurrency"
+msgstr "Eşzamanlılık"
+
+msgid "Sites checked at the same time."
+msgstr ""
+
+msgid "Time between two checks of the same site."
+msgstr ""
+
+msgid "Enable upstream health checks"
+msgstr "Upstream sağlık denetimlerini etkinleştir"
+
+msgid "Proxy Targets"
+msgstr "Proxy Hedefleri"
+
+msgid "Time between two checks of the same proxy target."
+msgstr ""
+
+msgid "External Notify"
+msgstr "Harici Bildirim"
+
+msgid "Channels that receive notifications from Nginx UI."
+msgstr ""
+
+msgid "Terminal Start Command"
+msgstr "Terminal Başlatma Komutu"
+
+msgid "Enable Logrotate"
+msgstr ""
+
+msgid ""
+"Runs the rotation command on a schedule from Nginx UI. Mainly needed inside "
+"a Docker container."
+msgstr ""
+
+msgid "Command"
+msgstr "Komut"
+
+msgid "Minutes between two runs."
+msgstr ""
+
+msgid ""
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
+msgstr ""
+"GeoLite2 veritabanı, IP adresleri için coğrafi bilgi sağlar. Bu, günlük "
+"analizinde çevrimdışı coğrafi analiz için kullanılır."
+
+msgid "Custom MMDB"
+msgstr ""
+
+msgid "A custom database replaces the GeoLite2 download."
+msgstr ""
+
+msgid "Map Boundary Directory"
+msgstr "Harita Sınır Dizini"
+
+msgid ""
+"Keep files with names like 100000_full.json in this directory. Only the "
+"world map is provided by default."
+msgstr ""
+
 msgid "Register passkey successfully"
 msgstr "Geçiş anahtarı başarıyla kaydedildi"
 
@@ -7903,9 +8256,6 @@ msgstr "HTML"
 
 msgid "HTML Template (Optional)"
 msgstr "HTML şablonu (isteğe bağlı)"
-
-msgid "HTTP Proxy"
-msgstr "HTTP Proxy"
 
 msgid "Message Body (JSON)"
 msgstr "Mesaj gövdesi (JSON)"
@@ -8994,6 +9344,23 @@ msgstr "Önceki"
 msgid "Save configuration"
 msgstr "Yapılandırmayı kaydet"
 
+msgid "%{count} unsaved change"
+msgid_plural "%{count} unsaved changes"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Discard"
+msgstr ""
+
+msgid "Keep editing"
+msgstr ""
+
+msgid "Search settings"
+msgstr ""
+
+msgid "No matching settings"
+msgstr ""
+
 msgid "Check the format of the API Base Url and API Proxy."
 msgstr "API Base Url ve API Proxy biçimini kontrol edin."
 
@@ -9031,38 +9398,98 @@ msgstr "2FA Ayarları"
 msgid "Unable to open SSH setup"
 msgstr "SSH kurulumu açılamadı"
 
+msgid "Basics"
+msgstr ""
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr ""
+
+msgid "Address, protocol and certificate used to reach this Nginx UI instance."
+msgstr ""
+
 msgid "App"
 msgstr "Uygulama"
 
-msgid "External Notify"
-msgstr "Harici Bildirim"
-
-msgid "Health Check"
-msgstr "Sağlık Kontrolü"
+msgid "Sign-in session and list display of the web interface."
+msgstr ""
 
 msgid "Node"
 msgstr "Düğüm"
 
+msgid "Identity and display details of this node."
+msgstr ""
+
+msgid "Go to nodes"
+msgstr ""
+
 msgid "HTTP"
 msgstr "HTTP"
+
+msgid "Proxies used when Nginx UI connects to the internet."
+msgstr ""
 
 msgid "Auth"
 msgstr "Kimlik Doğrulama"
 
-msgid "Access Tokens"
-msgstr "Erişim Belirteçleri"
+msgid "Sign-in throttling, banned addresses and passkey origin."
+msgstr ""
+
+msgid "Credentials for the command line, automation and MCP clients."
+msgstr ""
 
 msgid "Cert"
 msgstr "Sertifika"
 
+msgid ""
+"Contact, issuing service and renewal of certificates requested by Nginx UI."
+msgstr ""
+
+msgid "Go to certificates"
+msgstr ""
+
+msgid ""
+"Paths, commands, maintenance page and control mode of the managed Nginx."
+msgstr ""
+
 msgid "LLM"
 msgstr "LLM"
+
+msgid "Model and endpoint used by the assistant and code completion."
+msgstr ""
+
+msgid "Health Check"
+msgstr "Sağlık Kontrolü"
+
+msgid "Global switches and intervals for site and proxy target checks."
+msgstr ""
+
+msgid "Go to sites"
+msgstr ""
+
+msgid "Go to notifications"
+msgstr ""
+
+msgid "Shell started by the web terminal."
+msgstr ""
+
+msgid "Go to terminal"
+msgstr ""
 
 msgid "Logrotate"
 msgstr "Logrotate"
 
+msgid "Scheduled rotation of Nginx log files."
+msgstr ""
+
 msgid "GeoLite"
 msgstr "GeoLite"
+
+msgid "Geographic database and map files used by log analytics."
+msgstr ""
+
+msgid "Go to logs"
+msgstr ""
 
 msgid "Invalid settings: %{fields}"
 msgstr "Geçersiz ayarlar: %{fields}"
@@ -9130,12 +9557,8 @@ msgstr "Erişim belirteci kopyalanamadı"
 msgid "Active"
 msgstr "Etkin"
 
-msgid ""
-"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
-"Tokens are shown only once."
+msgid "Tokens"
 msgstr ""
-"Nginx UI CLI, otomasyon ve MCP istemcileri için kapsamlı kimlik bilgileri "
-"oluşturun. Belirteçler yalnızca bir kez gösterilir."
 
 msgid "Create Token"
 msgstr "Belirteç Oluştur"
@@ -9190,78 +9613,40 @@ msgstr ""
 msgid "I have saved the token"
 msgstr "Belirteci kaydettim"
 
-msgid "Jwt Secret"
-msgstr "Jwt Secret"
-
-msgid "Page Size"
-msgstr "Sayfa Boyutu"
+msgid "General"
+msgstr ""
 
 msgid "Banned Until"
 msgstr "Şu Zamana Kadar Yasaklı"
 
-msgid "Webauthn"
-msgstr "WebAuthn"
-
-msgid "RPID"
-msgstr "RPID"
-
-msgid "RP Display Name"
-msgstr "RP Görünen Adı"
-
-msgid "RP Origins"
-msgstr "RP Kökenleri"
+msgid "Passkeys"
+msgstr ""
 
 msgid "Throttle"
 msgstr "Kısıtlama"
 
-msgid "Ban Threshold Minutes"
-msgstr "Yasaklama Eşiği Süresi (Dakika)"
-
-msgid "Max Attempts"
-msgstr "Maksimum Deneme Sayısı"
-
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
-"ban threshold minutes,"
+"ban threshold minutes, the ip will be banned for a period of time."
 msgstr ""
-"Bir IP'den başarısız oturum açma denemesi sayısı, engelleme eşiği dakikaları "
-"içinde maksimum denemeye ulaşırsa,"
-
-msgid "Banned IPs"
-msgstr "Yasaklı IP'ler"
 
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Bu yasaklı IP'yi hemen sileceğinizden emin misiniz?"
 
-msgid "HTTP Challenge Port"
-msgstr "HTTP Doğrulama Bağlantı Noktası"
-
-msgid "CADir"
-msgstr "CADir"
+msgid "Issuing"
+msgstr ""
 
 msgid "The url is invalid"
 msgstr "URL geçersiz"
 
-msgid "Certificate Renewal Threshold"
-msgstr "Sertifika Yenileme Eşiği"
-
-msgid ""
-"Renew certificates when their remaining validity is less than or equal to "
-"this value."
+msgid "Renewal"
 msgstr ""
-"Kalan geçerlilik süresi bu değere eşit veya daha az olduğunda sertifikaları "
-"yenileyin."
 
 msgid "Days"
 msgstr "Günler"
 
-msgid "Set the recursive nameservers to override the systems nameservers "
+msgid "DNS Challenge"
 msgstr ""
-"Sistem ad sunucularını geçersiz kılmak için özyineli ad sunucularını "
-"ayarlayın"
-
-msgid "Recursive Nameservers"
-msgstr "Özyinelemeli İsim Sunucuları"
 
 msgid "Are you sure you want to remove this item?"
 msgstr "Bu öğeyi kaldırmak istediğinizden emin misiniz?"
@@ -9272,41 +9657,19 @@ msgstr "Bu bildirim devre dışı bırakıldı"
 msgid "Failed to send test message"
 msgstr "Test mesajı gönderilemedi"
 
-msgid "Custom MMDB is currently enabled"
-msgstr "Özel MMDB şu anda etkin"
+msgid "Database"
+msgstr ""
 
-msgid "IndexCustomMMDB File Name"
-msgstr "IndexCustomMMDB Dosya Adı"
+msgid "Maps"
+msgstr ""
 
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This "
-"is used for offline geographic analysis in log analytics."
+"Please download China and province boundary files yourself and place them in "
+"this directory."
 msgstr ""
-"GeoLite2 veritabanı, IP adresleri için coğrafi bilgi sağlar. Bu, günlük "
-"analizinde çevrimdışı coğrafi analiz için kullanılır."
-
-msgid "Map Boundary Directory"
-msgstr "Harita Sınır Dizini"
-
-msgid ""
-"Configured from [nginx_log].GeoMapPath. Keep files with names like "
-"100000_full.json in this directory."
-msgstr ""
-"[nginx_log].GeoMapPath üzerinden yapılandırılmıştır. 100000_full.json gibi "
-"adlara sahip dosyaları bu dizinde saklayın."
-
-msgid ""
-"Only the world map is provided by default. Please download China and "
-"province boundary files yourself and place them in this directory."
-msgstr ""
-"Varsayılan olarak yalnızca dünya haritası sağlanır. Lütfen Çin ve il sınır "
-"dosyalarını kendiniz indirip bu dizine yerleştirin."
 
 msgid "Template reference"
 msgstr "Şablon referansı"
-
-msgid "Global health check controls"
-msgstr "Genel sağlık denetimi kontrolleri"
 
 msgid ""
 "A global pause stops network probes without changing individual site or "
@@ -9317,29 +9680,14 @@ msgstr ""
 "yoklamalarını durdurur. Keşif etkin kalır, böylece yapılandırılmış hedefler "
 "görünür olmayı sürdürür."
 
-msgid "Enable site health checks"
-msgstr "Site sağlık denetimlerini etkinleştir"
-
-msgid "Concurrency"
-msgstr "Eşzamanlılık"
-
 msgid "Seconds"
 msgstr "Saniye"
 
-msgid "Proxy Targets"
-msgstr "Proxy Hedefleri"
-
-msgid "Enable upstream health checks"
-msgstr "Upstream sağlık denetimlerini etkinleştir"
-
-msgid "Github Proxy"
-msgstr "Github Proxy"
+msgid "Proxies"
+msgstr ""
 
 msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "Çinli kullanıcılar için: https://cloud.nginxui.com/"
-
-msgid "Insecure Skip Verify"
-msgstr "Güvensiz Doğrulamayı Atla"
 
 msgid ""
 "Logrotate, by default, is enabled in most mainstream Linux distributions for "
@@ -9356,88 +9704,26 @@ msgstr ""
 "etkinleştirebilir. Nginx UI'nin crontab görev zamanlayıcısı, belirlediğiniz "
 "dakika aralığında logrotate komutunu çalıştıracaktır."
 
-msgid "Command"
-msgstr "Komut"
-
 msgid "Minutes"
 msgstr "Dakika"
 
-msgid "Stub Status Port"
-msgstr "Stub Durum Portu"
-
-msgid "Maintenance host"
-msgstr "Bakım sunucusu"
+msgid "Maintenance Page"
+msgstr ""
 
 msgid "http://127.0.0.1:9000"
 msgstr "http://127.0.0.1:9000"
 
-msgid ""
-"Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
-"to use this Nginx UI instance."
-msgstr ""
-"Bakım sayfasını sunan isteğe bağlı HTTP veya HTTPS kaynağı. Bu Nginx UI "
-"örneğini kullanmak için boş bırakın."
-
-msgid "Maintenance bypass IP"
-msgstr "Bakım atlama IP'si"
-
 msgid "203.0.113.10"
 msgstr "203.0.113.10"
-
-msgid ""
-"Requests from this IPv4 or IPv6 address continue to use the original site "
-"while maintenance mode is active."
-msgstr ""
-"Bu IPv4 veya IPv6 adresinden gelen istekler, bakım modu etkinken orijinal "
-"siteyi kullanmaya devam eder."
-
-msgid "Maintenance template (filename only)"
-msgstr "Bakım şablonu (yalnızca dosya adı)"
-
-msgid "maintenance.html"
-msgstr "maintenance.html"
 
 msgid "Mounted directory"
 msgstr "Bağlanmış dizin"
 
-msgid ""
-"The file named <site name>.<filename> is used first; if it does not exist, "
-"the generic <filename> is used; if neither exists, the built-in Nginx UI "
-"maintenance page is used."
+msgid "maintenance.html"
+msgstr "maintenance.html"
+
+msgid "Control Mode"
 msgstr ""
-"<site name>.<filename> adlı dosya ilk olarak kullanılır; yoksa, genel "
-"<filename> dosyası kullanılır; hiçbiri yoksa, yerleşik Nginx UI bakım "
-"sayfası kullanılır."
-
-msgid "Nginx Access Log Path"
-msgstr "Nginx Erişim Günlüğü Yolu"
-
-msgid "Nginx Error Log Path"
-msgstr "Nginx Hata Günlüğü Yolu"
-
-msgid "Nginx Configurations Directory"
-msgstr "Nginx Yapılandırma Dizini"
-
-msgid "Nginx Configuration Path"
-msgstr "Nginx Yapılandırma Dosyası Yolu"
-
-msgid "Nginx Log Directory Whitelist"
-msgstr "Nginx Günlük Dizin Beyaz Listesi"
-
-msgid "Nginx PID Path"
-msgstr "Nginx PID Yolu"
-
-msgid "Nginx Test Config Command"
-msgstr "Nginx Yapılandırma Test Komutu"
-
-msgid "Nginx Reload Command"
-msgstr "Nginx Yeniden Yükleme Komutu"
-
-msgid "Nginx Restart Command"
-msgstr "Nginx Yeniden Başlatma Komutu"
-
-msgid "Nginx Control Mode"
-msgstr "Nginx Kontrol Modu"
 
 msgid "Host via SSH"
 msgstr "SSH üzerinden host"
@@ -9469,11 +9755,11 @@ msgstr "Harici Konteyner"
 msgid "Open SSH setup wizard"
 msgstr "SSH kurulum sihirbazını aç"
 
-msgid "Instance ID"
-msgstr "Örnek Kimliği"
+msgid "Paths and Commands"
+msgstr ""
 
-msgid "Node name"
-msgstr "Düğüm adı"
+msgid "Identity"
+msgstr ""
 
 msgid ""
 "The node name should only contain letters, unicode, numbers, hyphens, "
@@ -9482,19 +9768,8 @@ msgstr ""
 "Düğüm adı yalnızca harfler, unicode, sayılar, kısa çizgiler, uzun çizgiler, "
 "iki nokta üst üste ve noktalar içermelidir."
 
-msgid ""
-"Customize the name of local node to be displayed in the environment "
-"indicator."
-msgstr "Ortam göstergesinde görüntülenecek yerel düğüm adını özelleştirin."
-
-msgid "Skip Installation"
-msgstr "Kurulumu atla"
-
-msgid "Demo"
-msgstr "Demo"
-
-msgid "ICP Number"
-msgstr "ICP Numarası"
+msgid "Footer"
+msgstr ""
 
 msgid ""
 "The ICP Number should only contain letters, unicode, numbers, hyphens, "
@@ -9505,9 +9780,6 @@ msgstr ""
 
 msgid "For Chinese user"
 msgstr "Çin kullanıcıları için"
-
-msgid "Public Security Number"
-msgstr "Kamu Güvenlik Numarası"
 
 msgid ""
 "The Public Security Number should only contain letters, unicode, numbers, "
@@ -9599,71 +9871,26 @@ msgstr ""
 msgid "Connection"
 msgstr "Bağlantı"
 
-msgid "API Base Url"
-msgstr "API Temel Bağlantı Adresi"
-
 msgid "Regional endpoints"
 msgstr "Bölgesel uç noktalar"
 
 msgid "Documentation"
 msgstr "Dokümantasyon"
 
-msgid "API Token"
-msgstr "API Anahtarı"
-
 msgid "Token is not valid"
 msgstr "Token geçerli değil"
-
-msgid "Advanced"
-msgstr "Gelişmiş"
-
-msgid "API Proxy"
-msgstr "API Proxy"
-
-msgid "API Type"
-msgstr "API Türü"
 
 msgid "Models"
 msgstr "Modeller"
 
-msgid "Assistant models"
-msgstr "Asistan modelleri"
-
-msgid "The models to choose from in the assistant."
-msgstr "Asistende seçilebilecek modeller."
-
 msgid "Choose one or more models"
 msgstr "Bir veya daha fazla model seçin"
-
-msgid "Default model"
-msgstr "Varsayılan model"
-
-msgid "Used for new chats, chat titles and, unless set below, code completion."
-msgstr ""
-"Yeni sohbetler, sohbet başlıkları ve aşağıda ayarlanmadığı durumda kod "
-"tamamlama için kullanılır."
 
 msgid "Choose the assistant models first"
 msgstr "Önce asistan modellerini seçin"
 
-msgid ""
-"How each model switches its thinking levels. Pick the convention of your "
-"provider, or edit the request fields."
+msgid "Code Completion"
 msgstr ""
-"Her modelin düşünce seviyelerini nasıl değiştirdiği. Sağlayıcınızın kuralını "
-"seçin veya istek alanlarını düzenleyin."
-
-msgid "Enable Code Completion"
-msgstr "Kod Tamamlamayı Etkinleştir"
-
-msgid "Code Completion Model"
-msgstr "Kod Tamamlama Modeli"
-
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
-msgstr ""
-"Kod tamamlama için kullanılan model. Ayarlanmamışsa sohbet modeli "
-"kullanılacaktır."
 
 msgid "Same as the chat model (%{model})"
 msgstr "Sohbet modeliyle aynı (%{model})"
@@ -9671,38 +9898,23 @@ msgstr "Sohbet modeliyle aynı (%{model})"
 msgid "Same as the chat model"
 msgstr "Sohbet modeli ile aynı"
 
-msgid "Unix Socket"
-msgstr "Unix Socket"
+msgid "Advanced"
+msgstr "Gelişmiş"
 
-msgid "Nginx UI listens on this Unix socket instead of the TCP host and port."
+msgid "Listen Address"
 msgstr ""
-"Nginx UI, TCP ana bilgisayar ve bağlantı noktası yerine bu Unix soketinde "
-"dinler."
 
-msgid "Run Mode"
-msgstr "Çalışma Modu"
-
-msgid "Enable HTTPS"
-msgstr "HTTPS'yi Etkinleştir"
-
-msgid "SSL Key Path"
-msgstr "SSL Anahtar Yolu"
-
-msgid ""
-"Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
+msgid "All interfaces"
 msgstr ""
-"Protokol yapılandırması yalnızca doğrudan bağlantı sırasında geçerlidir. "
-"Ters proxy kullanıyorsanız, protokolü ters proxyda ayrı olarak yapılandırın."
 
-msgid "Enable HTTP/2"
-msgstr "HTTP/2'yi Etkinleştir"
+msgid "HTTPS"
+msgstr "HTTPS"
 
-msgid "Enables HTTP/2 support with multiplexing and server push capabilities"
-msgstr "Çoklama ve sunucu itme özellikleri ile HTTP/2 desteğini etkinleştirir"
+msgid "Certificate"
+msgstr "Sertifika"
 
-msgid "Enable HTTP/3"
-msgstr "HTTP/3'ü Etkinleştir"
+msgid "Pick the certificate that secures the web interface."
+msgstr ""
 
 msgid ""
 "HTTP/3 requires a UDP listener and is unavailable while Nginx UI listens on "
@@ -9711,12 +9923,12 @@ msgstr ""
 "HTTP/3, UDP dinleyicisi gerektirir ve Nginx UI bir Unix socket üzerinden "
 "dinlerken kullanılamaz."
 
-msgid "Enables HTTP/3 support based on QUIC protocol for best performance"
+msgid ""
+"Protocol configuration only takes effect when directly connecting. If using "
+"reverse proxy, please configure the protocol separately in the reverse proxy."
 msgstr ""
-"En iyi performans için QUIC protokolüne dayalı HTTP/3 desteğini etkinleştirir"
-
-msgid "Terminal Start Command"
-msgstr "Terminal Başlatma Komutu"
+"Protokol yapılandırması yalnızca doğrudan bağlantı sırasında geçerlidir. "
+"Ters proxy kullanıyorsanız, protokolü ters proxyda ayrı olarak yapılandırın."
 
 msgid "End time must be later than start time"
 msgstr "Bitiş zamanı başlangıç zamanından sonra olmalıdır"
@@ -9750,9 +9962,6 @@ msgstr "Ek bilgiler"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Örneğin: beklenen kurtarma planı veya olay referansı"
-
-msgid "HTTPS"
-msgstr "HTTPS"
 
 msgid "Configuration Name"
 msgstr "Yapılandırma Adı"
@@ -10220,9 +10429,6 @@ msgstr "En az bir alan adı veya IP adresi ekleyin."
 
 msgid "e.g. example.com www.example.com"
 msgstr "örn. example.com www.example.com"
-
-msgid "Certificate"
-msgstr "Sertifika"
 
 msgid "Recommended"
 msgstr ""
@@ -10868,3 +11074,41 @@ msgstr "Tek bölme"
 
 msgid "Split view"
 msgstr "Bölünmüş görünüm"
+
+#~ msgid "Webauthn"
+#~ msgstr "WebAuthn"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts "
+#~ "in ban threshold minutes,"
+#~ msgstr ""
+#~ "Bir IP'den başarısız oturum açma denemesi sayısı, engelleme eşiği "
+#~ "dakikaları içinde maksimum denemeye ulaşırsa,"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr ""
+#~ "Sistem ad sunucularını geçersiz kılmak için özyineli ad sunucularını "
+#~ "ayarlayın"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "Özel MMDB şu anda etkin"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "IndexCustomMMDB Dosya Adı"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "[nginx_log].GeoMapPath üzerinden yapılandırılmıştır. 100000_full.json "
+#~ "gibi adlara sahip dosyaları bu dizinde saklayın."
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "Varsayılan olarak yalnızca dünya haritası sağlanır. Lütfen Çin ve il "
+#~ "sınır dosyalarını kendiniz indirip bu dizine yerleştirin."
+
+#~ msgid "Global health check controls"
+#~ msgstr "Genel sağlık denetimi kontrolleri"

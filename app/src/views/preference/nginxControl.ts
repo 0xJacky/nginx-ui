@@ -72,3 +72,29 @@ export function applyNginxControlSettings(target: NginxSettings, settings: Nginx
     error_log_path: settings.error_log_path,
   })
 }
+
+// Settings paths written by applyNginxControlSettings.
+export const NGINX_CONTROL_PATHS = [
+  'container_name',
+  'host_mode',
+  'host_address',
+  'host_user',
+  'host_access_mode',
+  'host_key_source',
+  'host_private_key_path',
+  'host_known_hosts_path',
+  'host_sudo_prefix',
+  'host_service_manager',
+  'host_systemd_unit_name',
+  'host_systemctl_path',
+  'host_launchd_service',
+  'host_launchctl_path',
+  'host_config_dir',
+  'host_log_dir',
+  'sbin_path',
+  'pid_path',
+  'config_dir',
+  'config_path',
+  'access_log_path',
+  'error_log_path',
+].map(key => `nginx.${key}`)

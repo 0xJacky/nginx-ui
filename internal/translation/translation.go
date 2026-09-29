@@ -5,16 +5,26 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"slices"
 
 	"github.com/0xJacky/Nginx-UI/app"
 	"github.com/0xJacky/pofile"
 	"github.com/samber/lo"
 )
 
+// Dict holds the flat catalogs used by backend messages such as
+// notifications. Entries with a msgctxt are left out because pofile.Dict
+// cannot look them up.
 var Dict map[string]pofile.Dict
+
+// webDict holds the catalogs served to the web app. Entries that share a
+// msgid are merged into one object keyed by msgctxt, with "" for the entry
+// without a context, which is the shape vue3-gettext expects.
+var webDict map[string]map[string]any
 
 func init() {
 	Dict = make(map[string]pofile.Dict)
+	webDict = make(map[string]map[string]any)
 
 	fs, err := app.GetDistFS()
 	if err != nil {
@@ -69,9 +79,53 @@ func handlePo(langCode string) {
 		log.Fatalln(err)
 	}
 
-	Dict[langCode] = p.ToDict()
+	Dict[langCode], webDict[langCode] = buildDicts(p)
 }
 
-func GetTranslation(langCode string) pofile.Dict {
-	return Dict[langCode]
+// buildDicts splits the parsed entries into the flat dictionary used by
+// backend messages and the context aware one served to the web app.
+func buildDicts(p *pofile.Pofile) (flat pofile.Dict, web map[string]any) {
+	flat = make(pofile.Dict)
+	web = make(map[string]any)
+
+	for _, item := range p.Items {
+		if slices.Contains(item.Flags, "fuzzy") {
+			continue
+		}
+
+		var value any
+		if len(item.MsgStr) == 1 {
+			value = item.MsgStr[0]
+		} else if len(item.MsgStr) > 1 {
+			value = slices.Clone(item.MsgStr)
+		}
+
+		if item.Msgctxt == "" {
+			flat[item.MsgId] = value
+		}
+
+		existing, found := web[item.MsgId]
+		contexts, isObject := existing.(map[string]any)
+		switch {
+		case item.Msgctxt == "" && !isObject:
+			web[item.MsgId] = value
+		case item.Msgctxt == "":
+			contexts[""] = value
+		case isObject:
+			contexts[item.Msgctxt] = value
+		default:
+			contexts = map[string]any{item.Msgctxt: value}
+			if found {
+				contexts[""] = existing
+			}
+			web[item.MsgId] = contexts
+		}
+	}
+
+	return
+}
+
+// GetTranslation returns the catalog for the web app.
+func GetTranslation(langCode string) map[string]any {
+	return webDict[langCode]
 }
