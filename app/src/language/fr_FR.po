@@ -15,12 +15,12 @@ msgstr ""
 "X-Generator: Weblate 5.9.2\n"
 
 #: src/components/AccessControl/AccessControlCard.vue:21
-#: src/components/AccessControl/AccessSummary.vue:18
+#: src/components/AccessControl/AccessSummary.vue:20
 #: src/components/AccessControl/AccessSummaryTag.vue:18
 #: src/components/AccessControl/BatchAccessModal.vue:25
 #: src/components/AccessControl/LocationAccessSelect.vue:34
 #: src/components/AccessControl/LocationAccessTag.vue:20
-#: src/components/AccessControl/options.ts:30
+#: src/components/AccessControl/options.ts:46
 msgid "Public"
 msgstr "Public"
 
@@ -68,26 +68,26 @@ msgstr "Supprimez-les des directives pour gérer l'accès avec une liste d'accè
 #: src/components/AccessControl/AccessSummaryTag.vue:16
 #: src/components/AccessControl/LocationAccessSelect.vue:113
 #: src/components/AccessControl/LocationAccessTag.vue:24
-#: src/components/AccessControl/options.ts:28
+#: src/components/AccessControl/options.ts:44
 msgid "Custom rules"
 msgstr "Règles personnalisées"
 
-#: src/components/AccessControl/AccessSummary.vue:49
+#: src/components/AccessControl/AccessSummary.vue:46
 #: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:42
 msgid "Server %{index}"
 msgstr "Serveur %{index}"
 
-#: src/components/AccessControl/AccessSummary.vue:56
+#: src/components/AccessControl/AccessSummary.vue:53
 msgid "%{count} location set separately"
 msgid_plural "%{count} locations set separately"
 msgstr[0] "%{count} emplacement configuré séparément"
 msgstr[1] "%{count} emplacements configurés séparément"
 
-#: src/components/AccessControl/AccessSummary.vue:69
+#: src/components/AccessControl/AccessSummary.vue:66
 msgid "Use for all servers"
 msgstr "Utiliser pour tous les serveurs"
 
-#: src/components/AccessControl/AccessSummary.vue:69
+#: src/components/AccessControl/AccessSummary.vue:66
 msgid "Change access"
 msgstr "Modifier l'accès"
 
@@ -123,9 +123,9 @@ msgstr "Appliquer"
 #: src/components/AccessControl/BatchAccessModal.vue:67
 #: src/components/AccessControl/LocationAccessSelect.vue:101
 #: src/components/LLM/ChatMessage.vue:263
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:136
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:196
 #: src/components/NgxConfigEditor/NgxServer.vue:76
-#: src/components/NgxConfigEditor/NgxUpstream.vue:77
+#: src/components/NgxConfigEditor/NgxUpstream.vue:83
 #: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:185
 #: src/language/curd.ts:37 src/views/access_list/AccessListList.vue:80
 #: src/views/access_list/components/AccessListEditor.vue:421
@@ -408,7 +408,7 @@ msgstr "Non pris en charge pour les certificats IP"
 #: src/components/AutoCertForm/AutoCertForm.vue:218
 #: src/views/certificate/CertificateList/certColumns.tsx:76
 #: src/views/certificate/components/SelfSignedCertFields.vue:56
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:602
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:624
 msgid "Key Type"
 msgstr "Type de clé"
 
@@ -417,7 +417,7 @@ msgid "Special Settings"
 msgstr "Paramètres spéciaux"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:236
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:613
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:635
 msgid "OCSP Must Staple"
 msgstr "OCSP Must Staple"
 
@@ -426,7 +426,7 @@ msgid "Do not enable this option unless you are sure that you need it."
 msgstr "N'activez pas cette option sauf si vous êtes sûr d'en avoir avez besoin."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:240
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:614
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:636
 msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
 "Firefox."
@@ -435,12 +435,12 @@ msgstr ""
 "de leur premier accès avec Firefox."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:246
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:619
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:641
 msgid "Lego disable CNAME Support"
 msgstr "Lego désactiver la prise en charge CNAME"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:249
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:620
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:642
 msgid ""
 "If your domain has CNAME records and you cannot obtain certificates, you "
 "need to enable this option."
@@ -449,12 +449,12 @@ msgstr ""
 "pas à obtenir de certificats, vous devez activer cette option."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:256
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:626
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:648
 msgid "Disable Authoritative DNS Propagation Check"
 msgstr "Désactiver la vérification de propagation du DNS faisant autorité"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:260
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:627
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:649
 msgid ""
 "Skip local DNS propagation checks and wait 60 seconds before asking the "
 "certificate authority to validate the record."
@@ -464,12 +464,12 @@ msgstr ""
 "l'enregistrement."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:265
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:632
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:654
 msgid "Enable Common Name"
 msgstr "Activer le nom commun"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:268
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:633
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:655
 msgid ""
 "Enable the certificate Common Name field for private CAs that still require "
 "it."
@@ -478,12 +478,12 @@ msgstr ""
 "certification privées qui l'exigent encore."
 
 #: src/components/AutoCertForm/AutoCertForm.vue:273
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:638
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:660
 msgid "Revoke Old Certificate"
 msgstr "Révoquer l'ancien certificat"
 
 #: src/components/AutoCertForm/AutoCertForm.vue:276
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:639
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:661
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
@@ -565,7 +565,7 @@ msgid "Name: %{name}"
 msgstr "Nom : %{name}"
 
 #: src/components/CertInfo/CertInfo.vue:55
-#: src/components/NgxConfigEditor/NgxUpstream.vue:259
+#: src/components/NgxConfigEditor/NgxUpstream.vue:265
 #: src/views/access_list/AccessListList.vue:18
 #: src/views/access_list/components/AccessListEditor.vue:237
 #: src/views/backup/AutoBackup/AutoBackup.vue:40
@@ -711,8 +711,8 @@ msgid "Restore this version"
 msgstr "Restaurer cette version"
 
 #: src/components/ConfigStatusTag/configStatus.ts:13
-#: src/components/NgxConfigEditor/NgxUpstream.vue:205
-#: src/components/NgxConfigEditor/NgxUpstream.vue:209
+#: src/components/NgxConfigEditor/NgxUpstream.vue:211
+#: src/components/NgxConfigEditor/NgxUpstream.vue:215
 #: src/views/backup/AutoBackup/AutoBackup.vue:193
 #: src/views/backup/AutoBackup/AutoBackup.vue:203
 #: src/views/dns/DDNSManager.vue:359 src/views/node/nodeColumns.tsx:168
@@ -907,7 +907,7 @@ msgstr "Le fichier de configuration est testé avec succès"
 #: src/views/notification/notificationColumns.tsx:40
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
 #: src/views/preference/components/NginxHostSetup/checks.ts:121
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:364
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:367
 msgid "Warning"
 msgstr "Avertissement"
 
@@ -991,7 +991,7 @@ msgstr "Non"
 
 #: src/components/LLM/ChatMessageInput.vue:148
 #: src/components/NgxConfigEditor/NgxServer.vue:75
-#: src/components/NgxConfigEditor/NgxUpstream.vue:76
+#: src/components/NgxConfigEditor/NgxUpstream.vue:82
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
 #: src/views/access_list/AccessListList.vue:70
 #: src/views/backup/components/BackupCreator.vue:145
@@ -1046,7 +1046,7 @@ msgstr "Chat pour %{path}"
 
 #: src/components/LLM/LLMSessionTabs.vue:284
 #: src/components/LLM/LLMSessionTabs.vue:386
-#: src/components/NgxConfigEditor/NgxUpstream.vue:89
+#: src/components/NgxConfigEditor/NgxUpstream.vue:95
 #: src/views/config/components/ConfigName.vue:50
 #: src/views/config/components/Rename.vue:59
 #: src/views/config/ConfigList.vue:219
@@ -1067,7 +1067,7 @@ msgstr "Dupliquer"
 #: src/components/LLM/LLMSessionTabs.vue:300
 #: src/components/LLM/LLMSessionTabs.vue:402
 #: src/components/NgxConfigEditor/NgxServer.vue:88
-#: src/components/NgxConfigEditor/NgxUpstream.vue:94 src/language/curd.ts:9
+#: src/components/NgxConfigEditor/NgxUpstream.vue:100 src/language/curd.ts:9
 #: src/views/access_list/AccessListList.vue:78
 #: src/views/access_list/AccessListList.vue:194
 #: src/views/certificate/components/RemoveCert.vue:123
@@ -1192,7 +1192,7 @@ msgid "Nginx Control"
 msgstr "Contrôle Nginx"
 
 #: src/components/NginxControl/NginxControl.vue:164
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:360
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:363
 msgid "Running"
 msgstr "En cours d'éxécution"
 
@@ -1212,19 +1212,19 @@ msgstr "Arrêté"
 msgid "Restart"
 msgstr "Redémarrer"
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:75
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:92
 msgid "Upstream %{name} is now a shared upstream group"
 msgstr "Upstream %{name} est maintenant un groupe upstream partagé"
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:92
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:109
 msgid "Convert %{name} to a Shared Upstream Group"
 msgstr "Convertir %{name} en groupe de upstream partagé"
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:108
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:125
 msgid "This site has unsaved changes"
 msgstr "Ce site comporte des modifications non enregistrées"
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:109
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:126
 msgid ""
 "Converting rewrites the site file on the server. Save or discard your "
 "changes first, so they are neither lost nor written back over the converted "
@@ -1234,7 +1234,7 @@ msgstr ""
 "annulez d'abord vos modifications, afin qu'elles ne soient ni perdues ni "
 "réécrites par-dessus le fichier converti."
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:118
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:135
 msgid ""
 "The upstream block %{name} moves out of %{site} into its own file, %{file}, "
 "and becomes an upstream group:"
@@ -1242,7 +1242,7 @@ msgstr ""
 "Le bloc upstream %{name} est déplacé de %{site} vers son propre fichier, "
 "%{file}, et devient un groupe upstream :"
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:121
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:138
 msgid ""
 "It is listed and edited on the Upstream Groups page, with the health of its "
 "servers."
@@ -1250,21 +1250,51 @@ msgstr ""
 "Il est listé et modifié sur la page des groupes d'upstream, avec l'état de "
 "santé de ses serveurs."
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:122
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:139
 msgid "This site keeps proxying to it by name; nothing else in the site changes."
 msgstr ""
 "Ce site continue de proxifier vers lui par nom ; rien d'autre ne change "
 "dans le site."
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:123
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:140
 msgid "Other sites can choose it as their proxy target."
 msgstr "D'autres sites peuvent le choisir comme cible de proxy."
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:124
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:141
 msgid "Comments inside the block are kept at the end of the group."
 msgstr "Les commentaires à l'intérieur du bloc sont conservés à la fin du groupe."
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:127
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:148
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:169
+#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:146
+#: src/views/upstream/components/UpstreamEditor.vue:324
+#: src/views/upstream/components/UpstreamEditor.vue:334
+#: src/views/upstream/UpstreamList.vue:514
+msgid "Shared Memory Zone"
+msgstr "Zone de Mémoire Partagée"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:150
+msgid "The block already declares this zone; the group keeps it unchanged."
+msgstr "Le bloc déclare déjà cette zone ; le groupe la conserve inchangée."
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:151
+#: src/views/upstream/components/UpstreamEditor.vue:325
+msgid ""
+"Keeps the group's state in shared memory as zone %{name}, so every worker "
+"process balances across the same servers and shares their failure counts. "
+"Without it each worker balances on its own."
+msgstr ""
+"Conserve l'état du groupe en mémoire partagée sous forme de zone %{name}, "
+"afin que chaque processus worker répartisse la charge sur les mêmes "
+"serveurs et partage leurs compteurs d'échecs. Sans cela, chaque worker "
+"équilibre la charge de manière indépendante."
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:178
+#: src/views/upstream/components/UpstreamEditor.vue:343
+msgid "Zone Size"
+msgstr "Taille de zone"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:187
 msgid ""
 "Nginx is tested once and reloaded. If the test or the reload fails, both "
 "files are restored."
@@ -1272,15 +1302,15 @@ msgstr ""
 "Nginx est testé une fois et rechargé. Si le test ou le rechargement échoue, "
 "les deux fichiers sont restaurés."
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:145
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:205
 msgid "Discard Changes"
 msgstr "Ignorer les modifications"
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:153
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:213
 msgid "Save Changes"
 msgstr "Enregistrer les modifications"
 
-#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:164
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:224
 msgid "Convert"
 msgstr "Convertir"
 
@@ -1321,7 +1351,7 @@ msgstr "Directives"
 
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:54
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
-#: src/views/site/site_add/SiteAdd.vue:255
+#: src/views/site/site_add/SiteAdd.vue:267
 #: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:53
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:84
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:119
@@ -1396,7 +1426,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/LocationEditor.vue:180
 #: src/components/NgxConfigEditor/LocationEditor.vue:221
 #: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:131
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:119
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:126
 msgid "Select an upstream"
 msgstr "Sélectionner un upstream"
 
@@ -1470,46 +1500,46 @@ msgid "Add Server"
 msgstr "Ajouter un serveur"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:173
-#: src/components/NgxConfigEditor/NgxUpstream.vue:132 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:138 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:57
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:120
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:502
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:524
 #: src/views/site/site_list/SiteList.vue:245 src/views/stream/StreamList.vue:92
 msgid "Add"
 msgstr "Ajouter"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:73
+#: src/components/NgxConfigEditor/NgxUpstream.vue:79
 msgid "Do you want to remove this upstream?"
 msgstr "Voulez-vous supprimer cet upstream ?"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:102
-#: src/components/NgxConfigEditor/NgxUpstream.vue:195
+#: src/components/NgxConfigEditor/NgxUpstream.vue:108
+#: src/components/NgxConfigEditor/NgxUpstream.vue:201
 #: src/views/upstream/UpstreamList.vue:412
 msgid "Convert to Shared Group"
 msgstr "Convertir en groupe partagé"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:130
-#: src/components/NgxConfigEditor/NgxUpstream.vue:240
+#: src/components/NgxConfigEditor/NgxUpstream.vue:136
+#: src/components/NgxConfigEditor/NgxUpstream.vue:246
 msgid "Use Existing Group"
 msgstr "Utiliser un groupe existant"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:187
+#: src/components/NgxConfigEditor/NgxUpstream.vue:193
 msgid "Defined in this site only."
 msgstr "Défini uniquement dans ce site."
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:220
+#: src/components/NgxConfigEditor/NgxUpstream.vue:226
 msgid "No upstreams configured"
 msgstr "Aucun amont configuré"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:247
+#: src/components/NgxConfigEditor/NgxUpstream.vue:253
 msgid "Add Upstream"
 msgstr "Ajouter un upstream"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:254
+#: src/components/NgxConfigEditor/NgxUpstream.vue:260
 msgid "Upstream Name"
 msgstr "Nom de l'amont"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:268
+#: src/components/NgxConfigEditor/NgxUpstream.vue:274
 msgid ""
 "This adds an upstream block to this site only. To proxy to an upstream "
 "group shared with other sites, use \"Use Existing Group\" instead."
@@ -2171,7 +2201,7 @@ msgstr "Chiffre %{position} du code à usage unique"
 #: src/components/PortScanner/PortScannerCompact.vue:31
 #: src/views/preference/components/ExternalNotify/labels.ts:28
 #: src/views/preference/tabs/ServerSettings.vue:24
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:148
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:155
 msgid "Port"
 msgstr "Port"
 
@@ -2802,14 +2832,14 @@ msgstr "Nombre maximum de connexions par processus worker"
 #: src/views/nginx_log/NginxLogList.vue:147
 #: src/views/notification/notificationColumns.tsx:27
 #: src/views/preference/components/ExternalNotify/columns.tsx:25
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:60
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:67
 msgid "Type"
 msgstr "Type"
 
 #: src/composables/useUpstreamStatus.ts:124 src/routes/modules/upstream.ts:10
 #: src/routes/modules/upstream.ts:19 src/views/home/Home.vue:80
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:105
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:112
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:119
 #: src/views/upstream/SocketList.vue:27 src/views/upstream/UpstreamList.vue:52
 msgid "Upstream"
 msgstr "Amont"
@@ -4679,7 +4709,7 @@ msgstr "Écriture de la clé privée du certificat sur le disque"
 msgid "Reloading nginx"
 msgstr "Rechargement de nginx"
 
-#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:417
+#: src/language/constants.ts:19 src/views/site/site_add/SiteAdd.vue:429
 msgid "Finished"
 msgstr "Finie"
 
@@ -5805,7 +5835,7 @@ msgid "Sites List"
 msgstr "Liste des sites"
 
 #: src/routes/modules/sites.ts:33 src/views/site/index.vue:12
-#: src/views/site/site_add/SiteAdd.vue:395
+#: src/views/site/site_add/SiteAdd.vue:407
 msgid "Add Site"
 msgstr "Ajouter un site"
 
@@ -6155,7 +6185,7 @@ msgstr "En attente"
 #: src/views/dns/DNSGroupRecordManager.vue:1185
 #: src/views/preference/components/NginxHostSetup/checks.ts:123
 #: src/views/preference/tabs/ExternalNotify.vue:73
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:366
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:369
 msgid "Failed"
 msgstr "Échec"
 
@@ -6542,7 +6572,7 @@ msgid "This certificate is managed by Nginx UI"
 msgstr "Ce certificat est géré par Nginx UI"
 
 #: src/views/certificate/CertificateEditor.vue:404
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:417
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:420
 msgid "Log"
 msgstr "Journal"
 
@@ -6659,7 +6689,7 @@ msgstr "La liste des domaines est vide, essayez de rouvrir Auto Cert pour %{conf
 #: src/views/dns/DNSRecordManager.vue:261 src/views/nginx_log/NginxLog.vue:281
 #: src/views/preference/NginxHostSetup.vue:129
 #: src/views/preference/NginxHostSetup.vue:147
-#: src/views/site/site_add/SiteAdd.vue:533
+#: src/views/site/site_add/SiteAdd.vue:550
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:283
 #: src/views/stream/components/StreamEditor.vue:161
 msgid "Back"
@@ -6919,8 +6949,8 @@ msgstr "Les certificats wildcard nécessitent généralement le challenge DNS-01
 #: src/views/install/components/InstallView.vue:206
 #: src/views/preference/components/NginxHostSetup/Wizard.vue:97
 #: src/views/site/components/SiteStatusSelect.vue:183
-#: src/views/site/site_add/SiteAdd.vue:518
-#: src/views/site/site_add/SiteAdd.vue:526
+#: src/views/site/site_add/SiteAdd.vue:560
+#: src/views/site/site_add/SiteAdd.vue:578
 #: src/views/site/site_list/SiteList.vue:294
 msgid "Next"
 msgstr "Suivant"
@@ -6930,8 +6960,9 @@ msgstr "Suivant"
 #: src/views/preference/components/NginxHostSetup/steps/StepInstall.vue:103
 #: src/views/preference/NginxHostSetup.vue:144
 #: src/views/preference/tabs/OpenAISettings.vue:341
+#: src/views/site/site_add/wizardSteps.ts:51
 #: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:276
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:775
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:798
 msgid "Retry"
 msgstr "Réessayer"
 
@@ -7033,8 +7064,8 @@ msgstr "Saisir le nom du certificat"
 
 #: src/views/certificate/components/SelfSignedCertFields.vue:42
 #: src/views/dns/DNSGroupList.vue:31 src/views/dns/DNSGroupList.vue:267
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:78
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:472
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:85
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:494
 msgid "Domains"
 msgstr "Domaines"
 
@@ -7385,7 +7416,7 @@ msgid "Server names hash table size"
 msgstr "Taille de la table de hachage des noms de serveur"
 
 #: src/views/dashboard/components/ParamsOpt/PerformanceConfig.vue:110
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:159
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:166
 msgid "Client Max Body Size"
 msgstr "Taille maximale du corps du client"
 
@@ -7432,13 +7463,6 @@ msgstr "Niveaux de répertoire"
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:136
 msgid "Cache subdirectory levels structure, e.g. 1:2"
 msgstr "Structure des niveaux de sous-répertoires du cache, par ex. 1:2"
-
-#: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:146
-#: src/views/upstream/components/UpstreamEditor.vue:324
-#: src/views/upstream/components/UpstreamEditor.vue:334
-#: src/views/upstream/UpstreamList.vue:514
-msgid "Shared Memory Zone"
-msgstr "Zone de Mémoire Partagée"
 
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:149
 msgid "Define shared memory zone name and size, e.g. proxy_cache:10m"
@@ -8150,7 +8174,7 @@ msgstr "OS :"
 #: src/views/preference/components/ExternalNotify/labels.ts:23
 #: src/views/preference/components/NginxHostSetup/steps/HostKeyTrust.vue:196
 #: src/views/preference/tabs/ServerSettings.vue:21
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:141
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:148
 msgid "Host"
 msgstr "Hôte"
 
@@ -8862,7 +8886,7 @@ msgid "Succeeded"
 msgstr "Réussi"
 
 #: src/views/dns/DNSGroupRecordManager.vue:1186
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:368
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:371
 msgid "Skipped"
 msgstr "Ignoré"
 
@@ -9926,7 +9950,7 @@ msgstr "Rechercher dans le contenu du journal..."
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:535
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:452
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:474
 msgid "Method"
 msgstr "Méthode"
 
@@ -10836,7 +10860,7 @@ msgid "Bark"
 msgstr "Bark"
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:19
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:175
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:182
 msgid "Index"
 msgstr "Index"
 
@@ -12457,7 +12481,7 @@ msgid "Node"
 msgstr "Nœud"
 
 #: src/views/preference/Preference.vue:65
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:22
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:27
 msgid "HTTP"
 msgstr "HTTP"
 
@@ -13200,7 +13224,7 @@ msgid "Token is not valid"
 msgstr "Le jeton n'est pas valide"
 
 #: src/views/preference/tabs/OpenAISettings.vue:354
-#: src/views/site/site_add/SiteAdd.vue:402
+#: src/views/site/site_add/SiteAdd.vue:414
 msgid "Advanced"
 msgstr "Avancé"
 
@@ -13285,8 +13309,8 @@ msgid "Run Mode"
 msgstr "Mode d'exécution"
 
 #: src/views/preference/tabs/ServerSettings.vue:35
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:315
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:776
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:318
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:799
 msgid "Enable HTTPS"
 msgstr "Activer HTTPS"
 
@@ -13380,83 +13404,83 @@ msgstr "Informations supplémentaires"
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Par exemple : plan de reprise attendu ou référence d'incident"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:26
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:440
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:31
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:462
 msgid "HTTPS"
 msgstr "HTTPS"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:51
-#: src/views/site/site_add/SiteAdd.vue:429
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:56
+#: src/views/site/site_add/SiteAdd.vue:453
 msgid "Configuration Name"
 msgstr "Nom de la configuration"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:66
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:73
 msgid "Reverse Proxy"
 msgstr "Proxy inverse"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:69
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:76
 msgid "Static Site"
 msgstr "Site statique"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:72
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:79
 msgid "Redirect"
 msgstr "Redirection"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:83
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:90
 msgid "example.com www.example.com"
 msgstr "example.com www.example.com"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:88
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:95
 msgid "Scheme"
 msgstr "Schéma"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:95
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:102
 msgid "Proxy Target"
 msgstr "Cible du proxy"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:102
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:109
 msgid "Host and Port"
 msgstr "Hôte et Port"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:127
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:134
 msgid "No upstream groups yet."
 msgstr "Aucun groupe upstream pour le moment."
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:133
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:140
 msgid "Manage upstream groups"
 msgstr "Gérer les groupes upstream"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:155
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:162
 msgid "Enable WebSocket"
 msgstr "Activer WebSocket"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:166
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:173
 msgid "Web Root"
 msgstr "Racine web"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:179
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:186
 msgid "Single Page Application Fallback"
 msgstr "Repli pour application monopage"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:186
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:193
 msgid "Target URL"
 msgstr "URL de destination"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:195
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:202
 msgid "Status Code"
 msgstr "Code de statut"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:204
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:211
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:78
 msgid "Enable TLS"
 msgstr "Activer TLS"
 
-#: src/views/site/components/QuickSetup/QuickSetupForm.vue:210
+#: src/views/site/components/QuickSetup/QuickSetupForm.vue:217
 msgid "Redirect HTTP to HTTPS"
 msgstr "Rediriger HTTP vers HTTPS"
 
 #: src/views/site/components/SiteStatusSelect.vue:61
-#: src/views/site/site_add/SiteAdd.vue:260
+#: src/views/site/site_add/SiteAdd.vue:272
 #: src/views/stream/components/StreamStatusSelect.vue:27
 msgid "Enabled successfully"
 msgstr "Activé avec succès"
@@ -13572,7 +13596,7 @@ msgid "Select DNS domain"
 msgstr "Sélectionner un domaine DNS"
 
 #: src/views/site/site_add/components/DNSRecordIntegration.vue:332
-#: src/views/site/site_add/SiteAdd.vue:415
+#: src/views/site/site_add/SiteAdd.vue:427
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:660
 msgid "DNS Record"
 msgstr "Enregistrement DNS"
@@ -13648,21 +13672,17 @@ msgstr "Aucun domaine DNS disponible"
 msgid "Please add a DNS domain first in the DNS management section."
 msgstr "Veuillez d'abord ajouter un domaine DNS dans la section de gestion DNS"
 
-#: src/views/site/site_add/SiteAdd.vue:105
+#: src/views/site/site_add/SiteAdd.vue:119
 msgid "Edit configuration file"
 msgstr "Modifier le fichier de configuration"
 
-#: src/views/site/site_add/SiteAdd.vue:110
+#: src/views/site/site_add/SiteAdd.vue:124
 msgid "Save and enable the site with the HTTPS server block it already has."
 msgstr ""
 "Enregistrer et activer le site avec le bloc serveur HTTPS qu'il possède "
 "déjà."
 
-#: src/views/site/site_add/SiteAdd.vue:113
-msgid "Save and enable"
-msgstr "Enregistrer et activer"
-
-#: src/views/site/site_add/SiteAdd.vue:167
+#: src/views/site/site_add/SiteAdd.vue:179
 msgid ""
 "The previous draft %{name} is enabled, so it was kept. Remove it from the "
 "site list if you no longer need it."
@@ -13670,11 +13690,11 @@ msgstr ""
 "Le brouillon précédent %{name} est activé, il a donc été conservé. "
 "Supprimez-le de la liste des sites si vous n'en avez plus besoin."
 
-#: src/views/site/site_add/SiteAdd.vue:173
+#: src/views/site/site_add/SiteAdd.vue:185
 msgid "Removed the previous draft %{name}"
 msgstr "Le brouillon précédent %{name} a été supprimé"
 
-#: src/views/site/site_add/SiteAdd.vue:176
+#: src/views/site/site_add/SiteAdd.vue:188
 msgid ""
 "The previous draft %{name} could not be removed. Remove it from the site "
 "list if you no longer need it."
@@ -13682,70 +13702,90 @@ msgstr ""
 "Le brouillon précédent %{name} n'a pas pu être supprimé. Retirez-le de la "
 "liste des sites si vous n'en avez plus besoin."
 
-#: src/views/site/site_add/SiteAdd.vue:274
+#: src/views/site/site_add/SiteAdd.vue:286
 #: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:44
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:721
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:743
 msgid "HTTPS is enabled"
 msgstr "HTTPS est activé"
 
-#: src/views/site/site_add/SiteAdd.vue:377
+#: src/views/site/site_add/SiteAdd.vue:389
 msgid "DNS record selected: %{name}"
 msgstr "Enregistrement DNS sélectionné : %{name}"
 
-#: src/views/site/site_add/SiteAdd.vue:385
+#: src/views/site/site_add/SiteAdd.vue:397
 msgid "DNS record created and linked successfully"
 msgstr "Enregistrement DNS créé et lié avec succès"
 
-#: src/views/site/site_add/SiteAdd.vue:401
+#: src/views/site/site_add/SiteAdd.vue:413
 #: src/views/site/site_edit/components/QuickSetupModal.vue:139
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:178
 msgid "Quick Setup"
 msgstr "Configuration rapide"
 
-#: src/views/site/site_add/SiteAdd.vue:414
+#: src/views/site/site_add/SiteAdd.vue:426
 msgid "Base information"
 msgstr "Information générale"
 
-#: src/views/site/site_add/SiteAdd.vue:416
+#: src/views/site/site_add/SiteAdd.vue:428
 msgid "Configure SSL"
 msgstr "Configurer SSL"
 
 #: src/views/site/site_add/SiteAdd.vue:439
+#: src/views/site/site_add/SiteAdd.vue:456
+#: src/views/site/site_edit/components/RightPanel/Basic.vue:51
+#: src/views/site/site_list/columns.tsx:105 src/views/stream/columns.tsx:60
+#: src/views/stream/components/RightPanel/Basic.vue:40
+msgid "Namespace"
+msgstr "Espace de noms"
+
+#: src/views/site/site_add/SiteAdd.vue:472
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:543
 msgid "The parameter of server_name is required"
 msgstr "Le paramètre server_name est requis"
 
-#: src/views/site/site_add/SiteAdd.vue:471
+#: src/views/site/site_add/SiteAdd.vue:504
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "Enregistrez la configuration modifiée avant d'activer HTTPS."
 
-#: src/views/site/site_add/SiteAdd.vue:472
+#: src/views/site/site_add/SiteAdd.vue:505
 msgid "The site draft is not saved yet."
 msgstr "Le brouillon du site n'est pas encore enregistré."
 
-#: src/views/site/site_add/SiteAdd.vue:476
+#: src/views/site/site_add/SiteAdd.vue:509
 msgid "HTTPS setup reads the saved draft of this site."
 msgstr "La configuration HTTPS lit le brouillon enregistré de ce site."
 
-#: src/views/site/site_add/SiteAdd.vue:478
+#: src/views/site/site_add/SiteAdd.vue:511
 msgid "Save draft"
 msgstr "Enregistrer le brouillon"
 
-#: src/views/site/site_add/SiteAdd.vue:539
+#: src/views/site/site_add/SiteAdd.vue:584
 msgid "Site Config Created Successfully"
 msgstr "Configuration du site créée avec succès"
 
-#: src/views/site/site_add/SiteAdd.vue:540
+#: src/views/site/site_add/SiteAdd.vue:585
 msgid "DNS record has been linked: %{name}"
 msgstr "L'enregistrement DNS a été lié : %{name}"
 
-#: src/views/site/site_add/SiteAdd.vue:547
+#: src/views/site/site_add/SiteAdd.vue:592
 msgid "Modify Config"
 msgstr "Modifier la configuration"
 
-#: src/views/site/site_add/SiteAdd.vue:550
+#: src/views/site/site_add/SiteAdd.vue:595
 msgid "Create Another"
 msgstr "Créer un autre"
+
+#: src/views/site/site_add/wizardSteps.ts:49
+msgid "Finish"
+msgstr "Terminer"
+
+#: src/views/site/site_add/wizardSteps.ts:53
+msgid "Enable HTTPS and finish"
+msgstr "Activer HTTPS et terminer"
+
+#: src/views/site/site_add/wizardSteps.ts:54
+msgid "Issue certificate and finish"
+msgstr "Émettre le certificat et terminer"
 
 #: src/views/site/site_edit/components/Cert/Cert.vue:98
 msgid "Changed Certificate"
@@ -13875,27 +13915,27 @@ msgstr ""
 "configuration enregistrée. Les modifications non enregistrées sur ce bloc "
 "ne sont pas utilisées."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:122
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:125
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "Ce n'est pas un nom de domaine ou une adresse IP valide : %{value}"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:147
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:150
 msgid "HTTP-01"
 msgstr "HTTP-01"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:148
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:151
 msgid "DNS-01"
 msgstr "DNS-01"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:149
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:152
 msgid "Existing certificate"
 msgstr "Certificat existant"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:150
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:153
 msgid "Skip for now"
 msgstr "Ignorer pour l'instant"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:159
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:162
 msgid ""
 "The certificate authority validates each domain over port 80, so the "
 "domains must resolve to this server."
@@ -13903,7 +13943,7 @@ msgstr ""
 "L'autorité de certification valide chaque domaine via le port 80 ; les "
 "domaines doivent donc pointer vers ce serveur."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:161
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:164
 msgid ""
 "Validation uses a DNS TXT record created with the selected DNS credential. "
 "Required for wildcard domains."
@@ -13911,7 +13951,7 @@ msgstr ""
 "La validation utilise un enregistrement DNS TXT créé avec l'identifiant DNS "
 "sélectionné. Requis pour les domaines génériques (wildcards)."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:163
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:166
 msgid ""
 "Use a certificate from the certificate manager. Nothing is requested from a "
 "certificate authority, and the certificate keeps its own renewal settings."
@@ -13920,13 +13960,13 @@ msgstr ""
 "une autorité de certification et le certificat conserve ses propres "
 "paramètres de renouvellement."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:165
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:168
 msgid "Continue without HTTPS. You can enable it later from the site editor."
 msgstr ""
 "Continuer sans HTTPS. Vous pourrez l'activer plus tard depuis l'éditeur du "
 "site."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:224
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:227
 msgid ""
 "This certificate expired on %{date}. Choose another certificate or renew "
 "this one first."
@@ -13934,7 +13974,7 @@ msgstr ""
 "Ce certificat a expiré le %{date}. Choisissez un autre certificat ou "
 "renouvelez celui-ci d'abord."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:228
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:231
 msgid ""
 "This certificate record lists no domains. The pre-flight check reads them "
 "from the certificate file."
@@ -13942,11 +13982,11 @@ msgstr ""
 "Cet enregistrement de certificat ne répertorie aucun domaine. Le contrôle "
 "préalable les lit depuis le fichier du certificat."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:230
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:233
 msgid "This certificate does not cover any of the domains: %{domains}"
 msgstr "Ce certificat ne couvre aucun des domaines : %{domains}"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:232
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:235
 msgid ""
 "This certificate does not cover %{domains}. HTTPS is only enabled for the "
 "names it covers."
@@ -13954,59 +13994,59 @@ msgstr ""
 "Ce certificat ne couvre pas %{domains}. HTTPS n'est activé que pour les "
 "noms qu'il couvre."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:238
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:241
 msgid "IP address certificates only support HTTP-01 validation."
 msgstr ""
 "Les certificats d'adresses IP ne prennent en charge que la validation "
 "HTTP-01."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:240
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:243
 msgid "Wildcard domains require DNS-01 validation."
 msgstr "Les domaines génériques nécessitent la validation DNS-01."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:307
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:310
 msgid "Plan the configuration changes"
 msgstr "Planifier les modifications de configuration"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:309
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:312
 msgid "Stage the HTTP configuration"
 msgstr "Préparer la configuration HTTP"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:311
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:314
 msgid "Verify the challenge route"
 msgstr "Vérifier l'itinéraire du challenge"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:313
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:316
 msgid "Issue the certificate"
 msgstr "Émettre le certificat"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:317
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:320
 msgid "Roll back the changes"
 msgstr "Annuler les modifications"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:362
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:365
 msgid "Passed"
 msgstr "Réussi"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:370
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:373
 msgid "Waiting"
 msgstr "En attente"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:385
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:388
 msgid "The connection closed before HTTPS setup finished. Retry to run it again."
 msgstr ""
 "La connexion s'est fermée avant la fin de la configuration HTTPS. Réessayez "
 "pour l'exécuter à nouveau."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:386
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:389
 msgid "HTTPS setup failed"
 msgstr "La configuration HTTPS a échoué"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:418
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:421
 msgid "Certificate options"
 msgstr "Options du certificat"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:446
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:468
 msgid ""
 "Nginx UI stages the challenge route, verifies it, requests the certificate "
 "and switches the site to HTTPS in one run. If a step fails, the site keeps "
@@ -14016,41 +14056,41 @@ msgstr ""
 "bascule le site en HTTPS en une seule exécution. Si une étape échoue, le "
 "site continue de servir du HTTP classique."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:486
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:508
 msgid "Add at least one domain or IP address."
 msgstr "Ajoutez au moins un nom de domaine ou une adresse IP."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:497
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:519
 msgid "e.g. example.com www.example.com"
 msgstr "p. ex. example.com www.example.com"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:520
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:725
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:542
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:747
 msgid "Certificate"
 msgstr "Certificat"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:534
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:556
 msgid "Expired on %{date}"
 msgstr "Expiré le %{date}"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:535
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:557
 msgid "Expires on %{date}"
 msgstr "Expire le %{date}"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:543
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:565
 msgid "Change"
 msgstr "Changer"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:568
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:792
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:590
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:815
 msgid "Select certificate"
 msgstr "Sélectionner un certificat"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:585
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:607
 msgid "Redirect HTTP to HTTPS after the certificate is ready"
 msgstr "Rediriger HTTP vers HTTPS une fois le certificat prêt"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:589
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:611
 msgid ""
 "The HTTPS server block without a certificate is left out until the "
 "certificate is issued, then enabled with it."
@@ -14058,19 +14098,19 @@ msgstr ""
 "Le bloc serveur HTTPS sans certificat est laissé de côté jusqu'à l'émission "
 "du certificat, puis activé avec celui-ci."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:673
 msgid "Pre-flight check"
 msgstr "Vérification préalable"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:651
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:673
 msgid "Progress"
 msgstr "Progression"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:658
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:680
 msgid "Checking..."
 msgstr "Vérification..."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:660
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:682
 msgid ""
 "Run \"Check only\" to verify the configuration and the certificate without "
 "changing anything."
@@ -14078,7 +14118,7 @@ msgstr ""
 "Exécutez « Vérifier uniquement » pour contrôler la configuration et le "
 "certificat sans rien modifier."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:661
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:683
 msgid ""
 "Run \"Check only\" to verify the configuration and DNS without changing "
 "anything."
@@ -14086,23 +14126,23 @@ msgstr ""
 "Exécutez \"Vérification uniquement\" pour vérifier la configuration et le "
 "DNS sans rien modifier."
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:708
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:730
 msgid "Failed step: %{step}"
 msgstr "Étape échouée : %{step}"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:734
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:756
 msgid "Private Key"
 msgstr "Clé privée"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:766
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:788
 msgid "Check only"
 msgstr "Vérifier uniquement"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:776
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:799
 msgid "Issue and enable HTTPS"
 msgstr "Émettre et activer HTTPS"
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:784
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:807
 msgid "Continue without HTTPS"
 msgstr "Continuer sans HTTPS"
 
@@ -14155,12 +14195,6 @@ msgstr ""
 #: src/views/site/site_edit/components/QuickSetupModal.vue:168
 msgid "Generate Config"
 msgstr "Générer la configuration"
-
-#: src/views/site/site_edit/components/RightPanel/Basic.vue:51
-#: src/views/site/site_list/columns.tsx:105 src/views/stream/columns.tsx:60
-#: src/views/stream/components/RightPanel/Basic.vue:40
-msgid "Namespace"
-msgstr "Espace de noms"
 
 #: src/views/site/site_edit/components/RightPanel/Basic.vue:69
 #: src/views/stream/components/RightPanel/Basic.vue:56
@@ -14607,21 +14641,6 @@ msgstr "Délai d'échec"
 msgid "Not available with this load balancing method"
 msgstr "Non disponible avec cette méthode de répartition de charge"
 
-#: src/views/upstream/components/UpstreamEditor.vue:325
-msgid ""
-"Keeps the group's state in shared memory as zone %{name}, so every worker "
-"process balances across the same servers and shares their failure counts. "
-"Without it each worker balances on its own."
-msgstr ""
-"Conserve l'état du groupe en mémoire partagée sous forme de zone %{name}, "
-"afin que chaque processus worker répartisse la charge sur les mêmes "
-"serveurs et partage leurs compteurs d'échecs. Sans cela, chaque worker "
-"équilibre la charge de manière indépendante."
-
-#: src/views/upstream/components/UpstreamEditor.vue:343
-msgid "Zone Size"
-msgstr "Taille de zone"
-
 #: src/views/upstream/components/UpstreamEditor.vue:352
 msgid "Keepalive"
 msgstr "Keepalive"
@@ -14903,6 +14922,9 @@ msgstr "Vue partagée"
 msgctxt "Access list rule"
 msgid "Note"
 msgstr "Note"
+
+#~ msgid "Save and enable"
+#~ msgstr "Enregistrer et activer"
 
 #~ msgid "Model capabilities"
 #~ msgstr "Capacités du modèle"
