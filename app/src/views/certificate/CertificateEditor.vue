@@ -196,7 +196,7 @@ function localizeStructuredLevelValue(raw: string) {
 }
 
 function stripTimeKey(raw: string) {
-  return raw.replace(/^(time|时间|時間)=([^\s]+)/, '$2')
+  return raw.replace(/^(time|时间|時間)=(\S+)/, '$2')
 }
 
 function translateStructuredMessage(message: string) {
@@ -281,7 +281,7 @@ const log = computed(() => {
   if (!data.value.log)
     return ''
 
-  return data.value.log.split('\n').map(line => {
+  const lines = data.value.log.split('\n').map(line => {
     try {
       return renderLocalizedLogMessage(T(JSON.parse(line)))
     }
@@ -289,7 +289,8 @@ const log = computed(() => {
       return renderLocalizedLogMessage(line)
     }
   }).map(line => line.startsWith('[Nginx UI]') ? `${line}\n` : line)
-    .join('\n')
+
+  return lines.join('\n')
 })
 
 function resolveHTMLElement(target: unknown): HTMLElement | null {
