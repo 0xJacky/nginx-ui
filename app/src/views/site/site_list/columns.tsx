@@ -29,7 +29,7 @@ const columns: StdTableColumn[] = [{
   hiddenInTable: true,
   hiddenInDetail: true,
 }, {
-  title: () => $gettext('No'),
+  title: () => $gettext('No.'),
   dataIndex: 'index',
   sorter: true,
   pure: true,
