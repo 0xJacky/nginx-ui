@@ -14,6 +14,8 @@ import SourcesModal from './marketplace/SourcesModal.vue'
 
 const updatesOnly = defineModel<boolean>('updatesOnly', { default: false })
 
+const route = useRoute()
+const router = useRouter()
 const { message } = useGlobalApp()
 const inventory = usePluginInventory()
 const pluginLoader = usePluginLoader()
@@ -117,6 +119,20 @@ function onSourcesSaved() {
   message.success($gettext('Reloading the catalog'))
   void refreshAll(true)
 }
+
+// A link may point at one catalog entry, for example the notice on the log
+// pages. The entry opens once the catalog is there and the link is spent.
+watch([entries, () => route.query.catalog], ([list, id]) => {
+  if (typeof id !== 'string' || list.length === 0)
+    return
+
+  const { catalog: _catalog, ...rest } = route.query
+  router.replace({ query: rest })
+
+  const entry = list.find(item => item.id === id)
+  if (entry)
+    openDetail(entry)
+}, { immediate: true })
 
 watch([debouncedKeyword, category, source], () => load())
 onMounted(() => refreshAll())

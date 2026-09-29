@@ -11,7 +11,7 @@ const { data, errors } = storeToRefs(systemSettingsStore)
     <SettingPanel :title="$gettext('Proxies')">
       <SettingRow
         :title="$gettext('Github Proxy')"
-        :description="$gettext('Used for downloads from GitHub, such as upgrades and the GeoLite database.')"
+        :description="$gettext('Used for downloads from GitHub, such as upgrades.')"
         path="http.github_proxy"
         :error="errors?.http?.github_proxy === 'url' ? $gettext('The url is invalid') : undefined"
       >

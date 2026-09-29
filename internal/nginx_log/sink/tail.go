@@ -43,13 +43,11 @@ type followed struct {
 
 func newTailer(cfg Config) *tailer {
 	pc := parser.DefaultParserConfig()
-	pc.EnableGeoIP = false
-	pc.EnableUA = false
 	pc.StrictMode = true
 	pc.MaxLineLength = cfg.MaxLineLength
 	return &tailer{
 		cfg:    cfg,
-		parser: parser.NewParser(pc, nil, nil),
+		parser: parser.NewParser(pc),
 		files:  map[string]*followed{},
 		now:    time.Now,
 	}
