@@ -10,6 +10,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -19,6 +20,9 @@ type Index struct {
 	Content      string
 	Urls         []string
 	ProxyTargets []ProxyTarget
+	// LogDirectives are the file log directives of the site's own
+	// configuration file, without the nginx default fallback.
+	LogDirectives []utils.LogDirective
 }
 
 var (
@@ -95,6 +99,7 @@ func scanForSite(configPath string, content []byte) error {
 		Urls:         []string{},
 		ProxyTargets: []ProxyTarget{},
 	}
+	siteIndex.LogDirectives = utils.ScanLogDirectives(nginx.GetPrefix(), content)
 
 	// Map to track hosts, their SSL status and port
 	type hostInfo struct {
@@ -313,8 +318,8 @@ func scanForSite(configPath string, content []byte) error {
 	// Parse proxy targets from the configuration content
 	siteIndex.ProxyTargets = upstream.ParseProxyTargetsFromRawContent(string(content))
 
-	// Only store if we found valid URLs or proxy targets
-	if len(siteIndex.Urls) > 0 || len(siteIndex.ProxyTargets) > 0 {
+	// Only store if we found valid URLs, proxy targets or log directives
+	if len(siteIndex.Urls) > 0 || len(siteIndex.ProxyTargets) > 0 || len(siteIndex.LogDirectives) > 0 {
 		siteIndexMutex.Lock()
 		IndexedSites[filepath.Base(configPath)] = &siteIndex
 		siteIndexMutex.Unlock()

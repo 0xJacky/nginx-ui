@@ -116,7 +116,9 @@ func TestNginxLogHTTPHandlersWithRealRouterAndIndex(t *testing.T) {
 	require.True(t, ok)
 	require.NotEmpty(t, accessLogDir)
 	assert.Equal(t, logsDir, accessLogDir)
-	require.Len(t, defaultDirBody, 1)
+	assert.Equal(t, logPath, defaultDirBody["access_log_path"])
+	assert.Contains(t, defaultDirBody, "error_log_path")
+	require.Len(t, defaultDirBody, 3)
 
 	expectedTraffic := int64(2331)
 	startTime := baseTime.Unix()

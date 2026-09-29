@@ -39,4 +39,10 @@ type Config struct {
 	// of a site or stream use.
 	AccessMode string `json:"access_mode,omitempty"`
 	AccessList string `json:"access_list,omitempty"`
+	// The log files a site writes to, empty when it has none. Inherited tells
+	// whether the path is the nginx default log the site falls back to.
+	AccessLogPath      string `json:"access_log_path,omitempty"`
+	AccessLogInherited bool   `json:"access_log_inherited,omitempty"`
+	ErrorLogPath       string `json:"error_log_path,omitempty"`
+	ErrorLogInherited  bool   `json:"error_log_inherited,omitempty"`
 }
