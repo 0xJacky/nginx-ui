@@ -3,7 +3,7 @@ import type { JSX } from 'vue/jsx-runtime'
 import type { Node } from '@/api/node'
 import { ExclamationCircleOutlined, InfoCircleOutlined } from '@antdv-next/icons'
 import { datetimeRender } from '@uozi-admin/curd'
-import { Badge, InputPassword, Popover, Tag } from 'antdv-next'
+import { InputPassword, Popover, Tag } from 'antdv-next'
 import { h } from 'vue'
 import nodeApi from '@/api/node'
 import { SensitiveInput } from '@/components/SensitiveString'
@@ -146,18 +146,18 @@ const columns: StdTableColumn[] = [{
     const { text } = args
     if (args.record.enabled) {
       if (text === true || text > 0)
-        template.push(<Badge status="success" text={$gettext('Online')} />)
+        template.push(<Tag color="green">{$gettext('Online')}</Tag>)
       else
-        template.push(<Badge status="error" text={$gettext('Offline')} />)
+        template.push(<Tag color="red">{$gettext('Offline')}</Tag>)
     }
     else {
-      template.push(<Badge status="default" text={$gettext('Disabled')} />)
+      template.push(<Tag color="orange">{$gettext('Disabled')}</Tag>)
     }
 
     if (args.record.connection_error)
       template.push(renderConnectionError(args.record as Node))
 
-    return h('div', { class: 'flex items-center' }, template)
+    return h('div', { class: 'flex items-center gap-1' }, template)
   },
   sorter: true,
   pure: true,

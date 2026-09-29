@@ -572,6 +572,10 @@ msgstr "已过期"
 msgid "SAN Aliases: %{aliases}"
 msgstr "SAN 别名：%{aliases}"
 
+#: src/components/CertInfo/CertInfo.vue:84
+msgid "SAN Aliases:"
+msgstr "SAN 别名："
+
 #: src/components/CertInfo/CertInfo.vue:85
 msgid "Issuer: %{issuer}"
 msgstr "颁发者：%{issuer}"
@@ -596,6 +600,62 @@ msgstr "SSL 证书路径"
 #: src/views/certificate/CertificateList/Certificate.vue:57
 msgid "SSL Certificate Key Path"
 msgstr "SSL 证书密钥路径"
+
+#: src/views/certificate/CertificateEditor.vue:185
+msgid "domains"
+msgstr "域名列表"
+
+#: src/views/certificate/CertificateEditor.vue:186
+msgid "domain"
+msgstr "域名"
+
+#: src/views/certificate/CertificateEditor.vue:187
+msgid "type"
+msgstr "类型"
+
+#: src/views/certificate/CertificateEditor.vue:188
+msgid "hoursRemaining"
+msgstr "剩余小时"
+
+#: src/views/certificate/CertificateEditor.vue:189
+msgid "timeout"
+msgstr "超时"
+
+#: src/views/certificate/CertificateEditor.vue:190
+msgid "interval"
+msgstr "间隔"
+
+#: src/views/certificate/CertificateEditor.vue:174
+msgid "Trying renewal."
+msgstr "正在尝试续签。"
+
+#: src/views/certificate/CertificateEditor.vue:175
+msgid "Obtaining bundled SAN certificate."
+msgstr "正在申请 SAN 证书。"
+
+#: src/views/certificate/CertificateEditor.vue:176
+msgid "Use solver."
+msgstr "正在使用求解器。"
+
+#: src/views/certificate/CertificateEditor.vue:177
+msgid "http01: Trying to solve HTTP-01."
+msgstr "http01：正在进行 HTTP-01 验证。"
+
+#: src/views/certificate/CertificateEditor.vue:178
+msgid "The server validated our request."
+msgstr "服务器已验证我们的请求。"
+
+#: src/views/certificate/CertificateEditor.vue:179
+msgid "Validations succeeded; requesting certificates."
+msgstr "验证成功，正在请求证书。"
+
+#: src/views/certificate/CertificateEditor.vue:180
+msgid "Waiting for certificates."
+msgstr "正在等待证书。"
+
+#: src/views/certificate/CertificateEditor.vue:181
+msgid "Server responded with a certificate."
+msgstr "服务器已返回证书。"
 
 #: src/components/ConfigHistory/ConfigHistory.vue:54
 msgid "Modified At"
@@ -6208,6 +6268,10 @@ msgstr "普通证书"
 #: src/views/certificate/components/DNSIssueCertificate.vue:43
 msgid "Self-signed Certificate"
 msgstr "自签名证书"
+
+#: src/views/certificate/CertificateEditor.vue:367
+msgid "This certificate is not managed by Nginx UI"
+msgstr "该证书非 Nginx UI 托管"
 
 #: src/views/certificate/CertificateList/certColumns.tsx:46
 msgid "Renewal paused"

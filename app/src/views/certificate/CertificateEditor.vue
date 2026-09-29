@@ -58,6 +58,13 @@ const isSelfSigned = computed(() => {
   return data.value.auto_cert === AutoCertState.SelfSigned
 })
 
+const isGeneral = computed(() => {
+  if (typeof data.value.auto_cert !== 'number')
+    return false
+
+  return !isManaged.value && !isSelfSigned.value
+})
+
 const selfSignedPayload = ref<SelfSignedCertPayload>()
 
 watch(data, value => {
@@ -157,31 +164,29 @@ const logLevelLabels: Record<string, string> = {
   DEBUG: 'Debug',
 }
 
-const structuredLogKeys = [
-  'time',
-  'level',
-  'msg',
-  'domain',
-  'domains',
-  'type',
-  'timeout',
-  'interval',
-  'hoursRemaining',
+// Keep these literals in source so gettext extraction includes structured log
+// message keys that arrive dynamically from ACME libraries.
+const structuredLogMessageI18nHints = [
+  $gettext('Trying renewal.'),
+  $gettext('Obtaining bundled SAN certificate.'),
+  $gettext('Use solver.'),
+  $gettext('http01: Trying to solve HTTP-01.'),
+  $gettext('The server validated our request.'),
+  $gettext('Validations succeeded; requesting certificates.'),
+  $gettext('Waiting for certificates.'),
+  $gettext('Server responded with a certificate.'),
 ]
+void structuredLogMessageI18nHints
 
-function localizeStructuredFieldKeys(raw: string) {
-  let localized = raw
-  for (const key of structuredLogKeys) {
-    const translatedKey = $gettext(key)
-    if (translatedKey === key)
-      continue
-
-    const pattern = new RegExp(`(^|\\s)${key}=`, 'g')
-    localized = localized.replace(pattern, `$1${translatedKey}=`)
-  }
-
-  return localized
-}
+const structuredLogFieldI18nHints = [
+  $gettext('domains'),
+  $gettext('domain'),
+  $gettext('type'),
+  $gettext('hoursRemaining'),
+  $gettext('timeout'),
+  $gettext('interval'),
+]
+void structuredLogFieldI18nHints
 
 function localizeStructuredLevelValue(raw: string) {
   return raw.replace(/(^|\s)(level|等级|層級)=([A-Z]+)/g, (_, prefix: string, key: string, level: string) => {
@@ -190,23 +195,38 @@ function localizeStructuredLevelValue(raw: string) {
   })
 }
 
-function applyKeywordLineBreaks(raw: string) {
-  return raw.replace(/\s+(消息|msg|訊息|域名列表|domains|網域列表|域名|domain|網域)=/g, '\n$1=')
+function stripTimeKey(raw: string) {
+  return raw.replace(/^(time|时间|時間)=(\S+)/, '$2')
 }
 
-function applyDomainListValueLineBreaks(raw: string) {
-  return raw.replace(/(域名列表|domains|網域列表)=("([^"]*)"|(\S+))/g, (_, key: string, full: string, quoted: string | undefined, plain: string | undefined) => {
+function translateStructuredMessage(message: string) {
+  return $gettext(message)
+}
+
+function applyKeywordLineBreaks(raw: string) {
+  return raw.replace(/\s+(消息|msg|訊息|域名列表|domains|網域列表|域名|domain|網域|type|timeout|interval|hoursRemaining)=/g, '\n$1=')
+}
+
+function applyAuxiliaryFieldFormatting(raw: string) {
+  let localized = raw.replace(/^(domain|type|hoursRemaining|timeout|interval)=([^\n]*)$/gm, (_, key: string, value: string) => {
+    return `${$gettext(key)}:${value}`
+  })
+
+  localized = localized.replace(/(domains)=("([^"]*)"|(\S+))/g, (_, key: string, full: string, quoted: string | undefined, plain: string | undefined) => {
     const value = (quoted ?? plain ?? '').trim()
     const domains = value
       .split(/[\s,，;；]+/)
       .map(item => item.trim())
       .filter(Boolean)
+    const label = $gettext(key)
 
     if (domains.length <= 1)
-      return `${key}：${full}`
+      return `${label}:${full}`
 
-    return `${key}：\n${domains.map(domain => `- ${domain}`).join('\n')}`
+    return `${label}:\n${domains.map(domain => `- ${domain}`).join('\n')}`
   })
+
+  return localized
 }
 
 function applyNginxUILineBreaks(raw: string) {
@@ -217,20 +237,26 @@ function applyNginxUILineBreaks(raw: string) {
     .replace(/,\s*CA Dir:/g, '\nCA Dir:')
 }
 
+function stripMessageWrapper(raw: string) {
+  return raw
+    .replace(/^(msg|消息|訊息)="([^"]*)"$/gm, '$2')
+    .replace(/^(msg|消息|訊息)=(.+)$/gm, '$2')
+}
+
 function localizeStructuredLogLine(raw: string) {
   const translatedWhole = $gettext(raw)
   if (translatedWhole !== raw)
     return translatedWhole
 
-  let localized = localizeStructuredFieldKeys(raw)
-  localized = localizeStructuredLevelValue(localized)
+  let localized = localizeStructuredLevelValue(raw)
+  localized = stripTimeKey(localized)
 
   const match = raw.match(/msg="([^"]+)"/)
   if (!match)
     return localized
 
   const originalMessage = match[1]
-  const translatedMessage = $gettext(originalMessage)
+  const translatedMessage = translateStructuredMessage(originalMessage)
 
   if (translatedMessage !== originalMessage) {
     localized = localized.replace(`msg="${originalMessage}"`, `msg="${translatedMessage}"`)
@@ -239,7 +265,8 @@ function localizeStructuredLogLine(raw: string) {
   }
 
   localized = applyKeywordLineBreaks(localized)
-  return applyDomainListValueLineBreaks(localized)
+  localized = applyAuxiliaryFieldFormatting(localized)
+  return stripMessageWrapper(localized)
 }
 
 function renderLocalizedLogMessage(raw: string) {
@@ -254,14 +281,16 @@ const log = computed(() => {
   if (!data.value.log)
     return ''
 
-  return data.value.log.split('\n').map(line => {
+  const lines = data.value.log.split('\n').map(line => {
     try {
       return renderLocalizedLogMessage(T(JSON.parse(line)))
     }
     catch {
       return renderLocalizedLogMessage(line)
     }
-  }).join('\n\n')
+  }).map(line => line.startsWith('[Nginx UI]') ? `${line}\n` : line)
+
+  return lines.join('\n')
 })
 
 function resolveHTMLElement(target: unknown): HTMLElement | null {
@@ -354,6 +383,9 @@ onBeforeUnmount(() => {
     <template #extra>
       <ATag v-if="isManaged" color="success" class="managed-cert-tag">
         {{ $gettext('This certificate is managed by Nginx UI') }}
+      </ATag>
+      <ATag v-else-if="isGeneral" color="purple" variant="filled" class="general-cert-tag">
+        {{ $gettext('General Certificate') }} · {{ $gettext('This certificate is not managed by Nginx UI') }}
       </ATag>
     </template>
 
@@ -486,6 +518,12 @@ onBeforeUnmount(() => {
 .managed-cert-tag {
   font-size: 16px;
   line-height: 1.2;
+}
+
+.general-cert-tag {
+  font-size: 16px;
+  line-height: 1.2;
+  border: none;
 }
 
 .content-editor-bottom {
