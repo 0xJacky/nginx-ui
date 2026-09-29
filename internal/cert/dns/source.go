@@ -18,12 +18,21 @@ const OfficialDNS01PluginID = "com.nginxui.dns01"
 // ErrProviderNotFound is returned when no registered source owns a code.
 var ErrProviderNotFound = errors.New("dns: provider not found")
 
-// ProviderInfo is what the credential page and the challenge form see.
+// ProviderInfo is what the credential page and the challenge form see. Form
+// is the only schema of the provider.
 type ProviderInfo struct {
-	Config
-	PluginID         string `json:"plugin_id,omitempty"`
-	DNS01            bool   `json:"dns01"`
-	RecordManagement bool   `json:"record_management"`
+	Name             string         `json:"name"`
+	Code             string         `json:"code"`
+	Links            *ProviderLinks `json:"links,omitempty"`
+	Form             *Form          `json:"form,omitempty"`
+	PluginID         string         `json:"plugin_id,omitempty"`
+	DNS01            bool           `json:"dns01"`
+	RecordManagement bool           `json:"record_management"`
+}
+
+// ProviderLinks points at the vendor documentation.
+type ProviderLinks struct {
+	API string `json:"api,omitempty"`
 }
 
 // Source contributes provider schemas and, when it can solve DNS-01, the lego
@@ -68,8 +77,8 @@ func registeredSources() []Source {
 func GetProvidersList() []ProviderInfo {
 	list := mergedProviders()
 	for i := range list {
-		list[i].Configuration = nil
 		list[i].Links = nil
+		list[i].Form = nil
 	}
 	return list
 }

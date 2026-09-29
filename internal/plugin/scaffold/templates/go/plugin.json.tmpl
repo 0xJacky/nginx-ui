@@ -24,10 +24,10 @@
       {
         "name": {{json .ProviderName}},
         "code": {{json .ProviderCode}},
-        "configuration": {
-          "credentials": {
-            {{json .CredentialKey}}: "API token"
-          }
+        "form": {
+          "fields": [
+            { "key": {{json .CredentialKey}}, "label": "API token", "group": "credential", "secret": true }
+          ]
         }
       }
     ]
