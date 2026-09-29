@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Cert } from '@/api/cert'
+import type { Cert, CertificateFileFormat } from '@/api/cert'
 import { DownloadOutlined } from '@antdv-next/icons'
 import certApi from '@/api/cert'
 
@@ -15,7 +15,7 @@ const { message } = App.useApp()
 // Download state
 const isDownloading = ref(false)
 const modalVisible = ref(false)
-const selectedFormats = ref<Array<'crt' | 'key' | 'pfx'>>(['crt', 'key'])
+const selectedFormats = ref<CertificateFileFormat[]>(['crt', 'key'])
 const pfxPassword = ref('')
 
 // Check if certificate files can be downloaded
@@ -89,23 +89,29 @@ async function downloadCertificateFiles() {
       return
     }
 
-    if (selectedFormats.value.includes('crt'))
-      downloadFile(certContent, `${props.data.name}.crt`, 'application/x-x509-ca-cert')
+    const formats = selectedFormats.value
 
-    if (selectedFormats.value.includes('key'))
-      downloadFile(keyContent, `${props.data.name}.key`, 'application/x-pem-file')
-
-    if (selectedFormats.value.includes('pfx')) {
+    // Several files are packed server-side into one zip so the browser
+    // saves a single download instead of prompting once per file.
+    if (formats.length > 1 || formats.includes('pfx')) {
       if (!props.data.id) {
         message.error($gettext('Certificate ID cannot be empty'))
         return
       }
 
-      const pfxBlob = await certApi.download_file(props.data.id, {
-        format: 'pfx',
-        pfx_password: pfxPassword.value,
+      const isZip = formats.length > 1
+      const blob = await certApi.download_file(props.data.id, {
+        format: isZip ? 'zip' : 'pfx',
+        formats: isZip ? formats : undefined,
+        pfx_password: formats.includes('pfx') ? pfxPassword.value : undefined,
       })
-      downloadBlob(pfxBlob, `${props.data.name}.pfx`)
+      downloadBlob(blob, `${props.data.name}.${isZip ? 'zip' : 'pfx'}`)
+    }
+    else if (formats[0] === 'crt') {
+      downloadFile(certContent, `${props.data.name}.crt`, 'application/x-x509-ca-cert')
+    }
+    else {
+      downloadFile(keyContent, `${props.data.name}.key`, 'application/x-pem-file')
     }
 
     modalVisible.value = false
@@ -142,7 +148,10 @@ async function downloadCertificateFiles() {
       @ok="downloadCertificateFiles"
     >
       <AForm layout="vertical">
-        <AFormItem :label="$gettext('Download Format')">
+        <AFormItem
+          :label="$gettext('Download Format')"
+          :extra="$gettext('Multiple files are downloaded as a single ZIP archive')"
+        >
           <ACheckboxGroup v-model:value="selectedFormats">
             <div class="flex flex-col gap-2">
               <ACheckbox value="crt">

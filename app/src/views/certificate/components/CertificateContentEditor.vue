@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Cert } from '@/api/cert'
-import { CopyOutlined, InboxOutlined } from '@antdv-next/icons'
+import { CopyOutlined, FileZipOutlined, InboxOutlined } from '@antdv-next/icons'
+import certApi from '@/api/cert'
 import config from '@/api/config'
 import CodeEditor from '@/components/CodeEditor'
 import { copyText } from '@/lib/helper'
@@ -113,6 +114,53 @@ async function copyToClipboard(text: string, label: string) {
   }
 }
 
+// ZIP archive import
+const archiveInput = useTemplateRef<HTMLInputElement>('archiveInput')
+const isImportingArchive = ref(false)
+const maxArchiveSize = 5 * 1024 * 1024
+
+function isZipFile(file: File) {
+  return file.name.toLowerCase().endsWith('.zip')
+}
+
+async function importArchive(file: File) {
+  if (file.size > maxArchiveSize) {
+    message.error($gettext('File size cannot exceed 5MB'))
+    return
+  }
+
+  isImportingArchive.value = true
+  try {
+    const archive = await certApi.parse_archive(file)
+    data.value.ssl_certificate = archive.ssl_certificate
+    data.value.ssl_certificate_key = archive.ssl_certificate_key
+    await autoGeneratePaths(archive.name || file.name.replace(/\.zip$/i, ''), 'certificate')
+
+    message.success($gettext('Imported %{cert} and %{key} from the archive', {
+      cert: archive.certificate_file_name,
+      key: archive.private_key_file_name,
+    }))
+    if (archive.chain_completed_from_zip)
+      message.info($gettext('Intermediate certificates from the archive were appended to build the full chain'))
+  }
+  catch (error) {
+    // The HTTP interceptor already shows the translated backend error
+    console.error('Certificate archive import error:', error)
+  }
+  finally {
+    isImportingArchive.value = false
+  }
+}
+
+function handleArchiveSelect(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (file)
+    importArchive(file)
+  // Reset input value to allow selecting the same file again
+  input.value = ''
+}
+
 // Drag and drop state
 const isDragOverCert = ref(false)
 const isDragOverKey = ref(false)
@@ -179,6 +227,11 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
   const files = [...e.dataTransfer?.files || []]
   if (files.length > 0) {
     const file = files[0]
+    if (isZipFile(file)) {
+      importArchive(file)
+      return
+    }
+
     const reader = new FileReader()
     reader.onload = e => {
       const content = e.target?.result as string
@@ -196,6 +249,28 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
 
 <template>
   <div class="certificate-content-editor">
+    <div v-if="!readonly" class="archive-import">
+      <input
+        ref="archiveInput"
+        type="file"
+        accept=".zip,application/zip"
+        class="hidden"
+        @change="handleArchiveSelect"
+      >
+      <AButton
+        :loading="isImportingArchive"
+        @click="archiveInput?.click()"
+      >
+        <template #icon>
+          <FileZipOutlined />
+        </template>
+        {{ $gettext('Import from ZIP') }}
+      </AButton>
+      <span class="hint-text">
+        {{ $gettext('Fills both the certificate and the private key from a downloaded certificate archive') }}
+      </span>
+    </div>
+
     <!-- SSL Certificate Content -->
     <ACard size="small" class="content-card" :title="$gettext('SSL Certificate Content')">
       <template #extra>
@@ -324,6 +399,19 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 
+  .archive-import {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+
+    .hint-text {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.45);
+    }
+  }
+
   .content-card :deep(.ant-card-body) {
     padding: 12px;
   }
@@ -378,6 +466,10 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
 // 暗夜模式适配
 .dark {
   .certificate-content-editor {
+    .archive-import .hint-text {
+      color: rgba(255, 255, 255, 0.45);
+    }
+
     .code-editor-container {
       .drag-overlay {
         background-color: rgba(64, 169, 255, 0.15);

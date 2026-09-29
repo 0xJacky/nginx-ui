@@ -1,6 +1,8 @@
 package certificate
 
 import (
+	"archive/zip"
+	"bytes"
 	"crypto/rand"
 	"crypto/x509"
 	"encoding/pem"
@@ -20,8 +22,10 @@ import (
 )
 
 type downloadCertRequest struct {
-	Format      string `json:"format" binding:"required,oneof=crt key pfx"`
-	PFXPassword string `json:"pfx_password"`
+	Format string `json:"format" binding:"required,oneof=crt key pfx zip"`
+	// Formats lists the files to pack when Format is zip.
+	Formats     []string `json:"formats" binding:"omitempty,dive,oneof=crt key pfx"`
+	PFXPassword string   `json:"pfx_password"`
 }
 
 func DownloadCert(c *gin.Context) {
@@ -63,9 +67,64 @@ func DownloadCert(c *gin.Context) {
 		c.Header("Content-Type", "application/x-pkcs12")
 		c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.pfx\"", filename))
 		c.Data(http.StatusOK, "application/x-pkcs12", pfxBytes)
+	case "zip":
+		zipBytes, zipErr := buildCertificateZip(filename, req.Formats, certPEM, keyPEM, req.PFXPassword)
+		if zipErr != nil {
+			cosy.ErrHandler(c, zipErr)
+			return
+		}
+		c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s.zip\"", filename))
+		c.Data(http.StatusOK, "application/zip", zipBytes)
 	default:
 		cosy.ErrHandler(c, fmt.Errorf("unsupported download format"))
 	}
+}
+
+// buildCertificateZip packs the requested formats into one archive, each
+// entry named after the certificate like the standalone downloads.
+func buildCertificateZip(filename string, formats []string, certPEM, keyPEM []byte, pfxPassword string) ([]byte, error) {
+	if len(formats) == 0 {
+		formats = []string{"crt", "key"}
+	}
+
+	var buf bytes.Buffer
+	w := zip.NewWriter(&buf)
+	seen := make(map[string]bool, len(formats))
+	for _, format := range formats {
+		if seen[format] {
+			continue
+		}
+		seen[format] = true
+
+		var content []byte
+		switch format {
+		case "crt":
+			content = certPEM
+		case "key":
+			content = keyPEM
+		case "pfx":
+			pfxBytes, err := encodePFX(certPEM, keyPEM, pfxPassword)
+			if err != nil {
+				return nil, err
+			}
+			content = pfxBytes
+		default:
+			return nil, fmt.Errorf("unsupported download format")
+		}
+
+		entry, err := w.Create(filename + "." + format)
+		if err != nil {
+			return nil, err
+		}
+		if _, err = entry.Write(content); err != nil {
+			return nil, err
+		}
+	}
+
+	if err := w.Close(); err != nil {
+		return nil, err
+	}
+	return buf.Bytes(), nil
 }
 
 func readCertificatePair(certPath, keyPath string) ([]byte, []byte, error) {

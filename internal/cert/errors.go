@@ -56,6 +56,11 @@ var (
 	ErrHTTP01ChallengePreflight          = e.New(50057, "HTTP-01 challenge preflight failed: {0}")
 	ErrHTTP01ChallengeRouteCheck         = e.New(50058, "HTTP-01 challenge route check failed for {0}: {1}")
 	ErrHTTP01ChallengePortUnavailable    = e.New(50059, "HTTP-01 challenge port {0} is unavailable: {1}")
+	ErrInvalidCertificateArchive         = e.New(50060, "invalid certificate archive: {0}")
+	ErrCertificateArchiveTooLarge        = e.New(50061, "certificate archive is too large")
+	ErrCertificateArchiveNoCertificate   = e.New(50062, "no certificate found in the archive")
+	ErrCertificateArchiveNoPrivateKey    = e.New(50063, "no private key found in the archive")
+	ErrCertificateArchiveKeyMismatch     = e.New(50064, "no certificate in the archive matches its private key")
 )
 
 func NewInvalidKeyTypeError(keyType string) error {

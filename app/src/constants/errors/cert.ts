@@ -51,4 +51,9 @@ export default {
   50057: () => $gettext('HTTP-01 challenge preflight failed: {0}'),
   50058: () => $gettext('HTTP-01 challenge route check failed for {0}: {1}'),
   50059: () => $gettext('HTTP-01 challenge port {0} is unavailable: {1}'),
+  50060: () => $gettext('Invalid certificate archive: {0}'),
+  50061: () => $gettext('Certificate archive is too large'),
+  50062: () => $gettext('No certificate found in the archive'),
+  50063: () => $gettext('No private key found in the archive'),
+  50064: () => $gettext('No certificate in the archive matches its private key'),
 }

@@ -110,9 +110,22 @@ export interface SelfSignedCertPayload {
   sync_node_ids?: number[]
 }
 
+export type CertificateFileFormat = 'crt' | 'key' | 'pfx'
+
 export interface CertificateDownloadPayload {
-  format: 'crt' | 'key' | 'pfx'
+  format: CertificateFileFormat | 'zip'
+  // Files to pack when format is zip
+  formats?: CertificateFileFormat[]
   pfx_password?: string
+}
+
+export interface CertificateArchive {
+  name: string
+  ssl_certificate: string
+  ssl_certificate_key: string
+  certificate_file_name: string
+  private_key_file_name: string
+  chain_completed_from_zip: boolean
 }
 
 // toSelfSignedPayload maps a persisted Cert to an editable self-signed payload.
@@ -150,6 +163,13 @@ const cert = extendCurdApi(useCurdApi<Cert>('/certs'), {
   },
   download_file(id: number, payload: CertificateDownloadPayload): Promise<Blob> {
     return http.post(`/certs/${id}/download`, payload, { responseType: 'blob' })
+  },
+  parse_archive(file: File): Promise<CertificateArchive> {
+    const formData = new FormData()
+    formData.append('file', file)
+    return http.post('/cert_parse_archive', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
   },
 })
 
