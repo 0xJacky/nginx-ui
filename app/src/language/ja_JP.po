@@ -11760,6 +11760,535 @@ msgstr ""
 msgid "Less safe"
 msgstr "安全性低下"
 
+msgid "Validates the domain with a DNS record. Needs a DNS credential."
+msgstr "DNS レコードでドメインを検証します。DNS 認証情報が必要です。"
+
+msgid "Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail."
+msgstr ""
+"ワイルドカード証明書には通常 DNS-01 が必要です。HTTP-01 では失敗する可能性が"
+"高いです。"
+
+msgid "Validates each domain over port 80 on this server."
+msgstr "このサーバーのポート 80 で各ドメインを検証します。"
+
+msgid "Can be changed after the plugin is installed."
+msgstr "プラグインをインストールすると変更できます。"
+
+msgid "Can be changed after the plugin is enabled."
+msgstr "プラグインを有効にすると変更できます。"
+
+msgid ""
+"Only turn on when you are sure you need it. Firefox may show an error on the "
+"first visit."
+msgstr ""
+"必要な場合のみオンにしてください。Firefox では初回アクセス時にエラーが表示さ"
+"れることがあります。"
+
+msgid "For private CAs that still require this field."
+msgstr "このフィールドを必要とするプライベート CA 向けです。"
+
+msgid "Revokes the previous certificate once the new one is issued."
+msgstr "新しい証明書の発行後に以前の証明書を失効させます。"
+
+msgid "New credential"
+msgstr "新しい認証情報"
+
+msgid "The credential was deleted. Please choose another one."
+msgstr "この認証情報は削除されました。別の認証情報を選択してください。"
+
+msgid "Deleted credential"
+msgstr "削除された認証情報"
+
+msgid "DNS Credential"
+msgstr "DNS 認証情報"
+
+msgid "Select credential"
+msgstr "認証情報を選択"
+
+msgid "not installed"
+msgstr "インストールされていません"
+
+msgid "turned off"
+msgstr "無効になっています"
+
+msgid "not working right now"
+msgstr "現在動作していません"
+
+msgid ""
+"DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
+"yet."
+msgstr ""
+"DNS-01 検証は DNS-01 プラグインで提供されますが、まだインストールされていませ"
+"ん。"
+
+msgid "The DNS-01 plugin is installed but turned off."
+msgstr "DNS-01 プラグインはインストールされていますが、無効になっています。"
+
+msgid "The DNS-01 plugin is turned on but not working right now."
+msgstr "DNS-01 プラグインは有効ですが、現在動作していません。"
+
+msgid ""
+"This certificate renews through the DNS-01 plugin, which is %{state}. It "
+"cannot renew automatically until the plugin is back."
+msgstr ""
+"この証明書は DNS-01 プラグインで更新されますが、プラグインは%{state}。プラグ"
+"インが復旧するまで自動更新できません。"
+
+msgid "DNS providers come with the DNS-01 plugin, which is %{state}."
+msgstr ""
+"DNS プロバイダーは DNS-01 プラグインで提供されますが、プラグインは%{state}。"
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not installed."
+msgstr ""
+"現在利用できるプロバイダーは %{count} 件のみです。その他のプロバイダーは "
+"DNS-01 プラグインで提供されますが、インストールされていません。"
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is turned off."
+msgstr ""
+"現在利用できるプロバイダーは %{count} 件のみです。その他のプロバイダーは "
+"DNS-01 プラグインで提供されますが、無効になっています。"
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not working right now."
+msgstr ""
+"現在利用できるプロバイダーは %{count} 件のみです。その他のプロバイダーは "
+"DNS-01 プラグインで提供されますが、現在動作していません。"
+
+msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
+msgstr "DNS 検証には DNS-01 プラグインが必要ですが、プラグインは%{state}。"
+
+msgid "Enable plugin"
+msgstr "プラグインを有効にする"
+
+msgid "New DNS Credential"
+msgstr "新しい DNS 認証情報"
+
+msgid "Create and select"
+msgstr "作成して選択"
+
+msgid ""
+"Automatic renewal can only be switched for certificates issued by Nginx UI"
+msgstr "自動更新を切り替えられるのは Nginx UI が発行した証明書のみです"
+
+msgid "Plugin marketplace is disabled"
+msgstr "プラグインマーケットプレイスは無効です"
+
+msgid "Plugin marketplace source is unavailable: {0}"
+msgstr "プラグインマーケットプレイスのソースを利用できません: {0}"
+
+msgid "Plugin release not found"
+msgstr "プラグインのリリースが見つかりません"
+
+msgid "Plugin release has been yanked"
+msgstr "プラグインのリリースは取り下げられました"
+
+msgid "Plugin package digest does not match the catalog"
+msgstr "プラグインパッケージのダイジェストがカタログと一致しません"
+
+msgid "Plugin package signature is invalid: {0}"
+msgstr "プラグインパッケージの署名が無効です: {0}"
+
+msgid "Community plugins are not allowed on this node"
+msgstr "このノードではコミュニティプラグインは許可されていません"
+
+msgid "Plugin download url is not https"
+msgstr "プラグインのダウンロード URL が https ではありません"
+
+msgid "Plugin release has no build for this platform"
+msgstr "プラグインのリリースにこのプラットフォーム向けのビルドがありません"
+
+msgid "Plugin catalog is invalid: {0}"
+msgstr "プラグインカタログが無効です: {0}"
+
+msgid "Plugin is not in the marketplace catalog"
+msgstr "プラグインはマーケットプレイスのカタログにありません"
+
+msgid "No local package found for this plugin"
+msgstr "このプラグインのローカルパッケージが見つかりません"
+
+msgid "No plugin package is available for {0}"
+msgstr "{0} に利用できるプラグインパッケージがありません"
+
+msgid "The marketplace has no more trusted package of this plugin"
+msgstr ""
+"マーケットプレイスにはこのプラグインの信頼できるパッケージがもうありません"
+
+msgid "Advanced options"
+msgstr "詳細オプション"
+
+msgid "Sync to other nodes"
+msgstr "他のノードへ同期"
+
+msgid "Private key"
+msgstr "プライベートキー"
+
+msgid "Automatic renewal turned on"
+msgstr "自動更新をオンにしました"
+
+msgid "Automatic renewal turned off"
+msgstr "自動更新をオフにしました"
+
+msgid "Not issued yet"
+msgstr "未発行"
+
+msgid "Expiring within 30 days"
+msgstr "30 日以内に期限切れ"
+
+msgid "Renewal failed"
+msgstr "更新に失敗しました"
+
+msgid "Renewal method"
+msgstr "更新方法"
+
+msgid "Expiry date"
+msgstr "有効期限"
+
+msgid "Search by name or domain"
+msgstr "名前またはドメインで検索"
+
+msgid "Valid · %{days} days left"
+msgstr "有効 · 残り %{days} 日"
+
+msgid "Expires in %{days} days"
+msgstr "%{days} 日後に期限切れ"
+
+msgid "Managed manually"
+msgstr "手動管理"
+
+msgid "DNS validation · %{provider}"
+msgstr "DNS 検証 · %{provider}"
+
+msgid "DNS validation"
+msgstr "DNS 検証"
+
+msgid "HTTP validation"
+msgstr "HTTP 検証"
+
+msgid "Self-signed"
+msgstr "自己署名"
+
+msgid "Synced from another node"
+msgstr "他のノードから同期"
+
+msgid "Upload"
+msgstr "アップロード"
+
+msgid "Download"
+msgstr "ダウンロード"
+
+msgid "Renewed on the node it is synced from"
+msgstr "同期元のノードで更新されます"
+
+msgid "Renews around %{date}"
+msgstr "%{date} 頃に更新予定"
+
+msgid "Replace the files to renew"
+msgstr "ファイルを置き換えて更新"
+
+msgid "Auto renewal"
+msgstr "自動更新"
+
+msgid "Issuer"
+msgstr "発行者"
+
+msgid "Certificate files"
+msgstr "証明書ファイル"
+
+msgid "Hide contents"
+msgstr "内容を隠す"
+
+msgid "Show contents"
+msgstr "内容を表示"
+
+msgid "In progress"
+msgstr "進行中"
+
+msgid "Failed · %{time}"
+msgstr "失敗 · %{time}"
+
+msgid "Succeeded · %{time}"
+msgstr "成功 · %{time}"
+
+msgid "Last renewal"
+msgstr "前回の更新"
+
+msgid "Show less"
+msgstr "折りたたむ"
+
+msgid "View full log"
+msgstr "ログ全体を表示"
+
+msgid "No renewal has run yet."
+msgstr "まだ更新は実行されていません。"
+
+msgid "Select nodes"
+msgstr "ノードを選択"
+
+msgid "Only kept on this node."
+msgstr "このノードにのみ保存されます。"
+
+msgid "Renew now"
+msgstr "今すぐ更新"
+
+msgid "Certificate DNS validation"
+msgstr "証明書の DNS 検証"
+
+msgid ""
+"Validates domains through DNS records when certificates are issued or "
+"renewed."
+msgstr "証明書の発行または更新時に DNS レコードでドメインを検証します。"
+
+msgid "DNS credentials"
+msgstr "DNS 認証情報"
+
+msgid "Web pages and API"
+msgstr "Web ページと API"
+
+msgid "Serves its own pages and API inside Nginx UI."
+msgstr "Nginx UI 内で独自のページと API を提供します。"
+
+msgid "External notifications"
+msgstr "外部通知"
+
+msgid "Delivers Nginx UI notifications to other services."
+msgstr "Nginx UI の通知を他のサービスに配信します。"
+
+msgid "Health checks"
+msgstr "ヘルスチェック"
+
+msgid "Adds more ways to check whether sites and services are reachable."
+msgstr "サイトやサービスに到達できるかを確認する方法を追加します。"
+
+msgid "AI assistant tools"
+msgstr "AI アシスタントツール"
+
+msgid "Offers actions that AI assistants connected to Nginx UI can run."
+msgstr "Nginx UI に接続された AI アシスタントが実行できる操作を提供します。"
+
+msgid "Backup storage"
+msgstr "バックアップストレージ"
+
+msgid "Stores backups and other files in external storage."
+msgstr "バックアップやその他のファイルを外部ストレージに保存します。"
+
+msgid "Auto backup"
+msgstr "自動バックアップ"
+
+msgid "Certificate deployment"
+msgstr "証明書のデプロイ"
+
+msgid "Pushes issued certificates to other services and devices."
+msgstr "発行された証明書を他のサービスやデバイスへプッシュします。"
+
+msgid "Deploy targets"
+msgstr "デプロイ先"
+
+msgid "Keeps lists of addresses that are denied access up to date."
+msgstr "アクセスを拒否するアドレスのリストを最新に保ちます。"
+
+msgid "Service discovery"
+msgstr "サービスディスカバリー"
+
+msgid "Finds backend servers automatically and keeps upstreams up to date."
+msgstr "バックエンドサーバーを自動的に検出し、upstream を最新に保ちます。"
+
+msgid "Access log forwarding"
+msgstr "アクセスログの転送"
+
+msgid ""
+"Receives access log entries as they are written, for example to forward or "
+"analyse them."
+msgstr ""
+"アクセスログのエントリを書き込み時に受け取ります。転送や分析などに使用しま"
+"す。"
+
+msgid "Other feature"
+msgstr "その他の機能"
+
+msgid "A feature this version of Nginx UI does not describe."
+msgstr "このバージョンの Nginx UI では説明されていない機能です。"
+
+msgid "Disable %{name}?"
+msgstr "%{name} を無効にしますか？"
+
+msgid "Renewal resumes when you turn it back on."
+msgstr "再びオンにすると更新が再開されます。"
+
+msgid "Installed %{version} is not this version"
+msgstr "インストール済みの %{version} はこのバージョンではありません"
+
+msgid ""
+"This version was not published by the official team or a partner. It may be "
+"a development build or a repackaged copy."
+msgstr ""
+"このバージョンは公式チームまたはパートナーによって公開されたものではありませ"
+"ん。開発ビルドや再パッケージされたコピーである可能性があります。"
+
+msgid "Install the official version"
+msgstr "公式バージョンをインストール"
+
+msgid "Install the partner version"
+msgstr "パートナーバージョンをインストール"
+
+msgid "The marketplace has the official version %{version}."
+msgstr "マーケットプレイスに公式バージョン %{version} があります。"
+
+msgid "The marketplace has the partner version %{version}."
+msgstr "マーケットプレイスにパートナーバージョン %{version} があります。"
+
+msgid "This plugin needs no access beyond its own features."
+msgstr "このプラグインは自身の機能以外へのアクセスを必要としません。"
+
+msgid "Keep its own data inside Nginx UI."
+msgstr "独自のデータを Nginx UI 内に保存します。"
+
+msgid "Connect to other servers over the network."
+msgstr "ネットワーク経由で他のサーバーに接続します。"
+
+msgid "Run tasks on a regular schedule."
+msgstr "定期的なスケジュールでタスクを実行します。"
+
+msgid "Manage Nginx UI with your permissions."
+msgstr "あなたの権限で Nginx UI を管理します。"
+
+msgid "Offer actions that AI assistants connected to Nginx UI can run."
+msgstr "Nginx UI に接続された AI アシスタントが実行できる操作を提供します。"
+
+msgid ""
+"Receive issued certificates, including the parts that must stay secret, to "
+"push them to other services."
+msgstr ""
+"発行された証明書を、秘密にすべき部分も含めて受け取り、他のサービスへプッシュ"
+"します。"
+
+msgid ""
+"Receive every access log entry while it is on, including visitor addresses "
+"and requested URLs."
+msgstr ""
+"オンの間、訪問者のアドレスやリクエストされた URL を含むすべてのアクセスログを"
+"受け取ります。"
+
+msgid "Stored %{kind} credentials"
+msgstr "保存されている %{kind} の資格情報"
+
+msgid "Own data storage"
+msgstr "独自のデータストレージ"
+
+msgid "Scheduled tasks"
+msgstr "スケジュールタスク"
+
+msgid "Server metrics"
+msgstr "サーバーメトリクス"
+
+msgid "Nginx UI management"
+msgstr "Nginx UI の管理"
+
+msgid "Access logs"
+msgstr "アクセスログ"
+
+msgid "Unknown permission"
+msgstr "不明な権限"
+
+msgid "Nothing to start"
+msgstr "起動するものはありません"
+
+msgid "Starts when needed"
+msgstr "必要に応じて起動"
+
+msgid "Always running"
+msgstr "常時実行"
+
+msgid "Start mode"
+msgstr "起動モード"
+
+msgid "Turn it on to review what it can access."
+msgstr "オンにするとアクセスできる範囲を確認できます。"
+
+msgid "Provides"
+msgstr "提供する機能"
+
+msgid "Can access"
+msgstr "アクセスできる範囲"
+
+msgid "Only these addresses"
+msgstr "これらのアドレスのみ"
+
+msgid "%{n} more"
+msgstr "他 %{n} 件"
+
+msgid "No specific addresses listed"
+msgstr "特定のアドレスは指定されていません"
+
+msgid "Nothing beyond its own features."
+msgstr "自身の機能以外へのアクセスはありません。"
+
+msgid "In use"
+msgstr "使用中"
+
+msgid "%{count} certificate renews through it:"
+msgid_plural "%{count} certificates renew through it:"
+msgstr[0] "%{count} 件の証明書がこのプラグインで更新されます:"
+
+msgid "Version, API version, start mode, updated time"
+msgstr "バージョン、API バージョン、起動モード、更新日時"
+
+msgid "Needs features"
+msgstr "必要な機能"
+
+msgid "The limits are applied while the plugin runs."
+msgstr "プラグインの実行中はこれらの制限が適用されます。"
+
+msgid "The plugin is not running, or this node cannot apply limits."
+msgstr "プラグインが実行されていないか、このノードでは制限を適用できません。"
+
+msgid "Develop plugin"
+msgstr "プラグインを開発"
+
+msgid "Standby"
+msgstr "待機中"
+
+msgid "Starts automatically when needed"
+msgstr "必要なときに自動的に起動します"
+
+msgid "Installed. Turn it on to review what it can access."
+msgstr "インストールしました。オンにするとアクセスできる範囲を確認できます。"
+
+msgid "Installed the version from the marketplace"
+msgstr "マーケットプレイスのバージョンをインストールしました"
+
+msgid "Failed to install the version from the marketplace"
+msgstr "マーケットプレイスのバージョンのインストールに失敗しました"
+
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
+msgstr ""
+"インストール済みのバージョンをマーケットプレイスのバージョンに置き換えます"
+"か？設定とデータは保持されます。"
+
+msgid "%{count} unsaved"
+msgid_plural "%{count} unsaved"
+msgstr[0] "%{count} 件未保存"
+
+msgctxt "list separator"
+msgid ", "
+msgstr "、"
+
+msgid "and %{n} more"
+msgstr "ほか %{n} 件"
+
+msgid ""
+"%{count} certificate renews through it and will not renew while it is off:"
+msgid_plural ""
+"%{count} certificates renew through it and will not renew while it is off:"
+msgstr[0] ""
+"%{count} 件の証明書がこのプラグインで更新されます。オフの間は更新されません:"
+
 #~ msgid "Webauthn"
 #~ msgstr "WebAuthn"
 

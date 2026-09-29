@@ -155,6 +155,21 @@ msgstr "HTTP01"
 msgid "DNS01"
 msgstr "DNS01"
 
+msgid "Validates the domain with a DNS record. Needs a DNS credential."
+msgstr "透過 DNS 記錄驗證網域，需要 DNS 認證。"
+
+msgid "Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail."
+msgstr "萬用字元憑證通常需要 DNS-01，使用 HTTP-01 很可能會失敗。"
+
+msgid "Validates each domain over port 80 on this server."
+msgstr "透過本伺服器的 80 連接埠驗證每個網域。"
+
+msgid "Can be changed after the plugin is installed."
+msgstr "安裝外掛後即可變更。"
+
+msgid "Can be changed after the plugin is enabled."
+msgstr "啟用外掛後即可變更。"
+
 msgid "Please enter the server IP address"
 msgstr "請輸入伺服器 IP 位址"
 
@@ -220,9 +235,6 @@ msgstr ""
 "請先在「憑證」>「DNS 憑證」中新增憑證，然後在下方選擇一個憑證以呼叫 DNS 供應"
 "商的 API。"
 
-msgid "Required Settings"
-msgstr "必要設定"
-
 msgid "Server IP Address"
 msgstr "伺服器 IP 位址"
 
@@ -253,11 +265,6 @@ msgid ""
 "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可訪問的 IP 地址均可用於私有證書頒發機構"
 
-msgid ""
-"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
-"Plugins."
-msgstr "DNS-01 驗證需要 DNS-01 外掛，請前往「系統 > 外掛」安裝。"
-
 msgid "Install DNS-01 plugin"
 msgstr "安裝 DNS-01 外掛"
 
@@ -273,14 +280,13 @@ msgstr "不支援 IP 證書"
 msgid "Key Type"
 msgstr "金鑰類型"
 
-msgid "Special Settings"
-msgstr "特殊設定"
-
 msgid "OCSP Must Staple"
 msgstr "OCSP 強制裝訂"
 
-msgid "Do not enable this option unless you are sure that you need it."
-msgstr "除非您確定需要，否則不要啟用此選項。"
+msgid ""
+"Only turn on when you are sure you need it. Firefox may show an error on the "
+"first visit."
+msgstr "僅在確定需要時開啟。Firefox 首次造訪時可能會顯示錯誤。"
 
 msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
@@ -290,6 +296,9 @@ msgstr "OCSP 強制裝訂可能會導致部分使用者在首次使用 Firefox �
 msgid "Enable Common Name"
 msgstr "啟用通用名稱"
 
+msgid "For private CAs that still require this field."
+msgstr "適用於仍要求此欄位的私有 CA。"
+
 msgid ""
 "Enable the certificate Common Name field for private CAs that still require "
 "it."
@@ -297,6 +306,9 @@ msgstr "為仍需要此欄位的私有 CA 啟用憑證的通用名稱 (Common Na
 
 msgid "Revoke Old Certificate"
 msgstr "撤銷舊憑證"
+
+msgid "Revokes the previous certificate once the new one is issued."
+msgstr "新憑證簽發後撤銷舊憑證。"
 
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
@@ -306,17 +318,26 @@ msgstr "如果您想要自動撤銷舊憑證，請啟用此選項。"
 msgid "Unknown Provider"
 msgstr "未知提供者"
 
+msgid "New credential"
+msgstr "新增認證"
+
+msgid "The credential was deleted. Please choose another one."
+msgstr "該認證已被刪除，請選擇其他認證。"
+
+msgid "Deleted credential"
+msgstr "已刪除的認證"
+
+msgid "DNS Credential"
+msgstr "DNS 認證"
+
+msgid "Select credential"
+msgstr "選擇認證"
+
 msgid "Credential"
 msgstr "認證"
 
-msgid "Please create DNS credentials first in DNS > Credentials"
-msgstr "請先在 DNS > 憑證 中建立 DNS 憑證"
-
 msgid "Select Credential"
 msgstr "選擇憑證"
-
-msgid "Go to DNS > Credentials to create or manage credentials"
-msgstr "前往 DNS > 憑證 以建立或管理憑證"
 
 msgid "Local"
 msgstr "本機"
@@ -421,6 +442,59 @@ msgstr "停用"
 msgid "Maintenance"
 msgstr "維護"
 
+msgid "not installed"
+msgstr "尚未安裝"
+
+msgid "turned off"
+msgstr "已停用"
+
+msgid "not working right now"
+msgstr "暫時無法使用"
+
+msgid ""
+"DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
+"yet."
+msgstr "DNS-01 驗證由 DNS-01 外掛提供，該外掛尚未安裝。"
+
+msgid "The DNS-01 plugin is installed but turned off."
+msgstr "DNS-01 外掛已安裝，但已停用。"
+
+msgid "The DNS-01 plugin is turned on but not working right now."
+msgstr "DNS-01 外掛已啟用，但暫時無法使用。"
+
+msgid ""
+"This certificate renews through the DNS-01 plugin, which is %{state}. It "
+"cannot renew automatically until the plugin is back."
+msgstr ""
+"此憑證依賴 DNS-01 外掛續期，該外掛%{state}。在外掛恢復之前，憑證無法自動續"
+"期。"
+
+msgid "DNS providers come with the DNS-01 plugin, which is %{state}."
+msgstr "DNS 供應商由 DNS-01 外掛提供，該外掛%{state}。"
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not installed."
+msgstr ""
+"目前僅有 %{count} 個供應商可用。更多供應商由 DNS-01 外掛提供，該外掛尚未安"
+"裝。"
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is turned off."
+msgstr ""
+"目前僅有 %{count} 個供應商可用。更多供應商由 DNS-01 外掛提供，該外掛已停用。"
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not working right now."
+msgstr ""
+"目前僅有 %{count} 個供應商可用。更多供應商由 DNS-01 外掛提供，該外掛暫時無法"
+"使用。"
+
+msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
+msgstr "DNS 驗證需要 DNS-01 外掛，該外掛%{state}。"
+
 msgid "Include line copied to clipboard"
 msgstr "Include 行已複製到剪貼簿"
 
@@ -506,6 +580,12 @@ msgstr "Nginx 未能驗證配置。"
 
 msgid "Server error"
 msgstr "伺服器錯誤"
+
+msgid "New DNS Credential"
+msgstr "新增 DNS 認證"
+
+msgid "Create and select"
+msgstr "建立並選擇"
 
 msgid "Testing Nginx configuration..."
 msgstr "正在測試 Nginx 配置..."
@@ -2249,6 +2329,10 @@ msgstr "歸檔中沒有憑證與其私鑰匹配"
 msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
 msgstr "{0} 沒有可用的 DNS-01 提供者：請安裝並啟用 DNS-01 外掛"
 
+msgid ""
+"Automatic renewal can only be switched for certificates issued by Nginx UI"
+msgstr "只有 Nginx UI 簽發的憑證才能切換自動續期"
+
 msgid "Path is not under the nginx conf dir"
 msgstr "路徑不在 Nginx 設定目錄下"
 
@@ -2776,6 +2860,48 @@ msgstr "額外指令不得包含大括號"
 
 msgid "{0} is still included by the nginx configuration: {1}"
 msgstr "{0} 仍被 nginx 設定包含：{1}"
+
+msgid "Plugin marketplace is disabled"
+msgstr "外掛市集已停用"
+
+msgid "Plugin marketplace source is unavailable: {0}"
+msgstr "外掛市集來源無法使用：{0}"
+
+msgid "Plugin release not found"
+msgstr "找不到外掛版本"
+
+msgid "Plugin release has been yanked"
+msgstr "外掛版本已被撤回"
+
+msgid "Plugin package digest does not match the catalog"
+msgstr "外掛套件摘要與目錄不符"
+
+msgid "Plugin package signature is invalid: {0}"
+msgstr "外掛套件簽章無效：{0}"
+
+msgid "Community plugins are not allowed on this node"
+msgstr "此節點不允許使用社群外掛"
+
+msgid "Plugin download url is not https"
+msgstr "外掛下載網址不是 https"
+
+msgid "Plugin release has no build for this platform"
+msgstr "外掛版本沒有適用於此平台的建置"
+
+msgid "Plugin catalog is invalid: {0}"
+msgstr "外掛目錄無效：{0}"
+
+msgid "Plugin is not in the marketplace catalog"
+msgstr "外掛不在市集目錄中"
+
+msgid "No local package found for this plugin"
+msgstr "找不到此外掛的本機套件"
+
+msgid "No plugin package is available for {0}"
+msgstr "{0} 沒有可用的外掛套件"
+
+msgid "The marketplace has no more trusted package of this plugin"
+msgstr "市集中已沒有此外掛的其他可信套件"
 
 msgid "Task not found"
 msgstr "找不到任務"
@@ -4559,6 +4685,12 @@ msgstr "註冊狀態"
 msgid "Register"
 msgstr "註冊"
 
+msgid "Advanced options"
+msgstr "進階選項"
+
+msgid "Sync to other nodes"
+msgstr "同步至其他節點"
+
 msgid "Please enter a name for the certificate"
 msgstr "請輸入憑證名稱"
 
@@ -4610,14 +4742,35 @@ msgstr "逾時"
 msgid "interval"
 msgstr "間隔"
 
-msgid "This certificate is managed by Nginx UI"
-msgstr "此憑證由 Nginx UI 管理"
+msgid "Valid · %{days} days left"
+msgstr "有效 · 剩餘 %{days} 天"
+
+msgid "Expires in %{days} days"
+msgstr "%{days} 天後到期"
+
+msgid "Managed manually"
+msgstr "手動管理"
+
+msgid "DNS validation · %{provider}"
+msgstr "DNS 驗證 · %{provider}"
+
+msgid "DNS validation"
+msgstr "DNS 驗證"
+
+msgid "HTTP validation"
+msgstr "HTTP 驗證"
+
+msgid "Self-signed"
+msgstr "自行簽署"
+
+msgid "Synced from another node"
+msgstr "從其他節點同步"
+
+msgid "Upload"
+msgstr "上傳"
 
 msgid "General Certificate"
 msgstr "普通憑證"
-
-msgid "This certificate is not managed by Nginx UI"
-msgstr "此憑證並非由 Nginx UI 託管"
 
 msgid "Log"
 msgstr "日誌"
@@ -4652,6 +4805,9 @@ msgstr "設定引用路徑：%{configured}；託管路徑：%{managed}"
 msgid "Unable to verify deployment"
 msgstr "無法驗證部署狀態"
 
+msgid "Not issued yet"
+msgstr "尚未簽發"
+
 msgid "Not After"
 msgstr "不晚於"
 
@@ -4675,6 +4831,9 @@ msgstr "匯入"
 
 msgid "Issue certificate"
 msgstr "簽發證書"
+
+msgid "Search by name or domain"
+msgstr "依名稱或網域搜尋"
 
 msgid "Discover Certificates"
 msgstr "探索憑證"
@@ -4794,6 +4953,9 @@ msgstr "憑證檔案下載成功"
 msgid "Failed to download certificate files"
 msgstr "下載憑證檔案失敗"
 
+msgid "Download"
+msgstr "下載"
+
 msgid "Download Certificate Files"
 msgstr "下載證書文件"
 
@@ -4821,6 +4983,12 @@ msgstr "若不需要設定密碼可留空"
 msgid "Enter PFX password"
 msgstr "請輸入 PFX 密碼"
 
+msgid "Renewed on the node it is synced from"
+msgstr "在同步來源節點上續期"
+
+msgid "Renews around %{date}"
+msgstr "預計 %{date} 前後續期"
+
 msgid "certificate"
 msgstr "證書"
 
@@ -4844,6 +5012,33 @@ msgstr "上傳%{type}檔案"
 
 msgid "or drag file to editor below"
 msgstr "或將檔案拖曳到下方編輯器"
+
+msgid "In progress"
+msgstr "進行中"
+
+msgid "Failed · %{time}"
+msgstr "失敗 · %{time}"
+
+msgid "Succeeded · %{time}"
+msgstr "成功 · %{time}"
+
+msgid "Last renewal"
+msgstr "上次續期"
+
+msgid "Show less"
+msgstr "收合"
+
+msgid "View full log"
+msgstr "檢視完整日誌"
+
+msgid "No renewal has run yet."
+msgstr "尚未執行過續期。"
+
+msgid "Select nodes"
+msgstr "選擇節點"
+
+msgid "Only kept on this node."
+msgstr "僅保存在此節點。"
 
 msgid "Wildcard Certificate"
 msgstr "萬用字元憑證"
@@ -4894,20 +5089,6 @@ msgid ""
 "All selected subdomains must belong to the same DNS Provider, otherwise the "
 "certificate application will fail."
 msgstr "所有選定的子網域名稱必須屬於同一 DNS 提供商，否則證書申請將失敗。"
-
-msgid "Challenge Method Reminder"
-msgstr "驗證方式提醒"
-
-msgid ""
-"If you use HTTP-01 challenge, the DNS credential field is hidden and not "
-"required."
-msgstr "如果使用 HTTP-01 驗證，DNS 憑證欄位會隱藏且無需填寫。"
-
-msgid "If you use DNS-01 challenge, you must select a DNS credential."
-msgstr "如果使用 DNS-01 驗證，必須選擇一個 DNS 憑證。"
-
-msgid "Wildcard certificates usually require DNS-01 challenge."
-msgstr "萬用字元憑證通常需要使用 DNS-01 驗證。"
 
 msgid "Next"
 msgstr "下一步"
@@ -4964,6 +5145,9 @@ msgstr "更換憑證"
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert 正在執行中，請稍候..."
 
+msgid "Renew now"
+msgstr "立即續期"
+
 msgid "Certificate issued successfully"
 msgstr "憑證簽發成功"
 
@@ -4995,16 +5179,17 @@ msgstr "新增 IP 位址"
 msgid "Valid For (days)"
 msgstr "有效期（天）"
 
+msgid "Automatic renewal turned on"
+msgstr "已開啟自動續期"
+
+msgid "Automatic renewal turned off"
+msgstr "已關閉自動續期"
+
 msgid "Some browsers reject TLS certificates valid for more than 398 days."
 msgstr "某些瀏覽器會拒絕有效期超過 398 天的 TLS 憑證。"
 
 msgid "Generate Self-signed Certificate"
 msgstr "產生自簽署憑證"
-
-msgid ""
-"This self-signed certificate is managed by Nginx UI and renewed "
-"automatically."
-msgstr "此自簽名憑證由 Nginx UI 管理並自動續期。"
 
 msgid "No certificate is bound to this target"
 msgstr "此目標未繫結任何憑證"
@@ -5223,6 +5408,24 @@ msgstr "啟用內容傳輸壓縮"
 
 msgid "On"
 msgstr "開啟"
+
+msgid "Replace the files to renew"
+msgstr "替換檔案以續期"
+
+msgid "Auto renewal"
+msgstr "自動續期"
+
+msgid "Issuer"
+msgstr "簽發者"
+
+msgid "Certificate files"
+msgstr "憑證檔案"
+
+msgid "Hide contents"
+msgstr "隱藏內容"
+
+msgid "Show contents"
+msgstr "顯示內容"
 
 msgid "GZIP Min Length"
 msgstr "GZIP 最小長度"
@@ -5905,6 +6108,18 @@ msgstr "其他設定"
 
 msgid "All"
 msgstr "全部"
+
+msgid "Expiring within 30 days"
+msgstr "30 天內到期"
+
+msgid "Renewal failed"
+msgstr "續期失敗"
+
+msgid "Renewal method"
+msgstr "續期方式"
+
+msgid "Expiry date"
+msgstr "到期日期"
 
 msgid "Host, e.g. @ or www"
 msgstr "主機，例如 @ 或 www"
@@ -9732,6 +9947,9 @@ msgstr "HTTPS"
 msgid "Certificate"
 msgstr "憑證"
 
+msgid "Private key"
+msgstr "私鑰"
+
 msgid "Pick the certificate that secures the web interface."
 msgstr "選擇用於保護網頁介面的憑證。"
 
@@ -10547,6 +10765,82 @@ msgstr "組件"
 msgid "All Components"
 msgstr "所有組件"
 
+msgid "Certificate DNS validation"
+msgstr "憑證 DNS 驗證"
+
+msgid ""
+"Validates domains through DNS records when certificates are issued or "
+"renewed."
+msgstr "在簽發或續期憑證時透過 DNS 記錄驗證網域。"
+
+msgid "DNS credentials"
+msgstr "DNS 認證"
+
+msgid "Web pages and API"
+msgstr "網頁與 API"
+
+msgid "Serves its own pages and API inside Nginx UI."
+msgstr "在 Nginx UI 中提供自己的頁面和 API。"
+
+msgid "External notifications"
+msgstr "外部通知"
+
+msgid "Delivers Nginx UI notifications to other services."
+msgstr "將 Nginx UI 的通知傳送至其他服務。"
+
+msgid "Health checks"
+msgstr "健康檢查"
+
+msgid "Adds more ways to check whether sites and services are reachable."
+msgstr "增加更多檢查網站和服務是否可連線的方式。"
+
+msgid "AI assistant tools"
+msgstr "AI 助理工具"
+
+msgid "Offers actions that AI assistants connected to Nginx UI can run."
+msgstr "提供可供連接到 Nginx UI 的 AI 助理執行的操作。"
+
+msgid "Backup storage"
+msgstr "備份儲存"
+
+msgid "Stores backups and other files in external storage."
+msgstr "將備份和其他檔案儲存到外部儲存空間。"
+
+msgid "Auto backup"
+msgstr "自動備份"
+
+msgid "Certificate deployment"
+msgstr "憑證部署"
+
+msgid "Pushes issued certificates to other services and devices."
+msgstr "將簽發的憑證推送至其他服務和裝置。"
+
+msgid "Deploy targets"
+msgstr "部署目標"
+
+msgid "Keeps lists of addresses that are denied access up to date."
+msgstr "持續更新禁止存取的位址清單。"
+
+msgid "Service discovery"
+msgstr "服務探索"
+
+msgid "Finds backend servers automatically and keeps upstreams up to date."
+msgstr "自動探索後端伺服器，並保持 upstream 為最新狀態。"
+
+msgid "Access log forwarding"
+msgstr "存取日誌轉發"
+
+msgid ""
+"Receives access log entries as they are written, for example to forward or "
+"analyse them."
+msgstr "在存取日誌寫入時即時接收日誌項目，例如用於轉發或分析。"
+
+msgid "Other feature"
+msgstr "其他功能"
+
+msgid "A feature this version of Nginx UI does not describe."
+msgstr "此版本的 Nginx UI 未描述的功能。"
+
 msgid "Only localhost addresses are accepted"
 msgstr "只接受 localhost 位址"
 
@@ -10562,11 +10856,17 @@ msgstr "自動安裝至節點"
 msgid "Sync now"
 msgstr "立即同步"
 
+msgid "Version, API version, start mode, updated time"
+msgstr "版本、API 版本、啟動方式、更新時間"
+
 msgid "Uninstall this plugin"
 msgstr "解除安裝此外掛"
 
 msgid "Its files, data and settings are removed from this node."
 msgstr "將從此節點移除其檔案、資料和設定。"
+
+msgid "Develop plugin"
+msgstr "開發外掛"
 
 msgid "Plugin synchronized to %{count} node(s)"
 msgstr "外掛已同步至 %{count} 個節點"
@@ -10580,6 +10880,9 @@ msgstr "同步外掛失敗"
 msgid "Installed"
 msgstr "已安裝"
 
+msgid "Installed %{version} is not this version"
+msgstr "已安裝的 %{version} 並非此版本"
+
 msgid "Starting"
 msgstr "啟動中"
 
@@ -10592,8 +10895,25 @@ msgstr "不相容"
 msgid "Needs approval"
 msgstr "需要核准"
 
-msgid "Idle"
-msgstr "閒置"
+msgid "Standby"
+msgstr "待命"
+
+msgid "Starts automatically when needed"
+msgstr "需要時自動啟動"
+
+msgid "Installed. Turn it on to review what it can access."
+msgstr "已安裝。開啟後即可檢視它能存取的內容。"
+
+msgid "Installed the version from the marketplace"
+msgstr "已安裝市集中的版本"
+
+msgid "Failed to install the version from the marketplace"
+msgstr "安裝市集中的版本失敗"
+
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
+msgstr "要以市集中的版本取代已安裝的版本嗎？設定和資料將會保留。"
 
 msgid "Failed to load the plugin list"
 msgstr "載入外掛清單失敗"
@@ -10609,6 +10929,12 @@ msgstr "外掛已停用"
 
 msgid "Failed to disable the plugin"
 msgstr "停用外掛失敗"
+
+msgid "Disable %{name}?"
+msgstr "停用 %{name}？"
+
+msgid "Renewal resumes when you turn it back on."
+msgstr "重新開啟後將恢復續期。"
 
 msgid "Uninstall %{name}?"
 msgstr "解除安裝 %{name}？"
@@ -10663,9 +10989,6 @@ msgid ""
 msgstr ""
 "由本機靜態伺服器提供的 plugin.json 位址，只接受 localhost 位址。該外掛會在已"
 "安裝外掛之外額外載入。"
-
-msgid "Dev plugin"
-msgstr "開發外掛"
 
 msgid "Needs attention"
 msgstr "需處理"
@@ -10723,6 +11046,9 @@ msgstr "安裝外掛失敗"
 
 msgid "Install plugin"
 msgstr "安裝外掛"
+
+msgid "Enable plugin"
+msgstr "啟用外掛"
 
 msgid "Click or drag a plugin bundle here"
 msgstr "點擊或將外掛套件拖曳至此處"
@@ -11023,6 +11349,23 @@ msgid ""
 "developer mode."
 msgstr "未簽署，無法確認發布者。安裝需要開啟開發者模式。"
 
+msgid ""
+"This version was not published by the official team or a partner. It may be "
+"a development build or a repackaged copy."
+msgstr "此版本並非由官方團隊或合作夥伴發布，可能是開發版本或重新封裝的副本。"
+
+msgid "Install the official version"
+msgstr "安裝官方版本"
+
+msgid "Install the partner version"
+msgstr "安裝合作夥伴版本"
+
+msgid "The marketplace has the official version %{version}."
+msgstr "市集中有官方版本 %{version}。"
+
+msgid "The marketplace has the partner version %{version}."
+msgstr "市集中有合作夥伴版本 %{version}。"
+
 msgid "This package is trusted less than the version already installed"
 msgstr "此安裝套件的信任等級低於已安裝的版本"
 
@@ -11044,8 +11387,8 @@ msgid ""
 msgstr ""
 "請僅在信任作者時核准。核准記錄會被保留，且當所要求的權限有變動時會再次詢問。"
 
-msgid "This plugin does not request any host permission."
-msgstr "此外掛未要求任何主機權限。"
+msgid "This plugin needs no access beyond its own features."
+msgstr "此外掛除自身功能外不需要其他存取權限。"
 
 msgid "Read stored %{kind} credentials, including their secrets."
 msgstr "讀取已儲存的 %{kind} 憑證，包括其密鑰。"
@@ -11053,14 +11396,14 @@ msgstr "讀取已儲存的 %{kind} 憑證，包括其密鑰。"
 msgid "unknown"
 msgstr "未知"
 
-msgid "Store and read its own key-value data inside the Nginx UI database."
-msgstr "在 Nginx UI 資料庫中儲存和讀取外掛自身的鍵值資料。"
+msgid "Keep its own data inside Nginx UI."
+msgstr "在 Nginx UI 中儲存自己的資料。"
 
-msgid "Make outbound network requests to the hosts declared in its manifest."
-msgstr "向其清單中宣告的主機發出對外網路請求。"
+msgid "Connect to other servers over the network."
+msgstr "透過網路連線到其他伺服器。"
 
-msgid "Run scheduled tasks on the schedules declared in its manifest."
-msgstr "依其清單中宣告的排程執行定時任務。"
+msgid "Run tasks on a regular schedule."
+msgstr "依固定排程執行任務。"
 
 msgid "Send notifications through the Nginx UI notification channels."
 msgstr "透過 Nginx UI 的通知管道發送通知。"
@@ -11068,39 +11411,48 @@ msgstr "透過 Nginx UI 的通知管道發送通知。"
 msgid "Read CPU, memory, network and Nginx status metrics of this node."
 msgstr "讀取此節點的 CPU、記憶體、網路及 Nginx 狀態指標。"
 
-msgid "Call the Nginx UI management API with your permissions."
-msgstr "以您的權限呼叫 Nginx UI 管理 API。"
+msgid "Manage Nginx UI with your permissions."
+msgstr "以您的權限管理 Nginx UI。"
+
+msgid "Offer actions that AI assistants connected to Nginx UI can run."
+msgstr "提供可供連接到 Nginx UI 的 AI 助理執行的操作。"
 
 msgid ""
-"Offer its tools to AI assistants connected to Nginx UI through MCP, which "
-"can then run them."
-msgstr "透過 MCP 將其工具提供給連線至 Nginx UI 的 AI 助理，供其執行。"
+"Receive issued certificates, including the parts that must stay secret, to "
+"push them to other services."
+msgstr "接收簽發的憑證（包括必須保密的部分），以推送至其他服務。"
 
 msgid ""
-"Receive certificates and their private keys in order to push them to "
-"external targets."
-msgstr "接收憑證及其私鑰，以便將其推送至外部目標。"
-
-msgid ""
-"Receive every parsed nginx access log line while enabled, including client "
-"addresses and requested URLs."
-msgstr ""
-"在啟用期間接收每一筆解析後的 nginx 存取日誌，包括用戶端位址和請求的 URL。"
+"Receive every access log entry while it is on, including visitor addresses "
+"and requested URLs."
+msgstr "開啟期間接收每筆存取日誌，包括訪客位址和請求的 URL。"
 
 msgid "Unknown permission. Only grant it if you trust the plugin author."
 msgstr "未知權限，請僅在信任外掛作者時授予。"
 
+msgid "Stored %{kind} credentials"
+msgstr "已儲存的 %{kind} 憑證"
+
+msgid "Own data storage"
+msgstr "自有資料儲存"
+
+msgid "Scheduled tasks"
+msgstr "排程任務"
+
+msgid "Server metrics"
+msgstr "伺服器指標"
+
+msgid "Nginx UI management"
+msgstr "Nginx UI 管理"
+
+msgid "Access logs"
+msgstr "存取日誌"
+
+msgid "Unknown permission"
+msgstr "未知權限"
+
 msgid "Overview"
 msgstr "概覽"
-
-msgid "No background process"
-msgstr "無背景處理程序"
-
-msgid "On demand"
-msgstr "按需啟動"
-
-msgid "Resident"
-msgstr "常駐"
 
 msgid "Streamed"
 msgstr "已傳送"
@@ -11127,8 +11479,33 @@ msgstr "最近的錯誤"
 msgid "This plugin needs your approval before it can run."
 msgstr "此外掛需要您的核准後才能執行。"
 
-msgid "Turn it on to review the requested permissions."
-msgstr "開啟開關即可檢視其要求的權限。"
+msgid "Turn it on to review what it can access."
+msgstr "開啟後即可檢視它能存取的內容。"
+
+msgid "Provides"
+msgstr "提供"
+
+msgid "Can access"
+msgstr "可存取"
+
+msgid "Only these addresses"
+msgstr "僅限以下位址"
+
+msgid "%{n} more"
+msgstr "還有 %{n} 個"
+
+msgid "No specific addresses listed"
+msgstr "未列出具體位址"
+
+msgid "Nothing beyond its own features."
+msgstr "除自身功能外無其他存取。"
+
+msgid "In use"
+msgstr "使用中"
+
+msgid "%{count} certificate renews through it:"
+msgid_plural "%{count} certificates renew through it:"
+msgstr[0] "%{count} 個憑證透過它續期："
 
 msgid "API version"
 msgstr "API 版本"
@@ -11136,18 +11513,17 @@ msgstr "API 版本"
 msgid "Needs Nginx UI %{version} or newer"
 msgstr "需要 Nginx UI %{version} 或更新版本"
 
+msgid "Start mode"
+msgstr "啟動方式"
+
 msgid "Resource limits"
 msgstr "資源限制"
 
-msgid "The running process is confined to these limits."
-msgstr "執行中的行程被限制在這些限額內。"
+msgid "The limits are applied while the plugin runs."
+msgstr "外掛執行時會套用這些限制。"
 
-msgid ""
-"The plugin is not running, or this node cannot confine processes: that needs "
-"Linux with a writable cgroup v2 hierarchy."
-msgstr ""
-"該外掛未在執行，或此節點無法對行程施加限制：這需要具備可寫入 cgroup v2 階層結"
-"構的 Linux 系統。"
+msgid "The plugin is not running, or this node cannot apply limits."
+msgstr "外掛未執行，或此節點無法套用限制。"
 
 msgid "Enforced"
 msgstr "已強制"
@@ -11161,11 +11537,8 @@ msgstr "存取日誌串流"
 msgid "Depends on"
 msgstr "相依"
 
-msgid "Needs capabilities"
-msgstr "相依的能力"
-
-msgid "Permissions"
-msgstr "權限"
+msgid "Needs features"
+msgstr "所需功能"
 
 msgid "Cluster"
 msgstr "叢集"
@@ -11228,6 +11601,15 @@ msgstr "同步至所選"
 msgid "Sync to all"
 msgstr "同步至全部"
 
+msgid "Nothing to start"
+msgstr "無需啟動"
+
+msgid "Starts when needed"
+msgstr "依需求啟動"
+
+msgid "Always running"
+msgstr "持續執行"
+
 msgid "Updates available"
 msgstr "可更新"
 
@@ -11251,6 +11633,10 @@ msgstr "僅在 Linux 上生效，目前系統不支援。"
 
 msgid "%{field} is required"
 msgstr "%{field} 為必填項目"
+
+msgid "%{count} unsaved"
+msgid_plural "%{count} unsaved"
+msgstr[0] "%{count} 項未儲存"
 
 msgid "Failed to load the plugin settings"
 msgstr "載入外掛設定失敗"
@@ -11287,6 +11673,19 @@ msgstr ""
 
 msgid "Also sync the plugin settings"
 msgstr "同時同步外掛設定"
+
+msgctxt "list separator"
+msgid ", "
+msgstr "、"
+
+msgid "and %{n} more"
+msgstr "等 %{n} 個"
+
+msgid ""
+"%{count} certificate renews through it and will not renew while it is off:"
+msgid_plural ""
+"%{count} certificates renew through it and will not renew while it is off:"
+msgstr[0] "%{count} 個憑證透過它續期，停用期間將無法續期："
 
 msgid "Dev"
 msgstr "Dev"
@@ -11645,6 +12044,117 @@ msgstr "單窗格"
 
 msgid "Split view"
 msgstr "分割檢視"
+
+#~ msgid "Required Settings"
+#~ msgstr "必要設定"
+
+#~ msgid ""
+#~ "DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+#~ "Plugins."
+#~ msgstr "DNS-01 驗證需要 DNS-01 外掛，請前往「系統 > 外掛」安裝。"
+
+#~ msgid "Special Settings"
+#~ msgstr "特殊設定"
+
+#~ msgid "Do not enable this option unless you are sure that you need it."
+#~ msgstr "除非您確定需要，否則不要啟用此選項。"
+
+#~ msgid "Please create DNS credentials first in DNS > Credentials"
+#~ msgstr "請先在 DNS > 憑證 中建立 DNS 憑證"
+
+#~ msgid "Go to DNS > Credentials to create or manage credentials"
+#~ msgstr "前往 DNS > 憑證 以建立或管理憑證"
+
+#~ msgid "This certificate is managed by Nginx UI"
+#~ msgstr "此憑證由 Nginx UI 管理"
+
+#~ msgid "This certificate is not managed by Nginx UI"
+#~ msgstr "此憑證並非由 Nginx UI 託管"
+
+#~ msgid "Challenge Method Reminder"
+#~ msgstr "驗證方式提醒"
+
+#~ msgid ""
+#~ "If you use HTTP-01 challenge, the DNS credential field is hidden and not "
+#~ "required."
+#~ msgstr "如果使用 HTTP-01 驗證，DNS 憑證欄位會隱藏且無需填寫。"
+
+#~ msgid "If you use DNS-01 challenge, you must select a DNS credential."
+#~ msgstr "如果使用 DNS-01 驗證，必須選擇一個 DNS 憑證。"
+
+#~ msgid "Wildcard certificates usually require DNS-01 challenge."
+#~ msgstr "萬用字元憑證通常需要使用 DNS-01 驗證。"
+
+#~ msgid ""
+#~ "This self-signed certificate is managed by Nginx UI and renewed "
+#~ "automatically."
+#~ msgstr "此自簽名憑證由 Nginx UI 管理並自動續期。"
+
+#~ msgid "Dev plugin"
+#~ msgstr "開發外掛"
+
+#~ msgid "This plugin does not request any host permission."
+#~ msgstr "此外掛未要求任何主機權限。"
+
+#~ msgid "Store and read its own key-value data inside the Nginx UI database."
+#~ msgstr "在 Nginx UI 資料庫中儲存和讀取外掛自身的鍵值資料。"
+
+#~ msgid ""
+#~ "Make outbound network requests to the hosts declared in its manifest."
+#~ msgstr "向其清單中宣告的主機發出對外網路請求。"
+
+#~ msgid "Run scheduled tasks on the schedules declared in its manifest."
+#~ msgstr "依其清單中宣告的排程執行定時任務。"
+
+#~ msgid "Call the Nginx UI management API with your permissions."
+#~ msgstr "以您的權限呼叫 Nginx UI 管理 API。"
+
+#~ msgid ""
+#~ "Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+#~ "can then run them."
+#~ msgstr "透過 MCP 將其工具提供給連線至 Nginx UI 的 AI 助理，供其執行。"
+
+#~ msgid ""
+#~ "Receive certificates and their private keys in order to push them to "
+#~ "external targets."
+#~ msgstr "接收憑證及其私鑰，以便將其推送至外部目標。"
+
+#~ msgid ""
+#~ "Receive every parsed nginx access log line while enabled, including "
+#~ "client addresses and requested URLs."
+#~ msgstr ""
+#~ "在啟用期間接收每一筆解析後的 nginx 存取日誌，包括用戶端位址和請求的 URL。"
+
+#~ msgid "No background process"
+#~ msgstr "無背景處理程序"
+
+#~ msgid "On demand"
+#~ msgstr "按需啟動"
+
+#~ msgid "Resident"
+#~ msgstr "常駐"
+
+#~ msgid "Turn it on to review the requested permissions."
+#~ msgstr "開啟開關即可檢視其要求的權限。"
+
+#~ msgid "The running process is confined to these limits."
+#~ msgstr "執行中的行程被限制在這些限額內。"
+
+#~ msgid ""
+#~ "The plugin is not running, or this node cannot confine processes: that "
+#~ "needs Linux with a writable cgroup v2 hierarchy."
+#~ msgstr ""
+#~ "該外掛未在執行，或此節點無法對行程施加限制：這需要具備可寫入 cgroup v2 階"
+#~ "層結構的 Linux 系統。"
+
+#~ msgid "Needs capabilities"
+#~ msgstr "相依的能力"
+
+#~ msgid "Permissions"
+#~ msgstr "權限"
+
+#~ msgid "Idle"
+#~ msgstr "閒置"
 
 #~ msgid ""
 #~ "Turning it off stops every plugin and hides the plugin pages. Takes "
