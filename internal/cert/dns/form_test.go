@@ -1,6 +1,7 @@
 package dns
 
 import (
+	"slices"
 	"testing"
 )
 
@@ -35,8 +36,10 @@ func TestBuiltinProvidersCarryConsistentForms(t *testing.T) {
 				if m.Recommended {
 					recommended++
 				}
-				if len(m.Fields) == 0 {
-					t.Fatalf("method %s lists no fields", m.Name)
+				for key := range m.Values {
+					if group, ok := groups[key]; ok && (group != FieldGroupCredential || slices.Contains(m.Fields, key)) {
+						t.Fatalf("method %s sets value %s that it cannot set", m.Name, key)
+					}
 				}
 				for _, key := range m.Fields {
 					if groups[key] != FieldGroupCredential {

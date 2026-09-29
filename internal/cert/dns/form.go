@@ -29,9 +29,11 @@ type FormField struct {
 	Link     string `json:"link,omitempty"`
 }
 
-// FormMethod is one way to sign in and the credential fields it uses.
+// FormMethod is one way to sign in and the credential fields it uses. Values
+// are fixed credentials stored when the method is selected.
 type FormMethod struct {
-	Name        string   `json:"name"`
-	Recommended bool     `json:"recommended,omitempty"`
-	Fields      []string `json:"fields,omitempty"`
+	Name        string            `json:"name"`
+	Recommended bool              `json:"recommended,omitempty"`
+	Fields      []string          `json:"fields,omitempty"`
+	Values      map[string]string `json:"values,omitempty"`
 }
