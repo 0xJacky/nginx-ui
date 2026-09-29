@@ -3,6 +3,7 @@ import type { PluginInfo, PluginManifest, PluginManifestI18n, WebappEntry, Webap
 import pluginApi from '@/api/plugin'
 import gettext from '@/gettext'
 import router, { NOT_FOUND_ROUTE_NAME } from '@/routes'
+import { injectScript, scriptQueue, withVersion } from './chunks'
 import { isLoopbackUrl } from './loopback'
 import { createRegistry } from './registry'
 import { satisfies } from './semver'
@@ -31,24 +32,6 @@ function injectStyle(url: string): Promise<void> {
     link.onerror = () => resolve()
     document.head.appendChild(link)
   })
-}
-
-function injectScript(url: string): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script')
-    script.src = url
-    script.async = false
-    script.onload = () => resolve()
-    script.onerror = () => reject(new Error(`Failed to load plugin bundle ${url}`))
-    document.head.appendChild(script)
-  })
-}
-
-function withVersion(url: string, version: string) {
-  if (!version)
-    return url
-
-  return `${url}${url.includes('?') ? '&' : '?'}v=${encodeURIComponent(version)}`
 }
 
 /** Compares the ranges a bundle was built against with the shared runtime. */
@@ -98,6 +81,7 @@ function manifestFromInfo(entry: WebappEntry, info?: PluginInfo): PluginManifest
     webapp: {
       bundle_path: entry.bundle_url,
       style_path: entry.style_url,
+      chunks: entry.chunks,
       shared: entry.shared,
       pages: entry.pages,
     },
@@ -149,8 +133,12 @@ async function fetchDevEntry(url: string): Promise<{ entry: WebappEntry, manifes
   const bundleUrl = webapp.bundle_path ? new URL(webapp.bundle_path, base).toString() : ''
   const styleUrl = webapp.style_path ? new URL(webapp.style_path, base).toString() : undefined
 
+  const chunkUrls: Record<string, string> = {}
+  for (const [name, file] of Object.entries(webapp.chunks ?? {}))
+    chunkUrls[name] = new URL(file, base).toString()
+
   // An absolute path in the manifest must not lead off the loopback host either.
-  for (const assetUrl of [bundleUrl, styleUrl]) {
+  for (const assetUrl of [bundleUrl, styleUrl, ...Object.values(chunkUrls)]) {
     if (assetUrl && !isLoopbackUrl(assetUrl))
       throw new Error(`${assetUrl} is not a localhost address`)
   }
@@ -162,6 +150,7 @@ async function fetchDevEntry(url: string): Promise<{ entry: WebappEntry, manifes
       version: manifest.version ?? String(Date.now()),
       bundle_url: bundleUrl,
       style_url: styleUrl,
+      chunks: Object.keys(chunkUrls).length > 0 ? chunkUrls : undefined,
       shared: webapp.shared,
       pages: webapp.pages,
     },
@@ -208,16 +197,19 @@ export function usePluginLoader() {
     if (entry.style_url)
       await injectStyle(withVersion(entry.style_url, entry.version))
 
-    await injectScript(withVersion(entry.bundle_url, entry.version))
-
-    const definition = takePendingPlugin(entry.id)
+    // The bundle hands its definition over on a global, so no other script of
+    // the page runs until it has been taken.
+    const definition = await scriptQueue.run(async () => {
+      await injectScript(withVersion(entry.bundle_url, entry.version))
+      return takePendingPlugin(entry.id)
+    })
     if (!definition) {
       console.warn(`[plugin] ${entry.id}: bundle did not call registerPlugin('${entry.id}', ...)`)
       store.setLoadState(entry.id, 'failed')
       return
     }
 
-    await definition.setup(createRegistry(entry.id, manifest))
+    await definition.setup(createRegistry(entry.id, manifest, entry))
     store.setLoadState(entry.id, 'loaded')
   }
 

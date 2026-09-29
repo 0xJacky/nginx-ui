@@ -279,6 +279,7 @@ func initPluginCapabilities(ctx context.Context) {
 	capability.RegisterDiscovery(manager)
 	capability.RegisterContent(manager)
 	capability.RegisterLogSink(manager)
+	capability.RegisterLogFiles(manager)
 	certdeploy.Start(ctx)
 	blocklist.Start(ctx)
 	discovery.Start(ctx)

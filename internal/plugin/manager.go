@@ -114,12 +114,15 @@ type Info struct {
 // WebappEntry tells the browser runtime what to load for one plugin. The URLs
 // are relative to the application root, see webappURL.
 type WebappEntry struct {
-	ID        string                  `json:"id"`
-	Version   string                  `json:"version"`
-	BundleURL string                  `json:"bundle_url"`
-	StyleURL  string                  `json:"style_url,omitempty"`
-	Shared    map[string]string       `json:"shared,omitempty"`
-	Pages     []protocol.ManifestPage `json:"pages,omitempty"`
+	ID        string `json:"id"`
+	Version   string `json:"version"`
+	BundleURL string `json:"bundle_url"`
+	StyleURL  string `json:"style_url,omitempty"`
+	// Chunks maps each declared chunk name to its URL, chunks the webapp route
+	// cannot serve are left out.
+	Chunks map[string]string       `json:"chunks,omitempty"`
+	Shared map[string]string       `json:"shared,omitempty"`
+	Pages  []protocol.ManifestPage `json:"pages,omitempty"`
 }
 
 // DNS01ProviderEntry is one provider offered by one enabled plugin.
@@ -241,6 +244,17 @@ type Manager struct {
 	logSinkList    []*logSink
 	// logSinks is the list the feed goroutine reads without a lock.
 	logSinks atomic.Pointer[[]*logSink]
+
+	// logFilesMu guards the log file listing and the paths_changed debounce.
+	logFilesMu    sync.Mutex
+	logFiles      LogFileSource
+	logFilesUnsub func()
+	logPathsTimer *time.Timer
+	// logPathsSent is the list the last notification announced, nil before
+	// the first one.
+	logPathsSent []protocol.HostLogFile
+	// logPathsDelay overrides logPathsDebounce, zero keeps it.
+	logPathsDelay time.Duration
 
 	// partners is the signed partner keyring, see partners.go.
 	partners partnerStore
@@ -751,6 +765,24 @@ func webappURL(id, manifestPath string, manifest *protocol.Manifest) string {
 	return path.Join(pluginRoutePrefix, id, webappRouteDir, rel)
 }
 
+// chunkURLs maps the declared chunks onto the webapp static route. A chunk
+// outside the served directory has no URL.
+func chunkURLs(id string, manifest *protocol.Manifest) map[string]string {
+	if manifest == nil || manifest.Webapp == nil || len(manifest.Webapp.Chunks) == 0 {
+		return nil
+	}
+	urls := make(map[string]string, len(manifest.Webapp.Chunks))
+	for name, file := range manifest.Webapp.Chunks {
+		if url := webappURL(id, file, manifest); url != "" {
+			urls[name] = url
+		}
+	}
+	if len(urls) == 0 {
+		return nil
+	}
+	return urls
+}
+
 // iconURL exposes the manifest icon only when it is reachable through one of
 // the static routes.
 func iconURL(manifest *protocol.Manifest) string {
@@ -795,6 +827,7 @@ func (m *Manager) WebappEntries() []WebappEntry {
 			Version:   manifest.Version,
 			BundleURL: bundleURL,
 			StyleURL:  webappURL(item.id, manifest.Webapp.StylePath, manifest),
+			Chunks:    chunkURLs(item.id, manifest),
 			Shared:    manifest.Webapp.Shared,
 			Pages:     manifest.Webapp.Pages,
 		})

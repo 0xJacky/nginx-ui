@@ -1,7 +1,9 @@
 import type { Component } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
+import type { PrefixedSlotRegistration } from './slots'
 import type { PluginLoadState, RegisterSlotOptions, SlotContext, SlotName, SlotRegistration } from './types'
 import type { WebappEntry } from '@/api/plugin'
+import { collectSlotsByPrefix, registrationApplies } from './slots'
 
 /**
  * Everything plugin bundles contributed to the running application.
@@ -36,6 +38,9 @@ export const usePluginStore = defineStore('plugin', () => {
       component: markRaw(component),
       order: options.order ?? 0,
       when: options.when,
+      label: options.label,
+      sortValue: options.sortValue,
+      filters: options.filters,
     }
 
     slots.value = {
@@ -49,8 +54,13 @@ export const usePluginStore = defineStore('plugin', () => {
     const registrations = slots.value[String(name)] ?? []
 
     return registrations
-      .filter(registration => !registration.when || registration.when(ctx))
+      .filter(registration => registrationApplies(registration, ctx))
       .sort((a, b) => a.order - b.order)
+  }
+
+  /** Registrations of every slot named `prefix{key}` that apply to `ctx`. */
+  function slotsByPrefix(prefix: string, ctx: SlotContext = {}): PrefixedSlotRegistration[] {
+    return collectSlotsByPrefix(slots.value, prefix, ctx)
   }
 
   function setSettingsPanel(pluginId: string, component: Component) {
@@ -76,6 +86,7 @@ export const usePluginStore = defineStore('plugin', () => {
     addRoute,
     addSlot,
     slotComponents,
+    slotsByPrefix,
     setSettingsPanel,
     setLoadState,
   }

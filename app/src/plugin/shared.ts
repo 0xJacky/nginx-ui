@@ -9,6 +9,7 @@ import * as vueRouter from 'vue-router'
 import { openDnsCredentialEditor } from '@/components/DnsCredentialEditor/openDnsCredentialEditor'
 import gettext from '@/gettext'
 import version from '@/version.json'
+import { chunkLoader } from './chunks'
 
 /**
  * Definitions handed over by bundles that already executed. The loader takes
@@ -59,6 +60,7 @@ export function installSharedRuntime() {
       },
     },
     registerPlugin,
+    registerChunk: chunkLoader.registerChunk,
   }
 
   window.NginxUI = shared

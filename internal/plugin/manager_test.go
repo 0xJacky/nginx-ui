@@ -695,3 +695,30 @@ func TestManagerRefusesWhenTheSystemIsDisabled(t *testing.T) {
 	assert.ErrorIs(t, m.Uninstall(ctx, "official.alpha", false), ErrPluginsDisabled)
 	assert.ErrorIs(t, m.SaveSettings(ctx, "official.alpha", nil), ErrPluginsDisabled)
 }
+
+func TestWebappEntriesListChunkURLs(t *testing.T) {
+	m := newTestManager(t)
+	ctx := context.Background()
+	require.NoError(t, m.LoadOffline(ctx))
+
+	manifest := pluginManifest("official.alpha")
+	manifest.Server = nil
+	manifest.Capabilities = nil
+	manifest.DNS01 = nil
+	manifest.Webapp = &protocol.ManifestWebapp{
+		BundlePath: "webapp/main.js",
+		Chunks:     map[string]string{"search": "webapp/search.js", "deep": "webapp/chunks/deep.js", "elsewhere": "other/x.js"},
+	}
+	_, err := m.Install(ctx, buildTestPackage(t, manifest, map[string]string{
+		"webapp/main.js": "a", "webapp/search.js": "b", "webapp/chunks/deep.js": "c", "other/x.js": "d",
+	}), InstallOptions{Enable: true})
+	require.NoError(t, err)
+
+	entries := m.WebappEntries()
+	require.Len(t, entries, 1)
+	// A chunk the webapp route cannot serve is not offered.
+	assert.Equal(t, map[string]string{
+		"search": "plugins/official.alpha/webapp/search.js",
+		"deep":   "plugins/official.alpha/webapp/chunks/deep.js",
+	}, entries[0].Chunks)
+}

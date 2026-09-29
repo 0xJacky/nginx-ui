@@ -5,8 +5,10 @@ JavaScript bundle; the host loads it after login, hands it a registry, and the
 bundle contributes routes, slot components, translations and a settings panel.
 
 ```
-shared.ts    publishes window.NginxUI (shared modules + registerPlugin)
+shared.ts    publishes window.NginxUI (shared modules + registerPlugin + registerChunk)
 loader.ts    fetches GET /plugins/webapp, injects bundles, calls setup()
+chunks.ts    on-demand chunk loading and the queue every plugin script runs through
+slots.ts     helpers that list slot registrations, also by name prefix
 registry.ts  builds the object a bundle receives in setup()
 store.ts     everything bundles contributed (routes, slots, settings panels)
 semver.ts    range matcher for the shared runtime compatibility check
@@ -34,6 +36,7 @@ window.NginxUI = {
     },
   },
   registerPlugin,   // (id, { setup, teardown? }) => void
+  registerChunk,    // (pluginId, name, exports) => void, called by chunk files
 }
 ```
 
@@ -62,9 +65,10 @@ marked `failed` and the other plugins keep loading.
 | Member | Description |
 | --- | --- |
 | `registerRoute(route, { parent?, order? })` | Adds a child route under the `Home` layout with `router.addRoute('Home', route)` and records it in the store. `meta.pluginId` is set automatically, and a route without `meta.name` falls back to the plugin name. `parent` names an existing top level sidebar entry (for example `System`) to nest the item under; `order` sorts it inside that group. |
-| `registerSlot(slot, component, { order?, when? })` | Mounts a component into a host slot. `order` ascending, `when(ctx)` may skip the component for a given context. |
+| `registerSlot(slot, component, { order?, when?, label?, sortValue?, filters? })` | Mounts a component into a host slot. `order` ascending, `when(ctx)` may skip the component for a given context. `label`, `sortValue` and `filters` are read only by the `nginx_log.view:{key}` and `nginx_log.list.column:{key}` slots, see below. |
 | `registerTranslations(locale, messages)` | Merges messages into the host gettext translations reactively. Keys are the English source strings. |
 | `registerSettingsPanel(component)` | Replaces the schema-driven form on the plugin settings drawer. The component receives `{ settings, save }`. |
+| `loadChunk(name)` | Loads an on-demand chunk declared in `webapp.chunks` and resolves with the exports the chunk handed to `registerChunk`. See Chunks. |
 | `http` | Axios instance with `baseURL: ./api/plugins/{id}/http`, carrying the same `Authorization`, `X-Node-ID` and `X-Secure-Session-ID` headers as the core client. Plain axios semantics: it resolves with an `AxiosResponse`. |
 | `coreHttp` | The host API client (`./api`). Requires the `core_api` permission. |
 | `manifest` | The plugin manifest. |
@@ -86,10 +90,86 @@ registered.
 | `certificate.issue.footer` | Bottom of the certificate issue form | `{ options }` |
 | `plugin.settings:{plugin_id}` | Plugin settings drawer | `{ settings }` |
 | `sidebar.footer` | Bottom of the sidebar | none |
+| `nginx_log.view:{key}` | An extra view mode of the log page, listed after the built-in modes with the registration `label` and selected with `?view={key}`. A key equal to a built-in mode (`raw`, `structured`, `dashboard`) is ignored. `when(ctx)` decides whether the mode is offered for a file. | `{ path, type }` |
+| `nginx_log.list.toolbar` | Actions area above the log list | `{ type }` |
+| `nginx_log.list.column:{key}` | One extra column of the log list, titled with `label`, placed after the host columns and before the actions, ordered by `order` | `{ row }` |
+| `nginx_log.list.row.actions` | Per row actions of the log list | `{ row }` |
+| `site.log.actions` | Log actions of one site, in the site editor and in the site list. A path is an empty string when the site has no such log. The site list loads the paths of a row only when a plugin registered this slot. | `{ accessLogPath, errorLogPath, siteName }` |
+
+### Log list columns
+
+A column registration may add options the host applies in the browser, because
+the log list arrives whole:
+
+```ts
+registry.registerSlot('nginx_log.list.column:status', StatusCell, {
+  label: 'Index Status',                      // English source string, translated by the host
+  order: 10,
+  sortValue: row => statusRank(row.path),     // numbers by magnitude, strings by locale order, null and undefined last
+  filters: [{ label: 'Indexed', value: 'indexed', match: row => isIndexed(row.path) }],
+})
+```
+
+Several selected filters of one column combine with OR, columns combine with
+AND. `row` always has `path`, `type`, `name` and `config_file`, and may carry
+more fields, which a plugin must ignore. Sorting and filtering are evaluated
+each time the list is fetched: on load and after a change of sort, filter or
+search.
+
+Slot labels go through the host gettext, so a plugin supplies translations with
+`registerTranslations` under the same English string.
+
+## Processing indicator
+
+`host.activity.set` entries of a plugin appear in the processing indicator of
+the header next to the host tasks. The server sends them as
+`plugins: [{ plugin_id, key, label }]` in the `processing_status` event, and
+the indicator shows `$gettext(label)`. The translations come from the plugin
+through `registerTranslations`, and the English label is shown when there is
+none.
+
+## Chunks
+
+A bundle may declare more IIFE files in `webapp.chunks` and load them when a
+page needs them:
+
+```jsonc
+"webapp": {
+  "bundle_path": "webapp/dist/main.js",
+  "chunks": { "search": "webapp/dist/search.js", "dashboard": "webapp/dist/dashboard.js" }
+}
+```
+
+A chunk hands its exports over while its script executes, and the entry reads
+them with `registry.loadChunk`:
+
+```js
+// in the chunk
+window.NginxUI.registerChunk('com.example.logs', 'dashboard', { Dashboard })
+// in the entry
+const { Dashboard } = await registry.loadChunk('dashboard')
+```
+
+`GET /plugins/webapp` lists the address of each chunk, and the static route
+serves the files under the directory of the bundle, so a chunk lives next to
+it. `loadChunk`:
+
+- rejects a name that is not declared, without any request;
+- loads a chunk once per page, concurrent and later calls share one promise;
+- appends `?v={version}` like the entry does;
+- runs one script at a time. Entry bundles and chunks go through one queue,
+  because each hands its result over on a global that is read right after the
+  script ran;
+- rejects when the file fails to load or the script did not call `registerChunk`
+  with the plugin id and the requested name, and a later call may try again.
+
+A chunk has no stylesheet reference of its own, so its styles go into the
+plugin `style.css` or the chunk injects a `<style>` element itself.
 
 ## Bundle contract
 
-- Build an **IIFE**, one file, no code splitting.
+- Build an **IIFE**, one entry file, no code splitting. Code loaded later is
+  declared as chunks, each another IIFE file.
 - Never call `createApp`, never bundle a second copy of Vue. Externalize
   `vue`, `vue-router`, `pinia`, `antdv-next`, `@antdv-next/icons` and
   `@vueuse/core` onto `window.NginxUI.shared.*`.
