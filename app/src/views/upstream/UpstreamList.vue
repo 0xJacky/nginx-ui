@@ -64,9 +64,9 @@ const columns = computed<TableColumnsType<ManagedUpstreamDetail>>(() => isNarrow
 const externalColumns = computed<TableColumnsType<ExternalUpstream>>(() => isNarrow.value
   ? [compactColumn]
   : [
-      { title: () => $gettext('Name'), key: 'name', width: 160 },
-      { title: () => $gettext('Servers'), key: 'servers' },
-      { title: () => $gettext('Defined In'), key: 'source', width: 260 },
+      { title: () => $gettext('Name'), key: 'name', width: '33.33%' },
+      { title: () => $gettext('Servers'), key: 'servers', width: '33.33%' },
+      { title: () => $gettext('Defined In'), key: 'source', width: '33.34%' },
     ])
 
 // Cell fragments shared by the full and the compact layout.
@@ -559,6 +559,7 @@ function confirmDelete(record: ManagedUpstreamDetail) {
         {{ $gettext('These upstream blocks live inside site or other configuration files. Edit their settings in their own file; servers can be switched on and off here. A block inside a site can be converted to a shared group that other sites can use too.') }}
       </p>
       <ATable
+        table-layout="fixed"
         :columns="externalColumns"
         :data-source="filteredExternal"
         :pagination="false"
