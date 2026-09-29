@@ -43,7 +43,7 @@ const columns: StdTableColumn[] = [{
     type: 'input',
   },
   search: true,
-  width: 150,
+  width: 220,
   customRender: ({ text, record }: CustomRenderArgs) => {
     const template: JSXElements = []
 
@@ -129,7 +129,7 @@ const columns: StdTableColumn[] = [{
   customRender: datetimeRender,
   sorter: true,
   pure: true,
-  width: 150,
+  width: 120,
 }, {
   title: () => $gettext('Access'),
   dataIndex: 'access_mode',
@@ -138,7 +138,7 @@ const columns: StdTableColumn[] = [{
     slug: record.access_list,
   }),
   pure: true,
-  width: 120,
+  width: 80,
 }, {
   title: () => $gettext('Status'),
   dataIndex: 'status',
@@ -181,7 +181,7 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('Actions'),
   dataIndex: 'actions',
-  width: 120,
+  width: 150,
   fixed: 'right',
 }]
 
