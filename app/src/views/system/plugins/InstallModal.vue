@@ -9,6 +9,7 @@ import { setSyncPolicy, syncPlugin } from '@/api/plugin_sync'
 import NodeSelector from '@/components/NodeSelector'
 import gettext from '@/gettext'
 import { getErrorMessage, resolveErrorMessage } from '@/lib/http'
+import { capabilityLabel } from './capabilities'
 import { useInstalledPlugin } from './inventory'
 import { isCommunityTrust, isUnsignedTrust, packageTrustPreset } from './marketplace/trust'
 import TrustDowngradeAlert from './marketplace/TrustDowngradeAlert.vue'
@@ -283,7 +284,7 @@ watch(open, value => {
           <ADescriptionsItem :label="$gettext('Capabilities')">
             <div v-if="manifest.capabilities?.length" class="flex flex-wrap gap-1">
               <ATag v-for="capability in manifest.capabilities" :key="capability">
-                {{ capability }}
+                {{ capabilityLabel(capability) }}
               </ATag>
             </div>
             <span v-else class="text-gray-400">{{ $gettext('None') }}</span>
