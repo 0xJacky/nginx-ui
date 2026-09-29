@@ -46,8 +46,8 @@ func goodManifest() *protocol.Manifest {
 				{
 					Name: "MyDNS",
 					Code: "mydns",
-					Configuration: &protocol.DNS01ProviderConfig{
-						Credentials: map[string]string{"MYDNS_API_TOKEN": "API token"},
+					Form: &protocol.DNS01ProviderForm{
+						Fields: []protocol.DNS01ProviderField{{Key: "MYDNS_API_TOKEN", Label: "API token", Group: "credential", Secret: true}},
 					},
 				},
 			},

@@ -655,7 +655,8 @@ func lintMCP(m *protocol.Manifest, report *LintReport) {
 	}
 }
 
-// lintDNS01 checks dns01.providers (MAN-21, DNS01-1 through DNS01-3).
+// lintDNS01 checks dns01.providers (MAN-21, DNS01-1 through DNS01-3 and
+// DNS01-18 for the form).
 func lintDNS01(d *protocol.ManifestDNS01, report *LintReport) {
 	if d == nil || len(d.Providers) == 0 {
 		report.add(LevelError, "MAN-21", "capability dns01 requires at least one provider")
@@ -673,9 +674,8 @@ func lintDNS01(d *protocol.ManifestDNS01, report *LintReport) {
 		}
 		seen[p.Code] = struct{}{}
 
-		hasField := p.Configuration != nil && (len(p.Configuration.Credentials) > 0 || len(p.Configuration.Additional) > 0)
-		if !hasField {
-			report.add(LevelWarning, "DNS01-1", "dns01 provider %q declares no credential or additional field for the person installing it to fill in", p.Code)
+		for _, problem := range dns01FormProblems(p) {
+			report.add(LevelError, "DNS01-18", "%s", problem)
 		}
 	}
 }

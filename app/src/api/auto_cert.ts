@@ -5,18 +5,54 @@ export const AutoCertChallengeMethod = {
   dns01: 'dns01',
 } as const
 
+/** Where a credential form field is shown. */
+export type DNSProviderFieldGroup = 'credential' | 'setting'
+
+/** One input of the structured credential form. */
+export interface DNSProviderField {
+  /** Stored configuration key. */
+  key: string
+  /** English msgid, translated at render time. */
+  label?: string
+  /** English msgid shown below the input. */
+  help?: string
+  group?: DNSProviderFieldGroup
+  optional?: boolean
+  secret?: boolean
+  /** Value used when the field is empty, shown as the placeholder. */
+  default?: string
+  unit?: 'seconds' | ''
+  link?: string
+}
+
+/** One way to sign in, listing the credential keys it uses. */
+export interface DNSProviderMethod {
+  name: string
+  recommended?: boolean
+  fields?: string[]
+}
+
+/** Structured credential form of a provider. */
+export interface DNSProviderForm {
+  fields?: DNSProviderField[]
+  methods?: DNSProviderMethod[]
+}
+
+/** Values a DNS credential stores, split by field group. */
+export interface DNSCredentialConfiguration {
+  credentials: Record<string, string>
+  additional: Record<string, string>
+}
+
 export interface DNSProvider {
   name?: string
   code?: string
   provider?: string
-  configuration: {
-    credentials: Record<string, string>
-    additional: Record<string, string>
-  }
   links?: {
-    api: string
-    go_client: string
+    api?: string
   }
+  /** Credential form. Only the detail endpoint returns it. */
+  form?: DNSProviderForm
   /** Set when the provider also supports DNS record management in DNS Domains. */
   record_management?: boolean
   /** Set when the provider can solve ACME DNS-01 challenges. */
@@ -40,7 +76,7 @@ export interface AutoCertOptions {
   dns_credential_id?: number | null
   challenge_method: keyof typeof AutoCertChallengeMethod
   profile?: string
-  configuration?: DNSProvider['configuration']
+  configuration?: DNSCredentialConfiguration
   key_type: string
   acme_user_id?: number
   provider?: string
