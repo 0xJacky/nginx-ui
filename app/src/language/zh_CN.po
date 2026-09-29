@@ -3570,11 +3570,41 @@ msgstr ""
 "该域名的 CAA 记录未授权所选的证书颁发机构；请为其添加 CAA issue 记录，否则签"
 "发将会失败。"
 
+msgid "API base URL"
+msgstr "API 地址"
+
+msgid "API timeout"
+msgstr "API 超时"
+
+msgid "API token"
+msgstr "API 令牌"
+
+msgid "Access key ID"
+msgstr "访问密钥 ID"
+
+msgid "AccessKey"
+msgstr "AccessKey"
+
+msgid "AccessKey ID"
+msgstr "AccessKey ID"
+
+msgid "AccessKey secret"
+msgstr "AccessKey Secret"
+
+msgid "Account email"
+msgstr "账户邮箱"
+
 msgid "An existing certificate is used"
 msgstr "使用已有证书"
 
 msgid "Applying the HTTP configuration for validation"
 msgstr "正在应用用于验证的 HTTP 配置"
+
+msgid "Authentication method"
+msgstr "认证方式"
+
+msgid "Azure environment"
+msgstr "Azure 环境"
 
 msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
 msgstr "捆绑的 nginx-ui.conf 包含 WebSocket 反向代理修复"
@@ -3702,11 +3732,17 @@ msgid ""
 "nginx configuration directory"
 msgstr "检查 Nginx 配置目录下是否有 streams-available 和 streams-enabled 目录"
 
+msgid "Check interval"
+msgstr "检查间隔"
+
 msgid "Checking the HTTP challenge route"
 msgstr "正在检查 HTTP 验证路由"
 
 msgid "Conf.d directory exists"
 msgstr "conf.d 目录存在"
+
+msgid "DNS line"
+msgstr "解析线路"
 
 msgid "Docker socket exists"
 msgstr "Docker Socket 存在"
@@ -3726,6 +3762,9 @@ msgstr "撤销证书失败：%{error}"
 msgid "GeoLite2 database available"
 msgstr "GeoLite2 数据库可用"
 
+msgid "Global API key"
+msgstr "全局 API Key"
+
 msgid "HTTP challenge route is reachable"
 msgstr "HTTP 验证路由可访问"
 
@@ -3744,6 +3783,9 @@ msgstr "HTTPS 配置已规划"
 msgid "HTTPS enabled"
 msgstr "HTTPS 已启用"
 
+msgid "Instance RAM role"
+msgstr "实例 RAM 角色"
+
 msgid "Issuing the certificate"
 msgstr "正在签发证书"
 
@@ -3754,6 +3796,18 @@ msgid ""
 msgstr ""
 "日志文件 %{log_path} 不是常规文件。如果在 Docker 容器中使用 Nginx UI，请参阅 "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html 获取更多信息。"
+
+msgid "Managed identity timeout"
+msgstr "托管标识超时"
+
+msgid "Maximum wait"
+msgstr "最长等待"
+
+msgid "Needs the DNS edit permission."
+msgstr "需要 DNS 编辑权限。"
+
+msgid "Needs the zone read permission. Leave empty to use the API token."
+msgstr "需要区域读取权限。留空则使用 API 令牌。"
 
 msgid "Nginx PID path exists"
 msgstr "Nginx PID 路径存在"
@@ -3793,14 +3847,29 @@ msgstr "检查 nginx.conf 是否包含 streams-enabled 的目录"
 msgid "No DNS problem found"
 msgstr "未发现 DNS 问题"
 
+msgid "One of public, usgovernment and china."
+msgstr "可选值为 public、usgovernment 或 china。"
+
 msgid "Original site configuration restored"
 msgstr "原站点配置已恢复"
 
 msgid "Planning the HTTPS configuration"
 msgstr "正在规划 HTTPS 配置"
 
+msgid "Private zone"
+msgstr "私有区域"
+
+msgid "Region"
+msgstr "区域"
+
+msgid "Region ID"
+msgstr "区域 ID"
+
 msgid "Resolve the site configuration problem first"
 msgstr "请先解决站点配置问题"
+
+msgid "Resource group"
+msgstr "资源组"
 
 msgid "Restoring the HTTP configuration"
 msgstr "正在恢复 HTTP 配置"
@@ -3808,11 +3877,38 @@ msgstr "正在恢复 HTTP 配置"
 msgid "Restoring the original site configuration"
 msgstr "正在恢复原站点配置"
 
+msgid "STS security token"
+msgstr "STS 安全令牌"
+
+msgid "Secret access key"
+msgstr "秘密访问密钥"
+
+msgid "SecretId"
+msgstr "SecretId"
+
+msgid "SecretKey"
+msgstr "SecretKey"
+
+msgid "Service discovery filter"
+msgstr "服务发现过滤器"
+
+msgid "Session token"
+msgstr "会话令牌"
+
+msgid "Set to true to use a private DNS zone."
+msgstr "设为 true 以使用私有 DNS 区域。"
+
 msgid "Sites directory exists"
 msgstr "网站目录存在"
 
 msgid "Streams directory exists"
 msgstr "Streams 目录存在"
+
+msgid "Subscription ID"
+msgstr "订阅 ID"
+
+msgid "TXT record TTL"
+msgstr "TXT 记录 TTL"
 
 msgid "The DNS challenge does not use the HTTP challenge route"
 msgstr "DNS 验证不使用 HTTP 验证路由"
@@ -3961,6 +4057,12 @@ msgstr ""
 "conf.d/nginx-ui.conf 必须信任传入的 X-Forwarded-Proto/Host 头信息；否则 "
 "WebSocket 源检查将失败。保留 /etc/nginx 的旧部署可能仍使用未修复的版本。"
 
+msgid "Zone name"
+msgstr "区域名称"
+
+msgid "Zone read token"
+msgstr "区域读取令牌"
+
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] ACME 用户：%{name}，邮箱：%{email}，CA 目录：%{caDir}"
 
@@ -3988,9 +4090,6 @@ msgstr "[Nginx UI] 正在检查 %{domains} 的 HTTP01 验证路由"
 
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] 正在创建客户端用于与 CA 服务器通信"
-
-msgid "[Nginx UI] Environment variables cleaned"
-msgstr "[Nginx UI] 环境变量已清理"
 
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 已完成"
@@ -4049,9 +4148,6 @@ msgstr "[Nginx UI] 正在设置 DNS01 验证提供程序"
 
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] 正在设置 HTTP01 验证提供程序"
-
-msgid "[Nginx UI] Setting environment variables"
-msgstr "[Nginx UI] 正在设置环境变量"
 
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] 正在将证书私钥写入磁盘"
@@ -6087,17 +6183,20 @@ msgstr ""
 "%{provider} 可用于 ACME DNS-01 证书挑战，但 DNS Domains 暂不支持该提供商的 "
 "DNS 记录管理。"
 
+msgid "%{method} (recommended)"
+msgstr "%{method}（推荐）"
+
 msgid "DNS Provider"
 msgstr "DNS 提供商"
 
-msgid "API Document"
-msgstr "API 文档"
+msgid "%{provider} API docs"
+msgstr "%{provider} 接口文档"
 
-msgid "SDK"
-msgstr "SDK"
+msgid "Sign-in method"
+msgstr "填写方式"
 
-msgid "Additional"
-msgstr "额外选项"
+msgid "Optional"
+msgstr "可选"
 
 msgid "All"
 msgstr "全部"
@@ -6277,10 +6376,6 @@ msgid ""
 "provider."
 msgstr "请填写 DNS 提供商提供的 API 验证凭据。"
 
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
-msgstr "请注意，下面的时间单位配置均以秒为单位。"
-
 msgid "Modify DNS Credential"
 msgstr "修改 DNS 凭证"
 
@@ -6413,6 +6508,15 @@ msgstr "覆盖情况"
 
 msgid "Details"
 msgstr "详情"
+
+msgid "%{count} changed"
+msgstr "已修改 %{count} 项"
+
+msgid "All default"
+msgstr "均为默认"
+
+msgid "sec"
+msgstr "秒"
 
 msgid "Result"
 msgstr "结果"
@@ -8340,6 +8444,15 @@ msgstr "点击 URL"
 
 msgid "Client ID"
 msgstr "客户端 ID"
+
+msgid "Client certificate"
+msgstr "客户端证书"
+
+msgid "Client certificate path"
+msgstr "客户端证书路径"
+
+msgid "Client secret"
+msgstr "客户端密钥"
 
 msgid "Client Secret"
 msgstr "客户端密钥"
@@ -12031,6 +12144,25 @@ msgstr "单窗格"
 
 msgid "Split view"
 msgstr "分屏视图"
+
+#~ msgid "[Nginx UI] Environment variables cleaned"
+#~ msgstr "[Nginx UI] 环境变量已清理"
+
+#~ msgid "[Nginx UI] Setting environment variables"
+#~ msgstr "[Nginx UI] 正在设置环境变量"
+
+#~ msgid "API Document"
+#~ msgstr "API 文档"
+
+#~ msgid "SDK"
+#~ msgstr "SDK"
+
+#~ msgid "Additional"
+#~ msgstr "额外选项"
+
+#~ msgid ""
+#~ "Please note that the unit of time configurations below are all in seconds."
+#~ msgstr "请注意，下面的时间单位配置均以秒为单位。"
 
 #~ msgid "Required Settings"
 #~ msgstr "必填设置"
