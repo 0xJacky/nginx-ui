@@ -126,6 +126,7 @@ async function disablePlugin(plugin: PluginInfo) {
   try {
     await pluginApi.disable(plugin.id)
     message.success($gettext('Plugin disabled'))
+    await pluginLoader.unload(plugin.id)
     await inventory.reload(true)
   }
   catch (e) {
@@ -219,6 +220,7 @@ function confirmUninstall(plugin: PluginInfo) {
         await pluginApi.uninstall(plugin.id)
         message.success($gettext('Plugin uninstalled'))
         drawerOpen.value = false
+        await pluginLoader.unload(plugin.id, { forget: true })
         await inventory.reload(true)
       }
       catch (e) {
