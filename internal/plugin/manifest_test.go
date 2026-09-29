@@ -268,3 +268,54 @@ func TestIsSafeRelPath(t *testing.T) {
 		assert.False(t, isSafeRelPath(bad), bad)
 	}
 }
+
+func TestValidateManifestChunks(t *testing.T) {
+	withChunks := func(chunks map[string]string) *protocol.Manifest {
+		m := validManifest()
+		m.Webapp = &protocol.ManifestWebapp{BundlePath: "webapp/index.js", Chunks: chunks}
+		return m
+	}
+	assert.NoError(t, ValidateManifest(withChunks(map[string]string{
+		"search": "webapp/search.js", "dash_board-2": "webapp/chunks/dashboard.js", strings.Repeat("a", 32): "webapp/a.js",
+	})))
+	assert.NoError(t, ValidateManifest(withChunks(nil)))
+
+	tests := []struct {
+		name   string
+		mutate func(m *protocol.Manifest)
+		reason string
+	}{
+		{"no bundle", func(m *protocol.Manifest) {
+			m.Webapp = &protocol.ManifestWebapp{Chunks: map[string]string{"a": "webapp/a.js"}}
+		}, "needs webapp.bundle_path"},
+		{"upper case name", func(m *protocol.Manifest) { m.Webapp.Chunks = map[string]string{"Search": "webapp/a.js"} }, "must match"},
+		{"name starting with a dash", func(m *protocol.Manifest) { m.Webapp.Chunks = map[string]string{"-a": "webapp/a.js"} }, "must match"},
+		{"name too long", func(m *protocol.Manifest) {
+			m.Webapp.Chunks = map[string]string{strings.Repeat("a", 33): "webapp/a.js"}
+		}, "must match"},
+		{"empty name", func(m *protocol.Manifest) { m.Webapp.Chunks = map[string]string{"": "webapp/a.js"} }, "must match"},
+		{"absolute path", func(m *protocol.Manifest) { m.Webapp.Chunks = map[string]string{"a": "/etc/a.js"} }, "relative path"},
+		{"escaping path", func(m *protocol.Manifest) { m.Webapp.Chunks = map[string]string{"a": "../a.js"} }, "relative path"},
+		{"not a js file", func(m *protocol.Manifest) { m.Webapp.Chunks = map[string]string{"a": "webapp/a.mjs"} }, "must end in .js"},
+		{"the bundle itself", func(m *protocol.Manifest) { m.Webapp.Chunks = map[string]string{"a": "webapp/index.js"} }, "not be the bundle"},
+		{"one file twice", func(m *protocol.Manifest) {
+			m.Webapp.Chunks = map[string]string{"a": "webapp/a.js", "b": "webapp/a.js"}
+		}, "same file"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			m := withChunks(map[string]string{"ok": "webapp/ok.js"})
+			tt.mutate(m)
+			err := ValidateManifest(m)
+			require.Error(t, err)
+			assert.ErrorIs(t, err, ErrManifestInvalid)
+			assert.Contains(t, err.Error(), tt.reason)
+		})
+	}
+}
+
+func TestValidateManifestAcceptsLogFilesPermission(t *testing.T) {
+	m := validManifest()
+	m.Permissions = []string{protocol.PermissionLogFiles}
+	assert.NoError(t, ValidateManifest(m))
+}

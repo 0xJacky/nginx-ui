@@ -13,6 +13,7 @@ import MaintenanceConfigModal from '@/views/site/components/MaintenanceConfigMod
 import { managedIngressName } from '@/views/site/managedSite'
 import columns from '@/views/site/site_list/columns'
 import SiteDuplicate from '@/views/site/site_list/SiteDuplicate.vue'
+import SiteLogActions from '@/views/site/site_list/SiteLogActions.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -273,6 +274,7 @@ function onMaintenanceConfirm(payload: MaintenancePayload) {
         >
           {{ $gettext('Analytics') }}
         </AButton>
+        <SiteLogActions :site-name="record.name" />
         <AButton
           type="link"
           size="small"

@@ -83,3 +83,23 @@ type HostNotifyParams struct {
 type HostMetricsSnapshotResult struct {
 	Snapshot any `json:"snapshot"`
 }
+
+// HostLogsListResult is the reply to host.logs.list.
+type HostLogsListResult struct {
+	Logs []HostLogFile `json:"logs"`
+}
+
+// HostLogFile is one entry of HostLogsListResult.
+type HostLogFile struct {
+	Path       string `json:"path"`
+	Type       string `json:"type"`   // access | error
+	Source     string `json:"source"` // config | default
+	ConfigFile string `json:"config_file,omitempty"`
+}
+
+// HostActivitySetParams is the payload of host.activity.set.
+type HostActivitySetParams struct {
+	Key    string `json:"key"`
+	Label  string `json:"label"`
+	Active bool   `json:"active"`
+}

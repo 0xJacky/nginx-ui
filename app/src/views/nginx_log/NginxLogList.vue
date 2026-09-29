@@ -2,6 +2,7 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { NginxLogData } from '@/api/nginx_log'
 import type { TabOption } from '@/components/TabFilter'
+import type { NginxLogRow } from '@/plugin/types'
 import { CheckCircleOutlined, ExclamationCircleOutlined, StopOutlined, SyncOutlined } from '@antdv-next/icons'
 import { StdCurd } from '@uozi-admin/curd'
 import { useRouteQuery } from '@vueuse/router'
@@ -9,12 +10,17 @@ import { Badge, Modal, Tag, Tooltip } from 'antdv-next'
 import dayjs from 'dayjs'
 import nginxLog from '@/api/nginx_log'
 import { DevDebugPanel } from '@/components/DevDebugPanel'
+import PluginSlot from '@/components/PluginSlot'
+import PluginSlotItem from '@/components/PluginSlot/PluginSlotItem.vue'
 import { TabFilter } from '@/components/TabFilter'
 import { useGlobalStore, useWebSocketEventBusStore } from '@/pinia'
+import { NGINX_LOG_COLUMN_SLOT_PREFIX, registrationApplies } from '@/plugin/slots'
+import { usePluginStore } from '@/plugin/store'
 import IndexingSettingsModal from './components/IndexingSettingsModal.vue'
 import { useIndexProgress } from './composables/useIndexProgress'
 import IndexProgressBar from './indexing/components/IndexProgressBar.vue'
 import IndexManagement from './indexing/IndexManagement.vue'
+import { applyPluginColumns, pluginColumnKey, stripPluginParams } from './pluginColumns'
 
 const { message } = App.useApp()
 
@@ -342,6 +348,43 @@ const actionsColumn: StdTableColumn = {
   width: 250,
 }
 
+// Columns plugins add to the list, one per registration
+const pluginStore = usePluginStore()
+
+const pluginColumnSlots = computed(() => pluginStore.slotsByPrefix(NGINX_LOG_COLUMN_SLOT_PREFIX).map(item => ({
+  ...item,
+  columnKey: pluginColumnKey(`${item.registration.pluginId}:${item.key}`),
+})))
+
+const pluginColumnRules = computed(() => pluginColumnSlots.value.map(item => ({
+  columnKey: item.columnKey,
+  sortValue: item.registration.sortValue,
+  filters: item.registration.filters,
+})))
+
+const pluginColumns = computed<StdTableColumn[]>(() => pluginColumnSlots.value.map(item => {
+  const { registration } = item
+  const hasFilters = (registration.filters?.length ?? 0) > 0
+
+  return {
+    title: () => $gettext(registration.label ?? item.key),
+    dataIndex: item.columnKey,
+    key: item.columnKey,
+    sorter: !!registration.sortValue,
+    filters: hasFilters
+      ? registration.filters?.map(filter => ({ text: $gettext(filter.label), value: filter.value }))
+      : undefined,
+    customRender: (args: CustomRenderArgs) => {
+      const row = args.record
+      if (!row || !registrationApplies(registration, { row }))
+        return null
+
+      return <PluginSlotItem registration={registration} context={{ row }} />
+    },
+    width: 160,
+  }
+}))
+
 // Computed columns based on active log type
 const columns = computed(() => {
   const cols = [...baseColumns]
@@ -351,9 +394,24 @@ const columns = computed(() => {
     cols.push(...indexColumns)
   }
 
+  cols.push(...pluginColumns.value)
   cols.push(actionsColumn)
   return cols
 })
+
+// The list arrives whole, so sorting and filtering by a plugin column happens
+// here in the browser and the server only sees the parameters it knows.
+const curdApi = {
+  ...nginxLog,
+  async getList(params: Record<string, unknown> = {}, config?: Record<string, unknown>) {
+    const rules = pluginColumnRules.value
+    if (rules.length === 0)
+      return nginxLog.getList(params, config)
+
+    const response = await nginxLog.getList(stripPluginParams(params, rules), config)
+    return { ...response, data: applyPluginColumns((response.data ?? []) as NginxLogRow[], params, rules) }
+  },
+}
 
 function viewLog(record: NginxLogData) {
   router.push({
@@ -463,7 +521,7 @@ const debugData = computed(() => ({
       ref="stdCurdRef"
       :title="$gettext('Log List')"
       :columns="columns"
-      :api="nginxLog"
+      :api="curdApi"
       disable-add
       disable-export
       disable-delete
@@ -484,6 +542,8 @@ const debugData = computed(() => ({
 
       <template #beforeListActions>
         <div class="flex items-center gap-4">
+          <PluginSlot name="nginx_log.list.toolbar" :context="{ type: activeLogType }" />
+
           <!-- Global indexing progress -->
           <div v-if="isGlobalIndexing" class="flex items-center">
             <div class="flex items-center text-blue-500">
@@ -531,6 +591,8 @@ const debugData = computed(() => ({
         <AButton type="link" size="small" @click="viewLog(record)">
           {{ $gettext('View') }}
         </AButton>
+
+        <PluginSlot name="nginx_log.list.row.actions" :context="{ row: record }" />
 
         <!-- Rebuild File Index Action - only for Access logs with advanced indexing enabled -->
         <AButton

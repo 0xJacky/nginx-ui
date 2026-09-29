@@ -158,6 +158,7 @@ func (m *Manager) stopEntry(ctx context.Context, item *entry) {
 	m.mu.Lock()
 	item.state = StateStopped
 	m.mu.Unlock()
+	m.clearActivities(item.id)
 }
 
 // dropSupervisor stops the plugin and forgets the supervisor, which is what an
@@ -180,22 +181,27 @@ func (m *Manager) onStateChange(id string, state State, cause error) {
 
 	m.mu.Lock()
 	item, ok := m.entries[id]
-	if !ok {
-		m.mu.Unlock()
-		return
+	if ok {
+		item.state = state
+		item.lastErr = message
 	}
-	item.state = state
-	item.lastErr = message
-	row := item.row
-	changed := row != nil && row.LastError != message
-	if changed {
+	var row *model.Plugin
+	changed := false
+	if ok && item.row != nil && item.row.LastError != message {
+		row = item.row
 		row.LastError = message
-		rowID := row.ID
-		m.mu.Unlock()
-		m.persistLastError(rowID, message)
-		return
+		changed = true
 	}
 	m.mu.Unlock()
+
+	// A plugin that is not running cannot keep its processing entries alive.
+	// The state is stored first, so ActivitySet refuses a racing call.
+	if state != StateRunning {
+		m.clearActivities(id)
+	}
+	if changed {
+		m.persistLastError(row.ID, message)
+	}
 }
 
 // recordError stores a manager level failure on the plugin.
