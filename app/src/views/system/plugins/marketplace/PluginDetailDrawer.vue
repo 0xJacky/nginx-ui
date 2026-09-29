@@ -12,9 +12,12 @@ import {
 } from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
+import { capabilityLabel } from '../capabilities'
+import { useInstalledPlugin } from '../inventory'
 import PermissionList from '../PermissionList.vue'
 import PluginIcon from '../PluginIcon.vue'
-import { trustPreset } from './trust'
+import { useReplacePlugin } from '../replace'
+import { findTrustedOffer, trustedOfferAction, trustPreset } from './trust'
 
 const props = defineProps<{
   entry?: CatalogEntry
@@ -41,6 +44,9 @@ const name = computed(() => (current.value ? catalogEntryName(current.value, get
 const description = computed(() => (current.value ? catalogEntryDescription(current.value, gettext.current) : ''))
 const trust = computed(() => trustPreset(current.value?.trust))
 const permissions = computed(() => current.value?.installable_release?.manifest?.permissions ?? [])
+const installed = useInstalledPlugin(() => current.value?.id)
+const offer = computed(() => findTrustedOffer(installed.value?.trust, current.value))
+const { replacingId, confirmReplace } = useReplacePlugin()
 const renderedReadme = computed(() => (readme.value ? marked.parse(readme.value) as string : ''))
 
 const canInstall = computed(() => Boolean(current.value?.installable_release)
@@ -119,6 +125,15 @@ watch(open, value => {
   >
     <template #extra>
       <AButton
+        v-if="offer && !current?.update_available"
+        type="primary"
+        :loading="replacingId === offer.entry.id"
+        @click="confirmReplace(offer)"
+      >
+        {{ trustedOfferAction(offer) }}
+      </AButton>
+      <AButton
+        v-else
         type="primary"
         :disabled="!canInstall"
         @click="current && emit('install', current)"
@@ -139,7 +154,7 @@ watch(open, value => {
       <template v-if="current">
         <div class="detail">
           <div class="detail-head">
-            <PluginIcon :src="current.icon_url" :size="48" />
+            <PluginIcon :src="current.icon_url" :name="name" :size="48" />
             <div class="min-w-0 flex-1">
               <div class="pill-row mb-2">
                 <ATooltip :title="trust.hint()">
@@ -150,7 +165,7 @@ watch(open, value => {
                   :key="capability"
                   class="pill is-accent"
                 >
-                  {{ capability }}
+                  {{ capabilityLabel(capability) }}
                 </span>
                 <span v-if="current.stage && current.stage !== 'production'" class="pill is-purple">
                   {{ current.stage }}

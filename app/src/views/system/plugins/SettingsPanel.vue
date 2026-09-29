@@ -5,6 +5,7 @@ import PluginSlot from '@/components/PluginSlot'
 import { getErrorMessage } from '@/lib/http'
 import { usePluginStore } from '@/plugin'
 import SchemaForm from './SchemaForm.vue'
+import { cloneSettings } from './settingsForm'
 
 const props = defineProps<{
   plugin?: PluginInfo
@@ -20,6 +21,17 @@ const saving = ref(false)
 const error = ref('')
 const schema = ref<SettingsSchema | null>(null)
 const values = ref<Record<string, unknown>>({})
+/** What the server stores, the form compares against it. */
+const savedValues = ref<Record<string, unknown>>({})
+
+function applyValues(next: Record<string, unknown> | undefined) {
+  savedValues.value = cloneSettings(next ?? {})
+  values.value = cloneSettings(next ?? {})
+}
+
+function discard() {
+  values.value = cloneSettings(savedValues.value)
+}
 
 /** A plugin may replace the generated form with its own component. */
 const customPanel = computed(() => {
@@ -37,7 +49,7 @@ async function load() {
   try {
     const data = await pluginApi.getSettings(id)
     schema.value = data.schema ?? props.plugin?.settings_schema ?? null
-    values.value = { ...(data.values ?? {}) }
+    applyValues(data.values)
   }
   catch (e) {
     error.value = getErrorMessage(e, $gettext('Failed to load the plugin settings'))
@@ -61,7 +73,7 @@ async function save(next?: Record<string, unknown>) {
   try {
     const data = await pluginApi.saveSettings(id, next ?? values.value)
     schema.value = data.schema ?? schema.value
-    values.value = { ...(data.values ?? {}) }
+    applyValues(data.values)
     message.success($gettext('Plugin settings saved'))
   }
   catch (e) {
@@ -98,8 +110,10 @@ watch(() => [props.active, props.plugin?.id] as const, ([active, id]) => {
       v-else-if="schema?.settings?.length"
       v-model:values="values"
       :schema="schema"
+      :saved="savedValues"
       :saving="saving"
       @save="save()"
+      @discard="discard"
     />
     <AEmpty v-else-if="!loading" :description="$gettext('This plugin has no settings.')" />
 

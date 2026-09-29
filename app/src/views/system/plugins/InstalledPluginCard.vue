@@ -13,10 +13,11 @@ import {
 } from '@antdv-next/icons'
 import { localizedPluginDescription, localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
-import { packageTrustPreset } from './marketplace/trust'
+import { capabilityLabel } from './capabilities'
 import PluginIcon from './PluginIcon.vue'
 import { isToggleDisabled, needsAttention, statusOf } from './presets'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
+import TrustTag from './TrustTag.vue'
 
 const props = defineProps<{
   plugin: PluginInfo
@@ -37,7 +38,7 @@ const description = computed(() => localizedPluginDescription(props.plugin, gett
 const status = computed(() => statusOf(props.plugin))
 const attention = computed(() => needsAttention(props.plugin))
 const toggleDisabled = computed(() => isToggleDisabled(props.plugin))
-const trust = computed(() => packageTrustPreset(props.plugin.trust))
+const isMuted = computed(() => !props.plugin.enabled && !attention.value)
 
 const toggleHint = computed(() => {
   if (toggleDisabled.value)
@@ -79,14 +80,14 @@ function onMenuClick({ key }: { key: string | number }) {
 <template>
   <article
     class="plugin-card is-clickable"
-    :class="{ 'is-attention': attention, 'is-muted': !plugin.enabled && !attention }"
+    :class="{ 'is-attention': attention, 'is-muted': isMuted }"
     role="button"
     tabindex="0"
     @click="emit('open', 'overview')"
     @keydown.enter.self="emit('open', 'overview')"
   >
     <div class="plugin-card-head">
-      <PluginIcon :src="plugin.icon_url" :size="40" />
+      <PluginIcon :src="plugin.icon_url" :name="name" :size="40" :muted="isMuted" />
       <div class="plugin-card-body">
         <div class="plugin-card-title">
           <span class="plugin-card-name">{{ name }}</span>
@@ -113,20 +114,18 @@ function onMenuClick({ key }: { key: string | number }) {
     </p>
 
     <div class="plugin-card-meta">
-      <ABadge :status="status.badge" :text="status.label()" />
-      <!-- Outlined, so the trust level stands apart from the capability tags. -->
-      <ATooltip v-if="trust" :title="trust.hint()">
-        <ATag :color="trust.color" class="m-0" variant="outlined">
-          {{ trust.label() }}
-        </ATag>
+      <ATooltip :title="status.hint?.()">
+        <ABadge :status="status.badge" :text="status.label()" />
       </ATooltip>
+      <!-- Outlined, so the trust level stands apart from the capability tags. -->
+      <TrustTag :plugin="plugin" />
       <ATag
         v-for="capability in plugin.capabilities"
         :key="capability"
         class="m-0"
         variant="filled"
       >
-        {{ capability }}
+        {{ capabilityLabel(capability) }}
       </ATag>
     </div>
 

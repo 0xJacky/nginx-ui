@@ -47,8 +47,13 @@
     border-color: var(--ant-color-warning-border);
   }
 
+  // A plugin that is off recedes, the switch keeps its normal contrast.
   &.is-muted {
     background: var(--ant-color-fill-quaternary);
+
+    .plugin-card-name {
+      color: var(--ant-color-text-secondary);
+    }
   }
 }
 

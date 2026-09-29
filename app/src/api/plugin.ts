@@ -25,7 +25,8 @@ export type PluginTransport = 'stdio' | 'grpc'
 
 export type PluginSyncPolicy = 'manual' | 'auto'
 
-export type SettingsFieldType = 'text' | 'bool' | 'number' | 'select' | 'secret' | 'textarea'
+/** `list` holds an array of single line strings. */
+export type SettingsFieldType = 'text' | 'bool' | 'number' | 'select' | 'secret' | 'textarea' | 'list'
 
 export interface SettingsOption {
   value: string
@@ -287,6 +288,8 @@ export interface PluginInfo {
   permissions: string[]
   requires: PluginRequirement[]
   requires_capabilities: string[]
+  /** Addresses the plugin may reach, absent or empty when it names none. */
+  network_hosts?: string[]
   has_server: boolean
   has_webapp: boolean
   lifecycle: PluginLifecycle
@@ -362,6 +365,22 @@ export type PluginInstallSource = { file: File } | { uploadId: string }
 export interface PluginSettingsResponse {
   schema: SettingsSchema | null
   values: Record<string, unknown>
+}
+
+/** Kind of a thing that depends on a plugin. */
+export type PluginUsageKind = 'certificate'
+
+export interface PluginUsageItem {
+  kind: PluginUsageKind | string
+  id: string
+  name: string
+}
+
+/** What stops working on this node while a plugin is off. */
+export interface PluginUsage {
+  /** The first items, `total` counts all of them. */
+  items: PluginUsageItem[]
+  total: number
 }
 
 export interface PluginLogLine {
@@ -507,6 +526,10 @@ const plugin = {
 
   saveSettings(id: string, values: Record<string, unknown>): Promise<PluginSettingsResponse> {
     return http.post(pluginPath(id, '/settings'), { settings: values })
+  },
+
+  getUsage(id: string): Promise<PluginUsage> {
+    return http.get(pluginPath(id, '/usage'))
   },
 
   getLogs(id: string, lines = 500): Promise<PluginLogsResponse> {

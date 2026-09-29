@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { describePermission } from './permissions'
+import { describePermission, permissionLabel } from './permissions'
 
 const props = defineProps<{
   permissions: string[]
@@ -10,13 +10,13 @@ const props = defineProps<{
   <ul v-if="props.permissions.length > 0" class="permission-list">
     <li v-for="permission in props.permissions" :key="permission">
       <ATag color="warning" class="permission-tag">
-        {{ permission }}
+        {{ permissionLabel(permission) }}
       </ATag>
       <span class="permission-description">{{ describePermission(permission) }}</span>
     </li>
   </ul>
   <p v-else class="mb-0 text-gray-500">
-    {{ $gettext('This plugin does not request any host permission.') }}
+    {{ $gettext('This plugin needs no access beyond its own features.') }}
   </p>
 </template>
 
@@ -40,7 +40,6 @@ const props = defineProps<{
 }
 
 .permission-tag {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 12px;
 }
 

@@ -3,8 +3,11 @@ import type { CatalogEntry } from '@/api/plugin_marketplace'
 import { ArrowUpOutlined, CheckCircleOutlined, DownloadOutlined } from '@antdv-next/icons'
 import { catalogEntryDescription, catalogEntryName } from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
+import { capabilityLabel } from '../capabilities'
+import { useInstalledPlugin } from '../inventory'
 import PluginIcon from '../PluginIcon.vue'
-import { trustPreset } from './trust'
+import { useReplacePlugin } from '../replace'
+import { findTrustedOffer, trustedOfferAction, trustPreset } from './trust'
 
 const props = defineProps<{
   entry: CatalogEntry
@@ -24,6 +27,11 @@ const isInstalled = computed(() => Boolean(props.entry.installed_version))
 const canInstall = computed(() => Boolean(props.entry.installable_release))
 const isActionable = computed(() => canInstall.value && (!isInstalled.value || props.entry.update_available))
 
+// The installed copy may be a less trusted build of the same plugin.
+const installed = useInstalledPlugin(() => props.entry.id)
+const offer = computed(() => (props.entry.update_available ? undefined : findTrustedOffer(installed.value?.trust, props.entry)))
+const { replacingId, confirmReplace } = useReplacePlugin()
+
 const actionLabel = computed(() => {
   if (props.entry.update_available)
     return $gettext('Update')
@@ -42,7 +50,7 @@ const actionLabel = computed(() => {
     @keydown.enter.self="emit('detail', entry)"
   >
     <div class="plugin-card-head">
-      <PluginIcon :src="entry.icon_url" :size="40" />
+      <PluginIcon :src="entry.icon_url" :name="name" :size="40" />
       <div class="plugin-card-body">
         <div class="plugin-card-title">
           <span class="plugin-card-name">{{ name }}</span>
@@ -72,7 +80,7 @@ const actionLabel = computed(() => {
         class="m-0"
         variant="filled"
       >
-        {{ capability }}
+        {{ capabilityLabel(capability) }}
       </ATag>
       <ATag
         v-if="entry.stage && entry.stage !== 'production'"
@@ -86,7 +94,10 @@ const actionLabel = computed(() => {
     <div class="plugin-card-foot" @click.stop>
       <div class="plugin-card-status">
         <span v-if="entry.author" class="truncate">{{ entry.author }}</span>
-        <span v-if="isInstalled" class="plugin-card-installed" :class="{ 'is-outdated': entry.update_available }">
+        <span v-if="offer" class="plugin-card-installed is-outdated">
+          {{ $gettext('Installed %{version} is not this version', { version: entry.installed_version! }) }}
+        </span>
+        <span v-else-if="isInstalled" class="plugin-card-installed" :class="{ 'is-outdated': entry.update_available }">
           <ArrowUpOutlined v-if="entry.update_available" />
           <CheckCircleOutlined v-else />
           {{ $gettext('Installed: %{version}', { version: entry.installed_version! }) }}
@@ -94,6 +105,16 @@ const actionLabel = computed(() => {
       </div>
 
       <AButton
+        v-if="offer"
+        type="primary"
+        size="small"
+        :loading="replacingId === entry.id"
+        @click="confirmReplace(offer)"
+      >
+        {{ trustedOfferAction(offer) }}
+      </AButton>
+      <AButton
+        v-else
         :type="isActionable ? 'primary' : 'default'"
         size="small"
         :disabled="!isActionable"

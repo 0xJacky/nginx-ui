@@ -1,15 +1,17 @@
 import type { ComputedRef, InjectionKey, MaybeRefOrGetter, Ref } from 'vue'
 import type { PluginInfo } from '@/api/plugin'
-import type { PluginUpdateInfo } from '@/api/plugin_marketplace'
+import type { CatalogEntry, PluginUpdateInfo } from '@/api/plugin_marketplace'
 import { useIntervalFn } from '@vueuse/core'
 import nodeApi from '@/api/node'
 import pluginApi from '@/api/plugin'
-import { getPluginUpdates } from '@/api/plugin_marketplace'
+import { getMarketplaceList, getPluginUpdates } from '@/api/plugin_marketplace'
 import { getErrorMessage } from '@/lib/http'
 
 export interface PluginInventory {
   plugins: Ref<PluginInfo[]>
   updates: Ref<PluginUpdateInfo[]>
+  /** The unfiltered marketplace catalog, empty while it is unavailable. */
+  catalog: Ref<CatalogEntry[]>
   /** True once this instance has at least one enabled child node. */
   hasNodes: Ref<boolean>
   loading: Ref<boolean>
@@ -17,6 +19,7 @@ export interface PluginInventory {
   /** Reloads the installed list. A silent reload keeps the current view in place. */
   reload: (silent?: boolean) => Promise<void>
   reloadUpdates: () => Promise<void>
+  reloadCatalog: () => Promise<void>
 }
 
 const inventoryKey: InjectionKey<PluginInventory> = Symbol('plugin-inventory')
@@ -28,6 +31,7 @@ const inventoryKey: InjectionKey<PluginInventory> = Symbol('plugin-inventory')
 export function providePluginInventory(): PluginInventory {
   const plugins = ref<PluginInfo[]>([])
   const updates = ref<PluginUpdateInfo[]>([])
+  const catalog = ref<CatalogEntry[]>([])
   const hasNodes = ref(false)
   const loading = ref(false)
   const error = ref('')
@@ -58,6 +62,16 @@ export function providePluginInventory(): PluginInventory {
     }
   }
 
+  async function reloadCatalog() {
+    try {
+      catalog.value = (await getMarketplaceList()).plugins
+    }
+    catch {
+      // Only the offers to install a more trusted version depend on it.
+      catalog.value = []
+    }
+  }
+
   async function loadNodes() {
     try {
       const { data } = await nodeApi.getList({ enabled: true })
@@ -83,11 +97,22 @@ export function providePluginInventory(): PluginInventory {
   onMounted(() => {
     void reload()
     void reloadUpdates()
+    void reloadCatalog()
     void loadNodes()
   })
   onUnmounted(pause)
 
-  const inventory: PluginInventory = { plugins, updates, hasNodes, loading, error, reload, reloadUpdates }
+  const inventory: PluginInventory = {
+    plugins,
+    updates,
+    catalog,
+    hasNodes,
+    loading,
+    error,
+    reload,
+    reloadUpdates,
+    reloadCatalog,
+  }
   provide(inventoryKey, inventory)
   return inventory
 }
