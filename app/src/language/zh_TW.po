@@ -74,6 +74,7 @@ msgid "Custom rules"
 msgstr "自訂規則"
 
 #: src/components/AccessControl/AccessSummary.vue:49
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:42
 msgid "Server %{index}"
 msgstr "伺服器 %{index}"
 
@@ -111,17 +112,21 @@ msgstr "為所選站點設定存取權限"
 msgid "Set access for selected streams"
 msgstr "為選取的串流設定存取權限"
 
-#: src/components/AccessControl/BatchAccessModal.vue:66 src/language/curd.ts:65
-#: src/views/preference/components/LLMChatModelThinking.vue:114
+#: src/components/AccessControl/BatchAccessModal.vue:66
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:193
+#: src/language/curd.ts:65
+#: src/views/preference/components/LLMChatModelThinking.vue:115
 msgid "Apply"
 msgstr "應用"
 
 #: src/components/AccessControl/BatchAccessModal.vue:67
 #: src/components/AccessControl/LocationAccessSelect.vue:101
 #: src/components/LLM/ChatMessage.vue:263
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:136
 #: src/components/NgxConfigEditor/NgxServer.vue:76
-#: src/components/NgxConfigEditor/NgxUpstream.vue:43 src/language/curd.ts:37
-#: src/views/access_list/AccessListList.vue:80
+#: src/components/NgxConfigEditor/NgxUpstream.vue:77
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:185
+#: src/language/curd.ts:37 src/views/access_list/AccessListList.vue:80
 #: src/views/access_list/components/AccessListEditor.vue:421
 #: src/views/config/components/Delete.vue:101
 #: src/views/dashboard/components/SiteHealthCheckModal.vue:861
@@ -147,8 +152,8 @@ msgstr "應用"
 #: src/views/site/site_list/SiteList.vue:175
 #: src/views/stream/components/StreamStatusSelect.vue:62
 #: src/views/upstream/components/UpstreamEditor.vue:425
-#: src/views/upstream/UpstreamList.vue:267
-#: src/views/upstream/UpstreamList.vue:300
+#: src/views/upstream/UpstreamList.vue:281
+#: src/views/upstream/UpstreamList.vue:314
 msgid "Cancel"
 msgstr "取消"
 
@@ -511,7 +516,7 @@ msgid "Name: %{name}"
 msgstr "名稱：%{name}"
 
 #: src/components/CertInfo/CertInfo.vue:55
-#: src/components/NgxConfigEditor/NgxUpstream.vue:163
+#: src/components/NgxConfigEditor/NgxUpstream.vue:259
 #: src/views/access_list/AccessListList.vue:18
 #: src/views/access_list/components/AccessListEditor.vue:237
 #: src/views/backup/AutoBackup/AutoBackup.vue:40
@@ -545,8 +550,8 @@ msgstr "名稱：%{name}"
 #: src/views/stream/components/StreamDuplicate.vue:76
 #: src/views/stream/StreamList.vue:134 src/views/system/Licenses.vue:13
 #: src/views/upstream/components/UpstreamEditor.vue:194
-#: src/views/upstream/UpstreamList.vue:56
-#: src/views/upstream/UpstreamList.vue:66
+#: src/views/upstream/UpstreamList.vue:57
+#: src/views/upstream/UpstreamList.vue:67
 msgid "Name"
 msgstr "名稱"
 
@@ -657,8 +662,8 @@ msgid "Restore this version"
 msgstr "恢復此版本"
 
 #: src/components/ConfigStatusTag/configStatus.ts:13
-#: src/components/NgxConfigEditor/NgxUpstream.vue:110
-#: src/components/NgxConfigEditor/NgxUpstream.vue:114
+#: src/components/NgxConfigEditor/NgxUpstream.vue:205
+#: src/components/NgxConfigEditor/NgxUpstream.vue:209
 #: src/views/backup/AutoBackup/AutoBackup.vue:193
 #: src/views/backup/AutoBackup/AutoBackup.vue:203
 #: src/views/dns/DDNSManager.vue:359 src/views/node/nodeColumns.tsx:168
@@ -668,7 +673,7 @@ msgstr "恢復此版本"
 #: src/views/preference/tabs/LogrotateSettings.vue:16
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:130
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:144
 #: src/views/site/site_list/columns.tsx:164 src/views/stream/columns.tsx:123
 #: src/views/stream/components/RightPanel/Basic.vue:25
 #: src/views/stream/components/StreamEditor.vue:59
@@ -687,16 +692,16 @@ msgstr "已啟用"
 #: src/views/preference/tabs/HTTPSettings.vue:36
 #: src/views/preference/tabs/NodeSettings.vue:28
 #: src/views/preference/tabs/NodeSettings.vue:33
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:136
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:150
 #: src/views/site/site_list/columns.tsx:168 src/views/stream/columns.tsx:127
 #: src/views/stream/components/StreamEditor.vue:65
-#: src/views/upstream/UpstreamList.vue:146 src/views/user/userColumns.tsx:39
+#: src/views/upstream/UpstreamList.vue:160 src/views/user/userColumns.tsx:39
 msgid "Disabled"
 msgstr "停用"
 
 #: src/components/ConfigStatusTag/configStatus.ts:15
 #: src/views/site/components/SiteStatusSelect.vue:162
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:142
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:156
 #: src/views/site/site_list/columns.tsx:172
 #: src/views/site/site_list/SiteList.vue:160
 #: src/views/site/site_list/SiteList.vue:327
@@ -863,7 +868,7 @@ msgstr "修改"
 #: src/views/preference/tabs/NginxSettings.vue:318
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
 #: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:83
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:276
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:290
 #: src/views/stream/components/ConfigName.vue:52
 #: src/views/stream/components/StreamEditor.vue:168
 #: src/views/upstream/components/UpstreamEditor.vue:433
@@ -873,20 +878,33 @@ msgstr "儲存"
 #: src/components/LLM/ChatMessage.vue:269
 #: src/components/NginxControl/NginxControl.vue:199
 #: src/views/access_list/AccessListList.vue:96
-#: src/views/upstream/UpstreamList.vue:398
+#: src/views/upstream/UpstreamList.vue:421
 msgid "Reload"
 msgstr "重新載入"
 
-#: src/components/LLM/ChatMessageInput.vue:99
+#: src/components/LLM/ChatMessageInput.vue:97
+msgid "Type your message here..."
+msgstr "在此輸入您的訊息..."
+
+#: src/components/LLM/ChatMessageInput.vue:98
+msgid "Message"
+msgstr "訊息"
+
+#: src/components/LLM/ChatMessageInput.vue:110
 msgid "Model"
 msgstr "模型"
 
-#: src/components/LLM/ChatMessageInput.vue:110
+#: src/components/LLM/ChatMessageInput.vue:121
 #: src/views/preference/tabs/OpenAISettings.vue:424
 msgid "Thinking"
 msgstr "思考"
 
-#: src/components/LLM/ChatMessageInput.vue:122
+#: src/components/LLM/ChatMessageInput.vue:132
+#: src/components/LLM/ChatMessageInput.vue:138
+msgid "Regenerate response"
+msgstr "重新產生回應"
+
+#: src/components/LLM/ChatMessageInput.vue:147
 #: src/components/NamespaceTabs/NamespaceTabs.vue:141
 #: src/components/NamespaceTabs/NamespaceTabs.vue:153
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:136
@@ -901,9 +919,9 @@ msgstr "思考"
 msgid "No"
 msgstr "取消"
 
-#: src/components/LLM/ChatMessageInput.vue:123
+#: src/components/LLM/ChatMessageInput.vue:148
 #: src/components/NgxConfigEditor/NgxServer.vue:75
-#: src/components/NgxConfigEditor/NgxUpstream.vue:42
+#: src/components/NgxConfigEditor/NgxUpstream.vue:76
 #: src/components/Notification/Notification.vue:116 src/language/curd.ts:15
 #: src/views/access_list/AccessListList.vue:70
 #: src/views/backup/components/BackupCreator.vue:145
@@ -914,28 +932,27 @@ msgstr "取消"
 #: src/views/site/site_edit/components/EnableTLS/EnableTLS.vue:26
 #: src/views/site/site_list/SiteList.vue:270
 #: src/views/stream/components/StreamStatusSelect.vue:61
-#: src/views/stream/StreamList.vue:111 src/views/upstream/UpstreamList.vue:290
+#: src/views/stream/StreamList.vue:111 src/views/upstream/UpstreamList.vue:304
 msgid "OK"
 msgstr "確定"
 
-#: src/components/LLM/ChatMessageInput.vue:124
+#: src/components/LLM/ChatMessageInput.vue:149
 msgid "Are you sure you want to clear the record of chat?"
 msgstr "您確定要清除聊天記錄嗎？"
 
-#: src/components/LLM/ChatMessageInput.vue:128
+#: src/components/LLM/ChatMessageInput.vue:153
+#: src/components/LLM/ChatMessageInput.vue:159
 #: src/components/Notification/Notification.vue:122
 #: src/views/notification/Notification.vue:45
 #: src/views/site/site_edit/components/RightPanel/DNS.vue:565
 msgid "Clear"
 msgstr "清除"
 
-#: src/components/LLM/ChatMessageInput.vue:135
-msgid "Regenerate response"
-msgstr "重新產生回應"
-
-#: src/components/LLM/ChatMessageInput.vue:142
-msgid "Type your message here..."
-msgstr "在此輸入您的訊息..."
+#: src/components/LLM/ChatMessageInput.vue:174
+#: src/views/dashboard/ServerAnalytic.vue:46
+#: src/views/dashboard/ServerAnalytic.vue:415
+msgid "Send"
+msgstr "傳送"
 
 #: src/components/LLM/ChatMessageReasoning.vue:40
 msgid "Thinking..."
@@ -959,7 +976,7 @@ msgstr "%{path} 的聊天"
 
 #: src/components/LLM/LLMSessionTabs.vue:284
 #: src/components/LLM/LLMSessionTabs.vue:386
-#: src/components/NgxConfigEditor/NgxUpstream.vue:55
+#: src/components/NgxConfigEditor/NgxUpstream.vue:89
 #: src/views/config/components/ConfigName.vue:50
 #: src/views/config/components/Rename.vue:59
 #: src/views/config/ConfigList.vue:219
@@ -980,7 +997,7 @@ msgstr "複製"
 #: src/components/LLM/LLMSessionTabs.vue:300
 #: src/components/LLM/LLMSessionTabs.vue:402
 #: src/components/NgxConfigEditor/NgxServer.vue:88
-#: src/components/NgxConfigEditor/NgxUpstream.vue:60 src/language/curd.ts:9
+#: src/components/NgxConfigEditor/NgxUpstream.vue:94 src/language/curd.ts:9
 #: src/views/access_list/AccessListList.vue:78
 #: src/views/access_list/AccessListList.vue:194
 #: src/views/certificate/components/RemoveCert.vue:123
@@ -991,8 +1008,8 @@ msgstr "複製"
 #: src/views/dns/components/DNSRecordTable.vue:383
 #: src/views/dns/DDNSManager.vue:399 src/views/dns/DNSGroupList.vue:245
 #: src/views/site/site_list/SiteList.vue:280
-#: src/views/stream/StreamList.vue:121 src/views/upstream/UpstreamList.vue:298
-#: src/views/upstream/UpstreamList.vue:347
+#: src/views/stream/StreamList.vue:121 src/views/upstream/UpstreamList.vue:312
+#: src/views/upstream/UpstreamList.vue:361
 msgid "Delete"
 msgstr "刪除"
 
@@ -1060,7 +1077,7 @@ msgstr "重新啟動 Nginx"
 #: src/components/NodeSelector/NodeSelector.vue:79
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:112 src/views/node/nodeColumns.tsx:149
-#: src/views/upstream/SocketList.vue:51 src/views/upstream/UpstreamList.vue:148
+#: src/views/upstream/SocketList.vue:51 src/views/upstream/UpstreamList.vue:162
 msgid "Online"
 msgstr "線上"
 
@@ -1070,7 +1087,7 @@ msgstr "線上"
 #: src/components/NodeSwitcher/NodeSwitcher.vue:53
 #: src/components/UpstreamDetailModal/UpstreamDetailModal.vue:48
 #: src/views/dashboard/Nodes.vue:119 src/views/node/nodeColumns.tsx:151
-#: src/views/upstream/SocketList.vue:51 src/views/upstream/UpstreamList.vue:150
+#: src/views/upstream/SocketList.vue:51 src/views/upstream/UpstreamList.vue:164
 msgid "Offline"
 msgstr "離線"
 
@@ -1117,6 +1134,67 @@ msgstr "已停止"
 msgid "Restart"
 msgstr "重新啟動"
 
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:75
+msgid "Upstream %{name} is now a shared upstream group"
+msgstr "Upstream %{name} 現在是共用 upstream 群組"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:92
+msgid "Convert %{name} to a Shared Upstream Group"
+msgstr "將 %{name} 轉換為共享 Upstream 群組"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:108
+msgid "This site has unsaved changes"
+msgstr "此網站存在未儲存的變更"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:109
+msgid ""
+"Converting rewrites the site file on the server. Save or discard your "
+"changes first, so they are neither lost nor written back over the converted "
+"file."
+msgstr "轉換會重新寫入伺服器上的網站檔案。請先儲存或捨棄您的變更，以免它們遺失或覆寫已轉換的檔案。"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:118
+msgid ""
+"The upstream block %{name} moves out of %{site} into its own file, %{file}, "
+"and becomes an upstream group:"
+msgstr "upstream 區塊 %{name} 將從 %{site} 中移出到獨立檔案 %{file} 中，並成為 upstream 群組："
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:121
+msgid ""
+"It is listed and edited on the Upstream Groups page, with the health of its "
+"servers."
+msgstr "它會在 Upstream 群組頁面中列出和編輯，並顯示其伺服器的健康狀態。"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:122
+msgid "This site keeps proxying to it by name; nothing else in the site changes."
+msgstr "此站點仍透過名稱代理到它；站點中的其他內容不變。"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:123
+msgid "Other sites can choose it as their proxy target."
+msgstr "其他站點可以選擇它作為代理目標。"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:124
+msgid "Comments inside the block are kept at the end of the group."
+msgstr "區塊內的註解將保留在組的結尾。"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:127
+msgid ""
+"Nginx is tested once and reloaded. If the test or the reload fails, both "
+"files are restored."
+msgstr "Nginx 將進行一次測試並重新載入。如果測試或重新載入失敗，兩個檔案都會被還原。"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:145
+msgid "Discard Changes"
+msgstr "捨棄變更"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:153
+msgid "Save Changes"
+msgstr "儲存變更"
+
+#: src/components/NgxConfigEditor/ConvertUpstreamModal.vue:164
+msgid "Convert"
+msgstr "轉換"
+
 #: src/components/NgxConfigEditor/directive/DirectiveAdd.vue:19
 msgid "Single Directive"
 msgstr "單一指令"
@@ -1155,7 +1233,8 @@ msgstr "指令"
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:255
 #: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:53
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:105
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:84
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:119
 #: src/views/stream/components/StreamEditor.vue:40
 msgid "Saved successfully"
 msgstr "儲存成功"
@@ -1190,6 +1269,7 @@ msgid "Are you sure you want to remove this location?"
 msgstr "您確定要刪除此 Location 嗎？"
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:125
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:142
 msgid "Locations"
 msgstr "Locations"
 
@@ -1221,6 +1301,7 @@ msgstr "將 proxy_pass 設定為選取的 upstream 群組；其伺服器在 Upst
 
 #: src/components/NgxConfigEditor/LocationEditor.vue:180
 #: src/components/NgxConfigEditor/LocationEditor.vue:221
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:131
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:119
 msgid "Select an upstream"
 msgstr "選擇一個 upstream"
@@ -1293,7 +1374,7 @@ msgid "Add Server"
 msgstr "新增伺服器"
 
 #: src/components/NgxConfigEditor/NgxServer.vue:173
-#: src/components/NgxConfigEditor/NgxUpstream.vue:130 src/language/curd.ts:19
+#: src/components/NgxConfigEditor/NgxUpstream.vue:132 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:57
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:120
 #: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:502
@@ -1301,21 +1382,105 @@ msgstr "新增伺服器"
 msgid "Add"
 msgstr "新增"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:39
+#: src/components/NgxConfigEditor/NgxUpstream.vue:73
 msgid "Do you want to remove this upstream?"
 msgstr "您要移除這個 Upstream 嗎？"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:136
+#: src/components/NgxConfigEditor/NgxUpstream.vue:102
+#: src/components/NgxConfigEditor/NgxUpstream.vue:195
+#: src/views/upstream/UpstreamList.vue:412
+msgid "Convert to Shared Group"
+msgstr "轉換為共用組"
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:130
+#: src/components/NgxConfigEditor/NgxUpstream.vue:240
+msgid "Use Existing Group"
+msgstr "使用現有群組"
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:187
+msgid "Defined in this site only."
+msgstr "僅在此網站中定義。"
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:220
 msgid "No upstreams configured"
 msgstr "未配置上游"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:151
+#: src/components/NgxConfigEditor/NgxUpstream.vue:247
 msgid "Add Upstream"
 msgstr "添加上游"
 
-#: src/components/NgxConfigEditor/NgxUpstream.vue:158
+#: src/components/NgxConfigEditor/NgxUpstream.vue:254
 msgid "Upstream Name"
 msgstr "Upstream 名稱"
+
+#: src/components/NgxConfigEditor/NgxUpstream.vue:268
+msgid ""
+"This adds an upstream block to this site only. To proxy to an upstream "
+"group shared with other sites, use \"Use Existing Group\" instead."
+msgstr "這僅會將 upstream 區塊新增到目前站點。若要代理到與其他站點共用的 upstream 群組，請改用「使用現有群組」。"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:63
+msgid "Use an Existing Upstream Group"
+msgstr "使用已有的 Upstream 群組"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:77
+msgid "%{count} location(s) now proxy to %{name}"
+msgstr "現在有 %{count} 個 location 代理到 %{name}"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:78
+msgid "The selected locations already proxy to %{name}"
+msgstr "所選位置已代理至 %{name}"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:79
+msgid "Save the site to apply the change. Nginx is tested and reloaded on save."
+msgstr "儲存站點以套用變更。儲存時會測試並重新載入 Nginx。"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:90
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:167
+msgid "no proxy_pass"
+msgstr "無 proxy_pass"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:98
+msgid ""
+"No location uses %{names} anymore. You can delete it in the Upstream "
+"section, or keep it."
+msgstr "沒有 location 再使用 %{names} 了。你可以在 Upstream 部分刪除它，或者保留它。"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:106
+msgid "There are no upstream groups yet."
+msgstr "暫無 upstream 分組。"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:113
+msgid "Create one on the Upstream Groups page"
+msgstr "在 Upstream Groups 頁面上建立一個"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:122
+msgid ""
+"An upstream group is defined once on the Upstream Groups page and shared by "
+"every site that proxies to it."
+msgstr "Upstream 群組在 Upstream 群組頁面上僅定義一次，並由所有對其進行 proxy 的站點共享。"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:124
+#: src/views/upstream/UpstreamList.vue:182
+msgid "Upstream Group"
+msgstr "上游群組"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:143
+msgid ""
+"The selected locations proxy to the group. The scheme and URI of an "
+"existing proxy_pass are kept; locations without one get proxy_pass added."
+msgstr ""
+"所選 location 將代理到該組。已有的 proxy_pass 會保留其 scheme 和 URI；沒有 proxy_pass 的 "
+"location 會新增 proxy_pass。"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:149
+msgid "This site has no locations yet."
+msgstr "此站點尚無 location。"
+
+#: src/components/NgxConfigEditor/UseUpstreamGroupModal.vue:181
+#: src/views/site/site_edit/components/Cert/IssueCert.vue:139
+msgid "Done"
+msgstr "完成"
 
 #: src/components/NodeSwitcher/NodeSwitcher.vue:57
 #: src/components/PortScanner/PortScannerCompact.vue:47
@@ -1840,11 +2005,27 @@ msgid "Save stream %{name} to %{node} successfully"
 msgstr "串流 %{name} 成功儲存至 %{node}"
 
 #: src/components/Notification/notifications.ts:237
+msgid "Convert Remote Upstream Error"
+msgstr "遠端 Upstream 轉換錯誤"
+
+#: src/components/Notification/notifications.ts:238
+msgid "Convert upstream %{upstream} of site %{site} on %{node} failed"
+msgstr "轉換 %{node} 上站點 %{site} 的 upstream %{upstream} 失敗"
+
+#: src/components/Notification/notifications.ts:241
+msgid "Convert Remote Upstream Success"
+msgstr "遠端 Upstream 轉換成功"
+
+#: src/components/Notification/notifications.ts:242
+msgid "Convert upstream %{upstream} of site %{site} on %{node} successfully"
+msgstr "成功在 %{node} 上轉換站點 %{site} 的 upstream %{upstream}"
+
+#: src/components/Notification/notifications.ts:245
 #: src/language/constants.ts:58
 msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢復代碼已用完"
 
-#: src/components/Notification/notifications.ts:238
+#: src/components/Notification/notifications.ts:246
 #: src/language/constants.ts:59
 msgid ""
 "Please generate new recovery codes in the preferences immediately to "
@@ -1942,15 +2123,15 @@ msgstr "AutoCert 正在運行..."
 msgid "Nginx Log Indexing..."
 msgstr "Nginx 日誌索引中..."
 
-#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:37
-#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:60
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:43
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:66
 msgid ""
 "Legacy recovery code is deprecated. Generate new recovery codes to keep "
 "account recovery secure."
 msgstr "舊有的復原碼已不建議使用。請產生新的復原碼以確保帳戶復原安全。"
 
-#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:41
-#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:64
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:47
+#: src/components/RecoveryCodeMigrationWarning/RecoveryCodeMigrationWarning.vue:70
 #: src/language/curd.ts:17
 #: src/views/certificate/components/DNSIssueCertificate.vue:278
 #: src/views/certificate/components/SelfSignedCertForm.vue:82
@@ -1975,16 +2156,16 @@ msgstr "輸入安裝密鑰以運行系統檢查。"
 msgid "Attempt to fix"
 msgstr "嘗試修復"
 
-#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:31
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:37
 msgid "Fix"
 msgstr "修復"
 
-#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:31
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:37
 msgid "Check"
 msgstr "檢查"
 
-#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:42
-#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:64
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:48
+#: src/components/SelfCheck/SelfCheckHeaderBanner.vue:70
 msgid "Self check failed, Nginx UI may not work properly"
 msgstr "自我檢查失敗，Nginx UI 可能無法正常運作"
 
@@ -2460,7 +2641,7 @@ msgstr "類型"
 #: src/routes/modules/upstream.ts:19 src/views/home/Home.vue:80
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:105
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:112
-#: src/views/upstream/SocketList.vue:27 src/views/upstream/UpstreamList.vue:51
+#: src/views/upstream/SocketList.vue:27 src/views/upstream/UpstreamList.vue:52
 msgid "Upstream"
 msgstr "上游"
 
@@ -3896,110 +4077,156 @@ msgid "Upgrader core platform is unsupported"
 msgstr "升級程式核心平台不受支援"
 
 #: src/constants/errors/upstream.ts:2
+msgid "A site name and an upstream name are required"
+msgstr "需要站點名稱和 upstream 名稱"
+
+#: src/constants/errors/upstream.ts:3
+msgid ""
+"Upstream {0} contains a nested {1} block, which an upstream group cannot "
+"hold"
+msgstr "Upstream {0} 包含一個巢狀的 {1} 區塊，upstream 群組無法容納"
+
+#: src/constants/errors/upstream.ts:4
+msgid ""
+"The {0} directive of upstream {1} has a value that spans several lines, "
+"which an upstream group cannot hold"
+msgstr "上游 {1} 的 {0} 指令的值跨多行，上游群組無法容納"
+
+#: src/constants/errors/upstream.ts:5
+msgid ""
+"A comment inside upstream {0} contains braces, which an upstream group "
+"cannot hold; edit the comment first"
+msgstr "upstream {0} 內的註解包含花括號，upstream group 無法包含花括號；請先編輯註解"
+
+#: src/constants/errors/upstream.ts:6
+msgid ""
+"Upstream {0} is defined inside a {1} block; only upstream blocks of the "
+"http context can become an upstream group"
+msgstr "Upstream {0} 定義在 {1} 區塊內；只有 http 上下文中的 upstream 區塊才能成為 upstream 群組"
+
+#: src/constants/errors/upstream.ts:7
+msgid "Invalid site name: {0}"
+msgstr "無效的站點名稱：{0}"
+
+#: src/constants/errors/upstream.ts:8
+msgid "Site not found: {0}"
+msgstr "找不到站點：{0}"
+
+#: src/constants/errors/upstream.ts:9
+msgid ""
+"An upstream group named {0} already exists; rename this upstream before "
+"converting it"
+msgstr "名為 {0} 的 upstream 組已存在；請在轉換之前重新命名此 upstream"
+
+#: src/constants/errors/upstream.ts:10
+msgid "Upstream {0} is defined more than once in {1}"
+msgstr "Upstream {0} 在 {1} 中被多次定義"
+
+#: src/constants/errors/upstream.ts:11
 msgid ""
 "Invalid upstream name: use letters, digits, underscores and hyphens, "
 "starting with a letter or underscore (max 64 characters)"
 msgstr "無效的 upstream 名稱：請使用字母、數字、底線和連字號，以字母或底線開頭（最多 64 個字元）"
 
-#: src/constants/errors/upstream.ts:3
+#: src/constants/errors/upstream.ts:12
 msgid "Unsupported load balancing method: {0}"
 msgstr "不支援的負載均衡方式：{0}"
 
-#: src/constants/errors/upstream.ts:4
+#: src/constants/errors/upstream.ts:13
 msgid "The hash method needs a key"
 msgstr "哈希方式需要指定一個鍵"
 
-#: src/constants/errors/upstream.ts:5
+#: src/constants/errors/upstream.ts:14
 msgid "Invalid hash key: {0}"
 msgstr "無效的雜湊鍵: {0}"
 
-#: src/constants/errors/upstream.ts:6
+#: src/constants/errors/upstream.ts:15
 msgid "An upstream needs at least one server"
 msgstr "一個 upstream 至少需要一個伺服器"
 
-#: src/constants/errors/upstream.ts:7
+#: src/constants/errors/upstream.ts:16
 msgid "Invalid server address: {0}"
 msgstr "無效的伺服器位址：{0}"
 
-#: src/constants/errors/upstream.ts:8
+#: src/constants/errors/upstream.ts:17
 msgid "Server weight must be at least 1: {0}"
 msgstr "伺服器權重至少為 1：{0}"
 
-#: src/constants/errors/upstream.ts:9
+#: src/constants/errors/upstream.ts:18
 msgid "Server max_fails must not be negative: {0}"
 msgstr "伺服器 max_fails 不能為負數：{0}"
 
-#: src/constants/errors/upstream.ts:10
+#: src/constants/errors/upstream.ts:19
 msgid "Invalid server fail_timeout: {0}"
 msgstr "無效的 server fail_timeout：{0}"
 
-#: src/constants/errors/upstream.ts:11
+#: src/constants/errors/upstream.ts:20
 msgid "Backup servers cannot be used with the {0} method"
 msgstr "備用伺服器不能與 {0} 方法一起使用"
 
-#: src/constants/errors/upstream.ts:12
+#: src/constants/errors/upstream.ts:21
 msgid "Keepalive must not be negative"
 msgstr "Keepalive 不能為負數"
 
-#: src/constants/errors/upstream.ts:13
+#: src/constants/errors/upstream.ts:22
 msgid "Additional directives must not contain blocks or braces"
 msgstr "附加指令不能包含區塊或花括號"
 
-#: src/constants/errors/upstream.ts:14
+#: src/constants/errors/upstream.ts:23
 msgid "Invalid server parameters: {0}"
 msgstr "無效的伺服器參數：{0}"
 
-#: src/constants/errors/upstream.ts:15
+#: src/constants/errors/upstream.ts:24
 msgid ""
 "Invalid shared memory zone size: {0}; use a number with a k or m suffix, at "
 "least 32k"
 msgstr "無效的共享記憶體區域大小：{0}；請使用帶有 k 或 m 後綴的數字，最小值為 32k"
 
-#: src/constants/errors/upstream.ts:16
+#: src/constants/errors/upstream.ts:25
 msgid ""
 "The shared memory zone is set by the zone switch; remove the zone directive "
 "from the additional directives"
 msgstr "共享記憶體區域由 zone 開關設定；請從附加指令中移除 zone 指令"
 
-#: src/constants/errors/upstream.ts:17
+#: src/constants/errors/upstream.ts:26
 msgid "Upstream not found: {0}"
 msgstr "未找到 upstream：{0}"
 
-#: src/constants/errors/upstream.ts:18
+#: src/constants/errors/upstream.ts:27
 msgid "Upstream already exists: {0}"
 msgstr "Upstream 已存在：{0}"
 
-#: src/constants/errors/upstream.ts:19
+#: src/constants/errors/upstream.ts:28
 msgid "An upstream with this name is already defined in {0}"
 msgstr "已存在同名 upstream：{0}"
 
-#: src/constants/errors/upstream.ts:20
+#: src/constants/errors/upstream.ts:29
 msgid "Upstream is still referenced by: {0}"
 msgstr "Upstream 仍被以下位置引用：{0}"
 
-#: src/constants/errors/upstream.ts:21
+#: src/constants/errors/upstream.ts:30
 msgid "{0} is not an upstream file managed by Nginx UI"
 msgstr "{0} 不是由 Nginx UI 管理的 upstream 檔案"
 
-#: src/constants/errors/upstream.ts:22
+#: src/constants/errors/upstream.ts:31
 msgid ""
 "The shared memory zone {0} is already used by another directive; nginx "
 "reported: {1}"
 msgstr "共享記憶體區域 {0} 已被其他指令使用；nginx 報告：{1}"
 
-#: src/constants/errors/upstream.ts:23
+#: src/constants/errors/upstream.ts:32
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "nginx conf.d 目錄不可用: {0}"
 
-#: src/constants/errors/upstream.ts:24
+#: src/constants/errors/upstream.ts:33
 msgid "An upstream name, a config file and a server address are required"
 msgstr "必須提供 upstream 名稱、設定檔案和伺服器位址"
 
-#: src/constants/errors/upstream.ts:25
+#: src/constants/errors/upstream.ts:34
 msgid "Upstream {0} is not defined in {1}"
 msgstr "上游 {0} 未在 {1} 中定義"
 
-#: src/constants/errors/upstream.ts:26
+#: src/constants/errors/upstream.ts:35
 msgid "Server {0} was not found in upstream {1}"
 msgstr "未在 upstream {1} 中找到伺服器 {0}"
 
@@ -4289,7 +4516,7 @@ msgstr "檢視"
 #: src/views/dns/components/DNSRecordTable.vue:325
 #: src/views/dns/components/DNSRecordTable.vue:376
 #: src/views/preference/tabs/NginxSettings.vue:259
-#: src/views/upstream/UpstreamList.vue:338
+#: src/views/upstream/UpstreamList.vue:352
 msgid "Edit"
 msgstr "編輯"
 
@@ -5050,7 +5277,7 @@ msgstr "[Nginx UI] 正在將憑證寫入磁碟"
 msgid "Logout successful"
 msgstr "登出成功"
 
-#: src/layouts/HeaderLayout.vue:115 src/routes/index.ts:73
+#: src/layouts/HeaderLayout.vue:137 src/routes/index.ts:73
 msgid "Workspace"
 msgstr "工作區"
 
@@ -5271,7 +5498,7 @@ msgid "Terminal"
 msgstr "終端"
 
 #: src/routes/modules/upstream.ts:28 src/views/upstream/index.vue:7
-#: src/views/upstream/UpstreamList.vue:311
+#: src/views/upstream/UpstreamList.vue:325
 msgid "Upstream Groups"
 msgstr "Upstream 群組"
 
@@ -5334,7 +5561,7 @@ msgstr "更新時間"
 #: src/views/preference/components/ExternalNotify/columns.tsx:98
 #: src/views/preference/components/ExternalNotify/labels.ts:7
 #: src/views/site/site_list/columns.tsx:182 src/views/stream/columns.tsx:138
-#: src/views/upstream/UpstreamList.vue:60 src/views/user/userColumns.tsx:58
+#: src/views/upstream/UpstreamList.vue:61 src/views/user/userColumns.tsx:58
 msgid "Actions"
 msgstr "操作"
 
@@ -5395,7 +5622,7 @@ msgid "Allow"
 msgstr "允許"
 
 #: src/views/access_list/AccessListList.vue:170
-#: src/views/upstream/UpstreamList.vue:521
+#: src/views/upstream/UpstreamList.vue:544
 msgid "Not used"
 msgstr "未使用"
 
@@ -5409,12 +5636,12 @@ msgid "Deny (403)"
 msgstr "拒絕 (403)"
 
 #: src/views/access_list/components/AccessListEditor.vue:198
-#: src/views/upstream/UpstreamList.vue:169
+#: src/views/upstream/UpstreamList.vue:183
 msgid "Site"
 msgstr "站點"
 
 #: src/views/access_list/components/AccessListEditor.vue:198
-#: src/views/upstream/UpstreamList.vue:170
+#: src/views/upstream/UpstreamList.vue:184
 msgid "Stream"
 msgstr "串流"
 
@@ -6054,7 +6281,7 @@ msgstr "網域列表為空，請嘗試重新開啟 %{config} 的自動憑證"
 #: src/views/preference/NginxHostSetup.vue:129
 #: src/views/preference/NginxHostSetup.vue:147
 #: src/views/site/site_add/SiteAdd.vue:533
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:269
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:283
 #: src/views/stream/components/StreamEditor.vue:161
 msgid "Back"
 msgstr "返回"
@@ -6466,7 +6693,7 @@ msgid "Format successfully"
 msgstr "成功格式化"
 
 #: src/views/config/components/ConfigLeftPanel.vue:255
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:155
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:169
 #: src/views/stream/components/StreamEditor.vue:78
 msgid "History"
 msgstr "歷史"
@@ -6802,7 +7029,7 @@ msgstr "快取子目錄層級結構，例如 1:2"
 #: src/views/dashboard/components/ParamsOpt/ProxyCacheConfig.vue:146
 #: src/views/upstream/components/UpstreamEditor.vue:324
 #: src/views/upstream/components/UpstreamEditor.vue:334
-#: src/views/upstream/UpstreamList.vue:491
+#: src/views/upstream/UpstreamList.vue:514
 msgid "Shared Memory Zone"
 msgstr "共享記憶體區域"
 
@@ -7447,11 +7674,6 @@ msgstr "效能指標"
 #: src/views/dashboard/ServerAnalytic.vue:405
 msgid "Receive"
 msgstr "接收"
-
-#: src/views/dashboard/ServerAnalytic.vue:46
-#: src/views/dashboard/ServerAnalytic.vue:415
-msgid "Send"
-msgstr "傳送"
 
 #: src/views/dashboard/ServerAnalytic.vue:48
 #: src/views/dashboard/ServerAnalytic.vue:444
@@ -9102,7 +9324,7 @@ msgstr "進階記錄索引將會停止，結構化記錄分析將無法使用。
 #: src/views/nginx_log/NginxLogList.vue:419
 #: src/views/site/site_list/SiteList.vue:159
 #: src/views/site/site_list/SiteList.vue:318
-#: src/views/upstream/UpstreamList.vue:265
+#: src/views/upstream/UpstreamList.vue:279
 msgid "Disable"
 msgstr "停用"
 
@@ -9976,7 +10198,7 @@ msgid "Language"
 msgstr "語言"
 
 #: src/views/preference/components/ExternalNotify/columns.tsx:71
-#: src/views/upstream/UpstreamList.vue:171
+#: src/views/upstream/UpstreamList.vue:185
 msgid "Config"
 msgstr "配置"
 
@@ -10218,23 +10440,23 @@ msgstr "Telegram"
 msgid "WeCom"
 msgstr "企業微信"
 
-#: src/views/preference/components/LLMChatModelThinking.vue:55
+#: src/views/preference/components/LLMChatModelThinking.vue:56
 msgid "Enter a JSON object, such as {\"reasoning_effort\": \"high\"}"
 msgstr "請輸入一個 JSON 物件，例如 {\"reasoning_effort\": \"high\"}"
 
-#: src/views/preference/components/LLMChatModelThinking.vue:60
+#: src/views/preference/components/LLMChatModelThinking.vue:61
 msgid "This is not valid JSON"
 msgstr "這不是有效的 JSON"
 
-#: src/views/preference/components/LLMChatModelThinking.vue:106
+#: src/views/preference/components/LLMChatModelThinking.vue:107
 msgid "Set request fields"
 msgstr "設定請求欄位"
 
-#: src/views/preference/components/LLMChatModelThinking.vue:113
+#: src/views/preference/components/LLMChatModelThinking.vue:114
 msgid "Thinking levels of %{model}"
 msgstr "%{model} 的思考級別"
 
-#: src/views/preference/components/LLMChatModelThinking.vue:120
+#: src/views/preference/components/LLMChatModelThinking.vue:121
 msgid ""
 "Each level adds these fields to the chat request body, like extra_body in "
 "the OpenAI SDK. Leave a level empty to hide it in the assistant."
@@ -12593,7 +12815,7 @@ msgstr "DNS 記錄已成功創建並連結"
 
 #: src/views/site/site_add/SiteAdd.vue:401
 #: src/views/site/site_edit/components/QuickSetupModal.vue:139
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:164
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:178
 msgid "Quick Setup"
 msgstr "快速設定"
 
@@ -12671,10 +12893,6 @@ msgstr "我們將移除 HTTPChallenge 配置，從 "
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:117
 msgid "Obtain certificate"
 msgstr "取得憑證"
-
-#: src/views/site/site_edit/components/Cert/IssueCert.vue:139
-msgid "Done"
-msgstr "完成"
 
 #: src/views/site/site_edit/components/Cert/IssueCert.vue:145
 msgid "Encrypt website with Let's Encrypt"
@@ -13097,22 +13315,22 @@ msgstr "配置模板"
 msgid "Port Scanner"
 msgstr "端口掃描器"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:125
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:139
 #: src/views/stream/components/StreamEditor.vue:54
 msgid "Edit %{n}"
 msgstr "編輯 %{n}"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:177
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:191
 #: src/views/stream/components/StreamEditor.vue:90
 msgid "Advance Mode"
 msgstr "進階模式"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:180
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:194
 #: src/views/stream/components/StreamEditor.vue:93
 msgid "Basic Mode"
 msgstr "基本模式"
 
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:205
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:219
 #: src/views/stream/components/StreamEditor.vue:115
 msgid "Nginx Configuration Parse Error"
 msgstr "Nginx 設定解析錯誤"
@@ -13392,7 +13610,7 @@ msgid "Edit Upstream %{name}"
 msgstr "編輯 Upstream %{name}"
 
 #: src/views/upstream/components/UpstreamEditor.vue:186
-#: src/views/upstream/UpstreamList.vue:413
+#: src/views/upstream/UpstreamList.vue:436
 msgid "Create Upstream"
 msgstr "建立 Upstream"
 
@@ -13413,8 +13631,8 @@ msgid "Consistent Hashing"
 msgstr "一致性雜湊"
 
 #: src/views/upstream/components/UpstreamEditor.vue:238
-#: src/views/upstream/UpstreamList.vue:58
-#: src/views/upstream/UpstreamList.vue:67
+#: src/views/upstream/UpstreamList.vue:59
+#: src/views/upstream/UpstreamList.vue:68
 msgid "Servers"
 msgstr "伺服器"
 
@@ -13475,7 +13693,7 @@ msgid "One directive per line, for example keepalive_timeout or keepalive_reques
 msgstr "每行一條指令，例如 keepalive_timeout 或 keepalive_requests。"
 
 #: src/views/upstream/components/UpstreamEditor.vue:379
-#: src/views/upstream/UpstreamList.vue:59
+#: src/views/upstream/UpstreamList.vue:60
 msgid "Referenced By"
 msgstr "被引用"
 
@@ -13517,7 +13735,7 @@ msgstr "直接"
 msgid "Health Status"
 msgstr "健康狀態"
 
-#: src/views/upstream/SocketList.vue:47 src/views/upstream/UpstreamList.vue:152
+#: src/views/upstream/SocketList.vue:47 src/views/upstream/UpstreamList.vue:166
 msgid "No Data"
 msgstr "無資料"
 
@@ -13535,112 +13753,110 @@ msgid ""
 "preferences."
 msgstr "各目標的選擇會保留。可在健康檢查偏好設定中恢復探測。"
 
-#: src/views/upstream/UpstreamList.vue:39
+#: src/views/upstream/UpstreamList.vue:40
 msgid "Round Robin"
 msgstr "輪詢"
 
-#: src/views/upstream/UpstreamList.vue:40
+#: src/views/upstream/UpstreamList.vue:41
 msgid "Least Connections"
 msgstr "最少連接"
 
-#: src/views/upstream/UpstreamList.vue:41
+#: src/views/upstream/UpstreamList.vue:42
 msgid "IP Hash"
 msgstr "IP 雜湊"
 
-#: src/views/upstream/UpstreamList.vue:42
+#: src/views/upstream/UpstreamList.vue:43
 msgid "Hash"
 msgstr "雜湊"
 
-#: src/views/upstream/UpstreamList.vue:43
+#: src/views/upstream/UpstreamList.vue:44
 msgid "Random"
 msgstr "隨機"
 
-#: src/views/upstream/UpstreamList.vue:57
+#: src/views/upstream/UpstreamList.vue:58
 msgid "Load Balancing"
 msgstr "負載平衡"
 
-#: src/views/upstream/UpstreamList.vue:68
+#: src/views/upstream/UpstreamList.vue:69
 msgid "Defined In"
 msgstr "定義於"
 
-#: src/views/upstream/UpstreamList.vue:96
+#: src/views/upstream/UpstreamList.vue:97
 msgid "Matched upstreams: %{groups}, servers: %{servers}"
 msgstr "匹配的 upstream：%{groups}，伺服器：%{servers}"
 
-#: src/views/upstream/UpstreamList.vue:168
-msgid "Upstream Group"
-msgstr "上游群組"
-
-#: src/views/upstream/UpstreamList.vue:247
+#: src/views/upstream/UpstreamList.vue:261
 msgid "Server %{address} enabled"
 msgstr "伺服器 %{address} 已啟用"
 
-#: src/views/upstream/UpstreamList.vue:248
+#: src/views/upstream/UpstreamList.vue:262
 msgid "Server %{address} disabled"
 msgstr "伺服器 %{address} 已停用"
 
-#: src/views/upstream/UpstreamList.vue:263
+#: src/views/upstream/UpstreamList.vue:277
 msgid "Disable the last active server of %{name}?"
 msgstr "停用 %{name} 的最後一個活躍伺服器？"
 
-#: src/views/upstream/UpstreamList.vue:264
+#: src/views/upstream/UpstreamList.vue:278
 msgid ""
 "No other primary server of this upstream is enabled. Requests will fail "
 "unless a backup server takes over."
 msgstr "該上游群組沒有其他啟用的主要伺服器。除非備用伺服器接管，否則請求將會失敗。"
 
-#: src/views/upstream/UpstreamList.vue:285
+#: src/views/upstream/UpstreamList.vue:299
 msgid "Upstream %{name} is still in use"
 msgstr "Upstream %{name} 仍在使用中"
 
-#: src/views/upstream/UpstreamList.vue:287
+#: src/views/upstream/UpstreamList.vue:301
 msgid "Point these configurations at another upstream before deleting it:"
 msgstr "請先將這些設定指向其他 upstream，然後再刪除："
 
-#: src/views/upstream/UpstreamList.vue:296
+#: src/views/upstream/UpstreamList.vue:310
 msgid "Delete upstream %{name}?"
 msgstr "刪除 upstream %{name}？"
 
-#: src/views/upstream/UpstreamList.vue:297
+#: src/views/upstream/UpstreamList.vue:311
 msgid "%{path} will be removed and Nginx reloaded."
 msgstr "%{path} 將被刪除，Nginx 將重新載入。"
 
-#: src/views/upstream/UpstreamList.vue:303
+#: src/views/upstream/UpstreamList.vue:317
 msgid "Upstream %{name} deleted"
 msgstr "Upstream %{name} 已刪除"
 
-#: src/views/upstream/UpstreamList.vue:419
+#: src/views/upstream/UpstreamList.vue:442
 msgid ""
 "An upstream group shares its servers and load balancing method across "
 "sites. Choose it as the proxy target when setting up a site; later changes "
 "here apply to every site that uses it."
 msgstr "上游群組在各站點之間共享其伺服器和負載平衡方式。在設定站點時可選擇它作為代理目標；此處的後續變更將套用至所有使用它的站點。"
 
-#: src/views/upstream/UpstreamList.vue:421
+#: src/views/upstream/UpstreamList.vue:444
 msgid "Files are stored in %{dir}."
 msgstr "檔案儲存在 %{dir} 中。"
 
-#: src/views/upstream/UpstreamList.vue:435
+#: src/views/upstream/UpstreamList.vue:458
 msgid "Search by name or IP:port"
 msgstr "按名稱或 IP:port 搜尋"
 
-#: src/views/upstream/UpstreamList.vue:436
+#: src/views/upstream/UpstreamList.vue:459
 msgid "Search upstreams by name or server address"
 msgstr "按名稱或伺服器位址搜尋上游"
 
-#: src/views/upstream/UpstreamList.vue:456
+#: src/views/upstream/UpstreamList.vue:479
 msgid "No upstream group matches the search"
 msgstr "沒有符合搜尋條件的上游群組"
 
-#: src/views/upstream/UpstreamList.vue:533
+#: src/views/upstream/UpstreamList.vue:556
 msgid "Upstreams Defined in Other Files"
 msgstr "其他檔案中定義的 Upstream"
 
-#: src/views/upstream/UpstreamList.vue:536
+#: src/views/upstream/UpstreamList.vue:559
 msgid ""
 "These upstream blocks live inside site or other configuration files. Edit "
-"their settings in their own file; servers can be switched on and off here."
-msgstr "這些 upstream 個區塊位於站台或其他設定檔中。請在對應的檔案中修改其設定；伺服器可以在這裡啟用或停用。"
+"their settings in their own file; servers can be switched on and off here. "
+"A block inside a site can be converted to a shared group that other sites "
+"can use too."
+msgstr "這些 upstream 區塊位於站點或其他設定檔內。請在各自的檔案中編輯其設定；伺服器可以在此處啟停。站點內的區塊可以轉換為共享組，供其他站點使用。"
 
 #: src/views/user/userColumns.tsx:30
 msgid "2FA"
@@ -13845,9 +14061,6 @@ msgstr "備註"
 
 #~ msgid "DingTalk"
 #~ msgstr "釘釘"
-
-#~ msgid "Message Type"
-#~ msgstr "訊息類型"
 
 #~ msgid ""
 #~ "The current IndexCustomMMDB setting is read-only here. Make sure custom "
