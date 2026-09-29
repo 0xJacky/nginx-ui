@@ -58,6 +58,13 @@ const isSelfSigned = computed(() => {
   return data.value.auto_cert === AutoCertState.SelfSigned
 })
 
+const isGeneral = computed(() => {
+  if (typeof data.value.auto_cert !== 'number')
+    return false
+
+  return !isManaged.value && !isSelfSigned.value
+})
+
 const selfSignedPayload = ref<SelfSignedCertPayload>()
 
 watch(data, value => {
@@ -355,6 +362,9 @@ onBeforeUnmount(() => {
       <ATag v-if="isManaged" color="success" class="managed-cert-tag">
         {{ $gettext('This certificate is managed by Nginx UI') }}
       </ATag>
+      <ATag v-else-if="isGeneral" color="purple" variant="filled" class="general-cert-tag">
+        {{ $gettext('General Certificate') }} · {{ $gettext('This certificate is not managed by Nginx UI') }}
+      </ATag>
     </template>
 
     <ARow :gutter="[16, 16]" class="main-top-row">
@@ -486,6 +496,12 @@ onBeforeUnmount(() => {
 .managed-cert-tag {
   font-size: 16px;
   line-height: 1.2;
+}
+
+.general-cert-tag {
+  font-size: 16px;
+  line-height: 1.2;
+  border: none;
 }
 
 .content-editor-bottom {
