@@ -152,7 +152,10 @@ func testHost(caller *fakeCaller) *fakeHost {
 				{Key: "CF_DNS_API_TOKEN", Label: "API token", Group: "credential", Secret: true},
 				{Key: "CLOUDFLARE_TTL", Label: "TXT record TTL", Group: "setting", Default: "120", Unit: "seconds"},
 			},
-			Methods: []protocol.DNS01ProviderMethod{{Name: "API token", Recommended: true, Fields: []string{"CF_DNS_API_TOKEN"}}},
+			Methods: []protocol.DNS01ProviderMethod{
+				{Name: "API token", Recommended: true, Fields: []string{"CF_DNS_API_TOKEN"}},
+				{Name: "Instance role", Values: map[string]string{"CF_AUTH_MODE": "role"}},
+			},
 		},
 	}
 	return &fakeHost{
@@ -192,7 +195,7 @@ func TestProvidersMapsTheManifest(t *testing.T) {
 	if p.Links == nil || p.Links.API != "https://api.cloudflare.com/" {
 		t.Fatalf("links = %#v, want the manifest links", p.Links)
 	}
-	if p.Form == nil || len(p.Form.Fields) != 2 || len(p.Form.Methods) != 1 {
+	if p.Form == nil || len(p.Form.Fields) != 2 || len(p.Form.Methods) != 2 {
 		t.Fatalf("form = %#v, want the manifest form", p.Form)
 	}
 	want := dns.FormField{Key: "CLOUDFLARE_TTL", Label: "TXT record TTL", Group: "setting", Default: "120", Unit: "seconds"}
@@ -201,6 +204,9 @@ func TestProvidersMapsTheManifest(t *testing.T) {
 	}
 	if m := p.Form.Methods[0]; m.Name != "API token" || !m.Recommended || len(m.Fields) != 1 {
 		t.Fatalf("form method = %#v", m)
+	}
+	if m := p.Form.Methods[1]; len(m.Fields) != 0 || m.Values["CF_AUTH_MODE"] != "role" {
+		t.Fatalf("form method = %#v, want the fixed values", m)
 	}
 }
 

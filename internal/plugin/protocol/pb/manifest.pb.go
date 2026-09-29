@@ -1196,8 +1196,10 @@ type DNS01ProviderMethod struct {
 	// Plain English name, a gettext msgid.
 	Name        string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Recommended bool   `protobuf:"varint,2,opt,name=recommended,proto3" json:"recommended,omitempty"`
-	// Credential field keys this method uses.
-	Fields        []string `protobuf:"bytes,3,rep,name=fields,proto3" json:"fields,omitempty"`
+	// Credential field keys this method uses. May be empty.
+	Fields []string `protobuf:"bytes,3,rep,name=fields,proto3" json:"fields,omitempty"`
+	// Fixed config values the host stores while this method is chosen.
+	Values        map[string]string `protobuf:"bytes,4,rep,name=values,proto3" json:"values,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1249,6 +1251,13 @@ func (x *DNS01ProviderMethod) GetRecommended() bool {
 func (x *DNS01ProviderMethod) GetFields() []string {
 	if x != nil {
 		return x.Fields
+	}
+	return nil
+}
+
+func (x *DNS01ProviderMethod) GetValues() map[string]string {
+	if x != nil {
+		return x.Values
 	}
 	return nil
 }
@@ -2593,11 +2602,15 @@ const file_nginxui_plugin_v1_manifest_proto_rawDesc = "" +
 	"\x06secret\x18\x06 \x01(\bR\x06secret\x12\x18\n" +
 	"\adefault\x18\a \x01(\tR\adefault\x12\x12\n" +
 	"\x04unit\x18\b \x01(\tR\x04unit\x12\x12\n" +
-	"\x04link\x18\t \x01(\tR\x04link\"c\n" +
+	"\x04link\x18\t \x01(\tR\x04link\"\xea\x01\n" +
 	"\x13DNS01ProviderMethod\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vrecommended\x18\x02 \x01(\bR\vrecommended\x12\x16\n" +
-	"\x06fields\x18\x03 \x03(\tR\x06fields\"&\n" +
+	"\x06fields\x18\x03 \x03(\tR\x06fields\x12J\n" +
+	"\x06values\x18\x04 \x03(\v22.nginxui.plugin.v1.DNS01ProviderMethod.ValuesEntryR\x06values\x1a9\n" +
+	"\vValuesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"&\n" +
 	"\fManifestHTTP\x12\x16\n" +
 	"\x06listen\x18\x01 \x01(\tR\x06listen\"N\n" +
 	"\x0eManifestNotify\x12<\n" +
@@ -2685,7 +2698,7 @@ func file_nginxui_plugin_v1_manifest_proto_rawDescGZIP() []byte {
 	return file_nginxui_plugin_v1_manifest_proto_rawDescData
 }
 
-var file_nginxui_plugin_v1_manifest_proto_msgTypes = make([]protoimpl.MessageInfo, 40)
+var file_nginxui_plugin_v1_manifest_proto_msgTypes = make([]protoimpl.MessageInfo, 41)
 var file_nginxui_plugin_v1_manifest_proto_goTypes = []any{
 	(*Manifest)(nil),            // 0: nginxui.plugin.v1.Manifest
 	(*ManifestI18N)(nil),        // 1: nginxui.plugin.v1.ManifestI18n
@@ -2727,8 +2740,9 @@ var file_nginxui_plugin_v1_manifest_proto_goTypes = []any{
 	nil,                         // 37: nginxui.plugin.v1.ManifestServer.ExecutablesEntry
 	nil,                         // 38: nginxui.plugin.v1.ManifestWebapp.SharedEntry
 	nil,                         // 39: nginxui.plugin.v1.ManifestPage.TitleEntry
-	(*structpb.Struct)(nil),     // 40: google.protobuf.Struct
-	(*structpb.Value)(nil),      // 41: google.protobuf.Value
+	nil,                         // 40: nginxui.plugin.v1.DNS01ProviderMethod.ValuesEntry
+	(*structpb.Struct)(nil),     // 41: google.protobuf.Struct
+	(*structpb.Value)(nil),      // 42: google.protobuf.Value
 }
 var file_nginxui_plugin_v1_manifest_proto_depIdxs = []int32{
 	2,  // 0: nginxui.plugin.v1.Manifest.server:type_name -> nginxui.plugin.v1.ManifestServer
@@ -2758,30 +2772,31 @@ var file_nginxui_plugin_v1_manifest_proto_depIdxs = []int32{
 	12, // 24: nginxui.plugin.v1.DNS01Provider.form:type_name -> nginxui.plugin.v1.DNS01ProviderForm
 	13, // 25: nginxui.plugin.v1.DNS01ProviderForm.fields:type_name -> nginxui.plugin.v1.DNS01ProviderField
 	14, // 26: nginxui.plugin.v1.DNS01ProviderForm.methods:type_name -> nginxui.plugin.v1.DNS01ProviderMethod
-	17, // 27: nginxui.plugin.v1.ManifestNotify.channels:type_name -> nginxui.plugin.v1.NotifyChannel
-	29, // 28: nginxui.plugin.v1.NotifyChannel.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	19, // 29: nginxui.plugin.v1.ManifestProbe.kinds:type_name -> nginxui.plugin.v1.ProbeKind
-	29, // 30: nginxui.plugin.v1.ProbeKind.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	21, // 31: nginxui.plugin.v1.ManifestStorage.backends:type_name -> nginxui.plugin.v1.StorageBackend
-	29, // 32: nginxui.plugin.v1.StorageBackend.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	23, // 33: nginxui.plugin.v1.ManifestDeploy.targets:type_name -> nginxui.plugin.v1.DeployTarget
-	29, // 34: nginxui.plugin.v1.DeployTarget.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	25, // 35: nginxui.plugin.v1.ManifestBlocklist.sources:type_name -> nginxui.plugin.v1.BlocklistSource
-	29, // 36: nginxui.plugin.v1.BlocklistSource.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	27, // 37: nginxui.plugin.v1.ManifestDiscovery.providers:type_name -> nginxui.plugin.v1.DiscoveryProvider
-	29, // 38: nginxui.plugin.v1.DiscoveryProvider.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	30, // 39: nginxui.plugin.v1.ConfigurationSchema.fields:type_name -> nginxui.plugin.v1.ConfigurationField
-	32, // 40: nginxui.plugin.v1.ManifestMCP.tools:type_name -> nginxui.plugin.v1.MCPTool
-	40, // 41: nginxui.plugin.v1.MCPTool.input_schema:type_name -> google.protobuf.Struct
-	34, // 42: nginxui.plugin.v1.SettingsSchema.settings:type_name -> nginxui.plugin.v1.SettingsField
-	41, // 43: nginxui.plugin.v1.SettingsField.default:type_name -> google.protobuf.Value
-	35, // 44: nginxui.plugin.v1.SettingsField.options:type_name -> nginxui.plugin.v1.SettingsOption
-	1,  // 45: nginxui.plugin.v1.Manifest.I18nEntry.value:type_name -> nginxui.plugin.v1.ManifestI18n
-	46, // [46:46] is the sub-list for method output_type
-	46, // [46:46] is the sub-list for method input_type
-	46, // [46:46] is the sub-list for extension type_name
-	46, // [46:46] is the sub-list for extension extendee
-	0,  // [0:46] is the sub-list for field type_name
+	40, // 27: nginxui.plugin.v1.DNS01ProviderMethod.values:type_name -> nginxui.plugin.v1.DNS01ProviderMethod.ValuesEntry
+	17, // 28: nginxui.plugin.v1.ManifestNotify.channels:type_name -> nginxui.plugin.v1.NotifyChannel
+	29, // 29: nginxui.plugin.v1.NotifyChannel.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	19, // 30: nginxui.plugin.v1.ManifestProbe.kinds:type_name -> nginxui.plugin.v1.ProbeKind
+	29, // 31: nginxui.plugin.v1.ProbeKind.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	21, // 32: nginxui.plugin.v1.ManifestStorage.backends:type_name -> nginxui.plugin.v1.StorageBackend
+	29, // 33: nginxui.plugin.v1.StorageBackend.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	23, // 34: nginxui.plugin.v1.ManifestDeploy.targets:type_name -> nginxui.plugin.v1.DeployTarget
+	29, // 35: nginxui.plugin.v1.DeployTarget.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	25, // 36: nginxui.plugin.v1.ManifestBlocklist.sources:type_name -> nginxui.plugin.v1.BlocklistSource
+	29, // 37: nginxui.plugin.v1.BlocklistSource.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	27, // 38: nginxui.plugin.v1.ManifestDiscovery.providers:type_name -> nginxui.plugin.v1.DiscoveryProvider
+	29, // 39: nginxui.plugin.v1.DiscoveryProvider.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	30, // 40: nginxui.plugin.v1.ConfigurationSchema.fields:type_name -> nginxui.plugin.v1.ConfigurationField
+	32, // 41: nginxui.plugin.v1.ManifestMCP.tools:type_name -> nginxui.plugin.v1.MCPTool
+	41, // 42: nginxui.plugin.v1.MCPTool.input_schema:type_name -> google.protobuf.Struct
+	34, // 43: nginxui.plugin.v1.SettingsSchema.settings:type_name -> nginxui.plugin.v1.SettingsField
+	42, // 44: nginxui.plugin.v1.SettingsField.default:type_name -> google.protobuf.Value
+	35, // 45: nginxui.plugin.v1.SettingsField.options:type_name -> nginxui.plugin.v1.SettingsOption
+	1,  // 46: nginxui.plugin.v1.Manifest.I18nEntry.value:type_name -> nginxui.plugin.v1.ManifestI18n
+	47, // [47:47] is the sub-list for method output_type
+	47, // [47:47] is the sub-list for method input_type
+	47, // [47:47] is the sub-list for extension type_name
+	47, // [47:47] is the sub-list for extension extendee
+	0,  // [0:47] is the sub-list for field type_name
 }
 
 func init() { file_nginxui_plugin_v1_manifest_proto_init() }
@@ -2795,7 +2810,7 @@ func file_nginxui_plugin_v1_manifest_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nginxui_plugin_v1_manifest_proto_rawDesc), len(file_nginxui_plugin_v1_manifest_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   40,
+			NumMessages:   41,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

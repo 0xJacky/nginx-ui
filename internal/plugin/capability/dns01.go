@@ -430,6 +430,7 @@ func toForm(f *protocol.DNS01ProviderForm) *dns.Form {
 			Name:        method.Name,
 			Recommended: method.Recommended,
 			Fields:      slices.Clone(method.Fields),
+			Values:      maps.Clone(method.Values),
 		})
 	}
 	return form

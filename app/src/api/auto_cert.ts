@@ -25,11 +25,15 @@ export interface DNSProviderField {
   link?: string
 }
 
-/** One way to sign in, listing the credential keys it uses. */
+/**
+ * One way to sign in, listing the credential keys it uses. `values` are fixed
+ * credentials stored when the method is selected and never shown.
+ */
 export interface DNSProviderMethod {
   name: string
   recommended?: boolean
   fields?: string[]
+  values?: Record<string, string>
 }
 
 /** Structured credential form of a provider. */
