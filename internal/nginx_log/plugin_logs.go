@@ -25,8 +25,7 @@ type PluginLogFile struct {
 	ConfigFile string
 }
 
-// PluginLogFiles lists the log files plugins may read. It reads the registry
-// only, so it works whether or not the indexer runs. Paths outside the log
+// PluginLogFiles lists the log files plugins may read. Paths outside the log
 // viewer whitelist are left out and each path appears once.
 func PluginLogFiles() []PluginLogFile {
 	entries := registryEntriesSnapshot()

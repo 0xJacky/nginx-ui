@@ -45,8 +45,6 @@ export const PATH_PARAMS_BY_URL: Record<string, string[]> = {
   '/llm_messages': ['path'],
   '/llm_sessions': ['path'],
   '/nginx_logs': ['path'],
-  '/nginx_log/entries': ['path'],
-  '/nginx_log/preflight': ['log_path'],
 }
 
 /** Normalize a request URL to the key shape used by PATH_PARAMS_BY_URL. */

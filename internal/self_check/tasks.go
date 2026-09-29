@@ -181,18 +181,6 @@ func Init() {
 		})
 	}
 
-	if settings.NginxLogSettings.IndexingEnabled {
-		selfCheckTasks = append(selfCheckTasks, &Task{
-			Key:  "GeoLite-DB",
-			Name: translation.C("GeoLite2 database available"),
-			Description: translation.C("Check if the GeoLite2 database is available when log indexing is enabled. " +
-				"The GeoLite2 database is required for geographic IP analysis in log indexing. " +
-				"You can download it from the Preference page or manually place GeoLite2-City.mmdb in the same directory as app.ini"),
-			CheckFunc: CheckGeoLiteDB,
-			FixFunc:   FixGeoLiteDB,
-		})
-	}
-
 	for _, task := range selfCheckTasks {
 		selfCheckTaskMap.Set(task.Key, task)
 	}

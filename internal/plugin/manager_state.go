@@ -109,6 +109,9 @@ func (m *Manager) ensureSupervisor(item *entry) (*Supervisor, error) {
 	if err = os.MkdirAll(dataDir, 0o700); err != nil {
 		return nil, err
 	}
+	// The settings below are read after the handoff of the old log analytics
+	// data, which may add to them.
+	m.prepareLegacyLogAnalytics(item)
 
 	id := item.id
 	permissions := slices.Clone(manifest.Permissions)

@@ -55,12 +55,5 @@ func scanForLogDirectives(configPath string, content []byte) error {
 		}
 	}
 
-	// The removal above also drops a default log path when this config file
-	// declares it, so put the defaults back. Registering them last keeps the
-	// default marker on the shared path, which is what protects it from the next
-	// removal. This only replays the already resolved paths; resolving them
-	// again is the post-scan callback's job.
-	reapplyDefaultLogPaths()
-
 	return nil
 }

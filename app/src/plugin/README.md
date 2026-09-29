@@ -91,7 +91,7 @@ registered.
 | `certificate.issue.footer` | Bottom of the certificate issue form | `{ options }` |
 | `plugin.settings:{plugin_id}` | Plugin settings drawer | `{ settings }` |
 | `sidebar.footer` | Bottom of the sidebar | none |
-| `nginx_log.view:{key}` | An extra view mode of the log page, listed after the built-in modes with the registration `label` and selected with `?view={key}`. A key equal to a built-in mode (`raw`, `structured`, `dashboard`) is ignored. `when(ctx)` decides whether the mode is offered for a file. The page draws the log file picker and the view switch in a header row above the view, so a view does not render them itself. | `{ path, type }` |
+| `nginx_log.view:{key}` | A view mode of the log page, listed after the raw view with the registration `label` and selected with `?view={key}`. The key `raw` is ignored. Without a `view` in the link, access logs open the view with the key `structured` when a plugin registers one, error logs open the raw view. With no plugin view the page shows the raw view only and no switch. `when(ctx)` decides whether the mode is offered for a file. The page draws the log file picker and the view switch in a header row above the view, so a view does not render them itself. | `{ path, type }` |
 | `nginx_log.list.toolbar` | Actions area above the log list | `{ type }` |
 | `nginx_log.list.column:{key}` | One extra column of the log list, titled with `label`, placed after the host columns and before the actions, ordered by `order`. `when(ctx)` is called once per list with `{ type }` and decides whether the column exists at all, header and cells. | `{ row }` |
 | `nginx_log.list.row.actions` | Per row actions of the log list | `{ row }` |
