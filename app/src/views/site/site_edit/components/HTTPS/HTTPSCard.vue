@@ -15,8 +15,9 @@ import {
   PlusOutlined,
   SafetyCertificateOutlined,
 } from '@antdv-next/icons'
-import { breakpointsAntDesign, useBreakpoints, useLocalStorage } from '@vueuse/core'
+import { breakpointsAntDesign, useBreakpoints, useLocalStorage, watchDebounced } from '@vueuse/core'
 import dayjs from 'dayjs'
+import certApi from '@/api/cert'
 import DNSChallenge from '@/components/AutoCertForm/DNSChallenge.vue'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
 import { isIPAddress, splitCertificateIdentifiers } from '@/utils/certificate'
@@ -196,6 +197,8 @@ function confirmSkip() {
 const selectedCertificate = ref<Cert>()
 const pickerOpen = ref(false)
 const pickerRows = ref<Cert[]>([])
+const recommendationLocked = ref(false)
+const recommendedCertificateId = ref<number>()
 
 function openPicker() {
   pickerRows.value = selectedCertificate.value ? [selectedCertificate.value] : []
@@ -203,10 +206,66 @@ function openPicker() {
 }
 
 function confirmPicker() {
-  if (pickerRows.value.length)
+  if (pickerRows.value.length) {
     selectedCertificate.value = pickerRows.value[0]
+    // An explicit choice is never replaced by a recommendation.
+    recommendationLocked.value = true
+  }
   pickerOpen.value = false
 }
+
+// ---- Recommended certificate --------------------------------------------
+// While the user has not picked a method or a certificate themselves, the card
+// asks the backend for the certificate in the manager that covers every domain
+// best and starts on "Existing certificate" with it selected, which saves the
+// picker step. The backend applies the coverage rule of the run itself.
+
+let recommendationRequest = 0
+
+function onMethodChange() {
+  recommendationLocked.value = true
+}
+
+function canRecommend() {
+  return props.existingCertificate && !recommendationLocked.value && !running.value && phase.value === 'idle'
+}
+
+async function refreshRecommendation() {
+  if (!canRecommend())
+    return
+
+  const request = ++recommendationRequest
+  let best: Cert | null = null
+  if (domainList.value.length) {
+    try {
+      best = (await certApi.recommend(domainList.value)).certificate
+    }
+    catch {
+      // The recommendation is a convenience; the picker still works without it.
+      return
+    }
+  }
+  // A later domain change or a choice of the user wins over this answer.
+  if (request !== recommendationRequest || !canRecommend())
+    return
+
+  if (best) {
+    selectedCertificate.value = best
+    recommendedCertificateId.value = best.id
+    method.value = 'existing'
+  }
+  else if (recommendedCertificateId.value !== undefined) {
+    // The domains changed and the recommendation no longer fits.
+    selectedCertificate.value = undefined
+    recommendedCertificateId.value = undefined
+    method.value = 'http01'
+  }
+}
+
+const isRecommendedCertificate = computed(() => selectedCertificate.value !== undefined
+  && selectedCertificate.value.id === recommendedCertificateId.value)
+
+watchDebounced(domainList, refreshRecommendation, { debounce: 300, deep: true, immediate: true })
 
 const certificateName = computed(() => {
   const c = selectedCertificate.value
@@ -549,6 +608,7 @@ defineExpose({
             :disabled="formLocked"
             :vertical="isNarrow"
             :block="isNarrow"
+            @change="onMethodChange"
           />
         </div>
         <p class="https-muted mb-0 mt-2 text-sm">
@@ -613,9 +673,16 @@ defineExpose({
           <div v-if="selectedCertificate" class="https-certificate">
             <AFlex justify="space-between" align="flex-start" gap="small">
               <div class="min-w-0">
-                <div class="break-words font-medium">
-                  {{ certificateName }}
-                </div>
+                <AFlex align="center" gap="small" wrap>
+                  <span class="break-words font-medium">{{ certificateName }}</span>
+                  <ATag
+                    v-if="isRecommendedCertificate"
+                    class="m-0"
+                    color="success"
+                  >
+                    {{ $gettext('Recommended') }}
+                  </ATag>
+                </AFlex>
                 <div
                   v-if="certificateExpiry"
                   class="text-sm"

@@ -148,6 +148,10 @@ export function toSelfSignedPayload(c: Cert): SelfSignedCertPayload {
   }
 }
 
+export interface RecommendCertResponse {
+  certificate: Cert | null
+}
+
 const cert = extendCurdApi(useCurdApi<Cert>('/certs'), {
   import_existing(payload: ImportExistingCertPayload): Promise<Cert> {
     return http.post('/cert_import', payload)
@@ -163,6 +167,10 @@ const cert = extendCurdApi(useCurdApi<Cert>('/certs'), {
   },
   download_file(id: number, payload: CertificateDownloadPayload): Promise<Blob> {
     return http.post(`/certs/${id}/download`, payload, { responseType: 'blob' })
+  },
+  // Picks the certificate that covers every domain best; null when none does.
+  recommend(domains: string[]): Promise<RecommendCertResponse> {
+    return http.post('/cert_recommendation', { domains })
   },
   parse_archive(file: File): Promise<CertificateArchive> {
     const formData = new FormData()
