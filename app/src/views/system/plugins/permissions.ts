@@ -11,24 +11,56 @@ export function describePermission(permission: string): string {
 
   switch (permission) {
     case 'kv':
-      return $gettext('Store and read its own key-value data inside the Nginx UI database.')
+      return $gettext('Keep its own data inside Nginx UI.')
     case 'network':
-      return $gettext('Make outbound network requests to the hosts declared in its manifest.')
+      return $gettext('Connect to other servers over the network.')
     case 'cron':
-      return $gettext('Run scheduled tasks on the schedules declared in its manifest.')
+      return $gettext('Run tasks on a regular schedule.')
     case 'notify':
       return $gettext('Send notifications through the Nginx UI notification channels.')
     case 'metrics.read':
       return $gettext('Read CPU, memory, network and Nginx status metrics of this node.')
     case 'core_api':
-      return $gettext('Call the Nginx UI management API with your permissions.')
+      return $gettext('Manage Nginx UI with your permissions.')
     case 'mcp':
-      return $gettext('Offer its tools to AI assistants connected to Nginx UI through MCP, which can then run them.')
+      return $gettext('Offer actions that AI assistants connected to Nginx UI can run.')
     case 'cert.deploy':
-      return $gettext('Receive certificates and their private keys in order to push them to external targets.')
+      return $gettext('Receive issued certificates, including the parts that must stay secret, to push them to other services.')
     case 'log.read':
-      return $gettext('Receive every parsed nginx access log line while enabled, including client addresses and requested URLs.')
+      return $gettext('Receive every access log entry while it is on, including visitor addresses and requested URLs.')
     default:
       return $gettext('Unknown permission. Only grant it if you trust the plugin author.')
+  }
+}
+
+/** Short name of a permission, never the raw permission id. */
+export function permissionLabel(permission: string): string {
+  if (permission.startsWith('credentials.read:')) {
+    return $gettext('Stored %{kind} credentials', {
+      kind: permission.slice('credentials.read:'.length) || $gettext('unknown'),
+    })
+  }
+
+  switch (permission) {
+    case 'kv':
+      return $gettext('Own data storage')
+    case 'network':
+      return $gettext('Network')
+    case 'cron':
+      return $gettext('Scheduled tasks')
+    case 'notify':
+      return $gettext('Notifications')
+    case 'metrics.read':
+      return $gettext('Server metrics')
+    case 'core_api':
+      return $gettext('Nginx UI management')
+    case 'mcp':
+      return $gettext('AI assistant tools')
+    case 'cert.deploy':
+      return $gettext('Certificates')
+    case 'log.read':
+      return $gettext('Access logs')
+    default:
+      return $gettext('Unknown permission')
   }
 }

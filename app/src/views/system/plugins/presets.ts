@@ -1,9 +1,12 @@
 import type { BadgeProps } from 'antdv-next'
 import type { PluginInfo, PluginStatus } from '@/api/plugin'
+import { capabilityLabel } from './capabilities'
 
 export interface StatusPreset {
   badge: BadgeProps['status']
   label: () => string
+  /** Short explanation shown on hover, if the label needs one. */
+  hint?: () => string
 }
 
 /** Badge colour and wording of every status the backend reports. */
@@ -21,8 +24,13 @@ export const statusPresets: Record<PluginStatus, StatusPreset> = {
 export function statusOf(plugin: PluginInfo): StatusPreset {
   // An on demand plugin is stopped most of the time by design, so its idle
   // state must not read like a problem.
-  if (plugin.enabled && plugin.lifecycle === 'on_demand' && plugin.status === 'stopped')
-    return { badge: 'default', label: () => $gettext('Idle') }
+  if (plugin.enabled && plugin.lifecycle === 'on_demand' && plugin.status === 'stopped') {
+    return {
+      badge: 'default',
+      label: () => $gettext('Standby'),
+      hint: () => $gettext('Starts automatically when needed'),
+    }
+  }
 
   return statusPresets[plugin.status] ?? { badge: 'default', label: () => plugin.status }
 }
@@ -39,10 +47,13 @@ export function isToggleDisabled(plugin: PluginInfo) {
   return plugin.status === 'incompatible' || plugin.status === 'missing'
 }
 
-export type InstalledFilter = 'all' | 'enabled' | 'disabled' | 'attention'
+export type InstalledFilter = 'all' | 'enabled' | 'disabled' | 'attention' | 'updates'
 
-export function matchesFilter(plugin: PluginInfo, filter: InstalledFilter) {
+/** `updateIds` holds the plugins with a newer release, for the updates filter. */
+export function matchesFilter(plugin: PluginInfo, filter: InstalledFilter, updateIds: ReadonlySet<string> = new Set()) {
   switch (filter) {
+    case 'updates':
+      return updateIds.has(plugin.id)
     case 'enabled':
       return plugin.enabled
     case 'disabled':
@@ -70,6 +81,7 @@ export function matchesKeyword(plugin: PluginInfo, keyword: string) {
     ...Object.values(plugin.name_i18n ?? {}),
     ...Object.values(plugin.description_i18n ?? {}),
     ...(plugin.capabilities ?? []),
+    ...(plugin.capabilities ?? []).map(capabilityLabel),
   ]
   return haystack.some(value => value.toLowerCase().includes(needle))
 }
