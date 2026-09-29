@@ -9,12 +9,14 @@ import (
 	"net"
 	"net/http"
 	"net/http/httputil"
+	"net/url"
 	"path/filepath"
 	"runtime"
 	"slices"
 	"strconv"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/plugin"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
@@ -116,6 +118,7 @@ func serveHTTPUnix(c *gin.Context, h HTTPHost, id, subPath string) {
 	}
 
 	user := currentUser(c)
+	upgrade := middleware.IsWebSocketUpgrade(c.Request)
 	proxy := &httputil.ReverseProxy{
 		Transport:     &http.Transport{DialContext: dial},
 		FlushInterval: -1, // stream every write immediately.
@@ -124,6 +127,9 @@ func serveHTTPUnix(c *gin.Context, h HTTPHost, id, subPath string) {
 			req.URL.Host = "plugin"
 			req.URL.Path = subPath
 			req.URL.RawPath = ""
+			if upgrade {
+				stripHandshakeCredentials(req.URL)
+			}
 			req.Header.Del("Authorization")
 			req.Header.Del("Cookie")
 			req.Header.Set(headerPluginUser, user.Name)
@@ -134,6 +140,15 @@ func serveHTTPUnix(c *gin.Context, h HTTPHost, id, subPath string) {
 		},
 	}
 	proxy.ServeHTTP(c.Writer, c.Request)
+}
+
+// stripHandshakeCredentials removes the query parameters a browser WebSocket
+// uses to authenticate with the host, so the plugin never sees a session token.
+func stripHandshakeCredentials(u *url.URL) {
+	values := u.Query()
+	values.Del("token")
+	values.Del("x_node_id")
+	u.RawQuery = values.Encode()
 }
 
 // dialerFor resolves how to reach the plugin's http capability: a unix socket

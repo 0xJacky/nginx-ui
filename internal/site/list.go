@@ -7,6 +7,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/access_list"
 	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -43,7 +44,7 @@ func GetSiteConfigs(ctx context.Context, options *ListOptions, sites []*model.Si
 			EnabledDir:   "sites-enabled",
 		},
 		StatusMapBuilder: config.SiteStatusMapBuilder(MaintenanceSuffix),
-		ConfigBuilder:    buildConfig,
+		ConfigBuilder:    newConfigBuilder(),
 		FilterMatcher:    config.DefaultFilterMatcher,
 	}
 
@@ -152,8 +153,21 @@ func applyRemoteStatus(configs []config.Config, sites []*model.Site, statusFilte
 	return filtered
 }
 
+// newConfigBuilder returns the builder of one list call. The nginx default
+// log paths are resolved once for the whole list instead of once per site.
+func newConfigBuilder() config.Builder {
+	defaults := &defaultLogResolver{}
+	return func(fileName string, fileInfo os.FileInfo, status config.Status, index uint64, namespaceID uint64, namespace *model.Namespace) config.Config {
+		return buildSiteConfig(defaults, fileName, fileInfo, status, index, namespaceID, namespace)
+	}
+}
+
 // buildConfig creates a config.Config from file information with site-specific data
 func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, index uint64, namespaceID uint64, namespace *model.Namespace) config.Config {
+	return buildSiteConfig(&defaultLogResolver{}, fileName, fileInfo, status, index, namespaceID, namespace)
+}
+
+func buildSiteConfig(defaults *defaultLogResolver, fileName string, fileInfo os.FileInfo, status config.Status, index uint64, namespaceID uint64, namespace *model.Namespace) config.Config {
 	indexedSite := GetIndexedSite(fileName)
 
 	// Convert proxy targets, expanding upstream references
@@ -183,6 +197,13 @@ func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, in
 
 	accessMode, accessList := access_list.Summarize(indexedSite.Content)
 
+	// The default log only matters for a kind the site declares no directive for
+	var defaultAccessLog, defaultErrorLog string
+	if !hasLogDirective(indexedSite.LogDirectives, "access") || !hasLogDirective(indexedSite.LogDirectives, "error") {
+		defaultAccessLog, defaultErrorLog = defaults.get()
+	}
+	logPaths := resolveLogPaths(indexedSite.LogDirectives, defaultAccessLog, defaultErrorLog, utils.IsValidLogPath)
+
 	return config.Config{
 		AccessMode:   accessMode,
 		AccessList:   accessList,
@@ -196,5 +217,10 @@ func buildConfig(fileName string, fileInfo os.FileInfo, status config.Status, in
 		Namespace:    namespace,
 		Urls:         indexedSite.Urls,
 		ProxyTargets: proxyTargets,
+
+		AccessLogPath:      logPaths.AccessPath,
+		AccessLogInherited: logPaths.AccessInherited,
+		ErrorLogPath:       logPaths.ErrorPath,
+		ErrorLogInherited:  logPaths.ErrorInherited,
 	}
 }

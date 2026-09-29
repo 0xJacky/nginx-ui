@@ -115,6 +115,10 @@ func InitRouter() {
 			llm.InitLocalWebSocketRouter(localWs)
 		}
 
+		// The plugin http route serves both plain requests and WebSocket
+		// upgrades, so it picks its own authentication and proxy chain.
+		pluginapi.InitHTTPRouter(root)
+
 		// Authorization required and not websocket request
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
 		{
@@ -145,7 +149,6 @@ func InitRouter() {
 			pluginapi.InitRouter(g)
 			pluginapi.InitSyncRouter(g)
 			pluginapi.InitMarketplaceRouter(g)
-			pluginapi.InitHTTPRouter(g)
 			external_notify.InitRouter(g)
 			backup.InitAutoBackupRouter(g)
 			nginxLog.InitRouter(g)

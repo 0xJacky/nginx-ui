@@ -117,17 +117,20 @@ export interface PluginListParams {
 /**
  * Removes what only the browser can apply from the parameters sent to the
  * server: the sort of a plugin column and the selections of plugin filters.
+ * Every plugin column key goes, also one whose column the shown list no longer
+ * has, so a leftover selection never reaches the server.
  */
-export function stripPluginParams<T extends PluginListParams>(params: T, columns: PluginColumnRules[]): T {
-  const keys = new Set(columns.map(column => column.columnKey))
+export function stripPluginParams<T extends PluginListParams>(params: T): T {
   const next: PluginListParams = { ...params }
 
-  if (next.sort_by && keys.has(next.sort_by)) {
+  if (typeof next.sort_by === 'string' && next.sort_by.startsWith(COLUMN_KEY_PREFIX)) {
     delete next.sort_by
     delete next.order
   }
-  for (const key of keys)
-    delete next[key]
+  for (const key of Object.keys(next)) {
+    if (key.startsWith(COLUMN_KEY_PREFIX))
+      delete next[key]
+  }
 
   return next as T
 }
