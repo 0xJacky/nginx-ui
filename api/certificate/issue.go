@@ -9,7 +9,9 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
+	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/gorilla/websocket"
@@ -125,6 +127,8 @@ func IssueCert(c *gin.Context) {
 		return
 	}
 
+	syncIssuedCertificate(certModel.ID)
+
 	if err := wsWriter.WriteJSON(IssueCertResponse{
 		Status:            Success,
 		Message:           translation.C("[Nginx UI] Issued certificate successfully").ToString(),
@@ -147,3 +151,17 @@ var (
 	markCertSuccess  = cert.MarkCertSuccess
 	shortError       = cert.ShortError
 )
+
+// syncIssuedCertificate pushes a freshly issued certificate to the nodes that
+// serve it. A reissue keeps the file paths, so no site configuration changes
+// and no site sync would carry the new files to those nodes.
+func syncIssuedCertificate(id uint64) {
+	issued, err := query.Cert.FirstByID(id)
+	if err != nil {
+		logger.Error(err)
+		return
+	}
+	if err = cert.SyncToRemoteServer(issued); err != nil {
+		notification.Error("Sync Certificate Error", err.Error(), nil)
+	}
+}

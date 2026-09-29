@@ -348,6 +348,15 @@ func SyncCertificate(c *gin.Context) {
 		SSLCertificateKey:     json.SSLCertificateKey,
 	}
 
+	// Every save of a site replicates the certificates it loads, so an
+	// unchanged pair must not cost the node a reload each time.
+	if content.MatchesFiles() {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "ok",
+		})
+		return
+	}
+
 	err = content.WriteFile()
 	if err != nil {
 		cosy.ErrHandler(c, err)

@@ -166,6 +166,7 @@ func WaitForSync() {
 func syncSave(ctx context.Context, name string, content string) {
 	nodes, postSyncAction, namespaceName := getSyncData(ctx, name)
 	clustersync.PushAccessListsToNodes(content, nodes)
+	clustersync.PushCertificatesToNodes(content, nodes)
 
 	wg := &sync.WaitGroup{}
 	wg.Add(len(nodes))

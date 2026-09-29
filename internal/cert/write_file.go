@@ -17,6 +17,26 @@ type Content struct {
 	SSLCertificateKey     string `json:"ssl_certificate_key"`
 }
 
+// MatchesFiles reports whether both files already hold exactly this content.
+func (c *Content) MatchesFiles() bool {
+	if c.SSLCertificatePath == "" || c.SSLCertificateKeyPath == "" ||
+		c.SSLCertificate == "" || c.SSLCertificateKey == "" {
+		return false
+	}
+	nginxConfPath := nginx.GetConfPath()
+	if !helper.IsUnderDirectory(c.SSLCertificatePath, nginxConfPath) ||
+		!helper.IsUnderDirectory(c.SSLCertificateKeyPath, nginxConfPath) {
+		return false
+	}
+
+	certBytes, err := nginx.ReadFile(c.SSLCertificatePath)
+	if err != nil || string(certBytes) != c.SSLCertificate {
+		return false
+	}
+	keyBytes, err := nginx.ReadFile(c.SSLCertificateKeyPath)
+	return err == nil && string(keyBytes) == c.SSLCertificateKey
+}
+
 func (c *Content) WriteFile() (err error) {
 	if c.SSLCertificatePath == "" || c.SSLCertificateKeyPath == "" {
 		return

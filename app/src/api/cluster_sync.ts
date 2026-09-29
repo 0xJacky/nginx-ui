@@ -1,5 +1,5 @@
 /** Content kinds replicated by a cluster synchronization run. */
-export type SyncKind = 'config' | 'site' | 'stream' | 'namespace'
+export type SyncKind = 'config' | 'site' | 'stream' | 'namespace' | 'certificate'
 
 /** Outcome of a single item on a single node. */
 export interface SyncResult {

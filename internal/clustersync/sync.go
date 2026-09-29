@@ -159,6 +159,12 @@ func buildItems(scope Scope, namespace *model.Namespace) ([]item, error) {
 		}
 	}
 
+	// Certificates never travel with a config sync, so they always go ahead
+	// of the sites and streams that load them.
+	if certItem, ok := certificateItem(referencedCertificates(managedFiles)); ok {
+		items = append(items, certItem)
+	}
+
 	// Staging creates the destination files before the resource endpoints see
 	// them, so it is only compatible with overwrite syncs. A non-overwrite sync
 	// must leave the existing per-resource create-or-reject semantics untouched.

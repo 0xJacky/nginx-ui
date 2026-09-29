@@ -13,6 +13,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-acme/lego/v5/certcrypto"
+	"github.com/samber/lo"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -25,36 +26,35 @@ type SyncCertificatePayload struct {
 	KeyType               certcrypto.KeyType `json:"key_type"`
 }
 
+// SyncToRemoteServer pushes the certificate files to the nodes configured on
+// the certificate and to the sync nodes of every site and stream that loads
+// it, so a renewal reaches each node that serves the certificate.
 func SyncToRemoteServer(c *model.Cert) (err error) {
-	if c.SSLCertificatePath == "" || c.SSLCertificateKeyPath == "" || len(c.SyncNodeIds) == 0 {
+	if c.SSLCertificatePath == "" || c.SSLCertificateKeyPath == "" {
+		return
+	}
+
+	nodeIDs := lo.Uniq(append(append([]uint64{}, c.SyncNodeIds...), referencingNodeIDs(c)...))
+	if len(nodeIDs) == 0 {
 		return
 	}
 
 	nginxConfPath := nginx.GetConfPath()
-	if !helper.IsUnderDirectory(c.SSLCertificatePath, nginxConfPath) {
-		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), c.SSLCertificatePath, nginxConfPath)
+	for _, path := range []string{c.SSLCertificatePath, c.SSLCertificateKeyPath} {
+		if helper.IsUnderDirectory(path, nginxConfPath) {
+			continue
+		}
+		// Files outside the configuration directory are managed on each node
+		// by other means. Only an explicit sync target makes that an error.
+		if len(c.SyncNodeIds) == 0 {
+			return nil
+		}
+		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), path, nginxConfPath)
 	}
 
-	if !helper.IsUnderDirectory(c.SSLCertificateKeyPath, nginxConfPath) {
-		return e.NewWithParams(50006, ErrPathIsNotUnderTheNginxConfDir.Error(), c.SSLCertificateKeyPath, nginxConfPath)
-	}
-
-	certBytes, err := nginx.ReadFile(c.SSLCertificatePath)
+	payload, err := newSyncPayload(c.Name, c.SSLCertificatePath, c.SSLCertificateKeyPath, c.GetKeyType())
 	if err != nil {
 		return
-	}
-	keyBytes, err := nginx.ReadFile(c.SSLCertificateKeyPath)
-	if err != nil {
-		return
-	}
-
-	payload := &SyncCertificatePayload{
-		Name:                  c.Name,
-		SSLCertificatePath:    c.SSLCertificatePath,
-		SSLCertificateKeyPath: c.SSLCertificateKeyPath,
-		SSLCertificate:        string(certBytes),
-		SSLCertificateKey:     string(keyBytes),
-		KeyType:               c.GetKeyType(),
 	}
 
 	payloadBytes, err := json.Marshal(payload)
@@ -63,7 +63,7 @@ func SyncToRemoteServer(c *model.Cert) (err error) {
 	}
 
 	q := query.Node
-	nodes, _ := q.Where(q.ID.In(c.SyncNodeIds...)).Find()
+	nodes, _ := q.Where(q.ID.In(nodeIDs...)).Find()
 	for _, node := range nodes {
 		go func() {
 			err := deploy(node, c, payloadBytes)
@@ -74,6 +74,28 @@ func SyncToRemoteServer(c *model.Cert) (err error) {
 	}
 
 	return
+}
+
+// newSyncPayload reads a certificate pair from the Nginx target filesystem
+// into the body accepted by the /api/cert_sync endpoint of a node.
+func newSyncPayload(name, certPath, keyPath string, keyType certcrypto.KeyType) (*SyncCertificatePayload, error) {
+	certBytes, err := nginx.ReadFile(certPath)
+	if err != nil {
+		return nil, err
+	}
+	keyBytes, err := nginx.ReadFile(keyPath)
+	if err != nil {
+		return nil, err
+	}
+
+	return &SyncCertificatePayload{
+		Name:                  name,
+		SSLCertificatePath:    certPath,
+		SSLCertificateKeyPath: keyPath,
+		SSLCertificate:        string(certBytes),
+		SSLCertificateKey:     string(keyBytes),
+		KeyType:               keyType,
+	}, nil
 }
 
 type SyncNotificationPayload struct {
