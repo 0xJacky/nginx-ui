@@ -28,7 +28,6 @@ const isProcessing = computed(() => {
 
   return status.index_scanning
     || status.auto_cert_processing
-    || status.nginx_log_indexing
     || pluginEntries.value.length > 0
 })
 </script>
@@ -50,13 +49,6 @@ const isProcessing = computed(() => {
               v-if="processingStatus.auto_cert_processing"
               status="processing"
               :text="$gettext('AutoCert is running...')"
-            />
-          </div>
-          <div>
-            <ABadge
-              v-if="processingStatus.nginx_log_indexing"
-              status="processing"
-              :text="$gettext('Nginx Log Indexing...')"
             />
           </div>
           <!-- Plugin labels are English source strings, plugins supply the translations. -->

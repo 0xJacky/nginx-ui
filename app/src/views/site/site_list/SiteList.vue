@@ -2,7 +2,6 @@
 import type { MaintenancePayload, Site } from '@/api/site'
 import { StdCurd } from '@uozi-admin/curd'
 import { message, Modal } from 'antdv-next'
-import nginxLog from '@/api/nginx_log'
 import site from '@/api/site'
 import { BatchAccessModal } from '@/components/AccessControl'
 import FooterToolBar from '@/components/FooterToolbar'
@@ -40,41 +39,6 @@ function destroy(site_name: string) {
     curd.value.refresh()
     message.success($gettext('Delete site: %{site_name}', { site_name }))
     inspectConfig.value?.test()
-  })
-}
-
-const isIndexingEnabled = ref(false)
-
-onMounted(async () => {
-  try {
-    const res = await nginxLog.getAdvancedIndexingStatus()
-    isIndexingEnabled.value = !!res.enabled
-  }
-  catch {
-    isIndexingEnabled.value = false
-  }
-})
-
-async function handleClickAnalytics(name: string) {
-  const { logs } = await site.getLogs(name)
-  const accessLogs = (logs ?? []).filter(l => l.type === 'access' && l.valid)
-  const target = accessLogs.find(l => !l.inherited) ?? accessLogs[0]
-
-  if (!target) {
-    message.warning($gettext('No valid access log path found for this site'))
-    return
-  }
-
-  if (target.inherited) {
-    message.info($gettext('This site uses the default access log, which may contain traffic from other sites'))
-  }
-
-  router.push({
-    path: '/nginx_log/site',
-    query: {
-      path: target.path,
-      view: 'dashboard',
-    },
   })
 }
 
@@ -251,14 +215,6 @@ function onMaintenanceConfirm(payload: MaintenancePayload) {
         <NamespaceTabs v-model:active-key="namespaceId" />
       </template>
       <template #afterActions="{ record }">
-        <AButton
-          v-if="isIndexingEnabled"
-          type="link"
-          size="small"
-          @click="handleClickAnalytics(record.name)"
-        >
-          {{ $gettext('Analytics') }}
-        </AButton>
         <SiteLogActions :site="record" />
         <AButton
           type="link"

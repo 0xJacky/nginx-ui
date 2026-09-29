@@ -12,8 +12,6 @@ require (
 	github.com/BurntSushi/toml v1.6.0
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.2.4
 	github.com/alibabacloud-go/tea v1.5.3
-	github.com/blevesearch/bleve/v2 v2.6.1
-	github.com/blevesearch/bleve_index_api v1.4.1
 	github.com/caarlos0/env/v11 v11.4.1
 	github.com/casdoor/casdoor-go-sdk v1.56.0
 	github.com/cloudflare/cloudflare-go/v7 v7.12.0
@@ -45,7 +43,6 @@ require (
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.6.0
 	github.com/nxadm/tail v1.4.11
-	github.com/oschwald/maxminddb-golang/v2 v2.7.0
 	github.com/pires/go-proxyproto v0.15.0
 	github.com/pkg/errors v0.9.1
 	github.com/pkg/sftp v1.13.11
@@ -62,7 +59,6 @@ require (
 	github.com/uozi-tech/cosy v1.35.4
 	github.com/uozi-tech/cosy-driver-sqlite v0.2.2
 	github.com/urfave/cli/v3 v3.14.0
-	go.etcd.io/bbolt v1.5.0
 	go.uber.org/zap v1.28.0
 	golang.org/x/crypto v0.57.0
 	golang.org/x/net v0.59.0
@@ -84,30 +80,11 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
-	github.com/RoaringBitmap/roaring/v2 v2.24.0 // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.5 // indirect
 	github.com/alibabacloud-go/debug v1.0.1 // indirect
 	github.com/alibabacloud-go/endpoint-util v1.1.1 // indirect
 	github.com/alibabacloud-go/tea-utils/v2 v2.0.9 // indirect
 	github.com/aliyun/credentials-go v1.4.12 // indirect
-	github.com/bits-and-blooms/bitset v1.24.6 // indirect
-	github.com/blevesearch/geo v0.2.6 // indirect
-	github.com/blevesearch/go-faiss v1.1.5 // indirect
-	github.com/blevesearch/go-porterstemmer v1.0.3 // indirect
-	github.com/blevesearch/gtreap v0.1.1 // indirect
-	github.com/blevesearch/mmap-go v1.2.0 // indirect
-	github.com/blevesearch/scorch_segment_api/v2 v2.4.10 // indirect
-	github.com/blevesearch/segment v0.9.1 // indirect
-	github.com/blevesearch/snowballstem v0.9.0 // indirect
-	github.com/blevesearch/upsidedown_store_api v1.0.2 // indirect
-	github.com/blevesearch/vellum v1.2.0 // indirect
-	github.com/blevesearch/zapx/v11 v11.4.3 // indirect
-	github.com/blevesearch/zapx/v12 v12.4.3 // indirect
-	github.com/blevesearch/zapx/v13 v13.4.3 // indirect
-	github.com/blevesearch/zapx/v14 v14.4.3 // indirect
-	github.com/blevesearch/zapx/v15 v15.4.3 // indirect
-	github.com/blevesearch/zapx/v16 v16.3.4 // indirect
-	github.com/blevesearch/zapx/v17 v17.2.3 // indirect
 	github.com/blinkbean/dingtalk v1.1.3 // indirect
 	github.com/boombuler/barcode v1.1.0 // indirect
 	github.com/bsm/redislock v0.10.0 // indirect
@@ -143,7 +120,6 @@ require (
 	github.com/goccy/go-json v0.10.6 // indirect
 	github.com/goccy/go-yaml v1.19.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect
-	github.com/golang/snappy v1.0.0 // indirect
 	github.com/google/go-tpm v0.9.8 // indirect
 	github.com/google/jsonschema-go v0.4.3 // indirect
 	github.com/google/pprof v0.0.0-20260709232956-b9395ee17fa0 // indirect
@@ -176,10 +152,8 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/morikuni/aec v1.1.0 // indirect
-	github.com/mschoch/smat v0.2.0 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.1 // indirect
-	github.com/oschwald/geoip2-golang/v2 v2.4.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.4.3 // indirect
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.30 // indirect

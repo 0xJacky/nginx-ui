@@ -8,11 +8,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestPluginLogFilesListsConfigAndDefaultPathsWithoutTheIndexer(t *testing.T) {
+func TestPluginLogFilesListsConfigAndDefaultPaths(t *testing.T) {
 	resetConfigLogRegistry(t)
 	resetDefaultLogRegistry(t)
-	setManager := logFileManagerSwapper(t)
-	setManager(nil)
 
 	logDir := t.TempDir()
 	useLogDirWhiteList(t, logDir)

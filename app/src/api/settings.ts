@@ -146,8 +146,6 @@ export interface NginxControlSettings {
 export interface NginxLogSettings {
   indexing_enabled: boolean
   index_path: string
-  index_custom_mmdb: string
-  geo_map_path: string
 }
 
 export interface NodeSettings {

@@ -1,194 +1,31 @@
 # Nginx Log
 
-本節介紹 Nginx UI 中 Nginx 日誌處理和分析功能的設定選項。
+Nginx UI 會列出從 Nginx 設定中發現的日誌檔案，以及 Nginx 預設的存取日誌和錯誤日誌。你可以分頁檢視日誌，也可以即時追蹤。這些功能無需任何設定。
 
-## 索引
+## 日誌分析外掛
 
-### IndexingEnabled
+結構化搜尋、流量面板、訪客地圖和 IP 位置庫由官方外掛 **日誌分析**（`com.nginxui.log-analytics`）提供。它們以前以「進階索引」的形式內建在 Nginx UI 中。
 
-- 類型: `boolean`
-- 預設值: `false`
-- 環境變數: `NGINX_UI_NGINX_LOG_INDEXING_ENABLED`
-- 版本: `>= v2.2.0`
+- 在外掛頁面安裝並啟用該外掛。沒有外網的節點，可以在同一頁面上傳外掛安裝包。
+- 啟用後會自動開始索引。停用外掛即停止索引，並釋放它佔用的全部記憶體。Nginx UI 本身不會載入這部分程式碼。
+- 沒有安裝外掛時，日誌列表只顯示基礎欄位，日誌頁面只有原始檢視。
+- 叢集中，每個需要分析日誌的節點都要安裝該外掛。
 
-此選項啟用 Nginx 日誌的索引功能，提供高效能的日誌搜尋和分析能力。
+### 設定
 
-#### 關閉時的行為（基礎模式）
+原來 `[nginx_log]` 中的 `IncrementalIndexInterval`、`MaxConcurrentIndexTasks`、`IndexCustomMMDB` 和 `GeoMapPath` 不再由 Nginx UI 讀取，它們現在是外掛的設定，在外掛頁面的外掛設定中修改：
 
-當 `IndexingEnabled` 為 `false` 時，Nginx UI 仍會從 Nginx 設定中發現日誌入口，並在日誌列表中顯示。在基礎模式下：
+| 外掛設定 | 原來的設定 |
+|----------|------------|
+| 索引間隔（分鐘） | `IncrementalIndexInterval` |
+| 同時索引的日誌數 | `MaxConcurrentIndexTasks` |
+| 自訂 IP 位置庫 | `IndexCustomMMDB` |
+| 地圖檔案資料夾 | `GeoMapPath` |
 
-- 可檢視已偵測到的日誌檔列表（基於簡單的輪轉規則進行分組），但不提供索引指標、文件計數與分片搜尋等進階功能。
-- 依據解析出的存取/錯誤日誌路徑，即時檢視（tail）仍可使用。
+IP 位置庫（GeoLite2）也在外掛設定中下載。[template/custom-mmdb](https://github.com/0xJacky/nginx-ui/tree/dev/template/custom-mmdb) 中用於產生自訂庫的指令碼仍然適用，把自訂庫的設定指向產生的檔案即可。
 
-### IndexPath
+### 從進階索引升級
 
-- 類型：`string`
-- 版本：`>= v2.2.0`
+如果之前開啟了 `IndexingEnabled`，日誌頁面會提示「日誌分析已改為外掛」，從提示中前往安裝即可。外掛首次啟動時會接管既有的索引及其記錄、上述設定和已下載的 IP 位置庫，不會重複索引。之後 Nginx UI 會把 `IndexingEnabled` 關閉，並刪除舊的索引資料表。
 
-- 預設情況下，Bleve 索引檔存放於 Nginx UI 設定目錄下的 `log-index` 目錄（例如：`/usr/local/nginx-ui/log-index`）。
-- 若無法判定設定目錄，則回退至應用相對路徑的 `./log-index`。
-
-### IncrementalIndexInterval
-
-- 類型：`int`（分鐘）
-- 預設值：設定為 `0` 或負數時使用 `15`
-- 版本：`>= v2.2.0`
-
-控制增量索引任務掃描存取日誌的頻率。數值越小，分析資料越接近即時，但背景 CPU 使用率越高；數值越大則降低 CPU 負載，但分析資料更新會更滯後。設定為 `0` 或負數時會自動回退到安全的預設 15 分鐘。
-
-### IndexCustomMMDB
-
-- 類型：`string`
-- 預設值：空（使用標準 GeoLite2 資料庫）
-- 環境變數：`NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB`
-- 需要使用包含 [PR #1843](https://github.com/0xJacky/nginx-ui/pull/1843) 的建置版本。
-
-指定自訂 MaxMind DB（`.mmdb`）檔案的路徑，用於在日誌索引過程中補充 GeoIP 資訊。自訂記錄可以提供國家、省份、城市及四個業務標籤（`c1` 至 `c4`），例如分公司、工廠、部門和網路類型。使用索引日誌分析功能時，還需啟用 `IndexingEnabled`。
-
-絕對路徑直接使用設定值。相對路徑以目前使用的 `app.ini` 所在目錄為基準解析，而非處理程序的工作目錄。例如，將 `enterprise.mmdb` 放在 `app.ini` 同一目錄下，並設定：
-
-```ini
-[nginx_log]
-IndexingEnabled = true
-IndexCustomMMDB = enterprise.mmdb
-```
-
-也可以透過環境變數指定 Nginx UI 處理程序可存取的路徑：
-
-```bash
-NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB=/etc/nginx-ui/enterprise.mmdb
-```
-
-使用 Docker 部署時，需要將資料庫掛載至容器內，並填寫容器內的路徑。執行 Nginx UI 的使用者必須具有該檔案的讀取權限。
-
-::: warning 資料庫選擇規則
-如果 `app.ini` 同一目錄下存在 `GeoLite2-City.mmdb`，它的優先順序高於 `IndexCustomMMDB`。要使用自訂資料庫，請先將標準資料庫移至備份位置。兩個資料庫不會合併；未符合自訂 IP 範圍的位址也不會回退至標準城市資料庫查詢。
-
-當標準資料庫檔案不存在時，如果自訂檔案缺失或無效，GeoIP 資料庫將無法載入。設定路徑不會自動下載或產生檔案。
-:::
-
-#### 產生自訂資料庫
-
-儲存庫的 [template/custom-mmdb](https://github.com/0xJacky/nginx-ui/tree/dev/template/custom-mmdb) 目錄提供了產生腳本和範例資料。請使用包含 PR #1843 的程式碼版本中的這些檔案。
-
-1. 準備 Python 3 環境及產生腳本所需的相依套件：`mmdb_writer` 和 `netaddr`。
-2. 編輯 `region_codes.json`，定義國家、省份和城市的階層關係。隨附的檔案僅作為起始範本；引用尚未列出的地區前，請先補充對應資料。
-3. 編輯 `ip_inventory.json`，將單一 IPv4 位址或 CIDR 網段對應至上述地區階層及業務標籤。四個標籤鍵均需保留，未使用的標籤填寫空字串。
-
-例如，蘇州某網段的清單項目可以寫為：
-
-```json
-{
-  "10.10.0.0/16": {
-    "country": "CN",
-    "province": "320000",
-    "city": "320500",
-    "c1": "蘇州分公司",
-    "c2": "工廠 A",
-    "c3": "生產 IT 部門",
-    "c4": "有線網路"
-  }
-}
-```
-
-在儲存庫根目錄執行產生腳本：
-
-```bash
-python3 template/custom-mmdb/Build_Custom_mmdb.py
-```
-
-腳本會驗證網路位址和地區引用，然後在 `template/custom-mmdb` 中產生 `enterprise.mmdb` 及清單匯出檔案 `enterprise_data.json`。隨附的產生腳本建立的是 IPv4 資料庫，單一 IPv4 位址會轉換為 `/32` 網段。
-
-將 `enterprise.mmdb` 複製到設定指定的位置，並在修改設定或替換資料庫後重新啟動 Nginx UI。GeoIP 欄位在索引時寫入，因此現有索引記錄需要重新索引，才能反映新的地理資訊和業務標籤。
-
-當 `IndexCustomMMDB` 非空時，GeoLite2 設定頁面會顯示所設定的自訂資料庫檔名，並隱藏重新下載操作。該提示僅反映設定的路徑；實際資料庫選擇仍遵循上述優先順序規則。
-
-### GeoMapPath
-
-- 類型：`string`
-- 預設值：空（執行時會回退到 `maps`）
-- 環境變數：`NGINX_UI_NGINX_LOG_GEO_MAP_PATH`
-
-指定中國地圖與省級地圖邊界檔案目錄，目錄內檔名需遵循 `100000_full.json`、`<省級adcode>_full.json` 的命名規則。
-
-- 設定為絕對路徑時，直接使用該路徑。
-- 設定為相對路徑時，以目前 `app.ini` 所在目錄為基準解析。
-- 當此設定為空時，執行時讀取邊界檔案會回退到預設 `maps` 目錄。
-- 儀表板在中文語系下仍可顯示中國地圖入口，邊界檔案會依可用性由本機 API 或 CDN 載入。
-
-範例：
-
-```ini
-[nginx_log]
-GeoMapPath = /etc/nginx-ui/maps
-```
-
-Windows 範例：
-
-```ini
-[nginx_log]
-GeoMapPath = D:/OpCon/GIT/nginx-ui/maps
-```
-
-## 系統需求
-
-### 最低需求
-- **CPU**: 最少 1 核心
-- **記憶體**: 最少 2GB RAM
-- **儲存**: 至少 20GB 可用磁碟空間
-
-### 建議配置
-- **CPU**: 建議 2 核心或以上
-- **記憶體**: 建議 4GB RAM 或以上
-- **儲存**: 建議使用 SSD 以獲得更好的 I/O 效能
-
-## 效能指標
-
-基於生產環境驗證和全面測試（M2 Pro 12核心，2025年9月）：
-
-| 指標 | 數值 | 說明 |
-|------|------|------|
-| **生產環境管道** | **~10,000 條記錄/秒** | 包含搜尋功能的完整索引 |
-| **解析器效能** | **~932K 條記錄/秒** | 僅串流處理 |
-| **CPU 使用率** | **90%+** | 最佳化的多核處理 |
-| **記憶體效率** | **零分配設計** | 進階記憶體池系統 |
-| **自適應擴展** | **12→36 工作執行緒** | 動態資源最佳化 |
-| **批次處理最佳化** | **1000→6000** | 即時吞吐量調優 |
-
-## 功能特性
-
-啟用進階索引後，您將獲得以下功能：
-
-### 核心能力
-- **零分配管道** - 最佳化記憶體使用以實現高效能處理
-- **動態分片管理** - 智慧分布日誌資料到各個分片
-- **增量索引掃描** - 僅索引新的日誌條目以提高效率
-- **自動日誌輪轉偵測** - 無縫處理輪轉的日誌檔案
-
-### 搜尋與分析
-- **進階搜尋和過濾** - 支援多條件的複雜查詢
-- **支援正規表示式的全文搜尋** - 強大的模式比對能力
-- **跨檔案時間線關聯** - 分析多個日誌檔案中的事件
-- **錯誤模式識別** - 自動偵測錯誤模式
-
-### 資料處理
-- **壓縮日誌檔案支援** - 支援 gzip 和其他壓縮格式
-- **離線 GeoIP 分析** - 無需外部服務的位置分析
-- **即時分析儀表板** - 即時監控和統計
-- **多維資料視覺化** - 進階圖表和圖形
-
-### 使用注意事項
-
-::: tip 效能影響提示
-進階索引提供企業級效能，完整日誌處理吞吐量達到 **~10,000 條記錄/秒**。系統會根據您的硬體自動最佳化 CPU 使用率（90%+）並調整工作執行緒數量（12→36）以獲得最佳效能。
-:::
-
-::: info 開源限制
-- 進階日誌索引功能對所有使用者免費開源
-- 我們不接受該功能的功能請求
-- 如需商業或專業使用，請聯絡 business@uozi.com
-:::
-
-::: warning 初始索引
-當您啟用進階索引時，系統將立即開始索引現有日誌檔案。此初始索引過程可能會暫時影響系統效能。
-:::
+`IndexingEnabled` 和 `IndexPath` 仍保留在 `app.ini` 中，也仍可用 `NGINX_UI_NGINX_LOG_INDEXING_ENABLED` 和 `NGINX_UI_NGINX_LOG_INDEX_PATH` 設定。它們只用於這次交接，網頁介面不能再修改。

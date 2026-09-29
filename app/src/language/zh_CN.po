@@ -479,45 +479,6 @@ msgstr "DNS 验证需要 DNS-01 插件，该插件%{state}。"
 msgid "Include line copied to clipboard"
 msgstr "Include 行已复制到剪贴板"
 
-msgid "Starting download..."
-msgstr "开始下载..."
-
-msgid "Download failed"
-msgstr "下载失败"
-
-msgid "Download complete"
-msgstr "下载完成"
-
-msgid "GeoLite2 Database Required"
-msgstr "需要 GeoLite2 数据库"
-
-msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. "
-"Please download it to enable this feature."
-msgstr "离线地理 IP 分析需要 GeoLite2 数据库。请下载以启用此功能。"
-
-msgid ""
-"Alternatively, if you cannot download the database, you can manually place "
-"GeoLite2-City.mmdb in the same directory as app.ini."
-msgstr "或者，如果您无法下载数据库，可以手动将 GeoLite2-City.mmdb 文件放置在与 app.ini 相同的目录中。"
-
-msgid ""
-"If you want to enable custom MMDB data, configure `IndexCustomMMDB` and "
-"place the generated file in the same directory as app.ini."
-msgstr "如果您要启用自定义 MMDB 数据，配置 `IndexCustomMMDB`，并把生成的文件放置在与 app.ini 相同的目录中。"
-
-msgid "GeoLite2 Database Installed"
-msgstr "GeoLite2 数据库已安装"
-
-msgid "Download GeoLite2 Database"
-msgstr "下载 GeoLite2 数据库"
-
-msgid "Re-download Database"
-msgstr "重新下载数据库"
-
-msgid "Last updated:"
-msgstr "最后更新:"
-
 msgid "Nginx configuration test failed"
 msgstr "Nginx 配置测试失败"
 
@@ -868,9 +829,6 @@ msgstr "访问日志"
 
 msgid "Error Logs"
 msgstr "错误日志"
-
-msgid "Traffic Analytics"
-msgstr "流量分析"
 
 msgid "Nginx is not running"
 msgstr "Nginx 未启动"
@@ -1428,9 +1386,6 @@ msgstr "索引中..."
 msgid "AutoCert is running..."
 msgstr "AutoCert 正在运行..."
 
-msgid "Nginx Log Indexing..."
-msgstr "Nginx 日志索引中..."
-
 msgid ""
 "Legacy recovery code is deprecated. Generate new recovery codes to keep "
 "account recovery secure."
@@ -1740,12 +1695,6 @@ msgstr "高"
 
 msgid "Low"
 msgstr "低"
-
-msgid "Visits"
-msgstr "访问量"
-
-msgid "Percentage"
-msgstr "百分比"
 
 msgid "Failed to get performance data"
 msgstr "获取性能数据失败"
@@ -2394,36 +2343,6 @@ msgstr "找不到旧容器名称"
 msgid "Could not find temp container"
 msgstr "找不到临时容器"
 
-msgid "Failed to download GeoLite2 database: {0}"
-msgstr "下载 GeoLite2 数据库失败: {0}"
-
-msgid "Failed to decompress GeoLite2 database: {0}"
-msgstr "解压 GeoLite2 数据库失败: {0}"
-
-msgid "GeoLite2 database not found at {0}"
-msgstr "在 {0} 未找到 GeoLite2 数据库"
-
-msgid "Failed to get file size: {0}"
-msgstr "获取文件大小失败: {0}"
-
-msgid "Failed to save downloaded file: {0}"
-msgstr "保存下载的文件失败: {0}"
-
-msgid "Failed to open file: {0}"
-msgstr "打开文件失败: {0}"
-
-msgid "Failed to create xz reader: {0}"
-msgstr "创建 xz 读取器失败: {0}"
-
-msgid "Failed to write decompressed data: {0}"
-msgstr "写入解压缩数据失败: {0}"
-
-msgid "Failed to read compressed data: {0}"
-msgstr "读取压缩数据失败: {0}"
-
-msgid "Decompression succeeded but failed to delete compressed file: {0}"
-msgstr "解压成功但删除压缩文件失败: {0}"
-
 msgid ""
 "{0} contains characters that are unsafe to paste into the generated host "
 "instructions: {1}"
@@ -2558,9 +2477,6 @@ msgstr "表单解析失败"
 msgid "This action is disabled in demo mode"
 msgstr "此操作在演示模式下已禁用。"
 
-msgid "Log parser is not initialized; call indexer.InitLogParser() before use"
-msgstr "日志解析器未初始化；使用前请调用 indexer.InitLogParser()"
-
 msgid "Empty log line"
 msgstr "空日志行"
 
@@ -2604,59 +2520,17 @@ msgstr ""
 "Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 "
 "https://nginxui.com/guide/config-nginx.html"
 
-msgid "Log indexer not available"
-msgstr "日志索引器不可用"
-
-msgid "Analytics service not available"
-msgstr "分析服务不可用"
-
 msgid "Log file does not exist"
 msgstr "日志文件不存在"
 
 msgid "Log path is not under whitelist"
 msgstr "日志路径不在白名单中"
 
-msgid "Cannot access log file"
-msgstr "无法访问日志文件"
-
-msgid "Background log service not available"
-msgstr "后台日志服务不可用"
-
-msgid "File path is required"
-msgstr "文件路径是必需的"
-
-msgid "Failed to rebuild index"
-msgstr "重建索引失败"
-
-msgid "Failed to rebuild file index"
-msgstr "重建文件索引失败"
-
-msgid "Failed to delete file index"
-msgstr "删除文件索引失败"
-
-msgid "Failed to delete all indexes"
-msgstr "删除所有索引失败"
-
-msgid "Failed to get index status"
-msgstr "获取索引状态失败"
-
-msgid "Failed to get persistence stats"
-msgstr "获取持久化统计信息失败"
-
 msgid "Log file is not a regular file"
 msgstr "日志文件不是常规文件"
 
 msgid "Invalid websocket message type"
 msgstr "无效的 WebSocket 消息类型"
-
-msgid "Modern searcher service not available"
-msgstr "现代搜索服务不可用"
-
-msgid "Modern analytics service not available"
-msgstr "现代分析服务不可用"
-
-msgid "Modern indexer service not available"
-msgstr "现代索引服务不可用"
 
 msgid "Nginx error: {0}"
 msgstr "Nginx 错误：{0}"
@@ -2933,11 +2807,6 @@ msgstr "错误日志路径不存在"
 
 msgid "Conf.d directory not exists"
 msgstr "Conf.d 目录不存在"
-
-msgid ""
-"GeoLite2 database not found at {0}. Log indexing requires GeoLite2 database "
-"for geographic IP analysis"
-msgstr "未在 {0} 找到 GeoLite2 数据库。日志索引需要 GeoLite2 数据库进行地理 IP 分析"
 
 msgid "Failed to read bundled nginx-ui.conf: {0}"
 msgstr "读取内置的 nginx-ui.conf 失败：{0}"
@@ -3609,15 +3478,6 @@ msgstr ""
 "检查 Nginx UI 能否在已配置的 Nginx 目录中写入临时文件，且外部 Nginx 容器能否在同一路径下看到该文件。Docker socket "
 "访问和 ContainerName 仅用于路由控制命令；配置和日志目录必须以匹配的路径挂载到两个容器中。"
 
-msgid ""
-"Check if the GeoLite2 database is available when log indexing is enabled. "
-"The GeoLite2 database is required for geographic IP analysis in log "
-"indexing. You can download it from the Preference page or manually place "
-"GeoLite2-City.mmdb in the same directory as app.ini"
-msgstr ""
-"当启用日志索引时，检查 GeoLite2 数据库是否可用。GeoLite2 数据库是日志索引中地理 IP "
-"分析所必需的。您可以在偏好设置页面下载它，或者手动将 GeoLite2-City.mmdb 放在与 app.ini 相同的目录中"
-
 msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr "检查 conf.d 目录是否位于 nginx 配置目录下"
 
@@ -3710,9 +3570,6 @@ msgstr "从数据库中删除证书失败：%{error}"
 
 msgid "Failed to revoke certificate: %{error}"
 msgstr "撤销证书失败：%{error}"
-
-msgid "GeoLite2 database available"
-msgstr "GeoLite2 数据库可用"
 
 msgid "Global API key"
 msgstr "全局 API Key"
@@ -6686,8 +6543,8 @@ msgstr "可观测性"
 msgid "View server, Nginx, and site-level performance metrics."
 msgstr "查看服务器、Nginx 和站点级性能指标。"
 
-msgid "Inspect access and error logs with structured analysis tools."
-msgstr "使用结构化分析工具查看访问与错误日志。"
+msgid "Browse and follow the access and error logs of your sites."
+msgstr "浏览并实时跟踪站点的访问日志和错误日志。"
 
 msgid "Track system events and message delivery status."
 msgstr "跟踪系统事件与消息投递状态。"
@@ -6811,343 +6668,31 @@ msgstr "同步间隔（分钟）"
 msgid "This namespace has no sync node"
 msgstr "该命名空间没有同步节点"
 
+msgid "Read access logs page by page or follow them as they arrive."
+msgstr "分页阅读访问日志，或在新日志产生时实时跟踪。"
+
 msgid "CPU"
 msgstr "CPU"
-
-msgid "1 core minimum"
-msgstr "至少 1 核"
-
-msgid "2+ cores recommended"
-msgstr "推荐 2+ 核心"
-
-msgid "1GB RAM minimum"
-msgstr "至少 1GB 内存"
-
-msgid "4GB+ RAM recommended"
-msgstr "推荐 4GB 以上内存"
-
-msgid "At least 20GB available disk space"
-msgstr "至少 20GB 可用磁盘空间"
-
-msgid "SSD storage for better I/O performance"
-msgstr "SSD 存储以获得更好的 I/O 性能"
-
-msgid "Production Pipeline"
-msgstr "生产流水线"
-
-msgid "Complete indexing with search capabilities"
-msgstr "具备搜索功能的完整索引"
-
-msgid "Parser Performance"
-msgstr "解析器性能"
-
-msgid "SIMD-optimized stream processing"
-msgstr "SIMD 优化的流处理"
-
-msgid "Memory Design"
-msgstr "内存设计"
-
-msgid "Advanced memory pooling system"
-msgstr "高级内存池系统"
-
-msgid "Enable Advanced Log Indexing"
-msgstr "启用高级日志索引"
-
-msgid "Enable Indexing"
-msgstr "启用索引"
-
-msgid "Resource Usage Warning"
-msgstr "资源使用警告"
-
-msgid ""
-"Enabling advanced log indexing will consume significant computational "
-"resources including CPU and memory. Please ensure your system meets the "
-"minimum requirements before proceeding."
-msgstr "启用高级日志索引将消耗大量计算资源，包括 CPU 和内存。请确保您的系统满足最低要求后再继续。"
-
-msgid "System Requirements"
-msgstr "系统要求"
-
-msgid "Minimum:"
-msgstr "最低要求："
-
-msgid "Recommended:"
-msgstr "推荐："
-
-msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx "
-"UI config path by default."
-msgstr "* 索引文件默认存储在您的 Nginx UI 配置路径下的 \"log-index\" 目录中。"
-
-msgid ""
-"If you want to change the storage location, you can set the `IndexPath` of "
-"`nginx_log` section in the Nginx UI config."
-msgstr "如果要更改存储位置，可以在 Nginx UI 配置中设置 `nginx_log` 部分的 `IndexPath`。"
-
-msgid "GeoLite2 Database"
-msgstr "GeoLite2 数据库"
-
-msgid "Expected Performance"
-msgstr "预期性能"
-
-msgid ""
-"* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
-"Actual performance may vary based on your hardware configuration."
-msgstr "* 性能指标基于 Apple M2 Pro （12 核）和 32GB 内存测得。实际性能可能因您的硬件配置而异。"
 
 msgid "Features"
 msgstr "功能"
 
-msgid "Zero-allocation pipeline"
-msgstr "零分配管道"
-
-msgid "Dynamic shard management"
-msgstr "动态分片管理"
-
-msgid "Advanced search & filtering"
-msgstr "高级搜索和筛选"
-
-msgid "Real-time analytics dashboard"
-msgstr "实时分析仪表板"
-
-msgid "Offline GeoIP analysis"
-msgstr "离线 GeoIP 分析"
-
-msgid "Incremental index scanning"
-msgstr "增量索引扫描"
-
-msgid "Full-text search support"
-msgstr "全文搜索支持"
-
-msgid "Automated log rotation detection"
-msgstr "自动日志轮转检测"
-
-msgid "Cross-file timeline correlation"
-msgstr "跨文件时间线关联"
-
-msgid "Compressed log file support"
-msgstr "压缩日志文件支持"
-
-msgid "Error pattern recognition"
-msgstr "错误模式识别"
-
-msgid "Multi-dimensional data visualization"
-msgstr "多维数据可视化"
-
-msgid "Open Source Limitation"
-msgstr "开源限制"
-
-msgid "Advanced log indexing features are free and open source for all users"
-msgstr "高级日志索引功能对所有用户免费且开源"
-
-msgid "We do not accept any feature requests"
-msgstr "我们不接受任何功能请求"
-
-msgid "For commercial or professional use, contact"
-msgstr "如需商业或专业用途，请联系"
-
-msgid "Confirmation Required"
-msgstr "需要确认"
-
-msgid ""
-"By enabling advanced indexing, you acknowledge that your system meets the "
-"requirements and understand the performance implications. This will start "
-"indexing existing log files immediately."
-msgstr "启用高级索引即表示您确认系统满足要求并了解性能影响。这将立即开始对现有日志文件进行索引。"
-
-msgid "Indexing logs..."
-msgstr "正在索引日志..."
-
-msgid "Queued for indexing..."
-msgstr "排队等待索引中..."
-
-msgid "Index failed, please try rebuilding"
-msgstr "索引失败，请尝试重新构建"
-
-msgid "Log file not indexed yet"
-msgstr "日志文件尚未建立索引"
-
-msgid "Browser"
-msgstr "浏览器"
-
-msgid "Count"
-msgstr "计数"
-
-msgid "Browser Statistics"
-msgstr "浏览器统计"
-
-msgid "Failed to load China map data"
-msgstr "加载中国地图数据失败"
-
-msgid "Failed to load city map data"
-msgstr "加载城市地图数据失败"
-
-msgid "Province / Region"
-msgstr "省份 / 地区"
-
-msgid "City / C1 / C2 / C3 / C4"
-msgstr "城市 / C1 / C2 / C3 / C4"
-
-msgid "City"
-msgstr "城市"
-
-msgid "Top 10 Provinces / Regions"
-msgstr "前 10 个省份 / 地区"
-
-msgid "Top 10 City Labels (City + C1 + C2 + C3 + C4)"
-msgstr "前 10 个城市标签（城市 + C1 + C2 + C3 + C4）"
-
-msgid "Top 10 Cities"
-msgstr "前 10 个城市"
-
-msgid "China Access Map"
-msgstr "中国访问地图"
-
-msgid "No China geographic data available"
-msgstr "无中国地理数据"
-
-msgid "Daily Access Trends"
-msgstr "每日访问趋势"
-
-msgid "Date"
-msgstr "日期"
-
-msgid "Last 7 days"
-msgstr "最近 7 天"
-
-msgid "Last 14 days"
-msgstr "过去 14 天"
-
-msgid "Last 30 days"
-msgstr "过去 30 天"
-
-msgid "Last 90 days"
-msgstr "过去 90 天"
-
-msgid "This month"
-msgstr "本月"
-
-msgid "Last month"
-msgstr "上个月"
-
-msgid "Date Range"
-msgstr "日期范围"
-
-msgid "Quick Select"
-msgstr "快速选择"
-
-msgid "Start Date"
-msgstr "开始日期"
-
-msgid "End Date"
-msgstr "结束日期"
-
-msgid "Device Type"
-msgstr "设备类型"
-
-msgid "Device Statistics"
-msgstr "设备统计"
-
-msgid "Global Map"
-msgstr "全球地图"
-
-msgid "China Map"
-msgstr "中国地图"
-
-msgid "Global Access Map"
-msgstr "全球访问地图"
-
-msgid "24-Hour UV/PV Statistics"
-msgstr "24 小时 UV/PV 统计"
-
-msgid "Operating System"
-msgstr "操作系统"
-
-msgid "Operating System Statistics"
-msgstr "操作系统统计"
-
-msgid "Total PV"
-msgstr "总访问量"
-
-msgid "Total UV"
-msgstr "总 UV 数"
-
-msgid "Total Traffic"
-msgstr "总流量"
-
-msgid "Peak Hour"
-msgstr "高峰时段"
-
-msgid "Avg QPS"
-msgstr "平均 QPS"
-
-msgid "Peak QPS"
-msgstr "峰值 QPS"
-
-msgid "Avg Daily PV"
-msgstr "平均每日 PV"
-
-msgid "Avg Daily UV"
-msgstr "日均 UV"
-
 msgid "URL"
 msgstr "URL"
-
-msgid "TOP 10 URLs"
-msgstr "前 10 个 URL"
-
-msgid "Country / Region"
-msgstr "国家 / 地区"
-
-msgid "No geographic data available"
-msgstr "无可用地理数据"
-
-msgid "Top 10 Countries / Regions"
-msgstr "前 10 个国家 / 地区"
-
-msgid "Explore access traffic logs with filters and detailed request information."
-msgstr "按筛选条件查看访问流量日志及详细请求信息。"
 
 msgid "Inspect error events and troubleshoot issues from Nginx error output."
 msgstr "检查错误事件并基于 Nginx 错误输出定位问题。"
 
-msgid "Manage indexed log files and jump into structured analysis workflows."
-msgstr "管理已索引日志文件并进入结构化分析流程。"
-
-msgid "Scanning"
-msgstr "扫描中"
-
-msgid "Indexing"
-msgstr "索引中"
-
-msgid "Computing Statistics"
-msgstr "计算统计信息"
-
-msgid "Rebuild Index"
-msgstr "重建索引"
+msgid "See every log file Nginx writes and open one to read it."
+msgstr "查看 Nginx 写入的所有日志文件，并打开其中一个阅读。"
 
 msgid ""
-"This will rebuild the entire log index. All existing index data will be "
-"deleted and rebuilt from scratch. This may take some time. Continue?"
-msgstr "这将重建整个日志索引。所有现有索引数据将被删除并从头开始重建。这可能需要一些时间。是否继续？"
+"Log analytics is now a plugin. Install it to keep using it; your existing "
+"indexes are kept."
+msgstr "日志分析已改为插件，安装后继续使用，原有索引会保留。"
 
-msgid "Index and statistics rebuild started successfully"
-msgstr "索引和统计重建已成功启动"
-
-msgid "Rebuild File Index"
-msgstr "重建文件索引"
-
-msgid "This will rebuild the index data for this specific file: %{path}"
-msgstr "这将重建此特定文件的索引数据：%{path}"
-
-msgid "File index rebuild started successfully for %{path}"
-msgstr "已成功开始为 %{path} 重建文件索引"
-
-msgid "Rebuild All Index"
-msgstr "重建所有索引"
-
-msgid "Structured"
-msgstr "结构化"
+msgid "Go to install"
+msgstr "前往安装"
 
 msgid "Raw"
 msgstr "原始"
@@ -7158,64 +6703,8 @@ msgstr "选择日志文件"
 msgid "Auto Refresh"
 msgstr "自动刷新"
 
-msgid "Index Status"
-msgstr "索引状态"
-
-msgid "Indexed"
-msgstr "已索引"
-
-msgid "Index failed"
-msgstr "索引失败"
-
-msgid "Queued"
-msgstr "已排队"
-
-msgid "Not Indexed"
-msgstr "未索引"
-
-msgid "Last Indexed"
-msgstr "最后索引时间"
-
-msgid "Document Count"
-msgstr "文档数量"
-
-msgid "Time Range"
-msgstr "时间范围"
-
-msgid "Advanced indexing enabled successfully"
-msgstr "高级索引已成功启用"
-
-msgid "Index rebuild initiated"
-msgstr "索引重建已启动"
-
-msgid "Advanced indexing enabled but failed to start rebuild"
-msgstr "高级索引已启用但未能开始重建"
-
-msgid "Failed to enable advanced indexing"
-msgstr "启用高级索引失败"
-
-msgid "Disable Advanced Indexing"
-msgstr "禁用高级索引"
-
-msgid ""
-"Advanced log indexing will stop and structured log analytics will be "
-"unavailable. Existing index files will not be deleted. Continue?"
-msgstr "高级日志索引将停止，结构化日志分析将不可用。现有索引文件不会被删除。是否继续？"
-
 msgid "Disable"
 msgstr "禁用"
-
-msgid "Advanced indexing disabled successfully"
-msgstr "高级索引已成功禁用"
-
-msgid "Failed to disable advanced indexing"
-msgstr "停用高级索引失败"
-
-msgid "Enable Advanced Indexing"
-msgstr "启用高级索引"
-
-msgid "Rebuild"
-msgstr "重建"
 
 msgid "Filter"
 msgstr "过滤"
@@ -7223,164 +6712,20 @@ msgstr "过滤"
 msgid "Filter log content"
 msgstr "过滤日志内容"
 
-msgid "Search Filters"
-msgstr "搜索筛选器"
-
-msgid "Full Text Search"
-msgstr "全文搜索"
-
-msgid "Search in log content..."
-msgstr "在日志内容中搜索..."
-
 msgid "Method"
 msgstr "方法"
 
 msgid "Any"
 msgstr "任意"
 
-msgid "Type or select status codes"
-msgstr "输入或选择状态码"
-
-msgid "Request Path"
-msgstr "请求路径"
-
-msgid "Type or select browser"
-msgstr "输入或选择浏览器"
-
 msgid "OS"
 msgstr "OS"
-
-msgid "Type or select OS"
-msgstr "输入或选择操作系统"
-
-msgid "Device"
-msgstr "设备"
-
-msgid "Type or select device"
-msgstr "输入或选择设备"
-
-msgid "Referer"
-msgstr "来源"
-
-msgid "https://..."
-msgstr "https://..."
-
-msgid "Mozilla/5.0..."
-msgstr "Mozilla/5.0..."
 
 msgid "Time"
 msgstr "时间"
 
 msgid "IP"
 msgstr "IP"
-
-msgid "Request"
-msgstr "请求"
-
-msgid "Last 15 minutes"
-msgstr "过去 15 分钟"
-
-msgid "Last 30 minutes"
-msgstr "过去 30 分钟"
-
-msgid "Last hour"
-msgstr "过去 1 小时"
-
-msgid "Last 4 hours"
-msgstr "过去 4 小时"
-
-msgid "Last 12 hours"
-msgstr "过去 12 小时"
-
-msgid "Last 24 hours"
-msgstr "过去 24 小时"
-
-msgid "No logs found in the selected time range."
-msgstr "在选定的时间范围内未找到日志。"
-
-msgid ""
-"Background indexing in progress. Data will be updated automatically when "
-"ready."
-msgstr "后台索引正在进行中。数据将在准备就绪后自动更新。"
-
-msgid "Log indexing completed! Loading updated data..."
-msgstr "日志索引完成！正在加载更新数据..."
-
-msgid "Error Log Detected"
-msgstr "检测到错误日志"
-
-msgid ""
-"Error logs do not support structured analysis as they contain free-form "
-"text messages."
-msgstr "错误日志不支持结构化分析，因为它们包含自由格式的文本消息。"
-
-msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
-msgstr "对于错误日志，请使用原始日志查看器以获得更好的查看体验。"
-
-msgid "Go to Raw Log Viewer"
-msgstr "转到原始日志查看器"
-
-msgid "Sorted by"
-msgstr "排序方式"
-
-msgid "Ascending"
-msgstr "升序"
-
-msgid "Descending"
-msgstr "降序"
-
-msgid "Total Entries"
-msgstr "总条目数"
-
-msgid "PV"
-msgstr "页面浏览量"
-
-msgid "UV"
-msgstr "独立访客"
-
-msgid ""
-"The result set is too large to sum exactly, this value is extrapolated from "
-"a sample"
-msgstr "结果集过大，无法精确求和，该数值基于样本数据推算得出。"
-
-msgid "Traffic"
-msgstr "流量"
-
-msgid "Unique Pages"
-msgstr "独立页面"
-
-msgid "Avg/PV"
-msgstr "平均/PV"
-
-msgid "%{start}-%{end} of %{total} items"
-msgstr "第 %{start}-%{end} 条，共 %{total} 条"
-
-msgid "No entries in current page"
-msgstr "当前页面没有条目"
-
-msgid "Try adjusting your search criteria or navigate to different pages."
-msgstr "尝试调整搜索条件或导航到其他页面。"
-
-msgid "No structured log data available"
-msgstr "无结构化日志数据可用"
-
-msgid "Try adjusting your search criteria or time range."
-msgstr "尝试调整您的搜索条件或时间范围。"
-
-msgid "Search range"
-msgstr "搜索范围"
-
-msgid "From indexed logs"
-msgstr "来自已索引的日志"
-
-msgid "Default range"
-msgstr "默认范围"
-
-msgid "Reset Search"
-msgstr "重置搜索"
-
-msgid "Log file not available"
-msgstr "日志文件不可用"
 
 msgid "Stable"
 msgstr "稳定"
@@ -7767,8 +7112,8 @@ msgstr "公安备案号"
 msgid "Github Proxy"
 msgstr "Github 代理"
 
-msgid "Used for downloads from GitHub, such as upgrades and the GeoLite database."
-msgstr "用于从 GitHub 下载内容，例如升级包和 GeoLite 数据库。"
+msgid "Used for downloads from GitHub, such as upgrades."
+msgstr "用于从 GitHub 下载内容，例如升级。"
 
 msgid "HTTP Proxy"
 msgstr "HTTP 代理"
@@ -8004,25 +7349,6 @@ msgstr "命令"
 
 msgid "Minutes between two runs."
 msgstr "两次执行的间隔分钟数。"
-
-msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. "
-"This is used for offline geographic analysis in log analytics."
-msgstr "GeoLite2 数据库为 IP 地址提供地理信息。这用于日志分析中的离线地理分析。"
-
-msgid "Custom MMDB"
-msgstr "自定义 MMDB"
-
-msgid "A custom database replaces the GeoLite2 download."
-msgstr "已使用自定义数据库，无需下载 GeoLite2。"
-
-msgid "Map Boundary Directory"
-msgstr "地图边界目录"
-
-msgid ""
-"Keep files with names like 100000_full.json in this directory. Only the "
-"world map is provided by default."
-msgstr "请将类似 100000_full.json 的文件放在此目录，默认只提供世界地图。"
 
 msgid "Register passkey successfully"
 msgstr "Passkey 注册成功"
@@ -9447,15 +8773,6 @@ msgstr "Logrotate"
 msgid "Scheduled rotation of Nginx log files."
 msgstr "定时轮转 Nginx 日志文件。"
 
-msgid "GeoLite"
-msgstr "GeoLite"
-
-msgid "Geographic database and map files used by log analytics."
-msgstr "日志分析使用的地理数据库与地图文件。"
-
-msgid "Go to logs"
-msgstr "前往日志"
-
 msgid "Invalid settings: %{fields}"
 msgstr "无效设置：%{fields}"
 
@@ -9607,20 +8924,6 @@ msgstr "此通知已禁用"
 
 msgid "Failed to send test message"
 msgstr "发送测试消息失败"
-
-msgid "Database"
-msgstr "数据库"
-
-msgid "Maps"
-msgstr "地图"
-
-msgid ""
-"Please download China and province boundary files yourself and place them "
-"in this directory."
-msgstr "请自行下载中国及各省份边界文件并放入此目录。"
-
-msgid "Template reference"
-msgstr "模板参考"
 
 msgid ""
 "A global pause stops network probes without changing individual site or "
@@ -10515,14 +9818,6 @@ msgstr "成功复制到本地"
 msgid "Delete site: %{site_name}"
 msgstr "删除站点: %{site_name}"
 
-msgid "No valid access log path found for this site"
-msgstr "未找到该站点的有效访问日志路径"
-
-msgid ""
-"This site uses the default access log, which may contain traffic from other "
-"sites"
-msgstr "此站点使用默认访问日志，其中可能包含来自其他站点的流量。"
-
 msgid "Sites enabled successfully"
 msgstr "站点已成功启用"
 
@@ -10561,9 +9856,6 @@ msgstr "以下站点将切换到维护模式："
 
 msgid "Enable"
 msgstr "启用"
-
-msgid "Analytics"
-msgstr "分析"
 
 msgid "Set maintenance information for selected sites"
 msgstr "为选中的站点设置维护信息"
@@ -11303,6 +10595,11 @@ msgid ""
 "and requested URLs."
 msgstr "开启期间接收每条访问日志，包括访客地址和请求的 URL。"
 
+msgid ""
+"Read the Nginx log files of this node, including visitor addresses and "
+"requested URLs."
+msgstr "读取此节点的 Nginx 日志文件，其中包含访客地址和请求的 URL。"
+
 msgid "Unknown permission. Only grant it if you trust the plugin author."
 msgstr "未知权限，请仅在信任插件作者时授予。"
 
@@ -11323,6 +10620,9 @@ msgstr "Nginx UI 管理"
 
 msgid "Access logs"
 msgstr "访问日志"
+
+msgid "Log files"
+msgstr "日志文件"
 
 msgid "Unknown permission"
 msgstr "未知权限"
@@ -11909,6 +11209,762 @@ msgstr "单窗格"
 
 msgid "Split view"
 msgstr "分屏视图"
+
+#~ msgid "Starting download..."
+#~ msgstr "开始下载..."
+
+#~ msgid "Download failed"
+#~ msgstr "下载失败"
+
+#~ msgid "Download complete"
+#~ msgstr "下载完成"
+
+#~ msgid "GeoLite2 Database Required"
+#~ msgstr "需要 GeoLite2 数据库"
+
+#~ msgid ""
+#~ "The GeoLite2 database is required for offline geographic IP analysis. "
+#~ "Please download it to enable this feature."
+#~ msgstr "离线地理 IP 分析需要 GeoLite2 数据库。请下载以启用此功能。"
+
+#~ msgid ""
+#~ "Alternatively, if you cannot download the database, you can manually "
+#~ "place GeoLite2-City.mmdb in the same directory as app.ini."
+#~ msgstr ""
+#~ "或者，如果您无法下载数据库，可以手动将 GeoLite2-City.mmdb 文件放置在与 "
+#~ "app.ini 相同的目录中。"
+
+#~ msgid ""
+#~ "If you want to enable custom MMDB data, configure `IndexCustomMMDB` and "
+#~ "place the generated file in the same directory as app.ini."
+#~ msgstr ""
+#~ "如果您要启用自定义 MMDB 数据，配置 `IndexCustomMMDB`，并把生成的文件放置在"
+#~ "与 app.ini 相同的目录中。"
+
+#~ msgid "GeoLite2 Database Installed"
+#~ msgstr "GeoLite2 数据库已安装"
+
+#~ msgid "Download GeoLite2 Database"
+#~ msgstr "下载 GeoLite2 数据库"
+
+#~ msgid "Re-download Database"
+#~ msgstr "重新下载数据库"
+
+#~ msgid "Last updated:"
+#~ msgstr "最后更新:"
+
+#~ msgid "Traffic Analytics"
+#~ msgstr "流量分析"
+
+#~ msgid "Nginx Log Indexing..."
+#~ msgstr "Nginx 日志索引中..."
+
+#~ msgid "Visits"
+#~ msgstr "访问量"
+
+#~ msgid "Percentage"
+#~ msgstr "百分比"
+
+#~ msgid "Failed to download GeoLite2 database: {0}"
+#~ msgstr "下载 GeoLite2 数据库失败: {0}"
+
+#~ msgid "Failed to decompress GeoLite2 database: {0}"
+#~ msgstr "解压 GeoLite2 数据库失败: {0}"
+
+#~ msgid "GeoLite2 database not found at {0}"
+#~ msgstr "在 {0} 未找到 GeoLite2 数据库"
+
+#~ msgid "Failed to get file size: {0}"
+#~ msgstr "获取文件大小失败: {0}"
+
+#~ msgid "Failed to save downloaded file: {0}"
+#~ msgstr "保存下载的文件失败: {0}"
+
+#~ msgid "Failed to open file: {0}"
+#~ msgstr "打开文件失败: {0}"
+
+#~ msgid "Failed to create xz reader: {0}"
+#~ msgstr "创建 xz 读取器失败: {0}"
+
+#~ msgid "Failed to write decompressed data: {0}"
+#~ msgstr "写入解压缩数据失败: {0}"
+
+#~ msgid "Failed to read compressed data: {0}"
+#~ msgstr "读取压缩数据失败: {0}"
+
+#~ msgid "Decompression succeeded but failed to delete compressed file: {0}"
+#~ msgstr "解压成功但删除压缩文件失败: {0}"
+
+#~ msgid ""
+#~ "Log parser is not initialized; call indexer.InitLogParser() before use"
+#~ msgstr "日志解析器未初始化；使用前请调用 indexer.InitLogParser()"
+
+#~ msgid "Log indexer not available"
+#~ msgstr "日志索引器不可用"
+
+#~ msgid "Analytics service not available"
+#~ msgstr "分析服务不可用"
+
+#~ msgid "Cannot access log file"
+#~ msgstr "无法访问日志文件"
+
+#~ msgid "Background log service not available"
+#~ msgstr "后台日志服务不可用"
+
+#~ msgid "File path is required"
+#~ msgstr "文件路径是必需的"
+
+#~ msgid "Failed to rebuild index"
+#~ msgstr "重建索引失败"
+
+#~ msgid "Failed to rebuild file index"
+#~ msgstr "重建文件索引失败"
+
+#~ msgid "Failed to delete file index"
+#~ msgstr "删除文件索引失败"
+
+#~ msgid "Failed to delete all indexes"
+#~ msgstr "删除所有索引失败"
+
+#~ msgid "Failed to get index status"
+#~ msgstr "获取索引状态失败"
+
+#~ msgid "Failed to get persistence stats"
+#~ msgstr "获取持久化统计信息失败"
+
+#~ msgid "Modern searcher service not available"
+#~ msgstr "现代搜索服务不可用"
+
+#~ msgid "Modern analytics service not available"
+#~ msgstr "现代分析服务不可用"
+
+#~ msgid "Modern indexer service not available"
+#~ msgstr "现代索引服务不可用"
+
+#~ msgid ""
+#~ "GeoLite2 database not found at {0}. Log indexing requires GeoLite2 "
+#~ "database for geographic IP analysis"
+#~ msgstr ""
+#~ "未在 {0} 找到 GeoLite2 数据库。日志索引需要 GeoLite2 数据库进行地理 IP 分"
+#~ "析"
+
+#~ msgid ""
+#~ "Check if the GeoLite2 database is available when log indexing is enabled. "
+#~ "The GeoLite2 database is required for geographic IP analysis in log "
+#~ "indexing. You can download it from the Preference page or manually place "
+#~ "GeoLite2-City.mmdb in the same directory as app.ini"
+#~ msgstr ""
+#~ "当启用日志索引时，检查 GeoLite2 数据库是否可用。GeoLite2 数据库是日志索引"
+#~ "中地理 IP 分析所必需的。您可以在偏好设置页面下载它，或者手动将 GeoLite2-"
+#~ "City.mmdb 放在与 app.ini 相同的目录中"
+
+#~ msgid "GeoLite2 database available"
+#~ msgstr "GeoLite2 数据库可用"
+
+#~ msgid "Inspect access and error logs with structured analysis tools."
+#~ msgstr "使用结构化分析工具查看访问与错误日志。"
+
+#~ msgid "1 core minimum"
+#~ msgstr "至少 1 核"
+
+#~ msgid "2+ cores recommended"
+#~ msgstr "推荐 2+ 核心"
+
+#~ msgid "1GB RAM minimum"
+#~ msgstr "至少 1GB 内存"
+
+#~ msgid "4GB+ RAM recommended"
+#~ msgstr "推荐 4GB 以上内存"
+
+#~ msgid "At least 20GB available disk space"
+#~ msgstr "至少 20GB 可用磁盘空间"
+
+#~ msgid "SSD storage for better I/O performance"
+#~ msgstr "SSD 存储以获得更好的 I/O 性能"
+
+#~ msgid "Production Pipeline"
+#~ msgstr "生产流水线"
+
+#~ msgid "Complete indexing with search capabilities"
+#~ msgstr "具备搜索功能的完整索引"
+
+#~ msgid "Parser Performance"
+#~ msgstr "解析器性能"
+
+#~ msgid "SIMD-optimized stream processing"
+#~ msgstr "SIMD 优化的流处理"
+
+#~ msgid "Memory Design"
+#~ msgstr "内存设计"
+
+#~ msgid "Advanced memory pooling system"
+#~ msgstr "高级内存池系统"
+
+#~ msgid "Enable Advanced Log Indexing"
+#~ msgstr "启用高级日志索引"
+
+#~ msgid "Enable Indexing"
+#~ msgstr "启用索引"
+
+#~ msgid "Resource Usage Warning"
+#~ msgstr "资源使用警告"
+
+#~ msgid ""
+#~ "Enabling advanced log indexing will consume significant computational "
+#~ "resources including CPU and memory. Please ensure your system meets the "
+#~ "minimum requirements before proceeding."
+#~ msgstr ""
+#~ "启用高级日志索引将消耗大量计算资源，包括 CPU 和内存。请确保您的系统满足最"
+#~ "低要求后再继续。"
+
+#~ msgid "System Requirements"
+#~ msgstr "系统要求"
+
+#~ msgid "Minimum:"
+#~ msgstr "最低要求："
+
+#~ msgid "Recommended:"
+#~ msgstr "推荐："
+
+#~ msgid ""
+#~ "* Index files are stored in the \"log-index\" directory within your Nginx "
+#~ "UI config path by default."
+#~ msgstr ""
+#~ "* 索引文件默认存储在您的 Nginx UI 配置路径下的 \"log-index\" 目录中。"
+
+#~ msgid ""
+#~ "If you want to change the storage location, you can set the `IndexPath` "
+#~ "of `nginx_log` section in the Nginx UI config."
+#~ msgstr ""
+#~ "如果要更改存储位置，可以在 Nginx UI 配置中设置 `nginx_log` 部分的 "
+#~ "`IndexPath`。"
+
+#~ msgid "GeoLite2 Database"
+#~ msgstr "GeoLite2 数据库"
+
+#~ msgid "Expected Performance"
+#~ msgstr "预期性能"
+
+#~ msgid ""
+#~ "* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
+#~ "Actual performance may vary based on your hardware configuration."
+#~ msgstr ""
+#~ "* 性能指标基于 Apple M2 Pro （12 核）和 32GB 内存测得。实际性能可能因您的"
+#~ "硬件配置而异。"
+
+#~ msgid "Zero-allocation pipeline"
+#~ msgstr "零分配管道"
+
+#~ msgid "Dynamic shard management"
+#~ msgstr "动态分片管理"
+
+#~ msgid "Advanced search & filtering"
+#~ msgstr "高级搜索和筛选"
+
+#~ msgid "Real-time analytics dashboard"
+#~ msgstr "实时分析仪表板"
+
+#~ msgid "Offline GeoIP analysis"
+#~ msgstr "离线 GeoIP 分析"
+
+#~ msgid "Incremental index scanning"
+#~ msgstr "增量索引扫描"
+
+#~ msgid "Full-text search support"
+#~ msgstr "全文搜索支持"
+
+#~ msgid "Automated log rotation detection"
+#~ msgstr "自动日志轮转检测"
+
+#~ msgid "Cross-file timeline correlation"
+#~ msgstr "跨文件时间线关联"
+
+#~ msgid "Compressed log file support"
+#~ msgstr "压缩日志文件支持"
+
+#~ msgid "Error pattern recognition"
+#~ msgstr "错误模式识别"
+
+#~ msgid "Multi-dimensional data visualization"
+#~ msgstr "多维数据可视化"
+
+#~ msgid "Open Source Limitation"
+#~ msgstr "开源限制"
+
+#~ msgid ""
+#~ "Advanced log indexing features are free and open source for all users"
+#~ msgstr "高级日志索引功能对所有用户免费且开源"
+
+#~ msgid "We do not accept any feature requests"
+#~ msgstr "我们不接受任何功能请求"
+
+#~ msgid "For commercial or professional use, contact"
+#~ msgstr "如需商业或专业用途，请联系"
+
+#~ msgid "Confirmation Required"
+#~ msgstr "需要确认"
+
+#~ msgid ""
+#~ "By enabling advanced indexing, you acknowledge that your system meets the "
+#~ "requirements and understand the performance implications. This will start "
+#~ "indexing existing log files immediately."
+#~ msgstr ""
+#~ "启用高级索引即表示您确认系统满足要求并了解性能影响。这将立即开始对现有日志"
+#~ "文件进行索引。"
+
+#~ msgid "Indexing logs..."
+#~ msgstr "正在索引日志..."
+
+#~ msgid "Queued for indexing..."
+#~ msgstr "排队等待索引中..."
+
+#~ msgid "Index failed, please try rebuilding"
+#~ msgstr "索引失败，请尝试重新构建"
+
+#~ msgid "Log file not indexed yet"
+#~ msgstr "日志文件尚未建立索引"
+
+#~ msgid "Browser"
+#~ msgstr "浏览器"
+
+#~ msgid "Count"
+#~ msgstr "计数"
+
+#~ msgid "Browser Statistics"
+#~ msgstr "浏览器统计"
+
+#~ msgid "Failed to load China map data"
+#~ msgstr "加载中国地图数据失败"
+
+#~ msgid "Failed to load city map data"
+#~ msgstr "加载城市地图数据失败"
+
+#~ msgid "Province / Region"
+#~ msgstr "省份 / 地区"
+
+#~ msgid "City / C1 / C2 / C3 / C4"
+#~ msgstr "城市 / C1 / C2 / C3 / C4"
+
+#~ msgid "City"
+#~ msgstr "城市"
+
+#~ msgid "Top 10 Provinces / Regions"
+#~ msgstr "前 10 个省份 / 地区"
+
+#~ msgid "Top 10 City Labels (City + C1 + C2 + C3 + C4)"
+#~ msgstr "前 10 个城市标签（城市 + C1 + C2 + C3 + C4）"
+
+#~ msgid "Top 10 Cities"
+#~ msgstr "前 10 个城市"
+
+#~ msgid "China Access Map"
+#~ msgstr "中国访问地图"
+
+#~ msgid "No China geographic data available"
+#~ msgstr "无中国地理数据"
+
+#~ msgid "Daily Access Trends"
+#~ msgstr "每日访问趋势"
+
+#~ msgid "Date"
+#~ msgstr "日期"
+
+#~ msgid "Last 7 days"
+#~ msgstr "最近 7 天"
+
+#~ msgid "Last 14 days"
+#~ msgstr "过去 14 天"
+
+#~ msgid "Last 30 days"
+#~ msgstr "过去 30 天"
+
+#~ msgid "Last 90 days"
+#~ msgstr "过去 90 天"
+
+#~ msgid "This month"
+#~ msgstr "本月"
+
+#~ msgid "Last month"
+#~ msgstr "上个月"
+
+#~ msgid "Date Range"
+#~ msgstr "日期范围"
+
+#~ msgid "Quick Select"
+#~ msgstr "快速选择"
+
+#~ msgid "Start Date"
+#~ msgstr "开始日期"
+
+#~ msgid "End Date"
+#~ msgstr "结束日期"
+
+#~ msgid "Device Type"
+#~ msgstr "设备类型"
+
+#~ msgid "Device Statistics"
+#~ msgstr "设备统计"
+
+#~ msgid "Global Map"
+#~ msgstr "全球地图"
+
+#~ msgid "China Map"
+#~ msgstr "中国地图"
+
+#~ msgid "Global Access Map"
+#~ msgstr "全球访问地图"
+
+#~ msgid "24-Hour UV/PV Statistics"
+#~ msgstr "24 小时 UV/PV 统计"
+
+#~ msgid "Operating System"
+#~ msgstr "操作系统"
+
+#~ msgid "Operating System Statistics"
+#~ msgstr "操作系统统计"
+
+#~ msgid "Total PV"
+#~ msgstr "总访问量"
+
+#~ msgid "Total UV"
+#~ msgstr "总 UV 数"
+
+#~ msgid "Total Traffic"
+#~ msgstr "总流量"
+
+#~ msgid "Peak Hour"
+#~ msgstr "高峰时段"
+
+#~ msgid "Avg QPS"
+#~ msgstr "平均 QPS"
+
+#~ msgid "Peak QPS"
+#~ msgstr "峰值 QPS"
+
+#~ msgid "Avg Daily PV"
+#~ msgstr "平均每日 PV"
+
+#~ msgid "Avg Daily UV"
+#~ msgstr "日均 UV"
+
+#~ msgid "TOP 10 URLs"
+#~ msgstr "前 10 个 URL"
+
+#~ msgid "Country / Region"
+#~ msgstr "国家 / 地区"
+
+#~ msgid "No geographic data available"
+#~ msgstr "无可用地理数据"
+
+#~ msgid "Top 10 Countries / Regions"
+#~ msgstr "前 10 个国家 / 地区"
+
+#~ msgid ""
+#~ "Explore access traffic logs with filters and detailed request information."
+#~ msgstr "按筛选条件查看访问流量日志及详细请求信息。"
+
+#~ msgid ""
+#~ "Manage indexed log files and jump into structured analysis workflows."
+#~ msgstr "管理已索引日志文件并进入结构化分析流程。"
+
+#~ msgid "Scanning"
+#~ msgstr "扫描中"
+
+#~ msgid "Indexing"
+#~ msgstr "索引中"
+
+#~ msgid "Computing Statistics"
+#~ msgstr "计算统计信息"
+
+#~ msgid "Rebuild Index"
+#~ msgstr "重建索引"
+
+#~ msgid ""
+#~ "This will rebuild the entire log index. All existing index data will be "
+#~ "deleted and rebuilt from scratch. This may take some time. Continue?"
+#~ msgstr ""
+#~ "这将重建整个日志索引。所有现有索引数据将被删除并从头开始重建。这可能需要一"
+#~ "些时间。是否继续？"
+
+#~ msgid "Index and statistics rebuild started successfully"
+#~ msgstr "索引和统计重建已成功启动"
+
+#~ msgid "Rebuild File Index"
+#~ msgstr "重建文件索引"
+
+#~ msgid "This will rebuild the index data for this specific file: %{path}"
+#~ msgstr "这将重建此特定文件的索引数据：%{path}"
+
+#~ msgid "File index rebuild started successfully for %{path}"
+#~ msgstr "已成功开始为 %{path} 重建文件索引"
+
+#~ msgid "Rebuild All Index"
+#~ msgstr "重建所有索引"
+
+#~ msgid "Structured"
+#~ msgstr "结构化"
+
+#~ msgid "Index Status"
+#~ msgstr "索引状态"
+
+#~ msgid "Indexed"
+#~ msgstr "已索引"
+
+#~ msgid "Index failed"
+#~ msgstr "索引失败"
+
+#~ msgid "Queued"
+#~ msgstr "已排队"
+
+#~ msgid "Not Indexed"
+#~ msgstr "未索引"
+
+#~ msgid "Last Indexed"
+#~ msgstr "最后索引时间"
+
+#~ msgid "Document Count"
+#~ msgstr "文档数量"
+
+#~ msgid "Time Range"
+#~ msgstr "时间范围"
+
+#~ msgid "Advanced indexing enabled successfully"
+#~ msgstr "高级索引已成功启用"
+
+#~ msgid "Index rebuild initiated"
+#~ msgstr "索引重建已启动"
+
+#~ msgid "Advanced indexing enabled but failed to start rebuild"
+#~ msgstr "高级索引已启用但未能开始重建"
+
+#~ msgid "Failed to enable advanced indexing"
+#~ msgstr "启用高级索引失败"
+
+#~ msgid "Disable Advanced Indexing"
+#~ msgstr "禁用高级索引"
+
+#~ msgid ""
+#~ "Advanced log indexing will stop and structured log analytics will be "
+#~ "unavailable. Existing index files will not be deleted. Continue?"
+#~ msgstr ""
+#~ "高级日志索引将停止，结构化日志分析将不可用。现有索引文件不会被删除。是否继"
+#~ "续？"
+
+#~ msgid "Advanced indexing disabled successfully"
+#~ msgstr "高级索引已成功禁用"
+
+#~ msgid "Failed to disable advanced indexing"
+#~ msgstr "停用高级索引失败"
+
+#~ msgid "Enable Advanced Indexing"
+#~ msgstr "启用高级索引"
+
+#~ msgid "Rebuild"
+#~ msgstr "重建"
+
+#~ msgid "Search Filters"
+#~ msgstr "搜索筛选器"
+
+#~ msgid "Full Text Search"
+#~ msgstr "全文搜索"
+
+#~ msgid "Search in log content..."
+#~ msgstr "在日志内容中搜索..."
+
+#~ msgid "Type or select status codes"
+#~ msgstr "输入或选择状态码"
+
+#~ msgid "Request Path"
+#~ msgstr "请求路径"
+
+#~ msgid "Type or select browser"
+#~ msgstr "输入或选择浏览器"
+
+#~ msgid "Type or select OS"
+#~ msgstr "输入或选择操作系统"
+
+#~ msgid "Device"
+#~ msgstr "设备"
+
+#~ msgid "Type or select device"
+#~ msgstr "输入或选择设备"
+
+#~ msgid "Referer"
+#~ msgstr "来源"
+
+#~ msgid "https://..."
+#~ msgstr "https://..."
+
+#~ msgid "Mozilla/5.0..."
+#~ msgstr "Mozilla/5.0..."
+
+#~ msgid "Request"
+#~ msgstr "请求"
+
+#~ msgid "Last 15 minutes"
+#~ msgstr "过去 15 分钟"
+
+#~ msgid "Last 30 minutes"
+#~ msgstr "过去 30 分钟"
+
+#~ msgid "Last hour"
+#~ msgstr "过去 1 小时"
+
+#~ msgid "Last 4 hours"
+#~ msgstr "过去 4 小时"
+
+#~ msgid "Last 12 hours"
+#~ msgstr "过去 12 小时"
+
+#~ msgid "Last 24 hours"
+#~ msgstr "过去 24 小时"
+
+#~ msgid "No logs found in the selected time range."
+#~ msgstr "在选定的时间范围内未找到日志。"
+
+#~ msgid ""
+#~ "Background indexing in progress. Data will be updated automatically when "
+#~ "ready."
+#~ msgstr "后台索引正在进行中。数据将在准备就绪后自动更新。"
+
+#~ msgid "Log indexing completed! Loading updated data..."
+#~ msgstr "日志索引完成！正在加载更新数据..."
+
+#~ msgid "Error Log Detected"
+#~ msgstr "检测到错误日志"
+
+#~ msgid ""
+#~ "Error logs do not support structured analysis as they contain free-form "
+#~ "text messages."
+#~ msgstr "错误日志不支持结构化分析，因为它们包含自由格式的文本消息。"
+
+#~ msgid ""
+#~ "For error logs, please use the Raw Log Viewer for better viewing "
+#~ "experience."
+#~ msgstr "对于错误日志，请使用原始日志查看器以获得更好的查看体验。"
+
+#~ msgid "Go to Raw Log Viewer"
+#~ msgstr "转到原始日志查看器"
+
+#~ msgid "Sorted by"
+#~ msgstr "排序方式"
+
+#~ msgid "Ascending"
+#~ msgstr "升序"
+
+#~ msgid "Descending"
+#~ msgstr "降序"
+
+#~ msgid "Total Entries"
+#~ msgstr "总条目数"
+
+#~ msgid "PV"
+#~ msgstr "页面浏览量"
+
+#~ msgid "UV"
+#~ msgstr "独立访客"
+
+#~ msgid ""
+#~ "The result set is too large to sum exactly, this value is extrapolated "
+#~ "from a sample"
+#~ msgstr "结果集过大，无法精确求和，该数值基于样本数据推算得出。"
+
+#~ msgid "Traffic"
+#~ msgstr "流量"
+
+#~ msgid "Unique Pages"
+#~ msgstr "独立页面"
+
+#~ msgid "Avg/PV"
+#~ msgstr "平均/PV"
+
+#~ msgid "%{start}-%{end} of %{total} items"
+#~ msgstr "第 %{start}-%{end} 条，共 %{total} 条"
+
+#~ msgid "No entries in current page"
+#~ msgstr "当前页面没有条目"
+
+#~ msgid "Try adjusting your search criteria or navigate to different pages."
+#~ msgstr "尝试调整搜索条件或导航到其他页面。"
+
+#~ msgid "No structured log data available"
+#~ msgstr "无结构化日志数据可用"
+
+#~ msgid "Try adjusting your search criteria or time range."
+#~ msgstr "尝试调整您的搜索条件或时间范围。"
+
+#~ msgid "Search range"
+#~ msgstr "搜索范围"
+
+#~ msgid "From indexed logs"
+#~ msgstr "来自已索引的日志"
+
+#~ msgid "Default range"
+#~ msgstr "默认范围"
+
+#~ msgid "Reset Search"
+#~ msgstr "重置搜索"
+
+#~ msgid "Log file not available"
+#~ msgstr "日志文件不可用"
+
+#~ msgid ""
+#~ "Used for downloads from GitHub, such as upgrades and the GeoLite database."
+#~ msgstr "用于从 GitHub 下载内容，例如升级包和 GeoLite 数据库。"
+
+#~ msgid ""
+#~ "The GeoLite2 database provides geographic information for IP addresses. "
+#~ "This is used for offline geographic analysis in log analytics."
+#~ msgstr ""
+#~ "GeoLite2 数据库为 IP 地址提供地理信息。这用于日志分析中的离线地理分析。"
+
+#~ msgid "Custom MMDB"
+#~ msgstr "自定义 MMDB"
+
+#~ msgid "A custom database replaces the GeoLite2 download."
+#~ msgstr "已使用自定义数据库，无需下载 GeoLite2。"
+
+#~ msgid "Map Boundary Directory"
+#~ msgstr "地图边界目录"
+
+#~ msgid ""
+#~ "Keep files with names like 100000_full.json in this directory. Only the "
+#~ "world map is provided by default."
+#~ msgstr "请将类似 100000_full.json 的文件放在此目录，默认只提供世界地图。"
+
+#~ msgid "GeoLite"
+#~ msgstr "GeoLite"
+
+#~ msgid "Geographic database and map files used by log analytics."
+#~ msgstr "日志分析使用的地理数据库与地图文件。"
+
+#~ msgid "Go to logs"
+#~ msgstr "前往日志"
+
+#~ msgid "Database"
+#~ msgstr "数据库"
+
+#~ msgid "Maps"
+#~ msgstr "地图"
+
+#~ msgid ""
+#~ "Please download China and province boundary files yourself and place them "
+#~ "in this directory."
+#~ msgstr "请自行下载中国及各省份边界文件并放入此目录。"
+
+#~ msgid "Template reference"
+#~ msgstr "模板参考"
+
+#~ msgid "No valid access log path found for this site"
+#~ msgstr "未找到该站点的有效访问日志路径"
+
+#~ msgid ""
+#~ "This site uses the default access log, which may contain traffic from "
+#~ "other sites"
+#~ msgstr "此站点使用默认访问日志，其中可能包含来自其他站点的流量。"
+
+#~ msgid "Analytics"
+#~ msgstr "分析"
 
 #~ msgid "[Nginx UI] Environment variables cleaned"
 #~ msgstr "[Nginx UI] 环境变量已清理"

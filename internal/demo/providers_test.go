@@ -174,9 +174,6 @@ func TestAccessLogFixtureIsWellFormed(t *testing.T) {
 	lines := strings.Split(strings.TrimRight(string(data), "\n"), "\n")
 	assert.Len(t, lines, logLineCount)
 
-	// Every client must be an address the geo provider will answer for,
-	// otherwise the maps stay empty no matter how many lines exist.
-	svc := &geoService{}
 	combined := regexp.MustCompile(`^(\S+) - - \[([^\]]+)\] "(\w+) (\S+) HTTP/1\.1" (\d{3}) (\d+) "([^"]*)" "([^"]*)" "-"$`)
 	for i, line := range lines {
 		m := combined.FindStringSubmatch(line)
@@ -188,10 +185,6 @@ func TestAccessLogFixtureIsWellFormed(t *testing.T) {
 
 		_, err = time.Parse("02/Jan/2006:15:04:05 -0700", m[2])
 		assert.NoError(t, err, line)
-
-		got, err := svc.Search(m[1])
-		require.NoError(t, err)
-		require.NotNil(t, got, "geo provider declined %s", m[1])
 	}
 }
 
