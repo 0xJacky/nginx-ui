@@ -5,6 +5,7 @@ import { datetimeRender, StdCurd } from '@uozi-admin/curd'
 import { Tag } from 'antdv-next'
 
 import acme_user from '@/api/acme_user'
+import { SensitiveInput } from '@/components/SensitiveString'
 import { CA_SERVER_OPTIONS } from '@/constants/acme'
 
 const { message } = App.useApp()
@@ -38,6 +39,7 @@ const columns: ComputedRef<StdTableColumn[]> = computed(() => [
   {
     title: () => $gettext('CA Dir'),
     dataIndex: 'ca_dir',
+    hiddenInTable: true,
     sorter: true,
     pure: true,
     edit: {
@@ -79,11 +81,19 @@ const columns: ComputedRef<StdTableColumn[]> = computed(() => [
     dataIndex: 'eab_key_id',
     hiddenInTable: true,
     edit: {
-      type: 'input',
-      hint: $gettext('External Account Binding Key ID (optional). Required for some ACME providers like ZeroSSL.'),
-      input: {
-        placeholder: $gettext('Leave blank if not required by your ACME provider'),
+      type: (context: { formData: AcmeUser }) => {
+        if (context.formData.eab_key_id === undefined)
+          context.formData.eab_key_id = ''
+
+        return (
+          <SensitiveInput
+            v-model={context.formData.eab_key_id}
+            placeholder={$gettext('Leave blank if not required by your ACME provider')}
+            resolve={() => Promise.resolve(context.formData.eab_key_id || '')}
+          />
+        )
       },
+      hint: $gettext('External Account Binding Key ID (optional). Required for some ACME providers like ZeroSSL.'),
     },
     hiddenInDetail: true,
   },
@@ -92,11 +102,19 @@ const columns: ComputedRef<StdTableColumn[]> = computed(() => [
     dataIndex: 'eab_hmac_key',
     hiddenInTable: true,
     edit: {
-      type: 'input',
-      hint: $gettext('External Account Binding HMAC Key (optional). Should be in Base64 URL encoding format.'),
-      input: {
-        placeholder: $gettext('Leave blank if not required by your ACME provider'),
+      type: (context: { formData: AcmeUser }) => {
+        if (context.formData.eab_hmac_key === undefined)
+          context.formData.eab_hmac_key = ''
+
+        return (
+          <SensitiveInput
+            v-model={context.formData.eab_hmac_key}
+            placeholder={$gettext('Leave blank if not required by your ACME provider')}
+            resolve={() => Promise.resolve(context.formData.eab_hmac_key || '')}
+          />
+        )
       },
+      hint: $gettext('External Account Binding HMAC Key (optional). Should be in Base64 URL encoding format.'),
     },
     hiddenInDetail: true,
   },
