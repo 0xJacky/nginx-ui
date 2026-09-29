@@ -160,11 +160,14 @@ type DNS01ProviderField struct {
 	Link string `json:"link,omitempty"`
 }
 
-// DNS01ProviderMethod is one way to sign in, naming the credential fields it uses.
+// DNS01ProviderMethod is one way to sign in, naming the credential fields it
+// uses. Fields may be empty. Values are fixed credentials the host stores when
+// the method is selected; the user never sees them.
 type DNS01ProviderMethod struct {
-	Name        string   `json:"name"`
-	Recommended bool     `json:"recommended,omitempty"`
-	Fields      []string `json:"fields,omitempty"`
+	Name        string            `json:"name"`
+	Recommended bool              `json:"recommended,omitempty"`
+	Fields      []string          `json:"fields,omitempty"`
+	Values      map[string]string `json:"values,omitempty"`
 }
 
 // DNS01ProviderLinks points at vendor documentation.

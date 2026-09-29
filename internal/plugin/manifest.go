@@ -13,6 +13,7 @@ import (
 	"runtime"
 	"slices"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
@@ -649,7 +650,9 @@ func validateDNS01(d *protocol.ManifestDNS01) error {
 
 // dns01FormProblems checks the form of a provider shallowly. The form is
 // required but may list no fields, keys are unique, groups and units are known,
-// method fields are credential fields and at most one method is recommended.
+// method fields are credential fields, method values only target credential
+// fields another method lists, no two methods are the same and at most one
+// method is recommended.
 func dns01FormProblems(p protocol.DNS01Provider) []string {
 	where := fmt.Sprintf("dns01 provider %q form", p.Code)
 	form := p.Form
@@ -687,6 +690,14 @@ func dns01FormProblems(p protocol.DNS01Provider) []string {
 	}
 	recommended := 0
 	names := make(map[string]struct{}, len(form.Methods))
+	signatures := make(map[string]string, len(form.Methods))
+	// A fixed value may target a field only when some method lets the user fill it.
+	methodFields := make(map[string]struct{})
+	for _, method := range form.Methods {
+		for _, key := range method.Fields {
+			methodFields[key] = struct{}{}
+		}
+	}
 	for i, method := range form.Methods {
 		if method.Name == "" {
 			problems = append(problems, fmt.Sprintf("%s: methods[%d].name is required", where, i))
@@ -697,8 +708,29 @@ func dns01FormProblems(p protocol.DNS01Provider) []string {
 		if method.Recommended {
 			recommended++
 		}
-		if len(method.Fields) == 0 {
-			problems = append(problems, fmt.Sprintf("%s: method %q lists no fields", where, method.Name))
+		for key := range method.Values {
+			if key == "" {
+				problems = append(problems, fmt.Sprintf("%s: method %q has a value with an empty key", where, method.Name))
+				continue
+			}
+			group, isField := groups[key]
+			switch {
+			case !isField:
+			case group != protocol.DNS01FieldGroupCredential:
+				problems = append(problems, fmt.Sprintf("%s: method %q sets value %q that is not a credential field", where, method.Name, key))
+			case slices.Contains(method.Fields, key):
+				problems = append(problems, fmt.Sprintf("%s: method %q both lists and sets %q", where, method.Name, key))
+			default:
+				if _, ok := methodFields[key]; !ok {
+					problems = append(problems, fmt.Sprintf("%s: method %q sets value %q, a field no method lists", where, method.Name, key))
+				}
+			}
+		}
+		sig := methodSignature(method)
+		if other, dup := signatures[sig]; dup {
+			problems = append(problems, fmt.Sprintf("%s: methods %q and %q use the same fields and values", where, other, method.Name))
+		} else {
+			signatures[sig] = method.Name
 		}
 		for _, key := range method.Fields {
 			group, ok := groups[key]
@@ -713,6 +745,25 @@ func dns01FormProblems(p protocol.DNS01Provider) []string {
 		problems = append(problems, fmt.Sprintf("%s: %d methods are recommended, at most one may be", where, recommended))
 	}
 	return problems
+}
+
+// methodSignature identifies a method by its field set and fixed values.
+func methodSignature(method protocol.DNS01ProviderMethod) string {
+	fields := slices.Clone(method.Fields)
+	slices.Sort(fields)
+	fields = slices.Compact(fields)
+	keys := slices.Sorted(maps.Keys(method.Values))
+	var b strings.Builder
+	for _, key := range fields {
+		b.WriteString(strconv.Quote(key))
+	}
+	b.WriteByte('|')
+	for _, key := range keys {
+		b.WriteString(strconv.Quote(key))
+		b.WriteByte('=')
+		b.WriteString(strconv.Quote(method.Values[key]))
+	}
+	return b.String()
 }
 
 func validatePermissions(permissions []string) error {
