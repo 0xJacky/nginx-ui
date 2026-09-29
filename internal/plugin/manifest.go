@@ -640,8 +640,79 @@ func validateDNS01(d *protocol.ManifestDNS01) error {
 			return invalidManifest("dns01 provider code %q is declared twice", p.Code)
 		}
 		seen[p.Code] = struct{}{}
+		if problems := dns01FormProblems(p); len(problems) > 0 {
+			return invalidManifest("%s", problems[0])
+		}
 	}
 	return nil
+}
+
+// dns01FormProblems checks the form of a provider shallowly. The form is
+// required but may list no fields, keys are unique, groups and units are known,
+// method fields are credential fields and at most one method is recommended.
+func dns01FormProblems(p protocol.DNS01Provider) []string {
+	where := fmt.Sprintf("dns01 provider %q form", p.Code)
+	form := p.Form
+	if form == nil {
+		return []string{where + " is required"}
+	}
+	var problems []string
+
+	groups := make(map[string]string, len(form.Fields))
+	for i, field := range form.Fields {
+		if field.Key == "" {
+			problems = append(problems, fmt.Sprintf("%s: fields[%d].key is required", where, i))
+			continue
+		}
+		if _, dup := groups[field.Key]; dup {
+			problems = append(problems, fmt.Sprintf("%s: field %q is declared twice", where, field.Key))
+			continue
+		}
+		if field.Label == "" {
+			problems = append(problems, fmt.Sprintf("%s: field %q needs a label", where, field.Key))
+		}
+		switch field.Group {
+		case protocol.DNS01FieldGroupCredential, protocol.DNS01FieldGroupSetting:
+		default:
+			problems = append(problems, fmt.Sprintf("%s: field %q has unknown group %q", where, field.Key, field.Group))
+		}
+		if field.Unit != "" && field.Unit != protocol.DNS01FieldUnitSeconds {
+			problems = append(problems, fmt.Sprintf("%s: field %q has unknown unit %q", where, field.Key, field.Unit))
+		}
+		groups[field.Key] = field.Group
+	}
+
+	if len(form.Methods) == 1 {
+		problems = append(problems, fmt.Sprintf("%s: methods must be absent or list at least two ways to sign in", where))
+	}
+	recommended := 0
+	names := make(map[string]struct{}, len(form.Methods))
+	for i, method := range form.Methods {
+		if method.Name == "" {
+			problems = append(problems, fmt.Sprintf("%s: methods[%d].name is required", where, i))
+		} else if _, dup := names[method.Name]; dup {
+			problems = append(problems, fmt.Sprintf("%s: method %q is declared twice", where, method.Name))
+		}
+		names[method.Name] = struct{}{}
+		if method.Recommended {
+			recommended++
+		}
+		if len(method.Fields) == 0 {
+			problems = append(problems, fmt.Sprintf("%s: method %q lists no fields", where, method.Name))
+		}
+		for _, key := range method.Fields {
+			group, ok := groups[key]
+			if !ok {
+				problems = append(problems, fmt.Sprintf("%s: method %q uses field %q that is not in fields", where, method.Name, key))
+			} else if group != protocol.DNS01FieldGroupCredential {
+				problems = append(problems, fmt.Sprintf("%s: method %q uses field %q that is not a credential", where, method.Name, key))
+			}
+		}
+	}
+	if recommended > 1 {
+		problems = append(problems, fmt.Sprintf("%s: %d methods are recommended, at most one may be", where, recommended))
+	}
+	return problems
 }
 
 func validatePermissions(permissions []string) error {

@@ -9,6 +9,7 @@ import (
 	"context"
 	"log/slog"
 	"maps"
+	"slices"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -76,12 +77,10 @@ func (s *dns01Source) Providers() []dns.ProviderInfo {
 			continue
 		}
 		out = append(out, dns.ProviderInfo{
-			Config: dns.Config{
-				Name:          entry.Provider.Name,
-				Code:          entry.Provider.Code,
-				Configuration: toConfiguration(entry.Provider.Configuration),
-				Links:         toLinks(entry.Provider.Links),
-			},
+			Name:     entry.Provider.Name,
+			Code:     entry.Provider.Code,
+			Links:    toLinks(entry.Provider.Links),
+			Form:     toForm(entry.Provider.Form),
 			PluginID: entry.PluginID,
 			DNS01:    true,
 		})
@@ -408,19 +407,37 @@ func mergeConfiguration(cfg dns.Configuration) map[string]string {
 	return config
 }
 
-func toConfiguration(c *protocol.DNS01ProviderConfig) *dns.Configuration {
-	if c == nil {
+func toForm(f *protocol.DNS01ProviderForm) *dns.Form {
+	if f == nil {
 		return nil
 	}
-	return &dns.Configuration{
-		Credentials: maps.Clone(c.Credentials),
-		Additional:  maps.Clone(c.Additional),
+	form := &dns.Form{}
+	for _, field := range f.Fields {
+		form.Fields = append(form.Fields, dns.FormField{
+			Key:      field.Key,
+			Label:    field.Label,
+			Help:     field.Help,
+			Group:    field.Group,
+			Optional: field.Optional,
+			Secret:   field.Secret,
+			Default:  field.Default,
+			Unit:     field.Unit,
+			Link:     field.Link,
+		})
 	}
+	for _, method := range f.Methods {
+		form.Methods = append(form.Methods, dns.FormMethod{
+			Name:        method.Name,
+			Recommended: method.Recommended,
+			Fields:      slices.Clone(method.Fields),
+		})
+	}
+	return form
 }
 
-func toLinks(l *protocol.DNS01ProviderLinks) *dns.Links {
+func toLinks(l *protocol.DNS01ProviderLinks) *dns.ProviderLinks {
 	if l == nil {
 		return nil
 	}
-	return &dns.Links{API: l.API, GoClient: l.GoClient}
+	return &dns.ProviderLinks{API: l.API}
 }
