@@ -3,6 +3,8 @@ package plugin
 import (
 	"bufio"
 	"context"
+	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"io"
@@ -62,7 +64,13 @@ const (
 	EnvPluginAPIVersion = "NGINX_UI_PLUGIN_API_VERSION"
 	EnvPluginDataDir    = "NGINX_UI_PLUGIN_DATA_DIR"
 	EnvHostVersion      = "NGINX_UI_VERSION"
+	// EnvPluginHTTPSecret carries the per process secret a plugin serving the
+	// http capability requires on every request, see httpSecretBytes.
+	EnvPluginHTTPSecret = "NGINX_UI_PLUGIN_HTTP_SECRET"
 )
+
+// httpSecretBytes is the size of the random secret behind EnvPluginHTTPSecret.
+const httpSecretBytes = 32
 
 // State is the runtime state of one supervised plugin process.
 type State string
@@ -127,6 +135,9 @@ type process struct {
 	// hung records that the ping loop gave up on this process.
 	hung       atomic.Bool
 	initResult protocol.InitializeResult
+	// httpSecret is the secret this process was started with, empty when it
+	// does not serve the http capability on a listener.
+	httpSecret string
 	// grpc carries capability calls when the plugin serves gRPC. It is set
 	// before the process is published.
 	grpc *grpcRoute
@@ -244,6 +255,31 @@ func (s *Supervisor) InitializeResult() (protocol.InitializeResult, bool) {
 		return protocol.InitializeResult{}, false
 	}
 	return s.proc.initResult, true
+}
+
+// HTTPSecret returns the secret the running process expects on every http
+// request, and false when there is no process or it has no such listener.
+func (s *Supervisor) HTTPSecret() (string, bool) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.proc == nil || s.proc.httpSecret == "" {
+		return "", false
+	}
+	return s.proc.httpSecret, true
+}
+
+// newHTTPSecret returns a fresh secret for a plugin that serves the http
+// capability on a listener of its own, and an empty string for any other.
+func (s *Supervisor) newHTTPSecret() (string, error) {
+	m := s.cfg.Manifest
+	if m == nil || m.HTTP == nil || m.HTTP.Listen != "unix" || !slices.Contains(m.Capabilities, protocol.CapabilityHTTP) {
+		return "", nil
+	}
+	raw := make([]byte, httpSecretBytes)
+	if _, err := rand.Read(raw); err != nil {
+		return "", fmt.Errorf("generate the http secret: %w", err)
+	}
+	return base64.RawURLEncoding.EncodeToString(raw), nil
 }
 
 // Resources reports the limits of the plugin process and whether the running
@@ -430,7 +466,11 @@ func (s *Supervisor) spawn(ctx context.Context) error {
 
 	cmd := exec.Command(s.cfg.Argv[0], s.cfg.Argv[1:]...)
 	cmd.Dir = s.cfg.Dir
-	cmd.Env = s.env()
+	httpSecret, err := s.newHTTPSecret()
+	if err != nil {
+		return err
+	}
+	cmd.Env = s.env(httpSecret)
 
 	stdinR, stdinW, err := os.Pipe()
 	if err != nil {
@@ -456,7 +496,7 @@ func (s *Supervisor) spawn(ctx context.Context) error {
 	// The child owns its ends now, the parent keeps only the other half.
 	closeAll(stdinR, stdoutW, stderrW)
 
-	p := &process{cmd: cmd, stdin: stdinW, stdout: stdoutR, done: make(chan struct{}), cgroup: cg}
+	p := &process{cmd: cmd, stdin: stdinW, stdout: stdoutR, done: make(chan struct{}), cgroup: cg, httpSecret: httpSecret}
 	p.conn = jsonrpc.NewConn(stdoutR, stdinW, jsonrpc.WithLogger(s.log))
 	if s.cfg.HostHandlers != nil {
 		s.cfg.HostHandlers(p.conn)
@@ -691,14 +731,47 @@ var hostOnlyEnv = []string{
 	"LEGO_DISABLE_CNAME_SUPPORT",
 }
 
+// proxyEnv are the variables standard HTTP clients read to find a proxy, in
+// both spellings.
+var proxyEnv = []string{
+	"HTTP_PROXY", "http_proxy",
+	"HTTPS_PROXY", "https_proxy",
+	"NO_PROXY", "no_proxy",
+}
+
+// defaultNoProxy keeps traffic to the machine itself off the proxy.
+const defaultNoProxy = "localhost,127.0.0.1,::1"
+
+// hostHTTPProxy returns the outbound proxy of the host configuration, empty
+// when none is set. It is read on every spawn, so a restart picks up a change.
+var hostHTTPProxy = func() string {
+	return strings.TrimSpace(settings.HTTPSettings.HTTPProxy)
+}
+
 // env builds the child environment. Credentials never travel this way: the
 // host configuration variables, which carry the node secret among others,
-// are dropped along with hostOnlyEnv.
-func (s *Supervisor) env() []string {
+// are dropped along with hostOnlyEnv. The proxy variables follow the network
+// permission: without it the plugin gets none, not even an inherited one, and
+// with it the proxy of the host configuration, when one is set, replaces them.
+func (s *Supervisor) env(httpSecret string) []string {
 	parent := os.Environ()
-	env := make([]string, 0, len(parent)+4+len(s.extraEnv))
+	hasNetwork := slices.Contains(s.cfg.Permissions, protocol.PermissionNetwork)
+	proxy := ""
+	if hasNetwork {
+		proxy = hostHTTPProxy()
+	}
+	dropProxy := !hasNetwork || proxy != ""
+
+	env := make([]string, 0, len(parent)+4+len(proxyEnv)+len(s.extraEnv))
+	noProxy := defaultNoProxy
 	for _, entry := range parent {
 		if isHostOnlyEnv(entry) {
+			continue
+		}
+		if dropProxy && isProxyEnv(entry) {
+			if key, value, _ := strings.Cut(entry, "="); proxy != "" && value != "" && strings.EqualFold(key, "NO_PROXY") {
+				noProxy = mergeNoProxy(noProxy, value)
+			}
 			continue
 		}
 		env = append(env, entry)
@@ -709,7 +782,40 @@ func (s *Supervisor) env() []string {
 		EnvPluginDataDir+"="+s.cfg.DataDir,
 		EnvHostVersion+"="+s.cfg.HostVersion,
 	)
+	if httpSecret != "" {
+		env = append(env, EnvPluginHTTPSecret+"="+httpSecret)
+	}
+	if proxy != "" {
+		env = append(env,
+			"HTTP_PROXY="+proxy, "http_proxy="+proxy,
+			"HTTPS_PROXY="+proxy, "https_proxy="+proxy,
+			"NO_PROXY="+noProxy, "no_proxy="+noProxy,
+		)
+	}
 	return append(env, s.extraEnv...)
+}
+
+func isProxyEnv(entry string) bool {
+	key, _, ok := strings.Cut(entry, "=")
+	return ok && slices.Contains(proxyEnv, key)
+}
+
+// mergeNoProxy appends the entries of extra that base does not list yet.
+func mergeNoProxy(base, extra string) string {
+	seen := map[string]bool{}
+	for _, item := range strings.Split(base, ",") {
+		seen[strings.TrimSpace(item)] = true
+	}
+	merged := base
+	for _, item := range strings.Split(extra, ",") {
+		item = strings.TrimSpace(item)
+		if item == "" || seen[item] {
+			continue
+		}
+		seen[item] = true
+		merged += "," + item
+	}
+	return merged
 }
 
 func isHostOnlyEnv(entry string) bool {
