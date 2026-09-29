@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
 	"github.com/0xJacky/Nginx-UI/internal/process"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
 	"github.com/0xJacky/Nginx-UI/internal/system"
@@ -257,8 +258,22 @@ var upstreamCheckSection = settingsSection[settings.UpstreamCheck]{
 }
 
 var pluginSection = settingsSection[settings.Plugin]{
-	name:   "plugin",
-	target: func() *settings.Plugin { return settings.PluginSettings },
+	name:     "plugin",
+	target:   func() *settings.Plugin { return settings.PluginSettings },
+	validate: validatePluginSettings,
+}
+
+// validatePluginSettings rejects a trusted publisher whose key does not parse
+// or repeats another one, so a typo cannot reach the install checks.
+func validatePluginSettings(payload *settings.Plugin) error {
+	keys := payload.TrustedKeys()
+	if len(keys) == 0 {
+		return nil
+	}
+	if _, err := pkgsign.ParseTrustedKeys(keys); err != nil {
+		return ErrInvalidTrustedPublisher
+	}
+	return nil
 }
 
 // sectionHandlers maps each writable section to its save handler. The keys

@@ -62,20 +62,19 @@ export function buildSettingCatalog(): SettingCatalogEntry[] {
     { path: 'cert.renewal_interval', section: 'cert', title: $gettext('Certificate Renewal Threshold'), description: $gettext('Renew certificates when their remaining validity is less than or equal to this value.') },
 
     // Plugin
-    { path: 'plugin.enabled', section: 'plugin', title: $gettext('Plugin System'), description: $gettext('Turning it off stops every plugin and hides the plugin pages. Takes effect after a restart.') },
+    { path: 'plugin.enabled', section: 'plugin', title: $gettext('Plugin System'), description: $gettext('Turning it off stops every plugin and hides the plugin pages.') },
     { path: 'plugin.dir', section: 'plugin', title: $gettext('Plugin Directory') },
     { path: 'plugin.default_sync_policy', section: 'plugin', title: $gettext('Default Sync Policy'), description: $gettext('Applied to newly installed plugins. Automatic keeps the plugin installed on the child nodes.') },
     { path: 'plugin.marketplace_enabled', section: 'plugin', title: $gettext('Enable Marketplace') },
     { path: 'plugin.marketplace_sources', section: 'plugin', title: $gettext('Sources'), description: $gettext('Managed on the marketplace page. Empty means the official catalog.') },
     { path: 'plugin.allow_community_plugins', section: 'plugin', title: $gettext('Allow Community Plugins'), description: $gettext('Community plugins are published by third parties and ask for a confirmation before they install.') },
     { path: 'plugin.auto_update', section: 'plugin', title: $gettext('Automatic Updates'), description: $gettext('Updates official and partner plugins on their own while the permissions they ask for stay the same.') },
-    { path: 'plugin.allow_insecure_download_url', section: 'plugin', title: $gettext('Allow Insecure Download URLs'), description: $gettext('Accepts plain http catalog and download addresses. Only for a private catalog on a trusted network.') },
     { path: 'plugin.allow_uploads', section: 'plugin', title: $gettext('Allow Uploads'), description: $gettext('Allows installing packages uploaded from the browser or the command line.') },
+    { path: 'plugin.trusted_public_keys', section: 'plugin', title: $gettext('Trusted Publishers'), description: $gettext('Plugins from these publishers install as community plugins.') },
+    { path: 'plugin.memory_limit_mb', section: 'plugin', title: $gettext('Memory Limit'), description: $gettext('Maximum memory each plugin can use.') },
+    { path: 'plugin.cpu_percent', section: 'plugin', title: $gettext('CPU Limit'), description: $gettext('Share of one CPU core each plugin can use.') },
+    { path: 'plugin.allow_insecure_download_url', section: 'plugin', title: $gettext('Allow Insecure Download URLs'), description: $gettext('Accepts plain http catalog and download addresses. Only for a private catalog on a trusted network.') },
     { path: 'plugin.developer_mode', section: 'plugin', title: $gettext('Developer Mode'), description: $gettext('Allows installing unsigned plugins. Only turn this on while developing a plugin.') },
-    { path: 'plugin.trusted_public_keys', section: 'plugin', title: $gettext('Trusted Keys'), description: $gettext('Packages signed with one of these keys install as community plugins. One key per line.') },
-    { path: 'plugin.memory_limit_mb', section: 'plugin', title: $gettext('Memory Limit'), description: $gettext('Applies to every plugin process. 0 means unlimited, a plugin can only lower its own limit.') },
-    { path: 'plugin.cpu_percent', section: 'plugin', title: $gettext('CPU Limit'), description: $gettext('Percent of one core for every plugin process. 0 means unlimited.') },
-    { path: 'plugin.cgroup_root', section: 'plugin', title: $gettext('cgroup Root'), description: $gettext('Limits are enforced on Linux with cgroup v2 only.') },
 
     // Nginx
     { path: 'nginx.stub_status_port', section: 'nginx', title: $gettext('Stub Status Port'), description: $gettext('Local port used to read Nginx connection statistics.') },

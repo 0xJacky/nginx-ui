@@ -2829,6 +2829,9 @@ msgstr ""
 msgid "Unknown settings section: {0}"
 msgstr ""
 
+msgid "A trusted publisher is not in the expected format or is listed twice"
+msgstr ""
+
 msgid "Site not found"
 msgstr ""
 
@@ -7485,9 +7488,7 @@ msgstr ""
 msgid "Plugin System"
 msgstr ""
 
-msgid ""
-"Turning it off stops every plugin and hides the plugin pages. Takes effect "
-"after a restart."
+msgid "Turning it off stops every plugin and hides the plugin pages."
 msgstr ""
 
 msgid "Plugin Directory"
@@ -8944,6 +8945,37 @@ msgstr ""
 msgid "No matching settings"
 msgstr ""
 
+msgid ""
+"This is not a valid public key. Paste the whole key the publisher gave you."
+msgstr ""
+
+msgid "This publisher is already in the list."
+msgstr ""
+
+msgid "No publishers yet."
+msgstr ""
+
+msgid "Unnamed publisher"
+msgstr ""
+
+msgid "Not a valid public key"
+msgstr ""
+
+msgid "Are you sure you want to remove this item?"
+msgstr ""
+
+msgid "Add publisher"
+msgstr ""
+
+msgid "Shown in this list only"
+msgstr ""
+
+msgid "Public Key"
+msgstr ""
+
+msgid "Paste the public key the publisher gave you"
+msgstr ""
+
 msgid "Check the format of the API Base Url and API Proxy."
 msgstr ""
 
@@ -9440,9 +9472,6 @@ msgid "Same as the chat model"
 msgstr ""
 
 msgid "Advanced"
-msgstr ""
-
-msgid "The plugins directory under the configuration directory"
 msgstr ""
 
 msgid "Listen Address"
@@ -10550,6 +10579,12 @@ msgid ""
 "Allows installing packages uploaded from the browser or the command line."
 msgstr ""
 
+msgid "Trusted Publishers"
+msgstr ""
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr ""
+
 msgid "Developer Mode"
 msgstr ""
 
@@ -10558,32 +10593,16 @@ msgid ""
 "plugin."
 msgstr ""
 
-msgid "Trusted Keys"
-msgstr ""
-
-msgid ""
-"Packages signed with one of these keys install as community plugins. One key "
-"per line."
-msgstr ""
-
 msgid "Memory Limit"
 msgstr ""
 
-msgid ""
-"Applies to every plugin process. 0 means unlimited, a plugin can only lower "
-"its own limit."
+msgid "Maximum memory each plugin can use."
 msgstr ""
 
 msgid "CPU Limit"
 msgstr ""
 
-msgid "Percent of one core for every plugin process. 0 means unlimited."
-msgstr ""
-
-msgid "cgroup Root"
-msgstr ""
-
-msgid "Limits are enforced on Linux with cgroup v2 only."
+msgid "Share of one CPU core each plugin can use."
 msgstr ""
 
 msgid "%{count} installed plugin has a newer release."
@@ -10832,6 +10851,13 @@ msgstr ""
 msgid "Unlimited"
 msgstr ""
 
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr ""
+
+msgid "Less safe"
+msgstr ""
+
 msgid "Last error"
 msgstr ""
 
@@ -10947,10 +10973,13 @@ msgstr ""
 msgid "Packages"
 msgstr ""
 
-msgid "Paste public keys here"
+msgid "Resources"
 msgstr ""
 
-msgid "Resources"
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr ""
+
+msgid "Only applies on Linux. This system does not support it."
 msgstr ""
 
 msgid "%{field} is required"

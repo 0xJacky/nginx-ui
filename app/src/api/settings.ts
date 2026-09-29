@@ -213,6 +213,8 @@ export interface PluginSettings {
   cpu_percent: number
   /** cgroup v2 mount point the limits are enforced under, read only. */
   cgroup_root: string
+  /** Whether the resource limits apply on this system, read only. */
+  resource_limits_supported?: boolean
 }
 
 export interface Settings {
