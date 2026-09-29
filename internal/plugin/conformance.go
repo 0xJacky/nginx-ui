@@ -23,6 +23,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"sort"
 	"strings"
 	"sync"
 	"time"
@@ -1476,6 +1477,7 @@ func checkWebapp(dir string, manifest *protocol.Manifest, record recorder) {
 	if manifest.Webapp == nil || manifest.Webapp.BundlePath == "" {
 		return
 	}
+	checkChunks(dir, manifest, record)
 
 	data, err := os.ReadFile(filepath.Join(dir, filepath.FromSlash(manifest.Webapp.BundlePath)))
 	if err != nil {
@@ -1509,6 +1511,37 @@ func checkWebapp(dir string, manifest *protocol.Manifest, record recorder) {
 	}
 }
 
+// checkChunks checks WEB-13 against the chunk files on disk: each one exists
+// and is a non-empty .js file.
+func checkChunks(dir string, manifest *protocol.Manifest, record recorder) {
+	if manifest.Webapp == nil || len(manifest.Webapp.Chunks) == 0 {
+		return
+	}
+	names := make([]string, 0, len(manifest.Webapp.Chunks))
+	for name := range manifest.Webapp.Chunks {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+
+	for _, name := range names {
+		file := manifest.Webapp.Chunks[name]
+		label := "webapp chunk " + name
+		if !isSafeRelPath(file) || !strings.HasSuffix(file, ".js") {
+			record("WEB-13", label, StatusFail, 0, "%q is not a safe relative .js path", file)
+			continue
+		}
+		info, err := os.Stat(filepath.Join(dir, filepath.FromSlash(file)))
+		switch {
+		case err != nil:
+			record("WEB-13", label, StatusFail, 0, "cannot read the chunk: %v", err)
+		case !info.Mode().IsRegular() || info.Size() == 0:
+			record("WEB-13", label, StatusFail, 0, "%s is not a non-empty file", file)
+		default:
+			record("WEB-13", label, StatusPass, 0, "%s is %d bytes", file, info.Size())
+		}
+	}
+}
+
 // conformanceBackend is a minimal HostBackend: it records host.log calls and
 // answers every other host.* method with an empty, harmless value.
 type conformanceBackend struct {
@@ -1538,6 +1571,8 @@ func (b *conformanceBackend) CronRegister(string, protocol.HostCronRegisterParam
 func (b *conformanceBackend) CronUnregister(string, string) error                        { return nil }
 func (b *conformanceBackend) Notify(string, protocol.HostNotifyParams) error             { return nil }
 func (b *conformanceBackend) MetricsSnapshot() (any, error)                              { return nil, nil }
+func (b *conformanceBackend) LogsList(string) []protocol.HostLogFile                     { return nil }
+func (b *conformanceBackend) ActivitySet(string, protocol.HostActivitySetParams) error   { return nil }
 
 // isInvalidConfig reports whether err is the CodeInvalidConfig protocol error.
 func isInvalidConfig(err error) bool {

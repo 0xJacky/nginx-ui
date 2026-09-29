@@ -31,6 +31,8 @@ const (
 	Host_CronUnregister_FullMethodName  = "/nginxui.plugin.v1.Host/CronUnregister"
 	Host_Notify_FullMethodName          = "/nginxui.plugin.v1.Host/Notify"
 	Host_MetricsSnapshot_FullMethodName = "/nginxui.plugin.v1.Host/MetricsSnapshot"
+	Host_LogsList_FullMethodName        = "/nginxui.plugin.v1.Host/LogsList"
+	Host_ActivitySet_FullMethodName     = "/nginxui.plugin.v1.Host/ActivitySet"
 )
 
 // HostClient is the client API for Host service.
@@ -67,6 +69,12 @@ type HostClient interface {
 	Notify(ctx context.Context, in *HostNotifyRequest, opts ...grpc.CallOption) (*HostNotifyResponse, error)
 	// Reads the host's current metrics snapshot. Permission "metrics.read".
 	MetricsSnapshot(ctx context.Context, in *HostMetricsSnapshotRequest, opts ...grpc.CallOption) (*HostMetricsSnapshotResponse, error)
+	// Lists the nginx log files the host allows the plugin to read. Permission
+	// "log.files".
+	LogsList(ctx context.Context, in *HostLogsListRequest, opts ...grpc.CallOption) (*HostLogsListResponse, error)
+	// Shows or clears one entry of the host's processing indicator for the
+	// calling plugin. No permission needed.
+	ActivitySet(ctx context.Context, in *HostActivitySetRequest, opts ...grpc.CallOption) (*HostActivitySetResponse, error)
 }
 
 type hostClient struct {
@@ -197,6 +205,26 @@ func (c *hostClient) MetricsSnapshot(ctx context.Context, in *HostMetricsSnapsho
 	return out, nil
 }
 
+func (c *hostClient) LogsList(ctx context.Context, in *HostLogsListRequest, opts ...grpc.CallOption) (*HostLogsListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HostLogsListResponse)
+	err := c.cc.Invoke(ctx, Host_LogsList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hostClient) ActivitySet(ctx context.Context, in *HostActivitySetRequest, opts ...grpc.CallOption) (*HostActivitySetResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HostActivitySetResponse)
+	err := c.cc.Invoke(ctx, Host_ActivitySet_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // HostServer is the server API for Host service.
 // All implementations must embed UnimplementedHostServer
 // for forward compatibility.
@@ -231,6 +259,12 @@ type HostServer interface {
 	Notify(context.Context, *HostNotifyRequest) (*HostNotifyResponse, error)
 	// Reads the host's current metrics snapshot. Permission "metrics.read".
 	MetricsSnapshot(context.Context, *HostMetricsSnapshotRequest) (*HostMetricsSnapshotResponse, error)
+	// Lists the nginx log files the host allows the plugin to read. Permission
+	// "log.files".
+	LogsList(context.Context, *HostLogsListRequest) (*HostLogsListResponse, error)
+	// Shows or clears one entry of the host's processing indicator for the
+	// calling plugin. No permission needed.
+	ActivitySet(context.Context, *HostActivitySetRequest) (*HostActivitySetResponse, error)
 	mustEmbedUnimplementedHostServer()
 }
 
@@ -276,6 +310,12 @@ func (UnimplementedHostServer) Notify(context.Context, *HostNotifyRequest) (*Hos
 }
 func (UnimplementedHostServer) MetricsSnapshot(context.Context, *HostMetricsSnapshotRequest) (*HostMetricsSnapshotResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method MetricsSnapshot not implemented")
+}
+func (UnimplementedHostServer) LogsList(context.Context, *HostLogsListRequest) (*HostLogsListResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method LogsList not implemented")
+}
+func (UnimplementedHostServer) ActivitySet(context.Context, *HostActivitySetRequest) (*HostActivitySetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ActivitySet not implemented")
 }
 func (UnimplementedHostServer) mustEmbedUnimplementedHostServer() {}
 func (UnimplementedHostServer) testEmbeddedByValue()              {}
@@ -514,6 +554,42 @@ func _Host_MetricsSnapshot_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Host_LogsList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HostLogsListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HostServer).LogsList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Host_LogsList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HostServer).LogsList(ctx, req.(*HostLogsListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Host_ActivitySet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HostActivitySetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HostServer).ActivitySet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Host_ActivitySet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HostServer).ActivitySet(ctx, req.(*HostActivitySetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Host_ServiceDesc is the grpc.ServiceDesc for Host service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -568,6 +644,14 @@ var Host_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "MetricsSnapshot",
 			Handler:    _Host_MetricsSnapshot_Handler,
+		},
+		{
+			MethodName: "LogsList",
+			Handler:    _Host_LogsList_Handler,
+		},
+		{
+			MethodName: "ActivitySet",
+			Handler:    _Host_ActivitySet_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

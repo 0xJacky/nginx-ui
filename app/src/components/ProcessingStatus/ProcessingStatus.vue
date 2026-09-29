@@ -10,7 +10,8 @@ const { processingStatus } = storeToRefs(globalStore)
 
 onMounted(() => {
   processingStatusSubscriptionId = websocketEventBus.subscribe('processing_status', data => {
-    processingStatus.value = data
+    // A server without plugin entries sends no list.
+    processingStatus.value = { ...data, plugins: data?.plugins ?? [] }
   })
 })
 
@@ -20,8 +21,15 @@ onUnmounted(() => {
   }
 })
 
+const pluginEntries = computed(() => processingStatus.value.plugins ?? [])
+
 const isProcessing = computed(() => {
-  return Object.values(processingStatus.value).some(v => v)
+  const status = processingStatus.value
+
+  return status.index_scanning
+    || status.auto_cert_processing
+    || status.nginx_log_indexing
+    || pluginEntries.value.length > 0
 })
 </script>
 
@@ -49,6 +57,16 @@ const isProcessing = computed(() => {
               v-if="processingStatus.nginx_log_indexing"
               status="processing"
               :text="$gettext('Nginx Log Indexing...')"
+            />
+          </div>
+          <!-- Plugin labels are English source strings, plugins supply the translations. -->
+          <div
+            v-for="entry in pluginEntries"
+            :key="`${entry.plugin_id}:${entry.key}`"
+          >
+            <ABadge
+              status="processing"
+              :text="$gettext(entry.label)"
             />
           </div>
         </div>

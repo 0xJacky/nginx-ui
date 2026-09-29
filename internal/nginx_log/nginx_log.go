@@ -25,6 +25,7 @@ func init() {
 		// Runs after the defaults are registered again, so they count as
 		// configured and are never pruned.
 		pruneStaleLogIndexes()
+		notifyLogScan()
 	})
 
 	// The log.sink plugins follow the access logs of the log list, limited to

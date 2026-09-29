@@ -3,6 +3,8 @@ import type { NgxConfig } from '@/api/ngx'
 import { AreaChartOutlined, FileExclamationOutlined, FileTextOutlined } from '@antdv-next/icons'
 import { message } from 'antdv-next'
 import nginxLog from '@/api/nginx_log'
+import PluginSlot from '@/components/PluginSlot'
+import { usePluginStore } from '@/plugin/store'
 import { toLogFileBaseName } from './logFileName'
 import { useNgxConfigStore } from './store'
 
@@ -147,9 +149,21 @@ function onClickAnalytics() {
 // offered for http servers only
 const showAccessLogSwitch = computed(() => props.context === 'http')
 
+// Plugins add their own log actions next to the built-in ones
+const pluginStore = usePluginStore()
+
+const pluginContext = computed(() => ({
+  accessLogPath: accessLogPath.value ?? '',
+  errorLogPath: errorLogPath.value ?? '',
+  siteName: props.name ?? '',
+}))
+
+const hasPluginActions = computed(() =>
+  pluginStore.slotComponents('site.log.actions', pluginContext.value).length > 0)
+
 // Without any control to render, the row would still occupy its bottom margin
 const hasContent = computed(() =>
-  showAccessLogSwitch.value || hasAccessLog.value || hasErrorLog.value)
+  showAccessLogSwitch.value || hasAccessLog.value || hasErrorLog.value || hasPluginActions.value)
 </script>
 
 <template>
@@ -198,6 +212,8 @@ const hasContent = computed(() =>
       <AreaChartOutlined />
       {{ $gettext('Traffic Analytics') }}
     </AButton>
+
+    <PluginSlot name="site.log.actions" :context="pluginContext" />
   </ASpace>
 </template>
 

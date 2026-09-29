@@ -475,3 +475,83 @@ func TestLintChecksThePartnerCertificate(t *testing.T) {
 	lasting := fixture(t, certify(t, partnerPublic, release, "example", ""))
 	assert.Empty(t, lintSigned(t, lasting, partner).Findings)
 }
+
+func webappLintManifest(chunks map[string]string) *protocol.Manifest {
+	m := goodManifest()
+	m.Webapp = &protocol.ManifestWebapp{BundlePath: "webapp/index.js", Chunks: chunks}
+	return m
+}
+
+func writeWebappFiles(t *testing.T, dir string, files map[string]string) {
+	t.Helper()
+	for name, content := range files {
+		target := filepath.Join(dir, filepath.FromSlash(name))
+		require.NoError(t, os.MkdirAll(filepath.Dir(target), 0o755))
+		require.NoError(t, os.WriteFile(target, []byte(content), 0o644))
+	}
+}
+
+func TestLintChunks(t *testing.T) {
+	m := webappLintManifest(map[string]string{"search": "webapp/search.js", "dashboard": "webapp/chunks/dashboard.js"})
+	dir := writeLintFixture(t, lintFixture{manifest: m})
+	writeWebappFiles(t, dir, map[string]string{
+		"webapp/index.js": "registerPlugin()", "webapp/search.js": "a", "webapp/chunks/dashboard.js": "b",
+	})
+	report, err := Lint(dir)
+	require.NoError(t, err)
+	assert.Empty(t, report.Findings, "%+v", report.Findings)
+}
+
+func TestLintChunkFailures(t *testing.T) {
+	tests := []struct {
+		name   string
+		chunks map[string]string
+		files  map[string]string
+		level  Level
+		rule   string
+	}{
+		{"missing file", map[string]string{"a": "webapp/a.js"}, nil, LevelError, "MAN-41"},
+		{"empty file", map[string]string{"a": "webapp/a.js"}, map[string]string{"webapp/a.js": ""}, LevelError, "WEB-13"},
+		{"bad name", map[string]string{"A": "webapp/a.js"}, map[string]string{"webapp/a.js": "x"}, LevelError, "MAN-41"},
+		{"not js", map[string]string{"a": "webapp/a.css"}, map[string]string{"webapp/a.css": "x"}, LevelError, "MAN-41"},
+		{"the bundle", map[string]string{"a": "webapp/index.js"}, nil, LevelError, "MAN-41"},
+		{"duplicate file", map[string]string{"a": "webapp/a.js", "b": "webapp/a.js"}, map[string]string{"webapp/a.js": "x"}, LevelError, "MAN-41"},
+		{"outside the served directory", map[string]string{"a": "chunks/a.js"}, map[string]string{"chunks/a.js": "x"}, LevelWarning, "WEB-13"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			dir := writeLintFixture(t, lintFixture{manifest: webappLintManifest(tt.chunks)})
+			writeWebappFiles(t, dir, map[string]string{"webapp/index.js": "registerPlugin()"})
+			writeWebappFiles(t, dir, tt.files)
+			report, err := Lint(dir)
+			require.NoError(t, err)
+			assertHasFinding(t, report, tt.level, tt.rule)
+		})
+	}
+}
+
+func TestLintChunksNeedABundle(t *testing.T) {
+	m := goodManifest()
+	m.Webapp = &protocol.ManifestWebapp{Chunks: map[string]string{"a": "webapp/a.js"}}
+	dir := writeLintFixture(t, lintFixture{manifest: m})
+	writeWebappFiles(t, dir, map[string]string{"webapp/a.js": "x"})
+	report, err := Lint(dir)
+	require.NoError(t, err)
+	assertHasFinding(t, report, LevelError, "MAN-41")
+}
+
+func TestLintLogPathsChangedNeedsTheLogFilesPermission(t *testing.T) {
+	m := goodManifest()
+	m.Events = []string{protocol.EventLogPathsChanged}
+	dir := writeLintFixture(t, lintFixture{manifest: m})
+	report, err := Lint(dir)
+	require.NoError(t, err)
+	assertHasFinding(t, report, LevelWarning, "HOST-18")
+	assert.False(t, report.HasErrors())
+
+	m.Permissions = append(m.Permissions, protocol.PermissionLogFiles)
+	dir = writeLintFixture(t, lintFixture{manifest: m})
+	report, err = Lint(dir)
+	require.NoError(t, err)
+	assert.Empty(t, report.Findings, "%+v", report.Findings)
+}

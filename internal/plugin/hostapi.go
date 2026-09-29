@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"slices"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
@@ -30,6 +31,11 @@ type HostBackend interface {
 	CronUnregister(pluginID, id string) error
 	Notify(pluginID string, p protocol.HostNotifyParams) error
 	MetricsSnapshot() (any, error)
+	// LogsList returns the log files the plugin may read, never nil.
+	LogsList(pluginID string) []protocol.HostLogFile
+	// ActivitySet shows or clears one entry of the processing indicator. The
+	// params are already validated.
+	ActivitySet(pluginID string, p protocol.HostActivitySetParams) error
 }
 
 // hostKVSetParams mirrors protocol.HostKVSetParams but keeps the value raw so
@@ -231,6 +237,57 @@ func RegisterHostHandlers(conn *jsonrpc.Conn, pluginID string, permissions []str
 		}
 		return protocol.HostMetricsSnapshotResult{Snapshot: snapshot}, nil
 	})
+
+	conn.Handle(protocol.MethodHostLogsList, func(ctx context.Context, params json.RawMessage) (any, error) {
+		if err := requirePermission(granted, protocol.PermissionLogFiles); err != nil {
+			return nil, err
+		}
+		logs := backend.LogsList(pluginID)
+		if logs == nil {
+			logs = []protocol.HostLogFile{}
+		}
+		return protocol.HostLogsListResult{Logs: logs}, nil
+	})
+
+	conn.Handle(protocol.MethodHostActivitySet, func(ctx context.Context, params json.RawMessage) (any, error) {
+		var p protocol.HostActivitySetParams
+		if err := decodeParams(params, &p); err != nil {
+			return nil, err
+		}
+		if err := validateActivity(p); err != nil {
+			return nil, err
+		}
+		if err := backend.ActivitySet(pluginID, p); err != nil {
+			return nil, err
+		}
+		return protocol.EmptyResult{}, nil
+	})
+}
+
+const (
+	// maxActivityKeyLen and maxActivityLabelLen bound host.activity.set.
+	maxActivityKeyLen   = 64
+	maxActivityLabelLen = 128
+)
+
+// validateActivity checks the params of host.activity.set (spec HOST-19). The
+// label is ignored when the entry is removed.
+func validateActivity(p protocol.HostActivitySetParams) error {
+	if p.Key == "" || len(p.Key) > maxActivityKeyLen {
+		return jsonrpc.Errorf(protocol.CodeInvalidParams, "key must be 1 to 64 characters")
+	}
+	for _, r := range p.Key {
+		if !(r >= 'a' && r <= 'z' || r >= '0' && r <= '9' || r == '.' || r == '_' || r == '-') {
+			return jsonrpc.Errorf(protocol.CodeInvalidParams, "key may only contain a-z, 0-9, dot, underscore and dash")
+		}
+	}
+	if !p.Active {
+		return nil
+	}
+	if n := utf8.RuneCountInString(p.Label); n < 1 || n > maxActivityLabelLen {
+		return jsonrpc.Errorf(protocol.CodeInvalidParams, "label must be 1 to 128 characters")
+	}
+	return nil
 }
 
 // decodeParams unmarshals the params member, treating an absent one as empty.
