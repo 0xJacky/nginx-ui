@@ -116,6 +116,7 @@ function handleCertChange(certs: Cert[]) {
       v-if="isSiteActive && isPendingTLS"
       class="mb-4"
       compact
+      collapsible
       :domains="serverDomains"
       @success="onHTTPSEnabled"
     />

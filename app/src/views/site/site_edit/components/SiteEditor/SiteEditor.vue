@@ -240,6 +240,7 @@ async function save() {
           <div v-if="showHTTPSOnboarding" ref="httpsCardWrapper" class="mb-4 px-6">
             <EditorHTTPSCard
               compact
+              collapsible
               :domains="siteDomains"
               @success="onHTTPSEnabled"
             />

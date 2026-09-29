@@ -10,10 +10,13 @@ import { hasPendingTLSServer, hasUnsavedChanges, pendingTLSServersDiffer } from 
 withDefaults(defineProps<{
   domains: string[]
   compact?: boolean
+  // Lets the user fold the card, see HTTPSCard.
+  collapsible?: boolean
   // Offers the card's "Existing certificate" method.
   existingCertificate?: boolean
 }>(), {
   compact: false,
+  collapsible: false,
   existingCertificate: true,
 })
 
@@ -97,6 +100,7 @@ defineExpose({
       :config-name="name"
       :domains
       :compact
+      :collapsible
       :has-pending-t-l-s-server="hasPendingTLSInFile"
       :disabled="isDirty"
       :skippable="false"

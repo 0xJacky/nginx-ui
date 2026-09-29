@@ -8,20 +8,21 @@ import {
   CheckCircleFilled,
   ClockCircleOutlined,
   CloseCircleFilled,
+  DownOutlined,
   ExclamationCircleFilled,
   LoadingOutlined,
   MinusCircleOutlined,
   PlusOutlined,
   SafetyCertificateOutlined,
 } from '@antdv-next/icons'
-import { breakpointsAntDesign, useBreakpoints } from '@vueuse/core'
+import { breakpointsAntDesign, useBreakpoints, useLocalStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
 import DNSChallenge from '@/components/AutoCertForm/DNSChallenge.vue'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
 import { isIPAddress, splitCertificateIdentifiers } from '@/utils/certificate'
 import ACMEUserSelector from '@/views/certificate/components/ACMEUserSelector.vue'
 import CertificatePicker from '../Cert/CertificatePicker.vue'
-import { certificateCoverage, isCertificateExpired } from './certificateCoverage'
+import { certificateCoverage, certificateNamesOf, isCertificateExpired } from './certificateCoverage'
 import { buildHTTPSCheckRequest, buildHTTPSRequest, isChallengeMethod } from './httpsRequest'
 import { diagnosticsWithoutHint, HTTPS_MAIN_STEPS, isValidHostname, useHTTPSOnboarding } from './useHTTPSOnboarding'
 
@@ -45,6 +46,9 @@ const props = withDefaults(defineProps<{
   // Leaves the run and skip buttons to the caller (e.g. a wizard's Finish
   // button), which drives them through the exposed `confirm`.
   externalConfirm?: boolean
+  // Lets the user fold the card to its title and a one-line summary. The
+  // choice is remembered; a run or a finished check always shows the card.
+  collapsible?: boolean
 }>(), {
   hasPendingTLSServer: false,
   compact: false,
@@ -52,6 +56,7 @@ const props = withDefaults(defineProps<{
   skippable: true,
   existingCertificate: true,
   externalConfirm: false,
+  collapsible: false,
 })
 
 const emit = defineEmits<{
@@ -218,7 +223,21 @@ const certificateExpiry = computed(() => {
 })
 
 // A client-side preview; the backend reads the certificate file and decides.
-const coverage = computed(() => certificateCoverage(selectedCertificate.value?.domains, domainList.value))
+// The record's own `domains` is not enough: an imported certificate stores only
+// its subject name there, so the SANs come from the certificate file's info.
+const certificateNames = computed(() => certificateNamesOf(selectedCertificate.value))
+const coverage = computed(() => certificateCoverage(certificateNames.value, domainList.value))
+
+// A certificate with many SANs would fill the card with tags.
+const MAX_CERTIFICATE_TAGS = 6
+const certificateTagsExpanded = ref(false)
+const visibleCertificateNames = computed(() => certificateTagsExpanded.value
+  ? certificateNames.value
+  : certificateNames.value.slice(0, MAX_CERTIFICATE_TAGS))
+const hiddenCertificateNameCount = computed(() => certificateNames.value.length - visibleCertificateNames.value.length)
+watch(selectedCertificate, () => {
+  certificateTagsExpanded.value = false
+})
 
 const certificateProblem = computed<{ type: 'error' | 'warning' | 'info', title: string } | undefined>(() => {
   if (method.value !== 'existing' || !selectedCertificate.value)
@@ -254,6 +273,33 @@ const keyTypeOptions: SelectProps['options'] = PrivateKeyTypeList.map(t => ({
 const formLocked = computed(() => running.value || phase.value === 'success')
 
 const isExisting = computed(() => method.value === 'existing')
+
+// ---- Collapse -----------------------------------------------------------
+
+const collapsedPreference = useLocalStorage('nginx-ui-https-card-collapsed', false)
+
+// Once a check has run or the run has started the card has something to show.
+const collapsed = computed(() => props.collapsible
+  && collapsedPreference.value
+  && phase.value === 'idle'
+  && !checking.value
+  && !checks.value.length)
+
+const collapsedSummary = computed(() => {
+  const label = {
+    http01: $gettext('HTTP-01'),
+    dns01: $gettext('DNS-01'),
+    existing: $gettext('Existing certificate'),
+    skip: $gettext('Skip for now'),
+  }[method.value]
+
+  return [label, ...(method.value === 'skip' ? [] : domainList.value)].join(' · ')
+})
+
+function toggleCollapsed() {
+  if (props.collapsible && phase.value === 'idle')
+    collapsedPreference.value = !collapsedPreference.value
+}
 
 // "Check only" needs the certificate for the existing method; a challenge
 // method can be checked before its credential is chosen.
@@ -457,13 +503,36 @@ defineExpose({
     :size="compact ? 'small' : 'medium'"
   >
     <template #title>
-      <AFlex align="center" gap="small">
+      <AFlex
+        align="center"
+        gap="small"
+        :class="{ 'https-card-toggle': collapsible }"
+        :role="collapsible ? 'button' : undefined"
+        :tabindex="collapsible ? 0 : undefined"
+        :aria-expanded="collapsible ? !collapsed : undefined"
+        @click="toggleCollapsed"
+        @keydown.enter.prevent="toggleCollapsed"
+        @keydown.space.prevent="toggleCollapsed"
+      >
+        <DownOutlined
+          v-if="collapsible"
+          class="https-card-chevron"
+          :class="{ 'is-collapsed': collapsed }"
+        />
         <SafetyCertificateOutlined />
         <span>{{ $gettext('HTTPS') }}</span>
       </AFlex>
     </template>
 
-    <AFlex vertical :gap="compact ? 12 : 16">
+    <p v-if="collapsed" class="https-muted m-0 break-words text-sm">
+      {{ collapsedSummary }}
+    </p>
+
+    <AFlex
+      v-show="!collapsed"
+      vertical
+      :gap="compact ? 12 : 16"
+    >
       <p v-if="!compact" class="https-muted m-0">
         {{ $gettext('Nginx UI stages the challenge route, verifies it, requests the certificate and switches the site to HTTPS in one run. If a step fails, the site keeps serving plain HTTP.') }}
       </p>
@@ -566,19 +635,27 @@ defineExpose({
               </AButton>
             </AFlex>
             <AFlex
-              v-if="selectedCertificate.domains?.length"
+              v-if="certificateNames.length"
               wrap
               gap="small"
               class="mt-2"
             >
               <ATag
-                v-for="d in selectedCertificate.domains"
+                v-for="d in visibleCertificateNames"
                 :key="d"
                 class="m-0 font-mono"
                 variant="filled"
               >
                 {{ d }}
               </ATag>
+              <AButton
+                v-if="hiddenCertificateNameCount > 0"
+                size="small"
+                type="link"
+                @click="certificateTagsExpanded = true"
+              >
+                {{ $gettext('%{count} more', { count: String(hiddenCertificateNameCount) }) }}
+              </AButton>
             </AFlex>
           </div>
           <AButton
@@ -834,6 +911,21 @@ defineExpose({
 
 .https-muted {
   color: var(--ant-color-text-secondary);
+}
+
+.https-card-toggle {
+  cursor: pointer;
+  user-select: none;
+}
+
+.https-card-chevron {
+  font-size: 12px;
+  color: var(--ant-color-text-secondary);
+  transition: transform 0.2s;
+
+  &.is-collapsed {
+    transform: rotate(-90deg);
+  }
 }
 
 .https-error-text {
