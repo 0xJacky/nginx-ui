@@ -16,6 +16,7 @@ import {
   configurationTarget,
   formMethods,
   initialMethod,
+  methodNeedsNoInput,
   settingFields,
   visibleCredentialFields,
 } from './credentialForm'
@@ -135,7 +136,7 @@ function filterOption(input: string, option?: DefaultOptionType) {
 // Structured form
 
 const form = computed(() => current.value?.form)
-const hasForm = computed(() => !!form.value?.fields?.length)
+const hasForm = computed(() => !!form.value?.fields?.length || formMethods(form.value).length > 0)
 const methods = computed(() => formMethods(form.value))
 const selectedMethod = ref<string>()
 let stash: MethodStash = {}
@@ -168,6 +169,7 @@ function selectMethod(value: string | number) {
 }
 
 const credentialFieldsShown = computed(() => visibleCredentialFields(form.value, selectedMethod.value))
+const needsNoInput = computed(() => methodNeedsNoInput(form.value, selectedMethod.value))
 const settings = computed(() => settingFields(form.value))
 const settingsOpen = ref(false)
 
@@ -236,7 +238,11 @@ function fieldLabel(field: DNSProviderField) {
       :context="slotContext"
     >
       <template v-if="hasForm && data.configuration">
-        <AFormItem v-if="methods.length" :label="$gettext('Sign-in method')">
+        <AFormItem
+          v-if="methods.length"
+          :label="$gettext('Sign-in method')"
+          :extra="needsNoInput ? $gettext('Nothing to fill in. The server uses its own credentials.') : undefined"
+        >
           <ASegmented
             :value="selectedMethod"
             :options="methodOptions"
