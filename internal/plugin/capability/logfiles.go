@@ -22,7 +22,7 @@ func RegisterLogFiles(h LogFilesHost) {
 
 // NewLogFileSource builds the source from a lister and a scan subscription.
 func NewLogFileSource(list func() []nginx_log.PluginLogFile, subscribe func(func()) func()) plugin.LogFileSource {
-	return logFileSource{list: list, subscribe: subscribe}
+	return &logFileSource{list: list, subscribe: subscribe}
 }
 
 type logFileSource struct {
@@ -30,7 +30,7 @@ type logFileSource struct {
 	subscribe func(func()) func()
 }
 
-func (s logFileSource) LogFiles() []protocol.HostLogFile {
+func (s *logFileSource) LogFiles() []protocol.HostLogFile {
 	files := s.list()
 	out := make([]protocol.HostLogFile, len(files))
 	for i, f := range files {
@@ -39,6 +39,6 @@ func (s logFileSource) LogFiles() []protocol.HostLogFile {
 	return out
 }
 
-func (s logFileSource) SubscribeScan(notify func()) (unsubscribe func()) {
+func (s *logFileSource) SubscribeScan(notify func()) (unsubscribe func()) {
 	return s.subscribe(notify)
 }
