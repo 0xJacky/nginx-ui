@@ -1,5 +1,4 @@
 export default {
-  50058: () => $gettext('HTTP-01 challenge route check failed for {0}: {1}'),
   50001: () => $gettext('Filename is empty'),
   50002: () => $gettext('Cert path is not under the nginx conf dir'),
   50003: () => $gettext('Certificate decode error'),

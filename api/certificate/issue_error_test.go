@@ -7,15 +7,13 @@ import (
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/acmehint"
+	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/uozi-tech/cosy"
 )
 
-var testCertErrScope = cosy.NewErrorScope("cert")
-
 func TestIssueErrorResponseCarriesWrappedCosyError(t *testing.T) {
-	cErr := testCertErrScope.NewWithParams(50058, "HTTP-01 challenge route check failed for {0}: {1}", "example.com", "unexpected status 404")
+	cErr := cert.NewHTTP01ChallengeRouteCheckError("example.com", "unexpected status 404")
 	err := fmt.Errorf("issue certificate: %w", cErr)
 	hint := &acmehint.Hint{Code: acmehint.CodePort80Unreachable, Message: "m"}
 
