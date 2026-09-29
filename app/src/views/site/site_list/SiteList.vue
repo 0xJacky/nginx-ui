@@ -274,7 +274,7 @@ function onMaintenanceConfirm(payload: MaintenancePayload) {
         >
           {{ $gettext('Analytics') }}
         </AButton>
-        <SiteLogActions :site-name="record.name" />
+        <SiteLogActions :site="record" />
         <AButton
           type="link"
           size="small"
