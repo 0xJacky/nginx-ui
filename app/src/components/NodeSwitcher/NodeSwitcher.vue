@@ -2,7 +2,7 @@
 import type { AnalyticNode } from '@/api/node'
 import type { NodeSwitchTarget } from '@/composables/useNodeSwitch'
 import type { NodeSwitchBlocker } from '@/lib/node/switch'
-import { SettingOutlined, SplitCellsOutlined } from '@antdv-next/icons'
+import { SettingOutlined } from '@antdv-next/icons'
 import { storeToRefs } from 'pinia'
 import nodeApi from '@/api/node'
 import { useNodeSwitch } from '@/composables/useNodeSwitch'
@@ -164,7 +164,7 @@ function pickFirstMatch() {
               :aria-label="$gettext('Open in split view')"
               @click="openSplit(0)"
             >
-              <SplitCellsOutlined />
+              <span class="i-tabler-layout-columns text-base" />
             </button>
           </div>
 
@@ -211,7 +211,7 @@ function pickFirstMatch() {
                 :aria-label="$gettext('Open in split view')"
                 @click="openSplit(option.node.id)"
               >
-                <SplitCellsOutlined />
+                <span class="i-tabler-layout-columns text-base" />
               </button>
             </div>
           </ATooltip>
