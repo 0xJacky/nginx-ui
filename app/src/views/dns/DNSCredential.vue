@@ -6,6 +6,7 @@ import { datetimeRender, StdCurd } from '@uozi-admin/curd'
 import auto_cert from '@/api/auto_cert'
 import dns_credential from '@/api/dns_credential'
 import DNSChallenge from './components/DNSChallenge.vue'
+import DnsCredentialForm from './components/DnsCredentialForm.vue'
 
 const { message } = App.useApp()
 
@@ -168,10 +169,10 @@ const columns: StdTableColumn[] = [{
         :title="$gettext('Note')"
       >
         <template #description>
-          <p>
+          <p class="m-0">
             {{ $gettext('Please fill in the API authentication credentials provided by your DNS provider.') }}
           </p>
-          <p>
+          <p class="m-0 mt-1">
             {{ $gettext('Please note that the unit of time configurations below are all in seconds.') }}
           </p>
         </template>
@@ -189,31 +190,7 @@ const columns: StdTableColumn[] = [{
     width="680"
     @cancel="closeEditorModal"
   >
-    <AAlert
-      class="mb-4"
-      type="info"
-      show-icon
-      :title="$gettext('Note')"
-    >
-      <template #description>
-        <p>
-          {{ $gettext('Please fill in the API authentication credentials provided by your DNS provider.') }}
-        </p>
-        <p>
-          {{ $gettext('Please note that the unit of time configurations below are all in seconds.') }}
-        </p>
-      </template>
-    </AAlert>
-
-    <AForm layout="vertical">
-      <AFormItem :label="$gettext('Name')" required>
-        <AInput v-model:value="editorData.name" />
-      </AFormItem>
-
-      <AFormItem :label="$gettext('Configuration')">
-        <DNSChallenge v-model:data="editorData" />
-      </AFormItem>
-    </AForm>
+    <DnsCredentialForm v-model:data="editorData" />
 
     <div class="flex justify-end gap-2">
       <AButton :disabled="editorSaving" @click="closeEditorModal">

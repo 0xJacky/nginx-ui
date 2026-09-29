@@ -5,6 +5,9 @@ import certApi from '@/api/cert'
 
 interface Props {
   data: Cert
+  inline?: boolean
+  /** Plain button for page headers, a compact link otherwise. */
+  plain?: boolean
 }
 
 const props = defineProps<Props>()
@@ -127,8 +130,15 @@ async function downloadCertificateFiles() {
 </script>
 
 <template>
-  <div v-if="canDownloadCertificates">
+  <div v-if="canDownloadCertificates" class="certificate-download" :class="[{ 'is-inline': inline }]">
+    <AButton v-if="plain" @click="openDownloadModal">
+      <template #icon>
+        <DownloadOutlined />
+      </template>
+      {{ $gettext('Download') }}
+    </AButton>
     <AButton
+      v-else
       type="link"
       size="small"
       :aria-label="$gettext('Download Certificate Files')"
@@ -180,3 +190,13 @@ async function downloadCertificateFiles() {
     </AModal>
   </div>
 </template>
+
+<style scoped lang="less">
+.certificate-download {
+  margin-bottom: 12px;
+}
+
+.certificate-download.is-inline {
+  margin-bottom: 0;
+}
+</style>
