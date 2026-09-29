@@ -11,7 +11,7 @@
     "check:antdv": "bash scripts/check-antdv-legacy.sh",
     "build": "vite build",
     "preview": "vite preview",
-    "gettext:extract": "generate-curd-translations --output src/language/curd.ts && vue-gettext-extract"
+    "gettext:extract": "generate-curd-translations --output src/language/curd.ts && vue-gettext-extract && msgcat --no-location -o src/language/messages.pot src/language/messages.pot"
   },
   "dependencies": {
     "@0xjacky/vue-github-button": "^3.1.1",
