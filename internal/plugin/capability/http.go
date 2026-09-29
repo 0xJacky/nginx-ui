@@ -38,6 +38,9 @@ const (
 	// the exact casing here is cosmetic.
 	headerPluginUser   = "X-Nginx-UI-User"
 	headerPluginUserID = "X-Nginx-UI-User-ID"
+	// headerPluginSecret carries the per process secret the plugin requires
+	// on every request to its listener.
+	headerPluginSecret = "X-Nginx-UI-Plugin-Secret"
 )
 
 // errRPCBodyTooLarge marks a request body over maxRPCBodyBytes.
@@ -59,6 +62,9 @@ type HTTPHost interface {
 	// InitializeResult returns what the running plugin answered during its
 	// handshake, used for the Windows loopback port.
 	InitializeResult(id string) (protocol.InitializeResult, bool)
+	// HTTPSecret returns the secret the running plugin process expects in
+	// the headerPluginSecret header of every request.
+	HTTPSecret(id string) (string, bool)
 }
 
 // NewHTTPHandler exposes the http capability of a plugin as a gin route.
@@ -117,6 +123,12 @@ func serveHTTPUnix(c *gin.Context, h HTTPHost, id, subPath string) {
 		return
 	}
 
+	secret, ok := h.HTTPSecret(id)
+	if !ok {
+		respondUnavailable(c.Writer, plugin.ErrPluginNotRunning)
+		return
+	}
+
 	user := currentUser(c)
 	upgrade := middleware.IsWebSocketUpgrade(c.Request)
 	proxy := &httputil.ReverseProxy{
@@ -132,6 +144,10 @@ func serveHTTPUnix(c *gin.Context, h HTTPHost, id, subPath string) {
 			}
 			req.Header.Del("Authorization")
 			req.Header.Del("Cookie")
+			// A copy the client sent must never reach the plugin, the host
+			// is the only source of the secret.
+			req.Header.Del(headerPluginSecret)
+			req.Header.Set(headerPluginSecret, secret)
 			req.Header.Set(headerPluginUser, user.Name)
 			req.Header.Set(headerPluginUserID, user.ID)
 		},
@@ -153,7 +169,7 @@ func stripHandshakeCredentials(u *url.URL) {
 
 // dialerFor resolves how to reach the plugin's http capability: a unix socket
 // everywhere, a loopback TCP port on Windows where unix sockets need the
-// plugin to opt in and are not guaranteed.
+// plugin to opt in and are not guaranteed. Both carry the same secret header.
 func dialerFor(h HTTPHost, id string) (func(ctx context.Context, network, addr string) (net.Conn, error), error) {
 	if runtime.GOOS != "windows" {
 		socketPath := filepath.Join(h.DataDir(id), httpSocketName)
@@ -249,6 +265,7 @@ func sanitizedHeaders(h http.Header) map[string][]string {
 		switch {
 		case strings.EqualFold(key, "Authorization"),
 			strings.EqualFold(key, "Cookie"),
+			strings.EqualFold(key, headerPluginSecret),
 			strings.EqualFold(key, headerPluginUser),
 			strings.EqualFold(key, headerPluginUserID):
 			continue
