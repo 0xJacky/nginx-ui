@@ -191,3 +191,25 @@ func TestSupervisorHTTPSecretFollowsTheProcess(t *testing.T) {
 	_, ok = s.HTTPSecret()
 	assert.False(t, ok, "a process without a listener has none")
 }
+
+func TestSupervisorEnvMarksDemoHosts(t *testing.T) {
+	// An inherited value never reaches the plugin, only the host setting does.
+	t.Setenv(EnvDemo, "true")
+	previous := hostDemo
+	t.Cleanup(func() { hostDemo = previous })
+
+	s := NewSupervisor(SupervisorConfig{
+		PluginID:    "com.example.demo",
+		DataDir:     t.TempDir(),
+		HostVersion: "2.7.0",
+	})
+
+	hostDemo = func() bool { return false }
+	_, found := envValue(s.env(""), EnvDemo)
+	assert.False(t, found)
+
+	hostDemo = func() bool { return true }
+	got, found := envValue(s.env(""), EnvDemo)
+	assert.True(t, found)
+	assert.Equal(t, "1", got)
+}

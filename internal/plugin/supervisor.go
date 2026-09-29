@@ -18,6 +18,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/demo"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -67,6 +68,8 @@ const (
 	// EnvPluginHTTPSecret carries the per process secret a plugin serving the
 	// http capability requires on every request, see httpSecretBytes.
 	EnvPluginHTTPSecret = "NGINX_UI_PLUGIN_HTTP_SECRET"
+	// EnvDemo is set to 1 when the host runs as a public demo.
+	EnvDemo = "NGINX_UI_DEMO"
 )
 
 // httpSecretBytes is the size of the random secret behind EnvPluginHTTPSecret.
@@ -748,6 +751,10 @@ var hostHTTPProxy = func() string {
 	return strings.TrimSpace(settings.HTTPSettings.HTTPProxy)
 }
 
+// hostDemo reports whether the host runs as a public demo. It is read on every
+// spawn, like the proxy.
+var hostDemo = demo.Enabled
+
 // env builds the child environment. Credentials never travel this way: the
 // host configuration variables, which carry the node secret among others,
 // are dropped along with hostOnlyEnv. The proxy variables follow the network
@@ -784,6 +791,9 @@ func (s *Supervisor) env(httpSecret string) []string {
 	)
 	if httpSecret != "" {
 		env = append(env, EnvPluginHTTPSecret+"="+httpSecret)
+	}
+	if hostDemo() {
+		env = append(env, EnvDemo+"=1")
 	}
 	if proxy != "" {
 		env = append(env,
