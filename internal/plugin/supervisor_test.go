@@ -170,7 +170,7 @@ func testManifest() *protocol.Manifest {
 		Server:       &protocol.ManifestServer{Command: []string{"plugin"}},
 		Capabilities: []string{protocol.CapabilityDNS01},
 		DNS01: &protocol.ManifestDNS01{
-			Providers: []protocol.DNS01Provider{{Name: "Test", Code: "test"}},
+			Providers: []protocol.DNS01Provider{{Name: "Test", Code: "test", Form: &protocol.DNS01ProviderForm{Fields: []protocol.DNS01ProviderField{{Key: "TEST_TOKEN", Label: "API token", Group: "credential"}}}}},
 		},
 	}
 }

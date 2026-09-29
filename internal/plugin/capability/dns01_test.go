@@ -142,15 +142,18 @@ const testPluginID = "com.example.dns"
 
 func testHost(caller *fakeCaller) *fakeHost {
 	provider := protocol.DNS01Provider{
-		Name: "Cloudflare",
-		Code: "cloudflare",
-		Configuration: &protocol.DNS01ProviderConfig{
-			Credentials: map[string]string{"CF_DNS_API_TOKEN": "API token"},
-			Additional:  map[string]string{"CLOUDFLARE_TTL": "TTL"},
-		},
-		Links:                     &protocol.DNS01ProviderLinks{API: "https://api.cloudflare.com/", GoClient: "https://github.com/cloudflare/cloudflare-go"},
+		Name:                      "Cloudflare",
+		Code:                      "cloudflare",
+		Links:                     &protocol.DNS01ProviderLinks{API: "https://api.cloudflare.com/"},
 		PropagationTimeoutSeconds: 180,
 		PollingIntervalSeconds:    5,
+		Form: &protocol.DNS01ProviderForm{
+			Fields: []protocol.DNS01ProviderField{
+				{Key: "CF_DNS_API_TOKEN", Label: "API token", Group: "credential", Secret: true},
+				{Key: "CLOUDFLARE_TTL", Label: "TXT record TTL", Group: "setting", Default: "120", Unit: "seconds"},
+			},
+			Methods: []protocol.DNS01ProviderMethod{{Name: "API token", Recommended: true, Fields: []string{"CF_DNS_API_TOKEN"}}},
+		},
 	}
 	return &fakeHost{
 		owner:     testPluginID,
@@ -186,11 +189,18 @@ func TestProvidersMapsTheManifest(t *testing.T) {
 	if p.PluginID != testPluginID {
 		t.Fatalf("plugin id = %q, want %q", p.PluginID, testPluginID)
 	}
-	if p.Configuration == nil || p.Configuration.Credentials["CF_DNS_API_TOKEN"] != "API token" {
-		t.Fatalf("configuration = %#v, want the manifest schema", p.Configuration)
-	}
 	if p.Links == nil || p.Links.API != "https://api.cloudflare.com/" {
 		t.Fatalf("links = %#v, want the manifest links", p.Links)
+	}
+	if p.Form == nil || len(p.Form.Fields) != 2 || len(p.Form.Methods) != 1 {
+		t.Fatalf("form = %#v, want the manifest form", p.Form)
+	}
+	want := dns.FormField{Key: "CLOUDFLARE_TTL", Label: "TXT record TTL", Group: "setting", Default: "120", Unit: "seconds"}
+	if p.Form.Fields[1] != want || !p.Form.Fields[0].Secret {
+		t.Fatalf("form fields = %#v", p.Form.Fields)
+	}
+	if m := p.Form.Methods[0]; m.Name != "API token" || !m.Recommended || len(m.Fields) != 1 {
+		t.Fatalf("form method = %#v", m)
 	}
 }
 
