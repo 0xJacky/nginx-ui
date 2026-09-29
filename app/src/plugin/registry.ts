@@ -18,6 +18,7 @@ import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
 import { chunkLoader } from './chunks'
 import { usePluginStore } from './store'
+import { buildPluginWebSocketUrl } from './wsUrl'
 
 /** Route name plugin routes are attached to, i.e. the authenticated layout. */
 const LAYOUT_ROUTE_NAME = 'Home'
@@ -112,6 +113,17 @@ export function createRegistry(
     }, name)
   }
 
+  function wsUrl(path: string) {
+    const user = useUserStore()
+    const settings = useSettingsStore()
+
+    return buildPluginWebSocketUrl(pluginId, path, {
+      token: user.token,
+      shortToken: user.shortToken,
+      nodeId: settings.node.id,
+    })
+  }
+
   return {
     registerRoute,
     registerSlot,
@@ -119,6 +131,7 @@ export function createRegistry(
     registerSettingsPanel,
     loadChunk,
     http: pluginHttp,
+    wsUrl,
     coreHttp: http,
     manifest,
     host,

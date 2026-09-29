@@ -328,6 +328,12 @@ export interface GeoStats {
   percent: number
 }
 
+export interface DefaultLogDir {
+  access_log_dir: string
+  access_log_path?: string
+  error_log_path?: string
+}
+
 const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
   list(params?: Pick<NginxLogData, 'type' | 'name' | 'path'>): Promise<LogListResponse> {
     return http.get('/nginx_logs', { params })
@@ -395,8 +401,9 @@ const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
   },
 
   // Directory nginx writes its default access log to, used to propose a
-  // per-site access_log path that is already inside the log whitelist
-  getDefaultLogDir(): Promise<{ access_log_dir: string }> {
+  // per-site access_log path that is already inside the log whitelist, and
+  // the default log files a site without its own log directive falls back to
+  getDefaultLogDir(): Promise<DefaultLogDir> {
     return http.get('/nginx_log/default_log_dir')
   },
 })

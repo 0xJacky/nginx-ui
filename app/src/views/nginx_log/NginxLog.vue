@@ -8,6 +8,7 @@ import { usePluginStore } from '@/plugin/store'
 import DashboardViewer from './dashboard/DashboardViewer.vue'
 import RawLogViewer from './raw/RawLogViewer.vue'
 import StructuredLogViewer from './structured/StructuredLogViewer.vue'
+import { showsHostViewChrome } from './viewChrome'
 
 // Route and router
 const route = useRoute()
@@ -214,6 +215,10 @@ const segmentedValue = computed({
   },
 })
 
+// The built-in structured viewer draws the file picker and the view switch in
+// its own toolbar, every other view gets them in the header row of this page.
+const showHeader = computed(() => showsHostViewChrome(effectiveView.value, activePluginView.value?.key))
+
 const showViewToggle = computed(() => !isErrorLog.value || pluginViews.value.length > 0)
 
 watch(viewMode, v => {
@@ -257,7 +262,7 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
     :title="$gettext('Nginx Log')"
     variant="borderless"
   >
-    <div v-if="effectiveView !== 'structured'" class="mb-4 flex flex-wrap items-center justify-end gap-4">
+    <div v-if="showHeader" class="mb-4 flex flex-wrap items-center justify-end gap-4">
       <ASelect
         v-model:value="selectedLogPath"
         class="flex-none font-mono"
