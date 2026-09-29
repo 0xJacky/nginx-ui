@@ -442,13 +442,13 @@ msgstr ""
 
 #: src/components/CertInfo/CertInfo.vue:20
 #: src/views/certificate/components/CertificateBasicInfo.vue:25
-#: src/views/certificate/components/CertificateContentEditor.vue:103
+#: src/views/certificate/components/CertificateContentEditor.vue:104
 msgid "Nothing to copy"
 msgstr ""
 
 #: src/components/CertInfo/CertInfo.vue:25
 #: src/views/certificate/components/CertificateBasicInfo.vue:30
-#: src/views/certificate/components/CertificateContentEditor.vue:108
+#: src/views/certificate/components/CertificateContentEditor.vue:109
 msgid "{label} copied to clipboard"
 msgstr ""
 
@@ -456,7 +456,7 @@ msgstr ""
 #: src/components/SensitiveString/SensitiveInput.vue:72
 #: src/components/SensitiveString/SensitiveString.vue:77
 #: src/views/certificate/components/CertificateBasicInfo.vue:34
-#: src/views/certificate/components/CertificateContentEditor.vue:112
+#: src/views/certificate/components/CertificateContentEditor.vue:113
 msgid "Failed to copy to clipboard"
 msgstr ""
 
@@ -2445,15 +2445,56 @@ msgstr ""
 msgid "Main Node"
 msgstr ""
 
+#: src/composables/useClusterSync.ts:9
+msgid "unsupported file type"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:11
+msgid "larger than 5 MB"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:13
+msgid "not a text file"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:15
+msgid "unreadable"
+msgstr ""
+
 #: src/composables/useClusterSync.ts:17
+msgid "node specific entry configuration"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:38
+msgid "and %{count} more"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:51
+msgid "%{node}: %{count} existing files were not overwritten (%{detail})"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:67
+msgid "Nothing was synchronized, %{count} files were skipped"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:73
 msgid "There is nothing to synchronize"
 msgstr ""
 
-#: src/composables/useClusterSync.ts:22
+#: src/composables/useClusterSync.ts:81
+#: src/composables/useClusterSync.ts:104
+msgid "Skipped files:"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:84
+msgid "Synchronized %{count} items with some files skipped"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:92
 msgid "Synchronized %{count} items successfully"
 msgstr ""
 
-#: src/composables/useClusterSync.ts:33
+#: src/composables/useClusterSync.ts:108
 msgid "Synchronization finished with %{count} failures"
 msgstr ""
 
@@ -3226,6 +3267,26 @@ msgstr ""
 
 #: src/constants/errors/cert.ts:53
 msgid "HTTP-01 challenge port {0} is unavailable: {1}"
+msgstr ""
+
+#: src/constants/errors/cert.ts:54
+msgid "Invalid certificate archive: {0}"
+msgstr ""
+
+#: src/constants/errors/cert.ts:55
+msgid "Certificate archive is too large"
+msgstr ""
+
+#: src/constants/errors/cert.ts:56
+msgid "No certificate found in the archive"
+msgstr ""
+
+#: src/constants/errors/cert.ts:57
+msgid "No private key found in the archive"
+msgstr ""
+
+#: src/constants/errors/cert.ts:58
+msgid "No certificate in the archive matches its private key"
 msgstr ""
 
 #: src/constants/errors/cluster_sync.ts:2
@@ -6165,40 +6226,61 @@ msgstr ""
 msgid "Sync to"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:37
+#: src/views/certificate/components/CertificateContentEditor.vue:38
 msgid "Failed to load nginx configuration path"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:200
-#: src/views/certificate/components/CertificateContentEditor.vue:206
+#: src/views/certificate/components/CertificateContentEditor.vue:128
+#: src/views/certificate/components/CertificateFileUpload.vue:54
+msgid "File size cannot exceed 5MB"
+msgstr ""
+
+#: src/views/certificate/components/CertificateContentEditor.vue:139
+msgid "Imported %{cert} and %{key} from the archive"
+msgstr ""
+
+#: src/views/certificate/components/CertificateContentEditor.vue:144
+msgid "Intermediate certificates from the archive were appended to build the full chain"
+msgstr ""
+
+#: src/views/certificate/components/CertificateContentEditor.vue:267
+msgid "Import from ZIP"
+msgstr ""
+
+#: src/views/certificate/components/CertificateContentEditor.vue:270
+msgid "Fills both the certificate and the private key from a downloaded certificate archive"
+msgstr ""
+
+#: src/views/certificate/components/CertificateContentEditor.vue:275
+#: src/views/certificate/components/CertificateContentEditor.vue:281
 msgid "SSL Certificate Content"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:289
 msgid "The input is not a SSL Certificate"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:236
-#: src/views/certificate/components/CertificateContentEditor.vue:254
-#: src/views/certificate/components/CertificateContentEditor.vue:296
-#: src/views/certificate/components/CertificateContentEditor.vue:314
+#: src/views/certificate/components/CertificateContentEditor.vue:311
+#: src/views/certificate/components/CertificateContentEditor.vue:329
+#: src/views/certificate/components/CertificateContentEditor.vue:371
+#: src/views/certificate/components/CertificateContentEditor.vue:389
 msgid "Leave blank will not change anything"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:244
+#: src/views/certificate/components/CertificateContentEditor.vue:319
 msgid "Drop certificate file here"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:260
-#: src/views/certificate/components/CertificateContentEditor.vue:266
+#: src/views/certificate/components/CertificateContentEditor.vue:335
+#: src/views/certificate/components/CertificateContentEditor.vue:341
 msgid "SSL Certificate Key Content"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:274
+#: src/views/certificate/components/CertificateContentEditor.vue:349
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:304
+#: src/views/certificate/components/CertificateContentEditor.vue:379
 msgid "Drop private key file here"
 msgstr ""
 
@@ -6224,48 +6306,52 @@ msgstr ""
 msgid "Invalid private key format"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:100
+#: src/views/certificate/components/CertificateDownload.vue:98
 msgid "Certificate ID cannot be empty"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:112
+#: src/views/certificate/components/CertificateDownload.vue:118
 msgid "Certificate files downloaded successfully"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:116
+#: src/views/certificate/components/CertificateDownload.vue:122
 msgid "Failed to download certificate files"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:135
-#: src/views/certificate/components/CertificateDownload.vue:140
+#: src/views/certificate/components/CertificateDownload.vue:141
+#: src/views/certificate/components/CertificateDownload.vue:146
 msgid "Download Certificate Files"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:145
+#: src/views/certificate/components/CertificateDownload.vue:152
 msgid "Download Format"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:149
+#: src/views/certificate/components/CertificateDownload.vue:153
+msgid "Multiple files are downloaded as a single ZIP archive"
+msgstr ""
+
+#: src/views/certificate/components/CertificateDownload.vue:158
 msgid "Certificate (.crt)"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:152
+#: src/views/certificate/components/CertificateDownload.vue:161
 msgid "Private Key (.key)"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:155
+#: src/views/certificate/components/CertificateDownload.vue:164
 msgid "PFX (.pfx, CRT + KEY for Windows import)"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:163
+#: src/views/certificate/components/CertificateDownload.vue:172
 msgid "PFX Password"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:164
+#: src/views/certificate/components/CertificateDownload.vue:173
 msgid "Leave empty if you do not want to set a password"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:168
+#: src/views/certificate/components/CertificateDownload.vue:177
 msgid "Enter PFX password"
 msgstr ""
 
@@ -6281,10 +6367,6 @@ msgstr ""
 
 #: src/views/certificate/components/CertificateFileUpload.vue:46
 msgid "Please select a valid %{type} file (%{extensions})"
-msgstr ""
-
-#: src/views/certificate/components/CertificateFileUpload.vue:54
-msgid "File size cannot exceed 5MB"
 msgstr ""
 
 #: src/views/certificate/components/CertificateFileUpload.vue:70
