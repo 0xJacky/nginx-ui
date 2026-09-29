@@ -76,7 +76,15 @@ var knownPermissions = []string{
 var knownLogFormats = []string{protocol.LogFormatCombined, protocol.LogFormatRaw}
 
 // knownSettingsTypes lists the field types the settings form can render.
-var knownSettingsTypes = []string{"text", "bool", "number", "select", "secret", "textarea"}
+var knownSettingsTypes = []string{
+	settingsTypeText, "bool", "number", "select", "secret", "textarea", settingsTypeList,
+}
+
+const (
+	settingsTypeText = "text"
+	// settingsTypeList holds a list of single line strings.
+	settingsTypeList = "list"
+)
 
 // knownHTTPListenModes lists the transports of the http capability.
 var knownHTTPListenModes = []string{"unix", "rpc"}
@@ -668,8 +676,28 @@ func validateSettingsSchema(schema *protocol.SettingsSchema) error {
 		if field.Type == "select" && len(field.Options) == 0 {
 			return invalidManifest("settings_schema key %q needs options", field.Key)
 		}
+		if field.Type == settingsTypeList && field.Default != nil && !isStringList(field.Default) {
+			return invalidManifest("settings_schema key %q default must be a list of strings", field.Key)
+		}
 	}
 	return nil
+}
+
+// isStringList reports whether a decoded JSON value is an array of strings.
+func isStringList(value any) bool {
+	switch typed := value.(type) {
+	case []string:
+		return true
+	case []any:
+		for _, item := range typed {
+			if _, ok := item.(string); !ok {
+				return false
+			}
+		}
+		return true
+	default:
+		return false
+	}
 }
 
 // ResolveExecutable builds the argv used to spawn the plugin. The per platform
