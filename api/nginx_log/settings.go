@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
@@ -66,9 +67,14 @@ func GetAdvancedIndexingStatus(c *gin.Context) {
 // to. The site editor uses it to propose a per-site access_log path: a log
 // placed next to the default one is inside the log directory whitelist, so it
 // can be read and indexed without any further configuration.
+//
+// It also reports the default access and error log files themselves when they
+// are readable through the log whitelist, for a site that declares no log
+// directive of its own and so inherits them.
 func GetDefaultLogDir(c *gin.Context) {
 	dir := ""
-	if accessLogPath := nginx.GetAccessLogPath(); accessLogPath != "" {
+	accessLogPath := nginx.GetAccessLogPath()
+	if accessLogPath != "" {
 		dir = filepath.Dir(accessLogPath)
 	} else if prefix := nginx.GetPrefix(); prefix != "" {
 		// nginx may not be running or may declare no access_log at all; the
@@ -77,6 +83,16 @@ func GetDefaultLogDir(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"access_log_dir": dir,
+		"access_log_dir":  dir,
+		"access_log_path": usableLogPath(accessLogPath),
+		"error_log_path":  usableLogPath(nginx.GetErrorLogPath()),
 	})
+}
+
+// usableLogPath returns the path when it passes the log whitelist, else "".
+func usableLogPath(path string) string {
+	if path == "" || !utils.IsValidLogPath(path) {
+		return ""
+	}
+	return path
 }
