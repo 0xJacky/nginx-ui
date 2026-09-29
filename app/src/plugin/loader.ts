@@ -3,17 +3,35 @@ import type { PluginInfo, PluginManifest, PluginManifestI18n, WebappEntry, Webap
 import pluginApi from '@/api/plugin'
 import gettext from '@/gettext'
 import router, { NOT_FOUND_ROUTE_NAME } from '@/routes'
+import { createBundleSource } from './bundles'
 import { injectScript, scriptQueue, withVersion } from './chunks'
 import { isLoopbackUrl } from './loopback'
 import { createRegistry } from './registry'
+import { removePluginRoutes, trackPluginRoute } from './routeRemovers'
 import { satisfies } from './semver'
 import { takePendingPlugin } from './shared'
 import { usePluginStore } from './store'
 
 const IFRAME_PAGE_COMPONENT = () => import('@/views/plugin/IframePage.vue')
 
+/** Page the user is sent to when the plugin behind the open page goes away. */
+const FALLBACK_PATH = '/system/plugins'
+
 /** Initial load in flight, shared by every caller of `load()`. */
 let initialLoad: Promise<void> | undefined
+
+/**
+ * Runs a bundle script and takes the definition it registered. Definitions are
+ * remembered per version, so a plugin enabled again after `unload` runs its
+ * setup again instead of evaluating the script a second time.
+ */
+const bundles = createBundleSource<WebappEntry>(entry =>
+  // The bundle hands its definition over on a global, so no other script of
+  // the page runs until it has been taken.
+  scriptQueue.run(async () => {
+    await injectScript(withVersion(entry.bundle_url, entry.version))
+    return takePendingPlugin(entry.id)
+  }))
 
 /** Injects a stylesheet once and resolves as soon as it is applied. */
 function injectStyle(url: string): Promise<void> {
@@ -111,7 +129,7 @@ function registerIframePages(entry: WebappEntry) {
       },
     }
 
-    router.addRoute('Home', record)
+    trackPluginRoute(entry.id, router.addRoute('Home', record))
     store.addRoute(record)
   }
 }
@@ -197,12 +215,7 @@ export function usePluginLoader() {
     if (entry.style_url)
       await injectStyle(withVersion(entry.style_url, entry.version))
 
-    // The bundle hands its definition over on a global, so no other script of
-    // the page runs until it has been taken.
-    const definition = await scriptQueue.run(async () => {
-      await injectScript(withVersion(entry.bundle_url, entry.version))
-      return takePendingPlugin(entry.id)
-    })
+    const definition = await bundles.acquire(entry)
     if (!definition) {
       console.warn(`[plugin] ${entry.id}: bundle did not call registerPlugin('${entry.id}', ...)`)
       store.setLoadState(entry.id, 'failed')
@@ -297,8 +310,9 @@ export function usePluginLoader() {
 
   /**
    * Loads bundles of plugins enabled after the page was loaded. Entries that
-   * already went through the loader are left alone, because a bundle cannot
-   * be evaluated twice on the same page.
+   * already went through the loader are left alone. A plugin that was
+   * unloaded reuses its remembered definition when the version is the same,
+   * because a bundle cannot be evaluated twice on the same page.
    */
   async function loadNew() {
     if (store.loading)
@@ -327,5 +341,40 @@ export function usePluginLoader() {
     }
   }
 
-  return { load, loadNew }
+  /**
+   * Takes the contributions of a plugin out of the running page: slots,
+   * routes and the settings panel, after the plugin's own teardown. The definition stays remembered unless
+   * `forget` is set, so the plugin can be turned on again without a reload.
+   */
+  async function unload(pluginId: string, options: { forget?: boolean } = {}) {
+    // Leave a page that is about to disappear before its route is removed.
+    const current = router.currentRoute.value
+    if (current.matched.some(record => record.meta?.pluginId === pluginId)) {
+      try {
+        await router.replace(FALLBACK_PATH)
+      }
+      catch (error) {
+        console.error(`[plugin] ${pluginId}: could not leave its page`, error)
+      }
+    }
+
+    // The plugin cleans up what it started outside its components, such as
+    // timers or connections. Its failure must not keep the rest in place.
+    if (store.loaded[pluginId] === 'loaded') {
+      try {
+        bundles.peek(pluginId)?.teardown?.()
+      }
+      catch (error) {
+        console.error(`[plugin] ${pluginId}: teardown failed`, error)
+      }
+    }
+
+    removePluginRoutes(pluginId)
+    store.removePlugin(pluginId)
+
+    if (options.forget)
+      bundles.forget(pluginId)
+  }
+
+  return { load, loadNew, unload }
 }
