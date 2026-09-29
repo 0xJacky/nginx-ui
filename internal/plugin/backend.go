@@ -130,9 +130,19 @@ func (b *hostBackend) KVList(pluginID, prefix string) ([]string, error) {
 }
 
 func (b *hostBackend) kvRow(pluginID, key string) (*model.PluginKV, error) {
-	return query.PluginKV.WithContext(b.manager.context()).
+	// A missing key is a normal answer, so Find is used: First would log it as
+	// an error.
+	rows, err := query.PluginKV.WithContext(b.manager.context()).
 		Where(query.PluginKV.PluginID.Eq(pluginID), query.PluginKV.Key.Eq(key)).
-		First()
+		Limit(1).
+		Find()
+	if err != nil {
+		return nil, err
+	}
+	if len(rows) == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
+	return rows[0], nil
 }
 
 // SettingsGet returns the stored settings layered over the schema defaults.
