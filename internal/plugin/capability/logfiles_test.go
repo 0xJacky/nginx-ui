@@ -41,3 +41,10 @@ func TestLogFileSourceListIsNotNil(t *testing.T) {
 	assert.NotNil(t, source.LogFiles())
 	assert.Empty(t, source.LogFiles())
 }
+
+// The manager compares sources as interface values, which panics for a
+// dynamic type that is not comparable.
+func TestLogFileSourceIsComparable(t *testing.T) {
+	source := NewLogFileSource(func() []nginx_log.PluginLogFile { return nil }, func(func()) func() { return func() {} })
+	assert.NotPanics(t, func() { _ = source == source })
+}
