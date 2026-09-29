@@ -3532,11 +3532,41 @@ msgid ""
 "authority; add a CAA issue record for it or issuance will fail."
 msgstr "該網域的 CAA 記錄未授權所選的憑證授權單位；請為其新增 CAA issue 記錄，否則簽發將會失敗。"
 
+msgid "API base URL"
+msgstr "API 位址"
+
+msgid "API timeout"
+msgstr "API 逾時"
+
+msgid "API token"
+msgstr "API 令牌"
+
+msgid "Access key ID"
+msgstr "存取金鑰 ID"
+
+msgid "AccessKey"
+msgstr "AccessKey"
+
+msgid "AccessKey ID"
+msgstr "AccessKey ID"
+
+msgid "AccessKey secret"
+msgstr "AccessKey Secret"
+
+msgid "Account email"
+msgstr "帳戶電子郵件"
+
 msgid "An existing certificate is used"
 msgstr "使用現有憑證"
 
 msgid "Applying the HTTP configuration for validation"
 msgstr "正在套用用於驗證的 HTTP 設定"
+
+msgid "Authentication method"
+msgstr "認證方式"
+
+msgid "Azure environment"
+msgstr "Azure 環境"
 
 msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
 msgstr "綑綁的 nginx-ui.conf 包含 WebSocket 反向代理修正"
@@ -3658,11 +3688,17 @@ msgid ""
 "the nginx configuration directory"
 msgstr "檢查 streams-available 和 streams-enabled 目錄是否位於 nginx 配置目錄下"
 
+msgid "Check interval"
+msgstr "檢查間隔"
+
 msgid "Checking the HTTP challenge route"
 msgstr "正在檢查 HTTP 驗證路由"
 
 msgid "Conf.d directory exists"
 msgstr "conf.d 目錄存在"
+
+msgid "DNS line"
+msgstr "解析線路"
 
 msgid "Docker socket exists"
 msgstr "Docker 套接字存在"
@@ -3682,6 +3718,9 @@ msgstr "撤銷憑證失敗: %{error}"
 msgid "GeoLite2 database available"
 msgstr "GeoLite2 資料庫可用"
 
+msgid "Global API key"
+msgstr "全域 API Key"
+
 msgid "HTTP challenge route is reachable"
 msgstr "HTTP 驗證路由可存取"
 
@@ -3700,6 +3739,9 @@ msgstr "HTTPS 設定已規劃"
 msgid "HTTPS enabled"
 msgstr "HTTPS 已啟用"
 
+msgid "Instance RAM role"
+msgstr "實例 RAM 角色"
+
 msgid "Issuing the certificate"
 msgstr "正在簽發憑證"
 
@@ -3710,6 +3752,18 @@ msgid ""
 msgstr ""
 "日誌文件 %{log_path} 不是常規文件。如果您在 docker 容器中使用 nginx-ui，請參考 "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html 獲取更多信息。"
+
+msgid "Managed identity timeout"
+msgstr "受控識別逾時"
+
+msgid "Maximum wait"
+msgstr "最長等待"
+
+msgid "Needs the DNS edit permission."
+msgstr "需要 DNS 編輯權限。"
+
+msgid "Needs the zone read permission. Leave empty to use the API token."
+msgstr "需要區域讀取權限。留空則使用 API 令牌。"
 
 msgid "Nginx PID path exists"
 msgstr "Nginx PID 路徑存在"
@@ -3747,14 +3801,29 @@ msgstr "Nginx.conf 包含 streams-enabled 目錄"
 msgid "No DNS problem found"
 msgstr "未發現 DNS 問題"
 
+msgid "One of public, usgovernment and china."
+msgstr "可選值為 public、usgovernment 或 china。"
+
 msgid "Original site configuration restored"
 msgstr "原網站設定已還原"
 
 msgid "Planning the HTTPS configuration"
 msgstr "正在規劃 HTTPS 設定"
 
+msgid "Private zone"
+msgstr "私人區域"
+
+msgid "Region"
+msgstr "區域"
+
+msgid "Region ID"
+msgstr "區域 ID"
+
 msgid "Resolve the site configuration problem first"
 msgstr "請先解決網站設定問題"
+
+msgid "Resource group"
+msgstr "資源群組"
 
 msgid "Restoring the HTTP configuration"
 msgstr "正在還原 HTTP 設定"
@@ -3762,11 +3831,38 @@ msgstr "正在還原 HTTP 設定"
 msgid "Restoring the original site configuration"
 msgstr "正在還原原網站設定"
 
+msgid "STS security token"
+msgstr "STS 安全權杖"
+
+msgid "Secret access key"
+msgstr "秘密存取金鑰"
+
+msgid "SecretId"
+msgstr "SecretId"
+
+msgid "SecretKey"
+msgstr "SecretKey"
+
+msgid "Service discovery filter"
+msgstr "服務探索篩選器"
+
+msgid "Session token"
+msgstr "工作階段權杖"
+
+msgid "Set to true to use a private DNS zone."
+msgstr "設為 true 以使用私人 DNS 區域。"
+
 msgid "Sites directory exists"
 msgstr "站點目錄存在"
 
 msgid "Streams directory exists"
 msgstr "Streams 目錄存在"
+
+msgid "Subscription ID"
+msgstr "訂用帳戶 ID"
+
+msgid "TXT record TTL"
+msgstr "TXT 記錄 TTL"
 
 msgid "The DNS challenge does not use the HTTP challenge route"
 msgstr "DNS 驗證不使用 HTTP 驗證路由"
@@ -3899,6 +3995,12 @@ msgstr ""
 "必須信任傳入的 X-Forwarded-Proto/Host 標頭；否則 WebSocket 來源檢查將失敗。保留 /etc/nginx "
 "的舊部署可能仍使用未修復的版本。"
 
+msgid "Zone name"
+msgstr "區域名稱"
+
+msgid "Zone read token"
+msgstr "區域讀取令牌"
+
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] ACME 使用者：%{name}，電子郵件：%{email}，CA 目錄：%{caDir}"
 
@@ -3925,9 +4027,6 @@ msgstr "[Nginx UI] 正在檢查 %{domains} 的 HTTP01 驗證路由"
 
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] 創建客戶端以促進與 CA 伺服器的通信"
-
-msgid "[Nginx UI] Environment variables cleaned"
-msgstr "[Nginx UI] 環境變數已清理"
 
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 已完成"
@@ -3983,9 +4082,6 @@ msgstr "[Nginx UI] 正在設定 DNS01 驗證提供者"
 
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] 正在設定 HTTP01 驗證提供者"
-
-msgid "[Nginx UI] Setting environment variables"
-msgstr "[Nginx UI] 設定環境變數"
 
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] 正在將證書私鑰寫入磁碟"
@@ -5998,17 +6094,20 @@ msgid ""
 "record management in DNS Domains is not supported for this provider."
 msgstr "%{provider} 可用於 ACME DNS-01 憑證驗證挑戰，但 DNS Domains 暫不支援該提供商的 DNS 記錄管理。"
 
+msgid "%{method} (recommended)"
+msgstr "%{method}（推薦）"
+
 msgid "DNS Provider"
 msgstr "DNS 供應商"
 
-msgid "API Document"
-msgstr "API 文件"
+msgid "%{provider} API docs"
+msgstr "%{provider} API 文件"
 
-msgid "SDK"
-msgstr "SDK"
+msgid "Sign-in method"
+msgstr "填寫方式"
 
-msgid "Additional"
-msgstr "其他設定"
+msgid "Optional"
+msgstr "選填"
 
 msgid "All"
 msgstr "全部"
@@ -6187,9 +6286,6 @@ msgid ""
 "provider."
 msgstr "請填寫您的 DNS 供應商提供的 API 認證憑據。"
 
-msgid "Please note that the unit of time configurations below are all in seconds."
-msgstr "請注意，以下時間設定單位均為秒。"
-
 msgid "Modify DNS Credential"
 msgstr "修改 DNS 憑證"
 
@@ -6315,6 +6411,15 @@ msgstr "覆蓋率"
 
 msgid "Details"
 msgstr "細節"
+
+msgid "%{count} changed"
+msgstr "已修改 %{count} 項"
+
+msgid "All default"
+msgstr "皆為預設"
+
+msgid "sec"
+msgstr "秒"
 
 msgid "Result"
 msgstr "結果"
@@ -8195,6 +8300,15 @@ msgstr "點擊 URL"
 
 msgid "Client ID"
 msgstr "用戶端 ID"
+
+msgid "Client certificate"
+msgstr "用戶端憑證"
+
+msgid "Client certificate path"
+msgstr "用戶端憑證路徑"
+
+msgid "Client secret"
+msgstr "用戶端密鑰"
 
 msgid "Client Secret"
 msgstr "用戶端密鑰"
@@ -11796,6 +11910,25 @@ msgstr "單窗格"
 
 msgid "Split view"
 msgstr "分割檢視"
+
+#~ msgid "[Nginx UI] Environment variables cleaned"
+#~ msgstr "[Nginx UI] 環境變數已清理"
+
+#~ msgid "[Nginx UI] Setting environment variables"
+#~ msgstr "[Nginx UI] 設定環境變數"
+
+#~ msgid "API Document"
+#~ msgstr "API 文件"
+
+#~ msgid "SDK"
+#~ msgstr "SDK"
+
+#~ msgid "Additional"
+#~ msgstr "其他設定"
+
+#~ msgid ""
+#~ "Please note that the unit of time configurations below are all in seconds."
+#~ msgstr "請注意，以下時間設定單位均為秒。"
 
 #~ msgid "Required Settings"
 #~ msgstr "必要設定"
