@@ -41,6 +41,10 @@ type fakeHTTPHost struct {
 	acquireErr error
 	initResult protocol.InitializeResult
 	hasInit    bool
+	// secret is what HTTPSecret answers, "test-secret" when empty. noSecret
+	// makes it answer that the plugin has none.
+	secret   string
+	noSecret bool
 
 	mu       sync.Mutex
 	acquired []string
@@ -72,6 +76,16 @@ func (h *fakeHTTPHost) DataDir(string) string { return h.dataDir }
 
 func (h *fakeHTTPHost) InitializeResult(string) (protocol.InitializeResult, bool) {
 	return h.initResult, h.hasInit
+}
+
+func (h *fakeHTTPHost) HTTPSecret(string) (string, bool) {
+	if h.noSecret {
+		return "", false
+	}
+	if h.secret == "" {
+		return "test-secret", true
+	}
+	return h.secret, true
 }
 
 func (h *fakeHTTPHost) acquireCount() int {
@@ -191,6 +205,7 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 		sawAuth      string
 		sawCookie    string
 		sawHasCookie bool
+		sawSecrets   []string
 	)
 	startUnixHTTPServer(t, dir, func(w http.ResponseWriter, r *http.Request) {
 		body, _ := io.ReadAll(r.Body)
@@ -204,6 +219,7 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 		sawAuth = r.Header.Get("Authorization")
 		_, sawHasCookie = r.Header["Cookie"]
 		sawCookie = r.Header.Get("Cookie")
+		sawSecrets = r.Header.Values(headerPluginSecret)
 		mu.Unlock()
 
 		w.Header().Set("X-Plugin-Reply", "yes")
@@ -218,6 +234,9 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 	require.NoError(t, err)
 	req.Header.Set("Authorization", "Bearer secret")
 	req.Header.Set("Cookie", "session=abc")
+	// A client that guesses the header must not get its value through.
+	req.Header.Add(headerPluginSecret, "forged")
+	req.Header.Add("x-nginx-ui-plugin-secret", "forged-too")
 
 	resp, err := http.DefaultClient.Do(req)
 	require.NoError(t, err)
@@ -239,6 +258,7 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 	assert.Empty(t, sawAuth, "Authorization must not reach the plugin")
 	assert.False(t, sawHasCookie, "Cookie must not reach the plugin")
 	assert.Empty(t, sawCookie)
+	assert.Equal(t, []string{"test-secret"}, sawSecrets, "only the secret of the host reaches the plugin")
 
 	assert.Equal(t, 1, host.acquireCount())
 	assert.Equal(t, 1, host.releaseCount())
@@ -259,6 +279,22 @@ func TestNewHTTPHandlerUnixProxyReturns503WhenTheSocketIsMissing(t *testing.T) {
 	assert.Equal(t, http.StatusServiceUnavailable, resp.StatusCode)
 	assert.Contains(t, string(respBody), "55004")
 	assert.Equal(t, 1, host.releaseCount())
+}
+
+func TestNewHTTPHandlerUnixProxyReturns503WithoutASecret(t *testing.T) {
+	dir := t.TempDir()
+	called := make(chan struct{}, 1)
+	startUnixHTTPServer(t, dir, func(http.ResponseWriter, *http.Request) { called <- struct{}{} })
+
+	host := &fakeHTTPHost{info: enabledInfo(), manifest: httpManifest("unix"), dataDir: dir, noSecret: true}
+	server := newUnixProxyServer(t, host)
+
+	resp, err := http.Get(server.URL + "/plugins/official.http/http/x")
+	require.NoError(t, err)
+	defer resp.Body.Close()
+
+	assert.Equal(t, http.StatusServiceUnavailable, resp.StatusCode)
+	assert.Empty(t, called, "a request without the secret must not be sent to the plugin")
 }
 
 func TestNewHTTPHandlerUnixProxyReturns503WhenAcquireFails(t *testing.T) {
@@ -289,6 +325,7 @@ func TestNewHTTPHandlerRPCRoundTrip(t *testing.T) {
 	c, recorder := newHTTPTestContext(http.MethodPost, "/api/plugins/official.http/http/brew?x=1",
 		strings.NewReader("water"), "official.http", "/brew")
 	c.Request.Header.Set("Authorization", "Bearer secret")
+	c.Request.Header.Set(headerPluginSecret, "forged")
 
 	NewHTTPHandler(host)(c)
 
@@ -310,6 +347,8 @@ func TestNewHTTPHandlerRPCRoundTrip(t *testing.T) {
 	assert.Equal(t, "water", string(decoded))
 	_, hasAuth := params.Headers["Authorization"]
 	assert.False(t, hasAuth, "Authorization must not be forwarded to the plugin")
+	_, hasSecret := params.Headers[headerPluginSecret]
+	assert.False(t, hasSecret, "a client supplied secret header must not be forwarded")
 
 	assert.Equal(t, 1, host.releaseCount())
 }
@@ -347,9 +386,11 @@ func TestNewHTTPHandlerProxiesWebSocketsWithoutHandshakeCredentials(t *testing.T
 	dir := t.TempDir()
 
 	queries := make(chan string, 1)
+	secrets := make(chan []string, 1)
 	upgrader := websocket.Upgrader{}
 	startUnixHTTPServer(t, dir, func(w http.ResponseWriter, r *http.Request) {
 		queries <- r.URL.RawQuery
+		secrets <- r.Header.Values(headerPluginSecret)
 		conn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
 			return
@@ -370,7 +411,7 @@ func TestNewHTTPHandlerProxiesWebSocketsWithoutHandshakeCredentials(t *testing.T
 	server := newUnixProxyServer(t, host)
 
 	target := "ws" + strings.TrimPrefix(server.URL, "http") + "/plugins/official.http/http/events?token=secret&x_node_id=3&room=1"
-	conn, _, err := websocket.DefaultDialer.Dial(target, nil)
+	conn, _, err := websocket.DefaultDialer.Dial(target, http.Header{headerPluginSecret: {"forged"}})
 	require.NoError(t, err)
 	defer conn.Close()
 
@@ -380,6 +421,7 @@ func TestNewHTTPHandlerProxiesWebSocketsWithoutHandshakeCredentials(t *testing.T
 	assert.Equal(t, "echo:ping", string(reply))
 
 	assert.Equal(t, "room=1", <-queries, "session credentials must not reach the plugin")
+	assert.Equal(t, []string{"test-secret"}, <-secrets, "upgrades carry the secret of the host only")
 }
 
 func TestNewHTTPHandlerKeepsQueryOfPlainRequests(t *testing.T) {
