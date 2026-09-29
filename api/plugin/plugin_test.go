@@ -391,3 +391,45 @@ func TestGetPluginLogsRejectsAnUnknownPlugin(t *testing.T) {
 	assert.Equal(t, http.StatusInternalServerError, recorder.Code)
 	assert.Contains(t, recorder.Body.String(), "55002")
 }
+
+func TestGetPluginUsageReportsNothingForAPluginWithoutDependents(t *testing.T) {
+	manager := setupManager(t)
+	installTestPlugin(t, manager, webappManifest("official.alpha"), nil, true)
+
+	c, recorder := newContext(http.MethodGet, "/api/plugins/official.alpha/usage", nil,
+		gin.Params{{Key: "id", Value: "official.alpha"}})
+	GetPluginUsage(c)
+
+	require.Equal(t, http.StatusOK, recorder.Code)
+	assert.JSONEq(t, `{"items":[],"total":0}`, recorder.Body.String())
+
+	c, recorder = newContext(http.MethodGet, "/api/plugins/official.missing/usage", nil,
+		gin.Params{{Key: "id", Value: "official.missing"}})
+	GetPluginUsage(c)
+	assert.NotEqual(t, http.StatusOK, recorder.Code)
+}
+
+func TestSavePluginSettingsAcceptsAList(t *testing.T) {
+	manager := setupManager(t)
+	manifest := webappManifest("official.alpha")
+	manifest.SettingsSchema.Settings = append(manifest.SettingsSchema.Settings,
+		protocol.SettingsField{Key: "servers", Type: "list", DisplayName: "Servers", Default: []any{"1.1.1.1:53"}})
+	installTestPlugin(t, manager, manifest, nil, true)
+
+	payload := `{"settings":{"servers":["8.8.8.8:53"," ","9.9.9.9:53"]}}`
+	c, recorder := newContext(http.MethodPost, "/api/plugins/official.alpha/settings",
+		strings.NewReader(payload), gin.Params{{Key: "id", Value: "official.alpha"}})
+	SavePluginSettings(c)
+
+	require.Equal(t, http.StatusOK, recorder.Code)
+	var body struct {
+		Values map[string]any `json:"values"`
+	}
+	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &body))
+	assert.Equal(t, []any{"8.8.8.8:53", "9.9.9.9:53"}, body.Values["servers"])
+
+	c, recorder = newContext(http.MethodPost, "/api/plugins/official.alpha/settings",
+		strings.NewReader(`{"settings":{"servers":"8.8.8.8:53"}}`), gin.Params{{Key: "id", Value: "official.alpha"}})
+	SavePluginSettings(c)
+	assert.NotEqual(t, http.StatusOK, recorder.Code)
+}

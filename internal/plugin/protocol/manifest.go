@@ -305,7 +305,7 @@ type SettingsSchema struct {
 // SettingsField is one entry of SettingsSchema.
 type SettingsField struct {
 	Key         string           `json:"key"`
-	Type        string           `json:"type"` // text | bool | number | select | secret | textarea
+	Type        string           `json:"type"` // text | bool | number | select | secret | textarea | list
 	DisplayName string           `json:"display_name"`
 	HelpText    string           `json:"help_text,omitempty"`
 	Default     any              `json:"default,omitempty"`
