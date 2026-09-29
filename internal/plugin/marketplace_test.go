@@ -198,10 +198,26 @@ func encodeKey(t *testing.T, key minisign.PublicKey) string {
 }
 
 // trustKey adds a test public key to the node trust store, which makes the
-// packages it signs community trust.
+// packages it signs community trust. The entry carries a publisher name like
+// the ones the settings page saves.
 func trustKey(t *testing.T, key minisign.PublicKey) {
 	t.Helper()
-	settings.PluginSettings.TrustedPublicKeys = append(settings.PluginSettings.TrustedPublicKeys, encodeKey(t, key))
+	settings.PluginSettings.TrustedPublicKeys = append(settings.PluginSettings.TrustedPublicKeys, publisherEntry(t, key))
+}
+
+// publisherKey is the key line of a public key, the form a trusted publisher
+// entry keeps.
+func publisherKey(t *testing.T, key minisign.PublicKey) string {
+	t.Helper()
+	line, _ := settings.ParseTrustedPublisher(encodeKey(t, key))
+	return line
+}
+
+// publisherEntry is a trusted publisher entry as the settings page saves it:
+// the key line followed by a name.
+func publisherEntry(t *testing.T, key minisign.PublicKey) string {
+	t.Helper()
+	return publisherKey(t, key) + " Example Publisher"
 }
 
 // useReleaseKey pins a test key as the only release key, so the packages it
