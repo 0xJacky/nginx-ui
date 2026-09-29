@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import type { SelectProps } from 'antdv-next'
-import type { AutoCertOptions, ChallengeMethod } from '@/api/auto_cert'
-import { useRouter } from 'vue-router'
-import auto_cert, { AutoCertChallengeMethod } from '@/api/auto_cert'
+import type { AutoCertOptions } from '@/api/auto_cert'
+import { useMediaQuery } from '@vueuse/core'
+import { AutoCertChallengeMethod } from '@/api/auto_cert'
+import Dns01PluginNotice from '@/components/Dns01PluginNotice'
 import PluginSlot from '@/components/PluginSlot'
+import { useDns01Plugin } from '@/composables/useDns01Plugin'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
 import { isIPAddress } from '@/utils/certificate'
 import ACMEUserSelector from '@/views/certificate/components/ACMEUserSelector.vue'
-import InstallConfirmModal from '@/views/system/plugins/marketplace/InstallConfirmModal.vue'
 import DNSChallenge from './DNSChallenge.vue'
 
 const props = defineProps<{
@@ -18,10 +19,11 @@ const props = defineProps<{
   hasWildcardServerName?: boolean
   isIpCertificate?: boolean
   needsManualIpInput?: boolean
+  /** The certificate covers a wildcard name, which HTTP-01 cannot validate. */
+  wildcard?: boolean
+  /** Editing a certificate that already exists, as opposed to issuing one. */
+  existing?: boolean
 }>()
-
-/** The official plugin that contributes the DNS-01 challenge. */
-const DNS01_PLUGIN_ID = 'com.nginxui.dns01'
 
 const data = defineModel<AutoCertOptions>('options', {
   required: true,
@@ -29,64 +31,51 @@ const data = defineModel<AutoCertOptions>('options', {
 
 const manualIpAddress = defineModel<string>('manualIpAddress', { default: '' })
 
-const router = useRouter()
+// A credential id of 0 means none. Plugins only ever see undefined for it.
+if (data.value.dns_credential_id === 0 || data.value.dns_credential_id === null)
+  data.value.dns_credential_id = undefined
 
-const challengeMethods = ref<ChallengeMethod[]>([])
-// Until the backend answers, assume every method is available so the form does
-// not flash a warning for a plugin that is in fact installed.
-const challengeMethodsLoaded = ref(false)
+const dns01 = useDns01Plugin()
+const { state: dns01State } = dns01
 
-const availableMethods = computed(() => new Set(challengeMethods.value.map(method => method.code)))
+const isIpOnly = computed(() => !!(props.isIpCertificate || props.needsManualIpInput))
 
-function isMethodAvailable(code: keyof typeof AutoCertChallengeMethod) {
-  return !challengeMethodsLoaded.value || availableMethods.value.has(code)
-}
+const isWildcard = computed(() => !!props.wildcard
+  || (data.value.domains ?? []).some(domain => domain?.startsWith('*.')))
 
-// DNS-01 is contributed by a plugin, so it can legitimately be missing.
-const isDns01Available = computed(() => isMethodAvailable(AutoCertChallengeMethod.dns01))
+const isDns01 = computed(() => data.value.challenge_method === AutoCertChallengeMethod.dns01)
+
+/** DNS-01 is selected but nothing can run it right now. */
+const isDns01Blocked = computed(() => isDns01.value && !dns01.isAvailable.value)
 
 const challengeMethodOptions = computed<SelectProps['options']>(() => [
   {
     value: AutoCertChallengeMethod.http01,
-    disabled: !isMethodAvailable(AutoCertChallengeMethod.http01),
     label: $gettext('HTTP01'),
   },
   {
     value: AutoCertChallengeMethod.dns01,
-    disabled: props.isIpCertificate || props.needsManualIpInput || !isDns01Available.value,
+    disabled: isIpOnly.value,
     label: $gettext('DNS01'),
   },
 ])
 
-async function loadChallengeMethods() {
-  try {
-    challengeMethods.value = await auto_cert.get_challenge_methods()
-  }
-  catch {
-    // Keep both options usable rather than blocking issuance on a failed probe.
-    challengeMethods.value = []
-    return
-  }
+const challengeHint = computed<{ text: string, warning?: boolean } | undefined>(() => {
+  if (isDns01.value)
+    return isDns01Blocked.value ? undefined : { text: $gettext('Validates the domain with a DNS record. Needs a DNS credential.') }
+  if (isWildcard.value)
+    return { text: $gettext('Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail.'), warning: true }
+  return { text: $gettext('Validates each domain over port 80 on this server.') }
+})
 
-  challengeMethodsLoaded.value = true
-}
+const readonlyCredentialHelp = computed(() => dns01State.value === 'missing'
+  ? $gettext('Can be changed after the plugin is installed.')
+  : $gettext('Can be changed after the plugin is enabled.'))
 
-function goToPluginsPage() {
-  router.push('/system/plugins')
-}
-
-// Installing the plugin from here saves a trip to System > Plugins, which is
-// the only other place that offers it.
-const dns01InstallOpen = ref(false)
-
-function installDns01Plugin() {
-  dns01InstallOpen.value = true
-}
-
-async function onDns01PluginInstalled() {
-  challengeMethodsLoaded.value = false
-  await loadChallengeMethods()
-}
+// Phones stack labels above the controls; the plugin block follows via compact.
+const isNarrow = useMediaQuery('(max-width: 575px)')
+const compact = computed(() => !isNarrow.value)
+const slotContext = computed(() => ({ options: data.value, compact: compact.value }))
 
 const keyTypeOptions: SelectProps['options'] = PrivateKeyTypeList.map(t => ({
   key: t.key,
@@ -95,11 +84,14 @@ const keyTypeOptions: SelectProps['options'] = PrivateKeyTypeList.map(t => ({
 }))
 
 const compactLabelCol = { flex: '170px' }
-const compactWrapperCol = { flex: 'auto' }
+const compactWrapperCol = { flex: '1 1 0', style: { minWidth: 0 } }
+
+const cardStyles = {
+  header: { minHeight: '40px' },
+  body: { padding: '14px' },
+}
 
 onMounted(() => {
-  void loadChallengeMethods()
-
   if (!data.value.key_type)
     data.value.key_type = PrivateKeyTypeEnum.P256
 
@@ -140,6 +132,8 @@ async function validateManualIpAddress() {
 
 defineExpose({
   validateManualIpAddress,
+  /** True while DNS-01 is selected but cannot run, so issuing would fail. */
+  dns01Blocked: isDns01Blocked,
 })
 </script>
 
@@ -191,12 +185,17 @@ defineExpose({
         </p>
       </template>
     </AAlert>
-    <ACard size="small" class="cert-config-card mb-4" :title="$gettext('Required Settings')">
+    <ACard size="small" class="mb-4" :styles="cardStyles" :title="$gettext('Issuing')">
+      <Dns01PluginNotice
+        v-if="forceDnsChallenge && isDns01Blocked"
+        class="mb-4"
+        :variant="existing ? 'renewal' : 'challenge'"
+      />
       <AForm
-        layout="horizontal"
-        label-align="left"
-        :label-col="compactLabelCol"
-        :wrapper-col="compactWrapperCol"
+        :layout="compact ? 'horizontal' : 'vertical'"
+        :label-align="compact ? 'left' : undefined"
+        :label-col="compact ? compactLabelCol : undefined"
+        :wrapper-col="compact ? compactWrapperCol : undefined"
         :model="{ manualIpAddress }"
       >
         <!-- IP Address Input for IP certificates without explicit IP -->
@@ -241,30 +240,6 @@ defineExpose({
           </template>
         </AFormItem>
 
-        <AAlert
-          v-if="!isDns01Available"
-          class="mb-4"
-          type="warning"
-          show-icon
-          :title="$gettext('DNS-01 challenge requires the DNS-01 plugin. Install it from System > Plugins.')"
-        >
-          <template #description>
-            <ASpace wrap>
-              <AButton type="primary" size="small" @click="installDns01Plugin">
-                {{ $gettext('Install DNS-01 plugin') }}
-              </AButton>
-              <AButton type="link" size="small" class="px-0" @click="goToPluginsPage">
-                {{ $gettext('Go to System > Plugins') }}
-              </AButton>
-            </ASpace>
-          </template>
-        </AAlert>
-
-        <InstallConfirmModal
-          v-model:open="dns01InstallOpen"
-          :plugin-id="DNS01_PLUGIN_ID"
-          @installed="onDns01PluginInstalled"
-        />
         <AFormItem
           v-if="!forceDnsChallenge"
           :label="$gettext('Challenge Method')"
@@ -276,8 +251,8 @@ defineExpose({
             <template #optionRender="{ option }">
               {{ option.data.label }}
               <span
-                v-if="option.data.value === AutoCertChallengeMethod.dns01 && (isIpCertificate || needsManualIpInput)"
-                class="text-gray-400 ml-2"
+                v-if="option.data.value === AutoCertChallengeMethod.dns01 && isIpOnly"
+                class="challenge-hint ml-2"
               >
                 ({{ $gettext('Not supported for IP certificates') }})
               </span>
@@ -285,13 +260,25 @@ defineExpose({
             <template #labelRender="{ label, value }">
               {{ label }}
               <span
-                v-if="value === AutoCertChallengeMethod.dns01 && (isIpCertificate || needsManualIpInput)"
-                class="text-gray-400 ml-2"
+                v-if="value === AutoCertChallengeMethod.dns01 && isIpOnly"
+                class="challenge-hint ml-2"
               >
                 ({{ $gettext('Not supported for IP certificates') }})
               </span>
             </template>
           </ASelect>
+          <div
+            v-if="challengeHint"
+            class="challenge-hint mt-1"
+            :class="{ 'is-warning': challengeHint.warning }"
+          >
+            {{ challengeHint.text }}
+          </div>
+          <Dns01PluginNotice
+            v-if="isDns01Blocked"
+            class="mt-2"
+            :variant="existing ? 'renewal' : 'challenge'"
+          />
         </AFormItem>
         <AFormItem
           :label="$gettext('Key Type')"
@@ -304,60 +291,97 @@ defineExpose({
         </AFormItem>
       </AForm>
 
-      <ACMEUserSelector v-model:options="data" compact />
-      <PluginSlot
-        v-if="data.challenge_method === 'dns01'"
-        :name="`certificate.challenge.form:${data.challenge_method}`"
-        :context="{ options: data }"
-      >
-        <div class="mt-4">
-          <DNSChallenge v-model:options="data" compact />
-        </div>
-      </PluginSlot>
+      <ACMEUserSelector v-model:options="data" :compact="compact" />
+      <template v-if="isDns01">
+        <PluginSlot
+          v-if="!isDns01Blocked"
+          :name="`certificate.challenge.form:${data.challenge_method}`"
+          :context="slotContext"
+        >
+          <DNSChallenge v-model:options="data" :compact="compact" />
+        </PluginSlot>
+        <!-- Without the plugin an existing certificate keeps showing its credential. -->
+        <DNSChallenge
+          v-else-if="existing"
+          v-model:options="data"
+          :compact="compact"
+          readonly
+          :readonly-help="readonlyCredentialHelp"
+        />
+      </template>
     </ACard>
 
-    <ACard size="small" class="cert-config-card" :title="$gettext('Special Settings')">
-      <AForm layout="vertical">
-        <AFormItem :label="$gettext('OCSP Must Staple')">
-          <template #help>
-            <p>
-              {{ $gettext('Do not enable this option unless you are sure that you need it.') }}
-              {{ $gettext('OCSP Must Staple may cause errors for some users on first access using Firefox.') }}
-              <a href="https://github.com/0xJacky/nginx-ui/issues/322">#322</a>
-            </p>
-          </template>
-          <ASwitch v-model:checked="data.must_staple" />
-        </AFormItem>
-        <AFormItem :label="$gettext('Enable Common Name')">
-          <template #help>
-            <p>
-              {{ $gettext('Enable the certificate Common Name field for private CAs that still require it.') }}
-            </p>
-          </template>
-          <ASwitch v-model:checked="data.enable_common_name" />
-        </AFormItem>
-        <AFormItem :label="$gettext('Revoke Old Certificate')">
-          <template #help>
-            <p>
-              {{ $gettext('If you want to automatically revoke the old certificate, please enable this option.') }}
-            </p>
-          </template>
-          <ASwitch v-model:checked="data.revoke_old" />
-        </AFormItem>
-      </AForm>
+    <ACard size="small" :styles="cardStyles" :title="$gettext('Certificate options')">
+      <div class="cert-option-row">
+        <div class="cert-option-text">
+          <div>{{ $gettext('OCSP Must Staple') }}</div>
+          <div class="cert-option-desc">
+            {{ $gettext('Only turn on when you are sure you need it. Firefox may show an error on the first visit.') }}
+            <a href="https://github.com/0xJacky/nginx-ui/issues/322" target="_blank" rel="noopener noreferrer">#322</a>
+          </div>
+        </div>
+        <ASwitch v-model:checked="data.must_staple" :aria-label="$gettext('OCSP Must Staple')" />
+      </div>
+      <div class="cert-option-row">
+        <div class="cert-option-text">
+          <div>{{ $gettext('Enable Common Name') }}</div>
+          <div class="cert-option-desc">
+            {{ $gettext('For private CAs that still require this field.') }}
+          </div>
+        </div>
+        <ASwitch v-model:checked="data.enable_common_name" :aria-label="$gettext('Enable Common Name')" />
+      </div>
+      <div class="cert-option-row">
+        <div class="cert-option-text">
+          <div>{{ $gettext('Revoke Old Certificate') }}</div>
+          <div class="cert-option-desc">
+            {{ $gettext('Revokes the previous certificate once the new one is issued.') }}
+          </div>
+        </div>
+        <ASwitch v-model:checked="data.revoke_old" :aria-label="$gettext('Revoke Old Certificate')" />
+      </div>
     </ACard>
     <PluginSlot name="certificate.issue.footer" :context="{ options: data }" />
   </div>
 </template>
 
 <style lang="less" scoped>
-.cert-config-card {
-  :deep(.ant-card-head) {
-    min-height: 40px;
+.challenge-hint {
+  font-size: 13px;
+  color: var(--ant-color-text-secondary);
+
+  &.is-warning {
+    color: var(--ant-color-warning-text);
+  }
+}
+
+.cert-option-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+
+  & + & {
+    border-top: 1px solid var(--ant-color-split);
   }
 
-  :deep(.ant-card-body) {
-    padding: 14px;
+  &:first-child {
+    padding-top: 0;
   }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.cert-option-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.cert-option-desc {
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--ant-color-text-secondary);
 }
 </style>

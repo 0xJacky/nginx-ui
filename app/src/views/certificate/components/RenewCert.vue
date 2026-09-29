@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import type { AutoCertOptions } from '@/api/auto_cert'
+import { SyncOutlined } from '@antdv-next/icons'
 import { useGlobalStore } from '@/pinia'
 import { useCertStore } from '../store'
 import IssueCertModal from './IssueCertModal.vue'
 
 defineProps<{
   options: AutoCertOptions
+  /** Primary button labelled "Renew now", for page headers. */
+  primary?: boolean
 }>()
 
 const emit = defineEmits<{
   renewed: [void]
+  saved: [void]
 }>()
 
 const { message } = App.useApp()
@@ -19,6 +23,7 @@ const refModal = useTemplateRef('refModal')
 async function issueCert() {
   await certStore.save()
   message.success($gettext('Save successfully'))
+  emit('saved')
 
   // refModal is mounted alongside this button via force-render, so it
   // is guaranteed to be available by the time @click fires.
@@ -33,18 +38,35 @@ const { processingStatus } = storeToRefs(globalStore)
 </script>
 
 <template>
-  <div>
-    <AButton
-      type="default"
-      class="mb-6 renew-warning-btn"
-      :disabled="processingStatus.auto_cert_processing"
-      @click="issueCert"
+  <div class="inline-block">
+    <ATooltip
+      v-if="primary"
+      :title="processingStatus.auto_cert_processing ? $gettext('AutoCert is running, please wait...') : undefined"
     >
-      {{ $gettext('Renew Certificate') }}
-    </AButton>
-    <span v-if="processingStatus.auto_cert_processing" class="ml-4">
-      {{ $gettext('AutoCert is running, please wait...') }}
-    </span>
+      <AButton
+        type="primary"
+        :disabled="processingStatus.auto_cert_processing"
+        @click="issueCert"
+      >
+        <template #icon>
+          <SyncOutlined />
+        </template>
+        {{ $gettext('Renew now') }}
+      </AButton>
+    </ATooltip>
+    <template v-else>
+      <AButton
+        type="default"
+        class="mb-6 renew-warning-btn"
+        :disabled="processingStatus.auto_cert_processing"
+        @click="issueCert"
+      >
+        {{ $gettext('Renew Certificate') }}
+      </AButton>
+      <span v-if="processingStatus.auto_cert_processing" class="ml-4">
+        {{ $gettext('AutoCert is running, please wait...') }}
+      </span>
+    </template>
     <IssueCertModal
       ref="refModal"
       :title="$gettext('Renew Certificate')"

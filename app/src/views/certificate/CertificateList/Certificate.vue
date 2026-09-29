@@ -1,17 +1,210 @@
 <script setup lang="tsx">
-import type { DiscoveredCertificatePair } from '@/api/cert'
-import { CloudUploadOutlined, SafetyCertificateOutlined, SearchOutlined } from '@antdv-next/icons'
-import { StdTable } from '@uozi-admin/curd'
-import { Tag } from 'antdv-next'
+import type { TableColumnsType } from 'antdv-next'
+import type { Cert, CertListCounts, CertListFilter, DiscoveredCertificatePair } from '@/api/cert'
+import { CloudUploadOutlined, InfoCircleOutlined, PlusOutlined, ReloadOutlined, SearchOutlined } from '@antdv-next/icons'
+import { useMediaQuery, watchDebounced } from '@vueuse/core'
+import { Tag, Tooltip } from 'antdv-next'
+import dayjs from 'dayjs'
 import cert from '@/api/cert'
 import { useGlobalStore } from '@/pinia'
+import { certRenewalMethodLabel, certStateLabel, certStateTone, isAcmeCert, splitVisible } from '../certState'
 import WildcardCertificate from '../components/DNSIssueCertificate.vue'
-import RemoveCert from '../components/RemoveCert.vue'
 import RetryCert from '../components/RetryCert.vue'
-import certColumns from './certColumns'
 
 const refWildcard = ref()
-const refTable = ref()
+const router = useRouter()
+
+// ---- List ------------------------------------------------------------------
+
+const rows = ref<Cert[]>([])
+const loading = ref(false)
+const keyword = ref('')
+const filter = ref<CertListFilter>('all')
+const page = ref(1)
+const pageSize = ref(20)
+const total = ref(0)
+const counts = ref<CertListCounts>({ all: 0, expiring: 0, failed: 0, expired: 0 })
+
+let listSeq = 0
+
+async function loadList() {
+  const seq = ++listSeq
+  loading.value = true
+  try {
+    const r = await cert.get_overview_list({
+      page: page.value,
+      page_size: pageSize.value,
+      keyword: keyword.value.trim() || undefined,
+      state: filter.value === 'all' ? undefined : filter.value,
+      with_counts: true,
+    })
+    if (seq !== listSeq)
+      return
+    rows.value = r.data ?? []
+    total.value = r.pagination?.total ?? rows.value.length
+    if (r.counts)
+      counts.value = r.counts
+  }
+  finally {
+    if (seq === listSeq)
+      loading.value = false
+  }
+}
+
+function refresh() {
+  void loadList()
+}
+
+watch(filter, () => {
+  page.value = 1
+  void loadList()
+})
+
+watchDebounced(keyword, () => {
+  page.value = 1
+  void loadList()
+}, { debounce: 300 })
+
+onMounted(loadList)
+
+const filterOptions = computed(() => [
+  { value: 'all', label: $gettext('All') },
+  { value: 'expiring', label: $gettext('Expiring within 30 days') },
+  { value: 'failed', label: $gettext('Renewal failed') },
+  { value: 'expired', label: $gettext('Expired') },
+])
+
+const pagination = computed(() => ({
+  current: page.value,
+  pageSize: pageSize.value,
+  total: total.value,
+  showSizeChanger: true,
+  size: 'small' as const,
+  onChange: (next: number, size: number) => {
+    page.value = next
+    pageSize.value = size
+    void loadList()
+  },
+}))
+
+function toneColor(record: Cert) {
+  return `var(--ant-color-${{
+    success: 'success',
+    warning: 'warning',
+    error: 'error',
+    processing: 'primary',
+    default: 'text-quaternary',
+  }[certStateTone(record.state)]})`
+}
+
+function editCert(record: Cert) {
+  router.push(`/certificates/${record.id}`)
+}
+
+function renderState(record: Cert) {
+  const label = (
+    <span class="cert-state" style={{ color: toneColor(record) }}>
+      <span class="cert-state-dot" />
+      {certStateLabel(record)}
+      {record.state === 'failed' && record.last_renewal_error && <InfoCircleOutlined />}
+    </span>
+  )
+  if (record.state === 'failed' && record.last_renewal_error)
+    return <Tooltip title={record.last_renewal_error}>{label}</Tooltip>
+  return label
+}
+
+function expiryDate(record: Cert) {
+  return record.certificate_info?.not_after
+    ? dayjs(record.certificate_info.not_after).format('YYYY-MM-DD')
+    : '-'
+}
+
+// A function so the title follows a language switch.
+function actionsColumn(): TableColumnsType<Cert>[number] {
+  return {
+    title: $gettext('Actions'),
+    key: 'actions',
+    fixed: 'right',
+    align: 'right',
+    width: 130,
+  }
+}
+
+const columns = computed<TableColumnsType<Cert>>(() => [
+  {
+    title: $gettext('Name'),
+    dataIndex: 'name',
+    ellipsis: true,
+    width: 200,
+    render: (_: unknown, record: Cert) => (
+      <a onClick={() => editCert(record)}>{record.name || record.domains?.[0] || '-'}</a>
+    ),
+  },
+  {
+    title: $gettext('Domains'),
+    dataIndex: 'domains',
+    width: 260,
+    render: (_: unknown, record: Cert) => {
+      const { visible, hidden } = splitVisible(record.domains ?? [], 2)
+      if (!visible.length)
+        return '-'
+      return (
+        <div class="cert-domains">
+          {visible.map(domain => <Tag class="m-0 font-mono">{domain}</Tag>)}
+          {hidden > 0 && (
+            <Tooltip title={(record.domains ?? []).slice(2).join(', ')}>
+              <Tag class="m-0">{`+${hidden}`}</Tag>
+            </Tooltip>
+          )}
+        </div>
+      )
+    },
+  },
+  {
+    title: $gettext('Status'),
+    dataIndex: 'state',
+    width: 190,
+    render: (_: unknown, record: Cert) => renderState(record),
+  },
+  {
+    title: $gettext('Renewal method'),
+    dataIndex: 'renewal_method',
+    width: 190,
+    ellipsis: true,
+    render: (_: unknown, record: Cert) => certRenewalMethodLabel(record.renewal_method, record.dns_provider),
+  },
+  {
+    title: $gettext('Expiry date'),
+    dataIndex: ['certificate_info', 'not_after'],
+    width: 120,
+    render: (_: unknown, record: Cert) => expiryDate(record),
+  },
+  actionsColumn(),
+])
+
+// Phones get one column with the status and expiry under the name, so the
+// status stays visible without scrolling sideways.
+const isNarrow = useMediaQuery('(max-width: 575px)')
+
+const narrowColumns = computed<TableColumnsType<Cert>>(() => [
+  {
+    title: $gettext('Name'),
+    dataIndex: 'name',
+    render: (_: unknown, record: Cert) => (
+      <div class="min-w-0">
+        <a onClick={() => editCert(record)}>{record.name || record.domains?.[0] || '-'}</a>
+        <div class="cert-narrow-meta">
+          {renderState(record)}
+          {record.certificate_info?.not_after && <span class="cert-narrow-expiry">{expiryDate(record)}</span>}
+        </div>
+      </div>
+    ),
+  },
+  { ...actionsColumn(), fixed: undefined, width: 110 },
+])
+
+const tableColumns = computed(() => isNarrow.value ? narrowColumns.value : columns.value)
 
 const globalStore = useGlobalStore()
 
@@ -109,7 +302,7 @@ async function importSelectedDiscoveredCerts() {
     }
     message.success($gettext('Import successfully'))
     discoveryVisible.value = false
-    refTable.value?.refresh?.()
+    refresh()
   }
   catch (error) {
     console.error(error)
@@ -124,67 +317,88 @@ async function importSelectedDiscoveredCerts() {
 <template>
   <ACard :title="$gettext('Certificates')">
     <template #extra>
-      <ASpace>
-        <AButton
-          type="link"
-          size="small"
-          :aria-label="$gettext('Discover')"
-          @click="openDiscovery"
-        >
-          <SearchOutlined />
+      <AFlex wrap gap="small">
+        <AButton :aria-label="$gettext('Discover')" @click="openDiscovery">
+          <template #icon>
+            <SearchOutlined />
+          </template>
           <span class="certificate-action-label">{{ $gettext('Discover') }}</span>
         </AButton>
 
-        <AButton
-          type="link"
-          size="small"
-          :aria-label="$gettext('Import')"
-          @click="$router.push('/certificates/import')"
-        >
-          <CloudUploadOutlined />
+        <AButton :aria-label="$gettext('Import')" @click="$router.push('/certificates/import')">
+          <template #icon>
+            <CloudUploadOutlined />
+          </template>
           <span class="certificate-action-label">{{ $gettext('Import') }}</span>
         </AButton>
 
         <AButton
-          type="link"
-          size="small"
+          type="primary"
           :aria-label="$gettext('Issue certificate')"
           :disabled="processingStatus.auto_cert_processing"
           @click="() => refWildcard.open()"
         >
-          <SafetyCertificateOutlined />
+          <template #icon>
+            <PlusOutlined />
+          </template>
           <span class="certificate-action-label">{{ $gettext('Issue certificate') }}</span>
         </AButton>
-      </ASpace>
+      </AFlex>
     </template>
 
-    <StdTable
-      ref="refTable"
-      :api="cert"
-      :columns="certColumns"
-      :get-list-api="cert.getList"
-      disable-view
-      :scroll-x="1000"
-      disable-delete
-      @edit-item="record => $router.push(`/certificates/${record.id}`)"
+    <div class="cert-toolbar">
+      <AInput
+        v-model:value="keyword"
+        class="cert-search"
+        :placeholder="$gettext('Search by name or domain')"
+        allow-clear
+      >
+        <template #prefix>
+          <SearchOutlined class="cert-muted" />
+        </template>
+      </AInput>
+      <div class="cert-filter">
+        <ASegmented v-model:value="filter" :options="filterOptions">
+          <template #labelRender="option">
+            <span>
+              {{ option.label }}
+              <span class="cert-filter-count">{{ counts[option.value as CertListFilter] }}</span>
+            </span>
+          </template>
+        </ASegmented>
+      </div>
+      <AButton class="cert-refresh" :aria-label="$gettext('Reload')" :loading="loading" @click="refresh">
+        <template #icon>
+          <ReloadOutlined />
+        </template>
+      </AButton>
+    </div>
+
+    <ATable
+      :columns="tableColumns"
+      :data-source="rows"
+      :loading="loading"
+      :pagination="pagination"
+      :scroll="isNarrow ? undefined : { x: 1000 }"
+      row-key="id"
+      size="middle"
     >
-      <template #afterActions="{ record }">
-        <RetryCert
-          v-if="record.status === 'failure'"
-          :cert="record"
-          @retried="() => refTable.refresh()"
-        />
-        <RemoveCert
-          :id="record.id"
-          :certificate="record"
-          :disabled="processingStatus.auto_cert_processing"
-          @removed="() => refTable.refresh()"
-        />
+      <template #bodyCell="{ column, record }">
+        <AFlex v-if="column.key === 'actions'" justify="flex-end" gap="small">
+          <RetryCert
+            v-if="(record as Cert).renewal_failed && isAcmeCert(record as Cert)"
+            :cert="record as Cert"
+            @retried="refresh"
+          />
+          <AButton type="link" size="small" @click="editCert(record as Cert)">
+            {{ $gettext('Edit') }}
+          </AButton>
+        </AFlex>
       </template>
-    </StdTable>
+    </ATable>
     <WildcardCertificate
       ref="refWildcard"
-      @issued="() => refTable.refresh()"
+      @issued="refresh"
     />
     <AModal
       v-model:open="discoveryVisible"
@@ -217,9 +431,76 @@ async function importSelectedDiscoveredCerts() {
 </template>
 
 <style lang="less" scoped>
+.cert-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cert-search {
+  width: 260px;
+  max-width: 100%;
+}
+
+.cert-filter {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.cert-filter-count {
+  margin-inline-start: 4px;
+  color: var(--ant-color-text-tertiary);
+}
+
+.cert-refresh {
+  margin-inline-start: auto;
+}
+
+.cert-muted {
+  color: var(--ant-color-text-quaternary);
+}
+
+:deep(.cert-domains) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+:deep(.cert-state) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+:deep(.cert-state-dot) {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
 @media (max-width: 600px) {
   .certificate-action-label {
     display: none;
   }
+
+  .cert-search {
+    width: 100%;
+  }
+}
+
+:deep(.cert-narrow-meta) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  margin-top: 2px;
+  font-size: 12px;
+}
+
+:deep(.cert-narrow-expiry) {
+  color: var(--ant-color-text-tertiary);
 }
 </style>

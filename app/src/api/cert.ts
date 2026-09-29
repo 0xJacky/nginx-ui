@@ -14,6 +14,17 @@ export const CertStatus = {
 
 export type CertStatusType = '' | typeof CertStatus[keyof typeof CertStatus]
 
+/** Summary state computed by the backend for the list and the editor. */
+export type CertState = 'valid' | 'expiring' | 'expired' | 'failed' | 'issuing' | 'not_issued' | 'manual'
+
+/** How the certificate gets its next version. */
+export type CertRenewalMethod = 'dns01' | 'http01' | 'upload' | 'self_signed' | 'sync'
+
+/** Segments of the certificate list. */
+export type CertListFilter = 'all' | 'expiring' | 'failed' | 'expired'
+
+export type CertListCounts = Record<CertListFilter, number>
+
 export interface SelfSignedCertConfig {
   ip_addresses: string[]
   validity_days: number
@@ -48,6 +59,18 @@ export interface Cert extends ModelBase {
   last_error: string
   last_attempt_at: string | null
   self_signed_config?: SelfSignedCertConfig
+  state?: CertState
+  /** Whole days until expiry, negative once expired. */
+  days_left?: number
+  /** When automatic renewal is expected to run. */
+  renew_at?: string
+  renewal_method?: CertRenewalMethod
+  /** Latest issuance or automatic renewal attempt. */
+  last_renewal_at?: string
+  last_renewal_error?: string
+  renewal_failed?: boolean
+  /** Provider name of the DNS credential. */
+  dns_provider?: string
 }
 
 export interface CertificateDeploymentStatus {
@@ -89,6 +112,7 @@ export interface DiscoverNewCertsResponse {
 export interface CertificateInfo {
   subject_name: string
   issuer_name: string
+  issuer_organization?: string
   not_after: string
   not_before: string
   subject_alt_names?: string[]
@@ -148,6 +172,25 @@ export function toSelfSignedPayload(c: Cert): SelfSignedCertPayload {
   }
 }
 
+export interface CertListParams {
+  page?: number
+  page_size?: number
+  keyword?: string
+  state?: CertListFilter
+  with_counts?: boolean
+}
+
+export interface CertListResponse {
+  data: Cert[]
+  pagination: {
+    total: number
+    per_page: number
+    current_page: number
+    total_pages: number
+  }
+  counts?: CertListCounts
+}
+
 export interface RecommendCertResponse {
   certificate: Cert | null
 }
@@ -167,6 +210,13 @@ const cert = extendCurdApi(useCurdApi<Cert>('/certs'), {
   },
   download_file(id: number, payload: CertificateDownloadPayload): Promise<Blob> {
     return http.post(`/certs/${id}/download`, payload, { responseType: 'blob' })
+  },
+  // Same endpoint as getList, with the state filter and the per filter counts.
+  get_overview_list(params: CertListParams): Promise<CertListResponse> {
+    return http.get('/certs', { params })
+  },
+  set_auto_renewal(id: number, enabled: boolean): Promise<Cert> {
+    return http.post(`/certs/${id}/auto_renewal`, { enabled })
   },
   // Picks the certificate that covers every domain best; null when none does.
   recommend(domains: string[]): Promise<RecommendCertResponse> {

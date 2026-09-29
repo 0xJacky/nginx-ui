@@ -4,7 +4,9 @@ import type { Ref } from 'vue'
 import type { DNSProvider } from '@/api/auto_cert'
 import type { DnsCredential } from '@/api/dns_credential'
 import auto_cert from '@/api/auto_cert'
+import Dns01PluginNotice from '@/components/Dns01PluginNotice'
 import PluginSlot from '@/components/PluginSlot'
+import { useDns01Plugin } from '@/composables/useDns01Plugin'
 import { isAllowedDnsProviderCode } from '@/constants/dns_providers'
 
 interface DefaultOptionType {
@@ -13,6 +15,7 @@ interface DefaultOptionType {
 }
 
 const providers = ref([]) as Ref<DNSProvider[]>
+const providersLoaded = ref(false)
 
 // This data is provided by the Top StdCurd component,
 // is the object that you are trying to modify it
@@ -29,10 +32,22 @@ async function init() {
   }
 }
 
-auto_cert.get_dns_providers().then(r => {
-  providers.value = r
-}).then(() => {
+function loadProviders() {
+  return auto_cert.get_dns_providers().then(r => {
+    providers.value = r
+    providersLoaded.value = true
+  })
+}
+
+loadProviders().then(() => {
   init()
+})
+
+// Enabling or installing the plugin from the hint brings more providers.
+const { state: dns01State } = useDns01Plugin()
+watch(dns01State, (value, previous) => {
+  if (value === 'available' && previous !== 'unknown')
+    void loadProviders()
 })
 
 const current = computed(() => {
@@ -111,12 +126,19 @@ function filterOption(input: string, option?: DefaultOptionType) {
 
 <template>
   <div class="dns-challenge-form">
-    <AFormItem :label="$gettext('DNS Provider')">
+    <!-- Nothing follows the provider until one is chosen, so drop the gap. -->
+    <AFormItem :label="$gettext('DNS Provider')" :class="{ 'mb-0': !current }">
       <ASelect
         v-model:value="data.code"
         show-search
         :options="options"
         :filter-option="filterOption"
+      />
+      <Dns01PluginNotice
+        v-if="providersLoaded"
+        class="mt-2"
+        variant="providers"
+        :provider-count="providers.length"
       />
       <AAlert
         class="mt-2"
@@ -125,16 +147,16 @@ function filterOption(input: string, option?: DefaultOptionType) {
         :title="dnsProviderHint"
       />
     </AFormItem>
-    <AFormItem>
+    <AFormItem v-if="current?.links?.api || current?.links?.go_client">
       <!-- eslint-disable sonarjs/no-vue-bypass-sanitization -->
-      <p v-if="current?.links?.api">
+      <p v-if="current?.links?.api" class="m-0">
         {{ $gettext('API Document') }}: <a
           :href="current.links.api"
           target="_blank"
           rel="noopener noreferrer"
         >{{ current.links.api }}</a>
       </p>
-      <p v-if="current?.links?.go_client">
+      <p v-if="current?.links?.go_client" class="m-0 mt-1">
         {{ $gettext('SDK') }}: <a
           :href="current.links.go_client"
           target="_blank"

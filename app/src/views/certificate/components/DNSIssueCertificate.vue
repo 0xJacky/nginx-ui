@@ -84,6 +84,10 @@ defineExpose({
 })
 
 const refObtainCertLive = useTemplateRef('refObtainCertLive')
+const refAutoCertForm = useTemplateRef('refAutoCertForm')
+
+const isWildcard = computed(() => certType.value === 'wildcard'
+  || customDomains.value.some(d => d.trim().startsWith('*.')))
 
 const computedDomain = computed(() => {
   return `*.${domain.value}`
@@ -108,6 +112,9 @@ const computedMainDomain = computed(() => {
 })
 
 function issueCert() {
+  if (refAutoCertForm.value?.dns01Blocked)
+    return
+
   if (data.value.challenge_method === 'dns01' && !data.value.dns_credential_id) {
     message.error($gettext('Please select a DNS credential'))
     return
@@ -182,6 +189,7 @@ async function submitSelfSigned() {
       v-model:open="visible"
       :mask="false"
       :title="$gettext('Issue Certificate')"
+      :width="640"
       destroy-on-hidden
       :footer="null"
       :mask-closable="modalClosable"
@@ -229,36 +237,17 @@ async function submitSelfSigned() {
         </AForm>
 
         <template v-if="certType !== 'self_signed'">
-          <AAlert
-            type="info"
-            show-icon
-            class="mb-4"
-          >
-            <template #message>
-              {{ $gettext('Challenge Method Reminder') }}
-            </template>
-            <template #description>
-              <p>
-                {{ $gettext('If you use HTTP-01 challenge, the DNS credential field is hidden and not required.') }}
-              </p>
-              <p>
-                {{ $gettext('If you use DNS-01 challenge, you must select a DNS credential.') }}
-              </p>
-              <p>
-                {{ $gettext('Wildcard certificates usually require DNS-01 challenge.') }}
-              </p>
-            </template>
-          </AAlert>
-
           <AutoCertForm
+            ref="refAutoCertForm"
             v-model:options="data"
-            style="max-width: 600px"
+            :wildcard="isWildcard"
             hide-note
           />
 
-          <div class="flex justify-end">
+          <div class="mt-4 flex justify-end">
             <AButton
               type="primary"
+              :disabled="refAutoCertForm?.dns01Blocked"
               @click="issueCert"
             >
               {{ $gettext('Next') }}

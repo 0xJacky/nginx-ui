@@ -9,6 +9,8 @@ const props = defineProps<{
   id: number
   disabled?: boolean
   certificate?: Cert // Certificate full information
+  /** Renders no button; the caller opens the dialog through `open`. */
+  hideTrigger?: boolean
 }>()
 
 const emit = defineEmits(['removed'])
@@ -33,6 +35,8 @@ function handleDelete() {
   // Open the combined modal directly
   modalVisible.value = true
 }
+
+defineExpose({ open: handleDelete })
 
 // Close modal and refresh list
 function handleRemoved() {
@@ -114,6 +118,7 @@ function handleCancel() {
 <template>
   <div class="inline-block">
     <AButton
+      v-if="!hideTrigger"
       type="link"
       size="small"
       danger
