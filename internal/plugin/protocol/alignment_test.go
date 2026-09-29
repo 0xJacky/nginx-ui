@@ -48,6 +48,9 @@ var alignments = []alignment{
 	{reflect.TypeFor[protocol.HostCronUnregisterParams](), "HostCronUnregisterRequest"},
 	{reflect.TypeFor[protocol.HostNotifyParams](), "HostNotifyRequest"},
 	{reflect.TypeFor[protocol.HostMetricsSnapshotResult](), "HostMetricsSnapshotResponse"},
+	{reflect.TypeFor[protocol.HostLogsListResult](), "HostLogsListResponse"},
+	{reflect.TypeFor[protocol.HostLogFile](), "HostLogFile"},
+	{reflect.TypeFor[protocol.HostActivitySetParams](), "HostActivitySetRequest"},
 
 	// dns01.go
 	{reflect.TypeFor[protocol.DNS01ChallengeParams](), "DNS01PresentRequest"},
@@ -256,6 +259,8 @@ func TestMethodNamesMatchProto(t *testing.T) {
 		protocol.MethodHostCronUnregister,
 		protocol.MethodHostNotify,
 		protocol.MethodHostMetricsSnapshot,
+		protocol.MethodHostLogsList,
+		protocol.MethodHostActivitySet,
 	}
 	notifications := []string{
 		protocol.MethodInitialized,

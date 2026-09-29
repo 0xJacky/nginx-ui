@@ -46,6 +46,8 @@ export interface NginxUIGlobal {
   version: string
   shared: SharedRuntime
   registerPlugin: (id: string, definition: NginxUIPlugin) => void
+  /** Called by a chunk file while its script executes. Absent on hosts without chunk support. */
+  registerChunk?: (pluginId: string, name: string, exports: Record<string, unknown>) => void
 }
 
 /** Slots the host renders today. Any other string is accepted but ignored. */
@@ -56,6 +58,11 @@ export type KnownSlotName
     | 'certificate.issue.footer'
     | `plugin.settings:${string}`
     | 'sidebar.footer'
+    | `nginx_log.view:${string}`
+    | 'nginx_log.list.toolbar'
+    | `nginx_log.list.column:${string}`
+    | 'nginx_log.list.row.actions'
+    | 'site.log.actions'
 
 export type SlotName = KnownSlotName | (string & Record<never, never>)
 
@@ -75,11 +82,44 @@ export interface RegisterRouteOptions {
   order?: number
 }
 
+/**
+ * The list row of a log file, as the log list shows it. A host may add fields,
+ * a plugin must ignore the ones it does not know.
+ */
+export interface NginxLogRow {
+  path: string
+  type: 'access' | 'error' | string
+  name: string
+  config_file: string
+  [key: string]: unknown
+}
+
+/** One choice of a filterable log list column. */
+export interface SlotColumnFilter {
+  /** English source string, translated by the host. */
+  label: string
+  /** Stable identifier of the choice. */
+  value: string
+  match: (row: NginxLogRow) => boolean
+}
+
+/** Value a sortable column reads from a row. Null and undefined sort last. */
+export type SlotSortValue = string | number | null | undefined
+
 export interface RegisterSlotOptions {
   /** Lower values render first. */
   order?: number
   /** Return false to skip rendering for a given context. */
   when?: (ctx: SlotContext) => boolean
+  /**
+   * Display text of `nginx_log.view:{key}` and `nginx_log.list.column:{key}`,
+   * an English source string the host translates.
+   */
+  label?: string
+  /** Makes an `nginx_log.list.column:{key}` column sortable. */
+  sortValue?: (row: NginxLogRow) => SlotSortValue
+  /** Makes an `nginx_log.list.column:{key}` column filterable. */
+  filters?: SlotColumnFilter[]
 }
 
 /** Read-only view of the host state a plugin is allowed to observe. */
@@ -99,6 +139,12 @@ export interface PluginRegistry {
   registerTranslations: (locale: string, messages: Record<string, string>) => void
   /** Replaces the schema-driven settings form with a custom component. */
   registerSettingsPanel: (component: Component) => void
+  /**
+   * Loads an on-demand chunk declared in `webapp.chunks` and resolves with the
+   * exports the chunk handed to `registerChunk`. Absent on hosts without chunk
+   * support, so check before use.
+   */
+  loadChunk: (name: string) => Promise<Record<string, unknown>>
   /** Client whose baseURL is ./api/plugins/{id}/http. */
   http: AxiosInstance
   /** The host API client, usable only with the `core_api` permission. */
@@ -117,6 +163,9 @@ export interface SlotRegistration {
   component: Component
   order: number
   when?: (ctx: SlotContext) => boolean
+  label?: string
+  sortValue?: (row: NginxLogRow) => SlotSortValue
+  filters?: SlotColumnFilter[]
 }
 
 export type PluginLoadState = 'loaded' | 'failed' | 'incompatible'
