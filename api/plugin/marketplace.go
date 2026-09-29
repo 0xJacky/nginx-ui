@@ -53,6 +53,7 @@ func InitMarketplaceRouter(r *gin.RouterGroup) {
 		o.POST("/plugins/marketplace/install", InstallFromMarketplace)
 		o.POST("/plugins/marketplace/sources", SaveMarketplaceSources)
 		o.POST("/plugins/:id/update", UpdatePlugin)
+		o.POST("/plugins/:id/replace", ReplacePlugin)
 	}
 }
 
@@ -146,6 +147,27 @@ func UpdatePlugin(c *gin.Context) {
 	_ = c.ShouldBindJSON(&body)
 
 	info, err := plugin.GetManager().Marketplace().Update(detach(c), id, body.Version, body.ApprovePermissions)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, info)
+}
+
+// ReplacePlugin swaps an installed plugin for its more trusted marketplace
+// package, keeping its settings, data and enabled state.
+func ReplacePlugin(c *gin.Context) {
+	id, ok := pluginID(c)
+	if !ok {
+		return
+	}
+
+	var body struct {
+		Source string `json:"source"`
+	}
+	_ = c.ShouldBindJSON(&body)
+
+	info, err := plugin.GetManager().Marketplace().Replace(detach(c), id, body.Source)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

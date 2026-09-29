@@ -7,6 +7,7 @@ import (
 	"os"
 	"slices"
 	"sort"
+	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
@@ -418,7 +419,7 @@ func normalizeSettings(schema *protocol.SettingsSchema, values, stored map[strin
 			continue
 		}
 		value, ok := next[field.Key]
-		if !ok || value == nil || value == "" {
+		if !ok || value == nil || value == "" || isEmptyList(value) {
 			return nil, cosy.WrapErrorWithParams(ErrSettingsInvalid, field.Key)
 		}
 	}
@@ -474,11 +475,59 @@ func coerceSettingValue(field protocol.SettingsField, raw, stored any) (any, err
 			return invalid()
 		}
 		return text, nil
+	case settingsTypeList:
+		list, ok := coerceStringList(raw)
+		if !ok {
+			return invalid()
+		}
+		return list, nil
 	default:
 		text, ok := raw.(string)
 		if !ok {
 			return invalid()
 		}
 		return text, nil
+	}
+}
+
+// coerceStringList accepts an array of strings, trims every item and drops the
+// blank ones. The result is []any so it round trips through JSON unchanged.
+func coerceStringList(raw any) ([]any, bool) {
+	var items []any
+	switch typed := raw.(type) {
+	case nil:
+		return []any{}, true
+	case []any:
+		items = typed
+	case []string:
+		items = make([]any, len(typed))
+		for i, item := range typed {
+			items[i] = item
+		}
+	default:
+		return nil, false
+	}
+	out := make([]any, 0, len(items))
+	for _, item := range items {
+		text, ok := item.(string)
+		if !ok {
+			return nil, false
+		}
+		if text = strings.TrimSpace(text); text != "" {
+			out = append(out, text)
+		}
+	}
+	return out, true
+}
+
+// isEmptyList reports whether a stored value is a list without items.
+func isEmptyList(value any) bool {
+	switch typed := value.(type) {
+	case []any:
+		return len(typed) == 0
+	case []string:
+		return len(typed) == 0
+	default:
+		return false
 	}
 }

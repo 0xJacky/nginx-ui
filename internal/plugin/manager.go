@@ -74,18 +74,20 @@ type Info struct {
 	Permissions          []string                       `json:"permissions"`
 	Requires             []protocol.ManifestRequirement `json:"requires"`
 	RequiresCapabilities []string                       `json:"requires_capabilities"`
-	HasServer            bool                           `json:"has_server"`
-	HasWebapp            bool                           `json:"has_webapp"`
-	Lifecycle            string                         `json:"lifecycle"`
-	Status               Status                         `json:"status"`
-	Enabled              bool                           `json:"enabled"`
-	LastError            string                         `json:"last_error,omitempty"`
-	SettingsSchema       *protocol.SettingsSchema       `json:"settings_schema"`
-	SyncPolicy           string                         `json:"sync_policy"`
-	SyncNodeIDs          []uint64                       `json:"sync_node_ids"`
-	SyncSettings         bool                           `json:"sync_settings"`
-	UpdatedAt            time.Time                      `json:"updated_at"`
-	DroppedEvents        int64                          `json:"dropped_events"`
+	// NetworkHosts lists the addresses the plugin may reach, empty when it names none.
+	NetworkHosts   []string                 `json:"network_hosts"`
+	HasServer      bool                     `json:"has_server"`
+	HasWebapp      bool                     `json:"has_webapp"`
+	Lifecycle      string                   `json:"lifecycle"`
+	Status         Status                   `json:"status"`
+	Enabled        bool                     `json:"enabled"`
+	LastError      string                   `json:"last_error,omitempty"`
+	SettingsSchema *protocol.SettingsSchema `json:"settings_schema"`
+	SyncPolicy     string                   `json:"sync_policy"`
+	SyncNodeIDs    []uint64                 `json:"sync_node_ids"`
+	SyncSettings   bool                     `json:"sync_settings"`
+	UpdatedAt      time.Time                `json:"updated_at"`
+	DroppedEvents  int64                    `json:"dropped_events"`
 	// Trust is derived from the package signature at install time, see
 	// signature.go. Signer is the minisign key id, empty when unsigned.
 	// Partner is the partner name of a verified package, empty otherwise.
@@ -577,6 +579,7 @@ func (m *Manager) infoLocked(item *entry) Info {
 		Capabilities:         []string{},
 		Permissions:          []string{},
 		RequiresCapabilities: []string{},
+		NetworkHosts:         []string{},
 		SyncNodeIDs:          []uint64{},
 		Status:               statusOf(item),
 		Trust:                TrustUnsigned,
@@ -648,6 +651,9 @@ func (m *Manager) infoLocked(item *entry) Info {
 	}
 	if len(manifest.RequiresCapabilities) > 0 {
 		info.RequiresCapabilities = manifest.RequiresCapabilities
+	}
+	if len(manifest.NetworkHosts) > 0 {
+		info.NetworkHosts = manifest.NetworkHosts
 	}
 	return info
 }

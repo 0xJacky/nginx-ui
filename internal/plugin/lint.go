@@ -733,6 +733,10 @@ func lintSettingsSchema(schema *protocol.SettingsSchema, report *LintReport) {
 		if field.Type == "select" && len(field.Options) == 0 {
 			report.add(LevelError, "MAN-29", "settings_schema key %q needs options", field.Key)
 		}
+		if field.Type == settingsTypeList && field.Default != nil && !isStringList(field.Default) {
+			report.add(LevelError, "MAN-28", "settings_schema key %q default must be a list of strings", field.Key)
+			continue
+		}
 		if field.Default != nil && !settingsDefaultMatchesType(field.Type, field.Default) {
 			report.add(LevelWarning, "MAN-28", "settings_schema key %q default %v does not look like a %q value", field.Key, field.Default, field.Type)
 		}
@@ -752,6 +756,8 @@ func settingsDefaultMatchesType(fieldType string, value any) bool {
 			return true
 		}
 		return false
+	case settingsTypeList:
+		return isStringList(value)
 	default: // text, secret, textarea, select
 		_, ok := value.(string)
 		return ok

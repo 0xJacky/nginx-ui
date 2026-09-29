@@ -13,6 +13,7 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("/plugins/spec", GetSpec)
 	r.GET("/plugins/:id/settings", GetPluginSettings)
 	r.GET("/plugins/:id/logs", GetPluginLogs)
+	r.GET("/plugins/:id/usage", GetPluginUsage)
 
 	// Installing code that runs on the host is the most sensitive operation
 	// nginx-ui offers, so every mutation needs a fresh authentication and is
