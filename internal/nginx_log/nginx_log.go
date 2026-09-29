@@ -22,6 +22,7 @@ func init() {
 	// that a rescan just removed is registered again in the same sweep.
 	cache.RegisterPostScanCallback(func() {
 		RefreshDefaultLogPaths()
+		notifyLogScan()
 	})
 
 	// The log.sink plugins follow the access logs of the log list, limited to

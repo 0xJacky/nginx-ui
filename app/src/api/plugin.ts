@@ -86,6 +86,8 @@ export interface PluginManifestWebapp {
   style_path?: string
   /** Maps a shared runtime library to the semver range the bundle was built against. */
   shared?: Record<string, string>
+  /** Chunk name to file, loaded on demand with registry.loadChunk. */
+  chunks?: Record<string, string>
   pages?: PluginManifestPage[]
 }
 
@@ -400,6 +402,8 @@ export interface WebappEntry {
   version: string
   bundle_url: string
   style_url?: string
+  /** URL of every on-demand chunk the plugin declared, by chunk name. */
+  chunks?: Record<string, string>
   shared?: Record<string, string>
   pages?: WebappEntryPage[]
 }

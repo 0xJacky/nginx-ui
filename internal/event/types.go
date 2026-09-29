@@ -31,6 +31,7 @@ const (
 	TypeBackupCompleted   Type = "backup.completed"
 	TypeAuthLoginFailed   Type = "auth.login_failed"
 	TypePluginChanged     Type = "plugin.changed"
+	TypeLogPathsChanged   Type = "log.paths_changed"
 )
 
 // Event represents a generic event structure
@@ -44,6 +45,16 @@ type ProcessingStatusData struct {
 	IndexScanning      bool `json:"index_scanning"`
 	AutoCertProcessing bool `json:"auto_cert_processing"`
 	NginxLogIndexing   bool `json:"nginx_log_indexing"`
+	// Plugins lists the background work plugins reported. Never nil.
+	Plugins []PluginActivity `json:"plugins"`
+}
+
+// PluginActivity is one processing entry a plugin shows in the indicator.
+type PluginActivity struct {
+	PluginID string `json:"plugin_id"`
+	Key      string `json:"key"`
+	// Label is an English source string the browser translates.
+	Label string `json:"label"`
 }
 
 // NginxLogStatusData represents the data for nginx log status events (backward compatibility)

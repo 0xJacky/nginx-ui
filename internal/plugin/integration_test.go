@@ -37,6 +37,8 @@ func (integrationBackend) CronRegister(string, protocol.HostCronRegisterParams) 
 func (integrationBackend) CronUnregister(string, string) error                        { return nil }
 func (integrationBackend) Notify(string, protocol.HostNotifyParams) error             { return nil }
 func (integrationBackend) MetricsSnapshot() (any, error)                              { return nil, nil }
+func (integrationBackend) LogsList(string) []protocol.HostLogFile                     { return nil }
+func (integrationBackend) ActivitySet(string, protocol.HostActivitySetParams) error   { return nil }
 
 // integrationOutcome is what one transport answered, compared across the
 // transports at the end.

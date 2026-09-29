@@ -1153,6 +1153,267 @@ func (x *HostMetricsSnapshotResponse) GetSnapshot() *structpb.Value {
 	return nil
 }
 
+// HostLogsListRequest is the params of host.logs.list. It is empty.
+type HostLogsListRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HostLogsListRequest) Reset() {
+	*x = HostLogsListRequest{}
+	mi := &file_nginxui_plugin_v1_host_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HostLogsListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HostLogsListRequest) ProtoMessage() {}
+
+func (x *HostLogsListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nginxui_plugin_v1_host_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HostLogsListRequest.ProtoReflect.Descriptor instead.
+func (*HostLogsListRequest) Descriptor() ([]byte, []int) {
+	return file_nginxui_plugin_v1_host_proto_rawDescGZIP(), []int{24}
+}
+
+// HostLogsListResponse is the result of host.logs.list.
+type HostLogsListResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Every log file the host allows the plugin to read. Rotated files are not
+	// listed, the plugin finds them next to the file it was given. Never null.
+	Logs          []*HostLogFile `protobuf:"bytes,1,rep,name=logs,proto3" json:"logs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HostLogsListResponse) Reset() {
+	*x = HostLogsListResponse{}
+	mi := &file_nginxui_plugin_v1_host_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HostLogsListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HostLogsListResponse) ProtoMessage() {}
+
+func (x *HostLogsListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nginxui_plugin_v1_host_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HostLogsListResponse.ProtoReflect.Descriptor instead.
+func (*HostLogsListResponse) Descriptor() ([]byte, []int) {
+	return file_nginxui_plugin_v1_host_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *HostLogsListResponse) GetLogs() []*HostLogFile {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
+// HostLogFile is one entry of HostLogsListResponse.
+type HostLogFile struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Absolute path of the live log file.
+	Path string `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	// "access" or "error".
+	Type string `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
+	// "config" when an nginx configuration file names the path, "default" when
+	// it is one of nginx's built-in default log paths.
+	Source string `protobuf:"bytes,3,opt,name=source,proto3" json:"source,omitempty"`
+	// Configuration file that names the path. Empty when source is "default".
+	ConfigFile    string `protobuf:"bytes,4,opt,name=config_file,json=configFile,proto3" json:"config_file,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HostLogFile) Reset() {
+	*x = HostLogFile{}
+	mi := &file_nginxui_plugin_v1_host_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HostLogFile) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HostLogFile) ProtoMessage() {}
+
+func (x *HostLogFile) ProtoReflect() protoreflect.Message {
+	mi := &file_nginxui_plugin_v1_host_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HostLogFile.ProtoReflect.Descriptor instead.
+func (*HostLogFile) Descriptor() ([]byte, []int) {
+	return file_nginxui_plugin_v1_host_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *HostLogFile) GetPath() string {
+	if x != nil {
+		return x.Path
+	}
+	return ""
+}
+
+func (x *HostLogFile) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *HostLogFile) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+func (x *HostLogFile) GetConfigFile() string {
+	if x != nil {
+		return x.ConfigFile
+	}
+	return ""
+}
+
+// HostActivitySetRequest is the params of host.activity.set.
+type HostActivitySetRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identifies the entry inside the calling plugin, at most 64 characters of
+	// [a-z0-9._-].
+	Key string `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	// English source string shown in the indicator while active is true. The
+	// host translates it. At most 128 characters.
+	Label string `protobuf:"bytes,2,opt,name=label,proto3" json:"label,omitempty"`
+	// True shows the entry and false removes it.
+	Active        bool `protobuf:"varint,3,opt,name=active,proto3" json:"active,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HostActivitySetRequest) Reset() {
+	*x = HostActivitySetRequest{}
+	mi := &file_nginxui_plugin_v1_host_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HostActivitySetRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HostActivitySetRequest) ProtoMessage() {}
+
+func (x *HostActivitySetRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nginxui_plugin_v1_host_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HostActivitySetRequest.ProtoReflect.Descriptor instead.
+func (*HostActivitySetRequest) Descriptor() ([]byte, []int) {
+	return file_nginxui_plugin_v1_host_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *HostActivitySetRequest) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *HostActivitySetRequest) GetLabel() string {
+	if x != nil {
+		return x.Label
+	}
+	return ""
+}
+
+func (x *HostActivitySetRequest) GetActive() bool {
+	if x != nil {
+		return x.Active
+	}
+	return false
+}
+
+// HostActivitySetResponse is the result of host.activity.set. It is empty.
+type HostActivitySetResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HostActivitySetResponse) Reset() {
+	*x = HostActivitySetResponse{}
+	mi := &file_nginxui_plugin_v1_host_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HostActivitySetResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HostActivitySetResponse) ProtoMessage() {}
+
+func (x *HostActivitySetResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nginxui_plugin_v1_host_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HostActivitySetResponse.ProtoReflect.Descriptor instead.
+func (*HostActivitySetResponse) Descriptor() ([]byte, []int) {
+	return file_nginxui_plugin_v1_host_proto_rawDescGZIP(), []int{28}
+}
+
 var File_nginxui_plugin_v1_host_proto protoreflect.FileDescriptor
 
 const file_nginxui_plugin_v1_host_proto_rawDesc = "" +
@@ -1212,7 +1473,21 @@ const file_nginxui_plugin_v1_host_proto_rawDesc = "" +
 	"\x12HostNotifyResponse\"\x1c\n" +
 	"\x1aHostMetricsSnapshotRequest\"Q\n" +
 	"\x1bHostMetricsSnapshotResponse\x122\n" +
-	"\bsnapshot\x18\x01 \x01(\v2\x16.google.protobuf.ValueR\bsnapshot2\x87\v\n" +
+	"\bsnapshot\x18\x01 \x01(\v2\x16.google.protobuf.ValueR\bsnapshot\"\x15\n" +
+	"\x13HostLogsListRequest\"J\n" +
+	"\x14HostLogsListResponse\x122\n" +
+	"\x04logs\x18\x01 \x03(\v2\x1e.nginxui.plugin.v1.HostLogFileR\x04logs\"n\n" +
+	"\vHostLogFile\x12\x12\n" +
+	"\x04path\x18\x01 \x01(\tR\x04path\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12\x16\n" +
+	"\x06source\x18\x03 \x01(\tR\x06source\x12\x1f\n" +
+	"\vconfig_file\x18\x04 \x01(\tR\n" +
+	"configFile\"X\n" +
+	"\x16HostActivitySetRequest\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05label\x18\x02 \x01(\tR\x05label\x12\x16\n" +
+	"\x06active\x18\x03 \x01(\bR\x06active\"\x19\n" +
+	"\x17HostActivitySetResponse2\xf5\f\n" +
 	"\x04Host\x12Z\n" +
 	"\x03Log\x12!.nginxui.plugin.v1.HostLogRequest\x1a\".nginxui.plugin.v1.HostLogResponse\"\f\xaa\xb8\x19\bhost.log\x12c\n" +
 	"\x05KVGet\x12#.nginxui.plugin.v1.HostKVGetRequest\x1a$.nginxui.plugin.v1.HostKVGetResponse\"\x0f\xaa\xb8\x19\vhost.kv.get\x12c\n" +
@@ -1226,7 +1501,9 @@ const file_nginxui_plugin_v1_host_proto_rawDesc = "" +
 	"\fCronRegister\x12*.nginxui.plugin.v1.HostCronRegisterRequest\x1a+.nginxui.plugin.v1.HostCronRegisterResponse\"\x16\xaa\xb8\x19\x12host.cron.register\x12\x87\x01\n" +
 	"\x0eCronUnregister\x12,.nginxui.plugin.v1.HostCronUnregisterRequest\x1a-.nginxui.plugin.v1.HostCronUnregisterResponse\"\x18\xaa\xb8\x19\x14host.cron.unregister\x12f\n" +
 	"\x06Notify\x12$.nginxui.plugin.v1.HostNotifyRequest\x1a%.nginxui.plugin.v1.HostNotifyResponse\"\x0f\xaa\xb8\x19\vhost.notify\x12\x8b\x01\n" +
-	"\x0fMetricsSnapshot\x12-.nginxui.plugin.v1.HostMetricsSnapshotRequest\x1a..nginxui.plugin.v1.HostMetricsSnapshotResponse\"\x19\xaa\xb8\x19\x15host.metrics.snapshotBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
+	"\x0fMetricsSnapshot\x12-.nginxui.plugin.v1.HostMetricsSnapshotRequest\x1a..nginxui.plugin.v1.HostMetricsSnapshotResponse\"\x19\xaa\xb8\x19\x15host.metrics.snapshot\x12o\n" +
+	"\bLogsList\x12&.nginxui.plugin.v1.HostLogsListRequest\x1a'.nginxui.plugin.v1.HostLogsListResponse\"\x12\xaa\xb8\x19\x0ehost.logs.list\x12{\n" +
+	"\vActivitySet\x12).nginxui.plugin.v1.HostActivitySetRequest\x1a*.nginxui.plugin.v1.HostActivitySetResponse\"\x15\xaa\xb8\x19\x11host.activity.setBBZ@github.com/nginxui/plugin-spec/gen/go/nginxui/plugin/v1;pluginv1b\x06proto3"
 
 var (
 	file_nginxui_plugin_v1_host_proto_rawDescOnce sync.Once
@@ -1240,7 +1517,7 @@ func file_nginxui_plugin_v1_host_proto_rawDescGZIP() []byte {
 	return file_nginxui_plugin_v1_host_proto_rawDescData
 }
 
-var file_nginxui_plugin_v1_host_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
+var file_nginxui_plugin_v1_host_proto_msgTypes = make([]protoimpl.MessageInfo, 30)
 var file_nginxui_plugin_v1_host_proto_goTypes = []any{
 	(*HostLogRequest)(nil),              // 0: nginxui.plugin.v1.HostLogRequest
 	(*HostLogResponse)(nil),             // 1: nginxui.plugin.v1.HostLogResponse
@@ -1266,47 +1543,57 @@ var file_nginxui_plugin_v1_host_proto_goTypes = []any{
 	(*HostNotifyResponse)(nil),          // 21: nginxui.plugin.v1.HostNotifyResponse
 	(*HostMetricsSnapshotRequest)(nil),  // 22: nginxui.plugin.v1.HostMetricsSnapshotRequest
 	(*HostMetricsSnapshotResponse)(nil), // 23: nginxui.plugin.v1.HostMetricsSnapshotResponse
-	nil,                                 // 24: nginxui.plugin.v1.HostCredentialsGetResponse.ConfigEntry
-	(*structpb.Struct)(nil),             // 25: google.protobuf.Struct
-	(*structpb.Value)(nil),              // 26: google.protobuf.Value
+	(*HostLogsListRequest)(nil),         // 24: nginxui.plugin.v1.HostLogsListRequest
+	(*HostLogsListResponse)(nil),        // 25: nginxui.plugin.v1.HostLogsListResponse
+	(*HostLogFile)(nil),                 // 26: nginxui.plugin.v1.HostLogFile
+	(*HostActivitySetRequest)(nil),      // 27: nginxui.plugin.v1.HostActivitySetRequest
+	(*HostActivitySetResponse)(nil),     // 28: nginxui.plugin.v1.HostActivitySetResponse
+	nil,                                 // 29: nginxui.plugin.v1.HostCredentialsGetResponse.ConfigEntry
+	(*structpb.Struct)(nil),             // 30: google.protobuf.Struct
+	(*structpb.Value)(nil),              // 31: google.protobuf.Value
 }
 var file_nginxui_plugin_v1_host_proto_depIdxs = []int32{
-	25, // 0: nginxui.plugin.v1.HostLogRequest.fields:type_name -> google.protobuf.Struct
-	26, // 1: nginxui.plugin.v1.HostKVGetResponse.value:type_name -> google.protobuf.Value
-	26, // 2: nginxui.plugin.v1.HostKVSetRequest.value:type_name -> google.protobuf.Value
-	25, // 3: nginxui.plugin.v1.HostSettingsGetResponse.settings:type_name -> google.protobuf.Struct
-	24, // 4: nginxui.plugin.v1.HostCredentialsGetResponse.config:type_name -> nginxui.plugin.v1.HostCredentialsGetResponse.ConfigEntry
-	26, // 5: nginxui.plugin.v1.HostNotifyRequest.details:type_name -> google.protobuf.Value
-	26, // 6: nginxui.plugin.v1.HostMetricsSnapshotResponse.snapshot:type_name -> google.protobuf.Value
-	0,  // 7: nginxui.plugin.v1.Host.Log:input_type -> nginxui.plugin.v1.HostLogRequest
-	2,  // 8: nginxui.plugin.v1.Host.KVGet:input_type -> nginxui.plugin.v1.HostKVGetRequest
-	4,  // 9: nginxui.plugin.v1.Host.KVSet:input_type -> nginxui.plugin.v1.HostKVSetRequest
-	6,  // 10: nginxui.plugin.v1.Host.KVDelete:input_type -> nginxui.plugin.v1.HostKVDeleteRequest
-	8,  // 11: nginxui.plugin.v1.Host.KVList:input_type -> nginxui.plugin.v1.HostKVListRequest
-	10, // 12: nginxui.plugin.v1.Host.SettingsGet:input_type -> nginxui.plugin.v1.HostSettingsGetRequest
-	12, // 13: nginxui.plugin.v1.Host.I18nLocale:input_type -> nginxui.plugin.v1.HostI18nLocaleRequest
-	14, // 14: nginxui.plugin.v1.Host.CredentialsGet:input_type -> nginxui.plugin.v1.HostCredentialsGetRequest
-	16, // 15: nginxui.plugin.v1.Host.CronRegister:input_type -> nginxui.plugin.v1.HostCronRegisterRequest
-	18, // 16: nginxui.plugin.v1.Host.CronUnregister:input_type -> nginxui.plugin.v1.HostCronUnregisterRequest
-	20, // 17: nginxui.plugin.v1.Host.Notify:input_type -> nginxui.plugin.v1.HostNotifyRequest
-	22, // 18: nginxui.plugin.v1.Host.MetricsSnapshot:input_type -> nginxui.plugin.v1.HostMetricsSnapshotRequest
-	1,  // 19: nginxui.plugin.v1.Host.Log:output_type -> nginxui.plugin.v1.HostLogResponse
-	3,  // 20: nginxui.plugin.v1.Host.KVGet:output_type -> nginxui.plugin.v1.HostKVGetResponse
-	5,  // 21: nginxui.plugin.v1.Host.KVSet:output_type -> nginxui.plugin.v1.HostKVSetResponse
-	7,  // 22: nginxui.plugin.v1.Host.KVDelete:output_type -> nginxui.plugin.v1.HostKVDeleteResponse
-	9,  // 23: nginxui.plugin.v1.Host.KVList:output_type -> nginxui.plugin.v1.HostKVListResponse
-	11, // 24: nginxui.plugin.v1.Host.SettingsGet:output_type -> nginxui.plugin.v1.HostSettingsGetResponse
-	13, // 25: nginxui.plugin.v1.Host.I18nLocale:output_type -> nginxui.plugin.v1.HostI18nLocaleResponse
-	15, // 26: nginxui.plugin.v1.Host.CredentialsGet:output_type -> nginxui.plugin.v1.HostCredentialsGetResponse
-	17, // 27: nginxui.plugin.v1.Host.CronRegister:output_type -> nginxui.plugin.v1.HostCronRegisterResponse
-	19, // 28: nginxui.plugin.v1.Host.CronUnregister:output_type -> nginxui.plugin.v1.HostCronUnregisterResponse
-	21, // 29: nginxui.plugin.v1.Host.Notify:output_type -> nginxui.plugin.v1.HostNotifyResponse
-	23, // 30: nginxui.plugin.v1.Host.MetricsSnapshot:output_type -> nginxui.plugin.v1.HostMetricsSnapshotResponse
-	19, // [19:31] is the sub-list for method output_type
-	7,  // [7:19] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	30, // 0: nginxui.plugin.v1.HostLogRequest.fields:type_name -> google.protobuf.Struct
+	31, // 1: nginxui.plugin.v1.HostKVGetResponse.value:type_name -> google.protobuf.Value
+	31, // 2: nginxui.plugin.v1.HostKVSetRequest.value:type_name -> google.protobuf.Value
+	30, // 3: nginxui.plugin.v1.HostSettingsGetResponse.settings:type_name -> google.protobuf.Struct
+	29, // 4: nginxui.plugin.v1.HostCredentialsGetResponse.config:type_name -> nginxui.plugin.v1.HostCredentialsGetResponse.ConfigEntry
+	31, // 5: nginxui.plugin.v1.HostNotifyRequest.details:type_name -> google.protobuf.Value
+	31, // 6: nginxui.plugin.v1.HostMetricsSnapshotResponse.snapshot:type_name -> google.protobuf.Value
+	26, // 7: nginxui.plugin.v1.HostLogsListResponse.logs:type_name -> nginxui.plugin.v1.HostLogFile
+	0,  // 8: nginxui.plugin.v1.Host.Log:input_type -> nginxui.plugin.v1.HostLogRequest
+	2,  // 9: nginxui.plugin.v1.Host.KVGet:input_type -> nginxui.plugin.v1.HostKVGetRequest
+	4,  // 10: nginxui.plugin.v1.Host.KVSet:input_type -> nginxui.plugin.v1.HostKVSetRequest
+	6,  // 11: nginxui.plugin.v1.Host.KVDelete:input_type -> nginxui.plugin.v1.HostKVDeleteRequest
+	8,  // 12: nginxui.plugin.v1.Host.KVList:input_type -> nginxui.plugin.v1.HostKVListRequest
+	10, // 13: nginxui.plugin.v1.Host.SettingsGet:input_type -> nginxui.plugin.v1.HostSettingsGetRequest
+	12, // 14: nginxui.plugin.v1.Host.I18nLocale:input_type -> nginxui.plugin.v1.HostI18nLocaleRequest
+	14, // 15: nginxui.plugin.v1.Host.CredentialsGet:input_type -> nginxui.plugin.v1.HostCredentialsGetRequest
+	16, // 16: nginxui.plugin.v1.Host.CronRegister:input_type -> nginxui.plugin.v1.HostCronRegisterRequest
+	18, // 17: nginxui.plugin.v1.Host.CronUnregister:input_type -> nginxui.plugin.v1.HostCronUnregisterRequest
+	20, // 18: nginxui.plugin.v1.Host.Notify:input_type -> nginxui.plugin.v1.HostNotifyRequest
+	22, // 19: nginxui.plugin.v1.Host.MetricsSnapshot:input_type -> nginxui.plugin.v1.HostMetricsSnapshotRequest
+	24, // 20: nginxui.plugin.v1.Host.LogsList:input_type -> nginxui.plugin.v1.HostLogsListRequest
+	27, // 21: nginxui.plugin.v1.Host.ActivitySet:input_type -> nginxui.plugin.v1.HostActivitySetRequest
+	1,  // 22: nginxui.plugin.v1.Host.Log:output_type -> nginxui.plugin.v1.HostLogResponse
+	3,  // 23: nginxui.plugin.v1.Host.KVGet:output_type -> nginxui.plugin.v1.HostKVGetResponse
+	5,  // 24: nginxui.plugin.v1.Host.KVSet:output_type -> nginxui.plugin.v1.HostKVSetResponse
+	7,  // 25: nginxui.plugin.v1.Host.KVDelete:output_type -> nginxui.plugin.v1.HostKVDeleteResponse
+	9,  // 26: nginxui.plugin.v1.Host.KVList:output_type -> nginxui.plugin.v1.HostKVListResponse
+	11, // 27: nginxui.plugin.v1.Host.SettingsGet:output_type -> nginxui.plugin.v1.HostSettingsGetResponse
+	13, // 28: nginxui.plugin.v1.Host.I18nLocale:output_type -> nginxui.plugin.v1.HostI18nLocaleResponse
+	15, // 29: nginxui.plugin.v1.Host.CredentialsGet:output_type -> nginxui.plugin.v1.HostCredentialsGetResponse
+	17, // 30: nginxui.plugin.v1.Host.CronRegister:output_type -> nginxui.plugin.v1.HostCronRegisterResponse
+	19, // 31: nginxui.plugin.v1.Host.CronUnregister:output_type -> nginxui.plugin.v1.HostCronUnregisterResponse
+	21, // 32: nginxui.plugin.v1.Host.Notify:output_type -> nginxui.plugin.v1.HostNotifyResponse
+	23, // 33: nginxui.plugin.v1.Host.MetricsSnapshot:output_type -> nginxui.plugin.v1.HostMetricsSnapshotResponse
+	25, // 34: nginxui.plugin.v1.Host.LogsList:output_type -> nginxui.plugin.v1.HostLogsListResponse
+	28, // 35: nginxui.plugin.v1.Host.ActivitySet:output_type -> nginxui.plugin.v1.HostActivitySetResponse
+	22, // [22:36] is the sub-list for method output_type
+	8,  // [8:22] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_nginxui_plugin_v1_host_proto_init() }
@@ -1321,7 +1608,7 @@ func file_nginxui_plugin_v1_host_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nginxui_plugin_v1_host_proto_rawDesc), len(file_nginxui_plugin_v1_host_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   25,
+			NumMessages:   30,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

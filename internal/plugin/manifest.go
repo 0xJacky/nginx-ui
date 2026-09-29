@@ -36,6 +36,8 @@ var (
 	// backend, deploy target, blocklist source and discovery provider codes
 	// the same way.
 	capabilityCodePattern = regexp.MustCompile(`^[a-z0-9-]{2,32}$`)
+	// chunkNamePattern is MAN-41.
+	chunkNamePattern = regexp.MustCompile(`^[a-z0-9][a-z0-9_-]{0,31}$`)
 	// mcpToolNamePattern keeps the published tool name within the MCP limits,
 	// see MCPToolName.
 	mcpToolNamePattern = regexp.MustCompile(`^[a-z0-9][a-z0-9_-]{0,47}$`)
@@ -71,6 +73,7 @@ var knownPermissions = []string{
 	protocol.PermissionMCP,
 	protocol.PermissionCertDeploy,
 	protocol.PermissionLogRead,
+	protocol.PermissionLogFiles,
 }
 
 // knownLogFormats lists the line formats a log.sink plugin may ask for.
@@ -269,6 +272,9 @@ func validateWebapp(w *protocol.ManifestWebapp) error {
 	if w.StylePath != "" && !isSafeRelPath(w.StylePath) {
 		return invalidManifest("webapp.style_path %q must be a relative path inside the plugin", w.StylePath)
 	}
+	if problem := chunksProblem(w); problem != "" {
+		return invalidManifest("%s", problem)
+	}
 	for _, p := range w.Pages {
 		if p.Path == "" {
 			return invalidManifest("webapp.pages[].path is required")
@@ -278,6 +284,43 @@ func validateWebapp(w *protocol.ManifestWebapp) error {
 		}
 	}
 	return nil
+}
+
+// chunksProblem describes the first way webapp.chunks breaks MAN-41, empty
+// when it is fine. Chunk names are visited in sorted order so the message is
+// stable.
+func chunksProblem(w *protocol.ManifestWebapp) string {
+	if len(w.Chunks) == 0 {
+		return ""
+	}
+	if w.BundlePath == "" {
+		return "webapp.chunks needs webapp.bundle_path"
+	}
+	names := make([]string, 0, len(w.Chunks))
+	for name := range w.Chunks {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+
+	used := make(map[string]string, len(names))
+	for _, name := range names {
+		file := w.Chunks[name]
+		switch {
+		case !chunkNamePattern.MatchString(name):
+			return fmt.Sprintf("webapp.chunks name %q must match %s", name, chunkNamePattern)
+		case !isSafeRelPath(file):
+			return fmt.Sprintf("webapp.chunks[%q] %q must be a relative path inside the plugin", name, file)
+		case !strings.HasSuffix(file, ".js"):
+			return fmt.Sprintf("webapp.chunks[%q] %q must end in .js", name, file)
+		case file == w.BundlePath:
+			return fmt.Sprintf("webapp.chunks[%q] must not be the bundle itself", name)
+		}
+		if other, dup := used[file]; dup {
+			return fmt.Sprintf("webapp.chunks[%q] and [%q] name the same file %q", other, name, file)
+		}
+		used[file] = name
+	}
+	return ""
 }
 
 func validateContent(c *protocol.ManifestContent) error {
