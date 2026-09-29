@@ -14,7 +14,7 @@ import PluginSlot from '@/components/PluginSlot'
 import PluginSlotItem from '@/components/PluginSlot/PluginSlotItem.vue'
 import { TabFilter } from '@/components/TabFilter'
 import { useGlobalStore, useWebSocketEventBusStore } from '@/pinia'
-import { NGINX_LOG_COLUMN_SLOT_PREFIX, registrationApplies } from '@/plugin/slots'
+import { NGINX_LOG_COLUMN_SLOT_PREFIX } from '@/plugin/slots'
 import { usePluginStore } from '@/plugin/store'
 import IndexingSettingsModal from './components/IndexingSettingsModal.vue'
 import { useIndexProgress } from './composables/useIndexProgress'
@@ -350,10 +350,11 @@ const actionsColumn: StdTableColumn = {
   width: 250,
 }
 
-// Columns plugins add to the list, one per registration
+// Columns plugins add to the list, one per registration. A registration whose
+// condition rejects the list being shown adds no column at all.
 const pluginStore = usePluginStore()
 
-const pluginColumnSlots = computed(() => pluginStore.slotsByPrefix(NGINX_LOG_COLUMN_SLOT_PREFIX).map(item => ({
+const pluginColumnSlots = computed(() => pluginStore.slotsByPrefix(NGINX_LOG_COLUMN_SLOT_PREFIX, { type: activeLogType.value }).map(item => ({
   ...item,
   columnKey: pluginColumnKey(`${item.registration.pluginId}:${item.key}`),
 })))
@@ -378,7 +379,7 @@ const pluginColumns = computed<StdTableColumn[]>(() => pluginColumnSlots.value.m
       : undefined,
     customRender: (args: CustomRenderArgs) => {
       const row = args.record
-      if (!row || !registrationApplies(registration, { row }))
+      if (!row)
         return null
 
       return <PluginSlotItem registration={registration} context={{ row }} />
@@ -407,10 +408,10 @@ const curdApi = {
   ...nginxLog,
   async getList(params: Record<string, unknown> = {}, config?: Record<string, unknown>) {
     const rules = pluginColumnRules.value
+    const response = await nginxLog.getList(stripPluginParams(params), config)
     if (rules.length === 0)
-      return nginxLog.getList(params, config)
+      return response
 
-    const response = await nginxLog.getList(stripPluginParams(params, rules), config)
     return { ...response, data: applyPluginColumns((response.data ?? []) as NginxLogRow[], params, rules) }
   },
 }

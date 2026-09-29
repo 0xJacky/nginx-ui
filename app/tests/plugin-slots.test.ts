@@ -68,6 +68,22 @@ describe('collectSlotsByPrefix', () => {
   })
 })
 
+describe('nginx log column visibility', () => {
+  const accessOnly = registration('index', 0, { when: ctx => ctx.type === 'access' })
+  const columns = {
+    'nginx_log.list.column:index_status': [accessOnly],
+    'nginx_log.list.column:owner': [registration('owner')],
+  }
+
+  test('a column condition decides on the list type, not on a row', () => {
+    const access = collectSlotsByPrefix(columns, NGINX_LOG_COLUMN_SLOT_PREFIX, { type: 'access' })
+    const error = collectSlotsByPrefix(columns, NGINX_LOG_COLUMN_SLOT_PREFIX, { type: 'error' })
+
+    expect(access.map(item => item.key)).toEqual(['index_status', 'owner'])
+    expect(error.map(item => item.key)).toEqual(['owner'])
+  })
+})
+
 describe('registrationApplies', () => {
   test('is true without a condition and follows the condition otherwise', () => {
     expect(registrationApplies(registration('a'))).toBe(true)

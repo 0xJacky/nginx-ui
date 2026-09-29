@@ -147,6 +147,12 @@ export interface PluginRegistry {
   loadChunk: (name: string) => Promise<Record<string, unknown>>
   /** Client whose baseURL is ./api/plugins/{id}/http. */
   http: AxiosInstance
+  /**
+   * Absolute ws or wss URL of a path under the plugin http capability, carrying
+   * the credentials the host needs. Absent on hosts without WebSocket support,
+   * so check before use.
+   */
+  wsUrl: (path: string) => string
   /** The host API client, usable only with the `core_api` permission. */
   coreHttp: typeof http
   manifest: PluginManifest

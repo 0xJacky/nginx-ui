@@ -70,6 +70,7 @@ marked `failed` and the other plugins keep loading.
 | `registerSettingsPanel(component)` | Replaces the schema-driven form on the plugin settings drawer. The component receives `{ settings, save }`. |
 | `loadChunk(name)` | Loads an on-demand chunk declared in `webapp.chunks` and resolves with the exports the chunk handed to `registerChunk`. See Chunks. |
 | `http` | Axios instance with `baseURL: ./api/plugins/{id}/http`, carrying the same `Authorization`, `X-Node-ID` and `X-Secure-Session-ID` headers as the core client. Plain axios semantics: it resolves with an `AxiosResponse`. |
+| `wsUrl(path)` | Absolute `ws:` or `wss:` URL of a path under the plugin `http` route, built like the host's own WebSocket URLs: the session token and the selected node id travel in the query string, because a browser WebSocket cannot send headers. The plugin route accepts those query credentials for upgrade requests only, and strips them before the request reaches the plugin. A plugin must not build such a URL itself. |
 | `coreHttp` | The host API client (`./api`). Requires the `core_api` permission. |
 | `manifest` | The plugin manifest. |
 | `host` | Read-only reactive `{ theme, locale, nodeId, username }`. Stores are never exposed. |
@@ -90,11 +91,11 @@ registered.
 | `certificate.issue.footer` | Bottom of the certificate issue form | `{ options }` |
 | `plugin.settings:{plugin_id}` | Plugin settings drawer | `{ settings }` |
 | `sidebar.footer` | Bottom of the sidebar | none |
-| `nginx_log.view:{key}` | An extra view mode of the log page, listed after the built-in modes with the registration `label` and selected with `?view={key}`. A key equal to a built-in mode (`raw`, `structured`, `dashboard`) is ignored. `when(ctx)` decides whether the mode is offered for a file. | `{ path, type }` |
+| `nginx_log.view:{key}` | An extra view mode of the log page, listed after the built-in modes with the registration `label` and selected with `?view={key}`. A key equal to a built-in mode (`raw`, `structured`, `dashboard`) is ignored. `when(ctx)` decides whether the mode is offered for a file. The page draws the log file picker and the view switch in a header row above the view, so a view does not render them itself. | `{ path, type }` |
 | `nginx_log.list.toolbar` | Actions area above the log list | `{ type }` |
-| `nginx_log.list.column:{key}` | One extra column of the log list, titled with `label`, placed after the host columns and before the actions, ordered by `order` | `{ row }` |
+| `nginx_log.list.column:{key}` | One extra column of the log list, titled with `label`, placed after the host columns and before the actions, ordered by `order`. `when(ctx)` is called once per list with `{ type }` and decides whether the column exists at all, header and cells. | `{ row }` |
 | `nginx_log.list.row.actions` | Per row actions of the log list | `{ row }` |
-| `site.log.actions` | Log actions of one site, in the site editor and in the site list. A path is an empty string when the site has no such log. The site list loads the paths of a row only when a plugin registered this slot. | `{ accessLogPath, errorLogPath, siteName }` |
+| `site.log.actions` | Log actions of one site, in the site editor and in the site list. A path is the site's own log directive, else the nginx default log the site falls back to, else an empty string; the matching `...Inherited` flag is true for the fallback. The site list reads the paths from the row, and the editor asks for the default logs only when a plugin registered this slot. | `{ accessLogPath, accessLogInherited, errorLogPath, errorLogInherited, siteName }` |
 
 ### Log list columns
 
@@ -115,6 +116,10 @@ AND. `row` always has `path`, `type`, `name` and `config_file`, and may carry
 more fields, which a plugin must ignore. Sorting and filtering are evaluated
 each time the list is fetched: on load and after a change of sort, filter or
 search.
+
+A column that only suits one kind of log decides in `when`, which receives the
+list context, for example `when: ctx => ctx.type === 'access'`. The component
+of a cell only gets `{ row }`.
 
 Slot labels go through the host gettext, so a plugin supplies translations with
 `registerTranslations` under the same English string.

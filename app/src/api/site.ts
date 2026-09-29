@@ -41,6 +41,12 @@ export interface Site extends ModelBase {
   status: SiteStatus
   access_mode?: AccessSummaryMode
   access_list?: string
+  // Log files of the site, set by the site list. An inherited path is the
+  // nginx default log the site falls back to, and a missing one means none.
+  access_log_path?: string
+  access_log_inherited?: boolean
+  error_log_path?: string
+  error_log_inherited?: boolean
   dns_domain_id?: number | null
   dns_records?: SiteDNSRecord[] | null
   // Legacy single-record fields are kept for backward compatibility.

@@ -154,10 +154,16 @@ describe('list request parameters', () => {
   }
 
   test('stripPluginParams removes the plugin sort and selections only', () => {
-    expect(stripPluginParams({ sort_by: statusKey, order: 'desc', [statusKey]: ['indexed'], type: 'access' }, [statusColumn]))
+    expect(stripPluginParams({ sort_by: statusKey, order: 'desc', [statusKey]: ['indexed'], type: 'access' }))
       .toEqual({ type: 'access' })
-    expect(stripPluginParams({ sort_by: 'name', order: 'asc', type: 'access' }, [statusColumn]))
+    expect(stripPluginParams({ sort_by: 'name', order: 'asc', type: 'access' }))
       .toEqual({ sort_by: 'name', order: 'asc', type: 'access' })
+  })
+
+  test('stripPluginParams also removes leftovers of columns the list no longer shows', () => {
+    const hiddenKey = pluginColumnKey('p:hidden')
+    expect(stripPluginParams({ sort_by: hiddenKey, order: 'asc', [hiddenKey]: ['x'], name: 'a' }))
+      .toEqual({ name: 'a' })
   })
 
   test('applyPluginColumns filters and then sorts by the named column', () => {

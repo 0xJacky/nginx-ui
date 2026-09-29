@@ -19,6 +19,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -340,4 +341,61 @@ func TestNewHTTPHandlerRPCReturns503OnCallError(t *testing.T) {
 	assert.Equal(t, http.StatusServiceUnavailable, recorder.Code)
 	assert.Contains(t, recorder.Body.String(), "boom")
 	assert.Equal(t, 1, host.releaseCount())
+}
+
+func TestNewHTTPHandlerProxiesWebSocketsWithoutHandshakeCredentials(t *testing.T) {
+	dir := t.TempDir()
+
+	queries := make(chan string, 1)
+	upgrader := websocket.Upgrader{}
+	startUnixHTTPServer(t, dir, func(w http.ResponseWriter, r *http.Request) {
+		queries <- r.URL.RawQuery
+		conn, err := upgrader.Upgrade(w, r, nil)
+		if err != nil {
+			return
+		}
+		defer conn.Close()
+		for {
+			kind, data, err := conn.ReadMessage()
+			if err != nil {
+				return
+			}
+			if err = conn.WriteMessage(kind, append([]byte("echo:"), data...)); err != nil {
+				return
+			}
+		}
+	})
+
+	host := &fakeHTTPHost{info: enabledInfo(), manifest: httpManifest("unix"), dataDir: dir}
+	server := newUnixProxyServer(t, host)
+
+	target := "ws" + strings.TrimPrefix(server.URL, "http") + "/plugins/official.http/http/events?token=secret&x_node_id=3&room=1"
+	conn, _, err := websocket.DefaultDialer.Dial(target, nil)
+	require.NoError(t, err)
+	defer conn.Close()
+
+	require.NoError(t, conn.WriteMessage(websocket.TextMessage, []byte("ping")))
+	_, reply, err := conn.ReadMessage()
+	require.NoError(t, err)
+	assert.Equal(t, "echo:ping", string(reply))
+
+	assert.Equal(t, "room=1", <-queries, "session credentials must not reach the plugin")
+}
+
+func TestNewHTTPHandlerKeepsQueryOfPlainRequests(t *testing.T) {
+	dir := t.TempDir()
+
+	queries := make(chan string, 1)
+	startUnixHTTPServer(t, dir, func(w http.ResponseWriter, r *http.Request) {
+		queries <- r.URL.RawQuery
+	})
+
+	host := &fakeHTTPHost{info: enabledInfo(), manifest: httpManifest("unix"), dataDir: dir}
+	server := newUnixProxyServer(t, host)
+
+	resp, err := http.Get(server.URL + "/plugins/official.http/http/x?token=mine&x_node_id=3")
+	require.NoError(t, err)
+	defer resp.Body.Close()
+
+	assert.Equal(t, "token=mine&x_node_id=3", <-queries)
 }
