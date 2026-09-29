@@ -2850,6 +2850,9 @@ msgstr "當 Nginx UI 監聽 Unix socket 時，無法啟用 HTTP/3"
 msgid "Unknown settings section: {0}"
 msgstr "未知的設定區塊：{0}"
 
+msgid "A trusted publisher is not in the expected format or is listed twice"
+msgstr "有可信發布者的格式不正確或重複新增。"
+
 msgid "Site not found"
 msgstr "站點未找到"
 
@@ -7523,10 +7526,8 @@ msgstr "當憑證剩餘有效期小於或等於此值時續簽憑證。"
 msgid "Plugin System"
 msgstr "外掛系統"
 
-msgid ""
-"Turning it off stops every plugin and hides the plugin pages. Takes effect "
-"after a restart."
-msgstr "關閉後會停止所有外掛並隱藏外掛頁面，重新啟動後生效。"
+msgid "Turning it off stops every plugin and hides the plugin pages."
+msgstr "關閉後會停止所有外掛並隱藏外掛頁面。"
 
 msgid "Plugin Directory"
 msgstr "外掛目錄"
@@ -8969,6 +8970,37 @@ msgstr "搜尋設定項"
 msgid "No matching settings"
 msgstr "沒有符合的設定項"
 
+msgid ""
+"This is not a valid public key. Paste the whole key the publisher gave you."
+msgstr "這不是有效的公鑰，請貼上發布者提供的完整公鑰。"
+
+msgid "This publisher is already in the list."
+msgstr "該發布者已在清單中。"
+
+msgid "No publishers yet."
+msgstr "尚無發布者。"
+
+msgid "Unnamed publisher"
+msgstr "未命名發布者"
+
+msgid "Not a valid public key"
+msgstr "無效的公鑰"
+
+msgid "Are you sure you want to remove this item?"
+msgstr "您確定要刪除此項目嗎？"
+
+msgid "Add publisher"
+msgstr "新增發布者"
+
+msgid "Shown in this list only"
+msgstr "僅在此清單中顯示"
+
+msgid "Public Key"
+msgstr "公鑰"
+
+msgid "Paste the public key the publisher gave you"
+msgstr "貼上發布者提供的公鑰"
+
 msgid "Check the format of the API Base Url and API Proxy."
 msgstr "請檢查 API Base Url 和 API Proxy 的格式。"
 
@@ -9467,9 +9499,6 @@ msgstr "與聊天模型相同"
 
 msgid "Advanced"
 msgstr "進階"
-
-msgid "The plugins directory under the configuration directory"
-msgstr "設定目錄下的 plugins 目錄"
 
 msgid "Listen Address"
 msgstr "監聽位址"
@@ -10576,6 +10605,12 @@ msgid ""
 "Allows installing packages uploaded from the browser or the command line."
 msgstr "允許安裝從瀏覽器或命令列上傳的安裝套件。"
 
+msgid "Trusted Publishers"
+msgstr "可信發布者"
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr "來自這些發布者的外掛以社群外掛安裝。"
+
 msgid "Developer Mode"
 msgstr "開發者模式"
 
@@ -10584,33 +10619,17 @@ msgid ""
 "plugin."
 msgstr "允許安裝未簽署的外掛，僅在開發外掛時開啟。"
 
-msgid "Trusted Keys"
-msgstr "可信金鑰"
-
-msgid ""
-"Packages signed with one of these keys install as community plugins. One key "
-"per line."
-msgstr "用這些金鑰簽署的安裝套件按社群外掛安裝，每行一個金鑰。"
-
 msgid "Memory Limit"
 msgstr "記憶體限制"
 
-msgid ""
-"Applies to every plugin process. 0 means unlimited, a plugin can only lower "
-"its own limit."
-msgstr "套用於每個外掛程序。0 表示不限制，外掛只能調低自己的限制。"
+msgid "Maximum memory each plugin can use."
+msgstr "每個外掛最多可使用的記憶體。"
 
 msgid "CPU Limit"
 msgstr "CPU 限制"
 
-msgid "Percent of one core for every plugin process. 0 means unlimited."
-msgstr "每個外掛程序可用的單核百分比，0 表示不限制。"
-
-msgid "cgroup Root"
-msgstr "cgroup 根目錄"
-
-msgid "Limits are enforced on Linux with cgroup v2 only."
-msgstr "僅在使用 cgroup v2 的 Linux 上強制執行。"
+msgid "Share of one CPU core each plugin can use."
+msgstr "每個外掛可使用的單核 CPU 比例。"
 
 msgid "%{count} installed plugin has a newer release."
 msgid_plural "%{count} installed plugins have a newer release."
@@ -10860,6 +10879,13 @@ msgstr "已捨棄"
 msgid "Unlimited"
 msgstr "無限制"
 
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr "這些選項會降低外掛安裝的安全性，僅在需要時開啟。"
+
+msgid "Less safe"
+msgstr "安全性降低"
+
 msgid "Last error"
 msgstr "最近的錯誤"
 
@@ -10979,11 +11005,14 @@ msgstr "官方目錄"
 msgid "Packages"
 msgstr "安裝套件"
 
-msgid "Paste public keys here"
-msgstr "在此貼上公鑰"
-
 msgid "Resources"
 msgstr "資源"
+
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr "對每個外掛生效，外掛只能調低自己的限制。"
+
+msgid "Only applies on Linux. This system does not support it."
+msgstr "僅在 Linux 上生效，目前系統不支援。"
 
 msgid "%{field} is required"
 msgstr "%{field} 為必填項目"
@@ -11372,6 +11401,39 @@ msgstr "單窗格"
 msgid "Split view"
 msgstr "分割檢視"
 
+#~ msgid ""
+#~ "Turning it off stops every plugin and hides the plugin pages. Takes "
+#~ "effect after a restart."
+#~ msgstr "關閉後會停止所有外掛並隱藏外掛頁面，重新啟動後生效。"
+
+#~ msgid "Trusted Keys"
+#~ msgstr "可信金鑰"
+
+#~ msgid ""
+#~ "Packages signed with one of these keys install as community plugins. One "
+#~ "key per line."
+#~ msgstr "用這些金鑰簽署的安裝套件按社群外掛安裝，每行一個金鑰。"
+
+#~ msgid ""
+#~ "Applies to every plugin process. 0 means unlimited, a plugin can only "
+#~ "lower its own limit."
+#~ msgstr "套用於每個外掛程序。0 表示不限制，外掛只能調低自己的限制。"
+
+#~ msgid "Percent of one core for every plugin process. 0 means unlimited."
+#~ msgstr "每個外掛程序可用的單核百分比，0 表示不限制。"
+
+#~ msgid "cgroup Root"
+#~ msgstr "cgroup 根目錄"
+
+#~ msgid "Limits are enforced on Linux with cgroup v2 only."
+#~ msgstr "僅在使用 cgroup v2 的 Linux 上強制執行。"
+
+#~ msgid "The plugins directory under the configuration directory"
+#~ msgstr "設定目錄下的 plugins 目錄"
+
+#~ msgid "Paste public keys here"
+#~ msgstr "在此貼上公鑰"
+
 #~ msgid "Verifying the signature"
 #~ msgstr "正在驗證簽章"
 
@@ -11454,9 +11516,6 @@ msgstr "分割檢視"
 
 #~ msgid "DNS Challenge"
 #~ msgstr "DNS 驗證"
-
-#~ msgid "Are you sure you want to remove this item?"
-#~ msgstr "您確定要刪除此項目嗎？"
 
 msgid ""
 "The file name must end in .conf and use only letters, digits, dots, dashes "

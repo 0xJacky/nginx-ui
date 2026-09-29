@@ -19,7 +19,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-co-op/gocron/v2"
 	"github.com/uozi-tech/cosy/logger"
-	cSettings "github.com/uozi-tech/cosy/settings"
 	"go.uber.org/zap"
 )
 
@@ -290,10 +289,7 @@ func (m *Manager) Dir() string {
 // DefaultDir resolves the configured plugin directory, falling back to the
 // directory holding the nginx-ui configuration file.
 func DefaultDir() string {
-	if settings.PluginSettings.Dir != "" {
-		return settings.PluginSettings.Dir
-	}
-	return filepath.Join(path.Dir(cSettings.ConfPath), "plugins")
+	return settings.PluginSettings.GetDir()
 }
 
 // DataDir is the private writable directory handed to one plugin.

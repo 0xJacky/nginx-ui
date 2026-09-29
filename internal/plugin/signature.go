@@ -87,7 +87,7 @@ type trustTier struct {
 // the catalog key of the entry a package came from, empty on other paths.
 // partners are the certificate and keyring keys of the verified tier.
 func trustTiers(authorKey string, partners []partnerCertificate, keyring *partnerKeyring) []trustTier {
-	community := slices.Clone(settings.PluginSettings.TrustedPublicKeys)
+	community := settings.PluginSettings.TrustedKeys()
 	if strings.TrimSpace(authorKey) != "" {
 		community = append(community, authorKey)
 	}

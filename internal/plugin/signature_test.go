@@ -112,7 +112,7 @@ func TestVerifyPackageSignatureDerivesTheTrust(t *testing.T) {
 	}{
 		"release key": {signer: official, want: TrustOfficial},
 		"partner key": {signer: partner, want: TrustVerified, wantPartner: "example"},
-		"user key":    {signer: &user, want: TrustCommunity, wantKey: encodeKey(t, userPublic)},
+		"user key":    {signer: &user, want: TrustCommunity, wantKey: publisherKey(t, userPublic)},
 		"catalog author key": {signer: &author, authorKey: encodeKey(t, authorPublic), want: TrustCommunity,
 			wantKey: encodeKey(t, authorPublic)},
 		"author key unknown":  {signer: &author, want: TrustUnsigned},
@@ -219,7 +219,7 @@ func TestInstallAppliesTheTrustPolicy(t *testing.T) {
 	// The key that verified it is kept for a cluster push.
 	row, ok := manager.syncRow("com.example.community")
 	require.True(t, ok)
-	assert.Equal(t, encodeKey(t, userPublic), row.AuthorPublicKey)
+	assert.Equal(t, publisherKey(t, userPublic), row.AuthorPublicKey)
 
 	// A tampered package is refused in developer mode too.
 	settings.PluginSettings.DeveloperMode = true
