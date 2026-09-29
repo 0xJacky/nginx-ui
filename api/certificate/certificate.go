@@ -3,6 +3,7 @@ package certificate
 import (
 	"net/http"
 	"path/filepath"
+	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -16,6 +17,8 @@ import (
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
+	cosyModel "github.com/uozi-tech/cosy/model"
+	"gorm.io/gorm"
 )
 
 type APICertificate struct {
@@ -24,6 +27,9 @@ type APICertificate struct {
 	SSLCertificateKey string                           `json:"ssl_certificate_key,omitempty"`
 	CertificateInfo   *cert.Info                       `json:"certificate_info,omitempty"`
 	DeploymentStatus  site.CertificateDeploymentStatus `json:"deployment_status"`
+	cert.Overview
+	// DNSProvider is the provider name of the DNS credential used for DNS-01.
+	DNSProvider string `json:"dns_provider,omitempty"`
 }
 
 func Transformer(certModel *model.Cert) (certificate *APICertificate) {
@@ -57,21 +63,77 @@ func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 		SSLCertificateKey: string(sslCertificationKeyBytes),
 		CertificateInfo:   certificateInfo,
 		DeploymentStatus:  site.InspectCertificateDeployment(certModel),
+		Overview:          buildOverview(certModel, certificateInfo),
+		DNSProvider:       dnsProviderNames([]*model.Cert{certModel})[certModel.DnsCredentialID],
 	}
 }
 
 func GetCertList(c *gin.Context) {
 	s := logger.NewSessionLogger(c)
 	s.Info("GetCertList")
-	cosy.Core[model.Cert](c).SetFussy("name", "domain").
-		SetTransformer(func(m *model.Cert) any {
-			info, _ := cert.GetCertInfo(m.SSLCertificatePath)
-			return APICertificate{
-				Cert:             m,
-				CertificateInfo:  info,
-				DeploymentStatus: site.InspectCertificateDeployment(m),
+
+	keyword := strings.TrimSpace(c.Query("keyword"))
+	filter := cert.ParseListFilter(c.Query("state"))
+	withCounts := cast.ToBool(c.Query("with_counts"))
+
+	var summary *certListSummary
+	if filter != cert.FilterAll || withCounts {
+		var err error
+		summary, err = summarizeCertList(keyword, filter)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	var providers map[uint64]string
+	core := cosy.Core[model.Cert](c).SetFussy("name", "domain").
+		GormScope(func(tx *gorm.DB) *gorm.DB {
+			return applyCertKeyword(tx, keyword)
+		}).
+		SetScan(func(tx *gorm.DB) any {
+			models := make([]*model.Cert, 0)
+			tx.Find(&models)
+			providers = dnsProviderNames(models)
+
+			rows := make([]any, 0, len(models))
+			for _, m := range models {
+				var info *cert.Info
+				if summary != nil {
+					info = summary.infos[m.ID]
+				} else {
+					info, _ = cert.GetCertInfo(m.SSLCertificatePath)
+				}
+				rows = append(rows, APICertificate{
+					Cert:             m,
+					CertificateInfo:  info,
+					DeploymentStatus: site.InspectCertificateDeployment(m),
+					Overview:         buildOverview(m, info),
+					DNSProvider:      providers[m.DnsCredentialID],
+				})
 			}
-		}).PagingList()
+			return rows
+		})
+
+	if summary != nil {
+		core.GormScope(func(tx *gorm.DB) *gorm.DB {
+			if filter == cert.FilterAll {
+				return tx
+			}
+			if len(summary.matched) == 0 {
+				return tx.Where("1 = 0")
+			}
+			return tx.Where("certs.id IN ?", summary.matched)
+		})
+		if withCounts {
+			core.SetResponseBuilder(func(ctx *cosy.Ctx[model.Cert]) {
+				list, _ := ctx.GetDefaultResponseData().(cosyModel.DataList)
+				ctx.JSON(http.StatusOK, certListResponse{DataList: list, Counts: summary.counts})
+			})
+		}
+	}
+
+	core.PagingList()
 }
 
 func GetCert(c *gin.Context) {
@@ -365,4 +427,27 @@ func SyncCertificate(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
 	})
+}
+
+// SetCertAutoRenewal switches automatic renewal of an ACME certificate.
+func SetCertAutoRenewal(c *gin.Context) {
+	var json struct {
+		Enabled *bool `json:"enabled" binding:"required"`
+	}
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+
+	certModel, err := query.Cert.FirstByID(cast.ToUint64(c.Param("id")))
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	if err = cert.SetAutoRenewal(certModel, *json.Enabled); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, Transformer(certModel))
 }

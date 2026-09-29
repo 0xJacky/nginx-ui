@@ -29,6 +29,7 @@ func InitCertificateRouter(r *gin.RouterGroup) {
 		o.POST("certs", AddCert)
 		o.POST("certs/:id", ModifyCert)
 		o.DELETE("certs/:id", RemoveCert)
+		o.POST("certs/:id/auto_renewal", SetCertAutoRenewal)
 		o.POST("cert_import", ImportExistingCert)
 		o.POST("cert_discover_new", DiscoverNewCerts)
 		o.POST("cert_parse_archive", ParseCertificateArchive)
