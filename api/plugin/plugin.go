@@ -215,6 +215,21 @@ func SavePluginSettings(c *gin.Context) {
 	c.JSON(http.StatusOK, settingsResponse{Schema: schema, Values: values})
 }
 
+// GetPluginUsage lists what depends on a plugin on this node, so the UI can
+// warn before it is switched off.
+func GetPluginUsage(c *gin.Context) {
+	id, ok := pluginID(c)
+	if !ok {
+		return
+	}
+	usage, err := plugin.GetManager().Usage(c, id)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, usage)
+}
+
 // GetPluginLogs returns the tail of the plugin stderr buffer.
 func GetPluginLogs(c *gin.Context) {
 	id, ok := pluginID(c)
