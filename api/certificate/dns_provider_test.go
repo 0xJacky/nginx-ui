@@ -44,12 +44,10 @@ func performRequest(t *testing.T, handler gin.HandlerFunc, method, path string) 
 
 func TestGetDNSProvidersListStripsTheSchema(t *testing.T) {
 	registerSource(t, dns.ProviderInfo{
-		Config: dns.Config{
-			Name:          "Test Vendor",
-			Code:          "api-test-vendor",
-			Configuration: &dns.Configuration{Credentials: map[string]string{"TEST_TOKEN": "API token"}},
-			Links:         &dns.Links{API: "https://example.com/api"},
-		},
+		Name:     "Test Vendor",
+		Code:     "api-test-vendor",
+		Form:     &dns.Form{Fields: []dns.FormField{{Key: "TEST_TOKEN", Label: "API token", Group: dns.FieldGroupCredential}}},
+		Links:    &dns.ProviderLinks{API: "https://example.com/api"},
 		PluginID: "com.example.dns",
 		DNS01:    true,
 	})
@@ -70,7 +68,7 @@ func TestGetDNSProvidersListStripsTheSchema(t *testing.T) {
 			continue
 		}
 		found = true
-		if provider.Configuration != nil || provider.Links != nil {
+		if provider.Form != nil || provider.Links != nil {
 			t.Fatal("the list endpoint returned the provider schema")
 		}
 		if !provider.DNS01 || provider.PluginID != "com.example.dns" {
@@ -84,11 +82,9 @@ func TestGetDNSProvidersListStripsTheSchema(t *testing.T) {
 
 func TestGetDNSProviderReturnsTheSchema(t *testing.T) {
 	registerSource(t, dns.ProviderInfo{
-		Config: dns.Config{
-			Name:          "Detail Vendor",
-			Code:          "api-detail-vendor",
-			Configuration: &dns.Configuration{Credentials: map[string]string{"DETAIL_TOKEN": "API token"}},
-		},
+		Name:     "Detail Vendor",
+		Code:     "api-detail-vendor",
+		Form:     &dns.Form{Fields: []dns.FormField{{Key: "DETAIL_TOKEN", Label: "API token", Group: dns.FieldGroupCredential}}},
 		PluginID: "com.example.dns",
 		DNS01:    true,
 	})
@@ -107,8 +103,8 @@ func TestGetDNSProviderReturnsTheSchema(t *testing.T) {
 	if err := json.Unmarshal(recorder.Body.Bytes(), &provider); err != nil {
 		t.Fatal(err)
 	}
-	if provider.Configuration == nil || provider.Configuration.Credentials["DETAIL_TOKEN"] != "API token" {
-		t.Fatalf("configuration = %#v, want the full schema", provider.Configuration)
+	if provider.Form == nil || len(provider.Form.Fields) != 1 || provider.Form.Fields[0].Key != "DETAIL_TOKEN" {
+		t.Fatalf("form = %#v, want the full schema", provider.Form)
 	}
 
 	recorder = httptest.NewRecorder()
@@ -158,9 +154,9 @@ func TestGetChallengeMethodsOffersDNS01WhenAPluginProvidesIt(t *testing.T) {
 
 func TestDNS01PluginIDPrefersTheOfficialPlugin(t *testing.T) {
 	registerSource(t,
-		dns.ProviderInfo{Config: dns.Config{Name: "Third Party A", Code: "api-third-party-a"}, PluginID: "com.example.dns", DNS01: true},
-		dns.ProviderInfo{Config: dns.Config{Name: "Third Party B", Code: "api-third-party-b"}, PluginID: "com.example.dns", DNS01: true},
-		dns.ProviderInfo{Config: dns.Config{Name: "Official", Code: "api-official"}, PluginID: dns.OfficialDNS01PluginID, DNS01: true},
+		dns.ProviderInfo{Name: "Third Party A", Code: "api-third-party-a", PluginID: "com.example.dns", DNS01: true},
+		dns.ProviderInfo{Name: "Third Party B", Code: "api-third-party-b", PluginID: "com.example.dns", DNS01: true},
+		dns.ProviderInfo{Name: "Official", Code: "api-official", PluginID: dns.OfficialDNS01PluginID, DNS01: true},
 	)
 
 	if got := dns01PluginID(); got != dns.OfficialDNS01PluginID {

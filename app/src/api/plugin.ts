@@ -1,3 +1,4 @@
+import type { DNSProviderForm } from '@/api/auto_cert'
 import type { PluginTrust } from '@/api/plugin_marketplace'
 import type { HttpConfig } from '@/lib/http/types'
 import { http } from '@uozi-admin/request'
@@ -99,21 +100,16 @@ export interface PluginManifestCron {
   method: string
 }
 
-export interface DNS01ProviderConfig {
-  credentials?: Record<string, string>
-  additional?: Record<string, string>
-}
-
 export interface DNS01ProviderLinks {
   api?: string
-  go_client?: string
 }
 
 export interface DNS01Provider {
   name: string
   code: string
-  configuration?: DNS01ProviderConfig
   links?: DNS01ProviderLinks
+  /** Credential form, the only description of the values the provider takes. */
+  form: DNSProviderForm
   propagation_timeout_seconds?: number
   polling_interval_seconds?: number
 }
