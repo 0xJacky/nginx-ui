@@ -2,6 +2,7 @@ package dns
 
 import (
 	"context"
+	"maps"
 	"slices"
 
 	"github.com/0xJacky/Nginx-UI/internal/translation"
@@ -61,6 +62,7 @@ func (p builtinProvider) form() *Form {
 			Name:        m.Name,
 			Recommended: m.Recommended,
 			Fields:      slices.Clone(m.Fields),
+			Values:      maps.Clone(m.Values),
 		})
 	}
 	return form
