@@ -35,7 +35,6 @@ var (
 	LLMSession               *lLMSession
 	MCPServiceToken          *mCPServiceToken
 	Namespace                *namespace
-	NginxLogIndex            *nginxLogIndex
 	Node                     *node
 	NodeControllerCredential *nodeControllerCredential
 	NodeCredential           *nodeCredential
@@ -72,7 +71,6 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	LLMSession = &Q.LLMSession
 	MCPServiceToken = &Q.MCPServiceToken
 	Namespace = &Q.Namespace
-	NginxLogIndex = &Q.NginxLogIndex
 	Node = &Q.Node
 	NodeControllerCredential = &Q.NodeControllerCredential
 	NodeCredential = &Q.NodeCredential
@@ -110,7 +108,6 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		LLMSession:               newLLMSession(db, opts...),
 		MCPServiceToken:          newMCPServiceToken(db, opts...),
 		Namespace:                newNamespace(db, opts...),
-		NginxLogIndex:            newNginxLogIndex(db, opts...),
 		Node:                     newNode(db, opts...),
 		NodeControllerCredential: newNodeControllerCredential(db, opts...),
 		NodeCredential:           newNodeCredential(db, opts...),
@@ -149,7 +146,6 @@ type Query struct {
 	LLMSession               lLMSession
 	MCPServiceToken          mCPServiceToken
 	Namespace                namespace
-	NginxLogIndex            nginxLogIndex
 	Node                     node
 	NodeControllerCredential nodeControllerCredential
 	NodeCredential           nodeCredential
@@ -191,7 +187,6 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		LLMSession:               q.LLMSession.clone(db),
 		MCPServiceToken:          q.MCPServiceToken.clone(db),
 		Namespace:                q.Namespace.clone(db),
-		NginxLogIndex:            q.NginxLogIndex.clone(db),
 		Node:                     q.Node.clone(db),
 		NodeControllerCredential: q.NodeControllerCredential.clone(db),
 		NodeCredential:           q.NodeCredential.clone(db),
@@ -238,7 +233,6 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		LLMSession:               q.LLMSession.replaceDB(db),
 		MCPServiceToken:          q.MCPServiceToken.replaceDB(db),
 		Namespace:                q.Namespace.replaceDB(db),
-		NginxLogIndex:            q.NginxLogIndex.replaceDB(db),
 		Node:                     q.Node.replaceDB(db),
 		NodeControllerCredential: q.NodeControllerCredential.replaceDB(db),
 		NodeCredential:           q.NodeCredential.replaceDB(db),
@@ -275,7 +269,6 @@ type queryCtx struct {
 	LLMSession               *lLMSessionDo
 	MCPServiceToken          *mCPServiceTokenDo
 	Namespace                *namespaceDo
-	NginxLogIndex            *nginxLogIndexDo
 	Node                     *nodeDo
 	NodeControllerCredential *nodeControllerCredentialDo
 	NodeCredential           *nodeCredentialDo
@@ -312,7 +305,6 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		LLMSession:               q.LLMSession.WithContext(ctx),
 		MCPServiceToken:          q.MCPServiceToken.WithContext(ctx),
 		Namespace:                q.Namespace.WithContext(ctx),
-		NginxLogIndex:            q.NginxLogIndex.WithContext(ctx),
 		Node:                     q.Node.WithContext(ctx),
 		NodeControllerCredential: q.NodeControllerCredential.WithContext(ctx),
 		NodeCredential:           q.NodeCredential.WithContext(ctx),

@@ -16,7 +16,6 @@ import (
 	dnsapi "github.com/0xJacky/Nginx-UI/api/dns"
 	"github.com/0xJacky/Nginx-UI/api/event"
 	"github.com/0xJacky/Nginx-UI/api/external_notify"
-	"github.com/0xJacky/Nginx-UI/api/geolite"
 	"github.com/0xJacky/Nginx-UI/api/host"
 	"github.com/0xJacky/Nginx-UI/api/license"
 	"github.com/0xJacky/Nginx-UI/api/llm"
@@ -86,7 +85,6 @@ func InitRouter() {
 		crypto.InitPublicRouter(root)
 		user.InitAuthRouter(root)
 		license.InitRouter(root)
-		nginxLog.InitPublicRouter(root)
 
 		system.InitPublicRouter(root)
 		backup.InitRouter(root)
@@ -153,7 +151,6 @@ func InitRouter() {
 			backup.InitAutoBackupRouter(g)
 			nginxLog.InitRouter(g)
 			upstream.InitHTTPRouter(g)
-			g.GET("/geolite/status", geolite.GetStatus)
 		}
 
 		// The terminal applies its own gates before proxying to a child node.
@@ -171,7 +168,6 @@ func InitRouter() {
 			system.InitWebSocketRouter(w)
 			nginx.InitWebSocketRouter(w)
 			cluster.InitWebSocketRouter(w)
-			w.GET("/geolite/download", geolite.DownloadGeoLiteDB)
 		}
 	}
 }

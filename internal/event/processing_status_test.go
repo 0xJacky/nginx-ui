@@ -77,7 +77,6 @@ func TestProcessingStatusJSONHasEmptyPluginList(t *testing.T) {
 	encoded, err := json.Marshal(m.GetCurrentStatus())
 	require.NoError(t, err)
 	assert.Contains(t, string(encoded), `"plugins":[]`)
-	assert.Contains(t, string(encoded), `"nginx_log_indexing":false`)
 }
 
 func TestPublishedPluginListIsNotEditedLater(t *testing.T) {

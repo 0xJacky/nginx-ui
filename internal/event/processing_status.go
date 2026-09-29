@@ -24,7 +24,6 @@ func GetProcessingStatusManager() *ProcessingStatusManager {
 			status: ProcessingStatusData{
 				IndexScanning:      false,
 				AutoCertProcessing: false,
-				NginxLogIndexing:   false,
 				Plugins:            []PluginActivity{},
 			},
 		}
@@ -60,26 +59,6 @@ func (m *ProcessingStatusManager) UpdateAutoCertProcessing(processing bool) {
 		m.status.AutoCertProcessing = processing
 		logger.Infof("Auto cert processing status changed to: %t", processing)
 		m.publishStatus()
-	}
-}
-
-// UpdateNginxLogIndexing updates the nginx log indexing status
-func (m *ProcessingStatusManager) UpdateNginxLogIndexing(indexing bool) {
-	m.mu.Lock()
-	defer m.mu.Unlock()
-
-	if m.status.NginxLogIndexing != indexing {
-		m.status.NginxLogIndexing = indexing
-		logger.Infof("Nginx log indexing status changed to: %t", indexing)
-		m.publishStatus()
-
-		// Also publish legacy nginx_log_status for backward compatibility
-		Publish(Event{
-			Type: TypeNginxLogStatus,
-			Data: NginxLogStatusData{
-				Indexing: indexing,
-			},
-		})
 	}
 }
 

@@ -15,7 +15,6 @@ const preferenceTabKeys = [
   'nginx',
   'openai',
   'logrotate',
-  'geolite',
 ]
 
 async function clickPreferenceTab(page: Page, key: string) {
