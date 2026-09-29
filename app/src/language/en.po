@@ -366,7 +366,7 @@ msgstr ""
 #: src/components/AutoCertForm/AutoCertForm.vue:218
 #: src/views/certificate/CertificateList/certColumns.tsx:76
 #: src/views/certificate/components/SelfSignedCertFields.vue:56
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:624
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:768
 msgid "Key Type"
 msgstr ""
 
@@ -375,7 +375,7 @@ msgid "Special Settings"
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:236
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:635
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:779
 msgid "OCSP Must Staple"
 msgstr ""
 
@@ -384,55 +384,55 @@ msgid "Do not enable this option unless you are sure that you need it."
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:240
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:636
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:780
 msgid ""
 "OCSP Must Staple may cause errors for some users on first access using "
 "Firefox."
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:246
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:641
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:785
 msgid "Lego disable CNAME Support"
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:249
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:642
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:786
 msgid ""
 "If your domain has CNAME records and you cannot obtain certificates, you "
 "need to enable this option."
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:256
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:648
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:792
 msgid "Disable Authoritative DNS Propagation Check"
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:260
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:649
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:793
 msgid ""
 "Skip local DNS propagation checks and wait 60 seconds before asking the "
 "certificate authority to validate the record."
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:265
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:654
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:798
 msgid "Enable Common Name"
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:268
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:655
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:799
 msgid ""
 "Enable the certificate Common Name field for private CAs that still require "
 "it."
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:273
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:660
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:804
 msgid "Revoke Old Certificate"
 msgstr ""
 
 #: src/components/AutoCertForm/AutoCertForm.vue:276
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:661
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:805
 msgid ""
 "If you want to automatically revoke the old certificate, please enable this "
 "option."
@@ -481,13 +481,13 @@ msgstr ""
 
 #: src/components/CertInfo/CertInfo.vue:20
 #: src/views/certificate/components/CertificateBasicInfo.vue:25
-#: src/views/certificate/components/CertificateContentEditor.vue:103
+#: src/views/certificate/components/CertificateContentEditor.vue:104
 msgid "Nothing to copy"
 msgstr ""
 
 #: src/components/CertInfo/CertInfo.vue:25
 #: src/views/certificate/components/CertificateBasicInfo.vue:30
-#: src/views/certificate/components/CertificateContentEditor.vue:108
+#: src/views/certificate/components/CertificateContentEditor.vue:109
 msgid "{label} copied to clipboard"
 msgstr ""
 
@@ -495,7 +495,7 @@ msgstr ""
 #: src/components/SensitiveString/SensitiveInput.vue:72
 #: src/components/SensitiveString/SensitiveString.vue:77
 #: src/views/certificate/components/CertificateBasicInfo.vue:34
-#: src/views/certificate/components/CertificateContentEditor.vue:112
+#: src/views/certificate/components/CertificateContentEditor.vue:113
 msgid "Failed to copy to clipboard"
 msgstr ""
 
@@ -516,7 +516,7 @@ msgstr ""
 #: src/views/access_list/AccessListList.vue:18
 #: src/views/access_list/components/AccessListEditor.vue:237
 #: src/views/backup/AutoBackup/AutoBackup.vue:40
-#: src/views/certificate/ACMEUser.vue:14
+#: src/views/certificate/ACMEUser.vue:15
 #: src/views/certificate/CertificateList/certColumns.tsx:10
 #: src/views/certificate/CertificateList/Certificate.vue:40
 #: src/views/certificate/components/CertificateBasicInfo.vue:48
@@ -556,7 +556,7 @@ msgid "Status:"
 msgstr ""
 
 #: src/components/CertInfo/CertInfo.vue:71
-#: src/views/certificate/ACMEUser.vue:70 src/views/certificate/ACMEUser.vue:152
+#: src/views/certificate/ACMEUser.vue:72 src/views/certificate/ACMEUser.vue:170
 #: src/views/certificate/CertificateList/certColumns.tsx:119
 msgid "Valid"
 msgstr ""
@@ -568,93 +568,33 @@ msgstr ""
 msgid "Expired"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:82
-msgid "SAN Aliases: %{aliases}"
-msgstr ""
-
-#: src/components/CertInfo/CertInfo.vue:84
+#: src/components/CertInfo/CertInfo.vue:83
 msgid "SAN Aliases:"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:85
+#: src/components/CertInfo/CertInfo.vue:96
 msgid "Issuer: %{issuer}"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:88
+#: src/components/CertInfo/CertInfo.vue:99
 msgid "Expires At: %{date}"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:91
+#: src/components/CertInfo/CertInfo.vue:102
 msgid "Not Valid Before: %{date}"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:96
-#: src/components/CertInfo/CertInfo.vue:101
+#: src/components/CertInfo/CertInfo.vue:107
+#: src/components/CertInfo/CertInfo.vue:112
 #: src/views/certificate/CertificateList/Certificate.vue:52
 #: src/views/preference/tabs/ServerSettings.vue:42
 msgid "SSL Certificate Path"
 msgstr ""
 
-#: src/components/CertInfo/CertInfo.vue:109
-#: src/components/CertInfo/CertInfo.vue:114
+#: src/components/CertInfo/CertInfo.vue:120
+#: src/components/CertInfo/CertInfo.vue:125
 #: src/views/certificate/CertificateList/Certificate.vue:57
 msgid "SSL Certificate Key Path"
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:185
-msgid "domains"
-msgstr "domains"
-
-#: src/views/certificate/CertificateEditor.vue:186
-msgid "domain"
-msgstr "domain"
-
-#: src/views/certificate/CertificateEditor.vue:187
-msgid "type"
-msgstr "type"
-
-#: src/views/certificate/CertificateEditor.vue:188
-msgid "hoursRemaining"
-msgstr "hoursRemaining"
-
-#: src/views/certificate/CertificateEditor.vue:189
-msgid "timeout"
-msgstr "timeout"
-
-#: src/views/certificate/CertificateEditor.vue:190
-msgid "interval"
-msgstr "interval"
-
-#: src/views/certificate/CertificateEditor.vue:174
-msgid "Trying renewal."
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:175
-msgid "Obtaining bundled SAN certificate."
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:176
-msgid "Use solver."
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:177
-msgid "http01: Trying to solve HTTP-01."
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:178
-msgid "The server validated our request."
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:179
-msgid "Validations succeeded; requesting certificates."
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:180
-msgid "Waiting for certificates."
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:181
-msgid "Server responded with a certificate."
 msgstr ""
 
 #: src/components/ConfigHistory/ConfigHistory.vue:54
@@ -869,7 +809,7 @@ msgid "Nginx failed to validate the configuration."
 msgstr ""
 
 #: src/components/InspectConfig/InspectConfig.vue:103 src/lib/http/error.ts:36
-#: src/views/certificate/CertificateEditor.vue:145
+#: src/views/certificate/CertificateEditor.vue:152
 #: src/views/dns/DNSCredential.vue:85
 msgid "Server error"
 msgstr ""
@@ -895,7 +835,7 @@ msgstr ""
 #: src/views/notification/notificationColumns.tsx:40
 #: src/views/preference/components/AuthSettings/AddPasskey.vue:97
 #: src/views/preference/components/NginxHostSetup/checks.ts:121
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:367
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:472
 msgid "Warning"
 msgstr ""
 
@@ -925,8 +865,8 @@ msgstr ""
 #: src/views/preference/Preference.vue:105
 #: src/views/preference/tabs/NginxSettings.vue:318
 #: src/views/site/site_edit/components/ConfigName/ConfigName.vue:52
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:83
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:290
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:86
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:291
 #: src/views/stream/components/ConfigName.vue:52
 #: src/views/stream/components/StreamEditor.vue:168
 #: src/views/upstream/components/UpstreamEditor.vue:433
@@ -1172,7 +1112,7 @@ msgid "Nginx Control"
 msgstr ""
 
 #: src/components/NginxControl/NginxControl.vue:164
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:363
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:468
 msgid "Running"
 msgstr ""
 
@@ -1318,7 +1258,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/directive/DirectiveEditorItem.vue:54
 #: src/language/curd.ts:28 src/views/config/components/ConfigLeftPanel.vue:198
 #: src/views/site/site_add/SiteAdd.vue:267
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:53
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:56
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:84
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:119
 #: src/views/stream/components/StreamEditor.vue:40
@@ -1463,7 +1403,7 @@ msgstr ""
 #: src/components/NgxConfigEditor/NgxUpstream.vue:138 src/language/curd.ts:19
 #: src/views/preference/tabs/CertSettings.vue:57
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:120
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:524
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:653
 #: src/views/site/site_list/SiteList.vue:245 src/views/stream/StreamList.vue:92
 msgid "Add"
 msgstr ""
@@ -2133,7 +2073,7 @@ msgstr ""
 
 #: src/components/PortScanner/PortScannerCompact.vue:37
 #: src/views/backup/AutoBackup/AutoBackup.vue:189
-#: src/views/certificate/ACMEUser.vue:66
+#: src/views/certificate/ACMEUser.vue:68
 #: src/views/certificate/CertificateList/certColumns.tsx:82
 #: src/views/dashboard/components/ModulesTable.vue:75
 #: src/views/dns/DDNSManager.vue:192
@@ -2563,15 +2503,55 @@ msgstr ""
 msgid "Main Node"
 msgstr ""
 
+#: src/composables/useClusterSync.ts:9
+msgid "unsupported file type"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:11
+msgid "larger than 5 MB"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:13
+msgid "not a text file"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:15
+msgid "unreadable"
+msgstr ""
+
 #: src/composables/useClusterSync.ts:17
+msgid "node specific entry configuration"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:38
+msgid "and %{count} more"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:51
+msgid "%{node}: %{count} existing files were not overwritten (%{detail})"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:67
+msgid "Nothing was synchronized, %{count} files were skipped"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:73
 msgid "There is nothing to synchronize"
 msgstr ""
 
-#: src/composables/useClusterSync.ts:22
+#: src/composables/useClusterSync.ts:81 src/composables/useClusterSync.ts:104
+msgid "Skipped files:"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:84
+msgid "Synchronized %{count} items with some files skipped"
+msgstr ""
+
+#: src/composables/useClusterSync.ts:92
 msgid "Synchronized %{count} items successfully"
 msgstr ""
 
-#: src/composables/useClusterSync.ts:33
+#: src/composables/useClusterSync.ts:108
 msgid "Synchronization finished with %{count} failures"
 msgstr ""
 
@@ -3344,6 +3324,26 @@ msgstr ""
 
 #: src/constants/errors/cert.ts:53
 msgid "HTTP-01 challenge port {0} is unavailable: {1}"
+msgstr ""
+
+#: src/constants/errors/cert.ts:54
+msgid "Invalid certificate archive: {0}"
+msgstr ""
+
+#: src/constants/errors/cert.ts:55
+msgid "Certificate archive is too large"
+msgstr ""
+
+#: src/constants/errors/cert.ts:56
+msgid "No certificate found in the archive"
+msgstr ""
+
+#: src/constants/errors/cert.ts:57
+msgid "No private key found in the archive"
+msgstr ""
+
+#: src/constants/errors/cert.ts:58
+msgid "No certificate in the archive matches its private key"
 msgstr ""
 
 #: src/constants/errors/cluster_sync.ts:2
@@ -4678,7 +4678,7 @@ msgstr ""
 msgid "Batch Modify"
 msgstr ""
 
-#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:138
+#: src/language/curd.ts:35 src/views/certificate/CertificateEditor.vue:145
 #: src/views/certificate/components/RenewCert.vue:21
 #: src/views/dns/DNSCredential.vue:79
 #: src/views/preference/NginxHostSetup.vue:84
@@ -5384,7 +5384,7 @@ msgstr ""
 msgid "Certificates"
 msgstr ""
 
-#: src/routes/modules/certificates.ts:28 src/views/certificate/ACMEUser.vue:140
+#: src/routes/modules/certificates.ts:28 src/views/certificate/ACMEUser.vue:158
 #: src/views/certificate/components/ACMEUserSelector.vue:77
 #: src/views/certificate/index.vue:12
 msgid "ACME User"
@@ -5395,12 +5395,12 @@ msgid "Certificates List"
 msgstr ""
 
 #: src/routes/modules/certificates.ts:44
-#: src/views/certificate/CertificateEditor.vue:352
+#: src/views/certificate/CertificateEditor.vue:381
 msgid "Modify Certificate"
 msgstr ""
 
 #: src/routes/modules/certificates.ts:54
-#: src/views/certificate/CertificateEditor.vue:352
+#: src/views/certificate/CertificateEditor.vue:381
 #: src/views/certificate/index.vue:17
 msgid "Import Certificate"
 msgstr ""
@@ -5588,7 +5588,7 @@ msgstr ""
 
 #: src/views/access_list/AccessListList.vue:22
 #: src/views/backup/AutoBackup/AutoBackup.vue:265
-#: src/views/certificate/ACMEUser.vue:115
+#: src/views/certificate/ACMEUser.vue:133
 #: src/views/config/components/ConfigRightPanel/Basic.vue:54
 #: src/views/config/configColumns.tsx:44 src/views/dns/DNSCredential.vue:141
 #: src/views/dns/DNSDomainList.vue:255 src/views/dns/DNSGroupList.vue:34
@@ -5602,7 +5602,7 @@ msgstr ""
 
 #: src/views/access_list/AccessListList.vue:23
 #: src/views/backup/AutoBackup/AutoBackup.vue:302
-#: src/views/certificate/ACMEUser.vue:122
+#: src/views/certificate/ACMEUser.vue:140
 #: src/views/certificate/CertificateList/certColumns.tsx:130
 #: src/views/config/configColumns.tsx:51
 #: src/views/dns/components/DNSRecordTable.vue:65
@@ -5861,7 +5861,7 @@ msgstr ""
 #: src/views/dns/DNSGroupRecordManager.vue:1185
 #: src/views/preference/components/NginxHostSetup/checks.ts:123
 #: src/views/preference/tabs/ExternalNotify.vue:73
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:369
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:474
 msgid "Failed"
 msgstr ""
 
@@ -6117,117 +6117,183 @@ msgstr ""
 msgid "Please log in."
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:27
+#: src/views/certificate/ACMEUser.vue:28
 #: src/views/preference/components/ExternalNotify/email.ts:5
 #: src/views/preference/components/ExternalNotify/labels.ts:17
 #: src/views/preference/tabs/CertSettings.vue:13
 msgid "Email"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:39
+#: src/views/certificate/ACMEUser.vue:40
 msgid "CA Dir"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:46
+#: src/views/certificate/ACMEUser.vue:48
 #: src/views/preference/tabs/CertSettings.vue:29
 msgid "Select or enter a CA directory URL"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:50
+#: src/views/certificate/ACMEUser.vue:52
 msgid ""
 "Select a predefined CA directory or enter a custom one. Leave blank to use "
 "the default CA directory."
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:54
+#: src/views/certificate/ACMEUser.vue:56
 msgid "Proxy"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:59
+#: src/views/certificate/ACMEUser.vue:61
 msgid ""
 "Register a user or use this account to issue a certificate through an HTTP "
 "proxy."
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:61
+#: src/views/certificate/ACMEUser.vue:63
 msgid "Leave blank if you don't need this."
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:72 src/views/certificate/ACMEUser.vue:157
+#: src/views/certificate/ACMEUser.vue:74 src/views/certificate/ACMEUser.vue:175
 msgid "Invalid"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:78
+#: src/views/certificate/ACMEUser.vue:80
 msgid "EAB Key ID"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:83
+#: src/views/certificate/ACMEUser.vue:91 src/views/certificate/ACMEUser.vue:112
+msgid "Leave blank if not required by your ACME provider"
+msgstr ""
+
+#: src/views/certificate/ACMEUser.vue:96
 msgid ""
 "External Account Binding Key ID (optional). Required for some ACME providers "
 "like ZeroSSL."
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:85 src/views/certificate/ACMEUser.vue:98
-msgid "Leave blank if not required by your ACME provider"
-msgstr ""
-
-#: src/views/certificate/ACMEUser.vue:91
+#: src/views/certificate/ACMEUser.vue:101
 msgid "EAB HMAC Key"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:96
+#: src/views/certificate/ACMEUser.vue:117
 msgid ""
 "External Account Binding HMAC Key (optional). Should be in Base64 URL "
 "encoding format."
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:104
+#: src/views/certificate/ACMEUser.vue:122
 msgid "Register On Startup"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:110
+#: src/views/certificate/ACMEUser.vue:128
 msgid ""
 "When Enabled, Nginx UI will automatically re-register users upon startup. "
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:131
+#: src/views/certificate/ACMEUser.vue:149
 msgid "Register successfully"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:133
+#: src/views/certificate/ACMEUser.vue:151
 msgid "Register failed"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:148
+#: src/views/certificate/ACMEUser.vue:166
 msgid "Registration Status"
 msgstr ""
 
-#: src/views/certificate/ACMEUser.vue:165
+#: src/views/certificate/ACMEUser.vue:183
 msgid "Register"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:112
+#: src/views/certificate/CertificateEditor.vue:119
 #: src/views/certificate/components/DNSIssueCertificate.vue:149
 #: src/views/certificate/components/SelfSignedCertForm.vue:47
 msgid "Please enter a name for the certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:116
+#: src/views/certificate/CertificateEditor.vue:123
 #: src/views/certificate/components/DNSIssueCertificate.vue:153
 #: src/views/certificate/components/SelfSignedCertForm.vue:51
 msgid "Please enter at least one domain or IP address"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:135
+#: src/views/certificate/CertificateEditor.vue:142
 msgid "Saved certificate response is missing an ID"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:356
+#: src/views/certificate/CertificateEditor.vue:170
+msgid "Trying renewal."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:171
+msgid "Obtaining bundled SAN certificate."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:172
+msgid "Use solver."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:173
+msgid "http01: Trying to solve HTTP-01."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:174
+msgid "The server validated our request."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:175
+msgid "Validations succeeded; requesting certificates."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:176
+msgid "Waiting for certificates."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:177
+msgid "Server responded with a certificate."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:182
+msgid "domains"
+msgstr "domains"
+
+#: src/views/certificate/CertificateEditor.vue:183
+msgid "domain"
+msgstr "domain"
+
+#: src/views/certificate/CertificateEditor.vue:184
+msgid "type"
+msgstr "type"
+
+#: src/views/certificate/CertificateEditor.vue:185
+msgid "hoursRemaining"
+msgstr "hoursRemaining"
+
+#: src/views/certificate/CertificateEditor.vue:186
+msgid "timeout"
+msgstr "timeout"
+
+#: src/views/certificate/CertificateEditor.vue:187
+msgid "interval"
+msgstr "interval"
+
+#: src/views/certificate/CertificateEditor.vue:385
 msgid "This certificate is managed by Nginx UI"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:404
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:420
+#: src/views/certificate/CertificateEditor.vue:388
+#: src/views/certificate/CertificateList/certColumns.tsx:31
+#: src/views/certificate/CertificateList/Certificate.vue:47
+msgid "General Certificate"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:388
+msgid "This certificate is not managed by Nginx UI"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:436
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:525
 msgid "Log"
 msgstr ""
 
@@ -6239,18 +6305,9 @@ msgstr ""
 msgid "Managed Certificate"
 msgstr ""
 
-#: src/views/certificate/CertificateList/certColumns.tsx:31
-#: src/views/certificate/CertificateList/Certificate.vue:47
-msgid "General Certificate"
-msgstr ""
-
 #: src/views/certificate/CertificateList/certColumns.tsx:32
 #: src/views/certificate/components/DNSIssueCertificate.vue:43
 msgid "Self-signed Certificate"
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:367
-msgid "This certificate is not managed by Nginx UI"
 msgstr ""
 
 #: src/views/certificate/CertificateList/certColumns.tsx:46
@@ -6349,7 +6406,7 @@ msgstr ""
 #: src/views/preference/NginxHostSetup.vue:129
 #: src/views/preference/NginxHostSetup.vue:147
 #: src/views/site/site_add/SiteAdd.vue:550
-#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:283
+#: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:284
 #: src/views/stream/components/StreamEditor.vue:161
 msgid "Back"
 msgstr ""
@@ -6365,40 +6422,65 @@ msgstr ""
 msgid "Sync to"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:37
+#: src/views/certificate/components/CertificateContentEditor.vue:38
 msgid "Failed to load nginx configuration path"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:200
-#: src/views/certificate/components/CertificateContentEditor.vue:206
+#: src/views/certificate/components/CertificateContentEditor.vue:128
+#: src/views/certificate/components/CertificateFileUpload.vue:54
+msgid "File size cannot exceed 5MB"
+msgstr ""
+
+#: src/views/certificate/components/CertificateContentEditor.vue:139
+msgid "Imported %{cert} and %{key} from the archive"
+msgstr ""
+
+#: src/views/certificate/components/CertificateContentEditor.vue:144
+msgid ""
+"Intermediate certificates from the archive were appended to build the full "
+"chain"
+msgstr ""
+
+#: src/views/certificate/components/CertificateContentEditor.vue:267
+msgid "Import from ZIP"
+msgstr ""
+
+#: src/views/certificate/components/CertificateContentEditor.vue:270
+msgid ""
+"Fills both the certificate and the private key from a downloaded certificate "
+"archive"
+msgstr ""
+
+#: src/views/certificate/components/CertificateContentEditor.vue:275
+#: src/views/certificate/components/CertificateContentEditor.vue:281
 msgid "SSL Certificate Content"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:214
+#: src/views/certificate/components/CertificateContentEditor.vue:289
 msgid "The input is not a SSL Certificate"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:236
-#: src/views/certificate/components/CertificateContentEditor.vue:254
-#: src/views/certificate/components/CertificateContentEditor.vue:296
-#: src/views/certificate/components/CertificateContentEditor.vue:314
+#: src/views/certificate/components/CertificateContentEditor.vue:311
+#: src/views/certificate/components/CertificateContentEditor.vue:329
+#: src/views/certificate/components/CertificateContentEditor.vue:371
+#: src/views/certificate/components/CertificateContentEditor.vue:389
 msgid "Leave blank will not change anything"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:244
+#: src/views/certificate/components/CertificateContentEditor.vue:319
 msgid "Drop certificate file here"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:260
-#: src/views/certificate/components/CertificateContentEditor.vue:266
+#: src/views/certificate/components/CertificateContentEditor.vue:335
+#: src/views/certificate/components/CertificateContentEditor.vue:341
 msgid "SSL Certificate Key Content"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:274
+#: src/views/certificate/components/CertificateContentEditor.vue:349
 msgid "The input is not a SSL Certificate Key"
 msgstr ""
 
-#: src/views/certificate/components/CertificateContentEditor.vue:304
+#: src/views/certificate/components/CertificateContentEditor.vue:379
 msgid "Drop private key file here"
 msgstr ""
 
@@ -6424,48 +6506,52 @@ msgstr ""
 msgid "Invalid private key format"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:100
+#: src/views/certificate/components/CertificateDownload.vue:98
 msgid "Certificate ID cannot be empty"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:112
+#: src/views/certificate/components/CertificateDownload.vue:118
 msgid "Certificate files downloaded successfully"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:116
+#: src/views/certificate/components/CertificateDownload.vue:122
 msgid "Failed to download certificate files"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:135
-#: src/views/certificate/components/CertificateDownload.vue:140
+#: src/views/certificate/components/CertificateDownload.vue:141
+#: src/views/certificate/components/CertificateDownload.vue:146
 msgid "Download Certificate Files"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:145
+#: src/views/certificate/components/CertificateDownload.vue:152
 msgid "Download Format"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:149
+#: src/views/certificate/components/CertificateDownload.vue:153
+msgid "Multiple files are downloaded as a single ZIP archive"
+msgstr ""
+
+#: src/views/certificate/components/CertificateDownload.vue:158
 msgid "Certificate (.crt)"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:152
+#: src/views/certificate/components/CertificateDownload.vue:161
 msgid "Private Key (.key)"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:155
+#: src/views/certificate/components/CertificateDownload.vue:164
 msgid "PFX (.pfx, CRT + KEY for Windows import)"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:163
+#: src/views/certificate/components/CertificateDownload.vue:172
 msgid "PFX Password"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:164
+#: src/views/certificate/components/CertificateDownload.vue:173
 msgid "Leave empty if you do not want to set a password"
 msgstr ""
 
-#: src/views/certificate/components/CertificateDownload.vue:168
+#: src/views/certificate/components/CertificateDownload.vue:177
 msgid "Enter PFX password"
 msgstr ""
 
@@ -6481,10 +6567,6 @@ msgstr ""
 
 #: src/views/certificate/components/CertificateFileUpload.vue:46
 msgid "Please select a valid %{type} file (%{extensions})"
-msgstr ""
-
-#: src/views/certificate/components/CertificateFileUpload.vue:54
-msgid "File size cannot exceed 5MB"
 msgstr ""
 
 #: src/views/certificate/components/CertificateFileUpload.vue:70
@@ -6617,7 +6699,7 @@ msgstr ""
 #: src/views/preference/tabs/OpenAISettings.vue:341
 #: src/views/site/site_add/wizardSteps.ts:51
 #: src/views/site/site_edit/components/Cert/ObtainCertLive.vue:276
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:798
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:942
 msgid "Retry"
 msgstr ""
 
@@ -6711,7 +6793,7 @@ msgstr ""
 #: src/views/certificate/components/SelfSignedCertFields.vue:42
 #: src/views/dns/DNSGroupList.vue:31 src/views/dns/DNSGroupList.vue:267
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:85
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:494
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:623
 msgid "Domains"
 msgstr ""
 
@@ -7966,6 +8048,7 @@ msgid "TTL"
 msgstr ""
 
 #: src/views/dns/components/DNSRecordTable.vue:250
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:724
 msgid "%{count} more"
 msgstr ""
 
@@ -8446,7 +8529,7 @@ msgid "Succeeded"
 msgstr ""
 
 #: src/views/dns/DNSGroupRecordManager.vue:1186
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:371
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:476
 msgid "Skipped"
 msgstr ""
 
@@ -8924,10 +9007,6 @@ msgstr ""
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:143
 msgid "Minimum:"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:683
-msgid "Recommended"
 msgstr ""
 
 #: src/views/nginx_log/components/IndexingSettingsModal.vue:151
@@ -9442,7 +9521,7 @@ msgstr ""
 
 #: src/views/nginx_log/structured/components/SearchFilters.vue:92
 #: src/views/nginx_log/structured/StructuredLogViewer.vue:535
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:474
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:602
 msgid "Method"
 msgstr ""
 
@@ -12514,8 +12593,8 @@ msgid "Run Mode"
 msgstr ""
 
 #: src/views/preference/tabs/ServerSettings.vue:35
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:318
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:799
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:423
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:943
 msgid "Enable HTTPS"
 msgstr ""
 
@@ -12600,7 +12679,7 @@ msgid "For example: expected recovery plan or incident reference"
 msgstr ""
 
 #: src/views/site/components/QuickSetup/QuickSetupForm.vue:31
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:462
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:582
 msgid "HTTPS"
 msgstr ""
 
@@ -12885,8 +12964,8 @@ msgid ""
 msgstr ""
 
 #: src/views/site/site_add/SiteAdd.vue:286
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:44
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:743
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:47
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:887
 msgid "HTTPS is enabled"
 msgstr ""
 
@@ -13071,223 +13150,231 @@ msgstr ""
 msgid "To make sure the certification auto-renewal can work normally, "
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:72
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:75
 msgid "Save your changes before enabling HTTPS"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:76
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:79
 msgid ""
 "HTTPS setup rewrites the saved site configuration, so unsaved edits would be "
 "lost."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:92
+#: src/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue:95
 msgid ""
 "HTTPS setup builds the HTTPS server block from the saved configuration. "
 "Unsaved edits to that block are not used."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:125
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:131
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:150
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:156
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:349
 msgid "HTTP-01"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:151
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:157
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:350
 msgid "DNS-01"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:152
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:158
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:351
 msgid "Existing certificate"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:153
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:159
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:352
 msgid "Skip for now"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:162
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:168
 msgid ""
 "The certificate authority validates each domain over port 80, so the domains "
 "must resolve to this server."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:164
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:170
 msgid ""
 "Validation uses a DNS TXT record created with the selected DNS credential. "
 "Required for wildcard domains."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:166
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:172
 msgid ""
 "Use a certificate from the certificate manager. Nothing is requested from a "
 "certificate authority, and the certificate keeps its own renewal settings."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:168
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:174
 msgid "Continue without HTTPS. You can enable it later from the site editor."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:227
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:305
 msgid ""
 "This certificate expired on %{date}. Choose another certificate or renew "
 "this one first."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:231
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:309
 msgid ""
 "This certificate record lists no domains. The pre-flight check reads them "
 "from the certificate file."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:233
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:311
 msgid "This certificate does not cover any of the domains: %{domains}"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:235
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:313
 msgid ""
 "This certificate does not cover %{domains}. HTTPS is only enabled for the "
 "names it covers."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:241
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:319
 msgid "IP address certificates only support HTTP-01 validation."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:243
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:321
 msgid "Wildcard domains require DNS-01 validation."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:310
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:415
 msgid "Plan the configuration changes"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:312
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:417
 msgid "Stage the HTTP configuration"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:314
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:419
 msgid "Verify the challenge route"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:316
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:421
 msgid "Issue the certificate"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:320
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:425
 msgid "Roll back the changes"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:365
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:470
 msgid "Passed"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:373
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:478
 msgid "Waiting"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:388
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:493
 msgid ""
 "The connection closed before HTTPS setup finished. Retry to run it again."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:389
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:494
 msgid "HTTPS setup failed"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:421
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:526
 msgid "Certificate options"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:468
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:596
 msgid ""
 "Nginx UI stages the challenge route, verifies it, requests the certificate "
 "and switches the site to HTTPS in one run. If a step fails, the site keeps "
 "serving plain HTTP."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:508
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:637
 msgid "Add at least one domain or IP address."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:519
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:648
 msgid "e.g. example.com www.example.com"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:542
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:747
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:671
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:891
 msgid "Certificate"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:556
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:683
+msgid "Recommended"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:692
 msgid "Expired on %{date}"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:557
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:693
 msgid "Expires on %{date}"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:565
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:701
 msgid "Change"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:590
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:815
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:734
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:959
 msgid "Select certificate"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:607
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:751
 msgid "Redirect HTTP to HTTPS after the certificate is ready"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:611
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:755
 msgid ""
 "The HTTPS server block without a certificate is left out until the "
 "certificate is issued, then enabled with it."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:673
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:817
 msgid "Pre-flight check"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:673
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:817
 msgid "Progress"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:680
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:824
 msgid "Checking..."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:682
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:826
 msgid ""
 "Run \"Check only\" to verify the configuration and the certificate without "
 "changing anything."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:683
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:827
 msgid ""
 "Run \"Check only\" to verify the configuration and DNS without changing "
 "anything."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:730
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:874
 msgid "Failed step: %{step}"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:756
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:900
 msgid "Private Key"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:788
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:932
 msgid "Check only"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:799
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:943
 msgid "Issue and enable HTTPS"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:807
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:951
 msgid "Continue without HTTPS"
 msgstr ""
 
@@ -13435,6 +13522,10 @@ msgstr ""
 #: src/views/site/site_edit/components/SiteEditor/SiteEditor.vue:219
 #: src/views/stream/components/StreamEditor.vue:115
 msgid "Nginx Configuration Parse Error"
+msgstr ""
+
+#: src/views/site/site_list/columns.tsx:32
+msgid "No."
 msgstr ""
 
 #: src/views/site/site_list/SiteDuplicate.vue:33
@@ -14017,87 +14108,3 @@ msgstr ""
 #~ msgstr ""
 #~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent "
 #~ "Cloud DNS, and Cloudflare only."
-
-#: src/composables/useClusterSync.ts:9
-msgid "unsupported file type"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:11
-msgid "larger than 5 MB"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:13
-msgid "not a text file"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:15
-msgid "unreadable"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:17
-msgid "node specific entry configuration"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:38
-msgid "and %{count} more"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:51
-msgid "%{node}: %{count} existing files were not overwritten (%{detail})"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:67
-msgid "Nothing was synchronized, %{count} files were skipped"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:81 src/composables/useClusterSync.ts:104
-msgid "Skipped files:"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:84
-msgid "Synchronized %{count} items with some files skipped"
-msgstr ""
-
-#: src/constants/errors/cert.ts:54
-msgid "Invalid certificate archive: {0}"
-msgstr ""
-
-#: src/constants/errors/cert.ts:55
-msgid "Certificate archive is too large"
-msgstr ""
-
-#: src/constants/errors/cert.ts:56
-msgid "No certificate found in the archive"
-msgstr ""
-
-#: src/constants/errors/cert.ts:57
-msgid "No private key found in the archive"
-msgstr ""
-
-#: src/constants/errors/cert.ts:58
-msgid "No certificate in the archive matches its private key"
-msgstr ""
-
-#: src/views/certificate/components/CertificateContentEditor.vue:139
-msgid "Imported %{cert} and %{key} from the archive"
-msgstr ""
-
-#: src/views/certificate/components/CertificateContentEditor.vue:144
-msgid "Intermediate certificates from the archive were appended to build the full chain"
-msgstr ""
-
-#: src/views/certificate/components/CertificateContentEditor.vue:267
-msgid "Import from ZIP"
-msgstr ""
-
-#: src/views/certificate/components/CertificateContentEditor.vue:270
-msgid "Fills both the certificate and the private key from a downloaded certificate archive"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:153
-msgid "Multiple files are downloaded as a single ZIP archive"
-msgstr ""
-
-#: src/views/site/site_list/columns.tsx:32
-msgid "No."
-msgstr ""

@@ -8941,7 +8941,7 @@ msgstr "系統要求"
 msgid "Minimum:"
 msgstr "最低要求："
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:683
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:674
 msgid "Recommended"
 msgstr "推薦"
 
@@ -14010,6 +14010,95 @@ msgstr "單窗格"
 msgid "Split view"
 msgstr "分割檢視"
 
+#: src/composables/useClusterSync.ts:9
+msgid "unsupported file type"
+msgstr "不支援的檔案類型"
+
+#: src/composables/useClusterSync.ts:11
+msgid "larger than 5 MB"
+msgstr "大於 5 MB"
+
+#: src/composables/useClusterSync.ts:13
+msgid "not a text file"
+msgstr "不是文字檔案"
+
+#: src/composables/useClusterSync.ts:15
+msgid "unreadable"
+msgstr "無法讀取"
+
+#: src/composables/useClusterSync.ts:17
+msgid "node specific entry configuration"
+msgstr "節點特定的項目配置"
+
+#: src/composables/useClusterSync.ts:38
+msgid "and %{count} more"
+msgstr "以及另外 %{count} 個"
+
+#: src/composables/useClusterSync.ts:51
+msgid "%{node}: %{count} existing files were not overwritten (%{detail})"
+msgstr "%{node}：有 %{count} 個既有檔案未被覆寫（%{detail}）"
+
+#: src/composables/useClusterSync.ts:67
+msgid "Nothing was synchronized, %{count} files were skipped"
+msgstr "未同步任何內容，已跳過 %{count} 個檔案"
+
+#: src/composables/useClusterSync.ts:81
+#: src/composables/useClusterSync.ts:104
+msgid "Skipped files:"
+msgstr "已跳過的檔案："
+
+#: src/composables/useClusterSync.ts:84
+msgid "Synchronized %{count} items with some files skipped"
+msgstr "已同步 %{count} 項，部分檔案被略過"
+
+#: src/constants/errors/cert.ts:54
+msgid "Invalid certificate archive: {0}"
+msgstr "無效的憑證封存：{0}"
+
+#: src/constants/errors/cert.ts:55
+msgid "Certificate archive is too large"
+msgstr "證書封存檔過大"
+
+#: src/constants/errors/cert.ts:56
+msgid "No certificate found in the archive"
+msgstr "封存檔中未找到憑證"
+
+#: src/constants/errors/cert.ts:57
+msgid "No private key found in the archive"
+msgstr "歸檔中未找到私鑰"
+
+#: src/constants/errors/cert.ts:58
+msgid "No certificate in the archive matches its private key"
+msgstr "歸檔中沒有憑證與其私鑰匹配"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:139
+msgid "Imported %{cert} and %{key} from the archive"
+msgstr "已從封存檔中匯入 %{cert} 和 %{key}"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:144
+msgid ""
+"Intermediate certificates from the archive were appended to build the full "
+"chain"
+msgstr "已從壓縮檔中追加中間憑證以建構完整鏈"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:267
+msgid "Import from ZIP"
+msgstr "從 ZIP 匯入"
+
+#: src/views/certificate/components/CertificateContentEditor.vue:270
+msgid ""
+"Fills both the certificate and the private key from a downloaded "
+"certificate archive"
+msgstr "從下載的證書封存檔中同時填入憑證和私鑰"
+
+#: src/views/certificate/components/CertificateDownload.vue:153
+msgid "Multiple files are downloaded as a single ZIP archive"
+msgstr "多個檔案將下載為一個 ZIP 壓縮檔"
+
+#: src/views/site/site_list/columns.tsx:32
+msgid "No."
+msgstr "序號"
+
 #: src/views/access_list/components/AccessListEditor.vue:273
 #: src/views/access_list/components/AccessListEditor.vue:308
 #: src/views/access_list/components/AccessListEditor.vue:309
@@ -14943,87 +15032,3 @@ msgstr "備註"
 #~ "Currently, DNS record management supports Alibaba Cloud DNS, Tencent Cloud "
 #~ "DNS, and Cloudflare only."
 #~ msgstr "目前，DNS 記錄管理僅支援阿里雲 DNS、騰訊雲 DNS 和 Cloudflare。"
-
-#: src/composables/useClusterSync.ts:9
-msgid "unsupported file type"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:11
-msgid "larger than 5 MB"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:13
-msgid "not a text file"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:15
-msgid "unreadable"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:17
-msgid "node specific entry configuration"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:38
-msgid "and %{count} more"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:51
-msgid "%{node}: %{count} existing files were not overwritten (%{detail})"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:67
-msgid "Nothing was synchronized, %{count} files were skipped"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:81 src/composables/useClusterSync.ts:104
-msgid "Skipped files:"
-msgstr ""
-
-#: src/composables/useClusterSync.ts:84
-msgid "Synchronized %{count} items with some files skipped"
-msgstr ""
-
-#: src/constants/errors/cert.ts:54
-msgid "Invalid certificate archive: {0}"
-msgstr ""
-
-#: src/constants/errors/cert.ts:55
-msgid "Certificate archive is too large"
-msgstr ""
-
-#: src/constants/errors/cert.ts:56
-msgid "No certificate found in the archive"
-msgstr ""
-
-#: src/constants/errors/cert.ts:57
-msgid "No private key found in the archive"
-msgstr ""
-
-#: src/constants/errors/cert.ts:58
-msgid "No certificate in the archive matches its private key"
-msgstr ""
-
-#: src/views/certificate/components/CertificateContentEditor.vue:139
-msgid "Imported %{cert} and %{key} from the archive"
-msgstr ""
-
-#: src/views/certificate/components/CertificateContentEditor.vue:144
-msgid "Intermediate certificates from the archive were appended to build the full chain"
-msgstr ""
-
-#: src/views/certificate/components/CertificateContentEditor.vue:267
-msgid "Import from ZIP"
-msgstr ""
-
-#: src/views/certificate/components/CertificateContentEditor.vue:270
-msgid "Fills both the certificate and the private key from a downloaded certificate archive"
-msgstr ""
-
-#: src/views/certificate/components/CertificateDownload.vue:153
-msgid "Multiple files are downloaded as a single ZIP archive"
-msgstr ""
-
-#: src/views/site/site_list/columns.tsx:32
-msgid "No."
-msgstr ""
