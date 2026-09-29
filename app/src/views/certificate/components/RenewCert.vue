@@ -7,10 +7,13 @@ import IssueCertModal from './IssueCertModal.vue'
 
 defineProps<{
   options: AutoCertOptions
+  /** Primary button labelled "Renew now" for page headers, a compact link otherwise. */
+  primary?: boolean
 }>()
 
 const emit = defineEmits<{
   renewed: [void]
+  saved: [void]
 }>()
 
 const { message } = App.useApp()
@@ -20,6 +23,7 @@ const refModal = useTemplateRef('refModal')
 async function issueCert() {
   await certStore.save()
   message.success($gettext('Save successfully'))
+  emit('saved')
 
   // refModal is mounted alongside this button via force-render, so it
   // is guaranteed to be available by the time @click fires.
@@ -34,8 +38,24 @@ const { processingStatus } = storeToRefs(globalStore)
 </script>
 
 <template>
-  <div>
+  <div class="inline-block">
     <ATooltip
+      v-if="primary"
+      :title="processingStatus.auto_cert_processing ? $gettext('AutoCert is running, please wait...') : undefined"
+    >
+      <AButton
+        type="primary"
+        :disabled="processingStatus.auto_cert_processing"
+        @click="issueCert"
+      >
+        <template #icon>
+          <SyncOutlined />
+        </template>
+        {{ $gettext('Renew now') }}
+      </AButton>
+    </ATooltip>
+    <ATooltip
+      v-else
       :title="processingStatus.auto_cert_processing ? $gettext('AutoCert is running, please wait...') : undefined"
     >
       <AButton

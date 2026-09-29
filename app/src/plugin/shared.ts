@@ -6,6 +6,7 @@ import * as antdvNext from 'antdv-next'
 import * as pinia from 'pinia'
 import * as vue from 'vue'
 import * as vueRouter from 'vue-router'
+import { openDnsCredentialEditor } from '@/components/DnsCredentialEditor/openDnsCredentialEditor'
 import gettext from '@/gettext'
 import version from '@/version.json'
 
@@ -51,6 +52,11 @@ export function installSharedRuntime() {
       gettext,
       http,
       versions: __NGINX_UI_SHARED_VERSIONS__,
+      // Host dialogs for plugins. `openDnsCredentialEditor` lets a certificate
+      // form create a DNS credential in place and select it afterwards.
+      ui: {
+        openDnsCredentialEditor,
+      },
     },
     registerPlugin,
   }

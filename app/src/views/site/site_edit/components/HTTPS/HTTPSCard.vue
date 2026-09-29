@@ -19,7 +19,9 @@ import { breakpointsAntDesign, useBreakpoints, useLocalStorage, watchDebounced }
 import dayjs from 'dayjs'
 import certApi from '@/api/cert'
 import DNSChallenge from '@/components/AutoCertForm/DNSChallenge.vue'
+import Dns01PluginNotice from '@/components/Dns01PluginNotice'
 import PluginSlot from '@/components/PluginSlot'
+import { useDns01Plugin } from '@/composables/useDns01Plugin'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
 import { isIPAddress, splitCertificateIdentifiers } from '@/utils/certificate'
 import ACMEUserSelector from '@/views/certificate/components/ACMEUserSelector.vue'
@@ -313,6 +315,8 @@ const certificateProblem = computed<{ type: 'error' | 'warning' | 'info', title:
   return undefined
 })
 
+const { isAvailable: isDns01Available } = useDns01Plugin()
+
 const methodProblem = computed(() => {
   if (method.value === 'dns01' && hasIPIdentifier.value)
     return $gettext('IP address certificates only support HTTP-01 validation.')
@@ -368,7 +372,8 @@ const canCheck = computed(() => method.value !== 'skip'
 
 const canSubmit = computed(() => canCheck.value
   && !formLocked.value
-  && (isExisting.value || (!methodProblem.value && (method.value !== 'dns01' || !!options.value.dns_credential_id))))
+  && (isExisting.value || (!methodProblem.value
+    && (method.value !== 'dns01' || (isDns01Available.value && !!options.value.dns_credential_id)))))
 
 function buildRequest(): HTTPSRequest {
   return buildHTTPSRequest({
@@ -742,7 +747,8 @@ defineExpose({
         </div>
 
         <!-- DNS credential -->
-        <div v-if="method === 'dns01'" class="max-w-100">
+        <Dns01PluginNotice v-if="method === 'dns01' && !isDns01Available" variant="https" />
+        <div v-else-if="method === 'dns01'" class="max-w-100">
           <PluginSlot name="certificate.challenge.form:dns01" :context="{ options }">
             <DNSChallenge v-model:options="options" />
           </PluginSlot>
