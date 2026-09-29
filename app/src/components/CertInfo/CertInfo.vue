@@ -78,9 +78,20 @@ async function copyToClipboard(text: string, label: string) {
         {{ $gettext('Expired') }}
       </ATag>
     </p>
-    <p v-if="sanAliases.length > 0" class="break-words">
-      {{ $gettext('SAN Aliases: %{aliases}', { aliases: sanAliases.join(', ') }) }}
-    </p>
+    <template v-if="sanAliases.length > 0">
+      <p class="mb-1">
+        {{ $gettext('SAN Aliases:') }}
+      </p>
+      <ul class="san-alias-list">
+        <li
+          v-for="alias in sanAliases"
+          :key="alias"
+          class="break-all"
+        >
+          {{ alias }}
+        </li>
+      </ul>
+    </template>
     <p>
       {{ $gettext('Issuer: %{issuer}', { issuer: cert.issuer_name }) }}
     </p>
@@ -149,5 +160,10 @@ async function copyToClipboard(text: string, label: string) {
   align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
+}
+
+.san-alias-list {
+  margin: 0 0 1em;
+  padding-left: 18px;
 }
 </style>
