@@ -30,6 +30,33 @@ type Result struct {
 	Name    string `json:"name"`
 	Success bool   `json:"success"`
 	Error   string `json:"error,omitempty"`
+	// SkippedExisting counts files the node left alone because they already
+	// exist there and overwrite was off. SkippedPaths names them when the node
+	// is new enough to report it.
+	SkippedExisting int      `json:"skipped_existing,omitempty"`
+	SkippedPaths    []string `json:"skipped_paths,omitempty"`
+}
+
+// SkipReason explains why a local file was left out of a synchronization run.
+type SkipReason string
+
+const (
+	// SkipUnsupportedType is a file whose name or extension cannot be replicated.
+	SkipUnsupportedType SkipReason = "unsupported_type"
+	// SkipTooLarge is a file above the size limit.
+	SkipTooLarge SkipReason = "too_large"
+	// SkipNotText is a binary file.
+	SkipNotText SkipReason = "not_text"
+	// SkipUnreadable is a file that could not be read.
+	SkipUnreadable SkipReason = "unreadable"
+	// SkipEntryConfig is the node specific nginx.conf entry file.
+	SkipEntryConfig SkipReason = "entry_config"
+)
+
+// SkippedFile is a local file that was not replicated.
+type SkippedFile struct {
+	Path   string     `json:"path"`
+	Reason SkipReason `json:"reason"`
 }
 
 // Summary aggregates every result of one synchronization run.
@@ -38,6 +65,8 @@ type Summary struct {
 	Succeeded int      `json:"succeeded"`
 	Failed    int      `json:"failed"`
 	Results   []Result `json:"results"`
+	// Skipped lists local files that were left out and why.
+	Skipped []SkippedFile `json:"skipped"`
 }
 
 // Scope selects which content a synchronization run replicates.
@@ -76,6 +105,13 @@ func (c *collector) ok(node nodeRef, kind Kind, name string) {
 	c.add(Result{NodeID: node.id, Node: node.name, Kind: kind, Name: name, Success: true})
 }
 
+func (c *collector) okWith(node nodeRef, kind Kind, name string, outcome outcome) {
+	c.add(Result{
+		NodeID: node.id, Node: node.name, Kind: kind, Name: name, Success: true,
+		SkippedExisting: outcome.skippedExisting, SkippedPaths: outcome.skippedPaths,
+	})
+}
+
 func (c *collector) fail(node nodeRef, kind Kind, name string, err error) {
 	c.add(Result{NodeID: node.id, Node: node.name, Kind: kind, Name: name, Error: err.Error()})
 }
@@ -95,7 +131,7 @@ func (c *collector) summary() *Summary {
 		return c.results[i].Name < c.results[j].Name
 	})
 
-	summary := &Summary{Results: c.results, Total: len(c.results)}
+	summary := &Summary{Results: c.results, Total: len(c.results), Skipped: []SkippedFile{}}
 	for _, result := range c.results {
 		if result.Success {
 			summary.Succeeded++

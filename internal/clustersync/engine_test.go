@@ -40,3 +40,31 @@ func TestRunSkipsRemainingItemsAfterBlockingFailure(t *testing.T) {
 		t.Fatalf("expected the dependent item to report why it was skipped, got %+v", summary.Results[1])
 	}
 }
+
+func TestBatchOutcomeReportsExistingFilesTheNodeKept(t *testing.T) {
+	got := batchOutcome([]byte(`{"written":1,"skipped":2,"skipped_paths":["ssl/a.pem","ssl/a.key"]}`))
+	if got.skippedExisting != 2 || len(got.skippedPaths) != 2 {
+		t.Fatalf("unexpected outcome %+v", got)
+	}
+
+	// A node predating skipped_paths only reports the count.
+	got = batchOutcome([]byte(`{"written":0,"skipped":3}`))
+	if got.skippedExisting != 3 || len(got.skippedPaths) != 0 {
+		t.Fatalf("unexpected legacy outcome %+v", got)
+	}
+}
+
+func TestRunCarriesTheOutcomeIntoTheResult(t *testing.T) {
+	items := []item{{
+		kind: KindConfig,
+		name: "ssl (2)",
+		pushOutcome: func(context.Context, nodeRef) (outcome, error) {
+			return outcome{skippedExisting: 1, skippedPaths: []string{"ssl/a.pem"}}, nil
+		},
+	}}
+
+	summary := run(context.Background(), []nodeRef{{id: 1, name: "n1"}}, items)
+	if summary.Succeeded != 1 || summary.Results[0].SkippedExisting != 1 || summary.Results[0].SkippedPaths[0] != "ssl/a.pem" {
+		t.Fatalf("unexpected summary %+v", summary)
+	}
+}

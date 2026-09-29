@@ -54,18 +54,18 @@ func newConfigBatchItem(name string, files []ConfigFile, overwrite, blocking boo
 		kind:     KindConfig,
 		name:     name,
 		blocking: blocking,
-		push: func(ctx context.Context, node nodeRef) error {
+		pushOutcome: func(ctx context.Context, node nodeRef) (outcome, error) {
 			payload := configBatchPayload{Files: files, Overwrite: overwrite}
 			body, status, err := node.postForBody(ctx, "/api/config_sync_batch", payload)
 			if err == nil {
-				return batchFailure(body)
+				return batchOutcome(body), batchFailure(body)
 			}
 			if status != http.StatusNotFound {
-				return err
+				return outcome{}, err
 			}
 
 			// The node predates the batch receiver, fall back to file by file.
-			return pushConfigFilesIndividually(ctx, node, files, overwrite)
+			return outcome{}, pushConfigFilesIndividually(ctx, node, files, overwrite)
 		},
 	}
 }
@@ -73,12 +73,29 @@ func newConfigBatchItem(name string, files []ConfigFile, overwrite, blocking boo
 // batchResponse is the answer of the batch receiver. Files it could not apply
 // are reported individually instead of failing the whole request.
 type batchResponse struct {
-	Written  int `json:"written"`
-	Skipped  int `json:"skipped"`
-	Failures []struct {
+	Written int `json:"written"`
+	Skipped int `json:"skipped"`
+	// SkippedPaths is absent on nodes that predate it.
+	SkippedPaths []string `json:"skipped_paths"`
+	Failures     []struct {
 		Path  string `json:"path"`
 		Error string `json:"error"`
 	} `json:"failures"`
+}
+
+// batchOutcome extracts the files the node left alone from a batch answer.
+func batchOutcome(body []byte) outcome {
+	var response batchResponse
+	if err := json.Unmarshal(body, &response); err != nil {
+		return outcome{}
+	}
+
+	count := response.Skipped
+	if len(response.SkippedPaths) > count {
+		count = len(response.SkippedPaths)
+	}
+
+	return outcome{skippedExisting: count, skippedPaths: response.SkippedPaths}
 }
 
 // batchFailure turns a partially applied batch into an error so the summary

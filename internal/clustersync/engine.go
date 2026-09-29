@@ -15,6 +15,23 @@ type item struct {
 	name     string
 	blocking bool
 	push     func(ctx context.Context, node nodeRef) error
+	// pushOutcome is an alternative to push for items that learn something from
+	// a successful answer, such as files the node left alone.
+	pushOutcome func(ctx context.Context, node nodeRef) (outcome, error)
+}
+
+// outcome carries what a node reported about a successful push.
+type outcome struct {
+	skippedExisting int
+	skippedPaths    []string
+}
+
+func (i item) execute(ctx context.Context, node nodeRef) (outcome, error) {
+	if i.pushOutcome != nil {
+		return i.pushOutcome(ctx, node)
+	}
+
+	return outcome{}, i.push(ctx, node)
 }
 
 // run pushes every item to every node. Nodes are processed concurrently while a
@@ -51,7 +68,8 @@ func run(ctx context.Context, nodes []nodeRef, items []item) *Summary {
 					continue
 				}
 
-				if err := current.push(ctx, node); err != nil {
+				pushed, err := current.execute(ctx, node)
+				if err != nil {
 					logger.Errorf("cluster sync %s %s to %s: %v", current.kind, current.name, node.name, err)
 					results.fail(node, current.kind, current.name, err)
 					if current.blocking {
@@ -60,7 +78,7 @@ func run(ctx context.Context, nodes []nodeRef, items []item) *Summary {
 					continue
 				}
 
-				results.ok(node, current.kind, current.name)
+				results.okWith(node, current.kind, current.name, pushed)
 			}
 		}(node)
 	}

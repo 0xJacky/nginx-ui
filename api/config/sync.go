@@ -30,6 +30,7 @@ func SyncConfigBatch(c *gin.Context) {
 	// dropping the whole sync over it would make the feature useless.
 	written := 0
 	skipped := 0
+	skippedPaths := make([]string, 0)
 	failures := make([]gin.H, 0)
 
 	// Hold the apply lock for the whole write -> test -> reload sequence so a
@@ -58,6 +59,7 @@ func SyncConfigBatch(c *gin.Context) {
 			}
 			if exists {
 				skipped++
+				skippedPaths = append(skippedPaths, relativePath)
 				continue
 			}
 		}
@@ -104,10 +106,12 @@ func SyncConfigBatch(c *gin.Context) {
 	}
 
 	c.JSON(status, gin.H{
-		"message":  "ok",
-		"written":  written,
-		"skipped":  skipped,
-		"failures": failures,
+		"message": "ok",
+		"written": written,
+		"skipped": skipped,
+		// Files left alone because they already exist and overwrite is off.
+		"skipped_paths": skippedPaths,
+		"failures":      failures,
 	})
 }
 

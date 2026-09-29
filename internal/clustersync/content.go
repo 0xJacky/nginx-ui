@@ -39,14 +39,30 @@ func (f ConfigFile) RelativePath() string {
 // streams so their enabled state travels with the content instead of being
 // recreated as a plain file in sites-available.
 func CollectConfigFiles(root string) ([]ConfigFile, error) {
+	files, _, err := CollectConfigFilesReport(root)
+
+	return files, err
+}
+
+// CollectConfigFilesReport is CollectConfigFiles that also reports every file it
+// left out and why, so the user can be told what was not replicated.
+func CollectConfigFilesReport(root string) ([]ConfigFile, []SkippedFile, error) {
 	confPath := filepath.Clean(nginx.GetConfPath())
 	root = filepath.Clean(root)
 
 	if !helper.IsUnderDirectory(root, confPath) && root != confPath {
-		return nil, ErrPathOutsideConfDir
+		return nil, nil, ErrPathOutsideConfDir
 	}
 
 	var files []ConfigFile
+	var skipped []SkippedFile
+	skip := func(path string, reason SkipReason) {
+		relative, err := filepath.Rel(confPath, path)
+		if err != nil {
+			relative = path
+		}
+		skipped = append(skipped, SkippedFile{Path: filepath.ToSlash(relative), Reason: reason})
+	}
 	err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
 		if err != nil {
 			// An unreadable entry must not abort the whole directory.
@@ -70,32 +86,39 @@ func CollectConfigFiles(root string) ([]ConfigFile, error) {
 		// would break a node whose layout differs. It can still be deployed
 		// deliberately from the configuration editor.
 		if filepath.Clean(path) == filepath.Clean(nginx.GetConfEntryPath()) {
+			skip(path, SkipEntryConfig)
+			return nil
+		}
+
+		// Check the name first so an unsupported file is never read.
+		if err := config.ValidateConfigFilename(path); err != nil {
+			logger.Debugf("cluster sync skips unsupported config name %s: %v", path, err)
+			skip(path, SkipUnsupportedType)
 			return nil
 		}
 
 		info, err := entry.Info()
-		if err != nil || info.Size() > maxSyncFileSize {
-			logger.Debugf("cluster sync skips oversized or unreadable file %s", path)
+		if err != nil {
+			logger.Debugf("cluster sync skips unreadable file %s: %v", path, err)
+			skip(path, SkipUnreadable)
+			return nil
+		}
+		if info.Size() > maxSyncFileSize {
+			logger.Debugf("cluster sync skips oversized file %s", path)
+			skip(path, SkipTooLarge)
 			return nil
 		}
 
 		content, err := os.ReadFile(path)
 		if err != nil {
 			logger.Debugf("cluster sync skips unreadable file %s: %v", path, err)
+			skip(path, SkipUnreadable)
 			return nil
 		}
 
 		if !utf8.Valid(content) {
 			logger.Debugf("cluster sync skips non-text file %s", path)
-			return nil
-		}
-
-		// A real configuration directory accumulates files the receiver will
-		// always reject, such as nginx.conf.bak.1738662518. Leaving them out of
-		// the batch keeps a whole-directory sync from being dragged down by one
-		// name that is not a valid configuration file anywhere.
-		if err := config.ValidateConfigFilename(path); err != nil {
-			logger.Debugf("cluster sync skips unsupported config name %s: %v", path, err)
+			skip(path, SkipNotText)
 			return nil
 		}
 
@@ -116,10 +139,10 @@ func CollectConfigFiles(root string) ([]ConfigFile, error) {
 		return nil
 	})
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return files, nil
+	return files, skipped, nil
 }
 
 // isManagedDir reports whether a directory below the config root is owned by the

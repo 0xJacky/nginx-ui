@@ -24,6 +24,20 @@ var allowedConfigBaseNames = map[string]struct{}{
 	"win-utf":        {},
 }
 
+// dataFileExtensions are non-directive files that live next to the
+// configuration, such as TLS certificates, keys and basic auth files. They are
+// allowed outside the managed directories but never parsed as Nginx directives.
+var dataFileExtensions = map[string]struct{}{
+	".pem":       {},
+	".crt":       {},
+	".cer":       {},
+	".key":       {},
+	".csr":       {},
+	".crl":       {},
+	".ca-bundle": {},
+	".htpasswd":  {},
+}
+
 var managedConfigDirs = map[string]struct{}{
 	"sites-available":   {},
 	"sites-enabled":     {},
@@ -181,6 +195,10 @@ func ValidateConfigFile(path string, content string) error {
 		return err
 	}
 
+	if IsDataFile(path) {
+		return ValidateDataContent([]byte(content))
+	}
+
 	return ValidateConfigContent(content)
 }
 
@@ -189,7 +207,53 @@ func ValidateConfigFileBytes(path string, content []byte) error {
 		return err
 	}
 
+	if IsDataFile(path) {
+		return ValidateDataContent(content)
+	}
+
 	return ValidateConfigContentBytes(content)
+}
+
+// IsDataFile reports whether path is a certificate, key or similar data file
+// outside the site and stream directories. Such files are stored verbatim.
+func IsDataFile(path string) bool {
+	confPath := filepath.Clean(nginx.GetConfPath())
+	cleanPath := filepath.Clean(path)
+	if !helper.IsUnderDirectory(cleanPath, confPath) {
+		return false
+	}
+
+	if _, ok := dataFileExtensions[strings.ToLower(filepath.Ext(cleanPath))]; !ok {
+		return false
+	}
+
+	relativePath, err := filepath.Rel(confPath, cleanPath)
+	if err != nil {
+		return false
+	}
+
+	firstSegment := strings.ToLower(strings.SplitN(filepath.ToSlash(relativePath), "/", 2)[0])
+	_, managed := managedConfigDirs[firstSegment]
+
+	return !managed
+}
+
+// ValidateDataContent only checks that a data file is plain text without
+// control characters, since it holds no Nginx directives.
+func ValidateDataContent(content []byte) error {
+	if !utf8.Valid(content) {
+		return ErrConfigContentMustBeUTF8Text
+	}
+
+	for remaining := content; len(remaining) > 0; {
+		r, size := utf8.DecodeRune(remaining)
+		if unicode.IsControl(r) && r != '\n' && r != '\r' && r != '\t' {
+			return ErrConfigContentHasControlChars
+		}
+		remaining = remaining[size:]
+	}
+
+	return nil
 }
 
 func ValidateConfigFilename(path string) error {
@@ -210,6 +274,10 @@ func ValidateConfigFilename(path string) error {
 	}
 
 	if _, ok := allowedConfigBaseNames[lowerBaseName]; ok {
+		return nil
+	}
+
+	if IsDataFile(cleanPath) {
 		return nil
 	}
 
@@ -245,16 +313,8 @@ func ValidateConfigContent(content string) error {
 }
 
 func ValidateConfigContentBytes(content []byte) error {
-	if !utf8.Valid(content) {
-		return ErrConfigContentMustBeUTF8Text
-	}
-
-	for remaining := content; len(remaining) > 0; {
-		r, size := utf8.DecodeRune(remaining)
-		if unicode.IsControl(r) && r != '\n' && r != '\r' && r != '\t' {
-			return ErrConfigContentHasControlChars
-		}
-		remaining = remaining[size:]
+	if err := ValidateDataContent(content); err != nil {
+		return err
 	}
 
 	if err := ValidateConfigDirectives(content); err != nil {

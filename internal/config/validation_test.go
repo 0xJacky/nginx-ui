@@ -57,6 +57,19 @@ func TestValidateConfigFilename(t *testing.T) {
 			path: filepath.Join(confDir, "streams-enabled", "tcp_proxy"),
 		},
 		{
+			name: "allow certificate outside managed dirs",
+			path: filepath.Join(confDir, "ssl", "site.pem"),
+		},
+		{
+			name: "allow private key outside managed dirs",
+			path: filepath.Join(confDir, "conf.d", "site.key"),
+		},
+		{
+			name:    "reject certificate extension inside sites-available with blocked ext",
+			path:    filepath.Join(confDir, "sites-available", "evil.pl"),
+			wantErr: true,
+		},
+		{
 			name:    "reject shared library",
 			path:    filepath.Join(confDir, "evil.so"),
 			wantErr: true,
@@ -262,5 +275,22 @@ func requireRestrictedDirectiveError(t *testing.T, err error, wantParam string) 
 
 	if len(cosyErr.Params) != 1 || cosyErr.Params[0] != wantParam {
 		t.Fatalf("expected params [%q], got %v", wantParam, cosyErr.Params)
+	}
+}
+
+func TestValidateConfigFileAcceptsPEMContent(t *testing.T) {
+	confDir := t.TempDir()
+	originalConfigDir := settings.NginxSettings.ConfigDir
+	settings.NginxSettings.ConfigDir = confDir
+	t.Cleanup(func() {
+		settings.NginxSettings.ConfigDir = originalConfigDir
+	})
+
+	pem := "-----BEGIN CERTIFICATE-----\nMIIB\n-----END CERTIFICATE-----\n"
+	if err := ValidateConfigFile(filepath.Join(confDir, "ssl", "a.pem"), pem); err != nil {
+		t.Fatalf("PEM must not be parsed as directives: %v", err)
+	}
+	if err := ValidateConfigFile(filepath.Join(confDir, "ssl", "a.pem"), "a\x00b"); err == nil {
+		t.Fatal("control characters must still be rejected")
 	}
 }

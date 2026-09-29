@@ -199,3 +199,48 @@ func TestCollectConfigFilesSkipsNamesTheReceiverRejects(t *testing.T) {
 		t.Fatalf("missing files %v, got %v", want, got)
 	}
 }
+
+func TestCollectConfigFilesReportIncludesCertificatesAndSkipReasons(t *testing.T) {
+	confDir := withConfDir(t, map[string]string{
+		"nginx.conf":            "events {}\n",
+		"ssl/site.pem":          "-----BEGIN CERTIFICATE-----\nabc\n-----END CERTIFICATE-----\n",
+		"ssl/site.key":          "-----BEGIN PRIVATE KEY-----\nabc\n-----END PRIVATE KEY-----\n",
+		"conf.d/notes.txt":      "not a config\n",
+		"conf.d/a.conf":         "# a\n",
+		"sites-available/site1": "server {}\n",
+	})
+
+	if err := os.WriteFile(filepath.Join(confDir, "ssl", "blob.pem"), []byte{0xff, 0xfe}, 0644); err != nil {
+		t.Fatalf("write binary: %v", err)
+	}
+
+	files, skipped, err := CollectConfigFilesReport(confDir)
+	if err != nil {
+		t.Fatalf("collect: %v", err)
+	}
+
+	got := collectedPaths(files)
+	want := []string{"conf.d/a.conf", "ssl/site.key", "ssl/site.pem"}
+	if len(got) != len(want) {
+		t.Fatalf("got %v, want %v", got, want)
+	}
+	for i := range want {
+		if got[i] != want[i] {
+			t.Fatalf("got %v, want %v", got, want)
+		}
+	}
+
+	reasons := map[string]SkipReason{}
+	for _, file := range skipped {
+		reasons[file.Path] = file.Reason
+	}
+	if reasons["conf.d/notes.txt"] != SkipUnsupportedType {
+		t.Fatalf("notes.txt reason = %q", reasons["conf.d/notes.txt"])
+	}
+	if reasons["nginx.conf"] != SkipEntryConfig {
+		t.Fatalf("nginx.conf reason = %q", reasons["nginx.conf"])
+	}
+	if reasons["ssl/blob.pem"] != SkipNotText {
+		t.Fatalf("blob.pem reason = %q", reasons["ssl/blob.pem"])
+	}
+}

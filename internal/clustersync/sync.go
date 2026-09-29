@@ -32,9 +32,15 @@ func SyncDirectory(ctx context.Context, dir string, nodeIDs []uint64, overwrite 
 		return nil, ErrPathOutsideConfDir
 	}
 
-	files, err := CollectConfigFiles(dir)
+	files, skipped, err := CollectConfigFilesReport(dir)
 	if err != nil {
 		return nil, err
+	}
+
+	// Nothing to send: report what was left out instead of pushing an empty batch
+	// that every node would acknowledge as a success.
+	if len(files) == 0 {
+		return &Summary{Results: []Result{}, Skipped: nonNilSkipped(skipped)}, nil
 	}
 
 	relative, err := filepath.Rel(filepath.Clean(nginx.GetConfPath()), filepath.Clean(dir))
@@ -44,7 +50,18 @@ func SyncDirectory(ctx context.Context, dir string, nodeIDs []uint64, overwrite 
 
 	label := fmt.Sprintf("%s (%d)", filepath.ToSlash(relative), len(files))
 
-	return run(ctx, nodes, []item{configBatchItem(label, files, overwrite)}), nil
+	summary := run(ctx, nodes, []item{configBatchItem(label, files, overwrite)})
+	summary.Skipped = nonNilSkipped(skipped)
+
+	return summary, nil
+}
+
+func nonNilSkipped(skipped []SkippedFile) []SkippedFile {
+	if skipped == nil {
+		return []SkippedFile{}
+	}
+
+	return skipped
 }
 
 // SyncNodes replicates the selected kinds of local content to the given nodes.
