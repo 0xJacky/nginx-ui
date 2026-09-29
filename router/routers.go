@@ -132,16 +132,15 @@ func InitRouter() {
 			g.GET("/geolite/status", geolite.GetStatus)
 		}
 
+		// The terminal applies its own gates before proxying to a child node.
+		terminal.InitRouter(root.Group("/", middleware.AuthRequiredWS()))
+
 		// Authorization required and websocket request (no cookie fallback to prevent CSWSH)
 		w := root.Group("/", middleware.AuthRequiredWS(), middleware.ProxyWs())
 		{
 			analytic.InitWebSocketRouter(w)
 			certificate.InitCertificateWebSocketRouter(w)
 			event.InitRouter(w)
-			o := w.Group("", middleware.RequireInteractiveUser(), middleware.RequireSecureSession())
-			{
-				terminal.InitRouter(o)
-			}
 			nginxLog.InitWebSocketRouter(w)
 			sites.InitWebSocketRouter(w)
 			upstream.InitWebSocketRouter(w)

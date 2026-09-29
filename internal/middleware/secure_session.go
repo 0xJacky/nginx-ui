@@ -172,6 +172,27 @@ func RequireInteractiveUser() gin.HandlerFunc {
 	}
 }
 
+// RequireInteractiveUserOrProxy keeps service tokens away from endpoints that
+// hand out an interactive session, such as the terminal, while still letting a
+// controller reach them on a child node. The controller's proxy signs the
+// forwarded request as that node, so the node principal is accepted here; the
+// controller has already applied these gates to its own user before proxying.
+func RequireInteractiveUserOrProxy() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
+			c.Next()
+			return
+		}
+		if _, ok := c.Get(internalmcp.ServiceTokenPrincipalKey); ok {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"message": "This operation requires an interactive administrator",
+			})
+			return
+		}
+		c.Next()
+	}
+}
+
 func userNeedsSecureSession(cUser *model.User) (bool, error) {
 	if cUser.EnabledOTP() || cUser.EnabledTwoFA {
 		return true, nil
