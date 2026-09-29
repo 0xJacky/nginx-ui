@@ -77,6 +77,22 @@ test('terminal and assistant controls keep migrated components populated', async
     }).toBeGreaterThan(0)
   }
 
+  // The demo terminal session is empty, and Clear and Regenerate stay disabled
+  // until a chat has messages. Serve a short conversation from the session read
+  // instead of sending a prompt, so the composer controls can be exercised.
+  await page.route(/\/api\/llm_sessions\/[^/?]+$/, async route => {
+    if (route.request().method() !== 'GET')
+      return route.fallback()
+    const response = await route.fetch()
+    const session = await response.json()
+    session.messages = [
+      { role: 'user', content: 'How do I test the Nginx configuration?' },
+      { role: 'assistant', content: 'Run `nginx -t`.' },
+    ]
+    session.message_count = session.messages.length
+    await route.fulfill({ response, json: session })
+  })
+
   const assistantToggle = page.locator('.terminal-header .header-actions .ant-btn')
   await expect(assistantToggle).toBeVisible()
   await expect(assistantToggle).not.toHaveText('')
@@ -166,9 +182,13 @@ test('terminal and assistant controls keep migrated components populated', async
   await expect(sessionMenu).toBeHidden()
 
   // Open the confirmation Popover but cancel it; no mutating action is submitted.
-  const controlButtons = assistant.locator('.control-btn .ant-btn')
-  await expect.poll(() => controlButtons.count()).toBeGreaterThanOrEqual(2)
-  await controlButtons.first().click()
+  const composerActions = assistant.locator('.composer-actions')
+  await expect(composerActions.getByRole('button', { name: 'Regenerate response' })).toBeVisible()
+  await expect(composerActions.getByRole('button', { name: 'Send' })).toBeVisible()
+  await expect(assistant.locator('.llm-log')).toContainText('nginx -t')
+  const clearButton = composerActions.getByRole('button', { name: 'Clear' })
+  await expect(clearButton).toBeEnabled()
+  await clearButton.click()
   const clearConfirmation = page.locator('.ant-popconfirm:visible').last()
   await expect(clearConfirmation).toBeVisible()
   await expectNonEmptyTexts(clearConfirmation.locator('.ant-popconfirm-message-text'), 'clear confirmation message')

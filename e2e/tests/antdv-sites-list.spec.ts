@@ -87,9 +87,10 @@ test('sites list renders custom cells and non-empty status/select controls', asy
 
   for (let index = 0; index < rowCount; index++) {
     const row = rows.nth(index)
-    // Selection, No, Name, Proxy Targets, Namespace, Updated at, Status, Actions.
+    // Selection, No, Name, Proxy Targets, Namespace, Updated at, Access, Status, Actions.
     const cells = row.locator('td.ant-table-cell')
-    await expect(cells).toHaveCount(8)
+    await expect(cells).toHaveCount(9)
+    await expect(cells.nth(6)).toHaveText(/\S/)
 
     const nameCell = cells.nth(2)
     await expect(nameCell.locator('div').first()).toBeVisible()

@@ -65,7 +65,21 @@ test('dashboard nodes and site cards retain migrated component content', async (
   const indicator = page.locator('.indicator:visible').first()
   await expect(indicator).toBeVisible()
   await expect(indicator.locator('.node-name')).toHaveText(/\S/)
-  await expect(indicator.locator('.ant-tag')).toBeVisible()
+
+  // The sidebar pill opens the node switcher Popover. Only open and close it:
+  // picking a node would navigate away from the local dashboard.
+  const switcherTrigger = indicator.getByRole('button')
+  await expect(switcherTrigger).toHaveAttribute('aria-expanded', 'false')
+  await switcherTrigger.click()
+  await expect(switcherTrigger).toHaveAttribute('aria-expanded', 'true')
+  const switcher = page.locator('.node-switcher:visible')
+  await expect(switcher).toBeVisible()
+  const switcherOptions = switcher.locator('.node-option')
+  await expect.poll(() => switcherOptions.count()).toBeGreaterThan(1)
+  for (let index = 0; index < await switcherOptions.count(); index++)
+    await expect(switcherOptions.nth(index).locator('.option-name')).toHaveText(/\S/)
+  await switcherTrigger.click()
+  await expect(switcher).toBeHidden()
 
   const nodeItems = page.locator('.env-list-card .env-list-item')
   await expect.poll(() => nodeItems.count()).toBeGreaterThan(0)

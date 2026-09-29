@@ -55,7 +55,8 @@ async function clickPreferenceTab(page: Page, key: string) {
 }
 
 async function assertSelectOptions(page: Page, root: Locator, context: string) {
-  const selects = root.locator('.ant-select')
+  // Collapsed sections keep their controls mounted but hidden (v-show).
+  const selects = root.locator('.ant-select:visible')
 
   for (let index = 0; index < await selects.count(); index++) {
     const select = selects.nth(index)
@@ -142,6 +143,13 @@ test('preference tabs render every migrated panel and their controls', async ({ 
 
   for (const key of preferenceTabKeys) {
     const panel = await clickPreferenceTab(page, key)
+
+    if (key === 'openai') {
+      // The API type select lives in the collapsed Advanced section.
+      await panel.getByRole('button', { name: 'Advanced' }).click()
+      await expect(panel.locator('.ant-select:visible')).toHaveCount(6)
+    }
+
     await assertSelectOptions(page, panel, `preference tab ${key}`)
 
     if (key === 'external_notify') {

@@ -11,6 +11,10 @@ function isExpectedDemoNetworkFailure(message: string) {
     || message.startsWith('Failed to fetch short token:')
 }
 
+// Raw enum values are lowercase. Case-sensitive on purpose: "HTTP01" and "DNS01"
+// are the translated labels of the challenge methods.
+const rawEnumValue = /^(?:http01|dns01|wildcard|custom|self_signed|p256|p384)$/
+
 async function expectPopulatedSelect(page: Page, select: Locator) {
   const trigger = select.getByRole('combobox')
   await expect(trigger).toBeVisible()
@@ -23,16 +27,21 @@ async function expectPopulatedSelect(page: Page, select: Locator) {
   const options = dropdown.locator('.ant-select-item-option')
   await expect.poll(() => options.count()).toBeGreaterThan(0)
 
-  const optionLabel = (await options.first().innerText()).trim()
+  // Re-pick the option that is already selected so the form keeps its state:
+  // switching the challenge method to HTTP01 would unmount the DNS credential
+  // select that is checked next.
+  const selectedOption = dropdown.locator('.ant-select-item-option-selected')
+  const option = await selectedOption.count() > 0 ? selectedOption.first() : options.first()
+  const optionLabel = (await option.innerText()).trim()
   expect(optionLabel).not.toBe('')
-  expect(optionLabel).not.toMatch(/^(http01|dns01|wildcard|custom|self_signed|p256|p384)$/i)
+  expect(optionLabel).not.toMatch(rawEnumValue)
 
-  await options.first().click()
+  await option.click()
 
   const closedLabel = select.locator('.ant-select-content')
   await expect(closedLabel).toBeVisible()
   await expect(closedLabel).toContainText(optionLabel)
-  expect((await closedLabel.innerText()).trim()).not.toMatch(/^(http01|dns01|wildcard|custom|self_signed|p256|p384)$/i)
+  expect((await closedLabel.innerText()).trim()).not.toMatch(rawEnumValue)
 }
 
 test('certificate views keep antdv-next options and rendered content visible', async ({ page }) => {
@@ -58,12 +67,14 @@ test('certificate views keep antdv-next options and rendered content visible', a
 
   const issueModal = page.locator('.ant-modal:visible').last()
   await expect(issueModal).toBeVisible()
+  // Certificate Type, Challenge Method, Key Type, ACME User and DNS Credential.
   const issueSelects = issueModal.locator('.ant-select')
-  await expect(issueSelects).toHaveCount(4)
+  await expect(issueSelects).toHaveCount(5)
   for (let index = 0; index < await issueSelects.count(); index++)
     await expectPopulatedSelect(page, issueSelects.nth(index))
 
-  const credentialInfo = issueModal.locator('.anticon-info-circle')
+  // The challenge reminder Alert carries its own info icon, so scope to the form label.
+  const credentialInfo = issueModal.locator('.ant-form-item-label .anticon-info-circle')
   await expect(credentialInfo).toBeVisible()
   await credentialInfo.hover()
   const credentialTooltip = page.locator('.ant-tooltip:visible').last()
