@@ -17,6 +17,7 @@ import { applyAuthHeaders } from '@/lib/http/interceptors'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
 import { chunkLoader } from './chunks'
+import { trackPluginRoute } from './routeRemovers'
 import { usePluginStore } from './store'
 import { buildPluginWebSocketUrl } from './wsUrl'
 
@@ -81,7 +82,7 @@ export function createRegistry(
 
     const record = { ...route, meta } as RouteRecordRaw
 
-    router.addRoute(LAYOUT_ROUTE_NAME, record)
+    trackPluginRoute(pluginId, router.addRoute(LAYOUT_ROUTE_NAME, record))
     store.addRoute(record)
   }
 

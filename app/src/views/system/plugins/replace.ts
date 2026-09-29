@@ -38,6 +38,9 @@ export function useReplacePlugin() {
         message.warning($gettext('Installed. Turn it on to review what it can access.'))
       else
         message.success($gettext('Installed the version from the marketplace'))
+      // The new package may ship another bundle, so the old one is dropped and
+      // an enabled plugin is loaded again.
+      await pluginLoader.unload(id, { forget: true })
       await Promise.all([inventory.reload(true), inventory.reloadCatalog()])
       await pluginLoader.loadNew()
     }

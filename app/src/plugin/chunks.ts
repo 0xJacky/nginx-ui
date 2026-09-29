@@ -72,6 +72,8 @@ export function createChunkLoader(options: ChunkLoaderOptions): ChunkLoader {
   const handedOver = new Map<string, ChunkExports>()
   /** One promise per chunk, so every caller gets the same exports. */
   const loads = new Map<string, Promise<ChunkExports>>()
+  /** Version the cached chunks of a plugin belong to. */
+  const loadedVersions = new Map<string, string>()
 
   const keyOf = (pluginId: string, name: string) => `${pluginId}\u0000${name}`
 
@@ -106,6 +108,16 @@ export function createChunkLoader(options: ChunkLoaderOptions): ChunkLoader {
     const url = typeof name === 'string' && Object.hasOwn(chunks, name) ? chunks[name] : ''
     if (!url)
       return Promise.reject(new Error(`Chunk ${String(name)} is not declared by ${source.pluginId}`))
+
+    // Chunks of another version are not the ones the new bundle expects.
+    const version = source.version ?? ''
+    if (loadedVersions.get(source.pluginId) !== version) {
+      for (const cached of [...loads.keys()]) {
+        if (cached.startsWith(`${source.pluginId}\u0000`))
+          loads.delete(cached)
+      }
+      loadedVersions.set(source.pluginId, version)
+    }
 
     const key = keyOf(source.pluginId, name)
     const existing = loads.get(key)
