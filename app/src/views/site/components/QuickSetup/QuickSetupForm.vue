@@ -13,6 +13,11 @@ const props = withDefaults(defineProps<{
   showName: true,
 })
 
+defineSlots<{
+  // Extra fields placed right after the configuration name (e.g. the namespace).
+  afterName?: () => unknown
+}>()
+
 const { state, quickDerivedName, quickNameTouched } = props.quick
 
 const { options: upstreamOptions, isLoading: isUpstreamsLoading } = useManagedUpstreams()
@@ -56,6 +61,8 @@ const statusCodeOptions: SelectProps['options'] = [
         @change="quickNameTouched = true"
       />
     </AFormItem>
+
+    <slot name="afterName" />
 
     <AFormItem :label="$gettext('Type')">
       <ARadioGroup

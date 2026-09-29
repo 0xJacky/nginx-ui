@@ -20,6 +20,22 @@ export function listOptions(lists: AccessList[], currentSlug?: string): AccessOp
   return options
 }
 
+/**
+ * Select value for the access all server blocks share, so the "use for all
+ * servers" select reflects the current state. Undefined when the servers
+ * differ or one of them has custom rules.
+ */
+export function sharedServerAccessValue(servers: Pick<AccessServerState, 'mode' | 'slug'>[]): string | undefined {
+  const values = new Set(servers.map(s => {
+    if (s.mode === 'list')
+      return s.slug
+    return s.mode === 'manual' ? undefined : PublicValue
+  }))
+  if (values.size !== 1)
+    return undefined
+  return values.values().next().value
+}
+
 export function serverAccessLabel(state: AccessServerState | undefined, listName: (slug?: string) => string) {
   switch (state?.mode) {
     case 'list':

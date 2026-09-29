@@ -1,3 +1,5 @@
+import type { HTTPSOnboardingPhase } from '../site_edit/components/HTTPS/httpsOnboardingState'
+import type { HTTPSCardMethod } from '../site_edit/components/HTTPS/httpsRequest'
 import type { NgxConfig } from '@/api/ngx'
 import { hasPendingTLSServer, hasTLSServer } from '../site_edit/components/HTTPS/siteHTTPSState'
 
@@ -36,4 +38,18 @@ export function sslStepTLSState(config: Pick<NgxConfig, 'servers'> | undefined |
   if (hasPendingTLSServer(config))
     return 'pending'
   return hasTLSServer(config) ? 'configured' : 'none'
+}
+
+/**
+ * Label of the wizard's Finish button on the SSL step. It runs what the HTTPS
+ * card is set to, so the label names the HTTPS work it starts.
+ */
+export function sslStepFinishLabel(method: HTTPSCardMethod | undefined, phase: HTTPSOnboardingPhase | undefined): string {
+  if (!method || method === 'skip')
+    return $gettext('Finish')
+  if (phase === 'error')
+    return $gettext('Retry')
+  return method === 'existing'
+    ? $gettext('Enable HTTPS and finish')
+    : $gettext('Issue certificate and finish')
 }

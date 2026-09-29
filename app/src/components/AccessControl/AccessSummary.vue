@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AccessChange } from '@/api/access_list'
-import { listOptions, PublicValue, serverAccessLabel } from './options'
+import { listOptions, PublicValue, serverAccessLabel, sharedServerAccessValue } from './options'
 import { useAccessControlStore } from './store'
 
 const store = useAccessControlStore()
@@ -12,25 +12,22 @@ function customizedLocations(index: number) {
 
 const hasManual = computed(() => servers.value.some(s => s.mode === 'manual'))
 
-const allValue = ref<string>()
+// Shows the access every server shares; empty (with the placeholder) when
+// they differ.
+const sharedValue = computed(() => sharedServerAccessValue(servers.value))
 
 const options = computed(() => [
   { label: $gettext('Public'), value: PublicValue },
-  ...listOptions(lists.value),
+  ...listOptions(lists.value, sharedValue.value === PublicValue ? undefined : sharedValue.value),
 ])
 
-async function applyToAll(selected: unknown) {
+function applyToAll(selected: unknown) {
   if (typeof selected !== 'string')
     return
   const changes: AccessChange[] = servers.value.map(s => selected === PublicValue
     ? { server: s.index, mode: 'public' }
     : { server: s.index, mode: 'list', slug: selected })
-  try {
-    await store.apply(changes)
-  }
-  finally {
-    allValue.value = undefined
-  }
+  store.apply(changes)
 }
 </script>
 
@@ -64,7 +61,7 @@ async function applyToAll(selected: unknown) {
     <!-- Also shown for a single server: in advanced mode this is the only
          control, since the server cards belong to the basic mode editor. -->
     <ASelect
-      v-model:value="allValue"
+      :value="sharedValue"
       class="w-full"
       :placeholder="servers.length > 1 ? $gettext('Use for all servers') : $gettext('Change access')"
       :options="options"

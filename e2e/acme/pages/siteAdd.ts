@@ -116,8 +116,9 @@ export class SiteAddPage {
     ))
 
     try {
-      // Current SSL step: one HTTPS card that runs the backend orchestrator.
-      const httpsCardSubmit = this.page.getByRole('button', { name: 'Issue and enable HTTPS', exact: true })
+      // Current SSL step: the wizard's Finish button runs the HTTPS card,
+      // which drives the backend orchestrator.
+      const httpsCardSubmit = this.page.getByRole('button', { name: 'Issue certificate and finish', exact: true })
       // Previous SSL step: warning banner + per-server Let's Encrypt switch.
       const legacyEntry = this.page.getByRole('button', { name: 'Issue certificate', exact: true })
       const letsEncrypt = this.formItem('Encrypt website with Let\'s Encrypt').locator('.ant-switch')

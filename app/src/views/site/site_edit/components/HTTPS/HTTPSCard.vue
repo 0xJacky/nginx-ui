@@ -37,18 +37,21 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
   // Offers the "Skip for now" method, which emits `skip` once confirmed.
   skippable?: boolean
-  // Overrides the "Skip for now" description and button, e.g. when skipping
-  // keeps an HTTPS server the configuration already has.
+  // Overrides the "Skip for now" description, e.g. when skipping keeps an
+  // HTTPS server the configuration already has.
   skipDescription?: string
-  skipActionLabel?: string
   // Offers the "Existing certificate" method (a record of the certificate manager).
   existingCertificate?: boolean
+  // Leaves the run and skip buttons to the caller (e.g. a wizard's Finish
+  // button), which drives them through the exposed `confirm`.
+  externalConfirm?: boolean
 }>(), {
   hasPendingTLSServer: false,
   compact: false,
   disabled: false,
   skippable: true,
   existingCertificate: true,
+  externalConfirm: false,
 })
 
 const emit = defineEmits<{
@@ -56,7 +59,7 @@ const emit = defineEmits<{
   skip: []
 }>()
 
-defineSlots<{
+const slots = defineSlots<{
   // Extra buttons rendered next to the primary action (e.g. wizard navigation).
   actions?: () => unknown
 }>()
@@ -421,11 +424,30 @@ function restart() {
   onboarding.reset()
 }
 
+// The action of the primary button: skip, or run (and retry) the setup.
+function confirm() {
+  if (method.value === 'skip')
+    confirmSkip()
+  else
+    submit()
+}
+
+const canConfirm = computed(() => method.value === 'skip' || canSubmit.value)
+
+// With an external confirm button, only "Check only" (and the slot) is left.
+const hasActions = computed(() => Boolean(slots.actions)
+  || (method.value !== 'skip' && phase.value === 'idle')
+  || (!props.externalConfirm && (method.value === 'skip' || phase.value !== 'success')))
+
 defineExpose({
   running,
+  method,
+  phase,
+  canConfirm,
   reset: restart,
   check: runCheck,
   submit,
+  confirm,
 })
 </script>
 
@@ -755,7 +777,7 @@ defineExpose({
       </template>
 
       <!-- Actions -->
-      <AFlex wrap gap="small" align="center">
+      <AFlex v-if="hasActions" wrap gap="small" align="center">
         <template v-if="method !== 'skip' && phase !== 'success'">
           <AButton
             v-if="phase === 'idle'"
@@ -766,6 +788,7 @@ defineExpose({
             {{ $gettext('Check only') }}
           </AButton>
           <AButton
+            v-if="!externalConfirm"
             type="primary"
             :loading="running"
             :disabled="!canSubmit && !running"
@@ -777,11 +800,11 @@ defineExpose({
           </AButton>
         </template>
         <AButton
-          v-if="method === 'skip'"
+          v-if="method === 'skip' && !externalConfirm"
           type="primary"
           @click="confirmSkip"
         >
-          {{ skipActionLabel || $gettext('Continue without HTTPS') }}
+          {{ $gettext('Continue without HTTPS') }}
         </AButton>
         <slot name="actions" />
       </AFlex>

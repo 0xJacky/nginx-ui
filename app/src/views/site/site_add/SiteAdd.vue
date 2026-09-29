@@ -2,17 +2,20 @@
 import type { WizardMode } from './wizardSteps'
 import type { DNSDomain, DNSRecord } from '@/api/dns'
 import type { NgxConfig, NgxDirective, NgxServer } from '@/api/ngx'
+import { StdSelector } from '@uozi-admin/curd'
+import namespace from '@/api/namespace'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import NgxConfigEditor, { DirectiveEditor, LocationEditor, useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { ConfigStatus } from '@/constants'
+import namespaceColumns from '@/views/namespace/columns'
 import QuickSetupForm from '../components/QuickSetup/QuickSetupForm.vue'
 import { useQuickConfig } from '../components/QuickSetup/useQuickConfig'
 import { extractSiteDomains, HTTPSCard, sameStringList, serializeNgxConfig } from '../site_edit/components/HTTPS'
 import { useSiteEditorStore } from '../site_edit/components/SiteEditor/store'
 import DNSRecordIntegration from './components/DNSRecordIntegration.vue'
 import { staleDraftAction, staleDraftName } from './draftCleanup'
-import { defaultEditorPanelKeys, EDITOR_PANEL_KEY, isModeLocked, SSL_STEP, sslStepTLSState } from './wizardSteps'
+import { defaultEditorPanelKeys, EDITOR_PANEL_KEY, isModeLocked, SSL_STEP, sslStepFinishLabel, sslStepTLSState } from './wizardSteps'
 
 const currentStep = ref(0)
 const { message } = useGlobalApp()
@@ -38,6 +41,9 @@ const createdSiteName = ref('')
 // Canonical form of the config written by the last draft save.
 const draftSnapshot = ref<string>()
 const editorKeys = ref<string[]>([])
+// Namespace chosen on the first step. Like the draft name it survives a mode
+// switch, since it does not depend on how the configuration is built.
+const namespaceId = ref<number>()
 // Name of the disabled draft this wizard last wrote. Unlike the step state it
 // survives init() on a mode switch, so a renamed site can still clean it up.
 const draftName = ref('')
@@ -101,6 +107,14 @@ const httpsBlocked = computed(() => draftSaving.value || !draftSaved.value || dr
 
 const httpsCard = useTemplateRef('httpsCard')
 const httpsRunning = computed(() => httpsCard.value?.running ?? false)
+const finishLabel = computed(() => sslStepFinishLabel(httpsCard.value?.method, httpsCard.value?.phase))
+const canFinish = computed(() => httpsCard.value?.canConfirm ?? false)
+
+// The Finish button runs what the HTTPS card is set to: the HTTPS setup, or
+// "Skip for now" which saves and enables the site.
+function confirmSSLStep() {
+  httpsCard.value?.confirm()
+}
 
 const editorItems = computed(() => [{ key: EDITOR_PANEL_KEY, label: $gettext('Edit configuration file') }])
 
@@ -109,9 +123,6 @@ const editorItems = computed(() => [{ key: EDITOR_PANEL_KEY, label: $gettext('Ed
 const skipDescription = computed(() => tlsState.value === 'configured'
   ? $gettext('Save and enable the site with the HTTPS server block it already has.')
   : undefined)
-const skipActionLabel = computed(() => tlsState.value === 'configured'
-  ? $gettext('Save and enable')
-  : undefined)
 
 async function writeSite(config: NgxConfig) {
   const r = await ngx.build_config(config)
@@ -119,6 +130,7 @@ async function writeSite(config: NgxConfig) {
   const payload: Record<string, unknown> = {
     name: ngxConfig.value.name,
     content: r.content,
+    namespace_id: namespaceId.value ?? 0,
     overwrite: true, // Always overwrite to avoid conflicts during multi-step process
     // Nginx is only tested and reloaded when the site is enabled.
     post_action: 'reload_nginx',
@@ -422,12 +434,33 @@ function onDNSRecordCleared() {
         <QuickSetupForm
           v-if="quickMode"
           :quick="quick"
-        />
+        >
+          <template #afterName>
+            <AFormItem :label="$gettext('Namespace')">
+              <StdSelector
+                v-model:value="namespaceId"
+                :get-list-api="namespace.getList"
+                :columns="namespaceColumns"
+                display-key="name"
+                selection-type="radio"
+              />
+            </AFormItem>
+          </template>
+        </QuickSetupForm>
 
         <template v-else>
           <AForm layout="vertical">
             <AFormItem :label="$gettext('Configuration Name')">
               <AInput v-model:value="ngxConfig.name" />
+            </AFormItem>
+            <AFormItem :label="$gettext('Namespace')">
+              <StdSelector
+                v-model:value="namespaceId"
+                :get-list-api="namespace.getList"
+                :columns="namespaceColumns"
+                display-key="name"
+                selection-type="radio"
+              />
             </AFormItem>
           </AForm>
 
@@ -491,7 +524,7 @@ function onDNSRecordCleared() {
           :has-pending-t-l-s-server="hasPendingTLS"
           :disabled="httpsBlocked"
           :skip-description
-          :skip-action-label
+          external-confirm
           @success="onHTTPSSuccess"
           @skip="saveAndEnable"
         />
@@ -507,7 +540,16 @@ function onDNSRecordCleared() {
         </ACollapse>
       </ASpin>
 
-      <ASpace v-if="currentStep < 3">
+      <!-- Back on the left, the step's primary action on the right. -->
+      <AFlex v-if="currentStep < 3" justify="space-between" align="center" gap="small" wrap>
+        <AButton
+          v-if="currentStep > 0"
+          :disabled="finishing || httpsRunning"
+          @click="currentStep--"
+        >
+          {{ $gettext('Back') }}
+        </AButton>
+        <span v-else />
         <AButton
           v-if="currentStep === 0"
           type="primary"
@@ -517,22 +559,25 @@ function onDNSRecordCleared() {
         >
           {{ $gettext('Next') }}
         </AButton>
-        <!-- On the SSL step the HTTPS card finishes the wizard. -->
+        <!-- Runs what the HTTPS card is set to and finishes the wizard. -->
         <AButton
-          v-else-if="currentStep !== SSL_STEP"
+          v-else-if="currentStep === SSL_STEP"
+          type="primary"
+          :loading="httpsRunning || finishing"
+          :disabled="!canFinish"
+          data-testid="site-add-finish"
+          @click="confirmSSLStep"
+        >
+          {{ finishLabel }}
+        </AButton>
+        <AButton
+          v-else
           type="primary"
           @click="next"
         >
           {{ $gettext('Next') }}
         </AButton>
-        <AButton
-          v-if="currentStep > 0"
-          :disabled="finishing || httpsRunning"
-          @click="currentStep--"
-        >
-          {{ $gettext('Back') }}
-        </AButton>
-      </ASpace>
+      </AFlex>
       <AResult
         v-else-if="currentStep === 3"
         status="success"

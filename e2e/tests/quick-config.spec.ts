@@ -67,10 +67,10 @@ test('quick setup reverse proxy without TLS saves a site end to end', async ({ p
   await expect(page.locator('.ant-steps-item-active')).toContainText('Configure SSL')
   expect((await draftPromise).ok()).toBe(true)
 
-  // The HTTPS card is the only way forward; skipping it saves and enables the site.
+  // The wizard's Finish button runs the HTTPS card's method; skipping saves and enables the site.
   await page.getByText('Skip for now', { exact: true }).click()
   const savePromise = waitForApiResponse(page, `/api/sites/${name}`, 'POST')
-  await page.getByRole('button', { name: 'Continue without HTTPS', exact: true }).click()
+  await page.getByRole('button', { name: 'Finish', exact: true }).click()
   const saveResponse = await savePromise
   expect(saveResponse.ok()).toBe(true)
 
@@ -108,8 +108,10 @@ test('quick setup reverse proxy with TLS emits redirect, websocket and acme-chal
 
   // The mode is fixed once the wizard leaves the first step.
   await expect(page.locator('.ant-segmented').first()).toHaveClass(/ant-segmented-disabled/)
-  // The HTTPS card is the only way forward: no Next button on this step.
-  await expect(page.getByRole('button', { name: 'Issue and enable HTTPS', exact: true })).toBeEnabled()
+  // The wizard's Finish button runs the HTTPS card: no Next button on this step,
+  // and the card leaves its own run button to the wizard.
+  await expect(page.getByRole('button', { name: 'Issue certificate and finish', exact: true })).toBeEnabled()
+  await expect(page.getByRole('button', { name: 'Issue and enable HTTPS', exact: true })).toHaveCount(0)
   await expect(page.getByRole('button', { name: 'Next', exact: true })).toHaveCount(0)
 
   const deleteResponse = await page.request.delete('/api/sites/e2e-rp-tls', { headers: await authHeaders(page) })

@@ -4,8 +4,11 @@ import {
   defaultEditorPanelKeys,
   EDITOR_PANEL_KEY,
   isModeLocked,
+  sslStepFinishLabel,
   sslStepTLSState,
 } from '@/views/site/site_add/wizardSteps'
+
+Object.assign(globalThis, { $gettext: (message: string) => message })
 
 function httpServer(): NgxServer {
   return {
@@ -66,5 +69,23 @@ describe('sslStepTLSState', () => {
 
   test('TLS servers that all have a certificate are configured', () => {
     expect(sslStepTLSState({ servers: [httpServer(), tlsServer('/etc/ssl/app')] })).toBe('configured')
+  })
+})
+
+describe('sslStepFinishLabel', () => {
+  test('skipping only finishes the wizard', () => {
+    expect(sslStepFinishLabel('skip', 'idle')).toBe('Finish')
+    expect(sslStepFinishLabel(undefined, undefined)).toBe('Finish')
+  })
+
+  test('names the HTTPS work the button starts', () => {
+    expect(sslStepFinishLabel('http01', 'idle')).toBe('Issue certificate and finish')
+    expect(sslStepFinishLabel('dns01', 'running')).toBe('Issue certificate and finish')
+    expect(sslStepFinishLabel('existing', 'idle')).toBe('Enable HTTPS and finish')
+  })
+
+  test('a failed run is retried', () => {
+    expect(sslStepFinishLabel('http01', 'error')).toBe('Retry')
+    expect(sslStepFinishLabel('existing', 'error')).toBe('Retry')
   })
 })
