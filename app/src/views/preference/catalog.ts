@@ -40,7 +40,7 @@ export function buildSettingCatalog(): SettingCatalogEntry[] {
     { path: 'node.public_security_number', section: 'node', title: $gettext('Public Security Number'), description: $gettext('Shown in the page footer. Only needed for sites hosted in mainland China.') },
 
     // HTTP
-    { path: 'http.github_proxy', section: 'http', title: $gettext('Github Proxy'), description: $gettext('Used for downloads from GitHub, such as upgrades and the GeoLite database.') },
+    { path: 'http.github_proxy', section: 'http', title: $gettext('Github Proxy'), description: $gettext('Used for downloads from GitHub, such as upgrades.') },
     { path: 'http.http_proxy', section: 'http', title: $gettext('HTTP Proxy'), description: $gettext('Used for other outgoing requests made by Nginx UI.') },
     { path: 'http.insecure_skip_verify', section: 'http', title: $gettext('Insecure Skip Verify') },
 
@@ -121,11 +121,6 @@ export function buildSettingCatalog(): SettingCatalogEntry[] {
     { path: 'logrotate.enabled', section: 'logrotate', title: $gettext('Enable Logrotate'), description: $gettext('Runs the rotation command on a schedule from Nginx UI. Mainly needed inside a Docker container.') },
     { path: 'logrotate.cmd', section: 'logrotate', title: $gettext('Command') },
     { path: 'logrotate.interval', section: 'logrotate', title: $gettext('Interval'), description: $gettext('Minutes between two runs.') },
-
-    // GeoLite
-    { path: 'nginx_log.geolite_database', section: 'geolite', title: $gettext('GeoLite2 Database'), description: $gettext('The GeoLite2 database provides geographic information for IP addresses. This is used for offline geographic analysis in log analytics.') },
-    { path: 'nginx_log.index_custom_mmdb', section: 'geolite', title: $gettext('Custom MMDB'), description: $gettext('A custom database replaces the GeoLite2 download.') },
-    { path: 'nginx_log.geo_map_path', section: 'geolite', title: $gettext('Map Boundary Directory'), description: $gettext('Keep files with names like 100000_full.json in this directory. Only the world map is provided by default.') },
   ]
 }
 

@@ -1,38 +1,17 @@
 package parser
 
 import (
-	"bufio"
 	"bytes"
-	"context"
-	"io"
 	"strconv"
 	"sync"
 	"time"
 	"unsafe"
-
-	"github.com/0xJacky/Nginx-UI/internal/cgroup"
 )
 
-// Parser provides high-performance log parsing with zero-copy optimizations
+// Parser parses combined format access log lines with zero-copy optimizations
 type Parser struct {
-	config     *Config
-	uaParser   UserAgentParser
-	geoService GeoIPService
-	pool       *sync.Pool
-	stats      *ParseStats
-	mu         sync.RWMutex
-}
-
-// ParseStats tracks parsing performance metrics
-type ParseStats struct {
-	TotalLines     int64
-	SuccessLines   int64
-	ErrorLines     int64
-	TotalBytes     int64
-	ParseDuration  time.Duration
-	LinesPerSecond float64
-	BytesPerSecond float64
-	LastUpdated    time.Time
+	config *Config
+	pool   *sync.Pool
 }
 
 // parseBuffer holds reusable parsing buffers
@@ -49,16 +28,13 @@ type parseBuffer struct {
 }
 
 // NewParser creates a new high-performance parser
-func NewParser(config *Config, uaParser UserAgentParser, geoService GeoIPService) *Parser {
+func NewParser(config *Config) *Parser {
 	if config == nil {
 		config = DefaultParserConfig()
 	}
 
 	return &Parser{
-		config:     config,
-		uaParser:   uaParser,
-		geoService: geoService,
-		stats:      &ParseStats{},
+		config: config,
 		pool: &sync.Pool{
 			New: func() interface{} {
 				return &parseBuffer{
@@ -108,219 +84,6 @@ func (p *Parser) ParseLine(line string) (*AccessLogEntry, error) {
 	// Create a copy of the entry to avoid sharing the pooled object
 	entryCopy := *buf.entry
 	return &entryCopy, nil
-}
-
-// ParseLines parses multiple log lines with parallel processing
-func (p *Parser) ParseLines(lines []string) *ParseResult {
-	return p.ParseLinesWithContext(context.Background(), lines)
-}
-
-// ParseLinesWithContext parses lines with context support for cancellation
-func (p *Parser) ParseLinesWithContext(ctx context.Context, lines []string) *ParseResult {
-	startTime := time.Now()
-	result := &ParseResult{
-		Entries:   make([]*AccessLogEntry, 0, len(lines)),
-		Processed: len(lines),
-	}
-
-	if len(lines) == 0 {
-		result.Duration = time.Since(startTime)
-		return result
-	}
-
-	// For small datasets, use single-threaded parsing
-	if len(lines) < p.config.BatchSize {
-		return p.parseLinesSingleThreaded(ctx, lines, startTime)
-	}
-
-	// Use parallel processing for larger datasets
-	return p.parseLinesParallel(ctx, lines, startTime)
-}
-
-// ParseStream parses log entries from an io.Reader with streaming support
-func (p *Parser) ParseStream(ctx context.Context, reader io.Reader) (*ParseResult, error) {
-	startTime := time.Now()
-	result := &ParseResult{
-		Entries: make([]*AccessLogEntry, 0),
-	}
-
-	scanner := bufio.NewScanner(reader)
-	scanner.Buffer(make([]byte, 0, p.config.BufferSize), p.config.MaxLineLength)
-
-	batch := make([]string, 0, p.config.BatchSize)
-
-	for scanner.Scan() {
-		select {
-		case <-ctx.Done():
-			return result, ctx.Err()
-		default:
-		}
-
-		line := scanner.Text()
-		if len(line) == 0 {
-			continue
-		}
-
-		batch = append(batch, line)
-		result.Processed++
-
-		if len(batch) >= p.config.BatchSize {
-			batchResult := p.ParseLinesWithContext(ctx, batch)
-			result.Entries = append(result.Entries, batchResult.Entries...)
-			result.Succeeded += batchResult.Succeeded
-			result.Failed += batchResult.Failed
-			batch = batch[:0]
-		}
-	}
-
-	// Process remaining lines in batch
-	if len(batch) > 0 {
-		batchResult := p.ParseLinesWithContext(ctx, batch)
-		result.Entries = append(result.Entries, batchResult.Entries...)
-		result.Succeeded += batchResult.Succeeded
-		result.Failed += batchResult.Failed
-	}
-
-	if err := scanner.Err(); err != nil {
-		return result, err
-	}
-
-	result.Duration = time.Since(startTime)
-	if result.Processed > 0 {
-		result.ErrorRate = float64(result.Failed) / float64(result.Processed)
-	}
-
-	p.updateStats(result)
-	return result, nil
-}
-
-// parseLinesSingleThreaded handles small datasets with single-threaded parsing
-func (p *Parser) parseLinesSingleThreaded(ctx context.Context, lines []string, startTime time.Time) *ParseResult {
-	result := &ParseResult{
-		Entries:   make([]*AccessLogEntry, 0, len(lines)),
-		Processed: len(lines),
-	}
-
-	for _, line := range lines {
-		select {
-		case <-ctx.Done():
-			result.Duration = time.Since(startTime)
-			return result
-		default:
-		}
-
-		if entry, err := p.ParseLine(line); err == nil {
-			result.Entries = append(result.Entries, entry)
-			result.Succeeded++
-		} else {
-			result.Failed++
-		}
-	}
-
-	result.Duration = time.Since(startTime)
-	if result.Processed > 0 {
-		result.ErrorRate = float64(result.Failed) / float64(result.Processed)
-	}
-
-	return result
-}
-
-// parseLinesParallel handles large datasets with parallel processing
-func (p *Parser) parseLinesParallel(ctx context.Context, lines []string, startTime time.Time) *ParseResult {
-	numWorkers := p.config.WorkerCount
-	if numWorkers <= 0 {
-		// cgroup.AvailableCPUs rather than runtime.NumCPU: the affinity mask
-		// reports every host CPU inside a cgroup-limited container.
-		numWorkers = cgroup.AvailableCPUs()
-	}
-
-	if numWorkers > len(lines)/10 {
-		numWorkers = len(lines)/10 + 1
-	}
-
-	result := &ParseResult{
-		Processed: len(lines),
-	}
-
-	// Create channels for work distribution
-	lineChan := make(chan string, numWorkers*2)
-	resultChan := make(chan *AccessLogEntry, len(lines))
-	errorChan := make(chan error, len(lines))
-
-	var wg sync.WaitGroup
-
-	// Start worker goroutines
-	for i := 0; i < numWorkers; i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			for line := range lineChan {
-				if entry, err := p.ParseLine(line); err == nil {
-					resultChan <- entry
-				} else {
-					errorChan <- err
-				}
-			}
-		}()
-	}
-
-	// Send lines to workers
-	go func() {
-		defer close(lineChan)
-		for _, line := range lines {
-			select {
-			case <-ctx.Done():
-				return
-			case lineChan <- line:
-			}
-		}
-	}()
-
-	// Wait for workers and close result channels
-	go func() {
-		wg.Wait()
-		close(resultChan)
-		close(errorChan)
-	}()
-
-	// Collect results
-	entries := make([]*AccessLogEntry, 0, len(lines))
-	var errorCount int
-
-	for {
-		select {
-		case <-ctx.Done():
-			result.Duration = time.Since(startTime)
-			return result
-		case entry, ok := <-resultChan:
-			if !ok {
-				resultChan = nil
-			} else {
-				entries = append(entries, entry)
-			}
-		case _, ok := <-errorChan:
-			if !ok {
-				errorChan = nil
-			} else {
-				errorCount++
-			}
-		}
-
-		if resultChan == nil && errorChan == nil {
-			break
-		}
-	}
-
-	result.Entries = entries
-	result.Succeeded = len(entries)
-	result.Failed = errorCount
-	result.Duration = time.Since(startTime)
-
-	if result.Processed > 0 {
-		result.ErrorRate = float64(result.Failed) / float64(result.Processed)
-	}
-
-	return result
 }
 
 // parseLineOptimized performs optimized parsing of a single line
@@ -409,25 +172,6 @@ func (p *Parser) parseIP(line []byte, pos int, entry *AccessLogEntry) int {
 	}
 	if pos > start {
 		entry.IP = bytesToString(line[start:pos])
-
-		// Populate geographic fields if enabled
-		if p.config.EnableGeoIP && p.geoService != nil && entry.IP != "-" {
-			if location, err := p.geoService.Search(entry.IP); err == nil && location != nil {
-				entry.Province = location.Province
-				entry.City = location.City
-				entry.C1 = location.C1
-				entry.C2 = location.C2
-				entry.C3 = location.C3
-				entry.C4 = location.C4
-				// Use the specific RegionCode (e.g., province code 'CA') if available,
-				// otherwise, fall back to the CountryCode (e.g., 'US').
-				if location.RegionCode != "" {
-					entry.RegionCode = location.RegionCode
-				} else {
-					entry.RegionCode = location.CountryCode
-				}
-			}
-		}
 	}
 	return pos
 }
@@ -599,21 +343,6 @@ func (p *Parser) parseUserAgent(line []byte, pos int, entry *AccessLogEntry) int
 	if pos > start {
 		userAgent := bytesToString(line[start:pos])
 		entry.UserAgent = userAgent
-
-		if p.config.EnableUA && p.uaParser != nil && userAgent != "-" {
-			parsed := p.uaParser.Parse(userAgent)
-			if parsed.Browser != "Unknown" && parsed.Browser != "" {
-				entry.Browser = parsed.Browser
-				entry.BrowserVer = parsed.BrowserVer
-			}
-			if parsed.OS != "Unknown" && parsed.OS != "" {
-				entry.OS = parsed.OS
-				entry.OSVersion = parsed.OSVersion
-			}
-			if parsed.DeviceType != "" {
-				entry.DeviceType = parsed.DeviceType
-			}
-		}
 	}
 
 	if pos < len(line) && line[pos] == '"' {
@@ -672,38 +401,6 @@ func (p *Parser) skipField(line []byte, pos int) int {
 		pos++
 	}
 	return pos
-}
-
-func (p *Parser) updateStats(result *ParseResult) {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-
-	p.stats.TotalLines += int64(result.Processed)
-	p.stats.SuccessLines += int64(result.Succeeded)
-	p.stats.ErrorLines += int64(result.Failed)
-	p.stats.ParseDuration += result.Duration
-	p.stats.LastUpdated = time.Now()
-
-	if result.Duration > 0 {
-		p.stats.LinesPerSecond = float64(result.Processed) / result.Duration.Seconds()
-	}
-}
-
-// GetStats returns current parsing statistics
-func (p *Parser) GetStats() *ParseStats {
-	p.mu.RLock()
-	defer p.mu.RUnlock()
-
-	statsCopy := *p.stats
-	return &statsCopy
-}
-
-// ResetStats resets parsing statistics
-func (p *Parser) ResetStats() {
-	p.mu.Lock()
-	defer p.mu.Unlock()
-
-	p.stats = &ParseStats{}
 }
 
 // Zero-copy string/byte conversion utilities

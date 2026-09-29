@@ -3,6 +3,7 @@ package demo
 import (
 	"bufio"
 	"fmt"
+	"net/netip"
 	"os"
 	"path/filepath"
 	"time"
@@ -13,20 +14,33 @@ import (
 // Synthetic access log.
 //
 // This is the one part of the demo that cannot be a provider. Everything the
-// log dashboard shows is aggregated by the real parser, indexer and searcher
-// from a file on disk, and there is no seam between "file" and "indexed
-// document" — so the honest way to populate it is to write a real log and let
-// the real pipeline consume it.
+// log views show is read from a file on disk, so the honest way to populate
+// them is to write a real log and let the real pipeline consume it.
 //
-// The clients are drawn from the RFC 5737 documentation ranges, which is what
-// geoService will fabricate a location for. That pairing is deliberate: the
-// fake geo provider answers for exactly the addresses this file invents, and
-// declines everything else.
+// The clients are drawn from the RFC 5737 and RFC 3849 documentation ranges, so
+// the log never names a real visitor.
+
+// Documentation address blocks the synthetic access log draws its client IPs
+// from.
+var documentationPrefixes = []netip.Prefix{
+	netip.MustParsePrefix("192.0.2.0/24"),    // RFC 5737 TEST-NET-1
+	netip.MustParsePrefix("198.51.100.0/24"), // RFC 5737 TEST-NET-2
+	netip.MustParsePrefix("203.0.113.0/24"),  // RFC 5737 TEST-NET-3
+	netip.MustParsePrefix("2001:db8::/32"),   // RFC 3849
+}
+
+func isDocumentationIP(addr netip.Addr) bool {
+	for _, prefix := range documentationPrefixes {
+		if prefix.Contains(addr) {
+			return true
+		}
+	}
+	return false
+}
 
 const (
 	// logLineCount is a compromise. Enough for the charts to have shape, few
-	// enough that indexing them does not stretch the cold start; the bleve
-	// index runs about 0.9 KB per line.
+	// enough that indexing them does not stretch the cold start.
 	logLineCount = 20000
 	// logWindow is how far back the oldest entry sits. The dashboard's default
 	// range is the last 24 hours, so the window must cover it.

@@ -5,8 +5,6 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/0xJacky/Nginx-UI/internal/cache"
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/require"
 )
@@ -81,26 +79,41 @@ func makeDirectory(t *testing.T, dir, name string) string {
 }
 
 // groupsByPath indexes the grouped log list by path for direct field assertions.
-func groupsByPath(logs []*NginxLogWithIndex) map[string]*NginxLogWithIndex {
-	byPath := make(map[string]*NginxLogWithIndex, len(logs))
+func groupsByPath(logs []*NginxLogCache) map[string]*NginxLogCache {
+	byPath := make(map[string]*NginxLogCache, len(logs))
 	for _, log := range logs {
 		byPath[log.Path] = log
 	}
 	return byPath
 }
 
-// TestDefaultLogPathsAreIndexableWithoutDirectives is the regression test for
+// isDefaultLogPath reports whether the path is one of the nginx default logs.
+func isDefaultLogPath(path string) bool {
+	defaultLogRegistryMutex.RLock()
+	defer defaultLogRegistryMutex.RUnlock()
+
+	_, ok := defaultLogRegistry[path]
+	return ok
+}
+
+// isConfigLogPath reports whether the path is declared by a configuration file.
+func isConfigLogPath(path string) bool {
+	configLogRegistryMutex.RLock()
+	defer configLogRegistryMutex.RUnlock()
+
+	_, ok := configLogRegistry[path]
+	return ok
+}
+
+// TestDefaultLogPathsAreListedWithoutDirectives is the regression test for
 // issue #1787.
 //
 // The reporter runs the Homebrew nginx build, whose shipped nginx.conf has every
 // access_log directive commented out. He configured the real log paths through
-// nginx.AccessLogPath in app.ini, which made the log preview work, but the
-// indexer never saw them: the only source of indexable log paths was
+// nginx.AccessLogPath in app.ini, which made the log preview work, but the log
+// list stayed empty: the only source of listed log paths was
 // scanForLogDirectives, and it can only find paths that a directive spells out.
-// A full rebuild therefore reported "Processing 0 log groups" forever.
-func TestDefaultLogPathsAreIndexableWithoutDirectives(t *testing.T) {
-	cache.InitInMemoryCache()
-	useRegistryTestDB(t)
+func TestDefaultLogPathsAreListedWithoutDirectives(t *testing.T) {
 	resetConfigLogRegistry(t)
 	resetDefaultLogRegistry(t)
 
@@ -111,10 +124,6 @@ func TestDefaultLogPathsAreIndexableWithoutDirectives(t *testing.T) {
 	useLogDirWhiteList(t, logDir)
 	useDefaultLogSettings(t, accessLogPath, errorLogPath)
 
-	setManager := logFileManagerSwapper(t)
-	manager := indexer.NewLogFileManager()
-	setManager(manager)
-
 	// The configuration scan runs over the Homebrew nginx.conf and finds nothing,
 	// because both access_log lines are comments.
 	require.NoError(t, scanForLogDirectives("/opt/homebrew/etc/nginx/nginx.conf", []byte(
@@ -124,17 +133,17 @@ func TestDefaultLogPathsAreIndexableWithoutDirectives(t *testing.T) {
 			"        #access_log  logs/host.access.log  main;\n"+
 			"    }\n"+
 			"}\n")))
-	require.Empty(t, GetAllLogsWithIndexGrouped(),
+	require.Empty(t, GetAllLogPathsGrouped(),
 		"a configuration whose access_log directives are all commented out discovers no log path")
 
 	// Resolving the nginx defaults is what makes the log groups appear.
 	require.Equal(t, 2, RefreshDefaultLogPaths())
 	require.Equal(t, []string{accessLogPath, errorLogPath},
-		groupedLogPaths(GetAllLogsWithIndexGrouped()))
+		logPaths(GetAllLogPathsGrouped()))
 
-	groups := groupsByPath(GetAllLogsWithIndexGrouped())
+	groups := groupsByPath(GetAllLogPathsGrouped())
 	require.Equal(t, logTypeAccess, groups[accessLogPath].Type,
-		"the default access log must be typed as an access log so a full rebuild indexes it")
+		"the default access log must be typed as an access log")
 	require.Equal(t, logTypeError, groups[errorLogPath].Type)
 
 	// No configuration file owns these entries, so no rescan can take them away.
@@ -143,55 +152,12 @@ func TestDefaultLogPathsAreIndexableWithoutDirectives(t *testing.T) {
 	require.False(t, isConfigLogPath(accessLogPath))
 }
 
-// TestDefaultLogPathsSurviveIndexingRestart covers turning advanced indexing off
-// and on again: StopServices drops the LogFileManager holding the log paths and
-// InitializeServices builds an empty replacement, so the default paths have to be
-// kept outside the services and handed to every new manager.
-func TestDefaultLogPathsSurviveIndexingRestart(t *testing.T) {
-	cache.InitInMemoryCache()
-	useRegistryTestDB(t)
-	resetConfigLogRegistry(t)
-	resetDefaultLogRegistry(t)
-
-	logDir := t.TempDir()
-	accessLogPath := writeLogFile(t, logDir, "access.log")
-
-	useLogDirWhiteList(t, logDir)
-	useDefaultLogSettings(t, accessLogPath, makeDirectory(t, logDir, "no-error-log"))
-
-	setManager := logFileManagerSwapper(t)
-	first := indexer.NewLogFileManager()
-	setManager(first)
-
-	require.Equal(t, 1, RefreshDefaultLogPaths())
-	require.Equal(t, []string{accessLogPath}, cachedLogPaths(first.GetAllLogPaths()))
-
-	// Advanced indexing turned off: StopServices drops the manager.
-	setManager(nil)
-	require.Equal(t, []string{accessLogPath}, groupedLogPaths(GetAllLogsWithIndexGrouped()),
-		"the nginx default logs must stay listable while indexing is disabled")
-
-	// Advanced indexing turned back on: InitializeServices builds a new manager
-	// that starts out empty.
-	second := indexer.NewLogFileManager()
-	setManager(second)
-	require.Empty(t, second.GetAllLogPaths(), "a freshly created manager starts without any log path")
-
-	// EnableAdvancedIndexing calls SyncDiscoveredLogPaths right after
-	// InitializeServices; it must restore the default paths as well.
-	require.Zero(t, SyncDiscoveredLogPaths(), "nothing was discovered from the configuration")
-	require.Equal(t, []string{accessLogPath}, cachedLogPaths(second.GetAllLogPaths()))
-	require.Equal(t, []string{accessLogPath}, groupedLogPaths(GetAllLogsWithIndexGrouped()))
-}
-
 // TestRefreshDefaultLogPathsRejectsInvalidPaths makes sure the default paths go
 // through the same validation as a path taken from a directive. Both settings
 // accept arbitrary values, and the whitelist check must not be skipped just
 // because it usually passes for the defaults.
 func TestRefreshDefaultLogPathsRejectsInvalidPaths(t *testing.T) {
 	t.Run("not a regular file", func(t *testing.T) {
-		cache.InitInMemoryCache()
-		useRegistryTestDB(t)
 		resetConfigLogRegistry(t)
 		resetDefaultLogRegistry(t)
 
@@ -201,18 +167,12 @@ func TestRefreshDefaultLogPathsRejectsInvalidPaths(t *testing.T) {
 			makeDirectory(t, logDir, "access.log"),
 			makeDirectory(t, logDir, "error.log"))
 
-		setManager := logFileManagerSwapper(t)
-		manager := indexer.NewLogFileManager()
-		setManager(manager)
-
 		require.Zero(t, RefreshDefaultLogPaths())
-		require.Empty(t, manager.GetAllLogPaths())
-		require.Empty(t, GetAllLogsWithIndexGrouped())
+		require.Empty(t, GetAllLogPaths())
+		require.Empty(t, GetAllLogPathsGrouped())
 	})
 
 	t.Run("symlink resolving outside the whitelist", func(t *testing.T) {
-		cache.InitInMemoryCache()
-		useRegistryTestDB(t)
 		resetConfigLogRegistry(t)
 		resetDefaultLogRegistry(t)
 
@@ -226,13 +186,9 @@ func TestRefreshDefaultLogPathsRejectsInvalidPaths(t *testing.T) {
 		useLogDirWhiteList(t, logDir)
 		useDefaultLogSettings(t, accessLogPath, makeDirectory(t, logDir, "no-error-log"))
 
-		setManager := logFileManagerSwapper(t)
-		manager := indexer.NewLogFileManager()
-		setManager(manager)
-
 		require.Zero(t, RefreshDefaultLogPaths(),
 			"a default log path whose symlink target escapes the whitelist must be rejected")
-		require.Empty(t, manager.GetAllLogPaths())
+		require.Empty(t, GetAllLogPaths())
 	})
 }
 
@@ -241,8 +197,6 @@ func TestRefreshDefaultLogPathsRejectsInvalidPaths(t *testing.T) {
 // yield a single log group, and removing the directive must not take the default
 // away.
 func TestDefaultLogPathNotDuplicatedByDirective(t *testing.T) {
-	cache.InitInMemoryCache()
-	useRegistryTestDB(t)
 	resetConfigLogRegistry(t)
 	resetDefaultLogRegistry(t)
 
@@ -252,35 +206,29 @@ func TestDefaultLogPathNotDuplicatedByDirective(t *testing.T) {
 	useLogDirWhiteList(t, logDir)
 	useDefaultLogSettings(t, accessLogPath, makeDirectory(t, logDir, "no-error-log"))
 
-	setManager := logFileManagerSwapper(t)
-	manager := indexer.NewLogFileManager()
-	setManager(manager)
-
 	require.Equal(t, 1, RefreshDefaultLogPaths())
 
 	configPath := "/etc/nginx/conf.d/default-access-log.conf"
 	require.NoError(t, scanForLogDirectives(configPath,
 		[]byte("server {\n    access_log "+accessLogPath+" main;\n}\n")))
 
-	require.Equal(t, []string{accessLogPath}, cachedLogPaths(manager.GetAllLogPaths()),
+	require.Equal(t, []string{accessLogPath}, logPaths(GetAllLogPaths()),
 		"a path declared by a directive and used as the default log must be registered once")
-	require.Equal(t, []string{accessLogPath}, groupedLogPaths(GetAllLogsWithIndexGrouped()))
-	require.Len(t, GetAllLogsWithIndex(), 1)
+	require.Equal(t, []string{accessLogPath}, logPaths(GetAllLogPathsGrouped()))
+	require.Len(t, GetAllLogPaths(), 1)
 
 	// The directive is commented out again. The path is still the default access
 	// log, so it must survive the rescan that drops the directive.
 	require.NoError(t, scanForLogDirectives(configPath, []byte("server {\n}\n")))
-	require.Equal(t, []string{accessLogPath}, cachedLogPaths(manager.GetAllLogPaths()))
-	require.Equal(t, []string{accessLogPath}, groupedLogPaths(GetAllLogsWithIndexGrouped()))
+	require.Equal(t, []string{accessLogPath}, logPaths(GetAllLogPaths()))
+	require.Equal(t, []string{accessLogPath}, logPaths(GetAllLogPathsGrouped()))
 }
 
 // TestRefreshDefaultLogPathsFollowsSettingsChange checks that re-resolving picks
 // up a new nginx.AccessLogPath and forgets the previous one. The post-scan
 // callback re-runs this on every configuration scan sweep, so the change takes
-// effect without restarting the indexing services.
+// effect without a restart.
 func TestRefreshDefaultLogPathsFollowsSettingsChange(t *testing.T) {
-	cache.InitInMemoryCache()
-	useRegistryTestDB(t)
 	resetConfigLogRegistry(t)
 	resetDefaultLogRegistry(t)
 
@@ -292,16 +240,12 @@ func TestRefreshDefaultLogPathsFollowsSettingsChange(t *testing.T) {
 	useLogDirWhiteList(t, logDir)
 	useDefaultLogSettings(t, firstLogPath, noErrorLog)
 
-	setManager := logFileManagerSwapper(t)
-	manager := indexer.NewLogFileManager()
-	setManager(manager)
-
 	require.Equal(t, 1, RefreshDefaultLogPaths())
-	require.Equal(t, []string{firstLogPath}, cachedLogPaths(manager.GetAllLogPaths()))
+	require.Equal(t, []string{firstLogPath}, logPaths(GetAllLogPaths()))
 
 	settings.NginxSettings.AccessLogPath = secondLogPath
 	require.Equal(t, 1, RefreshDefaultLogPaths())
-	require.Equal(t, []string{secondLogPath}, cachedLogPaths(manager.GetAllLogPaths()))
+	require.Equal(t, []string{secondLogPath}, logPaths(GetAllLogPaths()))
 	require.False(t, isDefaultLogPath(firstLogPath))
 }
 
@@ -309,8 +253,6 @@ func TestRefreshDefaultLogPathsFollowsSettingsChange(t *testing.T) {
 // dropping a stale default never removes a path an access_log directive still
 // declares.
 func TestRefreshDefaultLogPathsKeepsPathStillDeclaredByDirective(t *testing.T) {
-	cache.InitInMemoryCache()
-	useRegistryTestDB(t)
 	resetConfigLogRegistry(t)
 	resetDefaultLogRegistry(t)
 
@@ -322,10 +264,6 @@ func TestRefreshDefaultLogPathsKeepsPathStillDeclaredByDirective(t *testing.T) {
 	useLogDirWhiteList(t, logDir)
 	useDefaultLogSettings(t, sharedLogPath, noErrorLog)
 
-	setManager := logFileManagerSwapper(t)
-	manager := indexer.NewLogFileManager()
-	setManager(manager)
-
 	require.Equal(t, 1, RefreshDefaultLogPaths())
 	require.NoError(t, scanForLogDirectives("/etc/nginx/conf.d/shared.conf",
 		[]byte("server {\n    access_log "+sharedLogPath+" main;\n}\n")))
@@ -334,7 +272,7 @@ func TestRefreshDefaultLogPathsKeepsPathStillDeclaredByDirective(t *testing.T) {
 	require.Equal(t, 1, RefreshDefaultLogPaths())
 
 	require.Equal(t, []string{newDefaultLogPath, sharedLogPath},
-		cachedLogPaths(manager.GetAllLogPaths()),
+		logPaths(GetAllLogPaths()),
 		"the previous default is still declared by a directive and must stay registered")
 }
 
@@ -343,8 +281,6 @@ func TestRefreshDefaultLogPathsKeepsPathStillDeclaredByDirective(t *testing.T) {
 // file can ever carry, and a removal request for it must be refused instead of
 // wiping every default at once.
 func TestRemoveLogPathsFromConfigIgnoresDefaultMarker(t *testing.T) {
-	cache.InitInMemoryCache()
-	useRegistryTestDB(t)
 	resetConfigLogRegistry(t)
 	resetDefaultLogRegistry(t)
 
@@ -354,15 +290,8 @@ func TestRemoveLogPathsFromConfigIgnoresDefaultMarker(t *testing.T) {
 	useLogDirWhiteList(t, logDir)
 	useDefaultLogSettings(t, accessLogPath, makeDirectory(t, logDir, "no-error-log"))
 
-	setManager := logFileManagerSwapper(t)
-	manager := indexer.NewLogFileManager()
-	setManager(manager)
-
 	require.Equal(t, 1, RefreshDefaultLogPaths())
 
 	RemoveLogPathsFromConfig(defaultLogConfigFile)
-	require.Equal(t, []string{accessLogPath}, cachedLogPaths(manager.GetAllLogPaths()))
-
-	manager.RemoveLogPathsFromConfig("")
-	require.Equal(t, []string{accessLogPath}, cachedLogPaths(manager.GetAllLogPaths()))
+	require.Equal(t, []string{accessLogPath}, logPaths(GetAllLogPaths()))
 }
