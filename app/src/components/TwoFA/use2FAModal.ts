@@ -83,6 +83,12 @@ function use2FAModal() {
       const modalInstance = modal.value!.confirm({
         title: $gettext('Two-factor authentication required'),
         centered: true,
+        // Let the user back out (X button or Esc) when the prompt was opened
+        // by mistake or no authenticator is at hand. Both paths go through
+        // onCancel, which rejects with TwoFACancelledError. The mask stays
+        // non-closable so a stray click does not discard a half-typed code.
+        closable: true,
+        keyboard: true,
         maskClosable: false,
         class: randomId,
         footer: null,
