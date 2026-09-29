@@ -26,7 +26,6 @@ var (
 	ErrAccessLogPathNotExist            = e.New(40417, "Access log path not exist")
 	ErrErrorLogPathNotExist             = e.New(40418, "Error log path not exist")
 	ErrConfdNotExists                   = e.New(40419, "Conf.d directory not exists")
-	ErrGeoLiteDBNotFound                = e.New(40420, "GeoLite2 database not found at {0}. Log indexing requires GeoLite2 database for geographic IP analysis")
 	ErrFailedToReadBundledNginxUIConf   = e.New(50007, "Failed to read bundled nginx-ui.conf: {0}")
 	ErrBundledNginxUIConfOutdated       = e.New(40421, "Bundled nginx-ui.conf is missing the WebSocket reverse-proxy fix")
 	ErrFixedConfigInvalid               = e.New(50008, "Patched nginx-ui.conf is invalid: {0}")

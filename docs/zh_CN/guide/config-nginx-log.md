@@ -1,195 +1,31 @@
 # Nginx Log
 
-本节介绍 Nginx UI 中 Nginx 日志处理和分析功能的配置选项。
+Nginx UI 会列出从 Nginx 配置中发现的日志文件，以及 Nginx 默认的访问日志和错误日志。你可以分页查看日志，也可以实时跟踪。这些功能无需任何设置。
 
-## 索引
+## 日志分析插件
 
-### IndexingEnabled
+结构化搜索、流量面板、访客地图和 IP 地理库由官方插件 **日志分析**（`com.nginxui.log-analytics`）提供。它们以前以「高级索引」的形式内置在 Nginx UI 中。
 
-- 类型: `boolean`
-- 默认值: `false`
-- 环境变量: `NGINX_UI_NGINX_LOG_INDEXING_ENABLED`
-- 版本: `>= v2.2.0`
+- 在插件页面安装并启用该插件。没有外网的节点，可以在同一页面上传插件安装包。
+- 启用后会自动开始索引。停用插件即停止索引，并释放它占用的全部内存。Nginx UI 本身不会加载这部分代码。
+- 没有安装插件时，日志列表只显示基础列，日志页面只有原始视图。
+- 集群中，每个需要分析日志的节点都要安装该插件。
 
-此选项启用 Nginx 日志的索引功能，提供高性能的日志搜索和分析能力。
+### 设置
 
-#### 关闭时的行为（基础模式）
+原来 `[nginx_log]` 中的 `IncrementalIndexInterval`、`MaxConcurrentIndexTasks`、`IndexCustomMMDB` 和 `GeoMapPath` 不再由 Nginx UI 读取，它们现在是插件的设置，在插件页面的插件设置中修改：
 
-当 `IndexingEnabled` 为 `false` 时，Nginx UI 仍会从 Nginx 配置中发现日志入口，并在日志列表中展示。在基础模式下：
+| 插件设置 | 原来的配置 |
+|----------|------------|
+| 索引间隔（分钟） | `IncrementalIndexInterval` |
+| 同时索引的日志数 | `MaxConcurrentIndexTasks` |
+| 自定义 IP 地理库 | `IndexCustomMMDB` |
+| 地图文件目录 | `GeoMapPath` |
 
-- 可以查看已检测到的日志文件列表（基于简单的轮转规则进行分组），但不提供索引指标、文档计数和分片搜索等高级功能。
-- 基于解析到的访问/错误日志路径，实时查看（tail）仍可使用。
+IP 地理库（GeoLite2）也在插件设置中下载。[template/custom-mmdb](https://github.com/0xJacky/nginx-ui/tree/dev/template/custom-mmdb) 中用于生成自定义库的脚本仍然适用，把自定义库的设置指向生成的文件即可。
 
-### IndexPath
+### 从高级索引升级
 
-- 类型：`string`
-- 版本：`>= v2.2.0`
+如果之前开启了 `IndexingEnabled`，日志页面会提示「日志分析已改为插件」，从提示中前往安装即可。插件首次启动时会接管已有的索引及其记录、上述设置和已下载的 IP 地理库，不会重复索引。之后 Nginx UI 会把 `IndexingEnabled` 关闭，并删除旧的索引数据表。
 
-- 默认情况下，Bleve 索引文件存放在 Nginx UI 配置目录下的 `log-index` 目录（例如：`/usr/local/nginx-ui/log-index`）。
-- 如果无法确定配置目录，回退路径为应用相对路径的 `./log-index`。
-
-### IncrementalIndexInterval
-
-- 类型：`int`（分钟）
-- 默认值：当配置为 `0` 或负数时使用 `15`
-- 版本：`>= v2.2.0`
-
-控制增量索引任务扫描访问日志的频率。数值越小，分析数据越接近实时，但后台 CPU 占用越高；数值越大则降低 CPU 占用，但分析数据更新会更滞后。配置为 `0` 或负数时会自动回退到安全的默认 15 分钟。
-
-### IndexCustomMMDB
-
-- 类型：`string`
-- 默认值：空（使用标准 GeoLite2 数据库）
-- 环境变量：`NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB`
-- 需要使用包含 [PR #1843](https://github.com/0xJacky/nginx-ui/pull/1843) 的构建版本。
-
-指定自定义 MaxMind DB（`.mmdb`）文件的路径，用于在日志索引过程中补充 GeoIP 信息。自定义记录可以提供国家、省份、城市及四个业务标签（`c1` 至 `c4`），例如分公司、工厂、部门和网络类型。使用索引日志分析功能时，还需启用 `IndexingEnabled`。
-
-绝对路径直接使用配置值。相对路径以当前使用的 `app.ini` 所在目录为基准解析，而非进程的工作目录。例如，将 `enterprise.mmdb` 放在 `app.ini` 同一目录下，并配置：
-
-```ini
-[nginx_log]
-IndexingEnabled = true
-IndexCustomMMDB = enterprise.mmdb
-```
-
-也可以通过环境变量指定 Nginx UI 进程可访问的路径：
-
-```bash
-NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB=/etc/nginx-ui/enterprise.mmdb
-```
-
-使用 Docker 部署时，需要将数据库挂载到容器内，并填写容器内的路径。运行 Nginx UI 的用户必须具有该文件的读取权限。
-
-::: warning 数据库选择规则
-如果 `app.ini` 同一目录下存在 `GeoLite2-City.mmdb`，它的优先级高于 `IndexCustomMMDB`。要使用自定义数据库，请先将标准数据库移至备份位置。两个数据库不会合并；未匹配自定义 IP 范围的地址也不会回退到标准城市数据库查询。
-
-当标准数据库文件不存在时，如果自定义文件缺失或无效，GeoIP 数据库将无法加载。配置路径不会自动下载或生成文件。
-:::
-
-#### 生成自定义数据库
-
-仓库的 [template/custom-mmdb](https://github.com/0xJacky/nginx-ui/tree/dev/template/custom-mmdb) 目录提供了生成脚本和示例数据。请使用包含 PR #1843 的代码版本中的这些文件。
-
-1. 准备 Python 3 环境及生成脚本所需的依赖：`mmdb_writer` 和 `netaddr`。
-2. 编辑 `region_codes.json`，定义国家、省份和城市的层级关系。附带的文件仅作为起始模板；引用尚未列出的地区前，请先补充对应数据。
-3. 编辑 `ip_inventory.json`，将单个 IPv4 地址或 CIDR 网段映射到上述地区层级及业务标签。四个标签键均需保留，未使用的标签填写空字符串。
-
-例如，苏州某网段的清单条目可以写为：
-
-```json
-{
-  "10.10.0.0/16": {
-    "country": "CN",
-    "province": "320000",
-    "city": "320500",
-    "c1": "苏州分公司",
-    "c2": "工厂 A",
-    "c3": "生产 IT 部门",
-    "c4": "有线网络"
-  }
-}
-```
-
-在仓库根目录运行生成脚本：
-
-```bash
-python3 template/custom-mmdb/Build_Custom_mmdb.py
-```
-
-脚本会校验网络地址和地区引用，然后在 `template/custom-mmdb` 中生成 `enterprise.mmdb` 及清单导出文件 `enterprise_data.json`。附带的生成脚本创建的是 IPv4 数据库，单个 IPv4 地址会转换为 `/32` 网段。
-
-将 `enterprise.mmdb` 复制到配置指定的位置，并在修改配置或替换数据库后重启 Nginx UI。GeoIP 字段在索引时写入，因此已有索引记录需要重新索引，才能反映新的地理信息和业务标签。
-
-当 `IndexCustomMMDB` 非空时，GeoLite2 设置页面会显示所配置的自定义数据库文件名，并隐藏重新下载操作。该提示仅反映配置的路径；实际数据库选择仍遵循上述优先级规则。
-
-### GeoMapPath
-
-- 类型：`string`
-- 默认值：空（运行时会回退到 `maps`）
-- 环境变量：`NGINX_UI_NGINX_LOG_GEO_MAP_PATH`
-
-指定中国地图与省级地图边界文件目录，目录内文件名需遵循 `100000_full.json`、`<省级adcode>_full.json` 的命名规则。
-
-- 配置为绝对路径时，直接使用该路径。
-- 配置为相对路径时，以当前 `app.ini` 所在目录为基准解析。
-- 当该配置为空时，运行时读取边界文件会回退到默认 `maps` 目录。
-- 仪表盘在中文语言下仍可展示中国地图入口，边界文件会按可用性从本地 API 或 CDN 加载。
-
-示例：
-
-```ini
-[nginx_log]
-GeoMapPath = /etc/nginx-ui/maps
-```
-
-Windows 示例：
-
-```ini
-[nginx_log]
-GeoMapPath = D:/OpCon/GIT/nginx-ui/maps
-```
-
-## 系统要求
-
-### 最低要求
-- **CPU**: 最少 1 核心
-- **内存**: 最少 2GB RAM
-- **存储**: 至少 20GB 可用磁盘空间
-
-### 推荐配置
-- **CPU**: 建议 2 核心或以上
-- **内存**: 建议 4GB RAM 或以上
-- **存储**: 建议使用 SSD 以获得更好的 I/O 性能
-
-## 性能指标
-
-基于生产环境验证和全面测试（M2 Pro 12核心，2025年9月）：
-
-| 指标 | 数值 | 说明 |
-|------|------|------|
-| **生产环境管道** | **~10,000 条记录/秒** | 包含搜索功能的完整索引 |
-| **解析器性能** | **~932K 条记录/秒** | 仅流式处理 |
-| **CPU 利用率** | **90%+** | 优化的多核处理 |
-| **内存效率** | **零分配设计** | 高级内存池系统 |
-| **自适应扩展** | **12→36 工作线程** | 动态资源优化 |
-| **批处理优化** | **1000→6000** | 实时吞吐量调优 |
-
-## 功能特性
-
-启用高级索引后，您将获得以下功能：
-
-### 核心能力
-- **零分配管道** - 优化内存使用以实现高性能处理
-- **动态分片管理** - 智能分布日志数据到各个分片
-- **增量索引扫描** - 仅索引新的日志条目以提高效率
-- **自动日志轮转检测** - 无缝处理轮转的日志文件
-
-### 搜索与分析
-- **高级搜索和过滤** - 支持多条件的复杂查询
-- **支持正则表达式的全文搜索** - 强大的模式匹配能力
-- **跨文件时间线关联** - 分析多个日志文件中的事件
-- **错误模式识别** - 自动检测错误模式
-
-### 数据处理
-- **压缩日志文件支持** - 支持 gzip 和其他压缩格式
-- **离线 GeoIP 分析** - 无需外部服务的位置分析
-- **实时分析仪表板** - 实时监控和统计
-- **多维数据可视化** - 高级图表和图形
-
-### 使用注意事项
-
-::: tip 性能影响提示
-高级索引提供企业级性能，完整日志处理吞吐量达到 **~10,000 条记录/秒**。系统会根据您的硬件自动优化 CPU 利用率（90%+）并调整工作线程数量（12→36）以获得最佳性能。
-:::
-
-::: info 开源限制
-- 高级日志索引功能对所有用户免费开源
-- 我们不接受该功能的功能请求
-- 如需商业或专业使用，请联系 business@uozi.com
-:::
-
-::: warning 初始索引
-当您启用高级索引时，系统将立即开始索引现有日志文件。此初始索引过程可能会暂时影响系统性能。
-:::
-
+`IndexingEnabled` 和 `IndexPath` 仍保留在 `app.ini` 中，也仍可用 `NGINX_UI_NGINX_LOG_INDEXING_ENABLED` 和 `NGINX_UI_NGINX_LOG_INDEX_PATH` 设置。它们只用于这次交接，网页界面不能再修改。

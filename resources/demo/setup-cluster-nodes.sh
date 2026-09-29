@@ -40,12 +40,11 @@ while [ "$n" -le $((PEER_COUNT + 1)) ]; do
     mkdir -p "$conf_dir" "$run_dir"
 
     # Peers exist to populate the cluster view. They share the single nginx in
-    # this container, so leave the site prober and the log indexer to the
-    # primary node rather than paying for them three times.
+    # this container, so leave the site prober to the primary node rather
+    # than paying for it three times.
     sed -e "s|^Port .*|Port    = ${port}|" \
         -e "s|^Name .*|Name             = demo-node-${n}|" \
         -e "s|^InstanceID .*|InstanceID       = $(peer_instance_id "$n")|" \
-        -e "s|^IndexingEnabled .*|IndexingEnabled = false|" \
         "$BASE_CONFIG" > "${conf_dir}/app.ini"
     sed -i "s|^Enabled         = true|Enabled         = false|" "${conf_dir}/app.ini"
 
