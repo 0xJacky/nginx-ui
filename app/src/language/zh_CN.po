@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.6\n"
 "Generated-By: easygettext\n"
+"X-Generator: Poedit 3.6\n"
 
 msgid "Public"
 msgstr "公开"
@@ -2687,6 +2687,12 @@ msgstr "插件包未签名，且开发者模式未开启"
 
 msgid "Plugin package trust {0} is below the installed {1}"
 msgstr "插件包的信任等级 {0} 低于已安装的 {1}"
+
+msgid "This plugin cannot be enabled together with: {0}"
+msgstr "此插件不能与以下插件同时启用：{0}"
+
+msgid "Release channel must be stable, beta or dev"
+msgstr "发布通道必须是 stable、beta 或 dev"
 
 msgid "Storage backend {0} is not available"
 msgstr "存储后端 {0} 不可用"
@@ -6785,9 +6791,9 @@ msgid "See every log file Nginx writes and open one to read it."
 msgstr "查看 Nginx 写入的所有日志文件，并打开其中一个阅读。"
 
 msgid ""
-"Log analytics is now a plugin. Install it to keep using it; your existing "
-"indexes are kept."
-msgstr "日志分析已改为插件，安装后继续使用，原有索引会保留。"
+"Advanced Indexing is now provided by the Log Analytics plugin. Install the "
+"plugin to continue using it. Existing indexes are kept."
+msgstr "高级索引现由日志分析插件提供。安装该插件即可继续使用，现有索引会保留。"
 
 msgid "Go to install"
 msgstr "前往安装"
@@ -10217,6 +10223,48 @@ msgstr "其他功能"
 msgid "A feature this version of Nginx UI does not describe."
 msgstr "此版本的 Nginx UI 未描述的功能。"
 
+msgid "Beta"
+msgstr "测试版"
+
+msgid ""
+"This is a beta release. Features may change, and some functions may not work "
+"as expected."
+msgstr "这是测试版。功能可能变化，部分功能可能无法正常工作。"
+
+msgid "This is a development release. It may be incomplete or unstable."
+msgstr "这是开发版，可能不完整或不稳定。"
+
+msgid "This is a stable release."
+msgstr "这是稳定版。"
+
+msgid "Development releases are received until a stable release is available."
+msgstr "在稳定版发布之前，会接收开发版。"
+
+msgid "Beta releases are received until a stable release is available."
+msgstr "在稳定版发布之前，会接收测试版。"
+
+msgid "Receive beta and stable releases."
+msgstr "接收测试版和稳定版。"
+
+msgid "Receive all releases, including development releases."
+msgstr "接收所有版本，包括开发版。"
+
+msgid "Receive stable releases only."
+msgstr "仅接收稳定版。"
+
+msgid "Cannot be enabled together with %{names}"
+msgstr "不能与 %{names} 同时启用"
+
+msgid ""
+"Enabling %{name} will disable %{others}, because these plugins cannot be "
+"enabled at the same time."
+msgstr "启用 %{name} 会停用 %{others}，因为这些插件不能同时启用。"
+
+msgid ""
+"Enabling this plugin will disable %{names}, because these plugins cannot be "
+"enabled at the same time."
+msgstr "启用此插件会停用 %{names}，因为这些插件不能同时启用。"
+
 msgid "Only localhost addresses are accepted"
 msgstr "只接受 localhost 地址"
 
@@ -10255,6 +10303,12 @@ msgstr "同步插件失败"
 
 msgid "Installed"
 msgstr "已安装"
+
+msgid "This server has less memory than recommended."
+msgstr "此服务器的内存低于建议值。"
+
+msgid "Memory: %{size}"
+msgstr "内存：%{size}"
 
 msgid "Installed %{version} is not this version"
 msgstr "已安装的 %{version} 并非此版本"
@@ -10311,6 +10365,9 @@ msgstr "停用 %{name}？"
 
 msgid "Renewal resumes when you turn it back on."
 msgstr "重新开启后将恢复续期。"
+
+msgid "Enable %{name}?"
+msgstr "启用 %{name}？"
 
 msgid "Uninstall %{name}?"
 msgstr "卸载 %{name}？"
@@ -10440,6 +10497,9 @@ msgstr "（替换 %{version}）"
 
 msgid "None"
 msgstr "无"
+
+msgid "Recommended memory"
+msgstr "建议内存"
 
 msgid "Install the plugins below first"
 msgstr "请先安装以下插件"
@@ -10578,6 +10638,9 @@ msgstr "查看更新"
 msgid "The marketplace is unavailable"
 msgstr "市场暂时不可用"
 
+msgid "Install a previous version"
+msgstr "安装旧版本"
+
 msgid "Every installed plugin is up to date"
 msgstr "所有已安装的插件均为最新版本"
 
@@ -10605,11 +10668,29 @@ msgstr "从市场加载插件失败"
 msgid "Update plugin"
 msgstr "更新插件"
 
+msgid "Install this version"
+msgstr "安装此版本"
+
 msgid "No release available for this platform"
 msgstr "该平台没有可用的发行版本"
 
 msgid "Source"
 msgstr "来源"
+
+msgid "This version is older than the installed version"
+msgstr "此版本比已安装的版本旧"
+
+msgid ""
+"Data created by the newer version may not be compatible with this version."
+msgstr "新版本创建的数据可能与此版本不兼容。"
+
+msgid "No stable release of this plugin is available yet."
+msgstr "此插件还没有稳定版。"
+
+msgid ""
+"Newer releases of this channel are received until a stable release is "
+"available."
+msgstr "在稳定版发布之前，会接收此通道的较新版本。"
 
 msgid "This is a community plugin"
 msgstr "这是一个社区插件"
@@ -10622,6 +10703,12 @@ msgstr "无法获取实时进度，正在改为检查插件列表"
 
 msgid "No description provided."
 msgstr "未提供描述。"
+
+msgid "This server has less memory than recommended for this plugin."
+msgstr "此服务器的内存低于此插件的建议值。"
+
+msgid "Low memory"
+msgstr "内存不足"
 
 msgid "Installed: %{version}"
 msgstr "已安装：%{version}"
@@ -10657,12 +10744,6 @@ msgstr "已安装版本"
 
 msgid "Versions"
 msgstr "版本"
-
-msgid "This node runs %{platform}, its build is highlighted."
-msgstr "此节点运行 %{platform}，对应的构建已高亮显示。"
-
-msgid "Yanked"
-msgstr "已撤回"
 
 msgid "Latest"
 msgstr "最新"
@@ -10747,6 +10828,13 @@ msgstr "此安装包的信任等级低于已安装的版本"
 
 msgid "Installed version: %{installed}. This package: %{package}."
 msgstr "已安装版本：%{installed}。此安装包：%{package}。"
+
+msgid ""
+"This server has %{system} of memory, below the %{recommended} recommended "
+"for this plugin. The plugin may run slowly or stop unexpectedly."
+msgstr ""
+"此服务器有 %{system} 内存，低于此插件建议的 %{recommended}。插件可能运行缓慢"
+"或意外停止。"
 
 msgid "Approve permissions"
 msgstr "批准权限"
@@ -10892,6 +10980,9 @@ msgid "%{count} certificate renews through it:"
 msgid_plural "%{count} certificates renew through it:"
 msgstr[0] "%{count} 个证书通过它续期："
 
+msgid "Update channel"
+msgstr "更新通道"
+
 msgid "API version"
 msgstr "API 版本"
 
@@ -10900,6 +10991,12 @@ msgstr "需要 Nginx UI %{version} 或更高版本"
 
 msgid "Start mode"
 msgstr "启动方式"
+
+msgid "Saved"
+msgstr "已保存"
+
+msgid "Failed to save"
+msgstr "保存失败"
 
 msgid "Resource limits"
 msgstr "资源限制"
@@ -11425,6 +11522,17 @@ msgstr "单窗格"
 
 msgid "Split view"
 msgstr "分屏视图"
+
+#~ msgid ""
+#~ "Log analytics is now a plugin. Install it to keep using it; your existing "
+#~ "indexes are kept."
+#~ msgstr "日志分析已改为插件，安装后继续使用，原有索引会保留。"
+
+#~ msgid "This node runs %{platform}, its build is highlighted."
+#~ msgstr "此节点运行 %{platform}，对应的构建已高亮显示。"
+
+#~ msgid "Yanked"
+#~ msgstr "已撤回"
 
 #~ msgid "Starting download..."
 #~ msgstr "开始下载..."

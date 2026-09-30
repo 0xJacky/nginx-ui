@@ -16,8 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.4\n"
 "Generated-By: easygettext\n"
+"X-Generator: Weblate 5.10.4\n"
 
 msgid "Public"
 msgstr "公開"
@@ -2691,6 +2691,12 @@ msgstr "外掛套件未簽署，且開發者模式未開啟"
 
 msgid "Plugin package trust {0} is below the installed {1}"
 msgstr "外掛套件的信任等級 {0} 低於已安裝的 {1}"
+
+msgid "This plugin cannot be enabled together with: {0}"
+msgstr "此外掛不能與以下外掛同時啟用：{0}"
+
+msgid "Release channel must be stable, beta or dev"
+msgstr "發布通道必須是 stable、beta 或 dev"
 
 msgid "Storage backend {0} is not available"
 msgstr "儲存後端 {0} 不可用"
@@ -6792,9 +6798,9 @@ msgid "See every log file Nginx writes and open one to read it."
 msgstr "檢視 Nginx 寫入的所有日誌檔案，並開啟其中一個閱讀。"
 
 msgid ""
-"Log analytics is now a plugin. Install it to keep using it; your existing "
-"indexes are kept."
-msgstr "日誌分析已改為外掛，安裝後繼續使用，原有索引會保留。"
+"Advanced Indexing is now provided by the Log Analytics plugin. Install the "
+"plugin to continue using it. Existing indexes are kept."
+msgstr "進階索引現由日誌分析外掛提供。安裝該外掛即可繼續使用，現有索引會保留。"
 
 msgid "Go to install"
 msgstr "前往安裝"
@@ -10227,6 +10233,48 @@ msgstr "其他功能"
 msgid "A feature this version of Nginx UI does not describe."
 msgstr "此版本的 Nginx UI 未描述的功能。"
 
+msgid "Beta"
+msgstr "測試版"
+
+msgid ""
+"This is a beta release. Features may change, and some functions may not work "
+"as expected."
+msgstr "這是測試版。功能可能變動，部分功能可能無法正常運作。"
+
+msgid "This is a development release. It may be incomplete or unstable."
+msgstr "這是開發版，可能不完整或不穩定。"
+
+msgid "This is a stable release."
+msgstr "這是穩定版。"
+
+msgid "Development releases are received until a stable release is available."
+msgstr "在穩定版發布之前，會接收開發版。"
+
+msgid "Beta releases are received until a stable release is available."
+msgstr "在穩定版發布之前，會接收測試版。"
+
+msgid "Receive beta and stable releases."
+msgstr "接收測試版和穩定版。"
+
+msgid "Receive all releases, including development releases."
+msgstr "接收所有版本，包括開發版。"
+
+msgid "Receive stable releases only."
+msgstr "僅接收穩定版。"
+
+msgid "Cannot be enabled together with %{names}"
+msgstr "不能與 %{names} 同時啟用"
+
+msgid ""
+"Enabling %{name} will disable %{others}, because these plugins cannot be "
+"enabled at the same time."
+msgstr "啟用 %{name} 會停用 %{others}，因為這些外掛不能同時啟用。"
+
+msgid ""
+"Enabling this plugin will disable %{names}, because these plugins cannot be "
+"enabled at the same time."
+msgstr "啟用此外掛會停用 %{names}，因為這些外掛不能同時啟用。"
+
 msgid "Only localhost addresses are accepted"
 msgstr "只接受 localhost 位址"
 
@@ -10265,6 +10313,12 @@ msgstr "同步外掛失敗"
 
 msgid "Installed"
 msgstr "已安裝"
+
+msgid "This server has less memory than recommended."
+msgstr "此伺服器的記憶體低於建議值。"
+
+msgid "Memory: %{size}"
+msgstr "記憶體：%{size}"
 
 msgid "Installed %{version} is not this version"
 msgstr "已安裝的 %{version} 並非此版本"
@@ -10321,6 +10375,9 @@ msgstr "停用 %{name}？"
 
 msgid "Renewal resumes when you turn it back on."
 msgstr "重新開啟後將恢復續期。"
+
+msgid "Enable %{name}?"
+msgstr "啟用 %{name}？"
 
 msgid "Uninstall %{name}?"
 msgstr "解除安裝 %{name}？"
@@ -10450,6 +10507,9 @@ msgstr "（取代 %{version}）"
 
 msgid "None"
 msgstr "無"
+
+msgid "Recommended memory"
+msgstr "建議記憶體"
 
 msgid "Install the plugins below first"
 msgstr "請先安裝以下外掛"
@@ -10588,6 +10648,9 @@ msgstr "檢視更新"
 msgid "The marketplace is unavailable"
 msgstr "市集暫時無法使用"
 
+msgid "Install a previous version"
+msgstr "安裝舊版本"
+
 msgid "Every installed plugin is up to date"
 msgstr "所有已安裝的外掛皆為最新版本"
 
@@ -10615,11 +10678,29 @@ msgstr "從市集載入外掛失敗"
 msgid "Update plugin"
 msgstr "更新外掛"
 
+msgid "Install this version"
+msgstr "安裝此版本"
+
 msgid "No release available for this platform"
 msgstr "此平台沒有可用的發行版本"
 
 msgid "Source"
 msgstr "來源"
+
+msgid "This version is older than the installed version"
+msgstr "此版本比已安裝的版本舊"
+
+msgid ""
+"Data created by the newer version may not be compatible with this version."
+msgstr "新版本建立的資料可能與此版本不相容。"
+
+msgid "No stable release of this plugin is available yet."
+msgstr "此外掛尚無穩定版。"
+
+msgid ""
+"Newer releases of this channel are received until a stable release is "
+"available."
+msgstr "在穩定版發布之前，會接收此通道的較新版本。"
 
 msgid "This is a community plugin"
 msgstr "這是一個社群外掛"
@@ -10632,6 +10713,12 @@ msgstr "無法取得即時進度，改為檢查外掛清單"
 
 msgid "No description provided."
 msgstr "未提供描述。"
+
+msgid "This server has less memory than recommended for this plugin."
+msgstr "此伺服器的記憶體低於此外掛的建議值。"
+
+msgid "Low memory"
+msgstr "記憶體不足"
 
 msgid "Installed: %{version}"
 msgstr "已安裝：%{version}"
@@ -10667,12 +10754,6 @@ msgstr "已安裝版本"
 
 msgid "Versions"
 msgstr "版本"
-
-msgid "This node runs %{platform}, its build is highlighted."
-msgstr "此節點執行 %{platform}，對應的建置已醒目提示。"
-
-msgid "Yanked"
-msgstr "已撤回"
 
 msgid "Latest"
 msgstr "最新"
@@ -10757,6 +10838,13 @@ msgstr "此安裝套件的信任等級低於已安裝的版本"
 
 msgid "Installed version: %{installed}. This package: %{package}."
 msgstr "已安裝版本：%{installed}。此安裝套件：%{package}。"
+
+msgid ""
+"This server has %{system} of memory, below the %{recommended} recommended "
+"for this plugin. The plugin may run slowly or stop unexpectedly."
+msgstr ""
+"此伺服器有 %{system} 記憶體，低於此外掛建議的 %{recommended}。外掛可能執行緩"
+"慢或意外停止。"
 
 msgid "Approve permissions"
 msgstr "核准權限"
@@ -10901,6 +10989,9 @@ msgid "%{count} certificate renews through it:"
 msgid_plural "%{count} certificates renew through it:"
 msgstr[0] "%{count} 個憑證透過它續期："
 
+msgid "Update channel"
+msgstr "更新通道"
+
 msgid "API version"
 msgstr "API 版本"
 
@@ -10909,6 +11000,12 @@ msgstr "需要 Nginx UI %{version} 或更新版本"
 
 msgid "Start mode"
 msgstr "啟動方式"
+
+msgid "Saved"
+msgstr "已儲存"
+
+msgid "Failed to save"
+msgstr "儲存失敗"
 
 msgid "Resource limits"
 msgstr "資源限制"
@@ -11438,6 +11535,17 @@ msgstr "單窗格"
 
 msgid "Split view"
 msgstr "分割檢視"
+
+#~ msgid ""
+#~ "Log analytics is now a plugin. Install it to keep using it; your existing "
+#~ "indexes are kept."
+#~ msgstr "日誌分析已改為外掛，安裝後繼續使用，原有索引會保留。"
+
+#~ msgid "This node runs %{platform}, its build is highlighted."
+#~ msgstr "此節點執行 %{platform}，對應的建置已醒目提示。"
+
+#~ msgid "Yanked"
+#~ msgstr "已撤回"
 
 #~ msgid "Starting download..."
 #~ msgstr "開始下載..."
