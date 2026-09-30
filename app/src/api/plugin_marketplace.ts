@@ -113,12 +113,16 @@ export interface CatalogSource {
   url: string
   /** The name the catalog declares, known once it was read. */
   catalog_name?: Record<string, string>
+  /** Image the catalog declares, when this node may load it. */
+  catalog_icon?: string
 }
 
 /** What reading one catalog found. */
 export interface SourceProbe {
   reachable: boolean
   catalog_name?: Record<string, string>
+  /** Image the catalog declares, when this node may load it. */
+  catalog_icon?: string
   plugins: number
   error?: string
 }
