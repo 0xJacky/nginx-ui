@@ -184,6 +184,30 @@ func DisablePlugin(c *gin.Context) {
 	c.JSON(http.StatusOK, info)
 }
 
+// SetPluginChannel changes the release channel an installed plugin takes
+// updates from.
+func SetPluginChannel(c *gin.Context) {
+	id, ok := pluginID(c)
+	if !ok {
+		return
+	}
+
+	var body struct {
+		Channel string `json:"channel"`
+	}
+	if err := c.ShouldBindJSON(&body); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	info, err := plugin.GetManager().SetChannel(detach(c), id, body.Channel)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, info)
+}
+
 // GetPluginSettings returns the settings form and the stored values, with
 // every secret replaced by the redaction placeholder.
 func GetPluginSettings(c *gin.Context) {

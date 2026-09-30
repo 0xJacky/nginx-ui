@@ -13,6 +13,8 @@ import {
 import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { useWebSocketEventBusStore } from '@/pinia'
+import { entryChannel, hasStableRelease, isDowngrade, releaseChannel } from '../channel'
+import ChannelTag from '../ChannelTag.vue'
 import { installReplacesText } from '../conflicts'
 import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
@@ -71,6 +73,9 @@ const release = computed<CatalogRelease | undefined>(() => {
 const permissions = computed(() => release.value?.manifest?.permissions ?? [])
 const requires = computed(() => release.value?.manifest?.requires ?? [])
 const trust = computed(() => trustPreset(entry.value?.trust))
+// The release being installed decides, a plugin can ship a beta next to a stable one.
+const channel = computed(() => (release.value ? releaseChannel(release.value) : entryChannel(entry.value)))
+const isOlder = computed(() => isDowngrade(entry.value?.installed_version, release.value?.version))
 const recommendedMb = computed(() => recommendedMemory(release.value?.manifest))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
@@ -83,6 +88,18 @@ const showCommunityWarning = computed(() => Boolean(entry.value) && isCommunityT
 const isUpgrade = computed(() => Boolean(entry.value?.installed_version))
 // Looked up while the dialog is open, and only for an upgrade.
 const installedPlugin = useInstalledPlugin(() => (open.value && isUpgrade.value ? entry.value?.id : undefined))
+// A plugin that only ships test versions so far.
+const noStableVersion = computed(() => Boolean(entry.value) && channel.value !== 'stable' && !hasStableRelease(entry.value))
+const title = computed(() => {
+  if (isOlder.value)
+    return $gettext('Install an earlier version')
+  return isUpgrade.value ? $gettext('Update plugin') : $gettext('Install plugin')
+})
+const okText = computed(() => {
+  if (isOlder.value)
+    return $gettext('Install this version')
+  return isUpgrade.value ? $gettext('Update') : $gettext('Install')
+})
 
 const phaseLabels: Record<PluginInstallStatus, () => string> = {
   downloading: () => $gettext('Downloading the package'),
@@ -254,11 +271,11 @@ onUnmounted(() => {
 <template>
   <AModal
     v-model:open="open"
-    :title="isUpgrade ? $gettext('Update plugin') : $gettext('Install plugin')"
+    :title="title"
     :width="600"
     :mask-closable="!installing"
     :closable="!installing"
-    :ok-text="isUpgrade ? $gettext('Update') : $gettext('Install')"
+    :ok-text="okText"
     :cancel-text="$gettext('Cancel')"
     :ok-button-props="{ disabled: !release || installing }"
     :confirm-loading="installing"
@@ -288,7 +305,10 @@ onUnmounted(() => {
           <span class="font-mono text-xs">{{ targetId }}</span>
         </ADescriptionsItem>
         <ADescriptionsItem :label="$gettext('Version')">
-          <span v-if="release">{{ release.version }}</span>
+          <template v-if="release">
+            <span>{{ release.version }}</span>
+            <span v-if="channel !== 'stable'" class="ml-2 inline-flex align-middle"><ChannelTag :channel="channel" /></span>
+          </template>
           <span v-else class="text-gray-400">{{ $gettext('No release available for this platform') }}</span>
           <span v-if="entry?.installed_version" class="ml-2 text-gray-500">
             {{ $gettext('(replaces %{version})', { version: entry.installed_version }) }}
@@ -306,6 +326,24 @@ onUnmounted(() => {
         class="mt-4"
         :next="entry?.trust"
         :installed="installedPlugin?.trust"
+      />
+
+      <AAlert
+        v-if="isOlder"
+        type="warning"
+        show-icon
+        class="mt-4"
+        :title="$gettext('This is older than the version installed now')"
+        :description="$gettext('Data saved by the newer version may not be readable by this older one.')"
+      />
+
+      <AAlert
+        v-if="noStableVersion"
+        type="info"
+        show-icon
+        class="mt-4"
+        :title="$gettext('There is no stable version of this plugin yet.')"
+        :description="$gettext('You keep getting newer versions until a stable one is out.')"
       />
 
       <AAlert

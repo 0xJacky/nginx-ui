@@ -4,6 +4,8 @@ import { ArrowUpOutlined, CheckCircleOutlined, DownloadOutlined } from '@antdv-n
 import { catalogEntryDescription, catalogEntryName } from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
 import { capabilityLabel } from '../capabilities'
+import { entryChannel } from '../channel'
+import ChannelTag from '../ChannelTag.vue'
 import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, recommendedMemory, useSystemMemory } from '../memory'
 import PluginIcon from '../PluginIcon.vue'
@@ -27,6 +29,8 @@ const trust = computed(() => trustPreset(props.entry.trust))
 const recommendedMb = computed(() => recommendedMemory(props.entry.installable_release?.manifest))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
+
+const channel = computed(() => entryChannel(props.entry))
 
 const isInstalled = computed(() => Boolean(props.entry.installed_version))
 const canInstall = computed(() => Boolean(props.entry.installable_release))
@@ -92,8 +96,9 @@ const actionLabel = computed(() => {
           {{ $gettext('Memory: %{size}', { size: formatMemory(recommendedMb) }) }}
         </ATag>
       </ATooltip>
+      <ChannelTag :channel="channel" />
       <ATag
-        v-if="entry.stage && entry.stage !== 'production'"
+        v-if="entry.stage && entry.stage !== 'production' && entry.stage !== 'beta'"
         color="purple"
         class="m-0"
       >

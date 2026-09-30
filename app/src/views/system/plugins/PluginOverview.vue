@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import type { PluginInfo, PluginUsage } from '@/api/plugin'
+import type { PluginChannel, PluginInfo, PluginUsage } from '@/api/plugin'
 import { CloudSyncOutlined, DeleteOutlined, DownOutlined, LinkOutlined, RightOutlined } from '@antdv-next/icons'
 import pluginApi, { localizedPluginDescription } from '@/api/plugin'
 import gettext from '@/gettext'
 import { formatDateTime } from '@/lib/helper'
+import { getErrorMessage } from '@/lib/http'
 import { capabilityLabel, capabilityPreset } from './capabilities'
+import { channelDescription, channelLabel, effectiveChannel, followedChannel, heldByReleaseText, isHeldByRelease, PLUGIN_CHANNELS, pluginChannel } from './channel'
+import ChannelTag from './ChannelTag.vue'
 import { conflictNote } from './conflicts'
 import { packageTrustPreset, trustedOfferAction, trustedOfferSummary, unsignedExplanation } from './marketplace/trust'
 import { formatMemory, isBelowRecommended, memoryWarning, useSystemMemory } from './memory'
@@ -24,6 +27,8 @@ const emit = defineEmits<{
   uninstall: []
   updated: []
 }>()
+
+const { message } = App.useApp()
 
 /** Addresses shown before the list is expanded. */
 const collapsedHostCount = 3
@@ -102,12 +107,13 @@ interface Fact {
   label: string
   value: string
   hint?: string
+  channel?: PluginChannel
 }
 
 const facts = computed<Fact[]>(() => {
   const plugin = props.plugin
   const items: Fact[] = [
-    { key: 'version', label: $gettext('Version'), value: `v${plugin.version}` },
+    { key: 'version', label: $gettext('Version'), value: `v${plugin.version}`, channel: pluginChannel(plugin) },
     {
       key: 'api',
       label: $gettext('API version'),
@@ -124,6 +130,30 @@ const facts = computed<Fact[]>(() => {
     items.push({ key: 'updated', label: $gettext('Updated at'), value: formatDateTime(plugin.updated_at) })
   return items
 })
+
+// Versions to receive
+const followed = computed(() => followedChannel(props.plugin))
+const savingChannel = ref(false)
+const channelOptions = computed(() => PLUGIN_CHANNELS.map(value => ({ value, label: channelLabel(value) })))
+// A test version that was installed keeps test versions coming until a stable one is out.
+const heldByRelease = computed(() => isHeldByRelease(props.plugin))
+
+async function changeChannel(value: PluginChannel) {
+  if (value === followed.value)
+    return
+  savingChannel.value = true
+  try {
+    await pluginApi.setChannel(props.plugin.id, value)
+    message.success($gettext('Saved'))
+    emit('updated')
+  }
+  catch (error) {
+    message.error(getErrorMessage(error, $gettext('Failed to save')))
+  }
+  finally {
+    savingChannel.value = false
+  }
+}
 
 const systemMb = useSystemMemory()
 const conflictingNames = useConflictNames(() => props.plugin)
@@ -319,6 +349,33 @@ function formatCount(value: number) {
       </p>
     </section>
 
+    <section class="overview-section">
+      <h4 class="section-title">
+        {{ $gettext('Updates') }}
+      </h4>
+      <div class="panel">
+        <div class="min-w-0">
+          <div class="panel-title">
+            {{ $gettext('Versions to get') }}
+          </div>
+          <div class="panel-text">
+            {{ channelDescription(followed) }}
+          </div>
+          <div v-if="heldByRelease" class="panel-text mt-1">
+            {{ heldByReleaseText(effectiveChannel(plugin)) }}
+          </div>
+        </div>
+        <ASelect
+          class="channel-select"
+          :value="followed"
+          :options="channelOptions"
+          :loading="savingChannel"
+          :disabled="savingChannel"
+          @change="changeChannel"
+        />
+      </div>
+    </section>
+
     <section v-if="hasNodes" class="overview-section">
       <h4 class="section-title">
         {{ $gettext('Cluster') }}
@@ -355,7 +412,10 @@ function formatCount(value: number) {
               class="fact"
             >
               <span class="fact-label">{{ fact.label }}</span>
-              <span class="fact-value">{{ fact.value }}</span>
+              <span class="fact-value">
+                {{ fact.value }}
+                <span v-if="fact.channel && fact.channel !== 'stable'" class="ml-2 inline-flex align-middle"><ChannelTag :channel="fact.channel" /></span>
+              </span>
               <span v-if="fact.hint" class="fact-hint">{{ fact.hint }}</span>
             </div>
           </div>
@@ -469,6 +529,11 @@ function formatCount(value: number) {
   flex-direction: column;
   align-items: stretch;
   gap: 2px;
+}
+
+.channel-select {
+  flex: none;
+  width: 150px;
 }
 
 .panel-link {
