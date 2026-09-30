@@ -926,3 +926,16 @@ func TestDecorateKeepsOnlyLoadableIcons(t *testing.T) {
 	mp.decorate(entry)
 	assert.Empty(t, entry.IconURL)
 }
+
+func TestCatalogCandidatesOfASite(t *testing.T) {
+	assert.Equal(t, []string{
+		"https://plugins.example/v1/index.json",
+		"https://plugins.example/index.json",
+	}, catalogCandidates("https://plugins.example"))
+	assert.Equal(t, []string{
+		"https://plugins.example/v1/index.json",
+		"https://plugins.example/index.json",
+	}, catalogCandidates("https://plugins.example/"))
+	assert.Equal(t, []string{"https://plugins.example/catalog.json"}, catalogCandidates("https://plugins.example/catalog.json"))
+	assert.Equal(t, []string{"https://plugins.example/?v=1"}, catalogCandidates("https://plugins.example/?v=1"))
+}
