@@ -159,11 +159,14 @@ type CatalogEntry struct {
 	RepositoryURL   string            `json:"repository_url,omitempty"`
 	ReadmeURL       string            `json:"readme_url,omitempty"`
 	IconURL         string            `json:"icon_url,omitempty"`
-	Categories      []string          `json:"categories,omitempty"`
-	Capabilities    []string          `json:"capabilities,omitempty"`
-	License         string            `json:"license,omitempty"`
-	Trust           string            `json:"trust,omitempty"`
-	Stage           string            `json:"stage,omitempty"`
+	// Screenshots are the images the catalog lists, in display order, without
+	// the ones this node may not load (spec PKG-29).
+	Screenshots  []CatalogScreenshot `json:"screenshots,omitempty"`
+	Categories   []string            `json:"categories,omitempty"`
+	Capabilities []string            `json:"capabilities,omitempty"`
+	License      string              `json:"license,omitempty"`
+	Trust        string              `json:"trust,omitempty"`
+	Stage        string              `json:"stage,omitempty"`
 	// Channel is computed by this node: the channel of the release it would
 	// install, at least beta while the entry stage is beta.
 	Channel  string           `json:"channel"`
@@ -180,6 +183,15 @@ type CatalogEntry struct {
 	InstalledVersion string `json:"installed_version,omitempty"`
 	UpdateAvailable  bool   `json:"update_available"`
 }
+
+// CatalogScreenshot is one image of a catalog entry.
+type CatalogScreenshot struct {
+	URL     string            `json:"url"`
+	Caption map[string]string `json:"caption,omitempty"`
+}
+
+// maxCatalogScreenshots is the most screenshots of an entry a node shows.
+const maxCatalogScreenshots = 8
 
 // CatalogDocument is the static JSON one source serves.
 type CatalogDocument struct {
@@ -327,7 +339,7 @@ func (mp *Marketplace) Detail(ctx context.Context, id, source string) (*CatalogE
 
 	readme := ""
 	if entry.ReadmeURL != "" {
-		if err = checkReadmeURL(entry); err != nil {
+		if err = checkCatalogURL(entry, entry.ReadmeURL); err != nil {
 			mp.manager.log.Debugf("Skip plugin readme %s: %v", entry.ReadmeURL, err)
 		} else if body, err := fetchText(ctx, proxiedURL(entry.ReadmeURL), maxReadmeBytes); err != nil {
 			mp.manager.log.Warnf("Plugin readme %s: %v", entry.ReadmeURL, err)
@@ -338,14 +350,15 @@ func (mp *Marketplace) Detail(ctx context.Context, id, source string) (*CatalogE
 	return entry, readme, nil
 }
 
-// checkReadmeURL decides whether the host may fetch the readme of an entry.
-// The URL comes from the catalog, so it must use https, or http when insecure
-// downloads are allowed, and live on the catalog source host, the host of the
-// package this node installs, or GitHub.
-func checkReadmeURL(entry *CatalogEntry) error {
-	parsed, err := url.Parse(entry.ReadmeURL)
+// checkCatalogURL decides whether the host may fetch, or let a browser load,
+// a URL of an entry, such as its readme or a screenshot. The URL comes from
+// the catalog, so it must use https, or http when insecure downloads are
+// allowed, and live on the catalog source host, the host of the package this
+// node installs, or GitHub.
+func checkCatalogURL(entry *CatalogEntry, raw string) error {
+	parsed, err := url.Parse(raw)
 	if err != nil || parsed.Host == "" {
-		return fmt.Errorf("%q is not a valid url", entry.ReadmeURL)
+		return fmt.Errorf("%q is not a valid url", raw)
 	}
 	switch parsed.Scheme {
 	case "https":
@@ -718,6 +731,24 @@ func (mp *Marketplace) decorate(entry *CatalogEntry) {
 	if entry.InstallableRelease != nil && entry.InstalledVersion != "" {
 		entry.UpdateAvailable = CompareVersions(entry.InstalledVersion, entry.InstallableRelease.Version) < 0
 	}
+	entry.Screenshots = loadableScreenshots(entry)
+}
+
+// loadableScreenshots keeps the screenshots a browser of this node may load:
+// the ones checkCatalogURL accepts, at most maxCatalogScreenshots. The entry
+// may be shared with the source cache, so the list is a new one.
+func loadableScreenshots(entry *CatalogEntry) []CatalogScreenshot {
+	var kept []CatalogScreenshot
+	for _, shot := range entry.Screenshots {
+		if len(kept) == maxCatalogScreenshots {
+			break
+		}
+		if err := checkCatalogURL(entry, shot.URL); err != nil {
+			continue
+		}
+		kept = append(kept, shot)
+	}
+	return kept
 }
 
 // installedVersion is the version of the plugin on this node, empty when it
