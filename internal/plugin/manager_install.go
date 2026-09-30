@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 	"path/filepath"
+	"runtime/debug"
 	"slices"
 	"strings"
 
@@ -84,6 +85,9 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 
 	m.opMu.Lock()
 	defer m.opMu.Unlock()
+	// Unpacking and hashing leave temporary memory behind that a small host
+	// should give back right away.
+	defer debug.FreeOSMemory()
 
 	if err := os.MkdirAll(m.Dir(), 0o755); err != nil {
 		return nil, err
