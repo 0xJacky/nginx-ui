@@ -441,7 +441,7 @@ func TestMarketplaceDetailSkipsAReadmeOnAnotherHost(t *testing.T) {
 	assert.Zero(t, hits.Load(), "the readme host must not be contacted")
 }
 
-func TestCheckReadmeURL(t *testing.T) {
+func TestCheckCatalogURL(t *testing.T) {
 	useMarketplace(t)
 	settings.PluginSettings.AllowInsecureDownloadURL = false
 
@@ -460,7 +460,7 @@ func TestCheckReadmeURL(t *testing.T) {
 	}
 	for _, raw := range allowed {
 		entry.ReadmeURL = raw
-		assert.NoError(t, checkReadmeURL(entry), raw)
+		assert.NoError(t, checkCatalogURL(entry, entry.ReadmeURL), raw)
 	}
 
 	refused := []string{
@@ -477,20 +477,20 @@ func TestCheckReadmeURL(t *testing.T) {
 	}
 	for _, raw := range refused {
 		entry.ReadmeURL = raw
-		assert.Error(t, checkReadmeURL(entry), raw)
+		assert.Error(t, checkCatalogURL(entry, entry.ReadmeURL), raw)
 	}
 
 	// Plain http passes once insecure downloads are allowed.
 	settings.PluginSettings.AllowInsecureDownloadURL = true
 	entry.ReadmeURL = "http://catalog.example/readme.md"
-	assert.NoError(t, checkReadmeURL(entry))
+	assert.NoError(t, checkCatalogURL(entry, entry.ReadmeURL))
 
 	// The portable package host counts as well.
 	entry.InstallableRelease = &CatalogRelease{DownloadURL: "https://portable.example/pkg.tar.gz"}
 	entry.ReadmeURL = "https://portable.example/readme.md"
-	assert.NoError(t, checkReadmeURL(entry))
+	assert.NoError(t, checkCatalogURL(entry, entry.ReadmeURL))
 	entry.ReadmeURL = "https://cdn.example/readme.md"
-	assert.Error(t, checkReadmeURL(entry))
+	assert.Error(t, checkCatalogURL(entry, entry.ReadmeURL))
 }
 
 func TestMarketplaceInstallTrustsTheReleaseKey(t *testing.T) {
@@ -883,4 +883,31 @@ func TestProxiedURLOnlyRewritesGithub(t *testing.T) {
 		proxiedURL("https://raw.githubusercontent.com/a/b/index.json"))
 	assert.Equal(t, "https://mirror.example.org/index.json", proxiedURL("https://mirror.example.org/index.json"))
 	assert.Equal(t, "", proxiedURL(""))
+}
+
+func TestScreenshotsKeepTheLoadableOnes(t *testing.T) {
+	previous := settings.PluginSettings.AllowInsecureDownloadURL
+	settings.PluginSettings.AllowInsecureDownloadURL = false
+	t.Cleanup(func() { settings.PluginSettings.AllowInsecureDownloadURL = previous })
+
+	shared := []CatalogScreenshot{
+		{URL: "https://raw.githubusercontent.com/example/plugin/v1/docs/list.png", Caption: map[string]string{"en": "List"}},
+		{URL: "https://tracker.example/pixel.png"},
+		{URL: "http://catalog.example/plain.png"},
+		{URL: "https://catalog.example/shots/dashboard.webp"},
+	}
+	for i := 0; i < 10; i++ {
+		shared = append(shared, CatalogScreenshot{URL: fmt.Sprintf("https://catalog.example/shots/%d.png", i)})
+	}
+	entry := &CatalogEntry{Source: "https://catalog.example/v1/index.json", Screenshots: shared}
+
+	kept := loadableScreenshots(entry)
+	require.Len(t, kept, maxCatalogScreenshots)
+	assert.Equal(t, "List", kept[0].Caption["en"])
+	assert.Equal(t, "https://catalog.example/shots/dashboard.webp", kept[1].URL)
+	for _, shot := range kept {
+		assert.NotContains(t, shot.URL, "tracker.example")
+		assert.NotContains(t, shot.URL, "http://")
+	}
+	assert.Len(t, entry.Screenshots, len(shared), "the entry of the cache keeps its list")
 }
