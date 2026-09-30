@@ -303,6 +303,9 @@ func peekPackageManifest(archivePath string) (*protocol.Manifest, error) {
 	return manifest, err
 }
 
+// maxManifestSize caps how much of one plugin.json is held in memory.
+const maxManifestSize = 1 << 20
+
 // peekPackage reads the manifest of an archive and the platforms it runs on
 // in one pass over the archive, without writing anything to disk. A broken
 // package fails the way ExtractPackage fails.
@@ -328,10 +331,12 @@ func peekPackage(archivePath string) (*protocol.Manifest, []string, error) {
 		if path.Base(name) != ManifestFileName || strings.Count(name, "/") > 1 {
 			return nil
 		}
-		// walkPackage already holds the entry to the package size budget.
-		data, err := io.ReadAll(reader)
+		data, err := io.ReadAll(io.LimitReader(reader, maxManifestSize+1))
 		if err != nil {
 			return invalidPackage("read entry %q: %v", header.Name, err)
+		}
+		if len(data) > maxManifestSize {
+			return invalidManifest("%s is larger than %d bytes", ManifestFileName, maxManifestSize)
 		}
 		manifests[name] = data
 		return nil
