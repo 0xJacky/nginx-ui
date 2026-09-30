@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
@@ -35,6 +36,7 @@ func newMarketplaceFixture(t *testing.T) *marketplaceFixture {
 	fixture := &marketplaceFixture{files: map[string][]byte{}}
 	fixture.document = map[string]any{
 		"schema_version": plugin.CatalogSchemaVersion,
+		"name":           map[string]string{"en": "Example Plugins", "zh_CN": "  示例插件 "},
 		"plugins":        []any{},
 	}
 
@@ -140,12 +142,16 @@ func TestGetMarketplaceListReturnsCatalogAndSources(t *testing.T) {
 	require.Equal(t, http.StatusOK, recorder.Code)
 
 	var body struct {
-		Plugins []plugin.CatalogEntry `json:"plugins"`
-		Sources []string              `json:"sources"`
+		Plugins []plugin.CatalogEntry  `json:"plugins"`
+		Sources []plugin.CatalogSource `json:"sources"`
 	}
 	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &body))
 	require.Len(t, body.Plugins, 2)
-	assert.Equal(t, []string{fixture.sourceURL()}, body.Sources)
+	// The name the catalog declares comes with the source once it was read.
+	assert.Equal(t, []plugin.CatalogSource{{
+		URL:         fixture.sourceURL(),
+		CatalogName: map[string]string{"en": "Example Plugins", "zh_CN": "示例插件"},
+	}}, body.Sources)
 	assert.Equal(t, "1.0.0", body.Plugins[0].InstallableRelease.Version)
 
 	// The category filter reaches the marketplace.
@@ -290,7 +296,8 @@ func TestGetMarketplaceSourcesReportsTheDefault(t *testing.T) {
 
 	var body marketplaceSourcesResponse
 	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &body))
-	assert.Equal(t, []string{fixture.sourceURL()}, body.Sources)
+	require.Len(t, body.Sources, 1)
+	assert.Equal(t, fixture.sourceURL(), body.Sources[0].URL)
 	assert.Equal(t, settings.DefaultPluginMarketplaceSource, body.Default)
 }
 
@@ -316,6 +323,7 @@ func TestMarketplaceRoutesDoNotCollideWithThePluginRoutes(t *testing.T) {
 		"GET /api/plugins/updates",
 		"POST /api/plugins/marketplace/install",
 		"POST /api/plugins/marketplace/sources",
+		"POST /api/plugins/marketplace/sources/probe",
 		"POST /api/plugins/:id/update",
 	} {
 		_, ok := registered[want]
@@ -331,12 +339,15 @@ func TestNormalizeSources(t *testing.T) {
 	sources, err := normalizeSources([]string{
 		" https://example.com/a.json ",
 		"https://example.com/a.json",
+		"https://example.com/b.json",
 		"",
 	})
 	require.NoError(t, err)
-	assert.Equal(t, []string{"https://example.com/a.json"}, sources)
+	assert.Equal(t, []string{"https://example.com/a.json", "https://example.com/b.json"}, sources)
 
 	_, err = normalizeSources([]string{"not a url"})
+	assert.Error(t, err)
+	_, err = normalizeSources([]string{"https://example.com/a b.json"})
 	assert.Error(t, err)
 
 	_, err = normalizeSources([]string{"http://example.com/a.json"})
@@ -346,4 +357,34 @@ func TestNormalizeSources(t *testing.T) {
 	sources, err = normalizeSources([]string{"http://example.com/a.json"})
 	require.NoError(t, err)
 	assert.Len(t, sources, 1)
+}
+
+func TestProbeMarketplaceSourceReadsTheCatalog(t *testing.T) {
+	setupManager(t)
+	fixture := newMarketplaceFixture(t)
+	fixture.publish(t, marketplaceTestManifest("com.example.alpha", "1.0.0"), nil)
+	fixture.publish(t, marketplaceTestManifest("com.example.beta", "1.0.0"), nil)
+
+	probe := func(rawURL string) (int, plugin.SourceProbe) {
+		payload, _ := json.Marshal(map[string]string{"url": rawURL})
+		c, recorder := newContext(http.MethodPost, "/api/plugins/marketplace/sources/probe", bytes.NewReader(payload), nil)
+		ProbeMarketplaceSource(c)
+		var body plugin.SourceProbe
+		_ = json.Unmarshal(recorder.Body.Bytes(), &body)
+		return recorder.Code, body
+	}
+
+	code, body := probe(fixture.sourceURL())
+	require.Equal(t, http.StatusOK, code)
+	assert.True(t, body.Reachable)
+	assert.Equal(t, 2, body.Plugins)
+	assert.Equal(t, "Example Plugins", body.CatalogName["en"])
+
+	code, body = probe(fixture.sourceURL() + "/missing")
+	require.Equal(t, http.StatusOK, code)
+	assert.False(t, body.Reachable)
+	assert.NotEmpty(t, body.Error)
+
+	code, _ = probe("ftp://example.com/index.json")
+	assert.NotEqual(t, http.StatusOK, code)
 }

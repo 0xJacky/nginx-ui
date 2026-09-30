@@ -193,11 +193,31 @@ type CatalogScreenshot struct {
 // maxCatalogScreenshots is the most screenshots of an entry a node shows.
 const maxCatalogScreenshots = 8
 
+// maxCatalogNameLength caps the name a catalog declares, in characters.
+const maxCatalogNameLength = 64
+
 // CatalogDocument is the static JSON one source serves.
 type CatalogDocument struct {
-	SchemaVersion int            `json:"schema_version"`
-	UpdatedAt     string         `json:"updated_at,omitempty"`
-	Plugins       []CatalogEntry `json:"plugins"`
+	SchemaVersion int `json:"schema_version"`
+	// Name is the name the catalog goes by, a locale map like an entry name.
+	Name      map[string]string `json:"name,omitempty"`
+	UpdatedAt string            `json:"updated_at,omitempty"`
+	Plugins   []CatalogEntry    `json:"plugins"`
+}
+
+// CatalogSource is one configured catalog and the name it declares.
+type CatalogSource struct {
+	URL string `json:"url"`
+	// CatalogName is the name the catalog declares, known once it was read.
+	CatalogName map[string]string `json:"catalog_name,omitempty"`
+}
+
+// SourceProbe is what reading one catalog found.
+type SourceProbe struct {
+	Reachable   bool              `json:"reachable"`
+	CatalogName map[string]string `json:"catalog_name,omitempty"`
+	Plugins     int               `json:"plugins"`
+	Error       string            `json:"error,omitempty"`
 }
 
 // CatalogFilter narrows the merged catalog.
@@ -236,6 +256,7 @@ type InstallProgress struct {
 // sourceCache keeps one fetched source for catalogTTL.
 type sourceCache struct {
 	entries []CatalogEntry
+	name    map[string]string
 	fetched time.Time
 }
 
@@ -258,6 +279,39 @@ func newMarketplace(m *Manager) *Marketplace {
 // Sources lists the configured catalog URLs in merge order.
 func (mp *Marketplace) Sources() []string {
 	return settings.PluginSettings.GetMarketplaceSources()
+}
+
+// SourceList lists the configured catalogs in merge order with the name each
+// declared when it was last read.
+func (mp *Marketplace) SourceList() []CatalogSource {
+	urls := mp.Sources()
+	list := make([]CatalogSource, 0, len(urls))
+	mp.mu.Lock()
+	defer mp.mu.Unlock()
+	for _, rawURL := range urls {
+		source := CatalogSource{URL: rawURL}
+		if cached, ok := mp.cache[rawURL]; ok {
+			source.CatalogName = cached.name
+		}
+		list = append(list, source)
+	}
+	return list
+}
+
+// Probe reads one catalog now and reports whether it answered, the name it
+// declares and how many plugins it lists. A configured source keeps what was
+// read in its cache.
+func (mp *Marketplace) Probe(ctx context.Context, rawURL string) SourceProbe {
+	entries, name, err := fetchCatalog(ctx, proxiedURL(rawURL))
+	if err != nil {
+		return SourceProbe{Error: err.Error()}
+	}
+	if slices.Contains(mp.Sources(), rawURL) {
+		mp.mu.Lock()
+		mp.cache[rawURL] = &sourceCache{entries: entries, name: name, fetched: time.Now()}
+		mp.mu.Unlock()
+	}
+	return SourceProbe{Reachable: true, CatalogName: name, Plugins: len(entries)}
 }
 
 // Catalog fetches every configured source and merges them by id, first source
@@ -697,13 +751,13 @@ func (mp *Marketplace) source(ctx context.Context, rawURL string, refresh bool) 
 		}
 	}
 
-	entries, err := fetchCatalog(ctx, proxiedURL(rawURL))
+	entries, name, err := fetchCatalog(ctx, proxiedURL(rawURL))
 	if err != nil {
 		return nil, err
 	}
 
 	mp.mu.Lock()
-	mp.cache[rawURL] = &sourceCache{entries: entries, fetched: time.Now()}
+	mp.cache[rawURL] = &sourceCache{entries: entries, name: name, fetched: time.Now()}
 	mp.mu.Unlock()
 	return entries, nil
 }
@@ -870,18 +924,18 @@ func publishPlatformProgress(pluginID, status string, progress float64, platform
 }
 
 // fetchCatalog downloads and validates one catalog document.
-func fetchCatalog(ctx context.Context, rawURL string) ([]CatalogEntry, error) {
+func fetchCatalog(ctx context.Context, rawURL string) ([]CatalogEntry, map[string]string, error) {
 	body, err := fetchText(ctx, rawURL, maxCatalogBytes)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	var document CatalogDocument
 	if err = json.Unmarshal([]byte(body), &document); err != nil {
-		return nil, cosy.WrapErrorWithParams(ErrCatalogInvalid, err.Error())
+		return nil, nil, cosy.WrapErrorWithParams(ErrCatalogInvalid, err.Error())
 	}
 	if document.SchemaVersion != CatalogSchemaVersion {
-		return nil, cosy.WrapErrorWithParams(ErrCatalogInvalid,
+		return nil, nil, cosy.WrapErrorWithParams(ErrCatalogInvalid,
 			fmt.Sprintf("schema_version %d is not supported", document.SchemaVersion))
 	}
 
@@ -896,7 +950,26 @@ func fetchCatalog(ctx context.Context, rawURL string) ([]CatalogEntry, error) {
 		}
 		entries = append(entries, entry)
 	}
-	return entries, nil
+	return entries, catalogName(document.Name), nil
+}
+
+// catalogName keeps the non-empty names of a catalog, short enough to show.
+func catalogName(raw map[string]string) map[string]string {
+	name := make(map[string]string, len(raw))
+	for locale, value := range raw {
+		value = strings.Join(strings.Fields(value), " ")
+		if locale == "" || value == "" {
+			continue
+		}
+		if runes := []rune(value); len(runes) > maxCatalogNameLength {
+			value = string(runes[:maxCatalogNameLength])
+		}
+		name[locale] = value
+	}
+	if len(name) == 0 {
+		return nil
+	}
+	return name
 }
 
 // fetchText reads a remote document with a hard size cap.
