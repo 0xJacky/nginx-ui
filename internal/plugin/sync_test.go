@@ -46,6 +46,7 @@ type fakeSyncNode struct {
 	// install and upload calls, in call order.
 	replaceFlags  []string
 	disableCalls  []string
+	channelCalls  []string
 	settingsCalls []map[string]any
 }
 
@@ -125,6 +126,12 @@ func newFakeSyncNode(t *testing.T) *fakeSyncNode {
 			node.enableCalls = append(node.enableCalls, id)
 		case "disable":
 			node.disableCalls = append(node.disableCalls, id)
+		case "channel":
+			var body struct {
+				Channel string `json:"channel"`
+			}
+			_ = json.NewDecoder(r.Body).Decode(&body)
+			node.channelCalls = append(node.channelCalls, id+":"+body.Channel)
 		case "settings":
 			var body struct {
 				Settings map[string]any `json:"settings"`
@@ -409,6 +416,39 @@ func TestSyncPluginAlignsEnabledStateAndPushesSettings(t *testing.T) {
 	require.Len(t, fake.settingsCalls, 1)
 	// Secrets are read from the row, not through the redacting API.
 	assert.Equal(t, "s3cret", fake.settingsCalls[0]["token"])
+}
+
+func TestSyncPluginAlignsTheFollowedChannel(t *testing.T) {
+	m, syncer := newSyncTestManager(t)
+	installSyncTestPlugin(t, m, "official.alpha", "1.0.0", true)
+	_, err := m.SetChannel(context.Background(), "official.alpha", ChannelBeta)
+	require.NoError(t, err)
+
+	fake := newFakeSyncNode(t)
+	fake.inventory = []Info{{ID: "official.alpha", Version: "1.0.0", Enabled: true, FollowedChannel: ChannelStable}}
+	node := addSyncTestNode(t, "node-a", fake.server.URL, true)
+	useFakeSyncCluster(t, map[uint64]bool{node.ID: true})
+
+	results, err := syncer.SyncPlugin(context.Background(), "official.alpha", nil)
+	require.NoError(t, err)
+	require.Len(t, results, 1)
+	assert.True(t, results[0].Success)
+	assert.Equal(t, []string{"channel"}, results[0].Actions)
+	fake.mu.Lock()
+	assert.Equal(t, []string{"official.alpha:beta"}, fake.channelCalls)
+	fake.mu.Unlock()
+
+	// A node that reports no channel predates channels and is left alone.
+	fake.mu.Lock()
+	fake.channelCalls = nil
+	fake.inventory = []Info{{ID: "official.alpha", Version: "1.0.0", Enabled: true}}
+	fake.mu.Unlock()
+	results, err = syncer.SyncPlugin(context.Background(), "official.alpha", nil)
+	require.NoError(t, err)
+	assert.Empty(t, results[0].Actions)
+	fake.mu.Lock()
+	assert.Empty(t, fake.channelCalls)
+	fake.mu.Unlock()
 }
 
 func TestReconcilePushesSettingsOnlyWhenTheyChange(t *testing.T) {

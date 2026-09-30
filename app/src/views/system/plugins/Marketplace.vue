@@ -34,6 +34,8 @@ const detailOpen = ref(false)
 const installOpen = ref(false)
 const sourcesOpen = ref(false)
 const selected = ref<CatalogEntry>()
+// A version picked in the details, empty for the newest one.
+const selectedVersion = ref<string>()
 
 const categoryOptions = computed<SelectProps['options']>(() => {
   const seen = new Set<string>()
@@ -100,11 +102,13 @@ async function refreshAll(refresh = false) {
 
 function openDetail(entry: CatalogEntry) {
   selected.value = entry
+  selectedVersion.value = undefined
   detailOpen.value = true
 }
 
-function openInstall(entry: CatalogEntry) {
+function openInstall(entry: CatalogEntry, version?: string) {
   selected.value = entry
+  selectedVersion.value = version
   detailOpen.value = false
   installOpen.value = true
 }
@@ -258,6 +262,7 @@ onMounted(() => refreshAll())
     <InstallConfirmModal
       v-model:open="installOpen"
       :entry="selected"
+      :version="selectedVersion"
       @installed="onInstalled"
     />
     <SourcesModal v-model:open="sourcesOpen" @saved="onSourcesSaved" />
