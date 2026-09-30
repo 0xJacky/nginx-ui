@@ -119,6 +119,8 @@ export interface CatalogSource {
 
 /** What reading one catalog found. */
 export interface SourceProbe {
+  /** Catalog address that answered, the one asked for when none did. */
+  url: string
   reachable: boolean
   catalog_name?: Record<string, string>
   /** Image the catalog declares, when this node may load it. */

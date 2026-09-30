@@ -390,6 +390,13 @@ func TestProbeMarketplaceSourceReadsTheCatalog(t *testing.T) {
 	_, body = probe(fixture.sourceURL())
 	assert.Empty(t, body.Icon)
 
+	// A site address finds the catalog at one of the usual paths.
+	fixture.document["icon"] = fixture.server.URL + "/icon.png"
+	code, body = probe(fixture.server.URL)
+	require.Equal(t, http.StatusOK, code)
+	assert.True(t, body.Reachable)
+	assert.Equal(t, fixture.sourceURL(), body.URL)
+
 	code, body = probe(fixture.sourceURL() + "/missing")
 	require.Equal(t, http.StatusOK, code)
 	assert.False(t, body.Reachable)
