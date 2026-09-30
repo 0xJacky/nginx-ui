@@ -55,6 +55,13 @@ export interface CatalogRelease {
   manifest?: PluginManifest
 }
 
+/** One image of a catalog entry. */
+export interface CatalogScreenshot {
+  url: string
+  /** Locale code to caption, "en" is the fallback. */
+  caption?: Record<string, string>
+}
+
 /** One plugin as the catalog describes it, plus the state of this node. */
 export interface CatalogEntry {
   id: string
@@ -67,6 +74,8 @@ export interface CatalogEntry {
   repository_url?: string
   readme_url?: string
   icon_url?: string
+  /** Images of the plugin in use the node may load, in display order. */
+  screenshots?: CatalogScreenshot[]
   categories?: string[]
   capabilities?: string[]
   license?: string
@@ -228,6 +237,11 @@ export function releasePlatforms(release: CatalogRelease): string[] {
 /** Display name of a catalog entry in the active language, English fallback. */
 export function catalogEntryName(entry: CatalogEntry, language: string): string {
   return localizedText(entry.name, language) || entry.id
+}
+
+/** Caption of a screenshot in the active language, English fallback. */
+export function catalogScreenshotCaption(screenshot: CatalogScreenshot, language: string): string {
+  return localizedText(screenshot.caption, language)
 }
 
 /** Description of a catalog entry in the active language, English fallback. */
