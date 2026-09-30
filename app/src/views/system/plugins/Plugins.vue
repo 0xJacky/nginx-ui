@@ -74,6 +74,7 @@ const tabs = computed(() => [
 // A freshly installed bundle is picked up without a page reload.
 async function onInstalled() {
   await inventory.reload(true)
+  await pluginLoader.unloadDisabled(inventory.plugins.value)
   await Promise.all([inventory.reloadUpdates(), inventory.reloadCatalog(), pluginLoader.loadNew()])
 }
 </script>

@@ -36,12 +36,15 @@ type fakeSyncNode struct {
 	// platform is what GET /api/plugins/spec reports, empty for an older node.
 	platform string
 
-	uploaded      []byte
-	uploadEnable  string
-	uploadAuthor  string
-	uploadCalls   int
-	marketCalls   int
-	enableCalls   []string
+	uploaded     []byte
+	uploadEnable string
+	uploadAuthor string
+	uploadCalls  int
+	marketCalls  int
+	enableCalls  []string
+	// replaceFlags records replace_conflicts of the enable, marketplace
+	// install and upload calls, in call order.
+	replaceFlags  []string
 	disableCalls  []string
 	settingsCalls []map[string]any
 }
@@ -63,8 +66,13 @@ func newFakeSyncNode(t *testing.T) *fakeSyncNode {
 		writeSyncJSON(w, spec)
 	})
 
-	mux.HandleFunc("/api/plugins/marketplace/install", func(w http.ResponseWriter, _ *http.Request) {
+	mux.HandleFunc("/api/plugins/marketplace/install", func(w http.ResponseWriter, r *http.Request) {
+		var body struct {
+			ReplaceConflicts bool `json:"replace_conflicts"`
+		}
+		_ = json.NewDecoder(r.Body).Decode(&body)
 		node.mu.Lock()
+		node.replaceFlags = append(node.replaceFlags, "market:"+boolText(body.ReplaceConflicts))
 		node.marketCalls++
 		status := node.marketplaceStatus
 		node.mu.Unlock()
@@ -98,6 +106,7 @@ func newFakeSyncNode(t *testing.T) *fakeSyncNode {
 		node.uploaded = payload
 		node.uploadEnable = r.FormValue("enable")
 		node.uploadAuthor = r.FormValue("author_public_key")
+		node.replaceFlags = append(node.replaceFlags, "upload:"+r.FormValue("replace_conflicts"))
 		node.mu.Unlock()
 		writeSyncJSON(w, Info{})
 	})
@@ -108,6 +117,11 @@ func newFakeSyncNode(t *testing.T) *fakeSyncNode {
 		defer node.mu.Unlock()
 		switch action {
 		case "enable":
+			var body struct {
+				ReplaceConflicts bool `json:"replace_conflicts"`
+			}
+			_ = json.NewDecoder(r.Body).Decode(&body)
+			node.replaceFlags = append(node.replaceFlags, "enable:"+boolText(body.ReplaceConflicts))
 			node.enableCalls = append(node.enableCalls, id)
 		case "disable":
 			node.disableCalls = append(node.disableCalls, id)
@@ -311,6 +325,7 @@ func TestSyncPluginUploadsThePackageWhenTheMarketplaceIsUnavailable(t *testing.T
 	assert.Equal(t, 1, fake.marketCalls)
 	assert.Equal(t, 1, fake.uploadCalls)
 	assert.Equal(t, "true", fake.uploadEnable)
+	assert.Equal(t, []string{"market:true", "upload:true"}, fake.replaceFlags)
 	assert.NotEmpty(t, fake.uploaded)
 	// An unsigned package has no author key to hand on.
 	assert.Empty(t, fake.uploadAuthor)
@@ -389,6 +404,8 @@ func TestSyncPluginAlignsEnabledStateAndPushesSettings(t *testing.T) {
 	defer fake.mu.Unlock()
 	assert.Equal(t, 0, fake.uploadCalls)
 	assert.Equal(t, []string{"official.alpha"}, fake.enableCalls)
+	// The main node decides what runs, so the node replaces conflicts.
+	assert.Equal(t, []string{"enable:true"}, fake.replaceFlags)
 	require.Len(t, fake.settingsCalls, 1)
 	// Secrets are read from the row, not through the redacting API.
 	assert.Equal(t, "s3cret", fake.settingsCalls[0]["token"])

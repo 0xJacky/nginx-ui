@@ -125,6 +125,8 @@ export interface MarketplaceInstallPayload {
   source?: string
   enable?: boolean
   approve_permissions?: boolean
+  /** Turns off the enabled plugins that cannot be on together with the package. */
+  replace_conflicts?: boolean
 }
 
 export interface PluginUpdatePayload {

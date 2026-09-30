@@ -722,3 +722,212 @@ func TestWebappEntriesListChunkURLs(t *testing.T) {
 		"deep":   "plugins/official.alpha/webapp/chunks/deep.js",
 	}, entries[0].Chunks)
 }
+
+// conflictManifest builds a test plugin that declares the given conflicts.
+func conflictManifest(id string, conflicts ...string) *protocol.Manifest {
+	manifest := pluginManifest(id)
+	manifest.Conflicts = conflicts
+	return manifest
+}
+
+func TestManagerEnableRefusesAConflictUnlessItReplaces(t *testing.T) {
+	m := newTestManager(t)
+	ctx := context.Background()
+	require.NoError(t, m.LoadOffline(ctx))
+
+	// official.beta declares the conflict, official.alpha does not know it.
+	_, err := m.Install(ctx, buildTestPackage(t, pluginManifest("official.alpha"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	beta, err := m.Install(ctx, buildTestPackage(t, conflictManifest("official.beta", "official.alpha"), nil), InstallOptions{})
+	require.NoError(t, err)
+	assert.Equal(t, []string{"official.alpha"}, beta.ConflictsEnabled)
+	assert.Equal(t, []string{"official.alpha"}, beta.Conflicts)
+
+	// The relation is symmetric, alpha sees beta as a conflict too.
+	alpha, err := m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.Empty(t, alpha.Conflicts)
+	assert.Empty(t, alpha.ConflictsEnabled)
+	require.NoError(t, m.setEnabledForTest(ctx, "official.beta", true))
+	alpha, err = m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.Equal(t, []string{"official.beta"}, alpha.ConflictsEnabled)
+	require.NoError(t, m.setEnabledForTest(ctx, "official.beta", false))
+
+	_, err = m.Enable(ctx, "official.beta", false)
+	assertPluginError(t, err, ErrPluginConflict)
+	assert.Contains(t, err.Error(), "official.alpha")
+	alpha, err = m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.True(t, alpha.Enabled)
+
+	// Replacing turns the other plugin off, in either direction.
+	beta, err = m.EnableWith(ctx, "official.beta", EnableOptions{ReplaceConflicts: true})
+	require.NoError(t, err)
+	assert.True(t, beta.Enabled)
+	assert.Empty(t, beta.ConflictsEnabled)
+	alpha, err = m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.False(t, alpha.Enabled)
+
+	_, err = m.Enable(ctx, "official.alpha", false)
+	assertPluginError(t, err, ErrPluginConflict)
+	_, err = m.EnableWith(ctx, "official.alpha", EnableOptions{ReplaceConflicts: true})
+	require.NoError(t, err)
+	beta, err = m.Get("official.beta")
+	require.NoError(t, err)
+	assert.False(t, beta.Enabled)
+}
+
+// setEnabledForTest flips the row flag without any conflict handling.
+func (m *Manager) setEnabledForTest(ctx context.Context, id string, enabled bool) error {
+	item, ok := m.lookup(id)
+	if !ok {
+		return ErrPluginNotFound
+	}
+	m.mu.Lock()
+	item.row.Enabled = enabled
+	m.mu.Unlock()
+	return m.saveRow(ctx, item.row)
+}
+
+func TestManagerReplacingAConflictStopsItsDependents(t *testing.T) {
+	m := newTestManager(t)
+	ctx := context.Background()
+	require.NoError(t, m.LoadOffline(ctx))
+
+	_, err := m.Install(ctx, buildTestPackage(t, pluginManifest("official.alpha"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	dependent := pluginManifest("official.gamma")
+	dependent.Requires = []protocol.ManifestRequirement{{ID: "official.alpha"}}
+	_, err = m.Install(ctx, buildTestPackage(t, dependent, nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	_, err = m.Install(ctx, buildTestPackage(t, conflictManifest("official.beta", "official.alpha"), nil), InstallOptions{})
+	require.NoError(t, err)
+
+	_, err = m.EnableWith(ctx, "official.beta", EnableOptions{ReplaceConflicts: true})
+	require.NoError(t, err)
+
+	gamma, err := m.Get("official.gamma")
+	require.NoError(t, err)
+	assert.Contains(t, gamma.LastError, "official.alpha")
+	alpha, err := m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.False(t, alpha.Enabled)
+}
+
+func TestManagerReplaceKeepsAnUnapprovedPluginFromTurningOffTheOther(t *testing.T) {
+	m := newTestManager(t)
+	ctx := context.Background()
+	require.NoError(t, m.LoadOffline(ctx))
+
+	_, err := m.Install(ctx, buildTestPackage(t, pluginManifest("official.alpha"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	first := conflictManifest("official.beta", "official.alpha")
+	first.Permissions = []string{protocol.PermissionKV}
+	_, err = m.Install(ctx, buildTestPackage(t, first, nil), InstallOptions{})
+	require.NoError(t, err)
+	second := conflictManifest("official.beta", "official.alpha")
+	second.Version = "2.0.0"
+	second.Permissions = []string{protocol.PermissionKV, protocol.PermissionNotify}
+	_, err = m.Install(ctx, buildTestPackage(t, second, nil), InstallOptions{})
+	require.NoError(t, err)
+	_, err = m.EnableWith(ctx, "official.beta", EnableOptions{ApprovePermissions: true})
+	assertPluginError(t, err, ErrPluginConflict)
+
+	// A replace that fails on the approval leaves the other plugin on.
+	_, err = m.EnableWith(ctx, "official.beta", EnableOptions{ReplaceConflicts: true})
+	assert.ErrorIs(t, err, ErrPermissionApprovalRequired)
+	alpha, err := m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.True(t, alpha.Enabled)
+
+	_, err = m.EnableWith(ctx, "official.beta", EnableOptions{ApprovePermissions: true, ReplaceConflicts: true})
+	require.NoError(t, err)
+	alpha, err = m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.False(t, alpha.Enabled)
+}
+
+func TestManagerInstallWithEnableLeavesAConflictDisabled(t *testing.T) {
+	m := newTestManager(t)
+	ctx := context.Background()
+	require.NoError(t, m.LoadOffline(ctx))
+
+	_, err := m.Install(ctx, buildTestPackage(t, pluginManifest("official.alpha"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+
+	info, err := m.Install(ctx, buildTestPackage(t, conflictManifest("official.beta", "official.alpha"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	assert.False(t, info.Enabled)
+	assert.Equal(t, []string{"official.alpha"}, info.ConflictsEnabled)
+	alpha, err := m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.True(t, alpha.Enabled)
+
+	// An upgrade that adds a conflict keeps the plugin off, and asking to
+	// replace turns the other one off instead.
+	upgrade := conflictManifest("official.alpha", "official.gamma")
+	upgrade.Version = "2.0.0"
+	_, err = m.Install(ctx, buildTestPackage(t, pluginManifest("official.gamma"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	info, err = m.Install(ctx, buildTestPackage(t, upgrade, nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	assert.False(t, info.Enabled)
+	gamma, err := m.Get("official.gamma")
+	require.NoError(t, err)
+	assert.True(t, gamma.Enabled)
+
+	upgrade.Version = "3.0.0"
+	info, err = m.Install(ctx, buildTestPackage(t, upgrade, nil), InstallOptions{Enable: true, ReplaceConflicts: true})
+	require.NoError(t, err)
+	assert.True(t, info.Enabled)
+	gamma, err = m.Get("official.gamma")
+	require.NoError(t, err)
+	assert.False(t, gamma.Enabled)
+
+	// The new package of an enabled plugin replaces a conflict on request.
+	other, err := m.Install(ctx, buildTestPackage(t, conflictManifest("official.beta", "official.alpha"), nil),
+		InstallOptions{Enable: true, ReplaceConflicts: true})
+	require.NoError(t, err)
+	assert.True(t, other.Enabled)
+	alpha, err = m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.False(t, alpha.Enabled)
+}
+
+func TestManagerStartupTurnsOffALaterConflictingPlugin(t *testing.T) {
+	m := newTestManager(t)
+	ctx := context.Background()
+	require.NoError(t, m.LoadOffline(ctx))
+
+	_, err := m.Install(ctx, buildTestPackage(t, pluginManifest("official.alpha"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	_, err = m.Install(ctx, buildTestPackage(t, pluginManifest("official.beta"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	_, err = m.Install(ctx, buildTestPackage(t, pluginManifest("official.delta"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+
+	// The database can hold two enabled conflicting plugins, for instance
+	// after an older host enabled them both.
+	beta, _ := m.lookup("official.beta")
+	m.mu.Lock()
+	beta.manifest.Conflicts = []string{"official.alpha"}
+	m.mu.Unlock()
+
+	m.startEnabled(ctx)
+
+	alpha, err := m.Get("official.alpha")
+	require.NoError(t, err)
+	assert.Empty(t, alpha.LastError)
+	betaInfo, err := m.Get("official.beta")
+	require.NoError(t, err)
+	assert.False(t, betaInfo.Enabled)
+	assert.Contains(t, betaInfo.LastError, "official.alpha")
+	row, err := query.Plugin.WithContext(ctx).Where(query.Plugin.PluginID.Eq("official.beta")).First()
+	require.NoError(t, err)
+	assert.False(t, row.Enabled, "the loser must stay off after a restart")
+	delta, err := m.Get("official.delta")
+	require.NoError(t, err)
+	assert.Empty(t, delta.LastError)
+}

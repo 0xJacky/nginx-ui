@@ -31,6 +31,10 @@ func (m *Manager) startEnabled(ctx context.Context) {
 		ordered = m.sortedIDs()
 	}
 
+	// kept holds the plugins that stay on. A later plugin that conflicts with
+	// one of them is turned off (spec LIFE-20). A plugin whose start failed
+	// stays on and counts too, it may come up again later.
+	kept := make(map[string]bool, len(ordered))
 	for _, id := range ordered {
 		item, ok := m.lookup(id)
 		if !ok {
@@ -38,15 +42,79 @@ func (m *Manager) startEnabled(ctx context.Context) {
 		}
 		m.mu.RLock()
 		ready := runnableLocked(item)
+		var rivals []string
+		if ready {
+			rivals = m.conflictIDsLocked(id, item.manifest, func(other *entry) bool { return kept[other.id] })
+		}
 		m.mu.RUnlock()
 		if !ready {
 			continue
 		}
+		if len(rivals) > 0 {
+			m.log.Warnf("[plugin:%s] turned off, it conflicts with %s", id, strings.Join(rivals, ", "))
+			m.turnOffForConflict(ctx, item, rivals)
+			continue
+		}
+		kept[id] = true
 		if err = m.bringUp(ctx, item); err != nil {
 			m.log.Errorf("[plugin:%s] start: %v", id, err)
 			m.recordError(item, err)
 		}
 	}
+}
+
+// turnOffForConflict switches off a plugin that lost to a conflicting one at
+// startup. Webapps, content and capability routing only look at the enabled
+// flag, so it has to be stored, not just reported.
+func (m *Manager) turnOffForConflict(ctx context.Context, item *entry, rivals []string) {
+	m.mu.Lock()
+	row := item.row
+	if row != nil {
+		row.Enabled = false
+	}
+	m.mu.Unlock()
+	if row != nil {
+		if err := m.saveRow(ctx, row); err != nil {
+			m.log.Errorf("[plugin:%s] turn off: %v", item.id, err)
+		}
+	}
+	m.recordError(item, cosy.WrapErrorWithParams(ErrPluginConflict, strings.Join(rivals, ", ")))
+}
+
+// isRowEnabled reports whether the plugin is switched on. The caller must
+// hold at least the read lock.
+func isRowEnabled(item *entry) bool {
+	return item.row != nil && item.row.Enabled
+}
+
+// conflictIDsLocked lists the installed plugins accepted by match that
+// conflict with the manifest. The relation is symmetric: either side may
+// declare it. The caller must hold at least the read lock.
+func (m *Manager) conflictIDsLocked(id string, manifest *protocol.Manifest, match func(*entry) bool) []string {
+	ids := []string{}
+	if manifest == nil {
+		return ids
+	}
+	for other, item := range m.entries {
+		if other == id || item.manifest == nil || !match(item) {
+			continue
+		}
+		if slices.Contains(manifest.Conflicts, other) || slices.Contains(item.manifest.Conflicts, id) {
+			ids = append(ids, other)
+		}
+	}
+	sort.Strings(ids)
+	return ids
+}
+
+// enabledConflicts lists the enabled plugins that conflict with the manifest.
+func (m *Manager) enabledConflicts(manifest *protocol.Manifest) []string {
+	if manifest == nil {
+		return []string{}
+	}
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	return m.conflictIDsLocked(manifest.ID, manifest, isRowEnabled)
 }
 
 // bringUp prepares the supervisor, registers the manifest cron entries and

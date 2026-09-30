@@ -84,7 +84,10 @@ type Manifest struct {
 	LogSink *ManifestLogSink `protobuf:"bytes,29,opt,name=log_sink,json=logSink,proto3" json:"log_sink,omitempty"`
 	// Translations of name and description keyed by host locale code, e.g.
 	// "zh_CN". name and description stay the fallback.
-	I18N          map[string]*ManifestI18N `protobuf:"bytes,30,rep,name=i18n,proto3" json:"i18n,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	I18N map[string]*ManifestI18N `protobuf:"bytes,30,rep,name=i18n,proto3" json:"i18n,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Plugin ids that must never be enabled together with this plugin. See
+	// spec/01-manifest.md MAN-42 and spec/04-lifecycle.md LIFE-20.
+	Conflicts     []string `protobuf:"bytes,31,rep,name=conflicts,proto3" json:"conflicts,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -325,6 +328,13 @@ func (x *Manifest) GetLogSink() *ManifestLogSink {
 func (x *Manifest) GetI18N() map[string]*ManifestI18N {
 	if x != nil {
 		return x.I18N
+	}
+	return nil
+}
+
+func (x *Manifest) GetConflicts() []string {
+	if x != nil {
+		return x.Conflicts
 	}
 	return nil
 }
@@ -2519,7 +2529,7 @@ var File_nginxui_plugin_v1_manifest_proto protoreflect.FileDescriptor
 
 const file_nginxui_plugin_v1_manifest_proto_rawDesc = "" +
 	"\n" +
-	" nginxui/plugin/v1/manifest.proto\x12\x11nginxui.plugin.v1\x1a\x1cgoogle/protobuf/struct.proto\"\x94\f\n" +
+	" nginxui/plugin/v1/manifest.proto\x12\x11nginxui.plugin.v1\x1a\x1cgoogle/protobuf/struct.proto\"\xb2\f\n" +
 	"\bManifest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
@@ -2552,7 +2562,8 @@ const file_nginxui_plugin_v1_manifest_proto_rawDesc = "" +
 	"\tblocklist\x18\x1b \x01(\v2$.nginxui.plugin.v1.ManifestBlocklistR\tblocklist\x12B\n" +
 	"\tdiscovery\x18\x1c \x01(\v2$.nginxui.plugin.v1.ManifestDiscoveryR\tdiscovery\x12=\n" +
 	"\blog_sink\x18\x1d \x01(\v2\".nginxui.plugin.v1.ManifestLogSinkR\alogSink\x129\n" +
-	"\x04i18n\x18\x1e \x03(\v2%.nginxui.plugin.v1.Manifest.I18nEntryR\x04i18n\x1aX\n" +
+	"\x04i18n\x18\x1e \x03(\v2%.nginxui.plugin.v1.Manifest.I18nEntryR\x04i18n\x12\x1c\n" +
+	"\tconflicts\x18\x1f \x03(\tR\tconflicts\x1aX\n" +
 	"\tI18nEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x125\n" +
 	"\x05value\x18\x02 \x01(\v2\x1f.nginxui.plugin.v1.ManifestI18nR\x05value:\x028\x01\"D\n" +

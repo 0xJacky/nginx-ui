@@ -376,5 +376,16 @@ export function usePluginLoader() {
       bundles.forget(pluginId)
   }
 
-  return { load, loadNew, unload }
+  /**
+   * Unloads the bundles of plugins that are installed but turned off, for
+   * example after an install turned off a plugin that cannot run beside it.
+   */
+  async function unloadDisabled(plugins: Pick<PluginInfo, 'id' | 'enabled'>[]) {
+    for (const plugin of plugins) {
+      if (!plugin.enabled && plugin.id in store.loaded)
+        await unload(plugin.id)
+    }
+  }
+
+  return { load, loadNew, unload, unloadDisabled }
 }

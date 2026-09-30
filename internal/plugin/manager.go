@@ -74,6 +74,11 @@ type Info struct {
 	Permissions          []string                       `json:"permissions"`
 	Requires             []protocol.ManifestRequirement `json:"requires"`
 	RequiresCapabilities []string                       `json:"requires_capabilities"`
+	// Conflicts are the plugin ids the manifest declares as never to run
+	// together with it. ConflictsEnabled lists the enabled plugins that
+	// conflict with it, whichever side declared it (spec LIFE-20).
+	Conflicts        []string `json:"conflicts"`
+	ConflictsEnabled []string `json:"conflicts_enabled"`
 	// NetworkHosts lists the addresses the plugin may reach, empty when it names none.
 	NetworkHosts   []string                 `json:"network_hosts"`
 	HasServer      bool                     `json:"has_server"`
@@ -152,6 +157,9 @@ type InstallOptions struct {
 	Enable bool
 	// ApprovePermissions records the manifest permission set as approved.
 	ApprovePermissions bool
+	// ReplaceConflicts disables the enabled plugins that conflict with the
+	// package, instead of leaving the package disabled (spec LIFE-20).
+	ReplaceConflicts bool
 	// ExpectedID and ExpectedVersion, when set, refuse a package whose
 	// manifest names another plugin or version. The marketplace passes what
 	// the catalog promised, so a swapped package is caught by the one
@@ -599,6 +607,8 @@ func (m *Manager) infoLocked(item *entry) Info {
 		Capabilities:         []string{},
 		Permissions:          []string{},
 		RequiresCapabilities: []string{},
+		Conflicts:            []string{},
+		ConflictsEnabled:     []string{},
 		NetworkHosts:         []string{},
 		SyncNodeIDs:          []uint64{},
 		Status:               statusOf(item),
@@ -675,6 +685,10 @@ func (m *Manager) infoLocked(item *entry) Info {
 	if len(manifest.RequiresCapabilities) > 0 {
 		info.RequiresCapabilities = manifest.RequiresCapabilities
 	}
+	if len(manifest.Conflicts) > 0 {
+		info.Conflicts = manifest.Conflicts
+	}
+	info.ConflictsEnabled = m.conflictIDsLocked(item.id, manifest, isRowEnabled)
 	if len(manifest.NetworkHosts) > 0 {
 		info.NetworkHosts = manifest.NetworkHosts
 	}

@@ -6,6 +6,7 @@ import pluginApi, { localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { usePluginLoader } from '@/plugin'
+import { enableReplacesText } from './conflicts'
 import InstalledPluginCard from './InstalledPluginCard.vue'
 import { usePluginInventory } from './inventory'
 import PermissionApprovalModal from './PermissionApprovalModal.vue'
@@ -13,6 +14,7 @@ import PluginDrawer from './PluginDrawer.vue'
 import { matchesFilter, matchesKeyword, needsAttention } from './presets'
 import SyncNodesModal from './SyncNodesModal.vue'
 import { certificateUsageText, formatUsagePreview, previewUsage } from './usage'
+import { enabledConflictNames } from './useConflicts'
 
 const emit = defineEmits<{
   install: []
@@ -40,6 +42,8 @@ const drawerTab = ref<PluginDrawerTab>('overview')
 const syncOpen = ref(false)
 const approvalOpen = ref(false)
 const pendingApproval = ref<PluginInfo>()
+// Set when the user already agreed to turn off the plugins that conflict.
+const pendingReplace = ref(false)
 
 const updateIds = computed(() => new Set(inventory.updates.value.map(item => item.id)))
 
@@ -104,11 +108,14 @@ function openSync(plugin: PluginInfo) {
   syncOpen.value = true
 }
 
-async function enablePlugin(plugin: PluginInfo, approvePermissions?: boolean) {
+async function enablePlugin(plugin: PluginInfo, approvePermissions?: boolean, replaceConflicts?: boolean) {
   togglingId.value = plugin.id
+  const replaced = replaceConflicts ? (plugin.conflicts_enabled ?? []) : []
   try {
-    await pluginApi.enable(plugin.id, approvePermissions)
+    await pluginApi.enable(plugin.id, approvePermissions, replaceConflicts)
     message.success($gettext('Plugin enabled'))
+    for (const id of replaced)
+      await pluginLoader.unload(id)
     await inventory.reload(true)
     await pluginLoader.loadNew()
   }
@@ -175,21 +182,40 @@ async function requestDisable(plugin: PluginInfo) {
   })
 }
 
+function startEnable(plugin: PluginInfo, replaceConflicts: boolean) {
+  // Enabling a plugin whose permissions are not approved yet has to go through
+  // the approval dialog first.
+  if (plugin.status === 'needs_approval') {
+    pendingApproval.value = plugin
+    pendingReplace.value = replaceConflicts
+    approvalOpen.value = true
+    return
+  }
+
+  void enablePlugin(plugin, undefined, replaceConflicts)
+}
+
 function toggle(plugin: PluginInfo, checked: boolean) {
   if (!checked) {
     void requestDisable(plugin)
     return
   }
 
-  // Enabling a plugin whose permissions are not approved yet has to go through
-  // the approval dialog first.
-  if (plugin.status === 'needs_approval') {
-    pendingApproval.value = plugin
-    approvalOpen.value = true
+  // The plugins that cannot be on together with this one are named first.
+  const others = enabledConflictNames(plugin, plugins.value)
+  if (others.length > 0) {
+    const name = localizedPluginName(plugin, gettext.current)
+    modal.confirm({
+      title: $gettext('Turn on %{name}?', { name }),
+      content: enableReplacesText(name, others),
+      okText: $gettext('Turn on'),
+      cancelText: $gettext('Cancel'),
+      onOk: () => startEnable(plugin, true),
+    })
     return
   }
 
-  void enablePlugin(plugin)
+  startEnable(plugin, false)
 }
 
 async function approvePermissions() {
@@ -199,9 +225,10 @@ async function approvePermissions() {
 
   approving.value = true
   try {
-    await enablePlugin(plugin, true)
+    await enablePlugin(plugin, true, pendingReplace.value)
     approvalOpen.value = false
     pendingApproval.value = undefined
+    pendingReplace.value = false
   }
   finally {
     approving.value = false
