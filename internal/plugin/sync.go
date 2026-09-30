@@ -218,6 +218,12 @@ func (n *nodeClient) setEnabled(ctx context.Context, id string, enabled bool) er
 	return decode(resp, err, path, nil)
 }
 
+func (n *nodeClient) setChannel(ctx context.Context, id, channel string) error {
+	path := "/api/plugins/" + id + "/channel"
+	resp, err := n.client.R().SetContext(ctx).SetBody(map[string]any{"channel": channel}).Post(path)
+	return decode(resp, err, path, nil)
+}
+
 func (n *nodeClient) saveSettings(ctx context.Context, id string, values map[string]any) error {
 	path := "/api/plugins/" + id + "/settings"
 	resp, err := n.client.R().SetContext(ctx).
@@ -517,7 +523,14 @@ func (s *Syncer) syncNode(
 		}
 		result.Actions = append(result.Actions, action)
 		// The install already applied the wanted enabled state.
-		remote = &Info{ID: info.ID, Version: info.Version, Enabled: info.Enabled}
+		// An install leaves the chosen channel alone, a new plugin starts on stable.
+		afterInstall := &Info{ID: info.ID, Version: info.Version, Enabled: info.Enabled}
+		if remote == nil {
+			afterInstall.FollowedChannel = ChannelStable
+		} else {
+			afterInstall.FollowedChannel = remote.FollowedChannel
+		}
+		remote = afterInstall
 	}
 
 	if remote.Enabled != info.Enabled {
@@ -527,6 +540,16 @@ func (s *Syncer) syncNode(
 			return result
 		}
 		result.Actions = append(result.Actions, enabledAction(info.Enabled))
+	}
+
+	// A node that does not report a channel predates channels.
+	if followed := NormalizeChannel(row.FollowedChannel); remote.FollowedChannel != "" && remote.FollowedChannel != followed {
+		if err = client.setChannel(nodeCtx, info.ID, followed); err != nil {
+			result.State = SyncStateError
+			result.Error = err.Error()
+			return result
+		}
+		result.Actions = append(result.Actions, "channel")
 	}
 
 	if row.SyncSettings && len(row.Settings) > 0 {

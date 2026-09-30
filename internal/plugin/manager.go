@@ -62,9 +62,16 @@ const (
 
 // Info is the plugin as the REST API and the CLI report it.
 type Info struct {
-	ID                   string                         `json:"id"`
-	Name                 string                         `json:"name"`
-	Version              string                         `json:"version"`
+	ID      string `json:"id"`
+	Name    string `json:"name"`
+	Version string `json:"version"`
+	// Channel is the channel of the installed release. FollowedChannel is the
+	// one the person chose, stable by default. EffectiveChannel is the one
+	// updates are taken from: the less stable of the two, so it falls back to
+	// FollowedChannel once a release on a steadier channel is installed.
+	Channel              string                         `json:"channel"`
+	FollowedChannel      string                         `json:"followed_channel"`
+	EffectiveChannel     string                         `json:"effective_channel"`
 	Description          string                         `json:"description,omitempty"`
 	HomepageURL          string                         `json:"homepage_url,omitempty"`
 	IconURL              string                         `json:"icon_url,omitempty"`
@@ -171,6 +178,10 @@ type InstallOptions struct {
 	AuthorPublicKey string
 	// MinTrust refuses a package whose derived trust ranks below it.
 	MinTrust string
+	// Channel is the channel the catalog gives the release, empty to take it
+	// from the version. It is remembered as the channel of the installed
+	// release.
+	Channel string
 }
 
 // InspectResult describes a package without installing it.
@@ -612,6 +623,9 @@ func (m *Manager) infoLocked(item *entry) Info {
 		NetworkHosts:         []string{},
 		SyncNodeIDs:          []uint64{},
 		Status:               statusOf(item),
+		Channel:              ChannelStable,
+		FollowedChannel:      ChannelStable,
+		EffectiveChannel:     ChannelStable,
 		Trust:                TrustUnsigned,
 		DroppedEvents:        item.dropped.Load(),
 		StreamedLogEntries:   item.logCounters.streamed.Load(),
@@ -621,6 +635,9 @@ func (m *Manager) infoLocked(item *entry) Info {
 
 	if row := item.row; row != nil {
 		info.Version = row.Version
+		info.Channel = rowReleaseChannel(row)
+		info.FollowedChannel = NormalizeChannel(row.FollowedChannel)
+		info.EffectiveChannel = lessStableChannel(info.FollowedChannel, info.Channel)
 		info.Enabled = row.Enabled
 		info.SyncPolicy = row.SyncPolicy
 		info.SyncSettings = row.SyncSettings

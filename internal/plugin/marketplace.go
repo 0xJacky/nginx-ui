@@ -38,6 +38,9 @@ const (
 // EventTypeInstallProgress carries the marketplace install progress to the UI.
 const EventTypeInstallProgress = event.Type("plugin_install_progress")
 
+// StageBeta is the catalog entry stage that marks a plugin as beta.
+const StageBeta = "beta"
+
 // CatalogSchemaVersion is the only catalog layout this node understands.
 const CatalogSchemaVersion = 1
 
@@ -89,11 +92,14 @@ type CatalogRelease struct {
 	Downloads map[string]ReleaseDownload `json:"downloads,omitempty"`
 	// DownloadURL and SHA256 describe the portable package, the fallback for
 	// every platform Downloads does not name.
-	DownloadURL     string             `json:"download_url"`
-	SHA256          string             `json:"sha256,omitempty"`
-	ReleaseNotesURL string             `json:"release_notes_url,omitempty"`
-	Yanked          bool               `json:"yanked,omitempty"`
-	Manifest        *protocol.Manifest `json:"manifest,omitempty"`
+	DownloadURL     string `json:"download_url"`
+	SHA256          string `json:"sha256,omitempty"`
+	ReleaseNotesURL string `json:"release_notes_url,omitempty"`
+	Yanked          bool   `json:"yanked,omitempty"`
+	// Channel is stable, beta or dev. The catalog may leave it out, the host
+	// then fills it from the version, so the UI reads one field.
+	Channel  string             `json:"channel,omitempty"`
+	Manifest *protocol.Manifest `json:"manifest,omitempty"`
 }
 
 // DownloadFor resolves the package a node running platform installs:
@@ -158,12 +164,18 @@ type CatalogEntry struct {
 	License         string            `json:"license,omitempty"`
 	Trust           string            `json:"trust,omitempty"`
 	Stage           string            `json:"stage,omitempty"`
-	Releases        []CatalogRelease  `json:"releases"`
+	// Channel is computed by this node: the channel of the release it would
+	// install, at least beta while the entry stage is beta.
+	Channel  string           `json:"channel"`
+	Releases []CatalogRelease `json:"releases"`
 
 	// Source is the catalog URL this entry was merged from.
 	Source string `json:"source"`
 	// InstallableRelease is the newest release this node can actually install.
 	InstallableRelease *CatalogRelease `json:"installable_release,omitempty"`
+	// InstallableVersions lists the versions this node can install, newest
+	// first, without the withdrawn ones. Any of them can be asked for by name.
+	InstallableVersions []string `json:"installable_versions"`
 	// InstalledVersion is the version currently on this node, if any.
 	InstalledVersion string `json:"installed_version,omitempty"`
 	UpdateAvailable  bool   `json:"update_available"`
@@ -509,6 +521,7 @@ func (mp *Marketplace) installEntry(ctx context.Context, entries []CatalogEntry,
 	opts.ExpectedID = entry.ID
 	opts.ExpectedVersion = release.Version
 	opts.AuthorPublicKey = entry.AuthorPublicKey
+	opts.Channel = release.Channel
 	return mp.manager.Install(ctx, archive, opts)
 }
 
@@ -528,7 +541,7 @@ func (mp *Marketplace) installRequirements(ctx context.Context, entries []Catalo
 		if dependency == nil {
 			return cosy.WrapErrorWithParams(ErrDependencyMissing, requirement.ID)
 		}
-		candidate := pickRelease(dependency, requirement.Version, HostPlatform())
+		candidate := pickRelease(dependency, requirement.Version, HostPlatform(), mp.followedChannel(dependency.ID))
 		if candidate == nil {
 			return cosy.WrapErrorWithParams(ErrDependencyMissing, requirement.ID+"@"+requirement.Version)
 		}
@@ -560,7 +573,7 @@ func (mp *Marketplace) resolveRelease(entry *CatalogEntry, wantVersion, platform
 			}
 			return entry.InstallableRelease, nil
 		}
-		if release := pickRelease(entry, "", platform); release != nil {
+		if release := pickRelease(entry, "", platform, mp.followedChannel(entry.ID)); release != nil {
 			return release, nil
 		}
 		return nil, ErrPlatformUnsupported
@@ -692,13 +705,39 @@ func (mp *Marketplace) ClearCache() {
 
 // decorate computes the node specific fields of one entry.
 func (mp *Marketplace) decorate(entry *CatalogEntry) {
-	entry.InstallableRelease = pickRelease(entry, "", HostPlatform())
-	if info, err := mp.manager.Get(entry.ID); err == nil {
-		entry.InstalledVersion = info.Version
+	entry.InstalledVersion = mp.installedVersion(entry.ID)
+	entry.InstallableRelease = pickRelease(entry, "", HostPlatform(), mp.followedChannel(entry.ID))
+	entry.InstallableVersions = installableVersions(entry, HostPlatform())
+	entry.Channel = ChannelStable
+	if entry.Stage == StageBeta {
+		entry.Channel = ChannelBeta
+	}
+	if entry.InstallableRelease != nil {
+		entry.Channel = lessStableChannel(entry.Channel, channelOfRelease(entry.InstallableRelease))
 	}
 	if entry.InstallableRelease != nil && entry.InstalledVersion != "" {
 		entry.UpdateAvailable = CompareVersions(entry.InstalledVersion, entry.InstallableRelease.Version) < 0
 	}
+}
+
+// installedVersion is the version of the plugin on this node, empty when it
+// is not installed.
+func (mp *Marketplace) installedVersion(id string) string {
+	if info, err := mp.manager.Get(id); err == nil {
+		return info.Version
+	}
+	return ""
+}
+
+// followedChannel is the channel an installed plugin takes updates from: the
+// less stable of the one the person chose and the one of the release it runs.
+// Empty when the plugin is not installed.
+func (mp *Marketplace) followedChannel(id string) string {
+	info, err := mp.manager.Get(id)
+	if err != nil {
+		return ""
+	}
+	return info.EffectiveChannel
 }
 
 // runMaintenance is the daily job: refresh the catalog and the partner
@@ -821,6 +860,9 @@ func fetchCatalog(ctx context.Context, rawURL string) ([]CatalogEntry, error) {
 		if !IsValidID(entry.ID) {
 			continue
 		}
+		for i := range entry.Releases {
+			entry.Releases[i].Channel = channelOfRelease(&entry.Releases[i])
+		}
 		entries = append(entries, entry)
 	}
 	return entries, nil
@@ -933,9 +975,12 @@ func findEntry(entries []CatalogEntry, id, source string) *CatalogEntry {
 }
 
 // pickRelease returns the newest release that installs on platform,
-// optionally restricted to a semver range.
-func pickRelease(entry *CatalogEntry, versionRange, platform string) *CatalogRelease {
-	var best *CatalogRelease
+// optionally restricted to a semver range. followed is the channel of an
+// installed plugin, and only releases on it or a more stable one qualify. It
+// is empty when the plugin is not installed: the newest stable release is
+// chosen, else the newest beta, else the newest dev one.
+func pickRelease(entry *CatalogEntry, versionRange, platform, followed string) *CatalogRelease {
+	var byRank [3]*CatalogRelease
 	for i := range entry.Releases {
 		release := &entry.Releases[i]
 		if release.Yanked || !releaseRunsOn(release, platform) {
@@ -944,11 +989,43 @@ func pickRelease(entry *CatalogEntry, versionRange, platform string) *CatalogRel
 		if versionRange != "" && !VersionSatisfies(release.Version, versionRange) {
 			continue
 		}
+		rank := ChannelRank(channelOfRelease(release))
+		if byRank[rank] == nil || CompareVersions(release.Version, byRank[rank].Version) > 0 {
+			byRank[rank] = release
+		}
+	}
+
+	if followed == "" {
+		for _, release := range byRank {
+			if release != nil {
+				return release
+			}
+		}
+		return nil
+	}
+	var best *CatalogRelease
+	for rank, release := range byRank {
+		if rank > ChannelRank(followed) || release == nil {
+			continue
+		}
 		if best == nil || CompareVersions(release.Version, best.Version) > 0 {
 			best = release
 		}
 	}
 	return best
+}
+
+// installableVersions lists the versions of an entry that install on
+// platform, newest first, without the withdrawn ones.
+func installableVersions(entry *CatalogEntry, platform string) []string {
+	versions := make([]string, 0, len(entry.Releases))
+	for i := range entry.Releases {
+		if release := &entry.Releases[i]; !release.Yanked && releaseRunsOn(release, platform) {
+			versions = append(versions, release.Version)
+		}
+	}
+	sort.SliceStable(versions, func(a, b int) bool { return CompareVersions(versions[a], versions[b]) > 0 })
+	return versions
 }
 
 // releaseRunsOn reports whether a node running this nginx-ui build on

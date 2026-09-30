@@ -434,3 +434,27 @@ func TestSavePluginSettingsAcceptsAList(t *testing.T) {
 	SavePluginSettings(c)
 	assert.NotEqual(t, http.StatusOK, recorder.Code)
 }
+
+func TestSetPluginChannelStoresTheFollowedChannel(t *testing.T) {
+	manager := setupManager(t)
+	installTestPlugin(t, manager, webappManifest("official.alpha"), nil, true)
+
+	c, recorder := newContext(http.MethodPost, "/api/plugins/official.alpha/channel",
+		strings.NewReader(`{"channel":"beta"}`), gin.Params{{Key: "id", Value: "official.alpha"}})
+	SetPluginChannel(c)
+	require.Equal(t, http.StatusOK, recorder.Code)
+	var info plugin.Info
+	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &info))
+	assert.Equal(t, plugin.ChannelBeta, info.FollowedChannel)
+	assert.Equal(t, plugin.ChannelStable, info.Channel)
+
+	stored, err := query.Plugin.WithContext(context.Background()).
+		Where(query.Plugin.PluginID.Eq("official.alpha")).First()
+	require.NoError(t, err)
+	assert.Equal(t, plugin.ChannelBeta, stored.FollowedChannel)
+
+	c, recorder = newContext(http.MethodPost, "/api/plugins/official.alpha/channel",
+		strings.NewReader(`{"channel":"nightly"}`), gin.Params{{Key: "id", Value: "official.alpha"}})
+	SetPluginChannel(c)
+	assert.NotEqual(t, http.StatusOK, recorder.Code)
+}
