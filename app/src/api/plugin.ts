@@ -69,6 +69,8 @@ export interface PluginManifestServer {
 export interface PluginManifestResources {
   /** Memory in MiB, 0 means no hint. */
   memory_mb?: number
+  /** Memory in MiB the machine should have for the plugin to work well, 0 means no hint. */
+  recommended_memory_mb?: number
   /** CPU time in percent of one core, 0 means no hint. */
   cpu_percent?: number
 }
@@ -310,6 +312,8 @@ export interface PluginInfo {
   dropped_log_entries?: number
   /** Limits of the plugin process, absent for a plugin without one. */
   resources?: PluginResources
+  /** Memory hint of the manifest in MiB, absent when the plugin gives none. */
+  recommended_memory_mb?: number
   /** Locale code to translated name, `name` is the fallback. */
   name_i18n?: Record<string, string>
   /** Locale code to translated description, `description` is the fallback. */
@@ -415,6 +419,8 @@ export interface PluginSpec {
   transports: string[]
   /** "<goos>-<goarch>" a package must cover to run on this node. */
   platform?: string
+  /** Memory this node runs with in MiB, 0 when unknown. */
+  system_memory_mb?: number
 }
 
 /**
