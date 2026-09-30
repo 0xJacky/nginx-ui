@@ -18,3 +18,6 @@ func (s *Supervisor) startProcess(cmd *exec.Cmd) (*exec.Cmd, *pluginCgroup, erro
 	}
 	return cmd, nil, cmd.Start()
 }
+
+// preferOOMKill is a no-op: the OOM score is a Linux setting.
+func (s *Supervisor) preferOOMKill(int) {}
