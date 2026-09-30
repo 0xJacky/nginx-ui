@@ -225,7 +225,10 @@ type CatalogSource struct {
 
 // SourceProbe is what reading one catalog found.
 type SourceProbe struct {
-	Reachable bool `json:"reachable"`
+	// URL is the catalog address that answered, or the one asked for when
+	// none did.
+	URL       string `json:"url"`
+	Reachable bool   `json:"reachable"`
 	CatalogInfo
 	Plugins int    `json:"plugins"`
 	Error   string `json:"error,omitempty"`
@@ -309,20 +312,47 @@ func (mp *Marketplace) SourceList() []CatalogSource {
 	return list
 }
 
-// Probe reads one catalog now and reports whether it answered, the name it
-// declares and how many plugins it lists. A configured source keeps what was
-// read in its cache.
+// Probe reads one catalog now and reports whether it answered, what it
+// declares and how many plugins it lists. An address without a path is a
+// site, so the usual catalog paths on it are tried in turn. A configured
+// source keeps what was read in its cache.
 func (mp *Marketplace) Probe(ctx context.Context, rawURL string) SourceProbe {
-	entries, info, err := fetchCatalog(ctx, rawURL)
-	if err != nil {
-		return SourceProbe{Error: err.Error()}
+	var firstErr error
+	for _, candidate := range catalogCandidates(rawURL) {
+		entries, info, err := fetchCatalog(ctx, candidate)
+		if err != nil {
+			if firstErr == nil {
+				firstErr = err
+			}
+			continue
+		}
+		if slices.Contains(mp.Sources(), candidate) {
+			mp.mu.Lock()
+			mp.cache[candidate] = &sourceCache{entries: entries, info: info, fetched: time.Now()}
+			mp.mu.Unlock()
+		}
+		return SourceProbe{URL: candidate, Reachable: true, CatalogInfo: info, Plugins: len(entries)}
 	}
-	if slices.Contains(mp.Sources(), rawURL) {
-		mp.mu.Lock()
-		mp.cache[rawURL] = &sourceCache{entries: entries, info: info, fetched: time.Now()}
-		mp.mu.Unlock()
+	return SourceProbe{URL: rawURL, Error: firstErr.Error()}
+}
+
+// catalogPaths are where a site serves its catalog, in the order they are
+// tried (spec PKG-30).
+var catalogPaths = []string{"/v1/index.json", "/index.json"}
+
+// catalogCandidates lists the addresses to read for a source address: the
+// address itself, or the catalog paths on it when it names only a site.
+func catalogCandidates(rawURL string) []string {
+	parsed, err := url.Parse(rawURL)
+	if err != nil || (parsed.Path != "" && parsed.Path != "/") || parsed.RawQuery != "" || parsed.Fragment != "" {
+		return []string{rawURL}
 	}
-	return SourceProbe{Reachable: true, CatalogInfo: info, Plugins: len(entries)}
+	base := strings.TrimSuffix(rawURL, "/")
+	candidates := make([]string, 0, len(catalogPaths))
+	for _, path := range catalogPaths {
+		candidates = append(candidates, base+path)
+	}
+	return candidates
 }
 
 // Catalog fetches every configured source and merges them by id, first source

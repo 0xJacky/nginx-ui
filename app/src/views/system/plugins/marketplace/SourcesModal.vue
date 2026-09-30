@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ComponentPublicInstance } from 'vue'
-import { AppstoreOutlined, DeleteOutlined, EditOutlined, HolderOutlined, InfoCircleOutlined, PlusOutlined } from '@antdv-next/icons'
+import { AppstoreOutlined, DeleteOutlined, EditOutlined, HolderOutlined, InfoCircleOutlined, LinkOutlined, PlusOutlined } from '@antdv-next/icons'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import { localizedText } from '@/api/plugin'
 import { getMarketplaceSources, probeMarketplaceSource, saveMarketplaceSources } from '@/api/plugin_marketplace'
@@ -15,6 +15,10 @@ interface SourceRow {
   url: string
   /** Shows the address as an input rather than as text. */
   editing: boolean
+  /** Address before the current edit, restored when it is cancelled. */
+  previousUrl: string
+  /** Check still running, awaited before saving. */
+  pending?: Promise<void>
   /** URL the state below belongs to. */
   probedUrl: string
   state: SourceState
@@ -64,7 +68,15 @@ useSortable(cards, rows, {
 })
 
 function newRow(url = '', editing = false): SourceRow {
-  return { key: nextKey++, url, editing, probedUrl: '', state: 'idle', catalogIcon: '', plugins: 0, detail: '' }
+  return { key: nextKey++, url, editing, previousUrl: url, probedUrl: '', state: 'idle', catalogIcon: '', plugins: 0, detail: '' }
+}
+
+// A bare domain gets https in front; the check then finds the catalog on it.
+function normalizeAddress(value: string) {
+  const trimmed = value.trim()
+  if (!trimmed || /^[a-z][a-z0-9+.-]*:\/\//i.test(trimmed))
+    return trimmed
+  return `https://${trimmed}`
 }
 
 function isWebAddress(value: string) {
@@ -94,7 +106,6 @@ async function probe(row: SourceRow) {
   }
   if (!isWebAddress(url)) {
     row.state = 'invalid'
-    row.detail = $gettext('Enter a valid web address')
     return
   }
 
@@ -104,6 +115,11 @@ async function probe(row: SourceRow) {
     if (row.probedUrl !== url)
       return
     row.state = result.reachable ? 'available' : 'unavailable'
+    // A site address resolves to the catalog found on it
+    if (result.reachable && result.url && result.url !== url) {
+      row.url = result.url
+      row.probedUrl = result.url
+    }
     row.catalogName = result.catalog_name
     row.catalogIcon = result.catalog_icon ?? ''
     row.plugins = result.plugins
@@ -163,10 +179,13 @@ async function load() {
   finally {
     loading.value = false
   }
-  rows.value.forEach(row => probe(row))
+  rows.value.forEach(row => {
+    row.pending = probe(row)
+  })
 }
 
 async function edit(row: SourceRow) {
+  row.previousUrl = row.url
   row.editing = true
   await nextTick()
   const list = cards.value?.$el as HTMLElement | undefined
@@ -175,9 +194,37 @@ async function edit(row: SourceRow) {
 
 // Leaving the input checks the address; a valid one goes back to text.
 function finishEdit(row: SourceRow) {
-  probe(row)
-  if (row.url.trim() && row.state !== 'invalid')
-    row.editing = false
+  if (!row.editing)
+    return
+  const url = normalizeAddress(row.url)
+  if (!url)
+    return
+  // An address that stays invalid is left as typed
+  if (!isWebAddress(url)) {
+    row.url = row.url.trim()
+    row.state = 'invalid'
+    row.probedUrl = row.url
+    return
+  }
+  row.url = url
+  row.editing = false
+  row.pending = probe(row)
+}
+
+function cancelEdit(row: SourceRow, index: number) {
+  if (!row.previousUrl) {
+    removeSource(index)
+    return
+  }
+  row.url = row.previousUrl
+  row.editing = false
+  row.state = row.probedUrl === row.url ? row.state : 'idle'
+  row.pending = probe(row)
+}
+
+function onInput(row: SourceRow) {
+  if (row.state === 'invalid')
+    row.state = 'idle'
 }
 
 function addSource() {
@@ -193,13 +240,20 @@ function removeSource(index: number) {
 function restoreDefault() {
   const row = newRow(defaultSource.value)
   rows.value.push(row)
-  probe(row)
+  row.pending = probe(row)
 }
 
 async function save() {
+  rows.value.forEach(finishEdit)
+  if (rows.value.some(row => row.state === 'invalid')) {
+    error.value = $gettext('Correct the addresses marked as invalid before saving.')
+    return
+  }
   saving.value = true
   error.value = ''
   try {
+    // Site addresses resolve to their catalog first
+    await Promise.all(rows.value.map(row => row.pending))
     const response = await saveMarketplaceSources(rows.value
       .map(row => row.url.trim())
       .filter(Boolean))
@@ -265,7 +319,7 @@ watch(open, value => {
           v-for="(row, index) in rows"
           :key="row.key"
           class="source-card"
-          :class="`is-${row.state}`"
+          :class="[`is-${row.state}`, { 'is-editing': row.editing }]"
           :data-source-key="row.key"
         >
           <HolderOutlined class="source-handle" :aria-label="$gettext('Drag to reorder')" />
@@ -290,8 +344,8 @@ watch(open, value => {
                 <span
                   :key="row.catalogName ? 'catalog' : 'address'"
                   class="source-title"
-                  :class="{ 'is-placeholder': !row.url.trim() || row.state === 'invalid' }"
-                >{{ titleOf(row) }}</span>
+                  :class="{ 'is-placeholder': row.editing && !row.catalogName }"
+                >{{ row.editing && !row.catalogName ? $gettext('New source') : titleOf(row) }}</span>
               </Transition>
               <ATag v-if="row.url.trim() === defaultSource" color="blue" :bordered="false" class="source-tag">
                 {{ $gettext('Official') }}
@@ -299,16 +353,31 @@ watch(open, value => {
             </div>
 
             <Transition name="source-swap" mode="out-in">
-              <AInput
-                v-if="row.editing"
-                key="input"
-                v-model:value="row.url"
-                size="small"
-                class="source-input"
-                placeholder="https://example.com/plugins/index.json"
-                @blur="finishEdit(row)"
-                @press-enter="finishEdit(row)"
-              />
+              <div v-if="row.editing" key="input" class="source-edit">
+                <AInput
+                  v-model:value="row.url"
+                  class="source-input"
+                  placeholder="plugins.example.com"
+                  :status="row.state === 'invalid' ? 'warning' : undefined"
+                  allow-clear
+                  @input="onInput(row)"
+                  @blur="finishEdit(row)"
+                  @press-enter="finishEdit(row)"
+                  @keydown.esc.stop="cancelEdit(row, index)"
+                >
+                  <template #prefix>
+                    <LinkOutlined class="source-input-icon" />
+                  </template>
+                </AInput>
+                <Transition name="source-fade" mode="out-in">
+                  <span v-if="row.state === 'invalid'" key="invalid" class="source-hint is-warning">
+                    {{ $gettext('Enter a domain or a web address.') }}
+                  </span>
+                  <span v-else key="hint" class="source-hint">
+                    {{ $gettext('Enter a domain such as plugins.example.com, or the full address of a catalog.') }}
+                  </span>
+                </Transition>
+              </div>
               <button
                 v-else
                 key="text"
@@ -318,7 +387,9 @@ watch(open, value => {
                 :aria-label="$gettext('Edit address')"
                 @click="edit(row)"
               >
-                <span class="source-url-text">{{ row.url }}</span>
+                <Transition name="source-fade" mode="out-in">
+                  <span :key="row.url" class="source-url-text">{{ row.url }}</span>
+                </Transition>
                 <EditOutlined class="source-url-icon" />
               </button>
             </Transition>
@@ -326,7 +397,7 @@ watch(open, value => {
 
           <div class="source-side">
             <Transition name="source-fade" mode="out-in">
-              <span v-if="row.state !== 'idle'" :key="row.state" class="source-status">
+              <span v-if="row.state !== 'idle' && !row.editing" :key="row.state" class="source-status">
                 <ATooltip :title="row.detail || undefined">
                   <span class="source-pill">
                     <span class="source-dot" />
@@ -602,9 +673,31 @@ watch(open, value => {
   outline: none;
 }
 
-.source-input {
-  font-family: var(--ant-font-family-code, ui-monospace, SFMono-Regular, Menlo, monospace);
+.source-card.is-editing {
+  border-color: var(--ant-color-primary-border);
+  box-shadow: 0 0 0 3px var(--ant-color-primary-bg);
+  transform: none;
+}
+
+.source-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.source-input-icon {
+  color: var(--ant-color-text-quaternary);
+}
+
+.source-hint {
   font-size: 12px;
+  line-height: 1.5;
+  color: var(--ant-color-text-tertiary);
+}
+
+.source-hint.is-warning {
+  color: var(--ant-color-warning-text, var(--ant-color-warning));
 }
 
 .source-side {
@@ -801,13 +894,36 @@ watch(open, value => {
 }
 
 /* Narrow screens: the status moves under the address, remove stays in the corner */
+/* Narrow screens: the status goes under the address, the handle, icon and
+   remove button stay centred across both lines */
 @media (max-width: 575px) {
   .source-card {
-    flex-wrap: wrap;
-    row-gap: 6px;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 6px 12px;
+    align-items: center;
+    padding-left: 30px;
+  }
+
+  .source-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 8px;
+    margin-right: 0;
+  }
+
+  .source-tile {
+    grid-row: 1 / span 2;
+    grid-column: 1;
+  }
+
+  .source-card:not(:has(.source-status)) .source-tile {
+    grid-row: 1;
   }
 
   .source-main {
+    grid-column: 2;
     padding-right: 28px;
   }
 
@@ -816,15 +932,16 @@ watch(open, value => {
   }
 
   .source-status {
-    order: 1;
-    flex-basis: 100%;
-    padding-left: 74px;
+    grid-row: 2;
+    grid-column: 2;
+    justify-self: start;
   }
 
   .source-remove {
     position: absolute;
-    top: 8px;
+    top: 50%;
     right: 8px;
+    translate: 0 -50%;
   }
 
   .sources-intro {
