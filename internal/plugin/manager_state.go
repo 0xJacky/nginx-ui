@@ -184,7 +184,8 @@ func (m *Manager) ensureSupervisor(item *entry) (*Supervisor, error) {
 	id := item.id
 	permissions := slices.Clone(manifest.Permissions)
 	backend := m.hostBackend()
-	supervisor := NewSupervisor(SupervisorConfig{
+	var supervisor *Supervisor
+	supervisor = NewSupervisor(SupervisorConfig{
 		PluginID:         id,
 		Dir:              dir,
 		DataDir:          dataDir,
@@ -200,7 +201,7 @@ func (m *Manager) ensureSupervisor(item *entry) (*Supervisor, error) {
 		HostHandlers: func(conn *jsonrpc.Conn) {
 			RegisterHostHandlers(conn, id, permissions, backend)
 		},
-		OnStateChange: func(state State, cause error) { m.onStateChange(id, state, cause) },
+		OnStateChange: func(state State, cause error) { m.onStateChange(id, supervisor, state, cause) },
 		Logger:        m.log,
 	})
 
@@ -243,15 +244,25 @@ func (m *Manager) dropSupervisor(ctx context.Context, item *entry) {
 }
 
 // onStateChange mirrors a supervisor transition into the manager and persists
-// the failure so the UI still shows it after a restart.
-func (m *Manager) onStateChange(id string, state State, cause error) {
+// the failure so the UI still shows it after a restart. A supervisor reports
+// its transitions without holding its lock, so two reports can arrive in the
+// other order: with a reporter the state is read back from it under the
+// manager lock, and a report from a supervisor the entry no longer holds is
+// dropped. Without a reporter the given state is taken as is.
+func (m *Manager) onStateChange(id string, reporter *Supervisor, state State, cause error) {
+	m.mu.Lock()
+	item, ok := m.entries[id]
+	if ok && reporter != nil {
+		if item.supervisor != reporter {
+			m.mu.Unlock()
+			return
+		}
+		state, cause = reporter.State(), reporter.LastError()
+	}
 	message := ""
 	if cause != nil {
 		message = cause.Error()
 	}
-
-	m.mu.Lock()
-	item, ok := m.entries[id]
 	if ok {
 		item.state = state
 		item.lastErr = message
