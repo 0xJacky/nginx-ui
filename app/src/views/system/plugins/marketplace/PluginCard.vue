@@ -91,7 +91,7 @@ const actionLabel = computed(() => {
       >
         {{ capabilityLabel(capability) }}
       </ATag>
-      <ATooltip v-if="recommendedMb > 0" :title="lowMemory ? $gettext('This server has less memory than that.') : undefined">
+      <ATooltip v-if="recommendedMb > 0" :title="lowMemory ? $gettext('This server has less memory than recommended.') : undefined">
         <ATag :color="lowMemory ? 'warning' : undefined" class="m-0">
           {{ $gettext('Memory: %{size}', { size: formatMemory(recommendedMb) }) }}
         </ATag>

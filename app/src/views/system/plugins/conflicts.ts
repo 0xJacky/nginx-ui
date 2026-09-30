@@ -48,12 +48,12 @@ export function joinNames(names: string[]): string {
 
 /** Shown on a plugin that cannot be on together with others. */
 export function conflictNote(names: string[]): string {
-  return $gettext('Can\'t be on at the same time as %{names}', { names: joinNames(names) })
+  return $gettext('Cannot be enabled together with %{names}', { names: joinNames(names) })
 }
 
 /** Asked before a plugin is turned on while others that conflict with it are on. */
 export function enableReplacesText(name: string, names: string[]): string {
-  return $gettext('Turning on %{name} turns off %{others}. They can\'t be on at the same time.', {
+  return $gettext('Enabling %{name} will disable %{others}, because these plugins cannot be enabled at the same time.', {
     name,
     others: joinNames(names),
   })
@@ -61,7 +61,7 @@ export function enableReplacesText(name: string, names: string[]): string {
 
 /** Shown before a package is installed and turned on while others are on. */
 export function installReplacesText(names: string[]): string {
-  return $gettext('Turning it on turns off %{names}. They can\'t be on at the same time.', {
+  return $gettext('Enabling this plugin will disable %{names}, because these plugins cannot be enabled at the same time.', {
     names: joinNames(names),
   })
 }
