@@ -6,6 +6,7 @@ import { marked } from 'marked'
 import {
   catalogEntryDescription,
   catalogEntryName,
+  catalogScreenshotCaption,
   getMarketplacePlugin,
 } from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
@@ -50,6 +51,10 @@ const channel = computed(() => entryChannel(current.value))
 const installed = useInstalledPlugin(() => current.value?.id)
 const offer = computed(() => findTrustedOffer(installed.value?.trust, current.value))
 const { replacingId, confirmReplace } = useReplacePlugin()
+const screenshots = computed(() => (current.value?.screenshots ?? []).map(shot => ({
+  url: shot.url,
+  caption: catalogScreenshotCaption(shot, gettext.current),
+})))
 const renderedReadme = computed(() => (readme.value ? marked.parse(readme.value) as string : ''))
 
 const canInstall = computed(() => Boolean(current.value?.installable_release)
@@ -225,6 +230,31 @@ watch(open, value => {
             </div>
           </dl>
 
+          <section v-if="screenshots.length" class="overview-section">
+            <div class="section-head">
+              <h4 class="section-title">
+                {{ $gettext('Screenshots') }}
+              </h4>
+            </div>
+            <AImagePreviewGroup>
+              <div class="screenshot-strip">
+                <figure v-for="shot in screenshots" :key="shot.url" class="screenshot">
+                  <AImage
+                    :src="shot.url"
+                    :alt="shot.caption || name"
+                    :width="240"
+                    :height="150"
+                    referrerpolicy="no-referrer"
+                    class="screenshot-image"
+                  />
+                  <figcaption v-if="shot.caption" class="screenshot-caption">
+                    {{ shot.caption }}
+                  </figcaption>
+                </figure>
+              </div>
+            </AImagePreviewGroup>
+          </section>
+
           <section class="overview-section">
             <div class="section-head">
               <h4 class="section-title">
@@ -338,5 +368,30 @@ watch(open, value => {
     padding: 6px 8px;
     border: 1px solid var(--ant-color-split);
   }
+}
+
+.screenshot-strip {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.screenshot {
+  flex: none;
+  width: 240px;
+  margin: 0;
+}
+
+.screenshot :deep(.screenshot-image) {
+  border-radius: 6px;
+  object-fit: cover;
+  border: 1px solid var(--ant-color-border-secondary);
+}
+
+.screenshot-caption {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--ant-color-text-secondary);
 }
 </style>
