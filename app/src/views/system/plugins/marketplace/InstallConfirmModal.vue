@@ -13,9 +13,11 @@ import {
 import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { useWebSocketEventBusStore } from '@/pinia'
+import { installReplacesText } from '../conflicts'
 import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import PermissionList from '../PermissionList.vue'
+import { usePackageConflicts } from '../useConflicts'
 import { isCommunityTrust, trustPreset } from './trust'
 import TrustDowngradeAlert from './TrustDowngradeAlert.vue'
 
@@ -72,6 +74,11 @@ const trust = computed(() => trustPreset(entry.value?.trust))
 const recommendedMb = computed(() => recommendedMemory(release.value?.manifest))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
+// Turning the package on turns off the enabled plugins that conflict with it.
+const conflictingNames = usePackageConflicts(
+  () => (release.value?.manifest ? { id: targetId.value, conflicts: release.value.manifest.conflicts } : undefined),
+  () => open.value && enableAfterInstall.value,
+)
 const showCommunityWarning = computed(() => Boolean(entry.value) && isCommunityTrust(entry.value?.trust))
 const isUpgrade = computed(() => Boolean(entry.value?.installed_version))
 // Looked up while the dialog is open, and only for an upgrade.
@@ -205,6 +212,7 @@ async function install() {
       source: entry.value?.source,
       enable: enableAfterInstall.value,
       approve_permissions: true,
+      replace_conflicts: conflictingNames.value.length > 0,
     })
     progress.value = 100
     phase.value = 'done'
@@ -306,6 +314,14 @@ onUnmounted(() => {
         show-icon
         class="mt-4"
         :title="memoryWarning(recommendedMb, systemMb)"
+      />
+
+      <AAlert
+        v-if="conflictingNames.length > 0"
+        type="warning"
+        show-icon
+        class="mt-4"
+        :title="installReplacesText(conflictingNames)"
       />
 
       <AAlert
