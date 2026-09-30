@@ -11,6 +11,8 @@ WorkingDirectory=/var/run/nginx-ui
 Restart=on-failure
 TimeoutStopSec=5
 KillMode=mixed
+# A plugin killed for memory must not stop the whole service
+OOMPolicy=continue
 
 [Install]
 WantedBy=multi-user.target
