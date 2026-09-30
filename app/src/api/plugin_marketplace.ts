@@ -1,4 +1,4 @@
-import type { PluginInfo, PluginManifest } from '@/api/plugin'
+import type { PluginChannel, PluginInfo, PluginManifest } from '@/api/plugin'
 import { http } from '@uozi-admin/request'
 import { localizedText } from '@/api/plugin'
 
@@ -49,6 +49,8 @@ export interface CatalogRelease {
   signed_by?: PluginSignedBy
   release_notes_url?: string
   yanked?: boolean
+  /** Channel of the release, filled from the version when the catalog names none. */
+  channel?: PluginChannel
   /** Snapshot of the plugin.json this release ships. */
   manifest?: PluginManifest
 }
@@ -70,11 +72,15 @@ export interface CatalogEntry {
   license?: string
   trust?: PluginTrust
   stage?: string
+  /** Channel of the release this node would install, at least beta in the beta stage. */
+  channel?: PluginChannel
   releases: CatalogRelease[]
   /** Catalog URL this entry was merged from. */
   source: string
   /** Newest release this node can actually install. */
   installable_release?: CatalogRelease
+  /** Versions this node can install, newest first, without withdrawn ones. */
+  installable_versions?: string[]
   installed_version?: string
   update_available: boolean
 }

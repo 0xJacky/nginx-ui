@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import type { CatalogEntry, CatalogRelease } from '@/api/plugin_marketplace'
+import type { CatalogEntry } from '@/api/plugin_marketplace'
 import { GlobalOutlined, LinkOutlined } from '@antdv-next/icons'
 import { useWindowSize } from '@vueuse/core'
 import { marked } from 'marked'
 import {
-  ANY_PLATFORM,
   catalogEntryDescription,
   catalogEntryName,
   getMarketplacePlugin,
-  releasePlatforms,
 } from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { capabilityLabel } from '../capabilities'
+import { channelHint, channelLabel, compareVersions, entryChannel, installableReleases, releaseChannel } from '../channel'
 import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import PermissionList from '../PermissionList.vue'
@@ -25,7 +24,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  install: [entry: CatalogEntry]
+  install: [entry: CatalogEntry, version?: string]
 }>()
 
 const open = defineModel<boolean>('open', { default: false })
@@ -38,7 +37,6 @@ const loading = ref(false)
 const error = ref('')
 const readme = ref('')
 const detail = ref<CatalogEntry>()
-const hostPlatform = ref('')
 
 const current = computed(() => detail.value ?? props.entry)
 const name = computed(() => (current.value ? catalogEntryName(current.value, gettext.current) : ''))
@@ -48,6 +46,7 @@ const permissions = computed(() => current.value?.installable_release?.manifest?
 const recommendedMb = computed(() => recommendedMemory(current.value?.installable_release?.manifest))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
+const channel = computed(() => entryChannel(current.value))
 const installed = useInstalledPlugin(() => current.value?.id)
 const offer = computed(() => findTrustedOffer(installed.value?.trust, current.value))
 const { replacingId, confirmReplace } = useReplacePlugin()
@@ -80,18 +79,14 @@ const facts = computed(() => {
   return items
 })
 
-/** Whether a platform tag stands for the build this node would install. */
-function isHostBuild(release: CatalogRelease, platform: string) {
-  if (!hostPlatform.value)
-    return false
-  if (platform === hostPlatform.value)
-    return true
-  // "any" only serves this node when no dedicated build exists.
-  return platform === ANY_PLATFORM && !releasePlatforms(release).includes(hostPlatform.value)
-}
+// Every version this node can install, each one can be picked.
+const releases = computed(() => installableReleases(current.value))
 
-function platformLabel(platform: string) {
-  return platform === ANY_PLATFORM ? $gettext('Any') : platform
+function releaseAction(version: string) {
+  const installedVersion = current.value?.installed_version
+  if (!installedVersion)
+    return $gettext('Install')
+  return compareVersions(version, installedVersion) < 0 ? $gettext('Install this version') : $gettext('Update')
 }
 
 async function load() {
@@ -107,7 +102,6 @@ async function load() {
     const response = await getMarketplacePlugin(id, props.entry?.source)
     detail.value = response.plugin
     readme.value = response.readme
-    hostPlatform.value = response.host_platform ?? ''
   }
   catch (e) {
     error.value = getErrorMessage(e, $gettext('Failed to load the plugin details'))
@@ -174,7 +168,10 @@ watch(open, value => {
                 >
                   {{ capabilityLabel(capability) }}
                 </span>
-                <span v-if="current.stage && current.stage !== 'production'" class="pill is-purple">
+                <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
+                  <span class="pill" :class="channel === 'beta' ? 'is-warning' : 'is-purple'">{{ channelLabel(channel) }}</span>
+                </ATooltip>
+                <span v-if="current.stage && current.stage !== 'production' && current.stage !== 'beta'" class="pill is-purple">
                   {{ current.stage }}
                 </span>
               </div>
@@ -243,39 +240,42 @@ watch(open, value => {
               <h4 class="section-title">
                 {{ $gettext('Versions') }}
               </h4>
-              <span v-if="hostPlatform" class="section-hint">
-                {{ $gettext('This node runs %{platform}, its build is highlighted.', { platform: hostPlatform }) }}
-              </span>
             </div>
             <ul class="release-list">
               <li
-                v-for="release in current.releases ?? []"
+                v-for="release in releases"
                 :key="release.version"
                 class="release"
-                :class="{
-                  'is-latest': release.version === current.installable_release?.version,
-                  'is-yanked': release.yanked,
-                }"
+                :class="{ 'is-latest': release.version === current.installable_release?.version }"
               >
                 <div class="release-main">
                   <span class="release-version">v{{ release.version }}</span>
-                  <span v-if="release.yanked" class="pill is-danger">{{ $gettext('Yanked') }}</span>
+                  <span v-if="release.version === current.installed_version" class="pill is-success">{{ $gettext('Installed') }}</span>
                   <span v-else-if="release.version === current.installable_release?.version" class="pill is-accent">{{ $gettext('Latest') }}</span>
-                  <span v-if="release.released_at" class="release-date">{{ release.released_at.slice(0, 10) }}</span>
-                </div>
-                <div class="pill-row">
-                  <template v-if="releasePlatforms(release).length">
-                    <span
-                      v-for="platform in releasePlatforms(release)"
-                      :key="platform"
-                      class="pill"
-                      :class="{ 'is-accent': isHostBuild(release, platform) }"
-                    >
-                      {{ platformLabel(platform) }}
+                  <ATooltip v-if="releaseChannel(release) !== 'stable'" :title="channelHint(releaseChannel(release))">
+                    <span class="pill" :class="releaseChannel(release) === 'beta' ? 'is-warning' : 'is-purple'">
+                      {{ channelLabel(releaseChannel(release)) }}
                     </span>
-                  </template>
-                  <span v-else class="pill">{{ $gettext('Any') }}</span>
+                  </ATooltip>
+                  <span v-if="release.released_at" class="release-date">{{ release.released_at.slice(0, 10) }}</span>
+                  <a
+                    v-if="release.release_notes_url"
+                    :href="release.release_notes_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="pill is-link"
+                  >
+                    <LinkOutlined />
+                    {{ $gettext('Release notes') }}
+                  </a>
                 </div>
+                <AButton
+                  v-if="release.version !== current.installed_version"
+                  size="small"
+                  @click="emit('install', current, release.version)"
+                >
+                  {{ releaseAction(release.version) }}
+                </AButton>
               </li>
             </ul>
           </section>

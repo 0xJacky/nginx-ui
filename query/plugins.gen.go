@@ -42,6 +42,8 @@ func newPlugin(db *gorm.DB, opts ...gen.DOOption) plugin {
 	_plugin.Signer = field.NewString(tableName, "signer")
 	_plugin.Partner = field.NewString(tableName, "partner")
 	_plugin.AuthorPublicKey = field.NewString(tableName, "author_public_key")
+	_plugin.ReleaseChannel = field.NewString(tableName, "release_channel")
+	_plugin.FollowedChannel = field.NewString(tableName, "followed_channel")
 	_plugin.SyncPolicy = field.NewString(tableName, "sync_policy")
 	_plugin.SyncNodeIDs = field.NewField(tableName, "sync_node_ids")
 	_plugin.SyncSettings = field.NewBool(tableName, "sync_settings")
@@ -69,6 +71,8 @@ type plugin struct {
 	Signer                  field.String
 	Partner                 field.String
 	AuthorPublicKey         field.String
+	ReleaseChannel          field.String
+	FollowedChannel         field.String
 	SyncPolicy              field.String
 	SyncNodeIDs             field.Field
 	SyncSettings            field.Bool
@@ -102,6 +106,8 @@ func (p *plugin) updateTableName(table string) *plugin {
 	p.Signer = field.NewString(table, "signer")
 	p.Partner = field.NewString(table, "partner")
 	p.AuthorPublicKey = field.NewString(table, "author_public_key")
+	p.ReleaseChannel = field.NewString(table, "release_channel")
+	p.FollowedChannel = field.NewString(table, "followed_channel")
 	p.SyncPolicy = field.NewString(table, "sync_policy")
 	p.SyncNodeIDs = field.NewField(table, "sync_node_ids")
 	p.SyncSettings = field.NewBool(table, "sync_settings")
@@ -121,7 +127,7 @@ func (p *plugin) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (p *plugin) fillFieldMap() {
-	p.fieldMap = make(map[string]field.Expr, 17)
+	p.fieldMap = make(map[string]field.Expr, 19)
 	p.fieldMap["id"] = p.ID
 	p.fieldMap["created_at"] = p.CreatedAt
 	p.fieldMap["updated_at"] = p.UpdatedAt
@@ -136,6 +142,8 @@ func (p *plugin) fillFieldMap() {
 	p.fieldMap["signer"] = p.Signer
 	p.fieldMap["partner"] = p.Partner
 	p.fieldMap["author_public_key"] = p.AuthorPublicKey
+	p.fieldMap["release_channel"] = p.ReleaseChannel
+	p.fieldMap["followed_channel"] = p.FollowedChannel
 	p.fieldMap["sync_policy"] = p.SyncPolicy
 	p.fieldMap["sync_node_ids"] = p.SyncNodeIDs
 	p.fieldMap["sync_settings"] = p.SyncSettings

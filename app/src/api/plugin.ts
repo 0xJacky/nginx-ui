@@ -277,6 +277,9 @@ export interface PluginManifest {
   log_sink?: PluginManifestLogSink
 }
 
+/** Release channels, from the most to the least stable. */
+export type PluginChannel = 'stable' | 'beta' | 'dev'
+
 export interface PluginInfo {
   id: string
   name: string
@@ -320,6 +323,12 @@ export interface PluginInfo {
   resources?: PluginResources
   /** Memory hint of the manifest in MiB, absent when the plugin gives none. */
   recommended_memory_mb?: number
+  /** Channel of the installed release, absent on an older node. */
+  channel?: PluginChannel
+  /** Channel the person chose for updates, absent on an older node. */
+  followed_channel?: PluginChannel
+  /** Channel updates come from: the less stable of the chosen one and `channel`. */
+  effective_channel?: PluginChannel
   /** Locale code to translated name, `name` is the fallback. */
   name_i18n?: Record<string, string>
   /** Locale code to translated description, `description` is the fallback. */
@@ -536,6 +545,11 @@ const plugin = {
 
   disable(id: string): Promise<PluginInfo> {
     return http.post(pluginPath(id, '/disable'))
+  },
+
+  /** Chooses the release channel updates are taken from. */
+  setChannel(id: string, channel: PluginChannel): Promise<PluginInfo> {
+    return http.post(pluginPath(id, '/channel'), { channel })
   },
 
   getSettings(id: string): Promise<PluginSettingsResponse> {

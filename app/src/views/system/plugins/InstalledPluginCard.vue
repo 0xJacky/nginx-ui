@@ -15,6 +15,8 @@ import {
 import { localizedPluginDescription, localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
 import { capabilityLabel } from './capabilities'
+import { pluginChannel } from './channel'
+import ChannelTag from './ChannelTag.vue'
 import { conflictNote } from './conflicts'
 import { isBelowRecommended, useSystemMemory } from './memory'
 import PluginIcon from './PluginIcon.vue'
@@ -44,6 +46,7 @@ const attention = computed(() => needsAttention(props.plugin))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(props.plugin.recommended_memory_mb, systemMb.value))
 const conflictingNames = useConflictNames(() => props.plugin)
+const channel = computed(() => pluginChannel(props.plugin))
 const toggleDisabled = computed(() => isToggleDisabled(props.plugin))
 const isMuted = computed(() => !props.plugin.enabled && !attention.value)
 
@@ -126,6 +129,7 @@ function onMenuClick({ key }: { key: string | number }) {
       </ATooltip>
       <!-- Outlined, so the trust level stands apart from the capability tags. -->
       <TrustTag :plugin="plugin" />
+      <ChannelTag :channel="channel" />
       <ATooltip v-if="lowMemory" :title="$gettext('This server has less memory than this plugin is recommended for.')">
         <ATag color="warning" class="m-0">
           {{ $gettext('Low memory') }}
