@@ -16,6 +16,7 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
+	"syscall"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/demo"
@@ -498,6 +499,9 @@ func (s *Supervisor) spawn(ctx context.Context) error {
 	}
 	// The child owns its ends now, the parent keeps only the other half.
 	closeAll(stdinR, stdoutW, stderrW)
+	if cmd.Process != nil {
+		s.preferOOMKill(cmd.Process.Pid)
+	}
 
 	p := &process{cmd: cmd, stdin: stdinW, stdout: stdoutR, done: make(chan struct{}), cgroup: cg, httpSecret: httpSecret}
 	p.conn = jsonrpc.NewConn(stdoutR, stdinW, jsonrpc.WithLogger(s.log))
@@ -622,7 +626,11 @@ func (s *Supervisor) handleExit(p *process, waitErr error) {
 	state := s.recordFailureLocked(cause)
 	s.mu.Unlock()
 
-	s.log.Warnf("[plugin:%s] process exited: %v", s.cfg.PluginID, cause)
+	if errors.Is(cause, errPluginOutOfMemory) {
+		s.log.Warnf("[plugin:%s] the system stopped the plugin process, most likely because memory ran out: %v", s.cfg.PluginID, waitErr)
+	} else {
+		s.log.Warnf("[plugin:%s] process exited: %v", s.cfg.PluginID, cause)
+	}
 	s.notify(state, cause)
 }
 
@@ -876,10 +884,28 @@ func (s *Supervisor) idleStop() {
 	}
 }
 
+// errPluginOutOfMemory is shown when the system ended the plugin process.
+var errPluginOutOfMemory = errors.New("plugin stopped because the system ran low on memory")
+
+// killedBySystem reports whether a process died from SIGKILL. The host only
+// kills a plugin itself for a hung ping or a failed start, both handled
+// before this check, so a kill signal here most likely means memory ran out.
+func killedBySystem(waitErr error) bool {
+	var exitErr *exec.ExitError
+	if !errors.As(waitErr, &exitErr) {
+		return false
+	}
+	status, ok := exitErr.Sys().(syscall.WaitStatus)
+	return ok && status.Signaled() && status.Signal() == syscall.SIGKILL
+}
+
 // exitCause turns a process exit into the error reported to the manager.
 func exitCause(p *process, waitErr error) error {
 	if p.hung.Load() {
 		return errors.New("plugin stopped answering pings")
+	}
+	if killedBySystem(waitErr) {
+		return errPluginOutOfMemory
 	}
 	if waitErr != nil {
 		return waitErr
