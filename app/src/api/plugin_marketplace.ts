@@ -108,9 +108,24 @@ export interface PluginUpdateInfo {
   release?: CatalogRelease
 }
 
+/** One configured catalog and the name it declares. */
+export interface CatalogSource {
+  url: string
+  /** The name the catalog declares, known once it was read. */
+  catalog_name?: Record<string, string>
+}
+
+/** What reading one catalog found. */
+export interface SourceProbe {
+  reachable: boolean
+  catalog_name?: Record<string, string>
+  plugins: number
+  error?: string
+}
+
 export interface MarketplaceListResponse {
   plugins: CatalogEntry[]
-  sources: string[]
+  sources: CatalogSource[]
   /** "<goos>-<goarch>" of this node, what installable_release was picked for. */
   host_platform?: string
 }
@@ -122,7 +137,7 @@ export interface MarketplaceDetailResponse {
 }
 
 export interface MarketplaceSourcesResponse {
-  sources: string[]
+  sources: CatalogSource[]
   default: string
 }
 
@@ -211,6 +226,27 @@ export function getMarketplaceSources(): Promise<MarketplaceSourcesResponse> {
 
 export function saveMarketplaceSources(sources: string[]): Promise<MarketplaceSourcesResponse> {
   return http.post('/plugins/marketplace/sources', { sources })
+}
+
+/** Reads one catalog URL now: whether it answers, its name and plugin count. */
+export function probeMarketplaceSource(url: string): Promise<SourceProbe> {
+  return http.post('/plugins/marketplace/sources/probe', { url })
+}
+
+/**
+ * Name of a catalog source: the name the catalog declares in the active
+ * language, else its host.
+ */
+export function catalogSourceName(source: CatalogSource | undefined, url: string, language: string): string {
+  const name = localizedText(source?.catalog_name, language)
+  if (name)
+    return name
+  try {
+    return new URL(url).host
+  }
+  catch {
+    return url
+  }
 }
 
 /**
