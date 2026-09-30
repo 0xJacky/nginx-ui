@@ -24,7 +24,7 @@ export function isBelowRecommended(recommendedMb: number | undefined, systemMb: 
 /** The warning shown when the server has less memory than advised. */
 export function memoryWarning(recommendedMb: number, systemMb: number): string {
   return $gettext(
-    'This server has %{system} of memory. This plugin is recommended for %{recommended} or more and may run slowly or stop while it works.',
+    'This server has %{system} of memory, below the %{recommended} recommended for this plugin. The plugin may run slowly or stop unexpectedly.',
     { system: formatMemory(systemMb), recommended: formatMemory(recommendedMb) },
   )
 }

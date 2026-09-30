@@ -206,9 +206,9 @@ function toggle(plugin: PluginInfo, checked: boolean) {
   if (others.length > 0) {
     const name = localizedPluginName(plugin, gettext.current)
     modal.confirm({
-      title: $gettext('Turn on %{name}?', { name }),
+      title: $gettext('Enable %{name}?', { name }),
       content: enableReplacesText(name, others),
-      okText: $gettext('Turn on'),
+      okText: $gettext('Enable'),
       cancelText: $gettext('Cancel'),
       onOk: () => startEnable(plugin, true),
     })
