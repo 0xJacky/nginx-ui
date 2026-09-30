@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SelectProps } from 'antdv-next'
-import type { CatalogEntry } from '@/api/plugin_marketplace'
+import type { CatalogEntry, CatalogSource } from '@/api/plugin_marketplace'
 import { ArrowUpOutlined, DisconnectOutlined, ReloadOutlined, SearchOutlined, SettingOutlined } from '@antdv-next/icons'
 import { refDebounced } from '@vueuse/core'
 import { getMarketplaceList } from '@/api/plugin_marketplace'
@@ -10,6 +10,7 @@ import { usePluginInventory } from './inventory'
 import InstallConfirmModal from './marketplace/InstallConfirmModal.vue'
 import PluginCard from './marketplace/PluginCard.vue'
 import PluginDetailDrawer from './marketplace/PluginDetailDrawer.vue'
+import { rememberSources, useSourceName } from './marketplace/sources'
 import SourcesModal from './marketplace/SourcesModal.vue'
 
 const updatesOnly = defineModel<boolean>('updatesOnly', { default: false })
@@ -23,7 +24,8 @@ const pluginLoader = usePluginLoader()
 const loading = ref(false)
 const error = ref('')
 const entries = ref<CatalogEntry[]>([])
-const sources = ref<string[]>([])
+const sources = ref<CatalogSource[]>([])
+const sourceName = useSourceName()
 
 const keyword = ref('')
 const debouncedKeyword = refDebounced(keyword, 300)
@@ -44,7 +46,7 @@ const categoryOptions = computed<SelectProps['options']>(() => {
 })
 
 const sourceOptions = computed<SelectProps['options']>(() =>
-  sources.value.map(item => ({ value: item, label: item })))
+  sources.value.map(item => ({ value: item.url, label: sourceName(item.url) })))
 
 const updateCount = computed(() => inventory.updates.value.length)
 
@@ -86,6 +88,7 @@ async function load(refresh = false) {
     })
     entries.value = response.plugins
     sources.value = response.sources
+    rememberSources(response.sources)
   }
   catch (e) {
     entries.value = []

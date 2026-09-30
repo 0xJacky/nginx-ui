@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"unicode"
 
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	plugin "github.com/0xJacky/Nginx-UI/internal/plugin"
@@ -18,8 +19,8 @@ const maxMarketplaceSources = 16
 
 // marketplaceListResponse is the body of the catalog endpoint.
 type marketplaceListResponse struct {
-	Plugins []plugin.CatalogEntry `json:"plugins"`
-	Sources []string              `json:"sources"`
+	Plugins []plugin.CatalogEntry  `json:"plugins"`
+	Sources []plugin.CatalogSource `json:"sources"`
 	// HostPlatform is the "<goos>-<goarch>" key installable_release was
 	// resolved for.
 	HostPlatform string `json:"host_platform"`
@@ -34,8 +35,8 @@ type marketplaceDetailResponse struct {
 
 // marketplaceSourcesResponse is the body of both source endpoints.
 type marketplaceSourcesResponse struct {
-	Sources []string `json:"sources"`
-	Default string   `json:"default"`
+	Sources []plugin.CatalogSource `json:"sources"`
+	Default string                 `json:"default"`
 }
 
 // InitMarketplaceRouter registers the marketplace endpoints. It is separate
@@ -52,6 +53,9 @@ func InitMarketplaceRouter(r *gin.RouterGroup) {
 	{
 		o.POST("/plugins/marketplace/install", InstallFromMarketplace)
 		o.POST("/plugins/marketplace/sources", SaveMarketplaceSources)
+		// A probe reads a URL the admin typed, so it needs the same session
+		// and checks as saving it.
+		o.POST("/plugins/marketplace/sources/probe", ProbeMarketplaceSource)
 		o.POST("/plugins/:id/update", UpdatePlugin)
 		o.POST("/plugins/:id/replace", ReplacePlugin)
 	}
@@ -74,7 +78,7 @@ func GetMarketplaceList(c *gin.Context) {
 
 	c.JSON(http.StatusOK, marketplaceListResponse{
 		Plugins:      entries,
-		Sources:      marketplace.Sources(),
+		Sources:      marketplace.SourceList(),
 		HostPlatform: plugin.HostPlatform(),
 	})
 }
@@ -183,9 +187,27 @@ func ReplacePlugin(c *gin.Context) {
 // GetMarketplaceSources returns the configured catalog URLs.
 func GetMarketplaceSources(c *gin.Context) {
 	c.JSON(http.StatusOK, marketplaceSourcesResponse{
-		Sources: plugin.GetManager().Marketplace().Sources(),
+		Sources: plugin.GetManager().Marketplace().SourceList(),
 		Default: settings.DefaultPluginMarketplaceSource,
 	})
+}
+
+// ProbeMarketplaceSource reads one catalog URL and reports whether it answers,
+// the name it declares and how many plugins it lists.
+func ProbeMarketplaceSource(c *gin.Context) {
+	var body struct {
+		URL string `json:"url"`
+	}
+	if err := c.ShouldBindJSON(&body); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	rawURL, err := validSourceURL(body.URL)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, plugin.GetManager().Marketplace().Probe(c, rawURL))
 }
 
 // SaveMarketplaceSources replaces the catalog URL list and drops the cache.
@@ -214,7 +236,7 @@ func SaveMarketplaceSources(c *gin.Context) {
 	marketplace := plugin.GetManager().Marketplace()
 	marketplace.ClearCache()
 	c.JSON(http.StatusOK, marketplaceSourcesResponse{
-		Sources: marketplace.Sources(),
+		Sources: marketplace.SourceList(),
 		Default: settings.DefaultPluginMarketplaceSource,
 	})
 }
@@ -223,25 +245,36 @@ func SaveMarketplaceSources(c *gin.Context) {
 func normalizeSources(raw []string) ([]string, error) {
 	sources := make([]string, 0, len(raw))
 	for _, item := range raw {
-		item = strings.TrimSpace(item)
-		if item == "" {
+		if strings.TrimSpace(item) == "" {
 			continue
 		}
-		parsed, err := url.Parse(item)
-		if err != nil || parsed.Host == "" || (parsed.Scheme != "https" && parsed.Scheme != "http") {
-			return nil, cosy.WrapErrorWithParams(plugin.ErrCatalogInvalid, item)
+		rawURL, err := validSourceURL(item)
+		if err != nil {
+			return nil, err
 		}
-		if parsed.Scheme == "http" && !settings.PluginSettings.AllowInsecureDownloadURL {
-			return nil, plugin.ErrInsecureURL
-		}
-		if !contains(sources, item) {
-			sources = append(sources, item)
+		if !contains(sources, rawURL) {
+			sources = append(sources, rawURL)
 		}
 		if len(sources) > maxMarketplaceSources {
 			return nil, cosy.WrapErrorWithParams(plugin.ErrCatalogInvalid, "too many sources")
 		}
 	}
 	return sources, nil
+}
+
+// validSourceURL trims one catalog URL and checks it is an http(s) URL the
+// settings allow.
+func validSourceURL(raw string) (string, error) {
+	item := strings.TrimSpace(raw)
+	parsed, err := url.Parse(item)
+	if err != nil || parsed.Host == "" || (parsed.Scheme != "https" && parsed.Scheme != "http") ||
+		strings.ContainsFunc(item, unicode.IsSpace) {
+		return "", cosy.WrapErrorWithParams(plugin.ErrCatalogInvalid, item)
+	}
+	if parsed.Scheme == "http" && !settings.PluginSettings.AllowInsecureDownloadURL {
+		return "", plugin.ErrInsecureURL
+	}
+	return item, nil
 }
 
 func contains(values []string, want string) bool {
