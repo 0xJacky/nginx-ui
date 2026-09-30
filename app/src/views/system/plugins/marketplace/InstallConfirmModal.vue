@@ -92,7 +92,7 @@ const installedPlugin = useInstalledPlugin(() => (open.value && isUpgrade.value 
 const noStableVersion = computed(() => Boolean(entry.value) && channel.value !== 'stable' && !hasStableRelease(entry.value))
 const title = computed(() => {
   if (isOlder.value)
-    return $gettext('Install an earlier version')
+    return $gettext('Install a previous version')
   return isUpgrade.value ? $gettext('Update plugin') : $gettext('Install plugin')
 })
 const okText = computed(() => {
@@ -333,8 +333,8 @@ onUnmounted(() => {
         type="warning"
         show-icon
         class="mt-4"
-        :title="$gettext('This is older than the version installed now')"
-        :description="$gettext('Data saved by the newer version may not be readable by this older one.')"
+        :title="$gettext('This version is older than the installed version')"
+        :description="$gettext('Data created by the newer version may not be compatible with this version.')"
       />
 
       <AAlert
@@ -342,8 +342,8 @@ onUnmounted(() => {
         type="info"
         show-icon
         class="mt-4"
-        :title="$gettext('There is no stable version of this plugin yet.')"
-        :description="$gettext('You keep getting newer versions until a stable one is out.')"
+        :title="$gettext('No stable release of this plugin is available yet.')"
+        :description="$gettext('Newer releases of this channel are received until a stable release is available.')"
       />
 
       <AAlert

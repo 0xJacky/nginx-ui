@@ -356,7 +356,7 @@ function formatCount(value: number) {
       <div class="panel">
         <div class="min-w-0">
           <div class="panel-title">
-            {{ $gettext('Versions to get') }}
+            {{ $gettext('Update channel') }}
           </div>
           <div class="panel-text">
             {{ channelDescription(followed) }}
