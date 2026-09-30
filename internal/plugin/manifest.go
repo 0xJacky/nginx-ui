@@ -168,7 +168,38 @@ func ValidateManifest(m *protocol.Manifest) error {
 	if err := validatePermissions(m.Permissions); err != nil {
 		return err
 	}
+	if problems := conflictProblems(m); len(problems) > 0 {
+		return invalidManifest("%s", problems[0])
+	}
 	return validateSettingsSchema(m.SettingsSchema)
+}
+
+// conflictProblems lists every way conflicts breaks MAN-42, empty when the
+// declaration is fine.
+func conflictProblems(m *protocol.Manifest) []string {
+	var problems []string
+	required := make(map[string]struct{}, len(m.Requires))
+	for _, requirement := range m.Requires {
+		required[requirement.ID] = struct{}{}
+	}
+	seen := make(map[string]struct{}, len(m.Conflicts))
+	for _, id := range m.Conflicts {
+		if !IsValidID(id) {
+			problems = append(problems, fmt.Sprintf("conflicts entry %q is not a valid plugin id", id))
+			continue
+		}
+		if id == m.ID {
+			problems = append(problems, fmt.Sprintf("conflicts entry %q is the plugin itself", id))
+		}
+		if _, ok := seen[id]; ok {
+			problems = append(problems, fmt.Sprintf("conflicts entry %q is listed twice", id))
+		}
+		seen[id] = struct{}{}
+		if _, ok := required[id]; ok {
+			problems = append(problems, fmt.Sprintf("conflicts entry %q is also in requires", id))
+		}
+	}
+	return problems
 }
 
 func validateIdentity(m *protocol.Manifest) error {

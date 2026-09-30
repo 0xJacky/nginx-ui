@@ -259,6 +259,8 @@ export interface PluginManifest {
   permissions?: string[]
   requires?: PluginRequirement[]
   requires_capabilities?: string[]
+  /** Ids of plugins that must not be on at the same time as this one. */
+  conflicts?: string[]
   events?: string[]
   cron?: PluginManifestCron[]
   network_hosts?: string[]
@@ -288,6 +290,10 @@ export interface PluginInfo {
   permissions: string[]
   requires: PluginRequirement[]
   requires_capabilities: string[]
+  /** Ids of plugins the manifest says cannot be on at the same time as this one. */
+  conflicts?: string[]
+  /** Enabled plugins that cannot be on together with this one, whichever side says so. */
+  conflicts_enabled?: string[]
   /** Addresses the plugin may reach, absent or empty when it names none. */
   network_hosts?: string[]
   has_server: boolean
@@ -503,13 +509,15 @@ const plugin = {
   },
 
   /** Installs a new plugin or upgrades an existing one from the same bundle. */
-  install(source: PluginInstallSource, enable = true, config?: HttpConfig): Promise<PluginInfo> {
+  install(source: PluginInstallSource, enable = true, config?: HttpConfig, replaceConflicts = false): Promise<PluginInfo> {
     const formData = new FormData()
     if ('uploadId' in source)
       formData.append('upload_id', source.uploadId)
     else
       formData.append('file', source.file)
     formData.append('enable', enable ? 'true' : 'false')
+    if (replaceConflicts)
+      formData.append('replace_conflicts', 'true')
 
     return http.post('/plugins', formData, { ...config, headers: multipartHeaders })
   },
@@ -518,8 +526,12 @@ const plugin = {
     return http.delete(pluginPath(id))
   },
 
-  enable(id: string, approvePermissions?: boolean): Promise<PluginInfo> {
-    return http.post(pluginPath(id, '/enable'), { approve_permissions: approvePermissions })
+  /** `replaceConflicts` turns off the enabled plugins that cannot be on together with this one. */
+  enable(id: string, approvePermissions?: boolean, replaceConflicts?: boolean): Promise<PluginInfo> {
+    return http.post(pluginPath(id, '/enable'), {
+      approve_permissions: approvePermissions,
+      replace_conflicts: replaceConflicts,
+    })
   },
 
   disable(id: string): Promise<PluginInfo> {

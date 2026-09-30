@@ -272,8 +272,21 @@ func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest
 		// An upgrade that asks for more stays down until it is approved.
 		row.Enabled = false
 	}
+	// A conflict with an enabled plugin keeps this one down, unless the
+	// caller asked to replace it (spec LIFE-20). An upgrade can add one.
+	var conflicts []string
+	if row.Enabled {
+		if conflicts = m.enabledConflicts(manifest); len(conflicts) > 0 && !opts.ReplaceConflicts {
+			row.Enabled = false
+		}
+	}
 	if err = m.saveRow(ctx, row); err != nil {
 		return nil, err
+	}
+	if row.Enabled {
+		if err = m.disableAll(ctx, conflicts); err != nil {
+			return nil, err
+		}
 	}
 
 	item := m.newEntry(manifest.ID, manifest, row)
@@ -396,9 +409,26 @@ func (m *Manager) uninstall(ctx context.Context, id string, cascade bool, seen m
 	return nil
 }
 
+// EnableOptions controls one Enable call.
+type EnableOptions struct {
+	// ApprovePermissions records the manifest permission set as approved.
+	ApprovePermissions bool
+	// ReplaceConflicts disables the enabled plugins that conflict with the
+	// plugin instead of refusing (spec LIFE-20).
+	ReplaceConflicts bool
+}
+
 // Enable marks a plugin as wanted and starts it. A permission set the user has
 // not approved yet blocks the start and leaves the plugin in needs_approval.
 func (m *Manager) Enable(ctx context.Context, id string, approvePermissions bool) (*Info, error) {
+	return m.EnableWith(ctx, id, EnableOptions{ApprovePermissions: approvePermissions})
+}
+
+// EnableWith is Enable with the full set of options. An enabled plugin that
+// conflicts with this one refuses the call, unless ReplaceConflicts is set and
+// the conflicting plugins are turned off first.
+func (m *Manager) EnableWith(ctx context.Context, id string, opts EnableOptions) (*Info, error) {
+	approvePermissions := opts.ApprovePermissions
 	if !settings.PluginSettings.Enabled {
 		return nil, ErrPluginsDisabled
 	}
@@ -433,6 +463,11 @@ func (m *Manager) Enable(ctx context.Context, id string, approvePermissions bool
 		return nil, cosy.WrapErrorWithParams(ErrDependencyMissing, requirementList(missing))
 	}
 
+	conflicts := m.enabledConflicts(manifest)
+	if len(conflicts) > 0 && !opts.ReplaceConflicts {
+		return nil, cosy.WrapErrorWithParams(ErrPluginConflict, strings.Join(conflicts, ", "))
+	}
+
 	hash := PermissionsHash(manifest)
 	switch {
 	case len(manifest.Permissions) == 0, approvedBefore == hash:
@@ -445,6 +480,11 @@ func (m *Manager) Enable(ctx context.Context, id string, approvePermissions bool
 		m.mu.Unlock()
 	default:
 		return nil, ErrPermissionApprovalRequired
+	}
+
+	// The approval is settled, so nothing is turned off for a call that fails.
+	if err := m.disableAll(ctx, conflicts); err != nil {
+		return nil, err
 	}
 
 	m.mu.Lock()
@@ -476,7 +516,21 @@ func (m *Manager) Disable(ctx context.Context, id string) (*Info, error) {
 
 	m.opMu.Lock()
 	defer m.opMu.Unlock()
+	return m.disable(ctx, id)
+}
 
+// disableAll turns the given plugins off. The caller must hold opMu.
+func (m *Manager) disableAll(ctx context.Context, ids []string) error {
+	for _, id := range ids {
+		if _, err := m.disable(ctx, id); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// disable is Disable for a caller that holds opMu.
+func (m *Manager) disable(ctx context.Context, id string) (*Info, error) {
 	item, ok := m.lookup(id)
 	if !ok {
 		return nil, ErrPluginNotFound

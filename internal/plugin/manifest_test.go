@@ -319,3 +319,37 @@ func TestValidateManifestAcceptsLogFilesPermission(t *testing.T) {
 	m.Permissions = []string{protocol.PermissionLogFiles}
 	assert.NoError(t, ValidateManifest(m))
 }
+
+func TestValidateManifestConflicts(t *testing.T) {
+	tests := []struct {
+		name      string
+		conflicts []string
+		requires  []protocol.ManifestRequirement
+		problem   string
+	}{
+		{"valid", []string{"official.other", "vendor.third"}, nil, ""},
+		{"none", nil, nil, ""},
+		{"malformed id", []string{"Not An Id"}, nil, "not a valid plugin id"},
+		{"empty id", []string{""}, nil, "not a valid plugin id"},
+		{"itself", []string{"official.cloudflare"}, nil, "the plugin itself"},
+		{"repeated", []string{"official.other", "official.other"}, nil, "listed twice"},
+		{
+			"also required", []string{"official.other"},
+			[]protocol.ManifestRequirement{{ID: "official.other"}}, "also in requires",
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			m := validManifest()
+			m.Conflicts = tc.conflicts
+			m.Requires = tc.requires
+			err := ValidateManifest(m)
+			if tc.problem == "" {
+				require.NoError(t, err)
+				return
+			}
+			require.ErrorIs(t, err, ErrManifestInvalid)
+			assert.Contains(t, err.Error(), tc.problem)
+		})
+	}
+}

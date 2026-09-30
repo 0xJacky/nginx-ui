@@ -10,11 +10,13 @@ import NodeSelector from '@/components/NodeSelector'
 import gettext from '@/gettext'
 import { getErrorMessage, resolveErrorMessage } from '@/lib/http'
 import { capabilityLabel } from './capabilities'
+import { installReplacesText } from './conflicts'
 import { useInstalledPlugin } from './inventory'
 import { isCommunityTrust, isUnsignedTrust, packageTrustPreset } from './marketplace/trust'
 import TrustDowngradeAlert from './marketplace/TrustDowngradeAlert.vue'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from './memory'
 import PermissionList from './PermissionList.vue'
+import { usePackageConflicts } from './useConflicts'
 
 const emit = defineEmits<{
   installed: []
@@ -68,6 +70,8 @@ const recommendedMb = computed(() => recommendedMemory(manifest.value))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
 const platforms = computed(() => inspect.value?.platforms ?? [])
+// Turning the package on turns off the enabled plugins that conflict with it.
+const conflictingNames = usePackageConflicts(manifest, () => open.value && enableAfterInstall.value)
 // An older node does not report the field, so only an explicit false blocks.
 const platformUnsupported = computed(() => inspect.value?.platform_supported === false)
 // An older node reports no trust level, and then nothing is shown.
@@ -152,14 +156,14 @@ function isPackageInvalid(e: unknown): boolean {
  * The node answers PACKAGE_INVALID_CODE when that upload expired or when it
  * does not know upload ids, and then the file is sent once instead.
  */
-async function installPackage(packageFile: File, enable: boolean): Promise<PluginInfo> {
+async function installPackage(packageFile: File, enable: boolean, replaceConflicts: boolean): Promise<PluginInfo> {
   const uploadId = inspect.value?.upload_id
   if (!uploadId)
-    return pluginApi.install({ file: packageFile }, enable)
+    return pluginApi.install({ file: packageFile }, enable, undefined, replaceConflicts)
 
   try {
     // Quiet, so an expired upload does not flash an error before the fallback.
-    return await pluginApi.install({ uploadId }, enable, { skipErrHandling: true })
+    return await pluginApi.install({ uploadId }, enable, { skipErrHandling: true }, replaceConflicts)
   }
   catch (e) {
     if (!isPackageInvalid(e)) {
@@ -171,7 +175,7 @@ async function installPackage(packageFile: File, enable: boolean): Promise<Plugi
     }
   }
 
-  return pluginApi.install({ file: packageFile }, enable)
+  return pluginApi.install({ file: packageFile }, enable, undefined, replaceConflicts)
 }
 
 async function install() {
@@ -181,7 +185,7 @@ async function install() {
   installing.value = true
   syncResults.value = []
   try {
-    const info = await installPackage(file.value, enableAfterInstall.value)
+    const info = await installPackage(file.value, enableAfterInstall.value, conflictingNames.value.length > 0)
     message.success($gettext('Plugin installed'))
     emit('installed')
 
@@ -347,6 +351,14 @@ watch(open, value => {
           show-icon
           class="mt-4"
           :title="memoryWarning(recommendedMb, systemMb)"
+        />
+
+        <AAlert
+          v-if="conflictingNames.length > 0"
+          type="warning"
+          show-icon
+          class="mt-4"
+          :title="installReplacesText(conflictingNames)"
         />
 
         <AAlert

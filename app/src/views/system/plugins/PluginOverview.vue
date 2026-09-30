@@ -5,12 +5,14 @@ import pluginApi, { localizedPluginDescription } from '@/api/plugin'
 import gettext from '@/gettext'
 import { formatDateTime } from '@/lib/helper'
 import { capabilityLabel, capabilityPreset } from './capabilities'
+import { conflictNote } from './conflicts'
 import { packageTrustPreset, trustedOfferAction, trustedOfferSummary, unsignedExplanation } from './marketplace/trust'
 import { formatMemory, isBelowRecommended, memoryWarning, useSystemMemory } from './memory'
 import { describePermission, permissionLabel } from './permissions'
 import { useReplacePlugin, useTrustedOffer } from './replace'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
 import { formatUsagePreview, previewUsage } from './usage'
+import { useConflictNames } from './useConflicts'
 
 const props = defineProps<{
   plugin: PluginInfo
@@ -124,6 +126,7 @@ const facts = computed<Fact[]>(() => {
 })
 
 const systemMb = useSystemMemory()
+const conflictingNames = useConflictNames(() => props.plugin)
 const lowMemory = computed(() => isBelowRecommended(props.plugin.recommended_memory_mb, systemMb.value))
 
 const resources = computed(() => props.plugin.resources)
@@ -187,6 +190,13 @@ function formatCount(value: number) {
       type="warning"
       show-icon
       :title="memoryWarning(plugin.recommended_memory_mb!, systemMb)"
+    />
+
+    <AAlert
+      v-if="conflictingNames.length > 0"
+      type="info"
+      show-icon
+      :title="conflictNote(conflictingNames)"
     />
 
     <div v-if="description || plugin.homepage_url" class="flex flex-col gap-2">

@@ -112,6 +112,7 @@ function openInstall(entry: CatalogEntry) {
 // The installed tab and the counters see the new plugin right away.
 async function onInstalled() {
   await Promise.all([refreshAll(false), inventory.reload(true), inventory.reloadCatalog()])
+  await pluginLoader.unloadDisabled(inventory.plugins.value)
   await pluginLoader.loadNew()
 }
 
