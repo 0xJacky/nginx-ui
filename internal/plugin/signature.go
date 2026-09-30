@@ -222,6 +222,9 @@ func signatureTrust(sums, signature []byte, tiers []trustTier) (packageTrust, er
 	return unsignedTrust, nil
 }
 
+// maxSignatureFileSize caps the signature files read into memory.
+const maxSignatureFileSize = 4 << 20
+
 // readRootFile reads one signature file, nil when it is not a regular file.
 func readRootFile(root, name string) ([]byte, error) {
 	target := filepath.Join(root, name)
@@ -234,6 +237,9 @@ func readRootFile(root, name string) ([]byte, error) {
 	}
 	if !info.Mode().IsRegular() {
 		return nil, nil
+	}
+	if info.Size() > maxSignatureFileSize {
+		return nil, fmt.Errorf("%s is larger than %d bytes", name, maxSignatureFileSize)
 	}
 	return os.ReadFile(target)
 }
