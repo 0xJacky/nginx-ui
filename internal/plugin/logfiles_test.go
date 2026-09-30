@@ -228,16 +228,16 @@ func TestActivityIsNamespacedLimitedAndCleared(t *testing.T) {
 
 	// A process that ends takes its entries with it, whichever way it ends.
 	for _, state := range []State{StateStopped, StateError, StateStarting} {
-		m.onStateChange("official.alpha", StateRunning, nil)
+		m.onStateChange("official.alpha", nil, StateRunning, nil)
 		require.NoError(t, set("official.beta", "x", true))
 		require.NoError(t, set("official.alpha", "x", true))
-		m.onStateChange("official.alpha", state, nil)
+		m.onStateChange("official.alpha", nil, state, nil)
 		assert.Empty(t, pluginEntries("official.alpha"), "state %s", state)
 		assert.NotEmpty(t, pluginEntries("official.beta"), "other plugins are untouched")
 	}
 
 	// A call that arrives after the process ended is ignored.
-	m.onStateChange("official.alpha", StateStopped, nil)
+	m.onStateChange("official.alpha", nil, StateStopped, nil)
 	require.NoError(t, set("official.alpha", "late", true))
 	assert.Empty(t, pluginEntries("official.alpha"))
 	require.NoError(t, set("official.unknown", "late", true))
@@ -246,9 +246,9 @@ func TestActivityIsNamespacedLimitedAndCleared(t *testing.T) {
 	}
 
 	// A plugin that stays up keeps them.
-	m.onStateChange("official.alpha", StateRunning, nil)
+	m.onStateChange("official.alpha", nil, StateRunning, nil)
 	require.NoError(t, set("official.alpha", "x", true))
-	m.onStateChange("official.alpha", StateRunning, nil)
+	m.onStateChange("official.alpha", nil, StateRunning, nil)
 	assert.NotEmpty(t, pluginEntries("official.alpha"))
 }
 
