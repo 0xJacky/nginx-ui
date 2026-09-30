@@ -5,6 +5,7 @@ import { catalogEntryDescription, catalogEntryName } from '@/api/plugin_marketpl
 import gettext from '@/gettext'
 import { capabilityLabel } from '../capabilities'
 import { useInstalledPlugin } from '../inventory'
+import { formatMemory, isBelowRecommended, recommendedMemory, useSystemMemory } from '../memory'
 import PluginIcon from '../PluginIcon.vue'
 import { useReplacePlugin } from '../replace'
 import { findTrustedOffer, trustedOfferAction, trustPreset } from './trust'
@@ -22,6 +23,10 @@ const emit = defineEmits<{
 const name = computed(() => catalogEntryName(props.entry, gettext.current))
 const description = computed(() => catalogEntryDescription(props.entry, gettext.current))
 const trust = computed(() => trustPreset(props.entry.trust))
+
+const recommendedMb = computed(() => recommendedMemory(props.entry.installable_release?.manifest))
+const systemMb = useSystemMemory()
+const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
 
 const isInstalled = computed(() => Boolean(props.entry.installed_version))
 const canInstall = computed(() => Boolean(props.entry.installable_release))
@@ -82,6 +87,11 @@ const actionLabel = computed(() => {
       >
         {{ capabilityLabel(capability) }}
       </ATag>
+      <ATooltip v-if="recommendedMb > 0" :title="lowMemory ? $gettext('This server has less memory than that.') : undefined">
+        <ATag :color="lowMemory ? 'warning' : undefined" class="m-0">
+          {{ $gettext('Memory: %{size}', { size: formatMemory(recommendedMb) }) }}
+        </ATag>
+      </ATooltip>
       <ATag
         v-if="entry.stage && entry.stage !== 'production'"
         color="purple"
