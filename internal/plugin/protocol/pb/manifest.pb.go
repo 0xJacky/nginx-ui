@@ -466,17 +466,22 @@ func (x *ManifestServer) GetResources() *ManifestResources {
 	return nil
 }
 
-// ManifestResources are the resources a plugin process needs at most. A host
-// that confines plugin processes applies the smaller of a hint and its own
-// limit; a hint never raises a limit. See spec/04-lifecycle.md LIFE-16.
+// ManifestResources are the resources a plugin process needs at most, and the
+// memory that suits it best. A host that confines plugin processes applies the
+// smaller of a hint and its own limit; a hint never raises a limit. See
+// spec/04-lifecycle.md LIFE-16.
 type ManifestResources struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Memory in MiB. 0 means no hint.
 	MemoryMb int32 `protobuf:"varint,1,opt,name=memory_mb,json=memoryMb,proto3" json:"memory_mb,omitempty"`
 	// CPU time in percent of one core, 100 being one core. 0 means no hint.
-	CpuPercent    int32 `protobuf:"varint,2,opt,name=cpu_percent,json=cpuPercent,proto3" json:"cpu_percent,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	CpuPercent int32 `protobuf:"varint,2,opt,name=cpu_percent,json=cpuPercent,proto3" json:"cpu_percent,omitempty"`
+	// Memory in MiB the machine, or the container the host runs in, should have
+	// for the plugin to work well, counting the host. Advice for people who
+	// choose plugins, never a limit. 0 means no hint. See LIFE-19.
+	RecommendedMemoryMb int32 `protobuf:"varint,3,opt,name=recommended_memory_mb,json=recommendedMemoryMb,proto3" json:"recommended_memory_mb,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
 func (x *ManifestResources) Reset() {
@@ -519,6 +524,13 @@ func (x *ManifestResources) GetMemoryMb() int32 {
 func (x *ManifestResources) GetCpuPercent() int32 {
 	if x != nil {
 		return x.CpuPercent
+	}
+	return 0
+}
+
+func (x *ManifestResources) GetRecommendedMemoryMb() int32 {
+	if x != nil {
+		return x.RecommendedMemoryMb
 	}
 	return 0
 }
@@ -2555,11 +2567,12 @@ const file_nginxui_plugin_v1_manifest_proto_rawDesc = "" +
 	"\tresources\x18\x05 \x01(\v2$.nginxui.plugin.v1.ManifestResourcesR\tresources\x1a>\n" +
 	"\x10ExecutablesEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"Q\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x85\x01\n" +
 	"\x11ManifestResources\x12\x1b\n" +
 	"\tmemory_mb\x18\x01 \x01(\x05R\bmemoryMb\x12\x1f\n" +
 	"\vcpu_percent\x18\x02 \x01(\x05R\n" +
-	"cpuPercent\"\x8b\x03\n" +
+	"cpuPercent\x122\n" +
+	"\x15recommended_memory_mb\x18\x03 \x01(\x05R\x13recommendedMemoryMb\"\x8b\x03\n" +
 	"\x0eManifestWebapp\x12\x1f\n" +
 	"\vbundle_path\x18\x01 \x01(\tR\n" +
 	"bundlePath\x12\x1d\n" +
