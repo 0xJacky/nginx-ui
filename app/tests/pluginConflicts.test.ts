@@ -55,8 +55,8 @@ describe('conflictNames', () => {
 
 describe('texts', () => {
   test('name the plugins without technical terms', () => {
-    expect(conflictNote(['One', 'Two'])).toBe('Can\'t be on at the same time as One, Two')
-    expect(enableReplacesText('Three', ['One'])).toBe('Turning on Three turns off One. They can\'t be on at the same time.')
+    expect(conflictNote(['One', 'Two'])).toBe('Cannot be enabled together with One, Two')
+    expect(enableReplacesText('Three', ['One'])).toBe('Enabling Three will disable One, because these plugins cannot be enabled at the same time.')
     expect(installReplacesText(['One'])).toContain('One')
   })
 })

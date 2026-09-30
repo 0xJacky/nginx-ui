@@ -130,7 +130,7 @@ function onMenuClick({ key }: { key: string | number }) {
       <!-- Outlined, so the trust level stands apart from the capability tags. -->
       <TrustTag :plugin="plugin" />
       <ChannelTag :channel="channel" />
-      <ATooltip v-if="lowMemory" :title="$gettext('This server has less memory than this plugin is recommended for.')">
+      <ATooltip v-if="lowMemory" :title="$gettext('This server has less memory than recommended for this plugin.')">
         <ATag color="warning" class="m-0">
           {{ $gettext('Low memory') }}
         </ATag>
