@@ -89,30 +89,30 @@ export function channelLabel(channel: PluginChannel): string {
 export function channelHint(channel: PluginChannel): string {
   switch (channel) {
     case 'beta':
-      return $gettext('This version is still being tested. Some things may change or not work yet.')
+      return $gettext('This is a beta release. Features may change, and some functions may not work as expected.')
     case 'dev':
-      return $gettext('This version is under active development. It may be unfinished or break without notice.')
+      return $gettext('This is a development release. It may be incomplete or unstable.')
     default:
-      return $gettext('This version is ready for everyday use.')
+      return $gettext('This is a stable release.')
   }
 }
 
 /** Says what an installation gets while its release, not its choice, sets the channel. */
 export function heldByReleaseText(channel: PluginChannel): string {
   return channel === 'dev'
-    ? $gettext('Gets versions under development until a stable version is out.')
-    : $gettext('Gets test versions until a stable version is out.')
+    ? $gettext('Development releases are received until a stable release is available.')
+    : $gettext('Beta releases are received until a stable release is available.')
 }
 
 /** Explains what following a channel means. */
 export function channelDescription(channel: PluginChannel): string {
   switch (channel) {
     case 'beta':
-      return $gettext('Get new versions as soon as they are ready for testing, as well as every stable version.')
+      return $gettext('Receive beta and stable releases.')
     case 'dev':
-      return $gettext('Get every new version, including the ones that are still under development.')
+      return $gettext('Receive all releases, including development releases.')
     default:
-      return $gettext('Only get versions that are ready for everyday use.')
+      return $gettext('Receive stable releases only.')
   }
 }
 
