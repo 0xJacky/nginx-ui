@@ -197,6 +197,9 @@ func lintServer(s *protocol.ManifestServer, dir string, report *LintReport) {
 		if r.MemoryMB < 0 {
 			report.add(LevelError, "MAN-39", "server.resources.memory_mb must not be negative")
 		}
+		if r.RecommendedMemoryMB < 0 {
+			report.add(LevelError, "MAN-39", "server.resources.recommended_memory_mb must not be negative")
+		}
 		if r.CPUPercent < 0 {
 			report.add(LevelError, "MAN-39", "server.resources.cpu_percent must not be negative")
 		}

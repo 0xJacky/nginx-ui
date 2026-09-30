@@ -13,6 +13,7 @@ import { capabilityLabel } from './capabilities'
 import { useInstalledPlugin } from './inventory'
 import { isCommunityTrust, isUnsignedTrust, packageTrustPreset } from './marketplace/trust'
 import TrustDowngradeAlert from './marketplace/TrustDowngradeAlert.vue'
+import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from './memory'
 import PermissionList from './PermissionList.vue'
 
 const emit = defineEmits<{
@@ -63,6 +64,9 @@ const manifestName = computed(() => (manifest.value ? localizedPluginName(manife
 const manifestDescription = computed(() => (manifest.value ? localizedPluginDescription(manifest.value, gettext.current) : ''))
 const permissions = computed(() => inspect.value?.permissions ?? [])
 const requiresMissing = computed(() => inspect.value?.requires_missing ?? [])
+const recommendedMb = computed(() => recommendedMemory(manifest.value))
+const systemMb = useSystemMemory()
+const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
 const platforms = computed(() => inspect.value?.platforms ?? [])
 // An older node does not report the field, so only an explicit false blocks.
 const platformUnsupported = computed(() => inspect.value?.platform_supported === false)
@@ -289,6 +293,9 @@ watch(open, value => {
             </div>
             <span v-else class="text-gray-400">{{ $gettext('None') }}</span>
           </ADescriptionsItem>
+          <ADescriptionsItem v-if="recommendedMb > 0" :label="$gettext('Recommended memory')">
+            {{ formatMemory(recommendedMb) }}
+          </ADescriptionsItem>
           <ADescriptionsItem v-if="platforms.length > 0" :label="$gettext('Platforms')">
             <div class="flex flex-wrap gap-1">
               <ATag
@@ -332,6 +339,14 @@ watch(open, value => {
           class="mt-4"
           :next="inspect?.trust"
           :installed="installedPlugin?.trust"
+        />
+
+        <AAlert
+          v-if="lowMemory"
+          type="warning"
+          show-icon
+          class="mt-4"
+          :title="memoryWarning(recommendedMb, systemMb)"
         />
 
         <AAlert

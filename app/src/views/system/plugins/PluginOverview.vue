@@ -6,6 +6,7 @@ import gettext from '@/gettext'
 import { formatDateTime } from '@/lib/helper'
 import { capabilityLabel, capabilityPreset } from './capabilities'
 import { packageTrustPreset, trustedOfferAction, trustedOfferSummary, unsignedExplanation } from './marketplace/trust'
+import { formatMemory, isBelowRecommended, memoryWarning, useSystemMemory } from './memory'
 import { describePermission, permissionLabel } from './permissions'
 import { useReplacePlugin, useTrustedOffer } from './replace'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
@@ -115,10 +116,15 @@ const facts = computed<Fact[]>(() => {
     },
     { key: 'start', label: $gettext('Start mode'), value: startMode.value },
   ]
+  if (plugin.recommended_memory_mb)
+    items.push({ key: 'memory', label: $gettext('Recommended memory'), value: formatMemory(plugin.recommended_memory_mb) })
   if (plugin.updated_at)
     items.push({ key: 'updated', label: $gettext('Updated at'), value: formatDateTime(plugin.updated_at) })
   return items
 })
+
+const systemMb = useSystemMemory()
+const lowMemory = computed(() => isBelowRecommended(props.plugin.recommended_memory_mb, systemMb.value))
 
 const resources = computed(() => props.plugin.resources)
 const hasResourceLimits = computed(() => {
@@ -174,6 +180,13 @@ function formatCount(value: number) {
       show-icon
       :title="$gettext('This plugin needs your approval before it can run.')"
       :description="$gettext('Turn it on to review what it can access.')"
+    />
+
+    <AAlert
+      v-if="lowMemory"
+      type="warning"
+      show-icon
+      :title="memoryWarning(plugin.recommended_memory_mb!, systemMb)"
     />
 
     <div v-if="description || plugin.homepage_url" class="flex flex-col gap-2">
