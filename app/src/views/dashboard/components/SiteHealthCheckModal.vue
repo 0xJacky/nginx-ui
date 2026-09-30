@@ -58,6 +58,7 @@ const formData = ref<EnhancedHealthCheckConfig>({
   headers: [],
   body: '',
   targetURL: '',
+  clickURL: '',
 
   // Response validation
   expectedStatus: [200],
@@ -225,6 +226,7 @@ async function loadExistingConfig() {
       headers: convertHeadersToArray(config.health_check_config?.headers ?? {}),
       body: config.health_check_config?.body ?? '',
       targetURL: config.health_check_config?.target_url ?? '',
+      clickURL: config.health_check_config?.click_url ?? '',
 
       // Response validation
       expectedStatus: config.health_check_config?.expected_status ?? [200],
@@ -278,6 +280,7 @@ function resetForm() {
     headers: [],
     body: '',
     targetURL: '',
+    clickURL: '',
 
     // Response validation
     expectedStatus: [200],
@@ -470,6 +473,7 @@ async function handleSave() {
         client_cert: config.clientCert,
         client_key: config.clientKey,
         target_url: config.targetURL,
+        click_url: config.clickURL,
       },
       health_check_alert: {
         enabled: config.alertEnabled,
@@ -602,6 +606,17 @@ async function handleTest() {
               v-model:value="formData.targetURL"
               data-testid="health-check-target-url"
               :placeholder="getTestUrl() || 'https://127.0.0.1:8443'"
+            />
+          </AFormItem>
+
+          <AFormItem
+            :label="$gettext('Site Card Click URL')"
+            :help="$gettext('Optional absolute HTTP/HTTPS URL used when opening this site card. If empty, the default site URL is used.')"
+          >
+            <AInput
+              v-model:value="formData.clickURL"
+              data-testid="site-card-click-url"
+              :placeholder="props.site?.display_url || props.site?.url || 'https://127.0.0.1:8443'"
             />
           </AFormItem>
 

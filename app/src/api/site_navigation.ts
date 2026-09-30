@@ -24,6 +24,9 @@ export interface SiteInfo {
   error_type?: SiteErrorType // machine-readable category for `error`
   effective_health_check_enabled: boolean
   health_check_disabled_reason?: 'global' | 'site'
+  health_check_config?: {
+    click_url?: string
+  }
   // Legacy fields for backward compatibility
   url?: string // deprecated, use display_url instead
   health_check_protocol?: string // deprecated, use scheme instead
@@ -56,6 +59,7 @@ export interface HealthCheckConfig {
     client_cert?: string
     client_key?: string
     target_url?: string
+    click_url?: string
   }
   health_check_alert?: {
     enabled: boolean
@@ -90,6 +94,7 @@ export interface EnhancedHealthCheckConfig {
   headers: HeaderItem[]
   body: string
   targetURL: string
+  clickURL: string
 
   // Response validation
   expectedStatus: number[]

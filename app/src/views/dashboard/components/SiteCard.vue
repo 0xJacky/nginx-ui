@@ -34,11 +34,11 @@ function openSite(site: SiteInfo) {
     return
   }
 
-  // Use display_url if available, otherwise construct from scheme and host_port
-  let targetUrl = site.display_url || site.url
+  // Prefer user-configured click URL from health check config.
+  let targetUrl = site.health_check_config?.click_url || site.display_url || site.url
 
   // If we have scheme and host_port, construct the URL
-  if (site.scheme && site.host_port && (site.scheme === 'http' || site.scheme === 'https')) {
+  if (!site.health_check_config?.click_url && site.scheme && site.host_port && (site.scheme === 'http' || site.scheme === 'https')) {
     targetUrl = `${site.scheme}://${site.host_port}`
   }
 
