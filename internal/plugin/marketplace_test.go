@@ -911,3 +911,18 @@ func TestScreenshotsKeepTheLoadableOnes(t *testing.T) {
 	}
 	assert.Len(t, entry.Screenshots, len(shared), "the entry of the cache keeps its list")
 }
+
+func TestDecorateKeepsOnlyLoadableIcons(t *testing.T) {
+	mp := newTestManager(t).Marketplace()
+	entry := &CatalogEntry{
+		ID:      "com.example.icon",
+		Source:  "https://catalog.example/index.json",
+		IconURL: "https://catalog.example/icon.png",
+	}
+	mp.decorate(entry)
+	assert.Equal(t, "https://catalog.example/icon.png", entry.IconURL)
+
+	entry.IconURL = "https://tracker.example/pixel.png"
+	mp.decorate(entry)
+	assert.Empty(t, entry.IconURL)
+}

@@ -54,6 +54,7 @@ func newMarketplaceFixture(t *testing.T) *marketplaceFixture {
 	})
 	fixture.server = httptest.NewServer(mux)
 	t.Cleanup(fixture.server.Close)
+	fixture.document["icon"] = fixture.server.URL + "/icon.png"
 
 	previousSources := settings.PluginSettings.MarketplaceSources
 	previousEnabled := settings.PluginSettings.MarketplaceEnabled
@@ -147,10 +148,13 @@ func TestGetMarketplaceListReturnsCatalogAndSources(t *testing.T) {
 	}
 	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &body))
 	require.Len(t, body.Plugins, 2)
-	// The name the catalog declares comes with the source once it was read.
+	// What the catalog declares comes with the source once it was read.
 	assert.Equal(t, []plugin.CatalogSource{{
-		URL:         fixture.sourceURL(),
-		CatalogName: map[string]string{"en": "Example Plugins", "zh_CN": "示例插件"},
+		URL: fixture.sourceURL(),
+		CatalogInfo: plugin.CatalogInfo{
+			Name: map[string]string{"en": "Example Plugins", "zh_CN": "示例插件"},
+			Icon: fixture.server.URL + "/icon.png",
+		},
 	}}, body.Sources)
 	assert.Equal(t, "1.0.0", body.Plugins[0].InstallableRelease.Version)
 
@@ -378,7 +382,13 @@ func TestProbeMarketplaceSourceReadsTheCatalog(t *testing.T) {
 	require.Equal(t, http.StatusOK, code)
 	assert.True(t, body.Reachable)
 	assert.Equal(t, 2, body.Plugins)
-	assert.Equal(t, "Example Plugins", body.CatalogName["en"])
+	assert.Equal(t, "Example Plugins", body.Name["en"])
+	assert.Equal(t, fixture.server.URL+"/icon.png", body.Icon)
+
+	// An icon on a host other than the catalog is not loaded.
+	fixture.document["icon"] = "https://tracker.example.net/pixel.png"
+	_, body = probe(fixture.sourceURL())
+	assert.Empty(t, body.Icon)
 
 	code, body = probe(fixture.sourceURL() + "/missing")
 	require.Equal(t, http.StatusOK, code)
