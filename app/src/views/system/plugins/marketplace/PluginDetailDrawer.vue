@@ -14,6 +14,7 @@ import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { capabilityLabel } from '../capabilities'
 import { useInstalledPlugin } from '../inventory'
+import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import PermissionList from '../PermissionList.vue'
 import PluginIcon from '../PluginIcon.vue'
 import { useReplacePlugin } from '../replace'
@@ -44,6 +45,9 @@ const name = computed(() => (current.value ? catalogEntryName(current.value, get
 const description = computed(() => (current.value ? catalogEntryDescription(current.value, gettext.current) : ''))
 const trust = computed(() => trustPreset(current.value?.trust))
 const permissions = computed(() => current.value?.installable_release?.manifest?.permissions ?? [])
+const recommendedMb = computed(() => recommendedMemory(current.value?.installable_release?.manifest))
+const systemMb = useSystemMemory()
+const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
 const installed = useInstalledPlugin(() => current.value?.id)
 const offer = computed(() => findTrustedOffer(installed.value?.trust, current.value))
 const { replacingId, confirmReplace } = useReplacePlugin()
@@ -68,6 +72,9 @@ const facts = computed(() => {
     ...(entry.license ? [{ key: 'license', label: $gettext('License'), value: entry.license, mono: false }] : []),
     ...(entry.installed_version
       ? [{ key: 'installed', label: $gettext('Installed version'), value: `v${entry.installed_version}`, mono: false }]
+      : []),
+    ...(recommendedMb.value > 0
+      ? [{ key: 'memory', label: $gettext('Recommended memory'), value: formatMemory(recommendedMb.value), mono: false }]
       : []),
   ]
   return items
@@ -176,6 +183,13 @@ watch(open, value => {
               </p>
             </div>
           </div>
+
+          <AAlert
+            v-if="lowMemory"
+            type="warning"
+            show-icon
+            :title="memoryWarning(recommendedMb, systemMb)"
+          />
 
           <div class="fact-grid">
             <div

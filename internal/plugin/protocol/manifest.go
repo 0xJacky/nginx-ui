@@ -66,6 +66,10 @@ type ManifestServer struct {
 type ManifestResources struct {
 	// MemoryMB is memory in MiB.
 	MemoryMB int `json:"memory_mb,omitempty"`
+	// RecommendedMemoryMB is the memory in MiB the machine should have for the
+	// plugin to work well, counting the host and the plugin together. It is a
+	// hint only and never limits the process.
+	RecommendedMemoryMB int `json:"recommended_memory_mb,omitempty"`
 	// CPUPercent is CPU time in percent of one core, 100 being one core.
 	CPUPercent int `json:"cpu_percent,omitempty"`
 }

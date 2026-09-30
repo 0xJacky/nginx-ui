@@ -105,6 +105,9 @@ type Info struct {
 	// Resources are the limits of the plugin process, absent for a plugin
 	// without one (spec LIFE-16).
 	Resources *ResourceStatus `json:"resources,omitempty"`
+	// RecommendedMemoryMB is the memory hint of the manifest in MiB, absent
+	// when the plugin gives none.
+	RecommendedMemoryMB int `json:"recommended_memory_mb,omitempty"`
 	// NameI18n and DescriptionI18n translate Name and Description, keyed by
 	// host locale code (spec MAN-40). Name and Description are the fallback.
 	NameI18n        map[string]string `json:"name_i18n,omitempty"`
@@ -139,6 +142,8 @@ type Spec struct {
 	Transports       []string `json:"transports"`
 	// Platform is the "<goos>-<goarch>" key a package must cover to run here.
 	Platform string `json:"platform,omitempty"`
+	// SystemMemoryMB is the memory this host runs with in MiB, 0 when unknown.
+	SystemMemoryMB int `json:"system_memory_mb"`
 }
 
 // InstallOptions controls one install or upgrade.
@@ -576,6 +581,7 @@ func (m *Manager) Spec() Spec {
 		Capabilities:     slices.Clone(knownCapabilities),
 		Transports:       []string{protocol.TransportStdio, protocol.TransportGRPC},
 		Platform:         HostPlatform(),
+		SystemMemoryMB:   SystemMemoryMB(),
 	}
 }
 
@@ -640,6 +646,9 @@ func (m *Manager) infoLocked(item *entry) Info {
 			resources = resourceStatus(EffectiveResources(hostResourceLimits(), manifest), false)
 		}
 		info.Resources = &resources
+		if r := manifest.Server.Resources; r != nil && r.RecommendedMemoryMB > 0 {
+			info.RecommendedMemoryMB = r.RecommendedMemoryMB
+		}
 	}
 
 	info.Name = manifest.Name

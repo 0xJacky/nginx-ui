@@ -243,6 +243,7 @@ func TestGetSpecAndWebappEntries(t *testing.T) {
 	assert.Equal(t, []int{protocol.APIVersion}, spec.APIVersions)
 	assert.Equal(t, []string{protocol.TransportStdio, protocol.TransportGRPC}, spec.Transports)
 	assert.Contains(t, spec.Capabilities, protocol.CapabilityDNS01)
+	assert.Equal(t, plugin.SystemMemoryMB(), spec.SystemMemoryMB)
 
 	c, recorder = newContext(http.MethodGet, "/api/plugins/webapp", nil, nil)
 	GetWebappEntries(c)

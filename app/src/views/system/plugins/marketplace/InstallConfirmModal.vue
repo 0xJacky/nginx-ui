@@ -14,6 +14,7 @@ import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { useWebSocketEventBusStore } from '@/pinia'
 import { useInstalledPlugin } from '../inventory'
+import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import PermissionList from '../PermissionList.vue'
 import { isCommunityTrust, trustPreset } from './trust'
 import TrustDowngradeAlert from './TrustDowngradeAlert.vue'
@@ -68,6 +69,9 @@ const release = computed<CatalogRelease | undefined>(() => {
 const permissions = computed(() => release.value?.manifest?.permissions ?? [])
 const requires = computed(() => release.value?.manifest?.requires ?? [])
 const trust = computed(() => trustPreset(entry.value?.trust))
+const recommendedMb = computed(() => recommendedMemory(release.value?.manifest))
+const systemMb = useSystemMemory()
+const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
 const showCommunityWarning = computed(() => Boolean(entry.value) && isCommunityTrust(entry.value?.trust))
 const isUpgrade = computed(() => Boolean(entry.value?.installed_version))
 // Looked up while the dialog is open, and only for an upgrade.
@@ -282,6 +286,9 @@ onUnmounted(() => {
             {{ $gettext('(replaces %{version})', { version: entry.installed_version }) }}
           </span>
         </ADescriptionsItem>
+        <ADescriptionsItem v-if="recommendedMb > 0" :label="$gettext('Recommended memory')">
+          {{ formatMemory(recommendedMb) }}
+        </ADescriptionsItem>
         <ADescriptionsItem v-if="entry?.source" :label="$gettext('Source')">
           <span class="break-all text-xs text-gray-500">{{ entry.source }}</span>
         </ADescriptionsItem>
@@ -291,6 +298,14 @@ onUnmounted(() => {
         class="mt-4"
         :next="entry?.trust"
         :installed="installedPlugin?.trust"
+      />
+
+      <AAlert
+        v-if="lowMemory"
+        type="warning"
+        show-icon
+        class="mt-4"
+        :title="memoryWarning(recommendedMb, systemMb)"
       />
 
       <AAlert

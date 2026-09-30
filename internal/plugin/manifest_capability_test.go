@@ -190,6 +190,9 @@ func TestValidateManifestCapabilityBlocks(t *testing.T) {
 		{"negative memory hint", func(m *protocol.Manifest) {
 			m.Server.Resources = &protocol.ManifestResources{MemoryMB: -1}
 		}, "server.resources"},
+		{"negative recommended memory", func(m *protocol.Manifest) {
+			m.Server.Resources = &protocol.ManifestResources{RecommendedMemoryMB: -1}
+		}, "server.resources"},
 		{"negative cpu hint", func(m *protocol.Manifest) {
 			m.Server.Resources = &protocol.ManifestResources{CPUPercent: -5}
 		}, "server.resources"},
@@ -335,6 +338,7 @@ func TestLintCapabilityBlocks(t *testing.T) {
 			m.LogSink.Formats = []string{protocol.LogFormatCombined, protocol.LogFormatCombined}
 		}, LevelError, "LOGSINK-3"},
 		{"negative memory hint", func(m *protocol.Manifest) { m.Server.Resources.MemoryMB = -1 }, LevelError, "MAN-39"},
+		{"negative recommended memory", func(m *protocol.Manifest) { m.Server.Resources.RecommendedMemoryMB = -1 }, LevelError, "MAN-39"},
 		{"negative cpu hint", func(m *protocol.Manifest) { m.Server.Resources.CPUPercent = -1 }, LevelError, "MAN-39"},
 	}
 
