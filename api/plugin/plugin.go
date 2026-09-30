@@ -3,8 +3,6 @@ package plugin
 import (
 	"context"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
@@ -55,12 +53,17 @@ func InspectPlugin(c *gin.Context) {
 	}
 	sweepUploads()
 
-	archivePath, cleanup, err := saveUpload(c)
+	form, err := readUpload(c)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
-	defer cleanup()
+	defer form.cleanup()
+	if form.path == "" {
+		cosy.ErrHandler(c, errUploadFileMissing())
+		return
+	}
+	archivePath := form.path
 
 	result, err := plugin.GetManager().Inspect(archivePath)
 	if err != nil {
@@ -87,32 +90,38 @@ func InstallPlugin(c *gin.Context) {
 	}
 	sweepUploads()
 
-	authorKey := strings.TrimSpace(c.PostForm("author_public_key"))
+	form, err := readUpload(c)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	defer form.cleanup()
+
+	authorKey := strings.TrimSpace(form.fields["author_public_key"])
 	if authorKey != "" {
-		if _, err := pkgsign.ParseTrustedKeys([]string{authorKey}); err != nil {
+		if _, err = pkgsign.ParseTrustedKeys([]string{authorKey}); err != nil {
 			cosy.ErrHandler(c, cosy.WrapErrorWithParams(plugin.ErrSignatureInvalid, "author_public_key: "+err.Error()))
 			return
 		}
 	}
 
-	var (
-		archivePath string
-		cleanup     func()
-		err         error
-	)
-	if uploadID := c.PostForm("upload_id"); uploadID != "" {
+	archivePath := form.path
+	if uploadID := form.fields["upload_id"]; uploadID != "" {
+		// The kept package wins over a file sent along with the id.
+		var cleanup func()
 		archivePath, cleanup, err = takeUpload(uploadID)
-	} else {
-		archivePath, cleanup, err = saveUpload(c)
-	}
-	if err != nil {
-		cosy.ErrHandler(c, err)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		defer cleanup()
+	} else if archivePath == "" {
+		cosy.ErrHandler(c, errUploadFileMissing())
 		return
 	}
-	defer cleanup()
 
 	info, err := plugin.GetManager().Install(detach(c), archivePath, plugin.InstallOptions{
-		Enable:          c.PostForm("enable") == "true",
+		Enable:          form.fields["enable"] == "true",
 		AuthorPublicKey: authorKey,
 	})
 	if err != nil {
@@ -271,26 +280,4 @@ func pluginID(c *gin.Context) (string, bool) {
 		return "", false
 	}
 	return id, true
-}
-
-// saveUpload stores the multipart package in a temporary file.
-func saveUpload(c *gin.Context) (string, func(), error) {
-	noop := func() {}
-	header, err := c.FormFile("file")
-	if err != nil {
-		return "", noop, cosy.WrapErrorWithParams(plugin.ErrPackageInvalid, err.Error())
-	}
-
-	dir, err := os.MkdirTemp("", "nginx-ui-plugin-upload-")
-	if err != nil {
-		return "", noop, err
-	}
-	cleanup := func() { _ = os.RemoveAll(dir) }
-
-	target := filepath.Join(dir, "package.tar.gz")
-	if err = c.SaveUploadedFile(header, target); err != nil {
-		cleanup()
-		return "", noop, err
-	}
-	return target, cleanup, nil
 }
