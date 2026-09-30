@@ -25,6 +25,7 @@ func InitRouter(r *gin.RouterGroup) {
 		o.DELETE("/plugins/:id", UninstallPlugin)
 		o.POST("/plugins/:id/enable", EnablePlugin)
 		o.POST("/plugins/:id/disable", DisablePlugin)
+		o.POST("/plugins/:id/channel", SetPluginChannel)
 		o.POST("/plugins/:id/settings", SavePluginSettings)
 	}
 }
