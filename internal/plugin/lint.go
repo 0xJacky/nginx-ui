@@ -123,6 +123,7 @@ func Lint(path string) (*LintReport, error) {
 	lintEvents(manifest, report)
 	lintPermissions(manifest.Permissions, report)
 	lintRequires(manifest.Requires, report)
+	lintConflicts(manifest, report)
 	lintSettingsSchema(manifest.SettingsSchema, report)
 	lintDocs(dir, report)
 
@@ -757,6 +758,13 @@ func lintRequires(requires []protocol.ManifestRequirement, report *LintReport) {
 		if !IsValidID(r.ID) {
 			report.add(LevelError, "MAN-24", "requires[].id %q is not a valid plugin id", r.ID)
 		}
+	}
+}
+
+// lintConflicts checks the conflicts declaration (MAN-42).
+func lintConflicts(m *protocol.Manifest, report *LintReport) {
+	for _, problem := range conflictProblems(m) {
+		report.add(LevelError, "MAN-42", "%s", problem)
 	}
 }
 

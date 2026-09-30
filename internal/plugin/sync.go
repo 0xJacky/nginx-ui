@@ -179,6 +179,8 @@ func (n *nodeClient) marketplaceInstall(ctx context.Context, id, version string,
 		"version":             version,
 		"enable":              enable,
 		"approve_permissions": true,
+		// The main node decides what runs, so a node makes room for it.
+		"replace_conflicts": true,
 	}
 	resp, err := n.client.R().SetContext(ctx).SetBody(body).Post("/api/plugins/marketplace/install")
 	return decode(resp, err, "/api/plugins/marketplace/install", nil)
@@ -194,7 +196,7 @@ func (n *nodeClient) uploadPackage(ctx context.Context, archivePath string, enab
 	}
 	defer file.Close()
 
-	form := map[string]string{"enable": boolText(enable)}
+	form := map[string]string{"enable": boolText(enable), "replace_conflicts": "true"}
 	if authorKey != "" {
 		form["author_public_key"] = authorKey
 	}
@@ -210,7 +212,7 @@ func (n *nodeClient) setEnabled(ctx context.Context, id string, enabled bool) er
 	request := n.client.R().SetContext(ctx)
 	if enabled {
 		path = "/api/plugins/" + id + "/enable"
-		request = request.SetBody(map[string]any{"approve_permissions": true})
+		request = request.SetBody(map[string]any{"approve_permissions": true, "replace_conflicts": true})
 	}
 	resp, err := request.Post(path)
 	return decode(resp, err, path, nil)

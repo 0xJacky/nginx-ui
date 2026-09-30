@@ -102,6 +102,7 @@ func InstallFromMarketplace(c *gin.Context) {
 		Source             string `json:"source"`
 		Enable             bool   `json:"enable"`
 		ApprovePermissions bool   `json:"approve_permissions"`
+		ReplaceConflicts   bool   `json:"replace_conflicts"`
 	}
 	if err := c.ShouldBindJSON(&body); err != nil {
 		cosy.ErrHandler(c, err)
@@ -113,7 +114,11 @@ func InstallFromMarketplace(c *gin.Context) {
 	}
 
 	info, err := plugin.GetManager().Marketplace().Install(detach(c), body.ID, body.Version, body.Source,
-		plugin.InstallOptions{Enable: body.Enable, ApprovePermissions: body.ApprovePermissions})
+		plugin.InstallOptions{
+			Enable:             body.Enable,
+			ApprovePermissions: body.ApprovePermissions,
+			ReplaceConflicts:   body.ReplaceConflicts,
+		})
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
