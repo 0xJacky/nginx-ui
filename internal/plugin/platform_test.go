@@ -234,9 +234,9 @@ func TestPickReleaseHonoursThePlatform(t *testing.T) {
 			Downloads: map[string]ReleaseDownload{foreign: {URL: "https://example.com/2-foreign"}}},
 	}}
 
-	assert.Equal(t, "1.0.0", pickRelease(entry, "", host).Version)
-	assert.Equal(t, "1.1.0", pickRelease(entry, "", foreign).Version)
-	assert.Nil(t, pickRelease(entry, "", "plan9-386"))
+	assert.Equal(t, "1.0.0", pickRelease(entry, "", host, "").Version)
+	assert.Equal(t, "1.1.0", pickRelease(entry, "", foreign, "").Version)
+	assert.Nil(t, pickRelease(entry, "", "plan9-386", ""))
 }
 
 func TestPackagePlatforms(t *testing.T) {

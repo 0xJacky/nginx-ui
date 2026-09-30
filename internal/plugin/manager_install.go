@@ -261,6 +261,12 @@ func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest
 	row.Signer = trust.Signer
 	row.Partner = trust.Partner
 	row.AuthorPublicKey = trust.AuthorKey
+	// The followed channel stays what the person chose. The release only
+	// raises the channel updates come from while it runs, see effectiveChannel.
+	row.ReleaseChannel = opts.Channel
+	if !IsValidChannel(row.ReleaseChannel) {
+		row.ReleaseChannel = InferChannel(manifest.Version)
+	}
 	row.LastError = ""
 	if row.SyncPolicy == "" {
 		row.SyncPolicy = settings.PluginSettings.GetDefaultSyncPolicy()

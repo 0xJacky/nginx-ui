@@ -35,6 +35,7 @@ var (
 	ErrUnsignedPackage            = e.New(55023, "plugin package is not signed and developer mode is off")
 	ErrTrustDowngrade             = e.New(55024, "plugin package trust {0} is below the installed {1}")
 	ErrPluginConflict             = e.New(55025, "plugin conflicts with the enabled plugin(s): {0}")
+	ErrChannelInvalid             = e.New(55026, "release channel must be stable, beta or dev")
 
 	// Capability errors continue at 55201, apart from the lifecycle and the
 	// marketplace codes.

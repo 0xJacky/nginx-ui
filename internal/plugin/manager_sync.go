@@ -265,3 +265,33 @@ func (m *Manager) autoPlugins() []string {
 	}
 	return ids
 }
+
+// SetChannel stores the channel an installed plugin takes updates from. The
+// plugin itself stays on its version until the user installs another one.
+func (m *Manager) SetChannel(ctx context.Context, id, channel string) (*Info, error) {
+	if !IsValidChannel(channel) {
+		return nil, ErrChannelInvalid
+	}
+
+	m.opMu.Lock()
+	defer m.opMu.Unlock()
+
+	item, ok := m.lookup(id)
+	if !ok {
+		return nil, ErrPluginNotFound
+	}
+	m.mu.Lock()
+	row := item.row
+	if row == nil {
+		m.mu.Unlock()
+		return nil, ErrPluginNotFound
+	}
+	row.FollowedChannel = channel
+	m.mu.Unlock()
+
+	if err := m.saveRow(ctx, row); err != nil {
+		return nil, err
+	}
+	info := m.infoOf(item)
+	return &info, nil
+}

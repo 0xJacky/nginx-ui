@@ -28,6 +28,12 @@ type Plugin struct {
 	// AuthorPublicKey is the key that verified a community package, which a
 	// cluster push hands on to the node. Empty for any other trust.
 	AuthorPublicKey string `json:"-"`
+	// ReleaseChannel is the channel of the installed release, empty for a row
+	// from before channels existed, which reads it from the version.
+	ReleaseChannel string `json:"release_channel"`
+	// FollowedChannel is the channel the person chose, stable by default. The
+	// installed release never changes it.
+	FollowedChannel string `json:"followed_channel" gorm:"default:stable"`
 	// Cluster sync, same pattern as Site.SyncNodeIDs.
 	SyncPolicy   string   `json:"sync_policy"`
 	SyncNodeIDs  []uint64 `json:"sync_node_ids" gorm:"serializer:json"`

@@ -24,6 +24,7 @@ export default {
   55023: () => $gettext('Plugin package is not signed and developer mode is off'),
   55024: () => $gettext('Plugin package trust {0} is below the installed {1}'),
   55025: () => $gettext('Plugin conflicts with the enabled plugin(s): {0}'),
+  55026: () => $gettext('Release channel must be stable, beta or dev'),
   55201: () => $gettext('Storage backend {0} is not available'),
   55202: () => $gettext('Storage config field {0} is invalid: {1}'),
   55203: () => $gettext('Deploy target kind {0} is not available'),
