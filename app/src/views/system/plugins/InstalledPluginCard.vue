@@ -14,6 +14,7 @@ import {
 import { localizedPluginDescription, localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
 import { capabilityLabel } from './capabilities'
+import { isBelowRecommended, useSystemMemory } from './memory'
 import PluginIcon from './PluginIcon.vue'
 import { isToggleDisabled, needsAttention, statusOf } from './presets'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
@@ -37,6 +38,8 @@ const name = computed(() => localizedPluginName(props.plugin, gettext.current))
 const description = computed(() => localizedPluginDescription(props.plugin, gettext.current))
 const status = computed(() => statusOf(props.plugin))
 const attention = computed(() => needsAttention(props.plugin))
+const systemMb = useSystemMemory()
+const lowMemory = computed(() => isBelowRecommended(props.plugin.recommended_memory_mb, systemMb.value))
 const toggleDisabled = computed(() => isToggleDisabled(props.plugin))
 const isMuted = computed(() => !props.plugin.enabled && !attention.value)
 
@@ -119,6 +122,11 @@ function onMenuClick({ key }: { key: string | number }) {
       </ATooltip>
       <!-- Outlined, so the trust level stands apart from the capability tags. -->
       <TrustTag :plugin="plugin" />
+      <ATooltip v-if="lowMemory" :title="$gettext('This server has less memory than this plugin is recommended for.')">
+        <ATag color="warning" class="m-0">
+          {{ $gettext('Low memory') }}
+        </ATag>
+      </ATooltip>
       <ATag
         v-for="capability in plugin.capabilities"
         :key="capability"

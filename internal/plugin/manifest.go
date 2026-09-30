@@ -242,7 +242,7 @@ func validateServer(s *protocol.ManifestServer) error {
 	if s.IdleTimeoutSeconds < 0 {
 		return invalidManifest("server.idle_timeout_seconds must not be negative")
 	}
-	if r := s.Resources; r != nil && (r.MemoryMB < 0 || r.CPUPercent < 0) {
+	if r := s.Resources; r != nil && (r.MemoryMB < 0 || r.RecommendedMemoryMB < 0 || r.CPUPercent < 0) {
 		return invalidManifest("server.resources must not be negative")
 	}
 	for platform, rel := range s.Executables {
