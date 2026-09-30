@@ -7,6 +7,7 @@ import {
   DeleteOutlined,
   FileTextOutlined,
   GlobalOutlined,
+  InfoCircleOutlined,
   MoreOutlined,
   SettingOutlined,
   WarningOutlined,
@@ -14,11 +15,13 @@ import {
 import { localizedPluginDescription, localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
 import { capabilityLabel } from './capabilities'
+import { conflictNote } from './conflicts'
 import { isBelowRecommended, useSystemMemory } from './memory'
 import PluginIcon from './PluginIcon.vue'
 import { isToggleDisabled, needsAttention, statusOf } from './presets'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
 import TrustTag from './TrustTag.vue'
+import { useConflictNames } from './useConflicts'
 
 const props = defineProps<{
   plugin: PluginInfo
@@ -40,6 +43,7 @@ const status = computed(() => statusOf(props.plugin))
 const attention = computed(() => needsAttention(props.plugin))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(props.plugin.recommended_memory_mb, systemMb.value))
+const conflictingNames = useConflictNames(() => props.plugin)
 const toggleDisabled = computed(() => isToggleDisabled(props.plugin))
 const isMuted = computed(() => !props.plugin.enabled && !attention.value)
 
@@ -137,6 +141,11 @@ function onMenuClick({ key }: { key: string | number }) {
       </ATag>
     </div>
 
+    <div v-if="conflictingNames.length > 0" class="plugin-card-note" :title="conflictNote(conflictingNames)">
+      <InfoCircleOutlined class="flex-none" />
+      <span class="truncate">{{ conflictNote(conflictingNames) }}</span>
+    </div>
+
     <div
       v-if="plugin.last_error"
       class="plugin-card-error"
@@ -196,6 +205,16 @@ function onMenuClick({ key }: { key: string | number }) {
   color: var(--ant-color-error);
   background: var(--ant-color-error-bg);
   border-radius: var(--ant-border-radius);
+}
+
+.plugin-card-note {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ant-color-text-secondary);
 }
 
 .plugin-card-sync {

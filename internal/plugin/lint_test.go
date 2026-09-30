@@ -555,3 +555,35 @@ func TestLintLogPathsChangedNeedsTheLogFilesPermission(t *testing.T) {
 	require.NoError(t, err)
 	assert.Empty(t, report.Findings, "%+v", report.Findings)
 }
+
+func TestLintConflicts(t *testing.T) {
+	tests := []struct {
+		name   string
+		mutate func(m *protocol.Manifest)
+		want   bool
+	}{
+		{"valid", func(m *protocol.Manifest) { m.Conflicts = []string{"official.other"} }, false},
+		{"malformed id", func(m *protocol.Manifest) { m.Conflicts = []string{"nope"} }, true},
+		{"itself", func(m *protocol.Manifest) { m.Conflicts = []string{m.ID} }, true},
+		{"repeated", func(m *protocol.Manifest) { m.Conflicts = []string{"official.other", "official.other"} }, true},
+		{"also required", func(m *protocol.Manifest) {
+			m.Conflicts = []string{"official.other"}
+			m.Requires = []protocol.ManifestRequirement{{ID: "official.other"}}
+		}, true},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			m := goodManifest()
+			tc.mutate(m)
+			report, err := Lint(writeLintFixture(t, lintFixture{manifest: m}))
+			require.NoError(t, err)
+			if tc.want {
+				assertHasFinding(t, report, LevelError, "MAN-42")
+				return
+			}
+			for _, f := range report.Findings {
+				assert.NotEqual(t, "MAN-42", f.Rule)
+			}
+		})
+	}
+}

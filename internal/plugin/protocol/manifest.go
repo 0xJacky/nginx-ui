@@ -23,6 +23,7 @@ type Manifest struct {
 	Permissions          []string              `json:"permissions,omitempty"`
 	Requires             []ManifestRequirement `json:"requires,omitempty"`
 	RequiresCapabilities []string              `json:"requires_capabilities,omitempty"`
+	Conflicts            []string              `json:"conflicts,omitempty"`
 	Events               []string              `json:"events,omitempty"`
 	Cron                 []ManifestCron        `json:"cron,omitempty"`
 	NetworkHosts         []string              `json:"network_hosts,omitempty"`

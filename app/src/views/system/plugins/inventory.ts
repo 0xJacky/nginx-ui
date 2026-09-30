@@ -126,6 +126,31 @@ export function usePluginInventory(): PluginInventory {
 }
 
 /**
+ * Every installed plugin. Reads the inventory of the plugins page, or fetches
+ * the list when the caller lives outside of it, once `active` turns true.
+ */
+export function useInstalledPlugins(active: MaybeRefOrGetter<boolean> = true): ComputedRef<PluginInfo[]> {
+  const inventory = inject(inventoryKey, undefined)
+  const fetched = shallowRef<PluginInfo[]>([])
+
+  if (!inventory) {
+    watch(() => toValue(active), async isActive => {
+      if (!isActive)
+        return
+
+      try {
+        fetched.value = await pluginApi.getList()
+      }
+      catch {
+        // Only hints depend on it, so a failed lookup shows none.
+      }
+    }, { immediate: true })
+  }
+
+  return computed(() => (inventory ? inventory.plugins.value : fetched.value))
+}
+
+/**
  * The installed plugin with the given id. Reads the inventory of the plugins
  * page, or fetches the plugin list when the caller lives outside of it. An
  * empty id skips the lookup.

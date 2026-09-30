@@ -121,8 +121,9 @@ func InstallPlugin(c *gin.Context) {
 	}
 
 	info, err := plugin.GetManager().Install(detach(c), archivePath, plugin.InstallOptions{
-		Enable:          form.fields["enable"] == "true",
-		AuthorPublicKey: authorKey,
+		Enable:           form.fields["enable"] == "true",
+		ReplaceConflicts: form.fields["replace_conflicts"] == "true",
+		AuthorPublicKey:  authorKey,
 	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
@@ -153,11 +154,15 @@ func EnablePlugin(c *gin.Context) {
 
 	var body struct {
 		ApprovePermissions bool `json:"approve_permissions"`
+		ReplaceConflicts   bool `json:"replace_conflicts"`
 	}
 	// The UI sends an empty body when it does not need to approve anything.
 	_ = c.ShouldBindJSON(&body)
 
-	info, err := plugin.GetManager().Enable(detach(c), id, body.ApprovePermissions)
+	info, err := plugin.GetManager().EnableWith(detach(c), id, plugin.EnableOptions{
+		ApprovePermissions: body.ApprovePermissions,
+		ReplaceConflicts:   body.ReplaceConflicts,
+	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
