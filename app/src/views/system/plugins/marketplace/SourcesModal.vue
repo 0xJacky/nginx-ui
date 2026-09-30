@@ -20,6 +20,8 @@ interface SourceRow {
   state: SourceState
   /** Localized names the catalog declares. */
   catalogName?: Record<string, string>
+  /** Image the catalog declares; dropped when it fails to load. */
+  catalogIcon: string
   plugins: number
   /** Why the source is unavailable, shown on hover. */
   detail: string
@@ -62,7 +64,7 @@ useSortable(cards, rows, {
 })
 
 function newRow(url = '', editing = false): SourceRow {
-  return { key: nextKey++, url, editing, probedUrl: '', state: 'idle', plugins: 0, detail: '' }
+  return { key: nextKey++, url, editing, probedUrl: '', state: 'idle', catalogIcon: '', plugins: 0, detail: '' }
 }
 
 function isWebAddress(value: string) {
@@ -84,6 +86,7 @@ async function probe(row: SourceRow) {
 
   row.probedUrl = url
   row.catalogName = undefined
+  row.catalogIcon = ''
   row.detail = ''
   if (!url) {
     row.state = 'idle'
@@ -102,6 +105,7 @@ async function probe(row: SourceRow) {
       return
     row.state = result.reachable ? 'available' : 'unavailable'
     row.catalogName = result.catalog_name
+    row.catalogIcon = result.catalog_icon ?? ''
     row.plugins = result.plugins
     row.detail = result.error ?? ''
   }
@@ -266,9 +270,18 @@ watch(open, value => {
         >
           <HolderOutlined class="source-handle" :aria-label="$gettext('Drag to reorder')" />
 
-          <div class="source-tile">
-            <AppstoreOutlined />
-            <span class="source-order">{{ index + 1 }}</span>
+          <div class="source-tile" :class="{ 'has-image': row.catalogIcon }">
+            <Transition name="source-fade" mode="out-in">
+              <img
+                v-if="row.catalogIcon"
+                :key="row.catalogIcon"
+                :src="row.catalogIcon"
+                alt=""
+                class="source-image"
+                @error="row.catalogIcon = ''"
+              >
+              <AppstoreOutlined v-else />
+            </Transition>
           </div>
 
           <div class="source-main">
@@ -461,11 +474,12 @@ watch(open, value => {
   align-self: stretch;
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 16px;
   margin-right: -6px;
-  padding: 0 2px;
   cursor: grab;
   color: var(--ant-color-text-quaternary);
-  opacity: 0;
+  opacity: 0.5;
   transition: opacity 0.2s ease, color 0.2s ease;
 }
 
@@ -493,27 +507,23 @@ watch(open, value => {
   transition: color 0.3s ease, background-color 0.3s ease;
 }
 
+.source-tile.has-image {
+  background: var(--ant-color-bg-container);
+  box-shadow:
+    inset 0 0 0 1px var(--ant-color-border-secondary),
+    0 0 0 2px var(--state-bg);
+}
+
+.source-image {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
 .sources-empty .source-tile {
   color: var(--ant-color-success);
   background: var(--ant-color-success-bg);
-}
-
-.source-order {
-  position: absolute;
-  right: -6px;
-  bottom: -6px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 4px;
-  border: 2px solid var(--ant-color-bg-container);
-  border-radius: 9px;
-  font-size: 10px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  line-height: 14px;
-  text-align: center;
-  color: var(--ant-color-text-light-solid, #fff);
-  background: var(--ant-color-text-secondary);
 }
 
 .source-main {
@@ -641,7 +651,7 @@ watch(open, value => {
 }
 
 .source-remove {
-  opacity: 0;
+  opacity: 0.45;
   transition: opacity 0.2s ease;
 }
 
@@ -650,7 +660,7 @@ watch(open, value => {
   opacity: 1;
 }
 
-/* Touch screens have no hover, so the controls stay visible */
+/* Touch screens have no hover, so the controls show in full */
 @media (hover: none) {
   .source-handle,
   .source-remove {
@@ -790,15 +800,35 @@ watch(open, value => {
   }
 }
 
-@media (max-width: 480px) {
+/* Narrow screens: the status moves under the address, remove stays in the corner */
+@media (max-width: 575px) {
   .source-card {
     flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  .source-main {
+    padding-right: 28px;
   }
 
   .source-side {
-    width: 100%;
-    justify-content: space-between;
-    padding-left: 70px;
+    display: contents;
+  }
+
+  .source-status {
+    order: 1;
+    flex-basis: 100%;
+    padding-left: 74px;
+  }
+
+  .source-remove {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  .sources-intro {
+    font-size: 12px;
   }
 }
 
