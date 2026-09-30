@@ -200,24 +200,35 @@ const maxCatalogNameLength = 64
 type CatalogDocument struct {
 	SchemaVersion int `json:"schema_version"`
 	// Name is the name the catalog goes by, a locale map like an entry name.
-	Name      map[string]string `json:"name,omitempty"`
-	UpdatedAt string            `json:"updated_at,omitempty"`
-	Plugins   []CatalogEntry    `json:"plugins"`
+	Name map[string]string `json:"name,omitempty"`
+	// Icon is the address of an image that stands for the catalog.
+	Icon      string         `json:"icon,omitempty"`
+	UpdatedAt string         `json:"updated_at,omitempty"`
+	Plugins   []CatalogEntry `json:"plugins"`
 }
 
-// CatalogSource is one configured catalog and the name it declares.
+// CatalogInfo is what a catalog declares about itself (spec PKG-30).
+type CatalogInfo struct {
+	// Name is a locale map of the catalog name.
+	Name map[string]string `json:"catalog_name,omitempty"`
+	// Icon is an image a browser of this node may load, empty when the
+	// catalog declares none this node accepts.
+	Icon string `json:"catalog_icon,omitempty"`
+}
+
+// CatalogSource is one configured catalog and what it declares about itself,
+// known once it was read.
 type CatalogSource struct {
 	URL string `json:"url"`
-	// CatalogName is the name the catalog declares, known once it was read.
-	CatalogName map[string]string `json:"catalog_name,omitempty"`
+	CatalogInfo
 }
 
 // SourceProbe is what reading one catalog found.
 type SourceProbe struct {
-	Reachable   bool              `json:"reachable"`
-	CatalogName map[string]string `json:"catalog_name,omitempty"`
-	Plugins     int               `json:"plugins"`
-	Error       string            `json:"error,omitempty"`
+	Reachable bool `json:"reachable"`
+	CatalogInfo
+	Plugins int    `json:"plugins"`
+	Error   string `json:"error,omitempty"`
 }
 
 // CatalogFilter narrows the merged catalog.
@@ -256,7 +267,7 @@ type InstallProgress struct {
 // sourceCache keeps one fetched source for catalogTTL.
 type sourceCache struct {
 	entries []CatalogEntry
-	name    map[string]string
+	info    CatalogInfo
 	fetched time.Time
 }
 
@@ -291,7 +302,7 @@ func (mp *Marketplace) SourceList() []CatalogSource {
 	for _, rawURL := range urls {
 		source := CatalogSource{URL: rawURL}
 		if cached, ok := mp.cache[rawURL]; ok {
-			source.CatalogName = cached.name
+			source.CatalogInfo = cached.info
 		}
 		list = append(list, source)
 	}
@@ -302,16 +313,16 @@ func (mp *Marketplace) SourceList() []CatalogSource {
 // declares and how many plugins it lists. A configured source keeps what was
 // read in its cache.
 func (mp *Marketplace) Probe(ctx context.Context, rawURL string) SourceProbe {
-	entries, name, err := fetchCatalog(ctx, proxiedURL(rawURL))
+	entries, info, err := fetchCatalog(ctx, rawURL)
 	if err != nil {
 		return SourceProbe{Error: err.Error()}
 	}
 	if slices.Contains(mp.Sources(), rawURL) {
 		mp.mu.Lock()
-		mp.cache[rawURL] = &sourceCache{entries: entries, name: name, fetched: time.Now()}
+		mp.cache[rawURL] = &sourceCache{entries: entries, info: info, fetched: time.Now()}
 		mp.mu.Unlock()
 	}
-	return SourceProbe{Reachable: true, CatalogName: name, Plugins: len(entries)}
+	return SourceProbe{Reachable: true, CatalogInfo: info, Plugins: len(entries)}
 }
 
 // Catalog fetches every configured source and merges them by id, first source
@@ -410,6 +421,20 @@ func (mp *Marketplace) Detail(ctx context.Context, id, source string) (*CatalogE
 // allowed, and live on the catalog source host, the host of the package this
 // node installs, or GitHub.
 func checkCatalogURL(entry *CatalogEntry, raw string) error {
+	allowed := []string{entry.Source}
+	if release := entry.InstallableRelease; release != nil {
+		download, _, ok := release.DownloadFor(HostPlatform())
+		if !ok {
+			download.URL = release.DownloadURL
+		}
+		allowed = append(allowed, download.URL)
+	}
+	return checkURLOnHosts(raw, allowed...)
+}
+
+// checkURLOnHosts accepts an https URL, or http when insecure downloads are
+// allowed, on GitHub or on the host of one of the allowed URLs.
+func checkURLOnHosts(raw string, allowed ...string) error {
 	parsed, err := url.Parse(raw)
 	if err != nil || parsed.Host == "" {
 		return fmt.Errorf("%q is not a valid url", raw)
@@ -427,14 +452,6 @@ func checkCatalogURL(entry *CatalogEntry, raw string) error {
 	host := strings.ToLower(parsed.Host)
 	if slices.Contains(githubHosts, host) {
 		return nil
-	}
-	allowed := []string{entry.Source}
-	if release := entry.InstallableRelease; release != nil {
-		download, _, ok := release.DownloadFor(HostPlatform())
-		if !ok {
-			download.URL = release.DownloadURL
-		}
-		allowed = append(allowed, download.URL)
 	}
 	for _, raw := range allowed {
 		if other, err := url.Parse(raw); err == nil && other.Host != "" && strings.ToLower(other.Host) == host {
@@ -751,13 +768,13 @@ func (mp *Marketplace) source(ctx context.Context, rawURL string, refresh bool) 
 		}
 	}
 
-	entries, name, err := fetchCatalog(ctx, proxiedURL(rawURL))
+	entries, info, err := fetchCatalog(ctx, rawURL)
 	if err != nil {
 		return nil, err
 	}
 
 	mp.mu.Lock()
-	mp.cache[rawURL] = &sourceCache{entries: entries, name: name, fetched: time.Now()}
+	mp.cache[rawURL] = &sourceCache{entries: entries, info: info, fetched: time.Now()}
 	mp.mu.Unlock()
 	return entries, nil
 }
@@ -786,6 +803,9 @@ func (mp *Marketplace) decorate(entry *CatalogEntry) {
 		entry.UpdateAvailable = CompareVersions(entry.InstalledVersion, entry.InstallableRelease.Version) < 0
 	}
 	entry.Screenshots = loadableScreenshots(entry)
+	if entry.IconURL != "" && checkCatalogURL(entry, entry.IconURL) != nil {
+		entry.IconURL = ""
+	}
 }
 
 // loadableScreenshots keeps the screenshots a browser of this node may load:
@@ -923,19 +943,19 @@ func publishPlatformProgress(pluginID, status string, progress float64, platform
 	})
 }
 
-// fetchCatalog downloads and validates one catalog document.
-func fetchCatalog(ctx context.Context, rawURL string) ([]CatalogEntry, map[string]string, error) {
-	body, err := fetchText(ctx, rawURL, maxCatalogBytes)
+// fetchCatalog downloads and validates the catalog document of one source.
+func fetchCatalog(ctx context.Context, source string) ([]CatalogEntry, CatalogInfo, error) {
+	body, err := fetchText(ctx, proxiedURL(source), maxCatalogBytes)
 	if err != nil {
-		return nil, nil, err
+		return nil, CatalogInfo{}, err
 	}
 
 	var document CatalogDocument
 	if err = json.Unmarshal([]byte(body), &document); err != nil {
-		return nil, nil, cosy.WrapErrorWithParams(ErrCatalogInvalid, err.Error())
+		return nil, CatalogInfo{}, cosy.WrapErrorWithParams(ErrCatalogInvalid, err.Error())
 	}
 	if document.SchemaVersion != CatalogSchemaVersion {
-		return nil, nil, cosy.WrapErrorWithParams(ErrCatalogInvalid,
+		return nil, CatalogInfo{}, cosy.WrapErrorWithParams(ErrCatalogInvalid,
 			fmt.Sprintf("schema_version %d is not supported", document.SchemaVersion))
 	}
 
@@ -950,7 +970,11 @@ func fetchCatalog(ctx context.Context, rawURL string) ([]CatalogEntry, map[strin
 		}
 		entries = append(entries, entry)
 	}
-	return entries, catalogName(document.Name), nil
+	info := CatalogInfo{Name: catalogName(document.Name)}
+	if document.Icon != "" && checkURLOnHosts(document.Icon, source) == nil {
+		info.Icon = document.Icon
+	}
+	return entries, info, nil
 }
 
 // catalogName keeps the non-empty names of a catalog, short enough to show.

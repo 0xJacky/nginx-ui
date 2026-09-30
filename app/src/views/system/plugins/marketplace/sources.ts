@@ -13,6 +13,25 @@ export function rememberSources(sources: CatalogSource[]) {
 
 /** Name of a source URL, read from the configured sources once if needed. */
 export function useSourceName() {
+  ensureSources()
+  return (url: string | undefined) => {
+    if (!url)
+      return ''
+    return catalogSourceName(sourceOf(url), url, gettext.current)
+  }
+}
+
+/** Icon a source URL declares, empty when it has none. */
+export function useSourceIcon() {
+  ensureSources()
+  return (url: string | undefined) => (url ? sourceOf(url)?.catalog_icon ?? '' : '')
+}
+
+function sourceOf(url: string) {
+  return known.value.find(item => item.url === url)
+}
+
+function ensureSources() {
   if (known.value.length === 0 && !pending) {
     pending = getMarketplaceSources()
       .then(response => {
@@ -23,11 +42,5 @@ export function useSourceName() {
       .finally(() => {
         pending = undefined
       })
-  }
-
-  return (url: string | undefined) => {
-    if (!url)
-      return ''
-    return catalogSourceName(known.value.find(item => item.url === url), url, gettext.current)
   }
 }
