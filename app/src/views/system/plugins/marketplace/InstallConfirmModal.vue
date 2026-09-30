@@ -20,6 +20,7 @@ import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import PermissionList from '../PermissionList.vue'
 import { usePackageConflicts } from '../useConflicts'
+import { useSourceName } from './sources'
 import { isCommunityTrust, trustPreset } from './trust'
 import TrustDowngradeAlert from './TrustDowngradeAlert.vue'
 
@@ -59,6 +60,7 @@ let subscriptionId = ''
 
 const entry = computed(() => props.entry ?? resolved.value)
 const targetId = computed(() => entry.value?.id ?? props.pluginId ?? '')
+const sourceName = useSourceName()
 const name = computed(() => (entry.value ? catalogEntryName(entry.value, gettext.current) : targetId.value))
 
 const release = computed<CatalogRelease | undefined>(() => {
@@ -318,7 +320,7 @@ onUnmounted(() => {
           {{ formatMemory(recommendedMb) }}
         </ADescriptionsItem>
         <ADescriptionsItem v-if="entry?.source" :label="$gettext('Source')">
-          <span class="break-all text-xs text-gray-500">{{ entry.source }}</span>
+          <span class="break-all text-xs text-gray-500" :title="entry.source">{{ sourceName(entry.source) }}</span>
         </ADescriptionsItem>
       </ADescriptions>
 

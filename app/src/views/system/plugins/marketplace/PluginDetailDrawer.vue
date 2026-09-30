@@ -18,6 +18,7 @@ import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, use
 import PermissionList from '../PermissionList.vue'
 import PluginIcon from '../PluginIcon.vue'
 import { useReplacePlugin } from '../replace'
+import { useSourceName } from './sources'
 import { findTrustedOffer, trustedOfferAction, trustPreset } from './trust'
 
 const props = defineProps<{
@@ -40,6 +41,7 @@ const readme = ref('')
 const detail = ref<CatalogEntry>()
 
 const current = computed(() => detail.value ?? props.entry)
+const sourceName = useSourceName()
 const name = computed(() => (current.value ? catalogEntryName(current.value, gettext.current) : ''))
 const description = computed(() => (current.value ? catalogEntryDescription(current.value, gettext.current) : ''))
 const trust = computed(() => trustPreset(current.value?.trust))
@@ -209,7 +211,7 @@ watch(open, value => {
             <div class="detail-row">
               <dt>{{ $gettext('Source') }}</dt>
               <dd class="detail-source">
-                {{ current.source }}
+                <span :title="current.source">{{ sourceName(current.source) }}</span>
               </dd>
             </div>
             <div v-if="links.length > 0" class="detail-row">
