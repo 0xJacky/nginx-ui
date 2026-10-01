@@ -70,11 +70,11 @@ const cpuLimit = limitModel('cpu_percent')
       </SettingRow>
       <SettingRow
         :title="$gettext('Sources')"
-        :description="$gettext('Managed on the marketplace page. Empty means the official catalog.')"
+        :description="$gettext('Managed on the marketplace page. The official catalog is always used.')"
         path="plugin.marketplace_sources"
       >
         <div class="plugin-source-list">
-          <span v-if="data.plugin.marketplace_sources.length === 0">{{ $gettext('Official catalog') }}</span>
+          <span>{{ $gettext('Official catalog') }}</span>
           <span
             v-for="source in data.plugin.marketplace_sources"
             :key="source"
