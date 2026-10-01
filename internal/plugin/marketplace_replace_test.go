@@ -28,7 +28,7 @@ func TestMarketplaceReplaceSwapsAnUnsignedCopyAtTheSameVersion(t *testing.T) {
 	require.NoError(t, err)
 	require.NoError(t, manager.SaveSettings(ctx, "com.nginxui.alpha", map[string]any{"endpoint": "https://kept.example"}))
 
-	signer := useReleaseKey(t)
+	signer := useOfficialKey(t)
 	server.publish(t, manifest, signer, nil)
 
 	info, err := manager.Marketplace().Replace(ctx, "com.nginxui.alpha", "")
@@ -80,7 +80,7 @@ func TestOfficialNamespaceNeedsTheOfficialSignature(t *testing.T) {
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
 	settings.PluginSettings.DeveloperMode = false
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	public, community := newSigningKey(t)
 	trustKey(t, public)
 	ctx := context.Background()
@@ -92,7 +92,7 @@ func TestOfficialNamespaceNeedsTheOfficialSignature(t *testing.T) {
 	_, err := manager.Install(ctx, buildSignedTestPackage(t, impostor, files, &community), InstallOptions{})
 	assertPluginError(t, err, ErrReservedID)
 
-	// The same key publishes its own ids, and the release key the official ones.
+	// The same key publishes its own ids, and the official plugin key the official ones.
 	_, err = manager.Install(ctx, buildSignedTestPackage(t, marketplaceManifest("com.example.own", "1.0.0"), files, &community), InstallOptions{})
 	require.NoError(t, err)
 	info, err := manager.Install(ctx, buildSignedTestPackage(t, marketplaceManifest("com.nginxui.real", "1.0.0"), files, release), InstallOptions{})

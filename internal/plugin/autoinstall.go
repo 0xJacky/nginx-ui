@@ -57,7 +57,7 @@ func (m *Manager) EnsureDNS01Plugin(ctx context.Context) {
 
 // installDNS01Plugin prefers a package the operator already placed on the
 // node, then falls back to the marketplace. Either way only a package signed
-// with a release key is installed without the user asking.
+// with an official plugin key is installed without the user asking.
 func (m *Manager) installDNS01Plugin(ctx context.Context) (*Info, error) {
 	opts := InstallOptions{Enable: true, ApprovePermissions: true, MinTrust: TrustOfficial}
 
@@ -108,7 +108,7 @@ func seedSettings(manifest *protocol.Manifest, row *model.Plugin) {
 
 // repairIncompatiblePlugins upgrades the vetted plugins a core upgrade left
 // behind, so a node does not lose a capability after an update. The new
-// package has to be signed with a release key.
+// package has to be signed with an official plugin key.
 func (m *Manager) repairIncompatiblePlugins(ctx context.Context) {
 	if !settings.PluginSettings.MarketplaceEnabled {
 		return

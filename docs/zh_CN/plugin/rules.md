@@ -253,7 +253,7 @@ ID 使用了保留给 Nginx UI 项目的 `com.nginxui.*`。参见[命名规则](
 
 <Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
 
-签名无法用检查工具已知的密钥验证：项目的发布密钥，或插件包中带有有效证书的合作伙伴密钥。对于社区插件这是预期的，因为它的密钥只由插件目录或运维人员指定。参见[信任等级](./signing.md#trust-levels)。
+签名无法用检查工具已知的密钥验证：项目的官方插件签名密钥，或插件包中带有有效证书的合作伙伴密钥。对于社区插件这是预期的，因为它的密钥只由插件目录或运维人员指定。参见[信任等级](./signing.md#trust-levels)。
 
 ### partner-files
 
@@ -265,7 +265,7 @@ ID 使用了保留给 Nginx UI 项目的 `com.nginxui.*`。参见[命名规则](
 
 <Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
 
-合作伙伴证书无法验证：`plugin.partner` 不是公钥，没有发布密钥为它签名，或者可信注释的格式错误。
+合作伙伴证书无法验证：`plugin.partner` 不是公钥，没有官方插件签名密钥为它签名，或者可信注释的格式错误。
 
 ### partner-certificate
 
