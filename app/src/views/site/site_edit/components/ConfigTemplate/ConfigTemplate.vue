@@ -59,6 +59,10 @@ const sourceOptions = computed(() => [
 // and can only be copied into the site.
 const canInclude = computed(() => isCustom(data.value) && Object.keys(data.value.variables ?? {}).length === 0)
 
+function displayName(item: Template) {
+  return item.name_i18n?.[language.value] || item.name || item.filename
+}
+
 const transDescription = computed(() => {
   return (item: { description: { [key: string]: string } }) =>
     item.description?.[language.value] ?? item.description?.en ?? ''
@@ -71,7 +75,7 @@ const filteredBlocks = computed(() => {
   return blocks.value
     .filter(item => source.value === 'all' || (source.value === 'custom') === isCustom(item))
     .filter(item => !searchText
-      || item.name?.toLowerCase().includes(searchText)
+      || displayName(item).toLowerCase().includes(searchText)
       || item.author?.toLowerCase().includes(searchText)
       || transDescription.value(item).toLowerCase().includes(searchText))
     .sort((a, b) => Number(isCustom(b)) - Number(isCustom(a)))
@@ -124,7 +128,7 @@ function include() {
             <ListItemMeta>
               <template #title>
                 <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-                  <span>{{ item.name || item.filename }}</span>
+                  <span>{{ displayName(item) }}</span>
                   <ATag
                     class="m-0"
                     :color="isCustom(item) ? 'green' : 'default'"
@@ -164,7 +168,7 @@ function include() {
     </div>
     <AModal
       v-model:open="visible"
-      :title="data.name"
+      :title="data.name_i18n?.[language] || data.name"
       :mask="false"
     >
       <AAlert

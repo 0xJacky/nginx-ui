@@ -1,28 +1,40 @@
 <script setup lang="ts">
 import type { TableColumnsType } from 'antdv-next'
-import type { Snippet } from '@/api/snippet'
+import type { BuiltinTemplate, Snippet } from '@/api/snippet'
 import { CheckOutlined, CloudSyncOutlined, CopyOutlined, PlusOutlined, ReloadOutlined, SearchOutlined } from '@antdv-next/icons'
 import { breakpointsAntDesign, createReusableTemplate, useBreakpoints, useClipboard } from '@vueuse/core'
 import dayjs from 'dayjs'
 import snippet from '@/api/snippet'
 import ReactiveFromNow from '@/components/ReactiveFromNow'
 import { formatDateTime } from '@/lib/helper'
-import SnippetEditor from './components/SnippetEditor.vue'
+import BuiltinTemplates from './components/BuiltinTemplates.vue'
+import SnippetPeek from './components/SnippetPeek.vue'
 import SnippetSync from './components/SnippetSync.vue'
 import SnippetUsage from './components/SnippetUsage.vue'
-import { useSnippetDescription } from './description'
+import { localize, useSnippetDescription } from './description'
 
 const { message, modal } = App.useApp()
-const { describe } = useSnippetDescription()
+const { current: language, describe } = useSnippetDescription()
 const { copy, copied, isSupported: canCopy } = useClipboard({ legacy: true, copiedDuring: 1500 })
 const isNarrow = useBreakpoints(breakpointsAntDesign).smaller('md')
 
 const snippets = ref<Snippet[]>([])
 const syncNodeCount = ref(0)
 const isLoading = ref(false)
-const isEditorOpen = ref(false)
 const isSyncOpen = ref(false)
-const editingFile = ref<string>()
+const route = useRoute()
+const router = useRouter()
+const builtins = ref<BuiltinTemplate[]>([])
+const isBuiltinLoading = ref(false)
+// The tab is kept in the address, so going back from a copy returns to it.
+const tab = computed({
+  get: () => route.query.tab === 'builtin' ? 'builtin' : 'snippets',
+  set: value => router.replace({ query: value === 'builtin' ? { tab: 'builtin' } : {} }),
+})
+const tabOptions = computed(() => [
+  { label: `${$gettext('My Snippets')} ${snippets.value.length}`, value: 'snippets' },
+  { label: `${$gettext('Built-in Templates')} ${builtins.value.length || ''}`.trim(), value: 'builtin' },
+])
 const copiedFile = ref('')
 const filterText = ref('')
 
@@ -40,10 +52,14 @@ const filteredSnippets = computed(() => {
   const text = filterText.value.trim().toLowerCase()
   if (!text)
     return snippets.value
-  return snippets.value.filter(s => s.name.toLowerCase().includes(text)
+  return snippets.value.filter(s => nameOf(s).toLowerCase().includes(text)
     || s.file.toLowerCase().includes(text)
     || describe(s.description).toLowerCase().includes(text))
 })
+
+function nameOf(record: Snippet) {
+  return localize(record.name_i18n, language.value) || record.name
+}
 
 function variableCount(record: Snippet) {
   return Object.keys(record.variables).length
@@ -61,22 +77,32 @@ async function loadData() {
   }
 }
 
-onMounted(loadData)
+async function loadBuiltins() {
+  isBuiltinLoading.value = true
+  try {
+    builtins.value = (await snippet.getBuiltins()).data ?? []
+  }
+  finally {
+    isBuiltinLoading.value = false
+  }
+}
+
+onMounted(() => {
+  loadData()
+  loadBuiltins()
+})
 
 function openCreate() {
-  editingFile.value = undefined
-  isEditorOpen.value = true
+  router.push('/sites/snippets/add')
 }
 
 function openEdit(file: string) {
-  editingFile.value = file
-  isEditorOpen.value = true
+  router.push(`/sites/snippets/${encodeURIComponent(file)}`)
 }
 
 // A click anywhere on a row opens the snippet, except on its own controls.
 function rowProps(record: Snippet) {
   return {
-    class: 'cursor-pointer',
     onClick: (event: MouseEvent) => {
       if (!(event.target as HTMLElement).closest('button, a, .ant-tag'))
         openEdit(record.file)
@@ -92,7 +118,7 @@ async function copyInclude(record: Snippet) {
 
 function confirmDelete(record: Snippet) {
   modal.confirm({
-    title: $gettext('Delete snippet %{name}?', { name: record.name }),
+    title: $gettext('Delete snippet %{name}?', { name: nameOf(record) }),
     content: syncNodeCount.value > 0
       ? $gettext('snippets/%{file} will be removed here and on the synchronized nodes.', { file: record.file })
       : $gettext('snippets/%{file} will be removed.', { file: record.file }),
@@ -101,7 +127,7 @@ function confirmDelete(record: Snippet) {
     cancelText: $gettext('Cancel'),
     async onOk() {
       await snippet.delete(record.file)
-      message.success($gettext('Snippet %{name} deleted', { name: record.name }))
+      message.success($gettext('Snippet %{name} deleted', { name: nameOf(record) }))
       await loadData()
     },
   })
@@ -156,17 +182,23 @@ const [DefineActions, ActionsCell] = createReusableTemplate<{ record: Snippet }>
     <DefineName v-slot="{ record }">
       <div class="flex min-w-0 flex-col gap-0.5">
         <div class="flex flex-wrap items-center gap-2">
-          <span class="font-medium">{{ record.name }}</span>
+          <span class="font-medium">{{ nameOf(record) }}</span>
           <ATooltip
-            v-if="variableCount(record) > 0"
-            :title="$gettext('Fill in the variables by inserting the snippet from the config template panel of the site editor.')"
+            :title="variableCount(record) > 0
+              ? $ngettext(
+                'Has %{count} variable. Sites insert a filled in copy from the config template panel of the site editor.',
+                'Has %{count} variables. Sites insert a filled in copy from the config template panel of the site editor.',
+                variableCount(record),
+                { count: String(variableCount(record)) },
+              )
+              : $gettext('Sites can include this snippet and follow its later changes.')"
           >
             <ATag
-              color="gold"
+              :color="variableCount(record) > 0 ? 'gold' : 'green'"
               :bordered="false"
               class="m-0"
             >
-              {{ $ngettext('%{count} variable', '%{count} variables', variableCount(record), { count: String(variableCount(record)) }) }}
+              {{ variableCount(record) > 0 ? $gettext('Insert Only') : $gettext('Includable') }}
             </ATag>
           </ATooltip>
         </div>
@@ -239,25 +271,39 @@ const [DefineActions, ActionsCell] = createReusableTemplate<{ record: Snippet }>
       {{ $gettext('A snippet keeps a piece of Nginx configuration in one place. Include it in a site, or insert it from the config template panel of the site editor; changing an included snippet updates every site that uses it.') }}
     </p>
 
-    <AInput
-      v-if="snippets.length > 0"
-      v-model:value="filterText"
-      :placeholder="$gettext('Search snippets')"
-      allow-clear
-      class="mb-4 max-w-80"
-    >
-      <template #prefix>
-        <SearchOutlined />
-      </template>
-    </AInput>
+    <div class="mb-4 flex flex-wrap items-center gap-3">
+      <ASegmented
+        v-model:value="tab"
+        :options="tabOptions"
+      />
+      <AInput
+        v-model:value="filterText"
+        :placeholder="tab === 'builtin' ? $gettext('Search templates') : $gettext('Search snippets')"
+        allow-clear
+        class="max-w-80"
+      >
+        <template #prefix>
+          <SearchOutlined />
+        </template>
+      </AInput>
+    </div>
+
+    <BuiltinTemplates
+      v-if="tab === 'builtin'"
+      :templates="builtins"
+      :loading="isBuiltinLoading"
+      :filter-text="filterText"
+    />
 
     <ATable
+      v-else
       :columns="columns"
       :data-source="filteredSnippets"
       :loading="isLoading"
       :pagination="false"
       :scroll="isNarrow ? undefined : { x: 900 }"
-      :custom-row="rowProps"
+      :on-row="rowProps"
+      row-class-name="cursor-pointer"
       row-key="file"
     >
       <template #emptyText>
@@ -279,6 +325,10 @@ const [DefineActions, ActionsCell] = createReusableTemplate<{ record: Snippet }>
           v-else
           :description="$gettext('No snippet matches the search')"
         />
+      </template>
+
+      <template #expandedRowRender="{ record }">
+        <SnippetPeek :file="record.file" />
       </template>
 
       <template #bodyCell="{ column, record }">
@@ -317,11 +367,6 @@ const [DefineActions, ActionsCell] = createReusableTemplate<{ record: Snippet }>
       </template>
     </ATable>
 
-    <SnippetEditor
-      v-model:open="isEditorOpen"
-      :file="editingFile"
-      @saved="loadData"
-    />
     <SnippetSync
       v-model:open="isSyncOpen"
       @saved="loadData"

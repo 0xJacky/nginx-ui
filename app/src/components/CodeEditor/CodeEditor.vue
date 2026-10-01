@@ -17,6 +17,10 @@ const props = defineProps<{
   lang?: string
 }>()
 
+const emit = defineEmits<{
+  init: [editor: Editor]
+}>()
+
 const content = defineModel<string>('content', { default: '' })
 
 onMounted(() => {
@@ -31,6 +35,7 @@ onMounted(() => {
 const codeCompletion = useCodeCompletion()
 
 async function init(editor: Editor) {
+  emit('init', editor)
   if (props.readonly || props.disableCodeCompletion) {
     return
   }

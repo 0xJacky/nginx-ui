@@ -10236,7 +10236,7 @@ msgid ""
 "snippet apply to it. Insert copies the content into the site instead."
 msgstr ""
 
-#: src/views/snippet/components/SnippetEditor.vue:178
+#: src/views/snippet/SnippetEdit.vue:178
 msgid "Insert"
 msgstr ""
 
@@ -10248,7 +10248,7 @@ msgstr ""
 msgid "Snippet %{name} saved"
 msgstr ""
 
-#: src/views/snippet/components/SnippetEditor.vue:130
+#: src/views/snippet/SnippetEdit.vue:130
 msgid "Edit Snippet %{name}"
 msgstr ""
 
@@ -10256,35 +10256,35 @@ msgstr ""
 msgid "Create Snippet"
 msgstr ""
 
-#: src/views/snippet/components/SnippetEditor.vue:141
+#: src/views/snippet/SnippetEdit.vue:141
 msgid "Static file cache"
 msgstr ""
 
-#: src/views/snippet/components/SnippetEditor.vue:145
+#: src/views/snippet/SnippetEdit.vue:145
 msgid "File Name"
 msgstr ""
 
-#: src/views/snippet/components/SnippetEditor.vue:149
+#: src/views/snippet/SnippetEdit.vue:149
 msgid ""
 "Fixed after creation, so the sites that include the snippet keep working."
 msgstr ""
 
-#: src/views/snippet/components/SnippetEditor.vue:150
+#: src/views/snippet/SnippetEdit.vue:150
 msgid "Letters, digits, dots, dashes and underscores."
 msgstr ""
 
-#: src/views/snippet/components/SnippetEditor.vue:178
+#: src/views/snippet/SnippetEdit.vue:178
 msgid ""
 "This snippet has variables: %{names}. Insert it from the config template "
 "panel of the site editor, which fills them in; Nginx cannot include it "
 "directly."
 msgstr ""
 
-#: src/views/snippet/components/SnippetEditor.vue:188
+#: src/views/snippet/SnippetEdit.vue:188
 msgid "To use the snippet, add this directive to a server or location block:"
 msgstr ""
 
-#: src/views/snippet/components/SnippetEditor.vue:209
+#: src/views/snippet/SnippetEdit.vue:209
 msgid "No configuration includes this snippet yet."
 msgstr ""
 
@@ -10387,4 +10387,300 @@ msgstr ""
 
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:54
 msgid "Built-in"
+msgstr ""
+
+#: src/views/snippet/template.ts:8
+msgid "The variable {0} is invalid: {1}"
+msgstr ""
+
+#: src/constants/errors/snippet.ts:9
+msgid "The content does not parse as a template: {0}"
+msgstr ""
+
+#: src/views/snippet/SnippetList.vue:36
+msgid "Built-in Template"
+msgstr ""
+
+#: src/views/snippet/SnippetEdit.vue:23
+msgid "Edit Snippet"
+msgstr ""
+
+#: src/views/snippet/BuiltinTemplateView.vue:62
+msgid "Read Only"
+msgstr ""
+
+#: src/views/stream/components/RightPanel/Basic.vue:8
+msgid "Preview"
+msgstr ""
+
+#: src/views/snippet/BuiltinTemplateView.vue:75
+msgid "Updates as the snippet changes."
+msgstr ""
+
+#: src/views/snippet/BuiltinTemplateView.vue:94
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr ""
+
+#: src/views/snippet/components/SnippetPreview.vue:9
+msgid "Variables"
+msgstr ""
+
+#: src/views/snippet/components/BuiltinTemplates.vue:113
+msgid "Copy as Snippet"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:26
+msgid "Template"
+msgstr ""
+
+#: src/views/snippet/components/BuiltinTemplates.vue:70
+msgid "No template matches the search"
+msgstr ""
+
+#: src/views/snippet/components/LocalizedInput.vue:98
+msgid "Translations"
+msgstr ""
+
+#: src/views/snippet/components/LocalizedInput.vue:113
+msgid ""
+"The field is in %{language}. Users of other languages see their translation, "
+"or English when there is none."
+msgstr ""
+
+#: src/views/snippet/components/LocalizedInput.vue:130
+msgid "Remove translation"
+msgstr ""
+
+#: src/views/snippet/components/LocalizedInput.vue:143
+msgid "Add a language"
+msgstr ""
+
+#: src/views/certificate/components/CertificateBasicInfo.vue:5
+msgid "Text"
+msgstr ""
+
+#: src/views/install/components/InstallFooter.vue:3
+msgid "Switch"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:99
+msgid "Select"
+msgstr ""
+
+#: src/views/snippet/components/SnippetCode.vue:255
+msgid "New Variable…"
+msgstr ""
+
+#: src/views/snippet/components/SnippetCode.vue:317
+msgid "Insert Variable"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:5
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr ""
+
+#: src/views/snippet/components/SnippetPreview.vue:182
+msgid "Default Value"
+msgstr ""
+
+#: src/views/snippet/components/SnippetCode.vue:365
+msgid "Edit Variable"
+msgstr ""
+
+#: src/views/snippet/components/SnippetCode.vue:376
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr ""
+
+#: src/views/snippet/components/SnippetCode.vue:385
+msgid "Declare Variable"
+msgstr ""
+
+#: src/views/snippet/components/SnippetCode.vue:401
+msgid "Make Variable"
+msgstr ""
+
+#: src/views/snippet/components/SnippetCode.vue:255
+msgid "New Variable"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:5
+msgid "Key"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:160
+msgid "Label"
+msgstr ""
+
+#: src/views/snippet/components/SnippetCode.vue:467
+msgid "The variable is declared and inserted at the cursor."
+msgstr ""
+
+#: src/views/snippet/components/SnippetCode.vue:468
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr ""
+
+#: src/views/snippet/components/SnippetCode.vue:484
+msgid "Add Variable"
+msgstr ""
+
+#: src/views/snippet/components/SnippetPreview.vue:103
+msgid "Not declared, so left without a value: %{names}"
+msgstr ""
+
+#: src/views/snippet/components/SnippetPreview.vue:109
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr ""
+
+#: src/views/snippet/components/SnippetPreview.vue:116
+msgid "The snippet renders as valid Nginx configuration."
+msgstr ""
+
+#: src/views/snippet/components/SnippetPreview.vue:142
+msgid "What the site editor asks for"
+msgstr ""
+
+#: src/views/snippet/components/SnippetPreview.vue:182
+msgid "Restore Default Values"
+msgstr ""
+
+#: src/views/snippet/components/SnippetPreview.vue:190
+msgid "Nothing to fill in."
+msgstr ""
+
+#: src/views/snippet/components/SnippetPreview.vue:190
+msgid "Fix the variables to preview the snippet."
+msgstr ""
+
+#: src/views/snippet/components/SnippetVariables.vue:165
+msgid "Not Used"
+msgstr ""
+
+#: src/views/snippet/components/SnippetVariables.vue:200
+msgid "Max Age"
+msgstr ""
+
+#: src/views/certificate/components/SelfSignedCertFields.vue:15
+msgid "Options"
+msgstr ""
+
+#: src/views/snippet/components/SnippetVariables.vue:255
+msgid "Remove option"
+msgstr ""
+
+#: src/views/snippet/components/SnippetVariables.vue:272
+msgid "Add Option"
+msgstr ""
+
+#: src/views/snippet/components/SnippetVariables.vue:293
+msgid "Remove variable"
+msgstr ""
+
+#: src/views/snippet/components/SnippetVariables.vue:308
+msgid "Used in the content, not declared"
+msgstr ""
+
+#: src/views/snippet/SnippetEdit.vue:168
+msgid "Discard the unsaved changes?"
+msgstr ""
+
+#: src/views/snippet/SnippetEdit.vue:171
+msgid "Keep Editing"
+msgstr ""
+
+#: src/views/snippet/SnippetList.vue:194
+msgid "Sites can include this snippet and follow its later changes."
+msgstr ""
+
+#: src/views/snippet/SnippetEdit.vue:205
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the config "
+"template panel."
+msgstr ""
+
+#: src/views/snippet/SnippetList.vue:201
+msgid "Includable"
+msgstr ""
+
+#: src/views/snippet/SnippetList.vue:201
+msgid "Insert Only"
+msgstr ""
+
+#: src/views/install/components/InstallForm.vue:3
+msgid "Use"
+msgstr ""
+
+#: src/views/snippet/SnippetEdit.vue:255
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr ""
+
+#: src/views/snippet/SnippetEdit.vue:298
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr ""
+
+#: src/views/snippet/SnippetEdit.vue:324
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr ""
+
+#: src/views/snippet/SnippetEdit.vue:354
+msgid "Unsaved changes"
+msgstr ""
+
+#: src/views/snippet/SnippetList.vue:35
+msgid "My Snippets"
+msgstr ""
+
+#: src/views/snippet/SnippetList.vue:36
+msgid "Built-in Templates"
+msgstr ""
+
+#: src/views/snippet/SnippetList.vue:189
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/views/snippet/variables.ts:80
+msgid "Enter a key."
+msgstr ""
+
+#: src/views/snippet/variables.ts:82
+msgid ""
+"Use letters, digits and underscores, starting with a letter or underscore."
+msgstr ""
+
+#: src/views/snippet/variables.ts:84
+msgid "Another variable uses this key."
+msgstr ""
+
+#: src/views/snippet/variables.ts:94
+msgid "Add at least one option."
+msgstr ""
+
+#: src/views/snippet/variables.ts:96
+msgid "Every option needs a value."
+msgstr ""
+
+#: src/views/snippet/variables.ts:98
+msgid "Option values must be unique."
+msgstr ""
+
+#: src/views/snippet/variables.ts:100
+msgid "Choose the default option."
 msgstr ""

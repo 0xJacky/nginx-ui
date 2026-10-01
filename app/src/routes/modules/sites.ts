@@ -41,6 +41,33 @@ export const sitesRoutes: RouteRecordRaw[] = [
         name: () => $gettext('Snippets'),
       },
     }, {
+      path: 'snippets/add',
+      name: 'Create Snippet',
+      component: () => import('@/views/snippet/SnippetEdit.vue'),
+      meta: {
+        name: () => $gettext('Create Snippet'),
+        hiddenInSidebar: true,
+        lastRouteName: 'Snippets',
+      },
+    }, {
+      path: 'snippets/templates/:name',
+      name: 'Built-in Template',
+      component: () => import('@/views/snippet/BuiltinTemplateView.vue'),
+      meta: {
+        name: () => $gettext('Built-in Template'),
+        hiddenInSidebar: true,
+        lastRouteName: 'Snippets',
+      },
+    }, {
+      path: 'snippets/:file',
+      name: 'Edit Snippet',
+      component: () => import('@/views/snippet/SnippetEdit.vue'),
+      meta: {
+        name: () => $gettext('Edit Snippet'),
+        hiddenInSidebar: true,
+        lastRouteName: 'Snippets',
+      },
+    }, {
       path: ':name',
       name: 'Edit Site',
       component: () => import('@/views/site/site_edit/SiteEdit.vue'),

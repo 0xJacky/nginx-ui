@@ -10490,7 +10490,7 @@ msgid ""
 "snippet apply to it. Insert copies the content into the site instead."
 msgstr "引用会让网站与 snippets/%{file} 保持关联，之后对片段的修改都会作用到网站。插入则会把内容复制到网站中。"
 
-#: src/views/snippet/components/SnippetEditor.vue:178
+#: src/views/snippet/SnippetEdit.vue:178
 msgid "Insert"
 msgstr "插入"
 
@@ -10502,7 +10502,7 @@ msgstr "引用"
 msgid "Snippet %{name} saved"
 msgstr "片段 %{name} 已保存"
 
-#: src/views/snippet/components/SnippetEditor.vue:130
+#: src/views/snippet/SnippetEdit.vue:130
 msgid "Edit Snippet %{name}"
 msgstr "编辑片段 %{name}"
 
@@ -10510,35 +10510,35 @@ msgstr "编辑片段 %{name}"
 msgid "Create Snippet"
 msgstr "新建片段"
 
-#: src/views/snippet/components/SnippetEditor.vue:141
+#: src/views/snippet/SnippetEdit.vue:141
 msgid "Static file cache"
 msgstr "静态文件缓存"
 
-#: src/views/snippet/components/SnippetEditor.vue:145
+#: src/views/snippet/SnippetEdit.vue:145
 msgid "File Name"
 msgstr "文件名"
 
-#: src/views/snippet/components/SnippetEditor.vue:149
+#: src/views/snippet/SnippetEdit.vue:149
 msgid ""
 "Fixed after creation, so the sites that include the snippet keep working."
 msgstr "创建后不可修改，以保证引用该片段的网站继续正常工作。"
 
-#: src/views/snippet/components/SnippetEditor.vue:150
+#: src/views/snippet/SnippetEdit.vue:150
 msgid "Letters, digits, dots, dashes and underscores."
 msgstr "字母、数字、点、连字符和下划线。"
 
-#: src/views/snippet/components/SnippetEditor.vue:178
+#: src/views/snippet/SnippetEdit.vue:178
 msgid ""
 "This snippet has variables: %{names}. Insert it from the config template "
 "panel of the site editor, which fills them in; Nginx cannot include it "
 "directly."
 msgstr "此片段包含变量：%{names}。请在网站编辑器的配置模板面板中插入它，由面板填写变量；Nginx 无法直接引用它。"
 
-#: src/views/snippet/components/SnippetEditor.vue:188
+#: src/views/snippet/SnippetEdit.vue:188
 msgid "To use the snippet, add this directive to a server or location block:"
 msgstr "在 server 或 location 块中加入以下指令即可使用该片段："
 
-#: src/views/snippet/components/SnippetEditor.vue:209
+#: src/views/snippet/SnippetEdit.vue:209
 msgid "No configuration includes this snippet yet."
 msgstr "目前没有配置引用此片段。"
 
@@ -10639,6 +10639,301 @@ msgstr "没有匹配的文件"
 #: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:54
 msgid "Built-in"
 msgstr "内置"
+
+#: src/views/snippet/template.ts:8
+msgid "The variable {0} is invalid: {1}"
+msgstr "变量 {0} 无效：{1}"
+
+#: src/constants/errors/snippet.ts:9
+msgid "The content does not parse as a template: {0}"
+msgstr "内容无法解析为模板：{0}"
+
+#: src/views/snippet/SnippetList.vue:36
+msgid "Built-in Template"
+msgstr "内置模板"
+
+#: src/views/snippet/SnippetEdit.vue:23
+msgid "Edit Snippet"
+msgstr "编辑片段"
+
+#: src/views/snippet/BuiltinTemplateView.vue:62
+msgid "Read Only"
+msgstr "只读"
+
+#: src/views/stream/components/RightPanel/Basic.vue:8
+msgid "Preview"
+msgstr "预览"
+
+#: src/views/snippet/BuiltinTemplateView.vue:75
+msgid "Updates as the snippet changes."
+msgstr "随片段修改实时更新。"
+
+#: src/views/snippet/BuiltinTemplateView.vue:94
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr "内置模板随 Nginx UI 提供，不能修改。如需修改，请将其复制为片段。"
+
+#: src/views/snippet/components/SnippetPreview.vue:9
+msgid "Variables"
+msgstr "变量"
+
+#: src/views/snippet/components/BuiltinTemplates.vue:113
+msgid "Copy as Snippet"
+msgstr "复制为片段"
+
+#: src/views/certificate/CertificateEditor.vue:26
+msgid "Template"
+msgstr "模板"
+
+#: src/views/snippet/components/BuiltinTemplates.vue:70
+msgid "No template matches the search"
+msgstr "没有匹配的模板"
+
+#: src/views/snippet/components/LocalizedInput.vue:98
+msgid "Translations"
+msgstr "翻译"
+
+#: src/views/snippet/components/LocalizedInput.vue:113
+msgid ""
+"The field is in %{language}. Users of other languages see their translation, "
+"or English when there is none."
+msgstr "输入框中为%{language}文本。其他语言的用户将看到对应的翻译，没有翻译时显示英文。"
+
+#: src/views/snippet/components/LocalizedInput.vue:130
+msgid "Remove translation"
+msgstr "删除翻译"
+
+#: src/views/snippet/components/LocalizedInput.vue:143
+msgid "Add a language"
+msgstr "添加语言"
+
+#: src/views/certificate/components/CertificateBasicInfo.vue:5
+msgid "Text"
+msgstr "文本"
+
+#: src/views/install/components/InstallFooter.vue:3
+msgid "Switch"
+msgstr "开关"
+
+#: src/views/certificate/CertificateEditor.vue:99
+msgid "Select"
+msgstr "选择"
+
+#: src/views/snippet/components/SnippetCode.vue:255
+msgid "New Variable…"
+msgstr "新建变量…"
+
+#: src/views/snippet/components/SnippetCode.vue:317
+msgid "Insert Variable"
+msgstr "插入变量"
+
+#: src/views/certificate/CertificateEditor.vue:5
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr "输入 %{open} 补全变量，或选中一个值后按 %{keys} 将其设为变量。"
+
+#: src/views/snippet/components/SnippetPreview.vue:182
+msgid "Default Value"
+msgstr "默认值"
+
+#: src/views/snippet/components/SnippetCode.vue:365
+msgid "Edit Variable"
+msgstr "编辑变量"
+
+#: src/views/snippet/components/SnippetCode.vue:376
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr "此变量未声明，插入片段时将没有值。"
+
+#: src/views/snippet/components/SnippetCode.vue:385
+msgid "Declare Variable"
+msgstr "声明变量"
+
+#: src/views/snippet/components/SnippetCode.vue:401
+msgid "Make Variable"
+msgstr "设为变量"
+
+#: src/views/snippet/components/SnippetCode.vue:255
+msgid "New Variable"
+msgstr "新变量"
+
+#: src/views/certificate/CertificateEditor.vue:5
+msgid "Key"
+msgstr "键名"
+
+#: src/views/certificate/CertificateEditor.vue:160
+msgid "Label"
+msgstr "显示名称"
+
+#: src/views/snippet/components/SnippetCode.vue:467
+msgid "The variable is declared and inserted at the cursor."
+msgstr "变量将被声明，并插入到光标处。"
+
+#: src/views/snippet/components/SnippetCode.vue:468
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr "选中的值将成为默认值，内容中改为引用该变量。"
+
+#: src/views/snippet/components/SnippetCode.vue:484
+msgid "Add Variable"
+msgstr "添加变量"
+
+#: src/views/snippet/components/SnippetPreview.vue:103
+msgid "Not declared, so left without a value: %{names}"
+msgstr "以下变量未声明，将没有值：%{names}"
+
+#: src/views/snippet/components/SnippetPreview.vue:109
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "片段无法渲染为有效的 Nginx 配置。"
+
+#: src/views/snippet/components/SnippetPreview.vue:116
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "片段可以渲染为有效的 Nginx 配置。"
+
+#: src/views/snippet/components/SnippetPreview.vue:142
+msgid "What the site editor asks for"
+msgstr "站点编辑器中填写的内容"
+
+#: src/views/snippet/components/SnippetPreview.vue:182
+msgid "Restore Default Values"
+msgstr "恢复默认值"
+
+#: src/views/snippet/components/SnippetPreview.vue:190
+msgid "Nothing to fill in."
+msgstr "没有需要填写的内容。"
+
+#: src/views/snippet/components/SnippetPreview.vue:190
+msgid "Fix the variables to preview the snippet."
+msgstr "请先修正变量，再预览片段。"
+
+#: src/views/snippet/components/SnippetVariables.vue:165
+msgid "Not Used"
+msgstr "未使用"
+
+#: src/views/snippet/components/SnippetVariables.vue:200
+msgid "Max Age"
+msgstr "有效时间"
+
+#: src/views/certificate/components/SelfSignedCertFields.vue:15
+msgid "Options"
+msgstr "选项"
+
+#: src/views/snippet/components/SnippetVariables.vue:255
+msgid "Remove option"
+msgstr "删除选项"
+
+#: src/views/snippet/components/SnippetVariables.vue:272
+msgid "Add Option"
+msgstr "添加选项"
+
+#: src/views/snippet/components/SnippetVariables.vue:293
+msgid "Remove variable"
+msgstr "删除变量"
+
+#: src/views/snippet/components/SnippetVariables.vue:308
+msgid "Used in the content, not declared"
+msgstr "内容中使用但未声明"
+
+#: src/views/snippet/SnippetEdit.vue:168
+msgid "Discard the unsaved changes?"
+msgstr "放弃未保存的修改？"
+
+#: src/views/snippet/SnippetEdit.vue:171
+msgid "Keep Editing"
+msgstr "继续编辑"
+
+#: src/views/snippet/SnippetList.vue:194
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "网站可以引用此片段，并随片段的后续修改同步更新。"
+
+#: src/views/snippet/SnippetEdit.vue:205
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the config "
+"template panel."
+msgstr "此片段含有变量，网站需从配置模板面板插入填写后的副本。"
+
+#: src/views/snippet/SnippetList.vue:201
+msgid "Includable"
+msgstr "可引用"
+
+#: src/views/snippet/SnippetList.vue:201
+msgid "Insert Only"
+msgstr "仅可插入"
+
+#: src/views/install/components/InstallForm.vue:3
+msgid "Use"
+msgstr "使用方式"
+
+#: src/views/snippet/SnippetEdit.vue:255
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr "将此指令添加到 server 或 location 块中。引用此片段的网站会随其后续修改同步更新。"
+
+#: src/views/snippet/SnippetEdit.vue:298
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr "有配置引用此片段时不可修改，以保证这些配置继续正常工作。"
+
+#: src/views/snippet/SnippetEdit.vue:324
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr "从站点编辑器的配置模板面板插入片段时填写变量。含有变量的片段只能插入，不能被引用。"
+
+#: src/views/snippet/SnippetEdit.vue:354
+msgid "Unsaved changes"
+msgstr "有未保存的修改"
+
+#: src/views/snippet/SnippetList.vue:35
+msgid "My Snippets"
+msgstr "我的片段"
+
+#: src/views/snippet/SnippetList.vue:36
+msgid "Built-in Templates"
+msgstr "内置模板"
+
+#: src/views/snippet/SnippetList.vue:189
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] "含有 %{count} 个变量。网站从站点编辑器的配置模板面板插入填写后的副本。"
+
+#: src/views/snippet/variables.ts:80
+msgid "Enter a key."
+msgstr "请输入键名。"
+
+#: src/views/snippet/variables.ts:82
+msgid ""
+"Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "只能使用字母、数字和下划线，且须以字母或下划线开头。"
+
+#: src/views/snippet/variables.ts:84
+msgid "Another variable uses this key."
+msgstr "该键名已被其他变量使用。"
+
+#: src/views/snippet/variables.ts:94
+msgid "Add at least one option."
+msgstr "请至少添加一个选项。"
+
+#: src/views/snippet/variables.ts:96
+msgid "Every option needs a value."
+msgstr "每个选项都需要填写值。"
+
+#: src/views/snippet/variables.ts:98
+msgid "Option values must be unique."
+msgstr "选项的值不能重复。"
+
+#: src/views/snippet/variables.ts:100
+msgid "Choose the default option."
+msgstr "请选择默认选项。"
 
 #~ msgid "Webauthn"
 #~ msgstr "Webauthn"

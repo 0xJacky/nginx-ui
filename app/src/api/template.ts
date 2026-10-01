@@ -14,6 +14,8 @@ export type TemplateOrigin = 'builtin' | 'custom'
 
 export interface Template extends NgxServer {
   name: string
+  /** The name per language, when the template has one. */
+  name_i18n?: Record<string, string>
   description: Record<string, string>
   author: string
   filename: string
