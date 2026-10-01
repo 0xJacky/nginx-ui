@@ -55,7 +55,7 @@ func useOfficialMarketplace(t *testing.T, source string) *minisign.PrivateKey {
 	t.Helper()
 	useMarketplace(t, source)
 	settings.PluginSettings.DeveloperMode = false
-	return useReleaseKey(t)
+	return useOfficialKey(t)
 }
 
 func TestEnsureDNS01PluginInstallsFromTheMarketplace(t *testing.T) {
@@ -156,7 +156,7 @@ func TestEnsureDNS01PluginRefusesACommunitySignedImpostor(t *testing.T) {
 func TestEnsureDNS01PluginIgnoresAnOfficialClaimOfAnUnsignedPackage(t *testing.T) {
 	manager := newCertAwareManager(t)
 	server := newCatalogServer(t)
-	// Even in developer mode the automatic install wants a release key.
+	// Even in developer mode the automatic install wants an official plugin key.
 	useMarketplace(t, server.catalogURL())
 
 	addDNS01Cert(t)
