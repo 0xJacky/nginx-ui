@@ -37,8 +37,17 @@ function variableCount(template: BuiltinTemplate) {
   return Object.keys(template.variables ?? {}).length
 }
 
+// A template of a plugin is named by the plugin and its file name.
+function sourceQuery(template: BuiltinTemplate) {
+  return template.plugin_id ? { plugin_id: template.plugin_id } : {}
+}
+
+function rowKey(template: BuiltinTemplate) {
+  return `${template.plugin_id ?? ''}/${template.filename}`
+}
+
 function view(template: BuiltinTemplate) {
-  router.push(`/sites/snippets/templates/${encodeURIComponent(template.filename)}`)
+  router.push({ path: `/sites/snippets/templates/${encodeURIComponent(template.filename)}`, query: sourceQuery(template) })
 }
 
 // A click anywhere on a row opens the template, except on its own controls.
@@ -52,7 +61,7 @@ function rowProps(record: BuiltinTemplate) {
 }
 
 function copyAsSnippet(template: BuiltinTemplate) {
-  router.push({ path: '/sites/snippets/add', query: { from: template.filename } })
+  router.push({ path: '/sites/snippets/add', query: { from: template.filename, ...sourceQuery(template) } })
 }
 </script>
 
@@ -64,7 +73,7 @@ function copyAsSnippet(template: BuiltinTemplate) {
     :pagination="false"
     :on-row="rowProps"
     row-class-name="cursor-pointer"
-    row-key="filename"
+    :row-key="rowKey"
   >
     <template #emptyText>
       <AEmpty :description="$gettext('No template matches the search')" />
@@ -73,6 +82,7 @@ function copyAsSnippet(template: BuiltinTemplate) {
     <template #expandedRowRender="{ record }">
       <SnippetPeek
         :file="record.filename"
+        :plugin-id="record.plugin_id"
         builtin
       />
     </template>
@@ -84,6 +94,14 @@ function copyAsSnippet(template: BuiltinTemplate) {
       >
         <div class="flex flex-wrap items-center gap-2">
           <span class="font-medium">{{ record.name || record.filename }}</span>
+          <ATag
+            v-if="record.plugin_id"
+            color="blue"
+            :bordered="false"
+            class="m-0"
+          >
+            {{ $gettext('From plugin %{id}', { id: record.plugin_id }) }}
+          </ATag>
           <ATag
             v-if="variableCount(record) > 0"
             color="gold"
