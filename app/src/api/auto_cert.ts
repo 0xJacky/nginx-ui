@@ -90,6 +90,16 @@ export interface AutoCertOptions {
   revoke_old?: boolean
   /** Free-form payload owned by the plugin that implements the challenge method. */
   challenge_config?: Record<string, unknown>
+  /**
+   * Where DNS-01 runs while a node is selected: on the main node, which then
+   * sends the certificate to the node and renews it, or on the node itself.
+   */
+  verify_on?: 'main' | 'node'
+  /**
+   * Node a certificate of this instance was issued for. Renewing it reissues
+   * it for that node, `name` being the configuration there.
+   */
+  delegated_node_id?: number
 }
 
 const auto_cert = {
@@ -101,8 +111,8 @@ const auto_cert = {
     return http.get(`/certificate/dns_provider/${code}`)
   },
 
-  get_challenge_methods(): Promise<ChallengeMethod[]> {
-    return http.get('/certificate/challenge_methods')
+  get_challenge_methods(config?: { skipNodeProxy?: boolean }): Promise<ChallengeMethod[]> {
+    return http.get('/certificate/challenge_methods', config)
   },
 }
 
