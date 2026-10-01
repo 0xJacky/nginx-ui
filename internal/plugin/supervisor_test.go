@@ -25,12 +25,13 @@ const testPluginModeEnv = "PLUGIN_TEST_MODE"
 
 // Plugin behaviours the supervisor tests need.
 const (
-	pluginModeNormal    = "normal"
-	pluginModeCrash     = "crash"
-	pluginModeStubborn  = "stubborn"
-	pluginModeWrongCaps = "wrongcaps"
-	pluginModeBadAPI    = "badapi"
-	pluginModeDeaf      = "deaf"
+	pluginModeNormal     = "normal"
+	pluginModeCrash      = "crash"
+	pluginModeStubborn   = "stubborn"
+	pluginModeWrongCaps  = "wrongcaps"
+	pluginModeBadAPI     = "badapi"
+	pluginModeDeaf       = "deaf"
+	pluginModeRemotePipe = "remotepipe"
 )
 
 func TestMain(m *testing.M) {
@@ -75,6 +76,9 @@ func runTestPlugin(mode string) {
 				apiVersion = protocol.APIVersion + 98
 			}
 			result := protocol.InitializeResult{APIVersion: apiVersion, Capabilities: capabilities}
+			if mode == pluginModeRemotePipe {
+				result.HTTPPipe = `\\attacker\pipe\x`
+			}
 			extendTestInitialize(mode, &result)
 			pluginReply(msg.ID, result)
 		case protocol.MethodInitialized:
@@ -294,6 +298,17 @@ func TestSupervisorRejectsWrongCapabilities(t *testing.T) {
 	assert.ErrorIs(t, err, ErrPluginHandshake)
 	assert.Equal(t, StateError, supervisor.State())
 	assert.ErrorIs(t, supervisor.LastError(), ErrPluginHandshake)
+}
+
+func TestSupervisorRejectsPipeOnAnotherMachine(t *testing.T) {
+	// Dialing a pipe on another machine would hand it the credentials of
+	// the host, so the handshake fails before anything dials it.
+	supervisor := newTestSupervisor(t, pluginModeRemotePipe, nil)
+
+	err := supervisor.Start(context.Background())
+	require.Error(t, err)
+	assert.ErrorIs(t, err, ErrPluginHandshake)
+	assert.Contains(t, err.Error(), "not a named pipe on this machine")
 }
 
 func TestSupervisorRejectsIncompatibleAPIVersion(t *testing.T) {

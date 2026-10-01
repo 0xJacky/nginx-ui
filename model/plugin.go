@@ -15,10 +15,11 @@ type Plugin struct {
 	Enabled  bool   `json:"enabled"`
 	// Settings holds the values of the manifest settings_schema, encrypted at rest.
 	Settings map[string]any `json:"settings" gorm:"serializer:json[aes]"`
-	// ApprovedPermissionsHash is the hash of the permission set the user approved.
-	// A different hash after an upgrade blocks enabling until re-approved.
-	ApprovedPermissionsHash string `json:"approved_permissions_hash"`
-	LastError               string `json:"last_error"`
+	// ApprovedPermissions is the permission set the user approved, nil before
+	// the first approval. An upgrade that asks for a permission outside it
+	// blocks enabling until re-approved.
+	ApprovedPermissions []string `json:"approved_permissions" gorm:"serializer:json"`
+	LastError           string   `json:"last_error"`
 	// Trust is the level derived from the package signature at install time.
 	Trust string `json:"trust"`
 	// Signer is the minisign key id that signed the package, empty when unsigned.

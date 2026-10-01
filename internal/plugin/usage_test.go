@@ -118,7 +118,7 @@ func TestLintSettingsSchemaListDefault(t *testing.T) {
 	report := &LintReport{}
 	lintSettingsSchema(m.SettingsSchema, report)
 	assert.True(t, report.HasErrors())
-	assertHasFinding(t, report, LevelError, "MAN-28")
+	assertHasFinding(t, report, LevelError, RuleSettingsType)
 
 	ok := &LintReport{}
 	lintSettingsSchema(&protocol.SettingsSchema{

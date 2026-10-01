@@ -136,15 +136,15 @@ func TestConformanceRunsTheNewCapabilityCases(t *testing.T) {
 	byKey := casesByKey(report)
 	for _, transport := range []string{protocol.TransportStdio, protocol.TransportGRPC} {
 		for _, key := range []string{
-			"NOTIFY-8:notify.validate",
-			"PROBE-5:probe.check",
-			"MCP-6:mcp.call unknown tool",
-			"STORAGE-10:storage.validate",
-			"STORAGE-8:storage.list",
-			"DEPLOY-9:deploy.validate",
-			"DEPLOY-6:deploy.push dry_run",
-			"BLOCKLIST-6:blocklist.fetch",
-			"DISCOVERY-5:discovery.resolve",
+			"notify-validate:notify.validate",
+			"probe-result:probe.check",
+			"mcp-unknown-tool:mcp.call unknown tool",
+			"storage-validate:storage.validate",
+			"storage-list:storage.list",
+			"deploy-validate:deploy.validate",
+			"deploy-dry-run:deploy.push dry_run",
+			"blocklist-errors:blocklist.fetch",
+			"discovery-resolve:discovery.resolve",
 		} {
 			c, ok := byKey[transport+"|"+key]
 			if assert.True(t, ok, "missing case %s over %s in %+v", key, transport, report.Cases) {
@@ -152,16 +152,16 @@ func TestConformanceRunsTheNewCapabilityCases(t *testing.T) {
 			}
 		}
 	}
-	logOnStdio, ok := byKey["stdio|LOGSINK-4:log.push on stdio"]
-	if assert.True(t, ok, "missing LOGSINK-4 in %+v", report.Cases) {
+	logOnStdio, ok := byKey["stdio|log-sink-transport:log.push on stdio"]
+	if assert.True(t, ok, "missing log-sink-transport in %+v", report.Cases) {
 		assert.Equal(t, StatusPass, logOnStdio.Status, logOnStdio.Message)
 	}
-	logStream, ok := byKey["grpc|LOGSINK-5:log.push stream"]
-	if assert.True(t, ok, "missing LOGSINK-5 in %+v", report.Cases) {
+	logStream, ok := byKey["grpc|log-sink-push:log.push stream"]
+	if assert.True(t, ok, "missing log-sink-push in %+v", report.Cases) {
 		assert.Equal(t, StatusPass, logStream.Status, logStream.Message)
 	}
 
-	parity, ok := byKey["|TRANSPORT-1:identical results"]
+	parity, ok := byKey["|protocol-transports:identical results"]
 	require.True(t, ok)
 	assert.Equal(t, StatusPass, parity.Status, parity.Message)
 	assert.Contains(t, parity.Message, protocol.MethodNotifyValidate)
@@ -178,9 +178,9 @@ func TestConformanceRunsTheNewCapabilityCases(t *testing.T) {
 	})
 	require.NoError(t, err)
 	byKey = casesByKey(report)
-	_, hasProbe := byKey["stdio|PROBE-5:probe.check"]
-	_, hasNotify := byKey["stdio|NOTIFY-8:notify.validate"]
-	_, hasMCP := byKey["stdio|MCP-6:mcp.call unknown tool"]
+	_, hasProbe := byKey["stdio|probe-result:probe.check"]
+	_, hasNotify := byKey["stdio|notify-validate:notify.validate"]
+	_, hasMCP := byKey["stdio|mcp-unknown-tool:mcp.call unknown tool"]
 	assert.True(t, hasProbe)
 	assert.False(t, hasNotify)
 	assert.False(t, hasMCP)

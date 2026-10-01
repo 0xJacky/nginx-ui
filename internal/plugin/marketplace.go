@@ -160,7 +160,7 @@ type CatalogEntry struct {
 	ReadmeURL       string            `json:"readme_url,omitempty"`
 	IconURL         string            `json:"icon_url,omitempty"`
 	// Screenshots are the images the catalog lists, in display order, without
-	// the ones this node may not load (spec PKG-29).
+	// the ones this node may not load.
 	Screenshots  []CatalogScreenshot `json:"screenshots,omitempty"`
 	Categories   []string            `json:"categories,omitempty"`
 	Capabilities []string            `json:"capabilities,omitempty"`
@@ -207,7 +207,7 @@ type CatalogDocument struct {
 	Plugins   []CatalogEntry `json:"plugins"`
 }
 
-// CatalogInfo is what a catalog declares about itself (spec PKG-30).
+// CatalogInfo is what a catalog declares about itself.
 type CatalogInfo struct {
 	// Name is a locale map of the catalog name.
 	Name map[string]string `json:"catalog_name,omitempty"`
@@ -337,7 +337,7 @@ func (mp *Marketplace) Probe(ctx context.Context, rawURL string) SourceProbe {
 }
 
 // catalogPaths are where a site serves its catalog, in the order they are
-// tried (spec PKG-30).
+// tried.
 var catalogPaths = []string{"/v1/index.json", "/index.json"}
 
 // catalogCandidates lists the addresses to read for a source address: the
@@ -777,14 +777,11 @@ func (mp *Marketplace) permissionsChanged(id string, release *CatalogRelease) bo
 		// Without a manifest snapshot the change cannot be ruled out.
 		return true
 	}
-	approved, ok := mp.manager.approvedPermissionsHash(id)
+	approved, ok := mp.manager.approvedPermissions(id)
 	if !ok {
 		return false
 	}
-	if approved == "" {
-		return len(release.Manifest.Permissions) > 0
-	}
-	return approved != PermissionsHash(release.Manifest)
+	return len(unapprovedPermissions(approved, release.Manifest)) > 0
 }
 
 // source returns one catalog source, using the memory cache unless refresh.

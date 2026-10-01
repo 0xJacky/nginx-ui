@@ -91,17 +91,17 @@ func (m *Manager) runMaintenance() {
 	m.EnsureDNS01Plugin(ctx)
 }
 
-// approvedPermissionsHash returns the permission set the user approved for an
-// installed plugin.
-func (m *Manager) approvedPermissionsHash(id string) (string, bool) {
+// approvedPermissions returns the permission set the user approved for an
+// installed plugin, nil when it was never approved.
+func (m *Manager) approvedPermissions(id string) ([]string, bool) {
 	item, ok := m.lookup(id)
 	if !ok {
-		return "", false
+		return nil, false
 	}
 	m.mu.RLock()
 	defer m.mu.RUnlock()
 	if item.row == nil {
-		return "", false
+		return nil, false
 	}
-	return item.row.ApprovedPermissionsHash, true
+	return item.row.ApprovedPermissions, true
 }

@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-// ClientStream is an open client stream of a streaming rpc (spec WIRE-12):
+// ClientStream is an open client stream of a streaming rpc:
 // the caller sends any number of request messages, closes the stream and
 // receives one response. It is not safe for concurrent use.
 type ClientStream struct {
