@@ -131,7 +131,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 | 欄位 | 意義 |
 | --- | --- |
 | `author_public_key` | 為外掛套件簽章的 minisign 公鑰，即 `.pub` 檔案中的 base64 那一行。從該項目下載並由它簽署的外掛套件是 `community`。 |
-| `trust` | `official`、`verified` 或 `community`：目錄預期的等級。僅用於列出和篩選，從不授予等級。 |
+| `trust` | `official`、`verified` 或 `community`：目錄預期的等級。僅用於列出和篩選，從不授予等級。只有保留命名空間 `com.nginxui.*` 中的 ID 才會顯示為 `official`，其他 ID 顯示為 `community`。 |
 
 `author_public_key` 只對從攜帶它的項目下載的外掛套件有效。參見[簽章與信任](./signing.md#trust-levels)。
 
