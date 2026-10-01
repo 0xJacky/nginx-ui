@@ -55,4 +55,11 @@ export default {
   50064: () => $gettext('No certificate in the archive matches its private key'),
   50065: () => $gettext('No DNS-01 provider for {0}: install and enable the DNS-01 plugin'),
   50066: () => $gettext('Automatic renewal can only be switched for certificates issued by Nginx UI'),
+  50067: () => $gettext('Only a DNS-01 certificate can be issued for another node'),
+  50068: () => $gettext('Node not found'),
+  50069: () => $gettext('Node {0} cannot receive certificates issued for it, upgrade it first'),
+  50070: () => $gettext('Node {0} answered {1}: {2}'),
+  50071: () => $gettext('The Nginx configuration still loads the certificate: {0}'),
+  50072: () => $gettext('The certificate was issued, but sending it to node {0} failed: {1}'),
+  50073: () => $gettext('Node {0} cannot be reached: {1}'),
 }

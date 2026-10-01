@@ -145,6 +145,7 @@ export const msg = [
   $gettext('[Nginx UI] Revocation completed'),
   $gettext('[Nginx UI] Revoking certificate'),
   $gettext('[Nginx UI] Revoking old certificate'),
+  $gettext('[Nginx UI] Sending the certificate to node %{name}'),
   $gettext('[Nginx UI] Setting DNS01 challenge provider'),
   $gettext('[Nginx UI] Setting HTTP01 challenge provider'),
   $gettext('[Nginx UI] Writing certificate private key to disk'),
