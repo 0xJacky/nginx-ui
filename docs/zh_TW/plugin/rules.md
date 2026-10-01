@@ -253,7 +253,7 @@ ID 使用了保留給 Nginx UI 專案的 `com.nginxui.*`。參見[命名規則](
 
 <Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
 
-簽章無法用檢查工具已知的金鑰驗證：專案的發佈金鑰，或外掛套件中帶有有效憑證的合作夥伴金鑰。對於社群外掛這是預期的，因為它的金鑰只由外掛目錄或維運人員指定。參見[信任等級](./signing.md#trust-levels)。
+簽章無法用檢查工具已知的金鑰驗證：專案的官方外掛簽章金鑰，或外掛套件中帶有有效憑證的合作夥伴金鑰。對於社群外掛這是預期的，因為它的金鑰只由外掛目錄或維運人員指定。參見[信任等級](./signing.md#trust-levels)。
 
 ### partner-files
 
@@ -265,7 +265,7 @@ ID 使用了保留給 Nginx UI 專案的 `com.nginxui.*`。參見[命名規則](
 
 <Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
 
-合作夥伴憑證無法驗證：`plugin.partner` 不是公鑰，沒有發佈金鑰為它簽章，或者可信註解的格式錯誤。
+合作夥伴憑證無法驗證：`plugin.partner` 不是公鑰，沒有官方外掛簽章金鑰為它簽章，或者可信註解的格式錯誤。
 
 ### partner-certificate
 

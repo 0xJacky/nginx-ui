@@ -42,11 +42,11 @@ const (
 	TrustUnsigned  = "unsigned"
 )
 
-// The release keys pinned in the binary and the clock the expiry checks use,
-// behind variables so the tests can swap them.
+// The official plugin keys pinned in the binary and the clock the expiry
+// checks use, behind variables so the tests can swap them.
 var (
-	releaseKeys = releasesign.TrustedPublicKeys
-	now         = time.Now
+	officialKeys = releasesign.PluginPublicKeys
+	now          = time.Now
 )
 
 // packageTrust is what the embedded signature of a package proves.
@@ -94,7 +94,7 @@ func trustTiers(authorKey string, partners []partnerCertificate, keyring *partne
 	return append(partnerTiers(partners, keyring), trustTier{trust: TrustCommunity, keys: community})
 }
 
-// partnerTiers are the release keys and the partner keys the keyring did not
+// partnerTiers are the official keys and the partner keys the keyring did not
 // revoke. Without the community keys it is all the linter knows.
 func partnerTiers(partners []partnerCertificate, keyring *partnerKeyring) []trustTier {
 	verified := make([]string, 0, len(partners))
@@ -104,7 +104,7 @@ func partnerTiers(partners []partnerCertificate, keyring *partnerKeyring) []trus
 		}
 	}
 	return []trustTier{
-		{trust: TrustOfficial, keys: releaseKeys()},
+		{trust: TrustOfficial, keys: officialKeys()},
 		{trust: TrustVerified, keys: verified},
 	}
 }

@@ -338,7 +338,7 @@ func TestMarkExecutablesIgnoresMissingPlatforms(t *testing.T) {
 }
 
 func TestBuildSignedPackageEmbedsSumsAndSignature(t *testing.T) {
-	signer := useReleaseKey(t)
+	signer := useOfficialKey(t)
 	archive := signedWebappPackage(t, "com.example.alpha", signer)
 
 	body, err := os.ReadFile(archive)
@@ -370,7 +370,7 @@ func TestBuildSignedPackageEmbedsSumsAndSignature(t *testing.T) {
 }
 
 func TestBuildPackageDropsAStaleSignature(t *testing.T) {
-	signer := useReleaseKey(t)
+	signer := useOfficialKey(t)
 	signed := signedWebappPackage(t, "com.example.alpha", signer)
 	source := filepath.Join(t.TempDir(), "source")
 	_, err := ExtractPackage(signed, source)
@@ -397,7 +397,7 @@ func TestBuildPackageDropsAStaleSignature(t *testing.T) {
 }
 
 func TestSignPackageSignsInPlace(t *testing.T) {
-	signer := useReleaseKey(t)
+	signer := useOfficialKey(t)
 	archive := signedWebappPackage(t, "com.example.alpha", nil)
 	require.NoError(t, os.Chmod(archive, 0o640))
 
