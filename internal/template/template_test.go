@@ -260,3 +260,45 @@ func TestTrimActionLines(t *testing.T) {
 	require.Equal(t, "gzip {{ if .g }}on{{ else }}off{{ end }};", TrimActionLines("gzip {{ if .g }}on{{ else }}off{{ end }};"))
 	require.Equal(t, "server {\n    {{ .extra }}\n}", TrimActionLines("server {\n    {{ .extra }}\n}"))
 }
+
+func TestPluginBlockSource(t *testing.T) {
+	source := registerTestSource()
+	root := t.TempDir()
+	outside := filepath.Join(t.TempDir(), "outside.conf")
+	require.NoError(t, os.WriteFile(outside, []byte(pluginBlock), 0o644))
+	writeFiles(t, root, map[string]string{"block/deny-dotfiles.conf": pluginBlock})
+	require.NoError(t, os.Symlink(outside, filepath.Join(root, KindBlock, "linked.conf")))
+	source.set(Root{PluginID: "io.github.example.snippets", Dir: root})
+	t.Cleanup(func() { source.set() })
+
+	info, body, err := PluginBlockSource("io.github.example.snippets", "deny-dotfiles.conf")
+	require.NoError(t, err)
+	assert.Equal(t, "Deny dotfiles", info.Name)
+	assert.Equal(t, "deny-dotfiles.conf", info.Filename, "the header cannot change the file name")
+	assert.Equal(t, OriginPlugin, info.Origin)
+	assert.Equal(t, "io.github.example.snippets", info.PluginID)
+	assert.True(t, strings.HasPrefix(body, "location ~ /\\. {"), body)
+	assert.NotContains(t, body, HeaderEnd)
+
+	for _, name := range []string{"linked.conf", "../block/deny-dotfiles.conf", "hsts.conf"} {
+		_, _, err = PluginBlockSource("io.github.example.snippets", name)
+		assert.ErrorIs(t, err, ErrTemplateNotFound, name)
+	}
+	_, _, err = PluginBlockSource("io.github.other", "deny-dotfiles.conf")
+	assert.ErrorIs(t, err, ErrTemplateNotFound)
+}
+
+func TestRenderPluginTextIsRestricted(t *testing.T) {
+	_, err := RenderPluginText("t", "{{range $i := 3}}deny all;{{end}}\n", nil)
+	assert.Error(t, err)
+	_, err = RenderPluginText("t", "{{if true}}"+strings.Repeat("# padding padding padding padding\n", 40000)+"{{end}}\n", nil)
+	assert.Error(t, err)
+
+	rendered, err := RenderPluginText("t", "{{ if .keep }}\nkeep;\n{{ end }}\nreturn {{ .status }};\n", map[string]Variable{"keep": {Value: true}, "status": {Value: "404"}})
+	require.NoError(t, err)
+	assert.Equal(t, "keep;\nreturn 404;\n", rendered)
+
+	rendered, err = RenderText("t", "{{ range $i := 2 }}deny all;\n{{ end }}", nil)
+	require.NoError(t, err)
+	assert.Equal(t, 2, strings.Count(rendered, "deny all;"), "a snippet of the user is not restricted")
+}
