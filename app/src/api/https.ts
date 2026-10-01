@@ -8,7 +8,9 @@ import { http } from '@uozi-admin/request'
 
 export type HTTPSChallengeMethod = keyof typeof AutoCertChallengeMethod
 
-export type HTTPSStep = 'plan' | 'stage' | 'probe' | 'issue' | 'finalize' | 'rollback'
+// `delegate` is reported by the client while the main node issues the
+// certificate for the selected node, before the run on the node starts.
+export type HTTPSStep = 'delegate' | 'plan' | 'stage' | 'probe' | 'issue' | 'finalize' | 'rollback'
 
 export type HTTPSStepStatus = 'running' | 'success' | 'warning' | 'error' | 'skipped'
 
