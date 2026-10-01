@@ -21,8 +21,9 @@ import (
 )
 
 // A partner certificate is two ordinary files at the package root:
-// plugin.partner holds the partner public key, plugin.partner.minisig is a
-// release key signature over it whose trusted comment names the partner.
+// plugin.partner holds the partner public key, plugin.partner.minisig is an
+// official plugin key signature over it whose trusted comment names the
+// partner.
 const (
 	PartnerFileName          = "plugin.partner"
 	PartnerSignatureFileName = "plugin.partner.minisig"
@@ -330,11 +331,11 @@ func partnersURL() string {
 	return base.ResolveReference(&url.URL{Path: PartnersFileName}).String()
 }
 
-// parsePartnerKeyring verifies partners.json with the release keys and
+// parsePartnerKeyring verifies partners.json with the official plugin keys and
 // parses it. Any malformed field refuses the whole document.
 func parsePartnerKeyring(raw, signature []byte) (*partnerKeyring, error) {
-	if _, err := pkgsign.VerifyBytes(raw, signature, releaseKeys()); err != nil {
-		return nil, fmt.Errorf("signature does not verify with a release key: %w", err)
+	if _, err := pkgsign.VerifyBytes(raw, signature, officialKeys()); err != nil {
+		return nil, fmt.Errorf("signature does not verify with an official plugin key: %w", err)
 	}
 	var document partnersDocument
 	if err := json.Unmarshal(raw, &document); err != nil {
@@ -402,13 +403,13 @@ func readPartnerCertificate(root string, keyring *partnerKeyring) (*partnerCerti
 	return checkPartnerCertificate(partner, signature, keyring)
 }
 
-// checkPartnerCertificate verifies a certificate: a release key signed the
-// exact partner key bytes, the trusted comment parses, the certificate has
-// not expired when it carries an expiry and the keyring did not revoke the
-// key. Without an expiry only a revocation ends it.
+// checkPartnerCertificate verifies a certificate: an official plugin key
+// signed the exact partner key bytes, the trusted comment parses, the
+// certificate has not expired when it carries an expiry and the keyring did
+// not revoke the key. Without an expiry only a revocation ends it.
 func checkPartnerCertificate(partner, signature []byte, keyring *partnerKeyring) (*partnerCertificate, error) {
-	if _, err := pkgsign.VerifyBytes(partner, signature, releaseKeys()); err != nil {
-		return nil, fmt.Errorf("%s does not verify with a release key: %w", PartnerSignatureFileName, err)
+	if _, err := pkgsign.VerifyBytes(partner, signature, officialKeys()); err != nil {
+		return nil, fmt.Errorf("%s does not verify with an official plugin key: %w", PartnerSignatureFileName, err)
 	}
 	var parsed minisign.Signature
 	if err := parsed.UnmarshalText(signature); err != nil {
@@ -483,11 +484,12 @@ func parsePartnerDate(value string) (time.Time, error) {
 	return day, nil
 }
 
-// NewPartnerCertificate issues a partner certificate with a release key. It
-// returns the contents of plugin.partner, the partner key in its two line
-// form, and of plugin.partner.minisig, whose trusted comment names the
-// partner and, unless expires is empty, the last day the certificate is valid.
-func NewPartnerCertificate(partnerKey []byte, name, expires string, releaseKey minisign.PrivateKey) (partner, signature []byte, err error) {
+// NewPartnerCertificate issues a partner certificate with an official plugin
+// key. It returns the contents of plugin.partner, the partner key in its two
+// line form, and of plugin.partner.minisig, whose trusted comment names the
+// partner and, unless expires is empty, the last day the certificate is
+// valid.
+func NewPartnerCertificate(partnerKey []byte, name, expires string, officialKey minisign.PrivateKey) (partner, signature []byte, err error) {
 	key, err := parsePartnerKey(partnerKey)
 	if err != nil {
 		return nil, nil, fmt.Errorf("partner key: %w", err)
@@ -514,7 +516,7 @@ func NewPartnerCertificate(partnerKey []byte, name, expires string, releaseKey m
 		return nil, nil, err
 	}
 	untrusted := fmt.Sprintf("partner certificate of %s, key %s", name, key.KeyID)
-	return partner, reader.SignWithComments(releaseKey, comment, untrusted), nil
+	return partner, reader.SignWithComments(officialKey, comment, untrusted), nil
 }
 
 // writeFileAtomic writes a file through a temporary file and a rename.

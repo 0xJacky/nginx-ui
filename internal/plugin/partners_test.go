@@ -89,7 +89,7 @@ func TestPartnerCertificateMakesAPackageVerified(t *testing.T) {
 	manager := newTestManager(t)
 	useMarketplace(t)
 	settings.PluginSettings.DeveloperMode = false
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, partner := newSigningKey(t)
 	archive := certifiedPackage(t, "com.example.alpha", certify(t, partnerPublic, release, "acme", "2099-12-31"), &partner)
 
@@ -122,7 +122,7 @@ func TestPartnerCertificateMakesAPackageVerified(t *testing.T) {
 }
 
 func TestPartnerCertificateIsValidThroughItsExpiryDay(t *testing.T) {
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, partner := newSigningKey(t)
 	useNow(t, time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
 	archive := certifiedPackage(t, "com.example.alpha", certify(t, partnerPublic, release, "acme", "2026-01-31"), &partner)
@@ -144,7 +144,7 @@ func TestPartnerCertificateIsValidThroughItsExpiryDay(t *testing.T) {
 
 func TestPartnerRevocationWinsOverCertificateAndKeyring(t *testing.T) {
 	useMarketplace(t)
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, partner := newSigningKey(t)
 	archive := certifiedPackage(t, "com.example.alpha", certify(t, partnerPublic, release, "acme", "2099-12-31"), &partner)
 
@@ -166,7 +166,7 @@ func TestPartnerRevocationWinsOverCertificateAndKeyring(t *testing.T) {
 }
 
 func TestPartnerCertificateIsIgnoredWhenItDoesNotHoldUp(t *testing.T) {
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, partner := newSigningKey(t)
 	_, stranger := newSigningKey(t)
 	certificate := certify(t, partnerPublic, release, "acme", "2099-12-31")
@@ -185,8 +185,8 @@ func TestPartnerCertificateIsIgnoredWhenItDoesNotHoldUp(t *testing.T) {
 	require.NoError(t, err)
 
 	for name, files := range map[string]map[string]string{
-		"signed by a key that is not a release key": certify(t, partnerPublic, &stranger, "acme", "2099-12-31"),
-		"trusted comment edited":                    withSignature(forgedText),
+		"signed by a key that is not an official plugin key": certify(t, partnerPublic, &stranger, "acme", "2099-12-31"),
+		"trusted comment edited":                             withSignature(forgedText),
 		"trusted comment without the partner fields": withSignature(
 			minisign.Sign(*release, []byte(certificate[PartnerFileName]))),
 		"key bytes changed after signing": {
@@ -262,7 +262,7 @@ func TestParsePartnerComment(t *testing.T) {
 }
 
 func TestPartnerCertificateWithoutExpiryLastsUntilRevoked(t *testing.T) {
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, partner := newSigningKey(t)
 	useNow(t, time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
 	certificate := certify(t, partnerPublic, release, "acme", "")
@@ -288,7 +288,7 @@ func TestPartnerCertificateWithoutExpiryLastsUntilRevoked(t *testing.T) {
 
 func TestNewPartnerCertificateChecksItsInput(t *testing.T) {
 	useNow(t, time.Date(2026, 6, 1, 12, 0, 0, 0, time.UTC))
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, _ := newSigningKey(t)
 	encoded := []byte(encodeKey(t, partnerPublic))
 
@@ -318,7 +318,7 @@ func TestPartnerKeyringMakesAPackageVerified(t *testing.T) {
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
 	useOfficialSource(t, server)
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, partner := newSigningKey(t)
 	expiredPublic, expired := newSigningKey(t)
 
@@ -363,7 +363,7 @@ func TestPartnerKeyringRefusesARollback(t *testing.T) {
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
 	useOfficialSource(t, server)
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	newerPublic, newer := newSigningKey(t)
 	olderPublic, older := newSigningKey(t)
 
@@ -371,7 +371,7 @@ func TestPartnerKeyringRefusesARollback(t *testing.T) {
 		map[string]minisign.PublicKey{"newer": newerPublic}), release)
 	manager.refreshPartners(context.Background())
 
-	// An older document, even one a release key signed, is refused.
+	// An older document, even one an official plugin key signed, is refused.
 	server.servePartners(t, keyringDocument(t, "2026-09-01T00:00:00Z",
 		map[string]minisign.PublicKey{"older": olderPublic}), release)
 	manager.refreshPartners(context.Background())
@@ -399,7 +399,7 @@ func TestPartnerKeyringWithABadSignatureKeepsTheCache(t *testing.T) {
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
 	useOfficialSource(t, server)
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, partner := newSigningKey(t)
 	otherPublic, _ := newSigningKey(t)
 	_, stranger := newSigningKey(t)
@@ -414,7 +414,7 @@ func TestPartnerKeyringWithABadSignatureKeepsTheCache(t *testing.T) {
 		map[string]minisign.PublicKey{"other": otherPublic}, keyID(&partner)), &stranger)
 	manager.refreshPartners(context.Background())
 
-	// A document changed after a release key signed it.
+	// A document changed after an official plugin key signed it.
 	raw := server.servePartners(t, keyringDocument(t, "2026-09-03T00:00:00Z",
 		map[string]minisign.PublicKey{"acme": partnerPublic}), release)
 	server.serve("/"+PartnersFileName, bytes.Replace(raw, []byte("acme"), []byte("evil"), 1))
@@ -441,7 +441,7 @@ func TestPartnerKeyringCacheSurvivesANewManager(t *testing.T) {
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
 	useOfficialSource(t, server)
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, partner := newSigningKey(t)
 	ctx := context.Background()
 
@@ -472,13 +472,13 @@ func TestPartnerKeyringCacheSurvivesANewManager(t *testing.T) {
 	require.NotNil(t, offline.partnerKeyring())
 
 	// A cache that does not verify is dropped, here one edited on disk and
-	// one a rotated release key no longer verifies.
+	// one a rotated official plugin key no longer verifies.
 	for name, prepare := range map[string]func(t *testing.T){
 		"edited on disk": func(t *testing.T) {
 			edited := bytes.Replace(cachedDocument, []byte("acme"), []byte("evil"), 1)
 			require.NoError(t, os.WriteFile(documentPath, edited, 0o644))
 		},
-		"rotated release key": func(t *testing.T) { useReleaseKey(t) },
+		"rotated official plugin key": func(t *testing.T) { useOfficialKey(t) },
 	} {
 		t.Run(name, func(t *testing.T) {
 			require.NoError(t, os.WriteFile(documentPath, cachedDocument, 0o644))
@@ -498,7 +498,7 @@ func TestPartnerKeyringOnlyComesFromTheOfficialSource(t *testing.T) {
 	manager := newTestManager(t)
 	official := newCatalogServer(t)
 	custom := newCatalogServer(t)
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	officialPublic, officialPartner := newSigningKey(t)
 	customPublic, customPartner := newSigningKey(t)
 	official.servePartners(t, keyringDocument(t, "2026-09-01T00:00:00Z",
@@ -542,7 +542,7 @@ func TestPartnerKeyringOnlyComesFromTheOfficialSource(t *testing.T) {
 }
 
 func TestParsePartnerKeyringRefusesMalformedDocuments(t *testing.T) {
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, _ := newSigningKey(t)
 	valid := func() partnersDocument {
 		return keyringDocument(t, "2026-09-01T00:00:00Z", map[string]minisign.PublicKey{"acme": partnerPublic}, "0123456789abcdef")

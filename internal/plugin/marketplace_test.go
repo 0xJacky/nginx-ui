@@ -220,15 +220,15 @@ func publisherEntry(t *testing.T, key minisign.PublicKey) string {
 	return publisherKey(t, key) + " Example Publisher"
 }
 
-// useReleaseKey pins a test key as the only release key, so the packages it
+// useOfficialKey pins a test key as the only official plugin key, so the packages it
 // signs are official.
-func useReleaseKey(t *testing.T) *minisign.PrivateKey {
+func useOfficialKey(t *testing.T) *minisign.PrivateKey {
 	t.Helper()
 	public, private := newSigningKey(t)
 	encoded := encodeKey(t, public)
-	previous := releaseKeys
-	releaseKeys = func() []string { return []string{encoded} }
-	t.Cleanup(func() { releaseKeys = previous })
+	previous := officialKeys
+	officialKeys = func() []string { return []string{encoded} }
+	t.Cleanup(func() { officialKeys = previous })
 	return &private
 }
 
@@ -565,7 +565,7 @@ func TestMarketplaceInstallTrustsTheReleaseKey(t *testing.T) {
 	useMarketplace(t, server.catalogURL())
 	settings.PluginSettings.DeveloperMode = false
 
-	signer := useReleaseKey(t)
+	signer := useOfficialKey(t)
 	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), signer, nil)
 
 	info, err := manager.Marketplace().Install(context.Background(), "com.example.alpha", "", "",
@@ -673,7 +673,7 @@ func TestMarketplaceInstallRejectsATamperedPackage(t *testing.T) {
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
 
-	signer := useReleaseKey(t)
+	signer := useOfficialKey(t)
 	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), signer, nil)
 
 	// A mirror swaps a file and fixes the catalog digest, the embedded
@@ -705,7 +705,7 @@ func TestMarketplaceUpdatesAutomaticallyOnlyToTheSameTrust(t *testing.T) {
 	useMarketplace(t, server.catalogURL())
 	settings.PluginSettings.AutoUpdate = true
 
-	official := useReleaseKey(t)
+	official := useOfficialKey(t)
 	userPublic, user := newSigningKey(t)
 	trustKey(t, userPublic)
 	ctx := context.Background()
