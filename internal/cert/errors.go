@@ -60,6 +60,13 @@ var (
 	ErrCertificateArchiveKeyMismatch     = e.New(50064, "no certificate in the archive matches its private key")
 	ErrNoDNS01Provider                   = e.New(50065, "no DNS-01 provider for {0}: install and enable the DNS-01 plugin")
 	ErrAutoRenewalNotSupported           = e.New(50066, "automatic renewal can only be switched for certificates issued by Nginx UI")
+	ErrDelegationRequiresDNS01           = e.New(50067, "only a DNS-01 certificate can be issued for another node")
+	ErrDelegationNodeNotFound            = e.New(50068, "node not found")
+	ErrNodeCannotReceiveCertificates     = e.New(50069, "node {0} cannot receive certificates issued for it, upgrade it first")
+	ErrNodeRequestFailed                 = e.New(50070, "node {0} answered {1}: {2}")
+	ErrCertificateStillLoaded            = e.New(50071, "the Nginx configuration still loads the certificate: {0}")
+	ErrPushCertificateToNode             = e.New(50072, "the certificate was issued, but sending it to node {0} failed: {1}")
+	ErrNodeUnreachable                   = e.New(50073, "node {0} cannot be reached: {1}")
 )
 
 func NewInvalidKeyTypeError(keyType string) error {

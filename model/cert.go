@@ -87,6 +87,19 @@ type Cert struct {
 	Status                       string                `json:"status"`
 	LastError                    string                `json:"last_error"`
 	LastAttemptAt                *time.Time            `json:"last_attempt_at"`
+	// DelegatedNodeID is the node this certificate was issued for. The node
+	// receives the files at the remote paths and this instance renews them.
+	DelegatedNodeID uint64 `json:"delegated_node_id" gorm:"index"`
+	// DelegatedConfigName is the configuration on that node the certificate
+	// was issued for.
+	DelegatedConfigName         string `json:"delegated_config_name"`
+	RemoteSSLCertificatePath    string `json:"remote_ssl_certificate_path"`
+	RemoteSSLCertificateKeyPath string `json:"remote_ssl_certificate_key_path"`
+}
+
+// IsDelegated reports whether the certificate was issued for another node.
+func (c *Cert) IsDelegated() bool {
+	return c.DelegatedNodeID != 0
 }
 
 func FirstCert(confName string) (c Cert, err error) {
