@@ -90,12 +90,17 @@ type PreviewResult struct {
 }
 
 // Preview renders a snippet that may not be saved yet with the given
-// variable values.
-func Preview(content string, vars map[string]template.Variable) (PreviewResult, error) {
+// variable values. Content that comes from a plugin is rendered with the
+// limits of plugin templates.
+func Preview(content string, vars map[string]template.Variable, fromPlugin bool) (PreviewResult, error) {
 	if len(content) > maxSnippetBytes {
 		return PreviewResult{}, ErrTooLarge
 	}
-	rendered, err := template.RenderText("snippet", content, vars)
+	render := template.RenderText
+	if fromPlugin {
+		render = template.RenderPluginText
+	}
+	rendered, err := render("snippet", content, vars)
 	result := PreviewResult{Content: rendered}
 	if err != nil {
 		result.Error = err.Error()

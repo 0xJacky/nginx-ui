@@ -54,7 +54,7 @@ export const sitesRoutes: RouteRecordRaw[] = [
       name: 'Built-in Template',
       component: () => import('@/views/snippet/BuiltinTemplateView.vue'),
       meta: {
-        name: () => $gettext('Built-in Template'),
+        name: () => $gettext('Template'),
         hiddenInSidebar: true,
         lastRouteName: 'Snippets',
       },

@@ -43,6 +43,8 @@ const isSaving = ref(false)
 // The form as loaded or saved, to tell whether it has unsaved changes.
 const pristine = ref('')
 const activeKey = ref<string>()
+// The plugin whose template a new snippet was copied from.
+const copiedFromPlugin = ref<string>()
 
 const isEditing = computed(() => file.value !== undefined)
 const fileName = computed(() => `${form.baseName.trim()}.conf`)
@@ -72,13 +74,14 @@ async function load() {
   loaded.value = undefined
   isBaseNameTouched.value = false
   activeKey.value = undefined
+  copiedFromPlugin.value = undefined
 
   if (file.value === undefined) {
     pristine.value = JSON.stringify(form)
-    // A copy of a built-in template starts from it; until it is saved it
-    // counts as unsaved.
+    // A copy of a template starts from it; until it is saved it counts as
+    // unsaved.
     if (typeof route.query.from === 'string')
-      await copyBuiltin(route.query.from)
+      await copyBuiltin(route.query.from, typeof route.query.plugin_id === 'string' ? route.query.plugin_id : undefined)
     return
   }
 
@@ -104,10 +107,10 @@ async function load() {
   }
 }
 
-async function copyBuiltin(name: string) {
+async function copyBuiltin(name: string, pluginId?: string) {
   isLoading.value = true
   try {
-    const source = await snippet.getBuiltin(name)
+    const source = await snippet.getBuiltin(name, pluginId)
     Object.assign(form, {
       baseName: source.filename.replace(/\.conf$/, ''),
       names: source.name ? { en: source.name } : {},
@@ -117,6 +120,7 @@ async function copyBuiltin(name: string) {
       content: source.content ?? '',
     })
     isBaseNameTouched.value = true
+    copiedFromPlugin.value = source.plugin_id || undefined
   }
   finally {
     isLoading.value = false
@@ -219,6 +223,12 @@ useEventListener(window, 'beforeunload', (event: BeforeUnloadEvent) => {
           </div>
         </template>
         <div class="flex flex-col gap-2">
+          <AAlert
+            v-if="copiedFromPlugin"
+            type="warning"
+            show-icon
+            :title="$gettext('This snippet starts from a template of the plugin %{id}. Review its directives before saving it. Once saved, it is a snippet of your own and no longer follows the plugin.', { id: copiedFromPlugin })"
+          />
           <SnippetCode
             v-model="form.content"
             v-model:active="activeKey"

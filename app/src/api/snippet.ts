@@ -1,5 +1,5 @@
 import type { SyncSummary } from '@/api/cluster_sync'
-import type { Variable } from '@/api/template'
+import type { TemplateOrigin, Variable } from '@/api/template'
 import { http } from '@uozi-admin/request'
 
 export interface Snippet {
@@ -38,7 +38,7 @@ export interface SnippetPreview {
   error?: string
 }
 
-/** A block template built into Nginx UI, as written. */
+/** A block template built into Nginx UI or offered by an enabled plugin, as written. */
 export interface BuiltinTemplate {
   name: string
   description: Record<string, string>
@@ -46,6 +46,9 @@ export interface BuiltinTemplate {
   /** File name of the template, such as "hsts.conf". */
   filename: string
   variables: Record<string, Variable>
+  origin?: TemplateOrigin
+  /** The plugin a template of origin "plugin" comes from. */
+  plugin_id?: string
   /** The body below the header, only when one template is read. */
   content?: string
 }
@@ -60,9 +63,9 @@ const snippet = {
   get: (file: string) => http.get<Snippet>(`/snippets/${encodeURIComponent(file)}`),
   create: (payload: SnippetPayload) => http.post<Snippet>('/snippets', payload),
   update: (file: string, payload: SnippetPayload) => http.post<Snippet>(`/snippets/${encodeURIComponent(file)}`, payload),
-  preview: (content: string, variables: Record<string, Variable>) => http.post<SnippetPreview>('/snippet_preview', { content, variables }),
+  preview: (content: string, variables: Record<string, Variable>, fromPlugin = false) => http.post<SnippetPreview>('/snippet_preview', { content, variables, from_plugin: fromPlugin }),
   getBuiltins: () => http.get<{ data: BuiltinTemplate[] }>('/snippet_templates'),
-  getBuiltin: (name: string) => http.get<BuiltinTemplate>(`/snippet_templates/${encodeURIComponent(name)}`),
+  getBuiltin: (name: string, pluginId?: string) => http.get<BuiltinTemplate>(`/snippet_templates/${encodeURIComponent(name)}`, { params: pluginId ? { plugin_id: pluginId } : undefined }),
   delete: (file: string) => http.delete(`/snippets/${encodeURIComponent(file)}`),
   getSync: () => http.get<SnippetSync>('/snippet_sync'),
   saveSync: (payload: SnippetSync) => http.post<SyncSummary>('/snippet_sync', payload),
