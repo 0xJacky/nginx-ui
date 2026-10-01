@@ -36,6 +36,7 @@ var (
 	ErrTrustDowngrade             = e.New(55024, "plugin package trust {0} is below the installed {1}")
 	ErrPluginConflict             = e.New(55025, "plugin conflicts with the enabled plugin(s): {0}")
 	ErrChannelInvalid             = e.New(55026, "release channel must be stable, beta or dev")
+	ErrReservedID                 = e.New(55027, "plugin id {0} is reserved for official plugins")
 
 	// Capability errors continue at 55201, apart from the lifecycle and the
 	// marketplace codes.

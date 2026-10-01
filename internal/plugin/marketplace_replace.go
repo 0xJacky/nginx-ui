@@ -23,7 +23,7 @@ func (mp *Marketplace) Replace(ctx context.Context, id, source string) (*Info, e
 		return nil, ErrMarketplaceNotFound
 	}
 
-	target := effectiveTrust(entry.Trust)
+	target := effectiveTrust(entry.ID, entry.Trust)
 	if !replaceable(current.Trust, target) {
 		return nil, ErrReplaceUnavailable
 	}

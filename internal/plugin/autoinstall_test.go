@@ -202,7 +202,7 @@ func TestRepairIncompatiblePluginsUpgradesOfficialOnes(t *testing.T) {
 	trustKey(t, public)
 
 	// A core upgrade left plugins built for another protocol version behind.
-	for _, id := range []string{"com.example.alpha", "com.example.beta"} {
+	for _, id := range []string{"com.nginxui.alpha", "com.nginxui.beta"} {
 		stale := marketplaceManifest(id, "1.0.0")
 		stale.APIVersion = protocol.APIVersion + 1
 		writePluginDir(t, manager.Dir()+"/"+stale.ID, stale)
@@ -210,22 +210,22 @@ func TestRepairIncompatiblePluginsUpgradesOfficialOnes(t *testing.T) {
 	manager.offline = true
 	require.NoError(t, manager.discover(context.Background()))
 
-	current, err := manager.Get("com.example.alpha")
+	current, err := manager.Get("com.nginxui.alpha")
 	require.NoError(t, err)
 	require.Equal(t, StatusIncompatible, current.Status)
 
 	// Both entries claim official, only one package is signed like it.
-	server.publish(t, marketplaceManifest("com.example.alpha", "1.1.0"), signer, nil)
-	server.publish(t, marketplaceManifest("com.example.beta", "1.1.0"), &community, nil)
+	server.publish(t, marketplaceManifest("com.nginxui.alpha", "1.1.0"), signer, nil)
+	server.publish(t, marketplaceManifest("com.nginxui.beta", "1.1.0"), &community, nil)
 	manager.repairIncompatiblePlugins(context.Background())
 
-	repaired, err := manager.Get("com.example.alpha")
+	repaired, err := manager.Get("com.nginxui.alpha")
 	require.NoError(t, err)
 	assert.Equal(t, "1.1.0", repaired.Version)
 	assert.NotEqual(t, StatusIncompatible, repaired.Status)
 	assert.Equal(t, TrustOfficial, repaired.Trust)
 
-	skipped, err := manager.Get("com.example.beta")
+	skipped, err := manager.Get("com.nginxui.beta")
 	require.NoError(t, err)
 	assert.Equal(t, StatusIncompatible, skipped.Status)
 }
