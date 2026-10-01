@@ -124,8 +124,6 @@ const facts = computed<Fact[]>(() => {
     },
     { key: 'start', label: $gettext('Start mode'), value: startMode.value },
   ]
-  if (plugin.recommended_memory_mb)
-    items.push({ key: 'memory', label: $gettext('Recommended memory'), value: formatMemory(plugin.recommended_memory_mb) })
   if (plugin.updated_at)
     items.push({ key: 'updated', label: $gettext('Updated at'), value: formatDateTime(plugin.updated_at) })
   return items
@@ -165,22 +163,36 @@ const hasResourceLimits = computed(() => {
   return !!limits && (limits.memory_limit_mb > 0 || limits.cpu_percent > 0)
 })
 
+const recommendedMb = computed(() => props.plugin.recommended_memory_mb ?? 0)
+const hasResources = computed(() => hasResourceLimits.value || recommendedMb.value > 0)
+
+// The memory the plugin recommends, then the limits this node applies.
 const resourceCells = computed(() => {
+  const cells: { key: string, label: string, value: string, warn?: boolean }[] = []
+  if (recommendedMb.value > 0) {
+    cells.push({
+      key: 'recommended',
+      label: $gettext('Recommended memory'),
+      value: formatMemory(recommendedMb.value),
+      warn: lowMemory.value,
+    })
+  }
   const limits = resources.value
-  if (!limits)
-    return []
-  return [
-    {
-      key: 'memory',
-      label: $gettext('Memory'),
-      value: limits.memory_limit_mb > 0 ? `${limits.memory_limit_mb} MB` : $gettext('Unlimited'),
-    },
-    {
-      key: 'cpu',
-      label: $gettext('CPU'),
-      value: limits.cpu_percent > 0 ? `${limits.cpu_percent}%` : $gettext('Unlimited'),
-    },
-  ]
+  if (hasResourceLimits.value && limits) {
+    cells.push(
+      {
+        key: 'memory',
+        label: $gettext('Memory Limit'),
+        value: limits.memory_limit_mb > 0 ? `${limits.memory_limit_mb} MB` : $gettext('Unlimited'),
+      },
+      {
+        key: 'cpu',
+        label: $gettext('CPU Limit'),
+        value: limits.cpu_percent > 0 ? `${limits.cpu_percent}%` : $gettext('Unlimited'),
+      },
+    )
+  }
+  return cells
 })
 
 const hasLogSink = computed(() => props.plugin.capabilities?.includes('log.sink') ?? false)
@@ -376,6 +388,35 @@ function formatCount(value: number) {
       </div>
     </section>
 
+    <section v-if="hasResources" class="overview-section">
+      <div class="section-head">
+        <h4 class="section-title">
+          {{ $gettext('Resources') }}
+        </h4>
+        <ATooltip
+          v-if="resources && hasResourceLimits"
+          :title="resources.enforced
+            ? $gettext('The limits are applied while the plugin runs.')
+            : $gettext('The plugin is not running, or this node cannot apply limits.')"
+        >
+          <span class="pill" :class="resources.enforced ? 'is-success' : 'is-muted'">
+            <span class="pill-dot" />
+            {{ resources.enforced ? $gettext('Enforced') : $gettext('Not enforced') }}
+          </span>
+        </ATooltip>
+      </div>
+      <div class="metric-row">
+        <div
+          v-for="cell in resourceCells"
+          :key="cell.key"
+          class="metric"
+        >
+          <span class="metric-value" :class="{ 'is-warning': cell.warn }">{{ cell.value }}</span>
+          <span class="metric-label">{{ cell.label }}</span>
+        </div>
+      </div>
+    </section>
+
     <section v-if="hasNodes" class="overview-section">
       <h4 class="section-title">
         {{ $gettext('Cluster') }}
@@ -452,35 +493,6 @@ function formatCount(value: number) {
               </dd>
             </div>
           </dl>
-
-          <div v-if="hasResourceLimits" class="overview-section">
-            <div class="section-head">
-              <h4 class="section-title">
-                {{ $gettext('Resource limits') }}
-              </h4>
-              <ATooltip
-                v-if="resources"
-                :title="resources.enforced
-                  ? $gettext('The limits are applied while the plugin runs.')
-                  : $gettext('The plugin is not running, or this node cannot apply limits.')"
-              >
-                <span class="pill" :class="resources.enforced ? 'is-success' : 'is-muted'">
-                  <span class="pill-dot" />
-                  {{ resources.enforced ? $gettext('Enforced') : $gettext('Not enforced') }}
-                </span>
-              </ATooltip>
-            </div>
-            <div class="metric-row">
-              <div
-                v-for="cell in resourceCells"
-                :key="cell.key"
-                class="metric"
-              >
-                <span class="metric-value">{{ cell.value }}</span>
-                <span class="metric-label">{{ cell.label }}</span>
-              </div>
-            </div>
-          </div>
 
           <div v-if="hasLogSink" class="overview-section">
             <h4 class="section-title">

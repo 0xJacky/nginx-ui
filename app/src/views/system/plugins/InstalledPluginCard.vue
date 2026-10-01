@@ -18,7 +18,7 @@ import { capabilityLabel } from './capabilities'
 import { pluginChannel } from './channel'
 import ChannelTag from './ChannelTag.vue'
 import { conflictNote } from './conflicts'
-import { isBelowRecommended, useSystemMemory } from './memory'
+import { formatMemory, isBelowRecommended, memoryWarning, useSystemMemory } from './memory'
 import PluginIcon from './PluginIcon.vue'
 import { isToggleDisabled, needsAttention, statusOf } from './presets'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
@@ -45,6 +45,9 @@ const status = computed(() => statusOf(props.plugin))
 const attention = computed(() => needsAttention(props.plugin))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(props.plugin.recommended_memory_mb, systemMb.value))
+const memoryHint = computed(() => lowMemory.value
+  ? memoryWarning(props.plugin.recommended_memory_mb!, systemMb.value)
+  : $gettext('Recommended memory: %{size}', { size: formatMemory(props.plugin.recommended_memory_mb ?? 0) }))
 const conflictingNames = useConflictNames(() => props.plugin)
 const channel = computed(() => pluginChannel(props.plugin))
 const toggleDisabled = computed(() => isToggleDisabled(props.plugin))
@@ -130,9 +133,16 @@ function onMenuClick({ key }: { key: string | number }) {
       <!-- Outlined, so the trust level stands apart from the capability tags. -->
       <TrustTag :plugin="plugin" />
       <ChannelTag :channel="channel" />
-      <ATooltip v-if="lowMemory" :title="$gettext('This server has less memory than recommended for this plugin.')">
-        <ATag color="warning" class="m-0">
-          {{ $gettext('Low memory') }}
+      <ATooltip v-if="plugin.recommended_memory_mb" :title="memoryHint">
+        <ATag
+          :color="lowMemory ? 'warning' : undefined"
+          class="m-0"
+          :aria-label="memoryHint"
+        >
+          <template #icon>
+            <span class="i-tabler-cpu align-[-2px]" />
+          </template>
+          {{ formatMemory(plugin.recommended_memory_mb) }}
         </ATag>
       </ATooltip>
       <ATag
