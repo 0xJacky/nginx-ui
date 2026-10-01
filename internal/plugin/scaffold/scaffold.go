@@ -20,7 +20,7 @@ import (
 //go:embed templates/*
 var templatesFS embed.FS
 
-// idPattern mirrors the plugin id grammar (spec/11-naming.md NAME-1).
+// idPattern mirrors the plugin id grammar.
 var idPattern = regexp.MustCompile(`^[a-z0-9]+(\.[a-z0-9-]+)+$`)
 
 // InitOptions configures Init.
@@ -29,7 +29,7 @@ type InitOptions struct {
 	ID string
 	// Name is the human readable display name.
 	Name string
-	// Lang selects the implementation language: "go", "python" or "node".
+	// Lang selects the implementation language: "go", "rust", "python" or "node".
 	Lang string
 	// Capability selects which capability to scaffold. Only "dns01" is
 	// supported today; empty defaults to it.
@@ -49,9 +49,11 @@ type data struct {
 	Platform       string
 	ExecutablePath string
 	GoTypeName     string
-	Interpreter    string
-	Today          string
-	Year           int
+	// BinaryName is the name of the compiled executable without a suffix.
+	BinaryName  string
+	Interpreter string
+	Today       string
+	Year        int
 }
 
 var funcMap = template.FuncMap{
@@ -83,12 +85,14 @@ func Init(dir string, opts InitOptions) error {
 	switch opts.Lang {
 	case "go":
 		langDir = "go"
+	case "rust":
+		langDir = "rust"
 	case "python":
 		langDir, interpreter = "python", "python3"
 	case "node":
 		langDir, interpreter = "node", "node"
 	default:
-		return fmt.Errorf("scaffold: lang %q must be one of go, python, node", opts.Lang)
+		return fmt.Errorf("scaffold: lang %q must be one of go, rust, python, node", opts.Lang)
 	}
 
 	lastSegment := opts.ID[strings.LastIndex(opts.ID, ".")+1:]
@@ -111,6 +115,7 @@ func Init(dir string, opts InitOptions) error {
 		Platform:       platform,
 		ExecutablePath: "dist/" + platform + "/" + execName,
 		GoTypeName:     pascalCase(lastSegment),
+		BinaryName:     lastSegment,
 		Interpreter:    interpreter,
 		Today:          time.Now().Format("2006-01-02"),
 		Year:           time.Now().Year(),
@@ -125,8 +130,8 @@ func Init(dir string, opts InitOptions) error {
 	if err := renderDir(dir, "templates/"+langDir, d); err != nil {
 		return err
 	}
-	if opts.Lang == "go" {
-		if err := writeGoPlaceholderBinary(dir, d); err != nil {
+	if opts.Lang == "go" || opts.Lang == "rust" {
+		if err := writePlaceholderBinary(dir, d); err != nil {
 			return err
 		}
 	}
@@ -178,11 +183,11 @@ func renderDir(destRoot, fsRoot string, d data) error {
 	})
 }
 
-// writeGoPlaceholderBinary drops a stub file where plugin.json's
+// writePlaceholderBinary drops a stub file where plugin.json's
 // server.executables entry expects the real binary, so a freshly scaffolded
-// Go plugin already passes "nginx-ui plugin lint" (PKG-9) before build.sh
+// compiled plugin already passes "nginx-ui plugin lint" before build.sh
 // has ever run. build.sh overwrites it with the real build.
-func writeGoPlaceholderBinary(dir string, d data) error {
+func writePlaceholderBinary(dir string, d data) error {
 	target := filepath.Join(dir, filepath.FromSlash(d.ExecutablePath))
 	if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
 		return err
@@ -194,7 +199,7 @@ func writeGoPlaceholderBinary(dir string, d data) error {
 }
 
 // sanitizeProviderCode turns a plugin id's last segment into a value that
-// satisfies the dns01 provider code grammar (spec/11-naming.md NAME-4).
+// satisfies the dns01 provider code grammar.
 func sanitizeProviderCode(s string) string {
 	s = strings.ToLower(s)
 	if len(s) < 2 {
