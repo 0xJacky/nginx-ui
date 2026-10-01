@@ -1,4 +1,5 @@
 import { LocaleSpecificConfig, DefaultTheme } from 'vitepress'
+import { pluginNav, pluginSidebar } from './plugin'
 import { demoUrl } from './common'
 
 export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
@@ -6,11 +7,13 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/about' },
+      pluginNav('en'),
       { text: 'Sponsor', link: '/sponsor' },
       { text: 'Demo', link: demoUrl }
     ],
 
     sidebar: {
+      ...pluginSidebar('en'),
       '/guide/': [
         {
           text: 'Introduction',
