@@ -460,11 +460,11 @@ func TestLintPerPlatformPackageMustDeclareItsPlatform(t *testing.T) {
 	both := goodManifest()
 	both.Server.Executables = map[string]string{host: "bin/plugin-" + host, foreign: "bin/plugin-" + foreign}
 	report = lintArchive(t, both, name)
-	assertHasFinding(t, report, LevelError, "PKG-12")
+	assertHasFinding(t, report, LevelError, RulePackagePlatform)
 
 	// A per-platform name over the wrong platform.
 	report = lintArchive(t, base, PackageFileName(base.ID, base.Version, foreign))
-	assertHasFinding(t, report, LevelError, "PKG-12")
+	assertHasFinding(t, report, LevelError, RulePackagePlatform)
 
 	// The portable form is free to list several platforms.
 	report = lintArchive(t, both, PackageFileName(both.ID, both.Version, ""))
@@ -472,7 +472,7 @@ func TestLintPerPlatformPackageMustDeclareItsPlatform(t *testing.T) {
 
 	// A name for another id or version is a warning.
 	report = lintArchive(t, base, PackageFileName(base.ID, "9.9.9", host))
-	assertHasFinding(t, report, LevelWarning, "PKG-1")
+	assertHasFinding(t, report, LevelWarning, RulePackageFileName)
 	assert.False(t, report.HasErrors(), "%+v", report.Findings)
 }
 

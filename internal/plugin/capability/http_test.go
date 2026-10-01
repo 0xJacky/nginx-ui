@@ -206,6 +206,7 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 		sawCookie    string
 		sawHasCookie bool
 		sawSecrets   []string
+		sawHeaders   http.Header
 	)
 	startUnixHTTPServer(t, dir, func(w http.ResponseWriter, r *http.Request) {
 		body, _ := io.ReadAll(r.Body)
@@ -220,6 +221,7 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 		_, sawHasCookie = r.Header["Cookie"]
 		sawCookie = r.Header.Get("Cookie")
 		sawSecrets = r.Header.Values(headerPluginSecret)
+		sawHeaders = r.Header.Clone()
 		mu.Unlock()
 
 		w.Header().Set("X-Plugin-Reply", "yes")
@@ -236,7 +238,16 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 	req.Header.Set("Cookie", "session=abc")
 	// A client that guesses the header must not get its value through.
 	req.Header.Add(headerPluginSecret, "forged")
-	req.Header.Add("x-nginx-ui-plugin-secret", "forged-too")
+	req.Header.Add("nginx-ui-plugin-secret", "forged-too")
+	req.Header.Add(headerPluginUser, "mallory")
+	req.Header.Set("X-Nginx-UI-User", "mallory")
+	// Credentials of another node authenticate against nginx-ui itself.
+	req.Header.Set("X-Node-Secret", "node-secret")
+	req.Header.Set("X-Node-ID", "2")
+	req.Header.Set("Signature-Input", "sig=()")
+	req.Header.Set("Signature", "sig=:AA==:")
+	req.Header.Set("X-Nginx-UI-Credential-ID", "credential")
+	req.Header.Set("Accept", "application/json")
 
 	resp, err := http.DefaultClient.Do(req)
 	require.NoError(t, err)
@@ -259,6 +270,11 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 	assert.False(t, sawHasCookie, "Cookie must not reach the plugin")
 	assert.Empty(t, sawCookie)
 	assert.Equal(t, []string{"test-secret"}, sawSecrets, "only the secret of the host reaches the plugin")
+	assert.Equal(t, []string{"alice"}, sawHeaders.Values(headerPluginUser))
+	for _, name := range []string{"X-Nginx-UI-User", "X-Node-Secret", "X-Node-ID", "Signature-Input", "Signature", "X-Nginx-UI-Credential-ID"} {
+		assert.Empty(t, sawHeaders.Values(name), "%s must not reach the plugin", name)
+	}
+	assert.Equal(t, "application/json", sawHeaders.Get("Accept"), "other headers pass through")
 
 	assert.Equal(t, 1, host.acquireCount())
 	assert.Equal(t, 1, host.releaseCount())
@@ -326,6 +342,8 @@ func TestNewHTTPHandlerRPCRoundTrip(t *testing.T) {
 		strings.NewReader("water"), "official.http", "/brew")
 	c.Request.Header.Set("Authorization", "Bearer secret")
 	c.Request.Header.Set(headerPluginSecret, "forged")
+	c.Request.Header.Set("X-Node-Secret", "node-secret")
+	c.Request.Header.Set("Accept", "text/plain")
 
 	NewHTTPHandler(host)(c)
 
@@ -349,6 +367,9 @@ func TestNewHTTPHandlerRPCRoundTrip(t *testing.T) {
 	assert.False(t, hasAuth, "Authorization must not be forwarded to the plugin")
 	_, hasSecret := params.Headers[headerPluginSecret]
 	assert.False(t, hasSecret, "a client supplied secret header must not be forwarded")
+	_, hasNodeSecret := params.Headers["X-Node-Secret"]
+	assert.False(t, hasNodeSecret, "node credentials must not be forwarded")
+	assert.Equal(t, []string{"text/plain"}, params.Headers["Accept"])
 
 	assert.Equal(t, 1, host.releaseCount())
 }

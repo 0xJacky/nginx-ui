@@ -117,7 +117,7 @@ func TestLintMissingReadmeIsError(t *testing.T) {
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	assert.True(t, report.HasErrors())
-	assertHasFinding(t, report, LevelError, "PKG-8")
+	assertHasFinding(t, report, LevelError, RulePackageDocs)
 }
 
 func TestLintMissingLicenseAndChangelogAreWarnings(t *testing.T) {
@@ -128,7 +128,7 @@ func TestLintMissingLicenseAndChangelogAreWarnings(t *testing.T) {
 	require.Len(t, report.Findings, 2)
 	for _, f := range report.Findings {
 		assert.Equal(t, LevelWarning, f.Level)
-		assert.Equal(t, "PKG-8", f.Rule)
+		assert.Equal(t, RulePackageDocs, f.Rule)
 	}
 }
 
@@ -137,7 +137,7 @@ func TestLintMissingExecutableIsError(t *testing.T) {
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	assert.True(t, report.HasErrors())
-	assertHasFinding(t, report, LevelError, "PKG-9")
+	assertHasFinding(t, report, LevelError, RulePackageExecutables)
 }
 
 func TestLintBadProviderCodeIsError(t *testing.T) {
@@ -147,7 +147,7 @@ func TestLintBadProviderCodeIsError(t *testing.T) {
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	assert.True(t, report.HasErrors())
-	assertHasFinding(t, report, LevelError, "DNS01-2")
+	assertHasFinding(t, report, LevelError, RuleDNS01Code)
 }
 
 func TestLintBadIDIsError(t *testing.T) {
@@ -157,7 +157,7 @@ func TestLintBadIDIsError(t *testing.T) {
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	assert.True(t, report.HasErrors())
-	assertHasFinding(t, report, LevelError, "MAN-2")
+	assertHasFinding(t, report, LevelError, RuleManifestID)
 }
 
 func TestLintI18nLocales(t *testing.T) {
@@ -177,7 +177,7 @@ func TestLintI18nLocales(t *testing.T) {
 	assert.True(t, report.HasErrors())
 	var locales []string
 	for _, f := range report.Findings {
-		if f.Rule == "MAN-40" {
+		if f.Rule == RuleManifestI18n {
 			assert.Equal(t, LevelError, f.Level)
 			locales = append(locales, f.Message)
 		}
@@ -194,7 +194,7 @@ func TestLintReservedNamespaceWarns(t *testing.T) {
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	assert.False(t, report.HasErrors())
-	assertHasFinding(t, report, LevelWarning, "NAME-2")
+	assertHasFinding(t, report, LevelWarning, RuleReservedNamespace)
 }
 
 func TestLintUnknownPermissionIsError(t *testing.T) {
@@ -204,7 +204,7 @@ func TestLintUnknownPermissionIsError(t *testing.T) {
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	assert.True(t, report.HasErrors())
-	assertHasFinding(t, report, LevelError, "MAN-23")
+	assertHasFinding(t, report, LevelError, RuleManifestPermissions)
 }
 
 func TestLintSettingsSchemaSelectRequiresOptions(t *testing.T) {
@@ -216,7 +216,7 @@ func TestLintSettingsSchemaSelectRequiresOptions(t *testing.T) {
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	assert.True(t, report.HasErrors())
-	assertHasFinding(t, report, LevelError, "MAN-29")
+	assertHasFinding(t, report, LevelError, RuleSettingsOptions)
 }
 
 func TestLintArchivePackageMatchesDirectory(t *testing.T) {
@@ -237,7 +237,7 @@ func TestLintArchiveWithSymlinkIsError(t *testing.T) {
 	report, err := Lint(archive)
 	require.NoError(t, err)
 	assert.True(t, report.HasErrors())
-	assertHasFinding(t, report, LevelError, "PKG-4")
+	assertHasFinding(t, report, LevelError, RulePackageLinks)
 }
 
 func TestLintDirectorySymlinkIsError(t *testing.T) {
@@ -249,11 +249,11 @@ func TestLintDirectorySymlinkIsError(t *testing.T) {
 
 	report, err := Lint(dir)
 	require.NoError(t, err)
-	assertHasFinding(t, report, LevelError, "PKG-4")
+	assertHasFinding(t, report, LevelError, RulePackageLinks)
 }
 
 // writeArchiveWithSymlink packages srcDir like BuildPackage, plus one
-// dangling symlink entry PKG-4 forbids regardless of its target.
+// dangling symlink entry, which a package may never contain whatever its target.
 func writeArchiveWithSymlink(t *testing.T, srcDir, archivePath string) {
 	t.Helper()
 
@@ -326,7 +326,7 @@ func TestLintChecksTheEmbeddedSignature(t *testing.T) {
 
 	// A key the linter does not know is only a warning.
 	report := lintSigned(t, community, nil)
-	assertHasFinding(t, report, LevelWarning, "SEC-18")
+	assertHasFinding(t, report, LevelWarning, RuleSignatureSigner)
 	assert.False(t, report.HasErrors(), "%+v", report.Findings)
 
 	// A file changed after signing no longer matches plugin.sums.
@@ -335,7 +335,7 @@ func TestLintChecksTheEmbeddedSignature(t *testing.T) {
 			entry.body = "changed"
 		}
 	})
-	assertHasFinding(t, report, LevelError, "PKG-21")
+	assertHasFinding(t, report, LevelError, RuleSignatureMismatch)
 
 	// A line that breaks the layout.
 	report = lintSigned(t, *release, func(entry *tarEntry) {
@@ -343,7 +343,7 @@ func TestLintChecksTheEmbeddedSignature(t *testing.T) {
 			entry.body = strings.TrimSuffix(entry.body, "\n")
 		}
 	})
-	assertHasFinding(t, report, LevelError, "PKG-19")
+	assertHasFinding(t, report, LevelError, RuleSignatureSums)
 
 	// A signature that does not parse, or that a known key fails.
 	report = lintSigned(t, *release, func(entry *tarEntry) {
@@ -351,13 +351,13 @@ func TestLintChecksTheEmbeddedSignature(t *testing.T) {
 			entry.body = "untrusted comment: nothing\n"
 		}
 	})
-	assertHasFinding(t, report, LevelError, "PKG-21")
+	assertHasFinding(t, report, LevelError, RuleSignatureMismatch)
 	report = lintSigned(t, *release, func(entry *tarEntry) {
 		if entry.header.Name == SumsSignatureFileName {
 			entry.body = string(minisign.Sign(*release, []byte("something else")))
 		}
 	})
-	assertHasFinding(t, report, LevelError, "PKG-21")
+	assertHasFinding(t, report, LevelError, RuleSignatureMismatch)
 
 	// Only one of the two files leaves the package unsigned.
 	for _, name := range []string{SumsFileName, SumsSignatureFileName} {
@@ -366,7 +366,7 @@ func TestLintChecksTheEmbeddedSignature(t *testing.T) {
 				entry.header.Name = ""
 			}
 		})
-		assertHasFinding(t, report, LevelWarning, "PKG-20")
+		assertHasFinding(t, report, LevelWarning, RuleSignatureFiles)
 		assert.False(t, report.HasErrors(), "%+v", report.Findings)
 	}
 }
@@ -415,15 +415,15 @@ func TestLintChecksThePartnerCertificate(t *testing.T) {
 		"valid certificate and partner signature": {files: certificate, signer: partner},
 		"only plugin.partner": {
 			files: map[string]string{PartnerFileName: certificate[PartnerFileName]}, signer: partner,
-			want: []string{"PKG-25", "SEC-18"},
+			want: []string{RulePartnerFiles, RuleSignatureSigner},
 		},
 		"only plugin.partner.minisig": {
 			files: map[string]string{PartnerSignatureFileName: certificate[PartnerSignatureFileName]}, signer: partner,
-			want: []string{"PKG-25", "SEC-18"},
+			want: []string{RulePartnerFiles, RuleSignatureSigner},
 		},
 		"signed by a key that is not a release key": {
 			files: certify(t, partnerPublic, &stranger, "example", "2099-12-31"), signer: partner,
-			want: []string{"PKG-26", "SEC-18"},
+			want: []string{RulePartnerComment, RuleSignatureSigner},
 		},
 		"plugin.partner is no public key": {
 			files: map[string]string{
@@ -431,7 +431,7 @@ func TestLintChecksThePartnerCertificate(t *testing.T) {
 				PartnerSignatureFileName: string(minisign.SignWithComments(*release, []byte(notAKey), "partner:example;expires:2099-12-31", "")),
 			},
 			signer: partner,
-			want:   []string{"PKG-26", "SEC-18"},
+			want:   []string{RulePartnerComment, RuleSignatureSigner},
 		},
 		"trusted comment breaks the format": {
 			files: map[string]string{
@@ -439,12 +439,12 @@ func TestLintChecksThePartnerCertificate(t *testing.T) {
 				PartnerSignatureFileName: string(minisign.Sign(*release, []byte(certificate[PartnerFileName]))),
 			},
 			signer: partner,
-			want:   []string{"PKG-26", "SEC-18"},
+			want:   []string{RulePartnerComment, RuleSignatureSigner},
 		},
-		"release signature with a certificate": {files: certificate, signer: *release, want: []string{"PKG-27"}},
+		"release signature with a certificate": {files: certificate, signer: *release, want: []string{RulePartnerCertificate}},
 		"another key than the certificate names": {
 			files: certificate, signer: stranger,
-			want: []string{"PKG-27", "SEC-18"},
+			want: []string{RulePartnerCertificate, RuleSignatureSigner},
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
@@ -456,7 +456,7 @@ func TestLintChecksThePartnerCertificate(t *testing.T) {
 	// A valid certificate in an unsigned directory signs nothing.
 	report, err := Lint(fixture(t, certificate))
 	require.NoError(t, err)
-	assert.Equal(t, []string{"PKG-27"}, warningRules(t, report))
+	assert.Equal(t, []string{RulePartnerCertificate}, warningRules(t, report))
 
 	// Expiry follows the UTC date of the linter clock.
 	certified := fixture(t, certificate)
@@ -464,9 +464,9 @@ func TestLintChecksThePartnerCertificate(t *testing.T) {
 	assert.Empty(t, lintSigned(t, certified, partner).Findings)
 	useNow(t, time.Date(2100, 1, 1, 0, 0, 0, 0, time.UTC))
 	report = lintSigned(t, certified, partner)
-	assert.ElementsMatch(t, []string{"PKG-27", "SEC-18"}, warningRules(t, report), "%+v", report.Findings)
+	assert.ElementsMatch(t, []string{RulePartnerCertificate, RuleSignatureSigner}, warningRules(t, report), "%+v", report.Findings)
 	for _, finding := range report.Findings {
-		if finding.Rule == "PKG-27" {
+		if finding.Rule == RulePartnerCertificate {
 			assert.Contains(t, finding.Message, "expired")
 		}
 	}
@@ -510,13 +510,13 @@ func TestLintChunkFailures(t *testing.T) {
 		level  Level
 		rule   string
 	}{
-		{"missing file", map[string]string{"a": "webapp/a.js"}, nil, LevelError, "MAN-41"},
-		{"empty file", map[string]string{"a": "webapp/a.js"}, map[string]string{"webapp/a.js": ""}, LevelError, "WEB-13"},
-		{"bad name", map[string]string{"A": "webapp/a.js"}, map[string]string{"webapp/a.js": "x"}, LevelError, "MAN-41"},
-		{"not js", map[string]string{"a": "webapp/a.css"}, map[string]string{"webapp/a.css": "x"}, LevelError, "MAN-41"},
-		{"the bundle", map[string]string{"a": "webapp/index.js"}, nil, LevelError, "MAN-41"},
-		{"duplicate file", map[string]string{"a": "webapp/a.js", "b": "webapp/a.js"}, map[string]string{"webapp/a.js": "x"}, LevelError, "MAN-41"},
-		{"outside the served directory", map[string]string{"a": "chunks/a.js"}, map[string]string{"chunks/a.js": "x"}, LevelWarning, "WEB-13"},
+		{"missing file", map[string]string{"a": "webapp/a.js"}, nil, LevelError, RuleWebappChunks},
+		{"empty file", map[string]string{"a": "webapp/a.js"}, map[string]string{"webapp/a.js": ""}, LevelError, RuleWebappChunkFiles},
+		{"bad name", map[string]string{"A": "webapp/a.js"}, map[string]string{"webapp/a.js": "x"}, LevelError, RuleWebappChunks},
+		{"not js", map[string]string{"a": "webapp/a.css"}, map[string]string{"webapp/a.css": "x"}, LevelError, RuleWebappChunks},
+		{"the bundle", map[string]string{"a": "webapp/index.js"}, nil, LevelError, RuleWebappChunks},
+		{"duplicate file", map[string]string{"a": "webapp/a.js", "b": "webapp/a.js"}, map[string]string{"webapp/a.js": "x"}, LevelError, RuleWebappChunks},
+		{"outside the served directory", map[string]string{"a": "chunks/a.js"}, map[string]string{"chunks/a.js": "x"}, LevelWarning, RuleWebappChunkFiles},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -537,7 +537,7 @@ func TestLintChunksNeedABundle(t *testing.T) {
 	writeWebappFiles(t, dir, map[string]string{"webapp/a.js": "x"})
 	report, err := Lint(dir)
 	require.NoError(t, err)
-	assertHasFinding(t, report, LevelError, "MAN-41")
+	assertHasFinding(t, report, LevelError, RuleWebappChunks)
 }
 
 func TestLintLogPathsChangedNeedsTheLogFilesPermission(t *testing.T) {
@@ -546,7 +546,7 @@ func TestLintLogPathsChangedNeedsTheLogFilesPermission(t *testing.T) {
 	dir := writeLintFixture(t, lintFixture{manifest: m})
 	report, err := Lint(dir)
 	require.NoError(t, err)
-	assertHasFinding(t, report, LevelWarning, "HOST-18")
+	assertHasFinding(t, report, LevelWarning, RuleEventPermission)
 	assert.False(t, report.HasErrors())
 
 	m.Permissions = append(m.Permissions, protocol.PermissionLogFiles)
@@ -578,11 +578,11 @@ func TestLintConflicts(t *testing.T) {
 			report, err := Lint(writeLintFixture(t, lintFixture{manifest: m}))
 			require.NoError(t, err)
 			if tc.want {
-				assertHasFinding(t, report, LevelError, "MAN-42")
+				assertHasFinding(t, report, LevelError, RuleManifestConflicts)
 				return
 			}
 			for _, f := range report.Findings {
-				assert.NotEqual(t, "MAN-42", f.Rule)
+				assert.NotEqual(t, RuleManifestConflicts, f.Rule)
 			}
 		})
 	}

@@ -50,7 +50,7 @@ func isNullJSON(raw []byte) bool {
 }
 
 // EncodeJSON converts a JSON value into the protobuf bytes of md. Members the
-// message does not define are ignored (WIRE-7).
+// message does not define are ignored.
 func EncodeJSON(md protoreflect.MessageDescriptor, value any) ([]byte, error) {
 	msg := dynamicpb.NewMessage(md)
 	if value != nil {
@@ -71,7 +71,7 @@ func EncodeJSON(md protoreflect.MessageDescriptor, value any) ([]byte, error) {
 }
 
 // DecodeJSON converts the protobuf bytes of md into JSON with proto field
-// names, the form the JSON-RPC side of the contract uses (WIRE-10).
+// names, the form the JSON-RPC side of the contract uses.
 func DecodeJSON(md protoreflect.MessageDescriptor, data []byte) (json.RawMessage, error) {
 	msg := dynamicpb.NewMessage(md)
 	if err := proto.Unmarshal(data, msg); err != nil {

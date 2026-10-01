@@ -31,6 +31,11 @@ type fakeHostBackend struct {
 	logFiles    []protocol.HostLogFile
 	activity    []protocol.HostActivitySetParams
 	activityErr error
+
+	snippets map[string]string
+	configs  map[string]string
+	sites    []protocol.HostSite
+	certs    []protocol.HostCert
 }
 
 func (f *fakeHostBackend) Log(pluginID string, p protocol.HostLogParams) {
@@ -139,6 +144,51 @@ func (f *fakeHostBackend) ActivitySet(pluginID string, p protocol.HostActivitySe
 	return f.activityErr
 }
 
+func (f *fakeHostBackend) NginxSnippetPut(pluginID, name, content string) (bool, error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	if f.snippets == nil {
+		f.snippets = map[string]string{}
+	}
+	changed := f.snippets[name] != content
+	f.snippets[name] = content
+	return changed, nil
+}
+
+func (f *fakeHostBackend) NginxSnippetDelete(pluginID, name string) (bool, error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	_, ok := f.snippets[name]
+	delete(f.snippets, name)
+	return ok, nil
+}
+
+func (f *fakeHostBackend) NginxSnippetList(pluginID string) ([]protocol.HostNginxSnippet, error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	var list []protocol.HostNginxSnippet
+	for name := range f.snippets {
+		list = append(list, protocol.HostNginxSnippet{Name: name, Include: SnippetInclude(pluginID, name)})
+	}
+	return list, nil
+}
+
+func (f *fakeHostBackend) NginxConfigList() ([]string, error) {
+	var files []string
+	for file := range f.configs {
+		files = append(files, file)
+	}
+	return files, nil
+}
+
+func (f *fakeHostBackend) NginxConfigGet(path string) (string, error) {
+	return f.configs[path], nil
+}
+
+func (f *fakeHostBackend) SitesList() ([]protocol.HostSite, error) { return f.sites, nil }
+
+func (f *fakeHostBackend) CertsList() ([]protocol.HostCert, error) { return f.certs, nil }
+
 // hostPipe puts the host API on one end of an in-memory pipe pair and returns
 // the caller a plugin would use.
 func hostPipe(t *testing.T, permissions []string, backend HostBackend) *jsonrpc.Conn {
@@ -209,6 +259,13 @@ func TestHostAPIWithoutPermissions(t *testing.T) {
 		{protocol.MethodHostNotify, protocol.HostNotifyParams{Level: "info", Title: "t"}},
 		{protocol.MethodHostMetricsSnapshot, nil},
 		{protocol.MethodHostLogsList, nil},
+		{protocol.MethodHostNginxSnippetPut, protocol.HostNginxSnippetPutParams{Name: "a", Content: ""}},
+		{protocol.MethodHostNginxSnippetDelete, protocol.HostNginxSnippetDeleteParams{Name: "a"}},
+		{protocol.MethodHostNginxSnippetList, nil},
+		{protocol.MethodHostNginxConfigList, nil},
+		{protocol.MethodHostNginxConfigGet, protocol.HostNginxConfigGetParams{Path: "nginx.conf"}},
+		{protocol.MethodHostSitesList, nil},
+		{protocol.MethodHostCertsList, nil},
 	}
 	for _, call := range denied {
 		err := client.Call(ctx, call.method, call.params, nil)
@@ -413,4 +470,68 @@ func TestHostAPIActivitySet(t *testing.T) {
 	perr, ok := jsonrpc.AsProtocolError(err)
 	require.True(t, ok)
 	assert.Equal(t, protocol.CodeInvalidParams, perr.Code)
+}
+
+func TestHostAPINginxSnippets(t *testing.T) {
+	backend := &fakeHostBackend{}
+	client := hostPipe(t, []string{protocol.PermissionNginxSnippet}, backend)
+	ctx := testContext(t)
+
+	var put protocol.HostNginxSnippetPutResult
+	require.NoError(t, client.Call(ctx, protocol.MethodHostNginxSnippetPut,
+		protocol.HostNginxSnippetPutParams{Name: "cache", Content: "expires 1d;\n"}, &put))
+	assert.True(t, put.Changed)
+	assert.Equal(t, "include snippets/plugins/official.test/cache.conf;", put.Include)
+
+	var list protocol.HostNginxSnippetListResult
+	require.NoError(t, client.Call(ctx, protocol.MethodHostNginxSnippetList, nil, &list))
+	assert.Equal(t, []protocol.HostNginxSnippet{{Name: "cache", Include: put.Include}}, list.Snippets)
+
+	var deleted protocol.HostNginxSnippetDeleteResult
+	require.NoError(t, client.Call(ctx, protocol.MethodHostNginxSnippetDelete,
+		protocol.HostNginxSnippetDeleteParams{Name: "cache"}, &deleted))
+	assert.True(t, deleted.Removed)
+
+	// An empty list is an array, never null.
+	var raw json.RawMessage
+	require.NoError(t, client.Call(ctx, protocol.MethodHostNginxSnippetList, nil, &raw))
+	assert.JSONEq(t, `{"snippets":[]}`, string(raw))
+
+	// Each permission covers its own methods only.
+	err := client.Call(ctx, protocol.MethodHostNginxConfigList, nil, nil)
+	perr, ok := jsonrpc.AsProtocolError(err)
+	require.True(t, ok)
+	assert.Equal(t, protocol.CodePermissionDenied, perr.Code)
+}
+
+func TestHostAPIReadOnlyNginxData(t *testing.T) {
+	backend := &fakeHostBackend{
+		configs: map[string]string{"nginx.conf": "events {}"},
+		sites:   []protocol.HostSite{{Name: "a", Status: "enabled", URLs: []string{"https://a.test"}, ConfigFile: "sites-available/a"}},
+		certs:   []protocol.HostCert{{ID: "1", Name: "a", Domains: []string{"a.test"}}},
+	}
+	client := hostPipe(t, []string{protocol.PermissionNginxConfigRead, protocol.PermissionSitesRead, protocol.PermissionCertsRead}, backend)
+	ctx := testContext(t)
+
+	var files protocol.HostNginxConfigListResult
+	require.NoError(t, client.Call(ctx, protocol.MethodHostNginxConfigList, nil, &files))
+	assert.Equal(t, []string{"nginx.conf"}, files.Files)
+
+	var file protocol.HostNginxConfigGetResult
+	require.NoError(t, client.Call(ctx, protocol.MethodHostNginxConfigGet, protocol.HostNginxConfigGetParams{Path: "nginx.conf"}, &file))
+	assert.Equal(t, "events {}", file.Content)
+
+	var sites protocol.HostSitesListResult
+	require.NoError(t, client.Call(ctx, protocol.MethodHostSitesList, nil, &sites))
+	assert.Equal(t, backend.sites, sites.Sites)
+
+	var certs protocol.HostCertsListResult
+	require.NoError(t, client.Call(ctx, protocol.MethodHostCertsList, nil, &certs))
+	assert.Equal(t, backend.certs, certs.Certs)
+
+	// Reading is not writing.
+	err := client.Call(ctx, protocol.MethodHostNginxSnippetPut, protocol.HostNginxSnippetPutParams{Name: "a"}, nil)
+	perr, ok := jsonrpc.AsProtocolError(err)
+	require.True(t, ok)
+	assert.Equal(t, protocol.CodePermissionDenied, perr.Code)
 }

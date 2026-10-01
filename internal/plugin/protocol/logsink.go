@@ -2,7 +2,7 @@ package protocol
 
 // LogSinkPushParams is one message of the log.push stream: one access log
 // line. log.push is a client stream on the gRPC transport only and has no
-// JSON-RPC form (spec WIRE-12); the JSON tags document the protobuf JSON
+// JSON-RPC form; the JSON tags document the protobuf JSON
 // mapping of the message.
 type LogSinkPushParams struct {
 	// LogPath is the absolute path of the access log the line was read from.
