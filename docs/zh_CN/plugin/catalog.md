@@ -131,7 +131,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 | 字段 | 含义 |
 | --- | --- |
 | `author_public_key` | 为插件包签名的 minisign 公钥，即 `.pub` 文件中的 base64 那一行。从该条目下载并由它签名的插件包是 `community`。 |
-| `trust` | `official`、`verified` 或 `community`：目录预期的等级。仅用于列出和筛选，从不授予等级。 |
+| `trust` | `official`、`verified` 或 `community`：目录预期的等级。仅用于列出和筛选，从不授予等级。只有保留命名空间 `com.nginxui.*` 中的 ID 才会显示为 `official`，其他 ID 显示为 `community`。 |
 
 `author_public_key` 只对从携带它的条目下载的插件包有效。参见[签名与信任](./signing.md#trust-levels)。
 

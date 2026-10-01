@@ -164,7 +164,7 @@ DNS-01 provider list may be left out.
 | Field | Meaning |
 | --- | --- |
 | `author_public_key` | The minisign public key that signs the plugin's packages, the base64 line of the `.pub` file. A package downloaded from this entry and signed with it is `community`. |
-| `trust` | `official`, `verified` or `community`: the level the catalog expects. A label for listing and filtering, never a grant. |
+| `trust` | `official`, `verified` or `community`: the level the catalog expects. A label for listing and filtering, never a grant. `official` is only shown for an id in the reserved `com.nginxui.*` namespace, others show as `community`. |
 
 `author_public_key` counts only for packages downloaded from the entry that
 carries it. See [Signing and Trust](./signing.md#trust-levels).

@@ -413,7 +413,7 @@ func (mp *Marketplace) Catalog(ctx context.Context, refresh bool) ([]CatalogEntr
 			}
 			seen[entry.ID] = struct{}{}
 			entry.Source = source
-			entry.Trust = effectiveTrust(entry.Trust)
+			entry.Trust = effectiveTrust(entry.ID, entry.Trust)
 			mp.decorate(&entry)
 			merged = append(merged, entry)
 		}
@@ -1133,10 +1133,17 @@ func proxiedURL(rawURL string) string {
 // effectiveTrust normalises the trust level a catalog entry declares. It is
 // only shown in the listing, the install derives the level from the package
 // signature. An unknown level is community, which keeps the community pre
-// filter in front of it.
-func effectiveTrust(claimed string) string {
+// filter in front of it. Official is only believed for an id in the official
+// namespace, which installs from an official signature or not at all, so no
+// catalog can dress up another plugin as official.
+func effectiveTrust(id, claimed string) string {
 	switch claimed {
-	case TrustOfficial, TrustVerified, TrustCommunity:
+	case TrustOfficial:
+		if IsReservedID(id) {
+			return TrustOfficial
+		}
+		return TrustCommunity
+	case TrustVerified, TrustCommunity:
 		return claimed
 	default:
 		return TrustCommunity

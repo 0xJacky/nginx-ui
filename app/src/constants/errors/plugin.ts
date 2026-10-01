@@ -25,6 +25,7 @@ export default {
   55024: () => $gettext('Plugin package trust {0} is below the installed {1}'),
   55025: () => $gettext('This plugin cannot be enabled together with: {0}'),
   55026: () => $gettext('Release channel must be stable, beta or dev'),
+  55027: () => $gettext('The plugin id {0} is reserved for official Nginx UI plugins'),
   55201: () => $gettext('Storage backend {0} is not available'),
   55202: () => $gettext('Storage config field {0} is invalid: {1}'),
   55203: () => $gettext('Deploy target kind {0} is not available'),
