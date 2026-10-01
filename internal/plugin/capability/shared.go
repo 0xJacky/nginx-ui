@@ -12,8 +12,7 @@ import (
 // deploy target kind, a blocklist source kind or a discovery provider that a
 // plugin provides. It keeps the plugin codes apart from the names of the
 // built-in notifiers, checks and storage, so a plugin can neither replace a
-// built-in one nor be shadowed by one added later (spec NOTIFY-9, PROBE-7,
-// STORAGE-12, DEPLOY-10, BLOCKLIST-8, DISCOVERY-8).
+// built-in one nor be shadowed by one added later.
 const PluginTypePrefix = "plugin:"
 
 // PluginType is the host side name of a plugin capability entry code.

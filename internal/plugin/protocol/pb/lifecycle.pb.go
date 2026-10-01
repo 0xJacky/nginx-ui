@@ -101,7 +101,8 @@ type PluginInitializeRequest struct {
 	Host  *HostInfo              `protobuf:"bytes,1,opt,name=host,proto3" json:"host,omitempty"`
 	// Current settings values. Free-form JSON object keyed by setting key.
 	Settings *structpb.Struct `protobuf:"bytes,2,opt,name=settings,proto3" json:"settings,omitempty"`
-	// Permissions the person granted. It may be a subset of the manifest's.
+	// Permissions the plugin holds. They always equal the manifest's, since the
+	// host does not start a plugin whose permissions wait for approval.
 	Permissions   []string `protobuf:"bytes,3,rep,name=permissions,proto3" json:"permissions,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -169,17 +170,23 @@ type PluginInitializeResponse struct {
 	// stdio only.
 	Transports []string `protobuf:"bytes,3,rep,name=transports,proto3" json:"transports,omitempty"`
 	// Loopback port of the http capability, reported by Windows plugins that
-	// cannot listen on a Unix socket.
+	// cannot open a named pipe. Used when http_pipe is empty.
 	HttpPort int32 `protobuf:"varint,4,opt,name=http_port,json=httpPort,proto3" json:"http_port,omitempty"`
 	// Loopback port of the gRPC transport, reported by Windows plugins that
-	// cannot listen on a Unix socket.
+	// cannot open a named pipe. Used when rpc_pipe is empty.
 	RpcPort int32 `protobuf:"varint,5,opt,name=rpc_port,json=rpcPort,proto3" json:"rpc_port,omitempty"`
-	// One-time token the host presents on the loopback gRPC transport.
+	// One-time token the host presents on the Windows gRPC transport, named
+	// pipe or loopback port.
 	RpcToken string `protobuf:"bytes,6,opt,name=rpc_token,json=rpcToken,proto3" json:"rpc_token,omitempty"`
 	// Absolute path of the Unix socket the gRPC transport listens on. Empty
 	// means <NGINX_UI_PLUGIN_DATA_DIR>/rpc.sock. A plugin reports it when the
 	// default path does not fit the platform's socket path limit.
-	RpcSocket     string `protobuf:"bytes,7,opt,name=rpc_socket,json=rpcSocket,proto3" json:"rpc_socket,omitempty"`
+	RpcSocket string `protobuf:"bytes,7,opt,name=rpc_socket,json=rpcSocket,proto3" json:"rpc_socket,omitempty"`
+	// Named pipe of the http capability on Windows, such as
+	// \\.\pipe\nginx-ui-plugin-<random>.
+	HttpPipe string `protobuf:"bytes,8,opt,name=http_pipe,json=httpPipe,proto3" json:"http_pipe,omitempty"`
+	// Named pipe of the gRPC transport on Windows.
+	RpcPipe       string `protobuf:"bytes,9,opt,name=rpc_pipe,json=rpcPipe,proto3" json:"rpc_pipe,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -259,6 +266,20 @@ func (x *PluginInitializeResponse) GetRpcToken() string {
 func (x *PluginInitializeResponse) GetRpcSocket() string {
 	if x != nil {
 		return x.RpcSocket
+	}
+	return ""
+}
+
+func (x *PluginInitializeResponse) GetHttpPipe() string {
+	if x != nil {
+		return x.HttpPipe
+	}
+	return ""
+}
+
+func (x *PluginInitializeResponse) GetRpcPipe() string {
+	if x != nil {
+		return x.RpcPipe
 	}
 	return ""
 }
@@ -656,7 +677,7 @@ const file_nginxui_plugin_v1_lifecycle_proto_rawDesc = "" +
 	"\x17PluginInitializeRequest\x12/\n" +
 	"\x04host\x18\x01 \x01(\v2\x1b.nginxui.plugin.v1.HostInfoR\x04host\x123\n" +
 	"\bsettings\x18\x02 \x01(\v2\x17.google.protobuf.StructR\bsettings\x12 \n" +
-	"\vpermissions\x18\x03 \x03(\tR\vpermissions\"\xf3\x01\n" +
+	"\vpermissions\x18\x03 \x03(\tR\vpermissions\"\xab\x02\n" +
 	"\x18PluginInitializeResponse\x12\x1f\n" +
 	"\vapi_version\x18\x01 \x01(\x05R\n" +
 	"apiVersion\x12\"\n" +
@@ -668,7 +689,9 @@ const file_nginxui_plugin_v1_lifecycle_proto_rawDesc = "" +
 	"\brpc_port\x18\x05 \x01(\x05R\arpcPort\x12\x1b\n" +
 	"\trpc_token\x18\x06 \x01(\tR\brpcToken\x12\x1d\n" +
 	"\n" +
-	"rpc_socket\x18\a \x01(\tR\trpcSocket\"\x1a\n" +
+	"rpc_socket\x18\a \x01(\tR\trpcSocket\x12\x1b\n" +
+	"\thttp_pipe\x18\b \x01(\tR\bhttpPipe\x12\x19\n" +
+	"\brpc_pipe\x18\t \x01(\tR\arpcPipe\"\x1a\n" +
 	"\x18PluginInitializedRequest\"\x1b\n" +
 	"\x19PluginInitializedResponse\"M\n" +
 	"\x16PluginConfigureRequest\x123\n" +

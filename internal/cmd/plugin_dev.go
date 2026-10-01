@@ -44,7 +44,7 @@ func init() {
 			Flags: []cli.Flag{
 				&cli.StringFlag{Name: "id", Usage: "plugin id, e.g. io.github.example.mydns", Required: true},
 				&cli.StringFlag{Name: "name", Usage: "human readable display name", Required: true},
-				&cli.StringFlag{Name: "lang", Usage: "go, python or node", Required: true},
+				&cli.StringFlag{Name: "lang", Usage: "go, rust, python or node", Required: true},
 				&cli.StringFlag{Name: "capability", Value: "dns01", Usage: "capability to scaffold"},
 			},
 		},
@@ -78,6 +78,7 @@ func LintPlugin(_ context.Context, command *cli.Command) error {
 	if err := writer.Flush(); err != nil {
 		return err
 	}
+	fmt.Printf("\nEvery rule is explained at %s\n", plugin.RulesURL)
 
 	if report.HasErrors() {
 		return fmt.Errorf("plugin lint found errors")
@@ -118,6 +119,7 @@ func ConformancePlugin(ctx context.Context, command *cli.Command) error {
 	if err := writer.Flush(); err != nil {
 		return err
 	}
+	fmt.Printf("\nEvery rule is explained at %s\n", plugin.RulesURL)
 
 	if !report.Passed() {
 		return fmt.Errorf("plugin conformance found failing cases")

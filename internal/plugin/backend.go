@@ -30,6 +30,9 @@ const defaultLocale = "en"
 // centre and the manager owned scheduler.
 type hostBackend struct {
 	manager *Manager
+	// writer and confDir replace the nginx of the host in tests.
+	writer  configWriter
+	confDir func() string
 }
 
 // hostBackend returns the host API implementation of this manager.

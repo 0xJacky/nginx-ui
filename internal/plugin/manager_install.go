@@ -67,8 +67,8 @@ func (m *Manager) Inspect(archivePath string) (*InspectResult, error) {
 		if item.manifest != nil {
 			result.InstalledVersion = item.manifest.Version
 		}
-		if item.row != nil && item.row.ApprovedPermissionsHash != "" {
-			result.PermissionsChanged = item.row.ApprovedPermissionsHash != PermissionsHash(manifest)
+		if item.row != nil && item.row.ApprovedPermissions != nil {
+			result.PermissionsChanged = len(unapprovedPermissions(item.row.ApprovedPermissions, manifest)) > 0
 		}
 		m.mu.RUnlock()
 	}
@@ -242,17 +242,18 @@ func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest
 		seedSettings(manifest, row)
 	}
 
-	hash := PermissionsHash(manifest)
-	approved := row.ApprovedPermissionsHash == hash || len(manifest.Permissions) == 0
+	approved := len(unapprovedPermissions(row.ApprovedPermissions, manifest)) == 0
 	switch {
 	case approved, opts.ApprovePermissions:
-		// Either nothing changed or the caller confirmed the new set.
-		row.ApprovedPermissionsHash = hash
+		// Either nothing new is asked for or the caller confirmed the new set.
+		// Storing the current set forgets a permission the upgrade dropped, so
+		// asking for it again needs a new approval.
+		row.ApprovedPermissions = approvedSet(manifest)
 		approved = true
-	case row.ApprovedPermissionsHash == "":
+	case row.ApprovedPermissions == nil:
 		// A first install is approved by the act of installing it: the user
 		// saw the permission list before uploading the package.
-		row.ApprovedPermissionsHash = hash
+		row.ApprovedPermissions = approvedSet(manifest)
 		approved = true
 	}
 
@@ -279,7 +280,7 @@ func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest
 		row.Enabled = false
 	}
 	// A conflict with an enabled plugin keeps this one down, unless the
-	// caller asked to replace it (spec LIFE-20). An upgrade can add one.
+	// caller asked to replace it. An upgrade can add one.
 	var conflicts []string
 	if row.Enabled {
 		if conflicts = m.enabledConflicts(manifest); len(conflicts) > 0 && !opts.ReplaceConflicts {
@@ -396,6 +397,9 @@ func (m *Manager) uninstall(ctx context.Context, id string, cascade bool, seen m
 	if err := os.RemoveAll(dataDir); err != nil {
 		m.log.Warnf("[plugin:%s] remove data directory: %v", id, err)
 	}
+	if err := m.backend.removeSnippets(id); err != nil {
+		m.log.Warnf("[plugin:%s] remove nginx snippets: %v", id, err)
+	}
 	// Both tables carry a unique index on the plugin id, so the rows are
 	// deleted for good and a later reinstall can create them again.
 	if _, err := query.PluginKV.WithContext(ctx).Unscoped().Where(query.PluginKV.PluginID.Eq(id)).Delete(); err != nil {
@@ -420,7 +424,7 @@ type EnableOptions struct {
 	// ApprovePermissions records the manifest permission set as approved.
 	ApprovePermissions bool
 	// ReplaceConflicts disables the enabled plugins that conflict with the
-	// plugin instead of refusing (spec LIFE-20).
+	// plugin instead of refusing.
 	ReplaceConflicts bool
 }
 
@@ -450,9 +454,9 @@ func (m *Manager) EnableWith(ctx context.Context, id string, opts EnableOptions)
 	m.mu.RLock()
 	manifest := item.manifest
 	row := item.row
-	approvedBefore := ""
+	var approvedBefore []string
 	if row != nil {
-		approvedBefore = row.ApprovedPermissionsHash
+		approvedBefore = row.ApprovedPermissions
 	}
 	m.mu.RUnlock()
 
@@ -474,15 +478,14 @@ func (m *Manager) EnableWith(ctx context.Context, id string, opts EnableOptions)
 		return nil, cosy.WrapErrorWithParams(ErrPluginConflict, strings.Join(conflicts, ", "))
 	}
 
-	hash := PermissionsHash(manifest)
 	switch {
-	case len(manifest.Permissions) == 0, approvedBefore == hash:
+	case len(unapprovedPermissions(approvedBefore, manifest)) == 0:
 		// Nothing new to approve.
-	case approvePermissions, approvedBefore == "":
+	case approvePermissions, approvedBefore == nil:
 		// Either the user confirmed the dialog or this plugin was never
 		// enabled before, in which case turning it on is the approval.
 		m.mu.Lock()
-		row.ApprovedPermissionsHash = hash
+		row.ApprovedPermissions = approvedSet(manifest)
 		m.mu.Unlock()
 	default:
 		return nil, ErrPermissionApprovalRequired

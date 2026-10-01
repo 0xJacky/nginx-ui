@@ -462,6 +462,51 @@ func TestManagerPermissionApprovalGating(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, StatusStopped, info.Status)
 	assert.True(t, info.Enabled)
+
+	// Dropping a permission asks for nothing new.
+	fourth := pluginManifest("official.alpha")
+	fourth.Version = "4.0.0"
+	fourth.Permissions = []string{protocol.PermissionKV}
+	info, err = m.Install(ctx, buildTestPackage(t, fourth, nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	assert.Equal(t, StatusStopped, info.Status)
+	assert.True(t, info.Enabled)
+
+	row, err := query.Plugin.Where(query.Plugin.PluginID.Eq("official.alpha")).First()
+	require.NoError(t, err)
+	assert.Equal(t, []string{protocol.PermissionKV}, row.ApprovedPermissions)
+
+	// The dropped permission is forgotten, so asking for it again needs a
+	// new approval.
+	fifth := pluginManifest("official.alpha")
+	fifth.Version = "5.0.0"
+	fifth.Permissions = second.Permissions
+	info, err = m.Install(ctx, buildTestPackage(t, fifth, nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	assert.Equal(t, StatusNeedsApproval, info.Status)
+}
+
+func TestManagerApprovalOfPluginWithoutPermissions(t *testing.T) {
+	m := newTestManager(t)
+	ctx := context.Background()
+	require.NoError(t, m.LoadOffline(ctx))
+
+	_, err := m.Install(ctx, buildTestPackage(t, pluginManifest("official.beta"), nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+
+	// An empty approved set survives the database, so the first permission
+	// a later version asks for still needs an approval.
+	row, err := query.Plugin.Where(query.Plugin.PluginID.Eq("official.beta")).First()
+	require.NoError(t, err)
+	assert.NotNil(t, row.ApprovedPermissions)
+	assert.Empty(t, row.ApprovedPermissions)
+
+	next := pluginManifest("official.beta")
+	next.Version = "2.0.0"
+	next.Permissions = []string{protocol.PermissionKV}
+	info, err := m.Install(ctx, buildTestPackage(t, next, nil), InstallOptions{Enable: true})
+	require.NoError(t, err)
+	assert.Equal(t, StatusNeedsApproval, info.Status)
 }
 
 func TestManagerDependencyRules(t *testing.T) {

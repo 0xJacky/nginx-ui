@@ -18,8 +18,7 @@ type ContentHost interface {
 
 // RegisterContent adds the templates of every enabled plugin to the
 // template lists and merges their translation files into the catalogs the
-// host serves, keeping both in step with the plugin inventory (spec
-// CONTENT-5 and CONTENT-8).
+// host serves, keeping both in step with the plugin inventory.
 func RegisterContent(h ContentHost) {
 	template.RegisterSource(NewTemplateSource(h))
 

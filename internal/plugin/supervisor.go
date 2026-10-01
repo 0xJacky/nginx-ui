@@ -21,6 +21,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/demo"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
+	"github.com/0xJacky/Nginx-UI/internal/plugin/npipe"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
@@ -574,6 +575,11 @@ func (s *Supervisor) handshake(ctx context.Context, p *process) error {
 	if !sameStringSet(result.Capabilities, declared) {
 		return fmt.Errorf("%w: plugin reports capabilities %v, the manifest declares %v",
 			ErrPluginHandshake, result.Capabilities, declared)
+	}
+	for _, pipe := range []string{result.HTTPPipe, result.RPCPipe} {
+		if pipe != "" && !npipe.Valid(pipe) {
+			return fmt.Errorf("%w: %q is not a named pipe on this machine", ErrPluginHandshake, pipe)
+		}
 	}
 	p.initResult = result
 

@@ -11,7 +11,7 @@ import (
 var cgroupNoticed atomic.Bool
 
 // startProcess starts cmd without limits: they are enforced on Linux with
-// cgroup v2 only (spec LIFE-16).
+// cgroup v2 only.
 func (s *Supervisor) startProcess(cmd *exec.Cmd) (*exec.Cmd, *pluginCgroup, error) {
 	if !s.cfg.Resources.IsZero() && cgroupNoticed.CompareAndSwap(false, true) {
 		s.log.Debugf("[plugin:%s] resource limits of plugin processes are enforced on Linux with cgroup v2 only", s.cfg.PluginID)

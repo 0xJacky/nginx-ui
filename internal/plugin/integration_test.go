@@ -39,6 +39,15 @@ func (integrationBackend) Notify(string, protocol.HostNotifyParams) error       
 func (integrationBackend) MetricsSnapshot() (any, error)                              { return nil, nil }
 func (integrationBackend) LogsList(string) []protocol.HostLogFile                     { return nil }
 func (integrationBackend) ActivitySet(string, protocol.HostActivitySetParams) error   { return nil }
+func (integrationBackend) NginxSnippetPut(string, string, string) (bool, error)       { return false, nil }
+func (integrationBackend) NginxSnippetDelete(string, string) (bool, error)            { return false, nil }
+func (integrationBackend) NginxSnippetList(string) ([]protocol.HostNginxSnippet, error) {
+	return nil, nil
+}
+func (integrationBackend) NginxConfigList() ([]string, error)      { return nil, nil }
+func (integrationBackend) NginxConfigGet(string) (string, error)   { return "", nil }
+func (integrationBackend) SitesList() ([]protocol.HostSite, error) { return nil, nil }
+func (integrationBackend) CertsList() ([]protocol.HostCert, error) { return nil, nil }
 
 // integrationOutcome is what one transport answered, compared across the
 // transports at the end.
