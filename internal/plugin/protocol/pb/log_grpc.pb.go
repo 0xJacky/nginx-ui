@@ -30,7 +30,8 @@ const (
 // receives the nginx access log lines of the host, parsed, while they are
 // written, and ships them wherever it likes (a log store, a SIEM, a metrics
 // pipeline). The host is the caller and streams the lines in batches over the
-// gRPC transport only. See spec/20-capabilities-logsink.md.
+// gRPC transport only. See
+// https://nginxui.com/plugin/capabilities/log-sink.
 type LogSinkClient interface {
 	// Delivers one batch of access log entries. The host sends every entry of
 	// the batch as one message, closes the stream and the plugin answers once.
@@ -66,7 +67,8 @@ type LogSink_PushClient = grpc.ClientStreamingClient[LogSinkPushRequest, LogSink
 // receives the nginx access log lines of the host, parsed, while they are
 // written, and ships them wherever it likes (a log store, a SIEM, a metrics
 // pipeline). The host is the caller and streams the lines in batches over the
-// gRPC transport only. See spec/20-capabilities-logsink.md.
+// gRPC transport only. See
+// https://nginxui.com/plugin/capabilities/log-sink.
 type LogSinkServer interface {
 	// Delivers one batch of access log entries. The host sends every entry of
 	// the batch as one message, closes the stream and the plugin answers once.

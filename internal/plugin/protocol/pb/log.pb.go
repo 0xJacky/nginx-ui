@@ -94,7 +94,7 @@ type LogEntry struct {
 	// Response status, $status.
 	Status int32 `protobuf:"varint,6,opt,name=status,proto3" json:"status,omitempty"`
 	// Size of the response body in bytes, $body_bytes_sent. A double so that
-	// sizes past 4 GiB stay exact (WIRE-10).
+	// sizes past 4 GiB stay exact.
 	BodyBytesSent float64 `protobuf:"fixed64,7,opt,name=body_bytes_sent,json=bodyBytesSent,proto3" json:"body_bytes_sent,omitempty"`
 	// $http_referer.
 	Referer string `protobuf:"bytes,8,opt,name=referer,proto3" json:"referer,omitempty"`

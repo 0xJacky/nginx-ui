@@ -29,7 +29,8 @@ const (
 //
 // Notify is the notify capability. A plugin that declares the capability
 // delivers nginx-ui notifications through the vendor channels its manifest
-// lists, and the host is the caller. See spec/12-capabilities-notify.md.
+// lists, and the host is the caller. See
+// https://nginxui.com/plugin/capabilities/notify.
 type NotifyClient interface {
 	// Delivers one notification through a channel.
 	Send(ctx context.Context, in *NotifySendRequest, opts ...grpc.CallOption) (*NotifySendResponse, error)
@@ -71,7 +72,8 @@ func (c *notifyClient) Validate(ctx context.Context, in *NotifyValidateRequest, 
 //
 // Notify is the notify capability. A plugin that declares the capability
 // delivers nginx-ui notifications through the vendor channels its manifest
-// lists, and the host is the caller. See spec/12-capabilities-notify.md.
+// lists, and the host is the caller. See
+// https://nginxui.com/plugin/capabilities/notify.
 type NotifyServer interface {
 	// Delivers one notification through a channel.
 	Send(context.Context, *NotifySendRequest) (*NotifySendResponse, error)
