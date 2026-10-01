@@ -70,7 +70,7 @@ func (m *Manager) dispatchEvent(published event.Event) {
 }
 
 // eventPermission returns the permission an event needs on top of being listed
-// in the manifest, empty when it needs none (spec HOST-18). The approved set
+// in the manifest, empty when it needs none. The approved set
 // equals the manifest set for a plugin that runs, see wantsLogSinkLocked.
 func eventPermission(eventType string) string {
 	if eventType == protocol.EventLogPathsChanged {

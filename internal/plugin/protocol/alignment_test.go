@@ -51,6 +51,19 @@ var alignments = []alignment{
 	{reflect.TypeFor[protocol.HostLogsListResult](), "HostLogsListResponse"},
 	{reflect.TypeFor[protocol.HostLogFile](), "HostLogFile"},
 	{reflect.TypeFor[protocol.HostActivitySetParams](), "HostActivitySetRequest"},
+	{reflect.TypeFor[protocol.HostNginxSnippetPutParams](), "HostNginxSnippetPutRequest"},
+	{reflect.TypeFor[protocol.HostNginxSnippetPutResult](), "HostNginxSnippetPutResponse"},
+	{reflect.TypeFor[protocol.HostNginxSnippetDeleteParams](), "HostNginxSnippetDeleteRequest"},
+	{reflect.TypeFor[protocol.HostNginxSnippetDeleteResult](), "HostNginxSnippetDeleteResponse"},
+	{reflect.TypeFor[protocol.HostNginxSnippetListResult](), "HostNginxSnippetListResponse"},
+	{reflect.TypeFor[protocol.HostNginxSnippet](), "HostNginxSnippet"},
+	{reflect.TypeFor[protocol.HostNginxConfigListResult](), "HostNginxConfigListResponse"},
+	{reflect.TypeFor[protocol.HostNginxConfigGetParams](), "HostNginxConfigGetRequest"},
+	{reflect.TypeFor[protocol.HostNginxConfigGetResult](), "HostNginxConfigGetResponse"},
+	{reflect.TypeFor[protocol.HostSitesListResult](), "HostSitesListResponse"},
+	{reflect.TypeFor[protocol.HostSite](), "HostSite"},
+	{reflect.TypeFor[protocol.HostCertsListResult](), "HostCertsListResponse"},
+	{reflect.TypeFor[protocol.HostCert](), "HostCert"},
 
 	// dns01.go
 	{reflect.TypeFor[protocol.DNS01ChallengeParams](), "DNS01PresentRequest"},
@@ -261,6 +274,13 @@ func TestMethodNamesMatchProto(t *testing.T) {
 		protocol.MethodHostMetricsSnapshot,
 		protocol.MethodHostLogsList,
 		protocol.MethodHostActivitySet,
+		protocol.MethodHostNginxSnippetPut,
+		protocol.MethodHostNginxSnippetDelete,
+		protocol.MethodHostNginxSnippetList,
+		protocol.MethodHostNginxConfigList,
+		protocol.MethodHostNginxConfigGet,
+		protocol.MethodHostSitesList,
+		protocol.MethodHostCertsList,
 	}
 	notifications := []string{
 		protocol.MethodInitialized,

@@ -1,7 +1,7 @@
 package plugin
 
-// This file prepares the cgroup v2 group a plugin process is confined to
-// (spec LIFE-16, SEC-17). The group of a plugin is
+// This file prepares the cgroup v2 group a plugin process is confined to.
+// The group of a plugin is
 // <root>/nginx-ui/plugins/<plugin id>: nginx-ui and nginx-ui/plugins only
 // pass the controllers down, and the leaf holds the limits and the process.
 // Starting the process inside it is Linux only, see cgroup_linux.go; the
@@ -57,7 +57,7 @@ type pluginCgroup struct {
 	limits ResourceLimits
 }
 
-// cgroupName turns a plugin id into one safe path segment (spec NAME-12).
+// cgroupName turns a plugin id into one safe path segment.
 func cgroupName(pluginID string) string {
 	name := strings.Map(func(r rune) rune {
 		switch {

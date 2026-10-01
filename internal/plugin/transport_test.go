@@ -305,22 +305,22 @@ func TestConformanceRunsBothTransports(t *testing.T) {
 
 	byKey := casesByKey(report)
 	for _, key := range []string{
-		"stdio|LIFE-8:plugin.ping",
-		"grpc|WIRE-11:grpc transport",
-		"grpc|LIFE-8:plugin.ping",
-		"grpc|WIRE-6:unknown method",
-		"grpc|WIRE-6:invalid params",
-		"grpc|WIRE-4:concurrent pings",
-		"grpc|DNS01-10:dns01.options",
-		"grpc|DNS01-9:dns01.validate",
-		"|TRANSPORT-1:identical results",
+		"stdio|lifecycle-ping:plugin.ping",
+		"grpc|protocol-grpc:grpc transport",
+		"grpc|lifecycle-ping:plugin.ping",
+		"grpc|protocol-errors:unknown method",
+		"grpc|protocol-errors:invalid params",
+		"grpc|protocol-concurrency:concurrent pings",
+		"grpc|dns01-options:dns01.options",
+		"grpc|dns01-validate:dns01.validate",
+		"|protocol-transports:identical results",
 	} {
 		c, ok := byKey[key]
 		if assert.True(t, ok, "missing case %s in %+v", key, report.Cases) {
 			assert.Equal(t, StatusPass, c.Status, "%s: %s", key, c.Message)
 		}
 	}
-	_, stdioOnly := byKey["grpc|WIRE-2:unanswered notification"]
+	_, stdioOnly := byKey["grpc|protocol-notification:unanswered notification"]
 	assert.False(t, stdioOnly, "notifications are a stdio case")
 
 	// Asking for one transport runs only that one.
@@ -329,7 +329,7 @@ func TestConformanceRunsBothTransports(t *testing.T) {
 	assert.True(t, report.Passed(), "%+v", report.Cases)
 	for _, c := range report.Cases {
 		assert.NotEqual(t, protocol.TransportGRPC, c.Transport, "%+v", c)
-		assert.NotEqual(t, "TRANSPORT-1", c.Rule)
+		assert.NotEqual(t, RuleProtocolTransports, c.Rule)
 	}
 }
 
@@ -345,7 +345,7 @@ func TestConformanceFailsGRPCForAStdioPlugin(t *testing.T) {
 	report, err := Conformance(ctx, dir, ConformanceOptions{Timeout: 25 * time.Second, Transport: TransportFlagGRPC, HandshakeTimeout: testHandshakeTimeout})
 	require.NoError(t, err)
 	assert.False(t, report.Passed())
-	c, ok := casesByKey(report)["grpc|WIRE-11:grpc transport"]
+	c, ok := casesByKey(report)["grpc|protocol-grpc:grpc transport"]
 	require.True(t, ok, "%+v", report.Cases)
 	assert.Equal(t, StatusFail, c.Status)
 

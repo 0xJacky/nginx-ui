@@ -22,11 +22,15 @@ type InitializeResult struct {
 	// Transports lists the transports the plugin can serve, e.g. ["stdio","grpc"].
 	// Empty means stdio only.
 	Transports []string `json:"transports,omitempty"`
-	// HTTPPort is reported by Windows plugins that serve the http capability
-	// on a loopback port instead of a Unix socket.
-	HTTPPort int `json:"http_port,omitempty"`
-	// RPCPort and RPCToken are reported by Windows plugins that serve gRPC on
-	// a loopback port instead of a Unix socket.
+	// HTTPPipe is the named pipe a Windows plugin serves the http capability
+	// on. HTTPPort is the loopback port of a Windows plugin that cannot open
+	// a named pipe, used when HTTPPipe is empty.
+	HTTPPipe string `json:"http_pipe,omitempty"`
+	HTTPPort int    `json:"http_port,omitempty"`
+	// RPCPipe is the named pipe a Windows plugin serves gRPC on. RPCPort is
+	// the loopback port of a Windows plugin that cannot open a named pipe,
+	// used when RPCPipe is empty. Both require RPCToken.
+	RPCPipe  string `json:"rpc_pipe,omitempty"`
 	RPCPort  int    `json:"rpc_port,omitempty"`
 	RPCToken string `json:"rpc_token,omitempty"`
 	// RPCSocket is the absolute path of the Unix socket the gRPC transport

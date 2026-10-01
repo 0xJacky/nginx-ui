@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/0xJacky/Nginx-UI/internal/plugin/npipe"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
@@ -26,11 +27,13 @@ const MaxMessageBytes = 64 << 20
 
 // Endpoint is where a plugin serves gRPC.
 type Endpoint struct {
-	// Socket is the Unix socket path. Empty when Port is set.
+	// Socket is the Unix socket path. Empty when Pipe or Port is set.
 	Socket string
-	// Port is the loopback TCP port Windows plugins listen on.
+	// Pipe is the named pipe Windows plugins listen on.
+	Pipe string
+	// Port is the loopback TCP port of a Windows plugin without a pipe.
 	Port int
-	// Token is sent as "authorization: Bearer <token>" on the TCP endpoint.
+	// Token is sent as "authorization: Bearer <token>" on a pipe or port.
 	Token string
 }
 
@@ -39,6 +42,9 @@ type Endpoint struct {
 func EndpointFor(result protocol.InitializeResult, dataDir string) (Endpoint, bool) {
 	if !slices.Contains(result.Transports, protocol.TransportGRPC) {
 		return Endpoint{}, false
+	}
+	if result.RPCPipe != "" {
+		return Endpoint{Pipe: result.RPCPipe, Token: result.RPCToken}, true
 	}
 	if result.RPCPort > 0 {
 		return Endpoint{Port: result.RPCPort, Token: result.RPCToken}, true
@@ -53,15 +59,27 @@ func EndpointFor(result protocol.InitializeResult, dataDir string) (Endpoint, bo
 	return Endpoint{Socket: socket}, true
 }
 
+// pipeTarget is the dial target of a named pipe endpoint. The pipe itself is
+// reached by the dialer, so the name never lands in the :authority header.
+const pipeTarget = "passthrough:///plugin"
+
 // Target is the gRPC dial target of the endpoint.
 func (e Endpoint) Target() string {
-	if e.Port > 0 {
+	switch {
+	case e.Pipe != "":
+		return pipeTarget
+	case e.Port > 0:
 		return net.JoinHostPort("127.0.0.1", strconv.Itoa(e.Port))
 	}
 	return "unix://" + e.Socket
 }
 
-func (e Endpoint) String() string { return e.Target() }
+func (e Endpoint) String() string {
+	if e.Pipe != "" {
+		return e.Pipe
+	}
+	return e.Target()
+}
 
 // bearerToken attaches the loopback token to every call.
 type bearerToken string
@@ -85,6 +103,12 @@ type Client struct {
 func Dial(ctx context.Context, ep Endpoint, opts ...grpc.DialOption) (*Client, error) {
 	if ep.Token != "" {
 		opts = append(opts, grpc.WithPerRPCCredentials(bearerToken(ep.Token)))
+	}
+	if ep.Pipe != "" {
+		pipe := ep.Pipe
+		opts = append(opts, grpc.WithContextDialer(func(ctx context.Context, _ string) (net.Conn, error) {
+			return npipe.Dial(ctx, pipe)
+		}))
 	}
 	return DialTarget(ctx, ep.Target(), opts...)
 }
