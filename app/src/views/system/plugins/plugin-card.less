@@ -43,8 +43,13 @@
     outline-offset: 2px;
   }
 
+  // A plugin that needs the operator gets a strip on its left edge.
   &.is-attention {
-    border-color: var(--ant-color-warning-border);
+    box-shadow: inset 3px 0 0 var(--ant-color-warning);
+  }
+
+  &.is-attention.is-error {
+    box-shadow: inset 3px 0 0 var(--ant-color-error);
   }
 
   // A plugin that is off recedes, the switch keeps its normal contrast.
@@ -70,40 +75,46 @@
 
 .plugin-card-title {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  gap: 2px 8px;
   min-width: 0;
 }
 
+.plugin-card-sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 10px;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--ant-color-text-tertiary);
+}
+
+.plugin-card-channel {
+  font-weight: 500;
+  color: var(--ant-color-warning);
+
+  &.is-dev {
+    color: var(--ant-purple-6, #722ed1);
+  }
+}
+
+// A long name wraps instead of being cut.
 .plugin-card-name {
+  display: -webkit-box;
   min-width: 0;
   overflow: hidden;
   font-size: 15px;
   font-weight: 600;
   line-height: 1.4;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .plugin-card-version {
-  flex: none;
-  padding: 0 7px;
-  font-size: 12px;
   font-variant-numeric: tabular-nums;
-  line-height: 18px;
-  color: var(--ant-color-text-secondary);
-  background: var(--ant-color-fill-tertiary);
-  border-radius: 999px;
-}
-
-.plugin-card-id {
-  margin-top: 2px;
-  overflow: hidden;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 12px;
-  color: var(--ant-color-text-quaternary);
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .plugin-card-description {
@@ -119,12 +130,48 @@
   -webkit-box-orient: vertical;
 }
 
-.plugin-card-meta {
+// State, trust, what the plugin provides and its memory, as quiet text.
+.plugin-card-facts {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px;
+  gap: 4px 14px;
   min-height: 22px;
+  font-size: 13px;
+  color: var(--ant-color-text-secondary);
+}
+
+.plugin-card-fact {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  &.is-warning {
+    color: var(--ant-color-warning);
+  }
+}
+
+.plugin-card-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+
+  &.is-success {
+    color: var(--ant-color-success);
+  }
+
+  &.is-warning {
+    color: var(--ant-color-warning);
+  }
+
+  &.is-error {
+    color: var(--ant-color-error);
+  }
+
+  &.is-processing {
+    color: var(--ant-color-primary);
+  }
 }
 
 .plugin-card-foot {

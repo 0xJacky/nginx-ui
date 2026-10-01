@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { PluginInfo, PluginSyncPolicy } from '@/api/plugin'
-import { SettingOutlined } from '@antdv-next/icons'
+import { CloudSyncOutlined, SettingOutlined } from '@antdv-next/icons'
 import { setSyncPolicy } from '@/api/plugin_sync'
 import NodeSelector from '@/components/NodeSelector'
 import { getErrorMessage } from '@/lib/http'
 
 const props = defineProps<{
   plugin: PluginInfo
+  // One link that opens the settings, switch included, for the plugin cards.
+  compact?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -19,6 +21,7 @@ const saving = ref(false)
 const popoverOpen = ref(false)
 const draftNodeIds = ref<number[]>([])
 const draftSyncSettings = ref(false)
+const draftAuto = ref(false)
 
 const isAuto = computed(() => props.plugin.sync_policy === 'auto')
 const nodeIds = computed(() => props.plugin.sync_node_ids ?? [])
@@ -65,10 +68,11 @@ function onPopoverOpenChange(open: boolean) {
 
   draftNodeIds.value = [...nodeIds.value]
   draftSyncSettings.value = props.plugin.sync_settings
+  draftAuto.value = isAuto.value
 }
 
 async function saveTargets() {
-  await save('auto', draftNodeIds.value, draftSyncSettings.value)
+  await save(!props.compact || draftAuto.value ? 'auto' : 'manual', draftNodeIds.value, draftSyncSettings.value)
   popoverOpen.value = false
 }
 </script>
@@ -76,6 +80,7 @@ async function saveTargets() {
 <template>
   <div class="flex items-center gap-2">
     <ASwitch
+      v-if="!compact"
       size="small"
       :checked="isAuto"
       :loading="saving"
@@ -95,11 +100,21 @@ async function saveTargets() {
             {{ $gettext('Keep this plugin at the same version and state on the selected child nodes. Leave every node unchecked to cover all of them, including the ones added later.') }}
           </p>
 
-          <NodeSelector v-model:target="draftNodeIds" hidden-local />
+          <ASwitch
+            v-if="compact"
+            v-model:checked="draftAuto"
+            class="mb-3"
+            :checked-children="$gettext('On')"
+            :un-checked-children="$gettext('Off')"
+          />
 
-          <ACheckbox v-model:checked="draftSyncSettings" class="mt-3">
-            {{ $gettext('Also sync the plugin settings') }}
-          </ACheckbox>
+          <template v-if="!compact || draftAuto">
+            <NodeSelector v-model:target="draftNodeIds" hidden-local />
+
+            <ACheckbox v-model:checked="draftSyncSettings" class="mt-3">
+              {{ $gettext('Also sync the plugin settings') }}
+            </ACheckbox>
+          </template>
 
           <div class="mt-3 flex justify-end gap-2">
             <AButton size="small" @click="popoverOpen = false">
@@ -119,9 +134,10 @@ async function saveTargets() {
 
       <AButton type="link" size="small" class="px-0">
         <template #icon>
-          <SettingOutlined />
+          <CloudSyncOutlined v-if="compact" />
+          <SettingOutlined v-else />
         </template>
-        {{ targetSummary }}
+        {{ compact ? $gettext('Nodes: %{target}', { target: targetSummary }) : targetSummary }}
       </AButton>
     </APopover>
   </div>
