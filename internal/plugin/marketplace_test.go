@@ -369,6 +369,37 @@ func TestMarketplaceUnavailableSourceIsReported(t *testing.T) {
 	assertPluginError(t, err, ErrSourceUnavailable)
 }
 
+func TestMarketplaceFailedSourceWaitsBeforeTheNextTry(t *testing.T) {
+	manager := newTestManager(t)
+	var hits atomic.Int32
+	failing := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		hits.Add(1)
+		http.Error(w, "down", http.StatusServiceUnavailable)
+	}))
+	t.Cleanup(failing.Close)
+	working := newCatalogServer(t)
+	working.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, nil)
+	useMarketplace(t, failing.URL+"/index.json", working.catalogURL())
+	marketplace := manager.Marketplace()
+	marketplace.ClearCache()
+
+	for range 3 {
+		entries, err := marketplace.Catalog(context.Background(), false)
+		require.NoError(t, err, "a working source is enough")
+		require.NotNil(t, findEntry(entries, "com.example.alpha", ""))
+	}
+	assert.Equal(t, int32(1), hits.Load(), "a failed source is not asked again right away")
+
+	_, err := marketplace.Catalog(context.Background(), true)
+	require.NoError(t, err)
+	assert.Equal(t, int32(2), hits.Load(), "a refresh asks again")
+
+	marketplace.ClearCache()
+	_, err = marketplace.Catalog(context.Background(), false)
+	require.NoError(t, err)
+	assert.Equal(t, int32(3), hits.Load(), "clearing the cache forgets the failure")
+}
+
 func TestMarketplaceSearchFiltersKeywordAndCategory(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)

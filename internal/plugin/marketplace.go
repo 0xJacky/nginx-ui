@@ -47,6 +47,9 @@ const CatalogSchemaVersion = 1
 const (
 	// catalogTTL is how long a fetched source is reused without refreshing.
 	catalogTTL = time.Hour
+	// catalogRetryAfter is how long a source that failed is not asked again
+	// without refreshing, so an unreachable one does not slow every page.
+	catalogRetryAfter = 5 * time.Minute
 	// maxCatalogBytes bounds one catalog document.
 	maxCatalogBytes = 8 << 20
 	// maxReadmeBytes bounds the proxied readme.
@@ -277,6 +280,11 @@ type sourceCache struct {
 	fetched time.Time
 }
 
+type sourceFailure struct {
+	err    error
+	failed time.Time
+}
+
 // Marketplace fetches the plugin catalogs and installs from them. It is owned
 // by the manager, see manager_marketplace.go.
 type Marketplace struct {
@@ -284,13 +292,15 @@ type Marketplace struct {
 
 	mu    sync.Mutex
 	cache map[string]*sourceCache
+	// failures holds the last error of each source that failed.
+	failures map[string]sourceFailure
 
 	// installMu serialises whole install flows, including their dependencies.
 	installMu sync.Mutex
 }
 
 func newMarketplace(m *Manager) *Marketplace {
-	return &Marketplace{manager: m, cache: map[string]*sourceCache{}}
+	return &Marketplace{manager: m, cache: map[string]*sourceCache{}, failures: map[string]sourceFailure{}}
 }
 
 // Sources lists the configured catalog URLs in merge order.
@@ -332,6 +342,7 @@ func (mp *Marketplace) Probe(ctx context.Context, rawURL string) SourceProbe {
 		if slices.Contains(mp.Sources(), candidate) {
 			mp.mu.Lock()
 			mp.cache[candidate] = &sourceCache{entries: entries, info: info, fetched: time.Now()}
+			delete(mp.failures, candidate)
 			mp.mu.Unlock()
 		}
 		return SourceProbe{URL: candidate, Reachable: true, CatalogInfo: info, Plugins: len(entries)}
@@ -366,12 +377,29 @@ func (mp *Marketplace) Catalog(ctx context.Context, refresh bool) ([]CatalogEntr
 		mp.manager.refreshPartners(ctx)
 	}
 	sources := mp.Sources()
+
+	// The sources are read at the same time, so a slow one does not hold up
+	// the others, and merged in their order.
+	type result struct {
+		entries []CatalogEntry
+		err     error
+	}
+	results := make([]result, len(sources))
+	var wg sync.WaitGroup
+	for i, source := range sources {
+		wg.Go(func() {
+			entries, err := mp.source(ctx, source, refresh)
+			results[i] = result{entries: entries, err: err}
+		})
+	}
+	wg.Wait()
+
 	merged := make([]CatalogEntry, 0, 32)
 	seen := make(map[string]struct{}, 32)
 
 	var firstErr error
-	for _, source := range sources {
-		entries, err := mp.source(ctx, source, refresh)
+	for i, source := range sources {
+		entries, err := results[i].entries, results[i].err
 		if err != nil {
 			if firstErr == nil {
 				firstErr = err
@@ -796,15 +824,28 @@ func (mp *Marketplace) source(ctx context.Context, rawURL string, refresh bool) 
 		if ok && time.Since(cached.fetched) < catalogTTL {
 			return cached.entries, nil
 		}
+		mp.mu.Lock()
+		failure, failed := mp.failures[rawURL]
+		mp.mu.Unlock()
+		if failed && time.Since(failure.failed) < catalogRetryAfter {
+			return nil, failure.err
+		}
 	}
 
 	entries, info, err := fetchCatalog(ctx, rawURL)
 	if err != nil {
+		// A cancelled request says nothing about the source.
+		if ctx.Err() == nil {
+			mp.mu.Lock()
+			mp.failures[rawURL] = sourceFailure{err: err, failed: time.Now()}
+			mp.mu.Unlock()
+		}
 		return nil, err
 	}
 
 	mp.mu.Lock()
 	mp.cache[rawURL] = &sourceCache{entries: entries, info: info, fetched: time.Now()}
+	delete(mp.failures, rawURL)
 	mp.mu.Unlock()
 	return entries, nil
 }
@@ -814,6 +855,7 @@ func (mp *Marketplace) source(ctx context.Context, rawURL string, refresh bool) 
 func (mp *Marketplace) ClearCache() {
 	mp.mu.Lock()
 	mp.cache = map[string]*sourceCache{}
+	mp.failures = map[string]sourceFailure{}
 	mp.mu.Unlock()
 }
 
