@@ -1,5 +1,5 @@
 // Package grpcbridge carries JSON-RPC shaped plugin calls over the optional
-// gRPC transport (plugin-spec/spec/03-wire-protocol.md WIRE-11).
+// gRPC transport (docs/plugin/protocol.md).
 //
 // Callers keep speaking in JSON-RPC terms: a method name, params and a result
 // value. The bridge resolves the method through the proto descriptors of the
@@ -36,7 +36,7 @@ type Method struct {
 	Input        protoreflect.MessageDescriptor
 	Output       protoreflect.MessageDescriptor
 	Notification bool
-	// Streaming marks a client streaming rpc (spec WIRE-12). It has no
+	// Streaming marks a client streaming rpc. It has no
 	// JSON-RPC form and is opened with Client.OpenStream only.
 	Streaming bool
 }

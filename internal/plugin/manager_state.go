@@ -32,7 +32,7 @@ func (m *Manager) startEnabled(ctx context.Context) {
 	}
 
 	// kept holds the plugins that stay on. A later plugin that conflicts with
-	// one of them is turned off (spec LIFE-20). A plugin whose start failed
+	// one of them is turned off. A plugin whose start failed
 	// stays on and counts too, it may come up again later.
 	kept := make(map[string]bool, len(ordered))
 	for _, id := range ordered {
@@ -134,7 +134,7 @@ func (m *Manager) bringUp(ctx context.Context, item *entry) error {
 	}
 	if supervisor == nil {
 		// A plugin without a server block has no process: there is nothing
-		// to start and nothing to schedule (spec CONTENT-1).
+		// to start and nothing to schedule.
 		return nil
 	}
 	m.registerManifestCron(item)

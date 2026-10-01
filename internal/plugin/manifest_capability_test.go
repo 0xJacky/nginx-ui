@@ -250,96 +250,96 @@ func TestLintCapabilityBlocks(t *testing.T) {
 		level  Level
 		rule   string
 	}{
-		{"notify without block", func(m *protocol.Manifest) { m.Notify = nil }, LevelError, "MAN-31"},
-		{"bad notify code", func(m *protocol.Manifest) { m.Notify.Channels[0].Code = "My Chat" }, LevelError, "NOTIFY-2"},
-		{"notify channel without name", func(m *protocol.Manifest) { m.Notify.Channels[0].Name = "" }, LevelError, "NOTIFY-3"},
+		{"notify without block", func(m *protocol.Manifest) { m.Notify = nil }, LevelError, RuleNotifyBlock},
+		{"bad notify code", func(m *protocol.Manifest) { m.Notify.Channels[0].Code = "My Chat" }, LevelError, RuleNotifyCode},
+		{"notify channel without name", func(m *protocol.Manifest) { m.Notify.Channels[0].Name = "" }, LevelError, RuleNotifyName},
 		{"notify field of unknown type", func(m *protocol.Manifest) {
 			m.Notify.Channels[0].Configuration.Fields[0].Type = "color"
-		}, LevelError, "NOTIFY-4"},
-		{"probe without block", func(m *protocol.Manifest) { m.Probe = nil }, LevelError, "MAN-32"},
+		}, LevelError, RuleConfigurationFields},
+		{"probe without block", func(m *protocol.Manifest) { m.Probe = nil }, LevelError, RuleProbeBlock},
 		{"duplicate probe code", func(m *protocol.Manifest) {
 			m.Probe.Kinds = append(m.Probe.Kinds, protocol.ProbeKind{Code: "tcp-banner", Name: "Again"})
-		}, LevelError, "PROBE-2"},
+		}, LevelError, RuleProbeCode},
 		{"probe field without display name", func(m *protocol.Manifest) {
 			m.Probe.Kinds[0].Configuration.Fields[0].DisplayName = ""
-		}, LevelError, "PROBE-3"},
+		}, LevelError, RuleProbeKind},
 		{"mcp without permission", func(m *protocol.Manifest) {
 			m.Permissions = []string{protocol.PermissionNetwork}
-		}, LevelError, "MAN-33"},
-		{"mcp without tools", func(m *protocol.Manifest) { m.MCP = nil }, LevelError, "MAN-33"},
-		{"bad mcp tool name", func(m *protocol.Manifest) { m.MCP.Tools[0].Name = "-purge" }, LevelError, "MCP-2"},
+		}, LevelError, RuleMCPBlock},
+		{"mcp without tools", func(m *protocol.Manifest) { m.MCP = nil }, LevelError, RuleMCPBlock},
+		{"bad mcp tool name", func(m *protocol.Manifest) { m.MCP.Tools[0].Name = "-purge" }, LevelError, RuleMCPTool},
 		{"mcp schema of another type", func(m *protocol.Manifest) {
 			m.MCP.Tools[0].InputSchema = map[string]any{"type": "string"}
-		}, LevelError, "MCP-3"},
+		}, LevelError, RuleMCPInputSchema},
 		{"notify without network", func(m *protocol.Manifest) {
 			m.Permissions = []string{protocol.PermissionMCP}
-		}, LevelWarning, "SEC-3"},
+		}, LevelWarning, RuleNetworkPermission},
 		{"mcp permission without capability", func(m *protocol.Manifest) {
 			m.Capabilities = []string{protocol.CapabilityNotify}
-		}, LevelWarning, "SEC-5"},
-		{"storage without block", func(m *protocol.Manifest) { m.Storage = nil }, LevelError, "MAN-34"},
-		{"bad storage code", func(m *protocol.Manifest) { m.Storage.Backends[0].Code = "Web DAV" }, LevelError, "STORAGE-2"},
-		{"storage backend without name", func(m *protocol.Manifest) { m.Storage.Backends[0].Name = "" }, LevelError, "STORAGE-3"},
+		}, LevelWarning, RuleUnusedPermission},
+		{"storage without block", func(m *protocol.Manifest) { m.Storage = nil }, LevelError, RuleStorageBlock},
+		{"bad storage code", func(m *protocol.Manifest) { m.Storage.Backends[0].Code = "Web DAV" }, LevelError, RuleStorageCode},
+		{"storage backend without name", func(m *protocol.Manifest) { m.Storage.Backends[0].Name = "" }, LevelError, RuleStorageBackend},
 		{"storage field without display name", func(m *protocol.Manifest) {
 			m.Storage.Backends[0].Configuration.Fields[0].DisplayName = ""
-		}, LevelError, "STORAGE-3"},
+		}, LevelError, RuleStorageBackend},
 		{"deploy without permission", func(m *protocol.Manifest) {
 			m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP}
-		}, LevelError, "MAN-35"},
-		{"deploy without targets", func(m *protocol.Manifest) { m.Deploy = nil }, LevelError, "MAN-35"},
+		}, LevelError, RuleDeployBlock},
+		{"deploy without targets", func(m *protocol.Manifest) { m.Deploy = nil }, LevelError, RuleDeployBlock},
 		{"duplicate deploy code", func(m *protocol.Manifest) {
 			m.Deploy.Targets = append(m.Deploy.Targets, protocol.DeployTarget{Code: "mycdn", Name: "Again"})
-		}, LevelError, "DEPLOY-2"},
-		{"deploy target without name", func(m *protocol.Manifest) { m.Deploy.Targets[0].Name = "" }, LevelError, "DEPLOY-3"},
+		}, LevelError, RuleDeployCode},
+		{"deploy target without name", func(m *protocol.Manifest) { m.Deploy.Targets[0].Name = "" }, LevelError, RuleDeployTarget},
 		{"deploy field of unknown type", func(m *protocol.Manifest) {
 			m.Deploy.Targets[0].Configuration.Fields[0].Type = "select"
-		}, LevelError, "DEPLOY-3"},
+		}, LevelError, RuleDeployTarget},
 		{"storage without network", func(m *protocol.Manifest) {
 			m.Capabilities = []string{protocol.CapabilityStorage}
 			m.Permissions = nil
-		}, LevelWarning, "SEC-3"},
+		}, LevelWarning, RuleNetworkPermission},
 		{"deploy permission without capability", func(m *protocol.Manifest) {
 			m.Capabilities = []string{protocol.CapabilityStorage}
-		}, LevelWarning, "SEC-5"},
+		}, LevelWarning, RuleUnusedPermission},
 		{"blocklist without network", func(m *protocol.Manifest) {
 			m.Permissions = []string{protocol.PermissionMCP, protocol.PermissionCertDeploy}
-		}, LevelError, "MAN-36"},
-		{"blocklist without sources", func(m *protocol.Manifest) { m.Blocklist = nil }, LevelError, "MAN-36"},
-		{"bad blocklist code", func(m *protocol.Manifest) { m.Blocklist.Sources[0].Code = "Threat" }, LevelError, "BLOCKLIST-2"},
-		{"blocklist source without name", func(m *protocol.Manifest) { m.Blocklist.Sources[0].Name = "" }, LevelError, "BLOCKLIST-3"},
-		{"blocklist refresh too short", func(m *protocol.Manifest) { m.Blocklist.Sources[0].RefreshSeconds = 59 }, LevelError, "BLOCKLIST-3"},
+		}, LevelError, RuleBlocklistBlock},
+		{"blocklist without sources", func(m *protocol.Manifest) { m.Blocklist = nil }, LevelError, RuleBlocklistBlock},
+		{"bad blocklist code", func(m *protocol.Manifest) { m.Blocklist.Sources[0].Code = "Threat" }, LevelError, RuleBlocklistCode},
+		{"blocklist source without name", func(m *protocol.Manifest) { m.Blocklist.Sources[0].Name = "" }, LevelError, RuleBlocklistSource},
+		{"blocklist refresh too short", func(m *protocol.Manifest) { m.Blocklist.Sources[0].RefreshSeconds = 59 }, LevelError, RuleBlocklistSource},
 		{"blocklist field without key", func(m *protocol.Manifest) {
 			m.Blocklist.Sources[0].Configuration.Fields[1].Key = ""
-		}, LevelError, "BLOCKLIST-3"},
+		}, LevelError, RuleBlocklistSource},
 		{"discovery without network", func(m *protocol.Manifest) {
 			m.Capabilities = []string{protocol.CapabilityUpstreamDiscovery}
 			m.Permissions = nil
-		}, LevelError, "MAN-37"},
-		{"discovery without providers", func(m *protocol.Manifest) { m.Discovery = nil }, LevelError, "MAN-37"},
+		}, LevelError, RuleDiscoveryBlock},
+		{"discovery without providers", func(m *protocol.Manifest) { m.Discovery = nil }, LevelError, RuleDiscoveryBlock},
 		{"duplicate discovery code", func(m *protocol.Manifest) {
 			m.Discovery.Providers = append(m.Discovery.Providers, protocol.DiscoveryProvider{Code: "registry", Name: "Again"})
-		}, LevelError, "DISCOVERY-2"},
+		}, LevelError, RuleDiscoveryCode},
 		{"discovery field without display name", func(m *protocol.Manifest) {
 			m.Discovery.Providers[0].Configuration.Fields[0].DisplayName = ""
-		}, LevelError, "DISCOVERY-3"},
+		}, LevelError, RuleDiscoveryProvider},
 		{"log.sink without log.read", func(m *protocol.Manifest) {
 			m.Permissions = []string{protocol.PermissionNetwork, protocol.PermissionMCP, protocol.PermissionCertDeploy}
-		}, LevelError, "MAN-38"},
+		}, LevelError, RuleLogSinkPermission},
 		{"log.read without log.sink", func(m *protocol.Manifest) {
 			m.Capabilities = []string{protocol.CapabilityStorage}
-		}, LevelWarning, "SEC-5"},
+		}, LevelWarning, RuleUnusedPermission},
 		{"log_sink block without log.sink", func(m *protocol.Manifest) {
 			m.Capabilities = []string{protocol.CapabilityStorage}
-		}, LevelWarning, "LOGSINK-1"},
-		{"log_sink batch too large", func(m *protocol.Manifest) { m.LogSink.BatchSize = 5000 }, LevelError, "LOGSINK-2"},
-		{"log_sink flush too short", func(m *protocol.Manifest) { m.LogSink.FlushIntervalMS = 10 }, LevelError, "LOGSINK-2"},
-		{"log_sink unknown format", func(m *protocol.Manifest) { m.LogSink.Formats = []string{"ltsv"} }, LevelError, "LOGSINK-3"},
+		}, LevelWarning, RuleLogSinkBlock},
+		{"log_sink batch too large", func(m *protocol.Manifest) { m.LogSink.BatchSize = 5000 }, LevelError, RuleLogSinkBatch},
+		{"log_sink flush too short", func(m *protocol.Manifest) { m.LogSink.FlushIntervalMS = 10 }, LevelError, RuleLogSinkBatch},
+		{"log_sink unknown format", func(m *protocol.Manifest) { m.LogSink.Formats = []string{"ltsv"} }, LevelError, RuleLogSinkFormats},
 		{"log_sink duplicate format", func(m *protocol.Manifest) {
 			m.LogSink.Formats = []string{protocol.LogFormatCombined, protocol.LogFormatCombined}
-		}, LevelError, "LOGSINK-3"},
-		{"negative memory hint", func(m *protocol.Manifest) { m.Server.Resources.MemoryMB = -1 }, LevelError, "MAN-39"},
-		{"negative recommended memory", func(m *protocol.Manifest) { m.Server.Resources.RecommendedMemoryMB = -1 }, LevelError, "MAN-39"},
-		{"negative cpu hint", func(m *protocol.Manifest) { m.Server.Resources.CPUPercent = -1 }, LevelError, "MAN-39"},
+		}, LevelError, RuleLogSinkFormats},
+		{"negative memory hint", func(m *protocol.Manifest) { m.Server.Resources.MemoryMB = -1 }, LevelError, RuleServerResources},
+		{"negative recommended memory", func(m *protocol.Manifest) { m.Server.Resources.RecommendedMemoryMB = -1 }, LevelError, RuleServerResources},
+		{"negative cpu hint", func(m *protocol.Manifest) { m.Server.Resources.CPUPercent = -1 }, LevelError, RuleServerResources},
 	}
 
 	for _, tc := range tests {

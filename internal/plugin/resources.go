@@ -5,8 +5,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 )
 
-// ResourceLimits are the limits of one plugin process, 0 meaning unlimited
-// (spec LIFE-16).
+// ResourceLimits are the limits of one plugin process, 0 meaning unlimited.
 type ResourceLimits struct {
 	// MemoryMB is memory in MiB.
 	MemoryMB int
@@ -31,8 +30,7 @@ type ResourceStatus struct {
 
 // EffectiveResources caps the server.resources hints of a manifest by the
 // host limits. For each resource the smaller of the two wins, 0 being
-// unlimited, so a hint lowers a limit but never raises it (spec LIFE-16,
-// SEC-17).
+// unlimited, so a hint lowers a limit but never raises it.
 func EffectiveResources(host ResourceLimits, manifest *protocol.Manifest) ResourceLimits {
 	var hint protocol.ManifestResources
 	if manifest != nil && manifest.Server != nil && manifest.Server.Resources != nil {

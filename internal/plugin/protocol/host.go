@@ -103,3 +103,83 @@ type HostActivitySetParams struct {
 	Label  string `json:"label"`
 	Active bool   `json:"active"`
 }
+
+// HostNginxSnippetPutParams is the payload of host.nginx.snippet.put.
+type HostNginxSnippetPutParams struct {
+	Name    string `json:"name"`
+	Content string `json:"content"`
+}
+
+// HostNginxSnippetPutResult is the reply to host.nginx.snippet.put.
+type HostNginxSnippetPutResult struct {
+	Changed bool   `json:"changed"`
+	Include string `json:"include"`
+}
+
+// HostNginxSnippetDeleteParams is the payload of host.nginx.snippet.delete.
+type HostNginxSnippetDeleteParams struct {
+	Name string `json:"name"`
+}
+
+// HostNginxSnippetDeleteResult is the reply to host.nginx.snippet.delete.
+type HostNginxSnippetDeleteResult struct {
+	Removed bool `json:"removed"`
+}
+
+// HostNginxSnippetListResult is the reply to host.nginx.snippet.list.
+type HostNginxSnippetListResult struct {
+	Snippets []HostNginxSnippet `json:"snippets"`
+}
+
+// HostNginxSnippet is one entry of HostNginxSnippetListResult.
+type HostNginxSnippet struct {
+	Name    string `json:"name"`
+	Include string `json:"include"`
+}
+
+// HostNginxConfigListResult is the reply to host.nginx.config.list.
+type HostNginxConfigListResult struct {
+	Files []string `json:"files"`
+}
+
+// HostNginxConfigGetParams is the payload of host.nginx.config.get.
+type HostNginxConfigGetParams struct {
+	Path string `json:"path"`
+}
+
+// HostNginxConfigGetResult is the reply to host.nginx.config.get.
+type HostNginxConfigGetResult struct {
+	Content string `json:"content"`
+}
+
+// HostSitesListResult is the reply to host.sites.list.
+type HostSitesListResult struct {
+	Sites []HostSite `json:"sites"`
+}
+
+// HostSite is one entry of HostSitesListResult.
+type HostSite struct {
+	Name       string   `json:"name"`
+	Status     string   `json:"status"`
+	URLs       []string `json:"urls"`
+	ConfigFile string   `json:"config_file"`
+}
+
+// HostCertsListResult is the reply to host.certs.list.
+type HostCertsListResult struct {
+	Certs []HostCert `json:"certs"`
+}
+
+// HostCert is one entry of HostCertsListResult. It never carries a private
+// key.
+type HostCert struct {
+	ID              string   `json:"id"`
+	Name            string   `json:"name"`
+	Domains         []string `json:"domains"`
+	AutoRenew       bool     `json:"auto_renew"`
+	ChallengeMethod string   `json:"challenge_method"`
+	KeyType         string   `json:"key_type"`
+	NotBefore       string   `json:"not_before"`
+	NotAfter        string   `json:"not_after"`
+	Issuer          string   `json:"issuer"`
+}

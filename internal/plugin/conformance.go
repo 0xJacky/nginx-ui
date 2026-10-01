@@ -1,8 +1,7 @@
 package plugin
 
-// This file drives a real plugin process through the numbered conformance
-// cases in plugin-spec/spec/09-conformance.md, for
-// "nginx-ui plugin conformance". It reuses the production Supervisor and
+// This file drives a real plugin process through the conformance cases of
+// "nginx-ui plugin conformance", each named after the rule it checks. It reuses the production Supervisor and
 // RegisterHostHandlers exactly as the plugin manager does, so a pass here is
 // evidence the plugin works against the real host, not a reimplementation of
 // the wire protocol.
@@ -100,7 +99,7 @@ func (r *ConformanceReport) Passed() bool {
 // defaultConformanceTimeout bounds a run when the caller does not set one.
 const defaultConformanceTimeout = 90 * time.Second
 
-// maxWebappBundleSize is the WEB-1 budget for a plugin's browser bundle.
+// maxWebappBundleSize is the budget for a plugin's browser bundle.
 const maxWebappBundleSize = 2 << 20 // 2 MiB
 
 // recorder appends one CaseResult to the report being built.
@@ -135,7 +134,7 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 
 	if manifest.Server == nil {
 		// A plugin without a server block has no process: only the static
-		// checks apply (spec CONF-13).
+		// checks apply.
 		record := func(rule, name string, status CaseStatus, dur time.Duration, format string, args ...any) {
 			report.Cases = append(report.Cases, CaseResult{
 				Rule: rule, Name: name, Status: status, Duration: dur, Message: fmt.Sprintf(format, args...),
@@ -190,7 +189,7 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 	_, release, err := sup.Acquire(runCtx)
 	handshakeElapsed := time.Since(started)
 	if err != nil {
-		record("LIFE-1", "handshake", StatusFail, handshakeElapsed, "plugin.initialize failed: %v", err)
+		record(RuleLifecycleHandshake, "handshake", StatusFail, handshakeElapsed, "plugin.initialize failed: %v", err)
 		checkWebapp(dir, manifest, record)
 		return report, nil
 	}
@@ -198,17 +197,17 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 
 	init, _ := sup.InitializeResult()
 	if init.APIVersion != protocol.APIVersion {
-		record("LIFE-3", "handshake api_version", StatusFail, handshakeElapsed,
+		record(RuleLifecycleAPIVersion, "handshake api_version", StatusFail, handshakeElapsed,
 			"plugin reported api_version %d, host speaks %d", init.APIVersion, protocol.APIVersion)
 	} else {
-		record("LIFE-1", "handshake", StatusPass, handshakeElapsed,
+		record(RuleLifecycleHandshake, "handshake", StatusPass, handshakeElapsed,
 			"completed in %s with api_version %d", handshakeElapsed.Round(time.Millisecond), init.APIVersion)
 	}
 
 	if sameStringSet(init.Capabilities, manifest.Capabilities) {
-		record("LIFE-4", "capabilities match manifest", StatusPass, 0, "capabilities: %v", init.Capabilities)
+		record(RuleLifecycleCapabilities, "capabilities match manifest", StatusPass, 0, "capabilities: %v", init.Capabilities)
 	} else {
-		record("LIFE-4", "capabilities match manifest", StatusFail, 0,
+		record(RuleLifecycleCapabilities, "capabilities match manifest", StatusFail, 0,
 			"handshake reported %v, manifest declares %v", init.Capabilities, manifest.Capabilities)
 	}
 
@@ -223,7 +222,7 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 	if runStdio {
 		stdioCaller, err = sup.stdioClient()
 		if err != nil {
-			record("LIFE-1", "handshake", StatusFail, 0, "the plugin stopped right after the handshake: %v", err)
+			record(RuleLifecycleHandshake, "handshake", StatusFail, 0, "the plugin stopped right after the handshake: %v", err)
 			return report, nil
 		}
 		runStdioCases(runCtx, sup, stdioCaller, targets, recordOn(protocol.TransportStdio))
@@ -257,11 +256,11 @@ func Conformance(ctx context.Context, path string, opts ConformanceOptions) (*Co
 	stopElapsed := time.Since(stopStarted)
 	switch {
 	case stopErr != nil:
-		record("LIFE-10", "shutdown and exit", StatusFail, stopElapsed, "Stop failed: %v", stopErr)
+		record(RuleLifecycleShutdown, "shutdown and exit", StatusFail, stopElapsed, "Stop failed: %v", stopErr)
 	case sup.State() != StateStopped:
-		record("LIFE-10", "shutdown and exit", StatusFail, stopElapsed, "state is %s after Stop", sup.State())
+		record(RuleLifecycleShutdown, "shutdown and exit", StatusFail, stopElapsed, "state is %s after Stop", sup.State())
 	default:
-		record("LIFE-10", "shutdown and exit", StatusPass, stopElapsed, "stopped in %s", stopElapsed.Round(time.Millisecond))
+		record(RuleLifecycleShutdown, "shutdown and exit", StatusPass, stopElapsed, "stopped in %s", stopElapsed.Round(time.Millisecond))
 	}
 
 	return report, nil
@@ -380,13 +379,13 @@ func runStdioCases(ctx context.Context, sup *Supervisor, caller jsonrpc.Caller, 
 	runCapabilityCases(ctx, caller, targets, record)
 }
 
-// connectConformanceGRPC checks WIRE-11: the plugin advertises grpc and its
+// connectConformanceGRPC checks the gRPC transport: the plugin advertises grpc and its
 // endpoint answers plugin.ping. It dials a client of its own, so the gRPC
 // cases fail instead of silently falling back to stdio.
 func connectConformanceGRPC(ctx context.Context, sup *Supervisor, init protocol.InitializeResult, dataDir string, record recorder) *grpcbridge.Client {
 	endpoint, ok := grpcbridge.EndpointFor(init, dataDir)
 	if !ok {
-		record("WIRE-11", "grpc transport", StatusFail, 0,
+		record(RuleProtocolGRPC, "grpc transport", StatusFail, 0,
 			"the plugin does not list grpc in transports (got %v)", init.Transports)
 		return nil
 	}
@@ -402,11 +401,11 @@ func connectConformanceGRPC(ctx context.Context, sup *Supervisor, init protocol.
 	}
 	elapsed := time.Since(started)
 	if err != nil {
-		record("WIRE-11", "grpc transport", StatusFail, elapsed, "cannot use the advertised endpoint %s: %v", endpoint, err)
+		record(RuleProtocolGRPC, "grpc transport", StatusFail, elapsed, "cannot use the advertised endpoint %s: %v", endpoint, err)
 		return nil
 	}
 
-	record("WIRE-11", "grpc transport", StatusPass, elapsed,
+	record(RuleProtocolGRPC, "grpc transport", StatusPass, elapsed,
 		"%s answered plugin.ping; the host routes capability calls over %s", endpoint, sup.Transport())
 	return client
 }
@@ -451,7 +450,7 @@ func (c *grpcConformanceCaller) Notify(context.Context, string, any) error {
 	return errors.New("notifications travel on stdio")
 }
 
-// runGRPCInvalidParams checks WIRE-6 over gRPC: request bytes that are no
+// runGRPCInvalidParams checks the error codes over gRPC: request bytes that are no
 // valid message answer INVALID_ARGUMENT or INTERNAL instead of hanging.
 func runGRPCInvalidParams(ctx context.Context, client *grpcbridge.Client, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -459,26 +458,26 @@ func runGRPCInvalidParams(ctx context.Context, client *grpcbridge.Client, record
 	m, _ := grpcbridge.Lookup(protocol.MethodDNS01Options)
 	_, err := client.Invoke(callCtx, m.FullMethod, []byte{0xff, 0xff, 0xff})
 	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
-		record("WIRE-6", "invalid params", StatusFail, 0, "the call hung instead of answering")
+		record(RuleProtocolErrors, "invalid params", StatusFail, 0, "the call hung instead of answering")
 		return
 	}
 	if err == nil {
-		record("WIRE-6", "invalid params", StatusFail, 0, "a malformed request message was accepted")
+		record(RuleProtocolErrors, "invalid params", StatusFail, 0, "a malformed request message was accepted")
 		return
 	}
 	err = grpcbridge.FromStatus(callCtx, err, true)
 	if perr, ok := jsonrpc.AsProtocolError(err); ok && (perr.Code == protocol.CodeInvalidParams || perr.Code == protocol.CodeInternalError) {
-		record("WIRE-6", "invalid params", StatusPass, 0, "a malformed request message answered with code %d", perr.Code)
+		record(RuleProtocolErrors, "invalid params", StatusPass, 0, "a malformed request message answered with code %d", perr.Code)
 		return
 	}
 	if isOptionalUnimplemented(err) {
-		record("WIRE-6", "invalid params", StatusSkip, 0, "dns01.options is not implemented, cannot exercise this case")
+		record(RuleProtocolErrors, "invalid params", StatusSkip, 0, "dns01.options is not implemented, cannot exercise this case")
 		return
 	}
-	record("WIRE-6", "invalid params", StatusFail, 0, "expected -32602 or -32000, got %v", err)
+	record(RuleProtocolErrors, "invalid params", StatusFail, 0, "expected -32602 or -32000, got %v", err)
 }
 
-// parityProbe is one call TRANSPORT-1 sends over both transports.
+// parityProbe is one call the transport parity case sends over both transports.
 type parityProbe struct {
 	name   string
 	method string
@@ -490,7 +489,7 @@ type parityProbe struct {
 	ignoreMessage bool
 }
 
-// runTransportParity checks TRANSPORT-1: the same calls produce the same
+// runTransportParity checks that the same calls produce the same
 // result or error on stdio and on gRPC.
 func runTransportParity(ctx context.Context, stdio, grpc jsonrpc.Caller, targets conformanceTargets, record recorder) {
 	probes := []parityProbe{}
@@ -578,10 +577,10 @@ func runTransportParity(ctx context.Context, stdio, grpc jsonrpc.Caller, targets
 	elapsed := time.Since(started)
 
 	if len(diffs) > 0 {
-		record("TRANSPORT-1", "identical results", StatusFail, elapsed, "%s", strings.Join(diffs, "; "))
+		record(RuleProtocolTransports, "identical results", StatusFail, elapsed, "%s", strings.Join(diffs, "; "))
 		return
 	}
-	record("TRANSPORT-1", "identical results", StatusPass, elapsed,
+	record(RuleProtocolTransports, "identical results", StatusPass, elapsed,
 		"%s answer the same on stdio and gRPC", strings.Join(names, ", "))
 }
 
@@ -646,7 +645,7 @@ func loadPluginForConformance(path string) (dir string, cleanup func(), manifest
 	return pkgDir, func() { _ = os.RemoveAll(dest) }, manifest, nil
 }
 
-// runPing checks LIFE-8: the plugin answers plugin.ping.
+// runPing checks that the plugin answers plugin.ping.
 func runPing(ctx context.Context, caller jsonrpc.Caller, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
@@ -654,25 +653,25 @@ func runPing(ctx context.Context, caller jsonrpc.Caller, record recorder) {
 	err := caller.Call(callCtx, protocol.MethodPing, nil, nil)
 	elapsed := time.Since(started)
 	if err != nil {
-		record("LIFE-8", "plugin.ping", StatusFail, elapsed, "ping failed: %v", err)
+		record(RuleLifecyclePing, "plugin.ping", StatusFail, elapsed, "ping failed: %v", err)
 		return
 	}
-	record("LIFE-8", "plugin.ping", StatusPass, elapsed, "answered in %s", elapsed.Round(time.Millisecond))
+	record(RuleLifecyclePing, "plugin.ping", StatusPass, elapsed, "answered in %s", elapsed.Round(time.Millisecond))
 }
 
-// runUnknownMethod checks WIRE-6: an unknown method answers -32601.
+// runUnknownMethod checks that an unknown method answers -32601.
 func runUnknownMethod(ctx context.Context, caller jsonrpc.Caller, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 	err := caller.Call(callCtx, "nginx-ui.conformance.does-not-exist", nil, nil)
 	if jsonrpc.IsMethodNotFound(err) {
-		record("WIRE-6", "unknown method", StatusPass, 0, "answered -32601 as required")
+		record(RuleProtocolErrors, "unknown method", StatusPass, 0, "answered -32601 as required")
 		return
 	}
-	record("WIRE-6", "unknown method", StatusFail, 0, "expected -32601 (method not found), got %v", err)
+	record(RuleProtocolErrors, "unknown method", StatusFail, 0, "expected -32601 (method not found), got %v", err)
 }
 
-// runInvalidParams checks WIRE-6: params of the wrong shape answer -32602 or
+// runInvalidParams checks that params of the wrong shape answer -32602 or
 // -32000, and never hang the connection.
 func runInvalidParams(ctx context.Context, caller jsonrpc.Caller, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -680,41 +679,41 @@ func runInvalidParams(ctx context.Context, caller jsonrpc.Caller, record recorde
 	// dns01.options expects an object; send a bare string instead.
 	err := caller.Call(callCtx, protocol.MethodDNS01Options, "not-an-object", nil)
 	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
-		record("WIRE-6", "invalid params", StatusFail, 0, "the call hung instead of answering")
+		record(RuleProtocolErrors, "invalid params", StatusFail, 0, "the call hung instead of answering")
 		return
 	}
 	if perr, ok := jsonrpc.AsProtocolError(err); ok && (perr.Code == protocol.CodeInvalidParams || perr.Code == protocol.CodeInternalError) {
-		record("WIRE-6", "invalid params", StatusPass, 0, "malformed params answered with code %d", perr.Code)
+		record(RuleProtocolErrors, "invalid params", StatusPass, 0, "malformed params answered with code %d", perr.Code)
 		return
 	}
 	if isOptionalUnimplemented(err) {
-		record("WIRE-6", "invalid params", StatusSkip, 0, "dns01.options is not implemented, cannot exercise this case")
+		record(RuleProtocolErrors, "invalid params", StatusSkip, 0, "dns01.options is not implemented, cannot exercise this case")
 		return
 	}
-	record("WIRE-6", "invalid params", StatusFail, 0, "expected -32602 or -32000, got %v", err)
+	record(RuleProtocolErrors, "invalid params", StatusFail, 0, "expected -32602 or -32000, got %v", err)
 }
 
-// runNotificationThenPing checks WIRE-2: a notification for an unknown
+// runNotificationThenPing checks that a notification for an unknown
 // method is never answered, and does not break the connection.
 func runNotificationThenPing(ctx context.Context, caller jsonrpc.Caller, record recorder) {
 	notifyCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	err := caller.Notify(notifyCtx, "nginx-ui.conformance.unknown-notification", nil)
 	cancel()
 	if err != nil {
-		record("WIRE-2", "unanswered notification", StatusFail, 0, "sending the notification failed: %v", err)
+		record(RuleProtocolNotification, "unanswered notification", StatusFail, 0, "sending the notification failed: %v", err)
 		return
 	}
 
 	pingCtx, cancel2 := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel2()
 	if err := caller.Call(pingCtx, protocol.MethodPing, nil, nil); err != nil {
-		record("WIRE-2", "unanswered notification", StatusFail, 0, "ping right after the unknown notification failed: %v", err)
+		record(RuleProtocolNotification, "unanswered notification", StatusFail, 0, "ping right after the unknown notification failed: %v", err)
 		return
 	}
-	record("WIRE-2", "unanswered notification", StatusPass, 0, "an unknown notification produced no reply and the connection stayed usable")
+	record(RuleProtocolNotification, "unanswered notification", StatusPass, 0, "an unknown notification produced no reply and the connection stayed usable")
 }
 
-// runConcurrentPings checks WIRE-4: concurrent requests are all answered.
+// runConcurrentPings checks that concurrent requests are all answered.
 func runConcurrentPings(ctx context.Context, caller jsonrpc.Caller, record recorder) {
 	const n = 20
 	callCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
@@ -740,23 +739,23 @@ func runConcurrentPings(ctx context.Context, caller jsonrpc.Caller, record recor
 		}
 	}
 	if failures == 0 {
-		record("WIRE-4", "concurrent pings", StatusPass, elapsed, "%d concurrent plugin.ping calls all answered", n)
+		record(RuleProtocolConcurrency, "concurrent pings", StatusPass, elapsed, "%d concurrent plugin.ping calls all answered", n)
 		return
 	}
-	record("WIRE-4", "concurrent pings", StatusFail, elapsed, "%d of %d concurrent pings failed", failures, n)
+	record(RuleProtocolConcurrency, "concurrent pings", StatusFail, elapsed, "%d of %d concurrent pings failed", failures, n)
 }
 
-// runStdoutHygiene approximates WIRE-1 (stdout carries protocol frames
-// only): the supervisor already closes the connection on a malformed line,
+// runStdoutHygiene approximates the rule that stdout carries protocol
+// frames only: the supervisor already closes the connection on a malformed line,
 // so instead this checks the plugin actually used stderr for at least one
 // line, which is the positive half of the same requirement.
 func runStdoutHygiene(sup *Supervisor, record recorder) {
 	logs := sup.Logs()
 	if len(logs) == 0 {
-		record("WIRE-1", "stdout hygiene", StatusSkip, 0, "not observable: the plugin wrote nothing to stderr during this run")
+		record(RuleProtocolStderr, "stdout hygiene", StatusSkip, 0, "not observable: the plugin wrote nothing to stderr during this run")
 		return
 	}
-	record("WIRE-1", "stdout hygiene", StatusPass, 0, "the plugin wrote %d line(s) to stderr, consistent with keeping stdout for protocol frames only", len(logs))
+	record(RuleProtocolStderr, "stdout hygiene", StatusPass, 0, "the plugin wrote %d line(s) to stderr, consistent with keeping stdout for protocol frames only", len(logs))
 }
 
 // effectiveCapabilities intersects the manifest's own declared capabilities
@@ -775,7 +774,7 @@ func effectiveCapabilities(manifest *protocol.Manifest, opts ConformanceOptions)
 }
 
 // runDNS01Cases exercises the optional dns01 methods against the manifest's
-// first declared provider, per spec/09-conformance.md CONF-2.
+// first declared provider.
 func runDNS01Cases(ctx context.Context, caller jsonrpc.Caller, code string, record recorder) {
 	runDNS01Options(ctx, caller, code, record)
 	runDNS01Validate(ctx, caller, code, record)
@@ -784,9 +783,9 @@ func runDNS01Cases(ctx context.Context, caller jsonrpc.Caller, code string, reco
 }
 
 // isOptionalUnimplemented reports whether err is how a plugin says "I do not
-// implement this optional method", per DNS01-9/10/11: -32002 is the spec
-// answer, but a plugin registering no handler at all answers -32601, which
-// the spec says a host must treat the same way.
+// implement this optional method": -32002 is the documented answer, but a
+// plugin registering no handler at all answers -32601, which a host treats
+// the same way.
 func isOptionalUnimplemented(err error) bool {
 	return jsonrpc.IsMethodNotFound(err) || jsonrpc.IsUnsupported(err)
 }
@@ -798,7 +797,7 @@ func protocolErrorCode(err error) string {
 	return "no protocol error"
 }
 
-// runDNS01Options checks DNS01-10: an empty config either answers, or
+// runDNS01Options checks that dns01.options with an empty config either answers, or
 // reports the method is not implemented.
 func runDNS01Options(ctx context.Context, caller jsonrpc.Caller, code string, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -807,18 +806,18 @@ func runDNS01Options(ctx context.Context, caller jsonrpc.Caller, code string, re
 	err := caller.Call(callCtx, protocol.MethodDNS01Options, protocol.DNS01OptionsParams{Provider: code, Config: map[string]string{}}, &result)
 	switch {
 	case err == nil:
-		record("DNS01-10", "dns01.options", StatusPass, 0,
+		record(RuleDNS01Options, "dns01.options", StatusPass, 0,
 			"implemented: propagation_timeout_seconds=%d polling_interval_seconds=%d", result.PropagationTimeoutSeconds, result.PollingIntervalSeconds)
 	case isOptionalUnimplemented(err):
-		record("DNS01-10", "dns01.options", StatusSkip, 0, "not implemented (%s); the host falls back to its own defaults", protocolErrorCode(err))
+		record(RuleDNS01Options, "dns01.options", StatusSkip, 0, "not implemented (%s); the host falls back to its own defaults", protocolErrorCode(err))
 	case isInvalidConfig(err):
-		record("DNS01-10", "dns01.options", StatusPass, 0, "an empty config was rejected with -32003; the provider needs credentials to answer")
+		record(RuleDNS01Options, "dns01.options", StatusPass, 0, "an empty config was rejected with -32003; the provider needs credentials to answer")
 	default:
-		record("DNS01-10", "dns01.options", StatusFail, 0, "unexpected error: %v", err)
+		record(RuleDNS01Options, "dns01.options", StatusFail, 0, "unexpected error: %v", err)
 	}
 }
 
-// runDNS01Validate checks DNS01-9: an empty config is rejected with
+// runDNS01Validate checks that dns01.validate rejects an empty config with
 // CodeInvalidConfig, or the method is reported as not implemented.
 func runDNS01Validate(ctx context.Context, caller jsonrpc.Caller, code string, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -827,15 +826,15 @@ func runDNS01Validate(ctx context.Context, caller jsonrpc.Caller, code string, r
 	perr, ok := jsonrpc.AsProtocolError(err)
 	switch {
 	case ok && perr.Code == protocol.CodeInvalidConfig:
-		record("DNS01-9", "dns01.validate", StatusPass, 0, "an empty config was rejected with -32003 as required")
+		record(RuleDNS01Validate, "dns01.validate", StatusPass, 0, "an empty config was rejected with -32003 as required")
 	case isOptionalUnimplemented(err):
-		record("DNS01-9", "dns01.validate", StatusSkip, 0, "not implemented (%s)", protocolErrorCode(err))
+		record(RuleDNS01Validate, "dns01.validate", StatusSkip, 0, "not implemented (%s)", protocolErrorCode(err))
 	default:
-		record("DNS01-9", "dns01.validate", StatusFail, 0, "expected -32003 for an empty config, got %v", err)
+		record(RuleDNS01Validate, "dns01.validate", StatusFail, 0, "expected -32003 for an empty config, got %v", err)
 	}
 }
 
-// runDNS01Present checks DNS01-4: a dry_run present with an empty config
+// runDNS01Present checks that a dry_run dns01.present with an empty config
 // must not hang and must return within 30 seconds. Any result is acceptable.
 func runDNS01Present(ctx context.Context, caller jsonrpc.Caller, code string, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
@@ -854,14 +853,14 @@ func runDNS01Present(ctx context.Context, caller jsonrpc.Caller, code string, re
 	}, nil)
 	elapsed := time.Since(started)
 	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
-		record("DNS01-4", "dns01.present dry_run", StatusFail, elapsed, "timed out waiting for a reply")
+		record(RuleDNS01Present, "dns01.present dry_run", StatusFail, elapsed, "timed out waiting for a reply")
 		return
 	}
-	record("DNS01-4", "dns01.present dry_run", StatusPass, elapsed,
+	record(RuleDNS01Present, "dns01.present dry_run", StatusPass, elapsed,
 		"answered in %s (err=%v, any result is acceptable for a dry run)", elapsed.Round(time.Millisecond), err)
 }
 
-// runDNS01Check checks DNS01-11: an empty config must return within 30
+// runDNS01Check checks that dns01.check with an empty config returns within 30
 // seconds, or the method is reported as not implemented.
 func runDNS01Check(ctx context.Context, caller jsonrpc.Caller, code string, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
@@ -878,14 +877,14 @@ func runDNS01Check(ctx context.Context, caller jsonrpc.Caller, code string, reco
 	}, &result)
 	elapsed := time.Since(started)
 	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
-		record("DNS01-11", "dns01.check", StatusFail, elapsed, "timed out waiting for a reply")
+		record(RuleDNS01Check, "dns01.check", StatusFail, elapsed, "timed out waiting for a reply")
 		return
 	}
 	if isOptionalUnimplemented(err) {
-		record("DNS01-11", "dns01.check", StatusSkip, elapsed, "not implemented (%s)", protocolErrorCode(err))
+		record(RuleDNS01Check, "dns01.check", StatusSkip, elapsed, "not implemented (%s)", protocolErrorCode(err))
 		return
 	}
-	record("DNS01-11", "dns01.check", StatusPass, elapsed, "answered in %s (err=%v)", elapsed.Round(time.Millisecond), err)
+	record(RuleDNS01Check, "dns01.check", StatusPass, elapsed, "answered in %s (err=%v)", elapsed.Round(time.Millisecond), err)
 }
 
 // requiredConfigurationField returns the key of the first required field of
@@ -921,13 +920,13 @@ func invalidConfigFieldOf(err error) (field string, ok bool) {
 	return field, true
 }
 
-// runNotifyValidate checks NOTIFY-8 against the manifest's first channel: an
+// runNotifyValidate checks notify.validate against the manifest's first channel: an
 // empty config is rejected with -32003 and data.field when the channel has a
 // required field, and accepted otherwise. notify.send is never called, it
 // would reach the vendor.
 func runNotifyValidate(ctx context.Context, caller jsonrpc.Caller, channel protocol.NotifyChannel, record recorder) {
 	runEmptyConfigValidate(ctx, caller, emptyConfigCase{
-		rule: "NOTIFY-8", method: protocol.MethodNotifyValidate, entry: "channel", code: channel.Code,
+		rule: RuleNotifyValidate, method: protocol.MethodNotifyValidate, entry: "channel", code: channel.Code,
 		params: protocol.NotifyValidateParams{Channel: channel.Code, Config: map[string]string{}},
 		schema: channel.Configuration,
 	}, record)
@@ -970,27 +969,27 @@ func runEmptyConfigValidate(ctx context.Context, caller jsonrpc.Caller, tc empty
 	}
 }
 
-// runStorageValidate checks STORAGE-10 against the manifest's first backend,
+// runStorageValidate checks storage.validate against the manifest's first backend,
 // as runNotifyValidate does for a channel.
 func runStorageValidate(ctx context.Context, caller jsonrpc.Caller, backend protocol.StorageBackend, record recorder) {
 	runEmptyConfigValidate(ctx, caller, emptyConfigCase{
-		rule: "STORAGE-10", method: protocol.MethodStorageValidate, entry: "backend", code: backend.Code,
+		rule: RuleStorageValidate, method: protocol.MethodStorageValidate, entry: "backend", code: backend.Code,
 		params: protocol.StorageValidateParams{Backend: backend.Code, Config: map[string]string{}},
 		schema: backend.Configuration,
 	}, record)
 }
 
-// runDeployValidate checks DEPLOY-9 against the manifest's first target kind,
+// runDeployValidate checks deploy.validate against the manifest's first target kind,
 // as runNotifyValidate does for a channel.
 func runDeployValidate(ctx context.Context, caller jsonrpc.Caller, target protocol.DeployTarget, record recorder) {
 	runEmptyConfigValidate(ctx, caller, emptyConfigCase{
-		rule: "DEPLOY-9", method: protocol.MethodDeployValidate, entry: "target kind", code: target.Code,
+		rule: RuleDeployValidate, method: protocol.MethodDeployValidate, entry: "target kind", code: target.Code,
 		params: protocol.DeployValidateParams{Kind: target.Code, Config: map[string]string{}},
 		schema: target.Configuration,
 	}, record)
 }
 
-// runStorageList checks STORAGE-8 against the manifest's first backend: with
+// runStorageList checks storage.list against the manifest's first backend: with
 // an empty config and an empty prefix it answers in time, with -32003 and
 // data.field when the backend has a required field and with an object list
 // otherwise. put, get and delete are never called, they change or fetch real
@@ -1008,50 +1007,50 @@ func runStorageList(ctx context.Context, caller jsonrpc.Caller, backend protocol
 	required := requiredConfigurationField(backend.Configuration)
 
 	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
-		record("STORAGE-8", "storage.list", StatusFail, elapsed, "no answer within 30 seconds")
+		record(RuleStorageList, "storage.list", StatusFail, elapsed, "no answer within 30 seconds")
 		return
 	}
 	if field, invalid := invalidConfigFieldOf(err); invalid {
 		switch {
 		case field == "":
-			record("STORAGE-8", "storage.list", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
+			record(RuleStorageList, "storage.list", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
 		case required == "":
-			record("STORAGE-8", "storage.list", StatusFail, elapsed, "backend %s declares no required field but rejected an empty config naming %s", backend.Code, field)
+			record(RuleStorageList, "storage.list", StatusFail, elapsed, "backend %s declares no required field but rejected an empty config naming %s", backend.Code, field)
 		default:
-			record("STORAGE-8", "storage.list", StatusPass, elapsed, "an empty config for backend %s was rejected with -32003 naming %s", backend.Code, field)
+			record(RuleStorageList, "storage.list", StatusPass, elapsed, "an empty config for backend %s was rejected with -32003 naming %s", backend.Code, field)
 		}
 		return
 	}
 	if err != nil {
-		record("STORAGE-8", "storage.list", StatusFail, elapsed, "expected an object list or -32003, got %v", err)
+		record(RuleStorageList, "storage.list", StatusFail, elapsed, "expected an object list or -32003, got %v", err)
 		return
 	}
 	if required != "" {
-		record("STORAGE-8", "storage.list", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
+		record(RuleStorageList, "storage.list", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
 		return
 	}
 	var listed struct {
 		Objects *[]protocol.StorageObject `json:"objects"`
 	}
 	if err = json.Unmarshal(result, &listed); err != nil {
-		record("STORAGE-8", "storage.list", StatusFail, elapsed, "objects is not a list of objects: %v", err)
+		record(RuleStorageList, "storage.list", StatusFail, elapsed, "objects is not a list of objects: %v", err)
 		return
 	}
 	count := 0
 	if listed.Objects != nil {
 		count = len(*listed.Objects)
 	}
-	record("STORAGE-8", "storage.list", StatusPass, elapsed, "backend %s listed %d object(s) for an empty prefix", backend.Code, count)
+	record(RuleStorageList, "storage.list", StatusPass, elapsed, "backend %s listed %d object(s) for an empty prefix", backend.Code, count)
 }
 
-// runDeployDryRun checks DEPLOY-6 against the manifest's first target kind:
+// runDeployDryRun checks a dry run deploy.push against the manifest's first target kind:
 // a dry run with an empty config and a throwaway certificate answers in
 // time, with -32003 and data.field when the kind has a required field and
 // with a result otherwise. A real push is never made.
 func runDeployDryRun(ctx context.Context, caller jsonrpc.Caller, target protocol.DeployTarget, record recorder) {
 	certificate, err := conformanceCertificate()
 	if err != nil {
-		record("DEPLOY-6", "deploy.push dry_run", StatusFail, 0, "cannot build the throwaway certificate: %v", err)
+		record(RuleDeployDryRun, "deploy.push dry_run", StatusFail, 0, "cannot build the throwaway certificate: %v", err)
 		return
 	}
 
@@ -1069,25 +1068,25 @@ func runDeployDryRun(ctx context.Context, caller jsonrpc.Caller, target protocol
 	required := requiredConfigurationField(target.Configuration)
 
 	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
-		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "no answer within 30 seconds")
+		record(RuleDeployDryRun, "deploy.push dry_run", StatusFail, elapsed, "no answer within 30 seconds")
 		return
 	}
 	field, invalid := invalidConfigFieldOf(err)
 	switch {
 	case invalid && field == "":
-		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
+		record(RuleDeployDryRun, "deploy.push dry_run", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
 	case invalid && required == "":
-		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "target kind %s declares no required field but rejected an empty config naming %s", target.Code, field)
+		record(RuleDeployDryRun, "deploy.push dry_run", StatusFail, elapsed, "target kind %s declares no required field but rejected an empty config naming %s", target.Code, field)
 	case invalid:
-		record("DEPLOY-6", "deploy.push dry_run", StatusPass, elapsed, "an empty config for target kind %s was rejected with -32003 naming %s", target.Code, field)
+		record(RuleDeployDryRun, "deploy.push dry_run", StatusPass, elapsed, "an empty config for target kind %s was rejected with -32003 naming %s", target.Code, field)
 	case err != nil && required != "":
-		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "expected -32003 naming a required field, got %v", err)
+		record(RuleDeployDryRun, "deploy.push dry_run", StatusFail, elapsed, "expected -32003 naming a required field, got %v", err)
 	case err != nil:
-		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "a dry run of a kind without required fields failed: %v", err)
+		record(RuleDeployDryRun, "deploy.push dry_run", StatusFail, elapsed, "a dry run of a kind without required fields failed: %v", err)
 	case required != "":
-		record("DEPLOY-6", "deploy.push dry_run", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
+		record(RuleDeployDryRun, "deploy.push dry_run", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
 	default:
-		record("DEPLOY-6", "deploy.push dry_run", StatusPass, elapsed, "target kind %s answered a dry run in %s", target.Code, elapsed.Round(time.Millisecond))
+		record(RuleDeployDryRun, "deploy.push dry_run", StatusPass, elapsed, "target kind %s answered a dry run in %s", target.Code, elapsed.Round(time.Millisecond))
 	}
 }
 
@@ -1128,7 +1127,7 @@ func conformanceCertificate() (protocol.DeployCertificate, error) {
 // conformanceDiscoveryService is a service no provider is expected to know.
 const conformanceDiscoveryService = "nginx-ui-conformance"
 
-// runBlocklistFetch checks BLOCKLIST-5 and BLOCKLIST-6 against the
+// runBlocklistFetch checks blocklist.fetch and its errors against the
 // manifest's first source kind: with an empty config it answers in time,
 // with -32003 and data.field when the kind has a required field, and
 // otherwise with a list whose entries parse as addresses or networks, or
@@ -1146,30 +1145,30 @@ func runBlocklistFetch(ctx context.Context, caller jsonrpc.Caller, source protoc
 	required := requiredConfigurationField(source.Configuration)
 
 	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
-		record("BLOCKLIST-5", "blocklist.fetch", StatusFail, elapsed, "no answer within 60 seconds")
+		record(RuleBlocklistFetch, "blocklist.fetch", StatusFail, elapsed, "no answer within 60 seconds")
 		return
 	}
 	if field, invalid := invalidConfigFieldOf(err); invalid {
 		if field == "" {
-			record("BLOCKLIST-6", "blocklist.fetch", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
+			record(RuleBlocklistErrors, "blocklist.fetch", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
 			return
 		}
-		record("BLOCKLIST-6", "blocklist.fetch", StatusPass, elapsed, "an empty config for source kind %s was rejected with -32003 naming %s", source.Code, field)
+		record(RuleBlocklistErrors, "blocklist.fetch", StatusPass, elapsed, "an empty config for source kind %s was rejected with -32003 naming %s", source.Code, field)
 		return
 	}
 	if err != nil {
-		record("BLOCKLIST-6", "blocklist.fetch", StatusFail, elapsed, "expected a list or -32003, got %v", err)
+		record(RuleBlocklistErrors, "blocklist.fetch", StatusFail, elapsed, "expected a list or -32003, got %v", err)
 		return
 	}
 	if required != "" {
-		record("BLOCKLIST-6", "blocklist.fetch", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
+		record(RuleBlocklistErrors, "blocklist.fetch", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
 		return
 	}
 	var fetched struct {
 		Entries *[]protocol.BlocklistEntry `json:"entries"`
 	}
 	if err = json.Unmarshal(result, &fetched); err != nil {
-		record("BLOCKLIST-5", "blocklist.fetch", StatusFail, elapsed, "entries is not a list of entries: %v", err)
+		record(RuleBlocklistFetch, "blocklist.fetch", StatusFail, elapsed, "entries is not a list of entries: %v", err)
 		return
 	}
 	var entries []protocol.BlocklistEntry
@@ -1178,14 +1177,14 @@ func runBlocklistFetch(ctx context.Context, caller jsonrpc.Caller, source protoc
 	}
 	for _, entry := range entries {
 		if !isAddressOrNetwork(entry.CIDR) {
-			record("BLOCKLIST-5", "blocklist.fetch", StatusFail, elapsed, "entry %q is not an address or a CIDR network", entry.CIDR)
+			record(RuleBlocklistFetch, "blocklist.fetch", StatusFail, elapsed, "entry %q is not an address or a CIDR network", entry.CIDR)
 			return
 		}
 	}
-	record("BLOCKLIST-5", "blocklist.fetch", StatusPass, elapsed, "source kind %s listed %d entries", source.Code, len(entries))
+	record(RuleBlocklistFetch, "blocklist.fetch", StatusPass, elapsed, "source kind %s listed %d entries", source.Code, len(entries))
 }
 
-// runDiscoveryResolve checks DISCOVERY-5 and DISCOVERY-6 against the
+// runDiscoveryResolve checks discovery.resolve and its errors against the
 // manifest's first provider: with an empty config and a service nobody
 // knows it answers in time, with -32003 and data.field when the provider has
 // a required field, and otherwise with a list of targets whose ports are
@@ -1204,30 +1203,30 @@ func runDiscoveryResolve(ctx context.Context, caller jsonrpc.Caller, provider pr
 	required := requiredConfigurationField(provider.Configuration)
 
 	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
-		record("DISCOVERY-5", "discovery.resolve", StatusFail, elapsed, "no answer within 30 seconds")
+		record(RuleDiscoveryResolve, "discovery.resolve", StatusFail, elapsed, "no answer within 30 seconds")
 		return
 	}
 	if field, invalid := invalidConfigFieldOf(err); invalid {
 		if field == "" {
-			record("DISCOVERY-6", "discovery.resolve", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
+			record(RuleDiscoveryErrors, "discovery.resolve", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
 			return
 		}
-		record("DISCOVERY-6", "discovery.resolve", StatusPass, elapsed, "an empty config for provider %s was rejected with -32003 naming %s", provider.Code, field)
+		record(RuleDiscoveryErrors, "discovery.resolve", StatusPass, elapsed, "an empty config for provider %s was rejected with -32003 naming %s", provider.Code, field)
 		return
 	}
 	if err != nil {
-		record("DISCOVERY-6", "discovery.resolve", StatusFail, elapsed, "expected a target list or -32003, got %v", err)
+		record(RuleDiscoveryErrors, "discovery.resolve", StatusFail, elapsed, "expected a target list or -32003, got %v", err)
 		return
 	}
 	if required != "" {
-		record("DISCOVERY-6", "discovery.resolve", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
+		record(RuleDiscoveryErrors, "discovery.resolve", StatusFail, elapsed, "an empty config was accepted although field %s is required", required)
 		return
 	}
 	var resolved struct {
 		Targets *[]protocol.DiscoveryTarget `json:"targets"`
 	}
 	if err = json.Unmarshal(result, &resolved); err != nil {
-		record("DISCOVERY-5", "discovery.resolve", StatusFail, elapsed, "targets is not a list of targets: %v", err)
+		record(RuleDiscoveryResolve, "discovery.resolve", StatusFail, elapsed, "targets is not a list of targets: %v", err)
 		return
 	}
 	var targets []protocol.DiscoveryTarget
@@ -1236,17 +1235,17 @@ func runDiscoveryResolve(ctx context.Context, caller jsonrpc.Caller, provider pr
 	}
 	for _, target := range targets {
 		if target.Address == "" || target.Port < 1 || target.Port > 65535 || target.Weight < 0 {
-			record("DISCOVERY-5", "discovery.resolve", StatusFail, elapsed, "target %s:%d (weight %d) is not valid", target.Address, target.Port, target.Weight)
+			record(RuleDiscoveryResolve, "discovery.resolve", StatusFail, elapsed, "target %s:%d (weight %d) is not valid", target.Address, target.Port, target.Weight)
 			return
 		}
 	}
-	record("DISCOVERY-5", "discovery.resolve", StatusPass, elapsed, "provider %s resolved %s to %d targets", provider.Code, conformanceDiscoveryService, len(targets))
+	record(RuleDiscoveryResolve, "discovery.resolve", StatusPass, elapsed, "provider %s resolved %s to %d targets", provider.Code, conformanceDiscoveryService, len(targets))
 }
 
-// conformanceLogPath is the log path of the entries LOGSINK-5 streams.
+// conformanceLogPath is the log path of the entries the log.push case streams.
 const conformanceLogPath = "/var/log/nginx/conformance.log"
 
-// conformanceLogEntries are the entries LOGSINK-5 streams.
+// conformanceLogEntries are the entries the log.push case streams.
 func conformanceLogEntries() []protocol.LogSinkPushParams {
 	entries := make([]protocol.LogSinkPushParams, 0, 3)
 	for i, uri := range []string{"/", "/index.html", "/favicon.ico"} {
@@ -1275,11 +1274,11 @@ func conformanceLogEntries() []protocol.LogSinkPushParams {
 	return entries
 }
 
-// runLogSinkCases checks the log.sink capability (spec CONF-16): the stream
+// runLogSinkCases checks the log.sink capability: the stream
 // has no stdio form and a stream of three entries is accepted over gRPC.
 func runLogSinkCases(ctx context.Context, stdioCaller jsonrpc.Caller, client *grpcbridge.Client, advertised, grpcRequested bool, recordOn func(string) recorder) {
 	if !advertised {
-		recordOn("")("LOGSINK-4", "log.sink transport", StatusFail, 0,
+		recordOn("")(RuleLogSinkTransport, "log.sink transport", StatusFail, 0,
 			"a log.sink plugin must list grpc in transports, log.push travels on gRPC only")
 	}
 	if stdioCaller != nil {
@@ -1291,13 +1290,13 @@ func runLogSinkCases(ctx context.Context, stdioCaller jsonrpc.Caller, client *gr
 	case client != nil:
 		runLogPushStream(ctx, client, record)
 	case !grpcRequested && advertised:
-		record("LOGSINK-5", "log.push stream", StatusSkip, 0, "log.push travels on gRPC only, run with --transport grpc or both")
+		record(RuleLogSinkPush, "log.push stream", StatusSkip, 0, "log.push travels on gRPC only, run with --transport grpc or both")
 	default:
-		record("LOGSINK-5", "log.push stream", StatusFail, 0, "no gRPC channel to stream log.push over")
+		record(RuleLogSinkPush, "log.push stream", StatusFail, 0, "no gRPC channel to stream log.push over")
 	}
 }
 
-// runLogPushOnStdio checks LOGSINK-4: log.push on stdio is an unknown method.
+// runLogPushOnStdio checks that log.push on stdio is an unknown method.
 func runLogPushOnStdio(ctx context.Context, caller jsonrpc.Caller, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
@@ -1306,14 +1305,14 @@ func runLogPushOnStdio(ctx context.Context, caller jsonrpc.Caller, record record
 	elapsed := time.Since(started)
 
 	if perr, ok := jsonrpc.AsProtocolError(err); ok && perr.Code == protocol.CodeMethodNotFound {
-		record("LOGSINK-4", "log.push on stdio", StatusPass, elapsed, "stdio answered -32601, the stream has no JSON-RPC form")
+		record(RuleLogSinkTransport, "log.push on stdio", StatusPass, elapsed, "stdio answered -32601, the stream has no JSON-RPC form")
 		return
 	}
 	if err == nil {
-		record("LOGSINK-4", "log.push on stdio", StatusFail, elapsed, "stdio answered log.push, which must be served on gRPC only")
+		record(RuleLogSinkTransport, "log.push on stdio", StatusFail, elapsed, "stdio answered log.push, which must be served on gRPC only")
 		return
 	}
-	record("LOGSINK-4", "log.push on stdio", StatusFail, elapsed, "expected -32601, got %v", err)
+	record(RuleLogSinkTransport, "log.push on stdio", StatusFail, elapsed, "expected -32601, got %v", err)
 }
 
 // logPushStreamer is the part of a gRPC client runLogPushStream needs.
@@ -1321,7 +1320,7 @@ type logPushStreamer interface {
 	OpenStream(ctx context.Context, method string) (*grpcbridge.ClientStream, error)
 }
 
-// runLogPushStream checks LOGSINK-5: a stream of three entries is answered
+// runLogPushStream checks that a stream of three entries is answered
 // with accepted 3.
 func runLogPushStream(ctx context.Context, client logPushStreamer, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
@@ -1332,13 +1331,13 @@ func runLogPushStream(ctx context.Context, client logPushStreamer, record record
 	elapsed := time.Since(started)
 	switch {
 	case errors.Is(callCtx.Err(), context.DeadlineExceeded):
-		record("LOGSINK-5", "log.push stream", StatusFail, elapsed, "no answer within 10 seconds")
+		record(RuleLogSinkPush, "log.push stream", StatusFail, elapsed, "no answer within 10 seconds")
 	case err != nil:
-		record("LOGSINK-5", "log.push stream", StatusFail, elapsed, "the stream failed: %v", err)
+		record(RuleLogSinkPush, "log.push stream", StatusFail, elapsed, "the stream failed: %v", err)
 	case accepted != 3:
-		record("LOGSINK-5", "log.push stream", StatusFail, elapsed, "accepted %d and rejected %d of 3 entries, want 3 accepted", accepted, rejected)
+		record(RuleLogSinkPush, "log.push stream", StatusFail, elapsed, "accepted %d and rejected %d of 3 entries, want 3 accepted", accepted, rejected)
 	default:
-		record("LOGSINK-5", "log.push stream", StatusPass, elapsed, "a stream of 3 entries was accepted")
+		record(RuleLogSinkPush, "log.push stream", StatusPass, elapsed, "a stream of 3 entries was accepted")
 	}
 }
 
@@ -1379,8 +1378,8 @@ func isAddressOrNetwork(value string) bool {
 	return err == nil && addr.Zone() == ""
 }
 
-// checkContent reports the static content checks (CONTENT-2, CONTENT-3,
-// CONTENT-6 and CONTENT-7). It needs no running plugin process.
+// checkContent reports the static checks of templates and translation
+// files. It needs no running plugin process.
 func checkContent(dir string, manifest *protocol.Manifest, record recorder) {
 	if manifest.Content == nil {
 		return
@@ -1394,11 +1393,11 @@ func checkContent(dir string, manifest *protocol.Manifest, record recorder) {
 		}
 		record(problem.Rule, "content", status, 0, "%s", problem.String())
 	}
-	if manifest.Content.Templates != "" && !failed["CONTENT-2"] && !failed["CONTENT-3"] {
-		record("CONTENT-3", "content templates", StatusPass, 0, "every template in %s parses and renders with its default values", manifest.Content.Templates)
+	if manifest.Content.Templates != "" && !failed[RuleContentTemplates] && !failed[RuleContentTemplate] {
+		record(RuleContentTemplate, "content templates", StatusPass, 0, "every template in %s parses and renders with its default values", manifest.Content.Templates)
 	}
-	if manifest.Content.Locales != "" && !failed["CONTENT-6"] && !failed["CONTENT-7"] {
-		record("CONTENT-7", "content locales", StatusPass, 0, "every translation file in %s is a host language and parses", manifest.Content.Locales)
+	if manifest.Content.Locales != "" && !failed[RuleContentLocales] && !failed[RuleContentLocale] {
+		record(RuleContentLocale, "content locales", StatusPass, 0, "every translation file in %s is a host language and parses", manifest.Content.Locales)
 	}
 }
 
@@ -1409,7 +1408,7 @@ const conformanceDeployDomain = "conformance.invalid"
 // anything real.
 const conformanceProbeTarget = "http://conformance.invalid"
 
-// runProbeCheck checks PROBE-4 and PROBE-5 against the manifest's first kind:
+// runProbeCheck checks probe.check and its result against the manifest's first kind:
 // the unroutable target answers in time with a known status, or the empty
 // config is rejected with -32003 and data.field.
 func runProbeCheck(ctx context.Context, caller jsonrpc.Caller, code string, record recorder) {
@@ -1426,52 +1425,52 @@ func runProbeCheck(ctx context.Context, caller jsonrpc.Caller, code string, reco
 	elapsed := time.Since(started)
 
 	if errors.Is(callCtx.Err(), context.DeadlineExceeded) {
-		record("PROBE-4", "probe.check", StatusFail, elapsed, "no answer within 15 seconds for timeout_seconds 5")
+		record(RuleProbeCheck, "probe.check", StatusFail, elapsed, "no answer within 15 seconds for timeout_seconds 5")
 		return
 	}
 	if field, invalid := invalidConfigFieldOf(err); invalid {
 		if field == "" {
-			record("PROBE-5", "probe.check", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
+			record(RuleProbeResult, "probe.check", StatusFail, elapsed, "an empty config was rejected with -32003 but without data.field")
 			return
 		}
-		record("PROBE-5", "probe.check", StatusPass, elapsed, "an empty config for kind %s was rejected with -32003 naming %s", code, field)
+		record(RuleProbeResult, "probe.check", StatusPass, elapsed, "an empty config for kind %s was rejected with -32003 naming %s", code, field)
 		return
 	}
 	if err != nil {
-		record("PROBE-5", "probe.check", StatusFail, elapsed, "an unreachable target must be reported as down, got %v", err)
+		record(RuleProbeResult, "probe.check", StatusFail, elapsed, "an unreachable target must be reported as down, got %v", err)
 		return
 	}
 	switch result.Status {
 	case protocol.ProbeStatusUp, protocol.ProbeStatusDown, protocol.ProbeStatusDegraded:
 	default:
-		record("PROBE-5", "probe.check", StatusFail, elapsed, "unknown status %q", result.Status)
+		record(RuleProbeResult, "probe.check", StatusFail, elapsed, "unknown status %q", result.Status)
 		return
 	}
 	if result.LatencyMS < 0 {
-		record("PROBE-5", "probe.check", StatusFail, elapsed, "negative latency_ms %d", result.LatencyMS)
+		record(RuleProbeResult, "probe.check", StatusFail, elapsed, "negative latency_ms %d", result.LatencyMS)
 		return
 	}
-	record("PROBE-5", "probe.check", StatusPass, elapsed, "%s answered %s in %s", conformanceProbeTarget, result.Status, elapsed.Round(time.Millisecond))
+	record(RuleProbeResult, "probe.check", StatusPass, elapsed, "%s answered %s in %s", conformanceProbeTarget, result.Status, elapsed.Round(time.Millisecond))
 }
 
-// runMCPUnknownTool checks MCP-6: a tool the manifest does not declare answers
+// runMCPUnknownTool checks that a tool the manifest does not declare answers
 // -32602. No declared tool is called, it may change state.
 func runMCPUnknownTool(ctx context.Context, caller jsonrpc.Caller, tool string, record recorder) {
 	callCtx, cancel := context.WithTimeout(ctx, 10*time.Second)
 	defer cancel()
 	err := caller.Call(callCtx, protocol.MethodMCPCall, protocol.MCPCallParams{Tool: tool}, &protocol.MCPCallResult{})
 	if perr, ok := jsonrpc.AsProtocolError(err); ok && perr.Code == protocol.CodeInvalidParams {
-		record("MCP-6", "mcp.call unknown tool", StatusPass, 0, "an unknown tool answered -32602 as required")
+		record(RuleMCPUnknownTool, "mcp.call unknown tool", StatusPass, 0, "an unknown tool answered -32602 as required")
 		return
 	}
 	if err == nil {
-		record("MCP-6", "mcp.call unknown tool", StatusFail, 0, "tool %s is not declared but answered with a result", tool)
+		record(RuleMCPUnknownTool, "mcp.call unknown tool", StatusFail, 0, "tool %s is not declared but answered with a result", tool)
 		return
 	}
-	record("MCP-6", "mcp.call unknown tool", StatusFail, 0, "expected -32602 for an unknown tool, got %v", err)
+	record(RuleMCPUnknownTool, "mcp.call unknown tool", StatusFail, 0, "expected -32602 for an unknown tool, got %v", err)
 }
 
-// checkWebapp checks WEB-1 and WEB-5 against the bundle file on disk. It
+// checkWebapp checks the bundle file on disk and its registration. It
 // needs no running plugin process.
 func checkWebapp(dir string, manifest *protocol.Manifest, record recorder) {
 	if manifest.Webapp == nil || manifest.Webapp.BundlePath == "" {
@@ -1481,37 +1480,37 @@ func checkWebapp(dir string, manifest *protocol.Manifest, record recorder) {
 
 	data, err := os.ReadFile(filepath.Join(dir, filepath.FromSlash(manifest.Webapp.BundlePath)))
 	if err != nil {
-		record("WEB-1", "webapp bundle", StatusFail, 0, "cannot read the bundle: %v", err)
+		record(RuleWebappBundle, "webapp bundle", StatusFail, 0, "cannot read the bundle: %v", err)
 		return
 	}
 
 	if len(data) > maxWebappBundleSize {
-		record("WEB-1", "webapp bundle size", StatusFail, 0, "bundle is %d bytes, more than the %d byte budget", len(data), maxWebappBundleSize)
+		record(RuleWebappBundle, "webapp bundle size", StatusFail, 0, "bundle is %d bytes, more than the %d byte budget", len(data), maxWebappBundleSize)
 	} else {
-		record("WEB-1", "webapp bundle size", StatusPass, 0, "bundle is %d bytes", len(data))
+		record(RuleWebappBundle, "webapp bundle size", StatusPass, 0, "bundle is %d bytes", len(data))
 	}
 
 	text := string(data)
 	if strings.Contains(text, "registerPlugin(") {
-		record("WEB-5", "webapp registerPlugin", StatusPass, 0, "the bundle calls registerPlugin(")
+		record(RuleWebappRegister, "webapp registerPlugin", StatusPass, 0, "the bundle calls registerPlugin(")
 	} else {
-		record("WEB-5", "webapp registerPlugin", StatusFail, 0, "the bundle never calls registerPlugin(")
+		record(RuleWebappRegister, "webapp registerPlugin", StatusFail, 0, "the bundle never calls registerPlugin(")
 	}
 
 	if strings.Contains(text, "createApp(") {
-		record("WEB-1", "webapp createApp", StatusWarn, 0, "the bundle calls createApp(, which WEB-1 forbids")
+		record(RuleWebappBundle, "webapp createApp", StatusWarn, 0, "the bundle calls createApp(, but a bundle must use the Vue instance of the host")
 	} else {
-		record("WEB-1", "webapp createApp", StatusPass, 0, "the bundle does not call createApp(")
+		record(RuleWebappBundle, "webapp createApp", StatusPass, 0, "the bundle does not call createApp(")
 	}
 
 	if strings.Contains(text, "eval(") {
-		record("WEB-1", "webapp eval", StatusFail, 0, "the bundle calls eval(")
+		record(RuleWebappBundle, "webapp eval", StatusFail, 0, "the bundle calls eval(")
 	} else {
-		record("WEB-1", "webapp eval", StatusPass, 0, "the bundle does not call eval(")
+		record(RuleWebappBundle, "webapp eval", StatusPass, 0, "the bundle does not call eval(")
 	}
 }
 
-// checkChunks checks WEB-13 against the chunk files on disk: each one exists
+// checkChunks checks the chunk files on disk: each one exists
 // and is a non-empty .js file.
 func checkChunks(dir string, manifest *protocol.Manifest, record recorder) {
 	if manifest.Webapp == nil || len(manifest.Webapp.Chunks) == 0 {
@@ -1527,17 +1526,17 @@ func checkChunks(dir string, manifest *protocol.Manifest, record recorder) {
 		file := manifest.Webapp.Chunks[name]
 		label := "webapp chunk " + name
 		if !isSafeRelPath(file) || !strings.HasSuffix(file, ".js") {
-			record("WEB-13", label, StatusFail, 0, "%q is not a safe relative .js path", file)
+			record(RuleWebappChunkFiles, label, StatusFail, 0, "%q is not a safe relative .js path", file)
 			continue
 		}
 		info, err := os.Stat(filepath.Join(dir, filepath.FromSlash(file)))
 		switch {
 		case err != nil:
-			record("WEB-13", label, StatusFail, 0, "cannot read the chunk: %v", err)
+			record(RuleWebappChunkFiles, label, StatusFail, 0, "cannot read the chunk: %v", err)
 		case !info.Mode().IsRegular() || info.Size() == 0:
-			record("WEB-13", label, StatusFail, 0, "%s is not a non-empty file", file)
+			record(RuleWebappChunkFiles, label, StatusFail, 0, "%s is not a non-empty file", file)
 		default:
-			record("WEB-13", label, StatusPass, 0, "%s is %d bytes", file, info.Size())
+			record(RuleWebappChunkFiles, label, StatusPass, 0, "%s is %d bytes", file, info.Size())
 		}
 	}
 }
@@ -1573,6 +1572,15 @@ func (b *conformanceBackend) Notify(string, protocol.HostNotifyParams) error    
 func (b *conformanceBackend) MetricsSnapshot() (any, error)                              { return nil, nil }
 func (b *conformanceBackend) LogsList(string) []protocol.HostLogFile                     { return nil }
 func (b *conformanceBackend) ActivitySet(string, protocol.HostActivitySetParams) error   { return nil }
+func (b *conformanceBackend) NginxSnippetPut(string, string, string) (bool, error)       { return false, nil }
+func (b *conformanceBackend) NginxSnippetDelete(string, string) (bool, error)            { return false, nil }
+func (b *conformanceBackend) NginxSnippetList(string) ([]protocol.HostNginxSnippet, error) {
+	return nil, nil
+}
+func (b *conformanceBackend) NginxConfigList() ([]string, error)      { return nil, nil }
+func (b *conformanceBackend) NginxConfigGet(string) (string, error)   { return "", nil }
+func (b *conformanceBackend) SitesList() ([]protocol.HostSite, error) { return nil, nil }
+func (b *conformanceBackend) CertsList() ([]protocol.HostCert, error) { return nil, nil }
 
 // isInvalidConfig reports whether err is the CodeInvalidConfig protocol error.
 func isInvalidConfig(err error) bool {

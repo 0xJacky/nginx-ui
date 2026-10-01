@@ -437,7 +437,7 @@ func TestManagerSkipsLogSinkWithoutThePermission(t *testing.T) {
 	assert.Nil(t, item.logSink, "log.read was not granted")
 
 	manifest.Permissions = []string{protocol.PermissionLogRead}
-	item = m.newEntry(manifest.ID, manifest, &model.Plugin{PluginID: manifest.ID, Enabled: true, ApprovedPermissionsHash: PermissionsHash(manifest)})
+	item = m.newEntry(manifest.ID, manifest, &model.Plugin{PluginID: manifest.ID, Enabled: true, ApprovedPermissions: approvedSet(manifest)})
 	m.startLogSink(item, NewSupervisor(SupervisorConfig{PluginID: manifest.ID, Manifest: manifest}))
 	require.NotNil(t, item.logSink)
 	m.stopLogSink(item)
@@ -462,13 +462,13 @@ func TestConformanceLogSinkCases(t *testing.T) {
 
 	notFound := staticCaller{err: &protocol.Error{Code: protocol.CodeMethodNotFound}}
 	runLogSinkCases(t.Context(), notFound, nil, true, false, recordOn)
-	assert.Equal(t, StatusPass, statusOf("LOGSINK-4"))
-	assert.Equal(t, StatusSkip, statusOf("LOGSINK-5"), "a stdio only run skips the stream")
+	assert.Equal(t, StatusPass, statusOf(RuleLogSinkTransport))
+	assert.Equal(t, StatusSkip, statusOf(RuleLogSinkPush), "a stdio only run skips the stream")
 
 	cases = nil
 	runLogSinkCases(t.Context(), staticCaller{}, nil, false, false, recordOn)
-	assert.Equal(t, StatusFail, statusOf("LOGSINK-4"), "answering log.push on stdio fails")
-	assert.Equal(t, StatusFail, statusOf("LOGSINK-5"), "a log.sink plugin without grpc fails")
+	assert.Equal(t, StatusFail, statusOf(RuleLogSinkTransport), "answering log.push on stdio fails")
+	assert.Equal(t, StatusFail, statusOf(RuleLogSinkPush), "a log.sink plugin without grpc fails")
 
 	recorder := &streamRecorder{}
 	open := bufconnOpener(t, recorder.handle)

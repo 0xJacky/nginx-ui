@@ -37,8 +37,7 @@ func (f logFeed) Subscribe(deliver func(entries []protocol.LogSinkPushParams)) (
 	}))
 }
 
-// LogEntries converts the lines of the hub into log.push messages (spec
-// LOGSINK-6).
+// LogEntries converts the lines of the hub into log.push messages.
 func LogEntries(entries []sink.Entry) []protocol.LogSinkPushParams {
 	out := make([]protocol.LogSinkPushParams, len(entries))
 	for i, e := range entries {

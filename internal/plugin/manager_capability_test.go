@@ -14,9 +14,9 @@ import (
 func addCapabilityEntry(m *Manager, manifest *protocol.Manifest, enabled, approved bool) {
 	row := &model.Plugin{PluginID: manifest.ID, Enabled: enabled}
 	if approved {
-		row.ApprovedPermissionsHash = PermissionsHash(manifest)
+		row.ApprovedPermissions = approvedSet(manifest)
 	} else {
-		row.ApprovedPermissionsHash = "stale"
+		row.ApprovedPermissions = []string{}
 	}
 	m.entries[manifest.ID] = m.newEntry(manifest.ID, manifest, row)
 }

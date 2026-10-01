@@ -1,7 +1,7 @@
 package plugin
 
 // This file is the host side of the log.sink capability
-// (plugin-spec/spec/20-capabilities-logsink.md). The access log
+// (docs/plugin/capabilities/log-sink.md). The access log
 // feed hands every batch of new lines to dispatchLogEntries, which offers it
 // to the queue of every running log sink without blocking. One goroutine per
 // plugin drains its queue into log.push client streams over the plugin's
@@ -24,12 +24,11 @@ import (
 )
 
 const (
-	// logSinkQueueSize bounds the entries waiting for one plugin (spec
-	// LOGSINK-9). A plugin that cannot keep up loses lines instead of
+	// logSinkQueueSize bounds the entries waiting for one plugin. A plugin that cannot keep up loses lines instead of
 	// holding anything back.
 	logSinkQueueSize = 8192
 	// logSinkStreamTimeout bounds one stream, starting an on_demand plugin
-	// included (spec LOGSINK-10).
+	// included.
 	logSinkStreamTimeout = 30 * time.Second
 	// logSinkStopGrace is how long stopping a sink waits for the stream in
 	// flight before it is cancelled.
@@ -40,7 +39,7 @@ const (
 )
 
 // errLogSinkNeedsGRPC is the last error of a log.sink plugin that does not
-// serve gRPC, since log.push has no stdio form (spec LOGSINK-11).
+// serve gRPC, since log.push has no stdio form.
 var errLogSinkNeedsGRPC = errors.New("log.sink requires the grpc transport")
 
 // LogFeed connects the log.sink capability to the access log pipeline of the

@@ -83,7 +83,7 @@ type Info struct {
 	RequiresCapabilities []string                       `json:"requires_capabilities"`
 	// Conflicts are the plugin ids the manifest declares as never to run
 	// together with it. ConflictsEnabled lists the enabled plugins that
-	// conflict with it, whichever side declared it (spec LIFE-20).
+	// conflict with it, whichever side declared it.
 	Conflicts        []string `json:"conflicts"`
 	ConflictsEnabled []string `json:"conflicts_enabled"`
 	// NetworkHosts lists the addresses the plugin may reach, empty when it names none.
@@ -110,18 +110,18 @@ type Info struct {
 	// "grpc". Empty when no process is running.
 	Transport string `json:"transport,omitempty"`
 	// The access log lines a log.sink plugin accepted, rejected and lost
-	// since the host started (spec LOGSINK-11).
+	// since the host started.
 	StreamedLogEntries int64 `json:"streamed_log_entries"`
 	RejectedLogEntries int64 `json:"rejected_log_entries"`
 	DroppedLogEntries  int64 `json:"dropped_log_entries"`
 	// Resources are the limits of the plugin process, absent for a plugin
-	// without one (spec LIFE-16).
+	// without one.
 	Resources *ResourceStatus `json:"resources,omitempty"`
 	// RecommendedMemoryMB is the memory hint of the manifest in MiB, absent
 	// when the plugin gives none.
 	RecommendedMemoryMB int `json:"recommended_memory_mb,omitempty"`
 	// NameI18n and DescriptionI18n translate Name and Description, keyed by
-	// host locale code (spec MAN-40). Name and Description are the fallback.
+	// host locale code. Name and Description are the fallback.
 	NameI18n        map[string]string `json:"name_i18n,omitempty"`
 	DescriptionI18n map[string]string `json:"description_i18n,omitempty"`
 }
@@ -165,7 +165,7 @@ type InstallOptions struct {
 	// ApprovePermissions records the manifest permission set as approved.
 	ApprovePermissions bool
 	// ReplaceConflicts disables the enabled plugins that conflict with the
-	// package, instead of leaving the package disabled (spec LIFE-20).
+	// package, instead of leaving the package disabled.
 	ReplaceConflicts bool
 	// ExpectedID and ExpectedVersion, when set, refuse a package whose
 	// manifest names another plugin or version. The marketplace passes what
@@ -199,7 +199,7 @@ type InspectResult struct {
 	// PlatformSupported reports whether the package runs on this node.
 	PlatformSupported bool `json:"platform_supported"`
 	// NameI18n and DescriptionI18n are the non-empty translations of the
-	// manifest i18n block, keyed by host locale code (spec MAN-40).
+	// manifest i18n block, keyed by host locale code.
 	NameI18n        map[string]string `json:"name_i18n,omitempty"`
 	DescriptionI18n map[string]string `json:"description_i18n,omitempty"`
 	// UploadID names the kept upload an install can reuse, set by the API layer.
@@ -727,7 +727,7 @@ func statusOf(item *entry) Status {
 	if !item.row.Enabled {
 		// An upgrade that asks for more permissions than the user approved
 		// leaves the plugin down until the new set is confirmed.
-		if item.row.ApprovedPermissionsHash != "" && !isApproved(item) {
+		if item.row.ApprovedPermissions != nil && !isApproved(item) {
 			return StatusNeedsApproval
 		}
 		return StatusInstalled
@@ -757,10 +757,7 @@ func isApproved(item *entry) bool {
 	if item.manifest == nil || item.row == nil {
 		return false
 	}
-	if len(item.manifest.Permissions) == 0 {
-		return true
-	}
-	return item.row.ApprovedPermissionsHash == PermissionsHash(item.manifest)
+	return len(unapprovedPermissions(item.row.ApprovedPermissions, item.manifest)) == 0
 }
 
 func lifecycleOf(manifest *protocol.Manifest) string {

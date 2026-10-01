@@ -290,6 +290,15 @@ func TestEndpointFor(t *testing.T) {
 	assert.Equal(t, "127.0.0.1:5000", ep.Target())
 	assert.Equal(t, "t", ep.Token)
 
+	// A pipe wins over a port, and its name stays out of the target.
+	ep, ok = grpcbridge.EndpointFor(protocol.InitializeResult{Transports: []string{"grpc"},
+		RPCPipe: `\\.\pipe\nginx-ui-rpc-1`, RPCPort: 5000, RPCToken: "t"}, "/data")
+	require.True(t, ok)
+	assert.Equal(t, `\\.\pipe\nginx-ui-rpc-1`, ep.Pipe)
+	assert.Equal(t, "passthrough:///plugin", ep.Target())
+	assert.Equal(t, `\\.\pipe\nginx-ui-rpc-1`, ep.String())
+	assert.Equal(t, "t", ep.Token)
+
 	ep, ok = grpcbridge.EndpointFor(protocol.InitializeResult{Transports: []string{"grpc"}}, "/data")
 	require.True(t, ok)
 	assert.Equal(t, "unix:///data/rpc.sock", ep.Target())
@@ -342,7 +351,7 @@ func TestToStatusRoundTripsThroughFromStatus(t *testing.T) {
 		assert.Equal(t, pe, got)
 	}
 
-	// A scalar data value is wrapped, WIRE-5.
+	// A scalar data value is wrapped in an object.
 	st := grpcbridge.ToStatus(&protocol.Error{Code: -31000, Message: "x", Data: 3})
 	got := grpcbridge.FromStatus(context.Background(), st.Err(), true)
 	assert.Equal(t, map[string]any{"value": float64(3)}, got.(*protocol.Error).Data)

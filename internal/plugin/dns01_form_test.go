@@ -155,7 +155,7 @@ func TestLintBadDNS01FormIsError(t *testing.T) {
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	assert.True(t, report.HasErrors())
-	assertHasFinding(t, report, LevelError, "DNS01-18")
+	assertHasFinding(t, report, LevelError, RuleDNS01Form)
 }
 
 func TestLintDNS01MethodValueShadowingFieldIsError(t *testing.T) {
@@ -173,7 +173,7 @@ func TestLintDNS01MethodValueShadowingFieldIsError(t *testing.T) {
 	dir := writeLintFixture(t, lintFixture{manifest: m})
 	report, err := Lint(dir)
 	require.NoError(t, err)
-	assertHasFinding(t, report, LevelError, "DNS01-18")
+	assertHasFinding(t, report, LevelError, RuleDNS01Form)
 }
 
 func TestLintDNS01MethodWithoutFieldsIsClean(t *testing.T) {
@@ -189,7 +189,7 @@ func TestLintDNS01MethodWithoutFieldsIsClean(t *testing.T) {
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	for _, f := range report.Findings {
-		assert.NotEqual(t, "DNS01-18", f.Rule, f.Message)
+		assert.NotEqual(t, RuleDNS01Form, f.Rule, f.Message)
 	}
 }
 
@@ -199,7 +199,7 @@ func TestLintMissingDNS01FormIsError(t *testing.T) {
 	dir := writeLintFixture(t, lintFixture{manifest: m})
 	report, err := Lint(dir)
 	require.NoError(t, err)
-	assertHasFinding(t, report, LevelError, "DNS01-18")
+	assertHasFinding(t, report, LevelError, RuleDNS01Form)
 }
 
 func TestLintGoodDNS01FormHasNoFormFinding(t *testing.T) {
@@ -211,6 +211,6 @@ func TestLintGoodDNS01FormHasNoFormFinding(t *testing.T) {
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	for _, finding := range report.Findings {
-		assert.NotEqual(t, "DNS01-18", finding.Rule, finding.Message)
+		assert.NotEqual(t, RuleDNS01Form, finding.Rule, finding.Message)
 	}
 }

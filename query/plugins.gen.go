@@ -36,7 +36,7 @@ func newPlugin(db *gorm.DB, opts ...gen.DOOption) plugin {
 	_plugin.Version = field.NewString(tableName, "version")
 	_plugin.Enabled = field.NewBool(tableName, "enabled")
 	_plugin.Settings = field.NewField(tableName, "settings")
-	_plugin.ApprovedPermissionsHash = field.NewString(tableName, "approved_permissions_hash")
+	_plugin.ApprovedPermissions = field.NewField(tableName, "approved_permissions")
 	_plugin.LastError = field.NewString(tableName, "last_error")
 	_plugin.Trust = field.NewString(tableName, "trust")
 	_plugin.Signer = field.NewString(tableName, "signer")
@@ -56,26 +56,26 @@ func newPlugin(db *gorm.DB, opts ...gen.DOOption) plugin {
 type plugin struct {
 	pluginDo
 
-	ALL                     field.Asterisk
-	ID                      field.Uint64
-	CreatedAt               field.Time
-	UpdatedAt               field.Time
-	DeletedAt               field.Field
-	PluginID                field.String
-	Version                 field.String
-	Enabled                 field.Bool
-	Settings                field.Field
-	ApprovedPermissionsHash field.String
-	LastError               field.String
-	Trust                   field.String
-	Signer                  field.String
-	Partner                 field.String
-	AuthorPublicKey         field.String
-	ReleaseChannel          field.String
-	FollowedChannel         field.String
-	SyncPolicy              field.String
-	SyncNodeIDs             field.Field
-	SyncSettings            field.Bool
+	ALL                 field.Asterisk
+	ID                  field.Uint64
+	CreatedAt           field.Time
+	UpdatedAt           field.Time
+	DeletedAt           field.Field
+	PluginID            field.String
+	Version             field.String
+	Enabled             field.Bool
+	Settings            field.Field
+	ApprovedPermissions field.Field
+	LastError           field.String
+	Trust               field.String
+	Signer              field.String
+	Partner             field.String
+	AuthorPublicKey     field.String
+	ReleaseChannel      field.String
+	FollowedChannel     field.String
+	SyncPolicy          field.String
+	SyncNodeIDs         field.Field
+	SyncSettings        field.Bool
 
 	fieldMap map[string]field.Expr
 }
@@ -100,7 +100,7 @@ func (p *plugin) updateTableName(table string) *plugin {
 	p.Version = field.NewString(table, "version")
 	p.Enabled = field.NewBool(table, "enabled")
 	p.Settings = field.NewField(table, "settings")
-	p.ApprovedPermissionsHash = field.NewString(table, "approved_permissions_hash")
+	p.ApprovedPermissions = field.NewField(table, "approved_permissions")
 	p.LastError = field.NewString(table, "last_error")
 	p.Trust = field.NewString(table, "trust")
 	p.Signer = field.NewString(table, "signer")
@@ -136,7 +136,7 @@ func (p *plugin) fillFieldMap() {
 	p.fieldMap["version"] = p.Version
 	p.fieldMap["enabled"] = p.Enabled
 	p.fieldMap["settings"] = p.Settings
-	p.fieldMap["approved_permissions_hash"] = p.ApprovedPermissionsHash
+	p.fieldMap["approved_permissions"] = p.ApprovedPermissions
 	p.fieldMap["last_error"] = p.LastError
 	p.fieldMap["trust"] = p.Trust
 	p.fieldMap["signer"] = p.Signer

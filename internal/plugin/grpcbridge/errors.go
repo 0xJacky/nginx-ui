@@ -28,7 +28,7 @@ var ErrNotInContract = errors.New("grpcbridge: method is not an rpc of the plugi
 var ErrStreamingMethod = errors.New("grpcbridge: streaming and unary rpcs are not interchangeable")
 
 // FromStatus maps the error of a gRPC call back onto what the same call
-// returns on stdio (WIRE-11): the PluginError detail when present, otherwise
+// returns on stdio: the PluginError detail when present, otherwise
 // the status code table. The caller's context wins, so a deadline or a
 // cancellation surfaces as the context error exactly as on stdio. inContract
 // tells whether the called path is an rpc of the contract, which decides the
@@ -87,7 +87,7 @@ func errorData(data *structpb.Struct) any {
 	return data.AsMap()
 }
 
-// CodeFor maps a JSON-RPC error code onto a gRPC status code (WIRE-11).
+// CodeFor maps a JSON-RPC error code onto a gRPC status code.
 func CodeFor(code int) codes.Code {
 	switch code {
 	case protocol.CodeParseError, protocol.CodeInvalidRequest, protocol.CodeInvalidParams, protocol.CodeInvalidConfig:
@@ -115,7 +115,7 @@ func ToStatus(pe *protocol.Error) *status.Status {
 }
 
 // structData converts error data to a Struct, wrapping a value that is not a
-// JSON object as {"value": data} (WIRE-5).
+// JSON object as {"value": data}.
 func structData(data any) *structpb.Struct {
 	if data == nil {
 		return nil

@@ -36,6 +36,15 @@ type HostBackend interface {
 	// ActivitySet shows or clears one entry of the processing indicator. The
 	// params are already validated.
 	ActivitySet(pluginID string, p protocol.HostActivitySetParams) error
+	NginxSnippetPut(pluginID, name, content string) (changed bool, err error)
+	NginxSnippetDelete(pluginID, name string) (removed bool, err error)
+	// NginxSnippetList returns the snippets of the plugin, never nil.
+	NginxSnippetList(pluginID string) ([]protocol.HostNginxSnippet, error)
+	NginxConfigList() ([]string, error)
+	NginxConfigGet(path string) (string, error)
+	// SitesList and CertsList return lists that are never nil.
+	SitesList() ([]protocol.HostSite, error)
+	CertsList() ([]protocol.HostCert, error)
 }
 
 // hostKVSetParams mirrors protocol.HostKVSetParams but keeps the value raw so
@@ -262,6 +271,113 @@ func RegisterHostHandlers(conn *jsonrpc.Conn, pluginID string, permissions []str
 		}
 		return protocol.EmptyResult{}, nil
 	})
+
+	registerNginxHandlers(conn, pluginID, granted, backend)
+}
+
+// registerNginxHandlers wires the methods that reach nginx, its sites and
+// its certificates.
+func registerNginxHandlers(conn *jsonrpc.Conn, pluginID string, granted []string, backend HostBackend) {
+	conn.Handle(protocol.MethodHostNginxSnippetPut, func(ctx context.Context, params json.RawMessage) (any, error) {
+		if err := requirePermission(granted, protocol.PermissionNginxSnippet); err != nil {
+			return nil, err
+		}
+		var p protocol.HostNginxSnippetPutParams
+		if err := decodeParams(params, &p); err != nil {
+			return nil, err
+		}
+		changed, err := backend.NginxSnippetPut(pluginID, p.Name, p.Content)
+		if err != nil {
+			return nil, err
+		}
+		return protocol.HostNginxSnippetPutResult{Changed: changed, Include: SnippetInclude(pluginID, p.Name)}, nil
+	})
+
+	conn.Handle(protocol.MethodHostNginxSnippetDelete, func(ctx context.Context, params json.RawMessage) (any, error) {
+		if err := requirePermission(granted, protocol.PermissionNginxSnippet); err != nil {
+			return nil, err
+		}
+		var p protocol.HostNginxSnippetDeleteParams
+		if err := decodeParams(params, &p); err != nil {
+			return nil, err
+		}
+		removed, err := backend.NginxSnippetDelete(pluginID, p.Name)
+		if err != nil {
+			return nil, err
+		}
+		return protocol.HostNginxSnippetDeleteResult{Removed: removed}, nil
+	})
+
+	conn.Handle(protocol.MethodHostNginxSnippetList, func(ctx context.Context, params json.RawMessage) (any, error) {
+		if err := requirePermission(granted, protocol.PermissionNginxSnippet); err != nil {
+			return nil, err
+		}
+		snippets, err := backend.NginxSnippetList(pluginID)
+		if err != nil {
+			return nil, err
+		}
+		if snippets == nil {
+			snippets = []protocol.HostNginxSnippet{}
+		}
+		return protocol.HostNginxSnippetListResult{Snippets: snippets}, nil
+	})
+
+	conn.Handle(protocol.MethodHostNginxConfigList, func(ctx context.Context, params json.RawMessage) (any, error) {
+		if err := requirePermission(granted, protocol.PermissionNginxConfigRead); err != nil {
+			return nil, err
+		}
+		files, err := backend.NginxConfigList()
+		if err != nil {
+			return nil, err
+		}
+		if files == nil {
+			files = []string{}
+		}
+		return protocol.HostNginxConfigListResult{Files: files}, nil
+	})
+
+	conn.Handle(protocol.MethodHostNginxConfigGet, func(ctx context.Context, params json.RawMessage) (any, error) {
+		if err := requirePermission(granted, protocol.PermissionNginxConfigRead); err != nil {
+			return nil, err
+		}
+		var p protocol.HostNginxConfigGetParams
+		if err := decodeParams(params, &p); err != nil {
+			return nil, err
+		}
+		content, err := backend.NginxConfigGet(p.Path)
+		if err != nil {
+			return nil, err
+		}
+		return protocol.HostNginxConfigGetResult{Content: content}, nil
+	})
+
+	conn.Handle(protocol.MethodHostSitesList, func(ctx context.Context, params json.RawMessage) (any, error) {
+		if err := requirePermission(granted, protocol.PermissionSitesRead); err != nil {
+			return nil, err
+		}
+		sites, err := backend.SitesList()
+		if err != nil {
+			return nil, err
+		}
+		if sites == nil {
+			sites = []protocol.HostSite{}
+		}
+		return protocol.HostSitesListResult{Sites: sites}, nil
+	})
+
+	conn.Handle(protocol.MethodHostCertsList, func(ctx context.Context, params json.RawMessage) (any, error) {
+		if err := requirePermission(granted, protocol.PermissionCertsRead); err != nil {
+			return nil, err
+		}
+		certs, err := backend.CertsList()
+		if err != nil {
+			return nil, err
+		}
+		if certs == nil {
+			certs = []protocol.HostCert{}
+		}
+		return protocol.HostCertsListResult{Certs: certs}, nil
+	})
 }
 
 const (
@@ -270,7 +386,7 @@ const (
 	maxActivityLabelLen = 128
 )
 
-// validateActivity checks the params of host.activity.set (spec HOST-19). The
+// validateActivity checks the params of host.activity.set. The
 // label is ignored when the entry is removed.
 func validateActivity(p protocol.HostActivitySetParams) error {
 	if p.Key == "" || len(p.Key) > maxActivityKeyLen {

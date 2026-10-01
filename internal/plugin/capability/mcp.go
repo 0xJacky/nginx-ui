@@ -180,7 +180,7 @@ func (b *MCPBridge) handler(pluginID, tool string) func(context.Context, mcp.Cal
 }
 
 // toolResult converts the plugin reply. Content types this host does not
-// know are skipped (spec MCP-6).
+// know are skipped.
 func toolResult(result protocol.MCPCallResult) *mcp.CallToolResult {
 	content := make([]mcp.Content, 0, len(result.Content))
 	for _, block := range result.Content {

@@ -19,20 +19,27 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Host_Log_FullMethodName             = "/nginxui.plugin.v1.Host/Log"
-	Host_KVGet_FullMethodName           = "/nginxui.plugin.v1.Host/KVGet"
-	Host_KVSet_FullMethodName           = "/nginxui.plugin.v1.Host/KVSet"
-	Host_KVDelete_FullMethodName        = "/nginxui.plugin.v1.Host/KVDelete"
-	Host_KVList_FullMethodName          = "/nginxui.plugin.v1.Host/KVList"
-	Host_SettingsGet_FullMethodName     = "/nginxui.plugin.v1.Host/SettingsGet"
-	Host_I18NLocale_FullMethodName      = "/nginxui.plugin.v1.Host/I18nLocale"
-	Host_CredentialsGet_FullMethodName  = "/nginxui.plugin.v1.Host/CredentialsGet"
-	Host_CronRegister_FullMethodName    = "/nginxui.plugin.v1.Host/CronRegister"
-	Host_CronUnregister_FullMethodName  = "/nginxui.plugin.v1.Host/CronUnregister"
-	Host_Notify_FullMethodName          = "/nginxui.plugin.v1.Host/Notify"
-	Host_MetricsSnapshot_FullMethodName = "/nginxui.plugin.v1.Host/MetricsSnapshot"
-	Host_LogsList_FullMethodName        = "/nginxui.plugin.v1.Host/LogsList"
-	Host_ActivitySet_FullMethodName     = "/nginxui.plugin.v1.Host/ActivitySet"
+	Host_Log_FullMethodName                = "/nginxui.plugin.v1.Host/Log"
+	Host_KVGet_FullMethodName              = "/nginxui.plugin.v1.Host/KVGet"
+	Host_KVSet_FullMethodName              = "/nginxui.plugin.v1.Host/KVSet"
+	Host_KVDelete_FullMethodName           = "/nginxui.plugin.v1.Host/KVDelete"
+	Host_KVList_FullMethodName             = "/nginxui.plugin.v1.Host/KVList"
+	Host_SettingsGet_FullMethodName        = "/nginxui.plugin.v1.Host/SettingsGet"
+	Host_I18NLocale_FullMethodName         = "/nginxui.plugin.v1.Host/I18nLocale"
+	Host_CredentialsGet_FullMethodName     = "/nginxui.plugin.v1.Host/CredentialsGet"
+	Host_CronRegister_FullMethodName       = "/nginxui.plugin.v1.Host/CronRegister"
+	Host_CronUnregister_FullMethodName     = "/nginxui.plugin.v1.Host/CronUnregister"
+	Host_Notify_FullMethodName             = "/nginxui.plugin.v1.Host/Notify"
+	Host_MetricsSnapshot_FullMethodName    = "/nginxui.plugin.v1.Host/MetricsSnapshot"
+	Host_LogsList_FullMethodName           = "/nginxui.plugin.v1.Host/LogsList"
+	Host_ActivitySet_FullMethodName        = "/nginxui.plugin.v1.Host/ActivitySet"
+	Host_NginxSnippetPut_FullMethodName    = "/nginxui.plugin.v1.Host/NginxSnippetPut"
+	Host_NginxSnippetDelete_FullMethodName = "/nginxui.plugin.v1.Host/NginxSnippetDelete"
+	Host_NginxSnippetList_FullMethodName   = "/nginxui.plugin.v1.Host/NginxSnippetList"
+	Host_NginxConfigList_FullMethodName    = "/nginxui.plugin.v1.Host/NginxConfigList"
+	Host_NginxConfigGet_FullMethodName     = "/nginxui.plugin.v1.Host/NginxConfigGet"
+	Host_SitesList_FullMethodName          = "/nginxui.plugin.v1.Host/SitesList"
+	Host_CertsList_FullMethodName          = "/nginxui.plugin.v1.Host/CertsList"
 )
 
 // HostClient is the client API for Host service.
@@ -75,6 +82,24 @@ type HostClient interface {
 	// Shows or clears one entry of the host's processing indicator for the
 	// calling plugin. No permission needed.
 	ActivitySet(ctx context.Context, in *HostActivitySetRequest, opts ...grpc.CallOption) (*HostActivitySetResponse, error)
+	// Writes one nginx configuration snippet of the plugin, tests the whole
+	// configuration and reloads nginx, putting the previous snippet back when
+	// either step fails. Permission "nginx.snippet".
+	NginxSnippetPut(ctx context.Context, in *HostNginxSnippetPutRequest, opts ...grpc.CallOption) (*HostNginxSnippetPutResponse, error)
+	// Removes one snippet of the plugin the same way. Permission
+	// "nginx.snippet".
+	NginxSnippetDelete(ctx context.Context, in *HostNginxSnippetDeleteRequest, opts ...grpc.CallOption) (*HostNginxSnippetDeleteResponse, error)
+	// Lists the snippets of the plugin. Permission "nginx.snippet".
+	NginxSnippetList(ctx context.Context, in *HostNginxSnippetListRequest, opts ...grpc.CallOption) (*HostNginxSnippetListResponse, error)
+	// Lists the nginx configuration files. Permission "nginx.config.read".
+	NginxConfigList(ctx context.Context, in *HostNginxConfigListRequest, opts ...grpc.CallOption) (*HostNginxConfigListResponse, error)
+	// Reads one nginx configuration file. Permission "nginx.config.read".
+	NginxConfigGet(ctx context.Context, in *HostNginxConfigGetRequest, opts ...grpc.CallOption) (*HostNginxConfigGetResponse, error)
+	// Lists the sites. Permission "sites.read".
+	SitesList(ctx context.Context, in *HostSitesListRequest, opts ...grpc.CallOption) (*HostSitesListResponse, error)
+	// Lists the certificates without their private keys. Permission
+	// "certs.read".
+	CertsList(ctx context.Context, in *HostCertsListRequest, opts ...grpc.CallOption) (*HostCertsListResponse, error)
 }
 
 type hostClient struct {
@@ -225,6 +250,76 @@ func (c *hostClient) ActivitySet(ctx context.Context, in *HostActivitySetRequest
 	return out, nil
 }
 
+func (c *hostClient) NginxSnippetPut(ctx context.Context, in *HostNginxSnippetPutRequest, opts ...grpc.CallOption) (*HostNginxSnippetPutResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HostNginxSnippetPutResponse)
+	err := c.cc.Invoke(ctx, Host_NginxSnippetPut_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hostClient) NginxSnippetDelete(ctx context.Context, in *HostNginxSnippetDeleteRequest, opts ...grpc.CallOption) (*HostNginxSnippetDeleteResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HostNginxSnippetDeleteResponse)
+	err := c.cc.Invoke(ctx, Host_NginxSnippetDelete_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hostClient) NginxSnippetList(ctx context.Context, in *HostNginxSnippetListRequest, opts ...grpc.CallOption) (*HostNginxSnippetListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HostNginxSnippetListResponse)
+	err := c.cc.Invoke(ctx, Host_NginxSnippetList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hostClient) NginxConfigList(ctx context.Context, in *HostNginxConfigListRequest, opts ...grpc.CallOption) (*HostNginxConfigListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HostNginxConfigListResponse)
+	err := c.cc.Invoke(ctx, Host_NginxConfigList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hostClient) NginxConfigGet(ctx context.Context, in *HostNginxConfigGetRequest, opts ...grpc.CallOption) (*HostNginxConfigGetResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HostNginxConfigGetResponse)
+	err := c.cc.Invoke(ctx, Host_NginxConfigGet_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hostClient) SitesList(ctx context.Context, in *HostSitesListRequest, opts ...grpc.CallOption) (*HostSitesListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HostSitesListResponse)
+	err := c.cc.Invoke(ctx, Host_SitesList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *hostClient) CertsList(ctx context.Context, in *HostCertsListRequest, opts ...grpc.CallOption) (*HostCertsListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HostCertsListResponse)
+	err := c.cc.Invoke(ctx, Host_CertsList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // HostServer is the server API for Host service.
 // All implementations must embed UnimplementedHostServer
 // for forward compatibility.
@@ -265,6 +360,24 @@ type HostServer interface {
 	// Shows or clears one entry of the host's processing indicator for the
 	// calling plugin. No permission needed.
 	ActivitySet(context.Context, *HostActivitySetRequest) (*HostActivitySetResponse, error)
+	// Writes one nginx configuration snippet of the plugin, tests the whole
+	// configuration and reloads nginx, putting the previous snippet back when
+	// either step fails. Permission "nginx.snippet".
+	NginxSnippetPut(context.Context, *HostNginxSnippetPutRequest) (*HostNginxSnippetPutResponse, error)
+	// Removes one snippet of the plugin the same way. Permission
+	// "nginx.snippet".
+	NginxSnippetDelete(context.Context, *HostNginxSnippetDeleteRequest) (*HostNginxSnippetDeleteResponse, error)
+	// Lists the snippets of the plugin. Permission "nginx.snippet".
+	NginxSnippetList(context.Context, *HostNginxSnippetListRequest) (*HostNginxSnippetListResponse, error)
+	// Lists the nginx configuration files. Permission "nginx.config.read".
+	NginxConfigList(context.Context, *HostNginxConfigListRequest) (*HostNginxConfigListResponse, error)
+	// Reads one nginx configuration file. Permission "nginx.config.read".
+	NginxConfigGet(context.Context, *HostNginxConfigGetRequest) (*HostNginxConfigGetResponse, error)
+	// Lists the sites. Permission "sites.read".
+	SitesList(context.Context, *HostSitesListRequest) (*HostSitesListResponse, error)
+	// Lists the certificates without their private keys. Permission
+	// "certs.read".
+	CertsList(context.Context, *HostCertsListRequest) (*HostCertsListResponse, error)
 	mustEmbedUnimplementedHostServer()
 }
 
@@ -316,6 +429,27 @@ func (UnimplementedHostServer) LogsList(context.Context, *HostLogsListRequest) (
 }
 func (UnimplementedHostServer) ActivitySet(context.Context, *HostActivitySetRequest) (*HostActivitySetResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ActivitySet not implemented")
+}
+func (UnimplementedHostServer) NginxSnippetPut(context.Context, *HostNginxSnippetPutRequest) (*HostNginxSnippetPutResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method NginxSnippetPut not implemented")
+}
+func (UnimplementedHostServer) NginxSnippetDelete(context.Context, *HostNginxSnippetDeleteRequest) (*HostNginxSnippetDeleteResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method NginxSnippetDelete not implemented")
+}
+func (UnimplementedHostServer) NginxSnippetList(context.Context, *HostNginxSnippetListRequest) (*HostNginxSnippetListResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method NginxSnippetList not implemented")
+}
+func (UnimplementedHostServer) NginxConfigList(context.Context, *HostNginxConfigListRequest) (*HostNginxConfigListResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method NginxConfigList not implemented")
+}
+func (UnimplementedHostServer) NginxConfigGet(context.Context, *HostNginxConfigGetRequest) (*HostNginxConfigGetResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method NginxConfigGet not implemented")
+}
+func (UnimplementedHostServer) SitesList(context.Context, *HostSitesListRequest) (*HostSitesListResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SitesList not implemented")
+}
+func (UnimplementedHostServer) CertsList(context.Context, *HostCertsListRequest) (*HostCertsListResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CertsList not implemented")
 }
 func (UnimplementedHostServer) mustEmbedUnimplementedHostServer() {}
 func (UnimplementedHostServer) testEmbeddedByValue()              {}
@@ -590,6 +724,132 @@ func _Host_ActivitySet_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Host_NginxSnippetPut_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HostNginxSnippetPutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HostServer).NginxSnippetPut(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Host_NginxSnippetPut_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HostServer).NginxSnippetPut(ctx, req.(*HostNginxSnippetPutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Host_NginxSnippetDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HostNginxSnippetDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HostServer).NginxSnippetDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Host_NginxSnippetDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HostServer).NginxSnippetDelete(ctx, req.(*HostNginxSnippetDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Host_NginxSnippetList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HostNginxSnippetListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HostServer).NginxSnippetList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Host_NginxSnippetList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HostServer).NginxSnippetList(ctx, req.(*HostNginxSnippetListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Host_NginxConfigList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HostNginxConfigListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HostServer).NginxConfigList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Host_NginxConfigList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HostServer).NginxConfigList(ctx, req.(*HostNginxConfigListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Host_NginxConfigGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HostNginxConfigGetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HostServer).NginxConfigGet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Host_NginxConfigGet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HostServer).NginxConfigGet(ctx, req.(*HostNginxConfigGetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Host_SitesList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HostSitesListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HostServer).SitesList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Host_SitesList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HostServer).SitesList(ctx, req.(*HostSitesListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Host_CertsList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HostCertsListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HostServer).CertsList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Host_CertsList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HostServer).CertsList(ctx, req.(*HostCertsListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Host_ServiceDesc is the grpc.ServiceDesc for Host service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -652,6 +912,34 @@ var Host_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ActivitySet",
 			Handler:    _Host_ActivitySet_Handler,
+		},
+		{
+			MethodName: "NginxSnippetPut",
+			Handler:    _Host_NginxSnippetPut_Handler,
+		},
+		{
+			MethodName: "NginxSnippetDelete",
+			Handler:    _Host_NginxSnippetDelete_Handler,
+		},
+		{
+			MethodName: "NginxSnippetList",
+			Handler:    _Host_NginxSnippetList_Handler,
+		},
+		{
+			MethodName: "NginxConfigList",
+			Handler:    _Host_NginxConfigList_Handler,
+		},
+		{
+			MethodName: "NginxConfigGet",
+			Handler:    _Host_NginxConfigGet_Handler,
+		},
+		{
+			MethodName: "SitesList",
+			Handler:    _Host_SitesList_Handler,
+		},
+		{
+			MethodName: "CertsList",
+			Handler:    _Host_CertsList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

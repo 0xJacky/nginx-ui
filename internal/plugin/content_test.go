@@ -118,43 +118,43 @@ func TestCheckContentReportsBrokenFiles(t *testing.T) {
 		level Level
 		rule  string
 	}{
-		{"missing markers", func(f map[string]string) { f["templates/block/bad.conf"] = "location / {}\n" }, LevelError, "CONTENT-3"},
+		{"missing markers", func(f map[string]string) { f["templates/block/bad.conf"] = "location / {}\n" }, LevelError, RuleContentTemplate},
 		{"invalid toml", func(f map[string]string) {
 			f["templates/block/bad.conf"] = "# Nginx UI Template Start\nname = \n# Nginx UI Template End\n"
-		}, LevelError, "CONTENT-3"},
+		}, LevelError, RuleContentTemplate},
 		{"loop", func(f map[string]string) {
 			f["templates/block/bad.conf"] = "# Nginx UI Template Start\nname = \"x\"\n# Nginx UI Template End\n{{range $i := 1000000000}}{{end}}\n"
-		}, LevelError, "CONTENT-3"},
+		}, LevelError, RuleContentTemplate},
 		{"printf", func(f map[string]string) {
 			f["templates/block/bad.conf"] = "# Nginx UI Template Start\nname = \"x\"\n# Nginx UI Template End\n{{printf \"%1000000000d\" 1}}\n"
-		}, LevelError, "CONTENT-3"},
+		}, LevelError, RuleContentTemplate},
 		{"nginx syntax", func(f map[string]string) {
 			f["templates/block/bad.conf"] = "# Nginx UI Template Start\nname = \"x\"\n# Nginx UI Template End\nlocation / {\n"
-		}, LevelError, "CONTENT-3"},
+		}, LevelError, RuleContentTemplate},
 		{"unknown variable type", func(f map[string]string) {
 			f["templates/block/bad.conf"] = "# Nginx UI Template Start\nname = \"x\"\n[variables.a]\ntype = \"file\"\nvalue = \"b\"\n# Nginx UI Template End\n"
-		}, LevelError, "CONTENT-3"},
+		}, LevelError, RuleContentTemplate},
 		{"no name", func(f map[string]string) {
 			f["templates/block/anonymous.conf"] = "# Nginx UI Template Start\nauthor = \"x\"\n# Nginx UI Template End\nclient_max_body_size 1m;\n"
-		}, LevelWarning, "CONTENT-3"},
-		{"stray file", func(f map[string]string) { f["templates/block/notes.txt"] = "x" }, LevelWarning, "CONTENT-2"},
-		{"stray directory", func(f map[string]string) { f["templates/http/a.conf"] = testBlockTemplate }, LevelWarning, "CONTENT-2"},
+		}, LevelWarning, RuleContentTemplate},
+		{"stray file", func(f map[string]string) { f["templates/block/notes.txt"] = "x" }, LevelWarning, RuleContentTemplates},
+		{"stray directory", func(f map[string]string) { f["templates/http/a.conf"] = testBlockTemplate }, LevelWarning, RuleContentTemplates},
 		{"no template", func(f map[string]string) {
 			delete(f, "templates/block/cache-static.conf")
 			delete(f, "templates/conf/ghost.conf")
 			f["templates/README"] = "empty"
-		}, LevelError, "CONTENT-2"},
-		{"unknown language", func(f map[string]string) { f["locales/xx_XX.po"] = testPOFile }, LevelError, "CONTENT-6"},
-		{"stray locale file", func(f map[string]string) { f["locales/de_DE.mo"] = "x" }, LevelWarning, "CONTENT-6"},
+		}, LevelError, RuleContentTemplates},
+		{"unknown language", func(f map[string]string) { f["locales/xx_XX.po"] = testPOFile }, LevelError, RuleContentLocales},
+		{"stray locale file", func(f map[string]string) { f["locales/de_DE.mo"] = "x" }, LevelWarning, RuleContentLocales},
 		{"no locale", func(f map[string]string) {
 			delete(f, "locales/de_DE.po")
 			f["locales/README"] = "empty"
-		}, LevelError, "CONTENT-6"},
-		{"broken po", func(f map[string]string) { f["locales/de_DE.po"] = "this is not a catalog\n" }, LevelError, "CONTENT-7"},
-		{"po without header", func(f map[string]string) { f["locales/de_DE.po"] = "msgid \"a\"\nmsgstr \"b\"\n" }, LevelError, "CONTENT-7"},
+		}, LevelError, RuleContentLocales},
+		{"broken po", func(f map[string]string) { f["locales/de_DE.po"] = "this is not a catalog\n" }, LevelError, RuleContentLocale},
+		{"po without header", func(f map[string]string) { f["locales/de_DE.po"] = "msgid \"a\"\nmsgstr \"b\"\n" }, LevelError, RuleContentLocale},
 		{"po entry without msgstr", func(f map[string]string) {
 			f["locales/de_DE.po"] = "msgid \"\"\nmsgstr \"\"\n\nmsgid \"a\"\n"
-		}, LevelError, "CONTENT-7"},
+		}, LevelError, RuleContentLocale},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
@@ -169,7 +169,7 @@ func TestCheckContentReportsBrokenFiles(t *testing.T) {
 	// A declared directory that is missing.
 	dir := writeContentDir(t, manifest, map[string]string{})
 	problems := CheckContent(manifest, dir)
-	assert.Equal(t, []string{"CONTENT-2", "CONTENT-6"}, problemRules(problems, LevelError), "%v", problems)
+	assert.Equal(t, []string{RuleContentTemplates, RuleContentLocales}, problemRules(problems, LevelError), "%v", problems)
 }
 
 func TestCheckContentRefusesSymlinkedTemplates(t *testing.T) {
@@ -181,7 +181,7 @@ func TestCheckContentRefusesSymlinkedTemplates(t *testing.T) {
 	require.NoError(t, os.Symlink(outside, filepath.Join(dir, "templates", "block", "linked.conf")))
 
 	problems := CheckContent(manifest, dir)
-	assert.Contains(t, problemRules(problems, LevelWarning), "CONTENT-2", "%v", problems)
+	assert.Contains(t, problemRules(problems, LevelWarning), RuleContentTemplates, "%v", problems)
 }
 
 func TestValidateManifestRejectsProcessWorkWithoutServer(t *testing.T) {
@@ -215,8 +215,8 @@ func TestLintReportsContentFindings(t *testing.T) {
 	for _, finding := range report.Findings {
 		rules[finding.Rule] = true
 	}
-	assert.True(t, rules["CONTENT-1"], "%+v", report.Findings)
-	assert.True(t, rules["CONTENT-6"], "%+v", report.Findings)
+	assert.True(t, rules[RuleContentProcessLess], "%+v", report.Findings)
+	assert.True(t, rules[RuleContentLocales], "%+v", report.Findings)
 }
 
 func TestInstallValidatesContent(t *testing.T) {
@@ -281,9 +281,9 @@ func TestConformanceChecksContentPluginsStatically(t *testing.T) {
 	for _, c := range report.Cases {
 		rules = append(rules, c.Rule)
 	}
-	assert.True(t, slices.Contains(rules, "CONTENT-3"), "%v", rules)
-	assert.True(t, slices.Contains(rules, "CONTENT-7"), "%v", rules)
-	assert.False(t, slices.Contains(rules, "LIFE-1"), "no process is started: %v", rules)
+	assert.True(t, slices.Contains(rules, RuleContentTemplate), "%v", rules)
+	assert.True(t, slices.Contains(rules, RuleContentLocale), "%v", rules)
+	assert.False(t, slices.Contains(rules, RuleLifecycleHandshake), "no process is started: %v", rules)
 
 	files := contentFiles()
 	files["locales/de_DE.po"] = "broken\n"

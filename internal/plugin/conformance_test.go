@@ -33,29 +33,29 @@ func TestConformanceAgainstFakePlugin(t *testing.T) {
 		byKey[c.Rule+":"+c.Name] = c
 	}
 
-	handshake, ok := byKey["LIFE-1:handshake"]
+	handshake, ok := byKey["lifecycle-handshake:handshake"]
 	require.True(t, ok)
 	assert.Equal(t, StatusPass, handshake.Status)
 
-	ping, ok := byKey["LIFE-8:plugin.ping"]
+	ping, ok := byKey["lifecycle-ping:plugin.ping"]
 	require.True(t, ok)
 	assert.Equal(t, StatusPass, ping.Status)
 
-	unknown, ok := byKey["WIRE-6:unknown method"]
+	unknown, ok := byKey["protocol-errors:unknown method"]
 	require.True(t, ok)
 	assert.Equal(t, StatusPass, unknown.Status)
 
-	concurrent, ok := byKey["WIRE-4:concurrent pings"]
+	concurrent, ok := byKey["protocol-concurrency:concurrent pings"]
 	require.True(t, ok)
 	assert.Equal(t, StatusPass, concurrent.Status)
 
 	// The fake plugin never registers a dns01.* handler, so the optional
 	// methods must be reported as skipped, never as failed.
-	options, ok := byKey["DNS01-10:dns01.options"]
+	options, ok := byKey["dns01-options:dns01.options"]
 	require.True(t, ok)
 	assert.Equal(t, StatusSkip, options.Status)
 
-	shutdown, ok := byKey["LIFE-10:shutdown and exit"]
+	shutdown, ok := byKey["lifecycle-shutdown:shutdown and exit"]
 	require.True(t, ok)
 	assert.Equal(t, StatusPass, shutdown.Status)
 }

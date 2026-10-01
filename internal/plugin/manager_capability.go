@@ -293,9 +293,9 @@ func (m *Manager) DiscoveryProviders() []DiscoveryProviderEntry {
 // contain an underscore, so the first separator always ends the prefix.
 const mcpToolSeparator = "__"
 
-// MCPToolName is the name a plugin tool is published under on the MCP server
-// (spec NAME-11): the plugin id with every dot replaced by an underscore, two
-// underscores and the tool name.
+// MCPToolName is the name a plugin tool is published under on the MCP server:
+// the plugin id with every dot replaced by an underscore, two underscores and
+// the tool name.
 func MCPToolName(pluginID, tool string) string {
 	return strings.ReplaceAll(pluginID, ".", "_") + mcpToolSeparator + tool
 }

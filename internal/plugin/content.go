@@ -87,7 +87,7 @@ func contentDir(pluginDir, rel string) string {
 // ContentProblem is one issue CheckContent found.
 type ContentProblem struct {
 	Level Level
-	// Rule is the spec requirement, e.g. "CONTENT-3".
+	// Rule is the spec requirement, e.g. RuleContentTemplate.
 	Rule string
 	// Path is the package relative path the problem is about.
 	Path    string
@@ -102,8 +102,8 @@ func (p ContentProblem) String() string {
 }
 
 // CheckContent checks the files the content block of a manifest points at,
-// in a plugin directory (spec CONTENT-2, CONTENT-3, CONTENT-6, CONTENT-7).
-// Unsafe paths are MAN-18 and left to the manifest checks.
+// in a plugin directory.
+// Unsafe paths are left to the manifest checks.
 func CheckContent(manifest *protocol.Manifest, dir string) []ContentProblem {
 	if manifest == nil || manifest.Content == nil {
 		return nil
@@ -119,7 +119,7 @@ func CheckContent(manifest *protocol.Manifest, dir string) []ContentProblem {
 }
 
 // validateContentFiles rejects a package whose content does not parse, as
-// install does (spec CONTENT-4, CONTENT-7).
+// install does.
 func validateContentFiles(manifest *protocol.Manifest, dir string) error {
 	for _, problem := range CheckContent(manifest, dir) {
 		if problem.Level == LevelError {
@@ -146,7 +146,7 @@ func contentRoot(dir, rel, rule, field string) (string, []ContentProblem) {
 }
 
 func checkTemplates(dir, rel string) []ContentProblem {
-	root, problems := contentRoot(dir, rel, "CONTENT-2", "templates")
+	root, problems := contentRoot(dir, rel, RuleContentTemplates, "templates")
 	if root == "" {
 		return problems
 	}
@@ -154,13 +154,13 @@ func checkTemplates(dir, rel string) []ContentProblem {
 
 	entries, err := os.ReadDir(root)
 	if err != nil {
-		return append(problems, ContentProblem{Level: LevelError, Rule: "CONTENT-2", Path: rel, Message: err.Error()})
+		return append(problems, ContentProblem{Level: LevelError, Rule: RuleContentTemplates, Path: rel, Message: err.Error()})
 	}
 	for _, entry := range entries {
 		if entry.IsDir() && slices.Contains(template.Kinds, entry.Name()) {
 			continue
 		}
-		problems = append(problems, ContentProblem{Level: LevelWarning, Rule: "CONTENT-2", Path: path.Join(rel, entry.Name()),
+		problems = append(problems, ContentProblem{Level: LevelWarning, Rule: RuleContentTemplates, Path: path.Join(rel, entry.Name()),
 			Message: "only the conf and block directories hold templates, this entry is ignored"})
 	}
 
@@ -174,36 +174,36 @@ func checkTemplates(dir, rel string) []ContentProblem {
 			name := entry.Name()
 			where := path.Join(rel, kind, name)
 			if !entry.Type().IsRegular() || !template.IsValidFileName(name) {
-				problems = append(problems, ContentProblem{Level: LevelWarning, Rule: "CONTENT-2", Path: where,
+				problems = append(problems, ContentProblem{Level: LevelWarning, Rule: RuleContentTemplates, Path: where,
 					Message: "not a template (a regular file named like name.conf), ignored"})
 				continue
 			}
 			count++
 			if err := template.ValidateFile(fsys, kind, name); err != nil {
-				problems = append(problems, ContentProblem{Level: LevelError, Rule: "CONTENT-3", Path: where, Message: err.Error()})
+				problems = append(problems, ContentProblem{Level: LevelError, Rule: RuleContentTemplate, Path: where, Message: err.Error()})
 				continue
 			}
 			if !template.HasName(fsys, kind, name) {
-				problems = append(problems, ContentProblem{Level: LevelWarning, Rule: "CONTENT-3", Path: where,
+				problems = append(problems, ContentProblem{Level: LevelWarning, Rule: RuleContentTemplate, Path: where,
 					Message: "the template has no name and is listed under its file name"})
 			}
 		}
 	}
 	if count == 0 {
-		problems = append(problems, ContentProblem{Level: LevelError, Rule: "CONTENT-2", Path: rel,
+		problems = append(problems, ContentProblem{Level: LevelError, Rule: RuleContentTemplates, Path: rel,
 			Message: "content.templates holds no template in conf/ or block/"})
 	}
 	return problems
 }
 
 func checkLocales(dir, rel string) []ContentProblem {
-	root, problems := contentRoot(dir, rel, "CONTENT-6", "locales")
+	root, problems := contentRoot(dir, rel, RuleContentLocales, "locales")
 	if root == "" {
 		return problems
 	}
 	entries, err := os.ReadDir(root)
 	if err != nil {
-		return append(problems, ContentProblem{Level: LevelError, Rule: "CONTENT-6", Path: rel, Message: err.Error()})
+		return append(problems, ContentProblem{Level: LevelError, Rule: RuleContentLocales, Path: rel, Message: err.Error()})
 	}
 
 	count := 0
@@ -212,22 +212,22 @@ func checkLocales(dir, rel string) []ContentProblem {
 		where := path.Join(rel, name)
 		lang, isPO := strings.CutSuffix(name, localeFileSuffix)
 		if !isPO || !entry.Type().IsRegular() {
-			problems = append(problems, ContentProblem{Level: LevelWarning, Rule: "CONTENT-6", Path: where,
+			problems = append(problems, ContentProblem{Level: LevelWarning, Rule: RuleContentLocales, Path: where,
 				Message: "not a translation file (<lang>.po), ignored"})
 			continue
 		}
 		count++
 		if !translation.IsLanguage(lang) {
-			problems = append(problems, ContentProblem{Level: LevelError, Rule: "CONTENT-6", Path: where,
+			problems = append(problems, ContentProblem{Level: LevelError, Rule: RuleContentLocales, Path: where,
 				Message: fmt.Sprintf("%q is not a language of the host (%s)", lang, strings.Join(translation.Languages(), ", "))})
 			continue
 		}
 		if _, err := readLocaleFile(filepath.Join(root, name)); err != nil {
-			problems = append(problems, ContentProblem{Level: LevelError, Rule: "CONTENT-7", Path: where, Message: err.Error()})
+			problems = append(problems, ContentProblem{Level: LevelError, Rule: RuleContentLocale, Path: where, Message: err.Error()})
 		}
 	}
 	if count == 0 {
-		problems = append(problems, ContentProblem{Level: LevelError, Rule: "CONTENT-6", Path: rel,
+		problems = append(problems, ContentProblem{Level: LevelError, Rule: RuleContentLocales, Path: rel,
 			Message: "content.locales holds no .po file"})
 	}
 	return problems
