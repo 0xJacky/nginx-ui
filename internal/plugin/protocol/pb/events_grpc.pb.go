@@ -27,7 +27,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // Events delivers subscribed host events to the plugin. The plugin serves it
-// and the host is the caller. See spec/06-host-api.md.
+// and the host is the caller. See https://nginxui.com/plugin/host-api.
 type EventsClient interface {
 	// Delivers one event. At most once, never answered.
 	On(ctx context.Context, in *EventsOnRequest, opts ...grpc.CallOption) (*EventsOnResponse, error)
@@ -56,7 +56,7 @@ func (c *eventsClient) On(ctx context.Context, in *EventsOnRequest, opts ...grpc
 // for forward compatibility.
 //
 // Events delivers subscribed host events to the plugin. The plugin serves it
-// and the host is the caller. See spec/06-host-api.md.
+// and the host is the caller. See https://nginxui.com/plugin/host-api.
 type EventsServer interface {
 	// Delivers one event. At most once, never answered.
 	On(context.Context, *EventsOnRequest) (*EventsOnResponse, error)

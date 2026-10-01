@@ -34,7 +34,8 @@ const (
 // keeps host files, such as backups, in the storage backends its manifest
 // lists, and the host is the caller. File contents never travel in a message:
 // the host and the plugin exchange them through files in the plugin's data
-// directory. See spec/15-capabilities-storage.md.
+// directory. See
+// https://nginxui.com/plugin/capabilities/storage.
 type StorageClient interface {
 	// Validates a backend configuration without storing anything. Optional.
 	Validate(ctx context.Context, in *StorageValidateRequest, opts ...grpc.CallOption) (*StorageValidateResponse, error)
@@ -114,7 +115,8 @@ func (c *storageClient) Delete(ctx context.Context, in *StorageDeleteRequest, op
 // keeps host files, such as backups, in the storage backends its manifest
 // lists, and the host is the caller. File contents never travel in a message:
 // the host and the plugin exchange them through files in the plugin's data
-// directory. See spec/15-capabilities-storage.md.
+// directory. See
+// https://nginxui.com/plugin/capabilities/storage.
 type StorageServer interface {
 	// Validates a backend configuration without storing anything. Optional.
 	Validate(context.Context, *StorageValidateRequest) (*StorageValidateResponse, error)

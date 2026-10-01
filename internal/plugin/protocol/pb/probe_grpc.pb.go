@@ -28,7 +28,8 @@ const (
 //
 // Probe is the probe capability. A plugin that declares the capability checks
 // the health of a target with the probe kinds its manifest lists, and the host
-// is the caller. See spec/13-capabilities-probe.md.
+// is the caller. See
+// https://nginxui.com/plugin/capabilities/probe.
 type ProbeClient interface {
 	// Checks one target once.
 	Check(ctx context.Context, in *ProbeCheckRequest, opts ...grpc.CallOption) (*ProbeCheckResponse, error)
@@ -58,7 +59,8 @@ func (c *probeClient) Check(ctx context.Context, in *ProbeCheckRequest, opts ...
 //
 // Probe is the probe capability. A plugin that declares the capability checks
 // the health of a target with the probe kinds its manifest lists, and the host
-// is the caller. See spec/13-capabilities-probe.md.
+// is the caller. See
+// https://nginxui.com/plugin/capabilities/probe.
 type ProbeServer interface {
 	// Checks one target once.
 	Check(context.Context, *ProbeCheckRequest) (*ProbeCheckResponse, error)
