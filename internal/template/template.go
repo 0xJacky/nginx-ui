@@ -20,6 +20,21 @@ import (
 	"text/template"
 )
 
+// Marker lines of the template format.
+const (
+	HeaderStart = "# Nginx UI Template Start"
+	HeaderEnd   = "# Nginx UI Template End"
+	customStart = "# Nginx UI Custom Start"
+	customEnd   = "# Nginx UI Custom End"
+)
+
+// Origins of a template.
+const (
+	OriginBuiltin = "builtin"
+	// OriginCustom is a snippet the user keeps in the snippets directory.
+	OriginCustom = "custom"
+)
+
 type Variable struct {
 	Type  string                       `json:"type"` // string, bool, select
 	Name  map[string]string            `json:"name"`
@@ -33,12 +48,15 @@ type ConfigInfoItem struct {
 	Author      string              `json:"author"`
 	Filename    string              `json:"filename"`
 	Variables   map[string]Variable `json:"variables"`
+	// Origin is OriginBuiltin or OriginCustom.
+	Origin string `json:"origin" toml:"-"`
 }
 
 func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 	configListItem = ConfigInfoItem{
 		Description: make(map[string]string),
 		Filename:    name,
+		Origin:      OriginBuiltin,
 	}
 
 	file, err := templ.DistFS.Open(dirPath.Join(path, name))
@@ -56,7 +74,7 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 	}
 	line := strings.TrimSpace(string(lineBytes))
 
-	if line != "# Nginx UI Template Start" {
+	if line != HeaderStart {
 		return
 	}
 	var content string
@@ -66,7 +84,7 @@ func GetTemplateInfo(path, name string) (configListItem ConfigInfoItem) {
 			break
 		}
 		line = strings.TrimSpace(string(lineBytes))
-		if line == "# Nginx UI Template End" {
+		if line == HeaderEnd {
 			break
 		}
 		content += line + "\n"
@@ -92,7 +110,20 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 	}
 	defer file.Close()
 
-	r := bufio.NewReader(file)
+	return parseContent(name, file, bindData)
+}
+
+// RenderBlock renders a block template held in memory, such as a snippet of
+// the user. Content without a header is a block without variables.
+func RenderBlock(name string, content []byte, bindData map[string]Variable) (ConfigDetail, error) {
+	if !bytes.Contains(content, []byte(HeaderEnd)) {
+		content = append([]byte(HeaderStart+"\n"+HeaderEnd+"\n"), content...)
+	}
+	return parseContent(name, bytes.NewReader(content), bindData)
+}
+
+func parseContent(name string, source io.Reader, bindData map[string]Variable) (c ConfigDetail, err error) {
+	r := bufio.NewReader(source)
 	var flag bool
 	custom := ""
 	content := ""
@@ -104,9 +135,9 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 		orig := string(lineBytes)
 		line := strings.TrimSpace(orig)
 		switch {
-		case line == "# Nginx UI Custom Start":
+		case line == customStart:
 			flag = true
-		case line == "# Nginx UI Custom End":
+		case line == customEnd:
 			flag = false
 		case flag == true:
 			custom += orig + "\n"
@@ -142,7 +173,7 @@ func ParseTemplate(path, name string, bindData map[string]Variable) (c ConfigDet
 
 	custom = strings.TrimSpace(buf.String())
 
-	templatePart := strings.Split(content, "# Nginx UI Template End")
+	templatePart := strings.Split(content, HeaderEnd)
 	if len(templatePart) < 2 {
 		return
 	}

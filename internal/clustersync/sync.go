@@ -157,6 +157,9 @@ func buildItems(scope Scope, namespace *model.Namespace) ([]item, error) {
 		if accessItem, ok := accessListItem(includedAccessLists(managedFiles)); ok {
 			items = append(items, accessItem)
 		}
+		if snippetsItem, ok := snippetItem(includedSnippets(managedFiles)); ok {
+			items = append(items, snippetsItem)
+		}
 	}
 
 	// Certificates never travel with a config sync, so they always go ahead

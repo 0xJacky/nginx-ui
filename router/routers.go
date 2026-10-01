@@ -25,6 +25,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/public"
 	"github.com/0xJacky/Nginx-UI/api/settings"
 	"github.com/0xJacky/Nginx-UI/api/sites"
+	snippetapi "github.com/0xJacky/Nginx-UI/api/snippet"
 	"github.com/0xJacky/Nginx-UI/api/streams"
 	"github.com/0xJacky/Nginx-UI/api/system"
 	"github.com/0xJacky/Nginx-UI/api/template"
@@ -111,6 +112,7 @@ func InitRouter() {
 			nginx.InitRouter(g)
 			sites.InitRouter(g)
 			accesslist.InitRouter(g)
+			snippetapi.InitRouter(g)
 			streams.InitRouter(g)
 			config.InitRouter(g)
 			template.InitRouter(g)

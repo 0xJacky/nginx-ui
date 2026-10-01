@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/snippet"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -146,14 +147,19 @@ func CollectConfigFilesReport(root string) ([]ConfigFile, []SkippedFile, error) 
 }
 
 // isManagedDir reports whether a directory below the config root is owned by the
-// site or stream synchronization instead of the plain config synchronization.
+// site or stream synchronization instead of the plain config synchronization,
+// or by software that manages its own snippets on every node.
 func isManagedDir(confPath, path string) bool {
 	relative, err := filepath.Rel(confPath, path)
 	if err != nil {
 		return false
 	}
 
-	top := strings.SplitN(filepath.ToSlash(relative), "/", 2)[0]
+	relative = filepath.ToSlash(relative)
+	if relative == snippet.DirName+"/"+snippet.ReservedDirName {
+		return true
+	}
+	top := strings.SplitN(relative, "/", 2)[0]
 
 	return strings.HasPrefix(top, "sites-") || strings.HasPrefix(top, "streams-")
 }
