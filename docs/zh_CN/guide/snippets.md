@@ -33,38 +33,56 @@ outline: [2, 3]
 仍被网站引用的片段无法删除，否则 Nginx 会拒绝配置。片段页面会列出引用它的文件。
 :::
 
-## 名称、描述与变量 {#name-description-and-variables}
+## 编辑片段 {#editing-a-snippet}
 
-片段页面显示的名称和描述保存在文件顶部的文件头中。文件头的每一行都是注释，因此 Nginx 始终可以引用这个文件：
+编辑页面左侧是片段的内容，右侧是片段的信息；在窄屏上信息显示在内容下方。标题旁的标签说明网站可以引用这个片段，还是只能插入它。在片段页面展开某一行，无需打开编辑器即可查看片段内容。
 
-```nginx [snippets/static-cache.conf]
+片段尚未被引用时可以修改文件名。一旦有配置引用它，文件名就不能再修改，以保证该配置继续正常工作。
+
+名称、描述以及变量和选项的显示名称都可以翻译。输入框中是当前界面语言的文字，旁边的翻译按钮用于添加其他语言。没有对应翻译的语言显示英文。
+
+### 变量 {#variables}
+
+变量让某个值因网站而异，例如目标地址或状态码。每个变量有键名、显示名称、类型（文本、开关或选择）和默认值，内容中以 `{{ .键名 }}` 引用。
+
+最快的方式是先用真实的值写好配置，然后选中这个值，点击 **设为变量**，或按 <kbd>⌘E</kbd>（Windows 和 Linux 上为 <kbd>Ctrl+E</kbd>）。键名和类型会根据所在行推测，选中的值成为默认值，内容随即改为引用该变量。选中 `on` 或 `off` 会创建开关。
+
+在内容中，每个变量都有自己的颜色，与变量列表中的颜色一致，将指针移到变量上会显示它的类型和默认值。输入 `{{ .` 会列出可补全的变量，列表末尾的 **新建变量…** 会在光标处声明一个新变量；**插入变量** 会在光标处插入已有变量。内容中使用但未声明的变量会被标出，并提供声明按钮。
+
+带变量的片段由配置模板面板填写变量，只能插入使用。Nginx 无法直接引用它，因为 `{{ }}` 占位符不是 Nginx 配置。
+
+### 预览 {#preview}
+
+内容下方的 **预览** 左侧是配置模板面板要求使用者填写的表单，右侧是填写后得到的配置。预览随每次修改实时更新：修改任一值，结果随之更新并标出变化的行；预览还会说明结果是否为有效的 Nginx 配置，无需先保存片段。不含变量的片段在同一位置显示引用它的指令。
+
+只包含 `{{ if .keepPath }}`、`{{ else }}` 或 `{{ end }}` 等动作的行不会在结果中留下空行，因此可以把这些动作单独写成一行。
+
+## 内置模板 {#built-in-templates}
+
+片段页面的 **内置模板** 标签页列出 Nginx UI 自带的配置模板。它们是只读的：展开某一行可以快速查看，打开模板则可以看到变量高亮的原文，并在 **预览** 中试填变量。**复制为片段** 会以该模板为基础新建一个片段，修改后即可保存为你自己的片段。
+
+## 文件头 {#the-file-header}
+
+这些信息保存在文件顶部的文件头中。文件头的每一行都是注释，因此 Nginx 始终可以引用这个文件：
+
+```nginx [snippets/redirect.conf]
 # Nginx UI Template Start
-# name = "Static file cache"
+# name = "Redirect"
 #
 # [description]
-# en = "Cache images, scripts and styles for a week"
-# Nginx UI Template End
-
-expires 7d;
-add_header Cache-Control "public";
-```
-
-文件头使用[配置模板](./nginx-ui-template.md)的格式，只是写成了注释。片段也可以用同样的方式在其中声明变量：
-
-```nginx [snippets/hsts.conf]
-# Nginx UI Template Start
-# name = "HSTS"
+# en = "Send every request to another address"
+# zh_CN = "将所有请求转发到另一个地址"
 #
-# [variables.maxAge]
+# [variables.target]
 # type = "string"
-# name = { en = "Max Age" }
-# value = "31536000"
+# name = { en = "Target address" }
+# value = "https://example.com"
 # Nginx UI Template End
 
-add_header Strict-Transport-Security "max-age={{ .maxAge }}" always;
+return 301 {{ .target }}$request_uri;
 ```
 
-带变量的片段由配置模板面板填写变量，只能插入使用。Nginx 无法直接引用它，因为 `{{ }}` 占位符不是 Nginx 配置。变量需要直接编辑文件头来添加（例如在 **配置管理** 中），片段页面会保留它们。
+文件头使用[配置模板](./nginx-ui-template.md)的格式，只是写成了注释，因此也可以手动编辑。只有英文的名称写成普通字符串；带翻译的名称与描述一样，写成按语言划分的表。
 
 ## 同步到节点 {#synchronizing-to-nodes}
 

@@ -49,44 +49,92 @@ reject the configuration without it. The snippet page lists the files that
 include it.
 :::
 
-## Name, Description and Variables
+## Editing a Snippet
 
-The name and description shown on the snippet page are stored in a header at
-the top of the file. Its lines are comments, so Nginx can always include the
-file:
+The editor page shows the content of the snippet on the left and its
+details on the right; on a narrow screen the details follow the content. The tag next to the title tells
+whether sites can include the snippet or only insert it. Expand a row of the
+snippet page to read a snippet without opening it.
 
-```nginx [snippets/static-cache.conf]
-# Nginx UI Template Start
-# name = "Static file cache"
-#
-# [description]
-# en = "Cache images, scripts and styles for a week"
-# Nginx UI Template End
+The file name can change while nothing includes the snippet. Once a
+configuration includes it, the name is fixed, so that configuration keeps
+working.
 
-expires 7d;
-add_header Cache-Control "public";
-```
+The name, the description and the labels of variables and options can be
+translated. A field holds the text of the interface language, and the
+translation button next to it adds the other languages. Users of a language
+without a translation see the English text.
 
-The header uses the format of [Config Template](./nginx-ui-template.md),
-written as comments. A snippet can declare variables in it the same way:
+### Variables
 
-```nginx [snippets/hsts.conf]
-# Nginx UI Template Start
-# name = "HSTS"
-#
-# [variables.maxAge]
-# type = "string"
-# name = { en = "Max Age" }
-# value = "31536000"
-# Nginx UI Template End
+A variable makes a value differ from site to site, such as a target address
+or a status code. It has a key, a label, a type (text, switch or select) and
+a default value, and the content refers to it as `{{ .key }}`.
 
-add_header Strict-Transport-Security "max-age={{ .maxAge }}" always;
-```
+The quickest way to add one is to write the configuration with a real value
+first, select the value and click **Make Variable**, or press <kbd>⌘E</kbd>
+(<kbd>Ctrl+E</kbd> on Windows and Linux). The key and the type are proposed
+from the line, the selected value becomes the default, and the content then
+refers to the variable. Selecting `on` or `off` makes a switch.
+
+In the content, every variable has its own color, the same as in the list of
+variables, and pointing at one shows its type and default value. Typing
+`{{ .` lists the variables to complete, and **New Variable…** at the end of
+the list declares one where the cursor is. **Insert Variable** adds one at
+the cursor. A variable the content uses without declaring it is marked, with
+a button to declare it.
 
 A snippet with variables is filled in by the config template panel and can
 only be inserted. Nginx cannot include it, because the `{{ }}` placeholders
-are not Nginx configuration. Variables are added by editing the header of the
-file, for example in **Manage Configs**; the snippet page keeps them.
+are not Nginx configuration.
+
+### Preview
+
+Below the content, **Preview** shows the form the config template panel asks
+the user to fill in, next to the configuration it produces. It follows every
+edit: changing a value updates the result and marks the lines that change,
+and the preview tells whether the result is valid Nginx configuration, before
+the snippet is saved. For a snippet without variables, the same place shows
+the directive that includes it.
+
+A line that holds only actions such as `{{ if .keepPath }}`, `{{ else }}` or
+`{{ end }}` leaves no blank line in the result, so blocks can be written on
+lines of their own.
+
+## Built-in Templates
+
+The **Built-in Templates** tab of the snippet page lists the config templates
+that come with Nginx UI. They are read only: expand a row to glance at one,
+or open it to read it with its variables highlighted and try them in
+**Preview**. **Copy as Snippet** opens a new snippet filled in from the
+template, to change and save as your own.
+
+## The File Header
+
+The details are stored in a header at the top of the file. Its lines are
+comments, so Nginx can always include the file:
+
+```nginx [snippets/redirect.conf]
+# Nginx UI Template Start
+# name = "Redirect"
+#
+# [description]
+# en = "Send every request to another address"
+# zh_CN = "将所有请求转发到另一个地址"
+#
+# [variables.target]
+# type = "string"
+# name = { en = "Target address" }
+# value = "https://example.com"
+# Nginx UI Template End
+
+return 301 {{ .target }}$request_uri;
+```
+
+The header uses the format of [Config Template](./nginx-ui-template.md),
+written as comments, so it can also be edited by hand. A name in English
+only is a plain string; a name with translations is a table of languages,
+like the description.
 
 ## Synchronizing to Nodes
 
