@@ -137,7 +137,7 @@ func lintIdentity(m *protocol.Manifest, report *LintReport) {
 		report.add(LevelError, RuleManifestID, "id must be at most %d characters", maxPluginIDLength)
 	case !pluginIDPattern.MatchString(m.ID):
 		report.add(LevelError, RuleManifestID, "id %q must look like \"vendor.name\" (%s)", m.ID, pluginIDPattern)
-	case strings.HasPrefix(m.ID, "com.nginxui."):
+	case IsReservedID(m.ID):
 		// This CLI has no allowlist of officially maintained plugin ids, so
 		// every com.nginxui.* id it sees is treated as unverified.
 		report.add(LevelWarning, RuleReservedNamespace, "id %q uses the reserved com.nginxui.* namespace; this tool cannot confirm official ownership", m.ID)

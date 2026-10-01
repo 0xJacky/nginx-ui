@@ -113,6 +113,11 @@ func (m *Manager) Install(ctx context.Context, archivePath string, opts InstallO
 	if err != nil {
 		return nil, err
 	}
+	// Whatever catalog or file a package comes from, only the official key
+	// can publish in the official namespace.
+	if err = checkReservedID(manifest.ID, trust.Trust); err != nil {
+		return nil, err
+	}
 	if !IsCompatible(manifest) {
 		return nil, ErrIncompatibleAPIVersion
 	}

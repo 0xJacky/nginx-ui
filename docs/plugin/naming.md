@@ -23,7 +23,10 @@ io.github.example.mydns
   `<owner>` is your GitHub user or organization in lowercase. Every GitHub
   user already controls that namespace.
 - `com.nginxui.*` is reserved for plugins of the Nginx UI project. The
-  official catalog rejects it for anyone else.
+  official catalog rejects it for anyone else, and Nginx UI installs such an
+  id only from a package signed with the official key, whichever catalog or
+  file it comes from. Developer mode lifts this, for building the official
+  plugins.
 
 ::: warning
 The id identifies the plugin for good: its settings, its data, its
