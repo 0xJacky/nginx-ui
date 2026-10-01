@@ -30,7 +30,7 @@ const (
 // Deploy is the cert.deploy capability. A plugin that declares the capability
 // pushes issued certificates to the kinds of external target its manifest
 // lists (a CDN, a cloud load balancer, another server), and the host is the
-// caller. See spec/16-capabilities-deploy.md.
+// caller. See https://nginxui.com/plugin/capabilities/cert-deploy.
 type DeployClient interface {
 	// Validates a target configuration without contacting the target.
 	// Optional.
@@ -74,7 +74,7 @@ func (c *deployClient) Push(ctx context.Context, in *DeployPushRequest, opts ...
 // Deploy is the cert.deploy capability. A plugin that declares the capability
 // pushes issued certificates to the kinds of external target its manifest
 // lists (a CDN, a cloud load balancer, another server), and the host is the
-// caller. See spec/16-capabilities-deploy.md.
+// caller. See https://nginxui.com/plugin/capabilities/cert-deploy.
 type DeployServer interface {
 	// Validates a target configuration without contacting the target.
 	// Optional.

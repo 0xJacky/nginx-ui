@@ -48,7 +48,7 @@ const (
 //
 // Host is the API the host serves to its plugins. The plugin is the caller,
 // and only after plugin.initialized. Each method needs the permission listed
-// in spec/06-host-api.md; without it the host replies
+// in https://nginxui.com/plugin/host-api; without it the host replies
 // ERROR_CODE_PERMISSION_DENIED.
 type HostClient interface {
 	// Writes a structured log line into the host logger. A caller MAY send it
@@ -326,7 +326,7 @@ func (c *hostClient) CertsList(ctx context.Context, in *HostCertsListRequest, op
 //
 // Host is the API the host serves to its plugins. The plugin is the caller,
 // and only after plugin.initialized. Each method needs the permission listed
-// in spec/06-host-api.md; without it the host replies
+// in https://nginxui.com/plugin/host-api; without it the host replies
 // ERROR_CODE_PERMISSION_DENIED.
 type HostServer interface {
 	// Writes a structured log line into the host logger. A caller MAY send it

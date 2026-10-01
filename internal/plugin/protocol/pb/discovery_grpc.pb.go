@@ -30,7 +30,8 @@ const (
 // capability resolves a service name into the servers that currently back it,
 // through the providers its manifest lists (a service registry, a container
 // orchestrator, a cloud API), and the host is the caller: it turns every
-// answer into an nginx upstream block. See spec/19-capabilities-discovery.md.
+// answer into an nginx upstream block. See
+// https://nginxui.com/plugin/capabilities/discovery.
 type DiscoveryClient interface {
 	// Resolves one service into its current targets.
 	Resolve(ctx context.Context, in *DiscoveryResolveRequest, opts ...grpc.CallOption) (*DiscoveryResolveResponse, error)
@@ -62,7 +63,8 @@ func (c *discoveryClient) Resolve(ctx context.Context, in *DiscoveryResolveReque
 // capability resolves a service name into the servers that currently back it,
 // through the providers its manifest lists (a service registry, a container
 // orchestrator, a cloud API), and the host is the caller: it turns every
-// answer into an nginx upstream block. See spec/19-capabilities-discovery.md.
+// answer into an nginx upstream block. See
+// https://nginxui.com/plugin/capabilities/discovery.
 type DiscoveryServer interface {
 	// Resolves one service into its current targets.
 	Resolve(context.Context, *DiscoveryResolveRequest) (*DiscoveryResolveResponse, error)

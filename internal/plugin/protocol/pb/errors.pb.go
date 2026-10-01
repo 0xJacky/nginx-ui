@@ -103,7 +103,7 @@ func (ErrorCode) EnumDescriptor() ([]byte, []int) {
 
 // PluginError is the JSON-RPC error object. On gRPC the same message travels
 // as a google.rpc.Status detail next to the mapped status code, see
-// spec/03-wire-protocol.md WIRE-11.
+// https://nginxui.com/plugin/protocol.
 type PluginError struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// One of ErrorCode, or a method specific negative integer.
