@@ -246,18 +246,25 @@ func TestResolveExecutable(t *testing.T) {
 	assert.ErrorIs(t, err, ErrNoExecutableForPlatform)
 }
 
-func TestPermissionsHash(t *testing.T) {
-	first := &protocol.Manifest{Permissions: []string{"kv", "cron", "credentials.read:dns"}}
-	second := &protocol.Manifest{Permissions: []string{"credentials.read:dns", "kv", "cron"}}
-	assert.Equal(t, PermissionsHash(first), PermissionsHash(second), "order must not matter")
+func TestUnapprovedPermissions(t *testing.T) {
+	approved := approvedSet(&protocol.Manifest{Permissions: []string{"kv", "cron", "credentials.read:dns"}})
+	assert.Equal(t, []string{"credentials.read:dns", "cron", "kv"}, approved)
 
-	more := &protocol.Manifest{Permissions: []string{"kv", "cron", "credentials.read:dns", "notify"}}
-	assert.NotEqual(t, PermissionsHash(first), PermissionsHash(more))
+	reordered := &protocol.Manifest{Permissions: []string{"credentials.read:dns", "kv", "cron"}}
+	assert.Empty(t, unapprovedPermissions(approved, reordered), "order must not matter")
 
-	// An empty set still hashes, which keeps the stored value comparable.
-	empty := PermissionsHash(&protocol.Manifest{})
-	assert.Len(t, empty, 64)
-	assert.Equal(t, empty, PermissionsHash(nil))
+	fewer := &protocol.Manifest{Permissions: []string{"kv"}}
+	assert.Empty(t, unapprovedPermissions(approved, fewer), "dropping a permission asks for nothing")
+
+	more := &protocol.Manifest{Permissions: []string{"kv", "notify", "cron"}}
+	assert.Equal(t, []string{"notify"}, unapprovedPermissions(approved, more))
+	assert.Equal(t, []string{"kv"}, unapprovedPermissions(nil, fewer))
+	assert.Empty(t, unapprovedPermissions(nil, nil))
+
+	// The stored set is never nil, which tells an approved plugin apart from
+	// one that was never approved.
+	assert.NotNil(t, approvedSet(&protocol.Manifest{}))
+	assert.NotNil(t, approvedSet(nil))
 }
 
 func TestIsSafeRelPath(t *testing.T) {

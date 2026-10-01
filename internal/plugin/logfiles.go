@@ -11,7 +11,7 @@ import (
 )
 
 // logPathsDebounce is how long a burst of scans is coalesced into one
-// log.paths_changed notification (spec HOST-18).
+// log.paths_changed notification.
 const logPathsDebounce = time.Second
 
 // LogFileSource connects host.logs.list and log.paths_changed to the nginx log

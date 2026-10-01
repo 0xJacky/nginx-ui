@@ -146,7 +146,7 @@ func storageSourceFor(storageType model.StorageType) (StorageSource, StorageBack
 	return nil, StorageBackend{}, cosy.WrapErrorWithParams(plugin.ErrStorageBackendUnavailable, string(storageType))
 }
 
-// maxStorageKeyLength bounds a key, in bytes (spec STORAGE-4).
+// maxStorageKeyLength bounds a key, in bytes.
 const maxStorageKeyLength = 1024
 
 // validStorageKey reports whether key is a relative path of "/" separated

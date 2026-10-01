@@ -1,8 +1,6 @@
 package plugin
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"maps"
@@ -36,7 +34,7 @@ var (
 	// backend, deploy target, blocklist source and discovery provider codes
 	// the same way.
 	capabilityCodePattern = regexp.MustCompile(`^[a-z0-9-]{2,32}$`)
-	// chunkNamePattern is MAN-41.
+	// chunkNamePattern is the grammar of a webapp.chunks name.
 	chunkNamePattern = regexp.MustCompile(`^[a-z0-9][a-z0-9_-]{0,31}$`)
 	// mcpToolNamePattern keeps the published tool name within the MCP limits,
 	// see MCPToolName.
@@ -74,6 +72,10 @@ var knownPermissions = []string{
 	protocol.PermissionCertDeploy,
 	protocol.PermissionLogRead,
 	protocol.PermissionLogFiles,
+	protocol.PermissionNginxSnippet,
+	protocol.PermissionNginxConfigRead,
+	protocol.PermissionSitesRead,
+	protocol.PermissionCertsRead,
 }
 
 // knownLogFormats lists the line formats a log.sink plugin may ask for.
@@ -174,8 +176,8 @@ func ValidateManifest(m *protocol.Manifest) error {
 	return validateSettingsSchema(m.SettingsSchema)
 }
 
-// conflictProblems lists every way conflicts breaks MAN-42, empty when the
-// declaration is fine.
+// conflictProblems lists every way the conflicts declaration is invalid,
+// empty when it is fine.
 func conflictProblems(m *protocol.Manifest) []string {
 	var problems []string
 	required := make(map[string]struct{}, len(m.Requires))
@@ -226,7 +228,7 @@ func validateIdentity(m *protocol.Manifest) error {
 }
 
 // validateI18n checks that every key of the i18n block is a language of the
-// host (spec MAN-40).
+// host.
 func validateI18n(i18n map[string]protocol.ManifestI18n) error {
 	for _, locale := range slices.Sorted(maps.Keys(i18n)) {
 		if !translation.IsLanguage(locale) {
@@ -317,7 +319,7 @@ func validateWebapp(w *protocol.ManifestWebapp) error {
 	return nil
 }
 
-// chunksProblem describes the first way webapp.chunks breaks MAN-41, empty
+// chunksProblem describes the first way webapp.chunks is invalid, empty
 // when it is fine. Chunk names are visited in sorted order so the message is
 // stable.
 func chunksProblem(w *protocol.ManifestWebapp) string {
@@ -368,7 +370,7 @@ func validateContent(c *protocol.ManifestContent) error {
 }
 
 // validateProcessless rejects what only a process can serve on a manifest
-// without a server block (spec CONTENT-1).
+// without a server block.
 func validateProcessless(m *protocol.Manifest) error {
 	if m.Server != nil {
 		return nil
@@ -449,7 +451,7 @@ func validateCapabilities(m *protocol.Manifest) error {
 	return validateLogSink(m.LogSink)
 }
 
-// validateLogSink checks the optional log_sink block (MAN-38).
+// validateLogSink checks the optional log_sink block.
 func validateLogSink(l *protocol.ManifestLogSink) error {
 	if l == nil {
 		return nil
@@ -931,16 +933,31 @@ func ResolveExecutable(m *protocol.Manifest, dir string) ([]string, error) {
 	return argv, nil
 }
 
-// PermissionsHash fingerprints the permission set so an upgrade that asks for
-// more can be detected and re-approved.
-func PermissionsHash(m *protocol.Manifest) string {
-	var permissions []string
-	if m != nil {
-		permissions = slices.Clone(m.Permissions)
+// unapprovedPermissions lists the permissions the manifest asks for that the
+// approved set does not hold. An upgrade that drops a permission asks for
+// nothing new.
+func unapprovedPermissions(approved []string, m *protocol.Manifest) []string {
+	if m == nil {
+		return nil
 	}
-	sort.Strings(permissions)
-	sum := sha256.Sum256([]byte(strings.Join(permissions, "\n")))
-	return hex.EncodeToString(sum[:])
+	var missing []string
+	for _, permission := range m.Permissions {
+		if !slices.Contains(approved, permission) {
+			missing = append(missing, permission)
+		}
+	}
+	return missing
+}
+
+// approvedSet is the permission set to store once the manifest is approved.
+// It is never nil, which marks the plugin as approved before.
+func approvedSet(m *protocol.Manifest) []string {
+	permissions := []string{}
+	if m != nil {
+		permissions = append(permissions, m.Permissions...)
+	}
+	slices.Sort(permissions)
+	return permissions
 }
 
 // absoluteIn joins a manifest relative path onto the plugin directory.

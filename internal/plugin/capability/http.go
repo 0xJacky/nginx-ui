@@ -17,8 +17,10 @@ import (
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/plugin"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
+	"github.com/0xJacky/Nginx-UI/internal/plugin/npipe"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
@@ -36,12 +38,48 @@ const (
 	// headerPluginUser and headerPluginUserID identify the nginx-ui user
 	// behind a proxied request. HTTP header names are case-insensitive, so
 	// the exact casing here is cosmetic.
-	headerPluginUser   = "X-Nginx-UI-User"
-	headerPluginUserID = "X-Nginx-UI-User-ID"
+	headerPluginUser   = "Nginx-UI-User"
+	headerPluginUserID = "Nginx-UI-User-ID"
 	// headerPluginSecret carries the per process secret the plugin requires
 	// on every request to its listener.
-	headerPluginSecret = "X-Nginx-UI-Plugin-Secret"
+	headerPluginSecret = "Nginx-UI-Plugin-Secret"
 )
+
+// hostCredentialHeaders authenticate a request to nginx-ui itself, from a
+// person or from another node, and must never reach a plugin.
+var hostCredentialHeaders = []string{
+	"Authorization",
+	"Cookie",
+	"X-Node-ID",
+	"X-Node-Secret",
+	"Signature",
+	"Signature-Input",
+	nodeauth.CredentialIDHeader,
+	nodeauth.TargetInstanceHeader,
+	nodeauth.ReplicatedFromHeader,
+}
+
+// isHostHeader reports whether a request header belongs to nginx-ui: a
+// credential, or a header in the namespace the host sets for the plugin,
+// which a client must not be able to supply.
+func isHostHeader(key string) bool {
+	for _, name := range hostCredentialHeaders {
+		if strings.EqualFold(key, name) {
+			return true
+		}
+	}
+	canonical := http.CanonicalHeaderKey(key)
+	return strings.HasPrefix(canonical, "Nginx-Ui-") || strings.HasPrefix(canonical, "X-Nginx-Ui-")
+}
+
+// stripHostHeaders removes every header isHostHeader matches.
+func stripHostHeaders(h http.Header) {
+	for key := range h {
+		if isHostHeader(key) {
+			delete(h, key)
+		}
+	}
+}
 
 // errRPCBodyTooLarge marks a request body over maxRPCBodyBytes.
 var errRPCBodyTooLarge = errors.New("plugin http body exceeds the rpc limit")
@@ -142,11 +180,9 @@ func serveHTTPUnix(c *gin.Context, h HTTPHost, id, subPath string) {
 			if upgrade {
 				stripHandshakeCredentials(req.URL)
 			}
-			req.Header.Del("Authorization")
-			req.Header.Del("Cookie")
-			// A copy the client sent must never reach the plugin, the host
-			// is the only source of the secret.
-			req.Header.Del(headerPluginSecret)
+			// Credentials and any copy of the headers below the client sent
+			// must never reach the plugin, the host is their only source.
+			stripHostHeaders(req.Header)
 			req.Header.Set(headerPluginSecret, secret)
 			req.Header.Set(headerPluginUser, user.Name)
 			req.Header.Set(headerPluginUserID, user.ID)
@@ -168,8 +204,8 @@ func stripHandshakeCredentials(u *url.URL) {
 }
 
 // dialerFor resolves how to reach the plugin's http capability: a unix socket
-// everywhere, a loopback TCP port on Windows where unix sockets need the
-// plugin to opt in and are not guaranteed. Both carry the same secret header.
+// everywhere but Windows, where the plugin reports a named pipe, or a loopback
+// TCP port when it cannot open one. All carry the same secret header.
 func dialerFor(h HTTPHost, id string) (func(ctx context.Context, network, addr string) (net.Conn, error), error) {
 	if runtime.GOOS != "windows" {
 		socketPath := filepath.Join(h.DataDir(id), httpSocketName)
@@ -180,7 +216,15 @@ func dialerFor(h HTTPHost, id string) (func(ctx context.Context, network, addr s
 	}
 
 	result, ok := h.InitializeResult(id)
-	if !ok || result.HTTPPort == 0 {
+	if !ok {
+		return nil, plugin.ErrPluginNotRunning
+	}
+	if pipe := result.HTTPPipe; pipe != "" {
+		return func(ctx context.Context, _, _ string) (net.Conn, error) {
+			return npipe.Dial(ctx, pipe)
+		}, nil
+	}
+	if result.HTTPPort == 0 {
 		return nil, plugin.ErrPluginNotRunning
 	}
 	addr := net.JoinHostPort("127.0.0.1", strconv.Itoa(result.HTTPPort))
@@ -262,12 +306,7 @@ func readLimitedBody(r io.Reader) ([]byte, error) {
 func sanitizedHeaders(h http.Header) map[string][]string {
 	out := make(map[string][]string, len(h))
 	for key, values := range h {
-		switch {
-		case strings.EqualFold(key, "Authorization"),
-			strings.EqualFold(key, "Cookie"),
-			strings.EqualFold(key, headerPluginSecret),
-			strings.EqualFold(key, headerPluginUser),
-			strings.EqualFold(key, headerPluginUserID):
+		if isHostHeader(key) {
 			continue
 		}
 		out[key] = values

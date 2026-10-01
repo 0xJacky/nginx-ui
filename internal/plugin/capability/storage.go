@@ -27,7 +27,7 @@ const (
 	// storageCallTimeout bounds the other storage methods.
 	storageCallTimeout = 30 * time.Second
 	// exchangeDirName is the directory of the plugin's data directory files
-	// are exchanged through (spec STORAGE-5).
+	// are exchanged through.
 	exchangeDirName = "exchange"
 	// exchangeLeftoverAge is when an exchange directory is considered left
 	// behind by an earlier run of the host.

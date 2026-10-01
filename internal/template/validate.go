@@ -55,8 +55,7 @@ func TemplateFiles(fsys fs.FS, kind string) []string {
 
 // ValidateFile checks one template of a plugin the way the host reads it:
 // the marker lines, the TOML header, the variable types, and a render with
-// the default values whose output must be valid nginx syntax (spec CONTENT-3
-// and CONTENT-4).
+// the default values whose output must be valid nginx syntax.
 func ValidateFile(fsys fs.FS, kind, name string) error {
 	if !IsValidFileName(name) {
 		return errors.Errorf("file name %q must match %s", name, fileNamePattern)
