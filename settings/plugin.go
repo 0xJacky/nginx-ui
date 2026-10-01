@@ -25,7 +25,8 @@ type Plugin struct {
 	DefaultSyncPolicy string `json:"default_sync_policy"`
 
 	MarketplaceEnabled bool `json:"marketplace_enabled"`
-	// MarketplaceSources lists catalog URLs, merged in order.
+	// MarketplaceSources lists the catalog URLs in merge order. The official
+	// one is always read, in front of the others when it is not listed.
 	MarketplaceSources []string `json:"marketplace_sources" ini:",,allowshadow"`
 	// TrustedPublicKeys are extra minisign public keys accepted for package
 	// signatures. Each entry is a key optionally followed by whitespace and a
@@ -113,14 +114,6 @@ func (p *Plugin) GetCgroupRoot() string {
 		return DefaultPluginCgroupRoot
 	}
 	return p.CgroupRoot
-}
-
-// GetMarketplaceSources returns the configured sources or the official default.
-func (p *Plugin) GetMarketplaceSources() []string {
-	if len(p.MarketplaceSources) == 0 {
-		return []string{DefaultPluginMarketplaceSource}
-	}
-	return append([]string(nil), p.MarketplaceSources...)
 }
 
 // GetDefaultSyncPolicy normalizes the default sync policy.
