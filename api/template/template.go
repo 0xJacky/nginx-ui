@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/snippet"
 	"github.com/0xJacky/Nginx-UI/internal/template"
 	"github.com/gin-gonic/gin"
 
@@ -66,18 +67,23 @@ func GetTemplateConfList(c *gin.Context) {
 	})
 }
 
+// GetTemplateBlockList lists the built-in block templates followed by the
+// snippets of the user.
 func GetTemplateBlockList(c *gin.Context) {
 	configList, err := template.GetTemplateList("block")
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	configList = append(configList, snippet.TemplateInfo()...)
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": configList,
 	})
 }
 
+// GetTemplateBlock renders a block template, a built-in one or, with the
+// origin query parameter set to custom, a snippet of the user.
 func GetTemplateBlock(c *gin.Context) {
 	type resp struct {
 		template.ConfigInfoItem
@@ -85,13 +91,36 @@ func GetTemplateBlock(c *gin.Context) {
 	}
 	var bindData map[string]template.Variable
 	_ = c.ShouldBindJSON(&bindData)
-	info := template.GetTemplateInfo("block", c.Param("name"))
+	name := c.Param("name")
+
+	var info template.ConfigInfoItem
+	if c.Query("origin") == template.OriginCustom {
+		s, err := snippet.Get(name)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		info = template.ConfigInfoItem{
+			Name: s.Name, NameI18n: s.NameI18n, Description: s.Description, Author: s.Author,
+			Filename: s.File, Variables: s.Variables, Origin: template.OriginCustom,
+		}
+	} else {
+		info = template.GetTemplateInfo("block", name)
+	}
 
 	if bindData == nil {
 		bindData = info.Variables
 	}
 
-	detail, err := template.ParseTemplate("block", c.Param("name"), bindData)
+	var (
+		detail template.ConfigDetail
+		err    error
+	)
+	if info.Origin == template.OriginCustom {
+		detail, err = snippet.Render(name, bindData)
+	} else {
+		detail, err = template.ParseTemplate("block", name, bindData)
+	}
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

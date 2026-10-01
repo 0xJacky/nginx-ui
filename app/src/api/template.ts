@@ -9,11 +9,17 @@ export interface Variable {
   mask?: Record<string, Record<string, string>>
 }
 
+/** Where a block template comes from: built into Nginx UI or a snippet of the user. */
+export type TemplateOrigin = 'builtin' | 'custom'
+
 export interface Template extends NgxServer {
   name: string
+  /** The name per language, when the template has one. */
+  name_i18n?: Record<string, string>
   description: Record<string, string>
   author: string
   filename: string
+  origin?: TemplateOrigin
   variables: Record<string, Variable>
   custom: string
   locations?: NgxLocation[]
@@ -55,8 +61,8 @@ const template = extendCurdApi(useCurdApi<Template>(baseUrl), {
   get_config_list: () => http.get(`${baseUrl}/configs`),
   get_block_list: () => http.get(`${baseUrl}/blocks`),
   get_config: (name: string) => http.get(`${baseUrl}/config/${name}`),
-  get_block: (name: string) => http.get(`${baseUrl}/block/${name}`),
-  build_block: (name: string, data: Variable) => http.post(`${baseUrl}/block/${name}`, data),
+  get_block: (name: string, origin?: TemplateOrigin) => http.get(`${baseUrl}/block/${name}`, { params: origin === 'custom' ? { origin } : undefined }),
+  build_block: (name: string, data: Variable, origin?: TemplateOrigin) => http.post(`${baseUrl}/block/${name}`, data, { params: origin === 'custom' ? { origin } : undefined }),
   get_quick_config: (data: QuickConfigRequest): Promise<QuickConfigResponse> => http.post(`${baseUrl}/quick_config`, data),
   analyze_quick_config: (config: string): Promise<{ request: QuickConfigRequest }> => http.post(`${baseUrl}/quick_config/analyze`, { config }),
 })

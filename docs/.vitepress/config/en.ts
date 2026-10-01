@@ -42,6 +42,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Build', link: '/guide/build' },
             { text: 'Project Structure', link: '/guide/project-structure' },
             { text: 'Config Template', link: '/guide/nginx-ui-template' },
+            { text: 'Snippets', link: '/guide/snippets' },
             { text: 'Translation', link: '/guide/dev-translate' },
             { text: 'Contributing', link: '/guide/contributing' }
           ]
