@@ -92,9 +92,16 @@ func GetPluginTemplateInfo(pluginID, path, name string) (ConfigInfoItem, error) 
 	return readInfo(loc, path, name)
 }
 
-// readInfo decodes the header of one template. The fields that identify the
-// file are set after decoding, so a header cannot change them.
-func readInfo(loc location, path, name string) (info ConfigInfoItem, err error) {
+// readInfo decodes the header of one template.
+func readInfo(loc location, path, name string) (ConfigInfoItem, error) {
+	info, _, err := readSource(loc, path, name)
+	return info, err
+}
+
+// readSource decodes the header of one template and returns the body below
+// it. The fields that identify the file are set after decoding, so a header
+// cannot change them.
+func readSource(loc location, path, name string) (info ConfigInfoItem, body string, err error) {
 	info = ConfigInfoItem{Description: map[string]string{}}
 	defer func() {
 		info.Filename = name
@@ -104,22 +111,22 @@ func readInfo(loc location, path, name string) (info ConfigInfoItem, err error) 
 
 	file, err := loc.fsys.Open(dirPath.Join(path, name))
 	if err != nil {
-		return info, err
+		return info, "", err
 	}
 	defer file.Close()
 
 	var header string
-	header, _, err = splitHeader(io.LimitReader(file, maxTemplateSize))
+	header, body, err = splitHeader(io.LimitReader(file, maxTemplateSize))
 	if err != nil {
-		return info, err
+		return info, "", err
 	}
 	if _, err = toml.Decode(header, &info); err != nil {
-		return info, errors.Wrap(err, "decode template header")
+		return info, "", errors.Wrap(err, "decode template header")
 	}
 	if info.Description == nil {
 		info.Description = map[string]string{}
 	}
-	return info, nil
+	return info, body, nil
 }
 
 // splitHeader returns the TOML header between the marker lines and the rest
@@ -256,15 +263,29 @@ func TrimActionLines(content string) string {
 // RenderText renders the body of a block template to text and checks that
 // the result parses as nginx configuration.
 func RenderText(name, content string, bindData map[string]Variable) (string, error) {
+	return renderText(name, content, bindData, false)
+}
+
+// RenderPluginText renders a block template of a plugin like RenderText,
+// with the limits every plugin template is rendered with.
+func RenderPluginText(name, content string, bindData map[string]Variable) (string, error) {
+	return renderText(name, content, bindData, true)
+}
+
+func renderText(name, content string, bindData map[string]Variable, restricted bool) (string, error) {
 	t, err := template.New(name).Parse(TrimActionLines(content))
 	if err != nil {
 		return "", err
 	}
-	var buf bytes.Buffer
-	if err = t.Execute(&buf, templateData(bindData)); err != nil {
+	if restricted {
+		if err = checkRestricted(t); err != nil {
+			return "", err
+		}
+	}
+	rendered, err := execute(t, templateData(bindData), restricted)
+	if err != nil {
 		return "", err
 	}
-	rendered := buf.String()
 	if _, err = parser.NewStringParser(rendered, parser.WithSkipValidDirectivesErr()).Parse(); err != nil {
 		return rendered, err
 	}
@@ -366,6 +387,26 @@ func BuiltinBlockSource(name string) (ConfigInfoItem, string, error) {
 	return info, strings.TrimLeft(body, "\r\n"), nil
 }
 
+// PluginBlockSource returns a block template of an enabled plugin as
+// written, like BuiltinBlockSource.
+func PluginBlockSource(pluginID, name string) (ConfigInfoItem, string, error) {
+	loc, err := pluginLocation(pluginID)
+	if err != nil {
+		return ConfigInfoItem{}, "", err
+	}
+	if !IsValidFileName(name) {
+		return ConfigInfoItem{}, "", ErrTemplateNotFound
+	}
+	if err = checkPluginFile(loc.fsys, "block", name); err != nil {
+		return ConfigInfoItem{}, "", err
+	}
+	info, body, err := readSource(loc, "block", name)
+	if err != nil {
+		return ConfigInfoItem{}, "", ErrTemplateNotFound
+	}
+	return info, strings.TrimLeft(body, "\r\n"), nil
+}
+
 // render parses and executes one template section.
 func render(name, text string, data gin.H, restricted bool) (string, error) {
 	t, err := template.New(name).Parse(text)
@@ -377,14 +418,23 @@ func render(name, text string, data gin.H, restricted bool) (string, error) {
 			return "", err
 		}
 	}
+	rendered, err := execute(t, data, restricted)
+	if err != nil {
+		return "", errors.Wrap(err, "error execute template")
+	}
+	return rendered, nil
+}
 
+// execute runs a parsed template. The output of a restricted one is
+// bounded.
+func execute(t *template.Template, data gin.H, restricted bool) (string, error) {
 	var buf bytes.Buffer
 	var out io.Writer = &buf
 	if restricted {
 		out = &limitedWriter{w: &buf, left: maxRenderedSize}
 	}
-	if err = t.Execute(out, data); err != nil {
-		return "", errors.Wrap(err, "error execute template")
+	if err := t.Execute(out, data); err != nil {
+		return "", err
 	}
 	return buf.String(), nil
 }
