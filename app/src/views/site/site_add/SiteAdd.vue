@@ -11,6 +11,7 @@ import { ConfigStatus } from '@/constants'
 import namespaceColumns from '@/views/namespace/columns'
 import QuickSetupForm from '../components/QuickSetup/QuickSetupForm.vue'
 import { useQuickConfig } from '../components/QuickSetup/useQuickConfig'
+import ConfigTemplate from '../site_edit/components/ConfigTemplate'
 import { extractSiteDomains, HTTPSCard, sameStringList, serializeNgxConfig } from '../site_edit/components/HTTPS'
 import { useSiteEditorStore } from '../site_edit/components/SiteEditor/store'
 import DNSRecordIntegration from './components/DNSRecordIntegration.vue'
@@ -405,7 +406,10 @@ function onDNSRecordCleared() {
 
 <template>
   <ACard :title="$gettext('Add Site')">
-    <div class="domain-add-container">
+    <div
+      class="domain-add-container"
+      :class="{ 'advanced-template-layout': currentStep === 0 && !quickMode }"
+    >
       <!-- Locked after the first step, but still shows the mode in use. -->
       <ASegmented
         :value="currentMode"
@@ -449,37 +453,49 @@ function onDNSRecordCleared() {
         </QuickSetupForm>
 
         <template v-else>
-          <AForm layout="vertical">
-            <AFormItem :label="$gettext('Configuration Name')">
-              <AInput v-model:value="ngxConfig.name" />
-            </AFormItem>
-            <AFormItem :label="$gettext('Namespace')">
-              <StdSelector
-                v-model:value="namespaceId"
-                :get-list-api="namespace.getList"
-                :columns="namespaceColumns"
-                display-key="name"
-                selection-type="radio"
+          <div class="advanced-config-layout">
+            <div class="advanced-config-main">
+              <AForm layout="vertical">
+                <AFormItem :label="$gettext('Configuration Name')">
+                  <AInput v-model:value="ngxConfig.name" />
+                </AFormItem>
+                <AFormItem :label="$gettext('Namespace')">
+                  <StdSelector
+                    v-model:value="namespaceId"
+                    :get-list-api="namespace.getList"
+                    :columns="namespaceColumns"
+                    display-key="name"
+                    selection-type="radio"
+                  />
+                </AFormItem>
+              </AForm>
+
+              <AAlert
+                v-if="!hasServerName"
+                type="warning"
+                class="mb-4"
+                show-icon
+                :title="$gettext('The parameter of server_name is required')"
               />
-            </AFormItem>
-          </AForm>
 
-          <AAlert
-            v-if="!hasServerName"
-            type="warning"
-            class="mb-4"
-            show-icon
-            :title="$gettext('The parameter of server_name is required')"
-          />
+              <DirectiveEditor
+                v-model:directives="curServerDirectives"
+                class="mb-4"
+              />
+              <LocationEditor
+                v-model:locations="curServerLocations"
+                :current-server-index="0"
+              />
+            </div>
 
-          <DirectiveEditor
-            v-model:directives="curServerDirectives"
-            class="mb-4"
-          />
-          <LocationEditor
-            v-model:locations="curServerLocations"
-            :current-server-index="0"
-          />
+            <ACard
+              class="advanced-config-template"
+              :title="$gettext('Config Template')"
+              :styles="{ body: { padding: '16px' } }"
+            >
+              <ConfigTemplate />
+            </ACard>
+          </div>
         </template>
       </div>
 
@@ -610,10 +626,41 @@ function onDNSRecordCleared() {
   margin: 0 auto
 }
 
+.domain-add-container.advanced-template-layout {
+  max-width: 1280px;
+}
+
+.advanced-config-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: 24px;
+}
+
+.advanced-config-main {
+  min-width: 0;
+}
+
+.advanced-config-template {
+  position: sticky;
+  top: 16px;
+  min-width: 0;
+}
+
 .ssl-step-guidance {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+  .advanced-config-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .advanced-config-template {
+    position: static;
+  }
 }
 </style>
