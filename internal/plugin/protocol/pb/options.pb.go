@@ -65,9 +65,8 @@ var (
 	// Marks a client streaming rpc: the caller sends any number of request
 	// messages and the callee answers once, with the response message, after
 	// the stream ended. Such an rpc has no JSON-RPC form. It travels on gRPC
-	// only and a peer answers -32601 for its rpc_name on stdio
-	// (spec/03-wire-protocol.md WIRE-12). The rpc MUST also be declared with
-	// a streamed request in the proto.
+	// only and a peer answers -32601 for its rpc_name on stdio. The rpc must
+	// also be declared with a streamed request in the proto.
 	//
 	// optional bool streaming = 52103;
 	E_Streaming = &file_nginxui_plugin_v1_options_proto_extTypes[2]

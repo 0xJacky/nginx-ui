@@ -24,7 +24,7 @@ const (
 
 // EventsOnRequest is the params of events.on. A fired cron entry reuses this
 // shape as the params of a request to the entry's own method, with type set
-// to the entry id and no data (spec/06-host-api.md HOST-10).
+// to the entry id and no data.
 type EventsOnRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Event type such as "cert.renewed".
