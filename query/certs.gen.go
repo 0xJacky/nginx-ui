@@ -65,6 +65,10 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.Status = field.NewString(tableName, "status")
 	_cert.LastError = field.NewString(tableName, "last_error")
 	_cert.LastAttemptAt = field.NewTime(tableName, "last_attempt_at")
+	_cert.DelegatedNodeID = field.NewUint64(tableName, "delegated_node_id")
+	_cert.DelegatedConfigName = field.NewString(tableName, "delegated_config_name")
+	_cert.RemoteSSLCertificatePath = field.NewString(tableName, "remote_ssl_certificate_path")
+	_cert.RemoteSSLCertificateKeyPath = field.NewString(tableName, "remote_ssl_certificate_key_path")
 	_cert.DnsCredential = certBelongsToDnsCredential{
 		db: db.Session(&gorm.Session{}),
 
@@ -123,6 +127,10 @@ type cert struct {
 	Status                       field.String
 	LastError                    field.String
 	LastAttemptAt                field.Time
+	DelegatedNodeID              field.Uint64
+	DelegatedConfigName          field.String
+	RemoteSSLCertificatePath     field.String
+	RemoteSSLCertificateKeyPath  field.String
 	DnsCredential                certBelongsToDnsCredential
 
 	ACMEUser certBelongsToACMEUser
@@ -179,6 +187,10 @@ func (c *cert) updateTableName(table string) *cert {
 	c.Status = field.NewString(table, "status")
 	c.LastError = field.NewString(table, "last_error")
 	c.LastAttemptAt = field.NewTime(table, "last_attempt_at")
+	c.DelegatedNodeID = field.NewUint64(table, "delegated_node_id")
+	c.DelegatedConfigName = field.NewString(table, "delegated_config_name")
+	c.RemoteSSLCertificatePath = field.NewString(table, "remote_ssl_certificate_path")
+	c.RemoteSSLCertificateKeyPath = field.NewString(table, "remote_ssl_certificate_key_path")
 
 	c.fillFieldMap()
 
@@ -195,7 +207,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 39)
+	c.fieldMap = make(map[string]field.Expr, 43)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -233,6 +245,10 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["status"] = c.Status
 	c.fieldMap["last_error"] = c.LastError
 	c.fieldMap["last_attempt_at"] = c.LastAttemptAt
+	c.fieldMap["delegated_node_id"] = c.DelegatedNodeID
+	c.fieldMap["delegated_config_name"] = c.DelegatedConfigName
+	c.fieldMap["remote_ssl_certificate_path"] = c.RemoteSSLCertificatePath
+	c.fieldMap["remote_ssl_certificate_key_path"] = c.RemoteSSLCertificateKeyPath
 
 }
 
