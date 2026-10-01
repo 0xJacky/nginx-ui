@@ -160,11 +160,17 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 
 ```json [index.json]
 "screenshots": [
-  { "url": "https://raw.githubusercontent.com/example/mydns/main/docs/credentials.png", "caption": { "en": "The credential form" } }
+  {
+    "url": "https://raw.githubusercontent.com/example/mydns/main/docs/credentials.png",
+    "dark_url": "https://raw.githubusercontent.com/example/mydns/main/docs/credentials-dark.png",
+    "caption": { "en": "The credential form" }
+  }
 ]
 ```
 
 最多八张插件使用时的 PNG、JPEG 或 WebP 图片，按显示顺序排列，每张可以附带各语言的说明。宽度 1280 到 1920 像素、宽高比约 16:10 的图片适合所有屏幕。Nginx UI 只从目录主机、插件包主机或 GitHub 上的 `https` 地址加载它们，丢弃其余图片，并且永远不会把图片缺失视为条目的问题。
+
+`dark_url` 是可选的，内容是同一画面的深色主题版本。界面为深色时 Nginx UI 显示它，否则显示 `url` 的图片；没有深色图片，或深色图片无法加载时，两种主题都显示浅色图片。两张图片应拍摄同一画面，尺寸相同。
 
 ## 托管自己的插件目录 {#hosting-a-catalog-of-your-own}
 
