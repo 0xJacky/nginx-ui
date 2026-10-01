@@ -912,6 +912,26 @@ func TestScreenshotsKeepTheLoadableOnes(t *testing.T) {
 	assert.Len(t, entry.Screenshots, len(shared), "the entry of the cache keeps its list")
 }
 
+func TestScreenshotsDropADarkVariantThatCannotLoad(t *testing.T) {
+	previous := settings.PluginSettings.AllowInsecureDownloadURL
+	settings.PluginSettings.AllowInsecureDownloadURL = false
+	t.Cleanup(func() { settings.PluginSettings.AllowInsecureDownloadURL = previous })
+
+	shared := []CatalogScreenshot{
+		{URL: "https://catalog.example/shots/list.png", DarkURL: "https://catalog.example/shots/list-dark.png"},
+		{URL: "https://catalog.example/shots/chart.png", DarkURL: "https://tracker.example/chart-dark.png"},
+		{URL: "https://tracker.example/only.png", DarkURL: "https://catalog.example/shots/only-dark.png"},
+	}
+	entry := &CatalogEntry{Source: "https://catalog.example/v1/index.json", Screenshots: shared}
+
+	kept := loadableScreenshots(entry)
+	require.Len(t, kept, 2, "a screenshot without a loadable light image is dropped")
+	assert.Equal(t, "https://catalog.example/shots/list-dark.png", kept[0].DarkURL)
+	assert.Equal(t, "https://catalog.example/shots/chart.png", kept[1].URL)
+	assert.Empty(t, kept[1].DarkURL, "the light image stands in for a dark one that cannot load")
+	assert.Equal(t, "https://tracker.example/chart-dark.png", shared[1].DarkURL, "the entry of the cache keeps its list")
+}
+
 func TestDecorateKeepsOnlyLoadableIcons(t *testing.T) {
 	mp := newTestManager(t).Marketplace()
 	entry := &CatalogEntry{
