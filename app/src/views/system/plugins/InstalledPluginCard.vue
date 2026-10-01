@@ -14,9 +14,8 @@ import {
 } from '@antdv-next/icons'
 import { localizedPluginDescription, localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
-import { capabilityLabel } from './capabilities'
-import { pluginChannel } from './channel'
-import ChannelTag from './ChannelTag.vue'
+import { capabilityIcon, capabilityLabel } from './capabilities'
+import { channelHint, channelLabel, pluginChannel } from './channel'
 import { conflictNote } from './conflicts'
 import { formatMemory, isBelowRecommended, memoryWarning, useSystemMemory } from './memory'
 import PluginIcon from './PluginIcon.vue'
@@ -93,7 +92,7 @@ function onMenuClick({ key }: { key: string | number }) {
 <template>
   <article
     class="plugin-card is-clickable"
-    :class="{ 'is-attention': attention, 'is-muted': isMuted }"
+    :class="{ 'is-attention': attention, 'is-error': attention && status.badge === 'error', 'is-muted': isMuted }"
     role="button"
     tabindex="0"
     @click="emit('open', 'overview')"
@@ -102,12 +101,14 @@ function onMenuClick({ key }: { key: string | number }) {
     <div class="plugin-card-head">
       <PluginIcon :src="plugin.icon_url" :name="name" :size="40" :muted="isMuted" />
       <div class="plugin-card-body">
-        <div class="plugin-card-title">
+        <ATooltip :title="plugin.id" placement="topLeft">
           <span class="plugin-card-name">{{ name }}</span>
+        </ATooltip>
+        <div class="plugin-card-sub">
           <span class="plugin-card-version">v{{ plugin.version }}</span>
-        </div>
-        <div class="plugin-card-id">
-          {{ plugin.id }}
+          <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
+            <span class="plugin-card-channel" :class="`is-${channel}`">{{ channelLabel(channel) }}</span>
+          </ATooltip>
         </div>
       </div>
       <span class="flex-none" @click.stop>
@@ -126,38 +127,33 @@ function onMenuClick({ key }: { key: string | number }) {
       {{ description || $gettext('No description provided.') }}
     </p>
 
-    <div class="plugin-card-meta">
+    <div class="plugin-card-facts">
       <ATooltip :title="status.hint?.()">
-        <ABadge :status="status.badge" :text="status.label()" />
+        <span class="plugin-card-status" :class="`is-${status.badge}`">
+          <ABadge :status="status.badge" />
+          {{ status.label() }}
+        </span>
       </ATooltip>
-      <!-- Outlined, so the trust level stands apart from the capability tags. -->
-      <TrustTag :plugin="plugin" />
-      <ChannelTag :channel="channel" />
-      <ATooltip v-if="plugin.recommended_memory_mb" :title="memoryHint">
-        <ATag
-          :color="lowMemory ? 'warning' : undefined"
-          class="m-0"
-          :aria-label="memoryHint"
-        >
-          <template #icon>
-            <span class="i-tabler-cpu align-[-2px]" />
-          </template>
-          {{ formatMemory(plugin.recommended_memory_mb) }}
-        </ATag>
-      </ATooltip>
-      <ATag
+      <TrustTag :plugin="plugin" plain />
+      <span
         v-for="capability in plugin.capabilities"
         :key="capability"
-        class="m-0"
-        variant="filled"
+        class="plugin-card-fact"
       >
+        <span :class="capabilityIcon(capability)" />
         {{ capabilityLabel(capability) }}
-      </ATag>
+      </span>
+      <ATooltip v-if="plugin.recommended_memory_mb" :title="memoryHint">
+        <span class="plugin-card-fact" :class="{ 'is-warning': lowMemory }" :aria-label="memoryHint">
+          <span class="i-tabler-cpu" />
+          {{ formatMemory(plugin.recommended_memory_mb) }}
+        </span>
+      </ATooltip>
     </div>
 
-    <div v-if="conflictingNames.length > 0" class="plugin-card-note" :title="conflictNote(conflictingNames)">
-      <InfoCircleOutlined class="flex-none" />
-      <span class="truncate">{{ conflictNote(conflictingNames) }}</span>
+    <div v-if="conflictingNames.length > 0" class="plugin-card-note">
+      <InfoCircleOutlined class="plugin-card-note-icon flex-none" />
+      <span class="min-w-0 break-words">{{ conflictNote(conflictingNames) }}</span>
     </div>
 
     <div
@@ -170,25 +166,24 @@ function onMenuClick({ key }: { key: string | number }) {
     </div>
 
     <div class="plugin-card-foot" @click.stop>
-      <div v-if="hasNodes" class="plugin-card-sync">
-        <CloudSyncOutlined class="text-gray-400" />
-        <SyncPolicyEditor :plugin="plugin" @updated="emit('updated')" />
-      </div>
+      <SyncPolicyEditor v-if="hasNodes" :plugin="plugin" compact @updated="emit('updated')" />
       <span v-else />
 
       <div class="plugin-card-actions">
-        <AButton type="text" size="small" @click="emit('open', 'settings')">
-          <template #icon>
-            <SettingOutlined />
-          </template>
-          {{ $gettext('Settings') }}
-        </AButton>
-        <AButton type="text" size="small" @click="emit('open', 'logs')">
-          <template #icon>
-            <FileTextOutlined />
-          </template>
-          {{ $gettext('Logs') }}
-        </AButton>
+        <ATooltip :title="$gettext('Settings')">
+          <AButton type="text" size="small" :aria-label="$gettext('Settings')" @click="emit('open', 'settings')">
+            <template #icon>
+              <SettingOutlined />
+            </template>
+          </AButton>
+        </ATooltip>
+        <ATooltip :title="$gettext('Logs')">
+          <AButton type="text" size="small" :aria-label="$gettext('Logs')" @click="emit('open', 'logs')">
+            <template #icon>
+              <FileTextOutlined />
+            </template>
+          </AButton>
+        </ATooltip>
         <ADropdown
           :trigger="['click']"
           placement="bottomRight"
@@ -223,19 +218,20 @@ function onMenuClick({ key }: { key: string | number }) {
 
 .plugin-card-note {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 6px;
   min-width: 0;
+  padding: 6px 10px;
   font-size: 12px;
   line-height: 1.5;
   color: var(--ant-color-text-secondary);
+  background: var(--ant-color-fill-quaternary);
+  border-radius: var(--ant-border-radius);
 }
 
-.plugin-card-sync {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
+// Keeps the icon on the first line when the names wrap.
+.plugin-card-note-icon {
+  margin-top: 3px;
 }
 
 .plugin-card-actions {
