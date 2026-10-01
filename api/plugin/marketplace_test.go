@@ -290,9 +290,11 @@ func TestUpdatePluginUpgradesFromTheCatalog(t *testing.T) {
 	assert.Equal(t, "1.1.0", info.Version)
 }
 
-func TestGetMarketplaceSourcesReportsTheDefault(t *testing.T) {
+func TestGetMarketplaceSourcesListsTheOfficialCatalogFirst(t *testing.T) {
 	setupManager(t)
 	fixture := newMarketplaceFixture(t)
+	const official = "https://official.example.com/v1/index.json"
+	t.Cleanup(plugin.SetOfficialSourceForTesting(official))
 
 	c, recorder := newContext(http.MethodGet, "/api/plugins/marketplace/sources", nil, nil)
 	GetMarketplaceSources(c)
@@ -300,9 +302,10 @@ func TestGetMarketplaceSourcesReportsTheDefault(t *testing.T) {
 
 	var body marketplaceSourcesResponse
 	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &body))
-	require.Len(t, body.Sources, 1)
-	assert.Equal(t, fixture.sourceURL(), body.Sources[0].URL)
-	assert.Equal(t, settings.DefaultPluginMarketplaceSource, body.Default)
+	require.Len(t, body.Sources, 2)
+	assert.Equal(t, official, body.Sources[0].URL)
+	assert.Equal(t, fixture.sourceURL(), body.Sources[1].URL)
+	assert.Equal(t, official, body.Default)
 }
 
 // The literal marketplace routes share a segment with /plugins/:id, so gin has
@@ -361,6 +364,17 @@ func TestNormalizeSources(t *testing.T) {
 	sources, err = normalizeSources([]string{"http://example.com/a.json"})
 	require.NoError(t, err)
 	assert.Len(t, sources, 1)
+
+	// The official catalog goes first unless listed, so only a later place
+	// is stored.
+	const official = "https://official.example.com/v1/index.json"
+	t.Cleanup(plugin.SetOfficialSourceForTesting(official))
+	sources, err = normalizeSources([]string{official, "https://example.com/a.json"})
+	require.NoError(t, err)
+	assert.Equal(t, []string{"https://example.com/a.json"}, sources)
+	sources, err = normalizeSources([]string{"https://example.com/a.json", official})
+	require.NoError(t, err)
+	assert.Equal(t, []string{"https://example.com/a.json", official}, sources)
 }
 
 func TestProbeMarketplaceSourceReadsTheCatalog(t *testing.T) {

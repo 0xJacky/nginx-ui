@@ -17,6 +17,8 @@ interface SourceRow {
   editing: boolean
   /** Address before the current edit, restored when it is cancelled. */
   previousUrl: string
+  /** The official catalog: it can move, but not be edited or removed. */
+  official: boolean
   /** Check still running, awaited before saving. */
   pending?: Promise<void>
   /** URL the state below belongs to. */
@@ -43,13 +45,9 @@ const loading = ref(false)
 const saving = ref(false)
 const error = ref('')
 const rows = ref<SourceRow[]>([])
-const defaultSource = ref('')
 const dragging = ref(false)
 const cards = useTemplateRef<ComponentPublicInstance>('cards')
 let nextKey = 0
-
-const canRestoreDefault = computed(() => Boolean(defaultSource.value)
-  && !rows.value.some(row => row.url.trim() === defaultSource.value))
 
 // Drag to reorder by the handle, so the address stays selectable.
 useSortable(cards, rows, {
@@ -67,8 +65,8 @@ useSortable(cards, rows, {
   },
 })
 
-function newRow(url = '', editing = false): SourceRow {
-  return { key: nextKey++, url, editing, previousUrl: url, probedUrl: '', state: 'idle', catalogIcon: '', plugins: 0, detail: '' }
+function newRow(url = '', editing = false, official = false): SourceRow {
+  return { key: nextKey++, url, editing, official, previousUrl: url, probedUrl: '', state: 'idle', catalogIcon: '', plugins: 0, detail: '' }
 }
 
 // A bare domain gets https in front; the check then finds the catalog on it.
@@ -170,8 +168,7 @@ async function load() {
   rows.value = []
   try {
     const response = await getMarketplaceSources()
-    rows.value = response.sources.map(source => newRow(source.url))
-    defaultSource.value = response.default
+    rows.value = response.sources.map(source => newRow(source.url, false, source.url === response.default))
   }
   catch (e) {
     error.value = getErrorMessage(e, $gettext('Failed to load the marketplace sources'))
@@ -237,12 +234,6 @@ function removeSource(index: number) {
   rows.value.splice(index, 1)
 }
 
-function restoreDefault() {
-  const row = newRow(defaultSource.value)
-  rows.value.push(row)
-  row.pending = probe(row)
-}
-
 async function save() {
   rows.value.forEach(finishEdit)
   if (rows.value.some(row => row.state === 'invalid')) {
@@ -257,7 +248,7 @@ async function save() {
     const response = await saveMarketplaceSources(rows.value
       .map(row => row.url.trim())
       .filter(Boolean))
-    rememberSources(response.sources)
+    rememberSources(response.sources, response.default)
     message.success($gettext('Marketplace sources saved'))
     open.value = false
     emit('saved')
@@ -298,7 +289,7 @@ watch(open, value => {
 
     <div class="sources-intro">
       <InfoCircleOutlined class="sources-intro-icon" />
-      <span>{{ $gettext('Catalogs are merged in order, the first source that offers a plugin wins. Leave the list empty to use the official catalog.') }}</span>
+      <span>{{ $gettext('Catalogs are merged in order, and the first source that offers a plugin wins. The official catalog cannot be removed. Move a mirror above it to install from the mirror first.') }}</span>
     </div>
 
     <div class="sources-list">
@@ -347,7 +338,7 @@ watch(open, value => {
                   :class="{ 'is-placeholder': row.editing && !row.catalogName }"
                 >{{ row.editing && !row.catalogName ? $gettext('New source') : titleOf(row) }}</span>
               </Transition>
-              <ATag v-if="row.url.trim() === defaultSource" color="blue" :bordered="false" class="source-tag">
+              <ATag v-if="row.official" color="blue" :bordered="false" class="source-tag">
                 {{ $gettext('Official') }}
               </ATag>
             </div>
@@ -378,6 +369,14 @@ watch(open, value => {
                   </span>
                 </Transition>
               </div>
+              <span
+                v-else-if="row.official"
+                key="fixed"
+                class="source-url is-fixed"
+                :title="row.url"
+              >
+                <span class="source-url-text">{{ row.url }}</span>
+              </span>
               <button
                 v-else
                 key="text"
@@ -408,6 +407,7 @@ watch(open, value => {
             </Transition>
 
             <AButton
+              v-if="!row.official"
               danger
               type="text"
               size="small"
@@ -423,34 +423,10 @@ watch(open, value => {
         </div>
       </TransitionGroup>
 
-      <Transition name="source-fade">
-        <div v-if="rows.length === 0 && !loading" class="sources-empty">
-          <div class="source-tile is-available">
-            <AppstoreOutlined />
-          </div>
-          <div>
-            <div class="sources-empty-title">
-              {{ $gettext('Using the official catalog') }}
-            </div>
-            <div class="sources-empty-hint">
-              {{ $gettext('Add a source to offer plugins from another catalog as well.') }}
-            </div>
-          </div>
-        </div>
-      </Transition>
-
       <button type="button" class="sources-add" @click="addSource">
         <PlusOutlined />
         <span>{{ $gettext('Add source') }}</span>
       </button>
-
-      <Transition name="source-fade">
-        <div v-if="canRestoreDefault && !loading" class="sources-official">
-          <AButton type="link" size="small" @click="restoreDefault">
-            {{ $gettext('Add the official catalog') }}
-          </AButton>
-        </div>
-      </Transition>
     </div>
   </AModal>
 </template>
@@ -554,6 +530,10 @@ watch(open, value => {
   transition: opacity 0.2s ease, color 0.2s ease;
 }
 
+.source-url.is-fixed {
+  cursor: default;
+}
+
 .source-card:hover .source-handle,
 .source-card:focus-within .source-handle {
   opacity: 1;
@@ -590,11 +570,6 @@ watch(open, value => {
   height: 28px;
   border-radius: 6px;
   object-fit: contain;
-}
-
-.sources-empty .source-tile {
-  color: var(--ant-color-success);
-  background: var(--ant-color-success-bg);
 }
 
 .source-main {
@@ -775,25 +750,6 @@ watch(open, value => {
   box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.3);
 }
 
-.sources-empty {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 14px 16px;
-  border: 1px solid var(--ant-color-border-secondary);
-  border-radius: 12px;
-}
-
-.sources-empty-title {
-  font-weight: 600;
-  color: var(--ant-color-text);
-}
-
-.sources-empty-hint {
-  font-size: 12px;
-  color: var(--ant-color-text-tertiary);
-}
-
 .sources-add {
   display: flex;
   gap: 8px;
@@ -823,11 +779,6 @@ watch(open, value => {
 
 .sources-add:active {
   transform: scale(0.995);
-}
-
-.sources-official {
-  margin-top: -4px;
-  text-align: center;
 }
 
 /* Cards slide in, collapse out and glide to a new place */
