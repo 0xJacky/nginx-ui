@@ -118,7 +118,12 @@ func RevokeCert(c *gin.Context) {
 	}
 
 	// Update certificate status in database
-	err = certModel.Remove()
+	// A certificate issued for a node keeps its files there unless asked.
+	if certModel.IsDelegated() {
+		err = cert.RemoveDelegated(c.Request.Context(), certModel, cast.ToBool(c.Query("remove_remote")))
+	} else {
+		err = certModel.Remove()
+	}
 	if err != nil {
 		logger.Error(err)
 		_ = wsWriter.WriteJSON(RevokeCertResponse{

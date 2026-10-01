@@ -33,6 +33,9 @@ type IssueCertResponse struct {
 	SSLCertificateKey string             `json:"ssl_certificate_key,omitempty"`
 	KeyType           certcrypto.KeyType `json:"key_type,omitempty"`
 	Profile           string             `json:"profile,omitempty"`
+	// RemoteCertificateID is the record of the node a certificate issued for it
+	// is kept in there. Only set by IssueCertForNode.
+	RemoteCertificateID uint64 `json:"remote_certificate_id,omitempty"`
 	// Hint explains an issuance failure in actionable terms. Only set on errors.
 	Hint *acmehint.Hint `json:"hint,omitempty"`
 	// Error is the structured cosy error behind a failure, so the frontend can
