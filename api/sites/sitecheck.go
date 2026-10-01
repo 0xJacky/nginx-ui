@@ -170,6 +170,19 @@ func validateHealthCheckRequest(req *updateHealthCheckRequest) error {
 		}
 	}
 
+	clickURL := strings.TrimSpace(req.HealthCheckConfig.ClickURL)
+	if clickURL != "" {
+		parsed, err := url.ParseRequestURI(clickURL)
+		if err != nil || parsed.Hostname() == "" || parsed.User != nil || parsed.Fragment != "" {
+			return fmt.Errorf("click_url must be an absolute URL without user information or a fragment")
+		}
+		switch strings.ToLower(parsed.Scheme) {
+		case "http", "https":
+		default:
+			return fmt.Errorf("click_url scheme must be http or https")
+		}
+	}
+
 	if req.HealthCheckAlert != nil {
 		if req.HealthCheckAlert.FailureThreshold < 1 {
 			req.HealthCheckAlert.FailureThreshold = 1

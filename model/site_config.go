@@ -13,6 +13,9 @@ type HealthCheckConfig struct {
 	// server block is used.
 	TargetURL string `json:"target_url"`
 
+	// Optional URL opened when clicking the site card in dashboard.
+	ClickURL string `json:"click_url"`
+
 	// Protocol settings
 	Protocol string            `json:"protocol"`                       // http, https, grpc
 	Method   string            `json:"method"`                         // GET, POST, PUT, etc.
