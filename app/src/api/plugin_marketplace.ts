@@ -58,6 +58,8 @@ export interface CatalogRelease {
 /** One image of a catalog entry. */
 export interface CatalogScreenshot {
   url: string
+  /** The same view in the dark theme; `url` stands in when it is absent. */
+  dark_url?: string
   /** Locale code to caption, "en" is the fallback. */
   caption?: Record<string, string>
 }
@@ -279,6 +281,11 @@ export function releasePlatforms(release: CatalogRelease): string[] {
 /** Display name of a catalog entry in the active language, English fallback. */
 export function catalogEntryName(entry: CatalogEntry, language: string): string {
   return localizedText(entry.name, language) || entry.id
+}
+
+/** Image of a screenshot for the theme, the light one when it has no dark one. */
+export function catalogScreenshotURL(screenshot: CatalogScreenshot, isDark: boolean): string {
+  return (isDark && screenshot.dark_url) || screenshot.url
 }
 
 /** Caption of a screenshot in the active language, English fallback. */
