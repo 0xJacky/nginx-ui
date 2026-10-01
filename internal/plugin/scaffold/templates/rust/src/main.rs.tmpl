@@ -1,0 +1,31 @@
+//! {{.Name}} nginx-ui plugin: a DNS-01 challenge solver for the
+//! "{{.ProviderCode}}" provider.
+
+use nginxui_plugin_sdk::{Context, Dns01Handler, Dns01Request, Error, Plugin};
+
+struct {{.GoTypeName}};
+
+#[async_trait::async_trait]
+impl Dns01Handler for {{.GoTypeName}} {
+    // Publishes the challenge TXT record `req.effective_fqdn` with the value
+    // `req.value`.
+    async fn present(&self, _ctx: &Context, req: Dns01Request) -> Result<(), Error> {
+        let token = req.config.get({{json .CredentialKey}}).cloned().unwrap_or_default();
+        if token.is_empty() {
+            return Err(Error::invalid_config({{json .CredentialKey}}, "the API token is required"));
+        }
+        // TODO: call the {{.ProviderName}} API with the token to create the record.
+        Ok(())
+    }
+
+    // Removes what `present` published. It runs even when `present` never ran
+    // or failed, so a record that is not there is not an error.
+    async fn clean_up(&self, _ctx: &Context, _req: Dns01Request) -> Result<(), Error> {
+        // TODO: call the {{.ProviderName}} API to remove the record.
+        Ok(())
+    }
+}
+
+fn main() {
+    nginxui_plugin_sdk::serve_blocking(Plugin::new().dns01({{.GoTypeName}}));
+}
