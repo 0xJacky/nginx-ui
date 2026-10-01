@@ -345,6 +345,34 @@ func TestMarketplaceCatalogMergesSourcesFirstWins(t *testing.T) {
 	assert.Equal(t, secondary.catalogURL(), findEntry(entries, "com.example.only", "").Source)
 }
 
+func TestMarketplaceOfficialSourceIsAlwaysRead(t *testing.T) {
+	manager := newTestManager(t)
+	official := newCatalogServer(t)
+	mirror := newCatalogServer(t)
+	useMarketplace(t, mirror.catalogURL())
+	t.Cleanup(SetOfficialSourceForTesting(official.catalogURL()))
+
+	official.publish(t, marketplaceManifest("com.example.shared", "1.0.0"), nil, nil)
+	mirror.publish(t, marketplaceManifest("com.example.shared", "9.9.9"), nil, nil)
+
+	// Not listed, the official catalog goes in front of the others.
+	marketplace := manager.Marketplace()
+	assert.Equal(t, []string{official.catalogURL(), mirror.catalogURL()}, marketplace.Sources())
+	entries, err := marketplace.Catalog(context.Background(), true)
+	require.NoError(t, err)
+	assert.Equal(t, official.catalogURL(), findEntry(entries, "com.example.shared", "").Source)
+
+	// Listed after a mirror, the mirror is read first.
+	settings.PluginSettings.MarketplaceSources = []string{mirror.catalogURL(), official.catalogURL(), mirror.catalogURL()}
+	assert.Equal(t, []string{mirror.catalogURL(), official.catalogURL()}, marketplace.Sources())
+	entries, err = marketplace.Catalog(context.Background(), true)
+	require.NoError(t, err)
+	assert.Equal(t, mirror.catalogURL(), findEntry(entries, "com.example.shared", "").Source)
+
+	SetOfficialSourceForTesting("")
+	assert.Equal(t, []string{mirror.catalogURL(), official.catalogURL()}, marketplace.Sources())
+}
+
 func TestMarketplaceCatalogCachesEverySource(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
