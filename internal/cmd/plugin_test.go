@@ -165,7 +165,7 @@ func TestCertifyPartner(t *testing.T) {
 	require.NoError(t, PluginCommand.Run(ctx, []string{"plugin", "certify", publicKeyPath,
 		"--key", releaseKeyPath, "--name", "acme", "--expires", "2099-12-31", "--out", out}))
 
-	// The release key signed the exact partner key bytes, and the trusted
+	// The official plugin key signed the exact partner key bytes, and the trusted
 	// comment names the partner and the expiry.
 	partner, err := os.ReadFile(filepath.Join(out, plugin.PartnerFileName))
 	require.NoError(t, err)

@@ -960,9 +960,9 @@ func packageErrorRule(err error) string {
 }
 
 // lintPartnerCertificate checks the partner certificate files: both belong
-// together, a release key verifies them and the trusted comment parses, and
-// a certificate with an expiry has not expired by the UTC date of the linter
-// clock. It returns the certificate when it is valid.
+// together, an official plugin key verifies them and the trusted comment
+// parses, and a certificate with an expiry has not expired by the UTC date of
+// the linter clock. It returns the certificate when it is valid.
 // The linter reads no keyring, so revocations are not checked.
 func lintPartnerCertificate(dir string, report *LintReport) *partnerCertificate {
 	certificate, err := readPartnerCertificate(dir, nil)
@@ -980,9 +980,9 @@ func lintPartnerCertificate(dir string, report *LintReport) *partnerCertificate 
 // lintSums checks the embedded signature files: plugin.sums has to follow
 // its format and match the files whether or not the package is signed, both
 // files belong together, a valid partner certificate has to name the key
-// that signed plugin.sums, and a signature neither the release keys pinned
-// in this binary nor the certificate key verify is only a warning, since a
-// community key is named by a catalog entry or an operator.
+// that signed plugin.sums, and a signature neither the official plugin keys
+// pinned in this binary nor the certificate key verify is only a warning,
+// since a community key is named by a catalog entry or an operator.
 func lintSums(dir string, certificate *partnerCertificate, report *LintReport) {
 	sums, err := readRootFile(dir, SumsFileName)
 	if err != nil {
@@ -1031,6 +1031,6 @@ func lintSums(dir string, certificate *partnerCertificate, report *LintReport) {
 	case err != nil:
 		report.add(LevelError, RuleSignatureMismatch, "%s: %v", SumsSignatureFileName, err)
 	case trust.Trust == TrustUnsigned:
-		report.add(LevelWarning, RuleSignatureSigner, "%s does not verify with the release keys pinned in this binary or a partner certificate key (expected for a community plugin)", SumsSignatureFileName)
+		report.add(LevelWarning, RuleSignatureSigner, "%s does not verify with the official plugin keys pinned in this binary or a partner certificate key (expected for a community plugin)", SumsSignatureFileName)
 	}
 }

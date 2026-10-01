@@ -94,7 +94,7 @@ func TestTrustRank(t *testing.T) {
 
 func TestVerifyPackageSignatureDerivesTheTrust(t *testing.T) {
 	useMarketplace(t)
-	official := useReleaseKey(t)
+	official := useOfficialKey(t)
 	partner, keyring := usePartnerKey(t)
 	userPublic, user := newSigningKey(t)
 	trustKey(t, userPublic)
@@ -110,9 +110,9 @@ func TestVerifyPackageSignatureDerivesTheTrust(t *testing.T) {
 		// wantPartner is the partner name recorded for a verified package.
 		wantPartner string
 	}{
-		"release key": {signer: official, want: TrustOfficial},
-		"partner key": {signer: partner, want: TrustVerified, wantPartner: "example"},
-		"user key":    {signer: &user, want: TrustCommunity, wantKey: publisherKey(t, userPublic)},
+		"official plugin key": {signer: official, want: TrustOfficial},
+		"partner key":         {signer: partner, want: TrustVerified, wantPartner: "example"},
+		"user key":            {signer: &user, want: TrustCommunity, wantKey: publisherKey(t, userPublic)},
 		"catalog author key": {signer: &author, authorKey: encodeKey(t, authorPublic), want: TrustCommunity,
 			wantKey: encodeKey(t, authorPublic)},
 		"author key unknown":  {signer: &author, want: TrustUnsigned},
@@ -137,7 +137,7 @@ func TestVerifyPackageSignatureDerivesTheTrust(t *testing.T) {
 
 func TestVerifyPackageSignatureRefusesATamperedPackage(t *testing.T) {
 	useMarketplace(t)
-	signer := useReleaseKey(t)
+	signer := useOfficialKey(t)
 	archive := signedWebappPackage(t, "com.example.alpha", signer)
 
 	for name, mutate := range map[string]func(entry *tarEntry){
@@ -191,7 +191,7 @@ func TestInstallAppliesTheTrustPolicy(t *testing.T) {
 	settings.PluginSettings.DeveloperMode = false
 	ctx := context.Background()
 
-	official := useReleaseKey(t)
+	official := useOfficialKey(t)
 	userPublic, user := newSigningKey(t)
 	trustKey(t, userPublic)
 
@@ -271,7 +271,7 @@ func TestInspectReportsTheTrust(t *testing.T) {
 	manager := newTestManager(t)
 	useMarketplace(t)
 	settings.PluginSettings.DeveloperMode = false
-	official := useReleaseKey(t)
+	official := useOfficialKey(t)
 	authorPublic, author := newSigningKey(t)
 
 	result, err := manager.Inspect(signedWebappPackage(t, "com.example.alpha", official))

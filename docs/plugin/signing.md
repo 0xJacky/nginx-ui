@@ -82,7 +82,7 @@ meant.
 
 | Signer | Level |
 | --- | --- |
-| A release key of the Nginx UI project | `official` |
+| The official plugin key of the Nginx UI project | `official` |
 | A partner key the project vouches for, and not revoked | `verified` |
 | The `author_public_key` of the catalog entry the package came from, or a key on the Nginx UI **Trusted Publishers** list | `community` |
 | No signature, or an unknown signer | `unsigned` |
@@ -90,6 +90,10 @@ meant.
 The levels rank `unsigned` < `community` < `verified` < `official`. Neither a
 catalog nor an operator can raise a key above `community`. The `trust` label
 of a catalog entry is for display only and never grants a level.
+
+The official plugin key is a key of its own, apart from the key that signs
+Nginx UI releases: it signs plugins, partner certificates and the partner
+keyring, but never an Nginx UI upgrade.
 
 What each level allows:
 
@@ -121,7 +125,7 @@ Most plugins are community plugins. To publish one:
 ## Partner Plugins
 
 Organizations that partner with the Nginx UI project sign with their own key,
-which the project vouches for with its release key. Their packages derive
+which the project vouches for with its official plugin key. Their packages derive
 `verified` on any Nginx UI, even one that has never heard of the partner.
 
 ### The Partner Certificate
@@ -132,7 +136,7 @@ root:
 | File | Content |
 | --- | --- |
 | `plugin.partner` | The partner's minisign public key, as in a `.pub` file. |
-| `plugin.partner.minisig` | A signature of that file by a release key of the project. |
+| `plugin.partner.minisig` | A signature of that file by the official plugin key of the project. |
 
 The trusted comment of the signature names the partner and, optionally, the
 last valid day of the certificate:
@@ -151,8 +155,8 @@ A partner copies both files unchanged into every package before signing it,
 so `plugin.sums` lists them. One certificate serves every package signed with
 that key; a renewed certificate is a changed file and needs a new signature.
 
-Nginx UI accepts a certificate when `plugin.partner` is a valid public key, a
-release key verifies the signature over it, the comment has the format above,
+Nginx UI accepts a certificate when `plugin.partner` is a valid public key, the
+official plugin key verifies the signature over it, the comment has the format above,
 it has not expired and the key is not revoked. A certificate that fails gives
 no partner trust but never makes a package invalid on its own: the package
 falls back to its other sources of trust.

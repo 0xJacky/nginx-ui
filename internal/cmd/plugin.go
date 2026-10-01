@@ -86,7 +86,7 @@ var PluginCommand = &cli.Command{
 		},
 		{
 			Name:      "certify",
-			Usage:     "Issue a partner certificate with a release key",
+			Usage:     "Issue a partner certificate with an official plugin key",
 			ArgsUsage: "<partner-public-key-file>",
 			Action:    CertifyPartner,
 			Flags: []cli.Flag{
@@ -319,13 +319,13 @@ func CertifyPartner(_ context.Context, command *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	releaseKey, err := loadSigningKey(command.String("key"))
+	officialKey, err := loadSigningKey(command.String("key"))
 	if err != nil {
 		return err
 	}
 	name := command.String("name")
 	expires := command.String("expires")
-	partner, signature, err := plugin.NewPartnerCertificate(partnerKey, name, expires, releaseKey)
+	partner, signature, err := plugin.NewPartnerCertificate(partnerKey, name, expires, officialKey)
 	if err != nil {
 		return err
 	}
@@ -341,21 +341,22 @@ func CertifyPartner(_ context.Context, command *cli.Command) error {
 		return err
 	}
 
-	if !isReleaseKey(releaseKey.ID()) {
-		fmt.Fprintf(os.Stderr, "warning: key %016X is not a release key of this build, hosts will ignore the certificate\n", releaseKey.ID())
+	if !isPluginKey(officialKey.ID()) {
+		fmt.Fprintf(os.Stderr, "warning: key %016X is not an official plugin key of this build, hosts will ignore the certificate\n", officialKey.ID())
 	}
 	validity := "until " + expires
 	if expires == "" {
 		validity = "with no expiry"
 	}
 	fmt.Printf("certified partner %s %s, signed with key %016X, wrote %s and %s into %s\n",
-		name, validity, releaseKey.ID(), plugin.PartnerFileName, plugin.PartnerSignatureFileName, out)
+		name, validity, officialKey.ID(), plugin.PartnerFileName, plugin.PartnerSignatureFileName, out)
 	return nil
 }
 
-// isReleaseKey reports whether a key id belongs to a release key of this build.
-func isReleaseKey(keyID uint64) bool {
-	keys, err := pkgsign.ParseTrustedKeys(releasesign.TrustedPublicKeys())
+// isPluginKey reports whether a key id belongs to an official plugin key of
+// this build.
+func isPluginKey(keyID uint64) bool {
+	keys, err := pkgsign.ParseTrustedKeys(releasesign.PluginPublicKeys())
 	if err != nil {
 		return false
 	}
