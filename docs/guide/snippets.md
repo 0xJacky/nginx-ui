@@ -69,7 +69,7 @@ without a translation see the English text.
 
 A variable makes a value differ from site to site, such as a target address
 or a status code. It has a key, a label, a type (text, switch or select) and
-a default value, and the content refers to it as `{{ .key }}`.
+a default value, and the content refers to it as <code v-pre>{{ .key }}</code>.
 
 The quickest way to add one is to write the configuration with a real value
 first, select the value and click **Make Variable**, or press <kbd>⌘E</kbd>
@@ -79,13 +79,13 @@ refers to the variable. Selecting `on` or `off` makes a switch.
 
 In the content, every variable has its own color, the same as in the list of
 variables, and pointing at one shows its type and default value. Typing
-`{{ .` lists the variables to complete, and **New Variable…** at the end of
+<code v-pre>{{ .</code> lists the variables to complete, and **New Variable…** at the end of
 the list declares one where the cursor is. **Insert Variable** adds one at
 the cursor. A variable the content uses without declaring it is marked, with
 a button to declare it.
 
 A snippet with variables is filled in by the config template panel and can
-only be inserted. Nginx cannot include it, because the `{{ }}` placeholders
+only be inserted. Nginx cannot include it, because the <code v-pre>{{ }}</code> placeholders
 are not Nginx configuration.
 
 ### Preview
@@ -97,8 +97,8 @@ and the preview tells whether the result is valid Nginx configuration, before
 the snippet is saved. For a snippet without variables, the same place shows
 the directive that includes it.
 
-A line that holds only actions such as `{{ if .keepPath }}`, `{{ else }}` or
-`{{ end }}` leaves no blank line in the result, so blocks can be written on
+A line that holds only actions such as <code v-pre>{{ if .keepPath }}</code>, <code v-pre>{{ else }}</code> or
+<code v-pre>{{ end }}</code> leaves no blank line in the result, so blocks can be written on
 lines of their own.
 
 ## Built-in Templates
