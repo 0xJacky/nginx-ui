@@ -246,7 +246,7 @@ export interface PluginManifest {
   name: string
   version: string
   description?: string
-  /** Locale code to the translated name and description, see spec MAN-40. */
+  /** Locale code to the translated name and description. */
   i18n?: Record<string, PluginManifestI18n>
   homepage_url?: string
   icon_path?: string
