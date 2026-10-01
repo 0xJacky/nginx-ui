@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -301,6 +302,34 @@ func TestServeWebappNeverHandsOutTheManifest(t *testing.T) {
 		gin.Params{{Key: "id", Value: "official.alpha"}, {Key: "filepath", Value: "/" + plugin.ManifestFileName}})
 	ServeWebapp(c)
 	assert.Equal(t, http.StatusNotFound, recorder.Code)
+}
+
+func TestServeWebappKeepsSymlinksInsideThePlugin(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("symlink creation needs elevated privileges on windows")
+	}
+	manager := setupManager(t)
+	manifest := webappManifest("official.alpha")
+	manifest.Webapp = &protocol.ManifestWebapp{BundlePath: "main.js"}
+	installTestPlugin(t, manager, manifest, map[string]string{"main.js": "export default {}", "style.css": "a{}"}, true)
+
+	dir := filepath.Join(manager.Dir(), "official.alpha")
+	outside := filepath.Join(t.TempDir(), "outside.txt")
+	require.NoError(t, os.WriteFile(outside, []byte("not served"), 0o644))
+	require.NoError(t, os.Symlink(outside, filepath.Join(dir, "escape.txt")))
+	require.NoError(t, os.Symlink(plugin.ManifestFileName, filepath.Join(dir, "manifest.txt")))
+	require.NoError(t, os.Symlink("style.css", filepath.Join(dir, "alias.css")))
+
+	for name, want := range map[string]int{
+		"/escape.txt":   http.StatusNotFound,
+		"/manifest.txt": http.StatusNotFound,
+		"/alias.css":    http.StatusOK,
+	} {
+		c, recorder := newContext(http.MethodGet, "/plugins/official.alpha/webapp"+name, nil,
+			gin.Params{{Key: "id", Value: "official.alpha"}, {Key: "filepath", Value: name}})
+		ServeWebapp(c)
+		assert.Equal(t, want, recorder.Code, name)
+	}
 }
 
 // getStatic requests a plugin asset through the registered static routes.
