@@ -10450,6 +10450,196 @@ msgstr "单窗格"
 msgid "Split view"
 msgstr "分屏视图"
 
+#: src/constants/errors/snippet.ts:2
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "文件名必须以 .conf 结尾，且只能包含字母、数字、点、连字符和下划线"
+
+#: src/constants/errors/snippet.ts:3
+msgid "Snippet not found"
+msgstr "未找到片段"
+
+#: src/constants/errors/snippet.ts:4
+msgid "The snippet exceeds 256 KiB"
+msgstr "片段超过 256 KiB"
+
+#: src/constants/errors/snippet.ts:5
+msgid "The header of the snippet does not parse: {0}"
+msgstr "片段的文件头无法解析：{0}"
+
+#: src/constants/errors/snippet.ts:6
+msgid "The snippet is still included by {0}"
+msgstr "片段仍被以下文件引用：{0}"
+
+#: src/constants/errors/snippet.ts:7
+msgid "A snippet with this file name already exists"
+msgstr "已存在同名文件的片段"
+
+#: src/views/snippet/SnippetList.vue:91
+msgid "Snippets"
+msgstr "片段"
+
+#: src/views/snippet/SnippetList.vue:3
+msgid "Snippet"
+msgstr "片段"
+
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:149
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr "引用会让网站与 snippets/%{file} 保持关联，之后对片段的修改都会作用到网站。插入则会把内容复制到网站中。"
+
+#: src/views/snippet/components/SnippetEditor.vue:178
+msgid "Insert"
+msgstr "插入"
+
+#: src/views/snippet/SnippetList.vue:26
+msgid "Include"
+msgstr "引用"
+
+#: src/views/snippet/SnippetList.vue:3
+msgid "Snippet %{name} saved"
+msgstr "片段 %{name} 已保存"
+
+#: src/views/snippet/components/SnippetEditor.vue:130
+msgid "Edit Snippet %{name}"
+msgstr "编辑片段 %{name}"
+
+#: src/views/snippet/SnippetList.vue:118
+msgid "Create Snippet"
+msgstr "新建片段"
+
+#: src/views/snippet/components/SnippetEditor.vue:141
+msgid "Static file cache"
+msgstr "静态文件缓存"
+
+#: src/views/snippet/components/SnippetEditor.vue:145
+msgid "File Name"
+msgstr "文件名"
+
+#: src/views/snippet/components/SnippetEditor.vue:149
+msgid ""
+"Fixed after creation, so the sites that include the snippet keep working."
+msgstr "创建后不可修改，以保证引用该片段的网站继续正常工作。"
+
+#: src/views/snippet/components/SnippetEditor.vue:150
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "字母、数字、点、连字符和下划线。"
+
+#: src/views/snippet/components/SnippetEditor.vue:178
+msgid ""
+"This snippet has variables: %{names}. Insert it from the config template "
+"panel of the site editor, which fills them in; Nginx cannot include it "
+"directly."
+msgstr "此片段包含变量：%{names}。请在网站编辑器的配置模板面板中插入它，由面板填写变量；Nginx 无法直接引用它。"
+
+#: src/views/snippet/components/SnippetEditor.vue:188
+msgid "To use the snippet, add this directive to a server or location block:"
+msgstr "在 server 或 location 块中加入以下指令即可使用该片段："
+
+#: src/views/snippet/components/SnippetEditor.vue:209
+msgid "No configuration includes this snippet yet."
+msgstr "目前没有配置引用此片段。"
+
+#: src/views/snippet/components/SnippetSync.vue:41
+msgid "Snippets are no longer synchronized"
+msgstr "片段已停止同步"
+
+#: src/views/snippet/components/SnippetSync.vue:57
+msgid "Synchronize Snippets"
+msgstr "同步片段"
+
+#: src/views/snippet/components/SnippetSync.vue:65
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr "所有片段会立即复制到所选节点，之后的修改也会自动同步。清空选择即可停止同步。"
+
+#: src/views/snippet/components/SnippetSync.vue:75
+msgid "Replace snippets that already exist on the nodes"
+msgstr "替换节点上已存在的片段"
+
+#: src/views/snippet/SnippetList.vue:74
+msgid "Delete snippet %{name}?"
+msgstr "删除片段 %{name}？"
+
+#: src/views/snippet/SnippetList.vue:76
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "将在本节点和已同步的节点上删除 snippets/%{file}。"
+
+#: src/views/snippet/SnippetList.vue:76
+msgid "snippets/%{file} will be removed."
+msgstr "将删除 snippets/%{file}。"
+
+#: src/views/snippet/SnippetList.vue:3
+msgid "Snippet %{name} deleted"
+msgstr "片段 %{name} 已删除"
+
+#: src/views/snippet/SnippetList.vue:104
+msgid "Synchronize"
+msgstr "同步"
+
+#: src/views/snippet/SnippetList.vue:112
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "已同步到 %{count} 个节点"
+
+#: src/views/snippet/SnippetList.vue:130
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in a "
+"site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr "片段把一段 Nginx 配置放在一处统一管理。可以在网站中引用它，也可以在网站编辑器的配置模板面板中插入它；修改被引用的片段会更新所有使用它的网站。"
+
+#: src/views/snippet/SnippetList.vue:112
+msgid "Copied %{include}"
+msgstr "已复制 %{include}"
+
+#: src/views/snippet/SnippetList.vue:184
+msgid ""
+"Fill in the variables by inserting the snippet from the config template "
+"panel of the site editor."
+msgstr "请在网站编辑器的配置模板面板中插入该片段并填写变量。"
+
+#: src/views/home/Home.vue:1
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} 个变量"
+
+#: src/views/snippet/SnippetList.vue:209
+msgid "Copy the include directive"
+msgstr "复制引用指令"
+
+#: src/views/snippet/SnippetList.vue:275
+msgid "Remove the snippet from the files that include it first."
+msgstr "请先从引用它的文件中移除该片段。"
+
+#: src/views/snippet/SnippetList.vue:298
+msgid "Search snippets"
+msgstr "搜索片段"
+
+#: src/views/snippet/SnippetList.vue:319
+msgid "No snippets yet"
+msgstr "还没有片段"
+
+#: src/views/snippet/SnippetList.vue:333
+msgid "No snippet matches the search"
+msgstr "没有匹配的片段"
+
+#: src/views/snippet/components/SnippetUsage.vue:75
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "被 %{count} 个文件引用"
+
+#: src/views/snippet/components/SnippetUsage.vue:104
+msgid "No file matches the search"
+msgstr "没有匹配的文件"
+
+#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:54
+msgid "Built-in"
+msgstr "内置"
+
 #~ msgid "Webauthn"
 #~ msgstr "Webauthn"
 

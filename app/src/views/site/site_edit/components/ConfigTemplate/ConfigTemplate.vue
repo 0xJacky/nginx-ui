@@ -23,6 +23,9 @@ const visible = ref(false)
 const name = ref('')
 const filterText = ref('')
 
+type Source = 'all' | 'custom' | 'builtin'
+const source = ref<Source>('all')
+
 function getBlockList() {
   template.get_block_list().then(r => {
     blocks.value = r.data
@@ -31,29 +34,47 @@ function getBlockList() {
 
 getBlockList()
 
-function view(n: string) {
+function view(item: Template) {
   visible.value = true
-  name.value = n
-  template.get_block(n).then(r => {
+  name.value = item.filename
+  template.get_block(item.filename, item.origin).then(r => {
     data.value = r
   })
 }
+
+function isCustom(item: Template) {
+  return item.origin === 'custom'
+}
+
+const customCount = computed(() => blocks.value.filter(isCustom).length)
+
+const sourceOptions = computed(() => [
+  { label: `${$gettext('All')} ${blocks.value.length}`, value: 'all' },
+  { label: `${$gettext('Snippets')} ${customCount.value}`, value: 'custom' },
+  { label: `${$gettext('Built-in')} ${blocks.value.length - customCount.value}`, value: 'builtin' },
+])
+
+// A snippet without variables is the same file on every use, so a site can
+// include it and follows its changes. One with variables is filled in here
+// and can only be copied into the site.
+const canInclude = computed(() => isCustom(data.value) && Object.keys(data.value.variables ?? {}).length === 0)
 
 const transDescription = computed(() => {
   return (item: { description: { [key: string]: string } }) =>
     item.description?.[language.value] ?? item.description?.en ?? ''
 })
 
+// The snippets of the user come first: they are what a site most likely
+// reuses, and there are fewer of them than built-in templates.
 const filteredBlocks = computed(() => {
-  if (!filterText.value)
-    return blocks.value
-
   const searchText = filterText.value.toLowerCase()
-  return blocks.value.filter(item =>
-    item.name?.toLowerCase().includes(searchText)
-    || item.author?.toLowerCase().includes(searchText)
-    || transDescription.value(item).toLowerCase().includes(searchText),
-  )
+  return blocks.value
+    .filter(item => source.value === 'all' || (source.value === 'custom') === isCustom(item))
+    .filter(item => !searchText
+      || item.name?.toLowerCase().includes(searchText)
+      || item.author?.toLowerCase().includes(searchText)
+      || transDescription.value(item).toLowerCase().includes(searchText))
+    .sort((a, b) => Number(isCustom(b)) - Number(isCustom(a)))
 })
 
 async function add() {
@@ -70,11 +91,16 @@ async function add() {
 
   visible.value = false
 }
+
+function include() {
+  curServer.value?.directives?.push({ directive: 'include', params: `snippets/${data.value.filename}` })
+  visible.value = false
+}
 </script>
 
 <template>
   <div>
-    <div class="mb-4">
+    <div class="mb-4 flex flex-col gap-3">
       <AInput
         v-model:value="filterText"
         :placeholder="$gettext('Search templates')"
@@ -84,19 +110,42 @@ async function add() {
           <SearchOutlined />
         </template>
       </AInput>
+      <ASegmented
+        v-if="customCount > 0"
+        v-model:value="source"
+        :options="sourceOptions"
+        block
+      />
     </div>
     <div class="config-list-wrapper">
       <List :data-source="filteredBlocks">
         <template #renderItem="{ item }">
           <ListItem>
-            <ListItemMeta
-              :title="item.name"
-            >
+            <ListItemMeta>
+              <template #title>
+                <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <span>{{ item.name || item.filename }}</span>
+                  <ATag
+                    class="m-0"
+                    :color="isCustom(item) ? 'green' : 'default'"
+                    :bordered="false"
+                  >
+                    {{ isCustom(item) ? $gettext('Snippet') : $gettext('Built-in') }}
+                  </ATag>
+                </div>
+              </template>
               <template #description>
-                <p class="mt-4">
+                <p
+                  v-if="item.author"
+                  class="mt-4"
+                >
                   {{ $gettext('Author') }}: {{ item.author }}
                 </p>
-                <p class="mb-0">
+                <p
+                  v-if="transDescription(item)"
+                  class="mb-0"
+                  :class="{ 'mt-4': !item.author }"
+                >
                   {{ $gettext('Description') }}: {{ transDescription(item) }}
                 </p>
               </template>
@@ -104,7 +153,7 @@ async function add() {
             <template #actions>
               <AButton
                 type="link"
-                @click="view(item.filename)"
+                @click="view(item)"
               >
                 {{ $gettext('View') }}
               </AButton>
@@ -117,11 +166,20 @@ async function add() {
       v-model:open="visible"
       :title="data.name"
       :mask="false"
-      :ok-text="$gettext('Add')"
-      @ok="add"
     >
-      <p>{{ $gettext('Author') }}: {{ data.author }}</p>
-      <p>{{ $gettext('Description') }}: {{ transDescription(data) }}</p>
+      <AAlert
+        v-if="canInclude"
+        class="mb-4"
+        type="info"
+        show-icon
+        :title="$gettext('Include keeps the site linked to snippets/%{file}, so later changes of the snippet apply to it. Insert copies the content into the site instead.', { file: data.filename })"
+      />
+      <p v-if="data.author">
+        {{ $gettext('Author') }}: {{ data.author }}
+      </p>
+      <p v-if="transDescription(data)">
+        {{ $gettext('Description') }}: {{ transDescription(data) }}
+      </p>
       <TemplateForm v-model="data.variables" />
       <div
         v-if="data.custom"
@@ -143,6 +201,26 @@ async function add() {
         :locations="data.locations"
         readonly
       />
+      <template #footer>
+        <AFlex justify="end" gap="small" wrap>
+          <AButton @click="visible = false">
+            {{ $gettext('Cancel') }}
+          </AButton>
+          <AButton
+            :type="canInclude ? 'default' : 'primary'"
+            @click="add"
+          >
+            {{ canInclude ? $gettext('Insert') : $gettext('Add') }}
+          </AButton>
+          <AButton
+            v-if="canInclude"
+            type="primary"
+            @click="include"
+          >
+            {{ $gettext('Include') }}
+          </AButton>
+        </AFlex>
+      </template>
     </AModal>
   </div>
 </template>
