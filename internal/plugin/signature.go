@@ -158,6 +158,16 @@ func checkPackageTrust(root string, opts InstallOptions, keyring *partnerKeyring
 	return trust, nil
 }
 
+// checkReservedID refuses a package in the official namespace that the
+// official key did not sign. Developer mode allows it, for building the
+// official plugins themselves.
+func checkReservedID(id, trust string) error {
+	if !IsReservedID(id) || trust == TrustOfficial || settings.PluginSettings.DeveloperMode {
+		return nil
+	}
+	return cosy.WrapErrorWithParams(ErrReservedID, id)
+}
+
 // verifyPackageSignature derives the trust of an extracted package. Missing
 // signature files or an unknown signer make it unsigned. A signature a known
 // key does not verify, or sums that do not match the files, are refused with

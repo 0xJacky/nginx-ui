@@ -298,23 +298,30 @@ func TestMarketplaceCatalogOnlyNormalisesTheDeclaredTrust(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
-	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, nil)
+	server.publish(t, marketplaceManifest("com.nginxui.alpha", "1.0.0"), nil, nil)
 	server.publish(t, marketplaceManifest("com.example.beta", "1.0.0"), nil, func(entry *CatalogEntry, _ *CatalogRelease) {
 		entry.Trust = "partner"
+	})
+	server.publish(t, marketplaceManifest("com.example.gamma", "1.0.0"), nil, func(entry *CatalogEntry, _ *CatalogRelease) {
+		entry.Trust = TrustOfficial
 	})
 
 	// The declared level is only shown in the listing, the install derives
 	// the real one from the package signature.
 	entries, err := manager.Marketplace().Catalog(context.Background(), true)
 	require.NoError(t, err)
-	assert.Equal(t, TrustOfficial, findEntry(entries, "com.example.alpha", "").Trust)
+	assert.Equal(t, TrustOfficial, findEntry(entries, "com.nginxui.alpha", "").Trust)
 	// An unknown level is community, so the community pre filter applies.
 	assert.Equal(t, TrustCommunity, findEntry(entries, "com.example.beta", "").Trust)
+	// Official is only believed in the official namespace.
+	assert.Equal(t, TrustCommunity, findEntry(entries, "com.example.gamma", "").Trust)
 
-	assert.Equal(t, TrustVerified, effectiveTrust(TrustVerified))
-	assert.Equal(t, TrustCommunity, effectiveTrust(TrustCommunity))
-	assert.Equal(t, TrustCommunity, effectiveTrust(TrustUnsigned))
-	assert.Equal(t, TrustCommunity, effectiveTrust(""))
+	assert.Equal(t, TrustOfficial, effectiveTrust("com.nginxui.x", TrustOfficial))
+	assert.Equal(t, TrustCommunity, effectiveTrust("com.example.x", TrustOfficial))
+	assert.Equal(t, TrustVerified, effectiveTrust("com.example.x", TrustVerified))
+	assert.Equal(t, TrustCommunity, effectiveTrust("com.example.x", TrustCommunity))
+	assert.Equal(t, TrustCommunity, effectiveTrust("com.example.x", TrustUnsigned))
+	assert.Equal(t, TrustCommunity, effectiveTrust("com.example.x", ""))
 }
 
 func TestMarketplaceCatalogMergesSourcesFirstWins(t *testing.T) {
