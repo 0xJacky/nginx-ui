@@ -10,6 +10,7 @@ import (
 	"context"
 	"errors"
 	"io/fs"
+	"maps"
 	"path"
 	"path/filepath"
 	"regexp"
@@ -45,8 +46,12 @@ var (
 // Snippet is one snippet with the fields of its header.
 type Snippet struct {
 	// File is the file name in the snippets directory.
-	File        string                       `json:"file"`
-	Name        string                       `json:"name"`
+	File string `json:"file"`
+	// Name is the name to show without a language at hand: the English one,
+	// another one, or the file name.
+	Name string `json:"name"`
+	// NameI18n is the name per language.
+	NameI18n    map[string]string            `json:"name_i18n"`
 	Description map[string]string            `json:"description"`
 	Author      string                       `json:"author"`
 	Variables   map[string]template.Variable `json:"variables"`
@@ -62,7 +67,8 @@ type Snippet struct {
 
 // header is what the header of a snippet holds.
 type header struct {
-	Name        string                       `toml:"name,omitempty"`
+	// Name is a string, the English name, or a table of languages.
+	Name        any                          `toml:"name,omitempty"`
 	Author      string                       `toml:"author,omitempty"`
 	Description map[string]string            `toml:"description,omitempty"`
 	Variables   map[string]template.Variable `toml:"variables,omitempty"`
@@ -130,7 +136,8 @@ func readAll(usage map[string][]string) ([]Snippet, error) {
 }
 
 func (s *Snippet) applyHeader(h header) {
-	s.Name = h.Name
+	s.NameI18n = h.names()
+	s.Name = displayName(s.NameI18n)
 	s.Author = h.Author
 	s.Description = h.Description
 	s.Variables = h.Variables
@@ -139,6 +146,9 @@ func (s *Snippet) applyHeader(h header) {
 func (s *Snippet) fillDefaults() {
 	if s.Name == "" {
 		s.Name = strings.TrimSuffix(s.File, ".conf")
+	}
+	if s.NameI18n == nil {
+		s.NameI18n = map[string]string{}
 	}
 	if s.Description == nil {
 		s.Description = map[string]string{}
@@ -182,15 +192,17 @@ func Get(file string) (Snippet, error) {
 // SaveParams is what the user edits of a snippet.
 type SaveParams struct {
 	File        string
-	Name        string
+	Names       map[string]string
 	Description map[string]string
-	Content     string
+	// Author and Variables replace those of the header; nil keeps them.
+	Author    *string
+	Variables map[string]template.Variable
+	Content   string
 	// Create refuses to replace an existing file.
 	Create bool
 }
 
-// Save writes a snippet, keeping the author and the variables of its
-// header. The configuration is tested and nginx reloaded, and the file is
+// Save writes a snippet. The configuration is tested and nginx reloaded, and the file is
 // replicated to the nodes the snippets directory is deployed to.
 func Save(ctx context.Context, p SaveParams, userName string) (Snippet, error) {
 	if !ValidFile(p.File) {
@@ -213,8 +225,19 @@ func Save(ctx context.Context, p SaveParams, userName string) (Snippet, error) {
 			}
 		}
 	}
-	h.Name = strings.TrimSpace(p.Name)
+	h.setNames(p.Names)
 	h.Description = cleanDescription(p.Description)
+	if p.Author != nil {
+		h.Author = strings.TrimSpace(*p.Author)
+	}
+	if p.Variables != nil {
+		if h.Variables, err = cleanVariables(p.Variables); err != nil {
+			return Snippet{}, err
+		}
+	}
+	if err = checkTemplate(h.Variables, p.Content); err != nil {
+		return Snippet{}, err
+	}
 
 	content, err := compose(h, p.Content)
 	if err != nil {
@@ -232,6 +255,52 @@ func Save(ctx context.Context, p SaveParams, userName string) (Snippet, error) {
 	return Get(p.File)
 }
 
+// names reads the name of a header. A plain string is the English name, as
+// in the built-in templates.
+func (h header) names() map[string]string {
+	switch name := h.Name.(type) {
+	case string:
+		if name = strings.TrimSpace(name); name != "" {
+			return map[string]string{"en": name}
+		}
+	case map[string]any:
+		names := map[string]string{}
+		for lang, text := range name {
+			if text, ok := text.(string); ok && strings.TrimSpace(text) != "" {
+				names[lang] = strings.TrimSpace(text)
+			}
+		}
+		return names
+	}
+	return map[string]string{}
+}
+
+// setNames writes an English only name as a plain string and any other set
+// of names as a table.
+func (h *header) setNames(names map[string]string) {
+	names = cleanDescription(names)
+	switch {
+	case len(names) == 0:
+		h.Name = nil
+	case len(names) == 1 && names["en"] != "":
+		h.Name = names["en"]
+	default:
+		h.Name = names
+	}
+}
+
+// displayName is the English name, else the name of the first language.
+func displayName(names map[string]string) string {
+	if name, ok := names["en"]; ok {
+		return name
+	}
+	langs := slices.Sorted(maps.Keys(names))
+	if len(langs) == 0 {
+		return ""
+	}
+	return names[langs[0]]
+}
+
 func cleanDescription(description map[string]string) map[string]string {
 	cleaned := map[string]string{}
 	for lang, text := range description {
@@ -240,6 +309,21 @@ func cleanDescription(description map[string]string) map[string]string {
 		}
 	}
 	return cleaned
+}
+
+// CheckRename tells whether a snippet can move to another file: nothing may
+// include it, since the include directives name the old file.
+func CheckRename(file, to string) error {
+	if !ValidFile(file) || !ValidFile(to) {
+		return ErrInvalidFile
+	}
+	if info, err := nginx.Lstat(filepath.Join(Dir(), file)); err != nil || !info.Mode().IsRegular() {
+		return ErrNotFound
+	}
+	if users := scanUsage()[IncludePath(file)]; len(users) > 0 {
+		return cosy.WrapErrorWithParams(ErrInUse, strings.Join(users, ", "))
+	}
+	return nil
 }
 
 // Remover removes a file, tests the configuration and reloads nginx,
@@ -284,7 +368,7 @@ func Render(file string, bindData map[string]template.Variable) (template.Config
 	if err != nil {
 		return template.ConfigDetail{}, cosy.WrapErrorWithParams(ErrInvalidHeader, err.Error())
 	}
-	return template.RenderBlock(file, []byte(body), bindData)
+	return template.RenderBlock(file, []byte(template.TrimActionLines(body)), bindData)
 }
 
 // TemplateInfo describes the snippets like block templates.
@@ -297,6 +381,7 @@ func TemplateInfo() []template.ConfigInfoItem {
 	for _, s := range snippets {
 		items = append(items, template.ConfigInfoItem{
 			Name:        s.Name,
+			NameI18n:    s.NameI18n,
 			Description: s.Description,
 			Author:      s.Author,
 			Filename:    s.File,
@@ -359,7 +444,7 @@ func parse(content []byte) (h header, body string, err error) {
 // without a name, description, author or variables has no header.
 func compose(h header, body string) ([]byte, error) {
 	body = strings.TrimRight(body, "\n") + "\n"
-	if h.Name == "" && len(h.Description) == 0 && h.Author == "" && len(h.Variables) == 0 {
+	if h.Name == nil && len(h.Description) == 0 && h.Author == "" && len(h.Variables) == 0 {
 		return []byte(body), nil
 	}
 	var encoded bytes.Buffer

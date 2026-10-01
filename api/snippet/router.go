@@ -10,6 +10,9 @@ func InitRouter(r *gin.RouterGroup) {
 	r.GET("snippets", GetSnippets)
 	r.GET("snippets/:file", GetSnippet)
 	r.GET("snippet_sync", GetSnippetSync)
+	r.POST("snippet_preview", PreviewSnippet)
+	r.GET("snippet_templates", GetBuiltinTemplates)
+	r.GET("snippet_templates/:name", GetBuiltinTemplate)
 
 	o := r.Group("", middleware.RequireSecureSession())
 	{

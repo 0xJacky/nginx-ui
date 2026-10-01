@@ -101,7 +101,7 @@ func GetTemplateBlock(c *gin.Context) {
 			return
 		}
 		info = template.ConfigInfoItem{
-			Name: s.Name, Description: s.Description, Author: s.Author,
+			Name: s.Name, NameI18n: s.NameI18n, Description: s.Description, Author: s.Author,
 			Filename: s.File, Variables: s.Variables, Origin: template.OriginCustom,
 		}
 	} else {

@@ -115,7 +115,7 @@ func TestSaveGetAndList(t *testing.T) {
 	ctx := context.Background()
 
 	saved, err := Save(ctx, SaveParams{
-		File: "cache.conf", Name: " Static cache ", Description: map[string]string{"en": "Cache static files", "zh_CN": " "},
+		File: "cache.conf", Names: map[string]string{"en": " Static cache "}, Description: map[string]string{"en": "Cache static files", "zh_CN": " "},
 		Content: "expires 7d;", Create: true,
 	}, "admin")
 	require.NoError(t, err)
@@ -137,7 +137,7 @@ func TestSaveGetAndList(t *testing.T) {
 `+template.HeaderEnd+`
 add_header Strict-Transport-Security "max-age={{.maxAge}}";
 `)
-	edited, err := Save(ctx, SaveParams{File: "hsts.conf", Name: "Strict transport", Content: `add_header Strict-Transport-Security "max-age={{.maxAge}}" always;`}, "admin")
+	edited, err := Save(ctx, SaveParams{File: "hsts.conf", Names: map[string]string{"en": "Strict transport"}, Content: `add_header Strict-Transport-Security "max-age={{.maxAge}}" always;`}, "admin")
 	require.NoError(t, err)
 	assert.Equal(t, "ops", edited.Author)
 	assert.Equal(t, "31536000", edited.Variables["maxAge"].Value)
@@ -156,6 +156,101 @@ add_header Strict-Transport-Security "max-age={{.maxAge}}";
 	assert.Equal(t, []string{"cache.conf", "fastcgi-php.conf", "hsts.conf"}, files)
 	assert.Equal(t, "fastcgi-php", snippets[1].Name, "a snippet without a header is named after its file")
 	assert.Empty(t, snippets[0].Content, "the list carries no bodies")
+}
+
+func TestSaveReplacesAuthorAndVariables(t *testing.T) {
+	confDir := setupSnippetTest(t)
+	ctx := context.Background()
+	author := " ops "
+
+	saved, err := Save(ctx, SaveParams{
+		File: "redirect.conf", Names: map[string]string{"en": "Redirect"}, Author: &author, Create: true,
+		Variables: map[string]template.Variable{
+			"status": {Type: VariableSelect, Name: map[string]string{"en": " Status ", "zh_CN": ""}, Value: "301", Mask: map[string]map[string]string{
+				"301": {"en": "Moved Permanently"},
+				"302": {"en": "Found"},
+			}},
+			"target": {Type: VariableString, Name: map[string]string{"en": "Target"}},
+			"keep":   {Type: VariableBoolean, Value: true},
+		},
+		Content: "return {{ .status }} {{ .target }};",
+	}, "admin")
+	require.NoError(t, err)
+	assert.Equal(t, "ops", saved.Author)
+	assert.Equal(t, map[string]string{"en": "Status"}, saved.Variables["status"].Name)
+	assert.Equal(t, "", saved.Variables["target"].Value)
+	assert.Equal(t, true, saved.Variables["keep"].Value)
+
+	raw, err := os.ReadFile(filepath.Join(confDir, "snippets", "redirect.conf"))
+	require.NoError(t, err)
+	assert.Contains(t, string(raw), "# [variables.status]")
+	assert.Contains(t, string(raw), "# type = \"select\"")
+
+	// An empty set removes the variables.
+	edited, err := Save(ctx, SaveParams{File: "redirect.conf", Names: map[string]string{"en": "Redirect"}, Variables: map[string]template.Variable{}, Content: "return 301 https://example.com;"}, "admin")
+	require.NoError(t, err)
+	assert.Empty(t, edited.Variables)
+	assert.Equal(t, "ops", edited.Author, "a nil author keeps the current one")
+}
+
+func TestNamesPerLanguage(t *testing.T) {
+	confDir := setupSnippetTest(t)
+	ctx := context.Background()
+	read := func(file string) string {
+		raw, err := os.ReadFile(filepath.Join(confDir, "snippets", file))
+		require.NoError(t, err)
+		return string(raw)
+	}
+
+	// An English only name stays a plain string, as in the built-in templates.
+	saved, err := Save(ctx, SaveParams{File: "a.conf", Names: map[string]string{"en": "Gzip"}, Content: "gzip on;", Create: true}, "admin")
+	require.NoError(t, err)
+	assert.Contains(t, read("a.conf"), `# name = "Gzip"`)
+	assert.Equal(t, "Gzip", saved.Name)
+	assert.Equal(t, map[string]string{"en": "Gzip"}, saved.NameI18n)
+
+	// Other languages make it a table, and the name to show falls back to
+	// the English one.
+	saved, err = Save(ctx, SaveParams{File: "b.conf", Names: map[string]string{"en": "Gzip", "zh_CN": "压缩", "ja_JP": " "}, Content: "gzip on;", Create: true}, "admin")
+	require.NoError(t, err)
+	assert.Contains(t, read("b.conf"), "# [name]")
+	assert.Equal(t, "Gzip", saved.Name)
+	assert.Equal(t, map[string]string{"en": "Gzip", "zh_CN": "压缩"}, saved.NameI18n)
+
+	saved, err = Save(ctx, SaveParams{File: "c.conf", Names: map[string]string{"zh_CN": "压缩"}, Content: "gzip on;", Create: true}, "admin")
+	require.NoError(t, err)
+	assert.Equal(t, "压缩", saved.Name)
+	assert.Equal(t, map[string]string{"zh_CN": "压缩"}, saved.NameI18n)
+
+	// Without a name the file name is shown.
+	saved, err = Save(ctx, SaveParams{File: "d.conf", Content: "gzip on;", Create: true}, "admin")
+	require.NoError(t, err)
+	assert.Equal(t, "d", saved.Name)
+	assert.Empty(t, saved.NameI18n)
+}
+
+func TestSaveRejectsInvalidVariables(t *testing.T) {
+	setupSnippetTest(t)
+	cases := map[string]struct {
+		vars    map[string]template.Variable
+		content string
+		want    error
+	}{
+		"bad key":          {map[string]template.Variable{"max-age": {Type: VariableString}}, "x;", ErrInvalidVariable},
+		"unknown type":     {map[string]template.Variable{"a": {Type: "number"}}, "x;", ErrInvalidVariable},
+		"boolean as text":  {map[string]template.Variable{"a": {Type: VariableBoolean, Value: "yes"}}, "x;", ErrInvalidVariable},
+		"select no option": {map[string]template.Variable{"a": {Type: VariableSelect, Value: "1"}}, "x;", ErrInvalidVariable},
+		"select default":   {map[string]template.Variable{"a": {Type: VariableSelect, Value: "3", Mask: map[string]map[string]string{"1": {}}}}, "x;", ErrInvalidVariable},
+		"broken template":  {map[string]template.Variable{"a": {Type: VariableString}}, "return {{ .a ;", ErrInvalidTemplate},
+	}
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			_, err := Save(context.Background(), SaveParams{File: "x.conf", Variables: tc.vars, Content: tc.content, Create: true}, "admin")
+			var cosyErr *cosy.Error
+			require.ErrorAs(t, err, &cosyErr)
+			assert.Equal(t, tc.want.(*cosy.Error).Code, cosyErr.Code)
+		})
+	}
 }
 
 func TestSaveKeepsThePreviousSnippetWhenNginxRejectsIt(t *testing.T) {
@@ -338,6 +433,46 @@ func TestUsageComesFromTheScannerOnceItIsReady(t *testing.T) {
 	require.NoError(t, scanIncludes(site, nil))
 	assert.Empty(t, usageIndex()[IncludePath("cache.conf")])
 	_, err = Delete("cache.conf", &fakeRemover{})
+	var cosyErr *cosy.Error
+	require.ErrorAs(t, err, &cosyErr)
+	assert.Equal(t, ErrInUse.(*cosy.Error).Code, cosyErr.Code)
+}
+
+func TestPreview(t *testing.T) {
+	setupSnippetTest(t)
+	vars := map[string]template.Variable{
+		"status":   {Type: VariableSelect, Value: "302"},
+		"keepPath": {Type: VariableBoolean, Value: false},
+	}
+	content := "location / {\n    return {{ .status }} https://example.com{{ if .keepPath }}$request_uri{{ end }};\n}\n"
+
+	result, err := Preview(content, vars)
+	require.NoError(t, err)
+	assert.Empty(t, result.Error)
+	assert.Contains(t, result.Content, "return 302 https://example.com;")
+
+	result, err = Preview("return {{ .status ;", vars)
+	require.NoError(t, err)
+	assert.NotEmpty(t, result.Error, "a template that does not parse is reported")
+
+	result, err = Preview("location / {\n    return {{ .status }};\n", vars)
+	require.NoError(t, err)
+	assert.Contains(t, result.Content, "return 302;")
+	assert.NotEmpty(t, result.Error, "a result that is not nginx configuration is reported")
+}
+
+func TestCheckRename(t *testing.T) {
+	confDir := setupSnippetTest(t)
+	writeFile(t, filepath.Join(confDir, "snippets", "cache.conf"), "expires 7d;\n")
+	writeFile(t, filepath.Join(confDir, "snippets", "unused.conf"), "gzip on;\n")
+	writeFile(t, filepath.Join(confDir, "sites-available", "example.com"), "server {\n    include snippets/cache.conf;\n}\n")
+
+	assert.NoError(t, CheckRename("unused.conf", "compression.conf"))
+	assert.ErrorIs(t, CheckRename("unused.conf", "../escape.conf"), ErrInvalidFile)
+	assert.ErrorIs(t, CheckRename("missing.conf", "other.conf"), ErrNotFound)
+
+	// Sites name the old file, so an included snippet keeps it.
+	err := CheckRename("cache.conf", "static-cache.conf")
 	var cosyErr *cosy.Error
 	require.ErrorAs(t, err, &cosyErr)
 	assert.Equal(t, ErrInUse.(*cosy.Error).Code, cosyErr.Code)

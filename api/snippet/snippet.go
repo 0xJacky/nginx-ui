@@ -1,6 +1,7 @@
 package snippet
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/api"
@@ -8,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/snippet"
+	"github.com/0xJacky/Nginx-UI/internal/template"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -16,9 +18,12 @@ import (
 
 type snippetPayload struct {
 	File        string            `json:"file"`
-	Name        string            `json:"name"`
+	NameI18n    map[string]string `json:"name_i18n"`
 	Description map[string]string `json:"description"`
-	Content     string            `json:"content"`
+	// Author and Variables are kept when left out.
+	Author    *string                      `json:"author"`
+	Variables map[string]template.Variable `json:"variables"`
+	Content   string                       `json:"content"`
 }
 
 // GetSnippets lists the snippets.
@@ -58,23 +63,38 @@ func CreateSnippet(c *gin.Context) {
 	save(c, json.File, json, true)
 }
 
-// ModifySnippet replaces the name, description and body of a snippet.
+// ModifySnippet replaces the header and body of a snippet, and renames it
+// when the payload names another file and nothing includes the snippet.
 func ModifySnippet(c *gin.Context) {
 	var json snippetPayload
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
-	save(c, c.Param("file"), json, false)
+	file := c.Param("file")
+	if json.File == "" || json.File == file {
+		save(c, file, json, false)
+		return
+	}
+	// A new file name renames the snippet: the new file is written first, so
+	// a configuration nginx rejects leaves the old one in place.
+	if err := snippet.CheckRename(file, json.File); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	s, err := saveSnippet(c, json.File, json, true)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	if err = removeSnippet(c.Request.Context(), file); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, s)
 }
 
 func save(c *gin.Context, file string, json snippetPayload, create bool) {
-	s, err := snippet.Save(c.Request.Context(), snippet.SaveParams{
-		File:        file,
-		Name:        json.Name,
-		Description: json.Description,
-		Content:     json.Content,
-		Create:      create,
-	}, api.CurrentUser(c).Name)
+	s, err := saveSnippet(c, file, json, create)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -82,13 +102,81 @@ func save(c *gin.Context, file string, json snippetPayload, create bool) {
 	c.JSON(http.StatusOK, s)
 }
 
-// DeleteSnippet removes a snippet nothing includes, here and on the nodes the
-// snippets directory is deployed to.
-func DeleteSnippet(c *gin.Context) {
-	removed, err := snippet.Delete(c.Param("file"), snippet.NginxRemover{})
+func saveSnippet(c *gin.Context, file string, json snippetPayload, create bool) (snippet.Snippet, error) {
+	return snippet.Save(c.Request.Context(), snippet.SaveParams{
+		File:        file,
+		Names:       json.NameI18n,
+		Description: json.Description,
+		Author:      json.Author,
+		Variables:   json.Variables,
+		Content:     json.Content,
+		Create:      create,
+	}, api.CurrentUser(c).Name)
+}
+
+// GetBuiltinTemplates lists the block templates built into Nginx UI, which
+// a snippet can start from.
+func GetBuiltinTemplates(c *gin.Context) {
+	list, err := template.GetTemplateList("block")
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": list})
+}
+
+// GetBuiltinTemplate returns a built-in block template as written.
+func GetBuiltinTemplate(c *gin.Context) {
+	info, body, err := template.BuiltinBlockSource(c.Param("name"))
+	if err != nil {
+		cosy.ErrHandler(c, snippet.ErrNotFound)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"name":        info.Name,
+		"description": info.Description,
+		"author":      info.Author,
+		"filename":    info.Filename,
+		"variables":   info.Variables,
+		"content":     body,
+	})
+}
+
+type previewPayload struct {
+	Content   string                       `json:"content"`
+	Variables map[string]template.Variable `json:"variables"`
+}
+
+// PreviewSnippet renders the content of a snippet with variable values,
+// before it is saved.
+func PreviewSnippet(c *gin.Context) {
+	var json previewPayload
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+	result, err := snippet.Preview(json.Content, json.Variables)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+// DeleteSnippet removes a snippet nothing includes, here and on the nodes the
+// snippets directory is deployed to.
+func DeleteSnippet(c *gin.Context) {
+	if err := removeSnippet(c.Request.Context(), c.Param("file")); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "ok"})
+}
+
+// removeSnippet removes a snippet here and on the nodes it is deployed to.
+func removeSnippet(ctx context.Context, file string) error {
+	removed, err := snippet.Delete(file, snippet.NginxRemover{})
+	if err != nil {
+		return err
 	}
 	// Targets set on the file itself count as well as those of the directory.
 	nodeIDs, _ := config.InheritedSyncTargets(removed)
@@ -97,16 +185,12 @@ func DeleteSnippet(c *gin.Context) {
 		nodeIDs, _ = config.EffectiveSyncTargets(record)
 	}
 	if err = config.CleanupDatabaseRecords(removed, false); err != nil {
-		cosy.ErrHandler(c, err)
-		return
+		return err
 	}
 	if len(nodeIDs) > 0 {
-		if err = config.SyncDeleteOnRemoteServer(c.Request.Context(), removed, nodeIDs); err != nil {
-			cosy.ErrHandler(c, err)
-			return
-		}
+		return config.SyncDeleteOnRemoteServer(ctx, removed, nodeIDs)
 	}
-	c.JSON(http.StatusOK, gin.H{"message": "ok"})
+	return nil
 }
 
 type syncPayload struct {
