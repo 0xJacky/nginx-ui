@@ -30,14 +30,18 @@ func serveStatic(c *gin.Context, kind string) {
 		return
 	}
 
-	root, err := plugin.GetManager().StaticRoot(id, kind)
-	if err != nil {
+	rel := strings.TrimPrefix(c.Param("filepath"), "/")
+	if rel == "" || strings.ContainsRune(rel, 0) {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
 
-	rel := strings.TrimPrefix(c.Param("filepath"), "/")
-	if rel == "" || strings.ContainsRune(rel, 0) {
+	root, err := plugin.GetManager().StaticRoot(id, kind)
+	if err != nil {
+		// The plugin pages show the icon of a disabled plugin as well.
+		root, err = plugin.GetManager().IconRoot(id, kind, rel)
+	}
+	if err != nil {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
