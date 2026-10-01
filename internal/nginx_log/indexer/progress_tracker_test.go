@@ -7,6 +7,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 func TestProgressTracker_BasicFunctionality(t *testing.T) {
@@ -394,9 +396,19 @@ func TestEstimateFileLines(t *testing.T) {
 	}
 }
 
+// allowLogDir adds dir to the log directory whitelist for the duration of the
+// test, since EstimateFileLines reads only files inside it.
+func allowLogDir(t *testing.T, dir string) {
+	t.Helper()
+	original := settings.NginxSettings.LogDirWhiteList
+	t.Cleanup(func() { settings.NginxSettings.LogDirWhiteList = original })
+	settings.NginxSettings.LogDirWhiteList = append(append([]string{}, original...), dir)
+}
+
 func TestEstimateFileLines_RealFile(t *testing.T) {
 	// Create a temporary file with known content
 	tmpDir := t.TempDir()
+	allowLogDir(t, tmpDir)
 	testFile := filepath.Join(tmpDir, "test.log")
 
 	// Create test content with known line count
@@ -668,5 +680,26 @@ func TestRotationLogSupport(t *testing.T) {
 		if !found {
 			t.Errorf("File %s not found in tracker", filePath)
 		}
+	}
+}
+
+func TestEstimateFileLines_OutsideTheWhitelist(t *testing.T) {
+	// A file outside the log directories is never read: the estimate falls
+	// back to about 150 bytes per line.
+	testFile := filepath.Join(t.TempDir(), "test.log")
+	content := ""
+	for range 100 {
+		content += "This is a test log line with some content to make it realistic\n"
+	}
+	if err := os.WriteFile(testFile, []byte(content), 0o644); err != nil {
+		t.Fatalf("Failed to create test file: %v", err)
+	}
+
+	estimatedLines, err := EstimateFileLines(context.Background(), testFile, int64(len(content)), false)
+	if err != nil {
+		t.Fatalf("Expected no error, got %v", err)
+	}
+	if want := int64(len(content)) / 150; estimatedLines != want {
+		t.Errorf("Estimated lines %d, want the fallback %d", estimatedLines, want)
 	}
 }
