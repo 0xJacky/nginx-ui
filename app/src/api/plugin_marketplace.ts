@@ -110,6 +110,9 @@ export interface PluginUpdateInfo {
   release?: CatalogRelease
 }
 
+/** Ids that start with it belong to the plugins of the Nginx UI project. */
+export const officialIdPrefix = 'com.nginxui.'
+
 /** One configured catalog and the name it declares. */
 export interface CatalogSource {
   url: string

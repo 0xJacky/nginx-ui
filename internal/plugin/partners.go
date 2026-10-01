@@ -45,12 +45,18 @@ const (
 	partnerDateLayout = time.DateOnly
 )
 
-// officialSource is the catalog whose keyring is used, a variable so the
-// tests can point it at a local server.
+// officialSource is the official catalog, read before every other source and
+// the one whose keyring is used. It is a variable so the tests can point it at
+// a local server or turn it off.
 var officialSource = settings.DefaultPluginMarketplaceSource
 
-// SetOfficialSourceForTesting points the keyring fetch at url, or turns it
-// off with an empty string, and returns a function that restores the previous
+// OfficialSource returns the official catalog URL, empty when it is off.
+func OfficialSource() string {
+	return officialSource
+}
+
+// SetOfficialSourceForTesting points the official catalog and its keyring at
+// url, or turns them off with an empty string, and returns a function that restores the previous
 // value. Tests of other packages use it so they never reach the network.
 func SetOfficialSourceForTesting(url string) (restore func()) {
 	previous := officialSource

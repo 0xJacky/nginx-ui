@@ -303,9 +303,21 @@ func newMarketplace(m *Manager) *Marketplace {
 	return &Marketplace{manager: m, cache: map[string]*sourceCache{}, failures: map[string]sourceFailure{}}
 }
 
-// Sources lists the configured catalog URLs in merge order.
+// Sources lists the catalog URLs in merge order. The official catalog is
+// always among them: where the settings place it, so a mirror can come
+// first, or else in front of the others.
 func (mp *Marketplace) Sources() []string {
-	return settings.PluginSettings.GetMarketplaceSources()
+	configured := settings.PluginSettings.MarketplaceSources
+	sources := make([]string, 0, len(configured)+1)
+	if officialSource != "" && !slices.Contains(configured, officialSource) {
+		sources = append(sources, officialSource)
+	}
+	for _, source := range configured {
+		if source != "" && !slices.Contains(sources, source) {
+			sources = append(sources, source)
+		}
+	}
+	return sources
 }
 
 // SourceList lists the configured catalogs in merge order with the name each

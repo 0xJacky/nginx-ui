@@ -66,7 +66,7 @@ export function buildSettingCatalog(): SettingCatalogEntry[] {
     { path: 'plugin.dir', section: 'plugin', title: $gettext('Plugin Directory') },
     { path: 'plugin.default_sync_policy', section: 'plugin', title: $gettext('Default Sync Policy'), description: $gettext('Applied to newly installed plugins. Automatic keeps the plugin installed on the child nodes.') },
     { path: 'plugin.marketplace_enabled', section: 'plugin', title: $gettext('Enable Marketplace') },
-    { path: 'plugin.marketplace_sources', section: 'plugin', title: $gettext('Sources'), description: $gettext('Managed on the marketplace page. Empty means the official catalog.') },
+    { path: 'plugin.marketplace_sources', section: 'plugin', title: $gettext('Sources'), description: $gettext('Managed on the marketplace page. The official catalog is always used.') },
     { path: 'plugin.allow_community_plugins', section: 'plugin', title: $gettext('Allow Community Plugins'), description: $gettext('Community plugins are published by third parties and ask for a confirmation before they install.') },
     { path: 'plugin.auto_update', section: 'plugin', title: $gettext('Automatic Updates'), description: $gettext('Updates official and partner plugins on their own while the permissions they ask for stay the same.') },
     { path: 'plugin.allow_uploads', section: 'plugin', title: $gettext('Allow Uploads'), description: $gettext('Allows installing packages uploaded from the browser or the command line.') },
