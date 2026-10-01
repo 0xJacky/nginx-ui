@@ -12,12 +12,12 @@ import (
 
 // TestInitProducesLintCleanRepositories scaffolds each supported language and
 // runs the plugin linter over the result. The only finding tolerated is the
-// "server.command[0] not found on PATH" warning (MAN-12): whether python3 or
+// "server.command[0] not found on PATH" warning: whether python3 or
 // node happen to be installed on the machine running this test is not
 // something the scaffold itself controls, and the spec only asks for a
 // warning there, never an error.
 func TestInitProducesLintCleanRepositories(t *testing.T) {
-	for _, lang := range []string{"go", "python", "node"} {
+	for _, lang := range []string{"go", "rust", "python", "node"} {
 		t.Run(lang, func(t *testing.T) {
 			dir := filepath.Join(t.TempDir(), "plugin")
 			require.NoError(t, Init(dir, InitOptions{
@@ -30,7 +30,7 @@ func TestInitProducesLintCleanRepositories(t *testing.T) {
 			require.NoError(t, err)
 
 			for _, f := range report.Findings {
-				if f.Level == plugin.LevelWarning && f.Rule == "MAN-12" {
+				if f.Level == plugin.LevelWarning && f.Rule == plugin.RuleServerPaths {
 					continue
 				}
 				t.Errorf("unexpected finding for lang %s: %+v", lang, f)
@@ -57,7 +57,7 @@ func TestInitRejectsEmptyName(t *testing.T) {
 }
 
 func TestInitRejectsUnknownLang(t *testing.T) {
-	err := Init(t.TempDir(), InitOptions{ID: "io.github.example.demo", Name: "Demo", Lang: "rust"})
+	err := Init(t.TempDir(), InitOptions{ID: "io.github.example.demo", Name: "Demo", Lang: "cobol"})
 	assert.Error(t, err)
 }
 
