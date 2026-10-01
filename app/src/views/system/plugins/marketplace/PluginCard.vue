@@ -7,7 +7,7 @@ import { capabilityLabel } from '../capabilities'
 import { entryChannel } from '../channel'
 import ChannelTag from '../ChannelTag.vue'
 import { useInstalledPlugin } from '../inventory'
-import { formatMemory, isBelowRecommended, recommendedMemory, useSystemMemory } from '../memory'
+import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import PluginIcon from '../PluginIcon.vue'
 import { useReplacePlugin } from '../replace'
 import { findTrustedOffer, trustedOfferAction, trustPreset } from './trust'
@@ -29,6 +29,9 @@ const trust = computed(() => trustPreset(props.entry.trust))
 const recommendedMb = computed(() => recommendedMemory(props.entry.installable_release?.manifest))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
+const memoryHint = computed(() => lowMemory.value
+  ? memoryWarning(recommendedMb.value, systemMb.value)
+  : $gettext('Recommended memory: %{size}', { size: formatMemory(recommendedMb.value) }))
 
 const channel = computed(() => entryChannel(props.entry))
 
@@ -91,9 +94,16 @@ const actionLabel = computed(() => {
       >
         {{ capabilityLabel(capability) }}
       </ATag>
-      <ATooltip v-if="recommendedMb > 0" :title="lowMemory ? $gettext('This server has less memory than recommended.') : undefined">
-        <ATag :color="lowMemory ? 'warning' : undefined" class="m-0">
-          {{ $gettext('Memory: %{size}', { size: formatMemory(recommendedMb) }) }}
+      <ATooltip v-if="recommendedMb > 0" :title="memoryHint">
+        <ATag
+          :color="lowMemory ? 'warning' : undefined"
+          class="m-0"
+          :aria-label="memoryHint"
+        >
+          <template #icon>
+            <span class="i-tabler-cpu align-[-2px]" />
+          </template>
+          {{ formatMemory(recommendedMb) }}
         </ATag>
       </ATooltip>
       <ChannelTag :channel="channel" />
