@@ -160,11 +160,17 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 
 ```json [index.json]
 "screenshots": [
-  { "url": "https://raw.githubusercontent.com/example/mydns/main/docs/credentials.png", "caption": { "en": "The credential form" } }
+  {
+    "url": "https://raw.githubusercontent.com/example/mydns/main/docs/credentials.png",
+    "dark_url": "https://raw.githubusercontent.com/example/mydns/main/docs/credentials-dark.png",
+    "caption": { "en": "The credential form" }
+  }
 ]
 ```
 
 最多八張外掛使用時的 PNG、JPEG 或 WebP 圖片，依顯示順序排列，每張可以附帶各語言的說明。寬度 1280 到 1920 像素、寬高比約 16:10 的圖片適合所有螢幕。Nginx UI 只從目錄主機、外掛套件主機或 GitHub 上的 `https` 網址載入它們，捨棄其餘圖片，並且永遠不會把圖片缺少視為項目的問題。
+
+`dark_url` 是選用的，內容是同一畫面的深色主題版本。介面為深色時 Nginx UI 顯示它，否則顯示 `url` 的圖片；沒有深色圖片，或深色圖片無法載入時，兩種主題都顯示淺色圖片。兩張圖片應拍攝同一畫面，尺寸相同。
 
 ## 託管自己的外掛目錄 {#hosting-a-catalog-of-your-own}
 

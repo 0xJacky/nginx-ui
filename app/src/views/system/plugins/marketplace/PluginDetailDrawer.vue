@@ -7,10 +7,12 @@ import {
   catalogEntryDescription,
   catalogEntryName,
   catalogScreenshotCaption,
+  catalogScreenshotURL,
   getMarketplacePlugin,
 } from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
+import { useSettingsStore } from '@/pinia'
 import { capabilityLabel } from '../capabilities'
 import { channelHint, channelLabel, compareVersions, entryChannel, installableReleases, releaseChannel } from '../channel'
 import { useInstalledPlugin } from '../inventory'
@@ -54,8 +56,9 @@ const channel = computed(() => entryChannel(current.value))
 const installed = useInstalledPlugin(() => current.value?.id)
 const offer = computed(() => findTrustedOffer(installed.value?.trust, current.value))
 const { replacingId, confirmReplace } = useReplacePlugin()
+const settings = useSettingsStore()
 const screenshots = computed(() => (current.value?.screenshots ?? []).map(shot => ({
-  url: shot.url,
+  url: catalogScreenshotURL(shot, settings.theme === 'dark'),
   caption: catalogScreenshotCaption(shot, gettext.current),
 })))
 const renderedReadme = computed(() => (readme.value ? marked.parse(readme.value) as string : ''))

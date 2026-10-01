@@ -212,7 +212,11 @@ How people receive releases:
 
 ```json [index.json]
 "screenshots": [
-  { "url": "https://raw.githubusercontent.com/example/mydns/main/docs/credentials.png", "caption": { "en": "The credential form" } }
+  {
+    "url": "https://raw.githubusercontent.com/example/mydns/main/docs/credentials.png",
+    "dark_url": "https://raw.githubusercontent.com/example/mydns/main/docs/credentials-dark.png",
+    "caption": { "en": "The credential form" }
+  }
 ]
 ```
 
@@ -221,6 +225,11 @@ each with an optional caption by language. 1280 to 1920 pixels wide at about
 16:10 suits every screen. Nginx UI loads them only from `https` addresses on
 the catalog's host, the package's host or GitHub, drops the rest and never
 treats a missing image as a fault of the entry.
+
+`dark_url` is optional: the same view in the dark theme. Nginx UI shows it
+while the interface is dark and the `url` image otherwise, so a screenshot
+without a dark image, or with one it cannot load, shows the light image in
+both themes. Take both images of the same view at the same size.
 
 ## Hosting a Catalog of Your Own
 

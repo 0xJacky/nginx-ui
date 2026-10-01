@@ -186,7 +186,10 @@ type CatalogEntry struct {
 
 // CatalogScreenshot is one image of a catalog entry.
 type CatalogScreenshot struct {
-	URL     string            `json:"url"`
+	URL string `json:"url"`
+	// DarkURL is the same view in the dark theme. Hosts show URL when it is
+	// empty.
+	DarkURL string            `json:"dark_url,omitempty"`
 	Caption map[string]string `json:"caption,omitempty"`
 }
 
@@ -836,8 +839,10 @@ func (mp *Marketplace) decorate(entry *CatalogEntry) {
 }
 
 // loadableScreenshots keeps the screenshots a browser of this node may load:
-// the ones checkCatalogURL accepts, at most maxCatalogScreenshots. The entry
-// may be shared with the source cache, so the list is a new one.
+// the ones checkCatalogURL accepts, at most maxCatalogScreenshots. A dark
+// variant it does not accept is dropped and the screenshot keeps its light
+// image. The entry may be shared with the source cache, so the list is a new
+// one.
 func loadableScreenshots(entry *CatalogEntry) []CatalogScreenshot {
 	var kept []CatalogScreenshot
 	for _, shot := range entry.Screenshots {
@@ -846,6 +851,9 @@ func loadableScreenshots(entry *CatalogEntry) []CatalogScreenshot {
 		}
 		if err := checkCatalogURL(entry, shot.URL); err != nil {
 			continue
+		}
+		if shot.DarkURL != "" && checkCatalogURL(entry, shot.DarkURL) != nil {
+			shot.DarkURL = ""
 		}
 		kept = append(kept, shot)
 	}
