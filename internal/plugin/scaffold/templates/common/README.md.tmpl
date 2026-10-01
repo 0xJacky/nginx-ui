@@ -1,14 +1,14 @@
 # {{.Name}}
 
 A `dns01` challenge plugin for nginx-ui, scaffolded by `nginx-ui plugin init`.
-See the [nginx-ui plugin spec](https://github.com/nginxui/plugin-spec)
-for the full contract this plugin implements.
+See the [plugin development guide](https://nginxui.com/plugin/overview)
+for everything a plugin can do.
 
 ## Capability
 
 Implements the `dns01` capability for the `{{.ProviderCode}}` provider:
 `dns01.present` publishes the ACME challenge TXT record, `dns01.cleanup`
-removes it. See `spec/05-capabilities-dns01.md` in the spec repository.
+removes it. See the [DNS-01 guide](https://nginxui.com/plugin/capabilities/dns01).
 
 ## Permissions
 
@@ -27,7 +27,7 @@ Runs anywhere `{{.Interpreter}}` is available on `PATH`.
 
 ## Development
 
-* `nginx-ui plugin lint .` checks this package against the spec.
+* `nginx-ui plugin lint .` checks the plugin files.
 * `nginx-ui plugin conformance .` runs it through the conformance cases.
 
 TODO: fill in `{{.CredentialKey}}` handling in `present`/`cleanup` and adjust
