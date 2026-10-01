@@ -11,6 +11,8 @@ import { useReplacePlugin, useTrustedOffer } from './replace'
 
 const props = defineProps<{
   plugin: PluginInfo
+  // Text with a shield instead of a tag, for the plugin cards.
+  plain?: boolean
 }>()
 
 const trust = computed(() => packageTrustPreset(props.plugin.trust))
@@ -51,13 +53,21 @@ const color = computed(() => (isUnsigned.value ? 'warning' : trust.value?.color)
           </AButton>
         </div>
       </template>
-      <ATag :color="color" class="m-0 cursor-help" variant="outlined">
+      <span v-if="plain" class="trust-plain cursor-help" :class="`is-${plugin.trust}`">
+        <span :class="isUnsigned ? 'i-tabler-shield' : 'i-tabler-shield-check'" />
+        {{ trust.label() }}
+      </span>
+      <ATag v-else :color="color" class="m-0 cursor-help" variant="outlined">
         {{ trust.label() }}
         <InfoCircleOutlined class="ms-1" />
       </ATag>
     </APopover>
     <ATooltip v-else :title="trust.hint()">
-      <ATag :color="color" class="m-0" variant="outlined">
+      <span v-if="plain" class="trust-plain" :class="`is-${plugin.trust}`">
+        <span :class="isUnsigned ? 'i-tabler-shield' : 'i-tabler-shield-check'" />
+        {{ trust.label() }}
+      </span>
+      <ATag v-else :color="color" class="m-0" variant="outlined">
         {{ trust.label() }}
       </ATag>
     </ATooltip>
@@ -67,6 +77,29 @@ const color = computed(() => (isUnsigned.value ? 'warning' : trust.value?.color)
 <style lang="less" scoped>
 .trust-popover {
   max-width: 300px;
+}
+
+.trust-plain {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+
+  &.is-official {
+    color: var(--ant-color-primary);
+  }
+
+  &.is-verified {
+    color: var(--ant-color-success);
+  }
+
+  &.is-community {
+    color: var(--ant-orange-7, #d46b08);
+  }
+
+  &.is-unsigned {
+    color: var(--ant-color-warning);
+  }
 }
 
 .trust-popover-text {

@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { CatalogEntry } from '@/api/plugin_marketplace'
-import { ArrowUpOutlined, CheckCircleOutlined, DownloadOutlined } from '@antdv-next/icons'
+import { ArrowUpOutlined, CheckCircleOutlined, DownloadOutlined, UserOutlined, WarningOutlined } from '@antdv-next/icons'
 import { catalogEntryDescription, catalogEntryName } from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
-import { capabilityLabel } from '../capabilities'
-import { entryChannel } from '../channel'
-import ChannelTag from '../ChannelTag.vue'
+import { capabilityIcon, capabilityLabel } from '../capabilities'
+import { channelHint, channelLabel, entryChannel } from '../channel'
 import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import PluginIcon from '../PluginIcon.vue'
@@ -44,13 +43,7 @@ const installed = useInstalledPlugin(() => props.entry.id)
 const offer = computed(() => (props.entry.update_available ? undefined : findTrustedOffer(installed.value?.trust, props.entry)))
 const { replacingId, confirmReplace } = useReplacePlugin()
 
-const actionLabel = computed(() => {
-  if (props.entry.update_available)
-    return $gettext('Update')
-  if (isInstalled.value)
-    return $gettext('Installed')
-  return $gettext('Install')
-})
+const actionLabel = computed(() => props.entry.update_available ? $gettext('Update') : $gettext('Install'))
 </script>
 
 <template>
@@ -64,20 +57,30 @@ const actionLabel = computed(() => {
     <div class="plugin-card-head">
       <PluginIcon :src="entry.icon_url" :name="name" :size="40" />
       <div class="plugin-card-body">
-        <div class="plugin-card-title">
+        <ATooltip :title="entry.id" placement="topLeft">
           <span class="plugin-card-name">{{ name }}</span>
+        </ATooltip>
+        <div class="plugin-card-sub">
           <span v-if="entry.installable_release" class="plugin-card-version">
             v{{ entry.installable_release.version }}
           </span>
-        </div>
-        <div class="plugin-card-id">
-          {{ entry.id }}
+          <span v-if="entry.author" class="plugin-card-author">
+            <UserOutlined />
+            {{ entry.author }}
+          </span>
+          <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
+            <span class="plugin-card-channel" :class="`is-${channel}`">{{ channelLabel(channel) }}</span>
+          </ATooltip>
+          <span v-if="entry.stage && entry.stage !== 'production' && entry.stage !== 'beta'" class="plugin-card-channel is-dev">
+            {{ entry.stage }}
+          </span>
         </div>
       </div>
       <ATooltip :title="trust.hint()">
-        <ATag :color="trust.color" class="m-0 flex-none" variant="filled">
+        <span class="plugin-card-trust" :class="`is-${entry.trust || 'unsigned'}`">
+          <span :class="entry.trust === 'unsigned' || !entry.trust ? 'i-tabler-shield' : 'i-tabler-shield-check'" />
           {{ trust.label() }}
-        </ATag>
+        </span>
       </ATooltip>
     </div>
 
@@ -85,64 +88,49 @@ const actionLabel = computed(() => {
       {{ description || $gettext('No description provided.') }}
     </p>
 
-    <div class="plugin-card-meta">
-      <ATag
+    <div class="plugin-card-facts">
+      <span
         v-for="capability in entry.capabilities ?? []"
         :key="capability"
-        class="m-0"
-        variant="filled"
+        class="plugin-card-fact"
       >
+        <span :class="capabilityIcon(capability)" />
         {{ capabilityLabel(capability) }}
-      </ATag>
+      </span>
       <ATooltip v-if="recommendedMb > 0" :title="memoryHint">
-        <ATag
-          :color="lowMemory ? 'warning' : undefined"
-          class="m-0"
-          :aria-label="memoryHint"
-        >
-          <template #icon>
-            <span class="i-tabler-cpu align-[-2px]" />
-          </template>
+        <span class="plugin-card-fact" :class="{ 'is-warning': lowMemory }" :aria-label="memoryHint">
+          <span class="i-tabler-cpu" />
           {{ formatMemory(recommendedMb) }}
-        </ATag>
+        </span>
       </ATooltip>
-      <ChannelTag :channel="channel" />
-      <ATag
-        v-if="entry.stage && entry.stage !== 'production' && entry.stage !== 'beta'"
-        color="purple"
-        class="m-0"
-      >
-        {{ entry.stage }}
-      </ATag>
     </div>
 
     <div class="plugin-card-foot" @click.stop>
-      <div class="plugin-card-status">
-        <span v-if="entry.author" class="truncate">{{ entry.author }}</span>
-        <span v-if="offer" class="plugin-card-installed is-outdated">
-          {{ $gettext('Installed %{version} is not this version', { version: entry.installed_version! }) }}
-        </span>
-        <span v-else-if="isInstalled" class="plugin-card-installed" :class="{ 'is-outdated': entry.update_available }">
-          <ArrowUpOutlined v-if="entry.update_available" />
-          <CheckCircleOutlined v-else />
-          {{ $gettext('Installed: %{version}', { version: entry.installed_version! }) }}
-        </span>
-      </div>
+      <span v-if="offer" class="plugin-card-installed is-outdated">
+        <WarningOutlined />
+        {{ $gettext('Installed %{version} is not this version', { version: entry.installed_version! }) }}
+      </span>
+      <span v-else-if="isInstalled" class="plugin-card-installed" :class="{ 'is-outdated': entry.update_available }">
+        <ArrowUpOutlined v-if="entry.update_available" />
+        <CheckCircleOutlined v-else />
+        {{ $gettext('Installed: %{version}', { version: entry.installed_version! }) }}
+      </span>
+      <span v-else />
 
+      <ATooltip v-if="offer" :title="trustedOfferAction(offer)">
+        <AButton
+          type="primary"
+          size="small"
+          :loading="replacingId === entry.id"
+          @click="confirmReplace(offer)"
+        >
+          {{ $gettext('Replace') }}
+        </AButton>
+      </ATooltip>
       <AButton
-        v-if="offer"
+        v-else-if="isActionable"
         type="primary"
         size="small"
-        :loading="replacingId === entry.id"
-        @click="confirmReplace(offer)"
-      >
-        {{ trustedOfferAction(offer) }}
-      </AButton>
-      <AButton
-        v-else
-        :type="isActionable ? 'primary' : 'default'"
-        size="small"
-        :disabled="!isActionable"
         :loading="installing"
         @click="emit('install', entry)"
       >
@@ -151,6 +139,9 @@ const actionLabel = computed(() => {
         </template>
         {{ actionLabel }}
       </AButton>
+      <AButton v-else size="small" @click="emit('detail', entry)">
+        {{ $gettext('Details') }}
+      </AButton>
     </div>
   </article>
 </template>
@@ -158,19 +149,43 @@ const actionLabel = computed(() => {
 <style lang="less" scoped>
 @import '../plugin-card.less';
 
-.plugin-card-status {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+.plugin-card-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.plugin-card-trust {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
   font-size: 12px;
-  color: var(--ant-color-text-secondary);
+  font-weight: 500;
+
+  &.is-official {
+    color: var(--ant-color-primary);
+  }
+
+  &.is-verified {
+    color: var(--ant-color-success);
+  }
+
+  &.is-community {
+    color: var(--ant-orange-7, #d46b08);
+  }
+
+  &.is-unsigned {
+    color: var(--ant-color-warning);
+  }
 }
 
 .plugin-card-installed {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  min-width: 0;
+  font-size: 12px;
   color: var(--ant-color-success);
 
   &.is-outdated {
