@@ -722,6 +722,21 @@ func TestWebappEntriesOnlyListWhatCanBeServed(t *testing.T) {
 	require.NoError(t, err)
 	_, err = m.StaticRoot("official.unknown", "webapp")
 	assert.ErrorIs(t, err, ErrPluginNotFound)
+
+	// A disabled plugin keeps only its icon.
+	_, err = m.Disable(ctx, "official.alpha")
+	require.NoError(t, err)
+	_, err = m.StaticRoot("official.alpha", "webapp")
+	assert.ErrorIs(t, err, ErrPluginNotFound)
+	root, err = m.IconRoot("official.alpha", "webapp", "icon.svg")
+	require.NoError(t, err)
+	assert.FileExists(t, filepath.Join(root, "icon.svg"))
+	_, err = m.IconRoot("official.alpha", "webapp", "main.js")
+	assert.ErrorIs(t, err, ErrPluginNotFound)
+	_, err = m.IconRoot("official.alpha", "pages", "icon.svg")
+	assert.ErrorIs(t, err, ErrPluginNotFound)
+	_, err = m.IconRoot("official.gamma", "pages", "overview.html")
+	assert.ErrorIs(t, err, ErrPluginNotFound, "a plugin without an icon serves nothing")
 }
 
 func TestManagerRefusesWhenTheSystemIsDisabled(t *testing.T) {
