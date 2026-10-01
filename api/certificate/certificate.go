@@ -31,6 +31,31 @@ type APICertificate struct {
 	cert.Overview
 	// DNSProvider is the provider name of the DNS credential used for DNS-01.
 	DNSProvider string `json:"dns_provider,omitempty"`
+	// DelegatedNodeName names the node a delegated certificate was issued for.
+	DelegatedNodeName string `json:"delegated_node_name,omitempty"`
+}
+
+// delegatedNodeNames maps the ids of the nodes certificates were issued for
+// to their names.
+func delegatedNodeNames(models []*model.Cert) map[uint64]string {
+	ids := make([]uint64, 0)
+	for _, m := range models {
+		if m.IsDelegated() {
+			ids = append(ids, m.DelegatedNodeID)
+		}
+	}
+	names := map[uint64]string{}
+	if len(ids) == 0 {
+		return names
+	}
+	nodes, err := query.Node.Where(query.Node.ID.In(ids...)).Find()
+	if err != nil {
+		return names
+	}
+	for _, node := range nodes {
+		names[node.ID] = node.Name
+	}
+	return names
 }
 
 func Transformer(certModel *model.Cert) (certificate *APICertificate) {
@@ -66,6 +91,7 @@ func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 		DeploymentStatus:  site.InspectCertificateDeployment(certModel),
 		Overview:          buildOverview(certModel, certificateInfo),
 		DNSProvider:       dnsProviderNames([]*model.Cert{certModel})[certModel.DnsCredentialID],
+		DelegatedNodeName: delegatedNodeNames([]*model.Cert{certModel})[certModel.DelegatedNodeID],
 	}
 }
 
@@ -97,6 +123,7 @@ func GetCertList(c *gin.Context) {
 			models := make([]*model.Cert, 0)
 			tx.Find(&models)
 			providers = dnsProviderNames(models)
+			nodeNames := delegatedNodeNames(models)
 
 			rows := make([]any, 0, len(models))
 			for _, m := range models {
@@ -107,12 +134,13 @@ func GetCertList(c *gin.Context) {
 					info, _ = cert.GetCertInfo(m.SSLCertificatePath)
 				}
 				rows = append(rows, APICertificate{
-					Cert:             m,
-					CertificateInfo:  info,
-					DeploymentStatus: site.InspectCertificateDeployment(m),
-					UsedBy:           usageIndex.Lookup(m.SSLCertificatePath),
-					Overview:         buildOverview(m, info),
-					DNSProvider:      providers[m.DnsCredentialID],
+					Cert:              m,
+					CertificateInfo:   info,
+					DeploymentStatus:  site.InspectCertificateDeployment(m),
+					UsedBy:            usageIndex.Lookup(m.SSLCertificatePath),
+					Overview:          buildOverview(m, info),
+					DNSProvider:       providers[m.DnsCredentialID],
+					DelegatedNodeName: nodeNames[m.DelegatedNodeID],
 				})
 			}
 			return rows
@@ -278,12 +306,44 @@ func RemoveCert(c *gin.Context) {
 		return
 	}
 
+	// A certificate issued for a node keeps its files there unless asked.
+	if certModel.IsDelegated() {
+		if err = cert.RemoveDelegated(c.Request.Context(), certModel, cast.ToBool(c.Query("remove_remote"))); err != nil {
+			cosy.ErrHandler(c, err)
+		}
+		return
+	}
+
 	if err = query.Cert.DeleteByID(id); err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
 	cleanupSelfSignedCertFiles(certModel)
+}
+
+// SyncCertificatePaths tells another instance where this node keeps the
+// certificate of one of its configurations.
+func SyncCertificatePaths(c *gin.Context) {
+	var json cert.SyncPathsRequest
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+	c.JSON(http.StatusOK, cert.SyncPathsFor(json))
+}
+
+// RemoveSyncedCertificate deletes certificate files another instance sent to
+// this node, unless the Nginx configuration still loads them.
+func RemoveSyncedCertificate(c *gin.Context) {
+	var json cert.SyncPaths
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+	if err := cert.RemoveSynced(json); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
 func ImportExistingCert(c *gin.Context) {
@@ -382,6 +442,14 @@ func SyncCertificate(c *gin.Context) {
 	}
 	normalizedKeyType := helper.GetKeyType(json.KeyType)
 
+	// The sender keeps renewing a certificate it issued for this node.
+	if json.Delegated {
+		if err := cert.StopRenewingDelegated(json.SSLCertificatePath, json.SSLCertificateKeyPath); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
 	certModel := &model.Cert{
 		Name:                  json.Name,
 		SSLCertificatePath:    json.SSLCertificatePath,
@@ -414,6 +482,7 @@ func SyncCertificate(c *gin.Context) {
 	if content.MatchesFiles() {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "ok",
+			"id":      certModel.ID,
 		})
 		return
 	}
@@ -429,6 +498,7 @@ func SyncCertificate(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
+		"id":      certModel.ID,
 	})
 }
 
