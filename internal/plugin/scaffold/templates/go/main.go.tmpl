@@ -1,41 +1,34 @@
-// Package main implements the {{.Name}} nginx-ui plugin: a dns01 challenge
+// Package main implements the {{.Name}} nginx-ui plugin: a DNS-01 challenge
 // solver for the "{{.ProviderCode}}" provider.
-//
-// TODO: pin a released version of github.com/nginxui/plugin-sdk-go
-// once one is tagged (see the TODO in go.mod), and replace the illustrative
-// SDK calls below with whatever that SDK's real API turns out to be.
 package main
 
 import (
 	"context"
 
-	pluginsdk "github.com/nginxui/plugin-sdk-go"
+	sdk "github.com/nginxui/plugin-sdk-go"
 )
 
 // {{.GoTypeName}} implements the dns01 capability for the "{{.ProviderCode}}" provider.
 type {{.GoTypeName}} struct{}
 
-// Present publishes the challenge TXT record.
-// TODO: call the real {{.ProviderName}} API using req.Config[{{json .CredentialKey}}]
-// instead of doing nothing.
-func (p {{.GoTypeName}}) Present(ctx context.Context, req pluginsdk.DNS01Request) error {
-	_ = req
+// Present publishes the challenge TXT record req.EffectiveFQDN with the value
+// req.Value.
+func (p {{.GoTypeName}}) Present(ctx context.Context, req sdk.DNS01Request) error {
+	token := req.Config[{{json .CredentialKey}}]
+	if token == "" {
+		return sdk.InvalidConfig({{json .CredentialKey}}, "the API token is required")
+	}
+	// TODO: call the {{.ProviderName}} API with the token to create the record.
 	return nil
 }
 
-// CleanUp removes what Present published for the same challenge. It MUST be
-// safe to call even when Present never ran or already failed (DNS01-8).
-// TODO: call the real {{.ProviderName}} API to remove the record.
-func (p {{.GoTypeName}}) CleanUp(ctx context.Context, req pluginsdk.DNS01Request) error {
-	_ = req
+// CleanUp removes what Present published. It runs even when Present never
+// ran or failed, so a record that is not there is not an error.
+func (p {{.GoTypeName}}) CleanUp(ctx context.Context, req sdk.DNS01Request) error {
+	// TODO: call the {{.ProviderName}} API to remove the record.
 	return nil
 }
 
 func main() {
-	pluginsdk.Serve(pluginsdk.Config{
-		ID:      {{json .ID}},
-		Name:    {{json .Name}},
-		Version: "0.1.0",
-		DNS01:   {{.GoTypeName}}{},
-	})
+	sdk.Serve(sdk.Plugin{DNS01: {{.GoTypeName}}{}})
 }
