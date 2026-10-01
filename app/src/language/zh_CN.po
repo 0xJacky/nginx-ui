@@ -217,6 +217,9 @@ msgid ""
 "select one of the credentials below to request the API of the DNS provider."
 msgstr "请先在“证书” > “DNS 凭证”中添加凭证，然后在下方选择一个凭证以调用 DNS 提供商的 API。"
 
+msgid "Issuing"
+msgstr "签发"
+
 msgid "Server IP Address"
 msgstr "服务器 IP 地址"
 
@@ -246,20 +249,25 @@ msgstr "私有 CA："
 msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可访问的 IP 地址均可用于私有证书颁发机构"
 
-msgid "Install DNS-01 plugin"
-msgstr "安装 DNS-01 插件"
-
-msgid "Go to System > Plugins"
-msgstr "前往「系统 > 插件」"
-
 msgid "Challenge Method"
 msgstr "挑战方法"
 
 msgid "Not supported for IP certificates"
 msgstr "不支持 IP 证书"
 
+msgid "DNS Validation"
+msgstr "DNS 验证"
+
+msgid ""
+"The main node has no DNS-01 plugin. Install it on the main node, or validate "
+"on this node."
+msgstr "主节点没有 DNS-01 插件。请在主节点安装，或改为在本节点验证。"
+
 msgid "Key Type"
 msgstr "密钥类型"
+
+msgid "Certificate options"
+msgstr "证书选项"
 
 msgid "OCSP Must Staple"
 msgstr "OCSP 必须装订"
@@ -269,32 +277,17 @@ msgid ""
 "first visit."
 msgstr "仅在确定需要时开启。Firefox 首次访问时可能会显示错误。"
 
-msgid ""
-"OCSP Must Staple may cause errors for some users on first access using "
-"Firefox."
-msgstr "某些用户在使用 Firefox 首次访问时，OCSP Must Staple 可能会导致错误。"
-
 msgid "Enable Common Name"
 msgstr "启用通用名称"
 
 msgid "For private CAs that still require this field."
 msgstr "适用于仍要求此字段的私有 CA。"
 
-msgid ""
-"Enable the certificate Common Name field for private CAs that still require "
-"it."
-msgstr "为仍需要此字段的私有 CA 启用证书的通用名称 (Common Name) 字段。"
-
 msgid "Revoke Old Certificate"
 msgstr "撤销旧证书"
 
 msgid "Revokes the previous certificate once the new one is issued."
 msgstr "新证书签发后吊销旧证书。"
-
-msgid ""
-"If you want to automatically revoke the old certificate, please enable this "
-"option."
-msgstr "如果要自动撤销旧证书，请启用此选项。"
 
 msgid "Unknown Provider"
 msgstr "未知提供商"
@@ -305,6 +298,10 @@ msgstr "新建凭证"
 msgid "The credential was deleted. Please choose another one."
 msgstr "该凭证已被删除，请选择其他凭证。"
 
+msgid ""
+"Credentials of the main node. Switch to the main node to add or change one."
+msgstr "这些是主节点的凭据。如需添加或修改，请切换到主节点。"
+
 msgid "Deleted credential"
 msgstr "已删除的凭证"
 
@@ -314,11 +311,8 @@ msgstr "DNS 凭证"
 msgid "Select credential"
 msgstr "选择凭证"
 
-msgid "Credential"
-msgstr "DNS 凭证"
-
-msgid "Select Credential"
-msgstr "选择凭证"
+msgid "Manage"
+msgstr "管理"
 
 msgid "Local"
 msgstr "本地"
@@ -476,8 +470,62 @@ msgstr ""
 msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
 msgstr "DNS 验证需要 DNS-01 插件，该插件%{state}。"
 
+msgid "Install DNS-01 plugin"
+msgstr "安装 DNS-01 插件"
+
+msgid "Install plugin"
+msgstr "安装插件"
+
+msgid "Enable plugin"
+msgstr "启用插件"
+
+msgid "Go to System > Plugins"
+msgstr "前往「系统 > 插件」"
+
+msgid "Name cannot be empty"
+msgstr "名称不能为空"
+
+msgid "Please select DNS provider"
+msgstr "请选择 DNS 提供商"
+
+msgid "Save successfully"
+msgstr "保存成功"
+
+msgid "Server error"
+msgstr "服务器错误"
+
+msgid "New DNS Credential"
+msgstr "新建 DNS 凭证"
+
+msgid "Create and select"
+msgstr "创建并选择"
+
 msgid "Include line copied to clipboard"
 msgstr "Include 行已复制到剪贴板"
+
+msgid "Copy"
+msgstr "拷贝"
+
+msgid "%{n} d"
+msgstr "%{n} 天"
+
+msgid "%{n} h"
+msgstr "%{n} 小时"
+
+msgid "%{n} min"
+msgstr "%{n} 分钟"
+
+msgid "%{n} s"
+msgstr "%{n} 秒"
+
+msgid "Not run yet"
+msgstr "尚未运行"
+
+msgid "Success"
+msgstr "成功"
+
+msgid "Failed"
+msgstr "失败"
 
 msgid "Nginx configuration test failed"
 msgstr "Nginx 配置测试失败"
@@ -513,15 +561,6 @@ msgstr "Nginx 报告了一个配置语法错误。"
 
 msgid "Nginx failed to validate the configuration."
 msgstr "Nginx 未能验证配置。"
-
-msgid "Server error"
-msgstr "服务器错误"
-
-msgid "New DNS Credential"
-msgstr "新建 DNS 凭证"
-
-msgid "Create and select"
-msgstr "创建并选择"
 
 msgid "Testing Nginx configuration..."
 msgstr "正在测试 Nginx 配置..."
@@ -1338,6 +1377,12 @@ msgstr "请立即在偏好设置中生成新的恢复码，以防止无法访问
 msgid "Digit %{position} of the one-time code"
 msgstr "一次性验证码的第 %{position} 位数字"
 
+msgid "Unknown error"
+msgstr "未知错误"
+
+msgid "Plugin %{plugin} failed to render"
+msgstr "插件 %{plugin} 渲染失败"
+
 msgid "Port"
 msgstr "端口"
 
@@ -1444,21 +1489,6 @@ msgstr "支持通过 WebSocket 协议与后端通信。"
 
 msgid "Copied"
 msgstr "已拷贝"
-
-msgid "Copy"
-msgstr "拷贝"
-
-msgid "%{n} d"
-msgstr "%{n} 天"
-
-msgid "%{n} h"
-msgstr "%{n} 小时"
-
-msgid "%{n} min"
-msgstr "%{n} 分钟"
-
-msgid "%{n} s"
-msgstr "%{n} 秒"
 
 msgid "Hide"
 msgstr "隐藏"
@@ -1690,11 +1720,27 @@ msgstr "已成功同步 %{count} 项"
 msgid "Synchronization finished with %{count} failures"
 msgstr "同步完成，其中 %{count} 项失败"
 
-msgid "High"
-msgstr "高"
+msgid "Plugin enabled"
+msgstr "插件已启用"
 
-msgid "Low"
-msgstr "低"
+msgid "Failed to enable the plugin"
+msgstr "启用插件失败"
+
+msgid "On the main node"
+msgstr "在主节点"
+
+msgid "On this node"
+msgstr "在本节点"
+
+msgid ""
+"The main node validates the domain with its DNS credentials, sends the "
+"certificate to this node and keeps renewing it."
+msgstr "主节点使用自己的 DNS 凭据验证域名，把证书发送到本节点，并负责后续续期。"
+
+msgid ""
+"This node validates the domain with its own DNS credentials and renews the "
+"certificate itself."
+msgstr "本节点使用自己的 DNS 凭据验证域名，并自行续期证书。"
 
 msgid "Failed to get performance data"
 msgstr "获取性能数据失败"
@@ -2246,6 +2292,27 @@ msgstr "{0} 没有可用的 DNS-01 提供商：请安装并启用 DNS-01 插件"
 msgid ""
 "Automatic renewal can only be switched for certificates issued by Nginx UI"
 msgstr "只有 Nginx UI 签发的证书才能切换自动续期"
+
+msgid "Only a DNS-01 certificate can be issued for another node"
+msgstr "只能为其他节点签发 DNS-01 证书"
+
+msgid "Node not found"
+msgstr "未找到节点"
+
+msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
+msgstr "节点 {0} 无法接收为其签发的证书，请先升级该节点"
+
+msgid "Node {0} answered {1}: {2}"
+msgstr "节点 {0} 返回 {1}：{2}"
+
+msgid "The Nginx configuration still loads the certificate: {0}"
+msgstr "Nginx 配置仍在加载该证书：{0}"
+
+msgid "The certificate was issued, but sending it to node {0} failed: {1}"
+msgstr "证书已签发，但发送到节点 {0} 失败：{1}"
+
+msgid "Node {0} cannot be reached: {1}"
+msgstr "无法连接节点 {0}：{1}"
 
 msgid "Path is not under the nginx conf dir"
 msgstr "路径不在 Nginx 配置目录下"
@@ -2865,6 +2932,32 @@ msgstr "网站处于维护模式"
 msgid "Read dir failed: {0}"
 msgstr "读取文件夹失败: {0}"
 
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "文件名必须以 .conf 结尾，且只能包含字母、数字、点、连字符和下划线"
+
+msgid "Snippet not found"
+msgstr "未找到片段"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "片段超过 256 KiB"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "片段的文件头无法解析：{0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "片段仍被以下文件引用：{0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "已存在同名文件的片段"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "变量 {0} 无效：{1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "内容无法解析为模板：{0}"
+
 msgid "Stream not found"
 msgstr "Stream 未找到"
 
@@ -3144,9 +3237,6 @@ msgstr "该字段只能包含字母、unicode 字符、数字和 -_。"
 msgid "Info"
 msgstr "信息"
 
-msgid "Success"
-msgstr "成功"
-
 msgid "Remote"
 msgstr "远程"
 
@@ -3162,8 +3252,14 @@ msgstr "自动"
 msgid "Off"
 msgstr "关闭"
 
+msgid "Low"
+msgstr "低"
+
 msgid "Medium"
 msgstr "中"
+
+msgid "High"
+msgstr "高"
 
 msgid "Default"
 msgstr "默认"
@@ -3264,6 +3360,9 @@ msgstr "错误日志"
 msgid "Select Provider"
 msgstr "选择提供商"
 
+msgid "Select Credential"
+msgstr "选择凭证"
+
 msgid "Total"
 msgstr "总计"
 
@@ -3329,9 +3428,6 @@ msgstr "请至少选择一项"
 
 msgid "Batch Modify"
 msgstr "批量修改"
-
-msgid "Save successfully"
-msgstr "保存成功"
 
 msgid "Save successful"
 msgstr "保存成功"
@@ -3556,6 +3652,18 @@ msgstr "检查间隔"
 msgid "Checking the HTTP challenge route"
 msgstr "正在检查 HTTP 验证路由"
 
+msgid "Client ID"
+msgstr "客户端 ID"
+
+msgid "Client certificate"
+msgstr "客户端证书"
+
+msgid "Client certificate path"
+msgstr "客户端证书路径"
+
+msgid "Client secret"
+msgstr "客户端密钥"
+
 msgid "Conf.d directory exists"
 msgstr "conf.d 目录存在"
 
@@ -3722,6 +3830,9 @@ msgstr "订阅 ID"
 
 msgid "TXT record TTL"
 msgstr "TXT 记录 TTL"
+
+msgid "Tenant ID"
+msgstr "租户 ID"
 
 msgid "The DNS challenge does not use the HTTP challenge route"
 msgstr "DNS 验证不使用 HTTP 验证路由"
@@ -3936,6 +4047,9 @@ msgstr "[Nginx UI] 正在撤销证书"
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] 正在撤销旧证书"
 
+msgid "[Nginx UI] Sending the certificate to node %{name}"
+msgstr "[Nginx UI] 正在将证书发送到节点 %{name}"
+
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] 正在设置 DNS01 验证提供程序"
 
@@ -4067,6 +4181,18 @@ msgstr "站点列表"
 
 msgid "Add Site"
 msgstr "添加站点"
+
+msgid "Snippets"
+msgstr "片段"
+
+msgid "Create Snippet"
+msgstr "新建片段"
+
+msgid "Built-in Template"
+msgstr "内置模板"
+
+msgid "Edit Snippet"
+msgstr "编辑片段"
 
 msgid "Edit Site"
 msgstr "编辑站点"
@@ -4228,6 +4354,9 @@ msgstr "此列表允许所有地址。"
 msgid "This list has no rules; only \"Everything else\" applies."
 msgstr "此列表没有规则；仅“其他所有内容”适用。"
 
+msgid "S3"
+msgstr "S3"
+
 msgid "Backup completed successfully"
 msgstr "备份成功"
 
@@ -4248,9 +4377,6 @@ msgstr "备份路径"
 
 msgid "Storage Type"
 msgstr "存储类型"
-
-msgid "S3"
-msgstr "S3"
 
 msgid "Storage Configuration"
 msgstr "存储配置"
@@ -4275,9 +4401,6 @@ msgstr "上次备份状态"
 
 msgid "Pending"
 msgstr "待处理"
-
-msgid "Failed"
-msgstr "失败"
 
 msgid "Created at"
 msgstr "创建时间"
@@ -4459,6 +4582,26 @@ msgstr "每次运行后会删除该存储中较旧的备份。设为 0 表示保
 msgid "Test Storage"
 msgstr "测试存储"
 
+msgid "Please log in."
+msgstr "请登录。"
+
+msgid "File"
+msgstr "文件"
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr "备份保存在 %{storage} 的 %{prefix} 下"
+
+msgid "Delete this backup from the storage?"
+msgstr "确定要从存储中删除此备份吗？"
+
+msgid "Restore Backup"
+msgstr "还原备份"
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr "还原操作将替换当前配置，随后 Nginx 和 Nginx UI 将重新启动。"
+
 msgid "Create system backups and restore from saved snapshots when needed."
 msgstr "创建系统备份，并在需要时从已保存快照恢复。"
 
@@ -4492,9 +4635,6 @@ msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
 msgstr "此 Token 只显示一次，以后无法找回。请确保将其保存在安全位置。"
-
-msgid "Please log in."
-msgstr "请登录。"
 
 msgid "Email"
 msgstr "邮箱"
@@ -4567,6 +4707,27 @@ msgstr "高级选项"
 msgid "Sync to other nodes"
 msgstr "同步到其他节点"
 
+msgid "Certificate"
+msgstr "证书"
+
+msgid "Private key"
+msgstr "私钥"
+
+msgid "Domains"
+msgstr "域名"
+
+msgid "IP Addresses"
+msgstr "IP 地址"
+
+msgid "Valid For (days)"
+msgstr "有效期（天）"
+
+msgid "Automatic renewal turned on"
+msgstr "已开启自动续期"
+
+msgid "Automatic renewal turned off"
+msgstr "已关闭自动续期"
+
 msgid "Please enter a name for the certificate"
 msgstr "请输入证书名称"
 
@@ -4575,6 +4736,113 @@ msgstr "请输入至少一个域名或 IP 地址"
 
 msgid "Saved certificate response is missing an ID"
 msgstr "保存的证书响应缺少 ID"
+
+msgid "More actions"
+msgstr "更多操作"
+
+msgid "Issued for %{node}"
+msgstr "为 %{node} 签发"
+
+msgid ""
+"This instance validates the domain, keeps renewing the certificate and sends "
+"each renewal to %{node}."
+msgstr "本实例负责验证域名和续期证书，每次续期后都会发送到 %{node}。"
+
+msgid "Files on the node:"
+msgstr "节点上的文件："
+
+msgid "Sync Certificate"
+msgstr "同步证书"
+
+msgid "Managed Certificate"
+msgstr "托管证书"
+
+msgid "General Certificate"
+msgstr "普通证书"
+
+msgid "Self-signed Certificate"
+msgstr "自签名证书"
+
+msgid "Renewal paused"
+msgstr "已暂停续期"
+
+msgid "Issuing..."
+msgstr "签发中..."
+
+msgid "Issuance failed"
+msgstr "签发失败"
+
+msgid "Automatic migration pending"
+msgstr "等待自动迁移"
+
+msgid "Configuration mismatch"
+msgstr "配置不一致"
+
+msgid "Configured path: %{configured}; managed path: %{managed}"
+msgstr "配置引用路径：%{configured}；托管路径：%{managed}"
+
+msgid "Unable to verify deployment"
+msgstr "无法验证部署状态"
+
+msgid "Not issued yet"
+msgstr "尚未签发"
+
+msgid "Not After"
+msgstr "有效期"
+
+msgid "All"
+msgstr "全部"
+
+msgid "Expiring within 30 days"
+msgstr "30 天内到期"
+
+msgid "Renewal failed"
+msgstr "续期失败"
+
+msgid "Issued by this instance for %{node} and renewed here"
+msgstr "由本实例为 %{node} 签发，并在此续期"
+
+msgid "For %{node}"
+msgstr "用于 %{node}"
+
+msgid "Renewal method"
+msgstr "续期方式"
+
+msgid "Expiry date"
+msgstr "到期日期"
+
+msgid "Failed to scan certificates"
+msgstr "扫描证书失败"
+
+msgid "Please select at least one certificate"
+msgstr "请至少选择一个证书"
+
+msgid "Import successfully"
+msgstr "导入成功"
+
+msgid "Failed to import certificate"
+msgstr "导入证书失败"
+
+msgid "Discover"
+msgstr "发现"
+
+msgid "Import"
+msgstr "导入"
+
+msgid "Issue certificate"
+msgstr "签发证书"
+
+msgid "Search by name or domain"
+msgstr "按名称或域名搜索"
+
+msgid "Discover Certificates"
+msgstr "发现证书"
+
+msgid "Import selected"
+msgstr "导入所选项"
+
+msgid "Scan"
+msgstr "扫描"
 
 msgid "Trying renewal."
 msgstr "正在尝试续签。"
@@ -4645,81 +4913,6 @@ msgstr "从其他节点同步"
 msgid "Upload"
 msgstr "上传"
 
-msgid "General Certificate"
-msgstr "普通证书"
-
-msgid "Log"
-msgstr "日志"
-
-msgid "Sync Certificate"
-msgstr "同步证书"
-
-msgid "Managed Certificate"
-msgstr "托管证书"
-
-msgid "Self-signed Certificate"
-msgstr "自签名证书"
-
-msgid "Renewal paused"
-msgstr "已暂停续期"
-
-msgid "Issuing..."
-msgstr "签发中..."
-
-msgid "Issuance failed"
-msgstr "签发失败"
-
-msgid "Automatic migration pending"
-msgstr "等待自动迁移"
-
-msgid "Configuration mismatch"
-msgstr "配置不一致"
-
-msgid "Configured path: %{configured}; managed path: %{managed}"
-msgstr "配置引用路径：%{configured}；托管路径：%{managed}"
-
-msgid "Unable to verify deployment"
-msgstr "无法验证部署状态"
-
-msgid "Not issued yet"
-msgstr "尚未签发"
-
-msgid "Not After"
-msgstr "有效期"
-
-msgid "Failed to scan certificates"
-msgstr "扫描证书失败"
-
-msgid "Please select at least one certificate"
-msgstr "请至少选择一个证书"
-
-msgid "Import successfully"
-msgstr "导入成功"
-
-msgid "Failed to import certificate"
-msgstr "导入证书失败"
-
-msgid "Discover"
-msgstr "发现"
-
-msgid "Import"
-msgstr "导入"
-
-msgid "Issue certificate"
-msgstr "签发证书"
-
-msgid "Search by name or domain"
-msgstr "按名称或域名搜索"
-
-msgid "Discover Certificates"
-msgstr "发现证书"
-
-msgid "Import selected"
-msgstr "导入所选项"
-
-msgid "Scan"
-msgstr "扫描"
-
 msgid "System Initial User"
 msgstr "系统初始用户"
 
@@ -4731,12 +4924,6 @@ msgstr "域名列表为空，请尝试为 %{config} 重新打开证书自动续�
 
 msgid "Back"
 msgstr "返回"
-
-msgid "This field is required"
-msgstr "此字段必填"
-
-msgid "Sync to"
-msgstr "同步到"
 
 msgid "Failed to load nginx configuration path"
 msgstr "加载 nginx 配置路径失败"
@@ -4786,9 +4973,6 @@ msgstr "已部署到 %{ok} 个目标，%{failed} 个失败"
 
 msgid "Deployed to %{ok} targets"
 msgstr "已部署到 %{ok} 个目标"
-
-msgid "Manage"
-msgstr "管理"
 
 msgid "Deploy Now"
 msgstr "立即部署"
@@ -4865,6 +5049,27 @@ msgstr "在同步来源节点上续期"
 msgid "Renews around %{date}"
 msgstr "预计 %{date} 前后续期"
 
+msgid "On"
+msgstr "开启"
+
+msgid "Replace the files to renew"
+msgstr "替换文件以续期"
+
+msgid "Auto renewal"
+msgstr "自动续期"
+
+msgid "Issuer"
+msgstr "颁发者"
+
+msgid "Certificate files"
+msgstr "证书文件"
+
+msgid "Hide contents"
+msgstr "隐藏内容"
+
+msgid "Show contents"
+msgstr "显示内容"
+
 msgid "certificate"
 msgstr "证书"
 
@@ -4915,6 +5120,44 @@ msgstr "选择节点"
 
 msgid "Only kept on this node."
 msgstr "仅保存在此节点。"
+
+msgid "Time"
+msgstr "时间"
+
+msgid "Attempts"
+msgstr "尝试次数"
+
+msgid "Deploy History of %{name}"
+msgstr "%{name} 的部署历史"
+
+msgid "All certificates"
+msgstr "所有证书"
+
+msgid "Dry run successful"
+msgstr "试运行成功"
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+"没有已启用的插件提供部署目标。请先安装并启用具有 cert.deploy 能力的插件。"
+
+msgid "Target Type"
+msgstr "目标类型"
+
+msgid "Select a target type"
+msgstr "选择目标类型"
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr "提供此目标类型的插件未启用。推送将失败，直到重新启用该插件。"
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr "证书在每次签发和续期后都会推送到此目标。"
+
+msgid "Dry Run"
+msgstr "试运行"
 
 msgid "Wildcard Certificate"
 msgstr "通配符证书"
@@ -4994,6 +5237,18 @@ msgid "Delete Certificate"
 msgstr "删除证书"
 
 msgid ""
+"This instance stops renewing the certificate and deletes its own copy. The "
+"files on %{node} stay unless you remove them below."
+msgstr "本实例将停止续期该证书并删除自己保存的副本。%{node} 上的文件会保留，除非在下方选择一并删除。"
+
+msgid "Also remove the certificate files from %{node}"
+msgstr "同时删除 %{node} 上的证书文件"
+
+msgid ""
+"They are kept when the Nginx configuration of the node still loads them."
+msgstr "如果节点的 Nginx 配置仍在加载这些文件，则会保留。"
+
+msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
 msgstr "此操作只会从数据库中删除证书。文件系统中的证书文件不会被删除。"
@@ -5042,29 +5297,17 @@ msgstr "Nginx UI 将根据全局证书续期间隔和此证书的有效期，在
 msgid "Enter certificate name"
 msgstr "输入证书名称"
 
-msgid "Domains"
-msgstr "域名"
-
-msgid "IP Addresses"
-msgstr "IP 地址"
-
 msgid "Enter IP address"
 msgstr "输入 IP 地址"
 
 msgid "Add IP Address"
 msgstr "添加 IP 地址"
 
-msgid "Valid For (days)"
-msgstr "有效期（天）"
-
-msgid "Automatic renewal turned on"
-msgstr "已开启自动续期"
-
-msgid "Automatic renewal turned off"
-msgstr "已关闭自动续期"
-
 msgid "Some browsers reject TLS certificates valid for more than 398 days."
 msgstr "某些浏览器会拒绝有效期超过 398 天的 TLS 证书。"
+
+msgid "Sync to"
+msgstr "同步到"
 
 msgid "Generate Self-signed Certificate"
 msgstr "生成自签名证书"
@@ -5077,6 +5320,12 @@ msgstr "已部署 %{ok} 个证书，%{failed} 个失败"
 
 msgid "Deployed %{ok} certificates"
 msgstr "已部署 %{ok} 个证书"
+
+msgid "Configuration"
+msgstr "配置"
+
+msgid "History"
+msgstr "历史"
 
 msgid "View all issued and imported certificates with expiration and status."
 msgstr "查看全部已签发和已导入证书及其到期时间与状态。"
@@ -5094,9 +5343,6 @@ msgstr "将现有证书与密钥对导入证书库。"
 
 msgid "Format successfully"
 msgstr "格式化成功"
-
-msgid "History"
-msgstr "历史"
 
 msgid "Format Code"
 msgstr "代码格式化"
@@ -5154,23 +5400,6 @@ msgstr "文件"
 
 msgid "Folder"
 msgstr "文件夹"
-
-msgid "File"
-msgstr "文件"
-
-msgid "Backups kept in %{storage} under %{prefix}"
-msgstr "备份保存在 %{storage} 的 %{prefix} 下"
-
-msgid "Delete this backup from the storage?"
-msgstr "确定要从存储中删除此备份吗？"
-
-msgid "Restore Backup"
-msgstr "还原备份"
-
-msgid ""
-"Restoring replaces the current configuration. Nginx and Nginx UI restart "
-"afterwards."
-msgstr "还原操作将替换当前配置，随后 Nginx 和 Nginx UI 将重新启动。"
 
 msgid "Type %{delete} to confirm"
 msgstr "输入 %{delete} 以确认"
@@ -5281,27 +5510,6 @@ msgstr "GZIP 压缩"
 
 msgid "Enable compression for content transfer"
 msgstr "启用内容传输压缩"
-
-msgid "On"
-msgstr "开启"
-
-msgid "Replace the files to renew"
-msgstr "替换文件以续期"
-
-msgid "Auto renewal"
-msgstr "自动续期"
-
-msgid "Issuer"
-msgstr "颁发者"
-
-msgid "Certificate files"
-msgstr "证书文件"
-
-msgid "Hide contents"
-msgstr "隐藏内容"
-
-msgid "Show contents"
-msgstr "显示内容"
 
 msgid "GZIP Min Length"
 msgstr "GZIP 最小长度"
@@ -5971,20 +6179,22 @@ msgstr "无需填写，服务器将使用自身的凭证。"
 msgid "Optional"
 msgstr "可选"
 
-msgid "All"
-msgstr "全部"
+msgid "Details"
+msgstr "详情"
 
-msgid "Expiring within 30 days"
-msgstr "30 天内到期"
+msgid "%{count} changed"
+msgstr "已修改 %{count} 项"
 
-msgid "Renewal failed"
-msgstr "续期失败"
+msgid "All default"
+msgstr "均为默认"
 
-msgid "Renewal method"
-msgstr "续期方式"
+msgid "sec"
+msgstr "秒"
 
-msgid "Expiry date"
-msgstr "到期日期"
+msgid ""
+"Please fill in the API authentication credentials provided by your DNS "
+"provider."
+msgstr "请填写 DNS 提供商提供的 API 验证凭据。"
 
 msgid "Host, e.g. @ or www"
 msgstr "主机，例如 @ 或 www"
@@ -6055,6 +6265,9 @@ msgid ""
 "in DNS."
 msgstr "未选择的同名记录不会被管理。它们在 DNS 中保持不变。"
 
+msgid "Credential"
+msgstr "DNS 凭证"
+
 msgid "Provider"
 msgstr "提供商"
 
@@ -6066,9 +6279,6 @@ msgstr "目标"
 
 msgid "Last run"
 msgstr "上次运行"
-
-msgid "Not run yet"
-msgstr "尚未运行"
 
 msgid "DDNS saved"
 msgstr "DDNS 已保存"
@@ -6131,22 +6341,8 @@ msgstr "选择要更新的 A/AAAA 记录"
 msgid "Interval (seconds)"
 msgstr "间隔（秒）"
 
-msgid "Name cannot be empty"
-msgstr "名称不能为空"
-
-msgid "Please select DNS provider"
-msgstr "请选择 DNS 提供商"
-
-msgid "Configuration"
-msgstr "配置"
-
 msgid "DNS Credentials"
 msgstr "DNS 凭证"
-
-msgid ""
-"Please fill in the API authentication credentials provided by your DNS "
-"provider."
-msgstr "请填写 DNS 提供商提供的 API 验证凭据。"
 
 msgid "Modify DNS Credential"
 msgstr "修改 DNS 凭证"
@@ -6270,18 +6466,6 @@ msgstr "名称"
 
 msgid "Coverage"
 msgstr "覆盖情况"
-
-msgid "Details"
-msgstr "详情"
-
-msgid "%{count} changed"
-msgstr "已修改 %{count} 项"
-
-msgid "All default"
-msgstr "均为默认"
-
-msgid "sec"
-msgstr "秒"
 
 msgid "Result"
 msgstr "结果"
@@ -6501,12 +6685,6 @@ msgstr "编辑记录"
 msgid "Create Record"
 msgstr "创建记录"
 
-msgid "Unknown error"
-msgstr "未知错误"
-
-msgid "Plugin %{plugin} failed to render"
-msgstr "插件 %{plugin} 渲染失败"
-
 msgid "Manage DNS zones and records for domains under your account."
 msgstr "管理账号下域名的 DNS 域区与记录。"
 
@@ -6677,15 +6855,6 @@ msgstr "该命名空间没有同步节点"
 msgid "Read access logs page by page or follow them as they arrive."
 msgstr "分页阅读访问日志，或在新日志产生时实时跟踪。"
 
-msgid "CPU"
-msgstr "CPU"
-
-msgid "Features"
-msgstr "功能"
-
-msgid "URL"
-msgstr "URL"
-
 msgid "Inspect error events and troubleshoot issues from Nginx error output."
 msgstr "检查错误事件并基于 Nginx 错误输出定位问题。"
 
@@ -6709,29 +6878,11 @@ msgstr "选择日志文件"
 msgid "Auto Refresh"
 msgstr "自动刷新"
 
-msgid "Disable"
-msgstr "禁用"
-
 msgid "Filter"
 msgstr "过滤"
 
 msgid "Filter log content"
 msgstr "过滤日志内容"
-
-msgid "Method"
-msgstr "方法"
-
-msgid "Any"
-msgstr "任意"
-
-msgid "OS"
-msgstr "OS"
-
-msgid "Time"
-msgstr "时间"
-
-msgid "IP"
-msgstr "IP"
 
 msgid "Stable"
 msgstr "稳定"
@@ -6919,41 +7070,6 @@ msgstr "最后尝试"
 msgid "Automatic retry after"
 msgstr "自动重试时间"
 
-msgid "Attempts"
-msgstr "尝试次数"
-
-msgid "Deploy History of %{name}"
-msgstr "%{name} 的部署历史"
-
-msgid "All certificates"
-msgstr "所有证书"
-
-msgid "Dry run successful"
-msgstr "试运行成功"
-
-msgid ""
-"No enabled plugin offers a deploy target. Install and enable a plugin with "
-"the cert.deploy capability first."
-msgstr ""
-"没有已启用的插件提供部署目标。请先安装并启用具有 cert.deploy 能力的插件。"
-
-msgid "Target Type"
-msgstr "目标类型"
-
-msgid "Select a target type"
-msgstr "选择目标类型"
-
-msgid ""
-"The plugin that provides this target type is not enabled. Pushes fail until "
-"it is enabled again."
-msgstr "提供此目标类型的插件未启用。推送将失败，直到重新启用该插件。"
-
-msgid "The certificate pushed to this target after every issuance and renewal."
-msgstr "证书在每次签发和续期后都会推送到此目标。"
-
-msgid "Dry Run"
-msgstr "试运行"
-
 msgid "Technical details"
 msgstr "技术详情"
 
@@ -6987,6 +7103,9 @@ msgstr "系统时间不同步"
 
 msgid "Node connection failed"
 msgstr "节点连接失败"
+
+msgid "URL"
+msgstr "URL"
 
 msgid "Node Secret"
 msgstr "节点密钥"
@@ -7209,6 +7328,69 @@ msgstr "应用于新安装的插件。自动会让插件始终安装在子节点
 
 msgid "Enable Marketplace"
 msgstr "启用市场"
+
+msgid "Sources"
+msgstr "来源"
+
+msgid "Managed on the marketplace page. Empty means the official catalog."
+msgstr "在市场页面管理，为空表示使用官方目录。"
+
+msgid "Allow Community Plugins"
+msgstr "允许社区插件"
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr "社区插件由第三方发布，安装前会要求确认。"
+
+msgid "Automatic Updates"
+msgstr "自动更新"
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr "在所需权限不变时自动更新官方与合作伙伴插件。"
+
+msgid "Allow Uploads"
+msgstr "允许上传"
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr "允许安装从浏览器或命令行上传的安装包。"
+
+msgid "Trusted Publishers"
+msgstr "可信发布者"
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr "来自这些发布者的插件按社区插件安装。"
+
+msgid "Memory Limit"
+msgstr "内存限制"
+
+msgid "Maximum memory each plugin can use."
+msgstr "每个插件最多可使用的内存。"
+
+msgid "CPU Limit"
+msgstr "CPU 限制"
+
+msgid "Share of one CPU core each plugin can use."
+msgstr "每个插件可使用的单核 CPU 比例。"
+
+msgid "Allow Insecure Download URLs"
+msgstr "允许不安全的下载地址"
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr "接受纯 http 的目录与下载地址，仅用于可信网络中的私有目录。"
+
+msgid "Developer Mode"
+msgstr "开发者模式"
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
+msgstr "允许安装未签名的插件，仅在开发插件时开启。"
 
 msgid "Stub Status Port"
 msgstr "Stub 状态端口"
@@ -7596,6 +7778,9 @@ msgstr "请选择通知类型"
 msgid "Test message sent successfully"
 msgstr "测试消息发送成功"
 
+msgid "Send test message"
+msgstr "发送测试消息"
+
 msgid "Microsoft Docs"
 msgstr "微软文档"
 
@@ -7604,9 +7789,6 @@ msgstr "Teams 请求示例"
 
 msgid "Available placeholders"
 msgstr "可用占位符"
-
-msgid "Send test message"
-msgstr "发送测试消息"
 
 msgid "Gotify"
 msgstr "Gotify"
@@ -7628,18 +7810,6 @@ msgstr "聊天 ID"
 
 msgid "Click URL"
 msgstr "点击 URL"
-
-msgid "Client ID"
-msgstr "客户端 ID"
-
-msgid "Client certificate"
-msgstr "客户端证书"
-
-msgid "Client certificate path"
-msgstr "客户端证书路径"
-
-msgid "Client secret"
-msgstr "客户端密钥"
 
 msgid "Client Secret"
 msgstr "客户端密钥"
@@ -7679,9 +7849,6 @@ msgstr "服务器 URL"
 
 msgid "Tags"
 msgstr "标签"
-
-msgid "Tenant ID"
-msgstr "租户 ID"
 
 msgid "To"
 msgstr "收件人"
@@ -7947,6 +8114,9 @@ msgstr "检测到："
 
 msgid "Restore detected value"
 msgstr "恢复为检测到的值"
+
+msgid "This field is required"
+msgstr "此字段必填"
 
 msgid "Point Nginx UI at a private key that already exists inside the container."
 msgstr "让 Nginx UI 指向容器内已存在的私钥。"
@@ -8693,6 +8863,9 @@ msgstr "无法打开 SSH 配置向导"
 msgid "Basics"
 msgstr "基础"
 
+msgid "Features"
+msgstr "功能"
+
 msgctxt "preference group"
 msgid "Maintenance"
 msgstr "维护"
@@ -8896,6 +9069,9 @@ msgstr "我已保存令牌"
 msgid "General"
 msgstr "常规"
 
+msgid "IP"
+msgstr "IP"
+
 msgid "Banned Until"
 msgstr "禁用至"
 
@@ -8912,9 +9088,6 @@ msgstr "如果某个 IP 在封禁阈值时间内登录失败次数达到最大�
 
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您确定要立即删除这个被禁用的 IP 吗？"
-
-msgid "Issuing"
-msgstr "签发"
 
 msgid "The url is invalid"
 msgstr "URL 无效"
@@ -9134,6 +9307,34 @@ msgstr "与聊天模型相同"
 msgid "Advanced"
 msgstr "高级"
 
+msgid "Marketplace"
+msgstr "市场"
+
+msgid "Official catalog"
+msgstr "官方目录"
+
+msgid "Packages"
+msgstr "安装包"
+
+msgid "Resources"
+msgstr "资源"
+
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr "对每个插件生效，插件只能调低自己的限制。"
+
+msgid "Only applies on Linux. This system does not support it."
+msgstr "仅在 Linux 上生效，当前系统不支持。"
+
+msgid "Unlimited"
+msgstr "无限制"
+
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr "这些选项会降低插件安装的安全性，仅在需要时开启。"
+
+msgid "Less safe"
+msgstr "安全性降低"
+
 msgid "Listen Address"
 msgstr "监听地址"
 
@@ -9142,12 +9343,6 @@ msgstr "所有网络接口"
 
 msgid "HTTPS"
 msgstr "HTTPS"
-
-msgid "Certificate"
-msgstr "证书"
-
-msgid "Private key"
-msgstr "私钥"
 
 msgid "Pick the certificate that secures the web interface."
 msgstr "选择用于保护网页界面的证书。"
@@ -9180,6 +9375,46 @@ msgstr "条目"
 
 msgid "Last Result"
 msgstr "最近结果"
+
+msgid "Include"
+msgstr "Include 行"
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+"封锁列表来源会从插件获取待拒绝的地址列表，并将其写入各自专属的文件作为拒绝规"
+"则。在您将某个来源的 Include 行添加到 server 或 location 块之前，不会阻止任何"
+"内容。"
+
+msgid "Refresh Now"
+msgstr "立即刷新"
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+"没有已启用的插件提供封锁列表来源。请先安装并启用具有 security.blocklist 能力"
+"的插件。"
+
+msgid "Select a source type"
+msgstr "选择来源类型"
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr "提供此来源类型的插件未启用。列表将被保留，但不再刷新。"
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr "以秒为单位设置列表重新获取的频率。仅当列表发生变化时才会重载 Nginx。"
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
+msgstr "将此行添加到 server 或 location 块中，以在该处拒绝列出的地址。"
 
 msgid "End time must be later than start time"
 msgstr "结束时间必须晚于开始时间"
@@ -9424,6 +9659,9 @@ msgstr "命名空间"
 msgid "The parameter of server_name is required"
 msgstr "必须为 server_name 指令指明参数"
 
+msgid "Config Template"
+msgstr "配置模板"
+
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "启用 HTTPS 前，请先保存已编辑的配置。"
 
@@ -9518,19 +9756,33 @@ msgstr "自签名证书"
 msgid "Generate self-signed certificate"
 msgstr "生成自签名证书"
 
+msgid "Built-in"
+msgstr "内置"
+
 msgid "Search templates"
 msgstr "搜索模板"
 
 msgid "From plugin %{id}"
 msgstr "来自插件 %{id}"
 
+msgid "Snippet"
+msgstr "片段"
+
 msgid "Author"
 msgstr "作者"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr "引用会让网站与 snippets/%{file} 保持关联，之后对片段的修改都会作用到网站。插入则会把内容复制到网站中。"
 
 msgid ""
 "This template comes from the plugin %{id}. Review the directives before "
 "adding them."
 msgstr "此模板来自插件 %{id}。添加这些指令前请先检查。"
+
+msgid "Insert"
+msgstr "插入"
 
 msgid "Do you want to enable TLS?"
 msgstr "你想启用 TLS 吗？"
@@ -9608,6 +9860,9 @@ msgstr "IP 地址证书仅支持 HTTP-01 验证。"
 msgid "Wildcard domains require DNS-01 validation."
 msgstr "通配符域名需要 DNS-01 验证。"
 
+msgid "Issue the certificate on the main node"
+msgstr "在主节点签发证书"
+
 msgid "Plan the configuration changes"
 msgstr "规划配置更改"
 
@@ -9635,14 +9890,17 @@ msgstr "HTTPS 设置完成前连接已关闭。请重试以重新运行。"
 msgid "HTTPS setup failed"
 msgstr "HTTPS 设置失败"
 
-msgid "Certificate options"
-msgstr "证书选项"
+msgid "Log"
+msgstr "日志"
 
 msgid ""
 "Nginx UI stages the challenge route, verifies it, requests the certificate "
 "and switches the site to HTTPS in one run. If a step fails, the site keeps "
 "serving plain HTTP."
 msgstr "Nginx UI 会一次性完成预置验证路由、验证路由、申请证书并将站点切换到 HTTPS。如果某一步失败，站点将继续以普通 HTTP 提供服务。"
+
+msgid "Method"
+msgstr "方法"
 
 msgid "Add at least one domain or IP address."
 msgstr "请至少添加一个域名或 IP 地址。"
@@ -9672,6 +9930,21 @@ msgid ""
 "The HTTPS server block without a certificate is left out until the "
 "certificate is issued, then enabled with it."
 msgstr "没有证书的 HTTPS server 块会先被忽略，待证书签发后再与证书一起启用。"
+
+msgid ""
+"OCSP Must Staple may cause errors for some users on first access using "
+"Firefox."
+msgstr "某些用户在使用 Firefox 首次访问时，OCSP Must Staple 可能会导致错误。"
+
+msgid ""
+"Enable the certificate Common Name field for private CAs that still require "
+"it."
+msgstr "为仍需要此字段的私有 CA 启用证书的通用名称 (Common Name) 字段。"
+
+msgid ""
+"If you want to automatically revoke the old certificate, please enable this "
+"option."
+msgstr "如果要自动撤销旧证书，请启用此选项。"
 
 msgid "Pre-flight check"
 msgstr "预检"
@@ -9706,6 +9979,11 @@ msgstr "签发证书并启用 HTTPS"
 
 msgid "Continue without HTTPS"
 msgstr "不启用 HTTPS 继续"
+
+msgid ""
+"The node did not confirm that it received the certificate. Update Nginx UI "
+"on the node and try again."
+msgstr "节点未确认已收到证书。请升级该节点上的 Nginx UI 后重试。"
 
 msgid "Configuration saved. Enable HTTPS from the HTTPS card."
 msgstr "配置已保存。请在 HTTPS 卡片中启用 HTTPS。"
@@ -9794,9 +10072,6 @@ msgstr "重新创建 DNS 记录"
 msgid "Clear Link"
 msgstr "清除链接"
 
-msgid "Config Template"
-msgstr "配置模板"
-
 msgid "Port Scanner"
 msgstr "端口检测"
 
@@ -9863,11 +10138,314 @@ msgstr "以下站点将切换到维护模式："
 msgid "Enable"
 msgstr "启用"
 
+msgid "Disable"
+msgstr "禁用"
+
 msgid "Set maintenance information for selected sites"
 msgstr "为选中的站点设置维护信息"
 
 msgid "%{count} sites selected"
 msgstr "%{count} 个已选站点"
+
+msgid "Read Only"
+msgstr "只读"
+
+msgid "Preview"
+msgstr "预览"
+
+msgid "Updates as the snippet changes."
+msgstr "随片段修改实时更新。"
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr "内置模板随 Nginx UI 提供，不能修改。如需修改，请将其复制为片段。"
+
+msgid "File Name"
+msgstr "文件名"
+
+msgid "Variables"
+msgstr "变量"
+
+msgid "Copy as Snippet"
+msgstr "复制为片段"
+
+msgid "Template"
+msgstr "模板"
+
+msgid "No template matches the search"
+msgstr "没有匹配的模板"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} 个变量"
+
+msgid "Translations"
+msgstr "翻译"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr "输入框中为%{language}文本。其他语言的用户将看到对应的翻译，没有翻译时显示英文。"
+
+msgid "Remove translation"
+msgstr "删除翻译"
+
+msgid "Add a language"
+msgstr "添加语言"
+
+msgid "Text"
+msgstr "文本"
+
+msgid "Switch"
+msgstr "开关"
+
+msgid "Select"
+msgstr "选择"
+
+msgid "New Variable…"
+msgstr "新建变量…"
+
+msgid "Insert Variable"
+msgstr "插入变量"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr "输入 %{open} 补全变量，或选中一个值后按 %{keys} 将其设为变量。"
+
+msgid "Default Value"
+msgstr "默认值"
+
+msgid "Edit Variable"
+msgstr "编辑变量"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr "此变量未声明，插入片段时将没有值。"
+
+msgid "Declare Variable"
+msgstr "声明变量"
+
+msgid "Make Variable"
+msgstr "设为变量"
+
+msgid "New Variable"
+msgstr "新变量"
+
+msgid "Key"
+msgstr "键名"
+
+msgid "Label"
+msgstr "显示名称"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "变量将被声明，并插入到光标处。"
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr "选中的值将成为默认值，内容中改为引用该变量。"
+
+msgid "Add Variable"
+msgstr "添加变量"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "以下变量未声明，将没有值：%{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "片段无法渲染为有效的 Nginx 配置。"
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "片段可以渲染为有效的 Nginx 配置。"
+
+msgid "What the site editor asks for"
+msgstr "站点编辑器中填写的内容"
+
+msgid "Restore Default Values"
+msgstr "恢复默认值"
+
+msgid "Nothing to fill in."
+msgstr "没有需要填写的内容。"
+
+msgid "Fix the variables to preview the snippet."
+msgstr "请先修正变量，再预览片段。"
+
+msgid "Snippets are no longer synchronized"
+msgstr "片段已停止同步"
+
+msgid "Synchronize Snippets"
+msgstr "同步片段"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr "所有片段会立即复制到所选节点，之后的修改也会自动同步。清空选择即可停止同步。"
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "替换节点上已存在的片段"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "被 %{count} 个文件引用"
+
+msgid "No file matches the search"
+msgstr "没有匹配的文件"
+
+msgid "Not Used"
+msgstr "未使用"
+
+msgid "Max Age"
+msgstr "有效时间"
+
+msgid "Options"
+msgstr "选项"
+
+msgid "Remove option"
+msgstr "删除选项"
+
+msgid "Add Option"
+msgstr "添加选项"
+
+msgid "Remove variable"
+msgstr "删除变量"
+
+msgid "Used in the content, not declared"
+msgstr "内容中使用但未声明"
+
+msgid "Snippet %{name} saved"
+msgstr "片段 %{name} 已保存"
+
+msgid "Discard the unsaved changes?"
+msgstr "放弃未保存的修改？"
+
+msgid "Keep Editing"
+msgstr "继续编辑"
+
+msgid "Edit Snippet %{name}"
+msgstr "编辑片段 %{name}"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "网站可以引用此片段，并随片段的后续修改同步更新。"
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr "此片段含有变量，网站需从配置模板面板插入填写后的副本。"
+
+msgid "Includable"
+msgstr "可引用"
+
+msgid "Insert Only"
+msgstr "仅可插入"
+
+msgid "Use"
+msgstr "使用方式"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr "将此指令添加到 server 或 location 块中。引用此片段的网站会随其后续修改同步更新。"
+
+msgid "Static file cache"
+msgstr "静态文件缓存"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr "有配置引用此片段时不可修改，以保证这些配置继续正常工作。"
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "字母、数字、点、连字符和下划线。"
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr "从站点编辑器的配置模板面板插入片段时填写变量。含有变量的片段只能插入，不能被引用。"
+
+msgid "No configuration includes this snippet yet."
+msgstr "目前没有配置引用此片段。"
+
+msgid "Unsaved changes"
+msgstr "有未保存的修改"
+
+msgid "My Snippets"
+msgstr "我的片段"
+
+msgid "Built-in Templates"
+msgstr "内置模板"
+
+msgid "Copied %{include}"
+msgstr "已复制 %{include}"
+
+msgid "Delete snippet %{name}?"
+msgstr "删除片段 %{name}？"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "将在本节点和已同步的节点上删除 snippets/%{file}。"
+
+msgid "snippets/%{file} will be removed."
+msgstr "将删除 snippets/%{file}。"
+
+msgid "Snippet %{name} deleted"
+msgstr "片段 %{name} 已删除"
+
+msgid "Synchronize"
+msgstr "同步"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "已同步到 %{count} 个节点"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] "含有 %{count} 个变量。网站从站点编辑器的配置模板面板插入填写后的副本。"
+
+msgid "Copy the include directive"
+msgstr "复制引用指令"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "请先从引用它的文件中移除该片段。"
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr "片段把一段 Nginx 配置放在一处统一管理。可以在网站中引用它，也可以在网站编辑器的配置模板面板中插入它；修改被引用的片段会更新所有使用它的网站。"
+
+msgid "Search snippets"
+msgstr "搜索片段"
+
+msgid "No snippets yet"
+msgstr "还没有片段"
+
+msgid "No snippet matches the search"
+msgstr "没有匹配的片段"
+
+msgid "Enter a key."
+msgstr "请输入键名。"
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "只能使用字母、数字和下划线，且须以字母或下划线开头。"
+
+msgid "Another variable uses this key."
+msgstr "该键名已被其他变量使用。"
+
+msgid "Add at least one option."
+msgstr "请至少添加一个选项。"
+
+msgid "Every option needs a value."
+msgstr "每个选项都需要填写值。"
+
+msgid "Option values must be unique."
+msgstr "选项的值不能重复。"
+
+msgid "Choose the default option."
+msgstr "请选择默认选项。"
 
 msgid "Do you want to %{action} this stream?"
 msgstr "您要%{action}此流吗？"
@@ -10059,85 +10637,25 @@ msgstr "启用此插件会停用 %{names}，因为这些插件不能同时启用
 msgid "Only localhost addresses are accepted"
 msgstr "只接受 localhost 地址"
 
-msgid "Plugin"
-msgstr "插件"
+msgid "Reload the page to apply the development plugin URL"
+msgstr "请刷新页面以应用开发插件地址"
 
-msgid "Capabilities"
-msgstr "功能"
-
-msgid "Auto install to nodes"
-msgstr "自动安装到节点"
-
-msgid "Sync now"
-msgstr "立即同步"
-
-msgid "Version, API version, start mode, updated time"
-msgstr "版本、API 版本、启动方式、更新时间"
-
-msgid "Uninstall this plugin"
-msgstr "卸载此插件"
-
-msgid "Its files, data and settings are removed from this node."
-msgstr "将从此节点移除其文件、数据和设置。"
-
-msgid "Develop plugin"
-msgstr "开发插件"
-
-msgid "Plugin synchronized to %{count} node(s)"
-msgstr "插件已同步到 %{count} 个节点"
-
-msgid "Some nodes could not be synchronized"
-msgstr "部分节点未能同步"
-
-msgid "Failed to synchronize the plugin"
-msgstr "同步插件失败"
-
-msgid "Installed"
-msgstr "已安装"
-
-msgid "Installed %{version} is not this version"
-msgstr "已安装的 %{version} 并非此版本"
-
-msgid "Starting"
-msgstr "启动中"
-
-msgid "Missing"
-msgstr "缺失"
-
-msgid "Incompatible"
-msgstr "不兼容"
-
-msgid "Needs approval"
-msgstr "需要批准"
-
-msgid "Standby"
-msgstr "待命"
-
-msgid "Starts automatically when needed"
-msgstr "需要时自动启动"
-
-msgid "Installed. Turn it on to review what it can access."
-msgstr "已安装。开启后即可查看它能访问的内容。"
-
-msgid "Installed the version from the marketplace"
-msgstr "已安装市场中的版本"
-
-msgid "Failed to install the version from the marketplace"
-msgstr "安装市场中的版本失败"
+msgid "Development plugin URL"
+msgstr "开发插件地址"
 
 msgid ""
-"Replace the installed version with the one from the marketplace? Settings "
-"and data are kept."
-msgstr "用市场中的版本替换已安装的版本？设置和数据将保留。"
+"Address of a plugin.json served by a static server on this computer. Only "
+"localhost addresses are accepted. The plugin is loaded in addition to the "
+"installed ones."
+msgstr ""
+"由本机静态服务器提供的 plugin.json 地址，只接受 localhost 地址。该插件会在已"
+"安装插件之外额外加载。"
 
-msgid "Failed to load the plugin list"
-msgstr "加载插件列表失败"
+msgid "Needs attention"
+msgstr "需处理"
 
-msgid "Plugin enabled"
-msgstr "插件已启用"
-
-msgid "Failed to enable the plugin"
-msgstr "启用插件失败"
+msgid "Updates available"
+msgstr "可更新"
 
 msgid "Plugin disabled"
 msgstr "插件已禁用"
@@ -10161,6 +10679,9 @@ msgid ""
 "Its files, data and settings are removed from this node. Other nodes are not "
 "touched."
 msgstr "将从此节点移除其文件、数据和设置，其他节点不受影响。"
+
+msgid "Uninstall"
+msgstr "卸载"
 
 msgid "Plugin uninstalled"
 msgstr "插件已卸载"
@@ -10186,57 +10707,26 @@ msgstr "从文件安装"
 msgid "No plugins match the current filter"
 msgstr "没有符合当前筛选条件的插件"
 
+msgid "Recommended memory: %{size}"
+msgstr "建议内存：%{size}"
+
 msgid "This plugin cannot run on this node"
 msgstr "该插件无法在此节点上运行"
 
-msgid "Reload the page to apply the development plugin URL"
-msgstr "请刷新页面以应用开发插件地址"
+msgid "Sync to nodes"
+msgstr "同步到节点"
 
-msgid ""
-"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
-"authors you trust."
-msgstr "插件可以为 Nginx UI 扩展额外功能，请仅安装您信任的作者发布的插件包。"
+msgid "Homepage"
+msgstr "主页"
 
-msgid "Development plugin URL"
-msgstr "开发插件地址"
-
-msgid ""
-"Address of a plugin.json served by a static server on this computer. Only "
-"localhost addresses are accepted. The plugin is loaded in addition to the "
-"installed ones."
-msgstr ""
-"由本机静态服务器提供的 plugin.json 地址，只接受 localhost 地址。该插件会在已"
-"安装插件之外额外加载。"
-
-msgid "Needs attention"
-msgstr "需处理"
-
-msgid "No plugins installed"
-msgstr "尚未安装任何插件"
+msgid "No description provided."
+msgstr "未提供描述。"
 
 msgid "Settings"
 msgstr "设置"
 
 msgid "Logs"
 msgstr "日志"
-
-msgid "More actions"
-msgstr "更多操作"
-
-msgid "Sync to nodes"
-msgstr "同步到节点"
-
-msgid "Uninstall"
-msgstr "卸载"
-
-msgid "Sync %{name} to nodes"
-msgstr "将 %{name} 同步到节点"
-
-msgid "Leave every node unchecked to sync to all child nodes."
-msgstr "不勾选任何节点即可同步到所有子节点。"
-
-msgid "Already in sync"
-msgstr "已同步"
 
 msgid "This node only"
 msgstr "仅本节点"
@@ -10250,8 +10740,14 @@ msgstr "已选节点"
 msgid "This plugin is not signed"
 msgstr "此插件未签名"
 
+msgid "This is a community plugin"
+msgstr "这是一个社区插件"
+
 msgid "Failed to read the plugin bundle"
 msgstr "读取插件包失败"
+
+msgid "Failed to install the plugin"
+msgstr "安装插件失败"
 
 msgid "Plugin installed"
 msgstr "插件已安装"
@@ -10259,14 +10755,8 @@ msgstr "插件已安装"
 msgid "The plugin was installed here but could not be pushed to the nodes"
 msgstr "插件已在本地安装，但未能推送到各节点"
 
-msgid "Failed to install the plugin"
-msgstr "安装插件失败"
-
-msgid "Install plugin"
-msgstr "安装插件"
-
-msgid "Enable plugin"
-msgstr "启用插件"
+msgid "Some nodes could not be synchronized"
+msgstr "部分节点未能同步"
 
 msgid "Click or drag a plugin bundle here"
 msgstr "点击或将插件包拖拽到此处"
@@ -10280,11 +10770,28 @@ msgstr "ID"
 msgid "(replaces %{version})"
 msgstr "（替换 %{version}）"
 
+msgid "Capabilities"
+msgstr "功能"
+
 msgid "None"
 msgstr "无"
 
 msgid "Recommended memory"
 msgstr "建议内存"
+
+msgid "Platforms"
+msgstr "平台"
+
+msgid "Any"
+msgstr "任意"
+
+msgid "This package has no build for this node (%{platform})"
+msgstr "此安装包没有适用于该节点的构建版本（%{platform}）"
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr "请下载适用于此平台的安装包，或下载便携版安装包后重试。"
 
 msgid "Install the plugins below first"
 msgstr "请先安装以下插件"
@@ -10314,6 +10821,12 @@ msgid ""
 "nodes."
 msgstr "这些节点上的版本、启用状态及后续更新都会保持一致。"
 
+msgid "Already in sync"
+msgstr "已同步"
+
+msgid "Failed to load the plugin list"
+msgstr "加载插件列表失败"
+
 msgid "Failed to load the plugin logs"
 msgstr "加载插件日志失败"
 
@@ -10335,6 +10848,15 @@ msgstr "全部插件"
 msgid "Updates"
 msgstr "更新"
 
+msgid "Every installed plugin is up to date"
+msgstr "所有已安装的插件均为最新版本"
+
+msgid "No plugins match your search"
+msgstr "没有找到匹配的插件"
+
+msgid "The catalog is empty"
+msgstr "目录为空"
+
 msgid "Failed to load the plugin marketplace"
 msgstr "加载插件市场失败"
 
@@ -10350,69 +10872,6 @@ msgstr "所有分类"
 msgid "All sources"
 msgstr "所有来源"
 
-msgid "Sources"
-msgstr "来源"
-
-msgid "Managed on the marketplace page. Empty means the official catalog."
-msgstr "在市场页面管理，为空表示使用官方目录。"
-
-msgid "Allow Community Plugins"
-msgstr "允许社区插件"
-
-msgid ""
-"Community plugins are published by third parties and ask for a confirmation "
-"before they install."
-msgstr "社区插件由第三方发布，安装前会要求确认。"
-
-msgid "Automatic Updates"
-msgstr "自动更新"
-
-msgid ""
-"Updates official and partner plugins on their own while the permissions they "
-"ask for stay the same."
-msgstr "在所需权限不变时自动更新官方与合作伙伴插件。"
-
-msgid "Allow Insecure Download URLs"
-msgstr "允许不安全的下载地址"
-
-msgid ""
-"Accepts plain http catalog and download addresses. Only for a private "
-"catalog on a trusted network."
-msgstr "接受纯 http 的目录与下载地址，仅用于可信网络中的私有目录。"
-
-msgid "Allow Uploads"
-msgstr "允许上传"
-
-msgid ""
-"Allows installing packages uploaded from the browser or the command line."
-msgstr "允许安装从浏览器或命令行上传的安装包。"
-
-msgid "Trusted Publishers"
-msgstr "可信发布者"
-
-msgid "Plugins from these publishers install as community plugins."
-msgstr "来自这些发布者的插件按社区插件安装。"
-
-msgid "Developer Mode"
-msgstr "开发者模式"
-
-msgid ""
-"Allows installing unsigned plugins. Only turn this on while developing a "
-"plugin."
-msgstr "允许安装未签名的插件，仅在开发插件时开启。"
-
-msgid "Memory Limit"
-msgstr "内存限制"
-
-msgid "Maximum memory each plugin can use."
-msgstr "每个插件最多可使用的内存。"
-
-msgid "CPU Limit"
-msgstr "CPU 限制"
-
-msgid "Share of one CPU core each plugin can use."
-msgstr "每个插件可使用的单核 CPU 比例。"
-
 msgid "%{count} installed plugin has a newer release."
 msgid_plural "%{count} installed plugins have a newer release."
 msgstr[0] "%{count} 个已安装的插件有新版本。"
@@ -10426,14 +10885,11 @@ msgstr "市场暂时不可用"
 msgid "Install a previous version"
 msgstr "安装旧版本"
 
-msgid "Every installed plugin is up to date"
-msgstr "所有已安装的插件均为最新版本"
+msgid "Update plugin"
+msgstr "更新插件"
 
-msgid "No plugins match your search"
-msgstr "没有找到匹配的插件"
-
-msgid "The catalog is empty"
-msgstr "目录为空"
+msgid "Install this version"
+msgstr "安装此版本"
 
 msgid "Downloading the package"
 msgstr "正在下载安装包"
@@ -10449,12 +10905,6 @@ msgstr "%{phase}：%{plugin}"
 
 msgid "Failed to load the plugin from the marketplace"
 msgstr "从市场加载插件失败"
-
-msgid "Update plugin"
-msgstr "更新插件"
-
-msgid "Install this version"
-msgstr "安装此版本"
 
 msgid "No release available for this platform"
 msgstr "该平台没有可用的发行版本"
@@ -10477,23 +10927,17 @@ msgid ""
 "available."
 msgstr "在稳定版发布之前，会接收此通道的较新版本。"
 
-msgid "This is a community plugin"
-msgstr "这是一个社区插件"
-
 msgid "The plugins below are installed together with it"
 msgstr "以下插件将随其一起安装"
 
 msgid "Live progress is unavailable, checking the plugin list instead"
 msgstr "无法获取实时进度，正在改为检查插件列表"
 
-msgid "No description provided."
-msgstr "未提供描述。"
+msgid "Installed %{version} is not this version"
+msgstr "已安装的 %{version} 并非此版本"
 
 msgid "Installed: %{version}"
 msgstr "已安装：%{version}"
-
-msgid "Homepage"
-msgstr "主页"
 
 msgid "Repository"
 msgstr "代码仓库"
@@ -10501,16 +10945,8 @@ msgstr "代码仓库"
 msgid "Release notes"
 msgstr "更新日志"
 
-msgid "Platforms"
-msgstr "平台"
-
-msgid "This package has no build for this node (%{platform})"
-msgstr "此安装包没有适用于该节点的构建版本（%{platform}）"
-
-msgid ""
-"Download the package built for this platform, or the portable package, and "
-"try again."
-msgstr "请下载适用于此平台的安装包，或下载便携版安装包后重试。"
+msgid "Installed version"
+msgstr "已安装版本"
 
 msgid "Failed to load the plugin details"
 msgstr "加载插件详情失败"
@@ -10521,11 +10957,11 @@ msgstr "链接"
 msgid "Screenshots"
 msgstr "截图"
 
-msgid "Installed version"
-msgstr "已安装版本"
-
 msgid "Versions"
 msgstr "版本"
+
+msgid "Installed"
+msgstr "已安装"
 
 msgid "Latest"
 msgstr "最新"
@@ -10575,18 +11011,6 @@ msgstr "目录按顺序合并，最先提供该插件的源生效。留空列表
 msgid "Drag to reorder"
 msgstr "拖动以调整顺序"
 
-msgid "Using the official catalog"
-msgstr "正在使用官方目录"
-
-msgid "Add a source to offer plugins from another catalog as well."
-msgstr "添加来源后，也可以安装其他目录中的插件。"
-
-msgid "Add source"
-msgstr "添加来源"
-
-msgid "Add the official catalog"
-msgstr "添加官方目录"
-
 msgid "Official"
 msgstr "官方"
 
@@ -10599,6 +11023,18 @@ msgstr "输入域名（如 plugins.example.com）或目录的完整地址。"
 
 msgid "Edit address"
 msgstr "编辑地址"
+
+msgid "Using the official catalog"
+msgstr "正在使用官方目录"
+
+msgid "Add a source to offer plugins from another catalog as well."
+msgstr "添加来源后，也可以安装其他目录中的插件。"
+
+msgid "Add source"
+msgstr "添加来源"
+
+msgid "Add the official catalog"
+msgstr "添加官方目录"
 
 msgid "Published by the Nginx UI project."
 msgstr "由 Nginx UI 项目发布。"
@@ -10772,6 +11208,100 @@ msgstr "未知权限"
 msgid "Overview"
 msgstr "概览"
 
+msgid "In sync"
+msgstr "已同步"
+
+msgid "Outdated"
+msgstr "版本过旧"
+
+msgid "Not installed"
+msgstr "未安装"
+
+msgid "Unsupported platform"
+msgstr "不支持的平台"
+
+msgid "Unsupported"
+msgstr "不支持"
+
+msgid "Plugin"
+msgstr "插件"
+
+msgid "Failed to load the plugin matrix"
+msgstr "加载插件矩阵失败"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "插件已同步到 %{count} 个节点"
+
+msgid "Failed to synchronize the plugin"
+msgstr "同步插件失败"
+
+msgid "Update to %{version}"
+msgstr "更新到 %{version}"
+
+msgid "Sync to this node"
+msgstr "同步到此节点"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+"展示各子节点已安装的插件，并与本控制节点进行对比。在页头切换所选节点后可直接"
+"管理该节点。"
+
+msgid "All nodes"
+msgstr "所有节点"
+
+msgid "%{count} in sync"
+msgstr "%{count} 个已同步"
+
+msgid "%{count} pending"
+msgstr "%{count} 个待处理"
+
+msgid "%{count} failing"
+msgstr "%{count} 个失败"
+
+msgid "This instance has no child node"
+msgstr "此实例没有子节点"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr "请先添加节点，之后即可在此处为其安装插件。"
+
+msgid "Manage nodes"
+msgstr "管理节点"
+
+msgid "No plugins installed"
+msgstr "尚未安装任何插件"
+
+msgid "Sync to selected"
+msgstr "同步到所选"
+
+msgid "Sync to all"
+msgstr "同步到全部"
+
+msgid "Nothing to start"
+msgstr "无需启动"
+
+msgid "Starts when needed"
+msgstr "按需启动"
+
+msgid "Always running"
+msgstr "始终运行"
+
+msgid "API version"
+msgstr "API 版本"
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr "需要 Nginx UI %{version} 或更高版本"
+
+msgid "Start mode"
+msgstr "启动方式"
+
+msgid "Saved"
+msgstr "已保存"
+
+msgid "Failed to save"
+msgstr "保存失败"
+
 msgid "Streamed"
 msgstr "已发送"
 
@@ -10780,16 +11310,6 @@ msgstr "已拒绝"
 
 msgid "Dropped"
 msgstr "已丢弃"
-
-msgid "Unlimited"
-msgstr "无限制"
-
-msgid ""
-"These options make plugin installs less safe. Turn them on only when needed."
-msgstr "这些选项会降低插件安装的安全性，仅在需要时开启。"
-
-msgid "Less safe"
-msgstr "安全性降低"
 
 msgid "Last error"
 msgstr "最近的错误"
@@ -10828,24 +11348,6 @@ msgstr[0] "%{count} 个证书通过它续期："
 msgid "Update channel"
 msgstr "更新通道"
 
-msgid "API version"
-msgstr "API 版本"
-
-msgid "Needs Nginx UI %{version} or newer"
-msgstr "需要 Nginx UI %{version} 或更高版本"
-
-msgid "Start mode"
-msgstr "启动方式"
-
-msgid "Saved"
-msgstr "已保存"
-
-msgid "Failed to save"
-msgstr "保存失败"
-
-msgid "Resource limits"
-msgstr "资源限制"
-
 msgid "The limits are applied while the plugin runs."
 msgstr "插件运行时会应用这些限制。"
 
@@ -10858,8 +11360,17 @@ msgstr "已强制"
 msgid "Not enforced"
 msgstr "未强制"
 
-msgid "Access log stream"
-msgstr "访问日志流"
+msgid "Cluster"
+msgstr "集群"
+
+msgid "Auto install to nodes"
+msgstr "自动安装到节点"
+
+msgid "Sync now"
+msgstr "立即同步"
+
+msgid "Version, API version, start mode, updated time"
+msgstr "版本、API 版本、启动方式、更新时间"
 
 msgid "Depends on"
 msgstr "依赖"
@@ -10867,96 +11378,54 @@ msgstr "依赖"
 msgid "Needs features"
 msgstr "所需功能"
 
-msgid "Cluster"
-msgstr "集群"
+msgid "Access log stream"
+msgstr "访问日志流"
 
-msgid "In sync"
-msgstr "已同步"
+msgid "Uninstall this plugin"
+msgstr "卸载此插件"
 
-msgid "Outdated"
-msgstr "版本过旧"
+msgid "Its files, data and settings are removed from this node."
+msgstr "将从此节点移除其文件、数据和设置。"
 
-msgid "Not installed"
-msgstr "未安装"
-
-msgid "Unsupported platform"
-msgstr "不支持的平台"
-
-msgid "Unsupported"
-msgstr "不支持"
-
-msgid "Failed to load the plugin matrix"
-msgstr "加载插件矩阵失败"
-
-msgid "Update to %{version}"
-msgstr "更新到 %{version}"
-
-msgid "Sync to this node"
-msgstr "同步到此节点"
+msgid "Develop plugin"
+msgstr "开发插件"
 
 msgid ""
-"What every child node has installed, compared with this controller. "
-"Switching the selected node in the header manages that node directly."
-msgstr ""
-"展示各子节点已安装的插件，并与本控制节点进行对比。在页头切换所选节点后可直接"
-"管理该节点。"
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr "插件可以为 Nginx UI 扩展额外功能，请仅安装您信任的作者发布的插件包。"
 
-msgid "All nodes"
-msgstr "所有节点"
+msgid "Starting"
+msgstr "启动中"
 
-msgid "%{count} in sync"
-msgstr "%{count} 个已同步"
+msgid "Missing"
+msgstr "缺失"
 
-msgid "%{count} pending"
-msgstr "%{count} 个待处理"
+msgid "Incompatible"
+msgstr "不兼容"
 
-msgid "%{count} failing"
-msgstr "%{count} 个失败"
+msgid "Needs approval"
+msgstr "需要批准"
 
-msgid "This instance has no child node"
-msgstr "此实例没有子节点"
+msgid "Standby"
+msgstr "待命"
 
-msgid "Add a node first, then plugins can be installed on it from here."
-msgstr "请先添加节点，之后即可在此处为其安装插件。"
+msgid "Starts automatically when needed"
+msgstr "需要时自动启动"
 
-msgid "Manage nodes"
-msgstr "管理节点"
+msgid "Installed. Turn it on to review what it can access."
+msgstr "已安装。开启后即可查看它能访问的内容。"
 
-msgid "Sync to selected"
-msgstr "同步到所选"
+msgid "Installed the version from the marketplace"
+msgstr "已安装市场中的版本"
 
-msgid "Sync to all"
-msgstr "同步到全部"
+msgid "Failed to install the version from the marketplace"
+msgstr "安装市场中的版本失败"
 
-msgid "Nothing to start"
-msgstr "无需启动"
-
-msgid "Starts when needed"
-msgstr "按需启动"
-
-msgid "Always running"
-msgstr "始终运行"
-
-msgid "Updates available"
-msgstr "可更新"
-
-msgid "Marketplace"
-msgstr "市场"
-
-msgid "Official catalog"
-msgstr "官方目录"
-
-msgid "Packages"
-msgstr "安装包"
-
-msgid "Resources"
-msgstr "资源"
-
-msgid "Applies to every plugin. A plugin can only lower its own limits."
-msgstr "对每个插件生效，插件只能调低自己的限制。"
-
-msgid "Only applies on Linux. This system does not support it."
-msgstr "仅在 Linux 上生效，当前系统不支持。"
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
+msgstr "用市场中的版本替换已安装的版本？设置和数据将保留。"
 
 msgid "%{field} is required"
 msgstr "%{field} 为必填项"
@@ -10976,6 +11445,12 @@ msgstr "保存插件设置失败"
 
 msgid "This plugin has no settings."
 msgstr "该插件没有可配置的设置。"
+
+msgid "Sync %{name} to nodes"
+msgstr "将 %{name} 同步到节点"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "不勾选任何节点即可同步到所有子节点。"
 
 msgid "%{count} node"
 msgid_plural "%{count} nodes"
@@ -11000,6 +11475,9 @@ msgstr ""
 
 msgid "Also sync the plugin settings"
 msgstr "同时同步插件设置"
+
+msgid "Nodes: %{target}"
+msgstr "节点：%{target}"
 
 msgctxt "list separator"
 msgid ", "
@@ -11028,6 +11506,9 @@ msgstr "你可以在这个页面检查 Nginx UI 的升级。"
 
 msgid "Current Version"
 msgstr "当前版本"
+
+msgid "OS"
+msgstr "OS"
 
 msgid "Arch"
 msgstr "架构"
@@ -11074,42 +11555,6 @@ msgstr "nginx 用于识别该 upstream 的名称：仅限字母、数字、点�
 msgid "Service"
 msgstr "服务"
 
-msgid "Round Robin (default)"
-msgstr "Round Robin（默认）"
-
-msgid "Least Connections (least_conn)"
-msgstr "最少连接数 (least_conn)"
-
-msgid "IP Hash (ip_hash)"
-msgstr "IP 哈希 (ip_hash)"
-
-msgid "Hash (hash)"
-msgstr "哈希 (hash)"
-
-msgid "Random (random)"
-msgstr "随机（random）"
-
-msgid "Upstream %{name} saved and Nginx reloaded"
-msgstr "上游 %{name} 已保存，Nginx 已重新加载"
-
-msgid "Edit Upstream %{name}"
-msgstr "编辑 Upstream %{name}"
-
-msgid "Create Upstream"
-msgstr "创建 Upstream"
-
-msgid "Sites use it as proxy_pass http://%{name};"
-msgstr "站点通过 proxy_pass http://%{name} 使用它；"
-
-msgid "Load Balancing Method"
-msgstr "负载均衡方式"
-
-msgid "Hash Key"
-msgstr "哈希键"
-
-msgid "Consistent Hashing"
-msgstr "一致性哈希"
-
 msgid "Servers"
 msgstr "服务器"
 
@@ -11154,6 +11599,42 @@ msgid ""
 msgstr ""
 "将此行添加到 http 块中（例如站点配置的顶部），然后通过其名称将请求代理到该 "
 "upstream。"
+
+msgid "Round Robin (default)"
+msgstr "Round Robin（默认）"
+
+msgid "Least Connections (least_conn)"
+msgstr "最少连接数 (least_conn)"
+
+msgid "IP Hash (ip_hash)"
+msgstr "IP 哈希 (ip_hash)"
+
+msgid "Hash (hash)"
+msgstr "哈希 (hash)"
+
+msgid "Random (random)"
+msgstr "随机（random）"
+
+msgid "Upstream %{name} saved and Nginx reloaded"
+msgstr "上游 %{name} 已保存，Nginx 已重新加载"
+
+msgid "Edit Upstream %{name}"
+msgstr "编辑 Upstream %{name}"
+
+msgid "Create Upstream"
+msgstr "创建 Upstream"
+
+msgid "Sites use it as proxy_pass http://%{name};"
+msgstr "站点通过 proxy_pass http://%{name} 使用它；"
+
+msgid "Load Balancing Method"
+msgstr "负载均衡方式"
+
+msgid "Hash Key"
+msgstr "哈希键"
+
+msgid "Consistent Hashing"
+msgstr "一致性哈希"
 
 msgid "Address"
 msgstr "地址"
@@ -11361,100 +11842,11 @@ msgstr "单窗格"
 msgid "Split view"
 msgstr "分屏视图"
 
-msgid "DNS Validation"
-msgstr "DNS 验证"
+#~ msgid "CPU"
+#~ msgstr "CPU"
 
-msgid ""
-"The main node has no DNS-01 plugin. Install it on the main node, or validate "
-"on this node."
-msgstr "主节点没有 DNS-01 插件。请在主节点安装，或改为在本节点验证。"
-
-msgid ""
-"Credentials of the main node. Switch to the main node to add or change one."
-msgstr "这些是主节点的凭据。如需添加或修改，请切换到主节点。"
-
-msgid "On the main node"
-msgstr "在主节点"
-
-msgid "On this node"
-msgstr "在本节点"
-
-msgid ""
-"The main node validates the domain with its DNS credentials, sends the "
-"certificate to this node and keeps renewing it."
-msgstr "主节点使用自己的 DNS 凭据验证域名，把证书发送到本节点，并负责后续续期。"
-
-msgid ""
-"This node validates the domain with its own DNS credentials and renews the "
-"certificate itself."
-msgstr "本节点使用自己的 DNS 凭据验证域名，并自行续期证书。"
-
-msgid "Only a DNS-01 certificate can be issued for another node"
-msgstr "只能为其他节点签发 DNS-01 证书"
-
-msgid "Node not found"
-msgstr "未找到节点"
-
-msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
-msgstr "节点 {0} 无法接收为其签发的证书，请先升级该节点"
-
-msgid "Node {0} answered {1}: {2}"
-msgstr "节点 {0} 返回 {1}：{2}"
-
-msgid "The Nginx configuration still loads the certificate: {0}"
-msgstr "Nginx 配置仍在加载该证书：{0}"
-
-msgid "The certificate was issued, but sending it to node {0} failed: {1}"
-msgstr "证书已签发，但发送到节点 {0} 失败：{1}"
-
-msgid "Node {0} cannot be reached: {1}"
-msgstr "无法连接节点 {0}：{1}"
-
-msgid "[Nginx UI] Sending the certificate to node %{name}"
-msgstr "[Nginx UI] 正在将证书发送到节点 %{name}"
-
-msgid "Issued for %{node}"
-msgstr "为 %{node} 签发"
-
-msgid ""
-"This instance validates the domain, keeps renewing the certificate and sends "
-"each renewal to %{node}."
-msgstr "本实例负责验证域名和续期证书，每次续期后都会发送到 %{node}。"
-
-msgid "Files on the node:"
-msgstr "节点上的文件："
-
-msgid "Issued by this instance for %{node} and renewed here"
-msgstr "由本实例为 %{node} 签发，并在此续期"
-
-msgid "For %{node}"
-msgstr "用于 %{node}"
-
-msgid ""
-"This instance stops renewing the certificate and deletes its own copy. The "
-"files on %{node} stay unless you remove them below."
-msgstr "本实例将停止续期该证书并删除自己保存的副本。%{node} 上的文件会保留，除非在下方选择一并删除。"
-
-msgid "Also remove the certificate files from %{node}"
-msgstr "同时删除 %{node} 上的证书文件"
-
-msgid ""
-"They are kept when the Nginx configuration of the node still loads them."
-msgstr "如果节点的 Nginx 配置仍在加载这些文件，则会保留。"
-
-msgid "Issue the certificate on the main node"
-msgstr "在主节点签发证书"
-
-msgid ""
-"The node did not confirm that it received the certificate. Update Nginx UI "
-"on the node and try again."
-msgstr "节点未确认已收到证书。请升级该节点上的 Nginx UI 后重试。"
-
-msgid "Recommended memory: %{size}"
-msgstr "建议内存：%{size}"
-
-msgid "Nodes: %{target}"
-msgstr "节点：%{target}"
+#~ msgid "Resource limits"
+#~ msgstr "资源限制"
 
 #~ msgid ""
 #~ "Log analytics is now a plugin. Install it to keep using it; your existing "
@@ -12469,401 +12861,9 @@ msgstr "节点：%{target}"
 #~ msgid "DNS Challenge"
 #~ msgstr "DNS 验证"
 
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr "文件名必须以 .conf 结尾，且只能包含字母、数字、点、连字符和下划线"
-
-msgid "Snippet not found"
-msgstr "未找到片段"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "片段超过 256 KiB"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "片段的文件头无法解析：{0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "片段仍被以下文件引用：{0}"
-
-msgid "A snippet with this file name already exists"
-msgstr "已存在同名文件的片段"
-
-msgid "Snippets"
-msgstr "片段"
-
-msgid "Snippet"
-msgstr "片段"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr "引用会让网站与 snippets/%{file} 保持关联，之后对片段的修改都会作用到网站。插入则会把内容复制到网站中。"
-
-msgid "Insert"
-msgstr "插入"
-
-msgid "Include"
-msgstr "Include 行"
-
-msgid ""
-"Blocklist sources fetch lists of addresses to deny from plugins and write "
-"them as deny rules to a file of their own. Nothing is blocked until you add "
-"the include line of a source to a server or location block."
-msgstr ""
-"封锁列表来源会从插件获取待拒绝的地址列表，并将其写入各自专属的文件作为拒绝规"
-"则。在您将某个来源的 Include 行添加到 server 或 location 块之前，不会阻止任何"
-"内容。"
-
-msgid "Refresh Now"
-msgstr "立即刷新"
-
-msgid ""
-"No enabled plugin offers a blocklist source. Install and enable a plugin "
-"with the security.blocklist capability first."
-msgstr ""
-"没有已启用的插件提供封锁列表来源。请先安装并启用具有 security.blocklist 能力"
-"的插件。"
-
-msgid "Select a source type"
-msgstr "选择来源类型"
-
-msgid ""
-"The plugin that provides this source type is not enabled. The list is kept "
-"but no longer refreshed."
-msgstr "提供此来源类型的插件未启用。列表将被保留，但不再刷新。"
-
-msgid ""
-"How often the list is fetched again, in seconds. Nginx is reloaded only when "
-"the list changed."
-msgstr "以秒为单位设置列表重新获取的频率。仅当列表发生变化时才会重载 Nginx。"
-
-msgid ""
-"Add this line to a server or location block to deny the listed addresses "
-"there."
-msgstr "将此行添加到 server 或 location 块中，以在该处拒绝列出的地址。"
-
-msgid "Snippet %{name} saved"
-msgstr "片段 %{name} 已保存"
-
-msgid "Edit Snippet %{name}"
-msgstr "编辑片段 %{name}"
-
-msgid "Create Snippet"
-msgstr "新建片段"
-
-msgid "Static file cache"
-msgstr "静态文件缓存"
-
-msgid "File Name"
-msgstr "文件名"
-
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr "字母、数字、点、连字符和下划线。"
-
-msgid "No configuration includes this snippet yet."
-msgstr "目前没有配置引用此片段。"
-
-msgid "Snippets are no longer synchronized"
-msgstr "片段已停止同步"
-
-msgid "Synchronize Snippets"
-msgstr "同步片段"
-
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr "所有片段会立即复制到所选节点，之后的修改也会自动同步。清空选择即可停止同步。"
-
-msgid "Replace snippets that already exist on the nodes"
-msgstr "替换节点上已存在的片段"
-
-msgid "Delete snippet %{name}?"
-msgstr "删除片段 %{name}？"
-
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr "将在本节点和已同步的节点上删除 snippets/%{file}。"
-
-msgid "snippets/%{file} will be removed."
-msgstr "将删除 snippets/%{file}。"
-
-msgid "Snippet %{name} deleted"
-msgstr "片段 %{name} 已删除"
-
-msgid "Synchronize"
-msgstr "同步"
-
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] "已同步到 %{count} 个节点"
-
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in "
-"a site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr "片段把一段 Nginx 配置放在一处统一管理。可以在网站中引用它，也可以在网站编辑器的配置模板面板中插入它；修改被引用的片段会更新所有使用它的网站。"
-
-msgid "Copied %{include}"
-msgstr "已复制 %{include}"
-
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] "%{count} 个变量"
-
-msgid "Copy the include directive"
-msgstr "复制引用指令"
-
-msgid "Remove the snippet from the files that include it first."
-msgstr "请先从引用它的文件中移除该片段。"
-
-msgid "Search snippets"
-msgstr "搜索片段"
-
-msgid "No snippets yet"
-msgstr "还没有片段"
-
-msgid "No snippet matches the search"
-msgstr "没有匹配的片段"
-
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] "被 %{count} 个文件引用"
-
 msgid "Used by %{count} configuration"
 msgid_plural "Used by %{count} configurations"
 msgstr[0] "被 %{count} 个配置使用"
-
-msgid "No file matches the search"
-msgstr "没有匹配的文件"
-
-msgid "Built-in"
-msgstr "内置"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "变量 {0} 无效：{1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "内容无法解析为模板：{0}"
-
-msgid "Built-in Template"
-msgstr "内置模板"
-
-msgid "Edit Snippet"
-msgstr "编辑片段"
-
-msgid "Read Only"
-msgstr "只读"
-
-msgid "Preview"
-msgstr "预览"
-
-msgid "Updates as the snippet changes."
-msgstr "随片段修改实时更新。"
-
-msgid ""
-"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
-"snippet to change it."
-msgstr "内置模板随 Nginx UI 提供，不能修改。如需修改，请将其复制为片段。"
-
-msgid "Variables"
-msgstr "变量"
-
-msgid "Copy as Snippet"
-msgstr "复制为片段"
-
-msgid "Template"
-msgstr "模板"
-
-msgid "No template matches the search"
-msgstr "没有匹配的模板"
-
-msgid "Translations"
-msgstr "翻译"
-
-msgid ""
-"The field is in %{language}. Users of other languages see their "
-"translation, or English when there is none."
-msgstr "输入框中为%{language}文本。其他语言的用户将看到对应的翻译，没有翻译时显示英文。"
-
-msgid "Remove translation"
-msgstr "删除翻译"
-
-msgid "Add a language"
-msgstr "添加语言"
-
-msgid "Text"
-msgstr "文本"
-
-msgid "Switch"
-msgstr "开关"
-
-msgid "Select"
-msgstr "选择"
-
-msgid "New Variable…"
-msgstr "新建变量…"
-
-msgid "Insert Variable"
-msgstr "插入变量"
-
-msgid ""
-"Type %{open} to complete a variable, or select a value and press %{keys} to "
-"make it one."
-msgstr "输入 %{open} 补全变量，或选中一个值后按 %{keys} 将其设为变量。"
-
-msgid "Default Value"
-msgstr "默认值"
-
-msgid "Edit Variable"
-msgstr "编辑变量"
-
-msgid ""
-"This variable is not declared, so it has no value when the snippet is "
-"inserted."
-msgstr "此变量未声明，插入片段时将没有值。"
-
-msgid "Declare Variable"
-msgstr "声明变量"
-
-msgid "Make Variable"
-msgstr "设为变量"
-
-msgid "New Variable"
-msgstr "新变量"
-
-msgid "Key"
-msgstr "键名"
-
-msgid "Label"
-msgstr "显示名称"
-
-msgid "The variable is declared and inserted at the cursor."
-msgstr "变量将被声明，并插入到光标处。"
-
-msgid ""
-"The selected value becomes the default value, and the content refers to the "
-"variable instead."
-msgstr "选中的值将成为默认值，内容中改为引用该变量。"
-
-msgid "Add Variable"
-msgstr "添加变量"
-
-msgid "Not declared, so left without a value: %{names}"
-msgstr "以下变量未声明，将没有值：%{names}"
-
-msgid "The snippet does not render as valid Nginx configuration."
-msgstr "片段无法渲染为有效的 Nginx 配置。"
-
-msgid "The snippet renders as valid Nginx configuration."
-msgstr "片段可以渲染为有效的 Nginx 配置。"
-
-msgid "What the site editor asks for"
-msgstr "站点编辑器中填写的内容"
-
-msgid "Restore Default Values"
-msgstr "恢复默认值"
-
-msgid "Nothing to fill in."
-msgstr "没有需要填写的内容。"
-
-msgid "Fix the variables to preview the snippet."
-msgstr "请先修正变量，再预览片段。"
-
-msgid "Not Used"
-msgstr "未使用"
-
-msgid "Max Age"
-msgstr "有效时间"
-
-msgid "Options"
-msgstr "选项"
-
-msgid "Remove option"
-msgstr "删除选项"
-
-msgid "Add Option"
-msgstr "添加选项"
-
-msgid "Remove variable"
-msgstr "删除变量"
-
-msgid "Used in the content, not declared"
-msgstr "内容中使用但未声明"
-
-msgid "Discard the unsaved changes?"
-msgstr "放弃未保存的修改？"
-
-msgid "Keep Editing"
-msgstr "继续编辑"
-
-msgid "Sites can include this snippet and follow its later changes."
-msgstr "网站可以引用此片段，并随片段的后续修改同步更新。"
-
-msgid ""
-"This snippet has variables, so sites insert a filled in copy from the "
-"config template panel."
-msgstr "此片段含有变量，网站需从配置模板面板插入填写后的副本。"
-
-msgid "Includable"
-msgstr "可引用"
-
-msgid "Insert Only"
-msgstr "仅可插入"
-
-msgid "Use"
-msgstr "使用方式"
-
-msgid ""
-"Add this directive to a server or location block. Sites that include the "
-"snippet follow its later changes."
-msgstr "将此指令添加到 server 或 location 块中。引用此片段的网站会随其后续修改同步更新。"
-
-msgid "Fixed while configurations include the snippet, so they keep working."
-msgstr "有配置引用此片段时不可修改，以保证这些配置继续正常工作。"
-
-msgid ""
-"Variables are filled in when the snippet is inserted from the config "
-"template panel of the site editor. A snippet with variables can only be "
-"inserted, not included."
-msgstr "从站点编辑器的配置模板面板插入片段时填写变量。含有变量的片段只能插入，不能被引用。"
-
-msgid "Unsaved changes"
-msgstr "有未保存的修改"
-
-msgid "My Snippets"
-msgstr "我的片段"
-
-msgid "Built-in Templates"
-msgstr "内置模板"
-
-msgid ""
-"Has %{count} variable. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgid_plural ""
-"Has %{count} variables. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgstr[0] "含有 %{count} 个变量。网站从站点编辑器的配置模板面板插入填写后的副本。"
-
-msgid "Enter a key."
-msgstr "请输入键名。"
-
-msgid "Use letters, digits and underscores, starting with a letter or underscore."
-msgstr "只能使用字母、数字和下划线，且须以字母或下划线开头。"
-
-msgid "Another variable uses this key."
-msgstr "该键名已被其他变量使用。"
-
-msgid "Add at least one option."
-msgstr "请至少添加一个选项。"
-
-msgid "Every option needs a value."
-msgstr "每个选项都需要填写值。"
-
-msgid "Option values must be unique."
-msgstr "选项的值不能重复。"
-
-msgid "Choose the default option."
-msgstr "请选择默认选项。"
 
 #~ msgid "Webauthn"
 #~ msgstr "Webauthn"

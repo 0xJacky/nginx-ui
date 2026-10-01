@@ -204,6 +204,9 @@ msgid ""
 "select one of the credentials below to request the API of the DNS provider."
 msgstr ""
 
+msgid "Issuing"
+msgstr ""
+
 msgid "Server IP Address"
 msgstr ""
 
@@ -234,19 +237,26 @@ msgid ""
 "Any reachable IP address can be used with private Certificate Authorities"
 msgstr ""
 
-msgid "Install DNS-01 plugin"
-msgstr ""
-
-msgid "Go to System > Plugins"
-msgstr ""
-
 msgid "Challenge Method"
 msgstr ""
 
 msgid "Not supported for IP certificates"
 msgstr ""
 
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:784
+msgid "DNS Validation"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:800
+msgid ""
+"The main node has no DNS-01 plugin. Install it on the main node, or validate "
+"on this node."
+msgstr ""
+
 msgid "Key Type"
+msgstr ""
+
+msgid "Certificate options"
 msgstr ""
 
 msgid "OCSP Must Staple"
@@ -257,31 +267,16 @@ msgid ""
 "first visit."
 msgstr ""
 
-msgid ""
-"OCSP Must Staple may cause errors for some users on first access using "
-"Firefox."
-msgstr ""
-
 msgid "Enable Common Name"
 msgstr ""
 
 msgid "For private CAs that still require this field."
 msgstr ""
 
-msgid ""
-"Enable the certificate Common Name field for private CAs that still require "
-"it."
-msgstr ""
-
 msgid "Revoke Old Certificate"
 msgstr ""
 
 msgid "Revokes the previous certificate once the new one is issued."
-msgstr ""
-
-msgid ""
-"If you want to automatically revoke the old certificate, please enable this "
-"option."
 msgstr ""
 
 msgid "Unknown Provider"
@@ -293,6 +288,11 @@ msgstr ""
 msgid "The credential was deleted. Please choose another one."
 msgstr ""
 
+#: src/components/AutoCertForm/DNSChallenge.vue:177
+msgid ""
+"Credentials of the main node. Switch to the main node to add or change one."
+msgstr ""
+
 msgid "Deleted credential"
 msgstr ""
 
@@ -302,10 +302,7 @@ msgstr ""
 msgid "Select credential"
 msgstr ""
 
-msgid "Credential"
-msgstr ""
-
-msgid "Select Credential"
+msgid "Manage"
 msgstr ""
 
 msgid "Local"
@@ -458,7 +455,61 @@ msgstr ""
 msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
 msgstr ""
 
+msgid "Install DNS-01 plugin"
+msgstr ""
+
+msgid "Install plugin"
+msgstr ""
+
+msgid "Enable plugin"
+msgstr ""
+
+msgid "Go to System > Plugins"
+msgstr ""
+
+msgid "Name cannot be empty"
+msgstr ""
+
+msgid "Please select DNS provider"
+msgstr ""
+
+msgid "Save successfully"
+msgstr ""
+
+msgid "Server error"
+msgstr ""
+
+msgid "New DNS Credential"
+msgstr ""
+
+msgid "Create and select"
+msgstr ""
+
 msgid "Include line copied to clipboard"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "%{n} d"
+msgstr ""
+
+msgid "%{n} h"
+msgstr ""
+
+msgid "%{n} min"
+msgstr ""
+
+msgid "%{n} s"
+msgstr ""
+
+msgid "Not run yet"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Failed"
 msgstr ""
 
 msgid "Nginx configuration test failed"
@@ -496,15 +547,6 @@ msgid "Nginx reported a configuration syntax error."
 msgstr ""
 
 msgid "Nginx failed to validate the configuration."
-msgstr ""
-
-msgid "Server error"
-msgstr ""
-
-msgid "New DNS Credential"
-msgstr ""
-
-msgid "Create and select"
 msgstr ""
 
 msgid "Testing Nginx configuration..."
@@ -1323,6 +1365,12 @@ msgstr ""
 msgid "Digit %{position} of the one-time code"
 msgstr ""
 
+msgid "Unknown error"
+msgstr ""
+
+msgid "Plugin %{plugin} failed to render"
+msgstr ""
+
 msgid "Port"
 msgstr ""
 
@@ -1428,21 +1476,6 @@ msgid "Support communication with the backend through the WebSocket protocol. "
 msgstr ""
 
 msgid "Copied"
-msgstr ""
-
-msgid "Copy"
-msgstr ""
-
-msgid "%{n} d"
-msgstr ""
-
-msgid "%{n} h"
-msgstr ""
-
-msgid "%{n} min"
-msgstr ""
-
-msgid "%{n} s"
 msgstr ""
 
 msgid "Hide"
@@ -1674,10 +1707,26 @@ msgstr ""
 msgid "Synchronization finished with %{count} failures"
 msgstr ""
 
-msgid "High"
+msgid "Plugin enabled"
 msgstr ""
 
-msgid "Low"
+msgid "Failed to enable the plugin"
+msgstr ""
+
+msgid "On the main node"
+msgstr ""
+
+msgid "On this node"
+msgstr ""
+
+msgid ""
+"The main node validates the domain with its DNS credentials, sends the "
+"certificate to this node and keeps renewing it."
+msgstr ""
+
+msgid ""
+"This node validates the domain with its own DNS credentials and renews the "
+"certificate itself."
 msgstr ""
 
 msgid "Failed to get performance data"
@@ -2228,6 +2277,34 @@ msgstr ""
 
 msgid ""
 "Automatic renewal can only be switched for certificates issued by Nginx UI"
+msgstr ""
+
+#: src/constants/errors/cert.ts:58
+msgid "Only a DNS-01 certificate can be issued for another node"
+msgstr ""
+
+#: src/constants/errors/cert.ts:59
+msgid "Node not found"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:231
+msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:231
+msgid "Node {0} answered {1}: {2}"
+msgstr ""
+
+#: src/constants/errors/cert.ts:62
+msgid "The Nginx configuration still loads the certificate: {0}"
+msgstr ""
+
+#: src/constants/errors/cert.ts:63
+msgid "The certificate was issued, but sending it to node {0} failed: {1}"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:231
+msgid "Node {0} cannot be reached: {1}"
 msgstr ""
 
 msgid "Path is not under the nginx conf dir"
@@ -2845,6 +2922,32 @@ msgstr ""
 msgid "Read dir failed: {0}"
 msgstr ""
 
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+
+msgid "Snippet not found"
+msgstr ""
+
+msgid "The snippet exceeds 256 KiB"
+msgstr ""
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr ""
+
+msgid "The snippet is still included by {0}"
+msgstr ""
+
+msgid "A snippet with this file name already exists"
+msgstr ""
+
+msgid "The variable {0} is invalid: {1}"
+msgstr ""
+
+msgid "The content does not parse as a template: {0}"
+msgstr ""
+
 msgid "Stream not found"
 msgstr ""
 
@@ -3124,9 +3227,6 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-msgid "Success"
-msgstr ""
-
 msgid "Remote"
 msgstr ""
 
@@ -3142,7 +3242,13 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
+msgid "Low"
+msgstr ""
+
 msgid "Medium"
+msgstr ""
+
+msgid "High"
 msgstr ""
 
 msgid "Default"
@@ -3244,6 +3350,9 @@ msgstr ""
 msgid "Select Provider"
 msgstr ""
 
+msgid "Select Credential"
+msgstr ""
+
 msgid "Total"
 msgstr ""
 
@@ -3308,9 +3417,6 @@ msgid "Please select at least one item"
 msgstr ""
 
 msgid "Batch Modify"
-msgstr ""
-
-msgid "Save successfully"
 msgstr ""
 
 msgid "Save successful"
@@ -3520,6 +3626,18 @@ msgstr ""
 msgid "Checking the HTTP challenge route"
 msgstr ""
 
+msgid "Client ID"
+msgstr ""
+
+msgid "Client certificate"
+msgstr ""
+
+msgid "Client certificate path"
+msgstr ""
+
+msgid "Client secret"
+msgstr ""
+
 msgid "Conf.d directory exists"
 msgstr ""
 
@@ -3683,6 +3801,9 @@ msgid "Subscription ID"
 msgstr ""
 
 msgid "TXT record TTL"
+msgstr ""
+
+msgid "Tenant ID"
 msgstr ""
 
 msgid "The DNS challenge does not use the HTTP challenge route"
@@ -3891,6 +4012,10 @@ msgstr ""
 msgid "[Nginx UI] Revoking old certificate"
 msgstr ""
 
+#: src/language/generate.ts:148
+msgid "[Nginx UI] Sending the certificate to node %{name}"
+msgstr ""
+
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr ""
 
@@ -4021,6 +4146,18 @@ msgid "Sites List"
 msgstr ""
 
 msgid "Add Site"
+msgstr ""
+
+msgid "Snippets"
+msgstr ""
+
+msgid "Create Snippet"
+msgstr ""
+
+msgid "Built-in Template"
+msgstr ""
+
+msgid "Edit Snippet"
 msgstr ""
 
 msgid "Edit Site"
@@ -4183,6 +4320,9 @@ msgstr ""
 msgid "This list has no rules; only \"Everything else\" applies."
 msgstr ""
 
+msgid "S3"
+msgstr ""
+
 msgid "Backup completed successfully"
 msgstr ""
 
@@ -4202,9 +4342,6 @@ msgid "Backup Path"
 msgstr ""
 
 msgid "Storage Type"
-msgstr ""
-
-msgid "S3"
 msgstr ""
 
 msgid "Storage Configuration"
@@ -4229,9 +4366,6 @@ msgid "Last Backup Status"
 msgstr ""
 
 msgid "Pending"
-msgstr ""
-
-msgid "Failed"
 msgstr ""
 
 msgid "Created at"
@@ -4414,6 +4548,26 @@ msgstr ""
 msgid "Test Storage"
 msgstr ""
 
+msgid "Please log in."
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr ""
+
+msgid "Delete this backup from the storage?"
+msgstr ""
+
+msgid "Restore Backup"
+msgstr ""
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr ""
+
 msgid "Create system backups and restore from saved snapshots when needed."
 msgstr ""
 
@@ -4446,9 +4600,6 @@ msgstr ""
 msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
-msgstr ""
-
-msgid "Please log in."
 msgstr ""
 
 msgid "Email"
@@ -4523,6 +4674,27 @@ msgstr ""
 msgid "Sync to other nodes"
 msgstr ""
 
+msgid "Certificate"
+msgstr ""
+
+msgid "Private key"
+msgstr ""
+
+msgid "Domains"
+msgstr ""
+
+msgid "IP Addresses"
+msgstr ""
+
+msgid "Valid For (days)"
+msgstr ""
+
+msgid "Automatic renewal turned on"
+msgstr ""
+
+msgid "Automatic renewal turned off"
+msgstr ""
+
 msgid "Please enter a name for the certificate"
 msgstr ""
 
@@ -4530,6 +4702,118 @@ msgid "Please enter at least one domain or IP address"
 msgstr ""
 
 msgid "Saved certificate response is missing an ID"
+msgstr ""
+
+msgid "More actions"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:455
+msgid "Issued for %{node}"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:459
+msgid ""
+"This instance validates the domain, keeps renewing the certificate and sends "
+"each renewal to %{node}."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:462
+msgid "Files on the node:"
+msgstr ""
+
+msgid "Sync Certificate"
+msgstr ""
+
+msgid "Managed Certificate"
+msgstr ""
+
+msgid "General Certificate"
+msgstr ""
+
+msgid "Self-signed Certificate"
+msgstr ""
+
+msgid "Renewal paused"
+msgstr ""
+
+msgid "Issuing..."
+msgstr ""
+
+msgid "Issuance failed"
+msgstr ""
+
+msgid "Automatic migration pending"
+msgstr ""
+
+msgid "Configuration mismatch"
+msgstr ""
+
+msgid "Configured path: %{configured}; managed path: %{managed}"
+msgstr ""
+
+msgid "Unable to verify deployment"
+msgstr ""
+
+msgid "Not issued yet"
+msgstr ""
+
+msgid "Not After"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "Expiring within 30 days"
+msgstr ""
+
+msgid "Renewal failed"
+msgstr ""
+
+#: src/views/certificate/CertificateList/Certificate.vue:144
+msgid "Issued by this instance for %{node} and renewed here"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:78
+msgid "For %{node}"
+msgstr ""
+
+msgid "Renewal method"
+msgstr ""
+
+msgid "Expiry date"
+msgstr ""
+
+msgid "Failed to scan certificates"
+msgstr ""
+
+msgid "Please select at least one certificate"
+msgstr ""
+
+msgid "Import successfully"
+msgstr ""
+
+msgid "Failed to import certificate"
+msgstr ""
+
+msgid "Discover"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Issue certificate"
+msgstr ""
+
+msgid "Search by name or domain"
+msgstr ""
+
+msgid "Discover Certificates"
+msgstr ""
+
+msgid "Import selected"
+msgstr ""
+
+msgid "Scan"
 msgstr ""
 
 msgid "Trying renewal."
@@ -4601,81 +4885,6 @@ msgstr ""
 msgid "Upload"
 msgstr ""
 
-msgid "General Certificate"
-msgstr ""
-
-msgid "Log"
-msgstr ""
-
-msgid "Sync Certificate"
-msgstr ""
-
-msgid "Managed Certificate"
-msgstr ""
-
-msgid "Self-signed Certificate"
-msgstr ""
-
-msgid "Renewal paused"
-msgstr ""
-
-msgid "Issuing..."
-msgstr ""
-
-msgid "Issuance failed"
-msgstr ""
-
-msgid "Automatic migration pending"
-msgstr ""
-
-msgid "Configuration mismatch"
-msgstr ""
-
-msgid "Configured path: %{configured}; managed path: %{managed}"
-msgstr ""
-
-msgid "Unable to verify deployment"
-msgstr ""
-
-msgid "Not issued yet"
-msgstr ""
-
-msgid "Not After"
-msgstr ""
-
-msgid "Failed to scan certificates"
-msgstr ""
-
-msgid "Please select at least one certificate"
-msgstr ""
-
-msgid "Import successfully"
-msgstr ""
-
-msgid "Failed to import certificate"
-msgstr ""
-
-msgid "Discover"
-msgstr ""
-
-msgid "Import"
-msgstr ""
-
-msgid "Issue certificate"
-msgstr ""
-
-msgid "Search by name or domain"
-msgstr ""
-
-msgid "Discover Certificates"
-msgstr ""
-
-msgid "Import selected"
-msgstr ""
-
-msgid "Scan"
-msgstr ""
-
 msgid "System Initial User"
 msgstr ""
 
@@ -4686,12 +4895,6 @@ msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 
 msgid "Back"
-msgstr ""
-
-msgid "This field is required"
-msgstr ""
-
-msgid "Sync to"
 msgstr ""
 
 msgid "Failed to load nginx configuration path"
@@ -4741,9 +4944,6 @@ msgid "Deployed to %{ok} targets, %{failed} failed"
 msgstr ""
 
 msgid "Deployed to %{ok} targets"
-msgstr ""
-
-msgid "Manage"
 msgstr ""
 
 msgid "Deploy Now"
@@ -4821,6 +5021,27 @@ msgstr ""
 msgid "Renews around %{date}"
 msgstr ""
 
+msgid "On"
+msgstr ""
+
+msgid "Replace the files to renew"
+msgstr ""
+
+msgid "Auto renewal"
+msgstr ""
+
+msgid "Issuer"
+msgstr ""
+
+msgid "Certificate files"
+msgstr ""
+
+msgid "Hide contents"
+msgstr ""
+
+msgid "Show contents"
+msgstr ""
+
 msgid "certificate"
 msgstr ""
 
@@ -4870,6 +5091,43 @@ msgid "Select nodes"
 msgstr ""
 
 msgid "Only kept on this node."
+msgstr ""
+
+msgid "Time"
+msgstr ""
+
+msgid "Attempts"
+msgstr ""
+
+msgid "Deploy History of %{name}"
+msgstr ""
+
+msgid "All certificates"
+msgstr ""
+
+msgid "Dry run successful"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+
+msgid "Target Type"
+msgstr ""
+
+msgid "Select a target type"
+msgstr ""
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr ""
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr ""
+
+msgid "Dry Run"
 msgstr ""
 
 msgid "Wildcard Certificate"
@@ -4949,6 +5207,21 @@ msgstr ""
 msgid "Delete Certificate"
 msgstr ""
 
+#: src/views/certificate/components/RemoveCert.vue:153
+msgid ""
+"This instance stops renewing the certificate and deletes its own copy. The "
+"files on %{node} stay unless you remove them below."
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:158
+msgid "Also remove the certificate files from %{node}"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:161
+msgid ""
+"They are kept when the Nginx configuration of the node still loads them."
+msgstr ""
+
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
@@ -4998,28 +5271,16 @@ msgstr ""
 msgid "Enter certificate name"
 msgstr ""
 
-msgid "Domains"
-msgstr ""
-
-msgid "IP Addresses"
-msgstr ""
-
 msgid "Enter IP address"
 msgstr ""
 
 msgid "Add IP Address"
 msgstr ""
 
-msgid "Valid For (days)"
-msgstr ""
-
-msgid "Automatic renewal turned on"
-msgstr ""
-
-msgid "Automatic renewal turned off"
-msgstr ""
-
 msgid "Some browsers reject TLS certificates valid for more than 398 days."
+msgstr ""
+
+msgid "Sync to"
 msgstr ""
 
 msgid "Generate Self-signed Certificate"
@@ -5032,6 +5293,12 @@ msgid "Deployed %{ok} certificates, %{failed} failed"
 msgstr ""
 
 msgid "Deployed %{ok} certificates"
+msgstr ""
+
+msgid "Configuration"
+msgstr ""
+
+msgid "History"
 msgstr ""
 
 msgid "View all issued and imported certificates with expiration and status."
@@ -5049,9 +5316,6 @@ msgid "Import an existing certificate and key pair into the certificate store."
 msgstr ""
 
 msgid "Format successfully"
-msgstr ""
-
-msgid "History"
 msgstr ""
 
 msgid "Format Code"
@@ -5109,23 +5373,6 @@ msgid "file"
 msgstr ""
 
 msgid "Folder"
-msgstr ""
-
-msgid "File"
-msgstr ""
-
-msgid "Backups kept in %{storage} under %{prefix}"
-msgstr ""
-
-msgid "Delete this backup from the storage?"
-msgstr ""
-
-msgid "Restore Backup"
-msgstr ""
-
-msgid ""
-"Restoring replaces the current configuration. Nginx and Nginx UI restart "
-"afterwards."
 msgstr ""
 
 msgid "Type %{delete} to confirm"
@@ -5236,27 +5483,6 @@ msgid "GZIP Compression"
 msgstr ""
 
 msgid "Enable compression for content transfer"
-msgstr ""
-
-msgid "On"
-msgstr ""
-
-msgid "Replace the files to renew"
-msgstr ""
-
-msgid "Auto renewal"
-msgstr ""
-
-msgid "Issuer"
-msgstr ""
-
-msgid "Certificate files"
-msgstr ""
-
-msgid "Hide contents"
-msgstr ""
-
-msgid "Show contents"
 msgstr ""
 
 msgid "GZIP Min Length"
@@ -5629,6 +5855,14 @@ msgid ""
 "actual upstream host or port."
 msgstr ""
 
+msgid "Site Card Click URL"
+msgstr ""
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If empty, "
+"the default site URL is used."
+msgstr ""
+
 msgid "HTTP Method"
 msgstr ""
 
@@ -5917,19 +6151,21 @@ msgstr ""
 msgid "Optional"
 msgstr ""
 
-msgid "All"
+msgid "Details"
 msgstr ""
 
-msgid "Expiring within 30 days"
+msgid "%{count} changed"
 msgstr ""
 
-msgid "Renewal failed"
+msgid "All default"
 msgstr ""
 
-msgid "Renewal method"
+msgid "sec"
 msgstr ""
 
-msgid "Expiry date"
+msgid ""
+"Please fill in the API authentication credentials provided by your DNS "
+"provider."
 msgstr ""
 
 msgid "Host, e.g. @ or www"
@@ -6001,6 +6237,9 @@ msgid ""
 "in DNS."
 msgstr ""
 
+msgid "Credential"
+msgstr ""
+
 msgid "Provider"
 msgstr ""
 
@@ -6011,9 +6250,6 @@ msgid "Targets"
 msgstr ""
 
 msgid "Last run"
-msgstr ""
-
-msgid "Not run yet"
 msgstr ""
 
 msgid "DDNS saved"
@@ -6073,21 +6309,7 @@ msgstr ""
 msgid "Interval (seconds)"
 msgstr ""
 
-msgid "Name cannot be empty"
-msgstr ""
-
-msgid "Please select DNS provider"
-msgstr ""
-
-msgid "Configuration"
-msgstr ""
-
 msgid "DNS Credentials"
-msgstr ""
-
-msgid ""
-"Please fill in the API authentication credentials provided by your DNS "
-"provider."
 msgstr ""
 
 msgid "Modify DNS Credential"
@@ -6212,18 +6434,6 @@ msgid "Names"
 msgstr ""
 
 msgid "Coverage"
-msgstr ""
-
-msgid "Details"
-msgstr ""
-
-msgid "%{count} changed"
-msgstr ""
-
-msgid "All default"
-msgstr ""
-
-msgid "sec"
 msgstr ""
 
 msgid "Result"
@@ -6445,12 +6655,6 @@ msgstr ""
 msgid "Create Record"
 msgstr ""
 
-msgid "Unknown error"
-msgstr ""
-
-msgid "Plugin %{plugin} failed to render"
-msgstr ""
-
 msgid "Manage DNS zones and records for domains under your account."
 msgstr ""
 
@@ -6620,15 +6824,6 @@ msgstr ""
 msgid "Read access logs page by page or follow them as they arrive."
 msgstr ""
 
-msgid "CPU"
-msgstr ""
-
-msgid "Features"
-msgstr ""
-
-msgid "URL"
-msgstr ""
-
 msgid "Inspect error events and troubleshoot issues from Nginx error output."
 msgstr ""
 
@@ -6652,28 +6847,10 @@ msgstr ""
 msgid "Auto Refresh"
 msgstr ""
 
-msgid "Disable"
-msgstr ""
-
 msgid "Filter"
 msgstr ""
 
 msgid "Filter log content"
-msgstr ""
-
-msgid "Method"
-msgstr ""
-
-msgid "Any"
-msgstr ""
-
-msgid "OS"
-msgstr ""
-
-msgid "Time"
-msgstr ""
-
-msgid "IP"
 msgstr ""
 
 msgid "Stable"
@@ -6864,40 +7041,6 @@ msgstr ""
 msgid "Automatic retry after"
 msgstr ""
 
-msgid "Attempts"
-msgstr ""
-
-msgid "Deploy History of %{name}"
-msgstr ""
-
-msgid "All certificates"
-msgstr ""
-
-msgid "Dry run successful"
-msgstr ""
-
-msgid ""
-"No enabled plugin offers a deploy target. Install and enable a plugin with "
-"the cert.deploy capability first."
-msgstr ""
-
-msgid "Target Type"
-msgstr ""
-
-msgid "Select a target type"
-msgstr ""
-
-msgid ""
-"The plugin that provides this target type is not enabled. Pushes fail until "
-"it is enabled again."
-msgstr ""
-
-msgid "The certificate pushed to this target after every issuance and renewal."
-msgstr ""
-
-msgid "Dry Run"
-msgstr ""
-
 msgid "Technical details"
 msgstr ""
 
@@ -6932,6 +7075,9 @@ msgid "System clocks are out of sync"
 msgstr ""
 
 msgid "Node connection failed"
+msgstr ""
+
+msgid "URL"
 msgstr ""
 
 msgid "Node Secret"
@@ -7156,6 +7302,69 @@ msgid ""
 msgstr ""
 
 msgid "Enable Marketplace"
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid "Managed on the marketplace page. Empty means the official catalog."
+msgstr ""
+
+msgid "Allow Community Plugins"
+msgstr ""
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr ""
+
+msgid "Automatic Updates"
+msgstr ""
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr ""
+
+msgid "Allow Uploads"
+msgstr ""
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr ""
+
+msgid "Trusted Publishers"
+msgstr ""
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr ""
+
+msgid "Memory Limit"
+msgstr ""
+
+msgid "Maximum memory each plugin can use."
+msgstr ""
+
+msgid "CPU Limit"
+msgstr ""
+
+msgid "Share of one CPU core each plugin can use."
+msgstr ""
+
+msgid "Allow Insecure Download URLs"
+msgstr ""
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr ""
+
+msgid "Developer Mode"
+msgstr ""
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
 msgstr ""
 
 msgid "Stub Status Port"
@@ -7548,6 +7757,9 @@ msgstr ""
 msgid "Test message sent successfully"
 msgstr ""
 
+msgid "Send test message"
+msgstr ""
+
 msgid "Microsoft Docs"
 msgstr ""
 
@@ -7555,9 +7767,6 @@ msgid "Teams Request Example"
 msgstr ""
 
 msgid "Available placeholders"
-msgstr ""
-
-msgid "Send test message"
 msgstr ""
 
 msgid "Gotify"
@@ -7579,18 +7788,6 @@ msgid "Chat ID"
 msgstr ""
 
 msgid "Click URL"
-msgstr ""
-
-msgid "Client ID"
-msgstr ""
-
-msgid "Client certificate"
-msgstr ""
-
-msgid "Client certificate path"
-msgstr ""
-
-msgid "Client secret"
 msgstr ""
 
 msgid "Client Secret"
@@ -7630,9 +7827,6 @@ msgid "Server URL"
 msgstr ""
 
 msgid "Tags"
-msgstr ""
-
-msgid "Tenant ID"
 msgstr ""
 
 msgid "To"
@@ -7902,6 +8096,9 @@ msgid "Detected:"
 msgstr ""
 
 msgid "Restore detected value"
+msgstr ""
+
+msgid "This field is required"
 msgstr ""
 
 msgid ""
@@ -8655,6 +8852,9 @@ msgstr ""
 msgid "Basics"
 msgstr ""
 
+msgid "Features"
+msgstr ""
+
 msgctxt "preference group"
 msgid "Maintenance"
 msgstr ""
@@ -8860,6 +9060,9 @@ msgstr ""
 msgid "General"
 msgstr ""
 
+msgid "IP"
+msgstr ""
+
 msgid "Banned Until"
 msgstr ""
 
@@ -8875,9 +9078,6 @@ msgid ""
 msgstr ""
 
 msgid "Are you sure to delete this banned IP immediately?"
-msgstr ""
-
-msgid "Issuing"
 msgstr ""
 
 msgid "The url is invalid"
@@ -9094,6 +9294,34 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
+msgid "Marketplace"
+msgstr ""
+
+msgid "Official catalog"
+msgstr ""
+
+msgid "Packages"
+msgstr ""
+
+msgid "Resources"
+msgstr ""
+
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr ""
+
+msgid "Only applies on Linux. This system does not support it."
+msgstr ""
+
+msgid "Unlimited"
+msgstr ""
+
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr ""
+
+msgid "Less safe"
+msgstr ""
+
 msgid "Listen Address"
 msgstr ""
 
@@ -9101,12 +9329,6 @@ msgid "All interfaces"
 msgstr ""
 
 msgid "HTTPS"
-msgstr ""
-
-msgid "Certificate"
-msgstr ""
-
-msgid "Private key"
 msgstr ""
 
 msgid "Pick the certificate that secures the web interface."
@@ -9138,6 +9360,41 @@ msgid "Entries"
 msgstr ""
 
 msgid "Last Result"
+msgstr ""
+
+msgid "Include"
+msgstr ""
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+
+msgid "Refresh Now"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+
+msgid "Select a source type"
+msgstr ""
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr ""
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr ""
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
 msgstr ""
 
 msgid "End time must be later than start time"
@@ -9383,6 +9640,9 @@ msgstr ""
 msgid "The parameter of server_name is required"
 msgstr ""
 
+msgid "Config Template"
+msgstr ""
+
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr ""
 
@@ -9479,18 +9739,32 @@ msgstr ""
 msgid "Generate self-signed certificate"
 msgstr ""
 
+msgid "Built-in"
+msgstr ""
+
 msgid "Search templates"
 msgstr ""
 
 msgid "From plugin %{id}"
 msgstr ""
 
+msgid "Snippet"
+msgstr ""
+
 msgid "Author"
+msgstr ""
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
 msgstr ""
 
 msgid ""
 "This template comes from the plugin %{id}. Review the directives before "
 "adding them."
+msgstr ""
+
+msgid "Insert"
 msgstr ""
 
 msgid "Do you want to enable TLS?"
@@ -9569,6 +9843,10 @@ msgstr ""
 msgid "Wildcard domains require DNS-01 validation."
 msgstr ""
 
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:446
+msgid "Issue the certificate on the main node"
+msgstr ""
+
 msgid "Plan the configuration changes"
 msgstr ""
 
@@ -9597,13 +9875,16 @@ msgstr ""
 msgid "HTTPS setup failed"
 msgstr ""
 
-msgid "Certificate options"
+msgid "Log"
 msgstr ""
 
 msgid ""
 "Nginx UI stages the challenge route, verifies it, requests the certificate "
 "and switches the site to HTTPS in one run. If a step fails, the site keeps "
 "serving plain HTTP."
+msgstr ""
+
+msgid "Method"
 msgstr ""
 
 msgid "Add at least one domain or IP address."
@@ -9633,6 +9914,21 @@ msgstr ""
 msgid ""
 "The HTTPS server block without a certificate is left out until the "
 "certificate is issued, then enabled with it."
+msgstr ""
+
+msgid ""
+"OCSP Must Staple may cause errors for some users on first access using "
+"Firefox."
+msgstr ""
+
+msgid ""
+"Enable the certificate Common Name field for private CAs that still require "
+"it."
+msgstr ""
+
+msgid ""
+"If you want to automatically revoke the old certificate, please enable this "
+"option."
 msgstr ""
 
 msgid "Pre-flight check"
@@ -9667,6 +9963,12 @@ msgid "Issue and enable HTTPS"
 msgstr ""
 
 msgid "Continue without HTTPS"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/useHTTPSOnboarding.ts:206
+msgid ""
+"The node did not confirm that it received the certificate. Update Nginx UI "
+"on the node and try again."
 msgstr ""
 
 msgid "Configuration saved. Enable HTTPS from the HTTPS card."
@@ -9756,9 +10058,6 @@ msgstr ""
 msgid "Clear Link"
 msgstr ""
 
-msgid "Config Template"
-msgstr ""
-
 msgid "Port Scanner"
 msgstr ""
 
@@ -9825,10 +10124,318 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
+msgid "Disable"
+msgstr ""
+
 msgid "Set maintenance information for selected sites"
 msgstr ""
 
 msgid "%{count} sites selected"
+msgstr ""
+
+msgid "Read Only"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Updates as the snippet changes."
+msgstr ""
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr ""
+
+msgid "File Name"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "Copy as Snippet"
+msgstr ""
+
+msgid "Template"
+msgstr ""
+
+msgid "No template matches the search"
+msgstr ""
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Translations"
+msgstr ""
+
+msgid ""
+"The field is in %{language}. Users of other languages see their translation, "
+"or English when there is none."
+msgstr ""
+
+msgid "Remove translation"
+msgstr ""
+
+msgid "Add a language"
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Switch"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "New Variable…"
+msgstr ""
+
+msgid "Insert Variable"
+msgstr ""
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr ""
+
+msgid "Default Value"
+msgstr ""
+
+msgid "Edit Variable"
+msgstr ""
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr ""
+
+msgid "Declare Variable"
+msgstr ""
+
+msgid "Make Variable"
+msgstr ""
+
+msgid "New Variable"
+msgstr ""
+
+msgid "Key"
+msgstr ""
+
+msgid "Label"
+msgstr ""
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr ""
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr ""
+
+msgid "Add Variable"
+msgstr ""
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr ""
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr ""
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr ""
+
+msgid "What the site editor asks for"
+msgstr ""
+
+msgid "Restore Default Values"
+msgstr ""
+
+msgid "Nothing to fill in."
+msgstr ""
+
+msgid "Fix the variables to preview the snippet."
+msgstr ""
+
+msgid "Snippets are no longer synchronized"
+msgstr ""
+
+msgid "Synchronize Snippets"
+msgstr ""
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr ""
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr ""
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "No file matches the search"
+msgstr ""
+
+msgid "Not Used"
+msgstr ""
+
+msgid "Max Age"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Remove option"
+msgstr ""
+
+msgid "Add Option"
+msgstr ""
+
+msgid "Remove variable"
+msgstr ""
+
+msgid "Used in the content, not declared"
+msgstr ""
+
+msgid "Snippet %{name} saved"
+msgstr ""
+
+msgid "Discard the unsaved changes?"
+msgstr ""
+
+msgid "Keep Editing"
+msgstr ""
+
+msgid "Edit Snippet %{name}"
+msgstr ""
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr ""
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the config "
+"template panel."
+msgstr ""
+
+msgid "Includable"
+msgstr ""
+
+msgid "Insert Only"
+msgstr ""
+
+msgid "Use"
+msgstr ""
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr ""
+
+msgid "Static file cache"
+msgstr ""
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr ""
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr ""
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr ""
+
+msgid "No configuration includes this snippet yet."
+msgstr ""
+
+msgid "Unsaved changes"
+msgstr ""
+
+msgid "My Snippets"
+msgstr ""
+
+msgid "Built-in Templates"
+msgstr ""
+
+msgid "Copied %{include}"
+msgstr ""
+
+msgid "Delete snippet %{name}?"
+msgstr ""
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr ""
+
+msgid "snippets/%{file} will be removed."
+msgstr ""
+
+msgid "Snippet %{name} deleted"
+msgstr ""
+
+msgid "Synchronize"
+msgstr ""
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Copy the include directive"
+msgstr ""
+
+msgid "Remove the snippet from the files that include it first."
+msgstr ""
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in a "
+"site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+
+msgid "Search snippets"
+msgstr ""
+
+msgid "No snippets yet"
+msgstr ""
+
+msgid "No snippet matches the search"
+msgstr ""
+
+msgid "Enter a key."
+msgstr ""
+
+msgid ""
+"Use letters, digits and underscores, starting with a letter or underscore."
+msgstr ""
+
+msgid "Another variable uses this key."
+msgstr ""
+
+msgid "Add at least one option."
+msgstr ""
+
+msgid "Every option needs a value."
+msgstr ""
+
+msgid "Option values must be unique."
+msgstr ""
+
+msgid "Choose the default option."
 msgstr ""
 
 msgid "Do you want to %{action} this stream?"
@@ -10021,84 +10628,22 @@ msgstr ""
 msgid "Only localhost addresses are accepted"
 msgstr ""
 
-msgid "Plugin"
+msgid "Reload the page to apply the development plugin URL"
 msgstr ""
 
-msgid "Capabilities"
-msgstr ""
-
-msgid "Auto install to nodes"
-msgstr ""
-
-msgid "Sync now"
-msgstr ""
-
-msgid "Version, API version, start mode, updated time"
-msgstr ""
-
-msgid "Uninstall this plugin"
-msgstr ""
-
-msgid "Its files, data and settings are removed from this node."
-msgstr ""
-
-msgid "Develop plugin"
-msgstr ""
-
-msgid "Plugin synchronized to %{count} node(s)"
-msgstr ""
-
-msgid "Some nodes could not be synchronized"
-msgstr ""
-
-msgid "Failed to synchronize the plugin"
-msgstr ""
-
-msgid "Installed"
-msgstr ""
-
-msgid "Installed %{version} is not this version"
-msgstr ""
-
-msgid "Starting"
-msgstr ""
-
-msgid "Missing"
-msgstr ""
-
-msgid "Incompatible"
-msgstr ""
-
-msgid "Needs approval"
-msgstr ""
-
-msgid "Standby"
-msgstr ""
-
-msgid "Starts automatically when needed"
-msgstr ""
-
-msgid "Installed. Turn it on to review what it can access."
-msgstr ""
-
-msgid "Installed the version from the marketplace"
-msgstr ""
-
-msgid "Failed to install the version from the marketplace"
+msgid "Development plugin URL"
 msgstr ""
 
 msgid ""
-"Replace the installed version with the one from the marketplace? Settings "
-"and data are kept."
+"Address of a plugin.json served by a static server on this computer. Only "
+"localhost addresses are accepted. The plugin is loaded in addition to the "
+"installed ones."
 msgstr ""
 
-msgid "Failed to load the plugin list"
+msgid "Needs attention"
 msgstr ""
 
-msgid "Plugin enabled"
-msgstr ""
-
-msgid "Failed to enable the plugin"
+msgid "Updates available"
 msgstr ""
 
 msgid "Plugin disabled"
@@ -10122,6 +10667,9 @@ msgstr ""
 msgid ""
 "Its files, data and settings are removed from this node. Other nodes are not "
 "touched."
+msgstr ""
+
+msgid "Uninstall"
 msgstr ""
 
 msgid "Plugin uninstalled"
@@ -10148,54 +10696,26 @@ msgstr ""
 msgid "No plugins match the current filter"
 msgstr ""
 
+#: src/views/system/plugins/InstalledPluginCard.vue:138
+msgid "Recommended memory: %{size}"
+msgstr ""
+
 msgid "This plugin cannot run on this node"
 msgstr ""
 
-msgid "Reload the page to apply the development plugin URL"
+msgid "Sync to nodes"
 msgstr ""
 
-msgid ""
-"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
-"authors you trust."
+msgid "Homepage"
 msgstr ""
 
-msgid "Development plugin URL"
-msgstr ""
-
-msgid ""
-"Address of a plugin.json served by a static server on this computer. Only "
-"localhost addresses are accepted. The plugin is loaded in addition to the "
-"installed ones."
-msgstr ""
-
-msgid "Needs attention"
-msgstr ""
-
-msgid "No plugins installed"
+msgid "No description provided."
 msgstr ""
 
 msgid "Settings"
 msgstr ""
 
 msgid "Logs"
-msgstr ""
-
-msgid "More actions"
-msgstr ""
-
-msgid "Sync to nodes"
-msgstr ""
-
-msgid "Uninstall"
-msgstr ""
-
-msgid "Sync %{name} to nodes"
-msgstr ""
-
-msgid "Leave every node unchecked to sync to all child nodes."
-msgstr ""
-
-msgid "Already in sync"
 msgstr ""
 
 msgid "This node only"
@@ -10210,7 +10730,13 @@ msgstr ""
 msgid "This plugin is not signed"
 msgstr ""
 
+msgid "This is a community plugin"
+msgstr ""
+
 msgid "Failed to read the plugin bundle"
+msgstr ""
+
+msgid "Failed to install the plugin"
 msgstr ""
 
 msgid "Plugin installed"
@@ -10219,13 +10745,7 @@ msgstr ""
 msgid "The plugin was installed here but could not be pushed to the nodes"
 msgstr ""
 
-msgid "Failed to install the plugin"
-msgstr ""
-
-msgid "Install plugin"
-msgstr ""
-
-msgid "Enable plugin"
+msgid "Some nodes could not be synchronized"
 msgstr ""
 
 msgid "Click or drag a plugin bundle here"
@@ -10240,10 +10760,27 @@ msgstr ""
 msgid "(replaces %{version})"
 msgstr ""
 
+msgid "Capabilities"
+msgstr ""
+
 msgid "None"
 msgstr ""
 
 msgid "Recommended memory"
+msgstr ""
+
+msgid "Platforms"
+msgstr ""
+
+msgid "Any"
+msgstr ""
+
+msgid "This package has no build for this node (%{platform})"
+msgstr ""
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
 msgstr ""
 
 msgid "Install the plugins below first"
@@ -10274,6 +10811,12 @@ msgid ""
 "nodes."
 msgstr ""
 
+msgid "Already in sync"
+msgstr ""
+
+msgid "Failed to load the plugin list"
+msgstr ""
+
 msgid "Failed to load the plugin logs"
 msgstr ""
 
@@ -10295,6 +10838,15 @@ msgstr ""
 msgid "Updates"
 msgstr ""
 
+msgid "Every installed plugin is up to date"
+msgstr ""
+
+msgid "No plugins match your search"
+msgstr ""
+
+msgid "The catalog is empty"
+msgstr ""
+
 msgid "Failed to load the plugin marketplace"
 msgstr ""
 
@@ -10308,69 +10860,6 @@ msgid "All categories"
 msgstr ""
 
 msgid "All sources"
-msgstr ""
-
-msgid "Sources"
-msgstr ""
-
-msgid "Managed on the marketplace page. Empty means the official catalog."
-msgstr ""
-
-msgid "Allow Community Plugins"
-msgstr ""
-
-msgid ""
-"Community plugins are published by third parties and ask for a confirmation "
-"before they install."
-msgstr ""
-
-msgid "Automatic Updates"
-msgstr ""
-
-msgid ""
-"Updates official and partner plugins on their own while the permissions they "
-"ask for stay the same."
-msgstr ""
-
-msgid "Allow Insecure Download URLs"
-msgstr ""
-
-msgid ""
-"Accepts plain http catalog and download addresses. Only for a private "
-"catalog on a trusted network."
-msgstr ""
-
-msgid "Allow Uploads"
-msgstr ""
-
-msgid ""
-"Allows installing packages uploaded from the browser or the command line."
-msgstr ""
-
-msgid "Trusted Publishers"
-msgstr ""
-
-msgid "Plugins from these publishers install as community plugins."
-msgstr ""
-
-msgid "Developer Mode"
-msgstr ""
-
-msgid ""
-"Allows installing unsigned plugins. Only turn this on while developing a "
-"plugin."
-msgstr ""
-
-msgid "Memory Limit"
-msgstr ""
-
-msgid "Maximum memory each plugin can use."
-msgstr ""
-
-msgid "CPU Limit"
-msgstr ""
-
-msgid "Share of one CPU core each plugin can use."
 msgstr ""
 
 msgid "%{count} installed plugin has a newer release."
@@ -10387,13 +10876,10 @@ msgstr ""
 msgid "Install a previous version"
 msgstr ""
 
-msgid "Every installed plugin is up to date"
+msgid "Update plugin"
 msgstr ""
 
-msgid "No plugins match your search"
-msgstr ""
-
-msgid "The catalog is empty"
+msgid "Install this version"
 msgstr ""
 
 msgid "Downloading the package"
@@ -10409,12 +10895,6 @@ msgid "%{phase}: %{plugin}"
 msgstr ""
 
 msgid "Failed to load the plugin from the marketplace"
-msgstr ""
-
-msgid "Update plugin"
-msgstr ""
-
-msgid "Install this version"
 msgstr ""
 
 msgid "No release available for this platform"
@@ -10438,22 +10918,16 @@ msgid ""
 "available."
 msgstr ""
 
-msgid "This is a community plugin"
-msgstr ""
-
 msgid "The plugins below are installed together with it"
 msgstr ""
 
 msgid "Live progress is unavailable, checking the plugin list instead"
 msgstr ""
 
-msgid "No description provided."
+msgid "Installed %{version} is not this version"
 msgstr ""
 
 msgid "Installed: %{version}"
-msgstr ""
-
-msgid "Homepage"
 msgstr ""
 
 msgid "Repository"
@@ -10462,15 +10936,7 @@ msgstr ""
 msgid "Release notes"
 msgstr ""
 
-msgid "Platforms"
-msgstr ""
-
-msgid "This package has no build for this node (%{platform})"
-msgstr ""
-
-msgid ""
-"Download the package built for this platform, or the portable package, and "
-"try again."
+msgid "Installed version"
 msgstr ""
 
 msgid "Failed to load the plugin details"
@@ -10482,10 +10948,10 @@ msgstr ""
 msgid "Screenshots"
 msgstr ""
 
-msgid "Installed version"
+msgid "Versions"
 msgstr ""
 
-msgid "Versions"
+msgid "Installed"
 msgstr ""
 
 msgid "Latest"
@@ -10537,18 +11003,6 @@ msgstr ""
 msgid "Drag to reorder"
 msgstr ""
 
-msgid "Using the official catalog"
-msgstr ""
-
-msgid "Add a source to offer plugins from another catalog as well."
-msgstr ""
-
-msgid "Add source"
-msgstr ""
-
-msgid "Add the official catalog"
-msgstr ""
-
 msgid "Official"
 msgstr ""
 
@@ -10560,6 +11014,18 @@ msgid ""
 msgstr ""
 
 msgid "Edit address"
+msgstr ""
+
+msgid "Using the official catalog"
+msgstr ""
+
+msgid "Add a source to offer plugins from another catalog as well."
+msgstr ""
+
+msgid "Add source"
+msgstr ""
+
+msgid "Add the official catalog"
 msgstr ""
 
 msgid "Published by the Nginx UI project."
@@ -10729,6 +11195,98 @@ msgstr ""
 msgid "Overview"
 msgstr ""
 
+msgid "In sync"
+msgstr ""
+
+msgid "Outdated"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Unsupported platform"
+msgstr ""
+
+msgid "Unsupported"
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Failed to load the plugin matrix"
+msgstr ""
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr ""
+
+msgid "Failed to synchronize the plugin"
+msgstr ""
+
+msgid "Update to %{version}"
+msgstr ""
+
+msgid "Sync to this node"
+msgstr ""
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+
+msgid "All nodes"
+msgstr ""
+
+msgid "%{count} in sync"
+msgstr ""
+
+msgid "%{count} pending"
+msgstr ""
+
+msgid "%{count} failing"
+msgstr ""
+
+msgid "This instance has no child node"
+msgstr ""
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+
+msgid "Manage nodes"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr ""
+
+msgid "Sync to selected"
+msgstr ""
+
+msgid "Sync to all"
+msgstr ""
+
+msgid "Nothing to start"
+msgstr ""
+
+msgid "Starts when needed"
+msgstr ""
+
+msgid "Always running"
+msgstr ""
+
+msgid "API version"
+msgstr ""
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr ""
+
+msgid "Start mode"
+msgstr ""
+
+msgid "Saved"
+msgstr ""
+
+msgid "Failed to save"
+msgstr ""
+
 msgid "Streamed"
 msgstr ""
 
@@ -10736,16 +11294,6 @@ msgid "Rejected"
 msgstr ""
 
 msgid "Dropped"
-msgstr ""
-
-msgid "Unlimited"
-msgstr ""
-
-msgid ""
-"These options make plugin installs less safe. Turn them on only when needed."
-msgstr ""
-
-msgid "Less safe"
 msgstr ""
 
 msgid "Last error"
@@ -10786,24 +11334,6 @@ msgstr[1] ""
 msgid "Update channel"
 msgstr ""
 
-msgid "API version"
-msgstr ""
-
-msgid "Needs Nginx UI %{version} or newer"
-msgstr ""
-
-msgid "Start mode"
-msgstr ""
-
-msgid "Saved"
-msgstr ""
-
-msgid "Failed to save"
-msgstr ""
-
-msgid "Resource limits"
-msgstr ""
-
 msgid "The limits are applied while the plugin runs."
 msgstr ""
 
@@ -10816,7 +11346,16 @@ msgstr ""
 msgid "Not enforced"
 msgstr ""
 
-msgid "Access log stream"
+msgid "Cluster"
+msgstr ""
+
+msgid "Auto install to nodes"
+msgstr ""
+
+msgid "Sync now"
+msgstr ""
+
+msgid "Version, API version, start mode, updated time"
 msgstr ""
 
 msgid "Depends on"
@@ -10825,93 +11364,53 @@ msgstr ""
 msgid "Needs features"
 msgstr ""
 
-msgid "Cluster"
+msgid "Access log stream"
 msgstr ""
 
-msgid "In sync"
+msgid "Uninstall this plugin"
 msgstr ""
 
-msgid "Outdated"
+msgid "Its files, data and settings are removed from this node."
 msgstr ""
 
-msgid "Not installed"
-msgstr ""
-
-msgid "Unsupported platform"
-msgstr ""
-
-msgid "Unsupported"
-msgstr ""
-
-msgid "Failed to load the plugin matrix"
-msgstr ""
-
-msgid "Update to %{version}"
-msgstr ""
-
-msgid "Sync to this node"
+msgid "Develop plugin"
 msgstr ""
 
 msgid ""
-"What every child node has installed, compared with this controller. "
-"Switching the selected node in the header manages that node directly."
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
 msgstr ""
 
-msgid "All nodes"
+msgid "Starting"
 msgstr ""
 
-msgid "%{count} in sync"
+msgid "Missing"
 msgstr ""
 
-msgid "%{count} pending"
+msgid "Incompatible"
 msgstr ""
 
-msgid "%{count} failing"
+msgid "Needs approval"
 msgstr ""
 
-msgid "This instance has no child node"
+msgid "Standby"
 msgstr ""
 
-msgid "Add a node first, then plugins can be installed on it from here."
+msgid "Starts automatically when needed"
 msgstr ""
 
-msgid "Manage nodes"
+msgid "Installed. Turn it on to review what it can access."
 msgstr ""
 
-msgid "Sync to selected"
+msgid "Installed the version from the marketplace"
 msgstr ""
 
-msgid "Sync to all"
+msgid "Failed to install the version from the marketplace"
 msgstr ""
 
-msgid "Nothing to start"
-msgstr ""
-
-msgid "Starts when needed"
-msgstr ""
-
-msgid "Always running"
-msgstr ""
-
-msgid "Updates available"
-msgstr ""
-
-msgid "Marketplace"
-msgstr ""
-
-msgid "Official catalog"
-msgstr ""
-
-msgid "Packages"
-msgstr ""
-
-msgid "Resources"
-msgstr ""
-
-msgid "Applies to every plugin. A plugin can only lower its own limits."
-msgstr ""
-
-msgid "Only applies on Linux. This system does not support it."
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
 msgstr ""
 
 msgid "%{field} is required"
@@ -10932,6 +11431,12 @@ msgid "Failed to save the plugin settings"
 msgstr ""
 
 msgid "This plugin has no settings."
+msgstr ""
+
+msgid "Sync %{name} to nodes"
+msgstr ""
+
+msgid "Leave every node unchecked to sync to all child nodes."
 msgstr ""
 
 msgid "%{count} node"
@@ -10955,6 +11460,10 @@ msgid ""
 msgstr ""
 
 msgid "Also sync the plugin settings"
+msgstr ""
+
+#: src/views/system/plugins/inventory.ts:16
+msgid "Nodes: %{target}"
 msgstr ""
 
 msgctxt "list separator"
@@ -10984,6 +11493,9 @@ msgid "You can check Nginx UI upgrade at this page."
 msgstr ""
 
 msgid "Current Version"
+msgstr ""
+
+msgid "OS"
 msgstr ""
 
 msgid "Arch"
@@ -11031,42 +11543,6 @@ msgstr ""
 msgid "Service"
 msgstr ""
 
-msgid "Round Robin (default)"
-msgstr ""
-
-msgid "Least Connections (least_conn)"
-msgstr ""
-
-msgid "IP Hash (ip_hash)"
-msgstr ""
-
-msgid "Hash (hash)"
-msgstr ""
-
-msgid "Random (random)"
-msgstr ""
-
-msgid "Upstream %{name} saved and Nginx reloaded"
-msgstr ""
-
-msgid "Edit Upstream %{name}"
-msgstr ""
-
-msgid "Create Upstream"
-msgstr ""
-
-msgid "Sites use it as proxy_pass http://%{name};"
-msgstr ""
-
-msgid "Load Balancing Method"
-msgstr ""
-
-msgid "Hash Key"
-msgstr ""
-
-msgid "Consistent Hashing"
-msgstr ""
-
 msgid "Servers"
 msgstr ""
 
@@ -11105,6 +11581,42 @@ msgstr ""
 msgid ""
 "Add this line to the http block, for example at the top of a site "
 "configuration, then proxy to the upstream by its name."
+msgstr ""
+
+msgid "Round Robin (default)"
+msgstr ""
+
+msgid "Least Connections (least_conn)"
+msgstr ""
+
+msgid "IP Hash (ip_hash)"
+msgstr ""
+
+msgid "Hash (hash)"
+msgstr ""
+
+msgid "Random (random)"
+msgstr ""
+
+msgid "Upstream %{name} saved and Nginx reloaded"
+msgstr ""
+
+msgid "Edit Upstream %{name}"
+msgstr ""
+
+msgid "Create Upstream"
+msgstr ""
+
+msgid "Sites use it as proxy_pass http://%{name};"
+msgstr ""
+
+msgid "Load Balancing Method"
+msgstr ""
+
+msgid "Hash Key"
+msgstr ""
+
+msgid "Consistent Hashing"
 msgstr ""
 
 msgid "Address"
@@ -11312,528 +11824,10 @@ msgstr ""
 msgid "Split view"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:784
-msgid "DNS Validation"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:800
-msgid ""
-"The main node has no DNS-01 plugin. Install it on the main node, or validate "
-"on this node."
-msgstr ""
-
-#: src/components/AutoCertForm/DNSChallenge.vue:177
-msgid ""
-"Credentials of the main node. Switch to the main node to add or change one."
-msgstr ""
-
-msgid "On the main node"
-msgstr ""
-
-msgid "On this node"
-msgstr ""
-
-msgid ""
-"The main node validates the domain with its DNS credentials, sends the "
-"certificate to this node and keeps renewing it."
-msgstr ""
-
-msgid ""
-"This node validates the domain with its own DNS credentials and renews the "
-"certificate itself."
-msgstr ""
-
-#: src/constants/errors/cert.ts:58
-msgid "Only a DNS-01 certificate can be issued for another node"
-msgstr ""
-
-#: src/constants/errors/cert.ts:59
-msgid "Node not found"
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:231
-msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:231
-msgid "Node {0} answered {1}: {2}"
-msgstr ""
-
-#: src/constants/errors/cert.ts:62
-msgid "The Nginx configuration still loads the certificate: {0}"
-msgstr ""
-
-#: src/constants/errors/cert.ts:63
-msgid "The certificate was issued, but sending it to node {0} failed: {1}"
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:231
-msgid "Node {0} cannot be reached: {1}"
-msgstr ""
-
-#: src/language/generate.ts:148
-msgid "[Nginx UI] Sending the certificate to node %{name}"
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:455
-msgid "Issued for %{node}"
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:459
-msgid ""
-"This instance validates the domain, keeps renewing the certificate and sends "
-"each renewal to %{node}."
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:462
-msgid "Files on the node:"
-msgstr ""
-
-#: src/views/certificate/CertificateList/Certificate.vue:144
-msgid "Issued by this instance for %{node} and renewed here"
-msgstr ""
-
-#: src/views/certificate/CertificateEditor.vue:78
-msgid "For %{node}"
-msgstr ""
-
-#: src/views/certificate/components/RemoveCert.vue:153
-msgid ""
-"This instance stops renewing the certificate and deletes its own copy. The "
-"files on %{node} stay unless you remove them below."
-msgstr ""
-
-#: src/views/certificate/components/RemoveCert.vue:158
-msgid "Also remove the certificate files from %{node}"
-msgstr ""
-
-#: src/views/certificate/components/RemoveCert.vue:161
-msgid ""
-"They are kept when the Nginx configuration of the node still loads them."
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:446
-msgid "Issue the certificate on the main node"
-msgstr ""
-
-#: src/views/site/site_edit/components/HTTPS/useHTTPSOnboarding.ts:206
-msgid ""
-"The node did not confirm that it received the certificate. Update Nginx UI "
-"on the node and try again."
-msgstr ""
-
-#: src/views/system/plugins/InstalledPluginCard.vue:138
-msgid "Recommended memory: %{size}"
-msgstr ""
-
-#: src/views/system/plugins/inventory.ts:16
-msgid "Nodes: %{target}"
-msgstr ""
-
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr ""
-
-msgid "Snippet not found"
-msgstr ""
-
-msgid "The snippet exceeds 256 KiB"
-msgstr ""
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr ""
-
-msgid "The snippet is still included by {0}"
-msgstr ""
-
-msgid "A snippet with this file name already exists"
-msgstr ""
-
-msgid "Snippets"
-msgstr ""
-
-msgid "Snippet"
-msgstr ""
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-
-msgid "Insert"
-msgstr ""
-
-msgid "Include"
-msgstr ""
-
-msgid ""
-"Blocklist sources fetch lists of addresses to deny from plugins and write "
-"them as deny rules to a file of their own. Nothing is blocked until you add "
-"the include line of a source to a server or location block."
-msgstr ""
-
-msgid "Refresh Now"
-msgstr ""
-
-msgid ""
-"No enabled plugin offers a blocklist source. Install and enable a plugin "
-"with the security.blocklist capability first."
-msgstr ""
-
-msgid "Select a source type"
-msgstr ""
-
-msgid ""
-"The plugin that provides this source type is not enabled. The list is kept "
-"but no longer refreshed."
-msgstr ""
-
-msgid ""
-"How often the list is fetched again, in seconds. Nginx is reloaded only when "
-"the list changed."
-msgstr ""
-
-msgid ""
-"Add this line to a server or location block to deny the listed addresses "
-"there."
-msgstr ""
-
-msgid "Snippet %{name} saved"
-msgstr ""
-
-msgid "Edit Snippet %{name}"
-msgstr ""
-
-msgid "Create Snippet"
-msgstr ""
-
-msgid "Static file cache"
-msgstr ""
-
-msgid "File Name"
-msgstr ""
-
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr ""
-
-msgid "No configuration includes this snippet yet."
-msgstr ""
-
-msgid "Snippets are no longer synchronized"
-msgstr ""
-
-msgid "Synchronize Snippets"
-msgstr ""
-
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr ""
-
-msgid "Replace snippets that already exist on the nodes"
-msgstr ""
-
-msgid "Delete snippet %{name}?"
-msgstr ""
-
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr ""
-
-msgid "snippets/%{file} will be removed."
-msgstr ""
-
-msgid "Snippet %{name} deleted"
-msgstr ""
-
-msgid "Synchronize"
-msgstr ""
-
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in a "
-"site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr ""
-
-msgid "Copied %{include}"
-msgstr ""
-
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Copy the include directive"
-msgstr ""
-
-msgid "Remove the snippet from the files that include it first."
-msgstr ""
-
-msgid "Search snippets"
-msgstr ""
-
-msgid "No snippets yet"
-msgstr ""
-
-msgid "No snippet matches the search"
-msgstr ""
-
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] ""
-msgstr[1] ""
-
 msgid "Used by %{count} configuration"
 msgid_plural "Used by %{count} configurations"
 msgstr[0] ""
 msgstr[1] ""
-
-msgid "No file matches the search"
-msgstr ""
-
-msgid "Built-in"
-msgstr ""
-
-msgid "The variable {0} is invalid: {1}"
-msgstr ""
-
-msgid "The content does not parse as a template: {0}"
-msgstr ""
-
-msgid "Built-in Template"
-msgstr ""
-
-msgid "Edit Snippet"
-msgstr ""
-
-msgid "Read Only"
-msgstr ""
-
-msgid "Preview"
-msgstr ""
-
-msgid "Updates as the snippet changes."
-msgstr ""
-
-msgid ""
-"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
-"snippet to change it."
-msgstr ""
-
-msgid "Variables"
-msgstr ""
-
-msgid "Copy as Snippet"
-msgstr ""
-
-msgid "Template"
-msgstr ""
-
-msgid "No template matches the search"
-msgstr ""
-
-msgid "Translations"
-msgstr ""
-
-msgid ""
-"The field is in %{language}. Users of other languages see their translation, "
-"or English when there is none."
-msgstr ""
-
-msgid "Remove translation"
-msgstr ""
-
-msgid "Add a language"
-msgstr ""
-
-msgid "Text"
-msgstr ""
-
-msgid "Switch"
-msgstr ""
-
-msgid "Select"
-msgstr ""
-
-msgid "New Variable…"
-msgstr ""
-
-msgid "Insert Variable"
-msgstr ""
-
-msgid ""
-"Type %{open} to complete a variable, or select a value and press %{keys} to "
-"make it one."
-msgstr ""
-
-msgid "Default Value"
-msgstr ""
-
-msgid "Edit Variable"
-msgstr ""
-
-msgid ""
-"This variable is not declared, so it has no value when the snippet is "
-"inserted."
-msgstr ""
-
-msgid "Declare Variable"
-msgstr ""
-
-msgid "Make Variable"
-msgstr ""
-
-msgid "New Variable"
-msgstr ""
-
-msgid "Key"
-msgstr ""
-
-msgid "Label"
-msgstr ""
-
-msgid "The variable is declared and inserted at the cursor."
-msgstr ""
-
-msgid ""
-"The selected value becomes the default value, and the content refers to the "
-"variable instead."
-msgstr ""
-
-msgid "Add Variable"
-msgstr ""
-
-msgid "Not declared, so left without a value: %{names}"
-msgstr ""
-
-msgid "The snippet does not render as valid Nginx configuration."
-msgstr ""
-
-msgid "The snippet renders as valid Nginx configuration."
-msgstr ""
-
-msgid "What the site editor asks for"
-msgstr ""
-
-msgid "Restore Default Values"
-msgstr ""
-
-msgid "Nothing to fill in."
-msgstr ""
-
-msgid "Fix the variables to preview the snippet."
-msgstr ""
-
-msgid "Not Used"
-msgstr ""
-
-msgid "Max Age"
-msgstr ""
-
-msgid "Options"
-msgstr ""
-
-msgid "Remove option"
-msgstr ""
-
-msgid "Add Option"
-msgstr ""
-
-msgid "Remove variable"
-msgstr ""
-
-msgid "Used in the content, not declared"
-msgstr ""
-
-msgid "Discard the unsaved changes?"
-msgstr ""
-
-msgid "Keep Editing"
-msgstr ""
-
-msgid "Sites can include this snippet and follow its later changes."
-msgstr ""
-
-msgid ""
-"This snippet has variables, so sites insert a filled in copy from the config "
-"template panel."
-msgstr ""
-
-msgid "Includable"
-msgstr ""
-
-msgid "Insert Only"
-msgstr ""
-
-msgid "Use"
-msgstr ""
-
-msgid ""
-"Add this directive to a server or location block. Sites that include the "
-"snippet follow its later changes."
-msgstr ""
-
-msgid "Fixed while configurations include the snippet, so they keep working."
-msgstr ""
-
-msgid ""
-"Variables are filled in when the snippet is inserted from the config "
-"template panel of the site editor. A snippet with variables can only be "
-"inserted, not included."
-msgstr ""
-
-msgid "Unsaved changes"
-msgstr ""
-
-msgid "My Snippets"
-msgstr ""
-
-msgid "Built-in Templates"
-msgstr ""
-
-msgid ""
-"Has %{count} variable. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgid_plural ""
-"Has %{count} variables. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Enter a key."
-msgstr ""
-
-msgid ""
-"Use letters, digits and underscores, starting with a letter or underscore."
-msgstr ""
-
-msgid "Another variable uses this key."
-msgstr ""
-
-msgid "Add at least one option."
-msgstr ""
-
-msgid "Every option needs a value."
-msgstr ""
-
-msgid "Option values must be unique."
-msgstr ""
-
-msgid "Choose the default option."
-msgstr ""
-
-msgid "Site Card Click URL"
-msgstr ""
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If empty, "
-"the default site URL is used."
-msgstr ""
 
 msgid "Certificate Relocated"
 msgstr ""
