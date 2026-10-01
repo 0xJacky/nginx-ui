@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { SegmentedProps, SelectProps } from 'antdv-next'
 import type { HTTPSCardMethod } from './httpsRequest'
+import type { HTTPSDelegatedIssue } from './useHTTPSOnboarding'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { Cert } from '@/api/cert'
 import type { HTTPSCheckStatus, HTTPSMessageArgs, HTTPSRequest, HTTPSResult, HTTPSStep, HTTPSStepStatus } from '@/api/https'
+import type { DnsVerifyOn } from '@/composables/useMainNodeDns01'
 import {
   CheckCircleFilled,
   ClockCircleOutlined,
@@ -22,6 +24,7 @@ import DNSChallenge from '@/components/AutoCertForm/DNSChallenge.vue'
 import Dns01PluginNotice from '@/components/Dns01PluginNotice'
 import PluginSlot from '@/components/PluginSlot'
 import { useDns01Plugin } from '@/composables/useDns01Plugin'
+import { useMainNodeDns01 } from '@/composables/useMainNodeDns01'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
 import { isIPAddress, splitCertificateIdentifiers } from '@/utils/certificate'
 import ACMEUserSelector from '@/views/certificate/components/ACMEUserSelector.vue'
@@ -317,6 +320,19 @@ const certificateProblem = computed<{ type: 'error' | 'warning' | 'info', title:
 
 const { isAvailable: isDns01Available } = useDns01Plugin()
 
+// ---- DNS-01 on the main node --------------------------------------------
+
+const { canVerifyOnMain, mainDns01, nodeId, verifyOptions, verifyHint } = useMainNodeDns01()
+const verifyOn = ref<DnsVerifyOn>('main')
+const isOnMainNode = computed(() => canVerifyOnMain.value && method.value === 'dns01' && verifyOn.value === 'main')
+
+// The DNS credential belongs to the node that validates, so a switch clears it.
+watch(isOnMainNode, () => {
+  options.value.dns_credential_id = undefined
+})
+
+const dns01Ready = computed(() => isOnMainNode.value ? mainDns01.value !== 'missing' : isDns01Available.value)
+
 const methodProblem = computed(() => {
   if (method.value === 'dns01' && hasIPIdentifier.value)
     return $gettext('IP address certificates only support HTTP-01 validation.')
@@ -373,7 +389,7 @@ const canCheck = computed(() => method.value !== 'skip'
 const canSubmit = computed(() => canCheck.value
   && !formLocked.value
   && (isExisting.value || (!methodProblem.value
-    && (method.value !== 'dns01' || (isDns01Available.value && !!options.value.dns_credential_id)))))
+    && (method.value !== 'dns01' || (dns01Ready.value && !!options.value.dns_credential_id)))))
 
 function buildRequest(): HTTPSRequest {
   return buildHTTPSRequest({
@@ -392,11 +408,22 @@ function runCheck() {
   onboarding.check(buildHTTPSCheckRequest(buildRequest()))
 }
 
+// The main node issues the certificate for the node, then the run on the node
+// installs it like an existing certificate.
+function delegatedIssue(request: HTTPSRequest): HTTPSDelegatedIssue | undefined {
+  if (!isOnMainNode.value)
+    return undefined
+
+  const { domains: _domains, redirect_http_to_https: _redirect, certificate_id: _id, ...payload } = request
+  return { nodeId: nodeId.value, payload }
+}
+
 function submit() {
   if (!canSubmit.value)
     return
 
-  onboarding.start(buildRequest())
+  const request = buildRequest()
+  onboarding.start(request, delegatedIssue(request))
 }
 
 // Stale check results would describe a different request.
@@ -415,6 +442,8 @@ function translate(message?: string, args?: HTTPSMessageArgs) {
 
 function stepLabel(step: HTTPSStep) {
   switch (step) {
+    case 'delegate':
+      return $gettext('Issue the certificate on the main node')
     case 'plan':
       return $gettext('Plan the configuration changes')
     case 'stage':
@@ -441,7 +470,10 @@ function formatParams(params?: HTTPSMessageArgs) {
 }
 
 const stepRows = computed<ChecklistRow[]>(() => {
-  const list: HTTPSStep[] = [...HTTPS_MAIN_STEPS]
+  // A run with a certificate from the main node issues nothing on the node.
+  const list: HTTPSStep[] = steps.value.delegate
+    ? ['delegate', ...HTTPS_MAIN_STEPS.filter(step => step !== 'issue')]
+    : [...HTTPS_MAIN_STEPS]
   if (steps.value.rollback)
     list.push('rollback')
 
@@ -747,7 +779,31 @@ defineExpose({
         </div>
 
         <!-- DNS credential -->
-        <Dns01PluginNotice v-if="method === 'dns01' && !isDns01Available" variant="https" />
+        <div v-if="canVerifyOnMain && method === 'dns01'">
+          <div class="https-label">
+            {{ $gettext('DNS Validation') }}
+          </div>
+          <ASegmented
+            v-model:value="verifyOn"
+            :options="verifyOptions"
+            :disabled="formLocked"
+          />
+          <p class="https-muted mb-0 mt-2 text-sm">
+            {{ verifyHint(verifyOn) }}
+          </p>
+        </div>
+        <template v-if="isOnMainNode">
+          <AAlert
+            v-if="mainDns01 === 'missing'"
+            type="warning"
+            show-icon
+            :title="$gettext('The main node has no DNS-01 plugin. Install it on the main node, or validate on this node.')"
+          />
+          <div v-else class="max-w-100">
+            <DNSChallenge v-model:options="options" main-node />
+          </div>
+        </template>
+        <Dns01PluginNotice v-else-if="method === 'dns01' && !isDns01Available" variant="https" />
         <div v-else-if="method === 'dns01'" class="max-w-100">
           <PluginSlot name="certificate.challenge.form:dns01" :context="{ options }">
             <DNSChallenge v-model:options="options" />

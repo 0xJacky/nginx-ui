@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import type { SelectProps } from 'antdv-next'
 import type { AutoCertOptions } from '@/api/auto_cert'
+import type { DnsVerifyOn } from '@/composables/useMainNodeDns01'
 import { useMediaQuery } from '@vueuse/core'
 import { AutoCertChallengeMethod } from '@/api/auto_cert'
 import Dns01PluginNotice from '@/components/Dns01PluginNotice'
 import PluginSlot from '@/components/PluginSlot'
 import { useDns01Plugin } from '@/composables/useDns01Plugin'
+import { useMainNodeDns01 } from '@/composables/useMainNodeDns01'
 import { PrivateKeyTypeEnum, PrivateKeyTypeList } from '@/constants'
 import { isIPAddress } from '@/utils/certificate'
 import ACMEUserSelector from '@/views/certificate/components/ACMEUserSelector.vue'
@@ -45,8 +47,20 @@ const isWildcard = computed(() => !!props.wildcard
 
 const isDns01 = computed(() => data.value.challenge_method === AutoCertChallengeMethod.dns01)
 
+const { canVerifyOnMain, mainDns01, verifyOptions, verifyHint: hintFor } = useMainNodeDns01(() => !props.existing)
+const verifyOn = computed<DnsVerifyOn>({
+  get: () => data.value.verify_on ?? 'main',
+  set: value => {
+    data.value.verify_on = value
+  },
+})
+const isOnMainNode = computed(() => canVerifyOnMain.value && isDns01.value && verifyOn.value === 'main')
+const verifyHint = computed(() => hintFor(verifyOn.value))
+
 /** DNS-01 is selected but nothing can run it right now. */
-const isDns01Blocked = computed(() => isDns01.value && !dns01.isAvailable.value)
+const isDns01Blocked = computed(() => isDns01.value && (isOnMainNode.value
+  ? mainDns01.value === 'missing'
+  : !dns01.isAvailable.value))
 
 const challengeMethodOptions = computed<SelectProps['options']>(() => [
   {
@@ -187,7 +201,7 @@ defineExpose({
     </AAlert>
     <ACard size="small" class="mb-4" :styles="cardStyles" :title="$gettext('Issuing')">
       <Dns01PluginNotice
-        v-if="forceDnsChallenge && isDns01Blocked"
+        v-if="forceDnsChallenge && isDns01Blocked && !isOnMainNode"
         class="mb-4"
         :variant="existing ? 'renewal' : 'challenge'"
       />
@@ -275,9 +289,28 @@ defineExpose({
             {{ challengeHint.text }}
           </div>
           <Dns01PluginNotice
-            v-if="isDns01Blocked"
+            v-if="isDns01Blocked && !isOnMainNode"
             class="mt-2"
             :variant="existing ? 'renewal' : 'challenge'"
+          />
+        </AFormItem>
+        <AFormItem
+          v-if="canVerifyOnMain && isDns01"
+          :label="$gettext('DNS Validation')"
+        >
+          <ASegmented
+            v-model:value="verifyOn"
+            :options="verifyOptions"
+          />
+          <div class="challenge-hint mt-1">
+            {{ verifyHint }}
+          </div>
+          <AAlert
+            v-if="isOnMainNode && mainDns01 === 'missing'"
+            class="mt-2"
+            type="warning"
+            show-icon
+            :title="$gettext('The main node has no DNS-01 plugin. Install it on the main node, or validate on this node.')"
           />
         </AFormItem>
         <AFormItem
@@ -293,8 +326,14 @@ defineExpose({
 
       <ACMEUserSelector v-model:options="data" :compact="compact" />
       <template v-if="isDns01">
+        <DNSChallenge
+          v-if="isOnMainNode"
+          v-model:options="data"
+          :compact="compact"
+          main-node
+        />
         <PluginSlot
-          v-if="!isDns01Blocked"
+          v-else-if="!isDns01Blocked"
           :name="`certificate.challenge.form:${data.challenge_method}`"
           :context="slotContext"
         >

@@ -23,6 +23,12 @@ const confirmLoading = ref(false)
 const shouldRevoke = ref(false)
 const deleteOnRevokeFailure = ref(true)
 const revokeInput = ref('')
+// Files on the node a delegated certificate was issued for stay by default.
+const removeRemote = ref(false)
+
+const delegatedNodeName = computed(() => props.certificate?.delegated_node_id
+  ? props.certificate.delegated_node_name || `#${props.certificate.delegated_node_id}`
+  : '')
 
 // Managed certificates renew through ACME, including ones whose renewal is paused
 const isManagedCertificate = computed(() => {
@@ -68,6 +74,7 @@ async function handleConfirm() {
     const { ws } = useWebSocket(`/api/certs/${props.id}/revoke`, false, undefined, {
       'X-Secure-Session-ID': secureSessionId,
       'delete_on_failure': deleteOnRevokeFailure.value ? 'true' : undefined,
+      'remove_remote': removeRemote.value ? 'true' : undefined,
     })
     const socket = ws.value!
 
@@ -96,7 +103,7 @@ async function handleConfirm() {
   }
   else {
     // Only remove certificate from database
-    cert.deleteItem(props.id).then(() => {
+    cert.remove(props.id, removeRemote.value).then(() => {
       message.success($gettext('Certificate removed successfully'))
       handleRemoved()
     }).catch(error => {
@@ -112,6 +119,7 @@ function handleCancel() {
   shouldRevoke.value = false
   deleteOnRevokeFailure.value = true
   revokeInput.value = ''
+  removeRemote.value = false
 }
 </script>
 
@@ -138,7 +146,24 @@ function handleCancel() {
       @ok="handleConfirm"
       @cancel="handleCancel"
     >
+      <template v-if="delegatedNodeName">
+        <AAlert
+          type="warning"
+          show-icon
+          :title="$gettext('This instance stops renewing the certificate and deletes its own copy. The files on %{node} stay unless you remove them below.', { node: delegatedNodeName })"
+          class="mb-4"
+        />
+        <div class="mb-4">
+          <ACheckbox v-model:checked="removeRemote">
+            {{ $gettext('Also remove the certificate files from %{node}', { node: delegatedNodeName }) }}
+          </ACheckbox>
+          <div class="remove-remote-help mt-1 ml-6">
+            {{ $gettext('They are kept when the Nginx configuration of the node still loads them.') }}
+          </div>
+        </div>
+      </template>
       <AAlert
+        v-else
         type="warning"
         show-icon
         :title="$gettext('This operation will only remove the certificate from the database. The certificate files on the file system will not be deleted.')"
@@ -170,3 +195,10 @@ function handleCancel() {
     </AModal>
   </div>
 </template>
+
+<style scoped lang="less">
+.remove-remote-help {
+  font-size: 13px;
+  color: var(--ant-color-text-secondary);
+}
+</style>

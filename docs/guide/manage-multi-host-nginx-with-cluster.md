@@ -65,6 +65,26 @@ services:
 
 The node switcher in the top bar routes all subsequent operations to the selected node. Each operation happens **locally on that node**. There is no SSH connection between hosts.
 
+## DNS-01 certificates for peers
+
+The DNS-01 plugin only needs to be installed on the lead node. With a peer
+selected in the node switcher, the certificate dialog of the site editor offers
+**DNS Validation: On the main node**, which is the default. The lead node then:
+
+- validates the domain with its own DNS credentials, which never leave it;
+- sends the certificate to the peer, where the site loads it;
+- renews the certificate and sends every renewal to the peer.
+
+On the lead node these certificates appear in the certificate list tagged
+**For &lt;node&gt;**. Deleting one stops its renewal. The files on the peer stay
+unless you choose to remove them as well, and they are kept when a
+configuration of the peer still loads them.
+
+Choose **On this node** to validate with the plugin and the DNS credentials of
+the peer itself. Signed in on a peer directly, only that is available, and the
+dialog asks to install the plugin when it is missing. The peer has to run a
+release that can receive these certificates.
+
 ## Combining cluster + host_via_ssh
 
 You can have each cluster peer run host_via_ssh internally. In that layout, the container manages nginx on its own host, and cluster federation handles cross-host coordination.

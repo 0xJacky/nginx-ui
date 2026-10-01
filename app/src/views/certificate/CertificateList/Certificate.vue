@@ -131,15 +131,30 @@ function actionsColumn(): TableColumnsType<Cert>[number] {
   }
 }
 
+// A certificate issued for a node names that node, since it does not serve
+// any configuration of this instance.
+function renderName(record: Cert) {
+  const link = <a onClick={() => editCert(record)}>{record.name || record.domains?.[0] || '-'}</a>
+  if (!record.delegated_node_id)
+    return link
+  const node = record.delegated_node_name || `#${record.delegated_node_id}`
+  return (
+    <div class="cert-name">
+      {link}
+      <Tooltip title={$gettext('Issued by this instance for %{node} and renewed here', { node })}>
+        <Tag class="m-0" color="geekblue" variant="filled">{$gettext('For %{node}', { node })}</Tag>
+      </Tooltip>
+    </div>
+  )
+}
+
 const columns = computed<TableColumnsType<Cert>>(() => [
   {
     title: $gettext('Name'),
     dataIndex: 'name',
     ellipsis: true,
     width: 200,
-    render: (_: unknown, record: Cert) => (
-      <a onClick={() => editCert(record)}>{record.name || record.domains?.[0] || '-'}</a>
-    ),
+    render: (_: unknown, record: Cert) => renderName(record),
   },
   {
     title: $gettext('Domains'),
@@ -193,7 +208,7 @@ const narrowColumns = computed<TableColumnsType<Cert>>(() => [
     dataIndex: 'name',
     render: (_: unknown, record: Cert) => (
       <div class="min-w-0">
-        <a onClick={() => editCert(record)}>{record.name || record.domains?.[0] || '-'}</a>
+        {renderName(record)}
         <div class="cert-narrow-meta">
           {renderState(record)}
           {record.certificate_info?.not_after && <span class="cert-narrow-expiry">{expiryDate(record)}</span>}
@@ -460,6 +475,14 @@ async function importSelectedDiscoveredCerts() {
 
 .cert-muted {
   color: var(--ant-color-text-quaternary);
+}
+
+:deep(.cert-name) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  min-width: 0;
 }
 
 :deep(.cert-domains) {

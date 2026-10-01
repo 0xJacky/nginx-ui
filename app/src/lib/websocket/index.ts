@@ -30,6 +30,8 @@ export function useWebSocket<T = any>(
   reconnect: boolean = true,
   options?: Omit<UseWebSocketOptions, 'autoReconnect'>,
   extraQuery?: Record<string, string | undefined>,
+  /** Connects to this server even while a remote node is selected. */
+  skipNodeProxy = false,
 ): UseWebSocketReturn<T> {
   const userStore = useUserStore()
   const settings = useSettingsStore()
@@ -44,7 +46,7 @@ export function useWebSocket<T = any>(
   // forced logout — which would kick out otherwise-valid sessions on any
   // WebSocket-backed page. Short-token refresh is handled by the user store's
   // token watcher (see app/src/pinia/moudule/user.ts).
-  const wsUrl = buildWebSocketUrlWithQuery(url, token.value, shortToken.value, extraQuery, settings.node.id)
+  const wsUrl = buildWebSocketUrlWithQuery(url, token.value, shortToken.value, extraQuery, skipNodeProxy ? undefined : settings.node.id)
 
   return vueUseWebSocket<T>(wsUrl, {
     autoReconnect: resolveAutoReconnect(url, reconnect),

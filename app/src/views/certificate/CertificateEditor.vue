@@ -227,8 +227,15 @@ function cancelRename() {
   renaming.value = false
 }
 
+const isDelegated = computed(() => !!data.value.delegated_node_id)
+const delegatedNode = computed(() => data.value.delegated_node_name || `#${data.value.delegated_node_id}`)
+
 const renewOptions = computed<AutoCertOptions>(() => ({
-  name: data.value.filename || data.value.name,
+  // A certificate issued for a node is renewed for its configuration there.
+  name: isDelegated.value
+    ? data.value.delegated_config_name || data.value.name
+    : data.value.filename || data.value.name,
+  delegated_node_id: data.value.delegated_node_id || undefined,
   domains: data.value.domains,
   key_type: data.value.key_type,
   challenge_method: data.value.challenge_method,
@@ -441,6 +448,23 @@ function handleBack() {
     <ARow :gutter="[16, 16]" class="mt-4">
       <ACol :xs="24" :lg="isNew ? 24 : 15">
         <AFlex vertical :gap="16">
+          <AAlert
+            v-if="isDelegated"
+            type="info"
+            show-icon
+            :title="$gettext('Issued for %{node}', { node: delegatedNode })"
+          >
+            <template #description>
+              <p class="mb-1">
+                {{ $gettext('This instance validates the domain, keeps renewing the certificate and sends each renewal to %{node}.', { node: delegatedNode }) }}
+              </p>
+              <p v-if="data.remote_ssl_certificate_path" class="mb-0">
+                {{ $gettext('Files on the node:') }}
+                <code>{{ data.remote_ssl_certificate_path }}</code>,
+                <code>{{ data.remote_ssl_certificate_key_path }}</code>
+              </p>
+            </template>
+          </AAlert>
           <SelfSignedCertManagement
             v-if="isSelfSigned && selfSignedPayload"
             v-model:value="selfSignedPayload"
@@ -452,7 +476,7 @@ function handleBack() {
           />
 
           <CertificateSyncCard
-            v-if="!isSelfSigned"
+            v-if="!isSelfSigned && !isDelegated"
             v-model:sync-node-ids="data.sync_node_ids"
           />
 

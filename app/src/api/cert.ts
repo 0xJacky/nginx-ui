@@ -71,6 +71,14 @@ export interface Cert extends ModelBase {
   renewal_failed?: boolean
   /** Provider name of the DNS credential. */
   dns_provider?: string
+  /** Node the certificate was issued for by this instance, 0 for none. */
+  delegated_node_id?: number
+  delegated_node_name?: string
+  /** Configuration on that node the certificate was issued for. */
+  delegated_config_name?: string
+  /** Where the node keeps the certificate files. */
+  remote_ssl_certificate_path?: string
+  remote_ssl_certificate_key_path?: string
 }
 
 export interface CertificateDeploymentStatus {
@@ -214,6 +222,10 @@ const cert = extendCurdApi(useCurdApi<Cert>('/certs'), {
   // Same endpoint as getList, with the state filter and the per filter counts.
   get_overview_list(params: CertListParams): Promise<CertListResponse> {
     return http.get('/certs', { params })
+  },
+  /** Deletes a certificate; a delegated one also removes its files on the node when asked. */
+  remove(id: number, removeRemote = false): Promise<void> {
+    return http.delete(`/certs/${id}`, { params: removeRemote ? { remove_remote: true } : undefined })
   },
   set_auto_renewal(id: number, enabled: boolean): Promise<Cert> {
     return http.post(`/certs/${id}/auto_renewal`, { enabled })
