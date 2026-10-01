@@ -1,5 +1,5 @@
 /**
- * On-demand chunks of a plugin bundle (spec WEB-13).
+ * On-demand chunks of a plugin bundle.
  *
  * A chunk is one more IIFE file. It hands its exports over by calling
  * `window.NginxUI.registerChunk(pluginId, name, exports)` while its script
