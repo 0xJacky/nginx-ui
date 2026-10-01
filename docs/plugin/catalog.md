@@ -244,3 +244,11 @@ A catalog is a static file, so any web server or static hosting works:
 
 People add the catalog under **Plugins > Marketplace > Sources**. Only the
 official catalog can publish partner keys.
+
+Catalogs are merged in the order they are listed, and the first catalog that
+lists a plugin is the one it installs from. The official catalog cannot be
+removed. It comes first unless moved: a mirror placed above it serves the
+official plugins in its place. That changes where a package downloads from,
+not what it is: an id in `com.nginxui.*` installs only from a package signed
+with the official key, and the marketplace marks such a plugin when another
+catalog offers it.

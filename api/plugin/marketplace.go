@@ -184,11 +184,12 @@ func ReplacePlugin(c *gin.Context) {
 	c.JSON(http.StatusOK, info)
 }
 
-// GetMarketplaceSources returns the configured catalog URLs.
+// GetMarketplaceSources returns the catalogs in merge order, the official one
+// first.
 func GetMarketplaceSources(c *gin.Context) {
 	c.JSON(http.StatusOK, marketplaceSourcesResponse{
 		Sources: plugin.GetManager().Marketplace().SourceList(),
-		Default: settings.DefaultPluginMarketplaceSource,
+		Default: plugin.OfficialSource(),
 	})
 }
 
@@ -210,7 +211,8 @@ func ProbeMarketplaceSource(c *gin.Context) {
 	c.JSON(http.StatusOK, plugin.GetManager().Marketplace().Probe(c, rawURL))
 }
 
-// SaveMarketplaceSources replaces the catalog URL list and drops the cache.
+// SaveMarketplaceSources replaces the catalog list and drops the cache. The
+// official catalog cannot be left out, only moved.
 func SaveMarketplaceSources(c *gin.Context) {
 	var body struct {
 		Sources []string `json:"sources"`
@@ -237,11 +239,13 @@ func SaveMarketplaceSources(c *gin.Context) {
 	marketplace.ClearCache()
 	c.JSON(http.StatusOK, marketplaceSourcesResponse{
 		Sources: marketplace.SourceList(),
-		Default: settings.DefaultPluginMarketplaceSource,
+		Default: plugin.OfficialSource(),
 	})
 }
 
 // normalizeSources trims, de-duplicates and validates the submitted URLs.
+// Listed first, the official catalog is where it goes anyway, so it is only
+// stored when another source comes before it.
 func normalizeSources(raw []string) ([]string, error) {
 	sources := make([]string, 0, len(raw))
 	for _, item := range raw {
@@ -258,6 +262,9 @@ func normalizeSources(raw []string) ([]string, error) {
 		if len(sources) > maxMarketplaceSources {
 			return nil, cosy.WrapErrorWithParams(plugin.ErrCatalogInvalid, "too many sources")
 		}
+	}
+	if official := plugin.OfficialSource(); len(sources) > 0 && sources[0] == official {
+		sources = sources[1:]
 	}
 	return sources, nil
 }

@@ -7335,8 +7335,8 @@ msgstr "启用市场"
 msgid "Sources"
 msgstr "来源"
 
-msgid "Managed on the marketplace page. Empty means the official catalog."
-msgstr "在市场页面管理，为空表示使用官方目录。"
+msgid "Managed on the marketplace page. The official catalog is always used."
+msgstr "在市场页面管理，官方目录始终启用。"
 
 msgid "Allow Community Plugins"
 msgstr "允许社区插件"
@@ -10948,6 +10948,9 @@ msgstr "以下插件将随其一起安装"
 msgid "Live progress is unavailable, checking the plugin list instead"
 msgstr "无法获取实时进度，正在改为检查插件列表"
 
+msgid "Offered by %{source} instead of the official catalog."
+msgstr "由 %{source} 提供，而非官方目录。"
+
 msgid "Installed %{version} is not this version"
 msgstr "已安装的 %{version} 并非此版本"
 
@@ -11019,9 +11022,10 @@ msgid "Marketplace sources"
 msgstr "市场源"
 
 msgid ""
-"Catalogs are merged in order, the first source that offers a plugin wins. "
-"Leave the list empty to use the official catalog."
-msgstr "目录按顺序合并，最先提供该插件的源生效。留空列表即使用官方目录。"
+"Catalogs are merged in order, and the first source that offers a plugin "
+"wins. The official catalog cannot be removed. Move a mirror above it to "
+"install from the mirror first."
+msgstr "目录按顺序合并，最先提供该插件的源生效。官方目录无法移除。将镜像移到官方目录之前，即可优先从镜像安装。"
 
 msgid "Drag to reorder"
 msgstr "拖动以调整顺序"
@@ -11039,17 +11043,8 @@ msgstr "输入域名（如 plugins.example.com）或目录的完整地址。"
 msgid "Edit address"
 msgstr "编辑地址"
 
-msgid "Using the official catalog"
-msgstr "正在使用官方目录"
-
-msgid "Add a source to offer plugins from another catalog as well."
-msgstr "添加来源后，也可以安装其他目录中的插件。"
-
 msgid "Add source"
 msgstr "添加来源"
-
-msgid "Add the official catalog"
-msgstr "添加官方目录"
 
 msgid "Published by the Nginx UI project."
 msgstr "由 Nginx UI 项目发布。"
@@ -11856,6 +11851,30 @@ msgstr "单窗格"
 
 msgid "Split view"
 msgstr "分屏视图"
+
+#~ msgid ""
+#~ "The official catalog is always used and comes first. Catalogs added here "
+#~ "follow it in order, and the first source that offers a plugin wins."
+#~ msgstr ""
+#~ "官方目录始终启用并排在最前。在此添加的目录按顺序排在其后，最先提供该插件的"
+#~ "源生效。"
+
+#~ msgid "Managed on the marketplace page. Empty means the official catalog."
+#~ msgstr "在市场页面管理，为空表示使用官方目录。"
+
+#~ msgid ""
+#~ "Catalogs are merged in order, the first source that offers a plugin wins. "
+#~ "Leave the list empty to use the official catalog."
+#~ msgstr "目录按顺序合并，最先提供该插件的源生效。留空列表即使用官方目录。"
+
+#~ msgid "Using the official catalog"
+#~ msgstr "正在使用官方目录"
+
+#~ msgid "Add a source to offer plugins from another catalog as well."
+#~ msgstr "添加来源后，也可以安装其他目录中的插件。"
+
+#~ msgid "Add the official catalog"
+#~ msgstr "添加官方目录"
 
 #~ msgid "Built-in Template"
 #~ msgstr "内置模板"

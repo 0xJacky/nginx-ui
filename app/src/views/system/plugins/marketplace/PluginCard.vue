@@ -9,6 +9,7 @@ import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import PluginIcon from '../PluginIcon.vue'
 import { useReplacePlugin } from '../replace'
+import { useOfficialElsewhere, useSourceName } from './sources'
 import { findTrustedOffer, trustedOfferAction, trustPreset } from './trust'
 
 const props = defineProps<{
@@ -33,6 +34,9 @@ const memoryHint = computed(() => lowMemory.value
   : $gettext('Recommended memory: %{size}', { size: formatMemory(recommendedMb.value) }))
 
 const channel = computed(() => entryChannel(props.entry))
+
+const sourceName = useSourceName()
+const isOfficialElsewhere = useOfficialElsewhere()
 
 const isInstalled = computed(() => Boolean(props.entry.installed_version))
 const canInstall = computed(() => Boolean(props.entry.installable_release))
@@ -68,6 +72,15 @@ const actionLabel = computed(() => props.entry.update_available ? $gettext('Upda
             <UserOutlined />
             {{ entry.author }}
           </span>
+          <ATooltip
+            v-if="isOfficialElsewhere(entry)"
+            :title="$gettext('Offered by %{source} instead of the official catalog.', { source: sourceName(entry.source) })"
+          >
+            <span class="plugin-card-source">
+              <span class="i-tabler-arrows-exchange" />
+              {{ sourceName(entry.source) }}
+            </span>
+          </ATooltip>
           <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
             <span class="plugin-card-channel" :class="`is-${channel}`">{{ channelLabel(channel) }}</span>
           </ATooltip>
@@ -149,7 +162,8 @@ const actionLabel = computed(() => props.entry.update_available ? $gettext('Upda
 <style lang="less" scoped>
 @import '../plugin-card.less';
 
-.plugin-card-author {
+.plugin-card-author,
+.plugin-card-source {
   display: inline-flex;
   align-items: center;
   gap: 4px;
