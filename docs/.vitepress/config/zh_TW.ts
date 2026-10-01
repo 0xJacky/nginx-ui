@@ -1,4 +1,5 @@
 import { LocaleSpecificConfig, DefaultTheme } from 'vitepress'
+import { pluginNav, pluginSidebar } from './plugin'
 import { demoUrl, editLinkPattern } from './common'
 
 export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
@@ -6,6 +7,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     nav: [
       { text: '首頁', link: '/zh_TW/' },
       { text: '手冊', link: '/zh_TW/guide/about' },
+      pluginNav('zh_TW'),
       { text: '贊助', link: '/zh_TW/sponsor' },
       { text: '演示', link: demoUrl }
     ],
@@ -16,6 +18,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     },
 
     sidebar: {
+      ...pluginSidebar('zh_TW'),
       '/zh_TW/guide/': [
         {
           text: '介紹',
