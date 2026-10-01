@@ -885,6 +885,33 @@ func (m *Manager) StaticRoot(id, kind string) (string, error) {
 	if item.manifest == nil || item.row == nil || !item.row.Enabled {
 		return "", ErrPluginNotFound
 	}
+	return staticRootOf(item, kind)
+}
+
+// IconRoot returns the static root of an installed plugin when rel names its
+// icon, whether or not the plugin is enabled, so the plugin pages show the
+// icon of a disabled plugin too. Nothing else of a disabled plugin is served.
+func (m *Manager) IconRoot(id, kind, rel string) (string, error) {
+	item, ok := m.lookup(id)
+	if !ok {
+		return "", ErrPluginNotFound
+	}
+
+	m.mu.RLock()
+	defer m.mu.RUnlock()
+	if item.manifest == nil {
+		return "", ErrPluginNotFound
+	}
+	icon := iconURL(item.manifest)
+	if icon == "" || icon != path.Join(pluginRoutePrefix, id, kind, rel) {
+		return "", ErrPluginNotFound
+	}
+	return staticRootOf(item, kind)
+}
+
+// staticRootOf is the directory a static route of kind serves for item. The
+// caller must hold at least the read lock.
+func staticRootOf(item *entry, kind string) (string, error) {
 	switch kind {
 	case webappRouteDir:
 		return filepath.Join(item.dir, filepath.FromSlash(webappDir(item.manifest))), nil
