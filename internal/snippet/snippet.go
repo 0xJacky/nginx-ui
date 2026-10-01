@@ -115,7 +115,9 @@ func readAll(usage map[string][]string) ([]Snippet, error) {
 		if info, err := entry.Info(); err == nil {
 			s.ModifiedAt = info.ModTime()
 		}
-		if content, err := nginx.ReadFile(filepath.Join(Dir(), file)); err == nil {
+		if h, ok := indexedHeader(file); ok {
+			s.applyHeader(h)
+		} else if content, err := nginx.ReadFile(filepath.Join(Dir(), file)); err == nil {
 			if h, _, err := parse(content); err == nil {
 				s.applyHeader(h)
 			}
@@ -252,7 +254,9 @@ func Delete(file string, remover Remover) (string, error) {
 	if !ValidFile(file) {
 		return "", ErrInvalidFile
 	}
-	if users := usageIndex()[IncludePath(file)]; len(users) > 0 {
+	// The scanner may lag behind a change on a remote host, so deleting
+	// checks the files as they are now.
+	if users := scanUsage()[IncludePath(file)]; len(users) > 0 {
 		return "", cosy.WrapErrorWithParams(ErrInUse, strings.Join(users, ", "))
 	}
 	abs := filepath.Join(Dir(), file)
@@ -454,9 +458,19 @@ func stripComments(content string) string {
 }
 
 // usageIndex maps every snippet include path to the configuration files
-// that include it, relative to the configuration directory. It reads
-// nginx.conf, conf.d and the sites and streams.
+// that include it, relative to the configuration directory. It uses what the
+// config scanner recorded, and reads the files itself until the scanner is
+// ready.
 func usageIndex() map[string][]string {
+	if index, ok := indexedUsage(); ok {
+		return index
+	}
+	return scanUsage()
+}
+
+// scanUsage builds the usage index by reading nginx.conf, conf.d and the
+// sites and streams now.
+func scanUsage() map[string][]string {
 	confDir := nginx.GetConfPath()
 	index := map[string][]string{}
 	add := func(rel string) {

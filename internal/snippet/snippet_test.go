@@ -25,6 +25,10 @@ import (
 // test and reload always succeed, with an in-memory database for the
 // configuration records Save keeps.
 func setupSnippetTest(t *testing.T) string {
+	return setupSnippetTestB(t)
+}
+
+func setupSnippetTestB(t testing.TB) string {
 	t.Helper()
 	confDir := t.TempDir()
 
@@ -46,7 +50,9 @@ func setupSnippetTest(t *testing.T) string {
 	return confDir
 }
 
-func writeFile(t *testing.T, path, content string) {
+func writeFile(t *testing.T, path, content string) { writeFileB(t, path, content) }
+
+func writeFileB(t testing.TB, path, content string) {
 	t.Helper()
 	require.NoError(t, os.MkdirAll(filepath.Dir(path), 0o755))
 	require.NoError(t, os.WriteFile(path, []byte(content), 0o644))
@@ -282,4 +288,57 @@ func TestNginxRemoverPutsTheFileBackWhenNginxRejectsIt(t *testing.T) {
 	removed, err = NginxRemover{}.Remove(file)
 	require.NoError(t, err)
 	assert.False(t, removed)
+}
+
+// useScannerIndex resets the index the config scanner feeds and marks it
+// ready, as after the first scan.
+func useScannerIndex(t *testing.T) {
+	t.Helper()
+	reset := func(ready bool) {
+		usage.Lock()
+		usage.includes = map[string][]string{}
+		usage.headers = map[string]header{}
+		usage.ready = ready
+		usage.Unlock()
+	}
+	reset(true)
+	t.Cleanup(func() { reset(false) })
+}
+
+func TestUsageComesFromTheScannerOnceItIsReady(t *testing.T) {
+	confDir := setupSnippetTest(t)
+	writeFile(t, filepath.Join(confDir, "snippets", "cache.conf"), template.HeaderStart+"\n# name = \"On disk\"\n"+template.HeaderEnd+"\nexpires 7d;\n")
+	writeFile(t, filepath.Join(confDir, "snippets", "wild-a.conf"), "")
+	site := filepath.Join(confDir, "sites-available", "example.com")
+	writeFile(t, site, "server {\n    include snippets/cache.conf;\n}\n")
+
+	// Before the scanner is ready the files are read directly.
+	assert.Equal(t, []string{"sites-available/example.com"}, usageIndex()[IncludePath("cache.conf")])
+
+	useScannerIndex(t)
+	require.NoError(t, scanIncludes(site, []byte("server {\n    include snippets/cache.conf;\n    include snippets/wild-*.conf;\n}\n")))
+	require.NoError(t, scanIncludes(filepath.Join(confDir, "conf.d", "a.conf"), []byte("include snippets/cache.conf;\n")))
+	require.NoError(t, scanIncludes(filepath.Join(confDir, "snippets", "cache.conf"),
+		[]byte(template.HeaderStart+"\n# name = \"From the scanner\"\n"+template.HeaderEnd+"\nexpires 7d;\n")))
+	require.NoError(t, scanIncludes("/elsewhere/x.conf", []byte("include snippets/cache.conf;\n")))
+
+	index := usageIndex()
+	assert.Equal(t, []string{"conf.d/a.conf", "sites-available/example.com"}, index[IncludePath("cache.conf")])
+	assert.Equal(t, []string{"sites-available/example.com"}, index[IncludePath("wild-a.conf")])
+
+	snippets, err := List()
+	require.NoError(t, err)
+	assert.Equal(t, "From the scanner", snippets[0].Name, "the header comes from the scanner, not the disk")
+
+	// A removed file arrives as empty content.
+	require.NoError(t, scanIncludes(filepath.Join(confDir, "conf.d", "a.conf"), nil))
+	assert.Equal(t, []string{"sites-available/example.com"}, usageIndex()[IncludePath("cache.conf")])
+
+	// Deleting reads the files as they are now, whatever the scanner says.
+	require.NoError(t, scanIncludes(site, nil))
+	assert.Empty(t, usageIndex()[IncludePath("cache.conf")])
+	_, err = Delete("cache.conf", &fakeRemover{})
+	var cosyErr *cosy.Error
+	require.ErrorAs(t, err, &cosyErr)
+	assert.Equal(t, ErrInUse.(*cosy.Error).Code, cosyErr.Code)
 }
