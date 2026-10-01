@@ -299,9 +299,9 @@ signing and will never install. See
 <Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
 
 The signature does not verify with a key the linter knows: the
-release keys of the project, or a partner key with a valid certificate in the
-package. This is expected for a community plugin, whose key only a catalog or
-an operator names. See [Trust Levels](./signing.md#trust-levels).
+official plugin key of the project, or a partner key with a valid certificate
+in the package. This is expected for a community plugin, whose key only a
+catalog or an operator names. See [Trust Levels](./signing.md#trust-levels).
 
 ### partner-files
 
@@ -316,8 +316,8 @@ present, so the package carries no partner certificate. See
 <Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
 
 The partner certificate does not verify: `plugin.partner` is
-not a public key, no release key signed it, or the trusted comment has the
-wrong format.
+not a public key, the official plugin key did not sign it, or the trusted
+comment has the wrong format.
 
 ### partner-certificate
 

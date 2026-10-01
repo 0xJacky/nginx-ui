@@ -152,7 +152,7 @@ func TestFetchPackageWritesOnlyTheArchive(t *testing.T) {
 	useMarketplace(t, server.catalogURL())
 	settings.PluginSettings.DeveloperMode = false
 
-	signer := useReleaseKey(t)
+	signer := useOfficialKey(t)
 	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), signer, nil)
 
 	destination := t.TempDir()

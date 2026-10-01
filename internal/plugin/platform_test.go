@@ -264,7 +264,7 @@ func TestMarketplaceInstallPicksTheHostDownload(t *testing.T) {
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
 	settings.PluginSettings.DeveloperMode = false
-	signer := useReleaseKey(t)
+	signer := useOfficialKey(t)
 
 	host, foreign := HostPlatform(), foreignPlatform()
 	server.publishPlatforms(t, "com.example.native", "1.0.0", signer, host, foreign)
@@ -349,7 +349,7 @@ func TestFetchPackageDownloadsTheRequestedPlatform(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
 	useMarketplace(t, server.catalogURL())
-	signer := useReleaseKey(t)
+	signer := useOfficialKey(t)
 
 	host, foreign := HostPlatform(), foreignPlatform()
 	bodies := server.publishPlatforms(t, "com.example.native", "1.0.0", signer, host, foreign)

@@ -317,7 +317,7 @@ func TestLintChecksTheEmbeddedSignature(t *testing.T) {
 		require.NoError(t, err)
 		return report
 	}
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	_, community := newSigningKey(t)
 
 	// A release signature is clean, a partner one is covered by
@@ -383,7 +383,7 @@ func warningRules(t *testing.T, report *LintReport) []string {
 }
 
 func TestLintChecksThePartnerCertificate(t *testing.T) {
-	release := useReleaseKey(t)
+	release := useOfficialKey(t)
 	partnerPublic, partner := newSigningKey(t)
 	_, stranger := newSigningKey(t)
 	certificate := certify(t, partnerPublic, release, "example", "2099-12-31")
@@ -421,7 +421,7 @@ func TestLintChecksThePartnerCertificate(t *testing.T) {
 			files: map[string]string{PartnerSignatureFileName: certificate[PartnerSignatureFileName]}, signer: partner,
 			want: []string{RulePartnerFiles, RuleSignatureSigner},
 		},
-		"signed by a key that is not a release key": {
+		"signed by a key that is not an official plugin key": {
 			files: certify(t, partnerPublic, &stranger, "example", "2099-12-31"), signer: partner,
 			want: []string{RulePartnerComment, RuleSignatureSigner},
 		},
