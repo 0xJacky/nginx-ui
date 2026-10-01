@@ -28,7 +28,8 @@ const (
 //
 // MCP is the mcp capability. A plugin that declares the capability serves the
 // Model Context Protocol tools its manifest lists; the host publishes them on
-// its MCP server and forwards every call. See spec/14-capabilities-mcp.md.
+// its MCP server and forwards every call. See
+// https://nginxui.com/plugin/capabilities/mcp.
 type MCPClient interface {
 	// Runs one tool.
 	Call(ctx context.Context, in *MCPCallRequest, opts ...grpc.CallOption) (*MCPCallResponse, error)
@@ -58,7 +59,8 @@ func (c *mCPClient) Call(ctx context.Context, in *MCPCallRequest, opts ...grpc.C
 //
 // MCP is the mcp capability. A plugin that declares the capability serves the
 // Model Context Protocol tools its manifest lists; the host publishes them on
-// its MCP server and forwards every call. See spec/14-capabilities-mcp.md.
+// its MCP server and forwards every call. See
+// https://nginxui.com/plugin/capabilities/mcp.
 type MCPServer interface {
 	// Runs one tool.
 	Call(context.Context, *MCPCallRequest) (*MCPCallResponse, error)

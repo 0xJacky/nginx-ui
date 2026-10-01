@@ -31,7 +31,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // DNS01 is the dns01 capability. A plugin that declares the capability serves
-// it and the host is the caller. See spec/05-capabilities-dns01.md.
+// it and the host is the caller. See
+// https://nginxui.com/plugin/capabilities/dns01.
 type DNS01Client interface {
 	// Publishes the challenge TXT record.
 	Present(ctx context.Context, in *DNS01PresentRequest, opts ...grpc.CallOption) (*DNS01PresentResponse, error)
@@ -110,7 +111,8 @@ func (c *dNS01Client) Validate(ctx context.Context, in *DNS01ValidateRequest, op
 // for forward compatibility.
 //
 // DNS01 is the dns01 capability. A plugin that declares the capability serves
-// it and the host is the caller. See spec/05-capabilities-dns01.md.
+// it and the host is the caller. See
+// https://nginxui.com/plugin/capabilities/dns01.
 type DNS01Server interface {
 	// Publishes the challenge TXT record.
 	Present(context.Context, *DNS01PresentRequest) (*DNS01PresentResponse, error)

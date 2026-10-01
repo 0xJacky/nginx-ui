@@ -22,9 +22,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Manifest is plugin.json, see spec/01-manifest.md. Its protobuf JSON mapping
-// with proto field names is the file format. schema/plugin.schema.json adds
-// the validation rules on top and is checked against this message.
+// Manifest is plugin.json, see https://nginxui.com/plugin/manifest. Its
+// protobuf JSON mapping with proto field names is the file format.
+// schema/plugin.schema.json adds the validation rules on top and is checked
+// against this message.
 type Manifest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Reverse domain plugin id, e.g. "com.nginxui.dns01".
@@ -85,8 +86,8 @@ type Manifest struct {
 	// Translations of name and description keyed by host locale code, e.g.
 	// "zh_CN". name and description stay the fallback.
 	I18N map[string]*ManifestI18N `protobuf:"bytes,30,rep,name=i18n,proto3" json:"i18n,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	// Plugin ids that must never be enabled together with this plugin. See
-	// spec/01-manifest.md MAN-42 and spec/04-lifecycle.md LIFE-20.
+	// Plugin ids that must never be enabled together with this plugin. The
+	// check is symmetric: either side declaring it is enough.
 	Conflicts     []string `protobuf:"bytes,31,rep,name=conflicts,proto3" json:"conflicts,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -478,8 +479,7 @@ func (x *ManifestServer) GetResources() *ManifestResources {
 
 // ManifestResources are the resources a plugin process needs at most, and the
 // memory that suits it best. A host that confines plugin processes applies the
-// smaller of a hint and its own limit; a hint never raises a limit. See
-// spec/04-lifecycle.md LIFE-16.
+// smaller of a hint and its own limit; a hint never raises a limit.
 type ManifestResources struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Memory in MiB. 0 means no hint.
@@ -488,7 +488,7 @@ type ManifestResources struct {
 	CpuPercent int32 `protobuf:"varint,2,opt,name=cpu_percent,json=cpuPercent,proto3" json:"cpu_percent,omitempty"`
 	// Memory in MiB the machine, or the container the host runs in, should have
 	// for the plugin to work well, counting the host. Advice for people who
-	// choose plugins, never a limit. 0 means no hint. See LIFE-19.
+	// choose plugins, never a limit. 0 means no hint.
 	RecommendedMemoryMb int32 `protobuf:"varint,3,opt,name=recommended_memory_mb,json=recommendedMemoryMb,proto3" json:"recommended_memory_mb,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
@@ -556,7 +556,7 @@ type ManifestWebapp struct {
 	// Zero-build iframe pages.
 	Pages []*ManifestPage `protobuf:"bytes,4,rep,name=pages,proto3" json:"pages,omitempty"`
 	// Extra IIFE files the bundle loads on demand with registry.loadChunk. Maps
-	// a chunk name to a package relative .js path. See spec/07-webapp.md WEB-13.
+	// a chunk name to a package relative .js path.
 	Chunks        map[string]string `protobuf:"bytes,5,rep,name=chunks,proto3" json:"chunks,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -699,7 +699,7 @@ func (x *ManifestPage) GetFile() string {
 }
 
 // ManifestContent declares process-less contributions. See
-// spec/17-content-plugins.md.
+// https://nginxui.com/plugin/capabilities/content.
 type ManifestContent struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Package relative directory holding conf/ and block/ config templates.
@@ -927,7 +927,7 @@ type DNS01Provider struct {
 	PropagationTimeoutSeconds int32 `protobuf:"varint,5,opt,name=propagation_timeout_seconds,json=propagationTimeoutSeconds,proto3" json:"propagation_timeout_seconds,omitempty"`
 	// Default used when the plugin does not implement dns01.options.
 	PollingIntervalSeconds int32 `protobuf:"varint,6,opt,name=polling_interval_seconds,json=pollingIntervalSeconds,proto3" json:"polling_interval_seconds,omitempty"`
-	// Credential form, see DNS01-14. Required.
+	// Credential form. Required.
 	Form          *DNS01ProviderForm `protobuf:"bytes,7,opt,name=form,proto3" json:"form,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache

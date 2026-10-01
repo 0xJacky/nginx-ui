@@ -32,7 +32,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
 // Plugin is the lifecycle service every plugin process serves. The host is
-// the caller. See spec/04-lifecycle.md.
+// the caller. See https://nginxui.com/plugin/lifecycle.
 type PluginClient interface {
 	// Handshake. It MUST complete before any other method is sent in either
 	// direction.
@@ -124,7 +124,7 @@ func (c *pluginClient) Exit(ctx context.Context, in *PluginExitRequest, opts ...
 // for forward compatibility.
 //
 // Plugin is the lifecycle service every plugin process serves. The host is
-// the caller. See spec/04-lifecycle.md.
+// the caller. See https://nginxui.com/plugin/lifecycle.
 type PluginServer interface {
 	// Handshake. It MUST complete before any other method is sent in either
 	// direction.

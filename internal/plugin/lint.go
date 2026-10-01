@@ -938,7 +938,7 @@ func lintExtractArchive(archivePath string, report *LintReport) (dir string, ok 
 	return tempDir, true
 }
 
-// packageErrorRule maps a package walker error onto the spec rule it
+// packageErrorRule maps a package walker error onto the check rule it
 // violates, using the sentinel error where one exists and the message
 // otherwise.
 func packageErrorRule(err error) string {

@@ -87,7 +87,7 @@ func contentDir(pluginDir, rel string) string {
 // ContentProblem is one issue CheckContent found.
 type ContentProblem struct {
 	Level Level
-	// Rule is the spec requirement, e.g. RuleContentTemplate.
+	// Rule is the check rule, e.g. RuleContentTemplate.
 	Rule string
 	// Path is the package relative path the problem is about.
 	Path    string

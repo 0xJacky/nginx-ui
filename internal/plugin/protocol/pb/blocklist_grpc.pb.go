@@ -30,7 +30,7 @@ const (
 // capability fetches lists of addresses to deny from the kinds of source its
 // manifest lists (a threat feed, a reputation service, a shared ban list),
 // and the host is the caller: it turns every list into nginx deny rules. See
-// spec/18-capabilities-blocklist.md.
+// https://nginxui.com/plugin/capabilities/blocklist.
 type BlocklistClient interface {
 	// Fetches the current entries of one source.
 	Fetch(ctx context.Context, in *BlocklistFetchRequest, opts ...grpc.CallOption) (*BlocklistFetchResponse, error)
@@ -62,7 +62,7 @@ func (c *blocklistClient) Fetch(ctx context.Context, in *BlocklistFetchRequest, 
 // capability fetches lists of addresses to deny from the kinds of source its
 // manifest lists (a threat feed, a reputation service, a shared ban list),
 // and the host is the caller: it turns every list into nginx deny rules. See
-// spec/18-capabilities-blocklist.md.
+// https://nginxui.com/plugin/capabilities/blocklist.
 type BlocklistServer interface {
 	// Fetches the current entries of one source.
 	Fetch(context.Context, *BlocklistFetchRequest) (*BlocklistFetchResponse, error)
