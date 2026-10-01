@@ -117,6 +117,15 @@ func IsValidID(id string) bool {
 	return id != "" && len(id) <= maxPluginIDLength && pluginIDPattern.MatchString(id)
 }
 
+// ReservedIDPrefix starts the ids of the plugins the Nginx UI project
+// publishes. Only a package signed with the official key may use it.
+const ReservedIDPrefix = "com.nginxui."
+
+// IsReservedID reports whether id belongs to the official namespace.
+func IsReservedID(id string) bool {
+	return strings.HasPrefix(id, ReservedIDPrefix)
+}
+
 // LoadManifest reads and decodes plugin.json from a plugin directory. It does
 // not validate the content, call ValidateManifest for that.
 func LoadManifest(dir string) (*protocol.Manifest, error) {
