@@ -11377,6 +11377,95 @@ msgstr "單窗格"
 msgid "Split view"
 msgstr "分割檢視"
 
+msgid "DNS Validation"
+msgstr "DNS 驗證"
+
+msgid ""
+"The main node has no DNS-01 plugin. Install it on the main node, or validate "
+"on this node."
+msgstr "主節點沒有 DNS-01 外掛。請在主節點安裝，或改為在本節點驗證。"
+
+msgid ""
+"Credentials of the main node. Switch to the main node to add or change one."
+msgstr "這些是主節點的憑證。如需新增或修改，請切換到主節點。"
+
+msgid "On the main node"
+msgstr "在主節點"
+
+msgid "On this node"
+msgstr "在本節點"
+
+msgid ""
+"The main node validates the domain with its DNS credentials, sends the "
+"certificate to this node and keeps renewing it."
+msgstr "主節點使用自己的 DNS 憑證驗證網域，將憑證傳送到本節點，並負責後續續期。"
+
+msgid ""
+"This node validates the domain with its own DNS credentials and renews the "
+"certificate itself."
+msgstr "本節點使用自己的 DNS 憑證驗證網域，並自行續期憑證。"
+
+msgid "Only a DNS-01 certificate can be issued for another node"
+msgstr "只能為其他節點簽發 DNS-01 憑證"
+
+msgid "Node not found"
+msgstr "找不到節點"
+
+msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
+msgstr "節點 {0} 無法接收為其簽發的憑證，請先升級該節點"
+
+msgid "Node {0} answered {1}: {2}"
+msgstr "節點 {0} 回應 {1}：{2}"
+
+msgid "The Nginx configuration still loads the certificate: {0}"
+msgstr "Nginx 設定仍在載入該憑證：{0}"
+
+msgid "The certificate was issued, but sending it to node {0} failed: {1}"
+msgstr "憑證已簽發，但傳送到節點 {0} 失敗：{1}"
+
+msgid "Node {0} cannot be reached: {1}"
+msgstr "無法連線節點 {0}：{1}"
+
+msgid "[Nginx UI] Sending the certificate to node %{name}"
+msgstr "[Nginx UI] 正在將憑證傳送到節點 %{name}"
+
+msgid "Issued for %{node}"
+msgstr "為 %{node} 簽發"
+
+msgid ""
+"This instance validates the domain, keeps renewing the certificate and sends "
+"each renewal to %{node}."
+msgstr "本實例負責驗證網域與續期憑證，每次續期後都會傳送到 %{node}。"
+
+msgid "Files on the node:"
+msgstr "節點上的檔案："
+
+msgid "Issued by this instance for %{node} and renewed here"
+msgstr "由本實例為 %{node} 簽發，並在此續期"
+
+msgid "For %{node}"
+msgstr "用於 %{node}"
+
+msgid ""
+"This instance stops renewing the certificate and deletes its own copy. The "
+"files on %{node} stay unless you remove them below."
+msgstr "本實例將停止續期該憑證並刪除自己保存的副本。%{node} 上的檔案會保留，除非在下方選擇一併刪除。"
+
+msgid "Also remove the certificate files from %{node}"
+msgstr "同時刪除 %{node} 上的憑證檔案"
+
+msgid ""
+"They are kept when the Nginx configuration of the node still loads them."
+msgstr "如果節點的 Nginx 設定仍在載入這些檔案，則會保留。"
+
+msgid "Issue the certificate on the main node"
+msgstr "在主節點簽發憑證"
+
+msgid ""
+"The node did not confirm that it received the certificate. Update Nginx UI "
+"on the node and try again."
+msgstr "節點未確認已收到憑證。請升級該節點上的 Nginx UI 後重試。"
+
 #~ msgid ""
 #~ "Log analytics is now a plugin. Install it to keep using it; your existing "
 #~ "indexes are kept."
