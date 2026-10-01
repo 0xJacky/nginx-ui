@@ -16,10 +16,13 @@ const props = withDefaults(defineProps<{
   readonly?: boolean
   /** Help text under a read-only picker. */
   readonlyHelp?: string
+  /** Lists the credentials of the main node, which runs the challenge for the selected node. */
+  mainNode?: boolean
 }>(), {
   compact: false,
   readonly: false,
   readonlyHelp: '',
+  mainNode: false,
 })
 
 const compactLabelCol = { flex: '170px' }
@@ -101,7 +104,7 @@ async function loadCredentials() {
 
     while (true) {
       try {
-        const r = await dns_credential.getList({ page })
+        const r = await dns_credential.getList({ page }, props.mainNode ? { skipNodeProxy: true } : undefined)
         const rows = r?.data ?? []
         list.push(...rows)
 
@@ -170,6 +173,8 @@ const help = computed(() => {
     return $gettext('The credential was deleted. Please choose another one.')
   if (props.readonly)
     return props.readonlyHelp || undefined
+  if (props.mainNode)
+    return $gettext('Credentials of the main node. Switch to the main node to add or change one.')
   return undefined
 })
 
@@ -211,11 +216,11 @@ onMounted(async () => {
           :placeholder="$gettext('Select credential')"
           :loading="loading"
           :disabled="readonly"
-          :popup-render="renderPopup"
+          :popup-render="mainNode ? undefined : renderPopup"
           show-search
           :filter-option="filterOption"
         />
-        <AButton v-if="!readonly" @click="goToCredentialPage">
+        <AButton v-if="!readonly && !mainNode" @click="goToCredentialPage">
           {{ $gettext('Manage') }}
         </AButton>
       </ASpaceCompact>
