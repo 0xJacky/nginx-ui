@@ -64,6 +64,19 @@ func TestTrimActionLines(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, "keep;\nlast;\n", rendered)
 
+	// Actions written without spaces inside the braces are trimmed as well.
+	rendered, err = RenderText("t", "{{if .keep}}\nkeep;\n{{else}}\ndrop;\n{{end}}\n{{/* done */}}\nlast;\n", map[string]Variable{"keep": {Value: true}})
+	require.NoError(t, err)
+	require.Equal(t, "keep;\nlast;\n", rendered)
+
+	rendered, err = RenderText("t", "{{range $i := 2}}deny all;\n{{end}}\n", nil)
+	require.NoError(t, err)
+	require.Equal(t, "deny all;deny all;\n", rendered)
+
+	rendered, err = RenderText("t", "{{- if .keep -}}\nkeep;\n{{- end }}\n", map[string]Variable{"keep": {Value: true}})
+	require.NoError(t, err)
+	require.Equal(t, "keep;\n", rendered)
+
 	// An action inside a line, or one that prints a value, keeps the line.
 	require.Equal(t, "gzip {{ if .g }}on{{ else }}off{{ end }};", TrimActionLines("gzip {{ if .g }}on{{ else }}off{{ end }};"))
 	require.Equal(t, "server {\n    {{ .extra }}\n}", TrimActionLines("server {\n    {{ .extra }}\n}"))

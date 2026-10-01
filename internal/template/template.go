@@ -158,12 +158,14 @@ func TrimActionLines(content string) string {
 		}
 		if i == 0 {
 			// Nothing comes before the first line, so the break after it goes.
-			if trimmed := strings.TrimRight(line, " \t"); !strings.HasSuffix(trimmed, "-}}") {
-				lines[i] = strings.TrimSuffix(trimmed, "}}") + "-}}"
+			// A trim marker needs a space next to it, so "{{end}}" becomes
+			// "{{end -}}".
+			if trimmed := strings.TrimRight(line, " \t"); !strings.HasSuffix(trimmed, " -}}") {
+				lines[i] = strings.TrimSuffix(trimmed, "}}") + " -}}"
 			}
 			continue
 		}
-		lines[i] = actionOpener.ReplaceAllString(line, "$1{{-")
+		lines[i] = actionOpener.ReplaceAllString(line, "$1{{- ")
 	}
 	return strings.Join(lines, "\n")
 }
