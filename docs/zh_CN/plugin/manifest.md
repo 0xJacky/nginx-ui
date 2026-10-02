@@ -23,7 +23,7 @@ outline: [2, 3]
 | `name` | string | 是 | 显示名称。 |
 | `version` | string | 是 | 插件自身的版本，使用[语义化版本](https://semver.org/lang/zh-CN/)。 |
 | `description` | string | 否 | 插件列表中显示的一行简介。 |
-| `i18n` | object | 否 | `name` 和 `description` 的翻译。参见[翻译](#translations)。 |
+| `i18n` | object | 否 | `name`、`description` 和 `permission_reasons` 的翻译。参见[翻译](#translations)。 |
 | `homepage_url` | string | 否 | 文档或仓库链接。 |
 | `icon_path` | string | 否 | 插件包内图标文件的路径。 |
 | `api_version` | integer | 是 | 插件使用的协议代次，目前固定为 `1`。 |
@@ -39,6 +39,7 @@ outline: [2, 3]
 | `events` | string[] | 否 | 插件订阅的事件。参见[宿主 API](./host-api.md#events)。 |
 | `cron` | object[] | 否 | 定时调用。参见[宿主 API](./host-api.md#scheduled-tasks)。 |
 | `network_hosts` | string[] | 否 | 插件打算访问的主机，会展示给安装插件的人。 |
+| `permission_reasons` | object | 否 | 插件请求每项权限的原因。参见[说明权限用途](./permissions.md#explaining-permissions)。 |
 | `settings_schema` | object | 否 | 设置表单。参见[设置](#settings)。 |
 | `dns01`、`http`、`notify`、`probe`、`mcp`、`storage`、`deploy`、`blocklist`、`discovery`、`log_sink` | object | 声明对应能力时 | 各能力的配置。 |
 
@@ -66,7 +67,7 @@ outline: [2, 3]
 }
 ```
 
-只需翻译你想支持的语言。顶层的 `name` 和 `description` 是英文文本，没有翻译的语言会显示它们。
+只需翻译你想支持的语言。顶层的 `name` 和 `description` 是英文文本，没有翻译的语言会显示它们。[`permission_reasons`](./permissions.md#explaining-permissions) 也可以用同样的方式按语言翻译。
 
 键使用 Nginx UI 界面的语言代码，例如 `zh_CN`、`zh_TW` 或 `ja_JP`。键不是其中之一时，[`nginx-ui plugin lint`](./rules.md#manifest-i18n) 会报告它，并列出所有可用的代码。
 

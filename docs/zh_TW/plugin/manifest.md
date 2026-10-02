@@ -23,7 +23,7 @@ outline: [2, 3]
 | `name` | string | 是 | 顯示名稱。 |
 | `version` | string | 是 | 外掛本身的版本，使用[語意化版本](https://semver.org/lang/zh-TW/)。 |
 | `description` | string | 否 | 外掛清單中顯示的一行簡介。 |
-| `i18n` | object | 否 | `name` 和 `description` 的翻譯。參見[翻譯](#translations)。 |
+| `i18n` | object | 否 | `name`、`description` 和 `permission_reasons` 的翻譯。參見[翻譯](#translations)。 |
 | `homepage_url` | string | 否 | 文件或儲存庫連結。 |
 | `icon_path` | string | 否 | 外掛套件內圖示檔案的路徑。 |
 | `api_version` | integer | 是 | 外掛使用的協定世代，目前固定為 `1`。 |
@@ -39,6 +39,7 @@ outline: [2, 3]
 | `events` | string[] | 否 | 外掛訂閱的事件。參見[宿主 API](./host-api.md#events)。 |
 | `cron` | object[] | 否 | 排程呼叫。參見[宿主 API](./host-api.md#scheduled-tasks)。 |
 | `network_hosts` | string[] | 否 | 外掛打算連線的主機，會顯示給安裝外掛的人。 |
+| `permission_reasons` | object | 否 | 外掛要求每項權限的原因。參見[說明權限用途](./permissions.md#explaining-permissions)。 |
 | `settings_schema` | object | 否 | 設定表單。參見[設定](#settings)。 |
 | `dns01`、`http`、`notify`、`probe`、`mcp`、`storage`、`deploy`、`blocklist`、`discovery`、`log_sink` | object | 宣告對應能力時 | 各能力的設定。 |
 
@@ -66,7 +67,7 @@ outline: [2, 3]
 }
 ```
 
-只需翻譯你想支援的語言。最上層的 `name` 和 `description` 是英文文字，沒有翻譯的語言會顯示它們。
+只需翻譯你想支援的語言。最上層的 `name` 和 `description` 是英文文字，沒有翻譯的語言會顯示它們。[`permission_reasons`](./permissions.md#explaining-permissions) 也可以用同樣的方式依語言翻譯。
 
 鍵使用 Nginx UI 介面的語言代碼，例如 `zh_CN`、`zh_TW` 或 `ja_JP`。鍵不是其中之一時，[`nginx-ui plugin lint`](./rules.md#manifest-i18n) 會回報它，並列出所有可用的代碼。
 

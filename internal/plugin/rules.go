@@ -15,6 +15,7 @@ const (
 	RuleManifestRequires    = "manifest-requires"
 	RuleManifestConflicts   = "manifest-conflicts"
 	RuleManifestPermissions = "manifest-permissions"
+	RuleManifestReasons     = "manifest-permission-reasons"
 	RuleCapabilityName      = "capability-name"
 	RuleCapabilityDuplicate = "capability-duplicate"
 	RuleServerEntry         = "server-entry"
@@ -149,6 +150,7 @@ var AllRules = []string{
 	RuleManifestRequires,
 	RuleManifestConflicts,
 	RuleManifestPermissions,
+	RuleManifestReasons,
 	RuleCapabilityName,
 	RuleCapabilityDuplicate,
 	RuleServerEntry,

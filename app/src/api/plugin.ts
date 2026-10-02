@@ -239,6 +239,8 @@ export interface PluginManifestLogSink {
 export interface PluginManifestI18n {
   name?: string
   description?: string
+  /** Translations of permission_reasons. */
+  permission_reasons?: Record<string, string>
 }
 
 export interface PluginManifest {
@@ -264,6 +266,8 @@ export interface PluginManifest {
   events?: string[]
   cron?: PluginManifestCron[]
   network_hosts?: string[]
+  /** Why the plugin asks for each permission, in its own words. */
+  permission_reasons?: Record<string, string>
   dns01?: PluginManifestDNS01
   http?: PluginManifestHTTP
   settings_schema?: SettingsSchema | null
@@ -299,6 +303,9 @@ export interface PluginInfo {
   conflicts_enabled?: string[]
   /** Addresses the plugin may reach, absent or empty when it names none. */
   network_hosts?: string[]
+  /** Why the plugin asks for each permission, and the translations by locale. */
+  permission_reasons?: Record<string, string>
+  permission_reasons_i18n?: Record<string, Record<string, string>>
   has_server: boolean
   has_webapp: boolean
   lifecycle: PluginLifecycle

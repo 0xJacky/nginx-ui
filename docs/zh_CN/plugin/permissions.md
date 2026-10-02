@@ -66,6 +66,27 @@ outline: [2, 3]
 
 Nginx UI 会把这个列表展示给安装插件的人。它仅供参考，不会阻止访问其他主机。
 
+## 说明权限用途 {#explaining-permissions}
+
+`permission_reasons` 用一句话说明插件为什么需要某项权限，让用户可以对照插件的实际功能来判断：
+
+```json [plugin.json]
+"permissions": ["log.files", "network"],
+"permission_reasons": {
+  "log.files": "To index the access and error logs of your sites for search and the dashboard.",
+  "network": "To download the IP location database when you choose to."
+},
+"i18n": {
+  "zh_CN": {
+    "permission_reasons": { "network": "在你选择下载时获取 IP 归属地数据库。" }
+  }
+}
+```
+
+凡是请用户授予权限的地方，包括市场、安装对话框和新权限的审批，Nginx UI 都会在权限下方以作者说明的形式显示这段原因。没有写原因或原因为空的权限只显示 Nginx UI 自己的说明。某个语言的翻译为空时，显示英文原因。
+
+每个键都必须是 `permissions` 中的一项，原因最多 300 个字符。键不在其中或原因过长时，[`nginx-ui plugin lint`](./rules.md#manifest-permission-reasons) 会报告，Nginx UI 也会拒绝安装这样的 manifest。请说明用途，而不是解释权限本身：每项权限允许做什么，Nginx UI 已经有说明。
+
 ## 处理凭据 {#handling-credentials}
 
 ::: danger 警告
