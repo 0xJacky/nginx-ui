@@ -19,6 +19,7 @@ import { installReplacesText } from '../conflicts'
 import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import PermissionList from '../PermissionList.vue'
+import { permissionReasons } from '../permissions'
 import { usePackageConflicts } from '../useConflicts'
 import { useSourceName } from './sources'
 import { isCommunityTrust, trustPreset } from './trust'
@@ -73,6 +74,7 @@ const release = computed<CatalogRelease | undefined>(() => {
 })
 
 const permissions = computed(() => release.value?.manifest?.permissions ?? [])
+const reasons = computed(() => permissionReasons(release.value?.manifest, gettext.current))
 const requires = computed(() => release.value?.manifest?.requires ?? [])
 const trust = computed(() => trustPreset(entry.value?.trust))
 // The release being installed decides, a plugin can ship a beta next to a stable one.
@@ -394,7 +396,7 @@ onUnmounted(() => {
         <h4 class="mb-2">
           {{ $gettext('Requested permissions') }}
         </h4>
-        <PermissionList :permissions="permissions" />
+        <PermissionList :permissions="permissions" :reasons="reasons" />
       </div>
 
       <ACheckbox v-model:checked="enableAfterInstall" :disabled="installing" class="mt-4">

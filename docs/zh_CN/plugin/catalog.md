@@ -128,7 +128,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 
 ### 清单快照 {#the-manifest-snapshot}
 
-`manifest` 包含该版本 `plugin.json` 中 Nginx UI 在下载任何内容之前要读取的字段：`id`、`name`、`version`、`description`、`i18n`、`homepage_url`、`api_version`、`min_nginx_ui_version`、`server`、`capabilities`、`permissions`、`requires`、`requires_capabilities`、`conflicts` 和 `network_hosts`。它的 `server.executables` 列出该版本提供的所有平台，尽管每个单一平台的插件包只声明自己的平台。DNS-01 服务商列表这类能力配置块留在插件包里：它们随版本变化，而 Nginx UI 安装时读取的是插件包自己的 `plugin.json`。
+`manifest` 包含该版本 `plugin.json` 中 Nginx UI 在下载任何内容之前要读取的字段：`id`、`name`、`version`、`description`、`i18n`、`homepage_url`、`api_version`、`min_nginx_ui_version`、`server`、`capabilities`、`permissions`、`requires`、`requires_capabilities`、`conflicts`、`network_hosts` 和 `permission_reasons`。它的 `server.executables` 列出该版本提供的所有平台，尽管每个单一平台的插件包只声明自己的平台。DNS-01 服务商列表这类能力配置块留在插件包里：它们随版本变化，而 Nginx UI 安装时读取的是插件包自己的 `plugin.json`。
 
 ## 发布者 {#publisher}
 

@@ -103,6 +103,36 @@ Nginx UI says so when it asks for approval:
 Nginx UI shows the list to the person installing the plugin. It is
 informational: nothing blocks other hosts.
 
+## Explaining Permissions
+
+`permission_reasons` says why the plugin needs a permission, in a sentence a
+person can check against what the plugin does:
+
+```json [plugin.json]
+"permissions": ["log.files", "network"],
+"permission_reasons": {
+  "log.files": "To index the access and error logs of your sites for search and the dashboard.",
+  "network": "To download the IP location database when you choose to."
+},
+"i18n": {
+  "zh_CN": {
+    "permission_reasons": { "network": "在你选择下载时获取 IP 归属地数据库。" }
+  }
+}
+```
+
+Nginx UI shows the reason under the permission as a note from the author,
+wherever it asks the person to grant the permission: the marketplace, the
+install dialog and the approval of new permissions. A permission without a
+reason, or with an empty one, shows only the description of Nginx UI. An
+empty translation shows the English reason.
+
+Each key must be one of `permissions`, and a reason is at most 300
+characters. [`nginx-ui plugin lint`](./rules.md#manifest-permission-reasons)
+reports a key that is not and a reason that is too long, and Nginx UI
+refuses to install such a manifest. Explain the use, not the
+permission: Nginx UI already describes what each permission allows.
+
 ## Handling Credentials
 
 ::: danger

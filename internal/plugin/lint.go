@@ -122,6 +122,7 @@ func Lint(path string) (*LintReport, error) {
 	lintPermissions(manifest.Permissions, report)
 	lintRequires(manifest.Requires, report)
 	lintConflicts(manifest, report)
+	lintPermissionReasons(manifest, report)
 	lintSettingsSchema(manifest.SettingsSchema, report)
 	lintDocs(dir, report)
 
@@ -760,6 +761,13 @@ func lintRequires(requires []protocol.ManifestRequirement, report *LintReport) {
 func lintConflicts(m *protocol.Manifest, report *LintReport) {
 	for _, problem := range conflictProblems(m) {
 		report.add(LevelError, RuleManifestConflicts, "%s", problem)
+	}
+}
+
+// lintPermissionReasons checks permission_reasons and its translations.
+func lintPermissionReasons(m *protocol.Manifest, report *LintReport) {
+	for _, problem := range permissionReasonProblems(m) {
+		report.add(LevelError, RuleManifestReasons, "%s", problem)
 	}
 }
 
