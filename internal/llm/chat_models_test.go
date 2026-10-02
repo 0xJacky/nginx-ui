@@ -1,9 +1,9 @@
 package llm
 
 import (
-	"fmt"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -21,7 +21,7 @@ func useChatModelDB(t *testing.T, defaultModel string) {
 	originalQuery := query.LLMModel
 	originalSettings := settings.OpenAISettings
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.LLMModel{}))
 

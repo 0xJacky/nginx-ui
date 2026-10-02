@@ -13,6 +13,7 @@ import (
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -31,7 +32,7 @@ func setupSelfSignedAPITest(t *testing.T) *gorm.DB {
 	gin.SetMode(gin.TestMode)
 	selfSignedValidationOnce.Do(validation.Init)
 
-	db, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("open test db: %v", err)
 	}

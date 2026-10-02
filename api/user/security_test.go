@@ -11,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -33,7 +34,7 @@ func setupUserSecurityRouter(t *testing.T) (*gin.Engine, string) {
 	originalJWTSecret := cSettings.AppSettings.JwtSecret
 	cSettings.AppSettings.JwtSecret = "test-secret"
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.User{}, &model.AuthToken{}, &model.Passkey{}))
 
@@ -111,7 +112,7 @@ func setupManageUserAuthorizationFixture(t *testing.T) manageUserAuthorizationFi
 
 	cosyModel.ClearCollection()
 	cosy.RegisterModels(model.User{})
-	database := cosy.InitDB(sqlite.Open(fmt.Sprintf("file:%s-authorization?mode=memory&cache=shared", t.Name())))
+	database := cosy.InitDB(sqlite.Open(testdb.DSN(t, "authorization")))
 	require.NoError(t, database.AutoMigrate(
 		&model.AuthToken{},
 		&model.Passkey{},
@@ -251,7 +252,7 @@ func setupCurrentUserSecurityRouter(t *testing.T) (*gin.Engine, string, uint64) 
 	originalJWTSecret := cSettings.AppSettings.JwtSecret
 	cSettings.AppSettings.JwtSecret = "test-secret"
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s-current?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t, "current")), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.User{}, &model.AuthToken{}, &model.Passkey{}))
 

@@ -3,6 +3,7 @@ package model
 import (
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gorm.io/driver/sqlite"
@@ -10,7 +11,7 @@ import (
 )
 
 func TestSiteDNSRecordsJSONSerializer(t *testing.T) {
-	db, err := gorm.Open(sqlite.Open("file:site-dns-records?mode=memory&cache=shared"), &gorm.Config{
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t, "site-dns-records")), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	require.NoError(t, err)

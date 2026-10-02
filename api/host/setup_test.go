@@ -16,6 +16,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/host/setup"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
@@ -456,7 +457,7 @@ func setDemoMode(t *testing.T, enabled bool) {
 func newInteractiveUserRouter(t *testing.T) *gin.Engine {
 	t.Helper()
 
-	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatal(err)
 	}

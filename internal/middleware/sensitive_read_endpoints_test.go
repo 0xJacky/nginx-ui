@@ -2,7 +2,6 @@ package middleware_test
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -15,6 +14,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -64,7 +64,7 @@ func setupSensitiveReadEndpoints(t *testing.T) sensitiveReadTestState {
 		&model.AcmeUser{},
 		&model.AutoBackup{},
 	)
-	database := cosy.InitDB(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())))
+	database := cosy.InitDB(sqlite.Open(testdb.DSN(t)))
 	model.Use(database)
 	query.Use(database)
 	query.SetDefault(database)

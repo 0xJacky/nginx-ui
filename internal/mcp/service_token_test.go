@@ -6,6 +6,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/assert"
@@ -27,7 +28,7 @@ func setupServiceTokenTest(t *testing.T) *gorm.DB {
 	settings.CryptoSettings.Secret = "mcp-token-test-root"
 	settings.NodeSettings.InstanceID = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
 
-	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{
+	database, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
 	})
 	require.NoError(t, err)

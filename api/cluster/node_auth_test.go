@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
@@ -27,7 +28,7 @@ const (
 
 func TestLegacyAuthenticatedRelationshipUpgradeReplacesExistingControllerCredential(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.AutoMigrate(&model.NodeControllerCredential{}))
 	model.Use(database)
@@ -80,7 +81,7 @@ func TestLegacyAuthenticatedRelationshipUpgradeReplacesExistingControllerCredent
 
 func TestLegacyUpgradeRequiresSharedSecretAuthentication(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.AutoMigrate(&model.NodeControllerCredential{}))
 	model.Use(database)

@@ -1,11 +1,11 @@
 package sitecheck
 
 import (
-	"fmt"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"gorm.io/driver/sqlite"
@@ -18,7 +18,7 @@ func TestSiteHealthAlertTransitionsAreDeduplicated(t *testing.T) {
 	originalExternalNotify := query.ExternalNotify
 	originalNow := siteHealthAlertNow
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("failed to open test database: %v", err)
 	}
@@ -134,7 +134,7 @@ func setupSiteHealthAlertTest(t *testing.T) (*gorm.DB, func()) {
 	originalNotification := query.Notification
 	originalExternalNotify := query.ExternalNotify
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("failed to open test database: %v", err)
 	}

@@ -3,11 +3,11 @@ package user
 import (
 	"context"
 	"errors"
-	"fmt"
 	"testing"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/stretchr/testify/assert"
@@ -24,7 +24,7 @@ func setupTokenAuthTest(t *testing.T) (*gorm.DB, *model.User, *model.AuthToken) 
 	cache.InitInMemoryCache()
 	cSettings.AppSettings.JwtSecret = "test-secret"
 
-	dbName := fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())
+	dbName := testdb.DSN(t)
 	db, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
 	require.NoError(t, err)
 
@@ -221,7 +221,7 @@ func TestSessionLookupErrorDoesNotRevokeValidLogin(t *testing.T) {
 }
 
 func TestAuthTokenSessionHashMigrationPreservesLegacyRows(t *testing.T) {
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s-migration?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t, "migration")), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.Exec("CREATE TABLE auth_tokens (user_id integer, token text, short_token text, expired_at integer)").Error)
 	require.NoError(t, db.Exec("INSERT INTO auth_tokens (user_id, token, short_token, expired_at) VALUES (?, ?, ?, ?)", 7, "legacy-jwt", "legacy-short", int64(123)).Error)

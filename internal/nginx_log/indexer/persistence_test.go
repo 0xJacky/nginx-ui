@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/stretchr/testify/require"
@@ -15,7 +16,7 @@ import (
 func TestDeleteAllLogIndexesUsesRegisteredQueryDatabase(t *testing.T) {
 	originalModelDB := model.UseDB()
 	originalQueryDB := query.Q.UnderlyingDB()
-	database, err := gorm.Open(sqlite.Open("file:delete-all-indexes?mode=memory&cache=shared"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open(testdb.DSN(t, "delete-all-indexes")), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.AutoMigrate(&model.NginxLogIndex{}))
 	model.Use(database)

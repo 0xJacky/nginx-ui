@@ -3,11 +3,11 @@ package stream
 import (
 	"context"
 	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	appsettings "github.com/0xJacky/Nginx-UI/settings"
@@ -42,7 +42,7 @@ func setupDeleteTest(t *testing.T) *deleteTestEnv {
 		appsettings.NginxSettings.ConfigDir = originalConfigDir
 	})
 
-	database, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("failed to open test database: %v", err)
 	}

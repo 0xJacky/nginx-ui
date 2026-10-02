@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -43,7 +44,7 @@ func setupCertificateMigrationTest(t *testing.T) certificateMigrationTestEnv {
 	}
 	t.Cleanup(func() { *settings.NginxSettings = originalSettings })
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("open database: %v", err)
 	}

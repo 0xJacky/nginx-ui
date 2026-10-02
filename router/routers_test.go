@@ -3,12 +3,12 @@
 package router
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -32,7 +32,7 @@ func TestControllerAccountRoutesIgnoreSelectedRemoteNode(t *testing.T) {
 	})
 	cSettings.AppSettings.JwtSecret = "router-test-secret"
 
-	database, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.AutoMigrate(&model.User{}, &model.AuthToken{}, &model.Passkey{}, &model.Node{}))
 	model.Use(database)

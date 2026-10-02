@@ -3,11 +3,11 @@ package sites
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -17,7 +17,7 @@ import (
 
 func TestUpdateHealthCheckConfigPersistsFalseValuesAndJSONFields(t *testing.T) {
 	originalDB := model.UseDB()
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("failed to open test database: %v", err)
 	}
@@ -86,7 +86,7 @@ func TestUpdateHealthCheckConfigPersistsFalseValuesAndJSONFields(t *testing.T) {
 func TestSyncHealthCheckUsesStableKeyAndPreservesLocalNotifierIDs(t *testing.T) {
 	originalDB := model.UseDB()
 	originalSiteConfig := query.SiteConfig
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("failed to open test database: %v", err)
 	}

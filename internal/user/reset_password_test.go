@@ -1,9 +1,9 @@
 package user
 
 import (
-	"fmt"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/stretchr/testify/assert"
@@ -13,7 +13,7 @@ import (
 )
 
 func TestUpdateInitUserPasswordReenablesDisabledUser(t *testing.T) {
-	dbName := fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())
+	dbName := testdb.DSN(t)
 	database, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.AutoMigrate(&model.User{}, &model.Passkey{}))

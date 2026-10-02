@@ -1,12 +1,12 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
@@ -28,7 +28,7 @@ func setupAPIServiceTokenTest(t *testing.T) (readToken, writeToken, mcpToken str
 	settings.CryptoSettings.Secret = "api-service-token-test-root"
 	settings.NodeSettings.InstanceID = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
 
-	database, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.AutoMigrate(&model.MCPServiceToken{}))
 	model.Use(database)

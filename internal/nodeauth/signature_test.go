@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/assert"
@@ -30,7 +31,7 @@ func setupSignatureTest(t *testing.T) (*gorm.DB, ed25519.PrivateKey, time.Time) 
 	settings.NodeSettings.InstanceID = "11111111-1111-4111-8111-111111111111"
 	settings.CryptoSettings.Secret = "signature-test-root"
 
-	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, database.AutoMigrate(&model.NodeControllerCredential{}))
 	model.Use(database)

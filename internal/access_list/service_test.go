@@ -2,12 +2,12 @@ package access_list
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/stretchr/testify/assert"
@@ -29,7 +29,7 @@ func setupService(t *testing.T) *serviceEnv {
 	t.Helper()
 	env := &serviceEnv{dir: useConfDir(t)}
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.AccessList{}))
 	model.Use(db)

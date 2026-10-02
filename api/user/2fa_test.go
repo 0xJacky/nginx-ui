@@ -1,10 +1,10 @@
 package user
 
 import (
-	"fmt"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -16,7 +16,7 @@ import (
 func setup2FAStatusTestDB(t *testing.T) *gorm.DB {
 	t.Helper()
 
-	dbName := fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())
+	dbName := testdb.DSN(t)
 	db, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.User{}, &model.Passkey{}))

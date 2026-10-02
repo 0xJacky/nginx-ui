@@ -2,7 +2,6 @@ package upstream
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -11,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	internalUpstream "github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -60,7 +60,7 @@ func managedAPI(t *testing.T) (*gin.Engine, string) {
 	require.NoError(t, os.WriteFile(settings.NginxSettings.PIDPath, []byte(strconv.Itoa(os.Getpid())), 0o644))
 	t.Cleanup(func() { *settings.NginxSettings = original })
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.Config{}, &model.ConfigBackup{}, &model.Node{}, &model.LLMSession{}))
 	model.Use(db)

@@ -1,9 +1,9 @@
 package model
 
 import (
-	"fmt"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gorm.io/driver/sqlite"
@@ -15,7 +15,7 @@ func setupUserPasskeyTestDB(t *testing.T) *gorm.DB {
 	t.Helper()
 
 	db, err := gorm.Open(
-		sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())),
+		sqlite.Open(testdb.DSN(t)),
 		&gorm.Config{Logger: logger.Default.LogMode(logger.Silent)},
 	)
 	require.NoError(t, err)

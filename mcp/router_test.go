@@ -2,7 +2,6 @@ package mcp
 
 import (
 	"bytes"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -10,6 +9,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -73,7 +73,7 @@ func setupMCPSecurityRouter(t *testing.T) (*gin.Engine, string, uint64) {
 	settings.NodeSettings.InstanceID = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
 	settings.NodeSettings.Secret = "legacy-mcp-secret"
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.User{}, &model.AuthToken{}, &model.Passkey{}, &model.MCPServiceToken{}))
 

@@ -3,12 +3,12 @@ package migrate
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"math/big"
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-acme/lego/v5/certificate"
@@ -68,7 +68,7 @@ func setupSensitiveFieldTestDB(t *testing.T) *gorm.DB {
 
 	settings.CryptoSettings.Secret = "test-secret"
 
-	dbName := fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())
+	dbName := testdb.DSN(t)
 	db, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
 	require.NoError(t, err)
 

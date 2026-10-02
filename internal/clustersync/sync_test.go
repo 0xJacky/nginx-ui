@@ -3,7 +3,6 @@ package clustersync
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -11,6 +10,7 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-resty/resty/v2"
@@ -36,7 +36,7 @@ func TestBuildItemsStagesAllSitesBeforeApplyingEitherSite(t *testing.T) {
 
 	originalQueryDB := query.Q.UnderlyingDB()
 	originalModelDB := model.UseDB()
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("open database: %v", err)
 	}
@@ -123,7 +123,7 @@ func TestBuildItemsStagesAllSitesBeforeApplyingEitherSite(t *testing.T) {
 func TestBuildItemsDoesNotStageNonOverwriteSites(t *testing.T) {
 	originalQueryDB := query.Q.UnderlyingDB()
 	originalModelDB := model.UseDB()
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("open database: %v", err)
 	}

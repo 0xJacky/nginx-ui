@@ -3,13 +3,13 @@ package site
 import (
 	"context"
 	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
 	"testing"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	appsettings "github.com/0xJacky/Nginx-UI/settings"
@@ -43,7 +43,7 @@ func setupSiteMutationTest(t *testing.T) (string, func()) {
 		t.Fatalf("failed to seed nginx pid file: %v", err)
 	}
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("failed to open test db: %v", err)
 	}

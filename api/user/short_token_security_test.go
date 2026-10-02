@@ -3,7 +3,6 @@ package user
 import (
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -11,6 +10,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -28,7 +28,7 @@ func setupShortTokenSecurityTest(t *testing.T) (*gin.Engine, *gorm.DB, *model.Us
 
 	previousSecret := cSettings.AppSettings.JwtSecret
 	cSettings.AppSettings.JwtSecret = "short-token-security-test-secret"
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s-short-token?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t, "short-token")), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.User{}, &model.AuthToken{}, &model.Passkey{}))
 	model.Use(db)

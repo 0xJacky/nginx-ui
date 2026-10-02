@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	internaluser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -303,7 +304,7 @@ func TestGetProtectedSetting(t *testing.T) {
 	})
 
 	t.Run("rejects users without 2fa", func(t *testing.T) {
-		database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+		database, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 		require.NoError(t, err)
 		require.NoError(t, database.AutoMigrate(&model.User{}, &model.Passkey{}))
 		previousDB := model.UseDB()

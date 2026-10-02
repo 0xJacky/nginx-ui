@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/assert"
@@ -172,7 +173,7 @@ func TestTwoInstanceOperationalRequestsUsePairedAuthentication(t *testing.T) {
 
 func openNodeAuthIntegrationDatabase(t *testing.T, name string) *gorm.DB {
 	t.Helper()
-	database, err := gorm.Open(sqlite.Open("file:"+t.Name()+"-"+name+"?mode=memory&cache=shared"), &gorm.Config{})
+	database, err := gorm.Open(sqlite.Open(testdb.DSN(t, name)), &gorm.Config{})
 	require.NoError(t, err)
 	return database
 }

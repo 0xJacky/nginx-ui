@@ -2,7 +2,6 @@ package site
 
 import (
 	"bytes"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -10,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	appsettings "github.com/0xJacky/Nginx-UI/settings"
@@ -36,7 +36,7 @@ func setupSiteStatusTest(t *testing.T) (*gorm.DB, *bytes.Buffer, string) {
 
 	var logs bytes.Buffer
 	database, err := gorm.Open(
-		sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())),
+		sqlite.Open(testdb.DSN(t)),
 		&gorm.Config{Logger: gormlogger.New(log.New(&logs, "", 0), gormlogger.Config{
 			SlowThreshold: time.Second,
 			LogLevel:      gormlogger.Info,

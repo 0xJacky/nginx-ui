@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -17,6 +16,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/internal/stream"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/internal/upstream/managed"
 	"github.com/0xJacky/Nginx-UI/internal/upstream/serverstate"
@@ -125,7 +125,7 @@ func setupConvertTest(t *testing.T) string {
 		*settings.NginxSettings = original
 	})
 
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.Config{}, &model.ConfigBackup{}, &model.Node{}, &model.Site{},
 		&model.Stream{}, &model.Namespace{}, &model.Notification{}, &model.ExternalNotify{}))
