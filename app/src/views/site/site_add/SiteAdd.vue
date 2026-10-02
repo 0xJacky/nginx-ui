@@ -491,7 +491,10 @@ function onDNSRecordCleared() {
             <ACard
               class="advanced-config-template"
               :title="$gettext('Config Template')"
-              :styles="{ body: { padding: '16px' } }"
+              :styles="{
+                header: { flexShrink: 0 },
+                body: { padding: '16px', flex: 1, minHeight: 0, overflowY: 'auto' },
+              }"
             >
               <ConfigTemplate />
             </ACard>
@@ -643,7 +646,10 @@ function onDNSRecordCleared() {
 
 .advanced-config-template {
   position: sticky;
-  top: 16px;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - 320px);
   min-width: 0;
 }
 
@@ -661,6 +667,7 @@ function onDNSRecordCleared() {
 
   .advanced-config-template {
     position: static;
+    height: calc(100dvh - 128px);
   }
 }
 </style>
