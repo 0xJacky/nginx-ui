@@ -68,8 +68,7 @@ mydns/
 ├── go.mod
 ├── build.sh         # builds dist/<platform>/mydns, the executable plugin.json points at
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 ```text [Rust]
@@ -80,8 +79,7 @@ mydns/
 │   └── main.rs      # the plugin, built on plugin-sdk-rust
 ├── build.sh         # builds dist/<platform>/mydns, the executable plugin.json points at
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 ```text [Python]
@@ -90,8 +88,7 @@ mydns/
 ├── server/
 │   └── main.py      # the plugin, standard library only
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 ```text [Node.js]
@@ -100,14 +97,13 @@ mydns/
 ├── server/
 │   └── main.js      # the plugin, no dependencies
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 :::
 
-`README.md`, `LICENSE` and `CHANGELOG.md` are required in every package, so
-the template already includes them. Fill them in before you publish.
+`README.md` and `LICENSE` are required in every package, so the template
+already includes them. Fill them in before you publish.
 
 ## The Manifest
 

@@ -24,7 +24,6 @@ io.github.example.snippets/
 ├── plugin.json
 ├── README.md
 ├── LICENSE
-├── CHANGELOG.md
 ├── templates/
 │   ├── block/
 │   │   └── cache-static.conf
