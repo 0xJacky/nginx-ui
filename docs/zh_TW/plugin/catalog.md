@@ -80,6 +80,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 | `categories`、`capabilities` | 用於篩選外掛市集。 |
 | `license` | 外掛授權條款的 SPDX 識別碼。 |
 | `stage` | `production` 或 `beta`，顯示在外掛旁邊的標籤。 |
+| `provides` | 選用。最新版本提供的內容。`dns01.since` 是外掛開始提供 DNS-01 的版本，`dns01.providers` 列出它的 DNS 服務商，每項包含 `code` 和 `name`；後來才加入的服務商帶有自己的 `since`；被較新版本移除、但最新穩定版仍包含的服務商帶有 `removed_in`。版本滿足 `since` ≤ 版本 < `removed_in` 時包含該服務商。讓 Nginx UI 在安裝之前就能找到外掛。 |
 | `releases` | 各個版本，見下文。 |
 
 項目的連結和圖片只使用目錄主機、外掛套件主機或 GitHub 上的 `https` 網址。
@@ -115,7 +116,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 | `release_notes_url` | 該版本完整發佈說明的頁面。 |
 | `notes` | 該版本的變更，Markdown 格式，最多 4096 個字元。Nginx UI 會在外掛詳細資訊頁顯示它；有更新時，顯示自已安裝版本以來每個版本的說明。 |
 | `yanked` | 該版本已撤回，不再提供。 |
-| `manifest` | 該版本的 `plugin.json`。 |
+| `manifest` | 該版本 `plugin.json` 的快照，見下文。 |
 
 版本至少包含 `downloads` 和 `download_url` 中的一個。`downloads` 中某個平台的項目指向該平台的外掛套件，`any` 項目指向可在所有平台執行的外掛套件。請為每個下載提供 `sha256`。
 
@@ -127,7 +128,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 
 ### 清單快照 {#the-manifest-snapshot}
 
-`manifest` 是整個版本的清單：它的 `server.executables` 列出該版本提供的所有平台，儘管每個單一平台的外掛套件只宣告自己的平台。Nginx UI 在下載任何內容之前，就根據它顯示權限、相依和平台。DNS-01 服務商清單這類較大的區塊可以省略。
+`manifest` 包含該版本 `plugin.json` 中 Nginx UI 在下載任何內容之前要讀取的欄位：`id`、`name`、`version`、`description`、`i18n`、`homepage_url`、`api_version`、`min_nginx_ui_version`、`server`、`capabilities`、`permissions`、`requires`、`requires_capabilities`、`conflicts` 和 `network_hosts`。它的 `server.executables` 列出該版本提供的所有平台，儘管每個單一平台的外掛套件只宣告自己的平台。DNS-01 服務商清單這類能力設定區塊留在外掛套件裡：它們隨版本變化，而 Nginx UI 安裝時讀取的是外掛套件自己的 `plugin.json`。
 
 ## 發佈者 {#publisher}
 

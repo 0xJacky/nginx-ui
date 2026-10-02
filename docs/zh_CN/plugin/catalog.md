@@ -80,6 +80,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 | `categories`、`capabilities` | 用于筛选插件市场。 |
 | `license` | 插件许可证的 SPDX 标识。 |
 | `stage` | `production` 或 `beta`，显示在插件旁边的标签。 |
+| `provides` | 可选。最新版本提供的内容。`dns01.since` 是插件开始提供 DNS-01 的版本，`dns01.providers` 列出它的 DNS 服务商，每项包含 `code` 和 `name`；后来才加入的服务商带有自己的 `since`；被较新版本移除、但最新稳定版仍包含的服务商带有 `removed_in`。版本满足 `since` ≤ 版本 < `removed_in` 时包含该服务商。让 Nginx UI 在安装之前就能找到插件。 |
 | `releases` | 各个版本，见下文。 |
 
 条目的链接和图片只使用目录主机、插件包主机或 GitHub 上的 `https` 地址。
@@ -115,7 +116,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 | `release_notes_url` | 该版本完整发布说明的页面。 |
 | `notes` | 该版本的变更，Markdown 格式，最多 4096 个字符。Nginx UI 会在插件详情页显示它；有更新时，显示自已安装版本以来每个版本的说明。 |
 | `yanked` | 该版本已撤回，不再提供。 |
-| `manifest` | 该版本的 `plugin.json`。 |
+| `manifest` | 该版本 `plugin.json` 的快照，见下文。 |
 
 版本至少包含 `downloads` 和 `download_url` 中的一个。`downloads` 中某个平台的条目指向该平台的插件包，`any` 条目指向可在所有平台运行的插件包。请为每个下载提供 `sha256`。
 
@@ -127,7 +128,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 
 ### 清单快照 {#the-manifest-snapshot}
 
-`manifest` 是整个版本的清单：它的 `server.executables` 列出该版本提供的所有平台，尽管每个单一平台的插件包只声明自己的平台。Nginx UI 在下载任何内容之前，就根据它显示权限、依赖和平台。DNS-01 服务商列表这类较大的块可以省略。
+`manifest` 包含该版本 `plugin.json` 中 Nginx UI 在下载任何内容之前要读取的字段：`id`、`name`、`version`、`description`、`i18n`、`homepage_url`、`api_version`、`min_nginx_ui_version`、`server`、`capabilities`、`permissions`、`requires`、`requires_capabilities`、`conflicts` 和 `network_hosts`。它的 `server.executables` 列出该版本提供的所有平台，尽管每个单一平台的插件包只声明自己的平台。DNS-01 服务商列表这类能力配置块留在插件包里：它们随版本变化，而 Nginx UI 安装时读取的是插件包自己的 `plugin.json`。
 
 ## 发布者 {#publisher}
 
