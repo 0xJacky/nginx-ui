@@ -209,6 +209,8 @@ var (
 	http01ProbeChallengePort = func() string {
 		return settings.CertSettings.HTTPChallengePort
 	}
+	// http01ProbeListen binds the challenge address for the probe.
+	http01ProbeListen = listenHTTP01Challenge
 	// http01ProbeServerBlocks reads the server blocks of the effective
 	// configuration (nginx -T).
 	http01ProbeServerBlocks = nginx.GetServerBlocks
@@ -298,7 +300,7 @@ func probeHTTP01Routes(ctx context.Context, domains []string, opts ...HTTP01Prob
 	}
 	path := http01ProbePathPrefix + http01ProbeTokenPrefix + token
 
-	listener, err := net.Listen("tcp", net.JoinHostPort(http01ProbeListenHost, port))
+	listener, err := http01ProbeListen(net.JoinHostPort(http01ProbeListenHost, port))
 	if err != nil {
 		return nil, NewHTTP01ChallengePortUnavailableError(port, err.Error())
 	}
@@ -1064,4 +1066,9 @@ func isAllDigits(value string) bool {
 		}
 	}
 	return true
+}
+
+// listenHTTP01Challenge binds the HTTP-01 challenge address.
+func listenHTTP01Challenge(address string) (net.Listener, error) {
+	return net.Listen("tcp", address)
 }

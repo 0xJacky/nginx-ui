@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -72,10 +73,10 @@ func useHTTP01Blocks(blocks []nginx.ServerBlock, addresses map[string]string) {
 // the challenge port".
 func setupHTTP01Probe(t *testing.T, routes, tlsRoutes map[string]http.Handler) (*fakeNginx, string) {
 	t.Helper()
-	port := freeTCPPort(t)
 
 	previousHost := http01ProbeListenHost
 	previousPort := http01ProbeChallengePort
+	previousListen := http01ProbeListen
 	previousBlocks := http01ProbeServerBlocks
 	previousSocket := http01ProbeSocketAddress
 	previousEndpoints := http01ProbeDefaultEndpoints
@@ -87,6 +88,7 @@ func setupHTTP01Probe(t *testing.T, routes, tlsRoutes map[string]http.Handler) (
 	t.Cleanup(func() {
 		http01ProbeListenHost = previousHost
 		http01ProbeChallengePort = previousPort
+		http01ProbeListen = previousListen
 		http01ProbeServerBlocks = previousBlocks
 		http01ProbeSocketAddress = previousSocket
 		http01ProbeDefaultEndpoints = previousEndpoints
@@ -97,6 +99,7 @@ func setupHTTP01Probe(t *testing.T, routes, tlsRoutes map[string]http.Handler) (
 		http01ProbeSettleInterval = previousInterval
 	})
 
+	port := reserveChallengePort(t)
 	challenge := httputil.NewSingleHostReverseProxy(&url.URL{Scheme: "http", Host: net.JoinHostPort("127.0.0.1", port)})
 	router := func(table map[string]http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -145,6 +148,97 @@ func setupHTTP01Probe(t *testing.T, routes, tlsRoutes map[string]http.Handler) (
 	return fake, port
 }
 
+// occupyChallengePort makes the probe bind a port for real, the way it does in
+// production, while the test holds that port.
+func occupyChallengePort(t *testing.T) string {
+	t.Helper()
+	busy, err := net.Listen("tcp", "127.0.0.1:0")
+	require.NoError(t, err)
+	t.Cleanup(func() { _ = busy.Close() })
+	port := strconv.Itoa(busy.Addr().(*net.TCPAddr).Port)
+	http01ProbeChallengePort = func() string { return port }
+	http01ProbeListen = listenHTTP01Challenge
+	return port
+}
+
+// reserveChallengePort holds a loopback port for the whole test and gives each
+// probe a listener on it. Releasing the port between probes would let another
+// test process take it before the probe binds it again.
+func reserveChallengePort(t *testing.T) string {
+	t.Helper()
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	require.NoError(t, err)
+	shared := &sharedListener{Listener: listener, conns: make(chan net.Conn), stop: make(chan struct{})}
+	go shared.serve()
+	t.Cleanup(shared.close)
+	http01ProbeListen = func(string) (net.Listener, error) {
+		return &listenerSession{shared: shared, done: make(chan struct{})}, nil
+	}
+	return strconv.Itoa(listener.Addr().(*net.TCPAddr).Port)
+}
+
+// sharedListener accepts on the reserved port and hands each connection to the
+// session of the probe that is running.
+type sharedListener struct {
+	net.Listener
+	conns chan net.Conn
+	stop  chan struct{}
+	once  sync.Once
+}
+
+func (s *sharedListener) serve() {
+	for {
+		conn, err := s.Listener.Accept()
+		if err != nil {
+			return
+		}
+		select {
+		case s.conns <- conn:
+		case <-s.stop:
+			_ = conn.Close()
+			return
+		}
+	}
+}
+
+func (s *sharedListener) close() {
+	s.once.Do(func() {
+		close(s.stop)
+		_ = s.Listener.Close()
+	})
+}
+
+// listenerSession is the listener one probe sees. Closing it ends the probe's
+// server and keeps the port.
+type listenerSession struct {
+	shared *sharedListener
+	done   chan struct{}
+	once   sync.Once
+}
+
+func (l *listenerSession) Accept() (net.Conn, error) {
+	select {
+	case <-l.done:
+		return nil, net.ErrClosed
+	default:
+	}
+	select {
+	case conn := <-l.shared.conns:
+		return conn, nil
+	case <-l.done:
+		return nil, net.ErrClosed
+	case <-l.shared.stop:
+		return nil, net.ErrClosed
+	}
+}
+
+func (l *listenerSession) Close() error {
+	l.once.Do(func() { close(l.done) })
+	return nil
+}
+
+func (l *listenerSession) Addr() net.Addr { return l.shared.Addr() }
+
 func redirectTo(format string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		target := fmt.Sprintf(format, r.URL.RequestURI())
@@ -178,7 +272,14 @@ func requireCosyCode(t *testing.T, err error, code int32) *cosy.Error {
 }
 
 func TestProbeHTTP01RoutesSuccess(t *testing.T) {
-	fake, port := setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
+	fake, _ := setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
+	sessions := make(chan net.Listener, 1)
+	listen := http01ProbeListen
+	http01ProbeListen = func(address string) (net.Listener, error) {
+		listener, err := listen(address)
+		sessions <- listener
+		return listener, err
+	}
 
 	results := probe(t, "ok.example.com")
 
@@ -188,10 +289,9 @@ func TestProbeHTTP01RoutesSuccess(t *testing.T) {
 	assert.Empty(t, results[0].Error)
 	assert.NoError(t, HTTP01RouteCheckError(results, ""))
 
-	// The challenge port is released once the probe returns, so lego can bind it.
-	listener, err := net.Listen("tcp", net.JoinHostPort("127.0.0.1", port))
-	require.NoError(t, err)
-	require.NoError(t, listener.Close())
+	// The probe closes its listener before it returns, so lego can bind the port.
+	_, err := (<-sessions).Accept()
+	assert.ErrorIs(t, err, net.ErrClosed)
 }
 
 func TestProbeHTTP01RoutesNotFound(t *testing.T) {
@@ -307,10 +407,8 @@ func TestProbeHTTP01RoutesRedirectToForeignHostIsWarning(t *testing.T) {
 }
 
 func TestProbeHTTP01RoutesChallengePortBusy(t *testing.T) {
-	_, port := setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
-	busy, err := net.Listen("tcp", net.JoinHostPort("127.0.0.1", port))
-	require.NoError(t, err)
-	t.Cleanup(func() { _ = busy.Close() })
+	setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
+	port := occupyChallengePort(t)
 
 	results, err := ProbeHTTP01Routes(context.Background(), []string{"ok.example.com"})
 
@@ -859,14 +957,12 @@ func TestVerifyHTTP01ChallengeRouteNeverBlocksOnRouteResults(t *testing.T) {
 	})
 
 	t.Run("busy challenge port still blocks", func(t *testing.T) {
-		_, port := setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
-		busy, err := net.Listen("tcp", net.JoinHostPort("127.0.0.1", port))
-		require.NoError(t, err)
-		t.Cleanup(func() { _ = busy.Close() })
+		setupHTTP01Probe(t, map[string]http.Handler{"ok.example.com": nil}, nil)
+		occupyChallengePort(t)
 		log := NewLogger()
 		defer log.Close()
 
-		err = verifyHTTP01ChallengeRoute(&ConfigPayload{ServerName: []string{"ok.example.com"}, ConfigName: "ok"}, log)
+		err := verifyHTTP01ChallengeRoute(&ConfigPayload{ServerName: []string{"ok.example.com"}, ConfigName: "ok"}, log)
 
 		requireCosyCode(t, err, 50059)
 	})
