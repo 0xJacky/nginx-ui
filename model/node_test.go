@@ -3,6 +3,7 @@ package model
 import (
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -98,7 +99,7 @@ func (nodeWithoutAcceptPluginSync) TableName() string {
 }
 
 func TestAutoMigrateDefaultsAcceptPluginSyncForExistingNodes(t *testing.T) {
-	db, err := gorm.Open(sqlite.Open("file:node_accept_plugin_sync?mode=memory&cache=shared"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatal(err)
 	}

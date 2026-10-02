@@ -3,6 +3,7 @@ package migrate
 import (
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/stretchr/testify/require"
 	"gorm.io/driver/sqlite"
@@ -22,7 +23,7 @@ func (legacyCertColumns) TableName() string {
 }
 
 func TestBackfillCertChallengeConfig(t *testing.T) {
-	db, err := gorm.Open(sqlite.Open("file:migrate10?mode=memory&cache=shared"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.Cert{}))
 	require.NoError(t, db.AutoMigrate(&legacyCertColumns{}))
