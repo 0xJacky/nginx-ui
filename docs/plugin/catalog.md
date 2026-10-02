@@ -161,7 +161,7 @@ the file the catalog meant; only the signature shows who published it.
 reads before downloading anything: `id`, `name`, `version`, `description`,
 `i18n`, `homepage_url`, `api_version`, `min_nginx_ui_version`, `server`,
 `capabilities`, `permissions`, `requires`, `requires_capabilities`,
-`conflicts` and `network_hosts`. Its `server.executables` lists every
+`conflicts`, `network_hosts` and `permission_reasons`. Its `server.executables` lists every
 platform the release ships, even though each per-platform package declares
 only its own. The capability blocks, such as the DNS-01 provider list, stay in
 the package: they change from release to release, and the package's own

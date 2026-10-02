@@ -66,6 +66,27 @@ outline: [2, 3]
 
 Nginx UI 會把這份清單顯示給安裝外掛的人。它僅供參考，不會阻止連線到其他主機。
 
+## 說明權限用途 {#explaining-permissions}
+
+`permission_reasons` 用一句話說明外掛為什麼需要某項權限，讓使用者可以對照外掛的實際功能來判斷：
+
+```json [plugin.json]
+"permissions": ["log.files", "network"],
+"permission_reasons": {
+  "log.files": "To index the access and error logs of your sites for search and the dashboard.",
+  "network": "To download the IP location database when you choose to."
+},
+"i18n": {
+  "zh_TW": {
+    "permission_reasons": { "network": "在你選擇下載時取得 IP 位置資料庫。" }
+  }
+}
+```
+
+凡是請使用者授予權限的地方，包括市集、安裝對話框和新權限的審核，Nginx UI 都會在權限下方以作者說明的形式顯示這段原因。沒有寫原因或原因為空的權限只顯示 Nginx UI 自己的說明。某個語言的翻譯為空時，顯示英文原因。
+
+每個鍵都必須是 `permissions` 中的一項，原因最多 300 個字元。鍵不在其中或原因過長時，[`nginx-ui plugin lint`](./rules.md#manifest-permission-reasons) 會回報，Nginx UI 也會拒絕安裝這樣的 manifest。請說明用途，而不是解釋權限本身：每項權限允許做什麼，Nginx UI 已經有說明。
+
 ## 處理認證 {#handling-credentials}
 
 ::: danger 警告
