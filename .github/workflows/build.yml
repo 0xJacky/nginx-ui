@@ -242,7 +242,7 @@ jobs:
       # answers 5xx; retry the whole action twice with a growing pause.
       - name: Install musl cross compiler
         if: env.GOOS == 'linux'
-        uses: nginxui/musl-cross-compilers@8f83e180fec1779fd14f7aa9834d83525187a317 # v1
+        uses: nginxui/musl-cross-compilers@57f4de0b40cd0b53b1dc02fb8b317d87f78f3483 # v1
         id: musl
         continue-on-error: true
         with:
@@ -255,7 +255,7 @@ jobs:
 
       - name: Install musl cross compiler (retry 1)
         if: env.GOOS == 'linux' && steps.musl.outcome == 'failure'
-        uses: nginxui/musl-cross-compilers@8f83e180fec1779fd14f7aa9834d83525187a317 # v1
+        uses: nginxui/musl-cross-compilers@57f4de0b40cd0b53b1dc02fb8b317d87f78f3483 # v1
         id: musl_retry1
         continue-on-error: true
         with:
@@ -268,7 +268,7 @@ jobs:
 
       - name: Install musl cross compiler (retry 2)
         if: env.GOOS == 'linux' && steps.musl_retry1.outcome == 'failure'
-        uses: nginxui/musl-cross-compilers@8f83e180fec1779fd14f7aa9834d83525187a317 # v1
+        uses: nginxui/musl-cross-compilers@57f4de0b40cd0b53b1dc02fb8b317d87f78f3483 # v1
         id: musl_retry2
         with:
           target: ${{ env.ARCH_NAME }}-linux-musl${{ env.ABI }}
