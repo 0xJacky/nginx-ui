@@ -83,7 +83,7 @@ jobs:
         run: bash .github/scripts/retry.sh -- go mod download
 
       - name: Set up C compiler for the race detector
-        uses: msys2/setup-msys2@66cd2cce69caa17b53920067426061ca1de3a884 # v2
+        uses: msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e # v2
         with:
           msystem: UCRT64
           install: mingw-w64-ucrt-x86_64-gcc
