@@ -10,13 +10,18 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/uozi-tech/cosy"
-	"gorm.io/gorm"
 )
 
 // testAndReload validates and loads the configuration after the rendered files
 // changed. Tests replace it to exercise the rollback path without Nginx.
 var testAndReload = func(tx *config.FileTransaction) error {
 	return tx.TestAndReload()
+}
+
+// rollbackAndReload restores the files and reloads Nginx after the database
+// rejected a change Nginx already loaded. Tests replace it as well.
+var rollbackAndReload = func(tx *config.FileTransaction) error {
+	return tx.RollbackAndReload()
 }
 
 // SaveResult reports what a save touched.
@@ -67,8 +72,11 @@ func Preview(list *model.AccessList) (content string, warnings []Warning, err er
 
 // Save creates or updates a list, renders its file and the files of every
 // list that references it, and reloads Nginx when a site or stream uses one of
-// them. The database change and the files are rolled back together when the
-// Nginx test fails.
+// them. The database is written only after Nginx accepted the files, so its
+// write lock is never held across `nginx -t` and the reload: on SQLite every
+// other writer would fail with "database is locked" once those outlast the
+// busy timeout. A rejected test leaves the database untouched, and a failed
+// database write restores the files and the running configuration.
 func Save(list *model.AccessList) (*SaveResult, error) {
 	lists, err := All()
 	if err != nil {
@@ -121,14 +129,18 @@ func Save(list *model.AccessList) (*SaveResult, error) {
 
 	refs := FilterReferences(ScanReferences(), slugs...)
 
-	err = model.UseDB().Transaction(func(db *gorm.DB) error {
-		if err := db.Save(list).Error; err != nil {
-			return err
-		}
-		return writeFiles(rendered, len(refs) > 0)
-	})
+	inUse := len(refs) > 0
+	files, err := writeFiles(rendered, inUse)
 	if err != nil {
 		return nil, err
+	}
+
+	if err = model.UseDB().Save(list).Error; err != nil {
+		rollback := files.Rollback
+		if inUse {
+			rollback = func() error { return rollbackAndReload(files) }
+		}
+		return nil, config.RollbackError(err, rollback)
 	}
 
 	return &SaveResult{List: list, Slugs: slugs, References: refs}, nil
@@ -136,25 +148,26 @@ func Save(list *model.AccessList) (*SaveResult, error) {
 
 // writeFiles renders the files and, when anything includes them, tests and
 // reloads Nginx. A file nothing includes is never loaded, so testing it would
-// only let an unrelated broken site block the save.
-func writeFiles(rendered map[string]string, inUse bool) error {
+// only let an unrelated broken site block the save. On success it returns the
+// transaction so the caller can still undo the files.
+func writeFiles(rendered map[string]string, inUse bool) (*config.FileTransaction, error) {
 	if err := nginx.MkdirAll(Dir(), 0o755); err != nil {
-		return cosy.WrapErrorWithParams(ErrWriteAccessListFile, err.Error())
+		return nil, cosy.WrapErrorWithParams(ErrWriteAccessListFile, err.Error())
 	}
 
 	tx := &config.FileTransaction{}
 	for slug, content := range rendered {
 		if err := tx.Write(FilePath(slug), []byte(content), 0o644); err != nil {
-			return config.RollbackError(cosy.WrapErrorWithParams(ErrWriteAccessListFile, err.Error()), tx.Rollback)
+			return nil, config.RollbackError(cosy.WrapErrorWithParams(ErrWriteAccessListFile, err.Error()), tx.Rollback)
 		}
 	}
 	if !inUse {
-		return nil
+		return tx, nil
 	}
 	if err := testAndReload(tx); err != nil {
-		return cosy.WrapErrorWithParams(ErrNginxTestFailed, err.Error())
+		return nil, cosy.WrapErrorWithParams(ErrNginxTestFailed, err.Error())
 	}
-	return nil
+	return tx, nil
 }
 
 // Delete removes a list and its file. A list that another list, a site or a
@@ -182,15 +195,21 @@ func Delete(id uint64) error {
 		return cosy.WrapErrorWithParams(ErrAccessListInUse, describeReferences(refs, names))
 	}
 
-	return model.UseDB().Transaction(func(db *gorm.DB) error {
-		if err := db.Unscoped().Delete(&model.AccessList{}, id).Error; err != nil {
-			return err
-		}
-		if err := nginx.Remove(FilePath(list.Slug)); err != nil && !os.IsNotExist(err) {
-			return err
-		}
-		return nil
-	})
+	// Nothing includes the file, so removing it needs no reload. It goes
+	// first and comes back when the row cannot be deleted, which keeps the
+	// database write out of the file operation.
+	path := FilePath(list.Slug)
+	snapshot, err := config.CaptureFile(path)
+	if err != nil {
+		return err
+	}
+	if err = nginx.Remove(path); err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	if err = model.UseDB().Unscoped().Delete(&model.AccessList{}, id).Error; err != nil {
+		return config.RollbackError(err, func() error { return snapshot.Restore(path) })
+	}
+	return nil
 }
 
 // Usage describes who uses a list.

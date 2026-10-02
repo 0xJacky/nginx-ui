@@ -17,9 +17,12 @@ import (
 )
 
 type serviceEnv struct {
-	dir   string
-	tests int
-	fail  bool
+	dir     string
+	tests   int
+	reloads int
+	fail    bool
+	// onTest runs while Nginx would be testing and reloading the files.
+	onTest func()
 }
 
 func setupService(t *testing.T) *serviceEnv {
@@ -33,8 +36,12 @@ func setupService(t *testing.T) *serviceEnv {
 	query.SetDefault(db)
 
 	previous := testAndReload
+	previousRollback := rollbackAndReload
 	testAndReload = func(tx *config.FileTransaction) error {
 		env.tests++
+		if env.onTest != nil {
+			env.onTest()
+		}
 		if env.fail {
 			// Mirror FileTransaction.TestAndReload, which restores the files
 			// before it reports a rejected configuration.
@@ -42,8 +49,13 @@ func setupService(t *testing.T) *serviceEnv {
 		}
 		return nil
 	}
+	rollbackAndReload = func(tx *config.FileTransaction) error {
+		env.reloads++
+		return tx.Rollback()
+	}
 	t.Cleanup(func() {
 		testAndReload = previous
+		rollbackAndReload = previousRollback
 		model.Use(nil)
 	})
 	return env
@@ -188,4 +200,86 @@ func TestSlugsExist(t *testing.T) {
 
 	require.NoError(t, SlugsExist([]string{"lan"}))
 	assertErrCode(t, SlugsExist([]string{"lan", "nope"}), ErrUnknownList)
+}
+
+func TestSaveDoesNotHoldDatabaseLockDuringReload(t *testing.T) {
+	env := setupService(t)
+	require.NoError(t, model.UseDB().Exec("CREATE TABLE probe (id INTEGER)").Error)
+
+	lan, err := Save(newList("LAN", "lan", allow("192.168.1.0/24")))
+	require.NoError(t, err)
+	env.writeSite(t, "nas", "server {\n    include nginx-ui/access/lan.conf;\n}\n")
+
+	// Another writer must get through while Nginx tests and reloads, which
+	// only works when Save holds no open write transaction at that point.
+	var probeErr error
+	env.onTest = func() {
+		probeErr = model.UseDB().Exec("INSERT INTO probe (id) VALUES (1)").Error
+	}
+	changed := newList("LAN", "lan", allow("10.0.0.0/8"))
+	changed.ID = lan.List.ID
+	_, err = Save(changed)
+	require.NoError(t, err)
+	assert.Equal(t, 1, env.tests)
+	assert.NoError(t, probeErr)
+}
+
+func TestSaveRestoresLoadedFilesWhenDatabaseWriteFails(t *testing.T) {
+	env := setupService(t)
+
+	lan, err := Save(newList("LAN", "lan", allow("192.168.1.0/24")))
+	require.NoError(t, err)
+	before := env.read(t, "lan")
+	env.writeSite(t, "nas", "server {\n    include nginx-ui/access/lan.conf;\n}\n")
+
+	failure := errors.New("disk I/O error")
+	require.NoError(t, model.UseDB().Callback().Update().Before("gorm:update").
+		Register("test:fail_update", func(db *gorm.DB) { db.AddError(failure) }))
+
+	changed := newList("LAN", "lan", allow("10.0.0.0/8"))
+	changed.ID = lan.List.ID
+	_, err = Save(changed)
+	require.ErrorIs(t, err, failure)
+
+	assert.Equal(t, 1, env.tests)
+	assert.Equal(t, 1, env.reloads, "Nginx already loaded the new file, so it is reloaded again")
+	assert.Equal(t, before, env.read(t, "lan"), "the file is restored")
+	stored, err := Get(lan.List.ID)
+	require.NoError(t, err)
+	assert.Equal(t, "192.168.1.0/24", stored.Rules[0].Value)
+}
+
+func TestSaveRemovesNewFileWhenDatabaseWriteFails(t *testing.T) {
+	env := setupService(t)
+
+	failure := errors.New("disk I/O error")
+	require.NoError(t, model.UseDB().Callback().Create().Before("gorm:create").
+		Register("test:fail_create", func(db *gorm.DB) { db.AddError(failure) }))
+
+	_, err := Save(newList("LAN", "lan", allow("192.168.1.0/24")))
+	require.ErrorIs(t, err, failure)
+
+	assert.Zero(t, env.tests)
+	assert.Zero(t, env.reloads, "a file nothing includes was never loaded")
+	_, err = os.Stat(filepath.Join(env.dir, "nginx-ui", "access", "lan.conf"))
+	assert.True(t, os.IsNotExist(err), "the new file is removed again")
+}
+
+func TestDeleteRestoresFileWhenDatabaseDeleteFails(t *testing.T) {
+	env := setupService(t)
+
+	lan, err := Save(newList("LAN", "lan", allow("192.168.1.0/24")))
+	require.NoError(t, err)
+	before := env.read(t, "lan")
+
+	failure := errors.New("disk I/O error")
+	require.NoError(t, model.UseDB().Callback().Delete().Before("gorm:delete").
+		Register("test:fail_delete", func(db *gorm.DB) { db.AddError(failure) }))
+
+	err = Delete(lan.List.ID)
+	require.ErrorIs(t, err, failure)
+
+	assert.Equal(t, before, env.read(t, "lan"), "the file is put back")
+	_, err = Get(lan.List.ID)
+	require.NoError(t, err, "the row is kept")
 }
