@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -37,6 +38,14 @@ func (s *staticProbeSource) Probe(_ context.Context, _ string, req sitecheck.Pro
 	return sitecheck.ProbeOutcome{Status: sitecheck.ProbeUp}, nil
 }
 
+// reset forgets the probes of an earlier test, the source is registered once
+// per process.
+func (s *staticProbeSource) reset() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.targets = nil
+}
+
 var registerStaticProbeSource = sync.OnceValue(func() *staticProbeSource {
 	source := &staticProbeSource{}
 	sitecheck.RegisterProbeSource(source)
@@ -47,7 +56,7 @@ func openSiteConfigDB(t *testing.T) *gorm.DB {
 	t.Helper()
 	originalDB := model.UseDB()
 	originalSiteConfig := query.SiteConfig
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("failed to open test database: %v", err)
 	}
@@ -120,6 +129,7 @@ func TestUpdateHealthCheckConfigStoresTheProbeKind(t *testing.T) {
 
 func TestGetProbeKindsAndTestHealthCheckWithAProbeKind(t *testing.T) {
 	source := registerStaticProbeSource()
+	source.reset()
 	db := openSiteConfigDB(t)
 	config := &model.SiteConfig{SiteKey: "api.conf|https://api.example:443", Host: "api.example:443", Scheme: "https", Timeout: 5}
 	if err := db.Create(config).Error; err != nil {
