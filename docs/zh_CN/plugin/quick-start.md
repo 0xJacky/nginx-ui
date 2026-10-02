@@ -66,8 +66,7 @@ mydns/
 ├── go.mod
 ├── build.sh         # 构建 dist/<平台>/mydns，即 plugin.json 指向的可执行文件
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 ```text [Rust]
@@ -78,8 +77,7 @@ mydns/
 │   └── main.rs      # 基于 plugin-sdk-rust 的插件
 ├── build.sh         # 构建 dist/<平台>/mydns，即 plugin.json 指向的可执行文件
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 ```text [Python]
@@ -88,8 +86,7 @@ mydns/
 ├── server/
 │   └── main.py      # 只使用标准库的插件
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 ```text [Node.js]
@@ -98,13 +95,12 @@ mydns/
 ├── server/
 │   └── main.js      # 没有依赖的插件
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 :::
 
-每个插件包都必须包含 `README.md`、`LICENSE` 和 `CHANGELOG.md`，因此模板已经包含了它们。发布前请补全内容。
+每个插件包都必须包含 `README.md` 和 `LICENSE`，因此模板已经包含了它们。发布前请补全内容。
 
 ## 清单文件 {#the-manifest}
 
