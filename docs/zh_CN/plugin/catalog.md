@@ -98,6 +98,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
     "linux-arm64": { "url": "https://github.com/example/mydns/releases/download/v1.2.0/io.github.example.mydns-1.2.0-linux-arm64.tar.gz", "sha256": "..." }
   },
   "release_notes_url": "https://github.com/example/mydns/releases/tag/v1.2.0",
+  "notes": "### Features\n\n- Support the new provider API",
   "manifest": { ... }
 }
 ```
@@ -111,6 +112,8 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 | `downloads` | 按平台键列出的插件包，`any` 表示可在所有平台运行的插件包。每项包含 `url` 和 `sha256`。 |
 | `download_url`、`sha256` | 通用插件包，`downloads` 未列出的平台都使用它。 |
 | `channel` | `stable`、`beta` 或 `dev`。参见[发布渠道](#release-channels)。 |
+| `release_notes_url` | 该版本完整发布说明的页面。 |
+| `notes` | 该版本的变更，Markdown 格式，最多 4096 个字符。Nginx UI 会在插件详情页显示它；有更新时，显示自已安装版本以来每个版本的说明。 |
 | `yanked` | 该版本已撤回，不再提供。 |
 | `manifest` | 该版本的 `plugin.json`。 |
 

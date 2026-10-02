@@ -48,6 +48,8 @@ export interface CatalogRelease {
   signature_url?: string
   signed_by?: PluginSignedBy
   release_notes_url?: string
+  /** What changed in the release, in Markdown. */
+  notes?: string
   yanked?: boolean
   /** Channel of the release, filled from the version when the catalog names none. */
   channel?: PluginChannel

@@ -10,9 +10,11 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
+	"unicode/utf8"
 
 	"aead.dev/minisign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
@@ -1024,4 +1026,23 @@ func TestCatalogCandidatesOfASite(t *testing.T) {
 	}, catalogCandidates("https://plugins.example/"))
 	assert.Equal(t, []string{"https://plugins.example/catalog.json"}, catalogCandidates("https://plugins.example/catalog.json"))
 	assert.Equal(t, []string{"https://plugins.example/?v=1"}, catalogCandidates("https://plugins.example/?v=1"))
+}
+
+func TestMarketplaceCatalogCutsLongReleaseNotes(t *testing.T) {
+	manager := newTestManager(t)
+	server := newCatalogServer(t)
+	useMarketplace(t, server.catalogURL())
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, func(_ *CatalogEntry, release *CatalogRelease) {
+		release.Notes = "\n### Features\n\n- One\n"
+	})
+	server.publish(t, marketplaceManifest("com.example.beta", "1.0.0"), nil, func(_ *CatalogEntry, release *CatalogRelease) {
+		release.Notes = strings.Repeat("é", maxReleaseNotesRunes+10)
+	})
+
+	entries, err := manager.Marketplace().Catalog(context.Background(), true)
+	require.NoError(t, err)
+	assert.Equal(t, "### Features\n\n- One", findEntry(entries, "com.example.alpha", "").Releases[0].Notes)
+	cut := findEntry(entries, "com.example.beta", "").Releases[0].Notes
+	assert.Equal(t, maxReleaseNotesRunes+1, utf8.RuneCountInString(cut))
+	assert.True(t, strings.HasSuffix(cut, "é…"))
 }
