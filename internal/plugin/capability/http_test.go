@@ -13,6 +13,7 @@ import (
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
@@ -98,6 +99,14 @@ func (h *fakeHTTPHost) releaseCount() int {
 	h.mu.Lock()
 	defer h.mu.Unlock()
 	return h.released
+}
+
+// assertReleasedOnce waits for the handler to release the plugin. The release
+// runs when the handler returns, which can be after the client read the reply.
+func assertReleasedOnce(t *testing.T, host *fakeHTTPHost) {
+	t.Helper()
+	assert.Eventually(t, func() bool { return host.releaseCount() == 1 }, 2*time.Second, 5*time.Millisecond,
+		"releases = %d, want 1", host.releaseCount())
 }
 
 // httpManifest builds a minimal manifest declaring the http capability.
@@ -277,7 +286,7 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 	assert.Equal(t, "application/json", sawHeaders.Get("Accept"), "other headers pass through")
 
 	assert.Equal(t, 1, host.acquireCount())
-	assert.Equal(t, 1, host.releaseCount())
+	assertReleasedOnce(t, host)
 }
 
 func TestNewHTTPHandlerUnixProxyReturns503WhenTheSocketIsMissing(t *testing.T) {
@@ -294,7 +303,7 @@ func TestNewHTTPHandlerUnixProxyReturns503WhenTheSocketIsMissing(t *testing.T) {
 
 	assert.Equal(t, http.StatusServiceUnavailable, resp.StatusCode)
 	assert.Contains(t, string(respBody), "55004")
-	assert.Equal(t, 1, host.releaseCount())
+	assertReleasedOnce(t, host)
 }
 
 func TestNewHTTPHandlerUnixProxyReturns503WithoutASecret(t *testing.T) {
@@ -325,7 +334,7 @@ func TestNewHTTPHandlerUnixProxyReturns503WhenAcquireFails(t *testing.T) {
 
 	assert.Equal(t, http.StatusServiceUnavailable, resp.StatusCode)
 	assert.Contains(t, string(respBody), "55004")
-	assert.Equal(t, 1, host.releaseCount())
+	assertReleasedOnce(t, host)
 	assert.Equal(t, 1, host.acquireCount())
 }
 
@@ -371,7 +380,7 @@ func TestNewHTTPHandlerRPCRoundTrip(t *testing.T) {
 	assert.False(t, hasNodeSecret, "node credentials must not be forwarded")
 	assert.Equal(t, []string{"text/plain"}, params.Headers["Accept"])
 
-	assert.Equal(t, 1, host.releaseCount())
+	assertReleasedOnce(t, host)
 }
 
 func TestNewHTTPHandlerRPCRejectsOversizedBody(t *testing.T) {
@@ -400,7 +409,7 @@ func TestNewHTTPHandlerRPCReturns503OnCallError(t *testing.T) {
 
 	assert.Equal(t, http.StatusServiceUnavailable, recorder.Code)
 	assert.Contains(t, recorder.Body.String(), "boom")
-	assert.Equal(t, 1, host.releaseCount())
+	assertReleasedOnce(t, host)
 }
 
 func TestNewHTTPHandlerProxiesWebSocketsWithoutHandshakeCredentials(t *testing.T) {
