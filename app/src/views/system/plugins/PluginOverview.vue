@@ -11,7 +11,7 @@ import ChannelTag from './ChannelTag.vue'
 import { conflictNote } from './conflicts'
 import { packageTrustPreset, trustedOfferAction, trustedOfferSummary, unsignedExplanation } from './marketplace/trust'
 import { formatMemory, isBelowRecommended, memoryWarning, useSystemMemory } from './memory'
-import { describePermission, permissionLabel } from './permissions'
+import { describePermission, permissionLabel, permissionReasons } from './permissions'
 import { useReplacePlugin, useTrustedOffer } from './replace'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
 import { formatUsagePreview, previewUsage } from './usage'
@@ -36,6 +36,7 @@ const collapsedHostCount = 3
 const usageNameCount = 3
 
 const description = computed(() => localizedPluginDescription(props.plugin, gettext.current))
+const reasons = computed(() => permissionReasons(props.plugin, gettext.current))
 
 // Trust notice
 const trust = computed(() => packageTrustPreset(props.plugin.trust))
@@ -312,9 +313,13 @@ function formatCount(value: number) {
           <div class="panel-text">
             {{ describePermission(permission) }}
           </div>
+          <div v-if="reasons[permission]" class="permission-reason">
+            <span class="permission-reason-label">{{ $gettext('Note from the author') }}</span>
+            {{ reasons[permission] }}
+          </div>
           <template v-if="permission === 'network'">
             <template v-if="networkHosts.length">
-              <div class="panel-text mt-1">
+              <div class="panel-text mt-2">
                 {{ $gettext('Only these addresses') }}
               </div>
               <div class="pill-row mt-1">
