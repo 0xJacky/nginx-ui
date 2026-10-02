@@ -99,6 +99,7 @@ elsewhere is dropped and a generic image shown.
 | `categories`, `capabilities` | For filtering the marketplace. |
 | `license` | SPDX identifier of the plugin's license. |
 | `stage` | `production` or `beta`, a label shown next to the plugin. |
+| `provides` | Optional. What the newest release provides. `dns01.since` is the plugin version since which the plugin provides DNS-01, and `dns01.providers` lists its DNS providers with `code` and `name`. A provider added later carries a `since` of its own, and one a newer release dropped while the newest stable release still has it carries `removed_in`. A provider is in a release when `since` ≤ its version < `removed_in`. Lets a host find the plugin before installing it. |
 | `releases` | The releases, see below. |
 
 Links and images of an entry are used only from `https` addresses on the
@@ -135,7 +136,7 @@ catalog's host, the package's host or GitHub.
 | `release_notes_url` | The page with the full notes of the release. |
 | `notes` | What changed in the release, in Markdown, at most 4096 characters. Nginx UI shows it on the plugin page, and for an update the notes of every version since the installed one. |
 | `yanked` | The release is withdrawn and no longer offered. |
-| `manifest` | The `plugin.json` of the release. |
+| `manifest` | A snapshot of the `plugin.json` of the release, see below. |
 
 A release has `downloads`, `download_url` or both. A platform entry of
 `downloads` points at the package of that platform, and an `any` entry at a
@@ -156,11 +157,15 @@ the file the catalog meant; only the signature shows who published it.
 
 ### The Manifest Snapshot
 
-`manifest` is the manifest of the release as a whole: its `server.executables`
-lists every platform the release ships, even though each per-platform package
-declares only its own. Nginx UI shows the permissions, dependencies and
-platforms from it before downloading anything. Large blocks such as the
-DNS-01 provider list may be left out.
+`manifest` holds the members of the release's `plugin.json` that Nginx UI
+reads before downloading anything: `id`, `name`, `version`, `description`,
+`i18n`, `homepage_url`, `api_version`, `min_nginx_ui_version`, `server`,
+`capabilities`, `permissions`, `requires`, `requires_capabilities`,
+`conflicts` and `network_hosts`. Its `server.executables` lists every
+platform the release ships, even though each per-platform package declares
+only its own. The capability blocks, such as the DNS-01 provider list, stay in
+the package: they change from release to release, and the package's own
+`plugin.json` is the one Nginx UI installs.
 
 ## Publisher
 
