@@ -12,6 +12,7 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
@@ -24,12 +25,18 @@ import (
 	"gorm.io/gorm"
 )
 
+// delegationDBs numbers the databases withDelegationDB opens.
+var delegationDBs atomic.Int64
+
 func withDelegationDB(t *testing.T) *gorm.DB {
 	t.Helper()
 
 	originalModelDB := model.UseDB()
 	originalQueryDB := query.Q.UnderlyingDB()
-	db, err := gorm.Open(sqlite.Open(fmt.Sprintf("file:%s?mode=memory&cache=shared", t.Name())), &gorm.Config{})
+	// A shared cache database lives as long as a connection to it does, so
+	// every call gets its own name and the cleanup closes it.
+	name := fmt.Sprintf("file:%s-%d?mode=memory&cache=shared", t.Name(), delegationDBs.Add(1))
+	db, err := gorm.Open(sqlite.Open(name), &gorm.Config{})
 	if err != nil {
 		t.Fatalf("open database: %v", err)
 	}
@@ -43,6 +50,9 @@ func withDelegationDB(t *testing.T) *gorm.DB {
 		model.Use(originalModelDB)
 		if originalQueryDB != nil {
 			query.SetDefault(originalQueryDB)
+		}
+		if sqlDB, err := db.DB(); err == nil {
+			_ = sqlDB.Close()
 		}
 	})
 	return db
