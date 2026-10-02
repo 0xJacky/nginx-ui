@@ -93,6 +93,27 @@ const facts = computed(() => {
 // Every version this node can install, each one can be picked.
 const releases = computed(() => installableReleases(current.value))
 
+// The notes worth reading before an install: every version newer than the
+// installed one up to the offered release, or the offered release alone.
+const releaseNotes = computed(() => {
+  const entry = current.value
+  const offered = entry?.installable_release
+  if (!entry || !offered)
+    return []
+  const installedVersion = entry.installed_version
+  const candidates = installedVersion && entry.update_available
+    ? releases.value.filter(release => compareVersions(release.version, installedVersion) > 0
+      && compareVersions(release.version, offered.version) <= 0)
+    : [offered]
+  return candidates
+    .filter(release => release.notes)
+    .map(release => ({
+      version: release.version,
+      date: release.released_at?.slice(0, 10),
+      html: marked.parse(release.notes ?? '') as string,
+    }))
+})
+
 function releaseAction(version: string) {
   const installedVersion = current.value?.installed_version
   if (!installedVersion)
@@ -278,6 +299,23 @@ watch(open, value => {
             <PermissionList :permissions="permissions" />
           </section>
 
+          <section v-if="releaseNotes.length" class="overview-section">
+            <div class="section-head">
+              <h4 class="section-title">
+                {{ current.update_available ? $gettext('Changes in this update') : $gettext('Release notes') }}
+              </h4>
+            </div>
+            <div class="notes-list">
+              <article v-for="notes in releaseNotes" :key="notes.version">
+                <div class="release-main">
+                  <span class="release-version">v{{ notes.version }}</span>
+                  <span v-if="notes.date" class="release-date">{{ notes.date }}</span>
+                </div>
+                <div v-dompurify-html="notes.html" class="plugin-readme release-notes-body" />
+              </article>
+            </div>
+          </section>
+
           <section class="overview-section">
             <div class="section-head">
               <h4 class="section-title">
@@ -385,6 +423,36 @@ watch(open, value => {
   :deep(td) {
     padding: 6px 8px;
     border: 1px solid var(--ant-color-split);
+  }
+}
+
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.release-notes-body {
+  margin-top: 6px;
+
+  :deep(h1),
+  :deep(h2),
+  :deep(h3),
+  :deep(h4) {
+    margin: 10px 0 2px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ant-color-text-secondary);
+  }
+
+  :deep(p) {
+    margin: 4px 0;
+  }
+
+  :deep(ul),
+  :deep(ol) {
+    margin: 0;
+    padding-left: 20px;
   }
 }
 

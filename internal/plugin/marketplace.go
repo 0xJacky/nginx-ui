@@ -17,6 +17,7 @@ import (
 	"strings"
 	"sync"
 	"time"
+	"unicode/utf8"
 
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -54,6 +55,8 @@ const (
 	maxCatalogBytes = 8 << 20
 	// maxReadmeBytes bounds the proxied readme.
 	maxReadmeBytes = 512 << 10
+	// maxReleaseNotesRunes bounds the notes of one catalog release.
+	maxReleaseNotesRunes = 4096
 	// catalogHTTPTimeout bounds a catalog or readme request.
 	catalogHTTPTimeout = 30 * time.Second
 	// downloadTimeout bounds one package download.
@@ -98,7 +101,10 @@ type CatalogRelease struct {
 	DownloadURL     string `json:"download_url"`
 	SHA256          string `json:"sha256,omitempty"`
 	ReleaseNotesURL string `json:"release_notes_url,omitempty"`
-	Yanked          bool   `json:"yanked,omitempty"`
+	// Notes says what changed in the release, in Markdown, cut to
+	// maxReleaseNotesRunes.
+	Notes  string `json:"notes,omitempty"`
+	Yanked bool   `json:"yanked,omitempty"`
 	// Channel is stable, beta or dev. The catalog may leave it out, the host
 	// then fills it from the version, so the UI reads one field.
 	Channel  string             `json:"channel,omitempty"`
@@ -1056,6 +1062,7 @@ func fetchCatalog(ctx context.Context, source string) ([]CatalogEntry, CatalogIn
 		}
 		for i := range entry.Releases {
 			entry.Releases[i].Channel = channelOfRelease(&entry.Releases[i])
+			entry.Releases[i].Notes = releaseNotes(entry.Releases[i].Notes)
 		}
 		entries = append(entries, entry)
 	}
@@ -1064,6 +1071,16 @@ func fetchCatalog(ctx context.Context, source string) ([]CatalogEntry, CatalogIn
 		info.Icon = document.Icon
 	}
 	return entries, info, nil
+}
+
+// releaseNotes trims the notes of a release and cuts them to
+// maxReleaseNotesRunes, so a catalog cannot bloat every page that lists it.
+func releaseNotes(notes string) string {
+	notes = strings.TrimSpace(notes)
+	if utf8.RuneCountInString(notes) <= maxReleaseNotesRunes {
+		return notes
+	}
+	return strings.TrimSpace(string([]rune(notes)[:maxReleaseNotesRunes])) + "…"
 }
 
 // catalogName keeps the non-empty names of a catalog, short enough to show.
