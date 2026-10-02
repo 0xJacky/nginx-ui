@@ -304,6 +304,16 @@ func canonicalSiteKey(siteName, rawURL string) string {
 }
 
 func resolveSiteIndexByName(siteName string) uint64 {
+	return resolveSiteIndexByNameInTx(nil, siteName)
+}
+
+// resolveSiteIndexByNameInTx resolves (and creates when missing) the sites row
+// for siteName. When tx is non-nil the lookup and the insert run on that
+// transaction. Callers holding an open SQLite transaction must pass it: an
+// insert through another pooled connection would wait on the transaction's own
+// write lock until busy_timeout, failing with "database is locked" and stalling
+// every other database user in the meantime.
+func resolveSiteIndexByNameInTx(tx *gorm.DB, siteName string) uint64 {
 	siteName = strings.TrimSpace(siteName)
 	if siteName == "" {
 		return 0
@@ -315,6 +325,9 @@ func resolveSiteIndexByName(siteName string) uint64 {
 	}
 
 	s := query.Site
+	if tx != nil {
+		s = &query.Use(tx).Site
+	}
 	siteModel, err := s.Where(s.Path.Eq(path)).FirstOrCreate()
 	if err != nil {
 		logger.Warnf("Failed to resolve site index for %s: %v", siteName, err)
@@ -601,7 +614,7 @@ func upgradeSiteConfigAssociations() (updated int, deduplicated int, unresolved 
 
 		targetIndex := cfg.SiteIndex
 		if siteName != "" {
-			if resolved := resolveSiteIndexByName(siteName); resolved > 0 {
+			if resolved := resolveSiteIndexByNameInTx(tx, siteName); resolved > 0 {
 				targetIndex = resolved
 			}
 		}
