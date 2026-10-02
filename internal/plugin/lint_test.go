@@ -23,7 +23,6 @@ type lintFixture struct {
 	manifest       *protocol.Manifest
 	skipReadme     bool
 	skipLicense    bool
-	skipChangelog  bool
 	skipExecutable bool
 }
 
@@ -81,9 +80,6 @@ func writeLintFixture(t *testing.T, f lintFixture) string {
 	if !f.skipLicense {
 		require.NoError(t, os.WriteFile(filepath.Join(dir, "LICENSE"), []byte("MIT"), 0o644))
 	}
-	if !f.skipChangelog {
-		require.NoError(t, os.WriteFile(filepath.Join(dir, "CHANGELOG.md"), []byte("# Changelog\n"), 0o644))
-	}
 	return dir
 }
 
@@ -120,16 +116,14 @@ func TestLintMissingReadmeIsError(t *testing.T) {
 	assertHasFinding(t, report, LevelError, RulePackageDocs)
 }
 
-func TestLintMissingLicenseAndChangelogAreWarnings(t *testing.T) {
-	dir := writeLintFixture(t, lintFixture{manifest: goodManifest(), skipLicense: true, skipChangelog: true})
+func TestLintMissingLicenseIsWarning(t *testing.T) {
+	dir := writeLintFixture(t, lintFixture{manifest: goodManifest(), skipLicense: true})
 	report, err := Lint(dir)
 	require.NoError(t, err)
 	assert.False(t, report.HasErrors())
-	require.Len(t, report.Findings, 2)
-	for _, f := range report.Findings {
-		assert.Equal(t, LevelWarning, f.Level)
-		assert.Equal(t, RulePackageDocs, f.Rule)
-	}
+	require.Len(t, report.Findings, 1)
+	assert.Equal(t, LevelWarning, report.Findings[0].Level)
+	assert.Equal(t, RulePackageDocs, report.Findings[0].Rule)
 }
 
 func TestLintMissingExecutableIsError(t *testing.T) {

@@ -249,8 +249,8 @@ The files of the package exceed 256 MiB uncompressed.
 
 <Badge type="info" text="lint" /> <Badge type="danger" text="error" /> <Badge type="warning" text="warning" />
 
-Error when `README.md` is missing; warning when `LICENSE` or
-`CHANGELOG.md` is missing, or when the readme lacks a section it should have.
+Error when `README.md` is missing; warning when `LICENSE` is missing, or
+when the readme lacks a section it should have.
 See [Packaging](./packaging.md#layout).
 
 ### package-executables
