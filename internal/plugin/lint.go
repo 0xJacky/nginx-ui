@@ -819,12 +819,11 @@ func settingsDefaultMatchesType(fieldType string, value any) bool {
 	}
 }
 
-// lintDocs checks that README.md, LICENSE and CHANGELOG.md are present and warns
+// lintDocs checks that README.md and LICENSE are present and warns
 // when README.md is missing the sections every plugin author should fill in.
 func lintDocs(dir string, report *LintReport) {
 	lintRequiredDoc(dir, lintReadmeName, LevelError, report)
 	lintRequiredDoc(dir, "LICENSE", LevelWarning, report)
-	lintRequiredDoc(dir, "CHANGELOG.md", LevelWarning, report)
 
 	data, err := os.ReadFile(filepath.Join(dir, lintReadmeName))
 	if err != nil {

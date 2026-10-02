@@ -24,9 +24,10 @@ this page. `nginx-ui plugin lint <package>` checks it.
 
 - `plugin.json` is at the root of the archive, or exactly one directory down
   (the layout `tar czf x.tar.gz plugin-dir/` produces).
-- The root holds `README.md`, `LICENSE` and `CHANGELOG.md`. They are for the
-  person installing the plugin and for anyone auditing it: a missing
-  `README.md` is an error, a missing `LICENSE` or `CHANGELOG.md` a warning.
+- The root holds `README.md` and `LICENSE`. They are for the person
+  installing the plugin and for anyone auditing it: a missing `README.md` is
+  an error, a missing `LICENSE` a warning. What changed in a version belongs
+  in its release notes, see [Releases](./catalog.md#releases).
 - The package contains every file `server.executables` declares.
 - It contains no symbolic or hard links.
 
