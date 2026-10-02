@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin"
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -280,7 +281,7 @@ func TestExecuteAutoBackupStoresThroughAPluginBackend(t *testing.T) {
 	storage := registerMemoryStorage()
 	storage.reset(map[string][]byte{})
 
-	db, err := gorm.Open(sqlite.Open("file:"+t.Name()+"?mode=memory&cache=shared"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.AutoBackup{}, &model.Notification{}, &model.ExternalNotify{}))
 	originalDB := model.UseDB()

@@ -5,9 +5,9 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/ini.v1"
@@ -41,8 +41,7 @@ const legacyTestSchema = `CREATE TABLE nginx_log_indices (
 func newLegacyTestDB(t *testing.T) *gorm.DB {
 	t.Helper()
 
-	name := strings.NewReplacer("/", "_", " ", "_").Replace(t.Name())
-	db, err := gorm.Open(sqlite.Open("file:legacy_"+name+"?mode=memory&cache=shared"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t, "legacy")), &gorm.Config{})
 	require.NoError(t, err)
 	sqlDB, err := db.DB()
 	require.NoError(t, err)
