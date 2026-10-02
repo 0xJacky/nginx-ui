@@ -19,7 +19,7 @@ nginx-ui plugin pack ./mydns io.github.example.mydns-1.0.0-linux-amd64.tar.gz --
 ## 結構 {#layout}
 
 - `plugin.json` 位於封存檔的根目錄，或者正好在一層目錄之下（即 `tar czf x.tar.gz plugin-dir/` 產生的結構）。
-- 根目錄包含 `README.md`、`LICENSE` 和 `CHANGELOG.md`。它們是給安裝外掛的人和審查外掛的人看的：缺少 `README.md` 是錯誤，缺少 `LICENSE` 或 `CHANGELOG.md` 是警告。
+- 根目錄包含 `README.md` 和 `LICENSE`。它們是給安裝外掛的人和審查外掛的人看的：缺少 `README.md` 是錯誤，缺少 `LICENSE` 是警告。每個版本的變更寫在該版本的發佈說明裡，參見[版本](./catalog.md#releases)。
 - 外掛套件包含 `server.executables` 宣告的每個檔案。
 - 不包含符號連結或硬連結。
 

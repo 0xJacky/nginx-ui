@@ -215,7 +215,7 @@ ID 使用了保留给 Nginx UI 项目的 `com.nginxui.*`。参见[命名规则](
 
 <Badge type="info" text="lint" /> <Badge type="danger" text="error" /> <Badge type="warning" text="warning" />
 
-缺少 `README.md` 时为错误；缺少 `LICENSE` 或 `CHANGELOG.md`，或者 README 缺少应有的章节时为警告。参见[打包](./packaging.md#layout)。
+缺少 `README.md` 时为错误；缺少 `LICENSE`，或者 README 缺少应有的章节时为警告。参见[打包](./packaging.md#layout)。
 
 ### package-executables
 

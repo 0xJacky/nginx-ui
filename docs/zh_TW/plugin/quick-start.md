@@ -66,8 +66,7 @@ mydns/
 ├── go.mod
 ├── build.sh         # 建置 dist/<平台>/mydns，即 plugin.json 指向的可執行檔
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 ```text [Rust]
@@ -78,8 +77,7 @@ mydns/
 │   └── main.rs      # 基於 plugin-sdk-rust 的外掛
 ├── build.sh         # 建置 dist/<平台>/mydns，即 plugin.json 指向的可執行檔
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 ```text [Python]
@@ -88,8 +86,7 @@ mydns/
 ├── server/
 │   └── main.py      # 只使用標準函式庫的外掛
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 ```text [Node.js]
@@ -98,13 +95,12 @@ mydns/
 ├── server/
 │   └── main.js      # 沒有相依套件的外掛
 ├── README.md
-├── LICENSE
-└── CHANGELOG.md
+└── LICENSE
 ```
 
 :::
 
-每個外掛套件都必須包含 `README.md`、`LICENSE` 和 `CHANGELOG.md`，因此範本已經包含了它們。發佈前請補齊內容。
+每個外掛套件都必須包含 `README.md` 和 `LICENSE`，因此範本已經包含了它們。發佈前請補齊內容。
 
 ## 清單檔案 {#the-manifest}
 

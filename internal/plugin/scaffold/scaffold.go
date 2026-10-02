@@ -52,7 +52,6 @@ type data struct {
 	// BinaryName is the name of the compiled executable without a suffix.
 	BinaryName  string
 	Interpreter string
-	Today       string
 	Year        int
 }
 
@@ -117,7 +116,6 @@ func Init(dir string, opts InitOptions) error {
 		GoTypeName:     pascalCase(lastSegment),
 		BinaryName:     lastSegment,
 		Interpreter:    interpreter,
-		Today:          time.Now().Format("2006-01-02"),
 		Year:           time.Now().Year(),
 	}
 
