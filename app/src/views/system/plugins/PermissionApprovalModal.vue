@@ -3,6 +3,7 @@ import type { PluginInfo } from '@/api/plugin'
 import { localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
 import PermissionList from './PermissionList.vue'
+import { permissionReasons } from './permissions'
 
 const props = defineProps<{
   plugin?: PluginInfo
@@ -16,6 +17,7 @@ const emit = defineEmits<{
 const open = defineModel<boolean>('open', { default: false })
 
 const permissions = computed(() => props.plugin?.permissions ?? [])
+const reasons = computed(() => permissionReasons(props.plugin, gettext.current))
 const name = computed(() => (props.plugin ? localizedPluginName(props.plugin, gettext.current) : ''))
 </script>
 
@@ -37,6 +39,6 @@ const name = computed(() => (props.plugin ? localizedPluginName(props.plugin, ge
       :description="$gettext('Approve only if you trust the author. The approval is recorded and asked again whenever the requested permissions change.')"
     />
 
-    <PermissionList :permissions="permissions" />
+    <PermissionList :permissions="permissions" :reasons="reasons" />
   </AModal>
 </template>

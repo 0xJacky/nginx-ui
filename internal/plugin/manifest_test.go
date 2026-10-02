@@ -327,6 +327,57 @@ func TestValidateManifestAcceptsLogFilesPermission(t *testing.T) {
 	assert.NoError(t, ValidateManifest(m))
 }
 
+func TestValidateManifestPermissionReasons(t *testing.T) {
+	tests := []struct {
+		name    string
+		reasons map[string]string
+		i18n    map[string]protocol.ManifestI18n
+		problem string
+	}{
+		{"valid", map[string]string{protocol.PermissionKV: "To keep the zone list."}, nil, ""},
+		{"none", nil, nil, ""},
+		{"three hundred characters", map[string]string{protocol.PermissionKV: strings.Repeat("字", 300)}, nil, ""},
+		{"not requested", map[string]string{protocol.PermissionNetwork: "To call the API."}, nil, `"network" is not a permission of the plugin`},
+		{"empty", map[string]string{protocol.PermissionKV: "  "}, nil, ""},
+		{"too long", map[string]string{protocol.PermissionKV: strings.Repeat("a", 301)}, nil, "longer than 300 characters"},
+		{
+			"translation not requested", nil,
+			map[string]protocol.ManifestI18n{"zh_CN": {PermissionReasons: map[string]string{protocol.PermissionNetwork: "调用 API。"}}},
+			"i18n.zh_CN.permission_reasons",
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			m := validManifest()
+			m.PermissionReasons = tc.reasons
+			m.I18n = tc.i18n
+			err := ValidateManifest(m)
+			if tc.problem == "" {
+				require.NoError(t, err)
+				return
+			}
+			require.ErrorIs(t, err, ErrManifestInvalid)
+			assert.Contains(t, err.Error(), tc.problem)
+		})
+	}
+}
+
+func TestPermissionReasonMaps(t *testing.T) {
+	reasons, translations := permissionReasonMaps(nil)
+	assert.Nil(t, reasons)
+	assert.Nil(t, translations)
+
+	m := validManifest()
+	m.PermissionReasons = map[string]string{protocol.PermissionKV: "To keep the zone list."}
+	m.I18n = map[string]protocol.ManifestI18n{
+		"zh_CN": {Name: "Cloudflare", PermissionReasons: map[string]string{protocol.PermissionKV: "保存区域列表。"}},
+		"ja_JP": {Name: "Cloudflare"},
+	}
+	reasons, translations = permissionReasonMaps(m)
+	assert.Equal(t, map[string]string{protocol.PermissionKV: "To keep the zone list."}, reasons)
+	assert.Equal(t, map[string]map[string]string{"zh_CN": {protocol.PermissionKV: "保存区域列表。"}}, translations)
+}
+
 func TestValidateManifestConflicts(t *testing.T) {
 	tests := []struct {
 		name      string

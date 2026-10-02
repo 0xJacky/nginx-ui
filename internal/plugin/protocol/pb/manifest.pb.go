@@ -88,9 +88,13 @@ type Manifest struct {
 	I18N map[string]*ManifestI18N `protobuf:"bytes,30,rep,name=i18n,proto3" json:"i18n,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	// Plugin ids that must never be enabled together with this plugin. The
 	// check is symmetric: either side declaring it is enough.
-	Conflicts     []string `protobuf:"bytes,31,rep,name=conflicts,proto3" json:"conflicts,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	Conflicts []string `protobuf:"bytes,31,rep,name=conflicts,proto3" json:"conflicts,omitempty"`
+	// Why the plugin asks for a permission, keyed by an entry of permissions
+	// and shown next to it before the person grants it. Optional per
+	// permission.
+	PermissionReasons map[string]string `protobuf:"bytes,32,rep,name=permission_reasons,json=permissionReasons,proto3" json:"permission_reasons,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *Manifest) Reset() {
@@ -340,14 +344,23 @@ func (x *Manifest) GetConflicts() []string {
 	return nil
 }
 
+func (x *Manifest) GetPermissionReasons() map[string]string {
+	if x != nil {
+		return x.PermissionReasons
+	}
+	return nil
+}
+
 // ManifestI18n translates the display fields of a manifest into one
 // language. An empty string means no translation for that field.
 type ManifestI18N struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Name        string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	// Translations of permission_reasons, keyed the same way.
+	PermissionReasons map[string]string `protobuf:"bytes,3,rep,name=permission_reasons,json=permissionReasons,proto3" json:"permission_reasons,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *ManifestI18N) Reset() {
@@ -392,6 +405,13 @@ func (x *ManifestI18N) GetDescription() string {
 		return x.Description
 	}
 	return ""
+}
+
+func (x *ManifestI18N) GetPermissionReasons() map[string]string {
+	if x != nil {
+		return x.PermissionReasons
+	}
+	return nil
 }
 
 // ManifestServer describes how to start the plugin process.
@@ -2529,7 +2549,7 @@ var File_nginxui_plugin_v1_manifest_proto protoreflect.FileDescriptor
 
 const file_nginxui_plugin_v1_manifest_proto_rawDesc = "" +
 	"\n" +
-	" nginxui/plugin/v1/manifest.proto\x12\x11nginxui.plugin.v1\x1a\x1cgoogle/protobuf/struct.proto\"\xb2\f\n" +
+	" nginxui/plugin/v1/manifest.proto\x12\x11nginxui.plugin.v1\x1a\x1cgoogle/protobuf/struct.proto\"\xdb\r\n" +
 	"\bManifest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x18\n" +
@@ -2563,13 +2583,21 @@ const file_nginxui_plugin_v1_manifest_proto_rawDesc = "" +
 	"\tdiscovery\x18\x1c \x01(\v2$.nginxui.plugin.v1.ManifestDiscoveryR\tdiscovery\x12=\n" +
 	"\blog_sink\x18\x1d \x01(\v2\".nginxui.plugin.v1.ManifestLogSinkR\alogSink\x129\n" +
 	"\x04i18n\x18\x1e \x03(\v2%.nginxui.plugin.v1.Manifest.I18nEntryR\x04i18n\x12\x1c\n" +
-	"\tconflicts\x18\x1f \x03(\tR\tconflicts\x1aX\n" +
+	"\tconflicts\x18\x1f \x03(\tR\tconflicts\x12a\n" +
+	"\x12permission_reasons\x18  \x03(\v22.nginxui.plugin.v1.Manifest.PermissionReasonsEntryR\x11permissionReasons\x1aX\n" +
 	"\tI18nEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x125\n" +
-	"\x05value\x18\x02 \x01(\v2\x1f.nginxui.plugin.v1.ManifestI18nR\x05value:\x028\x01\"D\n" +
+	"\x05value\x18\x02 \x01(\v2\x1f.nginxui.plugin.v1.ManifestI18nR\x05value:\x028\x01\x1aD\n" +
+	"\x16PermissionReasonsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xf1\x01\n" +
 	"\fManifestI18n\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\"\xd4\x02\n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12e\n" +
+	"\x12permission_reasons\x18\x03 \x03(\v26.nginxui.plugin.v1.ManifestI18n.PermissionReasonsEntryR\x11permissionReasons\x1aD\n" +
+	"\x16PermissionReasonsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd4\x02\n" +
 	"\x0eManifestServer\x12T\n" +
 	"\vexecutables\x18\x01 \x03(\v22.nginxui.plugin.v1.ManifestServer.ExecutablesEntryR\vexecutables\x12\x18\n" +
 	"\acommand\x18\x02 \x03(\tR\acommand\x12\x1c\n" +
@@ -2736,7 +2764,7 @@ func file_nginxui_plugin_v1_manifest_proto_rawDescGZIP() []byte {
 	return file_nginxui_plugin_v1_manifest_proto_rawDescData
 }
 
-var file_nginxui_plugin_v1_manifest_proto_msgTypes = make([]protoimpl.MessageInfo, 42)
+var file_nginxui_plugin_v1_manifest_proto_msgTypes = make([]protoimpl.MessageInfo, 44)
 var file_nginxui_plugin_v1_manifest_proto_goTypes = []any{
 	(*Manifest)(nil),            // 0: nginxui.plugin.v1.Manifest
 	(*ManifestI18N)(nil),        // 1: nginxui.plugin.v1.ManifestI18n
@@ -2775,13 +2803,15 @@ var file_nginxui_plugin_v1_manifest_proto_goTypes = []any{
 	(*SettingsField)(nil),       // 34: nginxui.plugin.v1.SettingsField
 	(*SettingsOption)(nil),      // 35: nginxui.plugin.v1.SettingsOption
 	nil,                         // 36: nginxui.plugin.v1.Manifest.I18nEntry
-	nil,                         // 37: nginxui.plugin.v1.ManifestServer.ExecutablesEntry
-	nil,                         // 38: nginxui.plugin.v1.ManifestWebapp.SharedEntry
-	nil,                         // 39: nginxui.plugin.v1.ManifestWebapp.ChunksEntry
-	nil,                         // 40: nginxui.plugin.v1.ManifestPage.TitleEntry
-	nil,                         // 41: nginxui.plugin.v1.DNS01ProviderMethod.ValuesEntry
-	(*structpb.Struct)(nil),     // 42: google.protobuf.Struct
-	(*structpb.Value)(nil),      // 43: google.protobuf.Value
+	nil,                         // 37: nginxui.plugin.v1.Manifest.PermissionReasonsEntry
+	nil,                         // 38: nginxui.plugin.v1.ManifestI18n.PermissionReasonsEntry
+	nil,                         // 39: nginxui.plugin.v1.ManifestServer.ExecutablesEntry
+	nil,                         // 40: nginxui.plugin.v1.ManifestWebapp.SharedEntry
+	nil,                         // 41: nginxui.plugin.v1.ManifestWebapp.ChunksEntry
+	nil,                         // 42: nginxui.plugin.v1.ManifestPage.TitleEntry
+	nil,                         // 43: nginxui.plugin.v1.DNS01ProviderMethod.ValuesEntry
+	(*structpb.Struct)(nil),     // 44: google.protobuf.Struct
+	(*structpb.Value)(nil),      // 45: google.protobuf.Value
 }
 var file_nginxui_plugin_v1_manifest_proto_depIdxs = []int32{
 	2,  // 0: nginxui.plugin.v1.Manifest.server:type_name -> nginxui.plugin.v1.ManifestServer
@@ -2801,42 +2831,44 @@ var file_nginxui_plugin_v1_manifest_proto_depIdxs = []int32{
 	26, // 14: nginxui.plugin.v1.Manifest.discovery:type_name -> nginxui.plugin.v1.ManifestDiscovery
 	28, // 15: nginxui.plugin.v1.Manifest.log_sink:type_name -> nginxui.plugin.v1.ManifestLogSink
 	36, // 16: nginxui.plugin.v1.Manifest.i18n:type_name -> nginxui.plugin.v1.Manifest.I18nEntry
-	37, // 17: nginxui.plugin.v1.ManifestServer.executables:type_name -> nginxui.plugin.v1.ManifestServer.ExecutablesEntry
-	3,  // 18: nginxui.plugin.v1.ManifestServer.resources:type_name -> nginxui.plugin.v1.ManifestResources
-	38, // 19: nginxui.plugin.v1.ManifestWebapp.shared:type_name -> nginxui.plugin.v1.ManifestWebapp.SharedEntry
-	5,  // 20: nginxui.plugin.v1.ManifestWebapp.pages:type_name -> nginxui.plugin.v1.ManifestPage
-	39, // 21: nginxui.plugin.v1.ManifestWebapp.chunks:type_name -> nginxui.plugin.v1.ManifestWebapp.ChunksEntry
-	40, // 22: nginxui.plugin.v1.ManifestPage.title:type_name -> nginxui.plugin.v1.ManifestPage.TitleEntry
-	10, // 23: nginxui.plugin.v1.ManifestDNS01.providers:type_name -> nginxui.plugin.v1.DNS01Provider
-	11, // 24: nginxui.plugin.v1.DNS01Provider.links:type_name -> nginxui.plugin.v1.DNS01ProviderLinks
-	12, // 25: nginxui.plugin.v1.DNS01Provider.form:type_name -> nginxui.plugin.v1.DNS01ProviderForm
-	13, // 26: nginxui.plugin.v1.DNS01ProviderForm.fields:type_name -> nginxui.plugin.v1.DNS01ProviderField
-	14, // 27: nginxui.plugin.v1.DNS01ProviderForm.methods:type_name -> nginxui.plugin.v1.DNS01ProviderMethod
-	41, // 28: nginxui.plugin.v1.DNS01ProviderMethod.values:type_name -> nginxui.plugin.v1.DNS01ProviderMethod.ValuesEntry
-	17, // 29: nginxui.plugin.v1.ManifestNotify.channels:type_name -> nginxui.plugin.v1.NotifyChannel
-	29, // 30: nginxui.plugin.v1.NotifyChannel.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	19, // 31: nginxui.plugin.v1.ManifestProbe.kinds:type_name -> nginxui.plugin.v1.ProbeKind
-	29, // 32: nginxui.plugin.v1.ProbeKind.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	21, // 33: nginxui.plugin.v1.ManifestStorage.backends:type_name -> nginxui.plugin.v1.StorageBackend
-	29, // 34: nginxui.plugin.v1.StorageBackend.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	23, // 35: nginxui.plugin.v1.ManifestDeploy.targets:type_name -> nginxui.plugin.v1.DeployTarget
-	29, // 36: nginxui.plugin.v1.DeployTarget.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	25, // 37: nginxui.plugin.v1.ManifestBlocklist.sources:type_name -> nginxui.plugin.v1.BlocklistSource
-	29, // 38: nginxui.plugin.v1.BlocklistSource.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	27, // 39: nginxui.plugin.v1.ManifestDiscovery.providers:type_name -> nginxui.plugin.v1.DiscoveryProvider
-	29, // 40: nginxui.plugin.v1.DiscoveryProvider.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
-	30, // 41: nginxui.plugin.v1.ConfigurationSchema.fields:type_name -> nginxui.plugin.v1.ConfigurationField
-	32, // 42: nginxui.plugin.v1.ManifestMCP.tools:type_name -> nginxui.plugin.v1.MCPTool
-	42, // 43: nginxui.plugin.v1.MCPTool.input_schema:type_name -> google.protobuf.Struct
-	34, // 44: nginxui.plugin.v1.SettingsSchema.settings:type_name -> nginxui.plugin.v1.SettingsField
-	43, // 45: nginxui.plugin.v1.SettingsField.default:type_name -> google.protobuf.Value
-	35, // 46: nginxui.plugin.v1.SettingsField.options:type_name -> nginxui.plugin.v1.SettingsOption
-	1,  // 47: nginxui.plugin.v1.Manifest.I18nEntry.value:type_name -> nginxui.plugin.v1.ManifestI18n
-	48, // [48:48] is the sub-list for method output_type
-	48, // [48:48] is the sub-list for method input_type
-	48, // [48:48] is the sub-list for extension type_name
-	48, // [48:48] is the sub-list for extension extendee
-	0,  // [0:48] is the sub-list for field type_name
+	37, // 17: nginxui.plugin.v1.Manifest.permission_reasons:type_name -> nginxui.plugin.v1.Manifest.PermissionReasonsEntry
+	38, // 18: nginxui.plugin.v1.ManifestI18n.permission_reasons:type_name -> nginxui.plugin.v1.ManifestI18n.PermissionReasonsEntry
+	39, // 19: nginxui.plugin.v1.ManifestServer.executables:type_name -> nginxui.plugin.v1.ManifestServer.ExecutablesEntry
+	3,  // 20: nginxui.plugin.v1.ManifestServer.resources:type_name -> nginxui.plugin.v1.ManifestResources
+	40, // 21: nginxui.plugin.v1.ManifestWebapp.shared:type_name -> nginxui.plugin.v1.ManifestWebapp.SharedEntry
+	5,  // 22: nginxui.plugin.v1.ManifestWebapp.pages:type_name -> nginxui.plugin.v1.ManifestPage
+	41, // 23: nginxui.plugin.v1.ManifestWebapp.chunks:type_name -> nginxui.plugin.v1.ManifestWebapp.ChunksEntry
+	42, // 24: nginxui.plugin.v1.ManifestPage.title:type_name -> nginxui.plugin.v1.ManifestPage.TitleEntry
+	10, // 25: nginxui.plugin.v1.ManifestDNS01.providers:type_name -> nginxui.plugin.v1.DNS01Provider
+	11, // 26: nginxui.plugin.v1.DNS01Provider.links:type_name -> nginxui.plugin.v1.DNS01ProviderLinks
+	12, // 27: nginxui.plugin.v1.DNS01Provider.form:type_name -> nginxui.plugin.v1.DNS01ProviderForm
+	13, // 28: nginxui.plugin.v1.DNS01ProviderForm.fields:type_name -> nginxui.plugin.v1.DNS01ProviderField
+	14, // 29: nginxui.plugin.v1.DNS01ProviderForm.methods:type_name -> nginxui.plugin.v1.DNS01ProviderMethod
+	43, // 30: nginxui.plugin.v1.DNS01ProviderMethod.values:type_name -> nginxui.plugin.v1.DNS01ProviderMethod.ValuesEntry
+	17, // 31: nginxui.plugin.v1.ManifestNotify.channels:type_name -> nginxui.plugin.v1.NotifyChannel
+	29, // 32: nginxui.plugin.v1.NotifyChannel.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	19, // 33: nginxui.plugin.v1.ManifestProbe.kinds:type_name -> nginxui.plugin.v1.ProbeKind
+	29, // 34: nginxui.plugin.v1.ProbeKind.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	21, // 35: nginxui.plugin.v1.ManifestStorage.backends:type_name -> nginxui.plugin.v1.StorageBackend
+	29, // 36: nginxui.plugin.v1.StorageBackend.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	23, // 37: nginxui.plugin.v1.ManifestDeploy.targets:type_name -> nginxui.plugin.v1.DeployTarget
+	29, // 38: nginxui.plugin.v1.DeployTarget.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	25, // 39: nginxui.plugin.v1.ManifestBlocklist.sources:type_name -> nginxui.plugin.v1.BlocklistSource
+	29, // 40: nginxui.plugin.v1.BlocklistSource.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	27, // 41: nginxui.plugin.v1.ManifestDiscovery.providers:type_name -> nginxui.plugin.v1.DiscoveryProvider
+	29, // 42: nginxui.plugin.v1.DiscoveryProvider.configuration:type_name -> nginxui.plugin.v1.ConfigurationSchema
+	30, // 43: nginxui.plugin.v1.ConfigurationSchema.fields:type_name -> nginxui.plugin.v1.ConfigurationField
+	32, // 44: nginxui.plugin.v1.ManifestMCP.tools:type_name -> nginxui.plugin.v1.MCPTool
+	44, // 45: nginxui.plugin.v1.MCPTool.input_schema:type_name -> google.protobuf.Struct
+	34, // 46: nginxui.plugin.v1.SettingsSchema.settings:type_name -> nginxui.plugin.v1.SettingsField
+	45, // 47: nginxui.plugin.v1.SettingsField.default:type_name -> google.protobuf.Value
+	35, // 48: nginxui.plugin.v1.SettingsField.options:type_name -> nginxui.plugin.v1.SettingsOption
+	1,  // 49: nginxui.plugin.v1.Manifest.I18nEntry.value:type_name -> nginxui.plugin.v1.ManifestI18n
+	50, // [50:50] is the sub-list for method output_type
+	50, // [50:50] is the sub-list for method input_type
+	50, // [50:50] is the sub-list for extension type_name
+	50, // [50:50] is the sub-list for extension extendee
+	0,  // [0:50] is the sub-list for field type_name
 }
 
 func init() { file_nginxui_plugin_v1_manifest_proto_init() }
@@ -2850,7 +2882,7 @@ func file_nginxui_plugin_v1_manifest_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nginxui_plugin_v1_manifest_proto_rawDesc), len(file_nginxui_plugin_v1_manifest_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   42,
+			NumMessages:   44,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

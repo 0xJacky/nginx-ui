@@ -93,6 +93,14 @@ own id, is listed twice or is also in `requires`. See
 An unknown permission is an error, a permission listed twice a warning.
 See [Permissions and Security](./permissions.md#permissions).
 
+### manifest-permission-reasons
+
+<Badge type="info" text="lint" /> <Badge type="danger" text="error" />
+
+A key of `permission_reasons`, or of its translation in `i18n`, is not one of
+`permissions`, or its reason is longer than 300 characters. See
+[Explaining Permissions](./permissions.md#explaining-permissions).
+
 ### capability-name
 
 <Badge type="info" text="lint" /> <Badge type="danger" text="error" />

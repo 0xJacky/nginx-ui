@@ -1,3 +1,6 @@
+import type { PluginManifestI18n } from '@/api/plugin'
+import { localizedText } from '@/api/plugin'
+
 /**
  * Plain English explanation of every host permission a plugin can request, so
  * the install and approval dialogs say what granting it actually allows.
@@ -83,4 +86,40 @@ export function permissionLabel(permission: string): string {
     default:
       return $gettext('Unknown permission')
   }
+}
+
+/** A manifest or an installed plugin, whichever carries the reasons. */
+export interface PermissionReasonSource {
+  permission_reasons?: Record<string, string>
+  permission_reasons_i18n?: Record<string, Record<string, string>>
+  i18n?: Record<string, PluginManifestI18n>
+}
+
+/**
+ * The reason a plugin gives for each permission, in the given language. An
+ * empty reason counts as none, and an empty translation falls back.
+ */
+export function permissionReasons(source: PermissionReasonSource | undefined, language: string): Record<string, string> {
+  const byLocale: Record<string, Record<string, string>> = { ...source?.permission_reasons_i18n }
+  for (const [locale, translated] of Object.entries(source?.i18n ?? {})) {
+    if (translated?.permission_reasons)
+      byLocale[locale] = { ...byLocale[locale], ...translated.permission_reasons }
+  }
+
+  const names = new Set(Object.keys(source?.permission_reasons ?? {}))
+  for (const translated of Object.values(byLocale))
+    Object.keys(translated).forEach(name => names.add(name))
+
+  const reasons: Record<string, string> = {}
+  for (const name of names) {
+    const translations: Record<string, string> = {}
+    for (const [locale, translated] of Object.entries(byLocale)) {
+      if (translated[name]?.trim())
+        translations[locale] = translated[name]
+    }
+    const text = localizedText(translations, language, source?.permission_reasons?.[name] ?? '').trim()
+    if (text)
+      reasons[name] = text
+  }
+  return reasons
 }
