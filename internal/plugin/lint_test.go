@@ -550,6 +550,21 @@ func TestLintLogPathsChangedNeedsTheLogFilesPermission(t *testing.T) {
 	assert.Empty(t, report.Findings, "%+v", report.Findings)
 }
 
+func TestLintPermissionReasons(t *testing.T) {
+	m := goodManifest()
+	m.PermissionReasons = map[string]string{protocol.PermissionNetwork: "To call the API of MyDNS."}
+	report, err := Lint(writeLintFixture(t, lintFixture{manifest: m}))
+	require.NoError(t, err)
+	for _, f := range report.Findings {
+		assert.NotEqual(t, RuleManifestReasons, f.Rule)
+	}
+
+	m.PermissionReasons = map[string]string{protocol.PermissionKV: "To keep the zone list."}
+	report, err = Lint(writeLintFixture(t, lintFixture{manifest: m}))
+	require.NoError(t, err)
+	assertHasFinding(t, report, LevelError, RuleManifestReasons)
+}
+
 func TestLintConflicts(t *testing.T) {
 	tests := []struct {
 		name   string

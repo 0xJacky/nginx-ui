@@ -27,7 +27,7 @@ of the manifest gives editors completion and validation:
 | `name` | string | yes | Display name. |
 | `version` | string | yes | The plugin's own version, [semantic versioning](https://semver.org/). |
 | `description` | string | no | One line summary shown in the plugin list. |
-| `i18n` | object | no | Translations of `name` and `description`. See [Translations](#translations). |
+| `i18n` | object | no | Translations of `name`, `description` and `permission_reasons`. See [Translations](#translations). |
 | `homepage_url` | string | no | Documentation or repository link. |
 | `icon_path` | string | no | Path of an icon file inside the package. |
 | `api_version` | integer | yes | Protocol generation the plugin speaks. Always `1` today. |
@@ -43,6 +43,7 @@ of the manifest gives editors completion and validation:
 | `events` | string[] | no | Events the plugin subscribes to. See [Host API](./host-api.md#events). |
 | `cron` | object[] | no | Scheduled calls. See [Host API](./host-api.md#scheduled-tasks). |
 | `network_hosts` | string[] | no | Hosts the plugin intends to contact, shown to the person installing it. |
+| `permission_reasons` | object | no | Why the plugin asks for each permission. See [Explaining Permissions](./permissions.md#explaining-permissions). |
 | `settings_schema` | object | no | The settings form. See [Settings](#settings). |
 | `dns01`, `http`, `notify`, `probe`, `mcp`, `storage`, `deploy`, `blocklist`, `discovery`, `log_sink` | object | with the capability | Configuration of each capability. |
 
@@ -81,7 +82,8 @@ interface:
 
 Translate only the languages you want to. The top level `name` and
 `description` are the English text, and a language without a translation
-shows them instead.
+shows them instead. A language can translate
+[`permission_reasons`](./permissions.md#explaining-permissions) the same way.
 
 Keys are the language codes of the Nginx UI interface, such as `zh_CN`,
 `zh_TW` or `ja_JP`. When a key is not one of them,

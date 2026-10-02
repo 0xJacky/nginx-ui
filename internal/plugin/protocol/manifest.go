@@ -27,6 +27,9 @@ type Manifest struct {
 	Events               []string              `json:"events,omitempty"`
 	Cron                 []ManifestCron        `json:"cron,omitempty"`
 	NetworkHosts         []string              `json:"network_hosts,omitempty"`
+	// PermissionReasons says why the plugin asks for a permission, keyed by
+	// an entry of Permissions.
+	PermissionReasons map[string]string `json:"permission_reasons,omitempty"`
 
 	DNS01          *ManifestDNS01     `json:"dns01,omitempty"`
 	HTTP           *ManifestHTTP      `json:"http,omitempty"`
@@ -44,8 +47,9 @@ type Manifest struct {
 // ManifestI18n translates the display fields of a manifest into one
 // language. An empty string means no translation for that field.
 type ManifestI18n struct {
-	Name        string `json:"name,omitempty"`
-	Description string `json:"description,omitempty"`
+	Name              string            `json:"name,omitempty"`
+	Description       string            `json:"description,omitempty"`
+	PermissionReasons map[string]string `json:"permission_reasons,omitempty"`
 }
 
 // ManifestServer describes how to start the plugin process.

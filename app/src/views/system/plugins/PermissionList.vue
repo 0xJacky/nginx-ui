@@ -3,6 +3,8 @@ import { describePermission, permissionLabel } from './permissions'
 
 const props = defineProps<{
   permissions: string[]
+  /** The reason the plugin gives for a permission, by permission. */
+  reasons?: Record<string, string>
 }>()
 </script>
 
@@ -12,7 +14,15 @@ const props = defineProps<{
       <ATag color="warning" class="permission-tag">
         {{ permissionLabel(permission) }}
       </ATag>
-      <span class="permission-description">{{ describePermission(permission) }}</span>
+      <div class="permission-body">
+        <div class="permission-description">
+          {{ describePermission(permission) }}
+        </div>
+        <div v-if="props.reasons?.[permission]" class="permission-reason">
+          <span class="permission-reason-label">{{ $gettext('Note from the author') }}</span>
+          {{ props.reasons[permission] }}
+        </div>
+      </div>
     </li>
   </ul>
   <p v-else class="mb-0 text-gray-500">
@@ -26,11 +36,12 @@ const props = defineProps<{
   padding: 0;
   list-style: none;
 
+  // Each row keeps its tag next to the text, the note starts under the text.
   li {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
     align-items: baseline;
-    gap: 4px;
+    column-gap: 6px;
     padding: 6px 0;
 
     & + li {
@@ -40,10 +51,24 @@ const props = defineProps<{
 }
 
 .permission-tag {
+  justify-self: start;
+  margin: 0;
   font-size: 12px;
 }
 
 .permission-description {
   color: var(--ant-color-text-secondary);
+}
+
+.permission-reason {
+  margin-top: 6px;
+  padding-left: 10px;
+  border-left: 2px solid var(--ant-color-border);
+  font-size: 13px;
+}
+
+.permission-reason-label {
+  margin-right: 6px;
+  color: var(--ant-color-text-tertiary);
 }
 </style>

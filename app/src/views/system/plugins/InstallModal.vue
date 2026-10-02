@@ -16,6 +16,7 @@ import { isCommunityTrust, isUnsignedTrust, packageTrustPreset } from './marketp
 import TrustDowngradeAlert from './marketplace/TrustDowngradeAlert.vue'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from './memory'
 import PermissionList from './PermissionList.vue'
+import { permissionReasons } from './permissions'
 import { usePackageConflicts } from './useConflicts'
 
 const emit = defineEmits<{
@@ -65,6 +66,7 @@ const manifest = computed(() => inspect.value?.manifest)
 const manifestName = computed(() => (manifest.value ? localizedPluginName(manifest.value, gettext.current) : ''))
 const manifestDescription = computed(() => (manifest.value ? localizedPluginDescription(manifest.value, gettext.current) : ''))
 const permissions = computed(() => inspect.value?.permissions ?? [])
+const reasons = computed(() => permissionReasons(inspect.value?.manifest, gettext.current))
 const requiresMissing = computed(() => inspect.value?.requires_missing ?? [])
 const recommendedMb = computed(() => recommendedMemory(manifest.value))
 const systemMb = useSystemMemory()
@@ -383,7 +385,7 @@ watch(open, value => {
           <h4 class="mb-2">
             {{ $gettext('Requested permissions') }}
           </h4>
-          <PermissionList :permissions="permissions" />
+          <PermissionList :permissions="permissions" :reasons="reasons" />
         </div>
 
         <ACheckbox v-model:checked="enableAfterInstall" class="mt-4">

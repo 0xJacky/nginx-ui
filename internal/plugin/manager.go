@@ -124,6 +124,10 @@ type Info struct {
 	// host locale code. Name and Description are the fallback.
 	NameI18n        map[string]string `json:"name_i18n,omitempty"`
 	DescriptionI18n map[string]string `json:"description_i18n,omitempty"`
+	// PermissionReasons says why the plugin asks for a permission, and
+	// PermissionReasonsI18n translates it, keyed by host locale code.
+	PermissionReasons     map[string]string            `json:"permission_reasons,omitempty"`
+	PermissionReasonsI18n map[string]map[string]string `json:"permission_reasons_i18n,omitempty"`
 }
 
 // WebappEntry tells the browser runtime what to load for one plugin. The URLs
@@ -682,6 +686,7 @@ func (m *Manager) infoLocked(item *entry) Info {
 	info.Version = manifest.Version
 	info.Description = manifest.Description
 	info.NameI18n, info.DescriptionI18n = i18nMaps(manifest)
+	info.PermissionReasons, info.PermissionReasonsI18n = permissionReasonMaps(manifest)
 	info.HomepageURL = manifest.HomepageURL
 	info.APIVersion = manifest.APIVersion
 	info.MinNginxUIVersion = manifest.MinNginxUIVersion

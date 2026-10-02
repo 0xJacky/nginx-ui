@@ -128,7 +128,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 
 ### 清單快照 {#the-manifest-snapshot}
 
-`manifest` 包含該版本 `plugin.json` 中 Nginx UI 在下載任何內容之前要讀取的欄位：`id`、`name`、`version`、`description`、`i18n`、`homepage_url`、`api_version`、`min_nginx_ui_version`、`server`、`capabilities`、`permissions`、`requires`、`requires_capabilities`、`conflicts` 和 `network_hosts`。它的 `server.executables` 列出該版本提供的所有平台，儘管每個單一平台的外掛套件只宣告自己的平台。DNS-01 服務商清單這類能力設定區塊留在外掛套件裡：它們隨版本變化，而 Nginx UI 安裝時讀取的是外掛套件自己的 `plugin.json`。
+`manifest` 包含該版本 `plugin.json` 中 Nginx UI 在下載任何內容之前要讀取的欄位：`id`、`name`、`version`、`description`、`i18n`、`homepage_url`、`api_version`、`min_nginx_ui_version`、`server`、`capabilities`、`permissions`、`requires`、`requires_capabilities`、`conflicts`、`network_hosts` 和 `permission_reasons`。它的 `server.executables` 列出該版本提供的所有平台，儘管每個單一平台的外掛套件只宣告自己的平台。DNS-01 服務商清單這類能力設定區塊留在外掛套件裡：它們隨版本變化，而 Nginx UI 安裝時讀取的是外掛套件自己的 `plugin.json`。
 
 ## 發佈者 {#publisher}
 

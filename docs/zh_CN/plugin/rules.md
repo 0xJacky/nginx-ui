@@ -77,6 +77,12 @@ outline: [2, 3]
 
 未知权限为错误，重复列出的权限为警告。参见[权限与安全](./permissions.md#permissions)。
 
+### manifest-permission-reasons
+
+<Badge type="info" text="lint" /> <Badge type="danger" text="error" />
+
+`permission_reasons` 或 `i18n` 中它的翻译里，某个键不是 `permissions` 中的一项，或者原因超过 300 个字符。参见[说明权限用途](./permissions.md#explaining-permissions)。
+
 ### capability-name
 
 <Badge type="info" text="lint" /> <Badge type="danger" text="error" />

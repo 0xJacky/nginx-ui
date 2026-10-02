@@ -13,6 +13,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
@@ -24,6 +25,9 @@ const ManifestFileName = "plugin.json"
 // maxPluginIDLength bounds the manifest id so it stays usable as a directory
 // name and as a database key.
 const maxPluginIDLength = 64
+
+// maxPermissionReasonLength caps a permission reason, in characters.
+const maxPermissionReasonLength = 300
 
 var (
 	// pluginIDPattern requires a dotted namespace, e.g. "official.cloudflare".
@@ -182,6 +186,9 @@ func ValidateManifest(m *protocol.Manifest) error {
 	if problems := conflictProblems(m); len(problems) > 0 {
 		return invalidManifest("%s", problems[0])
 	}
+	if problems := permissionReasonProblems(m); len(problems) > 0 {
+		return invalidManifest("%s", problems[0])
+	}
 	return validateSettingsSchema(m.SettingsSchema)
 }
 
@@ -211,6 +218,50 @@ func conflictProblems(m *protocol.Manifest) []string {
 		}
 	}
 	return problems
+}
+
+// permissionReasonProblems lists every way permission_reasons and its
+// translations are invalid, empty when they are fine. An empty reason is the
+// same as none.
+func permissionReasonProblems(m *protocol.Manifest) []string {
+	var problems []string
+	check := func(where string, reasons map[string]string) {
+		for _, permission := range slices.Sorted(maps.Keys(reasons)) {
+			reason := strings.TrimSpace(reasons[permission])
+			switch {
+			case !slices.Contains(m.Permissions, permission):
+				problems = append(problems, fmt.Sprintf("%s: %q is not a permission of the plugin", where, permission))
+			case utf8.RuneCountInString(reason) > maxPermissionReasonLength:
+				problems = append(problems, fmt.Sprintf("%s: the reason for %q is longer than %d characters", where, permission, maxPermissionReasonLength))
+			}
+		}
+	}
+	check("permission_reasons", m.PermissionReasons)
+	for _, locale := range slices.Sorted(maps.Keys(m.I18n)) {
+		check("i18n."+locale+".permission_reasons", m.I18n[locale].PermissionReasons)
+	}
+	return problems
+}
+
+// permissionReasonMaps returns the reasons of the manifest and their
+// translations keyed by host locale code, each nil when there is none.
+func permissionReasonMaps(m *protocol.Manifest) (reasons map[string]string, translations map[string]map[string]string) {
+	if m == nil {
+		return nil, nil
+	}
+	if len(m.PermissionReasons) > 0 {
+		reasons = m.PermissionReasons
+	}
+	for locale, translated := range m.I18n {
+		if len(translated.PermissionReasons) == 0 {
+			continue
+		}
+		if translations == nil {
+			translations = make(map[string]map[string]string, len(m.I18n))
+		}
+		translations[locale] = translated.PermissionReasons
+	}
+	return reasons, translations
 }
 
 func validateIdentity(m *protocol.Manifest) error {
