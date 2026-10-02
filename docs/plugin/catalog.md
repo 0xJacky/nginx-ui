@@ -118,6 +118,7 @@ catalog's host, the package's host or GitHub.
     "linux-arm64": { "url": "https://github.com/example/mydns/releases/download/v1.2.0/io.github.example.mydns-1.2.0-linux-arm64.tar.gz", "sha256": "..." }
   },
   "release_notes_url": "https://github.com/example/mydns/releases/tag/v1.2.0",
+  "notes": "### Features\n\n- Support the new provider API",
   "manifest": { ... }
 }
 ```
@@ -131,6 +132,8 @@ catalog's host, the package's host or GitHub.
 | `downloads` | Packages by platform key, or `any` for one that runs everywhere. Each has `url` and `sha256`. |
 | `download_url`, `sha256` | The portable package, the fallback for platforms `downloads` does not name. |
 | `channel` | `stable`, `beta` or `dev`. See [Release Channels](#release-channels). |
+| `release_notes_url` | The page with the full notes of the release. |
+| `notes` | What changed in the release, in Markdown, at most 4096 characters. Nginx UI shows it on the plugin page, and for an update the notes of every version since the installed one. |
 | `yanked` | The release is withdrawn and no longer offered. |
 | `manifest` | The `plugin.json` of the release. |
 

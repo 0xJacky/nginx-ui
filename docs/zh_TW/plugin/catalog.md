@@ -98,6 +98,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
     "linux-arm64": { "url": "https://github.com/example/mydns/releases/download/v1.2.0/io.github.example.mydns-1.2.0-linux-arm64.tar.gz", "sha256": "..." }
   },
   "release_notes_url": "https://github.com/example/mydns/releases/tag/v1.2.0",
+  "notes": "### Features\n\n- Support the new provider API",
   "manifest": { ... }
 }
 ```
@@ -111,6 +112,8 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 | `downloads` | 依平台鍵列出的外掛套件，`any` 表示可在所有平台執行的外掛套件。每項包含 `url` 和 `sha256`。 |
 | `download_url`、`sha256` | 通用外掛套件，`downloads` 未列出的平台都使用它。 |
 | `channel` | `stable`、`beta` 或 `dev`。參見[發佈通道](#release-channels)。 |
+| `release_notes_url` | 該版本完整發佈說明的頁面。 |
+| `notes` | 該版本的變更，Markdown 格式，最多 4096 個字元。Nginx UI 會在外掛詳細資訊頁顯示它；有更新時，顯示自已安裝版本以來每個版本的說明。 |
 | `yanked` | 該版本已撤回，不再提供。 |
 | `manifest` | 該版本的 `plugin.json`。 |
 
