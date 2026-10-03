@@ -377,6 +377,53 @@ func warningRules(t *testing.T, report *LintReport) []string {
 	return rules
 }
 
+func TestLintChecksTheSignerCertificate(t *testing.T) {
+	useMarketplace(t)
+	_, primary := newSigningKey(t)
+	signingPublic, signing := newSigningKey(t)
+	_, stranger := newSigningKey(t)
+	id := goodManifest().ID
+	certificate := signerFiles(t, signingPublic, id, primary)
+
+	lintSigned := func(t *testing.T, files map[string]string, key minisign.PrivateKey) []string {
+		t.Helper()
+		dir := writeLintFixture(t, lintFixture{manifest: goodManifest()})
+		for name, body := range files {
+			require.NoError(t, os.WriteFile(filepath.Join(dir, name), []byte(body), 0o644))
+		}
+		archive := filepath.Join(t.TempDir(), "plugin.tar.gz")
+		require.NoError(t, BuildSignedPackage(dir, archive, key))
+		report, err := Lint(archive)
+		require.NoError(t, err)
+		return warningRules(t, report)
+	}
+
+	for name, testCase := range map[string]struct {
+		files  map[string]string
+		signer minisign.PrivateKey
+		want   []string
+	}{
+		// The linter knows no primary key, so a community signature stays unknown.
+		"valid certificate and signing key": {files: certificate, signer: signing, want: []string{RuleSignatureSigner}},
+		"only plugin.signer": {
+			files: map[string]string{SignerFileName: certificate[SignerFileName]}, signer: signing,
+			want: []string{RuleSignerFiles, RuleSignatureSigner},
+		},
+		"certificate of another plugin": {
+			files: signerFiles(t, signingPublic, "io.github.example.other", primary), signer: signing,
+			want: []string{RuleSignerCertificate, RuleSignatureSigner},
+		},
+		"another key than the certificate names": {
+			files: certificate, signer: stranger,
+			want: []string{RuleSignerCertificate, RuleSignatureSigner},
+		},
+	} {
+		t.Run(name, func(t *testing.T) {
+			assert.ElementsMatch(t, testCase.want, lintSigned(t, testCase.files, testCase.signer))
+		})
+	}
+}
+
 func TestLintChecksThePartnerCertificate(t *testing.T) {
 	release := useOfficialKey(t)
 	partnerPublic, partner := newSigningKey(t)
