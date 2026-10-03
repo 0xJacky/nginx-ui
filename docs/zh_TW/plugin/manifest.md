@@ -23,7 +23,7 @@ outline: [2, 3]
 | `name` | string | 是 | 顯示名稱。 |
 | `version` | string | 是 | 外掛本身的版本，使用[語意化版本](https://semver.org/lang/zh-TW/)。 |
 | `description` | string | 否 | 外掛清單中顯示的一行簡介。 |
-| `i18n` | object | 否 | `name`、`description` 和 `permission_reasons` 的翻譯。參見[翻譯](#translations)。 |
+| `i18n` | object | 否 | `name`、`description`、`permission_reasons` 和螢幕截圖說明的翻譯。參見[翻譯](#translations)。 |
 | `homepage_url` | string | 否 | 文件或儲存庫連結。 |
 | `icon_path` | string | 否 | 外掛套件內圖示檔案的路徑。 |
 | `api_version` | integer | 是 | 外掛使用的協定世代，目前固定為 `1`。 |
@@ -40,13 +40,14 @@ outline: [2, 3]
 | `cron` | object[] | 否 | 排程呼叫。參見[宿主 API](./host-api.md#scheduled-tasks)。 |
 | `network_hosts` | string[] | 否 | 外掛打算連線的主機，會顯示給安裝外掛的人。 |
 | `permission_reasons` | object | 否 | 外掛要求每項權限的原因。參見[說明權限用途](./permissions.md#explaining-permissions)。 |
+| `screenshots` | object[] | 否 | 外掛目錄展示用的使用畫面截圖。參見[螢幕截圖](#screenshots)。 |
 | `settings_schema` | object | 否 | 設定表單。參見[設定](#settings)。 |
 | `dns01`、`http`、`notify`、`probe`、`mcp`、`storage`、`deploy`、`blocklist`、`discovery`、`log_sink` | object | 宣告對應能力時 | 各能力的設定。 |
 
 \* 清單至少宣告 `server`、`webapp` 和 `content` 中的一個，否則外掛什麼也不會安裝。
 
 ::: info 說明
-清單中的所有路徑（`icon_path`、`server.executables`、`webapp` 中的路徑、`content` 中的路徑）都相對於外掛套件根目錄，並且必須是[安全的相對路徑](./packaging.md#safe-paths)。
+清單中的所有路徑（`icon_path`、`server.executables`、`webapp` 中的路徑、`content` 中的路徑）都相對於外掛套件根目錄，並且必須是[安全的相對路徑](./packaging.md#safe-paths)。螢幕截圖路徑是唯一的例外，它相對於儲存庫，參見[螢幕截圖](#screenshots)。
 :::
 
 ## 識別 {#identity}
@@ -70,6 +71,26 @@ outline: [2, 3]
 只需翻譯你想支援的語言。最上層的 `name` 和 `description` 是英文文字，沒有翻譯的語言會顯示它們。[`permission_reasons`](./permissions.md#explaining-permissions) 也可以用同樣的方式依語言翻譯。
 
 鍵使用 Nginx UI 介面的語言代碼，例如 `zh_CN`、`zh_TW` 或 `ja_JP`。鍵不是其中之一時，[`nginx-ui plugin lint`](./rules.md#manifest-i18n) 會回報它，並列出所有可用的代碼。
+
+## 螢幕截圖 {#screenshots}
+
+`screenshots` 最多列出 8 張外掛使用中的螢幕截圖，依序顯示在外掛目錄的展示頁上：
+
+```json [plugin.json]
+"screenshots": [
+  {
+    "id": "dashboard",
+    "path": "docs/screenshots/dashboard.png",
+    "dark_path": "docs/screenshots/dashboard-dark.png",
+    "caption": "Traffic at a glance"
+  }
+],
+"i18n": {
+  "zh_TW": { "screenshot_captions": { "dashboard": "一覽流量" } }
+}
+```
+
+和清單中的其他路徑不同，`path` 和 `dark_path` 相對於外掛儲存庫的根目錄，而不是外掛套件，這樣圖片不會打包進外掛套件。外掛目錄在每個版本的 tag 上讀取它們，所以發佈新版本就能更新螢幕截圖。請使用 PNG、JPEG 或 WebP 圖片，寬高比約 16:10，寬度 1280 到 1920 像素。`dark_path` 是同一畫面的深色主題版本，Nginx UI 介面為深色時顯示它。`id` 是螢幕截圖的名稱，由小寫字母、數字和連字號組成。`caption` 使用英文，`i18n` 中的 `screenshot_captions` 依 `id` 翻譯它。[`nginx-ui plugin lint`](./rules.md#manifest-screenshots) 會檢查路徑和說明。
 
 ## 伺服器端進程 {#server-process}
 
