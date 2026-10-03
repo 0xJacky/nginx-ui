@@ -57,6 +57,11 @@ func (m *Manager) Inspect(archivePath string) (*InspectResult, error) {
 		Signer:            trust.Signer,
 		Partner:           trust.Partner,
 	}
+	if signer, signature, err := readSignerFiles(payload); err == nil && signer != nil {
+		if certificate, err := parseSignerCertificate(payload, signer, signature); err == nil {
+			result.CertifiedSigner = certificate.KeyID
+		}
+	}
 	if result.Permissions == nil {
 		result.Permissions = []string{}
 	}
