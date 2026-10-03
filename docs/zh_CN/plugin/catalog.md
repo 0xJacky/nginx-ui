@@ -10,11 +10,11 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 
 官方插件目录由 [nginxui/plugins](https://github.com/nginxui/plugins) 仓库构建。提交插件的步骤：
 
-1. 在公开仓库中发布插件，并创建一个以签名后的插件包为附件的 GitHub Release。
+1. 在公开仓库中发布插件，并创建一个 GitHub Release，附件是由经过认证的[签名密钥](./signing.md#signing-keys)签名的插件包。
 2. 确保 `nginx-ui plugin lint`，以及（对有服务端进程的插件）`nginx-ui plugin conformance` 能够通过。仓库会对你的版本运行这两项检查。
-3. 使用 **Submit a plugin** 表单创建 issue，它会为你起草条目；或者直接提交一个添加 `plugins/<插件 ID>.json` 的拉取请求。
+3. 使用 **Submit a plugin** 表单创建 issue。这个 issue 就是完整的提交：检查会在 issue 上运行，并以评论给出上架后的展示效果；编辑 issue 会重新检查；维护者批准 issue 后插件即上架。也可以提交一个添加 `plugins/<插件 ID>.json` 的拉取请求。
 
-仓库的贡献指南介绍了审核流程。之后的新版本会自动从你的仓库获取。
+仓库的贡献指南介绍了审核流程。之后的新版本会自动从你的仓库获取，展示内容也跟随最新的稳定版本：它 `plugin.json` 中的描述、名称翻译和[截图](./manifest.md#screenshots)，它 tag 上的 README，以及它插件包内的图标。只有英文名称变化时需要再次审核。
 
 ## 目录文档 {#catalog-document}
 
@@ -79,6 +79,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 | `categories` | 参见[分类](#categories)。 |
 | `capabilities` | 用于筛选插件市场。 |
 | `license` | 插件许可证的 SPDX 标识。 |
+| `revoked_signers` | 作者撤回的签名密钥的 ID。由它们签名的插件包会被 Nginx UI 视为未签名。参见[签名密钥](./signing.md#signing-keys)。 |
 | `provides` | 可选。最新版本提供的内容。`dns01.since` 是插件开始提供 DNS-01 的版本，`dns01.providers` 列出它的 DNS 服务商，每项包含 `code` 和 `name`；后来才加入的服务商带有自己的 `since`；被较新版本移除、但最新稳定版仍包含的服务商带有 `removed_in`。版本满足 `since` ≤ 版本 < `removed_in` 时包含该服务商。让 Nginx UI 在安装之前就能找到插件。 |
 | `releases` | 各个版本，见下文。 |
 
@@ -115,6 +116,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 | `release_notes_url` | 该版本完整发布说明的页面。 |
 | `notes` | 该版本的变更，Markdown 格式，最多 4096 个字符。Nginx UI 会在插件详情页显示它；有更新时，显示自已安装版本以来每个版本的说明。 |
 | `yanked` | 该版本已撤回，不再提供。 |
+| `signer` | 为插件包签名的密钥 ID，用于显示。 |
 | `manifest` | 该版本 `plugin.json` 的快照，见下文。 |
 
 版本至少包含 `downloads` 和 `download_url` 中的一个。`downloads` 中某个平台的条目指向该平台的插件包，`any` 条目指向可在所有平台运行的插件包。请为每个下载提供 `sha256`。
@@ -195,6 +197,8 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 最多八张插件使用时的 PNG、JPEG 或 WebP 图片，按显示顺序排列，每张可以附带各语言的说明。宽度 1280 到 1920 像素、宽高比约 16:10 的图片适合所有屏幕。Nginx UI 只从目录主机、插件包主机或 GitHub 上的 `https` 地址加载它们，丢弃其余图片，并且永远不会把图片缺失视为条目的问题。
 
 `dark_url` 是可选的，内容是同一画面的深色主题版本。界面为深色时 Nginx UI 显示它，否则显示 `url` 的图片；没有深色图片，或深色图片无法加载时，两种主题都显示浅色图片。两张图片应拍摄同一画面，尺寸相同。
+
+官方插件目录根据[清单中的截图](./manifest.md#screenshots)生成 `screenshots`，所以作者在 `plugin.json` 中列出截图，而不是写在目录条目里。
 
 ## 托管自己的插件目录 {#hosting-a-catalog-of-your-own}
 
