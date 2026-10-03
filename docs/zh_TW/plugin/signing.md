@@ -10,19 +10,21 @@ outline: [2, 3]
 
 ## 為外掛套件簽章 {#signing-a-package}
 
-產生一次金鑰對，並妥善保管私鑰：
+金鑰只需建立一次，各個檔案的用途參見[簽章金鑰](#signing-keys)：
 
 ```bash
-minisign -G -p mydns.pub -s mydns.key
+nginx-ui plugin key init --id io.github.example.mydns
 ```
 
-然後在外掛套件的其他所有檔案都確定後，為每個外掛套件簽章：
+然後在外掛套件的其他所有檔案都確定後，用簽章金鑰為每個外掛套件簽章：
 
 ```bash
-nginx-ui plugin pack ./mydns io.github.example.mydns-1.0.0.tar.gz --key mydns.key
+nginx-ui plugin pack ./mydns io.github.example.mydns-1.0.0.tar.gz --key signing.key
 # 或者直接為已有的外掛套件簽章
-nginx-ui plugin sign io.github.example.mydns-1.0.0.tar.gz --key mydns.key
+nginx-ui plugin sign io.github.example.mydns-1.0.0.tar.gz --key signing.key
 ```
+
+這兩個命令會把簽章金鑰的憑證打包進外掛套件，憑證從外掛目錄、`--signer` 指定的目錄或金鑰所在目錄中尋找。憑證屬於其他外掛或其他金鑰時，命令會拒絕執行，誤用主金鑰簽章時就會出現這種情況。加密的私鑰使用 `NGINX_UI_PLUGIN_SIGN_PASSWORD` 中的密碼讀取。
 
 簽章會在外掛套件根目錄加入兩個檔案：
 
@@ -109,25 +111,43 @@ Nginx UI 會記錄每個已安裝外掛的等級和簽署者的金鑰 ID，並�
 signer:io.github.example.mydns
 ```
 
-金鑰和憑證只需建立一次：
+`nginx-ui plugin key init --id <外掛 ID>` 一次寫出所有檔案：
+
+| 檔案 | 存放位置 |
+| --- | --- |
+| `primary.key` | 離線儲存或密碼管理器，並做好備份。不要放進程式碼儲存庫或 CI。 |
+| `primary.pub` | 其中 base64 的那一行就是目錄項目的 `author_public_key`。 |
+| `signing.key` | CI 的 secret。 |
+| `signing.pub` | 無需特別保存，憑證中已包含它。 |
+| `plugin.signer`、`plugin.signer.minisig` | 放在外掛原始碼旁邊，`pack` 和 `sign` 會把它們打包進每個外掛套件。 |
+
+除非 `NGINX_UI_PLUGIN_PRIMARY_PASSWORD` 或 `NGINX_UI_PLUGIN_SIGN_PASSWORD` 中設定了密碼，私鑰以不加密的形式寫出，並且只有擁有者可讀。之後可以用 `minisign -C -s primary.key` 加上密碼。
+
+也可以只用 minisign 產生同樣的檔案：
 
 ```bash
-minisign -G -p primary.pub -s primary.key   # primary.key 離線保存並備份
-minisign -G -p signing.pub -s signing.key   # CI 用來簽章的金鑰
+minisign -G -p primary.pub -s primary.key
+minisign -G -p signing.pub -s signing.key
 cp signing.pub plugin.signer
 minisign -S -m plugin.signer -x plugin.signer.minisig -s primary.key \
   -t "signer:io.github.example.mydns"
 ```
 
-在用 `signing.key` 簽章之前，把這兩個檔案原樣複製進每個外掛套件，讓 `plugin.sums` 列出它們。一把簽章金鑰可以為多個外掛簽章，每個外掛各有一份憑證。
+在用 `signing.key` 簽章之前，兩個憑證檔案要原樣放進每個外掛套件，讓 `plugin.sums` 列出它們。一把簽章金鑰可以為多個外掛簽章，每個外掛各有一份憑證：`nginx-ui plugin key certify signing.pub --id <另一個外掛 ID> --primary primary.key`。
 
 當 Nginx UI 信任的該外掛套件的主金鑰能驗證憑證、可信註解指明的是外掛套件本身的外掛，且目錄項目的 `revoked_signers` 中沒有這把簽章金鑰時，Nginx UI 接受這份憑證。這時外掛套件是 `community`，並以主金鑰記錄。憑證驗證失敗本身不會帶來信任：外掛套件依實際簽署它的金鑰判斷。
 
 ### 更換與撤銷簽章金鑰 {#replacing-and-revoking-a-signing-key}
 
-例行更換或換了電腦時，新建一把簽章金鑰，用主金鑰認證它，再用它為下一個版本簽章即可。目錄項目不需要改動，舊版本仍然依靠各自攜帶的憑證通過驗證。
+例行更換或換了電腦時，新建一把由主金鑰認證的簽章金鑰，再用它為下一個版本簽章即可：
 
-簽章金鑰可能已經外洩時，把它的金鑰 ID 加入目錄項目的 `revoked_signers`。Nginx UI 不再信任由它簽署的外掛套件，外掛目錄也會把由它簽署的版本標記為已撤回，正在執行這些版本的節點會收到更新提示。
+```bash
+nginx-ui plugin key rotate --id io.github.example.mydns --primary primary.key --force
+```
+
+目錄項目不需要改動，舊版本仍然依靠各自攜帶的憑證通過驗證。
+
+簽章金鑰可能已經外洩時，把它的金鑰 ID 加入目錄項目的 `revoked_signers`，`nginx-ui plugin key revoke signing.pub` 會給出要加入的那一行。Nginx UI 不再信任由它簽署的外掛套件，外掛目錄也會把由它簽署的版本標記為已撤回，正在執行這些版本的節點會收到更新提示。
 
 主金鑰不能用這種方式更換。換成新的 `author_public_key` 後，所有舊版本都不再有可信的簽章，所以請離線保存並備份主金鑰。
 

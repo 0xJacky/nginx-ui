@@ -10,19 +10,21 @@ outline: [2, 3]
 
 ## 为插件包签名 {#signing-a-package}
 
-生成一次密钥对，并妥善保管私钥：
+密钥只需创建一次，各个文件的用途参见[签名密钥](#signing-keys)：
 
 ```bash
-minisign -G -p mydns.pub -s mydns.key
+nginx-ui plugin key init --id io.github.example.mydns
 ```
 
-然后在插件包的其他所有文件都确定后，为每个插件包签名：
+然后在插件包的其他所有文件都确定后，用签名密钥为每个插件包签名：
 
 ```bash
-nginx-ui plugin pack ./mydns io.github.example.mydns-1.0.0.tar.gz --key mydns.key
+nginx-ui plugin pack ./mydns io.github.example.mydns-1.0.0.tar.gz --key signing.key
 # 或者直接为已有的插件包签名
-nginx-ui plugin sign io.github.example.mydns-1.0.0.tar.gz --key mydns.key
+nginx-ui plugin sign io.github.example.mydns-1.0.0.tar.gz --key signing.key
 ```
+
+这两个命令会把签名密钥的证书打进插件包，证书从插件目录、`--signer` 指定的目录或密钥所在目录中查找。证书属于其他插件或其他密钥时，命令会拒绝执行，误用主密钥签名时就会出现这种情况。加密的私钥使用 `NGINX_UI_PLUGIN_SIGN_PASSWORD` 中的密码读取。
 
 签名会在插件包根目录添加两个文件：
 
@@ -109,25 +111,43 @@ Nginx UI 会记录每个已安装插件的等级和签名者的密钥 ID，并�
 signer:io.github.example.mydns
 ```
 
-密钥和证书只需创建一次：
+`nginx-ui plugin key init --id <插件 ID>` 一次写出所有文件：
+
+| 文件 | 存放位置 |
+| --- | --- |
+| `primary.key` | 离线存储或密码管理器，并做好备份。不要放进代码仓库或 CI。 |
+| `primary.pub` | 其中 base64 的那一行就是目录条目的 `author_public_key`。 |
+| `signing.key` | CI 的 secret。 |
+| `signing.pub` | 无需特别保存，证书中已包含它。 |
+| `plugin.signer`、`plugin.signer.minisig` | 放在插件源码旁边，`pack` 和 `sign` 会把它们打进每个插件包。 |
+
+除非 `NGINX_UI_PLUGIN_PRIMARY_PASSWORD` 或 `NGINX_UI_PLUGIN_SIGN_PASSWORD` 中设置了密码，私钥以不加密的形式写出，并且只有所有者可读。之后可以用 `minisign -C -s primary.key` 加上密码。
+
+也可以只用 minisign 生成同样的文件：
 
 ```bash
-minisign -G -p primary.pub -s primary.key   # primary.key 离线保存并备份
-minisign -G -p signing.pub -s signing.key   # CI 用来签名的密钥
+minisign -G -p primary.pub -s primary.key
+minisign -G -p signing.pub -s signing.key
 cp signing.pub plugin.signer
 minisign -S -m plugin.signer -x plugin.signer.minisig -s primary.key \
   -t "signer:io.github.example.mydns"
 ```
 
-在用 `signing.key` 签名之前，把这两个文件原样复制进每个插件包，让 `plugin.sums` 列出它们。一把签名密钥可以为多个插件签名，每个插件各有一份证书。
+在用 `signing.key` 签名之前，两个证书文件要原样放进每个插件包，让 `plugin.sums` 列出它们。一把签名密钥可以为多个插件签名，每个插件各有一份证书：`nginx-ui plugin key certify signing.pub --id <另一个插件 ID> --primary primary.key`。
 
 当 Nginx UI 信任的该插件包的主密钥能验证证书、可信注释指明的是插件包本身的插件，并且目录条目的 `revoked_signers` 中没有这把签名密钥时，Nginx UI 接受这份证书。这时插件包是 `community`，并以主密钥记录。证书验证失败本身不会带来信任：插件包按实际签名它的密钥判断。
 
 ### 更换与吊销签名密钥 {#replacing-and-revoking-a-signing-key}
 
-例行更换或换了电脑时，新建一把签名密钥，用主密钥认证它，再用它为下一个版本签名即可。目录条目不需要改动，旧版本仍然依靠各自携带的证书通过验证。
+例行更换或换了电脑时，新建一把由主密钥认证的签名密钥，再用它为下一个版本签名即可：
 
-签名密钥可能已经泄露时，把它的密钥 ID 加入目录条目的 `revoked_signers`。Nginx UI 不再信任由它签名的插件包，插件目录也会把由它签名的版本标记为已撤回，正在运行这些版本的节点会收到更新提示。
+```bash
+nginx-ui plugin key rotate --id io.github.example.mydns --primary primary.key --force
+```
+
+目录条目不需要改动，旧版本仍然依靠各自携带的证书通过验证。
+
+签名密钥可能已经泄露时，把它的密钥 ID 加入目录条目的 `revoked_signers`，`nginx-ui plugin key revoke signing.pub` 会给出要添加的那一行。Nginx UI 不再信任由它签名的插件包，插件目录也会把由它签名的版本标记为已撤回，正在运行这些版本的节点会收到更新提示。
 
 主密钥不能用这种方式更换。换成新的 `author_public_key` 后，所有旧版本都不再有可信的签名，所以请离线保存并备份主密钥。
 
