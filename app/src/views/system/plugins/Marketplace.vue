@@ -6,6 +6,7 @@ import { refDebounced } from '@vueuse/core'
 import { getMarketplaceList } from '@/api/plugin_marketplace'
 import { getErrorMessage } from '@/lib/http'
 import { usePluginLoader } from '@/plugin'
+import { categoryLabel, sortCategories } from './categories'
 import { usePluginInventory } from './inventory'
 import InstallConfirmModal from './marketplace/InstallConfirmModal.vue'
 import PluginCard from './marketplace/PluginCard.vue'
@@ -40,9 +41,8 @@ const selected = ref<CatalogEntry>()
 const selectedVersion = ref<string>()
 
 const categoryOptions = computed<SelectProps['options']>(() => {
-  const seen = new Set<string>()
-  entries.value.forEach(entry => entry.categories?.forEach(item => seen.add(item)))
-  return [...seen].sort().map(item => ({ value: item, label: item }))
+  const seen = entries.value.flatMap(entry => entry.categories ?? [])
+  return sortCategories(seen).map(item => ({ value: item, label: categoryLabel(item) }))
 })
 
 const sourceOptions = computed<SelectProps['options']>(() =>

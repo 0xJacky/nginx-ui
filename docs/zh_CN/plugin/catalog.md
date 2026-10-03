@@ -60,7 +60,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
   "repository_url": "https://github.com/example/mydns",
   "readme_url": "https://raw.githubusercontent.com/example/mydns/main/README.md",
   "icon_url": "https://raw.githubusercontent.com/example/mydns/main/icon.png",
-  "categories": ["dns01"],
+  "categories": ["certificates", "dns"],
   "capabilities": ["dns01"],
   "license": "MIT",
   "trust": "community",
@@ -76,7 +76,8 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 | `author_public_key`、`trust` | 参见[发布者](#publisher)。 |
 | `homepage_url`、`repository_url`、`readme_url`、`icon_url` | 链接。README 会显示在插件详情中。 |
 | `screenshots` | 参见[截图](#screenshots)。 |
-| `categories`、`capabilities` | 用于筛选插件市场。 |
+| `categories` | 参见[分类](#categories)。 |
+| `capabilities` | 用于筛选插件市场。 |
 | `license` | 插件许可证的 SPDX 标识。 |
 | `provides` | 可选。最新版本提供的内容。`dns01.since` 是插件开始提供 DNS-01 的版本，`dns01.providers` 列出它的 DNS 服务商，每项包含 `code` 和 `name`；后来才加入的服务商带有自己的 `since`；被较新版本移除、但最新稳定版仍包含的服务商带有 `removed_in`。版本满足 `since` ≤ 版本 < `removed_in` 时包含该服务商。让 Nginx UI 在安装之前就能找到插件。 |
 | `releases` | 各个版本，见下文。 |
@@ -157,6 +158,27 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 - 安装单个测试版不会改变所跟随的渠道。这样的安装会收到更新的测试版，直到安装了正式版，然后回到稳定渠道。只有测试版的插件也是如此：用户先得到测试版，然后得到第一个正式版。
 - 对于尚未安装的插件，Nginx UI 选择最新的稳定版，没有时选择最新的 `beta`，再没有时选择最新的 `dev`，并标记没有稳定版的插件。
 - 任何未撤回且能在本机运行的版本都可以按版本号安装。安装较旧的版本属于降级，只有在用户要求时才会发生，并会警告新版本写入的数据可能无法被旧版本读取。
+
+## 分类 {#categories}
+
+条目按 id 列出一到三个分类。Nginx UI 显示分类名称，并按分类筛选插件市场。官方插件目录只接受下表中的 id。遇到不认识的 id，Nginx UI 会原样显示，所以自己托管的插件目录可以增加其他分类。
+
+| id | 名称 | 收录 |
+| --- | --- | --- |
+| `certificates` | 证书 | 签发证书，以及把证书部署到其他服务 |
+| `dns` | DNS | DNS 服务商和解析记录 |
+| `security` | 安全 | 黑名单、防火墙和访问控制 |
+| `traffic` | 流量与上游 | 服务发现和负载均衡 |
+| `monitoring` | 监控 | 可用性和健康检查 |
+| `logs` | 日志 | 收集、转发和检索日志 |
+| `analytics` | 分析 | 流量和访客统计 |
+| `notifications` | 通知 | 发送通知的渠道 |
+| `backup` | 备份与存储 | 备份到远程存储 |
+| `ai` | AI | 为 AI 助手提供的工具 |
+| `templates` | 配置模板 | Nginx 配置模板和配置片段 |
+| `languages` | 语言包 | 界面翻译 |
+| `integrations` | 集成 | 对接外部平台 |
+| `tools` | 工具 | 不属于其他分类的工具 |
 
 ## 截图 {#screenshots}
 
