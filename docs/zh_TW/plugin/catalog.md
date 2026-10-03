@@ -60,7 +60,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
   "repository_url": "https://github.com/example/mydns",
   "readme_url": "https://raw.githubusercontent.com/example/mydns/main/README.md",
   "icon_url": "https://raw.githubusercontent.com/example/mydns/main/icon.png",
-  "categories": ["dns01"],
+  "categories": ["certificates", "dns"],
   "capabilities": ["dns01"],
   "license": "MIT",
   "trust": "community",
@@ -76,7 +76,8 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 | `author_public_key`、`trust` | 參見[發佈者](#publisher)。 |
 | `homepage_url`、`repository_url`、`readme_url`、`icon_url` | 連結。README 會顯示在外掛詳細資料中。 |
 | `screenshots` | 參見[螢幕截圖](#screenshots)。 |
-| `categories`、`capabilities` | 用於篩選外掛市集。 |
+| `categories` | 參見[分類](#categories)。 |
+| `capabilities` | 用於篩選外掛市集。 |
 | `license` | 外掛授權條款的 SPDX 識別碼。 |
 | `provides` | 選用。最新版本提供的內容。`dns01.since` 是外掛開始提供 DNS-01 的版本，`dns01.providers` 列出它的 DNS 服務商，每項包含 `code` 和 `name`；後來才加入的服務商帶有自己的 `since`；被較新版本移除、但最新穩定版仍包含的服務商帶有 `removed_in`。版本滿足 `since` ≤ 版本 < `removed_in` 時包含該服務商。讓 Nginx UI 在安裝之前就能找到外掛。 |
 | `releases` | 各個版本，見下文。 |
@@ -157,6 +158,27 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 - 安裝單一測試版不會改變所跟隨的通道。這樣的安裝會收到更新的測試版，直到安裝了正式版，然後回到穩定通道。只有測試版的外掛也是如此：使用者先得到測試版，然後得到第一個正式版。
 - 對於尚未安裝的外掛，Nginx UI 選擇最新的穩定版，沒有時選擇最新的 `beta`，再沒有時選擇最新的 `dev`，並標記沒有穩定版的外掛。
 - 任何未撤回且能在本機執行的版本都可以依版本號安裝。安裝較舊的版本屬於降級，只有在使用者要求時才會發生，並會警告新版本寫入的資料可能無法被舊版本讀取。
+
+## 分類 {#categories}
+
+項目依 id 列出一到三個分類。Nginx UI 顯示分類名稱，並依分類篩選外掛市集。官方外掛目錄只接受下表中的 id。遇到不認得的 id，Nginx UI 會原樣顯示，所以自己託管的外掛目錄可以增加其他分類。
+
+| id | 名稱 | 收錄 |
+| --- | --- | --- |
+| `certificates` | 憑證 | 簽發憑證，以及把憑證部署到其他服務 |
+| `dns` | DNS | DNS 服務商和解析記錄 |
+| `security` | 安全性 | 黑名單、防火牆和存取控制 |
+| `traffic` | 流量與上游 | 服務探索和負載平衡 |
+| `monitoring` | 監控 | 可用性和健康檢查 |
+| `logs` | 日誌 | 收集、轉送和檢索日誌 |
+| `analytics` | 分析 | 流量和訪客統計 |
+| `notifications` | 通知 | 傳送通知的管道 |
+| `backup` | 備份與儲存 | 備份到遠端儲存 |
+| `ai` | AI | 為 AI 助理提供的工具 |
+| `templates` | 設定範本 | Nginx 設定範本和設定片段 |
+| `languages` | 語言套件 | 介面翻譯 |
+| `integrations` | 整合 | 串接外部平台 |
+| `tools` | 工具 | 不屬於其他分類的工具 |
 
 ## 螢幕截圖 {#screenshots}
 

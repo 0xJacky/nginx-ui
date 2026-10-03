@@ -79,7 +79,7 @@ elsewhere is dropped and a generic image shown.
   "repository_url": "https://github.com/example/mydns",
   "readme_url": "https://raw.githubusercontent.com/example/mydns/main/README.md",
   "icon_url": "https://raw.githubusercontent.com/example/mydns/main/icon.png",
-  "categories": ["dns01"],
+  "categories": ["certificates", "dns"],
   "capabilities": ["dns01"],
   "license": "MIT",
   "trust": "community",
@@ -95,7 +95,8 @@ elsewhere is dropped and a generic image shown.
 | `author_public_key`, `trust` | See [Publisher](#publisher). |
 | `homepage_url`, `repository_url`, `readme_url`, `icon_url` | Links. The readme is shown in the plugin details. |
 | `screenshots` | See [Screenshots](#screenshots). |
-| `categories`, `capabilities` | For filtering the marketplace. |
+| `categories` | See [Categories](#categories). |
+| `capabilities` | For filtering the marketplace. |
 | `license` | SPDX identifier of the plugin's license. |
 | `provides` | Optional. What the newest release provides. `dns01.since` is the plugin version since which the plugin provides DNS-01, and `dns01.providers` lists its DNS providers with `code` and `name`. A provider added later carries a `since` of its own, and one a newer release dropped while the newest stable release still has it carries `removed_in`. A provider is in a release when `since` ≤ its version < `removed_in`. Lets a host find the plugin before installing it. |
 | `releases` | The releases, see below. |
@@ -213,6 +214,30 @@ How people receive releases:
   version. Installing an older version is a downgrade, which only happens on
   request and comes with a warning that data written by the newer version may
   not be readable.
+
+## Categories
+
+An entry lists one to three categories by id. Nginx UI shows them by name and
+filters the marketplace by them. The official catalog accepts the ids below.
+Nginx UI shows an id it does not know as it is, so a catalog of your own may add
+others.
+
+| Id | Name | For |
+| --- | --- | --- |
+| `certificates` | Certificates | Issuing certificates and deploying them to other services |
+| `dns` | DNS | DNS providers and records |
+| `security` | Security | Blocklists, firewalls and access control |
+| `traffic` | Traffic and upstreams | Service discovery and load balancing |
+| `monitoring` | Monitoring | Availability and health checks |
+| `logs` | Logs | Collecting, forwarding and searching logs |
+| `analytics` | Analytics | Traffic and visitor statistics |
+| `notifications` | Notifications | Channels that deliver notifications |
+| `backup` | Backup and storage | Backups to remote storage |
+| `ai` | AI | Tools for AI assistants |
+| `templates` | Config templates | Nginx configuration templates and snippets |
+| `languages` | Language packs | Translations of the interface |
+| `integrations` | Integrations | Connections to external platforms |
+| `tools` | Tools | Anything that fits no other category |
 
 ## Screenshots
 
