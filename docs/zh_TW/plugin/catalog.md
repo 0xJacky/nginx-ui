@@ -10,11 +10,11 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 
 官方外掛目錄由 [nginxui/plugins](https://github.com/nginxui/plugins) 儲存庫建置。提交外掛的步驟：
 
-1. 在公開儲存庫中發佈外掛，並建立一個以簽章後的外掛套件為附件的 GitHub Release。
+1. 在公開儲存庫中發佈外掛，並建立一個 GitHub Release，附件是由經過認證的[簽章金鑰](./signing.md#signing-keys)簽署的外掛套件。
 2. 確保 `nginx-ui plugin lint`，以及（對有伺服器端進程的外掛）`nginx-ui plugin conformance` 能夠通過。儲存庫會對你的版本執行這兩項檢查。
-3. 使用 **Submit a plugin** 表單建立 issue，它會為你草擬項目；或者直接提交一個加入 `plugins/<外掛 ID>.json` 的拉取請求。
+3. 使用 **Submit a plugin** 表單建立 issue。這個 issue 就是完整的提交：檢查會在 issue 上執行，並以留言呈現上架後的展示效果；編輯 issue 會重新檢查；維護者核准 issue 後外掛即上架。也可以提交一個加入 `plugins/<外掛 ID>.json` 的拉取請求。
 
-儲存庫的貢獻指南介紹了審查流程。之後的新版本會自動從你的儲存庫取得。
+儲存庫的貢獻指南介紹了審查流程。之後的新版本會自動從你的儲存庫取得，展示內容也跟隨最新的穩定版本：它 `plugin.json` 中的描述、名稱翻譯和[螢幕截圖](./manifest.md#screenshots)，它 tag 上的 README，以及它外掛套件內的圖示。只有英文名稱變更時需要再次審查。
 
 ## 目錄文件 {#catalog-document}
 
@@ -79,6 +79,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 | `categories` | 參見[分類](#categories)。 |
 | `capabilities` | 用於篩選外掛市集。 |
 | `license` | 外掛授權條款的 SPDX 識別碼。 |
+| `revoked_signers` | 作者撤回的簽章金鑰的 ID。由它們簽署的外掛套件會被 Nginx UI 視為未簽章。參見[簽章金鑰](./signing.md#signing-keys)。 |
 | `provides` | 選用。最新版本提供的內容。`dns01.since` 是外掛開始提供 DNS-01 的版本，`dns01.providers` 列出它的 DNS 服務商，每項包含 `code` 和 `name`；後來才加入的服務商帶有自己的 `since`；被較新版本移除、但最新穩定版仍包含的服務商帶有 `removed_in`。版本滿足 `since` ≤ 版本 < `removed_in` 時包含該服務商。讓 Nginx UI 在安裝之前就能找到外掛。 |
 | `releases` | 各個版本，見下文。 |
 
@@ -115,6 +116,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 | `release_notes_url` | 該版本完整發佈說明的頁面。 |
 | `notes` | 該版本的變更，Markdown 格式，最多 4096 個字元。Nginx UI 會在外掛詳細資訊頁顯示它；有更新時，顯示自已安裝版本以來每個版本的說明。 |
 | `yanked` | 該版本已撤回，不再提供。 |
+| `signer` | 為外掛套件簽章的金鑰 ID，用於顯示。 |
 | `manifest` | 該版本 `plugin.json` 的快照，見下文。 |
 
 版本至少包含 `downloads` 和 `download_url` 中的一個。`downloads` 中某個平台的項目指向該平台的外掛套件，`any` 項目指向可在所有平台執行的外掛套件。請為每個下載提供 `sha256`。
@@ -195,6 +197,8 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 最多八張外掛使用時的 PNG、JPEG 或 WebP 圖片，依顯示順序排列，每張可以附帶各語言的說明。寬度 1280 到 1920 像素、寬高比約 16:10 的圖片適合所有螢幕。Nginx UI 只從目錄主機、外掛套件主機或 GitHub 上的 `https` 網址載入它們，捨棄其餘圖片，並且永遠不會把圖片缺少視為項目的問題。
 
 `dark_url` 是選用的，內容是同一畫面的深色主題版本。介面為深色時 Nginx UI 顯示它，否則顯示 `url` 的圖片；沒有深色圖片，或深色圖片無法載入時，兩種主題都顯示淺色圖片。兩張圖片應拍攝同一畫面，尺寸相同。
+
+官方外掛目錄依[清單中的螢幕截圖](./manifest.md#screenshots)產生 `screenshots`，所以作者在 `plugin.json` 中列出螢幕截圖，而不是寫在目錄項目裡。
 
 ## 託管自己的外掛目錄 {#hosting-a-catalog-of-your-own}
 
