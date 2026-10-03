@@ -30,6 +30,8 @@ type Manifest struct {
 	// PermissionReasons says why the plugin asks for a permission, keyed by
 	// an entry of Permissions.
 	PermissionReasons map[string]string `json:"permission_reasons,omitempty"`
+	// Screenshots are images of the plugin in use for catalog listings.
+	Screenshots []ManifestScreenshot `json:"screenshots,omitempty"`
 
 	DNS01          *ManifestDNS01     `json:"dns01,omitempty"`
 	HTTP           *ManifestHTTP      `json:"http,omitempty"`
@@ -50,6 +52,22 @@ type ManifestI18n struct {
 	Name              string            `json:"name,omitempty"`
 	Description       string            `json:"description,omitempty"`
 	PermissionReasons map[string]string `json:"permission_reasons,omitempty"`
+	// ScreenshotCaptions translates the screenshot captions, keyed by
+	// screenshot id.
+	ScreenshotCaptions map[string]string `json:"screenshot_captions,omitempty"`
+}
+
+// ManifestScreenshot is one image of a catalog listing. The paths are
+// relative to the root of the plugin repository at the release tag, not to
+// the package.
+type ManifestScreenshot struct {
+	// ID names the screenshot within the manifest.
+	ID   string `json:"id"`
+	Path string `json:"path"`
+	// DarkPath is the same view in the dark theme.
+	DarkPath string `json:"dark_path,omitempty"`
+	// Caption is the English caption.
+	Caption string `json:"caption,omitempty"`
 }
 
 // ManifestServer describes how to start the plugin process.

@@ -20,10 +20,12 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"slices"
 	"sort"
 	"strings"
+	"unicode/utf8"
 
 	"github.com/0xJacky/Nginx-UI/internal/pkgsign"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
@@ -123,6 +125,7 @@ func Lint(path string) (*LintReport, error) {
 	lintRequires(manifest.Requires, report)
 	lintConflicts(manifest, report)
 	lintPermissionReasons(manifest, report)
+	lintScreenshots(manifest, report)
 	lintSettingsSchema(manifest.SettingsSchema, report)
 	lintDocs(dir, report)
 
@@ -768,6 +771,74 @@ func lintConflicts(m *protocol.Manifest, report *LintReport) {
 func lintPermissionReasons(m *protocol.Manifest, report *LintReport) {
 	for _, problem := range permissionReasonProblems(m) {
 		report.add(LevelError, RuleManifestReasons, "%s", problem)
+	}
+}
+
+// Limits of the screenshots a manifest lists for catalog listings.
+const (
+	maxScreenshots            = 8
+	maxScreenshotCaptionRunes = 200
+)
+
+// screenshotExtensions are the image types a catalog shows.
+var screenshotExtensions = []string{".png", ".jpg", ".jpeg", ".webp"}
+
+// screenshotIDPattern names a screenshot, the key its translated captions use.
+var screenshotIDPattern = regexp.MustCompile(`^[a-z0-9][a-z0-9-]{0,31}$`)
+
+// lintScreenshots checks screenshots and the translations of their captions.
+// The paths point into the repository at the release tag, so lint checks
+// their form only.
+func lintScreenshots(m *protocol.Manifest, report *LintReport) {
+	if len(m.Screenshots) > maxScreenshots {
+		report.add(LevelError, RuleManifestScreenshots, "screenshots lists %d images, at most %d are shown", len(m.Screenshots), maxScreenshots)
+	}
+	ids := make(map[string]struct{}, len(m.Screenshots))
+	paths := make(map[string]struct{}, len(m.Screenshots))
+	for i, shot := range m.Screenshots {
+		switch {
+		case shot.ID == "":
+			report.add(LevelError, RuleManifestScreenshots, "screenshots[%d].id is required", i)
+		case !screenshotIDPattern.MatchString(shot.ID):
+			report.add(LevelError, RuleManifestScreenshots, "screenshots[%d].id %q must match %s", i, shot.ID, screenshotIDPattern)
+		default:
+			if _, dup := ids[shot.ID]; dup {
+				report.add(LevelError, RuleManifestScreenshots, "screenshots: the id %q is used twice", shot.ID)
+			}
+			ids[shot.ID] = struct{}{}
+		}
+		lintScreenshotPath(fmt.Sprintf("screenshots[%d].path", i), shot.Path, true, report)
+		lintScreenshotPath(fmt.Sprintf("screenshots[%d].dark_path", i), shot.DarkPath, false, report)
+		if utf8.RuneCountInString(shot.Caption) > maxScreenshotCaptionRunes {
+			report.add(LevelError, RuleManifestScreenshots, "screenshots[%d].caption is longer than %d characters", i, maxScreenshotCaptionRunes)
+		}
+		if _, dup := paths[shot.Path]; dup && shot.Path != "" {
+			report.add(LevelError, RuleManifestScreenshots, "screenshots: %q is listed twice", shot.Path)
+		}
+		paths[shot.Path] = struct{}{}
+	}
+	for _, locale := range slices.Sorted(maps.Keys(m.I18n)) {
+		for _, id := range slices.Sorted(maps.Keys(m.I18n[locale].ScreenshotCaptions)) {
+			if _, ok := ids[id]; !ok {
+				report.add(LevelError, RuleManifestScreenshots, "i18n.%s.screenshot_captions: %q is not the id of a screenshot", locale, id)
+			}
+			if utf8.RuneCountInString(m.I18n[locale].ScreenshotCaptions[id]) > maxScreenshotCaptionRunes {
+				report.add(LevelError, RuleManifestScreenshots, "i18n.%s.screenshot_captions: the caption of %q is longer than %d characters", locale, id, maxScreenshotCaptionRunes)
+			}
+		}
+	}
+}
+
+func lintScreenshotPath(field, path string, required bool, report *LintReport) {
+	switch {
+	case path == "":
+		if required {
+			report.add(LevelError, RuleManifestScreenshots, "%s is required", field)
+		}
+	case !isSafeRelPath(path):
+		report.add(LevelError, RuleManifestScreenshots, "%s %q must be a safe relative path", field, path)
+	case !slices.Contains(screenshotExtensions, strings.ToLower(filepath.Ext(path))):
+		report.add(LevelError, RuleManifestScreenshots, "%s %q is not a PNG, JPEG or WebP image", field, path)
 	}
 }
 

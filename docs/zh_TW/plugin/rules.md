@@ -83,6 +83,12 @@ outline: [2, 3]
 
 `permission_reasons` 或 `i18n` 中它的翻譯裡，某個鍵不是 `permissions` 中的一項，或者原因超過 300 個字元。參見[說明權限用途](./permissions.md#explaining-permissions)。
 
+### manifest-screenshots
+
+<Badge type="info" text="lint" /> <Badge type="danger" text="error" />
+
+`screenshots` 超過 8 張；某個 `id` 缺少、格式不對或者重複；某個路徑缺少、不是安全的相對路徑、不是 PNG、JPEG 或 WebP 圖片，或者重複出現；某則說明超過 200 個字元；或者 `i18n` 的 `screenshot_captions` 中某個鍵不是螢幕截圖的 id。參見[螢幕截圖](./manifest.md#screenshots)。
+
 ### capability-name
 
 <Badge type="info" text="lint" /> <Badge type="danger" text="error" />
