@@ -99,7 +99,7 @@ func Lint(path string) (*LintReport, error) {
 		defer os.RemoveAll(extracted)
 		dir = extracted
 	}
-	lintSums(dir, lintPartnerCertificate(dir, report), report)
+	lintSums(dir, lintPartnerCertificate(dir, report), lintSignerCertificate(dir, report), report)
 
 	manifest, err := LoadManifest(dir)
 	if err != nil {
@@ -1055,13 +1055,35 @@ func lintPartnerCertificate(dir string, report *LintReport) *partnerCertificate 
 	return certificate
 }
 
+// lintSignerCertificate checks the signer certificate files: both belong
+// together, the trusted comment names the plugin of the package and the key
+// parses. The linter knows no primary key, so who issued the certificate is
+// left to the catalog and the host. It returns the certificate when it
+// parses.
+func lintSignerCertificate(dir string, report *LintReport) *signerCertificate {
+	signer, signature, err := readSignerFiles(dir)
+	if err != nil {
+		report.add(LevelWarning, RuleSignerFiles, "%v, the certificate is ignored", err)
+		return nil
+	}
+	if signer == nil {
+		return nil
+	}
+	certificate, err := parseSignerCertificate(dir, signer, signature)
+	if err != nil {
+		report.add(LevelWarning, RuleSignerCertificate, "the signer certificate is ignored: %v", err)
+		return nil
+	}
+	return certificate
+}
+
 // lintSums checks the embedded signature files: plugin.sums has to follow
 // its format and match the files whether or not the package is signed, both
 // files belong together, a valid partner certificate has to name the key
 // that signed plugin.sums, and a signature neither the official plugin keys
 // pinned in this binary nor the certificate key verify is only a warning,
 // since a community key is named by a catalog entry or an operator.
-func lintSums(dir string, certificate *partnerCertificate, report *LintReport) {
+func lintSums(dir string, certificate *partnerCertificate, signer *signerCertificate, report *LintReport) {
 	sums, err := readRootFile(dir, SumsFileName)
 	if err != nil {
 		report.add(LevelError, RuleSignatureSums, "read %s: %v", SumsFileName, err)
@@ -1094,6 +1116,13 @@ func lintSums(dir string, certificate *partnerCertificate, report *LintReport) {
 	}
 	if signature == nil {
 		return
+	}
+
+	if signer != nil {
+		if _, err := pkgsign.VerifyBytes(sums, signature, []string{signer.Key}); err != nil {
+			report.add(LevelWarning, RuleSignerCertificate, "%s does not verify with the signing key %s the signer certificate names",
+				SumsSignatureFileName, signer.KeyID)
+		}
 	}
 
 	var partners []partnerCertificate

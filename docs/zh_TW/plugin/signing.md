@@ -70,7 +70,7 @@ Nginx UI 會在安裝前展示外掛套件時檢查一次，在安裝時再檢�
 | --- | --- |
 | Nginx UI 專案的官方外掛簽章金鑰 | `official` |
 | 專案擔保且未被撤銷的合作夥伴金鑰 | `verified` |
-| 外掛套件所來自的目錄項目的 `author_public_key`，或 Nginx UI **可信發布者**清單中的金鑰 | `community` |
+| 外掛套件所來自的目錄項目的 `author_public_key`、Nginx UI **可信發布者**清單中的金鑰，或者它們認證的簽章金鑰 | `community` |
 | 沒有簽章，或簽署者未知 | `unsigned` |
 
 等級排序為 `unsigned` < `community` < `verified` < `official`。外掛目錄和維運人員都不能把金鑰提升到 `community` 以上。外掛目錄項目中的 `trust` 標籤只用於顯示，從不授予等級。
@@ -87,11 +87,49 @@ Nginx UI 會記錄每個已安裝外掛的等級和簽署者的金鑰 ID，並�
 
 ## 以社群作者身分發佈 {#publishing-as-a-community-author}
 
-大多數外掛都是社群外掛。發佈步驟：
+大多數外掛都是社群外掛。它們的目錄項目登記作者的**主金鑰**，外掛套件則由主金鑰認證過的**簽章金鑰**簽署。主金鑰離線保存，幾乎不會更換；簽章金鑰可以放在 CI 中，更換時不需要改動外掛目錄。官方外掛目錄只收錄依這種方式簽署的社群外掛套件。
 
-1. 用你的金鑰為每個外掛套件簽章。
-2. 把你的公鑰（`.pub` 檔案中的 base64 那一行）作為 `author_public_key` 放進目錄項目，參見[外掛目錄](./catalog.md#publisher)。從該項目下載並由該金鑰簽署的外掛套件就是 `community`。
-3. 不透過外掛目錄安裝你的外掛套件的人，需要把你的公鑰加入 **偏好設定 > 外掛 > 可信發布者**。
+1. 建立金鑰並認證簽章金鑰，參見[簽章金鑰](#signing-keys)。
+2. 用簽章金鑰為每個外掛套件簽章。
+3. 把主公鑰（`.pub` 檔案中的 base64 那一行）作為 `author_public_key` 放進目錄項目，參見[外掛目錄](./catalog.md#publisher)。從該項目下載、由該金鑰或它認證的簽章金鑰簽署的外掛套件就是 `community`。
+4. 不透過外掛目錄安裝你的外掛套件的人，需要把你的主公鑰加入 **偏好設定 > 外掛 > 可信發布者**。
+
+### 簽章金鑰 {#signing-keys}
+
+用簽章金鑰簽署的外掛套件會帶上它的憑證，即外掛套件根目錄下的兩個檔案：
+
+| 檔案 | 內容 |
+| --- | --- |
+| `plugin.signer` | 簽章金鑰的 minisign 公鑰，與 `.pub` 檔案相同。 |
+| `plugin.signer.minisig` | 主金鑰對該檔案的簽章。 |
+
+簽章的可信註解指明這把金鑰可以簽署的那一個外掛：
+
+```text
+signer:io.github.example.mydns
+```
+
+金鑰和憑證只需建立一次：
+
+```bash
+minisign -G -p primary.pub -s primary.key   # primary.key 離線保存並備份
+minisign -G -p signing.pub -s signing.key   # CI 用來簽章的金鑰
+cp signing.pub plugin.signer
+minisign -S -m plugin.signer -x plugin.signer.minisig -s primary.key \
+  -t "signer:io.github.example.mydns"
+```
+
+在用 `signing.key` 簽章之前，把這兩個檔案原樣複製進每個外掛套件，讓 `plugin.sums` 列出它們。一把簽章金鑰可以為多個外掛簽章，每個外掛各有一份憑證。
+
+當 Nginx UI 信任的該外掛套件的主金鑰能驗證憑證、可信註解指明的是外掛套件本身的外掛，且目錄項目的 `revoked_signers` 中沒有這把簽章金鑰時，Nginx UI 接受這份憑證。這時外掛套件是 `community`，並以主金鑰記錄。憑證驗證失敗本身不會帶來信任：外掛套件依實際簽署它的金鑰判斷。
+
+### 更換與撤銷簽章金鑰 {#replacing-and-revoking-a-signing-key}
+
+例行更換或換了電腦時，新建一把簽章金鑰，用主金鑰認證它，再用它為下一個版本簽章即可。目錄項目不需要改動，舊版本仍然依靠各自攜帶的憑證通過驗證。
+
+簽章金鑰可能已經外洩時，把它的金鑰 ID 加入目錄項目的 `revoked_signers`。Nginx UI 不再信任由它簽署的外掛套件，外掛目錄也會把由它簽署的版本標記為已撤回，正在執行這些版本的節點會收到更新提示。
+
+主金鑰不能用這種方式更換。換成新的 `author_public_key` 後，所有舊版本都不再有可信的簽章，所以請離線保存並備份主金鑰。
 
 ## 合作夥伴外掛 {#partner-plugins}
 

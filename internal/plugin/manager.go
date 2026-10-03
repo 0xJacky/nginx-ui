@@ -178,8 +178,11 @@ type InstallOptions struct {
 	ExpectedID      string
 	ExpectedVersion string
 	// AuthorPublicKey is the key of the catalog entry the package came from,
-	// a signature by it makes the package community trust.
+	// a signature by it, or by a signing key it certified, makes the package
+	// community trust.
 	AuthorPublicKey string
+	// RevokedSigners are the signing key ids the catalog entry withdrew.
+	RevokedSigners []string
 	// MinTrust refuses a package whose derived trust ranks below it.
 	MinTrust string
 	// Channel is the channel the catalog gives the release, empty to take it

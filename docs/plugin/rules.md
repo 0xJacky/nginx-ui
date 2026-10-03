@@ -345,6 +345,23 @@ The partner certificate has expired, or `plugin.sums.minisig`
 is not signed by the key the certificate names, so the certificate gives the
 package nothing.
 
+### signer-files
+
+<Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
+
+Only one of `plugin.signer` and `plugin.signer.minisig` is in the package, so
+the signer certificate is ignored. See [Signing Keys](./signing.md#signing-keys).
+
+### signer-certificate
+
+<Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
+
+The signer certificate does not parse, its trusted comment does not name the
+plugin of the package, or `plugin.sums.minisig` is not signed by the key the
+certificate names, so the certificate gives the package nothing. The linter
+does not know the primary key, so the catalog and Nginx UI check who issued the
+certificate. See [Signing Keys](./signing.md#signing-keys).
+
 ## Protocol and Lifecycle
 
 ### protocol-stderr
