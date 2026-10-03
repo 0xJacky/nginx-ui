@@ -83,13 +83,24 @@ type trustTier struct {
 	keys  []string
 }
 
-// trustTiers lists the known keys from the highest trust down. authorKey is
-// the catalog key of the entry a package came from, empty on other paths.
-// partners are the certificate and keyring keys of the verified tier.
-func trustTiers(authorKey string, partners []partnerCertificate, keyring *partnerKeyring) []trustTier {
+// communityKeys are the primary keys of the community tier: the keys the
+// node trusts and authorKey, the catalog key of the entry a package came
+// from, empty on other paths.
+func communityKeys(authorKey string) []string {
 	community := settings.PluginSettings.TrustedKeys()
 	if strings.TrimSpace(authorKey) != "" {
 		community = append(community, authorKey)
+	}
+	return community
+}
+
+// trustTiers lists the known keys from the highest trust down. community are
+// the primary keys of the community tier, signer the signing key one of them
+// certified, nil for none. partners are the certificate and keyring keys of
+// the verified tier.
+func trustTiers(community []string, signer *signerCertificate, partners []partnerCertificate, keyring *partnerKeyring) []trustTier {
+	if signer != nil {
+		community = append(slices.Clone(community), signer.Key)
 	}
 	return append(partnerTiers(partners, keyring), trustTier{trust: TrustCommunity, keys: community})
 }
@@ -138,7 +149,7 @@ func partnerName(partners []partnerCertificate, keyID string) string {
 // checkPackageTrust verifies the embedded signature of an extracted package
 // and applies the node policy and the caller's floor to the derived trust.
 func checkPackageTrust(root string, opts InstallOptions, keyring *partnerKeyring) (packageTrust, error) {
-	trust, err := verifyPackageSignature(root, opts.AuthorPublicKey, keyring)
+	trust, err := verifyPackageSignature(root, opts.AuthorPublicKey, opts.RevokedSigners, keyring)
 	if err != nil {
 		return trust, err
 	}
@@ -171,8 +182,9 @@ func checkReservedID(id, trust string) error {
 // verifyPackageSignature derives the trust of an extracted package. Missing
 // signature files or an unknown signer make it unsigned. A signature a known
 // key does not verify, or sums that do not match the files, are refused with
-// ErrSignatureInvalid. keyring is the partner keyring, nil for none.
-func verifyPackageSignature(root, authorKey string, keyring *partnerKeyring) (packageTrust, error) {
+// ErrSignatureInvalid. revoked lists the signing key ids the catalog entry
+// withdrew. keyring is the partner keyring, nil for none.
+func verifyPackageSignature(root, authorKey string, revoked []string, keyring *partnerKeyring) (packageTrust, error) {
 	sums, err := readRootFile(root, SumsFileName)
 	if err != nil {
 		return unsignedTrust, err
@@ -186,9 +198,16 @@ func verifyPackageSignature(root, authorKey string, keyring *partnerKeyring) (pa
 	}
 
 	partners := packagePartners(root, keyring)
-	trust, err := signatureTrust(sums, signature, trustTiers(authorKey, partners, keyring))
+	community := communityKeys(authorKey)
+	signer := packageSigner(root, community, revoked)
+	trust, err := signatureTrust(sums, signature, trustTiers(community, signer, partners, keyring))
 	if err != nil || trust.Trust == TrustUnsigned {
 		return unsignedTrust, err
+	}
+	// A certified signing key stands for the primary key that issued it, which
+	// is the key the install records and the cluster passes on.
+	if signer != nil && trust.Trust == TrustCommunity && trust.AuthorKey == strings.TrimSpace(signer.Key) {
+		trust.AuthorKey = strings.TrimSpace(signer.Primary)
 	}
 	if err = checkSums(root, sums); err != nil {
 		return unsignedTrust, cosy.WrapErrorWithParams(ErrSignatureInvalid, err.Error())

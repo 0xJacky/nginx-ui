@@ -80,7 +80,7 @@ func extractedTrust(t *testing.T, archive, authorKey string, keyring *partnerKey
 	dir := filepath.Join(t.TempDir(), "payload")
 	_, err := ExtractPackage(archive, dir)
 	require.NoError(t, err)
-	return verifyPackageSignature(dir, authorKey, keyring)
+	return verifyPackageSignature(dir, authorKey, nil, keyring)
 }
 
 func TestTrustRank(t *testing.T) {
