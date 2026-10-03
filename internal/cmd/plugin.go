@@ -73,6 +73,7 @@ var PluginCommand = &cli.Command{
 			Action:    PackPlugin,
 			Flags: []cli.Flag{
 				&cli.StringFlag{Name: "key", Usage: "minisign secret key file to sign the package with"},
+				&cli.StringFlag{Name: "signer", Usage: "directory holding plugin.signer and plugin.signer.minisig when the plugin directory does not, default the directory of --key"},
 			},
 		},
 		{
@@ -82,6 +83,7 @@ var PluginCommand = &cli.Command{
 			Action:    SignPlugin,
 			Flags: []cli.Flag{
 				&cli.StringFlag{Name: "key", Usage: "minisign secret key file to sign the package with", Required: true},
+				&cli.StringFlag{Name: "signer", Usage: "directory holding plugin.signer and plugin.signer.minisig when the package does not, default the directory of --key"},
 			},
 		},
 		{
@@ -234,6 +236,9 @@ func InspectPlugin(ctx context.Context, command *cli.Command) error {
 	if result.Partner != "" {
 		fmt.Printf("partner: %s\n", result.Partner)
 	}
+	if result.CertifiedSigner != "" {
+		fmt.Printf("signer certificate: key %s, issued by the primary key of the catalog entry\n", result.CertifiedSigner)
+	}
 	if manifest.MinNginxUIVersion != "" {
 		fmt.Printf("min nginx-ui version: %s\n", manifest.MinNginxUIVersion)
 	}
@@ -281,11 +286,27 @@ func PackPlugin(_ context.Context, command *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	if err = plugin.BuildSignedPackage(sourceDir, archivePath, key); err != nil {
+	extra, found, err := signerCertificateFiles(sourceDir, signerDir(command), manifest.ID, key)
+	if err != nil {
+		return err
+	}
+	if !found {
+		warnWithoutCertificate(key.ID())
+	}
+	if err = plugin.BuildSignedPackageWithFiles(sourceDir, archivePath, key, extra); err != nil {
 		return err
 	}
 	fmt.Printf("packed %s %s into %s, signed with key %016X\n", manifest.ID, manifest.Version, archivePath, key.ID())
 	return nil
+}
+
+// signerDir is where pack and sign look for a signer certificate the plugin
+// does not hold: --signer, else the directory of the key.
+func signerDir(command *cli.Command) string {
+	if dir := command.String("signer"); dir != "" {
+		return dir
+	}
+	return filepath.Dir(command.String("key"))
 }
 
 // SignPlugin signs an existing package in place, replacing any previous
@@ -300,7 +321,24 @@ func SignPlugin(_ context.Context, command *cli.Command) error {
 	if err != nil {
 		return err
 	}
-	if err = plugin.SignPackage(archivePath, key); err != nil {
+	staging, err := os.MkdirTemp("", "nginx-ui-plugin-sign-")
+	if err != nil {
+		return err
+	}
+	defer os.RemoveAll(staging)
+	payload := filepath.Join(staging, "payload")
+	manifest, err := plugin.ExtractPackage(archivePath, payload)
+	if err != nil {
+		return err
+	}
+	extra, found, err := signerCertificateFiles(payload, signerDir(command), manifest.ID, key)
+	if err != nil {
+		return err
+	}
+	if !found {
+		warnWithoutCertificate(key.ID())
+	}
+	if err = plugin.SignPackageWithFiles(archivePath, key, extra); err != nil {
 		return err
 	}
 	fmt.Printf("signed %s with key %016X\n", archivePath, key.ID())
@@ -367,22 +405,7 @@ func isPluginKey(keyID uint64) bool {
 // loadSigningKey reads a minisign secret key file. An encrypted key is
 // decrypted with the password from NGINX_UI_PLUGIN_SIGN_PASSWORD.
 func loadSigningKey(path string) (minisign.PrivateKey, error) {
-	encoded, err := os.ReadFile(path)
-	if err != nil {
-		return minisign.PrivateKey{}, err
-	}
-	if minisign.IsEncrypted(encoded) {
-		key, err := minisign.PrivateKeyFromFile(os.Getenv(signPasswordEnv), path)
-		if err != nil {
-			return minisign.PrivateKey{}, fmt.Errorf("decrypt %s: %w", path, err)
-		}
-		return key, nil
-	}
-	var key minisign.PrivateKey
-	if err = key.UnmarshalText(encoded); err != nil {
-		return minisign.PrivateKey{}, fmt.Errorf("read %s: %w", path, err)
-	}
-	return key, nil
+	return loadKey(path, signPasswordEnv)
 }
 
 // loadPluginManager boots the settings and the database, then reads the plugin
