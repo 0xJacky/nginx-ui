@@ -84,9 +84,6 @@ const actionLabel = computed(() => props.entry.update_available ? $gettext('Upda
           <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
             <span class="plugin-card-channel" :class="`is-${channel}`">{{ channelLabel(channel) }}</span>
           </ATooltip>
-          <span v-if="entry.stage && entry.stage !== 'production' && entry.stage !== 'beta'" class="plugin-card-channel is-dev">
-            {{ entry.stage }}
-          </span>
         </div>
       </div>
       <ATooltip :title="trust.hint()">
