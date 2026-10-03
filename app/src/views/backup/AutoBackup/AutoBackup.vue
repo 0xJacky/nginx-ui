@@ -186,6 +186,22 @@ const columns: StdTableColumn[] = [
     pure: true,
   },
   {
+    title: () => $gettext('Backups to Keep (0 keeps all)'),
+    dataIndex: 'retention_count',
+    customRender: ({ text }: CustomRenderArgs) => {
+      return text > 0 ? text : $gettext('All')
+    },
+    edit: {
+      type: 'inputNumber',
+      inputNumber: {
+        min: 0,
+        precision: 0,
+        defaultValue: 0,
+      },
+    },
+    pure: true,
+  },
+  {
     title: () => $gettext('Status'),
     dataIndex: 'enabled',
     customRender: ({ text }: CustomRenderArgs) => {

@@ -98,6 +98,9 @@ func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
 		return uploadErr
 	}
 
+	// Apply the retention policy; deleting old backups never fails the new backup
+	pruneOldBackups(autoBackup, result)
+
 	logger.Infof("Auto backup task %s completed successfully, file: %s", autoBackup.Name, result.FilePath)
 	if updateErr := updateBackupStatusWithTime(autoBackup.ID, model.BackupStatusSuccess, "", &now); updateErr != nil {
 		logger.Errorf("Failed to update backup status to success: %v", updateErr)
@@ -148,7 +151,7 @@ func executeBackupByType(autoBackup *model.AutoBackup) (*ExecutionResult, error)
 //   - error: CosyError if backup creation fails
 func createEncryptedBackup(autoBackup *model.AutoBackup) (*ExecutionResult, error) {
 	// Generate unique filename with timestamp
-	filename := fmt.Sprintf("%s_%d.zip", autoBackup.GetName(), time.Now().Unix())
+	filename := fmt.Sprintf("%s%d.zip", autoBackupFilePrefix(autoBackup), time.Now().Unix())
 
 	// Determine output path based on storage type
 	outputPath, err := buildAutoBackupOutputPath(autoBackup, filename)
@@ -200,7 +203,7 @@ func createCustomDirectoryBackup(autoBackup *model.AutoBackup) (*ExecutionResult
 	}
 
 	// Generate unique filename with timestamp
-	filename := fmt.Sprintf("custom_dir_%s_%d.zip", autoBackup.GetName(), time.Now().Unix())
+	filename := fmt.Sprintf("%s%d.zip", autoBackupFilePrefix(autoBackup), time.Now().Unix())
 
 	// Determine output path based on storage type
 	outputPath, err := buildAutoBackupOutputPath(autoBackup, filename)
