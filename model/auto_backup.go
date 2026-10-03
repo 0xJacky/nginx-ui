@@ -41,6 +41,7 @@ type AutoBackup struct {
 	StoragePath      string       `json:"storage_path" gorm:"not null;comment:Storage destination path"`
 	CronExpression   string       `json:"cron_expression" gorm:"not null;comment:Cron expression for scheduling"`
 	Enabled          bool         `json:"enabled" gorm:"index;default:true;comment:Whether the backup task is enabled"`
+	RetentionCount   int          `json:"retention_count" gorm:"default:0;comment:Number of backups to keep (0 keeps all)"`
 	LastBackupTime   *time.Time   `json:"last_backup_time" gorm:"comment:Last backup execution time"`
 	LastBackupStatus BackupStatus `json:"last_backup_status" gorm:"default:'pending';comment:Status of last backup"`
 	LastBackupError  string       `json:"last_backup_error" gorm:"comment:Error message from last backup if failed"`

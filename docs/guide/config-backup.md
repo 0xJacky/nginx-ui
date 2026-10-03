@@ -103,4 +103,14 @@ Automatic backups use a visual cron editor interface that allows you to:
 - **Status Tracking**: Each backup task tracks execution status (pending, success, failed)
 - **Error Logging**: Failed backups include detailed error messages for troubleshooting
 
+### Backup Retention
+
+By default, every run of an automatic backup task adds a new backup file and old files are never deleted. Set **Backups to Keep** on a task to limit how many backups it retains:
+
+- **Default**: `0` keeps all backups
+- **Limit**: A positive number keeps only that many of the newest backups after each successful run and deletes the older ones. A backup that has an encryption key file is deleted together with its `.key` file
+- **Storage**: Works for both local and S3 storage
+- **Scope**: Only files that follow the task's naming scheme (`<name>_<timestamp>.zip`, or `custom_dir_<name>_<timestamp>.zip` for custom directory backups) directly inside the storage path are considered. Other files are left alone, so give each task its own name or storage path
+- **Failures**: If an old backup cannot be deleted, a warning is logged and the backup task itself still succeeds
+
 This configuration enables backup operations while maintaining strict security boundaries, ensuring that backup functionality cannot be misused to access unauthorized system areas.
