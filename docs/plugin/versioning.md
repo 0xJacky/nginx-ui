@@ -44,8 +44,12 @@ for new features and the patch version for fixes. A prerelease such as
 for example because it uses a host method or a slot added in that release:
 
 ```json [plugin.json]
-"min_nginx_ui_version": "2.7.0"
+"min_nginx_ui_version": "3.0.0"
 ```
+
+A version without a pre-release part also accepts the pre-releases of that
+version: a plugin that needs `3.0.0` runs on `3.0.0-beta.1`. Name a
+pre-release, such as `3.0.0-rc.2`, to require at least that one.
 
 It is advisory. Nginx UI shows it and may refuse to enable a plugin that
 needs a newer release, but it is not part of the protocol, and a plugin should

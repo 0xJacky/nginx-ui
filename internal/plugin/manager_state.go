@@ -464,7 +464,7 @@ func checkHostVersion(manifest *protocol.Manifest) error {
 	if current == "" {
 		return nil
 	}
-	if CompareVersions(current, required) < 0 {
+	if !HostVersionSatisfies(current, required) {
 		return cosy.WrapErrorWithParams(ErrHostVersionTooOld, required, current)
 	}
 	return nil
