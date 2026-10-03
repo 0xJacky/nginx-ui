@@ -50,6 +50,20 @@ func parseVersion(v string) (semver, bool) {
 	return semver{major: numbers[0], minor: numbers[1], patch: numbers[2], prerelease: prerelease}, true
 }
 
+// HostVersionSatisfies reports whether a host of version current meets a
+// plugin's min_nginx_ui_version. A minimum without a pre-release part also
+// accepts the pre-releases of its own version, so a plugin that needs 3.0.0
+// runs on 3.0.0-beta.1; a minimum that names a pre-release is compared as is.
+func HostVersionSatisfies(current, required string) bool {
+	if have, ok := parseVersion(current); ok {
+		if need, ok := parseVersion(required); ok && need.prerelease == "" {
+			have.prerelease = ""
+			return compareSemver(have, need) >= 0
+		}
+	}
+	return CompareVersions(current, required) >= 0
+}
+
 // CompareVersions orders two semantic versions, returning -1, 0 or 1. An
 // unparsable version sorts before a parsable one.
 func CompareVersions(a, b string) int {

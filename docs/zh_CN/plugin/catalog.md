@@ -92,7 +92,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
   "version": "1.2.0",
   "released_at": "2026-09-30T00:00:00Z",
   "api_version": 1,
-  "min_nginx_ui_version": "2.7.0",
+  "min_nginx_ui_version": "3.0.0",
   "platforms": ["linux-amd64", "linux-arm64"],
   "downloads": {
     "linux-amd64": { "url": "https://github.com/example/mydns/releases/download/v1.2.0/io.github.example.mydns-1.2.0-linux-amd64.tar.gz", "sha256": "..." },
