@@ -64,7 +64,6 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
   "capabilities": ["dns01"],
   "license": "MIT",
   "trust": "community",
-  "stage": "production",
   "releases": [ ... ]
 }
 ```
@@ -79,7 +78,6 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 | `screenshots` | 参见[截图](#screenshots)。 |
 | `categories`、`capabilities` | 用于筛选插件市场。 |
 | `license` | 插件许可证的 SPDX 标识。 |
-| `stage` | `production` 或 `beta`，显示在插件旁边的标签。 |
 | `provides` | 可选。最新版本提供的内容。`dns01.since` 是插件开始提供 DNS-01 的版本，`dns01.providers` 列出它的 DNS 服务商，每项包含 `code` 和 `name`；后来才加入的服务商带有自己的 `since`；被较新版本移除、但最新稳定版仍包含的服务商带有 `removed_in`。版本满足 `since` ≤ 版本 < `removed_in` 时包含该服务商。让 Nginx UI 在安装之前就能找到插件。 |
 | `releases` | 各个版本，见下文。 |
 
@@ -147,7 +145,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 - 预发布部分的第一个标识符为 `alpha`、`dev`、`nightly`、`snapshot`、`canary` 或 `preview`（不区分大小写）的版本是 `dev`，因此 `1.0.0-nightly.20260930` 是 `dev`，而 `1.0.0-alphabet` 不是；
 - 其他预发布版本，例如 `1.0.0-beta.1` 或 `2.0.0-rc.1`，是 `beta`。
 
-设置 `channel` 可以把普通版本号放到较不稳定的渠道。条目的 `stage` 不会改变任何渠道。
+设置 `channel` 可以把普通版本号放到较不稳定的渠道。插件市场按节点将要安装的版本所在的渠道给插件加标签。
 
 ::: tip 提示
 请用点分隔的数字为预发布版本编号，例如 `1.1.0-beta.10`：只有单独成段时标识符才按数字比较，所以 `1.1.0-beta10` 会排在 `1.1.0-beta9` 之前。

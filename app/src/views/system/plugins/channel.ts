@@ -36,14 +36,13 @@ export function releaseChannel(release?: Pick<CatalogRelease, 'version' | 'chann
   return isPluginChannel(release.channel) ? release.channel : inferChannel(release.version)
 }
 
-/** Channel of a marketplace entry: the release this node would install, at least beta while the entry is in its beta stage. */
-export function entryChannel(entry?: Pick<CatalogEntry, 'channel' | 'stage' | 'installable_release'>): PluginChannel {
+/** Channel of a marketplace entry: the release this node would install. */
+export function entryChannel(entry?: Pick<CatalogEntry, 'channel' | 'installable_release'>): PluginChannel {
   if (!entry)
     return 'stable'
   if (isPluginChannel(entry.channel))
     return entry.channel
-  const fromRelease = entry.installable_release ? releaseChannel(entry.installable_release) : 'stable'
-  return entry.stage === 'beta' && channelRank(fromRelease) < 1 ? 'beta' : fromRelease
+  return entry.installable_release ? releaseChannel(entry.installable_release) : 'stable'
 }
 
 /** Channel of the release an installed plugin runs. */

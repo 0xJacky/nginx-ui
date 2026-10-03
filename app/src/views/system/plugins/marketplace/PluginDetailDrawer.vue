@@ -205,9 +205,6 @@ watch(open, value => {
                 <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
                   <span class="pill" :class="channel === 'beta' ? 'is-warning' : 'is-purple'">{{ channelLabel(channel) }}</span>
                 </ATooltip>
-                <span v-if="current.stage && current.stage !== 'production' && current.stage !== 'beta'" class="pill is-purple">
-                  {{ current.stage }}
-                </span>
               </div>
               <p class="overview-description">
                 {{ description || $gettext('No description provided.') }}
