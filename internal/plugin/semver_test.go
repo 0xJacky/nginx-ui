@@ -17,6 +17,20 @@ func TestCompareVersions(t *testing.T) {
 	assert.Equal(t, -1, CompareVersions("1.0.0-alpha.2", "1.0.0-alpha.beta"))
 }
 
+func TestHostVersionSatisfies(t *testing.T) {
+	assert.True(t, HostVersionSatisfies("3.0.0", "3.0.0"))
+	assert.True(t, HostVersionSatisfies("3.1.2", "3.0.0"))
+	assert.False(t, HostVersionSatisfies("2.9.9", "3.0.0"))
+	// The pre-releases of the minimum's own version are accepted
+	assert.True(t, HostVersionSatisfies("3.0.0-beta.1", "3.0.0"))
+	assert.True(t, HostVersionSatisfies("v3.0.0-rc1", "3.0.0"))
+	assert.False(t, HostVersionSatisfies("2.9.9-rc.1", "3.0.0"))
+	// A minimum that names a pre-release is compared as is
+	assert.False(t, HostVersionSatisfies("3.0.0-beta.1", "3.0.0-rc.1"))
+	assert.True(t, HostVersionSatisfies("3.0.0-rc.2", "3.0.0-rc.1"))
+	assert.True(t, HostVersionSatisfies("3.0.0", "3.0.0-rc.1"))
+}
+
 func TestVersionSatisfies(t *testing.T) {
 	cases := []struct {
 		version  string

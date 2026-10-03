@@ -1279,7 +1279,7 @@ func releaseRunsOn(release *CatalogRelease, platform string) bool {
 	if release.MinNginxUIVersion != "" {
 		current := version.GetVersionInfo().Version
 		// A development build carries no version, do not block it.
-		if current != "" && CompareVersions(current, release.MinNginxUIVersion) < 0 {
+		if current != "" && !HostVersionSatisfies(current, release.MinNginxUIVersion) {
 			return false
 		}
 	}
