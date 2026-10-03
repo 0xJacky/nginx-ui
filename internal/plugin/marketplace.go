@@ -161,10 +161,12 @@ type CatalogEntry struct {
 	Description     map[string]string `json:"description,omitempty"`
 	Author          string            `json:"author,omitempty"`
 	AuthorPublicKey string            `json:"author_public_key,omitempty"`
-	HomepageURL     string            `json:"homepage_url,omitempty"`
-	RepositoryURL   string            `json:"repository_url,omitempty"`
-	ReadmeURL       string            `json:"readme_url,omitempty"`
-	IconURL         string            `json:"icon_url,omitempty"`
+	// RevokedSigners are the ids of the signing keys the author withdrew.
+	RevokedSigners []string `json:"revoked_signers,omitempty"`
+	HomepageURL    string   `json:"homepage_url,omitempty"`
+	RepositoryURL  string   `json:"repository_url,omitempty"`
+	ReadmeURL      string   `json:"readme_url,omitempty"`
+	IconURL        string   `json:"icon_url,omitempty"`
 	// Screenshots are the images the catalog lists, in display order, without
 	// the ones this node may not load.
 	Screenshots  []CatalogScreenshot `json:"screenshots,omitempty"`
@@ -680,6 +682,7 @@ func (mp *Marketplace) installEntry(ctx context.Context, entries []CatalogEntry,
 	opts.ExpectedID = entry.ID
 	opts.ExpectedVersion = release.Version
 	opts.AuthorPublicKey = entry.AuthorPublicKey
+	opts.RevokedSigners = entry.RevokedSigners
 	opts.Channel = release.Channel
 	return mp.manager.Install(ctx, archive, opts)
 }

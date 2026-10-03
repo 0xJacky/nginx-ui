@@ -53,6 +53,8 @@ const (
 	RulePartnerFiles       = "partner-files"
 	RulePartnerComment     = "partner-comment"
 	RulePartnerCertificate = "partner-certificate"
+	RuleSignerFiles        = "signer-files"
+	RuleSignerCertificate  = "signer-certificate"
 
 	// Protocol and lifecycle
 	RuleProtocolStderr        = "protocol-stderr"
@@ -185,6 +187,8 @@ var AllRules = []string{
 	RulePartnerFiles,
 	RulePartnerComment,
 	RulePartnerCertificate,
+	RuleSignerFiles,
+	RuleSignerCertificate,
 	RuleProtocolStderr,
 	RuleProtocolNotification,
 	RuleProtocolConcurrency,

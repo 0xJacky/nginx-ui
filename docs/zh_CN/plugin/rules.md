@@ -285,6 +285,18 @@ ID 使用了保留给 Nginx UI 项目的 `com.nginxui.*`。参见[命名规则](
 
 合作伙伴证书已过期，或者 `plugin.sums.minisig` 不是由证书指定的密钥签名的，因此证书对插件包不起作用。
 
+### signer-files
+
+<Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
+
+插件包中只有 `plugin.signer` 和 `plugin.signer.minisig` 之一，因此签名密钥证书被忽略。参见[签名密钥](./signing.md#signing-keys)。
+
+### signer-certificate
+
+<Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
+
+签名密钥证书无法解析、可信注释指明的不是插件包本身的插件，或者 `plugin.sums.minisig` 不是由证书指定的密钥签名的，因此证书对插件包不起作用。lint 不知道主密钥，证书由谁签发由插件目录和 Nginx UI 检查。参见[签名密钥](./signing.md#signing-keys)。
+
 ## 协议与生命周期 {#protocol-and-lifecycle}
 
 ### protocol-stderr
