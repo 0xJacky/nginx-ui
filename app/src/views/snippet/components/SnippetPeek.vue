@@ -8,8 +8,10 @@ import VariableSummary from './VariableSummary.vue'
 
 const props = defineProps<{
   file: string
-  // The file names a block template built into Nginx UI.
+  // The file names a block template built into Nginx UI, or one of the
+  // plugin given.
   builtin?: boolean
+  pluginId?: string
 }>()
 
 const detail = ref<Pick<Snippet | BuiltinTemplate, 'content' | 'variables'>>()
@@ -17,7 +19,7 @@ const isLoading = ref(true)
 
 onMounted(async () => {
   try {
-    detail.value = props.builtin ? await snippet.getBuiltin(props.file) : await snippet.get(props.file)
+    detail.value = props.builtin ? await snippet.getBuiltin(props.file, props.pluginId) : await snippet.get(props.file)
   }
   finally {
     isLoading.value = false

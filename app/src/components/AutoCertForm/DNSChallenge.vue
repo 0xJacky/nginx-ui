@@ -1,19 +1,32 @@
 <script setup lang="ts">
 import type { SelectProps } from 'antdv-next'
+import type { VNode } from 'vue'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { DnsCredential } from '@/api/dns_credential'
-import { InfoCircleOutlined } from '@antdv-next/icons'
-import { useRouter } from 'vue-router'
+import { PlusOutlined } from '@antdv-next/icons'
+import { Button, Divider } from 'antdv-next'
 import dns_credential from '@/api/dns_credential'
+import { openDnsCredentialEditor } from '@/components/DnsCredentialEditor/openDnsCredentialEditor'
 
+// Built-in credential picker, used when no plugin fills the DNS-01 slot of the
+// certificate form.
 const props = withDefaults(defineProps<{
   compact?: boolean
+  /** Shows the current credential without letting it change. */
+  readonly?: boolean
+  /** Help text under a read-only picker. */
+  readonlyHelp?: string
+  /** Lists the credentials of the main node, which runs the challenge for the selected node. */
+  mainNode?: boolean
 }>(), {
   compact: false,
+  readonly: false,
+  readonlyHelp: '',
+  mainNode: false,
 })
 
 const compactLabelCol = { flex: '170px' }
-const compactWrapperCol = { flex: 'auto' }
+const compactWrapperCol = { flex: '1 1 0', style: { minWidth: 0 } }
 
 interface DefaultOptionType {
   label?: string
@@ -27,21 +40,26 @@ const data = defineModel<AutoCertOptions>('options', {
 })
 
 const loading = ref(false)
+const loaded = ref(false)
 const credentials = ref<DnsCredential[]>([])
-const credentialOptions = ref<SelectProps['options']>([])
 
-function resolveProviderLabel(item: DnsCredential) {
+function resolveProviderLabel(item: Pick<DnsCredential, 'provider' | 'provider_code' | 'code'>) {
   return item.provider || item.provider_code || item.code || $gettext('Unknown Provider')
 }
 
-function mapCredentialOption(item: DnsCredential): NonNullable<SelectProps['options']>[number] {
-  return {
-    value: item.id,
-    label: `${item.name} (${resolveProviderLabel(item)})`,
-  }
+const credentialOptions = computed<SelectProps['options']>(() => credentials.value.map(item => ({
+  value: item.id,
+  label: `${item.name} (${resolveProviderLabel(item)})`,
+})))
+
+interface CredentialMeta {
+  id: number
+  code: string
+  provider?: string
+  provider_code?: string
 }
 
-function applyCredentialMeta(item?: DnsCredential) {
+function applyCredentialMeta(item?: CredentialMeta) {
   if (!item) {
     data.value.dns_credential_id = undefined
     data.value.code = undefined
@@ -54,45 +72,44 @@ function applyCredentialMeta(item?: DnsCredential) {
   data.value.code = item.code
   data.value.provider = item.provider
   data.value.provider_code = item.provider_code || item.code
+  // The dns01 plugin reads the selected credential from challenge_config.
+  data.value.challenge_config = {
+    ...data.value.challenge_config,
+    credential_id: String(item.id),
+  }
 }
 
-function onCredentialChange(value?: number) {
-  const current = credentials.value.find(item => item.id === value)
-  applyCredentialMeta(current)
-}
-
+// An id of 0 means none is set, so the select shows its placeholder.
 const selectedCredentialId = computed<SelectProps['value']>({
-  get: () => {
-    return data.value.dns_credential_id ?? undefined
-  },
+  get: () => data.value.dns_credential_id || undefined,
   set: value => {
-    let selectedID: number | undefined
-    if (typeof value === 'number')
-      selectedID = value
-    else if (typeof value === 'string')
-      selectedID = Number(value)
-
-    if (selectedID !== undefined && Number.isNaN(selectedID))
-      selectedID = undefined
-
-    onCredentialChange(selectedID)
+    const selectedID = typeof value === 'number' || typeof value === 'string' ? Number(value) : undefined
+    const current = selectedID === undefined || Number.isNaN(selectedID)
+      ? undefined
+      : credentials.value.find(item => item.id === selectedID)
+    applyCredentialMeta(current)
   },
 })
+
+// A credential that was deleted after this certificate was set up.
+const isMissingCredential = computed(() => loaded.value
+  && !!data.value.dns_credential_id
+  && !credentials.value.some(item => item.id === data.value.dns_credential_id))
 
 async function loadCredentials() {
   loading.value = true
   try {
-    credentials.value = []
+    const list: DnsCredential[] = []
     let page = 1
 
     while (true) {
       try {
-        const r = await dns_credential.getList({ page })
-        const list = r?.data ?? []
-        credentials.value.push(...list)
+        const r = await dns_credential.getList({ page }, props.mainNode ? { skipNodeProxy: true } : undefined)
+        const rows = r?.data ?? []
+        list.push(...rows)
 
         const perPage = r?.pagination?.per_page ?? 0
-        if (!perPage || list.length < perPage)
+        if (!perPage || rows.length < perPage)
           break
 
         page++
@@ -102,15 +119,12 @@ async function loadCredentials() {
       }
     }
 
-    credentialOptions.value = credentials.value.map(mapCredentialOption)
+    credentials.value = list
+    loaded.value = true
 
-    if (data.value.dns_credential_id) {
-      const current = credentials.value.find(item => item.id === data.value.dns_credential_id)
-      if (current)
-        applyCredentialMeta(current)
-      else
-        applyCredentialMeta(undefined)
-    }
+    const current = credentials.value.find(item => item.id === data.value.dns_credential_id)
+    if (current && !props.readonly)
+      applyCredentialMeta(current)
   }
   finally {
     loading.value = false
@@ -121,12 +135,58 @@ function goToCredentialPage() {
   router.push('/dns/credentials')
 }
 
+async function createCredential() {
+  const created = await openDnsCredentialEditor()
+  if (!created)
+    return
+
+  await loadCredentials()
+  applyCredentialMeta(credentials.value.find(item => item.id === created.id) ?? created)
+}
+
+function renderPopup(menu: VNode) {
+  return h('div', [
+    menu,
+    h(Divider, { style: { margin: '4px 0' } }),
+    h(Button, {
+      type: 'link',
+      size: 'small',
+      icon: h(PlusOutlined),
+      // Keep the focus in the select until the click lands.
+      onMousedown: (e: MouseEvent) => e.preventDefault(),
+      onClick: createCredential,
+    }, () => $gettext('New credential')),
+  ])
+}
+
 function filterOption(input: string, option?: DefaultOptionType) {
   const needle = input.toLowerCase()
   const label = option?.label?.toString().toLowerCase() ?? ''
   const value = option?.value?.toString().toLowerCase() ?? ''
   return label.includes(needle) || value.includes(needle)
 }
+
+const validateStatus = computed(() => isMissingCredential.value && !props.readonly ? 'error' : undefined)
+
+const help = computed(() => {
+  if (isMissingCredential.value)
+    return $gettext('The credential was deleted. Please choose another one.')
+  if (props.readonly)
+    return props.readonlyHelp || undefined
+  if (props.mainNode)
+    return $gettext('Credentials of the main node. Switch to the main node to add or change one.')
+  return undefined
+})
+
+// The select shows the raw id for a deleted credential; show a label instead.
+const displayOptions = computed<SelectProps['options']>(() => {
+  if (!isMissingCredential.value)
+    return credentialOptions.value
+  return [
+    ...(credentialOptions.value ?? []),
+    { value: data.value.dns_credential_id!, label: $gettext('Deleted credential'), disabled: true },
+  ]
+})
 
 onMounted(async () => {
   await loadCredentials()
@@ -141,28 +201,29 @@ onMounted(async () => {
     :wrapper-col="props.compact ? compactWrapperCol : undefined"
     :model="data"
   >
-    <AFormItem name="dns_credential_id" :rules="[{ required: true }]">
-      <template #label>
-        <span>{{ $gettext('Credential') }}</span>
-        <ATooltip :title="$gettext('Please create DNS credentials first in DNS > Credentials')">
-          <InfoCircleOutlined class="ml-2 cursor-pointer text-gray-500" @click="goToCredentialPage" />
-        </ATooltip>
-      </template>
-      <ASelect
-        v-model:value="selectedCredentialId"
-        :options="credentialOptions"
-        :placeholder="$gettext('Select Credential')"
-        :loading="loading"
-        show-search
-        :filter-option="filterOption"
-      />
-      <AButton type="link" size="small" class="px-0" @click="goToCredentialPage">
-        {{ $gettext('Go to DNS > Credentials to create or manage credentials') }}
-      </AButton>
+    <AFormItem
+      name="dns_credential_id"
+      :label="$gettext('DNS Credential')"
+      :required="!readonly"
+      :validate-status="validateStatus"
+      :help="help"
+    >
+      <ASpaceCompact block>
+        <ASelect
+          v-model:value="selectedCredentialId"
+          class="min-w-0 flex-1"
+          :options="displayOptions"
+          :placeholder="$gettext('Select credential')"
+          :loading="loading"
+          :disabled="readonly"
+          :popup-render="mainNode ? undefined : renderPopup"
+          show-search
+          :filter-option="filterOption"
+        />
+        <AButton v-if="!readonly && !mainNode" @click="goToCredentialPage">
+          {{ $gettext('Manage') }}
+        </AButton>
+      </ASpaceCompact>
     </AFormItem>
   </AForm>
 </template>
-
-<style lang="less" scoped>
-
-</style>

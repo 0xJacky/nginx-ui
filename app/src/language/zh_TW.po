@@ -16,8 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10.4\n"
 "Generated-By: easygettext\n"
+"X-Generator: Weblate 5.10.4\n"
 
 msgid "Public"
 msgstr "公開"
@@ -155,6 +155,21 @@ msgstr "HTTP01"
 msgid "DNS01"
 msgstr "DNS01"
 
+msgid "Validates the domain with a DNS record. Needs a DNS credential."
+msgstr "透過 DNS 記錄驗證網域，需要 DNS 認證。"
+
+msgid "Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail."
+msgstr "萬用字元憑證通常需要 DNS-01，使用 HTTP-01 很可能會失敗。"
+
+msgid "Validates each domain over port 80 on this server."
+msgstr "透過本伺服器的 80 連接埠驗證每個網域。"
+
+msgid "Can be changed after the plugin is installed."
+msgstr "安裝外掛後即可變更。"
+
+msgid "Can be changed after the plugin is enabled."
+msgstr "啟用外掛後即可變更。"
+
 msgid "Please enter the server IP address"
 msgstr "請輸入伺服器 IP 位址"
 
@@ -220,8 +235,8 @@ msgstr ""
 "請先在「憑證」>「DNS 憑證」中新增憑證，然後在下方選擇一個憑證以呼叫 DNS 供應"
 "商的 API。"
 
-msgid "Required Settings"
-msgstr "必要設定"
+msgid "Issuing"
+msgstr "簽發"
 
 msgid "Server IP Address"
 msgstr "伺服器 IP 位址"
@@ -259,69 +274,64 @@ msgstr "驗證方式"
 msgid "Not supported for IP certificates"
 msgstr "不支援 IP 證書"
 
+msgid "DNS Validation"
+msgstr "DNS 驗證"
+
+msgid ""
+"The main node has no DNS-01 plugin. Install it on the main node, or validate "
+"on this node."
+msgstr "主節點沒有 DNS-01 外掛。請在主節點安裝，或改為在本節點驗證。"
+
 msgid "Key Type"
 msgstr "金鑰類型"
 
-msgid "Special Settings"
-msgstr "特殊設定"
+msgid "Certificate options"
+msgstr "憑證選項"
 
 msgid "OCSP Must Staple"
 msgstr "OCSP 強制裝訂"
 
-msgid "Do not enable this option unless you are sure that you need it."
-msgstr "除非您確定需要，否則不要啟用此選項。"
-
 msgid ""
-"OCSP Must Staple may cause errors for some users on first access using "
-"Firefox."
-msgstr "OCSP 強制裝訂可能會導致部分使用者在首次使用 Firefox 存取時發生錯誤。"
-
-msgid "Lego disable CNAME Support"
-msgstr "Lego 停用 CNAME 支援"
-
-msgid ""
-"If your domain has CNAME records and you cannot obtain certificates, you "
-"need to enable this option."
-msgstr "如果您的網域有 CNAME 記錄且無法取得憑證，則需要啟用此選項。"
-
-msgid "Disable Authoritative DNS Propagation Check"
-msgstr "停用權威 DNS 傳播檢查"
-
-msgid ""
-"Skip local DNS propagation checks and wait 60 seconds before asking the "
-"certificate authority to validate the record."
-msgstr "略過本機 DNS 傳播檢查，並在請求憑證授權單位驗證記錄前等待 60 秒。"
+"Only turn on when you are sure you need it. Firefox may show an error on the "
+"first visit."
+msgstr "僅在確定需要時開啟。Firefox 首次造訪時可能會顯示錯誤。"
 
 msgid "Enable Common Name"
 msgstr "啟用通用名稱"
 
-msgid ""
-"Enable the certificate Common Name field for private CAs that still require "
-"it."
-msgstr "為仍需要此欄位的私有 CA 啟用憑證的通用名稱 (Common Name) 欄位。"
+msgid "For private CAs that still require this field."
+msgstr "適用於仍要求此欄位的私有 CA。"
 
 msgid "Revoke Old Certificate"
 msgstr "撤銷舊憑證"
 
-msgid ""
-"If you want to automatically revoke the old certificate, please enable this "
-"option."
-msgstr "如果您想要自動撤銷舊憑證，請啟用此選項。"
+msgid "Revokes the previous certificate once the new one is issued."
+msgstr "新憑證簽發後撤銷舊憑證。"
 
 msgid "Unknown Provider"
 msgstr "未知提供者"
 
-msgid "Credential"
-msgstr "認證"
+msgid "New credential"
+msgstr "新增認證"
 
-msgid "Please create DNS credentials first in DNS > Credentials"
-msgstr "請先在 DNS > 憑證 中建立 DNS 憑證"
+msgid "The credential was deleted. Please choose another one."
+msgstr "該認證已被刪除，請選擇其他認證。"
 
-msgid "Select Credential"
-msgstr "選擇憑證"
+msgid ""
+"Credentials of the main node. Switch to the main node to add or change one."
+msgstr "這些是主節點的憑證。如需新增或修改，請切換到主節點。"
 
-msgid "Go to DNS > Credentials to create or manage credentials"
-msgstr "前往 DNS > 憑證 以建立或管理憑證"
+msgid "Deleted credential"
+msgstr "已刪除的認證"
+
+msgid "DNS Credential"
+msgstr "DNS 認證"
+
+msgid "Select credential"
+msgstr "選擇認證"
+
+msgid "Manage"
+msgstr "管理"
 
 msgid "Local"
 msgstr "本機"
@@ -426,48 +436,115 @@ msgstr "停用"
 msgid "Maintenance"
 msgstr "維護"
 
-msgid "Starting download..."
-msgstr "開始下載..."
+msgid "not installed"
+msgstr "尚未安裝"
 
-msgid "Download failed"
-msgstr "下載失敗"
+msgid "turned off"
+msgstr "已停用"
 
-msgid "Download complete"
-msgstr "下載完成"
-
-msgid "GeoLite2 Database Required"
-msgstr "需要 GeoLite2 資料庫"
+msgid "not working right now"
+msgstr "暫時無法使用"
 
 msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. Please "
-"download it to enable this feature."
-msgstr "離線地理 IP 分析需要 GeoLite2 資料庫。請下載以啟用此功能。"
+"DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
+"yet."
+msgstr "DNS-01 驗證由 DNS-01 外掛提供，該外掛尚未安裝。"
+
+msgid "The DNS-01 plugin is installed but turned off."
+msgstr "DNS-01 外掛已安裝，但已停用。"
+
+msgid "The DNS-01 plugin is turned on but not working right now."
+msgstr "DNS-01 外掛已啟用，但暫時無法使用。"
 
 msgid ""
-"Alternatively, if you cannot download the database, you can manually place "
-"GeoLite2-City.mmdb in the same directory as app.ini."
+"This certificate renews through the DNS-01 plugin, which is %{state}. It "
+"cannot renew automatically until the plugin is back."
 msgstr ""
-"或者，如果您無法下載數據庫，可以手動將 GeoLite2-City.mmdb 文件放置於與 "
-"app.ini 相同的目錄中。"
+"此憑證依賴 DNS-01 外掛續期，該外掛%{state}。在外掛恢復之前，憑證無法自動續"
+"期。"
+
+msgid "DNS providers come with the DNS-01 plugin, which is %{state}."
+msgstr "DNS 供應商由 DNS-01 外掛提供，該外掛%{state}。"
 
 msgid ""
-"If you want to enable custom MMDB data, configure `IndexCustomMMDB` and "
-"place the generated file in the same directory as app.ini."
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not installed."
 msgstr ""
-"如果您要啟用自訂 MMDB 資料，請設定 `IndexCustomMMDB`，並將產生的檔案放置在與 "
-"app.ini 相同的目錄中。"
+"目前僅有 %{count} 個供應商可用。更多供應商由 DNS-01 外掛提供，該外掛尚未安"
+"裝。"
 
-msgid "GeoLite2 Database Installed"
-msgstr "GeoLite2 資料庫已安裝"
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is turned off."
+msgstr ""
+"目前僅有 %{count} 個供應商可用。更多供應商由 DNS-01 外掛提供，該外掛已停用。"
 
-msgid "Download GeoLite2 Database"
-msgstr "下載 GeoLite2 資料庫"
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not working right now."
+msgstr ""
+"目前僅有 %{count} 個供應商可用。更多供應商由 DNS-01 外掛提供，該外掛暫時無法"
+"使用。"
 
-msgid "Re-download Database"
-msgstr "重新下載資料庫"
+msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
+msgstr "DNS 驗證需要 DNS-01 外掛，該外掛%{state}。"
 
-msgid "Last updated:"
-msgstr "最後更新:"
+msgid "Install DNS-01 plugin"
+msgstr "安裝 DNS-01 外掛"
+
+msgid "Install plugin"
+msgstr "安裝外掛"
+
+msgid "Enable plugin"
+msgstr "啟用外掛"
+
+msgid "Go to System > Plugins"
+msgstr "前往「系統 > 外掛」"
+
+msgid "Name cannot be empty"
+msgstr "名稱不能為空"
+
+msgid "Please select DNS provider"
+msgstr "請選擇 DNS 供應商"
+
+msgid "Save successfully"
+msgstr "儲存成功"
+
+msgid "Server error"
+msgstr "伺服器錯誤"
+
+msgid "New DNS Credential"
+msgstr "新增 DNS 認證"
+
+msgid "Create and select"
+msgstr "建立並選擇"
+
+msgid "Include line copied to clipboard"
+msgstr "Include 行已複製到剪貼簿"
+
+msgid "Copy"
+msgstr "複製"
+
+msgid "%{n} d"
+msgstr "%{n} 天"
+
+msgid "%{n} h"
+msgstr "%{n} 小時"
+
+msgid "%{n} min"
+msgstr "%{n} 分鐘"
+
+msgid "%{n} s"
+msgstr "%{n} 秒"
+
+msgid "Not run yet"
+msgstr "尚未執行"
+
+msgid "Success"
+msgstr "成功"
+
+msgid "Failed"
+msgstr "失敗"
 
 msgid "Nginx configuration test failed"
 msgstr "Nginx 設定測試失敗"
@@ -505,9 +582,6 @@ msgstr "Nginx 報告了一個配置語法錯誤。"
 
 msgid "Nginx failed to validate the configuration."
 msgstr "Nginx 未能驗證配置。"
-
-msgid "Server error"
-msgstr "伺服器錯誤"
 
 msgid "Testing Nginx configuration..."
 msgstr "正在測試 Nginx 配置..."
@@ -825,9 +899,6 @@ msgstr "存取日誌"
 msgid "Error Logs"
 msgstr "錯誤日誌"
 
-msgid "Traffic Analytics"
-msgstr "流量分析"
-
 msgid "Nginx is not running"
 msgstr "Nginx 未執行"
 
@@ -1029,6 +1100,14 @@ msgstr "更新憑證錯誤"
 msgid "Certificate %{name} renewal failed: %{error}"
 msgstr "憑證 %{name} 續期失敗：%{error}"
 
+msgid "DNS-01 plugin unavailable"
+msgstr "DNS-01 外掛不可用"
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr "憑證 %{name} 無法續簽，因為沒有已啟用的外掛提供 DNS-01 驗證"
+
 msgid "Certificate Expired"
 msgstr "憑證已過期"
 
@@ -1046,6 +1125,12 @@ msgstr "憑證 %{name} 將在 %{days} 天後過期"
 
 msgid "Certificate Expiring Soon"
 msgstr "憑證即將到期"
+
+msgid "Deploy Certificate Error"
+msgstr "憑證部署錯誤"
+
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr "部署憑證 %{cert_name} 到 %{target_name} 失敗：%{error}"
 
 msgid "Sync Certificate Error"
 msgstr "同步憑證錯誤"
@@ -1315,6 +1400,12 @@ msgstr "請立即在偏好設定中產生新的恢復碼，以免無法存取您
 msgid "Digit %{position} of the one-time code"
 msgstr "一次性驗證碼的第 %{position} 位數字"
 
+msgid "Unknown error"
+msgstr "未知錯誤"
+
+msgid "Plugin %{plugin} failed to render"
+msgstr "外掛 %{plugin} 渲染失敗"
+
 msgid "Port"
 msgstr "監聽埠"
 
@@ -1362,9 +1453,6 @@ msgstr "建立索引中..."
 
 msgid "AutoCert is running..."
 msgstr "AutoCert 正在運行..."
-
-msgid "Nginx Log Indexing..."
-msgstr "Nginx 日誌索引中..."
 
 msgid ""
 "Legacy recovery code is deprecated. Generate new recovery codes to keep "
@@ -1426,9 +1514,6 @@ msgstr "支援透過 WebSocket 協定與後端通訊。"
 
 msgid "Copied"
 msgstr "已複製"
-
-msgid "Copy"
-msgstr "複製"
 
 msgid "Hide"
 msgstr "隱藏"
@@ -1665,17 +1750,28 @@ msgstr "已成功同步 %{count} 項"
 msgid "Synchronization finished with %{count} failures"
 msgstr "同步完成，其中 %{count} 項失敗"
 
-msgid "High"
-msgstr "高"
+msgid "Plugin enabled"
+msgstr "外掛已啟用"
 
-msgid "Low"
-msgstr "低"
+msgid "Failed to enable the plugin"
+msgstr "啟用外掛失敗"
 
-msgid "Visits"
-msgstr "訪問量"
+msgid "On the main node"
+msgstr "在主節點"
 
-msgid "Percentage"
-msgstr "百分比"
+msgid "On this node"
+msgstr "在本節點"
+
+msgid ""
+"The main node validates the domain with its DNS credentials, sends the "
+"certificate to this node and keeps renewing it."
+msgstr ""
+"主節點使用自己的 DNS 憑證驗證網域，將憑證傳送到本節點，並負責後續續期。"
+
+msgid ""
+"This node validates the domain with its own DNS credentials and renews the "
+"certificate itself."
+msgstr "本節點使用自己的 DNS 憑證驗證網域，並自行續期憑證。"
 
 msgid "Failed to get performance data"
 msgstr "無法取得效能資料"
@@ -2022,6 +2118,18 @@ msgstr "S3 上傳失敗：{0}"
 msgid "Invalid auto backup filename: {0}"
 msgstr "無效的自動備份檔案名稱： {0}"
 
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr "儲存的備份 {0} 不屬於此備份任務"
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr "僅可還原 Nginx 和 Nginx UI 的備份"
+
+msgid "This action needs a plugin storage backend"
+msgstr "此操作需要外掛儲存後端"
+
+msgid "Invalid storage key prefix: {0}"
+msgstr "無效的儲存 Key 前綴：{0}"
+
 msgid "Invalid path: {0}"
 msgstr "無效路徑: {0}"
 
@@ -2080,12 +2188,6 @@ msgstr "新建 lego 客戶端錯誤：{0}"
 msgid "Get dns credential error: {0}"
 msgstr "獲取 DNS 憑證錯誤：{0}"
 
-msgid "Provider not found: {0}"
-msgstr "未找到提供者：{0}"
-
-msgid "Set env error: {0}"
-msgstr "設定環境錯誤：{0}"
-
 msgid "New dns challenge provider error: {0}"
 msgstr "新建 DNS 驗證提供程序錯誤：{0}"
 
@@ -2094,9 +2196,6 @@ msgstr "環境配置為空"
 
 msgid "Challenge error: {0}"
 msgstr "驗證錯誤：{0}"
-
-msgid "Set env flag to disable lego CNAME support error: {0}"
-msgstr "設定環境標誌以停用 lego CNAME 支援錯誤：{0}"
 
 msgid "Renew cert error: {0}"
 msgstr "續簽證書錯誤：{0}"
@@ -2219,6 +2318,34 @@ msgstr "歸檔中未找到私鑰"
 msgid "No certificate in the archive matches its private key"
 msgstr "歸檔中沒有憑證與其私鑰匹配"
 
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr "{0} 沒有可用的 DNS-01 提供者：請安裝並啟用 DNS-01 外掛"
+
+msgid ""
+"Automatic renewal can only be switched for certificates issued by Nginx UI"
+msgstr "只有 Nginx UI 簽發的憑證才能切換自動續期"
+
+msgid "Only a DNS-01 certificate can be issued for another node"
+msgstr "只能為其他節點簽發 DNS-01 憑證"
+
+msgid "Node not found"
+msgstr "找不到節點"
+
+msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
+msgstr "節點 {0} 無法接收為其簽發的憑證，請先升級該節點"
+
+msgid "Node {0} answered {1}: {2}"
+msgstr "節點 {0} 回應 {1}：{2}"
+
+msgid "The Nginx configuration still loads the certificate: {0}"
+msgstr "Nginx 設定仍在載入該憑證：{0}"
+
+msgid "The certificate was issued, but sending it to node {0} failed: {1}"
+msgstr "憑證已簽發，但傳送到節點 {0} 失敗：{1}"
+
+msgid "Node {0} cannot be reached: {1}"
+msgstr "無法連線節點 {0}：{1}"
+
 msgid "Path is not under the nginx conf dir"
 msgstr "路徑不在 Nginx 設定目錄下"
 
@@ -2314,36 +2441,6 @@ msgstr "找不到舊容器名稱"
 
 msgid "Could not find temp container"
 msgstr "找不到暫存容器"
-
-msgid "Failed to download GeoLite2 database: {0}"
-msgstr "下載 GeoLite2 資料庫失敗: {0}"
-
-msgid "Failed to decompress GeoLite2 database: {0}"
-msgstr "解壓 GeoLite2 資料庫失敗: {0}"
-
-msgid "GeoLite2 database not found at {0}"
-msgstr "在 {0} 未找到 GeoLite2 資料庫"
-
-msgid "Failed to get file size: {0}"
-msgstr "取得檔案大小失敗: {0}"
-
-msgid "Failed to save downloaded file: {0}"
-msgstr "儲存下載的檔案失敗: {0}"
-
-msgid "Failed to open file: {0}"
-msgstr "開啟檔案失敗: {0}"
-
-msgid "Failed to create xz reader: {0}"
-msgstr "建立 xz 讀取器失敗: {0}"
-
-msgid "Failed to write decompressed data: {0}"
-msgstr "寫入解壓縮資料失敗: {0}"
-
-msgid "Failed to read compressed data: {0}"
-msgstr "讀取壓縮資料失敗: {0}"
-
-msgid "Decompression succeeded but failed to delete compressed file: {0}"
-msgstr "解壓成功但刪除壓縮檔案失敗: {0}"
 
 msgid ""
 "{0} contains characters that are unsafe to paste into the generated host "
@@ -2479,9 +2576,6 @@ msgstr "表單解析失敗"
 msgid "This action is disabled in demo mode"
 msgstr "此操作在示範模式下已停用。"
 
-msgid "Log parser is not initialized; call indexer.InitLogParser() before use"
-msgstr "日誌解析器未初始化；使用前請呼叫 indexer.InitLogParser()"
-
 msgid "Empty log line"
 msgstr "空日誌行"
 
@@ -2524,59 +2618,17 @@ msgstr ""
 "Settings.NginxLogSettings.AccessLogPath 為空，請參考 https://nginxui.com/"
 "guide/config-nginx.html 了解更多資訊"
 
-msgid "Log indexer not available"
-msgstr "日誌索引器不可用"
-
-msgid "Analytics service not available"
-msgstr "分析服務不可用"
-
 msgid "Log file does not exist"
 msgstr "日誌文件不存在"
 
 msgid "Log path is not under whitelist"
 msgstr "日誌路徑不在白名單中"
 
-msgid "Cannot access log file"
-msgstr "無法存取日誌檔案"
-
-msgid "Background log service not available"
-msgstr "後台日誌服務不可用"
-
-msgid "File path is required"
-msgstr "文件路徑是必需的"
-
-msgid "Failed to rebuild index"
-msgstr "重建索引失敗"
-
-msgid "Failed to rebuild file index"
-msgstr "重建文件索引失敗"
-
-msgid "Failed to delete file index"
-msgstr "刪除文件索引失敗"
-
-msgid "Failed to delete all indexes"
-msgstr "刪除所有索引失敗"
-
-msgid "Failed to get index status"
-msgstr "獲取索引狀態失敗"
-
-msgid "Failed to get persistence stats"
-msgstr "獲取持久化統計資訊失敗"
-
 msgid "Log file is not a regular file"
 msgstr "日誌檔案不是常規檔案"
 
 msgid "Invalid websocket message type"
 msgstr "無效的 WebSocket 消息類型"
-
-msgid "Modern searcher service not available"
-msgstr "現代搜尋服務不可用"
-
-msgid "Modern analytics service not available"
-msgstr "現代分析服務不可用"
-
-msgid "Modern indexer service not available"
-msgstr "現代索引服務不可用"
 
 msgid "Nginx error: {0}"
 msgstr "Nginx 錯誤：{0}"
@@ -2605,6 +2657,9 @@ msgstr "未找到外部通知配置"
 msgid "Invalid Telegram Chat ID: cannot be zero"
 msgstr "無效的 Telegram 聊天 ID：不能為零"
 
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr "通知器設定欄位 {0} 無效：{1}"
+
 msgid "Stub_status is not enabled"
 msgstr "未啟用 stub_status"
 
@@ -2632,6 +2687,168 @@ msgstr "構建 nginx 配置失敗: {0}"
 
 msgid "Failed to get nginx.conf path"
 msgstr "無法獲取 nginx.conf 路徑"
+
+msgid "Plugin manifest is invalid"
+msgstr "外掛清單無效"
+
+msgid "Plugin not found"
+msgstr "找不到外掛"
+
+msgid "Plugin already exists"
+msgstr "外掛已存在"
+
+msgid "Plugin is not running"
+msgstr "外掛未執行"
+
+msgid "Plugin handshake failed"
+msgstr "外掛握手失敗"
+
+msgid "Plugin has no executable for this platform"
+msgstr "外掛沒有適用於此平台的可執行檔"
+
+msgid "Plugin package is invalid"
+msgstr "外掛套件無效"
+
+msgid "Plugin package is too large"
+msgstr "外掛套件過大"
+
+msgid "Plugin api version is incompatible"
+msgstr "外掛 API 版本不相容"
+
+msgid "Plugin permissions need approval"
+msgstr "外掛權限需要核准"
+
+msgid "Plugin dependency is missing: {0}"
+msgstr "外掛缺少相依項目：{0}"
+
+msgid "Plugin dependencies form a cycle"
+msgstr "外掛相依關係形成循環"
+
+msgid "Plugin is in use by {0}"
+msgstr "外掛正被 {0} 使用中"
+
+msgid "Plugin system is disabled"
+msgstr "外掛系統已停用"
+
+msgid "Plugin uploads are disabled"
+msgstr "外掛上傳已停用"
+
+msgid "Plugin call timed out"
+msgstr "外掛呼叫逾時"
+
+msgid "Plugin rpc error: {0}"
+msgstr "外掛 RPC 錯誤：{0}"
+
+msgid "Plugin setting {0} is invalid"
+msgstr "外掛設定 {0} 無效"
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr "外掛需要 nginx-ui {0} 或更新版本，而此節點執行的是 {1}"
+
+msgid "Plugin package declares another id"
+msgstr "外掛套件宣告了另一個 ID"
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr "外掛內容 {0} 無效：{1}"
+
+msgid "Plugin package declares version {0}, {1} was expected"
+msgstr "外掛套件宣告的版本為 {0}，預期為 {1}"
+
+msgid "Plugin package is not signed and developer mode is off"
+msgstr "外掛套件未簽署，且開發者模式未開啟"
+
+msgid "Plugin package trust {0} is below the installed {1}"
+msgstr "外掛套件的信任等級 {0} 低於已安裝的 {1}"
+
+msgid "This plugin cannot be enabled together with: {0}"
+msgstr "此外掛不能與以下外掛同時啟用：{0}"
+
+msgid "Release channel must be stable, beta or dev"
+msgstr "發布通道必須是 stable、beta 或 dev"
+
+msgid "The plugin id {0} is reserved for official Nginx UI plugins"
+msgstr "外掛 ID {0} 為 Nginx UI 官方外掛保留"
+
+msgid "Storage backend {0} is not available"
+msgstr "儲存後端 {0} 不可用"
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr "儲存設定欄位 {0} 無效：{1}"
+
+msgid "Deploy target kind {0} is not available"
+msgstr "部署目標類型 {0} 不可用"
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr "部署目標設定欄位 {0} 無效：{1}"
+
+msgid "Blocklist source kind {0} is not available"
+msgstr "封鎖清單來源類型 {0} 不可用"
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr "封鎖清單來源設定欄位 {0} 無效：{1}"
+
+msgid "Discovery provider {0} is not available"
+msgstr "探索提供商 {0} 不可用"
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr "探索提供商設定欄位 {0} 無效：{1}"
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr "重新整理間隔必須至少為 {0} 秒"
+
+msgid "Upstream name {0} is invalid"
+msgstr "Upstream 名稱 {0} 無效"
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr "Upstream 名稱 {0} 已綁定至另一個服務"
+
+msgid "Extra directives must not contain braces"
+msgstr "額外指令不得包含大括號"
+
+msgid "{0} is still included by the nginx configuration: {1}"
+msgstr "{0} 仍被 nginx 設定包含：{1}"
+
+msgid "Plugin marketplace is disabled"
+msgstr "外掛市集已停用"
+
+msgid "Plugin marketplace source is unavailable: {0}"
+msgstr "外掛市集來源無法使用：{0}"
+
+msgid "Plugin release not found"
+msgstr "找不到外掛版本"
+
+msgid "Plugin release has been yanked"
+msgstr "外掛版本已被撤回"
+
+msgid "Plugin package digest does not match the catalog"
+msgstr "外掛套件摘要與目錄不符"
+
+msgid "Plugin package signature is invalid: {0}"
+msgstr "外掛套件簽章無效：{0}"
+
+msgid "Community plugins are not allowed on this node"
+msgstr "此節點不允許使用社群外掛"
+
+msgid "Plugin download url is not https"
+msgstr "外掛下載網址不是 https"
+
+msgid "Plugin release has no build for this platform"
+msgstr "外掛版本沒有適用於此平台的建置"
+
+msgid "Plugin catalog is invalid: {0}"
+msgstr "外掛目錄無效：{0}"
+
+msgid "Plugin is not in the marketplace catalog"
+msgstr "外掛不在市集目錄中"
+
+msgid "No local package found for this plugin"
+msgstr "找不到此外掛的本機套件"
+
+msgid "No plugin package is available for {0}"
+msgstr "{0} 沒有可用的外掛套件"
+
+msgid "The marketplace has no more trusted package of this plugin"
+msgstr "市集中已沒有此外掛的其他可信套件"
 
 msgid "Task not found"
 msgstr "找不到任務"
@@ -2699,12 +2916,6 @@ msgstr "錯誤日誌路徑不存在"
 msgid "Conf.d directory not exists"
 msgstr "Conf.d 目錄不存在"
 
-msgid ""
-"GeoLite2 database not found at {0}. Log indexing requires GeoLite2 database "
-"for geographic IP analysis"
-msgstr ""
-"未在 {0} 找到 GeoLite2 資料庫。日誌索引需要 GeoLite2 資料庫進行地理 IP 分析"
-
 msgid "Failed to read bundled nginx-ui.conf: {0}"
 msgstr "讀取內置的 nginx-ui.conf 失敗：{0}"
 
@@ -2739,6 +2950,9 @@ msgstr "當 Nginx UI 監聽 Unix socket 時，無法啟用 HTTP/3"
 msgid "Unknown settings section: {0}"
 msgstr "未知的設定區塊：{0}"
 
+msgid "A trusted publisher is not in the expected format or is listed twice"
+msgstr "有可信發布者的格式不正確或重複新增。"
+
 msgid "Site not found"
 msgstr "站點未找到"
 
@@ -2753,6 +2967,32 @@ msgstr "網站處於維護模式"
 
 msgid "Read dir failed: {0}"
 msgstr "讀取目錄失敗: {0}"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "檔名必須以 .conf 結尾，且只能包含字母、數字、點、連字號和底線"
+
+msgid "Snippet not found"
+msgstr "找不到片段"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "片段超過 256 KiB"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "片段的檔案標頭無法解析：{0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "片段仍被以下檔案引用：{0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "已存在相同檔名的片段"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "變數 {0} 無效：{1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "內容無法解析為範本：{0}"
 
 msgid "Stream not found"
 msgstr "串流未找到"
@@ -2795,6 +3035,9 @@ msgstr "SSL 金鑰檔案必須位於 Nginx 設定目錄下：{0}"
 
 msgid "SSL certificate and key do not form a valid pair: {0}"
 msgstr "SSL 憑證和密鑰未形成有效對：{0}"
+
+msgid "Template not found"
+msgstr "找不到範本"
 
 msgid "Upgrader core downloadUrl is empty"
 msgstr "升級器核心下載 URL 為空"
@@ -3036,9 +3279,6 @@ msgstr "此欄位僅能包含字母、Unicode 字元、數字、連字號、破�
 msgid "Info"
 msgstr "資訊"
 
-msgid "Success"
-msgstr "成功"
-
 msgid "Remote"
 msgstr "遠端"
 
@@ -3054,8 +3294,14 @@ msgstr "自動"
 msgid "Off"
 msgstr "關"
 
+msgid "Low"
+msgstr "低"
+
 msgid "Medium"
 msgstr "中"
+
+msgid "High"
+msgstr "高"
 
 msgid "Default"
 msgstr "預設"
@@ -3156,6 +3402,9 @@ msgstr "錯誤日誌"
 msgid "Select Provider"
 msgstr "選擇提供商"
 
+msgid "Select Credential"
+msgstr "選擇憑證"
+
 msgid "Total"
 msgstr "總計"
 
@@ -3221,9 +3470,6 @@ msgstr "請至少選擇一項"
 
 msgid "Batch Modify"
 msgstr "批次修改"
-
-msgid "Save successfully"
-msgstr "儲存成功"
 
 msgid "Save successful"
 msgstr "儲存成功"
@@ -3299,11 +3545,41 @@ msgstr ""
 "該網域的 CAA 記錄未授權所選的憑證授權單位；請為其新增 CAA issue 記錄，否則簽"
 "發將會失敗。"
 
+msgid "API base URL"
+msgstr "API 位址"
+
+msgid "API timeout"
+msgstr "API 逾時"
+
+msgid "API token"
+msgstr "API 令牌"
+
+msgid "Access key ID"
+msgstr "存取金鑰 ID"
+
+msgid "AccessKey"
+msgstr "AccessKey"
+
+msgid "AccessKey ID"
+msgstr "AccessKey ID"
+
+msgid "AccessKey secret"
+msgstr "AccessKey Secret"
+
+msgid "Account email"
+msgstr "帳戶電子郵件"
+
 msgid "An existing certificate is used"
 msgstr "使用現有憑證"
 
 msgid "Applying the HTTP configuration for validation"
 msgstr "正在套用用於驗證的 HTTP 設定"
+
+msgid "Authentication method"
+msgstr "認證方式"
+
+msgid "Azure environment"
+msgstr "Azure 環境"
 
 msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
 msgstr "綑綁的 nginx-ui.conf 包含 WebSocket 反向代理修正"
@@ -3351,16 +3627,6 @@ msgstr ""
 "檢查 Nginx UI 是否可以在設定的 Nginx 目錄中寫入暫存檔，且外部 Nginx 容器能否"
 "在相同路徑下看到該檔案。Docker socket 存取和 ContainerName 僅用於路由控制命"
 "令；設定與日誌目錄必須以相符的路徑掛載到兩個容器中。"
-
-msgid ""
-"Check if the GeoLite2 database is available when log indexing is enabled. "
-"The GeoLite2 database is required for geographic IP analysis in log "
-"indexing. You can download it from the Preference page or manually place "
-"GeoLite2-City.mmdb in the same directory as app.ini"
-msgstr ""
-"當啟用日誌索引時，檢查 GeoLite2 資料庫是否可用。GeoLite2 資料庫是日誌索引中地"
-"理 IP 分析所必需的。您可以在偏好設置頁面下載它，或者手動將 GeoLite2-"
-"City.mmdb 放在與 app.ini 相同的目錄中"
 
 msgid ""
 "Check if the conf.d directory is under the nginx configuration directory"
@@ -3432,11 +3698,29 @@ msgid ""
 msgstr ""
 "檢查 streams-available 和 streams-enabled 目錄是否位於 nginx 配置目錄下"
 
+msgid "Check interval"
+msgstr "檢查間隔"
+
 msgid "Checking the HTTP challenge route"
 msgstr "正在檢查 HTTP 驗證路由"
 
+msgid "Client ID"
+msgstr "用戶端 ID"
+
+msgid "Client certificate"
+msgstr "用戶端憑證"
+
+msgid "Client certificate path"
+msgstr "用戶端憑證路徑"
+
+msgid "Client secret"
+msgstr "用戶端密鑰"
+
 msgid "Conf.d directory exists"
 msgstr "conf.d 目錄存在"
+
+msgid "DNS line"
+msgstr "解析線路"
 
 msgid "Docker socket exists"
 msgstr "Docker 套接字存在"
@@ -3453,8 +3737,8 @@ msgstr "從資料庫刪除憑證失敗: %{error}"
 msgid "Failed to revoke certificate: %{error}"
 msgstr "撤銷憑證失敗: %{error}"
 
-msgid "GeoLite2 database available"
-msgstr "GeoLite2 資料庫可用"
+msgid "Global API key"
+msgstr "全域 API Key"
 
 msgid "HTTP challenge route is reachable"
 msgstr "HTTP 驗證路由可存取"
@@ -3474,6 +3758,9 @@ msgstr "HTTPS 設定已規劃"
 msgid "HTTPS enabled"
 msgstr "HTTPS 已啟用"
 
+msgid "Instance RAM role"
+msgstr "實例 RAM 角色"
+
 msgid "Issuing the certificate"
 msgstr "正在簽發憑證"
 
@@ -3484,6 +3771,18 @@ msgid ""
 msgstr ""
 "日誌文件 %{log_path} 不是常規文件。如果您在 docker 容器中使用 nginx-ui，請參"
 "考 https://nginxui.com/zh_CN/guide/config-nginx-log.html 獲取更多信息。"
+
+msgid "Managed identity timeout"
+msgstr "受控識別逾時"
+
+msgid "Maximum wait"
+msgstr "最長等待"
+
+msgid "Needs the DNS edit permission."
+msgstr "需要 DNS 編輯權限。"
+
+msgid "Needs the zone read permission. Leave empty to use the API token."
+msgstr "需要區域讀取權限。留空則使用 API 令牌。"
 
 msgid "Nginx PID path exists"
 msgstr "Nginx PID 路徑存在"
@@ -3523,14 +3822,29 @@ msgstr "Nginx.conf 包含 streams-enabled 目錄"
 msgid "No DNS problem found"
 msgstr "未發現 DNS 問題"
 
+msgid "One of public, usgovernment and china."
+msgstr "可選值為 public、usgovernment 或 china。"
+
 msgid "Original site configuration restored"
 msgstr "原網站設定已還原"
 
 msgid "Planning the HTTPS configuration"
 msgstr "正在規劃 HTTPS 設定"
 
+msgid "Private zone"
+msgstr "私人區域"
+
+msgid "Region"
+msgstr "區域"
+
+msgid "Region ID"
+msgstr "區域 ID"
+
 msgid "Resolve the site configuration problem first"
 msgstr "請先解決網站設定問題"
+
+msgid "Resource group"
+msgstr "資源群組"
 
 msgid "Restoring the HTTP configuration"
 msgstr "正在還原 HTTP 設定"
@@ -3538,11 +3852,41 @@ msgstr "正在還原 HTTP 設定"
 msgid "Restoring the original site configuration"
 msgstr "正在還原原網站設定"
 
+msgid "STS security token"
+msgstr "STS 安全權杖"
+
+msgid "Secret access key"
+msgstr "秘密存取金鑰"
+
+msgid "SecretId"
+msgstr "SecretId"
+
+msgid "SecretKey"
+msgstr "SecretKey"
+
+msgid "Service discovery filter"
+msgstr "服務探索篩選器"
+
+msgid "Session token"
+msgstr "工作階段權杖"
+
+msgid "Set to true to use a private DNS zone."
+msgstr "設為 true 以使用私人 DNS 區域。"
+
 msgid "Sites directory exists"
 msgstr "站點目錄存在"
 
 msgid "Streams directory exists"
 msgstr "Streams 目錄存在"
+
+msgid "Subscription ID"
+msgstr "訂用帳戶 ID"
+
+msgid "TXT record TTL"
+msgstr "TXT 記錄 TTL"
+
+msgid "Tenant ID"
+msgstr "租戶 ID"
 
 msgid "The DNS challenge does not use the HTTP challenge route"
 msgstr "DNS 驗證不使用 HTTP 驗證路由"
@@ -3691,6 +4035,12 @@ msgstr ""
 "conf.d/nginx-ui.conf 必須信任傳入的 X-Forwarded-Proto/Host 標頭；否則 "
 "WebSocket 來源檢查將失敗。保留 /etc/nginx 的舊部署可能仍使用未修復的版本。"
 
+msgid "Zone name"
+msgstr "區域名稱"
+
+msgid "Zone read token"
+msgstr "區域讀取令牌"
+
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] ACME 使用者：%{name}，電子郵件：%{email}，CA 目錄：%{caDir}"
 
@@ -3718,9 +4068,6 @@ msgstr "[Nginx UI] 正在檢查 %{domains} 的 HTTP01 驗證路由"
 
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
 msgstr "[Nginx UI] 創建客戶端以促進與 CA 伺服器的通信"
-
-msgid "[Nginx UI] Environment variables cleaned"
-msgstr "[Nginx UI] 環境變數已清理"
 
 msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 已完成"
@@ -3774,14 +4121,14 @@ msgstr "[Nginx UI] 正在撤銷證書"
 msgid "[Nginx UI] Revoking old certificate"
 msgstr "[Nginx UI] 正在撤銷舊憑證"
 
+msgid "[Nginx UI] Sending the certificate to node %{name}"
+msgstr "[Nginx UI] 正在將憑證傳送到節點 %{name}"
+
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr "[Nginx UI] 正在設定 DNS01 驗證提供者"
 
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr "[Nginx UI] 正在設定 HTTP01 驗證提供者"
-
-msgid "[Nginx UI] Setting environment variables"
-msgstr "[Nginx UI] 設定環境變數"
 
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr "[Nginx UI] 正在將證書私鑰寫入磁碟"
@@ -3824,6 +4171,9 @@ msgstr "ACME 使用者"
 
 msgid "Certificates List"
 msgstr "憑證列表"
+
+msgid "Deploy Targets"
+msgstr "部署目標"
 
 msgid "Modify Certificate"
 msgstr "修改憑證"
@@ -3894,6 +4244,9 @@ msgstr "偏好設定"
 msgid "Host SSH Setup"
 msgstr "主機 SSH 設定"
 
+msgid "Blocklists"
+msgstr "封鎖清單"
+
 msgid "Manage Sites"
 msgstr "管理網站"
 
@@ -3902,6 +4255,18 @@ msgstr "網站列表"
 
 msgid "Add Site"
 msgstr "新增網站"
+
+msgid "Snippets"
+msgstr "片段"
+
+msgid "Create Snippet"
+msgstr "建立片段"
+
+msgid "Template"
+msgstr "範本"
+
+msgid "Edit Snippet"
+msgstr "編輯片段"
 
 msgid "Edit Site"
 msgstr "編輯網站"
@@ -3914,6 +4279,9 @@ msgstr "編輯 Stream"
 
 msgid "Upgrade"
 msgstr "升級"
+
+msgid "Plugins"
+msgstr "外掛"
 
 msgid "About"
 msgstr "關於"
@@ -4064,6 +4432,9 @@ msgstr "此清單允許所有位址。"
 msgid "This list has no rules; only \"Everything else\" applies."
 msgstr "此清單沒有規則；僅「其他所有內容」適用。"
 
+msgid "S3"
+msgstr "S3"
+
 msgid "Backup completed successfully"
 msgstr "備份成功完成"
 
@@ -4084,9 +4455,6 @@ msgstr "備份路徑"
 
 msgid "Storage Type"
 msgstr "儲存類型"
-
-msgid "S3"
-msgstr "S3"
 
 msgid "Storage Configuration"
 msgstr "儲存配置"
@@ -4112,9 +4480,6 @@ msgstr "上次備份狀態"
 msgid "Pending"
 msgstr "待處理"
 
-msgid "Failed"
-msgstr "失敗"
-
 msgid "Created at"
 msgstr "建立時間"
 
@@ -4133,8 +4498,14 @@ msgstr "S3 儲存桶"
 msgid "S3 Region"
 msgstr "S3 區域"
 
+msgid "Keep Latest Backups"
+msgstr "保留最新備份數"
+
 msgid "Backup Now"
 msgstr "立即備份"
+
+msgid "Stored Backups"
+msgstr "已儲存的備份"
 
 msgid "Daily"
 msgstr "每日"
@@ -4205,6 +4576,12 @@ msgstr "例如：0 0 * * *（每天午夜）"
 msgid "Format: minute hour day month weekday"
 msgstr "格式：分鐘 小時 日 月 星期"
 
+msgid "Please fill in %{field}"
+msgstr "請填寫 %{field}"
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr "儲存測試成功，找到 %{count} 個已儲存的備份"
+
 msgid "Please fill in required S3 configuration fields"
 msgstr "請填寫必填的 S3 配置欄位"
 
@@ -4256,6 +4633,53 @@ msgstr "S3 區域（例如 us-east-1）"
 msgid "Test S3 Connection"
 msgstr "測試 S3 連接"
 
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr "提供此儲存的外掛未啟用。備份會失敗，直到重新啟用該外掛為止。"
+
+msgid "Key Prefix"
+msgstr "Key 前綴"
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr "備份會儲存在此前綴之下，例如 nginx-ui/daily。使用 / 代表根目錄。"
+
+msgid "Key prefix is required"
+msgstr "Key 前綴為必填項"
+
+msgid "nginx-ui/backups"
+msgstr "nginx-ui/backups"
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr "每次執行後會刪除該儲存中較舊的備份。設為 0 表示保留所有備份。"
+
+msgid "Test Storage"
+msgstr "測試儲存"
+
+msgid "Please log in."
+msgstr "請登入。"
+
+msgid "File"
+msgstr "檔案"
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr "備份保存在 %{storage} 的 %{prefix} 之下"
+
+msgid "Delete this backup from the storage?"
+msgstr "確定要從儲存中刪除此備份嗎？"
+
+msgid "Restore Backup"
+msgstr "還原備份"
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr "還原操作將取代目前設定，隨後 Nginx 與 Nginx UI 將重新啟動。"
+
 msgid "Create system backups and restore from saved snapshots when needed."
 msgstr "建立系統備份，並在需要時從已儲存快照還原。"
 
@@ -4290,9 +4714,6 @@ msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
 msgstr "此令牌僅顯示一次且無法後續找回，請務必將其儲存在安全的地方。"
-
-msgid "Please log in."
-msgstr "請登入。"
 
 msgid "Email"
 msgstr "電子郵件"
@@ -4361,6 +4782,33 @@ msgstr "註冊狀態"
 msgid "Register"
 msgstr "註冊"
 
+msgid "Advanced options"
+msgstr "進階選項"
+
+msgid "Sync to other nodes"
+msgstr "同步至其他節點"
+
+msgid "Certificate"
+msgstr "憑證"
+
+msgid "Private key"
+msgstr "私鑰"
+
+msgid "Domains"
+msgstr "網域"
+
+msgid "IP Addresses"
+msgstr "IP 位址"
+
+msgid "Valid For (days)"
+msgstr "有效期（天）"
+
+msgid "Automatic renewal turned on"
+msgstr "已開啟自動續期"
+
+msgid "Automatic renewal turned off"
+msgstr "已關閉自動續期"
+
 msgid "Please enter a name for the certificate"
 msgstr "請輸入憑證名稱"
 
@@ -4369,6 +4817,113 @@ msgstr "請輸入至少一個網域或 IP 位址"
 
 msgid "Saved certificate response is missing an ID"
 msgstr "儲存的憑證回應缺少 ID"
+
+msgid "More actions"
+msgstr "更多操作"
+
+msgid "Issued for %{node}"
+msgstr "為 %{node} 簽發"
+
+msgid ""
+"This instance validates the domain, keeps renewing the certificate and sends "
+"each renewal to %{node}."
+msgstr "本實例負責驗證網域與續期憑證，每次續期後都會傳送到 %{node}。"
+
+msgid "Files on the node:"
+msgstr "節點上的檔案："
+
+msgid "Sync Certificate"
+msgstr "同步憑證"
+
+msgid "Managed Certificate"
+msgstr "受管理的憑證"
+
+msgid "General Certificate"
+msgstr "普通憑證"
+
+msgid "Self-signed Certificate"
+msgstr "自行簽署憑證"
+
+msgid "Renewal paused"
+msgstr "已暫停續期"
+
+msgid "Issuing..."
+msgstr "簽發中..."
+
+msgid "Issuance failed"
+msgstr "簽發失敗"
+
+msgid "Automatic migration pending"
+msgstr "等待自動遷移"
+
+msgid "Configuration mismatch"
+msgstr "設定不一致"
+
+msgid "Configured path: %{configured}; managed path: %{managed}"
+msgstr "設定引用路徑：%{configured}；託管路徑：%{managed}"
+
+msgid "Unable to verify deployment"
+msgstr "無法驗證部署狀態"
+
+msgid "Not issued yet"
+msgstr "尚未簽發"
+
+msgid "Not After"
+msgstr "不晚於"
+
+msgid "All"
+msgstr "全部"
+
+msgid "Expiring within 30 days"
+msgstr "30 天內到期"
+
+msgid "Renewal failed"
+msgstr "續期失敗"
+
+msgid "Issued by this instance for %{node} and renewed here"
+msgstr "由本實例為 %{node} 簽發，並在此續期"
+
+msgid "For %{node}"
+msgstr "用於 %{node}"
+
+msgid "Renewal method"
+msgstr "續期方式"
+
+msgid "Expiry date"
+msgstr "到期日期"
+
+msgid "Failed to scan certificates"
+msgstr "掃描憑證失敗"
+
+msgid "Please select at least one certificate"
+msgstr "請至少選擇一個憑證"
+
+msgid "Import successfully"
+msgstr "匯入成功"
+
+msgid "Failed to import certificate"
+msgstr "匯入憑證失敗"
+
+msgid "Discover"
+msgstr "探索"
+
+msgid "Import"
+msgstr "匯入"
+
+msgid "Issue certificate"
+msgstr "簽發證書"
+
+msgid "Search by name or domain"
+msgstr "依名稱或網域搜尋"
+
+msgid "Discover Certificates"
+msgstr "探索憑證"
+
+msgid "Import selected"
+msgstr "匯入所選項目"
+
+msgid "Scan"
+msgstr "掃描"
 
 msgid "Trying renewal."
 msgstr "正在嘗試續簽。"
@@ -4412,80 +4967,32 @@ msgstr "逾時"
 msgid "interval"
 msgstr "間隔"
 
-msgid "This certificate is managed by Nginx UI"
-msgstr "此憑證由 Nginx UI 管理"
+msgid "Valid · %{days} days left"
+msgstr "有效 · 剩餘 %{days} 天"
 
-msgid "General Certificate"
-msgstr "普通憑證"
+msgid "Expires in %{days} days"
+msgstr "%{days} 天後到期"
 
-msgid "This certificate is not managed by Nginx UI"
-msgstr "此憑證並非由 Nginx UI 託管"
+msgid "Managed manually"
+msgstr "手動管理"
 
-msgid "Log"
-msgstr "日誌"
+msgid "DNS validation · %{provider}"
+msgstr "DNS 驗證 · %{provider}"
 
-msgid "Sync Certificate"
-msgstr "同步憑證"
+msgid "DNS validation"
+msgstr "DNS 驗證"
 
-msgid "Managed Certificate"
-msgstr "受管理的憑證"
+msgid "HTTP validation"
+msgstr "HTTP 驗證"
 
-msgid "Self-signed Certificate"
-msgstr "自行簽署憑證"
+msgid "Self-signed"
+msgstr "自行簽署"
 
-msgid "Renewal paused"
-msgstr "已暫停續期"
+msgid "Synced from another node"
+msgstr "從其他節點同步"
 
-msgid "Issuing..."
-msgstr "簽發中..."
-
-msgid "Issuance failed"
-msgstr "簽發失敗"
-
-msgid "Automatic migration pending"
-msgstr "等待自動遷移"
-
-msgid "Configuration mismatch"
-msgstr "設定不一致"
-
-msgid "Configured path: %{configured}; managed path: %{managed}"
-msgstr "設定引用路徑：%{configured}；託管路徑：%{managed}"
-
-msgid "Unable to verify deployment"
-msgstr "無法驗證部署狀態"
-
-msgid "Not After"
-msgstr "不晚於"
-
-msgid "Failed to scan certificates"
-msgstr "掃描憑證失敗"
-
-msgid "Please select at least one certificate"
-msgstr "請至少選擇一個憑證"
-
-msgid "Import successfully"
-msgstr "匯入成功"
-
-msgid "Failed to import certificate"
-msgstr "匯入憑證失敗"
-
-msgid "Discover"
-msgstr "探索"
-
-msgid "Import"
-msgstr "匯入"
-
-msgid "Issue certificate"
-msgstr "簽發證書"
-
-msgid "Discover Certificates"
-msgstr "探索憑證"
-
-msgid "Import selected"
-msgstr "匯入所選項目"
-
-msgid "Scan"
-msgstr "掃描"
+msgid "Upload"
+msgstr "上傳"
 
 msgid "System Initial User"
 msgstr "系統初始使用者"
@@ -4498,12 +5005,6 @@ msgstr "網域列表為空，請嘗試重新開啟 %{config} 的自動憑證"
 
 msgid "Back"
 msgstr "返回"
-
-msgid "This field is required"
-msgstr "此欄位為必填項"
-
-msgid "Sync to"
-msgstr "同步到"
 
 msgid "Failed to load nginx configuration path"
 msgstr "載入 nginx 配置路徑失敗"
@@ -4548,6 +5049,27 @@ msgstr "輸入的不是 SSL 憑證金鑰"
 msgid "Drop private key file here"
 msgstr "將私鑰檔案拖放到此處"
 
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr "已部署到 %{ok} 個目標，%{failed} 個失敗"
+
+msgid "Deployed to %{ok} targets"
+msgstr "已部署到 %{ok} 個目標"
+
+msgid "Deploy Now"
+msgstr "立即部署"
+
+msgid "This certificate is not pushed to any external target."
+msgstr "此憑證尚未推送至任何外部目標。"
+
+msgid "Plugin unavailable"
+msgstr "外掛不可用"
+
+msgid "Never deployed"
+msgstr "從未部署"
+
+msgid "%{count} attempts"
+msgstr "%{count} 次嘗試"
+
 msgid "Certificate content and private key content cannot be empty"
 msgstr "證書內容和私鑰內容不能為空"
 
@@ -4571,6 +5093,9 @@ msgstr "憑證檔案下載成功"
 
 msgid "Failed to download certificate files"
 msgstr "下載憑證檔案失敗"
+
+msgid "Download"
+msgstr "下載"
 
 msgid "Download Certificate Files"
 msgstr "下載證書文件"
@@ -4599,6 +5124,33 @@ msgstr "若不需要設定密碼可留空"
 msgid "Enter PFX password"
 msgstr "請輸入 PFX 密碼"
 
+msgid "Renewed on the node it is synced from"
+msgstr "在同步來源節點上續期"
+
+msgid "Renews around %{date}"
+msgstr "預計 %{date} 前後續期"
+
+msgid "On"
+msgstr "開啟"
+
+msgid "Replace the files to renew"
+msgstr "替換檔案以續期"
+
+msgid "Auto renewal"
+msgstr "自動續期"
+
+msgid "Issuer"
+msgstr "簽發者"
+
+msgid "Certificate files"
+msgstr "憑證檔案"
+
+msgid "Hide contents"
+msgstr "隱藏內容"
+
+msgid "Show contents"
+msgstr "顯示內容"
+
 msgid "certificate"
 msgstr "證書"
 
@@ -4622,6 +5174,71 @@ msgstr "上傳%{type}檔案"
 
 msgid "or drag file to editor below"
 msgstr "或將檔案拖曳到下方編輯器"
+
+msgid "In progress"
+msgstr "進行中"
+
+msgid "Failed · %{time}"
+msgstr "失敗 · %{time}"
+
+msgid "Succeeded · %{time}"
+msgstr "成功 · %{time}"
+
+msgid "Last renewal"
+msgstr "上次續期"
+
+msgid "Show less"
+msgstr "收合"
+
+msgid "View full log"
+msgstr "檢視完整日誌"
+
+msgid "No renewal has run yet."
+msgstr "尚未執行過續期。"
+
+msgid "Select nodes"
+msgstr "選擇節點"
+
+msgid "Only kept on this node."
+msgstr "僅保存在此節點。"
+
+msgid "Time"
+msgstr "時間"
+
+msgid "Attempts"
+msgstr "嘗試次數"
+
+msgid "Deploy History of %{name}"
+msgstr "%{name} 的部署歷史"
+
+msgid "All certificates"
+msgstr "所有憑證"
+
+msgid "Dry run successful"
+msgstr "試運行成功"
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+"沒有已啟用的外掛提供部署目標。請先安裝並啟用具有 cert.deploy 能力的外掛。"
+
+msgid "Target Type"
+msgstr "目標類型"
+
+msgid "Select a target type"
+msgstr "選擇目標類型"
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr "提供此目標類型的外掛未啟用。推送會失敗，直到重新啟用該外掛為止。"
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr "憑證在每次簽發與續期後都會推送到此目標。"
+
+msgid "Dry Run"
+msgstr "試運行"
 
 msgid "Wildcard Certificate"
 msgstr "萬用字元憑證"
@@ -4673,20 +5290,6 @@ msgid ""
 "certificate application will fail."
 msgstr "所有選定的子網域名稱必須屬於同一 DNS 提供商，否則證書申請將失敗。"
 
-msgid "Challenge Method Reminder"
-msgstr "驗證方式提醒"
-
-msgid ""
-"If you use HTTP-01 challenge, the DNS credential field is hidden and not "
-"required."
-msgstr "如果使用 HTTP-01 驗證，DNS 憑證欄位會隱藏且無需填寫。"
-
-msgid "If you use DNS-01 challenge, you must select a DNS credential."
-msgstr "如果使用 DNS-01 驗證，必須選擇一個 DNS 憑證。"
-
-msgid "Wildcard certificates usually require DNS-01 challenge."
-msgstr "萬用字元憑證通常需要使用 DNS-01 驗證。"
-
 msgid "Next"
 msgstr "下一步"
 
@@ -4715,6 +5318,20 @@ msgid "Delete Certificate"
 msgstr "刪除憑證"
 
 msgid ""
+"This instance stops renewing the certificate and deletes its own copy. The "
+"files on %{node} stay unless you remove them below."
+msgstr ""
+"本實例將停止續期該憑證並刪除自己保存的副本。%{node} 上的檔案會保留，除非在下"
+"方選擇一併刪除。"
+
+msgid "Also remove the certificate files from %{node}"
+msgstr "同時刪除 %{node} 上的憑證檔案"
+
+msgid ""
+"They are kept when the Nginx configuration of the node still loads them."
+msgstr "如果節點的 Nginx 設定仍在載入這些檔案，則會保留。"
+
+msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
 msgstr "此操作僅會從資料庫中移除憑證。檔案系統上的憑證檔案不會被刪除。"
@@ -4736,11 +5353,14 @@ msgstr "若要確認撤銷，請在下方欄位中輸入「撤銷」："
 msgid "Renew successfully"
 msgstr "更新成功"
 
-msgid "Renew Certificate"
-msgstr "更換憑證"
-
 msgid "AutoCert is running, please wait..."
 msgstr "AutoCert 正在執行中，請稍候..."
+
+msgid "Renew now"
+msgstr "立即續期"
+
+msgid "Renew Certificate"
+msgstr "更換憑證"
 
 msgid "Certificate issued successfully"
 msgstr "憑證簽發成功"
@@ -4758,31 +5378,35 @@ msgstr ""
 msgid "Enter certificate name"
 msgstr "輸入憑證名稱"
 
-msgid "Domains"
-msgstr "網域"
-
-msgid "IP Addresses"
-msgstr "IP 位址"
-
 msgid "Enter IP address"
 msgstr "輸入 IP 位址"
 
 msgid "Add IP Address"
 msgstr "新增 IP 位址"
 
-msgid "Valid For (days)"
-msgstr "有效期（天）"
-
 msgid "Some browsers reject TLS certificates valid for more than 398 days."
 msgstr "某些瀏覽器會拒絕有效期超過 398 天的 TLS 憑證。"
+
+msgid "Sync to"
+msgstr "同步到"
 
 msgid "Generate Self-signed Certificate"
 msgstr "產生自簽署憑證"
 
-msgid ""
-"This self-signed certificate is managed by Nginx UI and renewed "
-"automatically."
-msgstr "此自簽名憑證由 Nginx UI 管理並自動續期。"
+msgid "No certificate is bound to this target"
+msgstr "此目標未繫結任何憑證"
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr "已部署 %{ok} 個憑證，%{failed} 個失敗"
+
+msgid "Deployed %{ok} certificates"
+msgstr "已部署 %{ok} 個憑證"
+
+msgid "Configuration"
+msgstr "配置"
+
+msgid "History"
+msgstr "歷史"
 
 msgid "View all issued and imported certificates with expiration and status."
 msgstr "檢視所有已簽發與已匯入憑證及其到期時間與狀態。"
@@ -4790,14 +5414,16 @@ msgstr "檢視所有已簽發與已匯入憑證及其到期時間與狀態。"
 msgid "Manage ACME accounts for automated certificate issuance and renewal."
 msgstr "管理 ACME 帳戶以自動簽發與續期憑證。"
 
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
+msgstr "每次續期後將憑證推送到 CDN、負載平衡器和其他伺服器。"
+
 msgid "Import an existing certificate and key pair into the certificate store."
 msgstr "將現有憑證與金鑰配對匯入憑證庫。"
 
 msgid "Format successfully"
 msgstr "成功格式化"
-
-msgid "History"
-msgstr "歷史"
 
 msgid "Format Code"
 msgstr "格式化代碼"
@@ -4855,9 +5481,6 @@ msgstr "檔案"
 
 msgid "Folder"
 msgstr "資料夾"
-
-msgid "File"
-msgstr "檔案"
 
 msgid "Type %{delete} to confirm"
 msgstr "輸入 %{delete} 以確認"
@@ -4970,9 +5593,6 @@ msgstr "GZIP 壓縮"
 
 msgid "Enable compression for content transfer"
 msgstr "啟用內容傳輸壓縮"
-
-msgid "On"
-msgstr "開啟"
 
 msgid "GZIP Min Length"
 msgstr "GZIP 最小長度"
@@ -5277,6 +5897,12 @@ msgstr "%{days}天"
 msgid "Paused"
 msgstr "已暫停"
 
+msgid "Built-in HTTP / gRPC check"
+msgstr "內建 HTTP / gRPC 檢查"
+
+msgid "%{kind} (unavailable)"
+msgstr "%{kind}（不可用）"
+
 msgid "Informational Responses (1xx)"
 msgstr "資訊回應 (1xx)"
 
@@ -5325,6 +5951,16 @@ msgstr "健康檢查已啟用"
 msgid "Health check is disabled"
 msgstr "健康檢查已停用"
 
+msgid "Check Method"
+msgstr "檢查方式"
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
+msgstr ""
+"提供此檢查的外掛未啟用。在重新啟用該外掛或選擇其他檢查方式之前，該網站將被回"
+"報為錯誤狀態。"
+
 msgid "Protocol"
 msgstr "協定"
 
@@ -5340,9 +5976,11 @@ msgid "Site Card Click URL"
 msgstr "站點卡片跳轉 URL"
 
 msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr "選填的絕對 HTTP/HTTPS URL。點擊站點卡片時優先使用此位址；留空則使用預設站點 URL。"
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If empty, "
+"the default site URL is used."
+msgstr ""
+"選填的絕對 HTTP/HTTPS URL。點擊站點卡片時優先使用此位址；留空則使用預設站點 "
+"URL。"
 
 msgid "HTTP Method"
 msgstr "HTTP 方法"
@@ -5625,20 +6263,40 @@ msgstr ""
 "%{provider} 可用於 ACME DNS-01 憑證驗證挑戰，但 DNS Domains 暫不支援該提供商"
 "的 DNS 記錄管理。"
 
+msgid "%{method} (recommended)"
+msgstr "%{method}（推薦）"
+
 msgid "DNS Provider"
 msgstr "DNS 供應商"
 
-msgid "API Document"
-msgstr "API 文件"
+msgid "%{provider} API docs"
+msgstr "%{provider} API 文件"
 
-msgid "SDK"
-msgstr "SDK"
+msgid "Sign-in method"
+msgstr "填寫方式"
 
-msgid "Additional"
-msgstr "其他設定"
+msgid "Nothing to fill in. The server uses its own credentials."
+msgstr "無需填寫，伺服器將使用自身的憑證。"
 
-msgid "All"
-msgstr "全部"
+msgid "Optional"
+msgstr "選填"
+
+msgid "Details"
+msgstr "細節"
+
+msgid "%{count} changed"
+msgstr "已修改 %{count} 項"
+
+msgid "All default"
+msgstr "皆為預設"
+
+msgid "sec"
+msgstr "秒"
+
+msgid ""
+"Please fill in the API authentication credentials provided by your DNS "
+"provider."
+msgstr "請填寫您的 DNS 供應商提供的 API 認證憑據。"
 
 msgid "Host, e.g. @ or www"
 msgstr "主機，例如 @ 或 www"
@@ -5709,6 +6367,9 @@ msgid ""
 "in DNS."
 msgstr "未選擇的同名記錄不會被管理。它們在 DNS 中保持不變。"
 
+msgid "Credential"
+msgstr "認證"
+
 msgid "Provider"
 msgstr "供應商"
 
@@ -5720,9 +6381,6 @@ msgstr "目標"
 
 msgid "Last run"
 msgstr "上次執行"
-
-msgid "Not run yet"
-msgstr "尚未執行"
 
 msgid "DDNS saved"
 msgstr "DDNS 已儲存"
@@ -5786,26 +6444,8 @@ msgstr "選取要更新的 A/AAAA 記錄"
 msgid "Interval (seconds)"
 msgstr "間隔（秒）"
 
-msgid "Name cannot be empty"
-msgstr "名稱不能為空"
-
-msgid "Please select DNS provider"
-msgstr "請選擇 DNS 供應商"
-
-msgid "Configuration"
-msgstr "配置"
-
 msgid "DNS Credentials"
 msgstr "DNS 認證"
-
-msgid ""
-"Please fill in the API authentication credentials provided by your DNS "
-"provider."
-msgstr "請填寫您的 DNS 供應商提供的 API 認證憑據。"
-
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
-msgstr "請注意，以下時間設定單位均為秒。"
 
 msgid "Modify DNS Credential"
 msgstr "修改 DNS 憑證"
@@ -5936,9 +6576,6 @@ msgstr "名稱"
 
 msgid "Coverage"
 msgstr "覆蓋率"
-
-msgid "Details"
-msgstr "細節"
 
 msgid "Result"
 msgstr "結果"
@@ -6162,9 +6799,6 @@ msgstr "編輯記錄"
 msgid "Create Record"
 msgstr "建立記錄"
 
-msgid "Unknown error"
-msgstr "未知錯誤"
-
 msgid "Manage DNS zones and records for domains under your account."
 msgstr "管理帳戶下網域的 DNS 區域與記錄。"
 
@@ -6207,8 +6841,8 @@ msgstr "可觀測性"
 msgid "View server, Nginx, and site-level performance metrics."
 msgstr "檢視伺服器、Nginx 與站點層級的效能指標。"
 
-msgid "Inspect access and error logs with structured analysis tools."
-msgstr "使用結構化分析工具檢視存取與錯誤日誌。"
+msgid "Browse and follow the access and error logs of your sites."
+msgstr "瀏覽並即時追蹤站點的存取日誌和錯誤日誌。"
 
 msgid "Track system events and message delivery status."
 msgstr "追蹤系統事件與訊息投遞狀態。"
@@ -6331,354 +6965,22 @@ msgstr "同步間隔（分鐘）"
 msgid "This namespace has no sync node"
 msgstr "該命名空間沒有同步節點"
 
-msgid "CPU"
-msgstr "CPU"
-
-msgid "1 core minimum"
-msgstr "至少 1 核"
-
-msgid "2+ cores recommended"
-msgstr "推薦 2+ 核心"
-
-msgid "1GB RAM minimum"
-msgstr "至少 1GB 記憶體"
-
-msgid "4GB+ RAM recommended"
-msgstr "推薦 4GB 以上記憶體"
-
-msgid "At least 20GB available disk space"
-msgstr "至少 20GB 可用磁碟空間"
-
-msgid "SSD storage for better I/O performance"
-msgstr "SSD 儲存以獲得更好的 I/O 效能"
-
-msgid "Production Pipeline"
-msgstr "生產流水線"
-
-msgid "Complete indexing with search capabilities"
-msgstr "具備搜索功能的完整索引"
-
-msgid "Parser Performance"
-msgstr "解析器效能"
-
-msgid "SIMD-optimized stream processing"
-msgstr "SIMD 優化的流處理"
-
-msgid "Memory Design"
-msgstr "記憶體設計"
-
-msgid "Advanced memory pooling system"
-msgstr "高級記憶體池系統"
-
-msgid "Enable Advanced Log Indexing"
-msgstr "啟用進階日誌索引"
-
-msgid "Enable Indexing"
-msgstr "啟用索引"
-
-msgid "Resource Usage Warning"
-msgstr "資源使用警告"
-
-msgid ""
-"Enabling advanced log indexing will consume significant computational "
-"resources including CPU and memory. Please ensure your system meets the "
-"minimum requirements before proceeding."
-msgstr ""
-"啟用進階日誌索引將消耗大量計算資源，包括 CPU 和記憶體。請確保您的系統滿足最低"
-"要求後再繼續。"
-
-msgid "System Requirements"
-msgstr "系統要求"
-
-msgid "Minimum:"
-msgstr "最低要求："
-
-msgid "Recommended:"
-msgstr "推薦："
-
-msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx UI "
-"config path by default."
-msgstr "* 索引文件預設存儲在您的 Nginx UI 配置路徑下的 \"log-index\" 目錄中。"
-
-msgid ""
-"If you want to change the storage location, you can set the `IndexPath` of "
-"`nginx_log` section in the Nginx UI config."
-msgstr ""
-"如果要更改存儲位置，可以在 Nginx UI 配置中設置 `nginx_log` 部分的 "
-"`IndexPath`。"
-
-msgid "GeoLite2 Database"
-msgstr "GeoLite2 資料庫"
-
-msgid "Expected Performance"
-msgstr "預期效能"
-
-msgid ""
-"* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
-"Actual performance may vary based on your hardware configuration."
-msgstr ""
-"* 效能指標基於 Apple M2 Pro （12 核）和 32GB 記憶體測得。實際效能可能因您的硬"
-"體配置而異。"
-
-msgid "Features"
-msgstr "功能"
-
-msgid "Zero-allocation pipeline"
-msgstr "零分配管道"
-
-msgid "Dynamic shard management"
-msgstr "動態分片管理"
-
-msgid "Advanced search & filtering"
-msgstr "進階搜尋和篩選"
-
-msgid "Real-time analytics dashboard"
-msgstr "即時分析儀表板"
-
-msgid "Offline GeoIP analysis"
-msgstr "離線 GeoIP 分析"
-
-msgid "Incremental index scanning"
-msgstr "增量索引掃描"
-
-msgid "Full-text search support"
-msgstr "全文搜索支援"
-
-msgid "Automated log rotation detection"
-msgstr "自動日誌輪轉檢測"
-
-msgid "Cross-file timeline correlation"
-msgstr "跨文件時間線關聯"
-
-msgid "Compressed log file support"
-msgstr "壓縮日誌文件支援"
-
-msgid "Error pattern recognition"
-msgstr "錯誤模式識別"
-
-msgid "Multi-dimensional data visualization"
-msgstr "多維數據可視化"
-
-msgid "Open Source Limitation"
-msgstr "開源限制"
-
-msgid "Advanced log indexing features are free and open source for all users"
-msgstr "高級日誌索引功能對所有用戶免費且開源"
-
-msgid "We do not accept any feature requests"
-msgstr "我們不接受任何功能請求"
-
-msgid "For commercial or professional use, contact"
-msgstr "如需商業或專業用途，請聯繫"
-
-msgid "Confirmation Required"
-msgstr "需要確認"
-
-msgid ""
-"By enabling advanced indexing, you acknowledge that your system meets the "
-"requirements and understand the performance implications. This will start "
-"indexing existing log files immediately."
-msgstr ""
-"啟用進階索引即表示您確認系統滿足要求並瞭解效能影響。這將立即開始對現有日誌檔"
-"案進行索引。"
-
-msgid "Indexing logs..."
-msgstr "正在索引日誌..."
-
-msgid "Queued for indexing..."
-msgstr "排隊等待索引中..."
-
-msgid "Index failed, please try rebuilding"
-msgstr "索引失敗，請嘗試重新構建"
-
-msgid "Log file not indexed yet"
-msgstr "日誌檔案尚未建立索引"
-
-msgid "Browser"
-msgstr "瀏覽器"
-
-msgid "Count"
-msgstr "計數"
-
-msgid "Browser Statistics"
-msgstr "瀏覽器統計"
-
-msgid "Failed to load China map data"
-msgstr "載入中國地圖資料失敗"
-
-msgid "Failed to load city map data"
-msgstr "載入城市地圖資料失敗"
-
-msgid "Province / Region"
-msgstr "省份 / 地區"
-
-msgid "City / C1 / C2 / C3 / C4"
-msgstr "城市 / C1 / C2 / C3 / C4"
-
-msgid "City"
-msgstr "城市"
-
-msgid "Top 10 Provinces / Regions"
-msgstr "前十省份/地區"
-
-msgid "Top 10 City Labels (City + C1 + C2 + C3 + C4)"
-msgstr "前 10 個城市標籤（城市 + C1 + C2 + C3 + C4）"
-
-msgid "Top 10 Cities"
-msgstr "前 10 個城市"
-
-msgid "China Access Map"
-msgstr "中國訪問地圖"
-
-msgid "No China geographic data available"
-msgstr "無中國地理數據"
-
-msgid "Daily Access Trends"
-msgstr "每日訪問趨勢"
-
-msgid "Date"
-msgstr "日期"
-
-msgid "Last 7 days"
-msgstr "最近 7 天"
-
-msgid "Last 14 days"
-msgstr "過去 14 天"
-
-msgid "Last 30 days"
-msgstr "過去 30 天"
-
-msgid "Last 90 days"
-msgstr "過去 90 天"
-
-msgid "This month"
-msgstr "本月"
-
-msgid "Last month"
-msgstr "上個月"
-
-msgid "Date Range"
-msgstr "日期範圍"
-
-msgid "Quick Select"
-msgstr "快速選擇"
-
-msgid "Start Date"
-msgstr "開始日期"
-
-msgid "End Date"
-msgstr "結束日期"
-
-msgid "Device Type"
-msgstr "設備類型"
-
-msgid "Device Statistics"
-msgstr "設備統計"
-
-msgid "Global Map"
-msgstr "全球地圖"
-
-msgid "China Map"
-msgstr "中國地圖"
-
-msgid "Global Access Map"
-msgstr "全球訪問地圖"
-
-msgid "24-Hour UV/PV Statistics"
-msgstr "24 小時 UV/PV 統計"
-
-msgid "Operating System"
-msgstr "作業系統"
-
-msgid "Operating System Statistics"
-msgstr "作業系統統計"
-
-msgid "Total PV"
-msgstr "總訪問量"
-
-msgid "Total UV"
-msgstr "總 UV 數"
-
-msgid "Total Traffic"
-msgstr "總流量"
-
-msgid "Peak Hour"
-msgstr "高峰時段"
-
-msgid "Avg QPS"
-msgstr "平均 QPS"
-
-msgid "Peak QPS"
-msgstr "峰值 QPS"
-
-msgid "Avg Daily PV"
-msgstr "平均每日 PV"
-
-msgid "Avg Daily UV"
-msgstr "日均 UV"
-
-msgid "URL"
-msgstr "URL"
-
-msgid "TOP 10 URLs"
-msgstr "前 10 個 URL"
-
-msgid "Country / Region"
-msgstr "國家/地區"
-
-msgid "No geographic data available"
-msgstr "無可用地理數據"
-
-msgid "Top 10 Countries / Regions"
-msgstr "前 10 個國家/地區"
-
-msgid ""
-"Explore access traffic logs with filters and detailed request information."
-msgstr "以篩選條件檢視存取流量日誌與詳細請求資訊。"
+msgid "Read access logs page by page or follow them as they arrive."
+msgstr "分頁閱讀存取日誌，或在新日誌產生時即時追蹤。"
 
 msgid "Inspect error events and troubleshoot issues from Nginx error output."
 msgstr "檢查錯誤事件並根據 Nginx 錯誤輸出進行疑難排解。"
 
-msgid "Manage indexed log files and jump into structured analysis workflows."
-msgstr "管理已索引日誌檔並進入結構化分析流程。"
-
-msgid "Scanning"
-msgstr "掃描中"
-
-msgid "Indexing"
-msgstr "索引中"
-
-msgid "Computing Statistics"
-msgstr "計算統計資訊"
-
-msgid "Rebuild Index"
-msgstr "重建索引"
+msgid "See every log file Nginx writes and open one to read it."
+msgstr "檢視 Nginx 寫入的所有日誌檔案，並開啟其中一個閱讀。"
 
 msgid ""
-"This will rebuild the entire log index. All existing index data will be "
-"deleted and rebuilt from scratch. This may take some time. Continue?"
-msgstr ""
-"這將重建整個日誌索引。所有現有索引數據將被刪除並從頭開始重建。這可能需要一些"
-"時間。是否繼續？"
+"Advanced Indexing is now provided by the Log Analytics plugin. Install the "
+"plugin to continue using it. Existing indexes are kept."
+msgstr "進階索引現由日誌分析外掛提供。安裝該外掛即可繼續使用，現有索引會保留。"
 
-msgid "Index and statistics rebuild started successfully"
-msgstr "索引和統計重建已成功啟動"
-
-msgid "Rebuild File Index"
-msgstr "重建文件索引"
-
-msgid "This will rebuild the index data for this specific file: %{path}"
-msgstr "這將重建此特定檔案的索引數據：%{path}"
-
-msgid "File index rebuild started successfully for %{path}"
-msgstr "已成功開始為 %{path} 重建檔案索引"
-
-msgid "Rebuild All Index"
-msgstr "重建所有索引"
-
-msgid "Structured"
-msgstr "結構化"
+msgid "Go to install"
+msgstr "前往安裝"
 
 msgid "Raw"
 msgstr "原始"
@@ -6689,232 +6991,11 @@ msgstr "選擇日誌檔案"
 msgid "Auto Refresh"
 msgstr "自動重新整理"
 
-msgid "Index Status"
-msgstr "索引狀態"
-
-msgid "Indexed"
-msgstr "已建立索引"
-
-msgid "Index failed"
-msgstr "索引失敗"
-
-msgid "Queued"
-msgstr "已排隊"
-
-msgid "Not Indexed"
-msgstr "未索引"
-
-msgid "Last Indexed"
-msgstr "最後索引時間"
-
-msgid "Document Count"
-msgstr "文件數量"
-
-msgid "Time Range"
-msgstr "時間範圍"
-
-msgid "Advanced indexing enabled successfully"
-msgstr "高級索引已成功啟用"
-
-msgid "Index rebuild initiated"
-msgstr "索引重建已啟動"
-
-msgid "Advanced indexing enabled but failed to start rebuild"
-msgstr "高級索引已啟用但未能開始重建"
-
-msgid "Failed to enable advanced indexing"
-msgstr "啟用高級索引失敗"
-
-msgid "Disable Advanced Indexing"
-msgstr "停用進階索引"
-
-msgid ""
-"Advanced log indexing will stop and structured log analytics will be "
-"unavailable. Existing index files will not be deleted. Continue?"
-msgstr ""
-"進階記錄索引將會停止，結構化記錄分析將無法使用。現有的索引檔案不會被刪除。是"
-"否繼續？"
-
-msgid "Disable"
-msgstr "停用"
-
-msgid "Advanced indexing disabled successfully"
-msgstr "進階索引已成功停用"
-
-msgid "Failed to disable advanced indexing"
-msgstr "停用進階索引失敗"
-
-msgid "Enable Advanced Indexing"
-msgstr "啟用高級索引"
-
-msgid "Rebuild"
-msgstr "重建"
-
 msgid "Filter"
 msgstr "篩選"
 
 msgid "Filter log content"
 msgstr "過濾日誌內容"
-
-msgid "Search Filters"
-msgstr "搜尋篩選器"
-
-msgid "Full Text Search"
-msgstr "全文搜尋"
-
-msgid "Search in log content..."
-msgstr "在日誌內容中搜尋..."
-
-msgid "Method"
-msgstr "方法"
-
-msgid "Any"
-msgstr "任意"
-
-msgid "Type or select status codes"
-msgstr "輸入或選擇狀態碼"
-
-msgid "Request Path"
-msgstr "請求路徑"
-
-msgid "Type or select browser"
-msgstr "輸入或選擇瀏覽器"
-
-msgid "OS"
-msgstr "作業系統"
-
-msgid "Type or select OS"
-msgstr "輸入或選擇作業系統"
-
-msgid "Device"
-msgstr "裝置"
-
-msgid "Type or select device"
-msgstr "輸入或選擇裝置"
-
-msgid "Referer"
-msgstr "來源"
-
-msgid "https://..."
-msgstr "https://..."
-
-msgid "Mozilla/5.0..."
-msgstr "Mozilla/5.0..."
-
-msgid "Time"
-msgstr "時間"
-
-msgid "IP"
-msgstr "IP"
-
-msgid "Request"
-msgstr "請求"
-
-msgid "Last 15 minutes"
-msgstr "過去 15 分鐘"
-
-msgid "Last 30 minutes"
-msgstr "過去 30 分鐘"
-
-msgid "Last hour"
-msgstr "過去 1 小時"
-
-msgid "Last 4 hours"
-msgstr "過去 4 小時"
-
-msgid "Last 12 hours"
-msgstr "過去 12 小時"
-
-msgid "Last 24 hours"
-msgstr "過去 24 小時"
-
-msgid "No logs found in the selected time range."
-msgstr "在選定的時間範圍內未找到日誌。"
-
-msgid ""
-"Background indexing in progress. Data will be updated automatically when "
-"ready."
-msgstr "後台索引正在進行中。數據將在準備就緒後自動更新。"
-
-msgid "Log indexing completed! Loading updated data..."
-msgstr "日誌索引完成！正在載入更新數據..."
-
-msgid "Error Log Detected"
-msgstr "檢測到錯誤日誌"
-
-msgid ""
-"Error logs do not support structured analysis as they contain free-form text "
-"messages."
-msgstr "錯誤日誌不支援結構化分析，因為它們包含自由格式的文字訊息。"
-
-msgid ""
-"For error logs, please use the Raw Log Viewer for better viewing experience."
-msgstr "對於錯誤日誌，請使用原始日誌檢視器以獲得更好的檢視體驗。"
-
-msgid "Go to Raw Log Viewer"
-msgstr "轉到原始日誌查看器"
-
-msgid "Sorted by"
-msgstr "排序方式"
-
-msgid "Ascending"
-msgstr "升序"
-
-msgid "Descending"
-msgstr "降序"
-
-msgid "Total Entries"
-msgstr "總條目數"
-
-msgid "PV"
-msgstr "頁面瀏覽量"
-
-msgid "UV"
-msgstr "獨立訪客"
-
-msgid ""
-"The result set is too large to sum exactly, this value is extrapolated from "
-"a sample"
-msgstr "結果集過大，無法精確求和，該數值是基於樣本資料推算得出。"
-
-msgid "Traffic"
-msgstr "流量"
-
-msgid "Unique Pages"
-msgstr "獨立頁面"
-
-msgid "Avg/PV"
-msgstr "平均 /PV"
-
-msgid "%{start}-%{end} of %{total} items"
-msgstr "第 %{start}-%{end} 條，共 %{total} 條"
-
-msgid "No entries in current page"
-msgstr "當前頁面沒有條目"
-
-msgid "Try adjusting your search criteria or navigate to different pages."
-msgstr "嘗試調整搜索條件或導航到其他頁面。"
-
-msgid "No structured log data available"
-msgstr "無結構化日誌數據可用"
-
-msgid "Try adjusting your search criteria or time range."
-msgstr "嘗試調整您的搜尋條件或時間範圍。"
-
-msgid "Search range"
-msgstr "搜尋範圍"
-
-msgid "From indexed logs"
-msgstr "來自已索引的日誌"
-
-msgid "Default range"
-msgstr "預設範圍"
-
-msgid "Reset Search"
-msgstr "重置搜尋"
-
-msgid "Log file not available"
-msgstr "日誌文件不可用"
 
 msgid "Stable"
 msgstr "穩定"
@@ -7104,9 +7185,6 @@ msgstr "最後嘗試"
 msgid "Automatic retry after"
 msgstr "自動重試時間"
 
-msgid "Attempts"
-msgstr "嘗試次數"
-
 msgid "Technical details"
 msgstr "技術詳細"
 
@@ -7144,6 +7222,9 @@ msgstr "系統時鐘不同步"
 msgid "Node connection failed"
 msgstr "節點連線失敗"
 
+msgid "URL"
+msgstr "URL"
+
 msgid "Node Secret"
 msgstr "節點金鑰"
 
@@ -7155,6 +7236,15 @@ msgstr "版本"
 
 msgid "Authentication"
 msgstr "認證"
+
+msgid "Accept plugin sync"
+msgstr "接受外掛同步"
+
+msgid "Accepted"
+msgstr "已接受"
+
+msgid "Opted out"
+msgstr "已選擇退出"
 
 msgid "The selected content will be pushed to: %{nodes}"
 msgstr "所選內容將推送到：%{nodes}"
@@ -7267,9 +7357,8 @@ msgstr "公安編號"
 msgid "Github Proxy"
 msgstr "Github 代理"
 
-msgid ""
-"Used for downloads from GitHub, such as upgrades and the GeoLite database."
-msgstr "用於從 GitHub 下載內容，例如升級套件和 GeoLite 資料庫。"
+msgid "Used for downloads from GitHub, such as upgrades."
+msgstr "用於從 GitHub 下載內容，例如升級。"
 
 msgid "HTTP Proxy"
 msgstr "HTTP 代理"
@@ -7343,13 +7432,88 @@ msgid ""
 "this value."
 msgstr "當憑證剩餘有效期小於或等於此值時續簽憑證。"
 
-msgid "Recursive Nameservers"
-msgstr "遞迴名稱伺服器"
+msgid "Plugin System"
+msgstr "外掛系統"
+
+msgid "Turning it off stops every plugin and hides the plugin pages."
+msgstr "關閉後會停止所有外掛並隱藏外掛頁面。"
+
+msgid "Plugin Directory"
+msgstr "外掛目錄"
+
+msgid "Default Sync Policy"
+msgstr "預設同步策略"
 
 msgid ""
-"Set the recursive nameservers to override the systems nameservers for the "
-"step of DNS challenge."
-msgstr "設定遞迴網域名稱伺服器，在 DNS 驗證步驟中覆寫系統的網域名稱伺服器。"
+"Applied to newly installed plugins. Automatic keeps the plugin installed on "
+"the child nodes."
+msgstr "套用於新安裝的外掛。自動會讓外掛始終安裝在子節點上。"
+
+msgid "Enable Marketplace"
+msgstr "啟用市集"
+
+msgid "Sources"
+msgstr "來源"
+
+msgid "Managed on the marketplace page. The official catalog is always used."
+msgstr "在市集頁面管理，官方目錄一律啟用。"
+
+msgid "Allow Community Plugins"
+msgstr "允許社群外掛"
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr "社群外掛由第三方發布，安裝前會要求確認。"
+
+msgid "Automatic Updates"
+msgstr "自動更新"
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr "在所需權限不變時自動更新官方與合作夥伴外掛。"
+
+msgid "Allow Uploads"
+msgstr "允許上傳"
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr "允許安裝從瀏覽器或命令列上傳的安裝套件。"
+
+msgid "Trusted Publishers"
+msgstr "可信發布者"
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr "來自這些發布者的外掛以社群外掛安裝。"
+
+msgid "Memory Limit"
+msgstr "記憶體限制"
+
+msgid "Maximum memory each plugin can use."
+msgstr "每個外掛最多可使用的記憶體。"
+
+msgid "CPU Limit"
+msgstr "CPU 限制"
+
+msgid "Share of one CPU core each plugin can use."
+msgstr "每個外掛可使用的單核 CPU 比例。"
+
+msgid "Allow Insecure Download URLs"
+msgstr "允許不安全的下載位址"
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr "接受純 http 的目錄與下載位址，僅用於可信網路中的私有目錄。"
+
+msgid "Developer Mode"
+msgstr "開發者模式"
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
+msgstr "允許安裝未簽署的外掛，僅在開發外掛時開啟。"
 
 msgid "Stub Status Port"
 msgstr "存根狀態端口"
@@ -7500,26 +7664,6 @@ msgstr "命令"
 
 msgid "Minutes between two runs."
 msgstr "兩次執行的間隔分鐘數。"
-
-msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This "
-"is used for offline geographic analysis in log analytics."
-msgstr ""
-"GeoLite2 資料庫為 IP 位址提供地理資訊。這用於日誌分析中的離線地理分析。"
-
-msgid "Custom MMDB"
-msgstr "自訂 MMDB"
-
-msgid "A custom database replaces the GeoLite2 download."
-msgstr "已使用自訂資料庫，無需下載 GeoLite2。"
-
-msgid "Map Boundary Directory"
-msgstr "地圖邊界目錄"
-
-msgid ""
-"Keep files with names like 100000_full.json in this directory. Only the "
-"world map is provided by default."
-msgstr "請將類似 100000_full.json 的檔案放在此目錄，預設只提供世界地圖。"
 
 msgid "Register passkey successfully"
 msgstr "通行金鑰註冊成功"
@@ -7775,6 +7919,9 @@ msgstr "請選擇通知類型"
 msgid "Test message sent successfully"
 msgstr "測試訊息發送成功"
 
+msgid "Send test message"
+msgstr "發送測試訊息"
+
 msgid "Microsoft Docs"
 msgstr "微軟文件"
 
@@ -7783,9 +7930,6 @@ msgstr "Teams 請求示例"
 
 msgid "Available placeholders"
 msgstr "可用佔位符"
-
-msgid "Send test message"
-msgstr "發送測試訊息"
 
 msgid "Gotify"
 msgstr "Gotify"
@@ -7807,9 +7951,6 @@ msgstr "聊天室 ID"
 
 msgid "Click URL"
 msgstr "點擊 URL"
-
-msgid "Client ID"
-msgstr "用戶端 ID"
 
 msgid "Client Secret"
 msgstr "用戶端密鑰"
@@ -7849,9 +7990,6 @@ msgstr "伺服器 URL"
 
 msgid "Tags"
 msgstr "標籤"
-
-msgid "Tenant ID"
-msgstr "租戶 ID"
 
 msgid "To"
 msgstr "收件者"
@@ -8129,6 +8267,9 @@ msgstr "偵測值："
 
 msgid "Restore detected value"
 msgstr "還原為偵測到的值"
+
+msgid "This field is required"
+msgstr "此欄位為必填項"
 
 msgid ""
 "Point Nginx UI at a private key that already exists inside the container."
@@ -8853,6 +8994,37 @@ msgstr "搜尋設定項"
 msgid "No matching settings"
 msgstr "沒有符合的設定項"
 
+msgid ""
+"This is not a valid public key. Paste the whole key the publisher gave you."
+msgstr "這不是有效的公鑰，請貼上發布者提供的完整公鑰。"
+
+msgid "This publisher is already in the list."
+msgstr "該發布者已在清單中。"
+
+msgid "No publishers yet."
+msgstr "尚無發布者。"
+
+msgid "Unnamed publisher"
+msgstr "未命名發布者"
+
+msgid "Not a valid public key"
+msgstr "無效的公鑰"
+
+msgid "Are you sure you want to remove this item?"
+msgstr "您確定要刪除此項目嗎？"
+
+msgid "Add publisher"
+msgstr "新增發布者"
+
+msgid "Shown in this list only"
+msgstr "僅在此清單中顯示"
+
+msgid "Public Key"
+msgstr "公鑰"
+
+msgid "Paste the public key the publisher gave you"
+msgstr "貼上發布者提供的公鑰"
+
 msgid "Check the format of the API Base Url and API Proxy."
 msgstr "請檢查 API Base Url 和 API Proxy 的格式。"
 
@@ -8890,6 +9062,9 @@ msgstr "無法開啟 SSH 設定"
 
 msgid "Basics"
 msgstr "基礎"
+
+msgid "Features"
+msgstr "功能"
 
 msgctxt "preference group"
 msgid "Maintenance"
@@ -8942,6 +9117,13 @@ msgid ""
 "Paths, commands, maintenance page and control mode of the managed Nginx."
 msgstr "所管理 Nginx 的路徑、命令、維護頁面與控制模式。"
 
+msgid ""
+"Plugin system, marketplace, packages and resource limits of plugin processes."
+msgstr "外掛系統、市集、安裝套件以及外掛程序的資源限制。"
+
+msgid "Go to plugins"
+msgstr "前往外掛"
+
 msgid "LLM"
 msgstr "LLM"
 
@@ -8971,15 +9153,6 @@ msgstr "Logrotate"
 
 msgid "Scheduled rotation of Nginx log files."
 msgstr "定時輪替 Nginx 日誌檔案。"
-
-msgid "GeoLite"
-msgstr "GeoLite"
-
-msgid "Geographic database and map files used by log analytics."
-msgstr "日誌分析使用的地理資料庫與地圖檔案。"
-
-msgid "Go to logs"
-msgstr "前往日誌"
 
 msgid "Invalid settings: %{fields}"
 msgstr "無效設定：%{fields}"
@@ -9098,6 +9271,9 @@ msgstr "我已儲存權杖"
 msgid "General"
 msgstr "一般"
 
+msgid "IP"
+msgstr "IP"
+
 msgid "Banned Until"
 msgstr "禁止至"
 
@@ -9117,9 +9293,6 @@ msgstr ""
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您確定要刪除這個被停用的 IP 嗎？"
 
-msgid "Issuing"
-msgstr "簽發"
-
 msgid "The url is invalid"
 msgstr "網址無效"
 
@@ -9129,31 +9302,11 @@ msgstr "續期"
 msgid "Days"
 msgstr "天"
 
-msgid "DNS Challenge"
-msgstr "DNS 驗證"
-
-msgid "Are you sure you want to remove this item?"
-msgstr "您確定要刪除此項目嗎？"
-
 msgid "This notification is disabled"
 msgstr "此通知已停用"
 
 msgid "Failed to send test message"
 msgstr "發送測試消息失敗"
-
-msgid "Database"
-msgstr "資料庫"
-
-msgid "Maps"
-msgstr "地圖"
-
-msgid ""
-"Please download China and province boundary files yourself and place them in "
-"this directory."
-msgstr "請自行下載中國及各省份邊界檔案並放入此目錄。"
-
-msgid "Template reference"
-msgstr "模板參考"
 
 msgid ""
 "A global pause stops network probes without changing individual site or "
@@ -9366,6 +9519,34 @@ msgstr "與聊天模型相同"
 msgid "Advanced"
 msgstr "進階"
 
+msgid "Marketplace"
+msgstr "市集"
+
+msgid "Official catalog"
+msgstr "官方目錄"
+
+msgid "Packages"
+msgstr "安裝套件"
+
+msgid "Resources"
+msgstr "資源"
+
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr "對每個外掛生效，外掛只能調低自己的限制。"
+
+msgid "Only applies on Linux. This system does not support it."
+msgstr "僅在 Linux 上生效，目前系統不支援。"
+
+msgid "Unlimited"
+msgstr "無限制"
+
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr "這些選項會降低外掛安裝的安全性，僅在需要時開啟。"
+
+msgid "Less safe"
+msgstr "安全性降低"
+
 msgid "Listen Address"
 msgstr "監聽位址"
 
@@ -9374,9 +9555,6 @@ msgstr "所有網路介面"
 
 msgid "HTTPS"
 msgstr "HTTPS"
-
-msgid "Certificate"
-msgstr "憑證"
 
 msgid "Pick the certificate that secures the web interface."
 msgstr "選擇用於保護網頁介面的憑證。"
@@ -9391,6 +9569,65 @@ msgid ""
 "reverse proxy, please configure the protocol separately in the reverse proxy."
 msgstr ""
 "協議配置僅在直接連接時生效。如果使用反向代理，請在反向代理中單獨配置協議。"
+
+msgid "Refreshed"
+msgstr "已重新整理"
+
+msgid "Refresh failed"
+msgstr "重新整理失敗"
+
+msgid "Source Type"
+msgstr "來源類型"
+
+msgid "Refresh Interval"
+msgstr "重新整理間隔"
+
+msgid "Entries"
+msgstr "項目"
+
+msgid "Last Result"
+msgstr "最近結果"
+
+msgid "Include"
+msgstr "Include 行"
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+"封鎖清單來源會從外掛取得要拒絕的位址清單，並將其寫入各自專屬的檔案作為拒絕規"
+"則。在您將某個來源的 Include 行加入 server 或 location 區塊之前，不會封鎖任何"
+"內容。"
+
+msgid "Refresh Now"
+msgstr "立即重新整理"
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+"沒有已啟用的外掛提供封鎖清單來源。請先安裝並啟用具有 security.blocklist 能力"
+"的外掛。"
+
+msgid "Select a source type"
+msgstr "選擇來源類型"
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr "提供此來源類型的外掛未啟用。清單會被保留，但不再重新整理。"
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr ""
+"以秒為單位設定清單重新取得的頻率。僅當清單發生變化時才會重新載入 Nginx。"
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
+msgstr "將此行加入 server 或 location 區塊，以在該處拒絕清單中的位址。"
 
 msgid "End time must be later than start time"
 msgstr "結束時間必須晚於開始時間"
@@ -9638,6 +9875,9 @@ msgstr "命名空間"
 msgid "The parameter of server_name is required"
 msgstr "必須提供 server_name 參數"
 
+msgid "Config Template"
+msgstr "配置模板"
+
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "啟用 HTTPS 前，請先儲存已編輯的設定。"
 
@@ -9733,11 +9973,35 @@ msgstr "自行簽署憑證"
 msgid "Generate self-signed certificate"
 msgstr "產生自簽名憑證"
 
+msgid "Built-in"
+msgstr "內建"
+
 msgid "Search templates"
 msgstr "搜尋模板"
 
+msgid "From plugin %{id}"
+msgstr "來自外掛 %{id}"
+
+msgid "Snippet"
+msgstr "片段"
+
 msgid "Author"
 msgstr "作者"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"引用會讓網站與 snippets/%{file} 保持關聯，之後對片段的修改都會作用到網站。插"
+"入則會把內容複製到網站中。"
+
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
+msgstr "此範本來自外掛 %{id}。加入這些指令前請先檢查。"
+
+msgid "Insert"
+msgstr "插入"
 
 msgid "Do you want to enable TLS?"
 msgstr "您想啟用 TLS 嗎？"
@@ -9819,6 +10083,9 @@ msgstr "IP 位址憑證僅支援 HTTP-01 驗證。"
 msgid "Wildcard domains require DNS-01 validation."
 msgstr "萬用字元網域需要 DNS-01 驗證。"
 
+msgid "Issue the certificate on the main node"
+msgstr "在主節點簽發憑證"
+
 msgid "Plan the configuration changes"
 msgstr "規劃設定變更"
 
@@ -9847,8 +10114,8 @@ msgstr "HTTPS 設定完成前連線已關閉。請重試以重新執行。"
 msgid "HTTPS setup failed"
 msgstr "HTTPS 設定失敗"
 
-msgid "Certificate options"
-msgstr "憑證選項"
+msgid "Log"
+msgstr "日誌"
 
 msgid ""
 "Nginx UI stages the challenge route, verifies it, requests the certificate "
@@ -9857,6 +10124,9 @@ msgid ""
 msgstr ""
 "Nginx UI 會一次完成預置驗證路由、檢查路由、申請憑證並將網站切換至 HTTPS。若某"
 "一步驟失敗，網站將繼續以一般 HTTP 提供服務。"
+
+msgid "Method"
+msgstr "方法"
 
 msgid "Add at least one domain or IP address."
 msgstr "請至少新增一個網域或 IP 位址。"
@@ -9886,6 +10156,21 @@ msgid ""
 "The HTTPS server block without a certificate is left out until the "
 "certificate is issued, then enabled with it."
 msgstr "沒有憑證的 HTTPS server 區塊會先被略過，待憑證簽發後再與憑證一併啟用。"
+
+msgid ""
+"OCSP Must Staple may cause errors for some users on first access using "
+"Firefox."
+msgstr "OCSP 強制裝訂可能會導致部分使用者在首次使用 Firefox 存取時發生錯誤。"
+
+msgid ""
+"Enable the certificate Common Name field for private CAs that still require "
+"it."
+msgstr "為仍需要此欄位的私有 CA 啟用憑證的通用名稱 (Common Name) 欄位。"
+
+msgid ""
+"If you want to automatically revoke the old certificate, please enable this "
+"option."
+msgstr "如果您想要自動撤銷舊憑證，請啟用此選項。"
 
 msgid "Pre-flight check"
 msgstr "預檢"
@@ -9920,6 +10205,11 @@ msgstr "簽發憑證並啟用 HTTPS"
 
 msgid "Continue without HTTPS"
 msgstr "不啟用 HTTPS 繼續"
+
+msgid ""
+"The node did not confirm that it received the certificate. Update Nginx UI "
+"on the node and try again."
+msgstr "節點未確認已收到憑證。請升級該節點上的 Nginx UI 後重試。"
 
 msgid "Configuration saved. Enable HTTPS from the HTTPS card."
 msgstr "設定已儲存。請在 HTTPS 卡片中啟用 HTTPS。"
@@ -10012,9 +10302,6 @@ msgstr "重新創建 DNS 記錄"
 msgid "Clear Link"
 msgstr "清除連結"
 
-msgid "Config Template"
-msgstr "配置模板"
-
 msgid "Port Scanner"
 msgstr "端口掃描器"
 
@@ -10041,14 +10328,6 @@ msgstr "成功複製至本機"
 
 msgid "Delete site: %{site_name}"
 msgstr "刪除網站：%{site_name}"
-
-msgid "No valid access log path found for this site"
-msgstr "未找到此網站的有效存取日誌路徑"
-
-msgid ""
-"This site uses the default access log, which may contain traffic from other "
-"sites"
-msgstr "此網站使用預設的存取日誌，其中可能包含來自其他網站的流量。"
 
 msgid "Sites enabled successfully"
 msgstr "站台已成功啟用"
@@ -10089,14 +10368,337 @@ msgstr "以下站點將切換到維護模式："
 msgid "Enable"
 msgstr "啟用"
 
-msgid "Analytics"
-msgstr "分析"
+msgid "Disable"
+msgstr "停用"
 
 msgid "Set maintenance information for selected sites"
 msgstr "為選取的站點設定維護資訊"
 
 msgid "%{count} sites selected"
 msgstr "%{count} 個已選站點"
+
+msgid "Read Only"
+msgstr "唯讀"
+
+msgid "Preview"
+msgstr "預覽"
+
+msgid "Updates as the snippet changes."
+msgstr "隨片段修改即時更新。"
+
+msgid ""
+"This template comes from the plugin %{id} and cannot be changed. Copy it as "
+"a snippet to change it, and review its directives before using it."
+msgstr ""
+"此範本來自外掛 %{id}，無法修改。如需修改，請將其複製為片段，並在使用前檢查其"
+"中的指令。"
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr "內建範本隨 Nginx UI 提供，無法修改。如需修改，請將其複製為片段。"
+
+msgid "File Name"
+msgstr "檔名"
+
+msgid "Variables"
+msgstr "變數"
+
+msgid "Copy as Snippet"
+msgstr "複製為片段"
+
+msgid "No template matches the search"
+msgstr "沒有符合的範本"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} 個變數"
+
+msgid "Translations"
+msgstr "翻譯"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their translation, "
+"or English when there is none."
+msgstr ""
+"輸入框中為%{language}文字。其他語言的使用者將看到對應的翻譯，沒有翻譯時顯示英"
+"文。"
+
+msgid "Remove translation"
+msgstr "刪除翻譯"
+
+msgid "Add a language"
+msgstr "新增語言"
+
+msgid "Text"
+msgstr "文字"
+
+msgid "Switch"
+msgstr "開關"
+
+msgid "Select"
+msgstr "選擇"
+
+msgid "New Variable…"
+msgstr "新增變數…"
+
+msgid "Insert Variable"
+msgstr "插入變數"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr "輸入 %{open} 補全變數，或選取一個值後按 %{keys} 將其設為變數。"
+
+msgid "Default Value"
+msgstr "預設值"
+
+msgid "Edit Variable"
+msgstr "編輯變數"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr "此變數未宣告，插入片段時將沒有值。"
+
+msgid "Declare Variable"
+msgstr "宣告變數"
+
+msgid "Make Variable"
+msgstr "設為變數"
+
+msgid "New Variable"
+msgstr "新變數"
+
+msgid "Key"
+msgstr "鍵名"
+
+msgid "Label"
+msgstr "顯示名稱"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "變數將被宣告，並插入到游標處。"
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr "選取的值將成為預設值，內容中改為引用該變數。"
+
+msgid "Add Variable"
+msgstr "新增變數"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "以下變數未宣告，將沒有值：%{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "片段無法轉譯為有效的 Nginx 設定。"
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "片段可以轉譯為有效的 Nginx 設定。"
+
+msgid "What the site editor asks for"
+msgstr "網站編輯器中填寫的內容"
+
+msgid "Restore Default Values"
+msgstr "還原預設值"
+
+msgid "Nothing to fill in."
+msgstr "沒有需要填寫的內容。"
+
+msgid "Fix the variables to preview the snippet."
+msgstr "請先修正變數，再預覽片段。"
+
+msgid "Snippets are no longer synchronized"
+msgstr "片段已停止同步"
+
+msgid "Synchronize Snippets"
+msgstr "同步片段"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr ""
+"所有片段會立即複製到所選節點，之後的修改也會自動同步。清空選擇即可停止同步。"
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "取代節點上已存在的片段"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "被 %{count} 個檔案引用"
+
+msgid "No file matches the search"
+msgstr "沒有符合的檔案"
+
+msgid "Not Used"
+msgstr "未使用"
+
+msgid "Max Age"
+msgstr "有效時間"
+
+msgid "Options"
+msgstr "選項"
+
+msgid "Remove option"
+msgstr "刪除選項"
+
+msgid "Add Option"
+msgstr "新增選項"
+
+msgid "Remove variable"
+msgstr "刪除變數"
+
+msgid "Used in the content, not declared"
+msgstr "內容中使用但未宣告"
+
+msgid "Snippet %{name} saved"
+msgstr "片段 %{name} 已儲存"
+
+msgid "Discard the unsaved changes?"
+msgstr "放棄未儲存的變更？"
+
+msgid "Keep Editing"
+msgstr "繼續編輯"
+
+msgid "Edit Snippet %{name}"
+msgstr "編輯片段 %{name}"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "網站可以引用此片段，並隨片段的後續修改同步更新。"
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the config "
+"template panel."
+msgstr "此片段含有變數，網站需從設定範本面板插入填寫後的副本。"
+
+msgid "Includable"
+msgstr "可引用"
+
+msgid "Insert Only"
+msgstr "僅可插入"
+
+msgid ""
+"This snippet starts from a template of the plugin %{id}. Review its "
+"directives before saving it. Once saved, it is a snippet of your own and no "
+"longer follows the plugin."
+msgstr ""
+"此片段以外掛 %{id} 的範本為基礎建立。儲存前請檢查其中的指令。儲存後，它將成為"
+"你自己的片段，不再跟隨外掛更新。"
+
+msgid "Use"
+msgstr "使用方式"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr ""
+"將此指令加入 server 或 location 區塊中。引用此片段的網站會隨其後續修改同步更"
+"新。"
+
+msgid "Static file cache"
+msgstr "靜態檔案快取"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr "有設定引用此片段時不可修改，以確保這些設定繼續正常運作。"
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "字母、數字、點、連字號和底線。"
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr ""
+"從網站編輯器的設定範本面板插入片段時填寫變數。含有變數的片段只能插入，不能被"
+"引用。"
+
+msgid "No configuration includes this snippet yet."
+msgstr "目前沒有設定引用此片段。"
+
+msgid "Unsaved changes"
+msgstr "有未儲存的變更"
+
+msgid "My Snippets"
+msgstr "我的片段"
+
+msgid "Templates"
+msgstr "範本"
+
+msgid "Copied %{include}"
+msgstr "已複製 %{include}"
+
+msgid "Delete snippet %{name}?"
+msgstr "刪除片段 %{name}？"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "將在本節點和已同步的節點上刪除 snippets/%{file}。"
+
+msgid "snippets/%{file} will be removed."
+msgstr "將刪除 snippets/%{file}。"
+
+msgid "Snippet %{name} deleted"
+msgstr "片段 %{name} 已刪除"
+
+msgid "Synchronize"
+msgstr "同步"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "已同步到 %{count} 個節點"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] ""
+"含有 %{count} 個變數。網站從網站編輯器的設定範本面板插入填寫後的副本。"
+
+msgid "Copy the include directive"
+msgstr "複製引用指令"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "請先從引用它的檔案中移除該片段。"
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in a "
+"site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+"片段把一段 Nginx 設定放在一處統一管理。可以在網站中引用它，也可以在網站編輯器"
+"的配置模板面板中插入它；修改被引用的片段會更新所有使用它的網站。"
+
+msgid "Search snippets"
+msgstr "搜尋片段"
+
+msgid "No snippets yet"
+msgstr "還沒有片段"
+
+msgid "No snippet matches the search"
+msgstr "沒有符合的片段"
+
+msgid "Enter a key."
+msgstr "請輸入鍵名。"
+
+msgid ""
+"Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "只能使用字母、數字和底線，且須以字母或底線開頭。"
+
+msgid "Another variable uses this key."
+msgstr "此鍵名已被其他變數使用。"
+
+msgid "Add at least one option."
+msgstr "請至少新增一個選項。"
+
+msgid "Every option needs a value."
+msgstr "每個選項都需要填寫值。"
+
+msgid "Option values must be unique."
+msgstr "選項的值不能重複。"
+
+msgid "Choose the default option."
+msgstr "請選擇預設選項。"
 
 msgid "Do you want to %{action} this stream?"
 msgstr "您要 %{action} 此串流嗎？"
@@ -10140,6 +10742,9 @@ msgstr "執行內建診斷以驗證環境與服務就緒狀態。"
 msgid "Check release updates and execute upgrade operations when available."
 msgstr "檢查版本更新並在可用時執行升級操作。"
 
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr "安裝、設定並疑難排解為 Nginx UI 擴充功能的外掛。"
+
 msgid "Review third-party licenses and open source component attributions."
 msgstr "檢視第三方授權與開源元件歸屬資訊。"
 
@@ -10164,6 +10769,986 @@ msgstr "組件"
 msgid "All Components"
 msgstr "所有組件"
 
+msgid "Certificate DNS validation"
+msgstr "憑證 DNS 驗證"
+
+msgid ""
+"Validates domains through DNS records when certificates are issued or "
+"renewed."
+msgstr "在簽發或續期憑證時透過 DNS 記錄驗證網域。"
+
+msgid "DNS credentials"
+msgstr "DNS 認證"
+
+msgid "Web pages and API"
+msgstr "網頁與 API"
+
+msgid "Serves its own pages and API inside Nginx UI."
+msgstr "在 Nginx UI 中提供自己的頁面和 API。"
+
+msgid "External notifications"
+msgstr "外部通知"
+
+msgid "Delivers Nginx UI notifications to other services."
+msgstr "將 Nginx UI 的通知傳送至其他服務。"
+
+msgid "Health checks"
+msgstr "健康檢查"
+
+msgid "Adds more ways to check whether sites and services are reachable."
+msgstr "增加更多檢查網站和服務是否可連線的方式。"
+
+msgid "AI assistant tools"
+msgstr "AI 助理工具"
+
+msgid "Offers actions that AI assistants connected to Nginx UI can run."
+msgstr "提供可供連接到 Nginx UI 的 AI 助理執行的操作。"
+
+msgid "Backup storage"
+msgstr "備份儲存"
+
+msgid "Stores backups and other files in external storage."
+msgstr "將備份和其他檔案儲存到外部儲存空間。"
+
+msgid "Auto backup"
+msgstr "自動備份"
+
+msgid "Certificate deployment"
+msgstr "憑證部署"
+
+msgid "Pushes issued certificates to other services and devices."
+msgstr "將簽發的憑證推送至其他服務和裝置。"
+
+msgid "Deploy targets"
+msgstr "部署目標"
+
+msgid "Keeps lists of addresses that are denied access up to date."
+msgstr "持續更新禁止存取的位址清單。"
+
+msgid "Service discovery"
+msgstr "服務探索"
+
+msgid "Finds backend servers automatically and keeps upstreams up to date."
+msgstr "自動探索後端伺服器，並保持 upstream 為最新狀態。"
+
+msgid "Access log forwarding"
+msgstr "存取日誌轉發"
+
+msgid ""
+"Receives access log entries as they are written, for example to forward or "
+"analyse them."
+msgstr "在存取日誌寫入時即時接收日誌項目，例如用於轉發或分析。"
+
+msgid "Other feature"
+msgstr "其他功能"
+
+msgid "A feature this version of Nginx UI does not describe."
+msgstr "此版本的 Nginx UI 未描述的功能。"
+
+msgid "Beta"
+msgstr "測試版"
+
+msgid ""
+"This is a beta release. Features may change, and some functions may not work "
+"as expected."
+msgstr "這是測試版。功能可能變動，部分功能可能無法正常運作。"
+
+msgid "This is a development release. It may be incomplete or unstable."
+msgstr "這是開發版，可能不完整或不穩定。"
+
+msgid "This is a stable release."
+msgstr "這是穩定版。"
+
+msgid "Development releases are received until a stable release is available."
+msgstr "在穩定版發布之前，會接收開發版。"
+
+msgid "Beta releases are received until a stable release is available."
+msgstr "在穩定版發布之前，會接收測試版。"
+
+msgid "Receive beta and stable releases."
+msgstr "接收測試版和穩定版。"
+
+msgid "Receive all releases, including development releases."
+msgstr "接收所有版本，包括開發版。"
+
+msgid "Receive stable releases only."
+msgstr "僅接收穩定版。"
+
+msgid "Cannot be enabled together with %{names}"
+msgstr "不能與 %{names} 同時啟用"
+
+msgid ""
+"Enabling %{name} will disable %{others}, because these plugins cannot be "
+"enabled at the same time."
+msgstr "啟用 %{name} 會停用 %{others}，因為這些外掛不能同時啟用。"
+
+msgid ""
+"Enabling this plugin will disable %{names}, because these plugins cannot be "
+"enabled at the same time."
+msgstr "啟用此外掛會停用 %{names}，因為這些外掛不能同時啟用。"
+
+msgid "Only localhost addresses are accepted"
+msgstr "只接受 localhost 位址"
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr "請重新整理頁面以套用開發外掛網址"
+
+msgid "Development plugin URL"
+msgstr "開發外掛網址"
+
+msgid ""
+"Address of a plugin.json served by a static server on this computer. Only "
+"localhost addresses are accepted. The plugin is loaded in addition to the "
+"installed ones."
+msgstr ""
+"由本機靜態伺服器提供的 plugin.json 位址，只接受 localhost 位址。該外掛會在已"
+"安裝外掛之外額外載入。"
+
+msgid "Needs attention"
+msgstr "需處理"
+
+msgid "Updates available"
+msgstr "可更新"
+
+msgid "Plugin disabled"
+msgstr "外掛已停用"
+
+msgid "Failed to disable the plugin"
+msgstr "停用外掛失敗"
+
+msgid "Disable %{name}?"
+msgstr "停用 %{name}？"
+
+msgid "Renewal resumes when you turn it back on."
+msgstr "重新開啟後將恢復續期。"
+
+msgid "Enable %{name}?"
+msgstr "啟用 %{name}？"
+
+msgid "Uninstall %{name}?"
+msgstr "解除安裝 %{name}？"
+
+msgid ""
+"Its files, data and settings are removed from this node. Other nodes are not "
+"touched."
+msgstr "將從此節點移除其檔案、資料和設定，其他節點不受影響。"
+
+msgid "Uninstall"
+msgstr "解除安裝"
+
+msgid "Plugin uninstalled"
+msgstr "外掛已解除安裝"
+
+msgid "Failed to uninstall the plugin"
+msgstr "解除安裝外掛失敗"
+
+msgid "Search installed plugins"
+msgstr "搜尋已安裝的外掛"
+
+msgid "No plugins installed yet"
+msgstr "尚未安裝任何外掛"
+
+msgid "Pick one from the marketplace or upload a bundle you built yourself."
+msgstr "從市集挑選一個，或上傳您自行建置的外掛套件。"
+
+msgid "Browse marketplace"
+msgstr "瀏覽市集"
+
+msgid "Install from file"
+msgstr "從檔案安裝"
+
+msgid "No plugins match the current filter"
+msgstr "沒有符合目前篩選條件的外掛"
+
+msgid "Recommended memory: %{size}"
+msgstr "建議記憶體：%{size}"
+
+msgid "This plugin cannot run on this node"
+msgstr "該外掛無法在此節點上執行"
+
+msgid "Sync to nodes"
+msgstr "同步至節點"
+
+msgid "Homepage"
+msgstr "首頁"
+
+msgid "No description provided."
+msgstr "未提供描述。"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Logs"
+msgstr "日誌"
+
+msgid "This node only"
+msgstr "僅此節點"
+
+msgid "All child nodes"
+msgstr "所有子節點"
+
+msgid "Selected nodes"
+msgstr "已選節點"
+
+msgid "This plugin is not signed"
+msgstr "此外掛未簽署"
+
+msgid "This is a community plugin"
+msgstr "這是一個社群外掛"
+
+msgid "Failed to read the plugin bundle"
+msgstr "讀取外掛套件失敗"
+
+msgid "Failed to install the plugin"
+msgstr "安裝外掛失敗"
+
+msgid "Plugin installed"
+msgstr "外掛已安裝"
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr "外掛已在本機安裝，但未能推送至各節點"
+
+msgid "Some nodes could not be synchronized"
+msgstr "部分節點未能同步"
+
+msgid "Click or drag a plugin bundle here"
+msgstr "點擊或將外掛套件拖曳至此處"
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr "由外掛作者產生的 .tar.gz 檔案"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "(replaces %{version})"
+msgstr "（取代 %{version}）"
+
+msgid "Capabilities"
+msgstr "功能"
+
+msgid "None"
+msgstr "無"
+
+msgid "Recommended memory"
+msgstr "建議記憶體"
+
+msgid "Platforms"
+msgstr "平台"
+
+msgid "Any"
+msgstr "任意"
+
+msgid "This package has no build for this node (%{platform})"
+msgstr "此安裝包沒有適用於該節點的建置版本（%{platform}）"
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr "請下載適用於此平台的安裝包，或下載可攜式安裝包後重試。"
+
+msgid "Install the plugins below first"
+msgstr "請先安裝以下外掛"
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr "此版本要求了您尚未核准的權限。"
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr "安裝前請檢視以下清單，外掛在您核准這些權限前將保持停用狀態。"
+
+msgid "Requested permissions"
+msgstr "要求的權限"
+
+msgid "Enable after install"
+msgstr "安裝後啟用"
+
+msgid "Also install to child nodes"
+msgstr "同時安裝至子節點"
+
+msgid "Keep in sync automatically"
+msgstr "自動保持同步"
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr "這些節點上的版本、啟用狀態及後續更新都會保持一致。"
+
+msgid "Already in sync"
+msgstr "已同步"
+
+msgid "Failed to load the plugin list"
+msgstr "載入外掛清單失敗"
+
+msgid "Failed to load the plugin logs"
+msgstr "載入外掛日誌失敗"
+
+msgid "Logs copied to clipboard"
+msgstr "日誌已複製到剪貼簿"
+
+msgid "Failed to copy the logs"
+msgstr "複製日誌失敗"
+
+msgid "Follow new lines"
+msgstr "跟隨新日誌"
+
+msgid "No log output yet"
+msgstr "尚無日誌輸出"
+
+msgid "All plugins"
+msgstr "全部外掛"
+
+msgid "Updates"
+msgstr "更新"
+
+msgid "Every installed plugin is up to date"
+msgstr "所有已安裝的外掛皆為最新版本"
+
+msgid "No plugins match your search"
+msgstr "找不到符合搜尋條件的外掛"
+
+msgid "The catalog is empty"
+msgstr "目錄為空"
+
+msgid "Failed to load the plugin marketplace"
+msgstr "載入外掛市集失敗"
+
+msgid "Reloading the catalog"
+msgstr "正在重新載入目錄"
+
+msgid "Search the marketplace"
+msgstr "搜尋市集"
+
+msgid "All categories"
+msgstr "所有分類"
+
+msgid "All sources"
+msgstr "所有來源"
+
+msgid "%{count} installed plugin has a newer release."
+msgid_plural "%{count} installed plugins have a newer release."
+msgstr[0] "%{count} 個已安裝的外掛有新版本。"
+
+msgid "Show updates"
+msgstr "檢視更新"
+
+msgid "The marketplace is unavailable"
+msgstr "市集暫時無法使用"
+
+msgid "Install a previous version"
+msgstr "安裝舊版本"
+
+msgid "Update plugin"
+msgstr "更新外掛"
+
+msgid "Install this version"
+msgstr "安裝此版本"
+
+msgid "Downloading the package"
+msgstr "正在下載安裝套件"
+
+msgid "Checking the package"
+msgstr "正在檢查安裝套件"
+
+msgid "Installing"
+msgstr "正在安裝"
+
+msgid "%{phase}: %{plugin}"
+msgstr "%{phase}：%{plugin}"
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr "從市集載入外掛失敗"
+
+msgid "No release available for this platform"
+msgstr "此平台沒有可用的發行版本"
+
+msgid "Source"
+msgstr "來源"
+
+msgid "This version is older than the installed version"
+msgstr "此版本比已安裝的版本舊"
+
+msgid ""
+"Data created by the newer version may not be compatible with this version."
+msgstr "新版本建立的資料可能與此版本不相容。"
+
+msgid "No stable release of this plugin is available yet."
+msgstr "此外掛尚無穩定版。"
+
+msgid ""
+"Newer releases of this channel are received until a stable release is "
+"available."
+msgstr "在穩定版發布之前，會接收此通道的較新版本。"
+
+msgid "The plugins below are installed together with it"
+msgstr "以下外掛將隨其一併安裝"
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr "無法取得即時進度，改為檢查外掛清單"
+
+msgid "Offered by %{source} instead of the official catalog."
+msgstr "由 %{source} 提供，而非官方目錄。"
+
+msgid "Installed %{version} is not this version"
+msgstr "已安裝的 %{version} 並非此版本"
+
+msgid "Installed: %{version}"
+msgstr "已安裝：%{version}"
+
+msgid "Repository"
+msgstr "原始碼庫"
+
+msgid "Release notes"
+msgstr "發行說明"
+
+msgid "Installed version"
+msgstr "已安裝版本"
+
+msgid "Failed to load the plugin details"
+msgstr "載入外掛詳情失敗"
+
+msgid "Links"
+msgstr "連結"
+
+msgid "Screenshots"
+msgstr "螢幕截圖"
+
+msgid "Changes in this update"
+msgstr "本次更新的變更"
+
+msgid "Versions"
+msgstr "版本"
+
+msgid "Installed"
+msgstr "已安裝"
+
+msgid "Latest"
+msgstr "最新"
+
+msgid "Readme"
+msgstr "Readme"
+
+msgid "The source cannot be checked"
+msgstr "無法檢查此來源"
+
+msgid "New source"
+msgstr "新來源"
+
+msgid "Checking"
+msgstr "檢查中"
+
+msgid "%{count} plugin"
+msgid_plural "%{count} plugins"
+msgstr[0] "%{count} 個外掛"
+
+msgid "Unavailable"
+msgstr "無法使用"
+
+msgid "Invalid address"
+msgstr "位址無效"
+
+msgid "Failed to load the marketplace sources"
+msgstr "載入市集來源失敗"
+
+msgid "Correct the addresses marked as invalid before saving."
+msgstr "請先修正標示為無效的位址，再儲存。"
+
+msgid "Marketplace sources saved"
+msgstr "市集來源已儲存"
+
+msgid "Failed to save the marketplace sources"
+msgstr "儲存市集來源失敗"
+
+msgid "Marketplace sources"
+msgstr "市集來源"
+
+msgid ""
+"Catalogs are merged in order, and the first source that offers a plugin "
+"wins. The official catalog cannot be removed. Move a mirror above it to "
+"install from the mirror first."
+msgstr ""
+"目錄依序合併，最先提供該外掛的來源生效。官方目錄無法移除。將鏡像移到官方目錄"
+"之前，即可優先從鏡像安裝。"
+
+msgid "Drag to reorder"
+msgstr "拖曳以調整順序"
+
+msgid "Official"
+msgstr "官方"
+
+msgid "Enter a domain or a web address."
+msgstr "請輸入網域或網址。"
+
+msgid ""
+"Enter a domain such as plugins.example.com, or the full address of a catalog."
+msgstr "輸入網域（如 plugins.example.com）或目錄的完整位址。"
+
+msgid "Edit address"
+msgstr "編輯位址"
+
+msgid "Add source"
+msgstr "新增來源"
+
+msgid "Published by the Nginx UI project."
+msgstr "由 Nginx UI 專案發布。"
+
+msgid "Verified"
+msgstr "已驗證"
+
+msgid "Published by a partner of the Nginx UI project."
+msgstr "由 Nginx UI 專案的合作夥伴發布。"
+
+msgid "Community"
+msgstr "社群"
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+"由第三方發布，未經審核。它會以您授予的權限執行，請僅在信任其作者時安裝。"
+
+msgid "Unsigned"
+msgstr "未簽署"
+
+msgid ""
+"Not signed, so its publisher cannot be confirmed. Installing it requires "
+"developer mode."
+msgstr "未簽署，無法確認發布者。安裝需要開啟開發者模式。"
+
+msgid ""
+"This version was not published by the official team or a partner. It may be "
+"a development build or a repackaged copy."
+msgstr "此版本並非由官方團隊或合作夥伴發布，可能是開發版本或重新封裝的副本。"
+
+msgid "Install the official version"
+msgstr "安裝官方版本"
+
+msgid "Install the partner version"
+msgstr "安裝合作夥伴版本"
+
+msgid "The marketplace has the official version %{version}."
+msgstr "市集中有官方版本 %{version}。"
+
+msgid "The marketplace has the partner version %{version}."
+msgstr "市集中有合作夥伴版本 %{version}。"
+
+msgid "This package is trusted less than the version already installed"
+msgstr "此安裝套件的信任等級低於已安裝的版本"
+
+msgid "Installed version: %{installed}. This package: %{package}."
+msgstr "已安裝版本：%{installed}。此安裝套件：%{package}。"
+
+msgid ""
+"This server has %{system} of memory, below the %{recommended} recommended "
+"for this plugin. The plugin may run slowly or stop unexpectedly."
+msgstr ""
+"此伺服器有 %{system} 記憶體，低於此外掛建議的 %{recommended}。外掛可能執行緩"
+"慢或意外停止。"
+
+msgid "Approve permissions"
+msgstr "核准權限"
+
+msgid "Approve and enable"
+msgstr "核准並啟用"
+
+msgid "%{name} needs your approval before it can run."
+msgstr "%{name} 需要獲得您的核准才能執行。"
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+"請僅在信任作者時核准。核准記錄會被保留，且當所要求的權限有變動時會再次詢問。"
+
+msgid "Note from the author"
+msgstr "作者說明"
+
+msgid "This plugin needs no access beyond its own features."
+msgstr "此外掛除自身功能外不需要其他存取權限。"
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr "讀取已儲存的 %{kind} 憑證，包括其密鑰。"
+
+msgid "unknown"
+msgstr "未知"
+
+msgid "Keep its own data inside Nginx UI."
+msgstr "在 Nginx UI 中儲存自己的資料。"
+
+msgid "Connect to other servers over the network."
+msgstr "透過網路連線到其他伺服器。"
+
+msgid "Run tasks on a regular schedule."
+msgstr "依固定排程執行任務。"
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr "透過 Nginx UI 的通知管道發送通知。"
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr "讀取此節點的 CPU、記憶體、網路及 Nginx 狀態指標。"
+
+msgid "Manage Nginx UI with your permissions."
+msgstr "以您的權限管理 Nginx UI。"
+
+msgid "Offer actions that AI assistants connected to Nginx UI can run."
+msgstr "提供可供連接到 Nginx UI 的 AI 助理執行的操作。"
+
+msgid ""
+"Receive issued certificates, including the parts that must stay secret, to "
+"push them to other services."
+msgstr "接收簽發的憑證（包括必須保密的部分），以推送至其他服務。"
+
+msgid ""
+"Receive every access log entry while it is on, including visitor addresses "
+"and requested URLs."
+msgstr "開啟期間接收每筆存取日誌，包括訪客位址和請求的 URL。"
+
+msgid ""
+"Read the Nginx log files of this node, including visitor addresses and "
+"requested URLs."
+msgstr "讀取此節點的 Nginx 日誌檔案，其中包含訪客位址和請求的 URL。"
+
+msgid ""
+"Add Nginx configuration of its own. It takes effect only where you include "
+"it, and Nginx UI applies it only when the configuration remains valid."
+msgstr ""
+"新增它自己的 Nginx 設定。設定只在你引入它的位置生效，且只有在整體設定仍然有效"
+"時，Nginx UI 才會套用它。"
+
+msgid "Read the Nginx configuration files of this node."
+msgstr "讀取此節點的 Nginx 設定檔。"
+
+msgid "See the sites of this node and their addresses."
+msgstr "檢視此節點的站點及其位址。"
+
+msgid ""
+"See the certificates and when they expire, without the parts that must stay "
+"secret."
+msgstr "檢視憑證及其到期時間，不包括必須保密的部分。"
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr "未知權限，請僅在信任外掛作者時授予。"
+
+msgid "Stored %{kind} credentials"
+msgstr "已儲存的 %{kind} 憑證"
+
+msgid "Own data storage"
+msgstr "自有資料儲存"
+
+msgid "Scheduled tasks"
+msgstr "排程任務"
+
+msgid "Server metrics"
+msgstr "伺服器指標"
+
+msgid "Nginx UI management"
+msgstr "Nginx UI 管理"
+
+msgid "Access logs"
+msgstr "存取日誌"
+
+msgid "Log files"
+msgstr "日誌檔案"
+
+msgid "Nginx configuration snippets"
+msgstr "Nginx 設定片段"
+
+msgid "Nginx configuration"
+msgstr "Nginx 設定"
+
+msgid "Certificate list"
+msgstr "憑證清單"
+
+msgid "Unknown permission"
+msgstr "未知權限"
+
+msgid "Overview"
+msgstr "概覽"
+
+msgid "In sync"
+msgstr "已同步"
+
+msgid "Outdated"
+msgstr "版本過舊"
+
+msgid "Not installed"
+msgstr "未安裝"
+
+msgid "Unsupported platform"
+msgstr "不支援的平台"
+
+msgid "Unsupported"
+msgstr "不支援"
+
+msgid "Plugin"
+msgstr "外掛"
+
+msgid "Failed to load the plugin matrix"
+msgstr "載入外掛矩陣失敗"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "外掛已同步至 %{count} 個節點"
+
+msgid "Failed to synchronize the plugin"
+msgstr "同步外掛失敗"
+
+msgid "Update to %{version}"
+msgstr "更新至 %{version}"
+
+msgid "Sync to this node"
+msgstr "同步至此節點"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+"顯示各子節點已安裝的外掛，並與本控制節點比對。於頁首切換所選節點後即可直接管"
+"理該節點。"
+
+msgid "All nodes"
+msgstr "所有節點"
+
+msgid "%{count} in sync"
+msgstr "%{count} 個已同步"
+
+msgid "%{count} pending"
+msgstr "%{count} 個待處理"
+
+msgid "%{count} failing"
+msgstr "%{count} 個失敗"
+
+msgid "This instance has no child node"
+msgstr "此執行個體沒有子節點"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr "請先新增節點，之後即可在此處為其安裝外掛。"
+
+msgid "Manage nodes"
+msgstr "管理節點"
+
+msgid "No plugins installed"
+msgstr "尚未安裝任何外掛"
+
+msgid "Sync to selected"
+msgstr "同步至所選"
+
+msgid "Sync to all"
+msgstr "同步至全部"
+
+msgid "Nothing to start"
+msgstr "無需啟動"
+
+msgid "Starts when needed"
+msgstr "依需求啟動"
+
+msgid "Always running"
+msgstr "持續執行"
+
+msgid "API version"
+msgstr "API 版本"
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr "需要 Nginx UI %{version} 或更新版本"
+
+msgid "Start mode"
+msgstr "啟動方式"
+
+msgid "Saved"
+msgstr "已儲存"
+
+msgid "Failed to save"
+msgstr "儲存失敗"
+
+msgid "Streamed"
+msgstr "已傳送"
+
+msgid "Rejected"
+msgstr "已拒絕"
+
+msgid "Dropped"
+msgstr "已捨棄"
+
+msgid "Last error"
+msgstr "最近的錯誤"
+
+msgid "This plugin needs your approval before it can run."
+msgstr "此外掛需要您的核准後才能執行。"
+
+msgid "Turn it on to review what it can access."
+msgstr "開啟後即可檢視它能存取的內容。"
+
+msgid "Provides"
+msgstr "提供"
+
+msgid "Can access"
+msgstr "可存取"
+
+msgid "Only these addresses"
+msgstr "僅限以下位址"
+
+msgid "%{n} more"
+msgstr "還有 %{n} 個"
+
+msgid "No specific addresses listed"
+msgstr "未列出具體位址"
+
+msgid "Nothing beyond its own features."
+msgstr "除自身功能外無其他存取。"
+
+msgid "In use"
+msgstr "使用中"
+
+msgid "%{count} certificate renews through it:"
+msgid_plural "%{count} certificates renew through it:"
+msgstr[0] "%{count} 個憑證透過它續期："
+
+msgid "Update channel"
+msgstr "更新通道"
+
+msgid "The limits are applied while the plugin runs."
+msgstr "外掛執行時會套用這些限制。"
+
+msgid "The plugin is not running, or this node cannot apply limits."
+msgstr "外掛未執行，或此節點無法套用限制。"
+
+msgid "Enforced"
+msgstr "已強制"
+
+msgid "Not enforced"
+msgstr "未強制"
+
+msgid "Cluster"
+msgstr "叢集"
+
+msgid "Auto install to nodes"
+msgstr "自動安裝至節點"
+
+msgid "Sync now"
+msgstr "立即同步"
+
+msgid "Version, API version, start mode, updated time"
+msgstr "版本、API 版本、啟動方式、更新時間"
+
+msgid "Depends on"
+msgstr "相依"
+
+msgid "Needs features"
+msgstr "所需功能"
+
+msgid "Access log stream"
+msgstr "存取日誌串流"
+
+msgid "Uninstall this plugin"
+msgstr "解除安裝此外掛"
+
+msgid "Its files, data and settings are removed from this node."
+msgstr "將從此節點移除其檔案、資料和設定。"
+
+msgid "Develop plugin"
+msgstr "開發外掛"
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr "外掛可以為 Nginx UI 擴充額外功能，請僅安裝您信任的作者發布的外掛套件。"
+
+msgid "Starting"
+msgstr "啟動中"
+
+msgid "Missing"
+msgstr "缺失"
+
+msgid "Incompatible"
+msgstr "不相容"
+
+msgid "Needs approval"
+msgstr "需要核准"
+
+msgid "Standby"
+msgstr "待命"
+
+msgid "Starts automatically when needed"
+msgstr "需要時自動啟動"
+
+msgid "Installed. Turn it on to review what it can access."
+msgstr "已安裝。開啟後即可檢視它能存取的內容。"
+
+msgid "Installed the version from the marketplace"
+msgstr "已安裝市集中的版本"
+
+msgid "Failed to install the version from the marketplace"
+msgstr "安裝市集中的版本失敗"
+
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
+msgstr "要以市集中的版本取代已安裝的版本嗎？設定和資料將會保留。"
+
+msgid "%{field} is required"
+msgstr "%{field} 為必填項目"
+
+msgid "%{count} unsaved"
+msgid_plural "%{count} unsaved"
+msgstr[0] "%{count} 項未儲存"
+
+msgid "Failed to load the plugin settings"
+msgstr "載入外掛設定失敗"
+
+msgid "Plugin settings saved"
+msgstr "外掛設定已儲存"
+
+msgid "Failed to save the plugin settings"
+msgstr "儲存外掛設定失敗"
+
+msgid "This plugin has no settings."
+msgstr "該外掛沒有可設定的項目。"
+
+msgid "Sync %{name} to nodes"
+msgstr "將 %{name} 同步至節點"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "不勾選任何節點即可同步至所有子節點。"
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] "還有 %{count} 筆"
+
+msgid "Sync policy saved"
+msgstr "同步政策已儲存"
+
+msgid "Failed to save the sync policy"
+msgstr "儲存同步政策失敗"
+
+msgid "Automatic installation"
+msgstr "自動安裝"
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+"讓此外掛在所選子節點上保持相同的版本與狀態。不勾選任何節點即可涵蓋全部節點，"
+"包括之後新增的節點。"
+
+msgid "Also sync the plugin settings"
+msgstr "同時同步外掛設定"
+
+msgid "Nodes: %{target}"
+msgstr "節點：%{target}"
+
+msgctxt "list separator"
+msgid ", "
+msgstr "、"
+
+msgid "and %{n} more"
+msgstr "等 %{n} 個"
+
+msgid ""
+"%{count} certificate renews through it and will not renew while it is off:"
+msgid_plural ""
+"%{count} certificates renew through it and will not renew while it is off:"
+msgstr[0] "%{count} 個憑證透過它續期，停用期間將無法續期："
+
 msgid "Dev"
 msgstr "Dev"
 
@@ -10178,6 +11763,9 @@ msgstr "您可以在此頁面檢查 Nginx UI 的升級。"
 
 msgid "Current Version"
 msgstr "目前版本"
+
+msgid "OS"
+msgstr "作業系統"
 
 msgid "Arch"
 msgstr "架構"
@@ -10220,6 +11808,60 @@ msgstr ""
 "您正在透過非本地主機域上的不安全 HTTP 連線存取此終端機。這可能會暴露敏感資"
 "訊。"
 
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr "nginx 用來識別該 upstream 的名稱：僅限字母、數字、點、連字號與底線。"
+
+msgid "Service"
+msgstr "服務"
+
+msgid "Servers"
+msgstr "伺服器"
+
+msgid "Service Discovery"
+msgstr "服務探索"
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr ""
+"沒有已啟用的外掛提供服務探索。請先安裝並啟用具有 upstream.discovery 能力的外"
+"掛。"
+
+msgid "Select a provider"
+msgstr "選擇提供商"
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr "提供此提供商的外掛未啟用。該 upstream 會被保留，但不再重新整理。"
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr "依提供商的命名方式指定要解析的服務。"
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr ""
+"以秒為單位設定服務重新解析的頻率。僅當伺服器清單發生變化時才會重新載入 "
+"Nginx。"
+
+msgid "Extra Directives"
+msgstr "額外指令"
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr "附加在 upstream 區塊內，每行一條指令，例如 keepalive 32;"
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
+msgstr ""
+"將此行加入 http 區塊（例如站台設定的頂端），然後透過其名稱將請求代理至該 "
+"upstream。"
+
 msgid "Round Robin (default)"
 msgstr "Round Robin（預設）"
 
@@ -10255,9 +11897,6 @@ msgstr "雜湊鍵"
 
 msgid "Consistent Hashing"
 msgstr "一致性雜湊"
-
-msgid "Servers"
-msgstr "伺服器"
 
 msgid "Address"
 msgstr "地址"
@@ -10471,490 +12110,1075 @@ msgstr "單窗格"
 msgid "Split view"
 msgstr "分割檢視"
 
-#: src/constants/errors/snippet.ts:2
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr "檔名必須以 .conf 結尾，且只能包含字母、數字、點、連字號和底線"
-
-#: src/constants/errors/snippet.ts:3
-msgid "Snippet not found"
-msgstr "找不到片段"
-
-#: src/constants/errors/snippet.ts:4
-msgid "The snippet exceeds 256 KiB"
-msgstr "片段超過 256 KiB"
-
-#: src/constants/errors/snippet.ts:5
-msgid "The header of the snippet does not parse: {0}"
-msgstr "片段的檔案標頭無法解析：{0}"
-
-#: src/constants/errors/snippet.ts:6
-msgid "The snippet is still included by {0}"
-msgstr "片段仍被以下檔案引用：{0}"
-
-#: src/constants/errors/snippet.ts:7
-msgid "A snippet with this file name already exists"
-msgstr "已存在相同檔名的片段"
-
-#: src/views/snippet/SnippetList.vue:91
-msgid "Snippets"
-msgstr "片段"
-
-#: src/views/snippet/SnippetList.vue:3
-msgid "Snippet"
-msgstr "片段"
-
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:149
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr "引用會讓網站與 snippets/%{file} 保持關聯，之後對片段的修改都會作用到網站。插入則會把內容複製到網站中。"
-
-#: src/views/snippet/SnippetEdit.vue:178
-msgid "Insert"
-msgstr "插入"
-
-#: src/views/snippet/SnippetList.vue:26
-msgid "Include"
-msgstr "引用"
-
-#: src/views/snippet/SnippetList.vue:3
-msgid "Snippet %{name} saved"
-msgstr "片段 %{name} 已儲存"
-
-#: src/views/snippet/SnippetEdit.vue:130
-msgid "Edit Snippet %{name}"
-msgstr "編輯片段 %{name}"
-
-#: src/views/snippet/SnippetList.vue:118
-msgid "Create Snippet"
-msgstr "建立片段"
-
-#: src/views/snippet/SnippetEdit.vue:141
-msgid "Static file cache"
-msgstr "靜態檔案快取"
-
-#: src/views/snippet/SnippetEdit.vue:145
-msgid "File Name"
-msgstr "檔名"
-
-#: src/views/snippet/SnippetEdit.vue:149
-msgid ""
-"Fixed after creation, so the sites that include the snippet keep working."
-msgstr "建立後不可修改，以確保引用該片段的網站繼續正常運作。"
-
-#: src/views/snippet/SnippetEdit.vue:150
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr "字母、數字、點、連字號和底線。"
-
-#: src/views/snippet/SnippetEdit.vue:178
-msgid ""
-"This snippet has variables: %{names}. Insert it from the config template "
-"panel of the site editor, which fills them in; Nginx cannot include it "
-"directly."
-msgstr "此片段包含變數：%{names}。請在網站編輯器的配置模板面板中插入它，由面板填寫變數；Nginx 無法直接引用它。"
-
-#: src/views/snippet/SnippetEdit.vue:188
-msgid "To use the snippet, add this directive to a server or location block:"
-msgstr "在 server 或 location 區塊中加入以下指令即可使用該片段："
-
-#: src/views/snippet/SnippetEdit.vue:209
-msgid "No configuration includes this snippet yet."
-msgstr "目前沒有設定引用此片段。"
-
-#: src/views/snippet/components/SnippetSync.vue:41
-msgid "Snippets are no longer synchronized"
-msgstr "片段已停止同步"
-
-#: src/views/snippet/components/SnippetSync.vue:57
-msgid "Synchronize Snippets"
-msgstr "同步片段"
-
-#: src/views/snippet/components/SnippetSync.vue:65
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr "所有片段會立即複製到所選節點，之後的修改也會自動同步。清空選擇即可停止同步。"
-
-#: src/views/snippet/components/SnippetSync.vue:75
-msgid "Replace snippets that already exist on the nodes"
-msgstr "取代節點上已存在的片段"
-
-#: src/views/snippet/SnippetList.vue:74
-msgid "Delete snippet %{name}?"
-msgstr "刪除片段 %{name}？"
-
-#: src/views/snippet/SnippetList.vue:76
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr "將在本節點和已同步的節點上刪除 snippets/%{file}。"
-
-#: src/views/snippet/SnippetList.vue:76
-msgid "snippets/%{file} will be removed."
-msgstr "將刪除 snippets/%{file}。"
-
-#: src/views/snippet/SnippetList.vue:3
-msgid "Snippet %{name} deleted"
-msgstr "片段 %{name} 已刪除"
-
-#: src/views/snippet/SnippetList.vue:104
-msgid "Synchronize"
-msgstr "同步"
-
-#: src/views/snippet/SnippetList.vue:112
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] "已同步到 %{count} 個節點"
-
-#: src/views/snippet/SnippetList.vue:130
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in a "
-"site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr "片段把一段 Nginx 設定放在一處統一管理。可以在網站中引用它，也可以在網站編輯器的配置模板面板中插入它；修改被引用的片段會更新所有使用它的網站。"
-
-#: src/views/snippet/SnippetList.vue:112
-msgid "Copied %{include}"
-msgstr "已複製 %{include}"
-
-#: src/views/snippet/SnippetList.vue:184
-msgid ""
-"Fill in the variables by inserting the snippet from the config template "
-"panel of the site editor."
-msgstr "請在網站編輯器的配置模板面板中插入該片段並填寫變數。"
-
-#: src/views/home/Home.vue:1
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] "%{count} 個變數"
-
-#: src/views/snippet/SnippetList.vue:209
-msgid "Copy the include directive"
-msgstr "複製引用指令"
-
-#: src/views/snippet/SnippetList.vue:275
-msgid "Remove the snippet from the files that include it first."
-msgstr "請先從引用它的檔案中移除該片段。"
-
-#: src/views/snippet/SnippetList.vue:298
-msgid "Search snippets"
-msgstr "搜尋片段"
-
-#: src/views/snippet/SnippetList.vue:319
-msgid "No snippets yet"
-msgstr "還沒有片段"
-
-#: src/views/snippet/SnippetList.vue:333
-msgid "No snippet matches the search"
-msgstr "沒有符合的片段"
-
-#: src/views/snippet/components/SnippetUsage.vue:75
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] "被 %{count} 個檔案引用"
-
-#: src/views/snippet/components/SnippetUsage.vue:104
-msgid "No file matches the search"
-msgstr "沒有符合的檔案"
-
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:54
-msgid "Built-in"
-msgstr "內建"
-
-#: src/views/snippet/template.ts:8
-msgid "The variable {0} is invalid: {1}"
-msgstr "變數 {0} 無效：{1}"
-
-#: src/constants/errors/snippet.ts:9
-msgid "The content does not parse as a template: {0}"
-msgstr "內容無法解析為範本：{0}"
-
-#: src/views/snippet/SnippetList.vue:36
-msgid "Built-in Template"
-msgstr "內建範本"
-
-#: src/views/snippet/SnippetEdit.vue:23
-msgid "Edit Snippet"
-msgstr "編輯片段"
-
-#: src/views/snippet/BuiltinTemplateView.vue:62
-msgid "Read Only"
-msgstr "唯讀"
-
-#: src/views/stream/components/RightPanel/Basic.vue:8
-msgid "Preview"
-msgstr "預覽"
-
-#: src/views/snippet/BuiltinTemplateView.vue:75
-msgid "Updates as the snippet changes."
-msgstr "隨片段修改即時更新。"
-
-#: src/views/snippet/BuiltinTemplateView.vue:94
-msgid ""
-"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
-"snippet to change it."
-msgstr "內建範本隨 Nginx UI 提供，無法修改。如需修改，請將其複製為片段。"
-
-#: src/views/snippet/components/SnippetPreview.vue:9
-msgid "Variables"
-msgstr "變數"
-
-#: src/views/snippet/components/BuiltinTemplates.vue:113
-msgid "Copy as Snippet"
-msgstr "複製為片段"
-
-#: src/views/certificate/CertificateEditor.vue:26
-msgid "Template"
-msgstr "範本"
-
-#: src/views/snippet/components/BuiltinTemplates.vue:70
-msgid "No template matches the search"
-msgstr "沒有符合的範本"
-
-#: src/views/snippet/components/LocalizedInput.vue:98
-msgid "Translations"
-msgstr "翻譯"
-
-#: src/views/snippet/components/LocalizedInput.vue:113
-msgid ""
-"The field is in %{language}. Users of other languages see their translation, "
-"or English when there is none."
-msgstr "輸入框中為%{language}文字。其他語言的使用者將看到對應的翻譯，沒有翻譯時顯示英文。"
-
-#: src/views/snippet/components/LocalizedInput.vue:130
-msgid "Remove translation"
-msgstr "刪除翻譯"
-
-#: src/views/snippet/components/LocalizedInput.vue:143
-msgid "Add a language"
-msgstr "新增語言"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:5
-msgid "Text"
-msgstr "文字"
-
-#: src/views/install/components/InstallFooter.vue:3
-msgid "Switch"
-msgstr "開關"
-
-#: src/views/certificate/CertificateEditor.vue:99
-msgid "Select"
-msgstr "選擇"
-
-#: src/views/snippet/components/SnippetCode.vue:255
-msgid "New Variable…"
-msgstr "新增變數…"
-
-#: src/views/snippet/components/SnippetCode.vue:317
-msgid "Insert Variable"
-msgstr "插入變數"
-
-#: src/views/certificate/CertificateEditor.vue:5
-msgid ""
-"Type %{open} to complete a variable, or select a value and press %{keys} to "
-"make it one."
-msgstr "輸入 %{open} 補全變數，或選取一個值後按 %{keys} 將其設為變數。"
-
-#: src/views/snippet/components/SnippetPreview.vue:182
-msgid "Default Value"
-msgstr "預設值"
-
-#: src/views/snippet/components/SnippetCode.vue:365
-msgid "Edit Variable"
-msgstr "編輯變數"
-
-#: src/views/snippet/components/SnippetCode.vue:376
-msgid ""
-"This variable is not declared, so it has no value when the snippet is "
-"inserted."
-msgstr "此變數未宣告，插入片段時將沒有值。"
-
-#: src/views/snippet/components/SnippetCode.vue:385
-msgid "Declare Variable"
-msgstr "宣告變數"
-
-#: src/views/snippet/components/SnippetCode.vue:401
-msgid "Make Variable"
-msgstr "設為變數"
-
-#: src/views/snippet/components/SnippetCode.vue:255
-msgid "New Variable"
-msgstr "新變數"
-
-#: src/views/certificate/CertificateEditor.vue:5
-msgid "Key"
-msgstr "鍵名"
-
-#: src/views/certificate/CertificateEditor.vue:160
-msgid "Label"
-msgstr "顯示名稱"
-
-#: src/views/snippet/components/SnippetCode.vue:467
-msgid "The variable is declared and inserted at the cursor."
-msgstr "變數將被宣告，並插入到游標處。"
-
-#: src/views/snippet/components/SnippetCode.vue:468
-msgid ""
-"The selected value becomes the default value, and the content refers to the "
-"variable instead."
-msgstr "選取的值將成為預設值，內容中改為引用該變數。"
-
-#: src/views/snippet/components/SnippetCode.vue:484
-msgid "Add Variable"
-msgstr "新增變數"
-
-#: src/views/snippet/components/SnippetPreview.vue:103
-msgid "Not declared, so left without a value: %{names}"
-msgstr "以下變數未宣告，將沒有值：%{names}"
-
-#: src/views/snippet/components/SnippetPreview.vue:109
-msgid "The snippet does not render as valid Nginx configuration."
-msgstr "片段無法轉譯為有效的 Nginx 設定。"
-
-#: src/views/snippet/components/SnippetPreview.vue:116
-msgid "The snippet renders as valid Nginx configuration."
-msgstr "片段可以轉譯為有效的 Nginx 設定。"
-
-#: src/views/snippet/components/SnippetPreview.vue:142
-msgid "What the site editor asks for"
-msgstr "網站編輯器中填寫的內容"
-
-#: src/views/snippet/components/SnippetPreview.vue:182
-msgid "Restore Default Values"
-msgstr "還原預設值"
-
-#: src/views/snippet/components/SnippetPreview.vue:190
-msgid "Nothing to fill in."
-msgstr "沒有需要填寫的內容。"
-
-#: src/views/snippet/components/SnippetPreview.vue:190
-msgid "Fix the variables to preview the snippet."
-msgstr "請先修正變數，再預覽片段。"
-
-#: src/views/snippet/components/SnippetVariables.vue:165
-msgid "Not Used"
-msgstr "未使用"
-
-#: src/views/snippet/components/SnippetVariables.vue:200
-msgid "Max Age"
-msgstr "有效時間"
-
-#: src/views/certificate/components/SelfSignedCertFields.vue:15
-msgid "Options"
-msgstr "選項"
-
-#: src/views/snippet/components/SnippetVariables.vue:255
-msgid "Remove option"
-msgstr "刪除選項"
-
-#: src/views/snippet/components/SnippetVariables.vue:272
-msgid "Add Option"
-msgstr "新增選項"
-
-#: src/views/snippet/components/SnippetVariables.vue:293
-msgid "Remove variable"
-msgstr "刪除變數"
-
-#: src/views/snippet/components/SnippetVariables.vue:308
-msgid "Used in the content, not declared"
-msgstr "內容中使用但未宣告"
-
-#: src/views/snippet/SnippetEdit.vue:168
-msgid "Discard the unsaved changes?"
-msgstr "放棄未儲存的變更？"
-
-#: src/views/snippet/SnippetEdit.vue:171
-msgid "Keep Editing"
-msgstr "繼續編輯"
-
-#: src/views/snippet/SnippetList.vue:194
-msgid "Sites can include this snippet and follow its later changes."
-msgstr "網站可以引用此片段，並隨片段的後續修改同步更新。"
-
-#: src/views/snippet/SnippetEdit.vue:205
-msgid ""
-"This snippet has variables, so sites insert a filled in copy from the config "
-"template panel."
-msgstr "此片段含有變數，網站需從設定範本面板插入填寫後的副本。"
-
-#: src/views/snippet/SnippetList.vue:201
-msgid "Includable"
-msgstr "可引用"
-
-#: src/views/snippet/SnippetList.vue:201
-msgid "Insert Only"
-msgstr "僅可插入"
-
-#: src/views/install/components/InstallForm.vue:3
-msgid "Use"
-msgstr "使用方式"
-
-#: src/views/snippet/SnippetEdit.vue:255
-msgid ""
-"Add this directive to a server or location block. Sites that include the "
-"snippet follow its later changes."
-msgstr "將此指令加入 server 或 location 區塊中。引用此片段的網站會隨其後續修改同步更新。"
-
-#: src/views/snippet/SnippetEdit.vue:298
-msgid "Fixed while configurations include the snippet, so they keep working."
-msgstr "有設定引用此片段時不可修改，以確保這些設定繼續正常運作。"
-
-#: src/views/snippet/SnippetEdit.vue:324
-msgid ""
-"Variables are filled in when the snippet is inserted from the config "
-"template panel of the site editor. A snippet with variables can only be "
-"inserted, not included."
-msgstr "從網站編輯器的設定範本面板插入片段時填寫變數。含有變數的片段只能插入，不能被引用。"
-
-#: src/views/snippet/SnippetEdit.vue:354
-msgid "Unsaved changes"
-msgstr "有未儲存的變更"
-
-#: src/views/snippet/SnippetList.vue:35
-msgid "My Snippets"
-msgstr "我的片段"
-
-#: src/views/snippet/SnippetList.vue:36
-msgid "Built-in Templates"
-msgstr "內建範本"
-
-#: src/views/snippet/SnippetList.vue:189
-msgid ""
-"Has %{count} variable. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgid_plural ""
-"Has %{count} variables. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgstr[0] "含有 %{count} 個變數。網站從網站編輯器的設定範本面板插入填寫後的副本。"
-
-#: src/views/snippet/variables.ts:80
-msgid "Enter a key."
-msgstr "請輸入鍵名。"
-
-#: src/views/snippet/variables.ts:82
-msgid ""
-"Use letters, digits and underscores, starting with a letter or underscore."
-msgstr "只能使用字母、數字和底線，且須以字母或底線開頭。"
-
-#: src/views/snippet/variables.ts:84
-msgid "Another variable uses this key."
-msgstr "此鍵名已被其他變數使用。"
-
-#: src/views/snippet/variables.ts:94
-msgid "Add at least one option."
-msgstr "請至少新增一個選項。"
-
-#: src/views/snippet/variables.ts:96
-msgid "Every option needs a value."
-msgstr "每個選項都需要填寫值。"
-
-#: src/views/snippet/variables.ts:98
-msgid "Option values must be unique."
-msgstr "選項的值不能重複。"
-
-#: src/views/snippet/variables.ts:100
-msgid "Choose the default option."
-msgstr "請選擇預設選項。"
+#~ msgid ""
+#~ "The official catalog is always used and comes first. Catalogs added here "
+#~ "follow it in order, and the first source that offers a plugin wins."
+#~ msgstr ""
+#~ "官方目錄一律啟用並排在最前。在此加入的目錄依序排在其後，最先提供該外掛的來"
+#~ "源生效。"
+
+#~ msgid "Managed on the marketplace page. Empty means the official catalog."
+#~ msgstr "在市集頁面管理，為空表示使用官方目錄。"
+
+#~ msgid ""
+#~ "Catalogs are merged in order, the first source that offers a plugin wins. "
+#~ "Leave the list empty to use the official catalog."
+#~ msgstr "目錄按順序合併，最先提供該外掛的來源生效。清單留空即使用官方目錄。"
+
+#~ msgid "Using the official catalog"
+#~ msgstr "正在使用官方目錄"
+
+#~ msgid "Add a source to offer plugins from another catalog as well."
+#~ msgstr "新增來源後，也可以安裝其他目錄中的外掛。"
+
+#~ msgid "Add the official catalog"
+#~ msgstr "新增官方目錄"
+
+#~ msgid "Built-in Template"
+#~ msgstr "內建範本"
+
+#~ msgid "Built-in Templates"
+#~ msgstr "內建範本"
+
+#~ msgid "CPU"
+#~ msgstr "CPU"
+
+#~ msgid "Resource limits"
+#~ msgstr "資源限制"
+
+#~ msgid ""
+#~ "Log analytics is now a plugin. Install it to keep using it; your existing "
+#~ "indexes are kept."
+#~ msgstr "日誌分析已改為外掛，安裝後繼續使用，原有索引會保留。"
+
+#~ msgid "This node runs %{platform}, its build is highlighted."
+#~ msgstr "此節點執行 %{platform}，對應的建置已醒目提示。"
+
+#~ msgid "Yanked"
+#~ msgstr "已撤回"
+
+#~ msgid "Starting download..."
+#~ msgstr "開始下載..."
+
+#~ msgid "Download failed"
+#~ msgstr "下載失敗"
+
+#~ msgid "Download complete"
+#~ msgstr "下載完成"
+
+#~ msgid "GeoLite2 Database Required"
+#~ msgstr "需要 GeoLite2 資料庫"
+
+#~ msgid ""
+#~ "The GeoLite2 database is required for offline geographic IP analysis. "
+#~ "Please download it to enable this feature."
+#~ msgstr "離線地理 IP 分析需要 GeoLite2 資料庫。請下載以啟用此功能。"
+
+#~ msgid ""
+#~ "Alternatively, if you cannot download the database, you can manually "
+#~ "place GeoLite2-City.mmdb in the same directory as app.ini."
+#~ msgstr ""
+#~ "或者，如果您無法下載數據庫，可以手動將 GeoLite2-City.mmdb 文件放置於與 "
+#~ "app.ini 相同的目錄中。"
+
+#~ msgid ""
+#~ "If you want to enable custom MMDB data, configure `IndexCustomMMDB` and "
+#~ "place the generated file in the same directory as app.ini."
+#~ msgstr ""
+#~ "如果您要啟用自訂 MMDB 資料，請設定 `IndexCustomMMDB`，並將產生的檔案放置在"
+#~ "與 app.ini 相同的目錄中。"
+
+#~ msgid "GeoLite2 Database Installed"
+#~ msgstr "GeoLite2 資料庫已安裝"
+
+#~ msgid "Download GeoLite2 Database"
+#~ msgstr "下載 GeoLite2 資料庫"
+
+#~ msgid "Re-download Database"
+#~ msgstr "重新下載資料庫"
+
+#~ msgid "Last updated:"
+#~ msgstr "最後更新:"
+
+#~ msgid "Traffic Analytics"
+#~ msgstr "流量分析"
+
+#~ msgid "Nginx Log Indexing..."
+#~ msgstr "Nginx 日誌索引中..."
+
+#~ msgid "Visits"
+#~ msgstr "訪問量"
+
+#~ msgid "Percentage"
+#~ msgstr "百分比"
+
+#~ msgid "Failed to download GeoLite2 database: {0}"
+#~ msgstr "下載 GeoLite2 資料庫失敗: {0}"
+
+#~ msgid "Failed to decompress GeoLite2 database: {0}"
+#~ msgstr "解壓 GeoLite2 資料庫失敗: {0}"
+
+#~ msgid "GeoLite2 database not found at {0}"
+#~ msgstr "在 {0} 未找到 GeoLite2 資料庫"
+
+#~ msgid "Failed to get file size: {0}"
+#~ msgstr "取得檔案大小失敗: {0}"
+
+#~ msgid "Failed to save downloaded file: {0}"
+#~ msgstr "儲存下載的檔案失敗: {0}"
+
+#~ msgid "Failed to open file: {0}"
+#~ msgstr "開啟檔案失敗: {0}"
+
+#~ msgid "Failed to create xz reader: {0}"
+#~ msgstr "建立 xz 讀取器失敗: {0}"
+
+#~ msgid "Failed to write decompressed data: {0}"
+#~ msgstr "寫入解壓縮資料失敗: {0}"
+
+#~ msgid "Failed to read compressed data: {0}"
+#~ msgstr "讀取壓縮資料失敗: {0}"
+
+#~ msgid "Decompression succeeded but failed to delete compressed file: {0}"
+#~ msgstr "解壓成功但刪除壓縮檔案失敗: {0}"
+
+#~ msgid ""
+#~ "Log parser is not initialized; call indexer.InitLogParser() before use"
+#~ msgstr "日誌解析器未初始化；使用前請呼叫 indexer.InitLogParser()"
+
+#~ msgid "Log indexer not available"
+#~ msgstr "日誌索引器不可用"
+
+#~ msgid "Analytics service not available"
+#~ msgstr "分析服務不可用"
+
+#~ msgid "Cannot access log file"
+#~ msgstr "無法存取日誌檔案"
+
+#~ msgid "Background log service not available"
+#~ msgstr "後台日誌服務不可用"
+
+#~ msgid "File path is required"
+#~ msgstr "文件路徑是必需的"
+
+#~ msgid "Failed to rebuild index"
+#~ msgstr "重建索引失敗"
+
+#~ msgid "Failed to rebuild file index"
+#~ msgstr "重建文件索引失敗"
+
+#~ msgid "Failed to delete file index"
+#~ msgstr "刪除文件索引失敗"
+
+#~ msgid "Failed to delete all indexes"
+#~ msgstr "刪除所有索引失敗"
+
+#~ msgid "Failed to get index status"
+#~ msgstr "獲取索引狀態失敗"
+
+#~ msgid "Failed to get persistence stats"
+#~ msgstr "獲取持久化統計資訊失敗"
+
+#~ msgid "Modern searcher service not available"
+#~ msgstr "現代搜尋服務不可用"
+
+#~ msgid "Modern analytics service not available"
+#~ msgstr "現代分析服務不可用"
+
+#~ msgid "Modern indexer service not available"
+#~ msgstr "現代索引服務不可用"
+
+#~ msgid ""
+#~ "GeoLite2 database not found at {0}. Log indexing requires GeoLite2 "
+#~ "database for geographic IP analysis"
+#~ msgstr ""
+#~ "未在 {0} 找到 GeoLite2 資料庫。日誌索引需要 GeoLite2 資料庫進行地理 IP 分"
+#~ "析"
+
+#~ msgid ""
+#~ "Check if the GeoLite2 database is available when log indexing is enabled. "
+#~ "The GeoLite2 database is required for geographic IP analysis in log "
+#~ "indexing. You can download it from the Preference page or manually place "
+#~ "GeoLite2-City.mmdb in the same directory as app.ini"
+#~ msgstr ""
+#~ "當啟用日誌索引時，檢查 GeoLite2 資料庫是否可用。GeoLite2 資料庫是日誌索引"
+#~ "中地理 IP 分析所必需的。您可以在偏好設置頁面下載它，或者手動將 GeoLite2-"
+#~ "City.mmdb 放在與 app.ini 相同的目錄中"
+
+#~ msgid "GeoLite2 database available"
+#~ msgstr "GeoLite2 資料庫可用"
+
+#~ msgid "Inspect access and error logs with structured analysis tools."
+#~ msgstr "使用結構化分析工具檢視存取與錯誤日誌。"
+
+#~ msgid "1 core minimum"
+#~ msgstr "至少 1 核"
+
+#~ msgid "2+ cores recommended"
+#~ msgstr "推薦 2+ 核心"
+
+#~ msgid "1GB RAM minimum"
+#~ msgstr "至少 1GB 記憶體"
+
+#~ msgid "4GB+ RAM recommended"
+#~ msgstr "推薦 4GB 以上記憶體"
+
+#~ msgid "At least 20GB available disk space"
+#~ msgstr "至少 20GB 可用磁碟空間"
+
+#~ msgid "SSD storage for better I/O performance"
+#~ msgstr "SSD 儲存以獲得更好的 I/O 效能"
+
+#~ msgid "Production Pipeline"
+#~ msgstr "生產流水線"
+
+#~ msgid "Complete indexing with search capabilities"
+#~ msgstr "具備搜索功能的完整索引"
+
+#~ msgid "Parser Performance"
+#~ msgstr "解析器效能"
+
+#~ msgid "SIMD-optimized stream processing"
+#~ msgstr "SIMD 優化的流處理"
+
+#~ msgid "Memory Design"
+#~ msgstr "記憶體設計"
+
+#~ msgid "Advanced memory pooling system"
+#~ msgstr "高級記憶體池系統"
+
+#~ msgid "Enable Advanced Log Indexing"
+#~ msgstr "啟用進階日誌索引"
+
+#~ msgid "Enable Indexing"
+#~ msgstr "啟用索引"
+
+#~ msgid "Resource Usage Warning"
+#~ msgstr "資源使用警告"
+
+#~ msgid ""
+#~ "Enabling advanced log indexing will consume significant computational "
+#~ "resources including CPU and memory. Please ensure your system meets the "
+#~ "minimum requirements before proceeding."
+#~ msgstr ""
+#~ "啟用進階日誌索引將消耗大量計算資源，包括 CPU 和記憶體。請確保您的系統滿足"
+#~ "最低要求後再繼續。"
+
+#~ msgid "System Requirements"
+#~ msgstr "系統要求"
+
+#~ msgid "Minimum:"
+#~ msgstr "最低要求："
+
+#~ msgid "Recommended:"
+#~ msgstr "推薦："
+
+#~ msgid ""
+#~ "* Index files are stored in the \"log-index\" directory within your Nginx "
+#~ "UI config path by default."
+#~ msgstr ""
+#~ "* 索引文件預設存儲在您的 Nginx UI 配置路徑下的 \"log-index\" 目錄中。"
+
+#~ msgid ""
+#~ "If you want to change the storage location, you can set the `IndexPath` "
+#~ "of `nginx_log` section in the Nginx UI config."
+#~ msgstr ""
+#~ "如果要更改存儲位置，可以在 Nginx UI 配置中設置 `nginx_log` 部分的 "
+#~ "`IndexPath`。"
+
+#~ msgid "GeoLite2 Database"
+#~ msgstr "GeoLite2 資料庫"
+
+#~ msgid "Expected Performance"
+#~ msgstr "預期效能"
+
+#~ msgid ""
+#~ "* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
+#~ "Actual performance may vary based on your hardware configuration."
+#~ msgstr ""
+#~ "* 效能指標基於 Apple M2 Pro （12 核）和 32GB 記憶體測得。實際效能可能因您"
+#~ "的硬體配置而異。"
+
+#~ msgid "Zero-allocation pipeline"
+#~ msgstr "零分配管道"
+
+#~ msgid "Dynamic shard management"
+#~ msgstr "動態分片管理"
+
+#~ msgid "Advanced search & filtering"
+#~ msgstr "進階搜尋和篩選"
+
+#~ msgid "Real-time analytics dashboard"
+#~ msgstr "即時分析儀表板"
+
+#~ msgid "Offline GeoIP analysis"
+#~ msgstr "離線 GeoIP 分析"
+
+#~ msgid "Incremental index scanning"
+#~ msgstr "增量索引掃描"
+
+#~ msgid "Full-text search support"
+#~ msgstr "全文搜索支援"
+
+#~ msgid "Automated log rotation detection"
+#~ msgstr "自動日誌輪轉檢測"
+
+#~ msgid "Cross-file timeline correlation"
+#~ msgstr "跨文件時間線關聯"
+
+#~ msgid "Compressed log file support"
+#~ msgstr "壓縮日誌文件支援"
+
+#~ msgid "Error pattern recognition"
+#~ msgstr "錯誤模式識別"
+
+#~ msgid "Multi-dimensional data visualization"
+#~ msgstr "多維數據可視化"
+
+#~ msgid "Open Source Limitation"
+#~ msgstr "開源限制"
+
+#~ msgid ""
+#~ "Advanced log indexing features are free and open source for all users"
+#~ msgstr "高級日誌索引功能對所有用戶免費且開源"
+
+#~ msgid "We do not accept any feature requests"
+#~ msgstr "我們不接受任何功能請求"
+
+#~ msgid "For commercial or professional use, contact"
+#~ msgstr "如需商業或專業用途，請聯繫"
+
+#~ msgid "Confirmation Required"
+#~ msgstr "需要確認"
+
+#~ msgid ""
+#~ "By enabling advanced indexing, you acknowledge that your system meets the "
+#~ "requirements and understand the performance implications. This will start "
+#~ "indexing existing log files immediately."
+#~ msgstr ""
+#~ "啟用進階索引即表示您確認系統滿足要求並瞭解效能影響。這將立即開始對現有日誌"
+#~ "檔案進行索引。"
+
+#~ msgid "Indexing logs..."
+#~ msgstr "正在索引日誌..."
+
+#~ msgid "Queued for indexing..."
+#~ msgstr "排隊等待索引中..."
+
+#~ msgid "Index failed, please try rebuilding"
+#~ msgstr "索引失敗，請嘗試重新構建"
+
+#~ msgid "Log file not indexed yet"
+#~ msgstr "日誌檔案尚未建立索引"
+
+#~ msgid "Browser"
+#~ msgstr "瀏覽器"
+
+#~ msgid "Count"
+#~ msgstr "計數"
+
+#~ msgid "Browser Statistics"
+#~ msgstr "瀏覽器統計"
+
+#~ msgid "Failed to load China map data"
+#~ msgstr "載入中國地圖資料失敗"
+
+#~ msgid "Failed to load city map data"
+#~ msgstr "載入城市地圖資料失敗"
+
+#~ msgid "Province / Region"
+#~ msgstr "省份 / 地區"
+
+#~ msgid "City / C1 / C2 / C3 / C4"
+#~ msgstr "城市 / C1 / C2 / C3 / C4"
+
+#~ msgid "City"
+#~ msgstr "城市"
+
+#~ msgid "Top 10 Provinces / Regions"
+#~ msgstr "前十省份/地區"
+
+#~ msgid "Top 10 City Labels (City + C1 + C2 + C3 + C4)"
+#~ msgstr "前 10 個城市標籤（城市 + C1 + C2 + C3 + C4）"
+
+#~ msgid "Top 10 Cities"
+#~ msgstr "前 10 個城市"
+
+#~ msgid "China Access Map"
+#~ msgstr "中國訪問地圖"
+
+#~ msgid "No China geographic data available"
+#~ msgstr "無中國地理數據"
+
+#~ msgid "Daily Access Trends"
+#~ msgstr "每日訪問趨勢"
+
+#~ msgid "Date"
+#~ msgstr "日期"
+
+#~ msgid "Last 7 days"
+#~ msgstr "最近 7 天"
+
+#~ msgid "Last 14 days"
+#~ msgstr "過去 14 天"
+
+#~ msgid "Last 30 days"
+#~ msgstr "過去 30 天"
+
+#~ msgid "Last 90 days"
+#~ msgstr "過去 90 天"
+
+#~ msgid "This month"
+#~ msgstr "本月"
+
+#~ msgid "Last month"
+#~ msgstr "上個月"
+
+#~ msgid "Date Range"
+#~ msgstr "日期範圍"
+
+#~ msgid "Quick Select"
+#~ msgstr "快速選擇"
+
+#~ msgid "Start Date"
+#~ msgstr "開始日期"
+
+#~ msgid "End Date"
+#~ msgstr "結束日期"
+
+#~ msgid "Device Type"
+#~ msgstr "設備類型"
+
+#~ msgid "Device Statistics"
+#~ msgstr "設備統計"
+
+#~ msgid "Global Map"
+#~ msgstr "全球地圖"
+
+#~ msgid "China Map"
+#~ msgstr "中國地圖"
+
+#~ msgid "Global Access Map"
+#~ msgstr "全球訪問地圖"
+
+#~ msgid "24-Hour UV/PV Statistics"
+#~ msgstr "24 小時 UV/PV 統計"
+
+#~ msgid "Operating System"
+#~ msgstr "作業系統"
+
+#~ msgid "Operating System Statistics"
+#~ msgstr "作業系統統計"
+
+#~ msgid "Total PV"
+#~ msgstr "總訪問量"
+
+#~ msgid "Total UV"
+#~ msgstr "總 UV 數"
+
+#~ msgid "Total Traffic"
+#~ msgstr "總流量"
+
+#~ msgid "Peak Hour"
+#~ msgstr "高峰時段"
+
+#~ msgid "Avg QPS"
+#~ msgstr "平均 QPS"
+
+#~ msgid "Peak QPS"
+#~ msgstr "峰值 QPS"
+
+#~ msgid "Avg Daily PV"
+#~ msgstr "平均每日 PV"
+
+#~ msgid "Avg Daily UV"
+#~ msgstr "日均 UV"
+
+#~ msgid "TOP 10 URLs"
+#~ msgstr "前 10 個 URL"
+
+#~ msgid "Country / Region"
+#~ msgstr "國家/地區"
+
+#~ msgid "No geographic data available"
+#~ msgstr "無可用地理數據"
+
+#~ msgid "Top 10 Countries / Regions"
+#~ msgstr "前 10 個國家/地區"
+
+#~ msgid ""
+#~ "Explore access traffic logs with filters and detailed request information."
+#~ msgstr "以篩選條件檢視存取流量日誌與詳細請求資訊。"
+
+#~ msgid ""
+#~ "Manage indexed log files and jump into structured analysis workflows."
+#~ msgstr "管理已索引日誌檔並進入結構化分析流程。"
+
+#~ msgid "Scanning"
+#~ msgstr "掃描中"
+
+#~ msgid "Indexing"
+#~ msgstr "索引中"
+
+#~ msgid "Computing Statistics"
+#~ msgstr "計算統計資訊"
+
+#~ msgid "Rebuild Index"
+#~ msgstr "重建索引"
+
+#~ msgid ""
+#~ "This will rebuild the entire log index. All existing index data will be "
+#~ "deleted and rebuilt from scratch. This may take some time. Continue?"
+#~ msgstr ""
+#~ "這將重建整個日誌索引。所有現有索引數據將被刪除並從頭開始重建。這可能需要一"
+#~ "些時間。是否繼續？"
+
+#~ msgid "Index and statistics rebuild started successfully"
+#~ msgstr "索引和統計重建已成功啟動"
+
+#~ msgid "Rebuild File Index"
+#~ msgstr "重建文件索引"
+
+#~ msgid "This will rebuild the index data for this specific file: %{path}"
+#~ msgstr "這將重建此特定檔案的索引數據：%{path}"
+
+#~ msgid "File index rebuild started successfully for %{path}"
+#~ msgstr "已成功開始為 %{path} 重建檔案索引"
+
+#~ msgid "Rebuild All Index"
+#~ msgstr "重建所有索引"
+
+#~ msgid "Structured"
+#~ msgstr "結構化"
+
+#~ msgid "Index Status"
+#~ msgstr "索引狀態"
+
+#~ msgid "Indexed"
+#~ msgstr "已建立索引"
+
+#~ msgid "Index failed"
+#~ msgstr "索引失敗"
+
+#~ msgid "Queued"
+#~ msgstr "已排隊"
+
+#~ msgid "Not Indexed"
+#~ msgstr "未索引"
+
+#~ msgid "Last Indexed"
+#~ msgstr "最後索引時間"
+
+#~ msgid "Document Count"
+#~ msgstr "文件數量"
+
+#~ msgid "Time Range"
+#~ msgstr "時間範圍"
+
+#~ msgid "Advanced indexing enabled successfully"
+#~ msgstr "高級索引已成功啟用"
+
+#~ msgid "Index rebuild initiated"
+#~ msgstr "索引重建已啟動"
+
+#~ msgid "Advanced indexing enabled but failed to start rebuild"
+#~ msgstr "高級索引已啟用但未能開始重建"
+
+#~ msgid "Failed to enable advanced indexing"
+#~ msgstr "啟用高級索引失敗"
+
+#~ msgid "Disable Advanced Indexing"
+#~ msgstr "停用進階索引"
+
+#~ msgid ""
+#~ "Advanced log indexing will stop and structured log analytics will be "
+#~ "unavailable. Existing index files will not be deleted. Continue?"
+#~ msgstr ""
+#~ "進階記錄索引將會停止，結構化記錄分析將無法使用。現有的索引檔案不會被刪除。"
+#~ "是否繼續？"
+
+#~ msgid "Advanced indexing disabled successfully"
+#~ msgstr "進階索引已成功停用"
+
+#~ msgid "Failed to disable advanced indexing"
+#~ msgstr "停用進階索引失敗"
+
+#~ msgid "Enable Advanced Indexing"
+#~ msgstr "啟用高級索引"
+
+#~ msgid "Rebuild"
+#~ msgstr "重建"
+
+#~ msgid "Search Filters"
+#~ msgstr "搜尋篩選器"
+
+#~ msgid "Full Text Search"
+#~ msgstr "全文搜尋"
+
+#~ msgid "Search in log content..."
+#~ msgstr "在日誌內容中搜尋..."
+
+#~ msgid "Type or select status codes"
+#~ msgstr "輸入或選擇狀態碼"
+
+#~ msgid "Request Path"
+#~ msgstr "請求路徑"
+
+#~ msgid "Type or select browser"
+#~ msgstr "輸入或選擇瀏覽器"
+
+#~ msgid "Type or select OS"
+#~ msgstr "輸入或選擇作業系統"
+
+#~ msgid "Device"
+#~ msgstr "裝置"
+
+#~ msgid "Type or select device"
+#~ msgstr "輸入或選擇裝置"
+
+#~ msgid "Referer"
+#~ msgstr "來源"
+
+#~ msgid "https://..."
+#~ msgstr "https://..."
+
+#~ msgid "Mozilla/5.0..."
+#~ msgstr "Mozilla/5.0..."
+
+#~ msgid "Request"
+#~ msgstr "請求"
+
+#~ msgid "Last 15 minutes"
+#~ msgstr "過去 15 分鐘"
+
+#~ msgid "Last 30 minutes"
+#~ msgstr "過去 30 分鐘"
+
+#~ msgid "Last hour"
+#~ msgstr "過去 1 小時"
+
+#~ msgid "Last 4 hours"
+#~ msgstr "過去 4 小時"
+
+#~ msgid "Last 12 hours"
+#~ msgstr "過去 12 小時"
+
+#~ msgid "Last 24 hours"
+#~ msgstr "過去 24 小時"
+
+#~ msgid "No logs found in the selected time range."
+#~ msgstr "在選定的時間範圍內未找到日誌。"
+
+#~ msgid ""
+#~ "Background indexing in progress. Data will be updated automatically when "
+#~ "ready."
+#~ msgstr "後台索引正在進行中。數據將在準備就緒後自動更新。"
+
+#~ msgid "Log indexing completed! Loading updated data..."
+#~ msgstr "日誌索引完成！正在載入更新數據..."
+
+#~ msgid "Error Log Detected"
+#~ msgstr "檢測到錯誤日誌"
+
+#~ msgid ""
+#~ "Error logs do not support structured analysis as they contain free-form "
+#~ "text messages."
+#~ msgstr "錯誤日誌不支援結構化分析，因為它們包含自由格式的文字訊息。"
+
+#~ msgid ""
+#~ "For error logs, please use the Raw Log Viewer for better viewing "
+#~ "experience."
+#~ msgstr "對於錯誤日誌，請使用原始日誌檢視器以獲得更好的檢視體驗。"
+
+#~ msgid "Go to Raw Log Viewer"
+#~ msgstr "轉到原始日誌查看器"
+
+#~ msgid "Sorted by"
+#~ msgstr "排序方式"
+
+#~ msgid "Ascending"
+#~ msgstr "升序"
+
+#~ msgid "Descending"
+#~ msgstr "降序"
+
+#~ msgid "Total Entries"
+#~ msgstr "總條目數"
+
+#~ msgid "PV"
+#~ msgstr "頁面瀏覽量"
+
+#~ msgid "UV"
+#~ msgstr "獨立訪客"
+
+#~ msgid ""
+#~ "The result set is too large to sum exactly, this value is extrapolated "
+#~ "from a sample"
+#~ msgstr "結果集過大，無法精確求和，該數值是基於樣本資料推算得出。"
+
+#~ msgid "Traffic"
+#~ msgstr "流量"
+
+#~ msgid "Unique Pages"
+#~ msgstr "獨立頁面"
+
+#~ msgid "Avg/PV"
+#~ msgstr "平均 /PV"
+
+#~ msgid "%{start}-%{end} of %{total} items"
+#~ msgstr "第 %{start}-%{end} 條，共 %{total} 條"
+
+#~ msgid "No entries in current page"
+#~ msgstr "當前頁面沒有條目"
+
+#~ msgid "Try adjusting your search criteria or navigate to different pages."
+#~ msgstr "嘗試調整搜索條件或導航到其他頁面。"
+
+#~ msgid "No structured log data available"
+#~ msgstr "無結構化日誌數據可用"
+
+#~ msgid "Try adjusting your search criteria or time range."
+#~ msgstr "嘗試調整您的搜尋條件或時間範圍。"
+
+#~ msgid "Search range"
+#~ msgstr "搜尋範圍"
+
+#~ msgid "From indexed logs"
+#~ msgstr "來自已索引的日誌"
+
+#~ msgid "Default range"
+#~ msgstr "預設範圍"
+
+#~ msgid "Reset Search"
+#~ msgstr "重置搜尋"
+
+#~ msgid "Log file not available"
+#~ msgstr "日誌文件不可用"
+
+#~ msgid ""
+#~ "Used for downloads from GitHub, such as upgrades and the GeoLite database."
+#~ msgstr "用於從 GitHub 下載內容，例如升級套件和 GeoLite 資料庫。"
+
+#~ msgid ""
+#~ "The GeoLite2 database provides geographic information for IP addresses. "
+#~ "This is used for offline geographic analysis in log analytics."
+#~ msgstr ""
+#~ "GeoLite2 資料庫為 IP 位址提供地理資訊。這用於日誌分析中的離線地理分析。"
+
+#~ msgid "Custom MMDB"
+#~ msgstr "自訂 MMDB"
+
+#~ msgid "A custom database replaces the GeoLite2 download."
+#~ msgstr "已使用自訂資料庫，無需下載 GeoLite2。"
+
+#~ msgid "Map Boundary Directory"
+#~ msgstr "地圖邊界目錄"
+
+#~ msgid ""
+#~ "Keep files with names like 100000_full.json in this directory. Only the "
+#~ "world map is provided by default."
+#~ msgstr "請將類似 100000_full.json 的檔案放在此目錄，預設只提供世界地圖。"
+
+#~ msgid "GeoLite"
+#~ msgstr "GeoLite"
+
+#~ msgid "Geographic database and map files used by log analytics."
+#~ msgstr "日誌分析使用的地理資料庫與地圖檔案。"
+
+#~ msgid "Go to logs"
+#~ msgstr "前往日誌"
+
+#~ msgid "Database"
+#~ msgstr "資料庫"
+
+#~ msgid "Maps"
+#~ msgstr "地圖"
+
+#~ msgid ""
+#~ "Please download China and province boundary files yourself and place them "
+#~ "in this directory."
+#~ msgstr "請自行下載中國及各省份邊界檔案並放入此目錄。"
+
+#~ msgid "Template reference"
+#~ msgstr "模板參考"
+
+#~ msgid "No valid access log path found for this site"
+#~ msgstr "未找到此網站的有效存取日誌路徑"
+
+#~ msgid ""
+#~ "This site uses the default access log, which may contain traffic from "
+#~ "other sites"
+#~ msgstr "此網站使用預設的存取日誌，其中可能包含來自其他網站的流量。"
+
+#~ msgid "Analytics"
+#~ msgstr "分析"
+
+#~ msgid "[Nginx UI] Environment variables cleaned"
+#~ msgstr "[Nginx UI] 環境變數已清理"
+
+#~ msgid "[Nginx UI] Setting environment variables"
+#~ msgstr "[Nginx UI] 設定環境變數"
+
+#~ msgid "API Document"
+#~ msgstr "API 文件"
+
+#~ msgid "SDK"
+#~ msgstr "SDK"
+
+#~ msgid "Additional"
+#~ msgstr "其他設定"
+
+#~ msgid ""
+#~ "Please note that the unit of time configurations below are all in seconds."
+#~ msgstr "請注意，以下時間設定單位均為秒。"
+
+#~ msgid "Required Settings"
+#~ msgstr "必要設定"
+
+#~ msgid ""
+#~ "DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+#~ "Plugins."
+#~ msgstr "DNS-01 驗證需要 DNS-01 外掛，請前往「系統 > 外掛」安裝。"
+
+#~ msgid "Special Settings"
+#~ msgstr "特殊設定"
+
+#~ msgid "Do not enable this option unless you are sure that you need it."
+#~ msgstr "除非您確定需要，否則不要啟用此選項。"
+
+#~ msgid "Please create DNS credentials first in DNS > Credentials"
+#~ msgstr "請先在 DNS > 憑證 中建立 DNS 憑證"
+
+#~ msgid "Go to DNS > Credentials to create or manage credentials"
+#~ msgstr "前往 DNS > 憑證 以建立或管理憑證"
+
+#~ msgid "This certificate is managed by Nginx UI"
+#~ msgstr "此憑證由 Nginx UI 管理"
+
+#~ msgid "This certificate is not managed by Nginx UI"
+#~ msgstr "此憑證並非由 Nginx UI 託管"
+
+#~ msgid "Challenge Method Reminder"
+#~ msgstr "驗證方式提醒"
+
+#~ msgid ""
+#~ "If you use HTTP-01 challenge, the DNS credential field is hidden and not "
+#~ "required."
+#~ msgstr "如果使用 HTTP-01 驗證，DNS 憑證欄位會隱藏且無需填寫。"
+
+#~ msgid "If you use DNS-01 challenge, you must select a DNS credential."
+#~ msgstr "如果使用 DNS-01 驗證，必須選擇一個 DNS 憑證。"
+
+#~ msgid "Wildcard certificates usually require DNS-01 challenge."
+#~ msgstr "萬用字元憑證通常需要使用 DNS-01 驗證。"
+
+#~ msgid ""
+#~ "This self-signed certificate is managed by Nginx UI and renewed "
+#~ "automatically."
+#~ msgstr "此自簽名憑證由 Nginx UI 管理並自動續期。"
+
+#~ msgid "Dev plugin"
+#~ msgstr "開發外掛"
+
+#~ msgid "This plugin does not request any host permission."
+#~ msgstr "此外掛未要求任何主機權限。"
+
+#~ msgid "Store and read its own key-value data inside the Nginx UI database."
+#~ msgstr "在 Nginx UI 資料庫中儲存和讀取外掛自身的鍵值資料。"
+
+#~ msgid ""
+#~ "Make outbound network requests to the hosts declared in its manifest."
+#~ msgstr "向其清單中宣告的主機發出對外網路請求。"
+
+#~ msgid "Run scheduled tasks on the schedules declared in its manifest."
+#~ msgstr "依其清單中宣告的排程執行定時任務。"
+
+#~ msgid "Call the Nginx UI management API with your permissions."
+#~ msgstr "以您的權限呼叫 Nginx UI 管理 API。"
+
+#~ msgid ""
+#~ "Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+#~ "can then run them."
+#~ msgstr "透過 MCP 將其工具提供給連線至 Nginx UI 的 AI 助理，供其執行。"
+
+#~ msgid ""
+#~ "Receive certificates and their private keys in order to push them to "
+#~ "external targets."
+#~ msgstr "接收憑證及其私鑰，以便將其推送至外部目標。"
+
+#~ msgid ""
+#~ "Receive every parsed nginx access log line while enabled, including "
+#~ "client addresses and requested URLs."
+#~ msgstr ""
+#~ "在啟用期間接收每一筆解析後的 nginx 存取日誌，包括用戶端位址和請求的 URL。"
+
+#~ msgid "No background process"
+#~ msgstr "無背景處理程序"
+
+#~ msgid "On demand"
+#~ msgstr "按需啟動"
+
+#~ msgid "Resident"
+#~ msgstr "常駐"
+
+#~ msgid "Turn it on to review the requested permissions."
+#~ msgstr "開啟開關即可檢視其要求的權限。"
+
+#~ msgid "The running process is confined to these limits."
+#~ msgstr "執行中的行程被限制在這些限額內。"
+
+#~ msgid ""
+#~ "The plugin is not running, or this node cannot confine processes: that "
+#~ "needs Linux with a writable cgroup v2 hierarchy."
+#~ msgstr ""
+#~ "該外掛未在執行，或此節點無法對行程施加限制：這需要具備可寫入 cgroup v2 階"
+#~ "層結構的 Linux 系統。"
+
+#~ msgid "Needs capabilities"
+#~ msgstr "相依的能力"
+
+#~ msgid "Permissions"
+#~ msgstr "權限"
+
+#~ msgid "Idle"
+#~ msgstr "閒置"
+
+#~ msgid ""
+#~ "Turning it off stops every plugin and hides the plugin pages. Takes "
+#~ "effect after a restart."
+#~ msgstr "關閉後會停止所有外掛並隱藏外掛頁面，重新啟動後生效。"
+
+#~ msgid "Trusted Keys"
+#~ msgstr "可信金鑰"
+
+#~ msgid ""
+#~ "Packages signed with one of these keys install as community plugins. One "
+#~ "key per line."
+#~ msgstr "用這些金鑰簽署的安裝套件按社群外掛安裝，每行一個金鑰。"
+
+#~ msgid ""
+#~ "Applies to every plugin process. 0 means unlimited, a plugin can only "
+#~ "lower its own limit."
+#~ msgstr "套用於每個外掛程序。0 表示不限制，外掛只能調低自己的限制。"
+
+#~ msgid "Percent of one core for every plugin process. 0 means unlimited."
+#~ msgstr "每個外掛程序可用的單核百分比，0 表示不限制。"
+
+#~ msgid "cgroup Root"
+#~ msgstr "cgroup 根目錄"
+
+#~ msgid "Limits are enforced on Linux with cgroup v2 only."
+#~ msgstr "僅在使用 cgroup v2 的 Linux 上強制執行。"
+
+#~ msgid "The plugins directory under the configuration directory"
+#~ msgstr "設定目錄下的 plugins 目錄"
+
+#~ msgid "Paste public keys here"
+#~ msgstr "在此貼上公鑰"
+
+#~ msgid "Verifying the signature"
+#~ msgstr "正在驗證簽章"
+
+#~ msgid "Built and signed by the Nginx UI maintainers."
+#~ msgstr "由 Nginx UI 維護者建置並簽署。"
+
+#~ msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+#~ msgstr "經 Nginx UI 維護者審核，並使用發布金鑰簽署。"
+
+#~ msgid ""
+#~ "Address of a plugin.json served by any static server. The plugin is "
+#~ "loaded in addition to the installed ones."
+#~ msgstr ""
+#~ "由任意靜態伺服器提供的 plugin.json 位址，該外掛會在已安裝外掛之外額外載"
+#~ "入。"
+
+#~ msgid "Released"
+#~ msgstr "發布日期"
+
+#~ msgid "Transport"
+#~ msgstr "傳輸方式"
+
+#~ msgid "Danger zone"
+#~ msgstr "危險區域"
+
+#~ msgid "Uninstall %{name}? Its data and settings are removed."
+#~ msgstr "確定要解除安裝 %{name} 嗎？其資料和設定都會被移除。"
+
+#~ msgid "Logs: %{name}"
+#~ msgstr "日誌：%{name}"
+
+#~ msgid "Search plugins"
+#~ msgstr "搜尋外掛"
+
+#~ msgid "Updates only"
+#~ msgstr "僅顯示可更新"
+
+#~ msgid "Settings: %{name}"
+#~ msgstr "設定：%{name}"
+
+#~ msgid "Lego disable CNAME Support"
+#~ msgstr "Lego 停用 CNAME 支援"
+
+#~ msgid ""
+#~ "If your domain has CNAME records and you cannot obtain certificates, "
+#~ msgstr "如果您的域名有 CNAME 記錄且無法獲取證書，"
+
+#~ msgid "Disable Authoritative DNS Propagation Check"
+#~ msgstr "停用權威 DNS 傳播檢查"
+
+#~ msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+#~ msgstr "跳過本地 DNS 傳播檢查，並在請求前等待 60 秒。"
+
+#~ msgid "Provider not found: {0}"
+#~ msgstr "未找到提供者：{0}"
+
+#~ msgid "Set env error: {0}"
+#~ msgstr "設定環境錯誤：{0}"
+
+#~ msgid "Set env flag to disable lego CNAME support error: {0}"
+#~ msgstr "設定環境標誌以停用 lego CNAME 支援錯誤：{0}"
+
+#~ msgid ""
+#~ "If your domain has CNAME records and you cannot obtain certificates, you "
+#~ "need to enable this option."
+#~ msgstr "如果您的網域有 CNAME 記錄且無法取得憑證，則需要啟用此選項。"
+
+#~ msgid ""
+#~ "Skip local DNS propagation checks and wait 60 seconds before asking the "
+#~ "certificate authority to validate the record."
+#~ msgstr "略過本機 DNS 傳播檢查，並在請求憑證授權單位驗證記錄前等待 60 秒。"
+
+#~ msgid "Recursive Nameservers"
+#~ msgstr "遞迴名稱伺服器"
+
+#~ msgid ""
+#~ "Set the recursive nameservers to override the systems nameservers for the "
+#~ "step of DNS challenge."
+#~ msgstr "設定遞迴網域名稱伺服器，在 DNS 驗證步驟中覆寫系統的網域名稱伺服器。"
+
+#~ msgid "DNS Challenge"
+#~ msgstr "DNS 驗證"
+
+#~ msgid ""
+#~ "Fixed after creation, so the sites that include the snippet keep working."
+#~ msgstr "建立後不可修改，以確保引用該片段的網站繼續正常運作。"
+
+#~ msgid ""
+#~ "This snippet has variables: %{names}. Insert it from the config template "
+#~ "panel of the site editor, which fills them in; Nginx cannot include it "
+#~ "directly."
+#~ msgstr ""
+#~ "此片段包含變數：%{names}。請在網站編輯器的配置模板面板中插入它，由面板填寫"
+#~ "變數；Nginx 無法直接引用它。"
+
+#~ msgid ""
+#~ "To use the snippet, add this directive to a server or location block:"
+#~ msgstr "在 server 或 location 區塊中加入以下指令即可使用該片段："
+
+#~ msgid ""
+#~ "Fill in the variables by inserting the snippet from the config template "
+#~ "panel of the site editor."
+#~ msgstr "請在網站編輯器的配置模板面板中插入該片段並填寫變數。"
 
 #~ msgid "Webauthn"
 #~ msgstr "Webauthn"

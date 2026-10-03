@@ -68,7 +68,6 @@ var serviceTokenWriteGETPaths = map[string]struct{}{
 	"/api/backup":            {},
 	"/api/certs/:id/revoke":  {},
 	"/api/domain/:name/cert": {},
-	"/api/geolite/download":  {},
 	"/api/system/restart":    {},
 	"/api/upgrade/perform":   {},
 }

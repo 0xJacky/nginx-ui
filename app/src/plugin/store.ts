@@ -1,0 +1,122 @@
+import type { Component } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
+import type { PrefixedSlotRegistration } from './slots'
+import type { PluginLoadState, RegisterSlotOptions, SlotContext, SlotName, SlotRegistration } from './types'
+import type { WebappEntry } from '@/api/plugin'
+import { collectSlotsByPrefix, registrationApplies } from './slots'
+
+/**
+ * Everything plugin bundles contributed to the running application.
+ *
+ * Components and route records are stored with `markRaw` / `shallowRef` so Vue
+ * never wraps a component definition in a reactive proxy.
+ */
+export const usePluginStore = defineStore('plugin', () => {
+  /** True once the loader finished, successfully or not. */
+  const ready = ref(false)
+  const loading = ref(false)
+  const entries = shallowRef<WebappEntry[]>([])
+  const loaded = ref<Record<string, PluginLoadState>>({})
+  const routes = shallowRef<RouteRecordRaw[]>([])
+  const slots = shallowRef<Record<string, SlotRegistration[]>>({})
+  const settingsPanels = shallowRef<Record<string, Component>>({})
+  /**
+   * Address of a plugin.json served on a loopback host, used to load a plugin
+   * straight from its build output while developing it. The loader ignores
+   * any other address.
+   */
+  const devPluginUrl = ref('')
+
+  function addRoute(route: RouteRecordRaw) {
+    routes.value = [...routes.value, route]
+  }
+
+  function addSlot(name: SlotName, pluginId: string, component: Component, options: RegisterSlotOptions = {}) {
+    const key = String(name)
+    const registration: SlotRegistration = {
+      pluginId,
+      component: markRaw(component),
+      order: options.order ?? 0,
+      when: options.when,
+      label: options.label,
+      sortValue: options.sortValue,
+      filters: options.filters,
+    }
+
+    slots.value = {
+      ...slots.value,
+      [key]: [...(slots.value[key] ?? []), registration],
+    }
+  }
+
+  /** Registrations of one slot that apply to `ctx`, in render order. */
+  function slotComponents(name: SlotName, ctx: SlotContext = {}): SlotRegistration[] {
+    const registrations = slots.value[String(name)] ?? []
+
+    return registrations
+      .filter(registration => registrationApplies(registration, ctx))
+      .sort((a, b) => a.order - b.order)
+  }
+
+  /** Registrations of every slot named `prefix{key}` that apply to `ctx`. */
+  function slotsByPrefix(prefix: string, ctx: SlotContext = {}): PrefixedSlotRegistration[] {
+    return collectSlotsByPrefix(slots.value, prefix, ctx)
+  }
+
+  function setSettingsPanel(pluginId: string, component: Component) {
+    settingsPanels.value = {
+      ...settingsPanels.value,
+      [pluginId]: markRaw(component),
+    }
+  }
+
+  function setLoadState(pluginId: string, state: PluginLoadState) {
+    loaded.value[pluginId] = state
+  }
+
+  /**
+   * Drops everything one plugin contributed and forgets its load state, so a
+   * later load treats it as new. Each collection is replaced, not mutated.
+   */
+  function removePlugin(pluginId: string) {
+    routes.value = routes.value.filter(route => route.meta?.pluginId !== pluginId)
+
+    const nextSlots: Record<string, SlotRegistration[]> = {}
+    for (const [name, registrations] of Object.entries(slots.value)) {
+      const kept = registrations.filter(registration => registration.pluginId !== pluginId)
+      if (kept.length > 0)
+        nextSlots[name] = kept
+    }
+    slots.value = nextSlots
+
+    const { [pluginId]: _panel, ...panels } = settingsPanels.value
+    settingsPanels.value = panels
+
+    entries.value = entries.value.filter(entry => entry.id !== pluginId)
+
+    const { [pluginId]: _state, ...states } = loaded.value
+    loaded.value = states
+  }
+
+  return {
+    ready,
+    loading,
+    entries,
+    loaded,
+    routes,
+    slots,
+    settingsPanels,
+    devPluginUrl,
+    addRoute,
+    addSlot,
+    slotComponents,
+    slotsByPrefix,
+    setSettingsPanel,
+    setLoadState,
+    removePlugin,
+  }
+}, {
+  persist: {
+    pick: ['devPluginUrl'],
+  },
+})

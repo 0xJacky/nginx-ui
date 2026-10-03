@@ -22,7 +22,10 @@ var (
 	AuthToken                *authToken
 	AutoBackup               *autoBackup
 	BanIP                    *banIP
+	BlocklistSource          *blocklistSource
 	Cert                     *cert
+	CertDeployTarget         *certDeployTarget
+	CertDeployment           *certDeployment
 	Config                   *config
 	ConfigBackup             *configBackup
 	DnsCredential            *dnsCredential
@@ -32,17 +35,19 @@ var (
 	LLMSession               *lLMSession
 	MCPServiceToken          *mCPServiceToken
 	Namespace                *namespace
-	NginxLogIndex            *nginxLogIndex
 	Node                     *node
 	NodeControllerCredential *nodeControllerCredential
 	NodeCredential           *nodeCredential
 	Notification             *notification
 	Passkey                  *passkey
+	Plugin                   *plugin
+	PluginKV                 *pluginKV
 	Site                     *site
 	SiteConfig               *siteConfig
 	SiteHealthAlertState     *siteHealthAlertState
 	Stream                   *stream
 	UpstreamConfig           *upstreamConfig
+	UpstreamDiscovery        *upstreamDiscovery
 	User                     *user
 )
 
@@ -53,7 +58,10 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	AuthToken = &Q.AuthToken
 	AutoBackup = &Q.AutoBackup
 	BanIP = &Q.BanIP
+	BlocklistSource = &Q.BlocklistSource
 	Cert = &Q.Cert
+	CertDeployTarget = &Q.CertDeployTarget
+	CertDeployment = &Q.CertDeployment
 	Config = &Q.Config
 	ConfigBackup = &Q.ConfigBackup
 	DnsCredential = &Q.DnsCredential
@@ -63,17 +71,19 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	LLMSession = &Q.LLMSession
 	MCPServiceToken = &Q.MCPServiceToken
 	Namespace = &Q.Namespace
-	NginxLogIndex = &Q.NginxLogIndex
 	Node = &Q.Node
 	NodeControllerCredential = &Q.NodeControllerCredential
 	NodeCredential = &Q.NodeCredential
 	Notification = &Q.Notification
 	Passkey = &Q.Passkey
+	Plugin = &Q.Plugin
+	PluginKV = &Q.PluginKV
 	Site = &Q.Site
 	SiteConfig = &Q.SiteConfig
 	SiteHealthAlertState = &Q.SiteHealthAlertState
 	Stream = &Q.Stream
 	UpstreamConfig = &Q.UpstreamConfig
+	UpstreamDiscovery = &Q.UpstreamDiscovery
 	User = &Q.User
 }
 
@@ -85,7 +95,10 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		AuthToken:                newAuthToken(db, opts...),
 		AutoBackup:               newAutoBackup(db, opts...),
 		BanIP:                    newBanIP(db, opts...),
+		BlocklistSource:          newBlocklistSource(db, opts...),
 		Cert:                     newCert(db, opts...),
+		CertDeployTarget:         newCertDeployTarget(db, opts...),
+		CertDeployment:           newCertDeployment(db, opts...),
 		Config:                   newConfig(db, opts...),
 		ConfigBackup:             newConfigBackup(db, opts...),
 		DnsCredential:            newDnsCredential(db, opts...),
@@ -95,17 +108,19 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		LLMSession:               newLLMSession(db, opts...),
 		MCPServiceToken:          newMCPServiceToken(db, opts...),
 		Namespace:                newNamespace(db, opts...),
-		NginxLogIndex:            newNginxLogIndex(db, opts...),
 		Node:                     newNode(db, opts...),
 		NodeControllerCredential: newNodeControllerCredential(db, opts...),
 		NodeCredential:           newNodeCredential(db, opts...),
 		Notification:             newNotification(db, opts...),
 		Passkey:                  newPasskey(db, opts...),
+		Plugin:                   newPlugin(db, opts...),
+		PluginKV:                 newPluginKV(db, opts...),
 		Site:                     newSite(db, opts...),
 		SiteConfig:               newSiteConfig(db, opts...),
 		SiteHealthAlertState:     newSiteHealthAlertState(db, opts...),
 		Stream:                   newStream(db, opts...),
 		UpstreamConfig:           newUpstreamConfig(db, opts...),
+		UpstreamDiscovery:        newUpstreamDiscovery(db, opts...),
 		User:                     newUser(db, opts...),
 	}
 }
@@ -118,7 +133,10 @@ type Query struct {
 	AuthToken                authToken
 	AutoBackup               autoBackup
 	BanIP                    banIP
+	BlocklistSource          blocklistSource
 	Cert                     cert
+	CertDeployTarget         certDeployTarget
+	CertDeployment           certDeployment
 	Config                   config
 	ConfigBackup             configBackup
 	DnsCredential            dnsCredential
@@ -128,17 +146,19 @@ type Query struct {
 	LLMSession               lLMSession
 	MCPServiceToken          mCPServiceToken
 	Namespace                namespace
-	NginxLogIndex            nginxLogIndex
 	Node                     node
 	NodeControllerCredential nodeControllerCredential
 	NodeCredential           nodeCredential
 	Notification             notification
 	Passkey                  passkey
+	Plugin                   plugin
+	PluginKV                 pluginKV
 	Site                     site
 	SiteConfig               siteConfig
 	SiteHealthAlertState     siteHealthAlertState
 	Stream                   stream
 	UpstreamConfig           upstreamConfig
+	UpstreamDiscovery        upstreamDiscovery
 	User                     user
 }
 
@@ -154,7 +174,10 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		AuthToken:                q.AuthToken.clone(db),
 		AutoBackup:               q.AutoBackup.clone(db),
 		BanIP:                    q.BanIP.clone(db),
+		BlocklistSource:          q.BlocklistSource.clone(db),
 		Cert:                     q.Cert.clone(db),
+		CertDeployTarget:         q.CertDeployTarget.clone(db),
+		CertDeployment:           q.CertDeployment.clone(db),
 		Config:                   q.Config.clone(db),
 		ConfigBackup:             q.ConfigBackup.clone(db),
 		DnsCredential:            q.DnsCredential.clone(db),
@@ -164,17 +187,19 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		LLMSession:               q.LLMSession.clone(db),
 		MCPServiceToken:          q.MCPServiceToken.clone(db),
 		Namespace:                q.Namespace.clone(db),
-		NginxLogIndex:            q.NginxLogIndex.clone(db),
 		Node:                     q.Node.clone(db),
 		NodeControllerCredential: q.NodeControllerCredential.clone(db),
 		NodeCredential:           q.NodeCredential.clone(db),
 		Notification:             q.Notification.clone(db),
 		Passkey:                  q.Passkey.clone(db),
+		Plugin:                   q.Plugin.clone(db),
+		PluginKV:                 q.PluginKV.clone(db),
 		Site:                     q.Site.clone(db),
 		SiteConfig:               q.SiteConfig.clone(db),
 		SiteHealthAlertState:     q.SiteHealthAlertState.clone(db),
 		Stream:                   q.Stream.clone(db),
 		UpstreamConfig:           q.UpstreamConfig.clone(db),
+		UpstreamDiscovery:        q.UpstreamDiscovery.clone(db),
 		User:                     q.User.clone(db),
 	}
 }
@@ -195,7 +220,10 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		AuthToken:                q.AuthToken.replaceDB(db),
 		AutoBackup:               q.AutoBackup.replaceDB(db),
 		BanIP:                    q.BanIP.replaceDB(db),
+		BlocklistSource:          q.BlocklistSource.replaceDB(db),
 		Cert:                     q.Cert.replaceDB(db),
+		CertDeployTarget:         q.CertDeployTarget.replaceDB(db),
+		CertDeployment:           q.CertDeployment.replaceDB(db),
 		Config:                   q.Config.replaceDB(db),
 		ConfigBackup:             q.ConfigBackup.replaceDB(db),
 		DnsCredential:            q.DnsCredential.replaceDB(db),
@@ -205,17 +233,19 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		LLMSession:               q.LLMSession.replaceDB(db),
 		MCPServiceToken:          q.MCPServiceToken.replaceDB(db),
 		Namespace:                q.Namespace.replaceDB(db),
-		NginxLogIndex:            q.NginxLogIndex.replaceDB(db),
 		Node:                     q.Node.replaceDB(db),
 		NodeControllerCredential: q.NodeControllerCredential.replaceDB(db),
 		NodeCredential:           q.NodeCredential.replaceDB(db),
 		Notification:             q.Notification.replaceDB(db),
 		Passkey:                  q.Passkey.replaceDB(db),
+		Plugin:                   q.Plugin.replaceDB(db),
+		PluginKV:                 q.PluginKV.replaceDB(db),
 		Site:                     q.Site.replaceDB(db),
 		SiteConfig:               q.SiteConfig.replaceDB(db),
 		SiteHealthAlertState:     q.SiteHealthAlertState.replaceDB(db),
 		Stream:                   q.Stream.replaceDB(db),
 		UpstreamConfig:           q.UpstreamConfig.replaceDB(db),
+		UpstreamDiscovery:        q.UpstreamDiscovery.replaceDB(db),
 		User:                     q.User.replaceDB(db),
 	}
 }
@@ -226,7 +256,10 @@ type queryCtx struct {
 	AuthToken                *authTokenDo
 	AutoBackup               *autoBackupDo
 	BanIP                    *banIPDo
+	BlocklistSource          *blocklistSourceDo
 	Cert                     *certDo
+	CertDeployTarget         *certDeployTargetDo
+	CertDeployment           *certDeploymentDo
 	Config                   *configDo
 	ConfigBackup             *configBackupDo
 	DnsCredential            *dnsCredentialDo
@@ -236,17 +269,19 @@ type queryCtx struct {
 	LLMSession               *lLMSessionDo
 	MCPServiceToken          *mCPServiceTokenDo
 	Namespace                *namespaceDo
-	NginxLogIndex            *nginxLogIndexDo
 	Node                     *nodeDo
 	NodeControllerCredential *nodeControllerCredentialDo
 	NodeCredential           *nodeCredentialDo
 	Notification             *notificationDo
 	Passkey                  *passkeyDo
+	Plugin                   *pluginDo
+	PluginKV                 *pluginKVDo
 	Site                     *siteDo
 	SiteConfig               *siteConfigDo
 	SiteHealthAlertState     *siteHealthAlertStateDo
 	Stream                   *streamDo
 	UpstreamConfig           *upstreamConfigDo
+	UpstreamDiscovery        *upstreamDiscoveryDo
 	User                     *userDo
 }
 
@@ -257,7 +292,10 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		AuthToken:                q.AuthToken.WithContext(ctx),
 		AutoBackup:               q.AutoBackup.WithContext(ctx),
 		BanIP:                    q.BanIP.WithContext(ctx),
+		BlocklistSource:          q.BlocklistSource.WithContext(ctx),
 		Cert:                     q.Cert.WithContext(ctx),
+		CertDeployTarget:         q.CertDeployTarget.WithContext(ctx),
+		CertDeployment:           q.CertDeployment.WithContext(ctx),
 		Config:                   q.Config.WithContext(ctx),
 		ConfigBackup:             q.ConfigBackup.WithContext(ctx),
 		DnsCredential:            q.DnsCredential.WithContext(ctx),
@@ -267,17 +305,19 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		LLMSession:               q.LLMSession.WithContext(ctx),
 		MCPServiceToken:          q.MCPServiceToken.WithContext(ctx),
 		Namespace:                q.Namespace.WithContext(ctx),
-		NginxLogIndex:            q.NginxLogIndex.WithContext(ctx),
 		Node:                     q.Node.WithContext(ctx),
 		NodeControllerCredential: q.NodeControllerCredential.WithContext(ctx),
 		NodeCredential:           q.NodeCredential.WithContext(ctx),
 		Notification:             q.Notification.WithContext(ctx),
 		Passkey:                  q.Passkey.WithContext(ctx),
+		Plugin:                   q.Plugin.WithContext(ctx),
+		PluginKV:                 q.PluginKV.WithContext(ctx),
 		Site:                     q.Site.WithContext(ctx),
 		SiteConfig:               q.SiteConfig.WithContext(ctx),
 		SiteHealthAlertState:     q.SiteHealthAlertState.WithContext(ctx),
 		Stream:                   q.Stream.WithContext(ctx),
 		UpstreamConfig:           q.UpstreamConfig.WithContext(ctx),
+		UpstreamDiscovery:        q.UpstreamDiscovery.WithContext(ctx),
 		User:                     q.User.WithContext(ctx),
 	}
 }

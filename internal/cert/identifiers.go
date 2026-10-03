@@ -3,6 +3,7 @@ package cert
 import (
 	"net/netip"
 	"strings"
+	"unicode"
 )
 
 const shortLivedCertificateProfile = "shortlived"
@@ -73,8 +74,16 @@ func normalizeCertificateIdentifiers(values []string) (certificateIdentifierInfo
 			}
 			canonical = addr.String()
 			info.HasIP = true
-		} else if strings.HasPrefix(identifier, "*.") {
-			info.HasWildcard = true
+		} else {
+			// The names become a directory name below the nginx configuration
+			// directory, so nothing a domain name never holds gets through.
+			if strings.Contains(identifier, "..") || strings.ContainsAny(identifier, `/\:`) ||
+				strings.ContainsFunc(identifier, func(r rune) bool { return unicode.IsSpace(r) || unicode.IsControl(r) }) {
+				return certificateIdentifierInfo{}, NewInvalidCertificateIdentifierError(identifier)
+			}
+			if strings.HasPrefix(identifier, "*.") {
+				info.HasWildcard = true
+			}
 		}
 
 		if _, ok := seen[canonical]; ok {

@@ -1,0 +1,34 @@
+// Package main implements the {{.Name}} nginx-ui plugin: a DNS-01 challenge
+// solver for the "{{.ProviderCode}}" provider.
+package main
+
+import (
+	"context"
+
+	sdk "github.com/nginxui/plugin-sdk-go"
+)
+
+// {{.GoTypeName}} implements the dns01 capability for the "{{.ProviderCode}}" provider.
+type {{.GoTypeName}} struct{}
+
+// Present publishes the challenge TXT record req.EffectiveFQDN with the value
+// req.Value.
+func (p {{.GoTypeName}}) Present(ctx context.Context, req sdk.DNS01Request) error {
+	token := req.Config[{{json .CredentialKey}}]
+	if token == "" {
+		return sdk.InvalidConfig({{json .CredentialKey}}, "the API token is required")
+	}
+	// TODO: call the {{.ProviderName}} API with the token to create the record.
+	return nil
+}
+
+// CleanUp removes what Present published. It runs even when Present never
+// ran or failed, so a record that is not there is not an error.
+func (p {{.GoTypeName}}) CleanUp(ctx context.Context, req sdk.DNS01Request) error {
+	// TODO: call the {{.ProviderName}} API to remove the record.
+	return nil
+}
+
+func main() {
+	sdk.Serve(sdk.Plugin{DNS01: {{.GoTypeName}}{}})
+}

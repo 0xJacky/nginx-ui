@@ -15,6 +15,7 @@ const router = useRouter()
 const { describe } = useSnippetDescription()
 
 const name = computed(() => String(route.params.name))
+const pluginId = computed(() => typeof route.query.plugin_id === 'string' ? route.query.plugin_id : undefined)
 const source = ref<BuiltinTemplate>()
 const content = ref('')
 const isLoading = ref(false)
@@ -24,7 +25,7 @@ const rows = computed(() => toRows(source.value?.variables))
 async function load() {
   isLoading.value = true
   try {
-    source.value = await snippet.getBuiltin(name.value)
+    source.value = await snippet.getBuiltin(name.value, pluginId.value)
     content.value = source.value.content ?? ''
   }
   catch {
@@ -35,10 +36,10 @@ async function load() {
   }
 }
 
-watch(name, load, { immediate: true })
+watch([name, pluginId], load, { immediate: true })
 
 function copyAsSnippet() {
-  router.push({ path: '/sites/snippets/add', query: { from: name.value } })
+  router.push({ path: '/sites/snippets/add', query: { from: name.value, ...(pluginId.value ? { plugin_id: pluginId.value } : {}) } })
 }
 </script>
 
@@ -50,6 +51,15 @@ function copyAsSnippet() {
           <div class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
             <span class="truncate">{{ source?.name || name }}</span>
             <ATag
+              v-if="pluginId"
+              color="blue"
+              :bordered="false"
+              class="m-0 font-normal"
+            >
+              {{ $gettext('From plugin %{id}', { id: pluginId }) }}
+            </ATag>
+            <ATag
+              v-else
               :bordered="false"
               class="m-0 font-normal"
             >
@@ -77,6 +87,7 @@ function copyAsSnippet() {
           <SnippetPreview
             :rows="rows"
             :content="content"
+            :from-plugin="!!pluginId"
           />
         </section>
       </ACard>
@@ -89,6 +100,13 @@ function copyAsSnippet() {
       >
         <div class="flex flex-col gap-4">
           <AAlert
+            v-if="pluginId"
+            type="info"
+            show-icon
+            :title="$gettext('This template comes from the plugin %{id} and cannot be changed. Copy it as a snippet to change it, and review its directives before using it.', { id: pluginId })"
+          />
+          <AAlert
+            v-else
             type="info"
             show-icon
             :title="$gettext('Built-in templates come with Nginx UI and cannot be changed. Copy one as a snippet to change it.')"

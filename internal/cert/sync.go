@@ -3,6 +3,7 @@ package cert
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -24,6 +25,9 @@ type SyncCertificatePayload struct {
 	SSLCertificate        string             `json:"ssl_certificate"`
 	SSLCertificateKey     string             `json:"ssl_certificate_key"`
 	KeyType               certcrypto.KeyType `json:"key_type"`
+	// Delegated marks a certificate the sender issued for this node and keeps
+	// renewing, so a record of this node for the same files stops renewing.
+	Delegated bool `json:"delegated,omitempty"`
 }
 
 // SyncToRemoteServer pushes the certificate files to the nodes configured on
@@ -32,6 +36,9 @@ type SyncCertificatePayload struct {
 func SyncToRemoteServer(c *model.Cert) (err error) {
 	if c.SSLCertificatePath == "" || c.SSLCertificateKeyPath == "" {
 		return
+	}
+	if c.IsDelegated() {
+		return syncDelegated(c)
 	}
 
 	nodeIDs := lo.Uniq(append(append([]uint64{}, c.SyncNodeIds...), referencingNodeIDs(c)...))
@@ -105,7 +112,14 @@ type SyncNotificationPayload struct {
 	Response   string `json:"response"`
 }
 
-func deploy(node *model.Node, c *model.Cert, payloadBytes []byte) (err error) {
+func deploy(node *model.Node, c *model.Cert, payloadBytes []byte) error {
+	_, err := deployWithReply(node, c, payloadBytes)
+	return err
+}
+
+// deployWithReply sends a certificate to a node and returns the reply of the
+// node, which names the record the node keeps the certificate in.
+func deployWithReply(node *model.Node, c *model.Cert, payloadBytes []byte) (respBody []byte, err error) {
 	client, err := nodeauth.NewHTTPClient(node, 0)
 	if err != nil {
 		return
@@ -124,7 +138,7 @@ func deploy(node *model.Node, c *model.Cert, payloadBytes []byte) (err error) {
 	}
 	defer resp.Body.Close()
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err = io.ReadAll(resp.Body)
 	if err != nil {
 		return
 	}
@@ -139,7 +153,7 @@ func deploy(node *model.Node, c *model.Cert, payloadBytes []byte) (err error) {
 	if resp.StatusCode != http.StatusOK {
 		notification.Error("Sync Certificate Error",
 			"Sync Certificate %{cert_name} to %{node_name} failed", notificationPayload)
-		return
+		return respBody, fmt.Errorf("node %s answered %s", node.Name, resp.Status)
 	}
 
 	notification.Success("Sync Certificate Success",

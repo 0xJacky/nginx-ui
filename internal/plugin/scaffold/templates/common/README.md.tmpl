@@ -1,0 +1,35 @@
+# {{.Name}}
+
+A `dns01` challenge plugin for nginx-ui, scaffolded by `nginx-ui plugin init`.
+See the [plugin development guide](https://nginxui.com/plugin/overview)
+for everything a plugin can do.
+
+## Capability
+
+Implements the `dns01` capability for the `{{.ProviderCode}}` provider:
+`dns01.present` publishes the ACME challenge TXT record, `dns01.cleanup`
+removes it. See the [DNS-01 guide](https://nginxui.com/plugin/capabilities/dns01).
+
+## Permissions
+
+This plugin requests the `network` permission: its own process talks to the
+`{{.ProviderName}}` API directly, the host is not involved in that traffic.
+
+## Supported platforms
+
+{{if eq .Lang "go" -}}
+Built for the platform it was generated on: `{{.Platform}}`. Run `build.sh`
+after editing `main.go`, and add more entries to `server.executables` in
+`plugin.json` to support additional platforms.
+{{- else -}}
+Runs anywhere `{{.Interpreter}}` is available on `PATH`.
+{{- end}}
+
+## Development
+
+* `nginx-ui plugin lint .` checks the plugin files.
+* `nginx-ui plugin conformance .` runs it through the conformance cases.
+
+TODO: fill in `{{.CredentialKey}}` handling in `present`/`cleanup` and adjust
+`plugin.json`'s `dns01.providers[0].form` fields to match the real
+`{{.ProviderName}}` API.

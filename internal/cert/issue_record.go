@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -30,23 +31,22 @@ func PersistCertDraft(name string, payload *ConfigPayload) (*model.Cert, error) 
 	now := time.Now()
 
 	seed := &model.Cert{
-		Name:                              certificateName,
-		Filename:                          name,
-		KeyType:                           normalizedKeyType,
-		Domains:                           payload.ServerName,
-		ChallengeMethod:                   payload.ChallengeMethod,
-		Profile:                           payload.Profile,
-		DnsCredentialID:                   payload.DNSCredentialID,
-		ACMEUserID:                        payload.ACMEUserID,
-		AutoCert:                          model.AutoCertEnabled,
-		MustStaple:                        payload.MustStaple,
-		LegoDisableCNAMESupport:           payload.LegoDisableCNAMESupport,
-		DisableAuthoritativeNSPropagation: payload.DisableAuthoritativeNSPropagation,
-		EnableCommonName:                  payload.EnableCommonName,
-		RevokeOld:                         payload.RevokeOld,
-		Status:                            model.CertStatusPending,
-		LastError:                         "",
-		LastAttemptAt:                     &now,
+		Name:             certificateName,
+		Filename:         name,
+		KeyType:          normalizedKeyType,
+		Domains:          payload.ServerName,
+		ChallengeMethod:  payload.ChallengeMethod,
+		Profile:          payload.Profile,
+		DnsCredentialID:  payload.DNSCredentialID,
+		ACMEUserID:       payload.ACMEUserID,
+		AutoCert:         model.AutoCertEnabled,
+		MustStaple:       payload.MustStaple,
+		ChallengeConfig:  payload.ChallengeConfig,
+		EnableCommonName: payload.EnableCommonName,
+		RevokeOld:        payload.RevokeOld,
+		Status:           model.CertStatusPending,
+		LastError:        "",
+		LastAttemptAt:    &now,
 	}
 
 	// FirstOrCreate by (filename, key_type). Name is the certificate identifier,
@@ -69,27 +69,25 @@ func PersistCertDraft(name string, payload *ConfigPayload) (*model.Cert, error) 
 	// Use struct + Select so GORM applies the `serializer:json` tag for Domains
 	// AND writes the zero-valued LastError ("") instead of skipping it.
 	updates := &model.Cert{
-		Name:                              certificateName,
-		Domains:                           payload.ServerName,
-		ChallengeMethod:                   payload.ChallengeMethod,
-		Profile:                           payload.Profile,
-		DnsCredentialID:                   payload.DNSCredentialID,
-		ACMEUserID:                        payload.ACMEUserID,
-		AutoCert:                          model.AutoCertEnabled,
-		MustStaple:                        payload.MustStaple,
-		LegoDisableCNAMESupport:           payload.LegoDisableCNAMESupport,
-		DisableAuthoritativeNSPropagation: payload.DisableAuthoritativeNSPropagation,
-		EnableCommonName:                  payload.EnableCommonName,
-		RevokeOld:                         payload.RevokeOld,
-		Status:                            model.CertStatusPending,
-		LastError:                         "",
-		LastAttemptAt:                     &now,
+		Name:             certificateName,
+		Domains:          payload.ServerName,
+		ChallengeMethod:  payload.ChallengeMethod,
+		Profile:          payload.Profile,
+		DnsCredentialID:  payload.DNSCredentialID,
+		ACMEUserID:       payload.ACMEUserID,
+		AutoCert:         model.AutoCertEnabled,
+		MustStaple:       payload.MustStaple,
+		ChallengeConfig:  payload.ChallengeConfig,
+		EnableCommonName: payload.EnableCommonName,
+		RevokeOld:        payload.RevokeOld,
+		Status:           model.CertStatusPending,
+		LastError:        "",
+		LastAttemptAt:    &now,
 	}
 	if err := db.Model(&model.Cert{}).Where("id = ?", seed.ID).
 		Select(
 			"name", "domains", "challenge_method", "profile", "dns_credential_id", "acme_user_id",
-			"auto_cert", "must_staple", "lego_disable_cname_support",
-			"disable_authoritative_ns_propagation", "enable_common_name",
+			"auto_cert", "must_staple", "challenge_config", "enable_common_name",
 			"revoke_old", "status", "last_error", "last_attempt_at",
 		).
 		Updates(updates).Error; err != nil {
@@ -219,6 +217,7 @@ func IssueWithRecord(name string, payload *ConfigPayload, log *Logger) (*model.C
 	}
 
 	MarkCertSuccess(certModel.ID, payload.GetCertificatePath(), payload.GetCertificateKeyPath(), payload.Resource, payload.Profile)
+	event.PublishCertIssued(certModel.ID, certModel.Name, payload.ServerName, false)
 	return certModel, nil
 }
 

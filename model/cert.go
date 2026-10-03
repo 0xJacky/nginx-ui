@@ -50,42 +50,56 @@ type SelfSignedCertConfig struct {
 
 type Cert struct {
 	Model
-	Name                              string                `json:"name"`
-	Domains                           []string              `json:"domains" gorm:"serializer:json"`
-	Filename                          string                `json:"filename"`
-	SSLCertificatePath                string                `json:"ssl_certificate_path"`
-	SSLCertificateKeyPath             string                `json:"ssl_certificate_key_path"`
-	Fingerprint                       string                `json:"fingerprint" gorm:"index"`
-	AutoCert                          int                   `json:"auto_cert"`
-	ChallengeMethod                   string                `json:"challenge_method"`
-	Profile                           string                `json:"profile"`
-	DnsCredentialID                   uint64                `json:"dns_credential_id"`
-	DnsCredential                     *DnsCredential        `json:"dns_credential,omitempty"`
-	ACMEUserID                        uint64                `json:"acme_user_id"`
-	ACMEUser                          *AcmeUser             `json:"acme_user,omitempty"`
-	KeyType                           certcrypto.KeyType    `json:"key_type"`
-	Log                               string                `json:"log"`
-	Resource                          *CertificateResource  `json:"-" gorm:"serializer:json[aes]"`
-	SyncNodeIds                       []uint64              `json:"sync_node_ids" gorm:"serializer:json"`
-	MustStaple                        bool                  `json:"must_staple"`
-	LegoDisableCNAMESupport           bool                  `json:"lego_disable_cname_support"`
-	DisableAuthoritativeNSPropagation bool                  `json:"disable_authoritative_ns_propagation"`
-	EnableCommonName                  bool                  `json:"enable_common_name"`
-	RevokeOld                         bool                  `json:"revoke_old"`
-	SelfSignedConfig                  *SelfSignedCertConfig `json:"self_signed_config,omitempty" gorm:"serializer:json"`
-	LastAutoRenewAt                   *time.Time            `json:"-"`
-	LastAutoRenewError                string                `json:"-"`
-	NextAutoRenewAt                   *time.Time            `json:"-"`
-	LastRenewalInfoCheckAt            *time.Time            `json:"-"`
-	AutoRenewScheduleFingerprint      string                `json:"-"`
-	LastExpiryNotifyAt                *time.Time            `json:"-"`
-	LastExpiryNotifyNotAfter          *time.Time            `json:"-"`
-	LastExpiryNotifyStage             string                `json:"-"`
-	LastDeploymentIssueHash           string                `json:"-"`
-	LastDeploymentIssueNotifyAt       *time.Time            `json:"-"`
-	Status                            string                `json:"status"`
-	LastError                         string                `json:"last_error"`
-	LastAttemptAt                     *time.Time            `json:"last_attempt_at"`
+	Name                  string               `json:"name"`
+	Domains               []string             `json:"domains" gorm:"serializer:json"`
+	Filename              string               `json:"filename"`
+	SSLCertificatePath    string               `json:"ssl_certificate_path"`
+	SSLCertificateKeyPath string               `json:"ssl_certificate_key_path"`
+	Fingerprint           string               `json:"fingerprint" gorm:"index"`
+	AutoCert              int                  `json:"auto_cert"`
+	ChallengeMethod       string               `json:"challenge_method"`
+	Profile               string               `json:"profile"`
+	DnsCredentialID       uint64               `json:"dns_credential_id"`
+	DnsCredential         *DnsCredential       `json:"dns_credential,omitempty"`
+	ACMEUserID            uint64               `json:"acme_user_id"`
+	ACMEUser              *AcmeUser            `json:"acme_user,omitempty"`
+	KeyType               certcrypto.KeyType   `json:"key_type"`
+	Log                   string               `json:"log"`
+	Resource              *CertificateResource `json:"-" gorm:"serializer:json[aes]"`
+	SyncNodeIds           []uint64             `json:"sync_node_ids" gorm:"serializer:json"`
+	MustStaple            bool                 `json:"must_staple"`
+	// ChallengeConfig holds challenge specific options produced by the plugin
+	// that owns the challenge method. Opaque to the core.
+	ChallengeConfig              map[string]any        `json:"challenge_config" gorm:"serializer:json"`
+	EnableCommonName             bool                  `json:"enable_common_name"`
+	RevokeOld                    bool                  `json:"revoke_old"`
+	SelfSignedConfig             *SelfSignedCertConfig `json:"self_signed_config,omitempty" gorm:"serializer:json"`
+	LastAutoRenewAt              *time.Time            `json:"-"`
+	LastAutoRenewError           string                `json:"-"`
+	NextAutoRenewAt              *time.Time            `json:"-"`
+	LastRenewalInfoCheckAt       *time.Time            `json:"-"`
+	AutoRenewScheduleFingerprint string                `json:"-"`
+	LastExpiryNotifyAt           *time.Time            `json:"-"`
+	LastExpiryNotifyNotAfter     *time.Time            `json:"-"`
+	LastExpiryNotifyStage        string                `json:"-"`
+	LastDeploymentIssueHash      string                `json:"-"`
+	LastDeploymentIssueNotifyAt  *time.Time            `json:"-"`
+	Status                       string                `json:"status"`
+	LastError                    string                `json:"last_error"`
+	LastAttemptAt                *time.Time            `json:"last_attempt_at"`
+	// DelegatedNodeID is the node this certificate was issued for. The node
+	// receives the files at the remote paths and this instance renews them.
+	DelegatedNodeID uint64 `json:"delegated_node_id" gorm:"index"`
+	// DelegatedConfigName is the configuration on that node the certificate
+	// was issued for.
+	DelegatedConfigName         string `json:"delegated_config_name"`
+	RemoteSSLCertificatePath    string `json:"remote_ssl_certificate_path"`
+	RemoteSSLCertificateKeyPath string `json:"remote_ssl_certificate_key_path"`
+}
+
+// IsDelegated reports whether the certificate was issued for another node.
+func (c *Cert) IsDelegated() bool {
+	return c.DelegatedNodeID != 0
 }
 
 func FirstCert(confName string) (c Cert, err error) {

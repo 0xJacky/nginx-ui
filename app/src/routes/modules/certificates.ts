@@ -37,6 +37,14 @@ export const certificatesRoutes: RouteRecordRaw[] = [
         },
       },
       {
+        path: 'deploy_targets',
+        name: 'Deploy Targets',
+        component: () => import('@/views/certificate/DeployTargets.vue'),
+        meta: {
+          name: () => $gettext('Deploy Targets'),
+        },
+      },
+      {
         path: ':id',
         name: 'Modify Certificate',
         component: () => import('@/views/certificate/CertificateEditor.vue'),

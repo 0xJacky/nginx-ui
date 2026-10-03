@@ -16,11 +16,9 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/go-acme/lego/v5/challenge/dns01"
 	"github.com/go-acme/lego/v5/challenge/http01"
 	"github.com/go-acme/lego/v5/lego"
 	legolog "github.com/go-acme/lego/v5/log"
-	dnsproviders "github.com/go-acme/lego/v5/providers/dns"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
@@ -30,16 +28,32 @@ const (
 	HTTP01 = "http01"
 	DNS01  = "dns01"
 
-	disabledAuthoritativeNSPropagationWait = time.Minute
-
 	// http01ProbeOverallTimeout bounds the whole HTTP-01 route probe; each
 	// request is bounded separately by http01ProbeRequestTimeout.
 	http01ProbeOverallTimeout = 30 * time.Second
+
+	// envDisableCNAMESupport tells lego not to follow the CNAME of the
+	// challenge record while deriving the challenge name.
+	envDisableCNAMESupport = "LEGO_DISABLE_CNAME_SUPPORT"
 )
+
+// InitChallengeEnv pins the lego challenge environment for the whole process.
+//
+// CNAME delegation for DNS-01 is resolved by the plugin that owns the
+// provider, per certificate and with the user's own resolvers, so the core
+// must not resolve it a second time while deriving the challenge name.
+// dns01.GetChallengeInfo reads the variable on every call, and the plugin
+// supervisor strips it from the environment plugin processes inherit.
+func InitChallengeEnv() {
+	if err := os.Setenv(envDisableCNAMESupport, "true"); err != nil {
+		logger.Error(err)
+	}
+}
 
 func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 	lock()
 	defer unlock()
+	ctx := context.Background()
 	defer func() {
 		if err := recover(); err != nil {
 			buf := make([]byte, 1024)
@@ -123,67 +137,34 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 			),
 		)
 	case DNS01:
-		d := query.DnsCredential
-		dnsCredential, err := d.FirstByID(payload.DNSCredentialID)
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrGetDNSCredential, err.Error())
+		credential, credentialErr := query.DnsCredential.FirstByID(payload.DNSCredentialID)
+		if credentialErr != nil {
+			return cosy.WrapErrorWithParams(ErrGetDNSCredential, credentialErr.Error())
 		}
-
-		certLogger.Info(translation.C("[Nginx UI] Setting DNS01 challenge provider"))
-		code := dnsCredential.Config.Code
-		pConfig, ok := dns.GetProvider(code)
-		if !ok {
-			return ErrProviderNotFound
-		}
-		certLogger.Info(translation.C("[Nginx UI] Setting environment variables"))
-		if dnsCredential.Config.Configuration != nil {
-			err = pConfig.SetEnv(*dnsCredential.Config.Configuration)
-			if err != nil {
-				return cosy.WrapErrorWithParams(ErrSetEnv, err.Error())
-			}
-			defer func() {
-				pConfig.CleanEnv()
-				certLogger.Info(translation.C("[Nginx UI] Environment variables cleaned"))
-			}()
-			provider, err := dnsproviders.NewDNSChallengeProviderByName(code)
-			if err != nil {
-				return cosy.WrapErrorWithParams(ErrNewDNSChallengeProvider, err.Error())
-			}
-			if len(settings.CertSettings.RecursiveNameservers) > 0 {
-				oldDNSClient := dns01.DefaultClient()
-				dns01.SetDefaultClient(dns01.NewClient(&dns01.Options{
-					RecursiveNameservers: settings.CertSettings.RecursiveNameservers,
-				}))
-				defer dns01.SetDefaultClient(oldDNSClient)
-			}
-
-			// lego v5 enabled the recursive-nameserver propagation check by
-			// default, which queries the local system resolver for the
-			// _acme-challenge TXT record. Split-horizon or private resolvers
-			// (systemd-resolved at 127.0.0.53, Unbound, Docker DNS, etc.)
-			// frequently REFUSE these queries, so DNS-01 issuance/renewal that
-			// worked under lego v4 started timing out after the v5 migration.
-			// Default to the v4 behavior by only requiring propagation to the
-			// authoritative nameservers. A per-certificate option can also skip
-			// that local pre-check when the authoritative path is unreliable.
-			// Fixes #1711, #1719.
-			err = client.Challenge.SetDNS01Provider(provider, dns01ChallengeOptions(payload)...)
-		} else {
+		if credential.Config == nil || credential.Config.Configuration == nil {
 			return ErrEnvironmentConfigurationIsEmpty
 		}
+
+		code := credential.ProviderCode
+
+		certLogger.Info(translation.C("[Nginx UI] Setting DNS01 challenge provider"))
+		// Every vendor call, the propagation check and the CNAME delegation
+		// happen inside the plugin process that owns the provider code.
+		provider, options, release, providerErr := dns.NewChallengeProvider(ctx, code,
+			*credential.Config.Configuration, payload.EffectiveChallengeConfig())
+		if errors.Is(providerErr, dns.ErrProviderNotFound) {
+			return cosy.WrapErrorWithParams(ErrNoDNS01Provider, code)
+		}
+		defer release()
+		if providerErr != nil {
+			return cosy.WrapErrorWithParams(ErrNewDNSChallengeProvider, providerErr.Error())
+		}
+
+		err = client.Challenge.SetDNS01Provider(provider, options...)
 	}
 
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrChallengeError, err.Error())
-	}
-
-	// fix #407
-	if payload.LegoDisableCNAMESupport {
-		err = os.Setenv("LEGO_DISABLE_CNAME_SUPPORT", "true")
-		if err != nil {
-			return cosy.WrapErrorWithParams(ErrSetEnvFlagToDisableLegoCNAME, err.Error())
-		}
-		defer os.Unsetenv("LEGO_DISABLE_CNAME_SUPPORT")
 	}
 
 	// Backup current certificate and key if RevokeOld is true
@@ -317,27 +298,6 @@ func isHTTP01ChallengePortUnavailable(err error) bool {
 		return false
 	}
 	return got.Scope == want.Scope && got.Code == want.Code
-}
-
-func dns01ChallengeOptions(payload *ConfigPayload) []dns01.ChallengeOption {
-	if wait := dns01PropagationWait(payload); wait > 0 {
-		// No active propagation check remains in this mode, so wait before
-		// asking the ACME server to validate the newly published TXT record.
-		return []dns01.ChallengeOption{
-			dns01.PropagationWait(wait, true),
-		}
-	}
-
-	return []dns01.ChallengeOption{
-		dns01.DisableRecursiveNSsPropagationRequirement(),
-	}
-}
-
-func dns01PropagationWait(payload *ConfigPayload) time.Duration {
-	if payload != nil && payload.DisableAuthoritativeNSPropagation {
-		return disabledAuthoritativeNSPropagationWait
-	}
-	return 0
 }
 
 func canUseLegoRenew(payload *ConfigPayload) bool {

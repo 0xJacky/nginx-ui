@@ -80,12 +80,6 @@ func InitCronJobs(ctx context.Context) {
 		logger.Fatalf("UpstreamAvailability Err: %v\n", err)
 	}
 
-	// Initialize incremental log indexing job
-	_, err = setupIncrementalIndexingJob(s)
-	if err != nil {
-		logger.Fatalf("IncrementalIndexing Err: %v\n", err)
-	}
-
 	// Initialize automatic namespace replication job
 	_, err = setupNamespaceSyncJob(s)
 	if err != nil {

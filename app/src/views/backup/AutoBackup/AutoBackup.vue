@@ -4,11 +4,30 @@ import type { AutoBackup } from '@/api/backup'
 import { datetimeRender, StdCurd } from '@uozi-admin/curd'
 import { FormItem, Input, Tag } from 'antdv-next'
 import { autoBackup, runAutoBackup } from '@/api/backup'
-import { CronEditor, StorageConfigEditor } from './components'
+import { CronEditor, StorageConfigEditor, StoredBackups } from './components'
+import { isPluginStorageType, loadPluginBackends, pluginBackends, storageTypeLabel } from './pluginStorage'
 
 const { message } = useGlobalApp()
 const curd = useTemplateRef('curd')
 const runningStates = ref<Record<number, boolean>>({})
+
+// The task whose stored backups are shown.
+const storedBackupsRecord = ref<AutoBackup>()
+const storedBackupsOpen = ref(false)
+
+function showStoredBackups(record: AutoBackup) {
+  storedBackupsRecord.value = record
+  storedBackupsOpen.value = true
+}
+
+onMounted(() => loadPluginBackends(true))
+
+// Reactive, so the plugin backends appear once they are loaded.
+const storageTypeSearchOptions = computed(() => [
+  { label: $gettext('Local'), value: 'local' },
+  { label: $gettext('S3'), value: 's3' },
+  ...pluginBackends.value.map(backend => ({ label: backend.name, value: backend.type })),
+])
 
 function getErrorMessage(error: unknown) {
   if (typeof error === 'object' && error !== null && 'message' in error && typeof error.message === 'string')
@@ -98,20 +117,13 @@ const columns: StdTableColumn[] = [
   {
     title: () => $gettext('Storage Type'),
     dataIndex: 'storage_type',
-    customRender: ({ text }: CustomRenderArgs) => {
-      const typeMap = {
-        local: $gettext('Local'),
-        s3: $gettext('S3'),
-      }
-      return typeMap[text as keyof typeof typeMap] || text
-    },
+    customRender: ({ text }: CustomRenderArgs) => storageTypeLabel(text as string),
     search: {
       type: 'select',
       select: {
-        options: [
-          { label: $gettext('Local'), value: 'local' },
-          { label: $gettext('S3'), value: 's3' },
-        ],
+        get options() {
+          return storageTypeSearchOptions.value
+        },
       },
     },
     sorter: true,
@@ -299,6 +311,18 @@ const columns: StdTableColumn[] = [
     hiddenInEdit: true,
   },
   {
+    title: () => $gettext('Storage Configuration'),
+    dataIndex: 'storage_config',
+    hiddenInTable: true,
+    hiddenInEdit: true,
+  },
+  {
+    title: () => $gettext('Keep Latest Backups'),
+    dataIndex: 'retention_count',
+    hiddenInTable: true,
+    hiddenInEdit: true,
+  },
+  {
     title: () => $gettext('Actions'),
     dataIndex: 'actions',
     fixed: 'right',
@@ -323,8 +347,21 @@ const columns: StdTableColumn[] = [
       >
         {{ $gettext('Backup Now') }}
       </AButton>
+      <AButton
+        v-if="isPluginStorageType(record.storage_type)"
+        type="link"
+        size="small"
+        @click="showStoredBackups(record as AutoBackup)"
+      >
+        {{ $gettext('Stored Backups') }}
+      </AButton>
     </template>
   </StdCurd>
+
+  <StoredBackups
+    v-model:open="storedBackupsOpen"
+    :record="storedBackupsRecord"
+  />
 </template>
 
 <style lang="less">

@@ -50,6 +50,8 @@ func newSiteConfig(db *gorm.DB, opts ...gen.DOOption) siteConfig {
 	_siteConfig.CheckFavicon = field.NewBool(tableName, "check_favicon")
 	_siteConfig.HealthCheckConfig = field.NewField(tableName, "health_check_config")
 	_siteConfig.HealthCheckAlert = field.NewField(tableName, "health_check_alert")
+	_siteConfig.ProbeKind = field.NewString(tableName, "probe_kind")
+	_siteConfig.ProbeConfig = field.NewField(tableName, "probe_config")
 
 	_siteConfig.fillFieldMap()
 
@@ -82,6 +84,8 @@ type siteConfig struct {
 	CheckFavicon       field.Bool
 	HealthCheckConfig  field.Field
 	HealthCheckAlert   field.Field
+	ProbeKind          field.String
+	ProbeConfig        field.Field
 
 	fieldMap map[string]field.Expr
 }
@@ -120,6 +124,8 @@ func (s *siteConfig) updateTableName(table string) *siteConfig {
 	s.CheckFavicon = field.NewBool(table, "check_favicon")
 	s.HealthCheckConfig = field.NewField(table, "health_check_config")
 	s.HealthCheckAlert = field.NewField(table, "health_check_alert")
+	s.ProbeKind = field.NewString(table, "probe_kind")
+	s.ProbeConfig = field.NewField(table, "probe_config")
 
 	s.fillFieldMap()
 
@@ -159,6 +165,8 @@ func (s *siteConfig) fillFieldMap() {
 	s.fieldMap["check_favicon"] = s.CheckFavicon
 	s.fieldMap["health_check_config"] = s.HealthCheckConfig
 	s.fieldMap["health_check_alert"] = s.HealthCheckAlert
+	s.fieldMap["probe_kind"] = s.ProbeKind
+	s.fieldMap["probe_config"] = s.ProbeConfig
 }
 
 func (s siteConfig) clone(db *gorm.DB) siteConfig {

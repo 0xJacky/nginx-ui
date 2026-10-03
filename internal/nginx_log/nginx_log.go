@@ -5,6 +5,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/sink"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 )
 
@@ -21,7 +22,23 @@ func init() {
 	// that a rescan just removed is registered again in the same sweep.
 	cache.RegisterPostScanCallback(func() {
 		RefreshDefaultLogPaths()
+		notifyLogScan()
 	})
+
+	// The log.sink plugins follow the access logs of the log list, limited to
+	// the whitelist of the log viewer. The feeder only runs while a plugin
+	// subscribed.
+	sink.SetSource(sink.Source{Paths: accessLogPaths, Allowed: utils.IsValidLogPath})
+}
+
+// accessLogPaths lists the access logs the host knows.
+func accessLogPaths() []string {
+	logs := GetAllLogPaths(func(log *NginxLogCache) bool { return log.Type == "access" })
+	paths := make([]string, 0, len(logs))
+	for _, log := range logs {
+		paths = append(paths, log.Path)
+	}
+	return paths
 }
 
 // scanForLogDirectives scans and parses configuration files for log directives
@@ -37,13 +54,6 @@ func scanForLogDirectives(configPath string, content []byte) error {
 			AddLogPath(directive.Path, directive.Type, filepath.Base(directive.Path), configPath)
 		}
 	}
-
-	// The removal above also drops a default log path when this config file
-	// declares it, so put the defaults back. Registering them last keeps the
-	// default marker on the shared path, which is what protects it from the next
-	// removal. This only replays the already resolved paths; resolving them
-	// again is the post-scan callback's job.
-	reapplyDefaultLogPaths()
 
 	return nil
 }

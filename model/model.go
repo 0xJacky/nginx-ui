@@ -58,9 +58,14 @@ func GenerateAllModel() []any {
 		AutoBackup{},
 		SiteConfig{},
 		SiteHealthAlertState{},
-		NginxLogIndex{},
 		UpstreamConfig{},
 		AccessList{},
+		Plugin{},
+		PluginKV{},
+		CertDeployTarget{},
+		CertDeployment{},
+		BlocklistSource{},
+		UpstreamDiscovery{},
 	}
 }
 

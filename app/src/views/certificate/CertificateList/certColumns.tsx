@@ -5,6 +5,7 @@ import { datetimeRender } from '@uozi-admin/curd'
 import { Tag, Tooltip } from 'antdv-next'
 import dayjs from 'dayjs'
 import { AutoCertState, formatPrivateKeyType } from '@/constants'
+import { certStateLabel, certStateTone } from '../certState'
 
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
@@ -110,9 +111,18 @@ const columns: StdTableColumn[] = [{
       return h(Tooltip, { title: deployment.error }, () =>
         h(Tag, { color: 'warning' }, () => $gettext('Unable to verify deployment')))
     }
+    // Newer backends compute the state, which tells a certificate that was
+    // never issued apart from an expired one.
+    if (record.state) {
+      const tone = certStateTone(record.state)
+      return h(Tag, { color: tone === 'default' ? undefined : tone }, () => certStateLabel(record))
+    }
+
     const info = record.certificate_info
-    const valid = info?.not_before
-      && info?.not_after
+    if (!info)
+      return h(Tag, {}, () => $gettext('Not issued yet'))
+    const valid = info.not_before
+      && info.not_after
       && !dayjs().isBefore(info.not_before)
       && !dayjs().isAfter(info.not_after)
     if (valid)

@@ -101,13 +101,18 @@ A line that holds only actions such as <code v-pre>{{ if .keepPath }}</code>, <c
 <code v-pre>{{ end }}</code> leaves no blank line in the result, so blocks can be written on
 lines of their own.
 
-## Built-in Templates
+## Templates {#built-in-templates}
 
-The **Built-in Templates** tab of the snippet page lists the config templates
-that come with Nginx UI. They are read only: expand a row to glance at one,
-or open it to read it with its variables highlighted and try them in
-**Preview**. **Copy as Snippet** opens a new snippet filled in from the
-template, to change and save as your own.
+The **Templates** tab of the snippet page lists the config templates that
+come with Nginx UI, followed by those of enabled plugins, which are tagged
+with the plugin. They are read only: expand a row to glance at one, or open
+it to read it with its variables highlighted and try them in **Preview**.
+**Copy as Snippet** opens a new snippet filled in from the template, to
+change and save as your own.
+
+A copy of a plugin template is a snippet like any other: it no longer
+follows the plugin, and sites that include it get whatever it holds. Review
+its directives before saving it.
 
 ## The File Header
 

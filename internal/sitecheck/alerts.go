@@ -29,8 +29,10 @@ func isAlertFailure(policy *model.SiteHealthAlertConfig, info *SiteInfo) bool {
 	if info.StatusCode > 0 && slices.Contains(policy.StatusCodes, info.StatusCode) {
 		return true
 	}
+	// A degraded probe result keeps the site online, it is not a failure.
 	return policy.NetworkErrors && info.StatusCode == 0 &&
-		(info.Status == StatusOffline || info.Status == StatusError || info.Error != "")
+		(info.Status == StatusOffline || info.Status == StatusError ||
+			(info.Error != "" && info.ErrorType != ErrorTypeDegraded))
 }
 
 func alertDetails(config *model.SiteConfig, info *SiteInfo, failureCount int) map[string]any {

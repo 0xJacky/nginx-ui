@@ -1,138 +1,318 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
+import type { AutoCertOptions } from '@/api/auto_cert'
 import type { Cert, SelfSignedCertPayload } from '@/api/cert'
+import { EditOutlined, EllipsisOutlined } from '@antdv-next/icons'
 import cert, { toSelfSignedPayload } from '@/api/cert'
 import { AutoCertState, normalizePrivateKeyType } from '@/constants'
-
+import { getErrorMessage } from '@/lib/http'
+import { useGlobalStore } from '@/pinia'
+import { collectChangedPaths } from '@/utils/changedPaths'
+import { PreferenceSaveBar } from '@/views/preference/components/Shell'
+import { isAcmeCert } from './certState'
 import AutoCertManagement from './components/AutoCertManagement.vue'
 import CertificateActions from './components/CertificateActions.vue'
-import CertificateBasicInfo from './components/CertificateBasicInfo.vue'
-import CertificateContentEditor from './components/CertificateContentEditor.vue'
+import CertificateDeployTargets from './components/CertificateDeployTargets.vue'
+import CertificateDownload from './components/CertificateDownload.vue'
+import CertificateFacts from './components/CertificateFacts.vue'
+import CertificateFilesCard from './components/CertificateFilesCard.vue'
+import CertificateLastRenewal from './components/CertificateLastRenewal.vue'
+import CertificateSyncCard from './components/CertificateSyncCard.vue'
+import RemoveCert from './components/RemoveCert.vue'
+import RenewCert from './components/RenewCert.vue'
 import SelfSignedCertManagement from './components/SelfSignedCertManagement.vue'
 import { useCertStore } from './store'
 
-const { message } = App.useApp()
+const { message } = useGlobalApp()
 
 const route = useRoute()
 const certStore = useCertStore()
 const router = useRouter()
+const globalStore = useGlobalStore()
+const { processingStatus } = storeToRefs(globalStore)
 const errors = ref({}) as Ref<Record<string, string>>
 
-const id = computed(() => {
-  return Number.parseInt(route.params.id as string)
-})
+const id = computed(() => Number.parseInt(route.params.id as string))
+const isNew = computed(() => !(id.value > 0))
 
 const { data } = storeToRefs(certStore)
-const leftTopContent = useTemplateRef('leftTopContent')
-const logCardRef = useTemplateRef('logCardRef')
-const logContentHeight = ref<number | null>(null)
 
-let layoutObserver: ResizeObserver | null = null
-let handleWindowResize: (() => void) | null = null
+// Renewal and file contents are handled by Nginx UI for these.
+const isManaged = computed(() => data.value.auto_cert === AutoCertState.Enable
+  || data.value.auto_cert === AutoCertState.Paused
+  || data.value.auto_cert === AutoCertState.Sync)
 
-function scheduleLogHeightUpdate() {
-  requestAnimationFrame(updateLogContentHeight)
-}
+const isSelfSigned = computed(() => data.value.auto_cert === AutoCertState.SelfSigned)
+const isAcme = computed(() => !isNew.value && isAcmeCert(data.value))
 
-function reconnectLayoutObserver() {
-  layoutObserver?.disconnect()
-  layoutObserver = null
+const canRenew = computed(() => isAcme.value && (data.value.auto_cert === AutoCertState.Enable
+  || data.value.auto_cert === AutoCertState.Paused))
 
-  const leftElement = resolveHTMLElement(leftTopContent.value)
-  const cardElement = resolveHTMLElement(logCardRef.value)
-  if (!leftElement || !cardElement)
-    return
-
-  layoutObserver = new ResizeObserver(scheduleLogHeightUpdate)
-  layoutObserver.observe(leftElement)
-  layoutObserver.observe(cardElement)
-}
-
-const isManaged = computed(() => {
-  return data.value.auto_cert === AutoCertState.Enable
-    || data.value.auto_cert === AutoCertState.Paused
-    || data.value.auto_cert === AutoCertState.Sync
-})
-
-const isSelfSigned = computed(() => {
-  return data.value.auto_cert === AutoCertState.SelfSigned
-})
-
-const isGeneral = computed(() => {
-  if (typeof data.value.auto_cert !== 'number')
-    return false
-
-  return !isManaged.value && !isSelfSigned.value
-})
+const canSwitchAutoRenewal = computed(() => isAcme.value && !!data.value.domains?.length
+  && [AutoCertState.Enable, AutoCertState.Disable, AutoCertState.Paused].includes(data.value.auto_cert))
 
 const selfSignedPayload = ref<SelfSignedCertPayload>()
 
-watch(data, value => {
-  if (value.auto_cert === AutoCertState.SelfSigned)
-    selfSignedPayload.value = toSelfSignedPayload(value)
-}, { immediate: true })
+// ---- Change tracking ------------------------------------------------------
+
+const trackedFields = {
+  name: () => $gettext('Name'),
+  challenge_method: () => $gettext('Challenge Method'),
+  dns_credential_id: () => $gettext('DNS Credential'),
+  key_type: () => $gettext('Key Type'),
+  acme_user_id: () => $gettext('ACME User'),
+  challenge_config: () => $gettext('Advanced options'),
+  must_staple: () => $gettext('OCSP Must Staple'),
+  enable_common_name: () => $gettext('Enable Common Name'),
+  revoke_old: () => $gettext('Revoke Old Certificate'),
+  sync_node_ids: () => $gettext('Sync to other nodes'),
+  ssl_certificate: () => $gettext('Certificate'),
+  ssl_certificate_key: () => $gettext('Private key'),
+} satisfies Partial<Record<keyof Cert, () => string>>
+
+const selfSignedFields = {
+  name: () => $gettext('Name'),
+  domains: () => $gettext('Domains'),
+  ip_addresses: () => $gettext('IP Addresses'),
+  key_type: () => $gettext('Key Type'),
+  validity_days: () => $gettext('Valid For (days)'),
+  sync_node_ids: () => $gettext('Sync to other nodes'),
+} satisfies Record<keyof SelfSignedCertPayload, () => string>
+
+function clone<T>(value: T): T {
+  return value === undefined ? value : JSON.parse(JSON.stringify(value))
+}
+
+function pickTracked(source: Partial<Cert>) {
+  const picked: Record<string, unknown> = {}
+  for (const key of Object.keys(trackedFields))
+    picked[key] = clone(source[key as keyof Cert])
+
+  // The credential id is tracked on its own; its copy in the challenge
+  // options follows it.
+  const config = picked.challenge_config as Record<string, unknown> | undefined
+  if (config) {
+    delete config.credential_id
+    if (Object.keys(config).length === 0)
+      picked.challenge_config = undefined
+  }
+  return picked
+}
+
+const baseline = ref<Record<string, unknown>>({})
+const selfSignedBaseline = ref<SelfSignedCertPayload>()
+
+// Forms fill defaults into the challenge options right after they mount.
+// Those writes are part of loading, not edits.
+let absorbUntil = 0
+
+function markSaved() {
+  baseline.value = pickTracked(data.value)
+  selfSignedBaseline.value = clone(selfSignedPayload.value)
+  absorbUntil = Date.now() + 1500
+}
+
+watch(() => data.value.challenge_config, config => {
+  if (Date.now() < absorbUntil)
+    baseline.value = { ...baseline.value, challenge_config: pickTracked({ challenge_config: config }).challenge_config }
+}, { deep: true })
+
+function labelsOf<T extends Record<string, () => string>>(paths: string[], labels: T) {
+  const result = paths
+    .map(path => labels[path.split('.')[0] as keyof T]?.())
+    .filter((label): label is string => !!label)
+  return [...new Set(result)]
+}
+
+const changedLabels = computed(() => {
+  if (isNew.value)
+    return []
+
+  if (isSelfSigned.value)
+    return labelsOf(collectChangedPaths(selfSignedBaseline.value ?? {}, selfSignedPayload.value ?? {}), selfSignedFields)
+
+  return labelsOf(collectChangedPaths(baseline.value, pickTracked(data.value)), trackedFields)
+})
+
+// ---- Loading ------------------------------------------------------------
+
+function normalizeLoaded(r: Cert): Cert {
+  return {
+    ...r,
+    // Backend stores key_type in its canonical form (EC256, RSA2048…); the
+    // ACME form's ASelect options use the legacy keys (P256, 2048…).
+    key_type: normalizePrivateKeyType(r.key_type),
+    // An id of 0 means no credential.
+    dns_credential_id: r.dns_credential_id || (undefined as unknown as number),
+  }
+}
+
+function applyLoaded(r: Cert) {
+  data.value = normalizeLoaded(r)
+  selfSignedPayload.value = r.auto_cert === AutoCertState.SelfSigned ? toSelfSignedPayload(r) : undefined
+  markSaved()
+}
 
 // The store is a singleton, so editing another certificate starts out holding
 // the previous one's data. Every load takes a ticket so a slow response cannot
 // land after the operator moved on to another record.
 let loadSeq = 0
 
-function init() {
+async function load() {
   const seq = ++loadSeq
   const target = id.value
 
-  // Keep the form filled when this is a reload of the record already on screen,
-  // e.g. after a renewal.
+  // Keep the page filled when this is a reload of the record already on
+  // screen, e.g. after a renewal.
   if (data.value.id !== target) {
     data.value = {} as Cert
     selfSignedPayload.value = undefined
+    baseline.value = {}
   }
 
   if (!(target > 0))
     return
 
-  cert.getItem(target).then(r => {
-    if (seq !== loadSeq)
-      return
-
-    // Backend stores key_type in its canonical form (EC256, RSA2048…); the
-    // ACME form's ASelect options use the legacy keys (P256, 2048…). Normalize
-    // on load so the dropdown highlights the right option when editing.
-    data.value = { ...r, key_type: normalizePrivateKeyType(r.key_type) }
-  })
+  const r = await cert.getItem(target)
+  if (seq === loadSeq)
+    applyLoaded(r)
 }
 
 // Vue Router can reuse this component when only the id changes, so reload on
 // the route parameter instead of on mount alone.
-watch(id, init, { immediate: true })
+watch(id, load, { immediate: true })
+
+// ---- Header ------------------------------------------------------------
+
+const displayName = computed(() => {
+  if (isSelfSigned.value && selfSignedPayload.value)
+    return selfSignedPayload.value.name
+  return data.value.name || data.value.certificate_info?.subject_name || ''
+})
+
+const domains = computed(() => {
+  if (data.value.domains?.length)
+    return data.value.domains
+  const info = data.value.certificate_info
+  if (!info)
+    return []
+  return [info.subject_name, ...(info.subject_alt_names ?? [])].filter(Boolean)
+})
+
+// The name of an ACME certificate follows its domains and is rewritten on
+// renewal, so only other certificates can be renamed.
+const canRename = computed(() => !isNew.value && !isManaged.value)
+
+const renaming = ref(false)
+const nameDraft = ref('')
+function startRename() {
+  nameDraft.value = displayName.value
+  renaming.value = true
+}
+
+function finishRename() {
+  if (!renaming.value)
+    return
+  renaming.value = false
+  const name = nameDraft.value.trim()
+  if (!name || name === displayName.value)
+    return
+  if (isSelfSigned.value && selfSignedPayload.value)
+    selfSignedPayload.value.name = name
+  else
+    data.value.name = name
+}
+
+function cancelRename() {
+  renaming.value = false
+}
+
+const isDelegated = computed(() => !!data.value.delegated_node_id)
+const delegatedNode = computed(() => data.value.delegated_node_name || `#${data.value.delegated_node_id}`)
+
+const renewOptions = computed<AutoCertOptions>(() => ({
+  // A certificate issued for a node is renewed for its configuration there.
+  name: isDelegated.value
+    ? data.value.delegated_config_name || data.value.name
+    : data.value.filename || data.value.name,
+  delegated_node_id: data.value.delegated_node_id || undefined,
+  domains: data.value.domains,
+  key_type: data.value.key_type,
+  challenge_method: data.value.challenge_method,
+  profile: data.value.profile,
+  dns_credential_id: data.value.dns_credential_id,
+  acme_user_id: data.value.acme_user_id,
+  must_staple: data.value.must_staple,
+  challenge_config: data.value.challenge_config,
+  enable_common_name: data.value.enable_common_name,
+  revoke_old: data.value.revoke_old,
+}))
+
+const removeCert = useTemplateRef('removeCert')
+
+const moreMenu = computed(() => ({
+  items: [{ key: 'delete', danger: true, label: $gettext('Delete'), disabled: processingStatus.value.auto_cert_processing }],
+  onClick: ({ key }: { key: string | number }) => {
+    if (key === 'delete')
+      removeCert.value?.open()
+  },
+}))
+
+function handleRemoved() {
+  router.push('/certificates/list')
+}
+
+// ---- Auto renewal ---------------------------------------------------------
+
+const switchingAutoRenewal = ref(false)
+
+async function switchAutoRenewal(enabled: boolean) {
+  switchingAutoRenewal.value = true
+  try {
+    const r = await cert.set_auto_renewal(data.value.id, enabled)
+    data.value.auto_cert = r.auto_cert
+    data.value.state = r.state
+    data.value.renew_at = r.renew_at
+    message.success(enabled ? $gettext('Automatic renewal turned on') : $gettext('Automatic renewal turned off'))
+  }
+  catch (e) {
+    message.error(getErrorMessage(e, $gettext('Server error')))
+  }
+  finally {
+    switchingAutoRenewal.value = false
+  }
+}
+
+// ---- Save ------------------------------------------------------------------
+
+const saving = ref(false)
 
 async function save() {
+  saving.value = true
   try {
     let savedId = data.value.id
     if (isSelfSigned.value && selfSignedPayload.value && data.value.id) {
       const payload = selfSignedPayload.value
       const name = payload.name.trim()
-      const domains = payload.domains.map(d => d.trim()).filter(Boolean)
+      const domainList = payload.domains.map(d => d.trim()).filter(Boolean)
       const ip_addresses = payload.ip_addresses.map(s => s.trim()).filter(Boolean)
 
       if (!name) {
         message.error($gettext('Please enter a name for the certificate'))
         return
       }
-      if (domains.length === 0 && ip_addresses.length === 0) {
+      if (domainList.length === 0 && ip_addresses.length === 0) {
         message.error($gettext('Please enter at least one domain or IP address'))
         return
       }
 
-      const currentId = data.value.id
-      const result = await cert.modify_self_signed(currentId, {
+      const result = await cert.modify_self_signed(data.value.id, {
         ...payload,
         name,
-        domains,
+        domains: domainList,
         ip_addresses,
       })
-      savedId = result.id || currentId
-      data.value = { ...result, id: savedId }
+      savedId = result.id || data.value.id
     }
     else {
       await certStore.save()
@@ -144,425 +324,217 @@ async function save() {
     }
     message.success($gettext('Save successfully'))
     errors.value = {}
-    await router.push(`/certificates/${savedId}`)
+
+    if (savedId !== id.value) {
+      await router.push(`/certificates/${savedId}`)
+      return
+    }
+    applyLoaded(await cert.getItem(savedId))
   }
   // eslint-disable-next-line ts/no-explicit-any
   catch (e: any) {
     errors.value = e.errors ?? {}
     message.error(e.message ?? $gettext('Server error'))
   }
+  finally {
+    saving.value = false
+  }
+}
+
+function discard() {
+  const saved = baseline.value
+  for (const key of Object.keys(trackedFields))
+    (data.value as unknown as Record<string, unknown>)[key] = clone(saved[key])
+  // The credential id is part of the challenge options too.
+  if (data.value.dns_credential_id) {
+    data.value.challenge_config = {
+      ...data.value.challenge_config,
+      credential_id: String(data.value.dns_credential_id),
+    }
+  }
+  selfSignedPayload.value = clone(selfSignedBaseline.value)
+  errors.value = {}
 }
 
 function handleBack() {
   router.push('/certificates/list')
 }
-
-const logLevelLabels: Record<string, string> = {
-  INFO: 'Info',
-  WARN: 'Warning',
-  ERROR: 'Error',
-  DEBUG: 'Debug',
-}
-
-// Keep these literals in source so gettext extraction includes structured log
-// message keys that arrive dynamically from ACME libraries.
-const structuredLogMessageI18nHints = [
-  $gettext('Trying renewal.'),
-  $gettext('Obtaining bundled SAN certificate.'),
-  $gettext('Use solver.'),
-  $gettext('http01: Trying to solve HTTP-01.'),
-  $gettext('The server validated our request.'),
-  $gettext('Validations succeeded; requesting certificates.'),
-  $gettext('Waiting for certificates.'),
-  $gettext('Server responded with a certificate.'),
-]
-void structuredLogMessageI18nHints
-
-const structuredLogFieldI18nHints = [
-  $gettext('domains'),
-  $gettext('domain'),
-  $gettext('type'),
-  $gettext('hoursRemaining'),
-  $gettext('timeout'),
-  $gettext('interval'),
-]
-void structuredLogFieldI18nHints
-
-function localizeStructuredLevelValue(raw: string) {
-  return raw.replace(/(^|\s)(level|等级|層級)=([A-Z]+)/g, (_, prefix: string, key: string, level: string) => {
-    const mapped = logLevelLabels[level] || level
-    return `${prefix}${key}=${$gettext(mapped)}`
-  })
-}
-
-function stripTimeKey(raw: string) {
-  return raw.replace(/^(time|时间|時間)=(\S+)/, '$2')
-}
-
-function translateStructuredMessage(message: string) {
-  return $gettext(message)
-}
-
-function applyKeywordLineBreaks(raw: string) {
-  return raw.replace(/\s+(消息|msg|訊息|域名列表|domains|網域列表|域名|domain|網域|type|timeout|interval|hoursRemaining)=/g, '\n$1=')
-}
-
-function applyAuxiliaryFieldFormatting(raw: string) {
-  let localized = raw.replace(/^(domain|type|hoursRemaining|timeout|interval)=([^\n]*)$/gm, (_, key: string, value: string) => {
-    return `${$gettext(key)}:${value}`
-  })
-
-  localized = localized.replace(/(domains)=("([^"]*)"|(\S+))/g, (_, key: string, full: string, quoted: string | undefined, plain: string | undefined) => {
-    const value = (quoted ?? plain ?? '').trim()
-    const domains = value
-      .split(/[\s,，;；]+/)
-      .map(item => item.trim())
-      .filter(Boolean)
-    const label = $gettext(key)
-
-    if (domains.length <= 1)
-      return `${label}:${full}`
-
-    return `${label}:\n${domains.map(domain => `- ${domain}`).join('\n')}`
-  })
-
-  return localized
-}
-
-function applyNginxUILineBreaks(raw: string) {
-  return raw
-    .replace(/，邮箱：/g, '\n邮箱：')
-    .replace(/,\s*Email:/g, '\nEmail:')
-    .replace(/，CA 目录：/g, '\nCA 目录：')
-    .replace(/,\s*CA Dir:/g, '\nCA Dir:')
-}
-
-function stripMessageWrapper(raw: string) {
-  return raw
-    .replace(/^(msg|消息|訊息)="([^"]*)"$/gm, '$2')
-    .replace(/^(msg|消息|訊息)=(.+)$/gm, '$2')
-}
-
-function localizeStructuredLogLine(raw: string) {
-  const translatedWhole = $gettext(raw)
-  if (translatedWhole !== raw)
-    return translatedWhole
-
-  let localized = localizeStructuredLevelValue(raw)
-  localized = stripTimeKey(localized)
-
-  const match = raw.match(/msg="([^"]+)"/)
-  if (!match)
-    return localized
-
-  const originalMessage = match[1]
-  const translatedMessage = translateStructuredMessage(originalMessage)
-
-  if (translatedMessage !== originalMessage) {
-    localized = localized.replace(`msg="${originalMessage}"`, `msg="${translatedMessage}"`)
-    localized = localized.replace(`消息="${originalMessage}"`, `消息="${translatedMessage}"`)
-    localized = localized.replace(`訊息="${originalMessage}"`, `訊息="${translatedMessage}"`)
-  }
-
-  localized = applyKeywordLineBreaks(localized)
-  localized = applyAuxiliaryFieldFormatting(localized)
-  return stripMessageWrapper(localized)
-}
-
-function renderLocalizedLogMessage(raw: string) {
-  const matches = raw.match(/\[Nginx UI\] (.*)/)
-  if (matches?.[1])
-    return applyNginxUILineBreaks(raw.replaceAll(matches[1], $gettext(matches[1])))
-
-  return localizeStructuredLogLine(raw)
-}
-
-const log = computed(() => {
-  if (!data.value.log)
-    return ''
-
-  const lines = data.value.log.split('\n').map(line => {
-    try {
-      return renderLocalizedLogMessage(T(JSON.parse(line)))
-    }
-    catch {
-      return renderLocalizedLogMessage(line)
-    }
-  }).map(line => line.startsWith('[Nginx UI]') ? `${line}\n` : line)
-
-  return lines.join('\n')
-})
-
-function resolveHTMLElement(target: unknown): HTMLElement | null {
-  if (!target)
-    return null
-
-  if (target instanceof HTMLElement)
-    return target
-
-  const maybeEl = (target as { $el?: unknown }).$el
-  if (maybeEl instanceof HTMLElement)
-    return maybeEl
-
-  return null
-}
-
-function parsePx(value: string) {
-  const n = Number.parseFloat(value)
-  return Number.isFinite(n) ? n : 0
-}
-
-function updateLogContentHeight() {
-  const leftElement = resolveHTMLElement(leftTopContent.value)
-  const cardElement = resolveHTMLElement(logCardRef.value)
-  if (!leftElement || !cardElement)
-    return
-
-  const totalHeight = leftElement.getBoundingClientRect().height
-  const head = cardElement.querySelector('.ant-card-head') as HTMLElement | null
-  const body = cardElement.querySelector('.ant-card-body') as HTMLElement | null
-  const headHeight = head?.getBoundingClientRect().height ?? 0
-
-  let bodyPadding = 0
-  if (body) {
-    const styles = window.getComputedStyle(body)
-    bodyPadding = parsePx(styles.paddingTop) + parsePx(styles.paddingBottom)
-  }
-
-  const next = Math.floor(totalHeight - headHeight - bodyPadding)
-  if (next > 0)
-    logContentHeight.value = next
-}
-
-onMounted(() => {
-  scheduleLogHeightUpdate()
-  reconnectLayoutObserver()
-
-  handleWindowResize = scheduleLogHeightUpdate
-  window.addEventListener('resize', handleWindowResize)
-})
-
-watch(
-  () => data.value.auto_cert,
-  async autoCertState => {
-    if (autoCertState !== AutoCertState.Enable) {
-      layoutObserver?.disconnect()
-      layoutObserver = null
-      logContentHeight.value = null
-      return
-    }
-
-    await nextTick()
-    reconnectLayoutObserver()
-    scheduleLogHeightUpdate()
-  },
-  { immediate: true },
-)
-
-onBeforeUnmount(() => {
-  layoutObserver?.disconnect()
-  layoutObserver = null
-  if (handleWindowResize)
-    window.removeEventListener('resize', handleWindowResize)
-  handleWindowResize = null
-})
 </script>
 
 <template>
   <ACard>
-    <template #title>
-      <div v-if="!isSelfSigned" class="editor-title-name">
-        <AInput
-          v-model:value="data.name"
-          class="editor-title-input"
-          :disabled="isManaged"
-        />
+    <!-- Header -->
+    <div class="editor-head">
+      <div class="min-w-0 flex-1">
+        <template v-if="isNew">
+          <h2 class="editor-title">
+            {{ $gettext('Import Certificate') }}
+          </h2>
+          <AInput
+            v-model:value="data.name"
+            class="mt-3 max-w-120"
+            :placeholder="$gettext('Name')"
+            :status="errors.name ? 'error' : undefined"
+          />
+        </template>
+        <template v-else>
+          <AFlex align="center" wrap gap="small">
+            <AInput
+              v-if="renaming"
+              v-model:value="nameDraft"
+              autofocus
+              class="max-w-120"
+              @press-enter="finishRename"
+              @blur="finishRename"
+              @keydown.esc="cancelRename"
+            />
+            <h2 v-else class="editor-title">
+              {{ displayName }}
+            </h2>
+            <AButton
+              v-if="canRename && !renaming"
+              type="link"
+              size="small"
+              class="px-0"
+              @click="startRename"
+            >
+              <EditOutlined />
+              {{ $gettext('Rename') }}
+            </AButton>
+          </AFlex>
+          <AFlex v-if="domains.length" wrap gap="small" class="mt-2">
+            <ATag v-for="domain in domains" :key="domain" class="m-0 font-mono">
+              {{ domain }}
+            </ATag>
+          </AFlex>
+        </template>
       </div>
-      <span v-else>{{ id > 0 ? $gettext('Modify Certificate') : $gettext('Import Certificate') }}</span>
-    </template>
-    <template #extra>
-      <ATag v-if="isManaged" color="success" class="managed-cert-tag">
-        {{ $gettext('This certificate is managed by Nginx UI') }}
-      </ATag>
-      <ATag v-else-if="isGeneral" color="purple" variant="filled" class="general-cert-tag">
-        {{ $gettext('General Certificate') }} · {{ $gettext('This certificate is not managed by Nginx UI') }}
-      </ATag>
-    </template>
 
-    <ARow :gutter="[16, 16]" class="main-top-row">
-      <ACol
-        :sm="24"
-        :lg="14"
-      >
-        <div ref="leftTopContent" class="left-top-content">
-          <!-- Self-signed Certificate Management -->
+      <AFlex v-if="!isNew" wrap gap="small" align="center" class="editor-actions">
+        <CertificateDownload :data="data" plain inline />
+        <RenewCert
+          v-if="canRenew"
+          primary
+          :options="renewOptions"
+          @saved="markSaved"
+          @renewed="load"
+        />
+        <ADropdown :menu="moreMenu" :trigger="['click']" placement="bottomRight">
+          <AButton :aria-label="$gettext('More actions')">
+            <template #icon>
+              <EllipsisOutlined />
+            </template>
+          </AButton>
+        </ADropdown>
+        <RemoveCert
+          :id="data.id"
+          ref="removeCert"
+          :certificate="data"
+          hide-trigger
+          @removed="handleRemoved"
+        />
+      </AFlex>
+    </div>
+
+    <CertificateFacts
+      v-if="!isNew && data.id"
+      class="mt-4"
+      :cert="data"
+      :can-switch-auto-renewal="canSwitchAutoRenewal"
+      :switching="switchingAutoRenewal"
+      @switch-auto-renewal="switchAutoRenewal"
+    />
+
+    <ARow :gutter="[16, 16]" class="mt-4">
+      <ACol :xs="24" :lg="isNew ? 24 : 15">
+        <AFlex vertical :gap="16">
+          <AAlert
+            v-if="isDelegated"
+            type="info"
+            show-icon
+            :title="$gettext('Issued for %{node}', { node: delegatedNode })"
+          >
+            <template #description>
+              <p class="mb-1">
+                {{ $gettext('This instance validates the domain, keeps renewing the certificate and sends each renewal to %{node}.', { node: delegatedNode }) }}
+              </p>
+              <p v-if="data.remote_ssl_certificate_path" class="mb-0">
+                {{ $gettext('Files on the node:') }}
+                <code>{{ data.remote_ssl_certificate_path }}</code>,
+                <code>{{ data.remote_ssl_certificate_key_path }}</code>
+              </p>
+            </template>
+          </AAlert>
           <SelfSignedCertManagement
             v-if="isSelfSigned && selfSignedPayload"
             v-model:value="selfSignedPayload"
-            :certificate-info="data.certificate_info"
           />
-
-          <!-- Auto Certificate Management -->
           <AutoCertManagement
-            v-else
+            v-else-if="isAcme"
             v-model:data="data"
             :is-managed="isManaged"
-            @renewed="init"
           />
 
-          <AForm layout="vertical">
-            <!-- Certificate Basic Information -->
-            <CertificateBasicInfo
-              v-if="!isSelfSigned"
-              v-model:data="data"
-              :errors="errors"
-              :is-managed="isManaged"
-              :show-name-field="false"
-            />
-          </AForm>
-        </div>
+          <CertificateSyncCard
+            v-if="!isSelfSigned && !isDelegated"
+            v-model:sync-node-ids="data.sync_node_ids"
+          />
+
+          <CertificateFilesCard
+            v-model:data="data"
+            :errors="errors"
+            :managed="isManaged || isSelfSigned"
+          />
+        </AFlex>
       </ACol>
 
-      <!-- Log Column for Auto Cert -->
-      <ACol
-        v-if="data.auto_cert === AutoCertState.Enable || data.auto_cert === AutoCertState.Paused"
-        :sm="24"
-        :lg="10"
-        class="log-col"
-      >
-        <ACard
-          ref="logCardRef"
-          size="small"
-          :title="$gettext('Log')"
-          class="log-card"
-        >
-          <pre
-            v-dompurify-html="log"
-            class="log-container"
-            :style="logContentHeight ? { height: `${logContentHeight}px` } : undefined"
-          />
-        </ACard>
+      <ACol v-if="!isNew" :xs="24" :lg="9">
+        <AFlex vertical :gap="16">
+          <CertificateDeployTargets :cert-id="id" />
+          <CertificateLastRenewal v-if="isAcme" :cert="data" />
+        </AFlex>
       </ACol>
     </ARow>
 
-    <div class="content-editor-bottom">
-      <CertificateContentEditor
-        v-model:data="data"
-        :errors="errors"
-        :readonly="isManaged || isSelfSigned"
-      />
-    </div>
-
-    <!-- Certificate Actions -->
     <CertificateActions
+      v-if="isNew"
       @save="save"
       @back="handleBack"
+    />
+    <PreferenceSaveBar
+      v-else-if="changedLabels.length"
+      :labels="changedLabels"
+      :saving="saving"
+      @save="save"
+      @discard="discard"
     />
   </ACard>
 </template>
 
 <style scoped lang="less">
-.main-top-row {
-  align-items: stretch;
-}
-
-.editor-title-name {
+.editor-head {
   display: flex;
-  align-items: center;
-  width: 100%;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 16px;
 }
 
-.editor-title-input {
-  max-width: 560px;
-}
-
-.left-top-content {
-  width: 100%;
-}
-
-.log-col {
-  display: flex;
-  min-height: 0;
-}
-
-.log-card {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.log-card :deep(.ant-card-body) {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.log-container {
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 5px;
+.editor-title {
   margin: 0;
-
-  font-size: 12px;
-  line-height: 1.6;
-  white-space: pre-wrap;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 32px;
   overflow-wrap: anywhere;
-  word-break: break-word;
 }
 
-.managed-cert-tag {
-  font-size: 16px;
-  line-height: 1.2;
+.editor-actions {
+  flex: none;
 }
 
-.general-cert-tag {
-  font-size: 16px;
-  line-height: 1.2;
-  border: none;
-}
-
-.content-editor-bottom {
-  margin-top: 16px;
-}
-
-.code-editor-container {
-  position: relative;
-
-  .drag-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(24, 144, 255, 0.1);
-    border: 2px dashed #1890ff;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-
-    .drag-content {
-      text-align: center;
-      color: #1890ff;
-
-      .drag-icon {
-        font-size: 48px;
-        margin-bottom: 16px;
-        display: block;
-      }
-
-      p {
-        font-size: 16px;
-        margin: 0;
-        font-weight: 500;
-      }
-    }
+@media (max-width: 575px) {
+  .editor-actions {
+    width: 100%;
   }
 }
 </style>
