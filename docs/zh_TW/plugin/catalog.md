@@ -64,7 +64,6 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
   "capabilities": ["dns01"],
   "license": "MIT",
   "trust": "community",
-  "stage": "production",
   "releases": [ ... ]
 }
 ```
@@ -79,7 +78,6 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 | `screenshots` | 參見[螢幕截圖](#screenshots)。 |
 | `categories`、`capabilities` | 用於篩選外掛市集。 |
 | `license` | 外掛授權條款的 SPDX 識別碼。 |
-| `stage` | `production` 或 `beta`，顯示在外掛旁邊的標籤。 |
 | `provides` | 選用。最新版本提供的內容。`dns01.since` 是外掛開始提供 DNS-01 的版本，`dns01.providers` 列出它的 DNS 服務商，每項包含 `code` 和 `name`；後來才加入的服務商帶有自己的 `since`；被較新版本移除、但最新穩定版仍包含的服務商帶有 `removed_in`。版本滿足 `since` ≤ 版本 < `removed_in` 時包含該服務商。讓 Nginx UI 在安裝之前就能找到外掛。 |
 | `releases` | 各個版本，見下文。 |
 
@@ -147,7 +145,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 - 預發佈部分的第一個識別碼為 `alpha`、`dev`、`nightly`、`snapshot`、`canary` 或 `preview`（不區分大小寫）的版本是 `dev`，因此 `1.0.0-nightly.20260930` 是 `dev`，而 `1.0.0-alphabet` 不是；
 - 其他預發佈版本，例如 `1.0.0-beta.1` 或 `2.0.0-rc.1`，是 `beta`。
 
-設定 `channel` 可以把一般版本號放到較不穩定的通道。項目的 `stage` 不會改變任何通道。
+設定 `channel` 可以把一般版本號放到較不穩定的通道。外掛市集依節點將要安裝的版本所在的通道為外掛加上標籤。
 
 ::: tip 提示
 請用點分隔的數字為預發佈版本編號，例如 `1.1.0-beta.10`：只有單獨成段時識別碼才依數字比較，所以 `1.1.0-beta10` 會排在 `1.1.0-beta9` 之前。
