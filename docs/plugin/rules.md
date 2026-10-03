@@ -101,6 +101,16 @@ A key of `permission_reasons`, or of its translation in `i18n`, is not one of
 `permissions`, or its reason is longer than 300 characters. See
 [Explaining Permissions](./permissions.md#explaining-permissions).
 
+### manifest-screenshots
+
+<Badge type="info" text="lint" /> <Badge type="danger" text="error" />
+
+`screenshots` lists more than eight images; an `id` is missing, malformed or
+used twice; a path is missing, is not a safe relative path, is not a PNG, JPEG
+or WebP image or is listed twice; a caption is longer than 200 characters; or a
+key of `screenshot_captions` in `i18n` is not the id of a screenshot. See
+[Screenshots](./manifest.md#screenshots).
+
 ### capability-name
 
 <Badge type="info" text="lint" /> <Badge type="danger" text="error" />

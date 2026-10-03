@@ -23,7 +23,7 @@ outline: [2, 3]
 | `name` | string | 是 | 显示名称。 |
 | `version` | string | 是 | 插件自身的版本，使用[语义化版本](https://semver.org/lang/zh-CN/)。 |
 | `description` | string | 否 | 插件列表中显示的一行简介。 |
-| `i18n` | object | 否 | `name`、`description` 和 `permission_reasons` 的翻译。参见[翻译](#translations)。 |
+| `i18n` | object | 否 | `name`、`description`、`permission_reasons` 和截图说明的翻译。参见[翻译](#translations)。 |
 | `homepage_url` | string | 否 | 文档或仓库链接。 |
 | `icon_path` | string | 否 | 插件包内图标文件的路径。 |
 | `api_version` | integer | 是 | 插件使用的协议代次，目前固定为 `1`。 |
@@ -40,13 +40,14 @@ outline: [2, 3]
 | `cron` | object[] | 否 | 定时调用。参见[宿主 API](./host-api.md#scheduled-tasks)。 |
 | `network_hosts` | string[] | 否 | 插件打算访问的主机，会展示给安装插件的人。 |
 | `permission_reasons` | object | 否 | 插件请求每项权限的原因。参见[说明权限用途](./permissions.md#explaining-permissions)。 |
+| `screenshots` | object[] | 否 | 插件目录展示用的使用截图。参见[截图](#screenshots)。 |
 | `settings_schema` | object | 否 | 设置表单。参见[设置](#settings)。 |
 | `dns01`、`http`、`notify`、`probe`、`mcp`、`storage`、`deploy`、`blocklist`、`discovery`、`log_sink` | object | 声明对应能力时 | 各能力的配置。 |
 
 \* 清单至少声明 `server`、`webapp` 和 `content` 中的一个，否则插件什么也不会安装。
 
 ::: info 说明
-清单中的所有路径（`icon_path`、`server.executables`、`webapp` 中的路径、`content` 中的路径）都相对于插件包根目录，并且必须是[安全的相对路径](./packaging.md#safe-paths)。
+清单中的所有路径（`icon_path`、`server.executables`、`webapp` 中的路径、`content` 中的路径）都相对于插件包根目录，并且必须是[安全的相对路径](./packaging.md#safe-paths)。截图路径是唯一的例外，它相对于仓库，参见[截图](#screenshots)。
 :::
 
 ## 标识 {#identity}
@@ -70,6 +71,26 @@ outline: [2, 3]
 只需翻译你想支持的语言。顶层的 `name` 和 `description` 是英文文本，没有翻译的语言会显示它们。[`permission_reasons`](./permissions.md#explaining-permissions) 也可以用同样的方式按语言翻译。
 
 键使用 Nginx UI 界面的语言代码，例如 `zh_CN`、`zh_TW` 或 `ja_JP`。键不是其中之一时，[`nginx-ui plugin lint`](./rules.md#manifest-i18n) 会报告它，并列出所有可用的代码。
+
+## 截图 {#screenshots}
+
+`screenshots` 最多列出 8 张插件使用中的截图，按顺序显示在插件目录的展示页上：
+
+```json [plugin.json]
+"screenshots": [
+  {
+    "id": "dashboard",
+    "path": "docs/screenshots/dashboard.png",
+    "dark_path": "docs/screenshots/dashboard-dark.png",
+    "caption": "Traffic at a glance"
+  }
+],
+"i18n": {
+  "zh_CN": { "screenshot_captions": { "dashboard": "一览流量" } }
+}
+```
+
+和清单中的其他路径不同，`path` 和 `dark_path` 相对于插件仓库的根目录，而不是插件包，这样图片不会打进插件包。插件目录在每个版本的 tag 上读取它们，所以发布新版本就能更新截图。请使用 PNG、JPEG 或 WebP 图片，宽高比约 16:10，宽度 1280 到 1920 像素。`dark_path` 是同一画面的深色主题版本，Nginx UI 界面为深色时显示它。`id` 是截图的名称，由小写字母、数字和短横线组成。`caption` 使用英文，`i18n` 中的 `screenshot_captions` 按 `id` 翻译它。[`nginx-ui plugin lint`](./rules.md#manifest-screenshots) 会检查路径和说明。
 
 ## 服务端进程 {#server-process}
 

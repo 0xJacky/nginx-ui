@@ -27,7 +27,7 @@ of the manifest gives editors completion and validation:
 | `name` | string | yes | Display name. |
 | `version` | string | yes | The plugin's own version, [semantic versioning](https://semver.org/). |
 | `description` | string | no | One line summary shown in the plugin list. |
-| `i18n` | object | no | Translations of `name`, `description` and `permission_reasons`. See [Translations](#translations). |
+| `i18n` | object | no | Translations of `name`, `description`, `permission_reasons` and the screenshot captions. See [Translations](#translations). |
 | `homepage_url` | string | no | Documentation or repository link. |
 | `icon_path` | string | no | Path of an icon file inside the package. |
 | `api_version` | integer | yes | Protocol generation the plugin speaks. Always `1` today. |
@@ -44,6 +44,7 @@ of the manifest gives editors completion and validation:
 | `cron` | object[] | no | Scheduled calls. See [Host API](./host-api.md#scheduled-tasks). |
 | `network_hosts` | string[] | no | Hosts the plugin intends to contact, shown to the person installing it. |
 | `permission_reasons` | object | no | Why the plugin asks for each permission. See [Explaining Permissions](./permissions.md#explaining-permissions). |
+| `screenshots` | object[] | no | Images of the plugin in use for its catalog listing. See [Screenshots](#screenshots). |
 | `settings_schema` | object | no | The settings form. See [Settings](#settings). |
 | `dns01`, `http`, `notify`, `probe`, `mcp`, `storage`, `deploy`, `blocklist`, `discovery`, `log_sink` | object | with the capability | Configuration of each capability. |
 
@@ -53,7 +54,8 @@ a plugin with none of them would install nothing.
 ::: info
 Every path in a manifest (`icon_path`, `server.executables`, `webapp` paths,
 `content` paths) is relative to the package root and must be a
-[safe relative path](./packaging.md#safe-paths).
+[safe relative path](./packaging.md#safe-paths). Screenshot paths are the one
+exception: they are relative to the repository, see [Screenshots](#screenshots).
 :::
 
 ## Identity
@@ -89,6 +91,36 @@ Keys are the language codes of the Nginx UI interface, such as `zh_CN`,
 `zh_TW` or `ja_JP`. When a key is not one of them,
 [`nginx-ui plugin lint`](./rules.md#manifest-i18n) reports it and lists every
 code it accepts.
+
+## Screenshots
+
+`screenshots` lists up to eight images of the plugin in use, shown on its
+catalog listing in this order:
+
+```json [plugin.json]
+"screenshots": [
+  {
+    "id": "dashboard",
+    "path": "docs/screenshots/dashboard.png",
+    "dark_path": "docs/screenshots/dashboard-dark.png",
+    "caption": "Traffic at a glance"
+  }
+],
+"i18n": {
+  "zh_CN": { "screenshot_captions": { "dashboard": "一览流量" } }
+}
+```
+
+Unlike the other paths of a manifest, `path` and `dark_path` are relative to
+the root of the plugin repository, not to the package, so the images stay out
+of the package. The catalog reads them at the tag of each release, so a new
+release brings new screenshots. Use PNG, JPEG or WebP images, about 16:10 at
+1280 to 1920 pixels wide. `dark_path` is the same view in the dark theme, shown
+while the Nginx UI interface is dark. `id` names the
+screenshot, lowercase letters, digits and hyphens. `caption` is English, and
+`screenshot_captions` in `i18n` translates it, keyed by `id`.
+[`nginx-ui plugin lint`](./rules.md#manifest-screenshots) checks the paths and
+captions.
 
 ## Server Process
 
