@@ -16,15 +16,22 @@ The official catalog is built from the
 plugin:
 
 1. Publish the plugin in a public repository, with a GitHub release whose
-   assets are the signed packages.
+   assets are packages signed by a certified
+   [signing key](./signing.md#signing-keys).
 2. Make sure `nginx-ui plugin lint` and, for a plugin with a server process,
    `nginx-ui plugin conformance` pass. The repository runs both on your
    release.
-3. Open an issue with the **Submit a plugin** form, which drafts the entry
-   for you, or open a pull request adding `plugins/<plugin id>.json`.
+3. Open an issue with the **Submit a plugin** form. The issue is the whole
+   submission: the checks run on it and comment what the listing will show,
+   an edit runs them again, and a maintainer lists the plugin by approving
+   the issue. A pull request adding `plugins/<plugin id>.json` works too.
 
 The repository's contributing guide describes the review. New releases are
-picked up from your repository afterwards.
+picked up from your repository afterwards, and the listing follows the newest
+stable release: the description, the name translations and the
+[screenshots](./manifest.md#screenshots) of its `plugin.json`, the README at
+its tag and the icon inside its package. Only the English name is reviewed
+again when it changes.
 
 ## Catalog Document
 
@@ -98,6 +105,7 @@ elsewhere is dropped and a generic image shown.
 | `categories` | See [Categories](#categories). |
 | `capabilities` | For filtering the marketplace. |
 | `license` | SPDX identifier of the plugin's license. |
+| `revoked_signers` | Ids of signing keys the author withdrew. Nginx UI treats packages they signed as unsigned. See [Signing Keys](./signing.md#signing-keys). |
 | `provides` | Optional. What the newest release provides. `dns01.since` is the plugin version since which the plugin provides DNS-01, and `dns01.providers` lists its DNS providers with `code` and `name`. A provider added later carries a `since` of its own, and one a newer release dropped while the newest stable release still has it carries `removed_in`. A provider is in a release when `since` ≤ its version < `removed_in`. Lets a host find the plugin before installing it. |
 | `releases` | The releases, see below. |
 
@@ -135,6 +143,7 @@ catalog's host, the package's host or GitHub.
 | `release_notes_url` | The page with the full notes of the release. |
 | `notes` | What changed in the release, in Markdown, at most 4096 characters. Nginx UI shows it on the plugin page, and for an update the notes of every version since the installed one. |
 | `yanked` | The release is withdrawn and no longer offered. |
+| `signer` | Id of the key that signed the packages, for display. |
 | `manifest` | A snapshot of the `plugin.json` of the release, see below. |
 
 A release has `downloads`, `download_url` or both. A platform entry of
@@ -261,6 +270,10 @@ treats a missing image as a fault of the entry.
 while the interface is dark and the `url` image otherwise, so a screenshot
 without a dark image, or with one it cannot load, shows the light image in
 both themes. Take both images of the same view at the same size.
+
+The official catalog fills `screenshots` from the
+[screenshots of the manifest](./manifest.md#screenshots), so an author lists
+them in `plugin.json`, not in the catalog entry.
 
 ## Hosting a Catalog of Your Own
 
