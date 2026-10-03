@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -563,6 +564,63 @@ func TestLintPermissionReasons(t *testing.T) {
 	report, err = Lint(writeLintFixture(t, lintFixture{manifest: m}))
 	require.NoError(t, err)
 	assertHasFinding(t, report, LevelError, RuleManifestReasons)
+}
+
+func TestLintScreenshots(t *testing.T) {
+	shot := func(id, path string) protocol.ManifestScreenshot {
+		return protocol.ManifestScreenshot{ID: id, Path: path}
+	}
+	tests := []struct {
+		name   string
+		mutate func(m *protocol.Manifest)
+		want   bool
+	}{
+		{"valid", func(m *protocol.Manifest) {
+			m.Screenshots = []protocol.ManifestScreenshot{{ID: "dashboard", Path: "docs/1.png", DarkPath: "docs/1-dark.webp", Caption: "Dashboard"}}
+			m.I18n = map[string]protocol.ManifestI18n{"zh_CN": {ScreenshotCaptions: map[string]string{"dashboard": "面板"}}}
+		}, false},
+		{"no id", func(m *protocol.Manifest) { m.Screenshots = []protocol.ManifestScreenshot{shot("", "docs/1.png")} }, true},
+		{"bad id", func(m *protocol.Manifest) {
+			m.Screenshots = []protocol.ManifestScreenshot{shot("Dash Board", "docs/1.png")}
+		}, true},
+		{"id used twice", func(m *protocol.Manifest) {
+			m.Screenshots = []protocol.ManifestScreenshot{shot("a", "1.png"), shot("a", "2.png")}
+		}, true},
+		{"no path", func(m *protocol.Manifest) { m.Screenshots = []protocol.ManifestScreenshot{{ID: "a", Caption: "x"}} }, true},
+		{"unsafe path", func(m *protocol.Manifest) { m.Screenshots = []protocol.ManifestScreenshot{shot("a", "../1.png")} }, true},
+		{"not an image", func(m *protocol.Manifest) { m.Screenshots = []protocol.ManifestScreenshot{shot("a", "docs/1.gif")} }, true},
+		{"dark path not an image", func(m *protocol.Manifest) {
+			m.Screenshots = []protocol.ManifestScreenshot{{ID: "a", Path: "docs/1.png", DarkPath: "docs/1.svg"}}
+		}, true},
+		{"listed twice", func(m *protocol.Manifest) {
+			m.Screenshots = []protocol.ManifestScreenshot{shot("a", "a.png"), shot("b", "a.png")}
+		}, true},
+		{"too many", func(m *protocol.Manifest) {
+			for i := range maxScreenshots + 1 {
+				m.Screenshots = append(m.Screenshots, shot("s"+strconv.Itoa(i), strconv.Itoa(i)+".png"))
+			}
+		}, true},
+		{"caption of no screenshot", func(m *protocol.Manifest) {
+			m.Screenshots = []protocol.ManifestScreenshot{shot("dashboard", "docs/1.png")}
+			m.I18n = map[string]protocol.ManifestI18n{"zh_CN": {ScreenshotCaptions: map[string]string{"docs/1.png": "面板"}}}
+		}, true},
+		{"long caption", func(m *protocol.Manifest) {
+			m.Screenshots = []protocol.ManifestScreenshot{{ID: "a", Path: "docs/1.png", Caption: strings.Repeat("x", maxScreenshotCaptionRunes+1)}}
+		}, true},
+	}
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			m := goodManifest()
+			tc.mutate(m)
+			report, err := Lint(writeLintFixture(t, lintFixture{manifest: m}))
+			require.NoError(t, err)
+			found := false
+			for _, f := range report.Findings {
+				found = found || f.Rule == RuleManifestScreenshots
+			}
+			assert.Equal(t, tc.want, found)
+		})
+	}
 }
 
 func TestLintConflicts(t *testing.T) {
