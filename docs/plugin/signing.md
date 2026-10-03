@@ -84,7 +84,7 @@ meant.
 | --- | --- |
 | The official plugin key of the Nginx UI project | `official` |
 | A partner key the project vouches for, and not revoked | `verified` |
-| The `author_public_key` of the catalog entry the package came from, or a key on the Nginx UI **Trusted Publishers** list | `community` |
+| The `author_public_key` of the catalog entry the package came from, a key on the Nginx UI **Trusted Publishers** list, or a signing key one of them certified | `community` |
 | No signature, or an unknown signer | `unsigned` |
 
 The levels rank `unsigned` < `community` < `verified` < `official`. Neither a
@@ -113,14 +113,74 @@ be `official`.
 
 ## Publishing as a Community Author
 
-Most plugins are community plugins. To publish one:
+Most plugins are community plugins. Their catalog entry names the author's
+**primary key**, and the packages are signed with a **signing key** that the
+primary key certifies. The primary key stays offline and practically never
+changes. A signing key can live in CI and can be replaced without touching the
+catalog. The official catalog lists a community package only when it is signed
+this way.
 
-1. Sign every package with your key.
-2. Put your public key into the catalog entry as `author_public_key` (the
-   base64 line of the `.pub` file), see [Catalogs](./catalog.md#publisher).
-   A package downloaded from that entry and signed by that key is `community`.
-3. People who install your package without the catalog add your public key to
-   **Preferences > Plugins > Trusted Publishers**.
+1. Create the keys and certify the signing key, see
+   [Signing Keys](#signing-keys).
+2. Sign every package with the signing key.
+3. Put the primary public key (the base64 line of its `.pub` file) into the
+   catalog entry as `author_public_key`, see [Catalogs](./catalog.md#publisher).
+   A package downloaded from that entry and signed by that key, or by a signing
+   key it certified, is `community`.
+4. People who install your package without the catalog add your primary
+   public key to **Preferences > Plugins > Trusted Publishers**.
+
+### Signing Keys
+
+A package signed with a signing key carries its certificate, two files at the
+package root:
+
+| File | Content |
+| --- | --- |
+| `plugin.signer` | The signing key's minisign public key, as in a `.pub` file. |
+| `plugin.signer.minisig` | A signature of that file by the primary key. |
+
+The trusted comment of the signature names the one plugin the key may sign:
+
+```text
+signer:io.github.example.mydns
+```
+
+Create the keys and the certificate once:
+
+```bash
+minisign -G -p primary.pub -s primary.key   # keep primary.key offline and backed up
+minisign -G -p signing.pub -s signing.key   # the key CI signs with
+cp signing.pub plugin.signer
+minisign -S -m plugin.signer -x plugin.signer.minisig -s primary.key \
+  -t "signer:io.github.example.mydns"
+```
+
+Copy both files unchanged into every package before signing it with
+`signing.key`, so `plugin.sums` lists them. One signing key can sign several
+plugins, with a certificate for each.
+
+Nginx UI accepts a certificate when a primary key it trusts for the package
+verifies it, the comment names the plugin of the package and the catalog entry
+does not list the signing key in `revoked_signers`. The package is then
+`community` and recorded under the primary key. A certificate that fails gives
+no trust on its own: the package falls back to the key that signed it.
+
+### Replacing and Revoking a Signing Key
+
+To replace a signing key, for a new machine or as a routine, create a new one,
+certify it with the primary key and sign the next release with it. The catalog
+entry does not change, and older releases keep verifying with the certificates
+they carry.
+
+When a signing key may have leaked, add its key id to `revoked_signers` of the
+catalog entry. Nginx UI no longer trusts the packages it signed, and the
+catalog marks the releases it signed as yanked, so nodes that run one are asked
+to update.
+
+The primary key cannot be replaced this way. A new `author_public_key` leaves
+every older release without a trusted signature, so keep the primary key
+offline and backed up.
 
 ## Partner Plugins
 

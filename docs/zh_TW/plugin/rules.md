@@ -285,6 +285,18 @@ ID 使用了保留給 Nginx UI 專案的 `com.nginxui.*`。參見[命名規則](
 
 合作夥伴憑證已到期，或者 `plugin.sums.minisig` 不是由憑證指定的金鑰簽署的，因此憑證對外掛套件不起作用。
 
+### signer-files
+
+<Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
+
+外掛套件中只有 `plugin.signer` 和 `plugin.signer.minisig` 之一，因此簽章金鑰憑證被忽略。參見[簽章金鑰](./signing.md#signing-keys)。
+
+### signer-certificate
+
+<Badge type="info" text="lint" /> <Badge type="warning" text="warning" />
+
+簽章金鑰憑證無法解析、可信註解指明的不是外掛套件本身的外掛，或者 `plugin.sums.minisig` 不是由憑證指定的金鑰簽署的，因此憑證對外掛套件不起作用。lint 不知道主金鑰，憑證由誰簽發由外掛目錄和 Nginx UI 檢查。參見[簽章金鑰](./signing.md#signing-keys)。
+
 ## 協定與生命週期 {#protocol-and-lifecycle}
 
 ### protocol-stderr

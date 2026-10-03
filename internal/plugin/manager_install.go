@@ -40,7 +40,7 @@ func (m *Manager) Inspect(archivePath string) (*InspectResult, error) {
 		return nil, err
 	}
 
-	trust, err := verifyPackageSignature(payload, "", m.partnerKeyring())
+	trust, err := verifyPackageSignature(payload, "", nil, m.partnerKeyring())
 	if err != nil {
 		return nil, err
 	}

@@ -70,7 +70,7 @@ Nginx UI 会在安装前展示插件包时检查一次，在安装时再检查�
 | --- | --- |
 | Nginx UI 项目的官方插件签名密钥 | `official` |
 | 项目担保且未被吊销的合作伙伴密钥 | `verified` |
-| 插件包所来自的目录条目的 `author_public_key`，或 Nginx UI **可信发布者**列表中的密钥 | `community` |
+| 插件包所来自的目录条目的 `author_public_key`、Nginx UI **可信发布者**列表中的密钥，或者它们认证的签名密钥 | `community` |
 | 没有签名，或签名者未知 | `unsigned` |
 
 等级排序为 `unsigned` < `community` < `verified` < `official`。插件目录和运维人员都不能把密钥提升到 `community` 以上。插件目录条目中的 `trust` 标签只用于显示，从不授予等级。
@@ -87,11 +87,49 @@ Nginx UI 会记录每个已安装插件的等级和签名者的密钥 ID，并�
 
 ## 以社区作者身份发布 {#publishing-as-a-community-author}
 
-大多数插件都是社区插件。发布步骤：
+大多数插件都是社区插件。它们的目录条目登记作者的**主密钥**，插件包则由主密钥认证过的**签名密钥**签名。主密钥离线保存，几乎不会更换；签名密钥可以放在 CI 中，更换时不需要改动插件目录。官方插件目录只收录按这种方式签名的社区插件包。
 
-1. 用你的密钥为每个插件包签名。
-2. 把你的公钥（`.pub` 文件中的 base64 那一行）作为 `author_public_key` 放进目录条目，参见[插件目录](./catalog.md#publisher)。从该条目下载并由该密钥签名的插件包就是 `community`。
-3. 不通过插件目录安装你的插件包的人，需要把你的公钥添加到 **偏好设置 > 插件 > 可信发布者**。
+1. 创建密钥并认证签名密钥，参见[签名密钥](#signing-keys)。
+2. 用签名密钥为每个插件包签名。
+3. 把主公钥（`.pub` 文件中的 base64 那一行）作为 `author_public_key` 放进目录条目，参见[插件目录](./catalog.md#publisher)。从该条目下载、由该密钥或它认证的签名密钥签名的插件包就是 `community`。
+4. 不通过插件目录安装你的插件包的人，需要把你的主公钥添加到 **偏好设置 > 插件 > 可信发布者**。
+
+### 签名密钥 {#signing-keys}
+
+用签名密钥签名的插件包会带上它的证书，即插件包根目录下的两个文件：
+
+| 文件 | 内容 |
+| --- | --- |
+| `plugin.signer` | 签名密钥的 minisign 公钥，与 `.pub` 文件相同。 |
+| `plugin.signer.minisig` | 主密钥对该文件的签名。 |
+
+签名的可信注释指明这把密钥可以签名的那一个插件：
+
+```text
+signer:io.github.example.mydns
+```
+
+密钥和证书只需创建一次：
+
+```bash
+minisign -G -p primary.pub -s primary.key   # primary.key 离线保存并备份
+minisign -G -p signing.pub -s signing.key   # CI 用来签名的密钥
+cp signing.pub plugin.signer
+minisign -S -m plugin.signer -x plugin.signer.minisig -s primary.key \
+  -t "signer:io.github.example.mydns"
+```
+
+在用 `signing.key` 签名之前，把这两个文件原样复制进每个插件包，让 `plugin.sums` 列出它们。一把签名密钥可以为多个插件签名，每个插件各有一份证书。
+
+当 Nginx UI 信任的该插件包的主密钥能验证证书、可信注释指明的是插件包本身的插件，并且目录条目的 `revoked_signers` 中没有这把签名密钥时，Nginx UI 接受这份证书。这时插件包是 `community`，并以主密钥记录。证书验证失败本身不会带来信任：插件包按实际签名它的密钥判断。
+
+### 更换与吊销签名密钥 {#replacing-and-revoking-a-signing-key}
+
+例行更换或换了电脑时，新建一把签名密钥，用主密钥认证它，再用它为下一个版本签名即可。目录条目不需要改动，旧版本仍然依靠各自携带的证书通过验证。
+
+签名密钥可能已经泄露时，把它的密钥 ID 加入目录条目的 `revoked_signers`。Nginx UI 不再信任由它签名的插件包，插件目录也会把由它签名的版本标记为已撤回，正在运行这些版本的节点会收到更新提示。
+
+主密钥不能用这种方式更换。换成新的 `author_public_key` 后，所有旧版本都不再有可信的签名，所以请离线保存并备份主密钥。
 
 ## 合作伙伴插件 {#partner-plugins}
 
