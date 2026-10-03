@@ -39,9 +39,6 @@ const (
 // EventTypeInstallProgress carries the marketplace install progress to the UI.
 const EventTypeInstallProgress = event.Type("plugin_install_progress")
 
-// StageBeta is the catalog entry stage that marks a plugin as beta.
-const StageBeta = "beta"
-
 // CatalogSchemaVersion is the only catalog layout this node understands.
 const CatalogSchemaVersion = 1
 
@@ -175,9 +172,8 @@ type CatalogEntry struct {
 	Capabilities []string            `json:"capabilities,omitempty"`
 	License      string              `json:"license,omitempty"`
 	Trust        string              `json:"trust,omitempty"`
-	Stage        string              `json:"stage,omitempty"`
 	// Channel is computed by this node: the channel of the release it would
-	// install, at least beta while the entry stage is beta.
+	// install.
 	Channel  string           `json:"channel"`
 	Releases []CatalogRelease `json:"releases"`
 
@@ -883,11 +879,8 @@ func (mp *Marketplace) decorate(entry *CatalogEntry) {
 	entry.InstallableRelease = pickRelease(entry, "", HostPlatform(), mp.followedChannel(entry.ID))
 	entry.InstallableVersions = installableVersions(entry, HostPlatform())
 	entry.Channel = ChannelStable
-	if entry.Stage == StageBeta {
-		entry.Channel = ChannelBeta
-	}
 	if entry.InstallableRelease != nil {
-		entry.Channel = lessStableChannel(entry.Channel, channelOfRelease(entry.InstallableRelease))
+		entry.Channel = channelOfRelease(entry.InstallableRelease)
 	}
 	if entry.InstallableRelease != nil && entry.InstalledVersion != "" {
 		entry.UpdateAvailable = CompareVersions(entry.InstalledVersion, entry.InstallableRelease.Version) < 0

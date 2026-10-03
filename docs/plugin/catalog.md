@@ -83,7 +83,6 @@ elsewhere is dropped and a generic image shown.
   "capabilities": ["dns01"],
   "license": "MIT",
   "trust": "community",
-  "stage": "production",
   "releases": [ ... ]
 }
 ```
@@ -98,7 +97,6 @@ elsewhere is dropped and a generic image shown.
 | `screenshots` | See [Screenshots](#screenshots). |
 | `categories`, `capabilities` | For filtering the marketplace. |
 | `license` | SPDX identifier of the plugin's license. |
-| `stage` | `production` or `beta`, a label shown next to the plugin. |
 | `provides` | Optional. What the newest release provides. `dns01.since` is the plugin version since which the plugin provides DNS-01, and `dns01.providers` lists its DNS providers with `code` and `name`. A provider added later carries a `since` of its own, and one a newer release dropped while the newest stable release still has it carries `removed_in`. A provider is in a release when `since` ≤ its version < `removed_in`. Lets a host find the plugin before installing it. |
 | `releases` | The releases, see below. |
 
@@ -188,8 +186,8 @@ Every release belongs to a channel, from the most to the least stable:
   `1.0.0-nightly.20260930` is `dev` and `1.0.0-alphabet` is not;
 - any other prerelease, such as `1.0.0-beta.1` or `2.0.0-rc.1`, is `beta`.
 
-Set `channel` to put a plain version on a less stable channel. The `stage` of
-an entry does not change any channel.
+Set `channel` to put a plain version on a less stable channel. The marketplace
+labels a plugin with the channel of the release a node would install.
 
 ::: tip
 Number prereleases with dot separated numbers, such as `1.1.0-beta.10`:

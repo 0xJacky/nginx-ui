@@ -84,8 +84,7 @@ export interface CatalogEntry {
   capabilities?: string[]
   license?: string
   trust?: PluginTrust
-  stage?: string
-  /** Channel of the release this node would install, at least beta in the beta stage. */
+  /** Channel of the release this node would install. */
   channel?: PluginChannel
   releases: CatalogRelease[]
   /** Catalog URL this entry was merged from. */
