@@ -14,6 +14,7 @@ import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { useSettingsStore } from '@/pinia'
 import { capabilityLabel } from '../capabilities'
+import { categoryLabel } from '../categories'
 import { channelHint, channelLabel, compareVersions, entryChannel, installableReleases, releaseChannel } from '../channel'
 import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
@@ -243,6 +244,12 @@ watch(open, value => {
                   class="detail-source-icon"
                 />
                 <span :title="current.source">{{ sourceName(current.source) }}</span>
+              </dd>
+            </div>
+            <div v-if="current.categories?.length" class="detail-row">
+              <dt>{{ $gettext('Categories') }}</dt>
+              <dd class="pill-row">
+                <span v-for="item in current.categories" :key="item" class="pill">{{ categoryLabel(item) }}</span>
               </dd>
             </div>
             <div v-if="links.length > 0" class="detail-row">
