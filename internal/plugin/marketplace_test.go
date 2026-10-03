@@ -136,7 +136,6 @@ func (cs *catalogServer) publish(t *testing.T, manifest *protocol.Manifest, sign
 			Categories:   []string{"dns01"},
 			Capabilities: manifest.Capabilities,
 			Trust:        TrustOfficial,
-			Stage:        "production",
 		})
 		index = len(cs.document.Plugins) - 1
 	}
