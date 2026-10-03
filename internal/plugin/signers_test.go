@@ -147,3 +147,19 @@ func TestNewSignerCertificateRefusesBadInput(t *testing.T) {
 	_, _, err = NewSignerCertificate([]byte("not a key"), "io.github.example.demo", primary)
 	assert.ErrorContains(t, err, "signing key")
 }
+
+func TestInspectNamesTheCertifiedSigningKey(t *testing.T) {
+	useMarketplace(t)
+	const id = "io.github.example.demo"
+	_, primary := newSigningKey(t)
+	signingPublic, signing := newSigningKey(t)
+	manager := newTestManager(t)
+
+	result, err := manager.Inspect(signedByCertificatePackage(t, id, signerFiles(t, signingPublic, id, primary), &signing))
+	require.NoError(t, err)
+	assert.Equal(t, keyIDOf(signingPublic), result.CertifiedSigner)
+
+	result, err = manager.Inspect(signedByCertificatePackage(t, id, nil, &signing))
+	require.NoError(t, err)
+	assert.Empty(t, result.CertifiedSigner)
+}

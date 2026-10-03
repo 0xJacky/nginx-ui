@@ -101,17 +101,9 @@ func readSignerFiles(root string) (signer, signature []byte, err error) {
 // the one of the package at root. The linter, which knows no primary key,
 // stops here.
 func parseSignerCertificate(root string, signer, signature []byte) (*signerCertificate, error) {
-	var parsed minisign.Signature
-	if err := parsed.UnmarshalText(signature); err != nil {
-		return nil, err
-	}
-	id, ok := strings.CutPrefix(parsed.TrustedComment, signerCommentPrefix)
-	if !ok || !IsValidID(id) {
-		return nil, fmt.Errorf("trusted comment %q is not signer:<plugin id>", parsed.TrustedComment)
-	}
-	key, err := parsePartnerKey(signer)
+	id, key, err := InspectSignerCertificate(signer, signature)
 	if err != nil {
-		return nil, fmt.Errorf("%s: %w", SignerFileName, err)
+		return nil, err
 	}
 	packageID, err := packagePluginID(root)
 	if err != nil {
@@ -121,6 +113,32 @@ func parseSignerCertificate(root string, signer, signature []byte) (*signerCerti
 		return nil, fmt.Errorf("%w: it is for %s, the package is %s", errSignerPlugin, id, packageID)
 	}
 	return &signerCertificate{PluginID: id, KeyID: key.KeyID, Key: key.Key}, nil
+}
+
+// SignerKey is the signing key a certificate names.
+type SignerKey struct {
+	// KeyID is the key id in upper case hex.
+	KeyID string
+	// Key is the public key in its two line text form.
+	Key string
+}
+
+// InspectSignerCertificate reads the plugin id and the signing key of a
+// signer certificate without checking who issued it.
+func InspectSignerCertificate(signer, signature []byte) (pluginID string, key SignerKey, err error) {
+	var parsed minisign.Signature
+	if err = parsed.UnmarshalText(signature); err != nil {
+		return "", SignerKey{}, fmt.Errorf("%s: %w", SignerSignatureFileName, err)
+	}
+	id, ok := strings.CutPrefix(parsed.TrustedComment, signerCommentPrefix)
+	if !ok || !IsValidID(id) {
+		return "", SignerKey{}, fmt.Errorf("trusted comment %q is not signer:<plugin id>", parsed.TrustedComment)
+	}
+	parsedKey, err := parsePartnerKey(signer)
+	if err != nil {
+		return "", SignerKey{}, fmt.Errorf("%s: %w", SignerFileName, err)
+	}
+	return id, SignerKey{KeyID: parsedKey.KeyID, Key: parsedKey.Key}, nil
 }
 
 // packageSigner is the signer certificate of a package that holds up, nil

@@ -217,6 +217,10 @@ type InspectResult struct {
 	Trust   string `json:"trust"`
 	Signer  string `json:"signer"`
 	Partner string `json:"partner"`
+	// CertifiedSigner is the signing key id a signer certificate in the
+	// package names for this plugin, empty without one. Who issued the
+	// certificate is checked against the catalog key at install.
+	CertifiedSigner string `json:"certified_signer,omitempty"`
 }
 
 // entry is one plugin the manager knows about. A missing plugin has a row but

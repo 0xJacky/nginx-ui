@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
+	"maps"
 	"os"
 	"path"
 	"path/filepath"
@@ -99,18 +100,32 @@ func ExtractPackage(archivePath, destDir string) (manifest *protocol.Manifest, e
 // or plugin.sums.minisig in srcDir is left out. It is used by the tests and by
 // the plugin CLI.
 func BuildPackage(srcDir, archivePath string) error {
-	return buildPackage(srcDir, archivePath, nil)
+	return buildPackage(srcDir, archivePath, nil, nil)
 }
 
 // BuildSignedPackage is BuildPackage plus the embedded signature: plugin.sums
 // over the files as packed and its minisign signature, the last two entries.
 func BuildSignedPackage(srcDir, archivePath string, key minisign.PrivateKey) error {
-	return buildPackage(srcDir, archivePath, &key)
+	return buildPackage(srcDir, archivePath, &key, nil)
+}
+
+// BuildSignedPackageWithFiles is BuildSignedPackage with files added at the
+// package root, such as a signer certificate kept apart from the plugin
+// directory. A file the directory holds as well is an error.
+func BuildSignedPackageWithFiles(srcDir, archivePath string, key minisign.PrivateKey, files map[string][]byte) error {
+	return buildPackage(srcDir, archivePath, &key, files)
 }
 
 // SignPackage signs an existing package in place. It is unpacked and built
 // again with the embedded signature, which replaces a previous one.
 func SignPackage(archivePath string, key minisign.PrivateKey) error {
+	return SignPackageWithFiles(archivePath, key, nil)
+}
+
+// SignPackageWithFiles is SignPackage with files added at the package root,
+// such as a signer certificate kept apart from the package. A file the
+// package holds as well is an error.
+func SignPackageWithFiles(archivePath string, key minisign.PrivateKey, files map[string][]byte) error {
 	staging, err := os.MkdirTemp("", "nginx-ui-plugin-sign-")
 	if err != nil {
 		return err
@@ -130,7 +145,7 @@ func SignPackage(archivePath string, key minisign.PrivateKey) error {
 	_ = partial.Close()
 	defer os.Remove(partialPath)
 
-	if err = BuildSignedPackage(payload, partialPath, key); err != nil {
+	if err = BuildSignedPackageWithFiles(payload, partialPath, key, files); err != nil {
 		return err
 	}
 	// CreateTemp makes the file private, the package keeps its own mode.
@@ -143,7 +158,7 @@ func SignPackage(archivePath string, key minisign.PrivateKey) error {
 }
 
 // buildPackage packs srcDir and, when key is set, signs what it packed.
-func buildPackage(srcDir, archivePath string, key *minisign.PrivateKey) error {
+func buildPackage(srcDir, archivePath string, key *minisign.PrivateKey, extra map[string][]byte) error {
 	root, err := filepath.Abs(srcDir)
 	if err != nil {
 		return err
@@ -207,6 +222,14 @@ func buildPackage(srcDir, archivePath string, key *minisign.PrivateKey) error {
 	if err != nil {
 		return err
 	}
+	for _, name := range slices.Sorted(maps.Keys(extra)) {
+		if _, packed := digests[name]; packed || !isSafeRelPath(name) || strings.Contains(name, "/") || isSignatureFile(name) {
+			return fmt.Errorf("cannot add %s to the package root", name)
+		}
+		if digests[name], err = packBytes(tw, name, extra[name]); err != nil {
+			return err
+		}
+	}
 	if key != nil {
 		if err = packSignature(tw, digests, *key); err != nil {
 			return err
@@ -238,6 +261,19 @@ func packFile(tw *tar.Writer, header *tar.Header, path string) (string, error) {
 		return "", err
 	}
 	return hex.EncodeToString(digest.Sum(nil)), nil
+}
+
+// packBytes writes one regular file from memory and returns its sha256.
+func packBytes(tw *tar.Writer, name string, body []byte) (string, error) {
+	header := &tar.Header{Name: name, Typeflag: tar.TypeReg, Mode: 0o644, Size: int64(len(body)), ModTime: time.Now()}
+	if err := tw.WriteHeader(header); err != nil {
+		return "", err
+	}
+	if _, err := tw.Write(body); err != nil {
+		return "", err
+	}
+	digest := sha256.Sum256(body)
+	return hex.EncodeToString(digest[:]), nil
 }
 
 // packSignature appends plugin.sums and plugin.sums.minisig.

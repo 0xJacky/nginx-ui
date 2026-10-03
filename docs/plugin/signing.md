@@ -13,19 +13,27 @@ Signatures use [minisign](https://jedisct1.github.io/minisign/).
 
 ## Signing a Package
 
-Create a key pair once and keep the secret key safe:
+Create your keys once, see [Signing Keys](#signing-keys) for what each file is
+for:
 
 ```bash
-minisign -G -p mydns.pub -s mydns.key
+nginx-ui plugin key init --id io.github.example.mydns
 ```
 
-Then sign each package when every other file of it is final:
+Then sign each package with the signing key when every other file of it is
+final:
 
 ```bash
-nginx-ui plugin pack ./mydns io.github.example.mydns-1.0.0.tar.gz --key mydns.key
+nginx-ui plugin pack ./mydns io.github.example.mydns-1.0.0.tar.gz --key signing.key
 # or sign an existing package in place
-nginx-ui plugin sign io.github.example.mydns-1.0.0.tar.gz --key mydns.key
+nginx-ui plugin sign io.github.example.mydns-1.0.0.tar.gz --key signing.key
 ```
+
+Both commands pack the signing key's certificate, which they find in the plugin
+directory, in `--signer` or next to the key. They refuse a certificate of
+another plugin or another key, which is what signing with the primary key by
+mistake looks like. An encrypted secret key is read with the password in
+`NGINX_UI_PLUGIN_SIGN_PASSWORD`.
 
 Signing adds two files at the package root:
 
@@ -146,19 +154,34 @@ The trusted comment of the signature names the one plugin the key may sign:
 signer:io.github.example.mydns
 ```
 
-Create the keys and the certificate once:
+`nginx-ui plugin key init --id <plugin id>` writes everything once:
+
+| File | Where it goes |
+| --- | --- |
+| `primary.key` | Offline storage or a password manager, with a backup. Never into a repository or CI. |
+| `primary.pub` | The base64 line is the `author_public_key` of the catalog entry. |
+| `signing.key` | The secrets of your CI. |
+| `signing.pub` | Nowhere in particular, the certificate holds it. |
+| `plugin.signer`, `plugin.signer.minisig` | Next to the plugin sources, `pack` and `sign` put them into every package. |
+
+Secret keys are written unencrypted unless `NGINX_UI_PLUGIN_PRIMARY_PASSWORD`
+or `NGINX_UI_PLUGIN_SIGN_PASSWORD` holds a password, and readable by their
+owner only. `minisign -C -s primary.key` adds a password later.
+
+The same files can be made with minisign alone:
 
 ```bash
-minisign -G -p primary.pub -s primary.key   # keep primary.key offline and backed up
-minisign -G -p signing.pub -s signing.key   # the key CI signs with
+minisign -G -p primary.pub -s primary.key
+minisign -G -p signing.pub -s signing.key
 cp signing.pub plugin.signer
 minisign -S -m plugin.signer -x plugin.signer.minisig -s primary.key \
   -t "signer:io.github.example.mydns"
 ```
 
-Copy both files unchanged into every package before signing it with
-`signing.key`, so `plugin.sums` lists them. One signing key can sign several
-plugins, with a certificate for each.
+Both certificate files go unchanged into every package before it is signed
+with `signing.key`, so `plugin.sums` lists them. One signing key can sign
+several plugins, with a certificate for each:
+`nginx-ui plugin key certify signing.pub --id <other plugin id> --primary primary.key`.
 
 Nginx UI accepts a certificate when a primary key it trusts for the package
 verifies it, the comment names the plugin of the package and the catalog entry
@@ -168,13 +191,18 @@ no trust on its own: the package falls back to the key that signed it.
 
 ### Replacing and Revoking a Signing Key
 
-To replace a signing key, for a new machine or as a routine, create a new one,
-certify it with the primary key and sign the next release with it. The catalog
-entry does not change, and older releases keep verifying with the certificates
-they carry.
+To replace a signing key, for a new machine or as a routine, create a new one
+certified by the primary key and sign the next release with it:
+
+```bash
+nginx-ui plugin key rotate --id io.github.example.mydns --primary primary.key --force
+```
+
+The catalog entry does not change, and older releases keep verifying with the
+certificates they carry.
 
 When a signing key may have leaked, add its key id to `revoked_signers` of the
-catalog entry. Nginx UI no longer trusts the packages it signed, and the
+catalog entry; `nginx-ui plugin key revoke signing.pub` prints the line. Nginx UI no longer trusts the packages it signed, and the
 catalog marks the releases it signed as yanked, so nodes that run one are asked
 to update.
 

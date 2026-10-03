@@ -30,6 +30,17 @@ Runs anywhere `{{.Interpreter}}` is available on `PATH`.
 * `nginx-ui plugin lint .` checks the plugin files.
 * `nginx-ui plugin conformance .` runs it through the conformance cases.
 
+## Publishing
+
+1. `nginx-ui plugin key init --id {{.ID}}` creates a primary key, a signing
+   key and the certificate that links them. Keep `primary.key` offline, put
+   `signing.key` into the secrets of your CI, and commit `plugin.signer` and
+   `plugin.signer.minisig`.
+2. `nginx-ui plugin pack . {{.ID}}-<version>.tar.gz --key signing.key` signs a
+   package and packs the certificate with it.
+3. Publish the packages on a GitHub Release and submit the plugin to the
+   catalog, see [Catalogs](https://nginxui.com/plugin/catalog).
+
 TODO: fill in `{{.CredentialKey}}` handling in `present`/`cleanup` and adjust
 `plugin.json`'s `dns01.providers[0].form` fields to match the real
 `{{.ProviderName}}` API.
