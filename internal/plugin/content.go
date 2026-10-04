@@ -217,10 +217,15 @@ func checkLocales(dir, rel string) []ContentProblem {
 			continue
 		}
 		count++
-		if !translation.IsLanguage(lang) {
+		if !languageCode.MatchString(lang) {
 			problems = append(problems, ContentProblem{Level: LevelError, Rule: RuleContentLocales, Path: where,
-				Message: fmt.Sprintf("%q is not a language of the host (%s)", lang, strings.Join(translation.Languages(), ", "))})
+				Message: fmt.Sprintf("%q is not a language code such as zh_CN", lang)})
 			continue
+		}
+		// A language this host lacks is not loaded here, a host that has it uses it.
+		if !translation.IsLanguage(lang) {
+			problems = append(problems, ContentProblem{Level: LevelWarning, Rule: RuleContentLocales, Path: where,
+				Message: fmt.Sprintf("this Nginx UI has no %q and does not use the file (it has %s)", lang, strings.Join(translation.Languages(), ", "))})
 		}
 		if _, err := readLocaleFile(filepath.Join(root, name)); err != nil {
 			problems = append(problems, ContentProblem{Level: LevelError, Rule: RuleContentLocale, Path: where, Message: err.Error()})

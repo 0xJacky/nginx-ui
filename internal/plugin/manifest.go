@@ -16,7 +16,6 @@ import (
 	"unicode/utf8"
 
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
-	"github.com/0xJacky/Nginx-UI/internal/translation"
 )
 
 // ManifestFileName is the manifest every plugin package carries at its root.
@@ -287,13 +286,16 @@ func validateIdentity(m *protocol.Manifest) error {
 	return nil
 }
 
-// validateI18n checks that every key of the i18n block is a language of the
-// host.
+// languageCode is the form of the language codes of the host, such as zh_CN.
+var languageCode = regexp.MustCompile(`^[a-z]{2,3}(_[A-Z]{2})?$`)
+
+// validateI18n checks that every key of the i18n block is a language code. A
+// language this host lacks is kept: a host that has it shows it, the others
+// the top level text, so adding a language never stops a plugin installing.
 func validateI18n(i18n map[string]protocol.ManifestI18n) error {
 	for _, locale := range slices.Sorted(maps.Keys(i18n)) {
-		if !translation.IsLanguage(locale) {
-			return invalidManifest("i18n: %q is not a language of the host (%s)",
-				locale, strings.Join(translation.Languages(), ", "))
+		if !languageCode.MatchString(locale) {
+			return invalidManifest("i18n: %q is not a language code such as zh_CN", locale)
 		}
 	}
 	return nil

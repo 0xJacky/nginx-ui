@@ -55,9 +55,9 @@ outline: [2, 3]
 
 ### manifest-i18n
 
-<Badge type="info" text="lint" /> <Badge type="danger" text="error" />
+<Badge type="info" text="lint" /> <Badge type="danger" text="error" /> <Badge type="warning" text="warning" />
 
-`i18n` 的某個鍵不是 Nginx UI 介面的語言。參見[清單檔案](./manifest.md#translations)。
+`i18n` 的某個鍵不是 `zh_CN` 這樣的語言代碼時為錯誤；執行檢查工具的 Nginx UI 沒有該語言時為警告，這時它顯示英文。參見[清單檔案](./manifest.md#translations)。
 
 ### manifest-requires
 
@@ -749,7 +749,7 @@ ID 使用了保留給 Nginx UI 專案的 `com.nginxui.*`。參見[命名規則](
 
 <Badge type="info" text="lint" /> <Badge type="danger" text="error" /> <Badge type="warning" text="warning" />
 
-翻譯目錄缺少、沒有 `.po` 檔案，或者有以 Nginx UI 不支援的語言命名的檔案時為錯誤；有其他項目時為警告。參見[翻譯](./capabilities/content.md#translations)。
+翻譯目錄缺少、沒有 `.po` 檔案，或者有檔名不是語言代碼的檔案時為錯誤；有執行檢查工具的 Nginx UI 沒有的語言的檔案，或者有其他項目時為警告。參見[翻譯](./capabilities/content.md#translations)。
 
 ### content-locale
 

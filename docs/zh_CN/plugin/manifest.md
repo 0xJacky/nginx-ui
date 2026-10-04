@@ -70,7 +70,7 @@ outline: [2, 3]
 
 只需翻译你想支持的语言。顶层的 `name` 和 `description` 是英文文本，没有翻译的语言会显示它们。[`permission_reasons`](./permissions.md#explaining-permissions) 也可以用同样的方式按语言翻译。
 
-键使用 Nginx UI 界面的语言代码，例如 `zh_CN`、`zh_TW` 或 `ja_JP`。键不是其中之一时，[`nginx-ui plugin lint`](./rules.md#manifest-i18n) 会报告它，并列出所有可用的代码。
+键使用 Nginx UI 界面的语言代码，例如 `zh_CN`、`zh_TW` 或 `ja_JP`。Nginx UI 显示它界面已有的语言，其他语言显示英文，所以插件可以先于部分 Nginx UI 提供某种语言。[`nginx-ui plugin lint`](./rules.md#manifest-i18n) 会报告不是语言代码的键，并对运行它的 Nginx UI 没有的语言发出警告。
 
 ## 截图 {#screenshots}
 
