@@ -98,9 +98,9 @@ func TestValidateManifest(t *testing.T) {
 		{"version with v prefix", func(m *protocol.Manifest) { m.Version = "v1.2.3" }, "semantic version"},
 		{"missing api version", func(m *protocol.Manifest) { m.APIVersion = 0 }, "api_version is required"},
 		{"absolute icon path", func(m *protocol.Manifest) { m.IconPath = "/etc/passwd" }, "relative path"},
-		{"unknown i18n locale", func(m *protocol.Manifest) {
+		{"i18n key that is no language code", func(m *protocol.Manifest) {
 			m.I18n = map[string]protocol.ManifestI18n{"zh_CN": {Name: "Cloudflare"}, "klingon": {Name: "Cloudflare"}}
-		}, `i18n: "klingon" is not a language of the host`},
+		}, `i18n: "klingon" is not a language code`},
 		{"i18n locale in another spelling", func(m *protocol.Manifest) {
 			m.I18n = map[string]protocol.ManifestI18n{"zh-CN": {Name: "Cloudflare"}}
 		}, `i18n: "zh-CN"`},
