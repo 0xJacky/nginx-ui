@@ -173,11 +173,15 @@ type CatalogEntry struct {
 	IconURL        string   `json:"icon_url,omitempty"`
 	// Screenshots are the images the catalog lists, in display order, without
 	// the ones this node may not load.
-	Screenshots  []CatalogScreenshot `json:"screenshots,omitempty"`
-	Categories   []string            `json:"categories,omitempty"`
-	Capabilities []string            `json:"capabilities,omitempty"`
-	License      string              `json:"license,omitempty"`
-	Trust        string              `json:"trust,omitempty"`
+	Screenshots []CatalogScreenshot `json:"screenshots,omitempty"`
+	// PermissionReasons translates the notes on each permission, keyed by
+	// permission and then by locale. They come from the store document of
+	// the plugin and win over the translations in a release manifest.
+	PermissionReasons map[string]map[string]string `json:"permission_reasons,omitempty"`
+	Categories        []string                     `json:"categories,omitempty"`
+	Capabilities      []string                     `json:"capabilities,omitempty"`
+	License           string                       `json:"license,omitempty"`
+	Trust             string                       `json:"trust,omitempty"`
 	// Channel is computed by this node: the channel of the release it would
 	// install.
 	Channel  string           `json:"channel"`

@@ -74,7 +74,7 @@ const release = computed<CatalogRelease | undefined>(() => {
 })
 
 const permissions = computed(() => release.value?.manifest?.permissions ?? [])
-const reasons = computed(() => permissionReasons(release.value?.manifest, gettext.current))
+const reasons = computed(() => permissionReasons(release.value?.manifest, gettext.current, entry.value?.permission_reasons))
 const requires = computed(() => release.value?.manifest?.requires ?? [])
 const trust = computed(() => trustPreset(entry.value?.trust))
 // The release being installed decides, a plugin can ship a beta next to a stable one.
