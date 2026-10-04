@@ -295,6 +295,22 @@ func TestMarketplaceCatalogComputesInstallableState(t *testing.T) {
 	assert.Nil(t, findEntry(entries, "com.example.gamma", "").InstallableRelease)
 }
 
+func TestMarketplaceCatalogKeepsTranslatedPermissionNotes(t *testing.T) {
+	manager := newTestManager(t)
+	server := newCatalogServer(t)
+	useMarketplace(t, server.catalogURL())
+
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, func(entry *CatalogEntry, _ *CatalogRelease) {
+		entry.PermissionReasons = map[string]map[string]string{"network": {"ja_JP": "国を調べます。"}}
+	})
+
+	entries, err := manager.Marketplace().Catalog(context.Background(), true)
+	require.NoError(t, err)
+	alpha := findEntry(entries, "com.example.alpha", "")
+	require.NotNil(t, alpha)
+	assert.Equal(t, "国を調べます。", alpha.PermissionReasons["network"]["ja_JP"])
+}
+
 func TestMarketplaceCatalogOnlyNormalisesTheDeclaredTrust(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
