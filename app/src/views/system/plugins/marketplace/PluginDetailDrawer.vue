@@ -51,7 +51,7 @@ const name = computed(() => (current.value ? catalogEntryName(current.value, get
 const description = computed(() => (current.value ? catalogEntryDescription(current.value, gettext.current) : ''))
 const trust = computed(() => trustPreset(current.value?.trust))
 const permissions = computed(() => current.value?.installable_release?.manifest?.permissions ?? [])
-const reasons = computed(() => permissionReasons(current.value?.installable_release?.manifest, gettext.current))
+const reasons = computed(() => permissionReasons(current.value?.installable_release?.manifest, gettext.current, current.value?.permission_reasons))
 const recommendedMb = computed(() => recommendedMemory(current.value?.installable_release?.manifest))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))

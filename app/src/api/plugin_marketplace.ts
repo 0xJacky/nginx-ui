@@ -80,6 +80,8 @@ export interface CatalogEntry {
   icon_url?: string
   /** Images of the plugin in use the node may load, in display order. */
   screenshots?: CatalogScreenshot[]
+  /** Translated notes on each permission, by permission and then locale. */
+  permission_reasons?: Record<string, Record<string, string>>
   categories?: string[]
   capabilities?: string[]
   license?: string
