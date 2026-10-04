@@ -88,9 +88,11 @@ shows them instead. A language can translate
 [`permission_reasons`](./permissions.md#explaining-permissions) the same way.
 
 Keys are the language codes of the Nginx UI interface, such as `zh_CN`,
-`zh_TW` or `ja_JP`. When a key is not one of them,
-[`nginx-ui plugin lint`](./rules.md#manifest-i18n) reports it and lists every
-code it accepts.
+`zh_TW` or `ja_JP`. Nginx UI shows the languages its interface has and the
+English text for the others, so a plugin can carry a language before every
+Nginx UI has it. [`nginx-ui plugin lint`](./rules.md#manifest-i18n) reports a
+key that is not a language code, and warns about a language the Nginx UI it
+runs with does not have.
 
 ## Screenshots
 

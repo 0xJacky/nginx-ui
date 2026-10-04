@@ -83,7 +83,7 @@ Nginx UI 在安裝或更新外掛前會驗證每個範本。缺少開始或結�
 
 ## 翻譯 {#translations}
 
-`content.locales` 是一個包含 GNU gettext PO 檔案的目錄，每種語言一個檔案，命名為 `<lang>.po`，其中 `<lang>` 是 Nginx UI 介面的語言代碼，例如 `zh_CN` 或 `de_DE`。只需提供你翻譯了的語言。目錄至少包含一個這樣的檔案；其他項目會被忽略，檢查工具會對它們發出警告。檔名不是 Nginx UI 支援的語言代碼時，[`nginx-ui plugin lint`](../rules.md#content-locales) 會回報它，並列出所有可用的代碼。
+`content.locales` 是一個包含 GNU gettext PO 檔案的目錄，每種語言一個檔案，命名為 `<lang>.po`，其中 `<lang>` 是 Nginx UI 介面的語言代碼，例如 `zh_CN` 或 `de_DE`。只需提供你翻譯了的語言。目錄至少包含一個這樣的檔案；其他項目會被忽略，檢查工具會對它們發出警告。Nginx UI 沒有的語言的檔案在該 Nginx UI 上不會使用，[`nginx-ui plugin lint`](../rules.md#content-locales) 會對它發出警告；檔名不是語言代碼時為錯誤。
 
 檔案使用 UTF-8，以標頭項目（`msgid ""`）開始，每個 `msgid` 都有 `msgstr`。標記為 `fuzzy` 的項目會被忽略。包含無法解析的檔案的外掛套件會被 Nginx UI 拒絕。
 

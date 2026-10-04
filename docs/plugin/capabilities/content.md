@@ -118,9 +118,9 @@ seeing what it renders to.
 named `<lang>.po`, where `<lang>` is a language code of the Nginx UI
 interface, such as `zh_CN` or `de_DE`. Provide only the languages you
 translate. The directory holds at least one such file; other entries are
-ignored and the linter warns about them. When a file is named after a code
-Nginx UI does not have, [`nginx-ui plugin lint`](../rules.md#content-locales)
-reports it and lists every code it accepts.
+ignored and the linter warns about them. A file of a language a Nginx UI does
+not have is not used there, and [`nginx-ui plugin lint`](../rules.md#content-locales)
+warns about it; a file whose name is not a language code is an error.
 
 A file is UTF-8, starts with the header entry (`msgid ""`) and has a
 `msgstr` for every `msgid`. Entries marked `fuzzy` are ignored. Nginx UI

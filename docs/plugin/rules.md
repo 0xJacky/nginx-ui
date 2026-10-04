@@ -66,10 +66,11 @@ so the plugin would install nothing.
 
 ### manifest-i18n
 
-<Badge type="info" text="lint" /> <Badge type="danger" text="error" />
+<Badge type="info" text="lint" /> <Badge type="danger" text="error" /> <Badge type="warning" text="warning" />
 
-An `i18n` key is not a language of the Nginx UI interface. See
-[Manifest](./manifest.md#translations).
+Error when an `i18n` key is not a language code such as `zh_CN`; warning when
+the Nginx UI running the linter does not have the language, which it then
+shows in English. See [Manifest](./manifest.md#translations).
 
 ### manifest-requires
 
@@ -884,8 +885,8 @@ values; warning when it has no `name`.
 <Badge type="info" text="lint" /> <Badge type="danger" text="error" /> <Badge type="warning" text="warning" />
 
 Error when the locales directory is missing, holds no `.po` file or
-holds one named after a language Nginx UI does not have; warning for other
-entries. See [Translations](./capabilities/content.md#translations).
+holds one whose name is not a language code; warning for a file of a language
+the Nginx UI running the linter does not have, and for other entries. See [Translations](./capabilities/content.md#translations).
 
 ### content-locale
 

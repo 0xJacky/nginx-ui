@@ -165,21 +165,24 @@ func TestLintI18nLocales(t *testing.T) {
 	require.NoError(t, err)
 	assert.Empty(t, report.Findings, "%+v", report.Findings)
 
-	m.I18n["zh"] = protocol.ManifestI18n{Name: "MyDNS"}
+	// A key in another spelling is an error. A language this Nginx UI lacks
+	// only warns: hosts that have it show it, the others show English.
 	m.I18n["pt-BR"] = protocol.ManifestI18n{Name: "MyDNS"}
+	m.I18n["pl_PL"] = protocol.ManifestI18n{Name: "MyDNS"}
 	report, err = Lint(writeLintFixture(t, lintFixture{manifest: m}))
 	require.NoError(t, err)
 	assert.True(t, report.HasErrors())
-	var locales []string
+	levels := map[string]Level{}
 	for _, f := range report.Findings {
 		if f.Rule == RuleManifestI18n {
-			assert.Equal(t, LevelError, f.Level)
-			locales = append(locales, f.Message)
+			for _, locale := range []string{"pt-BR", "pl_PL"} {
+				if strings.Contains(f.Message, `"`+locale+`"`) {
+					levels[locale] = f.Level
+				}
+			}
 		}
 	}
-	require.Len(t, locales, 2)
-	assert.Contains(t, locales[0], `"pt-BR"`)
-	assert.Contains(t, locales[1], `"zh"`)
+	assert.Equal(t, map[string]Level{"pt-BR": LevelError, "pl_PL": LevelWarning}, levels)
 }
 
 func TestLintReservedNamespaceWarns(t *testing.T) {

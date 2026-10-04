@@ -144,7 +144,8 @@ func TestCheckContentReportsBrokenFiles(t *testing.T) {
 			delete(f, "templates/conf/ghost.conf")
 			f["templates/README"] = "empty"
 		}, LevelError, RuleContentTemplates},
-		{"unknown language", func(f map[string]string) { f["locales/xx_XX.po"] = testPOFile }, LevelError, RuleContentLocales},
+		{"language this host lacks", func(f map[string]string) { f["locales/xx_XX.po"] = testPOFile }, LevelWarning, RuleContentLocales},
+		{"file named in another spelling", func(f map[string]string) { f["locales/de-DE.po"] = testPOFile }, LevelError, RuleContentLocales},
 		{"stray locale file", func(f map[string]string) { f["locales/de_DE.mo"] = "x" }, LevelWarning, RuleContentLocales},
 		{"no locale", func(f map[string]string) {
 			delete(f, "locales/de_DE.po")

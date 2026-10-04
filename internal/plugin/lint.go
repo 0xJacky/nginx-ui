@@ -170,12 +170,15 @@ func lintIdentity(m *protocol.Manifest, report *LintReport) {
 	}
 }
 
-// lintI18n checks that every key of the i18n block is a language of the
-// host.
+// lintI18n checks that every key of the i18n block is a language code, and
+// warns about a language this Nginx UI lacks, which it shows in English.
 func lintI18n(i18n map[string]protocol.ManifestI18n, report *LintReport) {
 	for _, locale := range slices.Sorted(maps.Keys(i18n)) {
-		if !translation.IsLanguage(locale) {
-			report.add(LevelError, RuleManifestI18n, "i18n: %q is not a language of the host (%s)",
+		switch {
+		case !languageCode.MatchString(locale):
+			report.add(LevelError, RuleManifestI18n, "i18n: %q is not a language code such as zh_CN", locale)
+		case !translation.IsLanguage(locale):
+			report.add(LevelWarning, RuleManifestI18n, "i18n: this Nginx UI has no %q and shows the English text instead (it has %s)",
 				locale, strings.Join(translation.Languages(), ", "))
 		}
 	}
