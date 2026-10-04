@@ -70,7 +70,7 @@ outline: [2, 3]
 
 只需翻譯你想支援的語言。最上層的 `name` 和 `description` 是英文文字，沒有翻譯的語言會顯示它們。[`permission_reasons`](./permissions.md#explaining-permissions) 也可以用同樣的方式依語言翻譯。
 
-鍵使用 Nginx UI 介面的語言代碼，例如 `zh_CN`、`zh_TW` 或 `ja_JP`。鍵不是其中之一時，[`nginx-ui plugin lint`](./rules.md#manifest-i18n) 會回報它，並列出所有可用的代碼。
+鍵使用 Nginx UI 介面的語言代碼，例如 `zh_CN`、`zh_TW` 或 `ja_JP`。Nginx UI 顯示它介面已有的語言，其他語言顯示英文，所以外掛可以先於部分 Nginx UI 提供某種語言。[`nginx-ui plugin lint`](./rules.md#manifest-i18n) 會回報不是語言代碼的鍵，並對執行它的 Nginx UI 沒有的語言發出警告。
 
 ## 螢幕截圖 {#screenshots}
 

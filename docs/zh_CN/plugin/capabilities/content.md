@@ -83,7 +83,7 @@ Nginx UI 在安装或更新插件前会校验每个模板。缺少开始或结�
 
 ## 翻译 {#translations}
 
-`content.locales` 是一个包含 GNU gettext PO 文件的目录，每种语言一个文件，命名为 `<lang>.po`，其中 `<lang>` 是 Nginx UI 界面的语言代码，例如 `zh_CN` 或 `de_DE`。只需提供你翻译了的语言。目录至少包含一个这样的文件；其他条目会被忽略，检查工具会对它们发出警告。文件名不是 Nginx UI 支持的语言代码时，[`nginx-ui plugin lint`](../rules.md#content-locales) 会报告它，并列出所有可用的代码。
+`content.locales` 是一个包含 GNU gettext PO 文件的目录，每种语言一个文件，命名为 `<lang>.po`，其中 `<lang>` 是 Nginx UI 界面的语言代码，例如 `zh_CN` 或 `de_DE`。只需提供你翻译了的语言。目录至少包含一个这样的文件；其他条目会被忽略，检查工具会对它们发出警告。Nginx UI 没有的语言的文件在该 Nginx UI 上不会使用，[`nginx-ui plugin lint`](../rules.md#content-locales) 会对它发出警告；文件名不是语言代码时为错误。
 
 文件使用 UTF-8，以头部条目（`msgid ""`）开始，每个 `msgid` 都有 `msgstr`。标记为 `fuzzy` 的条目会被忽略。包含无法解析的文件的插件包会被 Nginx UI 拒绝。
 
