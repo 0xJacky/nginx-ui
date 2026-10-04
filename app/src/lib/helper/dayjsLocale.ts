@@ -11,6 +11,7 @@ const localeMap: Record<string, string> = {
   pt: 'pt',
   es: 'es',
   it: 'it',
+  it_IT: 'it',
   ar: 'ar',
   ru: 'ru',
   tr: 'tr',

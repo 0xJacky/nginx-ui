@@ -4,6 +4,7 @@ import de from 'i18n-iso-countries/langs/de.json'
 import en from 'i18n-iso-countries/langs/en.json'
 import es from 'i18n-iso-countries/langs/es.json'
 import fr from 'i18n-iso-countries/langs/fr.json'
+import it from 'i18n-iso-countries/langs/it.json'
 import ja from 'i18n-iso-countries/langs/ja.json'
 import ko from 'i18n-iso-countries/langs/ko.json'
 import pt from 'i18n-iso-countries/langs/pt.json'
@@ -28,6 +29,7 @@ countries.registerLocale(ar)
 countries.registerLocale(uk)
 countries.registerLocale(ja)
 countries.registerLocale(pt)
+countries.registerLocale(it)
 
 export interface GeoData {
   code: string
@@ -60,6 +62,7 @@ export function useGeoTranslation() {
       uk_UA: 'uk',
       ja_JP: 'ja',
       pt_PT: 'pt',
+      it_IT: 'it',
     }
     return langMap[settingsLang] || 'en'
   }
@@ -81,7 +84,7 @@ export function useGeoTranslation() {
     }
     // Map other browser languages to supported codes
     const browserLangCode = browserLocale.split('-')[0]
-    const supportedLangs = ['fr', 'es', 'de', 'ru', 'vi', 'ko', 'tr', 'ar', 'uk', 'ja', 'pt']
+    const supportedLangs = ['fr', 'es', 'de', 'ru', 'vi', 'ko', 'tr', 'ar', 'uk', 'ja', 'pt', 'it']
     if (supportedLangs.includes(browserLangCode)) {
       return browserLangCode
     }
