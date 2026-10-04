@@ -558,6 +558,12 @@ func TestCheckCatalogURL(t *testing.T) {
 	assert.NoError(t, checkCatalogURL(entry, entry.ReadmeURL))
 	entry.ReadmeURL = "https://cdn.example/readme.md"
 	assert.Error(t, checkCatalogURL(entry, entry.ReadmeURL))
+
+	// Only the official catalog may point at the screenshot mirror.
+	media := "https://plugin-media.nginxui.com/" + strings.Repeat("a", 64) + ".webp"
+	assert.Error(t, checkCatalogURL(entry, media))
+	entry.Source = settings.DefaultPluginMarketplaceSource
+	assert.NoError(t, checkCatalogURL(entry, media))
 }
 
 func TestMarketplaceInstallTrustsTheReleaseKey(t *testing.T) {
