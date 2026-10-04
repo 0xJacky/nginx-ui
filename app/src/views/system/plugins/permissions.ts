@@ -97,13 +97,21 @@ export interface PermissionReasonSource {
 
 /**
  * The reason a plugin gives for each permission, in the given language. An
- * empty reason counts as none, and an empty translation falls back.
+ * empty reason counts as none, and an empty translation falls back. notes are
+ * the translations a catalog lists for the plugin, by permission and then
+ * locale, which win over the ones of the manifest.
  */
-export function permissionReasons(source: PermissionReasonSource | undefined, language: string): Record<string, string> {
+export function permissionReasons(source: PermissionReasonSource | undefined, language: string, notes?: Record<string, Record<string, string>>): Record<string, string> {
   const byLocale: Record<string, Record<string, string>> = { ...source?.permission_reasons_i18n }
   for (const [locale, translated] of Object.entries(source?.i18n ?? {})) {
     if (translated?.permission_reasons)
       byLocale[locale] = { ...byLocale[locale], ...translated.permission_reasons }
+  }
+  for (const [name, translations] of Object.entries(notes ?? {})) {
+    for (const [locale, text] of Object.entries(translations ?? {})) {
+      if (text?.trim())
+        byLocale[locale] = { ...byLocale[locale], [name]: text }
+    }
   }
 
   const names = new Set(Object.keys(source?.permission_reasons ?? {}))
