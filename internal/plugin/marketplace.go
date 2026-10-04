@@ -64,6 +64,10 @@ const (
 	anyPlatform = "any"
 )
 
+// officialMediaURL serves the screenshots the official catalog mirrors, named
+// by their digest, so a host loads them from one address.
+const officialMediaURL = "https://plugin-media.nginxui.com/"
+
 // githubHosts are rewritten through the configured GitHub proxy, the same way
 // internal/version routes the release API.
 var githubHosts = []string{
@@ -499,6 +503,9 @@ func (mp *Marketplace) Detail(ctx context.Context, id, source string) (*CatalogE
 // node installs, or GitHub.
 func checkCatalogURL(entry *CatalogEntry, raw string) error {
 	allowed := []string{entry.Source}
+	if entry.Source == settings.DefaultPluginMarketplaceSource {
+		allowed = append(allowed, officialMediaURL)
+	}
 	if release := entry.InstallableRelease; release != nil {
 		download, _, ok := release.DownloadFor(HostPlatform())
 		if !ok {
