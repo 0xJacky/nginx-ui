@@ -52,6 +52,7 @@ export interface AutoBackup extends ModelBase {
   storage_path: string
   cron_expression: string
   enabled: boolean
+  retention_count: number
   last_backup_time?: string
   last_backup_status: 'pending' | 'success' | 'failed'
   last_backup_error?: string

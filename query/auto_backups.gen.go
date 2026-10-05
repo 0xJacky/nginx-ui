@@ -39,6 +39,7 @@ func newAutoBackup(db *gorm.DB, opts ...gen.DOOption) autoBackup {
 	_autoBackup.StoragePath = field.NewString(tableName, "storage_path")
 	_autoBackup.CronExpression = field.NewString(tableName, "cron_expression")
 	_autoBackup.Enabled = field.NewBool(tableName, "enabled")
+	_autoBackup.RetentionCount = field.NewInt(tableName, "retention_count")
 	_autoBackup.LastBackupTime = field.NewTime(tableName, "last_backup_time")
 	_autoBackup.LastBackupStatus = field.NewString(tableName, "last_backup_status")
 	_autoBackup.LastBackupError = field.NewString(tableName, "last_backup_error")
@@ -68,6 +69,7 @@ type autoBackup struct {
 	StoragePath       field.String // Storage destination path
 	CronExpression    field.String // Cron expression for scheduling
 	Enabled           field.Bool   // Whether the backup task is enabled
+	RetentionCount    field.Int    // Number of backups to keep (0 keeps all)
 	LastBackupTime    field.Time   // Last backup execution time
 	LastBackupStatus  field.String // Status of last backup
 	LastBackupError   field.String // Error message from last backup if failed
@@ -103,6 +105,7 @@ func (a *autoBackup) updateTableName(table string) *autoBackup {
 	a.StoragePath = field.NewString(table, "storage_path")
 	a.CronExpression = field.NewString(table, "cron_expression")
 	a.Enabled = field.NewBool(table, "enabled")
+	a.RetentionCount = field.NewInt(table, "retention_count")
 	a.LastBackupTime = field.NewTime(table, "last_backup_time")
 	a.LastBackupStatus = field.NewString(table, "last_backup_status")
 	a.LastBackupError = field.NewString(table, "last_backup_error")
@@ -127,7 +130,7 @@ func (a *autoBackup) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *autoBackup) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 19)
+	a.fieldMap = make(map[string]field.Expr, 20)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["created_at"] = a.CreatedAt
 	a.fieldMap["updated_at"] = a.UpdatedAt
@@ -139,6 +142,7 @@ func (a *autoBackup) fillFieldMap() {
 	a.fieldMap["storage_path"] = a.StoragePath
 	a.fieldMap["cron_expression"] = a.CronExpression
 	a.fieldMap["enabled"] = a.Enabled
+	a.fieldMap["retention_count"] = a.RetentionCount
 	a.fieldMap["last_backup_time"] = a.LastBackupTime
 	a.fieldMap["last_backup_status"] = a.LastBackupStatus
 	a.fieldMap["last_backup_error"] = a.LastBackupError
