@@ -448,3 +448,165 @@ func TestInspectCertificateDeploymentTreatsSymlinkedManagedFilesAsConsistent(t *
 		t.Fatalf("deployment status = %+v", status)
 	}
 }
+
+func (env certificateMigrationTestEnv) addSharedCertificate(t *testing.T, name string,
+	dnsNames []string) (*model.Cert, string, string) {
+	t.Helper()
+
+	managedDir := filepath.Join(env.confDir, "ssl", name+"_"+string(certcrypto.EC256))
+	if err := os.MkdirAll(managedDir, 0o755); err != nil {
+		t.Fatalf("create managed cert dir: %v", err)
+	}
+	certPEM, keyPEM, err := cert.GenerateSelfSigned(cert.SelfSignedOptions{
+		CommonName: dnsNames[0],
+		DNSNames:   dnsNames,
+		KeyType:    certcrypto.EC256,
+	})
+	if err != nil {
+		t.Fatalf("generate certificate: %v", err)
+	}
+	managedCertPath := filepath.Join(managedDir, "fullchain.cer")
+	managedKeyPath := filepath.Join(managedDir, "private.key")
+	if err = os.WriteFile(managedCertPath, certPEM, 0o644); err != nil {
+		t.Fatalf("write certificate: %v", err)
+	}
+	if err = os.WriteFile(managedKeyPath, keyPEM, 0o600); err != nil {
+		t.Fatalf("write private key: %v", err)
+	}
+
+	certModel := &model.Cert{
+		Name:                  name,
+		Filename:              name,
+		Domains:               dnsNames,
+		AutoCert:              model.AutoCertEnabled,
+		ChallengeMethod:       model.CertChallengeMethodDNS01,
+		KeyType:               certcrypto.EC256,
+		SSLCertificatePath:    managedCertPath,
+		SSLCertificateKeyPath: managedKeyPath,
+		Status:                model.CertStatusSuccess,
+	}
+	if err = env.db.Create(certModel).Error; err != nil {
+		t.Fatalf("create cert model: %v", err)
+	}
+
+	legacyDir := filepath.Join(env.confDir, "ssl", name+"_P256")
+	return certModel, filepath.Join(legacyDir, "fullchain.cer"), filepath.Join(legacyDir, "private.key")
+}
+
+func (env certificateMigrationTestEnv) addSiteUsingCertificate(t *testing.T, siteName, serverName,
+	certPath, keyPath string, enabled bool) string {
+	t.Helper()
+
+	configPath := filepath.Join(env.confDir, "sites-available", siteName)
+	content := fmt.Sprintf(`server {
+    listen 443 ssl;
+    server_name %s;
+    ssl_certificate %s;
+    ssl_certificate_key %s;
+}
+`, serverName, certPath, keyPath)
+	if err := os.WriteFile(configPath, []byte(content), 0o644); err != nil {
+		t.Fatalf("write site config: %v", err)
+	}
+	if enabled {
+		if err := os.Symlink(configPath, filepath.Join(env.confDir, "sites-enabled", siteName)); err != nil {
+			t.Fatalf("enable site: %v", err)
+		}
+	}
+	return configPath
+}
+
+func readSiteConfig(t *testing.T, path string) string {
+	t.Helper()
+	content, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatalf("read site config: %v", err)
+	}
+	return string(content)
+}
+
+func TestMigrateLegacyCertificatePathsRewritesSitesSharingWildcardCertificate(t *testing.T) {
+	env := setupCertificateMigrationTest(t)
+	certModel, legacyCertPath, legacyKeyPath := env.addSharedCertificate(t, "*.example.com",
+		[]string{"*.example.com", "example.com"})
+	apexConfig := env.addSiteUsingCertificate(t, "example.com", "example.com",
+		legacyCertPath, legacyKeyPath, true)
+	appConfig := env.addSiteUsingCertificate(t, "app.example.com", "app.example.com",
+		legacyCertPath, legacyKeyPath, true)
+
+	result, err := MigrateLegacyCertificatePaths()
+	if err != nil {
+		t.Fatalf("MigrateLegacyCertificatePaths() error = %v", err)
+	}
+	if result.MigratedFiles != 2 || result.MigratedSites != 2 || result.SkippedFiles != 0 {
+		t.Fatalf("migration result = %+v", result)
+	}
+	for _, path := range []string{apexConfig, appConfig} {
+		content := readSiteConfig(t, path)
+		if !strings.Contains(content, "ssl_certificate "+certModel.SSLCertificatePath+";") ||
+			!strings.Contains(content, "ssl_certificate_key "+certModel.SSLCertificateKeyPath+";") ||
+			strings.Contains(content, "_P256") {
+			t.Fatalf("migrated config %s =\n%s", path, content)
+		}
+	}
+
+	second, err := MigrateLegacyCertificatePaths()
+	if err != nil {
+		t.Fatalf("second migration error = %v", err)
+	}
+	if second.MigratedFiles != 0 || second.MigratedSites != 0 {
+		t.Fatalf("second migration result = %+v", second)
+	}
+}
+
+func TestMigrateLegacyCertificatePathsKeepsSharedLegacyPathOwnedByAnotherRecord(t *testing.T) {
+	env := setupCertificateMigrationTest(t)
+	_, legacyCertPath, legacyKeyPath := env.addSharedCertificate(t, "*.owned.example.com",
+		[]string{"*.owned.example.com"})
+	configPath := env.addSiteUsingCertificate(t, "app.owned.example.com", "app.owned.example.com",
+		legacyCertPath, legacyKeyPath, true)
+	owner := &model.Cert{
+		Name:                  "legacy owner",
+		AutoCert:              model.AutoCertSync,
+		SSLCertificatePath:    legacyCertPath,
+		SSLCertificateKeyPath: legacyKeyPath,
+	}
+	if err := env.db.Create(owner).Error; err != nil {
+		t.Fatalf("create legacy owner: %v", err)
+	}
+	before := readSiteConfig(t, configPath)
+
+	result, err := MigrateLegacyCertificatePaths()
+	if err != nil {
+		t.Fatalf("MigrateLegacyCertificatePaths() error = %v", err)
+	}
+	if result.MigratedFiles != 0 || readSiteConfig(t, configPath) != before {
+		t.Fatalf("migration result = %+v, config =\n%s", result, readSiteConfig(t, configPath))
+	}
+}
+
+func TestMigrateLegacyCertificatePathsSkipsDisabledAndUncoveredSharedSites(t *testing.T) {
+	env := setupCertificateMigrationTest(t)
+	_, legacyCertPath, legacyKeyPath := env.addSharedCertificate(t, "*.skip.example.com",
+		[]string{"*.skip.example.com"})
+	disabledConfig := env.addSiteUsingCertificate(t, "disabled.skip.example.com", "disabled.skip.example.com",
+		legacyCertPath, legacyKeyPath, false)
+	uncoveredConfig := env.addSiteUsingCertificate(t, "other.example.org", "other.example.org",
+		legacyCertPath, legacyKeyPath, true)
+	disabledBefore := readSiteConfig(t, disabledConfig)
+	uncoveredBefore := readSiteConfig(t, uncoveredConfig)
+
+	result, err := MigrateLegacyCertificatePaths()
+	if err != nil {
+		t.Fatalf("MigrateLegacyCertificatePaths() error = %v", err)
+	}
+	if result.MigratedFiles != 0 {
+		t.Fatalf("migration result = %+v", result)
+	}
+	if readSiteConfig(t, disabledConfig) != disabledBefore {
+		t.Fatalf("disabled site config changed:\n%s", readSiteConfig(t, disabledConfig))
+	}
+	if readSiteConfig(t, uncoveredConfig) != uncoveredBefore {
+		t.Fatalf("uncovered site config changed:\n%s", readSiteConfig(t, uncoveredConfig))
+	}
+}
