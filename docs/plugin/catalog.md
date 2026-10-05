@@ -271,6 +271,14 @@ while the interface is dark and the `url` image otherwise, so a screenshot
 without a dark image, or with one it cannot load, shows the light image in
 both themes. Take both images of the same view at the same size.
 
+`crop` is optional too: the part of the image the screenshot strip shows, as
+shares of the image's width and height from its top left corner, such as
+`{ "x": 0.1, "y": 0, "width": 0.8, "height": 1 }`. The part is 16:10 on the
+image. Opening a screenshot shows the whole image, so a wide window can be
+listed by its main part and still be seen in full. `dark_crop` is the part of
+`dark_url`, `crop` when it is absent. Without a crop Nginx UI fills the frame
+from the middle of the image, and a crop outside its image is ignored.
+
 The official catalog fills `screenshots` from the
 [screenshots of the manifest](./manifest.md#screenshots), so an author lists
 them in `plugin.json`, not in the catalog entry.
