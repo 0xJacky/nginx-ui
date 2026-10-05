@@ -199,3 +199,10 @@ func TestGenerateSelfSignedCertRejectsEmptyName(t *testing.T) {
 		t.Fatalf("response body %q did not mention the missing name field", rec.Body.String())
 	}
 }
+
+func TestSelfSignedSlugStaysWithinFileNameLimit(t *testing.T) {
+	got := selfSignedSlug(strings.Repeat("a", 300) + ".example.com")
+	if len(got) != maxSelfSignedSlugLength || strings.Trim(got, "a") != "" {
+		t.Fatalf("selfSignedSlug() = %q (%d bytes), want %d bytes", got, len(got), maxSelfSignedSlugLength)
+	}
+}
