@@ -311,38 +311,6 @@ export function catalogEntryName(entry: CatalogEntry, language: string): string 
   return localizedText(entry.name, language) || entry.id
 }
 
-/** Image of a screenshot for the theme, the light one when it has no dark one. */
-export function catalogScreenshotURL(screenshot: CatalogScreenshot, isDark: boolean): string {
-  return (isDark && screenshot.dark_url) || screenshot.url
-}
-
-/** The part of the image for the theme to show, none for the whole image. */
-export function catalogScreenshotCrop(screenshot: CatalogScreenshot, isDark: boolean): CatalogCrop | undefined {
-  return isDark && screenshot.dark_url ? screenshot.dark_crop ?? screenshot.crop : screenshot.crop
-}
-
-/** Image styles that show only the crop of an image in a frame of the crop's shape. */
-export function cropStyles(crop: CatalogCrop | undefined) {
-  if (!crop)
-    return {}
-  return {
-    root: { position: 'relative', display: 'block', overflow: 'hidden' },
-    image: {
-      position: 'absolute',
-      maxWidth: 'none',
-      width: `${100 / crop.width}%`,
-      height: `${100 / crop.height}%`,
-      left: `${-crop.x / crop.width * 100}%`,
-      top: `${-crop.y / crop.height * 100}%`,
-    },
-  } as const
-}
-
-/** Caption of a screenshot in the active language, English fallback. */
-export function catalogScreenshotCaption(screenshot: CatalogScreenshot, language: string): string {
-  return localizedText(screenshot.caption, language)
-}
-
 /** Description of a catalog entry in the active language, English fallback. */
 export function catalogEntryDescription(entry: CatalogEntry, language: string): string {
   return localizedText(entry.description, language)

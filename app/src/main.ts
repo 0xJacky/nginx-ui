@@ -1,4 +1,5 @@
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
+import { setMarketText } from '@nginxui/plugin-market-ui'
 import { createCosyProConfig } from '@uozi-admin/curd'
 import { createRequestConfig } from '@uozi-admin/request'
 import { createPinia } from 'pinia'
@@ -16,10 +17,14 @@ import i18n from '../i18n.json'
 import App from './App.vue'
 import gettext from './gettext'
 import router from './routes'
+import '@nginxui/plugin-market-ui/style.css'
 import '@uozi-admin/curd/dist/index.css'
 import 'virtual:uno.css'
 
 const pinia = createPinia()
+
+// The marketplace views translate with the catalogs of this app.
+setMarketText((msgid, params) => gettext.$gettext(msgid, params))
 
 const app = createApp(App)
 

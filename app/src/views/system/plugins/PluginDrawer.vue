@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { PluginDrawerTab } from './presets'
 import type { PluginInfo } from '@/api/plugin'
+import { PluginIcon } from '@nginxui/plugin-market-ui'
 import { useWindowSize } from '@vueuse/core'
 import { localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
 import LogsPanel from './LogsPanel.vue'
-import PluginIcon from './PluginIcon.vue'
 import PluginOverview from './PluginOverview.vue'
 import { isToggleDisabled, statusOf } from './presets'
 import SettingsPanel from './SettingsPanel.vue'
