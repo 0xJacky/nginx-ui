@@ -9,6 +9,7 @@ import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import PluginIcon from '../PluginIcon.vue'
 import { useReplacePlugin } from '../replace'
+import { commercialPrice } from './commercial'
 import { useOfficialElsewhere, useSourceName } from './sources'
 import { findTrustedOffer, trustedOfferAction, trustPreset } from './trust'
 
@@ -83,6 +84,9 @@ const actionLabel = computed(() => props.entry.update_available ? $gettext('Upda
           </ATooltip>
           <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
             <span class="plugin-card-channel" :class="`is-${channel}`">{{ channelLabel(channel) }}</span>
+          </ATooltip>
+          <ATooltip v-if="entry.commercial" :title="commercialPrice(entry.commercial, gettext.current)">
+            <span class="plugin-card-commercial">{{ $gettext('Commercial') }}</span>
           </ATooltip>
         </div>
       </div>
@@ -164,6 +168,11 @@ const actionLabel = computed(() => props.entry.update_available ? $gettext('Upda
   display: inline-flex;
   align-items: center;
   gap: 4px;
+}
+
+.plugin-card-commercial {
+  font-weight: 500;
+  color: var(--ant-gold-7, #d48806);
 }
 
 .plugin-card-trust {

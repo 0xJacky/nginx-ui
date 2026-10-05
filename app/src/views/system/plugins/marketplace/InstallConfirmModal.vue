@@ -22,6 +22,7 @@ import { asksForLess, asksForMore, permissionChanges } from '../permissionChange
 import PermissionList from '../PermissionList.vue'
 import { permissionLabel, permissionReasons } from '../permissions'
 import { usePackageConflicts } from '../useConflicts'
+import { commercialPrice, commercialTerms } from './commercial'
 import { useSourceName } from './sources'
 import { isCommunityTrust, trustPreset } from './trust'
 import TrustDowngradeAlert from './TrustDowngradeAlert.vue'
@@ -376,6 +377,19 @@ onUnmounted(() => {
         class="mt-4"
         :title="installReplacesText(conflictingNames)"
       />
+
+      <AAlert
+        v-if="entry?.commercial && !isUpgrade"
+        type="info"
+        show-icon
+        class="mt-4"
+        :title="$gettext('This is a commercial plugin, licensed by its vendor')"
+      >
+        <template #description>
+          <div>{{ [commercialPrice(entry.commercial, gettext.current), ...commercialTerms(entry.commercial)].join(', ') }}</div>
+          <a :href="entry.commercial.purchase_url" target="_blank" rel="noopener noreferrer">{{ $gettext('Buy a license') }}</a>
+        </template>
+      </AAlert>
 
       <AAlert
         v-if="showCommunityWarning"
