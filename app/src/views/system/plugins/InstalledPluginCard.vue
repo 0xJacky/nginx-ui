@@ -12,13 +12,13 @@ import {
   SettingOutlined,
   WarningOutlined,
 } from '@antdv-next/icons'
+import { PluginIcon } from '@nginxui/plugin-market-ui'
 import { localizedPluginDescription, localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
 import { capabilityIcon, capabilityLabel } from './capabilities'
 import { channelHint, channelLabel, pluginChannel } from './channel'
 import { conflictNote } from './conflicts'
 import { formatMemory, isBelowRecommended, memoryWarning, useSystemMemory } from './memory'
-import PluginIcon from './PluginIcon.vue'
 import { isToggleDisabled, needsAttention, statusOf } from './presets'
 import SyncPolicyEditor from './SyncPolicyEditor.vue'
 import TrustTag from './TrustTag.vue'
