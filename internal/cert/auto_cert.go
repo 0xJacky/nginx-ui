@@ -120,6 +120,7 @@ func autoCert(certModel *model.Cert) {
 	}
 
 	updateAutoRenewStatus(certModel, now, "")
+	notifyCertificateRelocated(targetName, certModel.SSLCertificatePath, payload.GetCertificatePath())
 	notification.Success("Renew Certificate Success", "Certificate %{name} renewed successfully", map[string]any{
 		"name": targetName,
 	})

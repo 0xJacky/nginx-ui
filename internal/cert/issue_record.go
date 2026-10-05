@@ -219,6 +219,7 @@ func IssueWithRecord(name string, payload *ConfigPayload, log *Logger) (*model.C
 	}
 
 	MarkCertSuccess(certModel.ID, payload.GetCertificatePath(), payload.GetCertificateKeyPath(), payload.Resource, payload.Profile)
+	notifyCertificateRelocated(getAutoRenewTargetName(certModel), certModel.SSLCertificatePath, payload.GetCertificatePath())
 	return certModel, nil
 }
 
