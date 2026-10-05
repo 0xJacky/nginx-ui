@@ -15,9 +15,25 @@ import (
 )
 
 const SecureSessionCookieName = "_nginx_ui_secure_session"
+const insecureSecureSessionCookieName = SecureSessionCookieName + "_http"
+
+// secureSessionCookieName keeps the HTTPS and HTTP session-binding
+// cookies separate. Browsers do not reliably allow an HTTP response to
+// replace a Secure cookie left by a previous HTTPS session.
+func secureSessionCookieName(https bool) string {
+	if https {
+		return SecureSessionCookieName
+	}
+	return insecureSecureSessionCookieName
+}
+
+func SecureSessionCookieNameForRequest(c *gin.Context) string {
+	return secureSessionCookieName(cSettings.ServerSettings.EnableHTTPS)
+}
 
 func ensureSecureSessionCookie(c *gin.Context) {
-	if _, err := c.Cookie(SecureSessionCookieName); err != http.ErrNoCookie {
+	cookieName := SecureSessionCookieNameForRequest(c)
+	if _, err := c.Cookie(cookieName); err != http.ErrNoCookie {
 		return
 	}
 
@@ -28,7 +44,7 @@ func ensureSecureSessionCookie(c *gin.Context) {
 
 	c.SetSameSite(http.SameSiteLaxMode)
 	c.SetCookie(
-		SecureSessionCookieName,
+		cookieName,
 		hex.EncodeToString(b),
 		0,
 		"/",

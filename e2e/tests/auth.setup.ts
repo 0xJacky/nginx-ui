@@ -27,7 +27,10 @@ setup('authenticate through the demo login UI', async ({ page }) => {
   })).not.toBe('')
 
   const cookies = await page.context().cookies()
-  expect(cookies.some(cookie => cookie.name === '_nginx_ui_secure_session' && cookie.httpOnly)).toBe(true)
+  const expectedSessionCookie = new URL(page.url()).protocol === 'https:'
+    ? '_nginx_ui_secure_session'
+    : '_nginx_ui_secure_session_http'
+  expect(cookies.some(cookie => cookie.name === expectedSessionCookie && cookie.httpOnly)).toBe(true)
 
   await mkdir(dirname(authState), { recursive: true })
   await page.context().storageState({ path: authState })
