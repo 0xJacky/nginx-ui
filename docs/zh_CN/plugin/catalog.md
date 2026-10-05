@@ -79,6 +79,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 | `categories` | 参见[分类](#categories)。 |
 | `capabilities` | 用于筛选插件市场。 |
 | `license` | 插件许可证的 SPDX 标识。 |
+| `commercial` | 可选，用于合作伙伴（`trust` 为 `verified`）的付费插件。`pricing` 是按语言列出的价格文字，`purchase_url` 是购买许可的 `https` 页面，`trial_days` 是免费试用天数，`license` 为 `commercial` 或 `subscription`。Nginx UI 会显示“商业”标签、价格和购买链接；其他信任级别的插件会忽略此字段。付款和许可校验由厂商和插件自行负责。 |
 | `revoked_signers` | 作者撤回的签名密钥的 ID。由它们签名的插件包会被 Nginx UI 视为未签名。参见[签名密钥](./signing.md#signing-keys)。 |
 | `provides` | 可选。最新版本提供的内容。`dns01.since` 是插件开始提供 DNS-01 的版本，`dns01.providers` 列出它的 DNS 服务商，每项包含 `code` 和 `name`；后来才加入的服务商带有自己的 `since`；被较新版本移除、但最新稳定版仍包含的服务商带有 `removed_in`。版本满足 `since` ≤ 版本 < `removed_in` 时包含该服务商。让 Nginx UI 在安装之前就能找到插件。 |
 | `releases` | 各个版本，见下文。 |
