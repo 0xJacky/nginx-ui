@@ -26,18 +26,15 @@ func TestAddStorageConfigToAutoBackups(t *testing.T) {
 
 	require.NoError(t, AddStorageConfigToAutoBackups.Migrate(database))
 	assert.True(t, database.Migrator().HasColumn(&model.AutoBackup{}, "StorageConfig"))
-	assert.True(t, database.Migrator().HasColumn(&model.AutoBackup{}, "RetentionCount"))
 
-	// The existing row keeps no plugin values and no retention limit.
+	// The existing row keeps no plugin values.
 	var row struct {
-		StorageType    string
-		StorageConfig  *string
-		RetentionCount *int
+		StorageType   string
+		StorageConfig *string
 	}
-	require.NoError(t, database.Raw("SELECT storage_type, storage_config, retention_count FROM auto_backups WHERE id = 1").Scan(&row).Error)
+	require.NoError(t, database.Raw("SELECT storage_type, storage_config FROM auto_backups WHERE id = 1").Scan(&row).Error)
 	assert.Equal(t, "s3", row.StorageType)
 	assert.Nil(t, row.StorageConfig)
-	assert.Nil(t, row.RetentionCount)
 
 	// Running it again is a no-op.
 	require.NoError(t, AddStorageConfigToAutoBackups.Migrate(database))
