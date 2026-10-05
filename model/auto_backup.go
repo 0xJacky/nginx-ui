@@ -57,9 +57,6 @@ type AutoBackup struct {
 	// only when StorageType is "plugin:<code>". The values may be
 	// credentials, so they are encrypted at rest.
 	StorageConfig map[string]string `json:"storage_config,omitempty" gorm:"serializer:json[aes];comment:Plugin storage backend configuration"`
-	// RetentionCount is how many runs a plugin storage backend keeps. Zero
-	// keeps every run.
-	RetentionCount int `json:"retention_count" gorm:"comment:Number of runs a plugin storage backend keeps"`
 }
 
 // StorageTypePluginPrefix marks a storage type a plugin provides.
