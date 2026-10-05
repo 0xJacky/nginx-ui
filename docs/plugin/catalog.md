@@ -105,6 +105,7 @@ elsewhere is dropped and a generic image shown.
 | `categories` | See [Categories](#categories). |
 | `capabilities` | For filtering the marketplace. |
 | `license` | SPDX identifier of the plugin's license. |
+| `commercial` | Optional, for a paid plugin of a partner (`trust` is `verified`). `pricing` is the price as text by language, `purchase_url` the `https` page to buy a license, `trial_days` the days of a free trial and `license` either `commercial` or `subscription`. Nginx UI shows a Commercial tag, the price and the purchase link, and ignores the block for any other trust level. Payment and license checks are the vendor's and the plugin's. |
 | `revoked_signers` | Ids of signing keys the author withdrew. Nginx UI treats packages they signed as unsigned. See [Signing Keys](./signing.md#signing-keys). |
 | `provides` | Optional. What the newest release provides. `dns01.since` is the plugin version since which the plugin provides DNS-01, and `dns01.providers` lists its DNS providers with `code` and `name`. A provider added later carries a `since` of its own, and one a newer release dropped while the newest stable release still has it carries `removed_in`. A provider is in a release when `since` ≤ its version < `removed_in`. Lets a host find the plugin before installing it. |
 | `releases` | The releases, see below. |

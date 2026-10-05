@@ -182,6 +182,9 @@ type CatalogEntry struct {
 	Capabilities      []string                     `json:"capabilities,omitempty"`
 	License           string                       `json:"license,omitempty"`
 	Trust             string                       `json:"trust,omitempty"`
+	// Commercial is set for a paid plugin of a partner, shown with its price
+	// text and purchase link. Payment and license checks are the vendor's.
+	Commercial *CatalogCommercial `json:"commercial,omitempty"`
 	// Channel is computed by this node: the channel of the release it would
 	// install.
 	Channel  string           `json:"channel"`
@@ -226,6 +229,55 @@ func (c *CatalogCrop) valid() bool {
 	const slack = 0.0001
 	return c.X >= 0 && c.Y >= 0 && c.Width > 0 && c.Height > 0 &&
 		c.X+c.Width <= 1+slack && c.Y+c.Height <= 1+slack
+}
+
+// CatalogCommercial describes a paid plugin: the price as text per locale,
+// where to buy it, the days of a trial and the kind of license.
+type CatalogCommercial struct {
+	Pricing     map[string]string `json:"pricing"`
+	PurchaseURL string            `json:"purchase_url"`
+	TrialDays   int               `json:"trial_days,omitempty"`
+	License     string            `json:"license,omitempty"`
+}
+
+// maxCatalogPricingLength caps the price text of one locale, in characters.
+const maxCatalogPricingLength = 120
+
+// shownCommercial is the commercial block of an entry a node shows. Only a
+// partner plugin may be sold through the catalog, so any other entry, or one
+// with no price or no https purchase link, shows none. The entry may be
+// shared with the source cache, so the block is a new one.
+func shownCommercial(entry *CatalogEntry) *CatalogCommercial {
+	c := entry.Commercial
+	if c == nil || entry.Trust != TrustVerified {
+		return nil
+	}
+	parsed, err := url.Parse(c.PurchaseURL)
+	if err != nil || parsed.Scheme != "https" || parsed.Host == "" {
+		return nil
+	}
+	pricing := map[string]string{}
+	for locale, text := range c.Pricing {
+		text = strings.TrimSpace(text)
+		if text == "" {
+			continue
+		}
+		if runes := []rune(text); len(runes) > maxCatalogPricingLength {
+			text = string(runes[:maxCatalogPricingLength])
+		}
+		pricing[locale] = text
+	}
+	if len(pricing) == 0 {
+		return nil
+	}
+	shown := &CatalogCommercial{Pricing: pricing, PurchaseURL: c.PurchaseURL}
+	if c.TrialDays > 0 && c.TrialDays <= 365 {
+		shown.TrialDays = c.TrialDays
+	}
+	if c.License == "commercial" || c.License == "subscription" {
+		shown.License = c.License
+	}
+	return shown
 }
 
 // maxCatalogScreenshots is the most screenshots of an entry a node shows.
@@ -920,6 +972,7 @@ func (mp *Marketplace) decorate(entry *CatalogEntry) {
 		entry.UpdateAvailable = CompareVersions(entry.InstalledVersion, entry.InstallableRelease.Version) < 0
 	}
 	entry.Screenshots = loadableScreenshots(entry)
+	entry.Commercial = shownCommercial(entry)
 	if entry.IconURL != "" && checkCatalogURL(entry, entry.IconURL) != nil {
 		entry.IconURL = ""
 	}

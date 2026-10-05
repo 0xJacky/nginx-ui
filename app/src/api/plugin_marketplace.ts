@@ -78,6 +78,14 @@ export interface CatalogCrop {
   height: number
 }
 
+/** A paid plugin: its price as text per locale, where to buy it, the trial and the license kind. */
+export interface CatalogCommercial {
+  pricing: Record<string, string>
+  purchase_url: string
+  trial_days?: number
+  license?: 'commercial' | 'subscription'
+}
+
 /** One plugin as the catalog describes it, plus the state of this node. */
 export interface CatalogEntry {
   id: string
@@ -98,6 +106,8 @@ export interface CatalogEntry {
   capabilities?: string[]
   license?: string
   trust?: PluginTrust
+  /** Set for a paid plugin of a partner; absent for every free plugin. */
+  commercial?: CatalogCommercial
   /** Channel of the release this node would install. */
   channel?: PluginChannel
   releases: CatalogRelease[]

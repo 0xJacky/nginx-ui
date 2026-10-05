@@ -1040,6 +1040,32 @@ func TestScreenshotsKeepOnlyCropsInsideTheImage(t *testing.T) {
 	assert.Nil(t, kept[1].DarkCrop, "a screenshot without a dark image keeps no dark crop")
 }
 
+func TestCommercialShowsOnlyForPartnersWithAPurchaseLink(t *testing.T) {
+	offer := &CatalogCommercial{
+		Pricing:     map[string]string{"en": " From 199 USD per server and year ", "zh_CN": ""},
+		PurchaseURL: "https://vendor.example/buy",
+		TrialDays:   400,
+		License:     "subscription",
+	}
+	entry := &CatalogEntry{ID: "com.vendor.waf", Trust: TrustVerified, Commercial: offer}
+	shown := shownCommercial(entry)
+	require.NotNil(t, shown)
+	assert.Equal(t, map[string]string{"en": "From 199 USD per server and year"}, shown.Pricing)
+	assert.Zero(t, shown.TrialDays, "a trial longer than a year is dropped")
+	assert.Equal(t, "subscription", shown.License)
+	assert.Equal(t, " From 199 USD per server and year ", offer.Pricing["en"], "the cached entry is left alone")
+
+	entry.Trust = TrustCommunity
+	assert.Nil(t, shownCommercial(entry), "only a partner plugin may be sold")
+
+	entry.Trust = TrustVerified
+	entry.Commercial = &CatalogCommercial{Pricing: offer.Pricing, PurchaseURL: "http://vendor.example/buy"}
+	assert.Nil(t, shownCommercial(entry), "the purchase link must be https")
+
+	entry.Commercial = &CatalogCommercial{Pricing: map[string]string{"en": " "}, PurchaseURL: offer.PurchaseURL}
+	assert.Nil(t, shownCommercial(entry), "a commercial plugin needs a price")
+}
+
 func TestDecorateKeepsOnlyLoadableIcons(t *testing.T) {
 	mp := newTestManager(t).Marketplace()
 	entry := &CatalogEntry{

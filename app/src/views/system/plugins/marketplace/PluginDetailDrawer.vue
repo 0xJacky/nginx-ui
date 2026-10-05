@@ -24,6 +24,7 @@ import PermissionList from '../PermissionList.vue'
 import { permissionReasons } from '../permissions'
 import PluginIcon from '../PluginIcon.vue'
 import { useReplacePlugin } from '../replace'
+import { commercialPrice, commercialTerms } from './commercial'
 import { useSourceIcon, useSourceName } from './sources'
 import { findTrustedOffer, trustedOfferAction, trustPreset } from './trust'
 
@@ -75,6 +76,8 @@ const renderedReadme = computed(() => (readme.value ? marked.parse(readme.value)
 
 const canInstall = computed(() => Boolean(current.value?.installable_release)
   && (!current.value?.installed_version || current.value?.update_available))
+
+const commercial = computed(() => current.value?.commercial)
 
 const links = computed(() => [
   { key: 'homepage', icon: GlobalOutlined, label: $gettext('Homepage'), url: current.value?.homepage_url },
@@ -203,6 +206,7 @@ watch(open, value => {
                 <ATooltip :title="trust.hint()">
                   <span class="pill" :class="trust.tone">{{ trust.label() }}</span>
                 </ATooltip>
+                <span v-if="commercial" class="pill is-gold">{{ $gettext('Commercial') }}</span>
                 <span
                   v-for="capability in current.capabilities ?? []"
                   :key="capability"
@@ -251,6 +255,17 @@ watch(open, value => {
                   class="detail-source-icon"
                 />
                 <span :title="current.source">{{ sourceName(current.source) }}</span>
+              </dd>
+            </div>
+            <div v-if="commercial" class="detail-row">
+              <dt>{{ $gettext('Price') }}</dt>
+              <dd class="detail-price">
+                <span>{{ commercialPrice(commercial, gettext.current) }}</span>
+                <span v-for="term in commercialTerms(commercial)" :key="term" class="pill">{{ term }}</span>
+                <a :href="commercial.purchase_url" target="_blank" rel="noopener noreferrer" class="pill is-link">
+                  <LinkOutlined />
+                  {{ $gettext('Buy a license') }}
+                </a>
               </dd>
             </div>
             <div v-if="current.categories?.length" class="detail-row">
@@ -406,6 +421,13 @@ watch(open, value => {
 .detail-source-icon {
   margin-right: 6px;
   vertical-align: -3px;
+}
+
+.detail-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
 }
 
 .detail-source {
