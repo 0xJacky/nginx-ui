@@ -5,6 +5,8 @@ const props = defineProps<{
   permissions: string[]
   /** The reason the plugin gives for a permission, by permission. */
   reasons?: Record<string, string>
+  /** Permissions the installed version did not ask for, marked as new. */
+  added?: string[]
 }>()
 </script>
 
@@ -16,6 +18,9 @@ const props = defineProps<{
       </ATag>
       <div class="permission-body">
         <div class="permission-description">
+          <ATag v-if="props.added?.includes(permission)" color="error" :bordered="false" class="new-tag">
+            {{ $gettext('New') }}
+          </ATag>
           {{ describePermission(permission) }}
         </div>
         <div v-if="props.reasons?.[permission]" class="permission-reason">
@@ -58,6 +63,11 @@ const props = defineProps<{
 
 .permission-description {
   color: var(--ant-color-text-secondary);
+}
+
+.new-tag {
+  margin-inline-end: 6px;
+  font-size: 12px;
 }
 
 .permission-reason {

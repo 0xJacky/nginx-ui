@@ -306,6 +306,8 @@ export interface PluginInfo {
   /** Why the plugin asks for each permission, and the translations by locale. */
   permission_reasons?: Record<string, string>
   permission_reasons_i18n?: Record<string, Record<string, string>>
+  /** Permissions an earlier approval did not cover, absent for a plugin never approved. */
+  new_permissions?: string[]
   has_server: boolean
   has_webapp: boolean
   lifecycle: PluginLifecycle
