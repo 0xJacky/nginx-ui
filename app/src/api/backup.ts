@@ -70,8 +70,6 @@ export interface AutoBackup extends ModelBase {
   s3_region?: string
   /** Form values of a plugin storage backend. */
   storage_config?: Record<string, string>
-  /** How many runs a plugin storage backend keeps, 0 keeps all. */
-  retention_count?: number
 }
 
 /** A storage type an auto backup can use, with the form of a plugin backend. */

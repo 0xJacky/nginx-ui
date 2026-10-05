@@ -336,12 +336,6 @@ const columns: StdTableColumn[] = [
     hiddenInEdit: true,
   },
   {
-    title: () => $gettext('Keep Latest Backups'),
-    dataIndex: 'retention_count',
-    hiddenInTable: true,
-    hiddenInEdit: true,
-  },
-  {
     title: () => $gettext('Actions'),
     dataIndex: 'actions',
     fixed: 'right',

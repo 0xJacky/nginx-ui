@@ -225,18 +225,6 @@ async function handleTestS3Connection() {
         />
       </AFormItem>
 
-      <AFormItem
-        :label="$gettext('Keep Latest Backups')"
-        :extra="$gettext('Older backups in this storage are deleted after each run. 0 keeps every backup.')"
-      >
-        <AInputNumber
-          v-model:value="modelValue.retention_count"
-          :min="0"
-          :precision="0"
-          class="w-full"
-        />
-      </AFormItem>
-
       <AFormItem v-if="pluginBackend">
         <AButton
           type="primary"
