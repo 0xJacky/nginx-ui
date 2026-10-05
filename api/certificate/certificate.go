@@ -24,6 +24,7 @@ type APICertificate struct {
 	SSLCertificateKey string                           `json:"ssl_certificate_key,omitempty"`
 	CertificateInfo   *cert.Info                       `json:"certificate_info,omitempty"`
 	DeploymentStatus  site.CertificateDeploymentStatus `json:"deployment_status"`
+	UsedBy            []site.CertificateUsage          `json:"used_by,omitempty"`
 }
 
 func Transformer(certModel *model.Cert) (certificate *APICertificate) {
@@ -63,6 +64,7 @@ func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 func GetCertList(c *gin.Context) {
 	s := logger.NewSessionLogger(c)
 	s.Info("GetCertList")
+	usageIndex := site.BuildCertificateUsageIndex()
 	cosy.Core[model.Cert](c).SetFussy("name", "domain").
 		SetTransformer(func(m *model.Cert) any {
 			info, _ := cert.GetCertInfo(m.SSLCertificatePath)
@@ -70,6 +72,7 @@ func GetCertList(c *gin.Context) {
 				Cert:             m,
 				CertificateInfo:  info,
 				DeploymentStatus: site.InspectCertificateDeployment(m),
+				UsedBy:           usageIndex.Lookup(m.SSLCertificatePath),
 			}
 		}).PagingList()
 }

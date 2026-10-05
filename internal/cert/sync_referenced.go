@@ -132,10 +132,17 @@ func syncablePath(path, confPath string) bool {
 	return path != "" && helper.IsUnderDirectory(path, confPath)
 }
 
+// ConfiguredCertificatePaths returns the certificate files a configuration
+// loads through ssl_certificate, resolved like Nginx resolves them. Values
+// that are not plain files, such as variables or "data:" values, are left out.
+func ConfiguredCertificatePaths(content string) []string {
+	certPaths, _ := certificateDirectivePaths(content)
+	return lo.Uniq(lo.Compact(certPaths))
+}
+
 // loadsCertificate reports whether a configuration loads the certificate file.
 func loadsCertificate(content, certPath string) bool {
-	certPaths, _ := certificateDirectivePaths(content)
-	return lo.Contains(certPaths, filepath.Clean(certPath))
+	return lo.Contains(ConfiguredCertificatePaths(content), filepath.Clean(certPath))
 }
 
 // referencingNodeIDs returns the sync nodes of every site and stream that

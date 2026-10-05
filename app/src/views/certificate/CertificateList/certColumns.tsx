@@ -1,10 +1,23 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
+import type { CertificateUsage } from '@/api/cert'
+import type { ConfigUsageItem } from '@/components/ConfigUsage'
 import type { JSXElements } from '@/types'
 import { SyncOutlined } from '@antdv-next/icons'
 import { datetimeRender } from '@uozi-admin/curd'
 import { Tag, Tooltip } from 'antdv-next'
 import dayjs from 'dayjs'
+import ConfigUsage from '@/components/ConfigUsage'
 import { AutoCertState, formatPrivateKeyType } from '@/constants'
+
+function toConfigUsages(usedBy: CertificateUsage[] = []): ConfigUsageItem[] {
+  return usedBy.map(usage => ({
+    key: `${usage.kind}:${usage.name}`,
+    label: usage.name,
+    kind: usage.kind,
+    to: `/${usage.kind}s/${encodeURIComponent(usage.name)}`,
+    status: usage.status,
+  }))
+}
 
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Name'),
@@ -126,6 +139,17 @@ const columns: StdTableColumn[] = [{
   customRender: datetimeRender,
   sorter: true,
   pure: true,
+}, {
+  title: () => $gettext('Used By'),
+  dataIndex: 'used_by',
+  pure: true,
+  customRender: ({ record }: CustomRenderArgs) => {
+    const usages = toConfigUsages(record.used_by)
+    return h(ConfigUsage, {
+      usages,
+      summary: $ngettext('Used by %{count} configuration', 'Used by %{count} configurations', usages.length, { count: String(usages.length) }),
+    })
+  },
 }, {
   title: () => $gettext('Actions'),
   dataIndex: 'actions',
