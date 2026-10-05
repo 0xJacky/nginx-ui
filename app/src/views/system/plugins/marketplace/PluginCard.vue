@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import type { CatalogEntry } from '@/api/plugin_marketplace'
-import { ArrowUpOutlined, CheckCircleOutlined, DownloadOutlined, UserOutlined, WarningOutlined } from '@antdv-next/icons'
-import { PluginIcon } from '@nginxui/plugin-market-ui'
-import { catalogEntryDescription, catalogEntryName } from '@/api/plugin_marketplace'
+import { ArrowUpOutlined, CheckCircleOutlined, DownloadOutlined, WarningOutlined } from '@antdv-next/icons'
+import { MarketCard } from '@nginxui/plugin-market-ui'
 import gettext from '@/gettext'
 import { capabilityIcon, capabilityLabel } from '../capabilities'
 import { channelHint, channelLabel, entryChannel } from '../channel'
 import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
 import { useReplacePlugin } from '../replace'
-import { commercialPrice } from './commercial'
 import { useOfficialElsewhere, useSourceName } from './sources'
-import { findTrustedOffer, trustedOfferAction, trustPreset } from './trust'
+import { findTrustedOffer, trustedOfferAction } from './trust'
 
 const props = defineProps<{
   entry: CatalogEntry
@@ -22,10 +20,6 @@ const emit = defineEmits<{
   detail: [entry: CatalogEntry]
   install: [entry: CatalogEntry]
 }>()
-
-const name = computed(() => catalogEntryName(props.entry, gettext.current))
-const description = computed(() => catalogEntryDescription(props.entry, gettext.current))
-const trust = computed(() => trustPreset(props.entry.trust))
 
 const recommendedMb = computed(() => recommendedMemory(props.entry.installable_release?.manifest))
 const systemMb = useSystemMemory()
@@ -52,74 +46,48 @@ const actionLabel = computed(() => props.entry.update_available ? $gettext('Upda
 </script>
 
 <template>
-  <article
-    class="plugin-card is-clickable"
+  <MarketCard
+    :entry="entry"
+    :locale="gettext.current"
+    clickable
     role="button"
     tabindex="0"
     @click="emit('detail', entry)"
     @keydown.enter.self="emit('detail', entry)"
   >
-    <div class="plugin-card-head">
-      <PluginIcon :src="entry.icon_url" :name="name" :size="40" />
-      <div class="plugin-card-body">
-        <ATooltip :title="entry.id" placement="topLeft">
-          <span class="plugin-card-name">{{ name }}</span>
-        </ATooltip>
-        <div class="plugin-card-sub">
-          <span v-if="entry.installable_release" class="plugin-card-version">
-            v{{ entry.installable_release.version }}
-          </span>
-          <span v-if="entry.author" class="plugin-card-author">
-            <UserOutlined />
-            {{ entry.author }}
-          </span>
-          <ATooltip
-            v-if="isOfficialElsewhere(entry)"
-            :title="$gettext('Offered by %{source} instead of the official catalog.', { source: sourceName(entry.source) })"
-          >
-            <span class="plugin-card-source">
-              <span class="i-tabler-arrows-exchange" />
-              {{ sourceName(entry.source) }}
-            </span>
-          </ATooltip>
-          <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
-            <span class="plugin-card-channel" :class="`is-${channel}`">{{ channelLabel(channel) }}</span>
-          </ATooltip>
-          <ATooltip v-if="entry.commercial" :title="commercialPrice(entry.commercial, gettext.current)">
-            <span class="plugin-card-commercial">{{ $gettext('Commercial') }}</span>
-          </ATooltip>
-        </div>
-      </div>
-      <ATooltip :title="trust.hint()">
-        <span class="plugin-card-trust" :class="`is-${entry.trust || 'unsigned'}`">
-          <span :class="entry.trust === 'unsigned' || !entry.trust ? 'i-tabler-shield' : 'i-tabler-shield-check'" />
-          {{ trust.label() }}
+    <template #sub>
+      <ATooltip
+        v-if="isOfficialElsewhere(entry)"
+        :title="$gettext('Offered by %{source} instead of the official catalog.', { source: sourceName(entry.source) })"
+      >
+        <span class="plugin-card-source">
+          <span class="i-tabler-arrows-exchange" />
+          {{ sourceName(entry.source) }}
         </span>
       </ATooltip>
-    </div>
+      <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
+        <span class="plugin-card-channel" :class="`is-${channel}`">{{ channelLabel(channel) }}</span>
+      </ATooltip>
+    </template>
 
-    <p class="plugin-card-description">
-      {{ description || $gettext('No description provided.') }}
-    </p>
-
-    <div class="plugin-card-facts">
+    <template #facts>
       <span
         v-for="capability in entry.capabilities ?? []"
         :key="capability"
-        class="plugin-card-fact"
+        class="pmu-card-fact"
       >
         <span :class="capabilityIcon(capability)" />
         {{ capabilityLabel(capability) }}
       </span>
       <ATooltip v-if="recommendedMb > 0" :title="memoryHint">
-        <span class="plugin-card-fact" :class="{ 'is-warning': lowMemory }" :aria-label="memoryHint">
+        <span class="pmu-card-fact" :class="{ 'is-warning': lowMemory }" :aria-label="memoryHint">
           <span class="i-tabler-cpu" />
           {{ formatMemory(recommendedMb) }}
         </span>
       </ATooltip>
-    </div>
+    </template>
 
-    <div class="plugin-card-foot" @click.stop>
+    <template #foot>
       <span v-if="offer" class="plugin-card-installed is-outdated">
         <WarningOutlined />
         {{ $gettext('Installed %{version} is not this version', { version: entry.installed_version! }) }}
@@ -156,47 +124,23 @@ const actionLabel = computed(() => props.entry.update_available ? $gettext('Upda
       <AButton v-else size="small" @click="emit('detail', entry)">
         {{ $gettext('Details') }}
       </AButton>
-    </div>
-  </article>
+    </template>
+  </MarketCard>
 </template>
 
 <style lang="less" scoped>
-@import '../plugin-card.less';
-
-.plugin-card-author,
 .plugin-card-source {
   display: inline-flex;
   align-items: center;
   gap: 4px;
 }
 
-.plugin-card-commercial {
+.plugin-card-channel {
   font-weight: 500;
-  color: var(--ant-gold-7, #d48806);
-}
+  color: var(--ant-color-warning);
 
-.plugin-card-trust {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  gap: 4px;
-  font-size: 12px;
-  font-weight: 500;
-
-  &.is-official {
-    color: var(--ant-color-primary);
-  }
-
-  &.is-verified {
-    color: var(--ant-color-success);
-  }
-
-  &.is-community {
-    color: var(--ant-orange-7, #d46b08);
-  }
-
-  &.is-unsigned {
-    color: var(--ant-color-warning);
+  &.is-dev {
+    color: var(--ant-purple-6, #722ed1);
   }
 }
 

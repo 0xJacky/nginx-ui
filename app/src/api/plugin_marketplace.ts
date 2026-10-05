@@ -310,8 +310,3 @@ export function releasePlatforms(release: CatalogRelease): string[] {
 export function catalogEntryName(entry: CatalogEntry, language: string): string {
   return localizedText(entry.name, language) || entry.id
 }
-
-/** Description of a catalog entry in the active language, English fallback. */
-export function catalogEntryDescription(entry: CatalogEntry, language: string): string {
-  return localizedText(entry.description, language)
-}
