@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import type { Cert, SelfSignedCertPayload } from '@/api/cert'
+import { SafetyCertificateOutlined } from '@antdv-next/icons'
 import cert, { toSelfSignedPayload } from '@/api/cert'
 import { AutoCertState, normalizePrivateKeyType } from '@/constants'
 
@@ -371,21 +372,24 @@ onBeforeUnmount(() => {
 <template>
   <ACard>
     <template #title>
-      <div v-if="!isSelfSigned" class="editor-title-name">
-        <AInput
-          v-model:value="data.name"
-          class="editor-title-input"
-          :disabled="isManaged"
-        />
-      </div>
-      <span v-else>{{ id > 0 ? $gettext('Modify Certificate') : $gettext('Import Certificate') }}</span>
+      <span v-if="isSelfSigned">{{ id > 0 ? $gettext('Modify Certificate') : $gettext('Import Certificate') }}</span>
+      <span v-else-if="isManaged" class="editor-title-text">{{ data.name }}</span>
+      <AInput
+        v-else
+        v-model:value="data.name"
+        class="editor-title-input"
+        :placeholder="$gettext('Name')"
+      />
     </template>
     <template #extra>
-      <ATag v-if="isManaged" color="success" class="managed-cert-tag">
-        {{ $gettext('This certificate is managed by Nginx UI') }}
+      <ATag v-if="isManaged" color="success" variant="filled" class="cert-kind-tag">
+        <template #icon>
+          <SafetyCertificateOutlined />
+        </template>
+        <span class="max-sm:hidden">{{ $gettext('This certificate is managed by Nginx UI') }}</span>
       </ATag>
-      <ATag v-else-if="isGeneral" color="purple" variant="filled" class="general-cert-tag">
-        {{ $gettext('General Certificate') }} · {{ $gettext('This certificate is not managed by Nginx UI') }}
+      <ATag v-else-if="isGeneral" color="purple" variant="filled" class="cert-kind-tag">
+        {{ $gettext('General Certificate') }}<span class="max-sm:hidden"> · {{ $gettext('This certificate is not managed by Nginx UI') }}</span>
       </ATag>
     </template>
 
@@ -466,14 +470,15 @@ onBeforeUnmount(() => {
   align-items: stretch;
 }
 
-.editor-title-name {
-  display: flex;
-  align-items: center;
-  width: 100%;
+.editor-title-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .editor-title-input {
-  max-width: 560px;
+  max-width: 480px;
 }
 
 .left-top-content {
@@ -515,15 +520,8 @@ onBeforeUnmount(() => {
   word-break: break-word;
 }
 
-.managed-cert-tag {
-  font-size: 16px;
-  line-height: 1.2;
-}
-
-.general-cert-tag {
-  font-size: 16px;
-  line-height: 1.2;
-  border: none;
+.cert-kind-tag {
+  margin-inline-end: 0;
 }
 
 .content-editor-bottom {

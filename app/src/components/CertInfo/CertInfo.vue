@@ -44,22 +44,17 @@ async function copyToClipboard(text: string, label: string) {
       <slot name="extra" />
     </template>
     <div class="name-with-copy">
-      <div class="name-primary">
-        <p class="mb-0 name-text">
-          {{ $gettext('Name: %{name}', { name: cert.subject_name }) }}
-        </p>
-        <AButton
-          v-if="cert.subject_name"
-          type="text"
-          size="small"
-          @click="copyToClipboard(cert.subject_name, $gettext('Name'))"
-        >
-          <CopyOutlined />
-        </AButton>
-      </div>
-      <div class="name-extra-actions">
-        <slot name="name-extra" />
-      </div>
+      <p class="mb-0">
+        {{ $gettext('Name: %{name}', { name: cert.subject_name }) }}
+      </p>
+      <AButton
+        v-if="cert.subject_name"
+        type="text"
+        size="small"
+        @click="copyToClipboard(cert.subject_name, $gettext('Name'))"
+      >
+        <CopyOutlined />
+      </AButton>
     </div>
     <p>
       {{ $gettext('Status:') }}
@@ -133,26 +128,9 @@ async function copyToClipboard(text: string, label: string) {
 <style scoped lang="less">
 .name-with-copy {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.name-text {
-  margin-right: 2px;
-}
-
-.name-primary {
-  display: inline-flex;
   align-items: center;
   gap: 6px;
-}
-
-.name-extra-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
+  margin-bottom: 1em;
 }
 
 .path-with-copy {
