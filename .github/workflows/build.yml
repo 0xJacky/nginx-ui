@@ -194,6 +194,7 @@ jobs:
           echo "BINARY_NAME=$_BINARY" >> $GITHUB_ENV
 
       - name: Setup Go modules cache
+        if: github.event_name != 'release' # ISSUE-705: release builds must not restore a shared, poisonable cache
         uses: actions/cache@v6
         with:
           path: |
@@ -203,6 +204,7 @@ jobs:
             go-${{ runner.os }}-${{ runner.arch }}-mod-
 
       - name: Setup Go build cache
+        if: github.event_name != 'release' # ISSUE-705: release builds must not restore a shared, poisonable cache
         uses: actions/cache@v6
         with:
           path: |
@@ -420,6 +422,7 @@ jobs:
           echo "BINARY_NAME=$_BINARY" >> $GITHUB_ENV
 
       - name: Setup Go modules cache
+        if: github.event_name != 'release' # ISSUE-705: release builds must not restore a shared, poisonable cache
         uses: actions/cache@v6
         with:
           path: |
@@ -429,6 +432,7 @@ jobs:
             go-${{ runner.os }}-${{ runner.arch }}-mod-
 
       - name: Setup Go build cache
+        if: github.event_name != 'release' # ISSUE-705: release builds must not restore a shared, poisonable cache
         uses: actions/cache@v6
         with:
           path: |
@@ -575,6 +579,7 @@ jobs:
           echo "BINARY_NAME=$_BINARY" >> $GITHUB_ENV
 
       - name: Setup Go build cache
+        if: github.event_name != 'release' # ISSUE-705: release builds must not restore a shared, poisonable cache
         uses: actions/cache@v6
         with:
           path: |
