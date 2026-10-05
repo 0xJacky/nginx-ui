@@ -1,25 +1,14 @@
-export type UsageKind = 'site' | 'stream' | 'config'
-
-export interface Usage {
-  /** Path relative to the Nginx configuration directory. */
-  path: string
-  label: string
-  kind: UsageKind
-  /** The page that edits the file. */
-  to: string
-}
+import type { ConfigUsageItem } from '@/components/ConfigUsage'
 
 /** Turns the files that include a snippet into links to their editors. */
-export function toUsages(usedBy: string[]): Usage[] {
+export function toUsages(usedBy: string[]): ConfigUsageItem[] {
   return usedBy.map(path => {
     const [dir, ...rest] = path.split('/')
     const name = rest.join('/')
     if (dir === 'sites-available')
-      return { path, label: name, kind: 'site', to: `/sites/${encodeURIComponent(name)}` }
+      return { key: path, label: name, kind: 'site', to: `/sites/${encodeURIComponent(name)}` }
     if (dir === 'streams-available')
-      return { path, label: name, kind: 'stream', to: `/streams/${encodeURIComponent(name)}` }
-    return { path, label: path, kind: 'config', to: `/config/${path}/edit` }
+      return { key: path, label: name, kind: 'stream', to: `/streams/${encodeURIComponent(name)}` }
+    return { key: path, label: path, kind: 'config', to: `/config/${path}/edit` }
   })
 }
-
-export const usageColor: Record<UsageKind, string> = { site: 'blue', stream: 'purple', config: 'default' }
