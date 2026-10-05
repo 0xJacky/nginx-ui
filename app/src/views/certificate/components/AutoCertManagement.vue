@@ -27,31 +27,22 @@ function handleRenewed() {
 <template>
   <div class="auto-cert-management">
     <!-- Auto Cert Status Alerts -->
-    <div
-      v-if="isManaged"
-      class="mb-4"
-    >
-      <div
+    <template v-if="isManaged">
+      <AAlert
         v-if="!data.filename"
-        class="mt-4 mb-4"
-      >
-        <AAlert
-          :title="$gettext('This Auto Cert item is invalid, please remove it.')"
-          type="error"
-          show-icon
-        />
-      </div>
-      <div
+        class="mb-4"
+        :title="$gettext('This Auto Cert item is invalid, please remove it.')"
+        type="error"
+        show-icon
+      />
+      <AAlert
         v-else-if="!data.domains"
-        class="mt-4 mb-4"
-      >
-        <AAlert
-          :title="$gettext('Domains list is empty, try to reopen Auto Cert for %{config}', { config: data.filename })"
-          type="error"
-          show-icon
-        />
-      </div>
-    </div>
+        class="mb-4"
+        :title="$gettext('Domains list is empty, try to reopen Auto Cert for %{config}', { config: data.filename })"
+        type="error"
+        show-icon
+      />
+    </template>
 
     <div class="auto-cert-layout">
       <AForm
@@ -66,28 +57,28 @@ function handleRenewed() {
             :ssl-certificate-key-path="data.ssl_certificate_key_path"
             class="status-card"
           >
-            <template #name-extra>
-              <CertificateDownload :data="data" inline />
-            </template>
             <template #extra>
-              <RenewCert
-                v-if="isManaged"
-                :options="{
-                  name: data.filename || data.name,
-                  domains: data.domains,
-                  key_type: data.key_type,
-                  challenge_method: data.challenge_method,
-                  profile: data.profile,
-                  dns_credential_id: data.dns_credential_id,
-                  acme_user_id: data.acme_user_id,
-                  must_staple: data.must_staple,
-                  lego_disable_cname_support: data.lego_disable_cname_support,
-                  disable_authoritative_ns_propagation: data.disable_authoritative_ns_propagation,
-                  enable_common_name: data.enable_common_name,
-                  revoke_old: data.revoke_old,
-                }"
-                @renewed="handleRenewed"
-              />
+              <ASpace :size="8" wrap>
+                <CertificateDownload :data="data" />
+                <RenewCert
+                  v-if="isManaged"
+                  :options="{
+                    name: data.filename || data.name,
+                    domains: data.domains,
+                    key_type: data.key_type,
+                    challenge_method: data.challenge_method,
+                    profile: data.profile,
+                    dns_credential_id: data.dns_credential_id,
+                    acme_user_id: data.acme_user_id,
+                    must_staple: data.must_staple,
+                    lego_disable_cname_support: data.lego_disable_cname_support,
+                    disable_authoritative_ns_propagation: data.disable_authoritative_ns_propagation,
+                    enable_common_name: data.enable_common_name,
+                    revoke_old: data.revoke_old,
+                  }"
+                  @renewed="handleRenewed"
+                />
+              </ASpace>
             </template>
           </CertInfo>
         </AFormItem>
@@ -112,10 +103,6 @@ function handleRenewed() {
 
 .status-form {
   width: 100%;
-}
-
-.status-card :deep(.mb-6) {
-  margin-bottom: 0 !important;
 }
 
 .managed-actions {
