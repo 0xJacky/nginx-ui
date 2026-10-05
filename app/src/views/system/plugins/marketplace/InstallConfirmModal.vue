@@ -18,8 +18,9 @@ import ChannelTag from '../ChannelTag.vue'
 import { installReplacesText } from '../conflicts'
 import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
+import { asksForLess, asksForMore, permissionChanges } from '../permissionChanges'
 import PermissionList from '../PermissionList.vue'
-import { permissionReasons } from '../permissions'
+import { permissionLabel, permissionReasons } from '../permissions'
 import { usePackageConflicts } from '../useConflicts'
 import { useSourceName } from './sources'
 import { isCommunityTrust, trustPreset } from './trust'
@@ -92,6 +93,16 @@ const showCommunityWarning = computed(() => Boolean(entry.value) && isCommunityT
 const isUpgrade = computed(() => Boolean(entry.value?.installed_version))
 // Looked up while the dialog is open, and only for an upgrade.
 const installedPlugin = useInstalledPlugin(() => (open.value && isUpgrade.value ? entry.value?.id : undefined))
+// What the update asks for beyond the installed version, and what it drops.
+const changes = computed(() => (installedPlugin.value && release.value?.manifest
+  ? permissionChanges(installedPlugin.value, release.value.manifest)
+  : undefined))
+const moreAccess = computed(() => Boolean(changes.value && asksForMore(changes.value)))
+const lessAccess = computed(() => Boolean(changes.value && !asksForMore(changes.value) && asksForLess(changes.value)))
+const accessTitle = computed(() => (isOlder.value
+  ? $gettext('This version asks for access the installed version does not have')
+  : $gettext('This update asks for access the installed version does not have')))
+const labels = (permissions: string[]) => permissions.map(permissionLabel).join(', ')
 // A plugin that only ships test versions so far.
 const noStableVersion = computed(() => Boolean(entry.value) && channel.value !== 'stable' && !hasStableRelease(entry.value))
 const title = computed(() => {
@@ -376,6 +387,53 @@ onUnmounted(() => {
       />
 
       <AAlert
+        v-if="moreAccess && changes"
+        type="warning"
+        show-icon
+        class="mt-4"
+        :title="accessTitle"
+      >
+        <template #description>
+          <ul class="mb-0 pl-4">
+            <li v-if="changes.added.length">
+              {{ $gettext('New permissions: %{list}', { list: labels(changes.added) }) }}
+            </li>
+            <li v-if="changes.addedHosts.length">
+              {{ $gettext('New addresses it may reach: %{list}', { list: changes.addedHosts.join(', ') }) }}
+            </li>
+            <li v-if="changes.anyHost">
+              {{ $gettext('It may now reach any address instead of a fixed list.') }}
+            </li>
+            <li v-if="changes.removed.length">
+              {{ $gettext('No longer requested: %{list}', { list: labels(changes.removed) }) }}
+            </li>
+            <li v-if="changes.removedHosts.length">
+              {{ $gettext('Addresses it no longer reaches: %{list}', { list: changes.removedHosts.join(', ') }) }}
+            </li>
+          </ul>
+        </template>
+      </AAlert>
+
+      <AAlert
+        v-else-if="lessAccess && changes"
+        type="info"
+        show-icon
+        class="mt-4"
+        :title="$gettext('This version asks for less access than the installed version')"
+      >
+        <template #description>
+          <ul class="mb-0 pl-4">
+            <li v-if="changes.removed.length">
+              {{ $gettext('No longer requested: %{list}', { list: labels(changes.removed) }) }}
+            </li>
+            <li v-if="changes.removedHosts.length">
+              {{ $gettext('Addresses it no longer reaches: %{list}', { list: changes.removedHosts.join(', ') }) }}
+            </li>
+          </ul>
+        </template>
+      </AAlert>
+
+      <AAlert
         v-if="requires.length > 0"
         type="info"
         show-icon
@@ -396,7 +454,7 @@ onUnmounted(() => {
         <h4 class="mb-2">
           {{ $gettext('Requested permissions') }}
         </h4>
-        <PermissionList :permissions="permissions" :reasons="reasons" />
+        <PermissionList :permissions="permissions" :reasons="reasons" :added="changes?.added" />
       </div>
 
       <ACheckbox v-model:checked="enableAfterInstall" :disabled="installing" class="mt-4">
