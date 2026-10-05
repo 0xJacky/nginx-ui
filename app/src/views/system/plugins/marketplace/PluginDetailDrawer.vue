@@ -1,32 +1,21 @@
 <script setup lang="ts">
+import type { MarketFact } from '@nginxui/plugin-market-ui'
 import type { CatalogEntry } from '@/api/plugin_marketplace'
-import { GlobalOutlined, LinkOutlined } from '@antdv-next/icons'
+import { LinkOutlined } from '@antdv-next/icons'
+import { MarketDetail, PluginIcon } from '@nginxui/plugin-market-ui'
 import { useWindowSize } from '@vueuse/core'
 import { marked } from 'marked'
-import {
-  catalogEntryDescription,
-  catalogEntryName,
-  catalogScreenshotCaption,
-  catalogScreenshotCrop,
-  catalogScreenshotURL,
-  cropStyles,
-  getMarketplacePlugin,
-} from '@/api/plugin_marketplace'
+import { catalogEntryName, getMarketplacePlugin } from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { useSettingsStore } from '@/pinia'
-import { capabilityLabel } from '../capabilities'
-import { categoryLabel } from '../categories'
 import { channelHint, channelLabel, compareVersions, entryChannel, installableReleases, releaseChannel } from '../channel'
 import { useInstalledPlugin } from '../inventory'
 import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, useSystemMemory } from '../memory'
-import PermissionList from '../PermissionList.vue'
-import { permissionReasons } from '../permissions'
-import PluginIcon from '../PluginIcon.vue'
+import { permissionChanges } from '../permissionChanges'
 import { useReplacePlugin } from '../replace'
-import { commercialPrice, commercialTerms } from './commercial'
 import { useSourceIcon, useSourceName } from './sources'
-import { findTrustedOffer, trustedOfferAction, trustPreset } from './trust'
+import { findTrustedOffer, trustedOfferAction } from './trust'
 
 const props = defineProps<{
   entry?: CatalogEntry
@@ -51,10 +40,6 @@ const current = computed(() => detail.value ?? props.entry)
 const sourceName = useSourceName()
 const sourceIcon = useSourceIcon()
 const name = computed(() => (current.value ? catalogEntryName(current.value, gettext.current) : ''))
-const description = computed(() => (current.value ? catalogEntryDescription(current.value, gettext.current) : ''))
-const trust = computed(() => trustPreset(current.value?.trust))
-const permissions = computed(() => current.value?.installable_release?.manifest?.permissions ?? [])
-const reasons = computed(() => permissionReasons(current.value?.installable_release?.manifest, gettext.current, current.value?.permission_reasons))
 const recommendedMb = computed(() => recommendedMemory(current.value?.installable_release?.manifest))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
@@ -63,45 +48,25 @@ const installed = useInstalledPlugin(() => current.value?.id)
 const offer = computed(() => findTrustedOffer(installed.value?.trust, current.value))
 const { replacingId, confirmReplace } = useReplacePlugin()
 const settings = useSettingsStore()
-// Each shows its crop in the strip and the whole image when opened.
-const screenshots = computed(() => (current.value?.screenshots ?? []).map(shot => {
-  const crop = cropStyles(catalogScreenshotCrop(shot, settings.theme === 'dark'))
-  return {
-    url: catalogScreenshotURL(shot, settings.theme === 'dark'),
-    caption: catalogScreenshotCaption(shot, gettext.current),
-    styles: 'root' in crop ? { root: { ...crop.root, width: '240px', height: '150px', borderRadius: '6px' }, image: crop.image } : undefined,
-  }
-}))
 const renderedReadme = computed(() => (readme.value ? marked.parse(readme.value) as string : ''))
 
 const canInstall = computed(() => Boolean(current.value?.installable_release)
   && (!current.value?.installed_version || current.value?.update_available))
 
-const commercial = computed(() => current.value?.commercial)
+// What only this node knows, after the facts the catalog gives.
+const facts = computed<MarketFact[]>(() => [
+  ...(current.value?.installed_version
+    ? [{ key: 'installed', label: $gettext('Installed version'), value: `v${current.value.installed_version}` }]
+    : []),
+  ...(recommendedMb.value > 0
+    ? [{ key: 'memory', label: $gettext('Recommended memory'), value: formatMemory(recommendedMb.value) }]
+    : []),
+])
 
-const links = computed(() => [
-  { key: 'homepage', icon: GlobalOutlined, label: $gettext('Homepage'), url: current.value?.homepage_url },
-  { key: 'repository', icon: LinkOutlined, label: $gettext('Repository'), url: current.value?.repository_url },
-  { key: 'release_notes', icon: LinkOutlined, label: $gettext('Release notes'), url: current.value?.installable_release?.release_notes_url },
-].filter(link => Boolean(link.url)))
-
-const facts = computed(() => {
-  const entry = current.value
-  if (!entry)
-    return []
-  const items = [
-    { key: 'id', label: $gettext('ID'), value: entry.id, mono: true },
-    ...(entry.author ? [{ key: 'author', label: $gettext('Author'), value: entry.author, mono: false }] : []),
-    ...(entry.license ? [{ key: 'license', label: $gettext('License'), value: entry.license, mono: false }] : []),
-    ...(entry.installed_version
-      ? [{ key: 'installed', label: $gettext('Installed version'), value: `v${entry.installed_version}`, mono: false }]
-      : []),
-    ...(recommendedMb.value > 0
-      ? [{ key: 'memory', label: $gettext('Recommended memory'), value: formatMemory(recommendedMb.value), mono: false }]
-      : []),
-  ]
-  return items
-})
+// An update marks the permissions the installed version did not ask for.
+const addedPermissions = computed(() => (current.value?.update_available && installed.value && current.value.installable_release?.manifest
+  ? permissionChanges(installed.value, current.value.installable_release.manifest).added
+  : []))
 
 // Every version this node can install, each one can be picked.
 const releases = computed(() => installableReleases(current.value))
@@ -197,140 +162,48 @@ watch(open, value => {
         :title="error"
       />
 
-      <template v-if="current">
-        <div class="detail">
-          <div class="detail-head">
-            <PluginIcon :src="current.icon_url" :name="name" :size="48" />
-            <div class="min-w-0 flex-1">
-              <div class="pill-row mb-2">
-                <ATooltip :title="trust.hint()">
-                  <span class="pill" :class="trust.tone">{{ trust.label() }}</span>
-                </ATooltip>
-                <span v-if="commercial" class="pill is-gold">{{ $gettext('Commercial') }}</span>
-                <span
-                  v-for="capability in current.capabilities ?? []"
-                  :key="capability"
-                  class="pill is-accent"
-                >
-                  {{ capabilityLabel(capability) }}
-                </span>
-                <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
-                  <span class="pill" :class="channel === 'beta' ? 'is-warning' : 'is-purple'">{{ channelLabel(channel) }}</span>
-                </ATooltip>
-              </div>
-              <p class="overview-description">
-                {{ description || $gettext('No description provided.') }}
-              </p>
-            </div>
-          </div>
+      <MarketDetail
+        v-if="current"
+        :entry="current"
+        :locale="gettext.current"
+        :dark="settings.theme === 'dark'"
+        :facts="facts"
+        :added-permissions="addedPermissions"
+      >
+        <template #pills>
+          <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
+            <span class="pmu-pill" :class="channel === 'beta' ? 'is-warning' : 'is-purple'">{{ channelLabel(channel) }}</span>
+          </ATooltip>
+        </template>
 
+        <template v-if="lowMemory" #alerts>
           <AAlert
-            v-if="lowMemory"
             type="warning"
             show-icon
             :title="memoryWarning(recommendedMb, systemMb)"
           />
+        </template>
 
-          <div class="fact-grid">
-            <div
-              v-for="fact in facts"
-              :key="fact.key"
-              class="fact"
-              :class="{ 'is-wide': fact.mono }"
-            >
-              <span class="fact-label">{{ fact.label }}</span>
-              <span class="fact-value" :class="{ 'is-mono': fact.mono }">{{ fact.value }}</span>
-            </div>
+        <template #rows>
+          <div class="pmu-row">
+            <dt>{{ $gettext('Source') }}</dt>
+            <dd class="detail-source">
+              <PluginIcon
+                v-if="sourceIcon(current.source)"
+                :src="sourceIcon(current.source)"
+                :name="sourceName(current.source)"
+                :size="16"
+                class="detail-source-icon"
+              />
+              <span :title="current.source">{{ sourceName(current.source) }}</span>
+            </dd>
           </div>
+        </template>
 
-          <dl class="detail-list">
-            <div class="detail-row">
-              <dt>{{ $gettext('Source') }}</dt>
-              <dd class="detail-source">
-                <PluginIcon
-                  v-if="sourceIcon(current.source)"
-                  :src="sourceIcon(current.source)"
-                  :name="sourceName(current.source)"
-                  :size="16"
-                  class="detail-source-icon"
-                />
-                <span :title="current.source">{{ sourceName(current.source) }}</span>
-              </dd>
-            </div>
-            <div v-if="commercial" class="detail-row">
-              <dt>{{ $gettext('Price') }}</dt>
-              <dd class="detail-price">
-                <span>{{ commercialPrice(commercial, gettext.current) }}</span>
-                <span v-for="term in commercialTerms(commercial)" :key="term" class="pill">{{ term }}</span>
-                <a :href="commercial.purchase_url" target="_blank" rel="noopener noreferrer" class="pill is-link">
-                  <LinkOutlined />
-                  {{ $gettext('Buy a license') }}
-                </a>
-              </dd>
-            </div>
-            <div v-if="current.categories?.length" class="detail-row">
-              <dt>{{ $gettext('Categories') }}</dt>
-              <dd class="pill-row">
-                <span v-for="item in current.categories" :key="item" class="pill">{{ categoryLabel(item) }}</span>
-              </dd>
-            </div>
-            <div v-if="links.length > 0" class="detail-row">
-              <dt>{{ $gettext('Links') }}</dt>
-              <dd class="pill-row">
-                <a
-                  v-for="link in links"
-                  :key="link.key"
-                  :href="link.url"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="pill is-link"
-                >
-                  <component :is="link.icon" />
-                  {{ link.label }}
-                </a>
-              </dd>
-            </div>
-          </dl>
-
-          <section v-if="screenshots.length" class="overview-section">
-            <div class="section-head">
-              <h4 class="section-title">
-                {{ $gettext('Screenshots') }}
-              </h4>
-            </div>
-            <AImagePreviewGroup>
-              <div class="screenshot-strip">
-                <figure v-for="shot in screenshots" :key="shot.url" class="screenshot">
-                  <AImage
-                    :src="shot.url"
-                    :alt="shot.caption || name"
-                    :width="240"
-                    :height="150"
-                    referrerpolicy="no-referrer"
-                    class="screenshot-image"
-                    :styles="shot.styles"
-                  />
-                  <figcaption v-if="shot.caption" class="screenshot-caption">
-                    {{ shot.caption }}
-                  </figcaption>
-                </figure>
-              </div>
-            </AImagePreviewGroup>
-          </section>
-
-          <section class="overview-section">
-            <div class="section-head">
-              <h4 class="section-title">
-                {{ $gettext('Requested permissions') }}
-              </h4>
-              <span v-if="permissions.length" class="section-count">{{ permissions.length }}</span>
-            </div>
-            <PermissionList :permissions="permissions" :reasons="reasons" />
-          </section>
-
-          <section v-if="releaseNotes.length" class="overview-section">
-            <div class="section-head">
-              <h4 class="section-title">
+        <template #sections>
+          <section v-if="releaseNotes.length" class="pmu-section">
+            <div class="pmu-section-head">
+              <h4 class="pmu-section-title">
                 {{ current.update_available ? $gettext('Changes in this update') : $gettext('Release notes') }}
               </h4>
             </div>
@@ -340,14 +213,14 @@ watch(open, value => {
                   <span class="release-version">v{{ notes.version }}</span>
                   <span v-if="notes.date" class="release-date">{{ notes.date }}</span>
                 </div>
-                <div v-dompurify-html="notes.html" class="plugin-readme release-notes-body" />
+                <div v-dompurify-html="notes.html" class="pmu-readme release-notes-body" />
               </article>
             </div>
           </section>
 
-          <section class="overview-section">
-            <div class="section-head">
-              <h4 class="section-title">
+          <section class="pmu-section">
+            <div class="pmu-section-head">
+              <h4 class="pmu-section-title">
                 {{ $gettext('Versions') }}
               </h4>
             </div>
@@ -360,10 +233,10 @@ watch(open, value => {
               >
                 <div class="release-main">
                   <span class="release-version">v{{ release.version }}</span>
-                  <span v-if="release.version === current.installed_version" class="pill is-success">{{ $gettext('Installed') }}</span>
-                  <span v-else-if="release.version === current.installable_release?.version" class="pill is-accent">{{ $gettext('Latest') }}</span>
+                  <span v-if="release.version === current.installed_version" class="pmu-pill is-success">{{ $gettext('Installed') }}</span>
+                  <span v-else-if="release.version === current.installable_release?.version" class="pmu-pill is-accent">{{ $gettext('Latest') }}</span>
                   <ATooltip v-if="releaseChannel(release) !== 'stable'" :title="channelHint(releaseChannel(release))">
-                    <span class="pill" :class="releaseChannel(release) === 'beta' ? 'is-warning' : 'is-purple'">
+                    <span class="pmu-pill" :class="releaseChannel(release) === 'beta' ? 'is-warning' : 'is-purple'">
                       {{ channelLabel(releaseChannel(release)) }}
                     </span>
                   </ATooltip>
@@ -373,7 +246,7 @@ watch(open, value => {
                     :href="release.release_notes_url"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="pill is-link"
+                    class="pmu-pill is-link"
                   >
                     <LinkOutlined />
                     {{ $gettext('Release notes') }}
@@ -389,17 +262,12 @@ watch(open, value => {
               </li>
             </ul>
           </section>
+        </template>
 
-          <section v-if="renderedReadme" class="overview-section">
-            <div class="section-head">
-              <h4 class="section-title">
-                {{ $gettext('Readme') }}
-              </h4>
-            </div>
-            <div v-dompurify-html="renderedReadme" class="plugin-readme" />
-          </section>
-        </div>
-      </template>
+        <template v-if="renderedReadme" #readme>
+          <div v-dompurify-html="renderedReadme" class="pmu-readme" />
+        </template>
+      </MarketDetail>
     </ASpin>
   </ADrawer>
 </template>
@@ -407,59 +275,15 @@ watch(open, value => {
 <style lang="less" scoped>
 @import '../plugin-detail.less';
 
-.detail {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.fact-value.is-mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 13px;
-}
-
 .detail-source-icon {
   margin-right: 6px;
   vertical-align: -3px;
-}
-
-.detail-price {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
 }
 
 .detail-source {
   font-size: 12px;
   color: var(--ant-color-text-secondary);
   overflow-wrap: anywhere;
-}
-
-.plugin-readme {
-  word-break: break-word;
-
-  :deep(img) {
-    max-width: 100%;
-  }
-
-  :deep(pre) {
-    padding: 12px;
-    overflow: auto;
-    border-radius: 6px;
-    background-color: var(--ant-color-fill-tertiary);
-  }
-
-  :deep(table) {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  :deep(th),
-  :deep(td) {
-    padding: 6px 8px;
-    border: 1px solid var(--ant-color-split);
-  }
 }
 
 .notes-list {
@@ -490,30 +314,5 @@ watch(open, value => {
     margin: 0;
     padding-left: 20px;
   }
-}
-
-.screenshot-strip {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-}
-
-.screenshot {
-  flex: none;
-  width: 240px;
-  margin: 0;
-}
-
-.screenshot :deep(.screenshot-image) {
-  border-radius: 6px;
-  object-fit: cover;
-  border: 1px solid var(--ant-color-border-secondary);
-}
-
-.screenshot-caption {
-  margin-top: 6px;
-  font-size: 12px;
-  color: var(--ant-color-text-secondary);
 }
 </style>

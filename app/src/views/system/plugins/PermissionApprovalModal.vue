@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { PluginInfo } from '@/api/plugin'
+import { PermissionList } from '@nginxui/plugin-market-ui'
 import { localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
-import PermissionList from './PermissionList.vue'
 import { permissionReasons } from './permissions'
 
 const props = defineProps<{
