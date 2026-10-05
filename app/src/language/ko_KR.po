@@ -414,6 +414,27 @@ msgstr "비활성화됨"
 msgid "Maintenance"
 msgstr "유지보수"
 
+msgid "Site"
+msgstr "사이트"
+
+msgid "Stream"
+msgstr "스트림"
+
+msgid "Configuration"
+msgstr "구성"
+
+msgid "+%{count} more"
+msgstr "+%{count}개 더"
+
+msgid "Search"
+msgstr "검색"
+
+msgid "No file matches the search"
+msgstr "검색과 일치하는 파일이 없습니다"
+
+msgid "Not used"
+msgstr "사용 안 함"
+
 msgid "Starting download..."
 msgstr "다운로드를 시작하고 있습니다..."
 
@@ -901,9 +922,6 @@ msgstr "완료"
 msgid "Unknown"
 msgstr "알 수 없음"
 
-msgid "Search"
-msgstr "검색"
-
 msgid "Open in split view"
 msgstr "분할 보기로 열기"
 
@@ -990,16 +1008,15 @@ msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
 msgstr "백업 작업 %{backup_name} 이(가) 성공적으로 완료되었습니다, 파일: %{file_path}"
 
 msgid "Auto Backup Retention Skipped"
-msgstr ""
+msgstr "자동 백업 보관이 건너뛰어졌습니다"
 
-msgid "Old backups of task %{backup_name} were not deleted because task %{conflict_names} writes backups with the same file names to the same storage location. Rename one of the tasks or change its storage path."
+msgid ""
+"Old backups of task %{backup_name} were not deleted because task "
+"%{conflict_names} writes backups with the same file names to the same "
+"storage location. Rename one of the tasks or change its storage path."
 msgstr ""
-
-msgid "Backups to Keep"
-msgstr ""
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr ""
+"작업 %{backup_name}의 이전 백업이 삭제되지 않았습니다. 작업 %{conflict_names}이(가) 동일한 파일 이름으로 "
+"동일한 스토리지 위치에 백업을 작성하고 있기 때문입니다. 작업 중 하나의 이름을 변경하거나 스토리지 경로를 변경하세요."
 
 msgid "Renew Certificate Success"
 msgstr "인증서 갱신 성공"
@@ -1030,6 +1047,16 @@ msgstr "인증서 %{name}은(는) %{days}일 후에 만료됩니다"
 
 msgid "Certificate Expiring Soon"
 msgstr "인증서 만료 임박"
+
+msgid "Certificate Relocated"
+msgstr "인증서가 이동되었습니다"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr ""
+"인증서 %{name}이(가) 이제 %{path}에 저장됩니다. %{previous_path}을(를) 로드하는 사이트를 이 경로로 "
+"지정하세요"
 
 msgid "Sync Certificate Error"
 msgstr "인증서 동기화 오류"
@@ -2731,6 +2758,32 @@ msgstr "사이트가 점검 모드입니다"
 msgid "Read dir failed: {0}"
 msgstr "디렉터리 읽기 실패: {0}"
 
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "파일 이름은 .conf 로 끝나야 하며, 영문자, 숫자, 점, 하이픈, 밑줄만 사용할 수 있습니다"
+
+msgid "Snippet not found"
+msgstr "스니펫을 찾을 수 없습니다"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "스니펫이 256 KiB를 초과합니다"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "스니펫의 헤더를 파싱할 수 없습니다: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "스니펫은 여전히 {0} 에 의해 포함되어 있습니다"
+
+msgid "A snippet with this file name already exists"
+msgstr "이 파일 이름의 스니펫이 이미 존재합니다"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "변수 {0}이(가) 유효하지 않습니다: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "콘텐츠를 템플릿으로 분석할 수 없습니다: {0}"
+
 msgid "Stream not found"
 msgstr "스트림을 찾을 수 없습니다"
 
@@ -3866,6 +3919,18 @@ msgstr "사이트 목록"
 msgid "Add Site"
 msgstr "사이트 추가"
 
+msgid "Snippets"
+msgstr "스니펫"
+
+msgid "Create Snippet"
+msgstr "스니펫 만들기"
+
+msgid "Built-in Template"
+msgstr "내장 템플릿"
+
+msgid "Edit Snippet"
+msgstr "스니펫 편집"
+
 msgid "Edit Site"
 msgstr "사이트 편집"
 
@@ -3945,29 +4010,17 @@ msgstr ""
 "액세스 목록은 IP 주소를 한 곳에 모아 관리합니다. 사이트 편집기에서 서버 또는 위치에 대해 선택하면 됩니다. 여기에서 목록을 "
 "변경하면 해당 목록을 사용하는 모든 사이트에 반영됩니다."
 
-msgid "+%{count} more"
-msgstr "+%{count}개 더"
-
 msgid "Deny"
 msgstr "거부"
 
 msgid "Allow"
 msgstr "허용"
 
-msgid "Not used"
-msgstr "사용 안 함"
-
 msgid "Use list"
 msgstr "목록 사용"
 
 msgid "Deny (403)"
 msgstr "거부됨 (403)"
-
-msgid "Site"
-msgstr "사이트"
-
-msgid "Stream"
-msgstr "스트림"
 
 msgid "Access list %{name} saved"
 msgstr "접근 목록 %{name}이(가) 저장되었습니다"
@@ -4059,6 +4112,15 @@ msgstr "매주 %{day} %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "매월 %{day}일 %{time}"
+
+msgid "Backups to Keep"
+msgstr "보관할 백업"
+
+msgid "All"
+msgstr "전체"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "보관할 백업 수 (0이면 모두 보관)"
 
 msgid "Last Backup Time"
 msgstr "마지막 백업 시간"
@@ -4411,6 +4473,10 @@ msgstr "배포를 확인할 수 없습니다"
 msgid "Not After"
 msgstr "유효 종료"
 
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "%{count} 개의 구성에서 사용됨"
+
 msgid "Failed to scan certificates"
 msgstr "인증서 스캔에 실패했습니다"
 
@@ -4526,11 +4592,11 @@ msgstr "인증서 파일이 성공적으로 다운로드되었습니다"
 msgid "Failed to download certificate files"
 msgstr "인증서 파일을 다운로드하지 못했습니다"
 
-msgid "Download"
-msgstr "다운로드"
-
 msgid "Download Certificate Files"
 msgstr "인증서 파일 다운로드"
+
+msgid "Download"
+msgstr "다운로드"
 
 msgid "Download Format"
 msgstr "다운로드 형식"
@@ -4693,14 +4759,14 @@ msgstr "취소를 확인하려면 아래 필드에 \"Revoke\"를 입력하세요
 msgid "Renew successfully"
 msgstr "갱신에 성공했습니다"
 
-msgid "Renew"
-msgstr "갱신"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert 실행 중입니다. 잠시 기다려 주세요..."
 
 msgid "Renew Certificate"
 msgstr "인증서 갱신"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert 실행 중입니다. 잠시 기다려 주세요..."
+msgid "Renew"
+msgstr "갱신"
 
 msgid "Certificate issued successfully"
 msgstr "인증서가 성공적으로 발급되었습니다"
@@ -5204,7 +5270,9 @@ msgid ""
 "Resident Set Size: Actual memory resident in physical memory, including all "
 "shared library memory, which will be repeated calculated for multiple "
 "processes"
-msgstr "Resident Set Size: 물리 메모리에 실제로 상주하는 메모리이며, 모든 공유 라이브러리 메모리를 포함하므로 여러 프로세스에서 중복 계산됩니다"
+msgstr ""
+"Resident Set Size: 물리 메모리에 실제로 상주하는 메모리이며, 모든 공유 라이브러리 메모리를 포함하므로 여러 프로세스에서 "
+"중복 계산됩니다"
 
 msgid "TLS certificate not trusted"
 msgstr "TLS 인증서를 신뢰할 수 없습니다"
@@ -5289,6 +5357,14 @@ msgid ""
 "actual upstream host or port."
 msgstr "선택 사항인 절대 URL입니다. 공개 주소가 실제 업스트림 호스트 또는 포트와 다를 때 사용하세요."
 
+msgid "Site Card Click URL"
+msgstr "사이트 카드 클릭 URL"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr "이 사이트 카드를 열 때 사용되는 선택적 절대 HTTP/HTTPS URL입니다. 비어 있는 경우 기본 사이트 URL이 사용됩니다."
+
 msgid "HTTP Method"
 msgstr "HTTP 메서드"
 
@@ -5313,17 +5389,23 @@ msgstr "예상하지 않는 텍스트"
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
-msgstr "gRPCS는 TLS 암호화를 사용합니다. 서버는 gRPC Health Check 서비스를 구현해야 합니다. 테스트 시에는 기본적으로 SSL 검증이 비활성화됩니다."
+msgstr ""
+"gRPCS는 TLS 암호화를 사용합니다. 서버는 gRPC Health Check 서비스를 구현해야 합니다. 테스트 시에는 기본적으로 "
+"SSL 검증이 비활성화됩니다."
 
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
-msgstr "gRPC 상태 확인을 사용하려면 서버가 gRPC Health Check 서비스(grpc.health.v1.Health)를 구현해야 합니다."
+msgstr ""
+"gRPC 상태 확인을 사용하려면 서버가 gRPC Health Check 서비스(grpc.health.v1.Health)를 구현해야 "
+"합니다."
 
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
-msgstr "참고: 서버가 gRPC Reflection을 지원하지 않으면 상태 확인이 실패할 수 있습니다. gRPC 서버에서 Reflection이 활성화되어 있는지 확인하세요."
+msgstr ""
+"참고: 서버가 gRPC Reflection을 지원하지 않으면 상태 확인이 실패할 수 있습니다. gRPC 서버에서 Reflection이 "
+"활성화되어 있는지 확인하세요."
 
 msgid "Service Name"
 msgstr "서비스 이름"
@@ -5557,7 +5639,9 @@ msgstr "%{provider}은(는) ACME DNS-01 인증서 챌린지와 DNS 도메인의 
 msgid ""
 "%{provider} can be used for ACME DNS-01 certificate challenges, but DNS "
 "record management in DNS Domains is not supported for this provider."
-msgstr "%{provider}은(는) ACME DNS-01 인증서 챌린지에 사용할 수 있지만, 이 제공자는 DNS 도메인의 DNS 레코드 관리를 지원하지 않습니다."
+msgstr ""
+"%{provider}은(는) ACME DNS-01 인증서 챌린지에 사용할 수 있지만, 이 제공자는 DNS 도메인의 DNS 레코드 관리를 "
+"지원하지 않습니다."
 
 msgid "DNS Provider"
 msgstr "DNS 제공자"
@@ -5570,9 +5654,6 @@ msgstr "SDK"
 
 msgid "Additional"
 msgstr "추가"
-
-msgid "All"
-msgstr "전체"
 
 msgid "Host, e.g. @ or www"
 msgstr "호스트 (예: @ 또는 www)"
@@ -5679,7 +5760,9 @@ msgstr "DDNS는 DNS 영역 내의 레코드를 업데이트합니다"
 msgid ""
 "Configure a zone, then select the A/AAAA records to update. For "
 "ddns.example.com, select the ddns record under example.com."
-msgstr "영역을 구성한 다음 업데이트할 A/AAAA 레코드를 선택하세요. ddns.example.com의 경우 example.com 아래의 ddns 레코드를 선택합니다."
+msgstr ""
+"영역을 구성한 다음 업데이트할 A/AAAA 레코드를 선택하세요. ddns.example.com의 경우 example.com 아래의 "
+"ddns 레코드를 선택합니다."
 
 msgid "Configure"
 msgstr "구성"
@@ -5704,7 +5787,10 @@ msgid ""
 "it creates the missing sibling record and removes selected records whose IP "
 "family is unreachable. Records you leave unselected are never changed. "
 "Disable to update only the selected records and never create or delete any."
-msgstr "활성화하면 DDNS는 A/AAAA 레코드가 모두 선택된 이름을 완성합니다. 누락된 형제 레코드를 생성하고, IP 계열에 연결할 수 없는 선택된 레코드를 제거합니다. 선택하지 않은 레코드는 절대 변경되지 않습니다. 비활성화하면 선택한 레코드만 업데이트하며 어떤 레코드도 생성하거나 삭제하지 않습니다."
+msgstr ""
+"활성화하면 DDNS는 A/AAAA 레코드가 모두 선택된 이름을 완성합니다. 누락된 형제 레코드를 생성하고, IP 계열에 연결할 수 없는 "
+"선택된 레코드를 제거합니다. 선택하지 않은 레코드는 절대 변경되지 않습니다. 비활성화하면 선택한 레코드만 업데이트하며 어떤 레코드도 "
+"생성하거나 삭제하지 않습니다."
 
 msgid "Records to update"
 msgstr "업데이트할 레코드"
@@ -5720,9 +5806,6 @@ msgstr "이름은 비워 둘 수 없습니다"
 
 msgid "Please select DNS provider"
 msgstr "DNS 제공자를 선택하세요"
-
-msgid "Configuration"
-msgstr "구성"
 
 msgid "DNS Credentials"
 msgstr "DNS 자격 증명"
@@ -5760,7 +5843,9 @@ msgstr "DNS 영역"
 msgid ""
 "Enter the zone managed by your DNS provider, such as example.com. Add "
 "subdomains such as ddns.example.com later as DNS records."
-msgstr "DNS 제공자가 관리하는 영역을 입력하세요. 예: example.com. ddns.example.com 같은 하위 도메인은 나중에 DNS 레코드로 추가하세요."
+msgstr ""
+"DNS 제공자가 관리하는 영역을 입력하세요. 예: example.com. ddns.example.com 같은 하위 도메인은 나중에 "
+"DNS 레코드로 추가하세요."
 
 msgid "Manage Records"
 msgstr "레코드 관리"
@@ -6029,7 +6114,9 @@ msgstr "공급자별 설정"
 msgid ""
 "Existing values are preserved per name. Changing a field overrides it for "
 "every selected name on that domain; new records use the shown defaults."
-msgstr "기존 값은 이름별로 유지됩니다. 필드를 변경하면 해당 도메인의 선택한 모든 이름에 덮어쓰기가 적용되며, 새 레코드에는 표시된 기본값이 사용됩니다."
+msgstr ""
+"기존 값은 이름별로 유지됩니다. 필드를 변경하면 해당 도메인의 선택한 모든 이름에 덮어쓰기가 적용되며, 새 레코드에는 표시된 기본값이 "
+"사용됩니다."
 
 msgid "Each setting is sent only to its matching target domain."
 msgstr "각 설정은 해당하는 대상 도메인에만 전송됩니다."
@@ -6301,7 +6388,9 @@ msgid ""
 "Enabling advanced log indexing will consume significant computational "
 "resources including CPU and memory. Please ensure your system meets the "
 "minimum requirements before proceeding."
-msgstr "고급 로그 인덱싱을 활성화하면 CPU와 메모리를 포함한 상당한 연산 리소스가 소모됩니다. 진행하기 전에 시스템이 최소 요구 사항을 충족하는지 확인하세요."
+msgstr ""
+"고급 로그 인덱싱을 활성화하면 CPU와 메모리를 포함한 상당한 연산 리소스가 소모됩니다. 진행하기 전에 시스템이 최소 요구 사항을 "
+"충족하는지 확인하세요."
 
 msgid "System Requirements"
 msgstr "시스템 요구 사항"
@@ -6331,7 +6420,9 @@ msgstr "예상 성능"
 msgid ""
 "* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
 "Actual performance may vary based on your hardware configuration."
-msgstr "* 성능 지표는 32GB RAM이 탑재된 Apple M2 Pro(12코어)에서 측정되었습니다. 실제 성능은 하드웨어 구성에 따라 다를 수 있습니다."
+msgstr ""
+"* 성능 지표는 32GB RAM이 탑재된 Apple M2 Pro(12코어)에서 측정되었습니다. 실제 성능은 하드웨어 구성에 따라 다를 "
+"수 있습니다."
 
 msgid "Features"
 msgstr "기능"
@@ -6391,7 +6482,9 @@ msgid ""
 "By enabling advanced indexing, you acknowledge that your system meets the "
 "requirements and understand the performance implications. This will start "
 "indexing existing log files immediately."
-msgstr "고급 인덱싱을 활성화하면 시스템이 요구 사항을 충족하며 성능에 미치는 영향을 이해한 것으로 간주됩니다. 기존 로그 파일의 인덱싱이 즉시 시작됩니다."
+msgstr ""
+"고급 인덱싱을 활성화하면 시스템이 요구 사항을 충족하며 성능에 미치는 영향을 이해한 것으로 간주됩니다. 기존 로그 파일의 인덱싱이 즉시 "
+"시작됩니다."
 
 msgid "Indexing logs..."
 msgstr "로그 인덱싱 중..."
@@ -6567,7 +6660,9 @@ msgstr "인덱스 다시 구축"
 msgid ""
 "This will rebuild the entire log index. All existing index data will be "
 "deleted and rebuilt from scratch. This may take some time. Continue?"
-msgstr "전체 로그 인덱스를 다시 구축합니다. 기존 인덱스 데이터가 모두 삭제되고 처음부터 다시 구축되며 시간이 걸릴 수 있습니다. 계속하시겠습니까?"
+msgstr ""
+"전체 로그 인덱스를 다시 구축합니다. 기존 인덱스 데이터가 모두 삭제되고 처음부터 다시 구축되며 시간이 걸릴 수 있습니다. "
+"계속하시겠습니까?"
 
 msgid "Index and statistics rebuild started successfully"
 msgstr "인덱스 및 통계 다시 구축이 시작되었습니다"
@@ -7273,7 +7368,9 @@ msgid ""
 "The file named <site name>.<filename> is used first; if it does not exist, "
 "the generic <filename> is used; if neither exists, the built-in Nginx UI "
 "maintenance page is used."
-msgstr "<site name>.<filename> 파일을 먼저 사용하고, 없으면 일반 <filename>을 사용하며, 둘 다 없으면 내장 Nginx UI 점검 페이지를 사용합니다."
+msgstr ""
+"<site name>.<filename> 파일을 먼저 사용하고, 없으면 일반 <filename>을 사용하며, 둘 다 없으면 내장 "
+"Nginx UI 점검 페이지를 사용합니다."
 
 msgid "Nginx Control Mode"
 msgstr "Nginx 제어 모드"
@@ -7448,7 +7545,9 @@ msgstr "이후 이 페이지를 새로고침하고 패스키 추가를 다시 �
 msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
-msgstr "일부 브라우저의 보안 정책으로 인해 localhost에서 실행하는 경우를 제외하고 HTTPS가 아닌 웹사이트에서는 패스키를 사용할 수 없습니다."
+msgstr ""
+"일부 브라우저의 보안 정책으로 인해 localhost에서 실행하는 경우를 제외하고 HTTPS가 아닌 웹사이트에서는 패스키를 사용할 수 "
+"없습니다."
 
 msgid "Update successfully"
 msgstr "업데이트했습니다"
@@ -7499,7 +7598,9 @@ msgstr "아직 2FA를 활성화하지 않았습니다. 복구 코드를 생성�
 msgid ""
 "Your account uses a deprecated legacy recovery code. Generate new recovery "
 "codes now to complete migration and keep account recovery secure."
-msgstr "계정이 더 이상 사용되지 않는 레거시 복구 코드를 사용하고 있습니다. 지금 새 복구 코드를 생성하여 마이그레이션을 완료하고 계정 복구를 안전하게 유지하세요."
+msgstr ""
+"계정이 더 이상 사용되지 않는 레거시 복구 코드를 사용하고 있습니다. 지금 새 복구 코드를 생성하여 마이그레이션을 완료하고 계정 복구를 "
+"안전하게 유지하세요."
 
 msgid ""
 "Your current recovery code might be outdated and insecure. Please generate "
@@ -7513,7 +7614,9 @@ msgid ""
 "These codes are the last resort for accessing your account in case you lose "
 "your password and second factors. If you cannot find these codes, you will "
 "lose access to your account."
-msgstr "이 코드는 비밀번호와 2단계 인증 수단을 모두 잃었을 때 계정에 접근할 수 있는 마지막 수단입니다. 이 코드를 찾을 수 없으면 계정에 접근할 수 없게 됩니다."
+msgstr ""
+"이 코드는 비밀번호와 2단계 인증 수단을 모두 잃었을 때 계정에 접근할 수 있는 마지막 수단입니다. 이 코드를 찾을 수 없으면 계정에 "
+"접근할 수 없게 됩니다."
 
 msgid "Copy Codes"
 msgstr "코드 복사"
@@ -7632,7 +7735,9 @@ msgstr "Error 또는 Warning과 같은 알림 유형의 번역 키"
 msgid ""
 "Teams notification level color enum: Error=Attention, Warning=Warning, "
 "Info=Accent, Success=Good"
-msgstr "Teams 알림 수준 색상 열거형: Error=Attention, Warning=Warning, Info=Accent, Success=Good"
+msgstr ""
+"Teams 알림 수준 색상 열거형: Error=Attention, Warning=Warning, Info=Accent, "
+"Success=Good"
 
 msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
 msgstr "WebAuthn RPOrigins와 라우트 경로로 생성된 전체 이동 URL"
@@ -7784,7 +7889,9 @@ msgstr "%{model}의 사고 수준"
 msgid ""
 "Each level adds these fields to the chat request body, like extra_body in "
 "the OpenAI SDK. Leave a level empty to hide it in the assistant."
-msgstr "각 수준은 OpenAI SDK의 extra_body처럼 이 필드들을 채팅 요청 본문에 추가합니다. 수준을 비워 두면 어시스턴트에서 숨겨집니다."
+msgstr ""
+"각 수준은 OpenAI SDK의 extra_body처럼 이 필드들을 채팅 요청 본문에 추가합니다. 수준을 비워 두면 어시스턴트에서 "
+"숨겨집니다."
 
 msgid "Custom model"
 msgstr "사용자 지정 모델"
@@ -7942,7 +8049,9 @@ msgstr "%{path}가 있는 호스트 PID 디렉터리를 동일한 컨테이너 �
 msgid ""
 "Persist /etc/nginx-ui with a Docker named volume or bind mount so "
 "known_hosts survives container rebuilds."
-msgstr "컨테이너를 다시 빌드해도 known_hosts가 유지되도록 /etc/nginx-ui를 Docker 명명된 볼륨 또는 바인드 마운트로 영구 저장하세요."
+msgstr ""
+"컨테이너를 다시 빌드해도 known_hosts가 유지되도록 /etc/nginx-ui를 Docker 명명된 볼륨 또는 바인드 마운트로 "
+"영구 저장하세요."
 
 msgid "Replace the mount with: -v %{source}:%{target}"
 msgstr "마운트를 다음으로 교체하세요: -v %{source}:%{target}"
@@ -8034,7 +8143,9 @@ msgid ""
 "Encrypted private keys are not supported. You may provide the host-side "
 "source path below to include a read-only bind mount in the generated "
 "container instructions."
-msgstr "암호화된 개인 키는 지원되지 않습니다. 아래에 호스트 측 원본 경로를 입력하면 생성되는 컨테이너 안내에 읽기 전용 바인드 마운트가 포함됩니다."
+msgstr ""
+"암호화된 개인 키는 지원되지 않습니다. 아래에 호스트 측 원본 경로를 입력하면 생성되는 컨테이너 안내에 읽기 전용 바인드 마운트가 "
+"포함됩니다."
 
 msgid "Saving will replace the Nginx UI managed SSH private key."
 msgstr "저장하면 Nginx UI가 관리하는 SSH 개인 키가 교체됩니다."
@@ -8145,7 +8256,9 @@ msgid ""
 "Nginx UI can read the key presented by the SSH server, but it cannot prove "
 "the key is genuine by itself. Verify the fingerprint through the host "
 "console or another trusted channel before trusting or replacing it."
-msgstr "Nginx UI는 SSH 서버가 제시한 키를 읽을 수 있지만, 그 키가 진짜인지 스스로 증명할 수는 없습니다. 신뢰하거나 교체하기 전에 호스트 콘솔 등 신뢰할 수 있는 경로로 지문을 확인하세요."
+msgstr ""
+"Nginx UI는 SSH 서버가 제시한 키를 읽을 수 있지만, 그 키가 진짜인지 스스로 증명할 수는 없습니다. 신뢰하거나 교체하기 전에 "
+"호스트 콘솔 등 신뢰할 수 있는 경로로 지문을 확인하세요."
 
 msgid "Current target"
 msgstr "현재 대상"
@@ -8228,7 +8341,9 @@ msgid ""
 "This key is marked @revoked in known_hosts. SSH will refuse it, so trusting "
 "it here would only fail later. Investigate why the host is presenting a "
 "revoked key before continuing."
-msgstr "이 키는 known_hosts에서 @revoked로 표시되어 있습니다. SSH가 이를 거부하므로 여기서 신뢰해도 나중에 실패합니다. 계속하기 전에 호스트가 폐기된 키를 제시하는 이유를 조사하세요."
+msgstr ""
+"이 키는 known_hosts에서 @revoked로 표시되어 있습니다. SSH가 이를 거부하므로 여기서 신뢰해도 나중에 실패합니다. "
+"계속하기 전에 호스트가 폐기된 키를 제시하는 이유를 조사하세요."
 
 msgid "Paths refreshed from %{path}"
 msgstr "%{path}에서 경로를 새로 고쳤습니다"
@@ -8389,7 +8504,9 @@ msgid ""
 "Creates %{file} with the permissions sshd requires and appends the key. "
 "sshd silently ignores an authorized_keys file that other users can write, "
 "which shows up later as a permission denied error."
-msgstr "sshd가 요구하는 권한으로 %{file}을(를) 만들고 키를 추가합니다. 다른 사용자가 쓸 수 있는 authorized_keys 파일은 sshd가 조용히 무시하며, 나중에 permission denied 오류로 나타납니다."
+msgstr ""
+"sshd가 요구하는 권한으로 %{file}을(를) 만들고 키를 추가합니다. 다른 사용자가 쓸 수 있는 authorized_keys "
+"파일은 sshd가 조용히 무시하며, 나중에 permission denied 오류로 나타납니다."
 
 msgid ""
 "The same key on its own, for appending by hand. To restrict where it may be "
@@ -8410,7 +8527,9 @@ msgstr "sudoers 규칙"
 msgid ""
 "Paste this into the editor visudo opened, then save and exit. It lets the "
 "SSH user reload nginx without a password."
-msgstr "visudo가 연 편집기에 이 내용을 붙여넣고 저장한 후 종료하세요. SSH 사용자가 비밀번호 없이 nginx를 리로드할 수 있게 됩니다."
+msgstr ""
+"visudo가 연 편집기에 이 내용을 붙여넣고 저장한 후 종료하세요. SSH 사용자가 비밀번호 없이 nginx를 리로드할 수 있게 "
+"됩니다."
 
 msgid "File access check"
 msgstr "파일 접근 검사"
@@ -8421,13 +8540,17 @@ msgstr "파일 권한"
 msgid ""
 "Run as the SSH user. Both commands only test access and change nothing. A "
 "failure means the SSH user cannot reach the Homebrew paths."
-msgstr "SSH 사용자로 실행하세요. 두 명령 모두 접근만 테스트하며 아무것도 변경하지 않습니다. 실패하면 SSH 사용자가 Homebrew 경로에 접근할 수 없다는 뜻입니다."
+msgstr ""
+"SSH 사용자로 실행하세요. 두 명령 모두 접근만 테스트하며 아무것도 변경하지 않습니다. 실패하면 SSH 사용자가 Homebrew "
+"경로에 접근할 수 없다는 뜻입니다."
 
 msgid ""
 "Run as root. Grants the SSH user write access to the nginx config directory "
 "and read access to the logs, including files created later, plus read "
 "access to the PID file."
-msgstr "root로 실행하세요. SSH 사용자에게 nginx 설정 디렉터리에 대한 쓰기 권한과 (나중에 생성되는 파일을 포함한) 로그에 대한 읽기 권한, 그리고 PID 파일에 대한 읽기 권한을 부여합니다."
+msgstr ""
+"root로 실행하세요. SSH 사용자에게 nginx 설정 디렉터리에 대한 쓰기 권한과 (나중에 생성되는 파일을 포함한) 로그에 대한 "
+"읽기 권한, 그리고 PID 파일에 대한 읽기 권한을 부여합니다."
 
 msgid "Nothing else to install on the host"
 msgstr "호스트에 추가로 설치할 것이 없습니다"
@@ -8448,7 +8571,9 @@ msgstr "Nginx UI를 실행하는 방식에 맞는 형식을 선택한 후 바인
 msgid ""
 "Linux Docker Engine requires this host-gateway mapping for "
 "host.docker.internal. No directory mounts are added."
-msgstr "Linux Docker Engine에서는 host.docker.internal을 위해 이 host-gateway 매핑이 필요합니다. 디렉터리 마운트는 추가되지 않습니다."
+msgstr ""
+"Linux Docker Engine에서는 host.docker.internal을 위해 이 host-gateway 매핑이 필요합니다. "
+"디렉터리 마운트는 추가되지 않습니다."
 
 msgid "Recreating the container closes this page"
 msgstr "컨테이너를 다시 생성하면 이 페이지가 닫힙니다"
@@ -8574,7 +8699,9 @@ msgid ""
 "The earlier steps already verified SSH, platform, file access and "
 "privileges. This final check only runs nginx -t against the host "
 "configuration."
-msgstr "이전 단계에서 SSH, 플랫폼, 파일 접근 및 권한을 이미 검증했습니다. 이 마지막 확인에서는 호스트 설정에 대해 nginx -t만 실행합니다."
+msgstr ""
+"이전 단계에서 SSH, 플랫폼, 파일 접근 및 권한을 이미 검증했습니다. 이 마지막 확인에서는 호스트 설정에 대해 nginx -t만 "
+"실행합니다."
 
 msgid "Verification failed"
 msgstr "검증 실패"
@@ -8589,7 +8716,9 @@ msgid ""
 "This is the configuration already present on the host, not something this "
 "wizard wrote. The SSH setup itself can still be saved, and the "
 "configuration can be fixed from Nginx UI afterwards."
-msgstr "이 설정은 이 마법사가 작성한 것이 아니라 호스트에 이미 존재하던 설정입니다. SSH 설정은 그대로 저장할 수 있으며, 설정은 나중에 Nginx UI에서 수정할 수 있습니다."
+msgstr ""
+"이 설정은 이 마법사가 작성한 것이 아니라 호스트에 이미 존재하던 설정입니다. SSH 설정은 그대로 저장할 수 있으며, 설정은 나중에 "
+"Nginx UI에서 수정할 수 있습니다."
 
 msgid "Continue without validating the configuration"
 msgstr "설정 검증 없이 계속"
@@ -8676,7 +8805,9 @@ msgstr "설정을 불러오지 못했습니다"
 msgid ""
 "The saved SSH access mode is missing or invalid. Set host_access_mode to "
 "sftp or mounted in the configuration file."
-msgstr "저장된 SSH 접근 모드가 없거나 올바르지 않습니다. 설정 파일에서 host_access_mode를 sftp 또는 mounted로 지정하세요."
+msgstr ""
+"저장된 SSH 접근 모드가 없거나 올바르지 않습니다. 설정 파일에서 host_access_mode를 sftp 또는 mounted로 "
+"지정하세요."
 
 msgid "Failed to authorize protected settings"
 msgstr "보호된 설정의 권한 부여에 실패했습니다"
@@ -8962,7 +9093,9 @@ msgid ""
 "A global pause stops network probes without changing individual site or "
 "upstream selections. Discovery remains active so configured targets stay "
 "visible."
-msgstr "전역 일시 중지는 개별 사이트 또는 업스트림 선택을 변경하지 않고 네트워크 프로브를 중지합니다. 검색은 계속 활성 상태이므로 설정된 대상은 계속 표시됩니다."
+msgstr ""
+"전역 일시 중지는 개별 사이트 또는 업스트림 선택을 변경하지 않고 네트워크 프로브를 중지합니다. 검색은 계속 활성 상태이므로 설정된 "
+"대상은 계속 표시됩니다."
 
 msgid "Seconds"
 msgstr "초"
@@ -8980,7 +9113,11 @@ msgid ""
 "Docker containers, you can manually enable this option. The crontab task "
 "scheduler of Nginx UI will execute the logrotate command at the interval "
 "you set in minutes."
-msgstr "호스트 머신에 Nginx UI를 설치한 사용자의 경우, 대부분의 주요 Linux 배포판에서 Logrotate가 기본적으로 활성화되어 있으므로 이 페이지의 매개변수를 수정할 필요가 없습니다. Docker 컨테이너로 Nginx UI를 설치한 사용자는 이 옵션을 직접 활성화할 수 있습니다. Nginx UI의 crontab 작업 스케줄러는 사용자가 분 단위로 설정한 간격마다 logrotate 명령을 실행합니다."
+msgstr ""
+"호스트 머신에 Nginx UI를 설치한 사용자의 경우, 대부분의 주요 Linux 배포판에서 Logrotate가 기본적으로 활성화되어 "
+"있으므로 이 페이지의 매개변수를 수정할 필요가 없습니다. Docker 컨테이너로 Nginx UI를 설치한 사용자는 이 옵션을 직접 "
+"활성화할 수 있습니다. Nginx UI의 crontab 작업 스케줄러는 사용자가 분 단위로 설정한 간격마다 logrotate 명령을 "
+"실행합니다."
 
 msgid "Minutes"
 msgstr "분"
@@ -9016,7 +9153,9 @@ msgid ""
 "Compatibility mode works entirely over SSH. For lower file-access latency, "
 "configure bind mounts and switch to high-performance mode after recreating "
 "the container."
-msgstr "호환 모드는 전적으로 SSH로 동작합니다. 파일 접근 지연 시간을 줄이려면 bind mount를 설정하고 컨테이너를 다시 만든 후 고성능 모드로 전환하세요."
+msgstr ""
+"호환 모드는 전적으로 SSH로 동작합니다. 파일 접근 지연 시간을 줄이려면 bind mount를 설정하고 컨테이너를 다시 만든 후 "
+"고성능 모드로 전환하세요."
 
 msgid "Review high-performance setup"
 msgstr "고성능 설정 검토"
@@ -9112,12 +9251,18 @@ msgid ""
 "service or https://api.minimaxi.com/v1 for China service. For "
 "Anthropic-compatible clients, use https://api.minimax.io/anthropic or "
 "https://api.minimaxi.com/anthropic."
-msgstr "MiniMax는 OpenAI와 호환됩니다. 글로벌 서비스는 https://api.minimax.io/v1, 중국 서비스는 https://api.minimaxi.com/v1을 사용하세요. Anthropic 호환 클라이언트에는 https://api.minimax.io/anthropic 또는 https://api.minimaxi.com/anthropic을 사용하세요."
+msgstr ""
+"MiniMax는 OpenAI와 호환됩니다. 글로벌 서비스는 https://api.minimax.io/v1, 중국 서비스는 "
+"https://api.minimaxi.com/v1을 사용하세요. Anthropic 호환 클라이언트에는 "
+"https://api.minimax.io/anthropic 또는 https://api.minimaxi.com/anthropic을 "
+"사용하세요."
 
 msgid ""
 "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an "
 "Atlas Cloud API key."
-msgstr "Atlas Cloud는 OpenAI와 호환됩니다. https://api.atlascloud.ai/v1과 Atlas Cloud API 키를 사용하세요."
+msgstr ""
+"Atlas Cloud는 OpenAI와 호환됩니다. https://api.atlascloud.ai/v1과 Atlas Cloud API "
+"키를 사용하세요."
 
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
 msgstr "로컬 대형 모델을 사용하려면 ollama, vllm 또는 lmdeploy로 배포하세요. "
@@ -9331,7 +9476,9 @@ msgstr "DNS 레코드 연동 (선택 사항)"
 msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name. You can skip this step if DNS is already configured."
-msgstr "이 사이트를 DNS 레코드에 연결합니다. server_name이 DNS 레코드 이름으로 사용됩니다. DNS가 이미 설정되어 있다면 이 단계를 건너뛸 수 있습니다."
+msgstr ""
+"이 사이트를 DNS 레코드에 연결합니다. server_name이 DNS 레코드 이름으로 사용됩니다. DNS가 이미 설정되어 있다면 이 "
+"단계를 건너뛸 수 있습니다."
 
 msgid "DNS Domain"
 msgstr "DNS 도메인"
@@ -9423,6 +9570,9 @@ msgstr "네임스페이스"
 
 msgid "The parameter of server_name is required"
 msgstr "server_name 매개변수는 필수입니다"
+
+msgid "Config Template"
+msgstr "설정 템플릿"
 
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "HTTPS를 활성화하기 전에 편집한 설정을 저장하세요."
@@ -9518,11 +9668,30 @@ msgstr "자체 서명 인증서"
 msgid "Generate self-signed certificate"
 msgstr "자체 서명 인증서 생성"
 
+msgid "Built-in"
+msgstr "내장"
+
 msgid "Search templates"
 msgstr "템플릿 검색"
 
+msgid "Snippet"
+msgstr "스니펫"
+
 msgid "Author"
 msgstr "작성자"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include는 사이트를 snippets/%{file}에 연결된 상태로 유지하여 스니펫의 후속 변경 사항이 적용됩니다. Insert는 "
+"콘텐츠를 사이트에 복사합니다."
+
+msgid "Insert"
+msgstr "삽입"
+
+msgid "Include"
+msgstr "포함"
 
 msgid "Do you want to enable TLS?"
 msgstr "TLS를 활성화하시겠습니까?"
@@ -9634,7 +9803,9 @@ msgid ""
 "Nginx UI stages the challenge route, verifies it, requests the certificate "
 "and switches the site to HTTPS in one run. If a step fails, the site keeps "
 "serving plain HTTP."
-msgstr "Nginx UI는 챌린지 경로를 준비하고 확인한 뒤, 인증서를 요청하고 사이트를 HTTPS로 전환하는 작업을 한 번에 실행합니다. 단계가 실패하면 사이트는 계속 일반 HTTP로 서비스됩니다."
+msgstr ""
+"Nginx UI는 챌린지 경로를 준비하고 확인한 뒤, 인증서를 요청하고 사이트를 HTTPS로 전환하는 작업을 한 번에 실행합니다. "
+"단계가 실패하면 사이트는 계속 일반 HTTP로 서비스됩니다."
 
 msgid "Add at least one domain or IP address."
 msgstr "도메인 또는 IP 주소를 하나 이상 추가하세요."
@@ -9786,9 +9957,6 @@ msgstr "DNS 레코드 다시 생성"
 msgid "Clear Link"
 msgstr "연결 해제"
 
-msgid "Config Template"
-msgstr "설정 템플릿"
-
 msgid "Port Scanner"
 msgstr "포트 스캐너"
 
@@ -9871,6 +10039,305 @@ msgstr "선택한 사이트의 유지 관리 정보 설정"
 
 msgid "%{count} sites selected"
 msgstr "사이트 %{count}개 선택됨"
+
+msgid "Read Only"
+msgstr "읽기 전용"
+
+msgid "Preview"
+msgstr "미리 보기"
+
+msgid "Updates as the snippet changes."
+msgstr "스니펫이 변경되면 업데이트됩니다."
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr "내장 템플릿은 Nginx UI에 포함되어 있으며 변경할 수 없습니다. 변경하려면 하나를 스니펫으로 복사하세요."
+
+msgid "File Name"
+msgstr "파일 이름"
+
+msgid "Variables"
+msgstr "변수"
+
+msgid "Copy as Snippet"
+msgstr "스니펫으로 복사"
+
+msgid "Template"
+msgstr "템플릿"
+
+msgid "No template matches the search"
+msgstr "검색과 일치하는 템플릿이 없습니다"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} 변수"
+
+msgid "Translations"
+msgstr "번역"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr "이 필드는 %{language}입니다. 다른 언어 사용자에게는 번역이 표시되며, 번역이 없으면 영어가 표시됩니다."
+
+msgid "Remove translation"
+msgstr "번역 삭제"
+
+msgid "Add a language"
+msgstr "언어 추가"
+
+msgid "Text"
+msgstr "텍스트"
+
+msgid "Switch"
+msgstr "전환"
+
+msgid "Select"
+msgstr "선택"
+
+msgid "New Variable…"
+msgstr "새 변수…"
+
+msgid "Insert Variable"
+msgstr "변수 삽입"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr "%{open}을(를) 입력하여 변수를 완성하거나, 값을 선택한 후 %{keys}을(를) 눌러 변수로 만드세요."
+
+msgid "Default Value"
+msgstr "기본값"
+
+msgid "Edit Variable"
+msgstr "변수 편집"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr "이 변수는 선언되지 않았으므로 스니펫을 삽입할 때 값이 없습니다."
+
+msgid "Declare Variable"
+msgstr "변수 선언"
+
+msgid "Make Variable"
+msgstr "변수 만들기"
+
+msgid "New Variable"
+msgstr "새 변수"
+
+msgid "Key"
+msgstr "키"
+
+msgid "Label"
+msgstr "레이블"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "변수가 선언되고 커서 위치에 삽입됩니다."
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr "선택한 값이 기본값이 되며, 내용은 대신 변수를 참조합니다."
+
+msgid "Add Variable"
+msgstr "변수 추가"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "선언되지 않아 값 없이 남겨짐: %{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "이 스니펫은 유효한 Nginx 구성으로 렌더링되지 않습니다."
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "스니펫이 유효한 Nginx 설정으로 렌더링됩니다."
+
+msgid "What the site editor asks for"
+msgstr "사이트 편집기가 요청하는 내용"
+
+msgid "Restore Default Values"
+msgstr "기본값 복원"
+
+msgid "Nothing to fill in."
+msgstr "입력할 항목이 없습니다."
+
+msgid "Fix the variables to preview the snippet."
+msgstr "스니펫을 미리 보려면 변수를 수정하세요."
+
+msgid "Snippets are no longer synchronized"
+msgstr "스니펫이 더 이상 동기화되지 않습니다"
+
+msgid "Synchronize Snippets"
+msgstr "스니펫 동기화"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr "모든 스니펫이 선택한 노드에 복사되며, 이후 변경 사항은 자동으로 따라옵니다. 선택을 해제하면 동기화가 중지됩니다."
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "노드에 이미 존재하는 스니펫 교체"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "%{count}개 파일에 포함됨"
+
+msgid "Not Used"
+msgstr "사용 안 함"
+
+msgid "Max Age"
+msgstr "최대 수명"
+
+msgid "Options"
+msgstr "옵션"
+
+msgid "Remove option"
+msgstr "옵션 삭제"
+
+msgid "Add Option"
+msgstr "옵션 추가"
+
+msgid "Remove variable"
+msgstr "변수 삭제"
+
+msgid "Used in the content, not declared"
+msgstr "콘텐츠에서 사용되며, 선언되지 않음"
+
+msgid "Snippet %{name} saved"
+msgstr "스니펫 %{name} 이(가) 저장되었습니다"
+
+msgid "Discard the unsaved changes?"
+msgstr "저장하지 않은 변경 사항을 삭제하시겠습니까?"
+
+msgid "Keep Editing"
+msgstr "편집 계속하기"
+
+msgid "Edit Snippet %{name}"
+msgstr "스니펫 %{name} 편집"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "사이트는 이 스니펫을 포함하고 이후 변경 사항을 추적할 수 있습니다."
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr "이 코드 스니펫에는 변수가 포함되어 있으므로, 사이트에서 설정 템플릿 패널에서 작성된 사본을 삽입합니다."
+
+msgid "Includable"
+msgstr "인클루드 가능"
+
+msgid "Insert Only"
+msgstr "삽입 전용"
+
+msgid "Use"
+msgstr "사용"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr "이 지시문을 server 또는 location 블록에 추가하세요. 이 스니펫을 포함하는 사이트는 이후 변경 사항을 따릅니다."
+
+msgid "Static file cache"
+msgstr "정적 파일 캐시"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr "구성이 스니펫을 포함하는 동안 수정되어 계속 작동합니다."
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "영문자, 숫자, 점, 하이픈 및 밑줄."
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr "변수는 사이트 편집기의 구성 템플릿 패널에서 스니펫을 삽입할 때 채워집니다. 변수가 있는 스니펫은 삽입만 가능하며, 포함할 수 없습니다."
+
+msgid "No configuration includes this snippet yet."
+msgstr "아직 어떤 구성에도 이 스니펫이 포함되어 있지 않습니다."
+
+msgid "Unsaved changes"
+msgstr "저장되지 않은 변경 사항"
+
+msgid "My Snippets"
+msgstr "내 스니펫"
+
+msgid "Built-in Templates"
+msgstr "내장 템플릿"
+
+msgid "Copied %{include}"
+msgstr "%{include} 복사됨"
+
+msgid "Delete snippet %{name}?"
+msgstr "스니펫 %{name}을(를) 삭제하시겠습니까?"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "snippets/%{file} 은(는) 여기와 동기화된 노드에서 제거됩니다."
+
+msgid "snippets/%{file} will be removed."
+msgstr "snippets/%{file} 이(가) 삭제됩니다."
+
+msgid "Snippet %{name} deleted"
+msgstr "스니펫 %{name} 삭제됨"
+
+msgid "Synchronize"
+msgstr "동기화"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "%{count} 노드에 동기화되었습니다"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] "변수가 %{count}개 있습니다. 사이트에서는 사이트 편집기의 구성 템플릿 패널에서 입력된 사본을 삽입합니다."
+
+msgid "Copy the include directive"
+msgstr "include 디렉티브 복사"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "먼저 스니펫을 포함하는 파일에서 스니펫을 제거하세요."
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+"스니펫은 Nginx 설정의 일부를 한 곳에 보관합니다. 사이트에 포함하거나 사이트 편집기의 구성 템플릿 패널에서 삽입하세요. 포함된 "
+"스니펫을 변경하면 해당 스니펫을 사용하는 모든 사이트가 업데이트됩니다."
+
+msgid "Search snippets"
+msgstr "검색 스니펫"
+
+msgid "No snippets yet"
+msgstr "아직 스니펫이 없습니다"
+
+msgid "No snippet matches the search"
+msgstr "검색과 일치하는 코드 스니펫이 없습니다"
+
+msgid "Enter a key."
+msgstr "키를 입력하세요."
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "문자, 숫자 및 밑줄을 사용하며, 문자 또는 밑줄로 시작해야 합니다."
+
+msgid "Another variable uses this key."
+msgstr "다른 변수가 이 키를 사용하고 있습니다."
+
+msgid "Add at least one option."
+msgstr "하나 이상의 옵션을 추가하세요."
+
+msgid "Every option needs a value."
+msgstr "모든 옵션에는 값이 필요합니다."
+
+msgid "Option values must be unique."
+msgstr "옵션 값은 고유해야 합니다."
+
+msgid "Choose the default option."
+msgstr "기본 옵션을 선택하세요."
 
 msgid "Do you want to %{action} this stream?"
 msgstr "이 스트림을 %{action} 하시겠습니까?"
@@ -10047,7 +10514,9 @@ msgstr "Keepalive"
 msgid ""
 "Idle connections to keep open per worker; 0 disables it. Proxied sites also "
 "need proxy_http_version 1.1 and an empty Connection header."
-msgstr "워커당 열어 둘 유휴 연결 수이며, 0이면 비활성화됩니다. 프록시되는 사이트에는 proxy_http_version 1.1과 빈 Connection 헤더도 필요합니다."
+msgstr ""
+"워커당 열어 둘 유휴 연결 수이며, 0이면 비활성화됩니다. 프록시되는 사이트에는 proxy_http_version 1.1과 빈 "
+"Connection 헤더도 필요합니다."
 
 msgid "Connections"
 msgstr "연결"
@@ -10161,7 +10630,9 @@ msgid ""
 "An upstream group shares its servers and load balancing method across "
 "sites. Choose it as the proxy target when setting up a site; later changes "
 "here apply to every site that uses it."
-msgstr "업스트림 그룹은 서버와 로드 밸런싱 방식을 여러 사이트에서 공유합니다. 사이트를 설정할 때 프록시 대상으로 선택하세요. 여기서 변경한 내용은 이를 사용하는 모든 사이트에 적용됩니다."
+msgstr ""
+"업스트림 그룹은 서버와 로드 밸런싱 방식을 여러 사이트에서 공유합니다. 사이트를 설정할 때 프록시 대상으로 선택하세요. 여기서 변경한 "
+"내용은 이를 사용하는 모든 사이트에 적용됩니다."
 
 msgid "Files are stored in %{dir}."
 msgstr "파일은 %{dir}에 저장됩니다."
@@ -10183,7 +10654,9 @@ msgid ""
 "their settings in their own file; servers can be switched on and off here. "
 "A block inside a site can be converted to a shared group that other sites "
 "can use too."
-msgstr "이 업스트림 블록은 사이트 또는 다른 설정 파일 안에 있습니다. 설정은 해당 파일에서 편집하세요. 서버는 여기서 켜고 끌 수 있습니다. 사이트 안의 블록은 다른 사이트도 사용할 수 있는 공유 그룹으로 변환할 수 있습니다."
+msgstr ""
+"이 업스트림 블록은 사이트 또는 다른 설정 파일 안에 있습니다. 설정은 해당 파일에서 편집하세요. 서버는 여기서 켜고 끌 수 있습니다. "
+"사이트 안의 블록은 다른 사이트도 사용할 수 있는 공유 그룹으로 변환할 수 있습니다."
 
 msgid "2FA"
 msgstr "2FA"

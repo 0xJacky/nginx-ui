@@ -5,11 +5,11 @@ msgstr ""
 "POT-Creation-Date: \n"
 "PO-Revision-Date: 2025-05-09 21:33+0800\n"
 "Last-Translator: 0xJacky <me@jackyu.cn>\n"
-"Language-Team: Chinese (Simplified Han script) <https://weblate.nginxui.com/"
-"projects/nginx-ui/frontend/zh_Hans/>\n"
+"Language-Team: Chinese (Simplified Han script) "
+"<https://weblate.nginxui.com/projects/nginx-ui/frontend/zh_Hans/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.6\n"
@@ -27,9 +27,7 @@ msgstr "只有 %{name} 允许的地址才可以连接。"
 msgid ""
 "Only addresses allowed by %{name} can reach this server. Locations can "
 "inherit it, open up or use another list."
-msgstr ""
-"只有 %{name} 允许的地址才能访问此服务器。位置可以继承它、开放访问或使用其他列"
-"表。"
+msgstr "只有 %{name} 允许的地址才能访问此服务器。位置可以继承它、开放访问或使用其他列表。"
 
 msgid "Access Control"
 msgstr "访问控制"
@@ -84,9 +82,7 @@ msgstr "取消"
 msgid ""
 "Every server block of the selected items uses the choice below. Locations "
 "with their own setting keep it. Each file is tested and Nginx reloaded."
-msgstr ""
-"所选项目的每个服务器块都使用下面的选择。拥有自己设置的位置保留原有设置。每个"
-"文件都会被测试并重新加载 Nginx。"
+msgstr "所选项目的每个服务器块都使用下面的选择。拥有自己设置的位置保留原有设置。每个文件都会被测试并重新加载 Nginx。"
 
 msgid "Select an access list"
 msgstr "选择访问列表"
@@ -100,8 +96,7 @@ msgstr "从服务器继承"
 msgid "Kept public so certificate renewals can reach the ACME challenge."
 msgstr "保持公开，以便证书续期能够访问 ACME 质询。"
 
-msgid ""
-"This location has allow or deny rules that were not written by Nginx UI."
+msgid "This location has allow or deny rules that were not written by Nginx UI."
 msgstr "此位置存在不由 Nginx UI 编写的允许或拒绝规则。"
 
 msgid "Public: overrides %{name} of the server and is reachable from anywhere."
@@ -161,33 +156,28 @@ msgid "IP Certificate Notice"
 msgstr "IP 证书通知"
 
 msgid ""
-"This site is configured as a default server (default_server) for HTTPS (port "
-"443). IP certificates require Certificate Authority (CA) support and may not "
-"be available with all ACME providers."
+"This site is configured as a default server (default_server) for HTTPS "
+"(port 443). IP certificates require Certificate Authority (CA) support and "
+"may not be available with all ACME providers."
 msgstr ""
-"此站点配置为 HTTPS 的默认服务器（default_server）（端口 443）。IP 证书需要证"
-"书颁发机构（CA）支持，并非所有 ACME 提供商都可用。"
+"此站点配置为 HTTPS 的默认服务器（default_server）（端口 443）。IP 证书需要证书颁发机构（CA）支持，并非所有 ACME "
+"提供商都可用。"
 
 msgid ""
-"This site uses wildcard server name (_) which typically indicates an IP-"
-"based certificate. IP certificates require Certificate Authority (CA) "
+"This site uses wildcard server name (_) which typically indicates an "
+"IP-based certificate. IP certificates require Certificate Authority (CA) "
 "support and may not be available with all ACME providers."
-msgstr ""
-"此站点使用了通配符服务器名称（_），这通常表示这是一个基于 IP 的证书。IP 证书"
-"需要证书颁发机构（CA）支持，并非所有 ACME 提供商都可用。"
+msgstr "此站点使用了通配符服务器名称（_），这通常表示这是一个基于 IP 的证书。IP 证书需要证书颁发机构（CA）支持，并非所有 ACME 提供商都可用。"
 
 msgid ""
 "No specific IP address found in server_name configuration. Please specify "
 "the server IP address below for the certificate."
-msgstr ""
-"在 server_name 配置中未找到指定的 IP 地址。请在下方为证书指定服务器 IP 地址。"
+msgstr "在 server_name 配置中未找到指定的 IP 地址。请在下方为证书指定服务器 IP 地址。"
 
 msgid ""
 "For IP-based certificate configurations, only HTTP-01 challenge method is "
 "supported. DNS-01 challenge is not compatible with IP-based certificates."
-msgstr ""
-"对于基于 IP 的证书配置，仅支持 HTTP-01 验证方式。DNS-01 验证不适用于基于 IP "
-"的证书。"
+msgstr "对于基于 IP 的证书配置，仅支持 HTTP-01 验证方式。DNS-01 验证不适用于基于 IP 的证书。"
 
 msgid "Note"
 msgstr "注意"
@@ -205,16 +195,12 @@ msgstr "域名证书每 30 分钟检查一次，并在剩余有效期达到设�
 msgid ""
 "Make sure you have configured a reverse proxy for .well-known directory to "
 "HTTPChallengePort before obtaining the certificate."
-msgstr ""
-"请确保您已为 .well-known 目录配置了指向 HTTPChallengePort 的反向代理，然后再"
-"获取证书。"
+msgstr "请确保您已为 .well-known 目录配置了指向 HTTPChallengePort 的反向代理，然后再获取证书。"
 
 msgid ""
 "Please first add credentials in Certification > DNS Credentials, and then "
 "select one of the credentials below to request the API of the DNS provider."
-msgstr ""
-"请先在“证书” > “DNS 凭证”中添加凭证，然后在下方选择一个凭证以调用 DNS 提供商"
-"的 API。"
+msgstr "请先在“证书” > “DNS 凭证”中添加凭证，然后在下方选择一个凭证以调用 DNS 提供商的 API。"
 
 msgid "Required Settings"
 msgstr "必填设置"
@@ -226,8 +212,8 @@ msgid "Enter server IP address (e.g., 203.0.113.1 or 2001:db8::1)"
 msgstr "输入服务器 IP 地址（例如：203.0.113.1 或 2001:db8::1）"
 
 msgid ""
-"For IP-based certificates, please specify the server IP address that will be "
-"included in the certificate."
+"For IP-based certificates, please specify the server IP address that will "
+"be included in the certificate."
 msgstr "对于基于 IP 的证书，请指定将包含在证书中的服务器 IP 地址。"
 
 msgid "Public CA Requirements:"
@@ -245,8 +231,7 @@ msgstr "私有 IP （192.168.x.x、10.x.x.x、172.16-31.x.x）将失败"
 msgid "Private CA:"
 msgstr "私有 CA："
 
-msgid ""
-"Any reachable IP address can be used with private Certificate Authorities"
+msgid "Any reachable IP address can be used with private Certificate Authorities"
 msgstr "任何可访问的 IP 地址均可用于私有证书颁发机构"
 
 msgid "Challenge Method"
@@ -422,6 +407,27 @@ msgstr "禁用"
 msgid "Maintenance"
 msgstr "维护模式"
 
+msgid "Site"
+msgstr "站点"
+
+msgid "Stream"
+msgstr "流"
+
+msgid "Configuration"
+msgstr "配置"
+
+msgid "+%{count} more"
+msgstr "+%{count} 更多"
+
+msgid "Search"
+msgstr "搜索"
+
+msgid "No file matches the search"
+msgstr "没有匹配的文件"
+
+msgid "Not used"
+msgstr "未使用"
+
 msgid "Starting download..."
 msgstr "开始下载..."
 
@@ -435,23 +441,19 @@ msgid "GeoLite2 Database Required"
 msgstr "需要 GeoLite2 数据库"
 
 msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. Please "
-"download it to enable this feature."
+"The GeoLite2 database is required for offline geographic IP analysis. "
+"Please download it to enable this feature."
 msgstr "离线地理 IP 分析需要 GeoLite2 数据库。请下载以启用此功能。"
 
 msgid ""
 "Alternatively, if you cannot download the database, you can manually place "
 "GeoLite2-City.mmdb in the same directory as app.ini."
-msgstr ""
-"或者，如果您无法下载数据库，可以手动将 GeoLite2-City.mmdb 文件放置在与 "
-"app.ini 相同的目录中。"
+msgstr "或者，如果您无法下载数据库，可以手动将 GeoLite2-City.mmdb 文件放置在与 app.ini 相同的目录中。"
 
 msgid ""
 "If you want to enable custom MMDB data, configure `IndexCustomMMDB` and "
 "place the generated file in the same directory as app.ini."
-msgstr ""
-"如果您要启用自定义 MMDB 数据，配置 `IndexCustomMMDB`，并把生成的文件放置在与 "
-"app.ini 相同的目录中。"
+msgstr "如果您要启用自定义 MMDB 数据，配置 `IndexCustomMMDB`，并把生成的文件放置在与 app.ini 相同的目录中。"
 
 msgid "GeoLite2 Database Installed"
 msgstr "GeoLite2 数据库已安装"
@@ -480,8 +482,7 @@ msgstr "错误"
 msgid "Config validation is unavailable for a remote-only namespace."
 msgstr "仅远程命名空间无法进行配置验证。"
 
-msgid ""
-"Sandbox validation is unavailable when Nginx runs in a separate container."
+msgid "Sandbox validation is unavailable when Nginx runs in a separate container."
 msgstr "当 Nginx 在独立容器中运行时，无法进行沙箱验证。"
 
 msgid ""
@@ -489,8 +490,7 @@ msgid ""
 "configured."
 msgstr "由于配置了自定义测试命令，无法进行沙箱验证。"
 
-msgid ""
-"A required include file is missing from the sandbox or source configuration."
+msgid "A required include file is missing from the sandbox or source configuration."
 msgstr "沙盒或源配置中缺少必需的包含文件。"
 
 msgid "Sandbox setup failed before Nginx could validate the configuration."
@@ -637,8 +637,7 @@ msgstr "重启 Nginx 失败"
 msgid "Nginx restarted successfully"
 msgstr "Nginx 重启成功"
 
-msgid ""
-"Nginx restart status could not be confirmed. Please check the Nginx status."
+msgid "Nginx restart status could not be confirmed. Please check the Nginx status."
 msgstr "无法确认 Nginx 重启状态。请检查 Nginx 状态。"
 
 msgid "Nginx Control"
@@ -672,24 +671,19 @@ msgid ""
 "Converting rewrites the site file on the server. Save or discard your "
 "changes first, so they are neither lost nor written back over the converted "
 "file."
-msgstr ""
-"转换会重写服务器上的站点文件。请先保存或丢弃您的更改，以免它们丢失或覆盖已转"
-"换的文件。"
+msgstr "转换会重写服务器上的站点文件。请先保存或丢弃您的更改，以免它们丢失或覆盖已转换的文件。"
 
 msgid ""
 "The upstream block %{name} moves out of %{site} into its own file, %{file}, "
 "and becomes an upstream group:"
-msgstr ""
-"upstream 块 %{name} 将从 %{site} 中移出到独立文件 %{file} 中，并成为 "
-"upstream 组："
+msgstr "upstream 块 %{name} 将从 %{site} 中移出到独立文件 %{file} 中，并成为 upstream 组："
 
 msgid ""
 "It is listed and edited on the Upstream Groups page, with the health of its "
 "servers."
 msgstr "它会在 Upstream 组页面中列出和编辑，并显示其服务器的健康状态。"
 
-msgid ""
-"This site keeps proxying to it by name; nothing else in the site changes."
+msgid "This site keeps proxying to it by name; nothing else in the site changes."
 msgstr "此站点仍通过名称代理到它；站点中的其他内容不变。"
 
 msgid "Other sites can choose it as their proxy target."
@@ -709,9 +703,8 @@ msgid ""
 "process balances across the same servers and shares their failure counts. "
 "Without it each worker balances on its own."
 msgstr ""
-"将组的状态以 zone %{name} 的形式保存在共享内存中，使每个工作进程都在相同的服"
-"务器之间分担负载并共享故障计数。若不启用，每个工作进程将各自独立地进行负载均"
-"衡。"
+"将组的状态以 zone %{name} "
+"的形式保存在共享内存中，使每个工作进程都在相同的服务器之间分担负载并共享故障计数。若不启用，每个工作进程将各自独立地进行负载均衡。"
 
 msgid "Zone Size"
 msgstr "区域大小"
@@ -719,8 +712,7 @@ msgstr "区域大小"
 msgid ""
 "Nginx is tested once and reloaded. If the test or the reload fails, both "
 "files are restored."
-msgstr ""
-"Nginx 将进行一次测试并重新加载。如果测试或重新加载失败，两个文件都会被还原。"
+msgstr "Nginx 将进行一次测试并重新加载。如果测试或重新加载失败，两个文件都会被还原。"
 
 msgid "Discard Changes"
 msgstr "放弃更改"
@@ -792,8 +784,7 @@ msgstr "代理到 upstream"
 msgid ""
 "Sets proxy_pass to the selected upstream group; its servers are managed on "
 "the Upstream page."
-msgstr ""
-"将 proxy_pass 设置为选定的 upstream 组；其服务器在 Upstream 页面中管理。"
+msgstr "将 proxy_pass 设置为选定的 upstream 组；其服务器在 Upstream 页面中管理。"
 
 msgid "Select an upstream"
 msgstr "选择一个 upstream"
@@ -808,8 +799,8 @@ msgid "Remove the access_log directive from this server"
 msgstr "移除此服务器的 access_log 指令"
 
 msgid ""
-"Write an access_log directive for this server, so its requests can be viewed "
-"and analysed separately"
+"Write an access_log directive for this server, so its requests can be "
+"viewed and analysed separately"
 msgstr "为此服务器写入 access_log 指令，以便单独查看和分析其请求"
 
 msgid "Access Log"
@@ -864,11 +855,9 @@ msgid "Upstream Name"
 msgstr "Upstream 名称"
 
 msgid ""
-"This adds an upstream block to this site only. To proxy to an upstream group "
-"shared with other sites, use \"Use Existing Group\" instead."
-msgstr ""
-"这仅会将 upstream 块添加到当前站点。若要代理到与其他站点共享的 upstream 组，"
-"请改用「使用现有组」。"
+"This adds an upstream block to this site only. To proxy to an upstream "
+"group shared with other sites, use \"Use Existing Group\" instead."
+msgstr "这仅会将 upstream 块添加到当前站点。若要代理到与其他站点共享的 upstream 组，请改用「使用现有组」。"
 
 msgid "Use an Existing Upstream Group"
 msgstr "使用已有的 Upstream 组"
@@ -879,8 +868,7 @@ msgstr "现在有 %{count} 个 location 代理到 %{name}"
 msgid "The selected locations already proxy to %{name}"
 msgstr "所选位置已代理至 %{name}"
 
-msgid ""
-"Save the site to apply the change. Nginx is tested and reloaded on save."
+msgid "Save the site to apply the change. Nginx is tested and reloaded on save."
 msgstr "保存站点以应用更改。保存时会测试并重新加载 Nginx。"
 
 msgid "no proxy_pass"
@@ -889,8 +877,7 @@ msgstr "无 proxy_pass"
 msgid ""
 "No location uses %{names} anymore. You can delete it in the Upstream "
 "section, or keep it."
-msgstr ""
-"没有 location 再使用 %{names} 了。你可以在 Upstream 部分删除它，或者保留它。"
+msgstr "没有 location 再使用 %{names} 了。你可以在 Upstream 部分删除它，或者保留它。"
 
 msgid "There are no upstream groups yet."
 msgstr "暂无 upstream 分组。"
@@ -901,19 +888,17 @@ msgstr "在 Upstream Groups 页面上创建一个"
 msgid ""
 "An upstream group is defined once on the Upstream Groups page and shared by "
 "every site that proxies to it."
-msgstr ""
-"Upstream 组在 Upstream 组页面上仅定义一次，并由所有对其进行 proxy 的站点共"
-"享。"
+msgstr "Upstream 组在 Upstream 组页面上仅定义一次，并由所有对其进行 proxy 的站点共享。"
 
 msgid "Upstream Group"
 msgstr "上游组"
 
 msgid ""
-"The selected locations proxy to the group. The scheme and URI of an existing "
-"proxy_pass are kept; locations without one get proxy_pass added."
+"The selected locations proxy to the group. The scheme and URI of an "
+"existing proxy_pass are kept; locations without one get proxy_pass added."
 msgstr ""
-"所选 location 将代理到该组。已有的 proxy_pass 会保留其 scheme 和 URI；没有 "
-"proxy_pass 的 location 会添加 proxy_pass。"
+"所选 location 将代理到该组。已有的 proxy_pass 会保留其 scheme 和 URI；没有 proxy_pass 的 "
+"location 会添加 proxy_pass。"
 
 msgid "This site has no locations yet."
 msgstr "此站点尚无 location。"
@@ -923,9 +908,6 @@ msgstr "完成"
 
 msgid "Unknown"
 msgstr "未知"
-
-msgid "Search"
-msgstr "搜索"
 
 msgid "Open in split view"
 msgstr "在分屏视图中打开"
@@ -1003,8 +985,7 @@ msgstr "备份任务 %{backup_name} 执行失败，错误：%{error}"
 msgid "Auto Backup Storage Failed"
 msgstr "自动备份存储失败"
 
-msgid ""
-"Backup task %{backup_name} failed during storage upload, error: %{error}"
+msgid "Backup task %{backup_name} failed during storage upload, error: %{error}"
 msgstr "备份任务 %{backup_name} 在存储上传过程中失败，错误：%{error}"
 
 msgid "Auto Backup Completed"
@@ -1016,14 +997,13 @@ msgstr "备份任务 %{backup_name} 已完成，文件：%{file_path}"
 msgid "Auto Backup Retention Skipped"
 msgstr "自动备份清理已跳过"
 
-msgid "Old backups of task %{backup_name} were not deleted because task %{conflict_names} writes backups with the same file names to the same storage location. Rename one of the tasks or change its storage path."
-msgstr "任务 %{backup_name} 的旧备份未被删除，因为任务 %{conflict_names} 会将同名备份文件写入同一存储位置。请重命名其中一个任务或更改其存储路径。"
-
-msgid "Backups to Keep"
-msgstr "保留备份数"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "保留备份数（0 表示全部保留）"
+msgid ""
+"Old backups of task %{backup_name} were not deleted because task "
+"%{conflict_names} writes backups with the same file names to the same "
+"storage location. Rename one of the tasks or change its storage path."
+msgstr ""
+"任务 %{backup_name} 的旧备份未被删除，因为任务 %{conflict_names} "
+"会将同名备份文件写入同一存储位置。请重命名其中一个任务或更改其存储路径。"
 
 msgid "Renew Certificate Success"
 msgstr "证书续期成功"
@@ -1055,6 +1035,14 @@ msgstr "证书 %{name} 将在 %{days} 天后过期"
 msgid "Certificate Expiring Soon"
 msgstr "证书即将过期"
 
+msgid "Certificate Relocated"
+msgstr "证书已迁移"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr "证书 %{name} 现已存储在 %{path}，请将加载 %{previous_path} 的站点指向它"
+
 msgid "Sync Certificate Error"
 msgstr "同步证书错误"
 
@@ -1082,8 +1070,7 @@ msgstr "同步配置成功"
 msgid "Sync config %{config_name} to %{node_name} successfully"
 msgstr "配置 %{config_name} 已成功同步到 %{node_name}"
 
-msgid ""
-"User %{user_name} synced config %{config_name} to %{node_name} successfully"
+msgid "User %{user_name} synced config %{config_name} to %{node_name} successfully"
 msgstr "用户 %{user_name} 已成功将配置 %{config_name} 同步到 %{node_name}"
 
 msgid "Rename Remote Config Error"
@@ -1113,8 +1100,7 @@ msgstr "在 %{node_name} 上成功删除 %{path}"
 msgid "Auto Sync Namespace Error"
 msgstr "自动同步命名空间出错"
 
-msgid ""
-"Auto sync of namespace %{namespace} finished with %{failed} failed items"
+msgid "Auto sync of namespace %{namespace} finished with %{failed} failed items"
 msgstr "命名空间 %{namespace} 自动同步完成，其中 %{failed} 项失败"
 
 msgid "External Notification Test"
@@ -1231,8 +1217,7 @@ msgstr "站点健康检查失败"
 msgid ""
 "Site %{site} on node %{node} failed its health check for %{failure_count} "
 "consecutive attempts: %{error}"
-msgstr ""
-"站点 %{site} 在节点 %{node} 上连续 %{failure_count} 次健康检查失败：%{error}"
+msgstr "站点 %{site} 在节点 %{node} 上连续 %{failure_count} 次健康检查失败：%{error}"
 
 msgid "Site Health Check Recovered"
 msgstr "站点健康检查已恢复"
@@ -1316,8 +1301,8 @@ msgid "All Recovery Codes Have Been Used"
 msgstr "所有恢复代码已用完"
 
 msgid ""
-"Please generate new recovery codes in the preferences immediately to prevent "
-"lockout."
+"Please generate new recovery codes in the preferences immediately to "
+"prevent lockout."
 msgstr "请立即在偏好设置中生成新的恢复码，以防止无法访问您的账户。"
 
 msgid "Digit %{position} of the one-time code"
@@ -1425,9 +1410,7 @@ msgstr "HTTPS 协议"
 msgid ""
 "Check if HTTPS is enabled. Using HTTP outside localhost is insecure and "
 "prevents using Passkeys and clipboard features"
-msgstr ""
-"检查是否启用了 HTTPS。在本地主机之外使用 HTTP 是不安全的，这也会导致无法使用 "
-"Passkey 和剪贴板功能"
+msgstr "检查是否启用了 HTTPS。在本地主机之外使用 HTTP 是不安全的，这也会导致无法使用 Passkey 和剪贴板功能"
 
 msgid "Support communication with the backend through the WebSocket protocol. "
 msgstr "支持通过 WebSocket 协议与后端通信。"
@@ -1493,7 +1476,8 @@ msgid "Invalid file object"
 msgstr "无效文件对象"
 
 msgid ""
-"Frontend debug mode: restore flow completed without sending a backend request"
+"Frontend debug mode: restore flow completed without sending a backend "
+"request"
 msgstr "前端调试模式：恢复流程已完成，无需发送后端请求"
 
 msgid "Restore completed successfully"
@@ -1512,9 +1496,7 @@ msgid ""
 "Warning: Restore operation will overwrite current configurations. Make sure "
 "you have a valid backup file and security token, and carefully select what "
 "to restore."
-msgstr ""
-"警告：还原操作将覆盖当前配置。请确保您有有效的备份文件和安全令牌，并仔细选择"
-"要还原的内容。"
+msgstr "警告：还原操作将覆盖当前配置。请确保您有有效的备份文件和安全令牌，并仔细选择要还原的内容。"
 
 msgid ""
 "Only backups created by versions that support signed manifests can be "
@@ -1559,8 +1541,8 @@ msgid "Automatic Restart"
 msgstr "自动重启"
 
 msgid ""
-"Nginx UI configuration has been restored and will restart automatically in a "
-"few seconds."
+"Nginx UI configuration has been restored and will restart automatically in "
+"a few seconds."
 msgstr "Nginx UI 配置已恢复，几秒钟后将自动重启。"
 
 msgid "You can close this dialog in %{countdown} seconds"
@@ -1572,9 +1554,7 @@ msgstr "现在可以关闭此对话框"
 msgid ""
 "Your account still uses a legacy recovery code. Generate new recovery codes "
 "after verification to keep account recovery secure."
-msgstr ""
-"您的账户仍在使用旧版恢复码。请在验证后生成新的恢复码，以确保账户恢复的安全"
-"性。"
+msgstr "您的账户仍在使用旧版恢复码。请在验证后生成新的恢复码，以确保账户恢复的安全性。"
 
 msgid "Input the recovery code:"
 msgstr "输入恢复代码："
@@ -1603,9 +1583,7 @@ msgstr "生成新的恢复代码"
 msgid ""
 "Your legacy recovery code has been used and cannot be used again. Generate "
 "new recovery codes now to keep account recovery available."
-msgstr ""
-"您的旧恢复码已使用，无法再次使用。立即生成新的恢复码，以保持账户恢复功能可"
-"用。"
+msgstr "您的旧恢复码已使用，无法再次使用。立即生成新的恢复码，以保持账户恢复功能可用。"
 
 msgid "Go to Recovery Codes"
 msgstr "前往恢复码"
@@ -2036,9 +2014,7 @@ msgstr "无效路径: {0}"
 msgid ""
 "Path not in granted access paths: {0}. Add it to [backup] GrantedAccessPath "
 "in app.ini and restart."
-msgstr ""
-"路径不在授予的访问路径中：{0}。将其添加到 app.ini 中的 [backup] "
-"GrantedAccessPath 并重启。"
+msgstr "路径不在授予的访问路径中：{0}。将其添加到 app.ini 中的 [backup] GrantedAccessPath 并重启。"
 
 msgid "Backup path does not exist: {0}"
 msgstr "备份路径不存在: {0}"
@@ -2197,7 +2173,8 @@ msgid "Certificate profile is not available from the selected ACME server: {0}"
 msgstr "所选 ACME 服务器不提供证书配置文件： {0}"
 
 msgid ""
-"Wildcard domains and IP addresses cannot be requested in the same certificate"
+"Wildcard domains and IP addresses cannot be requested in the same "
+"certificate"
 msgstr "通配符域名和 IP 地址不能在同一证书中请求。"
 
 msgid "Persist certificate record error: {0}"
@@ -2503,7 +2480,8 @@ msgid "Invalid timestamp format"
 msgstr "时间戳格式无效"
 
 msgid ""
-"The log path is not under the paths in settings.NginxSettings.LogDirWhiteList"
+"The log path is not under the paths in "
+"settings.NginxSettings.LogDirWhiteList"
 msgstr "日志路径不在 settings.NginxSettings.LogDirWhiteList 中的路径之下"
 
 msgid "ServerIdx out of range"
@@ -2519,18 +2497,18 @@ msgid "Directive params is empty"
 msgstr "指令的参数为空"
 
 msgid ""
-"Settings.NginxLogSettings.ErrorLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.ErrorLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.ErrorLogPath 为空，更多信息请参阅 https://"
-"nginxui.com/guide/config-nginx.html"
+"Settings.NginxLogSettings.ErrorLogPath 为空，更多信息请参阅 "
+"https://nginxui.com/guide/config-nginx.html"
 
 msgid ""
-"Settings.NginxLogSettings.AccessLogPath is empty, refer to https://"
-"nginxui.com/guide/config-nginx.html for more information"
+"Settings.NginxLogSettings.AccessLogPath is empty, refer to "
+"https://nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
-"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 https://"
-"nginxui.com/guide/config-nginx.html"
+"Settings.NginxLogSettings.AccessLogPath 为空，更多信息请参阅 "
+"https://nginxui.com/guide/config-nginx.html"
 
 msgid "Log indexer not available"
 msgstr "日志索引器不可用"
@@ -2628,8 +2606,7 @@ msgstr "解析模板失败: {0}"
 msgid "Failed to execute template: {0}"
 msgstr "执行模板失败: {0}"
 
-msgid ""
-"Nginx process information is not available when nginx runs on an SSH host"
+msgid "Nginx process information is not available when nginx runs on an SSH host"
 msgstr "当 nginx 在 SSH 主机上运行时，Nginx 进程信息不可用。"
 
 msgid "Failed to parse nginx config: {0}"
@@ -2710,8 +2687,7 @@ msgstr "Conf.d 目录不存在"
 msgid ""
 "GeoLite2 database not found at {0}. Log indexing requires GeoLite2 database "
 "for geographic IP analysis"
-msgstr ""
-"未在 {0} 找到 GeoLite2 数据库。日志索引需要 GeoLite2 数据库进行地理 IP 分析"
+msgstr "未在 {0} 找到 GeoLite2 数据库。日志索引需要 GeoLite2 数据库进行地理 IP 分析"
 
 msgid "Failed to read bundled nginx-ui.conf: {0}"
 msgstr "读取内置的 nginx-ui.conf 失败：{0}"
@@ -2728,8 +2704,7 @@ msgstr "修复后重载 Nginx 失败：{0}"
 msgid "Failed to restore nginx-ui.conf from backup: {0}"
 msgstr "从备份恢复 nginx-ui.conf 失败：{0}"
 
-msgid ""
-"Nginx configuration directory is not shared with external container at {0}"
+msgid "Nginx configuration directory is not shared with external container at {0}"
 msgstr "Nginx 配置目录未与位于 {0} 的外部容器共享"
 
 msgid "Failed to verify external Nginx configuration directory {0}: {1}"
@@ -2761,6 +2736,32 @@ msgstr "网站处于维护模式"
 
 msgid "Read dir failed: {0}"
 msgstr "读取文件夹失败: {0}"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "文件名必须以 .conf 结尾，且只能包含字母、数字、点、连字符和下划线"
+
+msgid "Snippet not found"
+msgstr "未找到片段"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "片段超过 256 KiB"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "片段的文件头无法解析：{0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "片段仍被以下文件引用：{0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "已存在同名文件的片段"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "变量 {0} 无效：{1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "内容无法解析为模板：{0}"
 
 msgid "Stream not found"
 msgstr "Stream 未找到"
@@ -2847,7 +2848,8 @@ msgid "A site name and an upstream name are required"
 msgstr "需要站点名称和 upstream 名称"
 
 msgid ""
-"Upstream {0} contains a nested {1} block, which an upstream group cannot hold"
+"Upstream {0} contains a nested {1} block, which an upstream group cannot "
+"hold"
 msgstr "Upstream {0} 包含一个嵌套的 {1} 块，upstream 组无法容纳"
 
 msgid ""
@@ -2858,15 +2860,12 @@ msgstr "上游 {1} 的 {0} 指令的值跨多行，上游组无法容纳"
 msgid ""
 "A comment inside upstream {0} contains braces, which an upstream group "
 "cannot hold; edit the comment first"
-msgstr ""
-"upstream {0} 内的注释包含花括号，upstream group 无法包含花括号；请先编辑注释"
+msgstr "upstream {0} 内的注释包含花括号，upstream group 无法包含花括号；请先编辑注释"
 
 msgid ""
-"Upstream {0} is defined inside a {1} block; only upstream blocks of the http "
-"context can become an upstream group"
-msgstr ""
-"Upstream {0} 定义在 {1} 块内；只有 http 上下文中的 upstream 块才能成为 "
-"upstream 组"
+"Upstream {0} is defined inside a {1} block; only upstream blocks of the "
+"http context can become an upstream group"
+msgstr "Upstream {0} 定义在 {1} 块内；只有 http 上下文中的 upstream 块才能成为 upstream 组"
 
 msgid "Invalid site name: {0}"
 msgstr "无效的站点名称：{0}"
@@ -2885,9 +2884,7 @@ msgstr "Upstream {0} 在 {1} 中被多次定义"
 msgid ""
 "Invalid upstream name: use letters, digits, underscores and hyphens, "
 "starting with a letter or underscore (max 64 characters)"
-msgstr ""
-"无效的 upstream 名称：请使用字母、数字、下划线和连字符，以字母或下划线开头"
-"（最多 64 个字符）"
+msgstr "无效的 upstream 名称：请使用字母、数字、下划线和连字符，以字母或下划线开头（最多 64 个字符）"
 
 msgid "Unsupported load balancing method: {0}"
 msgstr "不支持的负载均衡方式：{0}"
@@ -3036,8 +3033,7 @@ msgstr "该字段的值已经存在"
 msgid "This field should be a valid hostname"
 msgstr "该字段应是有效的主机名"
 
-msgid ""
-"This field should only contain letters, unicode characters, numbers, and -_."
+msgid "This field should only contain letters, unicode characters, numbers, and -_."
 msgstr "该字段只能包含字母、unicode 字符、数字和 -_。"
 
 msgid "Info"
@@ -3295,16 +3291,12 @@ msgid ""
 "A CAA record on the domain does not allow this certificate authority; add a "
 "CAA issue record for the certificate authority or remove the restrictive "
 "record."
-msgstr ""
-"该域名的 CAA 记录不允许此证书颁发机构；请为该证书颁发机构添加 CAA issue 记"
-"录，或删除限制性记录。"
+msgstr "该域名的 CAA 记录不允许此证书颁发机构；请为该证书颁发机构添加 CAA issue 记录，或删除限制性记录。"
 
 msgid ""
 "A CAA record on the domain does not authorize the selected certificate "
 "authority; add a CAA issue record for it or issuance will fail."
-msgstr ""
-"该域名的 CAA 记录未授权所选的证书颁发机构；请为其添加 CAA issue 记录，否则签"
-"发将会失败。"
+msgstr "该域名的 CAA 记录未授权所选的证书颁发机构；请为其添加 CAA issue 记录，否则签发将会失败。"
 
 msgid "An existing certificate is used"
 msgstr "使用已有证书"
@@ -3331,21 +3323,20 @@ msgstr "证书撤销成功"
 
 msgid ""
 "Check if /var/run/docker.sock exists. If you are using Nginx UI Official "
-"Docker Image, please make sure the docker socket is mounted like this: `-v /"
-"var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses /var/"
-"run/docker.sock to communicate with the host Docker Engine via Docker Client "
-"API. This feature is used to control Nginx in another container and perform "
-"container replacement rather than binary replacement during OTA upgrades of "
-"Nginx UI to ensure container dependencies are also upgraded. If you don't "
-"need this feature, please add the environment variable "
+"Docker Image, please make sure the docker socket is mounted like this: `-v "
+"/var/run/docker.sock:/var/run/docker.sock`. Nginx UI official image uses "
+"/var/run/docker.sock to communicate with the host Docker Engine via Docker "
+"Client API. This feature is used to control Nginx in another container and "
+"perform container replacement rather than binary replacement during OTA "
+"upgrades of Nginx UI to ensure container dependencies are also upgraded. If "
+"you don't need this feature, please add the environment variable "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true to the container."
 msgstr ""
-"检查 /var/run/docker.sock 是否存在。如果您使用的是 Nginx UI 官方 Docker 镜"
-"像，请确保以这种方式挂载 Docker 套接字：`-v /var/run/docker.sock:/var/run/"
-"docker.sock`。Nginx UI 官方镜像使用 /var/run/docker.sock 通过 Docker Client "
-"API 与主机 Docker Engine 通信。此功能用于在另一个容器中控制 Nginx，并在 "
-"Nginx UI 的 OTA 升级期间执行容器替换而非二进制替换，以确保容器依赖项也得到升"
-"级。如果您不需要此功能，请向容器添加环境变量 "
+"检查 /var/run/docker.sock 是否存在。如果您使用的是 Nginx UI 官方 Docker 镜像，请确保以这种方式挂载 "
+"Docker 套接字：`-v /var/run/docker.sock:/var/run/docker.sock`。Nginx UI 官方镜像使用 "
+"/var/run/docker.sock 通过 Docker Client API 与主机 Docker Engine "
+"通信。此功能用于在另一个容器中控制 Nginx，并在 Nginx UI 的 OTA "
+"升级期间执行容器替换而非二进制替换，以确保容器依赖项也得到升级。如果您不需要此功能，请向容器添加环境变量 "
 "NGINX_UI_IGNORE_DOCKER_SOCKET=true。"
 
 msgid ""
@@ -3355,9 +3346,8 @@ msgid ""
 "configuration and log directories must be mounted into both containers at "
 "matching paths."
 msgstr ""
-"检查 Nginx UI 能否在已配置的 Nginx 目录中写入临时文件，且外部 Nginx 容器能否"
-"在同一路径下看到该文件。Docker socket 访问和 ContainerName 仅用于路由控制命"
-"令；配置和日志目录必须以匹配的路径挂载到两个容器中。"
+"检查 Nginx UI 能否在已配置的 Nginx 目录中写入临时文件，且外部 Nginx 容器能否在同一路径下看到该文件。Docker socket "
+"访问和 ContainerName 仅用于路由控制命令；配置和日志目录必须以匹配的路径挂载到两个容器中。"
 
 msgid ""
 "Check if the GeoLite2 database is available when log indexing is enabled. "
@@ -3365,37 +3355,34 @@ msgid ""
 "indexing. You can download it from the Preference page or manually place "
 "GeoLite2-City.mmdb in the same directory as app.ini"
 msgstr ""
-"当启用日志索引时，检查 GeoLite2 数据库是否可用。GeoLite2 数据库是日志索引中地"
-"理 IP 分析所必需的。您可以在偏好设置页面下载它，或者手动将 GeoLite2-"
-"City.mmdb 放在与 app.ini 相同的目录中"
+"当启用日志索引时，检查 GeoLite2 数据库是否可用。GeoLite2 数据库是日志索引中地理 IP "
+"分析所必需的。您可以在偏好设置页面下载它，或者手动将 GeoLite2-City.mmdb 放在与 app.ini 相同的目录中"
 
-msgid ""
-"Check if the conf.d directory is under the nginx configuration directory"
+msgid "Check if the conf.d directory is under the nginx configuration directory"
 msgstr "检查 conf.d 目录是否位于 nginx 配置目录下"
 
 msgid ""
 "Check if the nginx PID path exists. By default, this path is obtained from "
 "'nginx -V'. If it cannot be obtained, an error will be reported. In this "
 "case, you need to modify the configuration file to specify the Nginx PID "
-"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#pidpath"
+"path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 msgstr ""
-"检查 Nginx PID 路径是否存在。默认情况下，该路径是从 'nginx -V' 获取的。如果无"
-"法获取，将会报错。在这种情况下，您需要修改配置文件以指定 Nginx PID 路径。更多"
-"详情请参阅文档：https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
+"检查 Nginx PID 路径是否存在。默认情况下，该路径是从 'nginx -V' "
+"获取的。如果无法获取，将会报错。在这种情况下，您需要修改配置文件以指定 Nginx PID "
+"路径。更多详情请参阅文档：https://nginxui.com/zh_CN/guide/config-nginx.html#pidpath"
 
 msgid ""
-"Check if the nginx access log path exists. By default, this path is obtained "
-"from 'nginx -V'. If it cannot be obtained or the obtained path does not "
-"point to a valid, existing file, an error will be reported. In this case, "
-"you need to modify the configuration file to specify the access log "
-"path.Refer to the docs for more details: https://nginxui.com/zh_CN/guide/"
-"config-nginx.html#accesslogpath"
+"Check if the nginx access log path exists. By default, this path is "
+"obtained from 'nginx -V'. If it cannot be obtained or the obtained path "
+"does not point to a valid, existing file, an error will be reported. In "
+"this case, you need to modify the configuration file to specify the access "
+"log path.Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 msgstr ""
-"检查 nginx 访问日志路径是否存在。默认情况下，此路径从 'nginx -V' 获取。如果无"
-"法获取或获取的路径未指向有效的现有文件，将报告错误。在这种情况下，您需要修改"
-"配置文件以指定访问日志路径。更多详情请参阅文档：https://nginxui.com/zh_CN/"
-"guide/config-nginx.html#accesslogpath"
+"检查 nginx 访问日志路径是否存在。默认情况下，此路径从 'nginx -V' "
+"获取。如果无法获取或获取的路径未指向有效的现有文件，将报告错误。在这种情况下，您需要修改配置文件以指定访问日志路径。更多详情请参阅文档：https://"
+"nginxui.com/zh_CN/guide/config-nginx.html#accesslogpath"
 
 msgid "Check if the nginx configuration directory exists"
 msgstr "检查 Nginx 配置目录是否存在"
@@ -3408,13 +3395,12 @@ msgid ""
 "from 'nginx -V'. If it cannot be obtained or the obtained path does not "
 "point to a valid, existing file, an error will be reported. In this case, "
 "you need to modify the configuration file to specify the error log path. "
-"Refer to the docs for more details: https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#errorlogpath"
+"Refer to the docs for more details: "
+"https://nginxui.com/zh_CN/guide/config-nginx.html#errorlogpath"
 msgstr ""
-"检查 nginx 错误日志路径是否存在。默认情况下，该路径从 'nginx -V' 获取。如果无"
-"法获取或获取的路径未指向有效的现有文件，将报错。此时需要修改配置文件以指定错"
-"误日志路径。详情请参阅文档：https://nginxui.com/zh_CN/guide/config-"
-"nginx.html#errorlogpath"
+"检查 nginx 错误日志路径是否存在。默认情况下，该路径从 'nginx -V' "
+"获取。如果无法获取或获取的路径未指向有效的现有文件，将报错。此时需要修改配置文件以指定错误日志路径。详情请参阅文档：https://nginxui."
+"com/zh_CN/guide/config-nginx.html#errorlogpath"
 
 msgid "Check if the nginx sbin path exists"
 msgstr "检查 nginx sbin 路径是否存在"
@@ -3434,8 +3420,8 @@ msgid ""
 msgstr "检查 sites-available 和 sites-enabled 目录是否位于 Nginx 配置目录下"
 
 msgid ""
-"Check if the streams-available and streams-enabled directories are under the "
-"nginx configuration directory"
+"Check if the streams-available and streams-enabled directories are under "
+"the nginx configuration directory"
 msgstr "检查 Nginx 配置目录下是否有 streams-available 和 streams-enabled 目录"
 
 msgid "Checking the HTTP challenge route"
@@ -3485,8 +3471,8 @@ msgstr "正在签发证书"
 
 msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
-"docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
-"nginx-log.html for more information."
+"docker container, please refer to "
+"https://nginxui.com/zh_CN/guide/config-nginx-log.html for more information."
 msgstr ""
 "日志文件 %{log_path} 不是常规文件。如果在 Docker 容器中使用 Nginx UI，请参阅 "
 "https://nginxui.com/zh_CN/guide/config-nginx-log.html 获取更多信息。"
@@ -3498,9 +3484,7 @@ msgid ""
 "Nginx UI could not listen on the HTTP challenge port; make sure no other "
 "process uses it, or change the HTTP challenge port in the certificate "
 "settings."
-msgstr ""
-"Nginx UI 无法监听 HTTP 验证端口；请确保没有其他进程占用该端口，或在证书设置中"
-"更改 HTTP 验证端口。"
+msgstr "Nginx UI 无法监听 HTTP 验证端口；请确保没有其他进程占用该端口，或在证书设置中更改 HTTP 验证端口。"
 
 msgid "Nginx access log path exists"
 msgstr "存在 Nginx 访问日志路径"
@@ -3558,8 +3542,7 @@ msgid ""
 "answering."
 msgstr "该域名的 DNS 查询失败；请确保其域名服务器正常响应。"
 
-msgid ""
-"The certificate %{name} covers the domains and is valid until %{not_after}"
+msgid "The certificate %{name} covers the domains and is valid until %{not_after}"
 msgstr "证书 %{name} 覆盖所有域名，有效期至 %{not_after}"
 
 msgid "The certificate %{name} does not cover any of the domains: %{uncovered}"
@@ -3577,18 +3560,14 @@ msgstr "证书 %{name} 已于 %{not_after} 过期；请续期或选择其他证�
 
 msgid ""
 "The certificate authority could not connect to port 80 of this domain; open "
-"TCP port 80 in the firewall or cloud security group and make sure any NAT or "
-"port forwarding sends it to this server."
-msgstr ""
-"证书颁发机构无法连接到该域名的 80 端口；请在防火墙或云安全组中放行 TCP 80 端"
-"口，并确保 NAT 或端口转发将其转发到此服务器。"
+"TCP port 80 in the firewall or cloud security group and make sure any NAT "
+"or port forwarding sends it to this server."
+msgstr "证书颁发机构无法连接到该域名的 80 端口；请在防火墙或云安全组中放行 TCP 80 端口，并确保 NAT 或端口转发将其转发到此服务器。"
 
 msgid ""
 "The certificate authority could not resolve the domain; create an A or AAAA "
 "record that points at this server and wait for DNS to propagate."
-msgstr ""
-"证书颁发机构无法解析该域名；请创建指向此服务器的 A 或 AAAA 记录，并等待 DNS "
-"生效。"
+msgstr "证书颁发机构无法解析该域名；请创建指向此服务器的 A 或 AAAA 记录，并等待 DNS 生效。"
 
 msgid ""
 "The certificate authority followed a redirect, but the redirected request "
@@ -3596,27 +3575,23 @@ msgid ""
 "also proxies /.well-known/acme-challenge/ to the challenge port, and that "
 "the redirect stays on the same host and on port 80 or 443."
 msgstr ""
-"证书颁发机构跟随了重定向，但重定向后的请求未到达验证路由；请确保该主机的 "
-"HTTPS server 也将 /.well-known/acme-challenge/ 代理到验证端口，并且重定向保持"
-"在同一主机的 80 或 443 端口上。"
+"证书颁发机构跟随了重定向，但重定向后的请求未到达验证路由；请确保该主机的 HTTPS server 也将 "
+"/.well-known/acme-challenge/ 代理到验证端口，并且重定向保持在同一主机的 80 或 443 端口上。"
 
 msgid ""
 "The certificate authority rate limit was reached; wait until the retry time "
 "before trying again, and test configuration changes against the staging "
 "environment."
-msgstr ""
-"已达到证书颁发机构的速率限制；请等到可重试时间后再试，并在测试（staging）环境"
-"中测试配置更改。"
+msgstr "已达到证书颁发机构的速率限制；请等到可重试时间后再试，并在测试（staging）环境中测试配置更改。"
 
 msgid ""
-"The certificate authority reached a server that did not return the challenge "
-"file, and the domain resolves to an address that is not on this server; "
-"point the domain's A/AAAA records at this server, or, behind NAT or a CDN, "
-"make sure port 80 is forwarded to it."
+"The certificate authority reached a server that did not return the "
+"challenge file, and the domain resolves to an address that is not on this "
+"server; point the domain's A/AAAA records at this server, or, behind NAT or "
+"a CDN, make sure port 80 is forwarded to it."
 msgstr ""
-"证书颁发机构访问到的服务器未返回验证文件，且该域名解析到的地址不属于此服务"
-"器；请将域名的 A/AAAA 记录指向此服务器，若位于 NAT 或 CDN 之后，请确保 80 端"
-"口已转发到此服务器。"
+"证书颁发机构访问到的服务器未返回验证文件，且该域名解析到的地址不属于此服务器；请将域名的 A/AAAA 记录指向此服务器，若位于 NAT 或 CDN "
+"之后，请确保 80 端口已转发到此服务器。"
 
 msgid ""
 "The certificate authority reached the server but the challenge file was not "
@@ -3624,22 +3599,18 @@ msgid ""
 "routes /.well-known/acme-challenge/ to Nginx UI, and that no other server "
 "block or proxy answers first."
 msgstr ""
-"证书颁发机构已访问到服务器，但未获取到验证文件；请确保该域名监听 80 端口的 "
-"server 块已启用，并将 /.well-known/acme-challenge/ 路由到 Nginx UI，且没有其"
-"他 server 块或代理抢先响应。"
+"证书颁发机构已访问到服务器，但未获取到验证文件；请确保该域名监听 80 端口的 server 块已启用，并将 "
+"/.well-known/acme-challenge/ 路由到 Nginx UI，且没有其他 server 块或代理抢先响应。"
 
 msgid ""
 "The certificate authority refuses to issue a certificate for this name; use "
 "a publicly resolvable domain name that the certificate authority supports."
-msgstr ""
-"证书颁发机构拒绝为此名称签发证书；请使用该证书颁发机构支持且可公开解析的域"
-"名。"
+msgstr "证书颁发机构拒绝为此名称签发证书；请使用该证书颁发机构支持且可公开解析的域名。"
 
 msgid ""
 "The certificate or key file of %{name} is missing or cannot be read; fix it "
 "in the certificate manager or choose another certificate"
-msgstr ""
-"%{name} 的证书或私钥文件缺失或无法读取；请在证书管理中修复，或选择其他证书"
+msgstr "%{name} 的证书或私钥文件缺失或无法读取；请在证书管理中修复，或选择其他证书"
 
 msgid ""
 "The domain has DNS address records, but the local addresses of this server "
@@ -3651,8 +3622,8 @@ msgid ""
 "Encrypt prefers IPv6, so add an IPv6 listen directive on port 80 or remove "
 "the AAAA record."
 msgstr ""
-"该域名存在 AAAA 记录，但站点未监听 IPv6；Let's Encrypt 会优先使用 IPv6，请添"
-"加监听 80 端口的 IPv6 listen 指令，或删除 AAAA 记录。"
+"该域名存在 AAAA 记录，但站点未监听 IPv6；Let's Encrypt 会优先使用 IPv6，请添加监听 80 端口的 IPv6 listen "
+"指令，或删除 AAAA 记录。"
 
 msgid ""
 "The domain has no A or AAAA record; create one that points at this server "
@@ -3666,12 +3637,9 @@ msgid ""
 "The domain resolves to an address that is not assigned to this server; this "
 "can be expected behind NAT, a load balancer, or a CDN, otherwise update the "
 "domain's A/AAAA records."
-msgstr ""
-"该域名解析到的地址未分配给此服务器；位于 NAT、负载均衡器或 CDN 之后时属正常情"
-"况，否则请更新域名的 A/AAAA 记录。"
+msgstr "该域名解析到的地址未分配给此服务器；位于 NAT、负载均衡器或 CDN 之后时属正常情况，否则请更新域名的 A/AAAA 记录。"
 
-msgid ""
-"The selected certificate does not exist any more; choose another certificate"
+msgid "The selected certificate does not exist any more; choose another certificate"
 msgstr "所选证书已不存在，请选择其他证书"
 
 msgid "The site already serves the required HTTP configuration"
@@ -3693,9 +3661,9 @@ msgid ""
 "checks fail. Older deployments that persisted /etc/nginx may still have the "
 "unfixed version."
 msgstr ""
-"当容器位于终止 TLS 的外部反向代理（如主机 nginx、Cloudflare）之后时，捆绑的 "
-"conf.d/nginx-ui.conf 必须信任传入的 X-Forwarded-Proto/Host 头信息；否则 "
-"WebSocket 源检查将失败。保留 /etc/nginx 的旧部署可能仍使用未修复的版本。"
+"当容器位于终止 TLS 的外部反向代理（如主机 nginx、Cloudflare）之后时，捆绑的 conf.d/nginx-ui.conf "
+"必须信任传入的 X-Forwarded-Proto/Host 头信息；否则 WebSocket 源检查将失败。保留 /etc/nginx "
+"的旧部署可能仍使用未修复的版本。"
 
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr "[Nginx UI] ACME 用户：%{name}，邮箱：%{email}，CA 目录：%{caDir}"
@@ -3715,8 +3683,7 @@ msgstr "[Nginx UI] 证书成功撤销"
 msgid "[Nginx UI] Certificate was already revoked by the CA"
 msgstr "[Nginx UI] 证书已被 CA 吊销"
 
-msgid ""
-"[Nginx UI] Certificate was used for server, reloading server TLS certificate"
+msgid "[Nginx UI] Certificate was used for server, reloading server TLS certificate"
 msgstr "[Nginx UI] 证书已用于服务器，正在重新加载服务器 TLS 证书"
 
 msgid "[Nginx UI] Checking HTTP01 challenge route for %{domains}"
@@ -3732,12 +3699,11 @@ msgid "[Nginx UI] Finished"
 msgstr "[Nginx UI] 已完成"
 
 msgid ""
-"[Nginx UI] HTTP01 challenge route cannot be verified locally for %{domain}: %"
-"{reason}"
+"[Nginx UI] HTTP01 challenge route cannot be verified locally for %{domain}: "
+"%{reason}"
 msgstr "[Nginx UI] 无法在本地验证 %{domain} 的 HTTP01 验证路由：%{reason}"
 
-msgid ""
-"[Nginx UI] HTTP01 challenge route check after renewal failure: %{summary}"
+msgid "[Nginx UI] HTTP01 challenge route check after renewal failure: %{summary}"
 msgstr "[Nginx UI] 续期失败后的 HTTP01 验证路由检查：%{summary}"
 
 msgid "[Nginx UI] HTTP01 challenge route check could not run: %{error}"
@@ -3746,9 +3712,7 @@ msgstr "[Nginx UI] 无法运行 HTTP01 验证路由检查：%{error}"
 msgid ""
 "[Nginx UI] HTTP01 challenge route check failed for %{domain}: %{error}. "
 "Issuance continues; the certificate authority will verify the route itself"
-msgstr ""
-"[Nginx UI] %{domain} 的 HTTP01 验证路由检查失败：%{error}。签发将继续，由证书"
-"颁发机构自行验证路由"
+msgstr "[Nginx UI] %{domain} 的 HTTP01 验证路由检查失败：%{error}。签发将继续，由证书颁发机构自行验证路由"
 
 msgid "[Nginx UI] HTTP01 challenge route check skipped: %{reason}"
 msgstr "[Nginx UI] 已跳过 HTTP01 验证路由检查：%{reason}"
@@ -3909,6 +3873,18 @@ msgstr "站点列表"
 msgid "Add Site"
 msgstr "添加站点"
 
+msgid "Snippets"
+msgstr "片段"
+
+msgid "Create Snippet"
+msgstr "新建片段"
+
+msgid "Built-in Template"
+msgstr "内置模板"
+
+msgid "Edit Snippet"
+msgstr "编辑片段"
+
 msgid "Edit Site"
 msgstr "编辑站点"
 
@@ -3966,8 +3942,7 @@ msgstr "访问列表 %{name} 仍在使用中"
 msgid ""
 "Open the list to see which lists, sites and streams use it, and switch them "
 "to another list first."
-msgstr ""
-"打开该列表以查看哪些列表、站点和流在使用它，并先将它们切换到另一个列表。"
+msgstr "打开该列表以查看哪些列表、站点和流在使用它，并先将它们切换到另一个列表。"
 
 msgid "Delete access list %{name}?"
 msgstr "删除访问列表 %{name}？"
@@ -3985,12 +3960,7 @@ msgid ""
 "An access list keeps IP addresses in one place. Choose it for a server or a "
 "location in the site editor; changing the list here updates every site that "
 "uses it."
-msgstr ""
-"访问列表将 IP 地址集中管理。可在站点编辑器中为服务器或位置选择访问列表；在此"
-"处修改列表会同步更新所有使用该列表的站点。"
-
-msgid "+%{count} more"
-msgstr "+%{count} 更多"
+msgstr "访问列表将 IP 地址集中管理。可在站点编辑器中为服务器或位置选择访问列表；在此处修改列表会同步更新所有使用该列表的站点。"
 
 msgid "Deny"
 msgstr "拒绝"
@@ -3998,20 +3968,11 @@ msgstr "拒绝"
 msgid "Allow"
 msgstr "允许"
 
-msgid "Not used"
-msgstr "未使用"
-
 msgid "Use list"
 msgstr "使用列表"
 
 msgid "Deny (403)"
 msgstr "拒绝 (403)"
-
-msgid "Site"
-msgstr "站点"
-
-msgid "Stream"
-msgstr "流"
 
 msgid "Access list %{name} saved"
 msgstr "访问列表 %{name} 已保存"
@@ -4029,20 +3990,15 @@ msgid "Names the file; lowercase letters, digits and hyphens."
 msgstr "命名文件；仅限小写字母、数字和连字符。"
 
 msgid ""
-"Checked from top to bottom; the first rule that matches decides. A list rule "
-"expands the rules of that list in place."
-msgstr ""
-"从上到下依次匹配，第一个匹配的规则决定结果。列表规则会就地展开该列表的规则。"
+"Checked from top to bottom; the first rule that matches decides. A list "
+"rule expands the rules of that list in place."
+msgstr "从上到下依次匹配，第一个匹配的规则决定结果。列表规则会就地展开该列表的规则。"
 
 msgid "Action"
 msgstr "操作"
 
 msgid "Address or list"
 msgstr "地址或列表"
-
-msgctxt "Access list rule"
-msgid "Note"
-msgstr "备注"
 
 msgid "Select a list"
 msgstr "选择列表"
@@ -4108,6 +4064,15 @@ msgstr "每周%{day}的%{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "每月%{day}日%{time}"
+
+msgid "Backups to Keep"
+msgstr "保留备份数"
+
+msgid "All"
+msgstr "全部"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "保留备份数（0 表示全部保留）"
 
 msgid "Last Backup Time"
 msgstr "上次备份时间"
@@ -4277,8 +4242,7 @@ msgstr "系统备份"
 msgid ""
 "Create system backups including Nginx configuration and Nginx UI settings. "
 "Backup files will be automatically downloaded to your computer."
-msgstr ""
-"创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
+msgstr "创建系统备份，包括 Nginx 配置和 Nginx UI 设置。备份文件将自动下载到你的电脑。"
 
 msgid "Create Backup"
 msgstr "创建备份"
@@ -4335,10 +4299,9 @@ msgid "Leave blank if not required by your ACME provider"
 msgstr "如果您的 ACME 提供商不需要，请留空"
 
 msgid ""
-"External Account Binding Key ID (optional). Required for some ACME providers "
-"like ZeroSSL."
-msgstr ""
-"外部账户绑定密钥 ID （可选）。某些 ACME 提供商（如 ZeroSSL）需要此信息。"
+"External Account Binding Key ID (optional). Required for some ACME "
+"providers like ZeroSSL."
+msgstr "外部账户绑定密钥 ID （可选）。某些 ACME 提供商（如 ZeroSSL）需要此信息。"
 
 msgid "EAB HMAC Key"
 msgstr "EAB HMAC 密钥"
@@ -4351,8 +4314,7 @@ msgstr "外部账户绑定 HMAC 密钥（可选）。应为 Base64 URL 编码格
 msgid "Register On Startup"
 msgstr "启动时注册"
 
-msgid ""
-"When Enabled, Nginx UI will automatically re-register users upon startup. "
+msgid "When Enabled, Nginx UI will automatically re-register users upon startup. "
 msgstr "启用后， Nginx UI 将在启动时自动重新注册用户。"
 
 msgid "Register successfully"
@@ -4463,6 +4425,10 @@ msgstr "无法验证部署状态"
 msgid "Not After"
 msgstr "有效期"
 
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "被 %{count} 个配置使用"
+
 msgid "Failed to scan certificates"
 msgstr "扫描证书失败"
 
@@ -4529,8 +4495,8 @@ msgid "Import from ZIP"
 msgstr "从 ZIP 导入"
 
 msgid ""
-"Fills both the certificate and the private key from a downloaded certificate "
-"archive"
+"Fills both the certificate and the private key from a downloaded "
+"certificate archive"
 msgstr "从下载的证书归档中同时填充证书和私钥"
 
 msgid "SSL Certificate Content"
@@ -4578,11 +4544,11 @@ msgstr "证书文件下载成功"
 msgid "Failed to download certificate files"
 msgstr "下载证书文件失败"
 
-msgid "Download"
-msgstr "下载"
-
 msgid "Download Certificate Files"
 msgstr "下载证书文件"
+
+msgid "Download"
+msgstr "下载"
 
 msgid "Download Format"
 msgstr "下载格式"
@@ -4745,14 +4711,14 @@ msgstr "要确认撤销，请在下面的字段中输入 \"撤销\"："
 msgid "Renew successfully"
 msgstr "更新成功"
 
-msgid "Renew"
-msgstr "更新"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert 正在运行，请稍候..."
 
 msgid "Renew Certificate"
 msgstr "更新证书"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert 正在运行，请稍候..."
+msgid "Renew"
+msgstr "更新"
 
 msgid "Certificate issued successfully"
 msgstr "证书签发成功"
@@ -4764,8 +4730,7 @@ msgid ""
 "Nginx UI will automatically renew this certificate as it approaches "
 "expiration, based on the global certificate renewal interval and this "
 "certificate's validity period."
-msgstr ""
-"Nginx UI 将根据全局证书续期间隔和此证书的有效期，在证书即将过期时自动续期。"
+msgstr "Nginx UI 将根据全局证书续期间隔和此证书的有效期，在证书即将过期时自动续期。"
 
 msgid "Enter certificate name"
 msgstr "输入证书名称"
@@ -4886,9 +4851,7 @@ msgstr "部署目录"
 msgid ""
 "All configuration files in %{name} will be deployed to the selected nodes, "
 "and files created here later will follow the same targets."
-msgstr ""
-"%{name} 中的所有配置文件都会部署到所选节点，之后在此处新建的文件也会同步到相"
-"同的目标。"
+msgstr "%{name} 中的所有配置文件都会部署到所选节点，之后在此处新建的文件也会同步到相同的目标。"
 
 msgid "Created successfully"
 msgstr "创建成功"
@@ -5160,9 +5123,7 @@ msgstr "每秒最大请求次数"
 msgid ""
 "Calculated based on worker_processes * worker_connections. Actual "
 "performance depends on hardware, configuration, and workload"
-msgstr ""
-"基于 worker_processes * worker_connections 计算得出。实际性能取决于硬件、配置"
-"和工作负载"
+msgstr "基于 worker_processes * worker_connections 计算得出。实际性能取决于硬件、配置和工作负载"
 
 msgid "Max Concurrent Connections"
 msgstr "最大并发连接数"
@@ -5230,8 +5191,7 @@ msgstr "手动设置"
 msgid ""
 "Tips: You can increase the concurrency processing capacity by increasing "
 "worker_processes or worker_connections"
-msgstr ""
-"提示您可以通过增加 worker_processes 或 worker_connections 来提高并发处理能力"
+msgstr "提示您可以通过增加 worker_processes 或 worker_connections 来提高并发处理能力"
 
 msgid "Process Distribution"
 msgstr "进程分布"
@@ -5260,9 +5220,7 @@ msgid ""
 "Resident Set Size: Actual memory resident in physical memory, including all "
 "shared library memory, which will be repeated calculated for multiple "
 "processes"
-msgstr ""
-"驻留集大小：实际驻留在物理内存中的内存，包括所有共享库内存，将为多个进程重复"
-"计算"
+msgstr "驻留集大小：实际驻留在物理内存中的内存，包括所有共享库内存，将为多个进程重复计算"
 
 msgid "TLS certificate not trusted"
 msgstr "TLS 证书不受信任"
@@ -5379,22 +5337,17 @@ msgstr "非预期文本"
 msgid ""
 "gRPCS uses TLS encryption. Server must implement gRPC Health Check service. "
 "For testing, SSL validation is disabled by default."
-msgstr ""
-"gRPCS 使用 TLS 加密。服务器必须实现 gRPC 健康检查服务。出于测试目的，默认情况"
-"下禁用 SSL 验证。"
+msgstr "gRPCS 使用 TLS 加密。服务器必须实现 gRPC 健康检查服务。出于测试目的，默认情况下禁用 SSL 验证。"
 
 msgid ""
 "gRPC health check requires server to implement gRPC Health Check service "
 "(grpc.health.v1.Health)."
-msgstr ""
-"gRPC 健康检查要求服务器实现 gRPC 健康检查服务（grpc.health.v1.Health）。"
+msgstr "gRPC 健康检查要求服务器实现 gRPC 健康检查服务（grpc.health.v1.Health）。"
 
 msgid ""
 "Note: If the server does not support gRPC Reflection, health checks may "
 "fail. Please ensure your gRPC server has Reflection enabled."
-msgstr ""
-"注意：如果服务器不支持 gRPC 反射，健康检查可能会失败。请确保您的 gRPC 服务器"
-"已启用反射功能。"
+msgstr "注意：如果服务器不支持 gRPC 反射，健康检查可能会失败。请确保您的 gRPC 服务器已启用反射功能。"
 
 msgid "Service Name"
 msgstr "服务名称"
@@ -5613,9 +5566,7 @@ msgstr "未找到站点"
 msgid ""
 "Sites will appear here once you configure nginx server blocks with valid "
 "server_name (localhost excluded) directives."
-msgstr ""
-"配置带有有效 server_name 指令（不包括 localhost）的 nginx 服务器块后，站点将"
-"显示在此处。"
+msgstr "配置带有有效 server_name 指令（不包括 localhost）的 nginx 服务器块后，站点将显示在此处。"
 
 msgid ""
 "Select a DNS provider to see whether it supports DNS record management in "
@@ -5625,16 +5576,12 @@ msgstr "选择 DNS 提供商后，将显示其是否支持 DNS Domains 中的 DN
 msgid ""
 "%{provider} can be used for ACME DNS-01 certificate challenges and DNS "
 "record management in DNS Domains."
-msgstr ""
-"%{provider} 可用于 ACME DNS-01 证书挑战，也可用于 DNS Domains 中的 DNS 记录管"
-"理。"
+msgstr "%{provider} 可用于 ACME DNS-01 证书挑战，也可用于 DNS Domains 中的 DNS 记录管理。"
 
 msgid ""
 "%{provider} can be used for ACME DNS-01 certificate challenges, but DNS "
 "record management in DNS Domains is not supported for this provider."
-msgstr ""
-"%{provider} 可用于 ACME DNS-01 证书挑战，但 DNS Domains 暂不支持该提供商的 "
-"DNS 记录管理。"
+msgstr "%{provider} 可用于 ACME DNS-01 证书挑战，但 DNS Domains 暂不支持该提供商的 DNS 记录管理。"
 
 msgid "DNS Provider"
 msgstr "DNS 提供商"
@@ -5647,9 +5594,6 @@ msgstr "SDK"
 
 msgid "Additional"
 msgstr "额外选项"
-
-msgid "All"
-msgstr "全部"
 
 msgid "Host, e.g. @ or www"
 msgstr "主机，例如 @ 或 www"
@@ -5757,8 +5701,8 @@ msgid ""
 "Configure a zone, then select the A/AAAA records to update. For "
 "ddns.example.com, select the ddns record under example.com."
 msgstr ""
-"配置 DNS 区域，然后选择要更新的 A/AAAA 记录。例如，要更新 ddns.example.com，"
-"请在 example.com 下选择 ddns 记录。"
+"配置 DNS 区域，然后选择要更新的 A/AAAA 记录。例如，要更新 ddns.example.com，请在 example.com 下选择 "
+"ddns 记录。"
 
 msgid "Configure"
 msgstr "配置"
@@ -5779,14 +5723,13 @@ msgid "Clean up conflicting records"
 msgstr "清理冲突记录"
 
 msgid ""
-"When enabled, DDNS completes names whose A/AAAA records are all selected: it "
-"creates the missing sibling record and removes selected records whose IP "
+"When enabled, DDNS completes names whose A/AAAA records are all selected: "
+"it creates the missing sibling record and removes selected records whose IP "
 "family is unreachable. Records you leave unselected are never changed. "
 "Disable to update only the selected records and never create or delete any."
 msgstr ""
 "启用后，DDNS 会补全 A/AAAA 记录均已选择的名称：创建缺失的同级记录，并移除 IP "
-"族不可达的已选记录。未选择的记录永远不会被更改。禁用后，仅更新已选记录，不会"
-"创建或删除任何记录。"
+"族不可达的已选记录。未选择的记录永远不会被更改。禁用后，仅更新已选记录，不会创建或删除任何记录。"
 
 msgid "Records to update"
 msgstr "要更新的记录"
@@ -5803,9 +5746,6 @@ msgstr "名称不能为空"
 msgid "Please select DNS provider"
 msgstr "请选择 DNS 提供商"
 
-msgid "Configuration"
-msgstr "配置"
-
 msgid "DNS Credentials"
 msgstr "DNS 凭证"
 
@@ -5814,8 +5754,7 @@ msgid ""
 "provider."
 msgstr "请填写 DNS 提供商提供的 API 验证凭据。"
 
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
+msgid "Please note that the unit of time configurations below are all in seconds."
 msgstr "请注意，下面的时间单位配置均以秒为单位。"
 
 msgid "Modify DNS Credential"
@@ -5827,20 +5766,15 @@ msgstr "仅用于 DNS 记录管理"
 msgid ""
 "DNS Domains are used for DNS record management in NGINX UI and are separate "
 "from ACME DNS-01 certificate challenges."
-msgstr ""
-"DNS 域名用于 NGINX UI 中的 DNS 记录管理，与 ACME DNS-01 证书挑战是两个不同的"
-"功能。"
+msgstr "DNS 域名用于 NGINX UI 中的 DNS 记录管理，与 ACME DNS-01 证书挑战是两个不同的功能。"
 
-msgid ""
-"DNS Domains only use providers with DNS record management implementations."
+msgid "DNS Domains only use providers with DNS record management implementations."
 msgstr "DNS Domains 仅使用已实现 DNS 记录管理的提供商。"
 
 msgid ""
 "For ACME DNS-01 certificate issuance, create DNS credentials under DNS > "
 "Credentials and select them in certificate settings."
-msgstr ""
-"如需使用 ACME DNS-01 签发证书，请在 DNS > 凭证中创建 DNS 凭证，并在证书设置中"
-"选择它。"
+msgstr "如需使用 ACME DNS-01 签发证书，请在 DNS > 凭证中创建 DNS 凭证，并在证书设置中选择它。"
 
 msgid "DNS Zone"
 msgstr "DNS 区域"
@@ -5848,9 +5782,7 @@ msgstr "DNS 区域"
 msgid ""
 "Enter the zone managed by your DNS provider, such as example.com. Add "
 "subdomains such as ddns.example.com later as DNS records."
-msgstr ""
-"请输入 DNS 提供商托管的区域，例如 example.com。之后再将 ddns.example.com 等子"
-"域名添加为 DNS 记录。"
+msgstr "请输入 DNS 提供商托管的区域，例如 example.com。之后再将 ddns.example.com 等子域名添加为 DNS 记录。"
 
 msgid "Manage Records"
 msgstr "管理记录"
@@ -6090,8 +6022,7 @@ msgstr "按共享值自动分组"
 msgid ""
 "Choose which names to synchronize. Existing provider-specific values are "
 "preserved unless you change them below."
-msgstr ""
-"选择要同步的名称。除非您在下方修改，否则会保留各名称现有的提供商特有字段。"
+msgstr "选择要同步的名称。除非您在下方修改，否则会保留各名称现有的提供商特有字段。"
 
 msgid "Edit scope"
 msgstr "编辑范围"
@@ -6120,9 +6051,7 @@ msgstr "提供商特有设置"
 msgid ""
 "Existing values are preserved per name. Changing a field overrides it for "
 "every selected name on that domain; new records use the shown defaults."
-msgstr ""
-"会按名称保留现有值。修改字段后，将覆盖该域名下所有所选名称的对应字段；新记录"
-"使用当前显示的默认值。"
+msgstr "会按名称保留现有值。修改字段后，将覆盖该域名下所有所选名称的对应字段；新记录使用当前显示的默认值。"
 
 msgid "Each setting is sent only to its matching target domain."
 msgstr "每项设置只会发送到与其匹配的目标域名。"
@@ -6145,8 +6074,7 @@ msgstr "查看分组记录更改"
 msgid "Apply changes"
 msgstr "应用更改"
 
-msgid ""
-"Changes are applied per domain and cannot be rolled back as one transaction."
+msgid "Changes are applied per domain and cannot be rolled back as one transaction."
 msgstr "更改将按域名分别应用，无法作为单个事务回滚。"
 
 msgid "Group record results"
@@ -6255,7 +6183,8 @@ msgid "Password length cannot exceed 20 characters"
 msgstr "密码长度不能超过 20 个字符"
 
 msgid ""
-"Frontend debug mode: install flow completed without sending a backend request"
+"Frontend debug mode: install flow completed without sending a backend "
+"request"
 msgstr "前端调试模式：安装流程完成，未发送后端请求"
 
 msgid "Install successfully"
@@ -6394,9 +6323,7 @@ msgid ""
 "Enabling advanced log indexing will consume significant computational "
 "resources including CPU and memory. Please ensure your system meets the "
 "minimum requirements before proceeding."
-msgstr ""
-"启用高级日志索引将消耗大量计算资源，包括 CPU 和内存。请确保您的系统满足最低要"
-"求后再继续。"
+msgstr "启用高级日志索引将消耗大量计算资源，包括 CPU 和内存。请确保您的系统满足最低要求后再继续。"
 
 msgid "System Requirements"
 msgstr "系统要求"
@@ -6408,16 +6335,14 @@ msgid "Recommended:"
 msgstr "推荐："
 
 msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx UI "
-"config path by default."
+"* Index files are stored in the \"log-index\" directory within your Nginx "
+"UI config path by default."
 msgstr "* 索引文件默认存储在您的 Nginx UI 配置路径下的 \"log-index\" 目录中。"
 
 msgid ""
 "If you want to change the storage location, you can set the `IndexPath` of "
 "`nginx_log` section in the Nginx UI config."
-msgstr ""
-"如果要更改存储位置，可以在 Nginx UI 配置中设置 `nginx_log` 部分的 "
-"`IndexPath`。"
+msgstr "如果要更改存储位置，可以在 Nginx UI 配置中设置 `nginx_log` 部分的 `IndexPath`。"
 
 msgid "GeoLite2 Database"
 msgstr "GeoLite2 数据库"
@@ -6428,9 +6353,7 @@ msgstr "预期性能"
 msgid ""
 "* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
 "Actual performance may vary based on your hardware configuration."
-msgstr ""
-"* 性能指标基于 Apple M2 Pro （12 核）和 32GB 内存测得。实际性能可能因您的硬件"
-"配置而异。"
+msgstr "* 性能指标基于 Apple M2 Pro （12 核）和 32GB 内存测得。实际性能可能因您的硬件配置而异。"
 
 msgid "Features"
 msgstr "功能"
@@ -6490,9 +6413,7 @@ msgid ""
 "By enabling advanced indexing, you acknowledge that your system meets the "
 "requirements and understand the performance implications. This will start "
 "indexing existing log files immediately."
-msgstr ""
-"启用高级索引即表示您确认系统满足要求并了解性能影响。这将立即开始对现有日志文"
-"件进行索引。"
+msgstr "启用高级索引即表示您确认系统满足要求并了解性能影响。这将立即开始对现有日志文件进行索引。"
 
 msgid "Indexing logs..."
 msgstr "正在索引日志..."
@@ -6644,8 +6565,7 @@ msgstr "无可用地理数据"
 msgid "Top 10 Countries / Regions"
 msgstr "前 10 个国家 / 地区"
 
-msgid ""
-"Explore access traffic logs with filters and detailed request information."
+msgid "Explore access traffic logs with filters and detailed request information."
 msgstr "按筛选条件查看访问流量日志及详细请求信息。"
 
 msgid "Inspect error events and troubleshoot issues from Nginx error output."
@@ -6669,9 +6589,7 @@ msgstr "重建索引"
 msgid ""
 "This will rebuild the entire log index. All existing index data will be "
 "deleted and rebuilt from scratch. This may take some time. Continue?"
-msgstr ""
-"这将重建整个日志索引。所有现有索引数据将被删除并从头开始重建。这可能需要一些"
-"时间。是否继续？"
+msgstr "这将重建整个日志索引。所有现有索引数据将被删除并从头开始重建。这可能需要一些时间。是否继续？"
 
 msgid "Index and statistics rebuild started successfully"
 msgstr "索引和统计重建已成功启动"
@@ -6742,9 +6660,7 @@ msgstr "禁用高级索引"
 msgid ""
 "Advanced log indexing will stop and structured log analytics will be "
 "unavailable. Existing index files will not be deleted. Continue?"
-msgstr ""
-"高级日志索引将停止，结构化日志分析将不可用。现有索引文件不会被删除。是否继"
-"续？"
+msgstr "高级日志索引将停止，结构化日志分析将不可用。现有索引文件不会被删除。是否继续？"
 
 msgid "Disable"
 msgstr "禁用"
@@ -6854,12 +6770,11 @@ msgid "Error Log Detected"
 msgstr "检测到错误日志"
 
 msgid ""
-"Error logs do not support structured analysis as they contain free-form text "
-"messages."
+"Error logs do not support structured analysis as they contain free-form "
+"text messages."
 msgstr "错误日志不支持结构化分析，因为它们包含自由格式的文本消息。"
 
-msgid ""
-"For error logs, please use the Raw Log Viewer for better viewing experience."
+msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
 msgstr "对于错误日志，请使用原始日志查看器以获得更好的查看体验。"
 
 msgid "Go to Raw Log Viewer"
@@ -6948,8 +6863,7 @@ msgstr "批量升级"
 msgid "Channel"
 msgstr "通道"
 
-msgid ""
-"This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
+msgid "This will upgrade or reinstall the Nginx UI on %{nodeNames} to %{version}."
 msgstr "将 %{nodeNames} 上的 Nginx UI 升级或重新安装到 %{version} 版本。"
 
 msgid "Dry run mode enabled"
@@ -7036,8 +6950,7 @@ msgstr "认证升级已暂停"
 msgid "Authentication upgrade pending"
 msgstr "身份验证升级待处理"
 
-msgid ""
-"The target node did not respond before the authentication upgrade timed out."
+msgid "The target node did not respond before the authentication upgrade timed out."
 msgstr "目标节点在认证升级超时前未响应。"
 
 msgid ""
@@ -7059,8 +6972,8 @@ msgid "The target node returned an invalid pairing response."
 msgstr "目标节点返回了无效的配对响应。"
 
 msgid ""
-"The target returned an invalid upgrade confirmation. Nginx UI stopped before "
-"accepting the new credential."
+"The target returned an invalid upgrade confirmation. Nginx UI stopped "
+"before accepting the new credential."
 msgstr "目标返回了无效的升级确认。Nginx UI 在接受新凭据之前停止了。"
 
 msgid "The paired credential could not be saved on this Nginx UI instance."
@@ -7085,8 +6998,8 @@ msgid ""
 msgstr "目标节点尚未支持配对签名。请升级目标节点，Nginx UI 将自动重试。"
 
 msgid ""
-"Enable the node to resume the authentication upgrade. The saved relationship "
-"has not been changed."
+"Enable the node to resume the authentication upgrade. The saved "
+"relationship has not been changed."
 msgstr "启用节点以恢复认证升级。已保存的关系没有更改。"
 
 msgid ""
@@ -7124,8 +7037,7 @@ msgstr "技术详情"
 msgid "Retry authentication upgrade"
 msgstr "重试身份验证升级"
 
-msgid ""
-"Check the node URL, network, TLS certificate, and authentication settings."
+msgid "Check the node URL, network, TLS certificate, and authentication settings."
 msgstr "请检查节点 URL、网络、TLS 证书和身份验证设置。"
 
 msgid ""
@@ -7139,14 +7051,12 @@ msgstr "请同步控制端和节点所在主机的系统时间。"
 msgid ""
 "If Nginx UI runs in Docker, correct the Docker host clock instead of the "
 "container clock."
-msgstr ""
-"如果 Nginx UI 运行在 Docker 中，请校准 Docker 主机时间，而不是容器时间。"
+msgstr "如果 Nginx UI 运行在 Docker 中，请校准 Docker 主机时间，而不是容器时间。"
 
 msgid "On Linux hosts, check and enable network time synchronization:"
 msgstr "在 Linux 主机上，检查并启用网络时间同步："
 
-msgid ""
-"The node will reconnect automatically after the clocks are synchronized."
+msgid "The node will reconnect automatically after the clocks are synchronized."
 msgstr "时间同步后，节点会自动重新连接。"
 
 msgid "System clocks are out of sync"
@@ -7267,8 +7177,7 @@ msgstr "Demo"
 msgid "ICP Number"
 msgstr "ICP 备案号"
 
-msgid ""
-"Shown in the page footer. Only needed for sites hosted in mainland China."
+msgid "Shown in the page footer. Only needed for sites hosted in mainland China."
 msgstr "显示在页面底部，仅中国大陆站点需要填写。"
 
 msgid "Public Security Number"
@@ -7277,8 +7186,7 @@ msgstr "公安备案号"
 msgid "Github Proxy"
 msgstr "Github 代理"
 
-msgid ""
-"Used for downloads from GitHub, such as upgrades and the GeoLite database."
+msgid "Used for downloads from GitHub, such as upgrades and the GeoLite database."
 msgstr "用于从 GitHub 下载内容，例如升级包和 GeoLite 数据库。"
 
 msgid "HTTP Proxy"
@@ -7309,8 +7217,8 @@ msgid "Max Attempts"
 msgstr "最大尝试次数"
 
 msgid ""
-"Failed attempts allowed inside the window before the address is banned for a "
-"while."
+"Failed attempts allowed inside the window before the address is banned for "
+"a while."
 msgstr "时间窗口内允许的失败次数，超过后该地址会被暂时封禁。"
 
 msgid "Banned IPs"
@@ -7323,10 +7231,9 @@ msgid "Access Tokens"
 msgstr "访问令牌"
 
 msgid ""
-"Create scoped credentials for the Nginx UI CLI, automation, and MCP clients. "
-"Tokens are shown only once."
-msgstr ""
-"为 Nginx UI CLI、自动化脚本和 MCP 客户端创建带作用域的凭据。令牌只显示一次。"
+"Create scoped credentials for the Nginx UI CLI, automation, and MCP "
+"clients. Tokens are shown only once."
+msgstr "为 Nginx UI CLI、自动化脚本和 MCP 客户端创建带作用域的凭据。令牌只显示一次。"
 
 msgid "Contact address registered with the certificate authority."
 msgstr "在证书颁发机构登记的联系邮箱。"
@@ -7334,8 +7241,7 @@ msgstr "在证书颁发机构登记的联系邮箱。"
 msgid "HTTP Challenge Port"
 msgstr "HTTP Challenge 监听端口"
 
-msgid ""
-"Port that answers validation requests while a certificate is being issued."
+msgid "Port that answers validation requests while a certificate is being issued."
 msgstr "签发证书时用于响应验证请求的端口。"
 
 msgid "CADir"
@@ -7372,8 +7278,7 @@ msgstr "维护主机"
 msgid ""
 "Optional HTTP or HTTPS origin that serves the maintenance page. Leave empty "
 "to use this Nginx UI instance."
-msgstr ""
-"可选的 HTTP 或 HTTPS 来源，用于提供维护页面。留空则使用当前 Nginx UI 实例。"
+msgstr "可选的 HTTP 或 HTTPS 来源，用于提供维护页面。留空则使用当前 Nginx UI 实例。"
 
 msgid "Maintenance bypass IP"
 msgstr "维护模式绕过 IP 地址"
@@ -7381,8 +7286,7 @@ msgstr "维护模式绕过 IP 地址"
 msgid ""
 "Requests from this IPv4 or IPv6 address continue to use the original site "
 "while maintenance mode is active."
-msgstr ""
-"当维护模式处于激活状态时，来自此 IPv4 或 IPv6 地址的请求将继续使用原始站点。"
+msgstr "当维护模式处于激活状态时，来自此 IPv4 或 IPv6 地址的请求将继续使用原始站点。"
 
 msgid "Maintenance template (filename only)"
 msgstr "维护模板（仅文件名）"
@@ -7391,9 +7295,7 @@ msgid ""
 "The file named <site name>.<filename> is used first; if it does not exist, "
 "the generic <filename> is used; if neither exists, the built-in Nginx UI "
 "maintenance page is used."
-msgstr ""
-"优先使用 <站点名>.<文件名> 命名的文件，若不存在则降级使用通用的 <文件名>，若"
-"两者均不存在则降级使用 Nginx UI 内置的维护页面。"
+msgstr "优先使用 <站点名>.<文件名> 命名的文件，若不存在则降级使用通用的 <文件名>，若两者均不存在则降级使用 Nginx UI 内置的维护页面。"
 
 msgid "Nginx Control Mode"
 msgstr "Nginx 控制模式"
@@ -7463,8 +7365,7 @@ msgstr "启动代码补全"
 msgid "Code Completion Model"
 msgstr "代码补全模型"
 
-msgid ""
-"The model used for code completion, if not set, the chat model will be used."
+msgid "The model used for code completion, if not set, the chat model will be used."
 msgstr "用于代码自动补全的模型，如果未设置，则使用聊天模型。"
 
 msgid "Enable site health checks"
@@ -7512,10 +7413,9 @@ msgid "Minutes between two runs."
 msgstr "两次执行的间隔分钟数。"
 
 msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This "
-"is used for offline geographic analysis in log analytics."
-msgstr ""
-"GeoLite2 数据库为 IP 地址提供地理信息。这用于日志分析中的离线地理分析。"
+"The GeoLite2 database provides geographic information for IP addresses. "
+"This is used for offline geographic analysis in log analytics."
+msgstr "GeoLite2 数据库为 IP 地址提供地理信息。这用于日志分析中的离线地理分析。"
 
 msgid "Custom MMDB"
 msgstr "自定义 MMDB"
@@ -7561,8 +7461,7 @@ msgid ""
 "passkey."
 msgstr "您尚未配置 Webauthn 的设置，因此无法添加 Passkey。"
 
-msgid ""
-"To ensure security, Webauthn configuration cannot be added through the UI. "
+msgid "To ensure security, Webauthn configuration cannot be added through the UI. "
 msgstr "为确保安全，Webauthn 配置无法通过 UI 添加。"
 
 msgid "Afterwards, refresh this page and click add passkey again."
@@ -7571,9 +7470,7 @@ msgstr "之后，请刷新此页面并再次点击添加通行密钥。"
 msgid ""
 "Due to the security policies of some browsers, you cannot use passkeys on "
 "non-HTTPS websites, except when running on localhost."
-msgstr ""
-"由于某些浏览器的安全策略，除非在 localhost 上使用，否则不能在非 HTTPS 网站上"
-"使用 Passkey。"
+msgstr "由于某些浏览器的安全策略，除非在 localhost 上使用，否则不能在非 HTTPS 网站上使用 Passkey。"
 
 msgid "Update successfully"
 msgstr "更新成功"
@@ -7584,8 +7481,7 @@ msgstr "移除成功"
 msgid "Passkey"
 msgstr "Passkey"
 
-msgid ""
-"Passkeys are webauthn credentials that validate your identity using touch, "
+msgid "Passkeys are webauthn credentials that validate your identity using touch, "
 msgstr "通行密钥是 WebAuthn 凭据，可通过触控验证您的身份，"
 
 msgid "Your passkeys"
@@ -7612,26 +7508,20 @@ msgstr "已查看"
 msgid ""
 "Recovery codes are used to access your account when you lose access to your "
 "2FA device. Each code can only be used once."
-msgstr ""
-"恢复代码用于在您无法访问双重身份验证设备时登录您的账户。每个代码只能使用一"
-"次。"
+msgstr "恢复代码用于在您无法访问双重身份验证设备时登录您的账户。每个代码只能使用一次。"
 
 msgid ""
 "Keep your recovery codes as safe as your password. We recommend saving them "
 "with a password manager."
-msgstr ""
-"请像保护密码一样安全地保管您的恢复代码。我们建议使用密码管理器保存它们。"
+msgstr "请像保护密码一样安全地保管您的恢复代码。我们建议使用密码管理器保存它们。"
 
-msgid ""
-"You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
+msgid "You have not enabled 2FA yet. Please enable 2FA to generate recovery codes."
 msgstr "您尚未启用双重身份验证。请启用双重身份验证以生成恢复代码。"
 
 msgid ""
 "Your account uses a deprecated legacy recovery code. Generate new recovery "
 "codes now to complete migration and keep account recovery secure."
-msgstr ""
-"您的帐户使用了已弃用的旧恢复代码。请立即生成新的恢复代码以完成迁移，并确保帐"
-"户恢复安全。"
+msgstr "您的帐户使用了已弃用的旧恢复代码。请立即生成新的恢复代码以完成迁移，并确保帐户恢复安全。"
 
 msgid ""
 "Your current recovery code might be outdated and insecure. Please generate "
@@ -7645,9 +7535,7 @@ msgid ""
 "These codes are the last resort for accessing your account in case you lose "
 "your password and second factors. If you cannot find these codes, you will "
 "lose access to your account."
-msgstr ""
-"这些代码是在您丢失密码和双重身份验证方式时，访问账户的最后手段。如果找不到这"
-"些代码，您将无法再访问您的账户。"
+msgstr "这些代码是在您丢失密码和双重身份验证方式时，访问账户的最后手段。如果找不到这些代码，您将无法再访问您的账户。"
 
 msgid "Copy Codes"
 msgstr "复制代码"
@@ -7689,8 +7577,7 @@ msgstr "TOTP 是一种使用基于时间的一次性密码算法的双因素身�
 msgid ""
 "To enable it, you need to install the Google or Microsoft Authenticator app "
 "on your mobile phone."
-msgstr ""
-"要启用该功能，您需要在手机上安装 Google 或 Microsoft Authenticator 应用程序。"
+msgstr "要启用该功能，您需要在手机上安装 Google 或 Microsoft Authenticator 应用程序。"
 
 msgid "Scan the QR code with your mobile phone to add the account to the app."
 msgstr "用手机扫描二维码，将账户添加到应用程序中。"
@@ -7767,9 +7654,7 @@ msgstr "通知类型的翻译键，例如 Error 或 Warning"
 msgid ""
 "Teams notification level color enum: Error=Attention, Warning=Warning, "
 "Info=Accent, Success=Good"
-msgstr ""
-"Teams 通知级别颜色枚举：Error=Attention，Warning=Warning，Info=Accent，"
-"Success=Good"
+msgstr "Teams 通知级别颜色枚举：Error=Attention，Warning=Warning，Info=Accent，Success=Good"
 
 msgid "Full go-to URL generated from WebAuthn RPOrigins and route path"
 msgstr "基于 WebAuthn RPOrigins 与路由路径生成的完整跳转 URL"
@@ -7921,9 +7806,7 @@ msgstr "%{model} 的思考级别"
 msgid ""
 "Each level adds these fields to the chat request body, like extra_body in "
 "the OpenAI SDK. Leave a level empty to hide it in the assistant."
-msgstr ""
-"每个级别会将这些字段添加到聊天请求体中，类似于 OpenAI SDK 中的 extra_body。留"
-"空某个级别即可在助手中隐藏该级别。"
+msgstr "每个级别会将这些字段添加到聊天请求体中，类似于 OpenAI SDK 中的 extra_body。留空某个级别即可在助手中隐藏该级别。"
 
 msgid "Custom model"
 msgstr "自定义模型"
@@ -8032,9 +7915,7 @@ msgstr "确认该地址可以访问运行 nginx 的宿主机。"
 msgid ""
 "This is expected on Docker Desktop. On other runtimes, confirm that the "
 "address reaches the machine running nginx."
-msgstr ""
-"Docker Desktop 出现此情况属于正常现象。在其他容器运行时中，请确认该地址可以访"
-"问运行 nginx 的宿主机。"
+msgstr "Docker Desktop 出现此情况属于正常现象。在其他容器运行时中，请确认该地址可以访问运行 nginx 的宿主机。"
 
 msgid ""
 "Confirm that the SSH server is running, the user exists, and the key or "
@@ -8044,9 +7925,7 @@ msgstr "确认 SSH 服务正在运行、用户存在，并且密钥或密码正�
 msgid ""
 "Confirm that the systemd unit name matches the installation, such as "
 "nginx.service or openresty.service."
-msgstr ""
-"确认 systemd 单元名称与安装方式一致，例如 nginx.service 或 "
-"openresty.service。"
+msgstr "确认 systemd 单元名称与安装方式一致，例如 nginx.service 或 openresty.service。"
 
 msgid "Confirm that the configured SSH user owns the Homebrew service."
 msgstr "确认配置的 SSH 用户是该 Homebrew 服务的所有者。"
@@ -8060,8 +7939,7 @@ msgstr "确认容器运行时提供了 host.docker.internal。"
 msgid "Confirm that /usr/bin/uname exists on the host."
 msgstr "确认宿主机上存在 /usr/bin/uname。"
 
-msgid ""
-"Correct the highlighted path or identifier, then run verification again."
+msgid "Correct the highlighted path or identifier, then run verification again."
 msgstr "修正标记出的路径或标识符，然后重新运行检查。"
 
 msgid "Fix the nginx configuration error shown in the details."
@@ -8076,9 +7954,7 @@ msgstr "检查 systemd 单元文件。"
 msgid ""
 "Bind-mount the host nginx log directory read-only at the configured "
 "container log path, and ensure the container can read it."
-msgstr ""
-"将宿主机的 nginx 日志目录以只读方式绑定挂载到配置的容器日志路径，并确保容器可"
-"以读取该目录。"
+msgstr "将宿主机的 nginx 日志目录以只读方式绑定挂载到配置的容器日志路径，并确保容器可以读取该目录。"
 
 msgid ""
 "Bind-mount the host PID directory containing %{path} at the same container "
@@ -8088,9 +7964,7 @@ msgstr "将宿主机上包含 %{path} 的 PID 目录绑定挂载到容器中的�
 msgid ""
 "Persist /etc/nginx-ui with a Docker named volume or bind mount so "
 "known_hosts survives container rebuilds."
-msgstr ""
-"使用 Docker 命名卷或绑定挂载持久化 /etc/nginx-ui，确保重建容器后仍保留 "
-"known_hosts。"
+msgstr "使用 Docker 命名卷或绑定挂载持久化 /etc/nginx-ui，确保重建容器后仍保留 known_hosts。"
 
 msgid "Replace the mount with: -v %{source}:%{target}"
 msgstr "将挂载替换为：-v %{source}:%{target}"
@@ -8113,8 +7987,7 @@ msgstr "选择与 SSH 宿主机匹配的服务管理器。"
 msgid "Run `brew services start nginx` as the configured SSH user."
 msgstr "以配置的 SSH 用户身份运行 `brew services start nginx`。"
 
-msgid ""
-"Review the cluster Node cross-host guide for the correct deployment method."
+msgid "Review the cluster Node cross-host guide for the correct deployment method."
 msgstr "请查看集群节点跨主机指南，使用正确的部署方式。"
 
 msgid "Use host.docker.internal when nginx runs on the Docker host."
@@ -8141,8 +8014,7 @@ msgstr "检测到："
 msgid "Restore detected value"
 msgstr "恢复为检测到的值"
 
-msgid ""
-"Point Nginx UI at a private key that already exists inside the container."
+msgid "Point Nginx UI at a private key that already exists inside the container."
 msgstr "让 Nginx UI 指向容器内已存在的私钥。"
 
 msgid ""
@@ -8150,8 +8022,7 @@ msgid ""
 "mode 0600."
 msgstr "粘贴或上传私钥。Nginx UI 会以 0600 权限将其保存在受管路径中。"
 
-msgid ""
-"Nginx UI generates an ed25519 keypair and stores it at the managed path."
+msgid "Nginx UI generates an ed25519 keypair and stores it at the managed path."
 msgstr "Nginx UI 会生成 ed25519 密钥对并保存在受管路径中。"
 
 msgid "No private key was found at this path"
@@ -8178,17 +8049,14 @@ msgstr "现有路径"
 msgid "Paste or upload"
 msgstr "粘贴或上传"
 
-msgid ""
-"The private key must already be available inside the Nginx UI container."
+msgid "The private key must already be available inside the Nginx UI container."
 msgstr "该私钥必须已存在于 Nginx UI 容器内。"
 
 msgid ""
 "Encrypted private keys are not supported. You may provide the host-side "
 "source path below to include a read-only bind mount in the generated "
 "container instructions."
-msgstr ""
-"不支持加密的私钥。您可以在下方填写宿主机侧的源路径，以便在生成的容器配置说明"
-"中包含只读绑定挂载。"
+msgstr "不支持加密的私钥。您可以在下方填写宿主机侧的源路径，以便在生成的容器配置说明中包含只读绑定挂载。"
 
 msgid "Saving will replace the Nginx UI managed SSH private key."
 msgstr "保存将替换由 Nginx UI 管理的 SSH 私钥。"
@@ -8196,14 +8064,12 @@ msgstr "保存将替换由 Nginx UI 管理的 SSH 私钥。"
 msgid ""
 "Only unencrypted SSH private keys are accepted. The submitted content is "
 "cleared from the browser after it is stored with file mode 0600."
-msgstr ""
-"仅接受未加密的 SSH 私钥。提交的内容在以 0600 权限保存后会从浏览器中清除。"
+msgstr "仅接受未加密的 SSH 私钥。提交的内容在以 0600 权限保存后会从浏览器中清除。"
 
 msgid "Private key path inside container"
 msgstr "容器内的私钥路径"
 
-msgid ""
-"Managed by Nginx UI. Switch to \"Existing path\" to use another location."
+msgid "Managed by Nginx UI. Switch to \"Existing path\" to use another location."
 msgstr "由 Nginx UI 管理。切换到“现有路径”可使用其他位置。"
 
 msgid "Private key content"
@@ -8301,9 +8167,7 @@ msgid ""
 "Nginx UI can read the key presented by the SSH server, but it cannot prove "
 "the key is genuine by itself. Verify the fingerprint through the host "
 "console or another trusted channel before trusting or replacing it."
-msgstr ""
-"Nginx UI 能读取 SSH 服务器提供的密钥，但无法自行证明该密钥的真实性。请先通过"
-"宿主机控制台或其他可信渠道核对指纹，再信任或替换它。"
+msgstr "Nginx UI 能读取 SSH 服务器提供的密钥，但无法自行证明该密钥的真实性。请先通过宿主机控制台或其他可信渠道核对指纹，再信任或替换它。"
 
 msgid "Current target"
 msgstr "当前目标"
@@ -8387,8 +8251,8 @@ msgid ""
 "it here would only fail later. Investigate why the host is presenting a "
 "revoked key before continuing."
 msgstr ""
-"此密钥在 known_hosts 中被标记为 @revoked。SSH 会拒绝该密钥，因此在此信任只会"
-"导致后续失败。继续之前，请先调查宿主机为何提供已撤销的密钥。"
+"此密钥在 known_hosts 中被标记为 @revoked。SSH "
+"会拒绝该密钥，因此在此信任只会导致后续失败。继续之前，请先调查宿主机为何提供已撤销的密钥。"
 
 msgid "Paths refreshed from %{path}"
 msgstr "已根据 %{path} 刷新路径"
@@ -8417,8 +8281,7 @@ msgstr "目标诊断失败"
 msgid "The target platform could not be classified automatically"
 msgstr "无法自动识别目标平台"
 
-msgid ""
-"Choose the platform and confirm every path below manually, then continue."
+msgid "Choose the platform and confirm every path below manually, then continue."
 msgstr "请手动选择平台并确认下方每个路径，然后继续。"
 
 msgid "Diagnosis completed with warnings"
@@ -8515,15 +8378,12 @@ msgstr "高性能模式（挂载）"
 msgid ""
 "Nginx UI reads configuration and logs from bind-mounted host directories. "
 "This is faster, but requires recreating the container."
-msgstr ""
-"Nginx UI 从绑定挂载的宿主机目录读取配置和日志。此模式速度更快，但需要重建容"
-"器。"
+msgstr "Nginx UI 从绑定挂载的宿主机目录读取配置和日志。此模式速度更快，但需要重建容器。"
 
 msgid ""
 "Nginx UI reads configuration and logs entirely over SSH and SFTP. No host "
 "directories are mounted into the container."
-msgstr ""
-"Nginx UI 完全通过 SSH 和 SFTP 读取配置与日志，不会将宿主机目录挂载到容器中。"
+msgstr "Nginx UI 完全通过 SSH 和 SFTP 读取配置与日志，不会将宿主机目录挂载到容器中。"
 
 msgid "Failed to load setup instructions"
 msgstr "加载配置说明失败"
@@ -8543,26 +8403,24 @@ msgstr "2. 在 Nginx UI 容器中"
 msgid "Run these on the machine that runs nginx, as a user who can use sudo."
 msgstr "请在运行 nginx 的机器上，以可使用 sudo 的用户身份执行以下命令。"
 
-msgid ""
-"Run these on the machine that runs nginx, as the SSH user configured above."
+msgid "Run these on the machine that runs nginx, as the SSH user configured above."
 msgstr "请在运行 nginx 的机器上，以上面配置的 SSH 用户身份执行以下命令。"
 
 msgid "Install the public key"
 msgstr "安装公钥"
 
 msgid ""
-"Creates %{file} with the permissions sshd requires and appends the key. sshd "
-"silently ignores an authorized_keys file that other users can write, which "
-"shows up later as a permission denied error."
+"Creates %{file} with the permissions sshd requires and appends the key. "
+"sshd silently ignores an authorized_keys file that other users can write, "
+"which shows up later as a permission denied error."
 msgstr ""
-"按 sshd 要求的权限创建 %{file} 并追加密钥。如果 authorized_keys 文件允许其他"
-"用户写入，sshd 会静默忽略它，之后表现为 permission denied 错误。"
+"按 sshd 要求的权限创建 %{file} 并追加密钥。如果 authorized_keys 文件允许其他用户写入，sshd "
+"会静默忽略它，之后表现为 permission denied 错误。"
 
 msgid ""
 "The same key on its own, for appending by hand. To restrict where it may be "
 "used from, prefix it with from='…'."
-msgstr ""
-"仅密钥本身，便于手动追加。若要限制可从哪些来源使用，请在前面加上 from='…'。"
+msgstr "仅密钥本身，便于手动追加。若要限制可从哪些来源使用，请在前面加上 from='…'。"
 
 msgid "Open the sudoers file"
 msgstr "打开 sudoers 文件"
@@ -8578,9 +8436,7 @@ msgstr "sudoers 规则"
 msgid ""
 "Paste this into the editor visudo opened, then save and exit. It lets the "
 "SSH user reload nginx without a password."
-msgstr ""
-"将以下内容粘贴到 visudo 打开的编辑器中，然后保存并退出。它允许该 SSH 用户无需"
-"密码即可重载 nginx。"
+msgstr "将以下内容粘贴到 visudo 打开的编辑器中，然后保存并退出。它允许该 SSH 用户无需密码即可重载 nginx。"
 
 msgid "File access check"
 msgstr "文件访问检查"
@@ -8591,17 +8447,13 @@ msgstr "文件权限"
 msgid ""
 "Run as the SSH user. Both commands only test access and change nothing. A "
 "failure means the SSH user cannot reach the Homebrew paths."
-msgstr ""
-"以该 SSH 用户身份运行。两条命令只测试访问权限，不会做任何更改。失败表示该 "
-"SSH 用户无法访问 Homebrew 路径。"
+msgstr "以该 SSH 用户身份运行。两条命令只测试访问权限，不会做任何更改。失败表示该 SSH 用户无法访问 Homebrew 路径。"
 
 msgid ""
 "Run as root. Grants the SSH user write access to the nginx config directory "
-"and read access to the logs, including files created later, plus read access "
-"to the PID file."
-msgstr ""
-"以 root 身份运行。授予该 SSH 用户对 nginx 配置目录的写权限、对日志（含之后创"
-"建的文件）的读权限，以及对 PID 文件的读权限。"
+"and read access to the logs, including files created later, plus read "
+"access to the PID file."
+msgstr "以 root 身份运行。授予该 SSH 用户对 nginx 配置目录的写权限、对日志（含之后创建的文件）的读权限，以及对 PID 文件的读权限。"
 
 msgid "Nothing else to install on the host"
 msgstr "宿主机上无需再安装任何内容"
@@ -8609,12 +8461,9 @@ msgstr "宿主机上无需再安装任何内容"
 msgid ""
 "A Homebrew launchd service runs as the SSH user, so no sudoers entry or "
 "extra permissions are needed."
-msgstr ""
-"Homebrew 的 launchd 服务以该 SSH 用户身份运行，因此无需 sudoers 条目或额外权"
-"限。"
+msgstr "Homebrew 的 launchd 服务以该 SSH 用户身份运行，因此无需 sudoers 条目或额外权限。"
 
-msgid ""
-"The SSH user is root, so no sudoers entry or extra permissions are needed."
+msgid "The SSH user is root, so no sudoers entry or extra permissions are needed."
 msgstr "该 SSH 用户是 root，因此无需 sudoers 条目或额外权限。"
 
 msgid ""
@@ -8625,9 +8474,7 @@ msgstr "选择与当前 Nginx UI 运行方式相符的格式，然后使用绑�
 msgid ""
 "Linux Docker Engine requires this host-gateway mapping for "
 "host.docker.internal. No directory mounts are added."
-msgstr ""
-"Linux Docker Engine 需要通过此 host-gateway 映射提供 host.docker.internal，不"
-"会添加目录挂载。"
+msgstr "Linux Docker Engine 需要通过此 host-gateway 映射提供 host.docker.internal，不会添加目录挂载。"
 
 msgid "Recreating the container closes this page"
 msgstr "重建容器会关闭此页面"
@@ -8636,16 +8483,14 @@ msgid "Finish the host side first, then come back here."
 msgstr "请先完成宿主机侧的配置，然后返回此处。"
 
 msgid ""
-"Restarting Nginx UI ends the two-factor session and clears anything typed in "
-"the earlier steps."
+"Restarting Nginx UI ends the two-factor session and clears anything typed "
+"in the earlier steps."
 msgstr "重启 Nginx UI 会结束两步验证会话，并清空前面步骤中已输入的内容。"
 
 msgid ""
 "The generated key and known_hosts survive, because they live under the "
 "persisted /etc/nginx-ui directory."
-msgstr ""
-"生成的密钥和 known_hosts 会保留，因为它们位于已持久化的 /etc/nginx-ui 目录"
-"下。"
+msgstr "生成的密钥和 known_hosts 会保留，因为它们位于已持久化的 /etc/nginx-ui 目录下。"
 
 msgid ""
 "Note the host address and SSH user before you recreate, then reopen the "
@@ -8667,9 +8512,7 @@ msgstr "docker-compose.yml"
 msgid ""
 "Merge this under services.nginx-ui in your existing file. Each bind mount "
 "uses the same path inside the container as on the host."
-msgstr ""
-"请将其合并到现有文件的 services.nginx-ui 下。每个绑定挂载在容器内使用与宿主机"
-"相同的路径。"
+msgstr "请将其合并到现有文件的 services.nginx-ui 下。每个绑定挂载在容器内使用与宿主机相同的路径。"
 
 msgid ""
 "Merge this host-gateway mapping under services.nginx-ui in your existing "
@@ -8682,15 +8525,12 @@ msgstr "docker-compose.override.yml"
 msgid ""
 "Save as a new file next to your main compose file. Docker Compose merges it "
 "automatically, so your original file stays untouched."
-msgstr ""
-"在主 compose 文件旁另存为新文件。Docker Compose 会自动合并，因此原文件保持不"
-"变。"
+msgstr "在主 compose 文件旁另存为新文件。Docker Compose 会自动合并，因此原文件保持不变。"
 
 msgid ""
 "Replaces your current docker run command. Adjust the published port and the "
 "image tag to match your current deployment."
-msgstr ""
-"用于替换您当前的 docker run 命令。请根据现有部署调整发布端口和镜像标签。"
+msgstr "用于替换您当前的 docker run 命令。请根据现有部署调整发布端口和镜像标签。"
 
 msgid "Apply the change"
 msgstr "应用变更"
@@ -8710,12 +8550,10 @@ msgid "Setup checks"
 msgstr "配置检查"
 
 msgid ""
-"Run these after applying the relevant host and container instructions above. "
-"They verify the service, file access and required privileges for the "
+"Run these after applying the relevant host and container instructions "
+"above. They verify the service, file access and required privileges for the "
 "selected mode."
-msgstr ""
-"请在应用上方相关的宿主机和容器配置后运行。检查会验证所选模式的服务、文件访问"
-"和所需权限。"
+msgstr "请在应用上方相关的宿主机和容器配置后运行。检查会验证所选模式的服务、文件访问和所需权限。"
 
 msgid "SSH target"
 msgstr "SSH 目标"
@@ -8732,8 +8570,7 @@ msgstr "从本容器可通过 SSH 端口访问以下地址："
 msgid "Could not probe for reachable addresses: %{reason}"
 msgstr "无法探测可达地址：%{reason}"
 
-msgid ""
-"No address answered. Enter one manually, then use Probe again to test it."
+msgid "No address answered. Enter one manually, then use Probe again to test it."
 msgstr "没有地址响应。请手动输入一个地址，然后点击“重新检查”进行测试。"
 
 msgid "Probe again"
@@ -8748,8 +8585,7 @@ msgstr "此模式仅支持 nginx-ui 与目标 nginx 位于同一台主机。"
 msgid ""
 "bind-mount cannot reach remote filesystems, so config editing, log viewing "
 "and certificate management will fail."
-msgstr ""
-"绑定挂载无法访问远程文件系统，因此配置编辑、日志查看和证书管理都会失败。"
+msgstr "绑定挂载无法访问远程文件系统，因此配置编辑、日志查看和证书管理都会失败。"
 
 msgid "Use the cluster Node guide for cross-host setups."
 msgstr "跨主机部署请参阅集群节点指南。"
@@ -8764,9 +8600,7 @@ msgid ""
 "The earlier steps already verified SSH, platform, file access and "
 "privileges. This final check only runs nginx -t against the host "
 "configuration."
-msgstr ""
-"前面的步骤已验证 SSH、平台、文件访问和权限。最后一步只对宿主机配置运行 nginx "
-"-t。"
+msgstr "前面的步骤已验证 SSH、平台、文件访问和权限。最后一步只对宿主机配置运行 nginx -t。"
 
 msgid "Verification failed"
 msgstr "验证失败"
@@ -8779,11 +8613,9 @@ msgstr "宿主机上的 nginx 配置校验未通过"
 
 msgid ""
 "This is the configuration already present on the host, not something this "
-"wizard wrote. The SSH setup itself can still be saved, and the configuration "
-"can be fixed from Nginx UI afterwards."
-msgstr ""
-"这是宿主机上已有的配置，并非本向导写入的内容。SSH 配置本身仍可保存，之后可以"
-"在 Nginx UI 中修复该配置。"
+"wizard wrote. The SSH setup itself can still be saved, and the "
+"configuration can be fixed from Nginx UI afterwards."
+msgstr "这是宿主机上已有的配置，并非本向导写入的内容。SSH 配置本身仍可保存，之后可以在 Nginx UI 中修复该配置。"
 
 msgid "Continue without validating the configuration"
 msgstr "跳过配置校验并继续"
@@ -8870,9 +8702,7 @@ msgstr "加载设置失败"
 msgid ""
 "The saved SSH access mode is missing or invalid. Set host_access_mode to "
 "sftp or mounted in the configuration file."
-msgstr ""
-"保存的 SSH 访问模式缺失或无效。请在配置文件中将 host_access_mode 设置为 sftp "
-"或 mounted。"
+msgstr "保存的 SSH 访问模式缺失或无效。请在配置文件中将 host_access_mode 设置为 sftp 或 mounted。"
 
 msgid "Failed to authorize protected settings"
 msgstr "受保护设置授权失败"
@@ -8886,8 +8716,7 @@ msgstr "返回 Nginx 设置"
 msgid "Authorizing..."
 msgstr "正在授权..."
 
-msgid ""
-"Enable two-factor authentication before changing Nginx control settings."
+msgid "Enable two-factor authentication before changing Nginx control settings."
 msgstr "修改 Nginx 控制设置前请先启用两步验证。"
 
 msgid "2FA Settings"
@@ -8898,10 +8727,6 @@ msgstr "无法打开 SSH 配置向导"
 
 msgid "Basics"
 msgstr "基础"
-
-msgctxt "preference group"
-msgid "Maintenance"
-msgstr "维护"
 
 msgid "Address, protocol and certificate used to reach this Nginx UI instance."
 msgstr "访问此 Nginx UI 实例所用的地址、协议和证书。"
@@ -8939,15 +8764,13 @@ msgstr "供命令行、自动化和 MCP 客户端使用的凭据。"
 msgid "Cert"
 msgstr "证书"
 
-msgid ""
-"Contact, issuing service and renewal of certificates requested by Nginx UI."
+msgid "Contact, issuing service and renewal of certificates requested by Nginx UI."
 msgstr "Nginx UI 申请证书时的联系方式、签发服务与续期设置。"
 
 msgid "Go to certificates"
 msgstr "前往证书"
 
-msgid ""
-"Paths, commands, maintenance page and control mode of the managed Nginx."
+msgid "Paths, commands, maintenance page and control mode of the managed Nginx."
 msgstr "所管理 Nginx 的路径、命令、维护页面与控制模式。"
 
 msgid "LLM"
@@ -9118,9 +8941,7 @@ msgstr "限流"
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
-msgstr ""
-"如果某个 IP 在封禁阈值时间内登录失败次数达到最大尝试次数，该 IP 将被封禁一段"
-"时间。"
+msgstr "如果某个 IP 在封禁阈值时间内登录失败次数达到最大尝试次数，该 IP 将被封禁一段时间。"
 
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "您确定要立即删除这个被禁用的 IP 吗？"
@@ -9156,8 +8977,8 @@ msgid "Maps"
 msgstr "地图"
 
 msgid ""
-"Please download China and province boundary files yourself and place them in "
-"this directory."
+"Please download China and province boundary files yourself and place them "
+"in this directory."
 msgstr "请自行下载中国及各省份边界文件并放入此目录。"
 
 msgid "Template reference"
@@ -9167,9 +8988,7 @@ msgid ""
 "A global pause stops network probes without changing individual site or "
 "upstream selections. Discovery remains active so configured targets stay "
 "visible."
-msgstr ""
-"全局暂停会停止网络探测，但不会更改各个站点或上游的选择。发现功能仍然启用，已"
-"配置的目标依然可见。"
+msgstr "全局暂停会停止网络探测，但不会更改各个站点或上游的选择。发现功能仍然启用，已配置的目标依然可见。"
 
 msgid "Seconds"
 msgstr "秒"
@@ -9181,16 +9000,15 @@ msgid "For Chinese user: https://cloud.nginxui.com/"
 msgstr "中国用户：https://cloud.nginxui.com/"
 
 msgid ""
-"Logrotate, by default, is enabled in most mainstream Linux distributions for "
-"users who install Nginx UI on the host machine, so you don't need to modify "
-"the parameters on this page. For users who install Nginx UI using Docker "
-"containers, you can manually enable this option. The crontab task scheduler "
-"of Nginx UI will execute the logrotate command at the interval you set in "
-"minutes."
+"Logrotate, by default, is enabled in most mainstream Linux distributions "
+"for users who install Nginx UI on the host machine, so you don't need to "
+"modify the parameters on this page. For users who install Nginx UI using "
+"Docker containers, you can manually enable this option. The crontab task "
+"scheduler of Nginx UI will execute the logrotate command at the interval "
+"you set in minutes."
 msgstr ""
-"对于在主机上安装 Nginx UI 的用户，Logrotate 在大多数主流 Linux 发行版中默认已"
-"启用，因此通常无需修改本页参数。对于使用 Docker 容器安装 Nginx UI 的用户，你"
-"可以手动启用该选项。Nginx UI 的 crontab 任务调度器会按照你设置的分钟间隔执行 "
+"对于在主机上安装 Nginx UI 的用户，Logrotate 在大多数主流 Linux 发行版中默认已启用，因此通常无需修改本页参数。对于使用 "
+"Docker 容器安装 Nginx UI 的用户，你可以手动启用该选项。Nginx UI 的 crontab 任务调度器会按照你设置的分钟间隔执行 "
 "logrotate 命令。"
 
 msgid "Minutes"
@@ -9227,9 +9045,7 @@ msgid ""
 "Compatibility mode works entirely over SSH. For lower file-access latency, "
 "configure bind mounts and switch to high-performance mode after recreating "
 "the container."
-msgstr ""
-"兼容模式完全通过 SSH 工作。若要降低文件访问延迟，请配置绑定挂载，并在重建容器"
-"后切换到高性能模式。"
+msgstr "兼容模式完全通过 SSH 工作。若要降低文件访问延迟，请配置绑定挂载，并在重建容器后切换到高性能模式。"
 
 msgid "Review high-performance setup"
 msgstr "查看高性能模式设置"
@@ -9307,12 +9123,11 @@ msgid "Input"
 msgstr "输入"
 
 msgid ""
-"Leave blank to use the MiniMax global OpenAI-compatible endpoint: https://"
-"api.minimax.io/v1"
+"Leave blank to use the MiniMax global OpenAI-compatible endpoint: "
+"https://api.minimax.io/v1"
 msgstr "留空以使用 MiniMax 全球 OpenAI 兼容端点：https://api.minimax.io/v1"
 
-msgid ""
-"Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
+msgid "Leave blank to use the Atlas Cloud endpoint: https://api.atlascloud.ai/v1"
 msgstr "留空则使用 Atlas Cloud 端点：https://api.atlascloud.ai/v1"
 
 msgid "Leave blank for the default: https://api.openai.com/"
@@ -9323,20 +9138,18 @@ msgstr "URL 无效."
 
 msgid ""
 "MiniMax is OpenAI-compatible. Use https://api.minimax.io/v1 for global "
-"service or https://api.minimaxi.com/v1 for China service. For Anthropic-"
-"compatible clients, use https://api.minimax.io/anthropic or https://"
-"api.minimaxi.com/anthropic."
+"service or https://api.minimaxi.com/v1 for China service. For "
+"Anthropic-compatible clients, use https://api.minimax.io/anthropic or "
+"https://api.minimaxi.com/anthropic."
 msgstr ""
-"MiniMax 兼容 OpenAI。全球服务请使用 https://api.minimax.io/v1，中国服务请使"
-"用 https://api.minimaxi.com/v1。对于兼容 Anthropic 的客户端，请使用 https://"
-"api.minimax.io/anthropic 或 https://api.minimaxi.com/anthropic。"
+"MiniMax 兼容 OpenAI。全球服务请使用 https://api.minimax.io/v1，中国服务请使用 "
+"https://api.minimaxi.com/v1。对于兼容 Anthropic 的客户端，请使用 "
+"https://api.minimax.io/anthropic 或 https://api.minimaxi.com/anthropic。"
 
 msgid ""
 "Atlas Cloud is OpenAI-compatible. Use https://api.atlascloud.ai/v1 and an "
 "Atlas Cloud API key."
-msgstr ""
-"Atlas Cloud 兼容 OpenAI。使用 https://api.atlascloud.ai/v1 和 Atlas Cloud "
-"API 密钥。"
+msgstr "Atlas Cloud 兼容 OpenAI。使用 https://api.atlascloud.ai/v1 和 Atlas Cloud API 密钥。"
 
 msgid "To use a local large model, deploy it with ollama, vllm or lmdeploy. "
 msgstr "要使用本地大模型，请使用 ollama 、 vllm 或 lmdeploy 部署。"
@@ -9396,9 +9209,9 @@ msgstr "HTTP/3 需要 UDP 监听器，Nginx UI 监听 Unix Socket 时不可用�
 
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
-"reverse proxy, please configure the protocol separately in the reverse proxy."
-msgstr ""
-"协议配置仅在直接连接时生效。如果使用反向代理，请在反向代理中单独配置协议。"
+"reverse proxy, please configure the protocol separately in the reverse "
+"proxy."
+msgstr "协议配置仅在直接连接时生效。如果使用反向代理，请在反向代理中单独配置协议。"
 
 msgid "End time must be later than start time"
 msgstr "结束时间必须晚于开始时间"
@@ -9550,9 +9363,7 @@ msgstr "DNS 记录集成（可选）"
 msgid ""
 "Link this site to a DNS record. The server_name will be used for the DNS "
 "record name. You can skip this step if DNS is already configured."
-msgstr ""
-"将此站点链接到 DNS 记录。server_name 将用作 DNS 记录名称。如果 DNS 已配置，可"
-"以跳过此步骤。"
+msgstr "将此站点链接到 DNS 记录。server_name 将用作 DNS 记录名称。如果 DNS 已配置，可以跳过此步骤。"
 
 msgid "DNS Domain"
 msgstr "DNS 域名"
@@ -9611,8 +9422,7 @@ msgstr "保存并启用站点，沿用已有的 HTTPS server 块。"
 msgid ""
 "The previous draft %{name} is enabled, so it was kept. Remove it from the "
 "site list if you no longer need it."
-msgstr ""
-"之前的草稿 %{name} 已启用，因此已保留。如果不再需要，请从站点列表中删除。"
+msgstr "之前的草稿 %{name} 已启用，因此已保留。如果不再需要，请从站点列表中删除。"
 
 msgid "Removed the previous draft %{name}"
 msgstr "已删除之前的草稿 %{name}"
@@ -9645,6 +9455,9 @@ msgstr "命名空间"
 
 msgid "The parameter of server_name is required"
 msgstr "必须为 server_name 指令指明参数"
+
+msgid "Config Template"
+msgstr "配置模板"
 
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "启用 HTTPS 前，请先保存已编辑的配置。"
@@ -9728,8 +9541,7 @@ msgstr "先检查"
 msgid "Self-signed certificate applied"
 msgstr "自签名证书已应用"
 
-msgid ""
-"Saving the site configuration failed; the certificate directives are in "
+msgid "Saving the site configuration failed; the certificate directives are in "
 msgstr "保存站点配置失败；证书指令位于"
 
 msgid "Certificate directives added to the editor; review and save when ready."
@@ -9741,11 +9553,28 @@ msgstr "自签名证书"
 msgid "Generate self-signed certificate"
 msgstr "生成自签名证书"
 
+msgid "Built-in"
+msgstr "内置"
+
 msgid "Search templates"
 msgstr "搜索模板"
 
+msgid "Snippet"
+msgstr "片段"
+
 msgid "Author"
 msgstr "作者"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr "引用会让网站与 snippets/%{file} 保持关联，之后对片段的修改都会作用到网站。插入则会把内容复制到网站中。"
+
+msgid "Insert"
+msgstr "插入"
+
+msgid "Include"
+msgstr "引用"
 
 msgid "Do you want to enable TLS?"
 msgstr "你想启用 TLS 吗？"
@@ -9757,16 +9586,14 @@ msgid "Save your changes before enabling HTTPS"
 msgstr "启用 HTTPS 前请先保存更改"
 
 msgid ""
-"HTTPS setup rewrites the saved site configuration, so unsaved edits would be "
-"lost."
+"HTTPS setup rewrites the saved site configuration, so unsaved edits would "
+"be lost."
 msgstr "HTTPS 设置会重写已保存的站点配置，未保存的编辑将会丢失。"
 
 msgid ""
 "HTTPS setup builds the HTTPS server block from the saved configuration. "
 "Unsaved edits to that block are not used."
-msgstr ""
-"HTTPS 设置会根据已保存的配置生成 HTTPS server 块，该块中未保存的编辑不会被使"
-"用。"
+msgstr "HTTPS 设置会根据已保存的配置生成 HTTPS server 块，该块中未保存的编辑不会被使用。"
 
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "不是有效的域名或 IP 地址：%{value}"
@@ -9784,16 +9611,14 @@ msgid "Skip for now"
 msgstr "暂时跳过"
 
 msgid ""
-"The certificate authority validates each domain over port 80, so the domains "
-"must resolve to this server."
-msgstr ""
-"证书颁发机构会通过 80 端口验证每个域名，因此这些域名必须解析到此服务器。"
+"The certificate authority validates each domain over port 80, so the "
+"domains must resolve to this server."
+msgstr "证书颁发机构会通过 80 端口验证每个域名，因此这些域名必须解析到此服务器。"
 
 msgid ""
 "Validation uses a DNS TXT record created with the selected DNS credential. "
 "Required for wildcard domains."
-msgstr ""
-"使用所选 DNS 凭证创建的 DNS TXT 记录进行验证。通配符域名必须使用此方式。"
+msgstr "使用所选 DNS 凭证创建的 DNS TXT 记录进行验证。通配符域名必须使用此方式。"
 
 msgid ""
 "Use a certificate from the certificate manager. Nothing is requested from a "
@@ -9848,8 +9673,7 @@ msgstr "已通过"
 msgid "Waiting"
 msgstr "等待中"
 
-msgid ""
-"The connection closed before HTTPS setup finished. Retry to run it again."
+msgid "The connection closed before HTTPS setup finished. Retry to run it again."
 msgstr "HTTPS 设置完成前连接已关闭。请重试以重新运行。"
 
 msgid "HTTPS setup failed"
@@ -9862,9 +9686,7 @@ msgid ""
 "Nginx UI stages the challenge route, verifies it, requests the certificate "
 "and switches the site to HTTPS in one run. If a step fails, the site keeps "
 "serving plain HTTP."
-msgstr ""
-"Nginx UI 会一次性完成预置验证路由、验证路由、申请证书并将站点切换到 HTTPS。如"
-"果某一步失败，站点将继续以普通 HTTP 提供服务。"
+msgstr "Nginx UI 会一次性完成预置验证路由、验证路由、申请证书并将站点切换到 HTTPS。如果某一步失败，站点将继续以普通 HTTP 提供服务。"
 
 msgid "Add at least one domain or IP address."
 msgstr "请至少添加一个域名或 IP 地址。"
@@ -9939,9 +9761,7 @@ msgid ""
 "The generated configuration will replace the current one and is saved right "
 "away without its HTTPS server. Any custom directives or locations will be "
 "lost."
-msgstr ""
-"生成的配置将替换当前配置，并立即保存（不含 HTTPS server）。所有自定义指令或 "
-"Location 都将丢失。"
+msgstr "生成的配置将替换当前配置，并立即保存（不含 HTTPS server）。所有自定义指令或 Location 都将丢失。"
 
 msgid ""
 "The generated configuration will replace the current one. Any custom "
@@ -9958,11 +9778,9 @@ msgid "Configuration regenerated"
 msgstr "配置已重新生成"
 
 msgid ""
-"The configuration is saved without its HTTPS server first. Then enable HTTPS "
-"from the HTTPS card on this page."
-msgstr ""
-"配置会先在不含 HTTPS server 的情况下保存，然后请在本页的 HTTPS 卡片中启用 "
-"HTTPS。"
+"The configuration is saved without its HTTPS server first. Then enable "
+"HTTPS from the HTTPS card on this page."
+msgstr "配置会先在不含 HTTPS server 的情况下保存，然后请在本页的 HTTPS 卡片中启用 HTTPS。"
 
 msgid "Generate Config"
 msgstr "生成配置"
@@ -10019,9 +9837,6 @@ msgstr "重新创建 DNS 记录"
 
 msgid "Clear Link"
 msgstr "清除链接"
-
-msgid "Config Template"
-msgstr "配置模板"
 
 msgid "Port Scanner"
 msgstr "端口检测"
@@ -10105,6 +9920,303 @@ msgstr "为选中的站点设置维护信息"
 
 msgid "%{count} sites selected"
 msgstr "%{count} 个已选站点"
+
+msgid "Read Only"
+msgstr "只读"
+
+msgid "Preview"
+msgstr "预览"
+
+msgid "Updates as the snippet changes."
+msgstr "随片段修改实时更新。"
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr "内置模板随 Nginx UI 提供，不能修改。如需修改，请将其复制为片段。"
+
+msgid "File Name"
+msgstr "文件名"
+
+msgid "Variables"
+msgstr "变量"
+
+msgid "Copy as Snippet"
+msgstr "复制为片段"
+
+msgid "Template"
+msgstr "模板"
+
+msgid "No template matches the search"
+msgstr "没有匹配的模板"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} 个变量"
+
+msgid "Translations"
+msgstr "翻译"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr "输入框中为%{language}文本。其他语言的用户将看到对应的翻译，没有翻译时显示英文。"
+
+msgid "Remove translation"
+msgstr "删除翻译"
+
+msgid "Add a language"
+msgstr "添加语言"
+
+msgid "Text"
+msgstr "文本"
+
+msgid "Switch"
+msgstr "开关"
+
+msgid "Select"
+msgstr "选择"
+
+msgid "New Variable…"
+msgstr "新建变量…"
+
+msgid "Insert Variable"
+msgstr "插入变量"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr "输入 %{open} 补全变量，或选中一个值后按 %{keys} 将其设为变量。"
+
+msgid "Default Value"
+msgstr "默认值"
+
+msgid "Edit Variable"
+msgstr "编辑变量"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr "此变量未声明，插入片段时将没有值。"
+
+msgid "Declare Variable"
+msgstr "声明变量"
+
+msgid "Make Variable"
+msgstr "设为变量"
+
+msgid "New Variable"
+msgstr "新变量"
+
+msgid "Key"
+msgstr "键名"
+
+msgid "Label"
+msgstr "显示名称"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "变量将被声明，并插入到光标处。"
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr "选中的值将成为默认值，内容中改为引用该变量。"
+
+msgid "Add Variable"
+msgstr "添加变量"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "以下变量未声明，将没有值：%{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "片段无法渲染为有效的 Nginx 配置。"
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "片段可以渲染为有效的 Nginx 配置。"
+
+msgid "What the site editor asks for"
+msgstr "站点编辑器中填写的内容"
+
+msgid "Restore Default Values"
+msgstr "恢复默认值"
+
+msgid "Nothing to fill in."
+msgstr "没有需要填写的内容。"
+
+msgid "Fix the variables to preview the snippet."
+msgstr "请先修正变量，再预览片段。"
+
+msgid "Snippets are no longer synchronized"
+msgstr "片段已停止同步"
+
+msgid "Synchronize Snippets"
+msgstr "同步片段"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr "所有片段会立即复制到所选节点，之后的修改也会自动同步。清空选择即可停止同步。"
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "替换节点上已存在的片段"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "被 %{count} 个文件引用"
+
+msgid "Not Used"
+msgstr "未使用"
+
+msgid "Max Age"
+msgstr "有效时间"
+
+msgid "Options"
+msgstr "选项"
+
+msgid "Remove option"
+msgstr "删除选项"
+
+msgid "Add Option"
+msgstr "添加选项"
+
+msgid "Remove variable"
+msgstr "删除变量"
+
+msgid "Used in the content, not declared"
+msgstr "内容中使用但未声明"
+
+msgid "Snippet %{name} saved"
+msgstr "片段 %{name} 已保存"
+
+msgid "Discard the unsaved changes?"
+msgstr "放弃未保存的修改？"
+
+msgid "Keep Editing"
+msgstr "继续编辑"
+
+msgid "Edit Snippet %{name}"
+msgstr "编辑片段 %{name}"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "网站可以引用此片段，并随片段的后续修改同步更新。"
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr "此片段含有变量，网站需从配置模板面板插入填写后的副本。"
+
+msgid "Includable"
+msgstr "可引用"
+
+msgid "Insert Only"
+msgstr "仅可插入"
+
+msgid "Use"
+msgstr "使用方式"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr "将此指令添加到 server 或 location 块中。引用此片段的网站会随其后续修改同步更新。"
+
+msgid "Static file cache"
+msgstr "静态文件缓存"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr "有配置引用此片段时不可修改，以保证这些配置继续正常工作。"
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "字母、数字、点、连字符和下划线。"
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr "从站点编辑器的配置模板面板插入片段时填写变量。含有变量的片段只能插入，不能被引用。"
+
+msgid "No configuration includes this snippet yet."
+msgstr "目前没有配置引用此片段。"
+
+msgid "Unsaved changes"
+msgstr "有未保存的修改"
+
+msgid "My Snippets"
+msgstr "我的片段"
+
+msgid "Built-in Templates"
+msgstr "内置模板"
+
+msgid "Copied %{include}"
+msgstr "已复制 %{include}"
+
+msgid "Delete snippet %{name}?"
+msgstr "删除片段 %{name}？"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "将在本节点和已同步的节点上删除 snippets/%{file}。"
+
+msgid "snippets/%{file} will be removed."
+msgstr "将删除 snippets/%{file}。"
+
+msgid "Snippet %{name} deleted"
+msgstr "片段 %{name} 已删除"
+
+msgid "Synchronize"
+msgstr "同步"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "已同步到 %{count} 个节点"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] "含有 %{count} 个变量。网站从站点编辑器的配置模板面板插入填写后的副本。"
+
+msgid "Copy the include directive"
+msgstr "复制引用指令"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "请先从引用它的文件中移除该片段。"
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr "片段把一段 Nginx 配置放在一处统一管理。可以在网站中引用它，也可以在网站编辑器的配置模板面板中插入它；修改被引用的片段会更新所有使用它的网站。"
+
+msgid "Search snippets"
+msgstr "搜索片段"
+
+msgid "No snippets yet"
+msgstr "还没有片段"
+
+msgid "No snippet matches the search"
+msgstr "没有匹配的片段"
+
+msgid "Enter a key."
+msgstr "请输入键名。"
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "只能使用字母、数字和下划线，且须以字母或下划线开头。"
+
+msgid "Another variable uses this key."
+msgstr "该键名已被其他变量使用。"
+
+msgid "Add at least one option."
+msgstr "请至少添加一个选项。"
+
+msgid "Every option needs a value."
+msgstr "每个选项都需要填写值。"
+
+msgid "Option values must be unique."
+msgstr "选项的值不能重复。"
+
+msgid "Choose the default option."
+msgstr "请选择默认选项。"
 
 msgid "Do you want to %{action} this stream?"
 msgstr "您要%{action}此流吗？"
@@ -10217,14 +10329,12 @@ msgstr "此终端连接已断开。请根据需要刷新。"
 msgid ""
 "This is a simulated terminal running entirely in your browser. Commands are "
 "answered locally and never reach a server."
-msgstr ""
-"这是一个完全在浏览器中运行的模拟终端。命令在本地处理，绝不会发送到服务器。"
+msgstr "这是一个完全在浏览器中运行的模拟终端。命令在本地处理，绝不会发送到服务器。"
 
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a non-"
-"localhost domain. This may expose sensitive information."
-msgstr ""
-"您正在通过非本地主机域上的不安全 HTTP 连接访问此终端。这可能会暴露敏感信息。"
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
+msgstr "您正在通过非本地主机域上的不安全 HTTP 连接访问此终端。这可能会暴露敏感信息。"
 
 msgid "Round Robin (default)"
 msgstr "Round Robin（默认）"
@@ -10284,8 +10394,8 @@ msgid ""
 "Idle connections to keep open per worker; 0 disables it. Proxied sites also "
 "need proxy_http_version 1.1 and an empty Connection header."
 msgstr ""
-"每个 worker 保持打开的空闲连接数；0 表示禁用。被代理的站点还需要 "
-"proxy_http_version 1.1 和空的 Connection 头。"
+"每个 worker 保持打开的空闲连接数；0 表示禁用。被代理的站点还需要 proxy_http_version 1.1 和空的 Connection "
+"头。"
 
 msgid "Connections"
 msgstr "连接"
@@ -10293,8 +10403,7 @@ msgstr "连接"
 msgid "Additional Directives"
 msgstr "附加指令"
 
-msgid ""
-"One directive per line, for example keepalive_timeout or keepalive_requests."
+msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
 msgstr "每行一条指令，例如 keepalive_timeout 或 keepalive_requests。"
 
 msgid "Referenced By"
@@ -10397,12 +10506,10 @@ msgid "Upstream %{name} deleted"
 msgstr "Upstream %{name} 已删除"
 
 msgid ""
-"An upstream group shares its servers and load balancing method across sites. "
-"Choose it as the proxy target when setting up a site; later changes here "
-"apply to every site that uses it."
-msgstr ""
-"上游组在各站点之间共享其服务器和负载均衡方式。在设置站点时可选择它作为代理目"
-"标；此处的后续更改将应用于所有使用它的站点。"
+"An upstream group shares its servers and load balancing method across "
+"sites. Choose it as the proxy target when setting up a site; later changes "
+"here apply to every site that uses it."
+msgstr "上游组在各站点之间共享其服务器和负载均衡方式。在设置站点时可选择它作为代理目标；此处的后续更改将应用于所有使用它的站点。"
 
 msgid "Files are stored in %{dir}."
 msgstr "文件存储在 %{dir} 中。"
@@ -10421,12 +10528,10 @@ msgstr "其他文件中定义的 Upstream"
 
 msgid ""
 "These upstream blocks live inside site or other configuration files. Edit "
-"their settings in their own file; servers can be switched on and off here. A "
-"block inside a site can be converted to a shared group that other sites can "
-"use too."
-msgstr ""
-"这些 upstream 块位于站点或其他配置文件内。请在各自的文件中编辑其设置；服务器"
-"可以在此处启停。站点内的块可以转换为共享组，供其他站点使用。"
+"their settings in their own file; servers can be switched on and off here. "
+"A block inside a site can be converted to a shared group that other sites "
+"can use too."
+msgstr "这些 upstream 块位于站点或其他配置文件内。请在各自的文件中编辑其设置；服务器可以在此处启停。站点内的块可以转换为共享组，供其他站点使用。"
 
 msgid "2FA"
 msgstr "2FA"
@@ -10476,503 +10581,38 @@ msgstr "单窗格"
 msgid "Split view"
 msgstr "分屏视图"
 
-#: src/constants/errors/snippet.ts:2
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr "文件名必须以 .conf 结尾，且只能包含字母、数字、点、连字符和下划线"
-
-#: src/constants/errors/snippet.ts:3
-msgid "Snippet not found"
-msgstr "未找到片段"
-
-#: src/constants/errors/snippet.ts:4
-msgid "The snippet exceeds 256 KiB"
-msgstr "片段超过 256 KiB"
-
-#: src/constants/errors/snippet.ts:5
-msgid "The header of the snippet does not parse: {0}"
-msgstr "片段的文件头无法解析：{0}"
-
-#: src/constants/errors/snippet.ts:6
-msgid "The snippet is still included by {0}"
-msgstr "片段仍被以下文件引用：{0}"
-
-#: src/constants/errors/snippet.ts:7
-msgid "A snippet with this file name already exists"
-msgstr "已存在同名文件的片段"
-
-#: src/views/snippet/SnippetList.vue:91
-msgid "Snippets"
-msgstr "片段"
-
-#: src/views/snippet/SnippetList.vue:3
-msgid "Snippet"
-msgstr "片段"
-
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:149
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr "引用会让网站与 snippets/%{file} 保持关联，之后对片段的修改都会作用到网站。插入则会把内容复制到网站中。"
-
-#: src/views/snippet/SnippetEdit.vue:178
-msgid "Insert"
-msgstr "插入"
-
-#: src/views/snippet/SnippetList.vue:26
-msgid "Include"
-msgstr "引用"
-
-#: src/views/snippet/SnippetList.vue:3
-msgid "Snippet %{name} saved"
-msgstr "片段 %{name} 已保存"
-
-#: src/views/snippet/SnippetEdit.vue:130
-msgid "Edit Snippet %{name}"
-msgstr "编辑片段 %{name}"
-
-#: src/views/snippet/SnippetList.vue:118
-msgid "Create Snippet"
-msgstr "新建片段"
-
-#: src/views/snippet/SnippetEdit.vue:141
-msgid "Static file cache"
-msgstr "静态文件缓存"
-
-#: src/views/snippet/SnippetEdit.vue:145
-msgid "File Name"
-msgstr "文件名"
-
-#: src/views/snippet/SnippetEdit.vue:149
-msgid ""
-"Fixed after creation, so the sites that include the snippet keep working."
-msgstr "创建后不可修改，以保证引用该片段的网站继续正常工作。"
-
-#: src/views/snippet/SnippetEdit.vue:150
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr "字母、数字、点、连字符和下划线。"
-
-#: src/views/snippet/SnippetEdit.vue:178
-msgid ""
-"This snippet has variables: %{names}. Insert it from the config template "
-"panel of the site editor, which fills them in; Nginx cannot include it "
-"directly."
-msgstr "此片段包含变量：%{names}。请在网站编辑器的配置模板面板中插入它，由面板填写变量；Nginx 无法直接引用它。"
-
-#: src/views/snippet/SnippetEdit.vue:188
-msgid "To use the snippet, add this directive to a server or location block:"
-msgstr "在 server 或 location 块中加入以下指令即可使用该片段："
-
-#: src/views/snippet/SnippetEdit.vue:209
-msgid "No configuration includes this snippet yet."
-msgstr "目前没有配置引用此片段。"
-
-#: src/views/snippet/components/SnippetSync.vue:41
-msgid "Snippets are no longer synchronized"
-msgstr "片段已停止同步"
-
-#: src/views/snippet/components/SnippetSync.vue:57
-msgid "Synchronize Snippets"
-msgstr "同步片段"
-
-#: src/views/snippet/components/SnippetSync.vue:65
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr "所有片段会立即复制到所选节点，之后的修改也会自动同步。清空选择即可停止同步。"
-
-#: src/views/snippet/components/SnippetSync.vue:75
-msgid "Replace snippets that already exist on the nodes"
-msgstr "替换节点上已存在的片段"
-
-#: src/views/snippet/SnippetList.vue:74
-msgid "Delete snippet %{name}?"
-msgstr "删除片段 %{name}？"
-
-#: src/views/snippet/SnippetList.vue:76
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr "将在本节点和已同步的节点上删除 snippets/%{file}。"
-
-#: src/views/snippet/SnippetList.vue:76
-msgid "snippets/%{file} will be removed."
-msgstr "将删除 snippets/%{file}。"
-
-#: src/views/snippet/SnippetList.vue:3
-msgid "Snippet %{name} deleted"
-msgstr "片段 %{name} 已删除"
-
-#: src/views/snippet/SnippetList.vue:104
-msgid "Synchronize"
-msgstr "同步"
-
-#: src/views/snippet/SnippetList.vue:112
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] "已同步到 %{count} 个节点"
-
-#: src/views/snippet/SnippetList.vue:130
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in a "
-"site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr "片段把一段 Nginx 配置放在一处统一管理。可以在网站中引用它，也可以在网站编辑器的配置模板面板中插入它；修改被引用的片段会更新所有使用它的网站。"
-
-#: src/views/snippet/SnippetList.vue:112
-msgid "Copied %{include}"
-msgstr "已复制 %{include}"
-
-#: src/views/snippet/SnippetList.vue:184
-msgid ""
-"Fill in the variables by inserting the snippet from the config template "
-"panel of the site editor."
-msgstr "请在网站编辑器的配置模板面板中插入该片段并填写变量。"
-
-#: src/views/home/Home.vue:1
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] "%{count} 个变量"
-
-#: src/views/snippet/SnippetList.vue:209
-msgid "Copy the include directive"
-msgstr "复制引用指令"
-
-#: src/views/snippet/SnippetList.vue:275
-msgid "Remove the snippet from the files that include it first."
-msgstr "请先从引用它的文件中移除该片段。"
-
-#: src/views/snippet/SnippetList.vue:298
-msgid "Search snippets"
-msgstr "搜索片段"
-
-#: src/views/snippet/SnippetList.vue:319
-msgid "No snippets yet"
-msgstr "还没有片段"
-
-#: src/views/snippet/SnippetList.vue:333
-msgid "No snippet matches the search"
-msgstr "没有匹配的片段"
-
-#: src/views/snippet/components/SnippetUsage.vue:75
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] "被 %{count} 个文件引用"
-
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "被 %{count} 个配置使用"
-
-#: src/views/snippet/components/SnippetUsage.vue:104
-msgid "No file matches the search"
-msgstr "没有匹配的文件"
-
-#: src/views/site/site_edit/components/ConfigTemplate/ConfigTemplate.vue:54
-msgid "Built-in"
-msgstr "内置"
-
-#: src/views/snippet/template.ts:8
-msgid "The variable {0} is invalid: {1}"
-msgstr "变量 {0} 无效：{1}"
-
-#: src/constants/errors/snippet.ts:9
-msgid "The content does not parse as a template: {0}"
-msgstr "内容无法解析为模板：{0}"
-
-#: src/views/snippet/SnippetList.vue:36
-msgid "Built-in Template"
-msgstr "内置模板"
-
-#: src/views/snippet/SnippetEdit.vue:23
-msgid "Edit Snippet"
-msgstr "编辑片段"
-
-#: src/views/snippet/BuiltinTemplateView.vue:62
-msgid "Read Only"
-msgstr "只读"
-
-#: src/views/stream/components/RightPanel/Basic.vue:8
-msgid "Preview"
-msgstr "预览"
-
-#: src/views/snippet/BuiltinTemplateView.vue:75
-msgid "Updates as the snippet changes."
-msgstr "随片段修改实时更新。"
-
-#: src/views/snippet/BuiltinTemplateView.vue:94
-msgid ""
-"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
-"snippet to change it."
-msgstr "内置模板随 Nginx UI 提供，不能修改。如需修改，请将其复制为片段。"
-
-#: src/views/snippet/components/SnippetPreview.vue:9
-msgid "Variables"
-msgstr "变量"
-
-#: src/views/snippet/components/BuiltinTemplates.vue:113
-msgid "Copy as Snippet"
-msgstr "复制为片段"
-
-#: src/views/certificate/CertificateEditor.vue:26
-msgid "Template"
-msgstr "模板"
-
-#: src/views/snippet/components/BuiltinTemplates.vue:70
-msgid "No template matches the search"
-msgstr "没有匹配的模板"
-
-#: src/views/snippet/components/LocalizedInput.vue:98
-msgid "Translations"
-msgstr "翻译"
-
-#: src/views/snippet/components/LocalizedInput.vue:113
-msgid ""
-"The field is in %{language}. Users of other languages see their translation, "
-"or English when there is none."
-msgstr "输入框中为%{language}文本。其他语言的用户将看到对应的翻译，没有翻译时显示英文。"
-
-#: src/views/snippet/components/LocalizedInput.vue:130
-msgid "Remove translation"
-msgstr "删除翻译"
-
-#: src/views/snippet/components/LocalizedInput.vue:143
-msgid "Add a language"
-msgstr "添加语言"
-
-#: src/views/certificate/components/CertificateBasicInfo.vue:5
-msgid "Text"
-msgstr "文本"
-
-#: src/views/install/components/InstallFooter.vue:3
-msgid "Switch"
-msgstr "开关"
-
-#: src/views/certificate/CertificateEditor.vue:99
-msgid "Select"
-msgstr "选择"
-
-#: src/views/snippet/components/SnippetCode.vue:255
-msgid "New Variable…"
-msgstr "新建变量…"
-
-#: src/views/snippet/components/SnippetCode.vue:317
-msgid "Insert Variable"
-msgstr "插入变量"
-
-#: src/views/certificate/CertificateEditor.vue:5
-msgid ""
-"Type %{open} to complete a variable, or select a value and press %{keys} to "
-"make it one."
-msgstr "输入 %{open} 补全变量，或选中一个值后按 %{keys} 将其设为变量。"
-
-#: src/views/snippet/components/SnippetPreview.vue:182
-msgid "Default Value"
-msgstr "默认值"
-
-#: src/views/snippet/components/SnippetCode.vue:365
-msgid "Edit Variable"
-msgstr "编辑变量"
-
-#: src/views/snippet/components/SnippetCode.vue:376
-msgid ""
-"This variable is not declared, so it has no value when the snippet is "
-"inserted."
-msgstr "此变量未声明，插入片段时将没有值。"
-
-#: src/views/snippet/components/SnippetCode.vue:385
-msgid "Declare Variable"
-msgstr "声明变量"
-
-#: src/views/snippet/components/SnippetCode.vue:401
-msgid "Make Variable"
-msgstr "设为变量"
-
-#: src/views/snippet/components/SnippetCode.vue:255
-msgid "New Variable"
-msgstr "新变量"
-
-#: src/views/certificate/CertificateEditor.vue:5
-msgid "Key"
-msgstr "键名"
-
-#: src/views/certificate/CertificateEditor.vue:160
-msgid "Label"
-msgstr "显示名称"
-
-#: src/views/snippet/components/SnippetCode.vue:467
-msgid "The variable is declared and inserted at the cursor."
-msgstr "变量将被声明，并插入到光标处。"
-
-#: src/views/snippet/components/SnippetCode.vue:468
-msgid ""
-"The selected value becomes the default value, and the content refers to the "
-"variable instead."
-msgstr "选中的值将成为默认值，内容中改为引用该变量。"
-
-#: src/views/snippet/components/SnippetCode.vue:484
-msgid "Add Variable"
-msgstr "添加变量"
-
-#: src/views/snippet/components/SnippetPreview.vue:103
-msgid "Not declared, so left without a value: %{names}"
-msgstr "以下变量未声明，将没有值：%{names}"
-
-#: src/views/snippet/components/SnippetPreview.vue:109
-msgid "The snippet does not render as valid Nginx configuration."
-msgstr "片段无法渲染为有效的 Nginx 配置。"
-
-#: src/views/snippet/components/SnippetPreview.vue:116
-msgid "The snippet renders as valid Nginx configuration."
-msgstr "片段可以渲染为有效的 Nginx 配置。"
-
-#: src/views/snippet/components/SnippetPreview.vue:142
-msgid "What the site editor asks for"
-msgstr "站点编辑器中填写的内容"
-
-#: src/views/snippet/components/SnippetPreview.vue:182
-msgid "Restore Default Values"
-msgstr "恢复默认值"
-
-#: src/views/snippet/components/SnippetPreview.vue:190
-msgid "Nothing to fill in."
-msgstr "没有需要填写的内容。"
-
-#: src/views/snippet/components/SnippetPreview.vue:190
-msgid "Fix the variables to preview the snippet."
-msgstr "请先修正变量，再预览片段。"
-
-#: src/views/snippet/components/SnippetVariables.vue:165
-msgid "Not Used"
-msgstr "未使用"
-
-#: src/views/snippet/components/SnippetVariables.vue:200
-msgid "Max Age"
-msgstr "有效时间"
-
-#: src/views/certificate/components/SelfSignedCertFields.vue:15
-msgid "Options"
-msgstr "选项"
-
-#: src/views/snippet/components/SnippetVariables.vue:255
-msgid "Remove option"
-msgstr "删除选项"
-
-#: src/views/snippet/components/SnippetVariables.vue:272
-msgid "Add Option"
-msgstr "添加选项"
-
-#: src/views/snippet/components/SnippetVariables.vue:293
-msgid "Remove variable"
-msgstr "删除变量"
-
-#: src/views/snippet/components/SnippetVariables.vue:308
-msgid "Used in the content, not declared"
-msgstr "内容中使用但未声明"
-
-#: src/views/snippet/SnippetEdit.vue:168
-msgid "Discard the unsaved changes?"
-msgstr "放弃未保存的修改？"
-
-#: src/views/snippet/SnippetEdit.vue:171
-msgid "Keep Editing"
-msgstr "继续编辑"
-
-#: src/views/snippet/SnippetList.vue:194
-msgid "Sites can include this snippet and follow its later changes."
-msgstr "网站可以引用此片段，并随片段的后续修改同步更新。"
-
-#: src/views/snippet/SnippetEdit.vue:205
-msgid ""
-"This snippet has variables, so sites insert a filled in copy from the config "
-"template panel."
-msgstr "此片段含有变量，网站需从配置模板面板插入填写后的副本。"
-
-#: src/views/snippet/SnippetList.vue:201
-msgid "Includable"
-msgstr "可引用"
-
-#: src/views/snippet/SnippetList.vue:201
-msgid "Insert Only"
-msgstr "仅可插入"
-
-#: src/views/install/components/InstallForm.vue:3
-msgid "Use"
-msgstr "使用方式"
-
-#: src/views/snippet/SnippetEdit.vue:255
-msgid ""
-"Add this directive to a server or location block. Sites that include the "
-"snippet follow its later changes."
-msgstr "将此指令添加到 server 或 location 块中。引用此片段的网站会随其后续修改同步更新。"
-
-#: src/views/snippet/SnippetEdit.vue:298
-msgid "Fixed while configurations include the snippet, so they keep working."
-msgstr "有配置引用此片段时不可修改，以保证这些配置继续正常工作。"
-
-#: src/views/snippet/SnippetEdit.vue:324
-msgid ""
-"Variables are filled in when the snippet is inserted from the config "
-"template panel of the site editor. A snippet with variables can only be "
-"inserted, not included."
-msgstr "从站点编辑器的配置模板面板插入片段时填写变量。含有变量的片段只能插入，不能被引用。"
-
-#: src/views/snippet/SnippetEdit.vue:354
-msgid "Unsaved changes"
-msgstr "有未保存的修改"
-
-#: src/views/snippet/SnippetList.vue:35
-msgid "My Snippets"
-msgstr "我的片段"
-
-#: src/views/snippet/SnippetList.vue:36
-msgid "Built-in Templates"
-msgstr "内置模板"
-
-#: src/views/snippet/SnippetList.vue:189
-msgid ""
-"Has %{count} variable. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgid_plural ""
-"Has %{count} variables. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgstr[0] "含有 %{count} 个变量。网站从站点编辑器的配置模板面板插入填写后的副本。"
-
-#: src/views/snippet/variables.ts:80
-msgid "Enter a key."
-msgstr "请输入键名。"
-
-#: src/views/snippet/variables.ts:82
-msgid ""
-"Use letters, digits and underscores, starting with a letter or underscore."
-msgstr "只能使用字母、数字和下划线，且须以字母或下划线开头。"
-
-#: src/views/snippet/variables.ts:84
-msgid "Another variable uses this key."
-msgstr "该键名已被其他变量使用。"
-
-#: src/views/snippet/variables.ts:94
-msgid "Add at least one option."
-msgstr "请至少添加一个选项。"
-
-#: src/views/snippet/variables.ts:96
-msgid "Every option needs a value."
-msgstr "每个选项都需要填写值。"
-
-#: src/views/snippet/variables.ts:98
-msgid "Option values must be unique."
-msgstr "选项的值不能重复。"
-
-#: src/views/snippet/variables.ts:100
-msgid "Choose the default option."
-msgstr "请选择默认选项。"
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "备注"
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr "维护"
+
+#~ msgid "Fixed after creation, so the sites that include the snippet keep working."
+#~ msgstr "创建后不可修改，以保证引用该片段的网站继续正常工作。"
+
+#~ msgid ""
+#~ "This snippet has variables: %{names}. Insert it from the config template "
+#~ "panel of the site editor, which fills them in; Nginx cannot include it "
+#~ "directly."
+#~ msgstr "此片段包含变量：%{names}。请在网站编辑器的配置模板面板中插入它，由面板填写变量；Nginx 无法直接引用它。"
+
+#~ msgid "To use the snippet, add this directive to a server or location block:"
+#~ msgstr "在 server 或 location 块中加入以下指令即可使用该片段："
+
+#~ msgid ""
+#~ "Fill in the variables by inserting the snippet from the config template "
+#~ "panel of the site editor."
+#~ msgstr "请在网站编辑器的配置模板面板中插入该片段并填写变量。"
 
 #~ msgid "Webauthn"
 #~ msgstr "Webauthn"
 
 #~ msgid ""
-#~ "If the number of login failed attempts from a ip reach the max attempts "
-#~ "in ban threshold minutes,"
-#~ msgstr ""
-#~ "如果在封禁阈值分钟数内，来自某个 IP 的登录失败尝试次数达到了最大尝试次数，"
+#~ "If the number of login failed attempts from a ip reach the max attempts in "
+#~ "ban threshold minutes,"
+#~ msgstr "如果在封禁阈值分钟数内，来自某个 IP 的登录失败尝试次数达到了最大尝试次数，"
 
 #~ msgid "Set the recursive nameservers to override the systems nameservers "
 #~ msgstr "设置递归域名服务器以覆盖系统的域名服务器"
@@ -10986,9 +10626,7 @@ msgstr "请选择默认选项。"
 #~ msgid ""
 #~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
 #~ "100000_full.json in this directory."
-#~ msgstr ""
-#~ "读取自 [nginx_log].GeoMapPath。请在该目录中放置类似 100000_full.json 命名"
-#~ "的文件。"
+#~ msgstr "读取自 [nginx_log].GeoMapPath。请在该目录中放置类似 100000_full.json 命名的文件。"
 
 #~ msgid ""
 #~ "Only the world map is provided by default. Please download China and "
