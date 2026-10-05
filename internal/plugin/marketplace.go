@@ -206,6 +206,26 @@ type CatalogScreenshot struct {
 	// empty.
 	DarkURL string            `json:"dark_url,omitempty"`
 	Caption map[string]string `json:"caption,omitempty"`
+	// Crop is the part of URL that lists show; opening the screenshot shows
+	// the whole image. DarkCrop is the part of DarkURL, Crop when it is nil.
+	Crop     *CatalogCrop `json:"crop,omitempty"`
+	DarkCrop *CatalogCrop `json:"dark_crop,omitempty"`
+}
+
+// CatalogCrop is a region of an image as shares of its width and height,
+// from its top left corner.
+type CatalogCrop struct {
+	X      float64 `json:"x"`
+	Y      float64 `json:"y"`
+	Width  float64 `json:"width"`
+	Height float64 `json:"height"`
+}
+
+// valid reports whether the region lies inside its image and has a size.
+func (c *CatalogCrop) valid() bool {
+	const slack = 0.0001
+	return c.X >= 0 && c.Y >= 0 && c.Width > 0 && c.Height > 0 &&
+		c.X+c.Width <= 1+slack && c.Y+c.Height <= 1+slack
 }
 
 // maxCatalogScreenshots is the most screenshots of an entry a node shows.
@@ -908,8 +928,8 @@ func (mp *Marketplace) decorate(entry *CatalogEntry) {
 // loadableScreenshots keeps the screenshots a browser of this node may load:
 // the ones checkCatalogURL accepts, at most maxCatalogScreenshots. A dark
 // variant it does not accept is dropped and the screenshot keeps its light
-// image. The entry may be shared with the source cache, so the list is a new
-// one.
+// image. A crop outside its image is dropped, so the whole image shows. The
+// entry may be shared with the source cache, so the list is a new one.
 func loadableScreenshots(entry *CatalogEntry) []CatalogScreenshot {
 	var kept []CatalogScreenshot
 	for _, shot := range entry.Screenshots {
@@ -921,6 +941,12 @@ func loadableScreenshots(entry *CatalogEntry) []CatalogScreenshot {
 		}
 		if shot.DarkURL != "" && checkCatalogURL(entry, shot.DarkURL) != nil {
 			shot.DarkURL = ""
+		}
+		if shot.Crop != nil && !shot.Crop.valid() {
+			shot.Crop = nil
+		}
+		if shot.DarkCrop != nil && (shot.DarkURL == "" || !shot.DarkCrop.valid()) {
+			shot.DarkCrop = nil
 		}
 		kept = append(kept, shot)
 	}
