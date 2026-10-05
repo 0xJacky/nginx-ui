@@ -12,9 +12,13 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 func TestAutoBackupFilePrefixMatchesGeneratedFilenames(t *testing.T) {
@@ -224,10 +228,11 @@ func TestPruneOldBackupsLocalMissingStoragePathDoesNotPanic(t *testing.T) {
 // fakeS3 is a minimal S3 server that supports listing the objects of a bucket
 // and deleting a single object, which is all the retention cleanup needs.
 type fakeS3 struct {
-	mu      sync.Mutex
-	bucket  string
-	keys    map[string]bool
-	deleted []string
+	mu          sync.Mutex
+	bucket      string
+	keys        map[string]bool
+	deleted     []string
+	failDeletes map[string]bool
 }
 
 type fakeS3Object struct {
@@ -258,7 +263,7 @@ type fakeS3ListResult struct {
 func newFakeS3(t *testing.T, bucket string, keys ...string) (*fakeS3, *httptest.Server) {
 	t.Helper()
 
-	fake := &fakeS3{bucket: bucket, keys: make(map[string]bool)}
+	fake := &fakeS3{bucket: bucket, keys: make(map[string]bool), failDeletes: make(map[string]bool)}
 	for _, key := range keys {
 		fake.keys[key] = true
 	}
@@ -277,6 +282,8 @@ func (f *fakeS3) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch {
 	case r.Method == http.MethodGet && r.URL.Query().Get("list-type") == "2":
 		f.list(w, r.URL.Query().Get("prefix"), r.URL.Query().Get("delimiter"))
+	case r.Method == http.MethodDelete && ok && f.failDeletes[objectKey]:
+		http.Error(w, "denied", http.StatusForbidden)
 	case r.Method == http.MethodDelete && ok && objectKey != "":
 		delete(f.keys, objectKey)
 		f.deleted = append(f.deleted, objectKey)
@@ -414,4 +421,172 @@ func TestS3ClientPruneBackupsReportsListingFailure(t *testing.T) {
 
 	err = s3Client.PruneBackups(t.Context(), task, &ExecutionResult{FilePath: "daily_200.zip"})
 	assert.Error(t, err)
+}
+
+func TestS3ClientPruneBackupsContinuesAfterADeleteFailure(t *testing.T) {
+	fake, server := newFakeS3(t, "test-bucket",
+		"backups/daily_100.zip", "backups/daily_200.zip", "backups/daily_300.zip",
+	)
+	fake.failDeletes["backups/daily_100.zip"] = true
+
+	task := newS3RetentionTask(server, "backups", 1)
+	s3Client, err := NewS3Client(task)
+	require.NoError(t, err)
+
+	err = s3Client.PruneBackups(t.Context(), task, &ExecutionResult{FilePath: "daily_300.zip"})
+	assert.ErrorContains(t, err, "backups/daily_100.zip")
+	assert.Equal(t, []string{"backups/daily_100.zip", "backups/daily_300.zip"}, fake.remainingKeys())
+}
+
+func TestShareBackupFiles(t *testing.T) {
+	local := func(name string, backupType model.BackupType, storagePath string) *model.AutoBackup {
+		return &model.AutoBackup{Name: name, BackupType: backupType, StorageType: model.StorageTypeLocal, StoragePath: storagePath}
+	}
+	s3 := func(name, bucket, storagePath string) *model.AutoBackup {
+		return &model.AutoBackup{
+			Name:        name,
+			BackupType:  model.BackupTypeNginxAndNginxUI,
+			StorageType: model.StorageTypeS3,
+			StoragePath: storagePath,
+			S3Bucket:    bucket,
+		}
+	}
+
+	tests := []struct {
+		name     string
+		a, b     *model.AutoBackup
+		expected bool
+	}{
+		{
+			name:     "same name and path",
+			a:        local("daily", model.BackupTypeNginxAndNginxUI, "/backups"),
+			b:        local("daily", model.BackupTypeNginxAndNginxUI, "/backups/"),
+			expected: true,
+		},
+		{
+			name:     "names that sanitize to the same file name",
+			a:        local("web prod", model.BackupTypeNginxAndNginxUI, "/backups"),
+			b:        local("web/prod", model.BackupTypeNginxAndNginxUI, "/backups"),
+			expected: true,
+		},
+		{
+			name:     "custom directory task and a task named after its prefix",
+			a:        local("web", model.BackupTypeCustomDir, "/backups"),
+			b:        local("custom_dir_web", model.BackupTypeNginxAndNginxUI, "/backups"),
+			expected: true,
+		},
+		{
+			name:     "same name in different paths",
+			a:        local("daily", model.BackupTypeNginxAndNginxUI, "/backups/a"),
+			b:        local("daily", model.BackupTypeNginxAndNginxUI, "/backups/b"),
+			expected: false,
+		},
+		{
+			name:     "same name of different backup types",
+			a:        local("daily", model.BackupTypeNginxAndNginxUI, "/backups"),
+			b:        local("daily", model.BackupTypeCustomDir, "/backups"),
+			expected: false,
+		},
+		{
+			name:     "different names",
+			a:        local("daily", model.BackupTypeNginxAndNginxUI, "/backups"),
+			b:        local("daily_1", model.BackupTypeNginxAndNginxUI, "/backups"),
+			expected: false,
+		},
+		{
+			name:     "local and S3",
+			a:        local("daily", model.BackupTypeNginxAndNginxUI, "backups"),
+			b:        s3("daily", "bucket", "backups"),
+			expected: false,
+		},
+		{
+			name:     "same S3 bucket and path",
+			a:        s3("daily", "bucket", "/backups/"),
+			b:        s3("daily", "bucket", "backups"),
+			expected: true,
+		},
+		{
+			name:     "different S3 buckets",
+			a:        s3("daily", "bucket-a", "backups"),
+			b:        s3("daily", "bucket-b", "backups"),
+			expected: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			assert.Equal(t, tt.expected, shareBackupFiles(tt.a, tt.b))
+			assert.Equal(t, tt.expected, shareBackupFiles(tt.b, tt.a))
+		})
+	}
+}
+
+func useRetentionTestDB(t *testing.T) *gorm.DB {
+	t.Helper()
+
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
+	require.NoError(t, err)
+	require.NoError(t, db.AutoMigrate(&model.AutoBackup{}, &model.Notification{}, &model.ExternalNotify{}))
+
+	model.Use(db)
+	query.Use(db)
+	query.SetDefault(db)
+
+	return db
+}
+
+func TestApplyRetentionPolicySkipsWhenAnotherTaskSharesFiles(t *testing.T) {
+	db := useRetentionTestDB(t)
+	dir := t.TempDir()
+	writeTestFiles(t, dir, "web_prod_100.zip", "web_prod_200.zip", "web_prod_300.zip")
+
+	task := &model.AutoBackup{
+		Name:           "web prod",
+		BackupType:     model.BackupTypeNginxAndNginxUI,
+		StorageType:    model.StorageTypeLocal,
+		StoragePath:    dir,
+		CronExpression: "0 0 * * *",
+		RetentionCount: 1,
+	}
+	other := &model.AutoBackup{
+		Name:           "web/prod",
+		BackupType:     model.BackupTypeNginxAndNginxUI,
+		StorageType:    model.StorageTypeLocal,
+		StoragePath:    dir,
+		CronExpression: "0 0 * * *",
+	}
+	require.NoError(t, db.Create(task).Error)
+	require.NoError(t, db.Create(other).Error)
+
+	applyRetentionPolicy(task, &ExecutionResult{FilePath: filepath.Join(dir, "web_prod_300.zip")})
+
+	assert.Equal(t, []string{"web_prod_100.zip", "web_prod_200.zip", "web_prod_300.zip"}, listTestDir(t, dir))
+}
+
+func TestApplyRetentionPolicyPrunesWhenNoOtherTaskSharesFiles(t *testing.T) {
+	db := useRetentionTestDB(t)
+	dir := t.TempDir()
+	writeTestFiles(t, dir, "daily_100.zip", "daily_200.zip", "daily_300.zip", "weekly_100.zip")
+
+	task := &model.AutoBackup{
+		Name:           "daily",
+		BackupType:     model.BackupTypeNginxAndNginxUI,
+		StorageType:    model.StorageTypeLocal,
+		StoragePath:    dir,
+		CronExpression: "0 0 * * *",
+		RetentionCount: 1,
+	}
+	other := &model.AutoBackup{
+		Name:           "weekly",
+		BackupType:     model.BackupTypeNginxAndNginxUI,
+		StorageType:    model.StorageTypeLocal,
+		StoragePath:    dir,
+		CronExpression: "0 0 * * 0",
+	}
+	require.NoError(t, db.Create(task).Error)
+	require.NoError(t, db.Create(other).Error)
+
+	applyRetentionPolicy(task, &ExecutionResult{FilePath: filepath.Join(dir, "daily_300.zip")})
+
+	assert.Equal(t, []string{"daily_300.zip", "weekly_100.zip"}, listTestDir(t, dir))
 }

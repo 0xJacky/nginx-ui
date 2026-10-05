@@ -99,7 +99,7 @@ func ExecuteAutoBackup(autoBackup *model.AutoBackup) error {
 	}
 
 	// Apply the retention policy; deleting old backups never fails the new backup
-	pruneOldBackups(autoBackup, result)
+	applyRetentionPolicy(autoBackup, result)
 
 	logger.Infof("Auto backup task %s completed successfully, file: %s", autoBackup.Name, result.FilePath)
 	if updateErr := updateBackupStatusWithTime(autoBackup.ID, model.BackupStatusSuccess, "", &now); updateErr != nil {

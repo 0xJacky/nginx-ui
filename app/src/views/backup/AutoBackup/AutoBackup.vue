@@ -186,7 +186,7 @@ const columns: StdTableColumn[] = [
     pure: true,
   },
   {
-    title: () => $gettext('Backups to Keep (0 keeps all)'),
+    title: () => $gettext('Backups to Keep'),
     dataIndex: 'retention_count',
     customRender: ({ text }: CustomRenderArgs) => {
       return text > 0 ? text : $gettext('All')
@@ -197,6 +197,9 @@ const columns: StdTableColumn[] = [
         min: 0,
         precision: 0,
         defaultValue: 0,
+      },
+      formItem: {
+        label: () => $gettext('Backups to Keep (0 keeps all)'),
       },
     },
     pure: true,

@@ -110,7 +110,10 @@ By default, every run of an automatic backup task adds a new backup file and old
 - **Default**: `0` keeps all backups
 - **Limit**: A positive number keeps only that many of the newest backups after each successful run and deletes the older ones. A backup that has an encryption key file is deleted together with its `.key` file
 - **Storage**: Works for both local and S3 storage
-- **Scope**: Only files that follow the task's naming scheme (`<name>_<timestamp>.zip`, or `custom_dir_<name>_<timestamp>.zip` for custom directory backups) directly inside the storage path are considered. Other files are left alone, so give each task its own name or storage path
+- **Scope**: Only files that follow the task's naming scheme (`<name>_<timestamp>.zip`, or `custom_dir_<name>_<timestamp>.zip` for custom directory backups) directly inside the storage path are considered. Other files are left alone. Characters that are not allowed in file names are replaced with `_` in `<name>`
+- **Shared names**: If another task writes backups with the same file names to the same storage path (for example `web prod` and `web/prod`, or a custom directory task `web` and a task named `custom_dir_web`), their backups cannot be told apart. The task then skips the cleanup and sends a warning notification until one of the tasks is renamed or moved to its own storage path
+- **Renamed tasks**: Backups written before a task was renamed or moved to another storage path no longer match it and are not deleted. Remove them by hand if they are no longer needed
+- **Versioned S3 buckets**: In a bucket with versioning enabled, deleting an old backup only adds a delete marker, so the storage is freed by the bucket's lifecycle rules rather than by the cleanup
 - **Failures**: If an old backup cannot be deleted, a warning is logged and the backup task itself still succeeds
 
 This configuration enables backup operations while maintaining strict security boundaries, ensuring that backup functionality cannot be misused to access unauthorized system areas.

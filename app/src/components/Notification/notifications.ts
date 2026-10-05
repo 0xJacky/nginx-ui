@@ -37,6 +37,10 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Auto Backup Completed'),
     content: (args: any) => $gettext('Backup task %{backup_name} completed successfully, file: %{file_path}', args),
   },
+  'Auto Backup Retention Skipped': {
+    title: () => $gettext('Auto Backup Retention Skipped'),
+    content: (args: any) => $gettext('Old backups of task %{backup_name} were not deleted because task %{conflict_names} writes backups with the same file names to the same storage location. Rename one of the tasks or change its storage path.', args),
+  },
   'Renew Certificate Success': {
     title: () => $gettext('Renew Certificate Success'),
     content: (args: any) => $gettext('Certificate %{name} renewed successfully', args),
