@@ -18,6 +18,7 @@ const open = defineModel<boolean>('open', { default: false })
 
 const permissions = computed(() => props.plugin?.permissions ?? [])
 const reasons = computed(() => permissionReasons(props.plugin, gettext.current))
+const added = computed(() => props.plugin?.new_permissions ?? [])
 const name = computed(() => (props.plugin ? localizedPluginName(props.plugin, gettext.current) : ''))
 </script>
 
@@ -36,9 +37,11 @@ const name = computed(() => (props.plugin ? localizedPluginName(props.plugin, ge
       show-icon
       class="mb-4"
       :title="$gettext('%{name} needs your approval before it can run.', { name })"
-      :description="$gettext('Approve only if you trust the author. The approval is recorded and asked again whenever the requested permissions change.')"
+      :description="added.length
+        ? $gettext('This version asks for permissions your earlier approval did not cover, marked as new below. Approve only if you trust the author.')
+        : $gettext('Approve only if you trust the author. The approval is recorded and asked again whenever the requested permissions change.')"
     />
 
-    <PermissionList :permissions="permissions" :reasons="reasons" />
+    <PermissionList :permissions="permissions" :reasons="reasons" :added="added" />
   </AModal>
 </template>

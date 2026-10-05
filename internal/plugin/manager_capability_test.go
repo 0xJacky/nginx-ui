@@ -165,3 +165,16 @@ func TestMCPToolName(t *testing.T) {
 		assert.False(t, ok, bad)
 	}
 }
+
+func TestInfoListsPermissionsBeyondTheEarlierApproval(t *testing.T) {
+	m := newManager(t.TempDir())
+	manifest := capabilityPluginManifest("io.github.update.plugin")
+	manifest.Permissions = []string{"kv", "network"}
+	row := &model.Plugin{PluginID: manifest.ID, ApprovedPermissions: []string{"kv"}}
+	m.entries[manifest.ID] = m.newEntry(manifest.ID, manifest, row)
+	assert.Equal(t, []string{"network"}, m.infoOf(m.entries[manifest.ID]).NewPermissions)
+
+	// A plugin never approved has nothing to compare with.
+	row.ApprovedPermissions = nil
+	assert.Empty(t, m.infoOf(m.entries[manifest.ID]).NewPermissions)
+}

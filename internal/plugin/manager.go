@@ -128,6 +128,9 @@ type Info struct {
 	// PermissionReasonsI18n translates it, keyed by host locale code.
 	PermissionReasons     map[string]string            `json:"permission_reasons,omitempty"`
 	PermissionReasonsI18n map[string]map[string]string `json:"permission_reasons_i18n,omitempty"`
+	// NewPermissions are the permissions of the manifest that were not part
+	// of an earlier approval, empty for a plugin never approved.
+	NewPermissions []string `json:"new_permissions,omitempty"`
 }
 
 // WebappEntry tells the browser runtime what to load for one plugin. The URLs
@@ -707,6 +710,9 @@ func (m *Manager) infoLocked(item *entry) Info {
 	}
 	if len(manifest.Permissions) > 0 {
 		info.Permissions = manifest.Permissions
+	}
+	if item.row != nil && item.row.ApprovedPermissions != nil {
+		info.NewPermissions = unapprovedPermissions(item.row.ApprovedPermissions, manifest)
 	}
 	if len(manifest.Requires) > 0 {
 		info.Requires = manifest.Requires
