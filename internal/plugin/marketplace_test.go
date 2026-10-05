@@ -1021,6 +1021,25 @@ func TestScreenshotsDropADarkVariantThatCannotLoad(t *testing.T) {
 	assert.Equal(t, "https://tracker.example/chart-dark.png", shared[1].DarkURL, "the entry of the cache keeps its list")
 }
 
+func TestScreenshotsKeepOnlyCropsInsideTheImage(t *testing.T) {
+	previous := settings.PluginSettings.AllowInsecureDownloadURL
+	settings.PluginSettings.AllowInsecureDownloadURL = false
+	t.Cleanup(func() { settings.PluginSettings.AllowInsecureDownloadURL = previous })
+
+	inside := &CatalogCrop{X: 0.1, Y: 0, Width: 0.8, Height: 1}
+	entry := &CatalogEntry{Source: "https://catalog.example/v1/index.json", Screenshots: []CatalogScreenshot{
+		{URL: "https://catalog.example/a.png", Crop: inside, DarkURL: "https://catalog.example/a-dark.png", DarkCrop: &CatalogCrop{X: 0.5, Y: 0, Width: 0.6, Height: 1}},
+		{URL: "https://catalog.example/b.png", Crop: &CatalogCrop{X: 0, Y: 0, Width: 0, Height: 1}, DarkCrop: inside},
+	}}
+
+	kept := loadableScreenshots(entry)
+	require.Len(t, kept, 2)
+	assert.Equal(t, inside, kept[0].Crop)
+	assert.Nil(t, kept[0].DarkCrop, "a crop past its image shows the whole image")
+	assert.Nil(t, kept[1].Crop, "a crop of no size shows the whole image")
+	assert.Nil(t, kept[1].DarkCrop, "a screenshot without a dark image keeps no dark crop")
+}
+
 func TestDecorateKeepsOnlyLoadableIcons(t *testing.T) {
 	mp := newTestManager(t).Marketplace()
 	entry := &CatalogEntry{
