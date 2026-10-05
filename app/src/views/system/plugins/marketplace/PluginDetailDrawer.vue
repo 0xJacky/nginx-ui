@@ -7,7 +7,9 @@ import {
   catalogEntryDescription,
   catalogEntryName,
   catalogScreenshotCaption,
+  catalogScreenshotCrop,
   catalogScreenshotURL,
+  cropStyles,
   getMarketplacePlugin,
 } from '@/api/plugin_marketplace'
 import gettext from '@/gettext'
@@ -60,10 +62,15 @@ const installed = useInstalledPlugin(() => current.value?.id)
 const offer = computed(() => findTrustedOffer(installed.value?.trust, current.value))
 const { replacingId, confirmReplace } = useReplacePlugin()
 const settings = useSettingsStore()
-const screenshots = computed(() => (current.value?.screenshots ?? []).map(shot => ({
-  url: catalogScreenshotURL(shot, settings.theme === 'dark'),
-  caption: catalogScreenshotCaption(shot, gettext.current),
-})))
+// Each shows its crop in the strip and the whole image when opened.
+const screenshots = computed(() => (current.value?.screenshots ?? []).map(shot => {
+  const crop = cropStyles(catalogScreenshotCrop(shot, settings.theme === 'dark'))
+  return {
+    url: catalogScreenshotURL(shot, settings.theme === 'dark'),
+    caption: catalogScreenshotCaption(shot, gettext.current),
+    styles: 'root' in crop ? { root: { ...crop.root, width: '240px', height: '150px', borderRadius: '6px' }, image: crop.image } : undefined,
+  }
+}))
 const renderedReadme = computed(() => (readme.value ? marked.parse(readme.value) as string : ''))
 
 const canInstall = computed(() => Boolean(current.value?.installable_release)
@@ -286,6 +293,7 @@ watch(open, value => {
                     :height="150"
                     referrerpolicy="no-referrer"
                     class="screenshot-image"
+                    :styles="shot.styles"
                   />
                   <figcaption v-if="shot.caption" class="screenshot-caption">
                     {{ shot.caption }}
