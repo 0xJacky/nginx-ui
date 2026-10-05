@@ -1,4 +1,6 @@
+import type { Translate } from '@nginxui/plugin-market-ui'
 import type { CatalogEntry, PluginTrust } from '@/api/plugin_marketplace'
+import { trustText } from '@nginxui/plugin-market-ui'
 
 interface TrustPreset {
   /** Tag colour. */
@@ -9,35 +11,34 @@ interface TrustPreset {
   hint: () => string
 }
 
+const t: Translate = (msgid, params) => $gettext(msgid, params)
+
+const colors: Record<PluginTrust, string> = {
+  official: 'blue',
+  verified: 'green',
+  community: 'orange',
+  unsigned: 'default',
+}
+
 /**
  * Trust level of a catalog entry or an installed package. It decides the badge
  * colour and the warning the install dialogs show, so it lives next to both.
+ * The wording is the marketplace's, shared with the developer portal.
  */
+function presetOf(trust: PluginTrust): TrustPreset {
+  return {
+    color: colors[trust],
+    tone: trustText(t, trust).tone,
+    label: () => trustText(t, trust).label,
+    hint: () => trustText(t, trust).hint,
+  }
+}
+
 const trustPresets: Record<PluginTrust, TrustPreset> = {
-  official: {
-    color: 'blue',
-    tone: 'is-accent',
-    label: () => $gettext('Official'),
-    hint: () => $gettext('Published by the Nginx UI project.'),
-  },
-  verified: {
-    color: 'green',
-    tone: 'is-success',
-    label: () => $gettext('Verified'),
-    hint: () => $gettext('Published by a partner of the Nginx UI project.'),
-  },
-  community: {
-    color: 'orange',
-    tone: 'is-warning',
-    label: () => $gettext('Community'),
-    hint: () => $gettext('Published by a third party and not reviewed. It runs with the permissions you grant it, so only install it if you trust the author.'),
-  },
-  unsigned: {
-    color: 'default',
-    tone: '',
-    label: () => $gettext('Unsigned'),
-    hint: () => $gettext('Not signed, so its publisher cannot be confirmed. Installing it requires developer mode.'),
-  },
+  official: presetOf('official'),
+  verified: presetOf('verified'),
+  community: presetOf('community'),
+  unsigned: presetOf('unsigned'),
 }
 
 /** Preset of a catalog entry, where a missing level counts as community. */
