@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 func TestBuildExpiryNotificationUsesShortLivedThresholds(t *testing.T) {
@@ -131,6 +132,66 @@ func TestBuildExpiryNotificationUsesOrderedStandardThresholds(t *testing.T) {
 				t.Fatalf("remaining %s: unexpected days detail: %+v", tt.remaining,
 					notice.Details)
 			}
+		}
+	}
+}
+
+func TestBuildExpiryNotificationWaitsForAutoRenewalThreshold(t *testing.T) {
+	originalInterval := settings.CertSettings.RenewalInterval
+	t.Cleanup(func() { settings.CertSettings.RenewalInterval = originalInterval })
+
+	notBefore := time.Date(2026, time.July, 1, 0, 0, 0, 0, time.UTC)
+	info := &Info{NotBefore: notBefore, NotAfter: notBefore.Add(90 * 24 * time.Hour)}
+	certModel := &model.Cert{Name: "*.example.com", AutoCert: model.AutoCertEnabled}
+
+	tests := []struct {
+		name      string
+		interval  int
+		remaining time.Duration
+		stage     expiryNotificationStage
+	}{
+		{name: "not due under a 7 day threshold", interval: 7, remaining: 14 * 24 * time.Hour},
+		{name: "exactly at the 7 day threshold", interval: 7, remaining: 7 * 24 * time.Hour},
+		{name: "below the 7 day threshold", interval: 7, remaining: 6 * 24 * time.Hour,
+			stage: expiryStageWarning},
+		{name: "not due under a 30 day threshold", interval: 30, remaining: 31 * 24 * time.Hour},
+		{name: "overdue before the fixed thresholds", interval: 30, remaining: 29 * 24 * time.Hour,
+			stage: expiryStageNotice},
+		{name: "overdue keeps escalating", interval: 30, remaining: 3 * 24 * time.Hour,
+			stage: expiryStageUrgent},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			settings.CertSettings.RenewalInterval = tt.interval
+			notice := buildExpiryNotification(certModel, info, info.NotAfter.Add(-tt.remaining))
+			if tt.stage == "" {
+				if notice != nil {
+					t.Fatalf("notice = %+v, want nil", notice)
+				}
+				return
+			}
+			if notice == nil || notice.Stage != tt.stage {
+				t.Fatalf("notice = %+v, want stage %q", notice, tt.stage)
+			}
+		})
+	}
+}
+
+func TestBuildExpiryNotificationKeepsFixedThresholdsWithoutAutoRenewal(t *testing.T) {
+	originalInterval := settings.CertSettings.RenewalInterval
+	t.Cleanup(func() { settings.CertSettings.RenewalInterval = originalInterval })
+	settings.CertSettings.RenewalInterval = 7
+
+	notBefore := time.Date(2026, time.July, 1, 0, 0, 0, 0, time.UTC)
+	info := &Info{NotBefore: notBefore, NotAfter: notBefore.Add(90 * 24 * time.Hour)}
+	now := info.NotAfter.Add(-14 * 24 * time.Hour)
+
+	for _, autoCert := range []int{model.AutoCertDisabled, model.AutoCertSync, model.AutoCertPaused} {
+		certModel := &model.Cert{Name: "imported.example.com", AutoCert: autoCert}
+		notice := buildExpiryNotification(certModel, info, now)
+		if notice == nil || notice.Stage != expiryStageNotice {
+			t.Fatalf("auto_cert %d: notice = %+v, want notice", autoCert, notice)
 		}
 	}
 }
