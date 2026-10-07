@@ -65,6 +65,52 @@ async function copyToClipboard(text: string, label: string) {
       </div>
     </AFormItem>
 
+    <template v-if="!isManaged">
+      <AFormItem
+        name="ssl_certificate_path"
+        :label="$gettext('SSL Certificate Path')"
+        :validate-status="errors?.ssl_certificate_path ? 'error' : ''"
+        :help="errors?.ssl_certificate_path?.includes('required') ? $gettext('This field is required')
+          : errors?.ssl_certificate_path?.includes('certificate_path')
+            ? $gettext('The path exists, but the file is not a certificate') : ''"
+      >
+        <div class="input-with-copy">
+          <AInput v-model:value="data.ssl_certificate_path" />
+          <AButton
+            v-if="data.ssl_certificate_path"
+            type="text"
+            size="small"
+            class="copy-button"
+            @click="copyToClipboard(data.ssl_certificate_path, $gettext('SSL Certificate Path'))"
+          >
+            <CopyOutlined />
+          </AButton>
+        </div>
+      </AFormItem>
+
+      <AFormItem
+        name="ssl_certificate_key_path"
+        :label="$gettext('SSL Certificate Key Path')"
+        :validate-status="errors?.ssl_certificate_key_path ? 'error' : ''"
+        :help="errors?.ssl_certificate_key_path?.includes('required') ? $gettext('This field is required')
+          : errors?.ssl_certificate_key_path?.includes('privatekey_path')
+            ? $gettext('The path exists, but the file is not a private key') : ''"
+      >
+        <div class="input-with-copy">
+          <AInput v-model:value="data.ssl_certificate_key_path" />
+          <AButton
+            v-if="data.ssl_certificate_key_path"
+            type="text"
+            size="small"
+            class="copy-button"
+            @click="copyToClipboard(data.ssl_certificate_key_path, $gettext('SSL Certificate Key Path'))"
+          >
+            <CopyOutlined />
+          </AButton>
+        </div>
+      </AFormItem>
+    </template>
+
     <ACard size="small" class="sync-target-card" :title="$gettext('Sync to')">
       <AFormItem class="mb-0">
         <NodeSelector
