@@ -19,6 +19,21 @@ watch(() => props.managed, managed => {
 })
 
 const hasPaths = computed(() => !!(data.value.ssl_certificate_path || data.value.ssl_certificate_key_path))
+
+// Paths are typed in for other certificates, so a pasted certificate can be
+// saved and a file already on disk can be referenced in place.
+const editsPaths = computed(() => !props.managed)
+
+function pathHelp(error: string | undefined, kind: string, wrongFile: string) {
+  if (!error)
+    return ''
+  if (error.includes('required'))
+    return $gettext('This field is required')
+  return error.includes(kind) ? wrongFile : ''
+}
+
+const certPathHelp = computed(() => pathHelp(props.errors?.ssl_certificate_path, 'certificate_path', $gettext('The path exists, but the file is not a certificate')))
+const keyPathHelp = computed(() => pathHelp(props.errors?.ssl_certificate_key_path, 'privatekey_path', $gettext('The path exists, but the file is not a private key')))
 </script>
 
 <template>
@@ -36,7 +51,28 @@ const hasPaths = computed(() => !!(data.value.ssl_certificate_path || data.value
     </template>
 
     <template v-if="!collapsed">
-      <dl v-if="hasPaths" class="files-paths">
+      <div v-if="editsPaths" class="files-inputs">
+        <label class="files-field">
+          <span class="files-label">{{ $gettext('SSL Certificate Path') }}</span>
+          <AInput
+            v-model:value="data.ssl_certificate_path"
+            class="font-mono"
+            :status="errors?.ssl_certificate_path ? 'error' : undefined"
+          />
+          <span v-if="certPathHelp" class="files-help">{{ certPathHelp }}</span>
+        </label>
+        <label class="files-field">
+          <span class="files-label">{{ $gettext('SSL Certificate Key Path') }}</span>
+          <AInput
+            v-model:value="data.ssl_certificate_key_path"
+            class="font-mono"
+            :status="errors?.ssl_certificate_key_path ? 'error' : undefined"
+          />
+          <span v-if="keyPathHelp" class="files-help">{{ keyPathHelp }}</span>
+        </label>
+      </div>
+
+      <dl v-else-if="hasPaths" class="files-paths">
         <dt>{{ $gettext('Certificate') }}</dt>
         <dd>
           <ATypographyText :copyable="!!data.ssl_certificate_path" class="font-mono">
@@ -54,7 +90,7 @@ const hasPaths = computed(() => !!(data.value.ssl_certificate_path || data.value
       <CertificateContentEditor
         v-if="showContents"
         v-model:data="data"
-        :class="{ 'mt-3': hasPaths }"
+        :class="{ 'mt-3': editsPaths || hasPaths }"
         :errors="errors"
         :readonly="managed"
       />
@@ -82,6 +118,27 @@ const hasPaths = computed(() => !!(data.value.ssl_certificate_path || data.value
   &.is-collapsed {
     transform: rotate(-90deg);
   }
+}
+
+.files-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px 16px;
+}
+
+.files-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.files-label {
+  color: var(--ant-color-text-secondary);
+}
+
+.files-help {
+  color: var(--ant-color-error);
 }
 
 .files-paths {
