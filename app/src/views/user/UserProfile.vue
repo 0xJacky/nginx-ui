@@ -149,6 +149,7 @@ onMounted(() => {
           {{ $gettext('2FA Settings') }}
         </h2>
         <ACard>
+          <AAlert v-if="twoFAStatus.required" class="mb-4" type="info" show-icon :title="twoFAStatus.policy_source === 'global' ? $gettext('MFA is required by the global policy. You cannot remove your last MFA method.') : $gettext('MFA is required for your account. You cannot remove your last MFA method.')" />
           <Passkey class="mb-4" />
 
           <TOTP

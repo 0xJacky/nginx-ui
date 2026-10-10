@@ -1,5 +1,4 @@
-import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
-import type { JSXElements } from '@/types'
+import type { StdTableColumn } from '@uozi-admin/curd'
 import { datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'antdv-next'
 
@@ -27,20 +26,20 @@ const columns: StdTableColumn[] = [{
   hiddenInTable: true,
   hiddenInDetail: true,
 }, {
-  title: () => $gettext('2FA'),
-  dataIndex: 'enabled_2fa',
-  customRender: (args: CustomRenderArgs) => {
-    const template: JSXElements = []
-    const { text } = args
-    if (text === true || text > 0)
-      template.push(<Tag color="green">{$gettext('Enabled')}</Tag>)
-
-    else
-      template.push(<Tag color="orange">{$gettext('Disabled')}</Tag>)
-
-    return h('div', template)
-  },
-  sorter: true,
+  title: () => $gettext('Require MFA for this user'),
+  dataIndex: 'mfa_required',
+  edit: { type: 'switch' },
+  hiddenInTable: true,
+  pure: true,
+}, {
+  title: () => $gettext('MFA Policy'),
+  dataIndex: 'mfa_policy_source',
+  customRender: ({ text }) => <Tag color={text === 'optional' ? 'default' : 'blue'}>{text === 'global' ? $gettext('Global enforcement') : text === 'user' ? $gettext('User enforcement') : $gettext('Optional')}</Tag>,
+  pure: true,
+}, {
+  title: () => $gettext('MFA Enrollment'),
+  dataIndex: 'mfa_pending',
+  customRender: ({ record }) => <Tag color={record.mfa_pending ? 'orange' : record.enabled_2fa ? 'green' : 'default'}>{record.mfa_pending ? $gettext('Pending enrollment') : record.enabled_2fa ? $gettext('Enabled') : $gettext('Disabled')}</Tag>,
   pure: true,
 }, {
   title: () => $gettext('Created at'),
@@ -58,7 +57,7 @@ const columns: StdTableColumn[] = [{
   title: () => $gettext('Actions'),
   dataIndex: 'actions',
   fixed: 'right',
-  width: 250,
+  width: 340,
 }]
 
 export default columns

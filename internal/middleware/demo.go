@@ -19,14 +19,22 @@ import (
 // TOTP enrollment, so the demo user can never trigger it.
 func RejectInDemo() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if settings.NodeSettings.Demo {
-			cosy.ErrHandler(c, ErrDisabledInDemo)
-			c.Abort()
+		if BlockInDemo(c) {
 			return
 		}
 
 		c.Next()
 	}
+}
+
+// BlockInDemo rejects an action that cannot run on the public demo.
+func BlockInDemo(c *gin.Context) bool {
+	if !settings.NodeSettings.Demo {
+		return false
+	}
+	cosy.ErrHandler(c, ErrDisabledInDemo)
+	c.Abort()
+	return true
 }
 
 // DemoReadOnly blocks state-changing methods in demo mode while leaving reads

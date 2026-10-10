@@ -33,6 +33,8 @@ export interface DatabaseSettings {
 }
 
 export interface AuthSettings {
+  mfa_required: boolean
+  mfa_required_for_sso: boolean
   ip_white_list: string[]
   ban_threshold_minutes: number
   max_attempts: number

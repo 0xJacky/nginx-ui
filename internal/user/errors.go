@@ -20,4 +20,7 @@ var (
 	ErrConfigNotFound          = e.New(50006, "config not found")
 	ErrDBFileNotFound          = e.New(50007, "db file not found")
 	ErrInitUserNotExists       = e.New(50008, "init user not exists")
+	ErrMFASetupRequired        = e.New(40307, "MFA enrollment is required")
+	ErrMFAVerifyRequired       = e.New(40308, "MFA verification is required")
+	ErrLastMFAFactor           = e.New(40309, "cannot remove the last required MFA method")
 )

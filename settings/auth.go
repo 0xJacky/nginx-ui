@@ -1,6 +1,8 @@
 package settings
 
 type Auth struct {
+	MFARequired                 bool     `json:"mfa_required"`
+	MFARequiredForSSO           bool     `json:"mfa_required_for_sso"`
 	IPWhiteList                 []string `json:"ip_white_list" binding:"omitempty,dive,ip|redacted" ini:",,allowshadow" protected:"true"`
 	TrustedProxies              []string `json:"trusted_proxies" binding:"omitempty,dive,ip|cidr|redacted" ini:",,allowshadow" protected:"true"`
 	BanThresholdMinutes         int      `json:"ban_threshold_minutes" binding:"min=1"`

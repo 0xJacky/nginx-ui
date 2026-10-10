@@ -7,3 +7,7 @@ type WebAuthn struct {
 }
 
 var WebAuthnSettings = &WebAuthn{}
+
+func (w *WebAuthn) Configured() bool {
+	return w.RPDisplayName != "" && w.RPID != "" && len(w.RPOrigins) > 0
+}

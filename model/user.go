@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/0xJacky/Nginx-UI/internal/crypto"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/spf13/cast"
 	"gorm.io/gorm"
@@ -30,13 +31,17 @@ type RecoveryCodes struct {
 type User struct {
 	Model
 
-	Name          string        `json:"name" cosy:"add:max=20;update:omitempty,max=20;list:fussy;db_unique"`
-	Password      string        `json:"-" cosy:"json:password;add:required,max=20;update:omitempty,max=20"`
-	Status        bool          `json:"status" cosy:"update:omitempty" gorm:"default:1"`
-	OTPSecret     []byte        `json:"-" gorm:"type:blob"`
-	RecoveryCodes RecoveryCodes `json:"-" gorm:"serializer:json[aes]"`
-	EnabledTwoFA  bool          `json:"enabled_2fa" gorm:"-"`
-	Language      string        `json:"language" gorm:"default:en"`
+	Name            string        `json:"name" cosy:"add:max=20;update:omitempty,max=20;list:fussy;db_unique"`
+	Password        string        `json:"-" cosy:"json:password;add:required,max=20;update:omitempty,max=20"`
+	Status          bool          `json:"status" cosy:"update:omitempty" gorm:"default:1"`
+	OTPSecret       []byte        `json:"-" gorm:"type:blob"`
+	RecoveryCodes   RecoveryCodes `json:"-" gorm:"serializer:json[aes]"`
+	EnabledTwoFA    bool          `json:"enabled_2fa" gorm:"-"`
+	MFARequired     bool          `json:"mfa_required" cosy:"add:omitempty;update:omitempty" gorm:"not null;default:false"`
+	MFAVersion      uint64        `json:"-" gorm:"not null;default:0"`
+	MFAPolicySource string        `json:"mfa_policy_source" gorm:"-"`
+	MFAPending      bool          `json:"mfa_pending" gorm:"-"`
+	Language        string        `json:"language" gorm:"default:en"`
 }
 
 type AuthToken struct {
@@ -58,7 +63,20 @@ func (u *User) AfterFind(tx *gorm.DB) error {
 	}
 
 	u.EnabledTwoFA = enabled
+	u.MFAPolicySource = u.MFAPolicy()
+	u.MFAPending = u.MFAPolicySource != "optional" && !(u.EnabledOTP() || enabled && settings.WebAuthnSettings.Configured())
 	return nil
+}
+
+// MFAPolicy keeps the requirement separate from credential enrollment.
+func (u *User) MFAPolicy() string {
+	if settings.AuthSettings.MFARequired {
+		return "global"
+	}
+	if u.MFARequired {
+		return "user"
+	}
+	return "optional"
 }
 
 func (u *User) EnabledOTP() bool {

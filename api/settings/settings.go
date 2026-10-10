@@ -299,8 +299,12 @@ func GetSettings(c *gin.Context) {
 // stays for API clients and scripts that post the whole document.
 func SaveSettings(c *gin.Context) {
 	var json saveSettingsPayload
+	json.Auth = *settings.AuthSettings
 
 	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+	if !authorizeMFAPolicy(c, &json.Auth) {
 		return
 	}
 

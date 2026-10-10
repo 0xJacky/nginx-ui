@@ -265,6 +265,16 @@ func IssueLoginToken(user *model.User, proof LoginProof) (*AccessTokenPayload, e
 	if user == nil {
 		return nil, errors.New("user is required")
 	}
+	stage, err := LoginMFAStage(user, proof)
+	if err != nil {
+		return nil, err
+	}
+	if stage == "setup" {
+		return nil, ErrMFASetupRequired
+	}
+	if stage == "verify" {
+		return nil, ErrMFAVerifyRequired
+	}
 	if proof == LoginProofPassword && !user.EnabledOTP() {
 		enabledPasskey, err := user.EnabledPasskey()
 		if err != nil {
@@ -274,7 +284,7 @@ func IssueLoginToken(user *model.User, proof LoginProof) (*AccessTokenPayload, e
 			return nil, ErrPasskeyRequired
 		}
 	}
-	return generateJWT(user)
+	return generateJWT(user, proof)
 }
 
 // GenerateJWT remains available for non-login system flows and tests. New
@@ -283,7 +293,7 @@ func GenerateJWT(user *model.User) (*AccessTokenPayload, error) {
 	return IssueLoginToken(user, LoginProofSystem)
 }
 
-func generateJWT(user *model.User) (*AccessTokenPayload, error) {
+func generateJWT(user *model.User, proof LoginProof) (*AccessTokenPayload, error) {
 	sessionID := make([]byte, 16)
 	if _, err := rand.Read(sessionID); err != nil {
 		return nil, err
@@ -325,8 +335,46 @@ func generateJWT(user *model.User) (*AccessTokenPayload, error) {
 		ExpiredAt:   now.Add(ExpiredTime).Unix(),
 	}
 
-	q := query.AuthToken
-	err = q.Create(authToken)
+	err = model.UseDB().Transaction(func(tx *gorm.DB) error {
+		var current struct {
+			ID          uint64
+			Status      bool
+			MFAVersion  uint64
+			MFARequired bool
+			OTPSecret   []byte
+		}
+		if err := tx.Model(&model.User{}).Clauses(clause.Locking{Strength: "UPDATE"}).
+			Select("id", "status", "mfa_version", "mfa_required", "otp_secret").Where("id = ?", user.ID).Take(&current).Error; err != nil {
+			return err
+		}
+		if !current.Status {
+			return ErrUserBanned
+		}
+		if current.MFAVersion != user.MFAVersion {
+			return ErrSessionNotFound
+		}
+		account := &model.User{Model: model.Model{ID: current.ID}, MFARequired: current.MFARequired, OTPSecret: current.OTPSecret}
+		stage, err := loginMFAStage(account, proof, tx)
+		if err != nil {
+			return err
+		}
+		if stage == "setup" {
+			return ErrMFASetupRequired
+		}
+		if stage == "verify" {
+			return ErrMFAVerifyRequired
+		}
+		if proof == LoginProofPassword {
+			enabled, err := hasUsableMFA(account, tx)
+			if err != nil {
+				return err
+			}
+			if enabled {
+				return ErrMFAVerifyRequired
+			}
+		}
+		return tx.Create(authToken).Error
+	})
 
 	if err != nil {
 		return nil, err

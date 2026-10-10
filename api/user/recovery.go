@@ -7,10 +7,11 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/api"
+	internalUser "github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
+	"gorm.io/gorm"
 )
 
 const recoveryCodeAlphabet = "0123456789abcdefghijklmnopqrstuvwxyz"
@@ -66,10 +67,16 @@ func ViewRecoveryCodes(c *gin.Context) {
 	user := api.CurrentUser(c)
 
 	// update last viewed time
-	u := query.User
 	t := time.Now().Unix()
-	user.RecoveryCodes.LastViewed = &t
-	_, err := u.Where(u.ID.Eq(user.ID)).Updates(user)
+	err := internalUser.SaveMFACredentials(user, func(tx *gorm.DB) error {
+		var current model.User
+		if err := tx.First(&current, user.ID).Error; err != nil {
+			return err
+		}
+		current.RecoveryCodes.LastViewed = &t
+		user.RecoveryCodes = current.RecoveryCodes
+		return tx.Model(&current).Select("recovery_codes").Updates(&current).Error
+	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -93,8 +100,9 @@ func GenerateRecoveryCodes(c *gin.Context) {
 	recoveryCodes := model.RecoveryCodes{Codes: codes, LastViewed: &t}
 	user.RecoveryCodes = recoveryCodes
 
-	u := query.User
-	_, err = u.Where(u.ID.Eq(user.ID)).Updates(user)
+	err = internalUser.SaveMFACredentials(user, func(tx *gorm.DB) error {
+		return tx.Model(user).Select("recovery_codes").Updates(user).Error
+	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

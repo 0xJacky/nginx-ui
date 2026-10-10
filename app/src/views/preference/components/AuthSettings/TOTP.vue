@@ -1,74 +1,78 @@
 <script setup lang="ts">
 import type { RecoveryCode } from '@/api/recovery'
 import { CheckCircleOutlined } from '@antdv-next/icons'
-import { UseClipboard } from '@vueuse/components'
 import otp from '@/api/otp'
-import OTPInput from '@/components/OTPInput'
 import { use2FAModal } from '@/components/TwoFA'
+import TOTPEnrollment from '@/components/TwoFA/TOTPEnrollment.vue'
+import { useUserStore } from '@/pinia'
 
-const { status = false } = defineProps<{
-  status?: boolean
-}>()
-
-const emit = defineEmits<{
-  refresh: [void]
-}>()
-
+const { status = false } = defineProps<{ status?: boolean }>()
+const emit = defineEmits<{ refresh: [void] }>()
 const { message } = App.useApp()
-
+const user = useUserStore()
 const recoveryCodes = defineModel<RecoveryCode[]>('recoveryCodes')
-
 const enrolling = ref(false)
-const resetting = ref(false)
+const replacing = ref(false)
+const loading = ref(false)
 const generatedUrl = ref('')
 const secret = ref('')
-const passcode = ref('')
-const password = ref('')
-const refOtp = useTemplateRef('refOtp')
+const enrollment = useTemplateRef('enrollment')
+const otpModal = use2FAModal()
+const cannotDisable = computed(() => user.twoFAStatus.required && !user.twoFAStatus.passkey_status)
 
-function clickEnable2FA() {
-  enrolling.value = true
-  generateSecret()
+async function beginEnrollment() {
+  if (status && !await otpModal.open())
+    return
+  loading.value = true
+  try {
+    const response = await otp.generate_secret()
+    secret.value = response.secret
+    generatedUrl.value = response.url
+    replacing.value = status
+    enrolling.value = true
+  }
+  finally {
+    loading.value = false
+  }
 }
 
-function generateSecret() {
-  otp.generate_secret().then(r => {
-    secret.value = r.secret
-    generatedUrl.value = r.url
-    password.value = ''
-    refOtp.value?.clearInput()
-  })
-}
-
-function enroll(code: string) {
-  if (!password.value) {
+async function enroll(code: string, password: string) {
+  if (!password) {
     message.error($gettext('Please enter your current password'))
-    refOtp.value?.clearInput()
+    enrollment.value?.clearInput()
     return
   }
-
-  otp.enroll_otp(secret.value, code, password.value).then(r => {
+  loading.value = true
+  try {
+    const response = await otp.enroll_otp(secret.value, code, password, replacing.value)
+    recoveryCodes.value = response.codes
     enrolling.value = false
-    password.value = ''
-    recoveryCodes.value = r.codes
+    secret.value = ''
+    generatedUrl.value = ''
     emit('refresh')
     message.success($gettext('Enable 2FA successfully'))
-  }).catch(() => {
-    refOtp.value?.clearInput()
-  })
+  }
+  catch {
+    enrollment.value?.clearInput()
+  }
+  finally {
+    loading.value = false
+  }
 }
 
-const otpModal = use2FAModal()
-
-function reset2FA() {
-  otpModal.open().then(() => {
-    otp.reset().then(() => {
-      resetting.value = false
-      recoveryCodes.value = undefined
-      emit('refresh')
-      clickEnable2FA()
-    })
-  })
+async function disableTOTP() {
+  if (!await otpModal.open())
+    return
+  loading.value = true
+  try {
+    await otp.reset()
+    recoveryCodes.value = undefined
+    emit('refresh')
+    message.success($gettext('TOTP disabled'))
+  }
+  finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -77,72 +81,26 @@ function reset2FA() {
     <h3>{{ $gettext('TOTP') }}</h3>
     <p>{{ $gettext('TOTP is a two-factor authentication method that uses a time-based one-time password algorithm.') }}</p>
     <p>{{ $gettext('To enable it, you need to install the Google or Microsoft Authenticator app on your mobile phone.') }}</p>
-    <p>{{ $gettext('Scan the QR code with your mobile phone to add the account to the app.') }}</p>
     <AAlert v-if="!status" type="warning" :title="$gettext('Current account is not enabled TOTP.')" class="mb-2" show-icon />
-    <div v-else>
-      <p><CheckCircleOutlined class="mr-2 text-green-600" />{{ $gettext('Current account is enabled TOTP.') }}</p>
-    </div>
-
-    <AButton
-      v-if="!status && !enrolling"
-      type="primary"
-      ghost
-      @click="clickEnable2FA"
-    >
-      {{ $gettext('Enable TOTP') }}
-    </AButton>
-    <APopconfirm
-      v-if="status && !resetting"
-      :title="$gettext('Are you sure to reset 2FA?')"
-      @confirm="reset2FA"
-    >
-      <AButton
-        v-if="status && !resetting"
-        type="primary"
-        ghost
-      >
-        {{ $gettext('Reset 2FA') }}
+    <p v-else>
+      <CheckCircleOutlined class="mr-2 text-green-600" />{{ $gettext('Current account is enabled TOTP.') }}
+    </p>
+    <AFlex v-if="!enrolling" wrap gap="small">
+      <AButton type="primary" ghost :loading @click="beginEnrollment">
+        {{ status ? $gettext('Replace TOTP') : $gettext('Enable TOTP') }}
       </AButton>
-    </APopconfirm>
-
-    <template v-if="enrolling">
-      <div class="flex flex-col items-center">
-        <div class="mt-4 mb-2">
-          <AQrcode
-            v-if="generatedUrl"
-            :value="generatedUrl"
-            :size="256"
-          />
-          <div class="w-64 flex justify-center mt-2">
-            <UseClipboard v-slot="{ copy, copied }">
-              <ATooltip @click="() => copy(secret)">
-                <template #title>
-                  {{ copied ? $gettext('Secret has been copied')
-                    : $gettext('Click to copy') }}
-                </template>
-                {{ $gettext('Or enter the secret: %{secret}', { secret }) }}
-              </ATooltip>
-            </UseClipboard>
-          </div>
-        </div>
-
-        <div>
-          <AForm layout="vertical">
-            <AFormItem :label="$gettext('Current Password')">
-              <AInputPassword
-                v-model:value="password"
-                autocomplete="current-password"
-              />
-            </AFormItem>
-          </AForm>
-          <p>{{ $gettext('Input the code from the app:') }}</p>
-          <OTPInput
-            ref="refOtp"
-            v-model="passcode"
-            @on-complete="enroll"
-          />
-        </div>
-      </div>
+      <APopconfirm v-if="status" :disabled="cannotDisable" :title="$gettext('Disable TOTP for this account?')" @confirm="disableTOTP">
+        <AButton danger :loading :disabled="cannotDisable">
+          {{ $gettext('Disable TOTP') }}
+        </AButton>
+      </APopconfirm>
+    </AFlex>
+    <template v-else>
+      <AAlert v-if="replacing" class="my-3" type="info" show-icon :title="$gettext('Your current authenticator remains active until the new code is verified. New recovery codes replace the old ones.')" />
+      <TOTPEnrollment ref="enrollment" class="mt-4" :secret :url="generatedUrl" :loading require-password @complete="enroll" />
+      <AButton class="mt-3" :disabled="loading" @click="enrolling = false; secret = ''; generatedUrl = ''">
+        {{ $gettext('Cancel') }}
+      </AButton>
     </template>
   </div>
 </template>

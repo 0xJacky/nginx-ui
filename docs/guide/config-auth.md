@@ -55,3 +55,19 @@ Controls how many minutes a successful TOTP or passkey verification authorizes
 protected operations. The setting does not change the normal login session
 lifetime. Values must be positive; missing, zero, and negative values use the
 10-minute default.
+
+## MFARequired
+- Type: `bool`
+- Default: `false`
+
+Requires TOTP or a usable passkey for every account at its next sign-in.
+Existing sessions remain active. Individual account requirements remain in
+effect when this global setting is disabled.
+
+## MFARequiredForSSO
+- Type: `bool`
+- Default: `false`
+
+When enabled, OIDC and Casdoor sign-ins also require local MFA verification
+for enrolled accounts and enrollment for accounts with an effective MFA
+requirement. See [MFA policy and recovery](./mfa).

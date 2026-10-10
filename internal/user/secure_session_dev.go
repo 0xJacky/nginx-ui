@@ -49,9 +49,10 @@ func SecureSessionDuration() time.Duration {
 // backend during development does not force another verification. Release
 // builds do not compile this file and keep sessions in memory only.
 type devSecureSession struct {
-	SessionID string `gorm:"primaryKey;size:64"`
-	UserID    uint64 `gorm:"not null"`
-	ExpiresAt int64  `gorm:"index;not null"`
+	SessionID  string `gorm:"primaryKey;size:64"`
+	UserID     uint64 `gorm:"not null"`
+	ExpiresAt  int64  `gorm:"index;not null"`
+	MFAVersion uint64 `gorm:"not null;default:0"`
 }
 
 func (devSecureSession) TableName() string {
@@ -85,8 +86,8 @@ func devSecureSessionDB() *gorm.DB {
 	return db
 }
 
-func storeSecureSession(sessionId string, userId uint64, ttl time.Duration) {
-	setCachedSecureSession(sessionId, userId, ttl)
+func storeSecureSession(sessionId string, userId uint64, version uint64, ttl time.Duration) {
+	setCachedSecureSession(sessionId, userId, ttl, version)
 
 	db := devSecureSessionDB()
 	if db == nil {
@@ -97,6 +98,7 @@ func storeSecureSession(sessionId string, userId uint64, ttl time.Duration) {
 		UserID:    userId,
 		ExpiresAt: time.Now().Add(ttl).Unix(),
 	}
+	record.MFAVersion = version
 	if err := db.Save(&record).Error; err != nil {
 		logger.Warnf("could not persist the dev secure session: %v", err)
 	}
@@ -120,8 +122,20 @@ func lookupSecureSession(sessionId string) (uint64, bool) {
 	if err := db.Where("session_id = ? AND expires_at > ?", sessionId, now).First(&record).Error; err != nil {
 		return 0, false
 	}
+	version, err := secureSessionMFAVersion(record.UserID)
+	if err != nil || version != record.MFAVersion {
+		return 0, false
+	}
 
 	// Warm the cache so the next lookup in this process does not hit the DB.
-	setCachedSecureSession(sessionId, record.UserID, time.Until(time.Unix(record.ExpiresAt, 0)))
+	setCachedSecureSession(sessionId, record.UserID, time.Until(time.Unix(record.ExpiresAt, 0)), record.MFAVersion)
 	return record.UserID, true
+}
+
+func secureSessionMFAVersion(userID uint64) (uint64, error) {
+	// Development can persist sessions before account migrations have run.
+	if db := model.UseDB(); db != nil && !db.Migrator().HasTable(&model.User{}) {
+		return 0, nil
+	}
+	return MFAVersion(userID)
 }

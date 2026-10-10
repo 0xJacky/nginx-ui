@@ -6,6 +6,7 @@ import (
 	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/process"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
@@ -40,13 +41,14 @@ type sectionSave struct {
 	validate  func() error
 	apply     func()
 	afterSave func()
+	mfaPolicy *settings.Auth
 }
 
 func (s settingsSection[T]) bind(payload *T) *sectionSave {
 	var previous T
 	target := s.target()
 
-	return &sectionSave{
+	save := &sectionSave{
 		validate: func() error {
 			if s.restore != nil {
 				s.restore(payload)
@@ -66,6 +68,10 @@ func (s settingsSection[T]) bind(payload *T) *sectionSave {
 			}
 		},
 	}
+	if s.name == "auth" {
+		save.mfaPolicy = any(payload).(*settings.Auth)
+	}
+	return save
 }
 
 // handler serves POST /settings/<name>: it saves this section only and answers
@@ -73,7 +79,13 @@ func (s settingsSection[T]) bind(payload *T) *sectionSave {
 func (s settingsSection[T]) handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var payload T
+		if s.name == "auth" {
+			*any(&payload).(*settings.Auth) = *settings.AuthSettings
+		}
 		if !cosy.BindAndValid(c, &payload) {
+			return
+		}
+		if s.name == "auth" && !authorizeMFAPolicy(c, any(&payload).(*settings.Auth)) {
 			return
 		}
 
@@ -85,6 +97,13 @@ func (s settingsSection[T]) handler() gin.HandlerFunc {
 		c.JSON(http.StatusOK, buildSettingsSectionResponse(s.name))
 		save.afterSave()
 	}
+}
+
+func authorizeMFAPolicy(c *gin.Context, payload *settings.Auth) bool {
+	if payload.MFARequired == settings.AuthSettings.MFARequired && payload.MFARequiredForSSO == settings.AuthSettings.MFARequiredForSSO {
+		return true
+	}
+	return middleware.RequireMFAManagement(c)
 }
 
 // persistSections validates every section first and then writes them in a
@@ -99,11 +118,22 @@ func persistSections(c *gin.Context, saves ...*sectionSave) bool {
 		}
 	}
 
+	authorized := true
 	err := settings.Update(func() {
+		// Recheck against the current policy while holding the settings lock.
+		for _, save := range saves {
+			if save.mfaPolicy != nil && !authorizeMFAPolicy(c, save.mfaPolicy) {
+				authorized = false
+				return
+			}
+		}
 		for _, save := range saves {
 			save.apply()
 		}
 	})
+	if !authorized {
+		return false
+	}
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return false

@@ -89,6 +89,9 @@ func CasdoorCallback(c *gin.Context) {
 		return
 	}
 
+	if beginRequiredMFA(c, u, user.LoginProofExternal) {
+		return
+	}
 	userToken, err := user.IssueLoginToken(u, user.LoginProofExternal)
 	if err != nil {
 		cosy.ErrHandler(c, err)

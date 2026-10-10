@@ -36,11 +36,7 @@ func Init(ctx context.Context) {
 }
 
 func Enabled() bool {
-	options := settings.WebAuthnSettings
-	if options.RPDisplayName == "" || options.RPID == "" || len(options.RPOrigins) == 0 {
-		return false
-	}
-	return true
+	return settings.WebAuthnSettings.Configured()
 }
 
 func GetInstance() *webauthn.WebAuthn {

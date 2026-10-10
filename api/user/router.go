@@ -6,6 +6,7 @@ import (
 )
 
 func InitAuthRouter(r *gin.RouterGroup) {
+	initMFAPreAuthRouter(r)
 	r.POST("/login", middleware.EncryptedParams(), Login)
 	r.DELETE("/logout", Logout)
 

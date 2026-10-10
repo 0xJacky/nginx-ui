@@ -18,12 +18,15 @@ import (
 )
 
 type Status2FA struct {
-	Enabled                        bool `json:"enabled"`
-	OTPStatus                      bool `json:"otp_status"`
-	PasskeyStatus                  bool `json:"passkey_status"`
-	RecoveryCodesGenerated         bool `json:"recovery_codes_generated"`
-	RecoveryCodesViewed            bool `json:"recovery_codes_viewed"`
-	RecoveryCodesMigrationRequired bool `json:"recovery_codes_migration_required"`
+	Required                       bool   `json:"required"`
+	PolicySource                   string `json:"policy_source"`
+	Pending                        bool   `json:"pending"`
+	Enabled                        bool   `json:"enabled"`
+	OTPStatus                      bool   `json:"otp_status"`
+	PasskeyStatus                  bool   `json:"passkey_status"`
+	RecoveryCodesGenerated         bool   `json:"recovery_codes_generated"`
+	RecoveryCodesViewed            bool   `json:"recovery_codes_viewed"`
+	RecoveryCodesMigrationRequired bool   `json:"recovery_codes_migration_required"`
 }
 
 func get2FAStatus(c *gin.Context) (status Status2FA, err error) {
@@ -38,6 +41,9 @@ func get2FAStatus(c *gin.Context) (status Status2FA, err error) {
 		}
 		status.PasskeyStatus = status.PasskeyStatus && passkey.Enabled()
 		status.Enabled = status.OTPStatus || status.PasskeyStatus
+		status.PolicySource = userPtr.MFAPolicy()
+		status.Required = status.PolicySource != "optional"
+		status.Pending = status.Required && !status.Enabled
 		status.RecoveryCodesGenerated = userPtr.RecoveryCodeGenerated()
 		status.RecoveryCodesViewed = userPtr.RecoveryCodeViewed()
 		status.RecoveryCodesMigrationRequired = userPtr.RecoveryCodesMigrationRequired()
@@ -95,7 +101,7 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 		return
 	}
 	u := api.CurrentUser(c)
-	if !u.EnabledOTP() {
+	if !u.EnabledOTP() && !(json.RecoveryCode != "" && u.RecoveryCodeGenerated()) {
 		cosy.ErrHandler(c, user.ErrUserNotEnabledOTPAs2FA)
 		return
 	}
@@ -111,7 +117,7 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 		return
 	}
 
-	sessionId := user.SetSecureSessionID(u.ID)
+	sessionId := user.SetSecureSessionID(u.ID, u.MFAVersion)
 
 	c.JSON(http.StatusOK, gin.H{
 		"session_id":                sessionId,
@@ -164,7 +170,7 @@ func FinishStart2FASecureSessionByPasskey(c *gin.Context) {
 		LastUsedAt: time.Now().Unix(),
 	})
 
-	sessionId := user.SetSecureSessionID(u.ID)
+	sessionId := user.SetSecureSessionID(u.ID, u.MFAVersion)
 
 	c.JSON(http.StatusOK, gin.H{
 		"session_id":  sessionId,

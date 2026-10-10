@@ -61,6 +61,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           collapsed: false,
           items: [
             { text: 'Command Line Interface', link: '/guide/cli' },
+            { text: 'MFA Policy and Recovery', link: '/guide/mfa' },
           ]
         },
         {

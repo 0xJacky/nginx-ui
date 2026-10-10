@@ -207,6 +207,9 @@ func OIDCCallback(c *gin.Context) {
 		return
 	}
 
+	if beginRequiredMFA(c, u, user.LoginProofExternal) {
+		return
+	}
 	userToken, err := user.IssueLoginToken(u, user.LoginProofExternal)
 	if err != nil {
 		respondOIDCCosyError(c, redirectUri, err)
@@ -227,9 +230,17 @@ func OIDCCallback(c *gin.Context) {
 }
 
 func buildOIDCFrontendLoginRedirect(redirectUri string, token string) string {
+	return buildOIDCFrontendRedirect(redirectUri, "oidc_token", token)
+}
+
+func buildOIDCFrontendLoginRedirectWithQuery(key, value string) string {
+	return buildOIDCFrontendRedirect(settings.OIDCSettings.RedirectUri, key, value)
+}
+
+func buildOIDCFrontendRedirect(redirectUri, key, value string) string {
 	parsed, err := url.Parse(redirectUri)
 	if err != nil {
-		return "/#/login?oidc_token=" + url.QueryEscape(token)
+		return "/#/login?" + url.QueryEscape(key) + "=" + url.QueryEscape(value)
 	}
 
 	basePath := strings.TrimSuffix(parsed.Path, "/api/oidc_callback")
@@ -238,7 +249,7 @@ func buildOIDCFrontendLoginRedirect(redirectUri string, token string) string {
 	}
 
 	query := url.Values{}
-	query.Set("oidc_token", token)
+	query.Set(key, value)
 
 	parsed.Path = basePath
 	parsed.RawQuery = ""

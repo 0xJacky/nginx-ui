@@ -17,10 +17,10 @@ export interface RecoveryCodesResponse extends RecoveryCodes {
 
 const recovery = {
   generate(): Promise<RecoveryCodesResponse> {
-    return http.get('/recovery_codes_generate')
+    return http.get('/recovery_codes_generate', { skipNodeProxy: true })
   },
   view(): Promise<RecoveryCodesResponse> {
-    return http.get('/recovery_codes')
+    return http.get('/recovery_codes', { skipNodeProxy: true })
   },
 }
 

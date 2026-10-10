@@ -24,6 +24,7 @@ function getList() {
   getListLoading.value = true
   passkey.getList().then(r => {
     data.value = r
+    void user.refreshTwoFAStatus()
   }).finally(() => {
     getListLoading.value = false
   })
@@ -34,6 +35,7 @@ onMounted(() => {
 })
 
 const modifyIdx = ref(-1)
+const cannotRemoveLast = computed(() => user.twoFAStatus.required && !user.twoFAStatus.otp_status && data.value.length <= 1)
 function update(id: number, record: Passkey) {
   passkey.update(id, record).then(() => {
     getList()
@@ -45,6 +47,7 @@ function update(id: number, record: Passkey) {
 function remove(item: Passkey) {
   passkey.remove(item.id).then(() => {
     getList()
+    void user.refreshTwoFAStatus()
     message.success($gettext('Remove successfully'))
 
     // if current passkey is removed, clear it from user store
@@ -112,12 +115,14 @@ function remove(item: Passkey) {
               </AButton>
 
               <APopconfirm
+                :disabled="cannotRemoveLast"
                 :title="$gettext('Are you sure to delete this passkey immediately?')"
                 @confirm="() => remove(item)"
               >
                 <AButton
                   type="link"
                   danger
+                  :disabled="cannotRemoveLast"
                   size="small"
                 >
                   <DeleteOutlined />

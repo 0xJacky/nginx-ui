@@ -52,6 +52,7 @@ func ensureSecureSessionCookie(c *gin.Context) {
 		cSettings.ServerSettings.EnableHTTPS,
 		true,
 	)
+	c.Request.AddCookie(&http.Cookie{Name: cookieName, Value: hex.EncodeToString(b)})
 }
 
 // EnsureSecureSessionCookie makes sure the session-binding cookie exists.

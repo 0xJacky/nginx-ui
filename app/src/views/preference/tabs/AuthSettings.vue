@@ -53,6 +53,14 @@ function removeBannedIP(ip: string) {
 
 <template>
   <div>
+    <SettingPanel :title="$gettext('MFA Policy')" :description="$gettext('Require MFA at the next sign-in. Users must enroll their own authenticator or passkey.')">
+      <SettingRow :title="$gettext('Require MFA for all users')" path="auth.mfa_required">
+        <ASwitch v-model:checked="data.auth.mfa_required" />
+      </SettingRow>
+      <SettingRow :title="$gettext('Require local MFA for SSO sign-in')" :description="$gettext('Apply local MFA verification and enrollment requirements to OIDC and Casdoor sign-in.')" path="auth.mfa_required_for_sso">
+        <ASwitch v-model:checked="data.auth.mfa_required_for_sso" />
+      </SettingRow>
+    </SettingPanel>
     <SettingPanel
       v-if="data.webauthn.rpid
         && data.webauthn.rp_display_name

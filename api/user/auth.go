@@ -41,6 +41,7 @@ type LoginResponse struct {
 	SecureSessionTTL int    `json:"secure_session_ttl,omitempty"`
 	PreAuthID        string `json:"pre_auth_id,omitempty"`
 	Options          any    `json:"options,omitempty"`
+	MFAStage         string `json:"mfa_stage,omitempty"`
 }
 
 func Login(c *gin.Context) {
@@ -78,12 +79,17 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	if u.MFAPending || json.OTP == "" && json.RecoveryCode == "" {
+		if beginRequiredMFA(c, u, user.LoginProofPassword) {
+			return
+		}
+	}
 	// Check if the user enables 2FA
 	var secureSessionID string
 	var secureSessionTTL int
 
 	loginProof := user.LoginProofPassword
-	if u.EnabledOTP() {
+	if u.EnabledOTP() || (u.RecoveryCodeGenerated() && json.RecoveryCode != "") {
 		if json.OTP == "" && json.RecoveryCode == "" {
 			c.JSON(http.StatusOK, LoginResponse{
 				Message: "The user has enabled 2FA",
@@ -99,7 +105,7 @@ func Login(c *gin.Context) {
 			return
 		}
 
-		secureSessionID = user.SetSecureSessionID(u.ID)
+		secureSessionID = user.SetSecureSessionID(u.ID, u.MFAVersion)
 		secureSessionTTL = int(user.SecureSessionDuration().Seconds())
 		loginProof = user.LoginProofOTP
 	} else {

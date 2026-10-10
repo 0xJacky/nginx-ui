@@ -2,7 +2,7 @@ import type { AuthenticationResponseJSON, PublicKeyCredentialRequestOptionsJSON 
 import { http } from '@uozi-admin/request'
 import { useUserStore } from '@/pinia'
 
-const { login, logout } = useUserStore()
+const { logout } = useUserStore()
 
 export interface AuthResponse {
   message: string
@@ -11,6 +11,7 @@ export interface AuthResponse {
   error: string
   secure_session_id: string
   secure_session_ttl?: number
+  mfa_stage?: 'setup' | 'verify'
   pre_auth_id?: string
   options?: {
     publicKey: PublicKeyCredentialRequestOptionsJSON
@@ -24,42 +25,31 @@ const auth = {
       password,
       otp,
       recovery_code: recoveryCode,
-    }, { crypto: true })
+    }, { crypto: true, skipNodeProxy: true })
   },
-  async casdoor_login(code?: string, state?: string) {
-    await http.post('/casdoor_callback', {
-      code,
-      state,
-    })
-      .then((r: AuthResponse) => {
-        login(r.token)
-      })
+  casdoor_login(code?: string, state?: string): Promise<AuthResponse> {
+    return http.post('/casdoor_callback', { code, state }, { skipNodeProxy: true })
   },
-  async oidc_login(code?: string, state?: string) {
-    await http.post('/oidc_callback', {
-      code,
-      state,
-    })
-      .then((r: AuthResponse) => {
-        login(r.token)
-      })
+  oidc_login(code?: string, state?: string): Promise<AuthResponse> {
+    return http.post('/oidc_callback', { code, state }, { skipNodeProxy: true })
   },
   async logout() {
-    return http.delete('/logout').then(async () => {
+    return http.delete('/logout', { skipNodeProxy: true }).then(async () => {
       logout()
     })
   },
   async get_casdoor_uri(): Promise<{ uri: string }> {
-    return http.get('/casdoor_uri')
+    return http.get('/casdoor_uri', { skipNodeProxy: true })
   },
   async get_oidc_uri(): Promise<{ uri: string }> {
-    return http.get('/oidc_uri')
+    return http.get('/oidc_uri', { skipNodeProxy: true })
   },
   begin_passkey_login() {
-    return http.get('/begin_passkey_login')
+    return http.get('/begin_passkey_login', { skipNodeProxy: true })
   },
   finish_passkey_login(data: { session_id: string, options: AuthenticationResponseJSON }) {
     return http.post('/finish_passkey_login', data.options, {
+      skipNodeProxy: true,
       headers: {
         'X-Passkey-Session-Id': data.session_id,
       },
@@ -67,6 +57,7 @@ const auth = {
   },
   finish_passkey_pre_auth(data: { pre_auth_id: string, options: AuthenticationResponseJSON }): Promise<AuthResponse> {
     return http.post('/finish_passkey_pre_auth', data.options, {
+      skipNodeProxy: true,
       headers: {
         'X-Passkey-Pre-Auth-ID': data.pre_auth_id,
       },

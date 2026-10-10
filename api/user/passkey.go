@@ -39,6 +39,7 @@ func buildCachePasskeyRegKey(id uint64) string {
 
 type passkeyPreAuthSession struct {
 	UserID      uint64
+	MFAVersion  uint64
 	SessionData *webauthn.SessionData
 }
 
@@ -96,6 +97,7 @@ func beginPasskeyPreAuthentication(c *gin.Context, currentUser *model.User) {
 	preAuthID := uuid.NewString()
 	cache.Set(buildPasskeyPreAuthKey(preAuthID), &passkeyPreAuthSession{
 		UserID:      currentUser.ID,
+		MFAVersion:  currentUser.MFAVersion,
 		SessionData: sessionData,
 	}, passkeyTimeout)
 	c.JSON(http.StatusOK, LoginResponse{
@@ -123,6 +125,10 @@ func FinishPasskeyPreAuthentication(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	if currentUser.MFAVersion != session.MFAVersion {
+		cosy.ErrHandler(c, user.ErrSessionNotFound)
+		return
+	}
 	credential, err := passkey.GetInstance().FinishLogin(currentUser, *session.SessionData, c.Request)
 	if err != nil {
 		cosy.ErrHandler(c, err)
@@ -142,7 +148,7 @@ func FinishPasskeyPreAuthentication(c *gin.Context) {
 	}
 	banIPQuery := query.BanIP
 	_, _ = banIPQuery.Where(banIPQuery.IP.Eq(c.ClientIP())).Delete()
-	secureSessionID := user.SetSecureSessionID(currentUser.ID)
+	secureSessionID := user.SetSecureSessionID(currentUser.ID, currentUser.MFAVersion)
 	middleware.EnsureSecureSessionCookie(c)
 	c.JSON(http.StatusOK, LoginResponse{
 		Code:               LoginSuccess,
@@ -187,12 +193,20 @@ func BeginPasskeyRegistration(c *gin.Context) {
 		return
 	}
 	cache.Set(buildCachePasskeyRegKey(u.ID), sessionData, passkeyTimeout)
+	cache.Set(buildCachePasskeyRegKey(u.ID)+":version", u.MFAVersion, passkeyTimeout)
 
 	c.JSON(http.StatusOK, options.Response)
 }
 
 func FinishPasskeyRegistration(c *gin.Context) {
 	cUser := api.CurrentUser(c)
+	unlock := user.LockMFA(cUser.ID)
+	defer unlock()
+	version, _ := cache.Take(buildCachePasskeyRegKey(cUser.ID) + ":version")
+	if version != cUser.MFAVersion && !(version == nil && cUser.MFAVersion == 0) {
+		cosy.ErrHandler(c, user.ErrSessionNotFound)
+		return
+	}
 	webauthnInstance := passkey.GetInstance()
 	sessionData, ok := takePasskeyRegistrationSession(cUser.ID)
 	if !ok {
@@ -207,13 +221,14 @@ func FinishPasskeyRegistration(c *gin.Context) {
 	}
 	rawId := strings.TrimRight(base64.StdEncoding.EncodeToString(credential.ID), "=")
 	passkeyName := c.Query("name")
-	p := query.Passkey
-	err = p.Create(&model.Passkey{
-		UserID:     cUser.ID,
-		Name:       passkeyName,
-		RawID:      rawId,
-		Credential: credential,
-		LastUsedAt: time.Now().Unix(),
+	err = user.SaveMFACredentials(cUser, func(tx *gorm.DB) error {
+		return tx.Create(&model.Passkey{
+			UserID:     cUser.ID,
+			Name:       passkeyName,
+			RawID:      rawId,
+			Credential: credential,
+			LastUsedAt: time.Now().Unix(),
+		}).Error
 	})
 	if err != nil {
 		cosy.ErrHandler(c, err)
@@ -291,7 +306,7 @@ func FinishPasskeyLogin(c *gin.Context) {
 		return
 	}
 
-	secureSessionID := user.SetSecureSessionID(outUser.ID)
+	secureSessionID := user.SetSecureSessionID(outUser.ID, outUser.MFAVersion)
 
 	middleware.EnsureSecureSessionCookie(c)
 
@@ -332,8 +347,18 @@ func UpdatePasskey(c *gin.Context) {
 
 func DeletePasskey(c *gin.Context) {
 	u := api.CurrentUser(c)
-	cosy.Core[model.Passkey](c).
-		GormScope(func(tx *gorm.DB) *gorm.DB {
-			return tx.Where("user_id", u.ID)
-		}).PermanentlyDelete()
+	id := c.Param("id")
+	err := user.ChangeMFA(u.ID, func(tx *gorm.DB, current *model.User) error {
+		var credential model.Passkey
+		if err := tx.Where("id = ? AND user_id = ?", id, current.ID).First(&credential).Error; err != nil {
+			return err
+		}
+		return tx.Unscoped().Delete(&credential).Error
+	}, u.MFAVersion)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	user.InvalidateUserCache(u.ID)
+	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FormInstance } from 'antdv-next'
+import type { AuthResponse } from '@/api/auth'
 import { KeyOutlined, LoadingOutlined, LockOutlined, UserOutlined } from '@antdv-next/icons'
 import { startAuthentication } from '@simplewebauthn/browser'
 import auth from '@/api/auth'
@@ -10,6 +11,7 @@ import ICP from '@/components/ICP'
 import SetLanguage from '@/components/SetLanguage'
 import SwitchAppearance from '@/components/SwitchAppearance'
 import Authorization from '@/components/TwoFA'
+import MFALogin from '@/components/TwoFA/MFALogin.vue'
 import gettext from '@/gettext'
 import { useSettingsStore, useUserStore } from '@/pinia'
 
@@ -21,6 +23,7 @@ const router = useRouter()
 const loading = ref(false)
 const { message } = useGlobalApp()
 const enabled2FA = ref(false)
+const mfaPreAuthId = ref('')
 
 // Debug data for development
 const debugData = computed(() => ({
@@ -142,6 +145,31 @@ async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
   await router.push(next && next !== '/' ? next : '/dashboard/server')
 }
 
+function beginMFA(id: string) {
+  mfaPreAuthId.value = id
+  modelRef.password = ''
+  const next = route.query.next?.toString()
+  const params = next ? `?next=${encodeURIComponent(next)}` : ''
+  window.history.replaceState(null, '', `${window.location.pathname}#/login${params}`)
+}
+
+async function completeMFA(response: AuthResponse) {
+  await handleLoginSuccess({ token: response.token, secureSessionId: response.secure_session_id, secureSessionTTL: response.secure_session_ttl })
+}
+
+async function handleSSOResponse(response: AuthResponse) {
+  if (response.code === 197 && response.pre_auth_id)
+    beginMFA(response.pre_auth_id)
+  else if (response.token)
+    await completeMFA(response)
+}
+
+function cancelMFA() {
+  mfaPreAuthId.value = ''
+  modelRef.password = ''
+  void router.replace('/login')
+}
+
 async function onSubmit() {
   if (loading.value)
     return
@@ -174,6 +202,10 @@ async function onSubmit() {
             secureSessionId: r.secure_session_id,
             secureSessionTTL: r.secure_session_ttl,
           })
+          break
+        case 197:
+          if (r.pre_auth_id)
+            beginMFA(r.pre_auth_id)
           break
         case 199:
           enabled2FA.value = true
@@ -255,6 +287,7 @@ const query = route.query
 const code = query?.code?.toString() ?? searchParams.get('code')
 const state = query?.state?.toString() ?? searchParams.get('state')
 const oidcToken = query?.oidc_token?.toString() ?? searchParams.get('oidc_token')
+const mfaTicket = query?.mfa_pre_auth?.toString() ?? searchParams.get('mfa_pre_auth')
 const ssoError = query?.sso_error?.toString() ?? searchParams.get('sso_error')
 
 if (ssoError) {
@@ -265,7 +298,10 @@ if (ssoError) {
   }
 }
 
-if (oidcToken) {
+if (mfaTicket) {
+  beginMFA(mfaTicket)
+}
+else if (oidcToken) {
   loading.value = true
   handleLoginSuccess({ token: oidcToken }).finally(() => {
     loading.value = false
@@ -274,16 +310,12 @@ if (oidcToken) {
 else if (code && state) {
   loading.value = true
   if (state.startsWith('nginx-ui-oidc_')) {
-    auth.oidc_login(code, state).then(async () => {
-      await handleLoginSuccess()
-    }).finally(() => {
+    auth.oidc_login(code, state).then(handleSSOResponse).finally(() => {
       loading.value = false
     })
   }
   else {
-    auth.casdoor_login(code, state).then(async () => {
-      await handleLoginSuccess()
-    }).finally(() => {
+    auth.casdoor_login(code, state).then(handleSSOResponse).finally(() => {
       loading.value = false
     })
   }
@@ -355,6 +387,8 @@ async function handlePasskeyLogin() {
             password managers can discover the segmented code fields, and
             nesting forms is invalid HTML.
           -->
+          <MFALogin v-else-if="mfaPreAuthId" :pre-auth-id="mfaPreAuthId" @completed="completeMFA" @cancel="cancelMFA" />
+
           <div v-else-if="enabled2FA">
             <Authorization
               ref="refOTP"

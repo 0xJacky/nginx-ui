@@ -357,6 +357,7 @@ func AuthRequiredWS() gin.HandlerFunc {
 		}
 
 		c.Set("user", u)
+		c.Writer = &mfaResponseWriter{ResponseWriter: c.Writer, user: u}
 		c.Next()
 	}
 }

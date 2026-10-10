@@ -40,7 +40,9 @@ func UpdateCurrentUser(c *gin.Context) {
 			user.Language = c.Model.Language
 
 			db := cosy.UseDB(c)
-			err := db.Where("id = ?", user.ID).Updates(user).Error
+			err := db.Where("id = ?", user.ID).Updates(&model.User{
+				Name: user.Name, Language: user.Language,
+			}).Error
 			if err != nil {
 				cosy.ErrHandler(c.Context, err)
 				return

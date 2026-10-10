@@ -33,10 +33,12 @@ func InitManageUserRouter(g *gin.RouterGroup) {
 	c := cosy.Api[model.User]("users")
 
 	c.CreateHook(func(c *cosy.Ctx[model.User]) {
+		c.BeforeDecodeHook(checkUserMFAPolicy)
 		c.BeforeDecodeHook(encryptPassword)
 	})
 
 	c.ModifyHook(func(c *cosy.Ctx[model.User]) {
+		c.BeforeDecodeHook(checkUserMFAPolicy)
 		c.BeforeDecodeHook(func(ctx *cosy.Ctx[model.User]) {
 			if settings.NodeSettings.Demo && ctx.ID == 1 {
 				ctx.AbortWithError(user.ErrChangeInitUserPwdInDemo)
@@ -71,4 +73,5 @@ func InitManageUserRouter(g *gin.RouterGroup) {
 	c.BeforeRecover(middleware.RequireInteractiveUser(), middleware.RequireSecureSession())
 
 	c.InitRouter(g)
+	g.POST("/users/:id/mfa/reset", middleware.RequireInteractiveUser(), middleware.RequireSecureSession(), middleware.RejectInDemo(), ResetUserMFA)
 }

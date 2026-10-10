@@ -2,6 +2,7 @@ import type { SavableSettingsSection, Settings } from '@/api/settings'
 import type { CosyError } from '@/lib/http/types'
 import settings, { SAVABLE_SETTINGS_SECTIONS } from '@/api/settings'
 import { use2FAModal } from '@/components/TwoFA'
+import { useMFAManagement } from '@/components/TwoFA/useMFAManagement'
 import { useGlobalApp } from '@/composables/useGlobalApp'
 import { isTwoFactorCancelled, translateError } from '@/lib/http/error'
 import { normalizeHttpError } from '@/lib/http/normalizeError'
@@ -44,6 +45,7 @@ interface SectionSaveResult {
 
 const useSystemSettingsStore = defineStore('systemSettings', () => {
   const { message } = useGlobalApp()
+  const authorizeMFA = useMFAManagement()
 
   const data = ref<Settings>({
     app: {
@@ -68,6 +70,8 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       name: '',
     },
     auth: {
+      mfa_required: false,
+      mfa_required_for_sso: false,
       ip_white_list: [],
       ban_threshold_minutes: 10,
       max_attempts: 10,
@@ -265,6 +269,12 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       ? [tabSavers.get(tab)].filter((saver): saver is TabSaver => !!saver)
       : dirtyTabSavers.value.map(([, saver]) => saver)
     if (!data.value || isSaving.value || (sections.length === 0 && savers.length === 0))
+      return
+
+    const hasMFAPolicyChanged = sections.includes('auth') && snapshot.value
+      && (data.value.auth.mfa_required !== snapshot.value.auth.mfa_required
+        || data.value.auth.mfa_required_for_sso !== snapshot.value.auth.mfa_required_for_sso)
+    if (hasMFAPolicyChanged && !await authorizeMFA())
       return
 
     normalizeBeforeSave()
