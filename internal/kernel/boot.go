@@ -15,6 +15,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/analytic"
 	"github.com/0xJacky/Nginx-UI/internal/cache"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	certdeploy "github.com/0xJacky/Nginx-UI/internal/cert/deploy"
 	"github.com/0xJacky/Nginx-UI/internal/cluster"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	"github.com/0xJacky/Nginx-UI/internal/demo"
@@ -22,12 +23,15 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
+	"github.com/0xJacky/Nginx-UI/internal/plugin"
+	"github.com/0xJacky/Nginx-UI/internal/plugin/capability"
+	"github.com/0xJacky/Nginx-UI/internal/security/blocklist"
 	"github.com/0xJacky/Nginx-UI/internal/self_check"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
 	"github.com/0xJacky/Nginx-UI/internal/system"
+	"github.com/0xJacky/Nginx-UI/internal/upstream/discovery"
 	"github.com/0xJacky/Nginx-UI/internal/user"
 	"github.com/0xJacky/Nginx-UI/internal/validation"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -98,6 +102,12 @@ func InitAfterDatabase(ctx context.Context) {
 		// Before sitecheck.Init, so the site prober sees the seeded rows.
 		demo.Seed,
 		sitecheck.Init,
+		// Before cert.InitRegister, so plugin provided DNS-01 providers are
+		// already registered when the certificate registry builds itself.
+		plugin.Init,
+		// Drops the old log index table once the log analytics plugin took it over.
+		plugin.CleanupLegacyLogAnalytics,
+		initPluginCapabilities,
 	}
 
 	for _, v := range syncs {
@@ -110,7 +120,6 @@ func InitAfterDatabase(ctx context.Context) {
 		analytic.RetrieveNodesStatus,
 		passkey.Init,
 		mcp.Init,
-		nginx_log.InitializeServices,
 		user.InitTokenCache,
 	}
 
@@ -252,4 +261,26 @@ func CheckAndCleanupOTA() {
 	if err != nil {
 		logger.Error("Failed to cleanup OTA containers:", err)
 	}
+}
+
+// initPluginCapabilities connects the plugin manager to the core registries
+// that accept plugin provided implementations and to the access log feed,
+// starts pushing issued certificates to their deploy targets and starts
+// refreshing the generated blocklists and upstreams.
+func initPluginCapabilities(ctx context.Context) {
+	manager := plugin.GetManager()
+	capability.RegisterDNS01(manager)
+	capability.RegisterNotify(manager)
+	capability.RegisterProbe(manager)
+	capability.RegisterMCP(manager)
+	capability.RegisterStorage(manager)
+	capability.RegisterDeploy(manager)
+	capability.RegisterBlocklist(manager)
+	capability.RegisterDiscovery(manager)
+	capability.RegisterContent(manager)
+	capability.RegisterLogSink(manager)
+	capability.RegisterLogFiles(manager)
+	certdeploy.Start(ctx)
+	blocklist.Start(ctx)
+	discovery.Start(ctx)
 }

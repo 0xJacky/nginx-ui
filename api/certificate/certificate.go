@@ -3,6 +3,7 @@ package certificate
 import (
 	"net/http"
 	"path/filepath"
+	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -16,6 +17,8 @@ import (
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
+	cosyModel "github.com/uozi-tech/cosy/model"
+	"gorm.io/gorm"
 )
 
 type APICertificate struct {
@@ -25,6 +28,34 @@ type APICertificate struct {
 	CertificateInfo   *cert.Info                       `json:"certificate_info,omitempty"`
 	DeploymentStatus  site.CertificateDeploymentStatus `json:"deployment_status"`
 	UsedBy            []site.CertificateUsage          `json:"used_by,omitempty"`
+	cert.Overview
+	// DNSProvider is the provider name of the DNS credential used for DNS-01.
+	DNSProvider string `json:"dns_provider,omitempty"`
+	// DelegatedNodeName names the node a delegated certificate was issued for.
+	DelegatedNodeName string `json:"delegated_node_name,omitempty"`
+}
+
+// delegatedNodeNames maps the ids of the nodes certificates were issued for
+// to their names.
+func delegatedNodeNames(models []*model.Cert) map[uint64]string {
+	ids := make([]uint64, 0)
+	for _, m := range models {
+		if m.IsDelegated() {
+			ids = append(ids, m.DelegatedNodeID)
+		}
+	}
+	names := map[uint64]string{}
+	if len(ids) == 0 {
+		return names
+	}
+	nodes, err := query.Node.Where(query.Node.ID.In(ids...)).Find()
+	if err != nil {
+		return names
+	}
+	for _, node := range nodes {
+		names[node.ID] = node.Name
+	}
+	return names
 }
 
 func Transformer(certModel *model.Cert) (certificate *APICertificate) {
@@ -58,23 +89,82 @@ func Transformer(certModel *model.Cert) (certificate *APICertificate) {
 		SSLCertificateKey: string(sslCertificationKeyBytes),
 		CertificateInfo:   certificateInfo,
 		DeploymentStatus:  site.InspectCertificateDeployment(certModel),
+		Overview:          buildOverview(certModel, certificateInfo),
+		DNSProvider:       dnsProviderNames([]*model.Cert{certModel})[certModel.DnsCredentialID],
+		DelegatedNodeName: delegatedNodeNames([]*model.Cert{certModel})[certModel.DelegatedNodeID],
 	}
 }
 
 func GetCertList(c *gin.Context) {
 	s := logger.NewSessionLogger(c)
 	s.Info("GetCertList")
+
 	usageIndex := site.BuildCertificateUsageIndex()
-	cosy.Core[model.Cert](c).SetFussy("name", "domain").
-		SetTransformer(func(m *model.Cert) any {
-			info, _ := cert.GetCertInfo(m.SSLCertificatePath)
-			return APICertificate{
-				Cert:             m,
-				CertificateInfo:  info,
-				DeploymentStatus: site.InspectCertificateDeployment(m),
-				UsedBy:           usageIndex.Lookup(m.SSLCertificatePath),
+	keyword := strings.TrimSpace(c.Query("keyword"))
+	filter := cert.ParseListFilter(c.Query("state"))
+	withCounts := cast.ToBool(c.Query("with_counts"))
+
+	var summary *certListSummary
+	if filter != cert.FilterAll || withCounts {
+		var err error
+		summary, err = summarizeCertList(keyword, filter)
+		if err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
+	var providers map[uint64]string
+	core := cosy.Core[model.Cert](c).SetFussy("name", "domain").
+		GormScope(func(tx *gorm.DB) *gorm.DB {
+			return applyCertKeyword(tx, keyword)
+		}).
+		SetScan(func(tx *gorm.DB) any {
+			models := make([]*model.Cert, 0)
+			tx.Find(&models)
+			providers = dnsProviderNames(models)
+			nodeNames := delegatedNodeNames(models)
+
+			rows := make([]any, 0, len(models))
+			for _, m := range models {
+				var info *cert.Info
+				if summary != nil {
+					info = summary.infos[m.ID]
+				} else {
+					info, _ = cert.GetCertInfo(m.SSLCertificatePath)
+				}
+				rows = append(rows, APICertificate{
+					Cert:              m,
+					CertificateInfo:   info,
+					DeploymentStatus:  site.InspectCertificateDeployment(m),
+					UsedBy:            usageIndex.Lookup(m.SSLCertificatePath),
+					Overview:          buildOverview(m, info),
+					DNSProvider:       providers[m.DnsCredentialID],
+					DelegatedNodeName: nodeNames[m.DelegatedNodeID],
+				})
 			}
-		}).PagingList()
+			return rows
+		})
+
+	if summary != nil {
+		core.GormScope(func(tx *gorm.DB) *gorm.DB {
+			if filter == cert.FilterAll {
+				return tx
+			}
+			if len(summary.matched) == 0 {
+				return tx.Where("1 = 0")
+			}
+			return tx.Where("certs.id IN ?", summary.matched)
+		})
+		if withCounts {
+			core.SetResponseBuilder(func(ctx *cosy.Ctx[model.Cert]) {
+				list, _ := ctx.GetDefaultResponseData().(cosyModel.DataList)
+				ctx.JSON(http.StatusOK, certListResponse{DataList: list, Counts: summary.counts})
+			})
+		}
+	}
+
+	core.PagingList()
 }
 
 func GetCert(c *gin.Context) {
@@ -115,22 +205,20 @@ func normalizeCertKeyType(ctx *cosy.Ctx[model.Cert]) {
 func AddCert(c *gin.Context) {
 	cosy.Core[model.Cert](c).
 		SetValidRules(gin.H{
-			"name":                                 "omitempty",
-			"ssl_certificate_path":                 "required,certificate_path",
-			"ssl_certificate_key_path":             "required,privatekey_path",
-			"ssl_certificate":                      "omitempty,certificate",
-			"ssl_certificate_key":                  "omitempty,privatekey",
-			"key_type":                             "omitempty,auto_cert_key_type",
-			"challenge_method":                     "omitempty,oneof=http01 dns01",
-			"profile":                              "omitempty",
-			"dns_credential_id":                    "omitempty",
-			"acme_user_id":                         "omitempty",
-			"sync_node_ids":                        "omitempty",
-			"must_staple":                          "omitempty",
-			"lego_disable_cname_support":           "omitempty",
-			"disable_authoritative_ns_propagation": "omitempty",
-			"enable_common_name":                   "omitempty",
-			"revoke_old":                           "omitempty",
+			"name":                     "omitempty",
+			"ssl_certificate_path":     "required,certificate_path",
+			"ssl_certificate_key_path": "required,privatekey_path",
+			"ssl_certificate":          "omitempty,certificate",
+			"ssl_certificate_key":      "omitempty,privatekey",
+			"key_type":                 "omitempty,auto_cert_key_type",
+			"challenge_method":         "omitempty,oneof=http01 dns01",
+			"profile":                  "omitempty",
+			"dns_credential_id":        "omitempty",
+			"acme_user_id":             "omitempty",
+			"sync_node_ids":            "omitempty",
+			"must_staple":              "omitempty",
+			"enable_common_name":       "omitempty",
+			"revoke_old":               "omitempty",
 		}).
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Cert]) {
 			normalizeCertKeyType(ctx)
@@ -166,22 +254,20 @@ func AddCert(c *gin.Context) {
 func ModifyCert(c *gin.Context) {
 	cosy.Core[model.Cert](c).
 		SetValidRules(gin.H{
-			"name":                                 "omitempty",
-			"ssl_certificate_path":                 "required,certificate_path",
-			"ssl_certificate_key_path":             "required,privatekey_path",
-			"ssl_certificate":                      "omitempty,certificate",
-			"ssl_certificate_key":                  "omitempty,privatekey",
-			"key_type":                             "omitempty,auto_cert_key_type",
-			"challenge_method":                     "omitempty,oneof=http01 dns01",
-			"profile":                              "omitempty",
-			"dns_credential_id":                    "omitempty",
-			"acme_user_id":                         "omitempty",
-			"sync_node_ids":                        "omitempty",
-			"must_staple":                          "omitempty",
-			"lego_disable_cname_support":           "omitempty",
-			"disable_authoritative_ns_propagation": "omitempty",
-			"enable_common_name":                   "omitempty",
-			"revoke_old":                           "omitempty",
+			"name":                     "omitempty",
+			"ssl_certificate_path":     "required,certificate_path",
+			"ssl_certificate_key_path": "required,privatekey_path",
+			"ssl_certificate":          "omitempty,certificate",
+			"ssl_certificate_key":      "omitempty,privatekey",
+			"key_type":                 "omitempty,auto_cert_key_type",
+			"challenge_method":         "omitempty,oneof=http01 dns01",
+			"profile":                  "omitempty",
+			"dns_credential_id":        "omitempty",
+			"acme_user_id":             "omitempty",
+			"sync_node_ids":            "omitempty",
+			"must_staple":              "omitempty",
+			"enable_common_name":       "omitempty",
+			"revoke_old":               "omitempty",
 		}).
 		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Cert]) {
 			normalizeCertKeyType(ctx)
@@ -220,12 +306,44 @@ func RemoveCert(c *gin.Context) {
 		return
 	}
 
+	// A certificate issued for a node keeps its files there unless asked.
+	if certModel.IsDelegated() {
+		if err = cert.RemoveDelegated(c.Request.Context(), certModel, cast.ToBool(c.Query("remove_remote"))); err != nil {
+			cosy.ErrHandler(c, err)
+		}
+		return
+	}
+
 	if err = query.Cert.DeleteByID(id); err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
 	cleanupSelfSignedCertFiles(certModel)
+}
+
+// SyncCertificatePaths tells another instance where this node keeps the
+// certificate of one of its configurations.
+func SyncCertificatePaths(c *gin.Context) {
+	var json cert.SyncPathsRequest
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+	c.JSON(http.StatusOK, cert.SyncPathsFor(json))
+}
+
+// RemoveSyncedCertificate deletes certificate files another instance sent to
+// this node, unless the Nginx configuration still loads them.
+func RemoveSyncedCertificate(c *gin.Context) {
+	var json cert.SyncPaths
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+	if err := cert.RemoveSynced(json); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
 func ImportExistingCert(c *gin.Context) {
@@ -324,6 +442,14 @@ func SyncCertificate(c *gin.Context) {
 	}
 	normalizedKeyType := helper.GetKeyType(json.KeyType)
 
+	// The sender keeps renewing a certificate it issued for this node.
+	if json.Delegated {
+		if err := cert.StopRenewingDelegated(json.SSLCertificatePath, json.SSLCertificateKeyPath); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	}
+
 	certModel := &model.Cert{
 		Name:                  json.Name,
 		SSLCertificatePath:    json.SSLCertificatePath,
@@ -356,6 +482,7 @@ func SyncCertificate(c *gin.Context) {
 	if content.MatchesFiles() {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "ok",
+			"id":      certModel.ID,
 		})
 		return
 	}
@@ -371,5 +498,29 @@ func SyncCertificate(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
+		"id":      certModel.ID,
 	})
+}
+
+// SetCertAutoRenewal switches automatic renewal of an ACME certificate.
+func SetCertAutoRenewal(c *gin.Context) {
+	var json struct {
+		Enabled *bool `json:"enabled" binding:"required"`
+	}
+	if !cosy.BindAndValid(c, &json) {
+		return
+	}
+
+	certModel, err := query.Cert.FirstByID(cast.ToUint64(c.Param("id")))
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	if err = cert.SetAutoRenewal(certModel, *json.Enabled); err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, Transformer(certModel))
 }

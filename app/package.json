@@ -11,13 +11,14 @@
     "check:antdv": "bash scripts/check-antdv-legacy.sh",
     "build": "vite build",
     "preview": "vite preview",
-    "gettext:extract": "generate-curd-translations --output src/language/curd.ts && vue-gettext-extract && msgcat --no-location -o src/language/messages.pot src/language/messages.pot"
+    "gettext:extract": "generate-curd-translations --output src/language/curd.ts && node scripts/market-messages.mjs && vue-gettext-extract && msgcat --no-location -o src/language/messages.pot src/language/messages.pot"
   },
   "dependencies": {
     "@0xjacky/vue-github-button": "^3.1.1",
     "@antdv-next/icons": "^1.1.2",
     "@fingerprintjs/fingerprintjs": "^5.2.0",
     "@formkit/auto-animate": "^0.10.0",
+    "@nginxui/plugin-market-ui": "^0.1.0",
     "@simplewebauthn/browser": "^14.0.0",
     "@uozi-admin/curd": "^6.1.0",
     "@uozi-admin/request": "^2.9.1",
@@ -34,9 +35,7 @@
     "apexcharts": "^7.8.0",
     "axios": "1.20.0",
     "dayjs": "^1.11.23",
-    "echarts": "^6.1.0",
     "highlight.js": "^11.12.0",
-    "i18n-iso-countries": "^7.14.0",
     "jsencrypt": "^3.5.4",
     "lodash": "^4.18.1",
     "marked": "^18.1.0",
@@ -53,7 +52,6 @@
     "vite-plugin-build-id": "0.7.0",
     "vue": "^3.5.43",
     "vue-dompurify-html": "^5.3.0",
-    "vue-echarts": "^8.3.1",
     "vue-router": "^5.3.1",
     "vue3-ace-editor": "2.2.4",
     "vue3-apexcharts": "1.6.0",

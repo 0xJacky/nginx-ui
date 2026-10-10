@@ -93,12 +93,14 @@ func CreateAutoBackup(c *gin.Context) {
 		"s3_secret_access_key": "omitempty",
 		"s3_bucket":            "omitempty",
 		"s3_region":            "omitempty",
+		"storage_config":       "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AutoBackup]) {
 		// Validate backup configuration before creation
 		if err := backup.ValidateAutoBackupConfig(&ctx.Model); err != nil {
 			ctx.AbortWithError(err)
 			return
 		}
+		validatePluginStorage(ctx)
 	}).ExecutedHook(func(ctx *cosy.Ctx[model.AutoBackup]) {
 		// Register cron job only if the backup is enabled
 		if ctx.Model.Enabled {
@@ -147,12 +149,14 @@ func ModifyAutoBackup(c *gin.Context) {
 		"s3_secret_access_key": "omitempty",
 		"s3_bucket":            "omitempty",
 		"s3_region":            "omitempty",
+		"storage_config":       "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AutoBackup]) {
 		// Validate backup configuration before modification
 		if err := backup.ValidateAutoBackupConfig(&ctx.Model); err != nil {
 			ctx.AbortWithError(err)
 			return
 		}
+		validatePluginStorage(ctx)
 	}).ExecutedHook(func(ctx *cosy.Ctx[model.AutoBackup]) {
 		// Update cron job based on enabled status
 		if ctx.Model.Enabled {

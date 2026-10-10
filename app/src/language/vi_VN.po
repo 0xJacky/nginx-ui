@@ -444,27 +444,6 @@ msgstr "Đã tắt"
 msgid "Maintenance"
 msgstr "Bảo trì"
 
-msgid "Site"
-msgstr "Trang web"
-
-msgid "Stream"
-msgstr "Luồng"
-
-msgid "Configuration"
-msgstr "Cấu hình"
-
-msgid "+%{count} more"
-msgstr "+%{count} mục nữa"
-
-msgid "Search"
-msgstr "Tìm kiếm"
-
-msgid "No file matches the search"
-msgstr "Không có tệp nào khớp với tìm kiếm"
-
-msgid "Not used"
-msgstr "Chưa sử dụng"
-
 msgid "Starting download..."
 msgstr "Đang bắt đầu tải xuống..."
 
@@ -985,6 +964,9 @@ msgstr "Hoàn tất"
 msgid "Unknown"
 msgstr "Không xác định"
 
+msgid "Search"
+msgstr "Tìm kiếm"
+
 msgid "Open in split view"
 msgstr "Mở ở dạng xem chia đôi"
 
@@ -1087,6 +1069,12 @@ msgstr ""
 "trữ. Hãy đổi tên một trong các tác vụ hoặc thay đổi đường dẫn lưu trữ của "
 "nó."
 
+msgid "Backups to Keep"
+msgstr "Bản sao lưu cần giữ"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "Số bản sao lưu giữ (0 giữ tất cả)"
+
 msgid "Renew Certificate Success"
 msgstr "Gia hạn chứng chỉ thành công"
 
@@ -1116,16 +1104,6 @@ msgstr "Chứng chỉ %{name} sẽ hết hạn sau %{days} ngày"
 
 msgid "Certificate Expiring Soon"
 msgstr "Chứng chỉ sắp hết hạn"
-
-msgid "Certificate Relocated"
-msgstr "Chứng chỉ đã được di chuyển"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr ""
-"Chứng chỉ %{name} hiện được lưu trong %{path}, hãy trỏ các trang web tải "
-"%{previous_path} đến nó"
 
 msgid "Sync Certificate Error"
 msgstr "Lỗi đồng bộ chứng chỉ"
@@ -2875,34 +2853,6 @@ msgstr "Trang web đang trong chế độ bảo trì"
 msgid "Read dir failed: {0}"
 msgstr "Đọc thư mục thất bại: {0}"
 
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr ""
-"Tên tệp phải kết thúc bằng .conf và chỉ được chứa chữ cái, chữ số, dấu "
-"chấm, dấu gạch ngang và dấu gạch dưới"
-
-msgid "Snippet not found"
-msgstr "Không tìm thấy đoạn mã"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "Đoạn mã vượt quá 256 KiB"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "Phần đầu của đoạn mã không thể phân tích cú pháp: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "Đoạn mã vẫn được bao gồm bởi {0}"
-
-msgid "A snippet with this file name already exists"
-msgstr "Một đoạn mã với tên tệp này đã tồn tại"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "Biến {0} không hợp lệ: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "Nội dung không được phân tích cú pháp dưới dạng mẫu: {0}"
-
 msgid "Stream not found"
 msgstr "Không tìm thấy luồng"
 
@@ -4107,18 +4057,6 @@ msgstr "Danh sách Website"
 msgid "Add Site"
 msgstr "Thêm Website"
 
-msgid "Snippets"
-msgstr "Snippet"
-
-msgid "Create Snippet"
-msgstr "Tạo đoạn mã"
-
-msgid "Built-in Template"
-msgstr "Mẫu tích hợp"
-
-msgid "Edit Snippet"
-msgstr "Chỉnh sửa đoạn mã"
-
 msgid "Edit Site"
 msgstr "Sửa trang web"
 
@@ -4201,17 +4139,29 @@ msgstr ""
 "hoặc vị trí trong trình chỉnh sửa trang web; thay đổi danh sách tại đây sẽ "
 "cập nhật mọi trang web sử dụng nó."
 
+msgid "+%{count} more"
+msgstr "+%{count} mục nữa"
+
 msgid "Deny"
 msgstr "Từ chối"
 
 msgid "Allow"
 msgstr "Cho phép"
 
+msgid "Not used"
+msgstr "Chưa sử dụng"
+
 msgid "Use list"
 msgstr "Sử dụng danh sách"
 
 msgid "Deny (403)"
 msgstr "Từ chối (403)"
+
+msgid "Site"
+msgstr "Trang web"
+
+msgid "Stream"
+msgstr "Luồng"
 
 msgid "Access list %{name} saved"
 msgstr "Danh sách truy cập %{name} đã được lưu"
@@ -4242,6 +4192,10 @@ msgstr "Hành động"
 
 msgid "Address or list"
 msgstr "Địa chỉ hoặc danh sách"
+
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "Ghi chú"
 
 msgid "Select a list"
 msgstr "Chọn một danh sách"
@@ -4313,15 +4267,6 @@ msgstr "Hàng tuần vào %{day} lúc %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Hàng tháng vào ngày %{day} lúc %{time}"
-
-msgid "Backups to Keep"
-msgstr "Bản sao lưu cần giữ"
-
-msgid "All"
-msgstr "Tất cả"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "Số bản sao lưu giữ (0 giữ tất cả)"
 
 msgid "Last Backup Time"
 msgstr "Thời gian sao lưu cuối cùng"
@@ -4686,10 +4631,6 @@ msgstr "Không thể xác minh việc triển khai"
 msgid "Not After"
 msgstr "Không phải sau khi"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "Được sử dụng bởi %{count} cấu hình"
-
 msgid "Failed to scan certificates"
 msgstr "Không quét được chứng chỉ"
 
@@ -4736,12 +4677,6 @@ msgstr "Quay lại"
 
 msgid "This field is required"
 msgstr "Trường này là bắt buộc"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "Đường dẫn tồn tại, nhưng tệp không phải là chứng chỉ"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "Đường dẫn tồn tại, nhưng tệp không phải là khóa riêng tư"
 
 msgid "Sync to"
 msgstr "Đồng bộ tới"
@@ -4815,11 +4750,11 @@ msgstr "Tải xuống tệp chứng chỉ thành công"
 msgid "Failed to download certificate files"
 msgstr "Tải xuống tệp chứng chỉ thất bại"
 
-msgid "Download Certificate Files"
-msgstr "Tải xuống tệp chứng chỉ"
-
 msgid "Download"
 msgstr "Tải xuống"
+
+msgid "Download Certificate Files"
+msgstr "Tải xuống tệp chứng chỉ"
 
 msgid "Download Format"
 msgstr "Định dạng tải xuống"
@@ -4990,14 +4925,14 @@ msgstr "Để xác nhận thu hồi, vui lòng nhập \"Thu hồi\" vào trườ
 msgid "Renew successfully"
 msgstr "Gia hạn thành công"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert đang chạy, vui lòng chờ..."
+msgid "Renew"
+msgstr "Gia hạn"
 
 msgid "Renew Certificate"
 msgstr "Gia hạn chứng chỉ"
 
-msgid "Renew"
-msgstr "Gia hạn"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert đang chạy, vui lòng chờ..."
 
 msgid "Certificate issued successfully"
 msgstr "Chứng chỉ đã được cấp thành công"
@@ -5601,16 +5536,6 @@ msgstr ""
 "URL tuyệt đối tuỳ chọn. Dùng khi địa chỉ công khai khác với host hoặc cổng "
 "upstream thực tế."
 
-msgid "Site Card Click URL"
-msgstr "URL nhấp vào thẻ trang web"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr ""
-"URL HTTP/HTTPS tuyệt đối tùy chọn được sử dụng khi mở thẻ trang web này. "
-"Nếu để trống, URL trang web mặc định sẽ được sử dụng."
-
 msgid "HTTP Method"
 msgstr "Phương thức HTTP"
 
@@ -5917,6 +5842,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "Bổ sung"
 
+msgid "All"
+msgstr "Tất cả"
+
 msgid "Host, e.g. @ or www"
 msgstr "Máy chủ, vd: @ hoặc www"
 
@@ -6076,6 +6004,9 @@ msgstr "Tên không được để trống"
 
 msgid "Please select DNS provider"
 msgstr "Vui lòng chọn nhà cung cấp DNS"
+
+msgid "Configuration"
+msgstr "Cấu hình"
 
 msgid "DNS Credentials"
 msgstr "Xác thực DNS"
@@ -9310,6 +9241,10 @@ msgstr "Không thể mở thiết lập SSH"
 msgid "Basics"
 msgstr "Cơ bản"
 
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr "Bảo trì"
+
 msgid "Address, protocol and certificate used to reach this Nginx UI instance."
 msgstr "Địa chỉ, giao thức và chứng chỉ dùng để truy cập phiên bản Nginx UI này."
 
@@ -10088,9 +10023,6 @@ msgstr "Không gian tên"
 msgid "The parameter of server_name is required"
 msgstr "Tham số của server_name là bắt buộc"
 
-msgid "Config Template"
-msgstr "Mẫu cấu hình"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "Lưu cấu hình đã chỉnh sửa trước khi bật HTTPS."
 
@@ -10187,31 +10119,11 @@ msgstr "Chứng chỉ tự ký"
 msgid "Generate self-signed certificate"
 msgstr "Tạo chứng chỉ tự ký"
 
-msgid "Built-in"
-msgstr "Tích hợp sẵn"
-
 msgid "Search templates"
 msgstr "Tìm kiếm mẫu"
 
-msgid "Snippet"
-msgstr "Đoạn mã"
-
 msgid "Author"
 msgstr "Tác giả"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"Include giữ cho trang được liên kết với snippets/%{file}, do đó các thay "
-"đổi sau này của đoạn mã sẽ được áp dụng cho nó. Insert thay vào đó sẽ sao "
-"chép nội dung vào trang."
-
-msgid "Insert"
-msgstr "Chèn"
-
-msgid "Include"
-msgstr "Bao gồm"
 
 msgid "Do you want to enable TLS?"
 msgstr "Bạn có muốn bật TLS không?"
@@ -10517,6 +10429,9 @@ msgstr "Tạo lại bản ghi DNS"
 msgid "Clear Link"
 msgstr "Xóa liên kết"
 
+msgid "Config Template"
+msgstr "Mẫu cấu hình"
+
 msgid "Port Scanner"
 msgstr "Trình quét cổng"
 
@@ -10601,333 +10516,6 @@ msgstr "Đặt thông tin bảo trì cho các trang web đã chọn"
 
 msgid "%{count} sites selected"
 msgstr "%{count} trang web đã chọn"
-
-msgid "Read Only"
-msgstr "Chỉ đọc"
-
-msgid "Preview"
-msgstr "Xem trước"
-
-msgid "Updates as the snippet changes."
-msgstr "Cập nhật khi đoạn mã thay đổi."
-
-msgid ""
-"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
-"snippet to change it."
-msgstr ""
-"Các mẫu tích hợp đi kèm với Nginx UI và không thể thay đổi. Sao chép một "
-"mẫu thành đoạn mã để thay đổi nó."
-
-msgid "File Name"
-msgstr "Tên tệp"
-
-msgid "Variables"
-msgstr "Biến"
-
-msgid "Copy as Snippet"
-msgstr "Sao chép thành snippet"
-
-msgid "Template"
-msgstr "Mẫu"
-
-msgid "No template matches the search"
-msgstr "Không có mẫu nào khớp với tìm kiếm"
-
-msgid "%{count} variable"
-msgid_plural "%{count} variables"
-msgstr[0] "%{count} biến"
-
-msgid "Translations"
-msgstr "Bản dịch"
-
-msgid ""
-"The field is in %{language}. Users of other languages see their "
-"translation, or English when there is none."
-msgstr ""
-"Trường này ở dạng %{language}. Người dùng các ngôn ngữ khác sẽ thấy bản "
-"dịch của mình, hoặc tiếng Anh khi không có."
-
-msgid "Remove translation"
-msgstr "Xóa bản dịch"
-
-msgid "Add a language"
-msgstr "Thêm ngôn ngữ"
-
-msgid "Text"
-msgstr "Văn bản"
-
-msgid "Switch"
-msgstr "Chuyển đổi"
-
-msgid "Select"
-msgstr "Chọn"
-
-msgid "New Variable…"
-msgstr "Biến mới…"
-
-msgid "Insert Variable"
-msgstr "Chèn biến"
-
-msgid ""
-"Type %{open} to complete a variable, or select a value and press %{keys} to "
-"make it one."
-msgstr ""
-"Nhập %{open} để hoàn thành một biến, hoặc chọn một giá trị và nhấn %{keys} "
-"để biến nó thành biến."
-
-msgid "Default Value"
-msgstr "Giá trị mặc định"
-
-msgid "Edit Variable"
-msgstr "Chỉnh sửa biến"
-
-msgid ""
-"This variable is not declared, so it has no value when the snippet is "
-"inserted."
-msgstr ""
-"Biến này không được khai báo, vì vậy nó không có giá trị khi đoạn mã được "
-"chèn vào."
-
-msgid "Declare Variable"
-msgstr "Khai báo biến"
-
-msgid "Make Variable"
-msgstr "Tạo biến"
-
-msgid "New Variable"
-msgstr "Biến mới"
-
-msgid "Key"
-msgstr "Khóa"
-
-msgid "Label"
-msgstr "Nhãn"
-
-msgid "The variable is declared and inserted at the cursor."
-msgstr "Biến được khai báo và chèn vào vị trí con trỏ."
-
-msgid ""
-"The selected value becomes the default value, and the content refers to the "
-"variable instead."
-msgstr ""
-"Giá trị đã chọn trở thành giá trị mặc định, và nội dung thay vào đó tham "
-"chiếu đến biến."
-
-msgid "Add Variable"
-msgstr "Thêm biến"
-
-msgid "Not declared, so left without a value: %{names}"
-msgstr "Chưa được khai báo, vì vậy để trống không có giá trị: %{names}"
-
-msgid "The snippet does not render as valid Nginx configuration."
-msgstr "Đoạn mã không được hiển thị dưới dạng cấu hình Nginx hợp lệ."
-
-msgid "The snippet renders as valid Nginx configuration."
-msgstr "Đoạn mã được hiển thị dưới dạng cấu hình Nginx hợp lệ."
-
-msgid "What the site editor asks for"
-msgstr "Những gì trình chỉnh sửa trang web yêu cầu"
-
-msgid "Restore Default Values"
-msgstr "Khôi phục giá trị mặc định"
-
-msgid "Nothing to fill in."
-msgstr "Không có gì để điền."
-
-msgid "Fix the variables to preview the snippet."
-msgstr "Sửa các biến để xem trước đoạn mã."
-
-msgid "Snippets are no longer synchronized"
-msgstr "Các đoạn mã không còn được đồng bộ"
-
-msgid "Synchronize Snippets"
-msgstr "Đồng bộ hóa các đoạn mã"
-
-msgid ""
-"Every snippet is copied to the selected nodes now, and later changes follow "
-"automatically. Clear the selection to stop synchronizing."
-msgstr ""
-"Mọi đoạn mã giờ đã được sao chép vào các nút được chọn, và các thay đổi sau "
-"đó sẽ tự động theo dõi. Hãy xóa lựa chọn để ngừng đồng bộ hóa."
-
-msgid "Replace snippets that already exist on the nodes"
-msgstr "Thay thế các đoạn mã đã tồn tại trên các nút"
-
-msgid "Included by %{count} file"
-msgid_plural "Included by %{count} files"
-msgstr[0] "Được đưa vào bởi %{count} tệp"
-
-msgid "Not Used"
-msgstr "Không sử dụng"
-
-msgid "Max Age"
-msgstr "Tuổi tối đa"
-
-msgid "Options"
-msgstr "Tùy chọn"
-
-msgid "Remove option"
-msgstr "Xóa tùy chọn"
-
-msgid "Add Option"
-msgstr "Thêm tùy chọn"
-
-msgid "Remove variable"
-msgstr "Xóa biến"
-
-msgid "Used in the content, not declared"
-msgstr "Được sử dụng trong nội dung, không được khai báo"
-
-msgid "Snippet %{name} saved"
-msgstr "Đoạn mã %{name} đã được lưu"
-
-msgid "Discard the unsaved changes?"
-msgstr "Hủy các thay đổi chưa được lưu?"
-
-msgid "Keep Editing"
-msgstr "Tiếp tục chỉnh sửa"
-
-msgid "Edit Snippet %{name}"
-msgstr "Chỉnh sửa đoạn mã %{name}"
-
-msgid "Sites can include this snippet and follow its later changes."
-msgstr ""
-"Các trang web có thể bao gồm đoạn mã này và theo dõi các thay đổi sau đó "
-"của nó."
-
-msgid ""
-"This snippet has variables, so sites insert a filled in copy from the "
-"config template panel."
-msgstr ""
-"Đoạn mã này có chứa biến, vì vậy các trang web sẽ chèn một bản sao đã điền "
-"từ bảng mẫu cấu hình."
-
-msgid "Includable"
-msgstr "Có thể bao gồm"
-
-msgid "Insert Only"
-msgstr "Chỉ chèn"
-
-msgid "Use"
-msgstr "Sử dụng"
-
-msgid ""
-"Add this directive to a server or location block. Sites that include the "
-"snippet follow its later changes."
-msgstr ""
-"Thêm chỉ thị này vào một khối server hoặc location. Các trang web bao gồm "
-"đoạn mã sẽ theo dõi các thay đổi sau này của nó."
-
-msgid "Static file cache"
-msgstr "Bộ nhớ đệm tệp tĩnh"
-
-msgid "Fixed while configurations include the snippet, so they keep working."
-msgstr ""
-"Đã sửa trong khi các cấu hình bao gồm đoạn mã, vì vậy chúng vẫn tiếp tục "
-"hoạt động."
-
-msgid "Letters, digits, dots, dashes and underscores."
-msgstr "Chữ cái, chữ số, dấu chấm, dấu gạch ngang và dấu gạch dưới."
-
-msgid ""
-"Variables are filled in when the snippet is inserted from the config "
-"template panel of the site editor. A snippet with variables can only be "
-"inserted, not included."
-msgstr ""
-"Các biến được điền khi đoạn mã được chèn từ bảng mẫu cấu hình của trình "
-"chỉnh sửa trang web. Đoạn mã có biến chỉ có thể được chèn, không thể được "
-"đưa vào."
-
-msgid "No configuration includes this snippet yet."
-msgstr "Chưa có cấu hình nào bao gồm đoạn mã này."
-
-msgid "Unsaved changes"
-msgstr "Các thay đổi chưa được lưu"
-
-msgid "My Snippets"
-msgstr "Đoạn mã của tôi"
-
-msgid "Built-in Templates"
-msgstr "Mẫu có sẵn"
-
-msgid "Copied %{include}"
-msgstr "Đã sao chép %{include}"
-
-msgid "Delete snippet %{name}?"
-msgstr "Xóa đoạn mã %{name}?"
-
-msgid "snippets/%{file} will be removed here and on the synchronized nodes."
-msgstr "snippets/%{file} sẽ bị xóa tại đây và trên các nút đã đồng bộ hóa."
-
-msgid "snippets/%{file} will be removed."
-msgstr "snippets/%{file} sẽ bị xóa."
-
-msgid "Snippet %{name} deleted"
-msgstr "Đã xóa snippet %{name}"
-
-msgid "Synchronize"
-msgstr "Đồng bộ"
-
-msgid "Synchronized to %{count} node"
-msgid_plural "Synchronized to %{count} nodes"
-msgstr[0] "Đã đồng bộ hóa tới %{count} nút"
-
-msgid ""
-"Has %{count} variable. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgid_plural ""
-"Has %{count} variables. Sites insert a filled in copy from the config "
-"template panel of the site editor."
-msgstr[0] ""
-"Có %{count} biến. Các trang web chèn bản sao đã điền từ bảng mẫu cấu hình "
-"của trình chỉnh sửa trang web."
-
-msgid "Copy the include directive"
-msgstr "Sao chép chỉ thị include"
-
-msgid "Remove the snippet from the files that include it first."
-msgstr "Trước tiên, hãy xóa đoạn mã khỏi các tệp chứa nó."
-
-msgid ""
-"A snippet keeps a piece of Nginx configuration in one place. Include it in "
-"a site, or insert it from the config template panel of the site editor; "
-"changing an included snippet updates every site that uses it."
-msgstr ""
-"Một đoạn mã giữ một phần cấu hình Nginx ở một nơi. Hãy đưa nó vào một trang "
-"web, hoặc chèn nó từ bảng mẫu cấu hình của trình chỉnh sửa trang web; thay "
-"đổi một đoạn mã đã đưa vào sẽ cập nhật mọi trang web sử dụng nó."
-
-msgid "Search snippets"
-msgstr "Đoạn trích tìm kiếm"
-
-msgid "No snippets yet"
-msgstr "Chưa có đoạn mã nào"
-
-msgid "No snippet matches the search"
-msgstr "Không có đoạn mã nào khớp với tìm kiếm"
-
-msgid "Enter a key."
-msgstr "Nhập khóa."
-
-msgid "Use letters, digits and underscores, starting with a letter or underscore."
-msgstr ""
-"Sử dụng chữ cái, chữ số và dấu gạch dưới, bắt đầu bằng chữ cái hoặc dấu "
-"gạch dưới."
-
-msgid "Another variable uses this key."
-msgstr "Một biến khác đang sử dụng khóa này."
-
-msgid "Add at least one option."
-msgstr "Vui lòng thêm ít nhất một tùy chọn."
-
-msgid "Every option needs a value."
-msgstr "Mỗi tùy chọn đều cần một giá trị."
-
-msgid "Option values must be unique."
-msgstr "Các giá trị tùy chọn phải là duy nhất."
-
-msgid "Choose the default option."
-msgstr "Chọn tùy chọn mặc định."
 
 msgid "Do you want to %{action} this stream?"
 msgstr "Bạn có muốn %{action} luồng này không?"
@@ -11316,13 +10904,2254 @@ msgstr "Một ô đơn"
 msgid "Split view"
 msgstr "Chia đôi màn hình"
 
-msgctxt "Access list rule"
-msgid "Note"
-msgstr "Ghi chú"
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
 
-msgctxt "preference group"
-msgid "Maintenance"
-msgstr "Bảo trì"
+msgid "Install DNS-01 plugin"
+msgstr ""
+
+msgid "Go to System > Plugins"
+msgstr ""
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "Nếu tên miền của bạn có bản ghi CNAME và bạn không thể nhận chứng chỉ,"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr ""
+"Bỏ qua kiểm tra lan truyền DNS cục bộ và đợi 60 giây trước khi yêu cầu "
+
+msgid "DNS-01 plugin unavailable"
+msgstr ""
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr ""
+
+msgid "Plugin %{plugin} failed to render"
+msgstr ""
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+
+msgid "Plugin manifest is invalid"
+msgstr ""
+
+msgid "Plugin not found"
+msgstr ""
+
+msgid "Plugin already exists"
+msgstr ""
+
+msgid "Plugin is not running"
+msgstr ""
+
+msgid "Plugin handshake failed"
+msgstr ""
+
+msgid "Plugin has no executable for this platform"
+msgstr ""
+
+msgid "Plugin package is invalid"
+msgstr ""
+
+msgid "Plugin package is too large"
+msgstr ""
+
+msgid "Plugin api version is incompatible"
+msgstr ""
+
+msgid "Plugin permissions need approval"
+msgstr ""
+
+msgid "Plugin dependency is missing: {0}"
+msgstr ""
+
+msgid "Plugin dependencies form a cycle"
+msgstr ""
+
+msgid "Plugin is in use by {0}"
+msgstr ""
+
+msgid "Plugin system is disabled"
+msgstr ""
+
+msgid "Plugin uploads are disabled"
+msgstr ""
+
+msgid "Plugin call timed out"
+msgstr ""
+
+msgid "Plugin rpc error: {0}"
+msgstr ""
+
+msgid "Plugin setting {0} is invalid"
+msgstr ""
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+
+msgid "Plugin package declares another id"
+msgstr ""
+
+msgid "Plugins"
+msgstr ""
+
+msgid "Accept plugin sync"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Opted out"
+msgstr ""
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Capabilities"
+msgstr ""
+
+msgid "Auto install to nodes"
+msgstr ""
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr ""
+
+msgid "Some nodes could not be synchronized"
+msgstr ""
+
+msgid "Failed to synchronize the plugin"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Starting"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "Incompatible"
+msgstr ""
+
+msgid "Needs approval"
+msgstr ""
+
+msgid "Failed to load the plugin list"
+msgstr ""
+
+msgid "Plugin enabled"
+msgstr ""
+
+msgid "Failed to enable the plugin"
+msgstr ""
+
+msgid "Plugin disabled"
+msgstr ""
+
+msgid "Failed to disable the plugin"
+msgstr ""
+
+msgid "Plugin uninstalled"
+msgstr ""
+
+msgid "Failed to uninstall the plugin"
+msgstr ""
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr ""
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+
+msgid "Development plugin URL"
+msgstr ""
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+
+msgid "Dev plugin"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr ""
+
+msgid "Settings"
+msgstr "Cài đặt"
+
+msgid "Logs"
+msgstr ""
+
+msgid "Sync to nodes"
+msgstr ""
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Sync %{name} to nodes"
+msgstr ""
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr ""
+
+msgid "Already in sync"
+msgstr ""
+
+msgid "This node only"
+msgstr ""
+
+msgid "All child nodes"
+msgstr ""
+
+msgid "Selected nodes"
+msgstr ""
+
+msgid "Failed to read the plugin bundle"
+msgstr ""
+
+msgid "Plugin installed"
+msgstr ""
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+
+msgid "Failed to install the plugin"
+msgstr ""
+
+msgid "Install plugin"
+msgstr ""
+
+msgid "Click or drag a plugin bundle here"
+msgstr ""
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "(replaces %{version})"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Install the plugins below first"
+msgstr ""
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr ""
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+
+msgid "Requested permissions"
+msgstr ""
+
+msgid "Enable after install"
+msgstr ""
+
+msgid "Also install to child nodes"
+msgstr ""
+
+msgid "Keep in sync automatically"
+msgstr ""
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+
+msgid "Failed to load the plugin logs"
+msgstr ""
+
+msgid "Logs copied to clipboard"
+msgstr ""
+
+msgid "Failed to copy the logs"
+msgstr ""
+
+msgid "Logs: %{name}"
+msgstr ""
+
+msgid "No log output yet"
+msgstr ""
+
+msgid "Failed to load the plugin marketplace"
+msgstr ""
+
+msgid "Reloading the catalog"
+msgstr ""
+
+msgid "Search plugins"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "All sources"
+msgstr ""
+
+msgid "Updates only"
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid "Every installed plugin is up to date"
+msgstr ""
+
+msgid "No plugins match your search"
+msgstr ""
+
+msgid "Downloading the package"
+msgstr ""
+
+msgid "Verifying the signature"
+msgstr ""
+
+msgid "Installing"
+msgstr ""
+
+msgid "%{phase}: %{plugin}"
+msgstr ""
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr ""
+
+msgid "Update plugin"
+msgstr ""
+
+msgid "No release available for this platform"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "This is a community plugin"
+msgstr ""
+
+msgid "The plugins below are installed together with it"
+msgstr ""
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+
+msgid "No description provided."
+msgstr ""
+
+msgid "Installed: %{version}"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Repository"
+msgstr ""
+
+msgid "Release notes"
+msgstr ""
+
+msgid "Released"
+msgstr ""
+
+msgid "Platforms"
+msgstr ""
+
+msgid "Failed to load the plugin details"
+msgstr ""
+
+msgid "Installed version"
+msgstr ""
+
+msgid "Versions"
+msgstr ""
+
+msgid "Yanked"
+msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "Readme"
+msgstr ""
+
+msgid "Failed to load the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources saved"
+msgstr ""
+
+msgid "Failed to save the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources"
+msgstr ""
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+
+msgid "Using the official catalog"
+msgstr ""
+
+msgid "Add source"
+msgstr ""
+
+msgid "Add the official catalog"
+msgstr ""
+
+msgid "Official"
+msgstr ""
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+
+msgid "Community"
+msgstr ""
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+
+msgid "Approve permissions"
+msgstr ""
+
+msgid "Approve and enable"
+msgstr ""
+
+msgid "%{name} needs your approval before it can run."
+msgstr ""
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+
+msgid "This plugin does not request any host permission."
+msgstr ""
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+
+msgid "unknown"
+msgstr ""
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr ""
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr ""
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr ""
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr ""
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr ""
+
+msgid "In sync"
+msgstr ""
+
+msgid "Outdated"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Unsupported platform"
+msgstr ""
+
+msgid "Unsupported"
+msgstr ""
+
+msgid "Failed to load the plugin matrix"
+msgstr ""
+
+msgid "Update to %{version}"
+msgstr ""
+
+msgid "Sync to this node"
+msgstr ""
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+
+msgid "All nodes"
+msgstr ""
+
+msgid "This instance has no child node"
+msgstr ""
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+
+msgid "Sync to selected"
+msgstr ""
+
+msgid "Sync to all"
+msgstr ""
+
+msgid "Marketplace"
+msgstr ""
+
+msgid "%{field} is required"
+msgstr ""
+
+msgid "Failed to load the plugin settings"
+msgstr ""
+
+msgid "Plugin settings saved"
+msgstr ""
+
+msgid "Failed to save the plugin settings"
+msgstr ""
+
+msgid "Settings: %{name}"
+msgstr ""
+
+msgid "This plugin has no settings."
+msgstr ""
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] ""
+
+msgid "Sync policy saved"
+msgstr ""
+
+msgid "Failed to save the sync policy"
+msgstr ""
+
+msgid "Automatic installation"
+msgstr ""
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+
+msgid "Also sync the plugin settings"
+msgstr ""
+
+msgid "Needs attention"
+msgstr ""
+
+msgid "Uninstall %{name}?"
+msgstr ""
+
+msgid ""
+"Its files, data and settings are removed from this node. Other nodes are not "
+"touched."
+msgstr ""
+
+msgid "Search installed plugins"
+msgstr ""
+
+msgid "No plugins installed yet"
+msgstr ""
+
+msgid "Pick one from the marketplace or upload a bundle you built yourself."
+msgstr ""
+
+msgid "Browse marketplace"
+msgstr ""
+
+msgid "Install from file"
+msgstr ""
+
+msgid "No plugins match the current filter"
+msgstr ""
+
+msgid "This plugin cannot run on this node"
+msgstr ""
+
+msgid "More actions"
+msgstr ""
+
+msgid "Follow new lines"
+msgstr ""
+
+msgid "All plugins"
+msgstr ""
+
+msgid "Updates"
+msgstr ""
+
+msgid "The catalog is empty"
+msgstr ""
+
+msgid "Search the marketplace"
+msgstr ""
+
+msgid "%{count} installed plugin has a newer release."
+msgid_plural "%{count} installed plugins have a newer release."
+msgstr[0] ""
+
+msgid "Show updates"
+msgstr ""
+
+msgid "The marketplace is unavailable"
+msgstr ""
+
+msgid "Overview"
+msgstr ""
+
+msgid "No background process"
+msgstr ""
+
+msgid "On demand"
+msgstr ""
+
+msgid "Resident"
+msgstr ""
+
+msgid "Last error"
+msgstr ""
+
+msgid "This plugin needs your approval before it can run."
+msgstr ""
+
+msgid "Turn it on to review the requested permissions."
+msgstr ""
+
+msgid "API version"
+msgstr ""
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr ""
+
+msgid "Depends on"
+msgstr ""
+
+msgid "Needs capabilities"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Cluster"
+msgstr ""
+
+msgid "Sync now"
+msgstr ""
+
+msgid "Danger zone"
+msgstr ""
+
+msgid "Uninstall this plugin"
+msgstr ""
+
+msgid "Its files, data and settings are removed from this node."
+msgstr ""
+
+msgid "%{count} in sync"
+msgstr ""
+
+msgid "%{count} pending"
+msgstr ""
+
+msgid "%{count} failing"
+msgstr ""
+
+msgid "Manage nodes"
+msgstr ""
+
+msgid "Updates available"
+msgstr ""
+
+msgid "Idle"
+msgstr ""
+
+msgid "Include line copied to clipboard"
+msgstr ""
+
+msgid "%{n} d"
+msgstr ""
+
+msgid "%{n} h"
+msgstr ""
+
+msgid "%{n} min"
+msgstr ""
+
+msgid "%{n} s"
+msgstr ""
+
+msgid "Deploy Certificate Error"
+msgstr ""
+
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr ""
+
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr ""
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr ""
+
+msgid "This action needs a plugin storage backend"
+msgstr ""
+
+msgid "Invalid storage key prefix: {0}"
+msgstr ""
+
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr ""
+
+msgid "Storage backend {0} is not available"
+msgstr ""
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Deploy target kind {0} is not available"
+msgstr ""
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Blocklist source kind {0} is not available"
+msgstr ""
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Discovery provider {0} is not available"
+msgstr ""
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr ""
+
+msgid "Upstream name {0} is invalid"
+msgstr ""
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr ""
+
+msgid "Extra directives must not contain braces"
+msgstr ""
+
+msgid "{0} is still included by the nginx configuration: {1}"
+msgstr ""
+
+msgid "Template not found"
+msgstr ""
+
+msgid "Deploy Targets"
+msgstr ""
+
+msgid "Blocklists"
+msgstr ""
+
+msgid "Keep Latest Backups"
+msgstr ""
+
+msgid "Stored Backups"
+msgstr ""
+
+msgid "Please fill in %{field}"
+msgstr ""
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr ""
+
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr ""
+
+msgid "Key Prefix"
+msgstr ""
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr ""
+
+msgid "Key prefix is required"
+msgstr ""
+
+msgid "nginx-ui/backups"
+msgstr ""
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr ""
+
+msgid "Test Storage"
+msgstr ""
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr ""
+
+msgid "Delete this backup from the storage?"
+msgstr ""
+
+msgid "Restore Backup"
+msgstr ""
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr ""
+
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr ""
+
+msgid "Deployed to %{ok} targets"
+msgstr ""
+
+msgid "Manage"
+msgstr ""
+
+msgid "Deploy Now"
+msgstr ""
+
+msgid "This certificate is not pushed to any external target."
+msgstr ""
+
+msgid "Plugin unavailable"
+msgstr ""
+
+msgid "Never deployed"
+msgstr ""
+
+msgid "%{count} attempts"
+msgstr ""
+
+msgid "Deploy History of %{name}"
+msgstr ""
+
+msgid "All certificates"
+msgstr ""
+
+msgid "Dry run successful"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+
+msgid "Target Type"
+msgstr ""
+
+msgid "Select a target type"
+msgstr ""
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr ""
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr ""
+
+msgid "Dry Run"
+msgstr ""
+
+msgid "No certificate is bound to this target"
+msgstr ""
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr ""
+
+msgid "Deployed %{ok} certificates"
+msgstr ""
+
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
+msgstr ""
+
+msgid "Built-in HTTP / gRPC check"
+msgstr ""
+
+msgid "%{kind} (unavailable)"
+msgstr ""
+
+msgid "Check Method"
+msgstr ""
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
+msgstr ""
+
+msgid "Refreshed"
+msgstr ""
+
+msgid "Refresh failed"
+msgstr ""
+
+msgid "Source Type"
+msgstr ""
+
+msgid "Refresh Interval"
+msgstr ""
+
+msgid "Entries"
+msgstr ""
+
+msgid "Last Result"
+msgstr ""
+
+msgid "Include"
+msgstr ""
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+
+msgid "Refresh Now"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+
+msgid "Select a source type"
+msgstr ""
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr ""
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr ""
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
+msgstr ""
+
+msgid "From plugin %{id}"
+msgstr ""
+
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
+msgstr ""
+
+msgid "This package has no build for this node (%{platform})"
+msgstr ""
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr ""
+
+msgid "This node runs %{platform}, its build is highlighted."
+msgstr ""
+
+msgid ""
+"Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+"can then run them."
+msgstr ""
+
+msgid ""
+"Receive certificates and their private keys in order to push them to "
+"external targets."
+msgstr ""
+
+msgid ""
+"Receive every parsed nginx access log line while enabled, including client "
+"addresses and requested URLs."
+msgstr ""
+
+msgid "Streamed"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Dropped"
+msgstr ""
+
+msgid "Unlimited"
+msgstr ""
+
+msgid "Transport"
+msgstr ""
+
+msgid "Resource limits"
+msgstr ""
+
+msgid "The running process is confined to these limits."
+msgstr ""
+
+msgid ""
+"The plugin is not running, or this node cannot confine processes: that needs "
+"Linux with a writable cgroup v2 hierarchy."
+msgstr ""
+
+msgid "Enforced"
+msgstr ""
+
+msgid "Not enforced"
+msgstr ""
+
+msgid "Access log stream"
+msgstr ""
+
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr ""
+
+msgid "Service"
+msgstr ""
+
+msgid "Service Discovery"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr ""
+
+msgid "Select a provider"
+msgstr ""
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr ""
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr ""
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr ""
+
+msgid "Extra Directives"
+msgstr ""
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr ""
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
+msgstr ""
+
+msgid "Links"
+msgstr ""
+
+msgid "Plugin package declares version {0}, {1} was expected"
+msgstr ""
+
+msgid "Only localhost addresses are accepted"
+msgstr ""
+
+msgid ""
+"Address of a plugin.json served by a static server on this computer. Only "
+"localhost addresses are accepted. The plugin is loaded in addition to the "
+"installed ones."
+msgstr ""
+
+msgid "Plugin package is not signed and developer mode is off"
+msgstr ""
+
+msgid "Plugin package trust {0} is below the installed {1}"
+msgstr ""
+
+msgid "This plugin is not signed"
+msgstr ""
+
+msgid "Checking the package"
+msgstr ""
+
+msgid "Published by the Nginx UI project."
+msgstr ""
+
+msgid "Published by a partner of the Nginx UI project."
+msgstr ""
+
+msgid "Unsigned"
+msgstr ""
+
+msgid ""
+"Not signed, so its publisher cannot be confirmed. Installing it requires "
+"developer mode."
+msgstr ""
+
+msgid "This package is trusted less than the version already installed"
+msgstr ""
+
+msgid "Installed version: %{installed}. This package: %{package}."
+msgstr ""
+
+msgid "Plugin System"
+msgstr ""
+
+msgid ""
+"Turning it off stops every plugin and hides the plugin pages. Takes effect "
+"after a restart."
+msgstr ""
+
+msgid "Plugin Directory"
+msgstr ""
+
+msgid "Default Sync Policy"
+msgstr ""
+
+msgid ""
+"Applied to newly installed plugins. Automatic keeps the plugin installed on "
+"the child nodes."
+msgstr ""
+
+msgid "Enable Marketplace"
+msgstr ""
+
+msgid "Managed on the marketplace page. Empty means the official catalog."
+msgstr ""
+
+msgid "Allow Community Plugins"
+msgstr ""
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr ""
+
+msgid "Automatic Updates"
+msgstr ""
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr ""
+
+msgid "Allow Insecure Download URLs"
+msgstr ""
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr ""
+
+msgid "Allow Uploads"
+msgstr ""
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr ""
+
+msgid "Developer Mode"
+msgstr ""
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
+msgstr ""
+
+msgid "Trusted Keys"
+msgstr ""
+
+msgid ""
+"Packages signed with one of these keys install as community plugins. One key "
+"per line."
+msgstr ""
+
+msgid "Memory Limit"
+msgstr ""
+
+msgid ""
+"Applies to every plugin process. 0 means unlimited, a plugin can only lower "
+"its own limit."
+msgstr ""
+
+msgid "CPU Limit"
+msgstr ""
+
+msgid "Percent of one core for every plugin process. 0 means unlimited."
+msgstr ""
+
+msgid "cgroup Root"
+msgstr ""
+
+msgid "Limits are enforced on Linux with cgroup v2 only."
+msgstr ""
+
+msgid ""
+"Plugin system, marketplace, packages and resource limits of plugin processes."
+msgstr ""
+
+msgid "Go to plugins"
+msgstr ""
+
+msgid "The plugins directory under the configuration directory"
+msgstr ""
+
+msgid "Official catalog"
+msgstr ""
+
+msgid "Packages"
+msgstr ""
+
+msgid "Paste public keys here"
+msgstr ""
+
+msgid "Resources"
+msgstr ""
+
+msgid "A trusted publisher is not in the expected format or is listed twice"
+msgstr ""
+
+msgid "Turning it off stops every plugin and hides the plugin pages."
+msgstr ""
+
+msgid "Trusted Publishers"
+msgstr ""
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr ""
+
+msgid "Maximum memory each plugin can use."
+msgstr ""
+
+msgid "Share of one CPU core each plugin can use."
+msgstr ""
+
+msgid ""
+"This is not a valid public key. Paste the whole key the publisher gave you."
+msgstr ""
+
+msgid "This publisher is already in the list."
+msgstr ""
+
+msgid "No publishers yet."
+msgstr ""
+
+msgid "Unnamed publisher"
+msgstr ""
+
+msgid "Not a valid public key"
+msgstr ""
+
+msgid "Add publisher"
+msgstr ""
+
+msgid "Shown in this list only"
+msgstr ""
+
+msgid "Public Key"
+msgstr ""
+
+msgid "Paste the public key the publisher gave you"
+msgstr ""
+
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr ""
+
+msgid "Only applies on Linux. This system does not support it."
+msgstr ""
+
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr ""
+
+msgid "Less safe"
+msgstr ""
+
+msgid "Validates the domain with a DNS record. Needs a DNS credential."
+msgstr ""
+
+msgid "Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail."
+msgstr ""
+
+msgid "Validates each domain over port 80 on this server."
+msgstr ""
+
+msgid "Can be changed after the plugin is installed."
+msgstr ""
+
+msgid "Can be changed after the plugin is enabled."
+msgstr ""
+
+msgid ""
+"Only turn on when you are sure you need it. Firefox may show an error on the "
+"first visit."
+msgstr ""
+
+msgid "For private CAs that still require this field."
+msgstr ""
+
+msgid "Revokes the previous certificate once the new one is issued."
+msgstr ""
+
+msgid "New credential"
+msgstr ""
+
+msgid "The credential was deleted. Please choose another one."
+msgstr ""
+
+msgid "Deleted credential"
+msgstr ""
+
+msgid "DNS Credential"
+msgstr ""
+
+msgid "Select credential"
+msgstr ""
+
+msgid "not installed"
+msgstr ""
+
+msgid "turned off"
+msgstr ""
+
+msgid "not working right now"
+msgstr ""
+
+msgid ""
+"DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
+"yet."
+msgstr ""
+
+msgid "The DNS-01 plugin is installed but turned off."
+msgstr ""
+
+msgid "The DNS-01 plugin is turned on but not working right now."
+msgstr ""
+
+msgid ""
+"This certificate renews through the DNS-01 plugin, which is %{state}. It "
+"cannot renew automatically until the plugin is back."
+msgstr ""
+
+msgid "DNS providers come with the DNS-01 plugin, which is %{state}."
+msgstr ""
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not installed."
+msgstr ""
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is turned off."
+msgstr ""
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not working right now."
+msgstr ""
+
+msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
+msgstr ""
+
+msgid "Enable plugin"
+msgstr ""
+
+msgid "New DNS Credential"
+msgstr ""
+
+msgid "Create and select"
+msgstr ""
+
+msgid ""
+"Automatic renewal can only be switched for certificates issued by Nginx UI"
+msgstr ""
+
+msgid "Plugin marketplace is disabled"
+msgstr ""
+
+msgid "Plugin marketplace source is unavailable: {0}"
+msgstr ""
+
+msgid "Plugin release not found"
+msgstr ""
+
+msgid "Plugin release has been yanked"
+msgstr ""
+
+msgid "Plugin package digest does not match the catalog"
+msgstr ""
+
+msgid "Plugin package signature is invalid: {0}"
+msgstr ""
+
+msgid "Community plugins are not allowed on this node"
+msgstr ""
+
+msgid "Plugin download url is not https"
+msgstr ""
+
+msgid "Plugin release has no build for this platform"
+msgstr ""
+
+msgid "Plugin catalog is invalid: {0}"
+msgstr ""
+
+msgid "Plugin is not in the marketplace catalog"
+msgstr ""
+
+msgid "No local package found for this plugin"
+msgstr ""
+
+msgid "No plugin package is available for {0}"
+msgstr ""
+
+msgid "The marketplace has no more trusted package of this plugin"
+msgstr ""
+
+msgid "Advanced options"
+msgstr ""
+
+msgid "Sync to other nodes"
+msgstr ""
+
+msgid "Private key"
+msgstr ""
+
+msgid "Automatic renewal turned on"
+msgstr ""
+
+msgid "Automatic renewal turned off"
+msgstr ""
+
+msgid "Not issued yet"
+msgstr ""
+
+msgid "Expiring within 30 days"
+msgstr ""
+
+msgid "Renewal failed"
+msgstr ""
+
+msgid "Renewal method"
+msgstr ""
+
+msgid "Expiry date"
+msgstr ""
+
+msgid "Search by name or domain"
+msgstr ""
+
+msgid "Valid · %{days} days left"
+msgstr ""
+
+msgid "Expires in %{days} days"
+msgstr ""
+
+msgid "Managed manually"
+msgstr ""
+
+msgid "DNS validation · %{provider}"
+msgstr ""
+
+msgid "DNS validation"
+msgstr ""
+
+msgid "HTTP validation"
+msgstr ""
+
+msgid "Self-signed"
+msgstr ""
+
+msgid "Synced from another node"
+msgstr ""
+
+msgid "Upload"
+msgstr ""
+
+msgid "Renewed on the node it is synced from"
+msgstr ""
+
+msgid "Renews around %{date}"
+msgstr ""
+
+msgid "Replace the files to renew"
+msgstr ""
+
+msgid "Auto renewal"
+msgstr ""
+
+msgid "Issuer"
+msgstr ""
+
+msgid "Certificate files"
+msgstr ""
+
+msgid "Hide contents"
+msgstr ""
+
+msgid "Show contents"
+msgstr ""
+
+msgid "In progress"
+msgstr ""
+
+msgid "Failed · %{time}"
+msgstr ""
+
+msgid "Succeeded · %{time}"
+msgstr ""
+
+msgid "Last renewal"
+msgstr ""
+
+msgid "Show less"
+msgstr ""
+
+msgid "View full log"
+msgstr ""
+
+msgid "No renewal has run yet."
+msgstr ""
+
+msgid "Select nodes"
+msgstr ""
+
+msgid "Only kept on this node."
+msgstr ""
+
+msgid "Renew now"
+msgstr ""
+
+msgid "Certificate DNS validation"
+msgstr ""
+
+msgid ""
+"Validates domains through DNS records when certificates are issued or "
+"renewed."
+msgstr ""
+
+msgid "DNS credentials"
+msgstr ""
+
+msgid "Web pages and API"
+msgstr ""
+
+msgid "Serves its own pages and API inside Nginx UI."
+msgstr ""
+
+msgid "External notifications"
+msgstr ""
+
+msgid "Delivers Nginx UI notifications to other services."
+msgstr ""
+
+msgid "Health checks"
+msgstr ""
+
+msgid "Adds more ways to check whether sites and services are reachable."
+msgstr ""
+
+msgid "AI assistant tools"
+msgstr ""
+
+msgid "Offers actions that AI assistants connected to Nginx UI can run."
+msgstr ""
+
+msgid "Backup storage"
+msgstr ""
+
+msgid "Stores backups and other files in external storage."
+msgstr ""
+
+msgid "Auto backup"
+msgstr ""
+
+msgid "Certificate deployment"
+msgstr ""
+
+msgid "Pushes issued certificates to other services and devices."
+msgstr ""
+
+msgid "Deploy targets"
+msgstr ""
+
+msgid "Keeps lists of addresses that are denied access up to date."
+msgstr ""
+
+msgid "Service discovery"
+msgstr ""
+
+msgid "Finds backend servers automatically and keeps upstreams up to date."
+msgstr ""
+
+msgid "Access log forwarding"
+msgstr ""
+
+msgid ""
+"Receives access log entries as they are written, for example to forward or "
+"analyse them."
+msgstr ""
+
+msgid "Other feature"
+msgstr ""
+
+msgid "A feature this version of Nginx UI does not describe."
+msgstr ""
+
+msgid "Disable %{name}?"
+msgstr ""
+
+msgid "Renewal resumes when you turn it back on."
+msgstr ""
+
+msgid "Installed %{version} is not this version"
+msgstr ""
+
+msgid ""
+"This version was not published by the official team or a partner. It may be "
+"a development build or a repackaged copy."
+msgstr ""
+
+msgid "Install the official version"
+msgstr ""
+
+msgid "Install the partner version"
+msgstr ""
+
+msgid "The marketplace has the official version %{version}."
+msgstr ""
+
+msgid "The marketplace has the partner version %{version}."
+msgstr ""
+
+msgid "This plugin needs no access beyond its own features."
+msgstr ""
+
+msgid "Keep its own data inside Nginx UI."
+msgstr ""
+
+msgid "Connect to other servers over the network."
+msgstr ""
+
+msgid "Run tasks on a regular schedule."
+msgstr ""
+
+msgid "Manage Nginx UI with your permissions."
+msgstr ""
+
+msgid "Offer actions that AI assistants connected to Nginx UI can run."
+msgstr ""
+
+msgid ""
+"Receive issued certificates, including the parts that must stay secret, to "
+"push them to other services."
+msgstr ""
+
+msgid ""
+"Receive every access log entry while it is on, including visitor addresses "
+"and requested URLs."
+msgstr ""
+
+msgid "Stored %{kind} credentials"
+msgstr ""
+
+msgid "Own data storage"
+msgstr ""
+
+msgid "Scheduled tasks"
+msgstr ""
+
+msgid "Server metrics"
+msgstr ""
+
+msgid "Nginx UI management"
+msgstr ""
+
+msgid "Access logs"
+msgstr ""
+
+msgid "Unknown permission"
+msgstr ""
+
+msgid "Nothing to start"
+msgstr ""
+
+msgid "Starts when needed"
+msgstr ""
+
+msgid "Always running"
+msgstr ""
+
+msgid "Start mode"
+msgstr ""
+
+msgid "Turn it on to review what it can access."
+msgstr ""
+
+msgid "Provides"
+msgstr ""
+
+msgid "Can access"
+msgstr ""
+
+msgid "Only these addresses"
+msgstr ""
+
+msgid "%{n} more"
+msgstr ""
+
+msgid "No specific addresses listed"
+msgstr ""
+
+msgid "Nothing beyond its own features."
+msgstr ""
+
+msgid "In use"
+msgstr ""
+
+msgid "%{count} certificate renews through it:"
+msgid_plural "%{count} certificates renew through it:"
+msgstr[0] ""
+
+msgid "Version, API version, start mode, updated time"
+msgstr ""
+
+msgid "Needs features"
+msgstr ""
+
+msgid "The limits are applied while the plugin runs."
+msgstr ""
+
+msgid "The plugin is not running, or this node cannot apply limits."
+msgstr ""
+
+msgid "Develop plugin"
+msgstr ""
+
+msgid "Standby"
+msgstr ""
+
+msgid "Starts automatically when needed"
+msgstr ""
+
+msgid "Installed. Turn it on to review what it can access."
+msgstr ""
+
+msgid "Installed the version from the marketplace"
+msgstr ""
+
+msgid "Failed to install the version from the marketplace"
+msgstr ""
+
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
+msgstr ""
+
+msgid "%{count} unsaved"
+msgid_plural "%{count} unsaved"
+msgstr[0] ""
+
+msgctxt "list separator"
+msgid ", "
+msgstr ""
+
+msgid "and %{n} more"
+msgstr ""
+
+msgid ""
+"%{count} certificate renews through it and will not renew while it is off:"
+msgid_plural ""
+"%{count} certificates renew through it and will not renew while it is off:"
+msgstr[0] ""
+
+msgid "API base URL"
+msgstr "URL cơ sở API"
+
+msgid "API timeout"
+msgstr "Thời gian chờ API"
+
+msgid "API token"
+msgstr "Mã API"
+
+msgid "Access key ID"
+msgstr "ID khóa truy cập"
+
+msgid "AccessKey"
+msgstr "AccessKey"
+
+msgid "AccessKey ID"
+msgstr "AccessKey ID"
+
+msgid "AccessKey secret"
+msgstr "Khóa bí mật AccessKey"
+
+msgid "Account email"
+msgstr "Email tài khoản"
+
+msgid "Authentication method"
+msgstr "Phương thức xác thực"
+
+msgid "Azure environment"
+msgstr "Môi trường Azure"
+
+msgid "Check interval"
+msgstr "Khoảng thời gian kiểm tra"
+
+msgid "Client certificate"
+msgstr "Chứng chỉ máy khách"
+
+msgid "Client certificate path"
+msgstr "Đường dẫn chứng chỉ máy khách"
+
+msgid "Client secret"
+msgstr "Khóa bí mật của khách hàng"
+
+msgid "DNS line"
+msgstr "Tuyến DNS"
+
+msgid "Global API key"
+msgstr "Khóa API toàn cục"
+
+msgid "Instance RAM role"
+msgstr "Vai trò RAM của phiên bản"
+
+msgid "Managed identity timeout"
+msgstr "Thời gian chờ danh tính được quản lý"
+
+msgid "Maximum wait"
+msgstr "Thời gian chờ tối đa"
+
+msgid "Needs the DNS edit permission."
+msgstr "Cần quyền chỉnh sửa DNS."
+
+msgid "Needs the zone read permission. Leave empty to use the API token."
+msgstr "Cần quyền đọc vùng. Để trống để dùng mã API."
+
+msgid "One of public, usgovernment and china."
+msgstr "Một trong public, usgovernment hoặc china."
+
+msgid "Private zone"
+msgstr "Vùng riêng tư"
+
+msgid "Region"
+msgstr "Khu vực"
+
+msgid "Region ID"
+msgstr "ID khu vực"
+
+msgid "Resource group"
+msgstr "Nhóm tài nguyên"
+
+msgid "STS security token"
+msgstr "Mã bảo mật STS"
+
+msgid "Secret access key"
+msgstr "Khóa truy cập bí mật"
+
+msgid "SecretId"
+msgstr "SecretId"
+
+msgid "SecretKey"
+msgstr "SecretKey"
+
+msgid "Service discovery filter"
+msgstr "Bộ lọc khám phá dịch vụ"
+
+msgid "Session token"
+msgstr "Mã phiên"
+
+msgid "Set to true to use a private DNS zone."
+msgstr "Đặt thành true để dùng vùng DNS riêng tư."
+
+msgid "Subscription ID"
+msgstr "ID đăng ký"
+
+msgid "TXT record TTL"
+msgstr "TTL của bản ghi TXT"
+
+msgid "Zone name"
+msgstr "Tên vùng"
+
+msgid "Zone read token"
+msgstr "Mã đọc vùng"
+
+msgid "%{method} (recommended)"
+msgstr "%{method} (khuyến nghị)"
+
+msgid "%{provider} API docs"
+msgstr "Tài liệu API của %{provider}"
+
+msgid "Sign-in method"
+msgstr "Phương thức đăng nhập"
+
+msgid "Optional"
+msgstr "Tùy chọn"
+
+msgid "%{count} changed"
+msgstr "Đã thay đổi %{count}"
+
+msgid "All default"
+msgstr "Tất cả mặc định"
+
+msgid "sec"
+msgstr "giây"
+
+msgid "Nothing to fill in. The server uses its own credentials."
+msgstr "Không cần điền gì. Máy chủ dùng thông tin xác thực của chính nó."
+
+msgid "Browse and follow the access and error logs of your sites."
+msgstr ""
+
+msgid "Read access logs page by page or follow them as they arrive."
+msgstr ""
+
+msgid "See every log file Nginx writes and open one to read it."
+msgstr ""
+
+msgid ""
+"Log analytics is now a plugin. Install it to keep using it; your existing "
+"indexes are kept."
+msgstr ""
+
+msgid "Go to install"
+msgstr ""
+
+msgid "Used for downloads from GitHub, such as upgrades."
+msgstr ""
+
+msgid ""
+"Read the Nginx log files of this node, including visitor addresses and "
+"requested URLs."
+msgstr ""
+
+msgid "Log files"
+msgstr ""
+
+msgid "This plugin cannot be enabled together with: {0}"
+msgstr "Không thể bật plugin này cùng với: {0}"
+
+msgid "Release channel must be stable, beta or dev"
+msgstr "Kênh phát hành phải là stable, beta hoặc dev"
+
+msgid ""
+"Advanced Indexing is now provided by the Log Analytics plugin. Install the "
+"plugin to continue using it. Existing indexes are kept."
+msgstr ""
+"Lập chỉ mục nâng cao hiện được cung cấp bởi plugin Log Analytics. Hãy cài "
+"đặt plugin để tiếp tục sử dụng. Các chỉ mục hiện có được giữ lại."
+
+msgid "Beta"
+msgstr "Beta"
+
+msgid ""
+"This is a beta release. Features may change, and some functions may not work "
+"as expected."
+msgstr ""
+"Đây là bản beta. Tính năng có thể thay đổi và một số chức năng có thể không "
+"hoạt động như mong đợi."
+
+msgid "This is a development release. It may be incomplete or unstable."
+msgstr ""
+"Đây là bản phát triển. Bản này có thể chưa hoàn chỉnh hoặc không ổn định."
+
+msgid "This is a stable release."
+msgstr "Đây là bản ổn định."
+
+msgid "Development releases are received until a stable release is available."
+msgstr "Sẽ nhận các bản phát triển cho đến khi có bản ổn định."
+
+msgid "Beta releases are received until a stable release is available."
+msgstr "Sẽ nhận các bản beta cho đến khi có bản ổn định."
+
+msgid "Receive beta and stable releases."
+msgstr "Nhận các bản beta và bản ổn định."
+
+msgid "Receive all releases, including development releases."
+msgstr "Nhận tất cả các bản phát hành, bao gồm cả bản phát triển."
+
+msgid "Receive stable releases only."
+msgstr "Chỉ nhận các bản ổn định."
+
+msgid "Cannot be enabled together with %{names}"
+msgstr "Không thể bật cùng với %{names}"
+
+msgid ""
+"Enabling %{name} will disable %{others}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+"Bật %{name} sẽ tắt %{others}, vì các plugin này không thể được bật cùng lúc."
+
+msgid ""
+"Enabling this plugin will disable %{names}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+"Bật plugin này sẽ tắt %{names}, vì các plugin này không thể được bật cùng "
+"lúc."
+
+msgid "Enable %{name}?"
+msgstr "Bật %{name}?"
+
+msgid "Recommended memory"
+msgstr "Bộ nhớ khuyến nghị"
+
+msgid "Install a previous version"
+msgstr "Cài đặt phiên bản trước"
+
+msgid "Install this version"
+msgstr "Cài đặt phiên bản này"
+
+msgid "This version is older than the installed version"
+msgstr "Phiên bản này cũ hơn phiên bản đã cài đặt"
+
+msgid ""
+"Data created by the newer version may not be compatible with this version."
+msgstr ""
+"Dữ liệu do phiên bản mới hơn tạo ra có thể không tương thích với phiên bản "
+"này."
+
+msgid "No stable release of this plugin is available yet."
+msgstr "Plugin này chưa có bản ổn định."
+
+msgid ""
+"Newer releases of this channel are received until a stable release is "
+"available."
+msgstr "Sẽ nhận các bản mới hơn của kênh này cho đến khi có bản ổn định."
+
+msgid ""
+"This server has %{system} of memory, below the %{recommended} recommended "
+"for this plugin. The plugin may run slowly or stop unexpectedly."
+msgstr ""
+"Máy chủ này có %{system} bộ nhớ, thấp hơn mức %{recommended} được khuyến "
+"nghị cho plugin này. Plugin có thể chạy chậm hoặc dừng đột ngột."
+
+msgid "Saved"
+msgstr "Đã lưu"
+
+msgid "Failed to save"
+msgstr "Lưu thất bại"
+
+msgid "Update channel"
+msgstr "Kênh cập nhật"
+
+msgid "Screenshots"
+msgstr "Ảnh chụp màn hình"
+
+msgid "Enter a valid web address"
+msgstr ""
+
+msgid "The source cannot be checked"
+msgstr ""
+
+msgid "Name (optional)"
+msgstr ""
+
+msgid "Checking availability"
+msgstr ""
+
+msgid "Available, %{count} plugin"
+msgid_plural "Available, %{count} plugins"
+msgstr[0] ""
+
+msgid "Unavailable"
+msgstr ""
+
+msgid "Catalog name: %{name}"
+msgstr ""
+
+msgid "New source"
+msgstr ""
+
+msgid "Checking"
+msgstr ""
+
+msgid "%{count} plugin"
+msgid_plural "%{count} plugins"
+msgstr[0] ""
+
+msgid "Invalid address"
+msgstr ""
+
+msgid "Drag to reorder"
+msgstr ""
+
+msgid "Edit address"
+msgstr ""
+
+msgid "Add a source to offer plugins from another catalog as well."
+msgstr ""
+
+msgid "Correct the addresses marked as invalid before saving."
+msgstr ""
+
+msgid "Enter a domain or a web address."
+msgstr ""
+
+msgid ""
+"Enter a domain such as plugins.example.com, or the full address of a catalog."
+msgstr ""
+
+msgid ""
+"Add Nginx configuration of its own. It takes effect only where you include "
+"it, and Nginx UI applies it only when the configuration remains valid."
+msgstr ""
+
+msgid "Read the Nginx configuration files of this node."
+msgstr ""
+
+msgid "See the sites of this node and their addresses."
+msgstr ""
+
+msgid ""
+"See the certificates and when they expire, without the parts that must stay "
+"secret."
+msgstr ""
+
+msgid "Nginx configuration snippets"
+msgstr ""
+
+msgid "Nginx configuration"
+msgstr ""
+
+msgid "Certificate list"
+msgstr ""
+
+msgid "DNS Validation"
+msgstr ""
+
+msgid ""
+"The main node has no DNS-01 plugin. Install it on the main node, or validate "
+"on this node."
+msgstr ""
+
+msgid ""
+"Credentials of the main node. Switch to the main node to add or change one."
+msgstr ""
+
+msgid "On the main node"
+msgstr ""
+
+msgid "On this node"
+msgstr ""
+
+msgid ""
+"The main node validates the domain with its DNS credentials, sends the "
+"certificate to this node and keeps renewing it."
+msgstr ""
+
+msgid ""
+"This node validates the domain with its own DNS credentials and renews the "
+"certificate itself."
+msgstr ""
+
+msgid "Only a DNS-01 certificate can be issued for another node"
+msgstr ""
+
+msgid "Node not found"
+msgstr ""
+
+msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
+msgstr ""
+
+msgid "Node {0} answered {1}: {2}"
+msgstr ""
+
+msgid "The Nginx configuration still loads the certificate: {0}"
+msgstr ""
+
+msgid "The certificate was issued, but sending it to node {0} failed: {1}"
+msgstr ""
+
+msgid "Node {0} cannot be reached: {1}"
+msgstr ""
+
+msgid "[Nginx UI] Sending the certificate to node %{name}"
+msgstr ""
+
+msgid "Issued for %{node}"
+msgstr ""
+
+msgid ""
+"This instance validates the domain, keeps renewing the certificate and sends "
+"each renewal to %{node}."
+msgstr ""
+
+msgid "Files on the node:"
+msgstr ""
+
+msgid "Issued by this instance for %{node} and renewed here"
+msgstr ""
+
+msgid "For %{node}"
+msgstr ""
+
+msgid ""
+"This instance stops renewing the certificate and deletes its own copy. The "
+"files on %{node} stay unless you remove them below."
+msgstr ""
+
+msgid "Also remove the certificate files from %{node}"
+msgstr ""
+
+msgid ""
+"They are kept when the Nginx configuration of the node still loads them."
+msgstr ""
+
+msgid "Issue the certificate on the main node"
+msgstr ""
+
+msgid ""
+"The node did not confirm that it received the certificate. Update Nginx UI "
+"on the node and try again."
+msgstr ""
+
+msgid "Recommended memory: %{size}"
+msgstr ""
+
+msgid "Nodes: %{target}"
+msgstr ""
 
 #~ msgid "Webauthn"
 #~ msgstr "WebAuthn"
@@ -11359,3 +13188,420 @@ msgstr "Bảo trì"
 
 #~ msgid "Global health check controls"
 #~ msgstr "Điều khiển kiểm tra sức khoẻ toàn cục"
+
+msgid "No file matches the search"
+msgstr "Không có tệp nào khớp với tìm kiếm"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+"Tên tệp phải kết thúc bằng .conf và chỉ được chứa chữ cái, chữ số, dấu "
+"chấm, dấu gạch ngang và dấu gạch dưới"
+
+msgid "Snippet not found"
+msgstr "Không tìm thấy đoạn mã"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "Đoạn mã vượt quá 256 KiB"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "Phần đầu của đoạn mã không thể phân tích cú pháp: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "Đoạn mã vẫn được bao gồm bởi {0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "Một đoạn mã với tên tệp này đã tồn tại"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "Biến {0} không hợp lệ: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "Nội dung không được phân tích cú pháp dưới dạng mẫu: {0}"
+
+msgid "Snippets"
+msgstr "Snippet"
+
+msgid "Create Snippet"
+msgstr "Tạo đoạn mã"
+
+msgid "Built-in Template"
+msgstr "Mẫu tích hợp"
+
+msgid "Edit Snippet"
+msgstr "Chỉnh sửa đoạn mã"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "Được sử dụng bởi %{count} cấu hình"
+
+msgid "Site Card Click URL"
+msgstr "URL nhấp vào thẻ trang web"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr ""
+"URL HTTP/HTTPS tuyệt đối tùy chọn được sử dụng khi mở thẻ trang web này. "
+"Nếu để trống, URL trang web mặc định sẽ được sử dụng."
+
+msgid "Built-in"
+msgstr "Tích hợp sẵn"
+
+msgid "Snippet"
+msgstr "Đoạn mã"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include giữ cho trang được liên kết với snippets/%{file}, do đó các thay "
+"đổi sau này của đoạn mã sẽ được áp dụng cho nó. Insert thay vào đó sẽ sao "
+"chép nội dung vào trang."
+
+msgid "Insert"
+msgstr "Chèn"
+
+msgid "Read Only"
+msgstr "Chỉ đọc"
+
+msgid "Preview"
+msgstr "Xem trước"
+
+msgid "Updates as the snippet changes."
+msgstr "Cập nhật khi đoạn mã thay đổi."
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr ""
+"Các mẫu tích hợp đi kèm với Nginx UI và không thể thay đổi. Sao chép một "
+"mẫu thành đoạn mã để thay đổi nó."
+
+msgid "File Name"
+msgstr "Tên tệp"
+
+msgid "Variables"
+msgstr "Biến"
+
+msgid "Copy as Snippet"
+msgstr "Sao chép thành snippet"
+
+msgid "Template"
+msgstr "Mẫu"
+
+msgid "No template matches the search"
+msgstr "Không có mẫu nào khớp với tìm kiếm"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} biến"
+
+msgid "Translations"
+msgstr "Bản dịch"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr ""
+"Trường này ở dạng %{language}. Người dùng các ngôn ngữ khác sẽ thấy bản "
+"dịch của mình, hoặc tiếng Anh khi không có."
+
+msgid "Remove translation"
+msgstr "Xóa bản dịch"
+
+msgid "Add a language"
+msgstr "Thêm ngôn ngữ"
+
+msgid "Text"
+msgstr "Văn bản"
+
+msgid "Switch"
+msgstr "Chuyển đổi"
+
+msgid "Select"
+msgstr "Chọn"
+
+msgid "New Variable…"
+msgstr "Biến mới…"
+
+msgid "Insert Variable"
+msgstr "Chèn biến"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr ""
+"Nhập %{open} để hoàn thành một biến, hoặc chọn một giá trị và nhấn %{keys} "
+"để biến nó thành biến."
+
+msgid "Default Value"
+msgstr "Giá trị mặc định"
+
+msgid "Edit Variable"
+msgstr "Chỉnh sửa biến"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr ""
+"Biến này không được khai báo, vì vậy nó không có giá trị khi đoạn mã được "
+"chèn vào."
+
+msgid "Declare Variable"
+msgstr "Khai báo biến"
+
+msgid "Make Variable"
+msgstr "Tạo biến"
+
+msgid "New Variable"
+msgstr "Biến mới"
+
+msgid "Key"
+msgstr "Khóa"
+
+msgid "Label"
+msgstr "Nhãn"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "Biến được khai báo và chèn vào vị trí con trỏ."
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr ""
+"Giá trị đã chọn trở thành giá trị mặc định, và nội dung thay vào đó tham "
+"chiếu đến biến."
+
+msgid "Add Variable"
+msgstr "Thêm biến"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "Chưa được khai báo, vì vậy để trống không có giá trị: %{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "Đoạn mã không được hiển thị dưới dạng cấu hình Nginx hợp lệ."
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "Đoạn mã được hiển thị dưới dạng cấu hình Nginx hợp lệ."
+
+msgid "What the site editor asks for"
+msgstr "Những gì trình chỉnh sửa trang web yêu cầu"
+
+msgid "Restore Default Values"
+msgstr "Khôi phục giá trị mặc định"
+
+msgid "Nothing to fill in."
+msgstr "Không có gì để điền."
+
+msgid "Fix the variables to preview the snippet."
+msgstr "Sửa các biến để xem trước đoạn mã."
+
+msgid "Snippets are no longer synchronized"
+msgstr "Các đoạn mã không còn được đồng bộ"
+
+msgid "Synchronize Snippets"
+msgstr "Đồng bộ hóa các đoạn mã"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr ""
+"Mọi đoạn mã giờ đã được sao chép vào các nút được chọn, và các thay đổi sau "
+"đó sẽ tự động theo dõi. Hãy xóa lựa chọn để ngừng đồng bộ hóa."
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "Thay thế các đoạn mã đã tồn tại trên các nút"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "Được đưa vào bởi %{count} tệp"
+
+msgid "Not Used"
+msgstr "Không sử dụng"
+
+msgid "Max Age"
+msgstr "Tuổi tối đa"
+
+msgid "Options"
+msgstr "Tùy chọn"
+
+msgid "Remove option"
+msgstr "Xóa tùy chọn"
+
+msgid "Add Option"
+msgstr "Thêm tùy chọn"
+
+msgid "Remove variable"
+msgstr "Xóa biến"
+
+msgid "Used in the content, not declared"
+msgstr "Được sử dụng trong nội dung, không được khai báo"
+
+msgid "Snippet %{name} saved"
+msgstr "Đoạn mã %{name} đã được lưu"
+
+msgid "Discard the unsaved changes?"
+msgstr "Hủy các thay đổi chưa được lưu?"
+
+msgid "Keep Editing"
+msgstr "Tiếp tục chỉnh sửa"
+
+msgid "Edit Snippet %{name}"
+msgstr "Chỉnh sửa đoạn mã %{name}"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr ""
+"Các trang web có thể bao gồm đoạn mã này và theo dõi các thay đổi sau đó "
+"của nó."
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr ""
+"Đoạn mã này có chứa biến, vì vậy các trang web sẽ chèn một bản sao đã điền "
+"từ bảng mẫu cấu hình."
+
+msgid "Includable"
+msgstr "Có thể bao gồm"
+
+msgid "Insert Only"
+msgstr "Chỉ chèn"
+
+msgid "Use"
+msgstr "Sử dụng"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr ""
+"Thêm chỉ thị này vào một khối server hoặc location. Các trang web bao gồm "
+"đoạn mã sẽ theo dõi các thay đổi sau này của nó."
+
+msgid "Static file cache"
+msgstr "Bộ nhớ đệm tệp tĩnh"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr ""
+"Đã sửa trong khi các cấu hình bao gồm đoạn mã, vì vậy chúng vẫn tiếp tục "
+"hoạt động."
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "Chữ cái, chữ số, dấu chấm, dấu gạch ngang và dấu gạch dưới."
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr ""
+"Các biến được điền khi đoạn mã được chèn từ bảng mẫu cấu hình của trình "
+"chỉnh sửa trang web. Đoạn mã có biến chỉ có thể được chèn, không thể được "
+"đưa vào."
+
+msgid "No configuration includes this snippet yet."
+msgstr "Chưa có cấu hình nào bao gồm đoạn mã này."
+
+msgid "Unsaved changes"
+msgstr "Các thay đổi chưa được lưu"
+
+msgid "My Snippets"
+msgstr "Đoạn mã của tôi"
+
+msgid "Built-in Templates"
+msgstr "Mẫu có sẵn"
+
+msgid "Copied %{include}"
+msgstr "Đã sao chép %{include}"
+
+msgid "Delete snippet %{name}?"
+msgstr "Xóa đoạn mã %{name}?"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "snippets/%{file} sẽ bị xóa tại đây và trên các nút đã đồng bộ hóa."
+
+msgid "snippets/%{file} will be removed."
+msgstr "snippets/%{file} sẽ bị xóa."
+
+msgid "Snippet %{name} deleted"
+msgstr "Đã xóa snippet %{name}"
+
+msgid "Synchronize"
+msgstr "Đồng bộ"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "Đã đồng bộ hóa tới %{count} nút"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] ""
+"Có %{count} biến. Các trang web chèn bản sao đã điền từ bảng mẫu cấu hình "
+"của trình chỉnh sửa trang web."
+
+msgid "Copy the include directive"
+msgstr "Sao chép chỉ thị include"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "Trước tiên, hãy xóa đoạn mã khỏi các tệp chứa nó."
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+"Một đoạn mã giữ một phần cấu hình Nginx ở một nơi. Hãy đưa nó vào một trang "
+"web, hoặc chèn nó từ bảng mẫu cấu hình của trình chỉnh sửa trang web; thay "
+"đổi một đoạn mã đã đưa vào sẽ cập nhật mọi trang web sử dụng nó."
+
+msgid "Search snippets"
+msgstr "Đoạn trích tìm kiếm"
+
+msgid "No snippets yet"
+msgstr "Chưa có đoạn mã nào"
+
+msgid "No snippet matches the search"
+msgstr "Không có đoạn mã nào khớp với tìm kiếm"
+
+msgid "Enter a key."
+msgstr "Nhập khóa."
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr ""
+"Sử dụng chữ cái, chữ số và dấu gạch dưới, bắt đầu bằng chữ cái hoặc dấu "
+"gạch dưới."
+
+msgid "Another variable uses this key."
+msgstr "Một biến khác đang sử dụng khóa này."
+
+msgid "Add at least one option."
+msgstr "Vui lòng thêm ít nhất một tùy chọn."
+
+msgid "Every option needs a value."
+msgstr "Mỗi tùy chọn đều cần một giá trị."
+
+msgid "Option values must be unique."
+msgstr "Các giá trị tùy chọn phải là duy nhất."
+
+msgid "Choose the default option."
+msgstr "Chọn tùy chọn mặc định."
+
+msgid "Certificate Relocated"
+msgstr "Chứng chỉ đã được di chuyển"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr ""
+"Chứng chỉ %{name} hiện được lưu trong %{path}, hãy trỏ các trang web tải "
+"%{previous_path} đến nó"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "Đường dẫn tồn tại, nhưng tệp không phải là chứng chỉ"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "Đường dẫn tồn tại, nhưng tệp không phải là khóa riêng tư"

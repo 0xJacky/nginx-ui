@@ -1,4 +1,5 @@
 import type { ModelBase } from '@/api/curd'
+import type { ConfigurationField } from '@/api/plugin'
 import { http, useCurdApi } from '@uozi-admin/request'
 
 export interface ExternalNotify extends ModelBase {
@@ -23,6 +24,15 @@ export interface CreateExternalNotifyRequest {
   enabled: boolean
 }
 
+/** A notifier type a plugin offers next to the built-in ones. */
+export interface ExternalNotifierChannel {
+  /** Value stored in ExternalNotify.type, e.g. "plugin:mychat". */
+  type: string
+  name: string
+  plugin_id?: string
+  fields: ConfigurationField[]
+}
+
 const baseUrl = '/external_notifies'
 
 const externalNotify = useCurdApi<ExternalNotify>(baseUrl)
@@ -38,6 +48,11 @@ export function listExternalNotifies(): Promise<{ data: ExternalNotify[] }> {
 
 export function createExternalNotify(params: CreateExternalNotifyRequest): Promise<ExternalNotify> {
   return http.post(baseUrl, params)
+}
+
+/** Lists the notifier types enabled plugins provide, with their form schema. */
+export function listExternalNotifierChannels(): Promise<{ data: ExternalNotifierChannel[] }> {
+  return http.get(`${baseUrl}/channels`)
 }
 
 export default externalNotify

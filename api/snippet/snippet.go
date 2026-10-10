@@ -114,8 +114,8 @@ func saveSnippet(c *gin.Context, file string, json snippetPayload, create bool) 
 	}, api.CurrentUser(c).Name)
 }
 
-// GetBuiltinTemplates lists the block templates built into Nginx UI, which
-// a snippet can start from.
+// GetBuiltinTemplates lists the block templates a snippet can start from:
+// those built into Nginx UI and those enabled plugins contribute.
 func GetBuiltinTemplates(c *gin.Context) {
 	list, err := template.GetTemplateList("block")
 	if err != nil {
@@ -125,9 +125,19 @@ func GetBuiltinTemplates(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": list})
 }
 
-// GetBuiltinTemplate returns a built-in block template as written.
+// GetBuiltinTemplate returns a block template as written: a built-in one or,
+// with the plugin_id query parameter, one of an enabled plugin.
 func GetBuiltinTemplate(c *gin.Context) {
-	info, body, err := template.BuiltinBlockSource(c.Param("name"))
+	var (
+		info template.ConfigInfoItem
+		body string
+		err  error
+	)
+	if pluginID := c.Query("plugin_id"); pluginID != "" {
+		info, body, err = template.PluginBlockSource(pluginID, c.Param("name"))
+	} else {
+		info, body, err = template.BuiltinBlockSource(c.Param("name"))
+	}
 	if err != nil {
 		cosy.ErrHandler(c, snippet.ErrNotFound)
 		return
@@ -138,6 +148,8 @@ func GetBuiltinTemplate(c *gin.Context) {
 		"author":      info.Author,
 		"filename":    info.Filename,
 		"variables":   info.Variables,
+		"origin":      info.Origin,
+		"plugin_id":   info.PluginID,
 		"content":     body,
 	})
 }
@@ -145,6 +157,9 @@ func GetBuiltinTemplate(c *gin.Context) {
 type previewPayload struct {
 	Content   string                       `json:"content"`
 	Variables map[string]template.Variable `json:"variables"`
+	// FromPlugin renders content read from a plugin template with the
+	// limits of plugin templates.
+	FromPlugin bool `json:"from_plugin"`
 }
 
 // PreviewSnippet renders the content of a snippet with variable values,
@@ -154,7 +169,7 @@ func PreviewSnippet(c *gin.Context) {
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
-	result, err := snippet.Preview(json.Content, json.Variables)
+	result, err := snippet.Preview(json.Content, json.Variables, json.FromPlugin)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

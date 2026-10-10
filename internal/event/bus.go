@@ -47,6 +47,8 @@ func (eb *Bus) SetWebSocketHub(hub WebSocketHub) {
 
 // Publish forwards an event directly to WebSocket clients
 func (eb *Bus) Publish(event Event) {
+	dispatchToSubscribers(event)
+
 	eb.wsMutex.RLock()
 	hub := eb.wsHub
 	eb.wsMutex.RUnlock()

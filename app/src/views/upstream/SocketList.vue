@@ -6,6 +6,7 @@ import { message, Tag } from 'antdv-next'
 import upstream from '@/api/upstream'
 import { useProxyAvailability } from '@/composables/useProxyAvailability'
 import { formatDateTime } from '@/lib/helper'
+import UpstreamDiscoveries from './components/UpstreamDiscoveries.vue'
 
 const dataSource = ref<SocketInfo[]>([])
 const loading = ref(false)
@@ -129,53 +130,60 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ACard :title="$gettext('Upstream Sockets')">
-    <template #extra>
-      <AButton :loading @click="loadData">
-        <template #icon>
-          <ReloadOutlined />
-        </template>
-      </AButton>
-    </template>
-
-    <AAlert
-      v-if="!globalHealthCheckEnabled"
-      data-testid="upstream-health-check-global-paused"
-      class="mb-4"
-      type="warning"
-      show-icon
-      :title="$gettext('Upstream health checks are globally paused')"
-      :description="$gettext('Per-target selections are preserved. Resume probes from Health Check preferences.')"
-    />
-
-    <ATable
-      :columns="columns"
-      :data-source="enrichedDataSource"
-      :loading="loading"
-      :pagination="false"
-      :scroll="{ x: 1400 }"
-      row-key="socket"
-    >
-      <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'socket'">
-          <ATag color="default" variant="filled" class="socket-tag">
-            <template #icon>
-              <span v-if="record.type === 'upstream'" class="target-type-icon">U</span>
-              <span v-else class="target-type-icon">P</span>
-            </template>
-            {{ record.socket }}
-          </ATag>
-        </template>
-        <template v-if="column.key === 'enabled'">
-          <ASwitch
-            v-model:checked="record.enabled"
-            :data-testid="`upstream-health-check-${record.socket}`"
-            @change="handleToggleEnabled(record.socket, $event)"
-          />
-        </template>
+  <div>
+    <ACard :title="$gettext('Upstream Sockets')">
+      <template #extra>
+        <AButton :loading @click="loadData">
+          <template #icon>
+            <ReloadOutlined />
+          </template>
+        </AButton>
       </template>
-    </ATable>
-  </ACard>
+
+      <AAlert
+        v-if="!globalHealthCheckEnabled"
+        data-testid="upstream-health-check-global-paused"
+        class="mb-4"
+        type="warning"
+        show-icon
+        :title="$gettext('Upstream health checks are globally paused')"
+        :description="$gettext('Per-target selections are preserved. Resume probes from Health Check preferences.')"
+      />
+
+      <ATable
+        :columns="columns"
+        :data-source="enrichedDataSource"
+        :loading="loading"
+        :pagination="false"
+        :scroll="{ x: 1400 }"
+        row-key="socket"
+      >
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key === 'socket'">
+            <ATag color="default" variant="filled" class="socket-tag">
+              <template #icon>
+                <span v-if="record.type === 'upstream'" class="target-type-icon">U</span>
+                <span v-else class="target-type-icon">P</span>
+              </template>
+              {{ record.socket }}
+            </ATag>
+          </template>
+          <template v-if="column.key === 'enabled'">
+            <ASwitch
+              v-model:checked="record.enabled"
+              :data-testid="`upstream-health-check-${record.socket}`"
+              @change="handleToggleEnabled(record.socket, $event)"
+            />
+          </template>
+        </template>
+      </ATable>
+    </ACard>
+
+    <!-- Upstreams whose servers a discovery plugin keeps in step. -->
+    <div class="mt-4">
+      <UpstreamDiscoveries />
+    </div>
+  </div>
 </template>
 
 <style scoped lang="less">

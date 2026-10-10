@@ -14,6 +14,8 @@ const props = defineProps<{
   content: string
   // The include directive, for a snippet without variables.
   include?: string
+  // The content is a template of a plugin.
+  fromPlugin?: boolean
 }>()
 
 const { current: language } = useSnippetDescription()
@@ -56,8 +58,8 @@ async function render() {
   isLoading.value = true
   try {
     const [filled, defaults] = await Promise.all([
-      snippet.preview(props.content, withValues(true)),
-      snippet.preview(props.content, withValues(false)),
+      snippet.preview(props.content, withValues(true), props.fromPlugin),
+      snippet.preview(props.content, withValues(false), props.fromPlugin),
     ])
     result.value = filled
     defaultLines.value = new Set(defaults.content.split('\n'))

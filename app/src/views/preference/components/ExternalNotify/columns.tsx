@@ -5,13 +5,20 @@ import gettext from '@/gettext'
 import EnabledSwitch from './EnabledSwitch.vue'
 import ExternalNotifyEditor from './ExternalNotifyEditor.vue'
 import configMap from './index'
+import { pluginChannels } from './pluginChannels'
 
 const languageAvailable = gettext.available
 
-const configTypeMask = Object.keys(configMap).reduce((acc, key) => {
+// Reactive, so the plugin channels appear once they are loaded.
+const configTypeMask = reactive<Record<string, string>>(Object.keys(configMap).reduce((acc, key) => {
   acc[key] = configMap[key].name()
   return acc
-}, {})
+}, {} as Record<string, string>))
+
+watch(pluginChannels, channels => {
+  for (const channel of channels)
+    configTypeMask[channel.type] = channel.name
+}, { immediate: true })
 
 const columns: StdTableColumn[] = [
   {

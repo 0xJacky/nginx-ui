@@ -135,6 +135,21 @@ msgstr ""
 msgid "DNS01"
 msgstr ""
 
+msgid "Validates the domain with a DNS record. Needs a DNS credential."
+msgstr ""
+
+msgid "Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail."
+msgstr ""
+
+msgid "Validates each domain over port 80 on this server."
+msgstr ""
+
+msgid "Can be changed after the plugin is installed."
+msgstr ""
+
+msgid "Can be changed after the plugin is enabled."
+msgstr ""
+
 msgid "Please enter the server IP address"
 msgstr ""
 
@@ -189,7 +204,7 @@ msgid ""
 "select one of the credentials below to request the API of the DNS provider."
 msgstr ""
 
-msgid "Required Settings"
+msgid "Issuing"
 msgstr ""
 
 msgid "Server IP Address"
@@ -228,68 +243,66 @@ msgstr ""
 msgid "Not supported for IP certificates"
 msgstr ""
 
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:784
+msgid "DNS Validation"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:800
+msgid ""
+"The main node has no DNS-01 plugin. Install it on the main node, or validate "
+"on this node."
+msgstr ""
+
 msgid "Key Type"
 msgstr ""
 
-msgid "Special Settings"
+msgid "Certificate options"
 msgstr ""
 
 msgid "OCSP Must Staple"
 msgstr ""
 
-msgid "Do not enable this option unless you are sure that you need it."
-msgstr ""
-
 msgid ""
-"OCSP Must Staple may cause errors for some users on first access using "
-"Firefox."
-msgstr ""
-
-msgid "Lego disable CNAME Support"
-msgstr ""
-
-msgid ""
-"If your domain has CNAME records and you cannot obtain certificates, you "
-"need to enable this option."
-msgstr ""
-
-msgid "Disable Authoritative DNS Propagation Check"
-msgstr ""
-
-msgid ""
-"Skip local DNS propagation checks and wait 60 seconds before asking the "
-"certificate authority to validate the record."
+"Only turn on when you are sure you need it. Firefox may show an error on the "
+"first visit."
 msgstr ""
 
 msgid "Enable Common Name"
 msgstr ""
 
-msgid ""
-"Enable the certificate Common Name field for private CAs that still require "
-"it."
+msgid "For private CAs that still require this field."
 msgstr ""
 
 msgid "Revoke Old Certificate"
 msgstr ""
 
-msgid ""
-"If you want to automatically revoke the old certificate, please enable this "
-"option."
+msgid "Revokes the previous certificate once the new one is issued."
 msgstr ""
 
 msgid "Unknown Provider"
 msgstr ""
 
-msgid "Credential"
+msgid "New credential"
 msgstr ""
 
-msgid "Please create DNS credentials first in DNS > Credentials"
+msgid "The credential was deleted. Please choose another one."
 msgstr ""
 
-msgid "Select Credential"
+#: src/components/AutoCertForm/DNSChallenge.vue:177
+msgid ""
+"Credentials of the main node. Switch to the main node to add or change one."
 msgstr ""
 
-msgid "Go to DNS > Credentials to create or manage credentials"
+msgid "Deleted credential"
+msgstr ""
+
+msgid "DNS Credential"
+msgstr ""
+
+msgid "Select credential"
+msgstr ""
+
+msgid "Manage"
 msgstr ""
 
 msgid "Local"
@@ -396,64 +409,107 @@ msgstr ""
 msgid "Maintenance"
 msgstr ""
 
-msgid "Site"
+msgid "not installed"
 msgstr ""
 
-msgid "Stream"
+msgid "turned off"
 msgstr ""
 
-msgid "Configuration"
-msgstr ""
-
-msgid "+%{count} more"
-msgstr ""
-
-msgid "Search"
-msgstr ""
-
-msgid "No file matches the search"
-msgstr ""
-
-msgid "Not used"
-msgstr ""
-
-msgid "Starting download..."
-msgstr ""
-
-msgid "Download failed"
-msgstr ""
-
-msgid "Download complete"
-msgstr ""
-
-msgid "GeoLite2 Database Required"
+msgid "not working right now"
 msgstr ""
 
 msgid ""
-"The GeoLite2 database is required for offline geographic IP analysis. Please "
-"download it to enable this feature."
+"DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
+"yet."
+msgstr ""
+
+msgid "The DNS-01 plugin is installed but turned off."
+msgstr ""
+
+msgid "The DNS-01 plugin is turned on but not working right now."
 msgstr ""
 
 msgid ""
-"Alternatively, if you cannot download the database, you can manually place "
-"GeoLite2-City.mmdb in the same directory as app.ini."
+"This certificate renews through the DNS-01 plugin, which is %{state}. It "
+"cannot renew automatically until the plugin is back."
+msgstr ""
+
+msgid "DNS providers come with the DNS-01 plugin, which is %{state}."
 msgstr ""
 
 msgid ""
-"If you want to enable custom MMDB data, configure `IndexCustomMMDB` and "
-"place the generated file in the same directory as app.ini."
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not installed."
 msgstr ""
 
-msgid "GeoLite2 Database Installed"
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is turned off."
 msgstr ""
 
-msgid "Download GeoLite2 Database"
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not working right now."
 msgstr ""
 
-msgid "Re-download Database"
+msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
 msgstr ""
 
-msgid "Last updated:"
+msgid "Install DNS-01 plugin"
+msgstr ""
+
+msgid "Install plugin"
+msgstr ""
+
+msgid "Enable plugin"
+msgstr ""
+
+msgid "Go to System > Plugins"
+msgstr ""
+
+msgid "Name cannot be empty"
+msgstr ""
+
+msgid "Please select DNS provider"
+msgstr ""
+
+msgid "Save successfully"
+msgstr ""
+
+msgid "Server error"
+msgstr ""
+
+msgid "New DNS Credential"
+msgstr ""
+
+msgid "Create and select"
+msgstr ""
+
+msgid "Include line copied to clipboard"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "%{n} d"
+msgstr ""
+
+msgid "%{n} h"
+msgstr ""
+
+msgid "%{n} min"
+msgstr ""
+
+msgid "%{n} s"
+msgstr ""
+
+msgid "Not run yet"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Failed"
 msgstr ""
 
 msgid "Nginx configuration test failed"
@@ -491,9 +547,6 @@ msgid "Nginx reported a configuration syntax error."
 msgstr ""
 
 msgid "Nginx failed to validate the configuration."
-msgstr ""
-
-msgid "Server error"
 msgstr ""
 
 msgid "Testing Nginx configuration..."
@@ -804,9 +857,6 @@ msgstr ""
 msgid "Error Logs"
 msgstr ""
 
-msgid "Traffic Analytics"
-msgstr ""
-
 msgid "Nginx is not running"
 msgstr ""
 
@@ -898,6 +948,9 @@ msgid "Done"
 msgstr ""
 
 msgid "Unknown"
+msgstr ""
+
+msgid "Search"
 msgstr ""
 
 msgid "Open in split view"
@@ -995,6 +1048,12 @@ msgid ""
 "location. Rename one of the tasks or change its storage path."
 msgstr ""
 
+msgid "Backups to Keep"
+msgstr ""
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr ""
+
 msgid "Renew Certificate Success"
 msgstr ""
 
@@ -1005,6 +1064,14 @@ msgid "Renew Certificate Error"
 msgstr ""
 
 msgid "Certificate %{name} renewal failed: %{error}"
+msgstr ""
+
+msgid "DNS-01 plugin unavailable"
+msgstr ""
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
 msgstr ""
 
 msgid "Certificate Expired"
@@ -1025,12 +1092,10 @@ msgstr ""
 msgid "Certificate Expiring Soon"
 msgstr ""
 
-msgid "Certificate Relocated"
+msgid "Deploy Certificate Error"
 msgstr ""
 
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load %"
-"{previous_path} to it"
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
 msgstr ""
 
 msgid "Sync Certificate Error"
@@ -1300,6 +1365,12 @@ msgstr ""
 msgid "Digit %{position} of the one-time code"
 msgstr ""
 
+msgid "Unknown error"
+msgstr ""
+
+msgid "Plugin %{plugin} failed to render"
+msgstr ""
+
 msgid "Port"
 msgstr ""
 
@@ -1346,9 +1417,6 @@ msgid "Indexing..."
 msgstr ""
 
 msgid "AutoCert is running..."
-msgstr ""
-
-msgid "Nginx Log Indexing..."
 msgstr ""
 
 msgid ""
@@ -1408,9 +1476,6 @@ msgid "Support communication with the backend through the WebSocket protocol. "
 msgstr ""
 
 msgid "Copied"
-msgstr ""
-
-msgid "Copy"
 msgstr ""
 
 msgid "Hide"
@@ -1642,16 +1707,26 @@ msgstr ""
 msgid "Synchronization finished with %{count} failures"
 msgstr ""
 
-msgid "High"
+msgid "Plugin enabled"
 msgstr ""
 
-msgid "Low"
+msgid "Failed to enable the plugin"
 msgstr ""
 
-msgid "Visits"
+msgid "On the main node"
 msgstr ""
 
-msgid "Percentage"
+msgid "On this node"
+msgstr ""
+
+msgid ""
+"The main node validates the domain with its DNS credentials, sends the "
+"certificate to this node and keeps renewing it."
+msgstr ""
+
+msgid ""
+"This node validates the domain with its own DNS credentials and renews the "
+"certificate itself."
 msgstr ""
 
 msgid "Failed to get performance data"
@@ -1999,6 +2074,18 @@ msgstr ""
 msgid "Invalid auto backup filename: {0}"
 msgstr ""
 
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr ""
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr ""
+
+msgid "This action needs a plugin storage backend"
+msgstr ""
+
+msgid "Invalid storage key prefix: {0}"
+msgstr ""
+
 msgid "Invalid path: {0}"
 msgstr ""
 
@@ -2055,12 +2142,6 @@ msgstr ""
 msgid "Get dns credential error: {0}"
 msgstr ""
 
-msgid "Provider not found: {0}"
-msgstr ""
-
-msgid "Set env error: {0}"
-msgstr ""
-
 msgid "New dns challenge provider error: {0}"
 msgstr ""
 
@@ -2068,9 +2149,6 @@ msgid "Environment configuration is empty"
 msgstr ""
 
 msgid "Challenge error: {0}"
-msgstr ""
-
-msgid "Set env flag to disable lego CNAME support error: {0}"
 msgstr ""
 
 msgid "Renew cert error: {0}"
@@ -2194,6 +2272,41 @@ msgstr ""
 msgid "No certificate in the archive matches its private key"
 msgstr ""
 
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+
+msgid ""
+"Automatic renewal can only be switched for certificates issued by Nginx UI"
+msgstr ""
+
+#: src/constants/errors/cert.ts:58
+msgid "Only a DNS-01 certificate can be issued for another node"
+msgstr ""
+
+#: src/constants/errors/cert.ts:59
+msgid "Node not found"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:231
+msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:231
+msgid "Node {0} answered {1}: {2}"
+msgstr ""
+
+#: src/constants/errors/cert.ts:62
+msgid "The Nginx configuration still loads the certificate: {0}"
+msgstr ""
+
+#: src/constants/errors/cert.ts:63
+msgid "The certificate was issued, but sending it to node {0} failed: {1}"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:231
+msgid "Node {0} cannot be reached: {1}"
+msgstr ""
+
 msgid "Path is not under the nginx conf dir"
 msgstr ""
 
@@ -2288,36 +2401,6 @@ msgid "Could not find old container name"
 msgstr ""
 
 msgid "Could not find temp container"
-msgstr ""
-
-msgid "Failed to download GeoLite2 database: {0}"
-msgstr ""
-
-msgid "Failed to decompress GeoLite2 database: {0}"
-msgstr ""
-
-msgid "GeoLite2 database not found at {0}"
-msgstr ""
-
-msgid "Failed to get file size: {0}"
-msgstr ""
-
-msgid "Failed to save downloaded file: {0}"
-msgstr ""
-
-msgid "Failed to open file: {0}"
-msgstr ""
-
-msgid "Failed to create xz reader: {0}"
-msgstr ""
-
-msgid "Failed to write decompressed data: {0}"
-msgstr ""
-
-msgid "Failed to read compressed data: {0}"
-msgstr ""
-
-msgid "Decompression succeeded but failed to delete compressed file: {0}"
 msgstr ""
 
 msgid ""
@@ -2454,9 +2537,6 @@ msgstr ""
 msgid "This action is disabled in demo mode"
 msgstr ""
 
-msgid "Log parser is not initialized; call indexer.InitLogParser() before use"
-msgstr ""
-
 msgid "Empty log line"
 msgstr ""
 
@@ -2495,58 +2575,16 @@ msgid ""
 "nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
 
-msgid "Log indexer not available"
-msgstr ""
-
-msgid "Analytics service not available"
-msgstr ""
-
 msgid "Log file does not exist"
 msgstr ""
 
 msgid "Log path is not under whitelist"
 msgstr ""
 
-msgid "Cannot access log file"
-msgstr ""
-
-msgid "Background log service not available"
-msgstr ""
-
-msgid "File path is required"
-msgstr ""
-
-msgid "Failed to rebuild index"
-msgstr ""
-
-msgid "Failed to rebuild file index"
-msgstr ""
-
-msgid "Failed to delete file index"
-msgstr ""
-
-msgid "Failed to delete all indexes"
-msgstr ""
-
-msgid "Failed to get index status"
-msgstr ""
-
-msgid "Failed to get persistence stats"
-msgstr ""
-
 msgid "Log file is not a regular file"
 msgstr ""
 
 msgid "Invalid websocket message type"
-msgstr ""
-
-msgid "Modern searcher service not available"
-msgstr ""
-
-msgid "Modern analytics service not available"
-msgstr ""
-
-msgid "Modern indexer service not available"
 msgstr ""
 
 msgid "Nginx error: {0}"
@@ -2576,6 +2614,9 @@ msgstr ""
 msgid "Invalid Telegram Chat ID: cannot be zero"
 msgstr ""
 
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr ""
+
 msgid "Stub_status is not enabled"
 msgstr ""
 
@@ -2602,6 +2643,168 @@ msgid "Failed to build nginx config: {0}"
 msgstr ""
 
 msgid "Failed to get nginx.conf path"
+msgstr ""
+
+msgid "Plugin manifest is invalid"
+msgstr ""
+
+msgid "Plugin not found"
+msgstr ""
+
+msgid "Plugin already exists"
+msgstr ""
+
+msgid "Plugin is not running"
+msgstr ""
+
+msgid "Plugin handshake failed"
+msgstr ""
+
+msgid "Plugin has no executable for this platform"
+msgstr ""
+
+msgid "Plugin package is invalid"
+msgstr ""
+
+msgid "Plugin package is too large"
+msgstr ""
+
+msgid "Plugin api version is incompatible"
+msgstr ""
+
+msgid "Plugin permissions need approval"
+msgstr ""
+
+msgid "Plugin dependency is missing: {0}"
+msgstr ""
+
+msgid "Plugin dependencies form a cycle"
+msgstr ""
+
+msgid "Plugin is in use by {0}"
+msgstr ""
+
+msgid "Plugin system is disabled"
+msgstr ""
+
+msgid "Plugin uploads are disabled"
+msgstr ""
+
+msgid "Plugin call timed out"
+msgstr ""
+
+msgid "Plugin rpc error: {0}"
+msgstr ""
+
+msgid "Plugin setting {0} is invalid"
+msgstr ""
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+
+msgid "Plugin package declares another id"
+msgstr ""
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr ""
+
+msgid "Plugin package declares version {0}, {1} was expected"
+msgstr ""
+
+msgid "Plugin package is not signed and developer mode is off"
+msgstr ""
+
+msgid "Plugin package trust {0} is below the installed {1}"
+msgstr ""
+
+msgid "This plugin cannot be enabled together with: {0}"
+msgstr ""
+
+msgid "Release channel must be stable, beta or dev"
+msgstr ""
+
+msgid "The plugin id {0} is reserved for official Nginx UI plugins"
+msgstr ""
+
+msgid "Storage backend {0} is not available"
+msgstr ""
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Deploy target kind {0} is not available"
+msgstr ""
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Blocklist source kind {0} is not available"
+msgstr ""
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Discovery provider {0} is not available"
+msgstr ""
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr ""
+
+msgid "Upstream name {0} is invalid"
+msgstr ""
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr ""
+
+msgid "Extra directives must not contain braces"
+msgstr ""
+
+msgid "{0} is still included by the nginx configuration: {1}"
+msgstr ""
+
+msgid "Plugin marketplace is disabled"
+msgstr ""
+
+msgid "Plugin marketplace source is unavailable: {0}"
+msgstr ""
+
+msgid "Plugin release not found"
+msgstr ""
+
+msgid "Plugin release has been yanked"
+msgstr ""
+
+msgid "Plugin package digest does not match the catalog"
+msgstr ""
+
+msgid "Plugin package signature is invalid: {0}"
+msgstr ""
+
+msgid "Community plugins are not allowed on this node"
+msgstr ""
+
+msgid "Plugin download url is not https"
+msgstr ""
+
+msgid "Plugin release has no build for this platform"
+msgstr ""
+
+msgid "Plugin catalog is invalid: {0}"
+msgstr ""
+
+msgid "Plugin is not in the marketplace catalog"
+msgstr ""
+
+msgid "No local package found for this plugin"
+msgstr ""
+
+msgid "No plugin package is available for {0}"
+msgstr ""
+
+msgid "The marketplace has no more trusted package of this plugin"
 msgstr ""
 
 msgid "Task not found"
@@ -2670,11 +2873,6 @@ msgstr ""
 msgid "Conf.d directory not exists"
 msgstr ""
 
-msgid ""
-"GeoLite2 database not found at {0}. Log indexing requires GeoLite2 database "
-"for geographic IP analysis"
-msgstr ""
-
 msgid "Failed to read bundled nginx-ui.conf: {0}"
 msgstr ""
 
@@ -2707,6 +2905,9 @@ msgid "HTTP/3 cannot be enabled while Nginx UI listens on a Unix socket"
 msgstr ""
 
 msgid "Unknown settings section: {0}"
+msgstr ""
+
+msgid "A trusted publisher is not in the expected format or is listed twice"
 msgstr ""
 
 msgid "Site not found"
@@ -2790,6 +2991,9 @@ msgid "SSL key file must be under Nginx configuration directory: {0}"
 msgstr ""
 
 msgid "SSL certificate and key do not form a valid pair: {0}"
+msgstr ""
+
+msgid "Template not found"
 msgstr ""
 
 msgid "Upgrader core downloadUrl is empty"
@@ -3026,9 +3230,6 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-msgid "Success"
-msgstr ""
-
 msgid "Remote"
 msgstr ""
 
@@ -3044,7 +3245,13 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
+msgid "Low"
+msgstr ""
+
 msgid "Medium"
+msgstr ""
+
+msgid "High"
 msgstr ""
 
 msgid "Default"
@@ -3146,6 +3353,9 @@ msgstr ""
 msgid "Select Provider"
 msgstr ""
 
+msgid "Select Credential"
+msgstr ""
+
 msgid "Total"
 msgstr ""
 
@@ -3210,9 +3420,6 @@ msgid "Please select at least one item"
 msgstr ""
 
 msgid "Batch Modify"
-msgstr ""
-
-msgid "Save successfully"
 msgstr ""
 
 msgid "Save successful"
@@ -3285,10 +3492,40 @@ msgid ""
 "authority; add a CAA issue record for it or issuance will fail."
 msgstr ""
 
+msgid "API base URL"
+msgstr ""
+
+msgid "API timeout"
+msgstr ""
+
+msgid "API token"
+msgstr ""
+
+msgid "Access key ID"
+msgstr ""
+
+msgid "AccessKey"
+msgstr ""
+
+msgid "AccessKey ID"
+msgstr ""
+
+msgid "AccessKey secret"
+msgstr ""
+
+msgid "Account email"
+msgstr ""
+
 msgid "An existing certificate is used"
 msgstr ""
 
 msgid "Applying the HTTP configuration for validation"
+msgstr ""
+
+msgid "Authentication method"
+msgstr ""
+
+msgid "Azure environment"
 msgstr ""
 
 msgid "Bundled nginx-ui.conf has WebSocket reverse-proxy fix"
@@ -3326,13 +3563,6 @@ msgid ""
 "Docker socket access and ContainerName only route control commands; "
 "configuration and log directories must be mounted into both containers at "
 "matching paths."
-msgstr ""
-
-msgid ""
-"Check if the GeoLite2 database is available when log indexing is enabled. "
-"The GeoLite2 database is required for geographic IP analysis in log "
-"indexing. You can download it from the Preference page or manually place "
-"GeoLite2-City.mmdb in the same directory as app.ini"
 msgstr ""
 
 msgid ""
@@ -3393,10 +3623,28 @@ msgid ""
 "nginx configuration directory"
 msgstr ""
 
+msgid "Check interval"
+msgstr ""
+
 msgid "Checking the HTTP challenge route"
 msgstr ""
 
+msgid "Client ID"
+msgstr ""
+
+msgid "Client certificate"
+msgstr ""
+
+msgid "Client certificate path"
+msgstr ""
+
+msgid "Client secret"
+msgstr ""
+
 msgid "Conf.d directory exists"
+msgstr ""
+
+msgid "DNS line"
 msgstr ""
 
 msgid "Docker socket exists"
@@ -3414,7 +3662,7 @@ msgstr ""
 msgid "Failed to revoke certificate: %{error}"
 msgstr ""
 
-msgid "GeoLite2 database available"
+msgid "Global API key"
 msgstr ""
 
 msgid "HTTP challenge route is reachable"
@@ -3435,6 +3683,9 @@ msgstr ""
 msgid "HTTPS enabled"
 msgstr ""
 
+msgid "Instance RAM role"
+msgstr ""
+
 msgid "Issuing the certificate"
 msgstr ""
 
@@ -3442,6 +3693,18 @@ msgid ""
 "Log file %{log_path} is not a regular file. If you are using nginx-ui in "
 "docker container, please refer to https://nginxui.com/zh_CN/guide/config-"
 "nginx-log.html for more information."
+msgstr ""
+
+msgid "Managed identity timeout"
+msgstr ""
+
+msgid "Maximum wait"
+msgstr ""
+
+msgid "Needs the DNS edit permission."
+msgstr ""
+
+msgid "Needs the zone read permission. Leave empty to use the API token."
 msgstr ""
 
 msgid "Nginx PID path exists"
@@ -3480,13 +3743,28 @@ msgstr ""
 msgid "No DNS problem found"
 msgstr ""
 
+msgid "One of public, usgovernment and china."
+msgstr ""
+
 msgid "Original site configuration restored"
 msgstr ""
 
 msgid "Planning the HTTPS configuration"
 msgstr ""
 
+msgid "Private zone"
+msgstr ""
+
+msgid "Region"
+msgstr ""
+
+msgid "Region ID"
+msgstr ""
+
 msgid "Resolve the site configuration problem first"
+msgstr ""
+
+msgid "Resource group"
 msgstr ""
 
 msgid "Restoring the HTTP configuration"
@@ -3495,10 +3773,40 @@ msgstr ""
 msgid "Restoring the original site configuration"
 msgstr ""
 
+msgid "STS security token"
+msgstr ""
+
+msgid "Secret access key"
+msgstr ""
+
+msgid "SecretId"
+msgstr ""
+
+msgid "SecretKey"
+msgstr ""
+
+msgid "Service discovery filter"
+msgstr ""
+
+msgid "Session token"
+msgstr ""
+
+msgid "Set to true to use a private DNS zone."
+msgstr ""
+
 msgid "Sites directory exists"
 msgstr ""
 
 msgid "Streams directory exists"
+msgstr ""
+
+msgid "Subscription ID"
+msgstr ""
+
+msgid "TXT record TTL"
+msgstr ""
+
+msgid "Tenant ID"
 msgstr ""
 
 msgid "The DNS challenge does not use the HTTP challenge route"
@@ -3623,6 +3931,12 @@ msgid ""
 "unfixed version."
 msgstr ""
 
+msgid "Zone name"
+msgstr ""
+
+msgid "Zone read token"
+msgstr ""
+
 msgid "[Nginx UI] ACME User: %{name}, Email: %{email}, CA Dir: %{caDir}"
 msgstr ""
 
@@ -3649,9 +3963,6 @@ msgid "[Nginx UI] Checking HTTP01 challenge route for %{domains}"
 msgstr ""
 
 msgid "[Nginx UI] Creating client facilitates communication with the CA server"
-msgstr ""
-
-msgid "[Nginx UI] Environment variables cleaned"
 msgstr ""
 
 msgid "[Nginx UI] Finished"
@@ -3704,19 +4015,323 @@ msgstr ""
 msgid "[Nginx UI] Revoking old certificate"
 msgstr ""
 
+#: src/language/generate.ts:148
+msgid "[Nginx UI] Sending the certificate to node %{name}"
+msgstr ""
+
 msgid "[Nginx UI] Setting DNS01 challenge provider"
 msgstr ""
 
 msgid "[Nginx UI] Setting HTTP01 challenge provider"
 msgstr ""
 
-msgid "[Nginx UI] Setting environment variables"
-msgstr ""
-
 msgid "[Nginx UI] Writing certificate private key to disk"
 msgstr ""
 
 msgid "[Nginx UI] Writing certificate to disk"
+msgstr ""
+
+msgid "A feature this version of Nginx UI does not describe."
+msgstr ""
+
+msgid "AI"
+msgstr ""
+
+msgid "AI assistant tools"
+msgstr ""
+
+msgid "Access log forwarding"
+msgstr ""
+
+msgid "Access logs"
+msgstr ""
+
+msgid ""
+"Add Nginx configuration of its own. It takes effect only where you include "
+"it, and Nginx UI applies it only when the configuration remains valid."
+msgstr ""
+
+msgid "Adds more ways to check whether sites and services are reachable."
+msgstr ""
+
+msgid "Analytics"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "Backup and storage"
+msgstr ""
+
+msgid "Backup storage"
+msgstr ""
+
+msgid "Blocklists"
+msgstr ""
+
+msgid "Buy a license"
+msgstr ""
+
+msgid "Categories"
+msgstr ""
+
+msgid "Certificate DNS validation"
+msgstr ""
+
+msgid "Certificate deployment"
+msgstr ""
+
+msgid "Certificate list"
+msgstr ""
+
+msgid "Certificates"
+msgstr ""
+
+msgid "Commercial"
+msgstr ""
+
+msgid "Community"
+msgstr ""
+
+msgid "Config templates"
+msgstr ""
+
+msgid "Connect to other servers over the network."
+msgstr ""
+
+msgid "DNS"
+msgstr ""
+
+msgid "Delivers Nginx UI notifications to other services."
+msgstr ""
+
+msgid "External notifications"
+msgstr ""
+
+msgid "Finds backend servers automatically and keeps upstreams up to date."
+msgstr ""
+
+msgid "Free trial of %{days} days"
+msgstr ""
+
+msgid "Health checks"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "Integrations"
+msgstr ""
+
+msgid "Keep its own data inside Nginx UI."
+msgstr ""
+
+msgid "Keeps lists of addresses that are denied access up to date."
+msgstr ""
+
+msgid "Language packs"
+msgstr ""
+
+msgid "License"
+msgstr ""
+
+msgid "Links"
+msgstr ""
+
+msgid "Log files"
+msgstr ""
+
+msgid "Logs"
+msgstr ""
+
+msgid "Manage Nginx UI with your permissions."
+msgstr ""
+
+msgid "Monitoring"
+msgstr ""
+
+msgid "Network"
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "Nginx UI management"
+msgstr ""
+
+msgid "Nginx configuration"
+msgstr ""
+
+msgid "Nginx configuration snippets"
+msgstr ""
+
+msgid "No description provided."
+msgstr ""
+
+msgid ""
+"Not signed, so its publisher cannot be confirmed. Installing it requires "
+"developer mode."
+msgstr ""
+
+msgid "Note from the author"
+msgstr ""
+
+msgid "Offer actions that AI assistants connected to Nginx UI can run."
+msgstr ""
+
+msgid "Offers actions that AI assistants connected to Nginx UI can run."
+msgstr ""
+
+msgid "Official"
+msgstr ""
+
+msgid "Only these addresses"
+msgstr ""
+
+msgid "Other feature"
+msgstr ""
+
+msgid "Own data storage"
+msgstr ""
+
+msgid "Paid license"
+msgstr ""
+
+msgid "Price"
+msgstr ""
+
+msgid "Published by a partner of the Nginx UI project."
+msgstr ""
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+
+msgid "Published by the Nginx UI project."
+msgstr ""
+
+msgid "Pushes issued certificates to other services and devices."
+msgstr ""
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+
+msgid "Read the Nginx configuration files of this node."
+msgstr ""
+
+msgid ""
+"Read the Nginx log files of this node, including visitor addresses and "
+"requested URLs."
+msgstr ""
+
+msgid "Readme"
+msgstr ""
+
+msgid ""
+"Receive every access log entry while it is on, including visitor addresses "
+"and requested URLs."
+msgstr ""
+
+msgid ""
+"Receive issued certificates, including the parts that must stay secret, to "
+"push them to other services."
+msgstr ""
+
+msgid ""
+"Receives access log entries as they are written, for example to forward or "
+"analyse them."
+msgstr ""
+
+msgid "Release notes"
+msgstr ""
+
+msgid "Repository"
+msgstr ""
+
+msgid "Requested permissions"
+msgstr ""
+
+msgid "Run tasks on a regular schedule."
+msgstr ""
+
+msgid "Scheduled tasks"
+msgstr ""
+
+msgid "Screenshots"
+msgstr ""
+
+msgid "Security"
+msgstr ""
+
+msgid ""
+"See the certificates and when they expire, without the parts that must stay "
+"secret."
+msgstr ""
+
+msgid "See the sites of this node and their addresses."
+msgstr ""
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr ""
+
+msgid "Server metrics"
+msgstr ""
+
+msgid "Serves its own pages and API inside Nginx UI."
+msgstr ""
+
+msgid "Service discovery"
+msgstr ""
+
+msgid "Sites"
+msgstr ""
+
+msgid "Stored %{kind} credentials"
+msgstr ""
+
+msgid "Stores backups and other files in external storage."
+msgstr ""
+
+msgid "Subscription"
+msgstr ""
+
+msgid "This plugin needs no access beyond its own features."
+msgstr ""
+
+msgid "Tools"
+msgstr ""
+
+msgid "Traffic and upstreams"
+msgstr ""
+
+msgid "Unknown permission"
+msgstr ""
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr ""
+
+msgid "Unsigned"
+msgstr ""
+
+msgid ""
+"Validates domains through DNS records when certificates are issued or "
+"renewed."
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "Web pages and API"
+msgstr ""
+
+msgid "unknown"
 msgstr ""
 
 msgid "Logout successful"
@@ -3746,13 +4361,13 @@ msgstr ""
 msgid "Auto Backup"
 msgstr ""
 
-msgid "Certificates"
-msgstr ""
-
 msgid "ACME User"
 msgstr ""
 
 msgid "Certificates List"
+msgstr ""
+
+msgid "Deploy Targets"
 msgstr ""
 
 msgid "Modify Certificate"
@@ -3777,12 +4392,6 @@ msgid "Server"
 msgstr ""
 
 msgid "Nginx"
-msgstr ""
-
-msgid "Sites"
-msgstr ""
-
-msgid "DNS"
 msgstr ""
 
 msgid "Credentials"
@@ -3839,7 +4448,7 @@ msgstr ""
 msgid "Create Snippet"
 msgstr ""
 
-msgid "Built-in Template"
+msgid "Template"
 msgstr ""
 
 msgid "Edit Snippet"
@@ -3855,6 +4464,9 @@ msgid "Edit Stream"
 msgstr ""
 
 msgid "Upgrade"
+msgstr ""
+
+msgid "Plugins"
 msgstr ""
 
 msgid "About"
@@ -3922,16 +4534,28 @@ msgid ""
 "uses it."
 msgstr ""
 
+msgid "+%{count} more"
+msgstr ""
+
 msgid "Deny"
 msgstr ""
 
 msgid "Allow"
 msgstr ""
 
+msgid "Not used"
+msgstr ""
+
 msgid "Use list"
 msgstr ""
 
 msgid "Deny (403)"
+msgstr ""
+
+msgid "Site"
+msgstr ""
+
+msgid "Stream"
 msgstr ""
 
 msgid "Access list %{name} saved"
@@ -3990,6 +4614,9 @@ msgstr ""
 msgid "This list has no rules; only \"Everything else\" applies."
 msgstr ""
 
+msgid "S3"
+msgstr ""
+
 msgid "Backup completed successfully"
 msgstr ""
 
@@ -4011,9 +4638,6 @@ msgstr ""
 msgid "Storage Type"
 msgstr ""
 
-msgid "S3"
-msgstr ""
-
 msgid "Storage Configuration"
 msgstr ""
 
@@ -4029,15 +4653,6 @@ msgstr ""
 msgid "Monthly on day %{day} at %{time}"
 msgstr ""
 
-msgid "Backups to Keep"
-msgstr ""
-
-msgid "All"
-msgstr ""
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr ""
-
 msgid "Last Backup Time"
 msgstr ""
 
@@ -4045,9 +4660,6 @@ msgid "Last Backup Status"
 msgstr ""
 
 msgid "Pending"
-msgstr ""
-
-msgid "Failed"
 msgstr ""
 
 msgid "Created at"
@@ -4068,7 +4680,13 @@ msgstr ""
 msgid "S3 Region"
 msgstr ""
 
+msgid "Keep Latest Backups"
+msgstr ""
+
 msgid "Backup Now"
+msgstr ""
+
+msgid "Stored Backups"
 msgstr ""
 
 msgid "Daily"
@@ -4140,6 +4758,12 @@ msgstr ""
 msgid "Format: minute hour day month weekday"
 msgstr ""
 
+msgid "Please fill in %{field}"
+msgstr ""
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr ""
+
 msgid "Please fill in required S3 configuration fields"
 msgstr ""
 
@@ -4191,6 +4815,53 @@ msgstr ""
 msgid "Test S3 Connection"
 msgstr ""
 
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr ""
+
+msgid "Key Prefix"
+msgstr ""
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr ""
+
+msgid "Key prefix is required"
+msgstr ""
+
+msgid "nginx-ui/backups"
+msgstr ""
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr ""
+
+msgid "Test Storage"
+msgstr ""
+
+msgid "Please log in."
+msgstr ""
+
+msgid "File"
+msgstr ""
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr ""
+
+msgid "Delete this backup from the storage?"
+msgstr ""
+
+msgid "Restore Backup"
+msgstr ""
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr ""
+
 msgid "Create system backups and restore from saved snapshots when needed."
 msgstr ""
 
@@ -4223,9 +4894,6 @@ msgstr ""
 msgid ""
 "This token will only be shown once and cannot be retrieved later. Please "
 "make sure to save it in a secure location."
-msgstr ""
-
-msgid "Please log in."
 msgstr ""
 
 msgid "Email"
@@ -4294,6 +4962,33 @@ msgstr ""
 msgid "Register"
 msgstr ""
 
+msgid "Advanced options"
+msgstr ""
+
+msgid "Sync to other nodes"
+msgstr ""
+
+msgid "Certificate"
+msgstr ""
+
+msgid "Private key"
+msgstr ""
+
+msgid "Domains"
+msgstr ""
+
+msgid "IP Addresses"
+msgstr ""
+
+msgid "Valid For (days)"
+msgstr ""
+
+msgid "Automatic renewal turned on"
+msgstr ""
+
+msgid "Automatic renewal turned off"
+msgstr ""
+
 msgid "Please enter a name for the certificate"
 msgstr ""
 
@@ -4301,6 +4996,118 @@ msgid "Please enter at least one domain or IP address"
 msgstr ""
 
 msgid "Saved certificate response is missing an ID"
+msgstr ""
+
+msgid "More actions"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:455
+msgid "Issued for %{node}"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:459
+msgid ""
+"This instance validates the domain, keeps renewing the certificate and sends "
+"each renewal to %{node}."
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:462
+msgid "Files on the node:"
+msgstr ""
+
+msgid "Sync Certificate"
+msgstr ""
+
+msgid "Managed Certificate"
+msgstr ""
+
+msgid "General Certificate"
+msgstr ""
+
+msgid "Self-signed Certificate"
+msgstr ""
+
+msgid "Renewal paused"
+msgstr ""
+
+msgid "Issuing..."
+msgstr ""
+
+msgid "Issuance failed"
+msgstr ""
+
+msgid "Automatic migration pending"
+msgstr ""
+
+msgid "Configuration mismatch"
+msgstr ""
+
+msgid "Configured path: %{configured}; managed path: %{managed}"
+msgstr ""
+
+msgid "Unable to verify deployment"
+msgstr ""
+
+msgid "Not issued yet"
+msgstr ""
+
+msgid "Not After"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "Expiring within 30 days"
+msgstr ""
+
+msgid "Renewal failed"
+msgstr ""
+
+#: src/views/certificate/CertificateList/Certificate.vue:144
+msgid "Issued by this instance for %{node} and renewed here"
+msgstr ""
+
+#: src/views/certificate/CertificateEditor.vue:78
+msgid "For %{node}"
+msgstr ""
+
+msgid "Renewal method"
+msgstr ""
+
+msgid "Expiry date"
+msgstr ""
+
+msgid "Failed to scan certificates"
+msgstr ""
+
+msgid "Please select at least one certificate"
+msgstr ""
+
+msgid "Import successfully"
+msgstr ""
+
+msgid "Failed to import certificate"
+msgstr ""
+
+msgid "Discover"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Issue certificate"
+msgstr ""
+
+msgid "Search by name or domain"
+msgstr ""
+
+msgid "Discover Certificates"
+msgstr ""
+
+msgid "Import selected"
+msgstr ""
+
+msgid "Scan"
 msgstr ""
 
 msgid "Trying renewal."
@@ -4345,84 +5152,31 @@ msgstr ""
 msgid "interval"
 msgstr ""
 
-msgid "This certificate is managed by Nginx UI"
+msgid "Valid · %{days} days left"
 msgstr ""
 
-msgid "General Certificate"
+msgid "Expires in %{days} days"
 msgstr ""
 
-msgid "This certificate is not managed by Nginx UI"
+msgid "Managed manually"
 msgstr ""
 
-msgid "Log"
+msgid "DNS validation · %{provider}"
 msgstr ""
 
-msgid "Sync Certificate"
+msgid "DNS validation"
 msgstr ""
 
-msgid "Managed Certificate"
+msgid "HTTP validation"
 msgstr ""
 
-msgid "Self-signed Certificate"
+msgid "Self-signed"
 msgstr ""
 
-msgid "Renewal paused"
+msgid "Synced from another node"
 msgstr ""
 
-msgid "Issuing..."
-msgstr ""
-
-msgid "Issuance failed"
-msgstr ""
-
-msgid "Automatic migration pending"
-msgstr ""
-
-msgid "Configuration mismatch"
-msgstr ""
-
-msgid "Configured path: %{configured}; managed path: %{managed}"
-msgstr ""
-
-msgid "Unable to verify deployment"
-msgstr ""
-
-msgid "Not After"
-msgstr ""
-
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Failed to scan certificates"
-msgstr ""
-
-msgid "Please select at least one certificate"
-msgstr ""
-
-msgid "Import successfully"
-msgstr ""
-
-msgid "Failed to import certificate"
-msgstr ""
-
-msgid "Discover"
-msgstr ""
-
-msgid "Import"
-msgstr ""
-
-msgid "Issue certificate"
-msgstr ""
-
-msgid "Discover Certificates"
-msgstr ""
-
-msgid "Import selected"
-msgstr ""
-
-msgid "Scan"
+msgid "Upload"
 msgstr ""
 
 msgid "System Initial User"
@@ -4435,18 +5189,6 @@ msgid "Domains list is empty, try to reopen Auto Cert for %{config}"
 msgstr ""
 
 msgid "Back"
-msgstr ""
-
-msgid "This field is required"
-msgstr ""
-
-msgid "The path exists, but the file is not a certificate"
-msgstr ""
-
-msgid "The path exists, but the file is not a private key"
-msgstr ""
-
-msgid "Sync to"
 msgstr ""
 
 msgid "Failed to load nginx configuration path"
@@ -4492,6 +5234,27 @@ msgstr ""
 msgid "Drop private key file here"
 msgstr ""
 
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr ""
+
+msgid "Deployed to %{ok} targets"
+msgstr ""
+
+msgid "Deploy Now"
+msgstr ""
+
+msgid "This certificate is not pushed to any external target."
+msgstr ""
+
+msgid "Plugin unavailable"
+msgstr ""
+
+msgid "Never deployed"
+msgstr ""
+
+msgid "%{count} attempts"
+msgstr ""
+
 msgid "Certificate content and private key content cannot be empty"
 msgstr ""
 
@@ -4516,10 +5279,10 @@ msgstr ""
 msgid "Failed to download certificate files"
 msgstr ""
 
-msgid "Download Certificate Files"
+msgid "Download"
 msgstr ""
 
-msgid "Download"
+msgid "Download Certificate Files"
 msgstr ""
 
 msgid "Download Format"
@@ -4546,6 +5309,33 @@ msgstr ""
 msgid "Enter PFX password"
 msgstr ""
 
+msgid "Renewed on the node it is synced from"
+msgstr ""
+
+msgid "Renews around %{date}"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+msgid "Replace the files to renew"
+msgstr ""
+
+msgid "Auto renewal"
+msgstr ""
+
+msgid "Issuer"
+msgstr ""
+
+msgid "Certificate files"
+msgstr ""
+
+msgid "Hide contents"
+msgstr ""
+
+msgid "Show contents"
+msgstr ""
+
 msgid "certificate"
 msgstr ""
 
@@ -4568,6 +5358,70 @@ msgid "Upload %{type} File"
 msgstr ""
 
 msgid "or drag file to editor below"
+msgstr ""
+
+msgid "In progress"
+msgstr ""
+
+msgid "Failed · %{time}"
+msgstr ""
+
+msgid "Succeeded · %{time}"
+msgstr ""
+
+msgid "Last renewal"
+msgstr ""
+
+msgid "Show less"
+msgstr ""
+
+msgid "View full log"
+msgstr ""
+
+msgid "No renewal has run yet."
+msgstr ""
+
+msgid "Select nodes"
+msgstr ""
+
+msgid "Only kept on this node."
+msgstr ""
+
+msgid "Time"
+msgstr ""
+
+msgid "Attempts"
+msgstr ""
+
+msgid "Deploy History of %{name}"
+msgstr ""
+
+msgid "All certificates"
+msgstr ""
+
+msgid "Dry run successful"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+
+msgid "Target Type"
+msgstr ""
+
+msgid "Select a target type"
+msgstr ""
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr ""
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr ""
+
+msgid "Dry Run"
 msgstr ""
 
 msgid "Wildcard Certificate"
@@ -4620,20 +5474,6 @@ msgid ""
 "certificate application will fail."
 msgstr ""
 
-msgid "Challenge Method Reminder"
-msgstr ""
-
-msgid ""
-"If you use HTTP-01 challenge, the DNS credential field is hidden and not "
-"required."
-msgstr ""
-
-msgid "If you use DNS-01 challenge, you must select a DNS credential."
-msgstr ""
-
-msgid "Wildcard certificates usually require DNS-01 challenge."
-msgstr ""
-
 msgid "Next"
 msgstr ""
 
@@ -4661,6 +5501,21 @@ msgstr ""
 msgid "Delete Certificate"
 msgstr ""
 
+#: src/views/certificate/components/RemoveCert.vue:153
+msgid ""
+"This instance stops renewing the certificate and deletes its own copy. The "
+"files on %{node} stay unless you remove them below."
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:158
+msgid "Also remove the certificate files from %{node}"
+msgstr ""
+
+#: src/views/certificate/components/RemoveCert.vue:161
+msgid ""
+"They are kept when the Nginx configuration of the node still loads them."
+msgstr ""
+
 msgid ""
 "This operation will only remove the certificate from the database. The "
 "certificate files on the file system will not be deleted."
@@ -4683,13 +5538,16 @@ msgstr ""
 msgid "Renew successfully"
 msgstr ""
 
-msgid "AutoCert is running, please wait..."
+msgid "Renew"
 msgstr ""
 
 msgid "Renew Certificate"
 msgstr ""
 
-msgid "Renew"
+msgid "AutoCert is running, please wait..."
+msgstr ""
+
+msgid "Renew now"
 msgstr ""
 
 msgid "Certificate issued successfully"
@@ -4707,30 +5565,34 @@ msgstr ""
 msgid "Enter certificate name"
 msgstr ""
 
-msgid "Domains"
-msgstr ""
-
-msgid "IP Addresses"
-msgstr ""
-
 msgid "Enter IP address"
 msgstr ""
 
 msgid "Add IP Address"
 msgstr ""
 
-msgid "Valid For (days)"
+msgid "Some browsers reject TLS certificates valid for more than 398 days."
 msgstr ""
 
-msgid "Some browsers reject TLS certificates valid for more than 398 days."
+msgid "Sync to"
 msgstr ""
 
 msgid "Generate Self-signed Certificate"
 msgstr ""
 
-msgid ""
-"This self-signed certificate is managed by Nginx UI and renewed "
-"automatically."
+msgid "No certificate is bound to this target"
+msgstr ""
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr ""
+
+msgid "Deployed %{ok} certificates"
+msgstr ""
+
+msgid "Configuration"
+msgstr ""
+
+msgid "History"
 msgstr ""
 
 msgid "View all issued and imported certificates with expiration and status."
@@ -4739,13 +5601,15 @@ msgstr ""
 msgid "Manage ACME accounts for automated certificate issuance and renewal."
 msgstr ""
 
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
+msgstr ""
+
 msgid "Import an existing certificate and key pair into the certificate store."
 msgstr ""
 
 msgid "Format successfully"
-msgstr ""
-
-msgid "History"
 msgstr ""
 
 msgid "Format Code"
@@ -4803,9 +5667,6 @@ msgid "file"
 msgstr ""
 
 msgid "Folder"
-msgstr ""
-
-msgid "File"
 msgstr ""
 
 msgid "Type %{delete} to confirm"
@@ -4916,9 +5777,6 @@ msgid "GZIP Compression"
 msgstr ""
 
 msgid "Enable compression for content transfer"
-msgstr ""
-
-msgid "On"
 msgstr ""
 
 msgid "GZIP Min Length"
@@ -5218,6 +6076,12 @@ msgstr ""
 msgid "Paused"
 msgstr ""
 
+msgid "Built-in HTTP / gRPC check"
+msgstr ""
+
+msgid "%{kind} (unavailable)"
+msgstr ""
+
 msgid "Informational Responses (1xx)"
 msgstr ""
 
@@ -5264,6 +6128,14 @@ msgid "Health check is enabled"
 msgstr ""
 
 msgid "Health check is disabled"
+msgstr ""
+
+msgid "Check Method"
+msgstr ""
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
 msgstr ""
 
 msgid "Protocol"
@@ -5514,9 +6386,6 @@ msgstr ""
 msgid "CPU Status"
 msgstr ""
 
-msgid "Network"
-msgstr ""
-
 msgid "Disk IO"
 msgstr ""
 
@@ -5555,16 +6424,39 @@ msgid ""
 "record management in DNS Domains is not supported for this provider."
 msgstr ""
 
+msgid "%{method} (recommended)"
+msgstr ""
+
 msgid "DNS Provider"
 msgstr ""
 
-msgid "API Document"
+msgid "%{provider} API docs"
 msgstr ""
 
-msgid "SDK"
+msgid "Sign-in method"
 msgstr ""
 
-msgid "Additional"
+msgid "Nothing to fill in. The server uses its own credentials."
+msgstr ""
+
+msgid "Optional"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "%{count} changed"
+msgstr ""
+
+msgid "All default"
+msgstr ""
+
+msgid "sec"
+msgstr ""
+
+msgid ""
+"Please fill in the API authentication credentials provided by your DNS "
+"provider."
 msgstr ""
 
 msgid "Host, e.g. @ or www"
@@ -5636,6 +6528,9 @@ msgid ""
 "in DNS."
 msgstr ""
 
+msgid "Credential"
+msgstr ""
+
 msgid "Provider"
 msgstr ""
 
@@ -5646,9 +6541,6 @@ msgid "Targets"
 msgstr ""
 
 msgid "Last run"
-msgstr ""
-
-msgid "Not run yet"
 msgstr ""
 
 msgid "DDNS saved"
@@ -5708,22 +6600,7 @@ msgstr ""
 msgid "Interval (seconds)"
 msgstr ""
 
-msgid "Name cannot be empty"
-msgstr ""
-
-msgid "Please select DNS provider"
-msgstr ""
-
 msgid "DNS Credentials"
-msgstr ""
-
-msgid ""
-"Please fill in the API authentication credentials provided by your DNS "
-"provider."
-msgstr ""
-
-msgid ""
-"Please note that the unit of time configurations below are all in seconds."
 msgstr ""
 
 msgid "Modify DNS Credential"
@@ -5848,9 +6725,6 @@ msgid "Names"
 msgstr ""
 
 msgid "Coverage"
-msgstr ""
-
-msgid "Details"
 msgstr ""
 
 msgid "Result"
@@ -6072,9 +6946,6 @@ msgstr ""
 msgid "Create Record"
 msgstr ""
 
-msgid "Unknown error"
-msgstr ""
-
 msgid "Manage DNS zones and records for domains under your account."
 msgstr ""
 
@@ -6117,7 +6988,7 @@ msgstr ""
 msgid "View server, Nginx, and site-level performance metrics."
 msgstr ""
 
-msgid "Inspect access and error logs with structured analysis tools."
+msgid "Browse and follow the access and error logs of your sites."
 msgstr ""
 
 msgid "Track system events and message delivery status."
@@ -6241,343 +7112,21 @@ msgstr ""
 msgid "This namespace has no sync node"
 msgstr ""
 
-msgid "CPU"
-msgstr ""
-
-msgid "1 core minimum"
-msgstr ""
-
-msgid "2+ cores recommended"
-msgstr ""
-
-msgid "1GB RAM minimum"
-msgstr ""
-
-msgid "4GB+ RAM recommended"
-msgstr ""
-
-msgid "At least 20GB available disk space"
-msgstr ""
-
-msgid "SSD storage for better I/O performance"
-msgstr ""
-
-msgid "Production Pipeline"
-msgstr ""
-
-msgid "Complete indexing with search capabilities"
-msgstr ""
-
-msgid "Parser Performance"
-msgstr ""
-
-msgid "SIMD-optimized stream processing"
-msgstr ""
-
-msgid "Memory Design"
-msgstr ""
-
-msgid "Advanced memory pooling system"
-msgstr ""
-
-msgid "Enable Advanced Log Indexing"
-msgstr ""
-
-msgid "Enable Indexing"
-msgstr ""
-
-msgid "Resource Usage Warning"
-msgstr ""
-
-msgid ""
-"Enabling advanced log indexing will consume significant computational "
-"resources including CPU and memory. Please ensure your system meets the "
-"minimum requirements before proceeding."
-msgstr ""
-
-msgid "System Requirements"
-msgstr ""
-
-msgid "Minimum:"
-msgstr ""
-
-msgid "Recommended:"
-msgstr ""
-
-msgid ""
-"* Index files are stored in the \"log-index\" directory within your Nginx UI "
-"config path by default."
-msgstr ""
-
-msgid ""
-"If you want to change the storage location, you can set the `IndexPath` of "
-"`nginx_log` section in the Nginx UI config."
-msgstr ""
-
-msgid "GeoLite2 Database"
-msgstr ""
-
-msgid "Expected Performance"
-msgstr ""
-
-msgid ""
-"* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. "
-"Actual performance may vary based on your hardware configuration."
-msgstr ""
-
-msgid "Features"
-msgstr ""
-
-msgid "Zero-allocation pipeline"
-msgstr ""
-
-msgid "Dynamic shard management"
-msgstr ""
-
-msgid "Advanced search & filtering"
-msgstr ""
-
-msgid "Real-time analytics dashboard"
-msgstr ""
-
-msgid "Offline GeoIP analysis"
-msgstr ""
-
-msgid "Incremental index scanning"
-msgstr ""
-
-msgid "Full-text search support"
-msgstr ""
-
-msgid "Automated log rotation detection"
-msgstr ""
-
-msgid "Cross-file timeline correlation"
-msgstr ""
-
-msgid "Compressed log file support"
-msgstr ""
-
-msgid "Error pattern recognition"
-msgstr ""
-
-msgid "Multi-dimensional data visualization"
-msgstr ""
-
-msgid "Open Source Limitation"
-msgstr ""
-
-msgid "Advanced log indexing features are free and open source for all users"
-msgstr ""
-
-msgid "We do not accept any feature requests"
-msgstr ""
-
-msgid "For commercial or professional use, contact"
-msgstr ""
-
-msgid "Confirmation Required"
-msgstr ""
-
-msgid ""
-"By enabling advanced indexing, you acknowledge that your system meets the "
-"requirements and understand the performance implications. This will start "
-"indexing existing log files immediately."
-msgstr ""
-
-msgid "Indexing logs..."
-msgstr ""
-
-msgid "Queued for indexing..."
-msgstr ""
-
-msgid "Index failed, please try rebuilding"
-msgstr ""
-
-msgid "Log file not indexed yet"
-msgstr ""
-
-msgid "Browser"
-msgstr ""
-
-msgid "Count"
-msgstr ""
-
-msgid "Browser Statistics"
-msgstr ""
-
-msgid "Failed to load China map data"
-msgstr ""
-
-msgid "Failed to load city map data"
-msgstr ""
-
-msgid "Province / Region"
-msgstr ""
-
-msgid "City / C1 / C2 / C3 / C4"
-msgstr ""
-
-msgid "City"
-msgstr ""
-
-msgid "Top 10 Provinces / Regions"
-msgstr ""
-
-msgid "Top 10 City Labels (City + C1 + C2 + C3 + C4)"
-msgstr ""
-
-msgid "Top 10 Cities"
-msgstr ""
-
-msgid "China Access Map"
-msgstr ""
-
-msgid "No China geographic data available"
-msgstr ""
-
-msgid "Daily Access Trends"
-msgstr ""
-
-msgid "Date"
-msgstr ""
-
-msgid "Last 7 days"
-msgstr ""
-
-msgid "Last 14 days"
-msgstr ""
-
-msgid "Last 30 days"
-msgstr ""
-
-msgid "Last 90 days"
-msgstr ""
-
-msgid "This month"
-msgstr ""
-
-msgid "Last month"
-msgstr ""
-
-msgid "Date Range"
-msgstr ""
-
-msgid "Quick Select"
-msgstr ""
-
-msgid "Start Date"
-msgstr ""
-
-msgid "End Date"
-msgstr ""
-
-msgid "Device Type"
-msgstr ""
-
-msgid "Device Statistics"
-msgstr ""
-
-msgid "Global Map"
-msgstr ""
-
-msgid "China Map"
-msgstr ""
-
-msgid "Global Access Map"
-msgstr ""
-
-msgid "24-Hour UV/PV Statistics"
-msgstr ""
-
-msgid "Operating System"
-msgstr ""
-
-msgid "Operating System Statistics"
-msgstr ""
-
-msgid "Total PV"
-msgstr ""
-
-msgid "Total UV"
-msgstr ""
-
-msgid "Total Traffic"
-msgstr ""
-
-msgid "Peak Hour"
-msgstr ""
-
-msgid "Avg QPS"
-msgstr ""
-
-msgid "Peak QPS"
-msgstr ""
-
-msgid "Avg Daily PV"
-msgstr ""
-
-msgid "Avg Daily UV"
-msgstr ""
-
-msgid "URL"
-msgstr ""
-
-msgid "TOP 10 URLs"
-msgstr ""
-
-msgid "Country / Region"
-msgstr ""
-
-msgid "No geographic data available"
-msgstr ""
-
-msgid "Top 10 Countries / Regions"
-msgstr ""
-
-msgid ""
-"Explore access traffic logs with filters and detailed request information."
+msgid "Read access logs page by page or follow them as they arrive."
 msgstr ""
 
 msgid "Inspect error events and troubleshoot issues from Nginx error output."
 msgstr ""
 
-msgid "Manage indexed log files and jump into structured analysis workflows."
-msgstr ""
-
-msgid "Scanning"
-msgstr ""
-
-msgid "Indexing"
-msgstr ""
-
-msgid "Computing Statistics"
-msgstr ""
-
-msgid "Rebuild Index"
+msgid "See every log file Nginx writes and open one to read it."
 msgstr ""
 
 msgid ""
-"This will rebuild the entire log index. All existing index data will be "
-"deleted and rebuilt from scratch. This may take some time. Continue?"
+"Advanced Indexing is now provided by the Log Analytics plugin. Install the "
+"plugin to continue using it. Existing indexes are kept."
 msgstr ""
 
-msgid "Index and statistics rebuild started successfully"
-msgstr ""
-
-msgid "Rebuild File Index"
-msgstr ""
-
-msgid "This will rebuild the index data for this specific file: %{path}"
-msgstr ""
-
-msgid "File index rebuild started successfully for %{path}"
-msgstr ""
-
-msgid "Rebuild All Index"
-msgstr ""
-
-msgid "Structured"
+msgid "Go to install"
 msgstr ""
 
 msgid "Raw"
@@ -6589,229 +7138,10 @@ msgstr ""
 msgid "Auto Refresh"
 msgstr ""
 
-msgid "Index Status"
-msgstr ""
-
-msgid "Indexed"
-msgstr ""
-
-msgid "Index failed"
-msgstr ""
-
-msgid "Queued"
-msgstr ""
-
-msgid "Not Indexed"
-msgstr ""
-
-msgid "Last Indexed"
-msgstr ""
-
-msgid "Document Count"
-msgstr ""
-
-msgid "Time Range"
-msgstr ""
-
-msgid "Advanced indexing enabled successfully"
-msgstr ""
-
-msgid "Index rebuild initiated"
-msgstr ""
-
-msgid "Advanced indexing enabled but failed to start rebuild"
-msgstr ""
-
-msgid "Failed to enable advanced indexing"
-msgstr ""
-
-msgid "Disable Advanced Indexing"
-msgstr ""
-
-msgid ""
-"Advanced log indexing will stop and structured log analytics will be "
-"unavailable. Existing index files will not be deleted. Continue?"
-msgstr ""
-
-msgid "Disable"
-msgstr ""
-
-msgid "Advanced indexing disabled successfully"
-msgstr ""
-
-msgid "Failed to disable advanced indexing"
-msgstr ""
-
-msgid "Enable Advanced Indexing"
-msgstr ""
-
-msgid "Rebuild"
-msgstr ""
-
 msgid "Filter"
 msgstr ""
 
 msgid "Filter log content"
-msgstr ""
-
-msgid "Search Filters"
-msgstr ""
-
-msgid "Full Text Search"
-msgstr ""
-
-msgid "Search in log content..."
-msgstr ""
-
-msgid "Method"
-msgstr ""
-
-msgid "Any"
-msgstr ""
-
-msgid "Type or select status codes"
-msgstr ""
-
-msgid "Request Path"
-msgstr ""
-
-msgid "Type or select browser"
-msgstr ""
-
-msgid "OS"
-msgstr ""
-
-msgid "Type or select OS"
-msgstr ""
-
-msgid "Device"
-msgstr ""
-
-msgid "Type or select device"
-msgstr ""
-
-msgid "Referer"
-msgstr ""
-
-msgid "https://..."
-msgstr ""
-
-msgid "Mozilla/5.0..."
-msgstr ""
-
-msgid "Time"
-msgstr ""
-
-msgid "IP"
-msgstr ""
-
-msgid "Request"
-msgstr ""
-
-msgid "Last 15 minutes"
-msgstr ""
-
-msgid "Last 30 minutes"
-msgstr ""
-
-msgid "Last hour"
-msgstr ""
-
-msgid "Last 4 hours"
-msgstr ""
-
-msgid "Last 12 hours"
-msgstr ""
-
-msgid "Last 24 hours"
-msgstr ""
-
-msgid "No logs found in the selected time range."
-msgstr ""
-
-msgid ""
-"Background indexing in progress. Data will be updated automatically when "
-"ready."
-msgstr ""
-
-msgid "Log indexing completed! Loading updated data..."
-msgstr ""
-
-msgid "Error Log Detected"
-msgstr ""
-
-msgid ""
-"Error logs do not support structured analysis as they contain free-form text "
-"messages."
-msgstr ""
-
-msgid ""
-"For error logs, please use the Raw Log Viewer for better viewing experience."
-msgstr ""
-
-msgid "Go to Raw Log Viewer"
-msgstr ""
-
-msgid "Sorted by"
-msgstr ""
-
-msgid "Ascending"
-msgstr ""
-
-msgid "Descending"
-msgstr ""
-
-msgid "Total Entries"
-msgstr ""
-
-msgid "PV"
-msgstr ""
-
-msgid "UV"
-msgstr ""
-
-msgid ""
-"The result set is too large to sum exactly, this value is extrapolated from "
-"a sample"
-msgstr ""
-
-msgid "Traffic"
-msgstr ""
-
-msgid "Unique Pages"
-msgstr ""
-
-msgid "Avg/PV"
-msgstr ""
-
-msgid "%{start}-%{end} of %{total} items"
-msgstr ""
-
-msgid "No entries in current page"
-msgstr ""
-
-msgid "Try adjusting your search criteria or navigate to different pages."
-msgstr ""
-
-msgid "No structured log data available"
-msgstr ""
-
-msgid "Try adjusting your search criteria or time range."
-msgstr ""
-
-msgid "Search range"
-msgstr ""
-
-msgid "From indexed logs"
-msgstr ""
-
-msgid "Default range"
-msgstr ""
-
-msgid "Reset Search"
-msgstr ""
-
-msgid "Log file not available"
 msgstr ""
 
 msgid "Stable"
@@ -7002,9 +7332,6 @@ msgstr ""
 msgid "Automatic retry after"
 msgstr ""
 
-msgid "Attempts"
-msgstr ""
-
 msgid "Technical details"
 msgstr ""
 
@@ -7041,6 +7368,9 @@ msgstr ""
 msgid "Node connection failed"
 msgstr ""
 
+msgid "URL"
+msgstr ""
+
 msgid "Node Secret"
 msgstr ""
 
@@ -7051,6 +7381,15 @@ msgid "Version"
 msgstr ""
 
 msgid "Authentication"
+msgstr ""
+
+msgid "Accept plugin sync"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Opted out"
 msgstr ""
 
 msgid "The selected content will be pushed to: %{nodes}"
@@ -7163,8 +7502,7 @@ msgstr ""
 msgid "Github Proxy"
 msgstr ""
 
-msgid ""
-"Used for downloads from GitHub, such as upgrades and the GeoLite database."
+msgid "Used for downloads from GitHub, such as upgrades."
 msgstr ""
 
 msgid "HTTP Proxy"
@@ -7237,12 +7575,87 @@ msgid ""
 "this value."
 msgstr ""
 
-msgid "Recursive Nameservers"
+msgid "Plugin System"
+msgstr ""
+
+msgid "Turning it off stops every plugin and hides the plugin pages."
+msgstr ""
+
+msgid "Plugin Directory"
+msgstr ""
+
+msgid "Default Sync Policy"
 msgstr ""
 
 msgid ""
-"Set the recursive nameservers to override the systems nameservers for the "
-"step of DNS challenge."
+"Applied to newly installed plugins. Automatic keeps the plugin installed on "
+"the child nodes."
+msgstr ""
+
+msgid "Enable Marketplace"
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid "Managed on the marketplace page. The official catalog is always used."
+msgstr ""
+
+msgid "Allow Community Plugins"
+msgstr ""
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr ""
+
+msgid "Automatic Updates"
+msgstr ""
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr ""
+
+msgid "Allow Uploads"
+msgstr ""
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr ""
+
+msgid "Trusted Publishers"
+msgstr ""
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr ""
+
+msgid "Memory Limit"
+msgstr ""
+
+msgid "Maximum memory each plugin can use."
+msgstr ""
+
+msgid "CPU Limit"
+msgstr ""
+
+msgid "Share of one CPU core each plugin can use."
+msgstr ""
+
+msgid "Allow Insecure Download URLs"
+msgstr ""
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr ""
+
+msgid "Developer Mode"
+msgstr ""
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
 msgstr ""
 
 msgid "Stub Status Port"
@@ -7390,25 +7803,6 @@ msgid "Command"
 msgstr ""
 
 msgid "Minutes between two runs."
-msgstr ""
-
-msgid ""
-"The GeoLite2 database provides geographic information for IP addresses. This "
-"is used for offline geographic analysis in log analytics."
-msgstr ""
-
-msgid "Custom MMDB"
-msgstr ""
-
-msgid "A custom database replaces the GeoLite2 download."
-msgstr ""
-
-msgid "Map Boundary Directory"
-msgstr ""
-
-msgid ""
-"Keep files with names like 100000_full.json in this directory. Only the "
-"world map is provided by default."
 msgstr ""
 
 msgid "Register passkey successfully"
@@ -7654,6 +8048,9 @@ msgstr ""
 msgid "Test message sent successfully"
 msgstr ""
 
+msgid "Send test message"
+msgstr ""
+
 msgid "Microsoft Docs"
 msgstr ""
 
@@ -7661,9 +8058,6 @@ msgid "Teams Request Example"
 msgstr ""
 
 msgid "Available placeholders"
-msgstr ""
-
-msgid "Send test message"
 msgstr ""
 
 msgid "Gotify"
@@ -7685,9 +8079,6 @@ msgid "Chat ID"
 msgstr ""
 
 msgid "Click URL"
-msgstr ""
-
-msgid "Client ID"
 msgstr ""
 
 msgid "Client Secret"
@@ -7727,9 +8118,6 @@ msgid "Server URL"
 msgstr ""
 
 msgid "Tags"
-msgstr ""
-
-msgid "Tenant ID"
 msgstr ""
 
 msgid "To"
@@ -7999,6 +8387,9 @@ msgid "Detected:"
 msgstr ""
 
 msgid "Restore detected value"
+msgstr ""
+
+msgid "This field is required"
 msgstr ""
 
 msgid ""
@@ -8685,6 +9076,37 @@ msgstr ""
 msgid "No matching settings"
 msgstr ""
 
+msgid ""
+"This is not a valid public key. Paste the whole key the publisher gave you."
+msgstr ""
+
+msgid "This publisher is already in the list."
+msgstr ""
+
+msgid "No publishers yet."
+msgstr ""
+
+msgid "Unnamed publisher"
+msgstr ""
+
+msgid "Not a valid public key"
+msgstr ""
+
+msgid "Are you sure you want to remove this item?"
+msgstr ""
+
+msgid "Add publisher"
+msgstr ""
+
+msgid "Shown in this list only"
+msgstr ""
+
+msgid "Public Key"
+msgstr ""
+
+msgid "Paste the public key the publisher gave you"
+msgstr ""
+
 msgid "Check the format of the API Base Url and API Proxy."
 msgstr ""
 
@@ -8719,6 +9141,9 @@ msgid "Unable to open SSH setup"
 msgstr ""
 
 msgid "Basics"
+msgstr ""
+
+msgid "Features"
 msgstr ""
 
 msgctxt "preference group"
@@ -8772,6 +9197,13 @@ msgid ""
 "Paths, commands, maintenance page and control mode of the managed Nginx."
 msgstr ""
 
+msgid ""
+"Plugin system, marketplace, packages and resource limits of plugin processes."
+msgstr ""
+
+msgid "Go to plugins"
+msgstr ""
+
 msgid "LLM"
 msgstr ""
 
@@ -8800,15 +9232,6 @@ msgid "Logrotate"
 msgstr ""
 
 msgid "Scheduled rotation of Nginx log files."
-msgstr ""
-
-msgid "GeoLite"
-msgstr ""
-
-msgid "Geographic database and map files used by log analytics."
-msgstr ""
-
-msgid "Go to logs"
 msgstr ""
 
 msgid "Invalid settings: %{fields}"
@@ -8928,6 +9351,9 @@ msgstr ""
 msgid "General"
 msgstr ""
 
+msgid "IP"
+msgstr ""
+
 msgid "Banned Until"
 msgstr ""
 
@@ -8945,9 +9371,6 @@ msgstr ""
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr ""
 
-msgid "Issuing"
-msgstr ""
-
 msgid "The url is invalid"
 msgstr ""
 
@@ -8957,30 +9380,10 @@ msgstr ""
 msgid "Days"
 msgstr ""
 
-msgid "DNS Challenge"
-msgstr ""
-
-msgid "Are you sure you want to remove this item?"
-msgstr ""
-
 msgid "This notification is disabled"
 msgstr ""
 
 msgid "Failed to send test message"
-msgstr ""
-
-msgid "Database"
-msgstr ""
-
-msgid "Maps"
-msgstr ""
-
-msgid ""
-"Please download China and province boundary files yourself and place them in "
-"this directory."
-msgstr ""
-
-msgid "Template reference"
 msgstr ""
 
 msgid ""
@@ -9182,6 +9585,34 @@ msgstr ""
 msgid "Advanced"
 msgstr ""
 
+msgid "Marketplace"
+msgstr ""
+
+msgid "Official catalog"
+msgstr ""
+
+msgid "Packages"
+msgstr ""
+
+msgid "Resources"
+msgstr ""
+
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr ""
+
+msgid "Only applies on Linux. This system does not support it."
+msgstr ""
+
+msgid "Unlimited"
+msgstr ""
+
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr ""
+
+msgid "Less safe"
+msgstr ""
+
 msgid "Listen Address"
 msgstr ""
 
@@ -9189,9 +9620,6 @@ msgid "All interfaces"
 msgstr ""
 
 msgid "HTTPS"
-msgstr ""
-
-msgid "Certificate"
 msgstr ""
 
 msgid "Pick the certificate that secures the web interface."
@@ -9205,6 +9633,59 @@ msgstr ""
 msgid ""
 "Protocol configuration only takes effect when directly connecting. If using "
 "reverse proxy, please configure the protocol separately in the reverse proxy."
+msgstr ""
+
+msgid "Refreshed"
+msgstr ""
+
+msgid "Refresh failed"
+msgstr ""
+
+msgid "Source Type"
+msgstr ""
+
+msgid "Refresh Interval"
+msgstr ""
+
+msgid "Entries"
+msgstr ""
+
+msgid "Last Result"
+msgstr ""
+
+msgid "Include"
+msgstr ""
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+
+msgid "Refresh Now"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+
+msgid "Select a source type"
+msgstr ""
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr ""
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr ""
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
 msgstr ""
 
 msgid "End time must be later than start time"
@@ -9555,10 +10036,10 @@ msgstr ""
 msgid "Search templates"
 msgstr ""
 
-msgid "Snippet"
+msgid "From plugin %{id}"
 msgstr ""
 
-msgid "Author"
+msgid "Snippet"
 msgstr ""
 
 msgid ""
@@ -9566,10 +10047,12 @@ msgid ""
 "snippet apply to it. Insert copies the content into the site instead."
 msgstr ""
 
-msgid "Insert"
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
 msgstr ""
 
-msgid "Include"
+msgid "Insert"
 msgstr ""
 
 msgid "Do you want to enable TLS?"
@@ -9648,6 +10131,10 @@ msgstr ""
 msgid "Wildcard domains require DNS-01 validation."
 msgstr ""
 
+#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:446
+msgid "Issue the certificate on the main node"
+msgstr ""
+
 msgid "Plan the configuration changes"
 msgstr ""
 
@@ -9676,13 +10163,16 @@ msgstr ""
 msgid "HTTPS setup failed"
 msgstr ""
 
-msgid "Certificate options"
+msgid "Log"
 msgstr ""
 
 msgid ""
 "Nginx UI stages the challenge route, verifies it, requests the certificate "
 "and switches the site to HTTPS in one run. If a step fails, the site keeps "
 "serving plain HTTP."
+msgstr ""
+
+msgid "Method"
 msgstr ""
 
 msgid "Add at least one domain or IP address."
@@ -9712,6 +10202,21 @@ msgstr ""
 msgid ""
 "The HTTPS server block without a certificate is left out until the "
 "certificate is issued, then enabled with it."
+msgstr ""
+
+msgid ""
+"OCSP Must Staple may cause errors for some users on first access using "
+"Firefox."
+msgstr ""
+
+msgid ""
+"Enable the certificate Common Name field for private CAs that still require "
+"it."
+msgstr ""
+
+msgid ""
+"If you want to automatically revoke the old certificate, please enable this "
+"option."
 msgstr ""
 
 msgid "Pre-flight check"
@@ -9746,6 +10251,12 @@ msgid "Issue and enable HTTPS"
 msgstr ""
 
 msgid "Continue without HTTPS"
+msgstr ""
+
+#: src/views/site/site_edit/components/HTTPS/useHTTPSOnboarding.ts:206
+msgid ""
+"The node did not confirm that it received the certificate. Update Nginx UI "
+"on the node and try again."
 msgstr ""
 
 msgid "Configuration saved. Enable HTTPS from the HTTPS card."
@@ -9862,14 +10373,6 @@ msgstr ""
 msgid "Delete site: %{site_name}"
 msgstr ""
 
-msgid "No valid access log path found for this site"
-msgstr ""
-
-msgid ""
-"This site uses the default access log, which may contain traffic from other "
-"sites"
-msgstr ""
-
 msgid "Sites enabled successfully"
 msgstr ""
 
@@ -9909,7 +10412,7 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
-msgid "Analytics"
+msgid "Disable"
 msgstr ""
 
 msgid "Set maintenance information for selected sites"
@@ -9928,6 +10431,11 @@ msgid "Updates as the snippet changes."
 msgstr ""
 
 msgid ""
+"This template comes from the plugin %{id} and cannot be changed. Copy it as "
+"a snippet to change it, and review its directives before using it."
+msgstr ""
+
+msgid ""
 "Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
 "snippet to change it."
 msgstr ""
@@ -9939,9 +10447,6 @@ msgid "Variables"
 msgstr ""
 
 msgid "Copy as Snippet"
-msgstr ""
-
-msgid "Template"
 msgstr ""
 
 msgid "No template matches the search"
@@ -10063,6 +10568,9 @@ msgid_plural "Included by %{count} files"
 msgstr[0] ""
 msgstr[1] ""
 
+msgid "No file matches the search"
+msgstr ""
+
 msgid "Not Used"
 msgstr ""
 
@@ -10110,6 +10618,12 @@ msgstr ""
 msgid "Insert Only"
 msgstr ""
 
+msgid ""
+"This snippet starts from a template of the plugin %{id}. Review its "
+"directives before saving it. Once saved, it is a snippet of your own and no "
+"longer follows the plugin."
+msgstr ""
+
 msgid "Use"
 msgstr ""
 
@@ -10142,7 +10656,7 @@ msgstr ""
 msgid "My Snippets"
 msgstr ""
 
-msgid "Built-in Templates"
+msgid "Templates"
 msgstr ""
 
 msgid "Copied %{include}"
@@ -10247,9 +10761,6 @@ msgstr ""
 msgid "Project Team"
 msgstr ""
 
-msgid "License"
-msgstr ""
-
 msgid "View Third-party Components"
 msgstr ""
 
@@ -10260,6 +10771,9 @@ msgid "Run built-in diagnostics to validate environment and service readiness."
 msgstr ""
 
 msgid "Check release updates and execute upgrade operations when available."
+msgstr ""
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
 msgstr ""
 
 msgid "Review third-party licenses and open source component attributions."
@@ -10286,6 +10800,784 @@ msgstr ""
 msgid "All Components"
 msgstr ""
 
+msgid "DNS credentials"
+msgstr ""
+
+msgid "Auto backup"
+msgstr ""
+
+msgid "Deploy targets"
+msgstr ""
+
+msgid "Beta"
+msgstr ""
+
+msgid ""
+"This is a beta release. Features may change, and some functions may not work "
+"as expected."
+msgstr ""
+
+msgid "This is a development release. It may be incomplete or unstable."
+msgstr ""
+
+msgid "This is a stable release."
+msgstr ""
+
+msgid "Development releases are received until a stable release is available."
+msgstr ""
+
+msgid "Beta releases are received until a stable release is available."
+msgstr ""
+
+msgid "Receive beta and stable releases."
+msgstr ""
+
+msgid "Receive all releases, including development releases."
+msgstr ""
+
+msgid "Receive stable releases only."
+msgstr ""
+
+msgid "Cannot be enabled together with %{names}"
+msgstr ""
+
+msgid ""
+"Enabling %{name} will disable %{others}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+
+msgid ""
+"Enabling this plugin will disable %{names}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+
+msgid "Only localhost addresses are accepted"
+msgstr ""
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr ""
+
+msgid "Development plugin URL"
+msgstr ""
+
+msgid ""
+"Address of a plugin.json served by a static server on this computer. Only "
+"localhost addresses are accepted. The plugin is loaded in addition to the "
+"installed ones."
+msgstr ""
+
+msgid "Needs attention"
+msgstr ""
+
+msgid "Updates available"
+msgstr ""
+
+msgid "Plugin disabled"
+msgstr ""
+
+msgid "Failed to disable the plugin"
+msgstr ""
+
+msgid "Disable %{name}?"
+msgstr ""
+
+msgid "Renewal resumes when you turn it back on."
+msgstr ""
+
+msgid "Enable %{name}?"
+msgstr ""
+
+msgid "Uninstall %{name}?"
+msgstr ""
+
+msgid ""
+"Its files, data and settings are removed from this node. Other nodes are not "
+"touched."
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Plugin uninstalled"
+msgstr ""
+
+msgid "Failed to uninstall the plugin"
+msgstr ""
+
+msgid "Search installed plugins"
+msgstr ""
+
+msgid "No plugins installed yet"
+msgstr ""
+
+msgid "Pick one from the marketplace or upload a bundle you built yourself."
+msgstr ""
+
+msgid "Browse marketplace"
+msgstr ""
+
+msgid "Install from file"
+msgstr ""
+
+msgid "No plugins match the current filter"
+msgstr ""
+
+#: src/views/system/plugins/InstalledPluginCard.vue:138
+msgid "Recommended memory: %{size}"
+msgstr ""
+
+msgid "This plugin cannot run on this node"
+msgstr ""
+
+msgid "Sync to nodes"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "This node only"
+msgstr ""
+
+msgid "All child nodes"
+msgstr ""
+
+msgid "Selected nodes"
+msgstr ""
+
+msgid "This plugin is not signed"
+msgstr ""
+
+msgid "This is a community plugin"
+msgstr ""
+
+msgid "Failed to read the plugin bundle"
+msgstr ""
+
+msgid "Failed to install the plugin"
+msgstr ""
+
+msgid "Plugin installed"
+msgstr ""
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+
+msgid "Some nodes could not be synchronized"
+msgstr ""
+
+msgid "Click or drag a plugin bundle here"
+msgstr ""
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr ""
+
+msgid "(replaces %{version})"
+msgstr ""
+
+msgid "Capabilities"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Recommended memory"
+msgstr ""
+
+msgid "Platforms"
+msgstr ""
+
+msgid "Any"
+msgstr ""
+
+msgid "This package has no build for this node (%{platform})"
+msgstr ""
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr ""
+
+msgid "Install the plugins below first"
+msgstr ""
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr ""
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+
+msgid "Enable after install"
+msgstr ""
+
+msgid "Also install to child nodes"
+msgstr ""
+
+msgid "Keep in sync automatically"
+msgstr ""
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+
+msgid "Already in sync"
+msgstr ""
+
+msgid "Failed to load the plugin list"
+msgstr ""
+
+msgid "Failed to load the plugin logs"
+msgstr ""
+
+msgid "Logs copied to clipboard"
+msgstr ""
+
+msgid "Failed to copy the logs"
+msgstr ""
+
+msgid "Follow new lines"
+msgstr ""
+
+msgid "No log output yet"
+msgstr ""
+
+msgid "All plugins"
+msgstr ""
+
+msgid "Updates"
+msgstr ""
+
+msgid "Every installed plugin is up to date"
+msgstr ""
+
+msgid "No plugins match your search"
+msgstr ""
+
+msgid "The catalog is empty"
+msgstr ""
+
+msgid "Failed to load the plugin marketplace"
+msgstr ""
+
+msgid "Reloading the catalog"
+msgstr ""
+
+msgid "Search the marketplace"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "All sources"
+msgstr ""
+
+msgid "%{count} installed plugin has a newer release."
+msgid_plural "%{count} installed plugins have a newer release."
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Show updates"
+msgstr ""
+
+msgid "The marketplace is unavailable"
+msgstr ""
+
+msgid "This version asks for access the installed version does not have"
+msgstr ""
+
+msgid "This update asks for access the installed version does not have"
+msgstr ""
+
+msgid "Install a previous version"
+msgstr ""
+
+msgid "Update plugin"
+msgstr ""
+
+msgid "Install this version"
+msgstr ""
+
+msgid "Downloading the package"
+msgstr ""
+
+msgid "Checking the package"
+msgstr ""
+
+msgid "Installing"
+msgstr ""
+
+msgid "%{phase}: %{plugin}"
+msgstr ""
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr ""
+
+msgid "No release available for this platform"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "This version is older than the installed version"
+msgstr ""
+
+msgid ""
+"Data created by the newer version may not be compatible with this version."
+msgstr ""
+
+msgid "No stable release of this plugin is available yet."
+msgstr ""
+
+msgid ""
+"Newer releases of this channel are received until a stable release is "
+"available."
+msgstr ""
+
+msgid "This is a commercial plugin, licensed by its vendor"
+msgstr ""
+
+msgid "New permissions: %{list}"
+msgstr ""
+
+msgid "New addresses it may reach: %{list}"
+msgstr ""
+
+msgid "It may now reach any address instead of a fixed list."
+msgstr ""
+
+msgid "No longer requested: %{list}"
+msgstr ""
+
+msgid "Addresses it no longer reaches: %{list}"
+msgstr ""
+
+msgid "This version asks for less access than the installed version"
+msgstr ""
+
+msgid "The plugins below are installed together with it"
+msgstr ""
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+
+msgid "Offered by %{source} instead of the official catalog."
+msgstr ""
+
+msgid "Installed %{version} is not this version"
+msgstr ""
+
+msgid "Installed: %{version}"
+msgstr ""
+
+msgid "Installed version"
+msgstr ""
+
+msgid "Failed to load the plugin details"
+msgstr ""
+
+msgid "Changes in this update"
+msgstr ""
+
+msgid "Versions"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "The source cannot be checked"
+msgstr ""
+
+msgid "New source"
+msgstr ""
+
+msgid "Checking"
+msgstr ""
+
+msgid "%{count} plugin"
+msgid_plural "%{count} plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Unavailable"
+msgstr ""
+
+msgid "Invalid address"
+msgstr ""
+
+msgid "Failed to load the marketplace sources"
+msgstr ""
+
+msgid "Correct the addresses marked as invalid before saving."
+msgstr ""
+
+msgid "Marketplace sources saved"
+msgstr ""
+
+msgid "Failed to save the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources"
+msgstr ""
+
+msgid ""
+"Catalogs are merged in order, and the first source that offers a plugin "
+"wins. The official catalog cannot be removed. Move a mirror above it to "
+"install from the mirror first."
+msgstr ""
+
+msgid "Drag to reorder"
+msgstr ""
+
+msgid "Enter a domain or a web address."
+msgstr ""
+
+msgid ""
+"Enter a domain such as plugins.example.com, or the full address of a catalog."
+msgstr ""
+
+msgid "Edit address"
+msgstr ""
+
+msgid "Add source"
+msgstr ""
+
+msgid ""
+"This version was not published by the official team or a partner. It may be "
+"a development build or a repackaged copy."
+msgstr ""
+
+msgid "Install the official version"
+msgstr ""
+
+msgid "Install the partner version"
+msgstr ""
+
+msgid "The marketplace has the official version %{version}."
+msgstr ""
+
+msgid "The marketplace has the partner version %{version}."
+msgstr ""
+
+msgid "This package is trusted less than the version already installed"
+msgstr ""
+
+msgid "Installed version: %{installed}. This package: %{package}."
+msgstr ""
+
+msgid ""
+"This server has %{system} of memory, below the %{recommended} recommended "
+"for this plugin. The plugin may run slowly or stop unexpectedly."
+msgstr ""
+
+msgid "Approve permissions"
+msgstr ""
+
+msgid "Approve and enable"
+msgstr ""
+
+msgid "%{name} needs your approval before it can run."
+msgstr ""
+
+msgid ""
+"This version asks for permissions your earlier approval did not cover, "
+"marked as new below. Approve only if you trust the author."
+msgstr ""
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+
+msgid "Overview"
+msgstr ""
+
+msgid "In sync"
+msgstr ""
+
+msgid "Outdated"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Unsupported platform"
+msgstr ""
+
+msgid "Unsupported"
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Failed to load the plugin matrix"
+msgstr ""
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr ""
+
+msgid "Failed to synchronize the plugin"
+msgstr ""
+
+msgid "Update to %{version}"
+msgstr ""
+
+msgid "Sync to this node"
+msgstr ""
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+
+msgid "All nodes"
+msgstr ""
+
+msgid "%{count} in sync"
+msgstr ""
+
+msgid "%{count} pending"
+msgstr ""
+
+msgid "%{count} failing"
+msgstr ""
+
+msgid "This instance has no child node"
+msgstr ""
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+
+msgid "Manage nodes"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr ""
+
+msgid "Sync to selected"
+msgstr ""
+
+msgid "Sync to all"
+msgstr ""
+
+msgid "Nothing to start"
+msgstr ""
+
+msgid "Starts when needed"
+msgstr ""
+
+msgid "Always running"
+msgstr ""
+
+msgid "API version"
+msgstr ""
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr ""
+
+msgid "Start mode"
+msgstr ""
+
+msgid "Saved"
+msgstr ""
+
+msgid "Failed to save"
+msgstr ""
+
+msgid "Streamed"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Dropped"
+msgstr ""
+
+msgid "Last error"
+msgstr ""
+
+msgid "This plugin needs your approval before it can run."
+msgstr ""
+
+msgid "Turn it on to review what it can access."
+msgstr ""
+
+msgid "Provides"
+msgstr ""
+
+msgid "Can access"
+msgstr ""
+
+msgid "%{n} more"
+msgstr ""
+
+msgid "No specific addresses listed"
+msgstr ""
+
+msgid "Nothing beyond its own features."
+msgstr ""
+
+msgid "In use"
+msgstr ""
+
+msgid "%{count} certificate renews through it:"
+msgid_plural "%{count} certificates renew through it:"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Update channel"
+msgstr ""
+
+msgid "The limits are applied while the plugin runs."
+msgstr ""
+
+msgid "The plugin is not running, or this node cannot apply limits."
+msgstr ""
+
+msgid "Enforced"
+msgstr ""
+
+msgid "Not enforced"
+msgstr ""
+
+msgid "Cluster"
+msgstr ""
+
+msgid "Auto install to nodes"
+msgstr ""
+
+msgid "Sync now"
+msgstr ""
+
+msgid "Version, API version, start mode, updated time"
+msgstr ""
+
+msgid "Depends on"
+msgstr ""
+
+msgid "Needs features"
+msgstr ""
+
+msgid "Access log stream"
+msgstr ""
+
+msgid "Uninstall this plugin"
+msgstr ""
+
+msgid "Its files, data and settings are removed from this node."
+msgstr ""
+
+msgid "Develop plugin"
+msgstr ""
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+
+msgid "Starting"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "Incompatible"
+msgstr ""
+
+msgid "Needs approval"
+msgstr ""
+
+msgid "Standby"
+msgstr ""
+
+msgid "Starts automatically when needed"
+msgstr ""
+
+msgid "Installed. Turn it on to review what it can access."
+msgstr ""
+
+msgid "Installed the version from the marketplace"
+msgstr ""
+
+msgid "Failed to install the version from the marketplace"
+msgstr ""
+
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
+msgstr ""
+
+msgid "%{field} is required"
+msgstr ""
+
+msgid "%{count} unsaved"
+msgid_plural "%{count} unsaved"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Failed to load the plugin settings"
+msgstr ""
+
+msgid "Plugin settings saved"
+msgstr ""
+
+msgid "Failed to save the plugin settings"
+msgstr ""
+
+msgid "This plugin has no settings."
+msgstr ""
+
+msgid "Sync %{name} to nodes"
+msgstr ""
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr ""
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Sync policy saved"
+msgstr ""
+
+msgid "Failed to save the sync policy"
+msgstr ""
+
+msgid "Automatic installation"
+msgstr ""
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+
+msgid "Also sync the plugin settings"
+msgstr ""
+
+#: src/views/system/plugins/inventory.ts:16
+msgid "Nodes: %{target}"
+msgstr ""
+
+msgctxt "list separator"
+msgid ", "
+msgstr ""
+
+msgid "and %{n} more"
+msgstr ""
+
+msgid ""
+"%{count} certificate renews through it and will not renew while it is off:"
+msgid_plural ""
+"%{count} certificates renew through it and will not renew while it is off:"
+msgstr[0] ""
+msgstr[1] ""
+
 msgid "Dev"
 msgstr ""
 
@@ -10299,6 +11591,9 @@ msgid "You can check Nginx UI upgrade at this page."
 msgstr ""
 
 msgid "Current Version"
+msgstr ""
+
+msgid "OS"
 msgstr ""
 
 msgid "Arch"
@@ -10338,6 +11633,54 @@ msgid ""
 "localhost domain. This may expose sensitive information."
 msgstr ""
 
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr ""
+
+msgid "Service"
+msgstr ""
+
+msgid "Servers"
+msgstr ""
+
+msgid "Service Discovery"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr ""
+
+msgid "Select a provider"
+msgstr ""
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr ""
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr ""
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr ""
+
+msgid "Extra Directives"
+msgstr ""
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr ""
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
+msgstr ""
+
 msgid "Round Robin (default)"
 msgstr ""
 
@@ -10372,9 +11715,6 @@ msgid "Hash Key"
 msgstr ""
 
 msgid "Consistent Hashing"
-msgstr ""
-
-msgid "Servers"
 msgstr ""
 
 msgid "Address"
@@ -10582,6 +11922,43 @@ msgstr ""
 msgid "Split view"
 msgstr ""
 
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid ""
+"Fixed after creation, so the sites that include the snippet keep working."
+msgstr ""
+
+msgid ""
+"This snippet has variables: %{names}. Insert it from the config template "
+"panel of the site editor, which fills them in; Nginx cannot include it "
+"directly."
+msgstr ""
+
+msgid "To use the snippet, add this directive to a server or location block:"
+msgstr ""
+
+msgid ""
+"Fill in the variables by inserting the snippet from the config template "
+"panel of the site editor."
+msgstr ""
+
+msgid "Certificate Relocated"
+msgstr ""
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load %"
+"{previous_path} to it"
+msgstr ""
+
+msgid "The path exists, but the file is not a certificate"
+msgstr ""
+
+msgid "The path exists, but the file is not a private key"
+msgstr ""
+
 msgid "Apply local MFA verification and enrollment requirements to OIDC and Casdoor sign-in."
 msgstr ""
 
@@ -10631,9 +12008,6 @@ msgid "MFA session expired. Please sign in again."
 msgstr ""
 
 msgid "MFA setup completed. Save your recovery codes before continuing."
-msgstr ""
-
-msgid "Optional"
 msgstr ""
 
 msgid "Pending enrollment"

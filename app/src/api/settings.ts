@@ -54,7 +54,6 @@ export interface CertSettings {
   email: string
   ca_dir: string
   renewal_interval: number
-  recursive_nameservers: string[]
   http_challenge_port: string
 }
 
@@ -147,8 +146,6 @@ export interface NginxControlSettings {
 export interface NginxLogSettings {
   indexing_enabled: boolean
   index_path: string
-  index_custom_mmdb: string
-  geo_map_path: string
 }
 
 export interface NodeSettings {
@@ -197,6 +194,29 @@ export interface OIDCSettings {
   identifier: string
 }
 
+export interface PluginSettings {
+  enabled: boolean
+  dir: string
+  default_sync_policy: string
+  marketplace_enabled: boolean
+  marketplace_sources: string[]
+  trusted_public_keys: string[]
+  allow_community_plugins: boolean
+  allow_insecure_download_url: boolean
+  allow_uploads: boolean
+  auto_update: boolean
+  /** Allows installing unsigned packages, off by default. */
+  developer_mode: boolean
+  /** Memory limit of every plugin process in MiB, 0 means unlimited. */
+  memory_limit_mb: number
+  /** CPU limit of every plugin process in percent of one core, 0 means unlimited. */
+  cpu_percent: number
+  /** cgroup v2 mount point the limits are enforced under, read only. */
+  cgroup_root: string
+  /** Whether the resource limits apply on this system, read only. */
+  resource_limits_supported?: boolean
+}
+
 export interface Settings {
   app: AppSettings
   server: ServerSettings
@@ -216,6 +236,8 @@ export interface Settings {
   webauthn: WebauthnSettings
   site_check: SiteCheckSettings
   upstream_check: UpstreamCheckSettings
+  /** Optional so a payload without it keeps the stored values. */
+  plugin?: PluginSettings
 }
 
 // Sections the server saves on their own through POST /settings/:section.
@@ -232,6 +254,7 @@ export const SAVABLE_SETTINGS_SECTIONS = [
   'oidc',
   'site_check',
   'upstream_check',
+  'plugin',
 ] as const satisfies readonly (keyof Settings)[]
 
 export type SavableSettingsSection = typeof SAVABLE_SETTINGS_SECTIONS[number]

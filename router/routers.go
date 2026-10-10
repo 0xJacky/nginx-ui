@@ -7,6 +7,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/analytic"
 	"github.com/0xJacky/Nginx-UI/api/audit"
 	"github.com/0xJacky/Nginx-UI/api/backup"
+	"github.com/0xJacky/Nginx-UI/api/blocklist"
+	"github.com/0xJacky/Nginx-UI/api/cert_deploy"
 	"github.com/0xJacky/Nginx-UI/api/certificate"
 	"github.com/0xJacky/Nginx-UI/api/cluster"
 	"github.com/0xJacky/Nginx-UI/api/config"
@@ -14,7 +16,6 @@ import (
 	dnsapi "github.com/0xJacky/Nginx-UI/api/dns"
 	"github.com/0xJacky/Nginx-UI/api/event"
 	"github.com/0xJacky/Nginx-UI/api/external_notify"
-	"github.com/0xJacky/Nginx-UI/api/geolite"
 	"github.com/0xJacky/Nginx-UI/api/host"
 	"github.com/0xJacky/Nginx-UI/api/license"
 	"github.com/0xJacky/Nginx-UI/api/llm"
@@ -22,6 +23,7 @@ import (
 	nginxLog "github.com/0xJacky/Nginx-UI/api/nginx_log"
 	"github.com/0xJacky/Nginx-UI/api/notification"
 	"github.com/0xJacky/Nginx-UI/api/pages"
+	pluginapi "github.com/0xJacky/Nginx-UI/api/plugin"
 	"github.com/0xJacky/Nginx-UI/api/public"
 	"github.com/0xJacky/Nginx-UI/api/settings"
 	"github.com/0xJacky/Nginx-UI/api/sites"
@@ -31,6 +33,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/api/template"
 	"github.com/0xJacky/Nginx-UI/api/terminal"
 	"github.com/0xJacky/Nginx-UI/api/upstream"
+	"github.com/0xJacky/Nginx-UI/api/upstream_discovery"
 	"github.com/0xJacky/Nginx-UI/api/user"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/mcp"
@@ -49,12 +52,20 @@ func InitRouter() {
 	r.Use(middleware.UnixPeerAddr())
 	r.Use(audit.LoggingMiddleware())
 
+	// Plugin packages are far larger than any other request body, see
+	// middleware.LargeUploads.
+	r.Use(middleware.ScopedBodyLimit())
+
 	if err := configureTrustedProxies(r); err != nil {
 		logger.Fatalf("Configure trusted proxies: %v", err)
 	}
 
 	// Add CORS middleware to allow all origins
 	r.Use(middleware.CORS())
+
+	// Registered before the embedded assets so the plugin routes skip the
+	// asset cache middleware and revalidate against their own files.
+	pluginapi.InitStaticRouter(r)
 
 	initEmbedRoute(r)
 
@@ -74,7 +85,6 @@ func InitRouter() {
 		crypto.InitPublicRouter(root)
 		user.InitAuthRouter(root)
 		license.InitRouter(root)
-		nginxLog.InitPublicRouter(root)
 
 		system.InitPublicRouter(root)
 		backup.InitRouter(root)
@@ -103,6 +113,10 @@ func InitRouter() {
 			llm.InitLocalWebSocketRouter(localWs)
 		}
 
+		// The plugin http route serves both plain requests and WebSocket
+		// upgrades, so it picks its own authentication and proxy chain.
+		pluginapi.InitHTTPRouter(root)
+
 		// Authorization required and not websocket request
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
 		{
@@ -119,6 +133,9 @@ func InitRouter() {
 			certificate.InitCertificateRouter(g)
 			certificate.InitDNSCredentialRouter(g)
 			certificate.InitAcmeUserRouter(g)
+			cert_deploy.InitRouter(g)
+			blocklist.InitRouter(g)
+			upstream_discovery.InitRouter(g)
 			dnsapi.InitRouter(g)
 			system.InitPrivateRouter(g)
 			settings.InitRouter(g)
@@ -127,11 +144,13 @@ func InitRouter() {
 			cluster.InitRouter(g)
 			host.InitRouter(g)
 			notification.InitRouter(g)
+			pluginapi.InitRouter(g)
+			pluginapi.InitSyncRouter(g)
+			pluginapi.InitMarketplaceRouter(g)
 			external_notify.InitRouter(g)
 			backup.InitAutoBackupRouter(g)
 			nginxLog.InitRouter(g)
 			upstream.InitHTTPRouter(g)
-			g.GET("/geolite/status", geolite.GetStatus)
 		}
 
 		// The terminal applies its own gates before proxying to a child node.
@@ -149,7 +168,6 @@ func InitRouter() {
 			system.InitWebSocketRouter(w)
 			nginx.InitWebSocketRouter(w)
 			cluster.InitWebSocketRouter(w)
-			w.GET("/geolite/download", geolite.DownloadGeoLiteDB)
 		}
 	}
 }

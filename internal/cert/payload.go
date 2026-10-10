@@ -6,6 +6,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
@@ -30,25 +31,26 @@ const maxCertificateDirNameLength = 255
 var errCertificateDirIsConfRoot = errors.New("certificate directory resolves to the nginx configuration directory")
 
 type ConfigPayload struct {
-	ConfigName                        string                     `json:"-"`
-	CertID                            uint64                     `json:"cert_id"`
-	ServerName                        []string                   `json:"server_name"`
-	ChallengeMethod                   string                     `json:"challenge_method"`
-	Profile                           string                     `json:"profile"`
-	DNSCredentialID                   uint64                     `json:"dns_credential_id"`
-	ACMEUserID                        uint64                     `json:"acme_user_id"`
-	KeyType                           certcrypto.KeyType         `json:"key_type"`
-	Resource                          *model.CertificateResource `json:"resource,omitempty"`
-	MustStaple                        bool                       `json:"must_staple"`
-	LegoDisableCNAMESupport           bool                       `json:"lego_disable_cname_support"`
-	DisableAuthoritativeNSPropagation bool                       `json:"disable_authoritative_ns_propagation"`
-	EnableCommonName                  bool                       `json:"enable_common_name"`
-	NotBefore                         time.Time                  `json:"-"`
-	CertificateDir                    string                     `json:"-"`
-	SSLCertificatePath                string                     `json:"-"`
-	SSLCertificateKeyPath             string                     `json:"-"`
-	RevokeOld                         bool                       `json:"revoke_old"`
-	ReplacesCertID                    string                     `json:"-"`
+	ConfigName      string                     `json:"-"`
+	CertID          uint64                     `json:"cert_id"`
+	ServerName      []string                   `json:"server_name"`
+	ChallengeMethod string                     `json:"challenge_method"`
+	Profile         string                     `json:"profile"`
+	DNSCredentialID uint64                     `json:"dns_credential_id"`
+	ACMEUserID      uint64                     `json:"acme_user_id"`
+	KeyType         certcrypto.KeyType         `json:"key_type"`
+	Resource        *model.CertificateResource `json:"resource,omitempty"`
+	MustStaple      bool                       `json:"must_staple"`
+	// ChallengeConfig carries challenge specific options that the core does
+	// not interpret.
+	ChallengeConfig       map[string]any `json:"challenge_config"`
+	EnableCommonName      bool           `json:"enable_common_name"`
+	NotBefore             time.Time      `json:"-"`
+	CertificateDir        string         `json:"-"`
+	SSLCertificatePath    string         `json:"-"`
+	SSLCertificateKeyPath string         `json:"-"`
+	RevokeOld             bool           `json:"revoke_old"`
+	ReplacesCertID        string         `json:"-"`
 }
 
 func (c *ConfigPayload) GetACMEUser() (user *model.AcmeUser, err error) {
@@ -288,4 +290,22 @@ func notifyCertificateRelocated(name, previousPath, currentPath string) {
 	notification.Warning("Certificate Relocated",
 		"Certificate %{name} is now stored in %{path}, point the sites that load %{previous_path} to it",
 		map[string]any{"name": name, "path": currentPath, "previous_path": previousPath})
+}
+
+// ChallengeConfigCredentialID names the credential the core resolved for the
+// challenge. Plugins may define more keys.
+const ChallengeConfigCredentialID = "credential_id"
+
+// EffectiveChallengeConfig returns a copy of ChallengeConfig with the resolved
+// DNS credential added when the map does not already name one. The result is a
+// copy, so callers may modify it freely.
+func (c *ConfigPayload) EffectiveChallengeConfig() map[string]any {
+	out := make(map[string]any, len(c.ChallengeConfig)+1)
+	for k, v := range c.ChallengeConfig {
+		out[k] = v
+	}
+	if _, ok := out[ChallengeConfigCredentialID]; !ok && c.DNSCredentialID != 0 {
+		out[ChallengeConfigCredentialID] = strconv.FormatUint(c.DNSCredentialID, 10)
+	}
+	return out
 }

@@ -28,15 +28,14 @@ func setupAutoCertTestDB(t *testing.T) *gorm.DB {
 func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 	db := setupAutoCertTestDB(t)
 	certModel := &model.Cert{
-		Name:                              "203.0.113.8",
-		Filename:                          "default.conf",
-		KeyType:                           certcrypto.RSA2048,
-		MustStaple:                        true,
-		LegoDisableCNAMESupport:           true,
-		DisableAuthoritativeNSPropagation: true,
-		EnableCommonName:                  true,
-		RevokeOld:                         true,
-		Profile:                           "shortlived",
+		Name:             "203.0.113.8",
+		Filename:         "default.conf",
+		KeyType:          certcrypto.RSA2048,
+		MustStaple:       true,
+		ChallengeConfig:  map[string]any{"disable_cname": true},
+		EnableCommonName: true,
+		RevokeOld:        true,
+		Profile:          "shortlived",
 	}
 	if err := db.Create(certModel).Error; err != nil {
 		t.Fatal(err)
@@ -71,11 +70,8 @@ func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 	if got.MustStaple {
 		t.Fatalf("MustStaple = true, want false")
 	}
-	if got.LegoDisableCNAMESupport {
-		t.Fatalf("LegoDisableCNAMESupport = true, want false")
-	}
-	if got.DisableAuthoritativeNSPropagation {
-		t.Fatalf("DisableAuthoritativeNSPropagation = true, want false")
+	if len(got.ChallengeConfig) != 0 {
+		t.Fatalf("ChallengeConfig = %#v, want cleared", got.ChallengeConfig)
 	}
 	if got.RevokeOld {
 		t.Fatalf("RevokeOld = true, want false")
@@ -94,7 +90,7 @@ func TestPersistAutoCertOptionsWritesCommonNameAndClearsBooleans(t *testing.T) {
 	}
 }
 
-func TestPersistAutoCertOptionsWritesAuthoritativePropagationOption(t *testing.T) {
+func TestPersistAutoCertOptionsWritesChallengeConfig(t *testing.T) {
 	db := setupAutoCertTestDB(t)
 	certModel := &model.Cert{
 		Name:     "example.com",
@@ -106,10 +102,14 @@ func TestPersistAutoCertOptionsWritesAuthoritativePropagationOption(t *testing.T
 	}
 
 	err := persistAutoCertOptions(certModel, "example.conf", autoCertRequest{
-		Domains:                           []string{"example.com"},
-		ChallengeMethod:                   model.CertChallengeMethodDNS01,
-		KeyType:                           certcrypto.EC256,
-		DisableAuthoritativeNSPropagation: true,
+		Domains:         []string{"example.com"},
+		ChallengeMethod: model.CertChallengeMethodDNS01,
+		KeyType:         certcrypto.EC256,
+		DnsCredentialID: 10,
+		ChallengeConfig: map[string]any{
+			"credential_id":                        "10",
+			"disable_authoritative_ns_propagation": true,
+		},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -119,7 +119,10 @@ func TestPersistAutoCertOptionsWritesAuthoritativePropagationOption(t *testing.T
 	if err := db.First(&got, certModel.ID).Error; err != nil {
 		t.Fatal(err)
 	}
-	if !got.DisableAuthoritativeNSPropagation {
-		t.Fatal("DisableAuthoritativeNSPropagation = false, want true")
+	if got.ChallengeConfig["credential_id"] != "10" {
+		t.Fatalf("ChallengeConfig[credential_id] = %#v, want \"10\"", got.ChallengeConfig["credential_id"])
+	}
+	if got.ChallengeConfig["disable_authoritative_ns_propagation"] != true {
+		t.Fatalf("ChallengeConfig = %#v, want the dns01 option persisted", got.ChallengeConfig)
 	}
 }

@@ -13,13 +13,13 @@ import {
   AuthSettings,
   CertSettings,
   ExternalNotify,
-  GeoLiteSettings,
   HealthCheckSettings,
   HTTPSettings,
   LogrotateSettings,
   NginxSettings,
   NodeSettings,
   OpenAISettings,
+  PluginSettings,
   ServerSettings,
   TerminalSettings,
 } from '@/views/preference/tabs'
@@ -42,12 +42,12 @@ const sectionComponents: Record<PreferenceSectionKey, Component> = {
   access_tokens: AccessTokens,
   cert: CertSettings,
   nginx: NginxSettings,
+  plugin: PluginSettings,
   openai: OpenAISettings,
   health_check: HealthCheckSettings,
   external_notify: ExternalNotify,
   terminal: TerminalSettings,
   logrotate: LogrotateSettings,
-  geolite: GeoLiteSettings,
 }
 
 const systemSettingsStore = useSystemSettingsStore()

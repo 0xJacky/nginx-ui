@@ -29,7 +29,15 @@ func InitRouter(r *gin.RouterGroup) {
 		BeforeModify(mutationMiddleware...).
 		BeforeDestroy(mutationMiddleware...).
 		BeforeRecover(mutationMiddleware...)
+	// Channels provided by plugins may reject a configuration before it is
+	// stored; the built-in ones are not checked here.
+	c.CreateHook(validateNotifierConfig)
+	c.ModifyHook(validateNotifierConfig)
 	c.InitRouter(r)
+
+	// Notifier types offered next to the built-in ones, with the schema of
+	// their configuration form.
+	r.GET("/external_notifies/channels", listChannels)
 
 	// Sending a test message posts to whatever endpoint the caller supplies.
 	r.POST(
@@ -39,6 +47,40 @@ func InitRouter(r *gin.RouterGroup) {
 		middleware.RejectInDemo(),
 		testMessage,
 	)
+}
+
+// listChannels returns the notifier types provided by plugins.
+func listChannels(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"data": notification.ExternalNotifierChannels(),
+	})
+}
+
+// validateNotifierConfig lets the source of a plugin notifier type check the
+// configuration when a record is created or its type or config changes.
+func validateNotifierConfig(ctx *cosy.Ctx[model.ExternalNotify]) {
+	ctx.BeforeExecuteHook(func(ctx *cosy.Ctx[model.ExternalNotify]) {
+		_, hasType := ctx.Payload["type"]
+		_, hasConfig := ctx.Payload["config"]
+		if !hasType && !hasConfig {
+			return
+		}
+
+		notifierType := ctx.Model.Type
+		if !hasType {
+			notifierType = ctx.OriginModel.Type
+		}
+		config := ctx.Model.Config
+		if !hasConfig {
+			config = ctx.OriginModel.Config
+		}
+
+		validateCtx, cancel := context.WithTimeout(ctx.RequestContext(), externalNotifyTestTimeout)
+		defer cancel()
+		if err := notification.ValidateExternalNotifierConfig(validateCtx, notifierType, config); err != nil {
+			ctx.AbortWithError(err)
+		}
+	})
 }
 
 // testMessage sends a test message with direct parameters

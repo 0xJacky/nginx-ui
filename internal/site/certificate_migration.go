@@ -73,7 +73,8 @@ func inspectCertificateDeployment(certModel *model.Cert) certificateInspection {
 	status.SiteName = certModel.Filename
 	status.ManagedCertificatePath = certModel.SSLCertificatePath
 	status.ManagedCertificateKeyPath = certModel.SSLCertificateKeyPath
-	if certModel.AutoCert != model.AutoCertEnabled || certModel.Filename == "" ||
+	// A certificate issued for another node serves a configuration there.
+	if certModel.IsDelegated() || certModel.AutoCert != model.AutoCertEnabled || certModel.Filename == "" ||
 		certModel.SSLCertificatePath == "" || certModel.SSLCertificateKeyPath == "" ||
 		certificateSiteIsRemoteDeploy(certModel.Filename) {
 		return certificateInspection{status: status}
