@@ -93,7 +93,7 @@ func setupExternalNotifyDB(t *testing.T) {
 	t.Cleanup(cache.Shutdown)
 
 	cosyModel.ClearCollection()
-	cosy.RegisterModels(model.ExternalNotify{})
+	cosy.RegisterModels(model.User{}, model.ExternalNotify{})
 	db := cosy.InitDB(sqlite.Open(filepath.Join(t.TempDir(), "external-notify.db")))
 	model.Use(db)
 	t.Cleanup(func() { model.Use(nil) })
@@ -106,6 +106,7 @@ func TestPluginNotifierConfigIsValidatedBeforeSaving(t *testing.T) {
 	setupExternalNotifyDB(t)
 
 	admin := &model.User{Model: model.Model{ID: 104}, Name: "admin", Status: true, OTPSecret: []byte("enabled")}
+	require.NoError(t, model.UseDB().Create(admin).Error)
 	session := internaluser.SetSecureSessionID(admin.ID)
 	router := newExternalNotifySecurityRouter(nil, nil, admin)
 	before := source.validations()

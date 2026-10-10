@@ -112,13 +112,14 @@ func newPluginStorageRouter(t *testing.T) (*gin.Engine, string) {
 	t.Cleanup(cache.Shutdown)
 
 	cosyModel.ClearCollection()
-	cosy.RegisterModels(model.AutoBackup{})
+	cosy.RegisterModels(model.User{}, model.AutoBackup{})
 	db := cosy.InitDB(sqlite.Open(filepath.Join(t.TempDir(), "auto-backup.db")))
 	model.Use(db)
 	t.Cleanup(func() { model.Use(nil) })
 	query.SetDefault(db)
 
 	admin := &model.User{Model: model.Model{ID: 301}, Name: "admin", Status: true, OTPSecret: []byte("enabled")}
+	require.NoError(t, model.UseDB().Create(admin).Error)
 	router := gin.New()
 	router.Use(func(c *gin.Context) {
 		c.Set("user", admin)

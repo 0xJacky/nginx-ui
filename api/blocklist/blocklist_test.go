@@ -92,7 +92,7 @@ func setup(t *testing.T) (*stubNginx, string) {
 	t.Cleanup(cache.Shutdown)
 
 	cosyModel.ClearCollection()
-	cosy.RegisterModels(model.BlocklistSource{})
+	cosy.RegisterModels(model.User{}, model.BlocklistSource{})
 	db := cosy.InitDB(sqlite.Open(filepath.Join(t.TempDir(), "blocklist.db")))
 	model.Use(db)
 	t.Cleanup(func() { model.Use(nil) })
@@ -138,6 +138,7 @@ func request(router http.Handler, method, path, body, session string) *httptest.
 func TestSourcesAreValidatedAndStoredEncrypted(t *testing.T) {
 	setup(t)
 	admin := &model.User{Model: model.Model{ID: 301}, Name: "admin", Status: true, OTPSecret: []byte("enabled")}
+	require.NoError(t, model.UseDB().Create(admin).Error)
 	session := internaluser.SetSecureSessionID(admin.ID)
 	router := newRouter(nil, admin)
 
@@ -202,6 +203,7 @@ func TestSourcesAreValidatedAndStoredEncrypted(t *testing.T) {
 func TestRefreshAndDelete(t *testing.T) {
 	stub, confDir := setup(t)
 	admin := &model.User{Model: model.Model{ID: 302}, Name: "admin", Status: true, OTPSecret: []byte("enabled")}
+	require.NoError(t, model.UseDB().Create(admin).Error)
 	session := internaluser.SetSecureSessionID(admin.ID)
 	router := newRouter(nil, admin)
 

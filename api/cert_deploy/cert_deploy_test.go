@@ -94,7 +94,7 @@ func setupDB(t *testing.T) {
 	t.Cleanup(cache.Shutdown)
 
 	cosyModel.ClearCollection()
-	cosy.RegisterModels(model.Cert{}, model.CertDeployTarget{}, model.CertDeployment{})
+	cosy.RegisterModels(model.User{}, model.Cert{}, model.CertDeployTarget{}, model.CertDeployment{})
 	db := cosy.InitDB(sqlite.Open(filepath.Join(t.TempDir(), "cert-deploy.db")))
 	model.Use(db)
 	t.Cleanup(func() { model.Use(nil) })
@@ -166,6 +166,7 @@ func TestTargetsAreValidatedAndStoredEncrypted(t *testing.T) {
 	certModel := createCert(t, "example.com")
 
 	admin := &model.User{Model: model.Model{ID: 201}, Name: "admin", Status: true, OTPSecret: []byte("enabled")}
+	require.NoError(t, model.UseDB().Create(admin).Error)
 	session := internaluser.SetSecureSessionID(admin.ID)
 	router := newRouter(nil, admin)
 
@@ -246,6 +247,7 @@ func TestDeployEndpoints(t *testing.T) {
 	require.NoError(t, query.CertDeployTarget.Create(up, down))
 
 	admin := &model.User{Model: model.Model{ID: 202}, Name: "admin", Status: true, OTPSecret: []byte("enabled")}
+	require.NoError(t, model.UseDB().Create(admin).Error)
 	session := internaluser.SetSecureSessionID(admin.ID)
 	router := newRouter(nil, admin)
 
