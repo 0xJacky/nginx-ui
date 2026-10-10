@@ -78,7 +78,7 @@ func setup(t *testing.T) (*stubNginx, string) {
 	t.Cleanup(cache.Shutdown)
 
 	cosyModel.ClearCollection()
-	cosy.RegisterModels(model.UpstreamDiscovery{})
+	cosy.RegisterModels(model.User{}, model.UpstreamDiscovery{})
 	db := cosy.InitDB(sqlite.Open(filepath.Join(t.TempDir(), "discovery.db")))
 	model.Use(db)
 	t.Cleanup(func() { model.Use(nil) })
@@ -129,6 +129,7 @@ func binding(name, extra string) string {
 func TestBindingsAreValidated(t *testing.T) {
 	setup(t)
 	admin := &model.User{Model: model.Model{ID: 401}, Name: "admin", Status: true, OTPSecret: []byte("enabled")}
+	require.NoError(t, model.UseDB().Create(admin).Error)
 	session := internaluser.SetSecureSessionID(admin.ID)
 	router := newRouter(nil, admin)
 
@@ -180,6 +181,7 @@ func TestBindingsAreValidated(t *testing.T) {
 func TestRefreshRenameAndDelete(t *testing.T) {
 	stub, confDir := setup(t)
 	admin := &model.User{Model: model.Model{ID: 402}, Name: "admin", Status: true, OTPSecret: []byte("enabled")}
+	require.NoError(t, model.UseDB().Create(admin).Error)
 	session := internaluser.SetSecureSessionID(admin.ID)
 	router := newRouter(nil, admin)
 
