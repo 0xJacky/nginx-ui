@@ -146,6 +146,9 @@ async function onSubmit() {
   if (loading.value)
     return
 
+  modelRef.username = modelRef.username.trim()
+  modelRef.password = modelRef.password.trim()
+
   if (!enabled2FA.value) {
     if (!formRef.value)
       return
