@@ -1,9 +1,21 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
 import logo from '@/assets/img/logo.png'
+
+defineProps<{
+  to?: string
+}>()
 </script>
 
 <template>
-  <div class="logo">
+  <component
+    :is="to ? RouterLink : 'div'"
+    class="logo"
+    :class="{ 'is-link': !!to }"
+    :to="to"
+    :title="to ? 'Back to Home' : undefined"
+    :aria-label="to ? 'Back to Home' : undefined"
+  >
     <img
       :src="logo"
       alt="logo"
@@ -11,7 +23,7 @@ import logo from '@/assets/img/logo.png'
     <p class="text">
       Nginx UI
     </p>
-  </div>
+  </component>
 </template>
 
 <style lang="less" scoped>
@@ -41,6 +53,12 @@ import logo from '@/assets/img/logo.png'
     font-size: 22px;
     line-height: 48px;
     height: 48px;
+  }
+
+  &.is-link {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
   }
 }
 </style>

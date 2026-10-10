@@ -2,7 +2,7 @@ import type { AutoCertChallengeMethod } from './auto_cert'
 import type { AcmeUser } from '@/api/acme_user'
 import type { ModelBase } from '@/api/curd'
 import type { DnsCredential } from '@/api/dns_credential'
-import type { PrivateKeyType } from '@/constants'
+import type { ConfigStatus, PrivateKeyType } from '@/constants'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 import { normalizePrivateKeyType, PrivateKeyTypeEnum } from '@/constants'
 
@@ -38,6 +38,7 @@ export interface Cert extends ModelBase {
   log: string
   certificate_info: CertificateInfo
   deployment_status: CertificateDeploymentStatus
+  used_by?: CertificateUsage[]
   sync_node_ids: number[]
   must_staple: boolean
   lego_disable_cname_support: boolean
@@ -59,6 +60,13 @@ export interface CertificateDeploymentStatus {
   configured_certificate_key_paths?: string[]
   automatic_migration_available: boolean
   error?: string
+}
+
+/** A site or stream whose configuration loads the certificate. */
+export interface CertificateUsage {
+  kind: 'site' | 'stream'
+  name: string
+  status: ConfigStatus
 }
 
 export interface ImportExistingCertPayload {

@@ -1,6 +1,9 @@
 package cert
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
+	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -8,6 +11,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
+	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
@@ -15,6 +19,15 @@ import (
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
+
+// maxCertificateDirNameLength is the file name limit (NAME_MAX) of common file
+// systems. A derived certificate directory name must stay within it.
+const maxCertificateDirNameLength = 255
+
+// errCertificateDirIsConfRoot refuses to write certificate files straight into
+// the nginx configuration directory. Every certificate would share the same
+// fullchain.cer and private.key there and overwrite each other.
+var errCertificateDirIsConfRoot = errors.New("certificate directory resolves to the nginx configuration directory")
 
 type ConfigPayload struct {
 	ConfigName                        string                     `json:"-"`
@@ -62,6 +75,9 @@ func (c *ConfigPayload) GetKeyType() certcrypto.KeyType {
 // filesystem, which is the remote host in host_via_ssh + sftp mode.
 func (c *ConfigPayload) mkCertificateDir() (err error) {
 	dir := c.getCertificateDirPath()
+	if isConfRootCertificateDir(dir) {
+		return errCertificateDirIsConfRoot
+	}
 	exists, err := nginx.Exists(dir)
 	if err != nil {
 		return err
@@ -108,6 +124,12 @@ func (c *ConfigPayload) UseExistingCertificatePaths(certificatePath, certificate
 	nginxConfPath := nginx.GetConfPath()
 	if !helper.IsUnderDirectory(certificatePath, nginxConfPath) ||
 		!helper.IsUnderDirectory(certificateKeyPath, nginxConfPath) {
+		return
+	}
+	// Files directly in the configuration directory come from a derived name
+	// that exceeded the file name limit, so every such certificate shares
+	// them. Reusing them would keep the certificates overwriting each other.
+	if IsConfRootCertificatePath(certificatePath) || IsConfRootCertificatePath(certificateKeyPath) {
 		return
 	}
 
@@ -197,8 +219,46 @@ func (c *ConfigPayload) getCertificateDirPath() string {
 		c.CertificateDir = filepath.Dir(c.SSLCertificatePath)
 		return c.CertificateDir
 	}
-	c.CertificateDir = nginx.GetConfPath("ssl", strings.Join(c.ServerName, "_")+"_"+string(c.GetKeyType()))
+	c.CertificateDir = nginx.GetConfPath("ssl", certificateDirName(c.ServerName, c.GetKeyType()))
 	return c.CertificateDir
+}
+
+// certificateDirName derives the directory name of a certificate from its
+// identifiers and key type. A long identifier list would exceed the file name
+// limit, which made the path check fail and the certificate land in the nginx
+// configuration directory, shared with every other such certificate. Such
+// lists keep the first identifier and replace the rest with a digest of the
+// whole list, so the name stays unique and keeps the key type suffix that the
+// legacy path migration relies on.
+func certificateDirName(identifiers []string, keyType certcrypto.KeyType) string {
+	suffix := "_" + string(keyType)
+	joined := strings.Join(identifiers, "_")
+	if len(joined)+len(suffix) <= maxCertificateDirNameLength {
+		return joined + suffix
+	}
+
+	sum := sha256.Sum256([]byte(joined))
+	digest := "_" + hex.EncodeToString(sum[:8])
+	prefix := ""
+	if len(identifiers) > 0 {
+		prefix = identifiers[0]
+	}
+	if limit := maxCertificateDirNameLength - len(digest) - len(suffix); len(prefix) > limit {
+		prefix = strings.ToValidUTF8(prefix[:limit], "")
+	}
+	return prefix + digest + suffix
+}
+
+// isConfRootCertificateDir reports whether dir is the nginx configuration
+// directory itself.
+func isConfRootCertificateDir(dir string) bool {
+	return filepath.Clean(dir) == filepath.Clean(nginx.GetConfPath())
+}
+
+// IsConfRootCertificatePath reports whether a certificate or key file sits
+// directly in the nginx configuration directory.
+func IsConfRootCertificatePath(path string) bool {
+	return path != "" && isConfRootCertificateDir(filepath.Dir(path))
 }
 
 func (c *ConfigPayload) GetCertificatePath() string {
@@ -215,4 +275,17 @@ func (c *ConfigPayload) GetCertificateKeyPath() string {
 	}
 	c.SSLCertificateKeyPath = filepath.Join(c.getCertificateDirPath(), "private.key")
 	return c.SSLCertificateKeyPath
+}
+
+// notifyCertificateRelocated warns when a certificate that used the shared files
+// in the nginx configuration directory was written to its own directory. The
+// sites still load the shared files, which no renewal updates any more, and
+// only the user knows which of them belong to this certificate.
+func notifyCertificateRelocated(name, previousPath, currentPath string) {
+	if !IsConfRootCertificatePath(previousPath) || filepath.Clean(previousPath) == filepath.Clean(currentPath) {
+		return
+	}
+	notification.Warning("Certificate Relocated",
+		"Certificate %{name} is now stored in %{path}, point the sites that load %{previous_path} to it",
+		map[string]any{"name": name, "path": currentPath, "previous_path": previousPath})
 }

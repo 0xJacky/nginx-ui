@@ -255,19 +255,12 @@ func MigrateLegacyCertificatePaths() (CertificateMigrationResult, error) {
 
 	targetsByPath := make(map[string]certificateMigrationTarget)
 	legacyCerts := make(map[uint64]*model.Cert)
-	for _, certModel := range certModels {
-		inspection := inspectCertificateDeployment(certModel)
-		switch inspection.status.State {
-		case CertificateDeploymentMismatch:
-			notifyCertificateDeploymentMismatch(certModel, inspection.status)
-		case CertificateDeploymentConsistent, CertificateDeploymentNotApplicable:
-			clearCertificateDeploymentIssue(certModel)
-		}
-		if inspection.status.State != CertificateDeploymentLegacyDrift {
-			continue
+	addTargets := func(certModel *model.Cert, targets []certificateMigrationTarget) {
+		if len(targets) == 0 {
+			return
 		}
 		legacyCerts[certModel.ID] = certModel
-		for _, target := range inspection.targets {
+		for _, target := range targets {
 			existing := targetsByPath[target.path]
 			if existing.path == "" {
 				existing.path = target.path
@@ -277,6 +270,29 @@ func MigrateLegacyCertificatePaths() (CertificateMigrationResult, error) {
 			existing.siteNames = append(existing.siteNames, target.siteNames...)
 			targetsByPath[target.path] = existing
 		}
+	}
+
+	managedPaths, err := managedCertificatePaths()
+	if err != nil {
+		return result, err
+	}
+	configFiles, err := enabledSiteConfigFiles()
+	if err != nil {
+		logger.Warnf("List enabled sites for certificate path migration: %v", err)
+	}
+
+	for _, certModel := range certModels {
+		inspection := inspectCertificateDeployment(certModel)
+		switch inspection.status.State {
+		case CertificateDeploymentMismatch:
+			notifyCertificateDeploymentMismatch(certModel, inspection.status)
+		case CertificateDeploymentConsistent, CertificateDeploymentNotApplicable:
+			clearCertificateDeploymentIssue(certModel)
+		}
+		if inspection.status.State == CertificateDeploymentLegacyDrift {
+			addTargets(certModel, inspection.targets)
+		}
+		addTargets(certModel, sharedLegacyReferenceTargets(certModel, configFiles, managedPaths))
 	}
 	if len(targetsByPath) == 0 {
 		return result, nil
@@ -346,6 +362,123 @@ func MigrateLegacyCertificatePaths() (CertificateMigrationResult, error) {
 		"Automatically migrated certificate paths for %{sites} sites", map[string]any{"sites": result.MigratedSites})
 	logger.Infof("Migrated legacy certificate paths in %d files for %d sites", result.MigratedFiles, result.MigratedSites)
 	return result, nil
+}
+
+// siteConfigFile is a configuration file that a locally enabled site loads.
+type siteConfigFile struct {
+	siteName string
+	path     string
+}
+
+// enabledSiteConfigFiles lists the configuration files of every locally
+// enabled site, including the generated maintenance file of a site in
+// maintenance. Remote deploy sites are left out because their files never
+// reach the local nginx.
+func enabledSiteConfigFiles() ([]siteConfigFile, error) {
+	entries, err := nginx.ReadDir(nginx.GetConfPath("sites-available"))
+	if err != nil {
+		return nil, err
+	}
+
+	files := make([]siteConfigFile, 0, len(entries))
+	for _, entry := range entries {
+		name := entry.Name()
+		if entry.IsDir() || validateSiteName(name) != nil || certificateSiteIsRemoteDeploy(name) {
+			continue
+		}
+		paths, pathErr := certificateDeploymentConfigPaths(name)
+		if pathErr != nil {
+			logger.Warnf("Resolve configuration of site %s: %v", name, pathErr)
+			continue
+		}
+		for _, path := range paths {
+			files = append(files, siteConfigFile{siteName: name, path: path})
+		}
+	}
+	return files, nil
+}
+
+// managedCertificatePaths returns the certificate paths that a live record
+// still owns, whatever its renewal mode.
+func managedCertificatePaths() (map[string]struct{}, error) {
+	c := query.Cert
+	certModels, err := c.Select(c.SSLCertificatePath).Where(c.SSLCertificatePath.Neq("")).Find()
+	if err != nil {
+		return nil, err
+	}
+	paths := make(map[string]struct{}, len(certModels))
+	for _, certModel := range certModels {
+		paths[filepath.Clean(certModel.SSLCertificatePath)] = struct{}{}
+	}
+	return paths, nil
+}
+
+// sharedLegacyReferenceTargets finds the sites that load a certificate through
+// its legacy key type path although the record is named after something else,
+// typically a wildcard certificate issued from the certificate page and shared
+// by several sites. inspectCertificateDeployment only looks at the site named
+// after the record, so these sites kept serving the legacy files after the
+// renewal had moved to the canonical path.
+func sharedLegacyReferenceTargets(certModel *model.Cert, files []siteConfigFile,
+	managedPaths map[string]struct{}) []certificateMigrationTarget {
+	if certModel == nil || certModel.SSLCertificatePath == "" || certModel.SSLCertificateKeyPath == "" {
+		return nil
+	}
+	legacyCertPath, legacyKeyPath, hasLegacyAlias := legacyCertificatePaths(certModel)
+	if !hasLegacyAlias {
+		return nil
+	}
+	// Another record still renews the legacy files, so the sites loading them
+	// are not left behind.
+	if _, managed := managedPaths[filepath.Clean(legacyCertPath)]; managed {
+		return nil
+	}
+	if containsPathOrSameFile([]string{legacyCertPath}, certModel.SSLCertificatePath) &&
+		containsPathOrSameFile([]string{legacyKeyPath}, certModel.SSLCertificateKeyPath) {
+		return nil
+	}
+	if _, err := cert.ValidateCertificateAndKey(certModel.SSLCertificatePath,
+		certModel.SSLCertificateKeyPath); err != nil {
+		return nil
+	}
+
+	var targets []certificateMigrationTarget
+	for _, file := range files {
+		// The site named after the record is covered by its own inspection.
+		if file.siteName == certModel.Filename {
+			continue
+		}
+		content, err := nginx.ReadFile(file.path)
+		if err != nil {
+			continue
+		}
+		certificatePaths, err := nginx.DirectiveValues(string(content), "ssl_certificate")
+		if err != nil {
+			continue
+		}
+		keyPaths, err := nginx.DirectiveValues(string(content), "ssl_certificate_key")
+		if err != nil {
+			continue
+		}
+		if !containsExactPath(certificatePaths, legacyCertPath) || !containsExactPath(keyPaths, legacyKeyPath) {
+			continue
+		}
+		if err = validateLegacyDirectiveCoverage(string(content), legacyCertPath, legacyKeyPath,
+			certModel.SSLCertificatePath); err != nil {
+			logger.Warnf("Skip certificate path migration of site %s: %v", file.siteName, err)
+			continue
+		}
+		targets = append(targets, certificateMigrationTarget{
+			path:        file.path,
+			contentHash: hashContent(content),
+			siteNames:   []string{file.siteName},
+			replace: []nginx.DirectiveValueReplacement{
+				{Directive: "ssl_certificate", OldValue: legacyCertPath, NewValue: certModel.SSLCertificatePath},
+				{Directive: "ssl_certificate_key", OldValue: legacyKeyPath, NewValue: certModel.SSLCertificateKeyPath},
+			},
+		})
+	}
+	return targets
 }
 
 func notifyCertificateDeploymentMismatch(certModel *model.Cert, status CertificateDeploymentStatus) {

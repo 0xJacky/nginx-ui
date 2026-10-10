@@ -13,12 +13,16 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	cSettings "github.com/uozi-tech/cosy/settings"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 func TestSecureSessionCookie(t *testing.T) {
 	gin.SetMode(gin.TestMode)
+	previousHTTPS := cSettings.ServerSettings.EnableHTTPS
+	cSettings.ServerSettings.EnableHTTPS = true
+	t.Cleanup(func() { cSettings.ServerSettings.EnableHTTPS = previousHTTPS })
 
 	t.Run("sets cookie when not present", func(t *testing.T) {
 		r := gin.New()
@@ -88,6 +92,31 @@ func TestSecureSessionCookie(t *testing.T) {
 	})
 }
 
+func TestSecureSessionCookieUsesSeparateNameOverHTTP(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	previousHTTPS := cSettings.ServerSettings.EnableHTTPS
+	cSettings.ServerSettings.EnableHTTPS = false
+	t.Cleanup(func() { cSettings.ServerSettings.EnableHTTPS = previousHTTPS })
+
+	r := gin.New()
+	r.Use(SecureSessionCookie())
+	r.GET("/", func(c *gin.Context) { c.Status(http.StatusNoContent) })
+
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	var found *http.Cookie
+	for _, cookie := range w.Result().Cookies() {
+		if cookie.Name == insecureSecureSessionCookieName {
+			found = cookie
+			break
+		}
+	}
+	require.NotNil(t, found)
+	assert.False(t, found.Secure)
+}
+
 func TestVerifiedNodePrincipalBypassesInternalSecureSessionOnly(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 	principal := &nodeauth.Principal{CredentialID: "credential", AuthMethod: model.NodeAuthMethodPaired}
@@ -119,6 +148,9 @@ func TestVerifiedNodePrincipalBypassesInternalSecureSessionOnly(t *testing.T) {
 
 func TestEnsureSecureSessionCookie(t *testing.T) {
 	gin.SetMode(gin.TestMode)
+	previousHTTPS := cSettings.ServerSettings.EnableHTTPS
+	cSettings.ServerSettings.EnableHTTPS = true
+	t.Cleanup(func() { cSettings.ServerSettings.EnableHTTPS = previousHTTPS })
 
 	r := gin.New()
 	r.POST("/login", func(c *gin.Context) {

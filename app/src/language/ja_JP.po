@@ -418,6 +418,27 @@ msgstr "無効"
 msgid "Maintenance"
 msgstr "メンテナンス"
 
+msgid "Site"
+msgstr "サイト"
+
+msgid "Stream"
+msgstr "ストリーム"
+
+msgid "Configuration"
+msgstr "設定"
+
+msgid "+%{count} more"
+msgstr "+%{count} 件"
+
+msgid "Search"
+msgstr "検索"
+
+msgid "No file matches the search"
+msgstr "検索に一致するファイルはありません"
+
+msgid "Not used"
+msgstr "未使用"
+
 msgid "Starting download..."
 msgstr "ダウンロードを開始しています..."
 
@@ -907,9 +928,6 @@ msgstr "完了"
 msgid "Unknown"
 msgstr "不明"
 
-msgid "Search"
-msgstr "検索"
-
 msgid "Open in split view"
 msgstr "分割表示で開く"
 
@@ -995,6 +1013,17 @@ msgstr "自動バックアップ完了"
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
 msgstr "バックアップタスク %{backup_name} が正常に完了しました、ファイル: %{file_path}"
 
+msgid "Auto Backup Retention Skipped"
+msgstr "自動バックアップ保持がスキップされました"
+
+msgid ""
+"Old backups of task %{backup_name} were not deleted because task "
+"%{conflict_names} writes backups with the same file names to the same "
+"storage location. Rename one of the tasks or change its storage path."
+msgstr ""
+"タスク %{backup_name} の古いバックアップは削除されませんでした。タスク %{conflict_names} "
+"が同じファイル名のバックアップを同じストレージの場所に書き込んでいるためです。いずれかのタスクの名前を変更するか、ストレージのパスを変更してください。"
+
 msgid "Renew Certificate Success"
 msgstr "証明書の更新に成功しました"
 
@@ -1024,6 +1053,14 @@ msgstr "証明書 %{name} は %{days} 日後に期限切れになります"
 
 msgid "Certificate Expiring Soon"
 msgstr "証明書の有効期限が近づいています"
+
+msgid "Certificate Relocated"
+msgstr "証明書が移動されました"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr "証明書 %{name} は %{path} に保存されました。%{previous_path} を読み込むサイトをこちらに指定してください"
 
 msgid "Sync Certificate Error"
 msgstr "証明書の同期エラー"
@@ -2725,6 +2762,32 @@ msgstr "サイトはメンテナンスモードです"
 msgid "Read dir failed: {0}"
 msgstr "ディレクトリの読み込みに失敗しました: {0}"
 
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "ファイル名は .conf で終わる必要があり、英字、数字、ピリオド、ハイフン、アンダースコアのみ使用できます"
+
+msgid "Snippet not found"
+msgstr "スニペットが見つかりません"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "スニペットが 256 KiB を超えています"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "スニペットのヘッダーを解析できません: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "スニペットはまだ {0} によって含まれています"
+
+msgid "A snippet with this file name already exists"
+msgstr "このファイル名のスニペットはすでに存在します"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "変数 {0} が無効です: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "コンテンツをテンプレートとして解析できません: {0}"
+
 msgid "Stream not found"
 msgstr "ストリームが見つかりません"
 
@@ -3856,6 +3919,18 @@ msgstr "サイト一覧"
 msgid "Add Site"
 msgstr "サイトを追加"
 
+msgid "Snippets"
+msgstr "スニペット"
+
+msgid "Create Snippet"
+msgstr "スニペットを作成"
+
+msgid "Built-in Template"
+msgstr "組み込みテンプレート"
+
+msgid "Edit Snippet"
+msgstr "スニペットを編集"
+
 msgid "Edit Site"
 msgstr "サイトを編集"
 
@@ -3936,29 +4011,17 @@ msgstr ""
 "アドレスを一元管理します。サイトエディターでサーバーまたはロケーションに割り当てることができ、ここでリストを変更すると使用中のすべてのサイトが更新されま"
 "す。"
 
-msgid "+%{count} more"
-msgstr "+%{count} 件"
-
 msgid "Deny"
 msgstr "拒否"
 
 msgid "Allow"
 msgstr "許可"
 
-msgid "Not used"
-msgstr "未使用"
-
 msgid "Use list"
 msgstr "リストを使用"
 
 msgid "Deny (403)"
 msgstr "拒否 (403)"
-
-msgid "Site"
-msgstr "サイト"
-
-msgid "Stream"
-msgstr "ストリーム"
 
 msgid "Access list %{name} saved"
 msgstr "アクセスリスト %{name} を保存しました"
@@ -4050,6 +4113,15 @@ msgstr "毎週%{day}の%{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "毎月%{day}日%{time}に"
+
+msgid "Backups to Keep"
+msgstr "保持するバックアップ"
+
+msgid "All"
+msgstr "すべて"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "保持するバックアップ数 (0 で全件保持)"
 
 msgid "Last Backup Time"
 msgstr "最終バックアップ時刻"
@@ -4402,6 +4474,10 @@ msgstr "デプロイを検証できません"
 msgid "Not After"
 msgstr "有効期限"
 
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "%{count} 個の構成で使用されています"
+
 msgid "Failed to scan certificates"
 msgstr "証明書のスキャンに失敗しました"
 
@@ -4446,6 +4522,12 @@ msgstr "戻る"
 
 msgid "This field is required"
 msgstr "このフィールドは必須です"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "パスは存在しますが、ファイルは証明書ではありません"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "パスは存在しますが、ファイルは秘密鍵ではありません"
 
 msgid "Sync to"
 msgstr "同期先"
@@ -4519,6 +4601,9 @@ msgstr "証明書ファイルのダウンロードに失敗しました"
 
 msgid "Download Certificate Files"
 msgstr "証明書ファイルをダウンロード"
+
+msgid "Download"
+msgstr "ダウンロード"
 
 msgid "Download Format"
 msgstr "ダウンロード形式"
@@ -4681,11 +4766,14 @@ msgstr "失効を確認するには、下の欄に「失効」と入力してく
 msgid "Renew successfully"
 msgstr "証明書の更新に成功しました"
 
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert が実行中です。お待ちください..."
+
 msgid "Renew Certificate"
 msgstr "証明書を更新"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert が実行中です。お待ちください..."
+msgid "Renew"
+msgstr "更新"
 
 msgid "Certificate issued successfully"
 msgstr "証明書が正常に発行されました"
@@ -5274,6 +5362,14 @@ msgid ""
 "actual upstream host or port."
 msgstr "任意の絶対 URL です。公開アドレスが実際のアップストリームのホストやポートと異なる場合に使用します。"
 
+msgid "Site Card Click URL"
+msgstr "サイトカードのクリック URL"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr "このサイトカードを開く際に使用される、任意の絶対 HTTP/HTTPS URL。空の場合は、デフォルトのサイト URL が使用されます。"
+
 msgid "HTTP Method"
 msgstr "HTTPメソッド"
 
@@ -5562,9 +5658,6 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "追加設定"
 
-msgid "All"
-msgstr "すべて"
-
 msgid "Host, e.g. @ or www"
 msgstr "ホスト、例: @ または www"
 
@@ -5716,9 +5809,6 @@ msgstr "名前は空にできません"
 
 msgid "Please select DNS provider"
 msgstr "DNS プロバイダーを選択してください"
-
-msgid "Configuration"
-msgstr "設定"
 
 msgid "DNS Credentials"
 msgstr "DNS 認証情報"
@@ -9491,6 +9581,9 @@ msgstr "名前空間"
 msgid "The parameter of server_name is required"
 msgstr "server_name のパラメーターが必要です"
 
+msgid "Config Template"
+msgstr "設定テンプレート"
+
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "HTTPS を有効にする前に、編集した設定を保存してください。"
 
@@ -9585,11 +9678,30 @@ msgstr "自己署名証明書"
 msgid "Generate self-signed certificate"
 msgstr "自己署名証明書を生成"
 
+msgid "Built-in"
+msgstr "内蔵"
+
 msgid "Search templates"
 msgstr "テンプレートを検索"
 
+msgid "Snippet"
+msgstr "スニペット"
+
 msgid "Author"
 msgstr "著者"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include はサイトを snippets/%{file} にリンクしたままにし、スニペットの後続の変更が反映されます。Insert "
+"はコンテンツをサイトにコピーします。"
+
+msgid "Insert"
+msgstr "挿入"
+
+msgid "Include"
+msgstr "含める"
 
 msgid "Do you want to enable TLS?"
 msgstr "TLSを有効にしますか？"
@@ -9855,9 +9967,6 @@ msgstr "DNSレコードを再作成"
 msgid "Clear Link"
 msgstr "リンクをクリア"
 
-msgid "Config Template"
-msgstr "設定テンプレート"
-
 msgid "Port Scanner"
 msgstr "ポートスキャナー"
 
@@ -9940,6 +10049,308 @@ msgstr "選択したサイトのメンテナンス情報を設定"
 
 msgid "%{count} sites selected"
 msgstr "%{count} サイト選択中"
+
+msgid "Read Only"
+msgstr "読み取り専用"
+
+msgid "Preview"
+msgstr "プレビュー"
+
+msgid "Updates as the snippet changes."
+msgstr "スニペットが変更されると更新されます。"
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr "組み込みテンプレートは Nginx UI に付属しており、変更できません。変更するには、1 つをスニペットとしてコピーしてください。"
+
+msgid "File Name"
+msgstr "ファイル名"
+
+msgid "Variables"
+msgstr "変数"
+
+msgid "Copy as Snippet"
+msgstr "スニペットとしてコピー"
+
+msgid "Template"
+msgstr "テンプレート"
+
+msgid "No template matches the search"
+msgstr "検索に一致するテンプレートはありません"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} 変数"
+
+msgid "Translations"
+msgstr "翻訳"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr "このフィールドは %{language} です。他の言語のユーザーには翻訳が表示され、翻訳がない場合は英語が表示されます。"
+
+msgid "Remove translation"
+msgstr "翻訳を削除"
+
+msgid "Add a language"
+msgstr "言語を追加"
+
+msgid "Text"
+msgstr "テキスト"
+
+msgid "Switch"
+msgstr "切り替え"
+
+msgid "Select"
+msgstr "選択"
+
+msgid "New Variable…"
+msgstr "新しい変数…"
+
+msgid "Insert Variable"
+msgstr "変数を挿入"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr "%{open} と入力して変数を補完するか、値を選択して %{keys} を押すと変数にできます。"
+
+msgid "Default Value"
+msgstr "デフォルト値"
+
+msgid "Edit Variable"
+msgstr "変数を編集"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr "この変数は宣言されていないため、スニペットを挿入するときに値がありません。"
+
+msgid "Declare Variable"
+msgstr "変数を宣言する"
+
+msgid "Make Variable"
+msgstr "変数を作成"
+
+msgid "New Variable"
+msgstr "新しい変数"
+
+msgid "Key"
+msgstr "キー"
+
+msgid "Label"
+msgstr "ラベル"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "変数が宣言され、カーソル位置に挿入されます。"
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr "選択した値がデフォルト値となり、内容は代わりに変数を参照します。"
+
+msgid "Add Variable"
+msgstr "変数を追加"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "未宣言のため、値なしで残されました: %{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "このスニペットは有効な Nginx 設定としてレンダリングされません。"
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "スニペットは有効な Nginx 設定としてレンダリングされます。"
+
+msgid "What the site editor asks for"
+msgstr "サイトエディターが求めていること"
+
+msgid "Restore Default Values"
+msgstr "デフォルト値を復元"
+
+msgid "Nothing to fill in."
+msgstr "入力する項目はありません。"
+
+msgid "Fix the variables to preview the snippet."
+msgstr "変数を修正して、スニペットをプレビューしてください。"
+
+msgid "Snippets are no longer synchronized"
+msgstr "スニペットは同期されなくなりました"
+
+msgid "Synchronize Snippets"
+msgstr "スニペットを同期"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr "すべてのスニペットが選択したノードにコピーされ、以降の変更は自動的に反映されます。選択を解除すると同期が停止します。"
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "ノードに既に存在するスニペットを置き換える"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "%{count} 個のファイルに含まれる"
+
+msgid "Not Used"
+msgstr "未使用"
+
+msgid "Max Age"
+msgstr "最大経過時間"
+
+msgid "Options"
+msgstr "オプション"
+
+msgid "Remove option"
+msgstr "オプションを削除"
+
+msgid "Add Option"
+msgstr "オプションを追加"
+
+msgid "Remove variable"
+msgstr "変数を削除"
+
+msgid "Used in the content, not declared"
+msgstr "コンテンツ内で使用されており、宣言されていません"
+
+msgid "Snippet %{name} saved"
+msgstr "スニペット %{name} を保存しました"
+
+msgid "Discard the unsaved changes?"
+msgstr "保存されていない変更を破棄しますか？"
+
+msgid "Keep Editing"
+msgstr "編集を続ける"
+
+msgid "Edit Snippet %{name}"
+msgstr "スニペット %{name} を編集"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "サイトはこのスニペットを含め、その後の変更を追跡できます。"
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr "このスニペットには変数が含まれているため、各サイトは設定テンプレートパネルから入力済みのコピーを挿入します。"
+
+msgid "Includable"
+msgstr "インクルード可能"
+
+msgid "Insert Only"
+msgstr "挿入のみ"
+
+msgid "Use"
+msgstr "使用する"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr "このディレクティブを server または location ブロックに追加してください。このスニペットを含むサイトは、その後の変更に従います。"
+
+msgid "Static file cache"
+msgstr "静的ファイルキャッシュ"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr "構成にスニペットが含まれる間は修正されているため、動作し続けます。"
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "英字、数字、ドット、ハイフン、アンダースコア。"
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr ""
+"変数は、サイトエディターの設定テンプレートパネルからスニペットを挿入する際に埋め込まれます。変数を含むスニペットは挿入のみ可能で、インクルードすることは"
+"できません。"
+
+msgid "No configuration includes this snippet yet."
+msgstr "まだどの設定にもこのスニペットは含まれていません。"
+
+msgid "Unsaved changes"
+msgstr "未保存の変更"
+
+msgid "My Snippets"
+msgstr "マイ スニペット"
+
+msgid "Built-in Templates"
+msgstr "組み込みテンプレート"
+
+msgid "Copied %{include}"
+msgstr "%{include} をコピーしました"
+
+msgid "Delete snippet %{name}?"
+msgstr "スニペット %{name} を削除しますか？"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "snippets/%{file} はここおよび同期ノード上で削除されます。"
+
+msgid "snippets/%{file} will be removed."
+msgstr "snippets/%{file} は削除されます。"
+
+msgid "Snippet %{name} deleted"
+msgstr "スニペット %{name} を削除しました"
+
+msgid "Synchronize"
+msgstr "同期"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "%{count} ノードに同期されました"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] "変数が %{count} 個あります。サイトでは、サイトエディターの設定テンプレートパネルから入力済みのコピーを挿入します。"
+
+msgid "Copy the include directive"
+msgstr "include ディレクティブをコピー"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "まず、スニペットを含むファイルからスニペットを削除してください。"
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+"スニペットは Nginx "
+"の設定の一部を一箇所に保存します。サイトに含めるか、サイトエディターの設定テンプレートパネルから挿入してください。含められたスニペットを変更すると、それ"
+"を使用するすべてのサイトが更新されます。"
+
+msgid "Search snippets"
+msgstr "検索スニペット"
+
+msgid "No snippets yet"
+msgstr "まだスニペットはありません"
+
+msgid "No snippet matches the search"
+msgstr "検索に一致するスニペットがありません"
+
+msgid "Enter a key."
+msgstr "キーを入力してください。"
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "英字、数字、アンダースコアを使用し、英字またはアンダースコアで始めてください。"
+
+msgid "Another variable uses this key."
+msgstr "別の変数がこのキーを使用しています。"
+
+msgid "Add at least one option."
+msgstr "少なくとも 1 つのオプションを追加してください。"
+
+msgid "Every option needs a value."
+msgstr "すべてのオプションには値が必要です。"
+
+msgid "Option values must be unique."
+msgstr "オプション値は一意である必要があります。"
+
+msgid "Choose the default option."
+msgstr "デフォルトのオプションを選択してください。"
 
 msgid "Do you want to %{action} this stream?"
 msgstr "このストリームを%{action}しますか？"

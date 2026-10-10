@@ -250,6 +250,10 @@ func normalizeStringSlice(in []string) []string {
 }
 
 // selfSignedSlug builds a filesystem-safe directory slug from a name.
+// maxSelfSignedSlugLength leaves room for the "_<id>" suffix within the 255
+// byte file name limit.
+const maxSelfSignedSlugLength = 200
+
 func selfSignedSlug(name string) string {
 	name = strings.TrimSpace(name)
 	if asciiName, err := idna.Lookup.ToASCII(name); err == nil {
@@ -265,7 +269,13 @@ func selfSignedSlug(name string) string {
 			b.WriteRune('_')
 		}
 	}
-	slug := strings.Trim(b.String(), "._-")
+	slug := b.String()
+	// The directory name also carries "_<id>", and a longer name would exceed
+	// the file name limit and send the files to the nginx configuration root.
+	if len(slug) > maxSelfSignedSlugLength {
+		slug = slug[:maxSelfSignedSlugLength]
+	}
+	slug = strings.Trim(slug, "._-")
 	if slug == "" {
 		slug = defaultSelfSignedSlug
 	}

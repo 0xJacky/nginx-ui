@@ -456,6 +456,27 @@ msgstr "Devre dışı"
 msgid "Maintenance"
 msgstr "Bakım"
 
+msgid "Site"
+msgstr "Site"
+
+msgid "Stream"
+msgstr "Akış"
+
+msgid "Configuration"
+msgstr "Yapılandırma"
+
+msgid "+%{count} more"
+msgstr "+%{count} daha"
+
+msgid "Search"
+msgstr "Ara"
+
+msgid "No file matches the search"
+msgstr "Aramayla eşleşen dosya yok"
+
+msgid "Not used"
+msgstr "Kullanılmıyor"
+
 msgid "Starting download..."
 msgstr "İndirme başlıyor..."
 
@@ -983,9 +1004,6 @@ msgstr "Tamamlandı"
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
-msgid "Search"
-msgstr "Ara"
-
 msgid "Open in split view"
 msgstr "Bölünmüş görünümde aç"
 
@@ -1075,6 +1093,18 @@ msgstr "Otomatik Yedekleme Tamamlandı"
 msgid "Backup task %{backup_name} completed successfully, file: %{file_path}"
 msgstr "Yedekleme görevi %{backup_name} başarıyla tamamlandı, dosya: %{file_path}"
 
+msgid "Auto Backup Retention Skipped"
+msgstr "Otomatik Yedekleme Saklama Atlandı"
+
+msgid ""
+"Old backups of task %{backup_name} were not deleted because task "
+"%{conflict_names} writes backups with the same file names to the same "
+"storage location. Rename one of the tasks or change its storage path."
+msgstr ""
+"%{backup_name} görevinin eski yedekleri silinmedi çünkü %{conflict_names} "
+"görevi aynı dosya adlarıyla yedekleri aynı depolama konumuna yazıyor. "
+"Görevlerden birini yeniden adlandırın veya depolama yolunu değiştirin."
+
 msgid "Renew Certificate Success"
 msgstr "Sertifika Yenileme Başarılı"
 
@@ -1104,6 +1134,16 @@ msgstr "Sertifika %{name}, %{days} gün sonra sona erecek"
 
 msgid "Certificate Expiring Soon"
 msgstr "Sertifika Yakında Sona Eriyor"
+
+msgid "Certificate Relocated"
+msgstr "Sertifika taşındı"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr ""
+"%{name} sertifikası artık %{path} içinde saklanıyor. %{previous_path} "
+"yükleyen siteleri ona yönlendirin"
 
 msgid "Sync Certificate Error"
 msgstr "Sertifika Senkronizasyon Hatası"
@@ -2878,6 +2918,34 @@ msgstr "Site bakım modunda"
 msgid "Read dir failed: {0}"
 msgstr "Dizin okuma hatası: {0}"
 
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+"Dosya adı .conf ile bitmeli ve yalnızca harfler, rakamlar, noktalar, "
+"tireler ve alt çizgiler içermelidir"
+
+msgid "Snippet not found"
+msgstr "Kod parçası bulunamadı"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "Kod parçası 256 KiB sınırını aşıyor"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "Kod parçasının başlığı ayrıştırılamıyor: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "Kod parçası hâlâ {0} tarafından ekleniyor"
+
+msgid "A snippet with this file name already exists"
+msgstr "Bu dosya adına sahip bir snippet zaten mevcut"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "{0} değişkeni geçersiz: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "İçerik şablon olarak ayrıştırılamıyor: {0}"
+
 msgid "Stream not found"
 msgstr "Akış bulunamadı"
 
@@ -4096,6 +4164,18 @@ msgstr "Site Listesi"
 msgid "Add Site"
 msgstr "Site Ekle"
 
+msgid "Snippets"
+msgstr "Snippets"
+
+msgid "Create Snippet"
+msgstr "Oluştur"
+
+msgid "Built-in Template"
+msgstr "Yerleşik Şablon"
+
+msgid "Edit Snippet"
+msgstr "Snippet'i Düzenle"
+
 msgid "Edit Site"
 msgstr "Siteyi Düzenle"
 
@@ -4178,29 +4258,17 @@ msgstr ""
 "bir sunucu veya konum için seçin; listeyi burada değiştirmek onu kullanan "
 "tüm siteleri günceller."
 
-msgid "+%{count} more"
-msgstr "+%{count} daha"
-
 msgid "Deny"
 msgstr "Reddet"
 
 msgid "Allow"
 msgstr "İzin ver"
 
-msgid "Not used"
-msgstr "Kullanılmıyor"
-
 msgid "Use list"
 msgstr "Liste kullan"
 
 msgid "Deny (403)"
 msgstr "Reddet (403)"
-
-msgid "Site"
-msgstr "Site"
-
-msgid "Stream"
-msgstr "Akış"
 
 msgid "Access list %{name} saved"
 msgstr "Erişim listesi %{name} kaydedildi"
@@ -4300,6 +4368,15 @@ msgstr "Haftalık olarak %{day} günü %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Her ayın %{day} günü %{time} saatinde"
+
+msgid "Backups to Keep"
+msgstr "Saklanacak Yedeklemeler"
+
+msgid "All"
+msgstr "Tümü"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "Saklanacak Yedekler (0 hepsini saklar)"
 
 msgid "Last Backup Time"
 msgstr "Son Yedekleme Zamanı"
@@ -4672,6 +4749,11 @@ msgstr "Dağıtım doğrulanamıyor"
 msgid "Not After"
 msgstr "Sonra Değil"
 
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "%{count} yapılandırmada kullanılıyor"
+msgstr[1] "%{count} yapılandırmada kullanılıyor"
+
 msgid "Failed to scan certificates"
 msgstr "Sertifikalar taranamadı"
 
@@ -4718,6 +4800,12 @@ msgstr "Geri"
 
 msgid "This field is required"
 msgstr "Bu alan zorunludur"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "Yol mevcut, ancak dosya bir sertifika değil"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "Yol mevcut, ancak dosya bir özel anahtar değil"
 
 msgid "Sync to"
 msgstr "Senkronize Et"
@@ -4791,6 +4879,9 @@ msgstr "Sertifika dosyaları indirilemedi"
 
 msgid "Download Certificate Files"
 msgstr "Sertifika Dosyalarını İndir"
+
+msgid "Download"
+msgstr "İndir"
 
 msgid "Download Format"
 msgstr "İndirme Biçimi"
@@ -4961,11 +5052,14 @@ msgstr "İptali onaylamak için lütfen aşağıdaki alana \"İptal\" yazın:"
 msgid "Renew successfully"
 msgstr "Başarıyla yenilendi"
 
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert çalışıyor, lütfen bekleyin..."
+
 msgid "Renew Certificate"
 msgstr "Sertifikayı Yenile"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert çalışıyor, lütfen bekleyin..."
+msgid "Renew"
+msgstr "Yenile"
 
 msgid "Certificate issued successfully"
 msgstr "Sertifika başarıyla verildi"
@@ -5577,6 +5671,16 @@ msgstr ""
 "İsteğe bağlı mutlak URL. Genel adres, gerçek upstream ana bilgisayarından "
 "veya bağlantı noktasından farklı olduğunda kullanın."
 
+msgid "Site Card Click URL"
+msgstr "Site Kartı Tıklama URL'si"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr ""
+"Bu site kartı açılırken kullanılan isteğe bağlı mutlak HTTP/HTTPS URL'si. "
+"Boşsa, varsayılan site URL'si kullanılır."
+
 msgid "HTTP Method"
 msgstr "HTTP Yöntemi"
 
@@ -5881,9 +5985,6 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "İlave bilgi"
 
-msgid "All"
-msgstr "Tümü"
-
 msgid "Host, e.g. @ or www"
 msgstr "Host, örn. @ veya www"
 
@@ -6044,9 +6145,6 @@ msgstr "Ad boş olamaz"
 
 msgid "Please select DNS provider"
 msgstr "Lütfen DNS sağlayıcısını seçin"
-
-msgid "Configuration"
-msgstr "Yapılandırma"
 
 msgid "DNS Credentials"
 msgstr "DNS Kimlik Bilgileri"
@@ -7545,7 +7643,9 @@ msgstr "HTTPS'yi Etkinleştir"
 msgid ""
 "Serves the web interface over HTTPS. Saving this change restarts Nginx UI "
 "and reloads the page."
-msgstr "Web arayüzünü HTTPS üzerinden sunar. Bu değişikliği kaydetmek Nginx UI'ı yeniden başlatır ve sayfayı yeniler."
+msgstr ""
+"Web arayüzünü HTTPS üzerinden sunar. Bu değişikliği kaydetmek Nginx UI'ı "
+"yeniden başlatır ve sayfayı yeniler."
 
 msgid "SSL Key Path"
 msgstr "SSL Anahtar Yolu"
@@ -7591,7 +7691,9 @@ msgid "ICP Number"
 msgstr "ICP Numarası"
 
 msgid "Shown in the page footer. Only needed for sites hosted in mainland China."
-msgstr "Sayfa alt bilgisinde gösterilir. Yalnızca Çin anakarasında barındırılan siteler için gereklidir."
+msgstr ""
+"Sayfa alt bilgisinde gösterilir. Yalnızca Çin anakarasında barındırılan "
+"siteler için gereklidir."
 
 msgid "Public Security Number"
 msgstr "Kamu Güvenlik Numarası"
@@ -7600,7 +7702,9 @@ msgid "Github Proxy"
 msgstr "Github Proxy"
 
 msgid "Used for downloads from GitHub, such as upgrades and the GeoLite database."
-msgstr "Yükseltmeler ve GeoLite veritabanı gibi GitHub'dan yapılan indirmeler için kullanılır."
+msgstr ""
+"Yükseltmeler ve GeoLite veritabanı gibi GitHub'dan yapılan indirmeler için "
+"kullanılır."
 
 msgid "HTTP Proxy"
 msgstr "HTTP Proxy"
@@ -7624,7 +7728,9 @@ msgid "Ban Threshold Minutes"
 msgstr "Yasaklama Eşiği Süresi (Dakika)"
 
 msgid "Window in which failed sign-in attempts from one address are counted."
-msgstr "Bir adresten gelen başarısız oturum açma denemelerinin sayıldığı süre aralığı."
+msgstr ""
+"Bir adresten gelen başarısız oturum açma denemelerinin sayıldığı süre "
+"aralığı."
 
 msgid "Max Attempts"
 msgstr "Maksimum Deneme Sayısı"
@@ -7632,7 +7738,9 @@ msgstr "Maksimum Deneme Sayısı"
 msgid ""
 "Failed attempts allowed inside the window before the address is banned for "
 "a while."
-msgstr "Adres bir süreliğine yasaklanmadan önce pencere içinde izin verilen başarısız deneme sayısı."
+msgstr ""
+"Adres bir süreliğine yasaklanmadan önce pencere içinde izin verilen "
+"başarısız deneme sayısı."
 
 msgid "Banned IPs"
 msgstr "Yasaklı IP'ler"
@@ -7681,7 +7789,9 @@ msgstr "Özyinelemeli İsim Sunucuları"
 msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
-msgstr "DNS challenge adımı için sistemin ad sunucularını geçersiz kılacak özyinelemeli ad sunucularını ayarlayın."
+msgstr ""
+"DNS challenge adımı için sistemin ad sunucularını geçersiz kılacak "
+"özyinelemeli ad sunucularını ayarlayın."
 
 msgid "Stub Status Port"
 msgstr "Stub Durum Portu"
@@ -7834,7 +7944,9 @@ msgstr "Logrotate'i Etkinleştir"
 msgid ""
 "Runs the rotation command on a schedule from Nginx UI. Mainly needed inside "
 "a Docker container."
-msgstr "Döndürme komutunu Nginx UI'dan zamanlanmış olarak çalıştırır. Esas olarak bir Docker konteyneri içinde gereklidir."
+msgstr ""
+"Döndürme komutunu Nginx UI'dan zamanlanmış olarak çalıştırır. Esas olarak "
+"bir Docker konteyneri içinde gereklidir."
 
 msgid "Command"
 msgstr "Komut"
@@ -7861,7 +7973,9 @@ msgstr "Harita Sınır Dizini"
 msgid ""
 "Keep files with names like 100000_full.json in this directory. Only the "
 "world map is provided by default."
-msgstr "100000_full.json gibi adlara sahip dosyaları bu dizinde tutun. Varsayılan olarak yalnızca dünya haritası sağlanır."
+msgstr ""
+"100000_full.json gibi adlara sahip dosyaları bu dizinde tutun. Varsayılan "
+"olarak yalnızca dünya haritası sağlanır."
 
 msgid "Register passkey successfully"
 msgstr "Geçiş anahtarı başarıyla kaydedildi"
@@ -9358,7 +9472,9 @@ msgid "Cert"
 msgstr "Sertifika"
 
 msgid "Contact, issuing service and renewal of certificates requested by Nginx UI."
-msgstr "Nginx UI tarafından istenen sertifikaların iletişim bilgisi, düzenleyen hizmet ve yenilenmesi."
+msgstr ""
+"Nginx UI tarafından istenen sertifikaların iletişim bilgisi, düzenleyen "
+"hizmet ve yenilenmesi."
 
 msgid "Go to certificates"
 msgstr "Sertifikalara git"
@@ -9542,7 +9658,9 @@ msgstr "Kısıtlama"
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
-msgstr "Bir IP'den gelen başarısız oturum açma denemelerinin sayısı yasaklama eşiği dakikası içinde azami deneme sayısına ulaşırsa, IP bir süre yasaklanır."
+msgstr ""
+"Bir IP'den gelen başarısız oturum açma denemelerinin sayısı yasaklama eşiği "
+"dakikası içinde azami deneme sayısına ulaşırsa, IP bir süre yasaklanır."
 
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Bu yasaklı IP'yi hemen sileceğinizden emin misiniz?"
@@ -10097,6 +10215,9 @@ msgstr "İsim alanı"
 msgid "The parameter of server_name is required"
 msgstr "server_name parametresi gereklidir"
 
+msgid "Config Template"
+msgstr "Yapılandırma Şablonu"
+
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "HTTPS'yi etkinleştirmeden önce düzenlenmiş yapılandırmayı kaydedin."
 
@@ -10194,11 +10315,30 @@ msgstr "Kendinden imzalı sertifika"
 msgid "Generate self-signed certificate"
 msgstr "Kendinden imzalı sertifika oluştur"
 
+msgid "Built-in"
+msgstr "Dahili"
+
 msgid "Search templates"
 msgstr "Şablonları ara"
 
+msgid "Snippet"
+msgstr "Kod parçası"
+
 msgid "Author"
 msgstr "Yazar"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include, siteyi snippets/%{file} ile bağlantılı tutar; böylece snippet'taki "
+"sonraki değişiklikler uygulanır. Insert ise içeriği siteye kopyalar."
+
+msgid "Insert"
+msgstr "Ekle"
+
+msgid "Include"
+msgstr "Dahil et"
 
 msgid "Do you want to enable TLS?"
 msgstr "TLS'yi etkinleştirmek istiyor musunuz?"
@@ -10510,9 +10650,6 @@ msgstr "DNS Kaydını Yeniden Oluştur"
 msgid "Clear Link"
 msgstr "Bağlantıyı Temizle"
 
-msgid "Config Template"
-msgstr "Yapılandırma Şablonu"
-
 msgid "Port Scanner"
 msgstr "Port Tarayıcı"
 
@@ -10597,6 +10734,330 @@ msgstr "Seçilen siteler için bakım bilgilerini ayarla"
 
 msgid "%{count} sites selected"
 msgstr "%{count} site seçildi"
+
+msgid "Read Only"
+msgstr "Salt okunur"
+
+msgid "Preview"
+msgstr "Önizleme"
+
+msgid "Updates as the snippet changes."
+msgstr "Kod parçası değiştiğinde güncellenir."
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr ""
+"Dahili şablonlar Nginx UI ile birlikte gelir ve değiştirilemez. Değiştirmek "
+"için birini snippet olarak kopyalayın."
+
+msgid "File Name"
+msgstr "Dosya Adı"
+
+msgid "Variables"
+msgstr "Değişkenler"
+
+msgid "Copy as Snippet"
+msgstr "Snippet olarak kopyala"
+
+msgid "Template"
+msgstr "Şablon"
+
+msgid "No template matches the search"
+msgstr "Aramayla eşleşen şablon yok"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} değişken"
+
+msgid "Translations"
+msgstr "Çeviriler"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr ""
+"Alan %{language} dilindedir. Diğer dillerin kullanıcıları kendi "
+"çevirilerini görür, yoksa İngilizce gösterilir."
+
+msgid "Remove translation"
+msgstr "Çeviriyi kaldır"
+
+msgid "Add a language"
+msgstr "Dil ekle"
+
+msgid "Text"
+msgstr "Metin"
+
+msgid "Switch"
+msgstr "Değiştir"
+
+msgid "Select"
+msgstr "Seç"
+
+msgid "New Variable…"
+msgstr "Yeni değişken…"
+
+msgid "Insert Variable"
+msgstr "Değişken Ekle"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr ""
+"Bir değişkeni tamamlamak için %{open} yazın veya bir değer seçip %{keys} "
+"tuşlarına basarak onu bir değişken haline getirin."
+
+msgid "Default Value"
+msgstr "Varsayılan değer"
+
+msgid "Edit Variable"
+msgstr "Değişkeni Düzenle"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr ""
+"Bu değişken bildirilmediğinden, kod parçası eklendiğinde hiçbir değere "
+"sahip olmayacaktır."
+
+msgid "Declare Variable"
+msgstr "Değişken Bildir"
+
+msgid "Make Variable"
+msgstr "Değişken Oluştur"
+
+msgid "New Variable"
+msgstr "Yeni Değişken"
+
+msgid "Key"
+msgstr "Anahtar"
+
+msgid "Label"
+msgstr "Etiket"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "Değişken bildirilir ve imlecin olduğu konuma eklenir."
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr ""
+"Seçilen değer varsayılan değer olur ve içerik bunun yerine değişkene atıfta "
+"bulunur."
+
+msgid "Add Variable"
+msgstr "Değişken Ekle"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "Bildirilmedi, bu nedenle değer olmadan bırakıldı: %{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "Kod parçası geçerli bir Nginx yapılandırması olarak işlenmiyor."
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "Kod parçası geçerli bir Nginx yapılandırması olarak işlenir."
+
+msgid "What the site editor asks for"
+msgstr "Site düzenleyicisinin istediği"
+
+msgid "Restore Default Values"
+msgstr "Varsayılan Değerleri Geri Yükle"
+
+msgid "Nothing to fill in."
+msgstr "Doldurulacak bir şey yok."
+
+msgid "Fix the variables to preview the snippet."
+msgstr "Kod parçasını önizlemek için değişkenleri düzeltin."
+
+msgid "Snippets are no longer synchronized"
+msgstr "Parçacıklar artık senkronize edilmiyor"
+
+msgid "Synchronize Snippets"
+msgstr "Kod Parçacıklarını Eşitle"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr ""
+"Her snippet artık seçilen düğümlere kopyalanır ve sonraki değişiklikler "
+"otomatik olarak takip edilir. Eşitlemeyi durdurmak için seçimi temizleyin."
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "Düğümlerde zaten var olan kod parçacıklarını değiştirin"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "%{count} dosya tarafından dahil edildi"
+
+msgid "Not Used"
+msgstr "Kullanılmıyor"
+
+msgid "Max Age"
+msgstr "Maksimum Yaş"
+
+msgid "Options"
+msgstr "Seçenekler"
+
+msgid "Remove option"
+msgstr "Seçeneği kaldır"
+
+msgid "Add Option"
+msgstr "Seçenek Ekle"
+
+msgid "Remove variable"
+msgstr "Değişkeni kaldır"
+
+msgid "Used in the content, not declared"
+msgstr "İçerikte kullanıldı, bildirilmedi"
+
+msgid "Snippet %{name} saved"
+msgstr "%{name} snippet'i kaydedildi"
+
+msgid "Discard the unsaved changes?"
+msgstr "Kaydedilmemiş değişiklikler atılsın mı?"
+
+msgid "Keep Editing"
+msgstr "Düzenlemeye Devam Et"
+
+msgid "Edit Snippet %{name}"
+msgstr "Kod parçasını düzenle %{name}"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr "Siteler bu snippet'i ekleyebilir ve sonraki değişikliklerini takip edebilir."
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr ""
+"Bu kod parçası değişkenler içerir, bu nedenle siteler yapılandırma şablon "
+"panelinden doldurulmuş bir kopya ekler."
+
+msgid "Includable"
+msgstr "Dahil edilebilir"
+
+msgid "Insert Only"
+msgstr "Yalnızca Ekle"
+
+msgid "Use"
+msgstr "Kullan"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr ""
+"Bu yönergeyi bir server veya location bloğuna ekleyin. Bu snippet'i içeren "
+"siteler, sonraki değişikliklerini takip eder."
+
+msgid "Static file cache"
+msgstr "Statik dosya önbelleği"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr ""
+"Yapılandırmalar snippet'i içerirken düzeltildi, böylece çalışmaya devam "
+"ediyorlar."
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "Harfler, rakamlar, noktalar, tireler ve alt çizgiler."
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr ""
+"Değişkenler, site düzenleyicisinin yapılandırma şablonu panelinden snippet "
+"eklendiğinde doldurulur. Değişkenleri olan bir snippet yalnızca "
+"eklenebilir, dahil edilemez."
+
+msgid "No configuration includes this snippet yet."
+msgstr "Henüz hiçbir yapılandırma bu kod parçasını içermiyor."
+
+msgid "Unsaved changes"
+msgstr "Kaydedilmemiş değişiklikler"
+
+msgid "My Snippets"
+msgstr "Kod parçacıklarım"
+
+msgid "Built-in Templates"
+msgstr "Dahili Şablonlar"
+
+msgid "Copied %{include}"
+msgstr "%{include} kopyalandı"
+
+msgid "Delete snippet %{name}?"
+msgstr "%{name} snippet'i silinsin mi?"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "snippets/%{file} burada ve senkronize edilmiş düğümlerde kaldırılacak."
+
+msgid "snippets/%{file} will be removed."
+msgstr "snippets/%{file} kaldırılacak."
+
+msgid "Snippet %{name} deleted"
+msgstr "%{name} snippet'i silindi"
+
+msgid "Synchronize"
+msgstr "Eşitle"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "%{count} düğüme senkronize edildi"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] ""
+"%{count} değişken içerir. Siteler, site düzenleyicisinin yapılandırma "
+"şablonu panelinden doldurulmuş bir kopya ekler."
+
+msgid "Copy the include directive"
+msgstr "include yönergesini kopyala"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "Önce snippet'ı içeren dosyalardan snippet'ı kaldırın."
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+"Bir snippet, Nginx yapılandırmasının bir parçasını tek bir yerde saklar. "
+"Bir siteye dahil edin veya site düzenleyicisinin yapılandırma şablonu "
+"panelinden ekleyin; dahil edilen bir snippet'i değiştirmek, onu kullanan "
+"her siteyi günceller."
+
+msgid "Search snippets"
+msgstr "Arama parçacıkları"
+
+msgid "No snippets yet"
+msgstr "Henüz snippet yok"
+
+msgid "No snippet matches the search"
+msgstr "Aramayla eşleşen hiçbir kod parçası yok"
+
+msgid "Enter a key."
+msgstr "Bir anahtar girin."
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "Harf, rakam ve alt çizgi kullanın; bir harf veya alt çizgi ile başlayın."
+
+msgid "Another variable uses this key."
+msgstr "Başka bir değişken bu anahtarı kullanıyor."
+
+msgid "Add at least one option."
+msgstr "En az bir seçenek ekleyin."
+
+msgid "Every option needs a value."
+msgstr "Her seçeneğin bir değere ihtiyacı vardır."
+
+msgid "Option values must be unique."
+msgstr "Seçenek değerleri benzersiz olmalıdır."
+
+msgid "Choose the default option."
+msgstr "Varsayılan seçeneği seçin."
 
 msgid "Do you want to %{action} this stream?"
 msgstr "Bu akışı %{action} etmek istiyor musunuz?"

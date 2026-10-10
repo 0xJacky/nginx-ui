@@ -13,7 +13,7 @@ import (
 // IssueShortToken creates a short token for WebSocket authentication.
 // Requires a JWT (via AuthRequired) and the browser session cookie.
 func IssueShortToken(c *gin.Context) {
-	sessionCookie, err := c.Cookie(middleware.SecureSessionCookieName)
+	sessionCookie, err := c.Cookie(middleware.SecureSessionCookieNameForRequest(c))
 	if err != nil || sessionCookie == "" {
 		c.JSON(http.StatusForbidden, gin.H{
 			"message": "Session binding cookie required",

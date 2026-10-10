@@ -27,7 +27,9 @@ func setupShortTokenSecurityTest(t *testing.T) (*gin.Engine, *gorm.DB, *model.Us
 	cache.InitInMemoryCache()
 
 	previousSecret := cSettings.AppSettings.JwtSecret
+	previousHTTPS := cSettings.ServerSettings.EnableHTTPS
 	cSettings.AppSettings.JwtSecret = "short-token-security-test-secret"
+	cSettings.ServerSettings.EnableHTTPS = false
 	db, err := gorm.Open(sqlite.Open(testdb.DSN(t, "short-token")), &gorm.Config{})
 	require.NoError(t, err)
 	require.NoError(t, db.AutoMigrate(&model.User{}, &model.AuthToken{}, &model.Passkey{}))
@@ -53,6 +55,7 @@ func setupShortTokenSecurityTest(t *testing.T) (*gin.Engine, *gorm.DB, *model.Us
 	t.Cleanup(func() {
 		cache.Shutdown()
 		cSettings.AppSettings.JwtSecret = previousSecret
+		cSettings.ServerSettings.EnableHTTPS = previousHTTPS
 	})
 	return router, db, u, payload.Token
 }
@@ -63,7 +66,7 @@ func shortTokenRequest(router http.Handler, method, path, authorization string, 
 		req.Header.Set("Authorization", authorization)
 	}
 	if withCookie {
-		req.AddCookie(&http.Cookie{Name: middleware.SecureSessionCookieName, Value: "forged-nonempty-cookie"})
+		req.AddCookie(&http.Cookie{Name: middleware.SecureSessionCookieName + "_http", Value: "forged-nonempty-cookie"})
 	}
 	response := httptest.NewRecorder()
 	router.ServeHTTP(response, req)

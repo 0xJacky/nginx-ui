@@ -456,6 +456,27 @@ msgstr "Desativado"
 msgid "Maintenance"
 msgstr "Manutenção"
 
+msgid "Site"
+msgstr "Site"
+
+msgid "Stream"
+msgstr "Stream"
+
+msgid "Configuration"
+msgstr "Configuração"
+
+msgid "+%{count} more"
+msgstr "+%{count} mais"
+
+msgid "Search"
+msgstr "Pesquisar"
+
+msgid "No file matches the search"
+msgstr "Nenhum ficheiro corresponde à pesquisa"
+
+msgid "Not used"
+msgstr "Não utilizado"
+
 msgid "Starting download..."
 msgstr "A iniciar o download..."
 
@@ -991,9 +1012,6 @@ msgstr "Concluído"
 msgid "Unknown"
 msgstr "Desconhecido"
 
-msgid "Search"
-msgstr "Pesquisar"
-
 msgid "Open in split view"
 msgstr "Abrir em vista dividida"
 
@@ -1085,6 +1103,19 @@ msgstr ""
 "Tarefa de backup %{backup_name} concluída com sucesso, ficheiro: "
 "%{file_path}"
 
+msgid "Auto Backup Retention Skipped"
+msgstr "Retenção de cópia de segurança automática ignorada"
+
+msgid ""
+"Old backups of task %{backup_name} were not deleted because task "
+"%{conflict_names} writes backups with the same file names to the same "
+"storage location. Rename one of the tasks or change its storage path."
+msgstr ""
+"Os backups antigos da tarefa %{backup_name} não foram eliminados porque a "
+"tarefa %{conflict_names} escreve backups com os mesmos nomes de ficheiro na "
+"mesma localização de armazenamento. Altere o nome de uma das tarefas ou "
+"altere o seu caminho de armazenamento."
+
 msgid "Renew Certificate Success"
 msgstr "Certificado Renovado com Sucesso"
 
@@ -1114,6 +1145,16 @@ msgstr "O certificado %{name} expirará em %{days} dias"
 
 msgid "Certificate Expiring Soon"
 msgstr "Certificado a expirar em breve"
+
+msgid "Certificate Relocated"
+msgstr "Certificado relocalizado"
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr ""
+"O certificado %{name} agora está armazenado em %{path}. Aponte os sites que "
+"carregam %{previous_path} para ele"
 
 msgid "Sync Certificate Error"
 msgstr "Erro ao Sincronizar Certificado"
@@ -2890,6 +2931,34 @@ msgstr "O site está em modo de manutenção"
 msgid "Read dir failed: {0}"
 msgstr "Falha ao ler o diretório: {0}"
 
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+"O nome do ficheiro deve terminar em .conf e conter apenas letras, dígitos, "
+"pontos, hífenes e traços inferiores"
+
+msgid "Snippet not found"
+msgstr "Fragmento não encontrado"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "O fragmento excede 256 KiB"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "O cabeçalho do snippet não pode ser analisado: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "O snippet ainda é incluído por {0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "Já existe um snippet com este nome de ficheiro"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "A variável {0} é inválida: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "O conteúdo não é analisado como um modelo: {0}"
+
 msgid "Stream not found"
 msgstr "Transmissão não encontrada"
 
@@ -4115,6 +4184,18 @@ msgstr "Lista de Sites"
 msgid "Add Site"
 msgstr "Adicionar Site"
 
+msgid "Snippets"
+msgstr "Snippets"
+
+msgid "Create Snippet"
+msgstr "Criar snippet"
+
+msgid "Built-in Template"
+msgstr "Modelo incorporado"
+
+msgid "Edit Snippet"
+msgstr "Editar snippet"
+
 msgid "Edit Site"
 msgstr "Editar Site"
 
@@ -4197,29 +4278,17 @@ msgstr ""
 "um servidor ou uma localização no editor do site; alterar a lista aqui "
 "atualiza todos os sites que a utilizam."
 
-msgid "+%{count} more"
-msgstr "+%{count} mais"
-
 msgid "Deny"
 msgstr "Negar"
 
 msgid "Allow"
 msgstr "Permitir"
 
-msgid "Not used"
-msgstr "Não utilizado"
-
 msgid "Use list"
 msgstr "Usar lista"
 
 msgid "Deny (403)"
 msgstr "Negar (403)"
-
-msgid "Site"
-msgstr "Site"
-
-msgid "Stream"
-msgstr "Stream"
 
 msgid "Access list %{name} saved"
 msgstr "Lista de acesso %{name} guardada"
@@ -4319,6 +4388,15 @@ msgstr "Semanalmente no %{day} às %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Mensalmente no dia %{day} às %{time}"
+
+msgid "Backups to Keep"
+msgstr "Backups a manter"
+
+msgid "All"
+msgstr "Todos"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "Backups a manter (0 mantém todos)"
 
 msgid "Last Backup Time"
 msgstr "Hora do último backup"
@@ -4692,6 +4770,11 @@ msgstr "Não é possível verificar a implementação"
 msgid "Not After"
 msgstr "Não Depois"
 
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "Usado por %{count} configuração"
+msgstr[1] "Usado por %{count} configurações"
+
 msgid "Failed to scan certificates"
 msgstr "Falha ao analisar certificados"
 
@@ -4736,6 +4819,12 @@ msgstr "Voltar"
 
 msgid "This field is required"
 msgstr "Este campo é mantatório"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "O caminho existe, mas o ficheiro não é um certificado"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "O caminho existe, mas o ficheiro não é uma chave privada"
 
 msgid "Sync to"
 msgstr "Sincronizar para"
@@ -4813,6 +4902,9 @@ msgstr "Falha ao baixar os ficheiros do certificado"
 
 msgid "Download Certificate Files"
 msgstr "Baixar arquivos de certificado"
+
+msgid "Download"
+msgstr "Baixar"
 
 msgid "Download Format"
 msgstr "Formato de download"
@@ -4983,11 +5075,14 @@ msgstr "Para confirmar a revogação, digite \"Revogar\" no campo abaixo:"
 msgid "Renew successfully"
 msgstr "Renovado com Sucesso"
 
+msgid "AutoCert is running, please wait..."
+msgstr "O AutoCert está em execução, aguarde..."
+
 msgid "Renew Certificate"
 msgstr "Renovar Certificado"
 
-msgid "AutoCert is running, please wait..."
-msgstr "O AutoCert está em execução, aguarde..."
+msgid "Renew"
+msgstr "Renovar"
 
 msgid "Certificate issued successfully"
 msgstr "Certificado emitido com sucesso"
@@ -5605,6 +5700,16 @@ msgstr ""
 "URL absoluto opcional. Utilize-o quando o endereço público for diferente do "
 "host ou porta real do upstream."
 
+msgid "Site Card Click URL"
+msgstr "URL de clique do cartão do site"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr ""
+"URL HTTP/HTTPS absoluta opcional utilizada ao abrir este cartão de site. Se "
+"estiver vazia, é utilizada a URL predefinida do site."
+
 msgid "HTTP Method"
 msgstr "Método HTTP"
 
@@ -5913,9 +6018,6 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "Adicional"
 
-msgid "All"
-msgstr "Todos"
-
 msgid "Host, e.g. @ or www"
 msgstr "Host, por ex. @ ou www"
 
@@ -6075,9 +6177,6 @@ msgstr "O nome não pode estar vazio"
 
 msgid "Please select DNS provider"
 msgstr "Por favor, selecione o provedor DNS"
-
-msgid "Configuration"
-msgstr "Configuração"
 
 msgid "DNS Credentials"
 msgstr "Credenciais DNS"
@@ -7588,7 +7687,9 @@ msgstr "Ativar HTTPS"
 msgid ""
 "Serves the web interface over HTTPS. Saving this change restarts Nginx UI "
 "and reloads the page."
-msgstr "Serve a interface web através de HTTPS. Guardar esta alteração reinicia o Nginx UI e recarrega a página."
+msgstr ""
+"Serve a interface web através de HTTPS. Guardar esta alteração reinicia o "
+"Nginx UI e recarrega a página."
 
 msgid "SSL Key Path"
 msgstr "Caminho da chave SSL"
@@ -7632,7 +7733,9 @@ msgid "ICP Number"
 msgstr "Número ICP"
 
 msgid "Shown in the page footer. Only needed for sites hosted in mainland China."
-msgstr "Apresentado no rodapé da página. Necessário apenas para sites alojados na China continental."
+msgstr ""
+"Apresentado no rodapé da página. Necessário apenas para sites alojados na "
+"China continental."
 
 msgid "Public Security Number"
 msgstr "Número de Segurança Pública"
@@ -7641,7 +7744,9 @@ msgid "Github Proxy"
 msgstr "Github Proxy"
 
 msgid "Used for downloads from GitHub, such as upgrades and the GeoLite database."
-msgstr "Utilizado para transferências do GitHub, como atualizações e a base de dados GeoLite."
+msgstr ""
+"Utilizado para transferências do GitHub, como atualizações e a base de "
+"dados GeoLite."
 
 msgid "HTTP Proxy"
 msgstr "Proxy HTTP"
@@ -7665,7 +7770,9 @@ msgid "Ban Threshold Minutes"
 msgstr "Minutos Limite para Banir"
 
 msgid "Window in which failed sign-in attempts from one address are counted."
-msgstr "Janela de tempo em que as tentativas de início de sessão falhadas de um endereço são contabilizadas."
+msgstr ""
+"Janela de tempo em que as tentativas de início de sessão falhadas de um "
+"endereço são contabilizadas."
 
 msgid "Max Attempts"
 msgstr "Máximo de Tentativas"
@@ -7673,7 +7780,9 @@ msgstr "Máximo de Tentativas"
 msgid ""
 "Failed attempts allowed inside the window before the address is banned for "
 "a while."
-msgstr "Tentativas falhadas permitidas dentro da janela antes de o endereço ser banido por algum tempo."
+msgstr ""
+"Tentativas falhadas permitidas dentro da janela antes de o endereço ser "
+"banido por algum tempo."
 
 msgid "Banned IPs"
 msgstr "IPs Banidos"
@@ -7698,13 +7807,17 @@ msgid "HTTP Challenge Port"
 msgstr "Porta para HTTP Challenge"
 
 msgid "Port that answers validation requests while a certificate is being issued."
-msgstr "Porta que responde aos pedidos de validação enquanto um certificado está a ser emitido."
+msgstr ""
+"Porta que responde aos pedidos de validação enquanto um certificado está a "
+"ser emitido."
 
 msgid "CADir"
 msgstr "CADir"
 
 msgid "Service that issues certificates. Leave empty to use the default."
-msgstr "Serviço que emite os certificados. Deixe em branco para utilizar o predefinido."
+msgstr ""
+"Serviço que emite os certificados. Deixe em branco para utilizar o "
+"predefinido."
 
 msgid "Certificate Renewal Threshold"
 msgstr "Limiar de renovação do certificado"
@@ -7722,7 +7835,9 @@ msgstr "Nameservers recursivos"
 msgid ""
 "Set the recursive nameservers to override the systems nameservers for the "
 "step of DNS challenge."
-msgstr "Defina os servidores de nomes recursivos para substituir os servidores de nomes do sistema no passo do desafio DNS."
+msgstr ""
+"Defina os servidores de nomes recursivos para substituir os servidores de "
+"nomes do sistema no passo do desafio DNS."
 
 msgid "Stub Status Port"
 msgstr "Porta de estado stub"
@@ -7875,7 +7990,9 @@ msgstr "Ativar Logrotate"
 msgid ""
 "Runs the rotation command on a schedule from Nginx UI. Mainly needed inside "
 "a Docker container."
-msgstr "Executa o comando de rotação de forma agendada a partir do Nginx UI. Necessário sobretudo dentro de um contentor Docker."
+msgstr ""
+"Executa o comando de rotação de forma agendada a partir do Nginx UI. "
+"Necessário sobretudo dentro de um contentor Docker."
 
 msgid "Command"
 msgstr "Comando"
@@ -7902,7 +8019,9 @@ msgstr "Diretório de limites de mapas"
 msgid ""
 "Keep files with names like 100000_full.json in this directory. Only the "
 "world map is provided by default."
-msgstr "Mantenha neste diretório ficheiros com nomes como 100000_full.json. Por predefinição, apenas o mapa-múndi é fornecido."
+msgstr ""
+"Mantenha neste diretório ficheiros com nomes como 100000_full.json. Por "
+"predefinição, apenas o mapa-múndi é fornecido."
 
 msgid "Register passkey successfully"
 msgstr "Chave de acesso registrada com sucesso"
@@ -9382,7 +9501,9 @@ msgid "Basics"
 msgstr "Básico"
 
 msgid "Address, protocol and certificate used to reach this Nginx UI instance."
-msgstr "Endereço, protocolo e certificado utilizados para aceder a esta instância do Nginx UI."
+msgstr ""
+"Endereço, protocolo e certificado utilizados para aceder a esta instância "
+"do Nginx UI."
 
 msgid "App"
 msgstr "Aplicação"
@@ -9418,7 +9539,9 @@ msgid "Cert"
 msgstr "Certificado"
 
 msgid "Contact, issuing service and renewal of certificates requested by Nginx UI."
-msgstr "Contacto, serviço emissor e renovação dos certificados pedidos pelo Nginx UI."
+msgstr ""
+"Contacto, serviço emissor e renovação dos certificados pedidos pelo Nginx "
+"UI."
 
 msgid "Go to certificates"
 msgstr "Ir para certificados"
@@ -9436,7 +9559,9 @@ msgid "Health Check"
 msgstr "Verificação de saúde"
 
 msgid "Global switches and intervals for site and proxy target checks."
-msgstr "Interruptores globais e intervalos para as verificações de sites e destinos de proxy."
+msgstr ""
+"Interruptores globais e intervalos para as verificações de sites e destinos "
+"de proxy."
 
 msgid "Go to sites"
 msgstr "Ir para sites"
@@ -9460,7 +9585,9 @@ msgid "GeoLite"
 msgstr "GeoLite"
 
 msgid "Geographic database and map files used by log analytics."
-msgstr "Base de dados geográfica e ficheiros de mapas utilizados pela análise de registos."
+msgstr ""
+"Base de dados geográfica e ficheiros de mapas utilizados pela análise de "
+"registos."
 
 msgid "Go to logs"
 msgstr "Ir para registos"
@@ -9602,7 +9729,10 @@ msgstr "Limitação"
 msgid ""
 "If the number of login failed attempts from a ip reach the max attempts in "
 "ban threshold minutes, the ip will be banned for a period of time."
-msgstr "Se o número de tentativas de início de sessão falhadas de um IP atingir o máximo de tentativas dentro dos minutos do limite de banimento, o IP será banido durante algum tempo."
+msgstr ""
+"Se o número de tentativas de início de sessão falhadas de um IP atingir o "
+"máximo de tentativas dentro dos minutos do limite de banimento, o IP será "
+"banido durante algum tempo."
 
 msgid "Are you sure to delete this banned IP immediately?"
 msgstr "Tem certeza que pretende eliminar este IP banido imediatamente?"
@@ -9640,7 +9770,9 @@ msgstr "Mapas"
 msgid ""
 "Please download China and province boundary files yourself and place them "
 "in this directory."
-msgstr "Transfira você mesmo os ficheiros de limites da China e das províncias e coloque-os neste diretório."
+msgstr ""
+"Transfira você mesmo os ficheiros de limites da China e das províncias e "
+"coloque-os neste diretório."
 
 msgid "Template reference"
 msgstr "Referência de modelo"
@@ -10157,6 +10289,9 @@ msgstr "Espaço de nomes"
 msgid "The parameter of server_name is required"
 msgstr "O parâmetro de server_name é obrigatório"
 
+msgid "Config Template"
+msgstr "Modelo de Configuração"
+
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "Guarde a configuração editada antes de ativar o HTTPS."
 
@@ -10256,11 +10391,31 @@ msgstr "Certificado autoassinado"
 msgid "Generate self-signed certificate"
 msgstr "Gerar certificado autoassinado"
 
+msgid "Built-in"
+msgstr "Integrado"
+
 msgid "Search templates"
 msgstr "Pesquisar modelos"
 
+msgid "Snippet"
+msgstr "Trecho"
+
 msgid "Author"
 msgstr "Autor"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include mantém o site ligado a snippets/%{file}, de modo que as alterações "
+"posteriores do snippet se aplicam a ele. Insert copia o conteúdo para o "
+"site em vez disso."
+
+msgid "Insert"
+msgstr "Inserir"
+
+msgid "Include"
+msgstr "Incluir"
 
 msgid "Do you want to enable TLS?"
 msgstr "Activar TLS?"
@@ -10570,9 +10725,6 @@ msgstr "Recriar registo DNS"
 msgid "Clear Link"
 msgstr "Limpar ligação"
 
-msgid "Config Template"
-msgstr "Modelo de Configuração"
-
 msgid "Port Scanner"
 msgstr "Scanner de portas"
 
@@ -10657,6 +10809,339 @@ msgstr "Definir informações de manutenção para os sites selecionados"
 
 msgid "%{count} sites selected"
 msgstr "%{count} sites selecionados"
+
+msgid "Read Only"
+msgstr "Somente leitura"
+
+msgid "Preview"
+msgstr "Pré-visualização"
+
+msgid "Updates as the snippet changes."
+msgstr "Atualiza-se quando o fragmento é alterado."
+
+msgid ""
+"Built-in templates come with Nginx UI and cannot be changed. Copy one as a "
+"snippet to change it."
+msgstr ""
+"Os modelos integrados vêm com o Nginx UI e não podem ser alterados. Copie "
+"um como um snippet para o alterar."
+
+msgid "File Name"
+msgstr "Nome do ficheiro"
+
+msgid "Variables"
+msgstr "Variáveis"
+
+msgid "Copy as Snippet"
+msgstr "Copiar como snippet"
+
+msgid "Template"
+msgstr "Modelo"
+
+msgid "No template matches the search"
+msgstr "Nenhum modelo corresponde à pesquisa"
+
+msgid "%{count} variable"
+msgid_plural "%{count} variables"
+msgstr[0] "%{count} variável"
+msgstr[1] "%{count} variáveis"
+
+msgid "Translations"
+msgstr "Traduções"
+
+msgid ""
+"The field is in %{language}. Users of other languages see their "
+"translation, or English when there is none."
+msgstr ""
+"O campo está em %{language}. Os utilizadores de outros idiomas veem a sua "
+"tradução, ou o inglês quando não existe."
+
+msgid "Remove translation"
+msgstr "Remover tradução"
+
+msgid "Add a language"
+msgstr "Adicionar um idioma"
+
+msgid "Text"
+msgstr "Texto"
+
+msgid "Switch"
+msgstr "Alternar"
+
+msgid "Select"
+msgstr "Selecionar"
+
+msgid "New Variable…"
+msgstr "Nova variável…"
+
+msgid "Insert Variable"
+msgstr "Inserir variável"
+
+msgid ""
+"Type %{open} to complete a variable, or select a value and press %{keys} to "
+"make it one."
+msgstr ""
+"Digite %{open} para completar uma variável, ou selecione um valor e "
+"pressione %{keys} para transformá-lo numa variável."
+
+msgid "Default Value"
+msgstr "Valor predefinido"
+
+msgid "Edit Variable"
+msgstr "Editar variável"
+
+msgid ""
+"This variable is not declared, so it has no value when the snippet is "
+"inserted."
+msgstr ""
+"Esta variável não está declarada, pelo que não tem valor quando o excerto é "
+"inserido."
+
+msgid "Declare Variable"
+msgstr "Declarar variável"
+
+msgid "Make Variable"
+msgstr "Criar variável"
+
+msgid "New Variable"
+msgstr "Nova variável"
+
+msgid "Key"
+msgstr "Chave"
+
+msgid "Label"
+msgstr "Etiqueta"
+
+msgid "The variable is declared and inserted at the cursor."
+msgstr "A variável é declarada e inserida na posição do cursor."
+
+msgid ""
+"The selected value becomes the default value, and the content refers to the "
+"variable instead."
+msgstr ""
+"O valor selecionado torna-se o valor predefinido, e o conteúdo refere-se à "
+"variável em vez disso."
+
+msgid "Add Variable"
+msgstr "Adicionar variável"
+
+msgid "Not declared, so left without a value: %{names}"
+msgstr "Não declarado, por isso ficou sem valor: %{names}"
+
+msgid "The snippet does not render as valid Nginx configuration."
+msgstr "O snippet não é renderizado como uma configuração de Nginx válida."
+
+msgid "The snippet renders as valid Nginx configuration."
+msgstr "O fragmento é renderizado como uma configuração válida do Nginx."
+
+msgid "What the site editor asks for"
+msgstr "O que o editor do site pede"
+
+msgid "Restore Default Values"
+msgstr "Restaurar valores predefinidos"
+
+msgid "Nothing to fill in."
+msgstr "Nada para preencher."
+
+msgid "Fix the variables to preview the snippet."
+msgstr "Corrija as variáveis para pré-visualizar o fragmento de código."
+
+msgid "Snippets are no longer synchronized"
+msgstr "Os snippets já não são sincronizados"
+
+msgid "Synchronize Snippets"
+msgstr "Sincronizar fragmentos"
+
+msgid ""
+"Every snippet is copied to the selected nodes now, and later changes follow "
+"automatically. Clear the selection to stop synchronizing."
+msgstr ""
+"Cada snippet é copiado para os nós selecionados agora, e as alterações "
+"futuras são seguidas automaticamente. Limpe a seleção para parar a "
+"sincronização."
+
+msgid "Replace snippets that already exist on the nodes"
+msgstr "Substituir snippets que já existem nos nós"
+
+msgid "Included by %{count} file"
+msgid_plural "Included by %{count} files"
+msgstr[0] "Incluído por %{count} ficheiro"
+msgstr[1] "Incluído por %{count} ficheiros"
+
+msgid "Not Used"
+msgstr "Não utilizado"
+
+msgid "Max Age"
+msgstr "Idade máxima"
+
+msgid "Options"
+msgstr "Opções"
+
+msgid "Remove option"
+msgstr "Remover opção"
+
+msgid "Add Option"
+msgstr "Adicionar opção"
+
+msgid "Remove variable"
+msgstr "Remover variável"
+
+msgid "Used in the content, not declared"
+msgstr "Utilizado no conteúdo, não declarado"
+
+msgid "Snippet %{name} saved"
+msgstr "Snippet %{name} guardado"
+
+msgid "Discard the unsaved changes?"
+msgstr "Descartar as alterações não guardadas?"
+
+msgid "Keep Editing"
+msgstr "Continuar a editar"
+
+msgid "Edit Snippet %{name}"
+msgstr "Editar fragmento %{name}"
+
+msgid "Sites can include this snippet and follow its later changes."
+msgstr ""
+"Os sites podem incluir este snippet e acompanhar as suas alterações "
+"posteriores."
+
+msgid ""
+"This snippet has variables, so sites insert a filled in copy from the "
+"config template panel."
+msgstr ""
+"Este snippet tem variáveis, pelo que os sites inserem uma cópia preenchida "
+"a partir do painel do modelo de configuração."
+
+msgid "Includable"
+msgstr "Incluível"
+
+msgid "Insert Only"
+msgstr "Apenas inserir"
+
+msgid "Use"
+msgstr "Usar"
+
+msgid ""
+"Add this directive to a server or location block. Sites that include the "
+"snippet follow its later changes."
+msgstr ""
+"Adicione esta diretiva a um bloco server ou location. Os sites que incluem "
+"o snippet seguem as suas alterações posteriores."
+
+msgid "Static file cache"
+msgstr "Cache de arquivos estáticos"
+
+msgid "Fixed while configurations include the snippet, so they keep working."
+msgstr ""
+"Corrigido enquanto as configurações incluem o snippet, para que continuem a "
+"funcionar."
+
+msgid "Letters, digits, dots, dashes and underscores."
+msgstr "Letras, dígitos, pontos, hifens e sublinhados."
+
+msgid ""
+"Variables are filled in when the snippet is inserted from the config "
+"template panel of the site editor. A snippet with variables can only be "
+"inserted, not included."
+msgstr ""
+"As variáveis são preenchidas quando o snippet é inserido a partir do painel "
+"de modelos de configuração do editor do site. Um snippet com variáveis pode "
+"apenas ser inserido, não incluído."
+
+msgid "No configuration includes this snippet yet."
+msgstr "Nenhuma configuração inclui este snippet ainda."
+
+msgid "Unsaved changes"
+msgstr "Alterações não guardadas"
+
+msgid "My Snippets"
+msgstr "Meus trechos de código"
+
+msgid "Built-in Templates"
+msgstr "Modelos integrados"
+
+msgid "Copied %{include}"
+msgstr "%{include} copiado"
+
+msgid "Delete snippet %{name}?"
+msgstr "Eliminar o snippet %{name}?"
+
+msgid "snippets/%{file} will be removed here and on the synchronized nodes."
+msgstr "snippets/%{file} será removido aqui e nos nós sincronizados."
+
+msgid "snippets/%{file} will be removed."
+msgstr "snippets/%{file} será removido."
+
+msgid "Snippet %{name} deleted"
+msgstr "Snippet %{name} eliminado"
+
+msgid "Synchronize"
+msgstr "Sincronizar"
+
+msgid "Synchronized to %{count} node"
+msgid_plural "Synchronized to %{count} nodes"
+msgstr[0] "Sincronizado para %{count} nó"
+msgstr[1] "Sincronizado para %{count} nós"
+
+msgid ""
+"Has %{count} variable. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgid_plural ""
+"Has %{count} variables. Sites insert a filled in copy from the config "
+"template panel of the site editor."
+msgstr[0] ""
+"Tem %{count} variável. Os sites inserem uma cópia preenchida a partir do "
+"painel de modelos de configuração do editor de sites."
+msgstr[1] ""
+"Tem %{count} variáveis. Os sites inserem uma cópia preenchida a partir do "
+"painel de modelos de configuração do editor de sites."
+
+msgid "Copy the include directive"
+msgstr "Copiar a diretiva include"
+
+msgid "Remove the snippet from the files that include it first."
+msgstr "Remova primeiro o snippet dos ficheiros que o incluem."
+
+msgid ""
+"A snippet keeps a piece of Nginx configuration in one place. Include it in "
+"a site, or insert it from the config template panel of the site editor; "
+"changing an included snippet updates every site that uses it."
+msgstr ""
+"Um snippet mantém uma parte da configuração do Nginx num único local. "
+"Inclua-o num site ou insira-o a partir do painel de modelos de configuração "
+"do editor de sites; ao alterar um snippet incluído, todos os sites que o "
+"utilizam são atualizados."
+
+msgid "Search snippets"
+msgstr "Excertos de pesquisa"
+
+msgid "No snippets yet"
+msgstr "Ainda não há excertos"
+
+msgid "No snippet matches the search"
+msgstr "Nenhum excerto corresponde à pesquisa"
+
+msgid "Enter a key."
+msgstr "Introduza uma chave."
+
+msgid "Use letters, digits and underscores, starting with a letter or underscore."
+msgstr "Use letras, dígitos e sublinhados, começando com uma letra ou um sublinhado."
+
+msgid "Another variable uses this key."
+msgstr "Outra variável usa esta chave."
+
+msgid "Add at least one option."
+msgstr "Adicione pelo menos uma opção."
+
+msgid "Every option needs a value."
+msgstr "Cada opção precisa de um valor."
+
+msgid "Option values must be unique."
+msgstr "Os valores das opções devem ser únicos."
+
+msgid "Choose the default option."
+msgstr "Escolha a opção predefinida."
 
 msgid "Do you want to %{action} this stream?"
 msgstr "Deseja %{action} este fluxo?"

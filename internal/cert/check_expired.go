@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -76,6 +77,20 @@ func buildExpiryNotification(certModel *model.Cert, info *Info, now time.Time) *
 		stage = shortLivedExpiryStage(info.NotAfter.Sub(info.NotBefore), remaining)
 	} else {
 		stage = standardExpiryStage(remaining)
+		if certModel.AutoCert == model.AutoCertEnabled {
+			renewAt := certificateRenewalTime(info, settings.CertSettings.GetCertRenewalInterval())
+			if !renewAt.IsZero() {
+				// The fixed thresholds would announce an expiry that the renewal
+				// job is about to prevent. Stay quiet until less validity is left
+				// than the renewal threshold, then report it right away.
+				if !now.After(renewAt) {
+					return nil
+				}
+				if stage == "" {
+					stage = expiryStageNotice
+				}
+			}
+		}
 	}
 	if stage == "" || expiryNotificationAlreadySent(certModel, info.NotAfter, stage) {
 		return nil

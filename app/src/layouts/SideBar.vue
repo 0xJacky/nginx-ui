@@ -132,7 +132,7 @@ const menuItems = computed(() => {
 
 <template>
   <div class="sidebar">
-    <Logo />
+    <Logo to="/" />
 
     <NodeIndicator />
 

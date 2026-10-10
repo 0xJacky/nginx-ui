@@ -1,0 +1,23 @@
+# Plumber policy overlay. `extends: plumber:default` makes this a sparse overlay on
+# Plumber's shipped baseline: only the keys below are overridden, everything else
+# (and any controls Plumber adds later) is inherited automatically.
+extends: plumber:default
+version: "2.0"
+
+github:
+  controls:
+    # ISSUE-713 "Action comes from an unauthorized source" flags any `uses:` whose
+    # owner is not GitHub-official, the same org as this repo, or explicitly trusted.
+    # nginxui is our own organization; nginxui/musl-cross-compilers is maintained by
+    # us, so trust the whole owner here. includePlumberDefaults keeps Plumber's
+    # curated trusted list in addition to this entry rather than replacing it.
+    githubActionMustComeFromAuthorizedSources:
+      includePlumberDefaults: true
+      trustedGithubActions:
+        - nginxui/*
+
+    # dev is pushed to directly by maintainers rather than through protected
+    # pull requests, so branch protection is intentionally not enforced. Suppress
+    # the assertion (ISSUE-501) rather than failing every scan on main and dev.
+    branchMustBeProtected:
+      enabled: false

@@ -23,6 +23,7 @@ type redactedAutoBackup struct {
 	StoragePath      string             `json:"storage_path"`
 	CronExpression   string             `json:"cron_expression"`
 	Enabled          bool               `json:"enabled"`
+	RetentionCount   int                `json:"retention_count"`
 	LastBackupTime   *time.Time         `json:"last_backup_time"`
 	LastBackupStatus model.BackupStatus `json:"last_backup_status"`
 	LastBackupError  string             `json:"last_backup_error"`
@@ -41,6 +42,7 @@ func redactAutoBackup(autoBackup *model.AutoBackup) redactedAutoBackup {
 		StoragePath:      autoBackup.StoragePath,
 		CronExpression:   autoBackup.CronExpression,
 		Enabled:          autoBackup.Enabled,
+		RetentionCount:   autoBackup.RetentionCount,
 		LastBackupTime:   autoBackup.LastBackupTime,
 		LastBackupStatus: autoBackup.LastBackupStatus,
 		LastBackupError:  autoBackup.LastBackupError,
@@ -84,6 +86,7 @@ func CreateAutoBackup(c *gin.Context) {
 		"storage_path":         "required",
 		"cron_expression":      "required",
 		"enabled":              "omitempty",
+		"retention_count":      "omitempty,min=0",
 		"backup_path":          "omitempty",
 		"s3_endpoint":          "omitempty",
 		"s3_access_key_id":     "omitempty",
@@ -138,6 +141,7 @@ func ModifyAutoBackup(c *gin.Context) {
 		"cron_expression":      "omitempty",
 		"backup_path":          "omitempty",
 		"enabled":              "omitempty",
+		"retention_count":      "omitempty,min=0",
 		"s3_endpoint":          "omitempty",
 		"s3_access_key_id":     "omitempty",
 		"s3_secret_access_key": "omitempty",
