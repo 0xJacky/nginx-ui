@@ -29,7 +29,7 @@ to Cursor's development tools. It provides `web_search` for finding sources and
 `web_fetch` for reading a specific page. Anonymous search uses Fast mode and
 requires no Parallel account or API key. Free usage is rate limited.
 
-1. Install Node.js 22.12 or newer, with `npx` available on Cursor's PATH. If
+1. Install Node.js 22.19 or newer, with `npx` available on Cursor's PATH. If
    Cursor runs MCP tools inside the devcontainer, install Node.js there.
 2. Open `.cursor/parallel-search.example.json` in the repository and merge its
    `parallel-search` entry into the `mcpServers` object in `.cursor/mcp.json`.
@@ -46,17 +46,17 @@ commands from the repository root; `npx` downloads the pinned Inspector on first
 use. They load the same configuration and execute tools without an AI model:
 
 ```shell
-npx --yes @modelcontextprotocol/inspector@0.21.2 --cli \
+npx --yes @modelcontextprotocol/inspector@2.10.1 --cli \
   --config .cursor/parallel-search.example.json --server parallel-search \
   --method tools/list
 
-npx --yes @modelcontextprotocol/inspector@0.21.2 --cli \
+npx --yes @modelcontextprotocol/inspector@2.10.1 --cli \
   --config .cursor/parallel-search.example.json --server parallel-search \
   --method tools/call --tool-name web_search \
   --tool-arg 'objective=Find the official Nginx proxy_read_timeout documentation.' \
   --tool-arg 'search_queries=["nginx proxy_read_timeout official documentation"]'
 
-npx --yes @modelcontextprotocol/inspector@0.21.2 --cli \
+npx --yes @modelcontextprotocol/inspector@2.10.1 --cli \
   --config .cursor/parallel-search.example.json --server parallel-search \
   --method tools/call --tool-name web_fetch \
   --tool-arg 'objective=Read the proxy_read_timeout directive syntax and default.' \
