@@ -35,7 +35,8 @@ requires no Parallel account or API key. Free usage is rate limited.
    `parallel-search` entry into the `mcpServers` object in `.cursor/mcp.json`.
    Keep the existing `eslint`, `context7`, and any other servers. The example
    pins the `mcp-remote` dependency, which `npx` downloads on first use, and
-   bridges local stdio to the remote HTTPS MCP endpoint.
+   bridges local stdio to the remote HTTPS MCP endpoint. It also honors
+   `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` if set in Cursor's environment.
 3. Reload Cursor's MCP configuration and enable `parallel-search` in its MCP
    settings. Confirm that `web_search` and `web_fetch` appear in the tool list.
 4. Ask Cursor to use `web_search` to find the official Nginx documentation for
