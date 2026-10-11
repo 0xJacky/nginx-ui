@@ -21,6 +21,55 @@ You'll need to set up a development environment if you want to develop on this p
 5. Select Tasks: Run Task -> Start all services
 6. Wait for the services to start
 
+## Optional documentation search in Cursor
+
+When researching Nginx directives or troubleshooting a configuration, you can
+add [Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp)
+to Cursor's development tools. It provides `web_search` for finding sources and
+`web_fetch` for reading a specific page. Anonymous search uses Fast mode and
+requires no Parallel account or API key. Free usage is rate limited.
+
+1. Open `.cursor/parallel-search.example.json` in the repository and merge its
+   `parallel-search` entry into the `mcpServers` object in `.cursor/mcp.json`.
+   Keep the existing `eslint`, `context7`, and any other servers. The example
+   uses Cursor's remote Streamable HTTP transport over HTTPS.
+2. Reload Cursor's MCP configuration and enable `parallel-search` in its MCP
+   settings. Confirm that `web_search` and `web_fetch` appear in the tool list.
+
+You can also check the example directly with the
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector) CLI. Run these
+commands from the repository root with Node.js 22.19 or newer and `npx` installed;
+`npx` downloads the pinned Inspector on first use. They load the same configuration
+and execute tools without an AI model:
+
+```shell
+npx --yes @modelcontextprotocol/inspector@2.10.1 --cli \
+  --config .cursor/parallel-search.example.json --server parallel-search \
+  --method tools/list
+
+npx --yes @modelcontextprotocol/inspector@2.10.1 --cli \
+  --config .cursor/parallel-search.example.json --server parallel-search \
+  --method tools/call --tool-name web_search \
+  --tool-arg 'objective=Find the official Nginx proxy_read_timeout documentation.' \
+  --tool-arg 'search_queries=["nginx proxy_read_timeout official documentation"]'
+
+npx --yes @modelcontextprotocol/inspector@2.10.1 --cli \
+  --config .cursor/parallel-search.example.json --server parallel-search \
+  --method tools/call --tool-name web_fetch \
+  --tool-arg 'objective=Read the proxy_read_timeout directive syntax and default.' \
+  --tool-arg 'urls=["https://nginx.org/en/docs/http/ngx_http_proxy_module.html"]'
+```
+
+The search output should contain source URLs and excerpts; the fetch output
+should describe `proxy_read_timeout`. Check the source before applying a
+configuration.
+
+Search queries and requested URLs are sent to Parallel. Use public documentation
+queries and omit credentials, private hostnames, and confidential configuration
+content. This setup adds tools to your development editor; it does not enable
+web search in Nginx UI's built-in ChatGPT assistant. To disable it, remove only
+the `parallel-search` entry from your local MCP configuration.
+
 ## Ports
 
 | Port  | Service          |
