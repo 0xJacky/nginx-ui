@@ -39,10 +39,33 @@ requires no Parallel account or API key. Free usage is rate limited.
    `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY` if set in Cursor's environment.
 3. Reload Cursor's MCP configuration and enable `parallel-search` in its MCP
    settings. Confirm that `web_search` and `web_fetch` appear in the tool list.
-4. Ask Cursor to use `web_search` to find the official Nginx documentation for
-   `proxy_read_timeout`, then use `web_fetch` on
-   `https://nginx.org/en/docs/http/ngx_http_proxy_module.html` to read the exact
-   directive description. Check the source before applying a configuration.
+
+You can also check the example directly with the
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector) CLI. Run these
+commands from the repository root; `npx` downloads the pinned Inspector on first
+use. They load the same configuration and execute tools without an AI model:
+
+```shell
+npx --yes @modelcontextprotocol/inspector@0.21.2 --cli \
+  --config .cursor/parallel-search.example.json --server parallel-search \
+  --method tools/list
+
+npx --yes @modelcontextprotocol/inspector@0.21.2 --cli \
+  --config .cursor/parallel-search.example.json --server parallel-search \
+  --method tools/call --tool-name web_search \
+  --tool-arg 'objective=Find the official Nginx proxy_read_timeout documentation.' \
+  --tool-arg 'search_queries=["nginx proxy_read_timeout official documentation"]'
+
+npx --yes @modelcontextprotocol/inspector@0.21.2 --cli \
+  --config .cursor/parallel-search.example.json --server parallel-search \
+  --method tools/call --tool-name web_fetch \
+  --tool-arg 'objective=Read the proxy_read_timeout directive syntax and default.' \
+  --tool-arg 'urls=["https://nginx.org/en/docs/http/ngx_http_proxy_module.html"]'
+```
+
+The search output should contain source URLs and excerpts; the fetch output
+should describe `proxy_read_timeout`. Check the source before applying a
+configuration.
 
 Search queries and requested URLs are sent to Parallel. Use public documentation
 queries and omit credentials, private hostnames, and confidential configuration
