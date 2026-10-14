@@ -41,7 +41,7 @@ func (s *NgxServer) parseServer(directive config.IDirective) {
 		default:
 			dir := &NgxDirective{
 				Directive: d.GetName(),
-				Comments:  buildComment(d.GetComment()),
+				Comments:  buildDirectiveComment(d),
 			}
 			dir.parseDirective(d, 0)
 			s.Directives = append(s.Directives, dir)
@@ -78,7 +78,7 @@ func (l *NgxLocation) parseLocation(directive config.IDirective, deep int) {
 			l.parseLocation(location, deep+1)
 			l.Content += strings.Repeat("\t", deep) + "} \n"
 		} else {
-			l.Content += ";\n"
+			l.Content += ";" + inlineComment(location) + "\n"
 		}
 	}
 }
@@ -112,7 +112,7 @@ func (d *NgxDirective) parseDirective(directive config.IDirective, deep int) {
 				params = append(params, param.Value)
 			}
 			d.Params += strings.Repeat("\t", deep+1) + location.GetName() + " " +
-				strings.Join(params, " ") + ";\n"
+				strings.Join(params, " ") + ";" + inlineComment(location) + "\n"
 			// d.parseDirective(location, deep+1)
 			if location.GetBlock() == nil {
 				continue
@@ -138,7 +138,7 @@ func (u *NgxUpstream) parseUpstream(directive config.IDirective) {
 		d := &NgxDirective{
 			Directive: us.GetName(),
 			Params:    strings.Join(params, " "),
-			Comments:  buildComment(us.GetComment()),
+			Comments:  buildDirectiveComment(us),
 		}
 		u.Directives = append(u.Directives, d)
 	}
@@ -176,6 +176,26 @@ func buildComment(c []string) string {
 		lines = append(lines, strings.TrimLeft(line, "#"))
 	}
 	return strings.Join(lines, "\n")
+}
+
+// buildDirectiveComment folds the inline comment of a directive into its
+// comments, so it is written back on its own line above the directive.
+func buildDirectiveComment(d config.IDirective) string {
+	lines := append([]string{}, d.GetComment()...)
+	for _, inline := range d.GetInlineComment() {
+		lines = append(lines, inline.Value)
+	}
+	return buildComment(lines)
+}
+
+// inlineComment returns the inline comments of a directive, each prefixed
+// with a space, to be written back on the same line.
+func inlineComment(d config.IDirective) string {
+	var comment string
+	for _, inline := range d.GetInlineComment() {
+		comment += " " + inline.Value
+	}
+	return comment
 }
 
 func shouldUnwrapRootBlock(block config.IBlock) config.IDirective {
