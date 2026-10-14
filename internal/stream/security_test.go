@@ -257,3 +257,34 @@ func TestRenameRelinksRegularFileInEnabledDir(t *testing.T) {
 		t.Fatalf("relinked entry points at %q, want the renamed available file", target)
 	}
 }
+
+// Renaming a stream used to leave its certificate record under the old name,
+// so deleting the renamed stream left the record behind.
+func TestRenameThenDeleteRemovesStreamCertificate(t *testing.T) {
+	confDir, waitForSyncQuery := setupStreamMutationTest(t)
+	database := model.UseDB()
+
+	if err := os.WriteFile(filepath.Join(confDir, "streams-available", "tcp_proxy"), []byte("server {\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed stream config: %v", err)
+	}
+	if err := database.Create(&model.Cert{Filename: "tcp_proxy", AutoCert: model.AutoCertEnabled}).Error; err != nil {
+		t.Fatalf("failed to seed certificate: %v", err)
+	}
+
+	if err := Rename(context.Background(), "tcp_proxy", "tcp_proxy_new"); err != nil {
+		t.Fatalf("Rename returned error: %v", err)
+	}
+	waitForSyncQuery()
+
+	if err := Delete(context.Background(), "tcp_proxy_new"); err != nil {
+		t.Fatalf("Delete returned error: %v", err)
+	}
+
+	var count int64
+	if err := database.Model(&model.Cert{}).Count(&count).Error; err != nil {
+		t.Fatalf("failed to count certificates: %v", err)
+	}
+	if count != 0 {
+		t.Fatalf("found %d certificates after rename and delete, want 0", count)
+	}
+}
