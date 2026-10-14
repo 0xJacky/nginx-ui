@@ -44,6 +44,18 @@ func Rename(ctx context.Context, oldName string, newName string) (err error) {
 		return ErrDstFileExists
 	}
 
+	maintenancePath, err := ResolveEnabledMaintenancePath(oldName)
+	if err != nil {
+		return err
+	}
+	maintenanceExists, err := nginx.Exists(maintenancePath)
+	if err != nil {
+		return err
+	}
+	if maintenanceExists {
+		return ErrSiteIsInMaintenance
+	}
+
 	s := query.Site
 	_, _ = s.Where(s.Path.Eq(oldPath)).Update(s.Path, newPath)
 

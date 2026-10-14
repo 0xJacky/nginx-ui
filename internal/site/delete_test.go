@@ -125,7 +125,7 @@ func TestDeleteSiteInMaintenanceKeepsRecordAndSkipsSync(t *testing.T) {
 
 	const name = "maintenance.conf"
 	siteModel := env.addSite(t, name, 0, false)
-	maintenancePath := filepath.Join(env.availableDir, name+MaintenanceSuffix)
+	maintenancePath := filepath.Join(env.enabledDir, name+MaintenanceSuffix)
 	if err := os.WriteFile(maintenancePath, []byte("server {}\n"), 0o644); err != nil {
 		t.Fatalf("failed to write maintenance file: %v", err)
 	}
