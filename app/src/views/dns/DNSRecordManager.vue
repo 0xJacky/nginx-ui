@@ -7,6 +7,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { dnsApi } from '@/api/dns'
 import FooterToolBar from '@/components/FooterToolbar'
 import { useDnsStore } from '@/pinia/moudule/dns'
+import { getDefaultDNSRecordLine } from '@/utils/dnsRecordLine'
 import { toUnicodeDomain } from '@/utils/idnDomain'
 import DNSRecordFilter from '@/views/dns/components/DNSRecordFilter.vue'
 import DNSRecordForm from '@/views/dns/components/DNSRecordForm.vue'
@@ -45,21 +46,13 @@ const isCloudflare = computed(() => {
   return provider.toLowerCase().includes('cloudflare')
 })
 
-const isAliDNS = computed(() => {
-  return store.currentDomain?.dns_credential?.provider_code?.toLowerCase() === 'alidns'
-})
-
 const isHuaweiCloud = computed(() => {
   return store.currentDomain?.dns_credential?.provider_code?.toLowerCase() === 'huaweicloud'
 })
 
-const defaultRecordLine = computed(() => {
-  if (isAliDNS.value)
-    return 'default'
-  if (isHuaweiCloud.value)
-    return 'default_view'
-  return undefined
-})
+const defaultRecordLine = computed(() => getDefaultDNSRecordLine(
+  store.currentDomain?.dns_credential?.provider_code,
+))
 
 const supportsRecordLines = computed(() => Boolean(defaultRecordLine.value))
 
