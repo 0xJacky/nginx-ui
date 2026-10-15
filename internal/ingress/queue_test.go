@@ -192,7 +192,8 @@ func TestDeleteRemovesFilesRowAndForgetsCertificate(t *testing.T) {
 
 func TestDeletePurgesUnusedACMECertificate(t *testing.T) {
 	env := setupEnv(t)
-	certDir := t.TempDir()
+	certDir := t.TempDir() + "/purge.example.com_RSA2048"
+	require.NoError(t, os.Mkdir(certDir, 0o755))
 	certPath, keyPath := certDir+"/fullchain.cer", certDir+"/private.key"
 	require.NoError(t, os.WriteFile(certPath, []byte("cert"), 0o644))
 	require.NoError(t, os.WriteFile(keyPath, []byte("key"), 0o600))
@@ -215,6 +216,8 @@ func TestDeletePurgesUnusedACMECertificate(t *testing.T) {
 	assert.True(t, os.IsNotExist(err))
 	_, err = os.Stat(keyPath)
 	assert.True(t, os.IsNotExist(err))
+	_, err = os.Stat(certDir)
+	assert.True(t, os.IsNotExist(err), "the empty certificate directory is removed")
 }
 
 func TestWorkerAppliesUnappliedIngressesOnStart(t *testing.T) {
@@ -426,4 +429,19 @@ func TestRecordBackendHealthMarksCheckedServers(t *testing.T) {
 	assert.Equal(t, reconcileReasonAllHealthy, health.Reason)
 
 	assert.NoError(t, recordBackendHealth("missing"))
+}
+
+// A delete without purge_cert keeps the certificate records for a re-create
+// but stops renewing them.
+func TestDeleteKeepsCertificateWithoutRenewal(t *testing.T) {
+	env := setupEnv(t)
+	cert := &model.Cert{Name: "kept", Filename: SiteName("kept"), AutoCert: model.AutoCertEnabled}
+	require.NoError(t, model.UseDB().Create(cert).Error)
+	env.startWorker(t)
+	ing := waitApplied(t, upsertBasic(t, "kept", "kept.example.com"))
+
+	require.NoError(t, Delete(context.Background(), ing.Name, "tester", false, false))
+	var row model.Cert
+	require.NoError(t, model.UseDB().Where("id = ?", cert.ID).First(&row).Error)
+	assert.Equal(t, model.AutoCertDisabled, row.AutoCert)
 }

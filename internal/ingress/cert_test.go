@@ -259,8 +259,18 @@ func TestResolveACMECertificate(t *testing.T) {
 		assert.Equal(t, issued.ID, state.CertID)
 	})
 
-	t.Run("other key type has no certificate", func(t *testing.T) {
+	t.Run("changed key type keeps serving the previous certificate", func(t *testing.T) {
 		ing := certIngress("app", model.IngressTLSModeACME, "app.example.com")
+		ing.Spec.TLS.KeyType = "P256"
+		state := resolve(t, m, ing)
+		assert.True(t, state.Ready)
+		assert.Equal(t, CertReasonCertNotFound, state.Reason, "not complete until the P256 one is issued")
+		assert.Equal(t, issued.ID, state.CertID)
+		assert.Contains(t, state.Message, "until the EC256 one is issued")
+	})
+
+	t.Run("other key type without coverage has no certificate", func(t *testing.T) {
+		ing := certIngress("app", model.IngressTLSModeACME, "app.example.com", "other.example.com")
 		ing.Spec.TLS.KeyType = "P256"
 		state := resolve(t, m, ing)
 		assert.False(t, state.Ready)
@@ -872,4 +882,67 @@ func TestHasPublicAddr(t *testing.T) {
 	assert.False(t, hasPublicAddr(parse("127.0.0.1", "10.1.2.3", "172.17.0.2", "192.168.1.4", "100.100.1.1", "fd00::1", "fe80::1", "::1")))
 	assert.True(t, hasPublicAddr(parse("10.1.2.3", "203.0.113.4")))
 	assert.True(t, hasPublicAddr(parse("2001:db8::1")))
+}
+
+// Changing the key type keeps the old certificate in place until the new
+// one is issued; then the old record stops renewing.
+func TestEnsureNewKeyTypeSupersedesTheOldCertificate(t *testing.T) {
+	h := newCertHarness(t)
+	old := addTestCert(t, h.confDir, SiteName("rekey"), certcrypto.RSA2048, "rekey.example.com")
+	ing := certIngress("rekey", model.IngressTLSModeACME, "rekey.example.com")
+	ing.Spec.TLS.KeyType = "P256"
+	h.addIngress(ing)
+
+	h.m.Ensure(context.Background(), ing)
+	h.waitEnqueued("rekey")
+	h.waitIdle("rekey")
+
+	state := resolve(t, h.m, ing)
+	assert.True(t, state.Ready)
+	assert.Equal(t, CertReasonIssued, state.Reason)
+	assert.NotEqual(t, old.ID, state.CertID)
+	var oldRow, newRow model.Cert
+	require.NoError(t, model.UseDB().Where("id = ?", old.ID).First(&oldRow).Error)
+	assert.Equal(t, model.AutoCertDisabled, oldRow.AutoCert)
+	require.NoError(t, model.UseDB().Where("id = ?", state.CertID).First(&newRow).Error)
+	assert.Equal(t, model.AutoCertEnabled, newRow.AutoCert)
+}
+
+// An issuance that completes after the ingress was deleted leaves the record
+// without auto renewal; a re-create turns it back on.
+func TestIssuanceAfterDeleteDoesNotRenew(t *testing.T) {
+	h := newCertHarness(t)
+	gate := make(chan struct{})
+	h.set(func() { h.issueGate = gate })
+	ing := h.addIngress(certIngress("late", model.IngressTLSModeACME, "late.example.com"))
+
+	h.m.Ensure(context.Background(), ing)
+	require.Eventually(t, func() bool {
+		_, issues, _ := h.counts()
+		return issues == 1
+	}, 5*time.Second, 5*time.Millisecond)
+	require.NoError(t, model.UseDB().Unscoped().Where("name = ?", "late").Delete(&model.Ingress{}).Error)
+	close(gate)
+	h.waitIdle("late")
+
+	var row model.Cert
+	require.NoError(t, model.UseDB().Where("filename = ?", SiteName("late")).First(&row).Error)
+	assert.Equal(t, model.AutoCertDisabled, row.AutoCert)
+	_, _, enqueued := h.counts()
+	assert.Empty(t, enqueued)
+
+	// Re-created: the complete certificate is reused and renews again.
+	h.m.Forget("late")
+	h.set(func() { h.issueGate = nil })
+	require.NoError(t, model.UseDB().Model(&row).Updates(map[string]any{
+		"ssl_certificate_path":     h.issues[0].GetCertificatePath(),
+		"ssl_certificate_key_path": h.issues[0].GetCertificateKeyPath(),
+	}).Error)
+	ing = h.addIngress(certIngress("late", model.IngressTLSModeACME, "late.example.com"))
+	h.m.Ensure(context.Background(), ing)
+	_, issues, _ := h.counts()
+	assert.Equal(t, 1, issues, "the kept certificate is reused")
+	var renewed model.Cert
+	require.NoError(t, model.UseDB().Where("id = ?", row.ID).First(&renewed).Error)
+	assert.Equal(t, model.AutoCertEnabled, renewed.AutoCert)
 }

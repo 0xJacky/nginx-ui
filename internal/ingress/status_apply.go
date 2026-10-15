@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -163,6 +164,13 @@ func completeDelete(ctx context.Context, ing *model.Ingress, job *deleteJob) err
 
 	certs().Forget(ing.Name)
 	forgetApplied(ing.Name)
+	if !job.purgeCert {
+		// The records stay for a re-create, which renews them again; until
+		// then nobody serves them.
+		if err := disableIngressCertRenewal(ing.Name); err != nil {
+			logger.Errorf("Disabling the certificate renewal of ingress %s failed: %v", ing.Name, err)
+		}
+	}
 	if job.purgeCert {
 		if err := purgeCertificate(ing); err != nil {
 			logger.Errorf("Purging the certificate of ingress %s failed: %v", ing.Name, err)
@@ -225,12 +233,23 @@ func purgeCertificate(ing *model.Ingress) error {
 	if others > 0 || len(site.BuildCertificateUsageIndex().Lookup(cert.SSLCertificatePath)) > 0 {
 		return nil
 	}
+	dirs := make(map[string]struct{}, 2)
 	for _, path := range []string{cert.SSLCertificatePath, cert.SSLCertificateKeyPath} {
 		if path == "" {
 			continue
 		}
 		if err := nginx.Remove(path); err != nil && !os.IsNotExist(err) {
 			return err
+		}
+		dirs[filepath.Dir(path)] = struct{}{}
+	}
+	// Issuance creates one directory per certificate (ssl/<host>_<key
+	// type>); drop it once it is empty.
+	for dir := range dirs {
+		if entries, err := nginx.ReadDir(dir); err == nil && len(entries) == 0 {
+			if err := nginx.Remove(dir); err != nil && !os.IsNotExist(err) {
+				return err
+			}
 		}
 	}
 	return nil

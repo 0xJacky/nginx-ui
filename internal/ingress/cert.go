@@ -301,6 +301,22 @@ func (m *acmeCertManager) resolveACME(req certRequest) (CertState, error) {
 		}
 	}
 
+	// Keep serving while the certificate the spec asks for is issued: first
+	// one of another key type that covers every host (the key type changed),
+	// else the current one for the hosts it covers (a host was added).
+	other, err := findOtherKeyTypeCert(req, m.now())
+	if err != nil {
+		return CertState{}, err
+	}
+	if other != nil {
+		state := other.state()
+		state.Ready = true
+		state.Reason = reason
+		state.Message = joinMessages(fmt.Sprintf("serving the %s certificate until the %s one is issued",
+			other.keyType, req.KeyType()), message)
+		return state, nil
+	}
+
 	if check.usable() {
 		// Keep serving the current certificate for the hosts it covers.
 		state := check.state()
@@ -344,9 +360,29 @@ func findACMECert(req certRequest) (*model.Cert, error) {
 	return &rows[0], nil
 }
 
+// findOtherKeyTypeCert returns the newest cert record of the generated site
+// with another key type than the request that covers every host and has
+// not expired, or nil.
+func findOtherKeyTypeCert(req certRequest, now time.Time) (*certCheck, error) {
+	var rows []model.Cert
+	err := model.UseDB().
+		Where("filename = ? AND key_type NOT IN ?", req.SiteName(), helper.GetKeyTypeAliasStrings(req.KeyType())).
+		Order("id DESC").Find(&rows).Error
+	if err != nil {
+		return nil, err
+	}
+	for i := range rows {
+		if check := checkCertificate(&rows[i], req.Hosts, now); check.complete() {
+			return &check, nil
+		}
+	}
+	return nil, nil
+}
+
 // certCheck is the outcome of checking a cert record against the hosts.
 type certCheck struct {
 	id       uint64
+	keyType  certcrypto.KeyType
 	name     string
 	certPath string
 	keyPath  string
@@ -360,6 +396,7 @@ type certCheck struct {
 func checkCertificate(row *model.Cert, hosts []string, now time.Time) certCheck {
 	check := certCheck{
 		id:       row.ID,
+		keyType:  helper.GetKeyType(row.KeyType),
 		name:     cert.CertificateName(fmt.Sprintf("#%d", row.ID), row.Domains),
 		certPath: strings.TrimSpace(row.SSLCertificatePath),
 		keyPath:  strings.TrimSpace(row.SSLCertificateKeyPath),
@@ -440,6 +477,12 @@ func (m *acmeCertManager) Ensure(_ context.Context, ing *model.Ingress) {
 		return
 	}
 	complete := row != nil && checkCertificate(row, req.Hosts, m.now()).complete()
+	if complete && row.AutoCert != model.AutoCertEnabled {
+		// A delete disabled the renewal; the ingress is back.
+		if err := setCertRenewal(model.UseDB().Where("id = ?", row.ID), model.AutoCertEnabled); err != nil {
+			logger.Error("ingress: enable auto renewal of", req.SiteName(), err)
+		}
+	}
 
 	fingerprint := req.fingerprint()
 	m.mu.Lock()
@@ -529,6 +572,17 @@ func (m *acmeCertManager) run(ctx context.Context, token uint64, req certRequest
 		return
 	}
 
+	// The ingress may have been deleted (or left ACME) while the CA was
+	// working: then nobody owns the certificate and it must not renew.
+	if !m.stillWants(req) {
+		if certModel != nil {
+			if err := setCertRenewal(model.UseDB().Where("id = ?", certModel.ID), model.AutoCertDisabled); err != nil {
+				logger.Error("ingress: disable auto renewal of", req.SiteName(), err)
+			}
+		}
+		m.finish(token, req.Name, CertReasonIssueFailed, "the ingress was deleted or no longer uses ACME")
+		return
+	}
 	if err := keepCertRenewed(certModel, payload); err != nil {
 		logger.Error("ingress: enable auto renewal of", req.SiteName(), err)
 	}
@@ -551,7 +605,28 @@ func (m *acmeCertManager) run(ctx context.Context, token uint64, req certRequest
 		m.finish(token, req.Name, CertReasonIssueFailed, message)
 		return
 	}
+	// Records of another key type served meanwhile are superseded now.
+	superseded := model.UseDB().Where("filename = ? AND id <> ? AND key_type NOT IN ?",
+		req.SiteName(), row.ID, helper.GetKeyTypeAliasStrings(req.KeyType()))
+	if err := setCertRenewal(superseded, model.AutoCertDisabled); err != nil {
+		logger.Error("ingress: disable auto renewal of superseded certificates of", req.SiteName(), err)
+	}
 	m.finish(token, req.Name, "", "")
+}
+
+// stillWants reports whether the ingress of req still exists and issues its
+// certificate over ACME.
+func (m *acmeCertManager) stillWants(req certRequest) bool {
+	ing, err := m.load(req.Name)
+	if err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			// Unknown: keep the certificate renewing rather than lose it.
+			logger.Error("ingress: load", req.Name, "after issuance:", err)
+			return true
+		}
+		return false
+	}
+	return ing.Spec.TLS.Mode == model.IngressTLSModeACME
 }
 
 // finish records the outcome of a run. An empty reason is a success: the
@@ -689,6 +764,20 @@ func keepCertRenewed(certModel *model.Cert, payload *cert.ConfigPayload) error {
 		return nil
 	}
 	return db.Model(&model.Cert{}).Where("id = ?", row.ID).Updates(updates).Error
+}
+
+// setCertRenewal turns the auto renewal of the cert records query selects on
+// or off.
+func setCertRenewal(query *gorm.DB, autoCert int) error {
+	return query.Model(&model.Cert{}).Where("auto_cert <> ?", autoCert).Update("auto_cert", autoCert).Error
+}
+
+// disableIngressCertRenewal stops the renewal of the certificates an ACME
+// ingress issued (its generated site's records). It is used when the ingress
+// is deleted without purging them: they are kept for a re-create, which
+// enables the renewal again (Ensure).
+func disableIngressCertRenewal(name string) error {
+	return setCertRenewal(model.UseDB().Where("filename = ?", SiteName(name)), model.AutoCertDisabled)
 }
 
 // Seams of probeCertHosts for tests.
