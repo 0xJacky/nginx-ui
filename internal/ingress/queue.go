@@ -25,7 +25,13 @@ var (
 // deleteJob is a pending delete with everyone waiting for it.
 type deleteJob struct {
 	purgeCert bool
-	done      []chan error
+	// generation is the generation the delete was requested at. The row is
+	// only deleted while it still has it.
+	generation int64
+	// superseded is set, under the queue lock, when a write to the ingress
+	// arrived after the worker picked the delete up: the write wins.
+	superseded bool
+	done       []chan error
 }
 
 // workQueue holds the changes the worker has not picked up yet.
@@ -33,13 +39,16 @@ type workQueue struct {
 	mu      sync.Mutex
 	applies map[string]struct{}
 	deletes map[string]*deleteJob
-	signal  chan struct{}
+	// inflight holds the deletes of the batch the worker is processing.
+	inflight map[string]*deleteJob
+	signal   chan struct{}
 }
 
 var queue = &workQueue{
-	applies: make(map[string]struct{}),
-	deletes: make(map[string]*deleteJob),
-	signal:  make(chan struct{}, 1),
+	applies:  make(map[string]struct{}),
+	deletes:  make(map[string]*deleteJob),
+	inflight: make(map[string]*deleteJob),
+	signal:   make(chan struct{}, 1),
 }
 
 func (q *workQueue) notify() {
@@ -61,7 +70,42 @@ func (q *workQueue) take() ([]string, map[string]*deleteJob) {
 	deletes := q.deletes
 	q.applies = make(map[string]struct{})
 	q.deletes = make(map[string]*deleteJob)
+	q.inflight = deletes
 	return applies, deletes
+}
+
+// done forgets the deletes of the batch the worker finished.
+func (q *workQueue) done() {
+	q.mu.Lock()
+	defer q.mu.Unlock()
+	q.inflight = make(map[string]*deleteJob)
+}
+
+// supersedeDelete lets a write to name win over a delete requested before
+// it: a delete still queued is dropped and its waiters get
+// ErrDeleteConflict; a delete the worker is processing keeps the row (see
+// completeDelete). Callers hold storeMu, after storing the write.
+func supersedeDelete(name string) {
+	queue.mu.Lock()
+	job, queued := queue.deletes[name]
+	if queued {
+		delete(queue.deletes, name)
+	}
+	if inflight, ok := queue.inflight[name]; ok {
+		inflight.superseded = true
+	}
+	queue.mu.Unlock()
+	if queued {
+		finishDelete(job, cosy.WrapErrorWithParams(ErrDeleteConflict, name))
+	}
+}
+
+// deleteSuperseded reports whether a write arrived after the worker picked up
+// the delete.
+func deleteSuperseded(job *deleteJob) bool {
+	queue.mu.Lock()
+	defer queue.mu.Unlock()
+	return job != nil && job.superseded
 }
 
 // Enqueue asks the worker to apply the named ingresses. Calls that arrive
@@ -78,9 +122,11 @@ func Enqueue(names ...string) {
 	queue.notify()
 }
 
-// enqueueDelete asks the worker to remove an ingress and its files. The
-// returned channel receives the outcome once.
-func enqueueDelete(name string, purgeCert bool) <-chan error {
+// enqueueDelete asks the worker to remove an ingress and its files, as long
+// as it is still at generation. The returned channel receives the outcome
+// once. Callers hold storeMu so no write slips in between reading the
+// generation and queueing the delete.
+func enqueueDelete(name string, purgeCert bool, generation int64) <-chan error {
 	done := make(chan error, 1)
 	queue.mu.Lock()
 	job, ok := queue.deletes[name]
@@ -89,6 +135,7 @@ func enqueueDelete(name string, purgeCert bool) <-chan error {
 		queue.deletes[name] = job
 	}
 	job.purgeCert = job.purgeCert || purgeCert
+	job.generation = generation
 	job.done = append(job.done, done)
 	queue.mu.Unlock()
 	queue.notify()
@@ -159,9 +206,11 @@ func startWorker(ctx context.Context) {
 		}
 		applies, deletes := queue.take()
 		if len(applies) == 0 && len(deletes) == 0 {
+			queue.done()
 			continue
 		}
 		processBatch(ctx, applies, deletes)
+		queue.done()
 	}
 }
 
@@ -301,7 +350,7 @@ func processBatch(ctx context.Context, applyNames []string, deletes map[string]*
 			finishDelete(job, cosy.WrapErrorWithParams(ErrApplyFailed, r.Error))
 			continue
 		}
-		finishDelete(job, completeDelete(ctx, ing, job.purgeCert))
+		finishDelete(job, completeDelete(ctx, ing, job))
 	}
 }
 

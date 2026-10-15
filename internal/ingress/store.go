@@ -10,6 +10,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gorm"
 )
 
@@ -114,6 +115,9 @@ func Upsert(ctx context.Context, name string, req UpsertRequest) (*model.Ingress
 	existing, err := checkUpsert(d, req.Force)
 	if err == nil {
 		err = store(d, existing)
+	}
+	if err == nil {
+		supersedeDelete(name)
 	}
 	storeMu.Unlock()
 	if err != nil {
@@ -225,9 +229,19 @@ func specEqual(a, b *model.IngressSpec) bool {
 // store creates or updates the ingress row. It never touches the status
 // except to recompute the phase, which the worker owns otherwise.
 func store(d *desired, existing *model.Ingress) error {
-	db := model.UseDB()
+	changed, err := storeRow(model.UseDB(), d, existing)
+	if err != nil || !changed {
+		return err
+	}
+	return refreshPhase(d.name)
+}
+
+// storeRow creates or updates the ingress row through db, leaving the status
+// column alone, and reports whether the generation of an existing row
+// changed.
+func storeRow(db *gorm.DB, d *desired, existing *model.Ingress) (bool, error) {
 	if existing == nil {
-		return db.Create(&model.Ingress{
+		return false, db.Create(&model.Ingress{
 			Name:        d.name,
 			Owner:       d.owner,
 			ExternalID:  d.externalID,
@@ -255,16 +269,17 @@ func store(d *desired, existing *model.Ingress) error {
 			SitePath:    SiteName(d.name),
 			NamespaceID: d.namespaceID,
 		}).Error
-	if err != nil {
-		return err
-	}
-	if generation != existing.Generation {
-		_, err = UpdateStatus(d.name, func(cur *model.Ingress) {
-			if cur.Status.Phase != model.IngressPhaseApplying {
-				cur.Status.Phase = ""
-			}
-		})
-	}
+	return err == nil && generation != existing.Generation, err
+}
+
+// refreshPhase recomputes the phase after the generation moved, unless the
+// worker is applying the ingress right now.
+func refreshPhase(name string) error {
+	_, err := UpdateStatus(name, func(cur *model.Ingress) {
+		if cur.Status.Phase != model.IngressPhaseApplying {
+			cur.Status.Phase = ""
+		}
+	})
 	return err
 }
 
@@ -302,21 +317,34 @@ func DryRun(ctx context.Context, name string, req UpsertRequest) (*ApplyResult, 
 // Delete removes an ingress and its files. The certificate row is kept unless
 // purgeCert is set. It returns once the worker removed the files and the
 // row, or ctx ends.
+//
+// The delete is tied to the generation it was requested at. A write to the
+// ingress that arrives before the worker removed the row wins: the delete
+// fails with ErrDeleteConflict and the ingress stays.
 func Delete(ctx context.Context, name, owner string, force, purgeCert bool) error {
-	ing, err := Get(name)
+	storeMu.Lock()
+	done, err := requestDelete(name, owner, force, purgeCert)
+	storeMu.Unlock()
 	if err != nil {
 		return err
 	}
-	if ing.Owner != owner && !force {
-		return cosy.WrapErrorWithParams(ErrOwnerMismatch, name, ing.Owner)
-	}
-	done := enqueueDelete(name, purgeCert)
 	select {
 	case err := <-done:
 		return err
 	case <-ctx.Done():
 		return ctx.Err()
 	}
+}
+
+func requestDelete(name, owner string, force, purgeCert bool) (<-chan error, error) {
+	ing, err := Get(name)
+	if err != nil {
+		return nil, err
+	}
+	if ing.Owner != owner && !force {
+		return nil, cosy.WrapErrorWithParams(ErrOwnerMismatch, name, ing.Owner)
+	}
+	return enqueueDelete(name, purgeCert, ing.Generation), nil
 }
 
 // SyncOwner makes the owner's ingresses match items: upserts every item and,
@@ -356,9 +384,6 @@ func SyncOwner(ctx context.Context, owner string, req SyncRequest, prune bool) (
 		return nil, err
 	}
 
-	for _, name := range pruned {
-		enqueueDelete(name, false)
-	}
 	names := make([]string, 0, len(items))
 	for _, d := range items {
 		names = append(names, d.name)
@@ -382,8 +407,9 @@ func SyncOwner(ctx context.Context, owner string, req SyncRequest, prune bool) (
 	return result, nil
 }
 
-// syncLocked checks and stores the items of a sync and returns the names of
-// the owner's ingresses to prune.
+// syncLocked checks and stores the items of a sync in one transaction,
+// queues the deletes of the owner's ingresses missing from items and returns
+// their names.
 func syncLocked(owner string, items []*desired, listed map[string]struct{}, prune bool) ([]string, error) {
 	all, err := List("")
 	if err != nil {
@@ -416,10 +442,32 @@ func syncLocked(owner string, items []*desired, listed map[string]struct{}, prun
 		return nil, err
 	}
 
-	for _, d := range items {
-		if err := store(d, byName[d.name]); err != nil {
-			return nil, err
+	var changed []string
+	err = model.UseDB().Transaction(func(tx *gorm.DB) error {
+		for _, d := range items {
+			moved, err := storeRow(tx, d, byName[d.name])
+			if err != nil {
+				return err
+			}
+			if moved {
+				changed = append(changed, d.name)
+			}
 		}
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	for _, name := range changed {
+		if err := refreshPhase(name); err != nil {
+			logger.Errorf("Refreshing the phase of ingress %s failed: %v", name, err)
+		}
+	}
+	for _, d := range items {
+		supersedeDelete(d.name)
+	}
+	for _, name := range pruned {
+		enqueueDelete(name, false, byName[name].Generation)
 	}
 	return pruned, nil
 }
@@ -433,6 +481,9 @@ func PatchServer(ctx context.Context, name, backend string, patch ServerPatch) (
 
 	storeMu.Lock()
 	err := patchServerLocked(name, backend, patch)
+	if err == nil {
+		supersedeDelete(name)
+	}
 	storeMu.Unlock()
 	if err != nil {
 		return nil, err

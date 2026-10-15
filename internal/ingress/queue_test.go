@@ -2,6 +2,7 @@ package ingress
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"testing"
@@ -10,6 +11,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"gorm.io/gorm"
 )
 
 func upsertBasic(t *testing.T, name, host string) *model.Ingress {
@@ -224,4 +226,152 @@ func TestWorkerAppliesUnappliedIngressesOnStart(t *testing.T) {
 	env.startWorker(t)
 	got := waitApplied(t, ing)
 	assert.Equal(t, model.IngressPhaseReady, got.Status.Phase)
+}
+
+// deleteAsync runs Delete in the background and returns its outcome channel.
+func deleteAsync(name string) <-chan error {
+	out := make(chan error, 1)
+	go func() {
+		out <- Delete(context.Background(), name, "tester", false, false)
+	}()
+	return out
+}
+
+func waitQueuedDelete(t *testing.T, name string) {
+	t.Helper()
+	eventually(t, func() bool {
+		queue.mu.Lock()
+		defer queue.mu.Unlock()
+		_, ok := queue.deletes[name]
+		return ok
+	}, "delete was not queued")
+}
+
+func receive(t *testing.T, ch <-chan error) error {
+	t.Helper()
+	select {
+	case err := <-ch:
+		return err
+	case <-time.After(5 * time.Second):
+		t.Fatal("no outcome")
+		return nil
+	}
+}
+
+func TestUpsertSupersedesQueuedDelete(t *testing.T) {
+	env := setupEnv(t)
+	upsertBasic(t, "keep", "keep.example.com")
+	done := deleteAsync("keep")
+	waitQueuedDelete(t, "keep")
+
+	// The write lands before the worker picked the delete up: it wins.
+	ing := upsertBasic(t, "keep", "keep.example.com")
+	requireCode(t, receive(t, done), ErrDeleteConflict)
+
+	env.startWorker(t)
+	got := waitApplied(t, ing)
+	assert.Equal(t, model.IngressPhaseReady, got.Status.Phase)
+	assert.True(t, env.exists("sites-enabled", "ingress-keep"))
+}
+
+func TestDeleteKeepsIngressUpdatedWhileDeleting(t *testing.T) {
+	cases := map[string]func(t *testing.T){
+		// Upsert flags the delete the worker is processing.
+		"superseded": func(t *testing.T) {
+			_, err := Upsert(context.Background(), "race", UpsertRequest{Owner: "tester", Spec: basicSpec("race2.example.com")})
+			require.NoError(t, err)
+		},
+		// The generation moved without passing through the store.
+		"generation moved": func(t *testing.T) {
+			require.NoError(t, model.UseDB().Model(&model.Ingress{}).Where("name = ?", "race").
+				Update("generation", 5).Error)
+		},
+	}
+	for name, write := range cases {
+		t.Run(name, func(t *testing.T) {
+			env := setupEnv(t)
+			stop := env.runWorker()
+			waitApplied(t, upsertBasic(t, "race", "race.example.com"))
+			stop()
+
+			// Hand the delete to a batch by hand so the write can land while
+			// the batch runs.
+			storeMu.Lock()
+			done, err := requestDelete("race", "tester", false, false)
+			storeMu.Unlock()
+			require.NoError(t, err)
+			applies, deletes := queue.take()
+			write(t)
+			processBatch(context.Background(), applies, deletes)
+			queue.done()
+
+			requireCode(t, receive(t, done), ErrDeleteConflict)
+			cur, err := Get("race")
+			require.NoError(t, err, "the row must survive")
+			_, forgotten := env.certs.snapshot()
+			assert.Empty(t, forgotten)
+
+			// The apply that restores the files was queued.
+			env.startWorker(t)
+			eventually(t, func() bool { return env.exists("sites-enabled", "ingress-race") },
+				"files were not restored")
+			eventually(t, func() bool {
+				got, err := Get("race")
+				return err == nil && got.Status.ObservedGeneration == cur.Generation &&
+					got.Status.Phase == model.IngressPhaseReady
+			}, "the ingress was not applied again")
+		})
+	}
+}
+
+func TestSyncOwnerPruneLosesToALaterUpsert(t *testing.T) {
+	env := setupEnv(t)
+	upsertBasic(t, "stay", "stay.example.com")
+	upsertBasic(t, "pruned", "pruned.example.com")
+
+	_, err := SyncOwner(context.Background(), "tester", SyncRequest{Items: []SyncItem{
+		{Name: "stay", Spec: basicSpec("stay.example.com")},
+	}}, true)
+	require.NoError(t, err)
+	// The prune was queued with the generation it saw, before storeMu was
+	// released.
+	queue.mu.Lock()
+	job := queue.deletes["pruned"]
+	queue.mu.Unlock()
+	require.NotNil(t, job)
+	assert.Equal(t, int64(1), job.generation)
+
+	ing := upsertBasic(t, "pruned", "pruned.example.com")
+	queue.mu.Lock()
+	_, stillQueued := queue.deletes["pruned"]
+	queue.mu.Unlock()
+	assert.False(t, stillQueued)
+
+	env.startWorker(t)
+	waitApplied(t, ing)
+	assert.True(t, env.exists("sites-enabled", "ingress-pruned"))
+}
+
+func TestSyncOwnerStoresAllItemsOrNone(t *testing.T) {
+	setupEnv(t)
+	db := model.UseDB()
+	require.NoError(t, db.Callback().Create().Before("gorm:create").Register("test:fail_boom", func(tx *gorm.DB) {
+		if ing, ok := tx.Statement.Dest.(*model.Ingress); ok && ing.Name == "boom" {
+			_ = tx.AddError(errors.New("disk full"))
+		}
+	}))
+	t.Cleanup(func() { _ = db.Callback().Create().Remove("test:fail_boom") })
+
+	_, err := SyncOwner(context.Background(), "tester", SyncRequest{Items: []SyncItem{
+		{Name: "first", Spec: basicSpec("first.example.com")},
+		{Name: "boom", Spec: basicSpec("boom.example.com")},
+	}}, false)
+	require.Error(t, err)
+
+	items, err := List("tester")
+	require.NoError(t, err)
+	assert.Empty(t, items, "a failed sync stores nothing")
+	queue.mu.Lock()
+	assert.Empty(t, queue.applies)
+	queue.mu.Unlock()
 }

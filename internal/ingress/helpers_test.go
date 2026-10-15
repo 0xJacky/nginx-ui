@@ -141,6 +141,21 @@ func (env *testEnv) startWorker(t *testing.T) {
 	})
 }
 
+// runWorker runs the worker until the returned function is called.
+func (env *testEnv) runWorker() (stop func()) {
+	ctx, cancel := context.WithCancel(context.Background())
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		startWorker(ctx)
+	}()
+	return func() {
+		cancel()
+		wg.Wait()
+	}
+}
+
 // fakeCerts is a certificate manager with fixed states.
 type fakeCerts struct {
 	mu        sync.Mutex
