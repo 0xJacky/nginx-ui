@@ -9,6 +9,7 @@ import (
 	"os"
 	"sort"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -503,8 +504,16 @@ func backendHealth(spec *model.IngressSpec, avail map[string]*upstream.Status, c
 // ingresses in the background, so a new or changed ingress does not wait for
 // the next reconcile pass. A variable so tests can observe it.
 var refreshHealthAfterApply = func(names []string) {
-	go refreshBackendHealth(names)
+	healthRefreshes.Add(1)
+	go func() {
+		defer healthRefreshes.Done()
+		refreshBackendHealth(names)
+	}()
 }
+
+// healthRefreshes tracks the refreshes refreshHealthAfterApply started; the
+// worker waits for them before it returns.
+var healthRefreshes sync.WaitGroup
 
 // refreshBackendHealth runs an availability check (the apply registered the
 // new servers with the checker) and records the backend health of the named

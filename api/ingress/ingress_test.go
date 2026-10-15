@@ -10,7 +10,6 @@ import (
 	"path/filepath"
 	"strconv"
 	"testing"
-	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/ingress"
 	"github.com/0xJacky/Nginx-UI/internal/testdb"
@@ -109,7 +108,7 @@ func decodeError(t *testing.T, w *httptest.ResponseRecorder) errorBody {
 
 func TestStatusOf(t *testing.T) {
 	tests := map[int32]int{
-		40001: 400, 40009: 400, 40401: 404, 40801: 408, 40901: 409, 50001: 500, 50002: 500,
+		40001: 400, 40009: 400, 40401: 404, 40801: 408, 40802: 408, 40901: 409, 40904: 409, 40905: 409, 50001: 500, 50002: 500,
 		404: 404, 40000: 400, 10001: 500, 0: 500, 60001: 500,
 	}
 	for code, want := range tests {
@@ -188,31 +187,82 @@ func TestPutWaitTimesOutWithoutWorker(t *testing.T) {
 	assert.Equal(t, errorBody{Scope: "ingress", Code: 40801}, decodeError(t, w))
 }
 
+// runWorker runs the apply worker until the test ends.
+func runWorker(t *testing.T) {
+	t.Helper()
+	originalCheck := settings.UpstreamCheckSettings.Enabled
+	settings.UpstreamCheckSettings.Enabled = false
+	ctx, cancel := context.WithCancel(context.Background())
+	done := make(chan struct{})
+	go func() {
+		defer close(done)
+		ingress.RunWorker(ctx)
+	}()
+	t.Cleanup(func() {
+		cancel()
+		<-done
+		settings.UpstreamCheckSettings.Enabled = originalCheck
+	})
+}
+
 func TestPutWaitReturnsTheAppliedIngress(t *testing.T) {
 	r := setupAPI(t)
-	// Stand in for the worker: record the apply once the ingress is stored.
-	ctx, cancel := context.WithCancel(context.Background())
-	t.Cleanup(cancel)
-	go func() {
-		for ctx.Err() == nil {
-			if _, err := ingress.UpdateStatus("waited", func(cur *model.Ingress) {
-				cur.Status.ObservedGeneration = cur.Generation
-				ingress.SetCondition(&cur.Status, model.IngressCondition{
-					Type: model.IngressConditionConfigApplied, Status: true, Reason: "Applied",
-				})
-			}); err == nil {
-				return
-			}
-			time.Sleep(10 * time.Millisecond)
-		}
-	}()
+	runWorker(t)
 
-	w := do(t, r, http.MethodPut, "/api/ingresses/waited?wait=5s", ingress.UpsertRequest{Owner: "ctl", Spec: spec("waited.example.com")})
+	w := do(t, r, http.MethodPut, "/api/ingresses/waited?wait=10s", ingress.UpsertRequest{Owner: "ctl", Spec: spec("waited.example.com")})
 	require.Equal(t, http.StatusOK, w.Code, w.Body.String())
 	var ing model.Ingress
 	require.NoError(t, json.Unmarshal(w.Body.Bytes(), &ing))
 	assert.Equal(t, ing.Generation, ing.Status.ObservedGeneration)
 	assert.Equal(t, model.IngressPhaseReady, ing.Status.Phase)
+}
+
+// A retry with an unchanged spec keeps the generation. ?wait must still wait
+// for the apply this request queued instead of returning the status of the
+// previous, failed apply.
+func TestPutWaitWaitsForTheApplyOfThisRequest(t *testing.T) {
+	r := setupAPI(t)
+	settings.NginxSettings.TestConfigCmd = "false"
+	runWorker(t)
+
+	w := do(t, r, http.MethodPut, "/api/ingresses/retry?wait=10s", ingress.UpsertRequest{Owner: "ctl", Spec: spec("retry.example.com")})
+	require.Equal(t, http.StatusOK, w.Code, w.Body.String())
+	var ing model.Ingress
+	require.NoError(t, json.Unmarshal(w.Body.Bytes(), &ing))
+	require.Equal(t, model.IngressPhaseError, ing.Status.Phase)
+
+	settings.NginxSettings.TestConfigCmd = "true"
+	w = do(t, r, http.MethodPut, "/api/ingresses/retry?wait=10s", ingress.UpsertRequest{Owner: "ctl", Spec: spec("retry.example.com")})
+	require.Equal(t, http.StatusOK, w.Code, w.Body.String())
+	require.NoError(t, json.Unmarshal(w.Body.Bytes(), &ing))
+	assert.Equal(t, int64(1), ing.Generation)
+	assert.Equal(t, model.IngressPhaseReady, ing.Status.Phase, "the retry's own apply was awaited")
+
+	w = do(t, r, http.MethodPost, "/api/ingresses/retry/reconcile?wait=10s", nil)
+	require.Equal(t, http.StatusOK, w.Code, w.Body.String())
+	require.NoError(t, json.Unmarshal(w.Body.Bytes(), &ing))
+	assert.Equal(t, model.IngressPhaseReady, ing.Status.Phase)
+}
+
+// A sync with prune and wait returns once the pruned ingresses are gone.
+func TestSyncWaitCoversPrunedIngresses(t *testing.T) {
+	r := setupAPI(t)
+	runWorker(t)
+
+	w := do(t, r, http.MethodPut, "/api/ingresses?owner=ctl&wait=10s", ingress.SyncRequest{Items: []ingress.SyncItem{
+		{Name: "one", Spec: spec("one.example.com")},
+		{Name: "two", Spec: spec("two.example.com")},
+	}})
+	require.Equal(t, http.StatusOK, w.Code, w.Body.String())
+
+	w = do(t, r, http.MethodPut, "/api/ingresses?owner=ctl&prune=1&wait=10s", ingress.SyncRequest{Items: []ingress.SyncItem{
+		{Name: "one", Spec: spec("one.example.com")},
+	}})
+	require.Equal(t, http.StatusOK, w.Code, w.Body.String())
+	w = do(t, r, http.MethodGet, "/api/ingresses/two", nil)
+	assert.Equal(t, http.StatusNotFound, w.Code, "the pruned ingress is gone when the sync returns")
+	_, err := os.Stat(filepath.Join(settings.NginxSettings.ConfigDir, "sites-available", "ingress-two"))
+	assert.True(t, os.IsNotExist(err))
 }
 
 func TestPutDryRunReturnsApplyResult(t *testing.T) {

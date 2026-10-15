@@ -9,3 +9,10 @@ func Start(ctx context.Context) {
 	go startReconcile(ctx)
 	<-ctx.Done()
 }
+
+// RunWorker runs only the apply worker until ctx ends, for callers that
+// drive the ingress API without the reconcile loop, such as API tests. It
+// returns once the worker and its background health refreshes stopped.
+func RunWorker(ctx context.Context) {
+	startWorker(ctx)
+}

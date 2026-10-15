@@ -77,9 +77,11 @@ func parseWait(c *gin.Context) (time.Duration, error) {
 	return min(wait, maxWait), nil
 }
 
-// waitFor blocks until every ingress reached its generation or the wait
-// expires, then returns the current state of the ingresses.
-func waitFor(c *gin.Context, wait time.Duration, items []*model.Ingress) ([]*model.Ingress, error) {
+// waitFor blocks until every ingress reached its generation through an apply
+// enqueued after seq (ingress.ApplySeq before the request's write) and every
+// name in deleted is gone, or the wait expires. It returns the current state
+// of the ingresses.
+func waitFor(c *gin.Context, wait time.Duration, seq uint64, items []*model.Ingress, deleted []string) ([]*model.Ingress, error) {
 	if wait <= 0 {
 		return items, nil
 	}
@@ -87,11 +89,16 @@ func waitFor(c *gin.Context, wait time.Duration, items []*model.Ingress) ([]*mod
 	defer cancel()
 	result := make([]*model.Ingress, 0, len(items))
 	for _, item := range items {
-		ing, err := ingress.WaitForGeneration(ctx, item.Name, item.Generation)
+		ing, err := ingress.WaitForApply(ctx, item.Name, item.Generation, seq)
 		if err != nil {
 			return nil, err
 		}
 		result = append(result, ing)
+	}
+	for _, name := range deleted {
+		if err := ingress.WaitForDeletion(ctx, name); err != nil {
+			return nil, err
+		}
 	}
 	return result, nil
 }
@@ -128,12 +135,13 @@ func SyncIngresses(c *gin.Context) {
 		badRequest(c, err)
 		return
 	}
-	items, err := ingress.SyncOwner(c.Request.Context(), c.Query("owner"), req, queryFlag(c, "prune"))
+	seq := ingress.ApplySeq()
+	items, pruned, err := ingress.SyncOwnerPruned(c.Request.Context(), c.Query("owner"), req, queryFlag(c, "prune"))
 	if err != nil {
 		respondError(c, err)
 		return
 	}
-	items, err = waitFor(c, wait, items)
+	items, err = waitFor(c, wait, seq, items, pruned)
 	if err != nil {
 		respondError(c, err)
 		return
@@ -165,12 +173,13 @@ func PutIngress(c *gin.Context) {
 		return
 	}
 
+	seq := ingress.ApplySeq()
 	ing, err := ingress.Upsert(c.Request.Context(), name, req)
 	if err != nil {
 		respondError(c, err)
 		return
 	}
-	items, err := waitFor(c, wait, []*model.Ingress{ing})
+	items, err := waitFor(c, wait, seq, []*model.Ingress{ing}, nil)
 	if err != nil {
 		respondError(c, err)
 		return
@@ -208,12 +217,13 @@ func PatchIngressServer(c *gin.Context) {
 		badRequest(c, err)
 		return
 	}
+	seq := ingress.ApplySeq()
 	ing, err := ingress.PatchServer(c.Request.Context(), c.Param("name"), c.Param("backend"), patch)
 	if err != nil {
 		respondError(c, err)
 		return
 	}
-	items, err := waitFor(c, wait, []*model.Ingress{ing})
+	items, err := waitFor(c, wait, seq, []*model.Ingress{ing}, nil)
 	if err != nil {
 		respondError(c, err)
 		return
@@ -221,14 +231,25 @@ func PatchIngressServer(c *gin.Context) {
 	c.JSON(http.StatusOK, items[0])
 }
 
-// ReconcileIngress handles POST /ingresses/:name/reconcile: it queues the
-// ingress for apply, which rewrites its files when they drifted.
+// ReconcileIngress handles POST /ingresses/:name/reconcile?wait=: it queues
+// the ingress for apply, which rewrites its files when they drifted.
 func ReconcileIngress(c *gin.Context) {
+	wait, err := parseWait(c)
+	if err != nil {
+		badRequest(c, err)
+		return
+	}
 	ing, err := ingress.Get(c.Param("name"))
 	if err != nil {
 		respondError(c, err)
 		return
 	}
+	seq := ingress.ApplySeq()
 	ingress.Enqueue(ing.Name)
-	c.JSON(http.StatusOK, ing)
+	items, err := waitFor(c, wait, seq, []*model.Ingress{ing}, nil)
+	if err != nil {
+		respondError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, items[0])
 }

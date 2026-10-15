@@ -21,6 +21,7 @@ var (
 	ErrDeleteConflict    = e.New(40904, "ingress {0} was updated while being deleted")
 	ErrUpstreamConflict  = e.New(40905, "upstream {0} already exists and is not managed by this ingress")
 	ErrWaitTimeout       = e.New(40801, "timed out waiting for ingress {0} to reach generation {1}")
+	ErrDeleteWaitTimeout = e.New(40802, "timed out waiting for ingress {0} to be deleted")
 	ErrApplyFailed       = e.New(50001, "apply failed: {0}")
 	ErrCertNotReady      = e.New(50002, "certificate not ready: {0}")
 	ErrNotImplemented    = e.New(50101, "not implemented")

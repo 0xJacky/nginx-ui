@@ -162,6 +162,7 @@ func completeDelete(ctx context.Context, ing *model.Ingress, job *deleteJob) err
 	}
 
 	certs().Forget(ing.Name)
+	forgetApplied(ing.Name)
 	if job.purgeCert {
 		if err := purgeCertificate(ing); err != nil {
 			logger.Errorf("Purging the certificate of ingress %s failed: %v", ing.Name, err)

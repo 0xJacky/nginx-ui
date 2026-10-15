@@ -366,8 +366,15 @@ func requestDelete(name, owner string, force, purgeCert bool) (<-chan error, err
 // refused. The result lists the owner's ingresses after the sync, without the
 // ones queued for deletion.
 func SyncOwner(ctx context.Context, owner string, req SyncRequest, prune bool) ([]*model.Ingress, error) {
+	items, _, err := SyncOwnerPruned(ctx, owner, req, prune)
+	return items, err
+}
+
+// SyncOwnerPruned is SyncOwner that also returns the names it queued for
+// deletion, for WaitForDeletion.
+func SyncOwnerPruned(ctx context.Context, owner string, req SyncRequest, prune bool) ([]*model.Ingress, []string, error) {
 	if err := ValidateOwner(owner); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	items := make([]*desired, 0, len(req.Items))
 	listed := make(map[string]struct{}, len(req.Items))
@@ -381,10 +388,10 @@ func SyncOwner(ctx context.Context, owner string, req SyncRequest, prune bool) (
 			namespaceID: item.NamespaceID,
 		}
 		if err := d.validate(); err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		if _, ok := listed[d.name]; ok {
-			return nil, cosy.WrapErrorWithParams(ErrInvalidName, d.name)
+			return nil, nil, cosy.WrapErrorWithParams(ErrInvalidName, d.name)
 		}
 		listed[d.name] = struct{}{}
 		items = append(items, d)
@@ -394,7 +401,7 @@ func SyncOwner(ctx context.Context, owner string, req SyncRequest, prune bool) (
 	pruned, err := syncLocked(owner, items, listed, prune)
 	storeMu.Unlock()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	names := make([]string, 0, len(items))
@@ -405,7 +412,7 @@ func SyncOwner(ctx context.Context, owner string, req SyncRequest, prune bool) (
 
 	all, err := List(owner)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	prunedSet := make(map[string]struct{}, len(pruned))
 	for _, name := range pruned {
@@ -417,7 +424,7 @@ func SyncOwner(ctx context.Context, owner string, req SyncRequest, prune bool) (
 			result = append(result, ing)
 		}
 	}
-	return result, nil
+	return result, pruned, nil
 }
 
 // syncLocked checks and stores the items of a sync in one transaction,

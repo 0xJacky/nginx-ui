@@ -36,19 +36,30 @@ type deleteJob struct {
 
 // workQueue holds the changes the worker has not picked up yet.
 type workQueue struct {
-	mu      sync.Mutex
-	applies map[string]struct{}
+	mu sync.Mutex
+	// applies maps the names to apply to the sequence number of their latest
+	// Enqueue.
+	applies map[string]uint64
 	deletes map[string]*deleteJob
-	// inflight holds the deletes of the batch the worker is processing.
-	inflight map[string]*deleteJob
-	signal   chan struct{}
+	// inflight holds the deletes of the batch the worker is processing, and
+	// inflightSeqs the sequence numbers of its applies.
+	inflight     map[string]*deleteJob
+	inflightSeqs map[string]uint64
+	// seq numbers the Enqueue calls; applied holds, per name, the sequence
+	// number of the latest Enqueue the worker finished. Both live in memory:
+	// they only tell a waiting request whether its own apply ran.
+	seq     uint64
+	applied map[string]uint64
+	signal  chan struct{}
 }
 
 var queue = &workQueue{
-	applies:  make(map[string]struct{}),
-	deletes:  make(map[string]*deleteJob),
-	inflight: make(map[string]*deleteJob),
-	signal:   make(chan struct{}, 1),
+	applies:      make(map[string]uint64),
+	deletes:      make(map[string]*deleteJob),
+	inflight:     make(map[string]*deleteJob),
+	inflightSeqs: make(map[string]uint64),
+	applied:      make(map[string]uint64),
+	signal:       make(chan struct{}, 1),
 }
 
 func (q *workQueue) notify() {
@@ -68,17 +79,67 @@ func (q *workQueue) take() ([]string, map[string]*deleteJob) {
 	}
 	sort.Strings(applies)
 	deletes := q.deletes
-	q.applies = make(map[string]struct{})
+	q.inflightSeqs = q.applies
+	q.applies = make(map[string]uint64)
 	q.deletes = make(map[string]*deleteJob)
 	q.inflight = deletes
 	return applies, deletes
 }
 
-// done forgets the deletes of the batch the worker finished.
+// done records the applies of the batch the worker finished, forgets its
+// deletes and wakes everyone waiting on them.
 func (q *workQueue) done() {
 	q.mu.Lock()
-	defer q.mu.Unlock()
+	names := make([]string, 0, len(q.inflightSeqs)+len(q.inflight))
+	for name, seq := range q.inflightSeqs {
+		if seq > q.applied[name] {
+			q.applied[name] = seq
+		}
+		names = append(names, name)
+	}
+	for name := range q.inflight {
+		names = append(names, name)
+	}
+	q.inflightSeqs = make(map[string]uint64)
 	q.inflight = make(map[string]*deleteJob)
+	q.mu.Unlock()
+	for _, name := range names {
+		notifyWaiters(name)
+	}
+}
+
+// forgetApplied drops the apply sequence of a deleted ingress.
+func forgetApplied(name string) {
+	queue.mu.Lock()
+	defer queue.mu.Unlock()
+	delete(queue.applied, name)
+}
+
+// appliedAfter reports whether the worker finished an apply of name that was
+// enqueued after seq.
+func appliedAfter(name string, seq uint64) bool {
+	queue.mu.Lock()
+	defer queue.mu.Unlock()
+	return queue.applied[name] > seq
+}
+
+// deletePending reports whether a delete of name is queued or running.
+func deletePending(name string) bool {
+	queue.mu.Lock()
+	defer queue.mu.Unlock()
+	_, queued := queue.deletes[name]
+	_, running := queue.inflight[name]
+	return queued || running
+}
+
+// ApplySeq returns the sequence number of the latest Enqueue. A request
+// captures it before its write and passes it to WaitForApply, which then
+// waits for the apply that write triggered, even when the spec, and so the
+// generation, did not change.
+func ApplySeq() uint64 {
+	queue.mu.Lock()
+	defer queue.mu.Unlock()
+	return queue.seq
 }
 
 // supersedeDelete lets a write to name win over a delete requested before
@@ -115,8 +176,9 @@ func Enqueue(names ...string) {
 		return
 	}
 	queue.mu.Lock()
+	queue.seq++
 	for _, name := range names {
-		queue.applies[name] = struct{}{}
+		queue.applies[name] = queue.seq
 	}
 	queue.mu.Unlock()
 	queue.notify()
@@ -172,6 +234,17 @@ func notifyWaiters(name string) {
 // WaitForGeneration blocks until the ingress has been applied at least at the
 // given generation (successfully or not), or ctx ends.
 func WaitForGeneration(ctx context.Context, name string, generation int64) (*model.Ingress, error) {
+	return waitIngress(ctx, name, generation, nil)
+}
+
+// WaitForApply is WaitForGeneration that also waits for an apply enqueued
+// after seq (see ApplySeq) to finish, so a request that re-applies an
+// unchanged spec does not return the status of an earlier apply.
+func WaitForApply(ctx context.Context, name string, generation int64, seq uint64) (*model.Ingress, error) {
+	return waitIngress(ctx, name, generation, &seq)
+}
+
+func waitIngress(ctx context.Context, name string, generation int64, seq *uint64) (*model.Ingress, error) {
 	for {
 		// Subscribe before reading so a status update in between is not missed.
 		ch := waitChan(name)
@@ -179,7 +252,7 @@ func WaitForGeneration(ctx context.Context, name string, generation int64) (*mod
 		if err != nil {
 			return nil, err
 		}
-		if ing.Status.ObservedGeneration >= generation {
+		if ing.Status.ObservedGeneration >= generation && (seq == nil || appliedAfter(name, *seq)) {
 			return ing, nil
 		}
 		select {
@@ -190,9 +263,27 @@ func WaitForGeneration(ctx context.Context, name string, generation int64) (*mod
 	}
 }
 
+// WaitForDeletion blocks until no delete of the ingress is queued or running,
+// or ctx ends. A delete that lost to a later write leaves the ingress in
+// place; that is not an error here.
+func WaitForDeletion(ctx context.Context, name string) error {
+	for {
+		ch := waitChan(name)
+		if !deletePending(name) {
+			return nil
+		}
+		select {
+		case <-ch:
+		case <-ctx.Done():
+			return cosy.WrapErrorWithParams(ErrDeleteWaitTimeout, name)
+		}
+	}
+}
+
 // startWorker applies queued changes until ctx ends. It is the only
 // goroutine that writes ingress files.
 func startWorker(ctx context.Context) {
+	defer healthRefreshes.Wait()
 	enqueueUnapplied()
 	ensureCertificates(ctx)
 	for {
