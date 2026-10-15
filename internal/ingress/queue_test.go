@@ -82,6 +82,27 @@ func TestWorkerIsolatesTheIngressThatBreaksTheTest(t *testing.T) {
 	assert.False(t, env.exists("sites-available", "ingress-bad"))
 }
 
+// Issuance runs in memory only, so a restarted worker resumes it for the
+// ACME ingresses that were applied before the restart.
+func TestWorkerStartEnsuresAppliedACMECertificates(t *testing.T) {
+	env := setupEnv(t)
+	spec := basicSpec("resume.example.com")
+	spec.TLS = model.IngressTLS{Mode: model.IngressTLSModeACME}
+	applied := &model.Ingress{Name: "resume", Owner: "tester", Spec: spec, Generation: 2,
+		Status: model.IngressStatus{ObservedGeneration: 2, Phase: model.IngressPhaseDegraded}}
+	require.NoError(t, model.UseDB().Create(applied).Error)
+	plain := &model.Ingress{Name: "plain", Owner: "tester", Spec: basicSpec("plain.example.com"), Generation: 1,
+		Status: model.IngressStatus{ObservedGeneration: 1, Phase: model.IngressPhaseReady}}
+	require.NoError(t, model.UseDB().Create(plain).Error)
+
+	env.startWorker(t)
+
+	eventually(t, func() bool {
+		ensured, _ := env.certs.snapshot()
+		return len(ensured) == 1 && ensured[0] == "resume"
+	}, "Ensure was not called for the applied ACME ingress")
+}
+
 func TestWorkerEnsuresACMECertificates(t *testing.T) {
 	env := setupEnv(t)
 	spec := basicSpec("acme.example.com")

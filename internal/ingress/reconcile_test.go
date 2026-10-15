@@ -29,6 +29,7 @@ import (
 type reconcileTestEnv struct {
 	mu        sync.Mutex
 	enqueued  []string
+	ensured   []string
 	certs     map[string]CertState
 	certErrs  map[string]error
 	renderErr map[string]error
@@ -66,10 +67,17 @@ func setupReconcileTest(t *testing.T) *reconcileTestEnv {
 
 	originalRender, originalEnqueue := reconcileRender, reconcileEnqueue
 	originalResolve, originalAvail, originalNow := reconcileResolveCert, reconcileAvailability, reconcileNow
+	originalEnsure := reconcileEnsureCert
 	t.Cleanup(func() {
 		reconcileRender, reconcileEnqueue = originalRender, originalEnqueue
 		reconcileResolveCert, reconcileAvailability, reconcileNow = originalResolve, originalAvail, originalNow
+		reconcileEnsureCert = originalEnsure
 	})
+	reconcileEnsureCert = func(_ context.Context, ing *model.Ingress) {
+		env.mu.Lock()
+		defer env.mu.Unlock()
+		env.ensured = append(env.ensured, ing.Name)
+	}
 
 	reconcileRender = func(ing *model.Ingress, opts RenderOptions) (*Rendered, error) {
 		if err := env.renderErr[ing.Name]; err != nil {
@@ -94,6 +102,12 @@ func setupReconcileTest(t *testing.T) *reconcileTestEnv {
 	reconcileNow = func() time.Time { return env.now }
 
 	return env
+}
+
+func (env *reconcileTestEnv) ensuredNames() []string {
+	env.mu.Lock()
+	defer env.mu.Unlock()
+	return append([]string(nil), env.ensured...)
 }
 
 func (env *reconcileTestEnv) enqueuedNames() []string {
@@ -400,6 +414,30 @@ func TestReconcileAllMarksExpiredCertificate(t *testing.T) {
 	assert.Equal(t, reconcileReasonExpired, cert.Reason)
 	assert.Equal(t, model.IngressPhaseDegraded, ing.Status.Phase)
 	assert.Empty(t, env.enqueuedNames())
+}
+
+// Issuance state lives in memory only, so the reconcile pass restarts it for
+// an ACME ingress whose certificate is missing or misses a host, e.g. after a
+// restart.
+func TestReconcileAllEnsuresMissingCertificates(t *testing.T) {
+	env := setupReconcileTest(t)
+	env.newIngress(t, "issued")
+	env.newIngress(t, "missing")
+	env.certs["missing"] = CertState{Reason: CertReasonCertNotFound, Message: "issuance has not started yet"}
+	env.writeFiles(t, loadReconcileTestIngress(t, "missing"))
+	env.newIngress(t, "grown")
+	grown := env.certs["grown"]
+	grown.Reason = CertReasonIssueFailed
+	env.certs["grown"] = grown
+	plain := env.newIngress(t, "plain")
+	plain.Spec.TLS = model.IngressTLS{Mode: model.IngressTLSModeNone}
+	require.NoError(t, model.UseDB().Model(plain).Select("spec").Updates(&model.Ingress{Spec: plain.Spec}).Error)
+	env.certs["plain"] = CertState{Reason: CertReasonNotRequired}
+	env.writeFiles(t, loadReconcileTestIngress(t, "plain"))
+
+	require.NoError(t, ReconcileAll(context.Background()))
+
+	assert.ElementsMatch(t, []string{"missing", "grown"}, env.ensuredNames())
 }
 
 func TestReconcileAllRefreshesBackendHealth(t *testing.T) {

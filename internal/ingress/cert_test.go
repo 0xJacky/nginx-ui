@@ -233,9 +233,11 @@ func TestResolveACMECertificate(t *testing.T) {
 	m := newACMECertManager()
 
 	t.Run("nothing issued yet", func(t *testing.T) {
+		// No run in memory, e.g. after a restart: nothing is issuing.
 		state := resolve(t, m, certIngress("fresh", model.IngressTLSModeACME, "fresh.example.com"))
 		assert.False(t, state.Ready)
-		assert.Equal(t, CertReasonIssuing, state.Reason)
+		assert.Equal(t, CertReasonCertNotFound, state.Reason)
+		assert.Contains(t, state.Message, "not started")
 	})
 
 	issued := addTestCert(t, confDir, SiteName("app"), certcrypto.RSA2048, "app.example.com", "www.example.com")
@@ -262,13 +264,13 @@ func TestResolveACMECertificate(t *testing.T) {
 		ing.Spec.TLS.KeyType = "P256"
 		state := resolve(t, m, ing)
 		assert.False(t, state.Ready)
-		assert.Equal(t, CertReasonIssuing, state.Reason)
+		assert.Equal(t, CertReasonCertNotFound, state.Reason)
 	})
 
 	t.Run("added host keeps serving the current certificate", func(t *testing.T) {
 		state := resolve(t, m, certIngress("app", model.IngressTLSModeACME, "app.example.com", "new.example.com"))
 		assert.True(t, state.Ready)
-		assert.Equal(t, CertReasonIssuing, state.Reason)
+		assert.Equal(t, CertReasonCertNotFound, state.Reason)
 		assert.Contains(t, state.Message, "new.example.com")
 		assert.Equal(t, issued.SSLCertificatePath, state.CertPath)
 	})
@@ -284,6 +286,14 @@ func TestResolveACMECertificate(t *testing.T) {
 		assert.Equal(t, CertReasonIssueFailed, state.Reason)
 		assert.Contains(t, state.Message, "acme: unauthorized")
 		assert.Contains(t, state.Message, "expired")
+	})
+
+	t.Run("expired without a run", func(t *testing.T) {
+		addTestCertValid(t, confDir, SiteName("old"), certcrypto.RSA2048,
+			time.Now().Add(-48*time.Hour), time.Now().Add(-time.Hour), "old.example.com")
+		state := resolve(t, m, certIngress("old", model.IngressTLSModeACME, "old.example.com"))
+		assert.False(t, state.Ready)
+		assert.Equal(t, CertReasonExpired, state.Reason)
 	})
 }
 

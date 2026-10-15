@@ -54,6 +54,9 @@ var (
 	reconcileResolveCert = func(ctx context.Context, ing *model.Ingress) (CertState, error) {
 		return certs().Resolve(ctx, ing)
 	}
+	reconcileEnsureCert = func(ctx context.Context, ing *model.Ingress) {
+		certs().Ensure(ctx, ing)
+	}
 	// reconcileAvailability returns the checker results keyed by socket
 	// address, and false when the checker is turned off, in which case the
 	// results are stale or missing.
@@ -162,7 +165,24 @@ func reconcileIngress(ctx context.Context, ing *model.Ingress) (err error) {
 	if plan.enqueue {
 		reconcileEnqueue(ing.Name)
 	}
+	// Issuance only runs in memory: after a restart, or once a retry timer
+	// was lost, nothing would start it again. Ensure is idempotent and keeps
+	// its backoff, so asking every pass is cheap. It runs after the status
+	// write so its own CertReady progress is not overwritten.
+	if plan.cert != nil && needsIssuance(ing, *plan.cert) {
+		reconcileEnsureCert(ctx, ing)
+	}
 	return errors.Join(errs...)
+}
+
+// needsIssuance reports whether an ACME ingress lacks a certificate that
+// covers every host: none is ready, or the ready one is served while a
+// reissue is due (its reason is not Issued).
+func needsIssuance(ing *model.Ingress, state CertState) bool {
+	if ing.Spec.TLS.Mode != model.IngressTLSModeACME {
+		return false
+	}
+	return !state.Ready || (state.Reason != "" && state.Reason != CertReasonIssued)
 }
 
 // reconcilePlan holds what one pass found for an ingress and turns it into a

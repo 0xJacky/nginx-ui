@@ -147,6 +147,7 @@ func WaitForGeneration(ctx context.Context, name string, generation int64) (*mod
 // goroutine that writes ingress files.
 func startWorker(ctx context.Context) {
 	enqueueUnapplied()
+	ensureCertificates(ctx)
 	for {
 		select {
 		case <-ctx.Done():
@@ -202,6 +203,30 @@ func enqueueUnapplied() {
 		if ing.Status.ObservedGeneration < ing.Generation || ing.Status.Phase == model.IngressPhaseApplying {
 			Enqueue(ing.Name)
 		}
+	}
+}
+
+// ensureCertificates resumes certificate issuance after a restart: it runs
+// only in memory, so nothing else would pick up an ACME ingress whose
+// certificate was not issued yet. Ingresses queued for apply are left to the
+// worker, which calls Ensure after applying them. Ensure returns at once when
+// the certificate is complete.
+func ensureCertificates(ctx context.Context) {
+	db := model.UseDB()
+	if db == nil {
+		return
+	}
+	var all []*model.Ingress
+	if err := db.Order("name").Find(&all).Error; err != nil {
+		logger.Errorf("Loading ingresses failed: %v", err)
+		return
+	}
+	for _, ing := range all {
+		if ing.Spec.TLS.Mode != model.IngressTLSModeACME ||
+			ing.Status.ObservedGeneration < ing.Generation || ing.Status.Phase == model.IngressPhaseApplying {
+			continue
+		}
+		certs().Ensure(ctx, ing)
 	}
 }
 

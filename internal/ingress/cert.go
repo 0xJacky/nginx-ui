@@ -216,9 +216,11 @@ func loadIngress(name string) (*model.Ingress, error) {
 //     and it covers every host (Existing); CertNotFound or Expired otherwise;
 //   - acme: the cert record of the generated site when it is valid and
 //     covers every host (Issued). Otherwise the issuance state (Issuing,
-//     DNSNotReady, IssueFailed). A valid certificate that misses hosts added
-//     later is still served (Ready with the issuance reason) so the existing
-//     hosts keep their HTTPS listener while the new one is issued.
+//     DNSNotReady, IssueFailed), or without a run in memory the record's
+//     last failure (IssueFailed), Expired or CertNotFound. A valid
+//     certificate that misses hosts added later is still served (Ready with
+//     the issuance reason) so the existing hosts keep their HTTPS listener
+//     while the new one is issued.
 //
 // It reads the database and the certificate files but changes nothing.
 func (m *acmeCertManager) Resolve(_ context.Context, ing *model.Ingress) (CertState, error) {
@@ -286,11 +288,16 @@ func (m *acmeCertManager) resolveACME(req certRequest) (CertState, error) {
 
 	reason, message := m.issuanceState(req.Name, req.fingerprint())
 	if reason == "" {
-		// Nothing recorded in memory, e.g. after a restart: report the last
-		// failure of the record, else issuance that has yet to start.
-		reason = CertReasonIssuing
-		if row != nil && row.Status == model.CertStatusFailure && row.LastError != "" {
+		// No run recorded in memory: none started since the last restart or
+		// the last spec change. Report what the record says; Ensure starts a
+		// run after the next apply or reconcile pass.
+		switch {
+		case row != nil && row.Status == model.CertStatusFailure && row.LastError != "":
 			reason, message = CertReasonIssueFailed, row.LastError
+		case row != nil && check.expired:
+			reason = CertReasonExpired
+		default:
+			reason, message = CertReasonCertNotFound, "issuance has not started yet"
 		}
 	}
 
