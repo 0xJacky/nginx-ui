@@ -77,7 +77,7 @@ func (r *QuickConfigRequest) validate() error {
 		if strings.TrimSpace(domain) == "" {
 			return errors.New("domain cannot be empty")
 		}
-		if !isSafeNginxToken(domain) {
+		if !internalTemplate.IsSafeNginxToken(domain) {
 			return errors.New("domain contains invalid characters")
 		}
 	}
@@ -91,36 +91,36 @@ func (r *QuickConfigRequest) validate() error {
 			if managed.ValidateName(r.Upstream) != nil {
 				return errors.New("upstream must be a valid upstream name")
 			}
-			if !reNginxSize.MatchString(r.ClientMaxBodySize) {
+			if !internalTemplate.IsNginxSize(r.ClientMaxBodySize) {
 				return errors.New("client_max_body_size must be a non-negative integer with an optional k, m, or g suffix")
 			}
 			break
 		}
-		if !isSafeNginxToken(r.Host) {
+		if !internalTemplate.IsSafeNginxToken(r.Host) {
 			return errors.New("host contains invalid characters")
 		}
 		port, err := strconv.Atoi(r.Port)
 		if err != nil || port < 1 || port > 65535 {
 			return errors.New("port must be between 1 and 65535")
 		}
-		if !reNginxSize.MatchString(r.ClientMaxBodySize) {
+		if !internalTemplate.IsNginxSize(r.ClientMaxBodySize) {
 			return errors.New("client_max_body_size must be a non-negative integer with an optional k, m, or g suffix")
 		}
 	case QuickConfigTypeStatic:
 		if strings.TrimSpace(r.WebRoot) == "" {
 			return errors.New("web_root is required")
 		}
-		if !isSafeNginxToken(r.WebRoot) {
+		if !internalTemplate.IsSafeNginxToken(r.WebRoot) {
 			return errors.New("web_root contains invalid characters")
 		}
-		if !isSafeNginxValue(r.Index) {
+		if !internalTemplate.IsSafeNginxValue(r.Index) {
 			return errors.New("index contains invalid characters")
 		}
 	case QuickConfigTypeRedirect:
 		if strings.TrimSpace(r.TargetURL) == "" {
 			return errors.New("target_url is required")
 		}
-		if !isSafeNginxToken(r.TargetURL) {
+		if !internalTemplate.IsSafeNginxToken(r.TargetURL) {
 			return errors.New("target_url contains invalid characters")
 		}
 		target, err := url.ParseRequestURI(r.TargetURL)
@@ -133,19 +133,6 @@ func (r *QuickConfigRequest) validate() error {
 	}
 
 	return nil
-}
-
-var (
-	reUnsafeNginxValue = regexp.MustCompile(`[;{}\r\n]`)
-	reNginxSize        = regexp.MustCompile(`^\d+[kKmMgG]?$`)
-)
-
-func isSafeNginxValue(value string) bool {
-	return value == strings.TrimSpace(value) && value != "" && !reUnsafeNginxValue.MatchString(value)
-}
-
-func isSafeNginxToken(value string) bool {
-	return isSafeNginxValue(value) && !strings.ContainsAny(value, " \t")
 }
 
 // quickApp holds the per-type server-level content of a quick config.
@@ -200,19 +187,6 @@ func buildQuickApp(r *QuickConfigRequest) (app *quickApp, err error) {
 	return app, nil
 }
 
-// letsEncryptLocation returns the HTTP challenge location block parsed from the
-// letsencrypt.conf template.
-func letsEncryptLocation() (*nginx.NgxLocation, error) {
-	block, err := internalTemplate.ParseTemplate("block", "letsencrypt.conf", nil)
-	if err != nil {
-		return nil, err
-	}
-	if len(block.Locations) == 0 {
-		return nil, errors.New("letsencrypt.conf contains no location")
-	}
-	return block.Locations[0], nil
-}
-
 func buildQuickConfig(r *QuickConfigRequest) (ngxConfig *nginx.NgxConfig, err error) {
 	app, err := buildQuickApp(r)
 	if err != nil {
@@ -241,7 +215,7 @@ func buildQuickConfig(r *QuickConfigRequest) (ngxConfig *nginx.NgxConfig, err er
 		tlsServer.Directives = append(tlsServer.Directives, app.directives...)
 		tlsServer.Locations = append(tlsServer.Locations, app.locations...)
 
-		challengeLocation, err := letsEncryptLocation()
+		challengeLocation, err := internalTemplate.LetsEncryptLocation()
 		if err != nil {
 			return nil, err
 		}
