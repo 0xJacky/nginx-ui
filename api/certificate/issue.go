@@ -9,9 +9,8 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
-	"github.com/0xJacky/Nginx-UI/internal/notification"
+	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
-	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/gorilla/websocket"
@@ -102,20 +101,14 @@ func IssueCert(c *gin.Context) {
 	stopKeepalive := startIssueCertKeepalive(ws, issueCertWSPingPeriod)
 	defer stopKeepalive()
 
-	payload.KeyType = payload.GetKeyType()
-	if err := cert.NormalizeAndValidateIdentifiers(payload); err != nil {
-		logger.Error(err)
-		_ = wsWriter.WriteJSON(issueErrorResponse(err, nil))
-		return
-	}
-
+	// Probe the challenge route of this site before issuing.
 	payload.ConfigName = name
 
 	log := cert.NewLogger()
 	log.SetWebSocket(wsWriter)
 	defer log.Close()
 
-	certModel, err := cert.IssueWithRecord(name, payload, log)
+	certModel, err := issueCertificate(c.Request.Context(), name, payload, log)
 	if certModel == nil && err != nil {
 		logger.Error(err)
 		_ = wsWriter.WriteJSON(issueErrorResponse(err, nil))
@@ -126,8 +119,6 @@ func IssueCert(c *gin.Context) {
 		_ = wsWriter.WriteJSON(issueErrorResponse(err, hint))
 		return
 	}
-
-	syncIssuedCertificate(certModel.ID)
 
 	if err := wsWriter.WriteJSON(IssueCertResponse{
 		Status:            Success,
@@ -152,16 +143,7 @@ var (
 	shortError       = cert.ShortError
 )
 
-// syncIssuedCertificate pushes a freshly issued certificate to the nodes that
-// serve it. A reissue keeps the file paths, so no site configuration changes
-// and no site sync would carry the new files to those nodes.
-func syncIssuedCertificate(id uint64) {
-	issued, err := query.Cert.FirstByID(id)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-	if err = cert.SyncToRemoteServer(issued); err != nil {
-		notification.Error("Sync Certificate Error", err.Error(), nil)
-	}
-}
+// issueCertificate is the issuance entry point shared with the ingress
+// certificate manager: identifier normalization, the per-name issuance lock,
+// the cert record bookkeeping and the sync to remote nodes. A seam for tests.
+var issueCertificate = site.IssueCertificate
