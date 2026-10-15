@@ -31,7 +31,22 @@ func ComputePhase(ing *model.Ingress) string {
 			return model.IngressPhaseDegraded
 		}
 	}
+	// A certificate that is served but does not match the spec yet (a host
+	// added, the key type changed) is true with the reason of the reissue.
+	if c, ok := FindCondition(status, model.IngressConditionCertReady); ok && c.Status && !certComplete(c.Reason) {
+		return model.IngressPhaseDegraded
+	}
 	return model.IngressPhaseReady
+}
+
+// certComplete reports whether a true CertReady reason means the
+// certificate covers the whole spec.
+func certComplete(reason string) bool {
+	switch reason {
+	case "", CertReasonIssued, CertReasonExisting, CertReasonNotRequired:
+		return true
+	}
+	return false
 }
 
 // statusMu serializes status writes. The apply worker, the certificate
