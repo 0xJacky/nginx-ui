@@ -317,7 +317,7 @@ Scope `ingress`:
 | 40006 | 400 | invalid route |
 | 40007 | 400 | invalid tls |
 | 40008 | 400 | invalid policy |
-| 40009 | 404 | server not found in backend |
+| 40009 | 400 | server not found in backend |
 | 40401 | 404 | ingress not found |
 | 40801 | 408 | wait timed out (the change is still queued) |
 | 40901 | 409 | owned by another owner |

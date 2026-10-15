@@ -464,7 +464,7 @@ func (h *certHarness) counts() (probes, issues int, enqueued []string) {
 	return h.probes, len(h.issues), append([]string(nil), h.enqueued...)
 }
 
-func certCondition(t *testing.T, name string) model.IngressCondition {
+func storedCertCondition(t *testing.T, name string) model.IngressCondition {
 	t.Helper()
 	ing, err := loadIngress(name)
 	require.NoError(t, err)
@@ -524,7 +524,7 @@ func TestEnsureIssuesEnablesAutoRenewAndEnqueues(t *testing.T) {
 	assert.Equal(t, row.ID, state.CertID)
 
 	// The run reported its progress while issuing.
-	c := certCondition(t, "app")
+	c := storedCertCondition(t, "app")
 	assert.False(t, c.Status)
 	assert.Equal(t, CertReasonIssuing, c.Reason)
 
@@ -655,7 +655,7 @@ func TestEnsureRunsOneIssuanceAtATime(t *testing.T) {
 	_, issues, _ := h.counts()
 	assert.Equal(t, 1, issues)
 	assert.Equal(t, CertReasonIssuing, resolve(t, h.m, second).Reason)
-	assert.Equal(t, CertReasonIssuing, certCondition(t, "second").Reason)
+	assert.Equal(t, CertReasonIssuing, storedCertCondition(t, "second").Reason)
 
 	close(gate)
 	h.waitEnqueued("first")
