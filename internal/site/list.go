@@ -120,6 +120,7 @@ func attachSiteMetadata(configs []config.Config, sites []*model.Site) ([]config.
 		}
 		configs[i].Index = siteModel.ID
 		configs[i].Description = siteModel.Description
+		configs[i].ManagedBy = siteModel.ManagedBy
 	}
 
 	return configs, nil
