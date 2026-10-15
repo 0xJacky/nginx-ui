@@ -13,7 +13,19 @@ The MCP module is divided into two main functional areas:
 
 ## Interface
 
-The MCP interface is accessible through the `/mcp` path and provides streaming via SSE.
+The MCP interface is accessible through `/mcp` using Streamable HTTP. Configure
+clients such as OpenCode with this URL and send JSON-RPC requests using HTTP POST.
+Initialization returns a JSON-RPC response directly, without first opening an SSE
+connection.
+
+For protocol versions that use sessions, initialization returns a `Mcp-Session-Id`
+response header. Include this header on subsequent requests, including GET requests
+that open a server event stream. Clients can also identify Streamable HTTP GET
+requests using the `MCP-Protocol-Version` header.
+
+Legacy HTTP+SSE clients remain supported: a GET to `/mcp` without either header
+opens the legacy SSE stream, which announces `/mcp_message?sessionId=...` as its
+message endpoint. Both transports use the same authentication and tool scopes.
 
 ## Authentication
 

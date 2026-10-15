@@ -86,6 +86,14 @@ func TestProviderLifecycleUsesSignedCommonClientRequests(t *testing.T) {
 		mu.Lock()
 		defer mu.Unlock()
 		switch action {
+		case "DescribeRecordLineCategoryList":
+			if stringField(request, "Domain") != "example.com" {
+				t.Errorf("unexpected domain: %v", request["Domain"])
+			}
+			writeTencentResponse(t, w, map[string]any{"LineList": []recordLineItem{
+				{LineName: "默认", Useful: true},
+				{LineName: "电信", Useful: true},
+			}})
 		case "CreateRecord":
 			record = recordInfo{
 				ID: 123, Subdomain: stringField(request, "SubDomain"), RecordType: stringField(request, "RecordType"),
@@ -130,6 +138,12 @@ func TestProviderLifecycleUsesSignedCommonClientRequests(t *testing.T) {
 		Additional: map[string]string{"TENCENTCLOUD_ENDPOINT": server.URL},
 	})
 	require.NoError(t, err)
+
+	lineProvider, ok := createdProvider.(dns.RecordLineProvider)
+	require.True(t, ok)
+	lines, err := lineProvider.ListRecordLines(t.Context(), "example.com")
+	require.NoError(t, err)
+	require.Equal(t, []dns.RecordLine{{Code: "默认", Name: "默认"}, {Code: "电信", Name: "电信"}}, lines)
 
 	line := "电信"
 	weight := 20

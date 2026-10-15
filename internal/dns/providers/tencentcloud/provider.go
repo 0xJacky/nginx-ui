@@ -239,6 +239,13 @@ func (p *provider) UpdateRecord(ctx context.Context, domain string, recordID str
 		return dns.Record{}, fmt.Errorf("tencentcloud: invalid record id: %w", err)
 	}
 	request := newRecordMutationRequest(domain, id, input)
+	if recordLine(input.Line, "") == "" {
+		existing, err := p.describeRecord(ctx, domain, recordID)
+		if err != nil {
+			return dns.Record{}, fmt.Errorf("tencentcloud: preserve record line: %w", err)
+		}
+		request.RecordLine = firstNonEmpty(existing.Line, defaultRecordLine)
+	}
 	if err := p.client.Call(ctx, "ModifyRecord", request, nil); err != nil {
 		return dns.Record{}, fmt.Errorf("tencentcloud: update record: %w", err)
 	}

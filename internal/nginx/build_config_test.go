@@ -161,3 +161,55 @@ upstream backend {
 		}
 	}
 }
+
+// TestBuildConfig_KeepsInlineComments guards comments written after a
+// directive on the same line, such as the "# managed by Certbot" markers.
+func TestBuildConfig_KeepsInlineComments(t *testing.T) {
+	content := `upstream backend {
+    server 10.0.0.1:8080; # primary node
+}
+
+server {
+    listen 443 ssl; # managed by Certbot
+    if ($host = example.com) {
+        return 301 https://$host$request_uri; # redirect to https
+    }
+
+    location / {
+        proxy_pass http://backend; # app server
+    }
+}
+`
+
+	ngxConfig, err := ParseNgxConfigByContent(content)
+	if err != nil {
+		t.Fatalf("ParseNgxConfigByContent() error = %v", err)
+	}
+
+	built, err := ngxConfig.BuildConfig()
+	if err != nil {
+		t.Fatalf("BuildConfig() error = %v", err)
+	}
+
+	for _, comment := range []string{
+		"# primary node",
+		"# managed by Certbot",
+		"# redirect to https",
+		"# app server",
+	} {
+		if got := strings.Count(built, comment); got != 1 {
+			t.Fatalf("BuildConfig() emitted %q %d times, want 1:\n%s", comment, got, built)
+		}
+	}
+
+	for _, directive := range []string{
+		"server 10.0.0.1:8080;",
+		"listen 443 ssl;",
+		"return 301 https://$host$request_uri;",
+		"proxy_pass http://backend;",
+	} {
+		if !strings.Contains(built, directive) {
+			t.Fatalf("BuildConfig() = %q, want it to contain %q", built, directive)
+		}
+	}
+}

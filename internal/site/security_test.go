@@ -223,3 +223,29 @@ func TestRenameRelinksRegularFileInEnabledDir(t *testing.T) {
 		t.Fatalf("relinked entry points at %q, want the renamed available file", target)
 	}
 }
+
+// Renaming a site in maintenance mode used to leave the generated maintenance
+// config in sites-enabled under the old name, with no site left to disable it.
+func TestRenameRefusesSiteInMaintenance(t *testing.T) {
+	confDir, _ := setupSiteMutationTest(t)
+
+	availableDir := filepath.Join(confDir, "sites-available")
+	maintenancePath := filepath.Join(confDir, "sites-enabled", "old.example.com"+MaintenanceSuffix)
+	if err := os.WriteFile(filepath.Join(availableDir, "old.example.com"), []byte("server {\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed site config: %v", err)
+	}
+	if err := os.WriteFile(maintenancePath, []byte("server {\n}\n"), 0o644); err != nil {
+		t.Fatalf("failed to seed maintenance config: %v", err)
+	}
+
+	err := Rename(context.Background(), "old.example.com", "new.example.com")
+	if !errors.Is(err, ErrSiteIsInMaintenance) {
+		t.Fatalf("Rename error = %v, want %v", err, ErrSiteIsInMaintenance)
+	}
+	if _, err := os.Stat(filepath.Join(availableDir, "old.example.com")); err != nil {
+		t.Fatalf("refused rename moved the site file: %v", err)
+	}
+	if _, err := os.Stat(maintenancePath); err != nil {
+		t.Fatalf("refused rename removed the maintenance config: %v", err)
+	}
+}

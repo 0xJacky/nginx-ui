@@ -32,7 +32,7 @@ func Delete(ctx context.Context, name string) (err error) {
 		return err
 	}
 
-	maintenancePath, err := ResolveAvailablePath(name + MaintenanceSuffix)
+	maintenancePath, err := ResolveEnabledMaintenancePath(name)
 	if err != nil {
 		return err
 	}

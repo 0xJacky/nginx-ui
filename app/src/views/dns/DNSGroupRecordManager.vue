@@ -9,6 +9,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { dnsApi } from '@/api/dns'
 import FooterToolBar from '@/components/FooterToolbar'
 import { useDnsGroupStore } from '@/pinia'
+import { getDefaultDNSRecordLine } from '@/utils/dnsRecordLine'
 import { toUnicodeDomain } from '@/utils/idnDomain'
 import DNSRecordForm from '@/views/dns/components/DNSRecordForm.vue'
 import {
@@ -668,16 +669,12 @@ function isCloudflareDomain(domain: DNSDomain) {
     || domain.dns_credential?.provider?.toLowerCase().includes('cloudflare') === true
 }
 
-function isAliDNSDomain(domain: DNSDomain) {
-  return getProviderCode(domain) === 'alidns'
-}
-
 function isHuaweiCloudDomain(domain: DNSDomain) {
   return getProviderCode(domain) === 'huaweicloud'
 }
 
 function supportsRecordLines(domain: DNSDomain) {
-  return isAliDNSDomain(domain) || isHuaweiCloudDomain(domain)
+  return Boolean(getDefaultRecordLine(domain))
 }
 
 function hasProviderSpecificFields(domain: DNSDomain) {
@@ -685,11 +682,7 @@ function hasProviderSpecificFields(domain: DNSDomain) {
 }
 
 function getDefaultRecordLine(domain: DNSDomain) {
-  if (isAliDNSDomain(domain))
-    return 'default'
-  if (isHuaweiCloudDomain(domain))
-    return 'default_view'
-  return undefined
+  return getDefaultDNSRecordLine(getProviderCode(domain))
 }
 
 function getOperationRecord(domainId: number) {

@@ -2,6 +2,7 @@ package mcp
 
 import (
 	"context"
+	"net/http"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +23,7 @@ var (
 		server.WithSSEEndpoint("/mcp"),
 		server.WithMessageEndpoint("/mcp_message"),
 	)
+	streamableHTTPServer = server.NewStreamableHTTPServer(mcpServer)
 )
 
 const (
@@ -51,7 +53,15 @@ func AddTool(tool mcp.Tool, handler func(ctx context.Context, request mcp.CallTo
 }
 
 func ServeHTTP(c *gin.Context) {
-	sseServer.ServeHTTP(c.Writer, c.Request)
+	request := c.Request
+	if request.URL.Path == "/mcp" && (request.Method != http.MethodGet ||
+		request.Header.Get("Mcp-Session-Id") != "" || request.Header.Get("MCP-Protocol-Version") != "") {
+		streamableHTTPServer.ServeHTTP(c.Writer, request)
+		return
+	}
+
+	// Preserve the legacy SSE handshake for clients without Streamable HTTP headers.
+	sseServer.ServeHTTP(c.Writer, request)
 }
 
 func Init(ctx context.Context) {
