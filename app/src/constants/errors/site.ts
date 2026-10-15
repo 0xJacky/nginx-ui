@@ -6,4 +6,5 @@ export default {
   50004: () => $gettext('Nginx test failed: {0}'),
   50005: () => $gettext('Nginx reload failed: {0}'),
   50006: () => $gettext('Read dir failed: {0}'),
+  40901: () => $gettext('Site is managed by ingress {0}; change the ingress instead or force the change'),
 }

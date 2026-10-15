@@ -10755,3 +10755,315 @@ msgstr "需要完成 MFA 验证"
 
 msgid "Cannot remove the last required MFA method"
 msgstr "无法删除最后一个必需的 MFA 认证方式"
+
+msgid "Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, starting and ending with a letter or digit"
+msgstr "无效的 Ingress 名称：请使用 1-40 个小写字母、数字和连字符，并以字母或数字开头和结尾"
+
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr "无效的所有者：请使用 1-64 个字母、数字、点、下划线和连字符"
+
+msgid "Invalid host: {0}"
+msgstr "无效的主机：{0}"
+
+msgid "Invalid backend {0}: {1}"
+msgstr "无效的后端 {0}：{1}"
+
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "后端服务器 {0} 不在允许的后端地址范围内"
+
+msgid "Invalid route {0}: {1}"
+msgstr "无效的路由 {0}：{1}"
+
+msgid "Invalid tls: {0}"
+msgstr "无效的 TLS 配置：{0}"
+
+msgid "Invalid policy: {0}"
+msgstr "无效的策略：{0}"
+
+msgid "Server {0} not found in backend {1}"
+msgstr "后端 {1} 中未找到服务器 {0}"
+
+msgid "Ingress {0} not found"
+msgstr "未找到 Ingress {0}"
+
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0} 属于 {1}；如需接管请传入 force"
+
+msgid "Host {0} is already served by ingress {1}"
+msgstr "主机 {0} 已由 Ingress {1} 提供服务"
+
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "网站 {0} 已存在，且不由此 Ingress 管理"
+
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "等待 Ingress {0} 达到版本 {1} 超时"
+
+msgid "Apply failed: {0}"
+msgstr "应用失败：{0}"
+
+msgid "Certificate not ready: {0}"
+msgstr "证书未就绪：{0}"
+
+msgid "Not implemented"
+msgstr "未实现"
+
+msgid "Site is managed by ingress {0}; change the ingress instead or force the change"
+msgstr "网站由 Ingress {0} 管理；请修改该 Ingress，或强制执行此更改"
+
+msgid "Ingresses"
+msgstr "Ingress"
+
+msgid "HTTP only"
+msgstr "仅 HTTP"
+
+msgid "Not issued yet"
+msgstr "尚未签发"
+
+msgid "Expired %{date}"
+msgstr "已于 %{date} 过期"
+
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date}（剩余 %{days} 天）"
+
+msgid "Health"
+msgstr "健康状态"
+
+msgid "Path Prefix"
+msgstr "路径前缀"
+
+msgid "Allowed Sources"
+msgstr "允许的来源"
+
+msgid "Last Transition"
+msgstr "最后变更时间"
+
+msgid "Drained"
+msgstr "已摘除"
+
+msgid "Healthy"
+msgstr "健康"
+
+msgid "Unhealthy"
+msgstr "不健康"
+
+msgid "The generated site could not be loaded. It is written by the first successful apply."
+msgstr "无法加载生成的网站。网站文件会在首次成功应用时写入。"
+
+msgid "Reconcile Now"
+msgstr "立即调和"
+
+msgid "The last apply failed; the previous config is still live"
+msgstr "上次应用失败；之前的配置仍在生效"
+
+msgid "Owner"
+msgstr "所有者"
+
+msgid "External ID"
+msgstr "外部 ID"
+
+msgid "Generation"
+msgstr "版本"
+
+msgid "%{observed} applied of %{generation}"
+msgstr "已应用 %{observed} / 共 %{generation}"
+
+msgid "Generated Site"
+msgstr "生成的网站"
+
+msgid "Last Applied"
+msgstr "最后应用时间"
+
+msgid "Config Hash"
+msgstr "配置哈希"
+
+msgid "Labels"
+msgstr "标签"
+
+msgid "Hosts"
+msgstr "主机"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "模式"
+
+msgid "View certificate"
+msgstr "查看证书"
+
+msgid "Challenge"
+msgstr "验证方式"
+
+msgid "Redirect to HTTPS"
+msgstr "重定向到 HTTPS"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "证书签发前仅提供 HTTP 监听。"
+
+msgid "Backends"
+msgstr "后端"
+
+msgid "Routes"
+msgstr "路由"
+
+msgid "Policy default"
+msgstr "使用策略默认值"
+
+msgid "Policy"
+msgstr "策略"
+
+msgid "Everyone"
+msgstr "所有人"
+
+msgid "Rate Limit"
+msgstr "速率限制"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "每个客户端 %{rps} 请求/秒，突发 %{burst}"
+
+msgid "Unlimited"
+msgstr "不限制"
+
+msgid "Max Body Size"
+msgstr "最大请求体大小"
+
+msgid "Extra Headers"
+msgstr "附加请求头"
+
+msgid "Conditions"
+msgstr "状态条件"
+
+msgid "True"
+msgstr "是"
+
+msgid "False"
+msgstr "否"
+
+msgid "Generated Site Config"
+msgstr "生成的网站配置"
+
+msgid "Open in site editor"
+msgstr "在网站编辑器中打开"
+
+msgid "Not ready"
+msgstr "未就绪"
+
+msgid "The latest spec has not been applied yet"
+msgstr "最新的规格尚未应用"
+
+msgid "Applying"
+msgstr "应用中"
+
+msgid "Ready"
+msgstr "就绪"
+
+msgid "Degraded"
+msgstr "降级"
+
+msgid "Config Applied"
+msgstr "配置已应用"
+
+msgid "Certificate Ready"
+msgstr "证书就绪"
+
+msgid "Backends Healthy"
+msgstr "后端健康"
+
+msgid "Issued automatically (ACME)"
+msgstr "自动签发（ACME）"
+
+msgid "All owners"
+msgstr "全部所有者"
+
+msgid "Reconcile of %{name} queued"
+msgstr "已将 %{name} 加入调和队列"
+
+msgid "Delete ingress %{name}?"
+msgstr "删除 Ingress %{name}？"
+
+msgid "This ingress is owned by %{owner}. Its controller will probably recreate it on the next sync; remove it from the controller to delete it for good."
+msgstr "此 Ingress 属于 %{owner}。其控制器很可能在下次同步时重新创建它；如需彻底删除，请在控制器中移除。"
+
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "将删除生成的网站和上游文件，并重载 Nginx。"
+
+msgid "Also delete the certificate"
+msgstr "同时删除证书"
+
+msgid "Ingress %{name} deleted"
+msgstr "已删除 Ingress %{name}"
+
+msgid "Ingress"
+msgstr "Ingress"
+
+msgid "Phase"
+msgstr "阶段"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} 健康"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} 台服务器"
+
+msgid "%{count} down"
+msgstr "%{count} 台已摘除"
+
+msgid "Filter by owner"
+msgstr "按所有者筛选"
+
+msgid "Applied generation / latest generation"
+msgstr "已应用版本 / 最新版本"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "版本 %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "调和"
+
+msgid "Ingresses are reverse proxy entries published by external controllers through the Ingress API. Nginx UI renders each one into a managed site and upstreams, issues its certificate and reports its status here. Change them in their controller; edits made here are overwritten by the next reconcile."
+msgstr "Ingress 是外部控制器通过 Ingress API 发布的反向代理条目。Nginx UI 会将每个 Ingress 渲染为受管网站和上游，签发证书，并在这里报告状态。请在控制器中修改它们；在此处所做的修改会被下一次调和覆盖。"
+
+msgid "Learn more"
+msgstr "了解更多"
+
+msgid "No ingresses yet"
+msgstr "暂无 Ingress"
+
+msgid "A controller such as a deployment platform creates ingresses with PUT /api/ingresses/:name, authenticated as a cluster node or with an API token. They show up here as soon as they are stored."
+msgstr "部署平台等控制器通过 PUT /api/ingresses/:name 创建 Ingress，以集群节点身份或 API 令牌认证。Ingress 保存后会立即显示在这里。"
+
+msgid "Read the Ingress API guide"
+msgstr "阅读 Ingress API 指南"
+
+msgid "Search by name, host or external ID"
+msgstr "按名称、主机或外部 ID 搜索"
+
+msgid "Search ingresses"
+msgstr "搜索 Ingress"
+
+msgid "No ingress matches the filter"
+msgstr "没有符合筛选条件的 Ingress"
+
+msgid "Managed by ingress %{name}"
+msgstr "由 Ingress %{name} 管理"
+
+msgid "Changes will be overwritten by the next reconcile. Edit the ingress in its controller instead."
+msgstr "下一次调和会覆盖此处的修改。请改为在控制器中编辑该 Ingress。"
+
+msgid "View ingress"
+msgstr "查看 Ingress"
+
+msgid "Edit anyway"
+msgstr "仍然编辑"
+
+msgid "Ingress: %{name}"
+msgstr "Ingress：%{name}"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "包含 %{count} 个由 Ingress 管理的网站"

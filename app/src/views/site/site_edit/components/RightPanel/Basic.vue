@@ -16,7 +16,7 @@ import { useSiteEditorStore } from '../SiteEditor/store'
 const settings = useSettingsStore()
 
 const editorStore = useSiteEditorStore()
-const { name, data } = storeToRefs(editorStore)
+const { name, data, forceManaged, isManagedLocked } = storeToRefs(editorStore)
 
 function handleStatusChanged(event: { status: SiteStatus }) {
   data.value.status = event.status
@@ -31,11 +31,18 @@ function handleStatusChanged(event: { status: SiteStatus }) {
           <SiteStatusSelect
             :status="data.status"
             :site-name="name"
+            :disabled="isManagedLocked"
+            :force="forceManaged"
             @status-changed="handleStatusChanged"
           />
         </AFormItem>
         <AFormItem :label="$gettext('Name')">
-          <ConfigName v-if="name" :name />
+          <ConfigName
+            v-if="name"
+            :name
+            :disabled="isManagedLocked"
+            :force="forceManaged"
+          />
         </AFormItem>
         <AFormItem :label="$gettext('Description')">
           <ATextarea
