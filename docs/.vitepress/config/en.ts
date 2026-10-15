@@ -62,6 +62,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           items: [
             { text: 'Command Line Interface', link: '/guide/cli' },
             { text: 'MFA Policy and Recovery', link: '/guide/mfa' },
+            { text: 'Ingress API', link: '/guide/ingress' },
           ]
         },
         {

@@ -256,6 +256,36 @@ A reconcile pass runs every `[ingress] ReconcileIntervalMinutes` (default 5).
 It rewrites generated files whose content no longer matches the spec and
 refreshes `cert_not_after` and the server health.
 
+## Viewing ingresses in the UI
+
+**Ingresses** in the side menu lists every ingress with its owner, hosts,
+phase, certificate expiry, backend health (healthy servers out of all servers,
+plus how many are drained with `down`) and the applied generation against the
+latest one (`gen 2/3` means generation 3 is still waiting to be applied).
+Filter by owner, or search by name, host or external ID. The list refreshes
+itself every few seconds while the page is open.
+
+The detail drawer shows the spec in readable form (hosts, backends with each
+server's health, routes, TLS and policy), the conditions with their reasons
+and messages (the `nginx -t` output of a failed apply included), and the
+generated site config. Two actions are available:
+
+- **Reconcile Now** queues the ingress for a reconcile pass
+  (`POST /ingresses/:name/reconcile`).
+- **Delete** removes the ingress with `force=1` and its owner, optionally with
+  its certificate. The controller that owns it usually recreates it on its
+  next sync, so remove it from the controller to delete it for good.
+
+Ingresses are otherwise read-only in the UI: change them through the
+controller that owns them.
+
+A generated site carries an **Ingress** tag in the site list and a warning in
+the site editor that links back to the ingress. Saving, renaming, enabling,
+disabling, putting in maintenance and deleting such a site are locked. Turn on
+**Edit anyway** in the editor (or tick the checkbox in the site list's batch
+toolbar) to send the change with the force flag; the next reconcile still
+overwrites it.
+
 ## Settings
 
 ```ini
