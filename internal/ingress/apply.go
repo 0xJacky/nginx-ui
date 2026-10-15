@@ -391,8 +391,9 @@ func loadNamespace(id uint64) (*model.Namespace, error) {
 
 // checkSiteOwnership refuses to overwrite a site file that does not belong
 // to the ingress. A file is ours when its site row is managed by the ingress,
-// or, when the row is missing (a crash between the write and the row
-// upsert), when it starts with the ingress marker.
+// or, when the row is missing (a crash between the write and the row upsert)
+// or unmanaged (a row the site list backfilled for the file meanwhile), when
+// it starts with the ingress marker. A backfilled row is claimed right away.
 func checkSiteOwnership(name, sitePath string) error {
 	exists, err := nginx.EntryExists(sitePath)
 	if err != nil {
@@ -401,6 +402,10 @@ func checkSiteOwnership(name, sitePath string) error {
 	if !exists {
 		return nil
 	}
+	hasMarker := func() bool {
+		content, err := nginx.ReadFile(sitePath)
+		return err == nil && strings.HasPrefix(string(content), siteHeaderPrefix+name+"\n")
+	}
 	var site model.Site
 	err = model.UseDB().Where("path = ?", sitePath).First(&site).Error
 	switch {
@@ -408,9 +413,12 @@ func checkSiteOwnership(name, sitePath string) error {
 		if site.ManagedBy == ManagedBy(name) {
 			return nil
 		}
+		if site.ManagedBy == "" && hasMarker() {
+			return model.UseDB().Model(&model.Site{}).Where("id = ?", site.ID).
+				Update("managed_by", ManagedBy(name)).Error
+		}
 	case errors.Is(err, gorm.ErrRecordNotFound):
-		content, readErr := nginx.ReadFile(sitePath)
-		if readErr == nil && strings.HasPrefix(string(content), siteHeaderPrefix+name+"\n") {
+		if hasMarker() {
 			return nil
 		}
 	default:

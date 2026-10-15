@@ -292,3 +292,26 @@ func TestApplyAcceptsOwnUpstreamFiles(t *testing.T) {
 	_, err = Apply(context.Background(), []*model.Ingress{ing}, ApplyOptions{})
 	require.NoError(t, err)
 }
+
+// The site list backfills a row without managed_by for a file it finds on
+// disk; the ingress recognizes its marker and claims that row.
+func TestApplyClaimsBackfilledSiteRow(t *testing.T) {
+	env := setupEnv(t)
+	ing := newIngress("own", "own.example.com")
+	_, err := Apply(context.Background(), []*model.Ingress{ing}, ApplyOptions{})
+	require.NoError(t, err)
+	sitePath := env.path("sites-available", "ingress-own")
+	require.NoError(t, model.UseDB().Model(&model.Site{}).Where("path = ?", sitePath).Update("managed_by", "").Error)
+
+	_, err = Upsert(context.Background(), "own", UpsertRequest{Owner: "tester", Spec: basicSpec("own.example.com")})
+	require.NoError(t, err)
+	var row model.Site
+	require.NoError(t, model.UseDB().Where("path = ?", sitePath).First(&row).Error)
+	assert.Equal(t, ManagedBy("own"), row.ManagedBy)
+
+	// A row without managed_by whose file lacks the marker stays the user's.
+	require.NoError(t, os.WriteFile(env.path("sites-available", "ingress-mine"), []byte("server {}\n"), 0o644))
+	require.NoError(t, model.UseDB().Create(&model.Site{Path: env.path("sites-available", "ingress-mine")}).Error)
+	_, err = Upsert(context.Background(), "mine", UpsertRequest{Owner: "tester", Spec: basicSpec("mine.example.com")})
+	requireCode(t, err, ErrSiteConflict)
+}

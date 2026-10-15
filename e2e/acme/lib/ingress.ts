@@ -45,7 +45,7 @@ export interface Ingress {
     config_hash: string
     cert_id: number
     cert_not_after: string | null
-    servers: { backend: string, address: string, down: boolean, healthy: boolean }[] | null
+    servers: { backend: string, address: string, down: boolean, healthy: boolean, checked: boolean }[] | null
   }
 }
 
