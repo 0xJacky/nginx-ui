@@ -279,6 +279,7 @@ Scope `ingress`:
 
 | Code | HTTP | Meaning |
 |---|---|---|
+| 40000 | 400 | invalid request body or query parameter |
 | 40001 | 400 | invalid ingress name |
 | 40002 | 400 | invalid owner |
 | 40003 | 400 | invalid host |

@@ -4,6 +4,7 @@ import "github.com/uozi-tech/cosy"
 
 var (
 	e                    = cosy.NewErrorScope("ingress")
+	ErrInvalidRequest    = e.New(40000, "invalid request: {0}")
 	ErrInvalidName       = e.New(40001, "invalid ingress name: use 1-40 lowercase letters, digits and hyphens, starting and ending with a letter or digit")
 	ErrInvalidOwner      = e.New(40002, "invalid owner: use 1-64 letters, digits, dots, underscores and hyphens")
 	ErrInvalidHost       = e.New(40003, "invalid host: {0}")

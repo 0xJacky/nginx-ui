@@ -40,8 +40,9 @@ var statusMu sync.Mutex
 
 // UpdateStatus loads the ingress, lets fn change its status, recomputes the
 // phase unless fn set IngressPhaseApplying, and saves only the status column.
-// It returns the updated ingress.
+// It returns the updated ingress and wakes WaitForGeneration callers.
 func UpdateStatus(name string, fn func(ing *model.Ingress)) (*model.Ingress, error) {
+	defer notifyWaiters(name)
 	statusMu.Lock()
 	defer statusMu.Unlock()
 

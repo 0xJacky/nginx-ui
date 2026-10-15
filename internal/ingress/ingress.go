@@ -146,9 +146,12 @@ func (noCerts) Forget(string) {}
 
 // ApplyOptions controls Apply.
 type ApplyOptions struct {
-	// DryRun renders and tests against a scratch copy of the config without
-	// touching the live files or reloading.
+	// DryRun writes the files under the apply lock, runs the nginx test and
+	// always rolls back. It never reloads nginx or touches the database.
 	DryRun bool
+	// Certs holds the certificate state of each ingress by name, as resolved
+	// by the caller. Apply resolves the missing ones itself.
+	Certs map[string]CertState
 }
 
 // ApplyResult is the outcome of applying one ingress.
