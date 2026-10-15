@@ -9,6 +9,7 @@ import site from '@/api/site'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
 import { translateError } from '@/lib/http/error'
 import { isIPAddress, splitCertificateIdentifiers } from '@/utils/certificate'
+import { managedIngressName } from '@/views/site/managedSite'
 import { hasDirectiveWithValue, hasSSLListen, stageServersForPendingTLS } from '../../composables/useHTTPSRedirect'
 
 interface SaveOptions {
@@ -40,6 +41,12 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
   const issuingCert = ref(false)
   const dnsLinked = ref(false) // Track if DNS is linked
   const linkedDNSName = ref('') // Store linked DNS name
+  // A site generated from an ingress is rewritten by the next reconcile, so
+  // the editor locks it unless the operator explicitly chooses to edit anyway;
+  // the changes are then sent with the force flag.
+  const forceManaged = ref(false)
+  const managedIngress = computed(() => managedIngressName(data.value.managed_by))
+  const isManagedLocked = computed(() => !!managedIngress.value && !forceManaged.value)
 
   const ngxConfigStore = useNgxConfigStore()
   const { ngxConfig, configText, curServerIdx, curServer, curServerDirectives, curDirectivesMap } = storeToRefs(ngxConfigStore)
@@ -85,6 +92,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     issuingCert.value = false
     dnsLinked.value = false
     linkedDNSName.value = ''
+    forceManaged.value = false
     savedText = ''
     savedConfig = null
     ngxConfigStore.reset()
@@ -198,6 +206,7 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         dns_record_id: data.value.dns_record_id,
         dns_record_name: data.value.dns_record_name,
         dns_record_type: data.value.dns_record_type,
+        force: forceManaged.value || undefined,
       })
 
       if (options.syncResponse !== false)
@@ -361,6 +370,9 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
     buildConfig,
     dnsLinked,
     linkedDNSName,
+    forceManaged,
+    managedIngress,
+    isManagedLocked,
     init,
     reset,
     save,

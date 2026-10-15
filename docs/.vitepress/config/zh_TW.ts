@@ -59,6 +59,13 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: '自動化',
+          collapsed: false,
+          items: [
+            { text: 'Ingress API', link: '/zh_TW/guide/ingress' },
+          ]
+        },
+        {
           text: '配置',
           collapsed: false,
           items: [

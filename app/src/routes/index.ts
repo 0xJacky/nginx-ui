@@ -11,6 +11,7 @@ import { configRoutes } from './modules/config'
 import { dashboardRoutes } from './modules/dashboard'
 import { dnsRoutes } from './modules/dns'
 import { errorRoutes } from './modules/error'
+import { ingressRoutes } from './modules/ingress'
 import { namespacesRoutes } from './modules/namespaces'
 import { nginxLogRoutes } from './modules/nginx_log'
 import { nodesRoutes } from './modules/nodes'
@@ -39,6 +40,7 @@ const mainLayoutChildren: RouteRecordRaw[] = [
   ...sitesRoutes,
   ...streamsRoutes,
   ...upstreamRoutes,
+  ...ingressRoutes,
   ...accessListsRoutes,
   ...configRoutes,
   ...certificatesRoutes,

@@ -9,6 +9,7 @@ import NgxConfigEditor from '@/components/NgxConfigEditor'
 import { siteUpstreamContextKey } from '@/components/NgxConfigEditor/siteUpstreamContext'
 import UpstreamCards from '@/components/UpstreamCards/UpstreamCards.vue'
 import { ConfigStatus } from '@/constants'
+import ManagedSiteAlert from '@/views/site/components/ManagedSiteAlert.vue'
 import Cert from '@/views/site/site_edit/components/Cert'
 import EnableTLS from '@/views/site/site_edit/components/EnableTLS'
 import EditorHTTPSCard from '@/views/site/site_edit/components/HTTPS/EditorHTTPSCard.vue'
@@ -37,6 +38,8 @@ const {
   dnsLinked,
   linkedDNSName,
   ngxConfig,
+  forceManaged,
+  isManagedLocked,
 } = storeToRefs(editorStore)
 
 // A site without any TLS server gets the HTTPS onboarding card; TLS servers
@@ -170,6 +173,7 @@ async function save() {
         </AButton>
         <AButton
           type="link"
+          :disabled="isManagedLocked"
           @click="quickSetupOpen = true"
         >
           <template #icon>
@@ -202,6 +206,12 @@ async function save() {
       class="mb-0!"
       banner
       :namespace-id="data.namespace_id"
+    />
+
+    <ManagedSiteAlert
+      v-model:force="forceManaged"
+      :managed-by="data.managed_by"
+      banner
     />
 
     <div class="card-body">
@@ -286,6 +296,7 @@ async function save() {
         <AButton
           type="primary"
           :loading="saving"
+          :disabled="isManagedLocked"
           @click="save"
         >
           {{ $gettext('Save') }}
