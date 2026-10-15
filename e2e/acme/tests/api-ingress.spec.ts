@@ -2,9 +2,10 @@ import type { APIRequestContext } from '@playwright/test'
 import type { ApiError, Ingress, IngressSpec } from '../lib/ingress'
 import { randomBytes } from 'node:crypto'
 import { expect, test } from '@playwright/test'
+import { createApi } from '../lib/api'
 import { clearDomain, pointDomainTo } from '../lib/dns'
-import { inContainer, mustInContainer, servedCertificateDNSNames, servedCertificateIssuer, writeContainerFile } from '../lib/docker'
-import { addresses } from '../lib/env'
+import { inContainer, mustInContainer, restartNginxUI, servedCertificateDNSNames, servedCertificateIssuer, writeContainerFile } from '../lib/docker'
+import { addresses, baseURL } from '../lib/env'
 import { answeringBackends, backendPorts, body, condition, createNodeApi, describeStatus, expectStatus, fileExists, httpBody, httpsBody, readFile, sitePaths, startBackends } from '../lib/ingress'
 import { uniqueDomain } from '../lib/sites'
 
@@ -18,6 +19,14 @@ let api: APIRequestContext
 test.beforeAll(async () => {
   api = await createNodeApi()
   await startBackends()
+})
+
+// A failed test must not leave its ingresses behind: their HTTPS servers
+// would answer for unknown names in the tests that follow.
+test.afterEach(async () => {
+  const list = await body<{ data: Ingress[] }>(await expectStatus(await api.get('/api/ingresses'), 200, 'GET /api/ingresses'))
+  for (const ing of list.data)
+    await expectStatus(await api.delete(`/api/ingresses/${ing.name}?owner=e2e-cleanup&force=1&purge_cert=1`), 200, `cleanup DELETE ${ing.name}`)
 })
 
 test.afterAll(async () => {
@@ -85,6 +94,18 @@ test('an ACME ingress goes Ready, balances, drains, resists drift and is deleted
     expect(again.generation).toBe(1)
   })
 
+  await test.step('the availability checker reports both servers as checked and healthy', async () => {
+    // An apply refreshes the backend health in the background; checked tells
+    // a server without a result yet from an unhealthy one.
+    await expect.poll(async () => {
+      const ing = await getIngress(name)
+      return (ing.status.servers ?? []).map(s => `${s.address} checked=${s.checked} healthy=${s.healthy}`).sort()
+    }, { timeout: 30_000, intervals: [1_000] }).toEqual([
+      `127.0.0.1:${backendPorts.one} checked=true healthy=true`,
+      `127.0.0.1:${backendPorts.two} checked=true healthy=true`,
+    ])
+  })
+
   await test.step('the certificate is issued by Pebble and the ingress becomes Ready', async () => {
     await expect.poll(async () => {
       const ing = await getIngress(name)
@@ -119,14 +140,23 @@ test('an ACME ingress goes Ready, balances, drains, resists drift and is deleted
     const ing = await body<Ingress>(response)
     expect(ing.generation).toBe(2)
     expect(ing.status.observed_generation, describeStatus(ing)).toBe(2)
-    // The current certificate keeps serving the host it covers.
+    // The current certificate keeps serving the host it covers, but it does
+    // not match the spec yet: Degraded until the reissue finished.
     expect(condition(ing, 'CertReady')?.status, describeStatus(ing)).toBe(true)
+    expect(condition(ing, 'CertReady')?.reason, describeStatus(ing)).not.toBe('Issued')
+    expect(ing.status.phase, describeStatus(ing)).toBe('Degraded')
     expect(httpsBody(host)).toContain('backend=')
 
+    const seen = new Set<string>()
     await expect.poll(async () => {
       const current = await getIngress(name)
-      return `${current.status.phase} ${condition(current, 'CertReady')?.reason ?? ''} ${servedCertificateDNSNames(host2).join(',')}`
+      const reason = condition(current, 'CertReady')?.reason ?? ''
+      seen.add(`${current.status.phase} ${reason}`)
+      return `${current.status.phase} ${reason} ${servedCertificateDNSNames(host2).join(',')}`
     }, { timeout: 120_000, intervals: [1_000] }).toBe(`Ready Issued ${[host, host2].sort().join(',')}`)
+    // Never Ready while the certificate missed the added host.
+    for (const state of seen)
+      expect(state === 'Ready Issued' || state.startsWith('Degraded '), [...seen].join('; ')).toBe(true)
     await expect.poll(() => httpsBody(host2), { timeout: 15_000 }).toContain(`host=${host2}`)
   })
 
@@ -230,6 +260,11 @@ test('an ACME ingress goes Ready, balances, drains, resists drift and is deleted
   })
 
   await test.step('DELETE removes the files and the HTTPS endpoint', async () => {
+    const certID = (await getIngress(name)).status.cert_id
+    expect(certID).toBeGreaterThan(0)
+    const certBefore = await body<{ auto_cert: number }>(await expectStatus(await api.get(`/api/certs/${certID}`), 200, 'GET cert'))
+    expect(certBefore.auto_cert).toBe(1)
+
     await expectError(await api.delete(`/api/ingresses/${name}`), 400, 'ingress', 40002)
     const response = await api.delete(`/api/ingresses/${name}?owner=${owner}`)
     await expectStatus(response, 200, 'DELETE')
@@ -237,7 +272,15 @@ test('an ACME ingress goes Ready, balances, drains, resists drift and is deleted
     expect(fileExists(paths.enabled)).toBe(false)
     expect(fileExists(paths.upstream('app'))).toBe(false)
     await expectError(await api.get(`/api/ingresses/${name}`), 404, 'ingress', 40401)
-    await expect.poll(() => httpsBody(host), { timeout: 15_000 }).not.toContain('backend=')
+    // Another ingress may hold the default HTTPS server and still answer
+    // with a backend, so check that nothing serves this host's certificate.
+    await expect.poll(() => servedCertificateDNSNames(host), { timeout: 15_000 }).not.toContain(host)
+
+    // Without purge the certificate record stays, but nobody serves it, so it
+    // must not renew.
+    const certAfter = await body<{ filename: string, auto_cert: number }>(await expectStatus(await api.get(`/api/certs/${certID}`), 200, 'GET cert after delete'))
+    expect(certAfter.filename).toBe(`ingress-${name}`)
+    expect(certAfter.auto_cert).toBe(-1)
   })
 })
 
@@ -279,8 +322,10 @@ test('a sync with prune deletes only the given owner\'s ingresses', async () => 
   const pruned = await api.put(`/api/ingresses?owner=e2e-owner-x&prune=1&wait=30s`, { data: { items: [] } })
   await expectStatus(pruned, 200, 'prune owner x')
   expect((await body<{ data: Ingress[] }>(pruned)).data).toEqual([])
-  await expect.poll(async () => (await api.get(`/api/ingresses/${drop}`)).status(), { timeout: 20_000 }).toBe(404)
+  // ?wait covers the prune: the ingress and its files are gone on return.
+  await expectError(await api.get(`/api/ingresses/${drop}`), 404, 'ingress', 40401)
   expect(fileExists(sitePaths(drop).available)).toBe(false)
+  expect(fileExists(sitePaths(drop).upstream('app'))).toBe(false)
 
   const kept = await getIngress(keep)
   expect(kept.owner).toBe('e2e-owner-b')
@@ -350,9 +395,16 @@ test('an apply that fails nginx -t is rolled back and a repeated PUT retries it'
     mustInContainer(`rm -f ${clash}`)
   }
 
-  // Repeating the PUT re-applies the same generation.
-  await expectStatus(await api.put(`/api/ingresses/${name}`, { data: { owner, spec } }), 200, 'repeated PUT')
-  await expect.poll(async () => (await getIngress(name)).status.phase, { timeout: 20_000 }).toBe('Ready')
+  // Repeating the PUT re-applies the same generation, and ?wait waits for
+  // that retry instead of returning the failed apply of generation 2.
+  const retried = await body<Ingress>(await expectStatus(
+    await api.put(`/api/ingresses/${name}?wait=30s`, { data: { owner, spec } }),
+    200,
+    'repeated PUT',
+  ))
+  expect(retried.generation).toBe(2)
+  expect(retried.status.phase, describeStatus(retried)).toBe('Ready')
+  expect(condition(retried, 'ConfigApplied')?.status, describeStatus(retried)).toBe(true)
   expect(fileExists(paths.upstream('extra'))).toBe(true)
   await expect.poll(() => httpBody(host, '/extra'), { timeout: 15_000 }).toContain('backend=two')
 
@@ -411,4 +463,90 @@ test('a failed issuance degrades the ingress and the backoff retry recovers it',
   await expect.poll(() => httpsBody(host), { timeout: 15_000 }).toContain('proto=https')
 
   await expectStatus(await api.delete(`/api/ingresses/${name}?owner=${owner}`), 200, 'DELETE')
+})
+
+test('the upstream API refuses to change an ingress upstream and reserves the ig- prefix', async () => {
+  const owner = 'e2e-controller'
+  const name = uniqueName('guard')
+  const paths = sitePaths(name)
+  const upstreamName = `ig-${name}-app`
+  await expectStatus(await api.put(`/api/ingresses/${name}?wait=30s`, { data: { owner, spec: proxySpec(uniqueDomain('guard')) } }), 200, 'PUT')
+  const upstreamFile = readFile(paths.upstream('app'))
+
+  // A user drives the upstream pages with an admin session, not the node secret.
+  const admin = await createApi()
+  try {
+    const user = admin.context
+    const got = await body<{ name: string }>(await expectStatus(await user.get(`/api/upstreams/${upstreamName}`), 200, 'GET upstream'))
+    expect(got.name).toBe(upstreamName)
+
+    await expectError(await user.post(`/api/upstreams/${upstreamName}`, {
+      data: { name: upstreamName, servers: [{ address: `127.0.0.1:${backendPorts.one}` }] },
+    }), 409, 'upstream', 40908)
+    await expectError(await user.delete(`/api/upstreams/${upstreamName}`), 409, 'upstream', 40908)
+    await expectError(await user.post('/api/upstream/server_state', {
+      data: { upstream: upstreamName, address: `127.0.0.1:${backendPorts.two}`, enabled: false },
+    }), 409, 'upstream', 40908)
+    expect(readFile(paths.upstream('app'))).toBe(upstreamFile)
+
+    // A user upstream cannot take a name an ingress may generate later.
+    const reserved = `ig-${uniqueName('user')}`
+    const created = await user.post('/api/upstreams', {
+      data: { name: reserved, servers: [{ address: `127.0.0.1:${backendPorts.one}` }] },
+    })
+    const text = await created.text()
+    expect(created.ok(), text).toBe(false)
+    const error = JSON.parse(text) as ApiError
+    expect(error.scope, text).toBe('upstream')
+    expect(error.code, text).toBe(40023)
+    expect(fileExists(`/etc/nginx/conf.d/upstream-${reserved}.conf`)).toBe(false)
+    expect((await user.get(`/api/upstreams/${reserved}`)).ok()).toBe(false)
+  }
+  finally {
+    await admin.dispose()
+  }
+
+  await expectStatus(await api.delete(`/api/ingresses/${name}?owner=${owner}`), 200, 'DELETE')
+})
+
+test('issuance resumes on its own after a restart once DNS is fixed', async () => {
+  // Issuance and its retry timer only live in memory. After a restart the
+  // worker and the reconcile loop must pick the failed ingress up again
+  // without any API call.
+  test.setTimeout(420_000)
+  const name = uniqueName('resume')
+  const host = uniqueDomain('resume')
+  const owner = 'e2e-controller'
+  await pointDomainTo(host, addresses.backend)
+  try {
+    await expectStatus(await api.put(`/api/ingresses/${name}?wait=30s`, {
+      data: { owner, spec: proxySpec(host, { mode: 'acme', redirect_https: true }) },
+    }), 200, 'PUT')
+    await expect.poll(async () => {
+      const ing = await getIngress(name)
+      const cert = condition(ing, 'CertReady')
+      return `${ing.status.phase} ${cert?.status} ${cert?.reason === 'DNSNotReady' ? 'IssueFailed' : cert?.reason}`
+    }, { timeout: 90_000, intervals: [1_000] }).toBe('Degraded false IssueFailed')
+
+    await restartNginxUI(baseURL)
+    // The status survives the restart; nothing is issued while DNS is wrong.
+    await expect.poll(async () => (await api.get(`/api/ingresses/${name}`)).status(), { timeout: 60_000, intervals: [1_000] }).toBe(200)
+    const after = await getIngress(name)
+    expect(after.status.phase, describeStatus(after)).toBe('Degraded')
+    expect(condition(after, 'CertReady')?.status, describeStatus(after)).toBe(false)
+  }
+  finally {
+    await clearDomain(host)
+  }
+
+  // No API call from here on: only the restarted worker, its retry and the
+  // reconcile loop can issue the certificate.
+  await expect.poll(async () => {
+    const ing = await getIngress(name)
+    return `${ing.status.phase} ${condition(ing, 'CertReady')?.reason ?? ''}`
+  }, { timeout: 240_000, intervals: [2_000] }).toBe('Ready Issued')
+  expect(readFile(sitePaths(name).available)).toContain('listen 443 ssl')
+  await expect.poll(() => httpsBody(host), { timeout: 15_000 }).toContain('proto=https')
+
+  await expectStatus(await api.delete(`/api/ingresses/${name}?owner=${owner}&purge_cert=1`), 200, 'DELETE')
 })
