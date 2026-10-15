@@ -10,7 +10,8 @@
 // CertManager, and a reconcile loop rewrites generated files that drifted.
 //
 // File ownership while the feature is being built in parallel:
-//   - ingress.go, errors.go, start.go: contract, change only by agreement
+//   - ingress.go, errors.go, start.go, status.go: contract, change only by
+//     agreement
 //   - render.go, apply.go, queue.go, store.go: core (render, apply, API logic)
 //   - cert.go: certificate manager
 //   - reconcile.go: drift reconcile loop

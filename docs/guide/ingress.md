@@ -125,9 +125,12 @@ overwriting each other, not an authorization boundary.
 | `sites-available/ingress-<name>` and the `sites-enabled` link | the server blocks |
 | `conf.d/upstream-ig-<name>-<backend>.conf` | one managed upstream per backend, with a shared memory zone |
 
-The site row has `managed_by` set to `ingress:<name>`. The regular site API
-refuses to save, rename, disable or delete such a site unless the request
-sets `force`. The upstreams show up on the upstream page and in the
+The site row has `managed_by` set to `ingress:<name>` and the site API returns
+it. The regular site API refuses to save, rename, enable, disable, delete or
+put in maintenance such a site (single and batch endpoints) with
+`ErrSiteManagedByIngress` unless the request forces it: `"force": true` in the
+JSON body of `POST /sites/:name`, `?force=1` on the other endpoints. A forced
+change is overwritten by the next reconcile. The upstreams show up on the upstream page and in the
 availability checker like any other managed upstream.
 
 Rendered server blocks, roughly:
