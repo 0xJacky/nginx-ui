@@ -178,6 +178,10 @@ func runBatch(ctx context.Context, applies, removes []*model.Ingress, certStates
 			item.result.fail(applyReasonRenderFailed, err)
 			continue
 		}
+		if err := checkUpstreamFiles(item.sitePath, item.rendered.Upstreams); err != nil {
+			item.result.fail(applyReasonRenderFailed, err)
+			continue
+		}
 		active = append(active, item)
 	}
 	prepared = active
@@ -446,19 +450,8 @@ var (
 // UpstreamName prefixes collide across ingresses.
 func staleUpstreams(item *preparedItem, current map[string]string, claimed map[string]string) map[string]string {
 	stale := make(map[string]string)
-	content, err := nginx.ReadFile(item.sitePath)
-	if err != nil {
-		return stale
-	}
-	var previous []string
-	if m := reUpstreamsLine.FindStringSubmatch(string(content)); m != nil {
-		previous = strings.Fields(m[1])
-	}
-	for _, m := range reUpstreamReference.FindAllStringSubmatch(string(content), -1) {
-		previous = append(previous, m[1])
-	}
-	prefix := "ig-" + item.ing.Name + "-"
-	for _, upstreamName := range previous {
+	prefix := UpstreamName(item.ing.Name, "")
+	for _, upstreamName := range previousUpstreams(item.sitePath) {
 		if !strings.HasPrefix(upstreamName, prefix) || !ValidateBackendName(strings.TrimPrefix(upstreamName, prefix)) {
 			continue
 		}
@@ -473,6 +466,61 @@ func staleUpstreams(item *preparedItem, current map[string]string, claimed map[s
 		}
 	}
 	return stale
+}
+
+// previousUpstreams returns the upstreams the site file on disk generated:
+// the upstreams marker line and the proxy_pass targets. It is empty when the
+// file is missing.
+func previousUpstreams(sitePath string) []string {
+	content, err := nginx.ReadFile(sitePath)
+	if err != nil {
+		return nil
+	}
+	var previous []string
+	if m := reUpstreamsLine.FindStringSubmatch(string(content)); m != nil {
+		previous = strings.Fields(m[1])
+	}
+	for _, m := range reUpstreamReference.FindAllStringSubmatch(string(content), -1) {
+		previous = append(previous, m[1])
+	}
+	return previous
+}
+
+// checkUpstreamFiles refuses to overwrite a managed upstream file the
+// ingress did not generate, e.g. one a user created through the upstream
+// page. A file is the ingress's own when its site file lists it, or when it
+// already holds what the ingress renders (left by an apply interrupted
+// between the upstream files and the site file). sitePath must be the
+// ingress's own site file or missing (checkSiteOwnership). upstreams maps
+// the upstream names to their rendered content.
+func checkUpstreamFiles(sitePath string, upstreams map[string]string) error {
+	var listed map[string]struct{}
+	for _, upstreamName := range sortedKeys(upstreams) {
+		path, err := managed.Path(upstreamName)
+		if err != nil {
+			return err
+		}
+		content, err := nginx.ReadFile(path)
+		if os.IsNotExist(err) {
+			continue
+		}
+		if err != nil {
+			return err
+		}
+		if string(content) == upstreams[upstreamName] {
+			continue
+		}
+		if listed == nil {
+			listed = make(map[string]struct{})
+			for _, name := range previousUpstreams(sitePath) {
+				listed[name] = struct{}{}
+			}
+		}
+		if _, ok := listed[upstreamName]; !ok {
+			return cosy.WrapErrorWithParams(ErrUpstreamConflict, upstreamName)
+		}
+	}
+	return nil
 }
 
 func writeItem(tx *fileTxn, item *preparedItem, claimed map[string]string, dryRun bool) error {

@@ -19,6 +19,7 @@ var (
 	ErrHostConflict      = e.New(40902, "host {0} is already served by ingress {1}")
 	ErrSiteConflict      = e.New(40903, "site {0} already exists and is not managed by this ingress")
 	ErrDeleteConflict    = e.New(40904, "ingress {0} was updated while being deleted")
+	ErrUpstreamConflict  = e.New(40905, "upstream {0} already exists and is not managed by this ingress")
 	ErrWaitTimeout       = e.New(40801, "timed out waiting for ingress {0} to reach generation {1}")
 	ErrApplyFailed       = e.New(50001, "apply failed: {0}")
 	ErrCertNotReady      = e.New(50002, "certificate not ready: {0}")

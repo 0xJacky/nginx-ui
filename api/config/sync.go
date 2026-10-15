@@ -7,6 +7,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/clustersync"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/ingress"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
@@ -24,6 +25,7 @@ func SyncConfigBatch(c *gin.Context) {
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
+	force := isForced(c)
 
 	// One rejected file must not discard the rest of the batch: a real
 	// configuration directory always holds something the validator dislikes, and
@@ -62,6 +64,13 @@ func SyncConfigBatch(c *gin.Context) {
 				skippedPaths = append(skippedPaths, relativePath)
 				continue
 			}
+		}
+
+		// A node never overwrites what its own ingresses generate unless the
+		// sender forces it.
+		if err = ingress.CheckManagedPath(path, force); err != nil {
+			failures = append(failures, gin.H{"path": relativePath, "error": err.Error()})
+			continue
 		}
 
 		if err = config.ValidateConfigFile(path, file.Content); err != nil {
@@ -116,7 +125,9 @@ func SyncConfigBatch(c *gin.Context) {
 }
 
 // SyncConfigDirectory replicates a whole configuration directory to the
-// selected nodes rather than a single file.
+// selected nodes rather than a single file. It writes nothing locally; each
+// receiving node refuses, in SyncConfigBatch, the files its own ingresses
+// generate.
 func SyncConfigDirectory(c *gin.Context) {
 	var json struct {
 		Dir           string   `json:"dir"`

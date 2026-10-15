@@ -79,3 +79,64 @@ func TestConfigEditorRefusesManagedSiteFileUnlessForced(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, edited, string(content))
 }
+
+// Creating over a managed file and replicating onto it are refused like an
+// edit, and so are the upstream files an ingress generates.
+func TestConfigAddAndSyncRefuseIngressFilesUnlessForced(t *testing.T) {
+	_, auth := setupConfigSecurityTest(t)
+	path := setupManagedSiteFile(t)
+	require.NoError(t, model.UseDB().AutoMigrate(&model.Ingress{}))
+	require.NoError(t, model.UseDB().Create(&model.Ingress{
+		Name: "web", Owner: "ctl", Generation: 1,
+		Spec: model.IngressSpec{Backends: []model.IngressBackend{{Name: "app"}}},
+	}).Error)
+	router := newConfigMutationRouter()
+	headers := map[string]string{"Authorization": auth.plainToken}
+	edited := "server {\n    listen 8080;\n}\n"
+
+	recorder := performJSONRequest(t, router, http.MethodPost, "/configs", gin.H{
+		"base_dir": "sites-available", "name": "ingress-web", "content": edited, "overwrite": true,
+	}, headers)
+	assertManagedSiteConflict(t, recorder.Code, recorder.Body.Bytes())
+
+	upstreamContent := "upstream ig-web-app {\n    server 127.0.0.1:9000;\n}\n"
+	recorder = performJSONRequest(t, router, http.MethodPost, "/configs", gin.H{
+		"base_dir": "conf.d", "name": "upstream-ig-web-app.conf", "content": upstreamContent, "overwrite": true,
+	}, headers)
+	require.Equal(t, http.StatusConflict, recorder.Code, recorder.Body.String())
+	var resp struct {
+		Scope string `json:"scope"`
+		Code  int32  `json:"code"`
+	}
+	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &resp))
+	assert.Equal(t, "upstream", resp.Scope)
+	assert.Equal(t, int32(40906), resp.Code)
+
+	recorder = performJSONRequest(t, router, http.MethodPost, "/config_sync_batch", gin.H{
+		"overwrite": true,
+		"files": []gin.H{
+			{"base_dir": "sites-available", "name": "ingress-web", "content": edited},
+			{"base_dir": "conf.d", "name": "upstream-ig-web-app.conf", "content": upstreamContent},
+		},
+	}, headers)
+	require.Equal(t, http.StatusInternalServerError, recorder.Code, recorder.Body.String())
+	var batch struct {
+		Written  int              `json:"written"`
+		Failures []map[string]any `json:"failures"`
+	}
+	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &batch))
+	assert.Zero(t, batch.Written)
+	assert.Len(t, batch.Failures, 2)
+
+	content, err := os.ReadFile(path)
+	require.NoError(t, err)
+	assert.Equal(t, managedSiteFileContent, string(content))
+
+	recorder = performJSONRequest(t, router, http.MethodPost, "/configs?force=1", gin.H{
+		"base_dir": "sites-available", "name": "ingress-web", "content": edited, "overwrite": true,
+	}, headers)
+	require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	content, err = os.ReadFile(path)
+	require.NoError(t, err)
+	assert.Equal(t, edited, string(content))
+}

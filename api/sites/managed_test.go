@@ -215,3 +215,42 @@ func TestSiteResponsesIncludeManagedBy(t *testing.T) {
 	require.Len(t, list.Data, 1)
 	assert.Equal(t, "ingress:web", list.Data[0]["managed_by"])
 }
+
+// The certificate of an ingress site belongs to the ingress: the auto renew
+// switch of the site refuses it unless forced.
+func TestAutoCertRefusesManagedSiteUnlessForced(t *testing.T) {
+	db := setupManagedSiteAPITest(t, "ingress-web", "ingress:web", true)
+	serve := func(method, target string, body any) *httptest.ResponseRecorder {
+		router := gin.New()
+		router.POST("/api/auto_cert/:name", AddDomainToAutoCert)
+		router.DELETE("/api/auto_cert/:name", RemoveDomainFromAutoCert)
+		var reader *bytes.Reader
+		if body != nil {
+			payload, err := json.Marshal(body)
+			require.NoError(t, err)
+			reader = bytes.NewReader(payload)
+		} else {
+			reader = bytes.NewReader(nil)
+		}
+		request := httptest.NewRequest(method, target, reader)
+		request.Header.Set("Content-Type", "application/json")
+		response := httptest.NewRecorder()
+		router.ServeHTTP(response, request)
+		return response
+	}
+	require.NoError(t, db.Create(&model.Cert{Filename: "ingress-web", AutoCert: model.AutoCertEnabled}).Error)
+	body := gin.H{"domains": []string{"web.example.com"}, "challenge_method": "http01"}
+
+	response := serve(http.MethodPost, "/api/auto_cert/ingress-web", body)
+	assert.Equal(t, http.StatusConflict, response.Code, response.Body.String())
+	response = serve(http.MethodDelete, "/api/auto_cert/ingress-web", nil)
+	assert.Equal(t, http.StatusConflict, response.Code, response.Body.String())
+	var row model.Cert
+	require.NoError(t, db.Where("filename = ?", "ingress-web").First(&row).Error)
+	assert.Equal(t, model.AutoCertEnabled, row.AutoCert)
+
+	response = serve(http.MethodDelete, "/api/auto_cert/ingress-web?force=1", nil)
+	require.Equal(t, http.StatusOK, response.Code, response.Body.String())
+	require.NoError(t, db.Where("filename = ?", "ingress-web").First(&row).Error)
+	assert.Equal(t, model.AutoCertDisabled, row.AutoCert)
+}

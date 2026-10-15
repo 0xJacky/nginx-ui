@@ -252,3 +252,43 @@ func TestApplyRemovesForcedMaintenanceVariant(t *testing.T) {
 	assert.True(t, env.exists("sites-enabled", "ingress-maint"))
 	assert.False(t, env.exists("sites-enabled", "ingress-maint_nginx_ui_maintenance"))
 }
+
+// A managed upstream the user created under a generated name is never
+// overwritten: neither the store nor the apply worker accepts it.
+func TestApplyRefusesForeignManagedUpstream(t *testing.T) {
+	env := setupEnv(t)
+	foreign := "upstream ig-own-app {\n    server 10.0.0.1:80;\n}\n"
+	require.NoError(t, os.WriteFile(env.path("conf.d", "upstream-ig-own-app.conf"), []byte(foreign), 0o644))
+
+	results, err := Apply(context.Background(), []*model.Ingress{newIngress("own", "own.example.com")}, ApplyOptions{})
+	requireCode(t, err, ErrApplyFailed)
+	assert.Contains(t, results[0].Error, "ig-own-app")
+	assert.Equal(t, foreign, env.read(t, "conf.d", "upstream-ig-own-app.conf"))
+	assert.False(t, env.exists("sites-available", "ingress-own"))
+
+	_, err = Upsert(context.Background(), "own", UpsertRequest{Owner: "tester", Spec: basicSpec("own.example.com")})
+	requireCode(t, err, ErrUpstreamConflict)
+}
+
+// The ingress's own upstream files are rewritten: the ones its site file
+// lists, and an identical leftover of an interrupted apply.
+func TestApplyAcceptsOwnUpstreamFiles(t *testing.T) {
+	env := setupEnv(t)
+	ing := newIngress("own", "own.example.com")
+	results, err := Apply(context.Background(), []*model.Ingress{ing}, ApplyOptions{})
+	require.NoError(t, err)
+
+	// Listed by the site file, even though it was edited by hand.
+	require.NoError(t, os.WriteFile(env.path("conf.d", "upstream-ig-own-app.conf"), []byte("edited\n"), 0o644))
+	_, err = Upsert(context.Background(), "own", UpsertRequest{Owner: "tester", Spec: basicSpec("own.example.com")})
+	require.NoError(t, err)
+	_, err = Apply(context.Background(), []*model.Ingress{ing}, ApplyOptions{})
+	require.NoError(t, err)
+
+	// Identical content without a site file.
+	require.NoError(t, os.Remove(env.path("sites-available", "ingress-own")))
+	require.NoError(t, os.Remove(env.path("sites-enabled", "ingress-own")))
+	assert.Equal(t, results[0].Rendered.Upstreams["ig-own-app"], env.read(t, "conf.d", "upstream-ig-own-app.conf"))
+	_, err = Apply(context.Background(), []*model.Ingress{ing}, ApplyOptions{})
+	require.NoError(t, err)
+}

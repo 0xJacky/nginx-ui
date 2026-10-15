@@ -10,8 +10,8 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/ingress"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
-	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	mcpgo "github.com/mark3labs/mcp-go/mcp"
@@ -74,7 +74,7 @@ func handleNginxConfigRename(ctx context.Context, request mcpgo.CallToolRequest)
 	}
 
 	if !stat.IsDir() {
-		if err := site.CheckManagedPath(origFullPath); err != nil {
+		if err := ingress.CheckManagedPath(origFullPath, false); err != nil {
 			return nil, err
 		}
 	}

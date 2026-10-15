@@ -8,6 +8,7 @@ import (
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
+	"github.com/0xJacky/Nginx-UI/internal/upstream/managed"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
@@ -162,20 +163,32 @@ func checkUpsert(d *desired, force bool) (*model.Ingress, error) {
 	if err := checkConflicts([]*desired{d}, others); err != nil {
 		return nil, err
 	}
-	if err := checkSiteFile(d.name); err != nil {
+	if err := checkGeneratedFiles(d); err != nil {
 		return nil, err
 	}
 	return existing, nil
 }
 
-// checkSiteFile refuses an ingress whose generated site name is taken by a
-// site it does not manage.
-func checkSiteFile(name string) error {
-	sitePath, err := config.ResolveConfPathInDir("sites-available", SiteName(name))
+// checkGeneratedFiles refuses an ingress whose generated site or upstream
+// names are taken by files it does not manage.
+func checkGeneratedFiles(d *desired) error {
+	sitePath, err := config.ResolveConfPathInDir("sites-available", SiteName(d.name))
 	if err != nil {
 		return err
 	}
-	return checkSiteOwnership(name, sitePath)
+	if err := checkSiteOwnership(d.name, sitePath); err != nil {
+		return err
+	}
+	upstreams := make(map[string]string, len(d.spec.Backends))
+	for _, b := range d.spec.Backends {
+		u := buildUpstream(d.name, b)
+		content, err := managed.Prepare(u)
+		if err != nil {
+			return cosy.WrapErrorWithParams(ErrInvalidBackend, b.Name, err.Error())
+		}
+		upstreams[u.Name] = content
+	}
+	return checkUpstreamFiles(sitePath, upstreams)
 }
 
 // checkConflicts refuses hosts served by another ingress and upstream names
@@ -434,12 +447,14 @@ func syncLocked(owner string, items []*desired, listed map[string]struct{}, prun
 		if existing := byName[d.name]; existing != nil && existing.Owner != owner {
 			return nil, cosy.WrapErrorWithParams(ErrOwnerMismatch, d.name, existing.Owner)
 		}
-		if err := checkSiteFile(d.name); err != nil {
-			return nil, err
-		}
 	}
 	if err := checkConflicts(items, others); err != nil {
 		return nil, err
+	}
+	for _, d := range items {
+		if err := checkGeneratedFiles(d); err != nil {
+			return nil, err
+		}
 	}
 
 	var changed []string

@@ -1,17 +1,22 @@
 package upstream
 
 import (
+	"errors"
 	"net"
 	"net/http"
 	"path/filepath"
 	"sort"
+	"strings"
 
 	"github.com/0xJacky/Nginx-UI/api"
+	"github.com/0xJacky/Nginx-UI/internal/ingress"
+	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/internal/upstream/convert"
 	"github.com/0xJacky/Nginx-UI/internal/upstream/managed"
 	"github.com/0xJacky/Nginx-UI/internal/upstream/serverstate"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
 )
 
@@ -132,6 +137,9 @@ func UpdateManagedUpstream(c *gin.Context) {
 		return
 	}
 	req.Name = c.Param("name")
+	if rejectIngressUpstream(c, req.Name) {
+		return
+	}
 
 	detail, err := managed.Save(&req, false, api.CurrentUser(c).Name)
 	if err != nil {
@@ -162,6 +170,9 @@ func PreviewManagedUpstream(c *gin.Context) {
 
 // DeleteManagedUpstream removes an upstream that no site references anymore.
 func DeleteManagedUpstream(c *gin.Context) {
+	if rejectIngressUpstream(c, c.Param("name")) {
+		return
+	}
 	if err := managed.Delete(c.Param("name")); err != nil {
 		cosy.ErrHandler(c, err)
 		return
@@ -176,6 +187,14 @@ func DeleteManagedUpstream(c *gin.Context) {
 func SetUpstreamServerState(c *gin.Context) {
 	var req serverstate.Request
 	if !cosy.BindAndValid(c, &req) {
+		return
+	}
+	// Drain an ingress server through the ingress API (PATCH .../servers),
+	// which the next apply would otherwise undo.
+	if rejectIngressUpstream(c, req.Upstream) {
+		return
+	}
+	if req.ConfigPath != "" && respondIngressError(c, ingress.CheckManagedPath(req.ConfigPath, isForced(c))) {
 		return
 	}
 
@@ -195,6 +214,10 @@ func ConvertSiteUpstream(c *gin.Context) {
 	if !cosy.BindAndValid(c, &req) {
 		return
 	}
+	if name := strings.TrimSpace(req.Site); name != "" &&
+		respondIngressError(c, site.CheckManaged(name, site.Force(isForced(c)))) {
+		return
+	}
 
 	detail, err := convert.Convert(c.Request.Context(), req, api.CurrentUser(c).Name)
 	if err != nil {
@@ -202,4 +225,31 @@ func ConvertSiteUpstream(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, detail)
+}
+
+func isForced(c *gin.Context) bool {
+	return cast.ToBool(c.Query("force"))
+}
+
+// rejectIngressUpstream refuses, unless the request passes ?force=1, a change
+// to an upstream an ingress generates: the next apply or reconcile would
+// overwrite it. It responds and reports true when the request must stop.
+func rejectIngressUpstream(c *gin.Context, name string) bool {
+	return respondIngressError(c, ingress.CheckUpstream(name, isForced(c)))
+}
+
+// respondIngressError answers a refused change to something an ingress
+// generates with 409 Conflict and any other error through cosy. It reports
+// whether it responded.
+func respondIngressError(c *gin.Context, err error) bool {
+	if err == nil {
+		return false
+	}
+	var cErr *cosy.Error
+	if ingress.IsManagedError(err) && errors.As(err, &cErr) {
+		c.JSON(http.StatusConflict, cErr)
+		return true
+	}
+	cosy.ErrHandler(c, err)
+	return true
 }

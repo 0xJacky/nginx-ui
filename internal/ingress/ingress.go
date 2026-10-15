@@ -23,6 +23,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/upstream/managed"
 	"github.com/0xJacky/Nginx-UI/model"
 )
 
@@ -65,7 +66,7 @@ func ManagedBy(name string) string {
 
 // UpstreamName returns the managed upstream name generated for a backend.
 func UpstreamName(name, backend string) string {
-	return "ig-" + name + "-" + backend
+	return managed.IngressPrefix + name + "-" + backend
 }
 
 // RenderOptions carries the state the renderer cannot derive from the spec.

@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
+	"github.com/0xJacky/Nginx-UI/internal/ingress"
 	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/internal/testdb"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -49,6 +50,48 @@ func TestNginxConfigToolsRefuseManagedSiteFile(t *testing.T) {
 		}},
 	})
 	assert.True(t, site.IsManagedByIngress(err), "rename: want ErrSiteManagedByIngress, got %v", err)
+
+	content, err := os.ReadFile(path)
+	require.NoError(t, err)
+	assert.Equal(t, original, string(content))
+}
+
+// nginx_config_add with overwrite never replaces a file an ingress
+// generates, its site file or its upstream files.
+func TestNginxConfigAddRefusesIngressFiles(t *testing.T) {
+	setupMCPConfigValidationTest(t)
+	db, err := gorm.Open(sqlite.Open(testdb.DSN(t)), &gorm.Config{})
+	require.NoError(t, err)
+	require.NoError(t, db.AutoMigrate(&model.Site{}, &model.Ingress{}, &model.Config{}, &model.ConfigBackup{}, &model.LLMSession{}))
+	model.Use(db)
+	query.SetDefault(db)
+
+	path, err := site.ResolveAvailablePath("ingress-web")
+	require.NoError(t, err)
+	original := "server { listen 80; }\n"
+	require.NoError(t, os.MkdirAll(filepath.Dir(path), 0o755))
+	require.NoError(t, os.WriteFile(path, []byte(original), 0o644))
+	require.NoError(t, db.Create(&model.Site{Path: path, ManagedBy: "ingress:web"}).Error)
+	require.NoError(t, db.Create(&model.Ingress{
+		Name: "web", Owner: "ctl", Generation: 1,
+		Spec: model.IngressSpec{Backends: []model.IngressBackend{{Name: "app"}}},
+	}).Error)
+
+	_, err = handleNginxConfigAdd(context.Background(), mcpgo.CallToolRequest{
+		Params: mcpgo.CallToolParams{Arguments: map[string]any{
+			"base_dir": "sites-available", "name": "ingress-web",
+			"content": "server { listen 8080; }\n", "overwrite": true,
+		}},
+	})
+	assert.True(t, site.IsManagedByIngress(err), "add: want ErrSiteManagedByIngress, got %v", err)
+
+	_, err = handleNginxConfigAdd(context.Background(), mcpgo.CallToolRequest{
+		Params: mcpgo.CallToolParams{Arguments: map[string]any{
+			"base_dir": "conf.d", "name": "upstream-ig-web-app.conf",
+			"content": "upstream ig-web-app { server 127.0.0.1:9000; }\n", "overwrite": true,
+		}},
+	})
+	assert.True(t, ingress.IsManagedError(err), "add upstream: want ErrManagedByIngress, got %v", err)
 
 	content, err := os.ReadFile(path)
 	require.NoError(t, err)
