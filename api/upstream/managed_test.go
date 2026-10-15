@@ -227,22 +227,22 @@ func TestManagedUpstreamAPIGuardsIngressUpstreams(t *testing.T) {
 	status, resp := doJSON(t, router, http.MethodPost, "/upstreams",
 		`{"name":"ig-mine","servers":[{"address":"127.0.0.1:8081"}]}`)
 	assert.Equal(t, http.StatusInternalServerError, status)
-	requireCosyError(t, resp, 40016)
+	requireCosyError(t, resp, 40023)
 
 	status, resp = doJSON(t, router, http.MethodPost, "/upstreams/ig-web-app",
 		`{"servers":[{"address":"127.0.0.1:9000"}]}`)
 	assert.Equal(t, http.StatusConflict, status)
-	requireCosyError(t, resp, 40906)
+	requireCosyError(t, resp, 40908)
 	assert.Equal(t, []any{"ig-web-app", "web"}, resp["params"])
 
 	status, resp = doJSON(t, router, http.MethodDelete, "/upstreams/ig-web-app", "")
 	assert.Equal(t, http.StatusConflict, status)
-	requireCosyError(t, resp, 40906)
+	requireCosyError(t, resp, 40908)
 
 	status, resp = doJSON(t, router, http.MethodPost, "/upstream/server_state",
 		`{"upstream":"ig-web-app","config_path":"`+path+`","address":"127.0.0.1:24001","enabled":false}`)
 	assert.Equal(t, http.StatusConflict, status)
-	requireCosyError(t, resp, 40906)
+	requireCosyError(t, resp, 40908)
 
 	got, err := os.ReadFile(path)
 	require.NoError(t, err)

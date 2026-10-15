@@ -110,7 +110,7 @@ func TestConfigAddAndSyncRefuseIngressFilesUnlessForced(t *testing.T) {
 	}
 	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &resp))
 	assert.Equal(t, "upstream", resp.Scope)
-	assert.Equal(t, int32(40906), resp.Code)
+	assert.Equal(t, int32(40908), resp.Code)
 
 	recorder = performJSONRequest(t, router, http.MethodPost, "/config_sync_batch", gin.H{
 		"overwrite": true,
