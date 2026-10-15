@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/netip"
 	"regexp"
+	"strconv"
 	"strings"
 
 	internalTemplate "github.com/0xJacky/Nginx-UI/internal/template"
@@ -61,8 +62,8 @@ var validKeyTypes = map[string]struct{}{
 }
 
 // Validate checks a spec without rendering it: names, hosts (IDNA), backend
-// addresses against settings.IngressSettings.AllowedBackends, routes, TLS and
-// policy values.
+// addresses against settings.IngressSettings.AllowedBackends and
+// AllowedBackendPorts, routes, TLS and policy values.
 func Validate(spec *model.IngressSpec) error {
 	if spec == nil {
 		return cosy.WrapErrorWithParams(ErrInvalidHost, "at least one host is required")
@@ -184,6 +185,7 @@ func validateBackends(backends []model.IngressBackend) error {
 		return cosy.WrapErrorWithParams(ErrInvalidBackend, "-", fmt.Sprintf("at most %d backends are allowed", maxBackends))
 	}
 	allowed := allowedBackendPrefixes()
+	ports := allowedBackendPorts()
 	seen := make(map[string]struct{}, len(backends))
 	for _, b := range backends {
 		invalid := func(reason string) error {
@@ -217,7 +219,7 @@ func validateBackends(backends []model.IngressBackend) error {
 			if err != nil {
 				return invalid(err.Error())
 			}
-			if !addressAllowed(addr.Addr(), allowed) {
+			if !addressAllowed(addr.Addr(), allowed) || !portAllowed(addr.Port(), ports) {
 				return cosy.WrapErrorWithParams(ErrBackendNotAllowed, s.Address)
 			}
 			if _, ok := addresses[addr.String()]; ok {
@@ -273,6 +275,49 @@ func allowedBackendPrefixes() []netip.Prefix {
 		logger.Warnf("Ignoring invalid ingress AllowedBackends entry %q", entry)
 	}
 	return prefixes
+}
+
+// portRange is an inclusive range of ports.
+type portRange struct{ first, last uint16 }
+
+// allowedBackendPorts parses settings.IngressSettings.AllowedBackendPorts.
+// nil means any port. Invalid entries are skipped, so a list with only
+// invalid entries allows no port at all.
+func allowedBackendPorts() []portRange {
+	entries := settings.IngressSettings.AllowedBackendPorts
+	if len(entries) == 0 {
+		return nil
+	}
+	ranges := make([]portRange, 0, len(entries))
+	for _, entry := range entries {
+		entry = strings.TrimSpace(entry)
+		first, last, isRange := strings.Cut(entry, "-")
+		if !isRange {
+			last = first
+		}
+		lo, errLo := strconv.ParseUint(strings.TrimSpace(first), 10, 16)
+		hi, errHi := strconv.ParseUint(strings.TrimSpace(last), 10, 16)
+		if errLo != nil || errHi != nil || lo == 0 || lo > hi {
+			logger.Warnf("Ignoring invalid ingress AllowedBackendPorts entry %q", entry)
+			continue
+		}
+		ranges = append(ranges, portRange{first: uint16(lo), last: uint16(hi)})
+	}
+	return ranges
+}
+
+// portAllowed reports whether port falls in one of the ranges; a nil list
+// allows every port.
+func portAllowed(port uint16, ranges []portRange) bool {
+	if ranges == nil {
+		return true
+	}
+	for _, r := range ranges {
+		if port >= r.first && port <= r.last {
+			return true
+		}
+	}
+	return false
 }
 
 func addressAllowed(addr netip.Addr, allowed []netip.Prefix) bool {

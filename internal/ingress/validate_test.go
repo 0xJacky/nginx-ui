@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -143,6 +144,30 @@ func TestValidateUsesAllowedBackendsSetting(t *testing.T) {
 
 	settingsBackends(t, []string{"10.0.0.0/8", "not-a-cidr"})
 	require.NoError(t, Validate(&spec))
+}
+
+func TestValidateUsesAllowedBackendPortsSetting(t *testing.T) {
+	setupRender(t, true)
+	original := settings.IngressSettings.AllowedBackendPorts
+	t.Cleanup(func() { settings.IngressSettings.AllowedBackendPorts = original })
+	spec := basicSpec("app.example.com")
+	spec.Backends[0].Servers[0].Address = "127.0.0.1:24001"
+
+	settings.IngressSettings.AllowedBackendPorts = nil
+	require.NoError(t, Validate(&spec), "an empty list allows any port")
+
+	settings.IngressSettings.AllowedBackendPorts = []string{"24000-24099", "8080"}
+	require.NoError(t, Validate(&spec))
+	spec.Backends[0].Servers[0].Address = "127.0.0.1:8080"
+	require.NoError(t, Validate(&spec))
+	spec.Backends[0].Servers[0].Address = "[::1]:24100"
+	requireCode(t, Validate(&spec), ErrBackendNotAllowed)
+	spec.Backends[0].Servers[0].Address = "127.0.0.1:22"
+	requireCode(t, Validate(&spec), ErrBackendNotAllowed)
+
+	settings.IngressSettings.AllowedBackendPorts = []string{"bogus", "90-80"}
+	spec.Backends[0].Servers[0].Address = "127.0.0.1:85"
+	requireCode(t, Validate(&spec), ErrBackendNotAllowed)
 }
 
 func TestHostToASCII(t *testing.T) {
