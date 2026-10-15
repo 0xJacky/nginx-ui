@@ -32,6 +32,8 @@ export interface BackendHealthSummary {
   total: number
   // Servers drained with `down`.
   down: number
+  // Servers that take traffic and have no check result yet.
+  unchecked: number
   // False until the availability checker has reported on any server.
   known: boolean
 }
@@ -39,29 +41,35 @@ export interface BackendHealthSummary {
 export function backendHealth(ingress: Ingress): BackendHealthSummary {
   const statuses = ingress.status?.servers ?? []
   if (statuses.length > 0) {
+    const serving = statuses.filter(server => !server.down)
     return {
-      healthy: statuses.filter(server => server.healthy && !server.down).length,
+      healthy: serving.filter(server => server.checked && server.healthy).length,
       total: statuses.length,
-      down: statuses.filter(server => server.down).length,
-      known: true,
+      down: statuses.length - serving.length,
+      unchecked: serving.filter(server => !server.checked).length,
+      known: statuses.some(server => server.checked),
     }
   }
 
   const servers = (ingress.spec?.backends ?? []).flatMap(backend => backend.servers ?? [])
+  const down = servers.filter(server => server.down).length
   return {
     healthy: 0,
     total: servers.length,
-    down: servers.filter(server => server.down).length,
+    down,
+    unchecked: servers.length - down,
     known: false,
   }
 }
 
+// A server without a check result is unknown, not unhealthy: the summary is
+// only red once every serving server was checked and none passed.
 export function backendHealthColor(summary: BackendHealthSummary): 'success' | 'warning' | 'error' | 'default' {
   const serving = summary.total - summary.down
   if (!summary.known || serving <= 0)
     return 'default'
   if (summary.healthy === 0)
-    return 'error'
+    return summary.unchecked > 0 ? 'default' : 'error'
   return summary.healthy < serving ? 'warning' : 'success'
 }
 

@@ -177,8 +177,8 @@ func (env *reconcileTestEnv) newIngress(t *testing.T, name string) *model.Ingres
 		},
 	}
 	ing.Status.Servers = []model.IngressServerStatus{
-		{Backend: "app", Address: "127.0.0.1:24001", Healthy: true},
-		{Backend: "app", Address: "127.0.0.1:24002", Healthy: true},
+		{Backend: "app", Address: "127.0.0.1:24001", Healthy: true, Checked: true},
+		{Backend: "app", Address: "127.0.0.1:24002", Healthy: true, Checked: true},
 	}
 	ing.Status.Phase = ComputePhase(ing)
 	require.NoError(t, model.UseDB().Create(ing).Error)
@@ -452,8 +452,8 @@ func TestReconcileAllRefreshesBackendHealth(t *testing.T) {
 	assert.True(t, health.Status)
 	assert.Equal(t, reconcileReasonPartiallyHealthy, health.Reason)
 	assert.Equal(t, []model.IngressServerStatus{
-		{Backend: "app", Address: "127.0.0.1:24001", Healthy: true},
-		{Backend: "app", Address: "127.0.0.1:24002", Healthy: false},
+		{Backend: "app", Address: "127.0.0.1:24001", Healthy: true, Checked: true},
+		{Backend: "app", Address: "127.0.0.1:24002", Healthy: false, Checked: true},
 	}, ing.Status.Servers)
 	assert.Empty(t, env.enqueuedNames())
 

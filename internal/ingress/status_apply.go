@@ -95,20 +95,23 @@ func recordApplyStatus(ing *model.Ingress, r *itemResult, cert CertState) {
 }
 
 // syncServerStatus lists every server of the spec in the status, keeping the
-// health the reconcile loop recorded and taking down from the spec.
+// health the reconcile loop recorded and taking down from the spec. A new
+// server is not checked yet.
 func syncServerStatus(st *model.IngressStatus, spec *model.IngressSpec) {
-	health := make(map[string]bool, len(st.Servers))
+	known := make(map[string]model.IngressServerStatus, len(st.Servers))
 	for _, s := range st.Servers {
-		health[s.Backend+"|"+s.Address] = s.Healthy
+		known[s.Backend+"|"+s.Address] = s
 	}
 	servers := make([]model.IngressServerStatus, 0)
 	for _, b := range spec.Backends {
 		for _, s := range b.Servers {
+			previous := known[b.Name+"|"+s.Address]
 			servers = append(servers, model.IngressServerStatus{
 				Backend: b.Name,
 				Address: s.Address,
 				Down:    s.Down,
-				Healthy: health[b.Name+"|"+s.Address],
+				Healthy: previous.Healthy,
+				Checked: previous.Checked,
 			})
 		}
 	}

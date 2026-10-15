@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -374,4 +375,55 @@ func TestSyncOwnerStoresAllItemsOrNone(t *testing.T) {
 	queue.mu.Lock()
 	assert.Empty(t, queue.applies)
 	queue.mu.Unlock()
+}
+
+// A fresh apply refreshes the backend health right away instead of leaving
+// it to the next reconcile pass, and the new servers start unchecked.
+func TestWorkerRefreshesHealthAfterApply(t *testing.T) {
+	env := setupEnv(t)
+	good := upsertBasic(t, "fresh", "fresh.example.com")
+	spec := basicSpec("broken.example.com")
+	spec.Policy.ExtraHeaders = []model.IngressHeaderSet{{Name: "X-Marker", Value: brokenMarker}}
+	bad, err := Upsert(context.Background(), "broken", UpsertRequest{Owner: "tester", Spec: spec})
+	require.NoError(t, err)
+	env.startWorker(t)
+
+	got := waitApplied(t, good)
+	waitApplied(t, bad)
+	require.Len(t, got.Status.Servers, 1)
+	assert.False(t, got.Status.Servers[0].Checked)
+	eventually(t, func() bool {
+		names := env.refreshedNames()
+		return len(names) == 1 && names[0] == "fresh"
+	}, "health was not refreshed for the applied ingress only")
+}
+
+func TestRecordBackendHealthMarksCheckedServers(t *testing.T) {
+	setupEnv(t)
+	upsertBasic(t, "probe", "probe.example.com")
+	original := reconcileAvailability
+	t.Cleanup(func() { reconcileAvailability = original })
+
+	reconcileAvailability = func() (map[string]*upstream.Status, bool) { return nil, true }
+	require.NoError(t, recordBackendHealth("probe"))
+	got, err := Get("probe")
+	require.NoError(t, err)
+	require.Len(t, got.Status.Servers, 1)
+	assert.False(t, got.Status.Servers[0].Checked)
+	health, _ := FindCondition(&got.Status, model.IngressConditionBackendsHealthy)
+	assert.Equal(t, ReasonUnknown, health.Reason)
+
+	reconcileAvailability = func() (map[string]*upstream.Status, bool) {
+		return map[string]*upstream.Status{"127.0.0.1:24001": {Online: true}}, true
+	}
+	require.NoError(t, recordBackendHealth("probe"))
+	got, err = Get("probe")
+	require.NoError(t, err)
+	assert.Equal(t, []model.IngressServerStatus{
+		{Backend: "app", Address: "127.0.0.1:24001", Healthy: true, Checked: true},
+	}, got.Status.Servers)
+	health, _ = FindCondition(&got.Status, model.IngressConditionBackendsHealthy)
+	assert.Equal(t, reconcileReasonAllHealthy, health.Reason)
+
+	assert.NoError(t, recordBackendHealth("missing"))
 }

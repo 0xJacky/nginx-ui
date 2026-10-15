@@ -90,7 +90,10 @@ export interface IngressServerStatus {
   backend: string
   address: string
   down: boolean
+  // Raw probe result; only meaningful when checked is true.
   healthy: boolean
+  // False until the availability checker has reported on this server.
+  checked: boolean
 }
 
 export interface IngressStatus {

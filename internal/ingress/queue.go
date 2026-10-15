@@ -326,14 +326,22 @@ func processBatch(ctx context.Context, applyNames []string, deletes map[string]*
 
 	res := runBisect(ctx, applies, removes, states)
 
+	var applied []string
 	for _, ing := range applies {
 		r := res.applies[ing.Name]
 		recordApplyStatus(ing, r, states[ing.Name])
+		if r.failed {
+			continue
+		}
+		applied = append(applied, ing.Name)
 		// Ensure is cheap and idempotent; it also catches a reissue for a
 		// host added while the previous certificate is still served.
-		if !r.failed && ing.Spec.TLS.Mode == model.IngressTLSModeACME {
+		if ing.Spec.TLS.Mode == model.IngressTLSModeACME {
 			certs().Ensure(ctx, ing)
 		}
+	}
+	if len(applied) > 0 {
+		refreshHealthAfterApply(applied)
 	}
 	for _, item := range res.changed {
 		syncToNodes(ctx, item)

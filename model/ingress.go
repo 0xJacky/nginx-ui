@@ -177,5 +177,9 @@ type IngressServerStatus struct {
 	Backend string `json:"backend"`
 	Address string `json:"address"`
 	Down    bool   `json:"down"`
-	Healthy bool   `json:"healthy"`
+	// Healthy is the last probe result; it is only meaningful when Checked.
+	Healthy bool `json:"healthy"`
+	// Checked is false until the availability checker has a result for the
+	// server, e.g. right after it was added or while the checker is off.
+	Checked bool `json:"checked"`
 }

@@ -18,6 +18,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
+	"gorm.io/gorm"
 )
 
 // Condition reasons the reconcile loop sets. The names are prefixed so they
@@ -435,6 +436,8 @@ func sameTime(a, b *time.Time) bool {
 //
 // Servers.Healthy is the raw probe result, also for servers marked down, so
 // a controller can see whether a drained server is back before undraining it.
+// Servers.Checked tells a server the checker has no result for (yet) from an
+// unhealthy one.
 func backendHealth(spec *model.IngressSpec, avail map[string]*upstream.Status, checkerEnabled bool) ([]model.IngressServerStatus, model.IngressCondition) {
 	servers := make([]model.IngressServerStatus, 0)
 	var noHealthy, unknown, partial []string
@@ -450,6 +453,7 @@ func backendHealth(spec *model.IngressSpec, avail map[string]*upstream.Status, c
 				Address: server.Address,
 				Down:    server.Down,
 				Healthy: isHealthy,
+				Checked: checked,
 			})
 			if server.Down {
 				continue
@@ -493,6 +497,47 @@ func backendHealth(spec *model.IngressSpec, avail map[string]*upstream.Status, c
 		c.Reason = reconcileReasonAllHealthy
 	}
 	return servers, c
+}
+
+// refreshHealthAfterApply refreshes the backend health of freshly applied
+// ingresses in the background, so a new or changed ingress does not wait for
+// the next reconcile pass. A variable so tests can observe it.
+var refreshHealthAfterApply = func(names []string) {
+	go refreshBackendHealth(names)
+}
+
+// refreshBackendHealth runs an availability check (the apply registered the
+// new servers with the checker) and records the backend health of the named
+// ingresses.
+func refreshBackendHealth(names []string) {
+	defer func() {
+		if r := recover(); r != nil {
+			logger.Errorf("Refreshing ingress backend health panicked: %v", r)
+		}
+	}()
+	if settings.UpstreamCheckSettings.Enabled {
+		upstream.GetUpstreamService().PerformAvailabilityTest()
+	}
+	for _, name := range names {
+		if err := recordBackendHealth(name); err != nil {
+			logger.Errorf("Recording the backend health of ingress %s failed: %v", name, err)
+		}
+	}
+}
+
+// recordBackendHealth writes the current checker results into the status of
+// one ingress.
+func recordBackendHealth(name string) error {
+	avail, checkerEnabled := reconcileAvailability()
+	_, err := UpdateStatus(name, func(cur *model.Ingress) {
+		servers, health := backendHealth(&cur.Spec, avail, checkerEnabled)
+		cur.Status.Servers = servers
+		SetCondition(&cur.Status, health)
+	})
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return err
 }
 
 func lookupAvailability(avail map[string]*upstream.Status, address string) (*upstream.Status, bool) {

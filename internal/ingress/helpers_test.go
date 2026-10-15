@@ -31,6 +31,22 @@ type testEnv struct {
 	confDir string
 	logDir  string
 	certs   *fakeCerts
+
+	mu        sync.Mutex
+	refreshed []string
+}
+
+// recordHealthRefresh stands in for the health refresh after an apply.
+func (env *testEnv) recordHealthRefresh(names []string) {
+	env.mu.Lock()
+	defer env.mu.Unlock()
+	env.refreshed = append(env.refreshed, names...)
+}
+
+func (env *testEnv) refreshedNames() []string {
+	env.mu.Lock()
+	defer env.mu.Unlock()
+	return append([]string(nil), env.refreshed...)
 }
 
 func setupEnv(t *testing.T) *testEnv {
@@ -60,6 +76,8 @@ func setupEnv(t *testing.T) *testEnv {
 	originalSync, originalRemoveSync := syncToNodes, syncRemoveToNodes
 	syncToNodes = func(context.Context, *preparedItem) {}
 	syncRemoveToNodes = func(context.Context, *preparedItem) {}
+	originalRefresh := refreshHealthAfterApply
+	refreshHealthAfterApply = env.recordHealthRefresh
 	originalQuiet, originalMax := coalesceQuiet, coalesceMax
 	coalesceQuiet, coalesceMax = 30*time.Millisecond, 300*time.Millisecond
 	SetCertManager(env.certs)
@@ -71,6 +89,7 @@ func setupEnv(t *testing.T) *testEnv {
 		supportsHTTP2Directive = originalHTTP2
 		syncToNodes, syncRemoveToNodes = originalSync, originalRemoveSync
 		coalesceQuiet, coalesceMax = originalQuiet, originalMax
+		refreshHealthAfterApply = originalRefresh
 		SetCertManager(noCerts{})
 		queue.take()
 	})

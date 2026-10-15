@@ -71,7 +71,7 @@ function healthBadge(backend: IngressBackend, server: IngressServer): { status: 
   if (server.down)
     return { status: 'default', text: $gettext('Drained') }
   const status = health(backend, server)
-  if (!status)
+  if (!status?.checked)
     return { status: 'default', text: $gettext('No Data') }
   return status.healthy
     ? { status: 'success', text: $gettext('Healthy') }
