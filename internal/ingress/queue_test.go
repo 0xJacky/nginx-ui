@@ -445,3 +445,31 @@ func TestDeleteKeepsCertificateWithoutRenewal(t *testing.T) {
 	require.NoError(t, model.UseDB().Where("id = ?", cert.ID).First(&row).Error)
 	assert.Equal(t, model.AutoCertDisabled, row.AutoCert)
 }
+
+// panicCerts makes the worker panic while it prepares a batch.
+type panicCerts struct{ fakeCerts }
+
+func (*panicCerts) Resolve(context.Context, *model.Ingress) (CertState, error) {
+	panic("certificate store exploded")
+}
+
+// A panic in a batch fails that batch instead of ending the worker.
+func TestWorkerSurvivesAPanickingBatch(t *testing.T) {
+	env := setupEnv(t)
+	SetCertManager(&panicCerts{})
+	env.startWorker(t)
+
+	ing := upsertBasic(t, "boom", "boom.example.com")
+	got := waitApplied(t, ing)
+	assert.Equal(t, model.IngressPhaseError, got.Status.Phase)
+	applied, _ := FindCondition(&got.Status, model.IngressConditionConfigApplied)
+	assert.Equal(t, applyReasonRenderFailed, applied.Reason)
+	assert.Contains(t, applied.Message, "certificate store exploded")
+
+	SetCertManager(env.certs)
+	Enqueue("boom")
+	eventually(t, func() bool {
+		cur, err := Get("boom")
+		return err == nil && cur.Status.Phase == model.IngressPhaseReady
+	}, "the worker did not apply after the panic")
+}

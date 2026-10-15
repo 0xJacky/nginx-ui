@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
@@ -218,7 +219,7 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 
 	certLogger.Info(translation.C("[Nginx UI] Reloading nginx"))
 
-	nginx.Reload()
+	reloadAfterIssue()
 
 	certLogger.Info(translation.C("[Nginx UI] Finished"))
 
@@ -394,4 +395,15 @@ func canUseLegoRenew(payload *ConfigPayload) bool {
 	// lego.RenewOptions does not expose EnableCommonName or ReplacesCertID,
 	// so use the obtain flow when either option is required.
 	return !payload.EnableCommonName && payload.ReplacesCertID == ""
+}
+
+// reloadAfterIssue reloads nginx under the configuration apply lock. A
+// mutation that holds the lock may have files on disk that are not meant to
+// be loaded yet: an ingress dry run writes, tests and rolls back under it,
+// and a save writes before its own test. Callers of IssueCert never hold the
+// lock, so this cannot deadlock.
+func reloadAfterIssue() {
+	release := config.LockApply()
+	defer release()
+	nginx.Reload()
 }

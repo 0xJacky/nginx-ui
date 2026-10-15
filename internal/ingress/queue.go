@@ -3,6 +3,8 @@ package ingress
 import (
 	"context"
 	"errors"
+	"fmt"
+	"runtime/debug"
 	"sort"
 	"strconv"
 	"sync"
@@ -300,7 +302,7 @@ func startWorker(ctx context.Context) {
 			queue.done()
 			continue
 		}
-		processBatch(ctx, applies, deletes)
+		processBatchSafely(ctx, applies, deletes)
 		queue.done()
 	}
 }
@@ -367,6 +369,45 @@ func ensureCertificates(ctx context.Context) {
 			continue
 		}
 		certs().Ensure(ctx, ing)
+	}
+}
+
+// processBatchSafely runs processBatch and turns a panic into a failed
+// batch, so the worker survives it: every apply of the batch gets
+// ConfigApplied=false (RenderFailed) with the panic message and every delete
+// fails with ErrApplyFailed.
+func processBatchSafely(ctx context.Context, applies []string, deletes map[string]*deleteJob) {
+	defer func() {
+		r := recover()
+		if r == nil {
+			return
+		}
+		logger.Errorf("Ingress apply panicked: %v\n%s", r, debug.Stack())
+		message := fmt.Sprintf("apply panicked: %v", r)
+		for _, name := range applies {
+			recordPanic(name, message)
+		}
+		for _, job := range deletes {
+			finishDelete(job, cosy.WrapErrorWithParams(ErrApplyFailed, message))
+		}
+	}()
+	processBatch(ctx, applies, deletes)
+}
+
+// recordPanic marks the current generation of an ingress as failed.
+func recordPanic(name, message string) {
+	_, err := UpdateStatus(name, func(cur *model.Ingress) {
+		cur.Status.Phase = ""
+		cur.Status.ObservedGeneration = max(cur.Status.ObservedGeneration, cur.Generation)
+		SetCondition(&cur.Status, model.IngressCondition{
+			Type:    model.IngressConditionConfigApplied,
+			Status:  false,
+			Reason:  applyReasonRenderFailed,
+			Message: truncateMessage(message),
+		})
+	})
+	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
+		logger.Errorf("Recording the failed apply of ingress %s failed: %v", name, err)
 	}
 }
 
@@ -460,6 +501,7 @@ func nilIfNotFound(err error) error {
 	return err
 }
 
+// finishDelete hands the outcome to everyone waiting for the delete, once.
 func finishDelete(job *deleteJob, err error) {
 	if job == nil {
 		return
@@ -467,6 +509,7 @@ func finishDelete(job *deleteJob, err error) {
 	for _, done := range job.done {
 		done <- err
 	}
+	job.done = nil
 }
 
 // runBisect runs the batch and, when the combined nginx test fails, splits it
