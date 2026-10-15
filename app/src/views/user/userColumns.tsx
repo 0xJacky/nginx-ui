@@ -39,7 +39,7 @@ const columns: StdTableColumn[] = [{
 }, {
   title: () => $gettext('MFA Enrollment'),
   dataIndex: 'mfa_pending',
-  customRender: ({ record }) => <Tag color={record.mfa_pending ? 'orange' : record.enabled_2fa ? 'green' : 'default'}>{record.mfa_pending ? $gettext('Pending enrollment') : record.enabled_2fa ? $gettext('Enabled') : $gettext('Disabled')}</Tag>,
+  customRender: ({ record }) => <Tag color={record.mfa_pending ? 'orange' : record.enabled_2fa ? 'green' : 'default'}>{record.mfa_pending ? $gettext('Pending enrollment') : record.enabled_2fa ? $gettext('Enrolled') : $gettext('Not enrolled')}</Tag>,
   pure: true,
 }, {
   title: () => $gettext('Created at'),

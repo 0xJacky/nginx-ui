@@ -58,7 +58,7 @@ onMounted(() => {
         {{ detail.name }}
       </ADescriptionsItem>
       <ADescriptionsItem :label="$gettext('MFA Enrollment')">
-        {{ detail.mfa_pending ? $gettext('Pending enrollment') : detail.enabled_2fa ? $gettext('Enabled') : $gettext('Disabled') }}
+        {{ detail.mfa_pending ? $gettext('Pending enrollment') : detail.enabled_2fa ? $gettext('Enrolled') : $gettext('Not enrolled') }}
       </ADescriptionsItem>
     </ADescriptions>
     <AAlert v-if="detail.mfa_policy_source === 'global'" type="info" show-icon :title="$gettext('Global MFA enforcement is active. Changing the user policy does not override it.')" />
