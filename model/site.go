@@ -25,6 +25,10 @@ type Site struct {
 	DNSRecordName   *string `json:"dns_record_name"`   // Cached DNS record name
 	DNSRecordType   *string `json:"dns_record_type"`   // Cached DNS record type (A, AAAA, CNAME)
 	DNSRecordExists *bool   `json:"dns_record_exists"` // Whether the DNS record still exists
+	// ManagedBy is "ingress:<name>" when the site is generated from an
+	// ingress. Such sites are rewritten by the ingress controller, so manual
+	// changes are refused unless forced.
+	ManagedBy string `json:"managed_by" gorm:"index"`
 }
 
 // GetID implements ConfigEntity interface

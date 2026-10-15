@@ -44,6 +44,7 @@ func newSite(db *gorm.DB, opts ...gen.DOOption) site {
 	_site.DNSRecordName = field.NewString(tableName, "dns_record_name")
 	_site.DNSRecordType = field.NewString(tableName, "dns_record_type")
 	_site.DNSRecordExists = field.NewBool(tableName, "dns_record_exists")
+	_site.ManagedBy = field.NewString(tableName, "managed_by")
 	_site.Namespace = siteBelongsToNamespace{
 		db: db.Session(&gorm.Session{}),
 
@@ -75,6 +76,7 @@ type site struct {
 	DNSRecordName   field.String
 	DNSRecordType   field.String
 	DNSRecordExists field.Bool
+	ManagedBy       field.String
 	Namespace       siteBelongsToNamespace
 
 	fieldMap map[string]field.Expr
@@ -108,6 +110,7 @@ func (s *site) updateTableName(table string) *site {
 	s.DNSRecordName = field.NewString(table, "dns_record_name")
 	s.DNSRecordType = field.NewString(table, "dns_record_type")
 	s.DNSRecordExists = field.NewBool(table, "dns_record_exists")
+	s.ManagedBy = field.NewString(table, "managed_by")
 
 	s.fillFieldMap()
 
@@ -124,7 +127,7 @@ func (s *site) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *site) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 17)
+	s.fieldMap = make(map[string]field.Expr, 18)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
@@ -141,6 +144,7 @@ func (s *site) fillFieldMap() {
 	s.fieldMap["dns_record_name"] = s.DNSRecordName
 	s.fieldMap["dns_record_type"] = s.DNSRecordType
 	s.fieldMap["dns_record_exists"] = s.DNSRecordExists
+	s.fieldMap["managed_by"] = s.ManagedBy
 
 }
 

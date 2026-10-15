@@ -61,6 +61,7 @@ func GenerateAllModel() []any {
 		NginxLogIndex{},
 		UpstreamConfig{},
 		AccessList{},
+		Ingress{},
 	}
 }
 
