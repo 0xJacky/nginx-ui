@@ -50,6 +50,10 @@ func DeleteConfig(c *gin.Context) {
 		return
 	}
 
+	if !stat.IsDir() && rejectManagedSiteFile(c, fullPath) {
+		return
+	}
+
 	// Delete the file or directory
 	err = nginx.RemoveAll(fullPath)
 	if err != nil {

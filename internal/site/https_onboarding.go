@@ -442,6 +442,13 @@ func (o *HTTPSOnboarding) inspectSite() (*httpsSiteState, error) {
 	if siteModel != nil && siteModel.Advanced {
 		return nil, advancedConfigError(errors.New("site uses the advanced editor"))
 	}
+	// The ingress controller owns the TLS setup of a generated site and would
+	// rewrite the onboarding result on its next reconcile.
+	if siteModel != nil {
+		if err := ManagedError(siteModel.ManagedBy); err != nil {
+			return nil, err
+		}
+	}
 
 	status := GetSiteStatus(o.Name)
 	if status == StatusMaintenance {

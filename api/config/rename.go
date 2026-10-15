@@ -57,6 +57,10 @@ func Rename(c *gin.Context) {
 		return
 	}
 
+	if !stat.IsDir() && rejectManagedSiteFile(c, origFullPath) {
+		return
+	}
+
 	if !stat.IsDir() {
 		err = config.ValidateConfigFilename(newFullPath)
 		if err != nil {

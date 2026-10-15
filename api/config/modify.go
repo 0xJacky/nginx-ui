@@ -48,6 +48,10 @@ func EditConfig(c *gin.Context) {
 		return
 	}
 
+	if rejectManagedSiteFile(c, absPath) {
+		return
+	}
+
 	content := json.Content
 	err = config.ValidateConfigFile(absPath, content)
 	if err != nil {
