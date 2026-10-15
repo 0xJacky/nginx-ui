@@ -341,10 +341,17 @@ func certCondition(ing *model.Ingress, state CertState, now time.Time) model.Ing
 	case state.Ready && state.NotAfter != nil && !state.NotAfter.After(now):
 		c.Reason = reconcileReasonExpired
 		c.Message = "certificate expired at " + state.NotAfter.UTC().Format(time.RFC3339)
-	case state.Ready && ing.Spec.TLS.Mode == model.IngressTLSModeCert:
-		c.Status, c.Reason = true, reconcileReasonExisting
 	case state.Ready:
-		c.Status, c.Reason = true, reconcileReasonIssued
+		// The manager may report a ready certificate with its own reason,
+		// e.g. Issuing while a reissue for an added host runs and the
+		// existing hosts keep their listener.
+		c.Status, c.Reason, c.Message = true, state.Reason, state.Message
+		if c.Reason == "" {
+			c.Reason = reconcileReasonIssued
+			if ing.Spec.TLS.Mode == model.IngressTLSModeCert {
+				c.Reason = reconcileReasonExisting
+			}
+		}
 	default:
 		c.Reason, c.Message = state.Reason, state.Message
 		if c.Reason == "" {

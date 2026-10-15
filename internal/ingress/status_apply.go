@@ -69,7 +69,7 @@ func recordApplyStatus(ing *model.Ingress, r *itemResult, cert CertState) {
 			}
 		}
 
-		SetCondition(st, certCondition(&ing.Spec, cert))
+		SetCondition(st, certCondition(ing, cert, time.Now()))
 		if ing.Spec.TLS.Mode == model.IngressTLSModeNone {
 			st.CertID = 0
 			st.CertNotAfter = nil
@@ -91,33 +91,6 @@ func recordApplyStatus(ing *model.Ingress, r *itemResult, cert CertState) {
 		logger.Errorf("Recording the status of ingress %s failed: %v", ing.Name, err)
 	}
 	notifyWaiters(ing.Name)
-}
-
-// certCondition derives the CertReady condition from the certificate state.
-func certCondition(spec *model.IngressSpec, cert CertState) model.IngressCondition {
-	c := model.IngressCondition{Type: model.IngressConditionCertReady}
-	switch {
-	case spec.TLS.Mode == model.IngressTLSModeNone:
-		c.Status = true
-		c.Reason = applyReasonCertNotRequired
-	case cert.Ready:
-		c.Status = true
-		c.Reason = cert.Reason
-		if c.Reason == "" {
-			c.Reason = applyReasonCertIssued
-			if spec.TLS.Mode == model.IngressTLSModeCert {
-				c.Reason = applyReasonCertExisting
-			}
-		}
-		c.Message = cert.Message
-	default:
-		c.Reason = cert.Reason
-		if c.Reason == "" {
-			c.Reason = "Issuing"
-		}
-		c.Message = cert.Message
-	}
-	return c
 }
 
 // syncServerStatus lists every server of the spec in the status, keeping the

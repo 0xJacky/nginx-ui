@@ -280,14 +280,6 @@ func processBatch(ctx context.Context, applyNames []string, deletes map[string]*
 	}
 }
 
-func loadIngress(name string) (*model.Ingress, error) {
-	var ing model.Ingress
-	if err := model.UseDB().Where("name = ?", name).First(&ing).Error; err != nil {
-		return nil, err
-	}
-	return &ing, nil
-}
-
 func nilIfNotFound(err error) error {
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil

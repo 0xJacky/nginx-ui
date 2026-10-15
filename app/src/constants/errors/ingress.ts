@@ -1,4 +1,5 @@
 export default {
+  40000: () => $gettext('Invalid request: {0}'),
   40001: () => $gettext('Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, starting and ending with a letter or digit'),
   40002: () => $gettext('Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens'),
   40003: () => $gettext('Invalid host: {0}'),
