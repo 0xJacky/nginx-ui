@@ -4,10 +4,13 @@ import (
 	"context"
 	"os"
 	"testing"
+	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"gorm.io/gorm"
 )
 
 func TestApplyWritesFilesEnablesSiteAndReloadsOnce(t *testing.T) {
@@ -314,4 +317,41 @@ func TestApplyClaimsBackfilledSiteRow(t *testing.T) {
 	require.NoError(t, model.UseDB().Create(&model.Site{Path: env.path("sites-available", "ingress-mine")}).Error)
 	_, err = Upsert(context.Background(), "mine", UpsertRequest{Owner: "tester", Spec: basicSpec("mine.example.com")})
 	requireCode(t, err, ErrSiteConflict)
+}
+
+// The site checker creates the sites row of a newly enabled site
+// (FirstOrCreate) as soon as the file watcher reports it, racing the apply
+// that records the same row. The apply must take the row over instead of
+// failing on the unique path.
+func TestApplyTakesOverSiteRowCreatedConcurrently(t *testing.T) {
+	setupEnv(t)
+	ing := newIngress("racy", "racy.example.com")
+	sitePath, err := config.ResolveConfPathInDir("sites-available", SiteName(ing.Name))
+	require.NoError(t, err)
+
+	db := model.UseDB()
+	raced := false
+	require.NoError(t, db.Callback().Create().Before("gorm:create").Register("test:race_site_row", func(d *gorm.DB) {
+		site, ok := d.Statement.Dest.(*model.Site)
+		if raced || !ok || site.Path != sitePath {
+			return
+		}
+		raced = true
+		now := time.Now()
+		require.NoError(t, d.Session(&gorm.Session{NewDB: true}).
+			Exec("INSERT INTO sites (path, created_at, updated_at) VALUES (?, ?, ?)", sitePath, now, now).Error)
+	}))
+	t.Cleanup(func() { _ = db.Callback().Create().Remove("test:race_site_row") })
+
+	results, err := Apply(context.Background(), []*model.Ingress{ing}, ApplyOptions{})
+	require.NoError(t, err)
+	require.Len(t, results, 1)
+	require.True(t, raced, "the racing insert did not run")
+	assert.Empty(t, results[0].Error)
+
+	var rows []model.Site
+	require.NoError(t, db.Unscoped().Where("path = ?", sitePath).Find(&rows).Error)
+	require.Len(t, rows, 1)
+	assert.Equal(t, ManagedBy(ing.Name), rows[0].ManagedBy)
+	assert.Nil(t, rows[0].DeletedAt)
 }

@@ -19,6 +19,7 @@ import (
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 // Reasons of the ConfigApplied condition.
@@ -618,24 +619,22 @@ func finishRemoved(items []*preparedItem) {
 	}
 }
 
+// upsertSiteRow creates or takes over the sites row of the generated site in
+// one statement. A lookup followed by an insert would race the site checker,
+// which creates the row (FirstOrCreate) as soon as the file watcher reports
+// the new enabled site, and the insert then fails on the unique path.
 func upsertSiteRow(item *preparedItem) error {
-	db := model.UseDB()
-	var site model.Site
-	err := db.Unscoped().Where("path = ?", item.sitePath).First(&site).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return db.Create(&model.Site{
-			Path:        item.sitePath,
-			NamespaceID: item.ing.NamespaceID,
-			ManagedBy:   ManagedBy(item.ing.Name),
-		}).Error
-	}
-	if err != nil {
-		return err
-	}
-	return db.Unscoped().Model(&model.Site{}).Where("id = ?", site.ID).Updates(map[string]any{
-		"deleted_at":   nil,
-		"namespace_id": item.ing.NamespaceID,
-		"managed_by":   ManagedBy(item.ing.Name),
+	return model.UseDB().Clauses(clause.OnConflict{
+		Columns: []clause.Column{{Name: "path"}},
+		DoUpdates: clause.Assignments(map[string]any{
+			"deleted_at":   nil,
+			"namespace_id": item.ing.NamespaceID,
+			"managed_by":   ManagedBy(item.ing.Name),
+		}),
+	}).Create(&model.Site{
+		Path:        item.sitePath,
+		NamespaceID: item.ing.NamespaceID,
+		ManagedBy:   ManagedBy(item.ing.Name),
 	}).Error
 }
 
