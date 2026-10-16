@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import type { NgxLocation } from '@/api/ngx'
 import { CopyOutlined, DeleteOutlined, HolderOutlined } from '@antdv-next/icons'
-import { cloneDeep } from 'lodash'
 import Draggable from 'vuedraggable'
 import CodeEditor from '@/components/CodeEditor'
 import { useManagedUpstreams } from '@/composables/useManagedUpstreams'
+import { appendLocation, duplicateLocation, removeLocation } from './locationList'
 import { getProxyPassUpstream, setProxyPassUpstream } from './proxyPassUpstream'
 
 defineProps<{
@@ -46,21 +46,19 @@ function add() {
   location.content = ''
 }
 
+// Assign new lists instead of mutating in place: a server without locations
+// arrives as null/undefined, and a push would never reach the site config.
 function save() {
   adding.value = false
-  locations.value.push({
-    ...location,
-  })
+  locations.value = appendLocation(locations.value, { ...location })
 }
 
 function remove(index: number) {
-  locations.value.splice(index, 1)
+  locations.value = removeLocation(locations.value, index)
 }
 
 function duplicate(index: number) {
-  const loc = locations.value[index]
-
-  locations.value.splice(index, 0, cloneDeep(loc))
+  locations.value = duplicateLocation(locations.value, index)
 }
 
 function getLocationKey(location: NgxLocation) {
