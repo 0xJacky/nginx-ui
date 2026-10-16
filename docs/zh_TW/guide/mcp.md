@@ -13,17 +13,26 @@ MCP 模組主要分為兩大部分功能：
 
 ## 介面
 
-MCP 介面通過 `/mcp` 路徑提供 SSE 流式傳輸。
+MCP 介面透過 `/mcp` 提供 Streamable HTTP 傳輸。將 OpenCode 等用戶端的連線位址設為此 URL，並透過 HTTP POST 傳送 JSON-RPC 請求。初始化會直接傳回 JSON-RPC 回應，無需先建立 SSE 連線。
+
+對於使用工作階段的協定版本，初始化回應會包含 `Mcp-Session-Id` 回應標頭。後續請求都應攜帶此請求標頭，包括用於建立伺服器事件串流的 GET 請求。用戶端也可以透過 `MCP-Protocol-Version` 請求標頭識別 Streamable HTTP GET 請求。
+
+舊式 HTTP+SSE 用戶端仍受支援：向 `/mcp` 傳送不帶上述兩個請求標頭的 GET 請求會建立舊式 SSE 串流，並透過事件告知用戶端使用 `/mcp_message?sessionId=...` 作為訊息端點。兩種傳輸方式使用相同的認證機制和工具權限範圍。
 
 ## 認證
 
-MCP 介面通過 `node_secret` 查詢參數進行認證。
+在 **偏好設定 > 存取權杖** 中建立服務權杖，並僅授予用戶端所需的最小 MCP 權限範圍：
 
-例如：
+- `mcp:read` 允許讀取資源和呼叫唯讀工具。
+- `mcp:write` 允許呼叫會修改狀態的工具，並包含 MCP 讀取權限。
 
+透過 `Authorization` 請求標頭傳送權杖：
+
+```http
+Authorization: Bearer nui_pat_...
 ```
-http://localhost:9000/mcp?node_secret=<your_node_secret>
-```
+
+權杖僅顯示一次。請將其儲存在金鑰管理器中，並盡可能設定到期時間。URL 查詢參數中的憑證會被拒絕，以防止憑證透過日誌和瀏覽器歷史記錄洩漏。
 
 ### 資源（Resource）
 
