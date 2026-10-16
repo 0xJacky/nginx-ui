@@ -167,7 +167,7 @@ func encodePFX(certPEM, keyPEM []byte, password string) ([]byte, error) {
 		return nil, err
 	}
 
-	return pkcs12.Encode(rand.Reader, privateKey, leaf, chain, password)
+	return pkcs12.Legacy.WithRand(rand.Reader).Encode(privateKey, leaf, chain, password)
 }
 
 func parseCertificateChain(certPEM []byte) (*x509.Certificate, []*x509.Certificate, error) {
