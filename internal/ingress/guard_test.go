@@ -23,6 +23,9 @@ func TestCheckManagedPathCoversSiteAndUpstreamFiles(t *testing.T) {
 	owner, err = UpstreamOwner("ig-web-other")
 	require.NoError(t, err)
 	assert.Empty(t, owner)
+	owners, err := UpstreamOwners()
+	require.NoError(t, err)
+	assert.Equal(t, map[string]string{"ig-web-app": "web"}, owners)
 
 	err = CheckManagedPath(env.path("conf.d", "upstream-ig-web-app.conf"), false)
 	requireCode(t, err, managed.ErrManagedByIngress)

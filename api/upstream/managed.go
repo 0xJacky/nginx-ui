@@ -18,6 +18,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 // ExternalUpstream is an upstream block defined outside the managed files, for
@@ -49,6 +50,8 @@ func ListManagedUpstreams(c *gin.Context) {
 	for _, item := range items {
 		managedPaths[filepath.Clean(item.Path)] = true
 	}
+
+	markIngressOwners(items...)
 
 	external := make([]ExternalUpstream, 0)
 	listed := make(map[string]bool)
@@ -100,6 +103,7 @@ func GetManagedUpstream(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	markIngressOwners(detail)
 	c.JSON(http.StatusOK, detail)
 }
 
@@ -146,6 +150,7 @@ func UpdateManagedUpstream(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	markIngressOwners(detail)
 	c.JSON(http.StatusOK, detail)
 }
 
@@ -225,6 +230,33 @@ func ConvertSiteUpstream(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, detail)
+}
+
+// markIngressOwners sets ManagedBy on the upstreams an ingress generates, so
+// the page can lock them before the API refuses a change. The store is only
+// queried when a name carries the reserved prefix. A failed lookup leaves the
+// field empty: the guards still refuse the change, they just do it later.
+func markIngressOwners(details ...*managed.Detail) {
+	hasCandidate := false
+	for _, detail := range details {
+		if strings.HasPrefix(detail.Name, managed.IngressPrefix) {
+			hasCandidate = true
+			break
+		}
+	}
+	if !hasCandidate {
+		return
+	}
+	owners, err := ingress.UpstreamOwners()
+	if err != nil {
+		logger.Warnf("resolve ingress upstream owners: %v", err)
+		return
+	}
+	for _, detail := range details {
+		if owner := owners[detail.Name]; owner != "" {
+			detail.ManagedBy = ingress.ManagedBy(owner)
+		}
+	}
 }
 
 func isForced(c *gin.Context) bool {

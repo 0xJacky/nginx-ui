@@ -41,6 +41,10 @@ type Detail struct {
 	Path       string      `json:"path"`
 	Content    string      `json:"content"`
 	References []Reference `json:"references"`
+	// ManagedBy is "ingress:<name>" when an ingress generates the upstream,
+	// so its next apply overwrites changes made here. The API layer fills it
+	// in, because resolving the owner needs the ingress store.
+	ManagedBy string `json:"managed_by,omitempty"`
 }
 
 // FileName returns the file name a managed upstream is stored under.
