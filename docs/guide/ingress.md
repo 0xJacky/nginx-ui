@@ -113,7 +113,7 @@ or while the checker is off).
 | `hosts` | at least one; DNS names (IDN allowed, stored as given and rendered as punycode); `*.` wildcards only with `tls.mode` `cert` or `none` or a `dns01` challenge; a host may belong to one ingress only |
 | `backends[].name` | 1–16 chars, `[a-z0-9-]`; unique in the ingress |
 | `backends[].lb` | `round_robin` (default), `least_conn`, `ip_hash` |
-| `backends[].servers[].address` | `host:port` with an IP host inside `[ingress] AllowedBackends` (default `127.0.0.1/32`, `::1/128`) and, when `[ingress] AllowedBackendPorts` is set, a port inside it; at least one server per backend |
+| `backends[].servers[].address` | `host:port` with an IP host inside `[ingress] AllowedBackends` (default `127.0.0.1/32`, `::1/128`) (any port); at least one server per backend |
 | `routes[].path_prefix` | starts with `/`, no spaces, `;`, `{`, `}`, quotes or `#`; unique in the ingress; longest prefix wins |
 | `routes[].backend` | names a backend of the ingress |
 | timeouts | nginx time values (`60s`, `5m`) |
@@ -352,17 +352,13 @@ overwrites it.
 [ingress]
 AllowedBackends = 127.0.0.1/32
 AllowedBackends = ::1/128
-AllowedBackendPorts = 24000-24099
 ReconcileIntervalMinutes = 5
 ```
 
-`AllowedBackends` lists the CIDRs or addresses backend servers may point to.
-`AllowedBackendPorts` lists the ports or port ranges (`8080`,
-`24000-24099`) they may use; empty (the default) allows any port. Entries
-that do not parse are ignored, so a list of only invalid entries allows no
-port. Both are protected settings: they can only be changed in `app.ini` or
-the environment (`NGINX_UI_INGRESS_ALLOWED_BACKENDS`,
-`NGINX_UI_INGRESS_ALLOWED_BACKEND_PORTS`), not through the API.
+`AllowedBackends` lists the CIDRs or addresses backend servers may point to;
+any port on those addresses is allowed. It is a protected setting: it can only
+be changed in `app.ini` or the environment
+(`NGINX_UI_INGRESS_ALLOWED_BACKENDS`), not through the API.
 
 ## Errors
 

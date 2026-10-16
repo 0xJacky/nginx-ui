@@ -13,9 +13,6 @@ type Ingress struct {
 	// An ingress is a remote-controlled proxy_pass, so this keeps a bad or
 	// compromised controller from aiming nginx at arbitrary hosts.
 	AllowedBackends []string `json:"allowed_backends" binding:"omitempty,dive,cidr" ini:",,allowshadow" protected:"true"`
-	// AllowedBackendPorts narrows the backend server ports to these ports or
-	// port ranges ("24000-24099", "8080"). Empty allows any port.
-	AllowedBackendPorts []string `json:"allowed_backend_ports" ini:",,allowshadow" protected:"true"`
 	// ReconcileIntervalMinutes is how often generated files are compared with
 	// the spec and rewritten when they drifted.
 	ReconcileIntervalMinutes int `json:"reconcile_interval_minutes" binding:"omitempty,min=1"`

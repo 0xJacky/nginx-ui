@@ -100,7 +100,7 @@
 | `hosts` | 至少一個；DNS 名稱（允許 IDN，依原樣儲存並以 punycode 呈現）；`*.` 萬用字元僅能搭配 `tls.mode` 為 `cert` 或 `none`，或 `dns01` 驗證方式；一個主機只能屬於一個 Ingress |
 | `backends[].name` | 1–16 個字元，`[a-z0-9-]`；在該 Ingress 內不得重複 |
 | `backends[].lb` | `round_robin`（預設）、`least_conn`、`ip_hash` |
-| `backends[].servers[].address` | `host:port`，其中 IP 主機必須位於 `[ingress] AllowedBackends` 之內（預設為 `127.0.0.1/32`、`::1/128`），設定了 `[ingress] AllowedBackendPorts` 時連接埠也必須在其範圍內；每個 backend 至少要有一個 server |
+| `backends[].servers[].address` | `host:port`，其中 IP 主機必須位於 `[ingress] AllowedBackends` 之內（預設為 `127.0.0.1/32`、`::1/128`），連接埠不限；每個 backend 至少要有一個 server |
 | `routes[].path_prefix` | 以 `/` 開頭，不得包含空格、`;`、`{`、`}`、引號或 `#`；在該 Ingress 內不得重複；最長前綴優先 |
 | `routes[].backend` | 必須是該 Ingress 中某個 backend 的名稱 |
 | timeouts | nginx 時間值（`60s`、`5m`） |
@@ -252,11 +252,10 @@ Condition 的 reason：
 [ingress]
 AllowedBackends = 127.0.0.1/32
 AllowedBackends = ::1/128
-AllowedBackendPorts = 24000-24099
 ReconcileIntervalMinutes = 5
 ```
 
-`AllowedBackends` 列出 backend server 可以指向的 CIDR 或位址。`AllowedBackendPorts` 列出它們可以使用的連接埠或連接埠範圍（`8080`、`24000-24099`）；空白（預設）時允許任何連接埠。無法解析的項目會被忽略，因此只包含無效項目的清單不允許任何連接埠。兩者皆為受保護的設定：只能在 `app.ini` 或環境變數（`NGINX_UI_INGRESS_ALLOWED_BACKENDS`、`NGINX_UI_INGRESS_ALLOWED_BACKEND_PORTS`）中變更，無法透過 API 修改。
+`AllowedBackends` 列出 backend server 可以指向的 CIDR 或位址，這些位址上的任何連接埠都允許。它是受保護的設定：只能在 `app.ini` 或環境變數（`NGINX_UI_INGRESS_ALLOWED_BACKENDS`）中變更，無法透過 API 修改。
 
 ## 錯誤
 
