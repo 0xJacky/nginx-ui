@@ -59,6 +59,10 @@ func Rename(ctx context.Context, oldName string, newName string) (err error) {
 	s := query.Site
 	_, _ = s.Where(s.Path.Eq(oldPath)).Update(s.Path, newPath)
 
+	// certificates are linked to their config by file name
+	c := query.Cert
+	_, _ = c.Where(c.Filename.Eq(oldName)).Update(c.Filename, newName)
+
 	err = nginx.Rename(oldPath, newPath)
 	if err != nil {
 		return
