@@ -33,10 +33,14 @@ const activeServerKey = computed({
   },
 })
 
-const serverTabItems = computed(() => ngxConfig.value.servers?.map((server, index) => ({
+// The tab content reads its server from the store by index, never from the
+// item: a tab pane keeps the slot content of its first render, so an item's
+// server would stay the object loaded back then. Once a save or reload
+// replaces the config, edits made there would land on that detached copy,
+// stay visible, and never reach the saved file.
+const serverTabItems = computed(() => ngxConfig.value.servers?.map((_, index) => ({
   key: String(index),
   label: `Server ${index + 1}`,
-  server,
 })) ?? [])
 
 watch(serversLength, () => {
@@ -135,23 +139,23 @@ function getServerMenuItems(index: number) {
         </ADropdown>
       </template>
 
-      <template #contentRender="{ item, index }">
+      <template #contentRender="{ index }">
         <LogEntry class="mb-4" :ngx-config :cur-server-idx :name :context />
 
-        <div class="tab-content">
+        <div v-if="ngxConfig.servers[index]" class="tab-content">
           <slot name="tab-content" :tab-idx="index" />
 
-          <template v-if="item.server.comments">
+          <template v-if="ngxConfig.servers[index].comments">
             <h3>{{ $gettext('Comments') }}</h3>
             <ATextarea
-              v-model:value="item.server.comments"
+              v-model:value="ngxConfig.servers[index].comments"
               variant="borderless"
             />
           </template>
-          <DirectiveEditor v-model:directives="item.server.directives" class="mb-4" />
+          <DirectiveEditor v-model:directives="ngxConfig.servers[index].directives" class="mb-4" />
           <LocationEditor
             v-if="context === Http"
-            v-model:locations="item.server.locations"
+            v-model:locations="ngxConfig.servers[index].locations"
           >
             <template #label-extra="{ index: locationIdx }">
               <slot name="location-label" :server-idx="index" :location-idx="locationIdx" />

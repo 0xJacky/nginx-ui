@@ -55,10 +55,12 @@ const convertDeclaredZone = computed(() => findDeclaredZone(
   ngxConfig.value.upstreams?.find(u => u.name === convertTarget.value)?.directives,
 ))
 
+// The tab content reads its upstream from the store by index, never from the
+// item: a tab pane keeps the slot content of its first render, so after a save
+// or reload replaced the config, edits would land on a detached copy.
 const upstreamTabItems = computed(() => ngxConfig.value.upstreams?.map((upstream, index) => ({
   key: String(index),
   label: `Upstream ${upstream.name}`,
-  upstream,
 })) ?? [])
 
 async function addUpstream() {
@@ -169,8 +171,8 @@ function renameOK() {
       :items="upstreamTabItems"
       :tab-bar-extra-content="tabBarExtra"
     >
-      <template #labelRender="{ item, index }">
-        Upstream {{ item.upstream.name }}
+      <template #labelRender="{ index }">
+        Upstream {{ ngxConfig.upstreams?.[index]?.name }}
         <ADropdown>
           <MoreOutlined />
           <template #popupRender>
@@ -179,10 +181,10 @@ function renameOK() {
         </ADropdown>
       </template>
 
-      <template #contentRender="{ item }">
-        <div class="tab-content">
+      <template #contentRender="{ index }">
+        <div v-if="ngxConfig.upstreams?.[index]" class="tab-content">
           <AFlex
-            v-if="siteContext && isHttp && item.upstream.name"
+            v-if="siteContext && isHttp && ngxConfig.upstreams[index].name"
             wrap
             gap="small"
             align="center"
@@ -194,14 +196,14 @@ function renameOK() {
             </span>
             <AButton
               size="small"
-              :data-testid="`convert-upstream-${item.upstream.name}`"
-              @click="openConvert(item.upstream.name)"
+              :data-testid="`convert-upstream-${ngxConfig.upstreams[index].name}`"
+              @click="openConvert(ngxConfig.upstreams[index].name)"
             >
               <ClusterOutlined />
               {{ $gettext('Convert to Shared Group') }}
             </AButton>
           </AFlex>
-          <DirectiveEditor v-model:directives="item.upstream.directives">
+          <DirectiveEditor v-model:directives="ngxConfig.upstreams[index].directives">
             <template #directiveSuffix="{ directive }">
               <div
                 v-if="directive.directive === 'server'"
