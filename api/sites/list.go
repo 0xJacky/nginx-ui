@@ -30,10 +30,9 @@ func GetSiteList(c *gin.Context) {
 	var err error
 
 	if options.NamespaceID == 0 {
-		// Local tab: no namespace OR deploy_mode='local'
-		err = db.Where("namespace_id IS NULL OR namespace_id IN (?)",
-			db.Model(&model.Namespace{}).Where("deploy_mode = ?", "local").Select("id"),
-		).Preload("Namespace").Find(&sites).Error
+		// Local tab: load every record so sites of remote-deploy namespaces can
+		// be recognized and left out; files without a record would be listed.
+		err = db.Preload("Namespace").Find(&sites).Error
 	} else {
 		// Remote tab: specific namespace
 		sites, err = s.Where(s.NamespaceID.Eq(options.NamespaceID)).Preload(s.Namespace).Find()

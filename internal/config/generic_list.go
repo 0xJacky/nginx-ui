@@ -123,6 +123,14 @@ func GetGenericConfigs[T Entity](
 			namespace = entity.GetNamespace()
 		}
 
+		// The local view (no namespace selected) lists what this node serves.
+		// Remote-deploy namespaces are served by their member nodes and have
+		// their own tab, so listing them here would show a status read from a
+		// local enabled directory they never use.
+		if options.NamespaceID == 0 && namespace.IsRemoteDeploy() {
+			continue
+		}
+
 		// Apply filters using custom logic
 		if !processor.FilterMatcher(fileName, status, namespaceID, options) {
 			continue
