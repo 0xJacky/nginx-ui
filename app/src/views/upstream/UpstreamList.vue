@@ -18,6 +18,7 @@ import ConvertUpstreamModal from '@/components/NgxConfigEditor/ConvertUpstreamMo
 import { useProxyAvailability } from '@/composables/useProxyAvailability'
 import UpstreamEditor from './components/UpstreamEditor.vue'
 import UpstreamServerLine from './components/UpstreamServerLine.vue'
+import { refusingIngress, upstreamIngressName } from './ingressOwner'
 import { disablesLastPrimary, filterUpstreams, normalizeKeyword } from './serverFilter'
 import { serverHealth } from './serverHealth'
 
@@ -72,6 +73,7 @@ const externalColumns = computed<TableColumnsType<ExternalUpstream>>(() => isNar
 // Cell fragments shared by the full and the compact layout.
 const [DefineManagedServers, ManagedServers] = createReusableTemplate<{ record: ManagedUpstreamDetail }>()
 const [DefineManagedActions, ManagedActions] = createReusableTemplate<{ record: ManagedUpstreamDetail }>()
+const [DefineManagedName, ManagedName] = createReusableTemplate<{ record: ManagedUpstreamDetail }>()
 const [DefineExternalServers, ExternalServers] = createReusableTemplate<{ record: ExternalUpstream }>()
 const [DefineExternalSource, ExternalSource] = createReusableTemplate<{ record: ExternalUpstream }>()
 
@@ -123,6 +125,16 @@ function openCreate() {
 function openEdit(name: string) {
   editingName.value = name
   isEditorOpen.value = true
+}
+
+// A group an ingress generates is rewritten by the ingress's next apply, so
+// the list offers no change to it. Its editor opens locked and only an
+// explicit "Edit anyway" there sends the force flag.
+function ingressLockReason(record: ManagedUpstreamDetail) {
+  const name = upstreamIngressName(record)
+  return name
+    ? $gettext('Ingress %{name} owns this upstream. Change the ingress instead; its next apply overwrites changes made here.', { name })
+    : ''
 }
 
 // An upstream block inside a site can become a shared group of the same name.
@@ -261,10 +273,13 @@ async function submitToggle(target: ServerTarget, address: string, isEnabled: bo
       ? $gettext('Server %{address} enabled', { address })
       : $gettext('Server %{address} disabled', { address }))
   }
-  catch {
+  catch (error) {
     // The request layer already shows the translated error (for example the
     // nginx -t output); the file was rolled back, so the switch keeps its
-    // previous position.
+    // previous position. A group an ingress claimed since the list loaded is
+    // reloaded, so it shows as locked.
+    if (refusingIngress(error))
+      loadData()
   }
   finally {
     togglingKeys.delete(key)
@@ -313,7 +328,14 @@ function confirmDelete(record: ManagedUpstreamDetail) {
     okButtonProps: { danger: true },
     cancelText: $gettext('Cancel'),
     async onOk() {
-      await upstream.deleteManaged(record.name)
+      try {
+        await upstream.deleteManaged(record.name)
+      }
+      catch (error) {
+        if (refusingIngress(error))
+          await loadData()
+        throw error
+      }
       message.success($gettext('Upstream %{name} deleted', { name: record.name }))
       await loadData()
     },
@@ -335,31 +357,59 @@ function confirmDelete(record: ManagedUpstreamDetail) {
           :weight="server.weight"
           :status="serverStatus(server.down, server.socket)"
           :status-title="serverTitle(server.down, server.socket)"
+          :locked-reason="ingressLockReason(record)"
           :is-toggling="isToggling({ upstream: record.name, configPath: record.path }, server.address)"
           @toggle="isEnabled => requestToggle({ upstream: record.name, configPath: record.path }, server.address, isEnabled)"
         />
       </div>
     </DefineManagedServers>
 
+    <DefineManagedName v-slot="{ record }">
+      <div class="flex flex-col items-start gap-1">
+        <span class="font-mono font-medium break-all">{{ record.name }}</span>
+        <RouterLink
+          v-if="upstreamIngressName(record)"
+          :to="{ path: '/ingresses', query: { name: upstreamIngressName(record) } }"
+        >
+          <ATag
+            color="purple"
+            class="me-0"
+            :data-testid="`upstream-ingress-${record.name}`"
+          >
+            {{ $gettext('Ingress: %{name}', { name: upstreamIngressName(record) }) }}
+          </ATag>
+        </RouterLink>
+      </div>
+    </DefineManagedName>
+
     <DefineManagedActions v-slot="{ record }">
       <ASpace :size="0">
-        <AButton
-          type="link"
-          size="small"
-          :data-testid="`upstream-edit-${record.name}`"
-          @click="openEdit(record.name)"
-        >
-          {{ $gettext('Edit') }}
-        </AButton>
-        <AButton
-          type="link"
-          size="small"
-          danger
-          :data-testid="`upstream-delete-${record.name}`"
-          @click="confirmDelete(record)"
-        >
-          {{ $gettext('Delete') }}
-        </AButton>
+        <!-- The editor of an ingress group opens locked, so it only shows the
+             group until the operator chooses to edit it anyway. -->
+        <ATooltip :title="ingressLockReason(record)">
+          <AButton
+            type="link"
+            size="small"
+            :data-testid="`upstream-edit-${record.name}`"
+            @click="openEdit(record.name)"
+          >
+            {{ ingressLockReason(record) ? $gettext('View') : $gettext('Edit') }}
+          </AButton>
+        </ATooltip>
+        <ATooltip :title="ingressLockReason(record)">
+          <span class="inline-flex">
+            <AButton
+              type="link"
+              size="small"
+              danger
+              :disabled="!!ingressLockReason(record)"
+              :data-testid="`upstream-delete-${record.name}`"
+              @click="confirmDelete(record)"
+            >
+              {{ $gettext('Delete') }}
+            </AButton>
+          </span>
+        </ATooltip>
       </ASpace>
     </DefineManagedActions>
 
@@ -486,7 +536,7 @@ function confirmDelete(record: ManagedUpstreamDetail) {
         <template v-if="column.key === 'compact'">
           <div class="flex flex-col gap-2">
             <div class="flex flex-wrap items-center justify-between gap-1">
-              <span class="font-mono font-medium break-all">{{ record.name }}</span>
+              <ManagedName :record />
               <ManagedActions :record />
             </div>
             <ManagedServers :record />
@@ -494,7 +544,7 @@ function confirmDelete(record: ManagedUpstreamDetail) {
         </template>
 
         <template v-else-if="column.key === 'name'">
-          <span class="font-mono font-medium">{{ record.name }}</span>
+          <ManagedName :record />
         </template>
 
         <template v-else-if="column.key === 'method'">

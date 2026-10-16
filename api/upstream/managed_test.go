@@ -223,8 +223,27 @@ func TestManagedUpstreamAPIGuardsIngressUpstreams(t *testing.T) {
 	path := filepath.Join(confDir, "conf.d", "upstream-ig-web-app.conf")
 	require.NoError(t, os.WriteFile(path, []byte(content), 0o644))
 	router.POST("/upstream/server_state", SetUpstreamServerState)
+	plain := "upstream app {\n    server 127.0.0.1:24002;\n}\n"
+	require.NoError(t, os.WriteFile(filepath.Join(confDir, "conf.d", "upstream-app.conf"), []byte(plain), 0o644))
 
-	status, resp := doJSON(t, router, http.MethodPost, "/upstreams",
+	// The list and the detail name the owning ingress, so the page can lock
+	// the group before the API refuses a change; other groups carry nothing.
+	status, resp := doJSON(t, router, http.MethodGet, "/upstreams", "")
+	require.Equal(t, http.StatusOK, status, resp)
+	owners := map[string]any{}
+	for _, item := range resp["data"].([]any) {
+		detail := item.(map[string]any)
+		owners[detail["name"].(string)] = detail["managed_by"]
+	}
+	assert.Equal(t, map[string]any{"app": nil, "ig-web-app": "ingress:web"}, owners)
+	status, resp = doJSON(t, router, http.MethodGet, "/upstreams/ig-web-app", "")
+	require.Equal(t, http.StatusOK, status, resp)
+	assert.Equal(t, "ingress:web", resp["managed_by"])
+	status, resp = doJSON(t, router, http.MethodGet, "/upstreams/app", "")
+	require.Equal(t, http.StatusOK, status, resp)
+	assert.NotContains(t, resp, "managed_by")
+
+	status, resp = doJSON(t, router, http.MethodPost, "/upstreams",
 		`{"name":"ig-mine","servers":[{"address":"127.0.0.1:8081"}]}`)
 	assert.Equal(t, http.StatusInternalServerError, status)
 	requireCosyError(t, resp, 40023)
@@ -248,7 +267,13 @@ func TestManagedUpstreamAPIGuardsIngressUpstreams(t *testing.T) {
 	require.NoError(t, err)
 	assert.Equal(t, content, string(got))
 
-	// Forced, the change goes through; the ingress overwrites it later.
+	// Forced, the change goes through; the ingress overwrites it later, so
+	// the saved group still names its owner.
+	status, resp = doJSON(t, router, http.MethodPost, "/upstreams/ig-web-app?force=1",
+		`{"zone":true,"servers":[{"address":"127.0.0.1:9000"}]}`)
+	require.Equal(t, http.StatusOK, status, resp)
+	assert.Equal(t, "ingress:web", resp["managed_by"])
+
 	status, resp = doJSON(t, router, http.MethodDelete, "/upstreams/ig-web-app?force=1", "")
 	require.Equal(t, http.StatusOK, status, resp)
 	_, err = os.Stat(path)

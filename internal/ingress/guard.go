@@ -17,18 +17,27 @@ func UpstreamOwner(upstreamName string) (string, error) {
 	if !strings.HasPrefix(upstreamName, managed.IngressPrefix) {
 		return "", nil
 	}
-	var all []*model.Ingress
-	if err := model.UseDB().Select("name", "spec").Find(&all).Error; err != nil {
+	owners, err := UpstreamOwners()
+	if err != nil {
 		return "", err
 	}
+	return owners[upstreamName], nil
+}
+
+// UpstreamOwners maps the name of every managed upstream an ingress generates
+// to that ingress, so a list can resolve all its owners with one query.
+func UpstreamOwners() (map[string]string, error) {
+	var all []*model.Ingress
+	if err := model.UseDB().Select("name", "spec").Find(&all).Error; err != nil {
+		return nil, err
+	}
+	owners := make(map[string]string)
 	for _, ing := range all {
 		for _, b := range ing.Spec.Backends {
-			if UpstreamName(ing.Name, b.Name) == upstreamName {
-				return ing.Name, nil
-			}
+			owners[UpstreamName(ing.Name, b.Name)] = ing.Name
 		}
 	}
-	return "", nil
+	return owners, nil
 }
 
 // CheckUpstream refuses a change to a managed upstream an ingress generates
