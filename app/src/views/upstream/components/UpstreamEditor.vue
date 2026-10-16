@@ -305,10 +305,12 @@ async function save() {
                 placeholder="10s"
                 :aria-label="$gettext('Fail Timeout')"
               />
+              <!-- A control's own disabled overrides the form's, even when it
+                   is false, so the ones that set it repeat the managed lock. -->
               <ATooltip :title="isBackupSupported ? '' : $gettext('Not available with this load balancing method')">
                 <ACheckbox
                   v-model:checked="server.backup"
-                  :disabled="!isBackupSupported"
+                  :disabled="isManagedLocked || !isBackupSupported"
                   :aria-label="$gettext('Backup')"
                 >
                   <span class="md:hidden">{{ $gettext('Backup') }}</span>
@@ -323,7 +325,7 @@ async function save() {
               <AButton
                 type="text"
                 danger
-                :disabled="form.servers.length <= 1"
+                :disabled="isManagedLocked || form.servers.length <= 1"
                 :aria-label="$gettext('Remove')"
                 @click="removeServer(index)"
               >
