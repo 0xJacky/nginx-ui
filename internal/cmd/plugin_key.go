@@ -202,8 +202,9 @@ func RevokePluginKey(_ context.Context, command *cli.Command) error {
 		}
 		keyID = fmt.Sprintf("%016X", key.ID())
 	}
-	fmt.Printf(`To withdraw signing key %[1]s, add it to the catalog entry of each plugin
-it signed and open a pull request:
+	fmt.Printf(`To withdraw signing key %[1]s, revoke it on the Signers page of each plugin
+it signed in the developer portal, https://portal.nginxui.com. In a catalog of
+your own, add it to the entry of each plugin instead:
 
   "revoked_signers": ["%[1]s"]
 
