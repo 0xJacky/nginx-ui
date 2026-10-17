@@ -201,6 +201,9 @@ type CatalogEntry struct {
 	// InstalledVersion is the version currently on this node, if any.
 	InstalledVersion string `json:"installed_version,omitempty"`
 	UpdateAvailable  bool   `json:"update_available"`
+	// InstalledYanked marks an installed version the catalog withdrew, for
+	// example because its signing key was revoked.
+	InstalledYanked bool `json:"installed_yanked,omitempty"`
 }
 
 // CatalogScreenshot is one image of a catalog entry.
@@ -969,6 +972,7 @@ func (mp *Marketplace) decorate(entry *CatalogEntry) {
 	if entry.InstallableRelease != nil && entry.InstalledVersion != "" {
 		entry.UpdateAvailable = CompareVersions(entry.InstalledVersion, entry.InstallableRelease.Version) < 0
 	}
+	entry.InstalledYanked = entry.InstalledVersion != "" && isVersionYanked(entry, entry.InstalledVersion)
 	entry.Screenshots = loadableScreenshots(entry)
 	entry.Commercial = shownCommercial(entry)
 	if entry.IconURL != "" && checkCatalogURL(entry, entry.IconURL) != nil {
