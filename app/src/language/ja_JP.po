@@ -418,27 +418,6 @@ msgstr "無効"
 msgid "Maintenance"
 msgstr "メンテナンス"
 
-msgid "Site"
-msgstr "サイト"
-
-msgid "Stream"
-msgstr "ストリーム"
-
-msgid "Configuration"
-msgstr "設定"
-
-msgid "+%{count} more"
-msgstr "+%{count} 件"
-
-msgid "Search"
-msgstr "検索"
-
-msgid "No file matches the search"
-msgstr "検索に一致するファイルはありません"
-
-msgid "Not used"
-msgstr "未使用"
-
 msgid "Starting download..."
 msgstr "ダウンロードを開始しています..."
 
@@ -928,6 +907,9 @@ msgstr "完了"
 msgid "Unknown"
 msgstr "不明"
 
+msgid "Search"
+msgstr "検索"
+
 msgid "Open in split view"
 msgstr "分割表示で開く"
 
@@ -1024,6 +1006,12 @@ msgstr ""
 "タスク %{backup_name} の古いバックアップは削除されませんでした。タスク %{conflict_names} "
 "が同じファイル名のバックアップを同じストレージの場所に書き込んでいるためです。いずれかのタスクの名前を変更するか、ストレージのパスを変更してください。"
 
+msgid "Backups to Keep"
+msgstr "保持するバックアップ"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "保持するバックアップ数 (0 で全件保持)"
+
 msgid "Renew Certificate Success"
 msgstr "証明書の更新に成功しました"
 
@@ -1053,14 +1041,6 @@ msgstr "証明書 %{name} は %{days} 日後に期限切れになります"
 
 msgid "Certificate Expiring Soon"
 msgstr "証明書の有効期限が近づいています"
-
-msgid "Certificate Relocated"
-msgstr "証明書が移動されました"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr "証明書 %{name} は %{path} に保存されました。%{previous_path} を読み込むサイトをこちらに指定してください"
 
 msgid "Sync Certificate Error"
 msgstr "証明書の同期エラー"
@@ -1598,51 +1578,6 @@ msgstr "リカバリーコードを使用"
 msgid "Use OTP"
 msgstr "OTP を使用する"
 
-msgid "Recovery codes downloaded"
-msgstr "リカバリーコードをダウンロードしました"
-
-msgid "MFA setup completed. Save your recovery codes before continuing."
-msgstr "MFA の設定が完了しました。続行する前にリカバリーコードを保存してください。"
-
-msgid "Download"
-msgstr "ダウンロード"
-
-msgid "Continue"
-msgstr "続行"
-
-msgid "MFA session expired. Please sign in again."
-msgstr "MFA セッションの有効期限が切れました。再度サインインしてください。"
-
-msgid "MFA is required. Set up an authenticator or a passkey to continue."
-msgstr "MFA が必要です。続行するには、認証アプリまたはパスキーを設定してください。"
-
-msgid "Verify your MFA method to continue signing in."
-msgstr "サインインを続けるには、MFA メソッドを確認してください。"
-
-msgid "Enable TOTP"
-msgstr "TOTP を有効にする"
-
-msgid "Verify"
-msgstr "検証"
-
-msgid "Add a passkey"
-msgstr "パスキーを追加"
-
-msgid "Back to sign in"
-msgstr "ログインに戻る"
-
-msgid "Secret has been copied"
-msgstr "シークレットがコピーされました"
-
-msgid "Click to copy"
-msgstr "クリックしてコピーします"
-
-msgid "Current Password"
-msgstr "現在のパスワード"
-
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr "スマートフォンでQRコードをスキャンして、アプリにアカウントを追加します。"
-
 msgid "Generate new recovery codes"
 msgstr "新しいリカバリコードを生成"
 
@@ -1662,11 +1597,6 @@ msgstr "二要素認証が必要です"
 
 msgid "Invalid passcode or recovery code"
 msgstr "無効なパスコードまたはリカバリーコード"
-
-msgid ""
-"Enable MFA on your own account before managing MFA policies or resetting "
-"another user."
-msgstr "MFA ポリシーの管理や他のユーザーのリセットを行う前に、ご自身のアカウントで MFA を有効にしてください。"
 
 msgid "Node Status"
 msgstr "ノードステータス"
@@ -2301,9 +2231,6 @@ msgstr "ファイルの内容に無効な制御文字が含まれています"
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "ファイルの内容に制限されたnginxディレクティブが含まれています: {0}"
 
-msgid "File content must be valid PEM or htpasswd data"
-msgstr "ファイルの内容は有効な PEM または htpasswd データである必要があります"
-
 msgid "Destination file: {0} already exists"
 msgstr "宛先ファイル: {0} は既に存在します"
 
@@ -2491,71 +2418,6 @@ msgstr "ホストキーのスキャンに失敗しました : {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "ホスト鍵のアルゴリズムが一致しません: {0} が必要でしたが、{1} が取得されました"
-
-msgid "Invalid request: {0}"
-msgstr "無効なリクエスト：{0}"
-
-msgid ""
-"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
-"starting and ending with a letter or digit"
-msgstr "無効な ingress 名: 1〜40 の小文字、数字、ハイフンを使用し、文字または数字で始め、文字または数字で終わってください"
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr "無効な所有者です：1〜64 文字の英字、数字、ピリオド、アンダースコア、ハイフンを使用してください"
-
-msgid "Invalid host: {0}"
-msgstr "無効なホスト: {0}"
-
-msgid "Invalid backend {0}: {1}"
-msgstr "無効な Backend {0}：{1}"
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr "バックエンドサーバー {0} は許可されたバックエンド範囲の外にあります"
-
-msgid "Invalid route {0}: {1}"
-msgstr "無効なルート {0}: {1}"
-
-msgid "Invalid tls: {0}"
-msgstr "無効な TLS: {0}"
-
-msgid "Invalid policy: {0}"
-msgstr "無効なポリシー：{0}"
-
-msgid "Server {0} not found in backend {1}"
-msgstr "バックエンド {1} にサーバー {0} が見つかりません"
-
-msgid "Ingress {0} not found"
-msgstr "Ingress {0} が見つかりません"
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr "Ingress {0} は {1} の所有です。force を指定して取得してください"
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr "ホスト {0} はすでに ingress {1} によって処理されています"
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr "サイト {0} は既に存在し、この ingress では管理されていません"
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr "Ingress {0} は削除中に更新されました"
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr "Upstream {0} は既に存在し、この ingress では管理されていません"
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr "ingress {0} が generation {1} に到達するのを待つ際にタイムアウトしました"
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr "ingress {0} の削除の待機がタイムアウトしました"
-
-msgid "Apply failed: {0}"
-msgstr "適用に失敗しました: {0}"
-
-msgid "Certificate not ready: {0}"
-msgstr "証明書の準備ができていません: {0}"
-
-msgid "Not implemented"
-msgstr "未実装"
 
 msgid "Code completion is not enabled"
 msgstr "コード補完が有効になっていません"
@@ -2880,37 +2742,6 @@ msgstr "サイトはメンテナンスモードです"
 msgid "Read dir failed: {0}"
 msgstr "ディレクトリの読み込みに失敗しました: {0}"
 
-msgid ""
-"Site is managed by ingress {0}; change the ingress instead or force the "
-"change"
-msgstr "サイトは ingress {0} によって管理されています。ingress を変更するか、変更を強制してください"
-
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr "ファイル名は .conf で終わる必要があり、英字、数字、ピリオド、ハイフン、アンダースコアのみ使用できます"
-
-msgid "Snippet not found"
-msgstr "スニペットが見つかりません"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "スニペットが 256 KiB を超えています"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "スニペットのヘッダーを解析できません: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "スニペットはまだ {0} によって含まれています"
-
-msgid "A snippet with this file name already exists"
-msgstr "このファイル名のスニペットはすでに存在します"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "変数 {0} が無効です: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "コンテンツをテンプレートとして解析できません: {0}"
-
 msgid "Stream not found"
 msgstr "ストリームが見つかりません"
 
@@ -3084,9 +2915,6 @@ msgid ""
 "from the additional directives"
 msgstr "共有メモリゾーンは zone スイッチで設定されます。追加ディレクティブから zone ディレクティブを削除してください"
 
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr "{0} で始まる upstream 名前は ingress 用に予約されています"
-
 msgid "Upstream not found: {0}"
 msgstr "Upstream が見つかりません: {0}"
 
@@ -3106,11 +2934,6 @@ msgid ""
 "The shared memory zone {0} is already used by another directive; nginx "
 "reported: {1}"
 msgstr "共有メモリゾーン {0} は既に別のディレクティブで使用されています。nginx の報告：{1}"
-
-msgid ""
-"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
-"the change"
-msgstr "Upstream {0} は ingress {1} によって管理されています。代わりに ingress を変更するか、変更を強制してください"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "nginx conf.d ディレクトリは利用できません: {0}"
@@ -3138,15 +2961,6 @@ msgstr "無効なリカバリーコード"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "TOTPが有効になっていないため、従来のリカバリーコードは許可されていません"
-
-msgid "MFA enrollment is required"
-msgstr "MFA の登録が必要です"
-
-msgid "MFA verification is required"
-msgstr "MFA の検証が必要です"
-
-msgid "Cannot remove the last required MFA method"
-msgstr "最後に必要な MFA 方式を削除できません"
 
 msgid "WebAuthn settings are not configured"
 msgstr "WebAuthn 設定が構成されていません"
@@ -4032,9 +3846,6 @@ msgstr "グループレコード"
 msgid "Not Found"
 msgstr "見つかりません"
 
-msgid "Ingresses"
-msgstr "Ingresses"
-
 msgid "Namespaces"
 msgstr "名前空間"
 
@@ -4061,18 +3872,6 @@ msgstr "サイト一覧"
 
 msgid "Add Site"
 msgstr "サイトを追加"
-
-msgid "Snippets"
-msgstr "スニペット"
-
-msgid "Create Snippet"
-msgstr "スニペットを作成"
-
-msgid "Built-in Template"
-msgstr "組み込みテンプレート"
-
-msgid "Edit Snippet"
-msgstr "スニペットを編集"
 
 msgid "Edit Site"
 msgstr "サイトを編集"
@@ -4154,17 +3953,29 @@ msgstr ""
 "アドレスを一元管理します。サイトエディターでサーバーまたはロケーションに割り当てることができ、ここでリストを変更すると使用中のすべてのサイトが更新されま"
 "す。"
 
+msgid "+%{count} more"
+msgstr "+%{count} 件"
+
 msgid "Deny"
 msgstr "拒否"
 
 msgid "Allow"
 msgstr "許可"
 
+msgid "Not used"
+msgstr "未使用"
+
 msgid "Use list"
 msgstr "リストを使用"
 
 msgid "Deny (403)"
 msgstr "拒否 (403)"
+
+msgid "Site"
+msgstr "サイト"
+
+msgid "Stream"
+msgstr "ストリーム"
 
 msgid "Access list %{name} saved"
 msgstr "アクセスリスト %{name} を保存しました"
@@ -4256,15 +4067,6 @@ msgstr "毎週%{day}の%{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "毎月%{day}日%{time}に"
-
-msgid "Backups to Keep"
-msgstr "保持するバックアップ"
-
-msgid "All"
-msgstr "すべて"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "保持するバックアップ数 (0 で全件保持)"
 
 msgid "Last Backup Time"
 msgstr "最終バックアップ時刻"
@@ -4617,10 +4419,6 @@ msgstr "デプロイを検証できません"
 msgid "Not After"
 msgstr "有効期限"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "%{count} 個の構成で使用されています"
-
 msgid "Failed to scan certificates"
 msgstr "証明書のスキャンに失敗しました"
 
@@ -4665,12 +4463,6 @@ msgstr "戻る"
 
 msgid "This field is required"
 msgstr "このフィールドは必須です"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "パスは存在しますが、ファイルは証明書ではありません"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "パスは存在しますが、ファイルは秘密鍵ではありません"
 
 msgid "Sync to"
 msgstr "同期先"
@@ -4741,6 +4533,9 @@ msgstr "証明書ファイルが正常にダウンロードされました"
 
 msgid "Failed to download certificate files"
 msgstr "証明書ファイルのダウンロードに失敗しました"
+
+msgid "Download"
+msgstr "ダウンロード"
 
 msgid "Download Certificate Files"
 msgstr "証明書ファイルをダウンロード"
@@ -4906,14 +4701,14 @@ msgstr "失効を確認するには、下の欄に「失効」と入力してく
 msgid "Renew successfully"
 msgstr "証明書の更新に成功しました"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert が実行中です。お待ちください..."
+msgid "Renew"
+msgstr "更新"
 
 msgid "Renew Certificate"
 msgstr "証明書を更新"
 
-msgid "Renew"
-msgstr "更新"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert が実行中です。お待ちください..."
 
 msgid "Certificate issued successfully"
 msgstr "証明書が正常に発行されました"
@@ -5502,14 +5297,6 @@ msgid ""
 "actual upstream host or port."
 msgstr "任意の絶対 URL です。公開アドレスが実際のアップストリームのホストやポートと異なる場合に使用します。"
 
-msgid "Site Card Click URL"
-msgstr "サイトカードのクリック URL"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr "このサイトカードを開く際に使用される、任意の絶対 HTTP/HTTPS URL。空の場合は、デフォルトのサイト URL が使用されます。"
-
 msgid "HTTP Method"
 msgstr "HTTPメソッド"
 
@@ -5798,6 +5585,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "追加設定"
 
+msgid "All"
+msgstr "すべて"
+
 msgid "Host, e.g. @ or www"
 msgstr "ホスト、例: @ または www"
 
@@ -5949,6 +5739,9 @@ msgstr "名前は空にできません"
 
 msgid "Please select DNS provider"
 msgstr "DNS プロバイダーを選択してください"
+
+msgid "Configuration"
+msgstr "設定"
 
 msgid "DNS Credentials"
 msgstr "DNS 認証情報"
@@ -6374,300 +6167,6 @@ msgstr "システムの正常性、アップグレードの状態、コンポー
 
 msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr "メンテナンスタスク用に統合ターミナルセッションにアクセスする。"
-
-msgid "HTTP only"
-msgstr "HTTP のみ"
-
-msgid "Not issued yet"
-msgstr "まだ発行されていません"
-
-msgid "Expired %{date}"
-msgstr "期限切れ %{date}"
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] "%{date} (残り %{days} 日)"
-
-msgid "Address"
-msgstr "アドレス"
-
-msgid "Health"
-msgstr "健康"
-
-msgid "Max Fails"
-msgstr "最大失敗回数"
-
-msgid "Fail Timeout"
-msgstr "障害タイムアウト"
-
-msgid "Path Prefix"
-msgstr "パスプレフィックス"
-
-msgid "Backend"
-msgstr "バックエンド"
-
-msgid "Options"
-msgstr "オプション"
-
-msgid "Allowed Sources"
-msgstr "許可されたソース"
-
-msgid "Last Transition"
-msgstr "最後の遷移"
-
-msgid "Drained"
-msgstr "疲れ果てた"
-
-msgid "No Data"
-msgstr "データなし"
-
-msgid "Healthy"
-msgstr "健康的"
-
-msgid "Unhealthy"
-msgstr "不健康"
-
-msgid ""
-"The generated site could not be loaded. It is written by the first "
-"successful apply."
-msgstr "生成されたサイトを読み込めませんでした。最初の適用が成功したときに書き込まれます。"
-
-msgid "Reconcile Now"
-msgstr "今すぐ照合"
-
-msgid "The last apply failed; the previous config is still live"
-msgstr "最後の適用に失敗しました。前の設定はまだ有効です。"
-
-msgid "Owner"
-msgstr "所有者"
-
-msgid "External ID"
-msgstr "外部 ID"
-
-msgid "Generation"
-msgstr "世代"
-
-msgid "%{observed} applied of %{generation}"
-msgstr "%{generation} のうち %{observed} が適用されました"
-
-msgid "Generated Site"
-msgstr "生成されたサイト"
-
-msgid "Last Applied"
-msgstr "最後に適用"
-
-msgid "Config Hash"
-msgstr "設定のハッシュ"
-
-msgid "Labels"
-msgstr "ラベル"
-
-msgid "Hosts"
-msgstr "ホスト"
-
-msgid "TLS"
-msgstr "TLS"
-
-msgid "Mode"
-msgstr "モード"
-
-msgid "Certificate"
-msgstr "証明書"
-
-msgid "View certificate"
-msgstr "証明書を表示"
-
-msgid "Challenge"
-msgstr "チャレンジ"
-
-msgid "Redirect to HTTPS"
-msgstr "HTTPS にリダイレクトする"
-
-msgid "HSTS"
-msgstr "HSTS"
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr "証明書が発行されるまで、HTTP リスナーのみが提供されます。"
-
-msgid "Backends"
-msgstr "バックエンド"
-
-msgid "Routes"
-msgstr "ルート"
-
-msgid "Policy default"
-msgstr "ポリシーのデフォルト"
-
-msgid "Policy"
-msgstr "ポリシー"
-
-msgid "Everyone"
-msgstr "全員"
-
-msgid "Rate Limit"
-msgstr "レート制限"
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr "クライアントごとに %{rps} リクエスト/秒、バースト %{burst}"
-
-msgid "Unlimited"
-msgstr "無制限"
-
-msgid "Max Body Size"
-msgstr "最大ボディサイズ"
-
-msgid "Extra Headers"
-msgstr "追加のヘッダー"
-
-msgid "Conditions"
-msgstr "条件"
-
-msgid "True"
-msgstr "真"
-
-msgid "False"
-msgstr "偽"
-
-msgid "Generated Site Config"
-msgstr "生成されたサイト設定"
-
-msgid "Open in site editor"
-msgstr "サイトエディターで開く"
-
-msgid "Not ready"
-msgstr "準備未完了"
-
-msgid "The latest spec has not been applied yet"
-msgstr "最新の仕様はまだ適用されていません"
-
-msgid "Applying"
-msgstr "適用中"
-
-msgid "Ready"
-msgstr "準備完了"
-
-msgid "Degraded"
-msgstr "低下"
-
-msgid "Config Applied"
-msgstr "設定を適用しました"
-
-msgid "Certificate Ready"
-msgstr "証明書の準備完了"
-
-msgid "Backends Healthy"
-msgstr "バックエンド正常"
-
-msgid "Issued automatically (ACME)"
-msgstr "自動発行（ACME）"
-
-msgid "Existing certificate"
-msgstr "既存の証明書"
-
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Round Robin"
-msgstr "ラウンドロビン"
-
-msgid "Least Connections"
-msgstr "最小接続数"
-
-msgid "IP Hash"
-msgstr "IP ハッシュ"
-
-msgid "All owners"
-msgstr "すべての所有者"
-
-msgid "Reconcile of %{name} queued"
-msgstr "%{name} の照合がキューに追加されました"
-
-msgid "Delete ingress %{name}?"
-msgstr "ingress %{name} を削除しますか？"
-
-msgid ""
-"This ingress is owned by %{owner}. Its controller will probably recreate it "
-"on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-"この Ingress は %{owner} が所有しています。その controller "
-"は次の同期時におそらく再作成されます。完全に削除するには、controller から削除してください。"
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr "生成されたサイトと upstream ファイルが削除され、nginx が再読み込みされます。"
-
-msgid "Also delete the certificate"
-msgstr "証明書も削除します"
-
-msgid "Ingress %{name} deleted"
-msgstr "Ingress %{name} を削除しました"
-
-msgid "Ingress"
-msgstr "Ingress"
-
-msgid "Phase"
-msgstr "フェーズ"
-
-msgid "%{healthy}/%{total} healthy"
-msgstr "%{healthy}/%{total} 正常"
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] "%{total} サーバー"
-
-msgid "%{count} down"
-msgstr "残り %{count}"
-
-msgid "Filter by owner"
-msgstr "所有者でフィルター"
-
-msgid "Applied generation / latest generation"
-msgstr "適用世代 / 最新世代"
-
-msgid "gen %{observed}/%{generation}"
-msgstr "gen %{observed}/%{generation}"
-
-msgid "Reconcile"
-msgstr "照合"
-
-msgid ""
-"Ingresses are reverse proxy entries published by external controllers "
-"through the Ingress API. Nginx UI renders each one into a managed site and "
-"upstreams, issues its certificate and reports its status here. Change them "
-"in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-"Ingress は、外部コントローラーによって Ingress API を通じて公開されるリバースプロキシエントリです。Nginx UI は各 "
-"Ingress を管理対象のサイトと upstream "
-"としてレンダリングし、その証明書を発行し、そのステータスをここで報告します。変更は各コントローラーで行ってください。ここで行った編集は、次のリコンサイル"
-"によって上書きされます。"
-
-msgid "Learn more"
-msgstr "詳細を見る"
-
-msgid "No ingresses yet"
-msgstr "Ingress はまだありません"
-
-msgid ""
-"A controller such as a deployment platform creates ingresses with PUT "
-"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
-"They show up here as soon as they are stored."
-msgstr ""
-"デプロイメントプラットフォームなどのコントローラーは、PUT /api/ingresses/:name で ingresses "
-"を作成します。認証はクラスターノードまたは API トークンで行われます。保存されるとすぐにここに表示されます。"
-
-msgid "Read the Ingress API guide"
-msgstr "Ingress API ガイドを読む"
-
-msgid "Search by name, host or external ID"
-msgstr "名前、ホスト、または外部 ID で検索"
-
-msgid "Search ingresses"
-msgstr "Ingress を検索"
-
-msgid "No ingress matches the filter"
-msgstr "フィルターに一致する Ingress がありません"
 
 msgid "Please input your E-mail!"
 msgstr "Eメールを入力してください！"
@@ -7950,6 +7449,9 @@ msgstr "このディレクトリに 100000_full.json のような名前のファ
 msgid "Register passkey successfully"
 msgstr "パスキーの登録に成功しました"
 
+msgid "Add a passkey"
+msgstr "パスキーを追加"
+
 msgid "Tips"
 msgstr "ヒント"
 
@@ -7965,6 +7467,9 @@ msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr "ダイアログの指示に従って、パスキーの登録プロセスを完了してください。"
+
+msgid "Current Password"
+msgstr "現在のパスワード"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -8080,9 +7585,6 @@ msgstr "現在のパスワードを入力してください"
 msgid "Enable 2FA successfully"
 msgstr "2FAが有効化されました"
 
-msgid "TOTP disabled"
-msgstr "TOTP が無効化されています"
-
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -8098,25 +7600,23 @@ msgstr ""
 "有効にするには、スマートフォンにGoogle AuthenticatorまたはMicrosoft "
 "Authenticatorアプリをインストールする必要があります。"
 
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr "スマートフォンでQRコードをスキャンして、アプリにアカウントを追加します。"
+
 msgid "Current account is not enabled TOTP."
 msgstr "現在のアカウントは TOTP が有効になっていません。"
 
 msgid "Current account is enabled TOTP."
 msgstr "現在のアカウントは TOTP が有効です。"
 
-msgid "Replace TOTP"
-msgstr "TOTP を置き換える"
+msgid "Enable TOTP"
+msgstr "TOTP を有効にする"
 
-msgid "Disable TOTP for this account?"
-msgstr "このアカウントの TOTP を無効にしますか？"
+msgid "Secret has been copied"
+msgstr "シークレットがコピーされました"
 
-msgid "Disable TOTP"
-msgstr "TOTP を無効にする"
-
-msgid ""
-"Your current authenticator remains active until the new code is verified. "
-"New recovery codes replace the old ones."
-msgstr "新しいコードが検証されるまで、現在の認証アプリは引き続き有効です。新しいリカバリーコードは以前のものに代わります。"
+msgid "Click to copy"
+msgstr "クリックしてコピーします"
 
 msgid "Bark"
 msgstr "Bark"
@@ -9199,6 +8699,9 @@ msgstr "アクセスとインストール"
 msgid "File mode and setup instructions"
 msgstr "ファイルモードとセットアップ手順"
 
+msgid "Verify"
+msgstr "検証"
+
 msgid "Run checks and save"
 msgstr "チェックを実行して保存"
 
@@ -9464,25 +8967,6 @@ msgstr "一般"
 
 msgid "Banned Until"
 msgstr "ブロック期限"
-
-msgid "MFA Policy"
-msgstr "MFA ポリシー"
-
-msgid ""
-"Require MFA at the next sign-in. Users must enroll their own authenticator "
-"or passkey."
-msgstr "次回のサインイン時に MFA を必須にする。ユーザーは自身の Authenticator または Passkey を登録する必要があります。"
-
-msgid "Require MFA for all users"
-msgstr "すべてのユーザーに MFA を必須にする"
-
-msgid "Require local MFA for SSO sign-in"
-msgstr "SSO サインインにローカル MFA を要求する"
-
-msgid ""
-"Apply local MFA verification and enrollment requirements to OIDC and "
-"Casdoor sign-in."
-msgstr "ローカル MFA 検証および登録の要件を OIDC と Casdoor のサインインに適用します。"
 
 msgid "Passkeys"
 msgstr "パスキー"
@@ -9756,6 +9240,9 @@ msgstr "すべてのインターフェース"
 msgid "HTTPS"
 msgstr "HTTPS"
 
+msgid "Certificate"
+msgstr "証明書"
+
 msgid "Pick the certificate that secures the web interface."
 msgstr "Web インターフェースを保護する証明書を選択してください。"
 
@@ -9775,6 +9262,9 @@ msgstr "終了時刻は開始時刻より後でなければなりません"
 
 msgid "Set maintenance information"
 msgstr "メンテナンス情報の設定"
+
+msgid "Continue"
+msgstr "続行"
 
 msgid "Start time"
 msgstr "開始時間"
@@ -9799,20 +9289,6 @@ msgstr "追加情報"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "例: 予定される復旧計画またはインシデント参照"
-
-msgid "Managed by ingress %{name}"
-msgstr "ingress %{name} により管理されています"
-
-msgid ""
-"Changes will be overwritten by the next reconcile. Edit the ingress in its "
-"controller instead."
-msgstr "変更は次の reconcile によって上書きされます。代わりに、Ingress をその Controller 内で編集してください。"
-
-msgid "View ingress"
-msgstr "Ingress を表示"
-
-msgid "Edit anyway"
-msgstr "編集を続行"
 
 msgid "Configuration Name"
 msgstr "設定名"
@@ -10026,9 +9502,6 @@ msgstr "名前空間"
 msgid "The parameter of server_name is required"
 msgstr "server_name のパラメーターが必要です"
 
-msgid "Config Template"
-msgstr "設定テンプレート"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "HTTPS を有効にする前に、編集した設定を保存してください。"
 
@@ -10123,30 +9596,11 @@ msgstr "自己署名証明書"
 msgid "Generate self-signed certificate"
 msgstr "自己署名証明書を生成"
 
-msgid "Built-in"
-msgstr "内蔵"
-
 msgid "Search templates"
 msgstr "テンプレートを検索"
 
-msgid "Snippet"
-msgstr "スニペット"
-
 msgid "Author"
 msgstr "著者"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"Include はサイトを snippets/%{file} にリンクしたままにし、スニペットの後続の変更が反映されます。Insert "
-"はコンテンツをサイトにコピーします。"
-
-msgid "Insert"
-msgstr "挿入"
-
-msgid "Include"
-msgstr "含める"
 
 msgid "Do you want to enable TLS?"
 msgstr "TLSを有効にしますか？"
@@ -10169,6 +9623,15 @@ msgstr "HTTPS の設定は、保存済みの構成から HTTPS サーバーブ�
 
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "有効なドメイン名または IP アドレスではありません: %{value}"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Existing certificate"
+msgstr "既存の証明書"
 
 msgid "Skip for now"
 msgstr "今はスキップ"
@@ -10403,6 +9866,9 @@ msgstr "DNSレコードを再作成"
 msgid "Clear Link"
 msgstr "リンクをクリア"
 
+msgid "Config Template"
+msgstr "設定テンプレート"
+
 msgid "Port Scanner"
 msgstr "ポートスキャナー"
 
@@ -10420,9 +9886,6 @@ msgstr "Nginx 設定解析エラー"
 
 msgid "No."
 msgstr "No."
-
-msgid "Ingress: %{name}"
-msgstr "Ingress: %{name}"
 
 msgid "Please input name, "
 msgstr "名前を入力してください、 "
@@ -10489,9 +9952,2931 @@ msgstr "選択したサイトのメンテナンス情報を設定"
 msgid "%{count} sites selected"
 msgstr "%{count} サイト選択中"
 
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] "Ingress が管理する %{count} 件のサイトを含める"
+msgid "Do you want to %{action} this stream?"
+msgstr "このストリームを%{action}しますか？"
+
+msgid "Delete stream: %{stream_name}"
+msgstr "ストリームを削除: %{stream_name}"
+
+msgid "Added successfully"
+msgstr "正常に追加されました"
+
+msgid "Add Stream"
+msgstr "Streamを追加"
+
+msgid "%{count} streams selected"
+msgstr "%{count} 件のストリームが選択されました"
+
+msgid "Development Mode"
+msgstr "開発モード"
+
+msgid "Official Document"
+msgstr "公式ドキュメント"
+
+msgid "Sponsor"
+msgstr "スポンサー"
+
+msgid "Project Team"
+msgstr "プロジェクトチーム"
+
+msgid "License"
+msgstr "ライセンス"
+
+msgid "View Third-party Components"
+msgstr "サードパーティコンポーネントを表示"
+
+msgid "View version details and core information about this Nginx UI instance."
+msgstr "この Nginx UI インスタンスのバージョン詳細と基本情報を表示します。"
+
+msgid "Run built-in diagnostics to validate environment and service readiness."
+msgstr "内蔵診断を実行して、環境とサービスの準備状態を確認します。"
+
+msgid "Check release updates and execute upgrade operations when available."
+msgstr "リリース更新を確認し、利用可能な場合はアップグレード操作を実行します。"
+
+msgid "Review third-party licenses and open source component attributions."
+msgstr "サードパーティのライセンスとオープンソースコンポーネントの帰属情報を確認します。"
+
+msgid "Total Components"
+msgstr "コンポーネントの合計"
+
+msgid "Backend"
+msgstr "バックエンド"
+
+msgid "Frontend"
+msgstr "フロントエンド"
+
+msgid "License Types"
+msgstr "ライセンスタイプ"
+
+msgid "License Distribution"
+msgstr "ライセンス分布"
+
+msgid "components"
+msgstr "コンポーネント"
+
+msgid "All Components"
+msgstr "すべてのコンポーネント"
+
+msgid "Dev"
+msgstr "Dev"
+
+msgid "Reinstall"
+msgstr "再インストール"
+
+msgid "Core Upgrade"
+msgstr "コアアップグレード"
+
+msgid "You can check Nginx UI upgrade at this page."
+msgstr "このページでNginx UIのアップグレードを確認できます。"
+
+msgid "Current Version"
+msgstr "現在のバージョン"
+
+msgid "Arch"
+msgstr "アーキテクチャ"
+
+msgid "Executable Path"
+msgstr "実行可能ファイルのパス"
+
+msgid "Last checked at"
+msgstr "最終確認日時"
+
+msgid "You are using the latest version"
+msgstr "最新バージョンを使用しています"
+
+msgid "New version released"
+msgstr "新しいバージョンがリリースされました"
+
+msgid "Release Note"
+msgstr "リリースノート"
+
+msgid "Hide Assistant"
+msgstr "アシスタントを非表示"
+
+msgid "Show Assistant"
+msgstr "アシスタントを表示"
+
+msgid "Connection lost for this terminal. Please refresh if needed."
+msgstr "この端末との接続が失われました。必要に応じて更新してください。"
+
+msgid ""
+"This is a simulated terminal running entirely in your browser. Commands are "
+"answered locally and never reach a server."
+msgstr "これは、ブラウザー内で完全に動作するシミュレートされたターミナルです。コマンドはローカルで処理され、サーバーに到達することはありません。"
+
+msgid ""
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
+msgstr ""
+"あなたは非 localhostドメインで安全でないHTTP "
+"接続を介してこのターミナルにアクセスしています。これにより機密情報が漏洩する可能性があります。"
+
+msgid "Round Robin (default)"
+msgstr "Round Robin（デフォルト）"
+
+msgid "Least Connections (least_conn)"
+msgstr "最小接続数 (least_conn)"
+
+msgid "IP Hash (ip_hash)"
+msgstr "IP ハッシュ (ip_hash)"
+
+msgid "Hash (hash)"
+msgstr "ハッシュ (hash)"
+
+msgid "Random (random)"
+msgstr "ランダム (random)"
+
+msgid "Upstream %{name} saved and Nginx reloaded"
+msgstr "Upstream %{name} を保存し、Nginx を再読み込みしました"
+
+msgid "Edit Upstream %{name}"
+msgstr "Upstream %{name} を編集"
+
+msgid "Create Upstream"
+msgstr "Upstream を作成"
+
+msgid "Sites use it as proxy_pass http://%{name};"
+msgstr "サイトでは proxy_pass http://%{name} として使用します。"
+
+msgid "Load Balancing Method"
+msgstr "ロードバランシング方式"
+
+msgid "Hash Key"
+msgstr "ハッシュキー"
+
+msgid "Consistent Hashing"
+msgstr "一貫性ハッシュ"
+
+msgid "Servers"
+msgstr "サーバー"
+
+msgid "Address"
+msgstr "アドレス"
+
+msgid "Max Fails"
+msgstr "最大失敗回数"
+
+msgid "Fail Timeout"
+msgstr "障害タイムアウト"
+
+msgid "Not available with this load balancing method"
+msgstr "この負荷分散方式では利用できません"
+
+msgid "Keepalive"
+msgstr "Keepalive"
+
+msgid ""
+"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
+"need proxy_http_version 1.1 and an empty Connection header."
+msgstr ""
+"ワーカーごとに開いておくアイドル接続の数。0 で無効化されます。プロキシ先のサイトには proxy_http_version 1.1 と空の "
+"Connection ヘッダーも必要です。"
+
+msgid "Connections"
+msgstr "接続"
+
+msgid "Additional Directives"
+msgstr "追加のディレクティブ"
+
+msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
+msgstr "1 行につき 1 つのディレクティブを指定してください。例：keepalive_timeout や keepalive_requests。"
+
+msgid "Referenced By"
+msgstr "参照元"
+
+msgid "No site uses this upstream yet."
+msgstr "まだどのサイトもこの upstream を使用していません。"
+
+msgid "Configuration Preview"
+msgstr "設定プレビュー"
+
+msgid "Enable server %{address}"
+msgstr "サーバー %{address} を有効にする"
+
+msgid "Disable server %{address}"
+msgstr "サーバー %{address} を無効にする"
+
+msgid ""
+"Create shared upstream groups with load balancing and reuse them across "
+"sites."
+msgstr "ロードバランシング付きの共有 Upstream グループを作成し、複数のサイト間で再利用できます。"
+
+msgid "Monitor the health of every proxy target and toggle its health check."
+msgstr "すべてのプロキシターゲットの状態を監視し、ヘルスチェックを切り替えます。"
+
+msgid "Socket"
+msgstr "ソケット"
+
+msgid "Direct"
+msgstr "ダイレクト"
+
+msgid "Health Status"
+msgstr "健康状態"
+
+msgid "No Data"
+msgstr "データなし"
+
+msgid "Last Check"
+msgstr "最終確認"
+
+msgid "Upstream health checks are globally paused"
+msgstr "アップストリームのヘルスチェックは全体で一時停止しています"
+
+msgid ""
+"Per-target selections are preserved. Resume probes from Health Check "
+"preferences."
+msgstr "対象ごとの選択は保持されます。ヘルスチェックの設定から検査を再開してください。"
+
+msgid "Round Robin"
+msgstr "ラウンドロビン"
+
+msgid "Least Connections"
+msgstr "最小接続数"
+
+msgid "IP Hash"
+msgstr "IP ハッシュ"
+
+msgid "Hash"
+msgstr "ハッシュ"
+
+msgid "Random"
+msgstr "ランダム"
+
+msgid "Load Balancing"
+msgstr "負荷分散"
+
+msgid "Defined In"
+msgstr "定義場所"
+
+msgid "Matched upstreams: %{groups}, servers: %{servers}"
+msgstr "一致した upstream：%{groups}、サーバー：%{servers}"
+
+msgid "Server %{address} enabled"
+msgstr "サーバー %{address} を有効にしました"
+
+msgid "Server %{address} disabled"
+msgstr "サーバー %{address} を無効にしました"
+
+msgid "Disable the last active server of %{name}?"
+msgstr "%{name} の最後のアクティブサーバーを無効にしますか？"
+
+msgid ""
+"No other primary server of this upstream is enabled. Requests will fail "
+"unless a backup server takes over."
+msgstr "この upstream の他のプライマリサーバーは有効になっていません。バックアップサーバーが引き継がない限り、リクエストは失敗します。"
+
+msgid "Upstream %{name} is still in use"
+msgstr "Upstream %{name} はまだ使用中です"
+
+msgid "Point these configurations at another upstream before deleting it:"
+msgstr "削除する前に、これらの構成を別の upstream に切り替えてください："
+
+msgid "Delete upstream %{name}?"
+msgstr "upstream %{name} を削除しますか？"
+
+msgid "%{path} will be removed and Nginx reloaded."
+msgstr "%{path} が削除され、Nginx が再読み込みされます。"
+
+msgid "Upstream %{name} deleted"
+msgstr "Upstream %{name} を削除しました"
+
+msgid ""
+"An upstream group shares its servers and load balancing method across "
+"sites. Choose it as the proxy target when setting up a site; later changes "
+"here apply to every site that uses it."
+msgstr ""
+"Upstream "
+"グループは、サイト間でサーバーとロードバランシング方式を共有します。サイトの設定時にプロキシターゲットとして選択してください。後からここを変更すると、そ"
+"れを使用しているすべてのサイトに適用されます。"
+
+msgid "Files are stored in %{dir}."
+msgstr "ファイルは %{dir} に保存されています。"
+
+msgid "Search by name or IP:port"
+msgstr "名前または IP:port で検索"
+
+msgid "Search upstreams by name or server address"
+msgstr "名前またはサーバーアドレスで upstream を検索"
+
+msgid "No upstream group matches the search"
+msgstr "検索に一致する upstream グループはありません"
+
+msgid "Upstreams Defined in Other Files"
+msgstr "他のファイルで定義された Upstream"
+
+msgid ""
+"These upstream blocks live inside site or other configuration files. Edit "
+"their settings in their own file; servers can be switched on and off here. "
+"A block inside a site can be converted to a shared group that other sites "
+"can use too."
+msgstr ""
+"これらの upstream "
+"ブロックは、サイトまたはその他の設定ファイル内にあります。各ファイルの設定はそのファイル内で編集できます。サーバーの有効・無効はここで切り替えられます。"
+"サイト内のブロックは、他のサイトでも使用できる共有グループに変換できます。"
+
+msgid "User info updated successfully"
+msgstr "ユーザー情報が正常に更新されました"
+
+msgid "Passwords do not match"
+msgstr "パスワードが一致しません"
+
+msgid "Password updated successfully"
+msgstr "パスワードが正常に更新されました"
+
+msgid "Personal Information"
+msgstr "個人情報"
+
+msgid "Update Profile"
+msgstr "プロフィールを更新"
+
+msgid "Security Settings"
+msgstr "セキュリティ設定"
+
+msgid "Change Password"
+msgstr "パスワードを変更する"
+
+msgid "New Password"
+msgstr "新しいパスワード"
+
+msgid "Confirm New Password"
+msgstr "新しいパスワードを確認"
+
+msgid "Update Password"
+msgstr "パスワードを更新"
+
+msgid "Node %{name} cannot be opened"
+msgstr "ノード %{name} を開けません"
+
+msgid "Exit workspace"
+msgstr "ワークスペースを終了"
+
+msgid "New tab"
+msgstr "新しいタブ"
+
+msgid "Single pane"
+msgstr "シングルペイン"
+
+msgid "Split view"
+msgstr "分割表示"
+
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "注記"
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr "メンテナンス"
+
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+"DNS-01 チャレンジには DNS-01 プラグインが必要です。「システム > プラグイン」"
+"からインストールしてください。"
+
+msgid "Install DNS-01 plugin"
+msgstr "DNS-01 プラグインをインストール"
+
+msgid "Go to System > Plugins"
+msgstr "「システム > プラグイン」へ移動"
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "ドメインに CNAME レコードがあり、証明書を取得できない場合は、"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr "ローカル DNS 伝播チェックをスキップして、依頼する前に 60 秒待ちます。"
+
+msgid "DNS-01 plugin unavailable"
+msgstr "DNS-01 プラグインが利用できません"
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr ""
+"証明書 %{name} を更新できません。DNS-01 チャレンジを提供する有効なプラグイン"
+"がありません"
+
+msgid "Plugin %{plugin} failed to render"
+msgstr "プラグイン %{plugin} のレンダリングに失敗しました"
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+"{0} に対応する DNS-01 プロバイダーがありません。DNS-01 プラグインをインストー"
+"ルして有効にしてください"
+
+msgid "Plugin manifest is invalid"
+msgstr "プラグインマニフェストが無効です"
+
+msgid "Plugin not found"
+msgstr "プラグインが見つかりません"
+
+msgid "Plugin already exists"
+msgstr "プラグインは既に存在します"
+
+msgid "Plugin is not running"
+msgstr "プラグインが実行されていません"
+
+msgid "Plugin handshake failed"
+msgstr "プラグインのハンドシェイクに失敗しました"
+
+msgid "Plugin has no executable for this platform"
+msgstr "プラグインにこのプラットフォーム用の実行ファイルがありません"
+
+msgid "Plugin package is invalid"
+msgstr "プラグインパッケージが無効です"
+
+msgid "Plugin package is too large"
+msgstr "プラグインパッケージが大きすぎます"
+
+msgid "Plugin api version is incompatible"
+msgstr "プラグインの API バージョンに互換性がありません"
+
+msgid "Plugin permissions need approval"
+msgstr "プラグインの権限には承認が必要です"
+
+msgid "Plugin dependency is missing: {0}"
+msgstr "プラグインの依存関係が不足しています: {0}"
+
+msgid "Plugin dependencies form a cycle"
+msgstr "プラグインの依存関係が循環しています"
+
+msgid "Plugin is in use by {0}"
+msgstr "プラグインは {0} によって使用されています"
+
+msgid "Plugin system is disabled"
+msgstr "プラグインシステムが無効になっています"
+
+msgid "Plugin uploads are disabled"
+msgstr "プラグインのアップロードが無効になっています"
+
+msgid "Plugin call timed out"
+msgstr "プラグインの呼び出しがタイムアウトしました"
+
+msgid "Plugin rpc error: {0}"
+msgstr "プラグインの RPC エラー: {0}"
+
+msgid "Plugin setting {0} is invalid"
+msgstr "プラグイン設定 {0} が無効です"
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+"プラグインには nginx-ui {0} 以降が必要ですが、このノードでは {1} が実行されて"
+"います"
+
+msgid "Plugin package declares another id"
+msgstr "プラグインパッケージが別の ID を宣言しています"
+
+msgid "Plugins"
+msgstr "プラグイン"
+
+msgid "Accept plugin sync"
+msgstr "プラグインの同期を受け入れる"
+
+msgid "Accepted"
+msgstr "受け入れ済み"
+
+msgid "Opted out"
+msgstr "除外済み"
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr ""
+"Nginx UI を拡張するプラグインのインストール、設定、トラブルシューティングを行"
+"います。"
+
+msgid "Plugin"
+msgstr "プラグイン"
+
+msgid "Capabilities"
+msgstr "機能"
+
+msgid "Auto install to nodes"
+msgstr "ノードへの自動インストール"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "プラグインは %{count} 件のノードに同期されました"
+
+msgid "Some nodes could not be synchronized"
+msgstr "一部のノードを同期できませんでした"
+
+msgid "Failed to synchronize the plugin"
+msgstr "プラグインの同期に失敗しました"
+
+msgid "Installed"
+msgstr "インストール済み"
+
+msgid "Starting"
+msgstr "起動中"
+
+msgid "Missing"
+msgstr "欠落"
+
+msgid "Incompatible"
+msgstr "非互換"
+
+msgid "Needs approval"
+msgstr "承認が必要"
+
+msgid "Failed to load the plugin list"
+msgstr "プラグイン一覧の読み込みに失敗しました"
+
+msgid "Plugin enabled"
+msgstr "プラグインを有効にしました"
+
+msgid "Failed to enable the plugin"
+msgstr "プラグインの有効化に失敗しました"
+
+msgid "Plugin disabled"
+msgstr "プラグインを無効にしました"
+
+msgid "Failed to disable the plugin"
+msgstr "プラグインの無効化に失敗しました"
+
+msgid "Plugin uninstalled"
+msgstr "プラグインをアンインストールしました"
+
+msgid "Failed to uninstall the plugin"
+msgstr "プラグインのアンインストールに失敗しました"
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr "開発用プラグイン URL を適用するにはページを再読み込みしてください"
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+"プラグインは Nginx UI に追加の機能を拡張します。信頼できる作者が公開したバン"
+"ドルのみをインストールしてください。"
+
+msgid "Development plugin URL"
+msgstr "開発用プラグイン URL"
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+"任意の静的サーバーで配信される plugin.json のアドレスです。このプラグインはイ"
+"ンストール済みのプラグインに加えて読み込まれます。"
+
+msgid "Dev plugin"
+msgstr "開発用プラグイン"
+
+msgid "No plugins installed"
+msgstr "インストール済みのプラグインはありません"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Logs"
+msgstr "ログ"
+
+msgid "Sync to nodes"
+msgstr "ノードへ同期"
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr "%{name} をアンインストールしますか？データと設定はすべて削除されます。"
+
+msgid "Uninstall"
+msgstr "アンインストール"
+
+msgid "Sync %{name} to nodes"
+msgstr "%{name} をノードへ同期"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "どのノードもチェックしない場合、すべての子ノードに同期されます。"
+
+msgid "Already in sync"
+msgstr "同期済み"
+
+msgid "This node only"
+msgstr "このノードのみ"
+
+msgid "All child nodes"
+msgstr "すべての子ノード"
+
+msgid "Selected nodes"
+msgstr "選択したノード"
+
+msgid "Failed to read the plugin bundle"
+msgstr "プラグインバンドルの読み込みに失敗しました"
+
+msgid "Plugin installed"
+msgstr "プラグインをインストールしました"
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+"プラグインはこのノードにはインストールされましたが、各ノードへの配信に失敗し"
+"ました"
+
+msgid "Failed to install the plugin"
+msgstr "プラグインのインストールに失敗しました"
+
+msgid "Install plugin"
+msgstr "プラグインをインストール"
+
+msgid "Click or drag a plugin bundle here"
+msgstr "ここをクリックするか、プラグインバンドルをドラッグしてください"
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr "プラグイン作者が作成した .tar.gz ファイル"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "(replaces %{version})"
+msgstr "（%{version} を置き換えます）"
+
+msgid "None"
+msgstr "なし"
+
+msgid "Install the plugins below first"
+msgstr "先に以下のプラグインをインストールしてください"
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr "このバージョンは、まだ承認していない権限を要求しています。"
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+"インストール前に以下の一覧を確認してください。権限を承認するまでプラグインは"
+"無効のままになります。"
+
+msgid "Requested permissions"
+msgstr "要求される権限"
+
+msgid "Enable after install"
+msgstr "インストール後に有効にする"
+
+msgid "Also install to child nodes"
+msgstr "子ノードにも同時にインストール"
+
+msgid "Keep in sync automatically"
+msgstr "自動的に同期を維持する"
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+"これらのノードでは、バージョン、有効状態、今後の更新が常に一致するように保た"
+"れます。"
+
+msgid "Failed to load the plugin logs"
+msgstr "プラグインログの読み込みに失敗しました"
+
+msgid "Logs copied to clipboard"
+msgstr "ログをクリップボードにコピーしました"
+
+msgid "Failed to copy the logs"
+msgstr "ログのコピーに失敗しました"
+
+msgid "Logs: %{name}"
+msgstr "ログ: %{name}"
+
+msgid "No log output yet"
+msgstr "まだログ出力がありません"
+
+msgid "Failed to load the plugin marketplace"
+msgstr "プラグインマーケットプレイスの読み込みに失敗しました"
+
+msgid "Reloading the catalog"
+msgstr "カタログを再読み込み中"
+
+msgid "Search plugins"
+msgstr "プラグインを検索"
+
+msgid "All categories"
+msgstr "すべてのカテゴリ"
+
+msgid "Security"
+msgstr "セキュリティ"
+
+msgid "Traffic and upstreams"
+msgstr "トラフィックとアップストリーム"
+
+msgid "Monitoring"
+msgstr "監視"
+
+msgid "Backup and storage"
+msgstr "バックアップとストレージ"
+
+msgid "AI"
+msgstr "AI"
+
+msgid "Config templates"
+msgstr "設定テンプレート"
+
+msgid "Language packs"
+msgstr "言語パック"
+
+msgid "Integrations"
+msgstr "連携"
+
+msgid "Tools"
+msgstr "ツール"
+
+msgid "Categories"
+msgstr "カテゴリ"
+
+msgid "All sources"
+msgstr "すべてのソース"
+
+msgid "Updates only"
+msgstr "更新のあるものだけ"
+
+msgid "Sources"
+msgstr "ソース"
+
+msgid "Every installed plugin is up to date"
+msgstr "インストール済みのプラグインはすべて最新です"
+
+msgid "No plugins match your search"
+msgstr "検索条件に一致するプラグインがありません"
+
+msgid "Downloading the package"
+msgstr "パッケージをダウンロード中"
+
+msgid "Verifying the signature"
+msgstr "署名を検証中"
+
+msgid "Installing"
+msgstr "インストール中"
+
+msgid "%{phase}: %{plugin}"
+msgstr "%{phase}: %{plugin}"
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr "マーケットプレイスからのプラグインの読み込みに失敗しました"
+
+msgid "Update plugin"
+msgstr "プラグインを更新"
+
+msgid "No release available for this platform"
+msgstr "このプラットフォーム向けのリリースがありません"
+
+msgid "Source"
+msgstr "ソース"
+
+msgid "This is a community plugin"
+msgstr "これはコミュニティプラグインです"
+
+msgid "The plugins below are installed together with it"
+msgstr "以下のプラグインも一緒にインストールされます"
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+"リアルタイムの進捗を取得できないため、代わりにプラグイン一覧を確認しています"
+
+msgid "No description provided."
+msgstr "説明はありません。"
+
+msgid "Installed: %{version}"
+msgstr "インストール済み: %{version}"
+
+msgid "Homepage"
+msgstr "ホームページ"
+
+msgid "Repository"
+msgstr "リポジトリ"
+
+msgid "Release notes"
+msgstr "リリースノート"
+
+msgid "Released"
+msgstr "リリース日"
+
+msgid "Platforms"
+msgstr "プラットフォーム"
+
+msgid "Failed to load the plugin details"
+msgstr "プラグインの詳細の読み込みに失敗しました"
+
+msgid "Installed version"
+msgstr "インストール済みバージョン"
+
+msgid "Versions"
+msgstr "バージョン"
+
+msgid "Yanked"
+msgstr "取り下げ済み"
+
+msgid "Latest"
+msgstr "最新"
+
+msgid "Readme"
+msgstr "Readme"
+
+msgid "Failed to load the marketplace sources"
+msgstr "マーケットプレイスのソースの読み込みに失敗しました"
+
+msgid "Marketplace sources saved"
+msgstr "マーケットプレイスのソースを保存しました"
+
+msgid "Failed to save the marketplace sources"
+msgstr "マーケットプレイスのソースの保存に失敗しました"
+
+msgid "Marketplace sources"
+msgstr "マーケットプレイスのソース"
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+"カタログは順番にマージされ、最初にそのプラグインを提供したソースが採用されま"
+"す。リストを空にすると公式カタログが使用されます。"
+
+msgid "Using the official catalog"
+msgstr "公式カタログを使用中"
+
+msgid "Add source"
+msgstr "ソースを追加"
+
+msgid "Add the official catalog"
+msgstr "公式カタログを追加"
+
+msgid "Official"
+msgstr "公式"
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr "Nginx UI のメンテナーによってビルドされ、署名されています。"
+
+msgid "Verified"
+msgstr "検証済み"
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+"Nginx UI のメンテナーによってレビューされ、リリースキーで署名されています。"
+
+msgid "Community"
+msgstr "コミュニティ"
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+"サードパーティによって公開されたもので、レビューされていません。付与した権限"
+"で動作するため、作者を信頼できる場合のみインストールしてください。"
+
+msgid "Approve permissions"
+msgstr "権限を承認"
+
+msgid "Approve and enable"
+msgstr "承認して有効にする"
+
+msgid "%{name} needs your approval before it can run."
+msgstr "%{name} を実行するには、あなたの承認が必要です。"
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+"作者を信頼できる場合のみ承認してください。承認内容は記録され、要求される権限"
+"が変わるたびに再度確認されます。"
+
+msgid "This plugin does not request any host permission."
+msgstr "このプラグインはホストの権限を要求していません。"
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+"保存されている %{kind} の資格情報を、シークレットを含めて読み取ります。"
+
+msgid "unknown"
+msgstr "不明"
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+"Nginx UI のデータベース内にプラグイン自身のキーバリューデータを保存・読み取り"
+"します。"
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr "マニフェストに宣言されたホストへ発信ネットワークリクエストを行います。"
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr "マニフェストに宣言されたスケジュールで定期タスクを実行します。"
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr "Nginx UI の通知チャネルを通じて通知を送信します。"
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+"このノードの CPU、メモリ、ネットワーク、Nginx のステータス指標を読み取りま"
+"す。"
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr "あなたの権限で Nginx UI の管理 API を呼び出します。"
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr "不明な権限です。プラグインの作者を信頼できる場合のみ許可してください。"
+
+msgid "In sync"
+msgstr "同期済み"
+
+msgid "Outdated"
+msgstr "旧バージョン"
+
+msgid "Not installed"
+msgstr "未インストール"
+
+msgid "Unsupported platform"
+msgstr "対応していないプラットフォーム"
+
+msgid "Unsupported"
+msgstr "非対応"
+
+msgid "Failed to load the plugin matrix"
+msgstr "プラグインマトリクスの読み込みに失敗しました"
+
+msgid "Update to %{version}"
+msgstr "%{version} に更新"
+
+msgid "Sync to this node"
+msgstr "このノードへ同期"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+"各子ノードにインストールされているものを、このコントローラーと比較して表示し"
+"ます。ヘッダーで選択ノードを切り替えると、そのノードを直接管理できます。"
+
+msgid "All nodes"
+msgstr "すべてのノード"
+
+msgid "This instance has no child node"
+msgstr "このインスタンスには子ノードがありません"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+"先にノードを追加すると、ここからそのノードにプラグインをインストールできるよ"
+"うになります。"
+
+msgid "Sync to selected"
+msgstr "選択したノードへ同期"
+
+msgid "Sync to all"
+msgstr "すべてのノードへ同期"
+
+msgid "Marketplace"
+msgstr "マーケットプレイス"
+
+msgid "%{field} is required"
+msgstr "%{field} は必須です"
+
+msgid "Failed to load the plugin settings"
+msgstr "プラグイン設定の読み込みに失敗しました"
+
+msgid "Plugin settings saved"
+msgstr "プラグイン設定を保存しました"
+
+msgid "Failed to save the plugin settings"
+msgstr "プラグイン設定の保存に失敗しました"
+
+msgid "Settings: %{name}"
+msgstr "設定: %{name}"
+
+msgid "This plugin has no settings."
+msgstr "このプラグインには設定項目がありません。"
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] "他 %{count} 件"
+
+msgid "Sync policy saved"
+msgstr "同期ポリシーを保存しました"
+
+msgid "Failed to save the sync policy"
+msgstr "同期ポリシーの保存に失敗しました"
+
+msgid "Automatic installation"
+msgstr "自動インストール"
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+"選択した子ノードで、このプラグインのバージョンと状態を常に一致させます。どの"
+"ノードもチェックしない場合、後から追加されるノードを含むすべてのノードが対象"
+"になります。"
+
+msgid "Also sync the plugin settings"
+msgstr "プラグイン設定も同期する"
+
+msgid "Needs attention"
+msgstr "要対応"
+
+msgid "Uninstall %{name}?"
+msgstr "%{name} をアンインストールしますか？"
+
+msgid ""
+"Its files, data and settings are removed from this node. Other nodes are not "
+"touched."
+msgstr ""
+"このノードからファイル、データ、設定が削除されます。他のノードには影響しませ"
+"ん。"
+
+msgid "Search installed plugins"
+msgstr "インストール済みプラグインを検索"
+
+msgid "No plugins installed yet"
+msgstr "インストール済みのプラグインはまだありません"
+
+msgid "Pick one from the marketplace or upload a bundle you built yourself."
+msgstr ""
+"マーケットプレイスから選ぶか、自分でビルドしたバンドルをアップロードしてくだ"
+"さい。"
+
+msgid "Browse marketplace"
+msgstr "マーケットプレイスを見る"
+
+msgid "Install from file"
+msgstr "ファイルからインストール"
+
+msgid "No plugins match the current filter"
+msgstr "現在のフィルターに一致するプラグインはありません"
+
+msgid "This plugin cannot run on this node"
+msgstr "このプラグインはこのノードでは実行できません"
+
+msgid "More actions"
+msgstr "その他の操作"
+
+msgid "Follow new lines"
+msgstr "新しい行を追従"
+
+msgid "All plugins"
+msgstr "すべてのプラグイン"
+
+msgid "Updates"
+msgstr "更新"
+
+msgid "The catalog is empty"
+msgstr "カタログは空です"
+
+msgid "Search the marketplace"
+msgstr "マーケットプレイスを検索"
+
+msgid "%{count} installed plugin has a newer release."
+msgid_plural "%{count} installed plugins have a newer release."
+msgstr[0] "インストール済みプラグイン %{count} 件に新しいリリースがあります。"
+
+msgid "Show updates"
+msgstr "更新を表示"
+
+msgid "The marketplace is unavailable"
+msgstr "マーケットプレイスを利用できません"
+
+msgid "Overview"
+msgstr "概要"
+
+msgid "No background process"
+msgstr "バックグラウンドプロセスなし"
+
+msgid "On demand"
+msgstr "オンデマンド"
+
+msgid "Resident"
+msgstr "常駐"
+
+msgid "Last error"
+msgstr "最後のエラー"
+
+msgid "This plugin needs your approval before it can run."
+msgstr "このプラグインを実行するには承認が必要です。"
+
+msgid "Turn it on to review the requested permissions."
+msgstr "オンにすると要求された権限を確認できます。"
+
+msgid "API version"
+msgstr "API バージョン"
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr "Nginx UI %{version} 以降が必要です"
+
+msgid "Depends on"
+msgstr "依存"
+
+msgid "Needs capabilities"
+msgstr "必要な機能"
+
+msgid "Permissions"
+msgstr "権限"
+
+msgid "Cluster"
+msgstr "クラスター"
+
+msgid "Sync now"
+msgstr "今すぐ同期"
+
+msgid "Danger zone"
+msgstr "危険な操作"
+
+msgid "Uninstall this plugin"
+msgstr "このプラグインをアンインストール"
+
+msgid "Its files, data and settings are removed from this node."
+msgstr "このノードからファイル、データ、設定が削除されます。"
+
+msgid "%{count} in sync"
+msgstr "%{count} 件が同期済み"
+
+msgid "%{count} pending"
+msgstr "%{count} 件が保留中"
+
+msgid "%{count} failing"
+msgstr "%{count} 件が失敗"
+
+msgid "Manage nodes"
+msgstr "ノードを管理"
+
+msgid "Updates available"
+msgstr "更新あり"
+
+msgid "Idle"
+msgstr "アイドル"
+
+msgid "Include line copied to clipboard"
+msgstr "インクルード行をクリップボードにコピーしました"
+
+msgid "%{n} d"
+msgstr "%{n} 日"
+
+msgid "%{n} h"
+msgstr "%{n} 時間"
+
+msgid "%{n} min"
+msgstr "%{n} 分"
+
+msgid "%{n} s"
+msgstr "%{n} 秒"
+
+msgid "Deploy Certificate Error"
+msgstr "証明書のデプロイエラー"
+
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr ""
+"証明書 %{cert_name} を %{target_name} へデプロイできませんでした: %{error}"
+
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr ""
+"保存されているバックアップ {0} はこのバックアップタスクに属していません"
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr "復元できるのは Nginx と Nginx UI のバックアップのみです"
+
+msgid "This action needs a plugin storage backend"
+msgstr "この操作にはプラグインのストレージバックエンドが必要です"
+
+msgid "Invalid storage key prefix: {0}"
+msgstr "無効なストレージキーのプレフィックスです: {0}"
+
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr "通知設定のフィールド {0} が無効です: {1}"
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr "プラグインの内容 {0} が無効です: {1}"
+
+msgid "Storage backend {0} is not available"
+msgstr "ストレージバックエンド {0} は利用できません"
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr "ストレージ設定のフィールド {0} が無効です: {1}"
+
+msgid "Deploy target kind {0} is not available"
+msgstr "デプロイ先の種類 {0} は利用できません"
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr "デプロイ先設定のフィールド {0} が無効です: {1}"
+
+msgid "Blocklist source kind {0} is not available"
+msgstr "ブロックリストソースの種類 {0} は利用できません"
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr "ブロックリストソース設定のフィールド {0} が無効です: {1}"
+
+msgid "Discovery provider {0} is not available"
+msgstr "ディスカバリプロバイダー {0} は利用できません"
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr "ディスカバリプロバイダー設定のフィールド {0} が無効です: {1}"
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr "更新間隔は最低 {0} 秒必要です"
+
+msgid "Upstream name {0} is invalid"
+msgstr "アップストリーム名 {0} が無効です"
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr "アップストリーム名 {0} は既に別のサービスに紐付けられています"
+
+msgid "Extra directives must not contain braces"
+msgstr "追加ディレクティブに中括弧を含めることはできません"
+
+msgid "{0} is still included by the nginx configuration: {1}"
+msgstr "{0} は今も nginx の設定に include されています: {1}"
+
+msgid "Template not found"
+msgstr "テンプレートが見つかりません"
+
+msgid "Deploy Targets"
+msgstr "デプロイ先"
+
+msgid "Blocklists"
+msgstr "ブロックリスト"
+
+msgid "Keep Latest Backups"
+msgstr "保持する最新バックアップ数"
+
+msgid "Stored Backups"
+msgstr "保存済みバックアップ"
+
+msgid "Please fill in %{field}"
+msgstr "%{field} を入力してください"
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr ""
+"ストレージのテストに成功しました。%{count} 件の保存済みバックアップが見つかり"
+"ました"
+
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr ""
+"このストレージを提供するプラグインが無効になっています。再度有効にするまで"
+"バックアップは失敗します。"
+
+msgid "Key Prefix"
+msgstr "キープレフィックス"
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr ""
+"バックアップはこのプレフィックス配下に保存されます（例: nginx-ui/daily）。"
+"ルートには / を使用してください。"
+
+msgid "Key prefix is required"
+msgstr "キープレフィックスは必須です"
+
+msgid "nginx-ui/backups"
+msgstr "nginx-ui/backups"
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr ""
+"実行のたびに、このストレージ内の古いバックアップが削除されます。0 に設定する"
+"とすべてのバックアップを保持します。"
+
+msgid "Test Storage"
+msgstr "ストレージをテスト"
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr "%{storage} の %{prefix} 配下に保存されたバックアップ"
+
+msgid "Delete this backup from the storage?"
+msgstr "このバックアップをストレージから削除しますか？"
+
+msgid "Restore Backup"
+msgstr "バックアップを復元"
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr ""
+"復元すると現在の設定が置き換えられます。その後 Nginx と Nginx UI が再起動しま"
+"す。"
+
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr "%{ok} 件のデプロイ先に配信し、%{failed} 件失敗しました"
+
+msgid "Deployed to %{ok} targets"
+msgstr "%{ok} 件のデプロイ先に配信しました"
+
+msgid "Manage"
+msgstr "管理"
+
+msgid "Deploy Now"
+msgstr "今すぐデプロイ"
+
+msgid "This certificate is not pushed to any external target."
+msgstr "この証明書はまだどの外部デプロイ先にもプッシュされていません。"
+
+msgid "Plugin unavailable"
+msgstr "プラグインが利用できません"
+
+msgid "Never deployed"
+msgstr "デプロイ未実行"
+
+msgid "%{count} attempts"
+msgstr "%{count} 回の試行"
+
+msgid "Deploy History of %{name}"
+msgstr "%{name} のデプロイ履歴"
+
+msgid "All certificates"
+msgstr "すべての証明書"
+
+msgid "Dry run successful"
+msgstr "ドライランに成功しました"
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+"デプロイ先を提供する有効なプラグインがありません。まず cert.deploy 機能を持つ"
+"プラグインをインストールして有効にしてください。"
+
+msgid "Target Type"
+msgstr "デプロイ先の種類"
+
+msgid "Select a target type"
+msgstr "デプロイ先の種類を選択"
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr ""
+"このデプロイ先の種類を提供するプラグインが無効になっています。再度有効にする"
+"までプッシュは失敗します。"
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr "この証明書は、発行および更新のたびにこのデプロイ先へプッシュされます。"
+
+msgid "Dry Run"
+msgstr "ドライラン"
+
+msgid "No certificate is bound to this target"
+msgstr "このデプロイ先には証明書が紐付けられていません"
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr "%{ok} 件の証明書をデプロイし、%{failed} 件失敗しました"
+
+msgid "Deployed %{ok} certificates"
+msgstr "%{ok} 件の証明書をデプロイしました"
+
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
+msgstr ""
+"更新のたびに、証明書を CDN やロードバランサー、その他のサーバーへプッシュしま"
+"す。"
+
+msgid "Built-in HTTP / gRPC check"
+msgstr "組み込みの HTTP / gRPC チェック"
+
+msgid "%{kind} (unavailable)"
+msgstr "%{kind}（利用不可）"
+
+msgid "Check Method"
+msgstr "チェック方法"
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
+msgstr ""
+"このチェックを提供するプラグインが無効になっています。再度有効にするか、別の"
+"チェック方法を選択するまで、このサイトはエラーとして報告されます。"
+
+msgid "Refreshed"
+msgstr "更新しました"
+
+msgid "Refresh failed"
+msgstr "更新に失敗しました"
+
+msgid "Source Type"
+msgstr "ソースの種類"
+
+msgid "Refresh Interval"
+msgstr "更新間隔"
+
+msgid "Entries"
+msgstr "エントリ"
+
+msgid "Last Result"
+msgstr "直近の結果"
+
+msgid "Include"
+msgstr "インクルード行"
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+"ブロックリストソースはプラグインから拒否対象アドレスのリストを取得し、専用の"
+"ファイルに拒否ルールとして書き込みます。ソースのインクルード行を server ブ"
+"ロックまたは location ブロックに追加するまでは、何もブロックされません。"
+
+msgid "Refresh Now"
+msgstr "今すぐ更新"
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+"ブロックリストソースを提供する有効なプラグインがありません。まず "
+"security.blocklist 機能を持つプラグインをインストールして有効にしてください。"
+
+msgid "Select a source type"
+msgstr "ソースの種類を選択"
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr ""
+"このソースの種類を提供するプラグインが無効になっています。リストは保持されま"
+"すが、更新されなくなります。"
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr ""
+"リストを再取得する間隔（秒）です。リストが変化した場合にのみ Nginx が再読み込"
+"みされます。"
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
+msgstr ""
+"この行を server ブロックまたは location ブロックに追加すると、そこでリスト内"
+"のアドレスを拒否できます。"
+
+msgid "From plugin %{id}"
+msgstr "プラグイン %{id} 提供"
+
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
+msgstr ""
+"このテンプレートはプラグイン %{id} から提供されています。追加する前にディレク"
+"ティブを確認してください。"
+
+msgid "This package has no build for this node (%{platform})"
+msgstr "このパッケージには、このノード（%{platform}）向けのビルドがありません"
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr ""
+"このプラットフォーム向けにビルドされたパッケージ、またはポータブル版パッケー"
+"ジをダウンロードしてから、もう一度お試しください。"
+
+msgid "This node runs %{platform}, its build is highlighted."
+msgstr ""
+"このノードは %{platform} で動作しており、該当するビルドがハイライト表示されて"
+"います。"
+
+msgid ""
+"Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+"can then run them."
+msgstr ""
+"MCP を通じて、Nginx UI に接続された AI アシスタントにツールを提供し、実行でき"
+"るようにします。"
+
+msgid ""
+"Receive certificates and their private keys in order to push them to "
+"external targets."
+msgstr "証明書とその秘密鍵を受け取り、外部のデプロイ先へプッシュします。"
+
+msgid ""
+"Receive every parsed nginx access log line while enabled, including client "
+"addresses and requested URLs."
+msgstr ""
+"有効な間、クライアントアドレスやリクエストされた URL を含む、解析済みの "
+"nginx アクセスログをすべて受け取ります。"
+
+msgid "Streamed"
+msgstr "送信済み"
+
+msgid "Rejected"
+msgstr "拒否済み"
+
+msgid "Dropped"
+msgstr "破棄済み"
+
+msgid "Unlimited"
+msgstr "無制限"
+
+msgid "Transport"
+msgstr "トランスポート"
+
+msgid "Resource limits"
+msgstr "リソース制限"
+
+msgid "The running process is confined to these limits."
+msgstr "実行中のプロセスはこれらの制限内に収まるよう制御されています。"
+
+msgid ""
+"The plugin is not running, or this node cannot confine processes: that needs "
+"Linux with a writable cgroup v2 hierarchy."
+msgstr ""
+"プラグインが実行されていないか、このノードではプロセスを制限できません。これ"
+"には書き込み可能な cgroup v2 階層を持つ Linux が必要です。"
+
+msgid "Enforced"
+msgstr "強制適用"
+
+msgid "Not enforced"
+msgstr "未適用"
+
+msgid "Access log stream"
+msgstr "アクセスログストリーム"
+
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr ""
+"nginx がこのアップストリームを識別する名前です。使用できるのは英数字、ピリオ"
+"ド、ハイフン、アンダースコアのみです。"
+
+msgid "Service"
+msgstr "サービス"
+
+msgid "Service Discovery"
+msgstr "サービスディスカバリ"
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr ""
+"サービスディスカバリを提供する有効なプラグインがありません。まず "
+"upstream.discovery 機能を持つプラグインをインストールして有効にしてください。"
+
+msgid "Select a provider"
+msgstr "プロバイダーを選択"
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr ""
+"このプロバイダーを提供するプラグインが無効になっています。アップストリームは"
+"保持されますが、更新されなくなります。"
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr "解決対象のサービスを、プロバイダーの用語で指定します。"
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr ""
+"サービスを再解決する間隔（秒）です。サーバーが変化した場合にのみ Nginx が再読"
+"み込みされます。"
+
+msgid "Extra Directives"
+msgstr "追加ディレクティブ"
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr ""
+"upstream ブロック内に追記されます。1 行に 1 つのディレクティブを記述してくだ"
+"さい（例: keepalive 32;）。"
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
+msgstr ""
+"この行を http ブロック（例えばサイト設定の先頭）に追加し、その名前でアップス"
+"トリームへプロキシしてください。"
+
+msgid "Links"
+msgstr "リンク"
+
+msgid "Plugin package declares version {0}, {1} was expected"
+msgstr "プラグインパッケージのバージョンは {0} ですが、{1} が想定されています"
+
+msgid "Only localhost addresses are accepted"
+msgstr "localhost のアドレスのみ使用できます"
+
+msgid ""
+"Address of a plugin.json served by a static server on this computer. Only "
+"localhost addresses are accepted. The plugin is loaded in addition to the "
+"installed ones."
+msgstr ""
+"このコンピューター上の静的サーバーが配信する plugin.json のアドレス。"
+"localhost のアドレスのみ使用できます。インストール済みプラグインに加えて読み"
+"込まれます。"
+
+msgid "Plugin package is not signed and developer mode is off"
+msgstr "プラグインパッケージが署名されておらず、開発者モードがオフです"
+
+msgid "Plugin package trust {0} is below the installed {1}"
+msgstr ""
+"プラグインパッケージの信頼レベル {0} はインストール済みの {1} より低いです"
+
+msgid "This plugin is not signed"
+msgstr "このプラグインは署名されていません"
+
+msgid "Checking the package"
+msgstr "パッケージを確認しています"
+
+msgid "Published by the Nginx UI project."
+msgstr "Nginx UI プロジェクトが公開しています。"
+
+msgid "Published by a partner of the Nginx UI project."
+msgstr "Nginx UI プロジェクトのパートナーが公開しています。"
+
+msgid "Unsigned"
+msgstr "未署名"
+
+msgid ""
+"Not signed, so its publisher cannot be confirmed. Installing it requires "
+"developer mode."
+msgstr ""
+"署名がないため、発行元を確認できません。インストールには開発者モードが必要で"
+"す。"
+
+msgid "This package is trusted less than the version already installed"
+msgstr ""
+"このパッケージはインストール済みのバージョンより信頼レベルが低くなります"
+
+msgid "Installed version: %{installed}. This package: %{package}."
+msgstr "インストール済み: %{installed}。このパッケージ: %{package}。"
+
+msgid "Plugin System"
+msgstr "プラグインシステム"
+
+msgid ""
+"Turning it off stops every plugin and hides the plugin pages. Takes effect "
+"after a restart."
+msgstr ""
+"オフにするとすべてのプラグインが停止し、プラグインページが非表示になります。"
+"再起動後に反映されます。"
+
+msgid "Plugin Directory"
+msgstr "プラグインディレクトリ"
+
+msgid "Default Sync Policy"
+msgstr "既定の同期ポリシー"
+
+msgid ""
+"Applied to newly installed plugins. Automatic keeps the plugin installed on "
+"the child nodes."
+msgstr ""
+"新しくインストールしたプラグインに適用されます。自動を選ぶと子ノードにも常に"
+"インストールされます。"
+
+msgid "Enable Marketplace"
+msgstr "マーケットプレイスを有効化"
+
+msgid "Managed on the marketplace page. Empty means the official catalog."
+msgstr ""
+"マーケットプレイスページで管理します。空の場合は公式カタログを使います。"
+
+msgid "Allow Community Plugins"
+msgstr "コミュニティプラグインを許可"
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr ""
+"コミュニティプラグインは第三者が公開したもので、インストール前に確認を求めま"
+"す。"
+
+msgid "Automatic Updates"
+msgstr "自動更新"
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr ""
+"要求する権限が変わらない限り、公式およびパートナーのプラグインを自動で更新し"
+"ます。"
+
+msgid "Allow Insecure Download URLs"
+msgstr "安全でないダウンロード URL を許可"
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr ""
+"平文 http のカタログとダウンロードアドレスを受け入れます。信頼できるネット"
+"ワーク上のプライベートカタログにのみ使ってください。"
+
+msgid "Allow Uploads"
+msgstr "アップロードを許可"
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr ""
+"ブラウザーやコマンドラインからアップロードしたパッケージのインストールを許可"
+"します。"
+
+msgid "Developer Mode"
+msgstr "開発者モード"
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
+msgstr ""
+"署名のないプラグインのインストールを許可します。プラグインを開発しているとき"
+"だけオンにしてください。"
+
+msgid "Trusted Keys"
+msgstr "信頼する鍵"
+
+msgid ""
+"Packages signed with one of these keys install as community plugins. One key "
+"per line."
+msgstr ""
+"これらの鍵で署名されたパッケージはコミュニティプラグインとしてインストールさ"
+"れます。1 行に 1 つの鍵を入力してください。"
+
+msgid "Memory Limit"
+msgstr "メモリ上限"
+
+msgid ""
+"Applies to every plugin process. 0 means unlimited, a plugin can only lower "
+"its own limit."
+msgstr ""
+"すべてのプラグインプロセスに適用されます。0 は無制限で、プラグインは自身の上"
+"限を下げることしかできません。"
+
+msgid "CPU Limit"
+msgstr "CPU 上限"
+
+msgid "Percent of one core for every plugin process. 0 means unlimited."
+msgstr "プラグインプロセスごとの 1 コアに対する割合です。0 は無制限です。"
+
+msgid "cgroup Root"
+msgstr "cgroup ルート"
+
+msgid "Limits are enforced on Linux with cgroup v2 only."
+msgstr "上限は cgroup v2 を使う Linux でのみ適用されます。"
+
+msgid ""
+"Plugin system, marketplace, packages and resource limits of plugin processes."
+msgstr ""
+"プラグインシステム、マーケットプレイス、パッケージ、プラグインプロセスのリ"
+"ソース制限。"
+
+msgid "Go to plugins"
+msgstr "プラグインへ移動"
+
+msgid "The plugins directory under the configuration directory"
+msgstr "設定ディレクトリ内の plugins ディレクトリ"
+
+msgid "Official catalog"
+msgstr "公式カタログ"
+
+msgid "Packages"
+msgstr "パッケージ"
+
+msgid "Paste public keys here"
+msgstr "ここに公開鍵を貼り付けてください"
+
+msgid "Resources"
+msgstr "リソース"
+
+msgid "A trusted publisher is not in the expected format or is listed twice"
+msgstr "信頼済み発行元の形式が正しくないか、重複しています。"
+
+msgid "Turning it off stops every plugin and hides the plugin pages."
+msgstr ""
+"オフにするとすべてのプラグインが停止し、プラグインのページが非表示になりま"
+"す。"
+
+msgid "Trusted Publishers"
+msgstr "信頼済み発行元"
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr ""
+"これらの発行元のプラグインはコミュニティプラグインとしてインストールされま"
+"す。"
+
+msgid "Maximum memory each plugin can use."
+msgstr "各プラグインが使用できるメモリの上限です。"
+
+msgid "Share of one CPU core each plugin can use."
+msgstr "各プラグインが使用できる CPU 1 コアあたりの割合です。"
+
+msgid ""
+"This is not a valid public key. Paste the whole key the publisher gave you."
+msgstr ""
+"有効な公開鍵ではありません。発行元から受け取った公開鍵をそのまま貼り付けてく"
+"ださい。"
+
+msgid "This publisher is already in the list."
+msgstr "この発行元はすでに一覧にあります。"
+
+msgid "No publishers yet."
+msgstr "発行元はまだありません。"
+
+msgid "Unnamed publisher"
+msgstr "名前のない発行元"
+
+msgid "Not a valid public key"
+msgstr "無効な公開鍵"
+
+msgid "Add publisher"
+msgstr "発行元を追加"
+
+msgid "Shown in this list only"
+msgstr "この一覧にのみ表示されます"
+
+msgid "Public Key"
+msgstr "公開鍵"
+
+msgid "Paste the public key the publisher gave you"
+msgstr "発行元から受け取った公開鍵を貼り付けてください"
+
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr ""
+"すべてのプラグインに適用されます。プラグインは自身の上限を下げることしかでき"
+"ません。"
+
+msgid "Only applies on Linux. This system does not support it."
+msgstr "Linux でのみ有効です。このシステムでは使用できません。"
+
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr ""
+"これらのオプションはプラグインのインストールの安全性を下げます。必要なときだ"
+"けオンにしてください。"
+
+msgid "Less safe"
+msgstr "安全性低下"
+
+msgid "Validates the domain with a DNS record. Needs a DNS credential."
+msgstr "DNS レコードでドメインを検証します。DNS 認証情報が必要です。"
+
+msgid "Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail."
+msgstr ""
+"ワイルドカード証明書には通常 DNS-01 が必要です。HTTP-01 では失敗する可能性が"
+"高いです。"
+
+msgid "Validates each domain over port 80 on this server."
+msgstr "このサーバーのポート 80 で各ドメインを検証します。"
+
+msgid "Can be changed after the plugin is installed."
+msgstr "プラグインをインストールすると変更できます。"
+
+msgid "Can be changed after the plugin is enabled."
+msgstr "プラグインを有効にすると変更できます。"
+
+msgid ""
+"Only turn on when you are sure you need it. Firefox may show an error on the "
+"first visit."
+msgstr ""
+"必要な場合のみオンにしてください。Firefox では初回アクセス時にエラーが表示さ"
+"れることがあります。"
+
+msgid "For private CAs that still require this field."
+msgstr "このフィールドを必要とするプライベート CA 向けです。"
+
+msgid "Revokes the previous certificate once the new one is issued."
+msgstr "新しい証明書の発行後に以前の証明書を失効させます。"
+
+msgid "New credential"
+msgstr "新しい認証情報"
+
+msgid "The credential was deleted. Please choose another one."
+msgstr "この認証情報は削除されました。別の認証情報を選択してください。"
+
+msgid "Deleted credential"
+msgstr "削除された認証情報"
+
+msgid "DNS Credential"
+msgstr "DNS 認証情報"
+
+msgid "Select credential"
+msgstr "認証情報を選択"
+
+msgid "not installed"
+msgstr "インストールされていません"
+
+msgid "turned off"
+msgstr "無効になっています"
+
+msgid "not working right now"
+msgstr "現在動作していません"
+
+msgid ""
+"DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
+"yet."
+msgstr ""
+"DNS-01 検証は DNS-01 プラグインで提供されますが、まだインストールされていませ"
+"ん。"
+
+msgid "The DNS-01 plugin is installed but turned off."
+msgstr "DNS-01 プラグインはインストールされていますが、無効になっています。"
+
+msgid "The DNS-01 plugin is turned on but not working right now."
+msgstr "DNS-01 プラグインは有効ですが、現在動作していません。"
+
+msgid ""
+"This certificate renews through the DNS-01 plugin, which is %{state}. It "
+"cannot renew automatically until the plugin is back."
+msgstr ""
+"この証明書は DNS-01 プラグインで更新されますが、プラグインは%{state}。プラグ"
+"インが復旧するまで自動更新できません。"
+
+msgid "DNS providers come with the DNS-01 plugin, which is %{state}."
+msgstr ""
+"DNS プロバイダーは DNS-01 プラグインで提供されますが、プラグインは%{state}。"
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not installed."
+msgstr ""
+"現在利用できるプロバイダーは %{count} 件のみです。その他のプロバイダーは "
+"DNS-01 プラグインで提供されますが、インストールされていません。"
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is turned off."
+msgstr ""
+"現在利用できるプロバイダーは %{count} 件のみです。その他のプロバイダーは "
+"DNS-01 プラグインで提供されますが、無効になっています。"
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not working right now."
+msgstr ""
+"現在利用できるプロバイダーは %{count} 件のみです。その他のプロバイダーは "
+"DNS-01 プラグインで提供されますが、現在動作していません。"
+
+msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
+msgstr "DNS 検証には DNS-01 プラグインが必要ですが、プラグインは%{state}。"
+
+msgid "Enable plugin"
+msgstr "プラグインを有効にする"
+
+msgid "New DNS Credential"
+msgstr "新しい DNS 認証情報"
+
+msgid "Create and select"
+msgstr "作成して選択"
+
+msgid ""
+"Automatic renewal can only be switched for certificates issued by Nginx UI"
+msgstr "自動更新を切り替えられるのは Nginx UI が発行した証明書のみです"
+
+msgid "Plugin marketplace is disabled"
+msgstr "プラグインマーケットプレイスは無効です"
+
+msgid "Plugin marketplace source is unavailable: {0}"
+msgstr "プラグインマーケットプレイスのソースを利用できません: {0}"
+
+msgid "Plugin release not found"
+msgstr "プラグインのリリースが見つかりません"
+
+msgid "Plugin release has been yanked"
+msgstr "プラグインのリリースは取り下げられました"
+
+msgid "Plugin package digest does not match the catalog"
+msgstr "プラグインパッケージのダイジェストがカタログと一致しません"
+
+msgid "Plugin package signature is invalid: {0}"
+msgstr "プラグインパッケージの署名が無効です: {0}"
+
+msgid "Community plugins are not allowed on this node"
+msgstr "このノードではコミュニティプラグインは許可されていません"
+
+msgid "Plugin download url is not https"
+msgstr "プラグインのダウンロード URL が https ではありません"
+
+msgid "Plugin release has no build for this platform"
+msgstr "プラグインのリリースにこのプラットフォーム向けのビルドがありません"
+
+msgid "Plugin catalog is invalid: {0}"
+msgstr "プラグインカタログが無効です: {0}"
+
+msgid "Plugin is not in the marketplace catalog"
+msgstr "プラグインはマーケットプレイスのカタログにありません"
+
+msgid "No local package found for this plugin"
+msgstr "このプラグインのローカルパッケージが見つかりません"
+
+msgid "No plugin package is available for {0}"
+msgstr "{0} に利用できるプラグインパッケージがありません"
+
+msgid "The marketplace has no more trusted package of this plugin"
+msgstr ""
+"マーケットプレイスにはこのプラグインの信頼できるパッケージがもうありません"
+
+msgid "Advanced options"
+msgstr "詳細オプション"
+
+msgid "Sync to other nodes"
+msgstr "他のノードへ同期"
+
+msgid "Private key"
+msgstr "プライベートキー"
+
+msgid "Automatic renewal turned on"
+msgstr "自動更新をオンにしました"
+
+msgid "Automatic renewal turned off"
+msgstr "自動更新をオフにしました"
+
+msgid "Not issued yet"
+msgstr "未発行"
+
+msgid "Expiring within 30 days"
+msgstr "30 日以内に期限切れ"
+
+msgid "Renewal failed"
+msgstr "更新に失敗しました"
+
+msgid "Renewal method"
+msgstr "更新方法"
+
+msgid "Expiry date"
+msgstr "有効期限"
+
+msgid "Search by name or domain"
+msgstr "名前またはドメインで検索"
+
+msgid "Valid · %{days} days left"
+msgstr "有効 · 残り %{days} 日"
+
+msgid "Expires in %{days} days"
+msgstr "%{days} 日後に期限切れ"
+
+msgid "Managed manually"
+msgstr "手動管理"
+
+msgid "DNS validation · %{provider}"
+msgstr "DNS 検証 · %{provider}"
+
+msgid "DNS validation"
+msgstr "DNS 検証"
+
+msgid "HTTP validation"
+msgstr "HTTP 検証"
+
+msgid "Self-signed"
+msgstr "自己署名"
+
+msgid "Synced from another node"
+msgstr "他のノードから同期"
+
+msgid "Upload"
+msgstr "アップロード"
+
+msgid "Renewed on the node it is synced from"
+msgstr "同期元のノードで更新されます"
+
+msgid "Renews around %{date}"
+msgstr "%{date} 頃に更新予定"
+
+msgid "Replace the files to renew"
+msgstr "ファイルを置き換えて更新"
+
+msgid "Auto renewal"
+msgstr "自動更新"
+
+msgid "Issuer"
+msgstr "発行者"
+
+msgid "Certificate files"
+msgstr "証明書ファイル"
+
+msgid "Hide contents"
+msgstr "内容を隠す"
+
+msgid "Show contents"
+msgstr "内容を表示"
+
+msgid "In progress"
+msgstr "進行中"
+
+msgid "Failed · %{time}"
+msgstr "失敗 · %{time}"
+
+msgid "Succeeded · %{time}"
+msgstr "成功 · %{time}"
+
+msgid "Last renewal"
+msgstr "前回の更新"
+
+msgid "Show less"
+msgstr "折りたたむ"
+
+msgid "View full log"
+msgstr "ログ全体を表示"
+
+msgid "No renewal has run yet."
+msgstr "まだ更新は実行されていません。"
+
+msgid "Select nodes"
+msgstr "ノードを選択"
+
+msgid "Only kept on this node."
+msgstr "このノードにのみ保存されます。"
+
+msgid "Renew now"
+msgstr "今すぐ更新"
+
+msgid "Certificate DNS validation"
+msgstr "証明書の DNS 検証"
+
+msgid ""
+"Validates domains through DNS records when certificates are issued or "
+"renewed."
+msgstr "証明書の発行または更新時に DNS レコードでドメインを検証します。"
+
+msgid "DNS credentials"
+msgstr "DNS 認証情報"
+
+msgid "Web pages and API"
+msgstr "Web ページと API"
+
+msgid "Serves its own pages and API inside Nginx UI."
+msgstr "Nginx UI 内で独自のページと API を提供します。"
+
+msgid "External notifications"
+msgstr "外部通知"
+
+msgid "Delivers Nginx UI notifications to other services."
+msgstr "Nginx UI の通知を他のサービスに配信します。"
+
+msgid "Health checks"
+msgstr "ヘルスチェック"
+
+msgid "Adds more ways to check whether sites and services are reachable."
+msgstr "サイトやサービスに到達できるかを確認する方法を追加します。"
+
+msgid "AI assistant tools"
+msgstr "AI アシスタントツール"
+
+msgid "Offers actions that AI assistants connected to Nginx UI can run."
+msgstr "Nginx UI に接続された AI アシスタントが実行できる操作を提供します。"
+
+msgid "Backup storage"
+msgstr "バックアップストレージ"
+
+msgid "Stores backups and other files in external storage."
+msgstr "バックアップやその他のファイルを外部ストレージに保存します。"
+
+msgid "Auto backup"
+msgstr "自動バックアップ"
+
+msgid "Certificate deployment"
+msgstr "証明書のデプロイ"
+
+msgid "Pushes issued certificates to other services and devices."
+msgstr "発行された証明書を他のサービスやデバイスへプッシュします。"
+
+msgid "Deploy targets"
+msgstr "デプロイ先"
+
+msgid "Keeps lists of addresses that are denied access up to date."
+msgstr "アクセスを拒否するアドレスのリストを最新に保ちます。"
+
+msgid "Service discovery"
+msgstr "サービスディスカバリー"
+
+msgid "Finds backend servers automatically and keeps upstreams up to date."
+msgstr "バックエンドサーバーを自動的に検出し、upstream を最新に保ちます。"
+
+msgid "Access log forwarding"
+msgstr "アクセスログの転送"
+
+msgid ""
+"Receives access log entries as they are written, for example to forward or "
+"analyse them."
+msgstr ""
+"アクセスログのエントリを書き込み時に受け取ります。転送や分析などに使用しま"
+"す。"
+
+msgid "Other feature"
+msgstr "その他の機能"
+
+msgid "A feature this version of Nginx UI does not describe."
+msgstr "このバージョンの Nginx UI では説明されていない機能です。"
+
+msgid "Disable %{name}?"
+msgstr "%{name} を無効にしますか？"
+
+msgid "Renewal resumes when you turn it back on."
+msgstr "再びオンにすると更新が再開されます。"
+
+msgid "Installed %{version} is not this version"
+msgstr "インストール済みの %{version} はこのバージョンではありません"
+
+msgid ""
+"This version was not published by the official team or a partner. It may be "
+"a development build or a repackaged copy."
+msgstr ""
+"このバージョンは公式チームまたはパートナーによって公開されたものではありませ"
+"ん。開発ビルドや再パッケージされたコピーである可能性があります。"
+
+msgid "Install the official version"
+msgstr "公式バージョンをインストール"
+
+msgid "Install the partner version"
+msgstr "パートナーバージョンをインストール"
+
+msgid "The marketplace has the official version %{version}."
+msgstr "マーケットプレイスに公式バージョン %{version} があります。"
+
+msgid "The marketplace has the partner version %{version}."
+msgstr "マーケットプレイスにパートナーバージョン %{version} があります。"
+
+msgid "Note from the author"
+msgstr "作者による説明"
+
+msgid "This plugin needs no access beyond its own features."
+msgstr "このプラグインは自身の機能以外へのアクセスを必要としません。"
+
+msgid "Keep its own data inside Nginx UI."
+msgstr "独自のデータを Nginx UI 内に保存します。"
+
+msgid "Connect to other servers over the network."
+msgstr "ネットワーク経由で他のサーバーに接続します。"
+
+msgid "Run tasks on a regular schedule."
+msgstr "定期的なスケジュールでタスクを実行します。"
+
+msgid "Manage Nginx UI with your permissions."
+msgstr "あなたの権限で Nginx UI を管理します。"
+
+msgid "Offer actions that AI assistants connected to Nginx UI can run."
+msgstr "Nginx UI に接続された AI アシスタントが実行できる操作を提供します。"
+
+msgid ""
+"Receive issued certificates, including the parts that must stay secret, to "
+"push them to other services."
+msgstr ""
+"発行された証明書を、秘密にすべき部分も含めて受け取り、他のサービスへプッシュ"
+"します。"
+
+msgid ""
+"Receive every access log entry while it is on, including visitor addresses "
+"and requested URLs."
+msgstr ""
+"オンの間、訪問者のアドレスやリクエストされた URL を含むすべてのアクセスログを"
+"受け取ります。"
+
+msgid "Stored %{kind} credentials"
+msgstr "保存されている %{kind} の資格情報"
+
+msgid "Own data storage"
+msgstr "独自のデータストレージ"
+
+msgid "Scheduled tasks"
+msgstr "スケジュールタスク"
+
+msgid "Server metrics"
+msgstr "サーバーメトリクス"
+
+msgid "Nginx UI management"
+msgstr "Nginx UI の管理"
+
+msgid "Access logs"
+msgstr "アクセスログ"
+
+msgid "Unknown permission"
+msgstr "不明な権限"
+
+msgid "Nothing to start"
+msgstr "起動するものはありません"
+
+msgid "Starts when needed"
+msgstr "必要に応じて起動"
+
+msgid "Always running"
+msgstr "常時実行"
+
+msgid "Start mode"
+msgstr "起動モード"
+
+msgid "Turn it on to review what it can access."
+msgstr "オンにするとアクセスできる範囲を確認できます。"
+
+msgid "Provides"
+msgstr "提供する機能"
+
+msgid "Can access"
+msgstr "アクセスできる範囲"
+
+msgid "Only these addresses"
+msgstr "これらのアドレスのみ"
+
+msgid "%{n} more"
+msgstr "他 %{n} 件"
+
+msgid "No specific addresses listed"
+msgstr "特定のアドレスは指定されていません"
+
+msgid "Nothing beyond its own features."
+msgstr "自身の機能以外へのアクセスはありません。"
+
+msgid "In use"
+msgstr "使用中"
+
+msgid "%{count} certificate renews through it:"
+msgid_plural "%{count} certificates renew through it:"
+msgstr[0] "%{count} 件の証明書がこのプラグインで更新されます:"
+
+msgid "Version, API version, start mode, updated time"
+msgstr "バージョン、API バージョン、起動モード、更新日時"
+
+msgid "Needs features"
+msgstr "必要な機能"
+
+msgid "The limits are applied while the plugin runs."
+msgstr "プラグインの実行中はこれらの制限が適用されます。"
+
+msgid "The plugin is not running, or this node cannot apply limits."
+msgstr "プラグインが実行されていないか、このノードでは制限を適用できません。"
+
+msgid "Develop plugin"
+msgstr "プラグインを開発"
+
+msgid "Standby"
+msgstr "待機中"
+
+msgid "Starts automatically when needed"
+msgstr "必要なときに自動的に起動します"
+
+msgid "Installed. Turn it on to review what it can access."
+msgstr "インストールしました。オンにするとアクセスできる範囲を確認できます。"
+
+msgid "Installed the version from the marketplace"
+msgstr "マーケットプレイスのバージョンをインストールしました"
+
+msgid "Failed to install the version from the marketplace"
+msgstr "マーケットプレイスのバージョンのインストールに失敗しました"
+
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
+msgstr ""
+"インストール済みのバージョンをマーケットプレイスのバージョンに置き換えます"
+"か？設定とデータは保持されます。"
+
+msgid "%{count} unsaved"
+msgid_plural "%{count} unsaved"
+msgstr[0] "%{count} 件未保存"
+
+msgctxt "list separator"
+msgid ", "
+msgstr "、"
+
+msgid "and %{n} more"
+msgstr "ほか %{n} 件"
+
+msgid ""
+"%{count} certificate renews through it and will not renew while it is off:"
+msgid_plural ""
+"%{count} certificates renew through it and will not renew while it is off:"
+msgstr[0] ""
+"%{count} 件の証明書がこのプラグインで更新されます。オフの間は更新されません:"
+
+msgid "API base URL"
+msgstr "APIベースURL"
+
+msgid "API timeout"
+msgstr "API タイムアウト"
+
+msgid "API token"
+msgstr "APIトークン"
+
+msgid "Access key ID"
+msgstr "アクセスキー ID"
+
+msgid "AccessKey"
+msgstr "AccessKey"
+
+msgid "AccessKey ID"
+msgstr "AccessKey ID"
+
+msgid "AccessKey secret"
+msgstr "AccessKey Secret"
+
+msgid "Account email"
+msgstr "アカウントのメールアドレス"
+
+msgid "Authentication method"
+msgstr "認証方式"
+
+msgid "Azure environment"
+msgstr "Azure 環境"
+
+msgid "Check interval"
+msgstr "確認間隔"
+
+msgid "Client certificate"
+msgstr "クライアント証明書"
+
+msgid "Client certificate path"
+msgstr "クライアント証明書のパス"
+
+msgid "Client secret"
+msgstr "クライアントシークレット"
+
+msgid "DNS line"
+msgstr "DNS 回線"
+
+msgid "Global API key"
+msgstr "グローバル API キー"
+
+msgid "Instance RAM role"
+msgstr "インスタンス RAM ロール"
+
+msgid "Managed identity timeout"
+msgstr "マネージド ID のタイムアウト"
+
+msgid "Maximum wait"
+msgstr "最大待機時間"
+
+msgid "Needs the DNS edit permission."
+msgstr "DNS の編集権限が必要です。"
+
+msgid "Needs the zone read permission. Leave empty to use the API token."
+msgstr "ゾーンの読み取り権限が必要です。空欄の場合は APIトークンを使用します。"
+
+msgid "One of public, usgovernment and china."
+msgstr "public、usgovernment、china のいずれか。"
+
+msgid "Private zone"
+msgstr "プライベートゾーン"
+
+msgid "Region"
+msgstr "リージョン"
+
+msgid "Region ID"
+msgstr "リージョン ID"
+
+msgid "Resource group"
+msgstr "リソースグループ"
+
+msgid "STS security token"
+msgstr "STS セキュリティトークン"
+
+msgid "Secret access key"
+msgstr "シークレットアクセスキー"
+
+msgid "SecretId"
+msgstr "SecretId"
+
+msgid "SecretKey"
+msgstr "SecretKey"
+
+msgid "Service discovery filter"
+msgstr "サービスディスカバリーフィルター"
+
+msgid "Session token"
+msgstr "セッショントークン"
+
+msgid "Set to true to use a private DNS zone."
+msgstr "プライベート DNS ゾーンを使用する場合は true に設定します。"
+
+msgid "Subscription ID"
+msgstr "サブスクリプション ID"
+
+msgid "TXT record TTL"
+msgstr "TXT レコードの TTL"
+
+msgid "Zone name"
+msgstr "ゾーン名"
+
+msgid "Zone read token"
+msgstr "ゾーン読み取りトークン"
+
+msgid "%{method} (recommended)"
+msgstr "%{method}（推奨）"
+
+msgid "%{provider} API docs"
+msgstr "%{provider} API ドキュメント"
+
+msgid "Sign-in method"
+msgstr "サインイン方法"
+
+msgid "Optional"
+msgstr "任意"
+
+msgid "%{count} changed"
+msgstr "%{count} 件変更"
+
+msgid "All default"
+msgstr "すべてデフォルト"
+
+msgid "sec"
+msgstr "秒"
+
+msgid "Nothing to fill in. The server uses its own credentials."
+msgstr "入力は不要です。サーバー自身の認証情報を使用します。"
+
+msgid "Browse and follow the access and error logs of your sites."
+msgstr "サイトのアクセスログとエラーログを閲覧し、リアルタイムで追跡します。"
+
+msgid "Read access logs page by page or follow them as they arrive."
+msgstr "アクセスログをページ単位で読むか、新しいログが届くたびに追跡します。"
+
+msgid "See every log file Nginx writes and open one to read it."
+msgstr "Nginx が書き込むすべてのログファイルを一覧し、開いて読みます。"
+
+msgid ""
+"Log analytics is now a plugin. Install it to keep using it; your existing "
+"indexes are kept."
+msgstr "ログ分析はプラグインになりました。インストールすると引き続き使えます。既存のインデックスは保持されます。"
+
+msgid "Go to install"
+msgstr "インストールへ移動"
+
+msgid "Used for downloads from GitHub, such as upgrades."
+msgstr "アップグレードなど、GitHub からのダウンロードに使用します。"
+
+msgid ""
+"Read the Nginx log files of this node, including visitor addresses and "
+"requested URLs."
+msgstr "このノードの Nginx ログファイルを読み取ります。訪問者のアドレスやリクエストされた URL が含まれます。"
+
+msgid "Log files"
+msgstr "ログファイル"
+
+msgid "This plugin cannot be enabled together with: {0}"
+msgstr "このプラグインは次のプラグインと同時に有効にできません: {0}"
+
+msgid "Release channel must be stable, beta or dev"
+msgstr "リリースチャンネルは stable、beta、dev のいずれかである必要があります"
+
+msgid ""
+"Advanced Indexing is now provided by the Log Analytics plugin. Install the "
+"plugin to continue using it. Existing indexes are kept."
+msgstr ""
+"高度なインデックス作成はログ分析プラグインで提供されるようになりました。引き"
+"続き使用するにはプラグインをインストールしてください。既存のインデックスは保"
+"持されます。"
+
+msgid "Beta"
+msgstr "ベータ版"
+
+msgid ""
+"This is a beta release. Features may change, and some functions may not work "
+"as expected."
+msgstr ""
+"これはベータ版です。機能が変更される可能性があり、一部の機能が正しく動作しな"
+"い場合があります。"
+
+msgid "This is a development release. It may be incomplete or unstable."
+msgstr "これは開発版です。不完全または不安定な場合があります。"
+
+msgid "This is a stable release."
+msgstr "これは安定版です。"
+
+msgid "Development releases are received until a stable release is available."
+msgstr "安定版が公開されるまで、開発版を受け取ります。"
+
+msgid "Beta releases are received until a stable release is available."
+msgstr "安定版が公開されるまで、ベータ版を受け取ります。"
+
+msgid "Receive beta and stable releases."
+msgstr "ベータ版と安定版を受け取ります。"
+
+msgid "Receive all releases, including development releases."
+msgstr "開発版を含むすべてのリリースを受け取ります。"
+
+msgid "Receive stable releases only."
+msgstr "安定版のみを受け取ります。"
+
+msgid "Cannot be enabled together with %{names}"
+msgstr "%{names} と同時に有効にできません"
+
+msgid ""
+"Enabling %{name} will disable %{others}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+"%{name} を有効にすると %{others} は無効になります。これらのプラグインは同時に"
+"有効にできません。"
+
+msgid ""
+"Enabling this plugin will disable %{names}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+"このプラグインを有効にすると %{names} は無効になります。これらのプラグインは"
+"同時に有効にできません。"
+
+msgid "Enable %{name}?"
+msgstr "%{name} を有効にしますか？"
+
+msgid "Recommended memory"
+msgstr "推奨メモリ"
+
+msgid "Install a previous version"
+msgstr "以前のバージョンをインストール"
+
+msgid "Install this version"
+msgstr "このバージョンをインストール"
+
+msgid "This version is older than the installed version"
+msgstr "このバージョンはインストール済みのバージョンより古いです"
+
+msgid ""
+"Data created by the newer version may not be compatible with this version."
+msgstr ""
+"新しいバージョンで作成されたデータは、このバージョンと互換性がない場合があり"
+"ます。"
+
+msgid "No stable release of this plugin is available yet."
+msgstr "このプラグインの安定版はまだありません。"
+
+msgid ""
+"Newer releases of this channel are received until a stable release is "
+"available."
+msgstr "安定版が公開されるまで、このチャンネルの新しいリリースを受け取ります。"
+
+msgid ""
+"This server has %{system} of memory, below the %{recommended} recommended "
+"for this plugin. The plugin may run slowly or stop unexpectedly."
+msgstr ""
+"このサーバーのメモリは %{system} で、このプラグインの推奨値 %{recommended} を"
+"下回っています。プラグインの動作が遅くなったり、予期せず停止したりする可能性"
+"があります。"
+
+msgid "Saved"
+msgstr "保存しました"
+
+msgid "Failed to save"
+msgstr "保存に失敗しました"
+
+msgid "Update channel"
+msgstr "更新チャンネル"
+
+msgid "Screenshots"
+msgstr "スクリーンショット"
+
+msgid "Enter a valid web address"
+msgstr "有効な URL を入力してください"
+
+msgid "The source cannot be checked"
+msgstr "このソースを確認できません"
+
+msgid "Name (optional)"
+msgstr "名前（任意）"
+
+msgid "Checking availability"
+msgstr "利用可能か確認しています"
+
+msgid "Available, %{count} plugin"
+msgid_plural "Available, %{count} plugins"
+msgstr[0] "利用可能、%{count} 個のプラグイン"
+
+msgid "Catalog name: %{name}"
+msgstr "カタログ名：%{name}"
+
+msgid "Unavailable"
+msgstr "利用できません"
+
+msgid "New source"
+msgstr "新しいソース"
+
+msgid "Checking"
+msgstr "確認中"
+
+msgid "%{count} plugin"
+msgid_plural "%{count} plugins"
+msgstr[0] "%{count} 個のプラグイン"
+
+msgid "Invalid address"
+msgstr "無効なアドレス"
+
+msgid "Drag to reorder"
+msgstr "ドラッグして並べ替え"
+
+msgid "Edit address"
+msgstr "アドレスを編集"
+
+msgid "Add a source to offer plugins from another catalog as well."
+msgstr "ソースを追加すると、ほかのカタログのプラグインもインストールできます。"
+
+msgid "Correct the addresses marked as invalid before saving."
+msgstr "保存する前に、無効と表示されたアドレスを修正してください。"
+
+msgid "Enter a domain or a web address."
+msgstr "ドメインまたは URL を入力してください。"
+
+msgid ""
+"Enter a domain such as plugins.example.com, or the full address of a catalog."
+msgstr ""
+"plugins.example.com のようなドメイン、またはカタログの完全なアドレスを入力し"
+"てください。"
+
+msgid ""
+"Add Nginx configuration of its own. It takes effect only where you include "
+"it, and Nginx UI applies it only when the configuration remains valid."
+msgstr ""
+
+msgid "Read the Nginx configuration files of this node."
+msgstr ""
+
+msgid "See the sites of this node and their addresses."
+msgstr ""
+
+msgid ""
+"See the certificates and when they expire, without the parts that must stay "
+"secret."
+msgstr ""
+
+msgid "Nginx configuration snippets"
+msgstr ""
+
+msgid "Nginx configuration"
+msgstr ""
+
+msgid "Certificate list"
+msgstr ""
+
+msgid "DNS Validation"
+msgstr ""
+
+msgid ""
+"The main node has no DNS-01 plugin. Install it on the main node, or validate "
+"on this node."
+msgstr ""
+
+msgid ""
+"Credentials of the main node. Switch to the main node to add or change one."
+msgstr ""
+
+msgid "On the main node"
+msgstr ""
+
+msgid "On this node"
+msgstr ""
+
+msgid ""
+"The main node validates the domain with its DNS credentials, sends the "
+"certificate to this node and keeps renewing it."
+msgstr ""
+
+msgid ""
+"This node validates the domain with its own DNS credentials and renews the "
+"certificate itself."
+msgstr ""
+
+msgid "Only a DNS-01 certificate can be issued for another node"
+msgstr ""
+
+msgid "Node not found"
+msgstr ""
+
+msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
+msgstr ""
+
+msgid "Node {0} answered {1}: {2}"
+msgstr ""
+
+msgid "The Nginx configuration still loads the certificate: {0}"
+msgstr ""
+
+msgid "The certificate was issued, but sending it to node {0} failed: {1}"
+msgstr ""
+
+msgid "Node {0} cannot be reached: {1}"
+msgstr ""
+
+msgid "[Nginx UI] Sending the certificate to node %{name}"
+msgstr ""
+
+msgid "Issued for %{node}"
+msgstr ""
+
+msgid ""
+"This instance validates the domain, keeps renewing the certificate and sends "
+"each renewal to %{node}."
+msgstr ""
+
+msgid "Files on the node:"
+msgstr ""
+
+msgid "Issued by this instance for %{node} and renewed here"
+msgstr ""
+
+msgid "For %{node}"
+msgstr ""
+
+msgid ""
+"This instance stops renewing the certificate and deletes its own copy. The "
+"files on %{node} stay unless you remove them below."
+msgstr ""
+
+msgid "Also remove the certificate files from %{node}"
+msgstr ""
+
+msgid ""
+"They are kept when the Nginx configuration of the node still loads them."
+msgstr ""
+
+msgid "Issue the certificate on the main node"
+msgstr ""
+
+msgid ""
+"The node did not confirm that it received the certificate. Update Nginx UI "
+"on the node and try again."
+msgstr ""
+
+msgid "Recommended memory: %{size}"
+msgstr ""
+
+msgid "Nodes: %{target}"
+msgstr ""
+
+#~ msgid "Webauthn"
+#~ msgstr "WebAuthn"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts in "
+#~ "ban threshold minutes,"
+#~ msgstr "1 つの IP からのログイン失敗回数が、禁止しきい値時間（分）内に最大試行回数に達した場合、"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr "再帰的なネームサーバーを設定して、システムのネームサーバーを上書きします"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "カスタム MMDB は現在有効です"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "IndexCustomMMDB ファイル名"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "[nginx_log].GeoMapPath から設定されています。100000_full.json "
+#~ "のような名前のファイルをこのディレクトリに保管してください。"
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr "デフォルトでは世界地図のみが提供されています。中国と各地方の境界ファイルをご自身でダウンロードし、このディレクトリに配置してください。"
+
+#~ msgid "Global health check controls"
+#~ msgstr "ヘルスチェックの全体設定"
+
+msgid "No file matches the search"
+msgstr "検索に一致するファイルはありません"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr "ファイル名は .conf で終わる必要があり、英字、数字、ピリオド、ハイフン、アンダースコアのみ使用できます"
+
+msgid "Snippet not found"
+msgstr "スニペットが見つかりません"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "スニペットが 256 KiB を超えています"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "スニペットのヘッダーを解析できません: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "スニペットはまだ {0} によって含まれています"
+
+msgid "A snippet with this file name already exists"
+msgstr "このファイル名のスニペットはすでに存在します"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "変数 {0} が無効です: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "コンテンツをテンプレートとして解析できません: {0}"
+
+msgid "Snippets"
+msgstr "スニペット"
+
+msgid "Create Snippet"
+msgstr "スニペットを作成"
+
+msgid "Built-in Template"
+msgstr "組み込みテンプレート"
+
+msgid "Edit Snippet"
+msgstr "スニペットを編集"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "%{count} 個の構成で使用されています"
+
+msgid "Site Card Click URL"
+msgstr "サイトカードのクリック URL"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr "このサイトカードを開く際に使用される、任意の絶対 HTTP/HTTPS URL。空の場合は、デフォルトのサイト URL が使用されます。"
+
+msgid "Built-in"
+msgstr "内蔵"
+
+msgid "Snippet"
+msgstr "スニペット"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include はサイトを snippets/%{file} にリンクしたままにし、スニペットの後続の変更が反映されます。Insert "
+"はコンテンツをサイトにコピーします。"
+
+msgid "Insert"
+msgstr "挿入"
 
 msgid "Read Only"
 msgstr "読み取り専用"
@@ -10641,6 +13026,9 @@ msgstr "未使用"
 
 msgid "Max Age"
 msgstr "最大経過時間"
+
+msgid "Options"
+msgstr "オプション"
 
 msgid "Remove option"
 msgstr "オプションを削除"
@@ -10792,244 +13180,382 @@ msgstr "オプション値は一意である必要があります。"
 msgid "Choose the default option."
 msgstr "デフォルトのオプションを選択してください。"
 
-msgid "Do you want to %{action} this stream?"
-msgstr "このストリームを%{action}しますか？"
-
-msgid "Delete stream: %{stream_name}"
-msgstr "ストリームを削除: %{stream_name}"
-
-msgid "Added successfully"
-msgstr "正常に追加されました"
-
-msgid "Add Stream"
-msgstr "Streamを追加"
-
-msgid "%{count} streams selected"
-msgstr "%{count} 件のストリームが選択されました"
-
-msgid "Development Mode"
-msgstr "開発モード"
-
-msgid "Official Document"
-msgstr "公式ドキュメント"
-
-msgid "Sponsor"
-msgstr "スポンサー"
-
-msgid "Project Team"
-msgstr "プロジェクトチーム"
-
-msgid "License"
-msgstr "ライセンス"
-
-msgid "View Third-party Components"
-msgstr "サードパーティコンポーネントを表示"
-
-msgid "View version details and core information about this Nginx UI instance."
-msgstr "この Nginx UI インスタンスのバージョン詳細と基本情報を表示します。"
-
-msgid "Run built-in diagnostics to validate environment and service readiness."
-msgstr "内蔵診断を実行して、環境とサービスの準備状態を確認します。"
-
-msgid "Check release updates and execute upgrade operations when available."
-msgstr "リリース更新を確認し、利用可能な場合はアップグレード操作を実行します。"
-
-msgid "Review third-party licenses and open source component attributions."
-msgstr "サードパーティのライセンスとオープンソースコンポーネントの帰属情報を確認します。"
-
-msgid "Total Components"
-msgstr "コンポーネントの合計"
-
-msgid "Frontend"
-msgstr "フロントエンド"
-
-msgid "License Types"
-msgstr "ライセンスタイプ"
-
-msgid "License Distribution"
-msgstr "ライセンス分布"
-
-msgid "components"
-msgstr "コンポーネント"
-
-msgid "All Components"
-msgstr "すべてのコンポーネント"
-
-msgid "Dev"
-msgstr "Dev"
-
-msgid "Reinstall"
-msgstr "再インストール"
-
-msgid "Core Upgrade"
-msgstr "コアアップグレード"
-
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "このページでNginx UIのアップグレードを確認できます。"
-
-msgid "Current Version"
-msgstr "現在のバージョン"
-
-msgid "Arch"
-msgstr "アーキテクチャ"
-
-msgid "Executable Path"
-msgstr "実行可能ファイルのパス"
-
-msgid "Last checked at"
-msgstr "最終確認日時"
-
-msgid "You are using the latest version"
-msgstr "最新バージョンを使用しています"
-
-msgid "New version released"
-msgstr "新しいバージョンがリリースされました"
-
-msgid "Release Note"
-msgstr "リリースノート"
-
-msgid "Hide Assistant"
-msgstr "アシスタントを非表示"
-
-msgid "Show Assistant"
-msgstr "アシスタントを表示"
-
-msgid "Connection lost for this terminal. Please refresh if needed."
-msgstr "この端末との接続が失われました。必要に応じて更新してください。"
+msgid "Certificate Relocated"
+msgstr "証明書が移動されました"
 
 msgid ""
-"This is a simulated terminal running entirely in your browser. Commands are "
-"answered locally and never reach a server."
-msgstr "これは、ブラウザー内で完全に動作するシミュレートされたターミナルです。コマンドはローカルで処理され、サーバーに到達することはありません。"
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
+msgstr "証明書 %{name} は %{path} に保存されました。%{previous_path} を読み込むサイトをこちらに指定してください"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "パスは存在しますが、ファイルは証明書ではありません"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "パスは存在しますが、ファイルは秘密鍵ではありません"
+
+msgid "MFA Enrollment"
+msgstr "MFA 登録状況"
+
+msgid "Enrolled"
+msgstr "登録済み"
+
+msgid "Not enrolled"
+msgstr "未登録"
+
+msgid "Pending enrollment"
+msgstr "登録待ち"
+
+msgid "Invalid request: {0}"
+msgstr "無効なリクエスト：{0}"
 
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
+msgstr "無効な ingress 名: 1〜40 の小文字、数字、ハイフンを使用し、文字または数字で始め、文字または数字で終わってください"
+
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr "無効な所有者です：1〜64 文字の英字、数字、ピリオド、アンダースコア、ハイフンを使用してください"
+
+msgid "Invalid host: {0}"
+msgstr "無効なホスト: {0}"
+
+msgid "Invalid backend {0}: {1}"
+msgstr "無効な Backend {0}：{1}"
+
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "バックエンドサーバー {0} は許可されたバックエンド範囲の外にあります"
+
+msgid "Invalid route {0}: {1}"
+msgstr "無効なルート {0}: {1}"
+
+msgid "Invalid tls: {0}"
+msgstr "無効な TLS: {0}"
+
+msgid "Invalid policy: {0}"
+msgstr "無効なポリシー：{0}"
+
+msgid "Server {0} not found in backend {1}"
+msgstr "バックエンド {1} にサーバー {0} が見つかりません"
+
+msgid "Ingress {0} not found"
+msgstr "Ingress {0} が見つかりません"
+
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0} は {1} の所有です。force を指定して取得してください"
+
+msgid "Host {0} is already served by ingress {1}"
+msgstr "ホスト {0} はすでに ingress {1} によって処理されています"
+
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "サイト {0} は既に存在し、この ingress では管理されていません"
+
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "ingress {0} が generation {1} に到達するのを待つ際にタイムアウトしました"
+
+msgid "Apply failed: {0}"
+msgstr "適用に失敗しました: {0}"
+
+msgid "Certificate not ready: {0}"
+msgstr "証明書の準備ができていません: {0}"
+
+msgid "Not implemented"
+msgstr "未実装"
+
+msgid ""
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
+msgstr "サイトは ingress {0} によって管理されています。ingress を変更するか、変更を強制してください"
+
+msgid "Ingresses"
+msgstr "Ingresses"
+
+msgid "HTTP only"
+msgstr "HTTP のみ"
+
+msgid "Expired %{date}"
+msgstr "期限切れ %{date}"
+
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date} (残り %{days} 日)"
+
+msgid "Health"
+msgstr "健康"
+
+msgid "Path Prefix"
+msgstr "パスプレフィックス"
+
+msgid "Allowed Sources"
+msgstr "許可されたソース"
+
+msgid "Last Transition"
+msgstr "最後の遷移"
+
+msgid "Drained"
+msgstr "疲れ果てた"
+
+msgid "Healthy"
+msgstr "健康的"
+
+msgid "Unhealthy"
+msgstr "不健康"
+
+msgid ""
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr "生成されたサイトを読み込めませんでした。最初の適用が成功したときに書き込まれます。"
+
+msgid "Reconcile Now"
+msgstr "今すぐ照合"
+
+msgid "The last apply failed; the previous config is still live"
+msgstr "最後の適用に失敗しました。前の設定はまだ有効です。"
+
+msgid "Owner"
+msgstr "所有者"
+
+msgid "External ID"
+msgstr "外部 ID"
+
+msgid "Generation"
+msgstr "世代"
+
+msgid "%{observed} applied of %{generation}"
+msgstr "%{generation} のうち %{observed} が適用されました"
+
+msgid "Generated Site"
+msgstr "生成されたサイト"
+
+msgid "Last Applied"
+msgstr "最後に適用"
+
+msgid "Config Hash"
+msgstr "設定のハッシュ"
+
+msgid "Labels"
+msgstr "ラベル"
+
+msgid "Hosts"
+msgstr "ホスト"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "モード"
+
+msgid "View certificate"
+msgstr "証明書を表示"
+
+msgid "Challenge"
+msgstr "チャレンジ"
+
+msgid "Redirect to HTTPS"
+msgstr "HTTPS にリダイレクトする"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "証明書が発行されるまで、HTTP リスナーのみが提供されます。"
+
+msgid "Backends"
+msgstr "バックエンド"
+
+msgid "Routes"
+msgstr "ルート"
+
+msgid "Policy default"
+msgstr "ポリシーのデフォルト"
+
+msgid "Policy"
+msgstr "ポリシー"
+
+msgid "Everyone"
+msgstr "全員"
+
+msgid "Rate Limit"
+msgstr "レート制限"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "クライアントごとに %{rps} リクエスト/秒、バースト %{burst}"
+
+msgid "Max Body Size"
+msgstr "最大ボディサイズ"
+
+msgid "Extra Headers"
+msgstr "追加のヘッダー"
+
+msgid "Conditions"
+msgstr "条件"
+
+msgid "True"
+msgstr "真"
+
+msgid "False"
+msgstr "偽"
+
+msgid "Generated Site Config"
+msgstr "生成されたサイト設定"
+
+msgid "Open in site editor"
+msgstr "サイトエディターで開く"
+
+msgid "Not ready"
+msgstr "準備未完了"
+
+msgid "The latest spec has not been applied yet"
+msgstr "最新の仕様はまだ適用されていません"
+
+msgid "Applying"
+msgstr "適用中"
+
+msgid "Ready"
+msgstr "準備完了"
+
+msgid "Degraded"
+msgstr "低下"
+
+msgid "Config Applied"
+msgstr "設定を適用しました"
+
+msgid "Certificate Ready"
+msgstr "証明書の準備完了"
+
+msgid "Backends Healthy"
+msgstr "バックエンド正常"
+
+msgid "Issued automatically (ACME)"
+msgstr "自動発行（ACME）"
+
+msgid "All owners"
+msgstr "すべての所有者"
+
+msgid "Reconcile of %{name} queued"
+msgstr "%{name} の照合がキューに追加されました"
+
+msgid "Delete ingress %{name}?"
+msgstr "ingress %{name} を削除しますか？"
+
+msgid ""
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
 msgstr ""
-"あなたは非 localhostドメインで安全でないHTTP "
-"接続を介してこのターミナルにアクセスしています。これにより機密情報が漏洩する可能性があります。"
+"この Ingress は %{owner} が所有しています。その controller "
+"は次の同期時におそらく再作成されます。完全に削除するには、controller から削除してください。"
 
-msgid "Create Upstream"
-msgstr "Upstream を作成"
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "生成されたサイトと upstream ファイルが削除され、nginx が再読み込みされます。"
 
-msgid "View Upstream %{name}"
-msgstr "upstream %{name} を表示"
+msgid "Also delete the certificate"
+msgstr "証明書も削除します"
 
-msgid "Edit Upstream %{name}"
-msgstr "Upstream %{name} を編集"
+msgid "Ingress %{name} deleted"
+msgstr "Ingress %{name} を削除しました"
 
-msgid "Round Robin (default)"
-msgstr "Round Robin（デフォルト）"
+msgid "Ingress"
+msgstr "Ingress"
 
-msgid "Least Connections (least_conn)"
-msgstr "最小接続数 (least_conn)"
+msgid "Phase"
+msgstr "フェーズ"
 
-msgid "IP Hash (ip_hash)"
-msgstr "IP ハッシュ (ip_hash)"
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} 正常"
 
-msgid "Hash (hash)"
-msgstr "ハッシュ (hash)"
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} サーバー"
 
-msgid "Random (random)"
-msgstr "ランダム (random)"
+msgid "%{count} down"
+msgstr "残り %{count}"
 
-msgid "Upstream %{name} saved and Nginx reloaded"
-msgstr "Upstream %{name} を保存し、Nginx を再読み込みしました"
+msgid "Filter by owner"
+msgstr "所有者でフィルター"
 
-msgid "Sites use it as proxy_pass http://%{name};"
-msgstr "サイトでは proxy_pass http://%{name} として使用します。"
+msgid "Applied generation / latest generation"
+msgstr "適用世代 / 最新世代"
 
-msgid "Load Balancing Method"
-msgstr "ロードバランシング方式"
+msgid "gen %{observed}/%{generation}"
+msgstr "gen %{observed}/%{generation}"
 
-msgid "Hash Key"
-msgstr "ハッシュキー"
-
-msgid "Consistent Hashing"
-msgstr "一貫性ハッシュ"
-
-msgid "Servers"
-msgstr "サーバー"
-
-msgid "Not available with this load balancing method"
-msgstr "この負荷分散方式では利用できません"
-
-msgid "Keepalive"
-msgstr "Keepalive"
+msgid "Reconcile"
+msgstr "照合"
 
 msgid ""
-"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
-"need proxy_http_version 1.1 and an empty Connection header."
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
 msgstr ""
-"ワーカーごとに開いておくアイドル接続の数。0 で無効化されます。プロキシ先のサイトには proxy_http_version 1.1 と空の "
-"Connection ヘッダーも必要です。"
+"Ingress は、外部コントローラーによって Ingress API を通じて公開されるリバースプロキシエントリです。Nginx UI は各 "
+"Ingress を管理対象のサイトと upstream "
+"としてレンダリングし、その証明書を発行し、そのステータスをここで報告します。変更は各コントローラーで行ってください。ここで行った編集は、次のリコンサイル"
+"によって上書きされます。"
 
-msgid "Connections"
-msgstr "接続"
+msgid "Learn more"
+msgstr "詳細を見る"
 
-msgid "Additional Directives"
-msgstr "追加のディレクティブ"
-
-msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
-msgstr "1 行につき 1 つのディレクティブを指定してください。例：keepalive_timeout や keepalive_requests。"
-
-msgid "Referenced By"
-msgstr "参照元"
-
-msgid "No site uses this upstream yet."
-msgstr "まだどのサイトもこの upstream を使用していません。"
-
-msgid "Configuration Preview"
-msgstr "設定プレビュー"
-
-msgid "Enable server %{address}"
-msgstr "サーバー %{address} を有効にする"
-
-msgid "Disable server %{address}"
-msgstr "サーバー %{address} を無効にする"
+msgid "No ingresses yet"
+msgstr "Ingress はまだありません"
 
 msgid ""
-"Create shared upstream groups with load balancing and reuse them across "
-"sites."
-msgstr "ロードバランシング付きの共有 Upstream グループを作成し、複数のサイト間で再利用できます。"
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"デプロイメントプラットフォームなどのコントローラーは、PUT /api/ingresses/:name で ingresses "
+"を作成します。認証はクラスターノードまたは API トークンで行われます。保存されるとすぐにここに表示されます。"
 
-msgid "Monitor the health of every proxy target and toggle its health check."
-msgstr "すべてのプロキシターゲットの状態を監視し、ヘルスチェックを切り替えます。"
+msgid "Read the Ingress API guide"
+msgstr "Ingress API ガイドを読む"
 
-msgid "Socket"
-msgstr "ソケット"
+msgid "Search by name, host or external ID"
+msgstr "名前、ホスト、または外部 ID で検索"
 
-msgid "Direct"
-msgstr "ダイレクト"
+msgid "Search ingresses"
+msgstr "Ingress を検索"
 
-msgid "Health Status"
-msgstr "健康状態"
+msgid "No ingress matches the filter"
+msgstr "フィルターに一致する Ingress がありません"
 
-msgid "Last Check"
-msgstr "最終確認"
-
-msgid "Upstream health checks are globally paused"
-msgstr "アップストリームのヘルスチェックは全体で一時停止しています"
+msgid "Managed by ingress %{name}"
+msgstr "ingress %{name} により管理されています"
 
 msgid ""
-"Per-target selections are preserved. Resume probes from Health Check "
-"preferences."
-msgstr "対象ごとの選択は保持されます。ヘルスチェックの設定から検査を再開してください。"
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr "変更は次の reconcile によって上書きされます。代わりに、Ingress をその Controller 内で編集してください。"
 
-msgid "Hash"
-msgstr "ハッシュ"
+msgid "View ingress"
+msgstr "Ingress を表示"
 
-msgid "Random"
-msgstr "ランダム"
+msgid "Edit anyway"
+msgstr "編集を続行"
 
-msgid "Load Balancing"
-msgstr "負荷分散"
+msgid "Ingress: %{name}"
+msgstr "Ingress: %{name}"
 
-msgid "Defined In"
-msgstr "定義場所"
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "Ingress が管理する %{count} 件のサイトを含める"
 
-msgid "Matched upstreams: %{groups}, servers: %{servers}"
-msgstr "一致した upstream：%{groups}、サーバー：%{servers}"
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0} は削除中に更新されました"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "Upstream {0} は既に存在し、この ingress では管理されていません"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "ingress {0} の削除の待機がタイムアウトしました"
+
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "{0} で始まる upstream 名前は ingress 用に予約されています"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr "Upstream {0} は ingress {1} によって管理されています。代わりに ingress を変更するか、変更を強制してください"
 
 msgid ""
 "Ingress %{name} owns this upstream. Change the ingress instead; its next "
@@ -11038,68 +13564,79 @@ msgstr ""
 "Ingress %{name} がこの upstream を所有しています。代わりに ingress "
 "を変更してください。次回の適用時にここでの変更は上書きされます。"
 
-msgid "Server %{address} enabled"
-msgstr "サーバー %{address} を有効にしました"
+msgid "View Upstream %{name}"
+msgstr "upstream %{name} を表示"
 
-msgid "Server %{address} disabled"
-msgstr "サーバー %{address} を無効にしました"
+msgid "Recovery codes downloaded"
+msgstr "リカバリーコードをダウンロードしました"
 
-msgid "Disable the last active server of %{name}?"
-msgstr "%{name} の最後のアクティブサーバーを無効にしますか？"
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr "MFA の設定が完了しました。続行する前にリカバリーコードを保存してください。"
 
-msgid ""
-"No other primary server of this upstream is enabled. Requests will fail "
-"unless a backup server takes over."
-msgstr "この upstream の他のプライマリサーバーは有効になっていません。バックアップサーバーが引き継がない限り、リクエストは失敗します。"
+msgid "MFA session expired. Please sign in again."
+msgstr "MFA セッションの有効期限が切れました。再度サインインしてください。"
 
-msgid "Upstream %{name} is still in use"
-msgstr "Upstream %{name} はまだ使用中です"
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "MFA が必要です。続行するには、認証アプリまたはパスキーを設定してください。"
 
-msgid "Point these configurations at another upstream before deleting it:"
-msgstr "削除する前に、これらの構成を別の upstream に切り替えてください："
+msgid "Verify your MFA method to continue signing in."
+msgstr "サインインを続けるには、MFA メソッドを確認してください。"
 
-msgid "Delete upstream %{name}?"
-msgstr "upstream %{name} を削除しますか？"
-
-msgid "%{path} will be removed and Nginx reloaded."
-msgstr "%{path} が削除され、Nginx が再読み込みされます。"
-
-msgid "Upstream %{name} deleted"
-msgstr "Upstream %{name} を削除しました"
+msgid "Back to sign in"
+msgstr "ログインに戻る"
 
 msgid ""
-"An upstream group shares its servers and load balancing method across "
-"sites. Choose it as the proxy target when setting up a site; later changes "
-"here apply to every site that uses it."
-msgstr ""
-"Upstream "
-"グループは、サイト間でサーバーとロードバランシング方式を共有します。サイトの設定時にプロキシターゲットとして選択してください。後からここを変更すると、そ"
-"れを使用しているすべてのサイトに適用されます。"
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
+msgstr "MFA ポリシーの管理や他のユーザーのリセットを行う前に、ご自身のアカウントで MFA を有効にしてください。"
 
-msgid "Files are stored in %{dir}."
-msgstr "ファイルは %{dir} に保存されています。"
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "ファイルの内容は有効な PEM または htpasswd データである必要があります"
 
-msgid "Search by name or IP:port"
-msgstr "名前または IP:port で検索"
+msgid "MFA enrollment is required"
+msgstr "MFA の登録が必要です"
 
-msgid "Search upstreams by name or server address"
-msgstr "名前またはサーバーアドレスで upstream を検索"
+msgid "MFA verification is required"
+msgstr "MFA の検証が必要です"
 
-msgid "No upstream group matches the search"
-msgstr "検索に一致する upstream グループはありません"
+msgid "Cannot remove the last required MFA method"
+msgstr "最後に必要な MFA 方式を削除できません"
 
-msgid "Upstreams Defined in Other Files"
-msgstr "他のファイルで定義された Upstream"
+msgid "TOTP disabled"
+msgstr "TOTP が無効化されています"
+
+msgid "Replace TOTP"
+msgstr "TOTP を置き換える"
+
+msgid "Disable TOTP for this account?"
+msgstr "このアカウントの TOTP を無効にしますか？"
+
+msgid "Disable TOTP"
+msgstr "TOTP を無効にする"
 
 msgid ""
-"These upstream blocks live inside site or other configuration files. Edit "
-"their settings in their own file; servers can be switched on and off here. "
-"A block inside a site can be converted to a shared group that other sites "
-"can use too."
-msgstr ""
-"これらの upstream "
-"ブロックは、サイトまたはその他の設定ファイル内にあります。各ファイルの設定はそのファイル内で編集できます。サーバーの有効・無効はここで切り替えられます。"
-"サイト内のブロックは、他のサイトでも使用できる共有グループに変換できます。"
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
+msgstr "新しいコードが検証されるまで、現在の認証アプリは引き続き有効です。新しいリカバリーコードは以前のものに代わります。"
+
+msgid "MFA Policy"
+msgstr "MFA ポリシー"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr "次回のサインイン時に MFA を必須にする。ユーザーは自身の Authenticator または Passkey を登録する必要があります。"
+
+msgid "Require MFA for all users"
+msgstr "すべてのユーザーに MFA を必須にする"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "SSO サインインにローカル MFA を要求する"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr "ローカル MFA 検証および登録の要件を OIDC と Casdoor のサインインに適用します。"
 
 msgid "MFA Settings"
 msgstr "MFA 設定"
@@ -11112,21 +13649,6 @@ msgstr "グローバル執行"
 
 msgid "User enforcement"
 msgstr "ユーザー強制"
-
-msgid "Optional"
-msgstr "任意"
-
-msgid "MFA Enrollment"
-msgstr "MFA 登録状況"
-
-msgid "Pending enrollment"
-msgstr "登録待ち"
-
-msgid "Enrolled"
-msgstr "登録済み"
-
-msgid "Not enrolled"
-msgstr "未登録"
 
 msgid "MFA policy updated. It takes effect at the next sign-in."
 msgstr "MFA ポリシーが更新されました。次回のサインイン時に有効になります。"
@@ -11150,21 +13672,6 @@ msgstr "このユーザーのすべての MFA 資格情報をリセットしま�
 msgid "Reset MFA"
 msgstr "MFA をリセット"
 
-msgid "User info updated successfully"
-msgstr "ユーザー情報が正常に更新されました"
-
-msgid "Passwords do not match"
-msgstr "パスワードが一致しません"
-
-msgid "Password updated successfully"
-msgstr "パスワードが正常に更新されました"
-
-msgid "Personal Information"
-msgstr "個人情報"
-
-msgid "Update Profile"
-msgstr "プロフィールを更新"
-
 msgid ""
 "MFA is required by the global policy. You cannot remove your last MFA "
 "method."
@@ -11172,44 +13679,6 @@ msgstr "グローバルポリシーにより MFA が必須です。最後の MFA
 
 msgid "MFA is required for your account. You cannot remove your last MFA method."
 msgstr "あなたのアカウントには MFA が必要です。最後の MFA 方式は削除できません。"
-
-msgid "Security Settings"
-msgstr "セキュリティ設定"
-
-msgid "Change Password"
-msgstr "パスワードを変更する"
-
-msgid "New Password"
-msgstr "新しいパスワード"
-
-msgid "Confirm New Password"
-msgstr "新しいパスワードを確認"
-
-msgid "Update Password"
-msgstr "パスワードを更新"
-
-msgid "Node %{name} cannot be opened"
-msgstr "ノード %{name} を開けません"
-
-msgid "Exit workspace"
-msgstr "ワークスペースを終了"
-
-msgid "New tab"
-msgstr "新しいタブ"
-
-msgid "Single pane"
-msgstr "シングルペイン"
-
-msgid "Split view"
-msgstr "分割表示"
-
-msgctxt "Access list rule"
-msgid "Note"
-msgstr "注記"
-
-msgctxt "preference group"
-msgid "Maintenance"
-msgstr "メンテナンス"
 
 #~ msgid "Are you sure to reset 2FA?"
 #~ msgstr "2 要素認証をリセットしてもよろしいですか？"
@@ -11225,35 +13694,3 @@ msgstr "メンテナンス"
 
 #~ msgid "2FA"
 #~ msgstr "二要素認証"
-
-#~ msgid "Webauthn"
-#~ msgstr "WebAuthn"
-
-#~ msgid ""
-#~ "If the number of login failed attempts from a ip reach the max attempts in "
-#~ "ban threshold minutes,"
-#~ msgstr "1 つの IP からのログイン失敗回数が、禁止しきい値時間（分）内に最大試行回数に達した場合、"
-
-#~ msgid "Set the recursive nameservers to override the systems nameservers "
-#~ msgstr "再帰的なネームサーバーを設定して、システムのネームサーバーを上書きします"
-
-#~ msgid "Custom MMDB is currently enabled"
-#~ msgstr "カスタム MMDB は現在有効です"
-
-#~ msgid "IndexCustomMMDB File Name"
-#~ msgstr "IndexCustomMMDB ファイル名"
-
-#~ msgid ""
-#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
-#~ "100000_full.json in this directory."
-#~ msgstr ""
-#~ "[nginx_log].GeoMapPath から設定されています。100000_full.json "
-#~ "のような名前のファイルをこのディレクトリに保管してください。"
-
-#~ msgid ""
-#~ "Only the world map is provided by default. Please download China and "
-#~ "province boundary files yourself and place them in this directory."
-#~ msgstr "デフォルトでは世界地図のみが提供されています。中国と各地方の境界ファイルをご自身でダウンロードし、このディレクトリに配置してください。"
-
-#~ msgid "Global health check controls"
-#~ msgstr "ヘルスチェックの全体設定"

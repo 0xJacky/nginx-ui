@@ -21,7 +21,6 @@ export default {
   40417: () => $gettext('Access log path not exist'),
   40418: () => $gettext('Error log path not exist'),
   40419: () => $gettext('Conf.d directory not exists'),
-  40420: () => $gettext('GeoLite2 database not found at {0}. Log indexing requires GeoLite2 database for geographic IP analysis'),
   50007: () => $gettext('Failed to read bundled nginx-ui.conf: {0}'),
   40421: () => $gettext('Bundled nginx-ui.conf is missing the WebSocket reverse-proxy fix'),
   50008: () => $gettext('Patched nginx-ui.conf is invalid: {0}'),

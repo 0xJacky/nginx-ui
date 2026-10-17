@@ -131,6 +131,10 @@ type updateHealthCheckRequest struct {
 	CheckFavicon       bool                         `json:"check_favicon"`
 	HealthCheckConfig  *model.HealthCheckConfig     `json:"health_check_config" binding:"required"`
 	HealthCheckAlert   *model.SiteHealthAlertConfig `json:"health_check_alert"`
+	// ProbeKind selects a probe kind a plugin provides; empty keeps the
+	// built-in check. ProbeConfig holds the values of its form.
+	ProbeKind   string            `json:"probe_kind,omitempty"`
+	ProbeConfig map[string]string `json:"probe_config,omitempty"`
 }
 
 type healthCheckSyncPayload struct {
@@ -183,6 +187,16 @@ func validateHealthCheckRequest(req *updateHealthCheckRequest) error {
 		}
 	}
 
+	if !sitecheck.IsValidProbeKind(req.ProbeKind) {
+		return fmt.Errorf("probe_kind %q is not a valid probe kind", req.ProbeKind)
+	}
+	// The built-in check is stored as an empty kind, so a site that never
+	// used a probe kind keeps its response shape.
+	if sitecheck.IsBuiltinProbeKind(req.ProbeKind) {
+		req.ProbeKind = ""
+		req.ProbeConfig = nil
+	}
+
 	if req.HealthCheckAlert != nil {
 		if req.HealthCheckAlert.FailureThreshold < 1 {
 			req.HealthCheckAlert.FailureThreshold = 1
@@ -208,9 +222,11 @@ func updateHealthCheckConfig(siteConfig *model.SiteConfig, req *updateHealthChec
 	siteConfig.CheckFavicon = req.CheckFavicon
 	siteConfig.HealthCheckConfig = req.HealthCheckConfig
 	siteConfig.HealthCheckAlert = req.HealthCheckAlert
+	siteConfig.ProbeKind = req.ProbeKind
+	siteConfig.ProbeConfig = req.ProbeConfig
 
 	// Select every field explicitly so false values are persisted while GORM's
-	// model-field serializers still encode the two JSON configuration columns.
+	// model-field serializers still encode the JSON configuration columns.
 	return model.UseDB().Model(siteConfig).Select(
 		"HealthCheckEnabled",
 		"CheckInterval",
@@ -221,6 +237,8 @@ func updateHealthCheckConfig(siteConfig *model.SiteConfig, req *updateHealthChec
 		"CheckFavicon",
 		"HealthCheckConfig",
 		"HealthCheckAlert",
+		"ProbeKind",
+		"ProbeConfig",
 	).Updates(siteConfig).Error
 }
 
@@ -342,12 +360,22 @@ func SyncHealthCheck(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Health check configuration synchronized successfully"})
 }
 
+// GetProbeKinds lists the probe kinds plugins offer next to the built-in
+// check. The site check form shows a kind selector only when it is not empty.
+func GetProbeKinds(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"data": sitecheck.ProbeKinds(),
+	})
+}
+
 // TestHealthCheck tests a health check configuration without saving it
 func TestHealthCheck(c *gin.Context) {
 	id := cast.ToUint64(c.Param("id"))
 
 	var req struct {
-		Config *model.HealthCheckConfig `json:"config" binding:"required"`
+		Config      *model.HealthCheckConfig `json:"config" binding:"required"`
+		ProbeKind   string                   `json:"probe_kind"`
+		ProbeConfig map[string]string        `json:"probe_config"`
 	}
 
 	if !cosy.BindAndValid(c, &req) {
@@ -359,6 +387,11 @@ func TestHealthCheck(c *gin.Context) {
 	siteConfig, err := sc.Where(sc.ID.Eq(id)).First()
 	if err != nil {
 		cosy.ErrHandler(c, err)
+		return
+	}
+
+	if !sitecheck.IsBuiltinProbeKind(req.ProbeKind) {
+		testProbeKind(c, siteConfig, req.Config, req.ProbeKind, req.ProbeConfig)
 		return
 	}
 
@@ -406,5 +439,35 @@ func TestHealthCheck(c *gin.Context) {
 		"status_code":   info.StatusCode,
 		"error":         errorMsg,
 		"error_type":    errorType,
+	})
+}
+
+// testProbeKind runs one check with a plugin probe kind and answers in the
+// shape of TestHealthCheck.
+func testProbeKind(c *gin.Context, siteConfig *model.SiteConfig, config *model.HealthCheckConfig, kind string, probeConfig map[string]string) {
+	if !sitecheck.IsValidProbeKind(kind) {
+		c.JSON(http.StatusBadRequest, gin.H{"message": fmt.Sprintf("probe_kind %q is not a valid probe kind", kind)})
+		return
+	}
+
+	target := siteConfig.GetURL()
+	if config != nil && strings.TrimSpace(config.TargetURL) != "" {
+		target = strings.TrimSpace(config.TargetURL)
+	}
+	timeout := time.Duration(siteConfig.Timeout) * time.Second
+
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
+	defer cancel()
+	result := sitecheck.TestProbe(ctx, kind, target, probeConfig, timeout)
+
+	// A degraded target counts as reachable, the message is still shown.
+	success := result.Status == sitecheck.StatusOnline
+	c.JSON(http.StatusOK, gin.H{
+		"success":       success,
+		"response_time": result.ResponseTime,
+		"status":        result.Status,
+		"status_code":   result.StatusCode,
+		"error":         result.Error,
+		"error_type":    result.ErrorType,
 	})
 }

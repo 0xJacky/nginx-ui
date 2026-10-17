@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import type { AutoBackup } from '@/api/backup'
+import type { AutoBackup, StorageType } from '@/api/backup'
 
 import { CheckCircleOutlined, LoadingOutlined } from '@antdv-next/icons'
-import { testS3Connection } from '@/api/backup'
+import { testPluginStorage, testS3Connection } from '@/api/backup'
+import PluginConfigForm from '@/components/PluginConfigForm'
+import { findPluginBackend, isPluginStorageType, loadPluginBackends, pluginBackends, sanitizeStorageConfig } from '../pluginStorage'
 
 const modelValue = defineModel<AutoBackup>({
   default: () => ({
@@ -13,12 +15,65 @@ const { message } = useGlobalApp()
 
 const isLocalStorage = computed(() => modelValue.value.storage_type === 'local')
 const isS3Storage = computed(() => modelValue.value.storage_type === 's3')
+const isPluginStorage = computed(() => isPluginStorageType(modelValue.value.storage_type))
+const pluginBackend = computed(() => findPluginBackend(modelValue.value.storage_type))
 const isTestingS3 = ref(false)
+const isTestingPlugin = ref(false)
+
+// The built-in storage first, then what plugins offer. A task whose plugin is
+// gone keeps its stored type selectable, so it is not changed by accident.
+const storageOptions = computed(() => {
+  const options: { label: string, value: StorageType }[] = [
+    { label: $gettext('Local'), value: 'local' },
+    { label: $gettext('S3'), value: 's3' },
+  ]
+  for (const backend of pluginBackends.value)
+    options.push({ label: backend.name, value: backend.type as StorageType })
+  const current = modelValue.value.storage_type
+  if (isPluginStorageType(current) && !options.some(option => option.value === current))
+    options.push({ label: current, value: current })
+  return options
+})
+
+const storageConfig = computed<Record<string, string>>({
+  get: () => modelValue.value.storage_config ?? {},
+  set: value => {
+    modelValue.value.storage_config = value
+  },
+})
 
 onMounted(() => {
   if (!modelValue.value.storage_type)
     modelValue.value.storage_type = 'local'
+  loadPluginBackends(true)
 })
+
+// Keep only the values the selected backend declares.
+watch(() => modelValue.value.storage_type, type => {
+  if (isPluginStorageType(type) && findPluginBackend(type))
+    modelValue.value.storage_config = sanitizeStorageConfig(type, modelValue.value.storage_config)
+})
+
+async function handleTestPluginStorage() {
+  const backend = pluginBackend.value
+  const missing = backend?.fields.find(field => field.required && !storageConfig.value[field.key])
+  if (missing) {
+    message.warning($gettext('Please fill in %{field}', { field: missing.display_name }))
+    return
+  }
+
+  isTestingPlugin.value = true
+  try {
+    const res = await testPluginStorage(modelValue.value)
+    message.success($gettext('Storage test successful, %{count} stored backups found', { count: res.stored ?? 0 }))
+  }
+  catch {
+    // The request layer shows the error.
+  }
+  finally {
+    isTestingPlugin.value = false
+  }
+}
 
 async function handleTestS3Connection() {
   if (!modelValue.value.s3_bucket || !modelValue.value.s3_access_key_id || !modelValue.value.s3_secret_access_key) {
@@ -47,8 +102,7 @@ async function handleTestS3Connection() {
     <AFormItem required :label="$gettext('Storage Type')">
       <ASelect
         v-model:value="modelValue.storage_type"
-        :options="[{ label: $gettext('Local'), value: 'local' },
-                   { label: $gettext('S3'), value: 's3' }]"
+        :options="storageOptions"
       />
     </AFormItem>
     <AFormItem
@@ -141,6 +195,48 @@ async function handleTestS3Connection() {
             <LoadingOutlined v-else />
           </template>
           {{ $gettext('Test S3 Connection') }}
+        </AButton>
+      </AFormItem>
+    </template>
+
+    <template v-else-if="isPluginStorage">
+      <AAlert
+        v-if="!pluginBackend"
+        class="mb-4"
+        type="warning"
+        show-icon
+        :message="$gettext('The plugin that provides this storage is not enabled. Backups fail until it is enabled again.')"
+      />
+      <PluginConfigForm
+        v-if="pluginBackend"
+        v-model="storageConfig"
+        :fields="pluginBackend.fields"
+      />
+
+      <AFormItem
+        :label="$gettext('Key Prefix')"
+        name="storage_path"
+        :extra="$gettext('Backups are stored under this prefix, for example nginx-ui/daily. Use / for the root.')"
+        :rules="[{ required: true, message: $gettext('Key prefix is required') }]"
+      >
+        <AInput
+          v-model:value="modelValue.storage_path"
+          :placeholder="$gettext('nginx-ui/backups')"
+        />
+      </AFormItem>
+
+      <AFormItem v-if="pluginBackend">
+        <AButton
+          type="primary"
+          ghost
+          :loading="isTestingPlugin"
+          @click="handleTestPluginStorage"
+        >
+          <template #icon>
+            <CheckCircleOutlined v-if="!isTestingPlugin" />
+            <LoadingOutlined v-else />
+          </template>
+          {{ $gettext('Test Storage') }}
         </AButton>
       </AFormItem>
     </template>

@@ -71,61 +71,6 @@ func TestIsNumericQuery(t *testing.T) {
 	}
 }
 
-// TestBuildQuery tests the buildQuery function structure
-func TestBuildQuery(t *testing.T) {
-	indexer := &SearchIndexer{}
-
-	tests := []struct {
-		name     string
-		query    string
-		docType  string
-		validate func(t *testing.T, query interface{})
-	}{
-		{
-			name:    "Numeric query",
-			query:   "9005",
-			docType: "",
-			validate: func(t *testing.T, query interface{}) {
-				if query == nil {
-					t.Error("Expected non-nil query")
-				}
-				// The query should be built with numeric strategy
-				// which prioritizes exact matches
-			},
-		},
-		{
-			name:    "Text query",
-			query:   "nginx",
-			docType: "",
-			validate: func(t *testing.T, query interface{}) {
-				if query == nil {
-					t.Error("Expected non-nil query")
-				}
-				// The query should be built with text strategy
-				// which includes fuzzy matching
-			},
-		},
-		{
-			name:    "Numeric query with type filter",
-			query:   "9005",
-			docType: "site",
-			validate: func(t *testing.T, query interface{}) {
-				if query == nil {
-					t.Error("Expected non-nil query")
-				}
-				// The query should include type filter
-			},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			query := indexer.buildQuery(tt.query, tt.docType)
-			tt.validate(t, query)
-		})
-	}
-}
-
 // TestSearchStrategyDifference ensures numeric and text queries use different strategies
 func TestSearchStrategyDifference(t *testing.T) {
 	// Test that numeric queries don't use fuzzy matching

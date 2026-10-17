@@ -8,7 +8,9 @@ import { http } from '@uozi-admin/request'
 
 export type HTTPSChallengeMethod = keyof typeof AutoCertChallengeMethod
 
-export type HTTPSStep = 'plan' | 'stage' | 'probe' | 'issue' | 'finalize' | 'rollback'
+// `delegate` is reported by the client while the main node issues the
+// certificate for the selected node, before the run on the node starts.
+export type HTTPSStep = 'delegate' | 'plan' | 'stage' | 'probe' | 'issue' | 'finalize' | 'rollback'
 
 export type HTTPSStepStatus = 'running' | 'success' | 'warning' | 'error' | 'skipped'
 
@@ -28,8 +30,8 @@ export interface HTTPSRequest {
   acme_user_id: number
   profile: string
   must_staple: boolean
-  lego_disable_cname_support: boolean
-  disable_authoritative_ns_propagation: boolean
+  /** Free-form payload owned by the plugin that implements the challenge method. */
+  challenge_config?: Record<string, unknown>
   enable_common_name: boolean
   revoke_old: boolean
   // A certificate record from the certificate manager to use instead of

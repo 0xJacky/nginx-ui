@@ -185,6 +185,26 @@ const columns: StdTableColumn[] = [{
   pure: true,
   width: 120,
 }, {
+  // A node that is opted out is still managed by hand, it only stops receiving
+  // the plugins the controller installs automatically.
+  title: () => $gettext('Accept plugin sync'),
+  dataIndex: 'accept_plugin_sync',
+  customRender: (args: CustomRenderArgs) => {
+    const { text } = args
+    // Nodes stored before plugin cluster sync read as opted in.
+    const accepted = text === undefined || text === null || text === true || text > 0
+
+    return accepted
+      ? <Tag color="green">{$gettext('Accepted')}</Tag>
+      : <Tag color="orange">{$gettext('Opted out')}</Tag>
+  },
+  edit: {
+    type: 'switch',
+  },
+  hiddenInTable: true,
+  pure: true,
+  width: 160,
+}, {
   title: () => $gettext('Updated at'),
   dataIndex: 'updated_at',
   customRender: datetimeRender,

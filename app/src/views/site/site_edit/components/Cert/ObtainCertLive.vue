@@ -3,8 +3,10 @@ import type { Ref } from 'vue'
 import type { IssueHint } from './issueFailure'
 import type { AutoCertOptions } from '@/api/auto_cert'
 import type { CertificateResult } from '@/api/cert'
+import { AutoCertChallengeMethod } from '@/api/auto_cert'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
 import { useWebSocket } from '@/lib/websocket'
+import { useSettingsStore } from '@/pinia'
 import { useSiteEditorStore } from '../SiteEditor/store'
 import { issueFailureDetail, issueHintTitle } from './issueFailure'
 
@@ -15,6 +17,8 @@ const props = defineProps<{
 const emit = defineEmits<{
   retry: []
 }>()
+
+const settings = useSettingsStore()
 
 const modalVisible = defineModel<boolean>('modalVisible')
 const modalClosable = defineModel<boolean>('modalClosable')
@@ -161,9 +165,19 @@ async function issue_cert(config_name: string, server_name: string[], key_type: 
 
     log($gettext('Getting the certificate, please wait...'))
 
-    const { ws } = useWebSocket(`/api/domain/${config_name}/cert`, false, undefined, {
+    // With a node selected, DNS-01 can run on this main node instead, which
+    // then sends the certificate to the node and keeps renewing it.
+    // A certificate this instance issued for a node is renewed for it too.
+    const nodeId = props.options.delegated_node_id || settings.node.id
+    const onMainNode = !!props.options.delegated_node_id || (nodeId > 0
+      && props.options.challenge_method === AutoCertChallengeMethod.dns01
+      && (props.options.verify_on ?? 'main') === 'main')
+    const endpoint = onMainNode
+      ? `/api/nodes/${nodeId}/domain/${config_name}/cert`
+      : `/api/domain/${config_name}/cert`
+    const { ws } = useWebSocket(endpoint, false, undefined, {
       'X-Secure-Session-ID': secureSessionId,
-    })
+    }, onMainNode)
     const socket = ws.value!
     let isSettled = false
 

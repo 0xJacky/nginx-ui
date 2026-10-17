@@ -92,9 +92,6 @@ func TestMaintenanceMutationsRejectMissingAndUnrelatedSecureSessions(t *testing.
 		{http.MethodGet, "/api/upgrade/perform"},
 		{http.MethodPut, "/api/upstream/socket/127.0.0.1:8080"},
 		{http.MethodPost, "/api/self_check/missing-task/fix"},
-		{http.MethodPost, "/api/nginx_log/index/rebuild"},
-		{http.MethodPost, "/api/nginx_log/settings/advanced_indexing/enable"},
-		{http.MethodPost, "/api/nginx_log/settings/advanced_indexing/disable"},
 		{http.MethodPost, "/api/site_navigation/test_health_check/1"},
 	}
 	for _, request := range requests {
@@ -140,7 +137,7 @@ func TestMaintenanceMutationsAllowVerifiedSessionsToReachHandlers(t *testing.T) 
 	}
 
 	// Existing read-only status routes must remain usable without step-up.
-	for _, path := range []string{"/api/nginx_log/settings/advanced_indexing/status", "/api/upstream/health_check/status"} {
+	for _, path := range []string{"/api/upstream/health_check/status"} {
 		req := httptest.NewRequest(http.MethodGet, path, nil)
 		req.Header.Set("Authorization", "Bearer "+token)
 		recorder := httptest.NewRecorder()

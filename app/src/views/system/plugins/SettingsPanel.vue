@@ -1,0 +1,126 @@
+<script setup lang="ts">
+import type { PluginInfo, SettingsSchema } from '@/api/plugin'
+import pluginApi from '@/api/plugin'
+import PluginSlot from '@/components/PluginSlot'
+import { getErrorMessage } from '@/lib/http'
+import { usePluginStore } from '@/plugin'
+import SchemaForm from './SchemaForm.vue'
+import { cloneSettings } from './settingsForm'
+
+const props = defineProps<{
+  plugin?: PluginInfo
+  /** The values are fetched when the panel becomes visible. */
+  active: boolean
+}>()
+
+const { message } = useGlobalApp()
+const pluginStore = usePluginStore()
+
+const loading = ref(false)
+const saving = ref(false)
+const error = ref('')
+const schema = ref<SettingsSchema | null>(null)
+const values = ref<Record<string, unknown>>({})
+/** What the server stores, the form compares against it. */
+const savedValues = ref<Record<string, unknown>>({})
+
+function applyValues(next: Record<string, unknown> | undefined) {
+  savedValues.value = cloneSettings(next ?? {})
+  values.value = cloneSettings(next ?? {})
+}
+
+function discard() {
+  values.value = cloneSettings(savedValues.value)
+}
+
+/** A plugin may replace the generated form with its own component. */
+const customPanel = computed(() => {
+  const id = props.plugin?.id
+  return id ? pluginStore.settingsPanels[id] : undefined
+})
+
+async function load() {
+  const id = props.plugin?.id
+  if (!id)
+    return
+
+  loading.value = true
+  error.value = ''
+  try {
+    const data = await pluginApi.getSettings(id)
+    schema.value = data.schema ?? props.plugin?.settings_schema ?? null
+    applyValues(data.values)
+  }
+  catch (e) {
+    error.value = getErrorMessage(e, $gettext('Failed to load the plugin settings'))
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+/**
+ * Secret fields come back as a placeholder. Sending it back unchanged is what
+ * tells the backend to keep the value it already stores.
+ */
+async function save(next?: Record<string, unknown>) {
+  const id = props.plugin?.id
+  if (!id)
+    return
+
+  saving.value = true
+  error.value = ''
+  try {
+    const data = await pluginApi.saveSettings(id, next ?? values.value)
+    schema.value = data.schema ?? schema.value
+    applyValues(data.values)
+    message.success($gettext('Plugin settings saved'))
+  }
+  catch (e) {
+    error.value = getErrorMessage(e, $gettext('Failed to save the plugin settings'))
+  }
+  finally {
+    saving.value = false
+  }
+}
+
+watch(() => [props.active, props.plugin?.id] as const, ([active, id]) => {
+  if (active && id)
+    void load()
+}, { immediate: true })
+</script>
+
+<template>
+  <ASpin :spinning="loading">
+    <AAlert
+      v-if="error"
+      type="error"
+      show-icon
+      class="mb-4"
+      :title="error"
+    />
+
+    <component
+      :is="customPanel"
+      v-if="customPanel"
+      :settings="values"
+      :save="save"
+    />
+    <SchemaForm
+      v-else-if="schema?.settings?.length"
+      v-model:values="values"
+      :schema="schema"
+      :saved="savedValues"
+      :saving="saving"
+      @save="save()"
+      @discard="discard"
+    />
+    <AEmpty v-else-if="!loading" :description="$gettext('This plugin has no settings.')" />
+
+    <PluginSlot
+      v-if="props.plugin"
+      :name="`plugin.settings:${props.plugin.id}`"
+      :context="{ settings: values }"
+    />
+  </ASpin>
+</template>

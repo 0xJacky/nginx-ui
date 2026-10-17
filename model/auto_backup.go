@@ -52,6 +52,20 @@ type AutoBackup struct {
 	S3SecretAccessKey string `json:"s3_secret_access_key" gorm:"comment:S3 secret access key;serializer:json[aes]"`
 	S3Bucket          string `json:"s3_bucket" gorm:"comment:S3 bucket name"`
 	S3Region          string `json:"s3_region" gorm:"comment:S3 region"`
+
+	// StorageConfig holds the form values of a plugin storage backend, used
+	// only when StorageType is "plugin:<code>". The values may be
+	// credentials, so they are encrypted at rest.
+	StorageConfig map[string]string `json:"storage_config,omitempty" gorm:"serializer:json[aes];comment:Plugin storage backend configuration"`
+}
+
+// StorageTypePluginPrefix marks a storage type a plugin provides.
+const StorageTypePluginPrefix = "plugin:"
+
+// IsPluginStorage reports whether the task stores its runs through a plugin
+// storage backend.
+func (a *AutoBackup) IsPluginStorage() bool {
+	return strings.HasPrefix(string(a.StorageType), StorageTypePluginPrefix)
 }
 
 func (a *AutoBackup) GetName() string {

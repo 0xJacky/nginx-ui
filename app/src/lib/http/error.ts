@@ -93,23 +93,35 @@ function fallbackMessage(err: CosyError): string {
     : translated
 }
 
-// Asynchronous version that handles dynamic loading
-export async function translateError(err: CosyError): Promise<string> {
-  // If scope exists, use sync version
-  if (!err?.scope || errors[err.scope]) {
-    return translateErrorSync(err)
-  }
+// Loads the error texts of a scope once, the fallback message covers a failure.
+async function loadErrorScope(scope?: string): Promise<void> {
+  if (!scope || errors[scope])
+    return
 
-  // Need to dynamically load error definitions
   try {
-    const errorModule = await import(`@/constants/errors/${err.scope}.ts`)
-    registerError(err.scope, errorModule.default)
-    return translateErrorSync(err)
+    const errorModule = await import(`@/constants/errors/${scope}.ts`)
+    registerError(scope, errorModule.default)
   }
   catch (error) {
     console.error(error)
-    return substituteParams(fallbackMessage(err), err?.params)
   }
+}
+
+// Asynchronous version that handles dynamic loading
+export async function translateError(err: CosyError): Promise<string> {
+  await loadErrorScope(err?.scope)
+  return translateErrorSync(err)
+}
+
+/**
+ * Like getErrorMessage, but loads the texts of the error scope first. Meant for
+ * requests sent with skipErrHandling, which skip the handler that loads them.
+ */
+export async function resolveErrorMessage(error: unknown, fallback?: string): Promise<string> {
+  const failure = error as (ErrorResponse & Partial<CosyError>) | undefined
+  const data = failure?.response?.data as Partial<CosyError> | undefined
+  await loadErrorScope(data?.scope ?? failure?.scope)
+  return getErrorMessage(error, fallback)
 }
 
 export async function handleApiError(err: CosyError, dedupe: MessageDedupe) {

@@ -19,6 +19,11 @@ const entries = computed<EntryItem[]>(() => [
     path: '/system/upgrade',
   },
   {
+    title: $gettext('Plugins'),
+    description: $gettext('Install, configure and troubleshoot plugins that extend Nginx UI.'),
+    path: '/system/plugins',
+  },
+  {
     title: $gettext('Third-party Components'),
     description: $gettext('Review third-party licenses and open source component attributions.'),
     path: '/system/licenses',

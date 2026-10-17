@@ -1,8 +1,12 @@
 <script setup lang="ts">
+import type { DefaultLogDir } from '@/api/nginx_log'
 import type { NgxConfig } from '@/api/ngx'
-import { AreaChartOutlined, FileExclamationOutlined, FileTextOutlined } from '@antdv-next/icons'
+import { FileExclamationOutlined, FileTextOutlined } from '@antdv-next/icons'
 import { message } from 'antdv-next'
 import nginxLog from '@/api/nginx_log'
+import PluginSlot from '@/components/PluginSlot'
+import { editorSiteLogContext } from '@/plugin/siteLogContext'
+import { usePluginStore } from '@/plugin/store'
 import { toLogFileBaseName } from './logFileName'
 import { useNgxConfigStore } from './store'
 
@@ -15,31 +19,30 @@ const props = withDefaults(defineProps<{
   context: 'http',
 })
 
-// Cache the indexing status at module level so multiple LogEntry instances
-// mounted on the same page share a single request
-let indexingStatusPromise: Promise<boolean> | null = null
-function getIndexingStatus(): Promise<boolean> {
-  indexingStatusPromise ??= nginxLog.getAdvancedIndexingStatus()
-    .then(res => !!res.enabled)
-    .catch(() => false)
-  return indexingStatusPromise
+// Cache the default log locations at module level so multiple LogEntry
+// instances mounted on the same page share a single request. They only change
+// when nginx itself is reconfigured
+let defaultLogsPromise: Promise<DefaultLogDir> | null = null
+function getDefaultLogs(): Promise<DefaultLogDir> {
+  defaultLogsPromise ??= nginxLog.getDefaultLogDir()
+    .catch(() => ({ access_log_dir: '' }))
+  return defaultLogsPromise
 }
 
-// Same for the log directory, which only changes when nginx itself is
-// reconfigured
-let defaultLogDirPromise: Promise<string> | null = null
-function getDefaultLogDir(): Promise<string> {
-  defaultLogDirPromise ??= nginxLog.getDefaultLogDir()
-    .then(res => res.access_log_dir ?? '')
-    .catch(() => '')
-  return defaultLogDirPromise
+async function getDefaultLogDir(): Promise<string> {
+  return (await getDefaultLogs()).access_log_dir ?? ''
 }
 
-const isIndexingEnabled = ref(false)
+const defaultLogs = ref<DefaultLogDir>({ access_log_dir: '' })
 
-onMounted(async () => {
-  isIndexingEnabled.value = await getIndexingStatus()
-})
+// Only plugins need the default log files, so nothing is requested without one
+const pluginStore = usePluginStore()
+const hasLogActionPlugins = computed(() => (pluginStore.slots['site.log.actions']?.length ?? 0) > 0)
+
+watch(hasLogActionPlugins, async has => {
+  if (has)
+    defaultLogs.value = await getDefaultLogs()
+}, { immediate: true })
 
 const ngxConfigStore = useNgxConfigStore()
 
@@ -133,23 +136,25 @@ function onClickErrorLog() {
   })
 }
 
-function onClickAnalytics() {
-  router.push({
-    path: '/nginx_log/site',
-    query: {
-      path: accessLogPath.value,
-      view: 'dashboard',
-    },
-  })
-}
-
-// The log viewer and indexer parse http access log formats, so the toggle is
-// offered for http servers only
+// The log viewer parses http access log formats, so the toggle is offered for
+// http servers only
 const showAccessLogSwitch = computed(() => props.context === 'http')
+
+// Plugins add their own log actions next to the built-in ones. A server of an
+// http site without a log directive of its own writes to the nginx default log.
+const pluginContext = computed(() => editorSiteLogContext(
+  props.name,
+  { access: accessLogPath.value, error: errorLogPath.value },
+  { access: defaultLogs.value.access_log_path, error: defaultLogs.value.error_log_path },
+  props.context === 'http',
+))
+
+const hasPluginActions = computed(() =>
+  pluginStore.slotComponents('site.log.actions', pluginContext.value).length > 0)
 
 // Without any control to render, the row would still occupy its bottom margin
 const hasContent = computed(() =>
-  showAccessLogSwitch.value || hasAccessLog.value || hasErrorLog.value)
+  showAccessLogSwitch.value || hasAccessLog.value || hasErrorLog.value || hasPluginActions.value)
 </script>
 
 <template>
@@ -189,15 +194,7 @@ const hasContent = computed(() =>
       <FileExclamationOutlined />
       {{ $gettext('Error Logs') }}
     </AButton>
-    <AButton
-      v-if="hasAccessLog && isIndexingEnabled"
-      type="link"
-      size="small"
-      @click="onClickAnalytics"
-    >
-      <AreaChartOutlined />
-      {{ $gettext('Traffic Analytics') }}
-    </AButton>
+    <PluginSlot name="site.log.actions" :context="pluginContext" />
   </ASpace>
 </template>
 
