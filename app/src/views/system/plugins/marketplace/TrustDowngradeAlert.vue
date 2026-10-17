@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PluginTrust } from '@/api/plugin_marketplace'
+import { compactAlertStyles } from './alertStyles'
 import { isTrustDowngrade, packageTrustPreset } from './trust'
 
 const props = defineProps<{
@@ -19,6 +20,7 @@ const installedLabel = computed(() => packageTrustPreset(props.installed)?.label
     v-if="isDowngrade"
     type="warning"
     show-icon
+    :styles="compactAlertStyles"
     :title="$gettext('This package is trusted less than the version already installed')"
     :description="$gettext('Installed version: %{installed}. This package: %{package}.', {
       installed: installedLabel,
