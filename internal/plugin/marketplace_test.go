@@ -919,10 +919,17 @@ func TestMarketplaceUpdatesAndUpdate(t *testing.T) {
 	assert.Equal(t, "1.1.0", updates[0].LatestVersion)
 	assert.True(t, updates[0].InstalledYanked)
 	assert.False(t, updates[0].PermissionsChanged)
+	// The catalog entry tells the installed list as well.
+	entries, err := marketplace.Catalog(ctx, false)
+	require.NoError(t, err)
+	assert.True(t, findEntry(entries, "com.example.alpha", "").InstalledYanked)
 
 	info, err := marketplace.Update(ctx, "com.example.alpha", "", false)
 	require.NoError(t, err)
 	assert.Equal(t, "1.1.0", info.Version)
+	entries, err = marketplace.Catalog(ctx, false)
+	require.NoError(t, err)
+	assert.False(t, findEntry(entries, "com.example.alpha", "").InstalledYanked)
 	// The upgrade keeps the plugin switched on.
 	assert.True(t, info.Enabled)
 }

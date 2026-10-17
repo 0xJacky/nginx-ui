@@ -27,6 +27,8 @@ import { useConflictNames } from './useConflicts'
 const props = defineProps<{
   plugin: PluginInfo
   hasNodes: boolean
+  /** The catalog withdrew the installed version. */
+  withdrawn?: boolean
   toggling?: boolean
 }>()
 
@@ -41,7 +43,7 @@ const emit = defineEmits<{
 const name = computed(() => localizedPluginName(props.plugin, gettext.current))
 const description = computed(() => localizedPluginDescription(props.plugin, gettext.current))
 const status = computed(() => statusOf(props.plugin))
-const attention = computed(() => needsAttention(props.plugin))
+const attention = computed(() => needsAttention(props.plugin, props.withdrawn))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(props.plugin.recommended_memory_mb, systemMb.value))
 const memoryHint = computed(() => lowMemory.value
@@ -154,6 +156,11 @@ function onMenuClick({ key }: { key: string | number }) {
     <div v-if="conflictingNames.length > 0" class="plugin-card-note">
       <InfoCircleOutlined class="plugin-card-note-icon flex-none" />
       <span class="min-w-0 break-words">{{ conflictNote(conflictingNames) }}</span>
+    </div>
+
+    <div v-if="withdrawn" class="plugin-card-error">
+      <WarningOutlined class="flex-none" />
+      <span class="min-w-0 break-words">{{ $gettext('The publisher withdrew this version. Update it, or disable it until a new version is available.') }}</span>
     </div>
 
     <div
