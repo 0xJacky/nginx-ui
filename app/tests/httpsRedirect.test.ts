@@ -170,6 +170,31 @@ describe('serveTLSAppOverHTTP', () => {
   })
 })
 
+describe('serveTLSAppOverHTTP with an existing root location', () => {
+  it('still copies the other locations of the TLS server', () => {
+    const authLocation: NgxLocation = {
+      path: '= /internal/authelia/authz',
+      content: 'internal;\nproxy_pass http://127.0.0.1:9091/api/authz/auth-request;',
+      comments: '',
+    }
+    const tlsServer: NgxServer = {
+      directives: [{ directive: 'listen', params: '443 ssl' }],
+      locations: [{ ...appLocation }, { ...authLocation }, { ...challengeLocation }],
+    }
+    const httpServer: NgxServer = {
+      directives: [{ directive: 'listen', params: '80' }],
+      locations: [
+        { path: '/', content: 'return 301 https://$host$request_uri;\nproxy_pass http://127.0.0.1:8000;', comments: '' },
+      ],
+    }
+
+    expect(serveTLSAppOverHTTP(httpServer, tlsServer).locations).toEqual([
+      { path: '/', content: 'proxy_pass http://127.0.0.1:8000;', comments: '' },
+      authLocation,
+    ])
+  })
+})
+
 describe('stageServersForPendingTLS', () => {
   it('serves the pending TLS app over HTTP instead of redirecting', () => {
     const servers = quickSetupServers()

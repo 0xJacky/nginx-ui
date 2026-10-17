@@ -144,15 +144,17 @@ export function serveTLSAppOverHTTP(httpServer: NgxServer, tlsServer: NgxServer)
   server.directives ??= []
   server.locations ??= []
 
-  if (server.locations.some(isRootLocation))
-    return server
+  // A server that already serves its own root location keeps its directives,
+  // but still gains the TLS server's other locations (e.g. an auth_request
+  // endpoint); returning early would silently drop them from the saved file.
+  const hasRoot = server.locations.some(isRootLocation)
 
   const directives = server.directives
   const locationPaths = new Set(server.locations.map(location => location.path.trim()))
   const source = cloneServer(tlsServer)
 
   source.directives?.forEach(directive => {
-    if (isTLSOnlyDirective(directive))
+    if (hasRoot || isTLSOnlyDirective(directive))
       return
     if (directives.some(v => v.directive === directive.directive && v.params === directive.params))
       return
