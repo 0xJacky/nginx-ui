@@ -201,10 +201,13 @@ nginx-ui plugin key rotate --id io.github.example.mydns --primary primary.key --
 The catalog entry does not change, and older releases keep verifying with the
 certificates they carry.
 
-When a signing key may have leaked, add its key id to `revoked_signers` of the
-catalog entry; `nginx-ui plugin key revoke signing.pub` prints the line. Nginx UI no longer trusts the packages it signed, and the
-catalog marks the releases it signed as yanked, so nodes that run one are asked
-to update.
+When a signing key may have leaked, revoke it on the Signers page of the
+plugin in the [developer portal](https://portal.nginxui.com), which adds its
+key id to `revoked_signers` of the catalog entry without a review. For a
+catalog of your own, `nginx-ui plugin key revoke signing.pub` prints the line.
+Nginx UI no longer trusts the packages it signed, and the catalog marks the
+releases it signed as yanked. Nodes that run one show it under Needs
+attention and are asked to update once a new release is out.
 
 The primary key cannot be replaced this way. A new `author_public_key` leaves
 every older release without a trusted signature, so keep the primary key
