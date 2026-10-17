@@ -68,6 +68,16 @@ const managedBy = ref('')
 const forceManaged = ref(false)
 const isManagedLocked = computed(() => !!managedBy.value && !forceManaged.value)
 
+// The list labels a locked group's action "View", so its drawer says so too.
+const drawerTitle = computed(() => {
+  if (!isEditing.value)
+    return $gettext('Create Upstream')
+  const name = props.name ?? ''
+  return isManagedLocked.value
+    ? $gettext('View Upstream %{name}', { name })
+    : $gettext('Edit Upstream %{name}', { name })
+})
+
 const extraDirectivesPlaceholder = 'keepalive_timeout 60s;\nkeepalive_requests 1000;'
 
 const methodOptions = computed<SelectProps['options']>(() => [
@@ -201,7 +211,7 @@ async function save() {
 <template>
   <ADrawer
     v-model:open="open"
-    :title="isEditing ? $gettext('Edit Upstream %{name}', { name: props.name ?? '' }) : $gettext('Create Upstream')"
+    :title="drawerTitle"
     :size="760"
     destroy-on-hidden
     data-testid="upstream-editor"
