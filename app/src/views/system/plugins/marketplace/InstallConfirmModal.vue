@@ -386,7 +386,12 @@ onUnmounted(() => {
         :title="$gettext('This is a commercial plugin, licensed by its vendor')"
       >
         <template #description>
-          <div>{{ [commercialPrice(entry.commercial, gettext.current), ...commercialTerms(entry.commercial)].join(', ') }}</div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span>{{ commercialPrice(entry.commercial, gettext.current) }}</span>
+            <ATag v-for="term in commercialTerms(entry.commercial)" :key="term" variant="filled" class="m-0">
+              {{ term }}
+            </ATag>
+          </div>
           <a :href="entry.commercial.purchase_url" target="_blank" rel="noopener noreferrer">{{ $gettext('Buy a license') }}</a>
         </template>
       </AAlert>
