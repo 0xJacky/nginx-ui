@@ -9,12 +9,15 @@ github:
     # ISSUE-713 "Action comes from an unauthorized source" flags any `uses:` whose
     # owner is not GitHub-official, the same org as this repo, or explicitly trusted.
     # nginxui is our own organization; nginxui/musl-cross-compilers is maintained by
-    # us, so trust the whole owner here. includePlumberDefaults keeps Plumber's
-    # curated trusted list in addition to this entry rather than replacing it.
+    # us, so trust the whole owner here. vedantmgoyal9/winget-releaser publishes
+    # releases to WinGet; it is pinned by digest and trusted as an exact repo only.
+    # includePlumberDefaults keeps Plumber's curated trusted list in addition to
+    # these entries rather than replacing it.
     githubActionMustComeFromAuthorizedSources:
       includePlumberDefaults: true
       trustedGithubActions:
         - nginxui/*
+        - vedantmgoyal9/winget-releaser
 
     # dev is pushed to directly by maintainers rather than through protected
     # pull requests, so branch protection is intentionally not enforced. Suppress
