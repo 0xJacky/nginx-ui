@@ -1760,6 +1760,53 @@ msgstr "Використати код відновлення"
 msgid "Use OTP"
 msgstr "Використовувати OTP"
 
+msgid "Recovery codes downloaded"
+msgstr "Коди відновлення завантажено"
+
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr "Налаштування MFA завершено. Збережіть коди відновлення перед продовженням."
+
+msgid "Download"
+msgstr "Завантажити"
+
+msgid "Continue"
+msgstr "Продовжити"
+
+msgid "MFA session expired. Please sign in again."
+msgstr "Сесію MFA завершено. Будь ласка, увійдіть знову."
+
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "Потрібно MFA. Налаштуйте аутентифікатор або passkey, щоб продовжити."
+
+msgid "Verify your MFA method to continue signing in."
+msgstr "Підтвердьте свій метод MFA, щоб продовжити вхід."
+
+msgid "Enable TOTP"
+msgstr "Увімкнути TOTP"
+
+msgid "Verify"
+msgstr "Перевірка"
+
+msgid "Add a passkey"
+msgstr "Додати ключ доступу"
+
+msgid "Back to sign in"
+msgstr "Повернутися до входу"
+
+msgid "Secret has been copied"
+msgstr "Секрет скопійовано"
+
+msgid "Click to copy"
+msgstr "Клацніть, щоб скопіювати"
+
+msgid "Current Password"
+msgstr "Поточний пароль"
+
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr ""
+"Відскануйте QR-код за допомогою мобільного телефону, щоб додати обліковий "
+"запис до програми."
+
 msgid "Generate new recovery codes"
 msgstr "Створити нові коди відновлення"
 
@@ -1782,6 +1829,13 @@ msgstr "Потрібна двофакторна аутентифікація"
 
 msgid "Invalid passcode or recovery code"
 msgstr "Невірний код підтвердження або код відновлення"
+
+msgid ""
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
+msgstr ""
+"Увімкніть MFA у власному обліковому записі, перш ніж керувати політиками "
+"MFA або скидати дані іншого користувача."
 
 msgid "Node Status"
 msgstr "Стан вузла"
@@ -2428,6 +2482,9 @@ msgstr "Вміст файлу містить неприпустимі керую
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "Вміст файлу містить обмежену директиву nginx: {0}"
 
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "Вміст файлу має бути коректними даними PEM або htpasswd"
+
 msgid "Destination file: {0} already exists"
 msgstr "Файл призначення: {0} вже існує"
 
@@ -2617,6 +2674,75 @@ msgstr "Не вдалося просканувати ключ хоста : {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "Невідповідність алгоритму ключа хоста: очікується {0}, отримано {1}"
+
+msgid "Invalid request: {0}"
+msgstr "Недійсний запит: {0}"
+
+msgid ""
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
+msgstr ""
+"Неприпустиме ім'я ingress: використовуйте від 1 до 40 малих літер, цифр і "
+"дефісів, починаючи та закінчуючи літерою або цифрою"
+
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr ""
+"Неприпустимий власник: використовуйте від 1 до 64 літер, цифр, крапок, "
+"підкреслень і дефісів"
+
+msgid "Invalid host: {0}"
+msgstr "Неприпустимий хост: {0}"
+
+msgid "Invalid backend {0}: {1}"
+msgstr "Недопустимий Backend {0}: {1}"
+
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "Сервер бекенду {0} знаходиться поза дозволеними діапазонами бекенду"
+
+msgid "Invalid route {0}: {1}"
+msgstr "Недопустимий маршрут {0}: {1}"
+
+msgid "Invalid tls: {0}"
+msgstr "Недійсний TLS: {0}"
+
+msgid "Invalid policy: {0}"
+msgstr "Недійсна політика: {0}"
+
+msgid "Server {0} not found in backend {1}"
+msgstr "Сервер {0} не знайдено в бекенді {1}"
+
+msgid "Ingress {0} not found"
+msgstr "Ingress {0} не знайдено"
+
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0} належить {1}; передайте force, щоб перехопити його"
+
+msgid "Host {0} is already served by ingress {1}"
+msgstr "Хост {0} вже обслуговується ingress {1}"
+
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "Сайт {0} вже існує і не керується цим ingress"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0} було оновлено під час видалення"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "Upstream {0} вже існує і не керується цим ingress"
+
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "Час очікування досягнення ingress {0} покоління {1} вичерпано"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "Вичерпано час очікування видалення ingress {0}"
+
+msgid "Apply failed: {0}"
+msgstr "Не вдалося застосувати: {0}"
+
+msgid "Certificate not ready: {0}"
+msgstr "Сертифікат не готовий: {0}"
+
+msgid "Not implemented"
+msgstr "Не реалізовано"
 
 msgid "Code completion is not enabled"
 msgstr "Автозавершення коду не ввімкнено"
@@ -2950,6 +3076,13 @@ msgid "Read dir failed: {0}"
 msgstr "Не вдалося прочитати каталог: {0}"
 
 msgid ""
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
+msgstr ""
+"Сайт керується через ingress {0}; змініть ingress або примусово застосуйте "
+"зміни"
+
+msgid ""
 "The file name must end in .conf and use only letters, digits, dots, dashes "
 "and underscores"
 msgstr ""
@@ -3162,6 +3295,9 @@ msgstr ""
 "Область спільної пам'яті задається перемикачем zone; видаліть директиву "
 "zone з додаткових директив"
 
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "Назви upstream, що починаються з {0}, зарезервовані для ingresses"
+
 msgid "Upstream not found: {0}"
 msgstr "Upstream не знайдено: {0}"
 
@@ -3183,6 +3319,13 @@ msgid ""
 msgstr ""
 "Область спільної пам'яті {0} вже використовується іншою директивою; nginx "
 "повідомив: {1}"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr ""
+"Upstream {0} керується ingress {1}; змініть ingress замість цього або "
+"примусово внесіть зміну"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "Каталог nginx conf.d недоступний: {0}"
@@ -3210,6 +3353,15 @@ msgstr "Недійсний код відновлення"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "Застарілий код відновлення не дозволяється, оскільки TOTP не ввімкнено"
+
+msgid "MFA enrollment is required"
+msgstr "Потрібна реєстрація MFA"
+
+msgid "MFA verification is required"
+msgstr "Потрібна перевірка MFA"
+
+msgid "Cannot remove the last required MFA method"
+msgstr "Не вдалося видалити останній обов'язковий метод MFA"
 
 msgid "WebAuthn settings are not configured"
 msgstr "Налаштування WebAuthn не налаштовані"
@@ -4159,6 +4311,9 @@ msgstr "Записи групи"
 msgid "Not Found"
 msgstr "Не знайдено"
 
+msgid "Ingresses"
+msgstr "Ingresses"
+
 msgid "Namespaces"
 msgstr "Простори імен"
 
@@ -4902,9 +5057,6 @@ msgstr "Не вдалося завантажити файли сертифіка
 
 msgid "Download Certificate Files"
 msgstr "Завантажити файли сертифіката"
-
-msgid "Download"
-msgstr "Завантажити"
 
 msgid "Download Format"
 msgstr "Формат завантаження"
@@ -6671,6 +6823,307 @@ msgstr ""
 "Отримати доступ до інтегрованих сеансів терміналу для завдань "
 "обслуговування."
 
+msgid "HTTP only"
+msgstr "Тільки HTTP"
+
+msgid "Not issued yet"
+msgstr "Ще не випущено"
+
+msgid "Expired %{date}"
+msgstr "Термін дії минув %{date}"
+
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date} (залишився %{days} день)"
+msgstr[1] "%{date} (залишилося %{days} днів)"
+
+msgid "Address"
+msgstr "Адреса"
+
+msgid "Health"
+msgstr "Здоров'я"
+
+msgid "Max Fails"
+msgstr "Макс. відмов"
+
+msgid "Fail Timeout"
+msgstr "Тайм-аут відмови"
+
+msgid "Path Prefix"
+msgstr "Префікс шляху"
+
+msgid "Backend"
+msgstr "Бекенд"
+
+msgid "Options"
+msgstr "Параметри"
+
+msgid "Allowed Sources"
+msgstr "Дозволені джерела"
+
+msgid "Last Transition"
+msgstr "Останній перехід"
+
+msgid "Drained"
+msgstr "Виснажений"
+
+msgid "No Data"
+msgstr "Немає даних"
+
+msgid "Healthy"
+msgstr "Здоровий"
+
+msgid "Unhealthy"
+msgstr "Нездоровий"
+
+msgid ""
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr ""
+"Не вдалося завантажити згенерований сайт. Він записується під час першого "
+"успішного застосування."
+
+msgid "Reconcile Now"
+msgstr "Звірити зараз"
+
+msgid "The last apply failed; the previous config is still live"
+msgstr "Останнє застосування не вдалося; попередня конфігурація все ще активна."
+
+msgid "Owner"
+msgstr "Власник"
+
+msgid "External ID"
+msgstr "Зовнішній ID"
+
+msgid "Generation"
+msgstr "Покоління"
+
+msgid "%{observed} applied of %{generation}"
+msgstr "%{observed} застосовано з %{generation}"
+
+msgid "Generated Site"
+msgstr "Згенерований сайт"
+
+msgid "Last Applied"
+msgstr "Останнє застосування"
+
+msgid "Config Hash"
+msgstr "Хеш конфігурації"
+
+msgid "Labels"
+msgstr "Мітки"
+
+msgid "Hosts"
+msgstr "Хости"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "Режим"
+
+msgid "Certificate"
+msgstr "Сертифікат"
+
+msgid "View certificate"
+msgstr "Переглянути сертифікат"
+
+msgid "Challenge"
+msgstr "Виклик"
+
+msgid "Redirect to HTTPS"
+msgstr "Перенаправити на HTTPS"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "До видачі сертифіката обслуговується лише HTTP-слухач."
+
+msgid "Backends"
+msgstr "Backends"
+
+msgid "Routes"
+msgstr "Маршрути"
+
+msgid "Policy default"
+msgstr "Політика за замовчуванням"
+
+msgid "Policy"
+msgstr "Політика"
+
+msgid "Everyone"
+msgstr "Усі"
+
+msgid "Rate Limit"
+msgstr "Обмеження частоти"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "%{rps} запитів/с на клієнта, burst %{burst}"
+
+msgid "Unlimited"
+msgstr "Безлімітний"
+
+msgid "Max Body Size"
+msgstr "Максимальний розмір тіла"
+
+msgid "Extra Headers"
+msgstr "Додаткові заголовки"
+
+msgid "Conditions"
+msgstr "Умови"
+
+msgid "True"
+msgstr "Істина"
+
+msgid "False"
+msgstr "Хибність"
+
+msgid "Generated Site Config"
+msgstr "Згенерована конфігурація сайту"
+
+msgid "Open in site editor"
+msgstr "Відкрити в редакторі сайту"
+
+msgid "Not ready"
+msgstr "Не готово"
+
+msgid "The latest spec has not been applied yet"
+msgstr "Остання специфікація ще не була застосована"
+
+msgid "Applying"
+msgstr "Застосування"
+
+msgid "Ready"
+msgstr "Готово"
+
+msgid "Degraded"
+msgstr "Деградовано"
+
+msgid "Config Applied"
+msgstr "Конфігурацію застосовано"
+
+msgid "Certificate Ready"
+msgstr "Сертифікат готовий"
+
+msgid "Backends Healthy"
+msgstr "Бекенди справні"
+
+msgid "Issued automatically (ACME)"
+msgstr "Видано автоматично (ACME)"
+
+msgid "Existing certificate"
+msgstr "Наявний сертифікат"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Round Robin"
+msgstr "Round Robin"
+
+msgid "Least Connections"
+msgstr "Найменша кількість з'єднань"
+
+msgid "IP Hash"
+msgstr "IP-хеш"
+
+msgid "All owners"
+msgstr "Усі власники"
+
+msgid "Reconcile of %{name} queued"
+msgstr "Звірку %{name} додано до черги"
+
+msgid "Delete ingress %{name}?"
+msgstr "Видалити ingress %{name}?"
+
+msgid ""
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
+msgstr ""
+"Цей Ingress належить %{owner}. Його controller, ймовірно, перестворить його "
+"під час наступної синхронізації; видаліть його з controller, щоб видалити "
+"назавжди."
+
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "Згенерований сайт і файли upstream видаляються, а nginx перезавантажується."
+
+msgid "Also delete the certificate"
+msgstr "Також видалити сертифікат"
+
+msgid "Ingress %{name} deleted"
+msgstr "Ingress %{name} видалено"
+
+msgid "Ingress"
+msgstr "Ingress"
+
+msgid "Phase"
+msgstr "Фаза"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} здорових"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} сервер"
+msgstr[1] "%{total} серверів"
+
+msgid "%{count} down"
+msgstr "Залишилось %{count}"
+
+msgid "Filter by owner"
+msgstr "Фільтр за власником"
+
+msgid "Applied generation / latest generation"
+msgstr "Застосоване покоління / Найновіше покоління"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "gen %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "Узгодження"
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+"Ingress — це записи зворотного проксі, які публікуються зовнішніми "
+"контролерами через Ingress API. Nginx UI відображає кожен із них як "
+"керований сайт з upstream'ами, випускає його сертифікат і повідомляє про "
+"його статус тут. Вносьте зміни у відповідному контролері; правки, зроблені "
+"тут, будуть перезаписані під час наступного реконсиляції."
+
+msgid "Learn more"
+msgstr "Дізнатися більше"
+
+msgid "No ingresses yet"
+msgstr "Поки що немає ingress-ресурсів"
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"Контролер, наприклад платформа розгортання, створює ingresses за допомогою "
+"PUT /api/ingresses/:name, автентифікуючись як вузол кластера або за "
+"допомогою токена API. Вони з'являються тут одразу після збереження."
+
+msgid "Read the Ingress API guide"
+msgstr "Прочитайте посібник із Ingress API"
+
+msgid "Search by name, host or external ID"
+msgstr "Пошук за іменем, хостом або зовнішнім ID"
+
+msgid "Search ingresses"
+msgstr "Пошук Ingress"
+
+msgid "No ingress matches the filter"
+msgstr "Жоден Ingress не відповідає фільтру"
+
 msgid "Please input your E-mail!"
 msgstr "Будь ласка, введіть вашу електронну пошту!"
 
@@ -8042,9 +8495,6 @@ msgstr ""
 msgid "Register passkey successfully"
 msgstr "Ключ доступу успішно зареєстровано"
 
-msgid "Add a passkey"
-msgstr "Додати ключ доступу"
-
 msgid "Tips"
 msgstr "Поради"
 
@@ -8064,9 +8514,6 @@ msgid ""
 msgstr ""
 "Дотримуйтесь інструкцій у діалоговому вікні, щоб завершити процес "
 "реєстрації ключа доступу."
-
-msgid "Current Password"
-msgstr "Поточний пароль"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -8202,6 +8649,9 @@ msgstr "Будь ласка, введіть ваш поточний пароль
 msgid "Enable 2FA successfully"
 msgstr "2FA успішно ввімкнено"
 
+msgid "TOTP disabled"
+msgstr "TOTP вимкнено"
+
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -8219,37 +8669,27 @@ msgstr ""
 "Щоб увімкнути його, вам потрібно встановити додаток Google Authenticator "
 "або Microsoft Authenticator на свій мобільний телефон."
 
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr ""
-"Відскануйте QR-код за допомогою мобільного телефону, щоб додати обліковий "
-"запис до програми."
-
 msgid "Current account is not enabled TOTP."
 msgstr "Поточний обліковий запис не має увімкненого TOTP."
 
 msgid "Current account is enabled TOTP."
 msgstr "Для поточного облікового запису ввімкнено TOTP."
 
-msgid "Enable TOTP"
-msgstr "Увімкнути TOTP"
+msgid "Replace TOTP"
+msgstr "Замінити TOTP"
 
-msgid "Are you sure to reset 2FA?"
-msgstr "Ви впевнені, що хочете скинути 2FA?"
+msgid "Disable TOTP for this account?"
+msgstr "Вимкнути TOTP для цього облікового запису?"
 
-msgid "Reset 2FA"
-msgstr "Скинути 2FA"
+msgid "Disable TOTP"
+msgstr "Вимкнути TOTP"
 
-msgid "Secret has been copied"
-msgstr "Секрет скопійовано"
-
-msgid "Click to copy"
-msgstr "Клацніть, щоб скопіювати"
-
-msgid "Or enter the secret: %{secret}"
-msgstr "Або введіть секрет: %{secret}"
-
-msgid "Input the code from the app:"
-msgstr "Введіть код з додатку:"
+msgid ""
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
+msgstr ""
+"Ваш поточний автентифікатор залишається активним до підтвердження нового "
+"коду. Нові коди відновлення замінюють старі."
 
 msgid "Bark"
 msgstr "Bark"
@@ -9422,9 +9862,6 @@ msgstr "Доступ і встановлення"
 msgid "File mode and setup instructions"
 msgstr "Режим файлів та інструкції з налаштування"
 
-msgid "Verify"
-msgstr "Перевірка"
-
 msgid "Run checks and save"
 msgstr "Виконати перевірки та зберегти"
 
@@ -9706,6 +10143,29 @@ msgstr "Загальні"
 
 msgid "Banned Until"
 msgstr "Заблоковано до"
+
+msgid "MFA Policy"
+msgstr "Політика MFA"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr ""
+"Вимагати MFA при наступному вході в систему. Користувачі повинні "
+"зареєструвати власний Authenticator або Passkey."
+
+msgid "Require MFA for all users"
+msgstr "Вимагати MFA для всіх користувачів"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "Вимагати локальну MFA для входу через SSO"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr ""
+"Застосувати локальні вимоги перевірки та реєстрації MFA до входу через OIDC "
+"і Casdoor."
 
 msgid "Passkeys"
 msgstr "Passkeys"
@@ -10002,9 +10462,6 @@ msgstr "Усі інтерфейси"
 msgid "HTTPS"
 msgstr "HTTPS"
 
-msgid "Certificate"
-msgstr "Сертифікат"
-
 msgid "Pick the certificate that secures the web interface."
 msgstr "Виберіть сертифікат, що захищає веб-інтерфейс."
 
@@ -10030,9 +10487,6 @@ msgstr "Час закінчення повинен бути пізнішим з�
 msgid "Set maintenance information"
 msgstr "Встановити інформацію про обслуговування"
 
-msgid "Continue"
-msgstr "Продовжити"
-
 msgid "Start time"
 msgstr "Час початку"
 
@@ -10056,6 +10510,22 @@ msgstr "Додаткова інформація"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Наприклад: очікуваний план відновлення або посилання на інцидент"
+
+msgid "Managed by ingress %{name}"
+msgstr "Керується ingress %{name}"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr ""
+"Зміни буде перезаписано під час наступного reconcile. Замість цього "
+"відредагуйте Ingress у його controller."
+
+msgid "View ingress"
+msgstr "Переглянути Ingress"
+
+msgid "Edit anyway"
+msgstr "Все одно редагувати"
 
 msgid "Configuration Name"
 msgstr "Назва конфігурації"
@@ -10431,15 +10901,6 @@ msgstr ""
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "Неприпустиме ім'я домену або IP-адреса: %{value}"
 
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Existing certificate"
-msgstr "Наявний сертифікат"
-
 msgid "Skip for now"
 msgstr "Пропустити поки що"
 
@@ -10724,6 +11185,9 @@ msgstr "Помилка аналізу конфігурації Nginx"
 msgid "No."
 msgstr "№"
 
+msgid "Ingress: %{name}"
+msgstr "Ingress: %{name}"
+
 msgid "Please input name, "
 msgstr "Будь ласка, введіть назву, "
 
@@ -10790,6 +11254,12 @@ msgstr "Налаштувати інформацію про технічне об
 
 msgid "%{count} sites selected"
 msgstr "%{count} сайтів вибрано"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "Включити %{count} сайт, керований ingress"
+msgstr[1] "Включити %{count} сайти, керовані ingress"
+msgstr[2] "Включити %{count} сайтів, керованих ingress"
 
 msgid "Read Only"
 msgstr "Тільки для читання"
@@ -10954,9 +11424,6 @@ msgstr "Не використовується"
 
 msgid "Max Age"
 msgstr "Максимальний вік"
-
-msgid "Options"
-msgstr "Параметри"
 
 msgid "Remove option"
 msgstr "Видалити варіант"
@@ -11177,9 +11644,6 @@ msgstr ""
 msgid "Total Components"
 msgstr "Всього компонентів"
 
-msgid "Backend"
-msgstr "Бекенд"
-
 msgid "Frontend"
 msgstr "Фронтенд"
 
@@ -11252,6 +11716,15 @@ msgstr ""
 "домені, який не є локальним. Це може призвести до витоку конфіденційної "
 "інформації."
 
+msgid "Create Upstream"
+msgstr "Створити Upstream"
+
+msgid "View Upstream %{name}"
+msgstr "Переглянути upstream %{name}"
+
+msgid "Edit Upstream %{name}"
+msgstr "Редагування Upstream %{name}"
+
 msgid "Round Robin (default)"
 msgstr "Round Robin (за замовчуванням)"
 
@@ -11270,12 +11743,6 @@ msgstr "Випадковий (random)"
 msgid "Upstream %{name} saved and Nginx reloaded"
 msgstr "Upstream %{name} збережено та Nginx перезавантажено"
 
-msgid "Edit Upstream %{name}"
-msgstr "Редагування Upstream %{name}"
-
-msgid "Create Upstream"
-msgstr "Створити Upstream"
-
 msgid "Sites use it as proxy_pass http://%{name};"
 msgstr "Сайти використовують його як proxy_pass http://%{name};"
 
@@ -11290,15 +11757,6 @@ msgstr "Консистентне хешування"
 
 msgid "Servers"
 msgstr "Сервери"
-
-msgid "Address"
-msgstr "Адреса"
-
-msgid "Max Fails"
-msgstr "Макс. відмов"
-
-msgid "Fail Timeout"
-msgstr "Тайм-аут відмови"
 
 msgid "Not available with this load balancing method"
 msgstr "Недоступно з цим методом балансування навантаження"
@@ -11359,9 +11817,6 @@ msgstr "Пряма"
 msgid "Health Status"
 msgstr "Стан здоров’я"
 
-msgid "No Data"
-msgstr "Немає даних"
-
 msgid "Last Check"
 msgstr "Остання перевірка"
 
@@ -11374,15 +11829,6 @@ msgid ""
 msgstr ""
 "Вибір для кожної цілі зберігається. Відновіть перевірки в налаштуваннях "
 "перевірки стану."
-
-msgid "Round Robin"
-msgstr "Round Robin"
-
-msgid "Least Connections"
-msgstr "Найменша кількість з'єднань"
-
-msgid "IP Hash"
-msgstr "IP-хеш"
 
 msgid "Hash"
 msgstr "Хеш"
@@ -11398,6 +11844,13 @@ msgstr "Визначено в"
 
 msgid "Matched upstreams: %{groups}, servers: %{servers}"
 msgstr "Знайдені Upstreams: %{groups}, сервери: %{servers}"
+
+msgid ""
+"Ingress %{name} owns this upstream. Change the ingress instead; its next "
+"apply overwrites changes made here."
+msgstr ""
+"Ingress %{name} володіє цим upstream. Натомість змініть ingress; його "
+"наступне застосування перезапише зміни, зроблені тут."
 
 msgid "Server %{address} enabled"
 msgstr "Сервер %{address} увімкнено"
@@ -11466,8 +11919,58 @@ msgstr ""
 "вмикати та вимикати тут. Блок всередині сайту можна перетворити на спільну "
 "групу, яку зможуть використовувати й інші сайти."
 
-msgid "2FA"
-msgstr "2FA"
+msgid "MFA Settings"
+msgstr "Налаштування MFA"
+
+msgid "Require MFA for this user"
+msgstr "Вимагати MFA для цього користувача"
+
+msgid "Global enforcement"
+msgstr "Глобальне примусове застосування"
+
+msgid "User enforcement"
+msgstr "Примус користувачів"
+
+msgid "Optional"
+msgstr "Необов'язково"
+
+msgid "MFA Enrollment"
+msgstr "Стан реєстрації MFA"
+
+msgid "Pending enrollment"
+msgstr "Очікує на реєстрацію"
+
+msgid "Enrolled"
+msgstr "Зареєстровано"
+
+msgid "Not enrolled"
+msgstr "Не зареєстровано"
+
+msgid "MFA policy updated. It takes effect at the next sign-in."
+msgstr "Політику MFA оновлено. Вона набуде чинності під час наступного входу."
+
+msgid "MFA credentials and sessions reset"
+msgstr "Скидання облікових даних і сеансів MFA"
+
+msgid ""
+"Global MFA enforcement is active. Changing the user policy does not "
+"override it."
+msgstr ""
+"Глобальне застосування MFA активне. Зміна політики користувача не скасовує "
+"його."
+
+msgid ""
+"Reset removes TOTP, all passkeys and recovery codes, and ends all sessions. "
+"The MFA requirement is preserved."
+msgstr ""
+"Скидання видаляє TOTP, усі ключі доступу та коди відновлення, а також "
+"завершує всі сеанси. Вимога MFA зберігається."
+
+msgid "Reset all MFA credentials and sessions for this user?"
+msgstr "Скинути всі облікові дані та сеанси MFA для цього користувача?"
+
+msgid "Reset MFA"
+msgstr "Скинути MFA"
 
 msgid "User info updated successfully"
 msgstr "Інформацію про користувача успішно оновлено"
@@ -11483,6 +11986,18 @@ msgstr "Особиста інформація"
 
 msgid "Update Profile"
 msgstr "Оновити профіль"
+
+msgid ""
+"MFA is required by the global policy. You cannot remove your last MFA "
+"method."
+msgstr ""
+"Глобальна політика вимагає використання MFA. Ви не можете видалити свій "
+"останній метод MFA."
+
+msgid "MFA is required for your account. You cannot remove your last MFA method."
+msgstr ""
+"Для вашого облікового запису потрібен MFA. Ви не можете видалити свій "
+"останній метод MFA."
 
 msgid "Security Settings"
 msgstr "Налаштування безпеки"
@@ -11522,17 +12037,20 @@ msgctxt "preference group"
 msgid "Maintenance"
 msgstr "Обслуговування"
 
-msgid "MFA Enrollment"
-msgstr "Стан реєстрації MFA"
+#~ msgid "Are you sure to reset 2FA?"
+#~ msgstr "Ви впевнені, що хочете скинути 2FA?"
 
-msgid "Enrolled"
-msgstr "Зареєстровано"
+#~ msgid "Reset 2FA"
+#~ msgstr "Скинути 2FA"
 
-msgid "Not enrolled"
-msgstr "Не зареєстровано"
+#~ msgid "Or enter the secret: %{secret}"
+#~ msgstr "Або введіть секрет: %{secret}"
 
-msgid "Pending enrollment"
-msgstr "Очікує на реєстрацію"
+#~ msgid "Input the code from the app:"
+#~ msgstr "Введіть код з додатку:"
+
+#~ msgid "2FA"
+#~ msgstr "2FA"
 
 #~ msgid "Webauthn"
 #~ msgstr "WebAuthn"
@@ -11569,345 +12087,3 @@ msgstr "Очікує на реєстрацію"
 
 #~ msgid "Global health check controls"
 #~ msgstr "Глобальне керування перевірками стану"
-
-msgid "Invalid request: {0}"
-msgstr ""
-
-msgid "Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, starting and ending with a letter or digit"
-msgstr ""
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr ""
-
-msgid "Invalid host: {0}"
-msgstr ""
-
-msgid "Invalid backend {0}: {1}"
-msgstr ""
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr ""
-
-msgid "Invalid route {0}: {1}"
-msgstr ""
-
-msgid "Invalid tls: {0}"
-msgstr ""
-
-msgid "Invalid policy: {0}"
-msgstr ""
-
-msgid "Server {0} not found in backend {1}"
-msgstr ""
-
-msgid "Ingress {0} not found"
-msgstr ""
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr ""
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr ""
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr ""
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr ""
-
-msgid "Apply failed: {0}"
-msgstr ""
-
-msgid "Certificate not ready: {0}"
-msgstr ""
-
-msgid "Not implemented"
-msgstr ""
-
-msgid "Site is managed by ingress {0}; change the ingress instead or force the change"
-msgstr ""
-
-msgid "Ingresses"
-msgstr ""
-
-msgid "HTTP only"
-msgstr ""
-
-msgid "Not issued yet"
-msgstr ""
-
-msgid "Expired %{date}"
-msgstr ""
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-msgid "Health"
-msgstr ""
-
-msgid "Path Prefix"
-msgstr ""
-
-msgid "Allowed Sources"
-msgstr ""
-
-msgid "Last Transition"
-msgstr ""
-
-msgid "Drained"
-msgstr ""
-
-msgid "Healthy"
-msgstr ""
-
-msgid "Unhealthy"
-msgstr ""
-
-msgid "The generated site could not be loaded. It is written by the first successful apply."
-msgstr ""
-
-msgid "Reconcile Now"
-msgstr ""
-
-msgid "The last apply failed; the previous config is still live"
-msgstr ""
-
-msgid "Owner"
-msgstr ""
-
-msgid "External ID"
-msgstr ""
-
-msgid "Generation"
-msgstr ""
-
-msgid "%{observed} applied of %{generation}"
-msgstr ""
-
-msgid "Generated Site"
-msgstr ""
-
-msgid "Last Applied"
-msgstr ""
-
-msgid "Config Hash"
-msgstr ""
-
-msgid "Labels"
-msgstr ""
-
-msgid "Hosts"
-msgstr ""
-
-msgid "TLS"
-msgstr ""
-
-msgid "Mode"
-msgstr ""
-
-msgid "View certificate"
-msgstr ""
-
-msgid "Challenge"
-msgstr ""
-
-msgid "Redirect to HTTPS"
-msgstr ""
-
-msgid "HSTS"
-msgstr ""
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr ""
-
-msgid "Backends"
-msgstr ""
-
-msgid "Routes"
-msgstr ""
-
-msgid "Policy default"
-msgstr ""
-
-msgid "Policy"
-msgstr ""
-
-msgid "Everyone"
-msgstr ""
-
-msgid "Rate Limit"
-msgstr ""
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr ""
-
-msgid "Unlimited"
-msgstr ""
-
-msgid "Max Body Size"
-msgstr ""
-
-msgid "Extra Headers"
-msgstr ""
-
-msgid "Conditions"
-msgstr ""
-
-msgid "True"
-msgstr ""
-
-msgid "False"
-msgstr ""
-
-msgid "Generated Site Config"
-msgstr ""
-
-msgid "Open in site editor"
-msgstr ""
-
-msgid "Not ready"
-msgstr ""
-
-msgid "The latest spec has not been applied yet"
-msgstr ""
-
-msgid "Applying"
-msgstr ""
-
-msgid "Ready"
-msgstr ""
-
-msgid "Degraded"
-msgstr ""
-
-msgid "Config Applied"
-msgstr ""
-
-msgid "Certificate Ready"
-msgstr ""
-
-msgid "Backends Healthy"
-msgstr ""
-
-msgid "Issued automatically (ACME)"
-msgstr ""
-
-msgid "All owners"
-msgstr ""
-
-msgid "Reconcile of %{name} queued"
-msgstr ""
-
-msgid "Delete ingress %{name}?"
-msgstr ""
-
-msgid "This ingress is owned by %{owner}. Its controller will probably recreate it on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr ""
-
-msgid "Also delete the certificate"
-msgstr ""
-
-msgid "Ingress %{name} deleted"
-msgstr ""
-
-msgid "Ingress"
-msgstr ""
-
-msgid "Phase"
-msgstr ""
-
-msgid "%{healthy}/%{total} healthy"
-msgstr ""
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-msgid "%{count} down"
-msgstr ""
-
-msgid "Filter by owner"
-msgstr ""
-
-msgid "Applied generation / latest generation"
-msgstr ""
-
-msgid "gen %{observed}/%{generation}"
-msgstr ""
-
-msgid "Reconcile"
-msgstr ""
-
-msgid "Ingresses are reverse proxy entries published by external controllers through the Ingress API. Nginx UI renders each one into a managed site and upstreams, issues its certificate and reports its status here. Change them in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-
-msgid "Learn more"
-msgstr ""
-
-msgid "No ingresses yet"
-msgstr ""
-
-msgid "A controller such as a deployment platform creates ingresses with PUT /api/ingresses/:name, authenticated as a cluster node or with an API token. They show up here as soon as they are stored."
-msgstr ""
-
-msgid "Read the Ingress API guide"
-msgstr ""
-
-msgid "Search by name, host or external ID"
-msgstr ""
-
-msgid "Search ingresses"
-msgstr ""
-
-msgid "No ingress matches the filter"
-msgstr ""
-
-msgid "Managed by ingress %{name}"
-msgstr ""
-
-msgid "Changes will be overwritten by the next reconcile. Edit the ingress in its controller instead."
-msgstr ""
-
-msgid "View ingress"
-msgstr ""
-
-msgid "Edit anyway"
-msgstr ""
-
-msgid "Ingress: %{name}"
-msgstr ""
-
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr ""
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr ""
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr ""
-
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr ""
-
-msgid "Upstream {0} is managed by ingress {1}; change the ingress instead or force the change"
-msgstr ""
-
-msgid "Ingress %{name} owns this upstream. Change the ingress instead; its next apply overwrites changes made here."
-msgstr ""
-
-msgid "View Upstream %{name}"
-msgstr ""

@@ -1753,6 +1753,55 @@ msgstr "Utiliser un code de récupération"
 msgid "Use OTP"
 msgstr "Utiliser OTP"
 
+msgid "Recovery codes downloaded"
+msgstr "Codes de récupération téléchargés"
+
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr ""
+"Configuration MFA terminée. Enregistrez vos codes de récupération avant de "
+"continuer."
+
+msgid "Download"
+msgstr "Télécharger"
+
+msgid "Continue"
+msgstr "Continuer"
+
+msgid "MFA session expired. Please sign in again."
+msgstr "La session MFA a expiré. Veuillez vous reconnecter."
+
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "MFA requis. Configurez un authentificateur ou une passkey pour continuer."
+
+msgid "Verify your MFA method to continue signing in."
+msgstr "Vérifiez votre méthode MFA pour poursuivre la connexion."
+
+msgid "Enable TOTP"
+msgstr "Activer TOTP"
+
+msgid "Verify"
+msgstr "Vérifier"
+
+msgid "Add a passkey"
+msgstr "Ajouter une clé d'accès"
+
+msgid "Back to sign in"
+msgstr "Retour à la connexion"
+
+msgid "Secret has been copied"
+msgstr "Le secret a été copié"
+
+msgid "Click to copy"
+msgstr "Clique pour copier"
+
+msgid "Current Password"
+msgstr "Mot de passe actuel"
+
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr ""
+"Scannez le code QR avec votre téléphone portable pour ajouter le compte à "
+"l'application."
+
 msgid "Generate new recovery codes"
 msgstr "Générer de nouveaux codes de récupération"
 
@@ -1775,6 +1824,13 @@ msgstr "Authentification à deux facteurs requise"
 
 msgid "Invalid passcode or recovery code"
 msgstr "Code de vérification ou code de récupération invalide"
+
+msgid ""
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
+msgstr ""
+"Activez la MFA sur votre propre compte avant de gérer les politiques de MFA "
+"ou de réinitialiser un autre utilisateur."
 
 msgid "Node Status"
 msgstr "État du nœud"
@@ -2426,6 +2482,9 @@ msgstr "Le contenu du fichier contient des caractères de contrôle non valides"
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "Le contenu du fichier contient une directive nginx restreinte : {0}"
 
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "Le contenu du fichier doit être des données PEM ou htpasswd valides"
+
 msgid "Destination file: {0} already exists"
 msgstr "Fichier de destination : {0} existe déjà"
 
@@ -2623,6 +2682,75 @@ msgstr "Échec de l'analyse de la clé hôte : {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "L'algorithme de la clé hôte ne correspond pas : attendu {0}, reçu {1}"
+
+msgid "Invalid request: {0}"
+msgstr "Requête non valide : {0}"
+
+msgid ""
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
+msgstr ""
+"Nom ingress invalide : utilisez de 1 à 40 lettres minuscules, chiffres et "
+"traits d'union, en commençant et en terminant par une lettre ou un chiffre"
+
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr ""
+"Propriétaire invalide : utilisez de 1 à 64 lettres, chiffres, points, "
+"tirets bas et tirets"
+
+msgid "Invalid host: {0}"
+msgstr "Hôte invalide : {0}"
+
+msgid "Invalid backend {0}: {1}"
+msgstr "Backend non valide {0} : {1}"
+
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "Le serveur backend {0} est en dehors des plages de backend autorisées"
+
+msgid "Invalid route {0}: {1}"
+msgstr "Route invalide {0} : {1}"
+
+msgid "Invalid tls: {0}"
+msgstr "TLS invalide : {0}"
+
+msgid "Invalid policy: {0}"
+msgstr "Politique invalide : {0}"
+
+msgid "Server {0} not found in backend {1}"
+msgstr "Serveur {0} introuvable dans le backend {1}"
+
+msgid "Ingress {0} not found"
+msgstr "Ingress {0} introuvable"
+
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0} appartient à {1} ; passez force pour le prendre en charge"
+
+msgid "Host {0} is already served by ingress {1}"
+msgstr "L'hôte {0} est déjà pris en charge par ingress {1}"
+
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "Le site {0} existe déjà et n'est pas géré par cet ingress"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0} a été mis à jour pendant sa suppression"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "L'upstream {0} existe déjà et n'est pas géré par cet ingress"
+
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "Délai dépassé en attendant que ingress {0} atteigne la génération {1}"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "Délai dépassé en attendant la suppression de l'ingress {0}"
+
+msgid "Apply failed: {0}"
+msgstr "Échec de l'application : {0}"
+
+msgid "Certificate not ready: {0}"
+msgstr "Certificat non prêt : {0}"
+
+msgid "Not implemented"
+msgstr "Non implémenté"
 
 msgid "Code completion is not enabled"
 msgstr "La complétion de code n'est pas activée"
@@ -2961,6 +3089,13 @@ msgid "Read dir failed: {0}"
 msgstr "Échec de la lecture du répertoire : {0}"
 
 msgid ""
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
+msgstr ""
+"Le site est géré par ingress {0} ; modifiez l'ingress à la place ou forcez "
+"le changement"
+
+msgid ""
 "The file name must end in .conf and use only letters, digits, dots, dashes "
 "and underscores"
 msgstr ""
@@ -3180,6 +3315,9 @@ msgstr ""
 "La zone de mémoire partagée est définie par l'interrupteur zone ; supprimez "
 "la directive zone des directives supplémentaires"
 
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "Les noms en amont commençant par {0} sont réservés aux ingresses"
+
 msgid "Upstream not found: {0}"
 msgstr "Upstream introuvable : {0}"
 
@@ -3201,6 +3339,13 @@ msgid ""
 msgstr ""
 "La zone de mémoire partagée {0} est déjà utilisée par une autre directive ; "
 "nginx a signalé : {1}"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr ""
+"L'upstream {0} est géré par l'ingress {1} ; modifiez l'ingress à la place "
+"ou forcez le changement"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "Le répertoire nginx conf.d n'est pas disponible : {0}"
@@ -3230,6 +3375,15 @@ msgstr "Code de récupération invalide"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "Ancien code de récupération non autorisé car TOTP n'est pas activé"
+
+msgid "MFA enrollment is required"
+msgstr "L'inscription à MFA est requise"
+
+msgid "MFA verification is required"
+msgstr "La vérification MFA est requise"
+
+msgid "Cannot remove the last required MFA method"
+msgstr "Impossible de supprimer la dernière méthode MFA requise"
 
 msgid "WebAuthn settings are not configured"
 msgstr "Les paramètres WebAuthn ne sont pas configurés"
@@ -4202,6 +4356,9 @@ msgstr "Enregistrements du groupe"
 msgid "Not Found"
 msgstr "Introuvable"
 
+msgid "Ingresses"
+msgstr "Ingresses"
+
 msgid "Namespaces"
 msgstr "Espaces de noms"
 
@@ -4948,9 +5105,6 @@ msgstr "Échec du téléchargement des fichiers du certificat"
 
 msgid "Download Certificate Files"
 msgstr "Télécharger les fichiers de certificat"
-
-msgid "Download"
-msgstr "Télécharger"
 
 msgid "Download Format"
 msgstr "Format de téléchargement"
@@ -6712,6 +6866,311 @@ msgstr ""
 msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr "Accéder aux sessions de terminal intégrées pour les tâches de maintenance."
 
+msgid "HTTP only"
+msgstr "HTTP uniquement"
+
+msgid "Not issued yet"
+msgstr "Pas encore émis"
+
+msgid "Expired %{date}"
+msgstr "Expiré %{date}"
+
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date} (reste %{days} jour)"
+msgstr[1] "%{date} (restent %{days} jours)"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Health"
+msgstr "Santé"
+
+msgid "Max Fails"
+msgstr "Échecs max."
+
+msgid "Fail Timeout"
+msgstr "Délai d'échec"
+
+msgid "Path Prefix"
+msgstr "Préfixe de chemin"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Options"
+msgstr "Options"
+
+msgid "Allowed Sources"
+msgstr "Sources autorisées"
+
+msgid "Last Transition"
+msgstr "Dernière transition"
+
+msgid "Drained"
+msgstr "Épuisé"
+
+msgid "No Data"
+msgstr "Aucune donnée"
+
+msgid "Healthy"
+msgstr "Sain"
+
+msgid "Unhealthy"
+msgstr "Malsain"
+
+msgid ""
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr ""
+"Le site généré n'a pas pu être chargé. Il est écrit lors de la première "
+"application réussie."
+
+msgid "Reconcile Now"
+msgstr "Rapprocher maintenant"
+
+msgid "The last apply failed; the previous config is still live"
+msgstr ""
+"La dernière application a échoué ; la configuration précédente est toujours "
+"active."
+
+msgid "Owner"
+msgstr "Propriétaire"
+
+msgid "External ID"
+msgstr "ID externe"
+
+msgid "Generation"
+msgstr "Génération"
+
+msgid "%{observed} applied of %{generation}"
+msgstr "%{observed} appliqué sur %{generation}"
+
+msgid "Generated Site"
+msgstr "Site généré"
+
+msgid "Last Applied"
+msgstr "Dernière application"
+
+msgid "Config Hash"
+msgstr "Hash de configuration"
+
+msgid "Labels"
+msgstr "Étiquettes"
+
+msgid "Hosts"
+msgstr "Hôtes"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "Mode"
+
+msgid "Certificate"
+msgstr "Certificat"
+
+msgid "View certificate"
+msgstr "Voir le certificat"
+
+msgid "Challenge"
+msgstr "Défi"
+
+msgid "Redirect to HTTPS"
+msgstr "Rediriger vers HTTPS"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "Seul le listener HTTP est servi jusqu'à la délivrance du certificat."
+
+msgid "Backends"
+msgstr "Backends"
+
+msgid "Routes"
+msgstr "Routes"
+
+msgid "Policy default"
+msgstr "Politique par défaut"
+
+msgid "Policy"
+msgstr "Politique"
+
+msgid "Everyone"
+msgstr "Tout le monde"
+
+msgid "Rate Limit"
+msgstr "Limite de débit"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "%{rps} requêtes/s par client, burst %{burst}"
+
+msgid "Unlimited"
+msgstr "Illimité"
+
+msgid "Max Body Size"
+msgstr "Taille maximale du corps"
+
+msgid "Extra Headers"
+msgstr "En-têtes supplémentaires"
+
+msgid "Conditions"
+msgstr "Conditions"
+
+msgid "True"
+msgstr "Vrai"
+
+msgid "False"
+msgstr "Faux"
+
+msgid "Generated Site Config"
+msgstr "Configuration du site générée"
+
+msgid "Open in site editor"
+msgstr "Ouvrir dans l'éditeur du site"
+
+msgid "Not ready"
+msgstr "Pas prêt"
+
+msgid "The latest spec has not been applied yet"
+msgstr "La dernière spécification n'a pas encore été appliquée"
+
+msgid "Applying"
+msgstr "Application en cours"
+
+msgid "Ready"
+msgstr "Prêt"
+
+msgid "Degraded"
+msgstr "Dégradé"
+
+msgid "Config Applied"
+msgstr "Configuration appliquée"
+
+msgid "Certificate Ready"
+msgstr "Certificat prêt"
+
+msgid "Backends Healthy"
+msgstr "Backends sains"
+
+msgid "Issued automatically (ACME)"
+msgstr "Émis automatiquement (ACME)"
+
+msgid "Existing certificate"
+msgstr "Certificat existant"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Round Robin"
+msgstr "Round Robin"
+
+msgid "Least Connections"
+msgstr "Moins de connexions"
+
+msgid "IP Hash"
+msgstr "Hachage IP"
+
+msgid "All owners"
+msgstr "Tous les propriétaires"
+
+msgid "Reconcile of %{name} queued"
+msgstr "Rapprochement de %{name} mis en file d'attente"
+
+msgid "Delete ingress %{name}?"
+msgstr "Supprimer ingress %{name} ?"
+
+msgid ""
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
+msgstr ""
+"Cet ingress appartient à %{owner}. Son controller le recréera probablement "
+"lors de la prochaine synchronisation ; supprimez-le du controller pour le "
+"supprimer définitivement."
+
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr ""
+"Le site généré et les fichiers upstream sont supprimés et nginx est "
+"rechargé."
+
+msgid "Also delete the certificate"
+msgstr "Supprimer également le certificat"
+
+msgid "Ingress %{name} deleted"
+msgstr "Ingress %{name} supprimé"
+
+msgid "Ingress"
+msgstr "Ingress"
+
+msgid "Phase"
+msgstr "Phase"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} sains"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} serveur"
+msgstr[1] "%{total} serveurs"
+
+msgid "%{count} down"
+msgstr "%{count} restants"
+
+msgid "Filter by owner"
+msgstr "Filtrer par propriétaire"
+
+msgid "Applied generation / latest generation"
+msgstr "Génération appliquée / Dernière génération"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "gen %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "Rapprocher"
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+"Les Ingresses sont des entrées de proxy inverse publiées par des "
+"contrôleurs externes via l'API Ingress. Nginx UI les rend sous forme de "
+"sites gérés avec des upstreams, émet leur certificat et affiche leur statut "
+"ici. Modifiez-les dans leur contrôleur ; les modifications effectuées ici "
+"sont écrasées lors de la prochaine réconciliation."
+
+msgid "Learn more"
+msgstr "En savoir plus"
+
+msgid "No ingresses yet"
+msgstr "Pas encore d'ingresses"
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"Un contrôleur tel qu'une plateforme de déploiement crée des ingresses avec "
+"PUT /api/ingresses/:name, authentifié en tant que nœud de cluster ou avec "
+"un jeton API. Ils apparaissent ici dès qu'ils sont stockés."
+
+msgid "Read the Ingress API guide"
+msgstr "Lisez le guide de l'API Ingress"
+
+msgid "Search by name, host or external ID"
+msgstr "Rechercher par nom, hôte ou ID externe"
+
+msgid "Search ingresses"
+msgstr "Rechercher des Ingress"
+
+msgid "No ingress matches the filter"
+msgstr "Aucun Ingress ne correspond au filtre"
+
 msgid "Please input your E-mail!"
 msgstr "Veuillez saisir votre e-mail !"
 
@@ -8113,9 +8572,6 @@ msgstr ""
 msgid "Register passkey successfully"
 msgstr "Clé d'accès enregistrée avec succès"
 
-msgid "Add a passkey"
-msgstr "Ajouter une clé d'accès"
-
 msgid "Tips"
 msgstr "Conseils"
 
@@ -8137,9 +8593,6 @@ msgid ""
 msgstr ""
 "Suivez les instructions dans la boîte de dialogue pour compléter le "
 "processus d'enregistrement de la clé d'accès."
-
-msgid "Current Password"
-msgstr "Mot de passe actuel"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -8280,6 +8733,9 @@ msgstr "Veuillez saisir votre mot de passe actuel"
 msgid "Enable 2FA successfully"
 msgstr "2FA activé avec succès"
 
+msgid "TOTP disabled"
+msgstr "TOTP désactivé"
+
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -8297,37 +8753,27 @@ msgstr ""
 "Pour l'activer, vous devez installer l'application Google Authenticator ou "
 "Microsoft Authenticator sur votre téléphone portable."
 
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr ""
-"Scannez le code QR avec votre téléphone portable pour ajouter le compte à "
-"l'application."
-
 msgid "Current account is not enabled TOTP."
 msgstr "Le compte actuel n'a pas le TOTP d'activé."
 
 msgid "Current account is enabled TOTP."
 msgstr "Le compte actuel a le TOTP d'activé."
 
-msgid "Enable TOTP"
-msgstr "Activer TOTP"
+msgid "Replace TOTP"
+msgstr "Remplacer TOTP"
 
-msgid "Are you sure to reset 2FA?"
-msgstr "Êtes-vous sûr de vouloir réinitialiser l'authentification à deux facteurs ?"
+msgid "Disable TOTP for this account?"
+msgstr "Désactiver TOTP pour ce compte ?"
 
-msgid "Reset 2FA"
-msgstr "Réinitialiser l'authentification à deux facteurs"
+msgid "Disable TOTP"
+msgstr "Désactiver TOTP"
 
-msgid "Secret has been copied"
-msgstr "Le secret a été copié"
-
-msgid "Click to copy"
-msgstr "Clique pour copier"
-
-msgid "Or enter the secret: %{secret}"
-msgstr "Ou entrez le secret : %{secret}"
-
-msgid "Input the code from the app:"
-msgstr "Entrez le code de l'application :"
+msgid ""
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
+msgstr ""
+"Votre authentificateur actuel reste actif jusqu'à la vérification du "
+"nouveau code. Les nouveaux codes de récupération remplacent les anciens."
 
 msgid "Bark"
 msgstr "Bark"
@@ -9525,9 +9971,6 @@ msgstr "Accès et installation"
 msgid "File mode and setup instructions"
 msgstr "Mode de fichiers et instructions de configuration"
 
-msgid "Verify"
-msgstr "Vérifier"
-
 msgid "Run checks and save"
 msgstr "Lancer les vérifications et enregistrer"
 
@@ -9814,6 +10257,29 @@ msgstr "Général"
 
 msgid "Banned Until"
 msgstr "Banni durant"
+
+msgid "MFA Policy"
+msgstr "Politique MFA"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr ""
+"Exiger MFA lors de la prochaine connexion. Les utilisateurs doivent "
+"enregistrer leur propre authenticator ou passkey."
+
+msgid "Require MFA for all users"
+msgstr "Exiger MFA pour tous les utilisateurs"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "Exiger MFA locale pour la connexion SSO"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr ""
+"Appliquer les exigences locales de vérification et d'inscription MFA à la "
+"connexion OIDC et Casdoor."
 
 msgid "Passkeys"
 msgstr "Passkeys"
@@ -10112,9 +10578,6 @@ msgstr "Toutes les interfaces"
 msgid "HTTPS"
 msgstr "HTTPS"
 
-msgid "Certificate"
-msgstr "Certificat"
-
 msgid "Pick the certificate that secures the web interface."
 msgstr "Choisissez le certificat qui sécurise l'interface web."
 
@@ -10140,9 +10603,6 @@ msgstr "L'heure de fin doit être postérieure à l'heure de début"
 msgid "Set maintenance information"
 msgstr "Définir les informations de maintenance"
 
-msgid "Continue"
-msgstr "Continuer"
-
 msgid "Start time"
 msgstr "Heure de début"
 
@@ -10166,6 +10626,22 @@ msgstr "Informations supplémentaires"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Par exemple : plan de reprise attendu ou référence d'incident"
+
+msgid "Managed by ingress %{name}"
+msgstr "Géré par ingress %{name}"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr ""
+"Les modifications seront écrasées par la prochaine réconciliation. Modifiez "
+"l'Ingress dans son contrôleur à la place."
+
+msgid "View ingress"
+msgstr "Afficher Ingress"
+
+msgid "Edit anyway"
+msgstr "Modifier quand même"
 
 msgid "Configuration Name"
 msgstr "Nom de la configuration"
@@ -10547,15 +11023,6 @@ msgstr ""
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "Ce n'est pas un nom de domaine ou une adresse IP valide : %{value}"
 
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Existing certificate"
-msgstr "Certificat existant"
-
 msgid "Skip for now"
 msgstr "Ignorer pour l'instant"
 
@@ -10848,6 +11315,9 @@ msgstr "Erreur d'analyse de configuration Nginx"
 msgid "No."
 msgstr "Nº"
 
+msgid "Ingress: %{name}"
+msgstr "Ingress: %{name}"
+
 msgid "Please input name, "
 msgstr "Veuillez saisir le nom, "
 
@@ -10914,6 +11384,11 @@ msgstr "Définir les informations de maintenance pour les sites sélectionnés"
 
 msgid "%{count} sites selected"
 msgstr "%{count} sites sélectionnés"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "Inclure %{count} site géré par un ingress"
+msgstr[1] "Inclure %{count} sites gérés par des ingress"
 
 msgid "Read Only"
 msgstr "Lecture seule"
@@ -11078,9 +11553,6 @@ msgstr "Non utilisé"
 
 msgid "Max Age"
 msgstr "Âge maximum"
-
-msgid "Options"
-msgstr "Options"
 
 msgid "Remove option"
 msgstr "Supprimer l'option"
@@ -11306,9 +11778,6 @@ msgstr ""
 msgid "Total Components"
 msgstr "Total des composants"
 
-msgid "Backend"
-msgstr "Backend"
-
 msgid "Frontend"
 msgstr "Frontend"
 
@@ -11380,6 +11849,15 @@ msgstr ""
 "Vous accédez à ce terminal via une connexion HTTP non sécurisée sur un "
 "domaine non localhost. Cela peut exposer des informations sensibles."
 
+msgid "Create Upstream"
+msgstr "Créer un Upstream"
+
+msgid "View Upstream %{name}"
+msgstr "Voir l'upstream %{name}"
+
+msgid "Edit Upstream %{name}"
+msgstr "Modifier l'Upstream %{name}"
+
 msgid "Round Robin (default)"
 msgstr "Round Robin (par défaut)"
 
@@ -11398,12 +11876,6 @@ msgstr "Aléatoire (random)"
 msgid "Upstream %{name} saved and Nginx reloaded"
 msgstr "Upstream %{name} enregistré et Nginx rechargé"
 
-msgid "Edit Upstream %{name}"
-msgstr "Modifier l'Upstream %{name}"
-
-msgid "Create Upstream"
-msgstr "Créer un Upstream"
-
 msgid "Sites use it as proxy_pass http://%{name};"
 msgstr "Les sites l'utilisent comme proxy_pass http://%{name};"
 
@@ -11418,15 +11890,6 @@ msgstr "Hachage cohérent"
 
 msgid "Servers"
 msgstr "Serveurs"
-
-msgid "Address"
-msgstr "Adresse"
-
-msgid "Max Fails"
-msgstr "Échecs max."
-
-msgid "Fail Timeout"
-msgstr "Délai d'échec"
 
 msgid "Not available with this load balancing method"
 msgstr "Non disponible avec cette méthode de répartition de charge"
@@ -11489,9 +11952,6 @@ msgstr "Direct"
 msgid "Health Status"
 msgstr "État de santé"
 
-msgid "No Data"
-msgstr "Aucune donnée"
-
 msgid "Last Check"
 msgstr "Dernière vérification"
 
@@ -11504,15 +11964,6 @@ msgid ""
 msgstr ""
 "Les sélections par cible sont conservées. Reprenez les sondes depuis les "
 "préférences de vérification d'état."
-
-msgid "Round Robin"
-msgstr "Round Robin"
-
-msgid "Least Connections"
-msgstr "Moins de connexions"
-
-msgid "IP Hash"
-msgstr "Hachage IP"
 
 msgid "Hash"
 msgstr "Hash"
@@ -11528,6 +11979,13 @@ msgstr "Défini dans"
 
 msgid "Matched upstreams: %{groups}, servers: %{servers}"
 msgstr "Upstreams correspondants : %{groups}, serveurs : %{servers}"
+
+msgid ""
+"Ingress %{name} owns this upstream. Change the ingress instead; its next "
+"apply overwrites changes made here."
+msgstr ""
+"Ingress %{name} possède cet upstream. Modifiez plutôt l'ingress ; sa "
+"prochaine application écrasera les modifications effectuées ici."
 
 msgid "Server %{address} enabled"
 msgstr "Serveur %{address} activé"
@@ -11597,8 +12055,61 @@ msgstr ""
 "site peut être converti en groupe partagé que d'autres sites peuvent "
 "également utiliser."
 
-msgid "2FA"
-msgstr "2fa"
+msgid "MFA Settings"
+msgstr "Paramètres MFA"
+
+msgid "Require MFA for this user"
+msgstr "Exiger l'authentification MFA pour cet utilisateur"
+
+msgid "Global enforcement"
+msgstr "Application mondiale"
+
+msgid "User enforcement"
+msgstr "Application utilisateur"
+
+msgid "Optional"
+msgstr "Facultatif"
+
+msgid "MFA Enrollment"
+msgstr "État de l’inscription à la MFA"
+
+msgid "Pending enrollment"
+msgstr "Inscription en attente"
+
+msgid "Enrolled"
+msgstr "Inscrit"
+
+msgid "Not enrolled"
+msgstr "Non inscrit"
+
+msgid "MFA policy updated. It takes effect at the next sign-in."
+msgstr "Politique MFA mise à jour. Elle prendra effet à la prochaine connexion."
+
+msgid "MFA credentials and sessions reset"
+msgstr "Réinitialisation des identifiants et sessions MFA"
+
+msgid ""
+"Global MFA enforcement is active. Changing the user policy does not "
+"override it."
+msgstr ""
+"L'application globale de MFA est active. Modifier la stratégie utilisateur "
+"ne la remplace pas."
+
+msgid ""
+"Reset removes TOTP, all passkeys and recovery codes, and ends all sessions. "
+"The MFA requirement is preserved."
+msgstr ""
+"La réinitialisation supprime TOTP, toutes les clés d'accès et les codes de "
+"récupération, et met fin à toutes les sessions. L'exigence de MFA est "
+"conservée."
+
+msgid "Reset all MFA credentials and sessions for this user?"
+msgstr ""
+"Réinitialiser toutes les identifiants MFA et les sessions de cet "
+"utilisateur ?"
+
+msgid "Reset MFA"
+msgstr "Réinitialiser MFA"
 
 msgid "User info updated successfully"
 msgstr "Informations utilisateur mises à jour avec succès"
@@ -11614,6 +12125,18 @@ msgstr "Informations personnelles"
 
 msgid "Update Profile"
 msgstr "Mettre à jour le profil"
+
+msgid ""
+"MFA is required by the global policy. You cannot remove your last MFA "
+"method."
+msgstr ""
+"La MFA est requise par la politique globale. Vous ne pouvez pas supprimer "
+"votre dernière méthode MFA."
+
+msgid "MFA is required for your account. You cannot remove your last MFA method."
+msgstr ""
+"La MFA est requise pour votre compte. Vous ne pouvez pas supprimer votre "
+"dernière méthode MFA."
 
 msgid "Security Settings"
 msgstr "Paramètres de sécurité"
@@ -11653,17 +12176,20 @@ msgctxt "preference group"
 msgid "Maintenance"
 msgstr "Maintenance"
 
-msgid "MFA Enrollment"
-msgstr "État de l’inscription à la MFA"
+#~ msgid "Are you sure to reset 2FA?"
+#~ msgstr "Êtes-vous sûr de vouloir réinitialiser l'authentification à deux facteurs ?"
 
-msgid "Enrolled"
-msgstr "Inscrit"
+#~ msgid "Reset 2FA"
+#~ msgstr "Réinitialiser l'authentification à deux facteurs"
 
-msgid "Not enrolled"
-msgstr "Non inscrit"
+#~ msgid "Or enter the secret: %{secret}"
+#~ msgstr "Ou entrez le secret : %{secret}"
 
-msgid "Pending enrollment"
-msgstr "Inscription en attente"
+#~ msgid "Input the code from the app:"
+#~ msgstr "Entrez le code de l'application :"
+
+#~ msgid "2FA"
+#~ msgstr "2fa"
 
 #~ msgid "Webauthn"
 #~ msgstr "Webauthn"
@@ -11704,342 +12230,3 @@ msgstr "Inscription en attente"
 
 #~ msgid "Global health check controls"
 #~ msgstr "Contrôles globaux des vérifications d'état"
-
-msgid "Invalid request: {0}"
-msgstr ""
-
-msgid "Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, starting and ending with a letter or digit"
-msgstr ""
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr ""
-
-msgid "Invalid host: {0}"
-msgstr ""
-
-msgid "Invalid backend {0}: {1}"
-msgstr ""
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr ""
-
-msgid "Invalid route {0}: {1}"
-msgstr ""
-
-msgid "Invalid tls: {0}"
-msgstr ""
-
-msgid "Invalid policy: {0}"
-msgstr ""
-
-msgid "Server {0} not found in backend {1}"
-msgstr ""
-
-msgid "Ingress {0} not found"
-msgstr ""
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr ""
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr ""
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr ""
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr ""
-
-msgid "Apply failed: {0}"
-msgstr ""
-
-msgid "Certificate not ready: {0}"
-msgstr ""
-
-msgid "Not implemented"
-msgstr ""
-
-msgid "Site is managed by ingress {0}; change the ingress instead or force the change"
-msgstr ""
-
-msgid "Ingresses"
-msgstr ""
-
-msgid "HTTP only"
-msgstr ""
-
-msgid "Not issued yet"
-msgstr ""
-
-msgid "Expired %{date}"
-msgstr ""
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Health"
-msgstr ""
-
-msgid "Path Prefix"
-msgstr ""
-
-msgid "Allowed Sources"
-msgstr ""
-
-msgid "Last Transition"
-msgstr ""
-
-msgid "Drained"
-msgstr ""
-
-msgid "Healthy"
-msgstr ""
-
-msgid "Unhealthy"
-msgstr ""
-
-msgid "The generated site could not be loaded. It is written by the first successful apply."
-msgstr ""
-
-msgid "Reconcile Now"
-msgstr ""
-
-msgid "The last apply failed; the previous config is still live"
-msgstr ""
-
-msgid "Owner"
-msgstr ""
-
-msgid "External ID"
-msgstr ""
-
-msgid "Generation"
-msgstr ""
-
-msgid "%{observed} applied of %{generation}"
-msgstr ""
-
-msgid "Generated Site"
-msgstr ""
-
-msgid "Last Applied"
-msgstr ""
-
-msgid "Config Hash"
-msgstr ""
-
-msgid "Labels"
-msgstr ""
-
-msgid "Hosts"
-msgstr ""
-
-msgid "TLS"
-msgstr ""
-
-msgid "Mode"
-msgstr ""
-
-msgid "View certificate"
-msgstr ""
-
-msgid "Challenge"
-msgstr ""
-
-msgid "Redirect to HTTPS"
-msgstr ""
-
-msgid "HSTS"
-msgstr ""
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr ""
-
-msgid "Backends"
-msgstr ""
-
-msgid "Routes"
-msgstr ""
-
-msgid "Policy default"
-msgstr ""
-
-msgid "Policy"
-msgstr ""
-
-msgid "Everyone"
-msgstr ""
-
-msgid "Rate Limit"
-msgstr ""
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr ""
-
-msgid "Unlimited"
-msgstr ""
-
-msgid "Max Body Size"
-msgstr ""
-
-msgid "Extra Headers"
-msgstr ""
-
-msgid "Conditions"
-msgstr ""
-
-msgid "True"
-msgstr ""
-
-msgid "False"
-msgstr ""
-
-msgid "Generated Site Config"
-msgstr ""
-
-msgid "Open in site editor"
-msgstr ""
-
-msgid "Not ready"
-msgstr ""
-
-msgid "The latest spec has not been applied yet"
-msgstr ""
-
-msgid "Applying"
-msgstr ""
-
-msgid "Ready"
-msgstr ""
-
-msgid "Degraded"
-msgstr ""
-
-msgid "Config Applied"
-msgstr ""
-
-msgid "Certificate Ready"
-msgstr ""
-
-msgid "Backends Healthy"
-msgstr ""
-
-msgid "Issued automatically (ACME)"
-msgstr ""
-
-msgid "All owners"
-msgstr ""
-
-msgid "Reconcile of %{name} queued"
-msgstr ""
-
-msgid "Delete ingress %{name}?"
-msgstr ""
-
-msgid "This ingress is owned by %{owner}. Its controller will probably recreate it on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr ""
-
-msgid "Also delete the certificate"
-msgstr ""
-
-msgid "Ingress %{name} deleted"
-msgstr ""
-
-msgid "Ingress"
-msgstr ""
-
-msgid "Phase"
-msgstr ""
-
-msgid "%{healthy}/%{total} healthy"
-msgstr ""
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "%{count} down"
-msgstr ""
-
-msgid "Filter by owner"
-msgstr ""
-
-msgid "Applied generation / latest generation"
-msgstr ""
-
-msgid "gen %{observed}/%{generation}"
-msgstr ""
-
-msgid "Reconcile"
-msgstr ""
-
-msgid "Ingresses are reverse proxy entries published by external controllers through the Ingress API. Nginx UI renders each one into a managed site and upstreams, issues its certificate and reports its status here. Change them in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-
-msgid "Learn more"
-msgstr ""
-
-msgid "No ingresses yet"
-msgstr ""
-
-msgid "A controller such as a deployment platform creates ingresses with PUT /api/ingresses/:name, authenticated as a cluster node or with an API token. They show up here as soon as they are stored."
-msgstr ""
-
-msgid "Read the Ingress API guide"
-msgstr ""
-
-msgid "Search by name, host or external ID"
-msgstr ""
-
-msgid "Search ingresses"
-msgstr ""
-
-msgid "No ingress matches the filter"
-msgstr ""
-
-msgid "Managed by ingress %{name}"
-msgstr ""
-
-msgid "Changes will be overwritten by the next reconcile. Edit the ingress in its controller instead."
-msgstr ""
-
-msgid "View ingress"
-msgstr ""
-
-msgid "Edit anyway"
-msgstr ""
-
-msgid "Ingress: %{name}"
-msgstr ""
-
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr ""
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr ""
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr ""
-
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr ""
-
-msgid "Upstream {0} is managed by ingress {1}; change the ingress instead or force the change"
-msgstr ""
-
-msgid "Ingress %{name} owns this upstream. Change the ingress instead; its next apply overwrites changes made here."
-msgstr ""
-
-msgid "View Upstream %{name}"
-msgstr ""

@@ -1581,6 +1581,51 @@ msgstr "使用恢復碼"
 msgid "Use OTP"
 msgstr "使用一次性密碼"
 
+msgid "Recovery codes downloaded"
+msgstr "復原碼已下載"
+
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr "MFA 設定已完成。請在繼續之前儲存您的復原代碼。"
+
+msgid "Download"
+msgstr "下載"
+
+msgid "Continue"
+msgstr "繼續"
+
+msgid "MFA session expired. Please sign in again."
+msgstr "MFA 會話已過期。請重新登入。"
+
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "需要 MFA。請設定驗證器或通行密鑰以繼續。"
+
+msgid "Verify your MFA method to continue signing in."
+msgstr "驗證您的 MFA 方法以繼續登入。"
+
+msgid "Enable TOTP"
+msgstr "啟用 TOTP"
+
+msgid "Verify"
+msgstr "驗證"
+
+msgid "Add a passkey"
+msgstr "新增通行金鑰"
+
+msgid "Back to sign in"
+msgstr "返回登入"
+
+msgid "Secret has been copied"
+msgstr "金鑰已複製"
+
+msgid "Click to copy"
+msgstr "點選複製"
+
+msgid "Current Password"
+msgstr "當前密碼"
+
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr "用手機掃描二維碼將賬戶新增到應用程式中。"
+
 msgid "Generate new recovery codes"
 msgstr "產生新的復原代碼"
 
@@ -1600,6 +1645,11 @@ msgstr "需要多重因素驗證"
 
 msgid "Invalid passcode or recovery code"
 msgstr "無效的密碼或恢復碼"
+
+msgid ""
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
+msgstr "在管理 MFA 政策或重設其他使用者之前，請先在您自己的帳戶上啟用 MFA。"
 
 msgid "Node Status"
 msgstr "節點狀態"
@@ -2232,6 +2282,9 @@ msgstr "檔案內容包含無效的控制字元"
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "檔案內容包含受限的 nginx 指令：{0}"
 
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "檔案內容必須是有效的 PEM 或 htpasswd 資料"
+
 msgid "Destination file: {0} already exists"
 msgstr "目標檔案: {0} 已存在"
 
@@ -2419,6 +2472,71 @@ msgstr "掃描主機金鑰失敗： {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "主機金鑰演算法不相符：預期 {0}，實際為 {1}"
+
+msgid "Invalid request: {0}"
+msgstr "無效的請求：{0}"
+
+msgid ""
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
+msgstr "無效的 Ingress 名稱：請使用 1-40 個小寫字母、數字和連字號，並以字母或數字開頭和結尾"
+
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr "無效的擁有者：請使用 1-64 個字母、數字、點、底線和連字號"
+
+msgid "Invalid host: {0}"
+msgstr "無效的主機：{0}"
+
+msgid "Invalid backend {0}: {1}"
+msgstr "無效的後端 {0}：{1}"
+
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "後端伺服器 {0} 不在允許的後端位址範圍內"
+
+msgid "Invalid route {0}: {1}"
+msgstr "無效的路由 {0}：{1}"
+
+msgid "Invalid tls: {0}"
+msgstr "無效的 TLS 配置：{0}"
+
+msgid "Invalid policy: {0}"
+msgstr "無效的策略：{0}"
+
+msgid "Server {0} not found in backend {1}"
+msgstr "後端 {1} 中找不到伺服器 {0}"
+
+msgid "Ingress {0} not found"
+msgstr "找不到 Ingress {0}"
+
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0} 屬於 {1}；如需接管請傳入 force"
+
+msgid "Host {0} is already served by ingress {1}"
+msgstr "主機 {0} 已由 Ingress {1} 提供服務"
+
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "網站 {0} 已存在，且不由此 Ingress 管理"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0} 在刪除過程中被更新"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "Upstream {0} 已存在，且不由此 Ingress 管理"
+
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "等待 Ingress {0} 達到版本 {1} 逾時"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "等待 Ingress {0} 刪除逾時"
+
+msgid "Apply failed: {0}"
+msgstr "套用失敗：{0}"
+
+msgid "Certificate not ready: {0}"
+msgstr "憑證未就緒：{0}"
+
+msgid "Not implemented"
+msgstr "尚未實作"
 
 msgid "Code completion is not enabled"
 msgstr "程式碼補全未啟用"
@@ -2742,6 +2860,11 @@ msgid "Read dir failed: {0}"
 msgstr "讀取目錄失敗: {0}"
 
 msgid ""
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
+msgstr "網站由 Ingress {0} 管理；請修改該 Ingress，或強制執行此變更"
+
+msgid ""
 "The file name must end in .conf and use only letters, digits, dots, dashes "
 "and underscores"
 msgstr "檔名必須以 .conf 結尾，且只能包含字母、數字、點、連字號和底線"
@@ -2936,6 +3059,9 @@ msgid ""
 "from the additional directives"
 msgstr "共享記憶體區域由 zone 開關設定；請從附加指令中移除 zone 指令"
 
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "以 {0} 開頭的 upstream 名稱保留給 Ingress 使用"
+
 msgid "Upstream not found: {0}"
 msgstr "未找到 upstream：{0}"
 
@@ -2955,6 +3081,11 @@ msgid ""
 "The shared memory zone {0} is already used by another directive; nginx "
 "reported: {1}"
 msgstr "共享記憶體區域 {0} 已被其他指令使用；nginx 報告：{1}"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr "Upstream {0} 由 Ingress {1} 管理；請修改該 Ingress，或強制執行此變更"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "nginx conf.d 目錄不可用: {0}"
@@ -2982,6 +3113,15 @@ msgstr "無效的恢復碼"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "不允許使用舊版恢復代碼，因為未啟用 TOTP 功能"
+
+msgid "MFA enrollment is required"
+msgstr "需要註冊 MFA"
+
+msgid "MFA verification is required"
+msgstr "需要進行 MFA 驗證"
+
+msgid "Cannot remove the last required MFA method"
+msgstr "無法移除最後一個必要的 MFA 方法"
 
 msgid "WebAuthn settings are not configured"
 msgstr "WebAuthn 設定尚未設定"
@@ -3850,6 +3990,9 @@ msgstr "群組記錄"
 msgid "Not Found"
 msgstr "找不到頁面"
 
+msgid "Ingresses"
+msgstr "Ingress"
+
 msgid "Namespaces"
 msgstr "命名空間"
 
@@ -4556,9 +4699,6 @@ msgstr "下載憑證檔案失敗"
 
 msgid "Download Certificate Files"
 msgstr "下載證書文件"
-
-msgid "Download"
-msgstr "下載"
 
 msgid "Download Format"
 msgstr "下載格式"
@@ -6177,6 +6317,296 @@ msgstr "檢視系統健康狀態、升級狀態與元件詳情。"
 msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr "存取整合終端工作階段以執行維護任務。"
 
+msgid "HTTP only"
+msgstr "僅 HTTP"
+
+msgid "Not issued yet"
+msgstr "尚未簽發"
+
+msgid "Expired %{date}"
+msgstr "已於 %{date} 過期"
+
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date}（剩餘 %{days} 天）"
+
+msgid "Address"
+msgstr "地址"
+
+msgid "Health"
+msgstr "健康狀態"
+
+msgid "Max Fails"
+msgstr "最大失敗次數"
+
+msgid "Fail Timeout"
+msgstr "故障逾時"
+
+msgid "Path Prefix"
+msgstr "路徑前綴"
+
+msgid "Backend"
+msgstr "後端"
+
+msgid "Options"
+msgstr "選項"
+
+msgid "Allowed Sources"
+msgstr "允許的來源"
+
+msgid "Last Transition"
+msgstr "最後變更時間"
+
+msgid "Drained"
+msgstr "已摘除"
+
+msgid "No Data"
+msgstr "無資料"
+
+msgid "Healthy"
+msgstr "健康"
+
+msgid "Unhealthy"
+msgstr "不健康"
+
+msgid ""
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr "無法載入產生的網站。網站檔案會在首次成功套用時寫入。"
+
+msgid "Reconcile Now"
+msgstr "立即調和"
+
+msgid "The last apply failed; the previous config is still live"
+msgstr "上次套用失敗；先前的配置仍在生效"
+
+msgid "Owner"
+msgstr "擁有者"
+
+msgid "External ID"
+msgstr "外部 ID"
+
+msgid "Generation"
+msgstr "版本"
+
+msgid "%{observed} applied of %{generation}"
+msgstr "已套用 %{observed} / 共 %{generation}"
+
+msgid "Generated Site"
+msgstr "產生的網站"
+
+msgid "Last Applied"
+msgstr "最後套用時間"
+
+msgid "Config Hash"
+msgstr "配置雜湊"
+
+msgid "Labels"
+msgstr "標籤"
+
+msgid "Hosts"
+msgstr "主機"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "模式"
+
+msgid "Certificate"
+msgstr "憑證"
+
+msgid "View certificate"
+msgstr "檢視憑證"
+
+msgid "Challenge"
+msgstr "驗證方式"
+
+msgid "Redirect to HTTPS"
+msgstr "重新導向至 HTTPS"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "憑證簽發前僅提供 HTTP 監聽。"
+
+msgid "Backends"
+msgstr "後端"
+
+msgid "Routes"
+msgstr "路由"
+
+msgid "Policy default"
+msgstr "使用策略預設值"
+
+msgid "Policy"
+msgstr "策略"
+
+msgid "Everyone"
+msgstr "所有人"
+
+msgid "Rate Limit"
+msgstr "速率限制"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "每個用戶端 %{rps} 請求/秒，突發 %{burst}"
+
+msgid "Unlimited"
+msgstr "不限制"
+
+msgid "Max Body Size"
+msgstr "最大請求主體大小"
+
+msgid "Extra Headers"
+msgstr "附加請求標頭"
+
+msgid "Conditions"
+msgstr "狀態條件"
+
+msgid "True"
+msgstr "是"
+
+msgid "False"
+msgstr "否"
+
+msgid "Generated Site Config"
+msgstr "產生的網站配置"
+
+msgid "Open in site editor"
+msgstr "在網站編輯器中開啟"
+
+msgid "Not ready"
+msgstr "未就緒"
+
+msgid "The latest spec has not been applied yet"
+msgstr "最新的規格尚未套用"
+
+msgid "Applying"
+msgstr "套用中"
+
+msgid "Ready"
+msgstr "就緒"
+
+msgid "Degraded"
+msgstr "降級"
+
+msgid "Config Applied"
+msgstr "配置已套用"
+
+msgid "Certificate Ready"
+msgstr "憑證就緒"
+
+msgid "Backends Healthy"
+msgstr "後端健康"
+
+msgid "Issued automatically (ACME)"
+msgstr "自動簽發（ACME）"
+
+msgid "Existing certificate"
+msgstr "現有憑證"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Round Robin"
+msgstr "輪詢"
+
+msgid "Least Connections"
+msgstr "最少連接"
+
+msgid "IP Hash"
+msgstr "IP 雜湊"
+
+msgid "All owners"
+msgstr "全部擁有者"
+
+msgid "Reconcile of %{name} queued"
+msgstr "已將 %{name} 加入調和佇列"
+
+msgid "Delete ingress %{name}?"
+msgstr "刪除 Ingress %{name}？"
+
+msgid ""
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
+msgstr "此 Ingress 屬於 %{owner}。其控制器很可能在下次同步時重新建立它；如需徹底刪除，請在控制器中移除。"
+
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "將刪除產生的網站和上游檔案，並重新載入 Nginx。"
+
+msgid "Also delete the certificate"
+msgstr "同時刪除憑證"
+
+msgid "Ingress %{name} deleted"
+msgstr "已刪除 Ingress %{name}"
+
+msgid "Ingress"
+msgstr "Ingress"
+
+msgid "Phase"
+msgstr "階段"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} 健康"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} 台伺服器"
+
+msgid "%{count} down"
+msgstr "%{count} 台已摘除"
+
+msgid "Filter by owner"
+msgstr "依擁有者篩選"
+
+msgid "Applied generation / latest generation"
+msgstr "已套用版本 / 最新版本"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "版本 %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "調和"
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+"Ingress 是外部控制器透過 Ingress API 發佈的反向代理項目。Nginx UI 會將每個 Ingress "
+"轉譯為受管網站和上游，簽發憑證，並在這裡回報狀態。請在控制器中修改它們；在此處所做的修改會被下一次調和覆寫。"
+
+msgid "Learn more"
+msgstr "了解更多"
+
+msgid "No ingresses yet"
+msgstr "尚無 Ingress"
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"部署平台等控制器透過 PUT /api/ingresses/:name 建立 Ingress，以叢集節點身分或 API 權杖認證。Ingress "
+"儲存後會立即顯示在這裡。"
+
+msgid "Read the Ingress API guide"
+msgstr "閱讀 Ingress API 指南"
+
+msgid "Search by name, host or external ID"
+msgstr "依名稱、主機或外部 ID 搜尋"
+
+msgid "Search ingresses"
+msgstr "搜尋 Ingress"
+
+msgid "No ingress matches the filter"
+msgstr "沒有符合篩選條件的 Ingress"
+
 msgid "Please input your E-mail!"
 msgstr "請輸入您的電子郵件！"
 
@@ -7444,9 +7874,6 @@ msgstr "請將類似 100000_full.json 的檔案放在此目錄，預設只提供
 msgid "Register passkey successfully"
 msgstr "通行金鑰註冊成功"
 
-msgid "Add a passkey"
-msgstr "新增通行金鑰"
-
 msgid "Tips"
 msgstr "提示"
 
@@ -7462,9 +7889,6 @@ msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr "請按照對話框中的指示完成通行金鑰的註冊流程。"
-
-msgid "Current Password"
-msgstr "當前密碼"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -7576,6 +8000,9 @@ msgstr "請輸入目前密碼"
 msgid "Enable 2FA successfully"
 msgstr "啟用多因素身份驗證成功"
 
+msgid "TOTP disabled"
+msgstr "TOTP 已停用"
+
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -7589,35 +8016,25 @@ msgid ""
 "on your mobile phone."
 msgstr "要啟用它，您需要在手機上安裝 Google 或 Microsoft Authenticator 應用程式。"
 
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr "用手機掃描二維碼將賬戶新增到應用程式中。"
-
 msgid "Current account is not enabled TOTP."
 msgstr "目前帳戶未啟用 TOTP。"
 
 msgid "Current account is enabled TOTP."
 msgstr "目前帳戶已啟用 TOTP。"
 
-msgid "Enable TOTP"
-msgstr "啟用 TOTP"
+msgid "Replace TOTP"
+msgstr "取代 TOTP"
 
-msgid "Are you sure to reset 2FA?"
-msgstr "您確定要重設 2FA 嗎？"
+msgid "Disable TOTP for this account?"
+msgstr "要為此帳戶停用 TOTP 嗎？"
 
-msgid "Reset 2FA"
-msgstr "重設多重因素驗證"
+msgid "Disable TOTP"
+msgstr "停用 TOTP"
 
-msgid "Secret has been copied"
-msgstr "金鑰已複製"
-
-msgid "Click to copy"
-msgstr "點選複製"
-
-msgid "Or enter the secret: %{secret}"
-msgstr "或輸入金鑰：%{secret}"
-
-msgid "Input the code from the app:"
-msgstr "請輸入應用程式中的代碼："
+msgid ""
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
+msgstr "在新代碼驗證之前，您目前的驗證器將持續有效。新的恢復代碼將取代舊代碼。"
 
 msgid "Bark"
 msgstr "Bark"
@@ -8675,9 +9092,6 @@ msgstr "存取與安裝"
 msgid "File mode and setup instructions"
 msgstr "檔案存取模式與設定說明"
 
-msgid "Verify"
-msgstr "驗證"
-
 msgid "Run checks and save"
 msgstr "執行檢查並儲存"
 
@@ -8941,6 +9355,25 @@ msgstr "一般"
 
 msgid "Banned Until"
 msgstr "禁止至"
+
+msgid "MFA Policy"
+msgstr "MFA 政策"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr "要求下次登入時使用 MFA。使用者必須註冊自己的 Authenticator 或 Passkey。"
+
+msgid "Require MFA for all users"
+msgstr "要求所有使用者啟用 MFA"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "要求 SSO 登入時使用本機 MFA"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr "將本地 MFA 驗證和註冊要求應用於 OIDC 和 Casdoor 登入。"
 
 msgid "Passkeys"
 msgstr "Passkey"
@@ -9206,9 +9639,6 @@ msgstr "所有網路介面"
 msgid "HTTPS"
 msgstr "HTTPS"
 
-msgid "Certificate"
-msgstr "憑證"
-
 msgid "Pick the certificate that secures the web interface."
 msgstr "選擇用於保護網頁介面的憑證。"
 
@@ -9228,9 +9658,6 @@ msgstr "結束時間必須晚於開始時間"
 
 msgid "Set maintenance information"
 msgstr "設定維護資訊"
-
-msgid "Continue"
-msgstr "繼續"
 
 msgid "Start time"
 msgstr "開始時間"
@@ -9255,6 +9682,20 @@ msgstr "附加資訊"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "例如：預計復原方案或事件編號"
+
+msgid "Managed by ingress %{name}"
+msgstr "由 Ingress %{name} 管理"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr "下一次調和會覆寫此處的修改。請改為在控制器中編輯該 Ingress。"
+
+msgid "View ingress"
+msgstr "檢視 Ingress"
+
+msgid "Edit anyway"
+msgstr "仍然編輯"
 
 msgid "Configuration Name"
 msgstr "設定名稱"
@@ -9608,15 +10049,6 @@ msgstr "HTTPS 設定會根據已儲存的設定產生 HTTPS server 區塊，該�
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "不是有效的網域名稱或 IP 位址：%{value}"
 
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Existing certificate"
-msgstr "現有憑證"
-
 msgid "Skip for now"
 msgstr "暫時略過"
 
@@ -9866,6 +10298,9 @@ msgstr "Nginx 設定解析錯誤"
 msgid "No."
 msgstr "序號"
 
+msgid "Ingress: %{name}"
+msgstr "Ingress：%{name}"
+
 msgid "Please input name, "
 msgstr "請輸入名稱，"
 
@@ -9930,6 +10365,10 @@ msgstr "為選取的站點設定維護資訊"
 
 msgid "%{count} sites selected"
 msgstr "%{count} 個已選站點"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "包含 %{count} 個由 Ingress 管理的網站"
 
 msgid "Read Only"
 msgstr "唯讀"
@@ -10079,9 +10518,6 @@ msgstr "未使用"
 
 msgid "Max Age"
 msgstr "有效時間"
-
-msgid "Options"
-msgstr "選項"
 
 msgid "Remove option"
 msgstr "刪除選項"
@@ -10276,9 +10712,6 @@ msgstr "檢視第三方授權與開源元件歸屬資訊。"
 msgid "Total Components"
 msgstr "總元件數"
 
-msgid "Backend"
-msgstr "後端"
-
 msgid "Frontend"
 msgstr "前端"
 
@@ -10346,6 +10779,15 @@ msgid ""
 "non-localhost domain. This may expose sensitive information."
 msgstr "您正在透過非本地主機域上的不安全 HTTP 連線存取此終端機。這可能會暴露敏感資訊。"
 
+msgid "Create Upstream"
+msgstr "建立 Upstream"
+
+msgid "View Upstream %{name}"
+msgstr "檢視 Upstream %{name}"
+
+msgid "Edit Upstream %{name}"
+msgstr "編輯 Upstream %{name}"
+
 msgid "Round Robin (default)"
 msgstr "Round Robin（預設）"
 
@@ -10364,12 +10806,6 @@ msgstr "隨機（random）"
 msgid "Upstream %{name} saved and Nginx reloaded"
 msgstr "Upstream %{name} 已儲存，Nginx 已重新載入"
 
-msgid "Edit Upstream %{name}"
-msgstr "編輯 Upstream %{name}"
-
-msgid "Create Upstream"
-msgstr "建立 Upstream"
-
 msgid "Sites use it as proxy_pass http://%{name};"
 msgstr "站點透過 proxy_pass http://%{name} 使用它；"
 
@@ -10384,15 +10820,6 @@ msgstr "一致性雜湊"
 
 msgid "Servers"
 msgstr "伺服器"
-
-msgid "Address"
-msgstr "地址"
-
-msgid "Max Fails"
-msgstr "最大失敗次數"
-
-msgid "Fail Timeout"
-msgstr "故障逾時"
 
 msgid "Not available with this load balancing method"
 msgstr "此負載均衡方式不支援該功能"
@@ -10448,9 +10875,6 @@ msgstr "直接"
 msgid "Health Status"
 msgstr "健康狀態"
 
-msgid "No Data"
-msgstr "無資料"
-
 msgid "Last Check"
 msgstr "最後檢查"
 
@@ -10461,15 +10885,6 @@ msgid ""
 "Per-target selections are preserved. Resume probes from Health Check "
 "preferences."
 msgstr "各目標的選擇會保留。可在健康檢查偏好設定中恢復探測。"
-
-msgid "Round Robin"
-msgstr "輪詢"
-
-msgid "Least Connections"
-msgstr "最少連接"
-
-msgid "IP Hash"
-msgstr "IP 雜湊"
 
 msgid "Hash"
 msgstr "雜湊"
@@ -10485,6 +10900,11 @@ msgstr "定義於"
 
 msgid "Matched upstreams: %{groups}, servers: %{servers}"
 msgstr "匹配的 upstream：%{groups}，伺服器：%{servers}"
+
+msgid ""
+"Ingress %{name} owns this upstream. Change the ingress instead; its next "
+"apply overwrites changes made here."
+msgstr "此 Upstream 歸 Ingress %{name} 所有。請改為修改該 Ingress，它下次套用時會覆寫在此處所做的變更。"
 
 msgid "Server %{address} enabled"
 msgstr "伺服器 %{address} 已啟用"
@@ -10543,8 +10963,54 @@ msgid ""
 "can use too."
 msgstr "這些 upstream 區塊位於站點或其他設定檔內。請在各自的檔案中編輯其設定；伺服器可以在此處啟停。站點內的區塊可以轉換為共享組，供其他站點使用。"
 
-msgid "2FA"
-msgstr "雙因素驗證"
+msgid "MFA Settings"
+msgstr "MFA 設定"
+
+msgid "Require MFA for this user"
+msgstr "要求此使用者啟用 MFA"
+
+msgid "Global enforcement"
+msgstr "全球執行"
+
+msgid "User enforcement"
+msgstr "使用者強制執行"
+
+msgid "Optional"
+msgstr "選填"
+
+msgid "MFA Enrollment"
+msgstr "MFA 綁定狀態"
+
+msgid "Pending enrollment"
+msgstr "待綁定"
+
+msgid "Enrolled"
+msgstr "已綁定"
+
+msgid "Not enrolled"
+msgstr "未綁定"
+
+msgid "MFA policy updated. It takes effect at the next sign-in."
+msgstr "MFA 政策已更新。將於下次登入時生效。"
+
+msgid "MFA credentials and sessions reset"
+msgstr "MFA 憑證和工作階段重置"
+
+msgid ""
+"Global MFA enforcement is active. Changing the user policy does not "
+"override it."
+msgstr "全域 MFA 強制執行已啟用。變更使用者政策不會覆寫它。"
+
+msgid ""
+"Reset removes TOTP, all passkeys and recovery codes, and ends all sessions. "
+"The MFA requirement is preserved."
+msgstr "重設會移除 TOTP、所有通行金鑰和復原代碼，並結束所有工作階段。MFA 要求將予以保留。"
+
+msgid "Reset all MFA credentials and sessions for this user?"
+msgstr "為該使用者重設所有 MFA 憑證和工作階段？"
+
+msgid "Reset MFA"
+msgstr "重設 MFA"
 
 msgid "User info updated successfully"
 msgstr "用戶資訊更新成功"
@@ -10560,6 +11026,14 @@ msgstr "個人資訊"
 
 msgid "Update Profile"
 msgstr "更新資料"
+
+msgid ""
+"MFA is required by the global policy. You cannot remove your last MFA "
+"method."
+msgstr "全球政策要求啟用 MFA。您無法移除最後一個 MFA 方法。"
+
+msgid "MFA is required for your account. You cannot remove your last MFA method."
+msgstr "您的帳戶需要 MFA。您無法移除最後的 MFA 方法。"
 
 msgid "Security Settings"
 msgstr "安全設定"
@@ -10599,17 +11073,20 @@ msgctxt "preference group"
 msgid "Maintenance"
 msgstr "維護"
 
-msgid "MFA Enrollment"
-msgstr "MFA 綁定狀態"
+#~ msgid "Are you sure to reset 2FA?"
+#~ msgstr "您確定要重設 2FA 嗎？"
 
-msgid "Enrolled"
-msgstr "已綁定"
+#~ msgid "Reset 2FA"
+#~ msgstr "重設多重因素驗證"
 
-msgid "Not enrolled"
-msgstr "未綁定"
+#~ msgid "Or enter the secret: %{secret}"
+#~ msgstr "或輸入金鑰：%{secret}"
 
-msgid "Pending enrollment"
-msgstr "待綁定"
+#~ msgid "Input the code from the app:"
+#~ msgstr "請輸入應用程式中的代碼："
+
+#~ msgid "2FA"
+#~ msgstr "雙因素驗證"
 
 #~ msgid "Fixed after creation, so the sites that include the snippet keep working."
 #~ msgstr "建立後不可修改，以確保引用該片段的網站繼續正常運作。"
@@ -10660,339 +11137,3 @@ msgstr "待綁定"
 
 #~ msgid "SAN Aliases: %{aliases}"
 #~ msgstr "SAN 別名：%{aliases}"
-
-msgid "Invalid request: {0}"
-msgstr "無效的請求：{0}"
-
-msgid "Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, starting and ending with a letter or digit"
-msgstr "無效的 Ingress 名稱：請使用 1-40 個小寫字母、數字和連字號，並以字母或數字開頭和結尾"
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr "無效的擁有者：請使用 1-64 個字母、數字、點、底線和連字號"
-
-msgid "Invalid host: {0}"
-msgstr "無效的主機：{0}"
-
-msgid "Invalid backend {0}: {1}"
-msgstr "無效的後端 {0}：{1}"
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr "後端伺服器 {0} 不在允許的後端位址範圍內"
-
-msgid "Invalid route {0}: {1}"
-msgstr "無效的路由 {0}：{1}"
-
-msgid "Invalid tls: {0}"
-msgstr "無效的 TLS 配置：{0}"
-
-msgid "Invalid policy: {0}"
-msgstr "無效的策略：{0}"
-
-msgid "Server {0} not found in backend {1}"
-msgstr "後端 {1} 中找不到伺服器 {0}"
-
-msgid "Ingress {0} not found"
-msgstr "找不到 Ingress {0}"
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr "Ingress {0} 屬於 {1}；如需接管請傳入 force"
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr "主機 {0} 已由 Ingress {1} 提供服務"
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr "網站 {0} 已存在，且不由此 Ingress 管理"
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr "等待 Ingress {0} 達到版本 {1} 逾時"
-
-msgid "Apply failed: {0}"
-msgstr "套用失敗：{0}"
-
-msgid "Certificate not ready: {0}"
-msgstr "憑證未就緒：{0}"
-
-msgid "Not implemented"
-msgstr "尚未實作"
-
-msgid "Site is managed by ingress {0}; change the ingress instead or force the change"
-msgstr "網站由 Ingress {0} 管理；請修改該 Ingress，或強制執行此變更"
-
-msgid "Ingresses"
-msgstr "Ingress"
-
-msgid "HTTP only"
-msgstr "僅 HTTP"
-
-msgid "Not issued yet"
-msgstr "尚未簽發"
-
-msgid "Expired %{date}"
-msgstr "已於 %{date} 過期"
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] "%{date}（剩餘 %{days} 天）"
-
-msgid "Health"
-msgstr "健康狀態"
-
-msgid "Path Prefix"
-msgstr "路徑前綴"
-
-msgid "Allowed Sources"
-msgstr "允許的來源"
-
-msgid "Last Transition"
-msgstr "最後變更時間"
-
-msgid "Drained"
-msgstr "已摘除"
-
-msgid "Healthy"
-msgstr "健康"
-
-msgid "Unhealthy"
-msgstr "不健康"
-
-msgid "The generated site could not be loaded. It is written by the first successful apply."
-msgstr "無法載入產生的網站。網站檔案會在首次成功套用時寫入。"
-
-msgid "Reconcile Now"
-msgstr "立即調和"
-
-msgid "The last apply failed; the previous config is still live"
-msgstr "上次套用失敗；先前的配置仍在生效"
-
-msgid "Owner"
-msgstr "擁有者"
-
-msgid "External ID"
-msgstr "外部 ID"
-
-msgid "Generation"
-msgstr "版本"
-
-msgid "%{observed} applied of %{generation}"
-msgstr "已套用 %{observed} / 共 %{generation}"
-
-msgid "Generated Site"
-msgstr "產生的網站"
-
-msgid "Last Applied"
-msgstr "最後套用時間"
-
-msgid "Config Hash"
-msgstr "配置雜湊"
-
-msgid "Labels"
-msgstr "標籤"
-
-msgid "Hosts"
-msgstr "主機"
-
-msgid "TLS"
-msgstr "TLS"
-
-msgid "Mode"
-msgstr "模式"
-
-msgid "View certificate"
-msgstr "檢視憑證"
-
-msgid "Challenge"
-msgstr "驗證方式"
-
-msgid "Redirect to HTTPS"
-msgstr "重新導向至 HTTPS"
-
-msgid "HSTS"
-msgstr "HSTS"
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr "憑證簽發前僅提供 HTTP 監聽。"
-
-msgid "Backends"
-msgstr "後端"
-
-msgid "Routes"
-msgstr "路由"
-
-msgid "Policy default"
-msgstr "使用策略預設值"
-
-msgid "Policy"
-msgstr "策略"
-
-msgid "Everyone"
-msgstr "所有人"
-
-msgid "Rate Limit"
-msgstr "速率限制"
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr "每個用戶端 %{rps} 請求/秒，突發 %{burst}"
-
-msgid "Unlimited"
-msgstr "不限制"
-
-msgid "Max Body Size"
-msgstr "最大請求主體大小"
-
-msgid "Extra Headers"
-msgstr "附加請求標頭"
-
-msgid "Conditions"
-msgstr "狀態條件"
-
-msgid "True"
-msgstr "是"
-
-msgid "False"
-msgstr "否"
-
-msgid "Generated Site Config"
-msgstr "產生的網站配置"
-
-msgid "Open in site editor"
-msgstr "在網站編輯器中開啟"
-
-msgid "Not ready"
-msgstr "未就緒"
-
-msgid "The latest spec has not been applied yet"
-msgstr "最新的規格尚未套用"
-
-msgid "Applying"
-msgstr "套用中"
-
-msgid "Ready"
-msgstr "就緒"
-
-msgid "Degraded"
-msgstr "降級"
-
-msgid "Config Applied"
-msgstr "配置已套用"
-
-msgid "Certificate Ready"
-msgstr "憑證就緒"
-
-msgid "Backends Healthy"
-msgstr "後端健康"
-
-msgid "Issued automatically (ACME)"
-msgstr "自動簽發（ACME）"
-
-msgid "All owners"
-msgstr "全部擁有者"
-
-msgid "Reconcile of %{name} queued"
-msgstr "已將 %{name} 加入調和佇列"
-
-msgid "Delete ingress %{name}?"
-msgstr "刪除 Ingress %{name}？"
-
-msgid "This ingress is owned by %{owner}. Its controller will probably recreate it on the next sync; remove it from the controller to delete it for good."
-msgstr "此 Ingress 屬於 %{owner}。其控制器很可能在下次同步時重新建立它；如需徹底刪除，請在控制器中移除。"
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr "將刪除產生的網站和上游檔案，並重新載入 Nginx。"
-
-msgid "Also delete the certificate"
-msgstr "同時刪除憑證"
-
-msgid "Ingress %{name} deleted"
-msgstr "已刪除 Ingress %{name}"
-
-msgid "Ingress"
-msgstr "Ingress"
-
-msgid "Phase"
-msgstr "階段"
-
-msgid "%{healthy}/%{total} healthy"
-msgstr "%{healthy}/%{total} 健康"
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] "%{total} 台伺服器"
-
-msgid "%{count} down"
-msgstr "%{count} 台已摘除"
-
-msgid "Filter by owner"
-msgstr "依擁有者篩選"
-
-msgid "Applied generation / latest generation"
-msgstr "已套用版本 / 最新版本"
-
-msgid "gen %{observed}/%{generation}"
-msgstr "版本 %{observed}/%{generation}"
-
-msgid "Reconcile"
-msgstr "調和"
-
-msgid "Ingresses are reverse proxy entries published by external controllers through the Ingress API. Nginx UI renders each one into a managed site and upstreams, issues its certificate and reports its status here. Change them in their controller; edits made here are overwritten by the next reconcile."
-msgstr "Ingress 是外部控制器透過 Ingress API 發佈的反向代理項目。Nginx UI 會將每個 Ingress 轉譯為受管網站和上游，簽發憑證，並在這裡回報狀態。請在控制器中修改它們；在此處所做的修改會被下一次調和覆寫。"
-
-msgid "Learn more"
-msgstr "了解更多"
-
-msgid "No ingresses yet"
-msgstr "尚無 Ingress"
-
-msgid "A controller such as a deployment platform creates ingresses with PUT /api/ingresses/:name, authenticated as a cluster node or with an API token. They show up here as soon as they are stored."
-msgstr "部署平台等控制器透過 PUT /api/ingresses/:name 建立 Ingress，以叢集節點身分或 API 權杖認證。Ingress 儲存後會立即顯示在這裡。"
-
-msgid "Read the Ingress API guide"
-msgstr "閱讀 Ingress API 指南"
-
-msgid "Search by name, host or external ID"
-msgstr "依名稱、主機或外部 ID 搜尋"
-
-msgid "Search ingresses"
-msgstr "搜尋 Ingress"
-
-msgid "No ingress matches the filter"
-msgstr "沒有符合篩選條件的 Ingress"
-
-msgid "Managed by ingress %{name}"
-msgstr "由 Ingress %{name} 管理"
-
-msgid "Changes will be overwritten by the next reconcile. Edit the ingress in its controller instead."
-msgstr "下一次調和會覆寫此處的修改。請改為在控制器中編輯該 Ingress。"
-
-msgid "View ingress"
-msgstr "檢視 Ingress"
-
-msgid "Edit anyway"
-msgstr "仍然編輯"
-
-msgid "Ingress: %{name}"
-msgstr "Ingress：%{name}"
-
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] "包含 %{count} 個由 Ingress 管理的網站"
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr "Ingress {0} 在刪除過程中被更新"
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr "Upstream {0} 已存在，且不由此 Ingress 管理"
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr "等待 Ingress {0} 刪除逾時"
-
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr "以 {0} 開頭的 upstream 名稱保留給 Ingress 使用"
-
-msgid "Upstream {0} is managed by ingress {1}; change the ingress instead or force the change"
-msgstr "Upstream {0} 由 Ingress {1} 管理；請修改該 Ingress，或強制執行此變更"
-
-msgid "Ingress %{name} owns this upstream. Change the ingress instead; its next apply overwrites changes made here."
-msgstr "此 Upstream 歸 Ingress %{name} 所有。請改為修改該 Ingress，它下次套用時會覆寫在此處所做的變更。"
-
-msgid "View Upstream %{name}"
-msgstr "檢視 Upstream %{name}"

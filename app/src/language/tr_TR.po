@@ -1729,6 +1729,51 @@ msgstr "Kurtarma kodunu kullan"
 msgid "Use OTP"
 msgstr "OTP Kullan"
 
+msgid "Recovery codes downloaded"
+msgstr "Kurtarma kodları indirildi"
+
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr "MFA kurulumu tamamlandı. Devam etmeden önce kurtarma kodlarınızı kaydedin."
+
+msgid "Download"
+msgstr "İndir"
+
+msgid "Continue"
+msgstr "Devam"
+
+msgid "MFA session expired. Please sign in again."
+msgstr "MFA oturumu sona erdi. Lütfen tekrar giriş yapın."
+
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "MFA gerekli. Devam etmek için bir doğrulayıcı veya passkey kurun."
+
+msgid "Verify your MFA method to continue signing in."
+msgstr "Oturum açmaya devam etmek için MFA yönteminizi doğrulayın."
+
+msgid "Enable TOTP"
+msgstr "TOTP'yi Etkinleştir"
+
+msgid "Verify"
+msgstr "Doğrula"
+
+msgid "Add a passkey"
+msgstr "Bir geçiş anahtarı ekle"
+
+msgid "Back to sign in"
+msgstr "Giriş sayfasına geri dön"
+
+msgid "Secret has been copied"
+msgstr "Gizli kod kopyalandı"
+
+msgid "Click to copy"
+msgstr "Kopyala için tıklayın"
+
+msgid "Current Password"
+msgstr "Mevcut Şifre"
+
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr "Hesabı uygulamaya eklemek için telefonunuzla QR kodunu tarayın."
+
 msgid "Generate new recovery codes"
 msgstr "Yeni kurtarma kodları oluştur"
 
@@ -1751,6 +1796,13 @@ msgstr "İki faktörlü kimlik doğrulama gerekiyor"
 
 msgid "Invalid passcode or recovery code"
 msgstr "Geçersiz parola veya kurtarma kodu"
+
+msgid ""
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
+msgstr ""
+"MFA politikalarını yönetmeden veya başka bir kullanıcıyı sıfırlamadan önce "
+"kendi hesabınızda MFA'yı etkinleştirin."
 
 msgid "Node Status"
 msgstr "Düğüm Durumu"
@@ -2393,6 +2445,9 @@ msgstr "Dosya içeriği geçersiz kontrol karakterleri içeriyor"
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "Dosya içeriği kısıtlı nginx yönergesi içeriyor: {0}"
 
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "Dosya içeriği geçerli PEM veya htpasswd verisi olmalıdır"
+
 msgid "Destination file: {0} already exists"
 msgstr "Hedef dosya: {0} zaten mevcut"
 
@@ -2584,6 +2639,75 @@ msgstr "Host anahtarı tarama başarısız oldu: {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "Ana makine anahtarı algoritması uyuşmazlığı: {0} bekleniyordu, {1} alındı"
+
+msgid "Invalid request: {0}"
+msgstr "Geçersiz istek: {0}"
+
+msgid ""
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
+msgstr ""
+"Geçersiz ingress adı: 1-40 arası küçük harf, rakam ve tire kullanın; harf "
+"veya rakam ile başlayıp harf veya rakam ile bitmelidir"
+
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr "Geçersiz sahip: 1-64 harf, rakam, nokta, alt çizgi ve tire kullanın"
+
+msgid "Invalid host: {0}"
+msgstr "Geçersiz ana makine: {0}"
+
+msgid "Invalid backend {0}: {1}"
+msgstr "Geçersiz Backend {0}: {1}"
+
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "Arka uç sunucusu {0} izin verilen arka uç aralıklarının dışında"
+
+msgid "Invalid route {0}: {1}"
+msgstr "Geçersiz rota {0}: {1}"
+
+msgid "Invalid tls: {0}"
+msgstr "Geçersiz TLS: {0}"
+
+msgid "Invalid policy: {0}"
+msgstr "Geçersiz politika: {0}"
+
+msgid "Server {0} not found in backend {1}"
+msgstr "Sunucu {0}, {1} arka uçta bulunamadı"
+
+msgid "Ingress {0} not found"
+msgstr "Ingress {0} bulunamadı"
+
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr ""
+"Ingress {0} sahibi {1} olarak görünüyor; devralmak için force parametresini "
+"kullanın"
+
+msgid "Host {0} is already served by ingress {1}"
+msgstr "Host {0} zaten ingress {1} tarafından sunulmaktadır"
+
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "Site {0} zaten var ve bu ingress tarafından yönetilmiyor"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0}, silinirken güncellendi"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "Upstream {0} zaten mevcut ve bu ingress tarafından yönetilmiyor"
+
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "ingress {0} için nesil {1} değerine ulaşması beklenirken zaman aşımı oluştu"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "ingress {0} silinmesi beklenirken zaman aşımına uğradı"
+
+msgid "Apply failed: {0}"
+msgstr "Uygulama başarısız: {0}"
+
+msgid "Certificate not ready: {0}"
+msgstr "Sertifika hazır değil: {0}"
+
+msgid "Not implemented"
+msgstr "Uygulanmadı"
 
 msgid "Code completion is not enabled"
 msgstr "Kod tamamlama etkin değil"
@@ -2919,6 +3043,13 @@ msgid "Read dir failed: {0}"
 msgstr "Dizin okuma hatası: {0}"
 
 msgid ""
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
+msgstr ""
+"Site, ingress {0} tarafından yönetilmektedir; bunun yerine ingress'i "
+"değiştirin veya değişikliği zorlayın"
+
+msgid ""
 "The file name must end in .conf and use only letters, digits, dots, dashes "
 "and underscores"
 msgstr ""
@@ -3131,6 +3262,9 @@ msgstr ""
 "Ortak bellek alanı zone anahtarı ile ayarlanır; ek direktiflerden zone "
 "direktifini kaldırın"
 
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "{0} ile başlayan upstream adları ingresses için ayrılmıştır"
+
 msgid "Upstream not found: {0}"
 msgstr "Upstream bulunamadı: {0}"
 
@@ -3152,6 +3286,13 @@ msgid ""
 msgstr ""
 "{0} paylaşılan bellek bölgesi zaten başka bir yönerge tarafından "
 "kullanılıyor; nginx bildirdi: {1}"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr ""
+"Upstream {0}, ingress {1} tarafından yönetiliyor; bunun yerine ingress'i "
+"değiştirin veya değişikliği zorlayın"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "nginx conf.d dizini kullanılamıyor: {0}"
@@ -3179,6 +3320,15 @@ msgstr "Geçersiz kurtarma kodu"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "TOTP etkin olmadığı için eski kurtarma kodu kullanılamaz"
+
+msgid "MFA enrollment is required"
+msgstr "MFA kaydı gereklidir"
+
+msgid "MFA verification is required"
+msgstr "MFA doğrulaması gereklidir"
+
+msgid "Cannot remove the last required MFA method"
+msgstr "Son gerekli MFA yöntemi kaldırılamıyor"
 
 msgid "WebAuthn settings are not configured"
 msgstr "WebAuthn ayarları yapılandırılmamış"
@@ -4137,6 +4287,9 @@ msgstr "Grup Kayıtları"
 msgid "Not Found"
 msgstr "Bulunamadı"
 
+msgid "Ingresses"
+msgstr "Ingresses"
+
 msgid "Namespaces"
 msgstr "İsim Alanları"
 
@@ -4879,9 +5032,6 @@ msgstr "Sertifika dosyaları indirilemedi"
 
 msgid "Download Certificate Files"
 msgstr "Sertifika Dosyalarını İndir"
-
-msgid "Download"
-msgstr "İndir"
 
 msgid "Download Format"
 msgstr "İndirme Biçimi"
@@ -6603,6 +6753,304 @@ msgstr "Sistem sağlığını, yükseltme durumunu ve bileşen ayrıntılarını
 msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr "Bakım görevleri için entegre terminal oturumlarına erişin."
 
+msgid "HTTP only"
+msgstr "Yalnızca HTTP"
+
+msgid "Not issued yet"
+msgstr "Henüz verilmedi"
+
+msgid "Expired %{date}"
+msgstr "Süresi doldu %{date}"
+
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date} (%{days} gün kaldı)"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Health"
+msgstr "Sağlık"
+
+msgid "Max Fails"
+msgstr "Maksimum Hata"
+
+msgid "Fail Timeout"
+msgstr "Hata Zaman Aşımı"
+
+msgid "Path Prefix"
+msgstr "Yol Öneki"
+
+msgid "Backend"
+msgstr "Arka Uç"
+
+msgid "Options"
+msgstr "Seçenekler"
+
+msgid "Allowed Sources"
+msgstr "İzin Verilen Kaynaklar"
+
+msgid "Last Transition"
+msgstr "Son Geçiş"
+
+msgid "Drained"
+msgstr "Tükenmiş"
+
+msgid "No Data"
+msgstr "Veri yok"
+
+msgid "Healthy"
+msgstr "Sağlıklı"
+
+msgid "Unhealthy"
+msgstr "Sağlıksız"
+
+msgid ""
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr "Oluşturulan site yüklenemedi. İlk başarılı uygulamada yazılır."
+
+msgid "Reconcile Now"
+msgstr "Şimdi mutabakat yap"
+
+msgid "The last apply failed; the previous config is still live"
+msgstr "Son uygulama başarısız oldu; önceki yapılandırma hâlâ aktif."
+
+msgid "Owner"
+msgstr "Sahip"
+
+msgid "External ID"
+msgstr "Harici ID"
+
+msgid "Generation"
+msgstr "Nesil"
+
+msgid "%{observed} applied of %{generation}"
+msgstr "%{generation} uygulanan %{observed}"
+
+msgid "Generated Site"
+msgstr "Oluşturulan Site"
+
+msgid "Last Applied"
+msgstr "Son uygulanan"
+
+msgid "Config Hash"
+msgstr "Yapılandırma hash'i"
+
+msgid "Labels"
+msgstr "Etiketler"
+
+msgid "Hosts"
+msgstr "Hosts"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "Mod"
+
+msgid "Certificate"
+msgstr "Sertifika"
+
+msgid "View certificate"
+msgstr "Sertifikayı görüntüle"
+
+msgid "Challenge"
+msgstr "Meydan Okuma"
+
+msgid "Redirect to HTTPS"
+msgstr "HTTPS'ye yönlendir"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "Sertifika verilene kadar yalnızca HTTP dinleyicisi sunulur."
+
+msgid "Backends"
+msgstr "Arka uçlar"
+
+msgid "Routes"
+msgstr "Rotalar"
+
+msgid "Policy default"
+msgstr "Varsayılan politika"
+
+msgid "Policy"
+msgstr "Politika"
+
+msgid "Everyone"
+msgstr "Herkes"
+
+msgid "Rate Limit"
+msgstr "Hız sınırı"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "istemci başına %{rps} istek/sn, burst %{burst}"
+
+msgid "Unlimited"
+msgstr "Sınırsız"
+
+msgid "Max Body Size"
+msgstr "Maksimum Gövde Boyutu"
+
+msgid "Extra Headers"
+msgstr "Ek Başlıklar"
+
+msgid "Conditions"
+msgstr "Koşullar"
+
+msgid "True"
+msgstr "Doğru"
+
+msgid "False"
+msgstr "Yanlış"
+
+msgid "Generated Site Config"
+msgstr "Oluşturulan Site Yapılandırması"
+
+msgid "Open in site editor"
+msgstr "Site düzenleyicisinde aç"
+
+msgid "Not ready"
+msgstr "Hazır değil"
+
+msgid "The latest spec has not been applied yet"
+msgstr "En son özellik henüz uygulanmadı"
+
+msgid "Applying"
+msgstr "Uygulanıyor"
+
+msgid "Ready"
+msgstr "Hazır"
+
+msgid "Degraded"
+msgstr "Hızı Düşük"
+
+msgid "Config Applied"
+msgstr "Yapılandırma uygulandı"
+
+msgid "Certificate Ready"
+msgstr "Sertifika hazır"
+
+msgid "Backends Healthy"
+msgstr "Arka uçlar sağlıklı"
+
+msgid "Issued automatically (ACME)"
+msgstr "Otomatik olarak verildi (ACME)"
+
+msgid "Existing certificate"
+msgstr "Mevcut sertifika"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Round Robin"
+msgstr "Round Robin"
+
+msgid "Least Connections"
+msgstr "En az bağlantı"
+
+msgid "IP Hash"
+msgstr "IP Karma"
+
+msgid "All owners"
+msgstr "Tüm sahipler"
+
+msgid "Reconcile of %{name} queued"
+msgstr "%{name} mutabakatı sıraya alındı"
+
+msgid "Delete ingress %{name}?"
+msgstr "ingress %{name} silinsin mi?"
+
+msgid ""
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
+msgstr ""
+"Bu ingress %{owner} tarafından sahiplenilmiştir. Controller'ı büyük "
+"olasılıkla bir sonraki senkronizasyonda yeniden oluşturacaktır; kalıcı "
+"olarak silmek için controller'dan kaldırın."
+
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "Oluşturulan site ve upstream dosyaları kaldırılır ve nginx yeniden yüklenir."
+
+msgid "Also delete the certificate"
+msgstr "Sertifikayı da sil"
+
+msgid "Ingress %{name} deleted"
+msgstr "Ingress %{name} silindi"
+
+msgid "Ingress"
+msgstr "Ingress"
+
+msgid "Phase"
+msgstr "Aşama"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} sağlıklı"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} sunucu"
+msgstr[1] "%{total} sunucu"
+
+msgid "%{count} down"
+msgstr "%{count} kaldı"
+
+msgid "Filter by owner"
+msgstr "Sahibine göre filtrele"
+
+msgid "Applied generation / latest generation"
+msgstr "Uygulanan nesil / En son nesil"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "gen %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "Mutabakat"
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+"Ingress'ler, harici denetleyiciler tarafından Ingress API aracılığıyla "
+"yayınlanan ters proxy girişleridir. Nginx UI her birini yönetilen bir site "
+"ve upstream olarak işler, sertifikasını verir ve durumunu burada bildirir. "
+"Bunları ilgili denetleyicilerinde değiştirin; burada yapılan değişiklikler "
+"bir sonraki uzlaştırma tarafından üzerine yazılır."
+
+msgid "Learn more"
+msgstr "Daha fazla bilgi"
+
+msgid "No ingresses yet"
+msgstr "Henüz ingress yok"
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"Bir dağıtım platformu gibi bir denetleyici, PUT /api/ingresses/:name ile "
+"kümе düğümü olarak veya API anahtarıyla kimlik doğrulaması yaparak "
+"ingresses oluşturur. Depolandıkları anda burada görünürler."
+
+msgid "Read the Ingress API guide"
+msgstr "Ingress API kılavuzunu okuyun"
+
+msgid "Search by name, host or external ID"
+msgstr "Ada, ana bilgisayara veya harici kimliğe göre ara"
+
+msgid "Search ingresses"
+msgstr "Ingress ara"
+
+msgid "No ingress matches the filter"
+msgstr "Filtreyle eşleşen Ingress yok"
+
 msgid "Please input your E-mail!"
 msgstr "Lütfen e-posta adresinizi giriniz!"
 
@@ -7980,9 +8428,6 @@ msgstr ""
 msgid "Register passkey successfully"
 msgstr "Geçiş anahtarı başarıyla kaydedildi"
 
-msgid "Add a passkey"
-msgstr "Bir geçiş anahtarı ekle"
-
 msgid "Tips"
 msgstr "İpuçları"
 
@@ -8004,9 +8449,6 @@ msgid ""
 msgstr ""
 "Geçiş anahtarı kayıt işlemini tamamlamak için iletişim kutusundaki "
 "talimatları izleyin."
-
-msgid "Current Password"
-msgstr "Mevcut Şifre"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -8143,6 +8585,9 @@ msgstr "Lütfen mevcut şifrenizi girin"
 msgid "Enable 2FA successfully"
 msgstr "2FA'yı başarıyla etkinleştirildi"
 
+msgid "TOTP disabled"
+msgstr "TOTP devre dışı"
+
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -8160,35 +8605,27 @@ msgstr ""
 "Etkinleştirmek için telefonunuza Google Authenticator veya Microsoft "
 "Authenticator uygulamasını yüklemeniz gerekir."
 
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr "Hesabı uygulamaya eklemek için telefonunuzla QR kodunu tarayın."
-
 msgid "Current account is not enabled TOTP."
 msgstr "Mevcut hesap için TOTP etkin değil."
 
 msgid "Current account is enabled TOTP."
 msgstr "Mevcut hesap için TOTP etkinleştirildi."
 
-msgid "Enable TOTP"
-msgstr "TOTP'yi Etkinleştir"
+msgid "Replace TOTP"
+msgstr "TOTP'yi Değiştir"
 
-msgid "Are you sure to reset 2FA?"
-msgstr "İki aşamalı doğrulama sıfırlanacaktır. Emin misiniz?"
+msgid "Disable TOTP for this account?"
+msgstr "Bu hesap için TOTP devre dışı bırakılsın mı?"
 
-msgid "Reset 2FA"
-msgstr "2FA'yı Sıfırla"
+msgid "Disable TOTP"
+msgstr "TOTP'yi devre dışı bırak"
 
-msgid "Secret has been copied"
-msgstr "Gizli kod kopyalandı"
-
-msgid "Click to copy"
-msgstr "Kopyala için tıklayın"
-
-msgid "Or enter the secret: %{secret}"
-msgstr "Veya gizli anahtarı girin: %{secret}"
-
-msgid "Input the code from the app:"
-msgstr "Uygulamadan kodu girin:"
+msgid ""
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
+msgstr ""
+"Yeni kod doğrulanana kadar mevcut kimlik doğrulayıcınız etkin kalır. Yeni "
+"kurtarma kodları eskilerinin yerini alır."
 
 msgid "Bark"
 msgstr "Bark"
@@ -9367,9 +9804,6 @@ msgstr "Erişim ve Kurulum"
 msgid "File mode and setup instructions"
 msgstr "Dosya modu ve kurulum talimatları"
 
-msgid "Verify"
-msgstr "Doğrula"
-
 msgid "Run checks and save"
 msgstr "Kontrolleri çalıştır ve kaydet"
 
@@ -9648,6 +10082,29 @@ msgstr "Genel"
 
 msgid "Banned Until"
 msgstr "Şu Zamana Kadar Yasaklı"
+
+msgid "MFA Policy"
+msgstr "MFA Politikası"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr ""
+"Sonraki oturum açmada MFA zorunlu olsun. Kullanıcılar kendi Authenticator "
+"veya Passkey kaydını yapmalıdır."
+
+msgid "Require MFA for all users"
+msgstr "Tüm kullanıcılar için MFA gerektir"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "SSO oturum açma için yerel MFA gerektir"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr ""
+"Yerel MFA doğrulama ve kayıt gereksinimlerini OIDC ve Casdoor oturum açmaya "
+"uygulayın."
 
 msgid "Passkeys"
 msgstr "Passkey'ler"
@@ -9943,9 +10400,6 @@ msgstr "Tüm arayüzler"
 msgid "HTTPS"
 msgstr "HTTPS"
 
-msgid "Certificate"
-msgstr "Sertifika"
-
 msgid "Pick the certificate that secures the web interface."
 msgstr "Web arayüzünü güvence altına alan sertifikayı seçin."
 
@@ -9970,9 +10424,6 @@ msgstr "Bitiş zamanı başlangıç zamanından sonra olmalıdır"
 msgid "Set maintenance information"
 msgstr "Bakım bilgilerini ayarla"
 
-msgid "Continue"
-msgstr "Devam"
-
 msgid "Start time"
 msgstr "Başlangıç zamanı"
 
@@ -9996,6 +10447,22 @@ msgstr "Ek bilgiler"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Örneğin: beklenen kurtarma planı veya olay referansı"
+
+msgid "Managed by ingress %{name}"
+msgstr "ingress %{name} tarafından yönetiliyor"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr ""
+"Değişiklikler bir sonraki reconcile tarafından üzerine yazılacaktır. Bunun "
+"yerine Ingress'i controller'ında düzenleyin."
+
+msgid "View ingress"
+msgstr "Ingress'i görüntüle"
+
+msgid "Edit anyway"
+msgstr "Yine de düzenle"
 
 msgid "Configuration Name"
 msgstr "Yapılandırma Adı"
@@ -10368,15 +10835,6 @@ msgstr ""
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "Geçerli bir alan adı veya IP adresi değil: %{value}"
 
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Existing certificate"
-msgstr "Mevcut sertifika"
-
 msgid "Skip for now"
 msgstr "Şimdilik atla"
 
@@ -10668,6 +11126,9 @@ msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
 msgid "No."
 msgstr "No"
 
+msgid "Ingress: %{name}"
+msgstr "Ingress: %{name}"
+
 msgid "Please input name, "
 msgstr "Lütfen adı girin, "
 
@@ -10734,6 +11195,11 @@ msgstr "Seçilen siteler için bakım bilgilerini ayarla"
 
 msgid "%{count} sites selected"
 msgstr "%{count} site seçildi"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "Bir ingress tarafından yönetilen %{count} siteyi dahil et"
+msgstr[1] "Ingress'ler tarafından yönetilen %{count} siteyi dahil et"
 
 msgid "Read Only"
 msgstr "Salt okunur"
@@ -10895,9 +11361,6 @@ msgstr "Kullanılmıyor"
 
 msgid "Max Age"
 msgstr "Maksimum Yaş"
-
-msgid "Options"
-msgstr "Seçenekler"
 
 msgid "Remove option"
 msgstr "Seçeneği kaldır"
@@ -11111,9 +11574,6 @@ msgstr "Üçüncü taraf lisanslarını ve açık kaynak bileşen atıflarını 
 msgid "Total Components"
 msgstr "Toplam Bileşenler"
 
-msgid "Backend"
-msgstr "Arka Uç"
-
 msgid "Frontend"
 msgstr "Önyüz"
 
@@ -11186,6 +11646,15 @@ msgstr ""
 "bağlantısı üzerinden erişiyorsunuz. Bu, hassas bilgilerin açığa çıkmasına "
 "neden olabilir."
 
+msgid "Create Upstream"
+msgstr "Upstream Oluştur"
+
+msgid "View Upstream %{name}"
+msgstr "upstream %{name} görüntüle"
+
+msgid "Edit Upstream %{name}"
+msgstr "Upstream %{name} Düzenle"
+
 msgid "Round Robin (default)"
 msgstr "Round Robin (varsayılan)"
 
@@ -11204,12 +11673,6 @@ msgstr "Rastgele (random)"
 msgid "Upstream %{name} saved and Nginx reloaded"
 msgstr "Upstream %{name} kaydedildi ve Nginx yeniden yüklendi"
 
-msgid "Edit Upstream %{name}"
-msgstr "Upstream %{name} Düzenle"
-
-msgid "Create Upstream"
-msgstr "Upstream Oluştur"
-
 msgid "Sites use it as proxy_pass http://%{name};"
 msgstr "Siteler bunu proxy_pass http://%{name} olarak kullanır;"
 
@@ -11224,15 +11687,6 @@ msgstr "Tutarlı Hashing"
 
 msgid "Servers"
 msgstr "Sunucular"
-
-msgid "Address"
-msgstr "Adres"
-
-msgid "Max Fails"
-msgstr "Maksimum Hata"
-
-msgid "Fail Timeout"
-msgstr "Hata Zaman Aşımı"
 
 msgid "Not available with this load balancing method"
 msgstr "Bu yük dengeleme yöntemiyle kullanılamaz"
@@ -11291,9 +11745,6 @@ msgstr "Doğrudan"
 msgid "Health Status"
 msgstr "Sağlık Durumu"
 
-msgid "No Data"
-msgstr "Veri yok"
-
 msgid "Last Check"
 msgstr "Son Kontrol"
 
@@ -11306,15 +11757,6 @@ msgid ""
 msgstr ""
 "Hedef bazlı seçimler korunur. Yoklamaları Sağlık Denetimi tercihlerinden "
 "sürdürün."
-
-msgid "Round Robin"
-msgstr "Round Robin"
-
-msgid "Least Connections"
-msgstr "En az bağlantı"
-
-msgid "IP Hash"
-msgstr "IP Karma"
 
 msgid "Hash"
 msgstr "Hash"
@@ -11330,6 +11772,13 @@ msgstr "Tanımlandığı yer"
 
 msgid "Matched upstreams: %{groups}, servers: %{servers}"
 msgstr "Eşleşen upstream'ler: %{groups}, sunucular: %{servers}"
+
+msgid ""
+"Ingress %{name} owns this upstream. Change the ingress instead; its next "
+"apply overwrites changes made here."
+msgstr ""
+"Ingress %{name} bu upstream'e sahiptir. Bunun yerine ingress'i değiştirin; "
+"bir sonraki uygulaması burada yapılan değişikliklerin üzerine yazar."
 
 msgid "Server %{address} enabled"
 msgstr "Sunucu %{address} etkinleştirildi"
@@ -11397,8 +11846,58 @@ msgstr ""
 "kapatabilirsiniz. Bir site içindeki blok, diğer sitelerin de "
 "kullanabileceği paylaşılan bir gruba dönüştürülebilir."
 
-msgid "2FA"
-msgstr "İki aşamalı kimlik doğrulaması(2FA)"
+msgid "MFA Settings"
+msgstr "MFA Ayarları"
+
+msgid "Require MFA for this user"
+msgstr "Bu kullanıcı için MFA zorunlu kıl"
+
+msgid "Global enforcement"
+msgstr "Küresel uygulama"
+
+msgid "User enforcement"
+msgstr "Kullanıcı zorunluluğu"
+
+msgid "Optional"
+msgstr "İsteğe bağlı"
+
+msgid "MFA Enrollment"
+msgstr "MFA kayıt durumu"
+
+msgid "Pending enrollment"
+msgstr "Kayıt bekleniyor"
+
+msgid "Enrolled"
+msgstr "Kayıtlı"
+
+msgid "Not enrolled"
+msgstr "Kayıtlı değil"
+
+msgid "MFA policy updated. It takes effect at the next sign-in."
+msgstr "MFA politikası güncellendi. Bir sonraki oturum açmada yürürlüğe girecektir."
+
+msgid "MFA credentials and sessions reset"
+msgstr "MFA kimlik bilgileri ve oturumları sıfırlandı"
+
+msgid ""
+"Global MFA enforcement is active. Changing the user policy does not "
+"override it."
+msgstr ""
+"Küresel MFA zorlaması etkindir. Kullanıcı politikasını değiştirmek bunun "
+"yerine geçmez."
+
+msgid ""
+"Reset removes TOTP, all passkeys and recovery codes, and ends all sessions. "
+"The MFA requirement is preserved."
+msgstr ""
+"Sıfırlama, TOTP'yi, tüm geçiş anahtarlarını ve kurtarma kodlarını kaldırır "
+"ve tüm oturumları sonlandırır. MFA gereksinimi korunur."
+
+msgid "Reset all MFA credentials and sessions for this user?"
+msgstr "Bu kullanıcının tüm MFA kimlik bilgileri ve oturumları sıfırlansın mı?"
+
+msgid "Reset MFA"
+msgstr "MFA'yı sıfırla"
 
 msgid "User info updated successfully"
 msgstr "Kullanıcı bilgileri başarıyla güncellendi"
@@ -11414,6 +11913,16 @@ msgstr "Kişisel Bilgiler"
 
 msgid "Update Profile"
 msgstr "Profili Güncelle"
+
+msgid ""
+"MFA is required by the global policy. You cannot remove your last MFA "
+"method."
+msgstr ""
+"MFA, küresel politika tarafından zorunlu kılınmıştır. Son MFA yönteminizi "
+"kaldıramazsınız."
+
+msgid "MFA is required for your account. You cannot remove your last MFA method."
+msgstr "Hesabınız için MFA gereklidir. Son MFA yönteminizi kaldıramazsınız."
 
 msgid "Security Settings"
 msgstr "Güvenlik Ayarları"
@@ -11453,17 +11962,20 @@ msgctxt "preference group"
 msgid "Maintenance"
 msgstr "Bakım"
 
-msgid "MFA Enrollment"
-msgstr "MFA kayıt durumu"
+#~ msgid "Are you sure to reset 2FA?"
+#~ msgstr "İki aşamalı doğrulama sıfırlanacaktır. Emin misiniz?"
 
-msgid "Enrolled"
-msgstr "Kayıtlı"
+#~ msgid "Reset 2FA"
+#~ msgstr "2FA'yı Sıfırla"
 
-msgid "Not enrolled"
-msgstr "Kayıtlı değil"
+#~ msgid "Or enter the secret: %{secret}"
+#~ msgstr "Veya gizli anahtarı girin: %{secret}"
 
-msgid "Pending enrollment"
-msgstr "Kayıt bekleniyor"
+#~ msgid "Input the code from the app:"
+#~ msgstr "Uygulamadan kodu girin:"
+
+#~ msgid "2FA"
+#~ msgstr "İki aşamalı kimlik doğrulaması(2FA)"
 
 #~ msgid "Webauthn"
 #~ msgstr "WebAuthn"
@@ -11502,342 +12014,3 @@ msgstr "Kayıt bekleniyor"
 
 #~ msgid "Global health check controls"
 #~ msgstr "Genel sağlık denetimi kontrolleri"
-
-msgid "Invalid request: {0}"
-msgstr ""
-
-msgid "Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, starting and ending with a letter or digit"
-msgstr ""
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr ""
-
-msgid "Invalid host: {0}"
-msgstr ""
-
-msgid "Invalid backend {0}: {1}"
-msgstr ""
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr ""
-
-msgid "Invalid route {0}: {1}"
-msgstr ""
-
-msgid "Invalid tls: {0}"
-msgstr ""
-
-msgid "Invalid policy: {0}"
-msgstr ""
-
-msgid "Server {0} not found in backend {1}"
-msgstr ""
-
-msgid "Ingress {0} not found"
-msgstr ""
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr ""
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr ""
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr ""
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr ""
-
-msgid "Apply failed: {0}"
-msgstr ""
-
-msgid "Certificate not ready: {0}"
-msgstr ""
-
-msgid "Not implemented"
-msgstr ""
-
-msgid "Site is managed by ingress {0}; change the ingress instead or force the change"
-msgstr ""
-
-msgid "Ingresses"
-msgstr ""
-
-msgid "HTTP only"
-msgstr ""
-
-msgid "Not issued yet"
-msgstr ""
-
-msgid "Expired %{date}"
-msgstr ""
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Health"
-msgstr ""
-
-msgid "Path Prefix"
-msgstr ""
-
-msgid "Allowed Sources"
-msgstr ""
-
-msgid "Last Transition"
-msgstr ""
-
-msgid "Drained"
-msgstr ""
-
-msgid "Healthy"
-msgstr ""
-
-msgid "Unhealthy"
-msgstr ""
-
-msgid "The generated site could not be loaded. It is written by the first successful apply."
-msgstr ""
-
-msgid "Reconcile Now"
-msgstr ""
-
-msgid "The last apply failed; the previous config is still live"
-msgstr ""
-
-msgid "Owner"
-msgstr ""
-
-msgid "External ID"
-msgstr ""
-
-msgid "Generation"
-msgstr ""
-
-msgid "%{observed} applied of %{generation}"
-msgstr ""
-
-msgid "Generated Site"
-msgstr ""
-
-msgid "Last Applied"
-msgstr ""
-
-msgid "Config Hash"
-msgstr ""
-
-msgid "Labels"
-msgstr ""
-
-msgid "Hosts"
-msgstr ""
-
-msgid "TLS"
-msgstr ""
-
-msgid "Mode"
-msgstr ""
-
-msgid "View certificate"
-msgstr ""
-
-msgid "Challenge"
-msgstr ""
-
-msgid "Redirect to HTTPS"
-msgstr ""
-
-msgid "HSTS"
-msgstr ""
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr ""
-
-msgid "Backends"
-msgstr ""
-
-msgid "Routes"
-msgstr ""
-
-msgid "Policy default"
-msgstr ""
-
-msgid "Policy"
-msgstr ""
-
-msgid "Everyone"
-msgstr ""
-
-msgid "Rate Limit"
-msgstr ""
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr ""
-
-msgid "Unlimited"
-msgstr ""
-
-msgid "Max Body Size"
-msgstr ""
-
-msgid "Extra Headers"
-msgstr ""
-
-msgid "Conditions"
-msgstr ""
-
-msgid "True"
-msgstr ""
-
-msgid "False"
-msgstr ""
-
-msgid "Generated Site Config"
-msgstr ""
-
-msgid "Open in site editor"
-msgstr ""
-
-msgid "Not ready"
-msgstr ""
-
-msgid "The latest spec has not been applied yet"
-msgstr ""
-
-msgid "Applying"
-msgstr ""
-
-msgid "Ready"
-msgstr ""
-
-msgid "Degraded"
-msgstr ""
-
-msgid "Config Applied"
-msgstr ""
-
-msgid "Certificate Ready"
-msgstr ""
-
-msgid "Backends Healthy"
-msgstr ""
-
-msgid "Issued automatically (ACME)"
-msgstr ""
-
-msgid "All owners"
-msgstr ""
-
-msgid "Reconcile of %{name} queued"
-msgstr ""
-
-msgid "Delete ingress %{name}?"
-msgstr ""
-
-msgid "This ingress is owned by %{owner}. Its controller will probably recreate it on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr ""
-
-msgid "Also delete the certificate"
-msgstr ""
-
-msgid "Ingress %{name} deleted"
-msgstr ""
-
-msgid "Ingress"
-msgstr ""
-
-msgid "Phase"
-msgstr ""
-
-msgid "%{healthy}/%{total} healthy"
-msgstr ""
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "%{count} down"
-msgstr ""
-
-msgid "Filter by owner"
-msgstr ""
-
-msgid "Applied generation / latest generation"
-msgstr ""
-
-msgid "gen %{observed}/%{generation}"
-msgstr ""
-
-msgid "Reconcile"
-msgstr ""
-
-msgid "Ingresses are reverse proxy entries published by external controllers through the Ingress API. Nginx UI renders each one into a managed site and upstreams, issues its certificate and reports its status here. Change them in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-
-msgid "Learn more"
-msgstr ""
-
-msgid "No ingresses yet"
-msgstr ""
-
-msgid "A controller such as a deployment platform creates ingresses with PUT /api/ingresses/:name, authenticated as a cluster node or with an API token. They show up here as soon as they are stored."
-msgstr ""
-
-msgid "Read the Ingress API guide"
-msgstr ""
-
-msgid "Search by name, host or external ID"
-msgstr ""
-
-msgid "Search ingresses"
-msgstr ""
-
-msgid "No ingress matches the filter"
-msgstr ""
-
-msgid "Managed by ingress %{name}"
-msgstr ""
-
-msgid "Changes will be overwritten by the next reconcile. Edit the ingress in its controller instead."
-msgstr ""
-
-msgid "View ingress"
-msgstr ""
-
-msgid "Edit anyway"
-msgstr ""
-
-msgid "Ingress: %{name}"
-msgstr ""
-
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr ""
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr ""
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr ""
-
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr ""
-
-msgid "Upstream {0} is managed by ingress {1}; change the ingress instead or force the change"
-msgstr ""
-
-msgid "Ingress %{name} owns this upstream. Change the ingress instead; its next apply overwrites changes made here."
-msgstr ""
-
-msgid "View Upstream %{name}"
-msgstr ""

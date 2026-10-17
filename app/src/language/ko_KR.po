@@ -1594,6 +1594,51 @@ msgstr "복구 코드 사용"
 msgid "Use OTP"
 msgstr "OTP 사용"
 
+msgid "Recovery codes downloaded"
+msgstr "복구 코드가 다운로드되었습니다"
+
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr "MFA 설정이 완료되었습니다. 계속하기 전에 복구 코드를 저장하세요."
+
+msgid "Download"
+msgstr "다운로드"
+
+msgid "Continue"
+msgstr "계속"
+
+msgid "MFA session expired. Please sign in again."
+msgstr "MFA 세션이 만료되었습니다. 다시 로그인해 주세요."
+
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "MFA 가 필요합니다. 계속하려면 인증 앱 또는 패스키를 설정하세요."
+
+msgid "Verify your MFA method to continue signing in."
+msgstr "로그인을 계속하려면 MFA 방법을 확인하세요."
+
+msgid "Enable TOTP"
+msgstr "TOTP 활성화"
+
+msgid "Verify"
+msgstr "확인"
+
+msgid "Add a passkey"
+msgstr "패스키 추가"
+
+msgid "Back to sign in"
+msgstr "로그인으로 돌아가기"
+
+msgid "Secret has been copied"
+msgstr "시크릿이 복사되었습니다"
+
+msgid "Click to copy"
+msgstr "클릭하여 복사"
+
+msgid "Current Password"
+msgstr "현재 비밀번호"
+
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr "휴대폰으로 QR 코드를 스캔하여 앱에 계정을 추가하세요."
+
 msgid "Generate new recovery codes"
 msgstr "새 복구 코드 생성"
 
@@ -1613,6 +1658,11 @@ msgstr "2단계 인증이 필요합니다"
 
 msgid "Invalid passcode or recovery code"
 msgstr "잘못된 패스코드 또는 복구 코드"
+
+msgid ""
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
+msgstr "MFA 정책을 관리하거나 다른 사용자를 초기화하기 전에 먼저 본인 계정에 MFA를 활성화하세요."
 
 msgid "Node Status"
 msgstr "노드 상태"
@@ -2247,6 +2297,9 @@ msgstr "파일 내용에 잘못된 제어 문자가 포함되어 있습니다"
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "파일 내용에 제한된 nginx 지시어가 포함되어 있습니다: {0}"
 
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "파일 내용은 유효한 PEM 또는 htpasswd 데이터여야 합니다"
+
 msgid "Destination file: {0} already exists"
 msgstr "대상 파일: {0}이(가) 이미 존재합니다"
 
@@ -2434,6 +2487,71 @@ msgstr "호스트 키 스캔에 실패했습니다: {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "호스트 키 알고리즘 불일치: 예상 {0}, 수신 {1}"
+
+msgid "Invalid request: {0}"
+msgstr "잘못된 요청: {0}"
+
+msgid ""
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
+msgstr "잘못된 ingress 이름: 1~40자의 소문자, 숫자 및 하이픈을 사용하고 문자 또는 숫자로 시작하고 문자 또는 숫자로 끝나야 합니다"
+
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr "잘못된 소유자입니다. 1-64자의 영문자, 숫자, 마침표, 밑줄 및 하이픈을 사용하세요"
+
+msgid "Invalid host: {0}"
+msgstr "잘못된 호스트: {0}"
+
+msgid "Invalid backend {0}: {1}"
+msgstr "유효하지 않은 Backend {0}: {1}"
+
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "백엔드 서버 {0}이(가) 허용된 백엔드 범위를 벗어났습니다"
+
+msgid "Invalid route {0}: {1}"
+msgstr "잘못된 경로 {0}: {1}"
+
+msgid "Invalid tls: {0}"
+msgstr "잘못된 TLS: {0}"
+
+msgid "Invalid policy: {0}"
+msgstr "잘못된 정책: {0}"
+
+msgid "Server {0} not found in backend {1}"
+msgstr "백엔드 {1} 에서 서버 {0} 을(를) 찾을 수 없습니다"
+
+msgid "Ingress {0} not found"
+msgstr "Ingress {0} 을(를) 찾을 수 없습니다"
+
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0}는 {1} 소유입니다. force를 지정하여 가져가세요"
+
+msgid "Host {0} is already served by ingress {1}"
+msgstr "호스트 {0}은(는) 이미 ingress {1}에서 처리하고 있습니다"
+
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "사이트 {0} 이(가) 이미 존재하며 이 ingress에서 관리되지 않습니다"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0}이(가) 삭제되는 동안 업데이트되었습니다"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "Upstream {0}이(가) 이미 존재하며 이 ingress에서 관리되지 않습니다"
+
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "ingress {0}이(가) generation {1}에 도달할 때까지 대기하는 중 시간이 초과되었습니다"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "ingress {0} 삭제 대기 중 시간이 초과되었습니다"
+
+msgid "Apply failed: {0}"
+msgstr "적용 실패: {0}"
+
+msgid "Certificate not ready: {0}"
+msgstr "인증서 준비되지 않음: {0}"
+
+msgid "Not implemented"
+msgstr "구현되지 않음"
 
 msgid "Code completion is not enabled"
 msgstr "코드 완성이 활성화되어 있지 않습니다"
@@ -2759,6 +2877,11 @@ msgid "Read dir failed: {0}"
 msgstr "디렉터리 읽기 실패: {0}"
 
 msgid ""
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
+msgstr "사이트는 ingress {0}에 의해 관리됩니다. ingress를 변경하거나 변경을 강제하세요"
+
+msgid ""
 "The file name must end in .conf and use only letters, digits, dots, dashes "
 "and underscores"
 msgstr "파일 이름은 .conf 로 끝나야 하며, 영문자, 숫자, 점, 하이픈, 밑줄만 사용할 수 있습니다"
@@ -2955,6 +3078,9 @@ msgid ""
 "from the additional directives"
 msgstr "공유 메모리 영역은 zone 스위치에 의해 설정됩니다. 추가 지시문에서 zone 지시문을 제거하세요."
 
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "{0} 로 시작하는 upstream 이름은 ingress 에 예약되어 있습니다"
+
 msgid "Upstream not found: {0}"
 msgstr "Upstream을 찾을 수 없습니다: {0}"
 
@@ -2974,6 +3100,11 @@ msgid ""
 "The shared memory zone {0} is already used by another directive; nginx "
 "reported: {1}"
 msgstr "공유 메모리 영역 {0}은(는) 이미 다른 지시문에서 사용 중입니다. nginx 보고: {1}"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr "Upstream {0}은(는) ingress {1}에 의해 관리됩니다. 대신 ingress를 변경하거나 변경을 강제하세요"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "nginx conf.d 디렉터리를 사용할 수 없습니다: {0}"
@@ -3001,6 +3132,15 @@ msgstr "유효하지 않은 복구 코드입니다"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "TOTP가 활성화되지 않았으므로 이전 복구 코드는 사용할 수 없습니다"
+
+msgid "MFA enrollment is required"
+msgstr "MFA 등록이 필요합니다"
+
+msgid "MFA verification is required"
+msgstr "MFA 인증이 필요합니다"
+
+msgid "Cannot remove the last required MFA method"
+msgstr "마지막 필수 MFA 방법을 제거할 수 없습니다"
 
 msgid "WebAuthn settings are not configured"
 msgstr "WebAuthn 설정이 구성되지 않았습니다"
@@ -3892,6 +4032,9 @@ msgstr "그룹 기록"
 msgid "Not Found"
 msgstr "찾을 수 없음"
 
+msgid "Ingresses"
+msgstr "Ingresses"
+
 msgid "Namespaces"
 msgstr "Namespaces"
 
@@ -4523,10 +4666,10 @@ msgid "This field is required"
 msgstr "이 항목은 필수입니다"
 
 msgid "The path exists, but the file is not a certificate"
-msgstr ""
+msgstr "경로가 존재하지만 파일이 인증서가 아닙니다"
 
 msgid "The path exists, but the file is not a private key"
-msgstr ""
+msgstr "경로가 존재하지만, 파일이 비공개 키가 아닙니다"
 
 msgid "Sync to"
 msgstr "동기화 대상"
@@ -4600,9 +4743,6 @@ msgstr "인증서 파일을 다운로드하지 못했습니다"
 
 msgid "Download Certificate Files"
 msgstr "인증서 파일 다운로드"
-
-msgid "Download"
-msgstr "다운로드"
 
 msgid "Download Format"
 msgstr "다운로드 형식"
@@ -6238,6 +6378,299 @@ msgstr "시스템 상태, 업그레이드 상태 및 구성 요소 세부 정보
 msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr "유지 관리 작업을 위한 통합 터미널 세션에 접근합니다."
 
+msgid "HTTP only"
+msgstr "HTTP 전용"
+
+msgid "Not issued yet"
+msgstr "아직 발급되지 않았습니다"
+
+msgid "Expired %{date}"
+msgstr "만료됨 %{date}"
+
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date} (%{days} 일 남음)"
+
+msgid "Address"
+msgstr "주소"
+
+msgid "Health"
+msgstr "건강"
+
+msgid "Max Fails"
+msgstr "최대 실패 횟수"
+
+msgid "Fail Timeout"
+msgstr "실패 제한 시간"
+
+msgid "Path Prefix"
+msgstr "경로 접두사"
+
+msgid "Backend"
+msgstr "백엔드"
+
+msgid "Options"
+msgstr "옵션"
+
+msgid "Allowed Sources"
+msgstr "허용된 소스"
+
+msgid "Last Transition"
+msgstr "마지막 전환"
+
+msgid "Drained"
+msgstr "지친"
+
+msgid "No Data"
+msgstr "데이터 없음"
+
+msgid "Healthy"
+msgstr "건강한"
+
+msgid "Unhealthy"
+msgstr "건강하지 않은"
+
+msgid ""
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr "생성된 사이트를 불러올 수 없습니다. 첫 번째 적용이 성공하면 기록됩니다."
+
+msgid "Reconcile Now"
+msgstr "지금 조정"
+
+msgid "The last apply failed; the previous config is still live"
+msgstr "마지막 적용이 실패했습니다. 이전 설정이 여전히 적용 중입니다."
+
+msgid "Owner"
+msgstr "소유자"
+
+msgid "External ID"
+msgstr "외부 ID"
+
+msgid "Generation"
+msgstr "세대"
+
+msgid "%{observed} applied of %{generation}"
+msgstr "%{generation} 중 %{observed} 적용됨"
+
+msgid "Generated Site"
+msgstr "생성된 사이트"
+
+msgid "Last Applied"
+msgstr "마지막 적용"
+
+msgid "Config Hash"
+msgstr "구성 해시"
+
+msgid "Labels"
+msgstr "라벨"
+
+msgid "Hosts"
+msgstr "호스트"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "모드"
+
+msgid "Certificate"
+msgstr "인증서"
+
+msgid "View certificate"
+msgstr "인증서 보기"
+
+msgid "Challenge"
+msgstr "챌린지"
+
+msgid "Redirect to HTTPS"
+msgstr "HTTPS 로 리디렉션"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "인증서가 발급되기 전까지는 HTTP 리스너만 서비스됩니다."
+
+msgid "Backends"
+msgstr "백엔드"
+
+msgid "Routes"
+msgstr "경로"
+
+msgid "Policy default"
+msgstr "정책 기본값"
+
+msgid "Policy"
+msgstr "정책"
+
+msgid "Everyone"
+msgstr "모두"
+
+msgid "Rate Limit"
+msgstr "속도 제한"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "클라이언트당 초당 %{rps} 요청, 버스트 %{burst}"
+
+msgid "Unlimited"
+msgstr "무제한"
+
+msgid "Max Body Size"
+msgstr "최대 본문 크기"
+
+msgid "Extra Headers"
+msgstr "추가 헤더"
+
+msgid "Conditions"
+msgstr "조건"
+
+msgid "True"
+msgstr "참"
+
+msgid "False"
+msgstr "거짓"
+
+msgid "Generated Site Config"
+msgstr "생성된 사이트 설정"
+
+msgid "Open in site editor"
+msgstr "사이트 편집기에서 열기"
+
+msgid "Not ready"
+msgstr "준비되지 않음"
+
+msgid "The latest spec has not been applied yet"
+msgstr "최신 사양이 아직 적용되지 않았습니다"
+
+msgid "Applying"
+msgstr "적용 중"
+
+msgid "Ready"
+msgstr "준비 완료"
+
+msgid "Degraded"
+msgstr "저하"
+
+msgid "Config Applied"
+msgstr "구성이 적용되었습니다"
+
+msgid "Certificate Ready"
+msgstr "인증서 준비 완료"
+
+msgid "Backends Healthy"
+msgstr "백엔드 정상"
+
+msgid "Issued automatically (ACME)"
+msgstr "자동 발급됨 (ACME)"
+
+msgid "Existing certificate"
+msgstr "기존 인증서"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Round Robin"
+msgstr "라운드 로빈"
+
+msgid "Least Connections"
+msgstr "최소 연결"
+
+msgid "IP Hash"
+msgstr "IP 해시"
+
+msgid "All owners"
+msgstr "모든 소유자"
+
+msgid "Reconcile of %{name} queued"
+msgstr "%{name}의 대사가 대기열에 추가되었습니다"
+
+msgid "Delete ingress %{name}?"
+msgstr "ingress %{name} 삭제하시겠습니까?"
+
+msgid ""
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
+msgstr ""
+"이 Ingress는 %{owner}이(가) 소유하고 있습니다. 해당 controller가 다음 동기화 시 다시 생성할 가능성이 "
+"높습니다. 완전히 삭제하려면 controller에서 제거하세요."
+
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "생성된 사이트와 upstream 파일이 제거되고 nginx가 다시 로드됩니다."
+
+msgid "Also delete the certificate"
+msgstr "인증서도 삭제합니다"
+
+msgid "Ingress %{name} deleted"
+msgstr "Ingress %{name} 삭제됨"
+
+msgid "Ingress"
+msgstr "Ingress"
+
+msgid "Phase"
+msgstr "단계"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} 정상"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} 서버"
+
+msgid "%{count} down"
+msgstr "%{count} 남음"
+
+msgid "Filter by owner"
+msgstr "소유자로 필터링"
+
+msgid "Applied generation / latest generation"
+msgstr "적용 세대 / 최신 세대"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "gen %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "조정"
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+"Ingress는 외부 컨트롤러가 Ingress API를 통해 발행하는 리버스 프록시 항목입니다. Nginx UI는 각 항목을 관리되는 "
+"사이트와 upstream으로 렌더링하고, 인증서를 발행하며, 여기에서 상태를 보고합니다. 각 컨트롤러에서 변경하세요. 여기에서 수행한 "
+"편집은 다음 리컨사이ﻞ에 의해 덮어쓰기됩니다."
+
+msgid "Learn more"
+msgstr "자세히 알아보기"
+
+msgid "No ingresses yet"
+msgstr "아직 Ingress 가 없습니다"
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"배포 플랫폼과 같은 컨트롤러는 PUT /api/ingresses/:name을 통해 ingresses를 생성합니다. 인증은 클러스터 노드 "
+"또는 API 토큰으로 수행됩니다. 저장되는 즉시 여기에 표시됩니다."
+
+msgid "Read the Ingress API guide"
+msgstr "Ingress API 가이드를 읽어보세요"
+
+msgid "Search by name, host or external ID"
+msgstr "이름, 호스트 또는 외부 ID로 검색"
+
+msgid "Search ingresses"
+msgstr "Ingress 검색"
+
+msgid "No ingress matches the filter"
+msgstr "필터와 일치하는 Ingress가 없습니다"
+
 msgid "Please input your E-mail!"
 msgstr "이메일을 입력하세요!"
 
@@ -7515,9 +7948,6 @@ msgstr "이 디렉터리에 100000_full.json과 같은 이름의 파일을 보�
 msgid "Register passkey successfully"
 msgstr "패스키를 등록했습니다"
 
-msgid "Add a passkey"
-msgstr "패스키 추가"
-
 msgid "Tips"
 msgstr "팁"
 
@@ -7533,9 +7963,6 @@ msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
 msgstr "대화 상자의 안내에 따라 패스키 등록 과정을 완료하세요."
-
-msgid "Current Password"
-msgstr "현재 비밀번호"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -7653,6 +8080,9 @@ msgstr "현재 비밀번호를 입력하세요"
 msgid "Enable 2FA successfully"
 msgstr "2FA를 활성화했습니다"
 
+msgid "TOTP disabled"
+msgstr "TOTP 비활성화됨"
+
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -7666,35 +8096,25 @@ msgid ""
 "on your mobile phone."
 msgstr "활성화하려면 휴대폰에 Google 또는 Microsoft Authenticator 앱을 설치해야 합니다."
 
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr "휴대폰으로 QR 코드를 스캔하여 앱에 계정을 추가하세요."
-
 msgid "Current account is not enabled TOTP."
 msgstr "현재 계정은 TOTP가 활성화되어 있지 않습니다."
 
 msgid "Current account is enabled TOTP."
 msgstr "현재 계정은 TOTP가 활성화되어 있습니다."
 
-msgid "Enable TOTP"
-msgstr "TOTP 활성화"
+msgid "Replace TOTP"
+msgstr "TOTP 교체"
 
-msgid "Are you sure to reset 2FA?"
-msgstr "2FA를 초기화하시겠습니까?"
+msgid "Disable TOTP for this account?"
+msgstr "이 계정의 TOTP를 비활성화하시겠습니까?"
 
-msgid "Reset 2FA"
-msgstr "2FA 초기화"
+msgid "Disable TOTP"
+msgstr "TOTP 비활성화"
 
-msgid "Secret has been copied"
-msgstr "시크릿이 복사되었습니다"
-
-msgid "Click to copy"
-msgstr "클릭하여 복사"
-
-msgid "Or enter the secret: %{secret}"
-msgstr "또는 시크릿을 직접 입력하세요: %{secret}"
-
-msgid "Input the code from the app:"
-msgstr "앱에 표시된 코드를 입력하세요:"
+msgid ""
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
+msgstr "새 코드가 확인될 때까지 현재 인증기는 계속 활성화됩니다. 새 복구 코드는 기존 코드를 대체합니다."
 
 msgid "Bark"
 msgstr "Bark"
@@ -8774,9 +9194,6 @@ msgstr "접근 및 설치"
 msgid "File mode and setup instructions"
 msgstr "파일 모드 및 설정 안내"
 
-msgid "Verify"
-msgstr "확인"
-
 msgid "Run checks and save"
 msgstr "검사 실행 및 저장"
 
@@ -9042,6 +9459,25 @@ msgstr "일반"
 
 msgid "Banned Until"
 msgstr "차단 기한"
+
+msgid "MFA Policy"
+msgstr "MFA 정책"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr "다음 로그인 시 MFA를 요구합니다. 사용자는 자신의 Authenticator 또는 Passkey를 등록해야 합니다."
+
+msgid "Require MFA for all users"
+msgstr "모든 사용자에게 MFA 필수 적용"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "SSO 로그인에 로컬 MFA 필요"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr "로컬 MFA 검증 및 등록 요건을 OIDC 및 Casdoor 로그인에 적용합니다."
 
 msgid "Passkeys"
 msgstr "패스키"
@@ -9315,9 +9751,6 @@ msgstr "모든 인터페이스"
 msgid "HTTPS"
 msgstr "HTTPS"
 
-msgid "Certificate"
-msgstr "인증서"
-
 msgid "Pick the certificate that secures the web interface."
 msgstr "웹 인터페이스를 보호할 인증서를 선택하세요."
 
@@ -9337,9 +9770,6 @@ msgstr "종료 시간은 시작 시간보다 늦어야 합니다"
 
 msgid "Set maintenance information"
 msgstr "점검 정보 설정"
-
-msgid "Continue"
-msgstr "계속"
 
 msgid "Start time"
 msgstr "시작 시간"
@@ -9364,6 +9794,20 @@ msgstr "추가 정보"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "예: 예상 복구 계획 또는 장애 참조 번호"
+
+msgid "Managed by ingress %{name}"
+msgstr "ingress %{name} 로 관리됨"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr "변경 사항은 다음 reconcile에 의해 덮어쓰여집니다. 대신 해당 Controller에서 Ingress를 편집하세요."
+
+msgid "View ingress"
+msgstr "Ingress 보기"
+
+msgid "Edit anyway"
+msgstr "그래도 편집"
 
 msgid "Configuration Name"
 msgstr "설정 이름"
@@ -9721,15 +10165,6 @@ msgstr "HTTPS 설정은 저장된 설정으로 HTTPS 서버 블록을 만듭니�
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "올바른 도메인 이름 또는 IP 주소가 아닙니다: %{value}"
 
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Existing certificate"
-msgstr "기존 인증서"
-
 msgid "Skip for now"
 msgstr "지금은 건너뛰기"
 
@@ -9981,6 +10416,9 @@ msgstr "Nginx 설정 구문 분석 오류"
 msgid "No."
 msgstr "번호"
 
+msgid "Ingress: %{name}"
+msgstr "Ingress: %{name}"
+
 msgid "Please input name, "
 msgstr "이름을 입력하세요, "
 
@@ -10045,6 +10483,10 @@ msgstr "선택한 사이트의 유지 관리 정보 설정"
 
 msgid "%{count} sites selected"
 msgstr "사이트 %{count}개 선택됨"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "Ingress가 관리하는 사이트 %{count}개 포함"
 
 msgid "Read Only"
 msgstr "읽기 전용"
@@ -10194,9 +10636,6 @@ msgstr "사용 안 함"
 
 msgid "Max Age"
 msgstr "최대 수명"
-
-msgid "Options"
-msgstr "옵션"
 
 msgid "Remove option"
 msgstr "옵션 삭제"
@@ -10393,9 +10832,6 @@ msgstr "서드파티 라이선스와 오픈 소스 구성 요소 저작자 표�
 msgid "Total Components"
 msgstr "전체 구성 요소"
 
-msgid "Backend"
-msgstr "백엔드"
-
 msgid "Frontend"
 msgstr "프런트엔드"
 
@@ -10463,6 +10899,15 @@ msgid ""
 "non-localhost domain. This may expose sensitive information."
 msgstr "localhost가 아닌 도메인에서 안전하지 않은 HTTP 연결로 이 터미널에 접속하고 있습니다. 민감한 정보가 노출될 수 있습니다."
 
+msgid "Create Upstream"
+msgstr "업스트림 생성"
+
+msgid "View Upstream %{name}"
+msgstr "upstream %{name} 보기"
+
+msgid "Edit Upstream %{name}"
+msgstr "업스트림 %{name} 편집"
+
 msgid "Round Robin (default)"
 msgstr "라운드 로빈 (기본값)"
 
@@ -10481,12 +10926,6 @@ msgstr "랜덤 (random)"
 msgid "Upstream %{name} saved and Nginx reloaded"
 msgstr "업스트림 %{name}을(를) 저장하고 Nginx를 다시 로드했습니다"
 
-msgid "Edit Upstream %{name}"
-msgstr "업스트림 %{name} 편집"
-
-msgid "Create Upstream"
-msgstr "업스트림 생성"
-
 msgid "Sites use it as proxy_pass http://%{name};"
 msgstr "사이트에서 proxy_pass http://%{name}; 로 사용합니다"
 
@@ -10501,15 +10940,6 @@ msgstr "일관된 해싱"
 
 msgid "Servers"
 msgstr "서버"
-
-msgid "Address"
-msgstr "주소"
-
-msgid "Max Fails"
-msgstr "최대 실패 횟수"
-
-msgid "Fail Timeout"
-msgstr "실패 제한 시간"
 
 msgid "Not available with this load balancing method"
 msgstr "이 로드 밸런싱 방식에서는 사용할 수 없습니다"
@@ -10565,9 +10995,6 @@ msgstr "직접"
 msgid "Health Status"
 msgstr "상태"
 
-msgid "No Data"
-msgstr "데이터 없음"
-
 msgid "Last Check"
 msgstr "마지막 확인"
 
@@ -10578,15 +11005,6 @@ msgid ""
 "Per-target selections are preserved. Resume probes from Health Check "
 "preferences."
 msgstr "대상별 선택은 유지됩니다. 상태 확인 환경설정에서 프로브를 재개하세요."
-
-msgid "Round Robin"
-msgstr "라운드 로빈"
-
-msgid "Least Connections"
-msgstr "최소 연결"
-
-msgid "IP Hash"
-msgstr "IP 해시"
 
 msgid "Hash"
 msgstr "해시"
@@ -10602,6 +11020,13 @@ msgstr "정의된 위치"
 
 msgid "Matched upstreams: %{groups}, servers: %{servers}"
 msgstr "일치한 업스트림: %{groups}, 서버: %{servers}"
+
+msgid ""
+"Ingress %{name} owns this upstream. Change the ingress instead; its next "
+"apply overwrites changes made here."
+msgstr ""
+"Ingress %{name}이(가) 이 upstream을 소유하고 있습니다. 대신 ingress를 변경하세요. 다음 적용 시 여기에서 "
+"수행된 변경 사항을 덮어씁니다."
 
 msgid "Server %{address} enabled"
 msgstr "서버 %{address}을(를) 활성화했습니다"
@@ -10664,8 +11089,54 @@ msgstr ""
 "이 업스트림 블록은 사이트 또는 다른 설정 파일 안에 있습니다. 설정은 해당 파일에서 편집하세요. 서버는 여기서 켜고 끌 수 있습니다. "
 "사이트 안의 블록은 다른 사이트도 사용할 수 있는 공유 그룹으로 변환할 수 있습니다."
 
-msgid "2FA"
-msgstr "2FA"
+msgid "MFA Settings"
+msgstr "MFA 설정"
+
+msgid "Require MFA for this user"
+msgstr "이 사용자에게 MFA 요구"
+
+msgid "Global enforcement"
+msgstr "글로벌 집행"
+
+msgid "User enforcement"
+msgstr "사용자 강제"
+
+msgid "Optional"
+msgstr "선택 사항"
+
+msgid "MFA Enrollment"
+msgstr "MFA 등록 상태"
+
+msgid "Pending enrollment"
+msgstr "등록 대기 중"
+
+msgid "Enrolled"
+msgstr "등록됨"
+
+msgid "Not enrolled"
+msgstr "미등록"
+
+msgid "MFA policy updated. It takes effect at the next sign-in."
+msgstr "MFA 정책이 업데이트되었습니다. 다음 로그인 시 적용됩니다."
+
+msgid "MFA credentials and sessions reset"
+msgstr "MFA 자격 증명 및 세션 초기화"
+
+msgid ""
+"Global MFA enforcement is active. Changing the user policy does not "
+"override it."
+msgstr "전역 MFA 적용이 활성화되어 있습니다. 사용자 정책을 변경해도 이를 덮어쓰지 않습니다."
+
+msgid ""
+"Reset removes TOTP, all passkeys and recovery codes, and ends all sessions. "
+"The MFA requirement is preserved."
+msgstr "재설정하면 TOTP, 모든 패스키 및 복구 코드가 삭제되고 모든 세션이 종료됩니다. MFA 요구 사항은 유지됩니다."
+
+msgid "Reset all MFA credentials and sessions for this user?"
+msgstr "이 사용자의 모든 MFA 자격 증명 및 세션을 재설정하시겠습니까?"
+
+msgid "Reset MFA"
+msgstr "MFA 재설정"
 
 msgid "User info updated successfully"
 msgstr "사용자 정보를 업데이트했습니다"
@@ -10681,6 +11152,14 @@ msgstr "개인 정보"
 
 msgid "Update Profile"
 msgstr "프로필 업데이트"
+
+msgid ""
+"MFA is required by the global policy. You cannot remove your last MFA "
+"method."
+msgstr "전역 정책에 따라 MFA가 필요합니다. 마지막 MFA 수단을 제거할 수 없습니다."
+
+msgid "MFA is required for your account. You cannot remove your last MFA method."
+msgstr "계정에 MFA 가 필요합니다. 마지막 MFA 방법은 제거할 수 없습니다."
 
 msgid "Security Settings"
 msgstr "보안 설정"
@@ -10720,350 +11199,17 @@ msgctxt "preference group"
 msgid "Maintenance"
 msgstr "유지 관리"
 
-msgid "MFA Enrollment"
-msgstr "MFA 등록 상태"
+#~ msgid "Are you sure to reset 2FA?"
+#~ msgstr "2FA를 초기화하시겠습니까?"
 
-msgid "Enrolled"
-msgstr "등록됨"
+#~ msgid "Reset 2FA"
+#~ msgstr "2FA 초기화"
 
-msgid "Not enrolled"
-msgstr "미등록"
+#~ msgid "Or enter the secret: %{secret}"
+#~ msgstr "또는 시크릿을 직접 입력하세요: %{secret}"
 
-msgid "Pending enrollment"
-msgstr "등록 대기 중"
+#~ msgid "Input the code from the app:"
+#~ msgstr "앱에 표시된 코드를 입력하세요:"
 
-msgid "Invalid request: {0}"
-msgstr ""
-
-msgid "Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, starting and ending with a letter or digit"
-msgstr ""
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr ""
-
-msgid "Invalid host: {0}"
-msgstr ""
-
-msgid "Invalid backend {0}: {1}"
-msgstr ""
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr ""
-
-msgid "Invalid route {0}: {1}"
-msgstr ""
-
-msgid "Invalid tls: {0}"
-msgstr ""
-
-msgid "Invalid policy: {0}"
-msgstr ""
-
-msgid "Server {0} not found in backend {1}"
-msgstr ""
-
-msgid "Ingress {0} not found"
-msgstr ""
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr ""
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr ""
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr ""
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr ""
-
-msgid "Apply failed: {0}"
-msgstr ""
-
-msgid "Certificate not ready: {0}"
-msgstr ""
-
-msgid "Not implemented"
-msgstr ""
-
-msgid "Site is managed by ingress {0}; change the ingress instead or force the change"
-msgstr ""
-
-msgid "Ingresses"
-msgstr ""
-
-msgid "HTTP only"
-msgstr ""
-
-msgid "Not issued yet"
-msgstr ""
-
-msgid "Expired %{date}"
-msgstr ""
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] ""
-
-msgid "Health"
-msgstr ""
-
-msgid "Path Prefix"
-msgstr ""
-
-msgid "Allowed Sources"
-msgstr ""
-
-msgid "Last Transition"
-msgstr ""
-
-msgid "Drained"
-msgstr ""
-
-msgid "Healthy"
-msgstr ""
-
-msgid "Unhealthy"
-msgstr ""
-
-msgid "The generated site could not be loaded. It is written by the first successful apply."
-msgstr ""
-
-msgid "Reconcile Now"
-msgstr ""
-
-msgid "The last apply failed; the previous config is still live"
-msgstr ""
-
-msgid "Owner"
-msgstr ""
-
-msgid "External ID"
-msgstr ""
-
-msgid "Generation"
-msgstr ""
-
-msgid "%{observed} applied of %{generation}"
-msgstr ""
-
-msgid "Generated Site"
-msgstr ""
-
-msgid "Last Applied"
-msgstr ""
-
-msgid "Config Hash"
-msgstr ""
-
-msgid "Labels"
-msgstr ""
-
-msgid "Hosts"
-msgstr ""
-
-msgid "TLS"
-msgstr ""
-
-msgid "Mode"
-msgstr ""
-
-msgid "View certificate"
-msgstr ""
-
-msgid "Challenge"
-msgstr ""
-
-msgid "Redirect to HTTPS"
-msgstr ""
-
-msgid "HSTS"
-msgstr ""
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr ""
-
-msgid "Backends"
-msgstr ""
-
-msgid "Routes"
-msgstr ""
-
-msgid "Policy default"
-msgstr ""
-
-msgid "Policy"
-msgstr ""
-
-msgid "Everyone"
-msgstr ""
-
-msgid "Rate Limit"
-msgstr ""
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr ""
-
-msgid "Unlimited"
-msgstr ""
-
-msgid "Max Body Size"
-msgstr ""
-
-msgid "Extra Headers"
-msgstr ""
-
-msgid "Conditions"
-msgstr ""
-
-msgid "True"
-msgstr ""
-
-msgid "False"
-msgstr ""
-
-msgid "Generated Site Config"
-msgstr ""
-
-msgid "Open in site editor"
-msgstr ""
-
-msgid "Not ready"
-msgstr ""
-
-msgid "The latest spec has not been applied yet"
-msgstr ""
-
-msgid "Applying"
-msgstr ""
-
-msgid "Ready"
-msgstr ""
-
-msgid "Degraded"
-msgstr ""
-
-msgid "Config Applied"
-msgstr ""
-
-msgid "Certificate Ready"
-msgstr ""
-
-msgid "Backends Healthy"
-msgstr ""
-
-msgid "Issued automatically (ACME)"
-msgstr ""
-
-msgid "All owners"
-msgstr ""
-
-msgid "Reconcile of %{name} queued"
-msgstr ""
-
-msgid "Delete ingress %{name}?"
-msgstr ""
-
-msgid "This ingress is owned by %{owner}. Its controller will probably recreate it on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr ""
-
-msgid "Also delete the certificate"
-msgstr ""
-
-msgid "Ingress %{name} deleted"
-msgstr ""
-
-msgid "Ingress"
-msgstr ""
-
-msgid "Phase"
-msgstr ""
-
-msgid "%{healthy}/%{total} healthy"
-msgstr ""
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] ""
-
-msgid "%{count} down"
-msgstr ""
-
-msgid "Filter by owner"
-msgstr ""
-
-msgid "Applied generation / latest generation"
-msgstr ""
-
-msgid "gen %{observed}/%{generation}"
-msgstr ""
-
-msgid "Reconcile"
-msgstr ""
-
-msgid "Ingresses are reverse proxy entries published by external controllers through the Ingress API. Nginx UI renders each one into a managed site and upstreams, issues its certificate and reports its status here. Change them in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-
-msgid "Learn more"
-msgstr ""
-
-msgid "No ingresses yet"
-msgstr ""
-
-msgid "A controller such as a deployment platform creates ingresses with PUT /api/ingresses/:name, authenticated as a cluster node or with an API token. They show up here as soon as they are stored."
-msgstr ""
-
-msgid "Read the Ingress API guide"
-msgstr ""
-
-msgid "Search by name, host or external ID"
-msgstr ""
-
-msgid "Search ingresses"
-msgstr ""
-
-msgid "No ingress matches the filter"
-msgstr ""
-
-msgid "Managed by ingress %{name}"
-msgstr ""
-
-msgid "Changes will be overwritten by the next reconcile. Edit the ingress in its controller instead."
-msgstr ""
-
-msgid "View ingress"
-msgstr ""
-
-msgid "Edit anyway"
-msgstr ""
-
-msgid "Ingress: %{name}"
-msgstr ""
-
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] ""
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr ""
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr ""
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr ""
-
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr ""
-
-msgid "Upstream {0} is managed by ingress {1}; change the ingress instead or force the change"
-msgstr ""
-
-msgid "Ingress %{name} owns this upstream. Change the ingress instead; its next apply overwrites changes made here."
-msgstr ""
-
-msgid "View Upstream %{name}"
-msgstr ""
+#~ msgid "2FA"
+#~ msgstr "2FA"
