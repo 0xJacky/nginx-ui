@@ -1,12 +1,12 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.27.1
+go 1.27.2
 
 require (
 	aead.dev/minisign v0.3.0
 	code.pfad.fr/risefront v1.0.0
 	github.com/0xJacky/pofile v1.1.2
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.2
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.3
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.1
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns v1.2.0
 	github.com/BurntSushi/toml v1.6.0
@@ -16,7 +16,7 @@ require (
 	github.com/blevesearch/bleve_index_api v1.4.1
 	github.com/caarlos0/env/v11 v11.4.1
 	github.com/casdoor/casdoor-go-sdk v1.56.0
-	github.com/cloudflare/cloudflare-go/v7 v7.12.0
+	github.com/cloudflare/cloudflare-go/v7 v7.13.0
 	github.com/coreos/go-oidc/v3 v3.21.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.4.2
@@ -38,14 +38,14 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.217
-	github.com/mark3labs/mcp-go v1.1.1
+	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.218
+	github.com/mark3labs/mcp-go v1.2.1
 	github.com/miekg/dns v1.1.73
-	github.com/minio/minio-go/v7 v7.3.0
+	github.com/minio/minio-go/v7 v7.4.1
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.6.0
 	github.com/nxadm/tail v1.4.11
-	github.com/oschwald/maxminddb-golang/v2 v2.7.0
+	github.com/oschwald/maxminddb-golang/v2 v2.8.0
 	github.com/pires/go-proxyproto v0.15.0
 	github.com/pkg/errors v0.9.1
 	github.com/pkg/sftp v1.13.11
@@ -57,7 +57,7 @@ require (
 	github.com/spf13/afero v1.15.0
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.12.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.191
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.193
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
 	github.com/ulikunitz/xz v0.5.17
 	github.com/uozi-tech/cosy v1.35.4
@@ -65,10 +65,10 @@ require (
 	github.com/urfave/cli/v3 v3.14.0
 	go.etcd.io/bbolt v1.5.0
 	go.uber.org/zap v1.28.0
-	golang.org/x/crypto v0.57.0
-	golang.org/x/net v0.59.0
+	golang.org/x/crypto v0.58.0
+	golang.org/x/net v0.61.0
 	golang.org/x/oauth2 v0.37.0
-	golang.org/x/sys v0.48.0
+	golang.org/x/sys v0.49.0
 	google.golang.org/grpc v1.84.0
 	gopkg.in/ini.v1 v1.67.3
 	gorm.io/datatypes v1.2.7
@@ -76,7 +76,7 @@ require (
 	gorm.io/gen v0.3.29
 	gorm.io/gorm v1.31.2
 	gorm.io/plugin/dbresolver v1.6.2
-	software.sslmate.com/src/go-pkcs12 v0.7.3
+	software.sslmate.com/src/go-pkcs12 v0.7.4
 )
 
 require (
@@ -85,7 +85,7 @@ require (
 	cloud.google.com/go/compute/metadata v0.9.0 // indirect
 	filippo.io/edwards25519 v1.2.0 // indirect
 	github.com/AdamSLevy/jsonrpc2/v14 v14.1.0 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.13.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns v1.3.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourcegraph/armresourcegraph v0.10.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0 // indirect
@@ -285,12 +285,12 @@ require (
 	github.com/rs/xid v1.6.0 // indirect
 	github.com/sacloud/sacloud-sdk-go v0.2.0 // indirect
 	github.com/sagikazarmark/locafero v0.12.0 // indirect
-	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 // indirect
+	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect
 	github.com/scaleway/scaleway-sdk-go v1.0.0-beta.37 // indirect
 	github.com/selectel/domains-go v1.1.0 // indirect
 	github.com/selectel/go-selvpcclient/v4 v4.2.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
-	github.com/sirupsen/logrus v1.9.4 // indirect
+	github.com/sirupsen/logrus v1.10.2 // indirect
 	github.com/softlayer/softlayer-go v1.2.1 // indirect
 	github.com/softlayer/xmlrpc v0.0.0-20200409220501-5f089df7cb7e // indirect
 	github.com/sony/gobreaker/v2 v2.4.0 // indirect
@@ -341,10 +341,10 @@ require (
 	golang.org/x/arch v0.29.0 // indirect
 	golang.org/x/exp v0.0.0-20260718201538-764159d718ef // indirect
 	golang.org/x/mod v0.41.0 // indirect
-	golang.org/x/sync v0.23.0 // indirect
-	golang.org/x/text v0.42.0 // indirect
+	golang.org/x/sync v0.24.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
 	golang.org/x/time v0.16.0 // indirect
-	golang.org/x/tools v0.50.0 // indirect
+	golang.org/x/tools v0.51.0 // indirect
 	google.golang.org/api v0.297.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260724162435-b2f20204f0df // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260819154853-08b0e4226688 // indirect
