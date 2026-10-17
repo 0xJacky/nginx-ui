@@ -196,10 +196,10 @@ func ValidateConfigFile(path string, content string) error {
 	}
 
 	if IsDataFile(path) {
-		return ValidateDataContent([]byte(content))
+		return ValidateDataFileContent(path, []byte(content))
 	}
 
-	return ValidateConfigContent(content)
+	return validateConfigIncludes(path, []byte(content))
 }
 
 func ValidateConfigFileBytes(path string, content []byte) error {
@@ -208,10 +208,10 @@ func ValidateConfigFileBytes(path string, content []byte) error {
 	}
 
 	if IsDataFile(path) {
-		return ValidateDataContent(content)
+		return ValidateDataFileContent(path, content)
 	}
 
-	return ValidateConfigContentBytes(content)
+	return validateConfigIncludes(path, content)
 }
 
 // IsDataFile reports whether path is a certificate, key or similar data file
@@ -325,13 +325,17 @@ func ValidateConfigContentBytes(content []byte) error {
 }
 
 func ValidateConfigDirectives(content []byte) error {
+	return visitConfigStatements(content, validateConfigStatement)
+}
+
+func visitConfigStatements(content []byte, visit func([]string) error) error {
 	lexer := &nginxConfigLexer{content: content}
 	statement := make([]string, 0, 4)
 
 	for {
 		token, ok := lexer.nextToken()
 		if !ok {
-			return validateConfigStatement(statement)
+			return visit(statement)
 		}
 
 		if token.kind == nginxConfigTokenWord {
@@ -341,7 +345,7 @@ func ValidateConfigDirectives(content []byte) error {
 
 		switch token.symbol {
 		case ';', '{':
-			if err := validateConfigStatement(statement); err != nil {
+			if err := visit(statement); err != nil {
 				return err
 			}
 			statement = statement[:0]

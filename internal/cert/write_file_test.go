@@ -10,6 +10,7 @@ import (
 )
 
 func TestContentWriteFileUsesOwnerOnlyPrivateKeyMode(t *testing.T) {
+	pair := newArchiveTestCert(t, "example.com", false, nil)
 	originalConfigDir := settings.NginxSettings.ConfigDir
 	confDir := t.TempDir()
 	settings.NginxSettings.ConfigDir = confDir
@@ -35,8 +36,8 @@ func TestContentWriteFileUsesOwnerOnlyPrivateKeyMode(t *testing.T) {
 	content := &Content{
 		SSLCertificatePath:    certPath,
 		SSLCertificateKeyPath: keyPath,
-		SSLCertificate:        "new cert",
-		SSLCertificateKey:     "new key",
+		SSLCertificate:        string(pair.pem),
+		SSLCertificateKey:     string(pair.keyPEM),
 	}
 	if err := content.WriteFile(); err != nil {
 		t.Fatalf("WriteFile: %v", err)
@@ -47,6 +48,7 @@ func TestContentWriteFileUsesOwnerOnlyPrivateKeyMode(t *testing.T) {
 }
 
 func TestContentWriteFilePreservesGroupReadablePrivateKeyMode(t *testing.T) {
+	pair := newArchiveTestCert(t, "example.com", false, nil)
 	originalConfigDir := settings.NginxSettings.ConfigDir
 	confDir := t.TempDir()
 	settings.NginxSettings.ConfigDir = confDir
@@ -70,18 +72,19 @@ func TestContentWriteFilePreservesGroupReadablePrivateKeyMode(t *testing.T) {
 	content := &Content{
 		SSLCertificatePath:    certPath,
 		SSLCertificateKeyPath: keyPath,
-		SSLCertificate:        "new cert",
-		SSLCertificateKey:     "new key",
+		SSLCertificate:        string(pair.pem),
+		SSLCertificateKey:     string(pair.keyPEM),
 	}
 	if err := content.WriteFile(); err != nil {
 		t.Fatalf("WriteFile: %v", err)
 	}
 
-	assertFileContent(t, keyPath, "new key")
+	assertFileContent(t, keyPath, string(pair.keyPEM))
 	assertFileMode(t, keyPath, 0640)
 }
 
 func TestContentWriteFileKeepsExistingPairWhenKeyWriteFails(t *testing.T) {
+	pair := newArchiveTestCert(t, "example.com", false, nil)
 	originalConfigDir := settings.NginxSettings.ConfigDir
 	confDir := t.TempDir()
 	settings.NginxSettings.ConfigDir = confDir
@@ -105,8 +108,8 @@ func TestContentWriteFileKeepsExistingPairWhenKeyWriteFails(t *testing.T) {
 	content := &Content{
 		SSLCertificatePath:    certPath,
 		SSLCertificateKeyPath: keyPath,
-		SSLCertificate:        "new cert",
-		SSLCertificateKey:     "new key",
+		SSLCertificate:        string(pair.pem),
+		SSLCertificateKey:     string(pair.keyPEM),
 	}
 	if err := content.WriteFile(); err == nil {
 		t.Fatalf("expected key write failure")
@@ -122,6 +125,7 @@ func TestContentWriteFileKeepsExistingPairWhenKeyWriteFails(t *testing.T) {
 }
 
 func TestContentWriteFileCreatesMissingDirectoriesAndLeavesNoTempFiles(t *testing.T) {
+	pair := newArchiveTestCert(t, "example.com", false, nil)
 	originalConfigDir := settings.NginxSettings.ConfigDir
 	confDir := t.TempDir()
 	settings.NginxSettings.ConfigDir = confDir
@@ -138,15 +142,15 @@ func TestContentWriteFileCreatesMissingDirectoriesAndLeavesNoTempFiles(t *testin
 	content := &Content{
 		SSLCertificatePath:    certPath,
 		SSLCertificateKeyPath: keyPath,
-		SSLCertificate:        "cert",
-		SSLCertificateKey:     "key",
+		SSLCertificate:        string(pair.pem),
+		SSLCertificateKey:     string(pair.keyPEM),
 	}
 	if err := content.WriteFile(); err != nil {
 		t.Fatalf("WriteFile: %v", err)
 	}
 
-	assertFileContent(t, certPath, "cert")
-	assertFileContent(t, keyPath, "key")
+	assertFileContent(t, certPath, string(pair.pem))
+	assertFileContent(t, keyPath, string(pair.keyPEM))
 	assertFileMode(t, certPath, 0644)
 	assertFileMode(t, keyPath, 0600)
 	assertNoTempFiles(t, dir)

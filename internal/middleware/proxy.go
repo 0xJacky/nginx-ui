@@ -50,6 +50,10 @@ func Proxy() gin.HandlerFunc {
 			return
 		}
 
+		if !authorizeProxyRequest(c) {
+			return
+		}
+
 		defer c.Abort()
 
 		nodeQuery := query.Node
@@ -88,6 +92,11 @@ func Proxy() gin.HandlerFunc {
 		route := c.FullPath()
 		isServiceToken := internalmcp.IsServiceTokenRequest(c)
 		configureProxyDirector(proxy, isServiceToken && serviceTokenRedactedResponseFields[route] != nil)
+		director := proxy.Director
+		proxy.Director = func(request *http.Request) {
+			director(request)
+			setProxyVerifiedTwoFactor(request, c)
+		}
 		configureProxyResponse(proxy, id, route, isServiceToken, logger.GetLogger().Warnw)
 
 		proxy.ErrorHandler = func(rw http.ResponseWriter, req *http.Request, err error) {

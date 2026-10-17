@@ -24,6 +24,10 @@ func ProxyWs() gin.HandlerFunc {
 			return
 		}
 
+		if !authorizeProxyRequest(c) {
+			return
+		}
+
 		defer c.Abort()
 
 		nodeQuery := query.Node
@@ -47,6 +51,7 @@ func ProxyWs() gin.HandlerFunc {
 			queryValues := r.URL.Query()
 			queryValues.Del("x_node_id")
 			r.URL.RawQuery = queryValues.Encode()
+			setProxyVerifiedTwoFactor(r, c)
 			return nodeauth.SignWebSocketHeaders(node, r.URL.String(), r.Header)
 		})
 

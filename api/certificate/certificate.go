@@ -1,10 +1,12 @@
 package certificate
 
 import (
+	"errors"
 	"net/http"
 	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
@@ -318,58 +320,135 @@ func cleanupSelfSignedCertFiles(certModel *model.Cert) {
 
 func SyncCertificate(c *gin.Context) {
 	var json cert.SyncCertificatePayload
-
 	if !cosy.BindAndValid(c, &json) {
 		return
 	}
-	normalizedKeyType := helper.GetKeyType(json.KeyType)
-
-	certModel := &model.Cert{
-		Name:                  json.Name,
-		SSLCertificatePath:    json.SSLCertificatePath,
-		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
-		KeyType:               normalizedKeyType,
-		AutoCert:              model.AutoCertSync,
-	}
-
-	db := model.UseDB()
-
-	err := db.Where("name = ? AND ssl_certificate_path = ? AND ssl_certificate_key_path = ? AND key_type IN ?",
-		json.Name, json.SSLCertificatePath, json.SSLCertificateKeyPath,
-		helper.GetKeyTypeAliasStrings(normalizedKeyType)).
-		Assign(&model.Cert{KeyType: normalizedKeyType}).
-		FirstOrCreate(certModel).Error
-	if err != nil {
-		cosy.ErrHandler(c, err)
-		return
-	}
-
 	content := &cert.Content{
 		SSLCertificatePath:    json.SSLCertificatePath,
 		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
 		SSLCertificate:        json.SSLCertificate,
 		SSLCertificateKey:     json.SSLCertificateKey,
 	}
-
-	// Every save of a site replicates the certificates it loads, so an
-	// unchanged pair must not cost the node a reload each time.
-	if content.MatchesFiles() {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "ok",
-		})
+	// Serialize target validation and replacement with ordinary config saves.
+	release := config.LockApply()
+	defer release()
+	if err := content.ValidateSync(); err != nil {
+		cosy.ErrHandler(c, err)
 		return
 	}
-
-	err = content.WriteFile()
+	normalizedKeyType := helper.GetKeyType(json.KeyType)
+	certModel := &model.Cert{
+		Name: json.Name, SSLCertificatePath: json.SSLCertificatePath,
+		SSLCertificateKeyPath: json.SSLCertificateKeyPath,
+		KeyType:               normalizedKeyType, AutoCert: model.AutoCertSync,
+	}
+	db := model.UseDB()
+	tx := db.Begin()
+	if tx.Error != nil {
+		cosy.ErrHandler(c, tx.Error)
+		return
+	}
+	defer tx.Rollback()
+	err := tx.Where("name = ? AND ssl_certificate_path = ? AND ssl_certificate_key_path = ? AND key_type IN ?",
+		json.Name, json.SSLCertificatePath, json.SSLCertificateKeyPath,
+		helper.GetKeyTypeAliasStrings(normalizedKeyType)).
+		Assign(&model.Cert{KeyType: normalizedKeyType}).FirstOrCreate(certModel).Error
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
-	persistCertificateFingerprint(certModel)
-
-	nginx.Reload()
-
-	c.JSON(http.StatusOK, gin.H{
-		"message": "ok",
-	})
+	// Every save of a site replicates its certificates. Unchanged pairs retain
+	// the existing no-write/no-reload behavior, after validating the input.
+	if content.MatchesFiles() {
+		if err = tx.Commit().Error; err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+		c.JSON(http.StatusOK, gin.H{"message": "ok"})
+		return
+	}
+	snapshots := make(map[string]config.FileSnapshot, 2)
+	for _, path := range []string{content.SSLCertificatePath, content.SSLCertificateKeyPath} {
+		snapshot, captureErr := config.CaptureFile(path)
+		if captureErr != nil {
+			cosy.ErrHandler(c, captureErr)
+			return
+		}
+		snapshots[path] = snapshot
+	}
+	rollback := func() error {
+		var failures []error
+		for path, snapshot := range snapshots {
+			if restoreErr := snapshot.Restore(path); restoreErr != nil {
+				failures = append(failures, restoreErr)
+			}
+		}
+		return errors.Join(failures...)
+	}
+	// Commit metadata only for accepted file state. Fingerprint persistence
+	// uses the shared database and must run after the transaction releases locks.
+	finish := func(reloadPending, reloaded bool) {
+		if commitErr := tx.Commit().Error; commitErr != nil {
+			cosy.ErrHandler(c, config.RollbackError(commitErr, func() error {
+				if restoreErr := rollback(); restoreErr != nil {
+					return restoreErr
+				}
+				if reloaded {
+					if restored := nginx.Control(nginx.TestConfig); restored.IsError() {
+						return restored.GetError()
+					}
+					if restored := nginx.Control(nginx.Reload); restored.IsError() {
+						return restored.GetError()
+					}
+				}
+				return nil
+			}))
+			return
+		}
+		persistCertificateFingerprint(certModel)
+		result := gin.H{"message": "ok"}
+		if reloadPending {
+			result["reload_pending"] = true
+		}
+		c.JSON(http.StatusOK, result)
+	}
+	wasHealthy := !nginx.Control(nginx.TestConfig).IsError()
+	if err = content.WriteFile(); err != nil {
+		cosy.ErrHandler(c, config.RollbackError(err, rollback))
+		return
+	}
+	// Certificates are also staged ahead of site/config deployments. An
+	// already broken configuration may reference several missing pairs; rolling
+	// back each valid pair would prevent that node from ever recovering.
+	// Previously healthy configurations still get transactional rollback.
+	if result := nginx.Control(nginx.TestConfig); result.IsError() {
+		if wasHealthy {
+			cosy.ErrHandler(c, config.RollbackError(result.GetError(), rollback))
+			return
+		}
+		logger.Warnf("Certificate sync stored a valid pair; nginx reload deferred until configuration is healthy: %v", result.GetError())
+		finish(true, false)
+		return
+	}
+	if result := nginx.Control(nginx.Reload); result.IsError() {
+		if !wasHealthy {
+			logger.Warnf("Certificate sync stored a valid pair; nginx reload is pending: %v", result.GetError())
+			finish(true, false)
+			return
+		}
+		cosy.ErrHandler(c, config.RollbackError(result.GetError(), func() error {
+			if restoreErr := rollback(); restoreErr != nil {
+				return restoreErr
+			}
+			if restored := nginx.Control(nginx.TestConfig); restored.IsError() {
+				return restored.GetError()
+			}
+			if restored := nginx.Control(nginx.Reload); restored.IsError() {
+				return restored.GetError()
+			}
+			return nil
+		}))
+		return
+	}
+	finish(false, true)
 }

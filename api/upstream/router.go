@@ -9,7 +9,6 @@ func InitHTTPRouter(r *gin.RouterGroup) {
 	r.GET("/upstream/availability", GetAvailability)
 	r.GET("/upstream/sockets", GetSocketList)
 	r.GET("/upstream/health_check/status", GetHealthCheckStatus)
-	r.PUT("/upstream/socket/:socket", UpdateSocketConfig)
 
 	// Standalone upstream groups managed by Nginx UI.
 	r.GET("/upstreams", ListManagedUpstreams)
@@ -18,6 +17,7 @@ func InitHTTPRouter(r *gin.RouterGroup) {
 
 	o := r.Group("", middleware.RequireSecureSession())
 	{
+		o.PUT("/upstream/socket/:socket", UpdateSocketConfig)
 		o.POST("/upstreams", CreateManagedUpstream)
 		o.POST("/upstreams/:name", UpdateManagedUpstream)
 		o.DELETE("/upstreams/:name", DeleteManagedUpstream)

@@ -9,7 +9,8 @@ func InitRouter(r *gin.RouterGroup) {
 	// A backup archive carries the crypto secret and every stored credential,
 	// and a restore can rewrite app.ini wholesale. Both stay closed in demo mode.
 	r.GET("/backup", middleware.AuthRequired(), middleware.RequireSecureSession(), middleware.RejectInDemo(), CreateBackup)
-	r.POST("/restore", middleware.AuthRequired(), middleware.RequireSecureSession(), middleware.RejectInDemo(), middleware.EncryptedForm(), RestoreBackup)
+	// Restoring the application database also replaces interactive accounts.
+	r.POST("/restore", middleware.AuthRequired(), middleware.RequireInteractiveUser(), middleware.RequireSecureSession(), middleware.RejectInDemo(), middleware.EncryptedForm(), RestoreBackup)
 }
 
 func InitSetupRouter(r *gin.RouterGroup) {

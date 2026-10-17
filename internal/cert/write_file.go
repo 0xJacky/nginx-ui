@@ -38,6 +38,12 @@ func (c *Content) MatchesFiles() bool {
 }
 
 func (c *Content) WriteFile() (err error) {
+	if c.SSLCertificate == "" && c.SSLCertificateKey == "" {
+		return nil
+	}
+	if err = c.validateWrite(); err != nil {
+		return err
+	}
 	if c.SSLCertificatePath == "" || c.SSLCertificateKeyPath == "" {
 		return
 	}

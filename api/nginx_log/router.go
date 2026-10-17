@@ -1,6 +1,9 @@
 package nginx_log
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
+	"github.com/gin-gonic/gin"
+)
 
 // InitRouter registers all the nginx log related routes
 func InitRouter(r *gin.RouterGroup) {
@@ -16,9 +19,9 @@ func InitRouter(r *gin.RouterGroup) {
 	r.POST("nginx_log/geo/china", GetChinaMapData)
 	r.POST("nginx_log/geo/china/city", GetChinaCityMapData)
 	r.POST("nginx_log/geo/stats", GetGeoStats)
-	r.POST("nginx_log/index/rebuild", RebuildIndex)
-	r.POST("nginx_log/settings/advanced_indexing/enable", EnableAdvancedIndexing)
-	r.POST("nginx_log/settings/advanced_indexing/disable", DisableAdvancedIndexing)
+	r.POST("nginx_log/index/rebuild", middleware.RequireSecureSession(), RebuildIndex)
+	r.POST("nginx_log/settings/advanced_indexing/enable", middleware.RequireSecureSession(), EnableAdvancedIndexing)
+	r.POST("nginx_log/settings/advanced_indexing/disable", middleware.RequireSecureSession(), DisableAdvancedIndexing)
 	r.GET("nginx_log/settings/advanced_indexing/status", GetAdvancedIndexingStatus)
 	r.GET("nginx_log/default_log_dir", GetDefaultLogDir)
 }

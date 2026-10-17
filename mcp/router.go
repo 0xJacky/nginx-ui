@@ -80,15 +80,8 @@ func mcpAuthRequired() gin.HandlerFunc {
 			return
 		}
 		if token != "" {
-			var (
-				currentUser *model.User
-				ok          bool
-			)
-			if len(token) <= 16 {
-				currentUser, ok = user.GetTokenUserByShortToken(token)
-			} else {
-				currentUser, ok = user.GetTokenUser(token)
-			}
+			// WebSocket short tokens must not authorize HTTP MCP requests.
+			currentUser, ok := user.GetTokenUser(token)
 			if ok {
 				c.Set("user", currentUser)
 				c.Next()

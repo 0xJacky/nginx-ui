@@ -73,59 +73,61 @@ const SecureSessionVerifiedKey = "SecureSessionVerified"
 
 func RequireSecureSession() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
+		if verifySecureSession(c) {
 			c.Next()
-			return
 		}
-		if token, ok := c.Get(internalmcp.ServiceTokenPrincipalKey); ok {
-			principal, valid := token.(*internalmcp.ServiceTokenPrincipal)
-			if !valid || !principal.HasScope(model.APITokenScopeWrite) {
-				c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
-					"message": "Service token write scope is required",
-				})
-				return
-			}
-			c.Next()
-			return
-		}
-
-		u, ok := c.Get("user")
-		if !ok {
-			c.Next()
-			return
-		}
-		cUser := u.(*model.User)
-		needsSecureSession, err := userNeedsSecureSession(cUser)
-		if err != nil {
-			cosy.ErrHandler(c, err)
-			c.Abort()
-			return
-		}
-		if !needsSecureSession {
-			c.Next()
-			return
-		}
-		ssid := c.GetHeader("X-Secure-Session-ID")
-		if ssid == "" {
-			ssid = c.Query("X-Secure-Session-ID")
-		}
-		if ssid == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-				"message": "Secure Session ID is empty",
-			})
-			return
-		}
-
-		if user.VerifySecureSessionID(ssid, cUser.ID) {
-			c.Set(SecureSessionVerifiedKey, true)
-			c.Next()
-			return
-		}
-
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"message": "Secure Session ID is invalid",
-		})
 	}
+}
+
+// verifySecureSession checks the caller without advancing Gin's handler chain.
+// Proxy uses the same check before replacing the caller with a node principal.
+func verifySecureSession(c *gin.Context) bool {
+	if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
+		return true
+	}
+	if token, ok := c.Get(internalmcp.ServiceTokenPrincipalKey); ok {
+		principal, valid := token.(*internalmcp.ServiceTokenPrincipal)
+		if !valid || !principal.HasScope(model.APITokenScopeWrite) {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"message": "Service token write scope is required",
+			})
+			return false
+		}
+		return true
+	}
+
+	u, ok := c.Get("user")
+	if !ok {
+		return true
+	}
+	cUser := u.(*model.User)
+	needsSecureSession, err := userNeedsSecureSession(cUser)
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		c.Abort()
+		return false
+	}
+	if !needsSecureSession {
+		return true
+	}
+	ssid := c.GetHeader("X-Secure-Session-ID")
+	if ssid == "" {
+		ssid = c.Query("X-Secure-Session-ID")
+	}
+	if ssid == "" {
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+			"message": "Secure Session ID is empty",
+		})
+		return false
+	}
+	if user.VerifySecureSessionID(ssid, cUser.ID) {
+		c.Set(SecureSessionVerifiedKey, true)
+		return true
+	}
+	c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+		"message": "Secure Session ID is invalid",
+	})
+	return false
 }
 
 // VerifiedSecureSession reports whether RequireSecureSession marked the
@@ -151,7 +153,11 @@ func VerifiedSecureSession(c *gin.Context, message string) bool {
 // rewrites 403 responses. Everyone else needs a verified two-factor session.
 func VerifiedTwoFactorOrProxy(c *gin.Context, message string) bool {
 	if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
-		return true
+		if nodeProxyVerifiedTwoFactor(c) {
+			return true
+		}
+		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"message": message})
+		return false
 	}
 
 	return VerifiedSecureSession(c, message)
@@ -173,20 +179,22 @@ func RequireVerifiedTwoFactorOrProxy(message string) gin.HandlerFunc {
 // controller-administration APIs intended only for a logged-in administrator.
 func RequireInteractiveUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if _, ok := c.Get(nodeauth.GinPrincipalKey); ok {
-			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
-				"message": "This operation requires an interactive administrator",
-			})
-			return
+		if verifyInteractiveUser(c) {
+			c.Next()
 		}
-		if _, ok := c.Get(internalmcp.ServiceTokenPrincipalKey); ok {
-			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
-				"message": "This operation requires an interactive administrator",
-			})
-			return
-		}
-		c.Next()
 	}
+}
+
+func verifyInteractiveUser(c *gin.Context) bool {
+	_, isNode := c.Get(nodeauth.GinPrincipalKey)
+	_, isServiceToken := c.Get(internalmcp.ServiceTokenPrincipalKey)
+	if isNode || isServiceToken {
+		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+			"message": "This operation requires an interactive administrator",
+		})
+		return false
+	}
+	return true
 }
 
 // RequireInteractiveUserOrProxy keeps service tokens away from endpoints that

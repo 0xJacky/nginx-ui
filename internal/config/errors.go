@@ -8,6 +8,7 @@ var (
 	ErrConfigContentMustBeUTF8Text    = e.New(40015, "file content must be valid UTF-8 text")
 	ErrConfigContentHasControlChars   = e.New(40016, "file content contains invalid control characters")
 	ErrConfigDirectiveNotAllowed      = e.New(40017, "file content contains restricted nginx directive: {0}")
+	ErrConfigDataInvalid              = e.New(40018, "file content must be valid PEM or htpasswd data")
 	ErrPathIsNotUnderTheNginxConfDir  = e.New(50006, "path: {0} is not under the nginx conf dir: {1}")
 	ErrDstFileExists                  = e.New(50007, "destination file: {0} already exists")
 	ErrNginxTestFailed                = e.New(50008, "nginx test failed: {0}")
