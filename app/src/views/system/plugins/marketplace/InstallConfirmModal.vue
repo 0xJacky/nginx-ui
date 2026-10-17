@@ -22,6 +22,7 @@ import { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory, use
 import { asksForLess, asksForMore, permissionChanges } from '../permissionChanges'
 import { permissionLabel, permissionReasons } from '../permissions'
 import { usePackageConflicts } from '../useConflicts'
+import { compactAlertStyles } from './alertStyles'
 import { commercialPrice, commercialTerms } from './commercial'
 import { useSourceName } from './sources'
 import { isCommunityTrust, trustPreset } from './trust'
@@ -348,6 +349,7 @@ onUnmounted(() => {
         v-if="isOlder"
         type="warning"
         show-icon
+        :styles="compactAlertStyles"
         class="mt-4"
         :title="$gettext('This version is older than the installed version')"
         :description="$gettext('Data created by the newer version may not be compatible with this version.')"
@@ -357,6 +359,7 @@ onUnmounted(() => {
         v-if="noStableVersion"
         type="info"
         show-icon
+        :styles="compactAlertStyles"
         class="mt-4"
         :title="$gettext('No stable release of this plugin is available yet.')"
         :description="$gettext('Newer releases of this channel are received until a stable release is available.')"
@@ -382,17 +385,18 @@ onUnmounted(() => {
         v-if="entry?.commercial && !isUpgrade"
         type="info"
         show-icon
+        :styles="compactAlertStyles"
         class="mt-4"
         :title="$gettext('This is a commercial plugin, licensed by its vendor')"
       >
         <template #description>
-          <div class="flex flex-wrap items-center gap-2">
+          <div class="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1">
             <span>{{ commercialPrice(entry.commercial, gettext.current) }}</span>
             <ATag v-for="term in commercialTerms(entry.commercial)" :key="term" variant="filled" class="m-0">
               {{ term }}
             </ATag>
+            <a :href="entry.commercial.purchase_url" target="_blank" rel="noopener noreferrer">{{ $gettext('Buy a license') }}</a>
           </div>
-          <a :href="entry.commercial.purchase_url" target="_blank" rel="noopener noreferrer">{{ $gettext('Buy a license') }}</a>
         </template>
       </AAlert>
 
@@ -400,6 +404,7 @@ onUnmounted(() => {
         v-if="showCommunityWarning"
         type="warning"
         show-icon
+        :styles="compactAlertStyles"
         class="mt-4"
         :title="$gettext('This is a community plugin')"
         :description="trust.hint()"
@@ -409,6 +414,7 @@ onUnmounted(() => {
         v-if="moreAccess && changes"
         type="warning"
         show-icon
+        :styles="compactAlertStyles"
         class="mt-4"
         :title="accessTitle"
       >
@@ -437,6 +443,7 @@ onUnmounted(() => {
         v-else-if="lessAccess && changes"
         type="info"
         show-icon
+        :styles="compactAlertStyles"
         class="mt-4"
         :title="$gettext('This version asks for less access than the installed version')"
       >
@@ -456,6 +463,7 @@ onUnmounted(() => {
         v-if="requires.length > 0"
         type="info"
         show-icon
+        :styles="compactAlertStyles"
         class="mt-4"
         :title="$gettext('The plugins below are installed together with it')"
       >
