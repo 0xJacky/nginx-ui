@@ -38,8 +38,9 @@ export function statusOf(plugin: PluginInfo): StatusPreset {
 /** Statuses the operator has to act on before the plugin works. */
 const attentionStatuses = new Set<PluginStatus>(['error', 'missing', 'incompatible', 'needs_approval'])
 
-export function needsAttention(plugin: PluginInfo) {
-  return attentionStatuses.has(plugin.status)
+/** withdrawn: the catalog withdrew the installed version. */
+export function needsAttention(plugin: PluginInfo, withdrawn = false) {
+  return withdrawn || attentionStatuses.has(plugin.status)
 }
 
 /** A plugin the host cannot run at all must not offer a toggle. */
@@ -49,8 +50,11 @@ export function isToggleDisabled(plugin: PluginInfo) {
 
 export type InstalledFilter = 'all' | 'enabled' | 'disabled' | 'attention' | 'updates'
 
-/** `updateIds` holds the plugins with a newer release, for the updates filter. */
-export function matchesFilter(plugin: PluginInfo, filter: InstalledFilter, updateIds: ReadonlySet<string> = new Set()) {
+/**
+ * `updateIds` holds the plugins with a newer release, for the updates filter,
+ * `withdrawnIds` the ones whose installed version the catalog withdrew.
+ */
+export function matchesFilter(plugin: PluginInfo, filter: InstalledFilter, updateIds: ReadonlySet<string> = new Set(), withdrawnIds: ReadonlySet<string> = new Set()) {
   switch (filter) {
     case 'updates':
       return updateIds.has(plugin.id)
@@ -59,7 +63,7 @@ export function matchesFilter(plugin: PluginInfo, filter: InstalledFilter, updat
     case 'disabled':
       return !plugin.enabled
     case 'attention':
-      return needsAttention(plugin)
+      return needsAttention(plugin, withdrawnIds.has(plugin.id))
     default:
       return true
   }

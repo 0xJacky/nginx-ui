@@ -119,6 +119,8 @@ export interface CatalogEntry {
   installable_versions?: string[]
   installed_version?: string
   update_available: boolean
+  /** The catalog withdrew the installed version. */
+  installed_yanked?: boolean
 }
 
 /** One installed plugin the catalog offers a newer release for. */

@@ -46,12 +46,16 @@ const pendingApproval = ref<PluginInfo>()
 const pendingReplace = ref(false)
 
 const updateIds = computed(() => new Set(inventory.updates.value.map(item => item.id)))
+// Installed versions the catalog withdrew, a revoked signing key for one.
+const withdrawnIds = computed(() => new Set(inventory.catalog.value
+  .filter(entry => entry.installed_yanked && plugins.value.some(item => item.id === entry.id && item.version === entry.installed_version))
+  .map(entry => entry.id)))
 
 const counts = computed<Record<InstalledFilter, number>>(() => ({
   all: plugins.value.length,
   enabled: plugins.value.filter(item => item.enabled).length,
   disabled: plugins.value.filter(item => !item.enabled).length,
-  attention: plugins.value.filter(needsAttention).length,
+  attention: plugins.value.filter(item => needsAttention(item, withdrawnIds.value.has(item.id))).length,
   updates: plugins.value.filter(item => updateIds.value.has(item.id)).length,
 }))
 
@@ -74,7 +78,7 @@ watch(() => counts.value.updates, count => {
 })
 
 const visible = computed(() => plugins.value.filter(item =>
-  matchesFilter(item, filter.value, updateIds.value) && matchesKeyword(item, keyword.value)))
+  matchesFilter(item, filter.value, updateIds.value, withdrawnIds.value) && matchesKeyword(item, keyword.value)))
 
 const isEmptyInventory = computed(() => !loading.value && !error.value && plugins.value.length === 0)
 
@@ -332,6 +336,7 @@ function confirmUninstall(plugin: PluginInfo) {
           :key="plugin.id"
           :plugin="plugin"
           :has-nodes="hasNodes"
+          :withdrawn="withdrawnIds.has(plugin.id)"
           :toggling="togglingId === plugin.id"
           @open="tab => openDrawer(plugin, tab)"
           @toggle="checked => toggle(plugin, checked)"
