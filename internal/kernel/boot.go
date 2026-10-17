@@ -21,6 +21,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/docker"
 	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/ingress"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
@@ -112,6 +113,7 @@ func InitAfterDatabase(ctx context.Context) {
 		mcp.Init,
 		nginx_log.InitializeServices,
 		user.InitTokenCache,
+		ingress.Start,
 	}
 
 	for _, v := range asyncs {

@@ -403,6 +403,11 @@ func TestConvertRefusals(t *testing.T) {
 			code: codeOf(managed.ErrInvalidName),
 		},
 		{
+			name: "name reserved for ingresses", site: "legacy.test", upstream: "ig-pool",
+			content: "upstream ig-pool {\n    server 127.0.0.1:8081;\n}\n",
+			code:    codeOf(managed.ErrReservedName),
+		},
+		{
 			name: "missing fields", site: "", upstream: "legacy_pool", content: legacySite,
 			code: codeOf(ErrInvalidRequest),
 		},

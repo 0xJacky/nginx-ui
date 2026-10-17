@@ -10,12 +10,14 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
+	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/go-acme/lego/v5/challenge/dns01"
 	"github.com/go-acme/lego/v5/challenge/http01"
 	"github.com/go-acme/lego/v5/lego"
@@ -202,7 +204,8 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 
 	if canUseLegoRenew(payload) &&
 		time.Since(payload.NotBefore).Hours()/24 <= 21 &&
-		payload.Resource != nil && payload.Resource.Certificate != nil {
+		payload.Resource != nil && payload.Resource.Certificate != nil &&
+		renewKeepsIdentifiers(payload) {
 		err = renew(payload, client, certLogger)
 		if err != nil {
 			return err
@@ -216,7 +219,7 @@ func IssueCert(payload *ConfigPayload, certLogger *Logger) error {
 
 	certLogger.Info(translation.C("[Nginx UI] Reloading nginx"))
 
-	nginx.Reload()
+	reloadAfterIssue()
 
 	certLogger.Info(translation.C("[Nginx UI] Finished"))
 
@@ -340,6 +343,50 @@ func dns01PropagationWait(payload *ConfigPayload) time.Duration {
 	return 0
 }
 
+// renewKeepsIdentifiers reports whether the certificate in payload.Resource
+// was issued for exactly the identifiers of payload.ServerName. lego's Renew
+// requests the identifiers of the old certificate (or of its CSR), so a
+// reissue after a domain was added or removed must obtain instead.
+func renewKeepsIdentifiers(payload *ConfigPayload) bool {
+	if payload == nil || payload.Resource == nil || len(payload.Resource.Certificate) == 0 {
+		return false
+	}
+	leaf, err := certcrypto.ParsePEMCertificate(payload.Resource.Certificate)
+	if err != nil {
+		return false
+	}
+	issued, err := normalizeCertificateIdentifiers(certcrypto.ExtractDomains(leaf))
+	if err != nil {
+		return false
+	}
+	wanted, err := normalizeCertificateIdentifiers(payload.ServerName)
+	if err != nil {
+		return false
+	}
+	return sameIdentifiers(issued.Values, wanted.Values)
+}
+
+// sameIdentifiers compares two identifier lists as case-insensitive sets.
+func sameIdentifiers(a, b []string) bool {
+	set := make(map[string]bool, len(a))
+	for _, value := range a {
+		set[strings.ToLower(value)] = false
+	}
+	for _, value := range b {
+		value = strings.ToLower(value)
+		if _, ok := set[value]; !ok {
+			return false
+		}
+		set[value] = true
+	}
+	for _, seen := range set {
+		if !seen {
+			return false
+		}
+	}
+	return true
+}
+
 func canUseLegoRenew(payload *ConfigPayload) bool {
 	if payload == nil {
 		return true
@@ -348,4 +395,15 @@ func canUseLegoRenew(payload *ConfigPayload) bool {
 	// lego.RenewOptions does not expose EnableCommonName or ReplacesCertID,
 	// so use the obtain flow when either option is required.
 	return !payload.EnableCommonName && payload.ReplacesCertID == ""
+}
+
+// reloadAfterIssue reloads nginx under the configuration apply lock. A
+// mutation that holds the lock may have files on disk that are not meant to
+// be loaded yet: an ingress dry run writes, tests and rolls back under it,
+// and a save writes before its own test. Callers of IssueCert never hold the
+// lock, so this cannot deadlock.
+func reloadAfterIssue() {
+	release := config.LockApply()
+	defer release()
+	nginx.Reload()
 }

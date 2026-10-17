@@ -143,3 +143,32 @@ export async function waitForHTTP(domain: string, accept: (probe: HTTPProbe) => 
 export function waitForMarker(domain: string, marker: string, address = '127.0.0.1') {
   return waitForHTTP(domain, probe => probe.status === 200 && probe.body.includes(marker), '/', 15_000, address)
 }
+
+/**
+ * Restart the nginx-ui container (its volumes stay) and wait until the API
+ * answers again. Everything nginx-ui only keeps in memory is lost.
+ */
+export async function restartNginxUI(baseURL: string, timeoutMs = 120_000) {
+  const result = spawnSync('docker', ['compose', '-p', project, '-f', composeFile, 'restart', 'nginx-ui'], {
+    env: composeEnv(),
+    encoding: 'utf8',
+    timeout: timeoutMs,
+  })
+  if (result.error)
+    throw result.error
+  if (result.status !== 0)
+    throw new Error(`docker compose restart nginx-ui exited with ${result.status}: ${result.stderr}`)
+
+  const deadline = Date.now() + timeoutMs
+  for (;;) {
+    try {
+      const response = await fetch(`${baseURL}/api/install`, { signal: AbortSignal.timeout(5_000) })
+      if (response.ok)
+        return
+    }
+    catch {}
+    if (Date.now() > deadline)
+      throw new Error('nginx-ui did not answer after the restart')
+    await new Promise(resolve => setTimeout(resolve, 1_000))
+  }
+}

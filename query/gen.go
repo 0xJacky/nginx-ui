@@ -28,6 +28,7 @@ var (
 	DnsCredential            *dnsCredential
 	DnsDomain                *dnsDomain
 	ExternalNotify           *externalNotify
+	Ingress                  *ingress
 	LLMModel                 *lLMModel
 	LLMSession               *lLMSession
 	MCPServiceToken          *mCPServiceToken
@@ -59,6 +60,7 @@ func SetDefault(db *gorm.DB, opts ...gen.DOOption) {
 	DnsCredential = &Q.DnsCredential
 	DnsDomain = &Q.DnsDomain
 	ExternalNotify = &Q.ExternalNotify
+	Ingress = &Q.Ingress
 	LLMModel = &Q.LLMModel
 	LLMSession = &Q.LLMSession
 	MCPServiceToken = &Q.MCPServiceToken
@@ -91,6 +93,7 @@ func Use(db *gorm.DB, opts ...gen.DOOption) *Query {
 		DnsCredential:            newDnsCredential(db, opts...),
 		DnsDomain:                newDnsDomain(db, opts...),
 		ExternalNotify:           newExternalNotify(db, opts...),
+		Ingress:                  newIngress(db, opts...),
 		LLMModel:                 newLLMModel(db, opts...),
 		LLMSession:               newLLMSession(db, opts...),
 		MCPServiceToken:          newMCPServiceToken(db, opts...),
@@ -124,6 +127,7 @@ type Query struct {
 	DnsCredential            dnsCredential
 	DnsDomain                dnsDomain
 	ExternalNotify           externalNotify
+	Ingress                  ingress
 	LLMModel                 lLMModel
 	LLMSession               lLMSession
 	MCPServiceToken          mCPServiceToken
@@ -160,6 +164,7 @@ func (q *Query) clone(db *gorm.DB) *Query {
 		DnsCredential:            q.DnsCredential.clone(db),
 		DnsDomain:                q.DnsDomain.clone(db),
 		ExternalNotify:           q.ExternalNotify.clone(db),
+		Ingress:                  q.Ingress.clone(db),
 		LLMModel:                 q.LLMModel.clone(db),
 		LLMSession:               q.LLMSession.clone(db),
 		MCPServiceToken:          q.MCPServiceToken.clone(db),
@@ -201,6 +206,7 @@ func (q *Query) ReplaceDB(db *gorm.DB) *Query {
 		DnsCredential:            q.DnsCredential.replaceDB(db),
 		DnsDomain:                q.DnsDomain.replaceDB(db),
 		ExternalNotify:           q.ExternalNotify.replaceDB(db),
+		Ingress:                  q.Ingress.replaceDB(db),
 		LLMModel:                 q.LLMModel.replaceDB(db),
 		LLMSession:               q.LLMSession.replaceDB(db),
 		MCPServiceToken:          q.MCPServiceToken.replaceDB(db),
@@ -232,6 +238,7 @@ type queryCtx struct {
 	DnsCredential            *dnsCredentialDo
 	DnsDomain                *dnsDomainDo
 	ExternalNotify           *externalNotifyDo
+	Ingress                  *ingressDo
 	LLMModel                 *lLMModelDo
 	LLMSession               *lLMSessionDo
 	MCPServiceToken          *mCPServiceTokenDo
@@ -263,6 +270,7 @@ func (q *Query) WithContext(ctx context.Context) *queryCtx {
 		DnsCredential:            q.DnsCredential.WithContext(ctx),
 		DnsDomain:                q.DnsDomain.WithContext(ctx),
 		ExternalNotify:           q.ExternalNotify.WithContext(ctx),
+		Ingress:                  q.Ingress.WithContext(ctx),
 		LLMModel:                 q.LLMModel.WithContext(ctx),
 		LLMSession:               q.LLMSession.WithContext(ctx),
 		MCPServiceToken:          q.MCPServiceToken.WithContext(ctx),

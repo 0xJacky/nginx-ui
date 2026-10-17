@@ -59,6 +59,13 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
           ]
         },
         {
+          text: '自动化',
+          collapsed: false,
+          items: [
+            { text: 'Ingress API', link: '/zh_CN/guide/ingress' },
+          ]
+        },
+        {
           text: '配置',
           collapsed: false,
           items: [

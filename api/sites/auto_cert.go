@@ -5,6 +5,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v5/certcrypto"
@@ -28,6 +29,11 @@ type autoCertRequest struct {
 
 func AddDomainToAutoCert(c *gin.Context) {
 	name := c.Param("name")
+	// The certificate of an ingress site belongs to the ingress.
+	if err := site.CheckManaged(name, forceOption(c)); err != nil {
+		respondSiteError(c, err)
+		return
+	}
 
 	var json autoCertRequest
 
@@ -65,6 +71,10 @@ func AddDomainToAutoCert(c *gin.Context) {
 
 func RemoveDomainFromAutoCert(c *gin.Context) {
 	name := c.Param("name")
+	if err := site.CheckManaged(name, forceOption(c)); err != nil {
+		respondSiteError(c, err)
+		return
+	}
 	certModel, err := model.FirstCert(name)
 
 	if err != nil {

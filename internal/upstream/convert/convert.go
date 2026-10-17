@@ -99,6 +99,9 @@ func prepare(req Request) (*plan, error) {
 	if err := managed.ValidateName(name); err != nil {
 		return nil, err
 	}
+	if err := managed.CheckUserName(name); err != nil {
+		return nil, err
+	}
 
 	sitePath, err := resolveSitePath(siteName)
 	if err != nil {

@@ -7,6 +7,8 @@ import upstream from '@/api/upstream'
 import CodeEditor from '@/components/CodeEditor'
 import { translateError } from '@/lib/http/error'
 import { normalizeHttpError } from '@/lib/http/normalizeError'
+import ManagedSiteAlert from '@/views/site/components/ManagedSiteAlert.vue'
+import { refusingIngress } from '../ingressOwner'
 import { DEFAULT_ZONE_SIZE_KB, kbToZoneSize, MIN_ZONE_SIZE_KB, zoneSizeToKb } from '../zoneSize'
 
 const props = defineProps<{
@@ -59,6 +61,23 @@ const previewError = ref('')
 
 const isEditing = computed(() => !!props.name)
 
+// A group an ingress generates is overwritten by the ingress's next apply, so
+// the form stays locked until the operator chooses to edit it anyway; the save
+// then carries the force flag.
+const managedBy = ref('')
+const forceManaged = ref(false)
+const isManagedLocked = computed(() => !!managedBy.value && !forceManaged.value)
+
+// The list labels a locked group's action "View", so its drawer says so too.
+const drawerTitle = computed(() => {
+  if (!isEditing.value)
+    return $gettext('Create Upstream')
+  const name = props.name ?? ''
+  return isManagedLocked.value
+    ? $gettext('View Upstream %{name}', { name })
+    : $gettext('Edit Upstream %{name}', { name })
+})
+
 const extraDirectivesPlaceholder = 'keepalive_timeout 60s;\nkeepalive_requests 1000;'
 
 const methodOptions = computed<SelectProps['options']>(() => [
@@ -94,6 +113,8 @@ async function load() {
   filePath.value = ''
   previewContent.value = ''
   previewError.value = ''
+  managedBy.value = ''
+  forceManaged.value = false
 
   if (!props.name)
     return
@@ -114,6 +135,7 @@ async function load() {
       extra_directives: detail.extra_directives ?? '',
     })
     references.value = detail.references
+    managedBy.value = detail.managed_by ?? ''
     filePath.value = detail.path
     previewContent.value = detail.content
   }
@@ -165,14 +187,20 @@ async function save() {
   try {
     const payload = toPayload()
     const detail = isEditing.value
-      ? await upstream.updateManaged(payload.name, payload)
+      ? await upstream.updateManaged(payload.name, payload, forceManaged.value)
       : await upstream.createManaged(payload)
     message.success($gettext('Upstream %{name} saved and Nginx reloaded', { name: detail.name }))
     emit('saved', detail.name)
     open.value = false
   }
-  catch {
+  catch (error) {
     // The request layer already shows the error, including nginx -t output.
+    // An ingress that claimed the group after it was opened locks the form.
+    const ingress = refusingIngress(error)
+    if (ingress) {
+      managedBy.value = `ingress:${ingress}`
+      forceManaged.value = false
+    }
   }
   finally {
     isSaving.value = false
@@ -183,13 +211,21 @@ async function save() {
 <template>
   <ADrawer
     v-model:open="open"
-    :title="isEditing ? $gettext('Edit Upstream %{name}', { name: props.name ?? '' }) : $gettext('Create Upstream')"
+    :title="drawerTitle"
     :size="760"
     destroy-on-hidden
     data-testid="upstream-editor"
   >
     <ASpin :spinning="isLoading">
-      <AForm layout="vertical">
+      <ManagedSiteAlert
+        v-model:force="forceManaged"
+        :managed-by="managedBy"
+        class="mb-4"
+      />
+      <AForm
+        layout="vertical"
+        :disabled="isManagedLocked"
+      >
         <AFormItem
           :label="$gettext('Name')"
           required
@@ -279,10 +315,12 @@ async function save() {
                 placeholder="10s"
                 :aria-label="$gettext('Fail Timeout')"
               />
+              <!-- A control's own disabled overrides the form's, even when it
+                   is false, so the ones that set it repeat the managed lock. -->
               <ATooltip :title="isBackupSupported ? '' : $gettext('Not available with this load balancing method')">
                 <ACheckbox
                   v-model:checked="server.backup"
-                  :disabled="!isBackupSupported"
+                  :disabled="isManagedLocked || !isBackupSupported"
                   :aria-label="$gettext('Backup')"
                 >
                   <span class="md:hidden">{{ $gettext('Backup') }}</span>
@@ -297,7 +335,7 @@ async function save() {
               <AButton
                 type="text"
                 danger
-                :disabled="form.servers.length <= 1"
+                :disabled="isManagedLocked || form.servers.length <= 1"
                 :aria-label="$gettext('Remove')"
                 @click="removeServer(index)"
               >
@@ -427,6 +465,7 @@ async function save() {
         <AButton
           type="primary"
           :loading="isSaving"
+          :disabled="isManagedLocked"
           data-testid="upstream-save"
           @click="save"
         >

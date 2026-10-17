@@ -49,6 +49,10 @@ func AddConfig(c *gin.Context) {
 		return
 	}
 
+	if rejectManagedSiteFile(c, path) {
+		return
+	}
+
 	if !json.Overwrite {
 		exists, existsErr := nginx.Exists(path)
 		if existsErr != nil {

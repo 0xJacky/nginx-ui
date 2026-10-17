@@ -36,6 +36,18 @@ Specs:
   negative twin), DNS pointing at another server (`unauthorized`) or at an
   unused address (`connection`), and issuance started immediately after
   enabling a site.
+- `tests/api-ingress.spec.ts` drives the ingress API (`docs/guide/ingress.md`)
+  like an external controller, with the node secret from `app.ini` in
+  `X-Node-Secret`. Two loopback backends (`127.0.0.1:24101`/`24102`, served by
+  the container's own Nginx from `conf.d/e2e-ingress-backends.conf`) sit
+  behind each ingress. It covers ACME issuance to `Ready`, round robin and the
+  forwarded headers over HTTPS, a reissue for an added host, draining a server,
+  dry runs, owner conflicts and takeover, drift restored by an explicit
+  reconcile and by the reconcile loop (`compose.yml` lowers
+  `ReconcileIntervalMinutes` to 1), the site API's refusal to edit generated
+  sites, prune by owner, delete, a failed `nginx -t` rolled back, host and
+  site name conflicts, a backend outside `AllowedBackends`, and a failed
+  issuance recovered by the backoff retry.
 - `tests/ui-quick-setup.spec.ts` drives Add Site -> Quick Setup (reverse proxy,
   TLS, redirect) -> SSL step -> finished, then checks HTTPS 200 with a Pebble
   certificate, HTTP 301, and that the challenge path is still proxied. All

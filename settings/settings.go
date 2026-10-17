@@ -44,6 +44,7 @@ var envPrefixMap = map[string]interface{}{
 	"OPENAI":         OpenAISettings,
 	"SITE_CHECK":     SiteCheckSettings,
 	"UPSTREAM_CHECK": UpstreamCheckSettings,
+	"INGRESS":        IngressSettings,
 	"TERMINAL":       TerminalSettings,
 	"WEBAUTHN":       WebAuthnSettings,
 	"BACKUP":         BackupSettings,
@@ -71,6 +72,7 @@ func init() {
 	sections.Set("openai", OpenAISettings)
 	sections.Set("site_check", SiteCheckSettings)
 	sections.Set("upstream_check", UpstreamCheckSettings)
+	sections.Set("ingress", IngressSettings)
 	sections.Set("terminal", TerminalSettings)
 	sections.Set("webauthn", WebAuthnSettings)
 

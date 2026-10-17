@@ -9,6 +9,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	"github.com/0xJacky/Nginx-UI/internal/ingress"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	mcpgo "github.com/mark3labs/mcp-go/mcp"
@@ -74,6 +75,10 @@ func handleNginxConfigEnable(ctx context.Context, request mcpgo.CallToolRequest)
 	if helper.FileExists(dstPath) {
 		if !overwrite {
 			return nil, fmt.Errorf("configuration is already enabled (symlink exists at %s)", dstPath)
+		}
+		// MCP tools never replace the enabled entry of an ingress site.
+		if err := ingress.CheckManagedPath(srcPath, false); err != nil {
+			return nil, err
 		}
 		// Remove existing symlink/file if overwrite is true
 		if err := os.Remove(dstPath); err != nil {

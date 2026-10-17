@@ -6,6 +6,7 @@ import type { Site, SiteStatus } from '@/api/site'
 import type { JSXElements } from '@/types'
 import { datetimeRender } from '@uozi-admin/curd'
 import { Tag } from 'antdv-next'
+import { RouterLink } from 'vue-router'
 import namespace from '@/api/namespace'
 import AccessSummaryTag from '@/components/AccessControl/AccessSummaryTag.vue'
 import ConfigStatusTag from '@/components/ConfigStatusTag'
@@ -14,6 +15,7 @@ import ProxyTargets from '@/components/ProxyTargets'
 import { ConfigStatus } from '@/constants'
 import namespaceColumns from '@/views/namespace/columns'
 import SiteStatusSelect from '@/views/site/components/SiteStatusSelect.vue'
+import { managedIngressName } from '@/views/site/managedSite'
 
 const columns: StdTableColumn[] = [{
   title: () => $gettext('Search'),
@@ -51,6 +53,19 @@ const columns: StdTableColumn[] = [{
     template.push(
       <div>{text}</div>,
     )
+
+    const ingressName = managedIngressName(record.managed_by)
+    if (ingressName) {
+      template.push(
+        <div class="mt-1">
+          <RouterLink to={{ path: '/ingresses', query: { name: ingressName } }}>
+            <Tag color="purple" data-testid="site-managed-tag">
+              {$gettext('Ingress: %{name}', { name: ingressName })}
+            </Tag>
+          </RouterLink>
+        </div>,
+      )
+    }
 
     if (record.description) {
       template.push(
@@ -148,9 +163,12 @@ const columns: StdTableColumn[] = [{
     if (source === 'detail')
       return h(ConfigStatusTag, { status: text as SiteStatus })
 
+    // A site generated from an ingress is changed from its editor, where the
+    // operator can explicitly choose to edit it anyway.
     return h(SiteStatusSelect, {
       status: text as SiteStatus,
       siteName: record.name,
+      disabled: !!managedIngressName(record.managed_by),
       onStatusChanged: ({ status }: { status: SiteStatus }) => {
         record.status = status
       },

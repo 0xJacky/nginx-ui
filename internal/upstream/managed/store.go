@@ -41,6 +41,10 @@ type Detail struct {
 	Path       string      `json:"path"`
 	Content    string      `json:"content"`
 	References []Reference `json:"references"`
+	// ManagedBy is "ingress:<name>" when an ingress generates the upstream,
+	// so its next apply overwrites changes made here. The API layer fills it
+	// in, because resolving the owner needs the ingress store.
+	ManagedBy string `json:"managed_by,omitempty"`
 }
 
 // FileName returns the file name a managed upstream is stored under.
@@ -87,6 +91,25 @@ func confinedPath(name string) (string, error) {
 		return "", cosy.WrapErrorWithParams(config.ErrPathIsNotUnderTheNginxConfDir, path, dir)
 	}
 	return path, nil
+}
+
+// IngressPrefix starts the names of the upstreams ingresses generate
+// (ig-<ingress>-<backend>). Users cannot create upstreams with it, so an
+// ingress never takes over a group somebody else wrote.
+const IngressPrefix = "ig-"
+
+// CheckUserName refuses the names reserved for ingresses.
+func CheckUserName(name string) error {
+	if strings.HasPrefix(name, IngressPrefix) {
+		return cosy.WrapErrorWithParams(ErrReservedName, IngressPrefix)
+	}
+	return nil
+}
+
+// NameFromFile extracts the upstream name from a managed file name such as
+// upstream-app.conf.
+func NameFromFile(fileName string) (string, bool) {
+	return nameFromFile(fileName)
 }
 
 // nameFromFile extracts the upstream name from a managed file name.
@@ -246,6 +269,11 @@ func Save(u *Upstream, create bool, userName string) (*Detail, error) {
 	}
 	if create && exists {
 		return nil, cosy.WrapErrorWithParams(ErrUpstreamExists, u.Name)
+	}
+	if create {
+		if err := CheckUserName(u.Name); err != nil {
+			return nil, err
+		}
 	}
 	if !create {
 		if !exists {

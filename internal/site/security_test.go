@@ -76,6 +76,10 @@ func setupSiteMutationTest(t *testing.T) (string, func()) {
 		appsettings.NginxSettings.TestConfigCmd = originalTestConfigCmd
 	})
 
+	// Registered after the settings restore above, so it runs first: the
+	// background replications read the settings until they return.
+	t.Cleanup(WaitForSync)
+
 	waitForSyncQuery := func() {
 		t.Helper()
 

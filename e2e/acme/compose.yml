@@ -76,6 +76,9 @@ services:
       NGINX_UI_HTTP_INSECURE_SKIP_VERIFY: "true"
       NGINX_UI_IGNORE_DOCKER_SOCKET: "true"
       NGINX_UI_HTTP_WEBSOCKET_TRUSTED_ORIGINS: http://127.0.0.1:${E2E_ACME_UI_PORT:-18181},http://localhost:${E2E_ACME_UI_PORT:-18181}
+      # tests/api-ingress.spec.ts waits for the drift reconcile loop; the
+      # default interval is 5 minutes.
+      NGINX_UI_INGRESS_RECONCILE_INTERVAL_MINUTES: "1"
     volumes:
       # nocopy keeps the volumes empty on first mount, so init-config seeds
       # /etc/nginx exactly like an empty bind mount on a fresh install.

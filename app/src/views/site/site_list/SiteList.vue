@@ -10,6 +10,7 @@ import InspectConfig from '@/components/InspectConfig'
 import NamespaceTabs from '@/components/NamespaceTabs'
 import { ConfigStatus } from '@/constants'
 import MaintenanceConfigModal from '@/views/site/components/MaintenanceConfigModal.vue'
+import { managedIngressName } from '@/views/site/managedSite'
 import columns from '@/views/site/site_list/columns'
 import SiteDuplicate from '@/views/site/site_list/SiteDuplicate.vue'
 
@@ -27,6 +28,19 @@ const [modal, ContextHolder] = Modal.useModal()
 const maintenanceModalOpen = ref(false)
 const pendingMaintenanceNames = ref<string[]>([])
 const isBatchAccessOpen = ref(false)
+
+// Sites generated from an ingress are rewritten by the next reconcile. Batch
+// actions on a selection that contains any are locked until the operator
+// explicitly chooses to change them anyway; the requests then carry the force
+// flag.
+const selectedManagedSites = computed(() => selectedSites.value.filter(s => !!managedIngressName(s.managed_by)))
+const forceManagedBatch = ref(false)
+const isBatchLocked = computed(() => selectedManagedSites.value.length > 0 && !forceManagedBatch.value)
+
+watch(() => selectedManagedSites.value.length, count => {
+  if (count === 0)
+    forceManagedBatch.value = false
+})
 
 const namespaceId = ref(Number.parseInt(route.query.namespace_id as string) || 0)
 
@@ -105,10 +119,11 @@ function executeBatchStatusAction(action: BatchStatusAction, names: string[], pa
     disable: loadingDisable,
     maintenance: loadingMaintenance,
   }
+  const force = selectedManagedSites.value.length > 0 && forceManagedBatch.value
   const requestMap: Record<BatchStatusAction, (names: string[], payload: MaintenancePayload) => Promise<unknown>> = {
-    enable: site.batchEnable,
-    disable: site.batchDisable,
-    maintenance: (maintenanceNames: string[], maintenancePayload: MaintenancePayload) => site.batchEnableMaintenance(maintenanceNames, maintenancePayload),
+    enable: enableNames => site.batchEnable(enableNames, force),
+    disable: disableNames => site.batchDisable(disableNames, force),
+    maintenance: (maintenanceNames: string[], maintenancePayload: MaintenancePayload) => site.batchEnableMaintenance(maintenanceNames, maintenancePayload, force),
   }
   const successMessageMap: Record<BatchStatusAction, string> = {
     enable: $gettext('Sites enabled successfully'),
@@ -269,13 +284,16 @@ function onMaintenanceConfirm(payload: MaintenancePayload) {
           :cancel-text="$gettext('No')"
           :ok-text="$gettext('OK')"
           :title="$gettext('Are you sure you want to delete?')"
-          :disabled="record.status !== ConfigStatus.Disabled"
+          :disabled="record.status !== ConfigStatus.Disabled || !!managedIngressName(record.managed_by)"
           @confirm="destroy(record.name)"
         >
           <AButton
             type="link"
             size="small"
-            :disabled="record.status !== ConfigStatus.Disabled"
+            :disabled="record.status !== ConfigStatus.Disabled || !!managedIngressName(record.managed_by)"
+            :title="managedIngressName(record.managed_by)
+              ? $gettext('Managed by ingress %{name}', { name: managedIngressName(record.managed_by) })
+              : undefined"
           >
             {{ $gettext('Delete') }}
           </AButton>
@@ -298,12 +316,28 @@ function onMaintenanceConfirm(payload: MaintenancePayload) {
 
     <FooterToolBar v-if="selectedSiteNames.length > 0">
       <template #extra>
-        {{ $gettext('%{count} sites selected', { count: String(selectedSiteNames.length) }) }}
+        <!-- The toolbar is one 56px line, so the force switch sits beside the
+             count rather than under it. -->
+        <AFlex
+          align="center"
+          gap="middle"
+          class="h-14 leading-normal"
+        >
+          <span>{{ $gettext('%{count} sites selected', { count: String(selectedSiteNames.length) }) }}</span>
+          <ACheckbox
+            v-if="selectedManagedSites.length > 0"
+            v-model:checked="forceManagedBatch"
+            data-testid="batch-managed-force"
+          >
+            {{ $ngettext('Include %{count} site managed by an ingress', 'Include %{count} sites managed by ingresses', selectedManagedSites.length, { count: String(selectedManagedSites.length) }) }}
+          </ACheckbox>
+        </AFlex>
       </template>
 
       <ASpace>
         <AButton
           :loading="loadingEnable"
+          :disabled="isBatchLocked"
           type="primary"
           @click="batchEnableSites"
         >
@@ -312,6 +346,7 @@ function onMaintenanceConfirm(payload: MaintenancePayload) {
 
         <AButton
           :loading="loadingDisable"
+          :disabled="isBatchLocked"
           danger
           @click="batchDisableSites"
         >
@@ -320,8 +355,9 @@ function onMaintenanceConfirm(payload: MaintenancePayload) {
 
         <AButton
           :loading="loadingMaintenance"
+          :disabled="isBatchLocked"
           type="primary"
-          class="!bg-amber-500 !border-amber-500 hover:!bg-amber-600 hover:!border-amber-600"
+          :class="isBatchLocked ? undefined : '!bg-amber-500 !border-amber-500 hover:!bg-amber-600 hover:!border-amber-600'"
           @click="batchEnableMaintenanceSites"
         >
           {{ $gettext('Maintenance') }}
@@ -329,6 +365,7 @@ function onMaintenanceConfirm(payload: MaintenancePayload) {
 
         <AButton
           data-testid="batch-access"
+          :disabled="isBatchLocked"
           @click="isBatchAccessOpen = true"
         >
           {{ $gettext('Access') }}

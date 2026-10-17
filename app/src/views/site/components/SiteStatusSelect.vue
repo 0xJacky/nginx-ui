@@ -11,6 +11,10 @@ import MaintenanceConfigModal from '@/views/site/components/MaintenanceConfigMod
 const props = defineProps<{
   siteName: string
   status: SiteStatus
+  // Locks the select, e.g. for a site managed by an ingress.
+  disabled?: boolean
+  // Sends the status change with the force flag.
+  force?: boolean
 }>()
 
 // Define event for status change notification
@@ -52,12 +56,14 @@ const selectStyle = computed(() => {
     '--ant-select-border': color,
     '--ant-select-color': '#ffffff',
     'color': '#ffffff',
+    // The status colours override the disabled look, so dim it instead.
+    ...(props.disabled ? { opacity: 0.5 } : {}),
   }
 })
 
 // Enable the site
 function enable() {
-  site.enable(props.siteName).then(() => {
+  site.enable(props.siteName, props.force).then(() => {
     message.success($gettext('Enabled successfully'))
     restoreDisplayStatus(ConfigStatus.Enabled)
     emit('statusChanged', {
@@ -70,7 +76,7 @@ function enable() {
 
 // Disable the site
 function disable() {
-  site.disable(props.siteName).then(() => {
+  site.disable(props.siteName, props.force).then(() => {
     message.success($gettext('Disabled successfully'))
     restoreDisplayStatus(ConfigStatus.Disabled)
     emit('statusChanged', {
@@ -83,7 +89,7 @@ function disable() {
 
 // Enable maintenance mode for the site
 function enableMaintenance(payload: MaintenancePayload) {
-  site.enableMaintenance(props.siteName, payload).then(() => {
+  site.enableMaintenance(props.siteName, payload, props.force).then(() => {
     message.success($gettext('Maintenance mode enabled successfully'))
     restoreDisplayStatus(ConfigStatus.Maintenance)
     emit('statusChanged', {
@@ -96,7 +102,7 @@ function enableMaintenance(payload: MaintenancePayload) {
 
 // Disable maintenance mode for the site
 function disableMaintenance() {
-  site.enable(props.siteName).then(() => {
+  site.enable(props.siteName, props.force).then(() => {
     message.success($gettext('Maintenance mode disabled successfully'))
     restoreDisplayStatus(ConfigStatus.Enabled)
     emit('statusChanged', {
@@ -206,6 +212,7 @@ function onMaintenanceModalOpenChange(open: boolean) {
       }"
       :style="selectStyle"
       :options="statusOptions"
+      :disabled
       @change="onChangeStatus"
     />
   </div>

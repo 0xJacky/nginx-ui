@@ -10,6 +10,8 @@ const props = defineProps<{
   statusTitle: string
   isToggling?: boolean
   isReadOnly?: boolean
+  // Why the switch is locked, shown as its tooltip; empty when it is not.
+  lockedReason?: string
 }>()
 
 const emit = defineEmits<{
@@ -30,16 +32,21 @@ const switchLabel = computed(() => props.isDown
   >
     <!-- The switch sits first with a fixed size, so nothing around it moves
          when the pointer hovers or the state changes. -->
-    <ASwitch
-      size="small"
-      class="shrink-0"
-      :checked="!isDown"
-      :loading="isToggling"
-      :disabled="isReadOnly"
-      :aria-label="switchLabel"
-      data-testid="upstream-server-switch"
-      @change="checked => emit('toggle', Boolean(checked))"
-    />
+    <!-- A disabled switch swallows pointer events, so the tooltip hangs on
+         the wrapper. -->
+    <ATooltip :title="lockedReason">
+      <span class="inline-flex shrink-0">
+        <ASwitch
+          size="small"
+          :checked="!isDown"
+          :loading="isToggling"
+          :disabled="isReadOnly || !!lockedReason"
+          :aria-label="switchLabel"
+          data-testid="upstream-server-switch"
+          @change="checked => emit('toggle', Boolean(checked))"
+        />
+      </span>
+    </ATooltip>
     <ATag
       :color="status"
       class="me-0 font-mono break-all"

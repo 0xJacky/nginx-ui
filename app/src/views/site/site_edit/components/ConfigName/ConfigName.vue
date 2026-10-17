@@ -3,6 +3,10 @@ import site from '@/api/site'
 
 const props = defineProps<{
   name: string
+  // Locks renaming, e.g. for a site managed by an ingress.
+  disabled?: boolean
+  // Sends the rename with the force flag.
+  force?: boolean
 }>()
 
 const router = useRouter()
@@ -22,7 +26,7 @@ function clickModify() {
 
 function save() {
   loading.value = true
-  site.rename(props.name, buffer.value).then(async () => {
+  site.rename(props.name, buffer.value, props.force).then(async () => {
     modify.value = false
     message.success($gettext('Renamed successfully'))
     router.push({
@@ -40,7 +44,12 @@ function save() {
       {{ buffer }}
     </div>
     <div>
-      <AButton type="link" size="small" @click="clickModify">
+      <AButton
+        type="link"
+        size="small"
+        :disabled
+        @click="clickModify"
+      >
         {{ $gettext('Rename') }}
       </AButton>
     </div>
