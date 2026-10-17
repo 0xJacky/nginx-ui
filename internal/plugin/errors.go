@@ -37,6 +37,7 @@ var (
 	ErrPluginConflict             = e.New(55025, "plugin conflicts with the enabled plugin(s): {0}")
 	ErrChannelInvalid             = e.New(55026, "release channel must be stable, beta or dev")
 	ErrReservedID                 = e.New(55027, "plugin id {0} is reserved for official plugins")
+	ErrUnknownSigner              = e.New(55028, "plugin package is signed by key {0}, which this node does not trust, and developer mode is off")
 
 	// Capability errors continue at 55201, apart from the lifecycle and the
 	// marketplace codes.

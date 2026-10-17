@@ -684,7 +684,7 @@ func TestMarketplaceInstallCountsAnUnknownSignerAsUnsigned(t *testing.T) {
 	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), &private, nil)
 
 	_, err := manager.Marketplace().Install(context.Background(), "com.example.alpha", "", "", InstallOptions{})
-	assert.ErrorIs(t, err, ErrUnsignedPackage)
+	assertPluginError(t, err, ErrUnknownSigner)
 
 	settings.PluginSettings.DeveloperMode = true
 	info, err := manager.Marketplace().Install(context.Background(), "com.example.alpha", "", "", InstallOptions{})
