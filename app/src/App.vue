@@ -177,6 +177,21 @@ loadTranslations(route)
   }
 }
 
+// antdv-next 1.6.0 sets the select text colour again in each variant rule
+// (`.ant-select.ant-select-outlined`, 0-2-0), which beats its own
+// `.ant-select-disabled` (0-1-0), so a disabled select keeps full-contrast
+// text. antd 6 sets no colour there. The repeated class outranks the variant
+// rule. The select and its content are divs, so both colours are set here
+// too, or `.dark div` above paints them over.
+.ant-select.ant-select.ant-select-disabled {
+  --ant-select-color: var(--ant-color-text-disabled);
+  color: var(--ant-select-color);
+
+  .ant-select-content {
+    color: inherit;
+  }
+}
+
 @media (max-width: 512px) {
   .ant-card {
     border-radius: 0;
