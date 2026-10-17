@@ -262,7 +262,7 @@ func (mp *Marketplace) fetchRelease(ctx context.Context, entry *CatalogEntry, re
 	partial := archive + ".partial"
 	defer os.Remove(partial)
 
-	if err := mp.download(ctx, proxiedURL(download.URL), partial, nil); err != nil {
+	if err := mp.download(ctx, download.URL, partial, nil); err != nil {
 		return "", err
 	}
 	if err := verifyDigest(partial, download.SHA256); err != nil {
