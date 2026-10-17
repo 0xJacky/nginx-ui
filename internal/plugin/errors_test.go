@@ -42,6 +42,7 @@ func TestErrorScopeCodesAreUnique(t *testing.T) {
 		ErrDependencyCycle, ErrPluginInUse, ErrPluginsDisabled, ErrUploadsDisabled,
 		ErrCallTimeout, ErrRPC, ErrSettingsInvalid, ErrHostVersionTooOld, ErrPluginIDMismatch,
 		ErrContentInvalid, ErrPluginVersionMismatch, ErrUnsignedPackage, ErrTrustDowngrade, ErrPluginConflict,
+		ErrChannelInvalid, ErrReservedID, ErrUnknownSigner,
 	}
 
 	seen := make(map[int32]struct{}, len(scoped))

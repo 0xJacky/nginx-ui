@@ -59,6 +59,9 @@ type packageTrust struct {
 	AuthorKey string
 	// Partner is the partner name of a verified signature, empty otherwise.
 	Partner string
+	// UnknownSigner is the key id of a signature no known key verifies, for
+	// telling such a package apart from one without a signature.
+	UnknownSigner string
 }
 
 var unsignedTrust = packageTrust{Trust: TrustUnsigned}
@@ -158,9 +161,13 @@ func checkPackageTrust(root string, opts InstallOptions, keyring *partnerKeyring
 	}
 	switch trust.Trust {
 	case TrustUnsigned:
-		if !settings.PluginSettings.DeveloperMode {
-			return trust, ErrUnsignedPackage
+		if settings.PluginSettings.DeveloperMode {
+			break
 		}
+		if trust.UnknownSigner != "" {
+			return trust, cosy.WrapErrorWithParams(ErrUnknownSigner, trust.UnknownSigner)
+		}
+		return trust, ErrUnsignedPackage
 	case TrustCommunity:
 		if !settings.PluginSettings.AllowCommunityPlugins {
 			return trust, ErrCommunityNotAllowed
@@ -201,8 +208,11 @@ func verifyPackageSignature(root, authorKey string, revoked []string, keyring *p
 	community := communityKeys(authorKey)
 	signer := packageSigner(root, community, revoked)
 	trust, err := signatureTrust(sums, signature, trustTiers(community, signer, partners, keyring))
-	if err != nil || trust.Trust == TrustUnsigned {
+	if err != nil {
 		return unsignedTrust, err
+	}
+	if trust.Trust == TrustUnsigned {
+		return trust, nil
 	}
 	// A certified signing key stands for the primary key that issued it, which
 	// is the key the install records and the cluster passes on.
@@ -219,7 +229,8 @@ func verifyPackageSignature(root, authorKey string, revoked []string, keyring *p
 }
 
 // signatureTrust returns the highest trust whose key verifies the signature
-// over sums. A key that is not known leaves the package unsigned, a known key
+// over sums. A key that is not known leaves the package unsigned with the key
+// id in UnknownSigner, a known key
 // that fails and a signature that does not parse are ErrSignatureInvalid.
 func signatureTrust(sums, signature []byte, tiers []trustTier) (packageTrust, error) {
 	keyID, err := pkgsign.KeyID(signature)
@@ -248,7 +259,7 @@ func signatureTrust(sums, signature []byte, tiers []trustTier) (packageTrust, er
 		return unsignedTrust, cosy.WrapErrorWithParams(ErrSignatureInvalid,
 			fmt.Sprintf("%s does not verify with key %016X", SumsFileName, keyID))
 	}
-	return unsignedTrust, nil
+	return packageTrust{Trust: TrustUnsigned, UnknownSigner: fmt.Sprintf("%016X", keyID)}, nil
 }
 
 // maxSignatureFileSize caps the signature files read into memory.
