@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"path/filepath"
+	"slices"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -972,6 +974,53 @@ func TestProxiedURLOnlyRewritesGithub(t *testing.T) {
 		proxiedURL("https://raw.githubusercontent.com/a/b/index.json"))
 	assert.Equal(t, "https://mirror.example.org/index.json", proxiedURL("https://mirror.example.org/index.json"))
 	assert.Equal(t, "", proxiedURL(""))
+}
+
+func TestGithubProxyRefusalFallsBackToDirect(t *testing.T) {
+	origin := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		_, _ = fmt.Fprint(w, "direct "+r.URL.Path)
+	}))
+	t.Cleanup(origin.Close)
+	proxy := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case strings.Contains(r.URL.Path, "/refused/"):
+			http.Error(w, "Access denied.", http.StatusForbidden)
+		case strings.Contains(r.URL.Path, "/broken/"):
+			http.Error(w, "Bad gateway", http.StatusBadGateway)
+		default:
+			_, _ = fmt.Fprint(w, "proxied")
+		}
+	}))
+	t.Cleanup(proxy.Close)
+
+	previousProxy := settings.HTTPSettings.GithubProxy
+	settings.HTTPSettings.GithubProxy = proxy.URL
+	previousHosts := githubHosts
+	// The test servers stand in for GitHub.
+	githubHosts = append(slices.Clone(githubHosts), "127.0.0.1")
+	t.Cleanup(func() {
+		settings.HTTPSettings.GithubProxy = previousProxy
+		githubHosts = previousHosts
+	})
+
+	ctx := context.Background()
+	body, err := fetchText(ctx, origin.URL+"/served/README.md", 1024)
+	require.NoError(t, err)
+	assert.Equal(t, "proxied", body)
+
+	body, err = fetchText(ctx, origin.URL+"/refused/README.md", 1024)
+	require.NoError(t, err)
+	assert.Equal(t, "direct /refused/README.md", body)
+
+	// Other proxy failures are reported, not retried.
+	_, err = fetchText(ctx, origin.URL+"/broken/README.md", 1024)
+	require.Error(t, err)
+
+	target := filepath.Join(t.TempDir(), "package.tar.gz")
+	require.NoError(t, (&Marketplace{}).download(ctx, origin.URL+"/refused/package.tar.gz", target, nil))
+	data, err := os.ReadFile(target)
+	require.NoError(t, err)
+	assert.Equal(t, "direct /refused/package.tar.gz", string(data))
 }
 
 func TestScreenshotsKeepTheLoadableOnes(t *testing.T) {

@@ -254,11 +254,11 @@ func (m *Manager) refreshPartners(ctx context.Context) {
 
 // fetchPartners is one refresh: fetch, verify, refuse a rollback, cache.
 func (m *Manager) fetchPartners(ctx context.Context, documentURL string) error {
-	raw, err := fetchText(ctx, proxiedURL(documentURL), maxPartnersBytes)
+	raw, err := fetchText(ctx, documentURL, maxPartnersBytes)
 	if err != nil {
 		return fmt.Errorf("fetch %s: %w", PartnersFileName, err)
 	}
-	signature, err := fetchText(ctx, proxiedURL(documentURL+".minisig"), maxPartnersSignatureBytes)
+	signature, err := fetchText(ctx, documentURL+".minisig", maxPartnersSignatureBytes)
 	if err != nil {
 		return fmt.Errorf("fetch %s: %w", partnersSignatureName, err)
 	}

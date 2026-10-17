@@ -25,6 +25,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 // Install progress phases published on the event bus.
@@ -563,7 +564,7 @@ func (mp *Marketplace) Detail(ctx context.Context, id, source string) (*CatalogE
 	if entry.ReadmeURL != "" {
 		if err = checkCatalogURL(entry, entry.ReadmeURL); err != nil {
 			mp.manager.log.Debugf("Skip plugin readme %s: %v", entry.ReadmeURL, err)
-		} else if body, err := fetchText(ctx, proxiedURL(entry.ReadmeURL), maxReadmeBytes); err != nil {
+		} else if body, err := fetchText(ctx, entry.ReadmeURL, maxReadmeBytes); err != nil {
 			mp.manager.log.Warnf("Plugin readme %s: %v", entry.ReadmeURL, err)
 		} else {
 			readme = body
@@ -749,7 +750,7 @@ func (mp *Marketplace) installEntry(ctx context.Context, entries []CatalogEntry,
 	progress := func(status string, percent float64) {
 		publishPlatformProgress(entry.ID, status, percent, key)
 	}
-	if err = mp.download(ctx, proxiedURL(download.URL), archive, progress); err != nil {
+	if err = mp.download(ctx, download.URL, archive, progress); err != nil {
 		return nil, err
 	}
 
@@ -856,7 +857,8 @@ func (mp *Marketplace) checkPolicy(entry *CatalogEntry, downloadURL string) erro
 	return nil
 }
 
-// download streams a package to disk. progress, when set, receives the
+// download streams a package to disk, through the GitHub proxy for GitHub
+// hosted files. progress, when set, receives the
 // downloading phase so the caller can publish it.
 func (mp *Marketplace) download(ctx context.Context, rawURL, target string, progress func(status string, percent float64)) error {
 	if progress == nil {
@@ -868,11 +870,7 @@ func (mp *Marketplace) download(ctx context.Context, rawURL, target string, prog
 	if err != nil {
 		return err
 	}
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, nil)
-	if err != nil {
-		return err
-	}
-	response, err := client.Do(request)
+	response, err := getThroughGithubProxy(ctx, client, rawURL)
 	if err != nil {
 		return cosy.WrapErrorWithParams(ErrSourceUnavailable, err.Error())
 	}
@@ -1126,7 +1124,7 @@ func publishPlatformProgress(pluginID, status string, progress float64, platform
 
 // fetchCatalog downloads and validates the catalog document of one source.
 func fetchCatalog(ctx context.Context, source string) ([]CatalogEntry, CatalogInfo, error) {
-	body, err := fetchText(ctx, proxiedURL(source), maxCatalogBytes)
+	body, err := fetchText(ctx, source, maxCatalogBytes)
 	if err != nil {
 		return nil, CatalogInfo{}, err
 	}
@@ -1188,7 +1186,8 @@ func catalogName(raw map[string]string) map[string]string {
 	return name
 }
 
-// fetchText reads a remote document with a hard size cap.
+// fetchText reads a remote document with a hard size cap, through the GitHub
+// proxy for GitHub hosted files.
 func fetchText(ctx context.Context, rawURL string, limit int64) (string, error) {
 	if rawURL == "" {
 		return "", ErrSourceUnavailable
@@ -1197,11 +1196,7 @@ func fetchText(ctx context.Context, rawURL string, limit int64) (string, error) 
 	if err != nil {
 		return "", err
 	}
-	request, err := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, nil)
-	if err != nil {
-		return "", cosy.WrapErrorWithParams(ErrSourceUnavailable, err.Error())
-	}
-	response, err := client.Do(request)
+	response, err := getThroughGithubProxy(ctx, client, rawURL)
 	if err != nil {
 		return "", cosy.WrapErrorWithParams(ErrSourceUnavailable, err.Error())
 	}
@@ -1227,6 +1222,28 @@ func newHTTPClient(timeout time.Duration) (*http.Client, error) {
 	client := *base
 	client.Timeout = timeout
 	return &client, nil
+}
+
+// getThroughGithubProxy requests a GitHub hosted file through the configured
+// proxy. A proxy that refuses the repository with 403, such as the default one
+// for a repository it does not serve, is skipped and GitHub is asked directly.
+func getThroughGithubProxy(ctx context.Context, client *http.Client, rawURL string) (*http.Response, error) {
+	target := proxiedURL(rawURL)
+	response, err := getURL(ctx, client, target)
+	if err != nil || target == rawURL || response.StatusCode != http.StatusForbidden {
+		return response, err
+	}
+	response.Body.Close()
+	logger.Debugf("GitHub proxy refused %s, fetching it directly", rawURL)
+	return getURL(ctx, client, rawURL)
+}
+
+func getURL(ctx context.Context, client *http.Client, rawURL string) (*http.Response, error) {
+	request, err := http.NewRequestWithContext(ctx, http.MethodGet, rawURL, nil)
+	if err != nil {
+		return nil, err
+	}
+	return client.Do(request)
 }
 
 // proxiedURL routes GitHub hosted files through the configured proxy, exactly
