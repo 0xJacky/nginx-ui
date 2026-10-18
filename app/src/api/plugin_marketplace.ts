@@ -161,11 +161,22 @@ export interface SourceProbe {
   error?: string
 }
 
+/** An installed plugin the catalogs took down. */
+export interface DelistedNotice {
+  id: string
+  reason?: string
+  delisted_at: string
+  source: string
+  /** The installed version was yanked, or signed by a revoked key, before the take down. */
+  withdrawn: boolean
+}
+
 export interface MarketplaceListResponse {
   plugins: CatalogEntry[]
   sources: CatalogSource[]
   /** "<goos>-<goarch>" of this node, what installable_release was picked for. */
   host_platform?: string
+  delisted?: DelistedNotice[] | null
 }
 
 export interface MarketplaceDetailResponse {

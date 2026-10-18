@@ -2,6 +2,7 @@
 import type { MenuProps } from 'antdv-next'
 import type { PluginDrawerTab } from './presets'
 import type { PluginInfo } from '@/api/plugin'
+import type { DelistedNotice } from '@/api/plugin_marketplace'
 import {
   CloudSyncOutlined,
   DeleteOutlined,
@@ -29,6 +30,8 @@ const props = defineProps<{
   hasNodes: boolean
   /** The catalog withdrew the installed version. */
   withdrawn?: boolean
+  /** The catalogs took the plugin down. */
+  delisted?: DelistedNotice
   toggling?: boolean
 }>()
 
@@ -158,7 +161,16 @@ function onMenuClick({ key }: { key: string | number }) {
       <span class="min-w-0 break-words">{{ conflictNote(conflictingNames) }}</span>
     </div>
 
-    <div v-if="withdrawn" class="plugin-card-error">
+    <div v-if="delisted" :class="withdrawn ? 'plugin-card-error' : 'plugin-card-note'">
+      <component :is="withdrawn ? WarningOutlined : InfoCircleOutlined" class="flex-none" :class="{ 'plugin-card-note-icon': !withdrawn }" />
+      <span class="min-w-0 break-words">
+        {{ withdrawn
+          ? $gettext('This plugin was taken down from the catalog, and this version was withdrawn. Disable or uninstall it.')
+          : $gettext('This plugin was taken down from the catalog and receives no more updates.') }}
+        <template v-if="delisted.reason">{{ ' ' }}{{ $gettext('Reason: %{reason}', { reason: delisted.reason }) }}</template>
+      </span>
+    </div>
+    <div v-else-if="withdrawn" class="plugin-card-error">
       <WarningOutlined class="flex-none" />
       <span class="min-w-0 break-words">{{ $gettext('The publisher withdrew this version. Update it, or disable it until a new version is available.') }}</span>
     </div>

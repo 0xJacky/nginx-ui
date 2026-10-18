@@ -46,10 +46,16 @@ const pendingApproval = ref<PluginInfo>()
 const pendingReplace = ref(false)
 
 const updateIds = computed(() => new Set(inventory.updates.value.map(item => item.id)))
-// Installed versions the catalog withdrew, a revoked signing key for one.
-const withdrawnIds = computed(() => new Set(inventory.catalog.value
-  .filter(entry => entry.installed_yanked && plugins.value.some(item => item.id === entry.id && item.version === entry.installed_version))
-  .map(entry => entry.id)))
+// Installed plugins the catalogs took down, by id.
+const delistedById = computed(() => new Map(inventory.delisted.value.map(notice => [notice.id, notice])))
+// Installed versions the catalog withdrew, a revoked signing key for one,
+// also when the plugin was taken down since.
+const withdrawnIds = computed(() => new Set([
+  ...inventory.catalog.value
+    .filter(entry => entry.installed_yanked && plugins.value.some(item => item.id === entry.id && item.version === entry.installed_version))
+    .map(entry => entry.id),
+  ...inventory.delisted.value.filter(notice => notice.withdrawn).map(notice => notice.id),
+]))
 
 const counts = computed<Record<InstalledFilter, number>>(() => ({
   all: plugins.value.length,
@@ -337,6 +343,7 @@ function confirmUninstall(plugin: PluginInfo) {
           :plugin="plugin"
           :has-nodes="hasNodes"
           :withdrawn="withdrawnIds.has(plugin.id)"
+          :delisted="delistedById.get(plugin.id)"
           :toggling="togglingId === plugin.id"
           @open="tab => openDrawer(plugin, tab)"
           @toggle="checked => toggle(plugin, checked)"

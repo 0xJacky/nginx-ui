@@ -24,6 +24,8 @@ type marketplaceListResponse struct {
 	// HostPlatform is the "<goos>-<goarch>" key installable_release was
 	// resolved for.
 	HostPlatform string `json:"host_platform"`
+	// Delisted are the installed plugins the catalogs took down.
+	Delisted []plugin.DelistedNotice `json:"delisted"`
 }
 
 // marketplaceDetailResponse pairs one entry with its proxied readme.
@@ -76,10 +78,15 @@ func GetMarketplaceList(c *gin.Context) {
 		return
 	}
 
+	delisted, err := marketplace.DelistedNotices(c)
+	if err != nil {
+		delisted = nil
+	}
 	c.JSON(http.StatusOK, marketplaceListResponse{
 		Plugins:      entries,
 		Sources:      marketplace.SourceList(),
 		HostPlatform: plugin.HostPlatform(),
+		Delisted:     delisted,
 	})
 }
 
