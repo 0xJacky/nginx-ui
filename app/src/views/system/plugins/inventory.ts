@@ -1,6 +1,6 @@
 import type { ComputedRef, InjectionKey, MaybeRefOrGetter, Ref } from 'vue'
 import type { PluginInfo } from '@/api/plugin'
-import type { CatalogEntry, PluginUpdateInfo } from '@/api/plugin_marketplace'
+import type { CatalogEntry, DelistedNotice, PluginUpdateInfo } from '@/api/plugin_marketplace'
 import { useIntervalFn } from '@vueuse/core'
 import nodeApi from '@/api/node'
 import pluginApi from '@/api/plugin'
@@ -12,6 +12,8 @@ export interface PluginInventory {
   updates: Ref<PluginUpdateInfo[]>
   /** The unfiltered marketplace catalog, empty while it is unavailable. */
   catalog: Ref<CatalogEntry[]>
+  /** Installed plugins the catalogs took down. */
+  delisted: Ref<DelistedNotice[]>
   /** True once this instance has at least one enabled child node. */
   hasNodes: Ref<boolean>
   loading: Ref<boolean>
@@ -32,6 +34,7 @@ export function providePluginInventory(): PluginInventory {
   const plugins = ref<PluginInfo[]>([])
   const updates = ref<PluginUpdateInfo[]>([])
   const catalog = ref<CatalogEntry[]>([])
+  const delisted = ref<DelistedNotice[]>([])
   const hasNodes = ref(false)
   const loading = ref(false)
   const error = ref('')
@@ -64,11 +67,14 @@ export function providePluginInventory(): PluginInventory {
 
   async function reloadCatalog() {
     try {
-      catalog.value = (await getMarketplaceList()).plugins
+      const list = await getMarketplaceList()
+      catalog.value = list.plugins
+      delisted.value = list.delisted ?? []
     }
     catch {
       // Only the offers to install a more trusted version depend on it.
       catalog.value = []
+      delisted.value = []
     }
   }
 
@@ -106,6 +112,7 @@ export function providePluginInventory(): PluginInventory {
     plugins,
     updates,
     catalog,
+    delisted,
     hasNodes,
     loading,
     error,

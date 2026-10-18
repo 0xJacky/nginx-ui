@@ -890,6 +890,50 @@ func TestMarketplaceInstallReportsMissingDependency(t *testing.T) {
 	assertPluginError(t, err, ErrDependencyMissing)
 }
 
+func TestMarketplaceTellsAboutADelistedPlugin(t *testing.T) {
+	manager := newTestManager(t)
+	server := newCatalogServer(t)
+	useMarketplace(t, server.catalogURL())
+	ctx := context.Background()
+	marketplace := manager.Marketplace()
+
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.0.0"), nil, nil)
+	_, err := marketplace.Install(ctx, "com.example.alpha", "", "", InstallOptions{Enable: true, ApprovePermissions: true})
+	require.NoError(t, err)
+	notices, err := marketplace.DelistedNotices(ctx)
+	require.NoError(t, err)
+	assert.Empty(t, notices)
+
+	// The catalog takes it down, having yanked the installed version.
+	server.mu.Lock()
+	server.document.Plugins = nil
+	server.document.Delisted = []DelistedPlugin{{ID: "com.example.alpha", Reason: "Abandoned.", DelistedAt: "2026-10-18", Yanked: []string{"1.0.0"}}}
+	server.mu.Unlock()
+	marketplace.ClearCache()
+
+	notices, err = marketplace.DelistedNotices(ctx)
+	require.NoError(t, err)
+	require.Len(t, notices, 1)
+	assert.Equal(t, DelistedNotice{ID: "com.example.alpha", Reason: "Abandoned.", DelistedAt: "2026-10-18", Source: server.catalogURL(), Withdrawn: true}, notices[0])
+
+	// Without the installed version among the withdrawn it only informs.
+	server.mu.Lock()
+	server.document.Delisted[0].Yanked = nil
+	server.mu.Unlock()
+	marketplace.ClearCache()
+	notices, err = marketplace.DelistedNotices(ctx)
+	require.NoError(t, err)
+	require.Len(t, notices, 1)
+	assert.False(t, notices[0].Withdrawn)
+
+	// A plugin listed again is not delisted, whatever record is left.
+	server.publish(t, marketplaceManifest("com.example.alpha", "1.1.0"), nil, nil)
+	marketplace.ClearCache()
+	notices, err = marketplace.DelistedNotices(ctx)
+	require.NoError(t, err)
+	assert.Empty(t, notices)
+}
+
 func TestMarketplaceUpdatesAndUpdate(t *testing.T) {
 	manager := newTestManager(t)
 	server := newCatalogServer(t)
