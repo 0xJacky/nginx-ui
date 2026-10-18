@@ -52,6 +52,7 @@ again when it changes.
 | `icon` | Square image standing for the catalog. |
 | `updated_at` | Time of this version of the document. |
 | `plugins` | The entries. |
+| `delisted` | Optional. Plugins the catalog took down: `id`, `reason`, `delisted_at` and the `yanked` versions and `revoked_signers` the entry had by then. Nginx UI tells the users of an installed copy, and lists it under Needs attention when its version or signing key is among them. An id that a configured catalog still lists is not delisted. |
 
 The [JSON Schema](https://github.com/nginxui/plugin-spec/blob/main/schema/catalog.schema.json)
 describes every member. Unknown members are ignored.
