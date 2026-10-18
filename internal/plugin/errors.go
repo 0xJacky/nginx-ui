@@ -38,6 +38,7 @@ var (
 	ErrChannelInvalid             = e.New(55026, "release channel must be stable, beta or dev")
 	ErrReservedID                 = e.New(55027, "plugin id {0} is reserved for official plugins")
 	ErrUnknownSigner              = e.New(55028, "plugin package is signed by key {0}, which this node does not trust, and developer mode is off")
+	ErrPluginWithdrawn            = e.New(55029, "plugin version {0} was withdrawn from the catalog and is not pushed to nodes")
 
 	// Capability errors continue at 55201, apart from the lifecycle and the
 	// marketplace codes.
