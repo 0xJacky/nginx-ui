@@ -23,6 +23,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/go-resty/resty/v2"
 	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy"
 )
 
 // State of one plugin on one node, as the matrix reports it.
@@ -580,12 +581,36 @@ func (s *Syncer) installOnNode(ctx context.Context, client *nodeClient, info *In
 	if marketplaceErr == nil {
 		return nil
 	}
+	// The node checks a pushed package against the author key alone, so a
+	// version the catalog withdrew must not reach it this way.
+	if err := s.withdrawnFromCatalog(ctx, info); err != nil {
+		return err
+	}
 	archive, err := s.manager.pushArchive(ctx, info, own, platform)
 	if err != nil {
 		return fmt.Errorf("marketplace install failed (%v) and no package is available: %w", marketplaceErr, err)
 	}
 	if err = client.uploadPackage(ctx, archive, info.Enabled, authorKey); err != nil {
 		return fmt.Errorf("marketplace install failed (%v) and pushing the package failed: %w", marketplaceErr, err)
+	}
+	return nil
+}
+
+// withdrawnFromCatalog refuses a version the catalog this node reads yanked,
+// or one signed by a key the entry revoked. A catalog that cannot be read
+// refuses nothing, so an offline cluster still syncs.
+func (s *Syncer) withdrawnFromCatalog(ctx context.Context, info *Info) error {
+	entries, err := s.manager.Marketplace().Catalog(ctx, false)
+	if err != nil {
+		return nil
+	}
+	entry := findEntry(entries, info.ID, "")
+	if entry == nil {
+		return nil
+	}
+	revoked := info.Signer != "" && slices.ContainsFunc(entry.RevokedSigners, func(id string) bool { return strings.EqualFold(id, info.Signer) })
+	if revoked || isVersionYanked(entry, info.Version) {
+		return cosy.WrapErrorWithParams(ErrPluginWithdrawn, info.Version)
 	}
 	return nil
 }
