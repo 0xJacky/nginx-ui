@@ -12,6 +12,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/plugin/grpcbridge"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/status"
 )
 
 // Handler answers one rpc by its JSON-RPC name. Returning a *protocol.Error
@@ -64,11 +65,7 @@ func serve(stream grpc.ServerStream, h Handler, sh StreamHandler) error {
 
 	result, err := h(stream.Context(), m.RPCName, params)
 	if err != nil {
-		var pe *protocol.Error
-		if !errors.As(err, &pe) {
-			pe = &protocol.Error{Code: protocol.CodeInternalError, Message: err.Error()}
-		}
-		return grpcbridge.ToStatus(pe).Err()
+		return handlerStatus(err)
 	}
 
 	out, err := grpcbridge.EncodeJSON(m.Output, result)
@@ -99,15 +96,24 @@ func serveStream(stream grpc.ServerStream, m *grpcbridge.Method, sh StreamHandle
 
 	result, err := sh(stream.Context(), m.RPCName, next)
 	if err != nil {
-		var pe *protocol.Error
-		if !errors.As(err, &pe) {
-			pe = &protocol.Error{Code: protocol.CodeInternalError, Message: err.Error()}
-		}
-		return grpcbridge.ToStatus(pe).Err()
+		return handlerStatus(err)
 	}
 	out, err := grpcbridge.EncodeJSON(m.Output, result)
 	if err != nil {
 		return grpcbridge.ToStatus(&protocol.Error{Code: protocol.CodeInternalError, Message: err.Error()}).Err()
 	}
 	return stream.SendMsg(out)
+}
+
+// handlerStatus is the status of a handler error: a deadline or a cancel as
+// itself, so the caller sees it as one, anything else as a plugin error.
+func handlerStatus(err error) error {
+	if errors.Is(err, context.DeadlineExceeded) || errors.Is(err, context.Canceled) {
+		return status.FromContextError(err).Err()
+	}
+	var pe *protocol.Error
+	if !errors.As(err, &pe) {
+		pe = &protocol.Error{Code: protocol.CodeInternalError, Message: err.Error()}
+	}
+	return grpcbridge.ToStatus(pe).Err()
 }
