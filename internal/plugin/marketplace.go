@@ -1048,30 +1048,48 @@ func (mp *Marketplace) runMaintenance(ctx context.Context) {
 		return
 	}
 
+	// Updates applied here are reported as done, the rest as available.
+	var applied, pending []UpdateInfo
+	for _, update := range updates {
+		if settings.PluginSettings.AutoUpdate && mp.autoUpdate(ctx, update) {
+			applied = append(applied, update)
+		} else {
+			pending = append(pending, update)
+		}
+	}
+	if len(applied) > 0 {
+		notification.Success("Plugins updated automatically", "Updated automatically: %{plugins}",
+			map[string]any{"plugins": updateList(applied), "updates": applied})
+	}
+	if len(pending) > 0 {
+		notification.Info("Plugin updates available", "Updates are available for %{plugins}",
+			map[string]any{"plugins": updateList(pending), "updates": pending})
+	}
+}
+
+// autoUpdate applies one update when the node may do so unattended: only
+// plugins installed from an official or verified signature, never to a
+// package signed with less, and only while the permission set the user
+// approved still covers the new version.
+func (mp *Marketplace) autoUpdate(ctx context.Context, update UpdateInfo) bool {
+	installed, err := mp.manager.Get(update.ID)
+	if err != nil || (installed.Trust != TrustOfficial && installed.Trust != TrustVerified) || update.PermissionsChanged {
+		return false
+	}
+	if _, err = mp.update(ctx, update.ID, update.LatestVersion, false, installed.Trust); err != nil {
+		mp.manager.log.Warnf("[plugin:%s] auto update: %v", update.ID, err)
+		return false
+	}
+	return true
+}
+
+// updateList names the updates for a notification, "Name 1.0.0 -> 1.1.0".
+func updateList(updates []UpdateInfo) string {
 	names := make([]string, 0, len(updates))
 	for _, update := range updates {
 		names = append(names, fmt.Sprintf("%s %s -> %s", update.Name, update.InstalledVersion, update.LatestVersion))
 	}
-	notification.Info("Plugin updates available", strings.Join(names, ", "), map[string]any{"updates": updates})
-
-	if !settings.PluginSettings.AutoUpdate {
-		return
-	}
-	for _, update := range updates {
-		// Only plugins installed from an official or verified signature update
-		// themselves, never to a package signed with less, and only while the
-		// permission set the user approved still covers the new version.
-		installed, err := mp.manager.Get(update.ID)
-		if err != nil || (installed.Trust != TrustOfficial && installed.Trust != TrustVerified) {
-			continue
-		}
-		if update.PermissionsChanged {
-			continue
-		}
-		if _, err = mp.update(ctx, update.ID, update.LatestVersion, false, installed.Trust); err != nil {
-			mp.manager.log.Warnf("[plugin:%s] auto update: %v", update.ID, err)
-		}
-	}
+	return strings.Join(names, ", ")
 }
 
 // progressWriter reports download progress, throttled so a fast link does
