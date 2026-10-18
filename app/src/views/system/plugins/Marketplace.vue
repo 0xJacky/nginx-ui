@@ -100,7 +100,13 @@ async function load(refresh = false) {
 }
 
 async function refreshAll(refresh = false) {
-  await Promise.all([load(refresh), inventory.reloadUpdates()])
+  if (!refresh) {
+    await Promise.all([load(), inventory.reloadUpdates()])
+    return
+  }
+  // The updates and the installed tab read the catalog this refresh fetched.
+  await load(true)
+  await Promise.all([inventory.reloadUpdates(), inventory.reloadCatalog()])
 }
 
 function openDetail(entry: CatalogEntry) {
