@@ -366,6 +366,38 @@ func TestSyncPluginPushesTheAuthorKeyOfACommunityPackage(t *testing.T) {
 	assert.Equal(t, authorKey, fake.uploadAuthor)
 }
 
+func TestSyncPluginRefusesToPushAWithdrawnVersion(t *testing.T) {
+	m, syncer := newSyncTestManager(t)
+	server := newCatalogServer(t)
+	useMarketplace(t, server.catalogURL())
+	authorPublic, author := newSigningKey(t)
+	authorKey := encodeKey(t, authorPublic)
+
+	archive := buildSignedTestPackage(t, webappOnlyManifest("com.example.community", "1.0.0"),
+		map[string]string{"webapp/main.js": "export default {}"}, &author)
+	_, err := m.Install(context.Background(), archive, InstallOptions{Enable: true, AuthorPublicKey: authorKey})
+	require.NoError(t, err)
+	// The catalog revoked the key that signed the installed version.
+	server.publish(t, marketplaceManifest("com.example.community", "1.0.0"), &author, func(entry *CatalogEntry, _ *CatalogRelease) {
+		entry.AuthorPublicKey = authorKey
+		entry.RevokedSigners = []string{keyID(&author)}
+	})
+
+	fake := newFakeSyncNode(t)
+	node := addSyncTestNode(t, "node-a", fake.server.URL, true)
+	useFakeSyncCluster(t, map[uint64]bool{node.ID: true})
+
+	results, err := syncer.SyncPlugin(context.Background(), "com.example.community", nil)
+	require.NoError(t, err)
+	require.Len(t, results, 1)
+	assert.False(t, results[0].Success)
+	assert.Contains(t, results[0].Error, "withdrawn")
+
+	fake.mu.Lock()
+	defer fake.mu.Unlock()
+	assert.Equal(t, 0, fake.uploadCalls)
+}
+
 func TestSyncPluginPrefersTheMarketplace(t *testing.T) {
 	m, syncer := newSyncTestManager(t)
 	installSyncTestPlugin(t, m, "official.alpha", "1.0.0", true)
