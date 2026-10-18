@@ -299,6 +299,29 @@ type CatalogDocument struct {
 	Icon      string         `json:"icon,omitempty"`
 	UpdatedAt string         `json:"updated_at,omitempty"`
 	Plugins   []CatalogEntry `json:"plugins"`
+	// Delisted are the plugins the catalog took down.
+	Delisted []DelistedPlugin `json:"delisted,omitempty"`
+}
+
+// DelistedPlugin is one plugin a catalog took down, with what its entry had
+// withdrawn by then.
+type DelistedPlugin struct {
+	ID             string   `json:"id"`
+	Reason         string   `json:"reason,omitempty"`
+	DelistedAt     string   `json:"delisted_at"`
+	Yanked         []string `json:"yanked,omitempty"`
+	RevokedSigners []string `json:"revoked_signers,omitempty"`
+}
+
+// DelistedNotice tells about an installed plugin no configured catalog lists
+// any more and one of them took down. Withdrawn marks an installed version
+// the entry had yanked, or one signed by a key it had revoked.
+type DelistedNotice struct {
+	ID         string `json:"id"`
+	Reason     string `json:"reason,omitempty"`
+	DelistedAt string `json:"delisted_at"`
+	Source     string `json:"source"`
+	Withdrawn  bool   `json:"withdrawn"`
 }
 
 // CatalogInfo is what a catalog declares about itself.
@@ -308,6 +331,8 @@ type CatalogInfo struct {
 	// Icon is an image a browser of this node may load, empty when the
 	// catalog declares none this node accepts.
 	Icon string `json:"catalog_icon,omitempty"`
+	// Delisted are the plugins the catalog took down, kept with the cache.
+	Delisted []DelistedPlugin `json:"-"`
 }
 
 // CatalogSource is one configured catalog and what it declares about itself,
@@ -951,6 +976,49 @@ func (mp *Marketplace) source(ctx context.Context, rawURL string, refresh bool) 
 	return entries, nil
 }
 
+// DelistedNotices lists the installed plugins that no configured catalog
+// lists and one of them took down, the first source in merge order winning.
+func (mp *Marketplace) DelistedNotices(ctx context.Context) ([]DelistedNotice, error) {
+	entries, err := mp.Catalog(ctx, false)
+	if err != nil {
+		return nil, err
+	}
+	listed := make(map[string]bool, len(entries))
+	for _, entry := range entries {
+		listed[entry.ID] = true
+	}
+	records := map[string]DelistedNotice{}
+	withdrawn := map[string]DelistedPlugin{}
+	mp.mu.Lock()
+	for _, source := range mp.Sources() {
+		cached, ok := mp.cache[source]
+		if !ok {
+			continue
+		}
+		for _, record := range cached.info.Delisted {
+			if _, seen := records[record.ID]; seen || listed[record.ID] {
+				continue
+			}
+			records[record.ID] = DelistedNotice{ID: record.ID, Reason: record.Reason, DelistedAt: record.DelistedAt, Source: source}
+			withdrawn[record.ID] = record
+		}
+	}
+	mp.mu.Unlock()
+
+	notices := make([]DelistedNotice, 0)
+	for _, info := range mp.manager.List() {
+		notice, ok := records[info.ID]
+		if !ok {
+			continue
+		}
+		record := withdrawn[info.ID]
+		notice.Withdrawn = slices.Contains(record.Yanked, info.Version) ||
+			(info.Signer != "" && slices.ContainsFunc(record.RevokedSigners, func(id string) bool { return strings.EqualFold(id, info.Signer) }))
+		notices = append(notices, notice)
+	}
+	return notices, nil
+}
+
 // ClearCache drops every cached source, which the tests and the settings
 // endpoint rely on.
 func (mp *Marketplace) ClearCache() {
@@ -1173,6 +1241,11 @@ func fetchCatalog(ctx context.Context, source string) ([]CatalogEntry, CatalogIn
 		entries = append(entries, entry)
 	}
 	info := CatalogInfo{Name: catalogName(document.Name)}
+	for _, delisted := range document.Delisted {
+		if IsValidID(delisted.ID) {
+			info.Delisted = append(info.Delisted, delisted)
+		}
+	}
 	if document.Icon != "" && checkURLOnHosts(document.Icon, source) == nil {
 		info.Icon = document.Icon
 	}
