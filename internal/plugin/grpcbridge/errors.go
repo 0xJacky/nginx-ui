@@ -45,6 +45,14 @@ func FromStatus(ctx context.Context, err error, inContract bool) error {
 	if !ok {
 		return err
 	}
+	// A deadline or a cancel the plugin saw first is still one, whatever
+	// detail came with it.
+	switch st.Code() {
+	case codes.DeadlineExceeded:
+		return context.DeadlineExceeded
+	case codes.Canceled:
+		return context.Canceled
+	}
 	for _, detail := range st.Details() {
 		if pe, ok := detail.(*pluginv1.PluginError); ok {
 			message := pe.GetMessage()
@@ -57,10 +65,6 @@ func FromStatus(ctx context.Context, err error, inContract bool) error {
 
 	var code int
 	switch st.Code() {
-	case codes.DeadlineExceeded:
-		return context.DeadlineExceeded
-	case codes.Canceled:
-		return context.Canceled
 	case codes.Unavailable:
 		return fmt.Errorf("%w: %s", ErrUnavailable, st.Message())
 	case codes.InvalidArgument:
