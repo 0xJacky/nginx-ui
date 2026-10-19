@@ -9,6 +9,7 @@ export interface LLMModelPreset {
   value: string
   contextWindow: number
   pricing: LLMModelPricing
+  pricingTiers?: { label: string, pricing: LLMModelPricing }[]
   inputModalities: string[]
   thinkingModes: string[]
 }
@@ -28,29 +29,35 @@ export interface LLMProviderPreset {
   endpoints?: LLMProviderEndpoint[]
 }
 
+// https://platform.minimax.io/docs/pricing/overview.md
 const MINIMAX_MODELS: LLMModelPreset[] = [
+  {
+    value: 'MiniMax-M3.1-Flash',
+    contextWindow: 1_000_000,
+    pricing: {
+      input: 0.15,
+      output: 0.6,
+      cacheRead: 0.015,
+    },
+    inputModalities: ['text', 'image', 'video'],
+    thinkingModes: ['adaptive'],
+  },
   {
     value: 'MiniMax-M3',
     contextWindow: 1_000_000,
     pricing: {
-      input: 0.6,
-      output: 2.4,
-      cacheRead: 0.12,
-    },
-    inputModalities: ['text', 'image', 'video'],
-    thinkingModes: ['adaptive', 'disabled'],
-  },
-  {
-    value: 'MiniMax-M2.7',
-    contextWindow: 204_800,
-    pricing: {
       input: 0.3,
       output: 1.2,
       cacheRead: 0.06,
-      cacheWrite: 0.375,
     },
-    inputModalities: ['text'],
-    thinkingModes: ['always_on'],
+    pricingTiers: [
+      { label: 'Standard, input ≤512k', pricing: { input: 0.3, output: 1.2, cacheRead: 0.06 } },
+      { label: 'Standard, input >512k', pricing: { input: 0.6, output: 2.4, cacheRead: 0.12 } },
+      { label: 'Priority, input ≤512k', pricing: { input: 0.45, output: 1.8, cacheRead: 0.09 } },
+      { label: 'Priority, input >512k', pricing: { input: 0.9, output: 3.6, cacheRead: 0.18 } },
+    ],
+    inputModalities: ['text', 'image', 'video'],
+    thinkingModes: ['adaptive', 'disabled'],
   },
 ]
 
@@ -152,6 +159,21 @@ export const LLM_THINKING_PRESETS: LLMThinkingPreset[] = [
       ...effortLevels(level => ({ reasoning_effort: level })),
     },
     match: /^(?:gpt-5|o\d)/i,
+  },
+  {
+    value: 'minimax_flash',
+    label: () => 'MiniMax M3.1 Flash (reasoning_effort)',
+    params: effortLevels(level => ({ thinking: { type: 'adaptive' }, reasoning_effort: level })),
+    match: /^MiniMax-M3\.1-Flash$/i,
+  },
+  {
+    value: 'minimax_m3',
+    label: () => 'MiniMax M3 (thinking.type)',
+    params: {
+      off: { thinking: { type: 'disabled' } },
+      high: { thinking: { type: 'adaptive' } },
+    },
+    match: /^MiniMax-M3$/i,
   },
   {
     value: 'thinking_type',

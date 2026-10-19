@@ -29,9 +29,14 @@ completion features work without additional backend changes. You can find the At
 For MiniMax, the OpenAI-compatible endpoints are `https://api.minimax.io/v1` for global service and
 `https://api.minimaxi.com/v1` for China service. MiniMax also provides Anthropic-compatible endpoints at
 `https://api.minimax.io/anthropic` and `https://api.minimaxi.com/anthropic`; use those with an Anthropic-compatible
-client. This setting requires an OpenAI-compatible endpoint. Suggested MiniMax text models include `MiniMax-M3` and
-`MiniMax-M2.7`. See the MiniMax API docs at <https://platform.minimax.io/docs> and
-<https://platform.minimaxi.com/docs>.
+client. This setting requires an OpenAI-compatible endpoint. The MiniMax presets are `MiniMax-M3.1-Flash` and
+`MiniMax-M3`, both with a 1M-token context window and text, image, and video input support at the API level.
+The Flash thinking preset offers low, medium, and high effort without an off option: this model always thinks.
+Leaving the effort unset uses the API default (`max`); `xhigh` and `max` can also be supplied through custom request fields.
+The M3 thinking preset supports off and adaptive thinking; it does not use effort levels.
+M3 prices depend on input length and service tier, while Flash has a single price and does not support `service_tier`.
+See the MiniMax API docs at <https://platform.minimax.io/docs> and <https://platform.minimaxi.com/docs>,
+and current prices at <https://platform.minimax.io/docs/pricing/overview.md>.
 
 ## Token
 

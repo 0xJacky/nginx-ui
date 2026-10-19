@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SelectProps } from 'antdv-next'
 import type { LLMChatModel } from '@/api/llm'
+import type { LLMModelPricing } from '@/constants/llm'
 import { DownOutlined, ReloadOutlined, RightOutlined } from '@antdv-next/icons'
 import { cloneDeep, isEqual } from 'lodash'
 import llm from '@/api/llm'
@@ -175,7 +176,9 @@ const selectedModelCapabilities = computed(() => {
     `${$gettext('Context window')}: ${preset.contextWindow.toLocaleString()} ${$gettext('tokens')}`,
     `${$gettext('Input modalities')}: ${preset.inputModalities.map(formatCapability).join(', ')}`,
     `${$gettext('Thinking modes')}: ${preset.thinkingModes.map(formatCapability).join(', ')}`,
-    `${$gettext('Pricing per million tokens')}: ${formatPricing()}`,
+    ...(preset.pricingTiers ?? [{ label: '', pricing: preset.pricing }]).map(tier =>
+      `${$gettext('Pricing per million tokens')}${tier.label ? ` (${tier.label})` : ''}: ${formatPricing(tier.pricing)}`,
+    ),
   ]
 })
 
@@ -200,11 +203,7 @@ function formatCapability(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1)
 }
 
-function formatPricing() {
-  const pricing = selectedModelPreset.value?.pricing
-  if (!pricing)
-    return ''
-
+function formatPricing(pricing: LLMModelPricing) {
   const prices = [
     `${$gettext('Input')}: $${pricing.input}`,
     `${$gettext('Output')}: $${pricing.output}`,
