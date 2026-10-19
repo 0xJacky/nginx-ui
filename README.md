@@ -211,12 +211,12 @@ Press `Control+C` in the terminal to exit Nginx UI.
 **Run Nginx UI in Background**
 
 ```shell
-nohup ./nginx-ui -config app.ini &
+nohup ./nginx-ui -config app.ini -pidfile nginx-ui.pid &
 ```
-Stop Nginx UI with the follow command.
+Stop Nginx UI gracefully with the following command.
 
 ```shell
-kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
+kill -TERM "$(cat nginx-ui.pid)"
 ```
 
 #### With Systemd
