@@ -316,7 +316,9 @@ On platforms that do not have an official build version, they can be built manua
 
 - Make
 
-- Golang 1.23+
+- Golang 1.27.2+
+
+- Bun 1.4.3 (the version pinned by this repository's package manifest and CI)
 
 - node.js 21+
 
