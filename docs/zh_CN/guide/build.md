@@ -5,8 +5,9 @@
 ## 依赖
 
 - Make
-- Golang 版本 1.23 或更高
-- node.js 版本 21 或更高
+- Go 版本 1.27.2 或更高（与 `go.mod` 要求一致）
+- Bun 版本 1.4.3（由 `package.json` 固定）
+- Node.js 版本 21 或更高（用于下方的 `npx browserslist` 命令）
 
 你需要在构建项目之前执行以下命令更新浏览器列表数据库。
   ```shell

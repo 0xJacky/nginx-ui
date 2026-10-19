@@ -6,8 +6,9 @@ Regular users should follow the [quick start](./getting-started) guide.
 ## Prerequisites
 
 - Make.
-- Golang version 1.23 or higher.
-- node.js version 21 or higher.
+- Go version 1.27.2 or higher, as required by `go.mod`.
+- Bun version 1.4.3, as pinned in `package.json`.
+- Node.js version 21 or higher for the `npx browserslist` command below.
 
 You should execute the following command to update browser list database before build project.
   ```shell
