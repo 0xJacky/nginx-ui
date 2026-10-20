@@ -211,12 +211,12 @@ Press `Control+C` in the terminal to exit Nginx UI.
 **Run Nginx UI in Background**
 
 ```shell
-nohup ./nginx-ui -config app.ini &
+nohup ./nginx-ui -config app.ini -pidfile nginx-ui.pid &
 ```
-Stop Nginx UI with the follow command.
+Stop Nginx UI gracefully with the following command.
 
 ```shell
-kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
+kill -TERM "$(cat nginx-ui.pid)"
 ```
 
 #### With Systemd
@@ -316,7 +316,9 @@ On platforms that do not have an official build version, they can be built manua
 
 - Make
 
-- Golang 1.23+
+- Golang 1.27.2+
+
+- Bun 1.4.3 (the version pinned by this repository's package manifest and CI)
 
 - node.js 21+
 

@@ -191,7 +191,7 @@ nginx-ui -config app.ini
 ```
 
 ```shell [In Background]
-nohup ./nginx-ui -config app.ini &
+nohup ./nginx-ui -config app.ini -pidfile nginx-ui.pid &
 ```
 
 :::
@@ -206,7 +206,7 @@ nohup ./nginx-ui -config app.ini &
 ```
 
 ```shell [In Background]
-kill -9 $(ps -aux | grep nginx-ui | grep -v grep | awk '{print $2}')
+kill -TERM "$(cat nginx-ui.pid)"
 ```
 
 :::
