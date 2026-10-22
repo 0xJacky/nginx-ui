@@ -39,6 +39,25 @@ func GetNginxProcessInfo() (*NginxProcessInfo, error) {
 	}
 }
 
+// isNginxProcessName reports whether a process name (gopsutil reads
+// /proc/<pid>/comm on Linux) belongs to nginx itself. The match must be exact:
+// in the official Docker image Nginx UI runs next to nginx and its process
+// name is "nginx-ui", so a substring match would misidentify Nginx UI as an
+// nginx process and, worse, as the master (#1704).
+func isNginxProcessName(name string) bool {
+	return strings.TrimSuffix(strings.ToLower(name), ".exe") == "nginx"
+}
+
+// isNginxMasterCmdline reports whether a command line belongs to the nginx
+// master process. On Linux nginx retitles its processes, so the master cmdline
+// contains "nginx: master process". The second clause is a fallback for
+// platforms or builds that do not retitle: the master is then the nginx
+// process that is neither a worker nor a cache process.
+func isNginxMasterCmdline(cmdline string) bool {
+	return strings.Contains(cmdline, "nginx: master process") ||
+		(!strings.Contains(cmdline, "worker process") && !strings.Contains(cmdline, "cache"))
+}
+
 // getNginxProcessInfoFromHost counts nginx processes in the local process
 // namespace (Nginx UI and nginx share the same host/container).
 func getNginxProcessInfoFromHost() (*NginxProcessInfo, error) {
@@ -81,9 +100,7 @@ func getNginxProcessInfoFromHost() (*NginxProcessInfo, error) {
 		}
 
 		// Check if it is the Nginx master process
-		if strings.Contains(strings.ToLower(name), "nginx") &&
-			(strings.Contains(cmdline, "master process") ||
-				!strings.Contains(cmdline, "worker process")) &&
+		if isNginxProcessName(name) && isNginxMasterCmdline(cmdline) &&
 			p.Pid > 0 {
 			masterPID = p.Pid
 			masterCount++
@@ -113,7 +130,7 @@ func getNginxProcessInfoFromHost() (*NginxProcessInfo, error) {
 		}
 
 		// Only process Nginx related processes
-		if !strings.Contains(strings.ToLower(name), "nginx") {
+		if !isNginxProcessName(name) {
 			continue
 		}
 
