@@ -48,6 +48,14 @@ function installationStarted(callbacks: UpgradeCallbacks, message = 'Performing 
   callbacks.onMessage(JSON.stringify({ status: 'info', message }))
 }
 
+function deferred<T>() {
+  let resolve!: (value: T) => void
+  const promise = new Promise<T>(done => {
+    resolve = done
+  })
+  return { promise, resolve }
+}
+
 describe('upgrade connection failures', () => {
   test('failed handshakes never send a command, verify a version or report 100%', async () => {
     const h = harness()
@@ -100,6 +108,23 @@ describe('upgrade connection failures', () => {
     expect(h.progress).not.toContain(100)
   })
 
+  test('the overall timeout also bounds the initial version request', async () => {
+    const pending = deferred<Info>()
+    const connect = mock(() => () => {})
+    const h = harness({ readVersion: () => pending.promise, connect, upgradeTimeout: 10 })
+    const { result } = await h.start()
+    const outcome = await Promise.race([
+      result.then(() => 'success', () => 'timeout'),
+      new Promise<string>(resolve => setTimeout(resolve, 50, 'still pending')),
+    ])
+    // Always release the request so a broken implementation leaves no timer.
+    h.controller.abort()
+    pending.resolve(version())
+    await expect(result).rejects.toThrow()
+    expect(outcome).toBe('timeout')
+    expect(connect).not.toHaveBeenCalled()
+  })
+
   test('cancelling the view closes the connection', async () => {
     const h = harness()
     const { result, callbacks } = await h.start()
@@ -108,6 +133,42 @@ describe('upgrade connection failures', () => {
     await expect(result).rejects.toThrow()
     expect(h.close).toHaveBeenCalledTimes(1)
     expect(h.progress).not.toContain(100)
+  })
+
+  test('socket construction errors reject without reporting completion', async () => {
+    const h = harness({ connect: () => {
+      throw new Error('invalid WebSocket URL')
+    } })
+    const { result } = await h.start()
+    await expect(result).rejects.toThrow('invalid WebSocket URL')
+    expect(h.progress).not.toContain(100)
+  })
+
+  test('send failures reject and close the connection', async () => {
+    const h = harness()
+    const { result, callbacks } = await h.start()
+    callbacks.onConnected({ send: () => {
+      throw new Error('connection is not open')
+    } })
+    await expect(result).rejects.toThrow('connection is not open')
+    expect(h.close).toHaveBeenCalledTimes(1)
+    expect(h.progress).not.toContain(100)
+  })
+
+  test.each(['', 'v2.9', 'sha-', 'sha-not-a-hash'])('refuses an unverifiable target before opening a socket: %s', async target => {
+    const connect = mock(() => () => {})
+    const h = harness({ target, connect, upgradeTimeout: 10 })
+    const { result } = await h.start()
+    await expect(result).rejects.toThrow('Invalid upgrade target')
+    expect(connect).not.toHaveBeenCalled()
+  })
+
+  test('a malformed baseline response never starts a destructive upgrade', async () => {
+    const connect = mock(() => () => {})
+    const h = harness({ readVersion: async () => ({}) as Info, connect, upgradeTimeout: 10 })
+    const { result } = await h.start()
+    await expect(result).rejects.toThrow('invalid version response')
+    expect(connect).not.toHaveBeenCalled()
   })
 })
 
@@ -196,6 +257,92 @@ describe('upgrade verification', () => {
     expect(h.readVersion).toHaveBeenCalledTimes(1)
     expect(h.progress).not.toContain(100)
   })
+
+  test('an overall timeout aborts an in-flight verification request and stops further polling', async () => {
+    const pending = deferred<Info>()
+    const requested = deferred<AbortSignal>()
+    const readVersion = mock(async (_signal?: AbortSignal) => version())
+    const h = harness({ readVersion, upgradeTimeout: 15, verificationTimeout: 100 })
+    const { result, callbacks } = await h.start()
+    readVersion.mockImplementation(async signal => {
+      requested.resolve(signal!)
+      return pending.promise
+    })
+    installationStarted(callbacks)
+    callbacks.onDisconnected()
+    const signal = await requested.promise
+    await expect(result).rejects.toThrow('upgrade timed out')
+    pending.resolve(version())
+    await new Promise(resolve => setTimeout(resolve, 5))
+    expect(signal?.aborted).toBe(true)
+    expect(readVersion).toHaveBeenCalledTimes(2)
+    expect(h.progress).not.toContain(100)
+    h.controller.abort()
+  })
+
+  test('the verification deadline aborts a stalled request even when it never resolves', async () => {
+    const pending = deferred<Info>()
+    const requested = deferred<AbortSignal>()
+    const readVersion = mock(async (_signal?: AbortSignal) => version())
+    const h = harness({ readVersion, upgradeTimeout: 100, verificationTimeout: 10 })
+    const { result, callbacks } = await h.start()
+    readVersion.mockImplementation(async signal => {
+      requested.resolve(signal!)
+      return pending.promise
+    })
+    installationStarted(callbacks)
+    callbacks.onDisconnected()
+    const signal = await requested.promise
+    await expect(result).rejects.toThrow('Could not verify the upgrade')
+    expect(signal.aborted).toBe(true)
+    pending.resolve(version())
+    expect(h.progress).not.toContain(100)
+  })
+
+  test('a verification deadline shorter than the polling interval does not probe or succeed late', async () => {
+    const h = harness({ verificationTimeout: 5, pollInterval: 20 })
+    const { result, callbacks } = await h.start()
+    h.readVersion.mockImplementation(async () => version({ version: '2.9.1', instance_id: 'after' }))
+    installationStarted(callbacks)
+    callbacks.onDisconnected()
+    await expect(result).rejects.toThrow('Could not verify the upgrade')
+    expect(h.readVersion).toHaveBeenCalledTimes(1)
+    expect(h.progress).not.toContain(100)
+  })
+
+  test('progress remains monotonic and below completion before version verification', async () => {
+    const h = harness()
+    const { result, callbacks } = await h.start()
+    for (const progress of [-10, 90, 30, 200])
+      callbacks.onMessage(JSON.stringify({ status: 'progress', progress }))
+    expect(h.progress).toEqual([...h.progress].sort((a, b) => a - b))
+    expect(h.progress.every(progress => progress >= 0 && progress < 100)).toBe(true)
+    callbacks.onError()
+    await expect(result).rejects.toThrow()
+  })
+
+  test('duplicate close events start only one verification request', async () => {
+    const h = harness()
+    const { result, callbacks } = await h.start()
+    h.readVersion.mockImplementation(async () => version({ version: '2.9.1', instance_id: 'new-process' }))
+    installationStarted(callbacks)
+    callbacks.onDisconnected()
+    callbacks.onDisconnected()
+    await result
+    expect(h.readVersion).toHaveBeenCalledTimes(2)
+    expect(h.close).toHaveBeenCalledTimes(1)
+    expect(h.progress.filter(progress => progress === 100)).toHaveLength(1)
+  })
+
+  test('the same process cannot confirm a reinstall even if the version is already correct', async () => {
+    const h = harness({ target: 'v2.9.0', verificationTimeout: 10 })
+    const { result, callbacks } = await h.start()
+    installationStarted(callbacks)
+    callbacks.onError()
+    callbacks.onDisconnected()
+    await expect(result).rejects.toThrow('Could not verify the upgrade')
+    expect(h.progress).not.toContain(100)
+  })
 })
 
 describe('upgrade target matching', () => {
@@ -210,5 +357,10 @@ describe('upgrade target matching', () => {
     expect(matchesUpgradeTarget(version({ short_hash: 'ABCDEF12' }), 'sha-abcdef1')).toBe(true)
     expect(matchesUpgradeTarget(version(), 'sha-abcdef1')).toBe(false)
     expect(matchesUpgradeTarget(version(), 'sha-')).toBe(false)
+    expect(matchesUpgradeTarget(version({ short_hash: 'ABCDEF12' }), 'SHA-ABCDEF1')).toBe(true)
+  })
+
+  test.each([null, {}, { version: '2.9.0' }, version({ instance_id: 123 as unknown as string })])('rejects malformed version responses: %j', info => {
+    expect(matchesUpgradeTarget(info as Info, 'v2.9.0')).toBe(false)
   })
 })

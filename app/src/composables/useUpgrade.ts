@@ -18,10 +18,11 @@ export function useUpgrade() {
 
   function perform(options: PerformUpgradeOptions) {
     const nodeId = options.nodeId ?? settings.node.id ?? 0
+    const secureSessionId = options.secureSessionId
     return runUpgrade({
       ...options,
       signal: controller.signal,
-      readVersion: () => upgrade.current_version(nodeId, controller.signal),
+      readVersion: signal => upgrade.current_version(nodeId, signal),
       connect(callbacks) {
         const connection = useWebSocket('/api/upgrade/perform', false, {
           immediate: false,
@@ -32,7 +33,7 @@ export function useUpgrade() {
           onError: callbacks.onError,
         }, {
           'x_node_id': String(nodeId),
-          'X-Secure-Session-ID': options.secureSessionId,
+          'X-Secure-Session-ID': secureSessionId,
         })
         connection.open()
         return connection.close

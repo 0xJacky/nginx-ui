@@ -13,7 +13,6 @@ const upgrader = useUpgrade()
 
 const route = useRoute()
 const visible = ref(false)
-const nodeIds = ref<number[]>([])
 const nodes = ref<Node[]>([])
 const channel = ref('stable')
 const channelOptions = computed<SelectProps['options']>(() => [
@@ -76,10 +75,11 @@ function getLatestRelease() {
 }
 
 function open(selectedNodeIds: Ref<number[]>, selectedNodes: Ref<Node[]>) {
+  if (upgrading.value)
+    return
   showLogContainer.value = false
   visible.value = true
-  nodeIds.value = [...selectedNodeIds.value]
-  nodes.value = cloneDeep(selectedNodes.value)
+  nodes.value = cloneDeep(selectedNodes.value.filter(node => node.id > 0 && selectedNodeIds.value.includes(node.id)))
   getLatestRelease()
 }
 
@@ -94,12 +94,12 @@ const dryRun = computed(() => {
 })
 
 async function performUpgrade() {
-  if (upgrading.value)
+  if (upgrading.value || nodes.value.length === 0)
     return
   upgrading.value = true
 
   try {
-    const secureSessionId = await upgrader.authorize()
+    let secureSessionId = await upgrader.authorize()
     showLogContainer.value = true
     progressStatus.value = 'active'
     progressPercent.value = 0
@@ -111,9 +111,11 @@ async function performUpgrade() {
     const nodesNum = nodes.value.length
 
     for (let i = 0; i < nodesNum; i++) {
+      if (i > 0)
+        secureSessionId = await upgrader.authorize()
       try {
         await upgrader.perform({
-          nodeId: nodeIds.value[i],
+          nodeId: nodes.value[i].id,
           secureSessionId,
           control: { dry_run: dryRun.value, channel: channel.value },
           target: data.value.tag_name || data.value.name,
@@ -147,8 +149,15 @@ async function performUpgrade() {
       emit('success')
   }
   catch (error) {
-    if (!(error instanceof TwoFACancelledError))
+    if (showLogContainer.value) {
+      progressStatus.value = 'exception'
+      log(error instanceof TwoFACancelledError
+        ? $gettext('Upgrade cancelled.')
+        : error instanceof Error ? error.message : String(error))
+    }
+    else if (!(error instanceof TwoFACancelledError)) {
       throw error
+    }
   }
   finally {
     upgrading.value = false

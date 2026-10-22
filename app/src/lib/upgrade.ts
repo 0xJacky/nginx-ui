@@ -18,7 +18,7 @@ export interface UpgradeOptions {
   target: string
   signal: AbortSignal
   connect: (callbacks: UpgradeCallbacks) => () => void
-  readVersion: () => Promise<Info>
+  readVersion: (signal: AbortSignal) => Promise<Info>
   onLog: (message: string) => void
   onProgress: (progress: number) => void
   upgradeTimeout?: number
@@ -26,8 +26,22 @@ export interface UpgradeOptions {
   pollInterval?: number
 }
 
+function isVersionInfo(info: unknown): info is Info {
+  return !!info && typeof info === 'object'
+    && 'version' in info && typeof info.version === 'string' && !!info.version
+    && 'short_hash' in info && typeof info.short_hash === 'string'
+    && (!('instance_id' in info) || info.instance_id === undefined || typeof info.instance_id === 'string')
+}
+
+function isUpgradeTarget(target: string): boolean {
+  return /^sha-[\da-f]{7,40}$/i.test(target)
+    || /^v?\d+\.\d+\.\d+(?:-[\da-z.-]+)?(?:\+[\da-z.-]+)?$/i.test(target)
+}
+
 export function matchesUpgradeTarget(info: Info, target: string): boolean {
-  if (target.startsWith('sha-')) {
+  if (!isVersionInfo(info) || !isUpgradeTarget(target))
+    return false
+  if (target.toLowerCase().startsWith('sha-')) {
     const hash = target.slice(4).toLowerCase()
     return hash.length >= 7 && info.short_hash.toLowerCase().startsWith(hash)
   }
@@ -63,12 +77,10 @@ function delay(ms: number, signal: AbortSignal): Promise<void> {
 async function verifyUpgrade(options: UpgradeOptions, before: Info): Promise<void> {
   options.onLog($gettext('Waiting for the node to restart and report the target version...'))
   options.onProgress(95)
-  const deadline = Date.now() + (options.verificationTimeout ?? 300_000)
-
-  while (Date.now() < deadline) {
+  while (true) {
     await delay(options.pollInterval ?? 1000, options.signal)
     try {
-      const current = await options.readVersion()
+      const current = await options.readVersion(options.signal)
       options.signal.throwIfAborted()
       if (matchesUpgradeTarget(current, options.target) && hasRestarted(before, current))
         return
@@ -77,21 +89,24 @@ async function verifyUpgrade(options: UpgradeOptions, before: Info): Promise<voi
       options.signal.throwIfAborted()
     }
   }
-
-  throw new Error($gettext('Could not verify the upgrade. Check the node version and service status.'))
 }
 
 export async function runUpgrade(options: UpgradeOptions): Promise<void> {
   options.signal.throwIfAborted()
-  const before = await options.readVersion()
-  options.signal.throwIfAborted()
+  const control = { ...options.control }
+  const target = options.target
+  if (!isUpgradeTarget(target))
+    throw new Error($gettext('Invalid upgrade target. Check for a release before upgrading.'))
 
   return new Promise((resolve, reject) => {
+    const controller = new AbortController()
+    const signal = controller.signal
     let settled = false
     let verifying = false
     let readyToRestart = false
     let progress = 0
     let close: (() => void) | undefined
+    let verificationTimeout: ReturnType<typeof setTimeout> | undefined
 
     const timeout = setTimeout(() => {
       finish(new Error($gettext('The upgrade timed out. Check the node logs.')))
@@ -103,7 +118,9 @@ export async function runUpgrade(options: UpgradeOptions): Promise<void> {
       }
       settled = true
       clearTimeout(timeout)
+      clearTimeout(verificationTimeout)
       options.signal.removeEventListener('abort', onAbort)
+      controller.abort()
       close?.()
       if (error) {
         reject(error)
@@ -120,13 +137,17 @@ export async function runUpgrade(options: UpgradeOptions): Promise<void> {
 
     options.signal.addEventListener('abort', onAbort, { once: true })
 
-    try {
+    async function start() {
+      const before = await options.readVersion(signal)
+      signal.throwIfAborted()
+      if (!isVersionInfo(before))
+        throw new Error($gettext('The node returned an invalid version response.'))
       close = options.connect({
         onConnected(socket) {
           if (settled)
             return
           try {
-            socket.send(JSON.stringify(options.control))
+            socket.send(JSON.stringify(control))
           }
           catch (error) {
             finish(error)
@@ -178,18 +199,19 @@ export async function runUpgrade(options: UpgradeOptions): Promise<void> {
             return
           }
           verifying = true
-          if (options.control.dry_run) {
+          if (control.dry_run) {
             finish()
             return
           }
-          void verifyUpgrade(options, before).then(() => finish(), finish)
+          verificationTimeout = setTimeout(() => {
+            finish(new Error($gettext('Could not verify the upgrade. Check the node version and service status.')))
+          }, options.verificationTimeout ?? 300_000)
+          void verifyUpgrade({ ...options, signal, target }, before).then(() => finish(), finish)
         },
       })
       if (settled)
         close()
     }
-    catch (error) {
-      finish(error)
-    }
+    void start().catch(finish)
   })
 }

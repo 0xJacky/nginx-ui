@@ -11,6 +11,8 @@ on:
       - "app/src/language/**/*.po"
       - "app/i18n.json"
       - "app/package.json"
+      - "package.json"
+      - "bun.lock"
       - "app/.env*"
       - "**/*.go"
       - "go.mod"
@@ -31,8 +33,11 @@ on:
     types: [ opened, synchronize, reopened ]
     paths:
       - "**/*.js"
+      - "app/**/*.ts"
       - "**/*.vue"
       - "app/package.json"
+      - "package.json"
+      - "bun.lock"
       - "app/.env*"
       - "**/*.go"
       - "go.mod"
@@ -81,6 +86,10 @@ jobs:
 
       - name: Check frontend types
         run: bun run typecheck
+
+      - name: Run frontend unit tests
+        working-directory: app
+        run: bun run test
 
       - name: Build
         run: |

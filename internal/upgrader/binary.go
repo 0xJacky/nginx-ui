@@ -38,16 +38,8 @@ func BinaryUpgrade(ws *helper.SafeWebSocketWriter, control *Control) {
 		Status:  UpgradeStatusInfo,
 		Message: "Downloading latest release",
 	})
-	progressChan := make(chan float64)
-	defer close(progressChan)
-	go func() {
-		for progress := range progressChan {
-			_ = ws.WriteJSON(CoreUpgradeResp{
-				Status:   UpgradeStatusProgress,
-				Progress: progress,
-			})
-		}
-	}()
+	progressChan, stopProgress := startUpgradeProgress(ws, "")
+	defer stopProgress()
 
 	if control.TestCommitAndRestart {
 		err = u.TestCommitAndRestart()

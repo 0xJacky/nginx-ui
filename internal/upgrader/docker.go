@@ -8,23 +8,8 @@ import (
 
 // DockerUpgrade Upgrade the Docker container
 func DockerUpgrade(ws *helper.SafeWebSocketWriter, control *Control) {
-	progressChan := make(chan float64)
-
-	// Start a goroutine to listen for progress updates and send them via WebSocket
-	go func() {
-		for progress := range progressChan {
-			err := ws.WriteJSON(CoreUpgradeResp{
-				Status:   UpgradeStatusProgress,
-				Progress: progress,
-				Message:  "Pulling Docker image...",
-			})
-			if err != nil {
-				logger.Error("Failed to send progress update:", err)
-				return
-			}
-		}
-	}()
-	defer close(progressChan)
+	progressChan, stopProgress := startUpgradeProgress(ws, "Pulling Docker image...")
+	defer stopProgress()
 
 	if !control.DryRun {
 		err := docker.UpgradeStepOne(control.Channel, progressChan)
