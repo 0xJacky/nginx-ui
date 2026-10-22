@@ -466,6 +466,14 @@ func (lexer *nginxConfigLexer) readUnquotedToken() nginxConfigToken {
 	return nginxConfigToken{kind: nginxConfigTokenWord, value: builder.String()}
 }
 
+// isBlockedConfigDirective implements a defense-in-depth denylist for
+// stock-nginx deployments, not a security boundary: whoever can write the
+// Nginx configuration is responsible for what that deployment runs. Lua
+// code-execution directives (*_by_lua*, loading the lua module) are
+// intentionally allowed for OpenResty compatibility — those deployments
+// manage real Lua through the UI, and rejecting the directives would make
+// their existing configs uneditable. The "allow existing lua block
+// directives" case in validation_test.go codifies this.
 func isBlockedConfigDirective(directive string) bool {
 	if strings.HasPrefix(directive, "js_") || strings.HasPrefix(directive, "perl_") {
 		return true
