@@ -1,10 +1,7 @@
 package analytic
 
 import (
-	"time"
-
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
-	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/load"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -17,7 +14,7 @@ func GetNodeStat() (data NodeStat) {
 		return
 	}
 
-	_, cpuUsage, err := sampleCPUUsage(time.Second, cpu.Times, time.Sleep)
+	_, cpuUsage, err := GetCPUUsage()
 	if err != nil {
 		logger.Error(err)
 		return

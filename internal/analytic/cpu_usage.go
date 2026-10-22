@@ -9,6 +9,12 @@ import (
 	"github.com/shirou/gopsutil/v4/cpu"
 )
 
+// GetCPUUsage samples host-wide user and total busy CPU percentages over one second.
+// The node summary, history and live WebSocket must use the same normalization.
+func GetCPUUsage() (user, total float64, err error) {
+	return sampleCPUUsage(time.Second, cpu.Times, time.Sleep)
+}
+
 // calculateCPUUsage normalizes aggregate CPU counters by their own elapsed time.
 // GOMAXPROCS may reflect a container quota and cannot normalize host counters.
 func calculateCPUUsage(before, after cpu.TimesStat) (user, total float64) {

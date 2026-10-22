@@ -3,7 +3,6 @@ package analytic
 import (
 	"time"
 
-	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -22,7 +21,7 @@ func getTotalDiskIO() (read, write uint64) {
 }
 
 func recordCpu(now time.Time) {
-	cpuUserUsage, cpuTotalUsage, err := sampleCPUUsage(time.Second, cpu.Times, time.Sleep)
+	cpuUserUsage, cpuTotalUsage, err := GetCPUUsage()
 	if err != nil {
 		logger.Error(err)
 		return
