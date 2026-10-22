@@ -62,12 +62,12 @@ describe('releaseChannel', () => {
 })
 
 describe('entryChannel', () => {
-  test('is the computed channel, the beta stage or the release it installs', () => {
+  test('is the computed channel or the channel of the release it installs', () => {
     expect(entryChannel({ channel: 'dev' })).toBe('dev')
-    expect(entryChannel({ stage: 'beta' })).toBe('beta')
+    expect(entryChannel({})).toBe('stable')
     expect(entryChannel({ installable_release: { version: '0.2.0-rc.1' } as never })).toBe('beta')
-    expect(entryChannel({ stage: 'beta', installable_release: { version: '0.2.0-nightly.1' } as never })).toBe('dev')
-    expect(entryChannel({ stage: 'production', installable_release: { version: '1.0.0' } as never })).toBe('stable')
+    expect(entryChannel({ installable_release: { version: '0.2.0-nightly.1' } as never })).toBe('dev')
+    expect(entryChannel({ installable_release: { version: '1.0.0' } as never })).toBe('stable')
     expect(entryChannel(undefined)).toBe('stable')
   })
 })
