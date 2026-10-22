@@ -28,7 +28,10 @@ const colors: Record<PluginTrust, string> = {
 function presetOf(trust: PluginTrust): TrustPreset {
   return {
     color: colors[trust],
-    tone: trustText(t, trust).tone,
+    // Read on use, so importing this module needs no gettext yet.
+    get tone() {
+      return trustText(t, trust).tone
+    },
     label: () => trustText(t, trust).label,
     hint: () => trustText(t, trust).hint,
   }
