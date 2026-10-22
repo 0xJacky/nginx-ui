@@ -2,6 +2,7 @@ package analytic
 
 import (
 	"fmt"
+	"math"
 	"net/http"
 	"runtime"
 	"time"
@@ -14,7 +15,6 @@ import (
 	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/host"
 	"github.com/shirou/gopsutil/v4/load"
-	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
 
 	"github.com/gin-gonic/gin"
@@ -22,6 +22,10 @@ import (
 )
 
 func Analytic(c *gin.Context) {
+	serveAnalytic(c, analytic.GetCPUUsage)
+}
+
+func serveAnalytic(c *gin.Context, sampleCPU func() (float64, float64, error)) {
 	var upGrader = websocket.Upgrader{
 		CheckOrigin: middleware.CheckWebSocketOrigin,
 	}
@@ -72,18 +76,24 @@ func Analytic(c *gin.Context) {
 			continue
 		}
 
-		cpuTimesBefore, _ := cpu.Times(false)
-		time.Sleep(1000 * time.Millisecond)
-		cpuTimesAfter, _ := cpu.Times(false)
-		threadNum := runtime.GOMAXPROCS(0)
-		cpuUserUsage := (cpuTimesAfter[0].User - cpuTimesBefore[0].User) / (float64(1000*threadNum) / 1000)
-		cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
+		cpuUserUsage, cpuTotalUsage, err := sampleCPU()
+		if err != nil {
+			logger.Error(err)
+			if !waitNext() {
+				return
+			}
+			continue
+		}
 
+		cpuUserUsage = math.Round(cpuUserUsage*100) / 100
+		cpuTotalUsage = math.Round(cpuTotalUsage*100) / 100
 		stat.CPU = CPUStat{
-			User:   cast.ToFloat64(fmt.Sprintf("%.2f", cpuUserUsage*100)),
-			System: cast.ToFloat64(fmt.Sprintf("%.2f", cpuSystemUsage*100)),
-			Idle:   cast.ToFloat64(fmt.Sprintf("%.2f", (1-cpuUserUsage-cpuSystemUsage)*100)),
-			Total:  cast.ToFloat64(fmt.Sprintf("%.2f", (cpuUserUsage+cpuSystemUsage)*100)),
+			User: cpuUserUsage,
+			// Clients derive total usage from User + System, so include all
+			// remaining busy modes here (nice, IRQ and steal as well as system).
+			System: math.Round((cpuTotalUsage-cpuUserUsage)*100) / 100,
+			Idle:   math.Round((100-cpuTotalUsage)*100) / 100,
+			Total:  cpuTotalUsage,
 		}
 
 		stat.Uptime, err = host.Uptime()
