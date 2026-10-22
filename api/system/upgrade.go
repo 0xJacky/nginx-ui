@@ -9,6 +9,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/version"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
@@ -73,8 +74,14 @@ func GetRelease(c *gin.Context) {
 	})
 }
 
+var upgradeInstanceID = uuid.NewString()
+
 func GetCurrentVersion(c *gin.Context) {
-	c.JSON(http.StatusOK, version.GetVersionInfo())
+	c.Header("Cache-Control", "no-store")
+	c.JSON(http.StatusOK, struct {
+		*version.Info
+		InstanceID string `json:"instance_id"`
+	}{version.GetVersionInfo(), upgradeInstanceID})
 }
 
 const (

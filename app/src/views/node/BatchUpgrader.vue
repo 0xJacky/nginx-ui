@@ -5,9 +5,11 @@ import type { ReleaseInfo } from '@/api/upgrade'
 import { cloneDeep } from 'lodash'
 import { marked } from 'marked'
 import upgrade from '@/api/upgrade'
-import { useWebSocket } from '@/lib/websocket'
+import { TwoFACancelledError } from '@/components/TwoFA/use2FAModal'
+import { useUpgrade } from '@/composables/useUpgrade'
 
 const emit = defineEmits(['success'])
+const upgrader = useUpgrade()
 
 const route = useRoute()
 const visible = ref(false)
@@ -33,8 +35,7 @@ const loading = ref(false)
 
 const data = ref<ReleaseInfo>({} as ReleaseInfo)
 
-const modalVisible = ref(false)
-const modalClosable = ref(false)
+const upgrading = ref(false)
 const getReleaseError = ref(false)
 const progressPercent = ref(0)
 const progressStatus = ref('active') as Ref<'normal' | 'active' | 'success' | 'exception'>
@@ -77,7 +78,7 @@ function getLatestRelease() {
 function open(selectedNodeIds: Ref<number[]>, selectedNodes: Ref<Node[]>) {
   showLogContainer.value = false
   visible.value = true
-  nodeIds.value = selectedNodeIds.value
+  nodeIds.value = [...selectedNodeIds.value]
   nodes.value = cloneDeep(selectedNodes.value)
   getLatestRelease()
 }
@@ -93,72 +94,64 @@ const dryRun = computed(() => {
 })
 
 async function performUpgrade() {
-  showLogContainer.value = true
-  progressStatus.value = 'active'
-  modalClosable.value = false
-  modalVisible.value = true
-  progressPercent.value = 0
-  logContainer.value!.innerHTML = ''
+  if (upgrading.value)
+    return
+  upgrading.value = true
 
-  log($gettext('Upgrading Nginx UI, please wait...'))
+  try {
+    const secureSessionId = await upgrader.authorize()
+    showLogContainer.value = true
+    progressStatus.value = 'active'
+    progressPercent.value = 0
+    logContainer.value!.innerHTML = ''
+    log($gettext('Upgrading Nginx UI, please wait...'))
 
-  const nodesNum = nodes.value.length
+    let hasFailed = false
+    let hasUpgraded = false
+    const nodesNum = nodes.value.length
 
-  for (let i = 0; i < nodesNum; i++) {
-    await new Promise(resolve => {
-      const { ws } = useWebSocket(`/api/upgrade/perform?x_node_id=${nodeIds.value[i]}`, false)
-      const socket = ws.value!
-
-      let last = 0
-
-      socket.onopen = () => {
-        socket.send(JSON.stringify({
-          dry_run: dryRun.value,
-          channel: channel.value,
+    for (let i = 0; i < nodesNum; i++) {
+      try {
+        await upgrader.perform({
+          nodeId: nodeIds.value[i],
+          secureSessionId,
+          control: { dry_run: dryRun.value, channel: channel.value },
+          target: data.value.tag_name || data.value.name,
+          onLog: log,
+          onProgress: progress => {
+            progressPercent.value = (100 * i + progress) / nodesNum
+          },
+        })
+        if (dryRun.value) {
+          log($gettext('Dry run completed for %{node}. No changes were made.', { node: nodes.value[i].name }))
+        }
+        else {
+          hasUpgraded = true
+          log($gettext('Upgraded Nginx UI on %{node} successfully 🎉', { node: nodes.value[i].name }))
+        }
+      }
+      catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError')
+          return
+        hasFailed = true
+        progressStatus.value = 'exception'
+        log($gettext('Upgrade failed for %{node}: %{error}', {
+          node: nodes.value[i].name,
+          error: error instanceof Error ? error.message : String(error),
         }))
       }
-      let isFailed = false
+    }
 
-      socket.onmessage = async m => {
-        const r = JSON.parse(m.data)
-        if (r.message)
-          log(r.message)
-        switch (r.status) {
-          case 'info':
-            progressPercent.value += (10 / nodesNum)
-            break
-          case 'progress':
-            progressPercent.value += ((r.progress - last) / 2) / nodesNum
-            last = r.progress
-            break
-          case 'error':
-            log('Upgraded successfully')
-            isFailed = true
-            break
-          default:
-            modalClosable.value = true
-            break
-        }
-      }
-
-      socket.onerror = () => {
-        resolve({})
-      }
-
-      socket.onclose = async () => {
-        resolve({})
-
-        progressPercent.value = 100 * ((i + 1) / nodesNum)
-        if (!isFailed)
-          log($gettext('Upgraded Nginx UI on %{node} successfully 🎉', { node: nodes.value[i].name }))
-
-        if (i + 1 === nodesNum) {
-          progressStatus.value = 'success'
-          modalClosable.value = true
-          emit('success')
-        }
-      }
-    })
+    progressStatus.value = hasFailed ? 'exception' : 'success'
+    if (hasUpgraded && !hasFailed)
+      emit('success')
+  }
+  catch (error) {
+    if (!(error instanceof TwoFACancelledError))
+      throw error
+  }
+  finally {
+    upgrading.value = false
   }
 }
 </script>
@@ -169,6 +162,8 @@ async function performUpgrade() {
     :title="$gettext('Batch Upgrade')"
     :footer="null"
     :mask="false"
+    :closable="!upgrading"
+    :keyboard="!upgrading"
     width="800px"
   >
     <AForm layout="vertical">
@@ -179,6 +174,7 @@ async function performUpgrade() {
         <ASelect
           v-model:value="channel"
           :options="channelOptions"
+          :disabled="upgrading"
         />
       </AFormItem>
     </AForm>
@@ -248,6 +244,7 @@ async function performUpgrade() {
           <AButton
             v-if="!showLogContainer"
             type="primary"
+            :loading="upgrading"
             @click="performUpgrade"
           >
             {{ $gettext('Perform') }}

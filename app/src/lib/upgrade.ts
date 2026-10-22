@@ -1,0 +1,195 @@
+import type { Info } from '@/api/upgrade'
+
+export interface UpgradeControl {
+  channel: string
+  dry_run: boolean
+  test_commit_and_restart?: boolean
+}
+
+export interface UpgradeCallbacks {
+  onConnected: (socket: Pick<WebSocket, 'send'>) => void
+  onMessage: (data: string) => void
+  onDisconnected: () => void
+  onError: () => void
+}
+
+export interface UpgradeOptions {
+  control: UpgradeControl
+  target: string
+  signal: AbortSignal
+  connect: (callbacks: UpgradeCallbacks) => () => void
+  readVersion: () => Promise<Info>
+  onLog: (message: string) => void
+  onProgress: (progress: number) => void
+  upgradeTimeout?: number
+  verificationTimeout?: number
+  pollInterval?: number
+}
+
+export function matchesUpgradeTarget(info: Info, target: string): boolean {
+  if (target.startsWith('sha-')) {
+    const hash = target.slice(4).toLowerCase()
+    return hash.length >= 7 && info.short_hash.toLowerCase().startsWith(hash)
+  }
+
+  return !!target && info.version.replace(/^v/, '') === target.replace(/^v/, '')
+}
+
+function hasRestarted(before: Info, after: Info): boolean {
+  if (after.instance_id)
+    return after.instance_id !== before.instance_id
+
+  // Older nodes have no process identifier. A changed running build still
+  // proves that the upgrade took effect, but an unchanged reinstall does not.
+  return before.version !== after.version || before.short_hash !== after.short_hash
+}
+
+function delay(ms: number, signal: AbortSignal): Promise<void> {
+  signal.throwIfAborted()
+  return new Promise((resolve, reject) => {
+    let timer: ReturnType<typeof setTimeout>
+    const onAbort = () => {
+      clearTimeout(timer)
+      reject(signal.reason)
+    }
+    timer = setTimeout(() => {
+      signal.removeEventListener('abort', onAbort)
+      resolve()
+    }, ms)
+    signal.addEventListener('abort', onAbort, { once: true })
+  })
+}
+
+async function verifyUpgrade(options: UpgradeOptions, before: Info): Promise<void> {
+  options.onLog($gettext('Waiting for the node to restart and report the target version...'))
+  options.onProgress(95)
+  const deadline = Date.now() + (options.verificationTimeout ?? 300_000)
+
+  while (Date.now() < deadline) {
+    await delay(options.pollInterval ?? 1000, options.signal)
+    try {
+      const current = await options.readVersion()
+      options.signal.throwIfAborted()
+      if (matchesUpgradeTarget(current, options.target) && hasRestarted(before, current))
+        return
+    }
+    catch {
+      options.signal.throwIfAborted()
+    }
+  }
+
+  throw new Error($gettext('Could not verify the upgrade. Check the node version and service status.'))
+}
+
+export async function runUpgrade(options: UpgradeOptions): Promise<void> {
+  options.signal.throwIfAborted()
+  const before = await options.readVersion()
+  options.signal.throwIfAborted()
+
+  return new Promise((resolve, reject) => {
+    let settled = false
+    let verifying = false
+    let readyToRestart = false
+    let progress = 0
+    let close: (() => void) | undefined
+
+    const timeout = setTimeout(() => {
+      finish(new Error($gettext('The upgrade timed out. Check the node logs.')))
+    }, options.upgradeTimeout ?? 30 * 60_000)
+
+    function finish(error?: unknown) {
+      if (settled) {
+        return
+      }
+      settled = true
+      clearTimeout(timeout)
+      options.signal.removeEventListener('abort', onAbort)
+      close?.()
+      if (error) {
+        reject(error)
+      }
+      else {
+        options.onProgress(100)
+        resolve()
+      }
+    }
+
+    function onAbort() {
+      finish(options.signal.reason)
+    }
+
+    options.signal.addEventListener('abort', onAbort, { once: true })
+
+    try {
+      close = options.connect({
+        onConnected(socket) {
+          if (settled)
+            return
+          try {
+            socket.send(JSON.stringify(options.control))
+          }
+          catch (error) {
+            finish(error)
+          }
+        },
+        onMessage(data) {
+          if (settled || verifying)
+            return
+          try {
+            const response = JSON.parse(data)
+            if (!response || !['info', 'progress', 'error'].includes(response.status))
+              throw new Error($gettext('The node returned an invalid upgrade response.'))
+
+            if (response.message)
+              options.onLog(response.message)
+            if (response.status === 'error') {
+              finish(new Error(response.message || $gettext('The node failed to upgrade.')))
+              return
+            }
+
+            // These messages are also sent by older binary and Docker nodes
+            // immediately before installing or handing off to the new container.
+            if (response.status === 'info' && (response.message === 'Performing core upgrade'
+              || response.message === 'Docker image pull completed, upgrading...')) {
+              readyToRestart = true
+              progress = 90
+            }
+            else if (response.status === 'progress' && Number.isFinite(response.progress)) {
+              progress = Math.max(progress, 10 + Math.min(100, Math.max(0, response.progress)) * 0.7)
+            }
+            else {
+              progress = Math.min(90, progress + 5)
+            }
+            options.onProgress(progress)
+          }
+          catch (error) {
+            finish(error)
+          }
+        },
+        onError() {
+          if (!readyToRestart)
+            finish(new Error($gettext('The upgrade connection failed. Check authentication and network connectivity.')))
+        },
+        onDisconnected() {
+          if (settled || verifying)
+            return
+          if (!readyToRestart) {
+            finish(new Error($gettext('The upgrade connection closed before installation started.')))
+            return
+          }
+          verifying = true
+          if (options.control.dry_run) {
+            finish()
+            return
+          }
+          void verifyUpgrade(options, before).then(() => finish(), finish)
+        },
+      })
+      if (settled)
+        close()
+    }
+    catch (error) {
+      finish(error)
+    }
+  })
+}

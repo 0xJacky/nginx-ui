@@ -6,10 +6,13 @@ import dayjs from 'dayjs'
 
 import { marked } from 'marked'
 import upgrade from '@/api/upgrade'
-import { useWebSocket } from '@/lib/websocket'
+import { TwoFACancelledError } from '@/components/TwoFA/use2FAModal'
+import { useUpgrade } from '@/composables/useUpgrade'
 import version from '@/version.json'
 
 const route = useRoute()
+const upgrader = useUpgrade()
+const upgrading = ref(false)
 const data = ref<ReleaseInfo>({} as ReleaseInfo)
 const lastCheck = ref('')
 const loading = ref(false)
@@ -144,79 +147,52 @@ const testCommitAndRestart = computed(() => {
 })
 
 async function performUpgrade() {
-  await upgrade.save_channel(channel.value).catch(() => null)
+  if (upgrading.value)
+    return
+  upgrading.value = true
 
-  progressStatus.value = 'active'
-  modalClosable.value = false
-  modalVisible.value = true
-  progressPercent.value = 0
-  logContainer.value!.innerHTML = ''
+  try {
+    const secureSessionId = await upgrader.authorize()
+    await upgrade.save_channel(channel.value).catch(() => null)
 
-  log($gettext('Upgrading Nginx UI, please wait...'))
+    progressStatus.value = 'active'
+    modalClosable.value = false
+    modalVisible.value = true
+    progressPercent.value = 0
+    logContainer.value!.innerHTML = ''
+    log($gettext('Upgrading Nginx UI, please wait...'))
 
-  const { ws } = useWebSocket('/api/upgrade/perform', false)
-  const socket = ws.value!
-
-  let last = 0
-
-  socket.onopen = () => {
-    socket.send(JSON.stringify({
-      dry_run: dryRun.value,
-      channel: channel.value,
-      test_commit_and_restart: testCommitAndRestart.value,
-    }))
-  }
-
-  let isFailed = false
-
-  socket.onmessage = async m => {
-    const r = JSON.parse(m.data)
-    if (r.message)
-      log(r.message)
-    switch (r.status) {
-      case 'info':
-        progressPercent.value += 10
-        break
-      case 'progress':
-        progressPercent.value += (r.progress - last) / 2
-        last = r.progress
-        break
-      case 'error':
-        progressStatus.value = 'exception'
-        modalClosable.value = true
-        isFailed = true
-        break
-      default:
-        modalClosable.value = true
-        break
+    await upgrader.perform({
+      secureSessionId,
+      control: {
+        dry_run: dryRun.value,
+        channel: channel.value,
+        test_commit_and_restart: testCommitAndRestart.value,
+      },
+      target: data.value.tag_name || data.value.name,
+      onLog: log,
+      onProgress: progress => { progressPercent.value = progress },
+    })
+    progressStatus.value = 'success'
+    if (dryRun.value) {
+      log($gettext('Dry run completed. No changes were made.'))
+    }
+    else {
+      log($gettext('Upgraded successfully'))
+      location.reload()
     }
   }
-
-  socket.onerror = () => {
-    isFailed = true
-    progressStatus.value = 'exception'
-    modalClosable.value = true
-  }
-
-  socket.onclose = async () => {
-    if (isFailed)
+  catch (error) {
+    if (error instanceof TwoFACancelledError || (error instanceof DOMException && error.name === 'AbortError'))
       return
-
-    const t = setInterval(() => {
-      const interval = data.value.in_docker ? 10000 : 1000
-      upgrade.current_version().then(() => {
-        clearInterval(t)
-        setTimeout(() => {
-          progressStatus.value = 'success'
-          progressPercent.value = 100
-          modalClosable.value = true
-          log('Upgraded successfully')
-          setTimeout(() => {
-            location.reload()
-          }, 1000)
-        }, interval)
-      })
-    }, 5000)
+    if (!modalVisible.value)
+      throw error
+    progressStatus.value = 'exception'
+    log(error instanceof Error ? error.message : String(error))
+  }
+  finally {
+    modalClosable.value = true
+    upgrading.value = false
   }
 }
 
@@ -273,6 +249,7 @@ const performUpgradeBtnText = computed(() => {
           <AButton
             type="link"
             :loading="loading"
+            :disabled="upgrading"
             @click="getLatestRelease"
           >
             {{ $gettext('Check again') }}
@@ -282,6 +259,7 @@ const performUpgradeBtnText = computed(() => {
           <ASelect
             v-model:value="channel"
             :options="channelOptions"
+            :disabled="upgrading"
           />
         </AFormItem>
         <template v-if="!loading">
@@ -310,6 +288,7 @@ const performUpgradeBtnText = computed(() => {
               <AButton
                 type="primary"
                 ghost
+                :loading="upgrading"
                 @click="performUpgrade"
               >
                 {{ performUpgradeBtnText }}
