@@ -488,8 +488,7 @@ func TestRestoreRejectsTamperedManifestSignature(t *testing.T) {
 
 	dbName := settings.DatabaseSettings.GetName()
 	dbPath := filepath.Join(tempDir, dbName+".db")
-	err = os.WriteFile(dbPath, []byte("CREATE TABLE users (id INT, name TEXT);"), 0644)
-	assert.NoError(t, err)
+	createSQLiteBackupFixture(t, dbPath)
 
 	nginxConfigDir := filepath.Join(tempDir, "nginx")
 	err = os.MkdirAll(nginxConfigDir, 0755)
@@ -558,8 +557,7 @@ func TestRestoreSucceedsWhenCryptoSecretChanges(t *testing.T) {
 
 	dbName := settings.DatabaseSettings.GetName()
 	dbPath := filepath.Join(tempDir, dbName+".db")
-	err = os.WriteFile(dbPath, []byte("CREATE TABLE users (id INT, name TEXT);"), 0644)
-	assert.NoError(t, err)
+	createSQLiteBackupFixture(t, dbPath)
 
 	nginxConfigDir := filepath.Join(tempDir, "nginx")
 	err = os.MkdirAll(nginxConfigDir, 0755)
@@ -620,8 +618,7 @@ func TestRestoreAcceptsLegacyManifestSignature(t *testing.T) {
 
 	dbName := settings.DatabaseSettings.GetName()
 	dbPath := filepath.Join(tempDir, dbName+".db")
-	err = os.WriteFile(dbPath, []byte("CREATE TABLE users (id INT, name TEXT);"), 0644)
-	assert.NoError(t, err)
+	createSQLiteBackupFixture(t, dbPath)
 
 	nginxConfigDir := filepath.Join(tempDir, "nginx")
 	err = os.MkdirAll(nginxConfigDir, 0755)

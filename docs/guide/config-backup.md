@@ -62,6 +62,30 @@ When backing up Nginx or Nginx UI configurations:
 - **Integrity Verification**: SHA-256 hashes ensure backup integrity
 - **Metadata**: Version information and timestamps are included for restoration context
 
+### Login Sessions
+
+New backups omit active login sessions from the application database. Accounts,
+passwords, MFA configuration, and other persistent application data remain in the
+backup. Sign in again after restoring a newly generated backup. Creating a backup
+does not sign out current users or change the live database.
+
+This also applies when a custom directory backup includes the live application
+database. Previously created archives are not rewritten, and existing archives
+inside a selected directory remain included under the normal backup rules.
+
+### Restore Trust
+
+Restoring a backup is a privileged full-recovery operation. Administrators may
+restore a complete snapshot they trust, including Nginx configuration and modules.
+Restored configuration can execute with the permissions of the Nginx process;
+the individual configuration editor's restricted-directive policy is not a
+sandbox for complete backup recovery.
+
+Restore only archives from sources you trust. A portable archive's integrity
+check does not establish a trusted origin or prove that its content is safe.
+Authentication, applicable MFA verification, archive path and symlink checks,
+and protected-setting rules continue to apply.
+
 ### Custom Directory Backups
 
 For custom directory backups:
@@ -116,4 +140,4 @@ By default, every run of an automatic backup task adds a new backup file and old
 - **Versioned S3 buckets**: In a bucket with versioning enabled, deleting an old backup only adds a delete marker, so the storage is freed by the bucket's lifecycle rules rather than by the cleanup
 - **Failures**: If an old backup cannot be deleted, a warning is logged and the backup task itself still succeeds
 
-This configuration enables backup operations while maintaining strict security boundaries, ensuring that backup functionality cannot be misused to access unauthorized system areas.
+Review backup source and destination permissions as part of your administrator access policy.

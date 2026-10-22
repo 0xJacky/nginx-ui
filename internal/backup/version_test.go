@@ -33,9 +33,7 @@ func TestBackupVersion(t *testing.T) {
 	dbName := settings.DatabaseSettings.GetName()
 	dbFile := dbName + ".db"
 	dbPath := filepath.Join(tempDir, dbFile)
-	testDB := []byte("CREATE TABLE users (id INT, name TEXT);")
-	err = os.WriteFile(dbPath, testDB, 0644)
-	assert.NoError(t, err)
+	createSQLiteBackupFixture(t, dbPath)
 
 	// Create nginx directory
 	nginxConfigDir := filepath.Join(tempDir, "nginx")

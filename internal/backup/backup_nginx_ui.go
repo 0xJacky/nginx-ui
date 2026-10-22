@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 	cosysettings "github.com/uozi-tech/cosy/settings"
@@ -25,23 +24,18 @@ func backupNginxUIFiles(destDir string) error {
 		return cosy.WrapErrorWithParams(ErrCopyConfigFile, err.Error())
 	}
 
-	// Get database file name and path
-	dbName := settings.DatabaseSettings.GetName()
-	dbFile := dbName + ".db"
-
-	// Database directory is the same as config file directory
-	dbDir := filepath.Dir(configPath)
-	dbPath := filepath.Join(dbDir, dbFile)
-
-	// Copy database file
+	// Snapshot through SQLite rather than copying the live file: committed WAL
+	// pages belong in the backup, while reusable login sessions do not.
+	dbPath := applicationDatabasePath()
 	if _, err := os.Stat(dbPath); err == nil {
-		// Database exists as file
-		destDBPath := filepath.Join(destDir, dbFile)
-		if err := copyFile(dbPath, destDBPath); err != nil {
+		destDBPath := filepath.Join(destDir, filepath.Base(dbPath))
+		if err := snapshotBackupDatabase(dbPath, destDBPath); err != nil {
 			return cosy.WrapErrorWithParams(ErrCopyDBFile, err.Error())
 		}
-	} else {
+	} else if os.IsNotExist(err) {
 		logger.Warn("Database file not found: %s", dbPath)
+	} else {
+		return cosy.WrapErrorWithParams(ErrCopyDBFile, err.Error())
 	}
 
 	return nil
@@ -56,7 +50,7 @@ func backupNginxFiles(destDir string) error {
 	}
 
 	// Copy nginx config directory
-	if err := copyDirectory(nginxConfigDir, destDir); err != nil {
+	if err := copyBackupDirectory(nginxConfigDir, destDir); err != nil {
 		return cosy.WrapErrorWithParams(ErrCopyNginxConfigDir, err.Error())
 	}
 

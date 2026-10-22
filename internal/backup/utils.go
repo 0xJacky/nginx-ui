@@ -199,3 +199,54 @@ func copyDirectory(src, dst string) error {
 		return copyFile(path, targetPath)
 	})
 }
+
+// copyBackupDirectory stages an exported tree without copying live application
+// sessions or SQLite sidecars. Restore and rollback use copyDirectory unchanged.
+func copyBackupDirectory(src, dst string) error {
+	srcInfo, err := os.Stat(src)
+	if err != nil {
+		return err
+	}
+	if !srcInfo.IsDir() {
+		return cosy.WrapErrorWithParams(ErrCopyNginxConfigDir, "%s is not a directory", src)
+	}
+	if err := os.MkdirAll(dst, 0755); err != nil {
+		return err
+	}
+	snapshot := &backupDatabaseSnapshot{}
+	defer snapshot.cleanup()
+	return filepath.Walk(src, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if snapshot.containsDirectory(info) {
+			return filepath.SkipDir
+		}
+		relPath, err := filepath.Rel(src, path)
+		if err != nil {
+			return err
+		}
+		if relPath == "." {
+			return nil
+		}
+		sourcePath, skip, err := snapshot.source(path, info)
+		if err != nil {
+			return err
+		}
+		if skip {
+			return nil
+		}
+		targetPath := filepath.Join(dst, relPath)
+		if info.Mode()&os.ModeSymlink != 0 {
+			linkTarget, err := os.Readlink(path)
+			if err != nil {
+				return err
+			}
+			return os.Symlink(linkTarget, targetPath)
+		}
+		if info.IsDir() {
+			return os.MkdirAll(targetPath, 0755)
+		}
+		return copyFile(sourcePath, targetPath)
+	})
+}

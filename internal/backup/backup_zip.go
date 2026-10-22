@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
@@ -12,8 +13,73 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
+// backupDatabaseSnapshot reuses one sanitized view for every alias encountered
+// during a single backup walk. SQLite must open the configured database path so
+// committed WAL contents are included even when an entry is a hard-link alias.
+type backupDatabaseSnapshot struct {
+	directory     string
+	directoryInfo os.FileInfo
+	path          string
+}
+
+func (snapshot *backupDatabaseSnapshot) cleanup() {
+	if snapshot.directory != "" {
+		_ = os.RemoveAll(snapshot.directory)
+	}
+}
+
+func (snapshot *backupDatabaseSnapshot) containsDirectory(info os.FileInfo) bool {
+	return snapshot.directoryInfo != nil && info.IsDir() && os.SameFile(info, snapshot.directoryInfo)
+}
+
+func (snapshot *backupDatabaseSnapshot) source(path string, info os.FileInfo) (source string, skip bool, err error) {
+	database, sidecar, err := applicationDatabaseFile(path, info)
+	if err != nil {
+		return "", false, err
+	}
+	if sidecar {
+		return "", true, nil
+	}
+	// ZIPs and directory staging preserve links as links rather than following
+	// them. A database link therefore contains no database bytes to sanitize.
+	if !database || info.Mode()&os.ModeSymlink != 0 {
+		return path, false, nil
+	}
+	if snapshot.path == "" {
+		directory, err := os.MkdirTemp("", "nginx-ui-backup-database-*")
+		if err != nil {
+			return "", false, err
+		}
+		snapshot.directory = directory
+		snapshot.directoryInfo, err = os.Stat(directory)
+		if err != nil {
+			return "", false, err
+		}
+		candidate := filepath.Join(directory, "database.db")
+		if err := snapshotBackupDatabase(applicationDatabasePath(), candidate); err != nil {
+			return "", false, err
+		}
+		snapshot.path = candidate
+	}
+	return snapshot.path, false, nil
+}
+
 // createZipArchive creates a zip archive from a directory
 func createZipArchive(zipPath, srcDir string) error {
+	// Creating an output alias must never truncate the live application DB.
+	if info, err := os.Lstat(zipPath); err == nil {
+		database, sidecar, err := applicationDatabaseFile(zipPath, info)
+		if err != nil {
+			return err
+		}
+		if database || sidecar {
+			return fmt.Errorf("backup output %q refers to the application database", zipPath)
+		}
+	} else if !os.IsNotExist(err) {
+		return err
+	}
+	snapshot := &backupDatabaseSnapshot{}
+	defer snapshot.cleanup()
 	// Create a new zip file
 	zipFile, err := os.Create(zipPath)
 	if err != nil {
@@ -40,6 +106,9 @@ func createZipArchive(zipPath, srcDir string) error {
 		if os.SameFile(info, outputInfo) {
 			return nil
 		}
+		if snapshot.containsDirectory(info) {
+			return filepath.SkipDir
+		}
 
 		// Get relative path
 		relPath, err := filepath.Rel(srcDir, path)
@@ -49,6 +118,13 @@ func createZipArchive(zipPath, srcDir string) error {
 
 		// Skip if it's the source directory itself
 		if relPath == "." {
+			return nil
+		}
+		sourcePath, skip, err := snapshot.source(path, info)
+		if err != nil {
+			return err
+		}
+		if skip {
 			return nil
 		}
 
@@ -108,7 +184,7 @@ func createZipArchive(zipPath, srcDir string) error {
 		}
 
 		// Open source file
-		source, err := os.Open(path)
+		source, err := os.Open(sourcePath)
 		if err != nil {
 			return cosy.WrapErrorWithParams(ErrOpenSourceFile, err.Error())
 		}
@@ -119,7 +195,10 @@ func createZipArchive(zipPath, srcDir string) error {
 		return err
 	})
 
-	return err
+	if err != nil {
+		return err
+	}
+	return zipWriter.Close()
 }
 
 // calculateFileHash calculates the SHA-256 hash of a file
@@ -144,6 +223,8 @@ func calculateFileHash(filePath string) (string, error) {
 // createZipArchiveToBuffer creates a zip archive of files in the specified directory
 // and writes the zip content to the provided buffer
 func createZipArchiveToBuffer(buffer *bytes.Buffer, sourceDir string) error {
+	snapshot := &backupDatabaseSnapshot{}
+	defer snapshot.cleanup()
 	// Create a zip writer that writes to the buffer
 	zipWriter := zip.NewWriter(buffer)
 	defer zipWriter.Close()
@@ -153,9 +234,19 @@ func createZipArchiveToBuffer(buffer *bytes.Buffer, sourceDir string) error {
 		if err != nil {
 			return err
 		}
+		if snapshot.containsDirectory(info) {
+			return filepath.SkipDir
+		}
 
 		// Skip the source directory itself
 		if path == sourceDir {
+			return nil
+		}
+		sourcePath, skip, err := snapshot.source(path, info)
+		if err != nil {
+			return err
+		}
+		if skip {
 			return nil
 		}
 
@@ -220,7 +311,7 @@ func createZipArchiveToBuffer(buffer *bytes.Buffer, sourceDir string) error {
 		}
 
 		// Open the source file
-		file, err := os.Open(path)
+		file, err := os.Open(sourcePath)
 		if err != nil {
 			return cosy.WrapErrorWithParams(ErrOpenSourceFile, err.Error())
 		}
