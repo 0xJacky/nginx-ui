@@ -146,9 +146,12 @@ var appSection = settingsSection[cSettings.App]{
 	name:   "app",
 	target: func() *cSettings.App { return cSettings.AppSettings },
 	restore: func(payload *cSettings.App) {
-		if payload.JwtSecret == redactedSensitiveValue {
-			payload.JwtSecret = cSettings.AppSettings.JwtSecret
-		}
+		// JwtSecret signs every issued session, so one settings write rotating
+		// it would invalidate all sessions at once and leave the writer as the
+		// only user able to log back in. It stays under the configuration
+		// file's control, matching the protection it carried in the v1 struct
+		// and keeps in the backup-restore policy.
+		payload.JwtSecret = cSettings.AppSettings.JwtSecret
 	},
 }
 
@@ -225,9 +228,26 @@ var openAISection = settingsSection[settings.OpenAI]{
 	name:   "openai",
 	target: func() *settings.OpenAI { return settings.OpenAISettings },
 	restore: func(payload *settings.OpenAI) {
-		if payload.Token == redactedSensitiveValue {
-			payload.Token = settings.OpenAISettings.Token
+		if payload.Token != settings.RedactedSensitiveValue {
+			return
 		}
+		// The saved token is only released to the saved endpoint through the
+		// saved proxy. A request that repoints any of them leaves the redacted
+		// placeholder in place so validate can demand a fresh token, or a
+		// settings write could silently redirect the stored key to a server
+		// of its own choosing.
+		if payload.GetBaseURL() != settings.OpenAISettings.GetBaseURL() ||
+			payload.Proxy != settings.OpenAISettings.Proxy ||
+			payload.APIType != settings.OpenAISettings.APIType {
+			return
+		}
+		payload.Token = settings.OpenAISettings.Token
+	},
+	validate: func(payload *settings.OpenAI) error {
+		if payload.Token == settings.RedactedSensitiveValue {
+			return ErrOpenAITokenRequired
+		}
+		return nil
 	},
 }
 

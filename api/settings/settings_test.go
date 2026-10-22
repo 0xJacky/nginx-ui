@@ -224,20 +224,26 @@ func TestProtectedNginxCommandsCannotBeOverwrittenBySettingsPayload(t *testing.T
 func TestRestoreRedactedSensitiveSettings(t *testing.T) {
 	originalJWTSecret := cSettings.AppSettings.JwtSecret
 	originalNodeSecret := appsettings.NodeSettings.Secret
-	originalOpenAIToken := appsettings.OpenAISettings.Token
+	originalOpenAI := *appsettings.OpenAISettings
 	defer func() {
 		cSettings.AppSettings.JwtSecret = originalJWTSecret
 		appsettings.NodeSettings.Secret = originalNodeSecret
-		appsettings.OpenAISettings.Token = originalOpenAIToken
+		*appsettings.OpenAISettings = originalOpenAI
 	}()
 
 	cSettings.AppSettings.JwtSecret = "jwt-secret"
 	appsettings.NodeSettings.Secret = "node-secret"
 	appsettings.OpenAISettings.Token = "openai-secret"
+	appsettings.OpenAISettings.BaseUrl = "https://api.openai.com/v1"
+	appsettings.OpenAISettings.APIType = "OPEN_AI"
 
 	payload := saveSettingsPayload{}
 	payload.App.JwtSecret = redactedSensitiveValue
 	payload.Node.Secret = redactedSensitiveValue
+	// The OpenAI placeholder only resolves while the endpoint, proxy and API
+	// type stay on their saved values.
+	payload.Openai.BaseUrl = "https://api.openai.com/v1"
+	payload.Openai.APIType = "OPEN_AI"
 	payload.Openai.Token = redactedSensitiveValue
 
 	restoreRedactedSensitiveSettings(&payload)

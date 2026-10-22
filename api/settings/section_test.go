@@ -27,12 +27,14 @@ func useTempSettingsFile(t *testing.T) string {
 
 	originalPath := cSettings.ConfPath
 	originalConf := cSettings.Conf
+	originalApp := *cSettings.AppSettings
 	originalOpenAI := *appsettings.OpenAISettings
 	originalLogrotate := *appsettings.LogrotateSettings
 	originalServer := *cSettings.ServerSettings
 	t.Cleanup(func() {
 		cSettings.ConfPath = originalPath
 		cSettings.Conf = originalConf
+		*cSettings.AppSettings = originalApp
 		*appsettings.OpenAISettings = originalOpenAI
 		*appsettings.LogrotateSettings = originalLogrotate
 		*cSettings.ServerSettings = originalServer
@@ -59,6 +61,8 @@ func postSection(t *testing.T, section string, body string) *httptest.ResponseRe
 func TestSaveSettingsSectionSavesOnlyThatSection(t *testing.T) {
 	confPath := useTempSettingsFile(t)
 	appsettings.OpenAISettings.Token = "saved-token"
+	appsettings.OpenAISettings.BaseUrl = "http://localhost:11434/v1"
+	appsettings.OpenAISettings.APIType = "OPEN_AI"
 	appsettings.LogrotateSettings.Interval = 1440
 
 	w := postSection(t, "openai", `{
