@@ -7,7 +7,7 @@ Object.assign(globalThis, {
   computed,
   ref,
   watch,
-  window: { location: { protocol: 'http:' } },
+  window: Object.assign(new EventTarget(), { location: { protocol: 'http:' } }),
 })
 mock.module('@vueuse/integrations/useCookies', () => ({
   useCookies: () => ({ set() {}, remove() {}, addChangeListener() {} }),
