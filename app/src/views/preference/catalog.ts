@@ -40,7 +40,7 @@ export function buildSettingCatalog(): SettingCatalogEntry[] {
     { path: 'node.public_security_number', section: 'node', title: $gettext('Public Security Number'), description: $gettext('Shown in the page footer. Only needed for sites hosted in mainland China.') },
 
     // HTTP
-    { path: 'http.github_proxy', section: 'http', title: $gettext('Github Proxy'), description: $gettext('Used for downloads from GitHub, such as upgrades and the GeoLite database.') },
+    { path: 'http.github_proxy', section: 'http', title: $gettext('Github Proxy'), description: $gettext('Used for downloads from GitHub, such as upgrades.') },
     { path: 'http.http_proxy', section: 'http', title: $gettext('HTTP Proxy'), description: $gettext('Used for other outgoing requests made by Nginx UI.') },
     { path: 'http.insecure_skip_verify', section: 'http', title: $gettext('Insecure Skip Verify') },
 
@@ -60,7 +60,21 @@ export function buildSettingCatalog(): SettingCatalogEntry[] {
     { path: 'cert.http_challenge_port', section: 'cert', title: $gettext('HTTP Challenge Port'), description: $gettext('Port that answers validation requests while a certificate is being issued.') },
     { path: 'cert.ca_dir', section: 'cert', title: $gettext('CADir'), description: $gettext('Service that issues certificates. Leave empty to use the default.') },
     { path: 'cert.renewal_interval', section: 'cert', title: $gettext('Certificate Renewal Threshold'), description: $gettext('Renew certificates when their remaining validity is less than or equal to this value.') },
-    { path: 'cert.recursive_nameservers', section: 'cert', title: $gettext('Recursive Nameservers'), description: $gettext('Set the recursive nameservers to override the systems nameservers for the step of DNS challenge.') },
+
+    // Plugin
+    { path: 'plugin.enabled', section: 'plugin', title: $gettext('Plugin System'), description: $gettext('Turning it off stops every plugin and hides the plugin pages.') },
+    { path: 'plugin.dir', section: 'plugin', title: $gettext('Plugin Directory') },
+    { path: 'plugin.default_sync_policy', section: 'plugin', title: $gettext('Default Sync Policy'), description: $gettext('Applied to newly installed plugins. Automatic keeps the plugin installed on the child nodes.') },
+    { path: 'plugin.marketplace_enabled', section: 'plugin', title: $gettext('Enable Marketplace') },
+    { path: 'plugin.marketplace_sources', section: 'plugin', title: $gettext('Sources'), description: $gettext('Managed on the marketplace page. The official catalog is always used.') },
+    { path: 'plugin.allow_community_plugins', section: 'plugin', title: $gettext('Allow Community Plugins'), description: $gettext('Community plugins are published by third parties and ask for a confirmation before they install.') },
+    { path: 'plugin.auto_update', section: 'plugin', title: $gettext('Automatic Updates'), description: $gettext('Updates official and partner plugins on their own while the permissions they ask for stay the same.') },
+    { path: 'plugin.allow_uploads', section: 'plugin', title: $gettext('Allow Uploads'), description: $gettext('Allows installing packages uploaded from the browser or the command line.') },
+    { path: 'plugin.trusted_public_keys', section: 'plugin', title: $gettext('Trusted Publishers'), description: $gettext('Plugins from these publishers install as community plugins.') },
+    { path: 'plugin.memory_limit_mb', section: 'plugin', title: $gettext('Memory Limit'), description: $gettext('Maximum memory each plugin can use.') },
+    { path: 'plugin.cpu_percent', section: 'plugin', title: $gettext('CPU Limit'), description: $gettext('Share of one CPU core each plugin can use.') },
+    { path: 'plugin.allow_insecure_download_url', section: 'plugin', title: $gettext('Allow Insecure Download URLs'), description: $gettext('Accepts plain http catalog and download addresses. Only for a private catalog on a trusted network.') },
+    { path: 'plugin.developer_mode', section: 'plugin', title: $gettext('Developer Mode'), description: $gettext('Allows installing unsigned plugins. Only turn this on while developing a plugin.') },
 
     // Nginx
     { path: 'nginx.stub_status_port', section: 'nginx', title: $gettext('Stub Status Port'), description: $gettext('Local port used to read Nginx connection statistics.') },
@@ -107,11 +121,6 @@ export function buildSettingCatalog(): SettingCatalogEntry[] {
     { path: 'logrotate.enabled', section: 'logrotate', title: $gettext('Enable Logrotate'), description: $gettext('Runs the rotation command on a schedule from Nginx UI. Mainly needed inside a Docker container.') },
     { path: 'logrotate.cmd', section: 'logrotate', title: $gettext('Command') },
     { path: 'logrotate.interval', section: 'logrotate', title: $gettext('Interval'), description: $gettext('Minutes between two runs.') },
-
-    // GeoLite
-    { path: 'nginx_log.geolite_database', section: 'geolite', title: $gettext('GeoLite2 Database'), description: $gettext('The GeoLite2 database provides geographic information for IP addresses. This is used for offline geographic analysis in log analytics.') },
-    { path: 'nginx_log.index_custom_mmdb', section: 'geolite', title: $gettext('Custom MMDB'), description: $gettext('A custom database replaces the GeoLite2 download.') },
-    { path: 'nginx_log.geo_map_path', section: 'geolite', title: $gettext('Map Boundary Directory'), description: $gettext('Keep files with names like 100000_full.json in this directory. Only the world map is provided by default.') },
   ]
 }
 

@@ -13,6 +13,12 @@ var Migrations = []*gormigrate.Migration{
 	EncryptSensitiveJSONFields,
 	DropLegacyRenamedTableIndexes,
 	RepairCertDomainsJSON,
+	BackfillCertChallengeConfig,
+	AddProbeKindToSiteConfigs,
+	AddStorageConfigToAutoBackups,
+	CreateCertDeployTables,
+	CreateBlocklistSourcesTable,
+	CreateUpstreamDiscoveriesTable,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{

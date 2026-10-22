@@ -1,0 +1,11 @@
+#!/bin/sh
+# Build the plugin binary for the current platform and drop it where
+# plugin.json's server.executables entry expects it.
+set -eu
+
+cd "$(dirname "$0")"
+cargo build --release
+mkdir -p "$(dirname "{{.ExecutablePath}}")"
+cp "target/release/{{.BinaryName}}" "{{.ExecutablePath}}"
+chmod +x "{{.ExecutablePath}}"
+echo "built {{.ExecutablePath}}"

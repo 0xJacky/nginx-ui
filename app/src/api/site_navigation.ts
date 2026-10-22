@@ -1,3 +1,4 @@
+import type { ConfigurationField } from '@/api/plugin'
 import type { SiteErrorType, SiteStatusType } from '@/constants/site-status'
 import { http } from '@uozi-admin/request'
 
@@ -70,6 +71,24 @@ export interface HealthCheckConfig {
     cooldown_seconds: number
     external_notify_ids: number[]
   }
+  /** A probe kind a plugin provides; absent means the built-in check. */
+  probe_kind?: string
+  probe_config?: Record<string, string>
+}
+
+/** A way of checking a site a plugin offers next to the built-in check. */
+export interface ProbeKindInfo {
+  /** Value stored in probe_kind, e.g. "plugin:tcp-banner". */
+  kind: string
+  name: string
+  plugin_id?: string
+  fields: ConfigurationField[]
+}
+
+/** The plugin probe kind a health check test runs with. */
+export interface HealthCheckTestProbe {
+  probe_kind?: string
+  probe_config?: Record<string, string>
 }
 
 export interface HeaderItem {
@@ -121,6 +140,10 @@ export interface EnhancedHealthCheckConfig {
   alertRecoveryEnabled: boolean
   alertCooldownSeconds: number
   externalNotifyIds: number[]
+
+  // Plugin probe kind, empty for the built-in check
+  probeKind: string
+  probeConfig: Record<string, string>
 }
 
 export interface HealthCheckTestConfig {
@@ -177,8 +200,13 @@ export const siteNavigationApi = {
   },
 
   // Test health check configuration
-  testHealthCheck(id: number, config: HealthCheckTestConfig): Promise<{ success: boolean, response_time?: number, error?: string }> {
-    return http.post(`/site_navigation/test_health_check/${id}`, { config })
+  testHealthCheck(id: number, config: HealthCheckTestConfig, probe: HealthCheckTestProbe = {}): Promise<{ success: boolean, response_time?: number, error?: string }> {
+    return http.post(`/site_navigation/test_health_check/${id}`, { config, ...probe })
+  },
+
+  // Probe kinds plugins offer next to the built-in check
+  getProbeKinds(): Promise<{ data: ProbeKindInfo[] }> {
+    return http.get('/site_navigation/probe_kinds')
   },
 
   // WebSocket URL for real-time updates

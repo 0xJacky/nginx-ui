@@ -48,6 +48,7 @@ func NewAppCmd() *cli.Command {
 			},
 			CertCommand,
 			ResetMFACommand,
+			PluginCommand,
 			CtlCommand,
 			UpgradeDockerStep2Command,
 			HostSetupCommand,

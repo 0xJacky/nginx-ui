@@ -2,9 +2,11 @@
 import { useRouteQuery } from '@vueuse/router'
 import nginxLog from '@/api/nginx_log'
 import FooterToolBar from '@/components/FooterToolbar'
-import DashboardViewer from './dashboard/DashboardViewer.vue'
+import PluginSlotItem from '@/components/PluginSlot/PluginSlotItem.vue'
+import { NGINX_LOG_VIEW_SLOT_PREFIX, uniqueByKey } from '@/plugin/slots'
+import { usePluginStore } from '@/plugin/store'
+import LegacyIndexingNotice from './LegacyIndexingNotice.vue'
 import RawLogViewer from './raw/RawLogViewer.vue'
-import StructuredLogViewer from './structured/StructuredLogViewer.vue'
 
 // Route and router
 const route = useRoute()
@@ -24,7 +26,11 @@ const logType = computed(() => {
   return 'site'
 })
 
-const viewMode = useRouteQuery<'raw' | 'structured' | 'dashboard'>('view', 'structured')
+// The raw view of the host or the key of a view a plugin registered. Empty
+// means the default view of the log type.
+const viewMode = useRouteQuery<string>('view', '')
+
+const RAW_VIEW = 'raw'
 
 interface LogPathOption {
   label: string
@@ -120,21 +126,7 @@ async function fetchLogPathOptions() {
   }
 }
 
-// Indexing status
-const isIndexingEnabled = ref<boolean | null>(null)
-
-onMounted(async () => {
-  try {
-    const res = await nginxLog.getAdvancedIndexingStatus()
-    isIndexingEnabled.value = res.enabled
-  }
-  catch (err) {
-    console.error('Failed to get indexing status:', err)
-    isIndexingEnabled.value = false
-  }
-
-  await fetchLogPathOptions()
-})
+onMounted(fetchLogPathOptions)
 
 watch(logType, async () => {
   await fetchLogPathOptions()
@@ -157,46 +149,50 @@ const isErrorLog = computed(() => {
 
 const autoRefresh = ref(true)
 
-const viewModeOptions = computed(() => {
-  const advancedViewDisabled = isIndexingEnabled.value !== true
+// Views plugins add next to the raw view. A key that equals the raw view is
+// ignored.
+const pluginStore = usePluginStore()
 
-  return [
-    { label: $gettext('Structured'), value: 'structured', disabled: advancedViewDisabled },
-    { label: $gettext('Dashboard'), value: 'dashboard', disabled: advancedViewDisabled },
-    { label: $gettext('Raw'), value: 'raw' },
-  ]
+const pluginViewContext = computed(() => ({
+  path: logPath.value,
+  type: isErrorLog.value ? 'error' : 'access',
+}))
+
+const pluginViews = computed(() => uniqueByKey(pluginStore.slotsByPrefix(NGINX_LOG_VIEW_SLOT_PREFIX, pluginViewContext.value))
+  .filter(item => item.key !== RAW_VIEW))
+
+// Without a `view` in the link, access logs open the structured view a plugin
+// may provide and error logs stay raw.
+const requestedView = computed(() => viewMode.value || (isErrorLog.value ? RAW_VIEW : 'structured'))
+
+const activePluginView = computed(() => pluginViews.value.find(item => item.key === requestedView.value))
+
+// What the page shows for the requested view. A view nobody provides shows the
+// raw view once plugins finished loading, until then nothing is decided yet.
+const effectiveView = computed(() => {
+  if (requestedView.value === RAW_VIEW || activePluginView.value)
+    return requestedView.value
+
+  return pluginStore.ready ? RAW_VIEW : ''
 })
 
-watch(viewMode, v => {
-  if (v === 'structured' && (isIndexingEnabled.value === false || isErrorLog.value)) {
-    viewMode.value = 'raw'
-  }
-}, { immediate: true })
+const viewModeOptions = computed(() => [
+  { label: $gettext('Raw'), value: RAW_VIEW },
+  ...pluginViews.value.map(item => ({
+    label: $gettext(item.registration.label ?? item.key),
+    value: item.key,
+  })),
+])
 
-// View mode logic: set defaults based on log type and indexing status
-watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEnabled]) => {
-  if (enabled === null)
-    return
+const segmentedValue = computed({
+  get: () => effectiveView.value || requestedView.value,
+  set: (value: string) => {
+    viewMode.value = value
+  },
+})
 
-  // Only set default when conditions change or initial load
-  const isInitialLoad = prevIsError === undefined && prevEnabled === undefined
-  const conditionsChanged = isError !== prevIsError || enabled !== prevEnabled
-
-  if (isInitialLoad || conditionsChanged) {
-    if (isError) {
-      // Error logs always use raw mode
-      viewMode.value = 'raw'
-    }
-    else if (!enabled) {
-      // Indexing disabled: default to raw
-      viewMode.value = 'raw'
-    }
-    else if (enabled && logType.value === 'access') {
-      // Indexing enabled for access logs: default to structured
-      viewMode.value = 'structured'
-    }
-  }
-}, { immediate: true })
+// Without a plugin view there is nothing to switch to
+const showViewToggle = computed(() => pluginViews.value.length > 0)
 </script>
 
 <template>
@@ -204,7 +200,9 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
     :title="$gettext('Nginx Log')"
     variant="borderless"
   >
-    <div v-if="viewMode !== 'structured'" class="mb-4 flex flex-wrap items-center justify-end gap-4">
+    <LegacyIndexingNotice />
+
+    <div class="mb-4 flex flex-wrap items-center justify-end gap-4">
       <ASelect
         v-model:value="selectedLogPath"
         class="flex-none font-mono"
@@ -219,16 +217,16 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
           ((option?.label ?? '') as string).toLowerCase().includes(input.toLowerCase())"
       />
 
-      <!-- View Mode Toggle (hide only for error logs) -->
-      <div v-if="!isErrorLog" class="flex items-center">
+      <!-- View mode toggle, only there when a plugin adds a view -->
+      <div v-if="showViewToggle" class="flex items-center">
         <ASegmented
-          v-model:value="viewMode"
+          v-model:value="segmentedValue"
           :options="viewModeOptions"
         />
       </div>
 
       <!-- Auto Refresh (only for raw mode) -->
-      <div v-if="viewMode === 'raw'" class="flex items-center">
+      <div v-if="effectiveView === 'raw'" class="flex items-center">
         <span class="mr-2">{{ $gettext('Auto Refresh') }}</span>
         <ASwitch v-model:checked="autoRefresh" />
       </div>
@@ -236,44 +234,18 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
 
     <!-- Raw Log View -->
     <RawLogViewer
-      v-if="viewMode === 'raw'"
+      v-if="effectiveView === 'raw'"
       :log-path="logPath"
       :log-type="logType"
       :auto-refresh="autoRefresh"
     />
 
-    <!-- Structured Log View -->
-    <StructuredLogViewer
-      v-else-if="viewMode === 'structured'"
-      :log-path="logPath"
-    >
-      <template #time-range-right>
-        <ASelect
-          v-model:value="selectedLogPath"
-          class="flex-none font-mono"
-          :style="logSelectStyle"
-          :styles="logSelectStyles"
-          show-search
-          allow-clear
-          :loading="isLoadingLogPathOptions"
-          :options="logPathOptions"
-          :placeholder="$gettext('Select log file')"
-          :filter-option="(input, option) =>
-            ((option?.label ?? '') as string).toLowerCase().includes(input.toLowerCase())"
-        />
-        <div v-if="!isErrorLog" class="flex items-center">
-          <ASegmented
-            v-model:value="viewMode"
-            :options="viewModeOptions"
-          />
-        </div>
-      </template>
-    </StructuredLogViewer>
-
-    <!-- Dashboard View -->
-    <DashboardViewer
-      v-else-if="viewMode === 'dashboard'"
-      :log-path="logPath"
+    <!-- View added by a plugin -->
+    <PluginSlotItem
+      v-else-if="activePluginView && effectiveView === activePluginView.key"
+      :key="activePluginView.slot"
+      :registration="activePluginView.registration"
+      :context="pluginViewContext"
     />
 
     <FooterToolBar v-if="logPath">

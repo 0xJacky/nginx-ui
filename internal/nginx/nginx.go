@@ -13,6 +13,7 @@ import (
 	"math"
 
 	"github.com/0xJacky/Nginx-UI/internal/docker"
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/google/uuid"
 	"github.com/shirou/gopsutil/v4/process"
@@ -84,6 +85,9 @@ func reload() (stdOut string, stdErr error) {
 }
 
 func reloadContext(ctx context.Context) (stdOut string, stdErr error) {
+	// TryTestAndReload calls this directly, so the event fires here rather
+	// than in the Reload wrapper above, covering both entry points.
+	defer func() { publishReloadResult(stdOut, stdErr) }()
 
 	// Clear the modules cache when reloading Nginx
 	clearModulesCache()
@@ -112,6 +116,14 @@ func reloadContext(ctx context.Context) (stdOut string, stdErr error) {
 		return execCommandContext(ctx, "nginx", "-s", "reload")
 	}
 	return execCommandContext(ctx, sbin, "-s", "reload")
+}
+
+// publishReloadResult reports one reload (or the restart it fell back to) so
+// plugins can react. It reuses ControlResult.IsError, the same rule the API
+// response and the UI use to call a reload attempt a failure.
+func publishReloadResult(stdOut string, stdErr error) {
+	result := &ControlResult{stdOut: stdOut, stdErr: stdErr}
+	event.PublishNginxReloaded(!result.IsError(), result.GetOutput())
 }
 
 // TryTestAndReload validates and reloads Nginx while holding the control lock
