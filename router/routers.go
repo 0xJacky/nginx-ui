@@ -74,7 +74,6 @@ func InitRouter() {
 		public.InitRouter(root)
 		crypto.InitPublicRouter(root)
 		user.InitAuthRouter(root)
-		license.InitRouter(root)
 		nginxLog.InitPublicRouter(root)
 
 		system.InitPublicRouter(root)
@@ -91,6 +90,7 @@ func InitRouter() {
 		// browser, even while the UI is managing a selected remote node.
 		local := root.Group("/", middleware.AuthRequired())
 		{
+			license.InitRouter(local)
 			llm.InitLocalRouter(local)
 			user.InitTokenRouter(local)
 			user.InitUserRouter(local)
