@@ -324,6 +324,10 @@ func createMaintenanceConfigWithPayload(conf *config.Config, baseDir string, sit
 	// Create new configuration
 	ngxConfig := nginx.NewNgxConfig("")
 
+	// Keep the site's http-level directives (upstream, map, limit_req_zone,
+	// ...): other sites may use them, and nginx -t fails without them.
+	ngxConfig.Custom = dumpNonServerDirectives(conf.Block)
+
 	// Find all server blocks in the original configuration
 	serverBlocks := findServerBlocks(conf.Block)
 	includeBaseDir := baseDir
@@ -561,6 +565,22 @@ func findServerBlocks(block config.IBlock) []config.IDirective {
 	}
 
 	return servers
+}
+
+// dumpNonServerDirectives dumps every top-level directive other than server.
+func dumpNonServerDirectives(block config.IBlock) string {
+	if block == nil {
+		return ""
+	}
+
+	var dumped []string
+	for _, directive := range block.GetDirectives() {
+		if directive.GetName() != "server" {
+			dumped = append(dumped, dumpMaintenanceDirective(directive))
+		}
+	}
+
+	return strings.Join(dumped, "\n")
 }
 
 // extractDirectives extracts all directives with a specific name from a server block
