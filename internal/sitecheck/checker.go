@@ -22,6 +22,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/uozi-tech/cosy/logger"
+	"gorm.io/gen"
 	"gorm.io/gorm"
 )
 
@@ -811,6 +812,20 @@ func findSiteConfigByIndex(siteIndex uint64, siteName, host, scheme string) (*mo
 
 // getOrCreateSiteConfigForURL gets or creates a site config for the given URL.
 // SiteKey is stable across synchronized nodes and avoids relying on local IDs.
+// firstSiteConfig is First without GORM's "record not found" log line: the
+// lookups below are expected to miss for every secondary server_name (#2036).
+func firstSiteConfig(conds ...gen.Condition) (*model.SiteConfig, error) {
+	sc := query.SiteConfig
+	configs, err := sc.Where(conds...).Order(sc.ID).Limit(1).Find()
+	if err != nil {
+		return nil, err
+	}
+	if len(configs) == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
+	return configs[0], nil
+}
+
 func getOrCreateSiteConfigForURL(siteName, rawURL string) *model.SiteConfig {
 	// Parse URL to get host:port
 	tempConfig := &model.SiteConfig{}
@@ -861,9 +876,9 @@ func getOrCreateSiteConfigForURL(siteName, rawURL string) *model.SiteConfig {
 
 	// Not in cache, query database
 	sc := query.SiteConfig
-	siteConfig, err := sc.Where(sc.SiteKey.Eq(tempConfig.SiteKey)).First()
+	siteConfig, err := firstSiteConfig(sc.SiteKey.Eq(tempConfig.SiteKey))
 	if err != nil {
-		siteConfig, err = sc.Where(sc.SiteKey.Eq(legacySiteKey)).First()
+		siteConfig, err = firstSiteConfig(sc.SiteKey.Eq(legacySiteKey))
 	}
 	if err != nil {
 		if tempConfig.SiteIndex > 0 {
@@ -874,11 +889,11 @@ func getOrCreateSiteConfigForURL(siteName, rawURL string) *model.SiteConfig {
 		}
 	}
 	if err != nil && strings.TrimSpace(siteName) != "" {
-		siteConfig, err = sc.Where(sc.Host.Eq(tempConfig.Host), sc.SiteName.Eq(siteName)).First()
+		siteConfig, err = firstSiteConfig(sc.Host.Eq(tempConfig.Host), sc.SiteName.Eq(siteName))
 	}
 	if err != nil {
 		// Lazily adopt a legacy record when it still has no stable key.
-		siteConfig, err = sc.Where(sc.Host.Eq(tempConfig.Host), sc.SiteKey.Eq("")).First()
+		siteConfig, err = firstSiteConfig(sc.Host.Eq(tempConfig.Host), sc.SiteKey.Eq(""))
 		if err == nil {
 			fieldsToUpdate := map[string]any{
 				"site_key": tempConfig.SiteKey,
