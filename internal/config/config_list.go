@@ -38,6 +38,8 @@ func (c ConfigsSort) Less(i, j int) bool {
 		flag = c.ConfigList[i].Status > c.ConfigList[j].Status
 	case "namespace_id":
 		flag = c.ConfigList[i].NamespaceID > c.ConfigList[j].NamespaceID
+	case "index":
+		flag = c.ConfigList[i].Index > c.ConfigList[j].Index
 	}
 
 	if c.ConfigList[i].IsDir != c.ConfigList[j].IsDir {
