@@ -2,6 +2,7 @@ package settings
 
 import (
 	"net/http"
+	"reflect"
 
 	"code.pfad.fr/risefront"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
@@ -74,14 +75,67 @@ func (s settingsSection[T]) bind(payload *T) *sectionSave {
 	return save
 }
 
+// prefillSettingsPayload returns a copy of a live settings section for a
+// request to be bound into. ProtectedFill copies every unprotected field of the
+// payload, so binding into a zero value would reset whatever the request body
+// leaves out; starting from the stored values makes a partial body change only
+// the fields it names.
+//
+// Slices and maps are copied, because JSON decoding writes into the backing
+// array or map it finds and would otherwise edit the live settings before the
+// request is validated. Sensitive strings start as the redacted placeholder a
+// GET returns, so an omitted secret goes through the same restore rules as one
+// the client echoes back instead of being silently kept for a changed endpoint.
+func prefillSettingsPayload[T any](current *T) T {
+	payload := *current
+	value := reflect.ValueOf(&payload).Elem()
+	cloneReferenceFields(value)
+
+	valueType := value.Type()
+	for i := 0; i < valueType.NumField(); i++ {
+		field := value.Field(i)
+		if valueType.Field(i).Tag.Get("sensitive") == "true" && field.Kind() == reflect.String && field.CanSet() {
+			field.SetString(redactedSensitiveValue)
+		}
+	}
+	return payload
+}
+
+// cloneReferenceFields replaces the slices and maps reachable through the
+// exported fields of a struct with copies.
+func cloneReferenceFields(value reflect.Value) {
+	for i := 0; i < value.NumField(); i++ {
+		field := value.Field(i)
+		if !field.CanSet() {
+			continue
+		}
+		switch field.Kind() {
+		case reflect.Slice:
+			if !field.IsNil() {
+				cloned := reflect.MakeSlice(field.Type(), field.Len(), field.Len())
+				reflect.Copy(cloned, field)
+				field.Set(cloned)
+			}
+		case reflect.Map:
+			if !field.IsNil() {
+				cloned := reflect.MakeMapWithSize(field.Type(), field.Len())
+				iter := field.MapRange()
+				for iter.Next() {
+					cloned.SetMapIndex(iter.Key(), iter.Value())
+				}
+				field.Set(cloned)
+			}
+		case reflect.Struct:
+			cloneReferenceFields(field)
+		}
+	}
+}
+
 // handler serves POST /settings/<name>: it saves this section only and answers
 // with the section as GET /settings would return it.
 func (s settingsSection[T]) handler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var payload T
-		if s.name == "auth" {
-			*any(&payload).(*settings.Auth) = *settings.AuthSettings
-		}
+		payload := prefillSettingsPayload(s.target())
 		if !cosy.BindAndValid(c, &payload) {
 			return
 		}

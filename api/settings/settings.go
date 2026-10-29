@@ -298,8 +298,22 @@ func GetSettings(c *gin.Context) {
 // each section through SaveSettingsSection instead; this combined endpoint
 // stays for API clients and scripts that post the whole document.
 func SaveSettings(c *gin.Context) {
-	var json saveSettingsPayload
-	json.Auth = *settings.AuthSettings
+	// Start every section from its stored values, so a body that leaves a
+	// section or field out keeps it instead of resetting it.
+	json := saveSettingsPayload{
+		App:           prefillSettingsPayload(cSettings.AppSettings),
+		Server:        prefillSettingsPayload(cSettings.ServerSettings),
+		Auth:          prefillSettingsPayload(settings.AuthSettings),
+		Cert:          prefillSettingsPayload(settings.CertSettings),
+		Http:          prefillSettingsPayload(settings.HTTPSettings),
+		Node:          prefillSettingsPayload(settings.NodeSettings),
+		Openai:        prefillSettingsPayload(settings.OpenAISettings),
+		Logrotate:     prefillSettingsPayload(settings.LogrotateSettings),
+		Nginx:         prefillSettingsPayload(settings.NginxSettings),
+		Oidc:          prefillSettingsPayload(settings.OIDCSettings),
+		SiteCheck:     prefillSettingsPayload(settings.SiteCheckSettings),
+		UpstreamCheck: prefillSettingsPayload(settings.UpstreamCheckSettings),
+	}
 
 	if !cosy.BindAndValid(c, &json) {
 		return
