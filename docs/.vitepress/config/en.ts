@@ -82,6 +82,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Nginx', link: '/guide/config-nginx' },
             { text: 'Nginx Log', link: '/guide/config-nginx-log' },
             { text: 'Node', link: '/guide/config-node' },
+            { text: 'Open ID Connect (OIDC)', link: '/guide/config-oidc' },
             { text: 'Open AI', link: '/guide/config-openai' },
             { text: 'Server', link: '/guide/config-server' },
             { text: 'Site Check', link: '/guide/config-sitecheck' },
