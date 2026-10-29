@@ -169,6 +169,12 @@ func assertIndexedGroup(t *testing.T, logPath string, wantDocuments uint64) {
 	require.NoError(t, err, "the full rebuild must have indexed %s", logPath)
 	require.Equal(t, string(indexer.IndexStatusIndexed), record.IndexStatus)
 	require.Equal(t, wantDocuments, record.DocumentCount)
+
+	// The rebuild must record how far it read, or the incremental job takes
+	// the file for inconsistent and re-reads it from the start (issue #2054).
+	info, err := os.Stat(logPath)
+	require.NoError(t, err)
+	require.Equal(t, info.Size(), record.LastPosition)
 }
 
 // writeAccessLog creates an nginx access log with the requested number of

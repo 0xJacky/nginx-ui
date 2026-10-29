@@ -249,6 +249,31 @@ func (ts *TaskScheduler) AcquireTaskLock(logPath string) (*sync.Mutex, func()) {
 	return lock, releaseFunc
 }
 
+// TryRunIndexTask runs fn for a log group synchronously, under the same
+// per-group lock and global run slot as scheduled tasks, so work started
+// outside the scheduler (the incremental indexing job) neither overlaps a
+// task on the same group nor adds to the number of groups indexed at once.
+// It returns false without calling fn when a task already holds the group or
+// the scheduler is shutting down.
+func (ts *TaskScheduler) TryRunIndexTask(ctx context.Context, logPath string, fn func()) bool {
+	lock := ts.acquireTaskLock(logPath)
+	if !lock.TryLock() {
+		return false
+	}
+	defer func() {
+		lock.Unlock()
+		ts.releaseTaskLock(logPath)
+	}()
+
+	if !ts.acquireRunSlot(ctx) {
+		return false
+	}
+	defer ts.releaseRunSlot()
+
+	fn()
+	return true
+}
+
 // ScheduleIndexTask schedules an indexing task for a log group
 // Returns error if task is already in progress
 func (ts *TaskScheduler) ScheduleIndexTask(ctx context.Context, logPath string, progressConfig *indexer.ProgressConfig) error {

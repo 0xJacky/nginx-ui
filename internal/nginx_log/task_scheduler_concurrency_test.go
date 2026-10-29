@@ -188,3 +188,77 @@ func TestRunSlotsSurviveRepeatedScheduling(t *testing.T) {
 		return runtime.NumGoroutine() <= before+2
 	}, 2*time.Second, 10*time.Millisecond, "repeated scheduling must not grow the goroutine count")
 }
+
+// TestTryRunIndexTaskSharesGroupLockAndRunSlots guards the incremental
+// indexing job of issue #2054: it used to index outside the scheduler, so a
+// full re-read could run on top of a scheduled task for the same group and on
+// top of every run slot already in use.
+func TestTryRunIndexTaskSharesGroupLockAndRunSlots(t *testing.T) {
+	scheduler := &TaskScheduler{
+		taskLocks: make(map[string]*sync.Mutex),
+		runSlots:  make(chan struct{}, 1),
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	scheduler.ctx = ctx
+	scheduler.cancel = cancel
+
+	const logPath = "/var/log/nginx/access.log"
+
+	t.Run("skips a group held by a task", func(t *testing.T) {
+		_, unlock := scheduler.AcquireTaskLock(logPath)
+		ran := scheduler.TryRunIndexTask(ctx, logPath, func() {
+			t.Fatal("must not run while the group is locked")
+		})
+		unlock()
+		assert.False(t, ran)
+	})
+
+	t.Run("runs once the group is free", func(t *testing.T) {
+		called := false
+		ran := scheduler.TryRunIndexTask(ctx, logPath, func() {
+			called = true
+			assert.True(t, scheduler.IsTaskInProgress(logPath), "the group must be held while running")
+			assert.Len(t, scheduler.runSlots, 1, "a run slot must be held while running")
+		})
+		assert.True(t, ran)
+		assert.True(t, called)
+		assert.False(t, scheduler.IsTaskInProgress(logPath))
+		assert.Empty(t, scheduler.runSlots, "the run slot must be released")
+	})
+
+	t.Run("waits for a run slot", func(t *testing.T) {
+		require.True(t, scheduler.acquireRunSlot(ctx))
+
+		done := make(chan bool, 1)
+		go func() {
+			done <- scheduler.TryRunIndexTask(ctx, logPath, func() {})
+		}()
+
+		select {
+		case <-done:
+			t.Fatal("must wait while every run slot is taken")
+		case <-time.After(100 * time.Millisecond):
+		}
+
+		scheduler.releaseRunSlot()
+		select {
+		case ran := <-done:
+			assert.True(t, ran)
+		case <-time.After(5 * time.Second):
+			t.Fatal("did not run after the run slot was released")
+		}
+	})
+
+	t.Run("gives up when cancelled while waiting", func(t *testing.T) {
+		require.True(t, scheduler.acquireRunSlot(ctx))
+		defer scheduler.releaseRunSlot()
+
+		waitCtx, waitCancel := context.WithCancel(context.Background())
+		waitCancel()
+		ran := scheduler.TryRunIndexTask(waitCtx, logPath, func() {
+			t.Fatal("must not run after cancellation")
+		})
+		assert.False(t, ran)
+	})
+}

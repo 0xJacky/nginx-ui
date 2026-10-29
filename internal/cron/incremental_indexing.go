@@ -1,7 +1,6 @@
 package cron
 
 import (
-	"compress/gzip"
 	"context"
 	"fmt"
 	"io"
@@ -89,32 +88,33 @@ func performIncrementalIndexing() {
 
 	// Process files sequentially to avoid overwhelming the system
 	// This is more conservative but prevents concurrent file indexing from consuming too much CPU
+	scheduler := nginx_log.GetTaskScheduler()
 	changedCount := 0
 	for _, log := range allLogs {
 		// Check if file needs incremental indexing
-		if needsIncrementalIndexing(log, persistence) {
-			logger.Debugf("Starting incremental indexing for file: %s", log.Path)
+		if !needsIncrementalIndexing(log, persistence) {
+			continue
+		}
 
-			// Set status to indexing
-			if err := setFileIndexStatus(log.Path, string(indexer.IndexStatusIndexing), logFileManager); err != nil {
-				logger.Errorf("Failed to set indexing status for %s: %v", log.Path, err)
+		indexed := false
+		run := func() {
+			indexed = indexLogFileIncrementally(log.Path, modernIndexer, logFileManager)
+		}
+
+		// Run under the scheduler's group lock and run slot, so this job
+		// neither races a scheduled task on the same log group nor raises the
+		// number of groups being indexed at once.
+		if scheduler != nil {
+			if !scheduler.TryRunIndexTask(context.Background(), log.Path, run) {
+				logger.Debugf("Skipping incremental indexing for %s: an indexing task is running for it", log.Path)
 				continue
 			}
+		} else {
+			run()
+		}
 
-			// Perform incremental indexing synchronously (one file at a time)
-			if err := performSingleFileIncrementalIndexing(log.Path, modernIndexer, logFileManager); err != nil {
-				logger.Errorf("Failed incremental indexing for %s: %v", log.Path, err)
-				// Set error status
-				if statusErr := setFileIndexStatus(log.Path, string(indexer.IndexStatusError), logFileManager); statusErr != nil {
-					logger.Errorf("Failed to set error status for %s: %v", log.Path, statusErr)
-				}
-			} else {
-				changedCount++
-				// Set status to indexed
-				if err := setFileIndexStatus(log.Path, string(indexer.IndexStatusIndexed), logFileManager); err != nil {
-					logger.Errorf("Failed to set indexed status for %s: %v", log.Path, err)
-				}
-			}
+		if indexed {
+			changedCount++
 		}
 	}
 
@@ -125,6 +125,30 @@ func performIncrementalIndexing() {
 	} else {
 		logger.Debug("No log files need incremental indexing")
 	}
+}
+
+// indexLogFileIncrementally indexes one log file and keeps its index status in
+// step. It reports whether the file was indexed successfully.
+func indexLogFileIncrementally(logPath string, modernIndexer *indexer.ParallelIndexer, logFileManager *indexer.LogFileManager) bool {
+	logger.Debugf("Starting incremental indexing for file: %s", logPath)
+
+	if err := setFileIndexStatus(logPath, string(indexer.IndexStatusIndexing), logFileManager); err != nil {
+		logger.Errorf("Failed to set indexing status for %s: %v", logPath, err)
+		return false
+	}
+
+	if err := performSingleFileIncrementalIndexing(logPath, modernIndexer, logFileManager); err != nil {
+		logger.Errorf("Failed incremental indexing for %s: %v", logPath, err)
+		if statusErr := setFileIndexStatus(logPath, string(indexer.IndexStatusError), logFileManager); statusErr != nil {
+			logger.Errorf("Failed to set error status for %s: %v", logPath, statusErr)
+		}
+		return false
+	}
+
+	if err := setFileIndexStatus(logPath, string(indexer.IndexStatusIndexed), logFileManager); err != nil {
+		logger.Errorf("Failed to set indexed status for %s: %v", logPath, err)
+	}
+	return true
 }
 
 func shouldRunIncrementalIndexing() bool {
@@ -213,21 +237,58 @@ func needsIncrementalIndexing(log *nginx_log.NginxLogWithIndex, persistence logI
 	return false
 }
 
+// incrementalMode is how an incremental run brings a file's index up to date.
+type incrementalMode int
+
+const (
+	// incrementalSkip: the index already covers the whole file.
+	incrementalSkip incrementalMode = iota
+	// incrementalAppend: read only the bytes appended since LastPosition.
+	incrementalAppend
+	// incrementalReindexFile: drop the file's documents and re-read it from 0.
+	incrementalReindexFile
+	// incrementalReindexGroup: the file shrank, so its earlier content now
+	// lives in a rotated sibling; re-index the whole log group.
+	incrementalReindexGroup
+)
+
+// planIncrementalRun decides how to index a file of currentSize bytes given
+// its persisted metadata. The returned position is only meaningful for
+// incrementalAppend.
+func planIncrementalRun(existing *model.NginxLogIndex, currentSize int64, isGzipped bool) (incrementalMode, int64) {
+	// Nothing recorded, or a gzip file: a persisted LastPosition counts
+	// compressed bytes and cannot be mapped into the decompressed stream.
+	if existing == nil || isGzipped {
+		return incrementalReindexFile, 0
+	}
+
+	switch {
+	case currentSize < existing.LastSize || existing.LastPosition > currentSize:
+		// The file is shorter than what was indexed: it was rotated or
+		// truncated, and the indexed lines moved to a rotated file.
+		return incrementalReindexGroup, 0
+	case existing.LastPosition == currentSize:
+		return incrementalSkip, 0
+	case existing.LastPosition > 0:
+		return incrementalAppend, existing.LastPosition
+	default:
+		// No recorded position. Re-reading from 0 on top of documents that
+		// are already indexed is what duplicated every line (issue #2054),
+		// so the re-read replaces the file's documents instead.
+		return incrementalReindexFile, 0
+	}
+}
+
 // performSingleFileIncrementalIndexing performs TRUE incremental indexing for a single file synchronously
 // This implements real incremental indexing by using LastPosition to only read new content
-func performSingleFileIncrementalIndexing(logPath string, modernIndexer interface{}, logFileManager interface{}) error {
+func performSingleFileIncrementalIndexing(logPath string, modernIndexer *indexer.ParallelIndexer, lfm *indexer.LogFileManager) (err error) {
 	defer func() {
 		// Ensure status is always updated, even on panic
 		if r := recover(); r != nil {
 			logger.Errorf("Recovered from panic during incremental indexing for %s: %v", logPath, r)
-			_ = setFileIndexStatus(logPath, string(indexer.IndexStatusError), logFileManager)
+			err = fmt.Errorf("panic during incremental indexing: %v", r)
 		}
 	}()
-
-	lfm, ok := logFileManager.(*indexer.LogFileManager)
-	if !ok {
-		return fmt.Errorf("invalid log file manager type")
-	}
 
 	persistence := lfm.GetPersistence()
 	if persistence == nil {
@@ -247,74 +308,43 @@ func performSingleFileIncrementalIndexing(logPath string, modernIndexer interfac
 	existingIndex, err := persistence.GetLogIndex(logPath)
 	if err != nil {
 		logger.Warnf("Could not get existing log index for %s: %v", logPath, err)
+		existingIndex = nil
 	}
 
-	var startPosition int64 = 0
-	var existingDocCount uint64 = 0
-
-	if existingIndex != nil {
-		if isGzipped {
-			// For gzip files, we cannot reliably map persisted LastPosition (compressed bytes)
-			// to a position in the decompressed stream. Treat every incremental run as a
-			// full re-index when the file changes to avoid skipping or duplicating data.
-			logger.Debugf("Gzip file %s detected; ignoring LastPosition and resetting document count for full re-index (last_size=%d, current_size=%d)",
-				logPath, existingIndex.LastSize, currentSize)
-			startPosition = 0
-			existingDocCount = 0
-		} else {
-			existingDocCount = existingIndex.DocumentCount
-
-			// Detect file rotation (size decreased)
-			if currentSize < existingIndex.LastSize {
-				startPosition = 0
-				existingDocCount = 0 // Reset count for rotated file
-				logger.Debugf("Log rotation detected for %s: size %d -> %d, full re-index",
-					logPath, existingIndex.LastSize, currentSize)
-			} else if existingIndex.LastPosition > 0 && existingIndex.LastPosition < currentSize {
-				// TRUE INCREMENTAL: File grew, resume from last position
-				startPosition = existingIndex.LastPosition
-				logger.Debugf("TRUE INCREMENTAL: %s grew %d -> %d bytes, reading from position %d",
-					logPath, existingIndex.LastSize, currentSize, startPosition)
-			} else if existingIndex.LastPosition == currentSize {
-				// File unchanged
-				logger.Debugf("File %s unchanged (size=%d, position=%d), skipping",
-					logPath, currentSize, existingIndex.LastPosition)
-				return nil
-			} else if existingIndex.LastPosition == 0 && existingDocCount > 0 {
-				// Inconsistent state: we have documents but no recorded position.
-				// Treat this as a full re-index from the beginning to avoid duplicate counting.
-				logger.Debugf("Inconsistent index state for %s (docs=%d, last_position=0); resetting existing count and re-indexing from start",
-					logPath, existingDocCount)
-				startPosition = 0
-				existingDocCount = 0
-			}
-		}
+	mode, startPosition := planIncrementalRun(existingIndex, currentSize, isGzipped)
+	switch mode {
+	case incrementalSkip:
+		logger.Debugf("File %s unchanged (size=%d), skipping", logPath, currentSize)
+		return nil
+	case incrementalReindexFile:
+		logger.Debugf("Re-indexing %s from the start (size=%d)", logPath, currentSize)
+		return reindexLogFile(logPath, modernIndexer, lfm)
+	case incrementalReindexGroup:
+		logger.Debugf("Log rotation detected for %s: size %d -> %d, re-indexing the log group",
+			logPath, existingIndex.LastSize, currentSize)
+		return reindexLogGroup(logPath, modernIndexer, lfm)
 	}
+
+	logger.Debugf("TRUE INCREMENTAL: %s grew %d -> %d bytes, reading from position %d",
+		logPath, existingIndex.LastSize, currentSize, startPosition)
 
 	// Perform incremental indexing with position-aware reading
 	startTime := time.Now()
-	newDocsIndexed, minTime, maxTime, finalPosition, err := indexFileFromPosition(
-		modernIndexer.(*indexer.ParallelIndexer),
-		logPath,
-		startPosition,
-	)
-
+	newDocsIndexed, minTime, maxTime, finalPosition, err := indexFileFromPosition(modernIndexer, logPath, startPosition)
 	if err != nil {
 		return fmt.Errorf("indexing failed: %w", err)
 	}
 
 	duration := time.Since(startTime)
-	finalDocCount := existingDocCount + newDocsIndexed
+	finalDocCount := existingIndex.DocumentCount + newDocsIndexed
 
 	// Save metadata with updated position
 	if err := lfm.SaveIndexMetadata(logPath, finalDocCount, startTime, duration, minTime, maxTime); err != nil {
 		return fmt.Errorf("failed to save metadata: %w", err)
 	}
 
-	// CRITICAL FIX for Bug 1 & Bug 2:
-	// Re-fetch the index record after SaveIndexMetadata to ensure we have the latest data
-	// (SaveIndexMetadata internally updates LastModified and other fields)
-	// Then update LastPosition which is critical for true incremental indexing
+	// Re-fetch the index record after SaveIndexMetadata, which updates
+	// LastModified and other fields, then record the new LastPosition.
 	updatedIndex, err := persistence.GetLogIndex(logPath)
 	if err != nil {
 		// If we still can't get it, this is a critical error as LastPosition won't be persisted
@@ -327,9 +357,6 @@ func performSingleFileIncrementalIndexing(logPath string, modernIndexer interfac
 		return fmt.Errorf("failed to stat file after indexing: %w", err)
 	}
 
-	// Update position to the end of the data we actually read.
-	// For non-gzip files, this is the byte offset returned by indexFileFromPosition.
-	// For gzip files, LastPosition is not used for incremental seeks and is kept for diagnostics only.
 	updatedIndex.LastPosition = finalPosition
 	updatedIndex.LastSize = finalFileInfo.Size()
 	updatedIndex.LastModified = finalFileInfo.ModTime()
@@ -339,12 +366,70 @@ func performSingleFileIncrementalIndexing(logPath string, modernIndexer interfac
 	}
 
 	logger.Debugf("TRUE INCREMENTAL completed: %s, new_docs=%d, total_docs=%d, position=%d->%d",
-		logPath, newDocsIndexed, finalDocCount, startPosition, finalFileInfo.Size())
+		logPath, newDocsIndexed, finalDocCount, startPosition, finalPosition)
 	return nil
 }
 
-// indexFileFromPosition reads and indexes only the new content from a file starting at the given position.
-// This is the core implementation of TRUE incremental indexing.
+// reindexLogFile replaces a file's documents with a fresh full read of it.
+// It goes through the same streaming path and document IDs as a scheduled
+// full index, and SaveIndexMetadata records where that read stopped.
+func reindexLogFile(logPath string, modernIndexer *indexer.ParallelIndexer, lfm *indexer.LogFileManager) error {
+	if err := modernIndexer.DeleteIndexByFiles([]string{logPath}); err != nil {
+		return fmt.Errorf("failed to delete existing documents before re-indexing: %w", err)
+	}
+
+	startTime := time.Now()
+	docCount, minTime, maxTime, err := modernIndexer.IndexSingleFileWithProgress(logPath, nil)
+	if err != nil {
+		return fmt.Errorf("indexing failed: %w", err)
+	}
+
+	if err := lfm.SaveIndexMetadata(logPath, docCount, startTime, time.Since(startTime), minTime, maxTime); err != nil {
+		return fmt.Errorf("failed to save metadata: %w", err)
+	}
+	return nil
+}
+
+// reindexLogGroup replaces every document of a log group with a fresh index
+// of its current files, the way a manual rebuild of the group does. After a
+// rotation the documents of the live file describe what is now a rotated
+// file, so only a group-wide re-index keeps them attributed correctly
+// without duplicates.
+func reindexLogGroup(logPath string, modernIndexer *indexer.ParallelIndexer, lfm *indexer.LogFileManager) error {
+	if err := modernIndexer.DeleteIndexByMainLogPath(logPath); err != nil {
+		return fmt.Errorf("failed to delete existing documents before re-indexing the log group: %w", err)
+	}
+
+	startTime := time.Now()
+	docsCountMap, minTime, maxTime, err := modernIndexer.IndexLogGroupWithProgress(logPath, nil)
+	if err != nil {
+		return fmt.Errorf("indexing failed: %w", err)
+	}
+	duration := time.Since(startTime)
+
+	var totalDocs uint64
+	for _, docCount := range docsCountMap {
+		totalDocs += docCount
+	}
+	if err := lfm.SaveIndexMetadata(logPath, totalDocs, startTime, duration, minTime, maxTime); err != nil {
+		return fmt.Errorf("failed to save metadata: %w", err)
+	}
+
+	for filePath, docCount := range docsCountMap {
+		if filePath == logPath {
+			continue
+		}
+		if err := lfm.SaveIndexMetadata(filePath, docCount, startTime, duration, minTime, maxTime); err != nil {
+			logger.Errorf("Failed to save index metadata for %s: %v", filePath, err)
+		}
+	}
+	return nil
+}
+
+// indexFileFromPosition reads and indexes only the new content of a plain
+// (uncompressed) file, starting at the given byte position. The content is
+// parsed and handed to the batch writer one parse batch at a time, so memory
+// stays bounded however much was appended.
 // It returns the number of successfully indexed documents, the time range, and the final byte position read.
 func indexFileFromPosition(pi *indexer.ParallelIndexer, filePath string, startPosition int64) (uint64, *time.Time, *time.Time, int64, error) {
 	file, err := os.Open(filePath)
@@ -353,122 +438,39 @@ func indexFileFromPosition(pi *indexer.ParallelIndexer, filePath string, startPo
 	}
 	defer file.Close()
 
-	fileInfo, err := file.Stat()
-	if err != nil {
-		return 0, nil, nil, 0, fmt.Errorf("failed to stat file: %w", err)
+	if startPosition > 0 {
+		if _, err := file.Seek(startPosition, io.SeekStart); err != nil {
+			return 0, nil, nil, 0, fmt.Errorf("failed to seek: %w", err)
+		}
 	}
 
-	fileSize := fileInfo.Size()
-	isGzipped := strings.HasSuffix(strings.ToLower(filePath), ".gz")
-	var reader io.Reader
-
-	if isGzipped {
-		// Gzip files: must read from beginning and discard up to startPosition
-		gzReader, err := gzip.NewReader(file)
-		if err != nil {
-			return 0, nil, nil, 0, fmt.Errorf("failed to create gzip reader: %w", err)
-		}
-		defer gzReader.Close()
-
-		if startPosition > 0 {
-			// WARNING: For large gzip files, this is still slow as we must decompress from start
-			// Consider skipping gzip files that were recently indexed
-			logger.Debugf("Gzip %s: reading %d bytes to skip to position %d", filePath, startPosition, startPosition)
-			if _, err := io.CopyN(io.Discard, gzReader, startPosition); err != nil && err != io.EOF {
-				return 0, nil, nil, 0, fmt.Errorf("failed to skip to position: %w", err)
-			}
-		}
-		reader = gzReader
-	} else {
-		// Regular files: direct seek (fast!)
-		if startPosition > 0 {
-			if _, err := file.Seek(startPosition, io.SeekStart); err != nil {
-				return 0, nil, nil, 0, fmt.Errorf("failed to seek: %w", err)
-			}
-			logger.Debugf("Seeked to position %d in %s (file size: %d, reading %d new bytes)",
-				startPosition, filePath, fileSize, fileSize-startPosition)
-		}
-		reader = file
-	}
-
-	// Parse only the new content
-	ctx := context.Background()
-	logDocs, err := indexer.ParseLogStream(ctx, reader, filePath)
-	if err != nil {
-		return 0, nil, nil, 0, fmt.Errorf("failed to parse new content: %w", err)
-	}
-
-	// Calculate time range for new documents using stable values
 	var (
-		minTimeVal time.Time
-		maxTimeVal time.Time
-		hasMin     bool
-		hasMax     bool
+		indexedDocCount uint64
+		segmentIndex    int
+		minTime         *time.Time
+		maxTime         *time.Time
 	)
-	for _, doc := range logDocs {
-		if doc.Timestamp <= 0 {
-			continue
-		}
-		ts := time.Unix(doc.Timestamp, 0)
-		if !hasMin || ts.Before(minTimeVal) {
-			minTimeVal = ts
-			hasMin = true
-		}
-		if !hasMax || ts.After(maxTimeVal) {
-			maxTimeVal = ts
-			hasMax = true
-		}
-	}
 
-	var minTime, maxTime *time.Time
-	if hasMin {
-		minTime = &minTimeVal
-	}
-	if hasMax {
-		maxTime = &maxTimeVal
-	}
+	batch := pi.StartBatch()
+	_, _, err = indexer.ParseLogStreamBatches(context.Background(), file, filePath, func(docs []*indexer.LogDocument) error {
+		for _, doc := range docs {
+			// Deterministic, segment-scoped document ID: the file, the byte
+			// offset this segment starts at, and the index within it. A retry
+			// of the same segment overwrites instead of duplicating.
+			docID := fmt.Sprintf("%s_%d_%d", filePath, startPosition, segmentIndex)
+			segmentIndex++
 
-	// Index the new documents using batch writer
-	var indexedDocCount uint64
-	var finalPosition int64
-
-	// CRITICAL: Calculate finalPosition BEFORE batch operations to ensure it's available
-	// even if batch.Flush() fails. This prevents losing track of where we read to.
-	// Bug fix for issue where flush failure returns position=0, causing duplicate indexing.
-	if !isGzipped {
-		// For regular files, get current file position after ParseLogStream finished reading
-		if pos, err := file.Seek(0, io.SeekCurrent); err == nil {
-			finalPosition = pos
-		} else {
-			logger.Warnf("Failed to determine current read position for %s: %v", filePath, err)
-			// Fallback: assume we read to EOF if we can't get position
-			finalPosition = fileSize
-		}
-	} else {
-		// For gzip files, we've decompressed the entire stream to EOF
-		// LastPosition is not used for seeks but kept for diagnostics
-		finalPosition = fileSize
-	}
-
-	if len(logDocs) > 0 {
-		batch := pi.StartBatch()
-
-		for i, doc := range logDocs {
-			// Deterministic, segment-scoped document ID:
-			// - filePath: physical log file
-			// - startPosition: byte offset where this incremental segment begins
-			// - i: index within this segment
-			// This ensures:
-			//   * Uniqueness within a single run
-			//   * Stable IDs across retries for the same (filePath, startPosition) segment,
-			//     so re-processing due to errors overwrites instead of creating duplicates.
-			docID := fmt.Sprintf("%s_%d_%d", filePath, startPosition, i)
-
-			document := &indexer.Document{
-				ID:     docID,
-				Fields: doc,
+			if doc.Timestamp > 0 {
+				ts := time.Unix(doc.Timestamp, 0)
+				if minTime == nil || ts.Before(*minTime) {
+					minTime = &ts
+				}
+				if maxTime == nil || ts.After(*maxTime) {
+					maxTime = &ts
+				}
 			}
-			if err := batch.Add(document); err != nil {
+
+			if err := batch.Add(&indexer.Document{ID: docID, Fields: doc}); err != nil {
 				// If Add fails, an auto-flush may have failed internally. We conservatively
 				// treat this document as not indexed and continue with the remaining ones.
 				logger.Warnf("Failed to add document %s: %v", docID, err)
@@ -476,30 +478,25 @@ func indexFileFromPosition(pi *indexer.ParallelIndexer, filePath string, startPo
 			}
 			indexedDocCount++
 		}
+		return nil
+	})
+	if err != nil {
+		return 0, nil, nil, 0, fmt.Errorf("failed to parse new content: %w", err)
+	}
 
-		// At this point:
-		//   indexedDocCount = total documents successfully handed to the batch writer
-		//   batch.Size()    = documents currently buffered but NOT yet flushed.
-		// Any documents that were auto-flushed due to internal batch limits have already
-		// been sent to the indexer and removed from the internal buffer.
-		pendingBeforeFlush := batch.Size()
-		autoFlushedCount := indexedDocCount
-		if pendingBeforeFlush > 0 && indexedDocCount >= uint64(pendingBeforeFlush) {
-			autoFlushedCount = indexedDocCount - uint64(pendingBeforeFlush)
-		}
+	// The parser read the file to EOF, so the descriptor offset is the end
+	// of the data that was indexed.
+	finalPosition, err := file.Seek(0, io.SeekCurrent)
+	if err != nil {
+		return 0, nil, nil, 0, fmt.Errorf("failed to determine read position: %w", err)
+	}
 
-		if _, err := batch.Flush(); err != nil {
-			// CRITICAL BUG FIX: Return the actual finalPosition we calculated earlier,
-			// not 0. This ensures that even on flush failure, the next incremental run
-			// knows where we read to and won't duplicate the auto-flushed documents.
-			logger.Warnf("Final batch flush failed for %s: %v (auto-flushed docs=%d, pending=%d, position will be saved as=%d)",
-				filePath, err, autoFlushedCount, pendingBeforeFlush, finalPosition)
-			return autoFlushedCount, minTime, maxTime, finalPosition, fmt.Errorf("failed to flush batch: %w", err)
-		}
+	if _, err := batch.Flush(); err != nil {
+		return 0, nil, nil, 0, fmt.Errorf("failed to flush batch: %w", err)
 	}
 
 	logger.Debugf("Indexed %d NEW documents from %s (position %d -> %d)",
-		indexedDocCount, filePath, startPosition, fileSize)
+		indexedDocCount, filePath, startPosition, finalPosition)
 
 	return indexedDocCount, minTime, maxTime, finalPosition, nil
 }

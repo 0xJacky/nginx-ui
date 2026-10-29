@@ -3,6 +3,7 @@ package indexer
 import (
 	"context"
 	"fmt"
+	"io"
 	"os"
 	"strconv"
 	"strings"
@@ -134,6 +135,20 @@ func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progress
 	if docCount > 0 {
 		if _, err := batch.Flush(); err != nil {
 			return docCount, minTime, maxTime, fmt.Errorf("failed to flush batch for %s: %w", filePath, err)
+		}
+	}
+
+	// Remember how far the file was read, so the metadata saved for it records
+	// a LastPosition and the incremental job only reads what is appended later.
+	// Without it the next incremental run re-reads the whole file from 0.
+	// The parser reads a plain file to EOF, so the descriptor offset is the
+	// end of the indexed data, including lines appended while indexing ran.
+	// Compressed files are always re-read in full, so they record nothing.
+	if !isCompressed {
+		if position, err := file.Seek(0, io.SeekCurrent); err == nil {
+			pi.recordReadPosition(filePath, position)
+		} else {
+			logger.Warnf("Failed to determine read position for %s: %v", filePath, err)
 		}
 	}
 

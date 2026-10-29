@@ -435,6 +435,21 @@ func (lm *LogFileManager) SaveIndexMetadata(basePath string, documentCount uint6
 		}
 	}
 
+	// Record where a full index of this file stopped reading. Leaving
+	// LastPosition at 0 while documents exist makes the incremental job treat
+	// the file as inconsistent and re-read it from the start (issue #2054).
+	if lm.indexer != nil {
+		if position, ok := lm.indexer.takeReadPosition(basePath); ok {
+			if position > logIndex.LastSize {
+				// The file shrank after it was read, i.e. it was rotated.
+				// Record the size that was actually indexed so the next
+				// incremental run sees the shrink and re-reads the new file.
+				logIndex.LastSize = position
+			}
+			logIndex.LastPosition = position
+		}
+	}
+
 	// If indexer is available and healthy, query Bleve for exact document count
 	if lm.indexer != nil && lm.indexer.IsHealthy() {
 		// Decide whether this path is a main log path (group) or a specific file

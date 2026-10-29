@@ -44,6 +44,12 @@ type ParallelIndexer struct {
 	// Optimization
 	lastOptimized int64
 	optimizing    int32
+
+	// readPositions holds, per physical file, the byte offset a full index
+	// read up to. SaveIndexMetadata turns it into LastPosition, so the
+	// incremental job resumes from there instead of re-reading the whole file.
+	readPositions   map[string]int64
+	readPositionsMu sync.Mutex
 }
 
 // indexWorker represents a single indexing worker
@@ -86,6 +92,7 @@ func NewParallelIndexer(config *Config, shardManager ShardManager) *ParallelInde
 		stats: &IndexStats{
 			WorkerStats: make([]*WorkerStats, config.WorkerCount),
 		},
+		readPositions: make(map[string]int64),
 	}
 
 	// Initialize workers
@@ -394,60 +401,134 @@ func (pi *ParallelIndexer) DeleteIndexByLogGroup(basePath string, logFileManager
 
 	logger.Infof("Deleting index entries for log group %s, files: %v", basePath, filesToDelete)
 
-	// Delete documents from all shards for these files
-	shards := pi.shardManager.GetAllShards()
-	var deleteErrors []error
-
-	for _, shard := range shards {
-		// Search for documents with matching file_path
-		for _, filePath := range filesToDelete {
-			query := bleve.NewTermQuery(filePath)
-			query.SetField("file_path")
-
-			searchRequest := bleve.NewSearchRequest(query)
-			searchRequest.Size = 1000 // Process in batches
-			searchRequest.Fields = []string{"file_path"}
-
-			for {
-				searchResult, err := shard.Search(searchRequest)
-				if err != nil {
-					deleteErrors = append(deleteErrors, fmt.Errorf("failed to search for documents in file %s: %w", filePath, err))
-					break
-				}
-
-				if len(searchResult.Hits) == 0 {
-					break // No more documents to delete
-				}
-
-				// Delete documents in batch
-				batch := shard.NewBatch()
-				for _, hit := range searchResult.Hits {
-					batch.Delete(hit.ID)
-				}
-
-				if err := shard.Batch(batch); err != nil {
-					deleteErrors = append(deleteErrors, fmt.Errorf("failed to delete batch for file %s: %w", filePath, err))
-					// Stop paging this file to avoid refetching the same documents forever
-					break
-				}
-
-				// If we got fewer results than requested, we're done
-				if len(searchResult.Hits) < searchRequest.Size {
-					break
-				}
-
-				// Deleted documents no longer match the query, so keep searching
-				// from the beginning; advancing From would skip surviving documents.
-			}
-		}
+	if err := pi.DeleteIndexByFiles(filesToDelete); err != nil {
+		return err
 	}
+
+	logger.Infof("Successfully deleted index entries for log group: %s", basePath)
+	return nil
+}
+
+// DeleteIndexByFiles deletes every document whose file_path is one of the
+// given physical files. It is the building block for group deletion, and lets
+// a full re-read of a single file drop that file's previous documents first so
+// documents written under another ID scheme cannot survive as duplicates.
+func (pi *ParallelIndexer) DeleteIndexByFiles(filesToDelete []string) error {
+	if !pi.IsHealthy() {
+		return fmt.Errorf("indexer not healthy")
+	}
+
+	var deleteErrors []error
+	for _, filePath := range filesToDelete {
+		deleteErrors = append(deleteErrors, pi.deleteDocsByTerm("file_path", filePath)...)
+	}
+
+	// The documents a recorded read position vouched for are gone (or partly
+	// gone on error), so the position must not be persisted any more.
+	pi.forgetReadPositions(filesToDelete)
 
 	if len(deleteErrors) > 0 {
 		return fmt.Errorf("encountered %d errors during deletion: %v", len(deleteErrors), deleteErrors[0])
 	}
 
-	logger.Infof("Successfully deleted index entries for log group: %s", basePath)
 	return nil
+}
+
+// DeleteIndexByMainLogPath deletes every document of a log group, matched on
+// main_log_path rather than on the file list stored in the database. Rotated
+// files indexed by the task scheduler have no metadata record of their own, so
+// a database-driven delete would leave their documents behind.
+func (pi *ParallelIndexer) DeleteIndexByMainLogPath(mainLogPath string) error {
+	if !pi.IsHealthy() {
+		return fmt.Errorf("indexer not healthy")
+	}
+
+	deleteErrors := pi.deleteDocsByTerm("main_log_path", mainLogPath)
+	if len(deleteErrors) > 0 {
+		return fmt.Errorf("encountered %d errors during deletion: %v", len(deleteErrors), deleteErrors[0])
+	}
+
+	return nil
+}
+
+// deleteDocsByTerm deletes, from every shard, the documents whose keyword
+// field equals value.
+func (pi *ParallelIndexer) deleteDocsByTerm(field, value string) []error {
+	var deleteErrors []error
+
+	for _, shard := range pi.shardManager.GetAllShards() {
+		query := bleve.NewTermQuery(value)
+		query.SetField(field)
+
+		searchRequest := bleve.NewSearchRequest(query)
+		searchRequest.Size = 1000 // Process in batches
+		searchRequest.Fields = []string{field}
+
+		for {
+			searchResult, err := shard.Search(searchRequest)
+			if err != nil {
+				deleteErrors = append(deleteErrors, fmt.Errorf("failed to search for documents with %s %s: %w", field, value, err))
+				break
+			}
+
+			if len(searchResult.Hits) == 0 {
+				break // No more documents to delete
+			}
+
+			// Delete documents in batch
+			batch := shard.NewBatch()
+			for _, hit := range searchResult.Hits {
+				batch.Delete(hit.ID)
+			}
+
+			if err := shard.Batch(batch); err != nil {
+				deleteErrors = append(deleteErrors, fmt.Errorf("failed to delete batch for %s %s: %w", field, value, err))
+				// Stop paging to avoid refetching the same documents forever
+				break
+			}
+
+			// If we got fewer results than requested, we're done
+			if len(searchResult.Hits) < searchRequest.Size {
+				break
+			}
+
+			// Deleted documents no longer match the query, so keep searching
+			// from the beginning; advancing From would skip surviving documents.
+		}
+	}
+
+	return deleteErrors
+}
+
+// recordReadPosition remembers the byte offset a completed full index of
+// filePath read up to.
+func (pi *ParallelIndexer) recordReadPosition(filePath string, position int64) {
+	pi.readPositionsMu.Lock()
+	defer pi.readPositionsMu.Unlock()
+	if pi.readPositions == nil {
+		pi.readPositions = make(map[string]int64)
+	}
+	pi.readPositions[filePath] = position
+}
+
+// takeReadPosition returns and clears the offset recorded for filePath.
+func (pi *ParallelIndexer) takeReadPosition(filePath string) (int64, bool) {
+	pi.readPositionsMu.Lock()
+	defer pi.readPositionsMu.Unlock()
+	position, ok := pi.readPositions[filePath]
+	if ok {
+		delete(pi.readPositions, filePath)
+	}
+	return position, ok
+}
+
+// forgetReadPositions drops the offsets recorded for the given files.
+func (pi *ParallelIndexer) forgetReadPositions(filePaths []string) {
+	pi.readPositionsMu.Lock()
+	defer pi.readPositionsMu.Unlock()
+	for _, filePath := range filePaths {
+		delete(pi.readPositions, filePath)
+	}
 }
 
 // DestroyAllIndexes closes and deletes all index data from disk.

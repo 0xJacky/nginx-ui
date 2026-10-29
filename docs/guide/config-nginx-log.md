@@ -36,6 +36,17 @@ When `IndexingEnabled` is set to `false`, Nginx UI still discovers log entries f
 
 Controls how frequently the incremental indexing job scans access logs for new entries. Lower values keep analytics closer to real time but increase background CPU usage; higher values reduce CPU load at the cost of staler analytics data. Set `0` or a negative value to use the safe default of 15 minutes.
 
+### MaxConcurrentIndexTasks
+
+- Type: `int`
+- Default: `0` (auto-sized)
+- Environment Variable: `NGINX_UI_NGINX_LOG_MAX_CONCURRENT_INDEX_TASKS`
+- Version: `>= v2.5.7`
+
+Caps how many log groups are indexed at the same time by the background indexing tasks: the initial indexing and recovery after startup, and the incremental indexing job. Each log group being indexed holds a parse batch and an index batch for every rotated file it processes in parallel, so this is the main lever on peak memory during indexing.
+
+`0` or a negative value does **not** mean unlimited. The limit is then sized from the CPUs the process is allowed to use (the container's CPU quota when one is set): half of them, at least `1` and at most `2`. Set a positive value to override it, for example `1` on a small host where indexing competes with nginx for memory.
+
 ### IndexCustomMMDB
 
 - Type: `string`
