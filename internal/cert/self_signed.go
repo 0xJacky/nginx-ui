@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/uozi-tech/cosy"
@@ -175,7 +174,10 @@ func loadSelfSignedKey(path string) (crypto.Signer, error) {
 	if path == "" {
 		return nil, ErrCertPathIsEmpty
 	}
-	pemBytes, err := nginx.ReadFile(path)
+	// The key path comes from the stored record, which may point outside the
+	// configuration directory or at a special file, so only a bounded read of
+	// a managed regular file is allowed. Callers fall back to a fresh key.
+	pemBytes, err := readManagedCertificateFile(path)
 	if err != nil {
 		return nil, err
 	}

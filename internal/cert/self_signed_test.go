@@ -123,7 +123,9 @@ func TestRegenerateSelfSignedReusesKey(t *testing.T) {
 		t.Fatalf("GenerateSelfSigned error: %v", err)
 	}
 
-	keyPath := filepath.Join(t.TempDir(), "private.key")
+	// Self-signed keys live in the nginx configuration directory, the only
+	// place the key is read back from for reuse.
+	keyPath := filepath.Join(useCertPathTestConfDir(t), "private.key")
 	if err := os.WriteFile(keyPath, keyPEM, 0600); err != nil {
 		t.Fatalf("write key: %v", err)
 	}
@@ -156,7 +158,9 @@ func TestRegenerateSelfSignedWithOptionsReusesKey(t *testing.T) {
 		t.Fatalf("GenerateSelfSigned error: %v", err)
 	}
 
-	keyPath := filepath.Join(t.TempDir(), "private.key")
+	// Self-signed keys live in the nginx configuration directory, the only
+	// place the key is read back from for reuse.
+	keyPath := filepath.Join(useCertPathTestConfDir(t), "private.key")
 	if err := os.WriteFile(keyPath, keyPEM, 0600); err != nil {
 		t.Fatalf("write key: %v", err)
 	}
