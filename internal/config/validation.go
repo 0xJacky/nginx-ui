@@ -185,9 +185,18 @@ type nginxConfigToken struct {
 	symbol rune
 }
 
+// nginxConfigLexer splits a configuration into the tokens nginx itself reads,
+// following ngx_conf_read_token in src/core/ngx_conf_file.c. The denylist is
+// only as good as this agreement: wherever the lexer ends a token, starts a
+// comment or opens a quote where nginx does not, a statement can be hidden
+// from the validator while nginx still runs it.
 type nginxConfigLexer struct {
 	content []byte
 	offset  int
+	// tokenStart mirrors nginx's last_space flag: the next byte may begin a
+	// new token. Only there does '#' start a comment and a quote open a
+	// quoted token.
+	tokenStart bool
 }
 
 func ValidateConfigFile(path string, content string) error {
@@ -329,7 +338,7 @@ func ValidateConfigDirectives(content []byte) error {
 }
 
 func visitConfigStatements(content []byte, visit func([]string) error) error {
-	lexer := &nginxConfigLexer{content: content}
+	lexer := &nginxConfigLexer{content: content, tokenStart: true}
 	statement := make([]string, 0, 4)
 
 	for {
@@ -350,6 +359,12 @@ func visitConfigStatements(content []byte, visit func([]string) error) error {
 			}
 			statement = statement[:0]
 		case '}':
+			// nginx rejects a '}' that arrives while a statement is still
+			// open ("unexpected }"), so checking the pending words can only
+			// reject configs nginx refuses as well.
+			if err := visit(statement); err != nil {
+				return err
+			}
 			statement = statement[:0]
 		}
 	}
@@ -380,25 +395,48 @@ func validateConfigStatement(statement []string) error {
 	return nil
 }
 
+// isNginxConfigSpace reports the characters ngx_conf_read_token treats as
+// whitespace: space, tab, CR and LF. Other Unicode spaces such as U+00A0 are
+// ordinary token characters for nginx, so they must not end a token here.
+func isNginxConfigSpace(r rune) bool {
+	return r == ' ' || r == '\t' || r == '\r' || r == '\n'
+}
+
 func (lexer *nginxConfigLexer) nextToken() (nginxConfigToken, bool) {
 	for lexer.offset < len(lexer.content) {
 		r, size := utf8.DecodeRune(lexer.content[lexer.offset:])
-		if unicode.IsSpace(r) {
+		if isNginxConfigSpace(r) {
 			lexer.offset += size
+			lexer.tokenStart = true
 			continue
 		}
 
-		if r == '#' {
+		// nginx only enters sharp_comment when '#' begins a token: at the
+		// start of the file, after whitespace, or after ';', '{' or '}'.
+		// Inside a token '#' is an ordinary character.
+		if r == '#' && lexer.tokenStart {
 			lexer.skipComment()
 			continue
 		}
 
+		// ';' and '{' end a statement wherever they appear outside quotes.
+		// '}' only reaches this point at a token start, since nginx treats a
+		// '}' inside a token as an ordinary character.
 		if r == ';' || r == '{' || r == '}' {
 			lexer.offset += size
+			lexer.tokenStart = true
 			return nginxConfigToken{kind: nginxConfigTokenSymbol, symbol: r}, true
 		}
 
-		if r == '"' || r == '\'' {
+		// A quote opens a quoted token only at a token start; elsewhere it
+		// is an ordinary character. Right after a closing quote nginx
+		// requires whitespace, ';', '{' or ')' and rejects anything else
+		// ("unexpected ..."). Reading what follows as an unquoted token, in
+		// which '#' is literal, therefore only differs on configs nginx
+		// refuses, and never turns it into a comment that hides statements.
+		atTokenStart := lexer.tokenStart
+		lexer.tokenStart = false
+		if atTokenStart && (r == '"' || r == '\'') {
 			return lexer.readQuotedToken(r, size), true
 		}
 
@@ -408,11 +446,14 @@ func (lexer *nginxConfigLexer) nextToken() (nginxConfigToken, bool) {
 	return nginxConfigToken{}, false
 }
 
+// skipComment drops a comment up to the line feed. nginx clears
+// sharp_comment only on LF, so a bare CR does not end a comment.
 func (lexer *nginxConfigLexer) skipComment() {
 	for lexer.offset < len(lexer.content) {
 		r, size := utf8.DecodeRune(lexer.content[lexer.offset:])
 		lexer.offset += size
-		if r == '\n' || r == '\r' {
+		if r == '\n' {
+			lexer.tokenStart = true
 			return
 		}
 	}
@@ -443,12 +484,32 @@ func (lexer *nginxConfigLexer) readQuotedToken(quote rune, quoteSize int) nginxC
 	return nginxConfigToken{kind: nginxConfigTokenWord, value: builder.String()}
 }
 
+// readUnquotedToken reads a token up to the characters that end one in
+// ngx_conf_read_token: whitespace, ';' and '{'. '#', '}' and quotes are
+// ordinary characters inside a token, and a backslash keeps the next
+// character in it. A '{' right after '$' also stays in the token: nginx sets
+// its variable flag on '$' and skips '{' while the flag is set, which keeps
+// "${name}" intact.
+//
+// An escape drops the backslash before every character, while nginx keeps it
+// unless a quote, a backslash, t, r or n follows. That only makes the words
+// the denylist compares stricter; token boundaries are the same.
 func (lexer *nginxConfigLexer) readUnquotedToken() nginxConfigToken {
 	var builder strings.Builder
+	variable := false
 
 	for lexer.offset < len(lexer.content) {
 		r, size := utf8.DecodeRune(lexer.content[lexer.offset:])
-		if unicode.IsSpace(r) || r == ';' || r == '{' || r == '}' || r == '#' {
+
+		// The flag stays set across consecutive '{', as in nginx.
+		if r == '{' && variable {
+			lexer.offset += size
+			builder.WriteRune(r)
+			continue
+		}
+		variable = r == '$'
+
+		if isNginxConfigSpace(r) || r == ';' || r == '{' {
 			break
 		}
 
