@@ -219,6 +219,48 @@ func TestCreateMaintenanceConfig_ForwardsSiteName(t *testing.T) {
 	}
 }
 
+func TestCreateMaintenanceConfig_KeepsHTTPLevelDirectives(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+
+	p := parser.NewStringParser(`upstream wordpress_backend {
+    zone wordpress_backend 64k;
+    server wordpress-app:9000;
+}
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+limit_req_zone $binary_remote_addr zone=one:10m rate=1r/s;
+server {
+    listen 80;
+    server_name shop.example.com;
+    location ~ \.php$ {
+        fastcgi_pass wordpress_backend;
+    }
+}`, parser.WithSkipValidDirectivesErr())
+
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+
+	content := createMaintenanceConfig(conf, "", "shop.example.com")
+
+	for _, want := range []string{
+		"upstream wordpress_backend {",
+		"server wordpress-app:9000;",
+		"map $http_upgrade $connection_upgrade {",
+		"limit_req_zone $binary_remote_addr zone=one:10m rate=1r/s;",
+	} {
+		if !strings.Contains(content, want) {
+			t.Fatalf("maintenance config = %q, want %q", content, want)
+		}
+	}
+	if strings.Contains(content, "fastcgi_pass") {
+		t.Fatalf("maintenance config = %q, want the site's locations dropped", content)
+	}
+}
+
 func TestCreateMaintenanceConfig_WithMetadataHeadersAndEndpoint(t *testing.T) {
 	setupMaintenanceTestSettings(t, "")
 

@@ -402,23 +402,12 @@ func disableSiteByName(ctx context.Context, name string, opts ...site.MutateOpti
 	return site.Disable(ctx, name, opts...)
 }
 
+// enableMaintenanceByName switches a site to its maintenance config. It does
+// not disable the site first: EnableMaintenanceWithPayload swaps the two
+// configs in one tested step, so nginx never runs with neither of them (an
+// upstream the site defines may be used by other sites) and a failed switch
+// leaves the site enabled.
 func enableMaintenanceByName(ctx context.Context, name string, payload *site.MaintenancePayload, opts ...site.MutateOption) error {
-	// If site is already enabled, disable the normal site first.
-	enabledConfigPath, err := site.ResolveEnabledPath(name)
-	if err != nil {
-		return err
-	}
-
-	enabledExists, err := nginx.Exists(enabledConfigPath)
-	if err != nil {
-		return err
-	}
-	if enabledExists {
-		if err := site.Disable(ctx, name, opts...); err != nil {
-			return err
-		}
-	}
-
 	return site.EnableMaintenanceWithPayload(ctx, name, payload, opts...)
 }
 
