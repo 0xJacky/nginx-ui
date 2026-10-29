@@ -7,7 +7,12 @@ const httpsRedirectStatement = /(^|[;{}\s])return\s+(?:\d{3}\s+)?["']?https:\/\/
 
 // Directives that only make sense on the TLS listener and must not be copied
 // into a plain HTTP server.
-const tlsOnlyDirectives = new Set(['listen', 'server_name', 'http2', 'ssl'])
+const tlsOnlyDirectives = new Set([
+  'listen',
+  'server_name',
+  'http2',
+  'ssl',
+])
 
 function cloneServer(server: NgxServer): NgxServer {
   return JSON.parse(JSON.stringify(server))
@@ -53,7 +58,11 @@ export function stripHTTPSRedirectReturns(content: string) {
       if (stripped === line)
         return [line]
 
-      return stripped.trim() ? [stripped.trimEnd()] : []
+      return stripped.trim()
+        ? [
+            stripped.trimEnd(),
+          ]
+        : []
     })
     .join('\n')
 }
@@ -89,7 +98,11 @@ function removeHTTPSRedirects(server: NgxServer) {
         return [location]
 
       removed = true
-      return hasEffectiveContent(content) ? [{ ...location, content }] : []
+      return hasEffectiveContent(content)
+        ? [
+            { ...location, content },
+          ]
+        : []
     })
   }
 
@@ -193,6 +206,8 @@ export function stageServersForPendingTLS(servers: NgxServer[]): NgxServer[] {
         ? undefined
         : pending.find(tlsServer => serverNamesKey(tlsServer) === names)
 
-      return source ? serveTLSAppOverHTTP(cloneServer(server), source) : cloneServer(server)
+      return source
+        ? serveTLSAppOverHTTP(cloneServer(server), source)
+        : cloneServer(server)
     })
 }

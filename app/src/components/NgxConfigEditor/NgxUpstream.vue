@@ -85,7 +85,9 @@ function removeUpstream(index: number) {
     cancelText: $gettext('Cancel'),
     onOk() {
       ngxConfig.value.upstreams?.splice(index, 1)
-      currentUpstreamIdx.value = String(index > 1 ? index - 1 : 0)
+      currentUpstreamIdx.value = String(index > 1
+        ? index - 1
+        : 0)
     },
   })
 }
@@ -129,7 +131,12 @@ function tabBarButton(label: string, icon: Component, onClick: () => void, testI
     'aria-label': label,
     'data-testid': testId,
     onClick,
-  }, { icon: () => h(icon), default: isNarrow.value ? undefined : () => label })
+  }, {
+    icon: () => h(icon),
+    default: isNarrow.value
+      ? undefined
+      : () => label,
+  })
 }
 
 const tabBarExtra = computed(() => ({

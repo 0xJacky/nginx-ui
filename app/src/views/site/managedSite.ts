@@ -4,5 +4,7 @@
 export function managedIngressName(managedBy?: string | null): string {
   if (!managedBy)
     return ''
-  return managedBy.startsWith('ingress:') ? managedBy.slice('ingress:'.length) : managedBy
+  return managedBy.startsWith('ingress:')
+    ? managedBy.slice('ingress:'.length)
+    : managedBy
 }

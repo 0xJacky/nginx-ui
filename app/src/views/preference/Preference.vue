@@ -120,7 +120,9 @@ const changedLabels = computed(() => {
   const labels = new Set<string>()
   for (const path of changedPaths.value) {
     const entry = findSettingEntry(catalog.value, path)
-    labels.add(entry ? settingEntryLabel(entry) : path)
+    labels.add(entry
+      ? settingEntryLabel(entry)
+      : path)
   }
   return [...labels]
 })
@@ -133,7 +135,9 @@ provide(SETTING_ROW_CONTEXT, {
 })
 
 const sectionListeners = computed(() => activeSection.value.key === 'nginx'
-  ? { controlEditing: (value: boolean) => { isNginxControlEditing.value = value } }
+  ? {
+      controlEditing: (value: boolean) => { isNginxControlEditing.value = value },
+    }
   : {})
 
 watch(activeKey, () => {
@@ -146,7 +150,9 @@ async function openSection(key: PreferenceSectionKey) {
   if (key === routeSectionKey.value)
     return
   hasListEntry.value = isMobileList.value
-  await router.push({ query: { tab: key } })
+  await router.push({
+    query: { tab: key },
+  })
 }
 
 function backToList() {
@@ -169,8 +175,13 @@ onMounted(async () => {
   await globalStore.ensureDemoFlag()
   isDemoResolved.value = true
   // The terminal section is hidden in the demo, send its links to the default.
-  if (globalStore.isDemo && route.query.tab === 'terminal')
-    router.replace({ query: isMobile.value ? {} : { tab: DEFAULT_SECTION_KEY } })
+  if (globalStore.isDemo && route.query.tab === 'terminal') {
+    router.replace({
+      query: isMobile.value
+        ? {}
+        : { tab: DEFAULT_SECTION_KEY },
+    })
+  }
 })
 </script>
 

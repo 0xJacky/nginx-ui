@@ -37,13 +37,25 @@ function withTabs(nodes: WorkspaceNode[], base = createWorkspaceState()) {
 }
 
 function split(state: WorkspaceState, left: number, right: number, focus: 0 | 1 = 0): WorkspaceState {
-  return { ...state, layout: 'split', panes: [left, right], focus }
+  return {
+    ...state,
+    layout: 'split',
+    panes: [left, right],
+    focus,
+  }
 }
 
 describe('opening tabs', () => {
   test('a new tab opens at the dashboard in the focused pane', () => {
     const { state, ids } = withTabs([local])
-    expect(state.tabs).toEqual([{ id: 1, node: local, route: DEFAULT_TAB_ROUTE, title: '' }])
+    expect(state.tabs).toEqual([
+      {
+        id: 1,
+        node: local,
+        route: DEFAULT_TAB_ROUTE,
+        title: '',
+      },
+    ])
     expect(state.panes).toEqual([ids[0], null])
     expect(state.nextId).toBe(2)
   })
@@ -89,7 +101,11 @@ describe('showing tabs', () => {
 
   test('single layout keeps a tab out of both panes', () => {
     const { state, ids } = withTabs([local, edge])
-    const single = { ...state, layout: 'single' as const, panes: [ids[0], ids[1]] as [number, number] }
+    const single = {
+      ...state,
+      layout: 'single' as const,
+      panes: [ids[0], ids[1]] as [number, number],
+    }
     const next = showTab(single, ids[1])
     expect(next.panes).toEqual([ids[1], ids[0]])
   })
@@ -178,7 +194,12 @@ describe('closing tabs', () => {
 
   test('single layout falls back to the remembered right tab', () => {
     const { state, ids } = withTabs([local, edge])
-    const single = { ...state, layout: 'single' as const, panes: [ids[0], ids[1]] as [number, number], recent: [ids[0]] }
+    const single = {
+      ...state,
+      layout: 'single' as const,
+      panes: [ids[0], ids[1]] as [number, number],
+      recent: [ids[0]],
+    }
     const next = closeTab(single, ids[0])
     expect(next.panes[0]).toBe(ids[1])
   })
@@ -190,7 +211,14 @@ describe('keeping iframes alive', () => {
     const { state, ids } = withTabs(nodes)
     const shown = split(state, ids[0], ids[1])
     // recent: 8, 7, 6, 5, 4, 3, 2, 1
-    expect(liveTabIds(shown)).toEqual([ids[0], ids[1], ids[7], ids[6], ids[5], ids[4]])
+    expect(liveTabIds(shown)).toEqual([
+      ids[0],
+      ids[1],
+      ids[7],
+      ids[6],
+      ids[5],
+      ids[4],
+    ])
   })
 
   test('a recreated tab counts as recent again', () => {
@@ -204,7 +232,11 @@ describe('keeping iframes alive', () => {
 
   test('single layout only counts the left pane as visible', () => {
     const { state, ids } = withTabs([local, edge])
-    const single = { ...state, layout: 'single' as const, panes: [ids[0], ids[1]] as [number, number] }
+    const single = {
+      ...state,
+      layout: 'single' as const,
+      panes: [ids[0], ids[1]] as [number, number],
+    }
     expect(visibleTabIds(single)).toEqual([ids[0]])
     expect(paneOfTab(single, ids[1])).toBeNull()
     expect(liveTabIds(single, 0)).toEqual([ids[0]])
@@ -276,10 +308,25 @@ describe('restoring persisted state', () => {
   test('drops malformed tabs and dangling pane ids', () => {
     const next = normalizeState({
       tabs: [
-        { id: 4, node: { id: 2, name: 'edge' }, route: '/sites/list', title: 'Sites' },
-        { id: 4, node: { id: 3, name: 'dup' } },
-        { id: 'x', node: { id: 1 } },
-        { id: 5, node: { id: 1, name: 'n' }, route: 'javascript:alert(1)' },
+        {
+          id: 4,
+          node: { id: 2, name: 'edge' },
+          route: '/sites/list',
+          title: 'Sites',
+        },
+        {
+          id: 4,
+          node: { id: 3, name: 'dup' },
+        },
+        {
+          id: 'x',
+          node: { id: 1 },
+        },
+        {
+          id: 5,
+          node: { id: 1, name: 'n' },
+          route: 'javascript:alert(1)',
+        },
       ],
       nextId: 2,
       layout: 'split',

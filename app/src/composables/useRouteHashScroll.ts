@@ -28,7 +28,9 @@ export function useRouteHashScroll(options: RouteHashScrollOptions = {}) {
 
     const headerHeight = document.querySelector<HTMLElement>(headerSelector)?.offsetHeight ?? 0
     const targetTop = window.scrollY + target.getBoundingClientRect().top - headerHeight - offset
-    window.scrollTo({ top: Math.max(0, targetTop) })
+    window.scrollTo({
+      top: Math.max(0, targetTop),
+    })
     return true
   }
 
@@ -54,7 +56,10 @@ export function useRouteHashScroll(options: RouteHashScrollOptions = {}) {
       void scheduleHashScroll()
   }
 
-  watch([() => route.path, () => route.hash], ([path, hash], [previousPath]) => {
+  watch([
+    () => route.path,
+    () => route.hash,
+  ], ([path, hash], [previousPath]) => {
     if (!hash) {
       cancelScheduledScroll()
       return

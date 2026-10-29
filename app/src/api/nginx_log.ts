@@ -346,7 +346,9 @@ const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
   },
 
   getPreflight(logPath?: string): Promise<PreflightResponse> {
-    const params = logPath ? { log_path: logPath } : {}
+    const params = logPath
+      ? { log_path: logPath }
+      : {}
     return http.get('/nginx_log/preflight', { params })
   },
 

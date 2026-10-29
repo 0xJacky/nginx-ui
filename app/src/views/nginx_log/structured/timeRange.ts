@@ -10,10 +10,14 @@ export function getInitialStructuredTimeRange(
   indexedEnd = dayjs(),
 ): StructuredTimeRange {
   const windowStart = indexedEnd.subtract(24, 'hour')
-  const boundedStart = indexedStart?.isAfter(windowStart) ? indexedStart : windowStart
+  const boundedStart = indexedStart?.isAfter(windowStart)
+    ? indexedStart
+    : windowStart
 
   return {
-    start: boundedStart.isAfter(indexedEnd) ? indexedEnd : boundedStart,
+    start: boundedStart.isAfter(indexedEnd)
+      ? indexedEnd
+      : boundedStart,
     end: indexedEnd,
   }
 }

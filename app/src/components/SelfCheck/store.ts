@@ -78,7 +78,10 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
       if (generation !== nodeScopeGeneration())
         return
 
-      data.value = [...backendReports, ...frontendReports]
+      data.value = [
+        ...backendReports,
+        ...frontendReports,
+      ]
       checked.value = true
     }
     catch (error) {
@@ -139,5 +142,15 @@ export const useSelfCheckStore = defineStore('selfCheck', () => {
     return data.value?.some(item => item.status === ReportStatus.Error)
   })
 
-  return { data, loading, fixing, checked, accessError, hasError, check, runCheck, fix }
+  return {
+    data,
+    loading,
+    fixing,
+    checked,
+    accessError,
+    hasError,
+    check,
+    runCheck,
+    fix,
+  }
 })

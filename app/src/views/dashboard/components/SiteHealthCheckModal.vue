@@ -32,7 +32,9 @@ const methodOptions: SelectProps['options'] = [
 
 function formatNotifyLabel(notify: ExternalNotify): string {
   const description = notify.description?.trim()
-  const suffix = description ? ` (${description})` : ''
+  const suffix = description
+    ? ` (${description})`
+    : ''
   return `${notify.type} (#${notify.id})${suffix}`
 }
 
@@ -334,11 +336,15 @@ function isDefaultGrpcPort(port: string, protocol: string): boolean {
 }
 
 function getGrpcDefaultPort(urlProtocol: string, protocol: string): string {
-  return (urlProtocol === 'https:' || protocol === 'grpcs') ? '443' : '80'
+  return (urlProtocol === 'https:' || protocol === 'grpcs')
+    ? '443'
+    : '80'
 }
 
 function buildUrl(protocol: string, hostname: string, port?: string): string {
-  return port ? `${protocol}://${hostname}:${port}` : `${protocol}://${hostname}`
+  return port
+    ? `${protocol}://${hostname}:${port}`
+    : `${protocol}://${hostname}`
 }
 
 function getHttpTestUrl(protocol: string, siteUrl: string): string {
@@ -490,7 +496,9 @@ async function handleSave() {
     message.success($gettext('Health check configuration saved successfully'))
     const failedNodes = (response.sync_results || []).filter(result => !result.success)
     if (failedNodes.length > 0) {
-      message.warning($gettext('Saved locally, but failed to synchronize %{count} node(s)', { count: String(failedNodes.length) }))
+      message.warning($gettext('Saved locally, but failed to synchronize %{count} node(s)', {
+        count: String(failedNodes.length),
+      }))
     }
 
     // Trigger site refresh to update display URLs
@@ -537,7 +545,9 @@ async function handleTest() {
     const result = await siteNavigationApi.testHealthCheck(props.site.id, testConfig)
 
     if (result.success) {
-      message.success($gettext('Test successful! Response time: %{response_time}ms', { response_time: String(result.response_time || 0) }))
+      message.success($gettext('Test successful! Response time: %{response_time}ms', {
+        response_time: String(result.response_time || 0),
+      }))
     }
     else {
       message.error($gettext('Test failed: %{error}', { error: result.error || 'Unknown error' }))

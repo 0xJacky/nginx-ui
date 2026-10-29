@@ -25,18 +25,29 @@ function isEqualLeaf(before: unknown, after: unknown) {
  */
 export function collectChangedPaths(before: unknown, after: unknown, prefix = ''): string[] {
   if (isPlainObject(before) || isPlainObject(after)) {
-    const beforeObject = isPlainObject(before) ? before : {}
-    const afterObject = isPlainObject(after) ? after : {}
-    const keys = new Set([...Object.keys(beforeObject), ...Object.keys(afterObject)])
+    const beforeObject = isPlainObject(before)
+      ? before
+      : {}
+    const afterObject = isPlainObject(after)
+      ? after
+      : {}
+    const keys = new Set([
+      ...Object.keys(beforeObject),
+      ...Object.keys(afterObject),
+    ])
     const paths: string[] = []
     for (const key of keys) {
-      const path = prefix ? `${prefix}.${key}` : key
+      const path = prefix
+        ? `${prefix}.${key}`
+        : key
       paths.push(...collectChangedPaths(beforeObject[key], afterObject[key], path))
     }
     return paths.sort()
   }
 
-  return isEqualLeaf(before, after) ? [] : [prefix]
+  return isEqualLeaf(before, after)
+    ? []
+    : [prefix]
 }
 
 /**
@@ -53,9 +64,13 @@ export function copyPaths<T extends object>(target: T, source: T, paths: string[
       if (!isPlainObject(targetNode[segment]))
         targetNode[segment] = {}
       targetNode = targetNode[segment] as PlainObject
-      sourceNode = isPlainObject(sourceNode?.[segment]) ? sourceNode![segment] as PlainObject : undefined
+      sourceNode = isPlainObject(sourceNode?.[segment])
+        ? sourceNode![segment] as PlainObject
+        : undefined
     }
     const value = sourceNode?.[key]
-    targetNode[key] = value === undefined ? undefined : JSON.parse(JSON.stringify(value))
+    targetNode[key] = value === undefined
+      ? undefined
+      : JSON.parse(JSON.stringify(value))
   }
 }

@@ -25,16 +25,35 @@ interface DemoCommand {
 function table(rows: string[][], gap = 2): string[] {
   const widths = rows[0].map((_, i) => Math.max(...rows.map(r => (r[i] ?? '').length)))
   return rows.map(r =>
-    r.map((cell, i) => (i === r.length - 1 ? cell : (cell ?? '').padEnd(widths[i] + gap))).join(''),
+    r.map((cell, i) => (i === r.length - 1
+      ? cell
+      : (cell ?? '').padEnd(widths[i] + gap))).join(''),
   )
 }
 
 const COMMANDS: Record<string, DemoCommand> = {
-  'whoami': { help: 'print the current user', output: ['nginx'] },
-  'id': { help: 'print user identity', output: ['uid=101(nginx) gid=101(nginx) groups=101(nginx)'] },
-  'hostname': { help: 'print the node name', output: ['nginx-ui-demo'] },
-  'pwd': { help: 'print the working directory', output: ['/'] },
-  'date': { help: 'print the current time', output: () => [new Date().toUTCString()] },
+  'whoami': {
+    help: 'print the current user',
+    output: ['nginx'],
+  },
+  'id': {
+    help: 'print user identity',
+    output: ['uid=101(nginx) gid=101(nginx) groups=101(nginx)'],
+  },
+  'hostname': {
+    help: 'print the node name',
+    output: ['nginx-ui-demo'],
+  },
+  'pwd': {
+    help: 'print the working directory',
+    output: ['/'],
+  },
+  'date': {
+    help: 'print the current time',
+    output: () => [
+      new Date().toUTCString(),
+    ],
+  },
   'uptime': {
     help: 'show how long the node has been up',
     output: () => {
@@ -51,28 +70,103 @@ const COMMANDS: Record<string, DemoCommand> = {
   'free -h': {
     help: 'show memory usage',
     output: () => table([
-      ['', 'total', 'used', 'free', 'shared', 'buff/cache', 'available'],
-      ['Mem:', '1.0Gi', '537Mi', '213Mi', '0.0Ki', '284Mi', '463Mi'],
+      [
+        '',
+        'total',
+        'used',
+        'free',
+        'shared',
+        'buff/cache',
+        'available',
+      ],
+      [
+        'Mem:',
+        '1.0Gi',
+        '537Mi',
+        '213Mi',
+        '0.0Ki',
+        '284Mi',
+        '463Mi',
+      ],
       ['Swap:', '0B', '0B', '0B', '', '', ''],
     ]),
   },
   'df -h': {
     help: 'show disk usage',
     output: () => table([
-      ['Filesystem', 'Size', 'Used', 'Avail', 'Use%', 'Mounted on'],
-      ['overlay', '4.0G', '712M', '3.3G', '18%', '/'],
-      ['tmpfs', '64M', '0', '64M', '0%', '/dev'],
+      [
+        'Filesystem',
+        'Size',
+        'Used',
+        'Avail',
+        'Use%',
+        'Mounted on',
+      ],
+      [
+        'overlay',
+        '4.0G',
+        '712M',
+        '3.3G',
+        '18%',
+        '/',
+      ],
+      [
+        'tmpfs',
+        '64M',
+        '0',
+        '64M',
+        '0%',
+        '/dev',
+      ],
     ]),
   },
-  'ls': { help: 'list /etc/nginx', output: ['conf.d  mime.types  nginx.conf  sites-available  sites-enabled  streams-available  streams-enabled'] },
+  'ls': {
+    help: 'list /etc/nginx',
+    output: ['conf.d  mime.types  nginx.conf  sites-available  sites-enabled  streams-available  streams-enabled'],
+  },
   'ls -la': {
     help: 'list /etc/nginx in detail',
     output: () => table([
-      ['drwxr-xr-x', '1', 'nginx', 'nginx', '4096', 'conf.d'],
-      ['-rw-r--r--', '1', 'nginx', 'nginx', '5349', 'mime.types'],
-      ['-rw-r--r--', '1', 'nginx', 'nginx', '1042', 'nginx.conf'],
-      ['drwxr-xr-x', '1', 'nginx', 'nginx', '4096', 'sites-available'],
-      ['drwxr-xr-x', '1', 'nginx', 'nginx', '4096', 'sites-enabled'],
+      [
+        'drwxr-xr-x',
+        '1',
+        'nginx',
+        'nginx',
+        '4096',
+        'conf.d',
+      ],
+      [
+        '-rw-r--r--',
+        '1',
+        'nginx',
+        'nginx',
+        '5349',
+        'mime.types',
+      ],
+      [
+        '-rw-r--r--',
+        '1',
+        'nginx',
+        'nginx',
+        '1042',
+        'nginx.conf',
+      ],
+      [
+        'drwxr-xr-x',
+        '1',
+        'nginx',
+        'nginx',
+        '4096',
+        'sites-available',
+      ],
+      [
+        'drwxr-xr-x',
+        '1',
+        'nginx',
+        'nginx',
+        '4096',
+        'sites-enabled',
+      ],
     ]),
   },
   'cat /etc/os-release': {
@@ -84,7 +178,10 @@ const COMMANDS: Record<string, DemoCommand> = {
       'ID=debian',
     ],
   },
-  'nginx -v': { help: 'print the nginx version', output: ['nginx version: nginx/1.31.3'] },
+  'nginx -v': {
+    help: 'print the nginx version',
+    output: ['nginx version: nginx/1.31.3'],
+  },
   'nginx -V': {
     help: 'print the nginx build configuration',
     output: [
@@ -131,7 +228,12 @@ function helpText(): string[] {
   const rows = Object.entries(COMMANDS).map(([name, cmd]) => [name, cmd.help])
   rows.push(['help', 'show this list'])
   rows.push(['clear', 'clear the screen'])
-  return ['Available commands:', '', ...table(rows, 4).map(line => `  ${line}`), '']
+  return [
+    'Available commands:',
+    '',
+    ...table(rows, 4).map(line => `  ${line}`),
+    '',
+  ]
 }
 
 export function useDemoTerminalSession() {
@@ -199,7 +301,9 @@ export function useDemoTerminalSession() {
         return
       }
 
-      writeLines(typeof entry.output === 'function' ? entry.output() : entry.output)
+      writeLines(typeof entry.output === 'function'
+        ? entry.output()
+        : entry.output)
     }
 
     const submit = () => {

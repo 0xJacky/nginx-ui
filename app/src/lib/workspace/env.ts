@@ -4,7 +4,9 @@ import { tabIdFromWindowName } from './paneStorage'
  * The workspace tab this window renders, when it is a workspace pane. Known at
  * boot from the iframe name, before any code runs in the pane.
  */
-export const paneTabId: number | null = window.parent !== window ? tabIdFromWindowName(window.name) : null
+export const paneTabId: number | null = window.parent !== window
+  ? tabIdFromWindowName(window.name)
+  : null
 
 /** This window is a pane inside the workspace rather than the main UI. */
 export const isWorkspacePane = paneTabId !== null

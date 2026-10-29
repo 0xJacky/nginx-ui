@@ -50,7 +50,9 @@ const digits = ref<string[]>(toDigits(''))
 const inputRefs = ref<(HTMLInputElement | null)[]>([])
 
 const inputIds = computed(() =>
-  Array.from({ length: props.length }, (_, index) => (index === 0 ? props.name : `${props.name}-${index + 1}`)),
+  Array.from({ length: props.length }, (_, index) => (index === 0
+    ? props.name
+    : `${props.name}-${index + 1}`)),
 )
 
 function setInputRef(el: Element | ComponentPublicInstance | null, index: number) {
@@ -145,7 +147,9 @@ function handlePaste(event: ClipboardEvent, index: number) {
   if (!chars)
     return
 
-  focusInput(fillFrom(chars, chars.length === props.length ? 0 : index))
+  focusInput(fillFrom(chars, chars.length === props.length
+    ? 0
+    : index))
 }
 
 function clearAt(index: number) {

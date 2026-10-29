@@ -15,12 +15,36 @@ const isEditorOpen = ref(false)
 const editingId = ref<number>()
 
 const columns: TableColumnsType<AccessList> = [
-  { title: () => $gettext('Name'), key: 'name', width: 220 },
-  { title: () => $gettext('Rules'), key: 'rules' },
-  { title: () => $gettext('Everything else'), key: 'fallback', width: 140 },
-  { title: () => $gettext('Used By'), key: 'used_by', width: 110 },
-  { title: () => $gettext('Updated at'), key: 'updated_at', width: 170 },
-  { title: () => $gettext('Actions'), key: 'actions', width: 140, fixed: 'right' },
+  {
+    title: () => $gettext('Name'),
+    key: 'name',
+    width: 220,
+  },
+  {
+    title: () => $gettext('Rules'),
+    key: 'rules',
+  },
+  {
+    title: () => $gettext('Everything else'),
+    key: 'fallback',
+    width: 140,
+  },
+  {
+    title: () => $gettext('Used By'),
+    key: 'used_by',
+    width: 110,
+  },
+  {
+    title: () => $gettext('Updated at'),
+    key: 'updated_at',
+    width: 170,
+  },
+  {
+    title: () => $gettext('Actions'),
+    key: 'actions',
+    width: 140,
+    fixed: 'right',
+  },
 ]
 
 const byId = computed(() => {

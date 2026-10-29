@@ -30,7 +30,9 @@ watch(noServerName, () => {
 
 const domains = computed<string[]>(previous => {
   const next = extractServerDomains([curServer.value])
-  return previous && sameStringList(previous, next) ? previous : next
+  return previous && sameStringList(previous, next)
+    ? previous
+    : next
 })
 
 // ---- Enable / reissue ---------------------------------------------------

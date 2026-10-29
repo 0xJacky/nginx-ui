@@ -16,7 +16,9 @@ const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
 
 function fontColor() {
-  return theme.value === 'dark' ? '#b4b4b4' : undefined
+  return theme.value === 'dark'
+    ? '#b4b4b4'
+    : undefined
 }
 
 const chart: Ref<ApexCharts | undefined> = ref()

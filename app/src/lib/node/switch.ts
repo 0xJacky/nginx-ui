@@ -18,7 +18,9 @@ export function getNodeVersionState(node: SwitchableNode, localVersion: string):
   if (!node.version || !localVersion)
     return 'unknown'
 
-  return node.version === localVersion ? 'compatible' : 'mismatch'
+  return node.version === localVersion
+    ? 'compatible'
+    : 'mismatch'
 }
 
 /** Mirrors the dashboard Link button: a node must be online and version-compatible. */
@@ -39,8 +41,11 @@ export function getNodeSwitchBlocker(node: SwitchableNode, localVersion: string)
 /** Online nodes first, then by name. */
 export function sortSwitchNodes<T extends SwitchableNode>(nodes: T[]): T[] {
   return [...nodes].sort((a, b) => {
-    if (!!a.status !== !!b.status)
-      return a.status ? -1 : 1
+    if (!!a.status !== !!b.status) {
+      return a.status
+        ? -1
+        : 1
+    }
 
     return (a.name ?? '').localeCompare(b.name ?? '')
   })
@@ -67,7 +72,9 @@ type LandingRoute = Pick<RouteLocationNormalizedLoaded, 'path' | 'params' | 'mat
  */
 export function resolveSwitchLanding(route: LandingRoute, fallback = '/dashboard'): string {
   const hasParams = Object.values(route.params)
-    .some(value => Array.isArray(value) ? value.length > 0 : !!value)
+    .some(value => Array.isArray(value)
+      ? value.length > 0
+      : !!value)
   if (hasParams)
     return fallback
 

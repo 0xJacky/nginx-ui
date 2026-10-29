@@ -35,23 +35,59 @@ const effectiveStatus = computed(() => {
 const statusPresentation = computed(() => {
   switch (effectiveStatus.value) {
     case 'active':
-      return { color: 'green', label: $gettext('Paired signature'), icon: markRaw(CheckCircleOutlined) }
+      return {
+        color: 'green',
+        label: $gettext('Paired signature'),
+        icon: markRaw(CheckCircleOutlined),
+      }
     case 'rotating':
-      return { color: 'blue', label: $gettext('Rotating'), icon: markRaw(LoadingOutlined) }
+      return {
+        color: 'blue',
+        label: $gettext('Rotating'),
+        icon: markRaw(LoadingOutlined),
+      }
     case 'unpaired':
-      return { color: 'default', label: $gettext('Unpaired'), icon: markRaw(ClockCircleOutlined) }
+      return {
+        color: 'default',
+        label: $gettext('Unpaired'),
+        icon: markRaw(ClockCircleOutlined),
+      }
     case 'revoked':
-      return { color: 'red', label: $gettext('Revoked'), icon: markRaw(ExclamationCircleOutlined) }
+      return {
+        color: 'red',
+        label: $gettext('Revoked'),
+        icon: markRaw(ExclamationCircleOutlined),
+      }
     case 'in_progress':
-      return { color: 'blue', label: $gettext('Upgrading'), icon: markRaw(LoadingOutlined) }
+      return {
+        color: 'blue',
+        label: $gettext('Upgrading'),
+        icon: markRaw(LoadingOutlined),
+      }
     case 'waiting_target':
-      return { color: 'orange', label: $gettext('Waiting for target'), icon: markRaw(ClockCircleOutlined) }
+      return {
+        color: 'orange',
+        label: $gettext('Waiting for target'),
+        icon: markRaw(ClockCircleOutlined),
+      }
     case 'failed':
-      return { color: 'red', label: $gettext('Upgrade failed'), icon: markRaw(ExclamationCircleOutlined) }
+      return {
+        color: 'red',
+        label: $gettext('Upgrade failed'),
+        icon: markRaw(ExclamationCircleOutlined),
+      }
     case 'paused':
-      return { color: 'default', label: $gettext('Upgrade paused'), icon: markRaw(PauseCircleOutlined) }
+      return {
+        color: 'default',
+        label: $gettext('Upgrade paused'),
+        icon: markRaw(PauseCircleOutlined),
+      }
     default:
-      return { color: 'blue', label: $gettext('Upgrade pending'), icon: markRaw(ClockCircleOutlined) }
+      return {
+        color: 'blue',
+        label: $gettext('Upgrade pending'),
+        icon: markRaw(ClockCircleOutlined),
+      }
   }
 })
 
@@ -111,10 +147,18 @@ const statusDescription = computed(() => {
 })
 
 const stepItems = computed(() => [
-  { title: $gettext('Legacy connection ready') },
-  { title: $gettext('Request paired credential') },
-  { title: $gettext('Verify target confirmation') },
-  { title: $gettext('Save and switch authentication') },
+  {
+    title: $gettext('Legacy connection ready'),
+  },
+  {
+    title: $gettext('Request paired credential'),
+  },
+  {
+    title: $gettext('Verify target confirmation'),
+  },
+  {
+    title: $gettext('Save and switch authentication'),
+  },
 ])
 
 const currentStep = computed(() => {

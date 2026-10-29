@@ -10,7 +10,10 @@ import { cloneDeep } from 'lodash'
 type LocationList = NgxLocation[] | null | undefined
 
 export function appendLocation(locations: LocationList, location: NgxLocation): NgxLocation[] {
-  return [...(locations ?? []), location]
+  return [
+    ...(locations ?? []),
+    location,
+  ]
 }
 
 export function removeLocation(locations: LocationList, index: number): NgxLocation[] {
@@ -19,7 +22,9 @@ export function removeLocation(locations: LocationList, index: number): NgxLocat
 
 /** Inserts a deep copy of the location at `index` right before it. */
 export function duplicateLocation(locations: LocationList, index: number): NgxLocation[] {
-  const list = [...(locations ?? [])]
+  const list = [
+    ...(locations ?? []),
+  ]
   const location = list[index]
   if (!location)
     return list

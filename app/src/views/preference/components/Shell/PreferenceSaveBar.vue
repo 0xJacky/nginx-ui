@@ -18,11 +18,15 @@ const countText = computed(() => $ngettext(
   '%{count} unsaved change',
   '%{count} unsaved changes',
   count.value,
-  { count: String(count.value) },
+  {
+    count: String(count.value),
+  },
 ))
 
 // Chinese and Japanese separate list items with "、".
-const summary = computed(() => props.labels.join(/^(?:zh|ja)/.test(gettext.current) ? '、' : ', '))
+const summary = computed(() => props.labels.join(/^(?:zh|ja)/.test(gettext.current)
+  ? '、'
+  : ', '))
 </script>
 
 <template>

@@ -264,7 +264,9 @@ const terminalContainerHeight = computed(() => {
     // In mobile/tablet layout, consider LLM panel visibility
     if (terminalStore.llm_panel_visible) {
       // Terminal takes 60% when LLM panel is visible
-      return windowWidth.value <= 512 ? '50%' : '60%'
+      return windowWidth.value <= 512
+        ? '50%'
+        : '60%'
     }
     return '100%' // Full height minus header and status bar when LLM panel is hidden
   }
@@ -278,7 +280,9 @@ const terminalMainContainerHeight = computed(() => {
     // In mobile/tablet layout, consider LLM panel visibility
     if (terminalStore.llm_panel_visible) {
       // Terminal container takes allocated percentage
-      return windowWidth.value <= 512 ? '50%' : '60%'
+      return windowWidth.value <= 512
+        ? '50%'
+        : '60%'
     }
     return '100%' // Full height minus header and status bar when LLM panel is hidden
   }

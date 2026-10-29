@@ -33,7 +33,12 @@ const allSyncNodeIds = computed(() => {
   const manualNodes = props.syncNodeIds || []
 
   // Merge and deduplicate
-  const allNodes = [...new Set([...namespaceNodes, ...manualNodes])]
+  const allNodes = [
+    ...new Set([
+      ...namespaceNodes,
+      ...manualNodes,
+    ]),
+  ]
   return allNodes
 })
 </script>

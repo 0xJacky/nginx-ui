@@ -142,7 +142,10 @@ function addLog(data: string, prepend: boolean = false) {
       return
 
     const prevScrollTop = elem?.scrollTop ?? 0
-    lines.value = [...parts, ...lines.value]
+    lines.value = [
+      ...parts,
+      ...lines.value,
+    ]
     nextTick(() => {
       if (elem)
         elem.scrollTop = prevScrollTop + addedCount * lineHeight.value
@@ -153,7 +156,9 @@ function addLog(data: string, prepend: boolean = false) {
   }
 
   // Append: only auto-scroll to bottom when user is near bottom or following
-  const shouldAutoScroll = elem ? (isFollowingBottom.value || isNearBottom(elem)) : true
+  const shouldAutoScroll = elem
+    ? (isFollowingBottom.value || isNearBottom(elem))
+    : true
 
   const chunk = tailFragment.value + data
   const parts = chunk.split('\n')

@@ -25,7 +25,14 @@ const emit = defineEmits<{
 }>()
 
 // Register ECharts components
-use([MapChart, TitleComponent, TooltipComponent, LegendComponent, VisualMapComponent, CanvasRenderer])
+use([
+  MapChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  VisualMapComponent,
+  CanvasRenderer,
+])
 
 interface CityData {
   name: string
@@ -61,14 +68,18 @@ async function fetchBoundary(path: string): Promise<unknown> {
   for (const url of sources) {
     try {
       const isCDN = url.startsWith(ALIYUN_BOUND_API)
-      const res = await fetch(url, isCDN ? { referrerPolicy: 'no-referrer' } : undefined)
+      const res = await fetch(url, isCDN
+        ? { referrerPolicy: 'no-referrer' }
+        : undefined)
       if (!res.ok)
         throw new Error(`boundary request failed: ${res.status}`)
 
       return await res.json()
     }
     catch (error) {
-      lastError = error instanceof Error ? error : new Error(String(error))
+      lastError = error instanceof Error
+        ? error
+        : new Error(String(error))
     }
   }
 
@@ -192,7 +203,9 @@ watch(() => props.data, () => backToProvinces())
 // Table data for top 10 provinces, or top 10 cities once drilled into a province.
 const tableData = computed(() => {
   const source = drilldown.value
-    ? (cityTopData.value.length > 0 ? cityTopData.value : cityChartData.value)
+    ? (cityTopData.value.length > 0
+        ? cityTopData.value
+        : cityChartData.value)
     : props.data
 
   if (!source || source.length === 0)
@@ -259,36 +272,60 @@ onMounted(() => {
 })
 
 const fontColor = computed(() => {
-  return theme.value === 'dark' ? '#b4b4b4' : '#333'
+  return theme.value === 'dark'
+    ? '#b4b4b4'
+    : '#333'
 })
 
 const backgroundColor = computed(() => {
-  return theme.value === 'dark' ? 'transparent' : '#fff'
+  return theme.value === 'dark'
+    ? 'transparent'
+    : '#fff'
 })
 
 // Color scheme for visualMap - brighter colors for dark mode to maintain visibility
 const visualMapColors = computed(() => {
   return theme.value === 'dark'
-    ? ['#612500', '#ad4e00', '#d4380d', '#ff7a45', '#ffbb96'] // Dark mode: visible orange gradient
-    : ['#fff2e8', '#ffbb96', '#ff7a45', '#fa541c', '#d4380d'] // Light mode: original colors
+    ? [
+        '#612500',
+        '#ad4e00',
+        '#d4380d',
+        '#ff7a45',
+        '#ffbb96',
+      ] // Dark mode: visible orange gradient
+    : [
+        '#fff2e8',
+        '#ffbb96',
+        '#ff7a45',
+        '#fa541c',
+        '#d4380d',
+      ] // Light mode: original colors
 })
 
 // Default area color for regions without data
 const areaColor = computed(() => {
-  return theme.value === 'dark' ? '#2a2a2a' : '#f5f5f5'
+  return theme.value === 'dark'
+    ? '#2a2a2a'
+    : '#f5f5f5'
 })
 
 // Tooltip style for dark mode
 const tooltipBgColor = computed(() => {
-  return theme.value === 'dark' ? 'rgba(50, 50, 50, 0.9)' : 'rgba(255, 255, 255, 0.9)'
+  return theme.value === 'dark'
+    ? 'rgba(50, 50, 50, 0.9)'
+    : 'rgba(255, 255, 255, 0.9)'
 })
 
 const tooltipBorderColor = computed(() => {
-  return theme.value === 'dark' ? '#555' : '#ccc'
+  return theme.value === 'dark'
+    ? '#555'
+    : '#ccc'
 })
 
 const tooltipTextColor = computed(() => {
-  return theme.value === 'dark' ? '#e0e0e0' : '#333'
+  return theme.value === 'dark'
+    ? '#e0e0e0'
+    : '#333'
 })
 
 const mapOption = computed((): EChartsOption => {
@@ -298,7 +335,9 @@ const mapOption = computed((): EChartsOption => {
   }
 
   const source = drilldown.value ? cityChartData.value : props.data!
-  const maxValue = source.length > 0 ? Math.max(...source.map(item => item.value)) : 0
+  const maxValue = source.length > 0
+    ? Math.max(...source.map(item => item.value))
+    : 0
 
   // Convert data for ECharts map
   const chartData = source.map(item => ({
@@ -336,7 +375,10 @@ const mapOption = computed((): EChartsOption => {
       max: maxValue,
       left: 'left',
       top: 'bottom',
-      text: [$gettext('High'), $gettext('Low')],
+      text: [
+        $gettext('High'),
+        $gettext('Low'),
+      ],
       textStyle: {
         color: fontColor.value,
       },
@@ -357,13 +399,17 @@ const mapOption = computed((): EChartsOption => {
             color: fontColor.value,
           },
           itemStyle: {
-            areaColor: theme.value === 'dark' ? '#5c3a2a' : '#f7d794',
+            areaColor: theme.value === 'dark'
+              ? '#5c3a2a'
+              : '#f7d794',
           },
         },
         data: chartData,
         itemStyle: {
           areaColor: areaColor.value,
-          borderColor: theme.value === 'dark' ? '#555' : '#ddd',
+          borderColor: theme.value === 'dark'
+            ? '#555'
+            : '#ddd',
           borderWidth: 0.5,
         },
       },

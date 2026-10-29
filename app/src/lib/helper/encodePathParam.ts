@@ -56,5 +56,7 @@ export function normalizeRequestUrl(url: string | undefined): string {
   }
   const withoutQuery = url.split('?')[0]
   const trimmed = withoutQuery.replace(/\/+$/, '')
-  return trimmed.startsWith('/') ? trimmed : `/${trimmed}`
+  return trimmed.startsWith('/')
+    ? trimmed
+    : `/${trimmed}`
 }

@@ -19,8 +19,12 @@ const props = defineProps<{
 
 // Index progress tracking
 const { getProgressForFile, isFileIndexing } = useIndexProgress()
-const indexProgress = computed(() => props.logPath ? getProgressForFile(props.logPath) : null)
-const isCurrentFileIndexing = computed(() => props.logPath ? isFileIndexing(props.logPath) : false)
+const indexProgress = computed(() => props.logPath
+  ? getProgressForFile(props.logPath)
+  : null)
+const isCurrentFileIndexing = computed(() => props.logPath
+  ? isFileIndexing(props.logPath)
+  : false)
 
 // Status-based loading message and icon
 const statusInfo = computed(() => {

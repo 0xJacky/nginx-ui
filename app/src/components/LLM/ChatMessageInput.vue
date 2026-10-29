@@ -30,16 +30,32 @@ const modelOptions = computed(() => chatModels.value.map(model => ({
 })))
 
 const thinkingOptions = computed(() => [
-  { label: thinkingLevelLabel(''), value: '' },
-  ...availableThinkingLevels.value.map(level => ({ label: thinkingLevelLabel(level), value: level })),
+  {
+    label: thinkingLevelLabel(''),
+    value: '',
+  },
+  ...availableThinkingLevels.value.map(level => ({
+    label: thinkingLevelLabel(level),
+    value: level,
+  })),
 ])
 
 // The composer draws the border and the focus ring (on :focus-within), so
 // the textarea drops its own, including antd's keyboard focus outline
-const bareInput = { border: 'none', boxShadow: 'none', outline: 'none', background: 'transparent' }
+const bareInput = {
+  border: 'none',
+  boxShadow: 'none',
+  outline: 'none',
+  background: 'transparent',
+}
 const composerInputStyles = {
   root: bareInput,
-  textarea: { ...bareInput, padding: '10px 12px 4px', lineHeight: 1.5, resize: 'none' as const },
+  textarea: {
+    ...bareInput,
+    padding: '10px 12px 4px',
+    lineHeight: 1.5,
+    resize: 'none' as const,
+  },
 }
 
 // A level the model does not offer falls back to the provider default

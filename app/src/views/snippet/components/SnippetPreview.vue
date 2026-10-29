@@ -24,11 +24,15 @@ const isIncludable = computed(() => props.rows.length === 0 && !!props.include)
 // The values filled in, per key; a key without one uses its default.
 const values = ref<Record<string, string | boolean>>({})
 
-const declared = computed(() => hasVariableProblems(props.rows) ? [] : props.rows)
+const declared = computed(() => hasVariableProblems(props.rows)
+  ? []
+  : props.rows)
 
 function valueOf(row: VariableRow) {
   const key = row.key.trim()
-  return key in values.value ? values.value[key] : row.value
+  return key in values.value
+    ? values.value[key]
+    : row.value
 }
 
 function setValue(row: VariableRow, value: string | boolean) {
@@ -70,7 +74,11 @@ async function render() {
   }
 }
 
-watchDebounced([() => props.content, () => props.rows, values], render, { debounce: 300, deep: true, immediate: true })
+watchDebounced([
+  () => props.content,
+  () => props.rows,
+  values,
+], render, { debounce: 300, deep: true, immediate: true })
 
 // Lines that differ from the result with the default values.
 const changed = computed(() => {
@@ -84,7 +92,9 @@ const changed = computed(() => {
 
 const undeclared = computed(() => {
   const keys = new Set(props.rows.map(r => r.key.trim()))
-  return [...referencedKeys(props.content)].filter(key => !keys.has(key)).map(key => `.${key}`)
+  return [
+    ...referencedKeys(props.content),
+  ].filter(key => !keys.has(key)).map(key => `.${key}`)
 })
 
 const hasChangedValues = computed(() => Object.keys(values.value).length > 0)

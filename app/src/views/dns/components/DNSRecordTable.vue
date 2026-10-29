@@ -37,36 +37,44 @@ const currentPage = ref(1)
 const pageSize = ref(50)
 const expandedRowKeys = ref<string[]>([])
 
-const baseColumns: TableColumnsType = [{
-  title: $gettext('Name'),
-  key: 'names',
-  width: 240,
-}, {
-  title: $gettext('Type'),
-  key: 'type',
-  width: 100,
-}, {
-  title: $gettext('Value'),
-  key: 'content',
-  width: 280,
-}, {
-  title: $gettext('TTL'),
-  key: 'ttl',
-  width: 100,
-}, {
-  title: $gettext('Priority'),
-  key: 'priority',
-  width: 100,
-}, {
-  title: $gettext('Weight'),
-  key: 'weight',
-  width: 100,
-}, {
-  title: $gettext('Actions'),
-  key: 'actions',
-  width: 180,
-  fixed: 'right',
-}]
+const baseColumns: TableColumnsType = [
+  {
+    title: $gettext('Name'),
+    key: 'names',
+    width: 240,
+  },
+  {
+    title: $gettext('Type'),
+    key: 'type',
+    width: 100,
+  },
+  {
+    title: $gettext('Value'),
+    key: 'content',
+    width: 280,
+  },
+  {
+    title: $gettext('TTL'),
+    key: 'ttl',
+    width: 100,
+  },
+  {
+    title: $gettext('Priority'),
+    key: 'priority',
+    width: 100,
+  },
+  {
+    title: $gettext('Weight'),
+    key: 'weight',
+    width: 100,
+  },
+  {
+    title: $gettext('Actions'),
+    key: 'actions',
+    width: 180,
+    fixed: 'right',
+  },
+]
 
 const commentColumn = {
   title: $gettext('Comment'),
@@ -113,7 +121,9 @@ function getRecordGroupKey(record: DNSRecord) {
 }
 
 function uniqueValues<T>(values: T[]) {
-  return [...new Set(values)]
+  return [
+    ...new Set(values),
+  ]
 }
 
 const recordGroups = computed<DNSRecordGroup[]>(() => {
@@ -133,7 +143,9 @@ const recordGroups = computed<DNSRecordGroup[]>(() => {
     groups.set(key, group)
   }
 
-  return [...groups.values()].map(group => {
+  return [
+    ...groups.values(),
+  ].map(group => {
     const records = group.records.slice().sort((left, right) => left.name.localeCompare(right.name))
     return {
       ...group,

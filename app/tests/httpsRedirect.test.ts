@@ -36,7 +36,10 @@ function quickSetupServers(): NgxServer[] {
         { directive: 'listen', params: '[::]:80' },
         { directive: 'server_name', params: 'app.example.com' },
       ],
-      locations: [{ ...redirectLocation }, { ...challengeLocation }],
+      locations: [
+        { ...redirectLocation },
+        { ...challengeLocation },
+      ],
     },
     {
       directives: [
@@ -49,7 +52,10 @@ function quickSetupServers(): NgxServer[] {
         { directive: 'ssl_protocols', params: 'TLSv1.2 TLSv1.3' },
         { directive: 'client_max_body_size', params: '128m' },
       ],
-      locations: [{ ...appLocation }, { ...challengeLocation }],
+      locations: [
+        { ...appLocation },
+        { ...challengeLocation },
+      ],
     },
   ]
 }
@@ -90,7 +96,10 @@ describe('buildTLSServerFromHTTPServer', () => {
         { directive: 'listen', params: '[::]:80' },
         { directive: 'server_name', params: 'app.example.com' },
       ],
-      locations: [{ ...redirectLocation }, { ...challengeLocation }],
+      locations: [
+        { ...redirectLocation },
+        { ...challengeLocation },
+      ],
     }
 
     const tlsServer = buildTLSServerFromHTTPServer(server)
@@ -134,8 +143,12 @@ describe('buildTLSServerFromHTTPServer', () => {
 
   it('keeps unrelated returns', () => {
     const server: NgxServer = {
-      directives: [{ directive: 'listen', params: '80' }],
-      locations: [{ path: '/old', content: 'return 301 https://example.org/new;', comments: '' }],
+      directives: [
+        { directive: 'listen', params: '80' },
+      ],
+      locations: [
+        { path: '/old', content: 'return 301 https://example.org/new;', comments: '' },
+      ],
     }
 
     expect(buildTLSServerFromHTTPServer(server).locations).toEqual(server.locations)
@@ -146,8 +159,13 @@ describe('serveTLSAppOverHTTP', () => {
   it('returns the server unchanged when it does not redirect', () => {
     const [, tlsServer] = quickSetupServers()
     const httpServer: NgxServer = {
-      directives: [{ directive: 'listen', params: '80' }],
-      locations: [{ ...appLocation }, { ...challengeLocation }],
+      directives: [
+        { directive: 'listen', params: '80' },
+      ],
+      locations: [
+        { ...appLocation },
+        { ...challengeLocation },
+      ],
     }
 
     expect(serveTLSAppOverHTTP(httpServer, tlsServer)).toBe(httpServer)
@@ -156,7 +174,9 @@ describe('serveTLSAppOverHTTP', () => {
   it('keeps the root location left after stripping a mixed redirect', () => {
     const [, tlsServer] = quickSetupServers()
     const httpServer: NgxServer = {
-      directives: [{ directive: 'listen', params: '80' }],
+      directives: [
+        { directive: 'listen', params: '80' },
+      ],
       locations: [
         { path: '/', content: 'return 301 https://$host$request_uri;\nproxy_pass http://127.0.0.1:8000;', comments: '' },
         { ...challengeLocation },
@@ -178,11 +198,19 @@ describe('serveTLSAppOverHTTP with an existing root location', () => {
       comments: '',
     }
     const tlsServer: NgxServer = {
-      directives: [{ directive: 'listen', params: '443 ssl' }],
-      locations: [{ ...appLocation }, { ...authLocation }, { ...challengeLocation }],
+      directives: [
+        { directive: 'listen', params: '443 ssl' },
+      ],
+      locations: [
+        { ...appLocation },
+        { ...authLocation },
+        { ...challengeLocation },
+      ],
     }
     const httpServer: NgxServer = {
-      directives: [{ directive: 'listen', params: '80' }],
+      directives: [
+        { directive: 'listen', params: '80' },
+      ],
       locations: [
         { path: '/', content: 'return 301 https://$host$request_uri;\nproxy_pass http://127.0.0.1:8000;', comments: '' },
       ],

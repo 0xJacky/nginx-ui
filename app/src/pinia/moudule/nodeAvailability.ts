@@ -31,7 +31,9 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
 
     try {
       const raw = window.sessionStorage.getItem(cacheKey)
-      return raw ? JSON.parse(raw) as Record<string, Partial<AnalyticNode>> : {}
+      return raw
+        ? JSON.parse(raw) as Record<string, Partial<AnalyticNode>>
+        : {}
     }
     catch {
       return {}
@@ -258,7 +260,9 @@ export const useNodeAvailabilityStore = defineStore('nodeAvailability', () => {
   // Auto-cleanup WebSocket on page unload. Using VueUse's useEventListener ties
   // the listener to the setup store's effect scope so HMR/$dispose reliably
   // removes it instead of accumulating duplicates.
-  useEventListener(typeof window !== 'undefined' ? window : null, 'beforeunload', () => {
+  useEventListener(typeof window !== 'undefined'
+    ? window
+    : null, 'beforeunload', () => {
     stopMonitoring()
   })
 

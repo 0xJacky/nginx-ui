@@ -158,7 +158,9 @@ function useCodeCompletion() {
       return true
 
     const isEmptyLineInBlock = /^\s+$/.test(beforeCursor) && beforeCursor.length > 0
-    const prevLine = position.row > 0 ? editor.session.getLine(position.row - 1) : ''
+    const prevLine = position.row > 0
+      ? editor.session.getLine(position.row - 1)
+      : ''
     const afterComment = /^\s*[#/]/.test(prevLine)
 
     if (!isEmptyLineInBlock && !afterComment) {
@@ -396,12 +398,16 @@ function useCodeCompletion() {
       const allLines = currentText.split('\n')
       const currentLine = allLines[cursorPosition.row]
       const textUpToCursor = allLines.slice(0, cursorPosition.row).join('\n')
-        + (cursorPosition.row > 0 ? '\n' : '')
+        + (cursorPosition.row > 0
+          ? '\n'
+          : '')
         + currentLine.substring(0, cursorPosition.column)
 
       // Get text after cursor position as suffix
       const textAfterCursor = currentLine.substring(cursorPosition.column)
-        + (cursorPosition.row < allLines.length - 1 ? '\n' : '')
+        + (cursorPosition.row < allLines.length - 1
+          ? '\n'
+          : '')
         + allLines.slice(cursorPosition.row + 1).join('\n')
 
       // Generate new request ID

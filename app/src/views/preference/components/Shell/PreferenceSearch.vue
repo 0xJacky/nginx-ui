@@ -47,9 +47,14 @@ const options = computed<SearchOption[]>(() => {
   const byTitle = visibleEntries.value.filter(entry => entry.title.toLowerCase().includes(keyword))
   const byText = visibleEntries.value.filter(entry => !byTitle.includes(entry) && matches(entry, keyword))
 
-  return [...byTitle, ...byText].slice(0, MAX_RESULTS).map(entry => ({
+  return [
+    ...byTitle,
+    ...byText,
+  ].slice(0, MAX_RESULTS).map(entry => ({
     value: entry.path,
-    title: entry.panel ? `${entry.panel} · ${entry.title}` : entry.title,
+    title: entry.panel
+      ? `${entry.panel} · ${entry.title}`
+      : entry.title,
     description: entry.description ?? '',
     sectionLabel: sectionLabels.value[entry.section] ?? '',
   }))

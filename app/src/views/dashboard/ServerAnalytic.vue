@@ -41,11 +41,32 @@ const host: HostInfoStat = reactive({
 
 const cpu = ref('0.0')
 const cpu_info = reactive([]) as CPUInfoStat[]
-const cpu_analytic_series = reactive([{ name: 'User', data: [] }, { name: 'Total', data: [] }]) as Series[]
+const cpu_analytic_series = reactive([
+  { name: 'User', data: [] },
+  { name: 'Total', data: [] },
+]) as Series[]
 
-const net_analytic = reactive([{ name: $gettext('Receive'), data: [] }, { name: $gettext('Send'), data: [] }]) as Series[]
+const net_analytic = reactive([
+  {
+    name: $gettext('Receive'),
+    data: [],
+  },
+  {
+    name: $gettext('Send'),
+    data: [],
+  },
+]) as Series[]
 
-const disk_io_analytic = reactive([{ name: $gettext('Writes'), data: [] }, { name: $gettext('Reads'), data: [] }]) as Series[]
+const disk_io_analytic = reactive([
+  {
+    name: $gettext('Writes'),
+    data: [],
+  },
+  {
+    name: $gettext('Reads'),
+    data: [],
+  },
+]) as Series[]
 
 const memory = reactive({
   total: '',
@@ -59,11 +80,22 @@ const memory = reactive({
   pressure: 0,
 }) as MemStat
 
-const disk = reactive({ percentage: 0, used: '', total: '', writes: { x: '', y: 0 }, reads: { x: '', y: 0 } }) as DiskStat
+const disk = reactive({
+  percentage: 0,
+  used: '',
+  total: '',
+  writes: { x: '', y: 0 },
+  reads: { x: '', y: 0 },
+}) as DiskStat
 const disk_io = reactive({ writes: 0, reads: 0 })
 const uptime = ref('')
 const loadavg = reactive({ load1: 0, load5: 0, load15: 0 }) as LoadStat
-const net = reactive({ recv: 0, sent: 0, last_recv: 0, last_sent: 0 })
+const net = reactive({
+  recv: 0,
+  sent: 0,
+  last_recv: 0,
+  last_sent: 0,
+})
 const ipAddresses = ref<string[]>([])
 
 interface NetworkSample {
@@ -138,12 +170,30 @@ onMounted(async () => {
   net.last_recv = r.network.init.bytesRecv
   net.last_sent = r.network.init.bytesSent
 
-  cpu_analytic_series[0].data = [...cpu_analytic_series[0].data, ...r.cpu.user]
-  cpu_analytic_series[1].data = [...cpu_analytic_series[1].data, ...r.cpu.total]
-  net_analytic[0].data = [...net_analytic[0].data, ...r.network.bytesRecv]
-  net_analytic[1].data = [...net_analytic[1].data, ...r.network.bytesSent]
-  disk_io_analytic[0].data = [...disk_io_analytic[0].data, ...r.disk_io.writes]
-  disk_io_analytic[1].data = [...disk_io_analytic[1].data, ...r.disk_io.reads]
+  cpu_analytic_series[0].data = [
+    ...cpu_analytic_series[0].data,
+    ...r.cpu.user,
+  ]
+  cpu_analytic_series[1].data = [
+    ...cpu_analytic_series[1].data,
+    ...r.cpu.total,
+  ]
+  net_analytic[0].data = [
+    ...net_analytic[0].data,
+    ...r.network.bytesRecv,
+  ]
+  net_analytic[1].data = [
+    ...net_analytic[1].data,
+    ...r.network.bytesSent,
+  ]
+  disk_io_analytic[0].data = [
+    ...disk_io_analytic[0].data,
+    ...r.disk_io.writes,
+  ]
+  disk_io_analytic[1].data = [
+    ...disk_io_analytic[1].data,
+    ...r.disk_io.reads,
+  ]
 
   websocket.open()
 })
@@ -173,10 +223,15 @@ function wsOnMessage(m: MessageEvent) {
 
   cpu.value = cpu_usage.toFixed(2)
 
-  const sampledAt = Number.isFinite(r.sampled_at) ? r.sampled_at : Date.now()
+  const sampledAt = Number.isFinite(r.sampled_at)
+    ? r.sampled_at
+    : Date.now()
   const time = new Date(sampledAt).toISOString()
 
-  cpu_analytic_series[0].data.push({ x: time, y: Number(r.cpu.user.toFixed(2)) })
+  cpu_analytic_series[0].data.push({
+    x: time,
+    y: Number(r.cpu.user.toFixed(2)),
+  })
   cpu_analytic_series[1].data.push({ x: time, y: cpu_usage })
 
   if (cpu_analytic_series[0].data.length > 100) {

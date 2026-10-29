@@ -15,7 +15,9 @@ const refForm = useTemplateRef('refForm')
 
 const serverNames = computed(() => {
   const params = curDirectivesMap.value.server_name?.[0]?.params?.trim()
-  return params ? params.split(/\s+/) : []
+  return params
+    ? params.split(/\s+/)
+    : []
 })
 
 function open() {

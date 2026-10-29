@@ -55,11 +55,16 @@ export function createWorkspaceState(): WorkspaceState {
 }
 
 function otherPane(index: PaneIndex): PaneIndex {
-  return index === 0 ? 1 : 0
+  return index === 0
+    ? 1
+    : 0
 }
 
 function touch(recent: number[], tabId: number): number[] {
-  return [tabId, ...recent.filter(id => id !== tabId)]
+  return [
+    tabId,
+    ...recent.filter(id => id !== tabId),
+  ]
 }
 
 export function findTab(state: WorkspaceState, tabId: number | null | undefined): WorkspaceTab | undefined {
@@ -71,7 +76,9 @@ export function findTab(state: WorkspaceState, tabId: number | null | undefined)
 
 /** Panes the user can see in the current layout. */
 export function visiblePaneIndexes(state: WorkspaceState): PaneIndex[] {
-  return state.layout === 'split' ? [0, 1] : [0]
+  return state.layout === 'split'
+    ? [0, 1]
+    : [0]
 }
 
 /** Tabs currently on screen. */
@@ -100,13 +107,19 @@ export function liveTabIds(state: WorkspaceState, maxBackground = MAX_BACKGROUND
     ...state.tabs.map(tab => tab.id).filter(id => !state.recent.includes(id)),
   ].filter(id => known.has(id) && !visible.includes(id))
 
-  return [...visible, ...background.slice(0, Math.max(0, maxBackground))]
+  return [
+    ...visible,
+    ...background.slice(0, Math.max(0, maxBackground)),
+  ]
 }
 
 /** The most recently used tab that no pane is showing. */
 function nextBackgroundTab(state: WorkspaceState): number | null {
   const shown = new Set(state.panes.filter((id): id is number => id != null))
-  return liveTabIds({ ...state, panes: [null, null] }, Number.POSITIVE_INFINITY)
+  return liveTabIds({
+    ...state,
+    panes: [null, null],
+  }, Number.POSITIVE_INFINITY)
     .find(id => !shown.has(id)) ?? null
 }
 
@@ -118,7 +131,9 @@ export function showTab(state: WorkspaceState, tabId: number): WorkspaceState {
   if (!findTab(state, tabId))
     return state
 
-  const focus: PaneIndex = state.layout === 'split' ? state.focus : 0
+  const focus: PaneIndex = state.layout === 'split'
+    ? state.focus
+    : 0
   const other = otherPane(focus)
   const panes: [number | null, number | null] = [...state.panes]
 
@@ -127,34 +142,64 @@ export function showTab(state: WorkspaceState, tabId: number): WorkspaceState {
 
   panes[focus] = tabId
 
-  return { ...state, panes, focus, recent: touch(state.recent, tabId) }
+  return {
+    ...state,
+    panes,
+    focus,
+    recent: touch(state.recent, tabId),
+  }
 }
 
 /** Adds a tab for a node and shows it in the focused pane. */
 export function openTab(state: WorkspaceState, node: WorkspaceNode, route = DEFAULT_TAB_ROUTE): { state: WorkspaceState, tabId: number } {
   const tabId = state.nextId
-  const tab: WorkspaceTab = { id: tabId, node: { id: node.id, name: node.name }, route, title: '' }
-  const next = { ...state, tabs: [...state.tabs, tab], nextId: tabId + 1 }
+  const tab: WorkspaceTab = {
+    id: tabId,
+    node: { id: node.id, name: node.name },
+    route,
+    title: '',
+  }
+  const next = {
+    ...state,
+    tabs: [...state.tabs, tab],
+    nextId: tabId + 1,
+  }
 
-  return { state: showTab(next, tabId), tabId }
+  return {
+    state: showTab(next, tabId),
+    tabId,
+  }
 }
 
 /** The most recently used tab of a node, skipping `exclude`. */
 export function findNodeTab(state: WorkspaceState, nodeId: number, exclude: number[] = []): number | null {
-  const ordered = liveTabIds({ ...state, panes: [null, null] }, Number.POSITIVE_INFINITY)
+  const ordered = liveTabIds({
+    ...state,
+    panes: [null, null],
+  }, Number.POSITIVE_INFINITY)
   return ordered.find(id => !exclude.includes(id) && findTab(state, id)?.node.id === nodeId) ?? null
 }
 
 /** Brings a node on screen: its most recent tab if it has one, otherwise a new tab. */
 export function openNode(state: WorkspaceState, node: WorkspaceNode): { state: WorkspaceState, tabId: number } {
-  const focus: PaneIndex = state.layout === 'split' ? state.focus : 0
+  const focus: PaneIndex = state.layout === 'split'
+    ? state.focus
+    : 0
   const focusedTab = findTab(state, state.panes[focus])
-  if (focusedTab?.node.id === node.id)
-    return { state: showTab(state, focusedTab.id), tabId: focusedTab.id }
+  if (focusedTab?.node.id === node.id) {
+    return {
+      state: showTab(state, focusedTab.id),
+      tabId: focusedTab.id,
+    }
+  }
 
   const existing = findNodeTab(state, node.id)
-  if (existing != null)
-    return { state: showTab(state, existing), tabId: existing }
+  if (existing != null) {
+    return {
+      state: showTab(state, existing),
+      tabId: existing,
+    }
+  }
 
   return openTab(state, node)
 }
@@ -199,7 +244,13 @@ export function focusPane(state: WorkspaceState, index: PaneIndex): WorkspaceSta
   if (state.focus === index && (tabId == null || state.recent[0] === tabId))
     return state
 
-  return { ...state, focus: index, recent: tabId != null ? touch(state.recent, tabId) : state.recent }
+  return {
+    ...state,
+    focus: index,
+    recent: tabId != null
+      ? touch(state.recent, tabId)
+      : state.recent,
+  }
 }
 
 /**
@@ -219,7 +270,11 @@ export function setLayout(state: WorkspaceState, layout: WorkspaceLayout): Works
     return { ...state, layout, panes, focus: 0 }
   }
 
-  let next: WorkspaceState = { ...state, layout, panes: [...state.panes] }
+  let next: WorkspaceState = {
+    ...state,
+    layout,
+    panes: [...state.panes],
+  }
   for (const index of [0, 1] as PaneIndex[]) {
     if (next.panes[index] != null)
       continue
@@ -247,7 +302,9 @@ export function closeTab(state: WorkspaceState, tabId: number): WorkspaceState {
     ...state,
     tabs: state.tabs.filter(tab => tab.id !== tabId),
     recent: state.recent.filter(id => id !== tabId),
-    panes: state.panes.map(id => id === tabId ? null : id) as [number | null, number | null],
+    panes: state.panes.map(id => id === tabId
+      ? null
+      : id) as [number | null, number | null],
   }
 
   for (const index of [0, 1] as PaneIndex[]) {
@@ -261,8 +318,12 @@ export function closeTab(state: WorkspaceState, tabId: number): WorkspaceState {
   }
 
   // An empty left pane in single layout would hide the remembered right tab.
-  if (next.layout === 'single' && next.panes[0] == null && next.panes[1] != null)
-    next = { ...next, panes: [next.panes[1], null] }
+  if (next.layout === 'single' && next.panes[0] == null && next.panes[1] != null) {
+    next = {
+      ...next,
+      panes: [next.panes[1], null],
+    }
+  }
 
   return next
 }
@@ -280,7 +341,12 @@ export function updateTab(state: WorkspaceState, tabId: number, patch: Partial<O
 
   return {
     ...state,
-    tabs: state.tabs.map(item => item.id === tabId ? { ...item, ...patch } : item),
+    tabs: state.tabs.map(item => item.id === tabId
+      ? {
+          ...item,
+          ...patch,
+        }
+      : item),
   }
 }
 
@@ -297,13 +363,22 @@ function toTab(value: unknown): WorkspaceTab | null {
   if (!Number.isInteger(id) || id <= 0 || !Number.isInteger(nodeId) || nodeId < 0)
     return null
 
-  const route = typeof value.route === 'string' && value.route.startsWith('/') ? value.route : DEFAULT_TAB_ROUTE
+  const route = typeof value.route === 'string' && value.route.startsWith('/')
+    ? value.route
+    : DEFAULT_TAB_ROUTE
 
   return {
     id,
-    node: { id: nodeId, name: typeof value.node.name === 'string' ? value.node.name : '' },
+    node: {
+      id: nodeId,
+      name: typeof value.node.name === 'string'
+        ? value.node.name
+        : '',
+    },
     route,
-    title: typeof value.title === 'string' ? value.title : '',
+    title: typeof value.title === 'string'
+      ? value.title
+      : '',
   }
 }
 
@@ -317,7 +392,9 @@ export function normalizeState(raw: unknown): WorkspaceState {
     return base
 
   const tabs: WorkspaceTab[] = []
-  for (const item of Array.isArray(raw.tabs) ? raw.tabs : []) {
+  for (const item of Array.isArray(raw.tabs)
+    ? raw.tabs
+    : []) {
     const tab = toTab(item)
     if (tab && !tabs.some(existing => existing.id === tab.id))
       tabs.push(tab)
@@ -325,28 +402,56 @@ export function normalizeState(raw: unknown): WorkspaceState {
 
   const ids = new Set(tabs.map(tab => tab.id))
   const maxId = tabs.reduce((max, tab) => Math.max(max, tab.id), 0)
-  const nextId = Math.max(Number.isInteger(raw.nextId) ? raw.nextId as number : 1, maxId + 1)
+  const nextId = Math.max(Number.isInteger(raw.nextId)
+    ? raw.nextId as number
+    : 1, maxId + 1)
 
-  const toId = (value: unknown) => typeof value === 'number' && ids.has(value) ? value : null
-  const rawPanes = Array.isArray(raw.panes) ? raw.panes : []
+  const toId = (value: unknown) => typeof value === 'number' && ids.has(value)
+    ? value
+    : null
+  const rawPanes = Array.isArray(raw.panes)
+    ? raw.panes
+    : []
   const left = toId(rawPanes[0])
   const rightCandidate = toId(rawPanes[1])
-  const right = rightCandidate === left ? null : rightCandidate
+  const right = rightCandidate === left
+    ? null
+    : rightCandidate
 
-  const recent = (Array.isArray(raw.recent) ? raw.recent : [])
+  const recent = (Array.isArray(raw.recent)
+    ? raw.recent
+    : [])
     .filter((id, index, list): id is number => typeof id === 'number' && ids.has(id) && list.indexOf(id) === index)
   const missing = tabs.map(tab => tab.id).filter(id => !recent.includes(id))
 
-  const layout: WorkspaceLayout = raw.layout === 'split' ? 'split' : 'single'
-  const focus: PaneIndex = layout === 'split' && raw.focus === 1 ? 1 : 0
+  const layout: WorkspaceLayout = raw.layout === 'split'
+    ? 'split'
+    : 'single'
+  const focus: PaneIndex = layout === 'split' && raw.focus === 1
+    ? 1
+    : 0
 
-  let state: WorkspaceState = { tabs, nextId, layout, panes: [left, right], focus, recent: [...recent, ...missing] }
+  let state: WorkspaceState = {
+    tabs,
+    nextId,
+    layout,
+    panes: [left, right],
+    focus,
+    recent: [
+      ...recent,
+      ...missing,
+    ],
+  }
 
   // Put something on screen when the saved panes pointed at closed tabs.
   if (state.panes[0] == null && tabs.length) {
     const fill = nextBackgroundTab(state)
-    if (fill != null)
-      state = { ...state, panes: [fill, state.panes[1]] }
+    if (fill != null) {
+      state = {
+        ...state,
+        panes: [fill, state.panes[1]],
+      }
+    }
   }
 
   return state
@@ -354,12 +459,16 @@ export function normalizeState(raw: unknown): WorkspaceState {
 
 /** Reads a node id from a `#/workspace?l=..&r=..` query value. */
 export function parseNodeIdParam(value: unknown): number | null {
-  const raw = Array.isArray(value) ? value[0] : value
+  const raw = Array.isArray(value)
+    ? value[0]
+    : value
   if (typeof raw !== 'string' && typeof raw !== 'number')
     return null
   if (typeof raw === 'string' && !/^\d+$/.test(raw.trim()))
     return null
 
   const id = Number(raw)
-  return Number.isInteger(id) && id >= 0 ? id : null
+  return Number.isInteger(id) && id >= 0
+    ? id
+    : null
 }

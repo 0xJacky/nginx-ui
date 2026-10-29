@@ -24,7 +24,9 @@ function legacyCopy(text: string) {
   const activeElement = document.activeElement as HTMLElement | null
   const container = activeElement?.closest('[role="dialog"]') ?? document.body
   const selection = document.getSelection()
-  const previousRange = selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null
+  const previousRange = selection && selection.rangeCount > 0
+    ? selection.getRangeAt(0)
+    : null
 
   const textarea = document.createElement('textarea')
   textarea.value = text

@@ -31,11 +31,16 @@ interface TabSaver {
 // Flattens a validation error map such as {ip_white_list: {0: "ip"}} into the
 // paths of the invalid fields.
 function invalidFieldPaths(errors: unknown, prefix = ''): string[] {
-  if (!errors || typeof errors !== 'object')
-    return prefix ? [prefix] : []
+  if (!errors || typeof errors !== 'object') {
+    return prefix
+      ? [prefix]
+      : []
+  }
 
   return Object.entries(errors).flatMap(([key, value]) =>
-    invalidFieldPaths(value, prefix ? `${prefix}.${key}` : key))
+    invalidFieldPaths(value, prefix
+      ? `${prefix}.${key}`
+      : key))
 }
 
 interface SectionSaveResult {
@@ -179,7 +184,9 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
   const tabSavers = shallowReactive(new Map<string, TabSaver>())
 
   function registerTabSaver(tab: string, saver: TabSaver | TabSaver['save']) {
-    const entry = typeof saver === 'function' ? { save: saver } : saver
+    const entry = typeof saver === 'function'
+      ? { save: saver }
+      : saver
     tabSavers.set(tab, entry)
     return () => {
       if (tabSavers.get(tab) === entry)
@@ -187,11 +194,15 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
     }
   }
 
-  const dirtyTabSavers = computed(() => [...tabSavers.entries()]
+  const dirtyTabSavers = computed(() => [
+    ...tabSavers.entries(),
+  ]
     .filter(([, saver]) => saver.isDirty?.()))
 
   const changedPaths = computed(() => {
-    const paths = snapshot.value ? collectChangedPaths(snapshot.value, data.value) : []
+    const paths = snapshot.value
+      ? collectChangedPaths(snapshot.value, data.value)
+      : []
     for (const [tab, saver] of dirtyTabSavers.value)
       paths.push(saver.path ?? tab)
     return paths
@@ -253,8 +264,14 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
 
       // Not every tab shows field errors inline, so name the fields
       const fields = invalidFieldPaths(cosyError.errors)
-      if (fields.length)
-        return { section, error: $gettext('Invalid settings: %{fields}', { fields: fields.join(', ') }) }
+      if (fields.length) {
+        return {
+          section,
+          error: $gettext('Invalid settings: %{fields}', {
+            fields: fields.join(', '),
+          }),
+        }
+      }
 
       return { section, error: await translateError(cosyError) }
     }
@@ -264,9 +281,13 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
   // section is its own request, so a failure is reported against the fields
   // it belongs to and the sections that did save stay saved.
   async function save(tab?: string) {
-    const sections = tab ? tabSettingsSections(tab) : dirtySections.value
+    const sections = tab
+      ? tabSettingsSections(tab)
+      : dirtySections.value
     const savers = tab
-      ? [tabSavers.get(tab)].filter((saver): saver is TabSaver => !!saver)
+      ? [
+          tabSavers.get(tab),
+        ].filter((saver): saver is TabSaver => !!saver)
       : dirtyTabSavers.value.map(([, saver]) => saver)
     if (!data.value || isSaving.value || (sections.length === 0 && savers.length === 0))
       return

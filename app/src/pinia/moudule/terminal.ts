@@ -31,7 +31,9 @@ export const useTerminalStore = defineStore('terminal', {
       const usedNumbers = new Set(
         this.tabs.map(tab => {
           const match = tab.id.match(/terminal-(\d+)/)
-          return match ? Number.parseInt(match[1]) : 0
+          return match
+            ? Number.parseInt(match[1])
+            : 0
         }).filter(num => num > 0),
       )
 

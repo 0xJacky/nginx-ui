@@ -43,7 +43,10 @@ const statusOptions = computed<SelectProps['options']>(() => [
   ConfigStatus.Enabled,
   ConfigStatus.Disabled,
   ConfigStatus.Maintenance,
-].map(value => ({ value, label: configStatusLabel(value) })))
+].map(value => ({
+  value,
+  label: configStatusLabel(value),
+})))
 
 // Computed property for select style based on current status
 const selectStyle = computed(() => {
@@ -57,7 +60,9 @@ const selectStyle = computed(() => {
     '--ant-select-color': '#ffffff',
     'color': '#ffffff',
     // The status colours override the disabled look, so dim it instead.
-    ...(props.disabled ? { opacity: 0.5 } : {}),
+    ...(props.disabled
+      ? { opacity: 0.5 }
+      : {}),
   }
 })
 

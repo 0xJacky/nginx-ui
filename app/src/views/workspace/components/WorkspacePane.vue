@@ -45,8 +45,15 @@ watch(() => props.focused, sendFocusState)
 
 const frameStyle = computed(() => {
   const rect = props.rect
-  if (!rect)
-    return { visibility: 'hidden' as const, left: '0px', top: '0px', width: '0px', height: '0px' }
+  if (!rect) {
+    return {
+      visibility: 'hidden' as const,
+      left: '0px',
+      top: '0px',
+      width: '0px',
+      height: '0px',
+    }
+  }
 
   return {
     left: `${rect.left}px`,
@@ -54,7 +61,9 @@ const frameStyle = computed(() => {
     width: `${rect.width}px`,
     height: `${rect.height}px`,
     visibility: props.visible ? 'visible' as const : 'hidden' as const,
-    pointerEvents: props.visible && !props.isResizing ? 'auto' as const : 'none' as const,
+    pointerEvents: props.visible && !props.isResizing
+      ? 'auto' as const
+      : 'none' as const,
   }
 })
 </script>

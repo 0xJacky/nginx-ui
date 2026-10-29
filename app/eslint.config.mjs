@@ -5,7 +5,15 @@ import autoImport from './.eslint-auto-import.mjs'
 export default createConfig(
   {
     stylistic: true,
-    ignores: ['**/*.md', '**/version.json', 'tsconfig.json', 'tsconfig.node.json', '.eslint-auto-import.mjs', '**/china.json', '**/world.json'],
+    ignores: [
+      '**/*.md',
+      '**/version.json',
+      'tsconfig.json',
+      'tsconfig.node.json',
+      '.eslint-auto-import.mjs',
+      '**/china.json',
+      '**/world.json',
+    ],
     plugins: {
       sonarjs,
     },
@@ -43,7 +51,10 @@ export default createConfig(
       'prefer-template': 'error',
 
       // https://eslint.style/rules/js/arrow-spacing
-      'style/arrow-spacing': ['error', { before: true, after: true }],
+      'style/arrow-spacing': [
+        'error',
+        { before: true, after: true },
+      ],
 
       // https://github.com/un-ts/eslint-plugin-import-x/blob/master/docs/rules/prefer-default-export.md
       'import/prefer-default-export': 'off',
@@ -58,9 +69,13 @@ export default createConfig(
       'vue/no-ref-as-operand': 'error',
 
       // https://eslint.vuejs.org/rules/component-name-in-template-casing
-      'vue/component-name-in-template-casing': ['error', 'PascalCase', {
-        registeredComponentsOnly: false,
-      }],
+      'vue/component-name-in-template-casing': [
+        'error',
+        'PascalCase',
+        {
+          registeredComponentsOnly: false,
+        },
+      ],
 
       // -- Sonarlint
       'sonarjs/no-duplicate-string': 'off',

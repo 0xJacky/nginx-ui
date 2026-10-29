@@ -217,7 +217,9 @@ function onMaintenanceModalOpenChange(open: boolean) {
 }
 
 function onMaintenanceConfirm(payload: MaintenancePayload) {
-  const names = pendingMaintenanceNames.value.length > 0 ? pendingMaintenanceNames.value : [...selectedSiteNames.value]
+  const names = pendingMaintenanceNames.value.length > 0
+    ? pendingMaintenanceNames.value
+    : [...selectedSiteNames.value]
   pendingMaintenanceNames.value = []
   confirmBatchStatusAction('maintenance', payload, names)
 }

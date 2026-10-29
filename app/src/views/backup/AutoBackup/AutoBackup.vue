@@ -66,8 +66,14 @@ const columns: StdTableColumn[] = [
       },
       select: {
         options: [
-          { label: $gettext('Nginx and Nginx UI Config'), value: 'nginx_and_nginx_ui' },
-          { label: $gettext('Custom Directory'), value: 'custom_dir' },
+          {
+            label: $gettext('Nginx and Nginx UI Config'),
+            value: 'nginx_and_nginx_ui',
+          },
+          {
+            label: $gettext('Custom Directory'),
+            value: 'custom_dir',
+          },
         ],
       },
     },
@@ -109,8 +115,14 @@ const columns: StdTableColumn[] = [
       type: 'select',
       select: {
         options: [
-          { label: $gettext('Local'), value: 'local' },
-          { label: $gettext('S3'), value: 's3' },
+          {
+            label: $gettext('Local'),
+            value: 'local',
+          },
+          {
+            label: $gettext('S3'),
+            value: 's3',
+          },
         ],
       },
     },
@@ -158,9 +170,20 @@ const columns: StdTableColumn[] = [
       }
 
       if (dayOfMonth === '*' && month === '*' && dayOfWeek !== '*') {
-        const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        const weekDays = [
+          'Sunday',
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+        ]
         const dayName = weekDays[Number.parseInt(dayOfWeek)] || 'Sunday'
-        return $gettext('Weekly on %{day} at %{time}', { day: $gettext(dayName), time: timeStr })
+        return $gettext('Weekly on %{day} at %{time}', {
+          day: $gettext(dayName),
+          time: timeStr,
+        })
       }
 
       if (dayOfMonth !== '*' && month === '*' && dayOfWeek === '*') {
@@ -189,7 +212,9 @@ const columns: StdTableColumn[] = [
     title: () => $gettext('Backups to Keep'),
     dataIndex: 'retention_count',
     customRender: ({ text }: CustomRenderArgs) => {
-      return text > 0 ? text : $gettext('All')
+      return text > 0
+        ? text
+        : $gettext('All')
     },
     edit: {
       type: 'inputNumber',
@@ -219,8 +244,14 @@ const columns: StdTableColumn[] = [
       type: 'select',
       select: {
         options: [
-          { label: $gettext('Enabled'), value: 1 },
-          { label: $gettext('Disabled'), value: 0 },
+          {
+            label: $gettext('Enabled'),
+            value: 1,
+          },
+          {
+            label: $gettext('Disabled'),
+            value: 0,
+          },
         ],
       },
     },
@@ -239,12 +270,23 @@ const columns: StdTableColumn[] = [
     dataIndex: 'last_backup_status',
     customRender: ({ text, record }: CustomRenderArgs) => {
       const statusMap = {
-        pending: { color: 'orange', text: $gettext('Pending') },
-        success: { color: 'green', text: $gettext('Success') },
-        failed: { color: 'red', text: $gettext('Failed') },
+        pending: {
+          color: 'orange',
+          text: $gettext('Pending'),
+        },
+        success: {
+          color: 'green',
+          text: $gettext('Success'),
+        },
+        failed: {
+          color: 'red',
+          text: $gettext('Failed'),
+        },
       }
       const status = statusMap[text as keyof typeof statusMap]
-      const statusTag = status ? <Tag color={status.color}>{status.text}</Tag> : text
+      const statusTag = status
+        ? <Tag color={status.color}>{status.text}</Tag>
+        : text
 
       // Show error message below failed status
       if (text === 'failed' && record.last_backup_error) {
@@ -264,9 +306,18 @@ const columns: StdTableColumn[] = [
       type: 'select',
       select: {
         options: [
-          { label: $gettext('Pending'), value: 'pending' },
-          { label: $gettext('Success'), value: 'success' },
-          { label: $gettext('Failed'), value: 'failed' },
+          {
+            label: $gettext('Pending'),
+            value: 'pending',
+          },
+          {
+            label: $gettext('Success'),
+            value: 'success',
+          },
+          {
+            label: $gettext('Failed'),
+            value: 'failed',
+          },
         ],
       },
     },

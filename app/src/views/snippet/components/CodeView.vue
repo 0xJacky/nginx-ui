@@ -11,7 +11,11 @@ const props = defineProps<{
 
 const lines = computed(() => {
   const result: { text: string, key?: string, isAction: boolean }[][] = [[]]
-  for (const part of props.slots ? segments(props.content) : [{ text: props.content, isAction: false }]) {
+  for (const part of props.slots
+    ? segments(props.content)
+    : [
+        { text: props.content, isAction: false },
+      ]) {
     part.text.split('\n').forEach((text, i) => {
       if (i > 0)
         result.push([])

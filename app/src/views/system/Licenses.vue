@@ -60,7 +60,10 @@ async function fetchLicenses() {
 }
 
 function getAllLicenses() {
-  return [...backendLicenses.value, ...frontendLicenses.value]
+  return [
+    ...backendLicenses.value,
+    ...frontendLicenses.value,
+  ]
 }
 
 function getCurrentLicenses() {

@@ -12,10 +12,26 @@ const challenge: NgxLocation = { path: '~ /.well-known/acme-challenge', content:
 
 describe('appendLocation', () => {
   test.each([
-    { name: 'server without locations (null)', locations: null, want: [authz] },
-    { name: 'server without locations (undefined)', locations: undefined, want: [authz] },
-    { name: 'empty list', locations: [], want: [authz] },
-    { name: 'after existing locations', locations: [root, challenge], want: [root, challenge, authz] },
+    {
+      name: 'server without locations (null)',
+      locations: null,
+      want: [authz],
+    },
+    {
+      name: 'server without locations (undefined)',
+      locations: undefined,
+      want: [authz],
+    },
+    {
+      name: 'empty list',
+      locations: [],
+      want: [authz],
+    },
+    {
+      name: 'after existing locations',
+      locations: [root, challenge],
+      want: [root, challenge, authz],
+    },
   ])('$name', ({ locations, want }) => {
     const got = appendLocation(locations, authz)
 
@@ -33,10 +49,30 @@ describe('appendLocation', () => {
 
 describe('removeLocation', () => {
   test.each([
-    { name: 'null list', locations: null, index: 0, want: [] },
-    { name: 'first location', locations: [root, authz, challenge], index: 0, want: [authz, challenge] },
-    { name: 'middle location', locations: [root, authz, challenge], index: 1, want: [root, challenge] },
-    { name: 'out of range index', locations: [root], index: 3, want: [root] },
+    {
+      name: 'null list',
+      locations: null,
+      index: 0,
+      want: [],
+    },
+    {
+      name: 'first location',
+      locations: [root, authz, challenge],
+      index: 0,
+      want: [authz, challenge],
+    },
+    {
+      name: 'middle location',
+      locations: [root, authz, challenge],
+      index: 1,
+      want: [root, challenge],
+    },
+    {
+      name: 'out of range index',
+      locations: [root],
+      index: 3,
+      want: [root],
+    },
   ])('$name', ({ locations, index, want }) => {
     expect(removeLocation(locations, index)).toEqual(want)
   })
@@ -44,9 +80,24 @@ describe('removeLocation', () => {
 
 describe('duplicateLocation', () => {
   test.each([
-    { name: 'null list', locations: null, index: 0, want: [] },
-    { name: 'copy goes before the original', locations: [root, authz], index: 1, want: [root, authz, authz] },
-    { name: 'out of range index', locations: [root], index: 2, want: [root] },
+    {
+      name: 'null list',
+      locations: null,
+      index: 0,
+      want: [],
+    },
+    {
+      name: 'copy goes before the original',
+      locations: [root, authz],
+      index: 1,
+      want: [root, authz, authz],
+    },
+    {
+      name: 'out of range index',
+      locations: [root],
+      index: 2,
+      want: [root],
+    },
   ])('$name', ({ locations, index, want }) => {
     expect(duplicateLocation(locations, index)).toEqual(want)
   })

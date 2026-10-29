@@ -31,7 +31,9 @@ export function isIPAddress(value: string): boolean {
 }
 
 export function splitCertificateIdentifiers(values: string[]): string[] {
-  return [...new Set(values.flatMap(value => value.split(/\s+/))
-    .map(value => value.trim())
-    .filter(value => value && value !== '_'))]
+  return [
+    ...new Set(values.flatMap(value => value.split(/\s+/))
+      .map(value => value.trim())
+      .filter(value => value && value !== '_')),
+  ]
 }

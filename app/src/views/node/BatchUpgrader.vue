@@ -139,7 +139,9 @@ async function performUpgrade() {
         progressStatus.value = 'exception'
         log($gettext('Upgrade failed for %{node}: %{error}', {
           node: nodes.value[i].name,
-          error: error instanceof Error ? error.message : String(error),
+          error: error instanceof Error
+            ? error.message
+            : String(error),
         }))
       }
     }
@@ -153,7 +155,9 @@ async function performUpgrade() {
       progressStatus.value = 'exception'
       log(error instanceof TwoFACancelledError
         ? $gettext('Upgrade cancelled.')
-        : error instanceof Error ? error.message : String(error))
+        : error instanceof Error
+          ? error.message
+          : String(error))
     }
     else if (!(error instanceof TwoFACancelledError)) {
       throw error

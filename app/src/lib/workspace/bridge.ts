@@ -138,7 +138,9 @@ export function postToPane(pane: Window, message: ShellMessage) {
 
 function windowName(source: MessageEvent['source']): string | null {
   try {
-    return source && 'name' in source ? (source as Window).name : null
+    return source && 'name' in source
+      ? (source as Window).name
+      : null
   }
   catch {
     return null

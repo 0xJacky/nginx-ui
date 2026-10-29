@@ -11,11 +11,20 @@ const tag = computed(() => {
     case 'list':
       return { color: 'green', text: props.slug ?? '' }
     case 'mixed':
-      return { color: 'orange', text: $gettext('Mixed') }
+      return {
+        color: 'orange',
+        text: $gettext('Mixed'),
+      }
     case 'manual':
-      return { color: 'default', text: $gettext('Custom rules') }
+      return {
+        color: 'default',
+        text: $gettext('Custom rules'),
+      }
     case 'public':
-      return { color: 'default', text: $gettext('Public') }
+      return {
+        color: 'default',
+        text: $gettext('Public'),
+      }
     default:
       return undefined
   }

@@ -24,7 +24,9 @@ export function isModeLocked(step: number): boolean {
 
 /** The "Edit configuration file" panel starts collapsed in Quick Setup and expanded in Advanced. */
 export function defaultEditorPanelKeys(mode: WizardMode): string[] {
-  return mode === 'advanced' ? [EDITOR_PANEL_KEY] : []
+  return mode === 'advanced'
+    ? [EDITOR_PANEL_KEY]
+    : []
 }
 
 /**
@@ -37,7 +39,9 @@ export type SSLStepTLSState = 'none' | 'pending' | 'configured'
 export function sslStepTLSState(config: Pick<NgxConfig, 'servers'> | undefined | null): SSLStepTLSState {
   if (hasPendingTLSServer(config))
     return 'pending'
-  return hasTLSServer(config) ? 'configured' : 'none'
+  return hasTLSServer(config)
+    ? 'configured'
+    : 'none'
 }
 
 /**

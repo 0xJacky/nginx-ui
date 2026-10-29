@@ -17,11 +17,29 @@ const { describe } = useSnippetDescription()
 const isNarrow = useBreakpoints(breakpointsAntDesign).smaller('md')
 
 const columns = computed<TableColumnsType<BuiltinTemplate>>(() => isNarrow.value
-  ? [{ title: () => $gettext('Template'), key: 'compact' }]
+  ? [
+      {
+        title: () => $gettext('Template'),
+        key: 'compact',
+      },
+    ]
   : [
-      { title: () => $gettext('Name'), key: 'name' },
-      { title: () => $gettext('Author'), key: 'author', width: 180, responsive: ['lg'] },
-      { title: () => $gettext('Actions'), key: 'actions', width: 220, fixed: 'right' },
+      {
+        title: () => $gettext('Name'),
+        key: 'name',
+      },
+      {
+        title: () => $gettext('Author'),
+        key: 'author',
+        width: 180,
+        responsive: ['lg'],
+      },
+      {
+        title: () => $gettext('Actions'),
+        key: 'actions',
+        width: 220,
+        fixed: 'right',
+      },
     ])
 
 const filtered = computed(() => {
@@ -52,7 +70,10 @@ function rowProps(record: BuiltinTemplate) {
 }
 
 function copyAsSnippet(template: BuiltinTemplate) {
-  router.push({ path: '/sites/snippets/add', query: { from: template.filename } })
+  router.push({
+    path: '/sites/snippets/add',
+    query: { from: template.filename },
+  })
 }
 </script>
 

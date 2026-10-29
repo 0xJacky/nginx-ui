@@ -74,7 +74,9 @@ const contentSuggestions = computed(() => {
 const pageTitle = computed(() => {
   const domain = store.currentDomain?.domain
   // Zones are stored as punycode; show the readable spelling in the heading.
-  return domain ? toUnicodeDomain(domain) : $gettext('DNS Records')
+  return domain
+    ? toUnicodeDomain(domain)
+    : $gettext('DNS Records')
 })
 
 async function initData() {

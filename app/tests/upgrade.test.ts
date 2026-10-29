@@ -3,10 +3,19 @@ import type { UpgradeCallbacks, UpgradeOptions } from '@/lib/upgrade'
 import { describe, expect, mock, test } from 'bun:test'
 import { matchesUpgradeTarget, runUpgrade } from '@/lib/upgrade'
 
-Object.assign(globalThis, { $gettext: (message: string) => message })
+Object.assign(globalThis, {
+  $gettext: (message: string) => message,
+})
 
 function version(overrides: Partial<Info> = {}): Info {
-  return { version: '2.9.0', short_hash: '12345678', build_id: 1, total_build: 1, instance_id: 'old-process', ...overrides }
+  return {
+    version: '2.9.0',
+    short_hash: '12345678',
+    build_id: 1,
+    total_build: 1,
+    instance_id: 'old-process',
+    ...overrides,
+  }
 }
 
 function harness(overrides: Partial<UpgradeOptions> = {}) {
@@ -38,10 +47,22 @@ function harness(overrides: Partial<UpgradeOptions> = {}) {
     // Attach a rejection handler before driving synchronous socket events.
     void result.catch(() => {})
     await Promise.resolve()
-    return { result, callbacks: callbacks!, socket: { send } }
+    return {
+      result,
+      callbacks: callbacks!,
+      socket: { send },
+    }
   }
 
-  return { start, readVersion, close, send, progress, logs, controller }
+  return {
+    start,
+    readVersion,
+    close,
+    send,
+    progress,
+    logs,
+    controller,
+  }
 }
 
 function installationStarted(callbacks: UpgradeCallbacks, message = 'Performing core upgrade') {
@@ -111,7 +132,11 @@ describe('upgrade connection failures', () => {
   test('the overall timeout also bounds the initial version request', async () => {
     const pending = deferred<Info>()
     const connect = mock(() => () => {})
-    const h = harness({ readVersion: () => pending.promise, connect, upgradeTimeout: 10 })
+    const h = harness({
+      readVersion: () => pending.promise,
+      connect,
+      upgradeTimeout: 10,
+    })
     const { result } = await h.start()
     const outcome = await Promise.race([
       result.then(() => 'success', () => 'timeout'),
@@ -136,9 +161,11 @@ describe('upgrade connection failures', () => {
   })
 
   test('socket construction errors reject without reporting completion', async () => {
-    const h = harness({ connect: () => {
-      throw new Error('invalid WebSocket URL')
-    } })
+    const h = harness({
+      connect: () => {
+        throw new Error('invalid WebSocket URL')
+      },
+    })
     const { result } = await h.start()
     await expect(result).rejects.toThrow('invalid WebSocket URL')
     expect(h.progress).not.toContain(100)
@@ -147,9 +174,11 @@ describe('upgrade connection failures', () => {
   test('send failures reject and close the connection', async () => {
     const h = harness()
     const { result, callbacks } = await h.start()
-    callbacks.onConnected({ send: () => {
-      throw new Error('connection is not open')
-    } })
+    callbacks.onConnected({
+      send: () => {
+        throw new Error('connection is not open')
+      },
+    })
     await expect(result).rejects.toThrow('connection is not open')
     expect(h.close).toHaveBeenCalledTimes(1)
     expect(h.progress).not.toContain(100)
@@ -165,7 +194,11 @@ describe('upgrade connection failures', () => {
 
   test('a malformed baseline response never starts a destructive upgrade', async () => {
     const connect = mock(() => () => {})
-    const h = harness({ readVersion: async () => ({}) as Info, connect, upgradeTimeout: 10 })
+    const h = harness({
+      readVersion: async () => ({}) as Info,
+      connect,
+      upgradeTimeout: 10,
+    })
     const { result } = await h.start()
     await expect(result).rejects.toThrow('invalid version response')
     expect(connect).not.toHaveBeenCalled()
@@ -229,7 +262,12 @@ describe('upgrade verification', () => {
   test('supports an older node without a process identifier when its build changes', async () => {
     let reads = 0
     const legacy = harness({
-      readVersion: async () => version({ instance_id: undefined, version: ++reads === 1 ? '2.9.0' : '2.9.1' }),
+      readVersion: async () => version({
+        instance_id: undefined,
+        version: ++reads === 1
+          ? '2.9.0'
+          : '2.9.1',
+      }),
     })
     const started = await legacy.start()
     installationStarted(started.callbacks)
@@ -239,7 +277,9 @@ describe('upgrade verification', () => {
   })
 
   test('dry run completes without a restart or version verification', async () => {
-    const h = harness({ control: { channel: 'stable', dry_run: true } })
+    const h = harness({
+      control: { channel: 'stable', dry_run: true },
+    })
     const { result, callbacks } = await h.start()
     installationStarted(callbacks)
     callbacks.onDisconnected()
@@ -360,7 +400,12 @@ describe('upgrade target matching', () => {
     expect(matchesUpgradeTarget(version({ short_hash: 'ABCDEF12' }), 'SHA-ABCDEF1')).toBe(true)
   })
 
-  test.each([null, {}, { version: '2.9.0' }, version({ instance_id: 123 as unknown as string })])('rejects malformed version responses: %j', info => {
+  test.each([
+    null,
+    {},
+    { version: '2.9.0' },
+    version({ instance_id: 123 as unknown as string }),
+  ])('rejects malformed version responses: %j', info => {
     expect(matchesUpgradeTarget(info as Info, 'v2.9.0')).toBe(false)
   })
 })

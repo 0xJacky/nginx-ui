@@ -28,7 +28,9 @@ export function useNginxPerformance() {
   function applyPerformanceData(response: NginxPerformanceResponse) {
     loading.value = false
     stubStatusEnabled.value = response.stub_status_enabled
-    error.value = response.error || (response.running ? '' : response.message || $gettext('Nginx is not running'))
+    error.value = response.error || (response.running
+      ? ''
+      : response.message || $gettext('Nginx is not running'))
     nginxInfo.value = response.running ? response.info : null
     if (response.running)
       updateLastUpdateTime()

@@ -15,10 +15,15 @@ const { lists, isApplying, isLoadingLists, stateError } = storeToRefs(store)
 const state = computed(() => store.serverState(props.serverIdx))
 const isManual = computed(() => state.value?.mode === 'manual')
 
-const value = computed(() => state.value?.mode === 'list' ? state.value.slug : PublicValue)
+const value = computed(() => state.value?.mode === 'list'
+  ? state.value.slug
+  : PublicValue)
 
 const options = computed(() => [
-  { label: $gettext('Public'), value: PublicValue },
+  {
+    label: $gettext('Public'),
+    value: PublicValue,
+  },
   ...listOptions(lists.value, state.value?.slug),
 ])
 
@@ -34,9 +39,11 @@ const hint = computed(() => {
 function onChange(selected: unknown) {
   if (typeof selected !== 'string')
     return
-  store.apply([selected === PublicValue
-    ? { server: props.serverIdx, mode: 'public' }
-    : { server: props.serverIdx, mode: 'list', slug: selected }])
+  store.apply([
+    selected === PublicValue
+      ? { server: props.serverIdx, mode: 'public' }
+      : { server: props.serverIdx, mode: 'list', slug: selected },
+  ])
 }
 </script>
 

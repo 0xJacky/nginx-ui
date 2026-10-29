@@ -8,11 +8,15 @@ describe('findDeclaredZone', () => {
       { directive: 'zone', params: 'backend 128k' },
       { directive: 'server', params: '127.0.0.1:8080' },
     ])).toBe('backend 128k')
-    expect(findDeclaredZone([{ directive: 'zone', params: ' shared; ' }])).toBe('shared')
+    expect(findDeclaredZone([
+      { directive: 'zone', params: ' shared; ' },
+    ])).toBe('shared')
   })
 
   test('is undefined for a block without a zone', () => {
-    expect(findDeclaredZone([{ directive: 'server', params: '127.0.0.1:8080' }])).toBeUndefined()
+    expect(findDeclaredZone([
+      { directive: 'server', params: '127.0.0.1:8080' },
+    ])).toBeUndefined()
     expect(findDeclaredZone([])).toBeUndefined()
     expect(findDeclaredZone(undefined)).toBeUndefined()
   })

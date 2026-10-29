@@ -125,143 +125,153 @@ function renderDnsDomainClarification() {
   )
 }
 
-const columns: StdTableColumn[] = [{
-  title: () => $gettext('DNS Zone'),
-  dataIndex: 'domain',
-  // Internationalized zones are stored as punycode. Show the readable form and
-  // keep the stored one visible underneath so it stays copyable.
-  customRender: ({ record }: CustomRenderArgs & { record: DNSDomain }) => {
-    const domain = record.domain ?? ''
-    if (!isIdnDomain(domain))
-      return domain || '--'
-
-    return (
-      <div class="flex flex-col">
-        <span>{toUnicodeDomain(domain)}</span>
-        <span class="text-xs opacity-45">{domain}</span>
-      </div>
-    )
-  },
-  sorter: true,
-  search: true,
-  edit: {
-    type: 'input',
-    hint: $gettext('Enter the zone managed by your DNS provider, such as example.com. Add subdomains such as ddns.example.com later as DNS records.'),
-    input: {
-      placeholder: 'example.com',
-    },
-    formItem: {
-      required: true,
-    },
-  },
-}, {
-  title: () => $gettext('Credential'),
-  dataIndex: 'dns_credential_id',
-  customRender: ({ record }: CustomRenderArgs & { record: DNSDomain }) => {
-    return resolveCredentialName(record as DomainForm)
-  },
-  edit: {
-    type: (context: DomainEditContext) => {
-      const formData = context.formData
-      if (!formData.provider_initialized) {
-        formData.selected_provider = context.mode === 'edit'
-          ? (resolveProviderCode(formData) || resolveProviderName(formData))
-          : ''
-        formData.provider_initialized = true
-      }
-      const providerRef = computed({
-        get: () => {
-          return formData.selected_provider ?? ''
-        },
-        set: (value: string) => {
-          formData.selected_provider = value
-        },
-      })
-
-      const mergedProviderOptions = computed<SelectOptionList>(() => {
-        const base = providerOptions.value
-        if (
-          providerRef.value
-          && !base.some(option => option.value === providerRef.value)
-        ) {
-          return [
-            ...base,
-            {
-              label: providerRef.value,
-              value: providerRef.value,
-            },
-          ]
-        }
-        return base
-      })
-
-      if (providerRef.value)
-        ensureCredentialOptions(providerRef.value)
-
-      const credentialList: SelectOptionList = providerRef.value ? credentialOptions[providerRef.value] ?? [] : []
-      const credentialField = providerRef.value
-        ? (
-            <FormItem key="credential" label={$gettext('Credential')} required>
-              <Select
-                v-model:value={formData.dns_credential_id}
-                options={credentialList}
-                placeholder={$gettext('Select Credential')}
-                loading={Boolean(credentialLoadingMap[providerRef.value] && !credentialList.length)}
-                showSearch
-                filterOption={filterOption}
-              />
-            </FormItem>
-          )
-        : null
-
-      function handleProviderChange(value: string) {
-        providerRef.value = value
-        clearCredentialSelection(formData)
-        if (value)
-          ensureCredentialOptions(value)
-      }
+const columns: StdTableColumn[] = [
+  {
+    title: () => $gettext('DNS Zone'),
+    dataIndex: 'domain',
+    // Internationalized zones are stored as punycode. Show the readable form and
+    // keep the stored one visible underneath so it stays copyable.
+    customRender: ({ record }: CustomRenderArgs & { record: DNSDomain }) => {
+      const domain = record.domain ?? ''
+      if (!isIdnDomain(domain))
+        return domain || '--'
 
       return (
-        <div class="flex flex-col gap-4">
-          {renderDnsDomainClarification()}
-          <FormItem label={$gettext('Provider')} required>
-            <Select
-              value={providerRef.value || undefined}
-              options={mergedProviderOptions.value}
-              placeholder={$gettext('Select Provider')}
-              showSearch
-              filterOption={filterOption}
-              loading={isLoadingProviders.value}
-              onChange={handleProviderChange}
-            />
-          </FormItem>
-          {credentialField}
+        <div class="flex flex-col">
+          <span>{toUnicodeDomain(domain)}</span>
+          <span class="text-xs opacity-45">{domain}</span>
         </div>
       )
     },
-    formItem: {
-      hiddenLabelInEdit: true,
+    sorter: true,
+    search: true,
+    edit: {
+      type: 'input',
+      hint: $gettext('Enter the zone managed by your DNS provider, such as example.com. Add subdomains such as ddns.example.com later as DNS records.'),
+      input: {
+        placeholder: 'example.com',
+      },
+      formItem: {
+        required: true,
+      },
     },
-    rules: [{ required: true }],
   },
-}, {
-  title: () => $gettext('Provider'),
-  dataIndex: 'credential.provider',
-  customRender: ({ record }: CustomRenderArgs & { record: DNSDomain }) => {
-    return resolveProviderName(record as DomainForm) || '--'
+  {
+    title: () => $gettext('Credential'),
+    dataIndex: 'dns_credential_id',
+    customRender: ({ record }: CustomRenderArgs & { record: DNSDomain }) => {
+      return resolveCredentialName(record as DomainForm)
+    },
+    edit: {
+      type: (context: DomainEditContext) => {
+        const formData = context.formData
+        if (!formData.provider_initialized) {
+          formData.selected_provider = context.mode === 'edit'
+            ? (resolveProviderCode(formData) || resolveProviderName(formData))
+            : ''
+          formData.provider_initialized = true
+        }
+        const providerRef = computed({
+          get: () => {
+            return formData.selected_provider ?? ''
+          },
+          set: (value: string) => {
+            formData.selected_provider = value
+          },
+        })
+
+        const mergedProviderOptions = computed<SelectOptionList>(() => {
+          const base = providerOptions.value
+          if (
+            providerRef.value
+            && !base.some(option => option.value === providerRef.value)
+          ) {
+            return [
+              ...base,
+              {
+                label: providerRef.value,
+                value: providerRef.value,
+              },
+            ]
+          }
+          return base
+        })
+
+        if (providerRef.value)
+          ensureCredentialOptions(providerRef.value)
+
+        const credentialList: SelectOptionList = providerRef.value
+          ? credentialOptions[providerRef.value] ?? []
+          : []
+        const credentialField = providerRef.value
+          ? (
+              <FormItem key="credential" label={$gettext('Credential')} required>
+                <Select
+                  v-model:value={formData.dns_credential_id}
+                  options={credentialList}
+                  placeholder={$gettext('Select Credential')}
+                  loading={Boolean(credentialLoadingMap[providerRef.value] && !credentialList.length)}
+                  showSearch
+                  filterOption={filterOption}
+                />
+              </FormItem>
+            )
+          : null
+
+        function handleProviderChange(value: string) {
+          providerRef.value = value
+          clearCredentialSelection(formData)
+          if (value)
+            ensureCredentialOptions(value)
+        }
+
+        return (
+          <div class="flex flex-col gap-4">
+            {renderDnsDomainClarification()}
+            <FormItem label={$gettext('Provider')} required>
+              <Select
+                value={providerRef.value || undefined}
+                options={mergedProviderOptions.value}
+                placeholder={$gettext('Select Provider')}
+                showSearch
+                filterOption={filterOption}
+                loading={isLoadingProviders.value}
+                onChange={handleProviderChange}
+              />
+            </FormItem>
+            {credentialField}
+          </div>
+        )
+      },
+      formItem: {
+        hiddenLabelInEdit: true,
+      },
+      rules: [
+        { required: true },
+      ],
+    },
   },
-  pure: true,
-}, {
-  title: () => $gettext('Updated at'),
-  dataIndex: 'updated_at',
-  customRender: datetimeRender,
-  sorter: true,
-  pure: true,
-}, {
-  title: () => $gettext('Actions'),
-  dataIndex: 'actions',
-  fixed: 'right',
-}]
+  {
+    title: () => $gettext('Provider'),
+    dataIndex: 'credential.provider',
+    customRender: ({ record }: CustomRenderArgs & { record: DNSDomain }) => {
+      return resolveProviderName(record as DomainForm) || '--'
+    },
+    pure: true,
+  },
+  {
+    title: () => $gettext('Updated at'),
+    dataIndex: 'updated_at',
+    customRender: datetimeRender,
+    sorter: true,
+    pure: true,
+  },
+  {
+    title: () => $gettext('Actions'),
+    dataIndex: 'actions',
+    fixed: 'right',
+  },
+]
 
 function goToRecords(record: DNSDomain) {
   router.push({

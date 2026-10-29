@@ -10,7 +10,9 @@ import { routes } from '@/routes'
 
 const route = useRoute()
 
-const openKeys = ref([openSub()])
+const openKeys = ref([
+  openSub(),
+])
 
 const selectedKey = ref([route.name as string])
 
@@ -80,7 +82,9 @@ const visible: ComputedRef<Sidebar[]> = computed(() => {
       name: s.name as string,
       meta: {
         ...s.meta,
-        icon: s.meta?.icon ? markRaw(s.meta.icon as Component) : undefined,
+        icon: s.meta?.icon
+          ? markRaw(s.meta.icon as Component)
+          : undefined,
       } as unknown as Meta,
       children: [],
     };

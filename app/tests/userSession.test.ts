@@ -7,15 +7,23 @@ Object.assign(globalThis, {
   computed,
   ref,
   watch,
-  window: Object.assign(new EventTarget(), { location: { protocol: 'http:' } }),
+  window: Object.assign(new EventTarget(), {
+    location: { protocol: 'http:' },
+  }),
 })
 mock.module('@vueuse/integrations/useCookies', () => ({
-  useCookies: () => ({ set() {}, remove() {}, addChangeListener() {} }),
+  useCookies: () => ({
+    set() {},
+    remove() {},
+    addChangeListener() {},
+  }),
 }))
 mock.module('../src/api/2fa', () => ({ default: {} }))
 const requests: ((data: { short_token: string }) => void)[] = []
 mock.module('../src/api/user', () => ({
-  default: { fetchShortToken: () => new Promise(resolve => requests.push(resolve)) },
+  default: {
+    fetchShortToken: () => new Promise(resolve => requests.push(resolve)),
+  },
 }))
 const { useUserStore } = await import('../src/pinia/moudule/user')
 

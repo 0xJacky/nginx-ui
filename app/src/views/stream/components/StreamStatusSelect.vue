@@ -52,7 +52,9 @@ function onChangeStatus(checked: CheckedType) {
   // Save original status to restore if user cancels
   const originalStatus = status.value
 
-  const action = isChecked ? $gettext('enable') : $gettext('disable')
+  const action = isChecked
+    ? $gettext('enable')
+    : $gettext('disable')
 
   modal.confirm({
     title: $gettext('Do you want to %{action} this stream?', { action }),

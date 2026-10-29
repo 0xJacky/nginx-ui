@@ -15,7 +15,13 @@ describe('DNS record resolution lines', () => {
   })
 
   test('does not enable line selection for unsupported providers', () => {
-    for (const provider of [undefined, '', 'cloudflare', 'azuredns', 'unknown'])
+    for (const provider of [
+      undefined,
+      '',
+      'cloudflare',
+      'azuredns',
+      'unknown',
+    ])
       expect(getDefaultDNSRecordLine(provider)).toBeUndefined()
   })
 })

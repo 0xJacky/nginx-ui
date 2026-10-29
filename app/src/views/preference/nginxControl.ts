@@ -11,7 +11,9 @@ export function resolveNginxControlMode(nginx: NginxSettings): NginxControlMode 
 export function cloneNginxSettings(nginx: NginxSettings): NginxSettings {
   return {
     ...nginx,
-    log_dir_white_list: [...(nginx.log_dir_white_list ?? [])],
+    log_dir_white_list: [
+      ...(nginx.log_dir_white_list ?? []),
+    ],
   }
 }
 
@@ -22,7 +24,9 @@ export function buildNginxControlPayload(
 ): NginxControlSettings {
   return {
     mode,
-    container_name: mode === 'external_container' ? containerName.trim() : '',
+    container_name: mode === 'external_container'
+      ? containerName.trim()
+      : '',
     host_address: nginx.host_address,
     host_user: nginx.host_user,
     host_access_mode: nginx.host_access_mode,
@@ -49,7 +53,9 @@ export function buildNginxControlPayload(
 export function applyNginxControlSettings(target: NginxSettings, settings: NginxControlSettings) {
   Object.assign(target, {
     container_name: settings.container_name,
-    host_mode: settings.mode === 'host_via_ssh' ? 'ssh' : '',
+    host_mode: settings.mode === 'host_via_ssh'
+      ? 'ssh'
+      : '',
     host_address: settings.host_address,
     host_user: settings.host_user,
     host_access_mode: settings.host_access_mode,

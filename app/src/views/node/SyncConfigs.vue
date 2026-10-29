@@ -22,7 +22,12 @@ function open(ids: number[], nodes: AnalyticNode[]) {
   visible.value = true
   nodeIds.value = [...ids]
   nodeNames.value = nodes.map(node => node.name)
-  scope.value = { configs: true, sites: true, streams: true, overwrite: true }
+  scope.value = {
+    configs: true,
+    sites: true,
+    streams: true,
+    overwrite: true,
+  }
 }
 
 defineExpose({

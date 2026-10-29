@@ -142,14 +142,18 @@ async function handleLoginSuccess(options: LoginSuccessOptions = {}) {
   }
 
   const next = (route.query?.next || '').toString()
-  await router.push(next && next !== '/' ? next : '/dashboard/server')
+  await router.push(next && next !== '/'
+    ? next
+    : '/dashboard/server')
 }
 
 function beginMFA(id: string) {
   mfaPreAuthId.value = id
   modelRef.password = ''
   const next = route.query.next?.toString()
-  const params = next ? `?next=${encodeURIComponent(next)}` : ''
+  const params = next
+    ? `?next=${encodeURIComponent(next)}`
+    : ''
   window.history.replaceState(null, '', `${window.location.pathname}#/login${params}`)
 }
 
@@ -245,7 +249,9 @@ const user = useUserStore()
 if (user.isLogin) {
   const next = (route.query?.next || '').toString()
 
-  router.push(next && next !== '/' ? next : '/dashboard/server')
+  router.push(next && next !== '/'
+    ? next
+    : '/dashboard/server')
 }
 
 watch(() => gettext.current, () => {

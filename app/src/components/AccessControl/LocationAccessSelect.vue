@@ -30,8 +30,14 @@ const value = computed(() => {
 })
 
 const options = computed(() => [
-  { label: $gettext('Inherit from server'), value: InheritValue },
-  { label: $gettext('Public'), value: PublicValue },
+  {
+    label: $gettext('Inherit from server'),
+    value: InheritValue,
+  },
+  {
+    label: $gettext('Public'),
+    value: PublicValue,
+  },
   ...listOptions(lists.value, state.value?.slug),
 ])
 
@@ -70,12 +76,21 @@ function onChange(selected: unknown) {
   if (typeof selected !== 'string')
     return
   const base = { server: props.serverIdx, location: props.locationIdx }
-  if (selected === InheritValue)
-    store.apply([{ ...base, mode: 'inherit' }])
-  else if (selected === PublicValue)
-    store.apply([{ ...base, mode: 'public' }])
-  else
-    store.apply([{ ...base, mode: 'list', slug: selected }])
+  if (selected === InheritValue) {
+    store.apply([
+      { ...base, mode: 'inherit' },
+    ])
+  }
+  else if (selected === PublicValue) {
+    store.apply([
+      { ...base, mode: 'public' },
+    ])
+  }
+  else {
+    store.apply([
+      { ...base, mode: 'list', slug: selected },
+    ])
+  }
 }
 
 function unlockACME() {

@@ -1,5 +1,11 @@
 // List of protected directories that cannot be deleted
-const PROTECTED_DIRS = ['sites-enabled', 'sites-available', 'streams-enabled', 'streams-available', 'conf.d']
+const PROTECTED_DIRS = [
+  'sites-enabled',
+  'sites-available',
+  'streams-enabled',
+  'streams-available',
+  'conf.d',
+]
 
 /**
  * Check if a file/directory name is protected and cannot be deleted

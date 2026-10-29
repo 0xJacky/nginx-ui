@@ -102,7 +102,9 @@ async function downloadCertificateFiles() {
       const blob = await certApi.download_file(props.data.id, {
         format: isZip ? 'zip' : 'pfx',
         formats: isZip ? formats : undefined,
-        pfx_password: formats.includes('pfx') ? pfxPassword.value : undefined,
+        pfx_password: formats.includes('pfx')
+          ? pfxPassword.value
+          : undefined,
       })
       downloadBlob(blob, `${props.data.name}.${isZip ? 'zip' : 'pfx'}`)
     }

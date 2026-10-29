@@ -60,7 +60,9 @@ const terminalContext = computed(() => {
   }
 
   const activeTabId = terminalStore.activeTabId
-  const currentCommand = activeTabId ? tabCommands.value.get(activeTabId) || '' : ''
+  const currentCommand = activeTabId
+    ? tabCommands.value.get(activeTabId) || ''
+    : ''
 
   if (activeTabId && terminalStore.activeTab) {
     context += `Active terminal tab: ${terminalStore.activeTab.name}\n`

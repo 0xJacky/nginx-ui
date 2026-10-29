@@ -28,7 +28,9 @@ const isPendingTLS = computed(() => isPendingTLSServer(curServer.value))
 // reset domains the operator added.
 const serverDomains = computed<string[]>(previous => {
   const next = extractServerDomains([curServer.value])
-  return previous && sameStringList(previous, next) ? previous : next
+  return previous && sameStringList(previous, next)
+    ? previous
+    : next
 })
 
 function onHTTPSEnabled() {

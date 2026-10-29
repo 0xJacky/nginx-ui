@@ -32,7 +32,9 @@ function digitValue(codePoint: number): number {
 }
 
 function adaptBias(delta: number, numPoints: number, firstTime: boolean): number {
-  let scaled = firstTime ? Math.floor(delta / DAMP) : delta >> 1
+  let scaled = firstTime
+    ? Math.floor(delta / DAMP)
+    : delta >> 1
   scaled += Math.floor(scaled / numPoints)
 
   let k = 0
@@ -66,7 +68,9 @@ function decodePunycode(input: string): string | undefined {
   let i = 0
   let bias = INITIAL_BIAS
 
-  let index = lastDelimiter > 0 ? lastDelimiter + 1 : 0
+  let index = lastDelimiter > 0
+    ? lastDelimiter + 1
+    : 0
   if (index >= input.length)
     return undefined
 
@@ -86,7 +90,11 @@ function decodePunycode(input: string): string | undefined {
 
       i += digit * w
 
-      const t = k <= bias ? T_MIN : (k >= bias + T_MAX ? T_MAX : k - bias)
+      const t = k <= bias
+        ? T_MIN
+        : (k >= bias + T_MAX
+            ? T_MAX
+            : k - bias)
       if (digit < t)
         break
 
@@ -124,7 +132,9 @@ export function decodeIdnLabel(label: string): string {
   const decoded = decodePunycode(label.slice(ACE_PREFIX.length))
   // An undecodable label is left alone: a name that merely looks like punycode is
   // still a legitimate DNS label.
-  return decoded === undefined || decoded === '' ? label : decoded
+  return decoded === undefined || decoded === ''
+    ? label
+    : decoded
 }
 
 /**

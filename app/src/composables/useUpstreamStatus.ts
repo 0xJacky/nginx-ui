@@ -121,7 +121,9 @@ export function useUpstreamStatus(namespaceId?: Ref<number | undefined>) {
 
   // Get target tooltip title
   function getTargetTitle(target: ProxyTarget): string {
-    return `${$gettext('Type')}: ${target.type === 'upstream' ? $gettext('Upstream') : $gettext('Proxy Pass')}`
+    return `${$gettext('Type')}: ${target.type === 'upstream'
+      ? $gettext('Upstream')
+      : $gettext('Proxy Pass')}`
   }
 
   // Get node name by ID

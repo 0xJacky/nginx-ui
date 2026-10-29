@@ -96,7 +96,9 @@ export function toCheckRows(result: VerifyResult | null): CheckRow[] {
     key,
     label: checkLabel(key),
     outcome,
-    suggestedFix: outcome.remediation ? remediationText(outcome.remediation) : undefined,
+    suggestedFix: outcome.remediation
+      ? remediationText(outcome.remediation)
+      : undefined,
     suggestedCommand: outcome.remediation ? remediationCommands[outcome.remediation.code] : undefined,
     level: checkLevel(outcome),
   }))

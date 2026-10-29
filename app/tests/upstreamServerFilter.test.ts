@@ -74,12 +74,18 @@ describe('last primary server guard', () => {
   })
 
   test('allows disabling while another primary stays up', () => {
-    const servers = [{ address: 'a:80' }, { address: 'b:80' }]
+    const servers = [
+      { address: 'a:80' },
+      { address: 'b:80' },
+    ]
     expect(disablesLastPrimary(servers, 'a:80')).toBe(false)
   })
 
   test('never flags backup, already disabled or unknown servers', () => {
-    const servers = [{ address: 'a:80', down: true }, { address: 'c:80', backup: true }]
+    const servers = [
+      { address: 'a:80', down: true },
+      { address: 'c:80', backup: true },
+    ]
     expect(disablesLastPrimary(servers, 'a:80')).toBe(false)
     expect(disablesLastPrimary(servers, 'c:80')).toBe(false)
     expect(disablesLastPrimary(servers, 'z:80')).toBe(false)

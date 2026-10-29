@@ -33,7 +33,14 @@ interface FormState extends Omit<ManagedUpstream, 'method' | 'zone_size'> {
 }
 
 function createServer(): ManagedUpstreamServer {
-  return { address: '', weight: null, max_fails: null, fail_timeout: '', backup: false, down: false }
+  return {
+    address: '',
+    weight: null,
+    max_fails: null,
+    fail_timeout: '',
+    backup: false,
+    down: false,
+  }
 }
 
 function createForm(): FormState {
@@ -46,7 +53,9 @@ function createForm(): FormState {
     // New groups share their balancing state across worker processes.
     zone: true,
     zoneSizeKb: DEFAULT_ZONE_SIZE_KB,
-    servers: [createServer()],
+    servers: [
+      createServer(),
+    ],
     extra_directives: '',
   }
 }
@@ -81,11 +90,26 @@ const drawerTitle = computed(() => {
 const extraDirectivesPlaceholder = 'keepalive_timeout 60s;\nkeepalive_requests 1000;'
 
 const methodOptions = computed<SelectProps['options']>(() => [
-  { label: $gettext('Round Robin (default)'), value: 'round_robin' },
-  { label: $gettext('Least Connections (least_conn)'), value: 'least_conn' },
-  { label: $gettext('IP Hash (ip_hash)'), value: 'ip_hash' },
-  { label: $gettext('Hash (hash)'), value: 'hash' },
-  { label: $gettext('Random (random)'), value: 'random' },
+  {
+    label: $gettext('Round Robin (default)'),
+    value: 'round_robin',
+  },
+  {
+    label: $gettext('Least Connections (least_conn)'),
+    value: 'least_conn',
+  },
+  {
+    label: $gettext('IP Hash (ip_hash)'),
+    value: 'ip_hash',
+  },
+  {
+    label: $gettext('Hash (hash)'),
+    value: 'hash',
+  },
+  {
+    label: $gettext('Random (random)'),
+    value: 'random',
+  },
 ])
 
 // nginx rejects `backup` together with these methods.
@@ -96,8 +120,12 @@ function toPayload(): ManagedUpstream {
   return {
     ...rest,
     name: props.name || form.name.trim(),
-    method: form.method === 'round_robin' ? '' : form.method,
-    zone_size: form.zone ? kbToZoneSize(zoneSizeKb) : undefined,
+    method: form.method === 'round_robin'
+      ? ''
+      : form.method,
+    zone_size: form.zone
+      ? kbToZoneSize(zoneSizeKb)
+      : undefined,
     servers: form.servers.map(server => ({
       ...server,
       backup: isBackupSupported.value && server.backup,
@@ -131,7 +159,14 @@ async function load() {
       // Groups saved without a zone keep it off until the operator opts in.
       zone: detail.zone,
       zoneSizeKb: zoneSizeToKb(detail.zone_size) ?? DEFAULT_ZONE_SIZE_KB,
-      servers: detail.servers.length > 0 ? detail.servers.map(server => ({ ...createServer(), ...server })) : [createServer()],
+      servers: detail.servers.length > 0
+        ? detail.servers.map(server => ({
+            ...createServer(),
+            ...server,
+          }))
+        : [
+            createServer(),
+          ],
       extra_directives: detail.extra_directives ?? '',
     })
     references.value = detail.references

@@ -16,7 +16,9 @@ function route(path: string, params: RouteLocationNormalizedLoaded['params'] = {
     params,
     matched: [
       { meta: {} },
-      { meta: { hiddenInSidebar: hidden } },
+      {
+        meta: { hiddenInSidebar: hidden },
+      },
     ] as unknown as LandingRoute['matched'],
   }
 }
@@ -78,7 +80,9 @@ describe('node switch landing', () => {
 
   test('falls back to the dashboard for resource pages', () => {
     expect(resolveSwitchLanding(route('/sites/example.com', { name: 'example.com' }))).toBe('/dashboard')
-    expect(resolveSwitchLanding(route('/config/conf.d/edit', { name: ['conf.d'] }))).toBe('/dashboard')
+    expect(resolveSwitchLanding(route('/config/conf.d/edit', {
+      name: ['conf.d'],
+    }))).toBe('/dashboard')
   })
 
   test('ignores empty params', () => {

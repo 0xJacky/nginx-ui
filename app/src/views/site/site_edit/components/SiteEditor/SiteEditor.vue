@@ -55,7 +55,9 @@ const showHTTPSOnboarding = computed(() => {
 // reset domains the operator added.
 const siteDomains = computed<string[]>(previous => {
   const next = extractSiteDomains(ngxConfig.value)
-  return previous && sameStringList(previous, next) ? previous : next
+  return previous && sameStringList(previous, next)
+    ? previous
+    : next
 })
 
 const httpsCardWrapper = useTemplateRef('httpsCardWrapper')

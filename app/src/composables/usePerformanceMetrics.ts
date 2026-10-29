@@ -52,10 +52,26 @@ export function usePerformanceMetrics(nginxInfo: Ref<NginxPerformanceInfo | unde
     }
 
     return [
-      { type: $gettext('Worker Processes'), value: nginxInfo.value.workers, color: '#1890ff' },
-      { type: $gettext('Master Process'), value: nginxInfo.value.master, color: '#52c41a' },
-      { type: $gettext('Cache Processes'), value: nginxInfo.value.cache, color: '#faad14' },
-      { type: $gettext('Other Processes'), value: nginxInfo.value.other, color: '#f5222d' },
+      {
+        type: $gettext('Worker Processes'),
+        value: nginxInfo.value.workers,
+        color: '#1890ff',
+      },
+      {
+        type: $gettext('Master Process'),
+        value: nginxInfo.value.master,
+        color: '#52c41a',
+      },
+      {
+        type: $gettext('Cache Processes'),
+        value: nginxInfo.value.cache,
+        color: '#faad14',
+      },
+      {
+        type: $gettext('Other Processes'),
+        value: nginxInfo.value.other,
+        color: '#f5222d',
+      },
     ]
   })
 

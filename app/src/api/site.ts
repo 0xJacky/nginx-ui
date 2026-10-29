@@ -85,7 +85,11 @@ const baseUrl = '/sites'
 
 // `?force=1` lets a request change a site managed by an ingress anyway.
 function forceConfig(force?: boolean) {
-  return force ? { params: { force: 1 } } : undefined
+  return force
+    ? {
+        params: { force: 1 },
+      }
+    : undefined
 }
 
 const site = extendCurdApi(useCurdApi<Site>(baseUrl), {

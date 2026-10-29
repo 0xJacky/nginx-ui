@@ -36,12 +36,17 @@ const recordTypes = [
 ]
 
 const resolutionLineOptions = computed(() => {
-  const lines = [...(props.lineOptions ?? [])]
+  const lines = [
+    ...(props.lineOptions ?? []),
+  ]
   const currentLine = formModel.value.line?.trim()
   const defaultLineCode = props.defaultLineCode?.trim()
 
   if (defaultLineCode && !lines.some(line => line.code === defaultLineCode)) {
-    lines.unshift({ code: defaultLineCode, display_name: $gettext('Default') })
+    lines.unshift({
+      code: defaultLineCode,
+      display_name: $gettext('Default'),
+    })
   }
   if (currentLine && !lines.some(line => line.code === currentLine)) {
     lines.push({ code: currentLine, display_name: currentLine })
@@ -50,7 +55,9 @@ const resolutionLineOptions = computed(() => {
   return lines.map(line => {
     const name = line.display_name || line.name || line.code
     return {
-      label: name === line.code ? name : `${name} (${line.code})`,
+      label: name === line.code
+        ? name
+        : `${name} (${line.code})`,
       value: line.code,
     }
   })

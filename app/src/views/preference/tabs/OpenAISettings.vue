@@ -89,9 +89,15 @@ const {
 const discoveryAlert = computed(() => {
   switch (discoveryStatus.value) {
     case 'missing_token':
-      return { type: 'info' as const, title: $gettext('Enter the API token to list the available models') }
+      return {
+        type: 'info' as const,
+        title: $gettext('Enter the API token to list the available models'),
+      }
     case 'loading':
-      return { type: 'info' as const, title: $gettext('Fetching the model list...') }
+      return {
+        type: 'info' as const,
+        title: $gettext('Fetching the model list...'),
+      }
     case 'success':
       return {
         type: 'success' as const,
@@ -99,7 +105,9 @@ const discoveryAlert = computed(() => {
           'Connected, %{count} model available',
           'Connected, %{count} models available',
           discoveredModels.value?.length ?? 0,
-          { count: String(discoveredModels.value?.length ?? 0) },
+          {
+            count: String(discoveredModels.value?.length ?? 0),
+          },
         ),
       }
     case 'unsupported':
@@ -176,8 +184,12 @@ const selectedModelCapabilities = computed(() => {
     `${$gettext('Context window')}: ${preset.contextWindow.toLocaleString()} ${$gettext('tokens')}`,
     `${$gettext('Input modalities')}: ${preset.inputModalities.map(formatCapability).join(', ')}`,
     `${$gettext('Thinking modes')}: ${preset.thinkingModes.map(formatCapability).join(', ')}`,
-    ...(preset.pricingTiers ?? [{ label: '', pricing: preset.pricing }]).map(tier =>
-      `${$gettext('Pricing per million tokens')}${tier.label ? ` (${tier.label})` : ''}: ${formatPricing(tier.pricing)}`,
+    ...(preset.pricingTiers ?? [
+      { label: '', pricing: preset.pricing },
+    ]).map(tier =>
+      `${$gettext('Pricing per million tokens')}${tier.label
+        ? ` (${tier.label})`
+        : ''}: ${formatPricing(tier.pricing)}`,
     ),
   ]
 })

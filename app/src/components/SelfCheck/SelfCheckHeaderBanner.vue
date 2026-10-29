@@ -34,7 +34,9 @@ const allFailingAreFixable = computed(() => {
 })
 
 const actionLabel = computed(() =>
-  allFailingAreFixable.value ? $gettext('Fix') : $gettext('Check'),
+  allFailingAreFixable.value
+    ? $gettext('Fix')
+    : $gettext('Check'),
 )
 
 onMounted(() => {

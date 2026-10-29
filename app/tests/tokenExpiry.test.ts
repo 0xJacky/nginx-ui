@@ -40,7 +40,15 @@ describe('JWT expiry', () => {
   })
 
   test('leaves opaque, malformed and missing-exp credentials to server validation', () => {
-    for (const value of ['', 'opaque-token', 'x.?.y', 'x.bnVsbA.y', token(undefined), token('101'), token(1e308)]) {
+    for (const value of [
+      '',
+      'opaque-token',
+      'x.?.y',
+      'x.bnVsbA.y',
+      token(undefined),
+      token('101'),
+      token(1e308),
+    ]) {
       expect(getTokenExpiration(value)).toBeNull()
       expect(isTokenExpired(value)).toBe(false)
     }
@@ -49,7 +57,9 @@ describe('JWT expiry', () => {
   test('expires a persisted token on the initial check', () => {
     const f = fixture(token(99))
     f.monitor.check()
-    expect(f.expired).toEqual([token(99)])
+    expect(f.expired).toEqual([
+      token(99),
+    ])
     expect(f.jobs).toHaveLength(0)
   })
 
@@ -59,7 +69,9 @@ describe('JWT expiry', () => {
     expect(f.jobs[0].delay).toBe(1000)
     f.setTime(101_000)
     f.jobs[0].callback()
-    expect(f.expired).toEqual([token(101)])
+    expect(f.expired).toEqual([
+      token(101),
+    ])
     f.monitor.check()
     expect(f.expired).toHaveLength(1)
   })
@@ -70,7 +82,9 @@ describe('JWT expiry', () => {
     f.setTime(300_000)
     f.monitor.check()
     expect(f.jobs[0].cancelled).toBe(true)
-    expect(f.expired).toEqual([token(200)])
+    expect(f.expired).toEqual([
+      token(200),
+    ])
   })
 
   test('a queued old timer cannot expire a replacement session', () => {

@@ -20,7 +20,10 @@ describe('MiniMax presets', () => {
     expect(preset.value).toBe('minimax_flash')
     expect(preset.params?.off).toBeUndefined()
     for (const level of ['low', 'medium', 'high'] as const) {
-      expect(preset.params?.[level]).toEqual({ thinking: { type: 'adaptive' }, reasoning_effort: level })
+      expect(preset.params?.[level]).toEqual({
+        thinking: { type: 'adaptive' },
+        reasoning_effort: level,
+      })
     }
     expect(suggestThinkingPreset('MiniMax-M3.1-Flash', 'https://api.minimaxi.com/v1').value).toBe('minimax_flash')
   })
@@ -28,8 +31,12 @@ describe('MiniMax presets', () => {
   test('keeps M3 thinking switch separate from Flash effort controls', () => {
     const preset = suggestThinkingPreset('MiniMax-M3')
     expect(preset.value).toBe('minimax_m3')
-    expect(preset.params?.off).toEqual({ thinking: { type: 'disabled' } })
-    expect(preset.params?.high).toEqual({ thinking: { type: 'adaptive' } })
+    expect(preset.params?.off).toEqual({
+      thinking: { type: 'disabled' },
+    })
+    expect(preset.params?.high).toEqual({
+      thinking: { type: 'adaptive' },
+    })
     expect(preset.params?.low).toBeUndefined()
   })
 

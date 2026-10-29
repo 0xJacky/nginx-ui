@@ -273,7 +273,9 @@ const settings = {
     return http.get('/settings/auth/banned_ips')
   },
   remove_banned_ip(ip: string) {
-    return http.delete('/settings/auth/banned_ip', { data: { ip } })
+    return http.delete('/settings/auth/banned_ip', {
+      data: { ip },
+    })
   },
 }
 

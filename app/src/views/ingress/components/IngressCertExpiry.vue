@@ -25,7 +25,9 @@ const text = computed(() => {
     case 'pending':
       return $gettext('Not issued yet')
     case 'expired':
-      return $gettext('Expired %{date}', { date: formatDate(notAfter!) })
+      return $gettext('Expired %{date}', {
+        date: formatDate(notAfter!),
+      })
     default:
       return $ngettext('%{date} (%{days} day left)', '%{date} (%{days} days left)', daysLeft!, {
         date: formatDate(notAfter!),

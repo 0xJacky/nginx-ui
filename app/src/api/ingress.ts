@@ -196,7 +196,10 @@ function flag(value?: boolean) {
 
 const ingress = {
   getList(owner?: string, config?: AxiosRequestConfig): Promise<{ data: Ingress[] }> {
-    return http.get(baseUrl, { ...config, params: { owner: owner || undefined } })
+    return http.get(baseUrl, {
+      ...config,
+      params: { owner: owner || undefined },
+    })
   },
 
   getItem(name: string, config?: AxiosRequestConfig): Promise<Ingress> {
@@ -204,11 +207,15 @@ const ingress = {
   },
 
   upsert(name: string, data: IngressUpsertRequest, options: IngressWriteOptions = {}): Promise<Ingress> {
-    return http.put(path(name), data, { params: { wait: options.wait } })
+    return http.put(path(name), data, {
+      params: { wait: options.wait },
+    })
   },
 
   dryRun(name: string, data: IngressUpsertRequest): Promise<IngressApplyResult> {
-    return http.put(path(name), data, { params: { dry_run: 1 } })
+    return http.put(path(name), data, {
+      params: { dry_run: 1 },
+    })
   },
 
   deleteItem(name: string, options: IngressDeleteOptions = {}) {

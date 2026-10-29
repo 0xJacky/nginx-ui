@@ -29,7 +29,12 @@ function configuredLevels(model: LLMChatModel) {
 }
 
 const editingModel = ref<LLMChatModel>()
-const draft = ref<Record<LLMThinkingLevel, string>>({ off: '', low: '', medium: '', high: '' })
+const draft = ref<Record<LLMThinkingLevel, string>>({
+  off: '',
+  low: '',
+  medium: '',
+  high: '',
+})
 const draftErrors = ref<Partial<Record<LLMThinkingLevel, string>>>({})
 
 function openEditor(model: LLMChatModel) {
@@ -37,7 +42,12 @@ function openEditor(model: LLMChatModel) {
   draftErrors.value = {}
   draft.value = Object.fromEntries(LLM_THINKING_LEVELS.map(level => {
     const params = model.thinking_params?.[level]
-    return [level, params ? JSON.stringify(params, null, 2) : '']
+    return [
+      level,
+      params
+        ? JSON.stringify(params, null, 2)
+        : '',
+    ]
   })) as Record<LLMThinkingLevel, string>
 }
 
@@ -63,7 +73,9 @@ function parseDraft(): LLMThinkingParams | undefined {
   }
 
   draftErrors.value = errors
-  return Object.keys(errors).length ? undefined : params
+  return Object.keys(errors).length
+    ? undefined
+    : params
 }
 
 function saveEditor() {

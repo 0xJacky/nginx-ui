@@ -7,7 +7,17 @@ function bytesToSize(bytes: number) {
 
   const k = 1024
 
-  const sizes = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+  const sizes = [
+    'B',
+    'KiB',
+    'MiB',
+    'GiB',
+    'TiB',
+    'PiB',
+    'EiB',
+    'ZiB',
+    'YiB',
+  ]
 
   const i = Math.floor(Math.log(bytes) / Math.log(k))
 
@@ -28,7 +38,9 @@ function downloadCsv(header: any, data: any[], fileName: string) {
     for (const element of keys)
       dataString = dataString.concat(String(item[element]), ',')
 
-    csvContent += index < data.length ? dataString.replace(/,$/, '\n') : dataString.replace(/,$/, '')
+    csvContent += index < data.length
+      ? dataString.replace(/,$/, '\n')
+      : dataString.replace(/,$/, '')
   })
 
   const a = document.createElement('a')

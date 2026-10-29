@@ -58,7 +58,10 @@ export function useHTTPSOnboarding(configName: MaybeRefOrGetter<string>) {
 
     const id = ++runId
     closeSocket()
-    lastRequest.value = { ...request, domains: [...request.domains] }
+    lastRequest.value = {
+      ...request,
+      domains: [...request.domains],
+    }
     state.value = createHTTPSOnboardingState('running')
 
     let secureSessionId: string

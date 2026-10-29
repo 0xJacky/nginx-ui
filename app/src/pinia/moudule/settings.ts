@@ -24,7 +24,9 @@ export const useSettingsStore = defineStore('settings', {
     },
     set_theme(t: string) {
       this.theme = t
-      document.body.setAttribute('class', t === 'dark' ? 'dark' : 'light')
+      document.body.setAttribute('class', t === 'dark'
+        ? 'dark'
+        : 'light')
     },
     set_preference_theme(t: string) {
       this.preference_theme = t

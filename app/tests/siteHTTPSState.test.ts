@@ -56,7 +56,12 @@ function certifiedTLSServer(names = 'app.example.com'): NgxServer {
 }
 
 function config(servers: NgxServer[]): NgxConfig {
-  return { name: 'app', servers, upstreams: [], custom: '' }
+  return {
+    name: 'app',
+    servers,
+    upstreams: [],
+    custom: '',
+  }
 }
 
 function clone<T>(value: T): T {
@@ -83,14 +88,30 @@ describe('pending TLS detection', () => {
   })
 
   test('site level checks', () => {
-    expect(hasTLSServer(config([httpServer()]))).toBe(false)
-    expect(hasPendingTLSServer(config([httpServer()]))).toBe(false)
+    expect(hasTLSServer(config([
+      httpServer(),
+    ]))).toBe(false)
+    expect(hasPendingTLSServer(config([
+      httpServer(),
+    ]))).toBe(false)
 
-    expect(hasTLSServer(config([httpServer(), pendingTLSServer()]))).toBe(true)
-    expect(hasPendingTLSServer(config([httpServer(), pendingTLSServer()]))).toBe(true)
+    expect(hasTLSServer(config([
+      httpServer(),
+      pendingTLSServer(),
+    ]))).toBe(true)
+    expect(hasPendingTLSServer(config([
+      httpServer(),
+      pendingTLSServer(),
+    ]))).toBe(true)
 
-    expect(hasTLSServer(config([httpServer(), certifiedTLSServer()]))).toBe(true)
-    expect(hasPendingTLSServer(config([httpServer(), certifiedTLSServer()]))).toBe(false)
+    expect(hasTLSServer(config([
+      httpServer(),
+      certifiedTLSServer(),
+    ]))).toBe(true)
+    expect(hasPendingTLSServer(config([
+      httpServer(),
+      certifiedTLSServer(),
+    ]))).toBe(false)
 
     expect(hasTLSServer(undefined)).toBe(false)
     expect(hasPendingTLSServer({ servers: undefined as unknown as NgxServer[] })).toBe(false)
@@ -112,23 +133,34 @@ describe('domain extraction', () => {
   })
 
   test('keeps wildcards and IP addresses for the card to validate', () => {
-    expect(extractServerDomains([httpServer('*.example.com 203.0.113.10')])).toEqual(['*.example.com', '203.0.113.10'])
+    expect(extractServerDomains([
+      httpServer('*.example.com 203.0.113.10'),
+    ])).toEqual(['*.example.com', '203.0.113.10'])
   })
 
   test('a site prefers the names of its pending TLS servers', () => {
-    const site = config([httpServer('legacy.example.com app.example.com'), pendingTLSServer('app.example.com')])
+    const site = config([
+      httpServer('legacy.example.com app.example.com'),
+      pendingTLSServer('app.example.com'),
+    ])
 
     expect(extractSiteDomains(site)).toEqual(['app.example.com'])
   })
 
   test('a site without pending TLS servers uses every server name', () => {
-    const site = config([httpServer('a.example.com'), httpServer('b.example.com a.example.com')])
+    const site = config([
+      httpServer('a.example.com'),
+      httpServer('b.example.com a.example.com'),
+    ])
 
     expect(extractSiteDomains(site)).toEqual(['a.example.com', 'b.example.com'])
   })
 
   test('falls back to all names when the pending TLS server has none usable', () => {
-    const site = config([httpServer('app.example.com'), pendingTLSServer('_')])
+    const site = config([
+      httpServer('app.example.com'),
+      pendingTLSServer('_'),
+    ])
 
     expect(extractSiteDomains(site)).toEqual(['app.example.com'])
   })
@@ -143,7 +175,10 @@ describe('domain extraction', () => {
 
 describe('unsaved change detection', () => {
   test('editor bookkeeping and whitespace are not changes', () => {
-    const saved = config([httpServer(), certifiedTLSServer()])
+    const saved = config([
+      httpServer(),
+      certifiedTLSServer(),
+    ])
     const current = clone(saved)
     current.servers[0].directives!.forEach((d, idx) => {
       d.idx = idx
@@ -156,7 +191,10 @@ describe('unsaved change detection', () => {
   })
 
   test('empty placeholder directives do not count, they never reach the file', () => {
-    const inMemory = config([httpServer(), pendingTLSServer()])
+    const inMemory = config([
+      httpServer(),
+      pendingTLSServer(),
+    ])
     const fromFile = clone(inMemory)
     fromFile.servers[1].directives = fromFile.servers[1].directives!.filter(d => d.params !== '')
 
@@ -164,7 +202,10 @@ describe('unsaved change detection', () => {
   })
 
   test('edits outside pending TLS servers are unsaved changes', () => {
-    const saved = config([httpServer(), certifiedTLSServer()])
+    const saved = config([
+      httpServer(),
+      certifiedTLSServer(),
+    ])
 
     const location = clone(saved)
     location.servers[0].locations!.push({ path: '/api', content: 'proxy_pass http://127.0.0.1:9001;', comments: '' })
@@ -180,8 +221,13 @@ describe('unsaved change detection', () => {
   })
 
   test('a pending TLS server added on screen is tracked separately', () => {
-    const saved = config([httpServer()])
-    const current = config([httpServer(), pendingTLSServer()])
+    const saved = config([
+      httpServer(),
+    ])
+    const current = config([
+      httpServer(),
+      pendingTLSServer(),
+    ])
 
     expect(hasUnsavedChanges(current, saved)).toBe(false)
     expect(pendingTLSServersDiffer(current, saved)).toBe(true)
@@ -189,15 +235,25 @@ describe('unsaved change detection', () => {
   })
 
   test('nothing to compare without a saved config', () => {
-    expect(hasUnsavedChanges(config([httpServer()]), undefined)).toBe(false)
-    expect(pendingTLSServersDiffer(config([httpServer()]), undefined)).toBe(false)
+    expect(hasUnsavedChanges(config([
+      httpServer(),
+    ]), undefined)).toBe(false)
+    expect(pendingTLSServersDiffer(config([
+      httpServer(),
+    ]), undefined)).toBe(false)
   })
 })
 
 describe('certificate carry-over on regeneration', () => {
   test('a working certificate replaces the placeholders in place', () => {
-    const next = config([httpServer(), pendingTLSServer()])
-    const previous = config([httpServer(), certifiedTLSServer()])
+    const next = config([
+      httpServer(),
+      pendingTLSServer(),
+    ])
+    const previous = config([
+      httpServer(),
+      certifiedTLSServer(),
+    ])
 
     expect(carryOverCertificate(next, previous)).toBe(true)
     expect(isPendingTLSServer(next.servers[1])).toBe(false)
@@ -220,7 +276,9 @@ describe('certificate carry-over on regeneration', () => {
       { directive: 'ssl_certificate', params: '/etc/nginx/ssl/app_rsa/fullchain.cer' },
       { directive: 'ssl_certificate_key', params: '/etc/nginx/ssl/app_rsa/private.key' },
     )
-    const next = config([pendingTLSServer()])
+    const next = config([
+      pendingTLSServer(),
+    ])
 
     expect(carryOverCertificate(next, config([source]))).toBe(true)
     expect(next.servers[0].directives!.filter(d => d.directive === 'ssl_certificate').map(d => d.params)).toEqual([
@@ -234,20 +292,34 @@ describe('certificate carry-over on regeneration', () => {
     pending.directives = pending.directives!.filter(d => !d.directive.startsWith('ssl_certificate'))
     const next = config([pending])
 
-    expect(carryOverCertificate(next, config([certifiedTLSServer()]))).toBe(true)
+    expect(carryOverCertificate(next, config([
+      certifiedTLSServer(),
+    ]))).toBe(true)
     expect(isPendingTLSServer(next.servers[0])).toBe(false)
     expect(next.servers[0].directives!.at(-1)!.directive).toBe('ssl_certificate_key')
   })
 
   test('nothing to carry without a working certificate or a pending server', () => {
-    const next = config([httpServer(), pendingTLSServer()])
-    expect(carryOverCertificate(next, config([httpServer(), pendingTLSServer()]))).toBe(false)
-    expect(carryOverCertificate(next, config([httpServer()]))).toBe(false)
+    const next = config([
+      httpServer(),
+      pendingTLSServer(),
+    ])
+    expect(carryOverCertificate(next, config([
+      httpServer(),
+      pendingTLSServer(),
+    ]))).toBe(false)
+    expect(carryOverCertificate(next, config([
+      httpServer(),
+    ]))).toBe(false)
     expect(carryOverCertificate(next, undefined)).toBe(false)
     expect(isPendingTLSServer(next.servers[1])).toBe(true)
 
-    const plain = config([httpServer()])
-    expect(carryOverCertificate(plain, config([certifiedTLSServer()]))).toBe(false)
+    const plain = config([
+      httpServer(),
+    ])
+    expect(carryOverCertificate(plain, config([
+      certifiedTLSServer(),
+    ]))).toBe(false)
     expect(plain.servers[0].directives).toEqual(httpServer().directives)
   })
 })

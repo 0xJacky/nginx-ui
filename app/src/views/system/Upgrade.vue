@@ -188,7 +188,9 @@ async function performUpgrade() {
     if (!modalVisible.value)
       throw error
     progressStatus.value = 'exception'
-    log(error instanceof Error ? error.message : String(error))
+    log(error instanceof Error
+      ? error.message
+      : String(error))
   }
   finally {
     modalClosable.value = true

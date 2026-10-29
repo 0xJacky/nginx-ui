@@ -18,7 +18,9 @@ const authorize = mock(async () => 'session-1')
 const perform = mock(async (_options: UpgradeRequest) => {})
 const saveChannel = mock(async (_channel: string) => ({}))
 const reload = mock(() => {})
-mock.module('../src/composables/useUpgrade', () => ({ useUpgrade: () => ({ authorize, perform }) }))
+mock.module('../src/composables/useUpgrade', () => ({
+  useUpgrade: () => ({ authorize, perform }),
+}))
 mock.module('../src/components/TwoFA/use2FAModal', () => ({ TwoFACancelledError }))
 mock.module('../src/api/upgrade', () => ({
   default: {
@@ -89,7 +91,10 @@ beforeEach(() => {
   })
 })
 
-async function setup(ids = [11, 22], rows = [{ id: 11, name: 'Node A' }, { id: 22, name: 'Node B' }]) {
+async function setup(ids = [11, 22], rows = [
+  { id: 11, name: 'Node A' },
+  { id: 22, name: 'Node B' },
+]) {
   const emit = mock((_event: string) => {})
   let exposed!: BatchExposed
   const scope = effectScope()
@@ -189,7 +194,9 @@ describe('batch upgrade component', () => {
   test('reopening the dialog during an upgrade cannot replace the active node list', async () => {
     const h = await setup()
     perform.mockImplementationOnce(async () => {
-      h.exposed.open(ref([33]), ref([{ id: 33, name: 'Other node' }]))
+      h.exposed.open(ref([33]), ref([
+        { id: 33, name: 'Other node' },
+      ]))
     })
     await h.state.performUpgrade()
     expect(perform.mock.calls.map(([request]) => request.nodeId)).toEqual([11, 22])
@@ -222,7 +229,9 @@ describe('batch upgrade component', () => {
 
 async function setupSystem() {
   const scope = effectScope()
-  const state = scope.run(() => systemComponent.setup({}, { expose() {} })) as BatchState
+  const state = scope.run(() => systemComponent.setup({}, {
+    expose() {},
+  })) as BatchState
   await nextTick()
   await nextTick()
   return { scope, state }

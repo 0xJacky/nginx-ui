@@ -386,7 +386,9 @@ export const useLLMStore = defineStore('llm', () => {
         nginxConfig.value,
         osInfo,
         activeModel.value?.name,
-        availableThinkingLevels.value.includes(thinkingLevel.value as LLMThinkingLevel) ? thinkingLevel.value : '',
+        availableThinkingLevels.value.includes(thinkingLevel.value as LLMThinkingLevel)
+          ? thinkingLevel.value
+          : '',
       )
 
       // Update the final content

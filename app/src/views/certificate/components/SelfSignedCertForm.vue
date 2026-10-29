@@ -21,7 +21,9 @@ function emptyForm(): SelfSignedCertPayload {
   const defaultDomains = props.defaultDomains ?? []
   return {
     name: '',
-    domains: defaultDomains.length ? [...defaultDomains] : [''],
+    domains: defaultDomains.length
+      ? [...defaultDomains]
+      : [''],
     ip_addresses: [''],
     key_type: PrivateKeyTypeEnum.P256,
     validity_days: 365,

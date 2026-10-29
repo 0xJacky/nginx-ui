@@ -47,7 +47,9 @@ const newPath = computed(() => {
   return path
 })
 
-const relativePath = computed(() => (basePath.value ? `${basePath.value}/${route.params.name.toString()}` : route.params.name.toString()))
+const relativePath = computed(() => (basePath.value
+  ? `${basePath.value}/${route.params.name.toString()}`
+  : route.params.name.toString()))
 const breadcrumbs = useBreadcrumbs()
 
 // Use Vue 3.4+ useTemplateRef for InspectConfig component
@@ -104,21 +106,26 @@ async function init() {
         }
       })
 
-      breadcrumbs.value = [{
-        name: 'Home',
-        translatedName: () => $gettext('Home'),
-        path: '/',
-        hasChildren: false,
-      }, {
-        name: 'Manage Configs',
-        translatedName: () => $gettext('Manage Configs'),
-        path: '/config',
-        hasChildren: false,
-      }, ...path, {
-        name: 'Edit Config',
-        translatedName: () => origName.value,
-        hasChildren: false,
-      }]
+      breadcrumbs.value = [
+        {
+          name: 'Home',
+          translatedName: () => $gettext('Home'),
+          path: '/',
+          hasChildren: false,
+        },
+        {
+          name: 'Manage Configs',
+          translatedName: () => $gettext('Manage Configs'),
+          path: '/config',
+          hasChildren: false,
+        },
+        ...path,
+        {
+          name: 'Edit Config',
+          translatedName: () => origName.value,
+          hasChildren: false,
+        },
+      ]
     })
   }
   else {
@@ -154,21 +161,26 @@ async function init() {
       }
     })
 
-    breadcrumbs.value = [{
-      name: 'Home',
-      translatedName: () => $gettext('Home'),
-      path: '/',
-      hasChildren: false,
-    }, {
-      name: 'Manage Configs',
-      translatedName: () => $gettext('Manage Configs'),
-      path: '/config',
-      hasChildren: false,
-    }, ...path, {
-      name: 'Add Config',
-      translatedName: () => $gettext('Add Configuration'),
-      hasChildren: false,
-    }]
+    breadcrumbs.value = [
+      {
+        name: 'Home',
+        translatedName: () => $gettext('Home'),
+        path: '/',
+        hasChildren: false,
+      },
+      {
+        name: 'Manage Configs',
+        translatedName: () => $gettext('Manage Configs'),
+        path: '/config',
+        hasChildren: false,
+      },
+      ...path,
+      {
+        name: 'Add Config',
+        translatedName: () => $gettext('Add Configuration'),
+        hasChildren: false,
+      },
+    ]
   }
   loading.value = false
 }

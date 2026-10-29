@@ -41,7 +41,9 @@ const upgrade = {
   current_version(nodeId?: number, signal?: AbortSignal) {
     return http.get<Info>('/upgrade/current', {
       skipNodeProxy: nodeId !== undefined,
-      headers: nodeId ? { 'X-Node-ID': nodeId } : undefined,
+      headers: nodeId
+        ? { 'X-Node-ID': nodeId }
+        : undefined,
       timeout: 5000,
       signal,
       skipErrHandling: true,

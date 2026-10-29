@@ -11,48 +11,54 @@ export const systemRoutes: RouteRecordRaw[] = [
       name: () => $gettext('System'),
       icon: InfoCircleOutlined,
     },
-    children: [{
-      path: '',
-      name: 'System Home',
-      component: () => import('@/views/system/index.vue'),
-      meta: {
-        name: () => $gettext('System'),
-        hiddenInSidebar: true,
-      },
-    }, {
-      path: 'self_check',
-      name: 'Self Check',
-      component: () => import('@/views/system/SelfCheck.vue'),
-      meta: {
-        name: () => $gettext('Self Check'),
-      },
-    }, {
-      path: 'upgrade',
-      name: 'Upgrade',
-      component: () => import('@/views/system/Upgrade.vue'),
-      meta: {
-        name: () => $gettext('Upgrade'),
-        hiddenInSidebar: (): boolean => {
-          const settings = useSettingsStore()
-
-          return settings.is_remote
+    children: [
+      {
+        path: '',
+        name: 'System Home',
+        component: () => import('@/views/system/index.vue'),
+        meta: {
+          name: () => $gettext('System'),
+          hiddenInSidebar: true,
         },
       },
-    }, {
-      path: 'about',
-      name: 'About',
-      component: () => import('@/views/system/About.vue'),
-      meta: {
-        name: () => $gettext('About'),
+      {
+        path: 'self_check',
+        name: 'Self Check',
+        component: () => import('@/views/system/SelfCheck.vue'),
+        meta: {
+          name: () => $gettext('Self Check'),
+        },
       },
-    }, {
-      path: 'licenses',
-      name: 'Licenses',
-      component: () => import('@/views/system/Licenses.vue'),
-      meta: {
-        name: () => $gettext('Third-party Components'),
-        hiddenInSidebar: true,
+      {
+        path: 'upgrade',
+        name: 'Upgrade',
+        component: () => import('@/views/system/Upgrade.vue'),
+        meta: {
+          name: () => $gettext('Upgrade'),
+          hiddenInSidebar: (): boolean => {
+            const settings = useSettingsStore()
+
+            return settings.is_remote
+          },
+        },
       },
-    }],
+      {
+        path: 'about',
+        name: 'About',
+        component: () => import('@/views/system/About.vue'),
+        meta: {
+          name: () => $gettext('About'),
+        },
+      },
+      {
+        path: 'licenses',
+        name: 'Licenses',
+        component: () => import('@/views/system/Licenses.vue'),
+        meta: {
+          name: () => $gettext('Third-party Components'),
+          hiddenInSidebar: true,
+        },
+      },
+    ],
   },
 ]

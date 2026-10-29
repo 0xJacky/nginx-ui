@@ -50,7 +50,9 @@ const isSplit = computed(() => state.value.layout === 'split')
 function paneSizeOf(index: PaneIndex) {
   if (!isSplit.value)
     return 100
-  return index === 0 ? paneSize.value : 100 - paneSize.value
+  return index === 0
+    ? paneSize.value
+    : 100 - paneSize.value
 }
 
 const isResizing = ref(false)
@@ -82,8 +84,12 @@ const leftSlot = ref<HTMLElement | null>(null)
 const rightSlot = ref<HTMLElement | null>(null)
 
 function setSlotRef(index: PaneIndex, el: unknown) {
-  const target = index === 0 ? leftSlot : rightSlot
-  target.value = el instanceof HTMLElement ? el : null
+  const target = index === 0
+    ? leftSlot
+    : rightSlot
+  target.value = el instanceof HTMLElement
+    ? el
+    : null
 }
 
 const bodyBox = useElementBounding(bodyRef)
@@ -102,7 +108,10 @@ function toRect(box: ReturnType<typeof useElementBounding>): PaneRect | null {
   }
 }
 
-const paneRects = computed<[PaneRect | null, PaneRect | null]>(() => [toRect(leftBox), toRect(rightBox)])
+const paneRects = computed<[PaneRect | null, PaneRect | null]>(() => [
+  toRect(leftBox),
+  toRect(rightBox),
+])
 
 const liveFrames = computed(() => {
   const focusRect = paneRects.value[state.value.focus] ?? paneRects.value[0]
@@ -120,7 +129,9 @@ const liveFrames = computed(() => {
         // The pane tab clicks go to; always the visible one in single layout.
         focused: pane !== null && (state.value.layout !== 'split' || pane === state.value.focus),
         // Background tabs keep a real size so they need no relayout when shown.
-        rect: pane !== null ? paneRects.value[pane] : focusRect,
+        rect: pane !== null
+          ? paneRects.value[pane]
+          : focusRect,
       }
     })
 })
@@ -205,7 +216,10 @@ const stopPaneListener = listenToPanes((tabId, paneMessage) => {
 // instead of every pane showing its own login page.
 const stopLogoutWatcher = watchSharedLogout(() => {
   userStore.$hydrate()
-  router.push({ path: '/login', query: { next: '/workspace' } })
+  router.push({
+    path: '/login',
+    query: { next: '/workspace' },
+  })
 })
 
 onBeforeUnmount(() => {
@@ -250,8 +264,12 @@ async function handleEntry() {
   router.replace({ path: '/workspace' })
 
   const [leftNode, rightNode] = await Promise.all([
-    left !== null ? resolveNode(left) : null,
-    right !== null ? resolveNode(right) : null,
+    left !== null
+      ? resolveNode(left)
+      : null,
+    right !== null
+      ? resolveNode(right)
+      : null,
   ])
 
   if (leftNode && rightNode)

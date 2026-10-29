@@ -8,7 +8,9 @@ interface SessionFixture {
 }
 
 let activeUser: SessionFixture
-mock.module('../src/pinia', () => ({ useUserStore: () => activeUser }))
+mock.module('../src/pinia', () => ({
+  useUserStore: () => activeUser,
+}))
 const { useSessionExpiry } = await import('../src/composables/useSessionExpiry')
 
 function fixture() {
@@ -17,7 +19,10 @@ function fixture() {
     resolveReady = resolve
   })
   const router = {
-    currentRoute: ref({ fullPath: '/', meta: { noAuth: false } }),
+    currentRoute: ref({
+      fullPath: '/',
+      meta: { noAuth: false },
+    }),
     isReady: () => ready,
     replace: mock(() => Promise.resolve()),
   }
@@ -35,12 +40,19 @@ function fixture() {
     watch,
     onScopeDispose,
     useRouter: () => router,
-    window: Object.assign(new EventTarget(), { location: { protocol: 'http:' } }),
+    window: Object.assign(new EventTarget(), {
+      location: { protocol: 'http:' },
+    }),
     document: new EventTarget(),
   })
   const scope = effectScope()
   scope.run(useSessionExpiry)
-  return { router, scope, resolveReady, user: activeUser }
+  return {
+    router,
+    scope,
+    resolveReady,
+    user: activeUser,
+  }
 }
 
 describe('session expiry navigation', () => {
@@ -48,7 +60,10 @@ describe('session expiry navigation', () => {
     const f = fixture()
     expect(f.user.isLogin).toBe(false)
     expect(f.router.replace).not.toHaveBeenCalled()
-    f.router.currentRoute.value = { fullPath: '/login?next=/dashboard/nginx', meta: { noAuth: true } }
+    f.router.currentRoute.value = {
+      fullPath: '/login?next=/dashboard/nginx',
+      meta: { noAuth: true },
+    }
     f.resolveReady()
     await nextTick()
     expect(f.router.replace).not.toHaveBeenCalled()
@@ -57,10 +72,16 @@ describe('session expiry navigation', () => {
 
   test('redirects an expired protected page with its return path', async () => {
     const f = fixture()
-    f.router.currentRoute.value = { fullPath: '/dashboard/nginx', meta: { noAuth: false } }
+    f.router.currentRoute.value = {
+      fullPath: '/dashboard/nginx',
+      meta: { noAuth: false },
+    }
     f.resolveReady()
     await nextTick()
-    expect(f.router.replace).toHaveBeenCalledWith({ path: '/login', query: { next: '/dashboard/nginx' } })
+    expect(f.router.replace).toHaveBeenCalledWith({
+      path: '/login',
+      query: { next: '/dashboard/nginx' },
+    })
     f.scope.stop()
   })
 
