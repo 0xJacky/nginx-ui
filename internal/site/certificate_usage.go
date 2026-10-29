@@ -27,7 +27,8 @@ type CertificateUsage struct {
 }
 
 // CertificateUsageIndex maps certificate files to the sites and streams that
-// load them through ssl_certificate. Build it once and look up every
+// load them through ssl_certificate, ssl_client_certificate or
+// ssl_trusted_certificate, directly or through an include. Build it once and look up every
 // certificate of a list against it, so the configuration files are read once.
 type CertificateUsageIndex struct {
 	byPath map[string][]CertificateUsage
@@ -102,7 +103,7 @@ func (index *CertificateUsageIndex) scan(source certificateUsageSource) {
 			status = config.Status(remoteStatus(enabled))
 		}
 		usage := CertificateUsage{Kind: source.kind, Name: name, Status: status}
-		for _, certPath := range cert.ConfiguredCertificatePaths(string(content)) {
+		for _, certPath := range cert.UsedCertificatePaths(string(content)) {
 			index.byPath[certPath] = append(index.byPath[certPath], usage)
 		}
 	}

@@ -245,3 +245,77 @@ func TestContentMatchesFiles(t *testing.T) {
 		t.Fatal("a missing key must not match")
 	}
 }
+
+func TestReferencedSyncPayloadsFollowsIncludes(t *testing.T) {
+	withSyncDB(t)
+	confDir := withSyncConfDir(t, map[string]string{
+		"ssl/snippet.com/fullchain.cer": "snippet cert",
+		"ssl/snippet.com/private.key":   "snippet key",
+		"ssl/split.com/fullchain.cer":   "split cert",
+		"ssl/split.com/private.key":     "split key",
+		"ssl/glob.com/fullchain.cer":    "glob cert",
+		"ssl/glob.com/private.key":      "glob key",
+		// The snippet holds both directives.
+		"snippets/tls.conf": "ssl_certificate ssl/snippet.com/fullchain.cer;\nssl_certificate_key ssl/snippet.com/private.key;\n",
+		// The snippet holds the certificate, the site file holds the key.
+		"snippets/cert-only.conf": "ssl_certificate ssl/split.com/fullchain.cer;\n",
+		// Reached through a glob, with a cycle back to itself.
+		"tls.d/glob.conf": "include tls.d/*.conf;\nssl_certificate ssl/glob.com/fullchain.cer;\nssl_certificate_key ssl/glob.com/private.key;\n",
+	})
+
+	content := `server {
+    listen 443 ssl;
+    include snippets/tls.conf;
+}
+server {
+    listen 8443 ssl;
+    include snippets/cert-only.conf;
+    ssl_certificate_key ssl/split.com/private.key;
+}
+server {
+    listen 9443 ssl;
+    include tls.d/*.conf;
+    include missing.d/*.conf;
+    include snippets/missing.conf;
+}
+`
+	payloads := ReferencedSyncPayloads(content)
+	got := make([]string, 0, len(payloads))
+	for _, payload := range payloads {
+		got = append(got, payload.SSLCertificatePath+"|"+payload.SSLCertificateKeyPath+"|"+payload.SSLCertificateKey)
+	}
+	want := []string{
+		filepath.Join(confDir, "ssl/snippet.com/fullchain.cer") + "|" + filepath.Join(confDir, "ssl/snippet.com/private.key") + "|snippet key",
+		filepath.Join(confDir, "ssl/split.com/fullchain.cer") + "|" + filepath.Join(confDir, "ssl/split.com/private.key") + "|split key",
+		filepath.Join(confDir, "ssl/glob.com/fullchain.cer") + "|" + filepath.Join(confDir, "ssl/glob.com/private.key") + "|glob key",
+	}
+	if !slices.Equal(got, want) {
+		t.Fatalf("payloads = %v, want %v", got, want)
+	}
+}
+
+func TestClientCertificateAuthorityIsUsedButNeverSynced(t *testing.T) {
+	withSyncDB(t)
+	confDir := withSyncConfDir(t, map[string]string{
+		"ssl/ca/ca.pem":      "ca cert",
+		"ssl/ca/private.key": "ca key",
+		"ssl/upstream.pem":   "upstream ca",
+		"snippets/mtls.conf": "ssl_client_certificate ssl/ca/ca.pem;\nssl_verify_client on;\n",
+	})
+	caPath := filepath.Join(confDir, "ssl/ca/ca.pem")
+	upstreamPath := filepath.Join(confDir, "ssl/upstream.pem")
+
+	content := "server { listen 443 ssl; include snippets/mtls.conf; ssl_trusted_certificate ssl/upstream.pem; }"
+	if payloads := ReferencedSyncPayloads(content); len(payloads) != 0 {
+		t.Fatalf("a CA bundle must not be pushed with a private key, got %+v", payloads)
+	}
+	if paths := ConfiguredCertificatePaths(content); len(paths) != 0 {
+		t.Fatalf("a CA bundle is not a served certificate, got %v", paths)
+	}
+	if loadsCertificate(content, caPath) {
+		t.Fatal("renewals must not fan out to files that only trust the CA")
+	}
+	if got, want := UsedCertificatePaths(content), []string{caPath, upstreamPath}; !slices.Equal(got, want) {
+		t.Fatalf("used certificate paths = %v, want %v", got, want)
+	}
+}

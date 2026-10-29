@@ -123,15 +123,21 @@ func inspectCertificateDeployment(certModel *model.Cert) certificateInspection {
 			return certificateInspection{status: status}
 		}
 
-		status.ConfiguredCertificatePaths = append(status.ConfiguredCertificatePaths, certificatePaths...)
-		status.ConfiguredCertificateKeys = append(status.ConfiguredCertificateKeys, keyPaths...)
-		if len(certificatePaths) == 0 && len(keyPaths) == 0 {
+		// Directives from included files count as present, but only the site
+		// file itself is ever rewritten: an included snippet may be shared.
+		includedCertificatePaths, includedKeyPaths := includedCertificateDirectiveValues(path, content)
+		allCertificatePaths := append(append([]string{}, certificatePaths...), includedCertificatePaths...)
+		allKeyPaths := append(append([]string{}, keyPaths...), includedKeyPaths...)
+
+		status.ConfiguredCertificatePaths = append(status.ConfiguredCertificatePaths, allCertificatePaths...)
+		status.ConfiguredCertificateKeys = append(status.ConfiguredCertificateKeys, allKeyPaths...)
+		if len(allCertificatePaths) == 0 && len(allKeyPaths) == 0 {
 			continue
 		}
 		foundDirectives = true
 
-		usesManagedFiles := containsPathOrSameFile(certificatePaths, certModel.SSLCertificatePath) &&
-			containsPathOrSameFile(keyPaths, certModel.SSLCertificateKeyPath)
+		usesManagedFiles := containsPathOrSameFile(allCertificatePaths, certModel.SSLCertificatePath) &&
+			containsPathOrSameFile(allKeyPaths, certModel.SSLCertificateKeyPath)
 		usesLegacyPaths := hasLegacyAlias && containsExactPath(certificatePaths, legacyCertPath) &&
 			containsExactPath(keyPaths, legacyKeyPath)
 		legacyPathsResolveToManagedFiles := usesLegacyPaths &&
@@ -165,6 +171,10 @@ func inspectCertificateDeployment(certModel *model.Cert) certificateInspection {
 		}
 
 		foundMismatch = true
+		if hasLegacyAlias && containsExactPath(allCertificatePaths, legacyCertPath) &&
+			containsExactPath(allKeyPaths, legacyKeyPath) {
+			status.Error = "legacy certificate directives come from an included file and must be updated there"
+		}
 	}
 
 	status.ConfiguredCertificatePaths = uniqueSorted(status.ConfiguredCertificatePaths)
@@ -183,6 +193,24 @@ func inspectCertificateDeployment(certModel *model.Cert) certificateInspection {
 	}
 
 	return certificateInspection{status: status, targets: targets}
+}
+
+// includedCertificateDirectiveValues returns the ssl_certificate and
+// ssl_certificate_key values the files included by a site file add, leaving
+// out the values the site file holds itself.
+func includedCertificateDirectiveValues(path string, content []byte) (certificatePaths, keyPaths []string) {
+	config.VisitStatementsWithIncludes(path, content, func(statement []string, depth int) {
+		if depth == 0 || len(statement) != 2 {
+			return
+		}
+		switch strings.ToLower(statement[0]) {
+		case "ssl_certificate":
+			certificatePaths = append(certificatePaths, statement[1])
+		case "ssl_certificate_key":
+			keyPaths = append(keyPaths, statement[1])
+		}
+	})
+	return certificatePaths, keyPaths
 }
 
 func certificateSiteIsRemoteDeploy(name string) bool {

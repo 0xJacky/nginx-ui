@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strconv"
 	"strings"
 	"testing"
@@ -608,5 +609,56 @@ func TestMigrateLegacyCertificatePathsSkipsDisabledAndUncoveredSharedSites(t *te
 	}
 	if readSiteConfig(t, uncoveredConfig) != uncoveredBefore {
 		t.Fatalf("uncovered site config changed:\n%s", readSiteConfig(t, uncoveredConfig))
+	}
+}
+
+func TestInspectCertificateDeploymentCountsDirectivesFromIncludes(t *testing.T) {
+	env := setupCertificateMigrationTest(t)
+	certModel, configPath, legacyCertPath, legacyKeyPath := env.addLegacySite(t, "snippet.example.com", certcrypto.EC256)
+	snippetPath := filepath.Join(env.confDir, "snippets", "tls.conf")
+	if err := os.MkdirAll(filepath.Dir(snippetPath), 0o755); err != nil {
+		t.Fatalf("create snippets dir: %v", err)
+	}
+	siteContent := "server { listen 443 ssl; server_name snippet.example.com; include snippets/tls.conf; }\n"
+	if err := os.WriteFile(configPath, []byte(siteContent), 0o640); err != nil {
+		t.Fatalf("write site config: %v", err)
+	}
+
+	// The managed pair loaded only through the snippet is consistent.
+	managedSnippet := fmt.Sprintf("ssl_certificate %s;\nssl_certificate_key %s;\n",
+		certModel.SSLCertificatePath, certModel.SSLCertificateKeyPath)
+	if err := os.WriteFile(snippetPath, []byte(managedSnippet), 0o640); err != nil {
+		t.Fatalf("write snippet: %v", err)
+	}
+	status := InspectCertificateDeployment(certModel)
+	if status.State != CertificateDeploymentConsistent ||
+		!reflect.DeepEqual(status.ConfiguredCertificatePaths, []string{certModel.SSLCertificatePath}) ||
+		!reflect.DeepEqual(status.ConfiguredCertificateKeys, []string{certModel.SSLCertificateKeyPath}) {
+		t.Fatalf("deployment status = %+v", status)
+	}
+
+	// A legacy pair in a shared snippet is reported but never rewritten.
+	legacySnippet := fmt.Sprintf("ssl_certificate %s;\nssl_certificate_key %s;\n", legacyCertPath, legacyKeyPath)
+	if err := os.WriteFile(snippetPath, []byte(legacySnippet), 0o640); err != nil {
+		t.Fatalf("write snippet: %v", err)
+	}
+	status = InspectCertificateDeployment(certModel)
+	if status.State != CertificateDeploymentMismatch || status.AutomaticMigrationAvailable ||
+		!strings.Contains(status.Error, "included file") {
+		t.Fatalf("deployment status = %+v", status)
+	}
+
+	result, err := MigrateLegacyCertificatePaths()
+	if err != nil {
+		t.Fatalf("MigrateLegacyCertificatePaths() error = %v", err)
+	}
+	if result.MigratedFiles != 0 {
+		t.Fatalf("migration result = %+v", result)
+	}
+	for path, want := range map[string]string{snippetPath: legacySnippet, configPath: siteContent} {
+		content, readErr := os.ReadFile(path)
+		if readErr != nil || string(content) != want {
+			t.Fatalf("%s changed to %q (%v)", path, content, readErr)
+		}
 	}
 }
