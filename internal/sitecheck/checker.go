@@ -810,10 +810,9 @@ func findSiteConfigByIndex(siteIndex uint64, siteName, host, scheme string) (*mo
 	return &candidates[0], nil
 }
 
-// getOrCreateSiteConfigForURL gets or creates a site config for the given URL.
-// SiteKey is stable across synchronized nodes and avoids relying on local IDs.
 // firstSiteConfig is First without GORM's "record not found" log line: the
-// lookups below are expected to miss for every secondary server_name (#2036).
+// lookups in getOrCreateSiteConfigForURL are expected to miss for every
+// secondary server_name (#2036).
 func firstSiteConfig(conds ...gen.Condition) (*model.SiteConfig, error) {
 	sc := query.SiteConfig
 	configs, err := sc.Where(conds...).Order(sc.ID).Limit(1).Find()
@@ -826,6 +825,8 @@ func firstSiteConfig(conds ...gen.Condition) (*model.SiteConfig, error) {
 	return configs[0], nil
 }
 
+// getOrCreateSiteConfigForURL gets or creates a site config for the given URL.
+// SiteKey is stable across synchronized nodes and avoids relying on local IDs.
 func getOrCreateSiteConfigForURL(siteName, rawURL string) *model.SiteConfig {
 	// Parse URL to get host:port
 	tempConfig := &model.SiteConfig{}
