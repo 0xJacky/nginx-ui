@@ -81,6 +81,37 @@ func TestParser_ParseLine(t *testing.T) {
 			},
 		},
 		{
+			// $remote_user comes from the client's Authorization header and
+			// nginx logs spaces and brackets in it as is
+			name: "remote user with a space",
+			line: `172.17.0.1 - john smith [19/Oct/2026:21:10:04 +0000] "GET /spaced-user-path HTTP/1.1" 404 23 "-" "curl/8.18.0"`,
+			validate: func(entry *AccessLogEntry) bool {
+				return entry.IP == "172.17.0.1" &&
+					entry.Timestamp == time.Date(2026, 10, 19, 21, 10, 4, 0, time.UTC).Unix() &&
+					entry.Method == "GET" &&
+					entry.Path == "/spaced-user-path" &&
+					entry.Status == 404 &&
+					entry.BytesSent == 23 &&
+					entry.UserAgent == "curl/8.18.0"
+			},
+		},
+		{
+			name: "remote user with brackets",
+			line: `172.17.0.1 - c] \x22d [b [19/Oct/2026:21:11:52 +0000] "GET /u-test HTTP/1.1" 404 23 "-" "curl/8.18.0"`,
+			validate: func(entry *AccessLogEntry) bool {
+				return entry.Timestamp == time.Date(2026, 10, 19, 21, 11, 52, 0, time.UTC).Unix() &&
+					entry.Path == "/u-test" &&
+					entry.Status == 404
+			},
+		},
+		{
+			name: "bracketed field after the timestamp",
+			line: `172.17.0.1 - john smith [19/Oct/2026:21:10:04 +0000] [extra] "GET / HTTP/1.1" 200 5`,
+			validate: func(entry *AccessLogEntry) bool {
+				return entry.Timestamp == time.Date(2026, 10, 19, 21, 10, 4, 0, time.UTC).Unix()
+			},
+		},
+		{
 			name: "WebDAV PROPFIND method",
 			line: `192.168.1.100 - - [25/Dec/2023:10:00:00 +0000] "PROPFIND /webdav/ HTTP/1.1" 207 1234 "-" "davfs2/1.5.4"`,
 			validate: func(entry *AccessLogEntry) bool {
