@@ -1,10 +1,8 @@
 package analytic
 
 import (
-	"runtime"
 	"time"
 
-	"github.com/shirou/gopsutil/v4/cpu"
 	"github.com/shirou/gopsutil/v4/disk"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -23,26 +21,11 @@ func getTotalDiskIO() (read, write uint64) {
 }
 
 func recordCpu(now time.Time) {
-	cpuTimesBefore, err := cpu.Times(false)
+	cpuUserUsage, cpuTotalUsage, err := GetCPUUsage()
 	if err != nil {
 		logger.Error(err)
 		return
 	}
-
-	time.Sleep(1000 * time.Millisecond)
-
-	cpuTimesAfter, err := cpu.Times(false)
-	if err != nil {
-		logger.Error(err)
-		return
-	}
-
-	threadNum := runtime.GOMAXPROCS(0)
-
-	cpuUserUsage := (cpuTimesAfter[0].User - cpuTimesBefore[0].User) / (float64(1000*threadNum) / 1000)
-	cpuUserUsage *= 100
-	cpuSystemUsage := (cpuTimesAfter[0].System - cpuTimesBefore[0].System) / (float64(1000*threadNum) / 1000)
-	cpuSystemUsage *= 100
 
 	u := Usage[float64]{
 		Time:  now,
@@ -53,7 +36,7 @@ func recordCpu(now time.Time) {
 
 	s := Usage[float64]{
 		Time:  now,
-		Usage: cpuUserUsage + cpuSystemUsage,
+		Usage: cpuTotalUsage,
 	}
 
 	CpuTotalRecord = append(CpuTotalRecord, s)
