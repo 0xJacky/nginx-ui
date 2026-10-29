@@ -48,12 +48,15 @@ func AesDecrypt(text []byte) ([]byte, error) {
 		return nil, ErrCipherTextTooShort
 	}
 
+	// Decrypt into a new buffer. Callers pass stored secrets such as a cached
+	// user's OTP secret, and decrypting in place would corrupt them for every
+	// later reader.
 	iv := text[:aes.BlockSize]
-	text = text[aes.BlockSize:]
+	plaintext := make([]byte, len(text)-aes.BlockSize)
 	cfb := cipher.NewCFBDecrypter(block, iv)
-	cfb.XORKeyStream(text, text)
+	cfb.XORKeyStream(plaintext, text[aes.BlockSize:])
 
-	data, err := base64.StdEncoding.DecodeString(string(text))
+	data, err := base64.StdEncoding.DecodeString(string(plaintext))
 	if err != nil {
 		return nil, err
 	}

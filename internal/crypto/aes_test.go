@@ -85,3 +85,19 @@ func TestAesDecrypt_WithInvalidBase64_ReturnsError(t *testing.T) {
 	_, err = AesDecrypt(input)
 	require.Error(t, err, "decrypting a payload that is not base64 should return an error")
 }
+
+func TestAesDecryptLeavesCiphertextUntouched(t *testing.T) {
+	settings.CryptoSettings.Secret = "test"
+	encrypted, err := AesEncrypt([]byte("JBSWY3DPEHPK3PXP"))
+	require.NoError(t, err)
+	original := append([]byte(nil), encrypted...)
+
+	for range 2 {
+		decrypted, err := AesDecrypt(encrypted)
+		require.NoError(t, err)
+		assert.Equal(t, "JBSWY3DPEHPK3PXP", string(decrypted))
+	}
+	// A cached user's OTP secret is decrypted on every verification, so the
+	// stored ciphertext must survive each call.
+	assert.Equal(t, original, encrypted)
+}
