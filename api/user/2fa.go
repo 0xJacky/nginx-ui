@@ -2,6 +2,7 @@ package user
 
 import (
 	"encoding/base64"
+	"errors"
 	"net/http"
 	"strings"
 	"time"
@@ -111,7 +112,12 @@ func Start2FASecureSessionByOTP(c *gin.Context) {
 		return
 	}
 
-	verificationResult, err := user.VerifyOTP(u, json.OTP, json.RecoveryCode)
+	verificationResult, err := user.VerifyStepUpOTP(u, json.OTP, json.RecoveryCode)
+	if errors.Is(err, user.ErrTooManyAttempts) {
+		// Same status as the login ban, so clients can treat both alike.
+		c.JSON(http.StatusTooManyRequests, err)
+		return
+	}
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return

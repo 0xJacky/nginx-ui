@@ -13,6 +13,7 @@ var Migrations = []*gormigrate.Migration{
 	EncryptSensitiveJSONFields,
 	DropLegacyRenamedTableIndexes,
 	RepairCertDomainsJSON,
+	CollapseBanIPRows,
 }
 
 var BeforeAutoMigrate = []*gormigrate.Migration{

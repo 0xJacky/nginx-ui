@@ -18,4 +18,5 @@ export default {
   40307: () => $gettext('MFA enrollment is required'),
   40308: () => $gettext('MFA verification is required'),
   40309: () => $gettext('Cannot remove the last required MFA method'),
+  42901: () => $gettext('Too many failed attempts, please try again later'),
 }

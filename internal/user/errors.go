@@ -23,4 +23,5 @@ var (
 	ErrMFASetupRequired        = e.New(40307, "MFA enrollment is required")
 	ErrMFAVerifyRequired       = e.New(40308, "MFA verification is required")
 	ErrLastMFAFactor           = e.New(40309, "cannot remove the last required MFA method")
+	ErrTooManyAttempts         = e.New(42901, "too many failed attempts, please try again later")
 )

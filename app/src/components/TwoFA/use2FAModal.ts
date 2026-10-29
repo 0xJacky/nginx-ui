@@ -1,3 +1,4 @@
+import type { CosyError } from '@/lib/http/types'
 import twoFA from '@/api/2fa'
 import Authorization from '@/components/TwoFA/Authorization.vue'
 import { useAppStore, useUserStore } from '@/pinia'
@@ -100,9 +101,13 @@ function use2FAModal() {
             try {
               result = await twoFA.start_secure_session_by_otp(passcode, recovery)
             }
-            catch {
+            catch (error) {
               refOTPAuthorization.value?.clearInput()
-              await message.error($gettext('Invalid passcode or recovery code'))
+              // After too many failures the server answers 429 for every
+              // code. The interceptor already shows that message, and an
+              // "invalid code" toast would wrongly blame a correct code.
+              if ((error as CosyError)?.httpStatus !== 429)
+                await message.error($gettext('Invalid passcode or recovery code'))
               return
             }
 
