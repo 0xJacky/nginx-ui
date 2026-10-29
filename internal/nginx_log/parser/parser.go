@@ -340,9 +340,9 @@ func (p *Parser) parseLineOptimized(line []byte, buf *parseBuffer) error {
 
 	// Skip remote user fields (- -)
 	pos = p.skipSpaces(line, pos)
-	pos = p.skipField(line, pos) // remote user
-	pos = p.skipSpaces(line, pos)
 	pos = p.skipField(line, pos) // remote logname
+	pos = p.skipSpaces(line, pos)
+	pos = p.skipRemoteUser(line, pos)
 
 	// Parse timestamp
 	pos = p.skipSpaces(line, pos)
@@ -672,6 +672,19 @@ func (p *Parser) skipField(line []byte, pos int) int {
 		pos++
 	}
 	return pos
+}
+
+// skipRemoteUser skips $remote_user. It comes from the client's Authorization
+// header, so it can hold spaces and brackets, but never ':' (the header splits
+// the user from the password there): the timestamp starts at the last '['
+// before the first ':'.
+func (p *Parser) skipRemoteUser(line []byte, pos int) int {
+	if i := bytes.IndexByte(line[pos:], ':'); i >= 0 {
+		if j := bytes.LastIndexByte(line[pos:pos+i], '['); j >= 0 {
+			return pos + j
+		}
+	}
+	return p.skipField(line, pos)
 }
 
 func (p *Parser) updateStats(result *ParseResult) {

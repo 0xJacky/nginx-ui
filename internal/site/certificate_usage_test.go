@@ -126,3 +126,33 @@ func TestCertificateUsageIndexWithoutConfigDirectories(t *testing.T) {
 		t.Fatalf("usages from nil index = %#v, want none", got)
 	}
 }
+
+func TestCertificateUsageIndexFollowsIncludesAndCertificateAuthorities(t *testing.T) {
+	env := setupCertificateMigrationTest(t)
+
+	certPath := filepath.Join(env.confDir, "ssl", "snippet", "fullchain.cer")
+	clientCAPath := filepath.Join(env.confDir, "ssl", "client-ca", "ca.pem")
+	trustedCAPath := filepath.Join(env.confDir, "ssl", "trusted-ca", "ca.pem")
+	for _, path := range []string{certPath, clientCAPath, trustedCAPath} {
+		writeUsageTestFile(t, path, "certificate")
+	}
+	writeUsageTestFile(t, filepath.Join(env.confDir, "snippets", "tls.conf"),
+		"ssl_certificate ssl/snippet/fullchain.cer;\nssl_certificate_key ssl/snippet/fullchain.cer.key;\n")
+	writeUsageTestFile(t, filepath.Join(env.confDir, "snippets", "mtls.conf"),
+		"ssl_client_certificate ssl/client-ca/ca.pem;\nssl_verify_client on;\n")
+
+	available := filepath.Join(env.confDir, "sites-available")
+	writeUsageTestFile(t, filepath.Join(available, "snippet.conf"),
+		"server {\n    listen 443 ssl;\n    include snippets/tls.conf;\n    include snippets/mtls.conf;\n"+
+			"    ssl_trusted_certificate ssl/trusted-ca/ca.pem;\n}\n")
+	writeUsageTestFile(t, filepath.Join(available, "missing.conf"),
+		"server {\n    listen 443 ssl;\n    include snippets/missing.conf;\n    include missing.d/*.conf;\n}\n")
+
+	index := BuildCertificateUsageIndex()
+	want := []CertificateUsage{{Kind: CertificateUsageSite, Name: "snippet.conf", Status: config.StatusDisabled}}
+	for _, path := range []string{certPath, clientCAPath, trustedCAPath} {
+		if got := index.Lookup(path); !reflect.DeepEqual(got, want) {
+			t.Fatalf("usages of %s = %#v, want %#v", path, got, want)
+		}
+	}
+}

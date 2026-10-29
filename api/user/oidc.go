@@ -21,9 +21,16 @@ import (
 	"gorm.io/gorm"
 )
 
+// OIDCLoginUser carries the auth-code callback payload. Neither field is
+// length-capped: OAuth 2.0 sets no limit on the authorization code, and real
+// IdPs (e.g. Microsoft Entra ID, ~1300 chars) exceed any fixed bound. Capping
+// the code here made ShouldBind fail on long codes, which then fell back to the
+// (empty) query params and surfaced as a misleading "Missing code or state".
+// State is still verified against the oidc_state cookie below, so no length
+// limit is needed for safety.
 type OIDCLoginUser struct {
-	Code  string `form:"code" json:"code" uri:"code" binding:"max=255"`
-	State string `form:"state" json:"state" uri:"state" binding:"max=255"`
+	Code  string `form:"code" json:"code" uri:"code"`
+	State string `form:"state" json:"state" uri:"state"`
 }
 
 func newOIDCRequestContext(ctx context.Context) (context.Context, error) {

@@ -4,6 +4,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -13,7 +14,8 @@ import (
 )
 
 // ReferencedSyncPayloads returns the certificate pairs a site or stream file
-// loads through ssl_certificate and ssl_certificate_key, read from disk and
+// loads through ssl_certificate and ssl_certificate_key, including the ones
+// its included files load, read from disk and
 // ready for the /api/cert_sync endpoint of a node. A node rejects the file in
 // its Nginx test until these pairs exist there, so they are pushed first.
 //
@@ -21,7 +23,8 @@ import (
 // from variables, "data:" or "engine:" values, paths outside the Nginx
 // configuration directory and files that cannot be read.
 func ReferencedSyncPayloads(content string) []*SyncCertificatePayload {
-	certPaths, keyPaths := certificateDirectivePaths(content)
+	directives := scanCertificateDirectives(content)
+	certPaths, keyPaths := directives.certPaths, directives.keyPaths
 	if len(certPaths) == 0 {
 		return nil
 	}
@@ -86,20 +89,42 @@ func describeCertificatePair(certPath string) (name, keyPath string, keyType cer
 	return name, record.SSLCertificateKeyPath, record.GetKeyType()
 }
 
-// certificateDirectivePaths returns the files a configuration loads through
-// ssl_certificate and ssl_certificate_key, in directive order and resolved
-// against the Nginx configuration directory like Nginx resolves them.
-func certificateDirectivePaths(content string) (certPaths, keyPaths []string) {
-	certValues, err := nginx.DirectiveValues(content, "ssl_certificate")
-	if err != nil {
-		return nil, nil
-	}
-	keyValues, err := nginx.DirectiveValues(content, "ssl_certificate_key")
-	if err != nil {
-		return nil, nil
-	}
+// certificateDirectives holds the files a configuration loads through its
+// certificate directives, with included files spliced in where they are
+// included, so a certificate in a snippet still pairs with a key next to the
+// include. Paths are resolved against the Nginx configuration directory like
+// Nginx resolves them.
+type certificateDirectives struct {
+	// certPaths and keyPaths follow ssl_certificate and ssl_certificate_key in
+	// directive order, so equal positions belong together.
+	certPaths []string
+	keyPaths  []string
+	// caPaths are the CA bundles of ssl_client_certificate and
+	// ssl_trusted_certificate.
+	caPaths []string
+}
 
-	return resolveDirectivePaths(certValues), resolveDirectivePaths(keyValues)
+func scanCertificateDirectives(content string) certificateDirectives {
+	var certValues, keyValues, caValues []string
+	config.VisitStatementsWithIncludes("", []byte(content), func(statement []string, _ int) {
+		if len(statement) != 2 {
+			return
+		}
+		switch strings.ToLower(statement[0]) {
+		case "ssl_certificate":
+			certValues = append(certValues, statement[1])
+		case "ssl_certificate_key":
+			keyValues = append(keyValues, statement[1])
+		case "ssl_client_certificate", "ssl_trusted_certificate":
+			caValues = append(caValues, statement[1])
+		}
+	})
+
+	return certificateDirectives{
+		certPaths: resolveDirectivePaths(certValues),
+		keyPaths:  resolveDirectivePaths(keyValues),
+		caPaths:   resolveDirectivePaths(caValues),
+	}
 }
 
 func resolveDirectivePaths(values []string) []string {
@@ -136,8 +161,17 @@ func syncablePath(path, confPath string) bool {
 // loads through ssl_certificate, resolved like Nginx resolves them. Values
 // that are not plain files, such as variables or "data:" values, are left out.
 func ConfiguredCertificatePaths(content string) []string {
-	certPaths, _ := certificateDirectivePaths(content)
-	return lo.Uniq(lo.Compact(certPaths))
+	return lo.Uniq(lo.Compact(scanCertificateDirectives(content).certPaths))
+}
+
+// UsedCertificatePaths returns every certificate file a configuration loads:
+// the server certificates of ssl_certificate and the CA bundles of
+// ssl_client_certificate and ssl_trusted_certificate. It answers which files
+// use a certificate; renewal and sync stay on ConfiguredCertificatePaths, since
+// a CA bundle is never served with its private key.
+func UsedCertificatePaths(content string) []string {
+	directives := scanCertificateDirectives(content)
+	return lo.Uniq(lo.Compact(append(directives.certPaths, directives.caPaths...)))
 }
 
 // loadsCertificate reports whether a configuration loads the certificate file.
