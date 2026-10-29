@@ -26,6 +26,8 @@ The application (client) secret. Keep it secret.
 The URL the provider redirects to after login, for example `https://nginx-ui.example.com/`.
 It must match one of the redirect URIs registered on the provider side.
 
+Point it at the Nginx UI root, not at `/api/oidc_callback`: the provider sends the browser back to the UI, and the login page then posts the code and state to `/api/oidc_callback` itself. Using the API path as the redirect URI returns 404.
+
 ## Scopes
 - Type: `string`
 
