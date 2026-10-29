@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -29,6 +30,8 @@ func InitRouter(r *gin.RouterGroup) {
 		BeforeModify(mutationMiddleware...).
 		BeforeDestroy(mutationMiddleware...).
 		BeforeRecover(mutationMiddleware...)
+	c.GetHook(redactConfigForReadOnlyTokens)
+	c.GetListHook(redactConfigForReadOnlyTokens)
 	c.InitRouter(r)
 
 	// Sending a test message posts to whatever endpoint the caller supplies.
@@ -39,6 +42,21 @@ func InitRouter(r *gin.RouterGroup) {
 		middleware.RejectInDemo(),
 		testMessage,
 	)
+}
+
+// redactConfigForReadOnlyTokens hides notifier configuration values from
+// service tokens without api:write. Which keys are secret depends on the
+// notifier type (bot tokens, SMTP passwords, webhook URLs that embed a key), so
+// every value is redacted while the keys and the other fields stay readable.
+func redactConfigForReadOnlyTokens(ctx *cosy.Ctx[model.ExternalNotify]) {
+	if !internalmcp.IsReadOnlyServiceTokenRequest(ctx.Context) {
+		return
+	}
+	ctx.SetTransformer(func(notifier *model.ExternalNotify) model.ExternalNotify {
+		redacted := *notifier
+		redacted.Config = internalmcp.RedactValues(notifier.Config)
+		return redacted
+	})
 }
 
 // testMessage sends a test message with direct parameters

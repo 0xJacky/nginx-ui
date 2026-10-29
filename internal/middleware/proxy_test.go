@@ -70,7 +70,7 @@ func TestConfigureProxyResponseStatusMapping(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			core, logs := observer.New(zap.WarnLevel)
 			proxy := &httputil.ReverseProxy{}
-			configureProxyResponse(proxy, 42, "/api/self_check", false, zap.New(core).Sugar().Warnw)
+			configureProxyResponse(proxy, 42, "/api/self_check", false, false, zap.New(core).Sugar().Warnw)
 
 			request := httptest.NewRequest(http.MethodGet, "https://node.example.com/api/self_check?token=secret", nil)
 			response := &http.Response{
@@ -175,7 +175,7 @@ func TestConfigureProxyResponseRedactsServiceTokenCredentials(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			proxy := &httputil.ReverseProxy{}
-			configureProxyResponse(proxy, 42, tt.route, true, nil)
+			configureProxyResponse(proxy, 42, tt.route, true, false, nil)
 			response := &http.Response{
 				StatusCode:    http.StatusOK,
 				Header:        make(http.Header),
@@ -200,7 +200,7 @@ func TestConfigureProxyResponseRedactsServiceTokenCredentials(t *testing.T) {
 
 func TestConfigureProxyResponsePreservesInteractiveCredentialResponses(t *testing.T) {
 	proxy := &httputil.ReverseProxy{}
-	configureProxyResponse(proxy, 42, "/api/acme_users/:id", false, nil)
+	configureProxyResponse(proxy, 42, "/api/acme_users/:id", false, false, nil)
 	body := `{"id":2,"name":"ACME","eab_key_id":"eab-id","eab_hmac_key":"eab-secret"}`
 	response := &http.Response{
 		StatusCode:    http.StatusOK,
@@ -217,7 +217,7 @@ func TestConfigureProxyResponsePreservesInteractiveCredentialResponses(t *testin
 
 func TestConfigureProxyResponseFailsClosedOnInvalidSensitivePayload(t *testing.T) {
 	proxy := &httputil.ReverseProxy{}
-	configureProxyResponse(proxy, 42, "/api/acme_users/:id", true, nil)
+	configureProxyResponse(proxy, 42, "/api/acme_users/:id", true, false, nil)
 	response := &http.Response{
 		StatusCode: http.StatusOK,
 		Header:     make(http.Header),
@@ -230,7 +230,7 @@ func TestConfigureProxyResponseFailsClosedOnInvalidSensitivePayload(t *testing.T
 func TestProxyResponseDiagnosticDoesNotLeakSensitiveData(t *testing.T) {
 	core, logs := observer.New(zap.WarnLevel)
 	proxy := &httputil.ReverseProxy{}
-	configureProxyResponse(proxy, 42, "/api/nginx_log/search", false, zap.New(core).Sugar().Warnw)
+	configureProxyResponse(proxy, 42, "/api/nginx_log/search", false, false, zap.New(core).Sugar().Warnw)
 
 	request := httptest.NewRequest(http.MethodPost,
 		"https://node.example.com/api/nginx_log/search?token=query-secret&search=union+select",

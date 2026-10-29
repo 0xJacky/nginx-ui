@@ -32,8 +32,12 @@ message endpoint. Both transports use the same authentication and tool scopes.
 Create a service token in **Preferences > Access Tokens** and grant it the
 smallest MCP scope the client needs:
 
-- `mcp:read` permits resources and read-only tools.
-- `mcp:write` permits mutating tools and includes MCP read access.
+- `mcp:read` permits resources and read-only tools. Stored secrets are hidden:
+  `nginx_config_get` refuses private key files (a `.key` file or any file
+  containing a PEM private key block), and `nginx_config_history` replaces the
+  content of private key revisions with `__NGINX_UI_REDACTED__`.
+- `mcp:write` permits mutating tools and includes MCP read access, including
+  private key material.
 
 Send the token in the `Authorization` header:
 

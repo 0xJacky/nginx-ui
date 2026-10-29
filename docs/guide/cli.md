@@ -15,8 +15,23 @@ The API scopes are:
 
 | Scope | Access |
 | --- | --- |
-| `api:read` | `GET`, `HEAD`, and `OPTIONS` management API requests |
-| `api:write` | Mutating management API requests and API read access |
+| `api:read` | `GET`, `HEAD`, and `OPTIONS` management API requests, with stored secrets hidden |
+| `api:write` | Mutating management API requests and API read access, including stored secrets |
+
+`api:read` is a read-only role and never receives stored secrets. Responses
+keep their shape and every non-secret field, but secret values are replaced by
+`__NGINX_UI_REDACTED__`. This covers notifier configuration values, site health
+check header values, DNS provider credentials attached to DNS domains, and the
+private key in certificate details. The DNS credential, ACME account and S3
+auto-backup endpoints omit their credential fields for every service token. Reading a
+private key file through `GET /api/config`, either a `.key` file or any file
+containing a PEM private key block, is refused with `403` and error code
+`40019`, and private key revisions in configuration history are redacted.
+Certificates and other configuration files stay readable. The site navigation
+WebSocket feed of a remote node (`X-Node-ID`) is refused with `403` and error
+code `40301`, because the controller cannot redact relayed frames. Use
+`GET /api/site_navigation` instead. Use an `api:write` token when automation
+needs to export keys or read stored credentials.
 
 MCP scopes are independent of API scopes. Granting `mcp:write` does not grant
 management API access, and granting `api:write` does not grant MCP access.

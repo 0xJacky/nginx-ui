@@ -3,6 +3,7 @@ package middleware
 import (
 	"net/http"
 
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -25,6 +26,12 @@ func ProxyWs() gin.HandlerFunc {
 		}
 
 		if !authorizeProxyRequest(c) {
+			return
+		}
+
+		if _, carriesSecrets := readOnlyServiceTokenRefusedProxyWebSockets[c.FullPath()]; carriesSecrets &&
+			internalmcp.IsReadOnlyServiceTokenRequest(c) {
+			c.AbortWithStatusJSON(http.StatusForbidden, ErrRemoteFeedHasSecrets)
 			return
 		}
 

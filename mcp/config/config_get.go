@@ -44,6 +44,12 @@ func handleNginxConfigGet(ctx context.Context, request mcpgo.CallToolRequest) (*
 		return nil, err
 	}
 
+	// mcp:read follows the same rule as api:read: configuration stays
+	// readable, private keys stored next to it do not.
+	if mcp.IsReadOnlyServiceTokenContext(ctx) && config.IsPrivateKeyMaterial(absPath, content) {
+		return nil, config.ErrPrivateKeyHiddenFromReadOnly
+	}
+
 	q := query.Config
 	cfg, err := q.Where(q.Filepath.Eq(absPath)).FirstOrInit()
 	if err != nil {

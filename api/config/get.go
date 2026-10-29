@@ -6,6 +6,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -36,6 +37,14 @@ func GetConfig(c *gin.Context) {
 	content, err := nginx.ReadFile(absPath)
 	if err != nil {
 		cosy.ErrHandler(c, err)
+		return
+	}
+
+	// Read-only service tokens may read configuration, certificates and other
+	// data files, but not private keys stored next to them. api:write tokens
+	// and administrators keep full access.
+	if internalmcp.IsReadOnlyServiceTokenRequest(c) && config.IsPrivateKeyMaterial(absPath, content) {
+		c.AbortWithStatusJSON(http.StatusForbidden, config.ErrPrivateKeyHiddenFromReadOnly)
 		return
 	}
 

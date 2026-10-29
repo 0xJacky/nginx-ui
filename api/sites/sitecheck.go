@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	internalsite "github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
@@ -26,6 +27,9 @@ import (
 func GetSiteNavigation(c *gin.Context) {
 	service := sitecheck.GetService()
 	sites := service.GetSites()
+	if internalmcp.IsReadOnlyServiceTokenRequest(c) {
+		sites = redactSiteInfos(sites)
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": sites,
@@ -99,8 +103,40 @@ func GetHealthCheck(c *gin.Context) {
 	}
 
 	ensureHealthCheckConfig(siteConfig)
+	if internalmcp.IsReadOnlyServiceTokenRequest(c) {
+		redactHealthCheckHeaders(siteConfig)
+	}
 
 	c.JSON(http.StatusOK, siteConfig)
+}
+
+// redactHealthCheckHeaders hides custom probe header values, which commonly
+// carry Authorization credentials, from read-only service tokens. Header names
+// stay visible. The config is copied so a shared value is never modified.
+func redactHealthCheckHeaders(siteConfig *model.SiteConfig) {
+	if siteConfig.HealthCheckConfig == nil {
+		return
+	}
+	healthCheckConfig := *siteConfig.HealthCheckConfig
+	healthCheckConfig.Headers = internalmcp.RedactValues(healthCheckConfig.Headers)
+	siteConfig.HealthCheckConfig = &healthCheckConfig
+}
+
+// redactSiteInfos returns copies of the checker's sites with probe header
+// values hidden. The checker keeps probing with the originals, so they must not
+// be modified.
+func redactSiteInfos(sites []*sitecheck.SiteInfo) []*sitecheck.SiteInfo {
+	redacted := make([]*sitecheck.SiteInfo, 0, len(sites))
+	for _, site := range sites {
+		if site == nil {
+			redacted = append(redacted, nil)
+			continue
+		}
+		clone := *site
+		redactHealthCheckHeaders(&clone.SiteConfig)
+		redacted = append(redacted, &clone)
+	}
+	return redacted
 }
 
 // createDefaultHealthCheckConfig creates default health check configuration

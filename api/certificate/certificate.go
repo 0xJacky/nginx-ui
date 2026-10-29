@@ -8,11 +8,13 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/internal/site"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
+	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/go-acme/lego/v5/certcrypto"
 	"github.com/spf13/cast"
@@ -94,7 +96,15 @@ func GetCert(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, Transformer(certModel))
+	certificate := Transformer(certModel)
+	// The private key is a stored secret. Read-only service tokens keep the
+	// certificate, its metadata and the key path, while api:write tokens keep
+	// the key for export and administrators keep it for the editor.
+	if internalmcp.IsReadOnlyServiceTokenRequest(c) && certificate.SSLCertificateKey != "" {
+		certificate.SSLCertificateKey = settings.RedactedSensitiveValue
+	}
+
+	c.JSON(http.StatusOK, certificate)
 }
 
 func normalizeCertKeyType(ctx *cosy.Ctx[model.Cert]) {

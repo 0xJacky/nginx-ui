@@ -1,7 +1,9 @@
 package config
 
 import (
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
@@ -18,6 +20,13 @@ func GetConfigHistory(c *gin.Context) {
 		core = core.GormScope(func(tx *gorm.DB) *gorm.DB {
 			return tx.Where("filepath = ?", filepath)
 		})
+	}
+
+	// History keeps earlier revisions of every file saved through the editor,
+	// including key files, so read-only service tokens get the same private key
+	// redaction as a direct file read.
+	if internalmcp.IsReadOnlyServiceTokenRequest(c) {
+		core.SetTransformer(config.RedactPrivateKeyBackup)
 	}
 
 	core.PagingList()

@@ -23,8 +23,8 @@ MCP 接口通过 `/mcp` 提供 Streamable HTTP 传输。将 OpenCode 等客户�
 
 在 **偏好设置 > 访问令牌** 中创建服务令牌，并仅授予客户端所需的最小 MCP 权限范围：
 
-- `mcp:read` 允许读取资源和调用只读工具。
-- `mcp:write` 允许调用会修改状态的工具，并包含 MCP 读取权限。
+- `mcp:read` 允许读取资源和调用只读工具，已存储的密钥会被隐藏：`nginx_config_get` 拒绝读取私钥文件（`.key` 文件或任何包含 PEM 私钥块的文件），`nginx_config_history` 会将私钥版本的内容替换为 `__NGINX_UI_REDACTED__`。
+- `mcp:write` 允许调用会修改状态的工具，并包含 MCP 读取权限，可读取私钥内容。
 
 通过 `Authorization` 请求头发送令牌：
 

@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	mcpgo "github.com/mark3labs/mcp-go/mcp"
 )
@@ -30,6 +32,16 @@ func handleNginxConfigHistory(ctx context.Context, request mcpgo.CallToolRequest
 	var histories, err = q.Where(q.FilePath.Eq(filepath)).Order(q.ID.Desc()).Find()
 	if err != nil {
 		return nil, err
+	}
+
+	// History keeps earlier revisions of key files saved through the editor.
+	if mcp.IsReadOnlyServiceTokenContext(ctx) {
+		redacted := make([]model.ConfigBackup, 0, len(histories))
+		for _, history := range histories {
+			redacted = append(redacted, config.RedactPrivateKeyBackup(history))
+		}
+		jsonResult, _ := json.Marshal(redacted)
+		return mcpgo.NewToolResultText(string(jsonResult)), nil
 	}
 
 	jsonResult, _ := json.Marshal(histories)

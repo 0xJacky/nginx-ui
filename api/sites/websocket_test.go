@@ -41,6 +41,13 @@ func isManaged(conn *websocket.Conn) bool {
 // session has ended.
 func startSiteNavigationServer(t *testing.T) (string, <-chan *websocket.Conn) {
 	t.Helper()
+	return startSiteNavigationServerFor(t, false)
+}
+
+// startSiteNavigationServerFor serves a session whose stored secrets are hidden
+// when hideSecrets is set, as they are for a read-only service token.
+func startSiteNavigationServerFor(t *testing.T, hideSecrets bool) (string, <-chan *websocket.Conn) {
+	t.Helper()
 
 	service := sitecheck.NewService(context.Background(), sitecheck.CheckOptions{})
 	sessions := make(chan *websocket.Conn, 1)
@@ -52,7 +59,7 @@ func startSiteNavigationServer(t *testing.T) (string, <-chan *websocket.Conn) {
 			return
 		}
 		sessions <- conn
-		serveSiteNavigation(conn, service)
+		serveSiteNavigation(conn, service, hideSecrets)
 	}))
 	t.Cleanup(server.Close)
 

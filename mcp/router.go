@@ -143,6 +143,11 @@ func authorizeMCPToolRequest() gin.HandlerFunc {
 				c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"message": "MCP token scope is insufficient"})
 				return
 			}
+			// mcp:read is a read-only role that must not receive stored secrets.
+			// Tool handlers only see the request context, so record it there.
+			if !principal.HasScope(model.MCPTokenScopeWrite) {
+				c.Request = c.Request.WithContext(internalmcp.WithReadOnlyServiceToken(c.Request.Context()))
+			}
 			c.Next()
 			return
 		}

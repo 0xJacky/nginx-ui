@@ -4,6 +4,7 @@ export default {
   40016: () => $gettext('File content contains invalid control characters'),
   40017: () => $gettext('File content contains restricted nginx directive: {0}'),
   40018: () => $gettext('File content must be valid PEM or htpasswd data'),
+  40019: () => $gettext('Private key material is hidden from read-only service tokens'),
   50006: () => $gettext('Path: {0} is not under the nginx conf dir: {1}'),
   50007: () => $gettext('Destination file: {0} already exists'),
   50008: () => $gettext('Nginx test failed: {0}'),

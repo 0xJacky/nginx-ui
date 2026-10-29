@@ -13,17 +13,43 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 
+	certdns "github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/0xJacky/Nginx-UI/internal/cron"
 	dnsService "github.com/0xJacky/Nginx-UI/internal/dns"
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/model"
 )
 
 func ListDomains(c *gin.Context) {
-	cosy.Core[model.DnsDomain](c).
+	core := cosy.Core[model.DnsDomain](c).
 		SetPreloads("DnsCredential").
 		SetFussy("description").
-		GormScope(domainSearchScope(c)).
-		PagingList()
+		GormScope(domainSearchScope(c))
+	if internalmcp.IsReadOnlyServiceTokenRequest(c) {
+		core.SetTransformer(redactDomainCredential)
+	}
+	core.PagingList()
+}
+
+// redactDomainCredential hides the preloaded provider credential values from
+// read-only service tokens. Both maps are redacted because several providers
+// keep secrets such as session tokens among their optional settings. The
+// credential's name, provider and the setting keys stay readable.
+func redactDomainCredential(domain *model.DnsDomain) model.DnsDomain {
+	redacted := *domain
+	if domain.DnsCredential == nil || domain.DnsCredential.Config == nil ||
+		domain.DnsCredential.Config.Configuration == nil {
+		return redacted
+	}
+	credential := *domain.DnsCredential
+	providerConfig := *credential.Config
+	providerConfig.Configuration = &certdns.Configuration{
+		Credentials: internalmcp.RedactValues(providerConfig.Configuration.Credentials),
+		Additional:  internalmcp.RedactValues(providerConfig.Configuration.Additional),
+	}
+	credential.Config = &providerConfig
+	redacted.DnsCredential = &credential
+	return redacted
 }
 
 // domainSearchScope filters the domain column the way cosy's fuzzy search does,
@@ -92,9 +118,11 @@ func fuzzyLikeClause() string {
 }
 
 func GetDomain(c *gin.Context) {
-	cosy.Core[model.DnsDomain](c).
-		SetPreloads("DnsCredential").
-		Get()
+	core := cosy.Core[model.DnsDomain](c).SetPreloads("DnsCredential")
+	if internalmcp.IsReadOnlyServiceTokenRequest(c) {
+		core.SetTransformer(redactDomainCredential)
+	}
+	core.Get()
 }
 
 func CreateDomain(c *gin.Context) {

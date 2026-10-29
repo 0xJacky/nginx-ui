@@ -26,7 +26,7 @@ const scopeOptions: Array<{ value: ServiceTokenScope, label: string, description
   {
     value: 'api:read',
     label: $gettext('Management API: Read'),
-    description: $gettext('Read resources and runtime status through the management API.'),
+    description: $gettext('Read resources and runtime status through the management API. Stored secrets such as credentials and private keys are hidden from read-only tokens.'),
   },
   {
     value: 'api:write',
@@ -36,7 +36,7 @@ const scopeOptions: Array<{ value: ServiceTokenScope, label: string, description
   {
     value: 'mcp:read',
     label: $gettext('MCP: Read'),
-    description: $gettext('Use read-only Nginx UI MCP tools.'),
+    description: $gettext('Use read-only Nginx UI MCP tools. Private keys are hidden from read-only tokens.'),
   },
   {
     value: 'mcp:write',

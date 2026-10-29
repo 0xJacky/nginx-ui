@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -19,6 +20,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -91,13 +93,14 @@ func Proxy() gin.HandlerFunc {
 
 		route := c.FullPath()
 		isServiceToken := internalmcp.IsServiceTokenRequest(c)
-		configureProxyDirector(proxy, isServiceToken && serviceTokenRedactedResponseFields[route] != nil)
+		hidesStoredSecrets := internalmcp.IsReadOnlyServiceTokenRequest(c)
+		configureProxyDirector(proxy, proxyRequiresIdentityEncoding(route, isServiceToken, hidesStoredSecrets))
 		director := proxy.Director
 		proxy.Director = func(request *http.Request) {
 			director(request)
 			setProxyVerifiedTwoFactor(request, c)
 		}
-		configureProxyResponse(proxy, id, route, isServiceToken, logger.GetLogger().Warnw)
+		configureProxyResponse(proxy, id, route, isServiceToken, hidesStoredSecrets, logger.GetLogger().Warnw)
 
 		proxy.ErrorHandler = func(rw http.ResponseWriter, req *http.Request, err error) {
 			logger.Error(err)
@@ -130,13 +133,21 @@ func configureProxyResponse(
 	nodeID uint64,
 	route string,
 	isServiceToken bool,
+	hidesStoredSecrets bool,
 	warn proxyLogFunc,
 ) {
 	proxy.ModifyResponse = func(resp *http.Response) error {
 		upstreamStatus := normalizeProxyResponse(resp)
-		if isServiceToken && upstreamStatus >= http.StatusOK && upstreamStatus < http.StatusMultipleChoices {
-			if err := redactServiceTokenProxyResponse(resp, route); err != nil {
-				return err
+		if upstreamStatus >= http.StatusOK && upstreamStatus < http.StatusMultipleChoices {
+			if isServiceToken {
+				if err := redactServiceTokenProxyResponse(resp, route); err != nil {
+					return err
+				}
+			}
+			if hidesStoredSecrets {
+				if err := redactReadOnlyServiceTokenProxyResponse(resp, route); err != nil {
+					return err
+				}
 			}
 		}
 		if shouldLogProxyResponse(upstreamStatus) {
@@ -146,30 +157,58 @@ func configureProxyResponse(
 	}
 }
 
-func redactServiceTokenProxyResponse(response *http.Response, route string) error {
-	fields := serviceTokenRedactedResponseFields[route]
-	if len(fields) == 0 {
-		return nil
-	}
+// proxyRequiresIdentityEncoding asks the child for an uncompressed body when
+// the controller has to rewrite the response before relaying it.
+func proxyRequiresIdentityEncoding(route string, isServiceToken, hidesStoredSecrets bool) bool {
+	return (isServiceToken && serviceTokenRedactedResponseFields[route] != nil) ||
+		(hidesStoredSecrets && readOnlyServiceTokenProxyRedactions[route] != nil)
+}
+
+func readProxyJSONResponse(response *http.Response, route string) (map[string]any, error) {
 	if response.Body == nil {
-		return fmt.Errorf("redact service token response for %s: response body is missing", route)
+		return nil, fmt.Errorf("redact service token response for %s: response body is missing", route)
 	}
 
 	body, err := io.ReadAll(io.LimitReader(response.Body, maxServiceTokenRedactionBodySize+1))
 	closeErr := response.Body.Close()
 	if err != nil {
-		return fmt.Errorf("redact service token response for %s: %w", route, err)
+		return nil, fmt.Errorf("redact service token response for %s: %w", route, err)
 	}
 	if closeErr != nil {
-		return fmt.Errorf("redact service token response for %s: %w", route, closeErr)
+		return nil, fmt.Errorf("redact service token response for %s: %w", route, closeErr)
 	}
 	if len(body) > maxServiceTokenRedactionBodySize {
-		return fmt.Errorf("redact service token response for %s: response body is too large", route)
+		return nil, fmt.Errorf("redact service token response for %s: response body is too large", route)
 	}
 
 	var payload map[string]any
 	if err := json.Unmarshal(body, &payload); err != nil {
+		return nil, fmt.Errorf("redact service token response for %s: %w", route, err)
+	}
+	return payload, nil
+}
+
+func writeProxyJSONResponse(response *http.Response, route string, payload any) error {
+	redactedBody, err := json.Marshal(payload)
+	if err != nil {
 		return fmt.Errorf("redact service token response for %s: %w", route, err)
+	}
+	response.Body = io.NopCloser(bytes.NewReader(redactedBody))
+	response.ContentLength = int64(len(redactedBody))
+	response.Header.Set("Content-Length", strconv.FormatInt(response.ContentLength, 10))
+	response.Header.Del("ETag")
+	return nil
+}
+
+func redactServiceTokenProxyResponse(response *http.Response, route string) error {
+	fields := serviceTokenRedactedResponseFields[route]
+	if len(fields) == 0 {
+		return nil
+	}
+
+	payload, err := readProxyJSONResponse(response, route)
+	if err != nil {
+		return err
 	}
 	if strings.HasSuffix(route, "/:id") {
 		redactResponseFields(payload, fields)
@@ -187,21 +226,39 @@ func redactServiceTokenProxyResponse(response *http.Response, route string) erro
 		}
 	}
 
-	redactedBody, err := json.Marshal(payload)
-	if err != nil {
-		return fmt.Errorf("redact service token response for %s: %w", route, err)
-	}
-	response.Body = io.NopCloser(bytes.NewReader(redactedBody))
-	response.ContentLength = int64(len(redactedBody))
-	response.Header.Set("Content-Length", strconv.FormatInt(response.ContentLength, 10))
-	response.Header.Del("ETag")
-	return nil
+	return writeProxyJSONResponse(response, route, payload)
 }
 
 func redactResponseFields(payload map[string]any, fields []string) {
 	for _, field := range fields {
 		delete(payload, field)
 	}
+}
+
+// redactReadOnlyServiceTokenProxyResponse applies the read-only rule to a
+// child node's response. A refused read replaces the response with the same
+// cosy error the local handler returns.
+func redactReadOnlyServiceTokenProxyResponse(response *http.Response, route string) error {
+	redact := readOnlyServiceTokenProxyRedactions[route]
+	if redact == nil {
+		return nil
+	}
+
+	payload, err := readProxyJSONResponse(response, route)
+	if err != nil {
+		return err
+	}
+	if err := redact(payload); err != nil {
+		var refusal *cosy.Error
+		if !errors.As(err, &refusal) {
+			return fmt.Errorf("redact service token response for %s: %w", route, err)
+		}
+		response.StatusCode = http.StatusForbidden
+		response.Status = strconv.Itoa(http.StatusForbidden) + " " + http.StatusText(http.StatusForbidden)
+		response.Header.Set("Content-Type", "application/json; charset=utf-8")
+		return writeProxyJSONResponse(response, route, refusal)
+	}
+	return writeProxyJSONResponse(response, route, payload)
 }
 
 func normalizeProxyResponse(resp *http.Response) int {

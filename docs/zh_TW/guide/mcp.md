@@ -23,8 +23,8 @@ MCP 介面透過 `/mcp` 提供 Streamable HTTP 傳輸。將 OpenCode 等用戶�
 
 在 **偏好設定 > 存取權杖** 中建立服務權杖，並僅授予用戶端所需的最小 MCP 權限範圍：
 
-- `mcp:read` 允許讀取資源和呼叫唯讀工具。
-- `mcp:write` 允許呼叫會修改狀態的工具，並包含 MCP 讀取權限。
+- `mcp:read` 允許讀取資源和呼叫唯讀工具，已儲存的密鑰會被隱藏：`nginx_config_get` 拒絕讀取私鑰檔案（`.key` 檔案或任何包含 PEM 私鑰區塊的檔案），`nginx_config_history` 會將私鑰版本的內容替換為 `__NGINX_UI_REDACTED__`。
+- `mcp:write` 允許呼叫會修改狀態的工具，並包含 MCP 讀取權限，可讀取私鑰內容。
 
 透過 `Authorization` 請求標頭傳送權杖：
 
