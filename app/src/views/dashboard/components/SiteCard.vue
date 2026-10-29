@@ -130,7 +130,9 @@ function formatCertRemaining(site: SiteInfo): string {
   if (site.cert_days_remaining < 0)
     return $gettext('Expired')
 
-  return $gettext('%{days}d', { days: String(site.cert_days_remaining) })
+  return $gettext('%{days}d', {
+    days: String(site.cert_days_remaining),
+  })
 }
 
 function getSiteTitle(site: SiteInfo): string {

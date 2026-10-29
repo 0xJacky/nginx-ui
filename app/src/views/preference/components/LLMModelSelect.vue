@@ -60,13 +60,17 @@ const groups = computed(() => {
     result.push({
       label: $gettext('Custom model'),
       title: 'custom',
-      options: [{ label: search, value: search, isCustom: true }],
+      options: [
+        { label: search, value: search, isCustom: true },
+      ],
     })
   }
 
   if (props.models) {
     result.push({
-      label: $gettext('Chat models from the endpoint (%{count})', { count: String(chatModels.value.length) }),
+      label: $gettext('Chat models from the endpoint (%{count})', {
+        count: String(chatModels.value.length),
+      }),
       title: 'chat',
       options: chatModels.value.map(model => toOption(model.id)),
     })
@@ -90,7 +94,10 @@ const groups = computed(() => {
   // Filtered here rather than by the Select, which keeps every option of a
   // group once the group itself passes its filter.
   return result
-    .map(group => ({ ...group, options: group.options.filter(matchesSearch) }))
+    .map(group => ({
+      ...group,
+      options: group.options.filter(matchesSearch),
+    }))
     .filter(group => group.options.length)
 })
 

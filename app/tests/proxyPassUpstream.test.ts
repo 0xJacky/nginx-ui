@@ -63,7 +63,9 @@ function siteConfig(): Pick<NgxConfig, 'servers'> {
         ],
       },
       {
-        directives: [{ directive: 'listen', params: '8080' }],
+        directives: [
+          { directive: 'listen', params: '8080' },
+        ],
         locations: [
           { path: '/', content: 'return 204;', comments: '' },
         ],
@@ -75,15 +77,45 @@ function siteConfig(): Pick<NgxConfig, 'servers'> {
 describe('listProxyLocations', () => {
   test('lists every location with its server name and proxy target', () => {
     expect(listProxyLocations(siteConfig())).toEqual([
-      { key: '0:0', serverIdx: 0, locationIdx: 0, serverName: 'old.test www.old.test', path: '/', target: 'http://old_pool/' },
-      { key: '0:1', serverIdx: 0, locationIdx: 1, serverName: 'old.test www.old.test', path: '/static/', target: undefined },
-      { key: '0:2', serverIdx: 0, locationIdx: 2, serverName: 'old.test www.old.test', path: '/api/', target: 'https://127.0.0.1:9000/v1/' },
-      { key: '1:0', serverIdx: 1, locationIdx: 0, serverName: '', path: '/', target: undefined },
+      {
+        key: '0:0',
+        serverIdx: 0,
+        locationIdx: 0,
+        serverName: 'old.test www.old.test',
+        path: '/',
+        target: 'http://old_pool/',
+      },
+      {
+        key: '0:1',
+        serverIdx: 0,
+        locationIdx: 1,
+        serverName: 'old.test www.old.test',
+        path: '/static/',
+        target: undefined,
+      },
+      {
+        key: '0:2',
+        serverIdx: 0,
+        locationIdx: 2,
+        serverName: 'old.test www.old.test',
+        path: '/api/',
+        target: 'https://127.0.0.1:9000/v1/',
+      },
+      {
+        key: '1:0',
+        serverIdx: 1,
+        locationIdx: 0,
+        serverName: '',
+        path: '/',
+        target: undefined,
+      },
     ])
   })
 
   test('handles servers without directives or locations', () => {
-    expect(listProxyLocations({ servers: [{}] })).toEqual([])
+    expect(listProxyLocations({
+      servers: [{}],
+    })).toEqual([])
     expect(getProxyPassTarget('# proxy_pass http://a;')).toBeUndefined()
   })
 })
@@ -94,18 +126,28 @@ describe('defaultProxyLocationKeys', () => {
   })
 
   test('preselects the only location of a site without proxy_pass', () => {
-    const config = { servers: [{ locations: [{ path: '/', content: 'root /srv;', comments: '' }] }] }
+    const config = {
+      servers: [
+        {
+          locations: [
+            { path: '/', content: 'root /srv;', comments: '' },
+          ],
+        },
+      ],
+    }
     expect(defaultProxyLocationKeys(listProxyLocations(config))).toEqual(['0:0'])
   })
 
   test('preselects nothing when several locations have no proxy_pass', () => {
     const config = {
-      servers: [{
-        locations: [
-          { path: '/', content: 'root /srv;', comments: '' },
-          { path: '/a/', content: 'return 204;', comments: '' },
-        ],
-      }],
+      servers: [
+        {
+          locations: [
+            { path: '/', content: 'root /srv;', comments: '' },
+            { path: '/a/', content: 'return 204;', comments: '' },
+          ],
+        },
+      ],
     }
     expect(defaultProxyLocationKeys(listProxyLocations(config))).toEqual([])
   })
@@ -152,12 +194,14 @@ describe('findUnreferencedUpstreams', () => {
 
   test('counts every pass directive and ignores comments and longer names', () => {
     const config = {
-      servers: [{
-        locations: [
-          { path: '/grpc', content: 'grpc_pass grpc://grpc_pool;', comments: '' },
-          { path: '/old', content: '# proxy_pass http://old_pool;\nproxy_pass http://old_pool_v2;', comments: '' },
-        ],
-      }],
+      servers: [
+        {
+          locations: [
+            { path: '/grpc', content: 'grpc_pass grpc://grpc_pool;', comments: '' },
+            { path: '/old', content: '# proxy_pass http://old_pool;\nproxy_pass http://old_pool_v2;', comments: '' },
+          ],
+        },
+      ],
     }
     expect(findUnreferencedUpstreams(config, ['grpc_pool', 'old_pool'])).toEqual(['old_pool'])
   })

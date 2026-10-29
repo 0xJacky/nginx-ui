@@ -60,7 +60,9 @@ function hasValue(value?: string) {
 function normalizeKeySource(source: string | undefined, privateKeyPath: string): KeySource {
   if (source === 'generated' || source === 'existing' || source === 'provided')
     return source
-  return privateKeyPath === defaultHostPrivateKeyPath ? 'generated' : 'existing'
+  return privateKeyPath === defaultHostPrivateKeyPath
+    ? 'generated'
+    : 'existing'
 }
 
 function initialAccessMode(nginx: Settings['nginx']): SetupParams['access_mode'] {
@@ -93,10 +95,18 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
     systemctl_path: nginx.host_systemctl_path || '/bin/systemctl',
     launchd_service: nginx.host_launchd_service || 'homebrew.mxcl.nginx',
     launchctl_path: nginx.host_launchctl_path || '/bin/launchctl',
-    nginx_sbin_path: nginx.sbin_path || (serviceManager === 'launchd' ? '/opt/homebrew/opt/nginx/bin/nginx' : '/usr/sbin/nginx'),
-    host_config_dir: nginx.host_config_dir || (serviceManager === 'launchd' ? '/opt/homebrew/etc/nginx' : '/etc/nginx'),
-    host_log_dir: nginx.host_log_dir || (serviceManager === 'launchd' ? '/opt/homebrew/var/log/nginx' : '/var/log/nginx'),
-    pid_path: nginx.pid_path || (serviceManager === 'launchd' ? '/opt/homebrew/var/run/nginx.pid' : '/var/run/nginx.pid'),
+    nginx_sbin_path: nginx.sbin_path || (serviceManager === 'launchd'
+      ? '/opt/homebrew/opt/nginx/bin/nginx'
+      : '/usr/sbin/nginx'),
+    host_config_dir: nginx.host_config_dir || (serviceManager === 'launchd'
+      ? '/opt/homebrew/etc/nginx'
+      : '/etc/nginx'),
+    host_log_dir: nginx.host_log_dir || (serviceManager === 'launchd'
+      ? '/opt/homebrew/var/log/nginx'
+      : '/var/log/nginx'),
+    pid_path: nginx.pid_path || (serviceManager === 'launchd'
+      ? '/opt/homebrew/var/run/nginx.pid'
+      : '/var/run/nginx.pid'),
     container_key_path: configuredPrivateKeyPath,
     container_known_hosts_path: nginx.host_known_hosts_path || defaultHostKnownHostsPath,
     key_source: configuredKeySource,
@@ -124,7 +134,9 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
     const detected = detectedValues.value[field]
     if (!detected)
       return 'unknown'
-    return params.value[field] === detected ? 'detected' : 'overridden'
+    return params.value[field] === detected
+      ? 'detected'
+      : 'overridden'
   }
 
   function restoreDetected(field: DetectableField) {
@@ -138,7 +150,10 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
   })
 
   watch(
-    [() => params.value.container_key_path, () => params.value.key_source],
+    [
+      () => params.value.container_key_path,
+      () => params.value.key_source,
+    ],
     () => {
       const currentPath = params.value.container_key_path?.trim() ?? ''
       if (validatedPrivateKeyPath.value !== currentPath) {
@@ -159,7 +174,10 @@ export function createHostSetupWizard(settings: Ref<Settings>) {
   )
 
   watch(
-    [() => params.value.host_user, publicKey],
+    [
+      () => params.value.host_user,
+      publicKey,
+    ],
     () => {
       isSSHConnected.value = false
       isVerificationPassed.value = false

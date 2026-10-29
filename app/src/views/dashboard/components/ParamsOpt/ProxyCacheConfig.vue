@@ -57,7 +57,15 @@ const sizeValues = reactive({
 })
 
 function initTimeValues() {
-  const timeFields = ['inactive', 'manager_sleep', 'manager_threshold', 'loader_sleep', 'loader_threshold', 'purger_sleep', 'purger_threshold']
+  const timeFields = [
+    'inactive',
+    'manager_sleep',
+    'manager_threshold',
+    'loader_sleep',
+    'loader_threshold',
+    'purger_sleep',
+    'purger_threshold',
+  ]
 
   timeFields.forEach(field => {
     const fieldValue = value.value[field]

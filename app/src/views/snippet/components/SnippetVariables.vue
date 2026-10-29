@@ -21,9 +21,18 @@ const openId = ref<number>()
 const slots = computed(() => colorSlots(rows.value))
 
 const typeOptions = computed(() => [
-  { label: $gettext('Text'), value: 'string' },
-  { label: $gettext('Switch'), value: 'boolean' },
-  { label: $gettext('Select'), value: 'select' },
+  {
+    label: $gettext('Text'),
+    value: 'string',
+  },
+  {
+    label: $gettext('Switch'),
+    value: 'boolean',
+  },
+  {
+    label: $gettext('Select'),
+    value: 'select',
+  },
 ])
 
 const typeLabels = computed(() => Object.fromEntries(typeOptions.value.map(o => [o.value, o.label])) as Record<VariableType, string>)
@@ -107,15 +116,23 @@ function optionLabel(option: VariableOption) {
 function defaultOptions(row: VariableRow) {
   return row.options
     .filter(o => o.value.trim())
-    .map(o => ({ label: optionLabel(o), value: o.value }))
+    .map(o => ({
+      label: optionLabel(o),
+      value: o.value,
+    }))
 }
 
 function defaultOf(row: VariableRow) {
-  if (row.type === 'boolean')
-    return row.value ? $gettext('On') : $gettext('Off')
+  if (row.type === 'boolean') {
+    return row.value
+      ? $gettext('On')
+      : $gettext('Off')
+  }
   if (row.type === 'select') {
     const option = row.options.find(o => o.value === row.value)
-    return option ? optionLabel(option) : ''
+    return option
+      ? optionLabel(option)
+      : ''
   }
   return String(row.value)
 }
@@ -129,7 +146,9 @@ function isUnused(row: VariableRow) {
 }
 
 function colorFor(row: VariableRow) {
-  return keyProblem(row, rows.value) ? 'var(--ant-color-border)' : colorOf(slots.value, row.key.trim())
+  return keyProblem(row, rows.value)
+    ? 'var(--ant-color-border)'
+    : colorOf(slots.value, row.key.trim())
 }
 </script>
 

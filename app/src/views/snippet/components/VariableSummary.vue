@@ -19,11 +19,16 @@ const typeLabels = computed<Record<VariableType, string>>(() => ({
 }))
 
 function defaultOf(row: VariableRow) {
-  if (row.type === 'boolean')
-    return row.value ? $gettext('On') : $gettext('Off')
+  if (row.type === 'boolean') {
+    return row.value
+      ? $gettext('On')
+      : $gettext('Off')
+  }
   if (row.type === 'select') {
     const option = row.options.find(o => o.value === row.value)
-    return option ? localize(option.labels, language.value) || option.value : ''
+    return option
+      ? localize(option.labels, language.value) || option.value
+      : ''
   }
   return String(row.value)
 }

@@ -16,7 +16,12 @@ function run(events: HTTPSOnboardingEvent[], initial = createHTTPSOnboardingStat
 describe('reduceHTTPSEvent', () => {
   test('a successful HTTP-01 run records steps, logs and the result', () => {
     const state = run([
-      { type: 'step', step: 'plan', status: 'running', message: 'Planning' },
+      {
+        type: 'step',
+        step: 'plan',
+        status: 'running',
+        message: 'Planning',
+      },
       { type: 'step', step: 'plan', status: 'success' },
       { type: 'step', step: 'stage', status: 'running' },
       { type: 'step', step: 'stage', status: 'success' },
@@ -53,7 +58,9 @@ describe('reduceHTTPSEvent', () => {
     expect(state.steps.finalize?.status).toBe('success')
     expect(state.steps.rollback).toBeUndefined()
     expect(state.currentStep).toBe('finalize')
-    expect(state.logs).toEqual([{ message: '[INFO] acme: Obtaining bundled SAN certificate', args: undefined }])
+    expect(state.logs).toEqual([
+      { message: '[INFO] acme: Obtaining bundled SAN certificate', args: undefined },
+    ])
   })
 
   test('a probe failure keeps the hint and marks the failed step', () => {
@@ -74,7 +81,13 @@ describe('reduceHTTPSEvent', () => {
         message: 'AAAA record without an IPv6 listen',
         params: { domain: 'app.example.com', ip: '2001:db8::1' },
       },
-      { type: 'done', status: 'error', step: 'probe', message: 'challenge route returned 404', hint },
+      {
+        type: 'done',
+        status: 'error',
+        step: 'probe',
+        message: 'challenge route returned 404',
+        hint,
+      },
       { type: 'socket_closed' },
     ])
 
@@ -87,12 +100,14 @@ describe('reduceHTTPSEvent', () => {
       args: undefined,
       hint,
     })
-    expect(state.diagnostics).toEqual([{
-      level: 'warning',
-      code: 'aaaa_without_ipv6_listen',
-      message: 'AAAA record without an IPv6 listen',
-      params: { domain: 'app.example.com', ip: '2001:db8::1' },
-    }])
+    expect(state.diagnostics).toEqual([
+      {
+        level: 'warning',
+        code: 'aaaa_without_ipv6_listen',
+        message: 'AAAA record without an IPv6 listen',
+        params: { domain: 'app.example.com', ip: '2001:db8::1' },
+      },
+    ])
   })
 
   test('done/error without a step falls back to the running step', () => {
@@ -109,7 +124,12 @@ describe('reduceHTTPSEvent', () => {
     const state = run([
       { type: 'step', step: 'stage', status: 'error' },
       { type: 'step', step: 'rollback', status: 'success' },
-      { type: 'done', status: 'error', step: 'stage', message: 'nginx -t failed' },
+      {
+        type: 'done',
+        status: 'error',
+        step: 'stage',
+        message: 'nginx -t failed',
+      },
     ])
 
     expect(state.steps.stage?.status).toBe('error')
@@ -133,7 +153,9 @@ describe('reduceHTTPSEvent', () => {
   })
 
   test('a socket closed before any step fails without a step', () => {
-    const state = run([{ type: 'socket_closed' }])
+    const state = run([
+      { type: 'socket_closed' },
+    ])
 
     expect(state.phase).toBe('error')
     expect(state.error?.code).toBe('connection_closed')

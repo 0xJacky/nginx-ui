@@ -89,65 +89,71 @@ async function saveEditorModal() {
   }
 }
 
-const columns: StdTableColumn[] = [{
-  title: () => $gettext('Name'),
-  dataIndex: 'name',
-  sorter: true,
-  pure: true,
-  edit: {
-    type: 'input',
+const columns: StdTableColumn[] = [
+  {
+    title: () => $gettext('Name'),
+    dataIndex: 'name',
+    sorter: true,
+    pure: true,
+    edit: {
+      type: 'input',
+    },
+    search: true,
   },
-  search: true,
-}, {
-  title: () => $gettext('Provider'),
-  dataIndex: 'provider_code',
-  customRender: ({ record }: CustomRenderArgs) => {
-    return record.provider
-  },
-  sorter: true,
-  pure: true,
-  search: {
-    type: 'select',
-    select: {
-      remote: {
-        valueKey: 'code',
-        labelKey: 'name',
-        api: async () => {
-          return {
-            data: await auto_cert.get_dns_providers(),
-          }
+  {
+    title: () => $gettext('Provider'),
+    dataIndex: 'provider_code',
+    customRender: ({ record }: CustomRenderArgs) => {
+      return record.provider
+    },
+    sorter: true,
+    pure: true,
+    search: {
+      type: 'select',
+      select: {
+        remote: {
+          valueKey: 'code',
+          labelKey: 'name',
+          api: async () => {
+            return {
+              data: await auto_cert.get_dns_providers(),
+            }
+          },
+        },
+        showSearch: true,
+        filterOption: (input, option) => {
+          return option?.label?.toLowerCase().includes(input.toLowerCase()) ?? false
         },
       },
-      showSearch: true,
-      filterOption: (input, option) => {
-        return option?.label?.toLowerCase().includes(input.toLowerCase()) ?? false
+    },
+  },
+  {
+    title: () => $gettext('Configuration'),
+    dataIndex: 'code',
+    edit: {
+      type: (context: { formData: DnsCredential }) => {
+        return <DNSChallenge v-model:data={context.formData} />
+      },
+      formItem: {
+        hiddenLabelInEdit: true,
       },
     },
+    hiddenInTable: true,
+    hiddenInDetail: true,
   },
-}, {
-  title: () => $gettext('Configuration'),
-  dataIndex: 'code',
-  edit: {
-    type: (context: { formData: DnsCredential }) => {
-      return <DNSChallenge v-model:data={context.formData} />
-    },
-    formItem: {
-      hiddenLabelInEdit: true,
-    },
+  {
+    title: () => $gettext('Updated at'),
+    dataIndex: 'updated_at',
+    customRender: datetimeRender,
+    sorter: true,
+    pure: true,
   },
-  hiddenInTable: true,
-  hiddenInDetail: true,
-}, {
-  title: () => $gettext('Updated at'),
-  dataIndex: 'updated_at',
-  customRender: datetimeRender,
-  sorter: true,
-  pure: true,
-}, {
-  title: () => $gettext('Actions'),
-  dataIndex: 'actions',
-  fixed: 'right',
-}]
+  {
+    title: () => $gettext('Actions'),
+    dataIndex: 'actions',
+    fixed: 'right',
+  },
+]
 </script>
 
 <template>

@@ -13,7 +13,9 @@ const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
 
 function fontColor() {
-  return theme.value === 'dark' ? '#b4b4b4' : undefined
+  return theme.value === 'dark'
+    ? '#b4b4b4'
+    : undefined
 }
 
 const dailyChartOptions = computed(() => {
@@ -110,7 +112,9 @@ const dailyChartOptions = computed(() => {
       },
     },
     tooltip: {
-      theme: theme.value === 'dark' ? 'dark' : 'light',
+      theme: theme.value === 'dark'
+        ? 'dark'
+        : 'light',
       shared: true,
       intersect: false,
     },

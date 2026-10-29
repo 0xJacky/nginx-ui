@@ -90,7 +90,9 @@ const dateRange = computed({
     const start = timeRange.value.start
     const end = timeRange.value.end
     // Return undefined if either value is null/undefined, otherwise return the tuple
-    return (start && end) ? [start, end] as [typeof start, typeof end] : undefined
+    return (start && end)
+      ? [start, end] as [typeof start, typeof end]
+      : undefined
   },
   set: value => {
     if (value && Array.isArray(value) && value.length === 2) {
@@ -110,7 +112,9 @@ const searchSummary = ref<SearchSummary | null>(null)
 
 // Check if current file is being indexed (from WebSocket progress events)
 const isCurrentFileIndexing = computed(() => {
-  return logPath.value ? isFileIndexing(logPath.value) : false
+  return logPath.value
+    ? isFileIndexing(logPath.value)
+    : false
 })
 
 // Check if preflight shows this specific file is available/indexed
@@ -179,20 +183,29 @@ function getDeviceColor(deviceType: string): string {
 // Get sort order for column
 function getSortOrder(fieldName: string): 'ascend' | 'descend' | undefined {
   if (sortBy.value === fieldName) {
-    return sortOrder.value === 'asc' ? 'ascend' : 'descend'
+    return sortOrder.value === 'asc'
+      ? 'ascend'
+      : 'descend'
   }
   return undefined
 }
 
 function buildLocationLabel(record: AccessLogEntry): string {
   const isChineseLocale = gettext.current.toLowerCase().startsWith('zh')
-  const displayRegion = isChineseLocale && record.region_code?.trim() === 'CN' ? '中国' : record.region_code
+  const displayRegion = isChineseLocale && record.region_code?.trim() === 'CN'
+    ? '中国'
+    : record.region_code
 
   const locationParts = [displayRegion, record.province, record.city]
     .map(part => part?.trim())
     .filter((part): part is string => Boolean(part))
 
-  const customParts = [record.c1, record.c2, record.c3, record.c4]
+  const customParts = [
+    record.c1,
+    record.c2,
+    record.c3,
+    record.c4,
+  ]
     .map(part => part?.trim())
     .filter((part): part is string => Boolean(part))
 
@@ -228,7 +241,11 @@ const structuredLogColumns = computed(() => [
       const locationLabel = (record.ip_location_label || '').trim() || buildLocationLabel(record)
 
       return h('div', { class: 'flex items-center gap-2' }, [
-        locationLabel ? h(Tag, { color: 'blue', size: 'small' }, { default: () => locationLabel }) : null,
+        locationLabel
+          ? h(Tag, { color: 'blue', size: 'small' }, {
+              default: () => locationLabel,
+            })
+          : null,
         h('span', record.ip),
       ])
     },
@@ -251,7 +268,9 @@ const structuredLogColumns = computed(() => [
         h(Tag, {
           color: methodColor,
           size: 'small',
-        }, { default: () => record.method }),
+        }, {
+          default: () => record.method,
+        }),
         h('span', { class: 'ml-1' }, record.path),
       ])
     },
@@ -262,7 +281,11 @@ const structuredLogColumns = computed(() => [
     width: 80,
     sorter: true,
     sortOrder: getSortOrder('status'),
-    render: (_value: unknown, record: AccessLogEntry) => h(Tag, { color: getStatusColor(record.status) }, { default: () => record.status }),
+    render: (_value: unknown, record: AccessLogEntry) => h(Tag, {
+      color: getStatusColor(record.status),
+    }, {
+      default: () => record.status,
+    }),
   },
   {
     title: $gettext('Size'),
@@ -311,7 +334,12 @@ const structuredLogColumns = computed(() => [
     sorter: true,
     sortOrder: getSortOrder('device_type'),
     render: (_value: unknown, record: AccessLogEntry) => record.device_type
-      ? h(Tag, { color: getDeviceColor(record.device_type), size: 'small' }, { default: () => record.device_type })
+      ? h(Tag, {
+          color: getDeviceColor(record.device_type),
+          size: 'small',
+        }, {
+          default: () => record.device_type,
+        })
       : null,
   },
   {
@@ -327,14 +355,70 @@ const structuredLogColumns = computed(() => [
 
 // Time range presets (Grafana-style)
 const timePresets = [
-  { key: 'last-15-minutes', label: () => $gettext('Last 15 minutes'), value: () => ({ start: dayjs().subtract(15, 'minute'), end: dayjs() }) },
-  { key: 'last-30-minutes', label: () => $gettext('Last 30 minutes'), value: () => ({ start: dayjs().subtract(30, 'minute'), end: dayjs() }) },
-  { key: 'last-hour', label: () => $gettext('Last hour'), value: () => ({ start: dayjs().subtract(1, 'hour'), end: dayjs() }) },
-  { key: 'last-4-hours', label: () => $gettext('Last 4 hours'), value: () => ({ start: dayjs().subtract(4, 'hour'), end: dayjs() }) },
-  { key: 'last-12-hours', label: () => $gettext('Last 12 hours'), value: () => ({ start: dayjs().subtract(12, 'hour'), end: dayjs() }) },
-  { key: 'last-24-hours', label: () => $gettext('Last 24 hours'), value: () => ({ start: dayjs().subtract(24, 'hour'), end: dayjs() }) },
-  { key: 'last-7-days', label: () => $gettext('Last 7 days'), value: () => ({ start: dayjs().subtract(7, 'day'), end: dayjs() }) },
-  { key: 'last-30-days', label: () => $gettext('Last 30 days'), value: () => ({ start: dayjs().subtract(30, 'day'), end: dayjs() }) },
+  {
+    key: 'last-15-minutes',
+    label: () => $gettext('Last 15 minutes'),
+    value: () => ({
+      start: dayjs().subtract(15, 'minute'),
+      end: dayjs(),
+    }),
+  },
+  {
+    key: 'last-30-minutes',
+    label: () => $gettext('Last 30 minutes'),
+    value: () => ({
+      start: dayjs().subtract(30, 'minute'),
+      end: dayjs(),
+    }),
+  },
+  {
+    key: 'last-hour',
+    label: () => $gettext('Last hour'),
+    value: () => ({
+      start: dayjs().subtract(1, 'hour'),
+      end: dayjs(),
+    }),
+  },
+  {
+    key: 'last-4-hours',
+    label: () => $gettext('Last 4 hours'),
+    value: () => ({
+      start: dayjs().subtract(4, 'hour'),
+      end: dayjs(),
+    }),
+  },
+  {
+    key: 'last-12-hours',
+    label: () => $gettext('Last 12 hours'),
+    value: () => ({
+      start: dayjs().subtract(12, 'hour'),
+      end: dayjs(),
+    }),
+  },
+  {
+    key: 'last-24-hours',
+    label: () => $gettext('Last 24 hours'),
+    value: () => ({
+      start: dayjs().subtract(24, 'hour'),
+      end: dayjs(),
+    }),
+  },
+  {
+    key: 'last-7-days',
+    label: () => $gettext('Last 7 days'),
+    value: () => ({
+      start: dayjs().subtract(7, 'day'),
+      end: dayjs(),
+    }),
+  },
+  {
+    key: 'last-30-days',
+    label: () => $gettext('Last 30 days'),
+    value: () => ({
+      start: dayjs().subtract(30, 'day'),
+      end: dayjs(),
+    }),
+  },
 ]
 
 // Load structured logs function - now only uses advanced search
@@ -357,13 +441,21 @@ async function performAdvancedSearch() {
       query: searchFilters.value.query || undefined,
       ip: searchFilters.value.ip || undefined,
       method: searchFilters.value.method || undefined,
-      status: searchFilters.value.status.length > 0 ? searchFilters.value.status.map(s => Number.parseInt(s)).filter(n => !Number.isNaN(n)) : undefined,
+      status: searchFilters.value.status.length > 0
+        ? searchFilters.value.status.map(s => Number.parseInt(s)).filter(n => !Number.isNaN(n))
+        : undefined,
       path: searchFilters.value.path || undefined,
       user_agent: searchFilters.value.user_agent || undefined,
       referer: searchFilters.value.referer || undefined,
-      browser: searchFilters.value.browser.length > 0 ? searchFilters.value.browser.join(',') : undefined,
-      os: searchFilters.value.os.length > 0 ? searchFilters.value.os.join(',') : undefined,
-      device: searchFilters.value.device.length > 0 ? searchFilters.value.device.join(',') : undefined,
+      browser: searchFilters.value.browser.length > 0
+        ? searchFilters.value.browser.join(',')
+        : undefined,
+      os: searchFilters.value.os.length > 0
+        ? searchFilters.value.os.join(',')
+        : undefined,
+      device: searchFilters.value.device.length > 0
+        ? searchFilters.value.device.join(',')
+        : undefined,
       limit: pageSize.value,
       offset: (currentPage.value - 1) * pageSize.value,
       sort_by: sortBy.value,
@@ -482,12 +574,16 @@ function handleTableChange(
   }
 
   // Handle sorting changes
-  const singleSorter = Array.isArray(sorter) ? sorter[0] : sorter
+  const singleSorter = Array.isArray(sorter)
+    ? sorter[0]
+    : sorter
 
   if (singleSorter?.field) {
     const newSortBy = mapColumnToSortField(String(singleSorter.field))
     // When order is not present, it means to clear sorting, so we revert to default
-    const newSortOrder = singleSorter.order === 'ascend' ? 'asc' : 'desc'
+    const newSortOrder = singleSorter.order === 'ascend'
+      ? 'asc'
+      : 'desc'
     const newSortField = singleSorter.order ? newSortBy : undefined
 
     // Check if sorting actually changed

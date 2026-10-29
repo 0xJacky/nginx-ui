@@ -42,7 +42,9 @@ const tabItems = computed(() => props.options.map(option => ({
   icon: undefined,
   tabOption: {
     ...option,
-    icon: option.icon ? markRaw(option.icon) : undefined,
+    icon: option.icon
+      ? markRaw(option.icon)
+      : undefined,
   },
 })))
 

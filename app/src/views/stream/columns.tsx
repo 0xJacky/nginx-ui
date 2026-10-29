@@ -11,134 +11,143 @@ import ProxyTargets from '@/components/ProxyTargets'
 import namespaceColumns from '@/views/namespace/columns'
 import StreamStatusSelect from '@/views/stream/components/StreamStatusSelect.vue'
 
-const columns: StdTableColumn[] = [{
-  title: () => $gettext('Search'),
-  dataIndex: 'search',
-  search: {
-    type: 'input',
-    input: {
-      placeholder: $gettext('Name or content'),
+const columns: StdTableColumn[] = [
+  {
+    title: () => $gettext('Search'),
+    dataIndex: 'search',
+    search: {
+      type: 'input',
+      input: {
+        placeholder: $gettext('Name or content'),
+      },
+    },
+    width: 150,
+    hiddenInEdit: true,
+    hiddenInTable: true,
+    hiddenInDetail: true,
+  },
+  {
+    title: () => $gettext('Name'),
+    dataIndex: 'name',
+    search: true,
+    sorter: true,
+    pure: true,
+    edit: {
+      type: 'input',
+    },
+    width: 150,
+    customRender: ({ text }: CustomRenderArgs<Stream>) => {
+      const template: JSXElements = []
+
+      // Add stream name
+      template.push(
+        <div>{text}</div>,
+      )
+
+      return h('div', {}, template)
     },
   },
-  width: 150,
-  hiddenInEdit: true,
-  hiddenInTable: true,
-  hiddenInDetail: true,
-}, {
-  title: () => $gettext('Name'),
-  dataIndex: 'name',
-  search: true,
-  sorter: true,
-  pure: true,
-  edit: {
-    type: 'input',
+  {
+    title: () => $gettext('Proxy Targets'),
+    dataIndex: 'proxy_targets',
+    width: 200,
+    customRender: ({ record }: CustomRenderArgs<Stream>) => {
+      if (record.proxy_targets && record.proxy_targets.length > 0) {
+        return h(ProxyTargets, {
+          targets: record.proxy_targets,
+        })
+      }
+      return h('span', '-')
+    },
   },
-  width: 150,
-  customRender: ({ text }: CustomRenderArgs<Stream>) => {
-    const template: JSXElements = []
-
-    // Add stream name
-    template.push(
-      <div>{text}</div>,
-    )
-
-    return h('div', {}, template)
-  },
-}, {
-  title: () => $gettext('Proxy Targets'),
-  dataIndex: 'proxy_targets',
-  width: 200,
-  customRender: ({ record }: CustomRenderArgs<Stream>) => {
-    if (record.proxy_targets && record.proxy_targets.length > 0) {
-      return h(ProxyTargets, {
-        targets: record.proxy_targets,
+  {
+    title: () => $gettext('Namespace'),
+    dataIndex: 'namespace_id',
+    customRender: ({ record }: CustomRenderArgs<Stream>) => {
+      return h(NamespaceRender, {
+        namespace: record.namespace || null,
       })
-    }
-    return h('span', '-')
-  },
-}, {
-  title: () => $gettext('Namespace'),
-  dataIndex: 'namespace_id',
-  customRender: ({ record }: CustomRenderArgs<Stream>) => {
-    return h(NamespaceRender, {
-      namespace: record.namespace || null,
-    })
-  },
-  edit: {
-    type: 'selector',
-    selector: {
-      getListApi: namespace.getList,
-      columns: namespaceColumns,
-      valueKey: 'id',
-      displayKey: 'name',
-      selectionType: 'radio',
     },
+    edit: {
+      type: 'selector',
+      selector: {
+        getListApi: namespace.getList,
+        columns: namespaceColumns,
+        valueKey: 'id',
+        displayKey: 'name',
+        selectionType: 'radio',
+      },
+    },
+    batchEdit: true,
+    sorter: true,
+    pure: true,
+    width: 100,
   },
-  batchEdit: true,
-  sorter: true,
-  pure: true,
-  width: 100,
-}, {
-  title: () => $gettext('Updated at'),
-  dataIndex: 'modified_at',
-  customRender: datetimeRender,
-  sorter: true,
-  pure: true,
-  width: 150,
-}, {
-  title: () => $gettext('Access'),
-  dataIndex: 'access_mode',
-  customRender: ({ record }: CustomRenderArgs<Stream>) => h(AccessSummaryTag, {
-    mode: record.access_mode,
-    slug: record.access_list,
-  }),
-  pure: true,
-  width: 120,
-}, {
-  title: () => $gettext('Status'),
-  dataIndex: 'status',
-  customRender: (args: CustomRenderArgs<Stream>, source) => {
-    const { record } = args
-    // Read-only views (e.g. the batch edit preview) must not offer a switch.
-    if (source === 'detail')
-      return h(ConfigStatusTag, { status: record.status })
+  {
+    title: () => $gettext('Updated at'),
+    dataIndex: 'modified_at',
+    customRender: datetimeRender,
+    sorter: true,
+    pure: true,
+    width: 150,
+  },
+  {
+    title: () => $gettext('Access'),
+    dataIndex: 'access_mode',
+    customRender: ({ record }: CustomRenderArgs<Stream>) => h(AccessSummaryTag, {
+      mode: record.access_mode,
+      slug: record.access_list,
+    }),
+    pure: true,
+    width: 120,
+  },
+  {
+    title: () => $gettext('Status'),
+    dataIndex: 'status',
+    customRender: (args: CustomRenderArgs<Stream>, source) => {
+      const { record } = args
+      // Read-only views (e.g. the batch edit preview) must not offer a switch.
+      if (source === 'detail')
+        return h(ConfigStatusTag, { status: record.status })
 
-    return h(StreamStatusSelect, {
-      'status': record.status,
-      'streamName': record.name,
-      'onStatusChanged': ({ status }: { status: SiteStatus }) => {
-        record.status = status
-      },
-      'onUpdate:status': (val?: SiteStatus) => {
+      return h(StreamStatusSelect, {
+        'status': record.status,
+        'streamName': record.name,
+        'onStatusChanged': ({ status }: { status: SiteStatus }) => {
+          record.status = status
+        },
+        'onUpdate:status': (val?: SiteStatus) => {
         // This will be handled by the component internal events
-        record.status = val!
-      },
-    })
-  },
-  search: {
-    type: 'select',
-    select: {
-      options: [
-        {
-          label: $gettext('Enabled'),
-          value: 'enabled',
+          record.status = val!
         },
-        {
-          label: $gettext('Disabled'),
-          value: 'disabled',
-        },
-      ],
+      })
     },
+    search: {
+      type: 'select',
+      select: {
+        options: [
+          {
+            label: $gettext('Enabled'),
+            value: 'enabled',
+          },
+          {
+            label: $gettext('Disabled'),
+            value: 'disabled',
+          },
+        ],
+      },
+    },
+    sorter: true,
+    pure: true,
+    width: 100,
+    fixed: 'right',
   },
-  sorter: true,
-  pure: true,
-  width: 100,
-  fixed: 'right',
-}, {
-  title: () => $gettext('Actions'),
-  dataIndex: 'actions',
-  width: 80,
-  fixed: 'right',
-}]
+  {
+    title: () => $gettext('Actions'),
+    dataIndex: 'actions',
+    width: 80,
+    fixed: 'right',
+  },
+]
 
 export default columns

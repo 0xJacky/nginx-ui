@@ -114,7 +114,9 @@ watch(() => props.domains, value => {
   if (running.value)
     return
 
-  domainList.value = [...new Set(splitCertificateIdentifiers(value ?? []).map(normalizeIdentifier).filter(Boolean))]
+  domainList.value = [
+    ...new Set(splitCertificateIdentifiers(value ?? []).map(normalizeIdentifier).filter(Boolean)),
+  ]
 }, { immediate: true, deep: true })
 
 function isValidIdentifier(value: string) {
@@ -128,11 +130,18 @@ function addDomains() {
 
   const invalid = candidates.filter(v => !isValidIdentifier(v))
   if (invalid.length) {
-    domainInputError.value = $gettext('Not a valid domain name or IP address: %{value}', { value: invalid.join(', ') })
+    domainInputError.value = $gettext('Not a valid domain name or IP address: %{value}', {
+      value: invalid.join(', '),
+    })
     return
   }
 
-  domainList.value = [...new Set([...domainList.value, ...candidates])]
+  domainList.value = [
+    ...new Set([
+      ...domainList.value,
+      ...candidates,
+    ]),
+  ]
   domainInput.value = ''
   domainInputError.value = ''
 }
@@ -153,10 +162,30 @@ const hasWildcardIdentifier = computed(() => domainList.value.some(d => d.starts
 // ---- Method -------------------------------------------------------------
 
 const methodOptions = computed<SegmentedProps['options']>(() => [
-  { value: 'http01', label: $gettext('HTTP-01') },
-  { value: 'dns01', label: $gettext('DNS-01') },
-  ...(props.existingCertificate ? [{ value: 'existing', label: $gettext('Existing certificate') }] : []),
-  ...(props.skippable ? [{ value: 'skip', label: $gettext('Skip for now') }] : []),
+  {
+    value: 'http01',
+    label: $gettext('HTTP-01'),
+  },
+  {
+    value: 'dns01',
+    label: $gettext('DNS-01'),
+  },
+  ...(props.existingCertificate
+    ? [
+        {
+          value: 'existing',
+          label: $gettext('Existing certificate'),
+        },
+      ]
+    : []),
+  ...(props.skippable
+    ? [
+        {
+          value: 'skip',
+          label: $gettext('Skip for now'),
+        },
+      ]
+    : []),
 ])
 
 // Four methods do not fit a phone's width side by side; stack them there.
@@ -201,7 +230,9 @@ const recommendationLocked = ref(false)
 const recommendedCertificateId = ref<number>()
 
 function openPicker() {
-  pickerRows.value = selectedCertificate.value ? [selectedCertificate.value] : []
+  pickerRows.value = selectedCertificate.value
+    ? [selectedCertificate.value]
+    : []
   pickerOpen.value = true
 }
 
@@ -269,7 +300,9 @@ watchDebounced(domainList, refreshRecommendation, { debounce: 300, deep: true, i
 
 const certificateName = computed(() => {
   const c = selectedCertificate.value
-  return c ? (c.name || c.certificate_info?.subject_name || `#${c.id}`) : ''
+  return c
+    ? (c.name || c.certificate_info?.subject_name || `#${c.id}`)
+    : ''
 })
 
 const certificateNotAfter = computed(() => selectedCertificate.value?.certificate_info?.not_after)
@@ -301,16 +334,36 @@ watch(selectedCertificate, () => {
 const certificateProblem = computed<{ type: 'error' | 'warning' | 'info', title: string } | undefined>(() => {
   if (method.value !== 'existing' || !selectedCertificate.value)
     return undefined
-  if (certificateExpired.value)
-    return { type: 'error', title: $gettext('This certificate expired on %{date}. Choose another certificate or renew this one first.', { date: certificateExpiry.value }) }
+  if (certificateExpired.value) {
+    return {
+      type: 'error',
+      title: $gettext('This certificate expired on %{date}. Choose another certificate or renew this one first.', { date: certificateExpiry.value }),
+    }
+  }
 
   const c = coverage.value
-  if (!c.known)
-    return { type: 'info', title: $gettext('This certificate record lists no domains. The pre-flight check reads them from the certificate file.') }
-  if (domainList.value.length && !c.covered.length)
-    return { type: 'error', title: $gettext('This certificate does not cover any of the domains: %{domains}', { domains: c.uncovered.join(', ') }) }
-  if (c.uncovered.length)
-    return { type: 'warning', title: $gettext('This certificate does not cover %{domains}. HTTPS is only enabled for the names it covers.', { domains: c.uncovered.join(', ') }) }
+  if (!c.known) {
+    return {
+      type: 'info',
+      title: $gettext('This certificate record lists no domains. The pre-flight check reads them from the certificate file.'),
+    }
+  }
+  if (domainList.value.length && !c.covered.length) {
+    return {
+      type: 'error',
+      title: $gettext('This certificate does not cover any of the domains: %{domains}', {
+        domains: c.uncovered.join(', '),
+      }),
+    }
+  }
+  if (c.uncovered.length) {
+    return {
+      type: 'warning',
+      title: $gettext('This certificate does not cover %{domains}. HTTPS is only enabled for the names it covers.', {
+        domains: c.uncovered.join(', '),
+      }),
+    }
+  }
   return undefined
 })
 
@@ -352,7 +405,12 @@ const collapsedSummary = computed(() => {
     skip: $gettext('Skip for now'),
   }[method.value]
 
-  return [label, ...(method.value === 'skip' ? [] : domainList.value)].join(' · ')
+  return [
+    label,
+    ...(method.value === 'skip'
+      ? []
+      : domainList.value),
+  ].join(' · ')
 })
 
 function toggleCollapsed() {
@@ -406,7 +464,9 @@ watch(result, value => {
 // ---- Checklist ----------------------------------------------------------
 
 function translate(message?: string, args?: HTTPSMessageArgs) {
-  return message ? T({ message, args }) : ''
+  return message
+    ? T({ message, args })
+    : ''
 }
 
 function stepLabel(step: HTTPSStep) {
@@ -432,7 +492,9 @@ function formatParams(params?: HTTPSMessageArgs) {
 
   return Object.entries(params)
     .filter(([, v]) => v !== undefined && v !== null && v !== '')
-    .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`)
+    .map(([k, v]) => `${k}: ${Array.isArray(v)
+      ? v.join(', ')
+      : v}`)
     .join('  ')
 }
 
@@ -460,7 +522,9 @@ const checkRows = computed<ChecklistRow[]>(() => checks.value.map((c, index) => 
   detail: c.detail || formatParams(c.params as HTTPSMessageArgs | undefined),
 })))
 
-const checklist = computed(() => phase.value === 'idle' ? checkRows.value : stepRows.value)
+const checklist = computed(() => phase.value === 'idle'
+  ? checkRows.value
+  : stepRows.value)
 
 function statusText(status: RowStatus) {
   switch (status) {
@@ -481,7 +545,9 @@ function statusText(status: RowStatus) {
 
 // ---- Result -------------------------------------------------------------
 
-const failedStepLabel = computed(() => error.value?.step ? stepLabel(error.value.step) : '')
+const failedStepLabel = computed(() => error.value?.step
+  ? stepLabel(error.value.step)
+  : '')
 
 const errorTitle = computed(() => {
   const e = error.value
@@ -522,8 +588,18 @@ function diagnosticType(level: string) {
 
 const logText = computed(() => logs.value.map(l => translate(l.message, l.args)).join('\n'))
 
-const logItems = computed(() => [{ key: 'log', label: $gettext('Log') }])
-const certificateOptionItems = computed(() => [{ key: 'options', label: $gettext('Certificate options') }])
+const logItems = computed(() => [
+  {
+    key: 'log',
+    label: $gettext('Log'),
+  },
+])
+const certificateOptionItems = computed(() => [
+  {
+    key: 'options',
+    label: $gettext('Certificate options'),
+  },
+])
 
 function restart() {
   onboarding.reset()

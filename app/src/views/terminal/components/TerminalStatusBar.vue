@@ -41,7 +41,9 @@ function formatMemoryUsage(memory: MemStat | null) {
     return '0B 0%'
 
   // Use percentage provided by the backend; keep 1 decimal place
-  const percentage = typeof memory.pressure === 'number' ? memory.pressure.toFixed(1) : '0.0'
+  const percentage = typeof memory.pressure === 'number'
+    ? memory.pressure.toFixed(1)
+    : '0.0'
 
   // Preserve space in formatted size and add a space before percentage
   const usedSize = memory.used
@@ -55,7 +57,9 @@ function formatDiskUsage(disk: DiskStat | null) {
     return '0B 0%'
 
   // Already a formatted string like "39 GiB"; percentage comes from API
-  const percentage = typeof disk.percentage === 'number' ? disk.percentage.toFixed(1) : '0.0'
+  const percentage = typeof disk.percentage === 'number'
+    ? disk.percentage.toFixed(1)
+    : '0.0'
   const usedSize = disk.used
 
   return `${usedSize} ${percentage}%`
@@ -106,7 +110,9 @@ async function initializeData() {
 
     const cpuInfo = analyticData?.cpu?.info || []
     statusData.value.cpuCount = cpuInfo.length || 0
-    statusData.value.cpuFreq = (cpuInfo.length > 0 && cpuInfo[0].mhz) ? cpuInfo[0].mhz : 0
+    statusData.value.cpuFreq = (cpuInfo.length > 0 && cpuInfo[0].mhz)
+      ? cpuInfo[0].mhz
+      : 0
 
     updateTimestamp()
   }

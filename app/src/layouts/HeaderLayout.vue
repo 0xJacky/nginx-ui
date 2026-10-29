@@ -55,7 +55,12 @@ const isWorkspace = isWorkspacePane
 
 const settingsStore = useSettingsStore()
 // The workspace opens (or brings forward) a tab of the node shown here.
-const workspaceLink = computed(() => ({ path: '/workspace', query: { l: String(settingsStore.node.id) } }))
+const workspaceLink = computed(() => ({
+  path: '/workspace',
+  query: {
+    l: String(settingsStore.node.id),
+  },
+}))
 
 // The breadcrumb is sized to its content, so this is the room it wants rather
 // than the room it got.
@@ -71,10 +76,14 @@ const { width: recoveryWidth } = useElementSize(recoveryRef)
 // a banner sits between the two, one gap on each side. The banners collapse to
 // icons instead of squeezing the breadcrumb.
 const bannerSpace = computed(() => {
-  const toolSpace = props.isMobile ? toolWidth.value + ITEM_GAP : 0
+  const toolSpace = props.isMobile
+    ? toolWidth.value + ITEM_GAP
+    : 0
   return headerWidth.value - toolSpace - breadcrumbWidth.value - userWrapperWidth.value - ITEM_GAP * 2
 })
-const recoveryBannerSpace = computed(() => bannerSpace.value - (selfCheckWidth.value ? selfCheckWidth.value + ITEM_GAP : 0))
+const recoveryBannerSpace = computed(() => bannerSpace.value - (selfCheckWidth.value
+  ? selfCheckWidth.value + ITEM_GAP
+  : 0))
 
 // A full alert is centered in the header, like the page title bar of a desktop
 // window. Both sides then grow from zero so the banners sit in the middle, and
@@ -82,7 +91,9 @@ const recoveryBannerSpace = computed(() => bannerSpace.value - (selfCheckWidth.v
 // rather than being clipped. A collapsed icon stays next to the header icons.
 const isBannerCentered = computed(() => !!(selfCheckRef.value?.isExpanded || recoveryRef.value?.isExpanded))
 const breadcrumbMinWidth = computed(() => {
-  const toolSpace = props.isMobile ? toolWidth.value + ITEM_GAP : 0
+  const toolSpace = props.isMobile
+    ? toolWidth.value + ITEM_GAP
+    : 0
   const bannerCount = (selfCheckWidth.value ? 1 : 0) + (recoveryWidth.value ? 1 : 0)
   const rest = headerWidth.value - toolSpace - userWrapperWidth.value
     - selfCheckWidth.value - recoveryWidth.value - ITEM_GAP * (bannerCount + 1)

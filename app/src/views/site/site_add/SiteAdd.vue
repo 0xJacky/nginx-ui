@@ -95,7 +95,9 @@ const hasPendingTLS = computed(() => tlsState.value === 'pending')
 // reset domains the operator added.
 const siteDomains = computed<string[]>(previous => {
   const next = extractSiteDomains(ngxConfig.value)
-  return previous && sameStringList(previous, next) ? previous : next
+  return previous && sameStringList(previous, next)
+    ? previous
+    : next
 })
 
 const draftSaving = ref(false)
@@ -117,7 +119,12 @@ function confirmSSLStep() {
   httpsCard.value?.confirm()
 }
 
-const editorItems = computed(() => [{ key: EDITOR_PANEL_KEY, label: $gettext('Edit configuration file') }])
+const editorItems = computed(() => [
+  {
+    key: EDITOR_PANEL_KEY,
+    label: $gettext('Edit configuration file'),
+  },
+])
 
 // Skipping keeps a TLS server that already has its certificate, so it does not
 // mean "without HTTPS" there.
@@ -213,7 +220,9 @@ async function writeDraft() {
     // config. Nginx rejects a TLS server without certificate there, so the
     // pending one stays out; the backend builds it again from the HTTP server.
     const enabled = draftSaved.value && hasPendingTLS.value && await isSiteEnabled(name)
-    const config = enabled ? editorStore.getConfigWithoutIncompleteTLSServers(ngxConfig.value) : ngxConfig.value
+    const config = enabled
+      ? editorStore.getConfigWithoutIncompleteTLSServers(ngxConfig.value)
+      : ngxConfig.value
 
     const r = await writeSite(config)
     // Later editor saves (e.g. Enable TLS) reuse the DNS link and namespace.
@@ -392,7 +401,10 @@ function onDNSRecordsSelected(records: DNSRecord[], domain: DNSDomain) {
 
 // Handle DNS record creation
 function onDNSRecordCreated(record: DNSRecord, domain: DNSDomain) {
-  selectedDNSRecords.value = { records: [record], domain }
+  selectedDNSRecords.value = {
+    records: [record],
+    domain,
+  }
   const fullDNSName = getFullDNSName(record, domain)
   updateServerNameWithDNS([fullDNSName])
   message.success($gettext('DNS record created and linked successfully'))

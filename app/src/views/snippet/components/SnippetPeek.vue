@@ -17,7 +17,9 @@ const isLoading = ref(true)
 
 onMounted(async () => {
   try {
-    detail.value = props.builtin ? await snippet.getBuiltin(props.file) : await snippet.get(props.file)
+    detail.value = props.builtin
+      ? await snippet.getBuiltin(props.file)
+      : await snippet.get(props.file)
   }
   finally {
     isLoading.value = false

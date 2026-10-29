@@ -1,10 +1,18 @@
 import { describe, expect, mock, spyOn, test } from 'bun:test'
 import { computed, ref } from 'vue'
 
-Object.assign(globalThis, { ref, computed, $gettext: (message: string) => message })
+Object.assign(globalThis, {
+  ref,
+  computed,
+  $gettext: (message: string) => message,
+})
 const detailStatus = mock(() => Promise.reject(new Error('temporary failure')))
-mock.module('../src/api/ngx', () => ({ default: { detail_status: detailStatus } }))
-mock.module('../src/lib/helper', () => ({ formatDateTime: (value: string) => value }))
+mock.module('../src/api/ngx', () => ({
+  default: { detail_status: detailStatus },
+}))
+mock.module('../src/lib/helper', () => ({
+  formatDateTime: (value: string) => value,
+}))
 const { useNginxPerformance } = await import('../src/composables/useNginxPerformance')
 
 const healthy = {

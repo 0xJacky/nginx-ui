@@ -25,5 +25,7 @@ export function zoneSizeToKb(size: string | undefined): number | null {
 
 /** Formats a KB value from the form as an nginx size string. */
 export function kbToZoneSize(kb: number | null | undefined): string {
-  return kb === null || kb === undefined ? '' : `${Math.trunc(kb)}k`
+  return kb === null || kb === undefined
+    ? ''
+    : `${Math.trunc(kb)}k`
 }

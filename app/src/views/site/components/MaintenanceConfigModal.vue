@@ -40,8 +40,12 @@ function handleOk() {
   }
 
   emit('confirm', {
-    start_time: startAt.value ? startAt.value.format('YYYY-MM-DD HH:mm:ss') : '',
-    end_time: endAt.value ? endAt.value.format('YYYY-MM-DD HH:mm:ss') : '',
+    start_time: startAt.value
+      ? startAt.value.format('YYYY-MM-DD HH:mm:ss')
+      : '',
+    end_time: endAt.value
+      ? endAt.value.format('YYYY-MM-DD HH:mm:ss')
+      : '',
     contact: contact.value.trim(),
     additioninfomation: additioninfomation.value.trim(),
   })

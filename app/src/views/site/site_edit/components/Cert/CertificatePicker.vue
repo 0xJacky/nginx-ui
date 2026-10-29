@@ -13,7 +13,9 @@ withDefaults(defineProps<{
   selectionType: 'checkbox',
 })
 
-const selectedRows = defineModel<Cert[]>('selectedRows', { default: () => [] })
+const selectedRows = defineModel<Cert[]>('selectedRows', {
+  default: () => [],
+})
 
 // The keys follow the rows, so clearing the rows also clears the table selection.
 const selectedRowKeys = computed(() => selectedRows.value.map(row => row.id))

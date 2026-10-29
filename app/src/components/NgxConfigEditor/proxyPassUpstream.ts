@@ -50,7 +50,9 @@ export function getProxyPassUpstream(content: string, names: Set<string>): strin
 export function setProxyPassUpstream(content: string, name: string): string {
   const match = proxyPassPattern.exec(content)
   if (!match) {
-    const separator = content === '' || content.endsWith('\n') ? '' : '\n'
+    const separator = content === '' || content.endsWith('\n')
+      ? ''
+      : '\n'
     return `${content}${separator}proxy_pass http://${name};\n`
   }
 
@@ -167,7 +169,10 @@ export function applyUpstreamToLocations(
     if (next === content)
       continue
     location.content = next
-    changes.push({ ...entry, after: getProxyPassTarget(next)! })
+    changes.push({
+      ...entry,
+      after: getProxyPassTarget(next)!,
+    })
   }
   return changes
 }

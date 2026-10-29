@@ -181,7 +181,9 @@ async function doRestore() {
   }
   catch (error) {
     console.error('Restore failed:', error)
-    emit('restoreError', error instanceof Error ? error : new Error(String(error)))
+    emit('restoreError', error instanceof Error
+      ? error
+      : new Error(String(error)))
   }
   finally {
     isRestoring.value = false

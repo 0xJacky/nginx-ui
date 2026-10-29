@@ -43,7 +43,9 @@ export const useDnsGroupStore = defineStore('dnsGroup', () => {
       id: uuidv4(),
       name: input.name.trim(),
       description: input.description?.trim() ?? '',
-      domainIds: [...new Set(input.domainIds)],
+      domainIds: [
+        ...new Set(input.domainIds),
+      ],
       createdAt: now,
       updatedAt: now,
     }
@@ -57,7 +59,9 @@ export const useDnsGroupStore = defineStore('dnsGroup', () => {
           ...group,
           name: input.name.trim(),
           description: input.description?.trim() ?? '',
-          domainIds: [...new Set(input.domainIds)],
+          domainIds: [
+            ...new Set(input.domainIds),
+          ],
           updatedAt: new Date().toISOString(),
         }
       : group)

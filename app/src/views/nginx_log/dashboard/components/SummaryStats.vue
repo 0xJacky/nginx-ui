@@ -26,14 +26,54 @@ const cards = computed(() => {
     return []
 
   return [
-    { key: 'pv', title: $gettext('Total PV'), value: summary.total_pv.toLocaleString(), color: '#1890ff' },
-    { key: 'uv', title: $gettext('Total UV'), value: summary.total_uv.toLocaleString(), color: '#52c41a' },
-    { key: 'traffic', title: $gettext('Total Traffic'), value: bytesToSize(summary.total_traffic), color: '#13c2c2' },
-    { key: 'peak_hour', title: $gettext('Peak Hour'), value: `${summary.peak_hour}:00`, color: '#722ed1' },
-    { key: 'avg_qps', title: $gettext('Avg QPS'), value: formatQps(summary.avg_qps), color: '#eb2f96' },
-    { key: 'peak_qps', title: $gettext('Peak QPS'), value: formatQps(summary.peak_qps), color: '#f5222d' },
-    { key: 'avg_daily_pv', title: $gettext('Avg Daily PV'), value: Math.round(summary.avg_daily_pv).toLocaleString(), color: '#2f54eb' },
-    { key: 'avg_daily_uv', title: $gettext('Avg Daily UV'), value: Math.round(summary.avg_daily_uv).toLocaleString(), color: '#faad14' },
+    {
+      key: 'pv',
+      title: $gettext('Total PV'),
+      value: summary.total_pv.toLocaleString(),
+      color: '#1890ff',
+    },
+    {
+      key: 'uv',
+      title: $gettext('Total UV'),
+      value: summary.total_uv.toLocaleString(),
+      color: '#52c41a',
+    },
+    {
+      key: 'traffic',
+      title: $gettext('Total Traffic'),
+      value: bytesToSize(summary.total_traffic),
+      color: '#13c2c2',
+    },
+    {
+      key: 'peak_hour',
+      title: $gettext('Peak Hour'),
+      value: `${summary.peak_hour}:00`,
+      color: '#722ed1',
+    },
+    {
+      key: 'avg_qps',
+      title: $gettext('Avg QPS'),
+      value: formatQps(summary.avg_qps),
+      color: '#eb2f96',
+    },
+    {
+      key: 'peak_qps',
+      title: $gettext('Peak QPS'),
+      value: formatQps(summary.peak_qps),
+      color: '#f5222d',
+    },
+    {
+      key: 'avg_daily_pv',
+      title: $gettext('Avg Daily PV'),
+      value: Math.round(summary.avg_daily_pv).toLocaleString(),
+      color: '#2f54eb',
+    },
+    {
+      key: 'avg_daily_uv',
+      title: $gettext('Avg Daily UV'),
+      value: Math.round(summary.avg_daily_uv).toLocaleString(),
+      color: '#faad14',
+    },
   ]
 })
 </script>

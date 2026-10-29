@@ -63,12 +63,24 @@ const modulesColumns: TableColumnType[] = [
     dataIndex: 'dynamic',
     width: '100px',
     filters: [
-      { text: $gettext('Dynamic'), value: true },
-      { text: $gettext('Static'), value: false },
+      {
+        text: $gettext('Dynamic'),
+        value: true,
+      },
+      {
+        text: $gettext('Static'),
+        value: false,
+      },
     ],
     onFilter: (value, record) => record.dynamic === value,
     render: (_value, record) => {
-      return <span>{record.dynamic ? $gettext('Dynamic') : $gettext('Static')}</span>
+      return (
+        <span>
+          {record.dynamic
+            ? $gettext('Dynamic')
+            : $gettext('Static')}
+        </span>
+      )
     },
   },
   {
@@ -76,12 +88,24 @@ const modulesColumns: TableColumnType[] = [
     dataIndex: 'loaded',
     width: '100px',
     filters: [
-      { text: $gettext('Loaded'), value: true },
-      { text: $gettext('Not Loaded'), value: false },
+      {
+        text: $gettext('Loaded'),
+        value: true,
+      },
+      {
+        text: $gettext('Not Loaded'),
+        value: false,
+      },
     ],
     onFilter: (value, record) => record.loaded === value,
     render: (_value, record) => {
-      return <span>{record.loaded ? $gettext('Loaded') : $gettext('Not Loaded')}</span>
+      return (
+        <span>
+          {record.loaded
+            ? $gettext('Loaded')
+            : $gettext('Not Loaded')}
+        </span>
+      )
     },
   },
 ]

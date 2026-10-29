@@ -20,12 +20,20 @@ const { message } = App.useApp()
 const fileInput = ref<HTMLInputElement>()
 
 // Supported file extensions
-const certificateExtensions = ['.crt', '.pem', '.cer', '.cert', '.csr']
+const certificateExtensions = [
+  '.crt',
+  '.pem',
+  '.cer',
+  '.cert',
+  '.csr',
+]
 const keyExtensions = ['.key', '.pem', '.private']
 
 // Get accepted file extensions based on type
 const acceptedExtensions = computed(() => {
-  return props.type === 'certificate' ? certificateExtensions : keyExtensions
+  return props.type === 'certificate'
+    ? certificateExtensions
+    : keyExtensions
 })
 
 // Get accept attribute for input
@@ -42,7 +50,9 @@ function validateFile(file: File): boolean {
   const isValidExtension = acceptedExtensions.value.some(ext => fileName.endsWith(ext))
 
   if (!isValidExtension) {
-    const typeText = props.type === 'certificate' ? $gettext('certificate') : $gettext('private key')
+    const typeText = props.type === 'certificate'
+      ? $gettext('certificate')
+      : $gettext('private key')
     message.error($gettext('Please select a valid %{type} file (%{extensions})', {
       type: typeText,
       extensions: acceptedExtensions.value.join(', '),
@@ -118,7 +128,9 @@ function handleFileSelect(event: Event) {
 
 // Get upload text based on type
 const uploadText = computed(() => {
-  const typeText = props.type === 'certificate' ? $gettext('certificate') : $gettext('private key')
+  const typeText = props.type === 'certificate'
+    ? $gettext('certificate')
+    : $gettext('private key')
   return $gettext('Upload %{type} File', { type: typeText })
 })
 </script>

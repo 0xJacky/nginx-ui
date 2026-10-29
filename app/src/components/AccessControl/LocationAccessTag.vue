@@ -15,13 +15,25 @@ const state = computed(() => store.locationState(props.serverIdx, props.location
 const tag = computed(() => {
   switch (state.value?.mode) {
     case 'list':
-      return { color: 'green', text: store.listName(state.value.slug) }
+      return {
+        color: 'green',
+        text: store.listName(state.value.slug),
+      }
     case 'public':
-      return { color: 'orange', text: $gettext('Public') }
+      return {
+        color: 'orange',
+        text: $gettext('Public'),
+      }
     case 'acme':
-      return { color: 'default', text: $gettext('ACME') }
+      return {
+        color: 'default',
+        text: $gettext('ACME'),
+      }
     case 'manual':
-      return { color: 'default', text: $gettext('Custom rules') }
+      return {
+        color: 'default',
+        text: $gettext('Custom rules'),
+      }
     default:
       return undefined
   }

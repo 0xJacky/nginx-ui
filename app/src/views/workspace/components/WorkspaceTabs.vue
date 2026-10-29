@@ -30,15 +30,21 @@ function paneOf(tabId: number): PaneIndex | null {
 
 const items = computed(() => props.tabs.map(tab => {
   const pane = paneOf(tab.id)
-  const nodeName = tab.node.id === 0 ? props.localName : tab.node.name
+  const nodeName = tab.node.id === 0
+    ? props.localName
+    : tab.node.name
   return {
     tab,
     nodeName,
-    label: tab.title ? `${nodeName} · ${tab.title}` : nodeName,
+    label: tab.title
+      ? `${nodeName} · ${tab.title}`
+      : nodeName,
     color: nodeColorFor(tab.node.id, props.isDark),
     isShown: pane !== null,
     isFocused: pane !== null && (props.layout !== 'split' || pane === props.focus),
-    badge: props.layout === 'split' && pane !== null ? PANE_BADGES[pane] : null,
+    badge: props.layout === 'split' && pane !== null
+      ? PANE_BADGES[pane]
+      : null,
   }
 }))
 

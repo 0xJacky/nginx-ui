@@ -34,10 +34,18 @@ watch(canShowChinaMap, newVal => {
 
 // Segment options - only show China option for Chinese locales
 const segmentOptions = computed(() => {
-  const options = [{ label: $gettext('Global Map'), value: 'global' }]
+  const options = [
+    {
+      label: $gettext('Global Map'),
+      value: 'global',
+    },
+  ]
 
   if (canShowChinaMap.value) {
-    options.push({ label: $gettext('China Map'), value: 'china' })
+    options.push({
+      label: $gettext('China Map'),
+      value: 'china',
+    })
   }
 
   return options
@@ -50,7 +58,9 @@ const showSegment = computed(() => {
 
 // Card title
 const cardTitle = computed(() => {
-  return mapType.value === 'global' ? $gettext('Global Access Map') : $gettext('China Access Map')
+  return mapType.value === 'global'
+    ? $gettext('Global Access Map')
+    : $gettext('China Access Map')
 })
 </script>
 

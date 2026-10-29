@@ -12,10 +12,22 @@ import type {
 // reactivity and no translations so it can be unit-tested in isolation;
 // the composable and the card translate the English source strings.
 
-export const HTTPS_MAIN_STEPS: readonly HTTPSStep[] = ['plan', 'stage', 'probe', 'issue', 'finalize']
+export const HTTPS_MAIN_STEPS: readonly HTTPSStep[] = [
+  'plan',
+  'stage',
+  'probe',
+  'issue',
+  'finalize',
+]
 
 const KNOWN_STEPS = new Set<HTTPSStep>([...HTTPS_MAIN_STEPS, 'rollback'])
-const KNOWN_STEP_STATUSES = new Set<HTTPSStepStatus>(['running', 'success', 'warning', 'error', 'skipped'])
+const KNOWN_STEP_STATUSES = new Set<HTTPSStepStatus>([
+  'running',
+  'success',
+  'warning',
+  'error',
+  'skipped',
+])
 
 export type HTTPSOnboardingPhase = 'idle' | 'running' | 'success' | 'error'
 
@@ -107,7 +119,9 @@ export function reduceHTTPSEvent(state: HTTPSOnboardingState, event: HTTPSOnboar
           message: event.message,
           args: event.args,
         }),
-        currentStep: event.status === 'running' ? event.step : state.currentStep,
+        currentStep: event.status === 'running'
+          ? event.step
+          : state.currentStep,
       }
     }
 
@@ -117,7 +131,10 @@ export function reduceHTTPSEvent(state: HTTPSOnboardingState, event: HTTPSOnboar
 
       return {
         ...state,
-        logs: [...state.logs, { message: event.message, args: event.args }],
+        logs: [
+          ...state.logs,
+          { message: event.message, args: event.args },
+        ],
       }
 
     case 'diagnostic': {
@@ -141,7 +158,9 @@ export function reduceHTTPSEvent(state: HTTPSOnboardingState, event: HTTPSOnboar
         }
       }
 
-      const step = isStep(event.step) ? event.step : state.currentStep
+      const step = isStep(event.step)
+        ? event.step
+        : state.currentStep
 
       return {
         ...state,

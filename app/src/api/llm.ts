@@ -72,7 +72,9 @@ const llm = {
     })
   },
   get_messages(path: string) {
-    return http.get(`/llm_messages`, { params: { path } })
+    return http.get(`/llm_messages`, {
+      params: { path },
+    })
   },
   store_messages(data: { file_name?: string, messages?: ChatComplicationMessage[] }) {
     return http.post('/llm_messages', data)
@@ -100,7 +102,9 @@ const llm = {
       }
     }
     return http.get<LLMSessionResponse[]>('/llm_sessions', {
-      params: Object.keys(params).length > 0 ? params : undefined,
+      params: Object.keys(params).length > 0
+        ? params
+        : undefined,
     })
   },
   get_session(sessionId: string) {

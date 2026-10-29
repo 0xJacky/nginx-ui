@@ -47,7 +47,9 @@ function getSelfCheckPath(path: string = '', options?: SelfCheckAccessOptions) {
 
 function getRequestOptions(options?: SelfCheckAccessOptions) {
   return {
-    headers: options?.setupAuth ? installSecretHeaders(options.installSecret) : undefined,
+    headers: options?.setupAuth
+      ? installSecretHeaders(options.installSecret)
+      : undefined,
     skipAuthRedirect: !!options?.setupAuth,
   }
 }

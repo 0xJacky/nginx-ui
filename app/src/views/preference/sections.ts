@@ -46,9 +46,18 @@ export const DEFAULT_SECTION_KEY: PreferenceSectionKey = 'server'
 // Labels are resolved on every call so a language switch is reflected.
 export function buildPreferenceGroups(): PreferenceGroup[] {
   return [
-    { key: 'basics', label: $gettext('Basics') },
-    { key: 'features', label: $gettext('Features') },
-    { key: 'maintenance', label: $pgettext('preference group', 'Maintenance') },
+    {
+      key: 'basics',
+      label: $gettext('Basics'),
+    },
+    {
+      key: 'features',
+      label: $gettext('Features'),
+    },
+    {
+      key: 'maintenance',
+      label: $pgettext('preference group', 'Maintenance'),
+    },
   ]
 }
 
@@ -73,7 +82,10 @@ export function buildPreferenceSections(): PreferenceSection[] {
       group: 'basics',
       label: $gettext('Node'),
       description: $gettext('Identity and display details of this node.'),
-      link: { label: $gettext('Go to nodes'), to: '/nodes' },
+      link: {
+        label: $gettext('Go to nodes'),
+        to: '/nodes',
+      },
       pathPrefixes: ['node'],
     },
     {
@@ -102,7 +114,10 @@ export function buildPreferenceSections(): PreferenceSection[] {
       group: 'features',
       label: $gettext('Cert'),
       description: $gettext('Contact, issuing service and renewal of certificates requested by Nginx UI.'),
-      link: { label: $gettext('Go to certificates'), to: '/certificates' },
+      link: {
+        label: $gettext('Go to certificates'),
+        to: '/certificates',
+      },
       pathPrefixes: ['cert'],
     },
     {
@@ -124,7 +139,10 @@ export function buildPreferenceSections(): PreferenceSection[] {
       group: 'features',
       label: $gettext('Health Check'),
       description: $gettext('Global switches and intervals for site and proxy target checks.'),
-      link: { label: $gettext('Go to sites'), to: '/sites' },
+      link: {
+        label: $gettext('Go to sites'),
+        to: '/sites',
+      },
       pathPrefixes: ['site_check', 'upstream_check'],
     },
     {
@@ -132,7 +150,10 @@ export function buildPreferenceSections(): PreferenceSection[] {
       group: 'features',
       label: $gettext('External Notify'),
       description: $gettext('Channels that receive notifications from Nginx UI.'),
-      link: { label: $gettext('Go to notifications'), to: '/notifications' },
+      link: {
+        label: $gettext('Go to notifications'),
+        to: '/notifications',
+      },
       pathPrefixes: [],
     },
     {
@@ -140,7 +161,10 @@ export function buildPreferenceSections(): PreferenceSection[] {
       group: 'features',
       label: $gettext('Terminal'),
       description: $gettext('Shell started by the web terminal.'),
-      link: { label: $gettext('Go to terminal'), to: '/terminal' },
+      link: {
+        label: $gettext('Go to terminal'),
+        to: '/terminal',
+      },
       pathPrefixes: ['terminal'],
     },
     {
@@ -155,7 +179,10 @@ export function buildPreferenceSections(): PreferenceSection[] {
       group: 'maintenance',
       label: $gettext('GeoLite'),
       description: $gettext('Geographic database and map files used by log analytics.'),
-      link: { label: $gettext('Go to logs'), to: '/nginx_log' },
+      link: {
+        label: $gettext('Go to logs'),
+        to: '/nginx_log',
+      },
       pathPrefixes: ['nginx_log'],
     },
   ]

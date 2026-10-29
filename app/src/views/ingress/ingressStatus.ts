@@ -68,9 +68,14 @@ export function backendHealthColor(summary: BackendHealthSummary): 'success' | '
   const serving = summary.total - summary.down
   if (!summary.known || serving <= 0)
     return 'default'
-  if (summary.healthy === 0)
-    return summary.unchecked > 0 ? 'default' : 'error'
-  return summary.healthy < serving ? 'warning' : 'success'
+  if (summary.healthy === 0) {
+    return summary.unchecked > 0
+      ? 'default'
+      : 'error'
+  }
+  return summary.healthy < serving
+    ? 'warning'
+    : 'success'
 }
 
 export function serverStatus(ingress: Ingress, backend: string, address: string): IngressServerStatus | undefined {
@@ -118,7 +123,9 @@ export function hostUrl(ingress: Ingress, host: string): string {
 }
 
 export function ownersOf(ingresses: Ingress[]): string[] {
-  return [...new Set(ingresses.map(ingress => ingress.owner).filter(Boolean))].sort()
+  return [
+    ...new Set(ingresses.map(ingress => ingress.owner).filter(Boolean)),
+  ].sort()
 }
 
 export function filterIngresses(ingresses: Ingress[], owner: string, keyword: string): Ingress[] {

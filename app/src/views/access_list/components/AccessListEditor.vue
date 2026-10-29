@@ -52,11 +52,23 @@ interface FormState {
 let rowSeed = 0
 
 function createRule(type: AccessRuleType = 'allow'): RuleRow {
-  return { key: rowSeed++, type, value: '', note: '' }
+  return {
+    key: rowSeed++,
+    type,
+    value: '',
+    note: '',
+  }
 }
 
 function createForm(): FormState {
-  return { name: '', slug: '', fallback: 'deny', rules: [createRule()] }
+  return {
+    name: '',
+    slug: '',
+    fallback: 'deny',
+    rules: [
+      createRule(),
+    ],
+  }
 }
 
 const form = reactive<FormState>(createForm())
@@ -71,14 +83,29 @@ const usage = ref<AccessListUsage>()
 const isEditing = computed(() => props.id !== undefined)
 
 const typeOptions = computed<SelectProps['options']>(() => [
-  { label: $gettext('Allow'), value: 'allow' },
-  { label: $gettext('Deny'), value: 'deny' },
-  { label: $gettext('Use list'), value: 'ref' },
+  {
+    label: $gettext('Allow'),
+    value: 'allow',
+  },
+  {
+    label: $gettext('Deny'),
+    value: 'deny',
+  },
+  {
+    label: $gettext('Use list'),
+    value: 'ref',
+  },
 ])
 
 const fallbackOptions = computed<SelectProps['options']>(() => [
-  { label: $gettext('Deny (403)'), value: 'deny' },
-  { label: $gettext('Allow'), value: 'allow' },
+  {
+    label: $gettext('Deny (403)'),
+    value: 'deny',
+  },
+  {
+    label: $gettext('Allow'),
+    value: 'allow',
+  },
 ])
 
 const referenceOptions = computed<SelectProps['options']>(() => props.lists
@@ -102,10 +129,20 @@ function toPayload(): AccessListPayload {
     fallback: form.fallback,
     // A row that was added but not filled in yet is not a rule.
     rules: form.rules
-      .filter(rule => rule.type === 'ref' ? !!rule.ref_id : !!rule.value.trim())
+      .filter(rule => rule.type === 'ref'
+        ? !!rule.ref_id
+        : !!rule.value.trim())
       .map(rule => rule.type === 'ref'
-        ? { type: 'ref', ref_id: rule.ref_id, note: rule.note.trim() }
-        : { type: rule.type, value: rule.value.trim(), note: rule.note.trim() }),
+        ? {
+            type: 'ref',
+            ref_id: rule.ref_id,
+            note: rule.note.trim(),
+          }
+        : {
+            type: rule.type,
+            value: rule.value.trim(),
+            note: rule.note.trim(),
+          }),
   }
 }
 
@@ -195,12 +232,18 @@ function onTypeChange(rule: RuleRow) {
 }
 
 function referenceLabel(ref: AccessReference) {
-  const kind = ref.kind === 'site' ? $gettext('Site') : $gettext('Stream')
-  return ref.location ? `${kind} ${ref.name} · ${ref.location}` : `${kind} ${ref.name}`
+  const kind = ref.kind === 'site'
+    ? $gettext('Site')
+    : $gettext('Stream')
+  return ref.location
+    ? `${kind} ${ref.name} · ${ref.location}`
+    : `${kind} ${ref.name}`
 }
 
 function openReference(ref: AccessReference) {
-  router.push(ref.kind === 'site' ? `/sites/${encodeURIComponent(ref.name)}` : `/streams/${encodeURIComponent(ref.name)}`)
+  router.push(ref.kind === 'site'
+    ? `/sites/${encodeURIComponent(ref.name)}`
+    : `/streams/${encodeURIComponent(ref.name)}`)
 }
 
 async function save() {

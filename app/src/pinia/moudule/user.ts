@@ -71,7 +71,9 @@ export const useUserStore = defineStore('user', () => {
   })
 
   function setSecureSession(id: string, ttl?: number) {
-    secureSessionTTL.value = ttl && ttl > 0 ? ttl : defaultSecureSessionTTL
+    secureSessionTTL.value = ttl && ttl > 0
+      ? ttl
+      : defaultSecureSessionTTL
     secureSessionId.value = id
   }
 
@@ -178,7 +180,10 @@ export const useUserStore = defineStore('user', () => {
   async function updateCurrentUser(userData: Partial<User>) {
     try {
       const response = await userApi.updateCurrentUser(userData as User)
-      info.value = { ...info.value, ...userData }
+      info.value = {
+        ...info.value,
+        ...userData,
+      }
       return response.data
     }
     catch (error) {
@@ -239,6 +244,13 @@ export const useUserStore = defineStore('user', () => {
   }
 }, {
   persist: {
-    pick: ['token', 'secureSessionId', 'secureSessionTTL', 'passkeyRawId', 'info', 'unreadCount'],
+    pick: [
+      'token',
+      'secureSessionId',
+      'secureSessionTTL',
+      'passkeyRawId',
+      'info',
+      'unreadCount',
+    ],
   },
 })

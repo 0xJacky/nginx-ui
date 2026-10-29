@@ -20,12 +20,54 @@ const { RangePicker } = DatePicker
 
 // Date range presets for dashboard (daily-based)
 const datePresets = [
-  { key: 'last-7-days', label: () => $gettext('Last 7 days'), value: () => [dayjs().subtract(7, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
-  { key: 'last-14-days', label: () => $gettext('Last 14 days'), value: () => [dayjs().subtract(14, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
-  { key: 'last-30-days', label: () => $gettext('Last 30 days'), value: () => [dayjs().subtract(30, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
-  { key: 'last-90-days', label: () => $gettext('Last 90 days'), value: () => [dayjs().subtract(90, 'day').startOf('day'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
-  { key: 'this-month', label: () => $gettext('This month'), value: () => [dayjs().startOf('month'), dayjs().endOf('day')] as [dayjs.Dayjs, dayjs.Dayjs] },
-  { key: 'last-month', label: () => $gettext('Last month'), value: () => [dayjs().subtract(1, 'month').startOf('month'), dayjs().subtract(1, 'month').endOf('month')] as [dayjs.Dayjs, dayjs.Dayjs] },
+  {
+    key: 'last-7-days',
+    label: () => $gettext('Last 7 days'),
+    value: () => [
+      dayjs().subtract(7, 'day').startOf('day'),
+      dayjs().endOf('day'),
+    ] as [dayjs.Dayjs, dayjs.Dayjs],
+  },
+  {
+    key: 'last-14-days',
+    label: () => $gettext('Last 14 days'),
+    value: () => [
+      dayjs().subtract(14, 'day').startOf('day'),
+      dayjs().endOf('day'),
+    ] as [dayjs.Dayjs, dayjs.Dayjs],
+  },
+  {
+    key: 'last-30-days',
+    label: () => $gettext('Last 30 days'),
+    value: () => [
+      dayjs().subtract(30, 'day').startOf('day'),
+      dayjs().endOf('day'),
+    ] as [dayjs.Dayjs, dayjs.Dayjs],
+  },
+  {
+    key: 'last-90-days',
+    label: () => $gettext('Last 90 days'),
+    value: () => [
+      dayjs().subtract(90, 'day').startOf('day'),
+      dayjs().endOf('day'),
+    ] as [dayjs.Dayjs, dayjs.Dayjs],
+  },
+  {
+    key: 'this-month',
+    label: () => $gettext('This month'),
+    value: () => [
+      dayjs().startOf('month'),
+      dayjs().endOf('day'),
+    ] as [dayjs.Dayjs, dayjs.Dayjs],
+  },
+  {
+    key: 'last-month',
+    label: () => $gettext('Last month'),
+    value: () => [
+      dayjs().subtract(1, 'month').startOf('month'),
+      dayjs().subtract(1, 'month').endOf('month'),
+    ] as [dayjs.Dayjs, dayjs.Dayjs],
+  },
 ]
 
 const datePresetMenuItems = computed<MenuProps['items']>(() => datePresets.map(preset => ({

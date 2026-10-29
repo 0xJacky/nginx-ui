@@ -58,7 +58,9 @@ export function resolveConnectionRecovery(input: ConnectionHealthInput): Connect
     return 'none'
   }
 
-  return now - lastMessageAt > staleAfterMs ? 'reopen' : 'none'
+  return now - lastMessageAt > staleAfterMs
+    ? 'reopen'
+    : 'none'
 }
 
 /**

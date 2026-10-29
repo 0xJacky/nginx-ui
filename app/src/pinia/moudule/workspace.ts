@@ -76,7 +76,9 @@ export const useWorkspaceStore = defineStore('workspace', () => {
   }
 
   function setTabNode(tabId: number, node: WorkspaceNode) {
-    state.value = updateTab(state.value, tabId, { node: { id: node.id, name: node.name } })
+    state.value = updateTab(state.value, tabId, {
+      node: { id: node.id, name: node.name },
+    })
   }
 
   function setTabRoute(tabId: number, route: string, title: string) {

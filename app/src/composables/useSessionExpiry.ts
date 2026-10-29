@@ -12,8 +12,12 @@ export function useSessionExpiry() {
     // with the router's temporary start location (/).
     void router.isReady().then(() => {
       const route = router.currentRoute.value
-      if (!disposed && !user.isLogin && !route.meta.noAuth)
-        void router.replace({ path: '/login', query: { next: route.fullPath } })
+      if (!disposed && !user.isLogin && !route.meta.noAuth) {
+        void router.replace({
+          path: '/login',
+          query: { next: route.fullPath },
+        })
+      }
     })
   })
 

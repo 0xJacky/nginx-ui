@@ -71,7 +71,9 @@ async function savePerformanceSettings() {
   loading.value = true
   try {
     const params: NginxPerfOpt = {
-      worker_processes: data.value.process_mode === 'auto' ? 'auto' : data.value.worker_processes.toString(),
+      worker_processes: data.value.process_mode === 'auto'
+        ? 'auto'
+        : data.value.worker_processes.toString(),
       worker_connections: data.value.worker_connections.toString(),
       keepalive_timeout: data.value.keepalive_timeout.toString(),
       gzip: data.value.gzip,

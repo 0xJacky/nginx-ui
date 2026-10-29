@@ -24,22 +24,27 @@ const formModel = reactive({
   domainIds: [] as number[],
 })
 
-const columns: TableColumnsType = [{
-  title: $gettext('Group'),
-  key: 'name',
-}, {
-  title: $gettext('Domains'),
-  key: 'domains',
-}, {
-  title: $gettext('Updated at'),
-  key: 'updatedAt',
-  width: 180,
-}, {
-  title: $gettext('Actions'),
-  key: 'actions',
-  width: 260,
-  fixed: 'right',
-}]
+const columns: TableColumnsType = [
+  {
+    title: $gettext('Group'),
+    key: 'name',
+  },
+  {
+    title: $gettext('Domains'),
+    key: 'domains',
+  },
+  {
+    title: $gettext('Updated at'),
+    key: 'updatedAt',
+    width: 180,
+  },
+  {
+    title: $gettext('Actions'),
+    key: 'actions',
+    width: 260,
+    fixed: 'right',
+  },
+]
 
 const domainMap = computed(() => new Map(domains.value.map(domain => [domain.id, domain])))
 const domainOptions = computed(() => domains.value.map(domain => ({
@@ -52,7 +57,9 @@ const selectedDomainOptions = computed(() => {
   for (const domainId of formModel.domainIds) {
     if (!domainMap.value.has(domainId)) {
       options.push({
-        label: $gettext('Unavailable domain #%{id}', { id: String(domainId) }),
+        label: $gettext('Unavailable domain #%{id}', {
+          id: String(domainId),
+        }),
         value: domainId,
       })
     }
@@ -146,7 +153,9 @@ function manageGroupRecords(group: DNSDomainGroup) {
 function getGroupDomains(group: DNSDomainGroup) {
   return group.domainIds.map(domainId => ({
     id: domainId,
-    name: toUnicodeDomain(domainMap.value.get(domainId)?.domain) || $gettext('Unavailable domain #%{id}', { id: String(domainId) }),
+    name: toUnicodeDomain(domainMap.value.get(domainId)?.domain) || $gettext('Unavailable domain #%{id}', {
+      id: String(domainId),
+    }),
     isMissing: !domainMap.value.has(domainId),
   }))
 }

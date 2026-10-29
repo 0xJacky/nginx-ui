@@ -30,11 +30,17 @@ export interface ConfigBackup extends ModelBase {
 const config = extendCurdApi(useCurdApi<Config>('/configs'), {
   // eslint-disable-next-line ts/no-explicit-any
   getItem: (id: string | number, params?: Record<string, any>, config?: AxiosRequestConfig) => {
-    return http.get<Config>('/config', { params: { path: id, ...params }, ...config })
+    return http.get<Config>('/config', {
+      params: { path: id, ...params },
+      ...config,
+    })
   },
   // eslint-disable-next-line ts/no-explicit-any
   updateItem: (id: string | number, data: Record<string, any>, config?: AxiosRequestConfig) => {
-    return http.post<Config>('/config', { path: decodeURIComponent(id as string), ...data }, config)
+    return http.post<Config>('/config', {
+      path: decodeURIComponent(id as string),
+      ...data,
+    }, config)
   },
   get_base_path: () => http.get('/config_base_path'),
   mkdir: (basePath: string, name: string) => http.post('/config_mkdir', { base_path: basePath, folder_name: name }),
@@ -50,7 +56,9 @@ const config = extendCurdApi(useCurdApi<Config>('/configs'), {
     sync_node_ids: syncNodeIds,
   }),
   get_history: (filepath: string, params?: { page: number, page_size: number }) => {
-    return http.get<GetListResponse<ConfigBackup>>('/config_histories', { params: { filepath, ...params } })
+    return http.get<GetListResponse<ConfigBackup>>('/config_histories', {
+      params: { filepath, ...params },
+    })
   },
   /** Replicates a whole directory to the selected nodes instead of a single file. */
   syncDirectory: (dir: string, syncNodeIds: number[], syncOverwrite: boolean) => {

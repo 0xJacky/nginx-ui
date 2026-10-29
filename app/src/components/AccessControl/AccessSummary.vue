@@ -17,8 +17,13 @@ const hasManual = computed(() => servers.value.some(s => s.mode === 'manual'))
 const sharedValue = computed(() => sharedServerAccessValue(servers.value))
 
 const options = computed(() => [
-  { label: $gettext('Public'), value: PublicValue },
-  ...listOptions(lists.value, sharedValue.value === PublicValue ? undefined : sharedValue.value),
+  {
+    label: $gettext('Public'),
+    value: PublicValue,
+  },
+  ...listOptions(lists.value, sharedValue.value === PublicValue
+    ? undefined
+    : sharedValue.value),
 ])
 
 function applyToAll(selected: unknown) {

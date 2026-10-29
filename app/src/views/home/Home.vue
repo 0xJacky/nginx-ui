@@ -142,7 +142,10 @@ const staticSections = computed<HomeSection[]>(() => ([
   },
 ] satisfies HomeSection[]).map(section => ({
   ...section,
-  entries: section.entries.map(item => ({ ...item, icon: resolveRouteIcon(item.path) })),
+  entries: section.entries.map(item => ({
+    ...item,
+    icon: resolveRouteIcon(item.path),
+  })),
 })))
 
 const sections = computed<HomeSection[]>(() => (

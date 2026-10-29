@@ -131,27 +131,39 @@ async function loadGeographicData() {
 
 // Refresh all dashboard data
 function refreshAllData() {
-  Promise.all([loadDashboardData(), loadGeographicData()])
+  Promise.all([
+    loadDashboardData(),
+    loadGeographicData(),
+  ])
 }
 
 // Initialize time range when log path changes
 watch(() => props.logPath, async () => {
   timeRangeLoaded.value = false
   const oldDateRange = dateRange.value
-  await Promise.all([loadTimeRange(), loadGeoMapConfig()])
+  await Promise.all([
+    loadTimeRange(),
+    loadGeoMapConfig(),
+  ])
 
   // Load dashboard data if dateRange didn't change (no automatic trigger from watch below)
   if (timeRangeLoaded.value
     && oldDateRange[0].isSame(dateRange.value[0])
     && oldDateRange[1].isSame(dateRange.value[1])) {
-    await Promise.all([loadDashboardData(), loadGeographicData()])
+    await Promise.all([
+      loadDashboardData(),
+      loadGeographicData(),
+    ])
   }
 }, { immediate: true })
 
 // Reload data when date range changes (after initial load)
 watch(dateRange, () => {
   if (timeRangeLoaded.value) {
-    Promise.all([loadDashboardData(), loadGeographicData()])
+    Promise.all([
+      loadDashboardData(),
+      loadGeographicData(),
+    ])
   }
 }, { deep: true })
 </script>

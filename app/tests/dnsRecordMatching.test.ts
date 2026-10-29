@@ -3,7 +3,13 @@ import { describe, expect, test } from 'bun:test'
 import { findMatchingDNSRecordIds } from '../src/utils/dnsRecordMatching'
 
 function record(id: string, name: string, type = 'A'): DNSRecord {
-  return { id, name, type, content: '192.0.2.1', ttl: 600 }
+  return {
+    id,
+    name,
+    type,
+    content: '192.0.2.1',
+    ttl: 600,
+  }
 }
 
 describe('DNS record matching', () => {

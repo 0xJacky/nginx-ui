@@ -51,11 +51,16 @@ const typeLabels = computed<Record<VariableType, string>>(() => ({
 }))
 
 function defaultOf(row: VariableRow) {
-  if (row.type === 'boolean')
-    return row.value ? $gettext('On') : $gettext('Off')
+  if (row.type === 'boolean') {
+    return row.value
+      ? $gettext('On')
+      : $gettext('Off')
+  }
   if (row.type === 'select') {
     const option = row.options.find(o => o.value === row.value)
-    return option ? localize(option.labels, language.value) || option.value : String(row.value)
+    return option
+      ? localize(option.labels, language.value) || option.value
+      : String(row.value)
   }
   return String(row.value)
 }
@@ -80,7 +85,9 @@ function refreshMarkers() {
     const cls = colorClass(slots.value, action.key)
     if (!cls)
       continue
-    const active = action.key === activeKey.value ? ' snippet-var-active' : ''
+    const active = action.key === activeKey.value
+      ? ' snippet-var-active'
+      : ''
     markerIds.push(session.addMarker(rangeOf(action.start, action.end), `snippet-var ${cls}${active}`, 'text', false))
   }
 }
@@ -116,7 +123,10 @@ function onMouseMove(event: MouseEvent) {
   if (hover.value?.key === action.key)
     return
   const start = editor.value!.session.doc.indexToPosition(action.start, 0)
-  hover.value = { key: action.key, ...pointBelow(start.row, start.column) }
+  hover.value = {
+    key: action.key,
+    ...pointBelow(start.row, start.column),
+  }
 }
 
 function openVariable(key: string) {
@@ -143,7 +153,10 @@ function updateSelection() {
     selection.value = undefined
     return
   }
-  selection.value = { range: range.clone(), ...pointBelow(range.end.row, range.end.column) }
+  selection.value = {
+    range: range.clone(),
+    ...pointBelow(range.end.row, range.end.column),
+  }
 }
 
 const debouncedSelection = useDebounceFn(updateSelection, 120)
@@ -158,7 +171,13 @@ const draftKey = useTemplateRef<{ focus: () => void }>('draftKey')
 function openDraft(row: VariableRow, range: Ace.Range, tail?: string) {
   const point = pointBelow(range.start.row, range.start.column)
   const width = wrapper.value!.clientWidth
-  draft.value = { row, range, tail, x: Math.max(0, Math.min(point.x, width - 460)), y: point.y }
+  draft.value = {
+    row,
+    range,
+    tail,
+    x: Math.max(0, Math.min(point.x, width - 460)),
+    y: point.y,
+  }
   nextTick(() => draftKey.value?.focus())
 }
 
@@ -168,7 +187,9 @@ function cancelDraft() {
 }
 const isNewDraft = computed(() => draft.value?.tail !== undefined)
 
-const draftProblem = computed(() => draft.value ? keyProblem(draft.value.row, [...props.rows, draft.value.row]) : '')
+const draftProblem = computed(() => draft.value
+  ? keyProblem(draft.value.row, [...props.rows, draft.value.row])
+  : '')
 
 function makeVariable() {
   const instance = editor.value
@@ -182,9 +203,13 @@ function makeVariable() {
 
 function changeDraftType(type: VariableType) {
   const row = draft.value!.row
-  const text = isNewDraft.value ? '' : editor.value!.session.getTextRange(draft.value!.range).trim()
+  const text = isNewDraft.value
+    ? ''
+    : editor.value!.session.getTextRange(draft.value!.range).trim()
   row.type = type
-  row.value = type === 'boolean' ? text.toLowerCase() === 'on' : text
+  row.value = type === 'boolean'
+    ? text.toLowerCase() === 'on'
+    : text
 }
 
 // Declares a variable from the completion list. The word typed after the
@@ -194,7 +219,11 @@ function newVariableAtCursor(tail: string) {
   const cursor = instance.getCursorPosition()
   const typed = /\w*$/.exec(instance.session.getLine(cursor.row).slice(0, cursor.column))![0]
   const row = newVariable(typed)
-  row.names = typed ? { en: labelFromKey(typed) } : {}
+  row.names = typed
+    ? {
+        en: labelFromKey(typed),
+      }
+    : {}
   openDraft(row, new ace.Range(cursor.row, cursor.column - typed.length, cursor.row, cursor.column), tail)
 }
 
@@ -203,7 +232,9 @@ function confirmDraft() {
     return
   const { row, range, tail } = draft.value
   row.key = row.key.trim()
-  editor.value!.session.replace(range, tail === undefined ? replacementOf(row.key, row.type) : row.key + tail)
+  editor.value!.session.replace(range, tail === undefined
+    ? replacementOf(row.key, row.type)
+    : row.key + tail)
   emit('addVariable', row)
   activeKey.value = row.key
   draft.value = undefined
@@ -218,11 +249,16 @@ function insertVariable(key: string) {
   if (!instance || !row)
     return
   const selected = instance.getSelectedText()
-  instance.insert(row.type === 'boolean' ? `{{ if .${key} }}${selected}{{ end }}` : `{{ .${key} }}`)
+  instance.insert(row.type === 'boolean'
+    ? `{{ if .${key} }}${selected}{{ end }}`
+    : `{{ .${key} }}`)
   instance.focus()
 }
 
-const insertItems = computed(() => declared.value.map(row => ({ key: row.key.trim(), label: labelOf(row) })))
+const insertItems = computed(() => declared.value.map(row => ({
+  key: row.key.trim(),
+  label: labelOf(row),
+})))
 
 // Completes variable keys after {{ .
 const completer: Ace.Completer = {
@@ -238,7 +274,11 @@ const completer: Ace.Completer = {
     const after = line.slice(position.column).replace(/^\w*/, '')
     const isBlock = /\{\{-?\s*(?:if|with|range|else\s+if)\s/.test(before)
     // Closes the action, or keeps a space before a closing that is there.
-    const tail = /^\s/.test(after) ? '' : /^-?\}\}/.test(after) ? ' ' : isBlock ? '' : ' }}'
+    const tail = /^\s/.test(after)
+      ? ''
+      : /^-?\}\}/.test(after)
+        ? ' '
+        : isBlock ? '' : ' }}'
     const known = new Set(declared.value.map(row => row.key.trim()))
     const typed = /\w*$/.exec(before)![0]
     callback(null, [
@@ -251,17 +291,19 @@ const completer: Ace.Completer = {
       // Always offered, below the declared variables.
       ...(known.has(typed)
         ? []
-        : [{
-            caption: $gettext('New Variable…'),
-            // Not empty, or the list takes it for no suggestion.
-            value: typed || '.',
-            score: 0,
-            skipFilter: true,
-            completer: {
-              getCompletions: (_e, _s, _p, _x, done) => done(null, []),
-              insertMatch: () => newVariableAtCursor(tail),
-            },
-          } as Ace.Completion]),
+        : [
+            {
+              caption: $gettext('New Variable…'),
+              // Not empty, or the list takes it for no suggestion.
+              value: typed || '.',
+              score: 0,
+              skipFilter: true,
+              completer: {
+                getCompletions: (_e, _s, _p, _x, done) => done(null, []),
+                insertMatch: () => newVariableAtCursor(tail),
+              },
+            } as Ace.Completion,
+          ]),
     ])
   },
 }
@@ -297,7 +339,9 @@ function init(instance: Editor) {
   })
 }
 
-const hoverRow = computed(() => hover.value ? rowOf(hover.value.key) : undefined)
+const hoverRow = computed(() => hover.value
+  ? rowOf(hover.value.key)
+  : undefined)
 const isMac = /Mac|iPhone|iPad/.test(navigator.platform)
 </script>
 

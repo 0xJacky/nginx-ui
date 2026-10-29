@@ -16,20 +16,50 @@ const cronConfig = ref<CronConfig>({
 })
 
 const cronTypes = [
-  { label: $gettext('Daily'), value: 'daily' },
-  { label: $gettext('Weekly'), value: 'weekly' },
-  { label: $gettext('Monthly'), value: 'monthly' },
+  {
+    label: $gettext('Daily'),
+    value: 'daily',
+  },
+  {
+    label: $gettext('Weekly'),
+    value: 'weekly',
+  },
+  {
+    label: $gettext('Monthly'),
+    value: 'monthly',
+  },
 //  { label: $gettext('Custom'), value: 'custom' },
 ]
 
 const weekDays = [
-  { label: $gettext('Sunday'), value: 0 },
-  { label: $gettext('Monday'), value: 1 },
-  { label: $gettext('Tuesday'), value: 2 },
-  { label: $gettext('Wednesday'), value: 3 },
-  { label: $gettext('Thursday'), value: 4 },
-  { label: $gettext('Friday'), value: 5 },
-  { label: $gettext('Saturday'), value: 6 },
+  {
+    label: $gettext('Sunday'),
+    value: 0,
+  },
+  {
+    label: $gettext('Monday'),
+    value: 1,
+  },
+  {
+    label: $gettext('Tuesday'),
+    value: 2,
+  },
+  {
+    label: $gettext('Wednesday'),
+    value: 3,
+  },
+  {
+    label: $gettext('Thursday'),
+    value: 4,
+  },
+  {
+    label: $gettext('Friday'),
+    value: 5,
+  },
+  {
+    label: $gettext('Saturday'),
+    value: 6,
+  },
 ]
 
 const customCronExpression = ref('')

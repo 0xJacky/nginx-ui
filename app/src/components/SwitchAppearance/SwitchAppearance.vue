@@ -10,7 +10,9 @@ const devicePrefersTheme = inject('devicePrefersTheme') as Ref<string>
 const isDark = computed(() => settings.theme === 'dark')
 
 const switchTitle = computed(() => {
-  return isDark.value ? $gettext('Switch to light theme') : $gettext('Switch to dark theme')
+  return isDark.value
+    ? $gettext('Switch to light theme')
+    : $gettext('Switch to dark theme')
 })
 
 async function toggleAppearance() {

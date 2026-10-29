@@ -113,7 +113,10 @@ export function useTerminalSession() {
     })
 
     terminal.onResize(data => {
-      sendMessage({ Type: 2, Data: { Cols: data.cols, Rows: data.rows } })
+      sendMessage({
+        Type: 2,
+        Data: { Cols: data.cols, Rows: data.rows },
+      })
     })
 
     const container = document.getElementById(containerId)
@@ -194,7 +197,9 @@ export function useTerminalSession() {
   }
 
   const hasAnyConnectionLoss = computed(() => {
-    return [...sessions.values()].some(session => session.lostConnection)
+    return [
+      ...sessions.values(),
+    ].some(session => session.lostConnection)
   })
 
   return {

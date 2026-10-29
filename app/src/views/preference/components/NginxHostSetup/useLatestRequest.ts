@@ -62,5 +62,11 @@ export function useLatestRequest(options: LatestRequestOptions = {}) {
     }
   }
 
-  return { error, invalidate, isLoading, reset, run }
+  return {
+    error,
+    invalidate,
+    isLoading,
+    reset,
+    run,
+  }
 }

@@ -29,15 +29,28 @@ export function newId() {
 }
 
 export function newOption(value = ''): VariableOption {
-  return { id: newId(), value, labels: {} }
+  return {
+    id: newId(),
+    value,
+    labels: {},
+  }
 }
 
 export function newVariable(key = ''): VariableRow {
-  return { id: newId(), key, type: 'string', names: {}, value: '', options: [] }
+  return {
+    id: newId(),
+    key,
+    type: 'string',
+    names: {},
+    value: '',
+    options: [],
+  }
 }
 
 function toType(type?: string): VariableType {
-  return type === 'boolean' || type === 'select' ? type : 'string'
+  return type === 'boolean' || type === 'select'
+    ? type
+    : 'string'
 }
 
 export function toRows(variables: Record<string, Variable> | undefined): VariableRow[] {
@@ -48,8 +61,14 @@ export function toRows(variables: Record<string, Variable> | undefined): Variabl
       key,
       type,
       names: { ...v.name },
-      value: type === 'boolean' ? Boolean(v.value) : String(v.value ?? ''),
-      options: Object.entries(v.mask ?? {}).map(([value, labels]) => ({ id: newId(), value, labels: { ...labels } })),
+      value: type === 'boolean'
+        ? Boolean(v.value)
+        : String(v.value ?? ''),
+      options: Object.entries(v.mask ?? {}).map(([value, labels]) => ({
+        id: newId(),
+        value,
+        labels: { ...labels },
+      })),
     }
   })
 }
@@ -63,7 +82,10 @@ export function toVariables(rows: VariableRow[]): Record<string, Variable> {
     }
     else if (row.type === 'select') {
       variable.value = String(row.value).trim()
-      variable.mask = Object.fromEntries(row.options.map(o => [o.value.trim(), o.labels]))
+      variable.mask = Object.fromEntries(row.options.map(o => [
+        o.value.trim(),
+        o.labels,
+      ]))
     }
     else {
       variable.value = String(row.value)

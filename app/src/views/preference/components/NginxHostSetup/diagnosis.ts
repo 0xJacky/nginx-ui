@@ -18,7 +18,10 @@ export function detectedSettings(diagnosis: HostDiagnosis): Partial<SetupParams>
   if (diagnosis.launchd_service)
     detected.launchd_service = diagnosis.launchd_service
 
-  return { ...detected, ...discoveredNginxPaths(diagnosis.nginx) }
+  return {
+    ...detected,
+    ...discoveredNginxPaths(diagnosis.nginx),
+  }
 }
 
 /** nginx paths compiled into the binary that answered `nginx -V`. */

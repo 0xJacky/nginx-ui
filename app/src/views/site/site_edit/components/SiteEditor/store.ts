@@ -254,7 +254,9 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
 
   async function handleResponse(r: Site) {
     savedText = r.config
-    savedConfig = r.tokenized ? cloneNgxConfig(r.tokenized) : null
+    savedConfig = r.tokenized
+      ? cloneNgxConfig(r.tokenized)
+      : null
 
     if (r.advanced)
       advanceMode.value = true

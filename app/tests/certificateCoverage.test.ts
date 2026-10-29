@@ -61,7 +61,12 @@ describe('certificateNameCovers', () => {
 
 describe('certificateCoverage', () => {
   test('splits the requested domains into covered and uncovered ones', () => {
-    expect(certificateCoverage(['example.com', '*.example.com'], ['example.com', 'www.example.com', 'a.b.example.com', 'other.org'])).toEqual({
+    expect(certificateCoverage(['example.com', '*.example.com'], [
+      'example.com',
+      'www.example.com',
+      'a.b.example.com',
+      'other.org',
+    ])).toEqual({
       known: true,
       covered: ['example.com', 'www.example.com'],
       uncovered: ['a.b.example.com', 'other.org'],
@@ -123,7 +128,10 @@ describe('certificateNamesOf', () => {
   })
 
   test('a record without certificate info falls back to its domains', () => {
-    expect(certificateNamesOf({ domains: ['example.com'], certificate_info: undefined as never })).toEqual(['example.com'])
+    expect(certificateNamesOf({
+      domains: ['example.com'],
+      certificate_info: undefined as never,
+    })).toEqual(['example.com'])
     expect(certificateNamesOf(undefined)).toEqual([])
   })
 })

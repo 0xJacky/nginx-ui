@@ -18,7 +18,12 @@ export interface MFAAuthResponse extends AuthResponse {
 }
 
 export function useMFAPreAuth(id: string) {
-  const config = { skipNodeProxy: true, skipAuthRedirect: true, skipErrHandling: true, headers: { 'X-MFA-Pre-Auth-ID': id } }
+  const config = {
+    skipNodeProxy: true,
+    skipAuthRedirect: true,
+    skipErrHandling: true,
+    headers: { 'X-MFA-Pre-Auth-ID': id },
+  }
   const path = '/mfa/pre_auth'
   return {
     status: (): Promise<MFAPreAuthStatus> => http.get(`${path}/status`, config),

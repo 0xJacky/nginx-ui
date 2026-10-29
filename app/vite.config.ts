@@ -43,7 +43,9 @@ export default defineConfig(({ mode }) => {
       svgLoader(),
       UnoCSS(),
       Components({
-        resolvers: [AntdvNextResolver()],
+        resolvers: [
+          AntdvNextResolver(),
+        ],
         directoryAsNamespace: true,
       }),
       AutoImport({

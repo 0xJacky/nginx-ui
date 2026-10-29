@@ -5,7 +5,9 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 function collectingLifecycle() {
   const errors: unknown[] = []
-  const lifecycle = createLifecycle({ onError: error => errors.push(error) })
+  const lifecycle = createLifecycle({
+    onError: error => errors.push(error),
+  })
   return { errors, lifecycle }
 }
 

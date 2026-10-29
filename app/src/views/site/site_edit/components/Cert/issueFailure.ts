@@ -20,12 +20,16 @@ export interface IssueErrorMessage {
 
 // issueHintTitle translates the hint headline, or returns '' without a hint.
 export function issueHintTitle(hint?: IssueHint): string {
-  return hint?.message ? T({ message: hint.message, args: hint.params }) : ''
+  return hint?.message
+    ? T({ message: hint.message, args: hint.params })
+    : ''
 }
 
 // issueFailureDetail is the translated failure text of an error message: the
 // cosy error translated by scope and code when present, else the raw message.
 export function issueFailureDetail(r: IssueErrorMessage): string {
-  const fallback = r.message ? T({ message: r.message }) : ''
+  const fallback = r.message
+    ? T({ message: r.message })
+    : ''
   return getErrorMessage(r.error, fallback)
 }

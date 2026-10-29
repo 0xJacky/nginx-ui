@@ -138,7 +138,9 @@ export interface CertificateArchive {
 
 // toSelfSignedPayload maps a persisted Cert to an editable self-signed payload.
 export function toSelfSignedPayload(c: Cert): SelfSignedCertPayload {
-  const domains = c.domains?.length ? [...c.domains] : ['']
+  const domains = c.domains?.length
+    ? [...c.domains]
+    : ['']
   const ipAddresses = c.self_signed_config?.ip_addresses?.length
     ? [...c.self_signed_config.ip_addresses]
     : ['']
@@ -152,7 +154,9 @@ export function toSelfSignedPayload(c: Cert): SelfSignedCertPayload {
     ip_addresses: ipAddresses,
     key_type: keyType,
     validity_days: c.self_signed_config?.validity_days || 365,
-    sync_node_ids: [...(c.sync_node_ids ?? [])],
+    sync_node_ids: [
+      ...(c.sync_node_ids ?? []),
+    ],
   }
 }
 

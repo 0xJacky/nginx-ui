@@ -23,7 +23,9 @@ export function updateThemeColor(theme: 'light' | 'dark') {
 
     // Also update apple status bar style
     if (appleStatusBarMeta) {
-      appleStatusBarMeta.setAttribute('content', theme === 'dark' ? 'black-translucent' : 'default')
+      appleStatusBarMeta.setAttribute('content', theme === 'dark'
+        ? 'black-translucent'
+        : 'default')
     }
 
     // Update Windows tile color
@@ -37,7 +39,9 @@ export function updateThemeColor(theme: 'light' | 'dark') {
  * Get the current theme from document body class
  */
 export function getCurrentTheme(): 'light' | 'dark' {
-  return document.body.classList.contains('dark') ? 'dark' : 'light'
+  return document.body.classList.contains('dark')
+    ? 'dark'
+    : 'light'
 }
 
 /**

@@ -48,8 +48,15 @@ const columns: TableColumnsType<SocketInfo> = [
       }
       const status = record.status
       return h('div', { class: 'flex items-center' }, [
-        h(Tag, { color: status.online ? 'success' : 'error', class: 'mr-2' }, () => status.online ? $gettext('Online') : $gettext('Offline')),
-        status.online ? h('span', `${status.latency.toFixed(2)}ms`) : null,
+        h(Tag, {
+          color: status.online ? 'success' : 'error',
+          class: 'mr-2',
+        }, () => status.online
+          ? $gettext('Online')
+          : $gettext('Offline')),
+        status.online
+          ? h('span', `${status.latency.toFixed(2)}ms`)
+          : null,
       ])
     },
   },
@@ -59,7 +66,9 @@ const columns: TableColumnsType<SocketInfo> = [
     key: 'last_check',
     width: 180,
     render: value => {
-      return value ? formatDateTime(value) : '-'
+      return value
+        ? formatDateTime(value)
+        : '-'
     },
   },
   {
@@ -112,7 +121,9 @@ async function loadData() {
 }
 
 async function handleToggleEnabled(socket: string, enabled: boolean | string | number) {
-  const isEnabled = typeof enabled === 'boolean' ? enabled : Boolean(enabled)
+  const isEnabled = typeof enabled === 'boolean'
+    ? enabled
+    : Boolean(enabled)
   try {
     await upstream.updateSocketConfig(socket, { enabled: isEnabled })
     message.success(`Health check ${isEnabled ? 'enabled' : 'disabled'} for ${socket}`)

@@ -80,7 +80,9 @@ async function handleConfirm() {
         handleRemoved()
       }
       else if (response.status === 'error') {
-        message.error(response.message ? $gettext(response.message, response.args) : $gettext('Failed to revoke certificate'))
+        message.error(response.message
+          ? $gettext(response.message, response.args)
+          : $gettext('Failed to revoke certificate'))
         confirmLoading.value = false
       }
     }

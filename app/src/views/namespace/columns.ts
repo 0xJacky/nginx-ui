@@ -4,125 +4,136 @@ import { DeployMode, PostSyncAction, SyncStrategy, UpstreamTestType } from '@/ap
 import { DeployModeMask, PostSyncActionMask, SyncStrategyMask, UpstreamTestTypeMask } from '@/constants'
 import { useNodeAvailabilityStore } from '@/pinia/moudule/nodeAvailability'
 
-const columns: StdTableColumn[] = [{
-  dataIndex: 'name',
-  title: () => $gettext('Name'),
-  search: true,
-  edit: {
-    type: 'input',
+const columns: StdTableColumn[] = [
+  {
+    dataIndex: 'name',
+    title: () => $gettext('Name'),
+    search: true,
+    edit: {
+      type: 'input',
+    },
+    pure: true,
+    width: 120,
   },
-  pure: true,
-  width: 120,
-}, {
-  title: () => $gettext('Sync Nodes'),
-  dataIndex: 'sync_node_ids',
-  customRender: ({ text }) => {
-    const nodeStore = useNodeAvailabilityStore()
+  {
+    title: () => $gettext('Sync Nodes'),
+    dataIndex: 'sync_node_ids',
+    customRender: ({ text }) => {
+      const nodeStore = useNodeAvailabilityStore()
 
-    if (!text || text.length === 0) {
-      return h('span', { class: 'text-gray-400' }, '-')
-    }
+      if (!text || text.length === 0) {
+        return h('span', { class: 'text-gray-400' }, '-')
+      }
 
-    const nodeElements = text.map((nodeId: number) => {
-      const nodeStatus = nodeStore.getNodeStatus(nodeId)
-      const nodeName = nodeStatus?.name || `Node ${nodeId}`
-      const isOnline = nodeStatus?.status ?? false
+      const nodeElements = text.map((nodeId: number) => {
+        const nodeStatus = nodeStore.getNodeStatus(nodeId)
+        const nodeName = nodeStatus?.name || `Node ${nodeId}`
+        const isOnline = nodeStatus?.status ?? false
 
-      return h('div', {
-        class: 'inline-flex items-center mr-2 mb-1',
-      }, [
-        h('span', {
-          class: `inline-block w-2 h-2 rounded-full mr-1 flex-shrink-0 ${isOnline ? 'bg-green-500' : 'bg-red-500'}`,
-        }),
-        h('span', nodeName),
-      ])
-    })
+        return h('div', {
+          class: 'inline-flex items-center mr-2 mb-1',
+        }, [
+          h('span', {
+            class: `inline-block w-2 h-2 rounded-full mr-1 flex-shrink-0 ${isOnline ? 'bg-green-500' : 'bg-red-500'}`,
+          }),
+          h('span', nodeName),
+        ])
+      })
 
-    return h('div', { class: 'flex flex-wrap' }, nodeElements)
-  },
-  pure: true,
-  width: 200,
-}, {
-  title: () => $gettext('Post-sync Action'),
-  dataIndex: 'post_sync_action',
-  customRender: maskRender(PostSyncActionMask),
-  edit: {
-    type: 'select',
-    select: {
-      mask: PostSyncActionMask,
-      defaultValue: PostSyncAction.ReloadNginx,
+      return h('div', { class: 'flex flex-wrap' }, nodeElements)
     },
+    pure: true,
+    width: 200,
   },
-  pure: true,
-  width: 150,
-}, {
-  title: () => $gettext('Upstream Test Type'),
-  dataIndex: 'upstream_test_type',
-  customRender: maskRender(UpstreamTestTypeMask),
-  edit: {
-    type: 'select',
-    select: {
-      mask: UpstreamTestTypeMask,
-      defaultValue: UpstreamTestType.Local,
+  {
+    title: () => $gettext('Post-sync Action'),
+    dataIndex: 'post_sync_action',
+    customRender: maskRender(PostSyncActionMask),
+    edit: {
+      type: 'select',
+      select: {
+        mask: PostSyncActionMask,
+        defaultValue: PostSyncAction.ReloadNginx,
+      },
     },
+    pure: true,
+    width: 150,
   },
-  pure: true,
-  width: 150,
-}, {
-  title: () => $gettext('Deploy Mode'),
-  dataIndex: 'deploy_mode',
-  customRender: maskRender(DeployModeMask),
-  edit: {
-    type: 'select',
-    select: {
-      mask: DeployModeMask,
-      defaultValue: DeployMode.Local,
+  {
+    title: () => $gettext('Upstream Test Type'),
+    dataIndex: 'upstream_test_type',
+    customRender: maskRender(UpstreamTestTypeMask),
+    edit: {
+      type: 'select',
+      select: {
+        mask: UpstreamTestTypeMask,
+        defaultValue: UpstreamTestType.Local,
+      },
     },
+    pure: true,
+    width: 150,
   },
-  pure: true,
-  width: 120,
-}, {
-  title: () => $gettext('Sync Strategy'),
-  dataIndex: 'sync_strategy',
-  customRender: maskRender(SyncStrategyMask),
-  edit: {
-    type: 'select',
-    select: {
-      mask: SyncStrategyMask,
-      defaultValue: SyncStrategy.Manual,
+  {
+    title: () => $gettext('Deploy Mode'),
+    dataIndex: 'deploy_mode',
+    customRender: maskRender(DeployModeMask),
+    edit: {
+      type: 'select',
+      select: {
+        mask: DeployModeMask,
+        defaultValue: DeployMode.Local,
+      },
     },
+    pure: true,
+    width: 120,
   },
-  pure: true,
-  width: 120,
-}, {
-  title: () => $gettext('Sync Interval (minutes)'),
-  dataIndex: 'sync_interval_minutes',
-  edit: {
-    type: 'inputNumber',
-    inputNumber: {
-      min: 1,
-      defaultValue: 30,
+  {
+    title: () => $gettext('Sync Strategy'),
+    dataIndex: 'sync_strategy',
+    customRender: maskRender(SyncStrategyMask),
+    edit: {
+      type: 'select',
+      select: {
+        mask: SyncStrategyMask,
+        defaultValue: SyncStrategy.Manual,
+      },
     },
+    pure: true,
+    width: 120,
   },
-  hiddenInTable: true,
-  pure: true,
-}, {
-  title: () => $gettext('Created at'),
-  dataIndex: 'created_at',
-  customRender: datetimeRender,
-  pure: true,
-  width: 150,
-}, {
-  title: () => $gettext('Updated at'),
-  dataIndex: 'updated_at',
-  customRender: datetimeRender,
-  pure: true,
-  width: 150,
-}, {
-  title: () => $gettext('Actions'),
-  dataIndex: 'actions',
-  fixed: 'right',
-  width: 150,
-}]
+  {
+    title: () => $gettext('Sync Interval (minutes)'),
+    dataIndex: 'sync_interval_minutes',
+    edit: {
+      type: 'inputNumber',
+      inputNumber: {
+        min: 1,
+        defaultValue: 30,
+      },
+    },
+    hiddenInTable: true,
+    pure: true,
+  },
+  {
+    title: () => $gettext('Created at'),
+    dataIndex: 'created_at',
+    customRender: datetimeRender,
+    pure: true,
+    width: 150,
+  },
+  {
+    title: () => $gettext('Updated at'),
+    dataIndex: 'updated_at',
+    customRender: datetimeRender,
+    pure: true,
+    width: 150,
+  },
+  {
+    title: () => $gettext('Actions'),
+    dataIndex: 'actions',
+    fixed: 'right',
+    width: 150,
+  },
+]
 
 export default columns

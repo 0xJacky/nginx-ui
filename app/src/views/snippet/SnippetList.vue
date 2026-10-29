@@ -28,24 +28,59 @@ const builtins = ref<BuiltinTemplate[]>([])
 const isBuiltinLoading = ref(false)
 // The tab is kept in the address, so going back from a copy returns to it.
 const tab = computed({
-  get: () => route.query.tab === 'builtin' ? 'builtin' : 'snippets',
-  set: value => router.replace({ query: value === 'builtin' ? { tab: 'builtin' } : {} }),
+  get: () => route.query.tab === 'builtin'
+    ? 'builtin'
+    : 'snippets',
+  set: value => router.replace({
+    query: value === 'builtin'
+      ? { tab: 'builtin' }
+      : {},
+  }),
 })
 const tabOptions = computed(() => [
   { label: `${$gettext('My Snippets')} ${snippets.value.length}`, value: 'snippets' },
-  { label: `${$gettext('Built-in Templates')} ${builtins.value.length || ''}`.trim(), value: 'builtin' },
+  {
+    label: `${$gettext('Built-in Templates')} ${builtins.value.length || ''}`.trim(),
+    value: 'builtin',
+  },
 ])
 const copiedFile = ref('')
 const filterText = ref('')
 
 const columns = computed<TableColumnsType<Snippet>>(() => isNarrow.value
-  ? [{ title: () => $gettext('Snippet'), key: 'compact' }]
+  ? [
+      {
+        title: () => $gettext('Snippet'),
+        key: 'compact',
+      },
+    ]
   : [
-      { title: () => $gettext('Name'), key: 'name' },
-      { title: () => $gettext('File'), key: 'file', width: 280 },
-      { title: () => $gettext('Used By'), key: 'used_by', width: 300 },
-      { title: () => $gettext('Updated at'), key: 'modified_at', width: 170, responsive: ['lg'] },
-      { title: () => $gettext('Actions'), key: 'actions', width: 130, fixed: 'right' },
+      {
+        title: () => $gettext('Name'),
+        key: 'name',
+      },
+      {
+        title: () => $gettext('File'),
+        key: 'file',
+        width: 280,
+      },
+      {
+        title: () => $gettext('Used By'),
+        key: 'used_by',
+        width: 300,
+      },
+      {
+        title: () => $gettext('Updated at'),
+        key: 'modified_at',
+        width: 170,
+        responsive: ['lg'],
+      },
+      {
+        title: () => $gettext('Actions'),
+        key: 'actions',
+        width: 130,
+        fixed: 'right',
+      },
     ])
 
 const filteredSnippets = computed(() => {
@@ -68,7 +103,10 @@ function variableCount(record: Snippet) {
 async function loadData() {
   isLoading.value = true
   try {
-    const [list, sync] = await Promise.all([snippet.getList(), snippet.getSync()])
+    const [list, sync] = await Promise.all([
+      snippet.getList(),
+      snippet.getSync(),
+    ])
     snippets.value = list.data ?? []
     syncNodeCount.value = sync.sync_node_ids?.length ?? 0
   }
@@ -118,7 +156,9 @@ async function copyInclude(record: Snippet) {
 
 function confirmDelete(record: Snippet) {
   modal.confirm({
-    title: $gettext('Delete snippet %{name}?', { name: nameOf(record) }),
+    title: $gettext('Delete snippet %{name}?', {
+      name: nameOf(record),
+    }),
     content: syncNodeCount.value > 0
       ? $gettext('snippets/%{file} will be removed here and on the synchronized nodes.', { file: record.file })
       : $gettext('snippets/%{file} will be removed.', { file: record.file }),
@@ -127,7 +167,9 @@ function confirmDelete(record: Snippet) {
     cancelText: $gettext('Cancel'),
     async onOk() {
       await snippet.delete(record.file)
-      message.success($gettext('Snippet %{name} deleted', { name: nameOf(record) }))
+      message.success($gettext('Snippet %{name} deleted', {
+        name: nameOf(record),
+      }))
       await loadData()
     },
   })

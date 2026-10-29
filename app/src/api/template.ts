@@ -61,8 +61,16 @@ const template = extendCurdApi(useCurdApi<Template>(baseUrl), {
   get_config_list: () => http.get(`${baseUrl}/configs`),
   get_block_list: () => http.get(`${baseUrl}/blocks`),
   get_config: (name: string) => http.get(`${baseUrl}/config/${name}`),
-  get_block: (name: string, origin?: TemplateOrigin) => http.get(`${baseUrl}/block/${name}`, { params: origin === 'custom' ? { origin } : undefined }),
-  build_block: (name: string, data: Variable, origin?: TemplateOrigin) => http.post(`${baseUrl}/block/${name}`, data, { params: origin === 'custom' ? { origin } : undefined }),
+  get_block: (name: string, origin?: TemplateOrigin) => http.get(`${baseUrl}/block/${name}`, {
+    params: origin === 'custom'
+      ? { origin }
+      : undefined,
+  }),
+  build_block: (name: string, data: Variable, origin?: TemplateOrigin) => http.post(`${baseUrl}/block/${name}`, data, {
+    params: origin === 'custom'
+      ? { origin }
+      : undefined,
+  }),
   get_quick_config: (data: QuickConfigRequest): Promise<QuickConfigResponse> => http.post(`${baseUrl}/quick_config`, data),
   analyze_quick_config: (config: string): Promise<{ request: QuickConfigRequest }> => http.post(`${baseUrl}/quick_config/analyze`, { config }),
 })

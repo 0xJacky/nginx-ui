@@ -30,7 +30,14 @@ const emit = defineEmits<{
 countries.registerLocale(en)
 
 // Register ECharts components
-use([MapChart, TitleComponent, TooltipComponent, LegendComponent, VisualMapComponent, CanvasRenderer])
+use([
+  MapChart,
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  VisualMapComponent,
+  CanvasRenderer,
+])
 
 const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
@@ -44,11 +51,15 @@ onMounted(() => {
 })
 
 const fontColor = computed(() => {
-  return theme.value === 'dark' ? '#b4b4b4' : '#333'
+  return theme.value === 'dark'
+    ? '#b4b4b4'
+    : '#333'
 })
 
 const backgroundColor = computed(() => {
-  return theme.value === 'dark' ? 'transparent' : '#fff'
+  return theme.value === 'dark'
+    ? 'transparent'
+    : '#fff'
 })
 
 // Color scheme for visualMap - brighter colors for dark mode to maintain visibility
@@ -60,20 +71,28 @@ const visualMapColors = computed(() => {
 
 // Default area color for regions without data
 const areaColor = computed(() => {
-  return theme.value === 'dark' ? '#2a2a2a' : '#f5f5f5'
+  return theme.value === 'dark'
+    ? '#2a2a2a'
+    : '#f5f5f5'
 })
 
 // Tooltip style for dark mode
 const tooltipBgColor = computed(() => {
-  return theme.value === 'dark' ? 'rgba(50, 50, 50, 0.9)' : 'rgba(255, 255, 255, 0.9)'
+  return theme.value === 'dark'
+    ? 'rgba(50, 50, 50, 0.9)'
+    : 'rgba(255, 255, 255, 0.9)'
 })
 
 const tooltipBorderColor = computed(() => {
-  return theme.value === 'dark' ? '#555' : '#ccc'
+  return theme.value === 'dark'
+    ? '#555'
+    : '#ccc'
 })
 
 const tooltipTextColor = computed(() => {
-  return theme.value === 'dark' ? '#e0e0e0' : '#333'
+  return theme.value === 'dark'
+    ? '#e0e0e0'
+    : '#333'
 })
 
 const mapOption = computed((): EChartsOption => {
@@ -122,7 +141,9 @@ const mapOption = computed((): EChartsOption => {
         // For countries without data, translate the name
         const englishName = params.name
         const countryCode = countries.getAlpha2Code(englishName, 'en')
-        const localizedName = countryCode ? translateCountry(countryCode) : englishName
+        const localizedName = countryCode
+          ? translateCountry(countryCode)
+          : englishName
         return `${localizedName}: ${$gettext('No data')}`
       },
     },
@@ -131,7 +152,10 @@ const mapOption = computed((): EChartsOption => {
       max: maxValue,
       left: 'left',
       top: 'bottom',
-      text: [$gettext('High'), $gettext('Low')],
+      text: [
+        $gettext('High'),
+        $gettext('Low'),
+      ],
       textStyle: {
         color: fontColor.value,
       },
@@ -161,17 +185,23 @@ const mapOption = computed((): EChartsOption => {
               const englishName = params.name
               // Convert English name back to country code
               const countryCode = countries.getAlpha2Code(englishName, 'en')
-              return countryCode ? translateCountry(countryCode) : englishName
+              return countryCode
+                ? translateCountry(countryCode)
+                : englishName
             },
           },
           itemStyle: {
-            areaColor: theme.value === 'dark' ? '#3a5a7c' : '#ffd666',
+            areaColor: theme.value === 'dark'
+              ? '#3a5a7c'
+              : '#ffd666',
           },
         },
         data: chartData,
         itemStyle: {
           areaColor: areaColor.value,
-          borderColor: theme.value === 'dark' ? '#555' : '#ddd',
+          borderColor: theme.value === 'dark'
+            ? '#555'
+            : '#ddd',
           borderWidth: 0.5,
         },
       },
@@ -201,7 +231,9 @@ function handleChartClick(params: unknown) {
     return
 
   const { data, name } = params as { data?: unknown, name?: string }
-  const countryCode = isWorldMapClickData(data) ? data.code : countries.getAlpha2Code(name || '', 'en')
+  const countryCode = isWorldMapClickData(data)
+    ? data.code
+    : countries.getAlpha2Code(name || '', 'en')
 
   if (countryCode === 'CN') {
     emit('drillChina')

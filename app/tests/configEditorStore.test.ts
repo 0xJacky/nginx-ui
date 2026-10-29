@@ -5,7 +5,13 @@ import { beforeEach, describe, expect, mock, test } from 'bun:test'
 import { createPinia, defineStore, setActivePinia, storeToRefs } from 'pinia'
 import { computed, nextTick, ref } from 'vue'
 
-Object.assign(globalThis, { computed, defineStore, nextTick, ref, storeToRefs })
+Object.assign(globalThis, {
+  computed,
+  defineStore,
+  nextTick,
+  ref,
+  storeToRefs,
+})
 
 interface PendingRequest<T> {
   name: string
@@ -17,7 +23,10 @@ const pendingStreams: PendingRequest<Stream>[] = []
 
 function enqueue<T>(queue: PendingRequest<T>[], name: string) {
   return new Promise<T>(resolve => {
-    queue.push({ name: decodeURIComponent(name), resolve })
+    queue.push({
+      name: decodeURIComponent(name),
+      resolve,
+    })
   })
 }
 
@@ -31,10 +40,14 @@ function release<T>(queue: PendingRequest<T>[], name: string, value: T) {
 // Only the entity APIs are mocked; mock.module is process wide, so anything the
 // other test files also import has to stay untouched.
 mock.module('../src/api/site', () => ({
-  default: { getItem: (name: string) => enqueue(pendingSites, name) },
+  default: {
+    getItem: (name: string) => enqueue(pendingSites, name),
+  },
 }))
 mock.module('../src/api/stream', () => ({
-  default: { getItem: (name: string) => enqueue(pendingStreams, name) },
+  default: {
+    getItem: (name: string) => enqueue(pendingStreams, name),
+  },
 }))
 
 const ngxConfigModule = await import('../src/components/NgxConfigEditor/store')
@@ -44,15 +57,38 @@ const { useSiteEditorStore } = await import('../src/views/site/site_edit/compone
 const { useStreamEditorStore } = await import('../src/views/stream/store')
 
 function tokenized(name: string): NgxConfig {
-  return { name, servers: [{ directives: [{ directive: 'server_name', params: name }], locations: [] }], upstreams: [] }
+  return {
+    name,
+    servers: [
+      {
+        directives: [
+          { directive: 'server_name', params: name },
+        ],
+        locations: [],
+      },
+    ],
+    upstreams: [],
+  }
 }
 
 function siteResponse(name: string, advanced = false): Site {
-  return { name, config: `# ${name}`, filepath: `/etc/nginx/sites-available/${name}`, advanced, tokenized: tokenized(name) } as Site
+  return {
+    name,
+    config: `# ${name}`,
+    filepath: `/etc/nginx/sites-available/${name}`,
+    advanced,
+    tokenized: tokenized(name),
+  } as Site
 }
 
 function streamResponse(name: string, advanced = false): Stream {
-  return { name, config: `# ${name}`, filepath: `/etc/nginx/streams-available/${name}`, advanced, tokenized: tokenized(name) } as Stream
+  return {
+    name,
+    config: `# ${name}`,
+    filepath: `/etc/nginx/streams-available/${name}`,
+    advanced,
+    tokenized: tokenized(name),
+  } as Stream
 }
 
 beforeEach(() => {

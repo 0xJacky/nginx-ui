@@ -8,7 +8,9 @@ import {
   sslStepTLSState,
 } from '@/views/site/site_add/wizardSteps'
 
-Object.assign(globalThis, { $gettext: (message: string) => message })
+Object.assign(globalThis, {
+  $gettext: (message: string) => message,
+})
 
 function httpServer(): NgxServer {
   return {
@@ -16,7 +18,9 @@ function httpServer(): NgxServer {
       { directive: 'listen', params: '80' },
       { directive: 'server_name', params: 'app.example.com' },
     ],
-    locations: [{ path: '/', content: 'proxy_pass http://127.0.0.1:3000;', comments: '' }],
+    locations: [
+      { path: '/', content: 'proxy_pass http://127.0.0.1:3000;', comments: '' },
+    ],
   }
 }
 
@@ -25,8 +29,18 @@ function tlsServer(certificate = ''): NgxServer {
     directives: [
       { directive: 'listen', params: '443 ssl' },
       { directive: 'server_name', params: 'app.example.com' },
-      { directive: 'ssl_certificate', params: certificate ? `${certificate}.cer` : '' },
-      { directive: 'ssl_certificate_key', params: certificate ? `${certificate}.key` : '' },
+      {
+        directive: 'ssl_certificate',
+        params: certificate
+          ? `${certificate}.cer`
+          : '',
+      },
+      {
+        directive: 'ssl_certificate_key',
+        params: certificate
+          ? `${certificate}.key`
+          : '',
+      },
     ],
     locations: [],
   }
@@ -54,21 +68,41 @@ describe('configuration editor panel', () => {
 
 describe('sslStepTLSState', () => {
   test('plain HTTP has no TLS server', () => {
-    expect(sslStepTLSState({ servers: [httpServer()] })).toBe('none')
+    expect(sslStepTLSState({
+      servers: [
+        httpServer(),
+      ],
+    })).toBe('none')
     expect(sslStepTLSState({ servers: [] })).toBe('none')
     expect(sslStepTLSState(undefined)).toBe('none')
   })
 
   test('a TLS server without certificate is pending', () => {
-    expect(sslStepTLSState({ servers: [httpServer(), tlsServer()] })).toBe('pending')
+    expect(sslStepTLSState({
+      servers: [
+        httpServer(),
+        tlsServer(),
+      ],
+    })).toBe('pending')
   })
 
   test('one pending TLS server outweighs a configured one', () => {
-    expect(sslStepTLSState({ servers: [httpServer(), tlsServer('/etc/ssl/app'), tlsServer()] })).toBe('pending')
+    expect(sslStepTLSState({
+      servers: [
+        httpServer(),
+        tlsServer('/etc/ssl/app'),
+        tlsServer(),
+      ],
+    })).toBe('pending')
   })
 
   test('TLS servers that all have a certificate are configured', () => {
-    expect(sslStepTLSState({ servers: [httpServer(), tlsServer('/etc/ssl/app')] })).toBe('configured')
+    expect(sslStepTLSState({
+      servers: [
+        httpServer(),
+        tlsServer('/etc/ssl/app'),
+      ],
+    })).toBe('configured')
   })
 })
 

@@ -14,7 +14,9 @@ const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
 
 function fontColor() {
-  return theme.value === 'dark' ? '#b4b4b4' : undefined
+  return theme.value === 'dark'
+    ? '#b4b4b4'
+    : undefined
 }
 
 const hourlyChartOptions = computed(() => {
@@ -25,7 +27,9 @@ const hourlyChartOptions = computed(() => {
   const allHourlyData = props.dashboardData.hourly_stats || []
 
   // Get the end date in local timezone
-  const endDateLocal = props.endDate ? new Date(`${props.endDate}T00:00:00`) : new Date()
+  const endDateLocal = props.endDate
+    ? new Date(`${props.endDate}T00:00:00`)
+    : new Date()
   const startOfDayTimestamp = Math.floor(endDateLocal.getTime() / 1000)
   const endOfDayTimestamp = startOfDayTimestamp + (24 * 60 * 60)
 
@@ -48,7 +52,12 @@ const hourlyChartOptions = computed(() => {
       finalHourlyData.push({ ...found, hour })
     }
     else {
-      finalHourlyData.push({ hour, uv: 0, pv: 0, timestamp: targetTimestamp })
+      finalHourlyData.push({
+        hour,
+        uv: 0,
+        pv: 0,
+        timestamp: targetTimestamp,
+      })
     }
   }
 
@@ -115,7 +124,9 @@ const hourlyChartOptions = computed(() => {
       opacity: 1,
     },
     tooltip: {
-      theme: theme.value === 'dark' ? 'dark' : 'light',
+      theme: theme.value === 'dark'
+        ? 'dark'
+        : 'light',
       y: {
         formatter(val: number) {
           return val.toLocaleString()
@@ -140,7 +151,9 @@ const hourlySeries = computed(() => {
   const allHourlyData = props.dashboardData.hourly_stats || []
 
   // Get the end date in local timezone
-  const endDateLocal = props.endDate ? new Date(`${props.endDate}T00:00:00`) : new Date()
+  const endDateLocal = props.endDate
+    ? new Date(`${props.endDate}T00:00:00`)
+    : new Date()
   const startOfDayTimestamp = Math.floor(endDateLocal.getTime() / 1000)
   const endOfDayTimestamp = startOfDayTimestamp + (24 * 60 * 60)
 
@@ -163,7 +176,12 @@ const hourlySeries = computed(() => {
       finalHourlyData.push({ ...found, hour })
     }
     else {
-      finalHourlyData.push({ hour, uv: 0, pv: 0, timestamp: targetTimestamp })
+      finalHourlyData.push({
+        hour,
+        uv: 0,
+        pv: 0,
+        timestamp: targetTimestamp,
+      })
     }
   }
 

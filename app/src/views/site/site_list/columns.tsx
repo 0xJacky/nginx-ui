@@ -17,190 +17,204 @@ import namespaceColumns from '@/views/namespace/columns'
 import SiteStatusSelect from '@/views/site/components/SiteStatusSelect.vue'
 import { managedIngressName } from '@/views/site/managedSite'
 
-const columns: StdTableColumn[] = [{
-  title: () => $gettext('Search'),
-  dataIndex: 'search',
-  search: {
-    type: 'input',
-    input: {
-      placeholder: $gettext('Name or content'),
-    },
-  },
-  width: 150,
-  hiddenInEdit: true,
-  hiddenInTable: true,
-  hiddenInDetail: true,
-}, {
-  title: () => $gettext('No.'),
-  dataIndex: 'index',
-  sorter: true,
-  pure: true,
-  width: 40,
-}, {
-  title: () => $gettext('Name'),
-  dataIndex: 'name',
-  sorter: true,
-  pure: true,
-  edit: {
-    type: 'input',
-  },
-  search: true,
-  width: 220,
-  customRender: ({ text, record }: CustomRenderArgs) => {
-    const template: JSXElements = []
-
-    // Add site name
-    template.push(
-      <div>{text}</div>,
-    )
-
-    const ingressName = managedIngressName(record.managed_by)
-    if (ingressName) {
-      template.push(
-        <div class="mt-1">
-          <RouterLink to={{ path: '/ingresses', query: { name: ingressName } }}>
-            <Tag color="purple" data-testid="site-managed-tag">
-              {$gettext('Ingress: %{name}', { name: ingressName })}
-            </Tag>
-          </RouterLink>
-        </div>,
-      )
-    }
-
-    if (record.description) {
-      template.push(
-        <div class="text-secondary mt-1">{record.description}</div>,
-      )
-    }
-
-    // Add URLs below the name
-    if (record.urls && record.urls.length > 0) {
-      const urlsContainer: JSXElements = []
-
-      if (record.status !== ConfigStatus.Disabled) {
-        record.urls.forEach((url: string) => {
-          const displayUrl = url.replace(/^https?:\/\//, '')
-          urlsContainer.push(
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              <Tag color="blue" variant="filled" style={{ marginRight: '8px', marginBottom: '4px' }}>
-                {displayUrl}
-              </Tag>
-            </a>,
-          )
-        })
-      }
-      else {
-        record.urls.forEach((url: string) => {
-          const displayUrl = url.replace(/^https?:\/\//, '')
-          urlsContainer.push(<Tag variant="filled" style={{ marginRight: '8px', marginBottom: '4px' }}>{displayUrl}</Tag>)
-        })
-      }
-
-      template.push(
-        <div style="display: flex; flex-wrap: wrap; margin: 4px 0;">{urlsContainer}</div>,
-      )
-    }
-
-    return h('div', {}, template)
-  },
-}, {
-  title: () => $gettext('Proxy Targets'),
-  dataIndex: 'proxy_targets',
-  width: 200,
-  customRender: ({ record }: CustomRenderArgs) => {
-    if (record.proxy_targets && record.proxy_targets.length > 0) {
-      return h(ProxyTargets, {
-        namespaceId: record.namespace_id,
-        targets: record.proxy_targets,
-      })
-    }
-    return h('span', '-')
-  },
-}, {
-  title: () => $gettext('Namespace'),
-  dataIndex: 'namespace_id',
-  customRender: ({ record }: CustomRenderArgs<Site>) => {
-    return h(NamespaceRender, {
-      namespace: record.namespace || null,
-    })
-  },
-  edit: {
-    type: 'selector',
-    selector: {
-      getListApi: namespace.getList,
-      columns: namespaceColumns,
-      valueKey: 'id',
-      displayKey: 'name',
-      selectionType: 'radio',
-    },
-  },
-  batchEdit: true,
-  sorter: true,
-  pure: true,
-  width: 100,
-}, {
-  title: () => $gettext('Updated at'),
-  dataIndex: 'modified_at',
-  customRender: datetimeRender,
-  sorter: true,
-  pure: true,
-  width: 120,
-}, {
-  title: () => $gettext('Access'),
-  dataIndex: 'access_mode',
-  customRender: ({ record }: CustomRenderArgs<Site>) => h(AccessSummaryTag, {
-    mode: record.access_mode,
-    slug: record.access_list,
-  }),
-  pure: true,
-  width: 80,
-}, {
-  title: () => $gettext('Status'),
-  dataIndex: 'status',
-  customRender: (args: CustomRenderArgs<Site>, source) => {
-    const { text, record } = args
-    // Read-only views (e.g. the batch edit preview) must not offer a switcher.
-    if (source === 'detail')
-      return h(ConfigStatusTag, { status: text as SiteStatus })
-
-    // A site generated from an ingress is changed from its editor, where the
-    // operator can explicitly choose to edit it anyway.
-    return h(SiteStatusSelect, {
-      status: text as SiteStatus,
-      siteName: record.name,
-      disabled: !!managedIngressName(record.managed_by),
-      onStatusChanged: ({ status }: { status: SiteStatus }) => {
-        record.status = status
+const columns: StdTableColumn[] = [
+  {
+    title: () => $gettext('Search'),
+    dataIndex: 'search',
+    search: {
+      type: 'input',
+      input: {
+        placeholder: $gettext('Name or content'),
       },
-    })
+    },
+    width: 150,
+    hiddenInEdit: true,
+    hiddenInTable: true,
+    hiddenInDetail: true,
   },
-  search: {
-    type: 'select',
-    select: {
-      options: [
-        {
-          label: $gettext('Enabled'),
-          value: ConfigStatus.Enabled,
-        },
-        {
-          label: $gettext('Disabled'),
-          value: ConfigStatus.Disabled,
-        },
-        {
-          label: $gettext('Maintenance'),
-          value: ConfigStatus.Maintenance,
-        },
-      ],
+  {
+    title: () => $gettext('No.'),
+    dataIndex: 'index',
+    sorter: true,
+    pure: true,
+    width: 40,
+  },
+  {
+    title: () => $gettext('Name'),
+    dataIndex: 'name',
+    sorter: true,
+    pure: true,
+    edit: {
+      type: 'input',
+    },
+    search: true,
+    width: 220,
+    customRender: ({ text, record }: CustomRenderArgs) => {
+      const template: JSXElements = []
+
+      // Add site name
+      template.push(
+        <div>{text}</div>,
+      )
+
+      const ingressName = managedIngressName(record.managed_by)
+      if (ingressName) {
+        template.push(
+          <div class="mt-1">
+            <RouterLink to={{
+              path: '/ingresses',
+              query: { name: ingressName },
+            }}
+            >
+              <Tag color="purple" data-testid="site-managed-tag">
+                {$gettext('Ingress: %{name}', { name: ingressName })}
+              </Tag>
+            </RouterLink>
+          </div>,
+        )
+      }
+
+      if (record.description) {
+        template.push(
+          <div class="text-secondary mt-1">{record.description}</div>,
+        )
+      }
+
+      // Add URLs below the name
+      if (record.urls && record.urls.length > 0) {
+        const urlsContainer: JSXElements = []
+
+        if (record.status !== ConfigStatus.Disabled) {
+          record.urls.forEach((url: string) => {
+            const displayUrl = url.replace(/^https?:\/\//, '')
+            urlsContainer.push(
+              <a href={url} target="_blank" rel="noopener noreferrer">
+                <Tag color="blue" variant="filled" style={{ marginRight: '8px', marginBottom: '4px' }}>
+                  {displayUrl}
+                </Tag>
+              </a>,
+            )
+          })
+        }
+        else {
+          record.urls.forEach((url: string) => {
+            const displayUrl = url.replace(/^https?:\/\//, '')
+            urlsContainer.push(<Tag variant="filled" style={{ marginRight: '8px', marginBottom: '4px' }}>{displayUrl}</Tag>)
+          })
+        }
+
+        template.push(
+          <div style="display: flex; flex-wrap: wrap; margin: 4px 0;">{urlsContainer}</div>,
+        )
+      }
+
+      return h('div', {}, template)
     },
   },
-  sorter: true,
-  pure: true,
-  width: 100,
-}, {
-  title: () => $gettext('Actions'),
-  dataIndex: 'actions',
-  width: 150,
-  fixed: 'right',
-}]
+  {
+    title: () => $gettext('Proxy Targets'),
+    dataIndex: 'proxy_targets',
+    width: 200,
+    customRender: ({ record }: CustomRenderArgs) => {
+      if (record.proxy_targets && record.proxy_targets.length > 0) {
+        return h(ProxyTargets, {
+          namespaceId: record.namespace_id,
+          targets: record.proxy_targets,
+        })
+      }
+      return h('span', '-')
+    },
+  },
+  {
+    title: () => $gettext('Namespace'),
+    dataIndex: 'namespace_id',
+    customRender: ({ record }: CustomRenderArgs<Site>) => {
+      return h(NamespaceRender, {
+        namespace: record.namespace || null,
+      })
+    },
+    edit: {
+      type: 'selector',
+      selector: {
+        getListApi: namespace.getList,
+        columns: namespaceColumns,
+        valueKey: 'id',
+        displayKey: 'name',
+        selectionType: 'radio',
+      },
+    },
+    batchEdit: true,
+    sorter: true,
+    pure: true,
+    width: 100,
+  },
+  {
+    title: () => $gettext('Updated at'),
+    dataIndex: 'modified_at',
+    customRender: datetimeRender,
+    sorter: true,
+    pure: true,
+    width: 120,
+  },
+  {
+    title: () => $gettext('Access'),
+    dataIndex: 'access_mode',
+    customRender: ({ record }: CustomRenderArgs<Site>) => h(AccessSummaryTag, {
+      mode: record.access_mode,
+      slug: record.access_list,
+    }),
+    pure: true,
+    width: 80,
+  },
+  {
+    title: () => $gettext('Status'),
+    dataIndex: 'status',
+    customRender: (args: CustomRenderArgs<Site>, source) => {
+      const { text, record } = args
+      // Read-only views (e.g. the batch edit preview) must not offer a switcher.
+      if (source === 'detail')
+        return h(ConfigStatusTag, { status: text as SiteStatus })
+
+      // A site generated from an ingress is changed from its editor, where the
+      // operator can explicitly choose to edit it anyway.
+      return h(SiteStatusSelect, {
+        status: text as SiteStatus,
+        siteName: record.name,
+        disabled: !!managedIngressName(record.managed_by),
+        onStatusChanged: ({ status }: { status: SiteStatus }) => {
+          record.status = status
+        },
+      })
+    },
+    search: {
+      type: 'select',
+      select: {
+        options: [
+          {
+            label: $gettext('Enabled'),
+            value: ConfigStatus.Enabled,
+          },
+          {
+            label: $gettext('Disabled'),
+            value: ConfigStatus.Disabled,
+          },
+          {
+            label: $gettext('Maintenance'),
+            value: ConfigStatus.Maintenance,
+          },
+        ],
+      },
+    },
+    sorter: true,
+    pure: true,
+    width: 100,
+  },
+  {
+    title: () => $gettext('Actions'),
+    dataIndex: 'actions',
+    width: 150,
+    fixed: 'right',
+  },
+]
 
 export default columns

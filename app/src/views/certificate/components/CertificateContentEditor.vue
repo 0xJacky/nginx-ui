@@ -224,7 +224,9 @@ function handleDrop(e: DragEvent, type: 'certificate' | 'key') {
     isDragOverKey.value = false
   }
 
-  const files = [...e.dataTransfer?.files || []]
+  const files = [
+    ...e.dataTransfer?.files || [],
+  ]
   if (files.length > 0) {
     const file = files[0]
     if (isZipFile(file)) {

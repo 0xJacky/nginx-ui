@@ -33,11 +33,18 @@ Object.assign(globalThis, {
   $gettext: (message: string) => message,
 })
 
-const useSettingsStore = defineStore('upgrade-settings', () => ({ node: ref({ id: 99 }) }))
-const useUserStore = defineStore('upgrade-user', () => ({ token: ref('browser-token'), shortToken: ref('') }))
+const useSettingsStore = defineStore('upgrade-settings', () => ({
+  node: ref({ id: 99 }),
+}))
+const useUserStore = defineStore('upgrade-user', () => ({
+  token: ref('browser-token'),
+  shortToken: ref(''),
+}))
 mock.module('../src/pinia', () => ({ useSettingsStore, useUserStore }))
 const authorize = mock(async () => 'secure-session/+?&=')
-mock.module('../src/components/TwoFA/use2FAModal', () => ({ default: () => ({ open: authorize }) }))
+mock.module('../src/components/TwoFA/use2FAModal', () => ({
+  default: () => ({ open: authorize }),
+}))
 
 interface RequestConfig {
   headers?: Record<string, number>
@@ -47,11 +54,19 @@ interface RequestConfig {
 }
 
 function version(instance = 'before') {
-  return { version: '2.9.0', short_hash: '12345678', build_id: 1, total_build: 1, instance_id: instance }
+  return {
+    version: '2.9.0',
+    short_hash: '12345678',
+    build_id: 1,
+    total_build: 1,
+    instance_id: instance,
+  }
 }
 
 const get = mock(async (_url: string, _config: RequestConfig) => version())
-mock.module('@uozi-admin/request', () => ({ http: { get } }))
+mock.module('@uozi-admin/request', () => ({
+  http: { get },
+}))
 
 // Exercise the real upgrade API, shared URL builder, VueUse connection and
 // composable. Only the browser transport, stores and 2FA UI are replaced.
@@ -95,11 +110,17 @@ async function start(h: ReturnType<typeof setup>) {
   expect(socket).toBeDefined()
   socket.readyState = Socket.OPEN
   socket.onopen?.()
-  return { result, socket, url: new URL(socket.url) }
+  return {
+    result,
+    socket,
+    url: new URL(socket.url),
+  }
 }
 
 function finishDryRun(socket: Socket) {
-  socket.onmessage?.({ data: JSON.stringify({ status: 'info', message: 'Performing core upgrade' }) })
+  socket.onmessage?.({
+    data: JSON.stringify({ status: 'info', message: 'Performing core upgrade' }),
+  })
   socket.close()
 }
 
@@ -124,7 +145,11 @@ describe('upgrade client integration', () => {
     expect(useSettingsStore().node.id).toBe(99)
     expect(url.searchParams.get('x_node_id')).toBe('7')
     expect(get.mock.calls[0][0]).toBe('/upgrade/current')
-    expect(get.mock.calls[0][1]).toMatchObject({ skipNodeProxy: true, headers: { 'X-Node-ID': 7 }, timeout: 5000 })
+    expect(get.mock.calls[0][1]).toMatchObject({
+      skipNodeProxy: true,
+      headers: { 'X-Node-ID': 7 },
+      timeout: 5000,
+    })
     finishDryRun(socket)
     await result
   })
@@ -225,13 +250,19 @@ describe('upgrade client integration', () => {
     h.options.control.dry_run = false
     const { result, socket } = await start(h)
     useSettingsStore().node.id = 42
-    get.mockImplementation(async () => ({ ...version('after'), version: '2.9.1' }))
+    get.mockImplementation(async () => ({
+      ...version('after'),
+      version: '2.9.1',
+    }))
     finishDryRun(socket)
     await result
     expect(get).toHaveBeenCalledTimes(2)
     for (const [url, config] of get.mock.calls) {
       expect(url).toBe('/upgrade/current')
-      expect(config).toMatchObject({ headers: { 'X-Node-ID': 7 }, skipNodeProxy: true })
+      expect(config).toMatchObject({
+        headers: { 'X-Node-ID': 7 },
+        skipNodeProxy: true,
+      })
     }
     expect(h.progress.at(-1)).toBe(100)
     expect(sockets).toHaveLength(1)

@@ -23,11 +23,15 @@ export function isChallengeMethod(method: HTTPSCardMethod): method is HTTPSChall
 
 export function buildHTTPSRequest(form: HTTPSRequestForm): HTTPSRequest {
   const o = form.options
-  const challengeMethod: HTTPSChallengeMethod = form.method === 'dns01' ? 'dns01' : 'http01'
+  const challengeMethod: HTTPSChallengeMethod = form.method === 'dns01'
+    ? 'dns01'
+    : 'http01'
   const request: HTTPSRequest = {
     domains: [...form.domains],
     challenge_method: challengeMethod,
-    dns_credential_id: challengeMethod === 'dns01' ? (o.dns_credential_id ?? 0) : 0,
+    dns_credential_id: challengeMethod === 'dns01'
+      ? (o.dns_credential_id ?? 0)
+      : 0,
     redirect_http_to_https: form.redirectHTTPToHTTPS,
     key_type: o.key_type || PrivateKeyTypeEnum.P256,
     acme_user_id: o.acme_user_id ?? 0,

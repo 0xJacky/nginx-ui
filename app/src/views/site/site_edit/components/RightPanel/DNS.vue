@@ -65,7 +65,9 @@ const domainOptions = computed<SelectProps['options']>(() => availableDomains.va
 const selectedDomainValue = computed({
   get: () => selectedDomainId.value ?? undefined,
   set: val => {
-    selectedDomainId.value = typeof val === 'number' ? val : null
+    selectedDomainId.value = typeof val === 'number'
+      ? val
+      : null
   },
 })
 
@@ -90,23 +92,33 @@ const selectableRecords = computed(() => {
 })
 
 const recordOptions = computed<SelectProps['options']>(() => selectableRecords.value.map(record => {
-  const proxiedLabel = record.proxied ? $gettext('Proxied') : ''
+  const proxiedLabel = record.proxied
+    ? $gettext('Proxied')
+    : ''
 
   return {
     key: record.id,
     value: record.id,
     label: h(Fragment, null, [
       h(Tag, {
-        color: record.type === 'A' ? 'blue' : record.type === 'AAAA' ? 'green' : 'orange',
+        color: record.type === 'A'
+          ? 'blue'
+          : record.type === 'AAAA'
+            ? 'green'
+            : 'orange',
         class: 'mr-2',
-      }, { default: () => record.type }),
+      }, {
+        default: () => record.type,
+      }),
       record.name === '@'
         ? availableDomains.value.find(domain => domain.id === selectedDomainId.value)?.domain
         : record.name,
       ' → ',
       record.content,
       record.proxied
-        ? h(Tag, { color: 'orange', class: 'ml-2' }, { default: () => proxiedLabel })
+        ? h(Tag, { color: 'orange', class: 'ml-2' }, {
+            default: () => proxiedLabel,
+          })
         : null,
     ]),
   }
@@ -251,12 +263,14 @@ function getStoredDNSRecords(): SiteDNSRecord[] {
   if (!data.value.dns_record_id) {
     return []
   }
-  return [{
-    id: data.value.dns_record_id,
-    name: data.value.dns_record_name || '',
-    type: data.value.dns_record_type || 'A',
-    exists: data.value.dns_record_exists !== false,
-  }]
+  return [
+    {
+      id: data.value.dns_record_id,
+      name: data.value.dns_record_name || '',
+      type: data.value.dns_record_type || 'A',
+      exists: data.value.dns_record_exists !== false,
+    },
+  ]
 }
 
 function toLinkedRecord(storedRecord: SiteDNSRecord, domain: DNSDomain): LinkedDNSRecord {
@@ -366,7 +380,9 @@ async function autoMatchDomain() {
 
 // Handle domain selection change
 async function onDomainChange(value: unknown) {
-  const domainId = typeof value === 'number' ? value : null
+  const domainId = typeof value === 'number'
+    ? value
+    : null
   clearDNSLinks()
   createNewRecord.value = false
   if (domainId) {
@@ -391,14 +407,16 @@ function onRecordSelect(value: unknown) {
         if (!record)
           return []
         const previousRecord = linkedRecords.value.find(item => item.record.id === recordId)
-        return [{
-          record,
-          domain,
-          exists: availableRecords.value.some(item => item.id === recordId),
-          recreateContent: previousRecord?.recreateContent || '',
-          recreateTTL: previousRecord?.recreateTTL || 600,
-          recreateProxied: previousRecord?.recreateProxied || false,
-        } satisfies LinkedDNSRecord]
+        return [
+{
+  record,
+  domain,
+  exists: availableRecords.value.some(item => item.id === recordId),
+  recreateContent: previousRecord?.recreateContent || '',
+  recreateTTL: previousRecord?.recreateTTL || 600,
+  recreateProxied: previousRecord?.recreateProxied || false,
+} satisfies LinkedDNSRecord,
+        ]
       })
       applyLinkedRecords(records, domain, true)
       const dnsNames = records.map(({ record }) => getFullDNSName(record, domain)).join(', ')

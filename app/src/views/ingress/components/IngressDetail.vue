@@ -37,28 +37,76 @@ const labels = computed(() => Object.entries(props.ingress?.labels ?? {}))
 const applyError = computed(() => props.ingress?.status?.conditions
   ?.find(condition => condition.type === 'ConfigApplied' && !condition.status))
 
-const cert = computed(() => props.ingress ? certExpiry(props.ingress) : undefined)
+const cert = computed(() => props.ingress
+  ? certExpiry(props.ingress)
+  : undefined)
 
 const serverColumns: TableColumnsType<IngressServer> = [
-  { title: () => $gettext('Address'), key: 'address' },
-  { title: () => $gettext('Health'), key: 'health', width: 120 },
-  { title: () => $gettext('Weight'), key: 'weight', width: 80 },
-  { title: () => $gettext('Max Fails'), key: 'max_fails', width: 90 },
-  { title: () => $gettext('Fail Timeout'), key: 'fail_timeout', width: 110 },
+  {
+    title: () => $gettext('Address'),
+    key: 'address',
+  },
+  {
+    title: () => $gettext('Health'),
+    key: 'health',
+    width: 120,
+  },
+  {
+    title: () => $gettext('Weight'),
+    key: 'weight',
+    width: 80,
+  },
+  {
+    title: () => $gettext('Max Fails'),
+    key: 'max_fails',
+    width: 90,
+  },
+  {
+    title: () => $gettext('Fail Timeout'),
+    key: 'fail_timeout',
+    width: 110,
+  },
 ]
 
 const routeColumns: TableColumnsType<IngressRoute> = [
-  { title: () => $gettext('Path Prefix'), key: 'path_prefix' },
-  { title: () => $gettext('Backend'), key: 'backend' },
-  { title: () => $gettext('Options'), key: 'options' },
-  { title: () => $gettext('Allowed Sources'), key: 'allow_cidrs' },
+  {
+    title: () => $gettext('Path Prefix'),
+    key: 'path_prefix',
+  },
+  {
+    title: () => $gettext('Backend'),
+    key: 'backend',
+  },
+  {
+    title: () => $gettext('Options'),
+    key: 'options',
+  },
+  {
+    title: () => $gettext('Allowed Sources'),
+    key: 'allow_cidrs',
+  },
 ]
 
 const conditionColumns: TableColumnsType<IngressCondition> = [
-  { title: () => $gettext('Type'), key: 'type', width: 130 },
-  { title: () => $gettext('Status'), key: 'status', width: 140 },
-  { title: () => $gettext('Message'), key: 'message' },
-  { title: () => $gettext('Last Transition'), key: 'last_transition_time', width: 140 },
+  {
+    title: () => $gettext('Type'),
+    key: 'type',
+    width: 130,
+  },
+  {
+    title: () => $gettext('Status'),
+    key: 'status',
+    width: 140,
+  },
+  {
+    title: () => $gettext('Message'),
+    key: 'message',
+  },
+  {
+    title: () => $gettext('Last Transition'),
+    key: 'last_transition_time',
+    width: 140,
+  },
 ]
 
 function health(backend: IngressBackend, server: IngressServer) {
@@ -68,14 +116,28 @@ function health(backend: IngressBackend, server: IngressServer) {
 }
 
 function healthBadge(backend: IngressBackend, server: IngressServer): { status: 'success' | 'error' | 'default', text: string } {
-  if (server.down)
-    return { status: 'default', text: $gettext('Drained') }
+  if (server.down) {
+    return {
+      status: 'default',
+      text: $gettext('Drained'),
+    }
+  }
   const status = health(backend, server)
-  if (!status?.checked)
-    return { status: 'default', text: $gettext('No Data') }
+  if (!status?.checked) {
+    return {
+      status: 'default',
+      text: $gettext('No Data'),
+    }
+  }
   return status.healthy
-    ? { status: 'success', text: $gettext('Healthy') }
-    : { status: 'error', text: $gettext('Unhealthy') }
+    ? {
+        status: 'success',
+        text: $gettext('Healthy'),
+      }
+    : {
+        status: 'error',
+        text: $gettext('Unhealthy'),
+      }
 }
 
 // The generated site file is loaded on demand from the regular site API.

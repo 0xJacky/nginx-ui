@@ -28,7 +28,10 @@ async function load() {
     content.value = source.value.content ?? ''
   }
   catch {
-    router.replace({ path: '/sites/snippets', query: { tab: 'builtin' } })
+    router.replace({
+      path: '/sites/snippets',
+      query: { tab: 'builtin' },
+    })
   }
   finally {
     isLoading.value = false
@@ -38,7 +41,10 @@ async function load() {
 watch(name, load, { immediate: true })
 
 function copyAsSnippet() {
-  router.push({ path: '/sites/snippets/add', query: { from: name.value } })
+  router.push({
+    path: '/sites/snippets/add',
+    query: { from: name.value },
+  })
 }
 </script>
 

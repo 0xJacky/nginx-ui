@@ -15,8 +15,12 @@ export function listOptions(lists: AccessList[], currentSlug?: string): AccessOp
   const options = lists.map(l => ({ label: l.name, value: l.slug }))
   // A file can include a list that no longer exists or was created on another
   // node; keep it selectable so the select does not show a raw value.
-  if (currentSlug && !lists.some(l => l.slug === currentSlug))
-    options.push({ label: $gettext('%{slug} (missing)', { slug: currentSlug }), value: currentSlug })
+  if (currentSlug && !lists.some(l => l.slug === currentSlug)) {
+    options.push({
+      label: $gettext('%{slug} (missing)', { slug: currentSlug }),
+      value: currentSlug,
+    })
+  }
   return options
 }
 
@@ -29,7 +33,9 @@ export function sharedServerAccessValue(servers: Pick<AccessServerState, 'mode' 
   const values = new Set(servers.map(s => {
     if (s.mode === 'list')
       return s.slug
-    return s.mode === 'manual' ? undefined : PublicValue
+    return s.mode === 'manual'
+      ? undefined
+      : PublicValue
   }))
   if (values.size !== 1)
     return undefined

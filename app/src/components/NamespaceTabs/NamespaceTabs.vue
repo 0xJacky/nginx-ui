@@ -10,9 +10,13 @@ defineProps<{
 
 const modelValue = defineModel<string | number>('activeKey')
 const tabsActiveKey = computed({
-  get: () => modelValue.value === undefined ? undefined : String(modelValue.value),
+  get: () => modelValue.value === undefined
+    ? undefined
+    : String(modelValue.value),
   set: value => {
-    modelValue.value = value === undefined ? undefined : Number(value)
+    modelValue.value = value === undefined
+      ? undefined
+      : Number(value)
   },
 })
 const nodeStore = useNodeAvailabilityStore()

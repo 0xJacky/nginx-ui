@@ -62,7 +62,9 @@ async function toggleShow() {
 }
 
 async function copyValue() {
-  const value = show.value ? model.value : await ensureRevealedValue()
+  const value = show.value
+    ? model.value
+    : await ensureRevealedValue()
   try {
     await copyText(value)
     message.success($gettext('Copied'))

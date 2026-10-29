@@ -12,7 +12,9 @@ const props = defineProps<{
 
 const { message } = App.useApp()
 
-const modelValue = defineModel<Record<string, string>>({ default: () => ({}) })
+const modelValue = defineModel<Record<string, string>>({
+  default: () => ({}),
+})
 const multilineConfigKeys = new Set(['html_template', 'message_body'])
 const sensitiveConfigKeysByType: Record<string, Set<string>> = {
   email: new Set(['password']),
@@ -153,7 +155,9 @@ const messageBodyJsonError = computed<JsonValidationError | undefined>(() => {
     return undefined
   }
   catch (error) {
-    const reason = error instanceof Error ? error.message : String(error)
+    const reason = error instanceof Error
+      ? error.message
+      : String(error)
     const position = parseJsonPositionError(reason)
 
     if (position === undefined) {
@@ -179,7 +183,10 @@ const sanitizedConfig = computed<Record<string, string>>(() => {
   )
 })
 
-watch([() => props.type, allowedConfigKeys], () => {
+watch([
+  () => props.type,
+  allowedConfigKeys,
+], () => {
   if (!currentConfig.value)
     return
 

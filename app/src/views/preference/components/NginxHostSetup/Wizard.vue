@@ -33,11 +33,26 @@ const stepComponents: Record<typeof wizard.currentStepId.value, Component> = {
 const activeStepComponent = computed(() => stepComponents[wizard.currentStepId.value])
 
 const steps = computed(() => [
-  { title: $gettext('SSH Target'), content: $gettext('Address, user and private key') },
-  { title: $gettext('Trust & Test'), content: $gettext('Host key and connectivity') },
-  { title: $gettext('Detect Platform'), content: $gettext('Service manager and nginx paths') },
-  { title: $gettext('Access & Install'), content: $gettext('File mode and setup instructions') },
-  { title: $gettext('Verify'), content: $gettext('Run checks and save') },
+  {
+    title: $gettext('SSH Target'),
+    content: $gettext('Address, user and private key'),
+  },
+  {
+    title: $gettext('Trust & Test'),
+    content: $gettext('Host key and connectivity'),
+  },
+  {
+    title: $gettext('Detect Platform'),
+    content: $gettext('Service manager and nginx paths'),
+  },
+  {
+    title: $gettext('Access & Install'),
+    content: $gettext('File mode and setup instructions'),
+  },
+  {
+    title: $gettext('Verify'),
+    content: $gettext('Run checks and save'),
+  },
 ].map((step, index) => ({
   ...step,
   disabled: index > wizard.furthestReachableIndex.value && index > wizard.currentStepIndex.value,

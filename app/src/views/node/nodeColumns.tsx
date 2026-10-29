@@ -68,7 +68,9 @@ function renderConnectionError(record: Node) {
     content: renderConnectionErrorContent(record),
     placement: 'rightTop',
     title: h('div', { class: 'flex items-center gap-2' }, [
-      h(ExclamationCircleOutlined, { class: isClockSkew ? 'text-orange-500' : 'text-red-500' }),
+      h(ExclamationCircleOutlined, {
+        class: isClockSkew ? 'text-orange-500' : 'text-red-500',
+      }),
       h('span', title),
     ]),
     trigger: ['hover', 'focus', 'click'],
@@ -79,123 +81,133 @@ function renderConnectionError(record: Node) {
   }, h(InfoCircleOutlined)))
 }
 
-const columns: StdTableColumn[] = [{
-  title: () => $gettext('Name'),
-  dataIndex: 'name',
-  sorter: true,
-  pure: true,
-  edit: {
-    type: 'input',
-  },
-  search: true,
-  width: 200,
-}, {
-  title: () => $gettext('URL'),
-  dataIndex: 'url',
-  sorter: true,
-  pure: true,
-  edit: {
-    type: 'input',
-    input: {
-      placeholder: 'https://10.0.0.1:9000',
+const columns: StdTableColumn[] = [
+  {
+    title: () => $gettext('Name'),
+    dataIndex: 'name',
+    sorter: true,
+    pure: true,
+    edit: {
+      type: 'input',
     },
+    search: true,
+    width: 200,
   },
-  width: 260,
-}, {
+  {
+    title: () => $gettext('URL'),
+    dataIndex: 'url',
+    sorter: true,
+    pure: true,
+    edit: {
+      type: 'input',
+      input: {
+        placeholder: 'https://10.0.0.1:9000',
+      },
+    },
+    width: 260,
+  },
+  {
   // The node secret is what a relationship starts from: the controller signs
   // its requests with it, then swaps itself onto a dedicated key pair in the
   // background. Copy it from the target node's Node Settings page.
-  title: () => $gettext('Node Secret'),
-  dataIndex: 'legacy_secret',
-  edit: {
+    title: () => $gettext('Node Secret'),
+    dataIndex: 'legacy_secret',
+    edit: {
     // An existing node stores a secret worth reading back, so it gets the
     // reveal-after-2FA input. A node being added has nothing to reveal yet.
-    type: (context: { formData: Node }) => {
-      if (context.formData.legacy_secret === undefined)
-        context.formData.legacy_secret = ''
+      type: (context: { formData: Node }) => {
+        if (context.formData.legacy_secret === undefined)
+          context.formData.legacy_secret = ''
 
-      return context.formData.id
-        ? (
-            <SensitiveInput
-              v-model={context.formData.legacy_secret}
-              placeholder={$gettext('Leave blank for no change')}
-              resolve={() => nodeApi.getSecret(context.formData.id).then(({ value }) => value)}
-            />
-          )
-        : <InputPassword v-model:value={context.formData.legacy_secret} />
+        return context.formData.id
+          ? (
+              <SensitiveInput
+                v-model={context.formData.legacy_secret}
+                placeholder={$gettext('Leave blank for no change')}
+                resolve={() => nodeApi.getSecret(context.formData.id).then(({ value }) => value)}
+              />
+            )
+          : <InputPassword v-model:value={context.formData.legacy_secret} />
+      },
     },
+    hiddenInTable: true,
+    hiddenInDetail: true,
   },
-  hiddenInTable: true,
-  hiddenInDetail: true,
-}, {
-  title: () => $gettext('Version'),
-  dataIndex: 'version',
-  pure: true,
-  width: 120,
-}, {
-  title: () => $gettext('Authentication'),
-  dataIndex: 'auth_method',
-  customRender: ({ record }: CustomRenderArgs) => <NodeAuthStatus node={record as Node} />,
-  pure: true,
-  width: 160,
-}, {
-  title: () => $gettext('Status'),
-  dataIndex: 'status',
-  customRender: (args: CustomRenderArgs) => {
-    const template: JSX.Element[] = []
-    const { text } = args
-    if (args.record.enabled) {
+  {
+    title: () => $gettext('Version'),
+    dataIndex: 'version',
+    pure: true,
+    width: 120,
+  },
+  {
+    title: () => $gettext('Authentication'),
+    dataIndex: 'auth_method',
+    customRender: ({ record }: CustomRenderArgs) => <NodeAuthStatus node={record as Node} />,
+    pure: true,
+    width: 160,
+  },
+  {
+    title: () => $gettext('Status'),
+    dataIndex: 'status',
+    customRender: (args: CustomRenderArgs) => {
+      const template: JSX.Element[] = []
+      const { text } = args
+      if (args.record.enabled) {
+        if (text === true || text > 0)
+          template.push(<Tag color="green">{$gettext('Online')}</Tag>)
+        else
+          template.push(<Tag color="red">{$gettext('Offline')}</Tag>)
+      }
+      else {
+        template.push(<Tag color="orange">{$gettext('Disabled')}</Tag>)
+      }
+
+      if (args.record.connection_error)
+        template.push(renderConnectionError(args.record as Node))
+
+      return h('div', { class: 'flex items-center gap-1' }, template)
+    },
+    sorter: true,
+    pure: true,
+    // The label now carries Badge's own 8px gap, so the longest state
+    // ("Disabled" plus the connection-error icon) needs more than 120px.
+    width: 140,
+  },
+  {
+    title: () => $gettext('Enabled'),
+    dataIndex: 'enabled',
+    customRender: (args: CustomRenderArgs) => {
+      const template: JSX.Element[] = []
+      const { text } = args
       if (text === true || text > 0)
-        template.push(<Tag color="green">{$gettext('Online')}</Tag>)
+        template.push(<Tag color="green">{$gettext('Enabled')}</Tag>)
+
       else
-        template.push(<Tag color="red">{$gettext('Offline')}</Tag>)
-    }
-    else {
-      template.push(<Tag color="orange">{$gettext('Disabled')}</Tag>)
-    }
+        template.push(<Tag color="orange">{$gettext('Disabled')}</Tag>)
 
-    if (args.record.connection_error)
-      template.push(renderConnectionError(args.record as Node))
-
-    return h('div', { class: 'flex items-center gap-1' }, template)
+      return h('div', template)
+    },
+    edit: {
+      type: 'switch',
+    },
+    sorter: true,
+    pure: true,
+    width: 120,
   },
-  sorter: true,
-  pure: true,
-  // The label now carries Badge's own 8px gap, so the longest state
-  // ("Disabled" plus the connection-error icon) needs more than 120px.
-  width: 140,
-}, {
-  title: () => $gettext('Enabled'),
-  dataIndex: 'enabled',
-  customRender: (args: CustomRenderArgs) => {
-    const template: JSX.Element[] = []
-    const { text } = args
-    if (text === true || text > 0)
-      template.push(<Tag color="green">{$gettext('Enabled')}</Tag>)
-
-    else
-      template.push(<Tag color="orange">{$gettext('Disabled')}</Tag>)
-
-    return h('div', template)
+  {
+    title: () => $gettext('Updated at'),
+    dataIndex: 'updated_at',
+    customRender: datetimeRender,
+    sorter: true,
+    pure: true,
+    width: 150,
   },
-  edit: {
-    type: 'switch',
+  {
+    title: () => $gettext('Actions'),
+    dataIndex: 'actions',
+    fixed: 'right',
+    width: 200,
   },
-  sorter: true,
-  pure: true,
-  width: 120,
-}, {
-  title: () => $gettext('Updated at'),
-  dataIndex: 'updated_at',
-  customRender: datetimeRender,
-  sorter: true,
-  pure: true,
-  width: 150,
-}, {
-  title: () => $gettext('Actions'),
-  dataIndex: 'actions',
-  fixed: 'right',
-  width: 200,
-}]
+]
 
 export default columns

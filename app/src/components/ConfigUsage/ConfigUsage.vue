@@ -23,7 +23,9 @@ const filterText = ref('')
 
 const filtered = computed(() => {
   const text = filterText.value.trim().toLowerCase()
-  return text ? props.usages.filter(u => u.label.toLowerCase().includes(text)) : props.usages
+  return text
+    ? props.usages.filter(u => u.label.toLowerCase().includes(text))
+    : props.usages
 })
 
 watch(isOpen, open => {
@@ -46,7 +48,9 @@ function isInactive(usage: ConfigUsageItem) {
 
 function detailLabel(usage: ConfigUsageItem) {
   const kind = kindLabel(usage.kind)
-  return isInactive(usage) ? `${kind} · ${configStatusLabel(usage.status!)}` : kind
+  return isInactive(usage)
+    ? `${kind} · ${configStatusLabel(usage.status!)}`
+    : kind
 }
 
 function go(to: string) {

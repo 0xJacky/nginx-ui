@@ -45,7 +45,10 @@ const localName = computed(() => server_name.value || $gettext('Local'))
 const showSearch = computed(() => nodes.value.length > SEARCH_THRESHOLD)
 
 const options = computed(() => sortSwitchNodes(filterSwitchNodes(nodes.value, keyword.value))
-  .map(item => ({ node: item, blocker: getNodeSwitchBlocker(item, version) })))
+  .map(item => ({
+    node: item,
+    blocker: getNodeSwitchBlocker(item, version),
+  })))
 
 function blockerLabel(blocker: NodeSwitchBlocker, item: AnalyticNode) {
   switch (blocker) {
@@ -112,7 +115,13 @@ async function pickLocal() {
 /** Opens the workspace with the current node on the left and `targetId` on the right. */
 function openSplit(targetId: number) {
   open.value = false
-  router.push({ path: '/workspace', query: { l: String(node.value.id), r: String(targetId) } })
+  router.push({
+    path: '/workspace',
+    query: {
+      l: String(node.value.id),
+      r: String(targetId),
+    },
+  })
 }
 
 function pickFirstMatch() {

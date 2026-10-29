@@ -6,7 +6,11 @@ test.each(['upgradeClient', 'upgradeComponents'])('%s integration', async name =
   // Bun module mocks are process-wide. Isolate the transport fixture so it
   // cannot replace the user/settings stores used by other unit test files.
   const fixture = fileURLToPath(new URL(`../test-fixtures/${name}.test.ts`, import.meta.url))
-  const process = spawn([which('bun')!, 'test', fixture], {
+  const process = spawn([
+    which('bun')!,
+    'test',
+    fixture,
+  ], {
     stdout: 'pipe',
     stderr: 'pipe',
   })

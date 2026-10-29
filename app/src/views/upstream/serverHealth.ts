@@ -31,5 +31,8 @@ export function serverHealth(
   const result = socket ? results[socket] : undefined
   if (!result)
     return { state: 'unknown' }
-  return { state: result.online ? 'online' : 'offline', result }
+  return {
+    state: result.online ? 'online' : 'offline',
+    result,
+  }
 }

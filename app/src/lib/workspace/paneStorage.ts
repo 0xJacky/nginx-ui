@@ -23,7 +23,9 @@ export function paneWindowName(tabId: number): string {
 /** The tab id a pane window name belongs to, or null for any other window. */
 export function tabIdFromWindowName(name: string | null | undefined): number | null {
   const match = PANE_NAME_PATTERN.exec(name ?? '')
-  return match ? Number(match[1]) : null
+  return match
+    ? Number(match[1])
+    : null
 }
 
 export function paneSettingsKey(tabId: number): string {
@@ -43,7 +45,10 @@ export function writePaneNode(storage: KeyValueStorage, tabId: number, node: Wor
     // A corrupt entry is replaced.
   }
 
-  storage.setItem(key, JSON.stringify({ ...saved, node: { id: node.id, name: node.name } }))
+  storage.setItem(key, JSON.stringify({
+    ...saved,
+    node: { id: node.id, name: node.name },
+  }))
 }
 
 export function removePaneSettings(storage: KeyValueStorage, tabId: number) {

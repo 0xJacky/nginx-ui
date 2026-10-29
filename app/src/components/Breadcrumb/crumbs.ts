@@ -24,7 +24,10 @@ export function collapseCrumbs(breads: Bread[], maxVisible = 4): CrumbEntry[] {
 
   return [
     ...items(breads.slice(0, 1)),
-    { type: 'collapsed', breads: breads.slice(1, breads.length - tailLength) },
+    {
+      type: 'collapsed',
+      breads: breads.slice(1, breads.length - tailLength),
+    },
     ...items(breads.slice(-tailLength)),
   ]
 }

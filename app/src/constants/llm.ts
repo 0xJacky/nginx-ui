@@ -51,10 +51,22 @@ const MINIMAX_MODELS: LLMModelPreset[] = [
       cacheRead: 0.06,
     },
     pricingTiers: [
-      { label: 'Standard, input ≤512k', pricing: { input: 0.3, output: 1.2, cacheRead: 0.06 } },
-      { label: 'Standard, input >512k', pricing: { input: 0.6, output: 2.4, cacheRead: 0.12 } },
-      { label: 'Priority, input ≤512k', pricing: { input: 0.45, output: 1.8, cacheRead: 0.09 } },
-      { label: 'Priority, input >512k', pricing: { input: 0.9, output: 3.6, cacheRead: 0.18 } },
+      {
+        label: 'Standard, input ≤512k',
+        pricing: { input: 0.3, output: 1.2, cacheRead: 0.06 },
+      },
+      {
+        label: 'Standard, input >512k',
+        pricing: { input: 0.6, output: 2.4, cacheRead: 0.12 },
+      },
+      {
+        label: 'Priority, input ≤512k',
+        pricing: { input: 0.45, output: 1.8, cacheRead: 0.09 },
+      },
+      {
+        label: 'Priority, input >512k',
+        pricing: { input: 0.9, output: 3.6, cacheRead: 0.18 },
+      },
     ],
     inputModalities: ['text', 'image', 'video'],
     thinkingModes: ['adaptive', 'disabled'],
@@ -97,13 +109,15 @@ export const LLM_PROVIDERS: LLMProviderPreset[] = [
   },
 ]
 
-export const LLM_PROVIDER_BASE_URLS = [...new Set([
-  'https://api.openai.com',
-  'https://api.atlascloud.ai/v1',
-  ...LLM_PROVIDERS.flatMap(provider => provider.endpoints?.map(endpoint => endpoint.openaiBaseUrl) ?? []),
-  'https://api.deepseek.com',
-  'http://localhost:11434',
-])]
+export const LLM_PROVIDER_BASE_URLS = [
+  ...new Set([
+    'https://api.openai.com',
+    'https://api.atlascloud.ai/v1',
+    ...LLM_PROVIDERS.flatMap(provider => provider.endpoints?.map(endpoint => endpoint.openaiBaseUrl) ?? []),
+    'https://api.deepseek.com',
+    'http://localhost:11434',
+  ]),
+]
 
 export type LLMThinkingLevel = 'off' | 'low' | 'medium' | 'high'
 
@@ -163,15 +177,22 @@ export const LLM_THINKING_PRESETS: LLMThinkingPreset[] = [
   {
     value: 'minimax_flash',
     label: () => 'MiniMax M3.1 Flash (reasoning_effort)',
-    params: effortLevels(level => ({ thinking: { type: 'adaptive' }, reasoning_effort: level })),
+    params: effortLevels(level => ({
+      thinking: { type: 'adaptive' },
+      reasoning_effort: level,
+    })),
     match: /^MiniMax-M3\.1-Flash$/i,
   },
   {
     value: 'minimax_m3',
     label: () => 'MiniMax M3 (thinking.type)',
     params: {
-      off: { thinking: { type: 'disabled' } },
-      high: { thinking: { type: 'adaptive' } },
+      off: {
+        thinking: { type: 'disabled' },
+      },
+      high: {
+        thinking: { type: 'adaptive' },
+      },
     },
     match: /^MiniMax-M3$/i,
   },
@@ -179,8 +200,13 @@ export const LLM_THINKING_PRESETS: LLMThinkingPreset[] = [
     value: 'thinking_type',
     label: () => 'DeepSeek / Volcengine Ark (thinking.type)',
     params: {
-      off: { thinking: { type: 'disabled' } },
-      ...effortLevels(level => ({ thinking: { type: 'enabled' }, reasoning_effort: level })),
+      off: {
+        thinking: { type: 'disabled' },
+      },
+      ...effortLevels(level => ({
+        thinking: { type: 'enabled' },
+        reasoning_effort: level,
+      })),
     },
     match: /deepseek|doubao/i,
   },
@@ -199,18 +225,30 @@ export const LLM_THINKING_PRESETS: LLMThinkingPreset[] = [
     value: 'openrouter',
     label: () => 'OpenRouter (reasoning.effort)',
     params: {
-      off: { reasoning: { enabled: false } },
-      ...effortLevels(level => ({ reasoning: { effort: level } })),
+      off: {
+        reasoning: { enabled: false },
+      },
+      ...effortLevels(level => ({
+        reasoning: { effort: level },
+      })),
     },
   },
   {
     value: 'anthropic',
     label: () => 'Claude (thinking.budget_tokens)',
     params: {
-      off: { thinking: { type: 'disabled' } },
-      low: { thinking: { type: 'enabled', budget_tokens: 2048 } },
-      medium: { thinking: { type: 'enabled', budget_tokens: 8192 } },
-      high: { thinking: { type: 'enabled', budget_tokens: 24576 } },
+      off: {
+        thinking: { type: 'disabled' },
+      },
+      low: {
+        thinking: { type: 'enabled', budget_tokens: 2048 },
+      },
+      medium: {
+        thinking: { type: 'enabled', budget_tokens: 8192 },
+      },
+      high: {
+        thinking: { type: 'enabled', budget_tokens: 24576 },
+      },
     },
     match: /claude/i,
   },
@@ -218,8 +256,12 @@ export const LLM_THINKING_PRESETS: LLMThinkingPreset[] = [
     value: 'chat_template',
     label: () => 'vLLM / SGLang (chat_template_kwargs)',
     params: {
-      off: { chat_template_kwargs: { enable_thinking: false } },
-      high: { chat_template_kwargs: { enable_thinking: true } },
+      off: {
+        chat_template_kwargs: { enable_thinking: false },
+      },
+      high: {
+        chat_template_kwargs: { enable_thinking: true },
+      },
     },
   },
   {
@@ -233,7 +275,9 @@ const OLLAMA_PORT = /:11434(?:\/|$)/
 // Suggests how a newly added model switches thinking. The serving endpoint
 // wins over the model name: Ollama takes reasoning_effort for every model.
 export function suggestThinkingPreset(modelName: string, baseUrl = ''): LLMThinkingPreset {
-  const byEndpoint = OLLAMA_PORT.test(baseUrl) ? 'openai' : undefined
+  const byEndpoint = OLLAMA_PORT.test(baseUrl)
+    ? 'openai'
+    : undefined
   return LLM_THINKING_PRESETS.find(preset => preset.value === byEndpoint)
     ?? LLM_THINKING_PRESETS.find(preset => preset.match?.test(modelName))
     ?? LLM_THINKING_PRESETS[0]

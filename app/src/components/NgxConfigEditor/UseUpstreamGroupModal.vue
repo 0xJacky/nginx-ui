@@ -39,7 +39,9 @@ const selectedGroupDetail = computed(() => upstreams.value.find(item => item.nam
 const canApply = computed(() => !!selectedGroup.value && selectedKeys.value.length > 0)
 
 function serverLabel(serverName: string, serverIdx: number) {
-  return serverName || $gettext('Server %{index}', { index: String(serverIdx + 1) })
+  return serverName || $gettext('Server %{index}', {
+    index: String(serverIdx + 1),
+  })
 }
 
 function apply() {

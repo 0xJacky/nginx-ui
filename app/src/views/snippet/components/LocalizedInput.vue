@@ -48,7 +48,9 @@ function toTag(lang: string) {
 
 const displayNames = computed(() => {
   try {
-    return new Intl.DisplayNames([toTag(language.value)], { type: 'language' })
+    return new Intl.DisplayNames([
+      toTag(language.value),
+    ], { type: 'language' })
   }
   catch {
     return undefined
@@ -64,7 +66,12 @@ function nameOf(lang: string) {
   }
 }
 
-const translations = computed(() => [...new Set([...Object.keys(text.value), ...added.value])]
+const translations = computed(() => [
+  ...new Set([
+    ...Object.keys(text.value),
+    ...added.value,
+  ]),
+]
   .filter(lang => lang !== language.value)
   .sort((a, b) => nameOf(a).localeCompare(nameOf(b))))
 
@@ -72,7 +79,10 @@ const translationCount = computed(() => Object.keys(text.value).filter(lang => l
 
 const addOptions = computed(() => Object.keys(languageNames)
   .filter(lang => lang !== language.value && !translations.value.includes(lang))
-  .map(lang => ({ label: nameOf(lang), value: lang })))
+  .map(lang => ({
+    label: nameOf(lang),
+    value: lang,
+  })))
 
 function addLanguage(lang: string) {
   added.value.push(lang)

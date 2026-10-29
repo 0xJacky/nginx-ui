@@ -22,7 +22,10 @@ const isApplying = ref(false)
 const failures = ref<AccessBatchResult[]>([])
 
 const options = computed(() => [
-  { label: $gettext('Public'), value: PublicValue },
+  {
+    label: $gettext('Public'),
+    value: PublicValue,
+  },
   ...listOptions(lists.value),
 ])
 
@@ -42,13 +45,20 @@ async function apply() {
     const { results } = await accessList.batchApply({
       kind: props.kind,
       names: props.names,
-      mode: selected.value === PublicValue ? 'public' : 'list',
-      slug: selected.value === PublicValue ? undefined : selected.value,
+      mode: selected.value === PublicValue
+        ? 'public'
+        : 'list',
+      slug: selected.value === PublicValue
+        ? undefined
+        : selected.value,
     })
     failures.value = results.filter(r => !r.success)
     const succeeded = results.length - failures.value.length
-    if (succeeded > 0)
-      message.success($ngettext('Access updated for %{count} item', 'Access updated for %{count} items', succeeded, { count: String(succeeded) }))
+    if (succeeded > 0) {
+      message.success($ngettext('Access updated for %{count} item', 'Access updated for %{count} items', succeeded, {
+        count: String(succeeded),
+      }))
+    }
     emit('done')
     if (failures.value.length === 0)
       open.value = false

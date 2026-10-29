@@ -88,13 +88,23 @@ const views = computed<CrumbView[]>(() => entries.value.map((entry, index) => {
 
   const { bread } = entry
   const isLast = index === entries.value.length - 1
-  if (!isLast && bread.path)
-    return { kind: 'link', label: bread.translatedName(), to: linkTo(bread) }
+  if (!isLast && bread.path) {
+    return {
+      kind: 'link',
+      label: bread.translatedName(),
+      to: linkTo(bread),
+    }
+  }
 
-  return { kind: 'text', label: bread.translatedName() }
+  return {
+    kind: 'text',
+    label: bread.translatedName(),
+  }
 }))
 
-const breadcrumbItems = computed(() => views.value.map((_, index) => ({ key: String(index) })))
+const breadcrumbItems = computed(() => views.value.map((_, index) => ({
+  key: String(index),
+})))
 
 function viewOf(item: { key?: string | number }) {
   return views.value[Number(item.key)]
@@ -102,7 +112,10 @@ function viewOf(item: { key?: string | number }) {
 
 function hiddenMenu(view: CrumbView) {
   return {
-    items: (view.hidden ?? []).map((bread, index) => ({ key: String(index), label: bread.translatedName() })),
+    items: (view.hidden ?? []).map((bread, index) => ({
+      key: String(index),
+      label: bread.translatedName(),
+    })),
   }
 }
 
@@ -116,7 +129,9 @@ const settingsStore = useSettingsStore()
 const { node, server_name } = storeToRefs(settingsStore)
 const isSwitcherOpen = ref(false)
 const isLocal = computed(() => node.value.id === 0)
-const nodeName = computed(() => isLocal.value ? (server_name.value || $gettext('Local')) : node.value.name)
+const nodeName = computed(() => isLocal.value
+  ? (server_name.value || $gettext('Local'))
+  : node.value.name)
 </script>
 
 <template>

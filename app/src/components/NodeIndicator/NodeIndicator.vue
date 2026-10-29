@@ -10,7 +10,9 @@ const { node, server_name } = storeToRefs(settingsStore)
 const open = ref(false)
 
 const isLocal = computed(() => node.value.id === 0)
-const currentName = computed(() => isLocal.value ? (server_name.value || $gettext('Local')) : node.value.name)
+const currentName = computed(() => isLocal.value
+  ? (server_name.value || $gettext('Local'))
+  : node.value.name)
 </script>
 
 <template>

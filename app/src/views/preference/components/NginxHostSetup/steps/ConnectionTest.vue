@@ -23,7 +23,11 @@ function resetResult() {
 }
 
 watch(
-  [() => props.params.host_address, () => props.params.host_user, () => props.trusted],
+  [
+    () => props.params.host_address,
+    () => props.params.host_user,
+    () => props.trusted,
+  ],
   resetResult,
 )
 

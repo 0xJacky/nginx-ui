@@ -84,7 +84,20 @@ export function useGeoTranslation() {
     }
     // Map other browser languages to supported codes
     const browserLangCode = browserLocale.split('-')[0]
-    const supportedLangs = ['fr', 'es', 'de', 'ru', 'vi', 'ko', 'tr', 'ar', 'uk', 'ja', 'pt', 'it']
+    const supportedLangs = [
+      'fr',
+      'es',
+      'de',
+      'ru',
+      'vi',
+      'ko',
+      'tr',
+      'ar',
+      'uk',
+      'ja',
+      'pt',
+      'it',
+    ]
     if (supportedLangs.includes(browserLangCode)) {
       return browserLangCode
     }
@@ -122,7 +135,9 @@ export function useGeoTranslation() {
       if (data.city)
         parts.push(data.city)
 
-      return parts.length > 0 ? parts.join(' ') : translateCountry(data.code)
+      return parts.length > 0
+        ? parts.join(' ')
+        : translateCountry(data.code)
     }
     else {
       // For other locales, only show country name

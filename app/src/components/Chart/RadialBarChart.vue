@@ -18,7 +18,9 @@ const settings = useSettingsStore()
 const { theme } = storeToRefs(settings)
 
 function fontColor() {
-  return theme.value === 'dark' ? '#fcfcfc' : undefined
+  return theme.value === 'dark'
+    ? '#fcfcfc'
+    : undefined
 }
 
 const chartOptions = computed(() => ({

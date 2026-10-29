@@ -40,7 +40,9 @@ async function checkUnsaved() {
   }
   step.value = 'checking'
   try {
-    step.value = await props.context.hasUnsavedChanges() ? 'unsaved' : 'confirm'
+    step.value = await props.context.hasUnsavedChanges()
+      ? 'unsaved'
+      : 'confirm'
   }
   catch {
     // Rendering the config failed; treat it as unsaved so nothing is lost.

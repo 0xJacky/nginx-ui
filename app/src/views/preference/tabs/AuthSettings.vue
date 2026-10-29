@@ -12,22 +12,27 @@ const { message } = App.useApp()
 const systemSettingsStore = useSystemSettingsStore()
 const { data } = storeToRefs(systemSettingsStore)
 
-const bannedIPColumns = [{
-  title: $gettext('IP'),
-  dataIndex: 'ip',
-}, {
-  title: $gettext('Attempts'),
-  dataIndex: 'attempts',
-}, {
-  title: $gettext('Banned Until'),
-  dataIndex: 'expired_at',
-  render: value => {
-    return dayjs.unix(value).format('YYYY-MM-DD HH:mm:ss')
+const bannedIPColumns = [
+  {
+    title: $gettext('IP'),
+    dataIndex: 'ip',
   },
-}, {
-  title: $gettext('Action'),
-  dataIndex: 'action',
-}]
+  {
+    title: $gettext('Attempts'),
+    dataIndex: 'attempts',
+  },
+  {
+    title: $gettext('Banned Until'),
+    dataIndex: 'expired_at',
+    render: value => {
+      return dayjs.unix(value).format('YYYY-MM-DD HH:mm:ss')
+    },
+  },
+  {
+    title: $gettext('Action'),
+    dataIndex: 'action',
+  },
+]
 
 const bannedIPs: Ref<BannedIP[]> = ref([])
 

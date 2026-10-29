@@ -40,11 +40,23 @@ const columns = [
     width: 80,
     render: (value: string) => {
       const statusMap = {
-        listening: { color: 'orange', text: $gettext('Listening') },
-        open: { color: 'blue', text: $gettext('Open') },
-        closed: { color: 'green', text: $gettext('Closed') },
+        listening: {
+          color: 'orange',
+          text: $gettext('Listening'),
+        },
+        open: {
+          color: 'blue',
+          text: $gettext('Open'),
+        },
+        closed: {
+          color: 'green',
+          text: $gettext('Closed'),
+        },
       }
-      const status = statusMap[value as keyof typeof statusMap] || { color: 'red', text: $gettext('Unknown') }
+      const status = statusMap[value as keyof typeof statusMap] || {
+        color: 'red',
+        text: $gettext('Unknown'),
+      }
       return h(Badge, {
         color: status.color,
         text: h('span', { style: 'font-size: 11px;' }, status.text),

@@ -20,7 +20,9 @@ const { message, modal } = App.useApp()
 const { current: language } = useSnippetDescription()
 
 // File of the snippet to edit; undefined to create a new one.
-const file = computed(() => route.name === 'Edit Snippet' ? String(route.params.file) : undefined)
+const file = computed(() => route.name === 'Edit Snippet'
+  ? String(route.params.file)
+  : undefined)
 
 interface FormState {
   baseName: string
@@ -32,7 +34,14 @@ interface FormState {
 }
 
 function createForm(): FormState {
-  return { baseName: '', names: {}, description: {}, author: '', variables: [], content: '' }
+  return {
+    baseName: '',
+    names: {},
+    description: {},
+    author: '',
+    variables: [],
+    content: '',
+  }
 }
 
 const form = reactive<FormState>(createForm())
@@ -56,7 +65,9 @@ const referenced = computed(() => referencedKeys(form.content))
 const undeclared = computed(() => [...referenced.value].filter(key => !form.variables.some(v => v.key.trim() === key)))
 const isIncludable = computed(() => form.variables.length === 0)
 // A snippet with variables is filled in by the site editor, never included.
-const include = computed(() => form.baseName.trim() && isIncludable.value ? `include snippets/${fileName.value};` : '')
+const include = computed(() => form.baseName.trim() && isIncludable.value
+  ? `include snippets/${fileName.value};`
+  : '')
 
 function toBaseName(name: string) {
   return name.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^[^a-z0-9]+|-+$/g, '').slice(0, 64)
@@ -110,7 +121,9 @@ async function copyBuiltin(name: string) {
     const source = await snippet.getBuiltin(name)
     Object.assign(form, {
       baseName: source.filename.replace(/\.conf$/, ''),
-      names: source.name ? { en: source.name } : {},
+      names: source.name
+        ? { en: source.name }
+        : {},
       description: { ...source.description },
       author: source.author,
       variables: toRows(source.variables),
@@ -145,7 +158,12 @@ async function save() {
       content: form.content,
     }
     const saved = isEditing.value
-      ? await snippet.update(file.value!, { ...payload, file: fileName.value !== file.value ? fileName.value : undefined })
+      ? await snippet.update(file.value!, {
+          ...payload,
+          file: fileName.value !== file.value
+            ? fileName.value
+            : undefined,
+        })
       : await snippet.create({ ...payload, file: fileName.value })
     message.success($gettext('Snippet %{name} saved', { name: localize(saved.name_i18n, language.value) || saved.name }))
     pristine.value = JSON.stringify(form)

@@ -3,7 +3,11 @@ import { describe, expect, test } from 'bun:test'
 import { collapseCrumbs, withoutHome } from '@/components/Breadcrumb/crumbs'
 
 function bread(name: string, path = `/${name}`): Bread {
-  return { name, path, translatedName: () => name }
+  return {
+    name,
+    path,
+    translatedName: () => name,
+  }
 }
 
 function names(entries: ReturnType<typeof collapseCrumbs>) {
@@ -14,24 +18,47 @@ function names(entries: ReturnType<typeof collapseCrumbs>) {
 
 describe('breadcrumb home crumb', () => {
   test('drops the route-derived home crumb', () => {
-    const result = withoutHome([bread('Home', '/'), bread('Dashboard'), bread('Server')])
+    const result = withoutHome([
+      bread('Home', '/'),
+      bread('Dashboard'),
+      bread('Server'),
+    ])
     expect(result.map(b => b.name)).toEqual(['Dashboard', 'Server'])
   })
 
   test('drops a hand-built home crumb by name', () => {
-    const result = withoutHome([bread('Home', ''), bread('Manage Configs', '/config')])
+    const result = withoutHome([
+      bread('Home', ''),
+      bread('Manage Configs', '/config'),
+    ])
     expect(result.map(b => b.name)).toEqual(['Manage Configs'])
   })
 })
 
 describe('breadcrumb collapsing', () => {
   test('keeps short trails intact', () => {
-    expect(names(collapseCrumbs([bread('a'), bread('b'), bread('c'), bread('d')]))).toEqual(['a', 'b', 'c', 'd'])
+    expect(names(collapseCrumbs([
+      bread('a'),
+      bread('b'),
+      bread('c'),
+      bread('d'),
+    ]))).toEqual(['a', 'b', 'c', 'd'])
   })
 
   test('folds the middle of long trails, keeping the first and last two', () => {
-    const trail = ['config', 'conf.d', 'sites', 'api', 'edit'].map(n => bread(n))
-    expect(names(collapseCrumbs(trail))).toEqual(['config', '[conf.d,sites]', 'api', 'edit'])
+    const trail = [
+      'config',
+      'conf.d',
+      'sites',
+      'api',
+      'edit',
+    ].map(n => bread(n))
+    expect(names(collapseCrumbs(trail))).toEqual([
+      'config',
+      '[conf.d,sites]',
+      'api',
+      'edit',
+    ])
   })
 
   test('respects a custom limit', () => {

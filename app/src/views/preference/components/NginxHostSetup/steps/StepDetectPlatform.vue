@@ -35,7 +35,12 @@ function homebrewPaths(prefix: HomebrewPrefix) {
   }
 }
 
-const pathKeys = ['nginx_sbin_path', 'host_config_dir', 'host_log_dir', 'pid_path'] as const
+const pathKeys = [
+  'nginx_sbin_path',
+  'host_config_dir',
+  'host_log_dir',
+  'pid_path',
+] as const
 const knownPathDefaults = {
   nginx_sbin_path: new Set([
     linuxPaths.nginx_sbin_path,
@@ -51,7 +56,9 @@ const knownPathDefaults = {
 
 function inferHomebrewPrefix(): HomebrewPrefix {
   const configuredPaths = [params.value.nginx_sbin_path, params.value.host_config_dir, params.value.host_log_dir]
-  return configuredPaths.some(path => path?.startsWith('/usr/local/')) ? '/usr/local' : '/opt/homebrew'
+  return configuredPaths.some(path => path?.startsWith('/usr/local/'))
+    ? '/usr/local'
+    : '/opt/homebrew'
 }
 
 const homebrewPrefix = ref<HomebrewPrefix>(inferHomebrewPrefix())
@@ -102,7 +109,9 @@ watch(homebrewPrefix, prefix => {
     applyPathPreset(homebrewPaths(prefix))
 })
 
-const hasDetectedChanges = computed(() => diagnosis.value ? hasDiagnosisChanges(params.value, diagnosis.value) : false)
+const hasDetectedChanges = computed(() => diagnosis.value
+  ? hasDiagnosisChanges(params.value, diagnosis.value)
+  : false)
 const warnings = computed(() => diagnosis.value?.warnings ?? [])
 const isUnclassifiedTarget = computed(() => Boolean(diagnosis.value) && !diagnosis.value?.service_manager)
 
@@ -165,7 +174,12 @@ async function rediscoverNginxPaths() {
   })
 }
 
-watch([isUnclassifiedTarget, diagnosisError, isPlatformReady, hasDetectedChanges], () => {
+watch([
+  isUnclassifiedTarget,
+  diagnosisError,
+  isPlatformReady,
+  hasDetectedChanges,
+], () => {
   if (isUnclassifiedTarget.value || diagnosisError.value || !isPlatformReady.value || hasDetectedChanges.value)
     revealAdjustPanel()
 }, { immediate: true })

@@ -50,7 +50,9 @@ export function extractServerDomains(servers: (NgxServer | undefined | null)[]):
     .filter(directive => directive.directive === 'server_name')
     .flatMap(directive => directive.params?.split(/\s+/) ?? []))
 
-  return [...new Set(names.map(normalizeServerName).filter(isCertificateCandidate))]
+  return [
+    ...new Set(names.map(normalizeServerName).filter(isCertificateCandidate)),
+  ]
 }
 
 /**
@@ -60,9 +62,13 @@ export function extractServerDomains(servers: (NgxServer | undefined | null)[]):
 export function extractSiteDomains(config: ServersOf): string[] {
   const servers = config?.servers ?? []
   const pending = servers.filter(isPendingTLSServer)
-  const domains = pending.length ? extractServerDomains(pending) : []
+  const domains = pending.length
+    ? extractServerDomains(pending)
+    : []
 
-  return domains.length ? domains : extractServerDomains(servers)
+  return domains.length
+    ? domains
+    : extractServerDomains(servers)
 }
 
 function isCertificateDirective(directive: NgxDirective) {
@@ -91,9 +97,15 @@ export function carryOverCertificate(next: ServersOf, previous: ServersOf): bool
     const at = directives.findIndex(isCertificateDirective)
     const kept = directives.filter(directive => !isCertificateDirective(directive))
     const copies = certificate.map(directive => ({ ...directive }))
-    const insertAt = at === -1 ? kept.length : at
+    const insertAt = at === -1
+      ? kept.length
+      : at
 
-    server.directives = [...kept.slice(0, insertAt), ...copies, ...kept.slice(insertAt)]
+    server.directives = [
+      ...kept.slice(0, insertAt),
+      ...copies,
+      ...kept.slice(insertAt),
+    ]
   })
 
   return true
@@ -111,11 +123,19 @@ export function sameStringList(a: readonly string[] | undefined, b: readonly str
 function normalizeDirectives(directives?: NgxDirective[]) {
   return (directives ?? [])
     .filter(directive => trimmed(directive.params) !== '')
-    .map(directive => [trimmed(directive.directive), trimmed(directive.params), trimmed(directive.comments)])
+    .map(directive => [
+      trimmed(directive.directive),
+      trimmed(directive.params),
+      trimmed(directive.comments),
+    ])
 }
 
 function normalizeLocations(locations?: NgxLocation[]) {
-  return (locations ?? []).map(location => [trimmed(location.path), trimmed(location.content), trimmed(location.comments)])
+  return (locations ?? []).map(location => [
+    trimmed(location.path),
+    trimmed(location.content),
+    trimmed(location.comments),
+  ])
 }
 
 function normalizeServer(server: NgxServer) {
@@ -148,12 +168,18 @@ export function serializeNgxConfig(config: Partial<NgxConfig> | undefined | null
   const servers = (config?.servers ?? []).filter(server => {
     if (mode === 'all')
       return true
-    return mode === 'pending-tls' ? isPendingTLSServer(server) : !isPendingTLSServer(server)
+    return mode === 'pending-tls'
+      ? isPendingTLSServer(server)
+      : !isPendingTLSServer(server)
   })
 
   return JSON.stringify({
-    custom: mode === 'pending-tls' ? '' : trimmed(config?.custom),
-    upstreams: mode === 'pending-tls' ? [] : (config?.upstreams ?? []).map(normalizeUpstream),
+    custom: mode === 'pending-tls'
+      ? ''
+      : trimmed(config?.custom),
+    upstreams: mode === 'pending-tls'
+      ? []
+      : (config?.upstreams ?? []).map(normalizeUpstream),
     servers: servers.map(normalizeServer),
   })
 }

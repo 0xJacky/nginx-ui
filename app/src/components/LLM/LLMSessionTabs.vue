@@ -51,7 +51,9 @@ async function createNewSession() {
     return // Don't create new session while LLM is generating output
   }
 
-  const title = props.type === 'terminal' ? 'Terminal Assistant' : 'New Chat'
+  const title = props.type === 'terminal'
+    ? 'Terminal Assistant'
+    : 'New Chat'
   try {
     const session = await sessionStore.createSession(title, props.path, props.type)
 

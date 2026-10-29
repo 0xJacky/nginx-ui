@@ -33,5 +33,7 @@ export function convertZoneChoice(
   if (!isZoneEnabled)
     return { zone: false }
   const size = kbToZoneSize(zoneSizeKb)
-  return size ? { zone: true, zone_size: size } : { zone: true }
+  return size
+    ? { zone: true, zone_size: size }
+    : { zone: true }
 }

@@ -123,70 +123,88 @@ const isApplying = ref(false)
 const isResultOpen = ref(false)
 const batchResults = ref<BatchResult[]>([])
 
-const recordGroupColumns: TableColumnsType = [{
-  title: $gettext('Type'),
-  key: 'type',
-  width: 90,
-}, {
-  title: $gettext('Shared value'),
-  key: 'value',
-  width: 300,
-}, {
-  title: $gettext('Names'),
-  key: 'names',
-  width: 280,
-}, {
-  title: $gettext('Coverage'),
-  key: 'coverage',
-  width: 130,
-}, {
-  title: $gettext('Status'),
-  key: 'status',
-  width: 180,
-}, {
-  title: $gettext('Actions'),
-  key: 'actions',
-  width: 220,
-  fixed: 'right',
-}]
+const recordGroupColumns: TableColumnsType = [
+  {
+    title: $gettext('Type'),
+    key: 'type',
+    width: 90,
+  },
+  {
+    title: $gettext('Shared value'),
+    key: 'value',
+    width: 300,
+  },
+  {
+    title: $gettext('Names'),
+    key: 'names',
+    width: 280,
+  },
+  {
+    title: $gettext('Coverage'),
+    key: 'coverage',
+    width: 130,
+  },
+  {
+    title: $gettext('Status'),
+    key: 'status',
+    width: 180,
+  },
+  {
+    title: $gettext('Actions'),
+    key: 'actions',
+    width: 220,
+    fixed: 'right',
+  },
+]
 
-const previewColumns: TableColumnsType = [{
-  title: $gettext('Domain'),
-  key: 'domain',
-  width: 180,
-}, {
-  title: $gettext('Name'),
-  key: 'name',
-  width: 180,
-}, {
-  title: $gettext('Action'),
-  key: 'action',
-  width: 120,
-}, {
-  title: $gettext('Details'),
-  key: 'details',
-}]
+const previewColumns: TableColumnsType = [
+  {
+    title: $gettext('Domain'),
+    key: 'domain',
+    width: 180,
+  },
+  {
+    title: $gettext('Name'),
+    key: 'name',
+    width: 180,
+  },
+  {
+    title: $gettext('Action'),
+    key: 'action',
+    width: 120,
+  },
+  {
+    title: $gettext('Details'),
+    key: 'details',
+  },
+]
 
-const resultColumns: TableColumnsType = [{
-  title: $gettext('Domain'),
-  key: 'domain',
-  width: 180,
-}, {
-  title: $gettext('Name'),
-  key: 'name',
-  width: 180,
-}, {
-  title: $gettext('Action'),
-  key: 'action',
-  width: 110,
-}, {
-  title: $gettext('Result'),
-  key: 'status',
-  width: 110,
-}, {
-  title: $gettext('Details'),
-  key: 'details',
-}]
+const resultColumns: TableColumnsType = [
+  {
+    title: $gettext('Domain'),
+    key: 'domain',
+    width: 180,
+  },
+  {
+    title: $gettext('Name'),
+    key: 'name',
+    width: 180,
+  },
+  {
+    title: $gettext('Action'),
+    key: 'action',
+    width: 110,
+  },
+  {
+    title: $gettext('Result'),
+    key: 'status',
+    width: 110,
+  },
+  {
+    title: $gettext('Details'),
+    key: 'details',
+  },
+]
 
 const domainOptions = computed(() => domains.value.map(domain => ({
   value: domain.id,
@@ -204,12 +222,17 @@ const aggregatedRecords = computed<AggregatedGroupRecord[]>(() => {
         type: record.type.toUpperCase(),
         members: {},
       }
-      row.members[domain.id] = [...(row.members[domain.id] ?? []), record]
+      row.members[domain.id] = [
+        ...(row.members[domain.id] ?? []),
+        record,
+      ]
       rows.set(key, row)
     }
   }
 
-  return [...rows.values()].sort((left, right) => left.name.localeCompare(right.name) || left.type.localeCompare(right.type))
+  return [
+    ...rows.values(),
+  ].sort((left, right) => left.name.localeCompare(right.name) || left.type.localeCompare(right.type))
 })
 
 const recordSources = computed<RecordSource[]>(() => domains.value.flatMap(domain =>
@@ -293,7 +316,9 @@ const automaticRecordGroups = computed<AutomaticRecordGroup[]>(() => {
     clusters.set(candidate.signature, cluster)
   }
 
-  return [...clusters.entries()].map(([key, cluster]) => {
+  return [
+    ...clusters.entries(),
+  ].map(([key, cluster]) => {
     const ttlCounts = new Map<number, number>()
     let ttl = cluster.sourceRecord.ttl
     let ttlCount = 0
@@ -309,7 +334,9 @@ const automaticRecordGroups = computed<AutomaticRecordGroup[]>(() => {
     return {
       key,
       type: cluster.type,
-      recordNames: [...cluster.names.values()].sort((left, right) => left.localeCompare(right)),
+      recordNames: [
+        ...cluster.names.values(),
+      ].sort((left, right) => left.localeCompare(right)),
       values: {
         content: cluster.sourceRecord.content,
         ttl,
@@ -368,7 +395,9 @@ const actionablePreviewCount = computed(() => previewTasks.value.filter(task =>
 const failedResults = computed(() => batchResults.value.filter(result => result.status === 'failed'))
 
 const operationTargetCount = computed(() => selectedDomainIds.value.length * (
-  operationMode.value === 'recordGroup' ? selectedRecordNames.value.length : 1
+  operationMode.value === 'recordGroup'
+    ? selectedRecordNames.value.length
+    : 1
 ))
 
 function createEmptyPayload(): RecordPayload {
@@ -432,7 +461,9 @@ async function runWithConcurrency<T, R>(items: T[], limit: number, worker: (item
     }
   }
 
-  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, runWorker))
+  await Promise.all(Array.from({
+    length: Math.min(limit, items.length),
+  }, runWorker))
   return results
 }
 
@@ -448,7 +479,9 @@ async function loadGroupRecords() {
     const allDomainMap = new Map(allDomains.map(domain => [domain.id, domain]))
     domains.value = group.value.domainIds.flatMap(domainId => {
       const domain = allDomainMap.get(domainId)
-      return domain ? [domain] : []
+      return domain
+        ? [domain]
+        : []
     })
     missingDomainIds.value = group.value.domainIds.filter(domainId => !allDomainMap.has(domainId))
 
@@ -506,7 +539,9 @@ function getRecordGroupCellStatus(recordGroup: AutomaticRecordGroup, name: strin
     return 'ambiguous'
   if (!hasSameRecordGroupValues(records[0], recordGroup))
     return 'drifted'
-  return hasRecordGroupProviderDrift(recordGroup, name, domain, records[0]) ? 'drifted' : 'synced'
+  return hasRecordGroupProviderDrift(recordGroup, name, domain, records[0])
+    ? 'drifted'
+    : 'synced'
 }
 
 function getProviderIdentity(domain: DNSDomain) {
@@ -533,7 +568,9 @@ function hasRecordGroupProviderDrift(recordGroup: AutomaticRecordGroup, name: st
     if (peerRecords.length !== 1 || !hasSameRecordGroupValues(peerRecords[0], recordGroup))
       return []
     const signature = getProviderSpecificSignature(peerDomain, peerRecords[0])
-    return signature ? [signature] : []
+    return signature
+      ? [signature]
+      : []
   })
   if (signatures.length < 2)
     return false
@@ -541,7 +578,9 @@ function hasRecordGroupProviderDrift(recordGroup: AutomaticRecordGroup, name: st
   const counts = new Map<string, number>()
   for (const signature of signatures)
     counts.set(signature, (counts.get(signature) ?? 0) + 1)
-  const expectedSignature = [...counts.entries()].sort((left, right) => right[1] - left[1])[0]?.[0]
+  const expectedSignature = [
+    ...counts.entries(),
+  ].sort((left, right) => right[1] - left[1])[0]?.[0]
   return currentSignature !== expectedSignature
 }
 
@@ -591,35 +630,45 @@ function getRecordGroupStatusItems(stats: RecordGroupStats) {
     items.push({
       key: 'syncedCount',
       color: 'success',
-      label: $gettext('%{count} synced', { count: String(stats.syncedCount) }),
+      label: $gettext('%{count} synced', {
+        count: String(stats.syncedCount),
+      }),
     })
   }
   if (stats.driftedCount > 0) {
     items.push({
       key: 'driftedCount',
       color: 'warning',
-      label: $gettext('%{count} drifted', { count: String(stats.driftedCount) }),
+      label: $gettext('%{count} drifted', {
+        count: String(stats.driftedCount),
+      }),
     })
   }
   if (stats.missingCount > 0) {
     items.push({
       key: 'missingCount',
       color: 'processing',
-      label: $gettext('%{count} missing', { count: String(stats.missingCount) }),
+      label: $gettext('%{count} missing', {
+        count: String(stats.missingCount),
+      }),
     })
   }
   if (stats.ambiguousCount > 0) {
     items.push({
       key: 'ambiguousCount',
       color: 'error',
-      label: $gettext('%{count} duplicated', { count: String(stats.ambiguousCount) }),
+      label: $gettext('%{count} duplicated', {
+        count: String(stats.ambiguousCount),
+      }),
     })
   }
   if (stats.unknownCount > 0) {
     items.push({
       key: 'unknownCount',
       color: 'default',
-      label: $gettext('%{count} unknown', { count: String(stats.unknownCount) }),
+      label: $gettext('%{count} unknown', {
+        count: String(stats.unknownCount),
+      }),
     })
   }
   return items
@@ -632,14 +681,20 @@ function getRecordGroupCellDetail(recordGroup: AutomaticRecordGroup, name: strin
     return loadErrors.value[domain.id]
   if (status === 'missing')
     return $gettext('Record is missing')
-  if (status === 'ambiguous')
-    return $gettext('%{count} matching records found', { count: String(records.length) })
+  if (status === 'ambiguous') {
+    return $gettext('%{count} matching records found', {
+      count: String(records.length),
+    })
+  }
   const record = records[0]
   const parts = [`${record.content} · TTL ${record.ttl}`]
   if (record.line)
     parts.push(`${$gettext('Resolution Line')}: ${record.line}`)
-  if (record.proxied !== undefined)
-    parts.push(record.proxied ? $gettext('Proxied') : $gettext('DNS Only'))
+  if (record.proxied !== undefined) {
+    parts.push(record.proxied
+      ? $gettext('Proxied')
+      : $gettext('DNS Only'))
+  }
   if (record.comment)
     parts.push(`${$gettext('Comment')}: ${record.comment}`)
   return parts.join(' · ')
@@ -703,11 +758,17 @@ function initializeProviderField(domain: DNSDomain) {
   if (providerFieldModels.value[domain.id])
     return
 
-  const record = operationMode.value === 'recordGroup' ? undefined : getOperationRecord(domain.id)
+  const record = operationMode.value === 'recordGroup'
+    ? undefined
+    : getOperationRecord(domain.id)
   providerFieldModels.value[domain.id] = {
     line: record?.line || getDefaultRecordLine(domain),
-    proxied: isCloudflareDomain(domain) ? record?.proxied ?? false : undefined,
-    comment: isCloudflareDomain(domain) ? record?.comment ?? '' : undefined,
+    proxied: isCloudflareDomain(domain)
+      ? record?.proxied ?? false
+      : undefined,
+    comment: isCloudflareDomain(domain)
+      ? record?.comment ?? ''
+      : undefined,
   }
   touchedProviderFields.value[domain.id] = []
 }
@@ -745,19 +806,27 @@ function loadRecordLines(domainIds: number[]) {
 }
 
 function getRecordLineOptions(domain: DNSDomain) {
-  const lines = [...(recordLinesByDomainId.value[domain.id] ?? [])]
+  const lines = [
+    ...(recordLinesByDomainId.value[domain.id] ?? []),
+  ]
   const currentLine = providerFieldModels.value[domain.id]?.line?.trim()
   const defaultLine = getDefaultRecordLine(domain)
 
-  if (defaultLine && !lines.some(line => line.code === defaultLine))
-    lines.unshift({ code: defaultLine, display_name: $gettext('Default') })
+  if (defaultLine && !lines.some(line => line.code === defaultLine)) {
+    lines.unshift({
+      code: defaultLine,
+      display_name: $gettext('Default'),
+    })
+  }
   if (currentLine && !lines.some(line => line.code === currentLine))
     lines.push({ code: currentLine, display_name: currentLine })
 
   return lines.map(line => {
     const name = line.display_name || line.name || line.code
     return {
-      label: name === line.code ? name : `${name} (${line.code})`,
+      label: name === line.code
+        ? name
+        : `${name} (${line.code})`,
       value: line.code,
     }
   })
@@ -823,7 +892,9 @@ function openRecordGroupOperation(recordGroup: AutomaticRecordGroup, initialName
   resetOperation()
   operationMode.value = 'recordGroup'
   operationRecordGroupKey.value = recordGroup.key
-  recordGroupScope.value = initialNames.length === recordGroup.recordNames.length ? 'all' : 'selected'
+  recordGroupScope.value = initialNames.length === recordGroup.recordNames.length
+    ? 'all'
+    : 'selected'
   selectedRecordNames.value = [...initialNames]
   selectedDomainIds.value = domains.value.map(domain => domain.id)
   formModel.value = getRecordGroupPayload(recordGroup, initialNames[0] ?? recordGroup.recordNames[0] ?? '@')
@@ -900,7 +971,9 @@ function buildPreviewTasks() {
   }
   const targetNames = operationMode.value === 'recordGroup'
     ? selectedRecordNames.value
-    : [formModel.value.name.trim()]
+    : [
+        formModel.value.name.trim(),
+      ]
 
   return domains.value
     .filter(domain => selectedDomainIds.value.includes(domain.id))
@@ -972,7 +1045,9 @@ function buildPreviewTasks() {
 }
 
 function buildDomainPayload(domain: DNSDomain, commonPayload: RecordPayload, record?: DNSRecord) {
-  const payload = record ? mergeRecordPayload(record, commonPayload) : { ...commonPayload }
+  const payload = record
+    ? mergeRecordPayload(record, commonPayload)
+    : { ...commonPayload }
   const fields = providerFieldModels.value[domain.id]
   if (!fields)
     return payload
@@ -1024,8 +1099,11 @@ function getTaskDetails(task: BatchTask) {
   const details = [task.payload.content, `TTL ${task.payload.ttl}`]
   if (task.payload.line)
     details.push(`${$gettext('Resolution Line')}: ${task.payload.line}`)
-  if (task.payload.proxied !== undefined)
-    details.push(task.payload.proxied ? $gettext('Proxied') : $gettext('DNS Only'))
+  if (task.payload.proxied !== undefined) {
+    details.push(task.payload.proxied
+      ? $gettext('Proxied')
+      : $gettext('DNS Only'))
+  }
   if (task.payload.comment)
     details.push(`${$gettext('Comment')}: ${task.payload.comment}`)
   return details.join(' · ')
@@ -1074,7 +1152,9 @@ async function applyPreview() {
         return executed
       return {
         ...task,
-        status: task.action === 'skip' ? 'skipped' : 'blocked',
+        status: task.action === 'skip'
+          ? 'skipped'
+          : 'blocked',
         detail: task.reason,
       }
     })
@@ -1085,10 +1165,14 @@ async function applyPreview() {
     await loadGroupRecords()
 
     const failedCount = batchResults.value.filter(result => result.status === 'failed').length
-    if (failedCount > 0)
-      message.warning($gettext('%{count} record operation(s) failed', { count: String(failedCount) }))
-    else
+    if (failedCount > 0) {
+      message.warning($gettext('%{count} record operation(s) failed', {
+        count: String(failedCount),
+      }))
+    }
+    else {
       message.success($gettext('Group record operation completed'))
+    }
   }
   finally {
     isApplying.value = false
@@ -1108,7 +1192,9 @@ async function retryFailed() {
         return executed
       return {
         ...task,
-        status: task.action === 'skip' ? 'skipped' : 'blocked',
+        status: task.action === 'skip'
+          ? 'skipped'
+          : 'blocked',
         detail: task.reason,
       }
     })

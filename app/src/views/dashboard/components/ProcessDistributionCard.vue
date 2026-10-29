@@ -9,10 +9,26 @@ const props = defineProps<{
 // Process composition data
 const processTypeData = computed(() => {
   return [
-    { type: $gettext('Worker Processes'), value: props.nginxInfo.workers, color: '#1890ff' },
-    { type: $gettext('Master Process'), value: props.nginxInfo.master, color: '#52c41a' },
-    { type: $gettext('Cache Processes'), value: props.nginxInfo.cache, color: '#faad14' },
-    { type: $gettext('Other Processes'), value: props.nginxInfo.other, color: '#f5222d' },
+    {
+      type: $gettext('Worker Processes'),
+      value: props.nginxInfo.workers,
+      color: '#1890ff',
+    },
+    {
+      type: $gettext('Master Process'),
+      value: props.nginxInfo.master,
+      color: '#52c41a',
+    },
+    {
+      type: $gettext('Cache Processes'),
+      value: props.nginxInfo.cache,
+      color: '#faad14',
+    },
+    {
+      type: $gettext('Other Processes'),
+      value: props.nginxInfo.other,
+      color: '#f5222d',
+    },
   ]
 })
 

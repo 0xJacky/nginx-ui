@@ -69,17 +69,21 @@ function updateBreadcrumbs() {
     }
   })
 
-  breadcrumbs.value = [{
-    name: 'Home',
-    translatedName: () => $gettext('Home'),
-    path: '/',
-    hasChildren: false,
-  }, {
-    name: 'Manage Configs',
-    translatedName: () => $gettext('Manage Configs'),
-    path: '/config',
-    hasChildren: false,
-  }, ...path]
+  breadcrumbs.value = [
+    {
+      name: 'Home',
+      translatedName: () => $gettext('Home'),
+      path: '/',
+      hasChildren: false,
+    },
+    {
+      name: 'Manage Configs',
+      translatedName: () => $gettext('Manage Configs'),
+      path: '/config',
+      hasChildren: false,
+    },
+    ...path,
+  ]
 }
 
 onMounted(() => {
@@ -93,7 +97,9 @@ watch(route, () => {
 
 function goBack() {
   const pathSegments = basePath.value.split('/').slice(0, -2)
-  const encodedPath = pathSegments.length > 0 ? pathSegments.join('/') : ''
+  const encodedPath = pathSegments.length > 0
+    ? pathSegments.join('/')
+    : ''
 
   router.push({
     path: '/config',

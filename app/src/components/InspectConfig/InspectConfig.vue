@@ -84,7 +84,9 @@ async function test() {
   testLoading.value = true
   translatedError.value = ''
   requestError.value = ''
-  const namespaceIdNum = props.namespaceId ? Number(props.namespaceId) : 0
+  const namespaceIdNum = props.namespaceId
+    ? Number(props.namespaceId)
+    : 0
 
   try {
     const result = namespaceIdNum > 0

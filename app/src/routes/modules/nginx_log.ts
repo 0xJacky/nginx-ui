@@ -10,43 +10,49 @@ export const nginxLogRoutes: RouteRecordRaw[] = [
       name: () => $gettext('Nginx Log'),
       icon: FileTextOutlined,
     },
-    children: [{
-      path: '',
-      name: 'Nginx Log Home',
-      component: () => import('@/views/nginx_log/index.vue'),
-      meta: {
-        name: () => $gettext('Nginx Log'),
-        hiddenInSidebar: true,
+    children: [
+      {
+        path: '',
+        name: 'Nginx Log Home',
+        component: () => import('@/views/nginx_log/index.vue'),
+        meta: {
+          name: () => $gettext('Nginx Log'),
+          hiddenInSidebar: true,
+        },
       },
-    }, {
-      path: 'access',
-      name: 'Access Logs',
-      component: () => import('@/views/nginx_log/NginxLog.vue'),
-      meta: {
-        name: () => $gettext('Access Logs'),
+      {
+        path: 'access',
+        name: 'Access Logs',
+        component: () => import('@/views/nginx_log/NginxLog.vue'),
+        meta: {
+          name: () => $gettext('Access Logs'),
+        },
       },
-    }, {
-      path: 'error',
-      name: 'Error Logs',
-      component: () => import('@/views/nginx_log/NginxLog.vue'),
-      meta: {
-        name: () => $gettext('Error Logs'),
+      {
+        path: 'error',
+        name: 'Error Logs',
+        component: () => import('@/views/nginx_log/NginxLog.vue'),
+        meta: {
+          name: () => $gettext('Error Logs'),
+        },
       },
-    }, {
-      path: 'site',
-      name: 'Site Logs',
-      component: () => import('@/views/nginx_log/NginxLog.vue'),
-      meta: {
-        name: () => $gettext('Site Logs'),
-        hiddenInSidebar: true,
+      {
+        path: 'site',
+        name: 'Site Logs',
+        component: () => import('@/views/nginx_log/NginxLog.vue'),
+        meta: {
+          name: () => $gettext('Site Logs'),
+          hiddenInSidebar: true,
+        },
       },
-    }, {
-      path: 'list',
-      name: 'Log List',
-      component: () => import('@/views/nginx_log/NginxLogList.vue'),
-      meta: {
-        name: () => $gettext('Log List'),
+      {
+        path: 'list',
+        name: 'Log List',
+        component: () => import('@/views/nginx_log/NginxLogList.vue'),
+        meta: {
+          name: () => $gettext('Log List'),
+        },
       },
-    }],
+    ],
   },
 ]

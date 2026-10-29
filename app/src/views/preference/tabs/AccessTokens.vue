@@ -46,12 +46,31 @@ const scopeOptions: Array<{ value: ServiceTokenScope, label: string, description
 ]
 
 const columns = [
-  { title: $gettext('Name'), dataIndex: 'name' },
-  { title: $gettext('Scopes'), dataIndex: 'scopes' },
-  { title: $gettext('Last used'), dataIndex: 'last_used_at' },
-  { title: $gettext('Expires'), dataIndex: 'expires_at' },
-  { title: $gettext('Status'), dataIndex: 'status' },
-  { title: $gettext('Action'), dataIndex: 'action', width: 120 },
+  {
+    title: $gettext('Name'),
+    dataIndex: 'name',
+  },
+  {
+    title: $gettext('Scopes'),
+    dataIndex: 'scopes',
+  },
+  {
+    title: $gettext('Last used'),
+    dataIndex: 'last_used_at',
+  },
+  {
+    title: $gettext('Expires'),
+    dataIndex: 'expires_at',
+  },
+  {
+    title: $gettext('Status'),
+    dataIndex: 'status',
+  },
+  {
+    title: $gettext('Action'),
+    dataIndex: 'action',
+    width: 120,
+  },
 ]
 
 async function loadTokens() {
@@ -142,11 +161,22 @@ function isTokenExpired(record: Record<string, unknown>) {
 }
 
 function tokenStatus(record: Record<string, unknown>) {
-  if (record.revoked_at)
-    return { color: 'default', text: $gettext('Revoked') }
-  if (isTokenExpired(record))
-    return { color: 'error', text: $gettext('Expired') }
-  return { color: 'success', text: $gettext('Active') }
+  if (record.revoked_at) {
+    return {
+      color: 'default',
+      text: $gettext('Revoked'),
+    }
+  }
+  if (isTokenExpired(record)) {
+    return {
+      color: 'error',
+      text: $gettext('Expired'),
+    }
+  }
+  return {
+    color: 'success',
+    text: $gettext('Active'),
+  }
 }
 
 function scopeLabel(scope: ServiceTokenScope) {

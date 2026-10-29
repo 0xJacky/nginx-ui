@@ -60,7 +60,9 @@ const recordOptions = computed<SelectProps['options']>(() => availableRecords.va
 
   return {
     key: record.id,
-    label: `${record.type} ${recordName ?? ''} → ${record.content}${record.proxied ? ` ${$gettext('Proxied')}` : ''}`,
+    label: `${record.type} ${recordName ?? ''} → ${record.content}${record.proxied
+      ? ` ${$gettext('Proxied')}`
+      : ''}`,
     value: record.id,
     recordType: record.type,
     recordName: record.name,
@@ -73,7 +75,9 @@ const recordOptions = computed<SelectProps['options']>(() => availableRecords.va
 const selectedDomainValue = computed({
   get: () => selectedDomainId.value ?? undefined,
   set: val => {
-    selectedDomainId.value = typeof val === 'number' ? val : null
+    selectedDomainId.value = typeof val === 'number'
+      ? val
+      : null
   },
 })
 
@@ -184,7 +188,9 @@ async function loadRecordsForDomain(domainId: number) {
 
 // Handle domain selection change
 function onDomainChange(value: unknown) {
-  const domainId = typeof value === 'number' ? value : null
+  const domainId = typeof value === 'number'
+    ? value
+    : null
   selectedRecordIds.value = []
   createNewRecord.value = false
   emit('cleared')
@@ -205,7 +211,9 @@ function onRecordSelect(value: unknown) {
   if (recordIds.length > 0 && selectedDomainId.value) {
     const records = recordIds.flatMap(recordId => {
       const record = availableRecords.value.find(item => item.id === recordId)
-      return record ? [record] : []
+      return record
+        ? [record]
+        : []
     })
     const domain = availableDomains.value.find(d => d.id === selectedDomainId.value)
     if (records.length > 0 && domain) {

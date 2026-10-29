@@ -12,7 +12,9 @@ export function staleDraftName(draftName: string | undefined, nextName: string |
   const previous = draftName?.trim() ?? ''
   const next = nextName?.trim() ?? ''
 
-  return previous && next && previous !== next ? previous : undefined
+  return previous && next && previous !== next
+    ? previous
+    : undefined
 }
 
 export type StaleDraftAction = 'delete' | 'keep'
@@ -23,5 +25,7 @@ export type StaleDraftAction = 'delete' | 'keep'
  * and stays; an unknown status is treated as live too.
  */
 export function staleDraftAction(status: string | undefined): StaleDraftAction {
-  return status === ConfigStatus.Disabled ? 'delete' : 'keep'
+  return status === ConfigStatus.Disabled
+    ? 'delete'
+    : 'keep'
 }

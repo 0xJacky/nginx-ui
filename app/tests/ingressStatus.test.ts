@@ -23,14 +23,18 @@ function makeIngress(overrides: Partial<Ingress> = {}): Ingress {
     site_path: 'ingress-tm-prod-ocr',
     spec: {
       hosts: ['ocr.example.com'],
-      backends: [{
-        name: 'app',
-        servers: [
-          { address: '127.0.0.1:24001', down: false, backup: false },
-          { address: '127.0.0.1:24002', down: true, backup: false },
-        ],
-      }],
-      routes: [{ path_prefix: '/', backend: 'app', websocket: true }],
+      backends: [
+        {
+          name: 'app',
+          servers: [
+            { address: '127.0.0.1:24001', down: false, backup: false },
+            { address: '127.0.0.1:24002', down: true, backup: false },
+          ],
+        },
+      ],
+      routes: [
+        { path_prefix: '/', backend: 'app', websocket: true },
+      ],
       tls: { mode: 'acme', redirect_https: true, hsts: false },
       policy: {},
     },
@@ -40,8 +44,20 @@ function makeIngress(overrides: Partial<Ingress> = {}): Ingress {
       conditions: [],
       cert_not_after: '2027-01-13T08:01:00Z',
       servers: [
-        { backend: 'app', address: '127.0.0.1:24001', down: false, healthy: true, checked: true },
-        { backend: 'app', address: '127.0.0.1:24002', down: true, healthy: false, checked: true },
+        {
+          backend: 'app',
+          address: '127.0.0.1:24001',
+          down: false,
+          healthy: true,
+          checked: true,
+        },
+        {
+          backend: 'app',
+          address: '127.0.0.1:24002',
+          down: true,
+          healthy: false,
+          checked: true,
+        },
       ],
     },
     created_at: '2026-10-15T07:59:58Z',
@@ -72,24 +88,60 @@ describe('isGenerationBehind', () => {
 describe('backendHealth', () => {
   test('counts healthy servers that are not drained', () => {
     const summary = backendHealth(makeIngress())
-    expect(summary).toEqual({ healthy: 1, total: 2, down: 1, unchecked: 0, known: true })
+    expect(summary).toEqual({
+      healthy: 1,
+      total: 2,
+      down: 1,
+      unchecked: 0,
+      known: true,
+    })
     expect(backendHealthColor(summary)).toBe('success')
   })
 
   test('does not count unchecked servers as unhealthy', () => {
     const ingress = makeIngress()
     ingress.status.servers = [
-      { backend: 'app', address: '127.0.0.1:24001', down: false, healthy: false, checked: false },
-      { backend: 'app', address: '127.0.0.1:24002', down: true, healthy: false, checked: false },
+      {
+        backend: 'app',
+        address: '127.0.0.1:24001',
+        down: false,
+        healthy: false,
+        checked: false,
+      },
+      {
+        backend: 'app',
+        address: '127.0.0.1:24002',
+        down: true,
+        healthy: false,
+        checked: false,
+      },
     ]
     const summary = backendHealth(ingress)
-    expect(summary).toEqual({ healthy: 0, total: 2, down: 1, unchecked: 1, known: false })
+    expect(summary).toEqual({
+      healthy: 0,
+      total: 2,
+      down: 1,
+      unchecked: 1,
+      known: false,
+    })
     expect(backendHealthColor(summary)).toBe('default')
 
     // One server checked and failing, another not checked yet: unknown.
     ingress.status.servers = [
-      { backend: 'app', address: '127.0.0.1:24001', down: false, healthy: false, checked: true },
-      { backend: 'app', address: '127.0.0.1:24003', down: false, healthy: false, checked: false },
+      {
+        backend: 'app',
+        address: '127.0.0.1:24001',
+        down: false,
+        healthy: false,
+        checked: true,
+      },
+      {
+        backend: 'app',
+        address: '127.0.0.1:24003',
+        down: false,
+        healthy: false,
+        checked: false,
+      },
     ]
     expect(backendHealthColor(backendHealth(ingress))).toBe('default')
   })
@@ -98,14 +150,38 @@ describe('backendHealth', () => {
     const ingress = makeIngress()
     ingress.status.servers = null
     const summary = backendHealth(ingress)
-    expect(summary).toEqual({ healthy: 0, total: 2, down: 1, unchecked: 1, known: false })
+    expect(summary).toEqual({
+      healthy: 0,
+      total: 2,
+      down: 1,
+      unchecked: 1,
+      known: false,
+    })
     expect(backendHealthColor(summary)).toBe('default')
   })
 
   test('flags partial and total outages', () => {
-    expect(backendHealthColor({ healthy: 1, total: 3, down: 0, unchecked: 0, known: true })).toBe('warning')
-    expect(backendHealthColor({ healthy: 0, total: 2, down: 0, unchecked: 0, known: true })).toBe('error')
-    expect(backendHealthColor({ healthy: 0, total: 2, down: 2, unchecked: 0, known: true })).toBe('default')
+    expect(backendHealthColor({
+      healthy: 1,
+      total: 3,
+      down: 0,
+      unchecked: 0,
+      known: true,
+    })).toBe('warning')
+    expect(backendHealthColor({
+      healthy: 0,
+      total: 2,
+      down: 0,
+      unchecked: 0,
+      known: true,
+    })).toBe('error')
+    expect(backendHealthColor({
+      healthy: 0,
+      total: 2,
+      down: 2,
+      unchecked: 0,
+      known: true,
+    })).toBe('default')
   })
 })
 
@@ -154,11 +230,22 @@ describe('hostUrl', () => {
 describe('filterIngresses', () => {
   const list = [
     makeIngress(),
-    makeIngress({ name: 'tm-dev-api', owner: 'telemetry-dev', external_id: 'svc:7', spec: { ...makeIngress().spec, hosts: ['api.dev.example.com'] } }),
+    makeIngress({
+      name: 'tm-dev-api',
+      owner: 'telemetry-dev',
+      external_id: 'svc:7',
+      spec: {
+        ...makeIngress().spec,
+        hosts: ['api.dev.example.com'],
+      },
+    }),
   ]
 
   test('lists owners once, sorted', () => {
-    expect(ownersOf([...list, makeIngress()])).toEqual(['telemetry-dev', 'telemetry-prod'])
+    expect(ownersOf([
+      ...list,
+      makeIngress(),
+    ])).toEqual(['telemetry-dev', 'telemetry-prod'])
   })
 
   test('filters by owner and by name, host or external ID', () => {

@@ -99,7 +99,10 @@ function init() {
     // Backend stores key_type in its canonical form (EC256, RSA2048…); the
     // ACME form's ASelect options use the legacy keys (P256, 2048…). Normalize
     // on load so the dropdown highlights the right option when editing.
-    data.value = { ...r, key_type: normalizePrivateKeyType(r.key_type) }
+    data.value = {
+      ...r,
+      key_type: normalizePrivateKeyType(r.key_type),
+    }
   })
 }
 
@@ -289,7 +292,9 @@ const log = computed(() => {
     catch {
       return renderLocalizedLogMessage(line)
     }
-  }).map(line => line.startsWith('[Nginx UI]') ? `${line}\n` : line)
+  }).map(line => line.startsWith('[Nginx UI]')
+    ? `${line}\n`
+    : line)
 
   return lines.join('\n')
 })
@@ -310,7 +315,9 @@ function resolveHTMLElement(target: unknown): HTMLElement | null {
 
 function parsePx(value: string) {
   const n = Number.parseFloat(value)
-  return Number.isFinite(n) ? n : 0
+  return Number.isFinite(n)
+    ? n
+    : 0
 }
 
 function updateLogContentHeight() {

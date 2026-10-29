@@ -96,7 +96,9 @@ async function fetchLogPathOptions() {
   isLoadingLogPathOptions.value = true
   try {
     const res = await nginxLog.list({ type: logType.value })
-    const logs = Array.isArray(res?.data) ? res.data : []
+    const logs = Array.isArray(res?.data)
+      ? res.data
+      : []
 
     logPathOptions.value = logs
       .filter(item => !!item.path)
@@ -161,9 +163,20 @@ const viewModeOptions = computed(() => {
   const advancedViewDisabled = isIndexingEnabled.value !== true
 
   return [
-    { label: $gettext('Structured'), value: 'structured', disabled: advancedViewDisabled },
-    { label: $gettext('Dashboard'), value: 'dashboard', disabled: advancedViewDisabled },
-    { label: $gettext('Raw'), value: 'raw' },
+    {
+      label: $gettext('Structured'),
+      value: 'structured',
+      disabled: advancedViewDisabled,
+    },
+    {
+      label: $gettext('Dashboard'),
+      value: 'dashboard',
+      disabled: advancedViewDisabled,
+    },
+    {
+      label: $gettext('Raw'),
+      value: 'raw',
+    },
   ]
 })
 

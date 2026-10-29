@@ -97,7 +97,10 @@ router.beforeEach(to => {
   if (to.meta.noAuth || user.isLogin)
     return true
 
-  return { path: '/login', query: { next: to.fullPath } }
+  return {
+    path: '/login',
+    query: { next: to.fullPath },
+  }
 })
 
 router.afterEach(() => {

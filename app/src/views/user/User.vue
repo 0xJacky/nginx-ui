@@ -13,7 +13,9 @@ const authorize = useMFAManagement()
 async function beforeSave(data: Record<string, unknown>) {
   if (typeof data.mfa_required !== 'boolean')
     return true
-  const previous = data.id ? (await user.getItem(String(data.id))).mfa_required : false
+  const previous = data.id
+    ? (await user.getItem(String(data.id))).mfa_required
+    : false
   return previous === data.mfa_required || await authorize()
 }
 </script>

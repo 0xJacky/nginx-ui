@@ -50,24 +50,60 @@ const methodLabels: Record<string, () => string> = {
 // switch. Wider screens get the full table.
 const isNarrow = useBreakpoints(breakpointsAntDesign).smaller('md')
 
-const compactColumn = { title: () => $gettext('Upstream'), key: 'compact' }
+const compactColumn = {
+  title: () => $gettext('Upstream'),
+  key: 'compact',
+}
 
 const columns = computed<TableColumnsType<ManagedUpstreamDetail>>(() => isNarrow.value
   ? [compactColumn]
   : [
-      { title: () => $gettext('Name'), key: 'name', width: 160 },
-      { title: () => $gettext('Load Balancing'), key: 'method', width: 200 },
-      { title: () => $gettext('Servers'), key: 'servers' },
-      { title: () => $gettext('Referenced By'), key: 'references', width: 220, responsive: ['lg'] },
-      { title: () => $gettext('Actions'), key: 'actions', width: 130, fixed: 'right' },
+      {
+        title: () => $gettext('Name'),
+        key: 'name',
+        width: 160,
+      },
+      {
+        title: () => $gettext('Load Balancing'),
+        key: 'method',
+        width: 200,
+      },
+      {
+        title: () => $gettext('Servers'),
+        key: 'servers',
+      },
+      {
+        title: () => $gettext('Referenced By'),
+        key: 'references',
+        width: 220,
+        responsive: ['lg'],
+      },
+      {
+        title: () => $gettext('Actions'),
+        key: 'actions',
+        width: 130,
+        fixed: 'right',
+      },
     ])
 
 const externalColumns = computed<TableColumnsType<ExternalUpstream>>(() => isNarrow.value
   ? [compactColumn]
   : [
-      { title: () => $gettext('Name'), key: 'name', width: '33.33%' },
-      { title: () => $gettext('Servers'), key: 'servers', width: '33.33%' },
-      { title: () => $gettext('Defined In'), key: 'source', width: '33.34%' },
+      {
+        title: () => $gettext('Name'),
+        key: 'name',
+        width: '33.33%',
+      },
+      {
+        title: () => $gettext('Servers'),
+        key: 'servers',
+        width: '33.33%',
+      },
+      {
+        title: () => $gettext('Defined In'),
+        key: 'source',
+        width: '33.34%',
+      },
     ])
 
 // Cell fragments shared by the full and the compact layout.
@@ -94,7 +130,10 @@ const filteredUpstreams = computed(() => filterUpstreams(upstreams.value, search
 const filteredExternal = computed(() => filterUpstreams(externalUpstreams.value, searchQuery.value))
 const matchSummary = computed(() => {
   const groups = filteredUpstreams.value.length + filteredExternal.value.length
-  const servers = [...filteredUpstreams.value, ...filteredExternal.value]
+  const servers = [
+    ...filteredUpstreams.value,
+    ...filteredExternal.value,
+  ]
     .reduce((total, group) => total + group.servers.length, 0)
   return $gettext('Matched upstreams: %{groups}, servers: %{servers}', {
     groups: String(groups),

@@ -7,7 +7,9 @@ const props = defineProps<{
 }>()
 
 function entryKey(item: EntryItem) {
-  return item.key ?? (typeof item.path === 'string' ? item.path : item.title)
+  return item.key ?? (typeof item.path === 'string'
+    ? item.path
+    : item.title)
 }
 
 // Reserve the icon column for every card as soon as one entry carries an icon,

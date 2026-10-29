@@ -12,7 +12,9 @@ export const marked = new Marked(
   markedHighlight({
     langPrefix: 'hljs language-',
     highlight(code, lang) {
-      const language = hljs.getLanguage(lang) ? lang : 'nginx'
+      const language = hljs.getLanguage(lang)
+        ? lang
+        : 'nginx'
       return hljs.highlight(code, { language }).value
     },
   }),

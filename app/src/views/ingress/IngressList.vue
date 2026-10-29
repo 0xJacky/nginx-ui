@@ -33,7 +33,10 @@ watchDebounced(searchText, value => {
 }, { debounce: 250 })
 
 const ownerOptions = computed<SelectProps['options']>(() => [
-  { value: '', label: $gettext('All owners') },
+  {
+    value: '',
+    label: $gettext('All owners'),
+  },
   ...ownersOf(ingresses.value).map(owner => ({ value: owner, label: owner })),
 ])
 
@@ -47,7 +50,9 @@ async function loadData(silent = false) {
   if (!silent)
     isLoading.value = true
   try {
-    const res = await ingressApi.getList(undefined, silent ? { skipErrHandling: true } : undefined)
+    const res = await ingressApi.getList(undefined, silent
+      ? { skipErrHandling: true }
+      : undefined)
     ingresses.value = res.data ?? []
     hasLoaded.value = true
   }
@@ -67,7 +72,9 @@ onMounted(() => loadData())
 // Pending to Ready without a manual reload.
 const visibility = useDocumentVisibility()
 const { pause, resume } = useIntervalFn(() => loadData(true), 10_000)
-watch(visibility, value => value === 'visible' ? resume() : pause(), { immediate: true })
+watch(visibility, value => value === 'visible'
+  ? resume()
+  : pause(), { immediate: true })
 
 const selectedIngress = computed(() => ingresses.value.find(ingress => ingress.name === openName.value))
 const isDetailOpen = computed({
@@ -88,8 +95,11 @@ async function reconcile(record: Ingress) {
   reconciling.value[record.name] = true
   try {
     const updated = await ingressApi.reconcile(record.name)
-    if (updated?.name)
-      ingresses.value = ingresses.value.map(ingress => ingress.name === updated.name ? updated : ingress)
+    if (updated?.name) {
+      ingresses.value = ingresses.value.map(ingress => ingress.name === updated.name
+        ? updated
+        : ingress)
+    }
     message.success($gettext('Reconcile of %{name} queued', { name: record.name }))
   }
   finally {
@@ -134,17 +144,51 @@ function confirmDelete(record: Ingress) {
 const isNarrow = useBreakpoints(breakpointsAntDesign).smaller('md')
 
 const columns = computed<TableColumnsType<Ingress>>(() => isNarrow.value
-  ? [{ title: () => $gettext('Ingress'), key: 'compact' }]
+  ? [
+      {
+        title: () => $gettext('Ingress'),
+        key: 'compact',
+      },
+    ]
   : [
       // The owner sits under the name and the generation under the phase, so
       // the table fits a laptop screen without scrolling sideways.
-      { title: () => $gettext('Name'), key: 'name', width: 220 },
-      { title: () => $gettext('Hosts'), key: 'hosts', width: 220 },
-      { title: () => $gettext('Phase'), key: 'phase', width: 120 },
-      { title: () => $gettext('Certificate'), key: 'cert', width: 180 },
-      { title: () => $gettext('Backends'), key: 'backends', width: 140 },
-      { title: () => $gettext('Updated at'), key: 'updated_at', width: 110 },
-      { title: () => $gettext('Actions'), key: 'actions', width: 150, fixed: 'right' },
+      {
+        title: () => $gettext('Name'),
+        key: 'name',
+        width: 220,
+      },
+      {
+        title: () => $gettext('Hosts'),
+        key: 'hosts',
+        width: 220,
+      },
+      {
+        title: () => $gettext('Phase'),
+        key: 'phase',
+        width: 120,
+      },
+      {
+        title: () => $gettext('Certificate'),
+        key: 'cert',
+        width: 180,
+      },
+      {
+        title: () => $gettext('Backends'),
+        key: 'backends',
+        width: 140,
+      },
+      {
+        title: () => $gettext('Updated at'),
+        key: 'updated_at',
+        width: 110,
+      },
+      {
+        title: () => $gettext('Actions'),
+        key: 'actions',
+        width: 150,
+        fixed: 'right',
+      },
     ])
 
 const [DefineHosts, Hosts] = createReusableTemplate<{ record: Ingress }>()

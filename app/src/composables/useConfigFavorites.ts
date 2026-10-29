@@ -58,7 +58,10 @@ export function useConfigFavorites() {
       return
     }
 
-    favorites.value = [...favorites.value, { name, dir }]
+    favorites.value = [
+      ...favorites.value,
+      { name, dir },
+    ]
   }
 
   /**
@@ -70,7 +73,9 @@ export function useConfigFavorites() {
       const key = favoriteKey(dir, oldName)
 
       favorites.value = favorites.value.map(item => (
-        favoriteKey(item.dir, item.name) === key ? { ...item, name: newName } : item
+        favoriteKey(item.dir, item.name) === key
+          ? { ...item, name: newName }
+          : item
       ))
       return
     }

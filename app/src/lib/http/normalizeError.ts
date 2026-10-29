@@ -33,10 +33,16 @@ export function normalizeHttpError(error: unknown): CosyError {
     ? body.message
     : httpStatus
       ? 'Server error'
-      : typeof failure?.message === 'string' ? failure.message : 'Network error'
+      : typeof failure?.message === 'string'
+        ? failure.message
+        : 'Network error'
   const code = typeof body?.code === 'string' || typeof body?.code === 'number'
     ? body.code
-    : typeof failure?.code === 'string' ? failure.code : httpStatus ? `HTTP_${httpStatus}` : 'NETWORK_ERROR'
+    : typeof failure?.code === 'string'
+      ? failure.code
+      : httpStatus
+        ? `HTTP_${httpStatus}`
+        : 'NETWORK_ERROR'
 
   return {
     // Keep API-specific validation details used by form callers.
@@ -44,7 +50,11 @@ export function normalizeHttpError(error: unknown): CosyError {
     code,
     message,
     httpStatus,
-    scope: typeof body?.scope === 'string' ? body.scope : undefined,
-    params: Array.isArray(body?.params) ? body.params.map(String) : undefined,
+    scope: typeof body?.scope === 'string'
+      ? body.scope
+      : undefined,
+    params: Array.isArray(body?.params)
+      ? body.params.map(String)
+      : undefined,
   }
 }

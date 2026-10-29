@@ -80,7 +80,9 @@ function removeServer(index: number) {
     cancelText: $gettext('Cancel'),
     onOk() {
       ngxConfig.value.servers?.splice(index, 1)
-      curServerIdx.value = (index > 1 ? index - 1 : 0)
+      curServerIdx.value = (index > 1
+        ? index - 1
+        : 0)
     },
   })
 }

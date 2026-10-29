@@ -43,8 +43,14 @@ export function certificateNamesOf(cert: Pick<Cert, 'domains' | 'certificate_inf
     return []
 
   const info = cert.certificate_info
-  const names = [info?.subject_name, ...(info?.subject_alt_names ?? []), ...(cert.domains ?? [])]
-  return [...new Set(names.filter((name): name is string => !!name?.trim()).map(name => name.trim()))]
+  const names = [
+    info?.subject_name,
+    ...(info?.subject_alt_names ?? []),
+    ...(cert.domains ?? []),
+  ]
+  return [
+    ...new Set(names.filter((name): name is string => !!name?.trim()).map(name => name.trim())),
+  ]
 }
 
 /**

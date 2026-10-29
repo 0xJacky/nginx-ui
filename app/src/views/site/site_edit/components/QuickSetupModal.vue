@@ -109,7 +109,9 @@ async function generateConfig() {
     content: staged
       ? $gettext('The generated configuration will replace the current one and is saved right away without its HTTPS server. Any custom directives or locations will be lost.')
       : $gettext('The generated configuration will replace the current one. Any custom directives or locations will be lost.'),
-    okText: staged ? $gettext('Replace and save') : $gettext('Replace'),
+    okText: staged
+      ? $gettext('Replace and save')
+      : $gettext('Replace'),
     cancelText: $gettext('Cancel'),
     onOk: async () => {
       if (staged) {
