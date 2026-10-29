@@ -14,8 +14,8 @@ require (
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.2.4
 	github.com/alibabacloud-go/tea v1.5.3
 	github.com/caarlos0/env/v11 v11.4.1
-	github.com/casdoor/casdoor-go-sdk v1.56.0
-	github.com/cloudflare/cloudflare-go/v7 v7.13.0
+	github.com/casdoor/casdoor-go-sdk v1.59.0
+	github.com/cloudflare/cloudflare-go/v7 v7.13.1
 	github.com/coreos/go-oidc/v3 v3.21.0
 	github.com/creack/pty v1.1.24
 	github.com/dgraph-io/ristretto/v2 v2.4.2
@@ -23,12 +23,12 @@ require (
 	github.com/dustin/go-humanize v1.1.0
 	github.com/elliotchance/orderedmap/v3 v3.1.1
 	github.com/fsnotify/fsnotify v1.10.1
-	github.com/gabriel-vasile/mimetype v1.4.15
+	github.com/gabriel-vasile/mimetype v1.4.16
 	github.com/gin-contrib/cors v1.7.10
 	github.com/gin-contrib/static v1.1.9
 	github.com/gin-gonic/gin v1.12.0
 	github.com/go-acme/lego/v5 v5.6.0
-	github.com/go-co-op/gocron/v2 v2.22.0
+	github.com/go-co-op/gocron/v2 v2.23.0
 	github.com/go-gormigrate/gormigrate/v2 v2.1.7
 	github.com/go-playground/validator/v10 v10.30.5
 	github.com/go-resty/resty/v2 v2.17.2
@@ -39,14 +39,15 @@ require (
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.221
 	github.com/mark3labs/mcp-go v1.5.0
+	github.com/mattn/go-sqlite3 v1.14.52
 	github.com/miekg/dns v1.1.73
 	github.com/minio/minio-go/v7 v7.4.1
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.6.0
 	github.com/nxadm/tail v1.4.11
-	github.com/pires/go-proxyproto v0.15.0
+	github.com/pires/go-proxyproto v0.16.0
 	github.com/pkg/errors v0.9.1
-	github.com/pkg/sftp v1.13.11
+	github.com/pkg/sftp v1.13.12
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.53.0
@@ -79,9 +80,7 @@ require (
 require (
 	filippo.io/edwards25519 v1.2.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.13.0 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/privatedns/armprivatedns/v2 v2.0.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.10.1 // indirect
-	github.com/akamai/AkamaiOPEN-edgegrid-golang/v14 v14.1.0 // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.5 // indirect
 	github.com/alibabacloud-go/debug v1.0.1 // indirect
 	github.com/alibabacloud-go/endpoint-util v1.1.1 // indirect
@@ -101,14 +100,12 @@ require (
 	github.com/containerd/errdefs/pkg v0.3.0 // indirect
 	github.com/containerd/log v0.1.0 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
-	github.com/dnsimple/dnsimple-go/v10 v10.0.0 // indirect
 	github.com/docker/go-connections v0.8.0 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/ebitengine/purego v0.11.1 // indirect
 	github.com/fatih/color v1.19.0 // indirect
 	github.com/felixge/httpsnoop v1.1.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.4 // indirect
-	github.com/gin-contrib/pprof v1.5.5 // indirect
 	github.com/gin-contrib/sse v1.1.1 // indirect
 	github.com/go-jose/go-jose/v4 v4.1.6 // indirect
 	github.com/go-lark/lark v1.16.0 // indirect
@@ -122,13 +119,9 @@ require (
 	github.com/go-webauthn/x v0.3.1 // indirect
 	github.com/goccy/go-json v0.10.6 // indirect
 	github.com/goccy/go-yaml v1.19.2 // indirect
-	github.com/gofrs/uuid/v5 v5.5.1 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.2 // indirect
 	github.com/google/go-tpm v0.9.8 // indirect
 	github.com/google/jsonschema-go v0.4.3 // indirect
-	github.com/google/pprof v0.0.0-20260709232956-b9395ee17fa0 // indirect
-	github.com/gophercloud/gophercloud/v2 v2.15.0 // indirect
-	github.com/gophercloud/utils/v2 v2.0.0-20260922174841-b4759ea0529b // indirect
 	github.com/guregu/null/v6 v6.0.0 // indirect
 	github.com/imega/luaformatter v0.0.0-20211025140405-86b0a68d6bef // indirect
 	github.com/itchyny/timefmt-go v0.1.8 // indirect
@@ -146,11 +139,9 @@ require (
 	github.com/leodido/go-urn v1.5.0 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible // indirect
 	github.com/lestrrat-go/strftime v1.2.0 // indirect
-	github.com/linode/linodego/v2 v2.10.0 // indirect
 	github.com/lufia/plan9stats v0.0.0-20260627054121-477a66015f15 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
-	github.com/mattn/go-sqlite3 v1.14.52 // indirect
 	github.com/minio/crc64nvme v1.1.1 // indirect
 	github.com/minio/md5-simd v1.1.2 // indirect
 	github.com/moby/docker-image-spec v1.3.1 // indirect
@@ -172,7 +163,6 @@ require (
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/rs/xid v1.6.0 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect
-	github.com/selectel/go-selvpcclient/v5 v5.0.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/sony/sonyflake/v2 v2.2.0 // indirect
 	github.com/stretchr/objx v0.5.3 // indirect
@@ -210,7 +200,6 @@ require (
 	golang.org/x/sync v0.24.0 // indirect
 	golang.org/x/text v0.43.0 // indirect
 	golang.org/x/tools v0.52.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260817212433-ac3dfec99bb1 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20261019180522-ce908d29299b // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
