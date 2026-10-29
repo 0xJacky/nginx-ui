@@ -76,7 +76,7 @@ func (validator *configIncludeValidator) validate(path string, content []byte, d
 		if !filepath.IsAbs(pattern) {
 			pattern = filepath.Join(validator.base, pattern)
 		}
-		matches, err := nginx.Glob(pattern)
+		matches, err := nginx.Glob(glibcGlobPattern(pattern))
 		if err != nil {
 			return fmt.Errorf("resolve nginx include %s: %w", pattern, err)
 		}
@@ -175,4 +175,12 @@ func (walker *includeWalker) include(pattern string, depth int) {
 		}
 		walker.walk(match, included, depth)
 	}
+}
+
+// glibcGlobPattern rewrites the glob(3) negated character class "[!...]",
+// which nginx resolves includes with, into the "[^...]" form Go's matcher
+// understands. Without it Go matches nothing for "[!x]" while nginx loads the
+// files, so they would escape validation.
+func glibcGlobPattern(pattern string) string {
+	return strings.ReplaceAll(pattern, "[!", "[^")
 }

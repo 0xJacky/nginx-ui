@@ -58,6 +58,12 @@ var tokenizerAttackCases = []tokenizerAttackCase{
 	// A statement still pending when '}' arrives is checked; nginx rejects
 	// that form, so checking it can only reject configs nginx refuses too.
 	{"statement before closing brace", "server { js_import m.js }\n", "js_import"},
+	// A Lua block body is skipped the way ngx_lua reads it, so statements
+	// after the block's real end are still checked.
+	{"after lua block with brace in string", "server { location / { content_by_lua_block { ngx.say(\"}\") } js_import m.js; } }\n", "js_import"},
+	{"after lua block with long bracket", "server { location / { content_by_lua_block { local s = [==[ } ]==] } js_import m.js; } }\n", "js_import"},
+	{"after lua block with comment", "server { location / { content_by_lua_block { -- } not the end\n ngx.say(1) } user root; } }\n", "user root"},
+	{"after nested lua tables", "server { location / { access_by_lua_block { local t = { a = { 1 } } } load_module modules/ngx_http_js_module.so; } }\n", "load_module"},
 }
 
 type tokenizerLegitCase struct {
@@ -95,6 +101,13 @@ var tokenizerLegitCases = []tokenizerLegitCase{
 	{"escaped space", "server { add_header X a\\ b; }\n"},
 	{"existing quoted and escaped semicolons", "server { listen 80; add_header X-Test \"safe; js_import app.js;\"; add_header X-Test safe\\;js_import; }\n"},
 	{"lua block directives", "server {\n    listen 443 ssl;\n    ssl_certificate_by_lua_block {\n        auto_ssl:ssl_certificate()\n    }\n    location / {\n        access_by_lua_block {\n            if ngx.var.x == \"#\" then return ngx.exit(403) end\n            local t = {1, 2}\n        }\n        content_by_lua_block { ngx.say(\"#hash\") }\n    }\n}\n"},
+	{"lua table field named like a restricted directive", "server { location / { content_by_lua_block {\n local cfg = {\n js_enabled = true\n }\n ngx.say(cfg.js_enabled)\n } } }\n"},
+	{"lua call named like a restricted directive", "server { location / { content_by_lua_block { perl_compat.run() } } }\n"},
+	{"lua string with semicolon and restricted word", "server { location / { content_by_lua_block { ngx.say(\"x;js_ok\") } } }\n"},
+	{"lua string glued to a comma", "server { location / { content_by_lua_block { ngx.say(\"a \", 1) } add_header X \"y\"; } }\n"},
+	{"lua length operator and comments", "server { location / { content_by_lua_block {\n local t = {1, 2} -- it's a table; js_import x;\n ngx.say(#t)\n --[[ load_module x.so; } ]]\n } } }\n"},
+	{"lua long string", "server { location / { content_by_lua_block { ngx.say([[ user root; } ]]) } } }\n"},
+	{"set_by_lua_block with variable", "server { set_by_lua_block $res { return \"}\" } return 200 $res; }\n"},
 	{"user and load_module that are not restricted", "user www-data;\nload_module modules/ngx_stream_module.so;\nevents {}\n"},
 }
 
@@ -165,6 +178,16 @@ func TestTokenizerFollowsIncludesBehindLiteralCharacters(t *testing.T) {
 			requireRestrictedDirectiveError(t, ValidateConfigFileBytes(path, []byte(content)), "js_import")
 		})
 	}
+}
+
+func TestIncludeGlobNegationIsValidated(t *testing.T) {
+	confDir := setupTokenizerConfDir(t)
+	path := filepath.Join(confDir, "conf.d", "app.conf")
+	writeIncludeTestFile(t, filepath.Join(confDir, "conf.d", "mod-perl.inc"), "js_import m.js;\n")
+
+	// glob(3), which nginx uses, treats "[!x]" as a negated class.
+	content := "include " + filepath.Join(confDir, "conf.d", "mod-[!x]erl.inc") + ";\n"
+	requireRestrictedDirectiveError(t, ValidateConfigFile(path, content), "js_import")
 }
 
 func TestTokenizerKeepsLegitimateConfigValid(t *testing.T) {

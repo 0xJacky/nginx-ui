@@ -1,6 +1,7 @@
 package config
 
 import (
+	"bytes"
 	"path/filepath"
 	"strings"
 	"unicode"
@@ -357,7 +358,11 @@ func visitConfigStatements(content []byte, visit func([]string) error) error {
 			if err := visit(statement); err != nil {
 				return err
 			}
+			opensLuaBlock := token.symbol == '{' && isLuaBlockDirective(statement)
 			statement = statement[:0]
+			if opensLuaBlock {
+				lexer.skipLuaBlock()
+			}
 		case '}':
 			// nginx rejects a '}' that arrives while a statement is still
 			// open ("unexpected }"), so checking the pending words can only
@@ -444,6 +449,100 @@ func (lexer *nginxConfigLexer) nextToken() (nginxConfigToken, bool) {
 	}
 
 	return nginxConfigToken{}, false
+}
+
+// isLuaBlockDirective reports a statement that opens an ngx_lua code block,
+// such as content_by_lua_block or set_by_lua_block $var.
+func isLuaBlockDirective(statement []string) bool {
+	return len(statement) > 0 && strings.HasSuffix(strings.ToLower(statement[0]), "_by_lua_block")
+}
+
+// skipLuaBlock consumes a *_by_lua_block body up to its closing '}'. ngx_lua
+// reads these bodies with its own Lua lexer (ngx_http_lua_conf_lua_block_parse),
+// not ngx_conf_read_token: quoted strings, long brackets and "--" comments are
+// opaque and only unquoted braces nest. On stock nginx the directive is unknown,
+// so nginx -t fails before anything in the body runs. Tokenizing the body with
+// nginx rules would misread ordinary Lua such as `ngx.say("a ", x)` or a table
+// field named js_enabled; skipping it the way ngx_lua does keeps the block
+// boundary where OpenResty puts it.
+func (lexer *nginxConfigLexer) skipLuaBlock() {
+	content := lexer.content
+	depth := 0
+	for lexer.offset < len(content) {
+		c := content[lexer.offset]
+		switch {
+		case c == '-' && lexer.offset+1 < len(content) && content[lexer.offset+1] == '-':
+			lexer.offset += 2
+			if level, ok := luaLongBracketLevel(content, lexer.offset); ok {
+				lexer.skipLuaLongBracket(level)
+				continue
+			}
+			for lexer.offset < len(content) && content[lexer.offset] != '\n' {
+				lexer.offset++
+			}
+		case c == '"' || c == '\'':
+			lexer.offset++
+			for lexer.offset < len(content) && content[lexer.offset] != c && content[lexer.offset] != '\n' {
+				if content[lexer.offset] == '\\' {
+					lexer.offset++
+				}
+				lexer.offset++
+			}
+			lexer.offset++
+		case c == '[':
+			if level, ok := luaLongBracketLevel(content, lexer.offset); ok {
+				lexer.skipLuaLongBracket(level)
+				continue
+			}
+			lexer.offset++
+		case c == '{':
+			depth++
+			lexer.offset++
+		case c == '}':
+			lexer.offset++
+			if depth == 0 {
+				lexer.tokenStart = true
+				return
+			}
+			depth--
+		default:
+			lexer.offset++
+		}
+	}
+	lexer.tokenStart = true
+}
+
+// luaLongBracketLevel reports whether a Lua long bracket ("[[", "[=[", ...)
+// opens at offset, and its level.
+func luaLongBracketLevel(content []byte, offset int) (int, bool) {
+	if offset >= len(content) || content[offset] != '[' {
+		return 0, false
+	}
+	level := 0
+	for i := offset + 1; i < len(content); i++ {
+		switch content[i] {
+		case '=':
+			level++
+		case '[':
+			return level, true
+		default:
+			return 0, false
+		}
+	}
+	return 0, false
+}
+
+// skipLuaLongBracket consumes a long bracket of the given level, opening
+// bracket included, up to its matching close.
+func (lexer *nginxConfigLexer) skipLuaLongBracket(level int) {
+	closing := "]" + strings.Repeat("=", level) + "]"
+	lexer.offset += level + 2
+	end := bytes.Index(lexer.content[lexer.offset:], []byte(closing))
+	if end < 0 {
+		lexer.offset = len(lexer.content)
+		return
+	}
+	lexer.offset += end + len(closing)
 }
 
 // skipComment drops a comment up to the line feed. nginx clears
