@@ -46,9 +46,26 @@ jobs:
           persist-credentials: false
 
       - name: Plumber Score
-        uses: getplumber/plumber@669507c3cc8282406ae58816823fd84a32752633 # v0.6.4
+        uses: getplumber/plumber@d1133cdac48cfdf0c0004637ae4af38bcf9f16c7 # v0.7.11
         with:
           soft-fail: true
+          upload-sarif: false
+
+      # A finding nested in a remote composite action gets a related location
+      # pointing at that action's GitHub blob URL. Code Scanning only accepts
+      # files of this checkout and rejects the whole upload over it, so drop
+      # those locations; the finding's message still names where it lives.
+      - name: Keep only repository paths in the SARIF
+        if: ${{ always() && hashFiles('plumber.sarif') != '' }}
+        run: |
+          jq '(.runs[]?.results[]? | select(.relatedLocations)) |= (.relatedLocations |= map(select(.physicalLocation.artifactLocation.uri // "" | test("^[A-Za-z][A-Za-z0-9+.-]*:") | not)) | if .relatedLocations == [] then del(.relatedLocations) else . end)' plumber.sarif > plumber.sarif.tmp
+          mv plumber.sarif.tmp plumber.sarif
+
+      - name: Upload SARIF to Code Scanning
+        if: ${{ always() && hashFiles('plumber.sarif') != '' }}
+        uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
+        with:
+          sarif_file: plumber.sarif
 
   publish:
     name: Plumber Score (publish)
@@ -68,9 +85,23 @@ jobs:
           persist-credentials: false
 
       - name: Plumber Score
-        uses: getplumber/plumber@669507c3cc8282406ae58816823fd84a32752633 # v0.6.4
+        uses: getplumber/plumber@d1133cdac48cfdf0c0004637ae4af38bcf9f16c7 # v0.7.11
         with:
           soft-fail: true
+          upload-sarif: false
           # Publishes this repository's score, and its name, to the public badge
           # service that backs the README badge. Only the default branch is shown.
           score-push: true
+
+      # Same cleanup as the score job above.
+      - name: Keep only repository paths in the SARIF
+        if: ${{ always() && hashFiles('plumber.sarif') != '' }}
+        run: |
+          jq '(.runs[]?.results[]? | select(.relatedLocations)) |= (.relatedLocations |= map(select(.physicalLocation.artifactLocation.uri // "" | test("^[A-Za-z][A-Za-z0-9+.-]*:") | not)) | if .relatedLocations == [] then del(.relatedLocations) else . end)' plumber.sarif > plumber.sarif.tmp
+          mv plumber.sarif.tmp plumber.sarif
+
+      - name: Upload SARIF to Code Scanning
+        if: ${{ always() && hashFiles('plumber.sarif') != '' }}
+        uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
+        with:
+          sarif_file: plumber.sarif
