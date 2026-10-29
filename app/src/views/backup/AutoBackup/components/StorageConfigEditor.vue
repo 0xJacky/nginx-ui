@@ -24,8 +24,14 @@ const isTestingPlugin = ref(false)
 // gone keeps its stored type selectable, so it is not changed by accident.
 const storageOptions = computed(() => {
   const options: { label: string, value: StorageType }[] = [
-    { label: $gettext('Local'), value: 'local' },
-    { label: $gettext('S3'), value: 's3' },
+    {
+      label: $gettext('Local'),
+      value: 'local',
+    },
+    {
+      label: $gettext('S3'),
+      value: 's3',
+    },
   ]
   for (const backend of pluginBackends.value)
     options.push({ label: backend.name, value: backend.type as StorageType })

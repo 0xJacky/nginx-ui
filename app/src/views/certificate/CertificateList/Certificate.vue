@@ -23,7 +23,12 @@ const filter = ref<CertListFilter>('all')
 const page = ref(1)
 const pageSize = ref(20)
 const total = ref(0)
-const counts = ref<CertListCounts>({ all: 0, expiring: 0, failed: 0, expired: 0 })
+const counts = ref<CertListCounts>({
+  all: 0,
+  expiring: 0,
+  failed: 0,
+  expired: 0,
+})
 
 let listSeq = 0
 
@@ -35,7 +40,9 @@ async function loadList() {
       page: page.value,
       page_size: pageSize.value,
       keyword: keyword.value.trim() || undefined,
-      state: filter.value === 'all' ? undefined : filter.value,
+      state: filter.value === 'all'
+        ? undefined
+        : filter.value,
       with_counts: true,
     })
     if (seq !== listSeq)
@@ -68,10 +75,22 @@ watchDebounced(keyword, () => {
 onMounted(loadList)
 
 const filterOptions = computed(() => [
-  { value: 'all', label: $gettext('All') },
-  { value: 'expiring', label: $gettext('Expiring within 30 days') },
-  { value: 'failed', label: $gettext('Renewal failed') },
-  { value: 'expired', label: $gettext('Expired') },
+  {
+    value: 'all',
+    label: $gettext('All'),
+  },
+  {
+    value: 'expiring',
+    label: $gettext('Expiring within 30 days'),
+  },
+  {
+    value: 'failed',
+    label: $gettext('Renewal failed'),
+  },
+  {
+    value: 'expired',
+    label: $gettext('Expired'),
+  },
 ])
 
 const pagination = computed(() => ({
@@ -103,7 +122,12 @@ function editCert(record: Cert) {
 
 function renderState(record: Cert) {
   const label = (
-    <span class="cert-state" style={{ color: toneColor(record) }}>
+    <span
+      class="cert-state"
+      style={{
+        color: toneColor(record),
+      }}
+    >
       <span class="cert-state-dot" />
       {certStateLabel(record)}
       {record.state === 'failed' && record.last_renewal_error && <InfoCircleOutlined />}
@@ -216,7 +240,11 @@ const narrowColumns = computed<TableColumnsType<Cert>>(() => [
       </div>
     ),
   },
-  { ...actionsColumn(), fixed: undefined, width: 110 },
+  {
+    ...actionsColumn(),
+    fixed: undefined,
+    width: 110,
+  },
 ])
 
 const tableColumns = computed(() => isNarrow.value ? narrowColumns.value : columns.value)

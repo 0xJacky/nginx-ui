@@ -26,7 +26,9 @@ const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
 const memoryHint = computed(() => lowMemory.value
   ? memoryWarning(recommendedMb.value, systemMb.value)
-  : $gettext('Recommended memory: %{size}', { size: formatMemory(recommendedMb.value) }))
+  : $gettext('Recommended memory: %{size}', {
+      size: formatMemory(recommendedMb.value),
+    }))
 
 const channel = computed(() => entryChannel(props.entry))
 
@@ -39,10 +41,14 @@ const isActionable = computed(() => canInstall.value && (!isInstalled.value || p
 
 // The installed copy may be a less trusted build of the same plugin.
 const installed = useInstalledPlugin(() => props.entry.id)
-const offer = computed(() => (props.entry.update_available ? undefined : findTrustedOffer(installed.value?.trust, props.entry)))
+const offer = computed(() => (props.entry.update_available
+  ? undefined
+  : findTrustedOffer(installed.value?.trust, props.entry)))
 const { replacingId, confirmReplace } = useReplacePlugin()
 
-const actionLabel = computed(() => props.entry.update_available ? $gettext('Update') : $gettext('Install'))
+const actionLabel = computed(() => props.entry.update_available
+  ? $gettext('Update')
+  : $gettext('Install'))
 </script>
 
 <template>

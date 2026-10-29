@@ -167,7 +167,9 @@ export function listStoredBackups(id: number): Promise<{ data: StoredBackup[] }>
 
 /** Removes one stored run, its archive and its key file. */
 export function deleteStoredBackup(id: number, key: string) {
-  return http.delete(`/auto_backup/${id}/stored`, { params: { key } })
+  return http.delete(`/auto_backup/${id}/stored`, {
+    params: { key },
+  })
 }
 
 /** Fetches one stored run from its plugin backend and restores it. */

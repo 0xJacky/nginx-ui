@@ -45,7 +45,10 @@ export const usePluginStore = defineStore('plugin', () => {
 
     slots.value = {
       ...slots.value,
-      [key]: [...(slots.value[key] ?? []), registration],
+      [key]: [
+        ...(slots.value[key] ?? []),
+        registration,
+      ],
     }
   }
 

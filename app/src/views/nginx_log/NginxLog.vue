@@ -179,7 +179,10 @@ const effectiveView = computed(() => {
 })
 
 const viewModeOptions = computed(() => [
-  { label: $gettext('Raw'), value: RAW_VIEW },
+  {
+    label: $gettext('Raw'),
+    value: RAW_VIEW,
+  },
   ...pluginViews.value.map(item => ({
     label: $gettext(item.registration.label ?? item.key),
     value: item.key,

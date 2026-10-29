@@ -23,7 +23,9 @@ export function settingFields(form: DNSProviderForm | undefined): DNSProviderFie
 /** Methods worth offering, which is only when there is more than one. */
 export function formMethods(form: DNSProviderForm | undefined): DNSProviderMethod[] {
   const methods = form?.methods ?? []
-  return methods.length > 1 ? methods : []
+  return methods.length > 1
+    ? methods
+    : []
 }
 
 /**
@@ -87,7 +89,9 @@ export function initialMethod(form: DNSProviderForm | undefined, credentials: Re
   let best: DNSProviderMethod | undefined
   let bestScore: [number, number] = [0, 0]
   for (const method of methods) {
-    const matched = valuesMatch(method, credentials) ? methodValueEntries(method).length : 0
+    const matched = valuesMatch(method, credentials)
+      ? methodValueEntries(method).length
+      : 0
     const filled = (method.fields ?? []).filter(key => hasValue(credentials?.[key])).length
     if (matched === 0 && filled === 0)
       continue
@@ -155,7 +159,9 @@ export function applyMethod(
 
 /** Map a field value is stored in, decided by its group. */
 export function configurationTarget(field: DNSProviderField): ConfigurationTarget {
-  return field.group === 'setting' ? 'additional' : 'credentials'
+  return field.group === 'setting'
+    ? 'additional'
+    : 'credentials'
 }
 
 /** Number of settings holding a value other than their default. */

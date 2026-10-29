@@ -22,7 +22,9 @@ const encodedFile = computed(() => props.file.split('/').map(segment => encodeUR
 // keeps working behind a reverse proxy that mounts Nginx UI on a sub path.
 const src = computed(() => `./plugins/${encodeURIComponent(props.pluginId)}/pages/${encodedFile.value}`)
 
-const theme = computed(() => (settings.theme === 'dark' ? 'dark' : 'light'))
+const theme = computed(() => (settings.theme === 'dark'
+  ? 'dark'
+  : 'light'))
 
 /**
  * Bridge for zero-build pages. A page asks for the auth token or the current

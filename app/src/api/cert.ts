@@ -237,7 +237,11 @@ const cert = extendCurdApi(useCurdApi<Cert>('/certs'), {
   },
   /** Deletes a certificate; a delegated one also removes its files on the node when asked. */
   remove(id: number, removeRemote = false): Promise<void> {
-    return http.delete(`/certs/${id}`, { params: removeRemote ? { remove_remote: true } : undefined })
+    return http.delete(`/certs/${id}`, {
+      params: removeRemote
+        ? { remove_remote: true }
+        : undefined,
+    })
   },
   set_auto_renewal(id: number, enabled: boolean): Promise<Cert> {
     return http.post(`/certs/${id}/auto_renewal`, { enabled })

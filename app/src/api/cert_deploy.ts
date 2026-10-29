@@ -59,7 +59,11 @@ export function listDeployKinds(): Promise<{ data: DeployTargetKind[] }> {
 
 /** Lists the latest outcomes of a target, newest first. */
 export function listDeployments(targetId: number, certId?: number): Promise<{ data: CertDeployment[] }> {
-  return http.get(`/cert_deploy_targets/${targetId}/deployments`, { params: certId ? { cert_id: certId } : undefined })
+  return http.get(`/cert_deploy_targets/${targetId}/deployments`, {
+    params: certId
+      ? { cert_id: certId }
+      : undefined,
+  })
 }
 
 /** Pushes every certificate bound to a target once. */

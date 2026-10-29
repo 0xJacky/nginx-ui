@@ -47,7 +47,9 @@ function createHostState(): PluginHostState {
   const user = useUserStore()
 
   const state = reactive({
-    theme: computed(() => (settings.theme === 'dark' ? 'dark' : 'light')),
+    theme: computed(() => (settings.theme === 'dark'
+      ? 'dark'
+      : 'light')),
     locale: computed(() => gettext.current),
     nodeId: computed(() => settings.node.id),
     username: computed(() => user.info?.name ?? ''),

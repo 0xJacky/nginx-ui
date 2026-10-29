@@ -7,12 +7,21 @@ import { createBundleSource } from '../src/plugin/bundles'
 import { createChunkLoader } from '../src/plugin/chunks'
 import { removePluginRoutes, trackPluginRoute } from '../src/plugin/routeRemovers'
 
-Object.assign(globalThis, { defineStore, markRaw, ref, shallowRef })
+Object.assign(globalThis, {
+  defineStore,
+  markRaw,
+  ref,
+  shallowRef,
+})
 
 const { usePluginStore } = await import('../src/plugin/store')
 
 function route(pluginId: string, path: string): RouteRecordRaw {
-  return { path, component: {}, meta: { pluginId } } as RouteRecordRaw
+  return {
+    path,
+    component: {},
+    meta: { pluginId },
+  } as RouteRecordRaw
 }
 
 describe('plugin store removePlugin', () => {
@@ -88,7 +97,9 @@ describe('bundle source', () => {
     const definitions: NginxUIPlugin[] = []
     const source = createBundleSource<Entry>(async entry => {
       injected.push(`${entry.id}@${entry.version}`)
-      const definition: NginxUIPlugin = { setup: () => {} }
+      const definition: NginxUIPlugin = {
+        setup: () => {},
+      }
       definitions.push(definition)
       return definition
     })
@@ -195,7 +206,11 @@ describe('chunk cache across versions', () => {
         loader.registerChunk('a', 'search', { url })
       },
     })
-    const source = (version: string) => ({ pluginId: 'a', version, chunks: { search: 'a/search.js' } })
+    const source = (version: string) => ({
+      pluginId: 'a',
+      version,
+      chunks: { search: 'a/search.js' },
+    })
 
     await loader.loadChunk(source('1'), 'search')
     await loader.loadChunk(source('1'), 'search')

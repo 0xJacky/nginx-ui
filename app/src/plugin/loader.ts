@@ -77,7 +77,9 @@ function manifestI18nFromInfo(info: PluginInfo): Record<string, PluginManifestI1
   for (const [locale, description] of Object.entries(info.description_i18n ?? {}))
     i18n[locale] = { ...i18n[locale], description }
 
-  return Object.keys(i18n).length > 0 ? i18n : undefined
+  return Object.keys(i18n).length > 0
+    ? i18n
+    : undefined
 }
 
 /** Fills in the manifest fields the plugin list already knows about. */
@@ -87,7 +89,9 @@ function manifestFromInfo(entry: WebappEntry, info?: PluginInfo): PluginManifest
     name: info?.name ?? entry.id,
     version: info?.version ?? entry.version,
     description: info?.description,
-    i18n: info ? manifestI18nFromInfo(info) : undefined,
+    i18n: info
+      ? manifestI18nFromInfo(info)
+      : undefined,
     homepage_url: info?.homepage_url,
     api_version: info?.api_version ?? 0,
     min_nginx_ui_version: info?.min_nginx_ui_version,
@@ -148,15 +152,23 @@ async function fetchDevEntry(url: string): Promise<{ entry: WebappEntry, manifes
 
   // Bundle and stylesheet live next to the manifest that points at them.
   const base = new URL(url, window.location.href)
-  const bundleUrl = webapp.bundle_path ? new URL(webapp.bundle_path, base).toString() : ''
-  const styleUrl = webapp.style_path ? new URL(webapp.style_path, base).toString() : undefined
+  const bundleUrl = webapp.bundle_path
+    ? new URL(webapp.bundle_path, base).toString()
+    : ''
+  const styleUrl = webapp.style_path
+    ? new URL(webapp.style_path, base).toString()
+    : undefined
 
   const chunkUrls: Record<string, string> = {}
   for (const [name, file] of Object.entries(webapp.chunks ?? {}))
     chunkUrls[name] = new URL(file, base).toString()
 
   // An absolute path in the manifest must not lead off the loopback host either.
-  for (const assetUrl of [bundleUrl, styleUrl, ...Object.values(chunkUrls)]) {
+  for (const assetUrl of [
+    bundleUrl,
+    styleUrl,
+    ...Object.values(chunkUrls),
+  ]) {
     if (assetUrl && !isLoopbackUrl(assetUrl))
       throw new Error(`${assetUrl} is not a localhost address`)
   }
@@ -168,7 +180,9 @@ async function fetchDevEntry(url: string): Promise<{ entry: WebappEntry, manifes
       version: manifest.version ?? String(Date.now()),
       bundle_url: bundleUrl,
       style_url: styleUrl,
-      chunks: Object.keys(chunkUrls).length > 0 ? chunkUrls : undefined,
+      chunks: Object.keys(chunkUrls).length > 0
+        ? chunkUrls
+        : undefined,
       shared: webapp.shared,
       pages: webapp.pages,
     },
@@ -387,5 +401,10 @@ export function usePluginLoader() {
     }
   }
 
-  return { load, loadNew, unload, unloadDisabled }
+  return {
+    load,
+    loadNew,
+    unload,
+    unloadDisabled,
+  }
 }

@@ -7,8 +7,14 @@ const systemSettingsStore = useSystemSettingsStore()
 const { data } = storeToRefs(systemSettingsStore)
 
 const syncPolicyOptions = computed(() => [
-  { value: 'manual', label: $gettext('Manual') },
-  { value: 'auto', label: $gettext('Automatic') },
+  {
+    value: 'manual',
+    label: $gettext('Manual'),
+  },
+  {
+    value: 'auto',
+    label: $gettext('Automatic'),
+  },
 ])
 
 const resourceLimitsSupported = computed(() => data.value.plugin?.resource_limits_supported !== false)
@@ -18,7 +24,9 @@ function limitModel(key: 'memory_limit_mb' | 'cpu_percent') {
   return computed<number | null>({
     get: () => {
       const value = data.value.plugin?.[key] ?? 0
-      return value > 0 ? value : null
+      return value > 0
+        ? value
+        : null
     },
     set: value => {
       if (data.value.plugin)

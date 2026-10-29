@@ -65,7 +65,9 @@ let subscriptionId = ''
 const entry = computed(() => props.entry ?? resolved.value)
 const targetId = computed(() => entry.value?.id ?? props.pluginId ?? '')
 const sourceName = useSourceName()
-const name = computed(() => (entry.value ? catalogEntryName(entry.value, gettext.current) : targetId.value))
+const name = computed(() => (entry.value
+  ? catalogEntryName(entry.value, gettext.current)
+  : targetId.value))
 
 const release = computed<CatalogRelease | undefined>(() => {
   const current = entry.value
@@ -81,20 +83,26 @@ const reasons = computed(() => permissionReasons(release.value?.manifest, gettex
 const requires = computed(() => release.value?.manifest?.requires ?? [])
 const trust = computed(() => trustPreset(entry.value?.trust))
 // The release being installed decides, a plugin can ship a beta next to a stable one.
-const channel = computed(() => (release.value ? releaseChannel(release.value) : entryChannel(entry.value)))
+const channel = computed(() => (release.value
+  ? releaseChannel(release.value)
+  : entryChannel(entry.value)))
 const isOlder = computed(() => isDowngrade(entry.value?.installed_version, release.value?.version))
 const recommendedMb = computed(() => recommendedMemory(release.value?.manifest))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
 // Turning the package on turns off the enabled plugins that conflict with it.
 const conflictingNames = usePackageConflicts(
-  () => (release.value?.manifest ? { id: targetId.value, conflicts: release.value.manifest.conflicts } : undefined),
+  () => (release.value?.manifest
+    ? { id: targetId.value, conflicts: release.value.manifest.conflicts }
+    : undefined),
   () => open.value && enableAfterInstall.value,
 )
 const showCommunityWarning = computed(() => Boolean(entry.value) && isCommunityTrust(entry.value?.trust))
 const isUpgrade = computed(() => Boolean(entry.value?.installed_version))
 // Looked up while the dialog is open, and only for an upgrade.
-const installedPlugin = useInstalledPlugin(() => (open.value && isUpgrade.value ? entry.value?.id : undefined))
+const installedPlugin = useInstalledPlugin(() => (open.value && isUpgrade.value
+  ? entry.value?.id
+  : undefined))
 // What the update asks for beyond the installed version, and what it drops.
 const changes = computed(() => (installedPlugin.value && release.value?.manifest
   ? permissionChanges(installedPlugin.value, release.value.manifest)
@@ -110,12 +118,16 @@ const noStableVersion = computed(() => Boolean(entry.value) && channel.value !==
 const title = computed(() => {
   if (isOlder.value)
     return $gettext('Install a previous version')
-  return isUpgrade.value ? $gettext('Update plugin') : $gettext('Install plugin')
+  return isUpgrade.value
+    ? $gettext('Update plugin')
+    : $gettext('Install plugin')
 })
 const okText = computed(() => {
   if (isOlder.value)
     return $gettext('Install this version')
-  return isUpgrade.value ? $gettext('Update') : $gettext('Install')
+  return isUpgrade.value
+    ? $gettext('Update')
+    : $gettext('Install')
 })
 
 const phaseLabels: Record<PluginInstallStatus, () => string> = {

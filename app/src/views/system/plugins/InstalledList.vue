@@ -67,13 +67,29 @@ const counts = computed<Record<InstalledFilter, number>>(() => ({
 
 const filterOptions = computed(() => {
   const options: { value: InstalledFilter, label: string }[] = [
-    { value: 'all', label: $gettext('All') },
-    { value: 'enabled', label: $gettext('Enabled') },
-    { value: 'disabled', label: $gettext('Disabled') },
-    { value: 'attention', label: $gettext('Needs attention') },
+    {
+      value: 'all',
+      label: $gettext('All'),
+    },
+    {
+      value: 'enabled',
+      label: $gettext('Enabled'),
+    },
+    {
+      value: 'disabled',
+      label: $gettext('Disabled'),
+    },
+    {
+      value: 'attention',
+      label: $gettext('Needs attention'),
+    },
   ]
-  if (counts.value.updates > 0)
-    options.push({ value: 'updates', label: $gettext('Updates available') })
+  if (counts.value.updates > 0) {
+    options.push({
+      value: 'updates',
+      label: $gettext('Updates available'),
+    })
+  }
   return options
 })
 
@@ -97,12 +113,19 @@ function openDrawer(plugin: PluginInfo, tab: PluginDrawerTab) {
 // The open drawer lives in the URL, so a link can point straight at one plugin.
 watch(drawerOpen, open => {
   const { plugin: _plugin, ...rest } = route.query
-  router.replace({ query: open ? { ...rest, plugin: selectedId.value } : rest })
+  router.replace({
+    query: open
+      ? { ...rest, plugin: selectedId.value }
+      : rest,
+  })
 })
 
 // A link may point straight at one plugin. It is honoured once the list is
 // there, and again whenever the query changes while the page stays mounted.
-watch([plugins, () => route.query.plugin], ([list, id]) => {
+watch([
+  plugins,
+  () => route.query.plugin,
+], ([list, id]) => {
   if (typeof id !== 'string' || list.length === 0)
     return
   if (drawerOpen.value && selectedId.value === id)
@@ -120,7 +143,9 @@ function openSync(plugin: PluginInfo) {
 
 async function enablePlugin(plugin: PluginInfo, approvePermissions?: boolean, replaceConflicts?: boolean) {
   togglingId.value = plugin.id
-  const replaced = replaceConflicts ? (plugin.conflicts_enabled ?? []) : []
+  const replaced = replaceConflicts
+    ? (plugin.conflicts_enabled ?? [])
+    : []
   try {
     await pluginApi.enable(plugin.id, approvePermissions, replaceConflicts)
     message.success($gettext('Plugin enabled'))
@@ -177,11 +202,19 @@ async function requestDisable(plugin: PluginInfo) {
     return
   }
 
-  const secondary = { style: { margin: 0, color: 'var(--ant-color-text-secondary)' } }
+  const secondary = {
+    style: { margin: 0, color: 'var(--ant-color-text-secondary)' },
+  }
   modal.confirm({
-    title: $gettext('Disable %{name}?', { name: localizedPluginName(plugin, gettext.current) }),
-    content: h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } }, [
-      h('p', { style: { margin: 0 } }, certificateUsageText(usage.total)),
+    title: $gettext('Disable %{name}?', {
+      name: localizedPluginName(plugin, gettext.current),
+    }),
+    content: h('div', {
+      style: { display: 'flex', flexDirection: 'column', gap: '8px' },
+    }, [
+      h('p', {
+        style: { margin: 0 },
+      }, certificateUsageText(usage.total)),
       h('p', secondary, formatUsagePreview(previewUsage(usage))),
       h('p', secondary, $gettext('Renewal resumes when you turn it back on.')),
     ]),
@@ -247,7 +280,9 @@ async function approvePermissions() {
 
 function confirmUninstall(plugin: PluginInfo) {
   modal.confirm({
-    title: $gettext('Uninstall %{name}?', { name: localizedPluginName(plugin, gettext.current) }),
+    title: $gettext('Uninstall %{name}?', {
+      name: localizedPluginName(plugin, gettext.current),
+    }),
     content: $gettext('Its files, data and settings are removed from this node. Other nodes are not touched.'),
     okText: $gettext('Uninstall'),
     okButtonProps: { danger: true },

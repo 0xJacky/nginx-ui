@@ -51,7 +51,9 @@ const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(props.plugin.recommended_memory_mb, systemMb.value))
 const memoryHint = computed(() => lowMemory.value
   ? memoryWarning(props.plugin.recommended_memory_mb!, systemMb.value)
-  : $gettext('Recommended memory: %{size}', { size: formatMemory(props.plugin.recommended_memory_mb ?? 0) }))
+  : $gettext('Recommended memory: %{size}', {
+      size: formatMemory(props.plugin.recommended_memory_mb ?? 0),
+    }))
 const conflictingNames = useConflictNames(() => props.plugin)
 const channel = computed(() => pluginChannel(props.plugin))
 const toggleDisabled = computed(() => isToggleDisabled(props.plugin))
@@ -60,21 +62,38 @@ const isMuted = computed(() => !props.plugin.enabled && !attention.value)
 const toggleHint = computed(() => {
   if (toggleDisabled.value)
     return $gettext('This plugin cannot run on this node')
-  return props.plugin.enabled ? $gettext('Disable') : $gettext('Enable')
+  return props.plugin.enabled
+    ? $gettext('Disable')
+    : $gettext('Enable')
 })
 
 const menuItems = computed<MenuProps['items']>(() => {
   const items: NonNullable<MenuProps['items']> = []
 
-  if (props.hasNodes)
-    items.push({ key: 'sync', label: $gettext('Sync to nodes'), icon: h(CloudSyncOutlined) })
-  if (props.plugin.homepage_url)
-    items.push({ key: 'homepage', label: $gettext('Homepage'), icon: h(GlobalOutlined) })
+  if (props.hasNodes) {
+    items.push({
+      key: 'sync',
+      label: $gettext('Sync to nodes'),
+      icon: h(CloudSyncOutlined),
+    })
+  }
+  if (props.plugin.homepage_url) {
+    items.push({
+      key: 'homepage',
+      label: $gettext('Homepage'),
+      icon: h(GlobalOutlined),
+    })
+  }
 
   // The destructive entry sits alone below a divider, unless it is the only one.
   if (items.length > 0)
     items.push({ type: 'divider' })
-  items.push({ key: 'uninstall', label: $gettext('Uninstall'), icon: h(DeleteOutlined), danger: true })
+  items.push({
+    key: 'uninstall',
+    label: $gettext('Uninstall'),
+    icon: h(DeleteOutlined),
+    danger: true,
+  })
 
   return items
 })

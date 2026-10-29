@@ -487,7 +487,9 @@ function translationsOf(plugin: LocalizablePlugin, field: LocalizedField): Recor
       values[locale] = value
   }
 
-  const flat = field === 'name' ? plugin.name_i18n : plugin.description_i18n
+  const flat = field === 'name'
+    ? plugin.name_i18n
+    : plugin.description_i18n
   for (const [locale, value] of Object.entries(flat ?? {})) {
     if (value)
       values[locale] = value
@@ -574,7 +576,9 @@ const plugin = {
   },
 
   getLogs(id: string, lines = 500): Promise<PluginLogsResponse> {
-    return http.get(pluginPath(id, '/logs'), { params: { lines } })
+    return http.get(pluginPath(id, '/logs'), {
+      params: { lines },
+    })
   },
 
   /** Browser bundles of every enabled plugin that ships a webapp. */

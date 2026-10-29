@@ -15,7 +15,9 @@ const router = useRouter()
 const { describe } = useSnippetDescription()
 
 const name = computed(() => String(route.params.name))
-const pluginId = computed(() => typeof route.query.plugin_id === 'string' ? route.query.plugin_id : undefined)
+const pluginId = computed(() => typeof route.query.plugin_id === 'string'
+  ? route.query.plugin_id
+  : undefined)
 const source = ref<BuiltinTemplate>()
 const content = ref('')
 const isLoading = ref(false)
@@ -42,7 +44,15 @@ async function load() {
 watch([name, pluginId], load, { immediate: true })
 
 function copyAsSnippet() {
-  router.push({ path: '/sites/snippets/add', query: { from: name.value, ...(pluginId.value ? { plugin_id: pluginId.value } : {}) } })
+  router.push({
+    path: '/sites/snippets/add',
+    query: {
+      from: name.value,
+      ...(pluginId.value
+        ? { plugin_id: pluginId.value }
+        : {}),
+    },
+  })
 }
 </script>
 

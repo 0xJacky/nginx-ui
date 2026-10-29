@@ -90,7 +90,9 @@ const currentConfig = computed<ExternalNotifyConfig | undefined>(() => {
 })
 
 // A channel a plugin provides, rendered from the schema it declares.
-const pluginChannel = computed(() => currentConfig.value ? undefined : findPluginChannel(props.type))
+const pluginChannel = computed(() => currentConfig.value
+  ? undefined
+  : findPluginChannel(props.type))
 
 onMounted(() => loadPluginChannels())
 
@@ -188,7 +190,10 @@ const sanitizedConfig = computed<Record<string, string>>(() => {
   )
 })
 
-watch([() => props.type, allowedConfigKeys], () => {
+watch([
+  () => props.type,
+  allowedConfigKeys,
+], () => {
   if (!currentConfig.value && !pluginChannel.value)
     return
 

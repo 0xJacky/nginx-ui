@@ -104,7 +104,10 @@ const selectedProbeKind = computed(() => probeKinds.value.find(kind => kind.kind
 // still uses one whose plugin is gone.
 const probeKindOptions = computed<SelectProps['options']>(() => {
   const options = [
-    { label: $gettext('Built-in HTTP / gRPC check'), value: '' },
+    {
+      label: $gettext('Built-in HTTP / gRPC check'),
+      value: '',
+    },
     ...probeKinds.value.map(kind => ({ label: kind.name, value: kind.kind })),
   ]
   if (usesProbeKind.value && !selectedProbeKind.value) {

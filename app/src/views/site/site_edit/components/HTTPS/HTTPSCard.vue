@@ -384,7 +384,9 @@ watch(isOnMainNode, () => {
   options.value.dns_credential_id = undefined
 })
 
-const dns01Ready = computed(() => isOnMainNode.value ? mainDns01.value !== 'missing' : isDns01Available.value)
+const dns01Ready = computed(() => isOnMainNode.value
+  ? mainDns01.value !== 'missing'
+  : isDns01Available.value)
 
 const methodProblem = computed(() => {
   if (method.value === 'dns01' && hasIPIdentifier.value)
@@ -534,7 +536,10 @@ function formatParams(params?: HTTPSMessageArgs) {
 const stepRows = computed<ChecklistRow[]>(() => {
   // A run with a certificate from the main node issues nothing on the node.
   const list: HTTPSStep[] = steps.value.delegate
-    ? ['delegate', ...HTTPS_MAIN_STEPS.filter(step => step !== 'issue')]
+    ? [
+        'delegate',
+        ...HTTPS_MAIN_STEPS.filter(step => step !== 'issue'),
+      ]
     : [...HTTPS_MAIN_STEPS]
   if (steps.value.rollback)
     list.push('rollback')

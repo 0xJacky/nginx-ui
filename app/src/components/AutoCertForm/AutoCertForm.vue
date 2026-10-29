@@ -75,11 +75,22 @@ const challengeMethodOptions = computed<SelectProps['options']>(() => [
 ])
 
 const challengeHint = computed<{ text: string, warning?: boolean } | undefined>(() => {
-  if (isDns01.value)
-    return isDns01Blocked.value ? undefined : { text: $gettext('Validates the domain with a DNS record. Needs a DNS credential.') }
-  if (isWildcard.value)
-    return { text: $gettext('Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail.'), warning: true }
-  return { text: $gettext('Validates each domain over port 80 on this server.') }
+  if (isDns01.value) {
+    return isDns01Blocked.value
+      ? undefined
+      : {
+          text: $gettext('Validates the domain with a DNS record. Needs a DNS credential.'),
+        }
+  }
+  if (isWildcard.value) {
+    return {
+      text: $gettext('Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail.'),
+      warning: true,
+    }
+  }
+  return {
+    text: $gettext('Validates each domain over port 80 on this server.'),
+  }
 })
 
 const readonlyCredentialHelp = computed(() => dns01State.value === 'missing'
@@ -98,7 +109,10 @@ const keyTypeOptions: SelectProps['options'] = PrivateKeyTypeList.map(t => ({
 }))
 
 const compactLabelCol = { flex: '170px' }
-const compactWrapperCol = { flex: '1 1 0', style: { minWidth: 0 } }
+const compactWrapperCol = {
+  flex: '1 1 0',
+  style: { minWidth: 0 },
+}
 
 const cardStyles = {
   header: { minHeight: '40px' },

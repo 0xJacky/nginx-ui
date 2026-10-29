@@ -23,7 +23,10 @@ function parseEntry(entry: string) {
   const index = line.search(/\s/)
   if (index < 0)
     return { key: line, name: '' }
-  return { key: line.slice(0, index), name: line.slice(index).trim() }
+  return {
+    key: line.slice(0, index),
+    name: line.slice(index).trim(),
+  }
 }
 
 // The id matches the one the backend prints: the little endian id bytes as
@@ -45,7 +48,12 @@ function keyID(key: string) {
 
 const publishers = computed<Publisher[]>(() => entries.value.map(entry => {
   const { key, name } = parseEntry(entry)
-  return { entry, key, name, id: keyID(key) }
+  return {
+    entry,
+    key,
+    name,
+    id: keyID(key),
+  }
 }))
 
 function remove(index: number) {
@@ -77,7 +85,12 @@ function add() {
   }
   // The name is stored on the same line, so it cannot span lines.
   const name = form.name.replace(/\s+/g, ' ').trim()
-  entries.value = [...entries.value, name ? `${key} ${name}` : key]
+  entries.value = [
+    ...entries.value,
+    name
+      ? `${key} ${name}`
+      : key,
+  ]
   isModalOpen.value = false
 }
 </script>

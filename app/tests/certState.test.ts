@@ -17,7 +17,10 @@ describe('certificate state', () => {
   test('a certificate that never finished issuing is not called expired', () => {
     expect(certStateLabel({ state: 'not_issued', certificate_info: undefined as never })).toBe('Not issued yet')
     expect(certStateLabel({ state: 'failed', certificate_info: undefined as never })).toBe('Issuance failed')
-    expect(certStateLabel({ state: 'failed', certificate_info: { not_after: '2026-10-01' } as never })).toBe('Renewal failed')
+    expect(certStateLabel({
+      state: 'failed',
+      certificate_info: { not_after: '2026-10-01' } as never,
+    })).toBe('Renewal failed')
   })
 
   test('tones follow the severity', () => {
@@ -45,7 +48,13 @@ describe('certificate state', () => {
   })
 
   test('splitVisible keeps the first items and counts the rest', () => {
-    expect(splitVisible(['a', 'b', 'c', 'd'], 2)).toEqual({ visible: ['a', 'b'], hidden: 2 })
-    expect(splitVisible(['a'], 2)).toEqual({ visible: ['a'], hidden: 0 })
+    expect(splitVisible(['a', 'b', 'c', 'd'], 2)).toEqual({
+      visible: ['a', 'b'],
+      hidden: 2,
+    })
+    expect(splitVisible(['a'], 2)).toEqual({
+      visible: ['a'],
+      hidden: 0,
+    })
   })
 })

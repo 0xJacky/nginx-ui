@@ -57,8 +57,13 @@ function parseAtom(value: string): RangeAtom | null {
   const [, operator = '', rawMajor, rawMinor, rawPatch] = match
 
   // A leading wildcard matches everything regardless of the operator.
-  if (isWildcard(rawMajor))
-    return { operator: '*', parts: { major: 0, minor: 0, patch: 0 }, specified: 0 }
+  if (isWildcard(rawMajor)) {
+    return {
+      operator: '*',
+      parts: { major: 0, minor: 0, patch: 0 },
+      specified: 0,
+    }
+  }
 
   let specified = 1
   if (!isWildcard(rawMinor))
@@ -70,8 +75,12 @@ function parseAtom(value: string): RangeAtom | null {
     operator,
     parts: {
       major: Number(rawMajor),
-      minor: isWildcard(rawMinor) ? 0 : Number(rawMinor),
-      patch: isWildcard(rawPatch) ? 0 : Number(rawPatch),
+      minor: isWildcard(rawMinor)
+        ? 0
+        : Number(rawMinor),
+      patch: isWildcard(rawPatch)
+        ? 0
+        : Number(rawPatch),
     },
     specified,
   }
@@ -158,7 +167,9 @@ export function satisfies(version: string, range: string): boolean {
 
     return atoms.every(raw => {
       const atom = parseAtom(raw)
-      return atom ? matchAtom(parsed, atom) : false
+      return atom
+        ? matchAtom(parsed, atom)
+        : false
     })
   })
 }

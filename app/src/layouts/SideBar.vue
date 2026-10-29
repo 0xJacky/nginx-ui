@@ -96,7 +96,9 @@ function toSidebar(record: RouteRecordRaw): Sidebar {
     name: record.name as string,
     meta: {
       ...record.meta,
-      icon: record.meta?.icon ? markRaw(record.meta.icon as Component) : undefined,
+      icon: record.meta?.icon
+        ? markRaw(record.meta.icon as Component)
+        : undefined,
     } as unknown as Meta,
     children: [],
   }
@@ -142,7 +144,10 @@ function pluginSidebar(record: RouteRecordRaw): Sidebar {
  * becomes a new top level item.
  */
 const visible = computed<Sidebar[]>(() => {
-  const res = staticSidebars.value.map(entry => ({ ...entry, children: [...entry.children] }))
+  const res = staticSidebars.value.map(entry => ({
+    ...entry,
+    children: [...entry.children],
+  }))
 
   for (const record of pluginStore.routes) {
     if (isHidden(record))
@@ -150,7 +155,9 @@ const visible = computed<Sidebar[]>(() => {
 
     const entry = pluginSidebar(record)
     const parentName = record.meta?.pluginParent
-    const parent = parentName ? res.find(item => item.name === parentName) : undefined
+    const parent = parentName
+      ? res.find(item => item.name === parentName)
+      : undefined
 
     if (parent)
       parent.children.push(entry)
@@ -190,7 +197,9 @@ const menuItems = computed(() => {
       label: s?.meta?.name(),
       children: s.children.map(child => ({
         key: child.name,
-        label: h(RouterLink, { to: childLink(s, child) }, () => child?.meta?.name()),
+        label: h(RouterLink, {
+          to: childLink(s, child),
+        }, () => child?.meta?.name()),
       })),
     }
   })

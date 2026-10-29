@@ -22,7 +22,9 @@ const { replacingId, confirmReplace } = useReplacePlugin()
 
 // Unsigned always explains itself, other levels only when there is a better package.
 const hasPopover = computed(() => isUnsigned.value || Boolean(offer.value))
-const explanation = computed(() => (isUnsigned.value ? unsignedExplanation() : trust.value?.hint() ?? ''))
+const explanation = computed(() => (isUnsigned.value
+  ? unsignedExplanation()
+  : trust.value?.hint() ?? ''))
 const color = computed(() => (isUnsigned.value ? 'warning' : trust.value?.color))
 </script>
 

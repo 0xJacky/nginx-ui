@@ -20,7 +20,9 @@ const open = defineModel<boolean>('open', { default: false })
 
 const { message } = useGlobalApp()
 
-const name = computed(() => (props.plugin ? localizedPluginName(props.plugin, gettext.current) : ''))
+const name = computed(() => (props.plugin
+  ? localizedPluginName(props.plugin, gettext.current)
+  : ''))
 const syncing = ref(false)
 const nodeIds = ref<number[]>([])
 const results = ref<PluginNodeResult[]>([])
@@ -34,10 +36,14 @@ async function run() {
   try {
     const response = await syncPlugin(plugin.id, nodeIds.value)
     results.value = response.results
-    if (response.results.every(result => result.success))
-      message.success($gettext('Plugin synchronized to %{count} node(s)', { count: String(response.results.length) }))
-    else
+    if (response.results.every(result => result.success)) {
+      message.success($gettext('Plugin synchronized to %{count} node(s)', {
+        count: String(response.results.length),
+      }))
+    }
+    else {
       message.warning($gettext('Some nodes could not be synchronized'))
+    }
     emit('synced')
   }
   catch (error) {
@@ -53,7 +59,9 @@ watch(open, value => {
     return
 
   // Start from the configured target set so a manual push matches the policy.
-  nodeIds.value = [...(props.plugin?.sync_node_ids ?? [])]
+  nodeIds.value = [
+    ...(props.plugin?.sync_node_ids ?? []),
+  ]
   results.value = []
 })
 </script>

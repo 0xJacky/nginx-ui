@@ -37,7 +37,9 @@ export function conflictNames<T extends { id: string }>(
 ): string[] {
   return ids.map(id => {
     const plugin = installed.find(item => item.id === id)
-    return plugin ? nameOf(plugin) : id
+    return plugin
+      ? nameOf(plugin)
+      : id
   })
 }
 
@@ -48,7 +50,9 @@ export function joinNames(names: string[]): string {
 
 /** Shown on a plugin that cannot be on together with others. */
 export function conflictNote(names: string[]): string {
-  return $gettext('Cannot be enabled together with %{names}', { names: joinNames(names) })
+  return $gettext('Cannot be enabled together with %{names}', {
+    names: joinNames(names),
+  })
 }
 
 /** Asked before a plugin is turned on while others that conflict with it are on. */

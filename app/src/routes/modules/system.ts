@@ -21,20 +21,13 @@ export const systemRoutes: RouteRecordRaw[] = [
           hiddenInSidebar: true,
         },
       },
-    }, {
-      path: 'plugins',
-      name: 'Plugins',
-      component: () => import('@/views/system/plugins/Plugins.vue'),
-      meta: {
-        name: () => $gettext('Plugins'),
-        icon: AppstoreOutlined,
-      },
-    }, {
-      path: 'about',
-      name: 'About',
-      component: () => import('@/views/system/About.vue'),
-      meta: {
-        name: () => $gettext('About'),
+      {
+        path: 'self_check',
+        name: 'Self Check',
+        component: () => import('@/views/system/SelfCheck.vue'),
+        meta: {
+          name: () => $gettext('Self Check'),
+        },
       },
       {
         path: 'upgrade',
@@ -47,6 +40,15 @@ export const systemRoutes: RouteRecordRaw[] = [
 
             return settings.is_remote
           },
+        },
+      },
+      {
+        path: 'plugins',
+        name: 'Plugins',
+        component: () => import('@/views/system/plugins/Plugins.vue'),
+        meta: {
+          name: () => $gettext('Plugins'),
+          icon: AppstoreOutlined,
         },
       },
       {

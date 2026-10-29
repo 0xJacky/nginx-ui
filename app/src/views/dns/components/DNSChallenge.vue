@@ -65,7 +65,9 @@ const current = computed(() => {
 
 const selectedProviderName = computed(() => {
   const name = current.value?.name ?? data.value.provider ?? data.value.code ?? ''
-  return name ? $gettext(name) : ''
+  return name
+    ? $gettext(name)
+    : ''
 })
 
 const isDnsRecordManagementSupported = computed(() => {
@@ -122,7 +124,9 @@ watch(current, () => {
 const options = computed<SelectProps['options']>(() => {
   return providers.value.map(v => ({
     value: v.code,
-    label: v.name ? $gettext(v.name) : v.code,
+    label: v.name
+      ? $gettext(v.name)
+      : v.code,
   }))
 })
 
@@ -144,13 +148,19 @@ let stash: MethodStash = {}
 const methodOptions = computed(() => methods.value.map(method => ({
   value: method.name,
   label: method.recommended
-    ? $gettext('%{method} (recommended)', { method: $gettext(method.name) })
+    ? $gettext('%{method} (recommended)', {
+        method: $gettext(method.name),
+      })
     : $gettext(method.name),
 })))
 
 // Pick the method once the provider schema arrives, or when the provider or
 // the edited credential changes.
-watch([() => data.value, () => data.value.code, form], ([record, code], [previousRecord, previousCode]) => {
+watch([
+  () => data.value,
+  () => data.value.code,
+  form,
+], ([record, code], [previousRecord, previousCode]) => {
   if (record !== previousRecord || code !== previousCode)
     stash = {}
   if (!form.value) {

@@ -66,7 +66,18 @@ useSortable(cards, rows, {
 })
 
 function newRow(url = '', editing = false, official = false): SourceRow {
-  return { key: nextKey++, url, editing, official, previousUrl: url, probedUrl: '', state: 'idle', catalogIcon: '', plugins: 0, detail: '' }
+  return {
+    key: nextKey++,
+    url,
+    editing,
+    official,
+    previousUrl: url,
+    probedUrl: '',
+    state: 'idle',
+    catalogIcon: '',
+    plugins: 0,
+    detail: '',
+  }
 }
 
 // A bare domain gets https in front; the check then finds the catalog on it.
@@ -152,7 +163,9 @@ function stateText(row: SourceRow) {
     case 'checking':
       return $gettext('Checking')
     case 'available':
-      return $ngettext('%{count} plugin', '%{count} plugins', row.plugins, { count: String(row.plugins) })
+      return $ngettext('%{count} plugin', '%{count} plugins', row.plugins, {
+        count: String(row.plugins),
+      })
     case 'unavailable':
       return $gettext('Unavailable')
     case 'invalid':
@@ -215,7 +228,9 @@ function cancelEdit(row: SourceRow, index: number) {
   }
   row.url = row.previousUrl
   row.editing = false
-  row.state = row.probedUrl === row.url ? row.state : 'idle'
+  row.state = row.probedUrl === row.url
+    ? row.state
+    : 'idle'
   row.pending = probe(row)
 }
 

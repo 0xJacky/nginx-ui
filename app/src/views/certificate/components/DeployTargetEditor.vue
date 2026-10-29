@@ -39,7 +39,10 @@ const kindOptions = computed(() => {
 })
 
 const certOptions = computed(() => [
-  { label: $gettext('All certificates'), value: 0 },
+  {
+    label: $gettext('All certificates'),
+    value: 0,
+  },
   ...certificateOptions.value.map(item => ({ label: item.name, value: item.id })),
 ])
 

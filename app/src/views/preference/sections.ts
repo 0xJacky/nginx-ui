@@ -132,7 +132,10 @@ export function buildPreferenceSections(): PreferenceSection[] {
       group: 'features',
       label: $gettext('Plugins'),
       description: $gettext('Plugin system, marketplace, packages and resource limits of plugin processes.'),
-      link: { label: $gettext('Go to plugins'), to: '/system/plugins' },
+      link: {
+        label: $gettext('Go to plugins'),
+        to: '/system/plugins',
+      },
       pathPrefixes: ['plugin'],
     },
     {

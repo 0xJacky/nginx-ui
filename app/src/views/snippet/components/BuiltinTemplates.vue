@@ -57,7 +57,9 @@ function variableCount(template: BuiltinTemplate) {
 
 // A template of a plugin is named by the plugin and its file name.
 function sourceQuery(template: BuiltinTemplate) {
-  return template.plugin_id ? { plugin_id: template.plugin_id } : {}
+  return template.plugin_id
+    ? { plugin_id: template.plugin_id }
+    : {}
 }
 
 function rowKey(template: BuiltinTemplate) {
@@ -65,7 +67,10 @@ function rowKey(template: BuiltinTemplate) {
 }
 
 function view(template: BuiltinTemplate) {
-  router.push({ path: `/sites/snippets/templates/${encodeURIComponent(template.filename)}`, query: sourceQuery(template) })
+  router.push({
+    path: `/sites/snippets/templates/${encodeURIComponent(template.filename)}`,
+    query: sourceQuery(template),
+  })
 }
 
 // A click anywhere on a row opens the template, except on its own controls.
@@ -79,7 +84,13 @@ function rowProps(record: BuiltinTemplate) {
 }
 
 function copyAsSnippet(template: BuiltinTemplate) {
-  router.push({ path: '/sites/snippets/add', query: { from: template.filename, ...sourceQuery(template) } })
+  router.push({
+    path: '/sites/snippets/add',
+    query: {
+      from: template.filename,
+      ...sourceQuery(template),
+    },
+  })
 }
 </script>
 

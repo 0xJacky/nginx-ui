@@ -27,5 +27,7 @@ export function cloneSettings(values: Record<string, unknown>): Record<string, u
 
 /** Text a plugin supplied, translated when the plugin registered a translation for it. */
 export function translatePluginText(text: string | undefined): string {
-  return text ? $gettext(text) : ''
+  return text
+    ? $gettext(text)
+    : ''
 }

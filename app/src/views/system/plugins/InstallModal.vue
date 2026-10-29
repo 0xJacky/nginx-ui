@@ -47,9 +47,18 @@ const keepInSync = ref(false)
 const syncResults = ref<PluginNodeResult[]>([])
 
 const nodeTargetOptions = computed(() => [
-  { value: 'none', label: $gettext('This node only') },
-  { value: 'all', label: $gettext('All child nodes') },
-  { value: 'selected', label: $gettext('Selected nodes') },
+  {
+    value: 'none',
+    label: $gettext('This node only'),
+  },
+  {
+    value: 'all',
+    label: $gettext('All child nodes'),
+  },
+  {
+    value: 'selected',
+    label: $gettext('Selected nodes'),
+  },
 ])
 
 async function loadNodes() {
@@ -63,8 +72,12 @@ async function loadNodes() {
 }
 
 const manifest = computed(() => inspect.value?.manifest)
-const manifestName = computed(() => (manifest.value ? localizedPluginName(manifest.value, gettext.current) : ''))
-const manifestDescription = computed(() => (manifest.value ? localizedPluginDescription(manifest.value, gettext.current) : ''))
+const manifestName = computed(() => (manifest.value
+  ? localizedPluginName(manifest.value, gettext.current)
+  : ''))
+const manifestDescription = computed(() => (manifest.value
+  ? localizedPluginDescription(manifest.value, gettext.current)
+  : ''))
 const permissions = computed(() => inspect.value?.permissions ?? [])
 const reasons = computed(() => permissionReasons(inspect.value?.manifest, gettext.current))
 const requiresMissing = computed(() => inspect.value?.requires_missing ?? [])
@@ -110,7 +123,9 @@ const canInstall = computed(() => Boolean(file.value)
 
 /** Pushes the freshly installed plugin to the nodes the user picked. */
 async function applyClusterOptions(pluginId: string) {
-  const nodeIds = nodeTarget.value === 'selected' ? targetNodeIds.value : []
+  const nodeIds = nodeTarget.value === 'selected'
+    ? targetNodeIds.value
+    : []
 
   if (keepInSync.value) {
     await setSyncPolicy(pluginId, {

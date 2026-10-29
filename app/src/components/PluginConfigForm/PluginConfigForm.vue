@@ -10,7 +10,9 @@ const props = defineProps<{
   fields: ConfigurationField[]
 }>()
 
-const values = defineModel<Record<string, string>>({ default: () => ({}) })
+const values = defineModel<Record<string, string>>({
+  default: () => ({}),
+})
 
 function update(key: string, value: string | number | null | undefined) {
   const next = { ...values.value }
@@ -26,7 +28,9 @@ function numberValue(key: string): number | undefined {
   if (raw === undefined || raw === '')
     return undefined
   const parsed = Number(raw)
-  return Number.isNaN(parsed) ? undefined : parsed
+  return Number.isNaN(parsed)
+    ? undefined
+    : parsed
 }
 
 function onNumber(key: string, value: number | string | null) {
@@ -34,7 +38,9 @@ function onNumber(key: string, value: number | string | null) {
 }
 
 function onBool(key: string, checked: boolean | string | number) {
-  update(key, checked === true ? 'true' : 'false')
+  update(key, checked === true
+    ? 'true'
+    : 'false')
 }
 </script>
 

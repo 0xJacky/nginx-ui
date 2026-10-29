@@ -23,8 +23,12 @@ const pluginLoader = usePluginLoader()
 const pluginStore = usePluginStore()
 
 function readTab(value: LocationQueryValue | LocationQueryValue[] | undefined): TabKey {
-  const key = Array.isArray(value) ? value[0] : value
-  return tabKeys.includes(key as TabKey) ? key as TabKey : 'installed'
+  const key = Array.isArray(value)
+    ? value[0]
+    : value
+  return tabKeys.includes(key as TabKey)
+    ? key as TabKey
+    : 'installed'
 }
 
 const activeKey = ref<TabKey>(readTab(route.query.tab))
@@ -36,7 +40,9 @@ const developerMode = ref(false)
 
 // The tab lives in the URL so a reload or a shared link lands on the same view.
 watch(activeKey, key => {
-  router.replace({ query: { ...route.query, tab: key } })
+  router.replace({
+    query: { ...route.query, tab: key },
+  })
 })
 
 // Developer tools only show in developer mode. A failed read keeps them hidden.
@@ -55,8 +61,13 @@ const showDevPlugin = computed(() => developerMode.value || Boolean(pluginStore.
 
 const moreItems = computed<MenuProps['items']>(() => {
   const items: NonNullable<MenuProps['items']> = []
-  if (showDevPlugin.value)
-    items.push({ key: 'dev', label: $gettext('Develop plugin'), icon: h(ExperimentOutlined) })
+  if (showDevPlugin.value) {
+    items.push({
+      key: 'dev',
+      label: $gettext('Develop plugin'),
+      icon: h(ExperimentOutlined),
+    })
+  }
   return items
 })
 
@@ -66,16 +77,31 @@ function onMoreClick({ key }: { key: string | number }) {
 }
 
 const tabs = computed(() => [
-  { key: 'installed', label: $gettext('Installed'), count: inventory.plugins.value.length },
-  { key: 'marketplace', label: $gettext('Marketplace'), count: inventory.updates.value.length },
-  { key: 'nodes', label: $gettext('Nodes') },
+  {
+    key: 'installed',
+    label: $gettext('Installed'),
+    count: inventory.plugins.value.length,
+  },
+  {
+    key: 'marketplace',
+    label: $gettext('Marketplace'),
+    count: inventory.updates.value.length,
+  },
+  {
+    key: 'nodes',
+    label: $gettext('Nodes'),
+  },
 ])
 
 // A freshly installed bundle is picked up without a page reload.
 async function onInstalled() {
   await inventory.reload(true)
   await pluginLoader.unloadDisabled(inventory.plugins.value)
-  await Promise.all([inventory.reloadUpdates(), inventory.reloadCatalog(), pluginLoader.loadNew()])
+  await Promise.all([
+    inventory.reloadUpdates(),
+    inventory.reloadCatalog(),
+    pluginLoader.loadNew(),
+  ])
 }
 </script>
 

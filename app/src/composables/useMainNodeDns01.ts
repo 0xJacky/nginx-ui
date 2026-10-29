@@ -21,7 +21,9 @@ export function useMainNodeDns01(enabled: MaybeRefOrGetter<boolean> = true) {
   async function load() {
     try {
       const methods = await auto_cert.get_challenge_methods({ skipNodeProxy: true })
-      mainDns01.value = methods.some(m => m.code === AutoCertChallengeMethod.dns01) ? 'available' : 'missing'
+      mainDns01.value = methods.some(m => m.code === AutoCertChallengeMethod.dns01)
+        ? 'available'
+        : 'missing'
     }
     catch {
       mainDns01.value = 'unknown'
@@ -34,8 +36,14 @@ export function useMainNodeDns01(enabled: MaybeRefOrGetter<boolean> = true) {
   }, { immediate: true })
 
   const verifyOptions = computed(() => [
-    { label: $gettext('On the main node'), value: 'main' },
-    { label: $gettext('On this node'), value: 'node' },
+    {
+      label: $gettext('On the main node'),
+      value: 'main',
+    },
+    {
+      label: $gettext('On this node'),
+      value: 'node',
+    },
   ])
 
   function verifyHint(verifyOn: DnsVerifyOn) {

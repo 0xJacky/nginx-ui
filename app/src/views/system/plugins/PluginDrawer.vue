@@ -31,14 +31,29 @@ const { width: windowWidth } = useWindowSize()
 // A phone gets the whole screen instead of an unusable sliver.
 const drawerSize = computed(() => Math.min(760, windowWidth.value))
 
-const name = computed(() => (props.plugin ? localizedPluginName(props.plugin, gettext.current) : ''))
-const status = computed(() => (props.plugin ? statusOf(props.plugin) : undefined))
-const toggleDisabled = computed(() => (props.plugin ? isToggleDisabled(props.plugin) : true))
+const name = computed(() => (props.plugin
+  ? localizedPluginName(props.plugin, gettext.current)
+  : ''))
+const status = computed(() => (props.plugin
+  ? statusOf(props.plugin)
+  : undefined))
+const toggleDisabled = computed(() => (props.plugin
+  ? isToggleDisabled(props.plugin)
+  : true))
 
 const tabs = computed(() => [
-  { key: 'overview', label: $gettext('Overview') },
-  { key: 'settings', label: $gettext('Settings') },
-  { key: 'logs', label: $gettext('Logs') },
+  {
+    key: 'overview',
+    label: $gettext('Overview'),
+  },
+  {
+    key: 'settings',
+    label: $gettext('Settings'),
+  },
+  {
+    key: 'logs',
+    label: $gettext('Logs'),
+  },
 ])
 
 const isActive = (key: PluginDrawerTab) => open.value && tab.value === key

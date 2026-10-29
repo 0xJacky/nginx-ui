@@ -14,17 +14,55 @@ import {
 function cloudflareForm(): DNSProviderForm {
   return {
     fields: [
-      { key: 'CF_DNS_API_TOKEN', label: 'API token', group: 'credential', secret: true },
-      { key: 'CF_ZONE_API_TOKEN', label: 'Zone read token', group: 'credential', optional: true },
+      {
+        key: 'CF_DNS_API_TOKEN',
+        label: 'API token',
+        group: 'credential',
+        secret: true,
+      },
+      {
+        key: 'CF_ZONE_API_TOKEN',
+        label: 'Zone read token',
+        group: 'credential',
+        optional: true,
+      },
       { key: 'CF_API_EMAIL', label: 'Account email', group: 'credential' },
-      { key: 'CF_API_KEY', label: 'Global API key', group: 'credential', secret: true },
-      { key: 'CF_ACCOUNT_ID', label: 'Account ID', group: 'credential', optional: true },
-      { key: 'CF_TTL', label: 'TXT record TTL', group: 'setting', default: '120', unit: 'seconds' },
-      { key: 'CF_BASE_URL', label: 'API base URL', group: 'setting', default: 'https://api.example.com' },
+      {
+        key: 'CF_API_KEY',
+        label: 'Global API key',
+        group: 'credential',
+        secret: true,
+      },
+      {
+        key: 'CF_ACCOUNT_ID',
+        label: 'Account ID',
+        group: 'credential',
+        optional: true,
+      },
+      {
+        key: 'CF_TTL',
+        label: 'TXT record TTL',
+        group: 'setting',
+        default: '120',
+        unit: 'seconds',
+      },
+      {
+        key: 'CF_BASE_URL',
+        label: 'API base URL',
+        group: 'setting',
+        default: 'https://api.example.com',
+      },
     ],
     methods: [
-      { name: 'API token', recommended: true, fields: ['CF_DNS_API_TOKEN', 'CF_ZONE_API_TOKEN'] },
-      { name: 'Global API key', fields: ['CF_API_EMAIL', 'CF_API_KEY'] },
+      {
+        name: 'API token',
+        recommended: true,
+        fields: ['CF_DNS_API_TOKEN', 'CF_ZONE_API_TOKEN'],
+      },
+      {
+        name: 'Global API key',
+        fields: ['CF_API_EMAIL', 'CF_API_KEY'],
+      },
     ],
   }
 }
@@ -34,21 +72,44 @@ function awsForm(): DNSProviderForm {
   return {
     fields: [
       { key: 'AWS_ACCESS_KEY_ID', label: 'Access key ID', group: 'credential' },
-      { key: 'AWS_SECRET_ACCESS_KEY', label: 'Secret access key', group: 'credential', secret: true },
+      {
+        key: 'AWS_SECRET_ACCESS_KEY',
+        label: 'Secret access key',
+        group: 'credential',
+        secret: true,
+      },
       { key: 'AWS_PROFILE', label: 'Profile', group: 'credential' },
       { key: 'AWS_REGION', label: 'Region', group: 'setting' },
     ],
     methods: [
-      { name: 'Access key', recommended: true, fields: ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY'] },
-      { name: 'Profile', fields: ['AWS_PROFILE'], values: { AWS_SDK_LOAD_CONFIG: '1' } },
-      { name: 'Instance role', values: { AWS_SDK_LOAD_CONFIG: '1', AWS_USE_INSTANCE_ROLE: 'true' } },
+      {
+        name: 'Access key',
+        recommended: true,
+        fields: ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY'],
+      },
+      {
+        name: 'Profile',
+        fields: ['AWS_PROFILE'],
+        values: { AWS_SDK_LOAD_CONFIG: '1' },
+      },
+      {
+        name: 'Instance role',
+        values: { AWS_SDK_LOAD_CONFIG: '1', AWS_USE_INSTANCE_ROLE: 'true' },
+      },
     ],
   }
 }
 
 describe('formMethods', () => {
   test('a single method is not offered', () => {
-    expect(formMethods({ methods: [{ name: 'Only', fields: ['A'] }] })).toEqual([])
+    expect(formMethods({
+      methods: [
+        {
+          name: 'Only',
+          fields: ['A'],
+        },
+      ],
+    })).toEqual([])
     expect(formMethods(undefined)).toEqual([])
     expect(formMethods(cloudflareForm()).map(m => m.name)).toEqual(['API token', 'Global API key'])
   })
@@ -62,13 +123,29 @@ describe('visibleCredentialFields', () => {
 
   test('shows every credential field without a method', () => {
     const keys = visibleCredentialFields(cloudflareForm(), undefined).map(f => f.key)
-    expect(keys).toEqual(['CF_DNS_API_TOKEN', 'CF_ZONE_API_TOKEN', 'CF_API_EMAIL', 'CF_API_KEY', 'CF_ACCOUNT_ID'])
+    expect(keys).toEqual([
+      'CF_DNS_API_TOKEN',
+      'CF_ZONE_API_TOKEN',
+      'CF_API_EMAIL',
+      'CF_API_KEY',
+      'CF_ACCOUNT_ID',
+    ])
   })
 
   test('fields without a group count as credentials', () => {
-    const keys = visibleCredentialFields({ fields: [{ key: 'A' }, { key: 'B', group: 'setting' }] }, undefined).map(f => f.key)
+    const keys = visibleCredentialFields({
+      fields: [
+        { key: 'A' },
+        { key: 'B', group: 'setting' },
+      ],
+    }, undefined).map(f => f.key)
     expect(keys).toEqual(['A'])
-    expect(settingFields({ fields: [{ key: 'A' }, { key: 'B', group: 'setting' }] }).map(f => f.key)).toEqual(['B'])
+    expect(settingFields({
+      fields: [
+        { key: 'A' },
+        { key: 'B', group: 'setting' },
+      ],
+    }).map(f => f.key)).toEqual(['B'])
   })
 })
 
@@ -98,7 +175,12 @@ describe('initialMethod', () => {
   test('prefers a method whose fixed values are all stored', () => {
     expect(initialMethod(awsForm(), { AWS_SDK_LOAD_CONFIG: '1', AWS_USE_INSTANCE_ROLE: 'true' })).toBe('Instance role')
     // Matching values beat filled fields.
-    expect(initialMethod(awsForm(), { AWS_ACCESS_KEY_ID: 'a', AWS_SECRET_ACCESS_KEY: 's', AWS_SDK_LOAD_CONFIG: '1', AWS_USE_INSTANCE_ROLE: 'true' })).toBe('Instance role')
+    expect(initialMethod(awsForm(), {
+      AWS_ACCESS_KEY_ID: 'a',
+      AWS_SECRET_ACCESS_KEY: 's',
+      AWS_SDK_LOAD_CONFIG: '1',
+      AWS_USE_INSTANCE_ROLE: 'true',
+    })).toBe('Instance role')
   })
 
   test('a partial value match does not count', () => {
@@ -116,7 +198,11 @@ describe('initialMethod', () => {
   })
 
   test('is undefined without methods', () => {
-    expect(initialMethod({ fields: [{ key: 'A' }] }, { A: 'x' })).toBeUndefined()
+    expect(initialMethod({
+      fields: [
+        { key: 'A' },
+      ],
+    }, { A: 'x' })).toBeUndefined()
   })
 })
 
@@ -143,10 +229,20 @@ describe('applyMethod', () => {
 
   test('keeps keys shared by the selected method', () => {
     const form: DNSProviderForm = {
-      fields: [{ key: 'TENANT' }, { key: 'SECRET' }, { key: 'CERT' }],
+      fields: [
+        { key: 'TENANT' },
+        { key: 'SECRET' },
+        { key: 'CERT' },
+      ],
       methods: [
-        { name: 'Secret', fields: ['TENANT', 'SECRET'] },
-        { name: 'Certificate', fields: ['TENANT', 'CERT'] },
+        {
+          name: 'Secret',
+          fields: ['TENANT', 'SECRET'],
+        },
+        {
+          name: 'Certificate',
+          fields: ['TENANT', 'CERT'],
+        },
       ],
     }
     const credentials: Record<string, string> = { TENANT: 't', SECRET: 's', CERT: '/c.pem' }
@@ -207,9 +303,20 @@ function dnsUpdateForm(): DNSProviderForm {
       { key: 'KRB5_PRINCIPAL', group: 'credential' },
     ],
     methods: [
-      { name: 'TSIG key', recommended: true, fields: ['TSIG_KEY', 'TSIG_ALGORITHM'] },
-      { name: 'Kerberos password', fields: ['KRB5_PRINCIPAL'], values: { TSIG_ALGORITHM: 'gss-tsig' } },
-      { name: 'Kerberos keytab', values: { TSIG_ALGORITHM: 'gss-tsig' } },
+      {
+        name: 'TSIG key',
+        recommended: true,
+        fields: ['TSIG_KEY', 'TSIG_ALGORITHM'],
+      },
+      {
+        name: 'Kerberos password',
+        fields: ['KRB5_PRINCIPAL'],
+        values: { TSIG_ALGORITHM: 'gss-tsig' },
+      },
+      {
+        name: 'Kerberos keytab',
+        values: { TSIG_ALGORITHM: 'gss-tsig' },
+      },
     ],
   }
 }
@@ -263,7 +370,12 @@ describe('methodNeedsNoInput', () => {
 
   test('is false while unlisted credential fields remain', () => {
     const form = awsForm()
-    form.fields!.push({ key: 'AWS_HOSTED_ZONE_ID', label: 'Hosted zone ID', group: 'credential', optional: true })
+    form.fields!.push({
+      key: 'AWS_HOSTED_ZONE_ID',
+      label: 'Hosted zone ID',
+      group: 'credential',
+      optional: true,
+    })
     expect(methodNeedsNoInput(form, 'Instance role')).toBe(false)
   })
 })

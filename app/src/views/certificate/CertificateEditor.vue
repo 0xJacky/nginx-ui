@@ -80,7 +80,9 @@ const selfSignedFields = {
 } satisfies Record<keyof SelfSignedCertPayload, () => string>
 
 function clone<T>(value: T): T {
-  return value === undefined ? value : JSON.parse(JSON.stringify(value))
+  return value === undefined
+    ? value
+    : JSON.parse(JSON.stringify(value))
 }
 
 function pickTracked(source: Partial<Cert>) {
@@ -121,7 +123,9 @@ function labelsOf<T extends Record<string, () => string>>(paths: string[], label
   const result = paths
     .map(path => labels[path.split('.')[0] as keyof T]?.())
     .filter((label): label is string => !!label)
-  return [...new Set(result)]
+  return [
+    ...new Set(result),
+  ]
 }
 
 const changedLabels = computed(() => {
@@ -149,7 +153,9 @@ function normalizeLoaded(r: Cert): Cert {
 
 function applyLoaded(r: Cert) {
   data.value = normalizeLoaded(r)
-  selfSignedPayload.value = r.auto_cert === AutoCertState.SelfSigned ? toSelfSignedPayload(r) : undefined
+  selfSignedPayload.value = r.auto_cert === AutoCertState.SelfSigned
+    ? toSelfSignedPayload(r)
+    : undefined
   markSaved()
 }
 
@@ -196,7 +202,10 @@ const domains = computed(() => {
   const info = data.value.certificate_info
   if (!info)
     return []
-  return [info.subject_name, ...(info.subject_alt_names ?? [])].filter(Boolean)
+  return [
+    info.subject_name,
+    ...(info.subject_alt_names ?? []),
+  ].filter(Boolean)
 })
 
 // The name of an ACME certificate follows its domains and is rewritten on
@@ -251,7 +260,14 @@ const renewOptions = computed<AutoCertOptions>(() => ({
 const removeCert = useTemplateRef('removeCert')
 
 const moreMenu = computed(() => ({
-  items: [{ key: 'delete', danger: true, label: $gettext('Delete'), disabled: processingStatus.value.auto_cert_processing }],
+  items: [
+    {
+      key: 'delete',
+      danger: true,
+      label: $gettext('Delete'),
+      disabled: processingStatus.value.auto_cert_processing,
+    },
+  ],
   onClick: ({ key }: { key: string | number }) => {
     if (key === 'delete')
       removeCert.value?.open()
@@ -273,7 +289,9 @@ async function switchAutoRenewal(enabled: boolean) {
     data.value.auto_cert = r.auto_cert
     data.value.state = r.state
     data.value.renew_at = r.renew_at
-    message.success(enabled ? $gettext('Automatic renewal turned on') : $gettext('Automatic renewal turned off'))
+    message.success(enabled
+      ? $gettext('Automatic renewal turned on')
+      : $gettext('Automatic renewal turned off'))
   }
   catch (e) {
     message.error(getErrorMessage(e, $gettext('Server error')))

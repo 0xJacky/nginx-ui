@@ -23,22 +23,57 @@ interface StatePreset {
 }
 
 const statePresets: Record<PluginSyncState, StatePreset> = {
-  in_sync: { tone: 'success', label: () => $gettext('In sync') },
-  outdated: { tone: 'warning', label: () => $gettext('Outdated') },
-  missing: { tone: 'muted', label: () => $gettext('Not installed') },
-  unsupported_platform: { tone: 'info', label: () => $gettext('Unsupported platform') },
-  unsupported: { tone: 'info', label: () => $gettext('Unsupported') },
-  offline: { tone: 'error', label: () => $gettext('Offline') },
-  opted_out: { tone: 'muted', label: () => $gettext('Opted out') },
-  error: { tone: 'error', label: () => $gettext('Error') },
+  in_sync: {
+    tone: 'success',
+    label: () => $gettext('In sync'),
+  },
+  outdated: {
+    tone: 'warning',
+    label: () => $gettext('Outdated'),
+  },
+  missing: {
+    tone: 'muted',
+    label: () => $gettext('Not installed'),
+  },
+  unsupported_platform: {
+    tone: 'info',
+    label: () => $gettext('Unsupported platform'),
+  },
+  unsupported: {
+    tone: 'info',
+    label: () => $gettext('Unsupported'),
+  },
+  offline: {
+    tone: 'error',
+    label: () => $gettext('Offline'),
+  },
+  opted_out: {
+    tone: 'muted',
+    label: () => $gettext('Opted out'),
+  },
+  error: {
+    tone: 'error',
+    label: () => $gettext('Error'),
+  },
 }
 
 /** Legend order: the states worth acting on come first. */
-const legend = computed(() => (['in_sync', 'outdated', 'missing', 'offline', 'error', 'unsupported_platform', 'opted_out'] as PluginSyncState[])
+const legend = computed(() => ([
+  'in_sync',
+  'outdated',
+  'missing',
+  'offline',
+  'error',
+  'unsupported_platform',
+  'opted_out',
+] as PluginSyncState[])
   .map(state => ({ state, ...statePresets[state] })))
 
 function stateOf(cell: PluginMatrixCell): StatePreset {
-  return statePresets[cell.state] ?? { tone: 'muted', label: () => cell.state }
+  return statePresets[cell.state] ?? {
+    tone: 'muted',
+    label: () => cell.state,
+  }
 }
 
 const nodeOptions = computed(() => matrix.value.nodes.map(node => ({
@@ -47,13 +82,23 @@ const nodeOptions = computed(() => matrix.value.nodes.map(node => ({
 })))
 
 const columns = computed(() => [
-  { title: $gettext('Plugin'), dataIndex: 'plugin', width: 240, fixed: 'left' as const },
+  {
+    title: $gettext('Plugin'),
+    dataIndex: 'plugin',
+    width: 240,
+    fixed: 'left' as const,
+  },
   ...matrix.value.nodes.map(node => ({
     title: node.name,
     dataIndex: `node:${node.id}`,
     width: 200,
   })),
-  { title: $gettext('Action'), dataIndex: 'action', width: 150, fixed: 'right' as const },
+  {
+    title: $gettext('Action'),
+    dataIndex: 'action',
+    width: 150,
+    fixed: 'right' as const,
+  },
 ])
 
 const scrollX = computed(() => 390 + matrix.value.nodes.length * 200)
@@ -74,7 +119,9 @@ const installedById = computed(() => new Map(inventory.plugins.value.map(item =>
 
 function rowName(row: PluginMatrixRow) {
   const installed = installedById.value.get(row.plugin_id)
-  return installed ? localizedPluginName(installed, gettext.current) : row.name
+  return installed
+    ? localizedPluginName(installed, gettext.current)
+    : row.name
 }
 
 function nodeIdOf(dataIndex: string) {
@@ -118,10 +165,14 @@ async function sync(pluginId: string, nodeIds: number[], key: string) {
   try {
     const { results } = await syncPlugin(pluginId, nodeIds)
     const failed = results.filter(result => !result.success)
-    if (failed.length === 0)
-      message.success($gettext('Plugin synchronized to %{count} node(s)', { count: String(results.length) }))
-    else
+    if (failed.length === 0) {
+      message.success($gettext('Plugin synchronized to %{count} node(s)', {
+        count: String(results.length),
+      }))
+    }
+    else {
       message.warning(failed.map(result => `${result.node}: ${result.error}`).join('\n'))
+    }
 
     await load(false)
   }
@@ -137,15 +188,32 @@ async function sync(pluginId: string, nodeIds: number[], key: string) {
 function cellActions(row: PluginMatrixRow, cell: PluginMatrixCell) {
   const items: { key: string, label: string }[] = []
 
-  if (cell.state === 'missing')
-    items.push({ key: 'install', label: $gettext('Install') })
-  else if (cell.version && cell.version !== row.version)
-    items.push({ key: 'update', label: $gettext('Update to %{version}', { version: row.version }) })
+  if (cell.state === 'missing') {
+    items.push({
+      key: 'install',
+      label: $gettext('Install'),
+    })
+  }
+  else if (cell.version && cell.version !== row.version) {
+    items.push({
+      key: 'update',
+      label: $gettext('Update to %{version}', { version: row.version }),
+    })
+  }
 
-  if (cell.state !== 'missing' && cell.enabled !== row.enabled)
-    items.push({ key: 'toggle', label: row.enabled ? $gettext('Enable') : $gettext('Disable') })
+  if (cell.state !== 'missing' && cell.enabled !== row.enabled) {
+    items.push({
+      key: 'toggle',
+      label: row.enabled
+        ? $gettext('Enable')
+        : $gettext('Disable'),
+    })
+  }
 
-  items.push({ key: 'sync', label: $gettext('Sync to this node') })
+  items.push({
+    key: 'sync',
+    label: $gettext('Sync to this node'),
+  })
   return items
 }
 

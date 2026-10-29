@@ -5,7 +5,9 @@ import pluginApi from '@/api/plugin'
 export function formatMemory(mb: number): string {
   if (mb >= 1024) {
     const gb = mb / 1024
-    return `${Number.isInteger(gb) ? gb : gb.toFixed(1)} GB`
+    return `${Number.isInteger(gb)
+      ? gb
+      : gb.toFixed(1)} GB`
   }
   return `${mb} MB`
 }
@@ -13,7 +15,9 @@ export function formatMemory(mb: number): string {
 /** The memory hint of a manifest in MiB, 0 when it gives none. */
 export function recommendedMemory(manifest?: Pick<PluginManifest, 'server'>): number {
   const value = manifest?.server?.resources?.recommended_memory_mb ?? 0
-  return value > 0 ? value : 0
+  return value > 0
+    ? value
+    : 0
 }
 
 /** True only when both numbers are known and the server has less than advised. */
@@ -25,7 +29,10 @@ export function isBelowRecommended(recommendedMb: number | undefined, systemMb: 
 export function memoryWarning(recommendedMb: number, systemMb: number): string {
   return $gettext(
     'This server has %{system} of memory, below the %{recommended} recommended for this plugin. The plugin may run slowly or stop unexpectedly.',
-    { system: formatMemory(systemMb), recommended: formatMemory(recommendedMb) },
+    {
+      system: formatMemory(systemMb),
+      recommended: formatMemory(recommendedMb),
+    },
   )
 }
 

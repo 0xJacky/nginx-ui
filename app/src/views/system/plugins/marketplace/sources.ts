@@ -40,7 +40,9 @@ export function useSourceName() {
 /** Icon a source URL declares, empty when it has none. */
 export function useSourceIcon() {
   ensureSources()
-  return (url: string | undefined) => (url ? sourceOf(url)?.catalog_icon ?? '' : '')
+  return (url: string | undefined) => (url
+    ? sourceOf(url)?.catalog_icon ?? ''
+    : '')
 }
 
 function sourceOf(url: string) {

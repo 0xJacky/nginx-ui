@@ -83,7 +83,10 @@ export function useHTTPSOnboarding(configName: MaybeRefOrGetter<string>) {
 
     const id = ++runId
     closeSocket()
-    lastRequest.value = { ...request, domains: [...request.domains] }
+    lastRequest.value = {
+      ...request,
+      domains: [...request.domains],
+    }
     lastDelegated.value = delegated
     state.value = createHTTPSOnboardingState('running')
 
@@ -203,7 +206,12 @@ export function useHTTPSOnboarding(configName: MaybeRefOrGetter<string>) {
         if (r.status !== 'success')
           return
         if (!r.remote_certificate_id) {
-          settle(0, { type: 'done', status: 'error', step: 'delegate', message: $gettext('The node did not confirm that it received the certificate. Update Nginx UI on the node and try again.') })
+          settle(0, {
+            type: 'done',
+            status: 'error',
+            step: 'delegate',
+            message: $gettext('The node did not confirm that it received the certificate. Update Nginx UI on the node and try again.'),
+          })
           return
         }
         delegatedIssued = { key, certificateId: r.remote_certificate_id }
