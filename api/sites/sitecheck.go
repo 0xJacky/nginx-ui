@@ -104,7 +104,7 @@ func GetHealthCheck(c *gin.Context) {
 
 	ensureHealthCheckConfig(siteConfig)
 	if internalmcp.IsReadOnlyServiceTokenRequest(c) {
-		redactHealthCheckHeaders(siteConfig)
+		redactHealthCheckSecrets(siteConfig)
 	}
 
 	c.JSON(http.StatusOK, siteConfig)
@@ -113,12 +113,17 @@ func GetHealthCheck(c *gin.Context) {
 // redactHealthCheckHeaders hides custom probe header values, which commonly
 // carry Authorization credentials, from read-only service tokens. Header names
 // stay visible. The config is copied so a shared value is never modified.
-func redactHealthCheckHeaders(siteConfig *model.SiteConfig) {
+func redactHealthCheckSecrets(siteConfig *model.SiteConfig) {
 	if siteConfig.HealthCheckConfig == nil {
 		return
 	}
 	healthCheckConfig := *siteConfig.HealthCheckConfig
 	healthCheckConfig.Headers = internalmcp.RedactValues(healthCheckConfig.Headers)
+	if healthCheckConfig.Body != "" {
+		healthCheckConfig.Body = settings.RedactedSensitiveValue
+	}
+	healthCheckConfig.TargetURL = internalmcp.RedactURLCredentials(healthCheckConfig.TargetURL)
+	healthCheckConfig.ClickURL = internalmcp.RedactURLCredentials(healthCheckConfig.ClickURL)
 	siteConfig.HealthCheckConfig = &healthCheckConfig
 }
 
@@ -133,7 +138,7 @@ func redactSiteInfos(sites []*sitecheck.SiteInfo) []*sitecheck.SiteInfo {
 			continue
 		}
 		clone := *site
-		redactHealthCheckHeaders(&clone.SiteConfig)
+		redactHealthCheckSecrets(&clone.SiteConfig)
 		redacted = append(redacted, &clone)
 	}
 	return redacted

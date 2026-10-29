@@ -100,7 +100,7 @@ func TestMCPReadTokenCannotReadPrivateKeyMaterial(t *testing.T) {
 	for _, token := range []string{readToken, mixedToken} {
 		body := callMCPTool(t, fixture.router, token, "nginx_config_get", map[string]string{"relative_path": "ssl/example.key"})
 		require.NotContains(t, body, "PRIVATE KEY")
-		require.Contains(t, body, "private key material is hidden from read-only service tokens")
+		require.Contains(t, body, "secret files are hidden from read-only service tokens")
 
 		body = callMCPTool(t, fixture.router, token, "nginx_config_history", map[string]string{"filepath": fixture.keyPath})
 		require.NotContains(t, body, "PRIVATE KEY")

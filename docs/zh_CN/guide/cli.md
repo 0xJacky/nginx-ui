@@ -17,7 +17,7 @@ API 权限范围如下：
 | `api:read` | 管理 API 的 `GET`、`HEAD`、`OPTIONS` 请求，已存储的密钥会被隐藏 |
 | `api:write` | 管理 API 的变更请求，同时包含 API 读权限，可读取已存储的密钥 |
 
-`api:read` 是只读角色，永远不会收到已存储的密钥。响应保持原有结构和所有非敏感字段，敏感值会替换为 `__NGINX_UI_REDACTED__`。范围包括通知渠道配置值、站点健康检查请求头的值、DNS 域名中附带的 DNS 服务商凭据，以及证书详情中的私钥。DNS 凭据、ACME 账户和 S3 自动备份接口对所有服务令牌都会省略凭据字段。通过 `GET /api/config` 读取私钥文件（`.key` 文件或任何包含 PEM 私钥块的文件）会返回 `403` 和错误码 `40019`，配置历史中的私钥版本也会被隐藏。证书和其他配置文件仍可读取。通过 `X-Node-ID` 订阅远程节点的站点导航 WebSocket 会返回 `403` 和错误码 `40301`，因为控制端无法对转发的帧进行脱敏，请改用 `GET /api/site_navigation`。如果自动化任务需要导出私钥或读取已存储的凭据，请使用 `api:write` 令牌。
+`api:read` 是只读角色，永远不会收到已存储的密钥。响应保持原有结构和所有非敏感字段，敏感值会替换为 `__NGINX_UI_REDACTED__`。范围包括通知渠道配置值、站点健康检查的请求头值、请求体以及探测与点击 URL 中的密码和查询参数值、DNS 域名中附带的 DNS 服务商凭据，以及证书详情中的私钥。DNS 凭据、ACME 账户和 S3 自动备份接口对所有服务令牌都会省略凭据字段。通过 `GET /api/config` 读取敏感文件会返回 `403` 和错误码 `40019`，包括 `.key` 和 `.htpasswd` 文件、任何包含 PEM 或 PGP 私钥块的文件，以及 Nginx 配置在 `ssl_certificate_key`、`ssl_password_file`、`ssl_session_ticket_key` 或 `auth_basic_user_file`（含 `proxy_`、`grpc_`、`uwsgi_` 前缀的变体）中引用的文件；这些文件在配置历史中的版本也会被隐藏。证书和其他配置文件仍可读取。通过 `X-Node-ID` 订阅远程节点的站点导航 WebSocket 会返回 `403` 和错误码 `40301`，因为控制端无法对转发的帧进行脱敏，请改用 `GET /api/site_navigation`。如果自动化任务需要导出私钥或读取已存储的凭据，请使用 `api:write` 令牌。
 
 MCP 权限与 API 权限彼此独立。授予 `mcp:write` 不会获得管理 API 访问权限，授予 `api:write` 也不会获得 MCP 访问权限。
 

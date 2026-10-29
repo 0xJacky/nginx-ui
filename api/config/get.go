@@ -41,10 +41,12 @@ func GetConfig(c *gin.Context) {
 	}
 
 	// Read-only service tokens may read configuration, certificates and other
-	// data files, but not private keys stored next to them. api:write tokens
-	// and administrators keep full access.
-	if internalmcp.IsReadOnlyServiceTokenRequest(c) && config.IsPrivateKeyMaterial(absPath, content) {
-		c.AbortWithStatusJSON(http.StatusForbidden, config.ErrPrivateKeyHiddenFromReadOnly)
+	// data files, but not the secrets stored next to them: private keys,
+	// password files and anything a secret directive references. api:write
+	// tokens and administrators keep full access.
+	if internalmcp.IsReadOnlyServiceTokenRequest(c) &&
+		config.IsSecretFile(absPath, content, config.SecretFileReferences()) {
+		c.AbortWithStatusJSON(http.StatusForbidden, config.ErrSecretFileHiddenFromReadOnly)
 		return
 	}
 

@@ -34,11 +34,12 @@ func handleNginxConfigHistory(ctx context.Context, request mcpgo.CallToolRequest
 		return nil, err
 	}
 
-	// History keeps earlier revisions of key files saved through the editor.
+	// History keeps earlier revisions of secret files saved through the editor.
 	if mcp.IsReadOnlyServiceTokenContext(ctx) {
+		redact := config.SecretBackupRedactor(config.SecretFileReferences())
 		redacted := make([]model.ConfigBackup, 0, len(histories))
 		for _, history := range histories {
-			redacted = append(redacted, config.RedactPrivateKeyBackup(history))
+			redacted = append(redacted, redact(history))
 		}
 		jsonResult, _ := json.Marshal(redacted)
 		return mcpgo.NewToolResultText(string(jsonResult)), nil

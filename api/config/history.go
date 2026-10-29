@@ -23,10 +23,10 @@ func GetConfigHistory(c *gin.Context) {
 	}
 
 	// History keeps earlier revisions of every file saved through the editor,
-	// including key files, so read-only service tokens get the same private key
+	// including secret files, so read-only service tokens get the same
 	// redaction as a direct file read.
 	if internalmcp.IsReadOnlyServiceTokenRequest(c) {
-		core.SetTransformer(config.RedactPrivateKeyBackup)
+		core.SetTransformer(config.SecretBackupRedactor(config.SecretFileReferences()))
 	}
 
 	core.PagingList()

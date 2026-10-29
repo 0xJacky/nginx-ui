@@ -21,12 +21,16 @@ The API scopes are:
 `api:read` is a read-only role and never receives stored secrets. Responses
 keep their shape and every non-secret field, but secret values are replaced by
 `__NGINX_UI_REDACTED__`. This covers notifier configuration values, site health
-check header values, DNS provider credentials attached to DNS domains, and the
-private key in certificate details. The DNS credential, ACME account and S3
+check header values, request bodies and the passwords and query values of
+their probe and click URLs, DNS provider credentials attached to DNS domains, and
+the private key in certificate details. The DNS credential, ACME account and S3
 auto-backup endpoints omit their credential fields for every service token. Reading a
-private key file through `GET /api/config`, either a `.key` file or any file
-containing a PEM private key block, is refused with `403` and error code
-`40019`, and private key revisions in configuration history are redacted.
+secret file through `GET /api/config` is refused with `403` and error code
+`40019`: a `.key` or `.htpasswd` file, any file containing a PEM or PGP private
+key block, and any file that the Nginx configuration names in
+`ssl_certificate_key`, `ssl_password_file`, `ssl_session_ticket_key` or
+`auth_basic_user_file` (including the `proxy_`, `grpc_` and `uwsgi_` variants).
+Revisions of those files in configuration history are redacted.
 Certificates and other configuration files stay readable. The site navigation
 WebSocket feed of a remote node (`X-Node-ID`) is refused with `403` and error
 code `40301`, because the controller cannot redact relayed frames. Use

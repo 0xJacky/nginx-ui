@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/settings"
 )
 
@@ -26,8 +27,8 @@ var readOnlyServiceTokenProxyRedactions = map[string]proxyJSONRedactor{
 	"/api/dns/domains/:id":                  redactJSONDomainCredential,
 	"/api/external_notifies":                redactJSONListItems(redactJSONValues("config")),
 	"/api/external_notifies/:id":            redactJSONValues("config"),
-	"/api/site_navigation":                  redactJSONListItems(redactJSONValues("health_check_config", "headers")),
-	"/api/site_navigation/health_check/:id": redactJSONValues("health_check_config", "headers"),
+	"/api/site_navigation":                  redactJSONListItems(redactJSONHealthCheck),
+	"/api/site_navigation/health_check/:id": redactJSONHealthCheck,
 }
 
 // readOnlyServiceTokenRefusedProxyWebSockets lists child node feeds that stream
@@ -112,22 +113,48 @@ func redactJSONDomainCredential(payload map[string]any) error {
 	return nil
 }
 
-func jsonPrivateKeyMaterial(payload map[string]any) bool {
+// redactJSONHealthCheck mirrors the local health check redaction: header
+// values, the request body and credentials embedded in the probe and click
+// URLs.
+func redactJSONHealthCheck(payload map[string]any) error {
+	if err := redactJSONValues("health_check_config", "headers")(payload); err != nil {
+		return err
+	}
+	healthCheck, err := jsonObjectAt(payload, "health_check_config")
+	if err != nil || healthCheck == nil {
+		return err
+	}
+	if body, ok := healthCheck["body"].(string); ok && body != "" {
+		healthCheck["body"] = settings.RedactedSensitiveValue
+	}
+	for _, field := range []string{"target_url", "click_url"} {
+		if rawURL, ok := healthCheck[field].(string); ok {
+			healthCheck[field] = internalmcp.RedactURLCredentials(rawURL)
+		}
+	}
+	return nil
+}
+
+// jsonSecretFile judges a relayed file by its extension and content. The
+// references a child's own configuration makes are not visible here, so files
+// that are secret only because a directive names them depend on the child
+// applying the rule itself.
+func jsonSecretFile(payload map[string]any) bool {
 	path, _ := payload["filepath"].(string)
 	content, _ := payload["content"].(string)
-	return config.IsPrivateKeyMaterial(path, []byte(content))
+	return config.IsSecretFileContent(path, []byte(content))
 }
 
 func redactJSONPrivateKeyBackup(payload map[string]any) error {
-	if jsonPrivateKeyMaterial(payload) {
+	if jsonSecretFile(payload) {
 		payload["content"] = settings.RedactedSensitiveValue
 	}
 	return nil
 }
 
 func refuseJSONPrivateKeyFile(payload map[string]any) error {
-	if jsonPrivateKeyMaterial(payload) {
-		return config.ErrPrivateKeyHiddenFromReadOnly
+	if jsonSecretFile(payload) {
+		return config.ErrSecretFileHiddenFromReadOnly
 	}
 	return nil
 }

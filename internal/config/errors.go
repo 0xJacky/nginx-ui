@@ -9,7 +9,7 @@ var (
 	ErrConfigContentHasControlChars   = e.New(40016, "file content contains invalid control characters")
 	ErrConfigDirectiveNotAllowed      = e.New(40017, "file content contains restricted nginx directive: {0}")
 	ErrConfigDataInvalid              = e.New(40018, "file content must be valid PEM or htpasswd data")
-	ErrPrivateKeyHiddenFromReadOnly   = e.New(40019, "private key material is hidden from read-only service tokens")
+	ErrSecretFileHiddenFromReadOnly   = e.New(40019, "secret files are hidden from read-only service tokens")
 	ErrPathIsNotUnderTheNginxConfDir  = e.New(50006, "path: {0} is not under the nginx conf dir: {1}")
 	ErrDstFileExists                  = e.New(50007, "destination file: {0} already exists")
 	ErrNginxTestFailed                = e.New(50008, "nginx test failed: {0}")

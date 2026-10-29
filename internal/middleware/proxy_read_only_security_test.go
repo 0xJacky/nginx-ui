@@ -63,6 +63,20 @@ var readOnlyProxyRedactionCases = []struct {
 		keep:    []string{`"Authorization"`, `"example.com:443"`},
 	},
 	{
+		name:    "site health check request secrets",
+		route:   "/api/site_navigation/health_check/:id",
+		body:    `{"id":1,"host":"example.com:443","health_check_config":{"method":"POST","body":"{\"password\":\"body-secret\"}","target_url":"https://probe:url-secret@example.com/health?token=query-secret","click_url":"https://example.com/status?key=click-secret"}}`,
+		secrets: []string{"body-secret", "url-secret", "query-secret", "click-secret"},
+		keep:    []string{`"POST"`, "example.com/health", "example.com/status", `token=`, `key=`},
+	},
+	{
+		name:    "config history password file",
+		route:   "/api/config_histories",
+		body:    `{"data":[{"id":1,"name":".htpasswd","filepath":"/etc/nginx/auth/.htpasswd","content":"admin:htpasswd-secret"},{"id":2,"name":"signing.asc","filepath":"/etc/nginx/signing.asc","content":"-----BEGIN PGP PRIVATE KEY BLOCK-----\\npgp-secret"},{"id":3,"name":"nginx.conf","filepath":"/etc/nginx/nginx.conf","content":"events {}"}]}`,
+		secrets: []string{"htpasswd-secret", "pgp-secret"},
+		keep:    []string{"events {}"},
+	},
+	{
 		name:    "certificate detail",
 		route:   "/api/certs/:id",
 		body:    `{"id":1,"name":"example","ssl_certificate":"-----BEGIN CERTIFICATE-----","ssl_certificate_key":"` + proxyTestPrivateKey + `","ssl_certificate_key_path":"/etc/nginx/ssl/example.key"}`,

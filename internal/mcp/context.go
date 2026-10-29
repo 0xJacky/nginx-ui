@@ -2,6 +2,7 @@ package mcp
 
 import (
 	"context"
+	"net/url"
 
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -67,4 +68,42 @@ func RedactValues(values map[string]string) map[string]string {
 		redacted[key] = settings.RedactedSensitiveValue
 	}
 	return redacted
+}
+
+// RedactURLCredentials hides the secrets a URL can carry: the userinfo password
+// and every query value. The scheme, host, path and query keys stay readable.
+// A value that does not parse as a URL but looks like it carries credentials is
+// replaced entirely.
+func RedactURLCredentials(rawURL string) string {
+	if rawURL == "" {
+		return rawURL
+	}
+	parsed, err := url.Parse(rawURL)
+	if err != nil {
+		return settings.RedactedSensitiveValue
+	}
+	changed := false
+	if parsed.User != nil {
+		if _, hasPassword := parsed.User.Password(); hasPassword {
+			parsed.User = url.UserPassword(parsed.User.Username(), settings.RedactedSensitiveValue)
+		} else {
+			parsed.User = url.User(settings.RedactedSensitiveValue)
+		}
+		changed = true
+	}
+	if parsed.RawQuery != "" {
+		query := parsed.Query()
+		for key, values := range query {
+			for i := range values {
+				values[i] = settings.RedactedSensitiveValue
+			}
+			query[key] = values
+		}
+		parsed.RawQuery = query.Encode()
+		changed = true
+	}
+	if !changed {
+		return rawURL
+	}
+	return parsed.String()
 }
