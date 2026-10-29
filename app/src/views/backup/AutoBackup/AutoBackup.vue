@@ -24,8 +24,14 @@ onMounted(() => loadPluginBackends(true))
 
 // Reactive, so the plugin backends appear once they are loaded.
 const storageTypeSearchOptions = computed(() => [
-  { label: $gettext('Local'), value: 'local' },
-  { label: $gettext('S3'), value: 's3' },
+  {
+    label: $gettext('Local'),
+    value: 'local',
+  },
+  {
+    label: $gettext('S3'),
+    value: 's3',
+  },
   ...pluginBackends.value.map(backend => ({ label: backend.name, value: backend.type })),
 ])
 

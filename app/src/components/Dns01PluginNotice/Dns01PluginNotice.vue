@@ -43,17 +43,32 @@ const title = computed(() => {
         return $gettext('The DNS-01 plugin is installed but turned off.')
       return $gettext('The DNS-01 plugin is turned on but not working right now.')
     case 'renewal':
-      return $gettext('This certificate renews through the DNS-01 plugin, which is %{state}. It cannot renew automatically until the plugin is back.', { state: stateLabel(current) })
+      return $gettext('This certificate renews through the DNS-01 plugin, which is %{state}. It cannot renew automatically until the plugin is back.', {
+        state: stateLabel(current),
+      })
     case 'providers':
-      if (!props.providerCount)
-        return $gettext('DNS providers come with the DNS-01 plugin, which is %{state}.', { state: stateLabel(current) })
-      if (current === 'missing')
-        return $gettext('Only %{count} providers are available now. More providers come with the DNS-01 plugin, which is not installed.', { count: String(props.providerCount) })
-      if (current === 'disabled')
-        return $gettext('Only %{count} providers are available now. More providers come with the DNS-01 plugin, which is turned off.', { count: String(props.providerCount) })
-      return $gettext('Only %{count} providers are available now. More providers come with the DNS-01 plugin, which is not working right now.', { count: String(props.providerCount) })
+      if (!props.providerCount) {
+        return $gettext('DNS providers come with the DNS-01 plugin, which is %{state}.', {
+          state: stateLabel(current),
+        })
+      }
+      if (current === 'missing') {
+        return $gettext('Only %{count} providers are available now. More providers come with the DNS-01 plugin, which is not installed.', {
+          count: String(props.providerCount),
+        })
+      }
+      if (current === 'disabled') {
+        return $gettext('Only %{count} providers are available now. More providers come with the DNS-01 plugin, which is turned off.', {
+          count: String(props.providerCount),
+        })
+      }
+      return $gettext('Only %{count} providers are available now. More providers come with the DNS-01 plugin, which is not working right now.', {
+        count: String(props.providerCount),
+      })
     default:
-      return $gettext('DNS validation needs the DNS-01 plugin, which is %{state}.', { state: stateLabel(current) })
+      return $gettext('DNS validation needs the DNS-01 plugin, which is %{state}.', {
+        state: stateLabel(current),
+      })
   }
 })
 

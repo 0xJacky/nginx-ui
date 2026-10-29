@@ -33,11 +33,35 @@ watch(open, async value => {
 })
 
 const columns: TableColumnType<CertDeployment>[] = [
-  { title: () => $gettext('Time'), dataIndex: 'created_at', key: 'created_at', width: 170 },
-  { title: () => $gettext('Certificate'), dataIndex: 'cert_id', key: 'cert_id', width: 160 },
-  { title: () => $gettext('Status'), dataIndex: 'status', key: 'status', width: 90 },
-  { title: () => $gettext('Attempts'), dataIndex: 'attempts', key: 'attempts', width: 90 },
-  { title: () => $gettext('Message'), dataIndex: 'message', key: 'message' },
+  {
+    title: () => $gettext('Time'),
+    dataIndex: 'created_at',
+    key: 'created_at',
+    width: 170,
+  },
+  {
+    title: () => $gettext('Certificate'),
+    dataIndex: 'cert_id',
+    key: 'cert_id',
+    width: 160,
+  },
+  {
+    title: () => $gettext('Status'),
+    dataIndex: 'status',
+    key: 'status',
+    width: 90,
+  },
+  {
+    title: () => $gettext('Attempts'),
+    dataIndex: 'attempts',
+    key: 'attempts',
+    width: 90,
+  },
+  {
+    title: () => $gettext('Message'),
+    dataIndex: 'message',
+    key: 'message',
+  },
 ]
 </script>
 

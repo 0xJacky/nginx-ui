@@ -1,6 +1,11 @@
 import { describe, expect, test } from 'bun:test'
 
-Object.assign(globalThis, { location: { protocol: 'https:' }, window: { location: { href: 'https://ui.example.com/app/' } } })
+Object.assign(globalThis, {
+  location: { protocol: 'https:' },
+  window: {
+    location: { href: 'https://ui.example.com/app/' },
+  },
+})
 const { buildPluginWebSocketUrl } = await import('../src/plugin/wsUrl')
 
 const session = { token: '', shortToken: 'abcdefghijklmnop', nodeId: 0 }

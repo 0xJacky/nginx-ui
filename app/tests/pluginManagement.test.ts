@@ -7,16 +7,29 @@ import { formatUsagePreview, previewUsage } from '../src/views/system/plugins/us
 function fakeGettext(text: string, params: Record<string, string> = {}) {
   return text.replace(/%\{(\w+)\}/g, (_, key) => params[key] ?? '')
 }
-Object.assign(globalThis, { $gettext: fakeGettext, $pgettext: (_context: string, text: string) => text })
+Object.assign(globalThis, {
+  $gettext: fakeGettext,
+  $pgettext: (_context: string, text: string) => text,
+})
 
 function usage(names: string[], total = names.length) {
-  return { items: names.map((name, i) => ({ kind: 'certificate', id: String(i + 1), name })), total }
+  return {
+    items: names.map((name, i) => ({
+      kind: 'certificate',
+      id: String(i + 1),
+      name,
+    })),
+    total,
+  }
 }
 
 describe('previewUsage', () => {
   test('lists up to three names and counts the rest', () => {
     const preview = previewUsage(usage(['a', 'b', 'c', 'd', 'e']))
-    expect(preview).toEqual({ names: ['a', 'b', 'c'], more: 2 })
+    expect(preview).toEqual({
+      names: ['a', 'b', 'c'],
+      more: 2,
+    })
     expect(formatUsagePreview(preview)).toBe('a, b, c and 2 more')
   })
 
@@ -63,9 +76,16 @@ describe('changedSettingKeys', () => {
   ]
 
   test('reports only the fields that differ', () => {
-    const saved = { servers: ['1.1.1.1:53'], name: 'a', on: false }
+    const saved = {
+      servers: ['1.1.1.1:53'],
+      name: 'a',
+      on: false,
+    }
     expect(changedSettingKeys(fields, { ...saved }, saved)).toEqual([])
-    expect(changedSettingKeys(fields, { ...saved, servers: ['1.1.1.1:53', ''] }, saved)).toEqual(['servers'])
+    expect(changedSettingKeys(fields, {
+      ...saved,
+      servers: ['1.1.1.1:53', ''],
+    }, saved)).toEqual(['servers'])
     expect(changedSettingKeys(fields, { ...saved, on: true, name: 'b' }, saved)).toEqual(['name', 'on'])
   })
 
@@ -74,7 +94,9 @@ describe('changedSettingKeys', () => {
   })
 
   test('the clone does not share lists with the source', () => {
-    const saved = { servers: ['a'] }
+    const saved = {
+      servers: ['a'],
+    }
     const copy = cloneSettings(saved)
     ;(copy.servers as string[]).push('b')
     expect(saved.servers).toEqual(['a'])

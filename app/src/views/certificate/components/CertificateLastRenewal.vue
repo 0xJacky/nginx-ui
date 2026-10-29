@@ -16,17 +16,30 @@ const time = computed(() => props.cert.last_renewal_at
   : '')
 
 const result = computed<{ color: string, text: string } | undefined>(() => {
-  if (props.cert.state === 'issuing')
-    return { color: 'processing', text: $gettext('In progress') }
+  if (props.cert.state === 'issuing') {
+    return {
+      color: 'processing',
+      text: $gettext('In progress'),
+    }
+  }
   if (!time.value)
     return undefined
-  if (props.cert.renewal_failed)
-    return { color: 'error', text: $gettext('Failed · %{time}', { time: time.value }) }
-  return { color: 'success', text: $gettext('Succeeded · %{time}', { time: time.value }) }
+  if (props.cert.renewal_failed) {
+    return {
+      color: 'error',
+      text: $gettext('Failed · %{time}', { time: time.value }),
+    }
+  }
+  return {
+    color: 'success',
+    text: $gettext('Succeeded · %{time}', { time: time.value }),
+  }
 })
 
 const preview = computed(() => lastCertificateLogLines(props.cert.log, PREVIEW_LINES))
-const fullLog = computed(() => expanded.value ? renderCertificateLog(props.cert.log) : '')
+const fullLog = computed(() => expanded.value
+  ? renderCertificateLog(props.cert.log)
+  : '')
 </script>
 
 <template>

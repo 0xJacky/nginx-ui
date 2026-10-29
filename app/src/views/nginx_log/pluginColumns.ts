@@ -36,8 +36,11 @@ function readSortValue(column: PluginColumnRules, row: NginxLogRow): string | nu
   if (value === null || value === undefined)
     return null
 
-  if (typeof value === 'number')
-    return Number.isNaN(value) ? null : value
+  if (typeof value === 'number') {
+    return Number.isNaN(value)
+      ? null
+      : value
+  }
 
   return String(value)
 }
@@ -54,15 +57,23 @@ export function sortRowsByColumn<T extends NginxLogRow>(
   if (!column.sortValue)
     return rows
 
-  const direction = order === 'desc' ? -1 : 1
-  const keyed = rows.map((row, index) => ({ row, index, value: readSortValue(column, row) }))
+  const direction = order === 'desc'
+    ? -1
+    : 1
+  const keyed = rows.map((row, index) => ({
+    row,
+    index,
+    value: readSortValue(column, row),
+  }))
 
   keyed.sort((a, b) => {
     if (a.value === null || b.value === null) {
       if (a.value === b.value)
         return a.index - b.index
 
-      return a.value === null ? 1 : -1
+      return a.value === null
+        ? 1
+        : -1
     }
 
     return direction * compareSortValues(a.value, b.value) || a.index - b.index
@@ -97,7 +108,9 @@ export function filterRowsByColumns<T extends NginxLogRow>(
         return null
 
       const chosen = column.filters.filter(filter => values.includes(filter.value))
-      return chosen.length > 0 ? chosen : null
+      return chosen.length > 0
+        ? chosen
+        : null
     })
     .filter((chosen): chosen is SlotColumnFilter[] => chosen !== null)
 
@@ -144,14 +157,20 @@ export function applyPluginColumns<T extends NginxLogRow>(
   const selected: Record<string, string[] | null | undefined> = {}
   for (const column of columns) {
     const value = params[column.columnKey]
-    selected[column.columnKey] = Array.isArray(value) ? value.map(String) : null
+    selected[column.columnKey] = Array.isArray(value)
+      ? value.map(String)
+      : null
   }
 
   const filtered = filterRowsByColumns(rows, columns, selected)
 
-  const sortColumn = params.sort_by ? columns.find(column => column.columnKey === params.sort_by) : undefined
+  const sortColumn = params.sort_by
+    ? columns.find(column => column.columnKey === params.sort_by)
+    : undefined
   if (!sortColumn)
     return filtered
 
-  return sortRowsByColumn(filtered, sortColumn, params.order === 'desc' ? 'desc' : 'asc')
+  return sortRowsByColumn(filtered, sortColumn, params.order === 'desc'
+    ? 'desc'
+    : 'asc')
 }

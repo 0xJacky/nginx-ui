@@ -38,7 +38,9 @@ export function buildWebSocketUrlWithQuery(
   extraQuery?: Record<string, string | undefined>,
   nodeId?: number,
 ): string {
-  const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:'
+  const protocol = location.protocol === 'https:'
+    ? 'wss:'
+    : 'ws:'
   const basePath = buildWebSocketBaseUrl(protocol)
 
   const wsUrl = new URL(normalizeWebSocketEndpoint(url), basePath)

@@ -111,8 +111,14 @@ const columns: StdTableColumn[] = [
       type: 'select',
       select: {
         options: [
-          { label: $gettext('Enabled'), value: 1 },
-          { label: $gettext('Disabled'), value: 0 },
+          {
+            label: $gettext('Enabled'),
+            value: 1,
+          },
+          {
+            label: $gettext('Disabled'),
+            value: 0,
+          },
         ],
       },
     },

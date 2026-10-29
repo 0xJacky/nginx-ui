@@ -42,17 +42,29 @@ const selectedVersion = ref<string>()
 
 const categoryOptions = computed<SelectProps['options']>(() => {
   const seen = entries.value.flatMap(entry => entry.categories ?? [])
-  return sortCategories(seen).map(item => ({ value: item, label: categoryLabel(item) }))
+  return sortCategories(seen).map(item => ({
+    value: item,
+    label: categoryLabel(item),
+  }))
 })
 
 const sourceOptions = computed<SelectProps['options']>(() =>
-  sources.value.map(item => ({ value: item.url, label: sourceName(item.url) })))
+  sources.value.map(item => ({
+    value: item.url,
+    label: sourceName(item.url),
+  })))
 
 const updateCount = computed(() => inventory.updates.value.length)
 
 const scopeOptions = computed(() => [
-  { value: 'all', label: $gettext('All plugins') },
-  { value: 'updates', label: $gettext('Updates') },
+  {
+    value: 'all',
+    label: $gettext('All plugins'),
+  },
+  {
+    value: 'updates',
+    label: $gettext('Updates'),
+  },
 ])
 
 const scope = computed({
@@ -101,12 +113,18 @@ async function load(refresh = false) {
 
 async function refreshAll(refresh = false) {
   if (!refresh) {
-    await Promise.all([load(), inventory.reloadUpdates()])
+    await Promise.all([
+      load(),
+      inventory.reloadUpdates(),
+    ])
     return
   }
   // The updates and the installed tab read the catalog this refresh fetched.
   await load(true)
-  await Promise.all([inventory.reloadUpdates(), inventory.reloadCatalog()])
+  await Promise.all([
+    inventory.reloadUpdates(),
+    inventory.reloadCatalog(),
+  ])
 }
 
 function openDetail(entry: CatalogEntry) {
@@ -124,7 +142,11 @@ function openInstall(entry: CatalogEntry, version?: string) {
 
 // The installed tab and the counters see the new plugin right away.
 async function onInstalled() {
-  await Promise.all([refreshAll(false), inventory.reload(true), inventory.reloadCatalog()])
+  await Promise.all([
+    refreshAll(false),
+    inventory.reload(true),
+    inventory.reloadCatalog(),
+  ])
   await pluginLoader.unloadDisabled(inventory.plugins.value)
   await pluginLoader.loadNew()
 }
@@ -136,7 +158,10 @@ function onSourcesSaved() {
 
 // A link may point at one catalog entry, for example the notice on the log
 // pages. The entry opens once the catalog is there and the link is spent.
-watch([entries, () => route.query.catalog], ([list, id]) => {
+watch([
+  entries,
+  () => route.query.catalog,
+], ([list, id]) => {
   if (typeof id !== 'string' || list.length === 0)
     return
 

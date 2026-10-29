@@ -45,8 +45,12 @@ const offer = useTrustedOffer(() => props.plugin)
 const { replacingId, confirmReplace } = useReplacePlugin()
 const showTrustNotice = computed(() => Boolean(trust.value) && (isUnsigned.value || Boolean(offer.value)))
 const trustNotice = computed(() => {
-  const text = isUnsigned.value ? unsignedExplanation() : trust.value?.hint() ?? ''
-  return offer.value ? `${text} ${trustedOfferSummary(offer.value)}` : text
+  const text = isUnsigned.value
+    ? unsignedExplanation()
+    : trust.value?.hint() ?? ''
+  return offer.value
+    ? `${text} ${trustedOfferSummary(offer.value)}`
+    : text
 })
 
 // Provides
@@ -100,7 +104,9 @@ const certificateUsage = computed(() => {
 const startMode = computed(() => {
   if (!props.plugin.has_server)
     return $gettext('Nothing to start')
-  return props.plugin.lifecycle === 'on_demand' ? $gettext('Starts when needed') : $gettext('Always running')
+  return props.plugin.lifecycle === 'on_demand'
+    ? $gettext('Starts when needed')
+    : $gettext('Always running')
 })
 
 interface Fact {
@@ -114,7 +120,12 @@ interface Fact {
 const facts = computed<Fact[]>(() => {
   const plugin = props.plugin
   const items: Fact[] = [
-    { key: 'version', label: $gettext('Version'), value: `v${plugin.version}`, channel: pluginChannel(plugin) },
+    {
+      key: 'version',
+      label: $gettext('Version'),
+      value: `v${plugin.version}`,
+      channel: pluginChannel(plugin),
+    },
     {
       key: 'api',
       label: $gettext('API version'),
@@ -123,17 +134,29 @@ const facts = computed<Fact[]>(() => {
         ? $gettext('Needs Nginx UI %{version} or newer', { version: plugin.min_nginx_ui_version })
         : undefined,
     },
-    { key: 'start', label: $gettext('Start mode'), value: startMode.value },
+    {
+      key: 'start',
+      label: $gettext('Start mode'),
+      value: startMode.value,
+    },
   ]
-  if (plugin.updated_at)
-    items.push({ key: 'updated', label: $gettext('Updated at'), value: formatDateTime(plugin.updated_at) })
+  if (plugin.updated_at) {
+    items.push({
+      key: 'updated',
+      label: $gettext('Updated at'),
+      value: formatDateTime(plugin.updated_at),
+    })
+  }
   return items
 })
 
 // Versions to receive
 const followed = computed(() => followedChannel(props.plugin))
 const savingChannel = ref(false)
-const channelOptions = computed(() => PLUGIN_CHANNELS.map(value => ({ value, label: channelLabel(value) })))
+const channelOptions = computed(() => PLUGIN_CHANNELS.map(value => ({
+  value,
+  label: channelLabel(value),
+})))
 // A test version that was installed keeps test versions coming until a stable one is out.
 const heldByRelease = computed(() => isHeldByRelease(props.plugin))
 
@@ -184,12 +207,16 @@ const resourceCells = computed(() => {
       {
         key: 'memory',
         label: $gettext('Memory Limit'),
-        value: limits.memory_limit_mb > 0 ? `${limits.memory_limit_mb} MB` : $gettext('Unlimited'),
+        value: limits.memory_limit_mb > 0
+          ? `${limits.memory_limit_mb} MB`
+          : $gettext('Unlimited'),
       },
       {
         key: 'cpu',
         label: $gettext('CPU Limit'),
-        value: limits.cpu_percent > 0 ? `${limits.cpu_percent}%` : $gettext('Unlimited'),
+        value: limits.cpu_percent > 0
+          ? `${limits.cpu_percent}%`
+          : $gettext('Unlimited'),
       },
     )
   }
@@ -199,12 +226,29 @@ const resourceCells = computed(() => {
 const hasLogSink = computed(() => props.plugin.capabilities?.includes('log.sink') ?? false)
 
 const logSinkCells = computed(() => [
-  { key: 'streamed', label: $gettext('Streamed'), value: props.plugin.streamed_log_entries ?? 0, warn: false },
-  { key: 'rejected', label: $gettext('Rejected'), value: props.plugin.rejected_log_entries ?? 0, warn: false },
-  { key: 'dropped', label: $gettext('Dropped'), value: props.plugin.dropped_log_entries ?? 0, warn: (props.plugin.dropped_log_entries ?? 0) > 0 },
+  {
+    key: 'streamed',
+    label: $gettext('Streamed'),
+    value: props.plugin.streamed_log_entries ?? 0,
+    warn: false,
+  },
+  {
+    key: 'rejected',
+    label: $gettext('Rejected'),
+    value: props.plugin.rejected_log_entries ?? 0,
+    warn: false,
+  },
+  {
+    key: 'dropped',
+    label: $gettext('Dropped'),
+    value: props.plugin.dropped_log_entries ?? 0,
+    warn: (props.plugin.dropped_log_entries ?? 0) > 0,
+  },
 ])
 
-const technicalItems = [{ key: 'technical' }]
+const technicalItems = [
+  { key: 'technical' },
+]
 
 function formatCount(value: number) {
   return value.toLocaleString()

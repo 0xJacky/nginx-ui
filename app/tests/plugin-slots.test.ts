@@ -9,17 +9,35 @@ import {
 } from '../src/plugin/slots'
 
 function registration(pluginId: string, order = 0, extra: Partial<SlotRegistration> = {}): SlotRegistration {
-  return { pluginId, component: {}, order, ...extra }
+  return {
+    pluginId,
+    component: {},
+    order,
+    ...extra,
+  }
 }
 
 describe('collectSlotsByPrefix', () => {
   const slots = {
-    'nginx_log.view:search': [registration('a', 5, { label: 'Search' })],
-    'nginx_log.view:dashboard': [registration('a', 1, { label: 'Dashboard' }), registration('b', 1)],
-    'nginx_log.view:': [registration('c')],
-    'nginx_log.list.column:status': [registration('a', 2)],
-    'nginx_log.list.toolbar': [registration('a')],
-    'sidebar.footer': [registration('a')],
+    'nginx_log.view:search': [
+      registration('a', 5, { label: 'Search' }),
+    ],
+    'nginx_log.view:dashboard': [
+      registration('a', 1, { label: 'Dashboard' }),
+      registration('b', 1),
+    ],
+    'nginx_log.view:': [
+      registration('c'),
+    ],
+    'nginx_log.list.column:status': [
+      registration('a', 2),
+    ],
+    'nginx_log.list.toolbar': [
+      registration('a'),
+    ],
+    'sidebar.footer': [
+      registration('a'),
+    ],
   }
 
   test('lists the registrations of one family with the key from the slot name', () => {
@@ -42,8 +60,14 @@ describe('collectSlotsByPrefix', () => {
 
   test('orders by order and keeps registration order for equal values', () => {
     const ordered = collectSlotsByPrefix({
-      'p:one': [registration('first', 1), registration('second', 1)],
-      'p:two': [registration('third', 0), registration('fourth', 1)],
+      'p:one': [
+        registration('first', 1),
+        registration('second', 1),
+      ],
+      'p:two': [
+        registration('third', 0),
+        registration('fourth', 1),
+      ],
     }, 'p:')
 
     expect(ordered.map(item => item.registration.pluginId)).toEqual(['third', 'first', 'second', 'fourth'])
@@ -52,9 +76,15 @@ describe('collectSlotsByPrefix', () => {
   test('applies when() to the context and treats a throwing when() as false', () => {
     const withWhen = {
       'p:a': [
-        registration('yes', 0, { when: ctx => ctx.type === 'access' }),
-        registration('no', 0, { when: ctx => ctx.type === 'error' }),
-        registration('broken', 0, { when: () => { throw new Error('boom') } }),
+        registration('yes', 0, {
+          when: ctx => ctx.type === 'access',
+        }),
+        registration('no', 0, {
+          when: ctx => ctx.type === 'error',
+        }),
+        registration('broken', 0, {
+          when: () => { throw new Error('boom') },
+        }),
       ],
     }
     const error = console.error
@@ -69,10 +99,14 @@ describe('collectSlotsByPrefix', () => {
 })
 
 describe('nginx log column visibility', () => {
-  const accessOnly = registration('index', 0, { when: ctx => ctx.type === 'access' })
+  const accessOnly = registration('index', 0, {
+    when: ctx => ctx.type === 'access',
+  })
   const columns = {
     'nginx_log.list.column:index_status': [accessOnly],
-    'nginx_log.list.column:owner': [registration('owner')],
+    'nginx_log.list.column:owner': [
+      registration('owner'),
+    ],
   }
 
   test('a column condition decides on the list type, not on a row', () => {
@@ -87,16 +121,25 @@ describe('nginx log column visibility', () => {
 describe('registrationApplies', () => {
   test('is true without a condition and follows the condition otherwise', () => {
     expect(registrationApplies(registration('a'))).toBe(true)
-    expect(registrationApplies(registration('a', 0, { when: () => false }))).toBe(false)
-    expect(registrationApplies(registration('a', 0, { when: ctx => ctx.x === 1 }), { x: 1 })).toBe(true)
+    expect(registrationApplies(registration('a', 0, {
+      when: () => false,
+    }))).toBe(false)
+    expect(registrationApplies(registration('a', 0, {
+      when: ctx => ctx.x === 1,
+    }), { x: 1 })).toBe(true)
   })
 })
 
 describe('uniqueByKey', () => {
   test('keeps the first registration of each key', () => {
     const items = collectSlotsByPrefix({
-      'p:dup': [registration('first'), registration('second')],
-      'p:other': [registration('third', 1)],
+      'p:dup': [
+        registration('first'),
+        registration('second'),
+      ],
+      'p:other': [
+        registration('third', 1),
+      ],
     }, 'p:')
 
     expect(uniqueByKey(items).map(item => item.registration.pluginId)).toEqual(['first', 'third'])

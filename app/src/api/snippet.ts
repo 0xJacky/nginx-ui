@@ -65,7 +65,11 @@ const snippet = {
   update: (file: string, payload: SnippetPayload) => http.post<Snippet>(`/snippets/${encodeURIComponent(file)}`, payload),
   preview: (content: string, variables: Record<string, Variable>, fromPlugin = false) => http.post<SnippetPreview>('/snippet_preview', { content, variables, from_plugin: fromPlugin }),
   getBuiltins: () => http.get<{ data: BuiltinTemplate[] }>('/snippet_templates'),
-  getBuiltin: (name: string, pluginId?: string) => http.get<BuiltinTemplate>(`/snippet_templates/${encodeURIComponent(name)}`, { params: pluginId ? { plugin_id: pluginId } : undefined }),
+  getBuiltin: (name: string, pluginId?: string) => http.get<BuiltinTemplate>(`/snippet_templates/${encodeURIComponent(name)}`, {
+    params: pluginId
+      ? { plugin_id: pluginId }
+      : undefined,
+  }),
   delete: (file: string) => http.delete(`/snippets/${encodeURIComponent(file)}`),
   getSync: () => http.get<SnippetSync>('/snippet_sync'),
   saveSync: (payload: SnippetSync) => http.post<SyncSummary>('/snippet_sync', payload),

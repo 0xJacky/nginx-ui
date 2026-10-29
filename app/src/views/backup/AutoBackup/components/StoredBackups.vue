@@ -102,10 +102,28 @@ function fileName(key: string) {
 }
 
 const columns: TableColumnType<StoredBackup>[] = [
-  { title: () => $gettext('Created at'), dataIndex: 'created_at', key: 'created_at' },
-  { title: () => $gettext('File'), dataIndex: 'key', key: 'key', ellipsis: true },
-  { title: () => $gettext('Size'), dataIndex: 'size', key: 'size', width: 110 },
-  { title: () => $gettext('Actions'), key: 'actions', width: 160 },
+  {
+    title: () => $gettext('Created at'),
+    dataIndex: 'created_at',
+    key: 'created_at',
+  },
+  {
+    title: () => $gettext('File'),
+    dataIndex: 'key',
+    key: 'key',
+    ellipsis: true,
+  },
+  {
+    title: () => $gettext('Size'),
+    dataIndex: 'size',
+    key: 'size',
+    width: 110,
+  },
+  {
+    title: () => $gettext('Actions'),
+    key: 'actions',
+    width: 160,
+  },
 ]
 </script>
 

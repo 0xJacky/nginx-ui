@@ -31,7 +31,9 @@ export function certStateLabel(cert: Pick<Cert, 'state' | 'days_left' | 'certifi
     case 'expired':
       return $gettext('Expired')
     case 'failed':
-      return cert.certificate_info ? $gettext('Renewal failed') : $gettext('Issuance failed')
+      return cert.certificate_info
+        ? $gettext('Renewal failed')
+        : $gettext('Issuance failed')
     case 'issuing':
       return $gettext('Issuing...')
     case 'manual':

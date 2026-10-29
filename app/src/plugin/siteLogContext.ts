@@ -53,8 +53,12 @@ export function editorSiteLogContext(
 ): SiteLogContext {
   const access = own.access ?? ''
   const error = own.error ?? ''
-  const inheritedAccess = inherits && !access ? defaults.access ?? '' : ''
-  const inheritedError = inherits && !error ? defaults.error ?? '' : ''
+  const inheritedAccess = inherits && !access
+    ? defaults.access ?? ''
+    : ''
+  const inheritedError = inherits && !error
+    ? defaults.error ?? ''
+    : ''
 
   return siteLogContext({
     siteName,

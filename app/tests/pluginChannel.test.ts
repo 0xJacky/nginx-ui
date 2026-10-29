@@ -1,6 +1,9 @@
 import { describe, expect, test } from 'bun:test'
 
-Object.assign(globalThis, { $gettext: (text: string) => text, $pgettext: (_context: string, text: string) => text })
+Object.assign(globalThis, {
+  $gettext: (text: string) => text,
+  $pgettext: (_context: string, text: string) => text,
+})
 
 const {
   channelDescription,
@@ -30,12 +33,25 @@ describe('inferChannel', () => {
   })
 
   test('alpha, dev, nightly, snapshot, canary and preview are dev', () => {
-    for (const version of ['1.0.0-alpha', '1.0.0-DEV.3', '1.0.0-nightly.20260930', '1.0.0-snapshot', '1.0.0-canary.2', '1.0.0-preview.1'])
+    for (const version of [
+      '1.0.0-alpha',
+      '1.0.0-DEV.3',
+      '1.0.0-nightly.20260930',
+      '1.0.0-snapshot',
+      '1.0.0-canary.2',
+      '1.0.0-preview.1',
+    ])
       expect(inferChannel(version)).toBe('dev')
   })
 
   test('any other prerelease is beta', () => {
-    for (const version of ['1.0.0-beta.1', 'v2.0.0-rc.1+build.5', '1.0.0-pre', '0.3.0-x.1', '1.0.0-alphabet'])
+    for (const version of [
+      '1.0.0-beta.1',
+      'v2.0.0-rc.1+build.5',
+      '1.0.0-pre',
+      '0.3.0-x.1',
+      '1.0.0-alphabet',
+    ])
       expect(inferChannel(version)).toBe('beta')
     // Only the first identifier decides.
     expect(inferChannel('1.0.0-beta.alpha')).toBe('beta')
@@ -65,9 +81,15 @@ describe('entryChannel', () => {
   test('is the computed channel or the channel of the release it installs', () => {
     expect(entryChannel({ channel: 'dev' })).toBe('dev')
     expect(entryChannel({})).toBe('stable')
-    expect(entryChannel({ installable_release: { version: '0.2.0-rc.1' } as never })).toBe('beta')
-    expect(entryChannel({ installable_release: { version: '0.2.0-nightly.1' } as never })).toBe('dev')
-    expect(entryChannel({ installable_release: { version: '1.0.0' } as never })).toBe('stable')
+    expect(entryChannel({
+      installable_release: { version: '0.2.0-rc.1' } as never,
+    })).toBe('beta')
+    expect(entryChannel({
+      installable_release: { version: '0.2.0-nightly.1' } as never,
+    })).toBe('dev')
+    expect(entryChannel({
+      installable_release: { version: '1.0.0' } as never,
+    })).toBe('stable')
     expect(entryChannel(undefined)).toBe('stable')
   })
 })
@@ -105,12 +127,33 @@ describe('effectiveChannel', () => {
 
 describe('hasStableRelease', () => {
   test('looks for an installable stable release', () => {
-    const betaOnly = { releases: [{ version: '0.1.0-beta.1' }, { version: '0.1.0-beta.2' }] } as never
+    const betaOnly = {
+      releases: [
+        { version: '0.1.0-beta.1' },
+        { version: '0.1.0-beta.2' },
+      ],
+    } as never
     expect(hasStableRelease(betaOnly)).toBe(false)
-    expect(hasStableRelease({ releases: [{ version: '0.1.0-beta.1' }, { version: '1.0.0' }] } as never)).toBe(true)
+    expect(hasStableRelease({
+      releases: [
+        { version: '0.1.0-beta.1' },
+        { version: '1.0.0' },
+      ],
+    } as never)).toBe(true)
     // A withdrawn or unsupported stable release does not count.
-    expect(hasStableRelease({ releases: [{ version: '1.0.0', yanked: true }, { version: '0.9.0-beta.1' }] } as never)).toBe(false)
-    expect(hasStableRelease({ releases: [{ version: '1.0.0' }, { version: '0.9.0-beta.1' }], installable_versions: ['0.9.0-beta.1'] } as never)).toBe(false)
+    expect(hasStableRelease({
+      releases: [
+        { version: '1.0.0', yanked: true },
+        { version: '0.9.0-beta.1' },
+      ],
+    } as never)).toBe(false)
+    expect(hasStableRelease({
+      releases: [
+        { version: '1.0.0' },
+        { version: '0.9.0-beta.1' },
+      ],
+      installable_versions: ['0.9.0-beta.1'],
+    } as never)).toBe(false)
     expect(hasStableRelease(undefined)).toBe(false)
   })
 })
@@ -155,11 +198,20 @@ describe('installableReleases', () => {
 
   test('drops withdrawn releases and sorts the newest first', () => {
     expect(installableReleases({ releases }).map(item => item.version))
-      .toEqual(['1.2.0-beta.1', '1.1.0-beta.10', '1.1.0-beta.9', '1.0.0', '0.9.0'])
+      .toEqual([
+        '1.2.0-beta.1',
+        '1.1.0-beta.10',
+        '1.1.0-beta.9',
+        '1.0.0',
+        '0.9.0',
+      ])
   })
 
   test('keeps only the versions the node reports as installable', () => {
-    expect(installableReleases({ releases, installable_versions: ['1.0.0', '1.1.0-beta.9'] }).map(item => item.version))
+    expect(installableReleases({
+      releases,
+      installable_versions: ['1.0.0', '1.1.0-beta.9'],
+    }).map(item => item.version))
       .toEqual(['1.1.0-beta.9', '1.0.0'])
     expect(installableReleases(undefined)).toEqual([])
   })

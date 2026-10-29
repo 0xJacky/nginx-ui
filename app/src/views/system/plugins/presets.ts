@@ -11,14 +11,38 @@ export interface StatusPreset {
 
 /** Badge colour and wording of every status the backend reports. */
 export const statusPresets: Record<PluginStatus, StatusPreset> = {
-  installed: { badge: 'default', label: () => $gettext('Installed') },
-  starting: { badge: 'processing', label: () => $gettext('Starting') },
-  running: { badge: 'success', label: () => $gettext('Running') },
-  stopped: { badge: 'default', label: () => $gettext('Stopped') },
-  error: { badge: 'error', label: () => $gettext('Error') },
-  missing: { badge: 'error', label: () => $gettext('Missing') },
-  incompatible: { badge: 'error', label: () => $gettext('Incompatible') },
-  needs_approval: { badge: 'warning', label: () => $gettext('Needs approval') },
+  installed: {
+    badge: 'default',
+    label: () => $gettext('Installed'),
+  },
+  starting: {
+    badge: 'processing',
+    label: () => $gettext('Starting'),
+  },
+  running: {
+    badge: 'success',
+    label: () => $gettext('Running'),
+  },
+  stopped: {
+    badge: 'default',
+    label: () => $gettext('Stopped'),
+  },
+  error: {
+    badge: 'error',
+    label: () => $gettext('Error'),
+  },
+  missing: {
+    badge: 'error',
+    label: () => $gettext('Missing'),
+  },
+  incompatible: {
+    badge: 'error',
+    label: () => $gettext('Incompatible'),
+  },
+  needs_approval: {
+    badge: 'warning',
+    label: () => $gettext('Needs approval'),
+  },
 }
 
 export function statusOf(plugin: PluginInfo): StatusPreset {
@@ -32,11 +56,19 @@ export function statusOf(plugin: PluginInfo): StatusPreset {
     }
   }
 
-  return statusPresets[plugin.status] ?? { badge: 'default', label: () => plugin.status }
+  return statusPresets[plugin.status] ?? {
+    badge: 'default',
+    label: () => plugin.status,
+  }
 }
 
 /** Statuses the operator has to act on before the plugin works. */
-const attentionStatuses = new Set<PluginStatus>(['error', 'missing', 'incompatible', 'needs_approval'])
+const attentionStatuses = new Set<PluginStatus>([
+  'error',
+  'missing',
+  'incompatible',
+  'needs_approval',
+])
 
 /** withdrawn: the catalog withdrew the installed version. */
 export function needsAttention(plugin: PluginInfo, withdrawn = false) {

@@ -32,11 +32,15 @@ function selectOptions(field: SettingsField) {
 
 function listOf(key: string): string[] {
   const value = values.value[key]
-  return Array.isArray(value) ? value as string[] : []
+  return Array.isArray(value)
+    ? value as string[]
+    : []
 }
 
 function setListItem(key: string, index: number, text: string) {
-  const next = [...listOf(key)]
+  const next = [
+    ...listOf(key),
+  ]
   next[index] = text
   values.value[key] = next
 }
@@ -44,7 +48,10 @@ function setListItem(key: string, index: number, text: string) {
 // Adds an empty row and moves the focus into it.
 async function addListItem(key: string, event: MouseEvent) {
   const field = (event.currentTarget as HTMLElement | null)?.closest('.list-field')
-  values.value[key] = [...listOf(key), '']
+  values.value[key] = [
+    ...listOf(key),
+    '',
+  ]
   await nextTick()
   const inputs = field?.querySelectorAll<HTMLInputElement>('.list-row input')
   inputs?.[inputs.length - 1]?.focus()
@@ -59,16 +66,22 @@ const rules = computed(() => {
     if (!field.required)
       return acc
 
-    const message = $gettext('%{field} is required', { field: t(field.display_name) })
+    const message = $gettext('%{field} is required', {
+      field: t(field.display_name),
+    })
     acc[field.key] = field.type === 'list'
-      ? [{
-          validator: async (_rule: Rule, value: unknown) => {
-            const filled = Array.isArray(value) && value.some(item => typeof item === 'string' && item.trim())
-            if (!filled)
-              throw new Error(message)
+      ? [
+          {
+            validator: async (_rule: Rule, value: unknown) => {
+              const filled = Array.isArray(value) && value.some(item => typeof item === 'string' && item.trim())
+              if (!filled)
+                throw new Error(message)
+            },
           },
-        }]
-      : [{ required: true, message }]
+        ]
+      : [
+          { required: true, message },
+        ]
     return acc
   }, {} as Record<string, Rule[]>)
 })

@@ -41,7 +41,10 @@ export function useReplacePlugin() {
       // The new package may ship another bundle, so the old one is dropped and
       // an enabled plugin is loaded again.
       await pluginLoader.unload(id, { forget: true })
-      await Promise.all([inventory.reload(true), inventory.reloadCatalog()])
+      await Promise.all([
+        inventory.reload(true),
+        inventory.reloadCatalog(),
+      ])
       await pluginLoader.loadNew()
     }
     catch (e) {

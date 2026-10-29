@@ -34,7 +34,9 @@ describe('withVersion', () => {
 
 describe('loadChunk', () => {
   test('resolves with the exports the chunk registered and applies the version', async () => {
-    const exportsOfSearch = { Search: () => 'search' }
+    const exportsOfSearch = {
+      Search: () => 'search',
+    }
     let loader: Loader
     const { requested, loadScript } = fakeScripts(() => {
       loader.registerChunk('com.example.logs', 'search', exportsOfSearch)
@@ -63,7 +65,10 @@ describe('loadChunk', () => {
     const { requested, loadScript } = fakeScripts(() => loader.registerChunk('com.example.logs', 'search', shared))
     loader = createChunkLoader({ loadScript })
 
-    const [first, second] = await Promise.all([loader.loadChunk(source, 'search'), loader.loadChunk(source, 'search')])
+    const [first, second] = await Promise.all([
+      loader.loadChunk(source, 'search'),
+      loader.loadChunk(source, 'search'),
+    ])
     const later = await loader.loadChunk(source, 'search')
 
     expect(first).toBe(shared)
@@ -75,12 +80,19 @@ describe('loadChunk', () => {
   test('keeps chunks of different plugins and names apart', async () => {
     let loader: Loader
     const { requested, loadScript } = fakeScripts(url => {
-      const name = url.includes('search') ? 'search' : 'dashboard'
-      const plugin = url.includes('other') ? 'com.example.other' : 'com.example.logs'
+      const name = url.includes('search')
+        ? 'search'
+        : 'dashboard'
+      const plugin = url.includes('other')
+        ? 'com.example.other'
+        : 'com.example.logs'
       loader.registerChunk(plugin, name, { url })
     })
     loader = createChunkLoader({ loadScript })
-    const other = { pluginId: 'com.example.other', chunks: { search: 'other/search.js' } }
+    const other = {
+      pluginId: 'com.example.other',
+      chunks: { search: 'other/search.js' },
+    }
 
     const [a, b, c] = await Promise.all([
       loader.loadChunk(source, 'search'),
@@ -165,7 +177,9 @@ describe('loadChunk', () => {
   })
 
   test('ignores a registerChunk call with bad arguments', async () => {
-    const loader = createChunkLoader({ loadScript: async () => {} })
+    const loader = createChunkLoader({
+      loadScript: async () => {},
+    })
     const warn = console.warn
     console.warn = () => {}
     try {
@@ -189,7 +203,9 @@ describe('loadChunk', () => {
         maxRunning = Math.max(maxRunning, running)
         await new Promise(resolve => setTimeout(resolve, 5))
         running -= 1
-        loader.registerChunk('com.example.logs', url.includes('search') ? 'search' : 'dashboard', {})
+        loader.registerChunk('com.example.logs', url.includes('search')
+          ? 'search'
+          : 'dashboard', {})
       },
     })
 
@@ -201,7 +217,11 @@ describe('loadChunk', () => {
       running -= 1
     })
 
-    await Promise.all([entry, loader.loadChunk(source, 'search'), loader.loadChunk(source, 'dashboard')])
+    await Promise.all([
+      entry,
+      loader.loadChunk(source, 'search'),
+      loader.loadChunk(source, 'dashboard'),
+    ])
 
     expect(maxRunning).toBe(1)
   })

@@ -20,7 +20,9 @@ const stateLabel = computed(() => certStateLabel(props.cert))
 
 const expiry = computed(() => {
   const notAfter = props.cert.certificate_info?.not_after
-  return notAfter ? dayjs(notAfter).format('YYYY-MM-DD HH:mm') : '-'
+  return notAfter
+    ? dayjs(notAfter).format('YYYY-MM-DD HH:mm')
+    : '-'
 })
 
 const autoRenewalOn = computed(() => props.cert.auto_cert === AutoCertState.Enable
@@ -34,7 +36,9 @@ const autoRenewalText = computed(() => {
     return $gettext('Renewal paused')
   if (autoRenewalOn.value) {
     return c.renew_at
-      ? $gettext('Renews around %{date}', { date: shortDate(c.renew_at) })
+      ? $gettext('Renews around %{date}', {
+          date: shortDate(c.renew_at),
+        })
       : $gettext('On')
   }
   if (!props.canSwitchAutoRenewal)
@@ -47,13 +51,19 @@ const issuer = computed(() => {
   if (!info)
     return '-'
   const parts = [info.issuer_organization, info.issuer_name].filter(Boolean)
-  return parts.length ? [...new Set(parts)].join(' · ') : '-'
+  return parts.length
+    ? [
+        ...new Set(parts),
+      ].join(' · ')
+    : '-'
 })
 
 // The year is left out while it is the current one, which keeps the tile short.
 function shortDate(value: string) {
   const date = dayjs(value)
-  return date.format(date.isSame(dayjs(), 'year') ? 'MM-DD' : 'YYYY-MM-DD')
+  return date.format(date.isSame(dayjs(), 'year')
+    ? 'MM-DD'
+    : 'YYYY-MM-DD')
 }
 </script>
 

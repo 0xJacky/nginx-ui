@@ -54,7 +54,9 @@ function isFromPlugin(item: Template) {
 function sourceOf(item: Template): Exclude<Source, 'all'> {
   if (isCustom(item))
     return 'custom'
-  return isFromPlugin(item) ? 'plugin' : 'builtin'
+  return isFromPlugin(item)
+    ? 'plugin'
+    : 'builtin'
 }
 
 const sourceCounts = computed(() => {
@@ -67,8 +69,16 @@ const hasOtherSources = computed(() => sourceCounts.value.custom > 0 || sourceCo
 
 const sourceOptions = computed(() => [
   { label: `${$gettext('All')} ${blocks.value.length}`, value: 'all' },
-  ...(sourceCounts.value.custom > 0 ? [{ label: `${$gettext('Snippets')} ${sourceCounts.value.custom}`, value: 'custom' }] : []),
-  ...(sourceCounts.value.plugin > 0 ? [{ label: `${$gettext('Plugins')} ${sourceCounts.value.plugin}`, value: 'plugin' }] : []),
+  ...(sourceCounts.value.custom > 0
+    ? [
+        { label: `${$gettext('Snippets')} ${sourceCounts.value.custom}`, value: 'custom' },
+      ]
+    : []),
+  ...(sourceCounts.value.plugin > 0
+    ? [
+        { label: `${$gettext('Plugins')} ${sourceCounts.value.plugin}`, value: 'plugin' },
+      ]
+    : []),
   { label: `${$gettext('Built-in')} ${sourceCounts.value.builtin}`, value: 'builtin' },
 ])
 

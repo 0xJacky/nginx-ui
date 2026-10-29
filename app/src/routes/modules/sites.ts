@@ -55,14 +55,15 @@ export const sitesRoutes: RouteRecordRaw[] = [
           lastRouteName: 'Snippets',
         },
       },
-    }, {
-      path: 'snippets/templates/:name',
-      name: 'Built-in Template',
-      component: () => import('@/views/snippet/BuiltinTemplateView.vue'),
-      meta: {
-        name: () => $gettext('Template'),
-        hiddenInSidebar: true,
-        lastRouteName: 'Snippets',
+      {
+        path: 'snippets/templates/:name',
+        name: 'Built-in Template',
+        component: () => import('@/views/snippet/BuiltinTemplateView.vue'),
+        meta: {
+          name: () => $gettext('Template'),
+          hiddenInSidebar: true,
+          lastRouteName: 'Snippets',
+        },
       },
       {
         path: 'snippets/:file',

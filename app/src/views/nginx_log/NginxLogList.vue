@@ -102,7 +102,10 @@ const pluginColumns = computed<StdTableColumn[]>(() => pluginColumnSlots.value.m
     key: item.columnKey,
     sorter: !!registration.sortValue,
     filters: hasFilters
-      ? registration.filters?.map(filter => ({ text: $gettext(filter.label), value: filter.value }))
+      ? registration.filters?.map(filter => ({
+          text: $gettext(filter.label),
+          value: filter.value,
+        }))
       : undefined,
     customRender: (args: CustomRenderArgs) => {
       const row = args.record
@@ -115,7 +118,11 @@ const pluginColumns = computed<StdTableColumn[]>(() => pluginColumnSlots.value.m
   }
 }))
 
-const columns = computed(() => [...baseColumns, ...pluginColumns.value, actionsColumn])
+const columns = computed(() => [
+  ...baseColumns,
+  ...pluginColumns.value,
+  actionsColumn,
+])
 
 // The list arrives whole, so sorting and filtering by a plugin column happens
 // here in the browser and the server only sees the parameters it knows.
@@ -127,7 +134,10 @@ const curdApi = {
     if (rules.length === 0)
       return response
 
-    return { ...response, data: applyPluginColumns((response.data ?? []) as NginxLogRow[], params, rules) }
+    return {
+      ...response,
+      data: applyPluginColumns((response.data ?? []) as NginxLogRow[], params, rules),
+    }
   },
 }
 

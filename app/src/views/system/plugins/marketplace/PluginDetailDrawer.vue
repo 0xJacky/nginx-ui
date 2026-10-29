@@ -39,7 +39,9 @@ const detail = ref<CatalogEntry>()
 const current = computed(() => detail.value ?? props.entry)
 const sourceName = useSourceName()
 const sourceIcon = useSourceIcon()
-const name = computed(() => (current.value ? catalogEntryName(current.value, gettext.current) : ''))
+const name = computed(() => (current.value
+  ? catalogEntryName(current.value, gettext.current)
+  : ''))
 const recommendedMb = computed(() => recommendedMemory(current.value?.installable_release?.manifest))
 const systemMb = useSystemMemory()
 const lowMemory = computed(() => isBelowRecommended(recommendedMb.value, systemMb.value))
@@ -48,7 +50,9 @@ const installed = useInstalledPlugin(() => current.value?.id)
 const offer = computed(() => findTrustedOffer(installed.value?.trust, current.value))
 const { replacingId, confirmReplace } = useReplacePlugin()
 const settings = useSettingsStore()
-const renderedReadme = computed(() => (readme.value ? marked.parse(readme.value) as string : ''))
+const renderedReadme = computed(() => (readme.value
+  ? marked.parse(readme.value) as string
+  : ''))
 
 const canInstall = computed(() => Boolean(current.value?.installable_release)
   && (!current.value?.installed_version || current.value?.update_available))
@@ -56,10 +60,22 @@ const canInstall = computed(() => Boolean(current.value?.installable_release)
 // What only this node knows, after the facts the catalog gives.
 const facts = computed<MarketFact[]>(() => [
   ...(current.value?.installed_version
-    ? [{ key: 'installed', label: $gettext('Installed version'), value: `v${current.value.installed_version}` }]
+    ? [
+        {
+          key: 'installed',
+          label: $gettext('Installed version'),
+          value: `v${current.value.installed_version}`,
+        },
+      ]
     : []),
   ...(recommendedMb.value > 0
-    ? [{ key: 'memory', label: $gettext('Recommended memory'), value: formatMemory(recommendedMb.value) }]
+    ? [
+        {
+          key: 'memory',
+          label: $gettext('Recommended memory'),
+          value: formatMemory(recommendedMb.value),
+        },
+      ]
     : []),
 ])
 
@@ -96,7 +112,9 @@ function releaseAction(version: string) {
   const installedVersion = current.value?.installed_version
   if (!installedVersion)
     return $gettext('Install')
-  return compareVersions(version, installedVersion) < 0 ? $gettext('Install this version') : $gettext('Update')
+  return compareVersions(version, installedVersion) < 0
+    ? $gettext('Install this version')
+    : $gettext('Update')
 }
 
 async function load() {

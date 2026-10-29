@@ -26,7 +26,10 @@ const props = withDefaults(defineProps<{
 })
 
 const compactLabelCol = { flex: '170px' }
-const compactWrapperCol = { flex: '1 1 0', style: { minWidth: 0 } }
+const compactWrapperCol = {
+  flex: '1 1 0',
+  style: { minWidth: 0 },
+}
 
 interface DefaultOptionType {
   label?: string
@@ -83,7 +86,9 @@ function applyCredentialMeta(item?: CredentialMeta) {
 const selectedCredentialId = computed<SelectProps['value']>({
   get: () => data.value.dns_credential_id || undefined,
   set: value => {
-    const selectedID = typeof value === 'number' || typeof value === 'string' ? Number(value) : undefined
+    const selectedID = typeof value === 'number' || typeof value === 'string'
+      ? Number(value)
+      : undefined
     const current = selectedID === undefined || Number.isNaN(selectedID)
       ? undefined
       : credentials.value.find(item => item.id === selectedID)
@@ -104,7 +109,9 @@ async function loadCredentials() {
 
     while (true) {
       try {
-        const r = await dns_credential.getList({ page }, props.mainNode ? { skipNodeProxy: true } : undefined)
+        const r = await dns_credential.getList({ page }, props.mainNode
+          ? { skipNodeProxy: true }
+          : undefined)
         const rows = r?.data ?? []
         list.push(...rows)
 
@@ -147,7 +154,9 @@ async function createCredential() {
 function renderPopup(menu: VNode) {
   return h('div', [
     menu,
-    h(Divider, { style: { margin: '4px 0' } }),
+    h(Divider, {
+      style: { margin: '4px 0' },
+    }),
     h(Button, {
       type: 'link',
       size: 'small',
@@ -166,7 +175,9 @@ function filterOption(input: string, option?: DefaultOptionType) {
   return label.includes(needle) || value.includes(needle)
 }
 
-const validateStatus = computed(() => isMissingCredential.value && !props.readonly ? 'error' : undefined)
+const validateStatus = computed(() => isMissingCredential.value && !props.readonly
+  ? 'error'
+  : undefined)
 
 const help = computed(() => {
   if (isMissingCredential.value)
@@ -184,7 +195,11 @@ const displayOptions = computed<SelectProps['options']>(() => {
     return credentialOptions.value
   return [
     ...(credentialOptions.value ?? []),
-    { value: data.value.dns_credential_id!, label: $gettext('Deleted credential'), disabled: true },
+    {
+      value: data.value.dns_credential_id!,
+      label: $gettext('Deleted credential'),
+      disabled: true,
+    },
   ]
 })
 

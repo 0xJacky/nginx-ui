@@ -37,7 +37,9 @@ export function buildHTTPSRequest(form: HTTPSRequestForm): HTTPSRequest {
     acme_user_id: o.acme_user_id ?? 0,
     profile: o.profile ?? '',
     must_staple: !!o.must_staple,
-    challenge_config: challengeMethod === 'dns01' ? o.challenge_config : undefined,
+    challenge_config: challengeMethod === 'dns01'
+      ? o.challenge_config
+      : undefined,
     enable_common_name: !!o.enable_common_name,
     revoke_old: !!o.revoke_old,
   }

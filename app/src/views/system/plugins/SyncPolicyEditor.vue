@@ -72,7 +72,9 @@ function onPopoverOpenChange(open: boolean) {
 }
 
 async function saveTargets() {
-  await save(!props.compact || draftAuto.value ? 'auto' : 'manual', draftNodeIds.value, draftSyncSettings.value)
+  await save(!props.compact || draftAuto.value
+    ? 'auto'
+    : 'manual', draftNodeIds.value, draftSyncSettings.value)
   popoverOpen.value = false
 }
 </script>

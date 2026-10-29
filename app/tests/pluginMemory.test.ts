@@ -3,7 +3,10 @@ import { describe, expect, test } from 'bun:test'
 function fakeGettext(text: string, params: Record<string, string> = {}) {
   return text.replace(/%\{(\w+)\}/g, (_, key) => params[key] ?? '')
 }
-Object.assign(globalThis, { $gettext: fakeGettext, $pgettext: (_context: string, text: string) => text })
+Object.assign(globalThis, {
+  $gettext: fakeGettext,
+  $pgettext: (_context: string, text: string) => text,
+})
 
 const { formatMemory, isBelowRecommended, memoryWarning, recommendedMemory } = await import('../src/views/system/plugins/memory')
 
@@ -17,8 +20,16 @@ describe('formatMemory', () => {
 
 describe('recommendedMemory', () => {
   test('reads the hint and treats missing or bad values as none', () => {
-    expect(recommendedMemory({ server: { resources: { recommended_memory_mb: 512 } } })).toBe(512)
-    expect(recommendedMemory({ server: { resources: { recommended_memory_mb: -1 } } })).toBe(0)
+    expect(recommendedMemory({
+      server: {
+        resources: { recommended_memory_mb: 512 },
+      },
+    })).toBe(512)
+    expect(recommendedMemory({
+      server: {
+        resources: { recommended_memory_mb: -1 },
+      },
+    })).toBe(0)
     expect(recommendedMemory({ server: {} })).toBe(0)
     expect(recommendedMemory(undefined)).toBe(0)
   })

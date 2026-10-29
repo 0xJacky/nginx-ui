@@ -91,8 +91,11 @@ async function load() {
     pristine.value = JSON.stringify(form)
     // A copy of a template starts from it; until it is saved it counts as
     // unsaved.
-    if (typeof route.query.from === 'string')
-      await copyBuiltin(route.query.from, typeof route.query.plugin_id === 'string' ? route.query.plugin_id : undefined)
+    if (typeof route.query.from === 'string') {
+      await copyBuiltin(route.query.from, typeof route.query.plugin_id === 'string'
+        ? route.query.plugin_id
+        : undefined)
+    }
     return
   }
 

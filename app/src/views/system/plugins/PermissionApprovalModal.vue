@@ -19,7 +19,9 @@ const open = defineModel<boolean>('open', { default: false })
 const permissions = computed(() => props.plugin?.permissions ?? [])
 const reasons = computed(() => permissionReasons(props.plugin, gettext.current))
 const added = computed(() => props.plugin?.new_permissions ?? [])
-const name = computed(() => (props.plugin ? localizedPluginName(props.plugin, gettext.current) : ''))
+const name = computed(() => (props.plugin
+  ? localizedPluginName(props.plugin, gettext.current)
+  : ''))
 </script>
 
 <template>

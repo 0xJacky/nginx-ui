@@ -21,7 +21,13 @@ export const HTTPS_MAIN_STEPS: readonly HTTPSStep[] = [
 ]
 
 const KNOWN_STEPS = new Set<HTTPSStep>(['delegate', ...HTTPS_MAIN_STEPS, 'rollback'])
-const KNOWN_STEP_STATUSES = new Set<HTTPSStepStatus>(['running', 'success', 'warning', 'error', 'skipped'])
+const KNOWN_STEP_STATUSES = new Set<HTTPSStepStatus>([
+  'running',
+  'success',
+  'warning',
+  'error',
+  'skipped',
+])
 
 export type HTTPSOnboardingPhase = 'idle' | 'running' | 'success' | 'error'
 

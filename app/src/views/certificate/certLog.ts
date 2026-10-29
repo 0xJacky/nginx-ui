@@ -136,7 +136,9 @@ export function renderCertificateLog(raw?: string): string {
 
   return raw.split('\n')
     .map(localizeLine)
-    .map(line => line.startsWith('[Nginx UI]') ? `${line}\n` : line)
+    .map(line => line.startsWith('[Nginx UI]')
+      ? `${line}\n`
+      : line)
     .join('\n')
 }
 

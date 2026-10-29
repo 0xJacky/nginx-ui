@@ -96,7 +96,12 @@ export function useDns01Plugin() {
   })
 
   function goToPlugins() {
-    router.push({ path: '/system/plugins', query: plugin.value ? { plugin: plugin.value.id } : undefined })
+    router.push({
+      path: '/system/plugins',
+      query: plugin.value
+        ? { plugin: plugin.value.id }
+        : undefined,
+    })
   }
 
   async function afterChange() {

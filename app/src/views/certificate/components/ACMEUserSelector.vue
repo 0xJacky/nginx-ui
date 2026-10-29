@@ -10,7 +10,10 @@ const props = withDefaults(defineProps<{
 })
 
 const compactLabelCol = { flex: '170px' }
-const compactWrapperCol = { flex: '1 1 0', style: { minWidth: 0 } }
+const compactWrapperCol = {
+  flex: '1 1 0',
+  style: { minWidth: 0 },
+}
 
 const data = defineModel<AutoCertOptions>('options', {
   required: true,

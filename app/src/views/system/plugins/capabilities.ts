@@ -19,14 +19,38 @@ export interface CapabilityPreset {
  * shows the raw capability ids.
  */
 const capabilityExtras: Record<string, Pick<CapabilityPreset, 'icon' | 'link'>> = {
-  'dns01': { icon: 'i-tabler-world-www', link: { to: '/dns/credentials', label: () => $gettext('DNS credentials') } },
+  'dns01': {
+    icon: 'i-tabler-world-www',
+    link: {
+      to: '/dns/credentials',
+      label: () => $gettext('DNS credentials'),
+    },
+  },
   'http': { icon: 'i-tabler-browser' },
   'notify': { icon: 'i-tabler-bell' },
   'probe': { icon: 'i-tabler-heartbeat' },
   'mcp': { icon: 'i-tabler-robot' },
-  'storage': { icon: 'i-tabler-database', link: { to: '/backup/auto-backup', label: () => $gettext('Auto backup') } },
-  'cert.deploy': { icon: 'i-tabler-certificate', link: { to: '/certificates/deploy_targets', label: () => $gettext('Deploy targets') } },
-  'security.blocklist': { icon: 'i-tabler-ban', link: { to: '/blocklists', label: () => $gettext('Blocklists') } },
+  'storage': {
+    icon: 'i-tabler-database',
+    link: {
+      to: '/backup/auto-backup',
+      label: () => $gettext('Auto backup'),
+    },
+  },
+  'cert.deploy': {
+    icon: 'i-tabler-certificate',
+    link: {
+      to: '/certificates/deploy_targets',
+      label: () => $gettext('Deploy targets'),
+    },
+  },
+  'security.blocklist': {
+    icon: 'i-tabler-ban',
+    link: {
+      to: '/blocklists',
+      label: () => $gettext('Blocklists'),
+    },
+  },
   'upstream.discovery': { icon: 'i-tabler-radar' },
   'log.sink': { icon: 'i-tabler-file-analytics' },
 }

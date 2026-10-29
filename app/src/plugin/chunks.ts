@@ -39,7 +39,9 @@ export function withVersion(url: string, version?: string) {
   if (!version)
     return url
 
-  return `${url}${url.includes('?') ? '&' : '?'}v=${encodeURIComponent(version)}`
+  return `${url}${url.includes('?')
+    ? '&'
+    : '?'}v=${encodeURIComponent(version)}`
 }
 
 /** Loads a classic script and resolves once it executed. */
@@ -105,14 +107,18 @@ export function createChunkLoader(options: ChunkLoaderOptions): ChunkLoader {
 
   function loadChunk(source: ChunkSource, name: string): Promise<ChunkExports> {
     const chunks = source.chunks ?? {}
-    const url = typeof name === 'string' && Object.hasOwn(chunks, name) ? chunks[name] : ''
+    const url = typeof name === 'string' && Object.hasOwn(chunks, name)
+      ? chunks[name]
+      : ''
     if (!url)
       return Promise.reject(new Error(`Chunk ${String(name)} is not declared by ${source.pluginId}`))
 
     // Chunks of another version are not the ones the new bundle expects.
     const version = source.version ?? ''
     if (loadedVersions.get(source.pluginId) !== version) {
-      for (const cached of [...loads.keys()]) {
+      for (const cached of [
+        ...loads.keys(),
+      ]) {
         if (cached.startsWith(`${source.pluginId}\u0000`))
           loads.delete(cached)
       }

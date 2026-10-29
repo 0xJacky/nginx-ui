@@ -29,7 +29,9 @@ function pathHelp(error: string | undefined, kind: string, wrongFile: string) {
     return ''
   if (error.includes('required'))
     return $gettext('This field is required')
-  return error.includes(kind) ? wrongFile : ''
+  return error.includes(kind)
+    ? wrongFile
+    : ''
 }
 
 const certPathHelp = computed(() => pathHelp(props.errors?.ssl_certificate_path, 'certificate_path', $gettext('The path exists, but the file is not a certificate')))
