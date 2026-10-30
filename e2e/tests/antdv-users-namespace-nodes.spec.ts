@@ -194,8 +194,11 @@ test('users and namespaces keep table renderers, overlays, and form controls pop
   const usersTable = page.locator('.ant-table').last()
   const userRows = await expectTableRows(usersTable, 1)
   const userRow = userRows.first()
-  await expect(userRow.locator('.ant-tag')).toHaveCount(1)
-  await expect(userRow.locator('.ant-tag')).not.toHaveText(/^\s*$/)
+  // MFA Policy and MFA Enrollment each render one labelled tag.
+  const userTags = userRow.locator('.ant-tag')
+  await expect(userTags).toHaveCount(2)
+  await expect(userTags.nth(0)).toHaveText(/^(?:Optional|User enforcement|Global enforcement)$/)
+  await expect(userTags.nth(1)).toHaveText(/^(?:Enrolled|Not enrolled|Pending enrollment)$/)
   expect(await userRow.innerText()).not.toMatch(/\b(?:true|false)\b/)
   await expectVisibleSelectsHaveOptions(page)
 
@@ -264,8 +267,12 @@ test('nodes keep auth Steps, Select options, and batch-upgrade overlays populate
   const authRow = nodeRows.filter({ has: page.locator('button[aria-label]') }).first()
   await expect(authRow).toBeVisible()
   await expect(authRow).toContainText(legacyNodeFixture.name)
-  await expect(authRow.locator('.ant-tag')).toHaveCount(2)
-  await expect(authRow.locator('.ant-badge')).toHaveCount(1)
+  // Authentication, Status, and Enabled each render one tag.
+  const nodeTags = authRow.locator('.ant-tag')
+  await expect(nodeTags).toHaveCount(3)
+  await expect(nodeTags.nth(0)).not.toHaveText(/^\s*$/)
+  await expect(nodeTags.nth(1)).toHaveText('Online')
+  await expect(nodeTags.nth(2)).toHaveText('Enabled')
   expect(await authRow.innerText()).not.toContain('legacy_secret')
 
   const authTrigger = authRow.locator('button[aria-label]').first()

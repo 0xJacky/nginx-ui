@@ -24,14 +24,18 @@ function expectReadOnlyTraffic(requests: string[]) {
 }
 
 function controlModeItem(page: Page) {
-  return page.locator('.ant-form-item').filter({ has: page.getByText('Nginx Control Mode', { exact: true }) }).first()
+  return page.locator('.setting-row[data-setting-path="nginx.host_mode"]')
+}
+
+function nginxSectionNavItem(page: Page) {
+  return page.locator('.preference-nav').getByRole('button', { name: 'Nginx', exact: true })
 }
 
 test('Nginx control mode stays read-only until Edit passes the 2FA guard', async ({ page }) => {
   const requests = trackApiRequests(page)
 
   await gotoRoute(page, '/preference')
-  await page.getByRole('tab', { name: 'Nginx', exact: true }).click()
+  await nginxSectionNavItem(page).click()
 
   const item = controlModeItem(page)
   await expect(item).toBeVisible()
@@ -78,7 +82,7 @@ test('Host SSH setup wizard route stops at the 2FA guard without calling api/hos
 
   await result.getByRole('button', { name: 'Back', exact: true }).click()
   await expect.poll(() => new URL(page.url()).hash).toBe('#/preference?tab=nginx')
-  await expect(page.getByRole('tab', { name: 'Nginx', exact: true })).toHaveAttribute('aria-selected', 'true')
+  await expect(nginxSectionNavItem(page)).toHaveAttribute('aria-current', 'page')
 
   expectReadOnlyTraffic(requests)
 })

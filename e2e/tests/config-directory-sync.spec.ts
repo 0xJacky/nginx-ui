@@ -1,6 +1,9 @@
 import type { APIRequestContext, Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 import { execFileSync } from 'node:child_process'
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { authHeaders, gotoRoute } from './helpers'
 
 // Runs against the demo image, where local config CRUD stays open by design. The
@@ -11,8 +14,26 @@ import { authHeaders, gotoRoute } from './helpers'
 // refuses to create (notes.txt, a binary) next to the certificates.
 const container = process.env.E2E_CONTAINER
 
-const sslPem = '-----BEGIN CERTIFICATE-----\nMIIBe2etest\n-----END CERTIFICATE-----\n'
-const sslKey = '-----BEGIN PRIVATE KEY-----\nMIIBe2etest\n-----END PRIVATE KEY-----\n'
+// Data files must be valid PEM, so the spec deploys a real throwaway
+// self-signed pair instead of committing a private key.
+function generateSelfSignedPair() {
+  const dir = mkdtempSync(join(tmpdir(), 'nginx-ui-e2e-ssl-'))
+  try {
+    const certPath = join(dir, 'site.pem')
+    const keyPath = join(dir, 'site.key')
+    execFileSync('openssl', [
+      'req', '-x509', '-nodes', '-days', '1',
+      '-newkey', 'ec', '-pkeyopt', 'ec_paramgen_curve:prime256v1',
+      '-subj', '/CN=e2e-ssl.example.test',
+      '-keyout', keyPath, '-out', certPath,
+    ], { stdio: 'pipe' })
+
+    return { cert: readFileSync(certPath, 'utf8'), key: readFileSync(keyPath, 'utf8') }
+  }
+  finally {
+    rmSync(dir, { recursive: true, force: true })
+  }
+}
 
 interface SyncResult {
   node: string
@@ -81,8 +102,9 @@ test.describe.serial('config directory deployment', () => {
     const headers = await openAuthenticated(page)
     const nodes = await peerNodeIds(page.request, headers)
 
-    await createConfig(page.request, headers, 'e2e-ssl', 'site.pem', sslPem)
-    await createConfig(page.request, headers, 'e2e-ssl', 'site.key', sslKey)
+    const { cert, key } = generateSelfSignedPair()
+    await createConfig(page.request, headers, 'e2e-ssl', 'site.pem', cert)
+    await createConfig(page.request, headers, 'e2e-ssl', 'site.key', key)
 
     const summary = await syncDirectory(page.request, headers, 'e2e-ssl', nodes, true)
 

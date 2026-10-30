@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { authHeaders, expectDemoRefusal, gotoRoute } from './helpers'
+import { authHeaders, expectDemoRefusal, gotoRoute, routeUrl } from './helpers'
 
 test('GET /api/pty returns the typed demo refusal before any upgrade', async ({ page }) => {
   await gotoRoute(page, '/dashboard/server')
@@ -41,13 +41,17 @@ test('terminal commands run in the browser-local simulated shell without a PTY W
   expect(websocketUrls.filter(url => new URL(url).pathname === '/api/pty')).toEqual([])
 })
 
-test('Terminal remains reachable while Preference hides its Terminal tab in demo mode', async ({ page }) => {
+test('Terminal remains reachable while Preference hides its Terminal section in demo mode', async ({ page }) => {
   await gotoRoute(page, '/terminal')
   await expect(page.locator('.xterm-screen').first()).toBeVisible()
 
-  await gotoRoute(page, '/preference')
-  await expect(page.getByRole('tab', { name: 'Server', exact: true })).toBeVisible()
-  await expect(page.getByRole('tab', { name: 'Terminal', exact: true })).toHaveCount(0)
+  // A direct link to the hidden section falls back to the default one.
+  await page.goto(routeUrl('/preference?tab=terminal'))
+  await expect.poll(() => new URL(page.url()).hash).toBe('#/preference?tab=server')
+
+  const nav = page.locator('.preference-nav')
+  await expect(nav.getByRole('button', { name: 'Server', exact: true })).toHaveAttribute('aria-current', 'page')
+  await expect(nav.getByRole('button', { name: 'Terminal', exact: true })).toHaveCount(0)
 })
 
 test('destructive settings, password, backup, and notifier routes return code 40300', async ({ page }) => {

@@ -1,4 +1,4 @@
-import type { APIResponse, Locator, Page, Response } from '@playwright/test'
+import type { APIRequestContext, APIResponse, Locator, Page, Response } from '@playwright/test'
 import { expect } from '@playwright/test'
 
 type LocatorRoot = Locator | Page
@@ -75,6 +75,14 @@ function containsCode(value: unknown, expectedCode: number): boolean {
     )
   }
   return false
+}
+
+// The same public endpoint the UI reads to decide whether it runs as the demo.
+export async function isDemoTarget(request: APIRequestContext) {
+  const response = await request.get('/api/icp_settings')
+  expect(response.ok(), await response.text()).toBe(true)
+
+  return (await response.json() as { demo?: boolean }).demo === true
 }
 
 export async function expectDemoRefusal(response: APIResponse) {

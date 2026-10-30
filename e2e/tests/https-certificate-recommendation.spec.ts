@@ -1,9 +1,11 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
-import { authHeaders, gotoRoute, waitForApiResponse } from './helpers'
+import { authHeaders, gotoRoute, isDemoTarget, waitForApiResponse } from './helpers'
 
-// Needs a writable instance (NGINX_UI_NODE_DEMO=false): it creates
-// certificates and a site, and enables HTTPS on it.
+// Creates certificates and a site, which the demo allows. Enabling HTTPS on
+// the site (POST /api/sites/:name/https) is refused in demo mode, so the spec
+// that finishes the wizard only runs against a writable instance started with
+// NGINX_UI_NODE_DEMO=false.
 
 interface CreatedCert {
   id: number
@@ -56,6 +58,11 @@ function methodSegment(page: Page) {
 }
 
 test('the SSL step preselects the certificate that covers the site', async ({ page }) => {
+  test.skip(
+    await isDemoTarget(page.request),
+    'enabling HTTPS is refused in demo mode; run against a container with NGINX_UI_NODE_DEMO=false',
+  )
+
   await gotoRoute(page, '/')
   const headers = await authHeaders(page)
   const created: CreatedCert[] = []
