@@ -2,56 +2,32 @@ import type { Locator, Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 import { gotoRoute, tableRows } from './helpers'
 
-const preferenceTabKeys = [
-  'server',
-  'app',
-  'external_notify',
-  'health_check',
-  'node',
-  'http',
-  'auth',
-  'access_tokens',
-  'cert',
-  'nginx',
-  'openai',
-  'logrotate',
-  'geolite',
+// Navigation order of the Preference sections. Terminal is hidden in demo mode.
+const preferenceSections = [
+  { key: 'server', label: 'Server' },
+  { key: 'app', label: 'App' },
+  { key: 'node', label: 'Node' },
+  { key: 'http', label: 'HTTP' },
+  { key: 'auth', label: 'Auth' },
+  { key: 'access_tokens', label: 'Access Tokens' },
+  { key: 'cert', label: 'Cert' },
+  { key: 'nginx', label: 'Nginx' },
+  { key: 'openai', label: 'LLM' },
+  { key: 'health_check', label: 'Health Check' },
+  { key: 'external_notify', label: 'External Notify' },
+  { key: 'logrotate', label: 'Logrotate' },
+  { key: 'geolite', label: 'GeoLite' },
 ]
 
-async function clickPreferenceTab(page: Page, key: string) {
-  const tabRoot = page.locator(`[data-node-key="${key}"]`).first()
-  const tab = tabRoot.getByRole('tab')
-  const navWrap = page.locator('.ant-tabs-nav-wrap')
-  const tabBox = await tabRoot.boundingBox()
-  const navBox = await navWrap.boundingBox()
-  const isFullyWithinNav = Boolean(
-    tabBox
-    && navBox
-    && tabBox.x >= navBox.x
-    && tabBox.x + tabBox.width <= navBox.x + navBox.width,
-  )
+async function openPreferenceSection(page: Page, label: string) {
+  const navItem = page.locator('.preference-nav').getByRole('button', { name: label, exact: true })
+  await navItem.click()
 
-  if (isFullyWithinNav) {
-    await tab.click()
-  }
-  else {
-    const moreButton = page.locator('.ant-tabs-nav-more')
-    await expect(moreButton).toBeVisible()
-    await moreButton.click()
-
-    const overflowOptions = page.getByRole('option')
-    await expect.poll(() => overflowOptions.count()).toBeGreaterThan(0)
-
-    const option = page.locator(`[role="option"][aria-controls$="-panel-${key}"]`)
-    await expect(option).toBeVisible()
-    await option.click()
-  }
-
-  await expect(tab).toHaveAttribute('aria-selected', 'true')
-  const panel = page.getByRole('tabpanel')
-  await expect(panel).toHaveAttribute('aria-labelledby', new RegExp(`-tab-${key}$`))
-  await expect(panel).not.toBeEmpty()
-  return panel
+  await expect(navItem).toHaveAttribute('aria-current', 'page')
+  const content = page.locator('.preference-content')
+  await expect(content.locator('.preference-section-title')).toHaveText(label)
+  await expect(content).not.toBeEmpty()
+  return content
 }
 
 async function assertSelectOptions(page: Page, root: Locator, context: string) {
@@ -125,7 +101,7 @@ function isKnownDemoNetworkError(message: string) {
     || message.startsWith('Failed to fetch short token:')
 }
 
-test('preference tabs render every migrated panel and their controls', async ({ page }) => {
+test('preference sections render every migrated panel and their controls', async ({ page }) => {
   const unexpectedConsoleErrors: string[] = []
 
   page.on('console', message => {
@@ -137,12 +113,12 @@ test('preference tabs render every migrated panel and their controls', async ({ 
   })
 
   await gotoRoute(page, '/preference')
-  await expect(page.locator('.preference-container')).toBeVisible()
-  await expect(page.getByRole('tablist')).toBeVisible()
-  await expect(page.getByRole('tab')).toHaveCount(preferenceTabKeys.length)
+  const nav = page.locator('.preference-nav')
+  await expect(nav).toBeVisible()
+  await expect(nav.locator('.preference-nav-item')).toHaveText(preferenceSections.map(section => section.label))
 
-  for (const key of preferenceTabKeys) {
-    const panel = await clickPreferenceTab(page, key)
+  for (const { key, label } of preferenceSections) {
+    const panel = await openPreferenceSection(page, label)
 
     if (key === 'openai') {
       // The API type select lives in the collapsed Advanced section.
@@ -150,7 +126,7 @@ test('preference tabs render every migrated panel and their controls', async ({ 
       await expect(panel.locator('.ant-select:visible')).toHaveCount(6)
     }
 
-    await assertSelectOptions(page, panel, `preference tab ${key}`)
+    await assertSelectOptions(page, panel, `preference section ${key}`)
 
     if (key === 'external_notify') {
       await assertTableHasRenderedBody(panel)
@@ -198,7 +174,7 @@ test('preference tabs render every migrated panel and their controls', async ({ 
         await expect(rows.first().locator('td').nth(4).locator('.ant-tag')).not.toHaveCount(0)
       }
 
-      const createAction = panel.getByRole('button').first()
+      const createAction = panel.getByRole('button', { name: 'Create Token' })
       await expect(createAction).toBeVisible()
       await createAction.click()
 

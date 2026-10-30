@@ -46,6 +46,17 @@ E2E_BASE_URL=https://demo.example.test E2E_USERNAME=admin E2E_PASSWORD=admin \
   bun run --cwd e2e test
 ```
 
+A few specs need more than the default demo target and skip themselves with the reason:
+
+- `config-directory-sync.spec.ts` drops unsupported files into the container when `E2E_CONTAINER` names it (for example `E2E_CONTAINER=nginxui-e2e`). It also needs `openssl` on the host to generate a throwaway certificate.
+- `https-certificate-recommendation.spec.ts` enables HTTPS on a site, which demo mode refuses. Run it against a writable container started with `-e NGINX_UI_NODE_DEMO=false`; the seeded `admin` / `admin` login still works there:
+
+```sh
+docker run -d --name nginxui-e2e-writable --platform linux/amd64 --cap-drop=ALL \
+  -e NGINX_UI_NODE_DEMO=false -p 18111:8080 nginxui-demo-e2e:local
+E2E_BASE_URL=http://127.0.0.1:18111 bun run --cwd e2e test https-certificate-recommendation
+```
+
 Failure traces, videos, and screenshots are retained under `e2e/test-results/`. The HTML report is written to `e2e/playwright-report/`.
 
 Stop and remove the local target when finished:

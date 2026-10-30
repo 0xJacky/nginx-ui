@@ -145,9 +145,15 @@ test('dashboard nodes and site cards retain migrated component content', async (
 
   const errorDetails = page.locator('[data-testid="site-health-check-error"]:visible')
   if (await errorDetails.count() > 0) {
-    await errorDetails.first().hover()
+    // The list is replaced by the HTTP load and again by the WebSocket's
+    // initial message. A card re-rendered under a still pointer never gets
+    // mouseenter, so move away and hover again until the tooltip opens.
     const tooltip = page.locator('.ant-tooltip:visible').last()
-    await expect(tooltip).toBeVisible()
+    await expect(async () => {
+      await page.mouse.move(0, 0)
+      await errorDetails.first().hover()
+      await expect(tooltip).toBeVisible({ timeout: 2_000 })
+    }).toPass()
     await expect(tooltip).toContainText(/\S/)
     await expect.poll(async () => (await tooltip.boundingBox())?.width ?? 0).toBeGreaterThan(0)
   }
