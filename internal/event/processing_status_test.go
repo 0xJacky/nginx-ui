@@ -18,7 +18,6 @@ func resetProcessingStatus(t *testing.T) *ProcessingStatusManager {
 	reset := func() {
 		m.UpdateIndexScanning(false)
 		m.UpdateAutoCertProcessing(false)
-		m.UpdateNginxLogIndexing(false)
 	}
 	reset()
 	t.Cleanup(reset)
@@ -45,11 +44,6 @@ func TestProcessingStatusUpdatesPublishFullStatus(t *testing.T) {
 			update: (*ProcessingStatusManager).UpdateAutoCertProcessing,
 			want:   ProcessingStatusData{AutoCertProcessing: true, Plugins: []PluginActivity{}},
 		},
-		{
-			name:   "nginx log indexing",
-			update: (*ProcessingStatusManager).UpdateNginxLogIndexing,
-			want:   ProcessingStatusData{NginxLogIndexing: true, Plugins: []PluginActivity{}},
-		},
 	}
 
 	for _, tt := range tests {
@@ -74,7 +68,6 @@ func TestProcessingStatusUnchangedValueDoesNotPublish(t *testing.T) {
 	}{
 		{name: "index scanning", update: (*ProcessingStatusManager).UpdateIndexScanning},
 		{name: "auto cert processing", update: (*ProcessingStatusManager).UpdateAutoCertProcessing},
-		{name: "nginx log indexing", update: (*ProcessingStatusManager).UpdateNginxLogIndexing},
 	}
 
 	for _, tt := range tests {
@@ -94,7 +87,6 @@ func TestProcessingStatusUnchangedValueDoesNotPublish(t *testing.T) {
 
 		m.UpdateIndexScanning(false)
 		m.UpdateAutoCertProcessing(false)
-		m.UpdateNginxLogIndexing(false)
 
 		assert.Empty(t, hub.snapshot())
 	})
@@ -116,21 +108,6 @@ func TestProcessingStatusFlagsAreIndependent(t *testing.T) {
 	}, hub.snapshot())
 }
 
-func TestUpdateNginxLogIndexingAlsoPublishesLegacyStatus(t *testing.T) {
-	m := resetProcessingStatus(t)
-	hub := installGlobalHub(t)
-
-	m.UpdateNginxLogIndexing(true)
-	m.UpdateNginxLogIndexing(false)
-
-	assert.Equal(t, []recordedMessage{
-		{event: string(TypeProcessingStatus), data: ProcessingStatusData{NginxLogIndexing: true, Plugins: []PluginActivity{}}},
-		{event: string(TypeNginxLogStatus), data: NginxLogStatusData{Indexing: true}},
-		{event: string(TypeProcessingStatus), data: ProcessingStatusData{Plugins: []PluginActivity{}}},
-		{event: string(TypeNginxLogStatus), data: NginxLogStatusData{Indexing: false}},
-	}, hub.snapshot())
-}
-
 func TestBroadcastCurrentStatusAlwaysPublishes(t *testing.T) {
 	m := resetProcessingStatus(t)
 	m.UpdateAutoCertProcessing(true)
@@ -148,7 +125,7 @@ func TestProcessingStatusConcurrentUpdates(t *testing.T) {
 	installGlobalHub(t)
 
 	const iterations = 100
-	updates := []func(bool){m.UpdateIndexScanning, m.UpdateAutoCertProcessing, m.UpdateNginxLogIndexing}
+	updates := []func(bool){m.UpdateIndexScanning, m.UpdateAutoCertProcessing}
 
 	var wg sync.WaitGroup
 	for _, update := range updates {

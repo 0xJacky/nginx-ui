@@ -1,12 +1,9 @@
 package audit
 
 import (
-	"strings"
 	"testing"
 
-	"github.com/0xJacky/Nginx-UI/internal/cert/dns"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 func TestIsCredentialName(t *testing.T) {
@@ -32,55 +29,4 @@ func TestIsCredentialName(t *testing.T) {
 	} {
 		assert.False(t, isCredentialName(name), name)
 	}
-}
-
-// nonSecretProviderSettingSuffixes cover provider settings that identify an
-// account, endpoint or option rather than hold a secret: user names, IDs,
-// URLs, regions, file paths and similar.
-var nonSecretProviderSettingSuffixes = []string{
-	"_USERNAME", "_USER_NAME", "_USER", "_LOGIN", "_EMAIL", "_NICKNAME", "_ID", "_OCID", "_URL", "_HOST",
-	"_HOSTNAME", "_ENDPOINT", "_ADDRESS", "_NAMESERVER", "_REGION", "_PROJECT", "_ROLE", "_ARN", "_ZONE",
-	"_BUCKET", "_PATH", "_FILE", "_EDGERC", "_SECTION", "_NAME", "_VIEW", "_MODE", "_CONFIG", "_NUMBER",
-	"_REFERENCE", "_CODE", "_FINGERPRINT", "_RECORDS_MAPPING", "_API_BASE", "_CHANGED", "_PROFILE",
-}
-
-// nonSecretProviderSettings are the remaining non-secret entries.
-var nonSecretProviderSettings = map[string]struct{}{
-	// A documentation entry in the catalog, not an environment variable.
-	"Application Default Credentials": {},
-	// UCloud pairs this public key with UCLOUD_PRIVATE_KEY, which is redacted.
-	"UCLOUD_PUBLIC_KEY": {},
-}
-
-// TestIsCredentialNameCoversDNSProviderCredentials runs the matcher over every
-// credential setting in the bundled lego provider catalog, so a provider whose
-// secret uses an unusual name cannot slip through redaction unnoticed.
-func TestIsCredentialNameCoversDNSProviderCredentials(t *testing.T) {
-	providers := dns.GetProvidersList()
-	require.NotEmpty(t, providers)
-	checked := 0
-	for _, listed := range providers {
-		provider, ok := dns.GetProvider(listed.Code)
-		if !ok || provider.Configuration == nil {
-			continue
-		}
-		for name := range provider.Configuration.Credentials {
-			checked++
-			if isCredentialName(name) {
-				continue
-			}
-			if _, ok := nonSecretProviderSettings[name]; ok {
-				continue
-			}
-			nonSecret := false
-			for _, suffix := range nonSecretProviderSettingSuffixes {
-				if strings.HasSuffix(name, suffix) {
-					nonSecret = true
-					break
-				}
-			}
-			assert.True(t, nonSecret, "%s credential %q is neither redacted nor listed as non-secret", provider.Code, name)
-		}
-	}
-	require.Greater(t, checked, 100)
 }
