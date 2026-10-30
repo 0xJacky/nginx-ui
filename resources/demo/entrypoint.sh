@@ -41,6 +41,20 @@ while [ "$n" -le $((PEER_COUNT + 1)) ]; do
     n=$((n + 1))
 done
 
+# Write the synthetic access and error logs BEFORE nginx starts. nginx-ui would
+# also write them when it boots, but it refuses to touch a log that already has
+# content, and by then the platform health check (or an E2E /healthz poll) has
+# already reached nginx and put a real line in access.log. The log dashboard
+# then stays empty for the container's whole life.
+#
+# A failure here must not stop nginx from coming up, for the same reason as
+# below: the boot log has to stay reachable.
+if nginx-ui --config /etc/nginx-ui/app.ini demo install-log-fixtures >> "$BOOT_LOG" 2>&1; then
+    log "installed demo log fixtures"
+else
+    log "failed to install demo log fixtures; the log dashboard will be empty"
+fi
+
 # nginx comes up first and stays up for the container's whole life. Keeping it
 # alive even when nginx-ui is down is deliberate: the platform health check and
 # the boot log below stay reachable, so a failure is diagnosable instead of

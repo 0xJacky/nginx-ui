@@ -2,6 +2,7 @@ package demo
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -172,30 +173,53 @@ func writeErrorLogFixture(path string, now time.Time) error {
 	return nil
 }
 
-// installLogFixtures writes both logs, if they are not already populated.
+// nginxLogDir is where the demo image's nginx.conf writes both logs.
+const nginxLogDir = "/var/log/nginx"
+
+// InstallLogFixtures writes both logs, if they are not already populated.
+//
+// The demo entrypoint calls this through `nginx-ui demo install-log-fixtures`
+// before it starts nginx. It cannot wait for the in-process override: the
+// platform health check reaches nginx before nginx-ui boots, so by then
+// access.log already holds a real line and the guard below skips the fixture.
 //
 // Refuses to overwrite a log that already has content: on a self-hosted
 // instance that would destroy the operator's real access log, and the guard
 // costs nothing.
-func installLogFixtures() {
-	now := time.Now()
+func InstallLogFixtures() error {
+	return writeLogFixtures(nginxLogDir, time.Now())
+}
 
+// installLogFixtures is the in-process fallback for deployments that do not
+// go through the demo entrypoint. On the demo image it finds the logs already
+// written and leaves them alone.
+func installLogFixtures() {
+	if err := InstallLogFixtures(); err != nil {
+		logger.Errorf("demo: %v", err)
+	}
+}
+
+func writeLogFixtures(dir string, now time.Time) error {
+	var errs []error
 	for _, fixture := range []struct {
-		path  string
+		name  string
 		write func(string, time.Time) error
 	}{
-		{"/var/log/nginx/access.log", WriteAccessLogFixture},
-		{"/var/log/nginx/error.log", writeErrorLogFixture},
+		{"access.log", WriteAccessLogFixture},
+		{"error.log", writeErrorLogFixture},
 	} {
-		if info, err := os.Stat(fixture.path); err == nil && info.Size() > 0 {
-			logger.Infof("demo: %s already has content, leaving it alone", fixture.path)
+		path := filepath.Join(dir, fixture.name)
+		if info, err := os.Stat(path); err == nil && info.Size() > 0 {
+			logger.Infof("demo: %s already has content, leaving it alone", path)
 			continue
 		}
 
-		if err := fixture.write(fixture.path, now); err != nil {
-			logger.Errorf("demo: failed to write %s: %v", fixture.path, err)
+		if err := fixture.write(path, now); err != nil {
+			errs = append(errs, fmt.Errorf("failed to write %s: %w", path, err))
 			continue
 		}
-		logger.Infof("demo: wrote synthetic %s", fixture.path)
+		logger.Infof("demo: wrote synthetic %s", path)
 	}
+
+	return errors.Join(errs...)
 }
