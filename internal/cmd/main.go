@@ -51,6 +51,7 @@ func NewAppCmd() *cli.Command {
 			CtlCommand,
 			UpgradeDockerStep2Command,
 			HostSetupCommand,
+			DemoCommand,
 		},
 		Flags: []cli.Flag{
 			&cli.StringFlag{

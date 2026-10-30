@@ -241,12 +241,33 @@ func TestAccessLogFixtureHasAMixOfStatuses(t *testing.T) {
 
 func TestLogFixturesRefuseToClobberRealLogs(t *testing.T) {
 	// A self-hosted instance that somehow ran this must not lose its log.
-	path := filepath.Join(t.TempDir(), "access.log")
-	require.NoError(t, os.WriteFile(path, []byte("real operator traffic\n"), 0o644))
+	dir := t.TempDir()
+	path := filepath.Join(dir, "access.log")
+	real := []byte("real operator traffic\n")
+	require.NoError(t, os.WriteFile(path, real, 0o644))
 
-	info, err := os.Stat(path)
+	require.NoError(t, writeLogFixtures(dir, time.Now()))
+
+	got, err := os.ReadFile(path)
 	require.NoError(t, err)
-	assert.Positive(t, info.Size(), "precondition")
-	// installLogFixtures skips non-empty files; assert the predicate it uses.
-	assert.True(t, info.Size() > 0)
+	assert.Equal(t, real, got, "a non-empty log must be left exactly as it was")
+}
+
+func TestLogFixturesFillEmptyLogs(t *testing.T) {
+	// The demo image ships both logs as empty files, so empty must count as
+	// unpopulated rather than as the operator's log.
+	dir := t.TempDir()
+	for _, name := range []string{"access.log", "error.log"} {
+		require.NoError(t, os.WriteFile(filepath.Join(dir, name), nil, 0o644))
+	}
+
+	require.NoError(t, writeLogFixtures(dir, time.Now()))
+
+	data, err := os.ReadFile(filepath.Join(dir, "access.log"))
+	require.NoError(t, err)
+	assert.Equal(t, logLineCount, strings.Count(string(data), "\n"))
+
+	info, err := os.Stat(filepath.Join(dir, "error.log"))
+	require.NoError(t, err)
+	assert.Positive(t, info.Size())
 }
