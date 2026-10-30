@@ -1372,6 +1372,19 @@ jobs:
         with:
           persist-credentials: false
 
+      # komac syncs the fork through GitHub's compare API, which gives up with
+      # "diff is taking too long" once the fork falls far behind upstream.
+      # Fast-forwarding the ref first keeps that diff empty; force=false makes
+      # this fail instead of discarding commits if the fork ever diverges.
+      - name: Fast-forward the WinGet fork
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_GITHUB_TOKEN }}
+        run: |
+          upstream=$(gh api repos/microsoft/winget-pkgs/commits/master --jq .sha)
+          gh api -X PATCH repos/0xJacky/winget-pkgs/git/refs/heads/master \
+            -f sha="$upstream" -F force=false --jq '.object.sha'
+
       - name: Publish to WinGet
         uses: vedantmgoyal9/winget-releaser@b7370d4d152efdce803a26cc6ca9eee58cb2ad54 # v2
         with:
