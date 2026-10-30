@@ -103,3 +103,26 @@ func TestPrefillSettingsPayloadRedactsSensitiveStrings(t *testing.T) {
 	assert.Equal(t, redactedSensitiveValue, payload.Token)
 	assert.Equal(t, "saved-model", payload.Model)
 }
+
+func TestSaveSettingsPartialBodyKeepsOmittedPluginFields(t *testing.T) {
+	useTempSettingsFile(t)
+	original := *appsettings.PluginSettings
+	t.Cleanup(func() { *appsettings.PluginSettings = original })
+
+	appsettings.PluginSettings.MarketplaceEnabled = true
+	appsettings.PluginSettings.MarketplaceSources = []string{"https://saved.example/catalog.json"}
+	appsettings.PluginSettings.MemoryLimitMB = 256
+
+	w := postSettings(t, `{"plugin":{"auto_update":true}}`)
+	require.Equal(t, http.StatusOK, w.Code, w.Body.String())
+
+	assert.True(t, appsettings.PluginSettings.AutoUpdate)
+	assert.True(t, appsettings.PluginSettings.MarketplaceEnabled, "an omitted plugin field must be kept")
+	assert.Equal(t, []string{"https://saved.example/catalog.json"}, appsettings.PluginSettings.MarketplaceSources)
+	assert.Equal(t, 256, appsettings.PluginSettings.MemoryLimitMB)
+
+	w = postSettings(t, `{"http":{"github_proxy":"https://mirror.example"}}`)
+	require.Equal(t, http.StatusOK, w.Code, w.Body.String())
+	assert.True(t, appsettings.PluginSettings.AutoUpdate, "an omitted plugin section must be kept")
+	assert.Equal(t, 256, appsettings.PluginSettings.MemoryLimitMB)
+}

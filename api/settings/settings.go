@@ -36,8 +36,7 @@ type saveSettingsPayload struct {
 	Oidc          settings.OIDC          `json:"oidc"`
 	SiteCheck     settings.SiteCheck     `json:"site_check"`
 	UpstreamCheck settings.UpstreamCheck `json:"upstream_check"`
-	// Plugin is optional so clients that predate the section keep the stored values.
-	Plugin *settings.Plugin `json:"plugin"`
+	Plugin        settings.Plugin        `json:"plugin"`
 }
 
 func cloneSettingsSection(section any) gin.H {
@@ -327,6 +326,7 @@ func SaveSettings(c *gin.Context) {
 		Oidc:          prefillSettingsPayload(settings.OIDCSettings),
 		SiteCheck:     prefillSettingsPayload(settings.SiteCheckSettings),
 		UpstreamCheck: prefillSettingsPayload(settings.UpstreamCheckSettings),
+		Plugin:        prefillSettingsPayload(settings.PluginSettings),
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -349,9 +349,7 @@ func SaveSettings(c *gin.Context) {
 		oidcSection.bind(&json.Oidc),
 		siteCheckSection.bind(&json.SiteCheck),
 		upstreamCheckSection.bind(&json.UpstreamCheck),
-	}
-	if json.Plugin != nil {
-		saves = append(saves, pluginSection.bind(json.Plugin))
+		pluginSection.bind(&json.Plugin),
 	}
 
 	if !persistSections(c, saves...) {

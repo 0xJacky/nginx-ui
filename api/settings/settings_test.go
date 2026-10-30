@@ -463,8 +463,8 @@ func TestPluginResourceSettingsAreExposedAndTheCgroupRootIsProtected(t *testing.
 	assert.Contains(t, string(encoded), `"cpu_percent":50`)
 	assert.Contains(t, string(encoded), `"cgroup_root":"/sys/fs/cgroup"`)
 
-	payload := saveSettingsPayload{Plugin: &appsettings.Plugin{MemoryLimitMB: 512, CPUPercent: 100, CgroupRoot: "/tmp/elsewhere"}}
-	cSettings.ProtectedFill(appsettings.PluginSettings, payload.Plugin)
+	payload := saveSettingsPayload{Plugin: appsettings.Plugin{MemoryLimitMB: 512, CPUPercent: 100, CgroupRoot: "/tmp/elsewhere"}}
+	cSettings.ProtectedFill(appsettings.PluginSettings, &payload.Plugin)
 	assert.Equal(t, 512, appsettings.PluginSettings.MemoryLimitMB)
 	assert.Equal(t, 100, appsettings.PluginSettings.CPUPercent)
 	assert.Equal(t, "/sys/fs/cgroup", appsettings.PluginSettings.CgroupRoot, "the cgroup root cannot be changed over the API")
