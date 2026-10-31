@@ -211,12 +211,14 @@ func GetHostIPAddresses() ([]string, error) {
 	return ipAddresses, nil
 }
 
-// isVirtualInterface checks if the interface is a virtual one based on name patterns
+// isVirtualInterface checks if the interface is a virtual one based on name patterns.
+// Bond interfaces are not virtual here: they carry the host's IP while their
+// slaves have none, so excluding them would leave no interface to count.
 func isVirtualInterface(name string) bool {
 	// Common virtual interface name patterns
 	virtualPatterns := []string{
 		"veth", "virbr", "vnet", "vmnet", "vboxnet", "docker",
-		"br-", "bridge", "tun", "tap", "bond", "dummy",
+		"br-", "bridge", "tun", "tap", "dummy",
 		"vpn", "ipsec", "gre", "sit", "vlan", "virt",
 		"wg", "vmk", "ib", "vxlan", "geneve", "ovs",
 		"hyperv", "hyper-v", "awdl", "llw", "utun",

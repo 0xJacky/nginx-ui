@@ -91,3 +91,33 @@ func TestBuildCountedInterfaceSetIncludesOnlyEligibleNames(t *testing.T) {
 		t.Fatalf("expected TAP adapter to be excluded")
 	}
 }
+
+func TestBuildCountedInterfaceSetCountsBondOnce(t *testing.T) {
+	bondMAC := stdnet.HardwareAddr{0x52, 0x54, 0x00, 0x12, 0x34, 0x56}
+	interfaces := []networkInterfaceInfo{
+		{
+			Name:         "bond0",
+			Flags:        stdnet.FlagUp | stdnet.FlagBroadcast | stdnet.FlagMulticast,
+			HardwareAddr: bondMAC,
+			Addrs:        []stdnet.Addr{mustCIDR(t, "192.168.10.20/24")},
+		},
+		{
+			Name:         "eno1",
+			Flags:        stdnet.FlagUp | stdnet.FlagBroadcast | stdnet.FlagMulticast,
+			HardwareAddr: bondMAC,
+		},
+		{
+			Name:         "eno2",
+			Flags:        stdnet.FlagUp | stdnet.FlagBroadcast | stdnet.FlagMulticast,
+			HardwareAddr: bondMAC,
+		},
+	}
+
+	counted := buildCountedInterfaceSet(interfaces)
+	if !counted["bond0"] {
+		t.Fatalf("expected bond0 carrying the host IP to be counted")
+	}
+	if counted["eno1"] || counted["eno2"] {
+		t.Fatalf("expected bond slaves without IPs to be excluded so traffic is not double counted")
+	}
+}
