@@ -3,17 +3,52 @@ package cache
 import (
 	"context"
 	"fmt"
+	"hash/fnv"
 	"path/filepath"
+	"sort"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
+	"unicode/utf8"
 
-	"github.com/blevesearch/bleve/v2"
-	"github.com/blevesearch/bleve/v2/mapping"
-	"github.com/blevesearch/bleve/v2/search/query"
-	indexapi "github.com/blevesearch/bleve_index_api"
+	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/gabriel-vasile/mimetype"
 	"github.com/uozi-tech/cosy/logger"
+)
+
+const (
+	// maxIndexedFileSize skips scanned files that are too large to be useful.
+	maxIndexedFileSize = 1024 * 1024
+	// maxDocumentContentSize is the absolute limit accepted by IndexDocument.
+	maxDocumentContentSize = 2 * 1024 * 1024
+	// maxIndexedDocuments caps the number of documents kept in memory.
+	maxIndexedDocuments = 1000
+	// defaultSearchLimit is used when the caller passes a non-positive limit.
+	defaultSearchLimit = 500
+	// minFuzzyQueryLength is the shortest query that gets typo tolerance.
+	minFuzzyQueryLength = 3
+	// maxContentBonus caps the bonus for repeated content matches.
+	maxContentBonus = 40
+	// longTokenLength is the token length that allows two edits instead of one.
+	longTokenLength = 8
+	// maxFuzzyDistance is the most edits tolerated in any match.
+	maxFuzzyDistance = 2
+	// cancelCheckInterval is how many documents are scanned between context checks.
+	cancelCheckInterval = 64
+)
+
+// Scores by match tier, from best to worst. Bonuses stay below the gap
+// between tiers so a tier never overtakes the one above it.
+const (
+	scoreNameExact    = 1000.0
+	scorePort         = 900.0
+	scoreNamePrefix   = 800.0
+	scoreNameContains = 600.0
+	scoreNameFuzzy    = 400.0
+	scorePathContains = 250.0
+	scoreContent      = 200.0
+	scoreContentTerms = 150.0
 )
 
 // SearchDocument represents a document in the search index
@@ -32,21 +67,35 @@ type SearchResult struct {
 	Score    float64        `json:"score"`
 }
 
-// SearchIndexer manages the Bleve search index
-type SearchIndexer struct {
-	index       bleve.Index
-	indexPath   string
-	indexMutex  sync.RWMutex
-	ctx         context.Context
-	cancel      context.CancelFunc
-	cleanupOnce sync.Once
+// indexedDocument keeps only what matching needs. The original content is
+// not retained, so results carry an empty Content field.
+type indexedDocument struct {
+	id          string
+	docType     string
+	name        string
+	path        string
+	updatedAt   time.Time
+	contentHash uint64
+	contentSize int64
 
-	// Memory management
+	lowerName    string
+	lowerPath    string
+	lowerContent string
+	nameTokens   []string
+	ports        []uint16
+}
+
+// SearchIndexer keeps config documents in memory and matches queries against them
+type SearchIndexer struct {
+	indexPath  string
+	indexMutex sync.RWMutex
+	docs       map[string]*indexedDocument
+	ctx        context.Context
+	cancel     context.CancelFunc
+
+	// Content budget, guarded by indexMutex
 	totalContentSize int64
-	documentCount    int64
 	maxMemoryUsage   int64
-	documentSizes    map[string]int64
-	memoryMutex      sync.RWMutex
 }
 
 var (
@@ -71,130 +120,59 @@ func InitSearchIndex(ctx context.Context) error {
 	return indexer.Initialize(ctx)
 }
 
-// Initialize sets up the Bleve search index
+// Initialize sets up the in-memory search index
 func (si *SearchIndexer) Initialize(ctx context.Context) error {
-	si.indexMutex.Lock()
-	defer si.indexMutex.Unlock()
-
-	// Create a derived context for cleanup
-	si.ctx, si.cancel = context.WithCancel(ctx)
-
-	// Check if context is cancelled
 	select {
 	case <-ctx.Done():
 		return ctx.Err()
 	default:
 	}
 
-	var err error
-	logger.Info("Creating in-memory search index")
-	si.index, err = bleve.NewMemOnly(si.createIndexMapping())
-	if err != nil {
-		return fmt.Errorf("failed to create in-memory search index: %w", err)
+	si.indexMutex.Lock()
+	if si.cancel != nil {
+		si.cancel()
 	}
+	// Create a derived context for cleanup
+	si.ctx, si.cancel = context.WithCancel(ctx)
+	watched := si.ctx
+	si.docs = make(map[string]*indexedDocument)
 	si.resetMemoryUsage()
+	if si.maxMemoryUsage <= 0 {
+		si.maxMemoryUsage = 100 * 1024 * 1024
+	}
+	si.indexMutex.Unlock()
+
+	logger.Info("Creating in-memory search index")
 
 	// Register callback for config scanning
 	RegisterCallback("search.handleConfigScan", si.handleConfigScan)
 
 	// Start cleanup goroutine
-	go si.watchContext()
+	go si.watchContext(watched)
 
 	logger.Info("Search index initialized successfully")
 	return nil
 }
 
-// watchContext monitors the context and cleans up when it's cancelled
-func (si *SearchIndexer) watchContext() {
-	<-si.ctx.Done()
-	si.cleanup()
+// watchContext releases the index when its context is cancelled
+func (si *SearchIndexer) watchContext(ctx context.Context) {
+	<-ctx.Done()
+
+	si.indexMutex.Lock()
+	defer si.indexMutex.Unlock()
+	// A newer Initialize owns the index now
+	if si.ctx == ctx {
+		si.cleanupLocked()
+	}
 }
 
-// cleanup closes the in-memory index and resets memory accounting.
-func (si *SearchIndexer) cleanup() {
-	si.cleanupOnce.Do(func() {
+// cleanupLocked drops all documents and resets memory accounting.
+func (si *SearchIndexer) cleanupLocked() {
+	if si.docs != nil {
 		logger.Info("Cleaning up search index...")
-
-		si.indexMutex.Lock()
-		defer si.indexMutex.Unlock()
-
-		if si.index != nil {
-			si.index.Close()
-			si.index = nil
-		}
-
-		// Reset memory tracking
-		si.memoryMutex.Lock()
-		si.totalContentSize = 0
-		si.documentCount = 0
-		si.documentSizes = nil
-		si.memoryMutex.Unlock()
-	})
-}
-
-// createIndexMapping creates the mapping for the search index
-func (si *SearchIndexer) createIndexMapping() mapping.IndexMapping {
-	docMapping := bleve.NewDocumentMapping()
-	docMapping.Dynamic = false
-
-	textField := bleve.NewTextFieldMapping()
-	textField.Analyzer = "standard"
-	textField.Store = true
-	textField.Index = true
-	textField.DocValues = false
-	textField.IncludeTermVectors = false
-	textField.IncludeInAll = false
-
-	keywordField := bleve.NewKeywordFieldMapping()
-	keywordField.Store = true
-	keywordField.Index = true
-	keywordField.DocValues = false
-	keywordField.IncludeTermVectors = false
-	keywordField.IncludeInAll = false
-
-	storedKeywordField := bleve.NewKeywordFieldMapping()
-	storedKeywordField.Store = true
-	storedKeywordField.Index = false
-	storedKeywordField.DocValues = false
-	storedKeywordField.IncludeTermVectors = false
-	storedKeywordField.IncludeInAll = false
-
-	idField := bleve.NewKeywordFieldMapping()
-	idField.Store = false
-	idField.Index = false
-	idField.DocValues = false
-	idField.IncludeTermVectors = false
-	idField.IncludeInAll = false
-
-	dateField := bleve.NewDateTimeFieldMapping()
-	dateField.Store = true
-	dateField.Index = false
-	dateField.DocValues = false
-	dateField.IncludeTermVectors = false
-	dateField.IncludeInAll = false
-
-	fieldMappings := map[string]*mapping.FieldMapping{
-		"id":         idField,
-		"type":       keywordField,
-		"path":       storedKeywordField,
-		"name":       textField,
-		"content":    textField,
-		"updated_at": dateField,
 	}
-
-	for field, fieldMapping := range fieldMappings {
-		docMapping.AddFieldMappingsAt(field, fieldMapping)
-	}
-
-	indexMapping := bleve.NewIndexMapping()
-	indexMapping.DefaultMapping = docMapping
-	indexMapping.DefaultAnalyzer = "standard"
-	indexMapping.DefaultField = "content"
-	indexMapping.IndexDynamic = false
-	indexMapping.StoreDynamic = false
-	indexMapping.DocValuesDynamic = false
-
-	return indexMapping
+	si.docs = nil
+	si.resetMemoryUsage()
 }
 
 // handleConfigScan processes scanned config files and indexes them
@@ -207,9 +185,8 @@ func (si *SearchIndexer) handleConfigScan(configPath string, content []byte) (er
 		}
 	}()
 
-	// File size limit: 1MB to prevent memory overflow and improve performance
-	const maxFileSize = 1024 * 1024 // 1MB
-	if len(content) > maxFileSize {
+	// File size limit to prevent memory overflow and improve performance
+	if len(content) > maxIndexedFileSize {
 		return nil
 	}
 
@@ -253,7 +230,7 @@ func (si *SearchIndexer) determineConfigType(configPath string) string {
 	}
 }
 
-// IndexDocument indexes a single document
+// IndexDocument adds or replaces a single document
 func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 	// Add panic recovery to prevent the entire application from crashing
 	defer func() {
@@ -264,39 +241,34 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 	}()
 
 	// Additional size check as a safety measure
-	if len(doc.Content) > 2*1024*1024 { // 2MB absolute limit
+	if len(doc.Content) > maxDocumentContentSize {
 		return fmt.Errorf("document content too large: %d bytes", len(doc.Content))
 	}
+
+	hash := hashContent(doc.Content)
+	contentSize := int64(len(doc.Content))
 
 	si.indexMutex.Lock()
 	defer si.indexMutex.Unlock()
 
-	if si.index == nil {
+	if si.docs == nil {
 		return fmt.Errorf("search index not initialized")
 	}
 
-	// Check if document already exists in the index
-	contentSize := int64(len(doc.Content))
-	existingDoc, err := si.index.Document(doc.ID)
-	isNewDocument := err != nil || existingDoc == nil
-	if !isNewDocument {
-		if existingContent, ok := documentStringField(existingDoc, "content"); ok && existingContent == doc.Content {
-			return nil
-		}
+	existing, isExisting := si.docs[doc.ID]
+	if isExisting && existing.contentHash == hash && existing.contentSize == contentSize {
+		return nil
 	}
 
-	si.memoryMutex.Lock()
-	defer si.memoryMutex.Unlock()
-	if si.documentSizes == nil {
-		si.documentSizes = make(map[string]int64)
+	var previousSize int64
+	documentCount := len(si.docs)
+	if isExisting {
+		previousSize = existing.contentSize
+	} else {
+		documentCount++
 	}
-	previousSize := si.documentSizes[doc.ID]
 	newTotalSize := si.totalContentSize - previousSize + contentSize
-	newDocumentCount := si.documentCount
-	if isNewDocument {
-		newDocumentCount++
-	}
-	if newTotalSize > si.maxMemoryUsage || newDocumentCount > 1000 {
+	if newTotalSize > si.maxMemoryUsage || documentCount > maxIndexedDocuments {
 		logger.Warn("Skipping document due to content budget",
 			"document_id", doc.ID,
 			"content_size", contentSize,
@@ -304,37 +276,136 @@ func (si *SearchIndexer) IndexDocument(doc SearchDocument) (err error) {
 		return nil
 	}
 
-	// Index the document (this will update existing or create new)
-	err = si.index.Index(doc.ID, doc)
-	if err != nil {
-		return err
-	}
-
+	si.docs[doc.ID] = newIndexedDocument(doc, hash)
 	si.totalContentSize = newTotalSize
-	si.documentCount = newDocumentCount
-	si.documentSizes[doc.ID] = contentSize
-
 	return nil
 }
 
-func documentStringField(doc indexapi.Document, name string) (string, bool) {
-	if doc == nil {
-		return "", false
+// newIndexedDocument reduces a document to the fields used for matching.
+func newIndexedDocument(doc SearchDocument, hash uint64) *indexedDocument {
+	lowerName := strings.ToLower(doc.Name)
+	return &indexedDocument{
+		id:          doc.ID,
+		docType:     doc.Type,
+		name:        doc.Name,
+		path:        doc.Path,
+		updatedAt:   doc.UpdatedAt,
+		contentHash: hash,
+		contentSize: int64(len(doc.Content)),
+
+		lowerName:    lowerName,
+		lowerPath:    strings.ToLower(matchablePath(doc.Path)),
+		lowerContent: strings.ToLower(doc.Content),
+		nameTokens:   splitNameTokens(lowerName),
+		ports:        extractListenPorts(doc.Content),
 	}
+}
 
-	var value string
-	var found bool
-	doc.VisitFields(func(field indexapi.Field) {
-		if found {
-			return
-		}
-		if field.Name() == name {
-			value = string(field.Value())
-			found = true
-		}
-	})
+// matchablePath returns the part of path below the nginx config directory, so
+// a query for a word of the config root itself does not match every document.
+func matchablePath(path string) string {
+	root := nginx.GetConfPath()
+	if root == "" {
+		return path
+	}
+	rel, err := filepath.Rel(root, path)
+	if err != nil || rel == ".." || strings.HasPrefix(rel, ".."+string(filepath.Separator)) {
+		return path
+	}
+	return rel
+}
 
-	return value, found
+func hashContent(content string) uint64 {
+	h := fnv.New64a()
+	_, _ = h.Write([]byte(content))
+	return h.Sum64()
+}
+
+// isNameSeparator reports whether r splits a name into tokens.
+func isNameSeparator(r rune) bool {
+	switch r {
+	case '.', '-', '_', '/', '\\', ' ':
+		return true
+	}
+	return false
+}
+
+// splitNameTokens splits a lowercased name on separators. Tokens share the
+// backing memory of the name.
+func splitNameTokens(name string) []string {
+	return strings.FieldsFunc(name, isNameSeparator)
+}
+
+// extractListenPorts returns the distinct ports of listen directives.
+func extractListenPorts(content string) []uint16 {
+	var ports []uint16
+	n := len(content)
+	atStart := true // at the start of a directive
+
+	for i := 0; i < n; {
+		c := content[i]
+		switch {
+		case c == '#':
+			for i < n && content[i] != '\n' {
+				i++
+			}
+		case c == ';' || c == '{' || c == '}' || c == '\n':
+			atStart = true
+			i++
+		case c == ' ' || c == '\t' || c == '\r':
+			i++
+		default:
+			start := i
+			for i < n && !isDirectiveDelimiter(content[i]) {
+				i++
+			}
+			if atStart && strings.EqualFold(content[start:i], "listen") {
+				for i < n && (content[i] == ' ' || content[i] == '\t') {
+					i++
+				}
+				argStart := i
+				for i < n && !isDirectiveDelimiter(content[i]) {
+					i++
+				}
+				ports = appendListenPort(ports, content[argStart:i])
+			}
+			atStart = false
+		}
+	}
+	return ports
+}
+
+func isDirectiveDelimiter(c byte) bool {
+	switch c {
+	case ' ', '\t', '\r', '\n', ';', '{', '}':
+		return true
+	}
+	return false
+}
+
+// appendListenPort parses a listen argument such as 80, 127.0.0.1:8080 or [::]:443.
+func appendListenPort(ports []uint16, arg string) []uint16 {
+	if arg == "" || strings.HasPrefix(arg, "unix:") {
+		return ports
+	}
+	if idx := strings.LastIndexByte(arg, ':'); idx >= 0 {
+		// A bare IPv6 address without a port has no port part
+		if strings.HasSuffix(arg, "]") {
+			return ports
+		}
+		arg = arg[idx+1:]
+	}
+	value, err := strconv.ParseUint(arg, 10, 16)
+	if err != nil || value == 0 {
+		return ports
+	}
+	port := uint16(value)
+	for _, existing := range ports {
+		if existing == port {
+			return ports
+		}
+	}
+	return append(ports, port)
 }
 
 // Search performs a search query
@@ -347,11 +418,43 @@ func (si *SearchIndexer) SearchByType(ctx context.Context, queryStr string, docT
 	return si.searchWithType(ctx, queryStr, docType, limit)
 }
 
+// searchQuery is a normalized query
+type searchQuery struct {
+	text    string
+	terms   []string // set when the text has several words
+	tokens  []string // set when the text spans several name tokens
+	port    uint16   // set for numeric queries that can be a port
+	numeric bool
+	fuzzy   bool
+}
+
+func newSearchQuery(queryStr string) searchQuery {
+	text := strings.ToLower(strings.TrimSpace(queryStr))
+	// "port:8080" searches for the port itself
+	if rest := strings.TrimPrefix(text, "port:"); rest != text && isNumericQuery(rest) {
+		text = strings.TrimSpace(rest)
+	}
+	q := searchQuery{text: text, numeric: isNumericQuery(text)}
+
+	if q.numeric {
+		digits := strings.TrimPrefix(text, ":")
+		if value, err := strconv.ParseUint(digits, 10, 16); err == nil && value > 0 {
+			q.port = uint16(value)
+		}
+	} else {
+		q.fuzzy = utf8.RuneCountInString(text) >= minFuzzyQueryLength
+		if tokens := splitNameTokens(text); len(tokens) > 1 {
+			q.tokens = tokens
+		}
+	}
+	if fields := strings.Fields(text); len(fields) > 1 {
+		q.terms = fields
+	}
+	return q
+}
+
 // searchWithType performs the actual search with optional type filtering
 func (si *SearchIndexer) searchWithType(ctx context.Context, queryStr string, docType string, limit int) ([]SearchResult, error) {
-	si.indexMutex.RLock()
-	defer si.indexMutex.RUnlock()
-
 	// Check if context is cancelled
 	select {
 	case <-ctx.Done():
@@ -359,47 +462,243 @@ func (si *SearchIndexer) searchWithType(ctx context.Context, queryStr string, do
 	default:
 	}
 
-	if si.index == nil {
+	if limit <= 0 {
+		limit = defaultSearchLimit
+	}
+
+	q := newSearchQuery(queryStr)
+
+	si.indexMutex.RLock()
+	defer si.indexMutex.RUnlock()
+
+	if si.docs == nil {
 		return nil, fmt.Errorf("search index not initialized")
 	}
-
-	if limit <= 0 {
-		limit = 500 // Increase default limit to handle more results
+	if q.text == "" {
+		return []SearchResult{}, nil
 	}
 
-	query := si.buildQuery(queryStr, docType)
-	searchRequest := bleve.NewSearchRequest(query)
-	searchRequest.Size = limit
-	searchRequest.Fields = []string{"*"}
-
-	// Use a channel to handle search with context cancellation
-	type searchResult struct {
-		result *bleve.SearchResult
-		err    error
-	}
-
-	resultChan := make(chan searchResult, 1)
-	go func() {
-		result, err := si.index.Search(searchRequest)
-		resultChan <- searchResult{result: result, err: err}
-	}()
-
-	// Wait for search result or context cancellation
-	select {
-	case <-ctx.Done():
-		return nil, ctx.Err()
-	case res := <-resultChan:
-		if res.err != nil {
-			return nil, fmt.Errorf("search execution failed: %w", res.err)
+	var matches []scoredDocument
+	scanned := 0
+	for _, doc := range si.docs {
+		scanned++
+		if scanned%cancelCheckInterval == 0 {
+			select {
+			case <-ctx.Done():
+				return nil, ctx.Err()
+			default:
+			}
 		}
-		results := si.convertResults(res.result)
-
-		// log the search execution
-		logger.Debugf("Search index query '%s' (type: %s, limit: %d) returned %d results",
-			queryStr, docType, limit, len(results))
-
-		return results, nil
+		if docType != "" && doc.docType != docType {
+			continue
+		}
+		if score, ok := doc.score(&q); ok {
+			matches = append(matches, scoredDocument{doc: doc, score: score})
+		}
 	}
+
+	sort.Slice(matches, func(i, j int) bool {
+		if matches[i].score != matches[j].score {
+			return matches[i].score > matches[j].score
+		}
+		if matches[i].doc.name != matches[j].doc.name {
+			return matches[i].doc.name < matches[j].doc.name
+		}
+		return matches[i].doc.id < matches[j].doc.id
+	})
+	if len(matches) > limit {
+		matches = matches[:limit]
+	}
+
+	results := make([]SearchResult, len(matches))
+	for i, m := range matches {
+		results[i] = SearchResult{
+			Document: SearchDocument{
+				ID:        m.doc.id,
+				Type:      m.doc.docType,
+				Name:      m.doc.name,
+				Path:      m.doc.path,
+				UpdatedAt: m.doc.updatedAt,
+			},
+			Score: m.score,
+		}
+	}
+
+	// log the search execution
+	logger.Debugf("Search index query '%s' (type: %s, limit: %d) returned %d results",
+		queryStr, docType, limit, len(results))
+
+	return results, nil
+}
+
+type scoredDocument struct {
+	doc   *indexedDocument
+	score float64
+}
+
+// score returns the best matching tier for the query.
+func (d *indexedDocument) score(q *searchQuery) (float64, bool) {
+	name := d.lowerName
+
+	// Name tiers
+	if name == q.text || strings.TrimSuffix(name, ".conf") == q.text {
+		return scoreNameExact, true
+	}
+	if q.port != 0 {
+		for _, port := range d.ports {
+			if port == q.port {
+				return scorePort, true
+			}
+		}
+	}
+	if strings.HasPrefix(name, q.text) {
+		return scoreNamePrefix + closeness(q.text, name), true
+	}
+	if strings.Contains(name, q.text) {
+		return scoreNameContains + closeness(q.text, name), true
+	}
+	if q.fuzzy {
+		if distance, ok := d.fuzzyNameDistance(q); ok {
+			return scoreNameFuzzy - float64(distance)*20 + closeness(q.text, name), true
+		}
+	}
+
+	// Path and content tiers. Digits in directory names are noise for numeric queries.
+	if !q.numeric && strings.Contains(d.lowerPath, q.text) {
+		return scorePathContains, true
+	}
+	if count := strings.Count(d.lowerContent, q.text); count > 0 {
+		return scoreContent + float64(min(count, maxContentBonus)), true
+	}
+	if len(q.terms) > 0 && containsAllTerms(d.lowerContent, d.lowerPath, q.terms) {
+		return scoreContentTerms, true
+	}
+	return 0, false
+}
+
+// closeness is a bonus below 50 that favors names close in length to the query.
+func closeness(query, name string) float64 {
+	if len(name) == 0 {
+		return 0
+	}
+	ratio := float64(len(query)) / float64(len(name))
+	if ratio > 1 {
+		ratio = 1
+	}
+	return ratio * 49
+}
+
+func containsAllTerms(content, docPath string, terms []string) bool {
+	for _, term := range terms {
+		if !strings.Contains(content, term) && !strings.Contains(docPath, term) {
+			return false
+		}
+	}
+	return true
+}
+
+// fuzzyNameDistance finds the smallest edit distance between the query and a
+// name token or the whole name, within the allowed tolerance. A query that
+// spans several tokens matches when each of its tokens is found or close to
+// a name token.
+func (d *indexedDocument) fuzzyNameDistance(q *searchQuery) (int, bool) {
+	best := -1
+	consider := func(candidate string) {
+		if distance := boundedEditDistance(q.text, candidate, fuzzyLimit(candidate)); distance >= 0 && (best < 0 || distance < best) {
+			best = distance
+		}
+	}
+
+	consider(d.lowerName)
+	for _, token := range d.nameTokens {
+		consider(token)
+	}
+	if best < 0 && len(q.tokens) > 1 {
+		if distance, ok := d.fuzzyTokensDistance(q.tokens); ok {
+			best = distance
+		}
+	}
+	return best, best >= 0
+}
+
+// fuzzyTokensDistance sums the typo distance of each query token against the
+// name. Tokens that appear in the name as they are cost nothing.
+func (d *indexedDocument) fuzzyTokensDistance(queryTokens []string) (int, bool) {
+	total := 0
+	for _, queryToken := range queryTokens {
+		if strings.Contains(d.lowerName, queryToken) {
+			continue
+		}
+		if utf8.RuneCountInString(queryToken) < minFuzzyQueryLength {
+			return 0, false
+		}
+		best := -1
+		for _, token := range d.nameTokens {
+			if distance := boundedEditDistance(queryToken, token, fuzzyLimit(token)); distance >= 0 && (best < 0 || distance < best) {
+				best = distance
+			}
+		}
+		if best < 0 {
+			return 0, false
+		}
+		total += best
+	}
+	return total, total > 0 && total <= maxFuzzyDistance
+}
+
+// fuzzyLimit is the edit distance allowed for a candidate of the given length.
+func fuzzyLimit(candidate string) int {
+	if utf8.RuneCountInString(candidate) >= longTokenLength {
+		return maxFuzzyDistance
+	}
+	return 1
+}
+
+// boundedEditDistance returns the optimal string alignment distance (edits
+// and adjacent transpositions) between a and b, or -1 when it exceeds limit.
+func boundedEditDistance(a, b string, limit int) int {
+	if a == b {
+		return 0
+	}
+	// Cheap length check before allocating rune slices
+	la, lb := utf8.RuneCountInString(a), utf8.RuneCountInString(b)
+	if diff := la - lb; diff > limit || -diff > limit || la == 0 || lb == 0 {
+		return -1
+	}
+	ra, rb := []rune(a), []rune(b)
+
+	prevPrev := make([]int, len(rb)+1)
+	prev := make([]int, len(rb)+1)
+	cur := make([]int, len(rb)+1)
+	for j := range prev {
+		prev[j] = j
+	}
+
+	for i := 1; i <= len(ra); i++ {
+		cur[0] = i
+		rowMin := cur[0]
+		for j := 1; j <= len(rb); j++ {
+			cost := 1
+			if ra[i-1] == rb[j-1] {
+				cost = 0
+			}
+			v := min(prev[j]+1, cur[j-1]+1, prev[j-1]+cost)
+			if i > 1 && j > 1 && ra[i-1] == rb[j-2] && ra[i-2] == rb[j-1] {
+				v = min(v, prevPrev[j-2]+1)
+			}
+			cur[j] = v
+			rowMin = min(rowMin, v)
+		}
+		if rowMin > limit {
+			return -1
+		}
+		prevPrev, prev, cur = prev, cur, prevPrev
+	}
+
+	if prev[len(rb)] > limit {
+		return -1
+	}
+	return prev[len(rb)]
 }
 
 // isNumericQuery checks if the query string is primarily numeric
@@ -422,188 +721,34 @@ func isNumericQuery(queryStr string) bool {
 	return float64(numericCount)/float64(len(queryStr)) > 0.5
 }
 
-// buildQuery builds a search query with optional type filtering
-func (si *SearchIndexer) buildQuery(queryStr string, docType string) query.Query {
-	mainQuery := bleve.NewBooleanQuery()
-
-	// Add type filter if specified
-	if docType != "" {
-		typeQuery := bleve.NewTermQuery(docType)
-		typeQuery.SetField("type")
-		mainQuery.AddMust(typeQuery)
-	}
-
-	// Determine if this is a numeric query
-	isNumeric := isNumericQuery(queryStr)
-
-	// Add text search across name and content fields only
-	textQuery := bleve.NewBooleanQuery()
-	searchFields := []string{"name", "content"}
-
-	for _, field := range searchFields {
-		// Create a boolean query for this field to combine multiple query types
-		fieldQuery := bleve.NewBooleanQuery()
-
-		if isNumeric {
-			// Numeric query strategy: prioritize exact matches and prefix matches
-			// Avoid fuzzy matching to prevent false positives
-
-			// 1. Term query for exact token match (highest priority for numbers)
-			termQuery := bleve.NewTermQuery(queryStr)
-			termQuery.SetField(field)
-			termQuery.SetBoost(10.0) // Highest boost for exact term matches
-			fieldQuery.AddShould(termQuery)
-
-			// 2. Prefix query for partial matches (e.g., "9005" matches "90051234")
-			prefixQuery := bleve.NewPrefixQuery(queryStr)
-			prefixQuery.SetField(field)
-			prefixQuery.SetBoost(5.0) // High boost for prefix matches
-			fieldQuery.AddShould(prefixQuery)
-
-			// 3. Wildcard query for substring matching (e.g., "9005" in "listen 9005;")
-			wildcardQuery := bleve.NewWildcardQuery("*" + queryStr + "*")
-			wildcardQuery.SetField(field)
-			wildcardQuery.SetBoost(2.0) // Lower boost for wildcard matches
-			fieldQuery.AddShould(wildcardQuery)
-
-		} else {
-			// Text query strategy: more flexible matching with fuzzy support
-
-			// 1. Term query for exact token match (highest priority)
-			termQuery := bleve.NewTermQuery(strings.ToLower(queryStr))
-			termQuery.SetField(field)
-			termQuery.SetBoost(8.0) // High boost for exact matches
-			fieldQuery.AddShould(termQuery)
-
-			// 2. Match query for analyzed text search (handles case-insensitive, etc.)
-			matchQuery := bleve.NewMatchQuery(queryStr)
-			matchQuery.SetField(field)
-			matchQuery.SetBoost(4.0) // Medium-high boost for match queries
-			fieldQuery.AddShould(matchQuery)
-
-			// 3. Prefix query for partial matches (e.g., "access" matches "access_log")
-			prefixQuery := bleve.NewPrefixQuery(strings.ToLower(queryStr))
-			prefixQuery.SetField(field)
-			prefixQuery.SetBoost(3.0) // Medium boost for prefix matches
-			fieldQuery.AddShould(prefixQuery)
-
-			// 4. Wildcard query for more flexible matching
-			wildcardQuery := bleve.NewWildcardQuery("*" + strings.ToLower(queryStr) + "*")
-			wildcardQuery.SetField(field)
-			wildcardQuery.SetBoost(2.0) // Lower boost for wildcard matches
-			fieldQuery.AddShould(wildcardQuery)
-
-			// 5. Fuzzy match query (allows 1 character difference) - only for text queries
-			fuzzyQuery := bleve.NewFuzzyQuery(queryStr)
-			fuzzyQuery.SetField(field)
-			fuzzyQuery.SetFuzziness(1)
-			fuzzyQuery.SetBoost(1.0) // Lowest boost for fuzzy matches
-			fieldQuery.AddShould(fuzzyQuery)
-		}
-
-		textQuery.AddShould(fieldQuery)
-	}
-
-	if docType != "" {
-		mainQuery.AddMust(textQuery)
-	} else {
-		return textQuery
-	}
-
-	return mainQuery
-}
-
-// convertResults converts Bleve search results to our SearchResult format
-func (si *SearchIndexer) convertResults(searchResult *bleve.SearchResult) []SearchResult {
-	results := make([]SearchResult, 0, len(searchResult.Hits))
-
-	for _, hit := range searchResult.Hits {
-		doc := SearchDocument{
-			ID:      hit.ID,
-			Type:    si.getStringField(hit.Fields, "type"),
-			Name:    si.getStringField(hit.Fields, "name"),
-			Path:    si.getStringField(hit.Fields, "path"),
-			Content: si.getStringField(hit.Fields, "content"),
-		}
-
-		// Parse updated_at if present
-		if updatedAtStr := si.getStringField(hit.Fields, "updated_at"); updatedAtStr != "" {
-			if updatedAt, err := time.Parse(time.RFC3339, updatedAtStr); err == nil {
-				doc.UpdatedAt = updatedAt
-			}
-		}
-
-		results = append(results, SearchResult{
-			Document: doc,
-			Score:    hit.Score,
-		})
-	}
-
-	return results
-}
-
-// getStringField safely gets a string field from search results
-func (si *SearchIndexer) getStringField(fields map[string]interface{}, fieldName string) string {
-	if value, ok := fields[fieldName]; ok {
-		if str, ok := value.(string); ok {
-			return str
-		}
-	}
-	return ""
-}
-
 // DeleteDocument removes a document from the index
 func (si *SearchIndexer) DeleteDocument(docID string) error {
 	si.indexMutex.Lock()
 	defer si.indexMutex.Unlock()
 
-	if si.index == nil {
+	if si.docs == nil {
 		return fmt.Errorf("search index not initialized")
 	}
 
-	if err := si.index.Delete(docID); err != nil {
-		return err
-	}
-
-	si.memoryMutex.Lock()
-	defer si.memoryMutex.Unlock()
-	if contentSize, exists := si.documentSizes[docID]; exists {
-		si.totalContentSize -= contentSize
-		si.documentCount--
-		delete(si.documentSizes, docID)
+	if doc, exists := si.docs[docID]; exists {
+		si.totalContentSize -= doc.contentSize
+		delete(si.docs, docID)
 	}
 	return nil
 }
 
-// RebuildIndex rebuilds the entire search index
+// RebuildIndex drops every document so the next scan repopulates the index
 func (si *SearchIndexer) RebuildIndex(ctx context.Context) error {
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+	}
+
 	si.indexMutex.Lock()
 	defer si.indexMutex.Unlock()
 
-	// Check if context is cancelled
-	select {
-	case <-ctx.Done():
-		return ctx.Err()
-	default:
-	}
-
-	if si.index != nil {
-		si.index.Close()
-	}
-
-	// Check context before creating new index
-	select {
-	case <-ctx.Done():
-		return ctx.Err()
-	default:
-	}
-
-	// Create new index
-	var err error
-	si.index, err = bleve.NewMemOnly(si.createIndexMapping())
-	if err != nil {
-		return fmt.Errorf("failed to create new in-memory index: %w", err)
-	}
+	si.docs = make(map[string]*indexedDocument)
 	si.resetMemoryUsage()
 
 	logger.Info("Search index rebuilt successfully")
@@ -615,21 +760,16 @@ func (si *SearchIndexer) GetIndexStats() (map[string]interface{}, error) {
 	si.indexMutex.RLock()
 	defer si.indexMutex.RUnlock()
 
-	if si.index == nil {
+	if si.docs == nil {
 		return nil, fmt.Errorf("search index not initialized")
 	}
 
-	docCount, err := si.index.DocCount()
-	if err != nil {
-		return nil, err
-	}
-
 	// Get memory usage statistics
-	totalContentSize, trackedDocCount, maxMemoryUsage := si.getMemoryUsage()
+	totalContentSize, documentCount, maxMemoryUsage := si.getMemoryUsage()
 
 	return map[string]interface{}{
-		"document_count":         docCount,
-		"tracked_document_count": trackedDocCount,
+		"document_count":         documentCount,
+		"tracked_document_count": documentCount,
 		"total_content_size":     totalContentSize,
 		"max_memory_usage":       maxMemoryUsage,
 		"memory_usage_percent":   float64(totalContentSize) / float64(maxMemoryUsage) * 100,
@@ -639,11 +779,14 @@ func (si *SearchIndexer) GetIndexStats() (map[string]interface{}, error) {
 
 // Close closes the search index and triggers cleanup
 func (si *SearchIndexer) Close() error {
-	if si.cancel != nil {
-		si.cancel()
-	}
+	si.indexMutex.Lock()
+	cancel := si.cancel
+	si.cleanupLocked()
+	si.indexMutex.Unlock()
 
-	si.cleanup()
+	if cancel != nil {
+		cancel()
+	}
 	return nil
 }
 
@@ -669,19 +812,14 @@ func SearchAll(ctx context.Context, query string, limit int) ([]SearchResult, er
 	return GetSearchIndexer().Search(ctx, query, limit)
 }
 
+// resetMemoryUsage clears the content budget. The caller holds indexMutex.
 func (si *SearchIndexer) resetMemoryUsage() {
-	si.memoryMutex.Lock()
-	defer si.memoryMutex.Unlock()
 	si.totalContentSize = 0
-	si.documentCount = 0
-	si.documentSizes = make(map[string]int64)
 }
 
-// getMemoryUsage returns current memory usage statistics
+// getMemoryUsage returns current memory usage statistics. The caller holds indexMutex.
 func (si *SearchIndexer) getMemoryUsage() (int64, int64, int64) {
-	si.memoryMutex.RLock()
-	defer si.memoryMutex.RUnlock()
-	return si.totalContentSize, si.documentCount, si.maxMemoryUsage
+	return si.totalContentSize, int64(len(si.docs)), si.maxMemoryUsage
 }
 
 // isConfigFile checks if the content is a text/plain file (most nginx configs)

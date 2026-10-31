@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"runtime"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
@@ -35,6 +36,7 @@ type saveSettingsPayload struct {
 	Oidc          settings.OIDC          `json:"oidc"`
 	SiteCheck     settings.SiteCheck     `json:"site_check"`
 	UpstreamCheck settings.UpstreamCheck `json:"upstream_check"`
+	Plugin        settings.Plugin        `json:"plugin"`
 }
 
 func cloneSettingsSection(section any) gin.H {
@@ -152,6 +154,7 @@ func settingsSectionSources() map[string]any {
 		"oidc":           settings.OIDCSettings,
 		"site_check":     settings.SiteCheckSettings,
 		"upstream_check": settings.UpstreamCheckSettings,
+		"plugin":         settings.PluginSettings,
 	}
 }
 
@@ -223,6 +226,7 @@ var settingsResponseBuilders = map[string]func() any{
 	"upstream_check": func() any {
 		return settings.UpstreamCheckSettings
 	},
+	"plugin": func() any { return buildPluginSettingsResponse() },
 }
 
 func buildSettingsResponse() gin.H {
@@ -248,6 +252,15 @@ func buildOpenAISettingsResponse() gin.H {
 		openai["base_url"] = baseURL
 	}
 	return openai
+}
+
+// buildPluginSettingsResponse adds the resolved plugin directory and whether
+// the process resource limits apply on this system.
+func buildPluginSettingsResponse() gin.H {
+	response := cloneRedactedSettingsSection(settings.PluginSettings)
+	response["dir"] = settings.PluginSettings.GetDir()
+	response["resource_limits_supported"] = runtime.GOOS == "linux"
+	return response
 }
 
 func buildNginxSettingsResponse() gin.H {
@@ -313,6 +326,7 @@ func SaveSettings(c *gin.Context) {
 		Oidc:          prefillSettingsPayload(settings.OIDCSettings),
 		SiteCheck:     prefillSettingsPayload(settings.SiteCheckSettings),
 		UpstreamCheck: prefillSettingsPayload(settings.UpstreamCheckSettings),
+		Plugin:        prefillSettingsPayload(settings.PluginSettings),
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -335,6 +349,7 @@ func SaveSettings(c *gin.Context) {
 		oidcSection.bind(&json.Oidc),
 		siteCheckSection.bind(&json.SiteCheck),
 		upstreamCheckSection.bind(&json.UpstreamCheck),
+		pluginSection.bind(&json.Plugin),
 	}
 
 	if !persistSections(c, saves...) {

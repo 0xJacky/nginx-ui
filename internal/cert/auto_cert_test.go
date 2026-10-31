@@ -124,16 +124,16 @@ func TestShouldSkipAutoCertForNonSuccessStatus(t *testing.T) {
 	}
 }
 
-func TestNewAutoRenewPayloadPreservesAuthoritativePropagationOption(t *testing.T) {
+func TestNewAutoRenewPayloadPreservesChallengeConfig(t *testing.T) {
 	notBefore := time.Date(2026, time.August, 17, 0, 0, 0, 0, time.UTC)
 	certModel := &model.Cert{
-		DisableAuthoritativeNSPropagation: true,
+		ChallengeConfig: map[string]any{"disable_authoritative_ns_propagation": true},
 	}
 
 	payload := newAutoRenewPayload(certModel, &Info{NotBefore: notBefore}, "aki.serial")
 
-	if !payload.DisableAuthoritativeNSPropagation {
-		t.Fatal("authoritative propagation option was not copied to auto-renew payload")
+	if payload.ChallengeConfig["disable_authoritative_ns_propagation"] != true {
+		t.Fatal("challenge config was not copied to auto-renew payload")
 	}
 	if !payload.NotBefore.Equal(notBefore) {
 		t.Fatalf("NotBefore = %s, want %s", payload.NotBefore, notBefore)

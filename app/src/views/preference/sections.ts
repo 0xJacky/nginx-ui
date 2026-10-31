@@ -13,12 +13,12 @@ export type PreferenceSectionKey
     | 'access_tokens'
     | 'cert'
     | 'nginx'
+    | 'plugin'
     | 'openai'
     | 'health_check'
     | 'external_notify'
     | 'terminal'
     | 'logrotate'
-    | 'geolite'
 
 export interface PreferenceSectionLink {
   label: string
@@ -128,6 +128,17 @@ export function buildPreferenceSections(): PreferenceSection[] {
       pathPrefixes: ['nginx'],
     },
     {
+      key: 'plugin',
+      group: 'features',
+      label: $gettext('Plugins'),
+      description: $gettext('Plugin system, marketplace, packages and resource limits of plugin processes.'),
+      link: {
+        label: $gettext('Go to plugins'),
+        to: '/system/plugins',
+      },
+      pathPrefixes: ['plugin'],
+    },
+    {
       key: 'openai',
       group: 'features',
       label: $gettext('LLM'),
@@ -174,17 +185,6 @@ export function buildPreferenceSections(): PreferenceSection[] {
       description: $gettext('Scheduled rotation of Nginx log files.'),
       pathPrefixes: ['logrotate'],
     },
-    {
-      key: 'geolite',
-      group: 'maintenance',
-      label: $gettext('GeoLite'),
-      description: $gettext('Geographic database and map files used by log analytics.'),
-      link: {
-        label: $gettext('Go to logs'),
-        to: '/nginx_log',
-      },
-      pathPrefixes: ['nginx_log'],
-    },
   ]
 }
 
@@ -205,6 +205,7 @@ const settingsSectionTab: Record<SavableSettingsSection, PreferenceSectionKey> =
   openai: 'openai',
   logrotate: 'logrotate',
   nginx: 'nginx',
+  plugin: 'plugin',
   site_check: 'health_check',
   upstream_check: 'health_check',
 }

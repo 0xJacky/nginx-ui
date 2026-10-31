@@ -97,70 +97,19 @@ test('server dashboard renders non-zero live gauges over the analytics WebSocket
   await expectPositiveText(networkValues.nth(1), 60_000)
 })
 
-test('nginx log list, raw view, structured view, and geographic dashboards render fabricated traffic', async ({ page }) => {
+test('nginx log list and raw view render fabricated traffic', async ({ page }) => {
   test.setTimeout(240_000)
 
   await gotoRoute(page, '/nginx_log/list')
   await expectTableRows(page, 1)
 
-  await gotoRoute(page, '/nginx_log/access')
-  const structuredView = page.getByRole('radio', { name: 'Structured', exact: true })
-  const rawView = page.getByRole('radio', { name: 'Raw', exact: true })
-  const dashboardView = page.getByRole('radio', { name: 'Dashboard', exact: true })
-  await expect(structuredView).toBeChecked()
-
   const rawResponsePromise = waitForApiResponse(page, '/api/nginx_log/page', 'POST')
-  await page.getByRole('main').getByText('Raw', { exact: true }).click()
-  await expect(rawView).toBeChecked()
+  await gotoRoute(page, '/nginx_log/access')
   const rawResponse = await rawResponsePromise
   expect(rawResponse.ok()).toBe(true)
   const rawBody = await rawResponse.json()
   expect(rawBody.content?.split('\n').filter(Boolean).length).toBeGreaterThan(0)
   await expect.poll(() => page.locator('.nginx-log-line').count()).toBeGreaterThan(0)
-
-  const searchResponsePromise = waitForApiResponse(page, '/api/nginx_log/search', 'POST', 180_000)
-  await page.getByRole('main').getByText('Structured', { exact: true }).click()
-  await expect(structuredView).toBeChecked()
-  const searchResponse = await searchResponsePromise
-  expect(searchResponse.ok()).toBe(true)
-  const searchBody = await searchResponse.json()
-  expect(searchBody.entries?.length).toBeGreaterThan(0)
-  await expectTableRows(page.locator('.log-table-container'), 1)
-
-  const dashboardResponsePromise = waitForApiResponse(page, '/api/nginx_log/dashboard', 'POST', 180_000)
-  const worldResponsePromise = waitForApiResponse(page, '/api/nginx_log/geo/world', 'POST', 180_000)
-  const chinaResponsePromise = waitForApiResponse(page, '/api/nginx_log/geo/china', 'POST', 180_000)
-  await page.getByRole('main').getByText('Dashboard', { exact: true }).click()
-  await expect(dashboardView).toBeChecked()
-
-  const [dashboardResponse, worldResponse, chinaResponse] = await Promise.all([
-    dashboardResponsePromise,
-    worldResponsePromise,
-    chinaResponsePromise,
-  ])
-  expect(dashboardResponse.ok()).toBe(true)
-  expect(worldResponse.ok()).toBe(true)
-  expect(chinaResponse.ok()).toBe(true)
-
-  const dashboardBody = await dashboardResponse.json()
-  const worldBody = await worldResponse.json()
-  const chinaBody = await chinaResponse.json()
-  expect(Number(dashboardBody.summary?.total_pv)).toBeGreaterThan(0)
-  expect(worldBody.data?.length).toBeGreaterThan(0)
-  expect(chinaBody.data?.length).toBeGreaterThan(0)
-
-  await expectPositiveText(page.locator('.ant-statistic').filter({
-    has: page.getByText('Total PV', { exact: true }),
-  }).locator('.ant-statistic-content-value'))
-
-  const worldMap = page.locator('.world-map-container')
-  await expect(worldMap).toBeVisible()
-  await expect(worldMap.locator('canvas')).toBeVisible()
-  await expectTableRows(worldMap, 1)
-
-  const chinaMap = page.locator('.china-map-container')
-  await expect(chinaMap).toBeAttached()
-  await expect.poll(() => tableRows(chinaMap).count()).toBeGreaterThan(0)
 })
 
 test('sites list is populated and navigation cards include healthy and failing sites', async ({ page }) => {

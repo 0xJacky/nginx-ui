@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { InfoCircleOutlined } from '@antdv-next/icons'
+import { AppstoreOutlined, InfoCircleOutlined } from '@antdv-next/icons'
 import { useSettingsStore } from '@/pinia'
 
 export const systemRoutes: RouteRecordRaw[] = [
@@ -40,6 +40,15 @@ export const systemRoutes: RouteRecordRaw[] = [
 
             return settings.is_remote
           },
+        },
+      },
+      {
+        path: 'plugins',
+        name: 'Plugins',
+        component: () => import('@/views/system/plugins/Plugins.vue'),
+        meta: {
+          name: () => $gettext('Plugins'),
+          icon: AppstoreOutlined,
         },
       },
       {

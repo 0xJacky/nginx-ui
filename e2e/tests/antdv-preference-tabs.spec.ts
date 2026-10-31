@@ -12,11 +12,11 @@ const preferenceSections = [
   { key: 'access_tokens', label: 'Access Tokens' },
   { key: 'cert', label: 'Cert' },
   { key: 'nginx', label: 'Nginx' },
+  { key: 'plugin', label: 'Plugins' },
   { key: 'openai', label: 'LLM' },
   { key: 'health_check', label: 'Health Check' },
   { key: 'external_notify', label: 'External Notify' },
   { key: 'logrotate', label: 'Logrotate' },
-  { key: 'geolite', label: 'GeoLite' },
 ]
 
 async function openPreferenceSection(page: Page, label: string) {

@@ -110,7 +110,6 @@ Applicable for version v2.0.0-beta.37 and above.
 |------------------------|---------------------------------------|
 | IndexingEnabled | NGINX_UI_NGINX_LOG_INDEXING_ENABLED |
 | IndexPath               | NGINX_UI_NGINX_LOG_INDEX_PATH                |
-| [IndexCustomMMDB](./config-nginx-log.md#indexcustommmdb) | NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB |
 
 ## Node
 | Configuration Setting | Environment Variable            |

@@ -447,16 +447,16 @@ func TestPreview(t *testing.T) {
 	}
 	content := "location / {\n    return {{ .status }} https://example.com{{ if .keepPath }}$request_uri{{ end }};\n}\n"
 
-	result, err := Preview(content, vars)
+	result, err := Preview(content, vars, false)
 	require.NoError(t, err)
 	assert.Empty(t, result.Error)
 	assert.Contains(t, result.Content, "return 302 https://example.com;")
 
-	result, err = Preview("return {{ .status ;", vars)
+	result, err = Preview("return {{ .status ;", vars, false)
 	require.NoError(t, err)
 	assert.NotEmpty(t, result.Error, "a template that does not parse is reported")
 
-	result, err = Preview("location / {\n    return {{ .status }};\n", vars)
+	result, err = Preview("location / {\n    return {{ .status }};\n", vars, false)
 	require.NoError(t, err)
 	assert.Contains(t, result.Content, "return 302;")
 	assert.NotEmpty(t, result.Error, "a result that is not nginx configuration is reported")

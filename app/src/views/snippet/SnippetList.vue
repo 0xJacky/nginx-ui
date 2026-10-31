@@ -40,7 +40,7 @@ const tab = computed({
 const tabOptions = computed(() => [
   { label: `${$gettext('My Snippets')} ${snippets.value.length}`, value: 'snippets' },
   {
-    label: `${$gettext('Built-in Templates')} ${builtins.value.length || ''}`.trim(),
+    label: `${$gettext('Templates')} ${builtins.value.length || ''}`.trim(),
     value: 'builtin',
   },
 ])

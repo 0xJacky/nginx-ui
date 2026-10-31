@@ -490,27 +490,6 @@ msgstr "Вимкнено"
 msgid "Maintenance"
 msgstr "Технічне обслуговування"
 
-msgid "Site"
-msgstr "Сайт"
-
-msgid "Stream"
-msgstr "Потік"
-
-msgid "Configuration"
-msgstr "Конфігурація"
-
-msgid "+%{count} more"
-msgstr "+%{count} ще"
-
-msgid "Search"
-msgstr "Пошук"
-
-msgid "No file matches the search"
-msgstr "Жоден файл не відповідає пошуку"
-
-msgid "Not used"
-msgstr "Не використовується"
-
 msgid "Starting download..."
 msgstr "Починається завантаження..."
 
@@ -1042,6 +1021,9 @@ msgstr "Готово"
 msgid "Unknown"
 msgstr "Невідомо"
 
+msgid "Search"
+msgstr "Пошук"
+
 msgid "Open in split view"
 msgstr "Відкрити в розділеному вигляді"
 
@@ -1148,6 +1130,12 @@ msgstr ""
 "файлів до того самого сховища. Перейменуйте одне із завдань або змініть "
 "його шлях зберігання."
 
+msgid "Backups to Keep"
+msgstr "Резервні копії для збереження"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "Кількість резервних копій для зберігання (0 — зберігати всі)"
+
 msgid "Renew Certificate Success"
 msgstr "Успішне поновлення сертифіката"
 
@@ -1177,16 +1165,6 @@ msgstr "Сертифікат %{name} закінчиться через %{days} �
 
 msgid "Certificate Expiring Soon"
 msgstr "Сертифікат незабаром закінчується"
-
-msgid "Certificate Relocated"
-msgstr "Сертифікат переміщено"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr ""
-"Сертифікат %{name} тепер зберігається в %{path}. Перенаправте сайти, які "
-"завантажують %{previous_path}, на цей шлях"
 
 msgid "Sync Certificate Error"
 msgstr "Помилка синхронізації сертифіката"
@@ -1760,53 +1738,6 @@ msgstr "Використати код відновлення"
 msgid "Use OTP"
 msgstr "Використовувати OTP"
 
-msgid "Recovery codes downloaded"
-msgstr "Коди відновлення завантажено"
-
-msgid "MFA setup completed. Save your recovery codes before continuing."
-msgstr "Налаштування MFA завершено. Збережіть коди відновлення перед продовженням."
-
-msgid "Download"
-msgstr "Завантажити"
-
-msgid "Continue"
-msgstr "Продовжити"
-
-msgid "MFA session expired. Please sign in again."
-msgstr "Сесію MFA завершено. Будь ласка, увійдіть знову."
-
-msgid "MFA is required. Set up an authenticator or a passkey to continue."
-msgstr "Потрібно MFA. Налаштуйте аутентифікатор або passkey, щоб продовжити."
-
-msgid "Verify your MFA method to continue signing in."
-msgstr "Підтвердьте свій метод MFA, щоб продовжити вхід."
-
-msgid "Enable TOTP"
-msgstr "Увімкнути TOTP"
-
-msgid "Verify"
-msgstr "Перевірка"
-
-msgid "Add a passkey"
-msgstr "Додати ключ доступу"
-
-msgid "Back to sign in"
-msgstr "Повернутися до входу"
-
-msgid "Secret has been copied"
-msgstr "Секрет скопійовано"
-
-msgid "Click to copy"
-msgstr "Клацніть, щоб скопіювати"
-
-msgid "Current Password"
-msgstr "Поточний пароль"
-
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr ""
-"Відскануйте QR-код за допомогою мобільного телефону, щоб додати обліковий "
-"запис до програми."
-
 msgid "Generate new recovery codes"
 msgstr "Створити нові коди відновлення"
 
@@ -1829,13 +1760,6 @@ msgstr "Потрібна двофакторна аутентифікація"
 
 msgid "Invalid passcode or recovery code"
 msgstr "Невірний код підтвердження або код відновлення"
-
-msgid ""
-"Enable MFA on your own account before managing MFA policies or resetting "
-"another user."
-msgstr ""
-"Увімкніть MFA у власному обліковому записі, перш ніж керувати політиками "
-"MFA або скидати дані іншого користувача."
 
 msgid "Node Status"
 msgstr "Стан вузла"
@@ -2482,9 +2406,6 @@ msgstr "Вміст файлу містить неприпустимі керую
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "Вміст файлу містить обмежену директиву nginx: {0}"
 
-msgid "File content must be valid PEM or htpasswd data"
-msgstr "Вміст файлу має бути коректними даними PEM або htpasswd"
-
 msgid "Destination file: {0} already exists"
 msgstr "Файл призначення: {0} вже існує"
 
@@ -2674,75 +2595,6 @@ msgstr "Не вдалося просканувати ключ хоста : {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "Невідповідність алгоритму ключа хоста: очікується {0}, отримано {1}"
-
-msgid "Invalid request: {0}"
-msgstr "Недійсний запит: {0}"
-
-msgid ""
-"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
-"starting and ending with a letter or digit"
-msgstr ""
-"Неприпустиме ім'я ingress: використовуйте від 1 до 40 малих літер, цифр і "
-"дефісів, починаючи та закінчуючи літерою або цифрою"
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr ""
-"Неприпустимий власник: використовуйте від 1 до 64 літер, цифр, крапок, "
-"підкреслень і дефісів"
-
-msgid "Invalid host: {0}"
-msgstr "Неприпустимий хост: {0}"
-
-msgid "Invalid backend {0}: {1}"
-msgstr "Недопустимий Backend {0}: {1}"
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr "Сервер бекенду {0} знаходиться поза дозволеними діапазонами бекенду"
-
-msgid "Invalid route {0}: {1}"
-msgstr "Недопустимий маршрут {0}: {1}"
-
-msgid "Invalid tls: {0}"
-msgstr "Недійсний TLS: {0}"
-
-msgid "Invalid policy: {0}"
-msgstr "Недійсна політика: {0}"
-
-msgid "Server {0} not found in backend {1}"
-msgstr "Сервер {0} не знайдено в бекенді {1}"
-
-msgid "Ingress {0} not found"
-msgstr "Ingress {0} не знайдено"
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr "Ingress {0} належить {1}; передайте force, щоб перехопити його"
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr "Хост {0} вже обслуговується ingress {1}"
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr "Сайт {0} вже існує і не керується цим ingress"
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr "Ingress {0} було оновлено під час видалення"
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr "Upstream {0} вже існує і не керується цим ingress"
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr "Час очікування досягнення ingress {0} покоління {1} вичерпано"
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr "Вичерпано час очікування видалення ingress {0}"
-
-msgid "Apply failed: {0}"
-msgstr "Не вдалося застосувати: {0}"
-
-msgid "Certificate not ready: {0}"
-msgstr "Сертифікат не готовий: {0}"
-
-msgid "Not implemented"
-msgstr "Не реалізовано"
 
 msgid "Code completion is not enabled"
 msgstr "Автозавершення коду не ввімкнено"
@@ -3075,41 +2927,6 @@ msgstr "Сайт у режимі технічного обслуговуванн
 msgid "Read dir failed: {0}"
 msgstr "Не вдалося прочитати каталог: {0}"
 
-msgid ""
-"Site is managed by ingress {0}; change the ingress instead or force the "
-"change"
-msgstr ""
-"Сайт керується через ingress {0}; змініть ingress або примусово застосуйте "
-"зміни"
-
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr ""
-"Ім'я файлу має закінчуватися на .conf і містити лише літери, цифри, крапки, "
-"дефіси та підкреслення"
-
-msgid "Snippet not found"
-msgstr "Фрагмент не знайдено"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "Фрагмент перевищує 256 КіБ"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "Заголовок фрагмента коду не вдається проаналізувати: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "Фрагмент коду все ще включається через {0}"
-
-msgid "A snippet with this file name already exists"
-msgstr "Сніппет з такою назвою файлу вже існує"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "Змінна {0} недійсна: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "Вміст не аналізується як шаблон: {0}"
-
 msgid "Stream not found"
 msgstr "Потік не знайдено"
 
@@ -3295,9 +3112,6 @@ msgstr ""
 "Область спільної пам'яті задається перемикачем zone; видаліть директиву "
 "zone з додаткових директив"
 
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr "Назви upstream, що починаються з {0}, зарезервовані для ingresses"
-
 msgid "Upstream not found: {0}"
 msgstr "Upstream не знайдено: {0}"
 
@@ -3319,13 +3133,6 @@ msgid ""
 msgstr ""
 "Область спільної пам'яті {0} вже використовується іншою директивою; nginx "
 "повідомив: {1}"
-
-msgid ""
-"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
-"the change"
-msgstr ""
-"Upstream {0} керується ingress {1}; змініть ingress замість цього або "
-"примусово внесіть зміну"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "Каталог nginx conf.d недоступний: {0}"
@@ -3353,15 +3160,6 @@ msgstr "Недійсний код відновлення"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "Застарілий код відновлення не дозволяється, оскільки TOTP не ввімкнено"
-
-msgid "MFA enrollment is required"
-msgstr "Потрібна реєстрація MFA"
-
-msgid "MFA verification is required"
-msgstr "Потрібна перевірка MFA"
-
-msgid "Cannot remove the last required MFA method"
-msgstr "Не вдалося видалити останній обов'язковий метод MFA"
 
 msgid "WebAuthn settings are not configured"
 msgstr "Налаштування WebAuthn не налаштовані"
@@ -4311,9 +4109,6 @@ msgstr "Записи групи"
 msgid "Not Found"
 msgstr "Не знайдено"
 
-msgid "Ingresses"
-msgstr "Ingresses"
-
 msgid "Namespaces"
 msgstr "Простори імен"
 
@@ -4340,18 +4135,6 @@ msgstr "Список сайтів"
 
 msgid "Add Site"
 msgstr "Додати сайт"
-
-msgid "Snippets"
-msgstr "Сніпети"
-
-msgid "Create Snippet"
-msgstr "Створити снипет"
-
-msgid "Built-in Template"
-msgstr "Вбудований шаблон"
-
-msgid "Edit Snippet"
-msgstr "Редагувати сниппет"
 
 msgid "Edit Site"
 msgstr "Редагувати сайт"
@@ -4435,17 +4218,29 @@ msgstr ""
 "або розташування в редакторі сайту; зміна списку тут оновлює кожен сайт, "
 "який його використовує."
 
+msgid "+%{count} more"
+msgstr "+%{count} ще"
+
 msgid "Deny"
 msgstr "Заборонити"
 
 msgid "Allow"
 msgstr "Дозволити"
 
+msgid "Not used"
+msgstr "Не використовується"
+
 msgid "Use list"
 msgstr "Використати список"
 
 msgid "Deny (403)"
 msgstr "Заборонити (403)"
+
+msgid "Site"
+msgstr "Сайт"
+
+msgid "Stream"
+msgstr "Потік"
 
 msgid "Access list %{name} saved"
 msgstr "Список доступу %{name} збережено"
@@ -4545,15 +4340,6 @@ msgstr "Щотижня в %{day} о %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Щомісяця %{day} числа о %{time}"
-
-msgid "Backups to Keep"
-msgstr "Резервні копії для збереження"
-
-msgid "All"
-msgstr "Усі"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "Кількість резервних копій для зберігання (0 — зберігати всі)"
 
 msgid "Last Backup Time"
 msgstr "Час останньої резервної копії"
@@ -4927,11 +4713,6 @@ msgstr "Не вдається перевірити розгортання"
 msgid "Not After"
 msgstr "Не пізніше"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "Використовується в %{count} конфігурації"
-msgstr[1] "Використовується в %{count} конфігураціях"
-
 msgid "Failed to scan certificates"
 msgstr "Не вдалося просканувати сертифікати"
 
@@ -4978,12 +4759,6 @@ msgstr "Назад"
 
 msgid "This field is required"
 msgstr "Це поле обов'язкове"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "Шлях існує, але файл не є сертифікатом"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "Шлях існує, але файл не є приватним ключем"
 
 msgid "Sync to"
 msgstr "Синхронізувати з"
@@ -5054,6 +4829,9 @@ msgstr "Файли сертифікатів успішно завантажен�
 
 msgid "Failed to download certificate files"
 msgstr "Не вдалося завантажити файли сертифіката"
+
+msgid "Download"
+msgstr "Завантажити"
 
 msgid "Download Certificate Files"
 msgstr "Завантажити файли сертифіката"
@@ -5229,14 +5007,14 @@ msgstr "Щоб підтвердити анулювання, введіть \"А�
 msgid "Renew successfully"
 msgstr "Оновлення успішне"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert виконується, будь ласка, зачекайте..."
+msgid "Renew"
+msgstr "Оновити"
 
 msgid "Renew Certificate"
 msgstr "Оновити сертифікат"
 
-msgid "Renew"
-msgstr "Оновити"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert виконується, будь ласка, зачекайте..."
 
 msgid "Certificate issued successfully"
 msgstr "Сертифікат успішно видано"
@@ -5852,17 +5630,6 @@ msgstr ""
 "Необовʼязкова абсолютна URL-адреса. Використовуйте її, коли публічна адреса "
 "відрізняється від фактичного хоста або порту upstream."
 
-msgid "Site Card Click URL"
-msgstr "URL кліку картки сайту"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr ""
-"Необов'язкова абсолютна HTTP/HTTPS-URL, що використовується під час "
-"відкриття цієї картки сайту. Якщо порожня, використовується URL сайту за "
-"замовчуванням."
-
 msgid "HTTP Method"
 msgstr "Метод HTTP"
 
@@ -6166,6 +5933,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "Додатково"
 
+msgid "All"
+msgstr "Усі"
+
 msgid "Host, e.g. @ or www"
 msgstr "Хост, напр. @ або www"
 
@@ -6324,6 +6094,9 @@ msgstr "Назва не може бути порожньою"
 
 msgid "Please select DNS provider"
 msgstr "Будь ласка, виберіть DNS-провайдера"
+
+msgid "Configuration"
+msgstr "Конфігурація"
 
 msgid "DNS Credentials"
 msgstr "DNS облікові дані"
@@ -6822,307 +6595,6 @@ msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr ""
 "Отримати доступ до інтегрованих сеансів терміналу для завдань "
 "обслуговування."
-
-msgid "HTTP only"
-msgstr "Тільки HTTP"
-
-msgid "Not issued yet"
-msgstr "Ще не випущено"
-
-msgid "Expired %{date}"
-msgstr "Термін дії минув %{date}"
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] "%{date} (залишився %{days} день)"
-msgstr[1] "%{date} (залишилося %{days} днів)"
-
-msgid "Address"
-msgstr "Адреса"
-
-msgid "Health"
-msgstr "Здоров'я"
-
-msgid "Max Fails"
-msgstr "Макс. відмов"
-
-msgid "Fail Timeout"
-msgstr "Тайм-аут відмови"
-
-msgid "Path Prefix"
-msgstr "Префікс шляху"
-
-msgid "Backend"
-msgstr "Бекенд"
-
-msgid "Options"
-msgstr "Параметри"
-
-msgid "Allowed Sources"
-msgstr "Дозволені джерела"
-
-msgid "Last Transition"
-msgstr "Останній перехід"
-
-msgid "Drained"
-msgstr "Виснажений"
-
-msgid "No Data"
-msgstr "Немає даних"
-
-msgid "Healthy"
-msgstr "Здоровий"
-
-msgid "Unhealthy"
-msgstr "Нездоровий"
-
-msgid ""
-"The generated site could not be loaded. It is written by the first "
-"successful apply."
-msgstr ""
-"Не вдалося завантажити згенерований сайт. Він записується під час першого "
-"успішного застосування."
-
-msgid "Reconcile Now"
-msgstr "Звірити зараз"
-
-msgid "The last apply failed; the previous config is still live"
-msgstr "Останнє застосування не вдалося; попередня конфігурація все ще активна."
-
-msgid "Owner"
-msgstr "Власник"
-
-msgid "External ID"
-msgstr "Зовнішній ID"
-
-msgid "Generation"
-msgstr "Покоління"
-
-msgid "%{observed} applied of %{generation}"
-msgstr "%{observed} застосовано з %{generation}"
-
-msgid "Generated Site"
-msgstr "Згенерований сайт"
-
-msgid "Last Applied"
-msgstr "Останнє застосування"
-
-msgid "Config Hash"
-msgstr "Хеш конфігурації"
-
-msgid "Labels"
-msgstr "Мітки"
-
-msgid "Hosts"
-msgstr "Хости"
-
-msgid "TLS"
-msgstr "TLS"
-
-msgid "Mode"
-msgstr "Режим"
-
-msgid "Certificate"
-msgstr "Сертифікат"
-
-msgid "View certificate"
-msgstr "Переглянути сертифікат"
-
-msgid "Challenge"
-msgstr "Виклик"
-
-msgid "Redirect to HTTPS"
-msgstr "Перенаправити на HTTPS"
-
-msgid "HSTS"
-msgstr "HSTS"
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr "До видачі сертифіката обслуговується лише HTTP-слухач."
-
-msgid "Backends"
-msgstr "Backends"
-
-msgid "Routes"
-msgstr "Маршрути"
-
-msgid "Policy default"
-msgstr "Політика за замовчуванням"
-
-msgid "Policy"
-msgstr "Політика"
-
-msgid "Everyone"
-msgstr "Усі"
-
-msgid "Rate Limit"
-msgstr "Обмеження частоти"
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr "%{rps} запитів/с на клієнта, burst %{burst}"
-
-msgid "Unlimited"
-msgstr "Безлімітний"
-
-msgid "Max Body Size"
-msgstr "Максимальний розмір тіла"
-
-msgid "Extra Headers"
-msgstr "Додаткові заголовки"
-
-msgid "Conditions"
-msgstr "Умови"
-
-msgid "True"
-msgstr "Істина"
-
-msgid "False"
-msgstr "Хибність"
-
-msgid "Generated Site Config"
-msgstr "Згенерована конфігурація сайту"
-
-msgid "Open in site editor"
-msgstr "Відкрити в редакторі сайту"
-
-msgid "Not ready"
-msgstr "Не готово"
-
-msgid "The latest spec has not been applied yet"
-msgstr "Остання специфікація ще не була застосована"
-
-msgid "Applying"
-msgstr "Застосування"
-
-msgid "Ready"
-msgstr "Готово"
-
-msgid "Degraded"
-msgstr "Деградовано"
-
-msgid "Config Applied"
-msgstr "Конфігурацію застосовано"
-
-msgid "Certificate Ready"
-msgstr "Сертифікат готовий"
-
-msgid "Backends Healthy"
-msgstr "Бекенди справні"
-
-msgid "Issued automatically (ACME)"
-msgstr "Видано автоматично (ACME)"
-
-msgid "Existing certificate"
-msgstr "Наявний сертифікат"
-
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Round Robin"
-msgstr "Round Robin"
-
-msgid "Least Connections"
-msgstr "Найменша кількість з'єднань"
-
-msgid "IP Hash"
-msgstr "IP-хеш"
-
-msgid "All owners"
-msgstr "Усі власники"
-
-msgid "Reconcile of %{name} queued"
-msgstr "Звірку %{name} додано до черги"
-
-msgid "Delete ingress %{name}?"
-msgstr "Видалити ingress %{name}?"
-
-msgid ""
-"This ingress is owned by %{owner}. Its controller will probably recreate it "
-"on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-"Цей Ingress належить %{owner}. Його controller, ймовірно, перестворить його "
-"під час наступної синхронізації; видаліть його з controller, щоб видалити "
-"назавжди."
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr "Згенерований сайт і файли upstream видаляються, а nginx перезавантажується."
-
-msgid "Also delete the certificate"
-msgstr "Також видалити сертифікат"
-
-msgid "Ingress %{name} deleted"
-msgstr "Ingress %{name} видалено"
-
-msgid "Ingress"
-msgstr "Ingress"
-
-msgid "Phase"
-msgstr "Фаза"
-
-msgid "%{healthy}/%{total} healthy"
-msgstr "%{healthy}/%{total} здорових"
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] "%{total} сервер"
-msgstr[1] "%{total} серверів"
-
-msgid "%{count} down"
-msgstr "Залишилось %{count}"
-
-msgid "Filter by owner"
-msgstr "Фільтр за власником"
-
-msgid "Applied generation / latest generation"
-msgstr "Застосоване покоління / Найновіше покоління"
-
-msgid "gen %{observed}/%{generation}"
-msgstr "gen %{observed}/%{generation}"
-
-msgid "Reconcile"
-msgstr "Узгодження"
-
-msgid ""
-"Ingresses are reverse proxy entries published by external controllers "
-"through the Ingress API. Nginx UI renders each one into a managed site and "
-"upstreams, issues its certificate and reports its status here. Change them "
-"in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-"Ingress — це записи зворотного проксі, які публікуються зовнішніми "
-"контролерами через Ingress API. Nginx UI відображає кожен із них як "
-"керований сайт з upstream'ами, випускає його сертифікат і повідомляє про "
-"його статус тут. Вносьте зміни у відповідному контролері; правки, зроблені "
-"тут, будуть перезаписані під час наступного реконсиляції."
-
-msgid "Learn more"
-msgstr "Дізнатися більше"
-
-msgid "No ingresses yet"
-msgstr "Поки що немає ingress-ресурсів"
-
-msgid ""
-"A controller such as a deployment platform creates ingresses with PUT "
-"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
-"They show up here as soon as they are stored."
-msgstr ""
-"Контролер, наприклад платформа розгортання, створює ingresses за допомогою "
-"PUT /api/ingresses/:name, автентифікуючись як вузол кластера або за "
-"допомогою токена API. Вони з'являються тут одразу після збереження."
-
-msgid "Read the Ingress API guide"
-msgstr "Прочитайте посібник із Ingress API"
-
-msgid "Search by name, host or external ID"
-msgstr "Пошук за іменем, хостом або зовнішнім ID"
-
-msgid "Search ingresses"
-msgstr "Пошук Ingress"
-
-msgid "No ingress matches the filter"
-msgstr "Жоден Ingress не відповідає фільтру"
 
 msgid "Please input your E-mail!"
 msgstr "Будь ласка, введіть вашу електронну пошту!"
@@ -8495,6 +7967,9 @@ msgstr ""
 msgid "Register passkey successfully"
 msgstr "Ключ доступу успішно зареєстровано"
 
+msgid "Add a passkey"
+msgstr "Додати ключ доступу"
+
 msgid "Tips"
 msgstr "Поради"
 
@@ -8514,6 +7989,9 @@ msgid ""
 msgstr ""
 "Дотримуйтесь інструкцій у діалоговому вікні, щоб завершити процес "
 "реєстрації ключа доступу."
+
+msgid "Current Password"
+msgstr "Поточний пароль"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -8649,9 +8127,6 @@ msgstr "Будь ласка, введіть ваш поточний пароль
 msgid "Enable 2FA successfully"
 msgstr "2FA успішно ввімкнено"
 
-msgid "TOTP disabled"
-msgstr "TOTP вимкнено"
-
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -8669,27 +8144,25 @@ msgstr ""
 "Щоб увімкнути його, вам потрібно встановити додаток Google Authenticator "
 "або Microsoft Authenticator на свій мобільний телефон."
 
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr ""
+"Відскануйте QR-код за допомогою мобільного телефону, щоб додати обліковий "
+"запис до програми."
+
 msgid "Current account is not enabled TOTP."
 msgstr "Поточний обліковий запис не має увімкненого TOTP."
 
 msgid "Current account is enabled TOTP."
 msgstr "Для поточного облікового запису ввімкнено TOTP."
 
-msgid "Replace TOTP"
-msgstr "Замінити TOTP"
+msgid "Enable TOTP"
+msgstr "Увімкнути TOTP"
 
-msgid "Disable TOTP for this account?"
-msgstr "Вимкнути TOTP для цього облікового запису?"
+msgid "Secret has been copied"
+msgstr "Секрет скопійовано"
 
-msgid "Disable TOTP"
-msgstr "Вимкнути TOTP"
-
-msgid ""
-"Your current authenticator remains active until the new code is verified. "
-"New recovery codes replace the old ones."
-msgstr ""
-"Ваш поточний автентифікатор залишається активним до підтвердження нового "
-"коду. Нові коди відновлення замінюють старі."
+msgid "Click to copy"
+msgstr "Клацніть, щоб скопіювати"
 
 msgid "Bark"
 msgstr "Bark"
@@ -9862,6 +9335,9 @@ msgstr "Доступ і встановлення"
 msgid "File mode and setup instructions"
 msgstr "Режим файлів та інструкції з налаштування"
 
+msgid "Verify"
+msgstr "Перевірка"
+
 msgid "Run checks and save"
 msgstr "Виконати перевірки та зберегти"
 
@@ -10143,29 +9619,6 @@ msgstr "Загальні"
 
 msgid "Banned Until"
 msgstr "Заблоковано до"
-
-msgid "MFA Policy"
-msgstr "Політика MFA"
-
-msgid ""
-"Require MFA at the next sign-in. Users must enroll their own authenticator "
-"or passkey."
-msgstr ""
-"Вимагати MFA при наступному вході в систему. Користувачі повинні "
-"зареєструвати власний Authenticator або Passkey."
-
-msgid "Require MFA for all users"
-msgstr "Вимагати MFA для всіх користувачів"
-
-msgid "Require local MFA for SSO sign-in"
-msgstr "Вимагати локальну MFA для входу через SSO"
-
-msgid ""
-"Apply local MFA verification and enrollment requirements to OIDC and "
-"Casdoor sign-in."
-msgstr ""
-"Застосувати локальні вимоги перевірки та реєстрації MFA до входу через OIDC "
-"і Casdoor."
 
 msgid "Passkeys"
 msgstr "Passkeys"
@@ -10462,6 +9915,9 @@ msgstr "Усі інтерфейси"
 msgid "HTTPS"
 msgstr "HTTPS"
 
+msgid "Certificate"
+msgstr "Сертифікат"
+
 msgid "Pick the certificate that secures the web interface."
 msgstr "Виберіть сертифікат, що захищає веб-інтерфейс."
 
@@ -10487,6 +9943,9 @@ msgstr "Час закінчення повинен бути пізнішим з�
 msgid "Set maintenance information"
 msgstr "Встановити інформацію про обслуговування"
 
+msgid "Continue"
+msgstr "Продовжити"
+
 msgid "Start time"
 msgstr "Час початку"
 
@@ -10510,22 +9969,6 @@ msgstr "Додаткова інформація"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Наприклад: очікуваний план відновлення або посилання на інцидент"
-
-msgid "Managed by ingress %{name}"
-msgstr "Керується ingress %{name}"
-
-msgid ""
-"Changes will be overwritten by the next reconcile. Edit the ingress in its "
-"controller instead."
-msgstr ""
-"Зміни буде перезаписано під час наступного reconcile. Замість цього "
-"відредагуйте Ingress у його controller."
-
-msgid "View ingress"
-msgstr "Переглянути Ingress"
-
-msgid "Edit anyway"
-msgstr "Все одно редагувати"
 
 msgid "Configuration Name"
 msgstr "Назва конфігурації"
@@ -10747,9 +10190,6 @@ msgstr "Простір імен"
 msgid "The parameter of server_name is required"
 msgstr "Параметр server_name є обов'язковим"
 
-msgid "Config Template"
-msgstr "Шаблон конфігурації"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "Збережіть відредаговану конфігурацію перед увімкненням HTTPS."
 
@@ -10848,30 +10288,11 @@ msgstr "Самопідписаний сертифікат"
 msgid "Generate self-signed certificate"
 msgstr "Створити самопідписаний сертифікат"
 
-msgid "Built-in"
-msgstr "Вбудований"
-
 msgid "Search templates"
 msgstr "Пошук шаблонів"
 
-msgid "Snippet"
-msgstr "Фрагмент"
-
 msgid "Author"
 msgstr "Автор"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"Include зберігає зв'язок сайту з snippets/%{file}, тому подальші зміни "
-"сниппета застосовуються до нього. Insert натомість копіює вміст у сайт."
-
-msgid "Insert"
-msgstr "Вставити"
-
-msgid "Include"
-msgstr "Включити"
 
 msgid "Do you want to enable TLS?"
 msgstr "Ви хочете увімкнути TLS?"
@@ -10900,6 +10321,15 @@ msgstr ""
 
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "Неприпустиме ім'я домену або IP-адреса: %{value}"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Existing certificate"
+msgstr "Наявний сертифікат"
 
 msgid "Skip for now"
 msgstr "Пропустити поки що"
@@ -11167,6 +10597,9 @@ msgstr "Відтворити DNS-запис"
 msgid "Clear Link"
 msgstr "Очистити посилання"
 
+msgid "Config Template"
+msgstr "Шаблон конфігурації"
+
 msgid "Port Scanner"
 msgstr "Сканер портів"
 
@@ -11184,9 +10617,6 @@ msgstr "Помилка аналізу конфігурації Nginx"
 
 msgid "No."
 msgstr "№"
-
-msgid "Ingress: %{name}"
-msgstr "Ingress: %{name}"
 
 msgid "Please input name, "
 msgstr "Будь ласка, введіть назву, "
@@ -11255,11 +10685,2779 @@ msgstr "Налаштувати інформацію про технічне об
 msgid "%{count} sites selected"
 msgstr "%{count} сайтів вибрано"
 
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] "Включити %{count} сайт, керований ingress"
-msgstr[1] "Включити %{count} сайти, керовані ingress"
-msgstr[2] "Включити %{count} сайтів, керованих ingress"
+msgid "Do you want to %{action} this stream?"
+msgstr "Ви хочете %{action} цей потік?"
+
+msgid "Delete stream: %{stream_name}"
+msgstr "Видалити потік: %{stream_name}"
+
+msgid "Added successfully"
+msgstr "Успішно додано"
+
+msgid "Add Stream"
+msgstr "Додати стрім"
+
+msgid "%{count} streams selected"
+msgstr "%{count} потоків вибрано"
+
+msgid "Development Mode"
+msgstr "Режим розробки"
+
+msgid "Official Document"
+msgstr "Офіційна документація"
+
+msgid "Sponsor"
+msgstr "Спонсор"
+
+msgid "Project Team"
+msgstr "Команда проекту"
+
+msgid "License"
+msgstr "Ліцензія"
+
+msgid "View Third-party Components"
+msgstr "Переглянути сторонні компоненти"
+
+msgid "View version details and core information about this Nginx UI instance."
+msgstr "Переглянути деталі версії та основну інформацію про цей екземпляр Nginx UI."
+
+msgid "Run built-in diagnostics to validate environment and service readiness."
+msgstr ""
+"Запустіть вбудовану діагностику для перевірки готовності середовища та "
+"сервісів."
+
+msgid "Check release updates and execute upgrade operations when available."
+msgstr ""
+"Перевірте оновлення випусків та виконайте операції оновлення, коли вони "
+"доступні."
+
+msgid "Review third-party licenses and open source component attributions."
+msgstr ""
+"Переглянути ліцензії третіх сторін та атрибуцію компонентів з відкритим "
+"кодом."
+
+msgid "Total Components"
+msgstr "Всього компонентів"
+
+msgid "Backend"
+msgstr "Бекенд"
+
+msgid "Frontend"
+msgstr "Фронтенд"
+
+msgid "License Types"
+msgstr "Типи ліцензій"
+
+msgid "License Distribution"
+msgstr "Розподіл ліцензій"
+
+msgid "components"
+msgstr "компоненти"
+
+msgid "All Components"
+msgstr "Усі компоненти"
+
+msgid "Dev"
+msgstr "Розробка"
+
+msgid "Reinstall"
+msgstr "Перевстановити"
+
+msgid "Core Upgrade"
+msgstr "Оновлення ядра"
+
+msgid "You can check Nginx UI upgrade at this page."
+msgstr "На цій сторінці ви можете перевірити оновлення Nginx UI."
+
+msgid "Current Version"
+msgstr "Поточна версія"
+
+msgid "Arch"
+msgstr "Архітектура"
+
+msgid "Executable Path"
+msgstr "Шлях до виконуваного файлу"
+
+msgid "Last checked at"
+msgstr "Остання перевірка"
+
+msgid "You are using the latest version"
+msgstr "Ви використовуєте останню версію"
+
+msgid "New version released"
+msgstr "Випущено нову версію"
+
+msgid "Release Note"
+msgstr "Примітки до версії"
+
+msgid "Hide Assistant"
+msgstr "Приховати помічника"
+
+msgid "Show Assistant"
+msgstr "Показати помічника"
+
+msgid "Connection lost for this terminal. Please refresh if needed."
+msgstr "Втрачено зв’язок із цим терміналом. Оновіть, якщо потрібно."
+
+msgid ""
+"This is a simulated terminal running entirely in your browser. Commands are "
+"answered locally and never reach a server."
+msgstr ""
+"Це змодельований термінал, який повністю працює у вашому браузері. Команди "
+"обробляються локально й ніколи не надсилаються на сервер."
+
+msgid ""
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
+msgstr ""
+"Ви отримуєте доступ до цього терміналу через незахищене HTTP-з’єднання в "
+"домені, який не є локальним. Це може призвести до витоку конфіденційної "
+"інформації."
+
+msgid "Round Robin (default)"
+msgstr "Round Robin (за замовчуванням)"
+
+msgid "Least Connections (least_conn)"
+msgstr "Найменше з'єднань (least_conn)"
+
+msgid "IP Hash (ip_hash)"
+msgstr "Хеш IP (ip_hash)"
+
+msgid "Hash (hash)"
+msgstr "Хеш (hash)"
+
+msgid "Random (random)"
+msgstr "Випадковий (random)"
+
+msgid "Upstream %{name} saved and Nginx reloaded"
+msgstr "Upstream %{name} збережено та Nginx перезавантажено"
+
+msgid "Edit Upstream %{name}"
+msgstr "Редагування Upstream %{name}"
+
+msgid "Create Upstream"
+msgstr "Створити Upstream"
+
+msgid "Sites use it as proxy_pass http://%{name};"
+msgstr "Сайти використовують його як proxy_pass http://%{name};"
+
+msgid "Load Balancing Method"
+msgstr "Метод балансування навантаження"
+
+msgid "Hash Key"
+msgstr "Ключ хеша"
+
+msgid "Consistent Hashing"
+msgstr "Консистентне хешування"
+
+msgid "Servers"
+msgstr "Сервери"
+
+msgid "Address"
+msgstr "Адреса"
+
+msgid "Max Fails"
+msgstr "Макс. відмов"
+
+msgid "Fail Timeout"
+msgstr "Тайм-аут відмови"
+
+msgid "Not available with this load balancing method"
+msgstr "Недоступно з цим методом балансування навантаження"
+
+msgid "Keepalive"
+msgstr "Keepalive"
+
+msgid ""
+"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
+"need proxy_http_version 1.1 and an empty Connection header."
+msgstr ""
+"Неактивні з'єднання, які слід тримати відкритими для кожного воркера; 0 "
+"вимикає функцію. Проксійованим сайтам також потрібні proxy_http_version 1.1 "
+"та порожній заголовок Connection."
+
+msgid "Connections"
+msgstr "З'єднання"
+
+msgid "Additional Directives"
+msgstr "Додаткові директиви"
+
+msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
+msgstr "Одна директива на рядок, наприклад keepalive_timeout або keepalive_requests."
+
+msgid "Referenced By"
+msgstr "Використовується в"
+
+msgid "No site uses this upstream yet."
+msgstr "Цей upstream ще не використовується жодним сайтом."
+
+msgid "Configuration Preview"
+msgstr "Попередній перегляд конфігурації"
+
+msgid "Enable server %{address}"
+msgstr "Увімкнути сервер %{address}"
+
+msgid "Disable server %{address}"
+msgstr "Вимкнути сервер %{address}"
+
+msgid ""
+"Create shared upstream groups with load balancing and reuse them across "
+"sites."
+msgstr ""
+"Створюйте спільні групи upstream з балансуванням навантаження та "
+"використовуйте їх на кількох сайтах."
+
+msgid "Monitor the health of every proxy target and toggle its health check."
+msgstr ""
+"Відстежуйте стан кожного цільового проксі та перемикайте перевірку його "
+"працездатності."
+
+msgid "Socket"
+msgstr "Сокет"
+
+msgid "Direct"
+msgstr "Пряма"
+
+msgid "Health Status"
+msgstr "Стан здоров’я"
+
+msgid "No Data"
+msgstr "Немає даних"
+
+msgid "Last Check"
+msgstr "Остання перевірка"
+
+msgid "Upstream health checks are globally paused"
+msgstr "Перевірки стану upstream призупинено глобально"
+
+msgid ""
+"Per-target selections are preserved. Resume probes from Health Check "
+"preferences."
+msgstr ""
+"Вибір для кожної цілі зберігається. Відновіть перевірки в налаштуваннях "
+"перевірки стану."
+
+msgid "Round Robin"
+msgstr "Round Robin"
+
+msgid "Least Connections"
+msgstr "Найменша кількість з'єднань"
+
+msgid "IP Hash"
+msgstr "IP-хеш"
+
+msgid "Hash"
+msgstr "Хеш"
+
+msgid "Random"
+msgstr "Випадково"
+
+msgid "Load Balancing"
+msgstr "Балансування навантаження"
+
+msgid "Defined In"
+msgstr "Визначено в"
+
+msgid "Matched upstreams: %{groups}, servers: %{servers}"
+msgstr "Знайдені Upstreams: %{groups}, сервери: %{servers}"
+
+msgid "Server %{address} enabled"
+msgstr "Сервер %{address} увімкнено"
+
+msgid "Server %{address} disabled"
+msgstr "Сервер %{address} вимкнено"
+
+msgid "Disable the last active server of %{name}?"
+msgstr "Вимкнути останній активний сервер у %{name}?"
+
+msgid ""
+"No other primary server of this upstream is enabled. Requests will fail "
+"unless a backup server takes over."
+msgstr ""
+"Жоден інший основний сервер цього upstream не увімкнено. Запити "
+"завершуватимуться помилкою, поки їх не перебере на себе резервний сервер."
+
+msgid "Upstream %{name} is still in use"
+msgstr "Upstream %{name} усе ще використовується"
+
+msgid "Point these configurations at another upstream before deleting it:"
+msgstr "Перенаправте ці конфігурації на інший upstream перед видаленням:"
+
+msgid "Delete upstream %{name}?"
+msgstr "Видалити upstream %{name}?"
+
+msgid "%{path} will be removed and Nginx reloaded."
+msgstr "%{path} буде видалено, а Nginx перезавантажено."
+
+msgid "Upstream %{name} deleted"
+msgstr "Upstream %{name} видалено"
+
+msgid ""
+"An upstream group shares its servers and load balancing method across "
+"sites. Choose it as the proxy target when setting up a site; later changes "
+"here apply to every site that uses it."
+msgstr ""
+"Група Upstream надає свої сервери та метод балансування навантаження для "
+"спільного використання сайтами. Оберіть її як ціль proxy під час "
+"налаштування сайту; подальші зміни тут застосовуються до всіх сайтів, які "
+"її використовують."
+
+msgid "Files are stored in %{dir}."
+msgstr "Файли зберігаються в %{dir}."
+
+msgid "Search by name or IP:port"
+msgstr "Пошук за назвою або IP:port"
+
+msgid "Search upstreams by name or server address"
+msgstr "Пошук upstream за назвою або адресою сервера"
+
+msgid "No upstream group matches the search"
+msgstr "Жодна група upstream не відповідає пошуку"
+
+msgid "Upstreams Defined in Other Files"
+msgstr "Upstream'и, визначені в інших файлах"
+
+msgid ""
+"These upstream blocks live inside site or other configuration files. Edit "
+"their settings in their own file; servers can be switched on and off here. "
+"A block inside a site can be converted to a shared group that other sites "
+"can use too."
+msgstr ""
+"Ці блоки upstream перебувають у файлах конфігурації сайтів або інших "
+"файлах. Налаштування редагуються у відповідному файлі; сервери можна "
+"вмикати та вимикати тут. Блок всередині сайту можна перетворити на спільну "
+"групу, яку зможуть використовувати й інші сайти."
+
+msgid "User info updated successfully"
+msgstr "Інформацію про користувача успішно оновлено"
+
+msgid "Passwords do not match"
+msgstr "Паролі не збігаються"
+
+msgid "Password updated successfully"
+msgstr "Пароль успішно оновлено"
+
+msgid "Personal Information"
+msgstr "Особиста інформація"
+
+msgid "Update Profile"
+msgstr "Оновити профіль"
+
+msgid "Security Settings"
+msgstr "Налаштування безпеки"
+
+msgid "Change Password"
+msgstr "Змінити пароль"
+
+msgid "New Password"
+msgstr "Новий пароль"
+
+msgid "Confirm New Password"
+msgstr "Підтвердити новий пароль"
+
+msgid "Update Password"
+msgstr "Оновити пароль"
+
+msgid "Node %{name} cannot be opened"
+msgstr "Не вдалося відкрити вузол %{name}"
+
+msgid "Exit workspace"
+msgstr "Вийти з робочого простору"
+
+msgid "New tab"
+msgstr "Нова вкладка"
+
+msgid "Single pane"
+msgstr "Одна панель"
+
+msgid "Split view"
+msgstr "Розділений вигляд"
+
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "Примітка"
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr "Обслуговування"
+
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+
+msgid "Install DNS-01 plugin"
+msgstr ""
+
+msgid "Go to System > Plugins"
+msgstr ""
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr ""
+"Якщо ваш домен містить записи CNAME і ви не можете отримати сертифікати,"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr ""
+"Пропустіть локальні перевірки поширення DNS та зачекайте 60 секунд перед "
+"запитом "
+
+msgid "DNS-01 plugin unavailable"
+msgstr ""
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr ""
+
+msgid "Plugin %{plugin} failed to render"
+msgstr ""
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr ""
+
+msgid "Plugin manifest is invalid"
+msgstr ""
+
+msgid "Plugin not found"
+msgstr ""
+
+msgid "Plugin already exists"
+msgstr ""
+
+msgid "Plugin is not running"
+msgstr ""
+
+msgid "Plugin handshake failed"
+msgstr ""
+
+msgid "Plugin has no executable for this platform"
+msgstr ""
+
+msgid "Plugin package is invalid"
+msgstr ""
+
+msgid "Plugin package is too large"
+msgstr ""
+
+msgid "Plugin api version is incompatible"
+msgstr ""
+
+msgid "Plugin permissions need approval"
+msgstr ""
+
+msgid "Plugin dependency is missing: {0}"
+msgstr ""
+
+msgid "Plugin dependencies form a cycle"
+msgstr ""
+
+msgid "Plugin is in use by {0}"
+msgstr ""
+
+msgid "Plugin system is disabled"
+msgstr ""
+
+msgid "Plugin uploads are disabled"
+msgstr ""
+
+msgid "Plugin call timed out"
+msgstr ""
+
+msgid "Plugin rpc error: {0}"
+msgstr ""
+
+msgid "Plugin setting {0} is invalid"
+msgstr ""
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr ""
+
+msgid "Plugin package declares another id"
+msgstr ""
+
+msgid "Plugins"
+msgstr ""
+
+msgid "Accept plugin sync"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Opted out"
+msgstr ""
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr ""
+
+msgid "Plugin"
+msgstr ""
+
+msgid "Capabilities"
+msgstr ""
+
+msgid "Auto install to nodes"
+msgstr ""
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr ""
+
+msgid "Some nodes could not be synchronized"
+msgstr ""
+
+msgid "Failed to synchronize the plugin"
+msgstr ""
+
+msgid "Installed"
+msgstr ""
+
+msgid "Starting"
+msgstr ""
+
+msgid "Missing"
+msgstr ""
+
+msgid "Incompatible"
+msgstr ""
+
+msgid "Needs approval"
+msgstr ""
+
+msgid "Failed to load the plugin list"
+msgstr ""
+
+msgid "Plugin enabled"
+msgstr ""
+
+msgid "Failed to enable the plugin"
+msgstr ""
+
+msgid "Plugin disabled"
+msgstr ""
+
+msgid "Failed to disable the plugin"
+msgstr ""
+
+msgid "Plugin uninstalled"
+msgstr ""
+
+msgid "Failed to uninstall the plugin"
+msgstr ""
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr ""
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr ""
+
+msgid "Development plugin URL"
+msgstr ""
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+
+msgid "Dev plugin"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr ""
+
+msgid "Settings"
+msgstr "Налаштування"
+
+msgid "Logs"
+msgstr ""
+
+msgid "Sync to nodes"
+msgstr ""
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Sync %{name} to nodes"
+msgstr ""
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr ""
+
+msgid "Already in sync"
+msgstr ""
+
+msgid "This node only"
+msgstr ""
+
+msgid "All child nodes"
+msgstr ""
+
+msgid "Selected nodes"
+msgstr ""
+
+msgid "Failed to read the plugin bundle"
+msgstr ""
+
+msgid "Plugin installed"
+msgstr ""
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr ""
+
+msgid "Failed to install the plugin"
+msgstr ""
+
+msgid "Install plugin"
+msgstr ""
+
+msgid "Click or drag a plugin bundle here"
+msgstr ""
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "(replaces %{version})"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Install the plugins below first"
+msgstr ""
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr ""
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr ""
+
+msgid "Requested permissions"
+msgstr ""
+
+msgid "Enable after install"
+msgstr ""
+
+msgid "Also install to child nodes"
+msgstr ""
+
+msgid "Keep in sync automatically"
+msgstr ""
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr ""
+
+msgid "Failed to load the plugin logs"
+msgstr ""
+
+msgid "Logs copied to clipboard"
+msgstr ""
+
+msgid "Failed to copy the logs"
+msgstr ""
+
+msgid "Logs: %{name}"
+msgstr ""
+
+msgid "No log output yet"
+msgstr ""
+
+msgid "Failed to load the plugin marketplace"
+msgstr ""
+
+msgid "Reloading the catalog"
+msgstr ""
+
+msgid "Search plugins"
+msgstr ""
+
+msgid "All categories"
+msgstr ""
+
+msgid "All sources"
+msgstr ""
+
+msgid "Updates only"
+msgstr ""
+
+msgid "Sources"
+msgstr ""
+
+msgid "Every installed plugin is up to date"
+msgstr ""
+
+msgid "No plugins match your search"
+msgstr ""
+
+msgid "Downloading the package"
+msgstr ""
+
+msgid "Verifying the signature"
+msgstr ""
+
+msgid "Installing"
+msgstr ""
+
+msgid "%{phase}: %{plugin}"
+msgstr ""
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr ""
+
+msgid "Update plugin"
+msgstr ""
+
+msgid "No release available for this platform"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "This is a community plugin"
+msgstr ""
+
+msgid "The plugins below are installed together with it"
+msgstr ""
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr ""
+
+msgid "No description provided."
+msgstr ""
+
+msgid "Installed: %{version}"
+msgstr ""
+
+msgid "Homepage"
+msgstr ""
+
+msgid "Repository"
+msgstr ""
+
+msgid "Release notes"
+msgstr ""
+
+msgid "Released"
+msgstr ""
+
+msgid "Platforms"
+msgstr ""
+
+msgid "Failed to load the plugin details"
+msgstr ""
+
+msgid "Installed version"
+msgstr ""
+
+msgid "Versions"
+msgstr ""
+
+msgid "Yanked"
+msgstr ""
+
+msgid "Latest"
+msgstr ""
+
+msgid "Readme"
+msgstr ""
+
+msgid "Failed to load the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources saved"
+msgstr ""
+
+msgid "Failed to save the marketplace sources"
+msgstr ""
+
+msgid "Marketplace sources"
+msgstr ""
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+
+msgid "Using the official catalog"
+msgstr ""
+
+msgid "Add source"
+msgstr ""
+
+msgid "Add the official catalog"
+msgstr ""
+
+msgid "Official"
+msgstr ""
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr ""
+
+msgid "Verified"
+msgstr ""
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+
+msgid "Community"
+msgstr ""
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr ""
+
+msgid "Approve permissions"
+msgstr ""
+
+msgid "Approve and enable"
+msgstr ""
+
+msgid "%{name} needs your approval before it can run."
+msgstr ""
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr ""
+
+msgid "This plugin does not request any host permission."
+msgstr ""
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr ""
+
+msgid "unknown"
+msgstr ""
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr ""
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr ""
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr ""
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr ""
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr ""
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr ""
+
+msgid "In sync"
+msgstr ""
+
+msgid "Outdated"
+msgstr ""
+
+msgid "Not installed"
+msgstr ""
+
+msgid "Unsupported platform"
+msgstr ""
+
+msgid "Unsupported"
+msgstr ""
+
+msgid "Failed to load the plugin matrix"
+msgstr ""
+
+msgid "Update to %{version}"
+msgstr ""
+
+msgid "Sync to this node"
+msgstr ""
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr ""
+
+msgid "All nodes"
+msgstr ""
+
+msgid "This instance has no child node"
+msgstr ""
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr ""
+
+msgid "Sync to selected"
+msgstr ""
+
+msgid "Sync to all"
+msgstr ""
+
+msgid "Marketplace"
+msgstr ""
+
+msgid "%{field} is required"
+msgstr ""
+
+msgid "Failed to load the plugin settings"
+msgstr ""
+
+msgid "Plugin settings saved"
+msgstr ""
+
+msgid "Failed to save the plugin settings"
+msgstr ""
+
+msgid "Settings: %{name}"
+msgstr ""
+
+msgid "This plugin has no settings."
+msgstr ""
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Sync policy saved"
+msgstr ""
+
+msgid "Failed to save the sync policy"
+msgstr ""
+
+msgid "Automatic installation"
+msgstr ""
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr ""
+
+msgid "Also sync the plugin settings"
+msgstr ""
+
+msgid "Needs attention"
+msgstr ""
+
+msgid "Uninstall %{name}?"
+msgstr ""
+
+msgid ""
+"Its files, data and settings are removed from this node. Other nodes are not "
+"touched."
+msgstr ""
+
+msgid "Search installed plugins"
+msgstr ""
+
+msgid "No plugins installed yet"
+msgstr ""
+
+msgid "Pick one from the marketplace or upload a bundle you built yourself."
+msgstr ""
+
+msgid "Browse marketplace"
+msgstr ""
+
+msgid "Install from file"
+msgstr ""
+
+msgid "No plugins match the current filter"
+msgstr ""
+
+msgid "This plugin cannot run on this node"
+msgstr ""
+
+msgid "More actions"
+msgstr ""
+
+msgid "Follow new lines"
+msgstr ""
+
+msgid "All plugins"
+msgstr ""
+
+msgid "Updates"
+msgstr ""
+
+msgid "The catalog is empty"
+msgstr ""
+
+msgid "Search the marketplace"
+msgstr ""
+
+msgid "%{count} installed plugin has a newer release."
+msgid_plural "%{count} installed plugins have a newer release."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Show updates"
+msgstr ""
+
+msgid "The marketplace is unavailable"
+msgstr ""
+
+msgid "Overview"
+msgstr ""
+
+msgid "No background process"
+msgstr ""
+
+msgid "On demand"
+msgstr ""
+
+msgid "Resident"
+msgstr ""
+
+msgid "Last error"
+msgstr ""
+
+msgid "This plugin needs your approval before it can run."
+msgstr ""
+
+msgid "Turn it on to review the requested permissions."
+msgstr ""
+
+msgid "API version"
+msgstr ""
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr ""
+
+msgid "Depends on"
+msgstr ""
+
+msgid "Needs capabilities"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Cluster"
+msgstr ""
+
+msgid "Sync now"
+msgstr ""
+
+msgid "Danger zone"
+msgstr ""
+
+msgid "Uninstall this plugin"
+msgstr ""
+
+msgid "Its files, data and settings are removed from this node."
+msgstr ""
+
+msgid "%{count} in sync"
+msgstr ""
+
+msgid "%{count} pending"
+msgstr ""
+
+msgid "%{count} failing"
+msgstr ""
+
+msgid "Manage nodes"
+msgstr ""
+
+msgid "Updates available"
+msgstr ""
+
+msgid "Idle"
+msgstr ""
+
+msgid "Include line copied to clipboard"
+msgstr ""
+
+msgid "%{n} d"
+msgstr ""
+
+msgid "%{n} h"
+msgstr ""
+
+msgid "%{n} min"
+msgstr ""
+
+msgid "%{n} s"
+msgstr ""
+
+msgid "Deploy Certificate Error"
+msgstr ""
+
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr ""
+
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr ""
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr ""
+
+msgid "This action needs a plugin storage backend"
+msgstr ""
+
+msgid "Invalid storage key prefix: {0}"
+msgstr ""
+
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr ""
+
+msgid "Storage backend {0} is not available"
+msgstr ""
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Deploy target kind {0} is not available"
+msgstr ""
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Blocklist source kind {0} is not available"
+msgstr ""
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Discovery provider {0} is not available"
+msgstr ""
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr ""
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr ""
+
+msgid "Upstream name {0} is invalid"
+msgstr ""
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr ""
+
+msgid "Extra directives must not contain braces"
+msgstr ""
+
+msgid "{0} is still included by the nginx configuration: {1}"
+msgstr ""
+
+msgid "Template not found"
+msgstr ""
+
+msgid "Deploy Targets"
+msgstr ""
+
+msgid "Blocklists"
+msgstr ""
+
+msgid "Keep Latest Backups"
+msgstr ""
+
+msgid "Stored Backups"
+msgstr ""
+
+msgid "Please fill in %{field}"
+msgstr ""
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr ""
+
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr ""
+
+msgid "Key Prefix"
+msgstr ""
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr ""
+
+msgid "Key prefix is required"
+msgstr ""
+
+msgid "nginx-ui/backups"
+msgstr ""
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr ""
+
+msgid "Test Storage"
+msgstr ""
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr ""
+
+msgid "Delete this backup from the storage?"
+msgstr ""
+
+msgid "Restore Backup"
+msgstr ""
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr ""
+
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr ""
+
+msgid "Deployed to %{ok} targets"
+msgstr ""
+
+msgid "Manage"
+msgstr ""
+
+msgid "Deploy Now"
+msgstr ""
+
+msgid "This certificate is not pushed to any external target."
+msgstr ""
+
+msgid "Plugin unavailable"
+msgstr ""
+
+msgid "Never deployed"
+msgstr ""
+
+msgid "%{count} attempts"
+msgstr ""
+
+msgid "Deploy History of %{name}"
+msgstr ""
+
+msgid "All certificates"
+msgstr ""
+
+msgid "Dry run successful"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr ""
+
+msgid "Target Type"
+msgstr ""
+
+msgid "Select a target type"
+msgstr ""
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr ""
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr ""
+
+msgid "Dry Run"
+msgstr ""
+
+msgid "No certificate is bound to this target"
+msgstr ""
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr ""
+
+msgid "Deployed %{ok} certificates"
+msgstr ""
+
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
+msgstr ""
+
+msgid "Built-in HTTP / gRPC check"
+msgstr ""
+
+msgid "%{kind} (unavailable)"
+msgstr ""
+
+msgid "Check Method"
+msgstr ""
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
+msgstr ""
+
+msgid "Refreshed"
+msgstr ""
+
+msgid "Refresh failed"
+msgstr ""
+
+msgid "Source Type"
+msgstr ""
+
+msgid "Refresh Interval"
+msgstr ""
+
+msgid "Entries"
+msgstr ""
+
+msgid "Last Result"
+msgstr ""
+
+msgid "Include"
+msgstr ""
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr ""
+
+msgid "Refresh Now"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr ""
+
+msgid "Select a source type"
+msgstr ""
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr ""
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr ""
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
+msgstr ""
+
+msgid "From plugin %{id}"
+msgstr ""
+
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
+msgstr ""
+
+msgid "This package has no build for this node (%{platform})"
+msgstr ""
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr ""
+
+msgid "This node runs %{platform}, its build is highlighted."
+msgstr ""
+
+msgid ""
+"Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+"can then run them."
+msgstr ""
+
+msgid ""
+"Receive certificates and their private keys in order to push them to "
+"external targets."
+msgstr ""
+
+msgid ""
+"Receive every parsed nginx access log line while enabled, including client "
+"addresses and requested URLs."
+msgstr ""
+
+msgid "Streamed"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Dropped"
+msgstr ""
+
+msgid "Unlimited"
+msgstr "Безлімітний"
+
+msgid "Transport"
+msgstr ""
+
+msgid "Resource limits"
+msgstr ""
+
+msgid "The running process is confined to these limits."
+msgstr ""
+
+msgid ""
+"The plugin is not running, or this node cannot confine processes: that needs "
+"Linux with a writable cgroup v2 hierarchy."
+msgstr ""
+
+msgid "Enforced"
+msgstr ""
+
+msgid "Not enforced"
+msgstr ""
+
+msgid "Access log stream"
+msgstr ""
+
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr ""
+
+msgid "Service"
+msgstr ""
+
+msgid "Service Discovery"
+msgstr ""
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr ""
+
+msgid "Select a provider"
+msgstr ""
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr ""
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr ""
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr ""
+
+msgid "Extra Directives"
+msgstr ""
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr ""
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
+msgstr ""
+
+msgid "Links"
+msgstr ""
+
+msgid "Plugin package declares version {0}, {1} was expected"
+msgstr ""
+
+msgid "Only localhost addresses are accepted"
+msgstr ""
+
+msgid ""
+"Address of a plugin.json served by a static server on this computer. Only "
+"localhost addresses are accepted. The plugin is loaded in addition to the "
+"installed ones."
+msgstr ""
+
+msgid "Plugin package is not signed and developer mode is off"
+msgstr ""
+
+msgid "Plugin package trust {0} is below the installed {1}"
+msgstr ""
+
+msgid "This plugin is not signed"
+msgstr ""
+
+msgid "Checking the package"
+msgstr ""
+
+msgid "Published by the Nginx UI project."
+msgstr ""
+
+msgid "Published by a partner of the Nginx UI project."
+msgstr ""
+
+msgid "Unsigned"
+msgstr ""
+
+msgid ""
+"Not signed, so its publisher cannot be confirmed. Installing it requires "
+"developer mode."
+msgstr ""
+
+msgid "This package is trusted less than the version already installed"
+msgstr ""
+
+msgid "Installed version: %{installed}. This package: %{package}."
+msgstr ""
+
+msgid "Plugin System"
+msgstr ""
+
+msgid ""
+"Turning it off stops every plugin and hides the plugin pages. Takes effect "
+"after a restart."
+msgstr ""
+
+msgid "Plugin Directory"
+msgstr ""
+
+msgid "Default Sync Policy"
+msgstr ""
+
+msgid ""
+"Applied to newly installed plugins. Automatic keeps the plugin installed on "
+"the child nodes."
+msgstr ""
+
+msgid "Enable Marketplace"
+msgstr ""
+
+msgid "Managed on the marketplace page. Empty means the official catalog."
+msgstr ""
+
+msgid "Allow Community Plugins"
+msgstr ""
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr ""
+
+msgid "Automatic Updates"
+msgstr ""
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr ""
+
+msgid "Allow Insecure Download URLs"
+msgstr ""
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr ""
+
+msgid "Allow Uploads"
+msgstr ""
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr ""
+
+msgid "Developer Mode"
+msgstr ""
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
+msgstr ""
+
+msgid "Trusted Keys"
+msgstr ""
+
+msgid ""
+"Packages signed with one of these keys install as community plugins. One key "
+"per line."
+msgstr ""
+
+msgid "Memory Limit"
+msgstr ""
+
+msgid ""
+"Applies to every plugin process. 0 means unlimited, a plugin can only lower "
+"its own limit."
+msgstr ""
+
+msgid "CPU Limit"
+msgstr ""
+
+msgid "Percent of one core for every plugin process. 0 means unlimited."
+msgstr ""
+
+msgid "cgroup Root"
+msgstr ""
+
+msgid "Limits are enforced on Linux with cgroup v2 only."
+msgstr ""
+
+msgid ""
+"Plugin system, marketplace, packages and resource limits of plugin processes."
+msgstr ""
+
+msgid "Go to plugins"
+msgstr ""
+
+msgid "The plugins directory under the configuration directory"
+msgstr ""
+
+msgid "Official catalog"
+msgstr ""
+
+msgid "Packages"
+msgstr ""
+
+msgid "Paste public keys here"
+msgstr ""
+
+msgid "Resources"
+msgstr ""
+
+msgid "A trusted publisher is not in the expected format or is listed twice"
+msgstr ""
+
+msgid "Turning it off stops every plugin and hides the plugin pages."
+msgstr ""
+
+msgid "Trusted Publishers"
+msgstr ""
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr ""
+
+msgid "Maximum memory each plugin can use."
+msgstr ""
+
+msgid "Share of one CPU core each plugin can use."
+msgstr ""
+
+msgid ""
+"This is not a valid public key. Paste the whole key the publisher gave you."
+msgstr ""
+
+msgid "This publisher is already in the list."
+msgstr ""
+
+msgid "No publishers yet."
+msgstr ""
+
+msgid "Unnamed publisher"
+msgstr ""
+
+msgid "Not a valid public key"
+msgstr ""
+
+msgid "Add publisher"
+msgstr ""
+
+msgid "Shown in this list only"
+msgstr ""
+
+msgid "Public Key"
+msgstr ""
+
+msgid "Paste the public key the publisher gave you"
+msgstr ""
+
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr ""
+
+msgid "Only applies on Linux. This system does not support it."
+msgstr ""
+
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr ""
+
+msgid "Less safe"
+msgstr ""
+
+msgid "Validates the domain with a DNS record. Needs a DNS credential."
+msgstr ""
+
+msgid "Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail."
+msgstr ""
+
+msgid "Validates each domain over port 80 on this server."
+msgstr ""
+
+msgid "Can be changed after the plugin is installed."
+msgstr ""
+
+msgid "Can be changed after the plugin is enabled."
+msgstr ""
+
+msgid ""
+"Only turn on when you are sure you need it. Firefox may show an error on the "
+"first visit."
+msgstr ""
+
+msgid "For private CAs that still require this field."
+msgstr ""
+
+msgid "Revokes the previous certificate once the new one is issued."
+msgstr ""
+
+msgid "New credential"
+msgstr ""
+
+msgid "The credential was deleted. Please choose another one."
+msgstr ""
+
+msgid "Deleted credential"
+msgstr ""
+
+msgid "DNS Credential"
+msgstr ""
+
+msgid "Select credential"
+msgstr ""
+
+msgid "not installed"
+msgstr ""
+
+msgid "turned off"
+msgstr ""
+
+msgid "not working right now"
+msgstr ""
+
+msgid ""
+"DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
+"yet."
+msgstr ""
+
+msgid "The DNS-01 plugin is installed but turned off."
+msgstr ""
+
+msgid "The DNS-01 plugin is turned on but not working right now."
+msgstr ""
+
+msgid ""
+"This certificate renews through the DNS-01 plugin, which is %{state}. It "
+"cannot renew automatically until the plugin is back."
+msgstr ""
+
+msgid "DNS providers come with the DNS-01 plugin, which is %{state}."
+msgstr ""
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not installed."
+msgstr ""
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is turned off."
+msgstr ""
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not working right now."
+msgstr ""
+
+msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
+msgstr ""
+
+msgid "Enable plugin"
+msgstr ""
+
+msgid "New DNS Credential"
+msgstr ""
+
+msgid "Create and select"
+msgstr ""
+
+msgid ""
+"Automatic renewal can only be switched for certificates issued by Nginx UI"
+msgstr ""
+
+msgid "Plugin marketplace is disabled"
+msgstr ""
+
+msgid "Plugin marketplace source is unavailable: {0}"
+msgstr ""
+
+msgid "Plugin release not found"
+msgstr ""
+
+msgid "Plugin release has been yanked"
+msgstr ""
+
+msgid "Plugin package digest does not match the catalog"
+msgstr ""
+
+msgid "Plugin package signature is invalid: {0}"
+msgstr ""
+
+msgid "Community plugins are not allowed on this node"
+msgstr ""
+
+msgid "Plugin download url is not https"
+msgstr ""
+
+msgid "Plugin release has no build for this platform"
+msgstr ""
+
+msgid "Plugin catalog is invalid: {0}"
+msgstr ""
+
+msgid "Plugin is not in the marketplace catalog"
+msgstr ""
+
+msgid "No local package found for this plugin"
+msgstr ""
+
+msgid "No plugin package is available for {0}"
+msgstr ""
+
+msgid "The marketplace has no more trusted package of this plugin"
+msgstr ""
+
+msgid "Advanced options"
+msgstr ""
+
+msgid "Sync to other nodes"
+msgstr ""
+
+msgid "Private key"
+msgstr ""
+
+msgid "Automatic renewal turned on"
+msgstr ""
+
+msgid "Automatic renewal turned off"
+msgstr ""
+
+msgid "Not issued yet"
+msgstr "Ще не випущено"
+
+msgid "Expiring within 30 days"
+msgstr ""
+
+msgid "Renewal failed"
+msgstr ""
+
+msgid "Renewal method"
+msgstr ""
+
+msgid "Expiry date"
+msgstr ""
+
+msgid "Search by name or domain"
+msgstr ""
+
+msgid "Valid · %{days} days left"
+msgstr ""
+
+msgid "Expires in %{days} days"
+msgstr ""
+
+msgid "Managed manually"
+msgstr ""
+
+msgid "DNS validation · %{provider}"
+msgstr ""
+
+msgid "DNS validation"
+msgstr ""
+
+msgid "HTTP validation"
+msgstr ""
+
+msgid "Self-signed"
+msgstr ""
+
+msgid "Synced from another node"
+msgstr ""
+
+msgid "Upload"
+msgstr ""
+
+msgid "Renewed on the node it is synced from"
+msgstr ""
+
+msgid "Renews around %{date}"
+msgstr ""
+
+msgid "Replace the files to renew"
+msgstr ""
+
+msgid "Auto renewal"
+msgstr ""
+
+msgid "Issuer"
+msgstr ""
+
+msgid "Certificate files"
+msgstr ""
+
+msgid "Hide contents"
+msgstr ""
+
+msgid "Show contents"
+msgstr ""
+
+msgid "In progress"
+msgstr ""
+
+msgid "Failed · %{time}"
+msgstr ""
+
+msgid "Succeeded · %{time}"
+msgstr ""
+
+msgid "Last renewal"
+msgstr ""
+
+msgid "Show less"
+msgstr ""
+
+msgid "View full log"
+msgstr ""
+
+msgid "No renewal has run yet."
+msgstr ""
+
+msgid "Select nodes"
+msgstr ""
+
+msgid "Only kept on this node."
+msgstr ""
+
+msgid "Renew now"
+msgstr ""
+
+msgid "Certificate DNS validation"
+msgstr ""
+
+msgid ""
+"Validates domains through DNS records when certificates are issued or "
+"renewed."
+msgstr ""
+
+msgid "DNS credentials"
+msgstr ""
+
+msgid "Web pages and API"
+msgstr ""
+
+msgid "Serves its own pages and API inside Nginx UI."
+msgstr ""
+
+msgid "External notifications"
+msgstr ""
+
+msgid "Delivers Nginx UI notifications to other services."
+msgstr ""
+
+msgid "Health checks"
+msgstr ""
+
+msgid "Adds more ways to check whether sites and services are reachable."
+msgstr ""
+
+msgid "AI assistant tools"
+msgstr ""
+
+msgid "Offers actions that AI assistants connected to Nginx UI can run."
+msgstr ""
+
+msgid "Backup storage"
+msgstr ""
+
+msgid "Stores backups and other files in external storage."
+msgstr ""
+
+msgid "Auto backup"
+msgstr ""
+
+msgid "Certificate deployment"
+msgstr ""
+
+msgid "Pushes issued certificates to other services and devices."
+msgstr ""
+
+msgid "Deploy targets"
+msgstr ""
+
+msgid "Keeps lists of addresses that are denied access up to date."
+msgstr ""
+
+msgid "Service discovery"
+msgstr ""
+
+msgid "Finds backend servers automatically and keeps upstreams up to date."
+msgstr ""
+
+msgid "Access log forwarding"
+msgstr ""
+
+msgid ""
+"Receives access log entries as they are written, for example to forward or "
+"analyse them."
+msgstr ""
+
+msgid "Other feature"
+msgstr ""
+
+msgid "A feature this version of Nginx UI does not describe."
+msgstr ""
+
+msgid "Disable %{name}?"
+msgstr ""
+
+msgid "Renewal resumes when you turn it back on."
+msgstr ""
+
+msgid "Installed %{version} is not this version"
+msgstr ""
+
+msgid ""
+"This version was not published by the official team or a partner. It may be "
+"a development build or a repackaged copy."
+msgstr ""
+
+msgid "Install the official version"
+msgstr ""
+
+msgid "Install the partner version"
+msgstr ""
+
+msgid "The marketplace has the official version %{version}."
+msgstr ""
+
+msgid "The marketplace has the partner version %{version}."
+msgstr ""
+
+msgid "This plugin needs no access beyond its own features."
+msgstr ""
+
+msgid "Keep its own data inside Nginx UI."
+msgstr ""
+
+msgid "Connect to other servers over the network."
+msgstr ""
+
+msgid "Run tasks on a regular schedule."
+msgstr ""
+
+msgid "Manage Nginx UI with your permissions."
+msgstr ""
+
+msgid "Offer actions that AI assistants connected to Nginx UI can run."
+msgstr ""
+
+msgid ""
+"Receive issued certificates, including the parts that must stay secret, to "
+"push them to other services."
+msgstr ""
+
+msgid ""
+"Receive every access log entry while it is on, including visitor addresses "
+"and requested URLs."
+msgstr ""
+
+msgid "Stored %{kind} credentials"
+msgstr ""
+
+msgid "Own data storage"
+msgstr ""
+
+msgid "Scheduled tasks"
+msgstr ""
+
+msgid "Server metrics"
+msgstr ""
+
+msgid "Nginx UI management"
+msgstr ""
+
+msgid "Access logs"
+msgstr ""
+
+msgid "Unknown permission"
+msgstr ""
+
+msgid "Nothing to start"
+msgstr ""
+
+msgid "Starts when needed"
+msgstr ""
+
+msgid "Always running"
+msgstr ""
+
+msgid "Start mode"
+msgstr ""
+
+msgid "Turn it on to review what it can access."
+msgstr ""
+
+msgid "Provides"
+msgstr ""
+
+msgid "Can access"
+msgstr ""
+
+msgid "Only these addresses"
+msgstr ""
+
+msgid "%{n} more"
+msgstr ""
+
+msgid "No specific addresses listed"
+msgstr ""
+
+msgid "Nothing beyond its own features."
+msgstr ""
+
+msgid "In use"
+msgstr ""
+
+msgid "%{count} certificate renews through it:"
+msgid_plural "%{count} certificates renew through it:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Version, API version, start mode, updated time"
+msgstr ""
+
+msgid "Needs features"
+msgstr ""
+
+msgid "The limits are applied while the plugin runs."
+msgstr ""
+
+msgid "The plugin is not running, or this node cannot apply limits."
+msgstr ""
+
+msgid "Develop plugin"
+msgstr ""
+
+msgid "Standby"
+msgstr ""
+
+msgid "Starts automatically when needed"
+msgstr ""
+
+msgid "Installed. Turn it on to review what it can access."
+msgstr ""
+
+msgid "Installed the version from the marketplace"
+msgstr ""
+
+msgid "Failed to install the version from the marketplace"
+msgstr ""
+
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
+msgstr ""
+
+msgid "%{count} unsaved"
+msgid_plural "%{count} unsaved"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgctxt "list separator"
+msgid ", "
+msgstr ""
+
+msgid "and %{n} more"
+msgstr ""
+
+msgid ""
+"%{count} certificate renews through it and will not renew while it is off:"
+msgid_plural ""
+"%{count} certificates renew through it and will not renew while it is off:"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "API base URL"
+msgstr "Базова URL-адреса API"
+
+msgid "API timeout"
+msgstr "Тайм-аут API"
+
+msgid "API token"
+msgstr "API-токен"
+
+msgid "Access key ID"
+msgstr "ID ключа доступу"
+
+msgid "AccessKey"
+msgstr "AccessKey"
+
+msgid "AccessKey ID"
+msgstr "AccessKey ID"
+
+msgid "AccessKey secret"
+msgstr "Секрет AccessKey"
+
+msgid "Account email"
+msgstr "Електронна пошта облікового запису"
+
+msgid "Authentication method"
+msgstr "Спосіб автентифікації"
+
+msgid "Azure environment"
+msgstr "Середовище Azure"
+
+msgid "Check interval"
+msgstr "Інтервал перевірки"
+
+msgid "Client certificate"
+msgstr "Сертифікат клієнта"
+
+msgid "Client certificate path"
+msgstr "Шлях до сертифіката клієнта"
+
+msgid "Client secret"
+msgstr "Секрет клієнта"
+
+msgid "DNS line"
+msgstr "Лінія DNS"
+
+msgid "Global API key"
+msgstr "Глобальний API-ключ"
+
+msgid "Instance RAM role"
+msgstr "RAM-роль екземпляра"
+
+msgid "Managed identity timeout"
+msgstr "Тайм-аут керованої ідентичності"
+
+msgid "Maximum wait"
+msgstr "Максимальне очікування"
+
+msgid "Needs the DNS edit permission."
+msgstr "Потрібен дозвіл на редагування DNS."
+
+msgid "Needs the zone read permission. Leave empty to use the API token."
+msgstr ""
+"Потрібен дозвіл на читання зон. Залиште порожнім, щоб використовувати API-"
+"токен."
+
+msgid "One of public, usgovernment and china."
+msgstr "Одне зі значень: public, usgovernment або china."
+
+msgid "Private zone"
+msgstr "Приватна зона"
+
+msgid "Region"
+msgstr "Регіон"
+
+msgid "Region ID"
+msgstr "ID регіону"
+
+msgid "Resource group"
+msgstr "Група ресурсів"
+
+msgid "STS security token"
+msgstr "Токен безпеки STS"
+
+msgid "Secret access key"
+msgstr "Секретний ключ доступу"
+
+msgid "SecretId"
+msgstr "SecretId"
+
+msgid "SecretKey"
+msgstr "SecretKey"
+
+msgid "Service discovery filter"
+msgstr "Фільтр виявлення сервісів"
+
+msgid "Session token"
+msgstr "Токен сеансу"
+
+msgid "Set to true to use a private DNS zone."
+msgstr "Установіть true, щоб використовувати приватну зону DNS."
+
+msgid "Subscription ID"
+msgstr "ID підписки"
+
+msgid "TXT record TTL"
+msgstr "TTL запису TXT"
+
+msgid "Zone name"
+msgstr "Назва зони"
+
+msgid "Zone read token"
+msgstr "Токен читання зон"
+
+msgid "%{method} (recommended)"
+msgstr "%{method} (рекомендовано)"
+
+msgid "%{provider} API docs"
+msgstr "Документація API %{provider}"
+
+msgid "Sign-in method"
+msgstr "Спосіб входу"
+
+msgid "Optional"
+msgstr "Необов'язково"
+
+msgid "%{count} changed"
+msgstr "Змінено: %{count}"
+
+msgid "All default"
+msgstr "Усе за замовчуванням"
+
+msgid "sec"
+msgstr "сек"
+
+msgid "Nothing to fill in. The server uses its own credentials."
+msgstr ""
+"Нічого заповнювати не потрібно. Сервер використовує власні облікові дані."
+
+msgid "Browse and follow the access and error logs of your sites."
+msgstr ""
+
+msgid "Read access logs page by page or follow them as they arrive."
+msgstr ""
+
+msgid "See every log file Nginx writes and open one to read it."
+msgstr ""
+
+msgid ""
+"Log analytics is now a plugin. Install it to keep using it; your existing "
+"indexes are kept."
+msgstr ""
+
+msgid "Go to install"
+msgstr ""
+
+msgid "Used for downloads from GitHub, such as upgrades."
+msgstr ""
+
+msgid ""
+"Read the Nginx log files of this node, including visitor addresses and "
+"requested URLs."
+msgstr ""
+
+msgid "Log files"
+msgstr ""
+
+msgid "This plugin cannot be enabled together with: {0}"
+msgstr "Цей плагін не можна ввімкнути разом із: {0}"
+
+msgid "Release channel must be stable, beta or dev"
+msgstr "Канал випусків має бути stable, beta або dev"
+
+msgid ""
+"Advanced Indexing is now provided by the Log Analytics plugin. Install the "
+"plugin to continue using it. Existing indexes are kept."
+msgstr ""
+"Розширене індексування тепер надає плагін Log Analytics. Установіть плагін, "
+"щоб і надалі ним користуватися. Наявні індекси зберігаються."
+
+msgid "Beta"
+msgstr "Бета"
+
+msgid ""
+"This is a beta release. Features may change, and some functions may not work "
+"as expected."
+msgstr ""
+"Це бета-версія. Функції можуть змінитися, а деякі з них можуть працювати не "
+"так, як очікується."
+
+msgid "This is a development release. It may be incomplete or unstable."
+msgstr "Це версія для розробки. Вона може бути неповною або нестабільною."
+
+msgid "This is a stable release."
+msgstr "Це стабільна версія."
+
+msgid "Development releases are received until a stable release is available."
+msgstr "До виходу стабільної версії надходитимуть версії для розробки."
+
+msgid "Beta releases are received until a stable release is available."
+msgstr "До виходу стабільної версії надходитимуть бета-версії."
+
+msgid "Receive beta and stable releases."
+msgstr "Отримувати бета-версії та стабільні версії."
+
+msgid "Receive all releases, including development releases."
+msgstr "Отримувати всі версії, зокрема версії для розробки."
+
+msgid "Receive stable releases only."
+msgstr "Отримувати лише стабільні версії."
+
+msgid "Cannot be enabled together with %{names}"
+msgstr "Не можна ввімкнути разом із %{names}"
+
+msgid ""
+"Enabling %{name} will disable %{others}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+"Увімкнення %{name} вимкне %{others}, оскільки ці плагіни не можна вмикати "
+"одночасно."
+
+msgid ""
+"Enabling this plugin will disable %{names}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+"Увімкнення цього плагіна вимкне %{names}, оскільки ці плагіни не можна "
+"вмикати одночасно."
+
+msgid "Enable %{name}?"
+msgstr "Увімкнути %{name}?"
+
+msgid "Recommended memory"
+msgstr "Рекомендований обсяг пам'яті"
+
+msgid "Install a previous version"
+msgstr "Установити попередню версію"
+
+msgid "Install this version"
+msgstr "Установити цю версію"
+
+msgid "This version is older than the installed version"
+msgstr "Ця версія старіша за встановлену"
+
+msgid ""
+"Data created by the newer version may not be compatible with this version."
+msgstr "Дані, створені новішою версією, можуть бути несумісні з цією версією."
+
+msgid "No stable release of this plugin is available yet."
+msgstr "Стабільної версії цього плагіна ще немає."
+
+msgid ""
+"Newer releases of this channel are received until a stable release is "
+"available."
+msgstr "До виходу стабільної версії надходитимуть новіші версії цього каналу."
+
+msgid ""
+"This server has %{system} of memory, below the %{recommended} recommended "
+"for this plugin. The plugin may run slowly or stop unexpectedly."
+msgstr ""
+"На цьому сервері %{system} пам'яті, це менше за рекомендовані для цього "
+"плагіна %{recommended}. Плагін може працювати повільно або неочікувано "
+"зупинитися."
+
+msgid "Saved"
+msgstr "Збережено"
+
+msgid "Failed to save"
+msgstr "Не вдалося зберегти"
+
+msgid "Update channel"
+msgstr "Канал оновлень"
+
+msgid "Screenshots"
+msgstr "Знімки екрана"
+
+msgid "Enter a valid web address"
+msgstr ""
+
+msgid "The source cannot be checked"
+msgstr ""
+
+msgid "Name (optional)"
+msgstr ""
+
+msgid "Checking availability"
+msgstr ""
+
+msgid "Available, %{count} plugin"
+msgid_plural "Available, %{count} plugins"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Unavailable"
+msgstr ""
+
+msgid "Catalog name: %{name}"
+msgstr ""
+
+msgid "New source"
+msgstr ""
+
+msgid "Checking"
+msgstr ""
+
+msgid "%{count} plugin"
+msgid_plural "%{count} plugins"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+msgid "Invalid address"
+msgstr ""
+
+msgid "Drag to reorder"
+msgstr ""
+
+msgid "Edit address"
+msgstr ""
+
+msgid "Add a source to offer plugins from another catalog as well."
+msgstr ""
+
+msgid "Correct the addresses marked as invalid before saving."
+msgstr ""
+
+msgid "Enter a domain or a web address."
+msgstr ""
+
+msgid ""
+"Enter a domain such as plugins.example.com, or the full address of a catalog."
+msgstr ""
+
+msgid ""
+"Add Nginx configuration of its own. It takes effect only where you include "
+"it, and Nginx UI applies it only when the configuration remains valid."
+msgstr ""
+
+msgid "Read the Nginx configuration files of this node."
+msgstr ""
+
+msgid "See the sites of this node and their addresses."
+msgstr ""
+
+msgid ""
+"See the certificates and when they expire, without the parts that must stay "
+"secret."
+msgstr ""
+
+msgid "Nginx configuration snippets"
+msgstr ""
+
+msgid "Nginx configuration"
+msgstr ""
+
+msgid "Certificate list"
+msgstr ""
+
+msgid "DNS Validation"
+msgstr ""
+
+msgid ""
+"The main node has no DNS-01 plugin. Install it on the main node, or validate "
+"on this node."
+msgstr ""
+
+msgid ""
+"Credentials of the main node. Switch to the main node to add or change one."
+msgstr ""
+
+msgid "On the main node"
+msgstr ""
+
+msgid "On this node"
+msgstr ""
+
+msgid ""
+"The main node validates the domain with its DNS credentials, sends the "
+"certificate to this node and keeps renewing it."
+msgstr ""
+
+msgid ""
+"This node validates the domain with its own DNS credentials and renews the "
+"certificate itself."
+msgstr ""
+
+msgid "Only a DNS-01 certificate can be issued for another node"
+msgstr ""
+
+msgid "Node not found"
+msgstr ""
+
+msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
+msgstr ""
+
+msgid "Node {0} answered {1}: {2}"
+msgstr ""
+
+msgid "The Nginx configuration still loads the certificate: {0}"
+msgstr ""
+
+msgid "The certificate was issued, but sending it to node {0} failed: {1}"
+msgstr ""
+
+msgid "Node {0} cannot be reached: {1}"
+msgstr ""
+
+msgid "[Nginx UI] Sending the certificate to node %{name}"
+msgstr ""
+
+msgid "Issued for %{node}"
+msgstr ""
+
+msgid ""
+"This instance validates the domain, keeps renewing the certificate and sends "
+"each renewal to %{node}."
+msgstr ""
+
+msgid "Files on the node:"
+msgstr ""
+
+msgid "Issued by this instance for %{node} and renewed here"
+msgstr ""
+
+msgid "For %{node}"
+msgstr ""
+
+msgid ""
+"This instance stops renewing the certificate and deletes its own copy. The "
+"files on %{node} stay unless you remove them below."
+msgstr ""
+
+msgid "Also remove the certificate files from %{node}"
+msgstr ""
+
+msgid ""
+"They are kept when the Nginx configuration of the node still loads them."
+msgstr ""
+
+msgid "Issue the certificate on the main node"
+msgstr ""
+
+msgid ""
+"The node did not confirm that it received the certificate. Update Nginx UI "
+"on the node and try again."
+msgstr ""
+
+msgid "Recommended memory: %{size}"
+msgstr ""
+
+msgid "Nodes: %{target}"
+msgstr ""
+
+#~ msgid "Webauthn"
+#~ msgstr "WebAuthn"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts in "
+#~ "ban threshold minutes,"
+#~ msgstr ""
+#~ "Якщо кількість невдалих спроб входу з IP-адреси досягає максимуму протягом "
+#~ "порогових хвилин блокування,"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr "Встановіть рекурсивні сервери імен, щоб перевизначити системні сервери імен"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "Користувацька MMDB зараз увімкнена"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "Ім'я файлу IndexCustomMMDB"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "Налаштовано з [nginx_log].GeoMapPath. Зберігайте файли з назвами на кшталт "
+#~ "100000_full.json у цій теці."
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "За замовчуванням надається лише карта світу. Будь ласка, завантажте файли "
+#~ "меж Китаю та провінцій самостійно та розмістіть їх у цьому каталозі."
+
+#~ msgid "Global health check controls"
+#~ msgstr "Глобальне керування перевірками стану"
+
+msgid "No file matches the search"
+msgstr "Жоден файл не відповідає пошуку"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+"Ім'я файлу має закінчуватися на .conf і містити лише літери, цифри, крапки, "
+"дефіси та підкреслення"
+
+msgid "Snippet not found"
+msgstr "Фрагмент не знайдено"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "Фрагмент перевищує 256 КіБ"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "Заголовок фрагмента коду не вдається проаналізувати: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "Фрагмент коду все ще включається через {0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "Сніппет з такою назвою файлу вже існує"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "Змінна {0} недійсна: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "Вміст не аналізується як шаблон: {0}"
+
+msgid "Snippets"
+msgstr "Сніпети"
+
+msgid "Create Snippet"
+msgstr "Створити снипет"
+
+msgid "Built-in Template"
+msgstr "Вбудований шаблон"
+
+msgid "Edit Snippet"
+msgstr "Редагувати сниппет"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "Використовується в %{count} конфігурації"
+msgstr[1] "Використовується в %{count} конфігураціях"
+
+msgid "Site Card Click URL"
+msgstr "URL кліку картки сайту"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr ""
+"Необов'язкова абсолютна HTTP/HTTPS-URL, що використовується під час "
+"відкриття цієї картки сайту. Якщо порожня, використовується URL сайту за "
+"замовчуванням."
+
+msgid "Built-in"
+msgstr "Вбудований"
+
+msgid "Snippet"
+msgstr "Фрагмент"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include зберігає зв'язок сайту з snippets/%{file}, тому подальші зміни "
+"сниппета застосовуються до нього. Insert натомість копіює вміст у сайт."
+
+msgid "Insert"
+msgstr "Вставити"
 
 msgid "Read Only"
 msgstr "Тільки для читання"
@@ -11424,6 +13622,9 @@ msgstr "Не використовується"
 
 msgid "Max Age"
 msgstr "Максимальний вік"
+
+msgid "Options"
+msgstr "Параметри"
 
 msgid "Remove option"
 msgstr "Видалити варіант"
@@ -11590,260 +13791,403 @@ msgstr "Значення параметрів повинні бути уніка
 msgid "Choose the default option."
 msgstr "Виберіть варіант за замовчуванням."
 
-msgid "Do you want to %{action} this stream?"
-msgstr "Ви хочете %{action} цей потік?"
-
-msgid "Delete stream: %{stream_name}"
-msgstr "Видалити потік: %{stream_name}"
-
-msgid "Added successfully"
-msgstr "Успішно додано"
-
-msgid "Add Stream"
-msgstr "Додати стрім"
-
-msgid "%{count} streams selected"
-msgstr "%{count} потоків вибрано"
-
-msgid "Development Mode"
-msgstr "Режим розробки"
-
-msgid "Official Document"
-msgstr "Офіційна документація"
-
-msgid "Sponsor"
-msgstr "Спонсор"
-
-msgid "Project Team"
-msgstr "Команда проекту"
-
-msgid "License"
-msgstr "Ліцензія"
-
-msgid "View Third-party Components"
-msgstr "Переглянути сторонні компоненти"
-
-msgid "View version details and core information about this Nginx UI instance."
-msgstr "Переглянути деталі версії та основну інформацію про цей екземпляр Nginx UI."
-
-msgid "Run built-in diagnostics to validate environment and service readiness."
-msgstr ""
-"Запустіть вбудовану діагностику для перевірки готовності середовища та "
-"сервісів."
-
-msgid "Check release updates and execute upgrade operations when available."
-msgstr ""
-"Перевірте оновлення випусків та виконайте операції оновлення, коли вони "
-"доступні."
-
-msgid "Review third-party licenses and open source component attributions."
-msgstr ""
-"Переглянути ліцензії третіх сторін та атрибуцію компонентів з відкритим "
-"кодом."
-
-msgid "Total Components"
-msgstr "Всього компонентів"
-
-msgid "Frontend"
-msgstr "Фронтенд"
-
-msgid "License Types"
-msgstr "Типи ліцензій"
-
-msgid "License Distribution"
-msgstr "Розподіл ліцензій"
-
-msgid "components"
-msgstr "компоненти"
-
-msgid "All Components"
-msgstr "Усі компоненти"
-
-msgid "Dev"
-msgstr "Розробка"
-
-msgid "Reinstall"
-msgstr "Перевстановити"
-
-msgid "Core Upgrade"
-msgstr "Оновлення ядра"
-
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "На цій сторінці ви можете перевірити оновлення Nginx UI."
-
-msgid "Current Version"
-msgstr "Поточна версія"
-
-msgid "Arch"
-msgstr "Архітектура"
-
-msgid "Executable Path"
-msgstr "Шлях до виконуваного файлу"
-
-msgid "Last checked at"
-msgstr "Остання перевірка"
-
-msgid "You are using the latest version"
-msgstr "Ви використовуєте останню версію"
-
-msgid "New version released"
-msgstr "Випущено нову версію"
-
-msgid "Release Note"
-msgstr "Примітки до версії"
-
-msgid "Hide Assistant"
-msgstr "Приховати помічника"
-
-msgid "Show Assistant"
-msgstr "Показати помічника"
-
-msgid "Connection lost for this terminal. Please refresh if needed."
-msgstr "Втрачено зв’язок із цим терміналом. Оновіть, якщо потрібно."
+msgid "Certificate Relocated"
+msgstr "Сертифікат переміщено"
 
 msgid ""
-"This is a simulated terminal running entirely in your browser. Commands are "
-"answered locally and never reach a server."
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
 msgstr ""
-"Це змодельований термінал, який повністю працює у вашому браузері. Команди "
-"обробляються локально й ніколи не надсилаються на сервер."
+"Сертифікат %{name} тепер зберігається в %{path}. Перенаправте сайти, які "
+"завантажують %{previous_path}, на цей шлях"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "Шлях існує, але файл не є сертифікатом"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "Шлях існує, але файл не є приватним ключем"
+
+msgid "MFA Enrollment"
+msgstr "Стан реєстрації MFA"
+
+msgid "Enrolled"
+msgstr "Зареєстровано"
+
+msgid "Not enrolled"
+msgstr "Не зареєстровано"
+
+msgid "Pending enrollment"
+msgstr "Очікує на реєстрацію"
+
+msgid "Invalid request: {0}"
+msgstr "Недійсний запит: {0}"
 
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
 msgstr ""
-"Ви отримуєте доступ до цього терміналу через незахищене HTTP-з’єднання в "
-"домені, який не є локальним. Це може призвести до витоку конфіденційної "
-"інформації."
+"Неприпустиме ім'я ingress: використовуйте від 1 до 40 малих літер, цифр і "
+"дефісів, починаючи та закінчуючи літерою або цифрою"
 
-msgid "Create Upstream"
-msgstr "Створити Upstream"
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr ""
+"Неприпустимий власник: використовуйте від 1 до 64 літер, цифр, крапок, "
+"підкреслень і дефісів"
 
-msgid "View Upstream %{name}"
-msgstr "Переглянути upstream %{name}"
+msgid "Invalid host: {0}"
+msgstr "Неприпустимий хост: {0}"
 
-msgid "Edit Upstream %{name}"
-msgstr "Редагування Upstream %{name}"
+msgid "Invalid backend {0}: {1}"
+msgstr "Недопустимий Backend {0}: {1}"
 
-msgid "Round Robin (default)"
-msgstr "Round Robin (за замовчуванням)"
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "Сервер бекенду {0} знаходиться поза дозволеними діапазонами бекенду"
 
-msgid "Least Connections (least_conn)"
-msgstr "Найменше з'єднань (least_conn)"
+msgid "Invalid route {0}: {1}"
+msgstr "Недопустимий маршрут {0}: {1}"
 
-msgid "IP Hash (ip_hash)"
-msgstr "Хеш IP (ip_hash)"
+msgid "Invalid tls: {0}"
+msgstr "Недійсний TLS: {0}"
 
-msgid "Hash (hash)"
-msgstr "Хеш (hash)"
+msgid "Invalid policy: {0}"
+msgstr "Недійсна політика: {0}"
 
-msgid "Random (random)"
-msgstr "Випадковий (random)"
+msgid "Server {0} not found in backend {1}"
+msgstr "Сервер {0} не знайдено в бекенді {1}"
 
-msgid "Upstream %{name} saved and Nginx reloaded"
-msgstr "Upstream %{name} збережено та Nginx перезавантажено"
+msgid "Ingress {0} not found"
+msgstr "Ingress {0} не знайдено"
 
-msgid "Sites use it as proxy_pass http://%{name};"
-msgstr "Сайти використовують його як proxy_pass http://%{name};"
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0} належить {1}; передайте force, щоб перехопити його"
 
-msgid "Load Balancing Method"
-msgstr "Метод балансування навантаження"
+msgid "Host {0} is already served by ingress {1}"
+msgstr "Хост {0} вже обслуговується ingress {1}"
 
-msgid "Hash Key"
-msgstr "Ключ хеша"
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "Сайт {0} вже існує і не керується цим ingress"
 
-msgid "Consistent Hashing"
-msgstr "Консистентне хешування"
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "Час очікування досягнення ingress {0} покоління {1} вичерпано"
 
-msgid "Servers"
-msgstr "Сервери"
+msgid "Apply failed: {0}"
+msgstr "Не вдалося застосувати: {0}"
 
-msgid "Not available with this load balancing method"
-msgstr "Недоступно з цим методом балансування навантаження"
+msgid "Certificate not ready: {0}"
+msgstr "Сертифікат не готовий: {0}"
 
-msgid "Keepalive"
-msgstr "Keepalive"
+msgid "Not implemented"
+msgstr "Не реалізовано"
 
 msgid ""
-"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
-"need proxy_http_version 1.1 and an empty Connection header."
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
 msgstr ""
-"Неактивні з'єднання, які слід тримати відкритими для кожного воркера; 0 "
-"вимикає функцію. Проксійованим сайтам також потрібні proxy_http_version 1.1 "
-"та порожній заголовок Connection."
+"Сайт керується через ingress {0}; змініть ingress або примусово застосуйте "
+"зміни"
 
-msgid "Connections"
-msgstr "З'єднання"
+msgid "Ingresses"
+msgstr "Ingresses"
 
-msgid "Additional Directives"
-msgstr "Додаткові директиви"
+msgid "HTTP only"
+msgstr "Тільки HTTP"
 
-msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
-msgstr "Одна директива на рядок, наприклад keepalive_timeout або keepalive_requests."
+msgid "Expired %{date}"
+msgstr "Термін дії минув %{date}"
 
-msgid "Referenced By"
-msgstr "Використовується в"
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date} (залишився %{days} день)"
+msgstr[1] "%{date} (залишилося %{days} днів)"
 
-msgid "No site uses this upstream yet."
-msgstr "Цей upstream ще не використовується жодним сайтом."
+msgid "Health"
+msgstr "Здоров'я"
 
-msgid "Configuration Preview"
-msgstr "Попередній перегляд конфігурації"
+msgid "Path Prefix"
+msgstr "Префікс шляху"
 
-msgid "Enable server %{address}"
-msgstr "Увімкнути сервер %{address}"
+msgid "Allowed Sources"
+msgstr "Дозволені джерела"
 
-msgid "Disable server %{address}"
-msgstr "Вимкнути сервер %{address}"
+msgid "Last Transition"
+msgstr "Останній перехід"
+
+msgid "Drained"
+msgstr "Виснажений"
+
+msgid "Healthy"
+msgstr "Здоровий"
+
+msgid "Unhealthy"
+msgstr "Нездоровий"
 
 msgid ""
-"Create shared upstream groups with load balancing and reuse them across "
-"sites."
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
 msgstr ""
-"Створюйте спільні групи upstream з балансуванням навантаження та "
-"використовуйте їх на кількох сайтах."
+"Не вдалося завантажити згенерований сайт. Він записується під час першого "
+"успішного застосування."
 
-msgid "Monitor the health of every proxy target and toggle its health check."
-msgstr ""
-"Відстежуйте стан кожного цільового проксі та перемикайте перевірку його "
-"працездатності."
+msgid "Reconcile Now"
+msgstr "Звірити зараз"
 
-msgid "Socket"
-msgstr "Сокет"
+msgid "The last apply failed; the previous config is still live"
+msgstr "Останнє застосування не вдалося; попередня конфігурація все ще активна."
 
-msgid "Direct"
-msgstr "Пряма"
+msgid "Owner"
+msgstr "Власник"
 
-msgid "Health Status"
-msgstr "Стан здоров’я"
+msgid "External ID"
+msgstr "Зовнішній ID"
 
-msgid "Last Check"
-msgstr "Остання перевірка"
+msgid "Generation"
+msgstr "Покоління"
 
-msgid "Upstream health checks are globally paused"
-msgstr "Перевірки стану upstream призупинено глобально"
+msgid "%{observed} applied of %{generation}"
+msgstr "%{observed} застосовано з %{generation}"
+
+msgid "Generated Site"
+msgstr "Згенерований сайт"
+
+msgid "Last Applied"
+msgstr "Останнє застосування"
+
+msgid "Config Hash"
+msgstr "Хеш конфігурації"
+
+msgid "Labels"
+msgstr "Мітки"
+
+msgid "Hosts"
+msgstr "Хости"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "Режим"
+
+msgid "View certificate"
+msgstr "Переглянути сертифікат"
+
+msgid "Challenge"
+msgstr "Виклик"
+
+msgid "Redirect to HTTPS"
+msgstr "Перенаправити на HTTPS"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "До видачі сертифіката обслуговується лише HTTP-слухач."
+
+msgid "Backends"
+msgstr "Backends"
+
+msgid "Routes"
+msgstr "Маршрути"
+
+msgid "Policy default"
+msgstr "Політика за замовчуванням"
+
+msgid "Policy"
+msgstr "Політика"
+
+msgid "Everyone"
+msgstr "Усі"
+
+msgid "Rate Limit"
+msgstr "Обмеження частоти"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "%{rps} запитів/с на клієнта, burst %{burst}"
+
+msgid "Max Body Size"
+msgstr "Максимальний розмір тіла"
+
+msgid "Extra Headers"
+msgstr "Додаткові заголовки"
+
+msgid "Conditions"
+msgstr "Умови"
+
+msgid "True"
+msgstr "Істина"
+
+msgid "False"
+msgstr "Хибність"
+
+msgid "Generated Site Config"
+msgstr "Згенерована конфігурація сайту"
+
+msgid "Open in site editor"
+msgstr "Відкрити в редакторі сайту"
+
+msgid "Not ready"
+msgstr "Не готово"
+
+msgid "The latest spec has not been applied yet"
+msgstr "Остання специфікація ще не була застосована"
+
+msgid "Applying"
+msgstr "Застосування"
+
+msgid "Ready"
+msgstr "Готово"
+
+msgid "Degraded"
+msgstr "Деградовано"
+
+msgid "Config Applied"
+msgstr "Конфігурацію застосовано"
+
+msgid "Certificate Ready"
+msgstr "Сертифікат готовий"
+
+msgid "Backends Healthy"
+msgstr "Бекенди справні"
+
+msgid "Issued automatically (ACME)"
+msgstr "Видано автоматично (ACME)"
+
+msgid "All owners"
+msgstr "Усі власники"
+
+msgid "Reconcile of %{name} queued"
+msgstr "Звірку %{name} додано до черги"
+
+msgid "Delete ingress %{name}?"
+msgstr "Видалити ingress %{name}?"
 
 msgid ""
-"Per-target selections are preserved. Resume probes from Health Check "
-"preferences."
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
 msgstr ""
-"Вибір для кожної цілі зберігається. Відновіть перевірки в налаштуваннях "
-"перевірки стану."
+"Цей Ingress належить %{owner}. Його controller, ймовірно, перестворить його "
+"під час наступної синхронізації; видаліть його з controller, щоб видалити "
+"назавжди."
 
-msgid "Hash"
-msgstr "Хеш"
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "Згенерований сайт і файли upstream видаляються, а nginx перезавантажується."
 
-msgid "Random"
-msgstr "Випадково"
+msgid "Also delete the certificate"
+msgstr "Також видалити сертифікат"
 
-msgid "Load Balancing"
-msgstr "Балансування навантаження"
+msgid "Ingress %{name} deleted"
+msgstr "Ingress %{name} видалено"
 
-msgid "Defined In"
-msgstr "Визначено в"
+msgid "Ingress"
+msgstr "Ingress"
 
-msgid "Matched upstreams: %{groups}, servers: %{servers}"
-msgstr "Знайдені Upstreams: %{groups}, сервери: %{servers}"
+msgid "Phase"
+msgstr "Фаза"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} здорових"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} сервер"
+msgstr[1] "%{total} серверів"
+
+msgid "%{count} down"
+msgstr "Залишилось %{count}"
+
+msgid "Filter by owner"
+msgstr "Фільтр за власником"
+
+msgid "Applied generation / latest generation"
+msgstr "Застосоване покоління / Найновіше покоління"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "gen %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "Узгодження"
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+"Ingress — це записи зворотного проксі, які публікуються зовнішніми "
+"контролерами через Ingress API. Nginx UI відображає кожен із них як "
+"керований сайт з upstream'ами, випускає його сертифікат і повідомляє про "
+"його статус тут. Вносьте зміни у відповідному контролері; правки, зроблені "
+"тут, будуть перезаписані під час наступного реконсиляції."
+
+msgid "Learn more"
+msgstr "Дізнатися більше"
+
+msgid "No ingresses yet"
+msgstr "Поки що немає ingress-ресурсів"
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"Контролер, наприклад платформа розгортання, створює ingresses за допомогою "
+"PUT /api/ingresses/:name, автентифікуючись як вузол кластера або за "
+"допомогою токена API. Вони з'являються тут одразу після збереження."
+
+msgid "Read the Ingress API guide"
+msgstr "Прочитайте посібник із Ingress API"
+
+msgid "Search by name, host or external ID"
+msgstr "Пошук за іменем, хостом або зовнішнім ID"
+
+msgid "Search ingresses"
+msgstr "Пошук Ingress"
+
+msgid "No ingress matches the filter"
+msgstr "Жоден Ingress не відповідає фільтру"
+
+msgid "Managed by ingress %{name}"
+msgstr "Керується ingress %{name}"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr ""
+"Зміни буде перезаписано під час наступного reconcile. Замість цього "
+"відредагуйте Ingress у його controller."
+
+msgid "View ingress"
+msgstr "Переглянути Ingress"
+
+msgid "Edit anyway"
+msgstr "Все одно редагувати"
+
+msgid "Ingress: %{name}"
+msgstr "Ingress: %{name}"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "Включити %{count} сайт, керований ingress"
+msgstr[1] "Включити %{count} сайти, керовані ingress"
+msgstr[2] "Включити %{count} сайтів, керованих ingress"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0} було оновлено під час видалення"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "Upstream {0} вже існує і не керується цим ingress"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "Вичерпано час очікування видалення ingress {0}"
+
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "Назви upstream, що починаються з {0}, зарезервовані для ingresses"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr ""
+"Upstream {0} керується ingress {1}; змініть ingress замість цього або "
+"примусово внесіть зміну"
 
 msgid ""
 "Ingress %{name} owns this upstream. Change the ingress instead; its next "
@@ -11852,72 +14196,87 @@ msgstr ""
 "Ingress %{name} володіє цим upstream. Натомість змініть ingress; його "
 "наступне застосування перезапише зміни, зроблені тут."
 
-msgid "Server %{address} enabled"
-msgstr "Сервер %{address} увімкнено"
+msgid "View Upstream %{name}"
+msgstr "Переглянути upstream %{name}"
 
-msgid "Server %{address} disabled"
-msgstr "Сервер %{address} вимкнено"
+msgid "Recovery codes downloaded"
+msgstr "Коди відновлення завантажено"
 
-msgid "Disable the last active server of %{name}?"
-msgstr "Вимкнути останній активний сервер у %{name}?"
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr "Налаштування MFA завершено. Збережіть коди відновлення перед продовженням."
 
-msgid ""
-"No other primary server of this upstream is enabled. Requests will fail "
-"unless a backup server takes over."
-msgstr ""
-"Жоден інший основний сервер цього upstream не увімкнено. Запити "
-"завершуватимуться помилкою, поки їх не перебере на себе резервний сервер."
+msgid "MFA session expired. Please sign in again."
+msgstr "Сесію MFA завершено. Будь ласка, увійдіть знову."
 
-msgid "Upstream %{name} is still in use"
-msgstr "Upstream %{name} усе ще використовується"
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "Потрібно MFA. Налаштуйте аутентифікатор або passkey, щоб продовжити."
 
-msgid "Point these configurations at another upstream before deleting it:"
-msgstr "Перенаправте ці конфігурації на інший upstream перед видаленням:"
+msgid "Verify your MFA method to continue signing in."
+msgstr "Підтвердьте свій метод MFA, щоб продовжити вхід."
 
-msgid "Delete upstream %{name}?"
-msgstr "Видалити upstream %{name}?"
-
-msgid "%{path} will be removed and Nginx reloaded."
-msgstr "%{path} буде видалено, а Nginx перезавантажено."
-
-msgid "Upstream %{name} deleted"
-msgstr "Upstream %{name} видалено"
+msgid "Back to sign in"
+msgstr "Повернутися до входу"
 
 msgid ""
-"An upstream group shares its servers and load balancing method across "
-"sites. Choose it as the proxy target when setting up a site; later changes "
-"here apply to every site that uses it."
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
 msgstr ""
-"Група Upstream надає свої сервери та метод балансування навантаження для "
-"спільного використання сайтами. Оберіть її як ціль proxy під час "
-"налаштування сайту; подальші зміни тут застосовуються до всіх сайтів, які "
-"її використовують."
+"Увімкніть MFA у власному обліковому записі, перш ніж керувати політиками "
+"MFA або скидати дані іншого користувача."
 
-msgid "Files are stored in %{dir}."
-msgstr "Файли зберігаються в %{dir}."
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "Вміст файлу має бути коректними даними PEM або htpasswd"
 
-msgid "Search by name or IP:port"
-msgstr "Пошук за назвою або IP:port"
+msgid "MFA enrollment is required"
+msgstr "Потрібна реєстрація MFA"
 
-msgid "Search upstreams by name or server address"
-msgstr "Пошук upstream за назвою або адресою сервера"
+msgid "MFA verification is required"
+msgstr "Потрібна перевірка MFA"
 
-msgid "No upstream group matches the search"
-msgstr "Жодна група upstream не відповідає пошуку"
+msgid "Cannot remove the last required MFA method"
+msgstr "Не вдалося видалити останній обов'язковий метод MFA"
 
-msgid "Upstreams Defined in Other Files"
-msgstr "Upstream'и, визначені в інших файлах"
+msgid "TOTP disabled"
+msgstr "TOTP вимкнено"
+
+msgid "Replace TOTP"
+msgstr "Замінити TOTP"
+
+msgid "Disable TOTP for this account?"
+msgstr "Вимкнути TOTP для цього облікового запису?"
+
+msgid "Disable TOTP"
+msgstr "Вимкнути TOTP"
 
 msgid ""
-"These upstream blocks live inside site or other configuration files. Edit "
-"their settings in their own file; servers can be switched on and off here. "
-"A block inside a site can be converted to a shared group that other sites "
-"can use too."
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
 msgstr ""
-"Ці блоки upstream перебувають у файлах конфігурації сайтів або інших "
-"файлах. Налаштування редагуються у відповідному файлі; сервери можна "
-"вмикати та вимикати тут. Блок всередині сайту можна перетворити на спільну "
-"групу, яку зможуть використовувати й інші сайти."
+"Ваш поточний автентифікатор залишається активним до підтвердження нового "
+"коду. Нові коди відновлення замінюють старі."
+
+msgid "MFA Policy"
+msgstr "Політика MFA"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr ""
+"Вимагати MFA при наступному вході в систему. Користувачі повинні "
+"зареєструвати власний Authenticator або Passkey."
+
+msgid "Require MFA for all users"
+msgstr "Вимагати MFA для всіх користувачів"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "Вимагати локальну MFA для входу через SSO"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr ""
+"Застосувати локальні вимоги перевірки та реєстрації MFA до входу через OIDC "
+"і Casdoor."
 
 msgid "MFA Settings"
 msgstr "Налаштування MFA"
@@ -11930,21 +14289,6 @@ msgstr "Глобальне примусове застосування"
 
 msgid "User enforcement"
 msgstr "Примус користувачів"
-
-msgid "Optional"
-msgstr "Необов'язково"
-
-msgid "MFA Enrollment"
-msgstr "Стан реєстрації MFA"
-
-msgid "Pending enrollment"
-msgstr "Очікує на реєстрацію"
-
-msgid "Enrolled"
-msgstr "Зареєстровано"
-
-msgid "Not enrolled"
-msgstr "Не зареєстровано"
 
 msgid "MFA policy updated. It takes effect at the next sign-in."
 msgstr "Політику MFA оновлено. Вона набуде чинності під час наступного входу."
@@ -11972,21 +14316,6 @@ msgstr "Скинути всі облікові дані та сеанси MFA д
 msgid "Reset MFA"
 msgstr "Скинути MFA"
 
-msgid "User info updated successfully"
-msgstr "Інформацію про користувача успішно оновлено"
-
-msgid "Passwords do not match"
-msgstr "Паролі не збігаються"
-
-msgid "Password updated successfully"
-msgstr "Пароль успішно оновлено"
-
-msgid "Personal Information"
-msgstr "Особиста інформація"
-
-msgid "Update Profile"
-msgstr "Оновити профіль"
-
 msgid ""
 "MFA is required by the global policy. You cannot remove your last MFA "
 "method."
@@ -11998,44 +14327,6 @@ msgid "MFA is required for your account. You cannot remove your last MFA method.
 msgstr ""
 "Для вашого облікового запису потрібен MFA. Ви не можете видалити свій "
 "останній метод MFA."
-
-msgid "Security Settings"
-msgstr "Налаштування безпеки"
-
-msgid "Change Password"
-msgstr "Змінити пароль"
-
-msgid "New Password"
-msgstr "Новий пароль"
-
-msgid "Confirm New Password"
-msgstr "Підтвердити новий пароль"
-
-msgid "Update Password"
-msgstr "Оновити пароль"
-
-msgid "Node %{name} cannot be opened"
-msgstr "Не вдалося відкрити вузол %{name}"
-
-msgid "Exit workspace"
-msgstr "Вийти з робочого простору"
-
-msgid "New tab"
-msgstr "Нова вкладка"
-
-msgid "Single pane"
-msgstr "Одна панель"
-
-msgid "Split view"
-msgstr "Розділений вигляд"
-
-msgctxt "Access list rule"
-msgid "Note"
-msgstr "Примітка"
-
-msgctxt "preference group"
-msgid "Maintenance"
-msgstr "Обслуговування"
 
 #~ msgid "Are you sure to reset 2FA?"
 #~ msgstr "Ви впевнені, що хочете скинути 2FA?"
@@ -12051,39 +14342,3 @@ msgstr "Обслуговування"
 
 #~ msgid "2FA"
 #~ msgstr "2FA"
-
-#~ msgid "Webauthn"
-#~ msgstr "WebAuthn"
-
-#~ msgid ""
-#~ "If the number of login failed attempts from a ip reach the max attempts in "
-#~ "ban threshold minutes,"
-#~ msgstr ""
-#~ "Якщо кількість невдалих спроб входу з IP-адреси досягає максимуму протягом "
-#~ "порогових хвилин блокування,"
-
-#~ msgid "Set the recursive nameservers to override the systems nameservers "
-#~ msgstr "Встановіть рекурсивні сервери імен, щоб перевизначити системні сервери імен"
-
-#~ msgid "Custom MMDB is currently enabled"
-#~ msgstr "Користувацька MMDB зараз увімкнена"
-
-#~ msgid "IndexCustomMMDB File Name"
-#~ msgstr "Ім'я файлу IndexCustomMMDB"
-
-#~ msgid ""
-#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
-#~ "100000_full.json in this directory."
-#~ msgstr ""
-#~ "Налаштовано з [nginx_log].GeoMapPath. Зберігайте файли з назвами на кшталт "
-#~ "100000_full.json у цій теці."
-
-#~ msgid ""
-#~ "Only the world map is provided by default. Please download China and "
-#~ "province boundary files yourself and place them in this directory."
-#~ msgstr ""
-#~ "За замовчуванням надається лише карта світу. Будь ласка, завантажте файли "
-#~ "меж Китаю та провінцій самостійно та розмістіть їх у цьому каталозі."
-
-#~ msgid "Global health check controls"
-#~ msgstr "Глобальне керування перевірками стану"

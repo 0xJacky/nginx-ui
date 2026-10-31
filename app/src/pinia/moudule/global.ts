@@ -3,14 +3,17 @@ import type { NginxStatus } from '@/constants'
 import publicApi from '@/api/public'
 import { nodeScopeGeneration, onNodeScopeReset } from '@/lib/node/nodeScope'
 
+/** Background work a plugin reports, label is an English source string. */
+export interface ProcessingPluginEntry {
+  plugin_id: string
+  key: string
+  label: string
+}
+
 interface ProcessingStatus {
   index_scanning: boolean
   auto_cert_processing: boolean
-  nginx_log_indexing: boolean
-}
-
-interface NginxLogStatus {
-  indexing: boolean
+  plugins: ProcessingPluginEntry[]
 }
 
 type NginxStatusType = NginxStatus.Reloading | NginxStatus.Restarting | NginxStatus.Running | NginxStatus.Stopped
@@ -21,11 +24,7 @@ export const useGlobalStore = defineStore('global', () => {
   const processingStatus = ref<ProcessingStatus>({
     index_scanning: false,
     auto_cert_processing: false,
-    nginx_log_indexing: false,
-  })
-
-  const nginxLogStatus = ref<NginxLogStatus>({
-    indexing: false,
+    plugins: [],
   })
 
   const modules = ref<NgxModule[]>([])
@@ -62,9 +61,8 @@ export const useGlobalStore = defineStore('global', () => {
     processingStatus.value = {
       index_scanning: false,
       auto_cert_processing: false,
-      nginx_log_indexing: false,
+      plugins: [],
     }
-    nginxLogStatus.value = { indexing: false }
     modules.value = []
     modulesMap.value = {}
     isDemo.value = false
@@ -74,7 +72,6 @@ export const useGlobalStore = defineStore('global', () => {
   return {
     nginxStatus,
     processingStatus,
-    nginxLogStatus,
     modules,
     modulesMap,
     isDemo,

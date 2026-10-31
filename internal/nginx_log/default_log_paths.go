@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -39,22 +38,19 @@ const defaultLogConfigFile = ""
 // belong to the configuration file that declared them and are dropped whenever
 // the file is rescanned without the directive, while the default paths have to
 // survive every rescan; keeping them in their own map also keeps
-// RemoveLogPathsFromConfig free of special cases. Like configLogRegistry it
-// lives in the package rather than inside LogFileManager, so the paths outlive
-// the StopServices/InitializeServices cycle that turning advanced indexing off
-// and on again performs.
+// RemoveLogPathsFromConfig free of special cases.
 var (
 	defaultLogRegistry      = make(map[string]*NginxLogCache)
 	defaultLogRegistryMutex sync.RWMutex
 )
 
-// RefreshDefaultLogPaths resolves the nginx default access and error logs,
-// replaces the default registry with the result and hands it to the running
-// LogFileManager. It returns the number of registered default paths.
+// RefreshDefaultLogPaths resolves the nginx default access and error logs and
+// replaces the default registry with the result. It returns the number of
+// registered default paths.
 //
 // Without it a server whose access_log directives are all commented out - the
-// Homebrew nginx.conf ships exactly like that - has no log path at all to
-// index, even though the log file itself exists and is previewable, because
+// Homebrew nginx.conf ships exactly like that - has no log path at all in the
+// log list, even though the log file itself exists and is viewable, because
 // scanForLogDirectives can only discover paths that a directive spells out.
 func RefreshDefaultLogPaths() int {
 	resolved := resolveDefaultLogPaths()
@@ -67,34 +63,19 @@ func RefreshDefaultLogPaths() int {
 	defaultLogRegistryMutex.Lock()
 	previous := defaultLogRegistry
 	defaultLogRegistry = next
-
-	stale := make([]string, 0, len(previous))
-	for path := range previous {
-		if _, kept := next[path]; !kept {
-			stale = append(stale, path)
+	changed := len(next) != len(previous)
+	if !changed {
+		for path := range previous {
+			if _, kept := next[path]; !kept {
+				changed = true
+				break
+			}
 		}
 	}
-	changed := len(stale) > 0 || len(next) != len(previous)
 	defaultLogRegistryMutex.Unlock()
 
-	manager := GetLogFileManager()
-
-	for _, path := range stale {
-		// A path that stopped being a default may still be declared by an
-		// access_log directive, in which case it stays owned by that config file
-		// and must not be dropped from the manager.
-		if isConfigLogPath(path) {
-			continue
-		}
-		if manager != nil {
-			manager.RemoveLogPath(path)
-		}
-	}
-
-	applyDefaultLogPaths(manager)
-
 	if changed {
-		logger.Infof("Registered %d nginx default log path(s) for indexing: %s",
+		logger.Infof("Registered %d nginx default log path(s): %s",
 			len(resolved), strings.Join(defaultLogPathList(), ", "))
 	}
 
@@ -102,7 +83,7 @@ func RefreshDefaultLogPaths() int {
 }
 
 // resolveDefaultLogPaths returns the nginx default access and error logs that
-// are usable as index sources, de-duplicated by path.
+// are viewable through the log whitelist, de-duplicated by path.
 func resolveDefaultLogPaths() []*NginxLogCache {
 	candidates := []struct {
 		path    string
@@ -121,8 +102,7 @@ func resolveDefaultLogPaths() []*NginxLogCache {
 		}
 
 		// A single file configured as both the access and the error log must not
-		// produce two log groups. The access log is resolved first and wins,
-		// because it is the type a rebuild actually indexes.
+		// produce two log groups. The access log is resolved first and wins.
 		if _, duplicate := seen[candidate.path]; duplicate {
 			continue
 		}
@@ -131,7 +111,7 @@ func resolveDefaultLogPaths() []*NginxLogCache {
 		// The whitelist always contains the directory of the default log paths,
 		// so this normally passes. It is still enforced: both settings can be
 		// pointed at an arbitrary path, and a path such as /dev/stdout resolves
-		// to a device that must never be handed to the indexer.
+		// to a device that must never be offered for reading.
 		if !utils.IsValidLogPath(candidate.path) {
 			logger.Debugf("Skipping nginx default %s log %q: not a regular file inside the log directory whitelist",
 				candidate.logType, candidate.path)
@@ -147,31 +127,6 @@ func resolveDefaultLogPaths() []*NginxLogCache {
 	}
 
 	return resolved
-}
-
-// applyDefaultLogPaths hands the registered default log paths to the given
-// LogFileManager. It is idempotent and tolerates a nil manager, which is the
-// state while advanced indexing is disabled.
-func applyDefaultLogPaths(manager *indexer.LogFileManager) int {
-	if manager == nil {
-		return 0
-	}
-
-	entries := defaultLogPathEntries()
-	for _, entry := range entries {
-		manager.AddLogPath(entry.Path, entry.Type, entry.Name, entry.ConfigFile)
-	}
-
-	return len(entries)
-}
-
-// reapplyDefaultLogPaths pushes the already resolved default log paths back into
-// the running LogFileManager without resolving them again. A config rescan first
-// removes every path owned by the rescanned file, which also drops the default
-// path when that file happens to declare it, so the defaults have to be
-// re-asserted right afterwards.
-func reapplyDefaultLogPaths() int {
-	return applyDefaultLogPaths(GetLogFileManager())
 }
 
 // defaultLogPathEntries returns a copy of the registered default log paths.
@@ -200,22 +155,4 @@ func defaultLogPathList() []string {
 	sort.Strings(paths)
 
 	return paths
-}
-
-// isDefaultLogPath reports whether the path is one of the nginx default logs.
-func isDefaultLogPath(path string) bool {
-	defaultLogRegistryMutex.RLock()
-	defer defaultLogRegistryMutex.RUnlock()
-
-	_, ok := defaultLogRegistry[path]
-	return ok
-}
-
-// isConfigLogPath reports whether the path is declared by a configuration file.
-func isConfigLogPath(path string) bool {
-	configLogRegistryMutex.RLock()
-	defer configLogRegistryMutex.RUnlock()
-
-	_, ok := configLogRegistry[path]
-	return ok
 }

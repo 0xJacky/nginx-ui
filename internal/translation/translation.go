@@ -6,13 +6,14 @@ import (
 	"io"
 	"log"
 	"slices"
+	"sort"
 
 	"github.com/0xJacky/Nginx-UI/app"
 	"github.com/0xJacky/pofile"
 	"github.com/samber/lo"
 )
 
-// Dict holds the flat catalogs used by backend messages such as
+// Dict holds the flat built-in catalogs used by backend messages such as
 // notifications. Entries with a msgctxt are left out because pofile.Dict
 // cannot look them up.
 var Dict map[string]pofile.Dict
@@ -21,6 +22,9 @@ var Dict map[string]pofile.Dict
 // msgid are merged into one object keyed by msgctxt, with "" for the entry
 // without a context, which is the shape vue3-gettext expects.
 var webDict map[string]map[string]any
+
+// languages lists the language codes of the built-in catalogs, sorted.
+var languages []string
 
 func init() {
 	Dict = make(map[string]pofile.Dict)
@@ -51,6 +55,20 @@ func init() {
 	for _, v := range langCode {
 		handlePo(v)
 	}
+	sort.Strings(langCode)
+	languages = langCode
+}
+
+// Languages lists the language codes the host translates its interface
+// into, sorted.
+func Languages() []string {
+	return slices.Clone(languages)
+}
+
+// IsLanguage reports whether code is one of Languages.
+func IsLanguage(code string) bool {
+	_, found := slices.BinarySearch(languages, code)
+	return found
 }
 
 func handlePo(langCode string) {
@@ -125,7 +143,9 @@ func buildDicts(p *pofile.Pofile) (flat pofile.Dict, web map[string]any) {
 	return
 }
 
-// GetTranslation returns the catalog for the web app.
+// GetTranslation returns the catalog for the web app: the built-in entries
+// merged with the entries of every enabled plugin, where a built-in
+// translation always wins. Plugin catalogs are kept apart, see plugin.go.
 func GetTranslation(langCode string) map[string]any {
-	return webDict[langCode]
+	return merged(langCode)
 }

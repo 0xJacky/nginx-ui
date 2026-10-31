@@ -71,6 +71,12 @@ type SiteConfig struct {
 	CheckFavicon       bool                   `gorm:"default:true" json:"check_favicon" cosy:"all:omitempty"`
 	HealthCheckConfig  *HealthCheckConfig     `gorm:"serializer:json" json:"health_check_config" cosy:"all:omitempty"`
 	HealthCheckAlert   *SiteHealthAlertConfig `gorm:"serializer:json" json:"health_check_alert" cosy:"all:omitempty"`
+	// ProbeKind selects how the site is checked. Empty or "http" is the
+	// built-in HTTP and gRPC check, "plugin:<code>" a probe plugin kind.
+	ProbeKind string `json:"probe_kind,omitempty" cosy:"all:omitempty"`
+	// ProbeConfig holds the form values of a plugin probe kind. They may
+	// contain credentials, so they are encrypted at rest.
+	ProbeConfig map[string]string `gorm:"serializer:json[aes]" json:"probe_config,omitempty" cosy:"all:omitempty"`
 }
 
 // GetURL returns the computed URL for this site config

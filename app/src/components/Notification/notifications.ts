@@ -49,6 +49,10 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
     title: () => $gettext('Renew Certificate Error'),
     content: (args: any) => $gettext('Certificate %{name} renewal failed: %{error}', args),
   },
+  'DNS-01 plugin unavailable': {
+    title: () => $gettext('DNS-01 plugin unavailable'),
+    content: (args: any) => $gettext('Certificate %{name} cannot be renewed because no enabled plugin provides the DNS-01 challenge', args),
+  },
   'Renew Certificate Success_1': {
     title: () => $gettext('Renew Certificate Success'),
     content: (args: any) => $gettext('Certificate %{name} renewed successfully', args),
@@ -72,6 +76,10 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
   'Certificate Expiring Soon_1': {
     title: () => $gettext('Certificate Expiring Soon'),
     content: (args: any) => $gettext('Certificate %{name} will expire in %{days} days', args),
+  },
+  'Deploy Certificate Error': {
+    title: () => $gettext('Deploy Certificate Error'),
+    content: (args: any) => $gettext('Failed to deploy certificate %{cert_name} to %{target_name}: %{error}', args),
   },
   'Certificate Relocated': {
     title: () => $gettext('Certificate Relocated'),
@@ -124,6 +132,18 @@ const notifications: Record<string, { title: () => string, content: (args: any) 
   'External Notification Test': {
     title: () => $gettext('External Notification Test'),
     content: (args: any) => $gettext('This is a test message sent at %{timestamp} from Nginx UI.', args),
+  },
+  'DNS-01 plugin unavailable_1': {
+    title: () => $gettext('DNS-01 plugin unavailable'),
+    content: (args: any) => $gettext('Certificates using the DNS-01 challenge cannot be renewed until the DNS-01 plugin is installed.', args),
+  },
+  'Plugins updated automatically': {
+    title: () => $gettext('Plugins updated automatically'),
+    content: (args: any) => $gettext('Updated automatically: %{plugins}', args),
+  },
+  'Plugin updates available': {
+    title: () => $gettext('Plugin updates available'),
+    content: (args: any) => $gettext('Updates are available for %{plugins}', args),
   },
   'Certificate Paths Migrated': {
     title: () => $gettext('Certificate Paths Migrated'),
