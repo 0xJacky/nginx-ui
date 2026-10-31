@@ -46,7 +46,7 @@ jobs:
           persist-credentials: false
 
       - name: Plumber Score
-        uses: getplumber/plumber@d1133cdac48cfdf0c0004637ae4af38bcf9f16c7 # v0.7.11
+        uses: getplumber/plumber@e9ad2dc6d6faa2dfd84395aac18e461284062640 # v0.7.16
         with:
           soft-fail: true
           upload-sarif: false
@@ -63,7 +63,7 @@ jobs:
 
       - name: Upload SARIF to Code Scanning
         if: ${{ always() && hashFiles('plumber.sarif') != '' }}
-        uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
+        uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
         with:
           sarif_file: plumber.sarif
 
@@ -85,7 +85,7 @@ jobs:
           persist-credentials: false
 
       - name: Plumber Score
-        uses: getplumber/plumber@d1133cdac48cfdf0c0004637ae4af38bcf9f16c7 # v0.7.11
+        uses: getplumber/plumber@e9ad2dc6d6faa2dfd84395aac18e461284062640 # v0.7.16
         with:
           soft-fail: true
           upload-sarif: false
@@ -102,6 +102,6 @@ jobs:
 
       - name: Upload SARIF to Code Scanning
         if: ${{ always() && hashFiles('plumber.sarif') != '' }}
-        uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
+        uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
         with:
           sarif_file: plumber.sarif
