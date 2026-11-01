@@ -101,6 +101,12 @@ func (d *NgxDirective) parseDirective(directive config.IDirective, deep int) {
 	d.Params += strings.Join(params, " ")
 	if directive.GetBlock() != nil {
 		d.Params += " {\n"
+		if directive.GetBlock().GetCodeBlock() != "" {
+			style := *dumper.IndentedStyle
+			style.StartIndent = (deep + 1) * style.Indent
+			d.Params += dumper.DumpLuaBlock(directive.GetBlock(), &style) + "\n}\n"
+			return
+		}
 		for _, location := range directive.GetBlock().GetDirectives() {
 			if len(location.GetComment()) > 0 {
 				for _, c := range location.GetComment() {

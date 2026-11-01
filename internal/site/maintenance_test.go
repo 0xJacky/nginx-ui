@@ -79,6 +79,28 @@ func TestCreateMaintenanceConfig_BypassPreservesOriginalSite(t *testing.T) {
 	}
 }
 
+func TestCreateMaintenanceConfig_BypassPreservesServerLuaBlock(t *testing.T) {
+	setupMaintenanceTestSettings(t, "")
+	settings.NginxSettings.MaintenanceBypassIP = "203.0.113.10"
+
+	p := parser.NewStringParser(`server {
+    listen 443 ssl;
+    server_name example.com;
+    ssl_certificate_by_lua_block {
+        auto_ssl:ssl_certificate()
+    }
+}`, parser.WithSkipValidDirectivesErr())
+	conf, err := p.Parse()
+	if err != nil {
+		t.Fatalf("Parse() error = %v", err)
+	}
+
+	content := createMaintenanceConfig(conf, "", "example.com")
+	if !strings.Contains(content, "203.0.113.10 1;") || !strings.Contains(content, "auto_ssl:ssl_certificate()") {
+		t.Fatalf("maintenance config = %q, want the bypass site to keep its Lua block", content)
+	}
+}
+
 func TestCreateMaintenanceConfig_InvalidBypassUsesRegularMaintenance(t *testing.T) {
 	setupMaintenanceTestSettings(t, "")
 	settings.NginxSettings.MaintenanceBypassIP = "203.0.113.10; return 200"
