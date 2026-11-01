@@ -159,8 +159,6 @@ var blockedConfigDirectives = map[string]struct{}{
 	"js_set":                            {},
 	"js_shared_dict_zone":               {},
 	"js_var":                            {},
-	"lua_package_cpath":                 {},
-	"lua_package_path":                  {},
 	"perl":                              {},
 	"perl_modules":                      {},
 	"perl_require":                      {},
@@ -632,8 +630,12 @@ func (lexer *nginxConfigLexer) readUnquotedToken() nginxConfigToken {
 // code-execution directives (*_by_lua*, loading the lua module) are
 // intentionally allowed for OpenResty compatibility — those deployments
 // manage real Lua through the UI, and rejecting the directives would make
-// their existing configs uneditable. The "allow existing lua block
-// directives" case in validation_test.go codifies this.
+// their existing configs uneditable. lua_package_path and lua_package_cpath
+// stay allowed for the same reason: Lua add-ons such as the CrowdSec bouncer
+// set them, and code that already runs through *_by_lua* can change
+// package.path or load native code itself, so blocking them adds nothing.
+// The "allow existing lua block directives" and "allow lua package paths"
+// cases in validation_test.go codify this.
 func isBlockedConfigDirective(directive string) bool {
 	if strings.HasPrefix(directive, "js_") || strings.HasPrefix(directive, "perl_") {
 		return true

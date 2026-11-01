@@ -23,7 +23,7 @@ var mcpHiddenDirectiveCases = []struct {
 	{"hash mid-token root workers", "env A#; user root;\nevents {}\n", "user root"},
 	{"brace mid-token", "server { add_header X a}#; js_content m.main; }\n", "js_content"},
 	{"dollar brace", "server { set $v ${host}#; perl_set $x 'sub { return 1; }'; }\n", "perl_set"},
-	{"comment past CR", "# note\r\"\nlua_package_path \"/tmp/?.lua;;\"; #\"\n", "lua_package_path"},
+	{"comment past CR", "# note\r\"\nperl_modules \"/tmp/perl\"; #\"\n", "perl_modules"},
 }
 
 func TestNginxConfigAddRejectsHiddenRestrictedDirectives(t *testing.T) {

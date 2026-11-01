@@ -31,7 +31,7 @@ var tokenizerAttackCases = []tokenizerAttackCase{
 	{"hash mid-token hides user root", "env A#; user root;\nevents {}\n", "user root"},
 	{"hash mid-token hides njs import", "server { location / { add_header X a#; js_import m from conf.d/m.js; js_content m.main; } }\n", "js_import"},
 	{"hash mid-token hides perl_set", "server { set $v a#; perl_set $x 'sub { return 1; }'; }\n", "perl_set"},
-	{"hash mid-token hides lua_package_path", "server { set $v a#; lua_package_path \"/tmp/?.lua;;\"; }\n", "lua_package_path"},
+	{"hash mid-token hides perl_modules", "http { charset a#; perl_modules \"/tmp/perl\"; }\n", "perl_modules"},
 	{"hash after variable", "server { set $v $host#; js_content m.main; }\n", "js_content"},
 	{"hash with suffix mid-token", "server { add_header X-A a#b; js_import m.js; }\n", "js_import"},
 	{"hash mid-token before tab", "server {\n\tset $v a#;\tjs_import m.js;\n}\n", "js_import"},

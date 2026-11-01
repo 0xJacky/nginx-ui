@@ -20,11 +20,11 @@ func TestNginxConfigAddRejectsRestrictedDirectiveContent(t *testing.T) {
 		Params: mcpgo.CallToolParams{
 			Arguments: map[string]any{
 				"name":    "app.conf",
-				"content": `server { listen 80; lua_package_path "/tmp/?.lua;;"; }`,
+				"content": `http { gzip on; perl_modules "/tmp/perl"; }`,
 			},
 		},
 	})
-	requireMCPRestrictedDirectiveError(t, err, "lua_package_path")
+	requireMCPRestrictedDirectiveError(t, err, "perl_modules")
 
 	path := filepath.Join(confDir, "app.conf")
 	if _, statErr := os.Stat(path); !errors.Is(statErr, os.ErrNotExist) {

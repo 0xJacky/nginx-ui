@@ -167,9 +167,9 @@ func TestValidateConfigDirectivesRejectsStatementSeparatedRestrictedDirectives(t
 		wantParam string
 	}{
 		{
-			name:      "reject same-line lua package path after safe directive",
-			content:   `server { listen 80; lua_package_path "/tmp/?.lua;;"; }`,
-			wantParam: "lua_package_path",
+			name:      "reject same-line perl modules path after safe directive",
+			content:   `http { gzip on; perl_modules "/tmp/perl"; }`,
+			wantParam: "perl_modules",
 		},
 		{
 			name:      "reject same-line njs import after safe directive",
@@ -241,6 +241,10 @@ func TestValidateConfigDirectivesAllowsSafeStatementsAndQuotedSemicolons(t *test
 }
 `,
 		},
+		{
+			name:    "allow lua package paths",
+			content: crowdsecBouncerConf,
+		},
 	}
 
 	for _, tt := range tests {
@@ -292,5 +296,32 @@ func TestValidateConfigFileAcceptsPEMContent(t *testing.T) {
 	}
 	if err := ValidateConfigFile(filepath.Join(confDir, "ssl", "a.pem"), "a\x00b"); err == nil {
 		t.Fatal("control characters must still be rejected")
+	}
+}
+
+// crowdsecBouncerConf has the shape of the CrowdSec nginx bouncer's
+// crowdsec_nginx.conf, which sets lua_package_path for its Lua modules.
+const crowdsecBouncerConf = `lua_package_path '/usr/lib/crowdsec/lua/?.lua;;';
+lua_package_cpath '/usr/local/lib/lua/5.1/?.so;;';
+lua_shared_dict crowdsec_cache 50m;
+init_by_lua_block {
+    cs = require "crowdsec"
+    local ok, err = cs.init("/etc/crowdsec/bouncers/crowdsec-nginx-bouncer.conf", "crowdsec-nginx-bouncer/v1.0.8")
+}
+access_by_lua_block {
+    local cs = require "crowdsec"
+    cs.Allow(ngx.var.remote_addr)
+}
+`
+
+// Saving nginx.conf validates every file it includes, so a bouncer config in
+// conf.d must not make the main config unsavable.
+func TestValidateConfigFileAllowsIncludedLuaPackagePath(t *testing.T) {
+	root := useDataValidationRoot(t)
+	writeIncludeTestFile(t, filepath.Join(root, "conf.d", "crowdsec_nginx.conf"), crowdsecBouncerConf)
+
+	content := "events {}\nhttp {\n    include conf.d/*.conf;\n}\n"
+	if err := ValidateConfigFile(filepath.Join(root, "nginx.conf"), content); err != nil {
+		t.Fatalf("ValidateConfigFile(nginx.conf) unexpected error: %v", err)
 	}
 }
