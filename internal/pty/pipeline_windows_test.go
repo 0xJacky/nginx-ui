@@ -149,15 +149,6 @@ func TestWindowsTerminalLegacyCleanupOwnership(t *testing.T) {
 	// never with an opaque HPCON returned by the modern OS.
 	kernel := windows.NewLazySystemDLL("kernel32.dll")
 	heap, _, _ := kernel.NewProc("GetProcessHeap").Call()
-	getCount := kernel.NewProc("GetProcessHandleCount")
-	count := func() uint32 {
-		var n uint32
-		if ok, _, err := getCount.Call(uintptr(windows.CurrentProcess()), uintptr(unsafe.Pointer(&n))); ok == 0 {
-			t.Fatal(err)
-		}
-		return n
-	}
-	before := count()
 	signal, err := windows.CreateEvent(nil, 0, 0, nil)
 	if err != nil {
 		t.Fatal(err)
@@ -173,19 +164,52 @@ func TestWindowsTerminalLegacyCleanupOwnership(t *testing.T) {
 		windows.CloseHandle(reference)
 		t.Fatal(err)
 	}
+	owned := []windows.Handle{signal, reference, process}
+	// Witnesses keep each object identity observable after the original slot
+	// is closed. Checking the three slots, rather than the process-wide handle
+	// count, keeps unrelated runtime or conhost handles out of the result.
+	witnesses := make([]windows.Handle, 0, len(owned))
+	defer func() {
+		for _, witness := range witnesses {
+			windows.CloseHandle(witness)
+		}
+	}()
+	for _, h := range owned {
+		var witness windows.Handle
+		if err := windows.DuplicateHandle(windows.CurrentProcess(), h, windows.CurrentProcess(), &witness, 0, false, windows.DUPLICATE_SAME_ACCESS); err != nil {
+			for _, h := range owned {
+				windows.CloseHandle(h)
+			}
+			t.Fatal(err)
+		}
+		witnesses = append(witnesses, witness)
+	}
 	memory, _, err := kernel.NewProc("HeapAlloc").Call(heap, 0, unsafe.Sizeof(legacyPseudoConsole{}))
 	if memory == 0 {
-		windows.CloseHandle(signal)
-		windows.CloseHandle(reference)
-		windows.CloseHandle(process)
+		for _, h := range owned {
+			windows.CloseHandle(h)
+		}
 		t.Fatal(err)
 	}
 	*(*legacyPseudoConsole)(unsafe.Pointer(memory)) = legacyPseudoConsole{signal, reference, process}
 	if err := closeLegacyPseudoConsole(windows.Handle(memory)); err != nil {
 		t.Fatal(err)
 	}
-	if after := count(); after != before {
-		t.Fatalf("synthetic legacy cleanup retained handles: %d -> %d", before, after)
+	getInfo := kernel.NewProc("GetHandleInformation")
+	compare := windows.NewLazySystemDLL("kernelbase.dll").NewProc("CompareObjectHandles")
+	for i, name := range []string{"signal", "reference", "process"} {
+		var flags uint32
+		if ok, _, err := getInfo.Call(uintptr(owned[i]), uintptr(unsafe.Pointer(&flags))); ok == 0 {
+			if err != windows.ERROR_INVALID_HANDLE {
+				t.Errorf("query %s handle after legacy cleanup: %v", name, err)
+			}
+			continue
+		}
+		// The slot is open again. Another owner may have reused it in the
+		// meantime; only the original object means cleanup skipped it.
+		if same, _, _ := compare.Call(uintptr(owned[i]), uintptr(witnesses[i])); same != 0 {
+			t.Errorf("synthetic legacy cleanup retained the %s handle", name)
+		}
 	}
 	t.Log("Synthetic legacy allocation released both event handles and the duplicated Process handle")
 }
