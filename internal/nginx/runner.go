@@ -24,6 +24,13 @@ func targetGOOS() string {
 	return resolveRunner().GOOS()
 }
 
+// TargetGOOS returns the operating system of the machine that runs nginx, in
+// runtime.GOOS terms. Callers outside this package use it to follow the file
+// name rules of the target rather than those of the OS hosting nginx-ui.
+func TargetGOOS() string {
+	return targetGOOS()
+}
+
 // StatOnTarget reports whether path exists on the machine that runs nginx,
 // which is not this container in external container or SSH mode.
 func StatOnTarget(path string) bool {

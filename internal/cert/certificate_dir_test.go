@@ -100,3 +100,92 @@ func TestUseExistingCertificatePathsIgnoresSharedConfRootFiles(t *testing.T) {
 	assert.Empty(t, payload.SSLCertificateKeyPath)
 	assert.Equal(t, filepath.Join(confDir, "ssl"), filepath.Dir(payload.getCertificateDirPath()))
 }
+
+// stubCertificateTargetGOOS makes the certificate directory follow the file
+// name rules of goos regardless of the OS running the test.
+func stubCertificateTargetGOOS(t *testing.T, goos string) {
+	t.Helper()
+
+	original := certificateTargetGOOS
+	certificateTargetGOOS = func() string { return goos }
+	t.Cleanup(func() { certificateTargetGOOS = original })
+}
+
+// TestWildcardCertificateDirFollowsTargetOS is the regression test for issue
+// #2067: on Windows the wildcard directory name held "*", the path check
+// rejected it, the path collapsed to the nginx configuration directory, and
+// the issued certificate could not be saved. Linux keeps the literal "*" that
+// existing installations store their certificates under.
+func TestWildcardCertificateDirFollowsTargetOS(t *testing.T) {
+	tests := []struct {
+		goos string
+		want string
+	}{
+		{goos: "windows", want: "#.example.com_example.com_EC256"},
+		{goos: "linux", want: "*.example.com_example.com_EC256"},
+		{goos: "darwin", want: "*.example.com_example.com_EC256"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.goos, func(t *testing.T) {
+			confDir := useTempNginxConfDir(t)
+			stubCertificateTargetGOOS(t, tt.goos)
+
+			payload := &ConfigPayload{
+				ServerName: []string{"*.example.com", "example.com"},
+				KeyType:    certcrypto.EC256,
+			}
+			dir := payload.getCertificateDirPath()
+
+			assert.Equal(t, filepath.Join(confDir, "ssl", tt.want), dir)
+			assert.False(t, isConfRootCertificateDir(dir), dir)
+			require.NoError(t, payload.mkCertificateDir())
+			info, err := os.Stat(payload.CertificateDir)
+			require.NoError(t, err)
+			assert.True(t, info.IsDir())
+			assert.Equal(t, filepath.Join(dir, "fullchain.cer"), payload.GetCertificatePath())
+			assert.Equal(t, filepath.Join(dir, "private.key"), payload.GetCertificateKeyPath())
+		})
+	}
+}
+
+func TestCertificateDirWithoutWildcardIsTheSameOnEveryTarget(t *testing.T) {
+	for _, goos := range []string{"windows", "linux"} {
+		t.Run(goos, func(t *testing.T) {
+			confDir := useTempNginxConfDir(t)
+			stubCertificateTargetGOOS(t, goos)
+
+			payload := &ConfigPayload{
+				ServerName: []string{"example.com", "www.example.com"},
+				KeyType:    certcrypto.RSA2048,
+			}
+
+			assert.Equal(t, filepath.Join(confDir, "ssl", "example.com_www.example.com_RSA2048"),
+				payload.getCertificateDirPath())
+			require.NoError(t, payload.mkCertificateDir())
+		})
+	}
+}
+
+// TestWildcardCertificateDirKeepsStoredPath makes sure a renewal of a
+// certificate whose record already points at a directory keeps writing there,
+// whatever name the target would derive today.
+func TestWildcardCertificateDirKeepsStoredPath(t *testing.T) {
+	confDir := useTempNginxConfDir(t)
+	stubCertificateTargetGOOS(t, "windows")
+
+	storedDir := filepath.Join(confDir, "ssl", "legacy_wildcard_EC256")
+	payload := &ConfigPayload{
+		ServerName:         []string{"*.example.com"},
+		KeyType:            certcrypto.EC256,
+		SSLCertificatePath: filepath.Join(storedDir, "fullchain.cer"),
+	}
+
+	assert.Equal(t, storedDir, payload.getCertificateDirPath())
+}
+
+func TestTargetCertificateDirName(t *testing.T) {
+	assert.Equal(t, "#.example.com_EC256", targetCertificateDirName("*.example.com_EC256", "windows"))
+	assert.Equal(t, "*.example.com_EC256", targetCertificateDirName("*.example.com_EC256", "linux"))
+	assert.Equal(t, "example.com_EC256", targetCertificateDirName("example.com_EC256", "windows"))
+}

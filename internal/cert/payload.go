@@ -29,6 +29,10 @@ const maxCertificateDirNameLength = 255
 // fullchain.cer and private.key there and overwrite each other.
 var errCertificateDirIsConfRoot = errors.New("certificate directory resolves to the nginx configuration directory")
 
+// certificateTargetGOOS names the operating system nginx runs on. It is a
+// variable so tests can follow the Windows naming rules on any host.
+var certificateTargetGOOS = nginx.TargetGOOS
+
 type ConfigPayload struct {
 	ConfigName                        string                     `json:"-"`
 	CertID                            uint64                     `json:"cert_id"`
@@ -90,7 +94,8 @@ func (c *ConfigPayload) mkCertificateDir() (err error) {
 		return nil
 	}
 
-	// For windows, replace * with # (issue #403)
+	// A target that reports Linux but stores files on a file system without
+	// "*" support, such as Docker on NTFS, still needs the "#" name (issue #403).
 	c.CertificateDir = strings.ReplaceAll(c.CertificateDir, "*", "#")
 	if _, err = nginx.Stat(c.CertificateDir); os.IsNotExist(err) {
 		err = nginx.MkdirAll(c.CertificateDir, 0755)
@@ -219,8 +224,25 @@ func (c *ConfigPayload) getCertificateDirPath() string {
 		c.CertificateDir = filepath.Dir(c.SSLCertificatePath)
 		return c.CertificateDir
 	}
-	c.CertificateDir = nginx.GetConfPath("ssl", certificateDirName(c.ServerName, c.GetKeyType()))
+	name := targetCertificateDirName(certificateDirName(c.ServerName, c.GetKeyType()), certificateTargetGOOS())
+	c.CertificateDir = nginx.GetConfPath("ssl", name)
 	return c.CertificateDir
+}
+
+// targetCertificateDirName adapts a derived certificate directory name to the
+// file name rules of the operating system nginx runs on.
+//
+// Windows does not allow "*" in file names, so the directory of a wildcard
+// certificate uses "#" there, the same name the legacy fallback of issue #403
+// created. Without it the path check rejected "ssl\*.example.com_EC256", the
+// path collapsed to the nginx configuration directory, and the certificate
+// could not be saved (issue #2067). Other targets keep the literal "*", which
+// existing installations already store their certificates under.
+func targetCertificateDirName(name, goos string) string {
+	if goos != "windows" {
+		return name
+	}
+	return strings.ReplaceAll(name, "*", "#")
 }
 
 // certificateDirName derives the directory name of a certificate from its
