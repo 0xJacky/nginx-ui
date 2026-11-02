@@ -24,10 +24,14 @@ var logLevel = [...]string{
 	"debug", "info", "notice", "warn", "error", "crit", "alert", "emerg",
 }
 
+// GetLogLevel returns the highest level nginx tagged in output. nginx writes the
+// level in brackets ("nginx: [warn] ..."), so only a bracketed level counts: a bare
+// word such as "alert" in "alertmanager.example.com" or "error" in an error.log path
+// is part of the message, not its level.
 func GetLogLevel(output string) (level int) {
-	level = -1
+	level = Unknown
 	for k, v := range logLevel {
-		if strings.Contains(output, v) {
+		if strings.Contains(output, "["+v+"]") {
 			// Try to find the highest log level
 			level = k
 		}
