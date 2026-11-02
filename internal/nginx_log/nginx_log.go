@@ -21,7 +21,26 @@ func init() {
 	// that a rescan just removed is registered again in the same sweep.
 	cache.RegisterPostScanCallback(func() {
 		RefreshDefaultLogPaths()
+		// Runs after the defaults are registered again, so they count as
+		// configured and are never pruned.
+		pruneStaleLogIndexes()
 	})
+}
+
+// pruneStaleLogIndexes drops the index of log groups that no configuration
+// declares any more and whose log file is gone, so a deleted site's access log
+// stops showing up in the log list (issue #2011).
+func pruneStaleLogIndexes() {
+	manager := GetLogFileManager()
+	if manager == nil {
+		return
+	}
+
+	var isBusy func(string) bool
+	if scheduler := GetTaskScheduler(); scheduler != nil {
+		isBusy = scheduler.IsTaskInProgress
+	}
+	manager.PruneStaleLogGroups(isBusy)
 }
 
 // scanForLogDirectives scans and parses configuration files for log directives

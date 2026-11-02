@@ -201,9 +201,22 @@ func (lm *LogFileManager) GetAllLogsWithIndexGrouped(filters ...func(*NginxLogWi
 		persistenceIndexes = []*model.NginxLogIndex{}
 	}
 
-	// Add all indexed files from persistence (including rotated files)
+	// Add all indexed files from persistence (including rotated files), except
+	// the ones of groups that no longer exist (see isStaleGroup).
+	configuredGroups := lm.configuredGroupsLocked()
+	staleVerdicts := make(map[string]bool)
 	for _, idx := range persistenceIndexes {
 		if _, exists := allLogsMap[idx.Path]; !exists {
+			group := getMainLogPathFromFile(idx.Path)
+			stale, checked := staleVerdicts[group]
+			if !checked {
+				stale = isStaleGroup(group, configuredGroups)
+				staleVerdicts[group] = stale
+			}
+			if stale {
+				continue
+			}
+
 			// This is a rotated file not in config cache, create entry for it
 			logType := "access"
 			if strings.Contains(idx.Path, "error") {

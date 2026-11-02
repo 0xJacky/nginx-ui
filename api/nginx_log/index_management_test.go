@@ -147,6 +147,40 @@ func TestRebuildAllFilesDiscoversLogGroups(t *testing.T) {
 		assertIndexedGroup(t, logPath, 2)
 		nginxlog.StopServices()
 	})
+
+	// Issue #2011: a group whose site was deleted together with its log file
+	// is neither configured nor on disk. It must not be listed, and a full
+	// rebuild must not queue it again and so recreate its metadata.
+	t.Run("stale group is not resurrected", func(t *testing.T) {
+		livePath := writeAccessLog(t, logsDir, "still-there.log", 2)
+		stalePath := filepath.Join(logsDir, "deleted-site.access.log")
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		nginxlog.StopServices()
+		nginxlog.InitializeServices(ctx)
+
+		modernIndexer := nginxlog.GetIndexer()
+		require.NotNil(t, modernIndexer)
+		logFileManager := nginxlog.GetLogFileManager()
+		require.NotNil(t, logFileManager)
+
+		require.NoError(t, logFileManager.DeleteAllIndexMetadata())
+		require.NoError(t, logFileManager.SaveIndexMetadata(livePath, 0, time.Now(), 0, nil, nil))
+		require.NoError(t, logFileManager.SaveIndexMetadata(stalePath, 0, time.Now(), 0, nil, nil))
+
+		require.NotContains(t, groupedPaths(nginxlog.GetAllLogsWithIndexGrouped()), stalePath)
+
+		rebuildAllFiles(modernIndexer, logFileManager, nil)
+
+		assertIndexedGroup(t, livePath, 2)
+		q := query.NginxLogIndex
+		count, err := q.Where(q.MainLogPath.Eq(stalePath)).Count()
+		require.NoError(t, err)
+		require.Zero(t, count, "the rebuild must not recreate the stale group")
+		nginxlog.StopServices()
+	})
 }
 
 // groupedPaths returns the paths of a grouped log list in a stable order.
