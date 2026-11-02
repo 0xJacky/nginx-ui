@@ -42,3 +42,20 @@ func TestIsUnderDirectoryRejectsNonExistingPathUnderSymlinkEscape(t *testing.T) 
 	targetPath := filepath.Join(linkPath, "nested", "secret.txt")
 	assert.False(t, IsUnderDirectory(targetPath, baseDir))
 }
+
+// TestIsUnderDirectoryAcceptsMissingWildcardName covers the wildcard
+// certificate directory of issue #2067: a name that does not exist yet is
+// joined onto its existing parent and stays inside the directory.
+func TestIsUnderDirectoryAcceptsMissingWildcardName(t *testing.T) {
+	baseDir := t.TempDir()
+
+	assert.True(t, IsUnderDirectory(filepath.Join(baseDir, "ssl", "*.example.com_EC256"), baseDir))
+	assert.True(t, IsUnderDirectory(filepath.Join(baseDir, "sites-available", "*.example.com"), baseDir))
+}
+
+func TestIsNonexistentPathError(t *testing.T) {
+	_, err := os.Lstat(filepath.Join(t.TempDir(), "missing"))
+	assert.True(t, isNonexistentPathError(err))
+	assert.True(t, isNonexistentPathError(os.ErrNotExist))
+	assert.False(t, isNonexistentPathError(os.ErrPermission))
+}
