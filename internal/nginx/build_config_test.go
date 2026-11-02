@@ -213,3 +213,36 @@ server {
 		}
 	}
 }
+
+// TestBuildConfig_KeepsServerLuaBlock guards the code of a server level Lua
+// block, which has no nginx directives for the block walk to copy.
+func TestBuildConfig_KeepsServerLuaBlock(t *testing.T) {
+	content := `server {
+    listen 443 ssl;
+    server_name example.com;
+    ssl_certificate_by_lua_block {
+        auto_ssl:ssl_certificate()
+    }
+    location / {
+        return 204;
+    }
+}
+`
+
+	ngxConfig, err := ParseNgxConfigByContent(content)
+	if err != nil {
+		t.Fatalf("ParseNgxConfigByContent() error = %v", err)
+	}
+
+	built, err := ngxConfig.BuildConfig()
+	if err != nil {
+		t.Fatalf("BuildConfig() error = %v", err)
+	}
+
+	if strings.Count(built, "ssl_certificate_by_lua_block") != 1 || !strings.Contains(built, "auto_ssl:ssl_certificate()") {
+		t.Fatalf("BuildConfig() = %q, want the Lua block kept with its code", built)
+	}
+	if !strings.Contains(built, "return 204;") {
+		t.Fatalf("BuildConfig() = %q, want the location kept", built)
+	}
+}
