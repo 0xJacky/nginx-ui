@@ -55,7 +55,7 @@ func TestIsUnderDirectoryAcceptsMissingWildcardName(t *testing.T) {
 
 func TestIsNonexistentPathError(t *testing.T) {
 	_, err := os.Lstat(filepath.Join(t.TempDir(), "missing"))
-	assert.True(t, isNonexistentPathError(err))
-	assert.True(t, isNonexistentPathError(os.ErrNotExist))
-	assert.False(t, isNonexistentPathError(os.ErrPermission))
+	assert.True(t, IsNonexistentPathError(err))
+	assert.True(t, IsNonexistentPathError(os.ErrNotExist))
+	assert.False(t, IsNonexistentPathError(os.ErrPermission))
 }

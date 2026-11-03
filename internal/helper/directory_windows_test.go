@@ -16,8 +16,8 @@ import (
 // reports "*" in a name as ERROR_INVALID_NAME, which must count as missing.
 func TestIsNonexistentPathErrorAcceptsInvalidName(t *testing.T) {
 	_, err := os.Lstat(filepath.Join(t.TempDir(), "*.example.com_EC256"))
-	assert.True(t, isNonexistentPathError(err), fmt.Sprint(err))
-	assert.True(t, isNonexistentPathError(&os.PathError{Op: "lstat", Path: "*", Err: windows.ERROR_INVALID_NAME}))
+	assert.True(t, IsNonexistentPathError(err), fmt.Sprint(err))
+	assert.True(t, IsNonexistentPathError(&os.PathError{Op: "lstat", Path: "*", Err: windows.ERROR_INVALID_NAME}))
 }
 
 // TestIsUnderDirectoryAcceptsInvalidNameOnWindows makes sure a wildcard name
