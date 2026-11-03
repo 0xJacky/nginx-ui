@@ -79,6 +79,7 @@ func setupHTTP01Probe(t *testing.T, routes, tlsRoutes map[string]http.Handler) (
 	previousListen := http01ProbeListen
 	previousBlocks := http01ProbeServerBlocks
 	previousSocket := http01ProbeSocketAddress
+	previousLocal := http01ProbeLocalAddresses
 	previousEndpoints := http01ProbeDefaultEndpoints
 	previousSite := http01ProbeSiteEndpoints
 	previousSkip := http01ProbeSkipReason
@@ -91,6 +92,7 @@ func setupHTTP01Probe(t *testing.T, routes, tlsRoutes map[string]http.Handler) (
 		http01ProbeListen = previousListen
 		http01ProbeServerBlocks = previousBlocks
 		http01ProbeSocketAddress = previousSocket
+		http01ProbeLocalAddresses = previousLocal
 		http01ProbeDefaultEndpoints = previousEndpoints
 		http01ProbeSiteEndpoints = previousSite
 		http01ProbeSkipReason = previousSkip
@@ -141,6 +143,9 @@ func setupHTTP01Probe(t *testing.T, routes, tlsRoutes map[string]http.Handler) (
 	}
 	http01ProbeSiteEndpoints = func(string) []http01ProbeEndpoint { return nil }
 	http01ProbeSkipReason = func() string { return "" }
+	// No alternative local address unless a test provides one, so results do
+	// not depend on the interfaces of the machine running the tests.
+	http01ProbeLocalAddresses = func(bool) []string { return nil }
 	http01ProbeRequestTimeout = 2 * time.Second
 	// Keep failing cases fast; the settle tests set their own window.
 	http01ProbeSettleTimeout = 100 * time.Millisecond

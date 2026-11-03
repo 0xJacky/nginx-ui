@@ -36,6 +36,18 @@ import (
 // certificate plays no role, so a certificate whose SANs live in several
 // server blocks is covered too.
 //
+// Shadowed loopback: Nginx hands a connection to the most specific socket of
+// its local address, so when the configuration also listens on the very
+// loopback address a wildcard socket would be dialed through (for example
+// "listen 127.0.0.1:80;" for a stub_status server next to "listen 80;"), a
+// request to 127.0.0.1 reaches that server instead of the wildcard one the CA
+// reaches through the public address. The wildcard socket is then dialed
+// through another local address that no specific socket of the port owns:
+// another 127.0.0.0/8 address where the system accepts it (Linux, Windows),
+// else an address assigned to one of the host's interfaces. When there is
+// none, the socket yields a warning instead of HTTP evidence. Redirect hops
+// resolve their sockets the same way.
+//
 // Redirects are followed the way the Let's Encrypt validator follows them:
 // at most 10, only to http/https URLs on ports 80 or 443, never to IP-address
 // hosts, and without certificate verification on HTTPS. Every hop is sent to
@@ -194,6 +206,9 @@ type http01ProbeEndpoint struct {
 	// socket is the port-80 socket HTTP reaches, nil when the configuration
 	// is unknown.
 	socket *nginx.ServerSocket
+	// unreachable is set, with HTTP empty, when no local address reaches
+	// socket (see "Shadowed loopback" above). It explains the warning.
+	unreachable string
 	// guessed marks a loopback default probed without knowing the
 	// configuration: its answer may come from another server block than the
 	// one the CA reaches, so it can only prove success.
@@ -217,6 +232,11 @@ var (
 	// http01ProbeSocketAddress maps a listening socket to the address the
 	// probe dials to reach it.
 	http01ProbeSocketAddress = http01SocketDialAddress
+	// http01ProbeLocalAddresses lists the addresses of this host, other than
+	// the loopback address of the family, through which a shadowed wildcard
+	// socket can be dialed (see "Shadowed loopback" above), in preference
+	// order.
+	http01ProbeLocalAddresses = http01LocalAlternativeAddresses
 	// http01ProbeDefaultEndpoints are the last resort when the configuration
 	// cannot be read. IPv6 loopback covers IPv6-only listeners.
 	http01ProbeDefaultEndpoints = func() []http01ProbeEndpoint {
@@ -494,6 +514,9 @@ func randomHTTP01ProbeString() (string, error) {
 type http01ProbeRouting struct {
 	blocks   []nginx.ServerBlock
 	fallback []http01ProbeEndpoint
+	// alternatives caches http01ProbeLocalAddresses per address family
+	// (true: IPv6) for the run.
+	alternatives map[bool][]string
 }
 
 // newHTTP01ProbeRouting reads the effective configuration once per run.
@@ -511,10 +534,13 @@ func (r *http01ProbeRouting) configKnown() bool {
 
 // http01HopTarget is a local address a request is dialed to, with the
 // socket (and the host it was resolved for) behind it when known.
+// unreachable is set, with address empty, when no local address reaches the
+// socket.
 type http01HopTarget struct {
-	address string
-	host    string
-	socket  *nginx.ServerSocket
+	address     string
+	host        string
+	socket      *nginx.ServerSocket
+	unreachable string
 }
 
 // targets returns the dial targets of the deciding sockets on port for host
@@ -523,15 +549,60 @@ func (r *http01ProbeRouting) targets(host, port string) []http01HopTarget {
 	var targets []http01HopTarget
 	seen := map[string]bool{}
 	for _, socket := range decidingServerSockets(r.blocks, host, port) {
-		address := http01ProbeSocketAddress(socket.Listen)
+		selected := socket
+		dial, loopback, ok := r.dialListen(socket.Listen)
+		if !ok {
+			label := serverListenLabel(socket.Listen)
+			if seen["unreachable "+label] {
+				continue
+			}
+			seen["unreachable "+label] = true
+			targets = append(targets, http01HopTarget{host: host, socket: &selected, unreachable: fmt.Sprintf(
+				"the wildcard socket %s cannot be reached locally: Nginx answers %s with the server block listening on that address, and no other local address of this host reaches %s",
+				label, net.JoinHostPort(loopback, http01ListenPort(socket.Listen)), label)})
+			continue
+		}
+		address := http01ProbeSocketAddress(dial)
 		if address == "" || seen[address] {
 			continue
 		}
 		seen[address] = true
-		selected := socket
 		targets = append(targets, http01HopTarget{address: address, host: host, socket: &selected})
 	}
 	return targets
+}
+
+// dialListen returns the listen the probe dials to reach the socket of
+// listen: listen itself, or, for a wildcard socket whose loopback address is
+// owned by a specific-address socket on the same port, a listen on another
+// local address that no specific socket of the port owns (see "Shadowed
+// loopback" above). loopback is the shadowed address; ok is false when no
+// other address is available.
+func (r *http01ProbeRouting) dialListen(listen nginx.ServerListen) (dial nginx.ServerListen, loopback string, ok bool) {
+	loopback, wildcard := http01WildcardLoopback(listen)
+	if !wildcard {
+		return listen, "", true
+	}
+	port := http01ListenPort(listen)
+	owned := http01SpecificListenAddresses(r.blocks, port)
+	if !owned[loopback] {
+		return listen, "", true
+	}
+	ipv6 := loopback == "::1"
+	if r.alternatives == nil {
+		r.alternatives = map[bool][]string{}
+	}
+	alternatives, cached := r.alternatives[ipv6]
+	if !cached {
+		alternatives = http01ProbeLocalAddresses(ipv6)
+		r.alternatives[ipv6] = alternatives
+	}
+	for _, address := range alternatives {
+		if !owned[http01CanonicalListenAddress(address)] {
+			return nginx.ServerListen{Addr: address, Port: port, IPv6: ipv6}, loopback, true
+		}
+	}
+	return listen, loopback, false
 }
 
 // endpoints returns the local targets for domain, or a warning reason when
@@ -549,13 +620,22 @@ func (r *http01ProbeRouting) endpoints(domain string) ([]http01ProbeEndpoint, st
 	}
 	endpoints := make([]http01ProbeEndpoint, 0, len(targets))
 	for _, target := range targets {
-		endpoint := http01ProbeEndpoint{HTTP: target.address, socket: target.socket}
+		endpoint := http01ProbeEndpoint{HTTP: target.address, socket: target.socket, unreachable: target.unreachable}
 		if host, _, err := net.SplitHostPort(target.address); err == nil {
 			endpoint.HTTPS = net.JoinHostPort(host, "443")
 		}
 		endpoints = append(endpoints, endpoint)
 	}
 	return endpoints, ""
+}
+
+// http01UnreachableSocketError reports a socket that no local address reaches.
+type http01UnreachableSocketError struct {
+	Reason string
+}
+
+func (e *http01UnreachableSocketError) Error() string {
+	return e.Reason
 }
 
 // http01NoSocketError reports a redirect hop that no local socket serves.
@@ -654,19 +734,103 @@ func http01SocketDialAddress(listen nginx.ServerListen) string {
 		return ""
 	}
 	host = strings.TrimSuffix(strings.TrimPrefix(host, "["), "]")
-	port := strings.TrimSpace(listen.Port)
-	if port == "" {
-		port = "80"
+	if loopback, wildcard := http01WildcardLoopback(listen); wildcard {
+		host = loopback
 	}
+	return net.JoinHostPort(host, http01ListenPort(listen))
+}
+
+// http01WildcardLoopback returns the loopback address a wildcard socket is
+// dialed through by http01SocketDialAddress; wildcard is false for any other
+// socket.
+func http01WildcardLoopback(listen nginx.ServerListen) (loopback string, wildcard bool) {
+	host := strings.TrimSuffix(strings.TrimPrefix(strings.TrimSpace(listen.Addr), "["), "]")
 	switch host {
 	case "", "*", "0.0.0.0", "::":
 		if listen.IPv6 || host == "::" {
-			host = "::1"
-		} else {
-			host = "127.0.0.1"
+			return "::1", true
+		}
+		return "127.0.0.1", true
+	}
+	return "", false
+}
+
+// http01ListenPort returns the port of listen, 80 when it is not given.
+func http01ListenPort(listen nginx.ServerListen) string {
+	if port := strings.TrimSpace(listen.Port); port != "" {
+		return port
+	}
+	return "80"
+}
+
+// http01CanonicalListenAddress normalizes the address of a listen directive
+// for comparison: brackets dropped, IP addresses in canonical form.
+func http01CanonicalListenAddress(address string) string {
+	address = strings.ToLower(strings.TrimSuffix(strings.TrimPrefix(strings.TrimSpace(address), "["), "]"))
+	if ip := net.ParseIP(address); ip != nil {
+		return ip.String()
+	}
+	return address
+}
+
+// http01SpecificListenAddresses returns the addresses that specific-address
+// sockets on port own, in canonical form. "localhost" owns both loopback
+// addresses, the ones Nginx resolves it to; other host names are kept as
+// written.
+func http01SpecificListenAddresses(blocks []nginx.ServerBlock, port string) map[string]bool {
+	owned := map[string]bool{}
+	for _, block := range blocks {
+		for _, listen := range block.Listens {
+			if http01ListenPort(listen) != port || strings.HasPrefix(strings.TrimSpace(listen.Addr), "unix:") {
+				continue
+			}
+			if _, wildcard := http01WildcardLoopback(listen); wildcard {
+				continue
+			}
+			address := http01CanonicalListenAddress(listen.Addr)
+			if address == "localhost" {
+				owned["127.0.0.1"] = true
+				owned["::1"] = true
+				continue
+			}
+			owned[address] = true
 		}
 	}
-	return net.JoinHostPort(host, port)
+	return owned
+}
+
+// http01LocalAlternativeAddresses lists the local addresses of one family,
+// other than its loopback address, that a shadowed wildcard socket can be
+// dialed through: 127.0.0.2 for IPv4, then the global unicast addresses of
+// the host's interfaces. An address counts only when this host can bind it,
+// so 127.0.0.2 is skipped where only 127.0.0.1 is configured (macOS).
+func http01LocalAlternativeAddresses(ipv6 bool) []string {
+	var candidates []string
+	if !ipv6 {
+		candidates = append(candidates, "127.0.0.2")
+	}
+	if addrs, err := net.InterfaceAddrs(); err == nil {
+		for _, addr := range addrs {
+			ipNet, ok := addr.(*net.IPNet)
+			if !ok || ipNet.IP.IsLoopback() || !ipNet.IP.IsGlobalUnicast() {
+				continue
+			}
+			if (ipNet.IP.To4() == nil) != ipv6 {
+				continue
+			}
+			candidates = append(candidates, ipNet.IP.String())
+		}
+	}
+	var local []string
+	for _, candidate := range candidates {
+		listener, err := net.Listen("tcp", net.JoinHostPort(candidate, "0"))
+		if err != nil {
+			continue
+		}
+		_ = listener.Close()
+		local = append(local, candidate)
+	}
+	return local
 }
 
 // probeHTTP01Domain probes every deciding port-80 socket of domain. The CA
@@ -759,7 +923,7 @@ func probeHTTP01Endpoint(ctx context.Context, routing *http01ProbeRouting, endpo
 		body:     body,
 		initial:  start.String(),
 	}
-	first := http01HopTarget{address: endpoint.HTTP, host: domain, socket: endpoint.socket}
+	first := http01HopTarget{address: endpoint.HTTP, host: domain, socket: endpoint.socket, unreachable: endpoint.unreachable}
 	return walk.run(start, first, nil, map[string]bool{walk.initial: true})
 }
 
@@ -772,6 +936,10 @@ func (w *http01ProbeWalk) run(current *url.URL, target http01HopTarget, redirect
 	}
 	if len(redirects) > 0 {
 		attempt.hop = &target
+	}
+	if target.unreachable != "" {
+		attempt.Error = target.unreachable
+		return w.finish(attempt, current, &http01UnreachableSocketError{Reason: target.unreachable}, true, false)
 	}
 
 	client := newHTTP01ProbeClient(target.address)
@@ -850,7 +1018,11 @@ func (w *http01ProbeWalk) finish(attempt HTTP01ProbeAttempt, current *url.URL, f
 	}
 
 	var noSocket *http01NoSocketError
+	var unreachable *http01UnreachableSocketError
 	switch {
+	case noAnswer && errors.As(fetchErr, &unreachable):
+		attempt.Status = HTTP01ProbeStatusWarning
+		attempt.Error = withChain(unreachable.Reason + ", so the route cannot be verified locally")
 	case noAnswer && errors.As(fetchErr, &noSocket):
 		attempt.Status = HTTP01ProbeStatusWarning
 		attempt.Error = withChain(fmt.Sprintf(
