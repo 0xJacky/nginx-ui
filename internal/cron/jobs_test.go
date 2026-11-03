@@ -51,6 +51,30 @@ func waitForRun(t *testing.T, finished <-chan uuid.UUID, jobID uuid.UUID) {
 	}
 }
 
+// waitForNextRun returns the job's next scheduled run once the scheduler has
+// recorded the one that follows the run observed at after. gocron dispatches
+// an immediate first run before it has scheduled the next one, and its loop
+// handles the executor's reschedule, the run's completion (which prunes the
+// run that just happened) and the NextRun query in any order. Right after a
+// run, NextRun can therefore still report that run, or no run at all (the
+// zero time).
+func waitForNextRun(t *testing.T, job gocron.Job, after time.Time) time.Time {
+	t.Helper()
+
+	deadline := time.Now().Add(jobRunTimeout)
+	for {
+		next, err := job.NextRun()
+		require.NoError(t, err)
+		if next.After(after) {
+			return next
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("job %s was not rescheduled after its run, next run %s", job.ID(), next)
+		}
+		time.Sleep(time.Millisecond)
+	}
+}
+
 func TestSetupJobsRegisterOnScheduler(t *testing.T) {
 	tests := []struct {
 		name     string
@@ -148,8 +172,7 @@ func TestIntervalJobsFollowSettings(t *testing.T) {
 			// next run is one interval after the start.
 			waitForRun(t, finished, job.ID())
 			after := time.Now()
-			next, err := job.NextRun()
-			require.NoError(t, err)
+			next := waitForNextRun(t, job, after)
 			assert.False(t, next.Before(before.Add(tt.want)), "next run %s is earlier than one interval after start", next)
 			assert.False(t, next.After(after.Add(tt.want)), "next run %s is later than one interval after start", next)
 		})
