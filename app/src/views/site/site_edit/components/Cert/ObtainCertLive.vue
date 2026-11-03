@@ -148,7 +148,17 @@ function log(msg: string) {
 }
 
 async function issue_cert(config_name: string, server_name: string[], key_type: string) {
-  const secureSessionId = await otpModal.open()
+  // Keeps the Retry button loading while the 2FA prompt is open, so a
+  // second click cannot start a parallel attempt.
+  issuingCert.value = true
+  let secureSessionId: string
+  try {
+    secureSessionId = await otpModal.open()
+  }
+  catch (error) {
+    issuingCert.value = false
+    throw error
+  }
 
   return new Promise<CertificateResult>((resolve, reject) => {
     progressStatus.value = 'active'

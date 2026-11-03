@@ -24,7 +24,6 @@ const data = ref({}) as Ref<AutoCertOptions>
 const domain = ref('')
 const certType = ref<CertType>('wildcard')
 const customDomains = ref<string[]>([''])
-const errored = ref(false)
 const selfSignedLoading = ref(false)
 const modalVisible = ref(false)
 const modalClosable = ref(true)
@@ -61,7 +60,6 @@ function closeModal() {
   visible.value = false
   modalVisible.value = false
   modalClosable.value = true
-  errored.value = false
   step.value = 0
 }
 
@@ -75,7 +73,6 @@ function open() {
   domain.value = ''
   certType.value = 'wildcard'
   customDomains.value = ['']
-  errored.value = false
   selfSignedPayload.value = emptySelfSignedPayload()
 }
 
@@ -121,7 +118,6 @@ function issueCert() {
     }
   }
 
-  errored.value = false
   step.value = 1
   modalVisible.value = true
 
@@ -138,7 +134,6 @@ function issueCert() {
         ? error.message
         : String(error)
       message.error(detail || $gettext('Fail to obtain certificate'))
-      errored.value = true
     })
 }
 
@@ -289,19 +284,8 @@ async function submitSelfSigned() {
         v-model:modal-closable="modalClosable"
         v-model:modal-visible="modalVisible"
         :options="data"
+        @retry="issueCert"
       />
-
-      <div
-        v-if="step === 1 && errored"
-        class="flex justify-end mt-4"
-      >
-        <AButton
-          type="primary"
-          @click="issueCert"
-        >
-          {{ $gettext('Retry') }}
-        </AButton>
-      </div>
     </AModal>
   </div>
 </template>
