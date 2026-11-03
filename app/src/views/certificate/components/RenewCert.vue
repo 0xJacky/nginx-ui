@@ -26,6 +26,8 @@ async function issueCert() {
   refModal.value!.start().then(() => {
     message.success($gettext('Renew successfully'))
     emit('renewed')
+  }).catch(() => {
+    // Closed without success; the failure is already shown in the dialog's log.
   })
 }
 
