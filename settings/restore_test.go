@@ -119,3 +119,72 @@ func TestBuildRestoreConfigRejectsInvalidTypedValue(t *testing.T) {
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "server")
 }
+
+func TestBuildRestoreConfigPreservesAIAssistantEndpointOnPortableRestore(t *testing.T) {
+	currentPath := writeRestoreConfigFixture(t, "current.ini", `[openai]
+BaseUrl = https://destination.example/v1
+Token = destination-token
+Proxy = http://destination-proxy.example:3128
+Model = destination-model
+[http]
+GithubProxy = https://destination-mirror.example
+HTTPProxy = http://destination-http-proxy.example:3128
+`)
+	backupPath := writeRestoreConfigFixture(t, "backup.ini", `[openai]
+BaseUrl = https://source.example/v1
+Token = source-token
+Proxy = http://source-proxy.example:3128
+Model = source-model
+[http]
+GithubProxy = https://source-mirror.example
+HTTPProxy = http://source-http-proxy.example:3128
+`)
+
+	merged, skipped, err := BuildRestoreConfig(backupPath, currentPath, true)
+	require.NoError(t, err)
+
+	config, err := ini.Load(merged)
+	require.NoError(t, err)
+	assert.Equal(t, "https://destination.example/v1", config.Section("openai").Key("BaseUrl").String())
+	assert.Equal(t, "destination-token", config.Section("openai").Key("Token").String())
+	assert.Equal(t, "http://destination-proxy.example:3128", config.Section("openai").Key("Proxy").String())
+	assert.Equal(t, "https://destination-mirror.example", config.Section("http").Key("GithubProxy").String())
+	assert.Contains(t, skipped, "openai.BaseUrl")
+	assert.Contains(t, skipped, "openai.Token")
+	assert.Contains(t, skipped, "openai.Proxy")
+	assert.Contains(t, skipped, "http.GithubProxy")
+
+	// Fields outside the list are still restored from the backup.
+	assert.Equal(t, "source-model", config.Section("openai").Key("Model").String())
+	assert.Equal(t, "http://source-http-proxy.example:3128", config.Section("http").Key("HTTPProxy").String())
+	assert.NotContains(t, skipped, "openai.Model")
+	assert.NotContains(t, skipped, "http.HTTPProxy")
+}
+
+func TestBuildRestoreConfigRestoresAIAssistantEndpointOnTrustedRestore(t *testing.T) {
+	currentPath := writeRestoreConfigFixture(t, "current.ini", `[openai]
+BaseUrl = https://destination.example/v1
+Token = destination-token
+Proxy = http://destination-proxy.example:3128
+[http]
+GithubProxy = https://destination-mirror.example
+`)
+	backupPath := writeRestoreConfigFixture(t, "backup.ini", `[openai]
+BaseUrl = https://source.example/v1
+Token = source-token
+Proxy = http://source-proxy.example:3128
+[http]
+GithubProxy = https://source-mirror.example
+`)
+
+	merged, skipped, err := BuildRestoreConfig(backupPath, currentPath, false)
+	require.NoError(t, err)
+	assert.Empty(t, skipped)
+
+	config, err := ini.Load(merged)
+	require.NoError(t, err)
+	assert.Equal(t, "https://source.example/v1", config.Section("openai").Key("BaseUrl").String())
+	assert.Equal(t, "source-token", config.Section("openai").Key("Token").String())
+	assert.Equal(t, "http://source-proxy.example:3128", config.Section("openai").Key("Proxy").String())
+	assert.Equal(t, "https://source-mirror.example", config.Section("http").Key("GithubProxy").String())
+}

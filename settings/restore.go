@@ -17,6 +17,22 @@ type restoreSettingsSection struct {
 	protectedFields map[string]struct{}
 }
 
+// restoreOnlyProtectedFields lists settings a portable restore keeps from the
+// destination although the settings page may still edit them. A
+// protected:"true" struct tag would also make cosy's ProtectedFill drop these
+// fields on every settings save, so they are listed here instead. They point
+// the instance at external endpoints that receive its credentials.
+var restoreOnlyProtectedFields = map[string]map[string]struct{}{
+	"openai": {
+		"BaseUrl": {},
+		"Token":   {},
+		"Proxy":   {},
+	},
+	"http": {
+		"GithubProxy": {},
+	},
+}
+
 func restoreSettingsSections() []restoreSettingsSection {
 	result := []restoreSettingsSection{
 		{
@@ -32,7 +48,11 @@ func restoreSettingsSections() []restoreSettingsSection {
 	}
 
 	for name, prototype := range sections.AllFromFront() {
-		result = append(result, restoreSettingsSection{name: name, prototype: prototype})
+		result = append(result, restoreSettingsSection{
+			name:            name,
+			prototype:       prototype,
+			protectedFields: restoreOnlyProtectedFields[name],
+		})
 	}
 	return result
 }
