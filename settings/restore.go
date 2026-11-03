@@ -87,6 +87,7 @@ func BuildRestoreConfig(backupPath, currentPath string, preserveProtected bool) 
 				}
 			}
 		}
+		skipped = append(skipped, dropLegacyServerKeys(backupConfig)...)
 	}
 
 	if err := validateRestoreConfig(backupConfig); err != nil {
@@ -99,6 +100,37 @@ func BuildRestoreConfig(backupPath, currentPath string, preserveProtected bool) 
 	}
 	sort.Strings(skipped)
 	return output.Bytes(), skipped, nil
+}
+
+// dropLegacyServerKeys removes the v1 [server] keys from a portable backup.
+// A non-empty server.JwtSecret makes the next settings.Init run migrate(),
+// which copies these keys into the v2 sections wherever the restored value is
+// empty, so they would bypass the destination-owned settings kept above.
+// Backups with a manifest are always v2 or later and never need the v1
+// migration. Keys that are also current [server] fields are left alone.
+func dropLegacyServerKeys(config *ini.File) []string {
+	if !config.HasSection("server") {
+		return nil
+	}
+	section := config.Section("server")
+
+	current := map[string]struct{}{}
+	serverType := reflect.TypeOf(cosysettings.Server{})
+	for i := 0; i < serverType.NumField(); i++ {
+		current[iniFieldName(serverType.Field(i))] = struct{}{}
+	}
+
+	var dropped []string
+	legacyType := reflect.TypeOf(serverV1{})
+	for i := 0; i < legacyType.NumField(); i++ {
+		name := iniFieldName(legacyType.Field(i))
+		if _, ok := current[name]; ok || name == "" || !section.HasKey(name) {
+			continue
+		}
+		section.DeleteKey(name)
+		dropped = append(dropped, "server."+name)
+	}
+	return dropped
 }
 
 func loadRestoreConfig(configPath string) (*ini.File, error) {
