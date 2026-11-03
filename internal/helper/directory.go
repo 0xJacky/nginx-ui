@@ -34,8 +34,8 @@ func resolvePathWithExistingSymlinks(path string) (string, error) {
 
 		// A component that cannot exist (not found, or on Windows a name the
 		// file system rejects such as "*.example.com") is kept lexically and
-		// the walk continues with its parent, see isNonexistentPathError.
-		if !isNonexistentPathError(err) {
+		// the walk continues with its parent, see IsNonexistentPathError.
+		if !IsNonexistentPathError(err) {
 			return "", err
 		}
 

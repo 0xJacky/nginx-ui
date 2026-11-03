@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/pkg/sftp"
 )
@@ -356,12 +357,15 @@ func Stat(path string) (os.FileInfo, error) {
 	return fs.Stat(path)
 }
 
+// Exists reports whether path exists on the target, following symlinks. A name
+// the local file system rejects, such as "*.example.com.conf" on Windows, is
+// reported as missing rather than as an error (issue #2067).
 func Exists(path string) (bool, error) {
 	_, err := Stat(path)
 	if err == nil {
 		return true, nil
 	}
-	if os.IsNotExist(err) {
+	if helper.IsNonexistentPathError(err) {
 		return false, nil
 	}
 	return false, err
@@ -375,7 +379,7 @@ func EntryExists(path string) (bool, error) {
 	if err == nil {
 		return true, nil
 	}
-	if os.IsNotExist(err) {
+	if helper.IsNonexistentPathError(err) {
 		return false, nil
 	}
 	return false, err
@@ -386,7 +390,7 @@ func SymlinkExists(path string) (bool, error) {
 	if err == nil {
 		return info.Mode()&os.ModeSymlink != 0, nil
 	}
-	if os.IsNotExist(err) {
+	if helper.IsNonexistentPathError(err) {
 		return false, nil
 	}
 	return false, err

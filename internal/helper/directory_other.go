@@ -4,8 +4,9 @@ package helper
 
 import "os"
 
-// isNonexistentPathError reports whether err from os.Lstat means that the path
-// does not exist on the file system.
-func isNonexistentPathError(err error) bool {
+// IsNonexistentPathError reports whether err from os.Stat or os.Lstat means
+// that the path does not exist on the file system. See the Windows variant for
+// the names that platform rejects instead of reporting them as missing.
+func IsNonexistentPathError(err error) bool {
 	return os.IsNotExist(err)
 }
