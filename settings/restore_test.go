@@ -7,6 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/uozi-tech/cosy/logger"
 	"gopkg.in/ini.v1"
 )
 
@@ -118,4 +119,157 @@ func TestBuildRestoreConfigRejectsInvalidTypedValue(t *testing.T) {
 	_, _, err := BuildRestoreConfig(backupPath, currentPath, false)
 	require.Error(t, err)
 	assert.Contains(t, err.Error(), "server")
+}
+
+func TestBuildRestoreConfigPreservesAIAssistantEndpointOnPortableRestore(t *testing.T) {
+	currentPath := writeRestoreConfigFixture(t, "current.ini", `[openai]
+BaseUrl = https://destination.example/v1
+Token = destination-token
+Proxy = http://destination-proxy.example:3128
+Model = destination-model
+[http]
+GithubProxy = https://destination-mirror.example
+HTTPProxy = http://destination-http-proxy.example:3128
+`)
+	backupPath := writeRestoreConfigFixture(t, "backup.ini", `[openai]
+BaseUrl = https://source.example/v1
+Token = source-token
+Proxy = http://source-proxy.example:3128
+Model = source-model
+[http]
+GithubProxy = https://source-mirror.example
+HTTPProxy = http://source-http-proxy.example:3128
+`)
+
+	merged, skipped, err := BuildRestoreConfig(backupPath, currentPath, true)
+	require.NoError(t, err)
+
+	config, err := ini.Load(merged)
+	require.NoError(t, err)
+	assert.Equal(t, "https://destination.example/v1", config.Section("openai").Key("BaseUrl").String())
+	assert.Equal(t, "destination-token", config.Section("openai").Key("Token").String())
+	assert.Equal(t, "http://destination-proxy.example:3128", config.Section("openai").Key("Proxy").String())
+	assert.Equal(t, "https://destination-mirror.example", config.Section("http").Key("GithubProxy").String())
+	assert.Contains(t, skipped, "openai.BaseUrl")
+	assert.Contains(t, skipped, "openai.Token")
+	assert.Contains(t, skipped, "openai.Proxy")
+	assert.Contains(t, skipped, "http.GithubProxy")
+
+	// Fields outside the list are still restored from the backup.
+	assert.Equal(t, "source-model", config.Section("openai").Key("Model").String())
+	assert.Equal(t, "http://source-http-proxy.example:3128", config.Section("http").Key("HTTPProxy").String())
+	assert.NotContains(t, skipped, "openai.Model")
+	assert.NotContains(t, skipped, "http.HTTPProxy")
+}
+
+func TestBuildRestoreConfigRestoresAIAssistantEndpointOnTrustedRestore(t *testing.T) {
+	currentPath := writeRestoreConfigFixture(t, "current.ini", `[openai]
+BaseUrl = https://destination.example/v1
+Token = destination-token
+Proxy = http://destination-proxy.example:3128
+[http]
+GithubProxy = https://destination-mirror.example
+`)
+	backupPath := writeRestoreConfigFixture(t, "backup.ini", `[openai]
+BaseUrl = https://source.example/v1
+Token = source-token
+Proxy = http://source-proxy.example:3128
+[http]
+GithubProxy = https://source-mirror.example
+`)
+
+	merged, skipped, err := BuildRestoreConfig(backupPath, currentPath, false)
+	require.NoError(t, err)
+	assert.Empty(t, skipped)
+
+	config, err := ini.Load(merged)
+	require.NoError(t, err)
+	assert.Equal(t, "https://source.example/v1", config.Section("openai").Key("BaseUrl").String())
+	assert.Equal(t, "source-token", config.Section("openai").Key("Token").String())
+	assert.Equal(t, "http://source-proxy.example:3128", config.Section("openai").Key("Proxy").String())
+	assert.Equal(t, "https://source-mirror.example", config.Section("http").Key("GithubProxy").String())
+}
+
+func TestBuildRestoreConfigDropsLegacyServerKeysOnPortableRestore(t *testing.T) {
+	logger.Init("debug")
+	currentPath := writeRestoreConfigFixture(t, "current.ini", `[app]
+JwtSecret = destination-jwt
+[http]
+GithubProxy =
+InsecureSkipVerify = false
+[server]
+Port = 9000
+`)
+	backupPath := writeRestoreConfigFixture(t, "backup.ini", `[app]
+JwtSecret = source-jwt
+[http]
+GithubProxy =
+InsecureSkipVerify = false
+[server]
+Port = 9443
+RunMode = release
+JwtSecret = legacy-jwt
+GithubProxy = https://legacy-mirror.example
+InsecureSkipVerify = true
+`)
+
+	merged, skipped, err := BuildRestoreConfig(backupPath, currentPath, true)
+	require.NoError(t, err)
+	assert.Contains(t, skipped, "server.JwtSecret")
+	assert.Contains(t, skipped, "server.GithubProxy")
+	assert.Contains(t, skipped, "server.InsecureSkipVerify")
+	assert.NotContains(t, skipped, "server.RunMode")
+	assert.NotContains(t, skipped, "server.Port")
+
+	// Run the restored file through the startup migration as settings.Init
+	// does after the restart that follows a restore.
+	restoredPath := writeRestoreConfigFixture(t, "restored.ini", string(merged))
+	migrate(restoredPath)
+
+	config, err := ini.Load(restoredPath)
+	require.NoError(t, err)
+	assert.Empty(t, config.Section("http").Key("GithubProxy").String())
+	assert.Equal(t, "false", config.Section("http").Key("InsecureSkipVerify").String())
+	assert.Equal(t, "destination-jwt", config.Section("app").Key("JwtSecret").String())
+	assert.Equal(t, "9443", config.Section("server").Key("Port").String())
+	assert.Equal(t, "release", config.Section("server").Key("RunMode").String())
+}
+
+func TestBuildRestoreConfigDropsAIAssistantEndpointMissingFromCurrentConfig(t *testing.T) {
+	currentPath := writeRestoreConfigFixture(t, "current.ini", "[openai]\nModel=destination-model\n[server]\nPort=9000\n")
+	backupPath := writeRestoreConfigFixture(t, "backup.ini", `[openai]
+Proxy = http://source-proxy.example:3128
+[http]
+GithubProxy = https://source-mirror.example
+`)
+
+	merged, skipped, err := BuildRestoreConfig(backupPath, currentPath, true)
+	require.NoError(t, err)
+
+	config, err := ini.Load(merged)
+	require.NoError(t, err)
+	assert.False(t, config.Section("openai").HasKey("Proxy"))
+	assert.False(t, config.Section("http").HasKey("GithubProxy"))
+	assert.Contains(t, skipped, "openai.Proxy")
+	assert.Contains(t, skipped, "http.GithubProxy")
+}
+
+func TestBuildRestoreConfigKeepsLegacyServerKeysOnTrustedRestore(t *testing.T) {
+	currentPath := writeRestoreConfigFixture(t, "current.ini", "[server]\nPort=9000\n")
+	backupPath := writeRestoreConfigFixture(t, "backup.ini", `[server]
+Port = 9443
+JwtSecret = legacy-jwt
+GithubProxy = https://legacy-mirror.example
+InsecureSkipVerify = true
+`)
+
+	merged, skipped, err := BuildRestoreConfig(backupPath, currentPath, false)
+	require.NoError(t, err)
+	assert.Empty(t, skipped)
+
+	config, err := ini.Load(merged)
+	require.NoError(t, err)
+	assert.Equal(t, "legacy-jwt", config.Section("server").Key("JwtSecret").String())
+	assert.Equal(t, "https://legacy-mirror.example", config.Section("server").Key("GithubProxy").String())
+	assert.Equal(t, "true", config.Section("server").Key("InsecureSkipVerify").String())
 }
