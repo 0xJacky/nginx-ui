@@ -96,7 +96,7 @@ func serveAnalytic(c *gin.Context, sampleCPU func() (float64, float64, error)) {
 			Total:  cpuTotalUsage,
 		}
 
-		stat.Uptime, err = host.Uptime()
+		stat.Uptime, err = analytic.Uptime()
 		if err != nil {
 			logger.Error(err)
 			if !waitNext() {
@@ -177,6 +177,9 @@ func GetAnalyticInit(c *gin.Context) {
 		logger.Error(err)
 		hostInfo = &host.InfoStat{}
 	}
+	if uptime, err := analytic.Uptime(); err == nil {
+		hostInfo.Uptime = uptime
+	}
 
 	switch hostInfo.Platform {
 	case "ubuntu":
@@ -239,6 +242,9 @@ func GetNode(c *gin.Context) {
 	if err != nil {
 		logger.Error(err)
 		hostInfo = &host.InfoStat{}
+	}
+	if uptime, err := analytic.Uptime(); err == nil {
+		hostInfo.Uptime = uptime
 	}
 
 	switch hostInfo.Platform {
