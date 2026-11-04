@@ -50,3 +50,30 @@ This is the application name you created in Casdoor.
 
 This is the URI that users will be redirected to after successful login or authorization.
 It should be consistent with the Redirect URI in the Casdoor application configuration.
+
+## Account Mapping
+
+Casdoor signs in users who already exist in Nginx UI; it does not create accounts.
+A login is accepted only when the access token returned by Casdoor:
+
+- is signed by the certificate at `CertificatePath`;
+- is an access token, not a refresh token;
+- has an audience (`aud`) equal to `ClientId`, or `<ClientId>-org-<Organization>` for a shared Casdoor application;
+- has an `owner` claim equal to `Organization`. Users of any other organization, including `built-in`, are refused even if the Casdoor application lets them sign in.
+
+The Nginx UI username must equal the Casdoor username (the user's `Name`, not the display name). Where Casdoor puts it depends on the application's token format:
+
+| Token format | Username claim | Notes |
+|--------------|----------------|-------|
+| `JWT` (default) | `name` | |
+| `JWT-Empty` | `name` | |
+| `JWT-Standard` | `preferred_username` | `name` holds the display name and is never used |
+| `JWT-Custom` | `name` | Select both `Owner` and `Name` in the token fields, and do not add token attributes or `Properties` fields named `owner`, `name` or `preferred_username` (in any letter case) |
+
+Tokens without an `owner` claim are refused, because the organization cannot be verified.
+
+When a login is refused or no matching user exists, the error response includes `organization`, `resolved_by` and `resolved_username` to help you check the mapping.
+
+::: warning
+Anyone who can create a Casdoor account in `Organization` with the same username as an Nginx UI user can sign in as that user. For the application used by Nginx UI, disable sign-up (and guest sign-in), or make sure every Nginx UI username is already taken by the intended person in Casdoor. Also keep the `Name` account item's modify rule at `Admin` (the Casdoor default) so users cannot rename themselves.
+:::

@@ -16,6 +16,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/casdoor/casdoor-go-sdk/casdoorsdk"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/uozi-tech/cosy"
 	cSettings "github.com/uozi-tech/cosy/settings"
 	"gorm.io/gorm"
@@ -77,11 +78,25 @@ func CasdoorCallback(c *gin.Context) {
 		return
 	}
 
-	u, err := user.GetUser(claims.Name)
+	username, resolvedBy, rejectReason := resolveCasdoorUsername(token.AccessToken, claims, clientId, organization)
+	if rejectReason != "" {
+		c.JSON(http.StatusForbidden, gin.H{
+			"message":           rejectReason,
+			"organization":      claims.Owner,
+			"resolved_by":       resolvedBy,
+			"resolved_username": username,
+		})
+		return
+	}
+
+	u, err := user.GetUser(username)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			c.JSON(http.StatusForbidden, gin.H{
-				"message": "User not exist",
+				"message":           "User not exist",
+				"organization":      claims.Owner,
+				"resolved_by":       resolvedBy,
+				"resolved_username": username,
 			})
 		} else {
 			cosy.ErrHandler(c, err)
@@ -104,6 +119,76 @@ func CasdoorCallback(c *gin.Context) {
 		Message:            "ok",
 		AccessTokenPayload: userToken,
 	})
+}
+
+// resolveCasdoorUsername checks that a signature-verified Casdoor access token
+// was issued to the configured application for a user of the configured
+// organization, and returns the Casdoor username that selects the local
+// account. casdoorsdk.ParseJwtToken only verifies the signature and the time
+// claims, and Casdoor applications commonly share one certificate, so the
+// audience and owner claims have to be checked here. A non-empty rejectReason
+// means the login must be refused.
+func resolveCasdoorUsername(accessToken string, claims *casdoorsdk.Claims, clientId, organization string) (username, resolvedBy, rejectReason string) {
+	if claims.IsRefreshToken() {
+		return "", "", "Casdoor returned a refresh token instead of an access token"
+	}
+
+	if !casdoorAudienceAllowed(claims.Audience, clientId, organization) {
+		return "", "", "Casdoor token audience does not match the configured client ID"
+	}
+
+	if claims.Owner == "" {
+		return "", "", "Casdoor token has no organization (owner) claim; use the JWT, JWT-Empty or JWT-Standard " +
+			"token format, or select Owner in the JWT-Custom token fields"
+	}
+	if claims.Owner != organization {
+		return "", "", "Casdoor user does not belong to the configured organization"
+	}
+
+	return casdoorTokenUsername(accessToken, claims)
+}
+
+// casdoorAudienceAllowed accepts the client ID itself and, for a shared
+// Casdoor application, "<clientId>-org-<organization>", which is the audience
+// Casdoor issues to users of that organization.
+func casdoorAudienceAllowed(audience []string, clientId, organization string) bool {
+	sharedAudience := clientId + "-org-" + organization
+	for _, aud := range audience {
+		if aud == clientId || aud == sharedAudience {
+			return true
+		}
+	}
+	return false
+}
+
+// casdoorTokenUsername returns the unique Casdoor username. The JWT, JWT-Empty
+// and JWT-Custom formats carry it in "name", but JWT-Standard follows OIDC and
+// carries it in "preferred_username" while "name" holds the display name,
+// which users may edit themselves. preferred_username therefore wins when it
+// is present and never falls back to "name", except in tokens that carry the
+// display name as "displayName": there "name" is the username, and a
+// preferred_username claim can only come from a custom token attribute.
+func casdoorTokenUsername(accessToken string, claims *casdoorsdk.Claims) (username, resolvedBy, rejectReason string) {
+	// The token was verified by casdoorsdk.ParseJwtToken; this only reads the
+	// claim the SDK's Claims type does not expose.
+	rawClaims := jwt.MapClaims{}
+	if _, _, err := jwt.NewParser().ParseUnverified(accessToken, rawClaims); err != nil {
+		return "", "", "Casdoor token claims could not be decoded"
+	}
+
+	_, hasDisplayName := rawClaims["displayName"]
+	if value, ok := rawClaims["preferred_username"]; ok && !hasDisplayName {
+		username, _ = value.(string)
+		if username == "" {
+			return "", "preferred_username", "Casdoor claim \"preferred_username\" is not a non-empty string"
+		}
+		return username, "preferred_username", ""
+	}
+
+	if claims.Name == "" {
+		return "", "name", "Casdoor token has no username claim; select Name in the JWT-Custom token fields"
+	}
+	return claims.Name, "name", ""
 }
 
 func validateCasdoorState(c *gin.Context, loginState string) bool {
