@@ -45,14 +45,15 @@ Applicable for version v2.0.0-beta.37 and above.
 | RedirectUri           | NGINX_UI_CASDOOR_REDIRECT_URI     |
 
 ## Oidc
-| Configuration Setting | Environment Variable        |
-|-----------------------|-----------------------------|
-| Endpoint              | NGINX_UI_OIDC_ENDPOINT      |
-| ClientId              | NGINX_UI_OIDC_CLIENT_ID     |
-| ClientSecret          | NGINX_UI_OIDC_CLIENT_SECRET |
-| RedirectUri           | NGINX_UI_OIDC_REDIRECT_URI  |
-| Scopes                | NGINX_UI_OIDC_SCOPES        |
-| Identifier            | NGINX_UI_OIDC_IDENTIFIER    |
+| Configuration Setting | Environment Variable                  |
+|-----------------------|---------------------------------------|
+| Endpoint              | NGINX_UI_OIDC_ENDPOINT                |
+| ClientId              | NGINX_UI_OIDC_CLIENT_ID               |
+| ClientSecret          | NGINX_UI_OIDC_CLIENT_SECRET           |
+| RedirectUri           | NGINX_UI_OIDC_REDIRECT_URI            |
+| Scopes                | NGINX_UI_OIDC_SCOPES                  |
+| Identifier            | NGINX_UI_OIDC_IDENTIFIER              |
+| TrustUnverifiedEmail  | NGINX_UI_OIDC_TRUST_UNVERIFIED_EMAIL  |
 
 ## Cert
 | Configuration Setting | Environment Variable                |

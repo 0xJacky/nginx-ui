@@ -56,6 +56,7 @@
 | RedirectUri     | NGINX_UI_OIDC_REDIRECT_URI  |
 | Scopes          | NGINX_UI_OIDC_SCOPES        |
 | Identifier      | NGINX_UI_OIDC_IDENTIFIER    |
+| TrustUnverifiedEmail | NGINX_UI_OIDC_TRUST_UNVERIFIED_EMAIL |
 
 ## Cert
 

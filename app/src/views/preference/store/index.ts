@@ -97,6 +97,7 @@ const useSystemSettingsStore = defineStore('systemSettings', () => {
       redirect_uri: '',
       scopes: '',
       identifier: '',
+      trust_unverified_email: false,
     },
     cert: {
       email: '',

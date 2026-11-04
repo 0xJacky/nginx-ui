@@ -31,15 +31,36 @@ Point it at the Nginx UI root, not at `/api/oidc_callback`: the provider sends t
 ## Scopes
 - Type: `string`
 
-Space-separated additional scopes. The `openid`, `profile`, and `email` scopes are always requested.
-Leave empty for the defaults.
+Space-separated scopes to request. When empty, Nginx UI requests `openid profile email`.
+When set, the value replaces the defaults entirely, so include `openid` yourself (and `email` or `profile` if the claim you use as Identifier needs them), for example `openid profile email`.
 
 ## Identifier
 - Type: `string`
 
-The token claim used to resolve the Nginx UI username, for example `email` or `sub`.
-If the claim is missing, Nginx UI falls back to `email`, then `name`, then `sub`.
+The ID token claim whose value must equal the Nginx UI username, for example `sub`, `email`, `preferred_username`, `oid`, or `upn`.
 The user must already exist in Nginx UI; OIDC signs users in, it does not create accounts.
+Nginx UI usernames are limited to 20 characters, so the claim value must fit in that limit.
+
+When Identifier is set, only that claim is used. If the claim is missing, is not a string, or is empty, the login is refused and the error names the claim; there is no fallback to other claims.
+
+When Identifier is empty, Nginx UI uses the first claim present in this order:
+
+1. `email`, only when the provider marks it verified (see below)
+2. `sub`
+
+Display-name claims such as `name` are never used, and `preferred_username` is only used when you configure it explicitly, because many providers let end users choose or change it. Configure `preferred_username` only if your provider guarantees it is unique and controlled by the provider.
+
+Whenever `email` is the claim that resolves the user, whether configured as Identifier or selected by default, the provider must also send `email_verified` as `true` (the string `"true"` is accepted too). Otherwise the login is refused. If `email` is present but not verified and you want to match on `sub` instead, set Identifier to `sub`.
+
+When a login is refused or no matching user exists, the error response includes `identifier`, `resolved_by`, and `resolved_username` to help you check the mapping.
+
+## TrustUnverifiedEmail
+- Type: `bool`
+- Default: `false`
+
+Accept the `email` claim as the identifier even when the provider does not send `email_verified=true`.
+Some providers, such as Microsoft Entra ID, never emit `email_verified`. Prefer a stable claim like `sub`, `oid`, or `preferred_username` for those providers.
+Enable this option only if you are certain the provider does not let users set an email address they do not own: anyone who can make the provider issue a token with a matching `email` value can sign in as that Nginx UI user.
 
 ## Entra ID example
 
@@ -50,10 +71,13 @@ ClientSecret = <client-secret>
 Endpoint     = https://login.microsoftonline.com/<tenant-id>/v2.0
 RedirectUri  = https://nginx-ui.example.com/
 Scopes       = openid profile email
-Identifier   = email
+Identifier   = preferred_username
 ```
+
+In a single-tenant Entra ID app, `preferred_username` is usually the user principal name (for example `alice@contoso.com`). Microsoft documents it as mutable, so use it only if your tenant administrators control UPN changes; `oid` is the immutable alternative.
+Entra ID does not emit `email_verified`, so `Identifier = email` is refused unless you also set `TrustUnverifiedEmail = true`; see [TrustUnverifiedEmail](#trustunverifiedemail) for the risk before doing so.
 
 Register the redirect URI in the Entra ID app registration (Authentication > Redirect URI, web platform).
 Note that Entra ID authorization codes are long (around 1300 characters); Nginx UI accepts codes of any length, so no truncation or "Missing code or state" errors should occur.
 
-The same options can be set with environment variables: `NGINX_UI_OIDC_ENDPOINT`, `NGINX_UI_OIDC_CLIENT_ID`, `NGINX_UI_OIDC_CLIENT_SECRET`, `NGINX_UI_OIDC_REDIRECT_URI`, `NGINX_UI_OIDC_SCOPES`, `NGINX_UI_OIDC_IDENTIFIER`.
+The same options can be set with environment variables: `NGINX_UI_OIDC_ENDPOINT`, `NGINX_UI_OIDC_CLIENT_ID`, `NGINX_UI_OIDC_CLIENT_SECRET`, `NGINX_UI_OIDC_REDIRECT_URI`, `NGINX_UI_OIDC_SCOPES`, `NGINX_UI_OIDC_IDENTIFIER`, `NGINX_UI_OIDC_TRUST_UNVERIFIED_EMAIL`.

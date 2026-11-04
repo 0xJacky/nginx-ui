@@ -195,6 +195,7 @@ export interface OIDCSettings {
   redirect_uri: string
   scopes: string
   identifier: string
+  trust_unverified_email: boolean
 }
 
 export interface Settings {

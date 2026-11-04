@@ -46,6 +46,7 @@ func TestSetup(t *testing.T) {
 	_ = os.Setenv("NGINX_UI_OIDC_REDIRECT_URI", "https://redirect.example.com")
 	_ = os.Setenv("NGINX_UI_OIDC_SCOPES", "openid profile email username")
 	_ = os.Setenv("NGINX_UI_OIDC_IDENTIFIER", "username")
+	_ = os.Setenv("NGINX_UI_OIDC_TRUST_UNVERIFIED_EMAIL", "true")
 
 	// Cert
 	_ = os.Setenv("NGINX_UI_CERT_EMAIL", "test")
@@ -142,6 +143,7 @@ func TestSetup(t *testing.T) {
 	assert.Equal(t, "https://redirect.example.com", OIDCSettings.RedirectUri)
 	assert.Equal(t, "openid profile email username", OIDCSettings.Scopes)
 	assert.Equal(t, "username", OIDCSettings.Identifier)
+	assert.True(t, OIDCSettings.TrustUnverifiedEmail)
 
 	// Cert
 	assert.Equal(t, "test", CertSettings.Email)

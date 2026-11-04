@@ -159,45 +159,14 @@ func OIDCCallback(c *gin.Context) {
 		return
 	}
 
-	var username string
-
-	if settings.OIDCSettings.Identifier != "" {
-		if v, ok := claims[settings.OIDCSettings.Identifier]; ok {
-			username, _ = v.(string)
-		}
-	}
-
-	if username == "" {
-		if v, ok := claims["email"]; ok {
-			username, _ = v.(string)
-		}
-	}
-
-	if username == "" {
-		if v, ok := claims["name"]; ok {
-			username, _ = v.(string)
-		}
-	}
-
-	if username == "" {
-		if v, ok := claims["sub"]; ok {
-			username, _ = v.(string)
-		}
-	}
-
-	resolvedBy := ""
-	if settings.OIDCSettings.Identifier != "" {
-		if _, ok := claims[settings.OIDCSettings.Identifier]; ok {
-			resolvedBy = settings.OIDCSettings.Identifier
-		}
-	}
-	if resolvedBy == "" {
-		for _, fallback := range []string{"email", "name", "sub"} {
-			if _, ok := claims[fallback]; ok {
-				resolvedBy = fallback
-				break
-			}
-		}
+	username, resolvedBy, rejectReason := resolveOIDCUsername(claims)
+	if rejectReason != "" {
+		respondOIDCError(c, redirectUri, http.StatusForbidden, rejectReason, gin.H{
+			"identifier":        settings.OIDCSettings.Identifier,
+			"resolved_by":       resolvedBy,
+			"resolved_username": username,
+		})
+		return
 	}
 
 	u, err := user.GetUser(username)
@@ -234,6 +203,54 @@ func OIDCCallback(c *gin.Context) {
 		Message:            "ok",
 		AccessTokenPayload: userToken,
 	})
+}
+
+// oidcDefaultIdentifierClaims is the claim order used when no Identifier is
+// configured. Only claims the IdP controls are listed: display names and
+// preferred_username can be chosen or changed by the end user at many IdPs.
+var oidcDefaultIdentifierClaims = []string{"email", "sub"}
+
+// resolveOIDCUsername selects the local username from verified ID token
+// claims. A configured Identifier is used exclusively; otherwise the first
+// present default claim is used. The email claim is only trusted when the IdP
+// asserts email_verified, unless the operator opted out. A non-empty
+// rejectReason means the login must be refused.
+func resolveOIDCUsername(claims map[string]any) (username, resolvedBy, rejectReason string) {
+	if identifier := settings.OIDCSettings.Identifier; identifier != "" {
+		username, _ = claims[identifier].(string)
+		if username == "" {
+			return "", identifier, "OIDC claim \"" + identifier + "\" configured as identifier is missing or not a non-empty string"
+		}
+		resolvedBy = identifier
+	} else {
+		for _, claim := range oidcDefaultIdentifierClaims {
+			if v, _ := claims[claim].(string); v != "" {
+				username, resolvedBy = v, claim
+				break
+			}
+		}
+		if username == "" {
+			return "", "", "OIDC token has no usable identifier claim"
+		}
+	}
+
+	if resolvedBy == "email" && !settings.OIDCSettings.TrustUnverifiedEmail && !oidcEmailVerified(claims) {
+		return username, resolvedBy, "OIDC email claim is not verified (email_verified is not true)"
+	}
+
+	return username, resolvedBy, ""
+}
+
+// oidcEmailVerified accepts both the boolean form required by OIDC Core and
+// the string form some IdPs send.
+func oidcEmailVerified(claims map[string]any) bool {
+	switch v := claims["email_verified"].(type) {
+	case bool:
+		return v
+	case string:
+		return strings.EqualFold(v, "true")
+	}
+	return false
 }
 
 func buildOIDCFrontendLoginRedirect(redirectUri string, token string) string {
