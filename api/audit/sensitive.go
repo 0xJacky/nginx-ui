@@ -105,21 +105,45 @@ var sensitiveRoutes = map[string]routeRedaction{
 	"POST /api/external_notifies/test": redactRequest,
 
 	// Backups: S3 keys, the backup archive and its decryption token.
-	"GET /api/auto_backup":          redactResponse,
-	"GET /api/auto_backup/:id":      redactResponse,
-	"POST /api/auto_backup":         redactBoth,
-	"POST /api/auto_backup/:id":     redactBoth,
-	"PATCH /api/auto_backup/:id":    redactResponse,
-	"POST /api/auto_backup/test_s3": redactRequest,
-	"GET /api/backup":               redactResponse,
-	"POST /api/restore":             redactRequest,
-	"POST /api/setup/restore":       redactRequest,
+	"GET /api/auto_backup":               redactResponse,
+	"GET /api/auto_backup/:id":           redactResponse,
+	"POST /api/auto_backup":              redactBoth,
+	"POST /api/auto_backup/:id":          redactBoth,
+	"PATCH /api/auto_backup/:id":         redactResponse,
+	"POST /api/auto_backup/test_s3":      redactRequest,
+	"POST /api/auto_backup/test_storage": redactRequest,
+	"GET /api/backup":                    redactResponse,
+	"POST /api/restore":                  redactRequest,
+	"POST /api/setup/restore":            redactRequest,
 
 	// Cluster node credentials.
 	"POST /api/nodes":             redactRequest,
 	"POST /api/nodes/:id":         redactRequest,
 	"GET /api/nodes/:id/secret":   redactResponse,
 	"POST /api/node/pair/upgrade": redactRequest,
+
+	// Plugin settings carry secret fields in plain text on write. The answer
+	// holds the redaction placeholder instead.
+	"POST /api/plugins/:id/settings": redactRequest,
+
+	// The forms of plugin backed features hold credentials under names the
+	// plugin picks, so the field name check cannot be relied on.
+	"GET /api/cert_deploy_targets":        redactResponse,
+	"GET /api/cert_deploy_targets/:id":    redactResponse,
+	"POST /api/cert_deploy_targets":       redactBoth,
+	"POST /api/cert_deploy_targets/:id":   redactBoth,
+	"PATCH /api/cert_deploy_targets/:id":  redactResponse,
+	"POST /api/cert_deploy_targets/test":  redactRequest,
+	"GET /api/blocklist_sources":          redactResponse,
+	"GET /api/blocklist_sources/:id":      redactResponse,
+	"POST /api/blocklist_sources":         redactBoth,
+	"POST /api/blocklist_sources/:id":     redactBoth,
+	"PATCH /api/blocklist_sources/:id":    redactResponse,
+	"GET /api/upstream_discoveries":       redactResponse,
+	"GET /api/upstream_discoveries/:id":   redactResponse,
+	"POST /api/upstream_discoveries":      redactBoth,
+	"POST /api/upstream_discoveries/:id":  redactBoth,
+	"PATCH /api/upstream_discoveries/:id": redactResponse,
 }
 
 // SensitiveRoutes lists the "METHOD /route/template" keys whose bodies are
