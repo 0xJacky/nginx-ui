@@ -44,7 +44,7 @@ func runAudit(t *testing.T, tc auditCase) map[string]string {
 	engine := gin.New()
 	engine.Use(func(c *gin.Context) {
 		c.Next()
-		sanitizeAuditLog(c, logMap)
+		sanitizeAuditLog(newRequestSnapshot(c), logMap)
 	})
 	handler := tc.handler
 	if handler == nil {
@@ -123,8 +123,10 @@ func TestSanitizeAuditLogRedactsCredentialBearingResponses(t *testing.T) {
 	}
 	for _, tc := range cases {
 		t.Run(tc.method+" "+tc.route, func(t *testing.T) {
+			tc.sessionLogs = syntheticSQLSession
 			logMap := runAudit(t, tc)
 			assert.Equal(t, "[sensitive response redacted]", logMap["resp_body"])
+			assert.Equal(t, "[sensitive session logs redacted]", logMap["session_logs"])
 		})
 	}
 }
@@ -219,13 +221,14 @@ func TestSanitizeAuditLogRedactsCredentialFieldsInKeptBodies(t *testing.T) {
 		route:    "/api/unlisted",
 		target:   "/api/unlisted",
 		reqBody:  body,
-		respBody: `{"access_token":"` + syntheticSecret,
+		respBody: `{"access_token":"` + syntheticSecret + ` [truncated]`,
 	})
 	assert.NotContains(t, logMap["req_body"], syntheticSecret)
 	assert.Contains(t, logMap["req_body"], `"name":"n"`)
 	assert.Contains(t, logMap["req_body"], `"ssl_certificate_key_path":"/etc/nginx/ssl/k.pem"`)
 	assert.Contains(t, logMap["req_body"], `"empty_token":""`)
 	assert.Contains(t, logMap["req_body"], `"password":"[REDACTED]"`)
-	// A body cut off by the audit size limit must not leak a partial value.
-	assert.NotContains(t, logMap["resp_body"], syntheticSecret)
+	// A body cut off by the audit size limit must not leak a partial value,
+	// and keeps cosy's truncation marker.
+	assert.Equal(t, `{"access_token":"[REDACTED]" [truncated]`, logMap["resp_body"])
 }

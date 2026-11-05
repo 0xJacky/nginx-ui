@@ -71,13 +71,11 @@ func debugRouteCredentials(t *testing.T) map[string]string {
 	}
 }
 
-// serveOnFreshRouter rebuilds the production router before each request. The
-// cosy audit middleware finishes its work in a goroutine that still reads the
-// gin context, so reusing one engine would let the next request recycle that
-// context underneath it and trip the race detector.
-func serveOnFreshRouter(method, target, credential string) *httptest.ResponseRecorder {
-	cosyRouter.Init()
-	InitRouter()
+// serveAuthenticated sends one request through the production router built
+// by debugRouteCredentials. Requests reuse the same engine, as in production;
+// the audit middleware keeps each gin context alive until cosy's audit
+// goroutine is done with it.
+func serveAuthenticated(method, target, credential string) *httptest.ResponseRecorder {
 	request := httptest.NewRequest(method, target, nil)
 	request.Header.Set("Authorization", "Bearer "+credential)
 	recorder := httptest.NewRecorder()
@@ -108,7 +106,7 @@ func TestDebugRequestTraceRoutesAreNotServed(t *testing.T) {
 	}
 	for name, credential := range credentials {
 		for _, target := range targets {
-			recorder := serveOnFreshRouter(target.method, target.path, credential)
+			recorder := serveAuthenticated(target.method, target.path, credential)
 			assert.Equal(t, http.StatusNotFound, recorder.Code, "%s %s %s: %s", name, target.method, target.path, recorder.Body.String())
 		}
 	}
@@ -127,7 +125,7 @@ func TestNormalRoutesStillServeServiceTokens(t *testing.T) {
 	credentials := debugRouteCredentials(t)
 
 	for name, credential := range credentials {
-		recorder := serveOnFreshRouter(http.MethodGet, "/api/settings/server/name", credential)
+		recorder := serveAuthenticated(http.MethodGet, "/api/settings/server/name", credential)
 		assert.Equal(t, http.StatusOK, recorder.Code, "%s: %s", name, recorder.Body.String())
 	}
 }

@@ -23,7 +23,7 @@ func TestSanitizeAuditLogRedactsAuthenticationMaterial(t *testing.T) {
 		"resp_body":  `{"token":"nui_pat_identifier_secret"}`,
 	}
 
-	sanitizeAuditLog(context, logMap)
+	sanitizeAuditLog(newRequestSnapshot(context), logMap)
 
 	assert.NotContains(t, logMap["req_header"], "nui_pat_identifier_secret")
 	assert.NotContains(t, logMap["req_header"], "legacy-secret")

@@ -77,6 +77,10 @@ var sensitiveRoutes = map[string]routeRedaction{
 	"GET /api/dns_credentials/:id":  redactResponse,
 	"POST /api/dns_credentials":     redactBoth,
 	"POST /api/dns_credentials/:id": redactBoth,
+	// DNS domains preload their credential for interactive users and api:write
+	// tokens. Create and update responses do not preload it.
+	"GET /api/dns/domains":     redactResponse,
+	"GET /api/dns/domains/:id": redactResponse,
 
 	// ACME accounts carry the EAB HMAC key.
 	"GET /api/acme_users":               redactResponse,
@@ -132,8 +136,29 @@ var credentialWords = map[string]struct{}{
 	"passcode":   {},
 	"secret":     {},
 	"token":      {},
+	"signature":  {},
 	"apikey":     {},
 	"privatekey": {},
+	"secretkey":  {},
+	"accesskey":  {},
+}
+
+// envCredentialWords are plural forms that only mark ALL-CAPS environment
+// style names (DNS provider settings such as HURRICANE_TOKENS or
+// SYSE_CREDENTIALS). Lower-case JSON names keep the stricter singular rule so
+// fields such as max_tokens or credentials objects stay readable.
+var envCredentialWords = map[string]struct{}{
+	"tokens":      {},
+	"secrets":     {},
+	"passwords":   {},
+	"credentials": {},
+}
+
+// envCredentialNames are environment style names that hold a credential
+// without any of the words above.
+var envCredentialNames = map[string]struct{}{
+	// Holds the service account JSON, including its private key.
+	"GCE_SERVICE_ACCOUNT": {},
 }
 
 // credentialKeyQualifiers mark "<qualifier>_key" names as key material, while
@@ -152,23 +177,89 @@ var credentialKeyQualifiers = map[string]struct{}{
 	"certificate": {},
 }
 
+// nonSecretKeyQualifiers are the words before a trailing KEY that make an
+// environment style name public rather than secret.
+var nonSecretKeyQualifiers = map[string]struct{}{
+	"public": {},
+}
+
+// nonSecretTrailingWords mark names that only point at a secret, such as a
+// key file path, rather than hold it.
+var nonSecretTrailingWords = map[string]struct{}{
+	"path": {},
+	"file": {},
+	"id":   {},
+}
+
 // isCredentialName reports whether a JSON field, header or query parameter
 // name looks like it holds a credential. Names are split into words on
 // separators and camelCase boundaries so that, for example, "tokenized" or
 // "max_tokens" are not mistaken for a token.
 func isCredentialName(name string) bool {
 	words := splitNameWords(name)
-	for i, word := range words {
+	if len(words) == 0 {
+		return false
+	}
+	envStyle := isEnvStyleName(name)
+	if envStyle {
+		if _, ok := envCredentialNames[name]; ok {
+			return true
+		}
+	}
+	for _, word := range words {
 		if _, ok := credentialWords[word]; ok {
 			return true
 		}
-		if word == "key" && i == len(words)-1 && i > 0 {
-			if _, ok := credentialKeyQualifiers[words[i-1]]; ok {
+		if envStyle {
+			if _, ok := envCredentialWords[word]; ok {
 				return true
 			}
 		}
 	}
+
+	last := len(words) - 1
+	if words[last] == "key" && last > 0 {
+		if _, ok := credentialKeyQualifiers[words[last-1]]; ok {
+			return true
+		}
+	}
+	if !envStyle {
+		return false
+	}
+	// Provider settings name their secret keys freely (OVH_CONSUMER_KEY,
+	// TELE3_KEY, SELFHOSTDEV2_API_KEYS), so a trailing KEY or KEYS counts unless
+	// it is a public key.
+	if (words[last] == "key" || words[last] == "keys") && last > 0 {
+		_, public := nonSecretKeyQualifiers[words[last-1]]
+		return !public
+	}
+	// A private key mapping such as MYADDR_PRIVATE_KEYS_MAPPING still holds the
+	// keys, while OCI_PRIVATE_KEY_PATH only points at one.
+	if _, pointer := nonSecretTrailingWords[words[last]]; pointer {
+		return false
+	}
+	for i := 0; i+1 < len(words); i++ {
+		if words[i] == "private" && (words[i+1] == "key" || words[i+1] == "keys") {
+			return true
+		}
+	}
 	return false
+}
+
+// isEnvStyleName reports whether name is written like an environment
+// variable: upper-case letters, digits and underscores only.
+func isEnvStyleName(name string) bool {
+	hasLetter := false
+	for _, r := range name {
+		switch {
+		case r >= 'A' && r <= 'Z':
+			hasLetter = true
+		case r >= '0' && r <= '9', r == '_':
+		default:
+			return false
+		}
+	}
+	return hasLetter
 }
 
 func splitNameWords(name string) []string {
@@ -196,10 +287,14 @@ func splitNameWords(name string) []string {
 	return words
 }
 
+// truncatedSuffix is what cosy appends to a body cut off at its capture limit.
+const truncatedSuffix = " [truncated]"
+
 // jsonStringField matches a JSON object member whose value is a string. The
-// closing quote is optional at the end of input so that a body cut off by the
-// audit size limit cannot leak the start of a secret.
-var jsonStringField = regexp.MustCompile(`"([^"\\]{1,128})"(\s*:\s*)"(?:[^"\\]|\\.)*(?:"|$)`)
+// closing quote (group 3) is optional at the end of input, as is a dangling
+// escape, so that a body cut off by the audit size limit cannot leak the start
+// of a secret.
+var jsonStringField = regexp.MustCompile(`"([^"\\]{1,128})"(\s*:\s*)"(?:[^"\\]|\\.)*\\?("|$)`)
 
 // redactCredentialFields replaces the string value of every credential-named
 // member in a JSON (or truncated JSON) body and leaves the rest of the body
@@ -209,9 +304,10 @@ func redactCredentialFields(body string) string {
 	if trimmed == "" || (trimmed[0] != '{' && trimmed[0] != '[') {
 		return body
 	}
+	truncated := strings.HasSuffix(body, truncatedSuffix)
 	return jsonStringField.ReplaceAllStringFunc(body, func(member string) string {
 		parts := jsonStringField.FindStringSubmatch(member)
-		if len(parts) < 3 || !isCredentialName(parts[1]) {
+		if len(parts) < 4 || !isCredentialName(parts[1]) {
 			return member
 		}
 		prefix := `"` + parts[1] + `"` + parts[2]
@@ -219,6 +315,12 @@ func redactCredentialFields(body string) string {
 		if member[len(prefix):] == `""` {
 			return member
 		}
-		return prefix + `"` + redactedValue + `"`
+		redacted := prefix + `"` + redactedValue + `"`
+		// An unterminated value ran into cosy's truncation marker; keep the
+		// marker so the log still shows the body was cut off.
+		if parts[3] == "" && truncated {
+			redacted += truncatedSuffix
+		}
+		return redacted
 	})
 }
