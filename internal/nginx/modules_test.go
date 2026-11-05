@@ -1,9 +1,12 @@
 package nginx
 
 import (
+	"path/filepath"
 	"regexp"
 	"strings"
 	"testing"
+
+	"github.com/0xJacky/Nginx-UI/settings"
 )
 
 func TestModuleNameNormalization(t *testing.T) {
@@ -703,5 +706,47 @@ configure arguments: --prefix=/usr/local/openresty/nginx --with-cc-opt=-O2 --add
 
 	if foundCount < 2 {
 		t.Errorf("Expected to find at least 2 modules, found %d", foundCount)
+	}
+}
+
+func TestIsModuleLoadedSkipsCommentedLoadModule(t *testing.T) {
+	originalSettings := *settings.NginxSettings
+	originalNginxVOutput := nginxVOutputCache.value
+	originalNginxTOutput := nginxTOutputCache.value
+
+	t.Cleanup(func() {
+		*settings.NginxSettings = originalSettings
+		nginxVOutputCache.set(originalNginxVOutput)
+		nginxTOutputCache.set(originalNginxTOutput)
+		clearModulesCache()
+	})
+
+	settings.NginxSettings.PIDPath = filepath.Join(t.TempDir(), "nginx.pid")
+	clearModulesCache()
+
+	nginxVOutputCache.set(`nginx version: nginx/1.24.0 (Ubuntu)
+configure arguments: --modules-path=/usr/lib/nginx/modules --with-stream=dynamic --with-stream_geoip_module=dynamic
+`)
+	// nginx -T output of a config whose load_module line is commented out
+	nginxTOutputCache.set(`# configuration file /etc/nginx/nginx.conf:
+error_log /var/log/nginx/error.log;
+# load_module modules/ngx_stream_module.so;
+events {}
+
+`)
+
+	if IsModuleLoaded(ModuleStream) {
+		t.Fatal("IsModuleLoaded(stream) = true, want false: its load_module line is commented out")
+	}
+
+	clearModulesCache()
+	nginxTOutputCache.set(`# configuration file /etc/nginx/nginx.conf:
+load_module modules/ngx_stream_module.so;
+events {}
+
+`)
+
+	if !IsModuleLoaded(ModuleStream) {
+		t.Fatal("IsModuleLoaded(stream) = false, want true")
 	}
 }
