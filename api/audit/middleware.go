@@ -2,6 +2,7 @@ package audit
 
 import (
 	"encoding/json"
+	"net/http"
 	"strings"
 
 	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
@@ -47,17 +48,35 @@ func LoggingMiddleware() gin.HandlerFunc {
 	})
 }
 
-func sanitizeAuditLog(c *gin.Context, logMap map[string]string) {
-	responseHeaders := c.Writer.Header().Clone()
-	if responseHeaders.Get("Set-Cookie") != "" {
-		responseHeaders.Set("Set-Cookie", "[REDACTED]")
-	}
-	headers := c.Request.Header.Clone()
-	for _, name := range []string{"Authorization", "X-Node-Secret", "Cookie", "X-MFA-Pre-Auth-ID", "X-Secure-Session-ID", "X-Passkey-Pre-Auth-ID", "X-Passkey-Session-ID", "X-Current-Password"} {
+// redactHeaders replaces the listed headers, and any header whose name looks
+// credential-bearing, with a placeholder.
+func redactHeaders(headers http.Header, names ...string) {
+	for _, name := range names {
 		if headers.Get(name) != "" {
-			headers.Set(name, "[REDACTED]")
+			headers.Set(name, redactedValue)
 		}
 	}
+	for name := range headers {
+		if isCredentialName(name) {
+			headers[name] = []string{redactedValue}
+		}
+	}
+}
+
+func isMarked(c *gin.Context, key string) bool {
+	sensitive, ok := c.Get(key)
+	if !ok {
+		return false
+	}
+	isSensitive, valid := sensitive.(bool)
+	return valid && isSensitive
+}
+
+func sanitizeAuditLog(c *gin.Context, logMap map[string]string) {
+	responseHeaders := c.Writer.Header().Clone()
+	redactHeaders(responseHeaders, "Set-Cookie", backupSecurityHeaderName)
+	headers := c.Request.Header.Clone()
+	redactHeaders(headers, "Authorization", "X-Node-Secret", "Cookie", "X-MFA-Pre-Auth-ID", "X-Secure-Session-ID", "X-Passkey-Pre-Auth-ID", "X-Passkey-Session-ID", "X-Current-Password", installSecretHeaderName)
 	if encodedHeaders, err := json.Marshal(headers); err == nil {
 		logMap["req_header"] = string(encodedHeaders)
 	}
@@ -67,43 +86,48 @@ func sanitizeAuditLog(c *gin.Context, logMap map[string]string) {
 	if strings.HasSuffix(requestURL.Path, "/oidc_callback") || strings.HasSuffix(requestURL.Path, "/casdoor_callback") {
 		for _, name := range []string{"code", "state"} {
 			if query.Has(name) {
-				query.Set(name, "[REDACTED]")
+				query.Set(name, redactedValue)
 			}
 		}
 	}
-	for _, name := range []string{"X-Secure-Session-ID", "token", "mfa_pre_auth"} {
-		if query.Has(name) {
-			query.Set(name, "[REDACTED]")
+	for name := range query {
+		switch name {
+		case "X-Secure-Session-ID", "token", "mfa_pre_auth", "node_secret", installSecretQueryKey:
+			query.Set(name, redactedValue)
+		default:
+			if isCredentialName(name) {
+				query.Set(name, redactedValue)
+			}
 		}
-	}
-	if query.Has("node_secret") {
-		query.Set("node_secret", "[REDACTED]")
-		requestURL.RawQuery = query.Encode()
-		logMap["req_url"] = requestURL.String()
 	}
 	requestURL.RawQuery = query.Encode()
 	logMap["req_url"] = requestURL.String()
+
+	// Bodies that are kept still lose the values of credential-named fields.
+	logMap["req_body"] = redactCredentialFields(logMap["req_body"])
+	logMap["resp_body"] = redactCredentialFields(logMap["resp_body"])
+
 	path := c.Request.URL.Path
 	if strings.Contains(path, "/mfa/pre_auth/") || strings.Contains(path, "/otp_") || strings.Contains(path, "/recovery_codes") || strings.Contains(path, "/2fa_secure_session/") || strings.HasSuffix(path, "/login") || strings.HasSuffix(path, "/oidc_callback") || strings.HasSuffix(path, "/casdoor_callback") || strings.Contains(path, "passkey") {
-		logMap["req_body"] = "[sensitive request redacted]"
-		logMap["resp_body"] = "[sensitive response redacted]"
-		logMap["session_logs"] = "[sensitive session logs redacted]"
+		logMap["req_body"] = redactedRequestBody
+		logMap["resp_body"] = redactedResponseBody
+		logMap["session_logs"] = redactedSessionLogs
 		if responseHeaders.Get("Location") != "" {
-			responseHeaders.Set("Location", "[REDACTED]")
+			responseHeaders.Set("Location", redactedValue)
 		}
 	}
 	if encodedHeaders, err := json.Marshal(responseHeaders); err == nil {
 		logMap["resp_header"] = string(encodedHeaders)
 	}
-	if sensitive, ok := c.Get(sensitiveRequestAuditKey); ok {
-		if isSensitive, valid := sensitive.(bool); valid && isSensitive {
-			logMap["req_body"] = "[sensitive request redacted]"
-		}
-	}
 
-	if sensitive, ok := c.Get(sensitiveResponseAuditKey); ok {
-		if isSensitive, valid := sensitive.(bool); valid && isSensitive {
-			logMap["resp_body"] = "[sensitive response redacted]"
-		}
+	rule := sensitiveRoutes[c.Request.Method+" "+c.FullPath()]
+	// Session logs hold the SQL written while handling the request, which can
+	// include the same credential values the request body carried.
+	if rule.request || isMarked(c, sensitiveRequestAuditKey) {
+		logMap["req_body"] = redactedRequestBody
+		logMap["session_logs"] = redactedSessionLogs
+	}
+	if rule.response || isMarked(c, sensitiveResponseAuditKey) {
+		logMap["resp_body"] = redactedResponseBody
 	}
 }

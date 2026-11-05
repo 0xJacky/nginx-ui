@@ -37,7 +37,6 @@ import (
 	"github.com/0xJacky/Nginx-UI/mcp"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
-	"github.com/uozi-tech/cosy/debug"
 	"github.com/uozi-tech/cosy/logger"
 )
 
@@ -104,10 +103,14 @@ func InitRouter() {
 			llm.InitLocalWebSocketRouter(localWs)
 		}
 
-		// Authorization required and not websocket request
+		// Authorization required and not websocket request.
+		//
+		// The cosy debug monitor (github.com/uozi-tech/cosy/debug) is
+		// deliberately not imported or mounted: importing it registers a
+		// reporter that keeps every audited request and response in memory and
+		// serves them under /api/debug, which the frontend never uses.
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
 		{
-			debug.InitRouter(g)
 			analytic.InitRouter(g)
 			user.InitManageUserRouter(g)
 			nginx.InitRouter(g)
