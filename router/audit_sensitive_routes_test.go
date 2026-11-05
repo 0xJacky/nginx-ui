@@ -27,4 +27,10 @@ func TestAuditSensitiveRoutesMatchRegisteredRoutes(t *testing.T) {
 		_, ok := registered[route]
 		assert.True(t, ok, "audit redaction rule %q does not match a registered route", route)
 	}
+	configFiles := audit.ConfigFileRoutes()
+	require.NotEmpty(t, configFiles)
+	for _, route := range configFiles {
+		_, ok := registered[route]
+		assert.True(t, ok, "audit config file rule %q does not match a registered route", route)
+	}
 }

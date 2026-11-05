@@ -232,3 +232,14 @@ func TestSanitizeAuditLogRedactsCredentialFieldsInKeptBodies(t *testing.T) {
 	// and keeps cosy's truncation marker.
 	assert.Equal(t, `{"access_token":"[REDACTED]" [truncated]`, logMap["resp_body"])
 }
+
+func TestSanitizeAuditLogRedactsProxyAuthorization(t *testing.T) {
+	logMap := runAudit(t, auditCase{
+		method:     http.MethodGet,
+		route:      "/api/nginx/status",
+		target:     "/api/nginx/status",
+		reqHeaders: map[string]string{"Proxy-Authorization": "Basic " + syntheticSecret},
+	})
+	assert.NotContains(t, logMap["req_header"], syntheticSecret)
+	assert.Contains(t, logMap["req_header"], "Proxy-Authorization")
+}

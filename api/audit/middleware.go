@@ -13,11 +13,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy/logger"
+	cosySettings "github.com/uozi-tech/cosy/settings"
 )
 
 const (
 	sensitiveRequestAuditKey  = "SensitiveRequestAudit"
 	sensitiveResponseAuditKey = "SensitiveResponseAudit"
+	// loggingInstalledKey marks a request that an outer LoggingMiddleware
+	// already audits.
+	loggingInstalledKey = "AuditLoggingInstalled"
 
 	// auditContextHoldTimeout bounds how long a request waits for its audit
 	// goroutine to pick up the snapshot. The goroutine normally starts within
@@ -105,6 +109,17 @@ func pendingAuditFor(requestID string) *pendingAudit {
 	return entry.(*pendingAudit)
 }
 
+// auditSinkConfigured reports whether a finished audit entry is sent
+// anywhere. cosy only hands the entry to the monitor reporter and to SLS;
+// without either, nothing reads the sanitized copy.
+func auditSinkConfigured(reporter logger.MonitorReporter, sls *cosySettings.SLS) bool {
+	return reporter != nil || sls.Enable()
+}
+
+func hasAuditSink() bool {
+	return auditSinkConfigured(logger.GetMonitorReporter(), cosySettings.SLSSettings)
+}
+
 // LoggingMiddleware records the audit log through cosy and sanitizes it.
 //
 // cosy builds the log entry in a goroutine that starts after the handlers
@@ -115,11 +130,26 @@ func pendingAuditFor(requestID string) *pendingAudit {
 // snapshot and hands it to the goroutine by request ID, then waits until the
 // goroutine has picked it up, which is after cosy's own reads of the context.
 // The sanitizer itself never touches the context.
+//
+// Without an audit sink the snapshot and the sanitizer are skipped. The
+// request still waits for the goroutine, because cosy itself reads the context
+// there. The sinks are configured at startup; if one appears while a request
+// is in flight, that request's entry is redacted as if its snapshot were lost.
+//
+// Installing the middleware twice is harmless: the inner copy only passes the
+// request on, so the request is audited once and does not wait for a snapshot
+// pickup that never comes.
 func LoggingMiddleware() gin.HandlerFunc {
 	audit := logger.AuditMiddleware(func(_ *gin.Context, logMap map[string]string) {
 		handleAuditLog(logMap)
 	})
 	return func(c *gin.Context) {
+		if _, installed := c.Get(loggingInstalledKey); installed {
+			c.Next()
+			return
+		}
+		c.Set(loggingInstalledKey, true)
+
 		audit(c)
 
 		if skip, ok := c.Get(logger.CosySkipAuditKey); ok {
@@ -134,7 +164,9 @@ func LoggingMiddleware() gin.HandlerFunc {
 		}
 
 		pending := pendingAuditFor(requestID)
-		pending.snapshot = newRequestSnapshot(c)
+		if hasAuditSink() {
+			pending.snapshot = newRequestSnapshot(c)
+		}
 		close(pending.ready)
 
 		timer := time.NewTimer(auditContextHoldTimeout)
@@ -172,6 +204,10 @@ func handleAuditLog(logMap map[string]string) {
 	// the request may now return and gin may recycle the context.
 	close(pending.released)
 
+	if !hasAuditSink() {
+		// Nobody reads the entry, so there is nothing to sanitize.
+		return
+	}
 	if snapshot == nil {
 		redactWithoutSnapshot(logMap)
 		return
@@ -230,7 +266,7 @@ func sanitizeAuditLog(snapshot *requestSnapshot, logMap map[string]string) {
 	responseHeaders := snapshot.responseHeader.Clone()
 	redactHeaders(responseHeaders, "Set-Cookie", backupSecurityHeaderName)
 	headers := snapshot.requestHeader.Clone()
-	redactHeaders(headers, "Authorization", "X-Node-Secret", "Cookie", "X-MFA-Pre-Auth-ID", "X-Secure-Session-ID", "X-Passkey-Pre-Auth-ID", "X-Passkey-Session-ID", "X-Current-Password", installSecretHeaderName)
+	redactHeaders(headers, "Authorization", "Proxy-Authorization", "X-Node-Secret", "Cookie", "X-MFA-Pre-Auth-ID", "X-Secure-Session-ID", "X-Passkey-Pre-Auth-ID", "X-Passkey-Session-ID", "X-Current-Password", installSecretHeaderName)
 	if encodedHeaders, err := json.Marshal(headers); err == nil {
 		logMap["req_header"] = string(encodedHeaders)
 	}
