@@ -2,22 +2,36 @@ package audit
 
 import (
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 )
 
-// configFileRoutes read or write the content of one configuration file, or
-// its history, in the request or response body. The MCP endpoints carry the
-// nginx_config_* tools, whose arguments name the file the same way.
+// configFileRoutes read or write the content of configuration files, or
+// their history, in the request or response body. The MCP endpoints carry the
+// nginx_config_* tools, whose arguments name the file the same way, and a
+// cluster config sync names each replicated file by base_dir and name.
 var configFileRoutes = map[string]struct{}{
-	"GET /api/config":           {},
-	"POST /api/config":          {},
-	"POST /api/configs":         {},
-	"GET /api/config_histories": {},
-	"POST /mcp":                 {},
-	"POST /mcp_message":         {},
+	"GET /api/config":             {},
+	"POST /api/config":            {},
+	"POST /api/configs":           {},
+	"POST /api/config_sync_batch": {},
+	"GET /api/config_histories":   {},
+	"POST /mcp":                   {},
+	"POST /mcp_message":           {},
+}
+
+// ConfigFileRoutes lists the "METHOD /route/template" keys whose bodies are
+// redacted from audit logs when they carry a secret file.
+func ConfigFileRoutes() []string {
+	routes := make([]string, 0, len(configFileRoutes))
+	for route := range configFileRoutes {
+		routes = append(routes, route)
+	}
+	sort.Strings(routes)
+	return routes
 }
 
 // mcpConfigToolPrefix names the MCP configuration tools (mcp/config).
@@ -69,7 +83,7 @@ func targetsSecretConfigFile(snapshot *requestSnapshot, reqBody, respBody string
 				candidates = append(candidates, values...)
 			}
 		}
-		// AddConfig names the file by base_dir and name.
+		// AddConfig and a cluster config sync name files by base_dir and name.
 		for _, baseDir := range fields["base_dir"] {
 			for _, name := range fields["name"] {
 				candidates = append(candidates, filepath.Join(baseDir, name))

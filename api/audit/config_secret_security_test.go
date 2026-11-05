@@ -1,6 +1,7 @@
 package audit
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -106,6 +107,16 @@ func TestAuditLogRedactsSecretConfigurationFiles(t *testing.T) {
 			respBody: `{"jsonrpc":"2.0","id":1,"result":{}}`, redacted: true,
 		},
 		{
+			name: "cluster sync of a password file", method: http.MethodPost, route: "/api/config_sync_batch", target: "/api/config_sync_batch",
+			reqBody:  `{"files":[{"base_dir":"conf.d","name":"public.conf","content":"server { listen 80; }"},{"base_dir":"auth","name":"users.htpasswd","content":"admin:` + syntheticFileSecret + `"}]}`,
+			respBody: `{"message":"ok"}`, redacted: true,
+		},
+		{
+			name: "cluster sync of a key referenced by a directive", method: http.MethodPost, route: "/api/config_sync_batch", target: "/api/config_sync_batch",
+			reqBody:  `{"files":[{"base_dir":"ssl","name":"site.der","content":"` + syntheticFileSecret + `"}]}`,
+			respBody: `{"message":"ok"}`, redacted: true,
+		},
+		{
 			name: "private key in any body", method: http.MethodPost, route: "/api/unlisted", target: "/api/unlisted",
 			reqBody: `{"note":"` + syntheticPEMKey + syntheticFileSecret + `"}`, respBody: `{"echo":"` + syntheticPEMKey + syntheticFileSecret + `"}`, redacted: true,
 		},
@@ -116,6 +127,11 @@ func TestAuditLogRedactsSecretConfigurationFiles(t *testing.T) {
 		{
 			name: "edit ordinary configuration", method: http.MethodPost, route: "/api/config", target: "/api/config",
 			reqBody: `{"path":"conf.d/public.conf","content":"server { listen 80; } ` + syntheticFileSecret + `"}`, respBody: `{"message":"ok"}`,
+		},
+		{
+			name: "cluster sync of ordinary configuration", method: http.MethodPost, route: "/api/config_sync_batch", target: "/api/config_sync_batch",
+			reqBody:  `{"files":[{"base_dir":"conf.d","name":"public.conf","content":"server { listen 80; } ` + syntheticFileSecret + `"}]}`,
+			respBody: `{"message":"ok"}`,
 		},
 		{
 			name: "other MCP tool", method: http.MethodPost, route: "/mcp", target: "/mcp",
@@ -157,4 +173,25 @@ func TestAuditLogRedactsDNSDomainCredentials(t *testing.T) {
 			assert.NotContains(t, entry["resp_body"], syntheticFileSecret)
 		})
 	}
+}
+
+// TestAuditLogRedactsLegacyMCPEventStream covers the legacy MCP SSE transport:
+// POST /mcp_message only answers 202, and the nginx_config_get result, file
+// content included, arrives later on the long-lived GET /mcp stream, whose
+// request names no file.
+func TestAuditLogRedactsLegacyMCPEventStream(t *testing.T) {
+	server := newAuditedServer(t, func(engine *gin.Engine) {
+		engine.GET("/mcp", func(c *gin.Context) {
+			c.Header("Content-Type", "text/event-stream")
+			// The SSE server writes with fmt.Fprintf, which cosy captures.
+			_, _ = fmt.Fprint(c.Writer, "event: endpoint\ndata: /mcp_message?sessionId=s\n\n")
+			c.Writer.Flush()
+			_, _ = fmt.Fprint(c.Writer, `event: message`+"\n"+`data: {"jsonrpc":"2.0","id":1,"result":{"content":[{"type":"text","text":"admin:`+syntheticFileSecret+`"}]}}`+"\n\n")
+			c.Writer.Flush()
+		})
+	})
+	server.send(t, http.MethodGet, "/mcp", "")
+	entry := server.waitForLogs(t, 1)[0]
+	assert.NotContains(t, entry["resp_body"], syntheticFileSecret)
+	assert.NotContains(t, entry["session_logs"], syntheticFileSecret)
 }

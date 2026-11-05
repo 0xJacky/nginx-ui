@@ -46,6 +46,12 @@ var sensitiveRoutes = map[string]routeRedaction{
 	"POST /api/setup/install": redactRequest,
 	"POST /api/token/short":   redactResponse,
 
+	// The legacy MCP SSE transport answers POST /mcp_message with 202 and
+	// delivers every tool result, configuration file content included, on
+	// this long-lived stream. The stream's request names no file, so the
+	// configuration file check cannot tell which results carry a secret.
+	"GET /mcp": redactResponse,
+
 	// Service tokens are minted or rotated in the response.
 	"POST /api/mcp/tokens":                redactResponse,
 	"POST /api/mcp/tokens/:id/rotate":     redactResponse,
