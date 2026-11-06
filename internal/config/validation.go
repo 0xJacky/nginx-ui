@@ -341,6 +341,30 @@ func ValidateConfigDirectives(content []byte) error {
 	return visitConfigStatements(content, validateConfigStatement)
 }
 
+// validateIncludedConfigContent applies the directive policy to a file that
+// the edited configuration includes from disk. A load_module of the njs or
+// Perl module is accepted there: distribution packages enable installed
+// modules through files such as modules-enabled/50-mod-http-perl.conf, and
+// rejecting them made nginx.conf uneditable on those hosts (#2087). Loading
+// a module runs no script by itself, and every js_* and perl* directive that
+// would stays blocked in included files as well as in the edited file, which
+// still may not load these modules.
+func validateIncludedConfigContent(content []byte) error {
+	if err := ValidateDataContent(content); err != nil {
+		return err
+	}
+
+	return visitConfigStatements(content, validateIncludedConfigStatement)
+}
+
+func validateIncludedConfigStatement(statement []string) error {
+	if len(statement) > 0 && strings.EqualFold(statement[0], "load_module") {
+		return nil
+	}
+
+	return validateConfigStatement(statement)
+}
+
 func visitConfigStatements(content []byte, visit func([]string) error) error {
 	return visitStatements(&nginxConfigLexer{content: content, tokenStart: true}, visit)
 }
@@ -405,6 +429,10 @@ func validateConfigStatement(statement []string) error {
 
 	if directive == "load_module" && loadsRestrictedDynamicModule(statement) {
 		return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, "load_module")
+	}
+
+	if directive == "env" && setsRestrictedEnvVariable(statement) {
+		return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, "env "+restrictedEnvVariableName(statement))
 	}
 
 	if isBlockedConfigDirective(directive) {
@@ -701,4 +729,31 @@ func loadsRestrictedDynamicModule(statement []string) bool {
 	}
 
 	return false
+}
+
+// restrictedEnvVariableName returns the variable name set by an env directive,
+// without the "=value" part. env takes a single argument, "NAME" or
+// "NAME=value".
+func restrictedEnvVariableName(statement []string) string {
+	if len(statement) < 2 {
+		return ""
+	}
+	name := statement[1]
+	if i := strings.IndexByte(name, '='); i >= 0 {
+		name = name[:i]
+	}
+	return name
+}
+
+// setsRestrictedEnvVariable reports an env directive that exports a Perl
+// runtime variable such as PERL5OPT, PERL5LIB or PERL5DB. nginx applies env
+// before it initializes the embedded Perl interpreter, and perl_parse honors
+// these variables, so exporting them turns a loaded Perl module into
+// arbitrary code execution during "nginx -t" and reload, without any perl*
+// directive. Loading the module alone runs nothing, which is why included
+// files may load it (#2087); feeding the interpreter stays blocked at every
+// depth. The perl* directives themselves are already denied by
+// isBlockedConfigDirective.
+func setsRestrictedEnvVariable(statement []string) bool {
+	return strings.HasPrefix(strings.ToUpper(restrictedEnvVariableName(statement)), "PERL")
 }

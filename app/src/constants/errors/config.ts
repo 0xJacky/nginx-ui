@@ -6,6 +6,7 @@ export default {
   40018: () => $gettext('File content must be valid PEM or htpasswd data'),
   40019: () => $gettext('Secret files are hidden from read-only service tokens'),
   40020: () => $gettext('Include pattern uses glob syntax that cannot be validated: {0}'),
+  40021: () => $gettext('Included file {0} contains restricted nginx directive: {1}'),
   50006: () => $gettext('Path: {0} is not under the nginx conf dir: {1}'),
   50007: () => $gettext('Destination file: {0} already exists'),
   50008: () => $gettext('Nginx test failed: {0}'),
