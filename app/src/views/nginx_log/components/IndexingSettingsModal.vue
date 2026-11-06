@@ -52,33 +52,34 @@ const systemRequirements = [
   },
   {
     title: $gettext('Memory'),
-    requirement: $gettext('1GB RAM minimum'),
-    recommended: $gettext('4GB+ RAM recommended'),
+    requirement: $gettext('Indexing batches shrink to fit the available memory'),
+    recommended: $gettext('More memory indexes large logs faster'),
     icon: markRaw(<CheckCircleOutlined class="text-green-500" />),
   },
   {
     title: $gettext('Storage'),
-    requirement: $gettext('At least 20GB available disk space'),
+    requirement: $gettext('About a quarter of the size of the logs'),
     recommended: $gettext('SSD storage for better I/O performance'),
     icon: markRaw(<CheckCircleOutlined class="text-green-500" />),
   },
 ]
 
+// From the logstore benchmark, see internal/nginx_log/logstore/DESIGN.md.
 const performanceStats = [
   {
-    metric: $gettext('Production Pipeline'),
-    value: '~10,000/sec',
-    description: $gettext('Complete indexing with search capabilities'),
+    metric: $gettext('Indexing'),
+    value: '~1 µs',
+    description: $gettext('CPU time to parse and store one log line'),
   },
   {
-    metric: $gettext('Parser Performance'),
-    value: '~932K/sec',
-    description: $gettext('SIMD-optimized stream processing'),
+    metric: $gettext('Index Size'),
+    value: '~29 B',
+    description: $gettext('Per log line, about 0.16x the raw log'),
   },
   {
-    metric: $gettext('Memory Design'),
-    value: 'Zero-allocation',
-    description: $gettext('Advanced memory pooling system'),
+    metric: $gettext('Log Viewer Page'),
+    value: '~20 ms',
+    description: $gettext('Results with IP and path facets and statistics'),
   },
 ]
 
@@ -161,7 +162,7 @@ function handleCancel() {
           </template>
         </List>
 
-        <!-- Subtle note about Bleve index storage location -->
+        <!-- Subtle note about the index storage location -->
         <div class="mt-2">
           <ATypographyText type="secondary" class="text-xs">
             {{ $gettext('* Index files are stored in the "log-index" directory within your Nginx UI config path by default.') }}
@@ -213,7 +214,7 @@ function handleCancel() {
 
         <div class="mt-3">
           <ATypographyText type="secondary" class="text-xs">
-            {{ $gettext('* Performance metrics measured on Apple M2 Pro (12-core) with 32GB RAM. Actual performance may vary based on your hardware configuration.') }}
+            {{ $gettext('* Measured on Apple M2 Pro with 100,000 combined-format log lines. Actual performance may vary based on your hardware configuration.') }}
           </ATypographyText>
         </div>
       </div>
@@ -230,11 +231,11 @@ function handleCancel() {
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div class="flex items-center space-x-2">
             <CheckCircleOutlined class="text-green-500" />
-            <ATypographyText>{{ $gettext('Zero-allocation pipeline') }}</ATypographyText>
+            <ATypographyText>{{ $gettext('Compressed columnar storage') }}</ATypographyText>
           </div>
           <div class="flex items-center space-x-2">
             <CheckCircleOutlined class="text-green-500" />
-            <ATypographyText>{{ $gettext('Dynamic shard management') }}</ATypographyText>
+            <ATypographyText>{{ $gettext('Field filters in the search box') }}</ATypographyText>
           </div>
           <div class="flex items-center space-x-2">
             <CheckCircleOutlined class="text-green-500" />
@@ -254,7 +255,7 @@ function handleCancel() {
           </div>
           <div class="flex items-center space-x-2">
             <CheckCircleOutlined class="text-green-500" />
-            <ATypographyText>{{ $gettext('Full-text search support') }}</ATypographyText>
+            <ATypographyText>{{ $gettext('Substring search over the raw line') }}</ATypographyText>
           </div>
           <div class="flex items-center space-x-2">
             <CheckCircleOutlined class="text-green-500" />
@@ -270,7 +271,7 @@ function handleCancel() {
           </div>
           <div class="flex items-center space-x-2">
             <CheckCircleOutlined class="text-green-500" />
-            <ATypographyText>{{ $gettext('Error pattern recognition') }}</ATypographyText>
+            <ATypographyText>{{ $gettext('Error log indexing') }}</ATypographyText>
           </div>
           <div class="flex items-center space-x-2">
             <CheckCircleOutlined class="text-green-500" />
