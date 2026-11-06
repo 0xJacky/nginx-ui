@@ -62,9 +62,6 @@ var syntaxFields = map[string]Column{
 	"bytes": ColBytesSent, "rt": ColRequestTime, "request_time": ColRequestTime, "time": ColRequestTime,
 }
 
-// levelColumn is set by the error log support; zero means level: is unknown.
-var levelColumn Column
-
 // ParseSearchText turns the search box into clauses.
 func ParseSearchText(text string) ([]Clause, []SyntaxWarning) {
 	var clauses []Clause
@@ -175,10 +172,10 @@ func tokenize(s string, warnings *[]SyntaxWarning) []token {
 
 func parseFilter(name, value string) (Clause, bool, string) {
 	if name == "level" {
-		if levelColumn == 0 || value == "" {
-			return Clause{}, false, "unknown_field"
+		if value == "" {
+			return Clause{}, false, "invalid_value"
 		}
-		return Clause{Kind: ClauseEquals, Column: levelColumn, Text: strings.ToLower(value)}, true, ""
+		return Clause{Kind: ClauseEquals, Column: ColLevel, Text: strings.ToLower(value)}, true, ""
 	}
 	col, known := syntaxFields[name]
 	if !known {

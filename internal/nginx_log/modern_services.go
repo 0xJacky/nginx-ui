@@ -136,6 +136,7 @@ func initializeWithDefaults(ctx context.Context) (*searcher.ColumnarSearcher, an
 	}
 
 	indexerInstance := indexer.NewColumnarIndexer(indexerConfig)
+	indexerInstance.SetErrorLogResolver(IsErrorLogGroup)
 	if err := indexerInstance.Start(ctx); err != nil {
 		logger.Errorf("Failed to start log indexer: %v", err)
 		return nil, nil, nil, nil, fmt.Errorf("failed to start log indexer: %w", err)

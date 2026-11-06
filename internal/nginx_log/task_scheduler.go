@@ -404,8 +404,7 @@ func (ts *TaskScheduler) RecoverUnfinishedTasks(ctx context.Context) error {
 
 	// Get all logs with their index status
 	allLogs := GetAllLogsWithIndexGrouped(func(log *NginxLogWithIndex) bool {
-		// Only process access logs
-		return log.Type == "access"
+		return log.Type == "access" || log.Type == "error"
 	})
 
 	var incompleteTasksCount int

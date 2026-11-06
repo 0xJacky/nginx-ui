@@ -11,6 +11,7 @@ import { useWebSocketEventBusStore } from '@/pinia'
 import LoadingState from '../components/LoadingState.vue'
 import { useIndexProgress } from '../composables/useIndexProgress'
 import SearchFilters from './components/SearchFilters.vue'
+import { isPathValidationError, timePresetRange, timePresets } from './searchHelpers'
 import { getInitialStructuredTimeRange } from './timeRange'
 
 const props = defineProps<Props>()
@@ -353,74 +354,6 @@ const structuredLogColumns = computed(() => [
   },
 ])
 
-// Time range presets (Grafana-style)
-const timePresets = [
-  {
-    key: 'last-15-minutes',
-    label: () => $gettext('Last 15 minutes'),
-    value: () => ({
-      start: dayjs().subtract(15, 'minute'),
-      end: dayjs(),
-    }),
-  },
-  {
-    key: 'last-30-minutes',
-    label: () => $gettext('Last 30 minutes'),
-    value: () => ({
-      start: dayjs().subtract(30, 'minute'),
-      end: dayjs(),
-    }),
-  },
-  {
-    key: 'last-hour',
-    label: () => $gettext('Last hour'),
-    value: () => ({
-      start: dayjs().subtract(1, 'hour'),
-      end: dayjs(),
-    }),
-  },
-  {
-    key: 'last-4-hours',
-    label: () => $gettext('Last 4 hours'),
-    value: () => ({
-      start: dayjs().subtract(4, 'hour'),
-      end: dayjs(),
-    }),
-  },
-  {
-    key: 'last-12-hours',
-    label: () => $gettext('Last 12 hours'),
-    value: () => ({
-      start: dayjs().subtract(12, 'hour'),
-      end: dayjs(),
-    }),
-  },
-  {
-    key: 'last-24-hours',
-    label: () => $gettext('Last 24 hours'),
-    value: () => ({
-      start: dayjs().subtract(24, 'hour'),
-      end: dayjs(),
-    }),
-  },
-  {
-    key: 'last-7-days',
-    label: () => $gettext('Last 7 days'),
-    value: () => ({
-      start: dayjs().subtract(7, 'day'),
-      end: dayjs(),
-    }),
-  },
-  {
-    key: 'last-30-days',
-    label: () => $gettext('Last 30 days'),
-    value: () => ({
-      start: dayjs().subtract(30, 'day'),
-      end: dayjs(),
-    }),
-  },
-]
-
 // Load structured logs function - now only uses advanced search
 async function loadLogs() {
   await performAdvancedSearch()
@@ -539,8 +472,15 @@ async function loadPreflight(): Promise<boolean> {
 }
 
 // Apply time preset
-function applyTimePreset(preset: { value: () => { start: dayjs.Dayjs, end: dayjs.Dayjs } }) {
-  const range = preset.value()
+const timePresetItems = computed(() => timePresets.map(preset => ({
+  key: preset.key,
+  label: preset.label(),
+})))
+
+function applyTimePresetByKey(key: string) {
+  const range = timePresetRange(key)
+  if (!range)
+    return
   timeRange.value = range
   loadLogs()
 }
@@ -651,28 +591,6 @@ function resetSorting() {
   sortOrder.value = 'desc'
   currentPage.value = 1
   performAdvancedSearch()
-}
-
-// Helper function to check if error is a path validation error
-function isPathValidationError(error: unknown): boolean {
-  if (!(error instanceof Error)) {
-    return false
-  }
-
-  try {
-    // Check if error response contains path validation error codes
-    const errorData = JSON.parse(error.message)
-    if (errorData.scope === 'nginx_log' && errorData.code) {
-      const code = Number.parseInt(errorData.code)
-      // Path validation error codes: 50013, 50014, 50015
-      return code === 50013 || code === 50014 || code === 50015
-    }
-  }
-  catch {
-    // Ignore parsing errors
-  }
-
-  return false
 }
 
 // Handle initialization with indexed data and search
@@ -822,8 +740,8 @@ watch(timeRange, () => {
             <ADropdown placement="bottomLeft">
               <template #popupRender>
                 <AMenu
-                  :items="timePresets.map(preset => ({ key: preset.key, label: preset.label() }))"
-                  @click="({ key }) => applyTimePreset(timePresets.find(preset => preset.key === key)!)"
+                  :items="timePresetItems"
+                  @click="({ key }) => applyTimePresetByKey(String(key))"
                 />
               </template>
               <AButton>

@@ -31,5 +31,6 @@ func LogDocumentToRow(doc *LogDocument) *logstore.Row {
 		RequestTime:    doc.RequestTime,
 		UpstreamTime:   doc.UpstreamTime,
 		Raw:            doc.Raw,
+		Level:          doc.Level,
 	}
 }

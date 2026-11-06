@@ -41,6 +41,22 @@ type ColumnarIndexer struct {
 
 	readPositions   map[string]int64
 	readPositionsMu sync.Mutex
+
+	// isErrorLog reports whether a log group holds nginx error log lines.
+	isErrorLog atomic.Pointer[func(mainLogPath string) bool]
+}
+
+// SetErrorLogResolver tells the indexer which log groups are error logs; it
+// parses their files as error log entries.
+func (ci *ColumnarIndexer) SetErrorLogResolver(fn func(mainLogPath string) bool) {
+	ci.isErrorLog.Store(&fn)
+}
+
+func (ci *ColumnarIndexer) errorLog(group string) bool {
+	if fn := ci.isErrorLog.Load(); fn != nil {
+		return (*fn)(group)
+	}
+	return false
 }
 
 // NewColumnarIndexer creates an indexer that stores rows under

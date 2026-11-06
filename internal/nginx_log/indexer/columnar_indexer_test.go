@@ -260,3 +260,38 @@ func TestCountryOnlyGeoIPUsesTheEmbeddedDatabase(t *testing.T) {
 	_, err = countryOnlyGeoIP{}.Search("-")
 	assert.Error(t, err)
 }
+
+// Error logs are parsed as error entries: level, client and request become
+// columns, and a continuation line that starts no entry is skipped.
+func TestColumnarIndexerIndexesErrorLogs(t *testing.T) {
+	ci, logDir := newTestColumnarIndexer(t)
+	base := filepath.Join(logDir, "error.log")
+	ci.SetErrorLogResolver(func(group string) bool { return group == base })
+
+	lines := strings.Join([]string{
+		`2026/10/01 12:00:01 [error] 12#12: *34 open() "/srv/www/missing.png" failed (2: No such file or directory), client: 192.0.2.10, server: example.com, request: "GET /missing.png HTTP/1.1", host: "example.com", referrer: "https://example.com/"`,
+		`2026/10/01 12:00:02 [warn] 12#12: *35 an upstream response is buffered to a temporary file, client: 192.0.2.11, server: example.com, request: "POST /api/upload HTTP/1.1", upstream: "http://127.0.0.1:8080/api/upload", host: "example.com"`,
+		`2026/10/01 12:00:03 [crit] 12#12: *36 SSL_do_handshake() failed, client: 198.51.100.7, server: 0.0.0.0:443`,
+		`  continuation of a multi-line message`,
+		`2026/10/01 12:00:04 [notice] 1#1: signal process started`,
+	}, "\n") + "\n"
+	require.NoError(t, os.WriteFile(base, []byte(lines), 0o600))
+
+	assert.Equal(t, map[string]int64{base: 4}, syncGroup(t, ci, base))
+
+	ctx := context.Background()
+	res, err := ci.Store().Search(ctx, &logstore.Query{Levels: []string{"error", "crit"}}, logstore.SearchOptions{Desc: true, Limit: 10})
+	require.NoError(t, err)
+	require.EqualValues(t, 2, res.Total)
+	newest := res.Hits[0].Row
+	assert.Equal(t, "crit", newest.Level)
+	assert.Equal(t, "198.51.100.7", newest.IP)
+
+	clauses, warnings := logstore.ParseSearchText("level:warn upload")
+	require.Empty(t, warnings)
+	res, err = ci.Store().Search(ctx, &logstore.Query{Clauses: clauses}, logstore.SearchOptions{Limit: 10})
+	require.NoError(t, err)
+	require.EqualValues(t, 1, res.Total)
+	assert.Equal(t, "POST", res.Hits[0].Row.Method)
+	assert.Equal(t, "/api/upload", res.Hits[0].Row.Path)
+}

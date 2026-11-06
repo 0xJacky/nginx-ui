@@ -155,3 +155,14 @@ func matchesAll(entry *NginxLogCache, filters []func(*NginxLogCache) bool) bool 
 	}
 	return true
 }
+
+// IsErrorLogGroup reports whether a log group, named by its main log path,
+// is an nginx error log.
+func IsErrorLogGroup(mainLogPath string) bool {
+	for _, entry := range registryEntriesSnapshot() {
+		if entry.Type == logTypeError && utils.MainLogPathFromFile(entry.Path) == mainLogPath {
+			return true
+		}
+	}
+	return false
+}

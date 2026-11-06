@@ -15,6 +15,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/parser"
+
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -244,30 +246,43 @@ func (ci *ColumnarIndexer) syncFile(filePath string, progressTracker *ProgressTr
 		invalid          int
 		lines            int64
 	)
-	_, _, err = ParseLogStreamBatches(context.Background(), counted, filePath, func(batch []*LogDocument) error {
-		for _, doc := range batch {
-			if !isValidLogEntry(doc) {
-				invalid++
-				continue
-			}
-			ts := time.Unix(doc.Timestamp, 0)
-			if minTime == nil || ts.Before(*minTime) {
-				minTime = &ts
-			}
-			if maxTime == nil || ts.After(*maxTime) {
-				maxTime = &ts
-			}
-			if err := w.Append(LogDocumentToRow(doc), 0); err != nil {
-				return err
-			}
-			docs++
+	add := func(doc *LogDocument) error {
+		if !isValidLogEntry(doc) {
+			invalid++
+			return nil
 		}
-		lines += int64(len(batch))
+		ts := time.Unix(doc.Timestamp, 0)
+		if minTime == nil || ts.Before(*minTime) {
+			minTime = &ts
+		}
+		if maxTime == nil || ts.After(*maxTime) {
+			maxTime = &ts
+		}
+		if err := w.Append(LogDocumentToRow(doc), 0); err != nil {
+			return err
+		}
+		docs++
+		return nil
+	}
+	progress := func(n int) {
+		lines += int64(n)
 		if progressTracker != nil {
 			progressTracker.UpdateFileProgress(filePath, lines, min(start+counted.n, size))
 		}
-		return nil
-	})
+	}
+	if ci.errorLog(group) {
+		err = parseErrorLog(counted, filePath, group, add, progress)
+	} else {
+		_, _, err = ParseLogStreamBatches(context.Background(), counted, filePath, func(batch []*LogDocument) error {
+			for _, doc := range batch {
+				if err := add(doc); err != nil {
+					return err
+				}
+			}
+			progress(len(batch))
+			return nil
+		})
+	}
 	if err == nil {
 		w.SetSourceEnd(start + counted.n)
 		err = w.Flush()
@@ -308,4 +323,41 @@ func (ci *ColumnarIndexer) pruneVanished(group string, present []string) {
 			store.DeleteSegment(seg)
 		}
 	}
+}
+
+// parseErrorLog reads nginx error log entries. A line that does not start
+// like an entry, such as the continuation of a multi-line message, is
+// skipped.
+func parseErrorLog(r io.Reader, filePath, group string, add func(*LogDocument) error, progress func(int)) error {
+	scanner := bufio.NewScanner(r)
+	scanner.Buffer(make([]byte, 0, 64*1024), 1<<20)
+	n := 0
+	for scanner.Scan() {
+		line := scanner.Text()
+		n++
+		entry, ok := parser.ParseErrorLine(line)
+		if !ok {
+			continue
+		}
+		doc := &LogDocument{
+			Timestamp:   entry.Timestamp,
+			IP:          entry.Client,
+			Method:      entry.Method,
+			Path:        entry.Path,
+			PathExact:   entry.Path,
+			Referer:     entry.Referrer,
+			Level:       entry.Level,
+			Raw:         line,
+			FilePath:    filePath,
+			MainLogPath: group,
+		}
+		if err := add(doc); err != nil {
+			return err
+		}
+		if n%10000 == 0 {
+			progress(10000)
+		}
+	}
+	progress(n % 10000)
+	return scanner.Err()
 }

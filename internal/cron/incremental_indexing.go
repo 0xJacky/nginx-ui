@@ -82,8 +82,9 @@ func performIncrementalIndexing() {
 
 	// Get all log groups to check for changes
 	allLogs := nginx_log.GetAllLogsWithIndexGrouped(func(log *nginx_log.NginxLogWithIndex) bool {
-		// Only process access logs (skip error logs as they are not indexed)
-		return log.Type == "access"
+		// Access logs feed the dashboard and structured search, error logs
+		// are searchable by level and text.
+		return log.Type == "access" || log.Type == "error"
 	})
 
 	// Process files sequentially to avoid overwhelming the system

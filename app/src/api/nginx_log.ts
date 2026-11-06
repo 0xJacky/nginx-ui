@@ -74,6 +74,31 @@ export interface AccessLogEntry {
   raw: string
 }
 
+// nginx error log severities, from least to most severe
+export type ErrorLogLevel = 'debug' | 'info' | 'notice' | 'warn' | 'error' | 'crit' | 'alert' | 'emerg'
+
+// An entry of an error log search. The request parts are only present when
+// nginx logged the line while handling a request.
+export interface ErrorLogEntry {
+  timestamp: number
+  level: ErrorLogLevel | string
+  ip?: string
+  method?: string
+  path?: string
+  referer?: string
+  raw: string
+  message?: string
+  pid?: number
+  connection?: number
+  server?: string
+  upstream?: string
+  host?: string
+  request?: string
+  file_path?: string
+  main_log_path?: string
+  ip_location_label?: string
+}
+
 export interface LogStats {
   total_requests: number
   unique_ips: number
@@ -162,6 +187,8 @@ export interface AdvancedSearchRequest {
   browser?: string
   os?: string
   device?: string
+  // Error log severities, comma separated
+  level?: string
   limit?: number
   offset?: number
   sort_by?: string
@@ -184,8 +211,8 @@ export interface QuerySyntaxWarning {
   reason: 'unknown_field' | 'invalid_value' | 'unterminated_quote'
 }
 
-export interface AdvancedSearchResponse {
-  entries: AccessLogEntry[]
+export interface AdvancedSearchResponse<T = AccessLogEntry> {
+  entries: T[]
   total: number
   took: number
   query: string
@@ -355,6 +382,11 @@ const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
   },
 
   search(data: AdvancedSearchRequest): Promise<AdvancedSearchResponse> {
+    return http.post('/nginx_log/search', data)
+  },
+
+  // The same search for an error log, whose entries have their own shape
+  searchErrorLog(data: AdvancedSearchRequest): Promise<AdvancedSearchResponse<ErrorLogEntry>> {
     return http.post('/nginx_log/search', data)
   },
 

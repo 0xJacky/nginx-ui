@@ -318,6 +318,7 @@ type LogDocument struct {
 	FilePath     string   `json:"file_path"`     // Actual physical file path (e.g., /var/log/nginx/access.log.1.gz)
 	MainLogPath  string   `json:"main_log_path"` // Main log group path (e.g., /var/log/nginx/access.log)
 	Raw          string   `json:"raw"`
+	Level        string   `json:"level,omitempty"` // Severity of an error log entry
 }
 
 // IndexJob represents a single indexing job

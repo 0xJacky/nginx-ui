@@ -7,6 +7,7 @@ import { NGINX_LOG_VIEW_SLOT_PREFIX, uniqueByKey } from '@/plugin/slots'
 import { usePluginStore } from '@/plugin/store'
 import DashboardViewer from './dashboard/DashboardViewer.vue'
 import RawLogViewer from './raw/RawLogViewer.vue'
+import ErrorLogViewer from './structured/ErrorLogViewer.vue'
 import StructuredLogViewer from './structured/StructuredLogViewer.vue'
 
 // Route and router
@@ -27,8 +28,20 @@ const logType = computed(() => {
   return 'site'
 })
 
-// One of the built-in views or the key of a view a plugin registered
-const viewMode = useRouteQuery<string>('view', 'structured')
+// Check if this is an error log
+const isErrorLog = computed(() => {
+  if (logType.value === 'error')
+    return true
+
+  if (logType.value === 'access')
+    return false
+
+  return logPath.value.includes('error.log') || logPath.value.includes('error_log')
+})
+
+// One of the built-in views or the key of a view a plugin registered. Error
+// logs open raw unless the URL asks for another view.
+const viewMode = useRouteQuery<string>('view', () => isErrorLog.value ? 'raw' : 'structured')
 
 const BUILTIN_VIEWS = new Set(['raw', 'structured', 'dashboard'])
 
@@ -152,17 +165,6 @@ watch(logPath, newPath => {
   ensureCurrentPathOption(newPath)
 })
 
-// Check if this is an error log
-const isErrorLog = computed(() => {
-  if (logType.value === 'error')
-    return true
-
-  if (logType.value === 'access')
-    return false
-
-  return logPath.value.includes('error.log') || logPath.value.includes('error_log')
-})
-
 const autoRefresh = ref(true)
 
 // Views plugins add after the built-in ones. A key that equals a built-in view
@@ -182,6 +184,10 @@ const activePluginView = computed(() => pluginViews.value.find(item => item.key 
 // What the page shows. A plugin view nobody provides shows the raw view once
 // plugins finished loading, until then nothing is decided yet.
 const effectiveView = computed(() => {
+  // Error logs have no traffic to chart
+  if (viewMode.value === 'dashboard' && isErrorLog.value)
+    return 'raw'
+
   if (BUILTIN_VIEWS.has(viewMode.value) || activePluginView.value)
     return viewMode.value
 
@@ -198,21 +204,24 @@ const segmentedValue = computed({
 const viewModeOptions = computed(() => {
   const advancedViewDisabled = isIndexingEnabled.value !== true
 
-  // Structured and dashboard views only cover access logs
-  const indexedViews = isErrorLog.value
-    ? []
-    : [
-        {
-          label: $gettext('Structured'),
-          value: 'structured',
-          disabled: advancedViewDisabled,
-        },
-        {
-          label: $gettext('Dashboard'),
-          value: 'dashboard',
-          disabled: advancedViewDisabled,
-        },
-      ]
+  // Error logs have a structured view but no dashboard: there is no traffic
+  // to chart
+  const indexedViews = [
+    {
+      label: $gettext('Structured'),
+      value: 'structured',
+      disabled: advancedViewDisabled,
+    },
+    ...(isErrorLog.value
+      ? []
+      : [
+          {
+            label: $gettext('Dashboard'),
+            value: 'dashboard',
+            disabled: advancedViewDisabled,
+          },
+        ]),
+  ]
 
   return [
     ...indexedViews,
@@ -227,11 +236,17 @@ const viewModeOptions = computed(() => {
   ]
 })
 
-// Error logs only have the raw view unless a plugin adds one
-const showViewToggle = computed(() => !isErrorLog.value || pluginViews.value.length > 0)
+// Without the index an error log only has the raw view, unless a plugin adds one
+const showViewToggle = computed(() => !isErrorLog.value
+  || isIndexingEnabled.value === true
+  || pluginViews.value.length > 0)
+
+// The structured viewer of the log type, both take the same props and slot
+const structuredViewer = computed(() => isErrorLog.value ? ErrorLogViewer : StructuredLogViewer)
 
 watch(viewMode, v => {
-  if (v === 'structured' && (isIndexingEnabled.value === false || isErrorLog.value)) {
+  const indexingDisabled = isIndexingEnabled.value === false
+  if ((v === 'structured' && indexingDisabled) || (v === 'dashboard' && (indexingDisabled || isErrorLog.value))) {
     viewMode.value = 'raw'
   }
 }, { immediate: true })
@@ -250,13 +265,15 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
     return
 
   if (isInitialLoad || conditionsChanged) {
-    if (isError) {
-      // Error logs always use raw mode
-      viewMode.value = 'raw'
-    }
-    else if (!enabled) {
+    if (!enabled) {
       // Indexing disabled: default to raw
       viewMode.value = 'raw'
+    }
+    else if (isError) {
+      // Error logs keep raw, their default, or the structured view the URL
+      // asked for. They have no dashboard.
+      if (viewMode.value === 'dashboard')
+        viewMode.value = 'raw'
     }
     else if (enabled && logType.value === 'access') {
       // Indexing enabled for access logs: default to structured
@@ -286,7 +303,7 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
           ((option?.label ?? '') as string).toLowerCase().includes(input.toLowerCase())"
       />
 
-      <!-- View Mode Toggle (error logs only get it when a plugin adds a view) -->
+      <!-- View Mode Toggle (error logs get it with the index or a plugin view) -->
       <div v-if="showViewToggle" class="flex items-center">
         <ASegmented
           v-model:value="segmentedValue"
@@ -310,8 +327,10 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
     />
 
     <!-- Structured Log View -->
-    <StructuredLogViewer
+    <component
+      :is="structuredViewer"
       v-else-if="effectiveView === 'structured'"
+      :key="isErrorLog ? 'error' : 'access'"
       :log-path="logPath"
     >
       <template #time-range-right>
@@ -335,7 +354,7 @@ watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEn
           />
         </div>
       </template>
-    </StructuredLogViewer>
+    </component>
 
     <!-- Dashboard View -->
     <DashboardViewer

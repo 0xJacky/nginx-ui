@@ -99,6 +99,11 @@ func (r *blockReader) dict(col Column) ([]string, error) {
 	if r.dicts[col] != nil {
 		return r.dicts[col], nil
 	}
+	if _, ok := r.m.payload(col, payloadValues); !ok {
+		// A block written before the column existed: every value is empty.
+		r.dicts[col] = []string{""}
+		return r.dicts[col], nil
+	}
 	raw, _, err := r.read(col, payloadValues)
 	if err != nil {
 		return nil, err
@@ -109,6 +114,10 @@ func (r *blockReader) dict(col Column) ([]string, error) {
 
 func (r *blockReader) idColumn(col Column) ([]uint32, error) {
 	if r.ids[col] != nil {
+		return r.ids[col], nil
+	}
+	if _, ok := r.m.payload(col, payloadIDs); !ok {
+		r.ids[col] = make([]uint32, r.m.rows) // all point at the empty value
 		return r.ids[col], nil
 	}
 	raw, p, err := r.read(col, payloadIDs)

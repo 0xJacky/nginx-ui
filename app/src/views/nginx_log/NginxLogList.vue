@@ -181,7 +181,7 @@ const baseColumns: StdTableColumn[] = [
   },
 ]
 
-// Index-related columns only for Access logs
+// Index-related columns, access and error logs are both indexed
 const indexColumns: StdTableColumn[] = [
   {
     title: () => $gettext('Index Status'),
@@ -394,12 +394,10 @@ const pluginColumns = computed<StdTableColumn[]>(() => pluginColumnSlots.value.m
 
 // Computed columns based on active log type
 const columns = computed(() => {
-  const cols = [...baseColumns]
-
-  // Only show index-related columns for Access logs
-  if (activeLogType.value === 'access') {
-    cols.push(...indexColumns)
-  }
+  const cols = [
+    ...baseColumns,
+    ...indexColumns,
+  ]
 
   cols.push(...pluginColumns.value)
   cols.push(actionsColumn)
@@ -562,8 +560,8 @@ const debugData = computed(() => ({
             </div>
           </div>
 
-          <!-- Advanced Indexing Toggle - only for Access logs -->
-          <div v-if="activeLogType === 'access' && !advancedIndexingEnabled" class="flex items-center">
+          <!-- Advanced Indexing Toggle -->
+          <div v-if="!advancedIndexingEnabled" class="flex items-center">
             <AButton
               type="link"
               size="small"
@@ -573,16 +571,16 @@ const debugData = computed(() => ({
             </AButton>
           </div>
 
-          <!-- Index Management - only for Access logs when advanced indexing is enabled -->
+          <!-- Index Management - when advanced indexing is enabled -->
           <IndexManagement
-            v-if="activeLogType === 'access' && advancedIndexingEnabled"
+            v-if="advancedIndexingEnabled"
             ref="indexManagementRef"
             :disabled="processingStatus.nginx_log_indexing"
             :indexing="isGlobalIndexing || processingStatus.nginx_log_indexing"
             @refresh="refreshTable"
           />
           <AButton
-            v-if="activeLogType === 'access' && advancedIndexingEnabled"
+            v-if="advancedIndexingEnabled"
             type="link"
             size="small"
             danger
@@ -604,9 +602,9 @@ const debugData = computed(() => ({
 
         <PluginSlot name="nginx_log.list.row.actions" :context="{ row: record }" />
 
-        <!-- Rebuild File Index Action - only for Access logs with advanced indexing enabled -->
+        <!-- Rebuild File Index Action - with advanced indexing enabled -->
         <AButton
-          v-if="record.type === 'access' && advancedIndexingEnabled"
+          v-if="advancedIndexingEnabled"
           type="link"
           size="small"
           :disabled="processingStatus.nginx_log_indexing"

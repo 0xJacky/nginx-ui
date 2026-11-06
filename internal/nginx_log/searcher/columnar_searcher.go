@@ -189,6 +189,7 @@ func QueryFromRequest(req *SearchRequest) *logstore.Query {
 		Browsers:          req.Browsers,
 		OSs:               req.OSs,
 		Devices:           req.Devices,
+		Levels:            req.Levels,
 		Statuses:          req.StatusCodes,
 		PathContains:      req.Paths,
 		UserAgentContains: req.UserAgents,
@@ -321,6 +322,9 @@ func hitFields(h *logstore.Hit, columns []string) map[string]interface{} {
 	}
 	if r.UpstreamTime != nil {
 		all["upstream_time"] = *r.UpstreamTime
+	}
+	if r.Level != "" {
+		all["level"] = r.Level
 	}
 	if len(columns) == 0 {
 		return all

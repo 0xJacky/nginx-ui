@@ -30,6 +30,8 @@ type Row struct {
 	RequestTime    float64
 	UpstreamTime   *float64
 	Raw            string
+	// Level is the severity of an error log entry, empty for access logs.
+	Level string
 }
 
 // Column identifies a stored column. The numeric values are part of the
@@ -61,6 +63,7 @@ const (
 	ColOS
 	ColOSVersion
 	ColDeviceType
+	ColLevel
 
 	numColumns
 )
@@ -92,6 +95,7 @@ var columnNames = [numColumns]string{
 	ColOS:             "os",
 	ColOSVersion:      "os_version",
 	ColDeviceType:     "device_type",
+	ColLevel:          "level",
 }
 
 func (c Column) String() string {
@@ -160,6 +164,8 @@ func dictValue(r *Row, c Column) string {
 		return r.OSVersion
 	case ColDeviceType:
 		return r.DeviceType
+	case ColLevel:
+		return r.Level
 	}
 	return ""
 }
@@ -202,6 +208,8 @@ func setDictValue(r *Row, c Column, v string) {
 		r.OSVersion = v
 	case ColDeviceType:
 		r.DeviceType = v
+	case ColLevel:
+		r.Level = v
 	}
 }
 

@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/parser"
+
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/logstore"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -16,6 +18,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	nginxLogUtils "github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	nginxSettings "github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
@@ -80,6 +83,8 @@ type AdvancedSearchRequest struct {
 	Browser   string `json:"browser" form:"browser"`
 	OS        string `json:"os" form:"os"`
 	Device    string `json:"device" form:"device"`
+	// Level filters error log entries by severity, comma separated.
+	Level     string `json:"level" form:"level"`
 	Limit     int    `json:"limit" form:"limit"`
 	Offset    int    `json:"offset" form:"offset"`
 	SortBy    string `json:"sort_by" form:"sort_by"`
@@ -438,6 +443,9 @@ func AdvancedSearchLogs(c *gin.Context) {
 	if req.OS != "" {
 		searchReq.OSs = splitCommaSeparated(req.OS)
 	}
+	if req.Level != "" {
+		searchReq.Levels = splitCommaSeparated(strings.ToLower(req.Level))
+	}
 	if req.Device != "" {
 		searchReq.Devices = splitCommaSeparated(req.Device)
 	}
@@ -461,7 +469,7 @@ func AdvancedSearchLogs(c *gin.Context) {
 	// 1. Extract entries from hits
 	entries := make([]map[string]interface{}, len(result.Hits))
 	for i, hit := range result.Hits {
-		entries[i] = enrichEntryWithIPLocationLabel(hit.Fields, useChineseName)
+		entries[i] = enrichErrorLogEntry(enrichEntryWithIPLocationLabel(hit.Fields, useChineseName))
 	}
 
 	// 2. Calculate summary stats from the overall results using Counter for accuracy
@@ -736,6 +744,10 @@ func GetDashboardAnalytics(c *gin.Context) {
 		}
 	}
 
+	if rejectErrorLog(c, safeLogPath) {
+		return
+	}
+
 	// Parse and validate date strings
 	var startTime, endTime time.Time
 	var err error
@@ -856,6 +868,10 @@ func GetWorldMapData(c *gin.Context) {
 		}
 	}
 
+	if rejectErrorLog(c, safeLogPath) {
+		return
+	}
+
 	// Use main_log_path field for efficient log group queries instead of expanding file paths
 	logger.Debugf("WorldMapData - Using main_log_path field for log group: %s", safeLogPath)
 
@@ -967,6 +983,10 @@ func GetChinaMapData(c *gin.Context) {
 			cosy.ErrHandler(c, err)
 			return
 		}
+	}
+
+	if rejectErrorLog(c, safeLogPath) {
+		return
 	}
 
 	// Use main_log_path field for efficient log group queries instead of expanding file paths
@@ -1211,6 +1231,10 @@ func GetChinaCityMapData(c *gin.Context) {
 		}
 	}
 
+	if rejectErrorLog(c, safeLogPath) {
+		return
+	}
+
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
 	defer cancel()
 
@@ -1306,6 +1330,10 @@ func GetGeoStats(c *gin.Context) {
 		}
 	}
 
+	if rejectErrorLog(c, safeLogPath) {
+		return
+	}
+
 	// Use main_log_path field for efficient log group queries instead of expanding file paths
 	logger.Debugf("GeoStats - Using main_log_path field for log group: %s", safeLogPath)
 
@@ -1360,4 +1388,37 @@ func getCardinalityCount(ctx context.Context, field string, searchReq *searcher.
 		return 0
 	}
 	return int(count)
+}
+
+// rejectErrorLog answers 400 for an error log, which has no traffic to chart.
+// It reports whether it answered.
+func rejectErrorLog(c *gin.Context, logPath string) bool {
+	if logPath == "" || !nginx_log.IsErrorLogGroup(utils.MainLogPathFromFile(logPath)) {
+		return false
+	}
+	c.JSON(http.StatusBadRequest, ErrorResponse{Error: "The dashboard and maps are not available for error logs"})
+	return true
+}
+
+// enrichErrorLogEntry adds the parts of an error log entry the index does not
+// keep, re-read from its raw line: message, process, connection, server,
+// upstream, host and request.
+func enrichErrorLogEntry(entry map[string]interface{}) map[string]interface{} {
+	level, _ := entry["level"].(string)
+	raw, _ := entry["raw"].(string)
+	if level == "" || raw == "" {
+		return entry
+	}
+	parsed, ok := parser.ParseErrorLine(raw)
+	if !ok {
+		return entry
+	}
+	entry["message"] = parsed.Message
+	entry["pid"] = parsed.PID
+	entry["connection"] = parsed.Connection
+	entry["server"] = parsed.Server
+	entry["upstream"] = parsed.Upstream
+	entry["host"] = parsed.Host
+	entry["request"] = parsed.Request
+	return entry
 }

@@ -33,6 +33,7 @@ type Query struct {
 	Browsers    []string
 	OSs         []string
 	Devices     []string
+	Levels      []string // error log severities
 	Statuses    []int
 
 	// Substring filters, case-insensitive (ASCII); any needle may match.
@@ -100,6 +101,7 @@ func compile(q *Query) *compiledQuery {
 	}{
 		{ColIP, q.IPs}, {ColMethod, q.Methods}, {ColRegionCode, q.RegionCodes}, {ColProvince, q.Provinces},
 		{ColCity, q.Cities}, {ColBrowser, q.Browsers}, {ColOS, q.OSs}, {ColDeviceType, q.Devices},
+		{ColLevel, q.Levels},
 	} {
 		if len(f.values) > 0 {
 			c.exact = append(c.exact, exactFilter{col: f.col, values: toSet(f.values)})
