@@ -12,7 +12,29 @@ import (
 	"gorm.io/gen/field"
 )
 
+// SaveOptions carries what a save needs beyond the content itself.
+type SaveOptions struct {
+	// UserName is the administrator the change is attributed to when it is
+	// replicated to the other nodes.
+	UserName string
+	// AllowRestrictedDirectives keeps the restricted js_*, perl* and
+	// load_module statements in the content instead of rejecting them. Only
+	// an API handler that verified the two-factor step-up may set it; see
+	// middleware.RestrictedDirectiveSaveAllowed.
+	AllowRestrictedDirectives bool
+}
+
 func Save(ctx context.Context, absPath string, content string, cfg *model.Config, userNames ...string) (err error) {
+	userName := ""
+	if len(userNames) > 0 {
+		userName = userNames[0]
+	}
+
+	return SaveWithOptions(ctx, absPath, content, cfg, SaveOptions{UserName: userName})
+}
+
+// SaveWithOptions is Save with the options a request may set on it.
+func SaveWithOptions(ctx context.Context, absPath string, content string, cfg *model.Config, opts SaveOptions) (err error) {
 	q := query.Config
 	if cfg == nil {
 		cfg, err = q.Assign(field.Attrs(&model.Config{
@@ -28,7 +50,7 @@ func Save(ctx context.Context, absPath string, content string, cfg *model.Config
 		return cosy.WrapErrorWithParams(ErrPathIsNotUnderTheNginxConfDir, absPath, nginx.GetConfPath())
 	}
 
-	err = ValidateConfigFile(absPath, content)
+	err = ValidateConfigFileWithRestricted(absPath, content, opts.AllowRestrictedDirectives)
 	if err != nil {
 		return
 	}
@@ -55,11 +77,7 @@ func Save(ctx context.Context, absPath string, content string, cfg *model.Config
 		return
 	}
 
-	userName := ""
-	if len(userNames) > 0 {
-		userName = userNames[0]
-	}
-	err = SyncToRemoteServer(ctx, cfg, userName)
+	err = SyncToRemoteServer(ctx, cfg, opts.UserName)
 	if err != nil {
 		return
 	}

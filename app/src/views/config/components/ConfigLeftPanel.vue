@@ -9,10 +9,12 @@ import { ConfigHistory } from '@/components/ConfigHistory'
 import FooterToolbar from '@/components/FooterToolbar'
 import InspectConfig from '@/components/InspectConfig'
 import { useBreadcrumbs } from '@/composables/useBreadcrumbs'
+import { isRestrictedDirectivesNotApplied, useRestrictedDirectives } from '@/composables/useRestrictedDirectives'
 
 const route = useRoute()
 const router = useRouter()
 const { message } = useGlobalApp()
+const { withConfirmation } = useRestrictedDirectives()
 
 const origName = ref('')
 const addMode = computed(() => !route.params.name)
@@ -201,9 +203,18 @@ function save() {
     sync_overwrite: data.value.sync_overwrite,
   }
 
-  const api = addMode.value
-    ? config.createItem(payload)
-    : config.updateItem(relativePath.value, payload)
+  // Content holding njs or Perl directives is refused until the
+  // administrator confirms it; the composable asks and repeats the save.
+  const api = withConfirmation(allowRestrictedDirectives => {
+    const body = {
+      ...payload,
+      allow_restricted_directives: allowRestrictedDirectives || undefined,
+    }
+
+    return addMode.value
+      ? config.createItem(body)
+      : config.updateItem(relativePath.value, body)
+  })
 
   api.then(r => {
     data.value.content = r.content
@@ -222,6 +233,11 @@ function save() {
       // Run test after saving to verify configuration
       inspectConfigRef.value?.test()
     }
+  }).catch(error => {
+    // A dismissed confirmation is not a failure; every other error has
+    // already been reported by the response interceptor.
+    if (!isRestrictedDirectivesNotApplied(error))
+      throw error
   })
 }
 

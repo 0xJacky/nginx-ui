@@ -23,14 +23,20 @@ type configIncludeValidator struct {
 	visited map[string]bool
 	bytes   int
 	files   int
+	opts    validateOptions
 }
 
 // validateConfigIncludes applies the directive policy to existing include
 // targets as well as the edited file. Relative includes use Nginx's main config
 // prefix, not the directory of the file containing the include. Globs with no
 // matches remain valid, and safe system snippets outside the conf root work.
-func validateConfigIncludes(path string, content []byte) error {
-	validator := configIncludeValidator{base: includeBasePath(), active: make(map[string]bool), visited: make(map[string]bool)}
+func validateConfigIncludes(path string, content []byte, opts validateOptions) error {
+	validator := configIncludeValidator{
+		base:    includeBasePath(),
+		active:  make(map[string]bool),
+		visited: make(map[string]bool),
+		opts:    opts,
+	}
 	return validator.validate(path, content, 0)
 }
 
@@ -67,7 +73,7 @@ func (validator *configIncludeValidator) validate(path string, content []byte, d
 	defer delete(validator.active, canonical)
 	validator.files++
 	validator.bytes += len(content)
-	if err := ValidateConfigContentBytes(content); err != nil {
+	if err := validator.validateContent(path, content); err != nil {
 		return err
 	}
 	if err := visitConfigStatementsAsNginx(content, func(statement []string) error {
@@ -104,6 +110,36 @@ func (validator *configIncludeValidator) validate(path string, content []byte, d
 	}
 	validator.visited[canonical] = true
 	return nil
+}
+
+// validateContent applies the content policy to one file and names that file
+// on every restricted directive it finds, since the statement validation only
+// knows the directive itself.
+func (validator *configIncludeValidator) validateContent(path string, content []byte) error {
+	opts := validator.opts
+
+	var found []RestrictedDirective
+	if validator.opts.found != nil {
+		opts.found = &found
+	}
+
+	err := validateConfigContent(content, opts)
+
+	if validator.opts.found != nil {
+		for index := range found {
+			found[index].File = path
+		}
+		*validator.opts.found = append(*validator.opts.found, found...)
+	}
+
+	if restricted, ok := errors.AsType[*RestrictedDirectiveError](err); ok {
+		return &RestrictedDirectiveError{
+			Found: RestrictedDirective{Directive: restricted.Found.Directive, File: path},
+			err:   restricted.err,
+		}
+	}
+
+	return err
 }
 
 type includeWalker struct {

@@ -78,6 +78,12 @@ func setupStreamMutationTest(t *testing.T) (string, func()) {
 		appsettings.NginxSettings.TestConfigCmd = originalTestConfigCmd
 	})
 
+	// Registered after the settings restore above, so it runs first: the
+	// background replications read the settings until they return. Waiting
+	// only for the sync query leaves the rest of the goroutine racing the
+	// restore, which the site fixture avoids the same way.
+	t.Cleanup(WaitForSync)
+
 	waitForSyncQuery := func() {
 		t.Helper()
 

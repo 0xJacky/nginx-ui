@@ -18,6 +18,10 @@ func AddConfig(c *gin.Context) {
 	var json struct {
 		config.SyncConfigPayload
 		SyncNodeIds []uint64 `json:"sync_node_ids"`
+		// AllowRestrictedDirectives asks to keep the restricted js_*, perl*
+		// and load_module statements in the content. It is honoured only for
+		// an interactive administrator with a verified two-factor session.
+		AllowRestrictedDirectives bool `json:"allow_restricted_directives"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
@@ -43,9 +47,9 @@ func AddConfig(c *gin.Context) {
 		return
 	}
 
-	err = config.ValidateConfigFile(path, content)
-	if err != nil {
-		cosy.ErrHandler(c, err)
+	allowRestricted := api.AllowRestrictedDirectives(c, json.AllowRestrictedDirectives)
+	if err = config.ValidateConfigFileWithRestricted(path, content, allowRestricted); err != nil {
+		api.ConfigSaveError(c, path, content, err)
 		return
 	}
 
@@ -99,6 +103,8 @@ func AddConfig(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+
+	api.RecordRestrictedDirectiveSave(c, path, content, allowRestricted)
 
 	q := query.Config
 	_, err = q.Where(q.Filepath.Eq(path)).Delete()

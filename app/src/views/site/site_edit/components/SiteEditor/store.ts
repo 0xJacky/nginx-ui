@@ -7,6 +7,7 @@ import config from '@/api/config'
 import ngx from '@/api/ngx'
 import site from '@/api/site'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
+import { isRestrictedDirectivesNotApplied, useRestrictedDirectives } from '@/composables/useRestrictedDirectives'
 import { translateError } from '@/lib/http/error'
 import { isIPAddress, splitCertificateIdentifiers } from '@/utils/certificate'
 import { managedIngressName } from '@/views/site/managedSite'
@@ -33,6 +34,8 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
   const parseErrorMessage = ref('')
   const data = ref({}) as Ref<Site>
   const loading = ref(true)
+  const { withConfirmation } = useRestrictedDirectives()
+
   const saving = ref(false)
   const autoCert = ref(false)
   const certInfoMap = ref({}) as Ref<Record<number, CertificateInfo[]>>
@@ -194,7 +197,9 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         data.value.namespace_id = 0
       }
 
-      const response = await site.updateItem(encodeURIComponent(name.value), {
+      // Content holding njs or Perl directives is refused until the
+      // administrator confirms it; the composable asks and repeats the save.
+      const response = await withConfirmation(allowRestrictedDirectives => site.updateItem(encodeURIComponent(name.value), {
         content,
         description: data.value.description,
         overwrite: true,
@@ -207,7 +212,8 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
         dns_record_name: data.value.dns_record_name,
         dns_record_type: data.value.dns_record_type,
         force: forceManaged.value || undefined,
-      })
+        allow_restricted_directives: allowRestrictedDirectives || undefined,
+      }))
 
       if (options.syncResponse !== false)
         await handleResponse(response)
@@ -215,7 +221,11 @@ export const useSiteEditorStore = defineStore('siteEditor', () => {
       return response
     }
     catch (error) {
-      await handleParseError(error as CosyError)
+      // A dismissed confirmation left the file untouched and was explained
+      // by its own dialog, so the editor keeps the content as it is instead
+      // of reporting a parse error and reloading from disk.
+      if (!isRestrictedDirectivesNotApplied(error))
+        await handleParseError(error as CosyError)
       throw error
     }
     finally {

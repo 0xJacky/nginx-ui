@@ -171,6 +171,57 @@ var blockedDynamicModules = []string{
 	"ngx_http_perl_module.so",
 }
 
+// RestrictedDirective names one restricted statement and the configuration
+// file it was found in.
+type RestrictedDirective struct {
+	// Directive is the statement's name, such as "js_import", or
+	// "load_module" for a restricted dynamic module.
+	Directive string `json:"directive"`
+	// File is the configuration file holding the statement: the file being
+	// saved for a statement in the edited content, and the included file
+	// otherwise.
+	File string `json:"file"`
+}
+
+// RestrictedDirectiveError marks a validation that failed only because the
+// configuration holds a restricted js_*, perl* or load_module statement.
+// Such a statement loads code into the Nginx worker, which an interactive
+// administrator may still have a reason to deploy, so the API turns this
+// error into a two-factor step-up instead of a flat rejection. It wraps the
+// same cosy error as before, so every caller that cannot step up — a cluster
+// node, a service token, MCP — keeps exactly the response it had.
+//
+// "user root" is rejected without this type on purpose: it changes the
+// identity the worker processes run as rather than the code the
+// configuration loads, and no step-up unlocks it.
+type RestrictedDirectiveError struct {
+	// Found is the statement that stopped the validation.
+	Found RestrictedDirective
+	err   error
+}
+
+func (e *RestrictedDirectiveError) Error() string {
+	return e.err.Error()
+}
+
+func (e *RestrictedDirectiveError) Unwrap() error {
+	return e.err
+}
+
+// validateOptions carries the per-request decisions a caller may make about
+// the directive denylist. Its zero value is the behavior every caller had
+// before the step-up existed.
+type validateOptions struct {
+	// allowRestricted keeps the restricted js_*, perl* and load_module
+	// statements instead of rejecting them. Only a request that passed the
+	// two-factor step-up may set it.
+	allowRestricted bool
+	// found collects every restricted statement the walk meets, including
+	// the ones allowRestricted lets through, so a caller can report what a
+	// save would enable.
+	found *[]RestrictedDirective
+}
+
 type nginxConfigTokenKind int
 
 const (
@@ -204,18 +255,38 @@ type nginxConfigLexer struct {
 }
 
 func ValidateConfigFile(path string, content string) error {
-	if err := ValidateConfigFilename(path); err != nil {
-		return err
-	}
-
-	if IsDataFile(path) {
-		return ValidateDataFileContent(path, []byte(content))
-	}
-
-	return validateConfigIncludes(path, []byte(content))
+	return validateConfigFile(path, []byte(content), validateOptions{})
 }
 
 func ValidateConfigFileBytes(path string, content []byte) error {
+	return validateConfigFile(path, content, validateOptions{})
+}
+
+// ValidateConfigFileWithRestricted is ValidateConfigFile with the restricted
+// js_*, perl* and load_module denylist lifted when allowRestricted is set.
+// Only a request that passed the two-factor step-up may set it; every other
+// caller keeps using ValidateConfigFile.
+func ValidateConfigFileWithRestricted(path string, content string, allowRestricted bool) error {
+	return validateConfigFile(path, []byte(content), validateOptions{allowRestricted: allowRestricted})
+}
+
+// FindRestrictedDirectives reports the restricted statements in content and
+// in the files it includes, in the order Nginx reads them and without
+// repeating a directive from the same file. It walks exactly as validation
+// does, so it names the files validation reaches.
+//
+// The second value is false when the walk could not finish — an include that
+// changed since the content was validated, a limit, a cycle — so a caller can
+// tell "this configuration holds none" from "this walk could not say". An
+// audit record must not read an aborted walk as a clean one.
+func FindRestrictedDirectives(path string, content string) ([]RestrictedDirective, bool) {
+	found := make([]RestrictedDirective, 0, 1)
+	err := validateConfigFile(path, []byte(content), validateOptions{allowRestricted: true, found: &found})
+
+	return dedupeRestrictedDirectives(found), err == nil
+}
+
+func validateConfigFile(path string, content []byte, opts validateOptions) error {
 	if err := ValidateConfigFilename(path); err != nil {
 		return err
 	}
@@ -224,7 +295,28 @@ func ValidateConfigFileBytes(path string, content []byte) error {
 		return ValidateDataFileContent(path, content)
 	}
 
-	return validateConfigIncludes(path, content)
+	return validateConfigIncludes(path, content, opts)
+}
+
+// dedupeRestrictedDirectives drops repeats of the same directive in the same
+// file, which a configuration using one statement several times produces,
+// while keeping the order they were found in.
+func dedupeRestrictedDirectives(found []RestrictedDirective) []RestrictedDirective {
+	if len(found) == 0 {
+		return nil
+	}
+
+	seen := make(map[RestrictedDirective]struct{}, len(found))
+	unique := make([]RestrictedDirective, 0, len(found))
+	for _, directive := range found {
+		if _, ok := seen[directive]; ok {
+			continue
+		}
+		seen[directive] = struct{}{}
+		unique = append(unique, directive)
+	}
+
+	return unique
 }
 
 // IsDataFile reports whether path is a certificate, key or similar data file
@@ -326,11 +418,15 @@ func ValidateConfigContent(content string) error {
 }
 
 func ValidateConfigContentBytes(content []byte) error {
+	return validateConfigContent(content, validateOptions{})
+}
+
+func validateConfigContent(content []byte, opts validateOptions) error {
 	if err := ValidateDataContent(content); err != nil {
 		return err
 	}
 
-	if err := ValidateConfigDirectives(content); err != nil {
+	if err := validateConfigDirectives(content, opts); err != nil {
 		return err
 	}
 
@@ -338,7 +434,13 @@ func ValidateConfigContentBytes(content []byte) error {
 }
 
 func ValidateConfigDirectives(content []byte) error {
-	return visitConfigStatements(content, validateConfigStatement)
+	return validateConfigDirectives(content, validateOptions{})
+}
+
+func validateConfigDirectives(content []byte, opts validateOptions) error {
+	return visitConfigStatements(content, func(statement []string) error {
+		return validateConfigStatement(statement, opts)
+	})
 }
 
 func visitConfigStatements(content []byte, visit func([]string) error) error {
@@ -389,7 +491,7 @@ func visitStatements(lexer *nginxConfigLexer, visit func([]string) error) error 
 	}
 }
 
-func validateConfigStatement(statement []string) error {
+func validateConfigStatement(statement []string, opts validateOptions) error {
 	if len(statement) == 0 {
 		return nil
 	}
@@ -399,19 +501,40 @@ func validateConfigStatement(statement []string) error {
 		return nil
 	}
 
+	// "user root" is outside the step-up: it decides which system account the
+	// worker processes run as, which is not what an administrator confirms
+	// when they accept loading their own njs or Perl code.
 	if directive == "user" && configuresRootWorkers(statement) {
 		return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, "user root")
 	}
 
 	if directive == "load_module" && loadsRestrictedDynamicModule(statement) {
-		return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, "load_module")
+		return restrictedDirectiveFound(directive, opts)
 	}
 
 	if isBlockedConfigDirective(directive) {
-		return cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, directive)
+		return restrictedDirectiveFound(directive, opts)
 	}
 
 	return nil
+}
+
+// restrictedDirectiveFound records a restricted statement and reports whether
+// it stops the validation. The file it was found in is filled in by the
+// include validator, the only place that knows it.
+func restrictedDirectiveFound(directive string, opts validateOptions) error {
+	if opts.found != nil {
+		*opts.found = append(*opts.found, RestrictedDirective{Directive: directive})
+	}
+
+	if opts.allowRestricted {
+		return nil
+	}
+
+	return &RestrictedDirectiveError{
+		Found: RestrictedDirective{Directive: directive},
+		err:   cosy.WrapErrorWithParams(ErrConfigDirectiveNotAllowed, directive),
+	}
 }
 
 // isNginxConfigSpace reports the characters ngx_conf_read_token treats as

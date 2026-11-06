@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/clustersync"
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
@@ -170,6 +171,10 @@ func SaveStream(c *gin.Context) {
 		SyncNodeIDs []uint64 `json:"sync_node_ids"`
 		Overwrite   bool     `json:"overwrite"`
 		PostAction  string   `json:"post_action"`
+		// AllowRestrictedDirectives asks to keep the restricted js_*, perl*
+		// and load_module statements in the content. It is honoured only for
+		// an interactive administrator with a verified two-factor session.
+		AllowRestrictedDirectives bool `json:"allow_restricted_directives"`
 	}
 
 	// Validate input JSON
@@ -185,11 +190,24 @@ func SaveStream(c *gin.Context) {
 		namespaceID = clustersync.ResolveNamespaceIDByName(json.Namespace)
 	}
 
-	err := stream.SaveStreamConfig(c.Request.Context(), name, json.Content, namespaceID, json.SyncNodeIDs, json.Overwrite, json.PostAction)
+	// The path is resolved before the save so a rejection can name the file
+	// the restricted directives were found in.
+	path, err := stream.ResolveAvailablePath(name)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
+
+	allowRestricted := api.AllowRestrictedDirectives(c, json.AllowRestrictedDirectives)
+
+	err = stream.SaveStreamConfig(c.Request.Context(), name, json.Content, namespaceID, json.SyncNodeIDs, json.Overwrite, json.PostAction,
+		stream.AllowRestrictedDirectives(allowRestricted))
+	if err != nil {
+		api.ConfigSaveError(c, path, json.Content, err)
+		return
+	}
+
+	api.RecordRestrictedDirectiveSave(c, path, json.Content, allowRestricted)
 
 	// Return the updated stream
 	GetStream(c)

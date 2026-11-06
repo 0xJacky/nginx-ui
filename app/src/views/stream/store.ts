@@ -5,6 +5,7 @@ import config from '@/api/config'
 import ngx from '@/api/ngx'
 import stream from '@/api/stream'
 import { useNgxConfigStore } from '@/components/NgxConfigEditor'
+import { isRestrictedDirectivesNotApplied, useRestrictedDirectives } from '@/composables/useRestrictedDirectives'
 import { ConfigStatus } from '@/constants'
 
 export const useStreamEditorStore = defineStore('streamEditor', () => {
@@ -22,6 +23,7 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
   const status = ref(ConfigStatus.Disabled)
 
   const ngxConfigStore = useNgxConfigStore()
+  const { withConfirmation } = useRestrictedDirectives()
   const { ngxConfig, configText, curServerIdx, curServer, curServerDirectives, curDirectivesMap } = storeToRefs(ngxConfigStore)
 
   // This store is a singleton, so opening another stream reuses the state left
@@ -94,18 +96,25 @@ export const useStreamEditorStore = defineStore('streamEditor', () => {
         data.value.namespace_id = 0
       }
 
-      const response = await stream.updateItem(encodeURIComponent(name.value), {
+      // Content holding njs or Perl directives is refused until the
+      // administrator confirms it; the composable asks and repeats the save.
+      const response = await withConfirmation(allowRestrictedDirectives => stream.updateItem(encodeURIComponent(name.value), {
         content: configText.value,
         overwrite: true,
         namespace_id: data.value.namespace_id,
         sync_node_ids: data.value.sync_node_ids,
         post_action: 'reload_nginx',
-      })
+        allow_restricted_directives: allowRestrictedDirectives || undefined,
+      }))
 
       handleResponse(response)
     }
     catch (error) {
-      handleParseError(error as { error?: string, message: string })
+      // A dismissed confirmation left the file untouched and was explained
+      // by its own dialog, so the editor keeps the content as it is instead
+      // of reporting a parse error and reloading from disk.
+      if (!isRestrictedDirectivesNotApplied(error))
+        handleParseError(error as { error?: string, message: string })
     }
     finally {
       saving.value = false
