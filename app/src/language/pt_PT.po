@@ -11129,7 +11129,7 @@ msgid ""
 msgstr "O certificado %{name} não pode ser renovado porque nenhum plugin ativado fornece o desafio DNS-01"
 
 msgid "Plugin %{plugin} failed to render"
-msgstr "Falha ao apresentar o plugin %{plugin}"
+msgstr "Falha ao renderizar o plugin %{plugin}"
 
 msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
 msgstr "Não existe fornecedor DNS-01 para {0}: instale e ative o plugin DNS-01"
@@ -11171,7 +11171,7 @@ msgid "Plugin dependencies form a cycle"
 msgstr "As dependências do plugin formam um ciclo"
 
 msgid "Plugin is in use by {0}"
-msgstr "O plugin está em uso por {0}"
+msgstr "O plugin está a ser utilizado por {0}"
 
 msgid "Plugin system is disabled"
 msgstr "O sistema de plugins está desativado"
@@ -11204,10 +11204,10 @@ msgid "Accepted"
 msgstr "Aceite"
 
 msgid "Opted out"
-msgstr "Excluído"
+msgstr "Recusado"
 
 msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
-msgstr "Instale, configure e resolva problemas de plugins que estendem o Nginx UI."
+msgstr "Instale, configure e diagnostique plugins que estendem o Nginx UI."
 
 msgid "Plugin"
 msgstr "Plugin"
@@ -11334,7 +11334,7 @@ msgid "Install plugin"
 msgstr "Instalar plugin"
 
 msgid "Click or drag a plugin bundle here"
-msgstr "Clique ou arraste um pacote de plugin para aqui"
+msgstr "Clique ou arraste um pacote de plugin para esta área"
 
 msgid "A .tar.gz produced by the plugin author"
 msgstr "Um .tar.gz produzido pelo autor do plugin"
@@ -11419,7 +11419,7 @@ msgid "No plugins match your search"
 msgstr "Nenhum plugin corresponde à sua pesquisa"
 
 msgid "Downloading the package"
-msgstr "A transferir o pacote"
+msgstr "A descarregar o pacote"
 
 msgid "Verifying the signature"
 msgstr ""
@@ -11449,7 +11449,7 @@ msgid "The plugins below are installed together with it"
 msgstr "Os plugins abaixo são instalados em conjunto com ele"
 
 msgid "Live progress is unavailable, checking the plugin list instead"
-msgstr "O progresso em direto não está disponível, a verificar a lista de plugins em vez disso"
+msgstr "Progresso em direto indisponível, a verificar a lista de plugins"
 
 msgid "No description provided."
 msgstr "Nenhuma descrição fornecida."
@@ -11900,7 +11900,7 @@ msgstr "Teste de armazenamento bem-sucedido, %{count} cópias de segurança arma
 msgid ""
 "The plugin that provides this storage is not enabled. Backups fail until it "
 "is enabled again."
-msgstr "O plugin que fornece este armazenamento não está ativado. As cópias de segurança falham até ser ativado novamente."
+msgstr "O plugin que fornece este armazenamento não está ativado. As cópias de segurança falham até o plugin ser ativado novamente."
 
 msgid "Key Prefix"
 msgstr "Prefixo de chave"
@@ -11985,7 +11985,7 @@ msgstr "Selecione um tipo de destino"
 msgid ""
 "The plugin that provides this target type is not enabled. Pushes fail until "
 "it is enabled again."
-msgstr "O plugin que fornece este tipo de destino não está ativado. Os envios falham até ser ativado novamente."
+msgstr "O plugin que fornece este tipo de destino não está ativado. Os envios falham até o plugin ser ativado novamente."
 
 msgid "The certificate pushed to this target after every issuance and renewal."
 msgstr "O certificado enviado para este destino após cada emissão e renovação."
@@ -12019,7 +12019,7 @@ msgstr "Método de verificação"
 msgid ""
 "The plugin that provides this check is not enabled. The site is reported as "
 "an error until it is enabled again or another check method is selected."
-msgstr "O plugin que fornece esta verificação não está ativado. O site é comunicado como erro até ser ativado novamente ou ser selecionado outro método de verificação."
+msgstr "O plugin que fornece esta verificação não está ativado. O site é comunicado como erro até o plugin ser ativado novamente ou ser selecionado outro método de verificação."
 
 msgid "Refreshed"
 msgstr "Atualizado"
@@ -12088,7 +12088,7 @@ msgstr "Este pacote não tem compilação para este nó (%{platform})"
 msgid ""
 "Download the package built for this platform, or the portable package, and "
 "try again."
-msgstr "Transfira o pacote compilado para esta plataforma, ou o pacote portátil, e tente novamente."
+msgstr "Descarregue o pacote compilado para esta plataforma, ou o pacote portátil, e tente novamente."
 
 msgid "This node runs %{platform}, its build is highlighted."
 msgstr ""
@@ -12146,7 +12146,7 @@ msgstr "Stream de registo de acesso"
 msgid ""
 "The name nginx knows the upstream by: letters, digits, dots, hyphens and "
 "underscores."
-msgstr "O nome pelo qual o nginx conhece o upstream: letras, dígitos, pontos, hífenes e underscores."
+msgstr "O nome pelo qual o nginx conhece o upstream: letras, dígitos, pontos, hífens e underscores."
 
 msgid "Service"
 msgstr "Serviço"
@@ -12252,7 +12252,7 @@ msgstr "Política de sincronização predefinida"
 msgid ""
 "Applied to newly installed plugins. Automatic keeps the plugin installed on "
 "the child nodes."
-msgstr "Aplicada aos plugins instalados de novo. Automática mantém o plugin instalado nos nós filhos."
+msgstr "Aplicada a plugins recém-instalados. Automática mantém o plugin instalado nos nós filhos."
 
 msgid "Enable Marketplace"
 msgstr "Ativar marketplace"
@@ -12274,15 +12274,15 @@ msgstr "Atualizações automáticas"
 msgid ""
 "Updates official and partner plugins on their own while the permissions they "
 "ask for stay the same."
-msgstr "Atualiza os plugins oficiais e de parceiros por si próprio enquanto as permissões que pedem se mantiverem iguais."
+msgstr "Atualiza automaticamente os plugins oficiais e de parceiros, desde que as permissões que pedem se mantenham iguais."
 
 msgid "Allow Insecure Download URLs"
-msgstr "Permitir URLs de transferência inseguros"
+msgstr "Permitir URLs de descarga inseguros"
 
 msgid ""
 "Accepts plain http catalog and download addresses. Only for a private "
 "catalog on a trusted network."
-msgstr "Aceita endereços http simples de catálogo e transferência. Apenas para um catálogo privado numa rede de confiança."
+msgstr "Aceita endereços http simples de catálogo e de descarga. Apenas para um catálogo privado numa rede de confiança."
 
 msgid "Allow Uploads"
 msgstr "Permitir carregamentos"
@@ -12450,13 +12450,13 @@ msgid "Select credential"
 msgstr "Selecionar credencial"
 
 msgid "not installed"
-msgstr "não instalado"
+msgstr "por instalar"
 
 msgid "turned off"
 msgstr "desativado"
 
 msgid "not working right now"
-msgstr "sem funcionar neste momento"
+msgstr "a falhar neste momento"
 
 msgid ""
 "DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
@@ -12467,7 +12467,7 @@ msgid "The DNS-01 plugin is installed but turned off."
 msgstr "O plugin DNS-01 está instalado, mas desativado."
 
 msgid "The DNS-01 plugin is turned on but not working right now."
-msgstr "O plugin DNS-01 está ativado, mas sem funcionar neste momento."
+msgstr "O plugin DNS-01 está ativado, mas não está a funcionar neste momento."
 
 msgid ""
 "This certificate renews through the DNS-01 plugin, which is %{state}. It "
@@ -12530,7 +12530,7 @@ msgid "Community plugins are not allowed on this node"
 msgstr "Os plugins da comunidade não são permitidos neste nó"
 
 msgid "Plugin download url is not https"
-msgstr "O URL de transferência do plugin não é https"
+msgstr "O URL de descarga do plugin não é https"
 
 msgid "Plugin release has no build for this platform"
 msgstr "A versão do plugin não tem compilação para esta plataforma"
@@ -12569,7 +12569,7 @@ msgid "Not issued yet"
 msgstr "Ainda não emitido"
 
 msgid "Expiring within 30 days"
-msgstr "A expirar em 30 dias"
+msgstr "A expirar dentro de 30 dias"
 
 msgid "Renewal failed"
 msgstr "Falha na renovação"
@@ -12828,7 +12828,7 @@ msgid "Start mode"
 msgstr "Modo de arranque"
 
 msgid "Turn it on to review what it can access."
-msgstr "Ative-o para rever o que pode aceder."
+msgstr "Ative-o para rever os acessos que pede."
 
 msgid "Provides"
 msgstr "Fornece"
@@ -12878,7 +12878,7 @@ msgid "Starts automatically when needed"
 msgstr "Inicia automaticamente quando necessário"
 
 msgid "Installed. Turn it on to review what it can access."
-msgstr "Instalado. Ative-o para rever o que pode aceder."
+msgstr "Instalado. Ative-o para rever os acessos que pede."
 
 msgid "Installed the version from the marketplace"
 msgstr "Instalada a versão do marketplace"
@@ -13401,7 +13401,7 @@ msgid "Go to Settings"
 msgstr "Ir para Definições"
 
 msgid "This configuration loads code into the Nginx worker processes. Applying it needs a two-factor confirmation, so enable two-factor authentication on your account first."
-msgstr "Esta configuração carrega código nos processos de trabalho do Nginx. A sua aplicação requer uma confirmação de dois fatores, por isso ative primeiro a autenticação de dois fatores na sua conta."
+msgstr "Esta configuração carrega código nos processos de trabalho do Nginx. Aplicá-la requer uma confirmação de dois fatores, por isso ative primeiro a autenticação de dois fatores na sua conta."
 
 msgid "Secret files are hidden from read-only service tokens"
 msgstr "Os ficheiros secretos estão ocultos para tokens de serviço só de leitura"
@@ -13506,7 +13506,7 @@ msgid "The node returned an invalid upgrade response."
 msgstr "O nó devolveu uma resposta de atualização inválida."
 
 msgid "The node failed to upgrade."
-msgstr "O nó falhou a atualização."
+msgstr "A atualização do nó falhou."
 
 msgid "The upgrade connection failed. Check authentication and network connectivity."
 msgstr "A ligação de atualização falhou. Verifique a autenticação e a conectividade de rede."
@@ -13518,7 +13518,7 @@ msgid "Could not verify the upgrade. Check the node version and service status."
 msgstr "Não foi possível verificar a atualização. Verifique a versão do nó e o estado do serviço."
 
 msgid "Indexing batches shrink to fit the available memory"
-msgstr "Os lotes de indexação encolhem para caber na memória disponível"
+msgstr "Os lotes de indexação reduzem-se para caber na memória disponível"
 
 msgid "More memory indexes large logs faster"
 msgstr "Mais memória indexa registos grandes mais depressa"
@@ -13638,7 +13638,7 @@ msgid "It may now reach any address instead of a fixed list."
 msgstr "Agora pode contactar qualquer endereço em vez de uma lista fixa."
 
 msgid "No longer requested: %{list}"
-msgstr "Já não pedidas: %{list}"
+msgstr "Deixaram de ser pedidas: %{list}"
 
 msgid "Addresses it no longer reaches: %{list}"
 msgstr "Endereços que já não contacta: %{list}"

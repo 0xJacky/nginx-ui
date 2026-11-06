@@ -11316,7 +11316,7 @@ msgstr "Синхронизировать автоматически"
 msgid ""
 "The version, the enabled state and future updates are kept aligned on those "
 "nodes."
-msgstr "Версия, состояние включения и будущие обновления поддерживаются согласованными на этих узлах."
+msgstr "Версия, состояние включения и будущие обновления остаются согласованными на этих узлах."
 
 msgid "Failed to load the plugin logs"
 msgstr "Не удалось загрузить журналы плагина"
@@ -11485,7 +11485,7 @@ msgid "Approve and enable"
 msgstr "Одобрить и включить"
 
 msgid "%{name} needs your approval before it can run."
-msgstr "%{name} требует вашего одобрения, прежде чем сможет работать."
+msgstr "Для запуска %{name} требуется ваше одобрение."
 
 msgid ""
 "Approve only if you trust the author. The approval is recorded and asked "
@@ -11549,7 +11549,7 @@ msgstr "Синхронизировать с этим узлом"
 msgid ""
 "What every child node has installed, compared with this controller. "
 "Switching the selected node in the header manages that node directly."
-msgstr "Что установлено на каждом дочернем узле по сравнению с этим контроллером. Переключение выбранного узла в заголовке управляет этим узлом напрямую."
+msgstr "Что установлено на каждом дочернем узле по сравнению с этим контроллером. Если выбрать другой узел в заголовке, плагинами этого узла можно управлять напрямую."
 
 msgid "All nodes"
 msgstr "Все узлы"
@@ -11644,7 +11644,7 @@ msgid "This plugin cannot run on this node"
 msgstr "Этот плагин не может работать на этом узле"
 
 msgid "More actions"
-msgstr "Ещё действия"
+msgstr "Другие действия"
 
 msgid "Follow new lines"
 msgstr "Следить за новыми строками"
@@ -11844,7 +11844,7 @@ msgstr "Проверка хранилища выполнена, найдено �
 msgid ""
 "The plugin that provides this storage is not enabled. Backups fail until it "
 "is enabled again."
-msgstr "Плагин, предоставляющий это хранилище, не включён. Резервное копирование будет завершаться ошибкой, пока он снова не будет включён."
+msgstr "Плагин, предоставляющий это хранилище, не включён. Резервное копирование будет завершаться ошибкой, пока плагин не будет включён снова."
 
 msgid "Key Prefix"
 msgstr "Префикс ключа"
@@ -11929,7 +11929,7 @@ msgstr "Выберите тип цели"
 msgid ""
 "The plugin that provides this target type is not enabled. Pushes fail until "
 "it is enabled again."
-msgstr "Плагин, предоставляющий этот тип цели, не включён. Отправка будет завершаться ошибкой, пока он снова не будет включён."
+msgstr "Плагин, предоставляющий этот тип цели, не включён. Отправка будет завершаться ошибкой, пока плагин не будет включён снова."
 
 msgid "The certificate pushed to this target after every issuance and renewal."
 msgstr "Сертификат, отправляемый на эту цель после каждого выпуска и обновления."
@@ -11963,7 +11963,7 @@ msgstr "Метод проверки"
 msgid ""
 "The plugin that provides this check is not enabled. The site is reported as "
 "an error until it is enabled again or another check method is selected."
-msgstr "Плагин, предоставляющий эту проверку, не включён. Сайт будет отображаться с ошибкой, пока он снова не будет включён или не будет выбран другой метод проверки."
+msgstr "Плагин, предоставляющий эту проверку, не включён. Сайт будет отображаться с ошибкой, пока плагин не будет включён снова или не будет выбран другой метод проверки."
 
 msgid "Refreshed"
 msgstr "Обновлено"
@@ -12016,7 +12016,7 @@ msgstr "Как часто список загружается заново, в �
 msgid ""
 "Add this line to a server or location block to deny the listed addresses "
 "there."
-msgstr "Добавьте эту строку в блок server или location, чтобы запретить перечисленные адреса там."
+msgstr "Добавьте эту строку в блок server или location, чтобы запретить в нём перечисленные адреса."
 
 msgid "From plugin %{id}"
 msgstr "От плагина %{id}"
@@ -12109,15 +12109,15 @@ msgstr "Выберите провайдера"
 msgid ""
 "The plugin that provides this provider is not enabled. The upstream is kept "
 "but no longer refreshed."
-msgstr "Плагин, предоставляющий этого провайдера, не включён. Upstream сохраняется, но больше не обновляется."
+msgstr "Плагин, которому принадлежит этот провайдер, не включён. Upstream сохраняется, но больше не обновляется."
 
 msgid "The service to resolve, in the terms of the provider."
-msgstr "Сервис для разрешения в терминах провайдера."
+msgstr "Сервис, который нужно найти, в терминах провайдера."
 
 msgid ""
 "How often the service is resolved again, in seconds. Nginx is reloaded only "
 "when the servers changed."
-msgstr "Как часто сервис разрешается заново, в секундах. Nginx перезагружается, только если серверы изменились."
+msgstr "Как часто адреса сервиса запрашиваются заново, в секундах. Nginx перезагружается, только если серверы изменились."
 
 msgid "Extra Directives"
 msgstr "Дополнительные директивы"
@@ -12148,7 +12148,7 @@ msgid ""
 msgstr "Адрес plugin.json, раздаваемого статическим сервером на этом компьютере. Принимаются только адреса localhost. Плагин загружается в дополнение к установленным."
 
 msgid "Plugin package is not signed and developer mode is off"
-msgstr "Пакет плагина не подписан, а режим разработчика выключен"
+msgstr "Пакет плагина не подписан, а режим разработчика отключён"
 
 msgid "Plugin package trust {0} is below the installed {1}"
 msgstr "Уровень доверия пакета плагина {0} ниже установленного {1}"
@@ -12174,7 +12174,7 @@ msgid ""
 msgstr "Не подписан, поэтому издателя нельзя подтвердить. Для установки требуется режим разработчика."
 
 msgid "This package is trusted less than the version already installed"
-msgstr "Этому пакету доверяют меньше, чем уже установленной версии"
+msgstr "Уровень доверия к этому пакету ниже, чем к уже установленной версии"
 
 msgid "Installed version: %{installed}. This package: %{package}."
 msgstr "Установленная версия: %{installed}. Этот пакет: %{package}."
@@ -12507,7 +12507,7 @@ msgid "Automatic renewal turned on"
 msgstr "Автоматическое обновление включено"
 
 msgid "Automatic renewal turned off"
-msgstr "Автоматическое обновление выключено"
+msgstr "Автоматическое обновление отключено"
 
 msgid "Not issued yet"
 msgstr "Ещё не выпущено"
@@ -12516,7 +12516,7 @@ msgid "Expiring within 30 days"
 msgstr "Истекает в течение 30 дней"
 
 msgid "Renewal failed"
-msgstr "Не удалось обновить"
+msgstr "Ошибка обновления"
 
 msgid "Renewal method"
 msgstr "Способ обновления"
@@ -12528,10 +12528,10 @@ msgid "Search by name or domain"
 msgstr "Поиск по имени или домену"
 
 msgid "Valid · %{days} days left"
-msgstr "Действителен · осталось дней: %{days}"
+msgstr "Действителен · осталось %{days} дн."
 
 msgid "Expires in %{days} days"
-msgstr "Истекает через дней: %{days}"
+msgstr "Истекает через %{days} дн."
 
 msgid "Managed manually"
 msgstr "Управляется вручную"
@@ -12558,7 +12558,7 @@ msgid "Renewed on the node it is synced from"
 msgstr "Обновляется на узле, с которого синхронизирован"
 
 msgid "Renews around %{date}"
-msgstr "Обновление около %{date}"
+msgstr "Обновится около %{date}"
 
 msgid "Replace the files to renew"
 msgstr "Замените файлы для обновления"
@@ -12691,7 +12691,7 @@ msgid "Renewal resumes when you turn it back on."
 msgstr "Обновление возобновится, когда вы снова его включите."
 
 msgid "Installed %{version} is not this version"
-msgstr "Установленная версия %{version} — не эта версия"
+msgstr "Установлена другая версия: %{version}"
 
 msgid ""
 "This version was not published by the official team or a partner. It may be "
@@ -12838,9 +12838,9 @@ msgstr "Заменить установленную версию версией 
 
 msgid "%{count} unsaved"
 msgid_plural "%{count} unsaved"
-msgstr[0] "%{count} не сохранено"
-msgstr[1] "%{count} не сохранено"
-msgstr[2] "%{count} не сохранено"
+msgstr[0] "Не сохранено: %{count}"
+msgstr[1] "Не сохранено: %{count}"
+msgstr[2] "Не сохранено: %{count}"
 
 msgctxt "list separator"
 msgid ", "
@@ -13333,7 +13333,7 @@ msgid "Apply anyway"
 msgstr "Всё равно применить"
 
 msgid "This configuration loads code into the Nginx worker processes, which runs with the privileges of Nginx itself. Only apply it if you wrote these directives or trust where they came from."
-msgstr "Эта конфигурация загружает код в рабочие процессы Nginx, который выполняется с привилегиями самого Nginx. Применяйте её, только если вы сами написали эти директивы или доверяете их источнику."
+msgstr "Эта конфигурация загружает код в рабочие процессы Nginx; он выполняется с привилегиями самого Nginx. Применяйте её, только если вы сами написали эти директивы или доверяете их источнику."
 
 msgid "Restricted directives"
 msgstr "Ограниченные директивы"
@@ -13372,7 +13372,7 @@ msgid "The plugin id {0} is reserved for official Nginx UI plugins"
 msgstr "Идентификатор плагина {0} зарезервирован для официальных плагинов Nginx UI"
 
 msgid "Plugin package is signed by key {0}, which this node does not trust, and developer mode is off"
-msgstr "Пакет плагина подписан ключом {0}, которому этот узел не доверяет, а режим разработчика выключен"
+msgstr "Пакет плагина подписан ключом {0}, которому этот узел не доверяет, а режим разработчика отключён"
 
 msgid "Plugin version {0} was withdrawn from the catalog and is not pushed to nodes"
 msgstr "Версия плагина {0} отозвана из каталога и не отправляется на узлы"
@@ -13549,7 +13549,7 @@ msgid "This template comes from the plugin %{id} and cannot be changed. Copy it 
 msgstr "Этот шаблон предоставлен плагином %{id} и не может быть изменён. Скопируйте его как сниппет, чтобы изменить, и проверьте его директивы перед использованием."
 
 msgid "This snippet starts from a template of the plugin %{id}. Review its directives before saving it. Once saved, it is a snippet of your own and no longer follows the plugin."
-msgstr "Этот сниппет создан на основе шаблона плагина %{id}. Проверьте его директивы перед сохранением. После сохранения он становится вашим собственным сниппетом и больше не следует за плагином."
+msgstr "Этот сниппет создан на основе шаблона плагина %{id}. Проверьте его директивы перед сохранением. После сохранения он становится вашим собственным сниппетом и больше не связан с плагином."
 
 msgid "Templates"
 msgstr "Шаблоны"
@@ -13600,10 +13600,10 @@ msgid "Changes in this update"
 msgstr "Изменения в этом обновлении"
 
 msgid "Catalogs are merged in order, and the first source that offers a plugin wins. The official catalog cannot be removed. Move a mirror above it to install from the mirror first."
-msgstr "Каталоги объединяются по порядку, и побеждает первый источник, предлагающий плагин. Официальный каталог удалить нельзя. Переместите зеркало выше него, чтобы сначала устанавливать из зеркала."
+msgstr "Каталоги объединяются по порядку; плагин берётся из первого источника, который его предлагает. Официальный каталог удалить нельзя. Переместите зеркало выше него, чтобы сначала устанавливать из зеркала."
 
 msgid "This version asks for permissions your earlier approval did not cover, marked as new below. Approve only if you trust the author."
-msgstr "Эта версия запрашивает разрешения, не охваченные вашим предыдущим одобрением, они помечены ниже как новые. Одобряйте, только если доверяете автору."
+msgstr "Эта версия запрашивает разрешения, на которые не распространялось ваше прежнее одобрение; ниже они помечены как новые. Одобряйте, только если доверяете автору."
 
 msgid "Dry run completed. No changes were made."
 msgstr "Пробный запуск завершён. Изменений не внесено."

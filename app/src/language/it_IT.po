@@ -12377,7 +12377,7 @@ msgid "Plugin dependencies form a cycle"
 msgstr "Le dipendenze del plugin formano un ciclo"
 
 msgid "Plugin is in use by {0}"
-msgstr "Il plugin è in uso da {0}"
+msgstr "Il plugin è in uso da parte di {0}"
 
 msgid "Plugin system is disabled"
 msgstr "Il sistema di plugin è disabilitato"
@@ -12446,10 +12446,10 @@ msgid "Blocklist source config field {0} is invalid: {1}"
 msgstr "Il campo di configurazione della sorgente della blocklist {0} non è valido: {1}"
 
 msgid "Discovery provider {0} is not available"
-msgstr "Il provider di discovery {0} non è disponibile"
+msgstr "Il provider di service discovery {0} non è disponibile"
 
 msgid "Discovery provider config field {0} is invalid: {1}"
-msgstr "Il campo di configurazione del provider di discovery {0} non è valido: {1}"
+msgstr "Il campo di configurazione del provider di service discovery {0} non è valido: {1}"
 
 msgid "Refresh interval must be at least {0} seconds"
 msgstr "L'intervallo di aggiornamento deve essere di almeno {0} secondi"
@@ -12476,7 +12476,7 @@ msgid "Plugin release not found"
 msgstr "Release del plugin non trovata"
 
 msgid "Plugin release has been yanked"
-msgstr "La release del plugin è stata ritirata (yanked)"
+msgstr "La release del plugin è stata ritirata"
 
 msgid "Plugin package digest does not match the catalog"
 msgstr "Il digest del pacchetto del plugin non corrisponde al catalogo"
@@ -12506,13 +12506,13 @@ msgid "No plugin package is available for {0}"
 msgstr "Nessun pacchetto del plugin disponibile per {0}"
 
 msgid "The marketplace has no more trusted package of this plugin"
-msgstr "Il marketplace non ha più pacchetti attendibili di questo plugin"
+msgstr "Il marketplace non ha più alcun pacchetto attendibile di questo plugin"
 
 msgid "Enter the API token again to save a different endpoint, proxy or API type"
 msgstr "Inserisci di nuovo il token API per salvare un endpoint, un proxy o un tipo di API diverso"
 
 msgid "A trusted publisher is not in the expected format or is listed twice"
-msgstr "Un publisher attendibile non è nel formato previsto o è elencato due volte"
+msgstr "Un editore attendibile non è nel formato previsto o è elencato due volte"
 
 msgid "Template not found"
 msgstr "Template non trovato"
@@ -12755,7 +12755,7 @@ msgid "No description provided."
 msgstr "Nessuna descrizione fornita."
 
 msgid "Not signed, so its publisher cannot be confirmed. Installing it requires developer mode."
-msgstr "Non firmato, quindi il publisher non può essere confermato. L'installazione richiede la modalità sviluppatore."
+msgstr "Non firmato, quindi l'editore non può essere confermato. L'installazione richiede la modalità sviluppatore."
 
 msgid "Note from the author"
 msgstr "Nota dell'autore"
@@ -12776,7 +12776,7 @@ msgid "Other feature"
 msgstr "Altra funzionalità"
 
 msgid "Own data storage"
-msgstr "Archiviazione dati propria"
+msgstr "Archiviazione dati dedicata"
 
 msgid "Paid license"
 msgstr "Licenza a pagamento"
@@ -12863,7 +12863,7 @@ msgid "Stored %{kind} credentials"
 msgstr "Credenziali %{kind} archiviate"
 
 msgid "Stores backups and other files in external storage."
-msgstr "Archivia backup e altri file in uno storage esterno."
+msgstr "Archivia backup e altri file in un'archiviazione esterna."
 
 msgid "Subscription"
 msgstr "Abbonamento"
@@ -12905,7 +12905,7 @@ msgid "Invalid upgrade target. Check for a release before upgrading."
 msgstr "Destinazione di aggiornamento non valida. Verifica la presenza di una release prima di aggiornare."
 
 msgid "The upgrade timed out. Check the node logs."
-msgstr "L'aggiornamento è scaduto. Controlla i log del nodo."
+msgstr "Timeout dell'aggiornamento. Controlla i log del nodo."
 
 msgid "The node returned an invalid version response."
 msgstr "Il nodo ha restituito una risposta di versione non valida."
@@ -12941,7 +12941,7 @@ msgid "Storage test successful, %{count} stored backups found"
 msgstr "Test di archiviazione riuscito, trovati %{count} backup archiviati"
 
 msgid "The plugin that provides this storage is not enabled. Backups fail until it is enabled again."
-msgstr "Il plugin che fornisce questo storage non è abilitato. I backup falliranno finché non verrà riabilitato."
+msgstr "Il plugin che fornisce questa archiviazione non è abilitato. I backup falliranno finché non sarà riabilitato."
 
 msgid "Key Prefix"
 msgstr "Prefisso della chiave"
@@ -12962,7 +12962,7 @@ msgid "Backups kept in %{storage} under %{prefix}"
 msgstr "Backup conservati in %{storage} con prefisso %{prefix}"
 
 msgid "Delete this backup from the storage?"
-msgstr "Eliminare questo backup dallo storage?"
+msgstr "Eliminare questo backup dall'archiviazione?"
 
 msgid "Restore Backup"
 msgstr "Ripristina backup"
@@ -13124,10 +13124,10 @@ msgid "All certificates"
 msgstr "Tutti i certificati"
 
 msgid "Dry run successful"
-msgstr "Dry run riuscito"
+msgstr "Simulazione riuscita"
 
 msgid "No enabled plugin offers a deploy target. Install and enable a plugin with the cert.deploy capability first."
-msgstr "Nessun plugin abilitato offre una destinazione di distribuzione. Installa e abilita prima un plugin con la capability cert.deploy."
+msgstr "Nessun plugin abilitato offre una destinazione di distribuzione. Installa e abilita prima un plugin con la funzionalità cert.deploy."
 
 msgid "Target Type"
 msgstr "Tipo di destinazione"
@@ -13136,13 +13136,13 @@ msgid "Select a target type"
 msgstr "Seleziona un tipo di destinazione"
 
 msgid "The plugin that provides this target type is not enabled. Pushes fail until it is enabled again."
-msgstr "Il plugin che fornisce questo tipo di destinazione non è abilitato. Gli invii falliranno finché non verrà riabilitato."
+msgstr "Il plugin che fornisce questo tipo di destinazione non è abilitato. Gli invii falliranno finché non sarà riabilitato."
 
 msgid "The certificate pushed to this target after every issuance and renewal."
 msgstr "Il certificato inviato a questa destinazione dopo ogni emissione e rinnovo."
 
 msgid "Dry Run"
-msgstr "Dry run"
+msgstr "Simulazione"
 
 msgid "This instance stops renewing the certificate and deletes its own copy. The files on %{node} stay unless you remove them below."
 msgstr "Questa istanza smette di rinnovare il certificato ed elimina la propria copia. I file su %{node} restano, a meno che tu non li rimuova qui sotto."
@@ -13223,7 +13223,7 @@ msgid "Log Viewer Page"
 msgstr "Pagina del visualizzatore di log"
 
 msgid "Results with IP and path facets and statistics"
-msgstr "Risultati con faccette per IP e percorso e statistiche"
+msgstr "Risultati con filtri a faccette per IP e percorso e statistiche"
 
 msgid "* Measured on Apple M2 Pro with 100,000 combined-format log lines. Actual performance may vary based on your hardware configuration."
 msgstr "* Misurato su Apple M2 Pro con 100.000 righe di log in formato combined. Le prestazioni effettive possono variare in base alla configurazione hardware."
@@ -13262,7 +13262,7 @@ msgid "%{total} entries found in %{took} ms"
 msgstr "%{total} voci trovate in %{took} ms"
 
 msgid "Dry run completed for %{node}. No changes were made."
-msgstr "Dry run completato per %{node}. Nessuna modifica effettuata."
+msgstr "Simulazione completata per %{node}. Nessuna modifica effettuata."
 
 msgid "Upgrade failed for %{node}: %{error}"
 msgstr "Aggiornamento non riuscito per %{node}: %{error}"
@@ -13289,7 +13289,7 @@ msgid "Plugin Directory"
 msgstr "Directory dei plugin"
 
 msgid "Default Sync Policy"
-msgstr "Criterio di sincronizzazione predefinito"
+msgstr "Politica di sincronizzazione predefinita"
 
 msgid "Applied to newly installed plugins. Automatic keeps the plugin installed on the child nodes."
 msgstr "Si applica ai plugin appena installati. Automatico mantiene il plugin installato sui nodi figli."
@@ -13322,10 +13322,10 @@ msgid "Allows installing packages uploaded from the browser or the command line.
 msgstr "Consente di installare pacchetti caricati dal browser o dalla riga di comando."
 
 msgid "Trusted Publishers"
-msgstr "Publisher attendibili"
+msgstr "Editori attendibili"
 
 msgid "Plugins from these publishers install as community plugins."
-msgstr "I plugin di questi publisher vengono installati come plugin della community."
+msgstr "I plugin di questi editori vengono installati come plugin della community."
 
 msgid "Memory Limit"
 msgstr "Limite di memoria"
@@ -13352,22 +13352,22 @@ msgid "Allows installing unsigned plugins. Only turn this on while developing a 
 msgstr "Consente di installare plugin non firmati. Attivala solo mentre sviluppi un plugin."
 
 msgid "This is not a valid public key. Paste the whole key the publisher gave you."
-msgstr "Non è una chiave pubblica valida. Incolla l'intera chiave fornita dal publisher."
+msgstr "Non è una chiave pubblica valida. Incolla l'intera chiave fornita dall'editore."
 
 msgid "This publisher is already in the list."
-msgstr "Questo publisher è già nell'elenco."
+msgstr "Questo editore è già nell'elenco."
 
 msgid "No publishers yet."
-msgstr "Ancora nessun publisher."
+msgstr "Ancora nessun editore."
 
 msgid "Unnamed publisher"
-msgstr "Publisher senza nome"
+msgstr "Editore senza nome"
 
 msgid "Not a valid public key"
 msgstr "Non è una chiave pubblica valida"
 
 msgid "Add publisher"
-msgstr "Aggiungi publisher"
+msgstr "Aggiungi editore"
 
 msgid "Shown in this list only"
 msgstr "Mostrato solo in questo elenco"
@@ -13376,7 +13376,7 @@ msgid "Public Key"
 msgstr "Chiave pubblica"
 
 msgid "Paste the public key the publisher gave you"
-msgstr "Incolla la chiave pubblica fornita dal publisher"
+msgstr "Incolla la chiave pubblica fornita dall'editore"
 
 msgid "Plugin system, marketplace, packages and resource limits of plugin processes."
 msgstr "Sistema di plugin, marketplace, pacchetti e limiti di risorse dei processi dei plugin."
@@ -13442,7 +13442,7 @@ msgid "Refresh Now"
 msgstr "Aggiorna ora"
 
 msgid "No enabled plugin offers a blocklist source. Install and enable a plugin with the security.blocklist capability first."
-msgstr "Nessun plugin abilitato offre una sorgente blocklist. Installa e abilita prima un plugin con la capability security.blocklist."
+msgstr "Nessun plugin abilitato offre una sorgente blocklist. Installa e abilita prima un plugin con la funzionalità security.blocklist."
 
 msgid "Select a source type"
 msgstr "Seleziona un tipo di sorgente"
@@ -13502,10 +13502,10 @@ msgid "This is a stable release."
 msgstr "Questa è una release stabile."
 
 msgid "Development releases are received until a stable release is available."
-msgstr "Si ricevono le release di sviluppo finché non è disponibile una release stabile."
+msgstr "Riceverai le release di sviluppo finché non sarà disponibile una release stabile."
 
 msgid "Beta releases are received until a stable release is available."
-msgstr "Si ricevono le release beta finché non è disponibile una release stabile."
+msgstr "Riceverai le release beta finché non sarà disponibile una release stabile."
 
 msgid "Receive beta and stable releases."
 msgstr "Ricevi release beta e stabili."
@@ -13610,7 +13610,7 @@ msgid "Reason: %{reason}"
 msgstr "Motivo: %{reason}"
 
 msgid "The publisher withdrew this version. Update it, or disable it until a new version is available."
-msgstr "Il publisher ha ritirato questa versione. Aggiornala oppure disabilitala finché non sarà disponibile una nuova versione."
+msgstr "L'editore ha ritirato questa versione. Aggiornala oppure disabilitala finché non sarà disponibile una nuova versione."
 
 msgid "Settings"
 msgstr "Impostazioni"
@@ -13655,7 +13655,7 @@ msgid "(replaces %{version})"
 msgstr "(sostituisce %{version})"
 
 msgid "Capabilities"
-msgstr "Capability"
+msgstr "Funzionalità"
 
 msgid "None"
 msgstr "Nessuna"
@@ -13804,7 +13804,7 @@ msgid "Newer releases of this channel are received until a stable release is ava
 msgstr "Le release più recenti di questo canale vengono ricevute finché non è disponibile una release stabile."
 
 msgid "This is a commercial plugin, licensed by its vendor"
-msgstr "Questo è un plugin commerciale, con licenza del suo fornitore"
+msgstr "Questo è un plugin commerciale, concesso in licenza dal suo fornitore"
 
 msgid "New permissions: %{list}"
 msgstr "Nuovi permessi: %{list}"
@@ -13828,7 +13828,7 @@ msgid "The plugins below are installed together with it"
 msgstr "I plugin qui sotto vengono installati insieme ad esso"
 
 msgid "Live progress is unavailable, checking the plugin list instead"
-msgstr "Lo stato in tempo reale non è disponibile, si controlla invece l'elenco dei plugin"
+msgstr "L'avanzamento in tempo reale non è disponibile, si controlla invece l'elenco dei plugin"
 
 msgid "Offered by %{source} instead of the official catalog."
 msgstr "Offerto da %{source} invece che dal catalogo ufficiale."
@@ -14080,8 +14080,8 @@ msgstr "In uso"
 
 msgid "%{count} certificate renews through it:"
 msgid_plural "%{count} certificates renew through it:"
-msgstr[0] "%{count} certificato viene rinnovato tramite esso:"
-msgstr[1] "%{count} certificati vengono rinnovati tramite esso:"
+msgstr[0] "%{count} certificato viene rinnovato tramite questo plugin:"
+msgstr[1] "%{count} certificati vengono rinnovati tramite questo plugin:"
 
 msgid "Update channel"
 msgstr "Canale di aggiornamento"
@@ -14193,10 +14193,10 @@ msgstr[0] "%{count} nodo"
 msgstr[1] "%{count} nodi"
 
 msgid "Sync policy saved"
-msgstr "Criterio di sincronizzazione salvato"
+msgstr "Politica di sincronizzazione salvata"
 
 msgid "Failed to save the sync policy"
-msgstr "Impossibile salvare il criterio di sincronizzazione"
+msgstr "Impossibile salvare la politica di sincronizzazione"
 
 msgid "Automatic installation"
 msgstr "Installazione automatica"
@@ -14219,11 +14219,11 @@ msgstr "e altri %{n}"
 
 msgid "%{count} certificate renews through it and will not renew while it is off:"
 msgid_plural "%{count} certificates renew through it and will not renew while it is off:"
-msgstr[0] "%{count} certificato viene rinnovato tramite esso e non verrà rinnovato finché è disattivato:"
-msgstr[1] "%{count} certificati vengono rinnovati tramite esso e non verranno rinnovati finché è disattivato:"
+msgstr[0] "%{count} certificato viene rinnovato tramite questo plugin e non verrà rinnovato finché è disattivato:"
+msgstr[1] "%{count} certificati vengono rinnovati tramite questo plugin e non verranno rinnovati finché è disattivato:"
 
 msgid "Dry run completed. No changes were made."
-msgstr "Dry run completato. Nessuna modifica effettuata."
+msgstr "Simulazione completata. Nessuna modifica effettuata."
 
 msgid "The name nginx knows the upstream by: letters, digits, dots, hyphens and underscores."
 msgstr "Il nome con cui nginx conosce l'upstream: lettere, cifre, punti, trattini e trattini bassi."
@@ -14235,7 +14235,7 @@ msgid "Service Discovery"
 msgstr "Service discovery"
 
 msgid "No enabled plugin offers service discovery. Install and enable a plugin with the upstream.discovery capability first."
-msgstr "Nessun plugin abilitato offre il service discovery. Installa e abilita prima un plugin con la capability upstream.discovery."
+msgstr "Nessun plugin abilitato offre il service discovery. Installa e abilita prima un plugin con la funzionalità upstream.discovery."
 
 msgid "Select a provider"
 msgstr "Seleziona un provider"
@@ -14256,7 +14256,7 @@ msgid "Appended inside the upstream block, one directive per line, for example k
 msgstr "Aggiunte all'interno del blocco upstream, una direttiva per riga, ad esempio keepalive 32;"
 
 msgid "Add this line to the http block, for example at the top of a site configuration, then proxy to the upstream by its name."
-msgstr "Aggiungi questa riga al blocco http, ad esempio all'inizio della configurazione di un sito, poi usa il proxy verso l'upstream tramite il suo nome."
+msgstr "Aggiungi questa riga al blocco http, ad esempio all'inizio della configurazione di un sito, poi imposta il proxy verso l'upstream tramite il suo nome."
 
 #~ msgid "Are you sure to reset 2FA?"
 #~ msgstr "Sei sicuro di voler reimpostare la 2FA?"

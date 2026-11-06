@@ -10916,7 +10916,7 @@ msgid ""
 msgstr "Không thể gia hạn chứng chỉ %{name} vì không có plugin nào được bật cung cấp thử thách DNS-01"
 
 msgid "Plugin %{plugin} failed to render"
-msgstr "Plugin %{plugin} hiển thị thất bại"
+msgstr "Không thể hiển thị plugin %{plugin}"
 
 msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
 msgstr "Không có nhà cung cấp DNS-01 cho {0}: hãy cài đặt và bật plugin DNS-01"
@@ -10925,7 +10925,7 @@ msgid "Plugin manifest is invalid"
 msgstr "Manifest của plugin không hợp lệ"
 
 msgid "Plugin not found"
-msgstr "Không tìm thấy plugin"
+msgstr "Gói plugin khai báo ID khác"
 
 msgid "Plugin already exists"
 msgstr "Plugin đã tồn tại"
@@ -10940,7 +10940,7 @@ msgid "Plugin has no executable for this platform"
 msgstr "Plugin không có tệp thực thi cho nền tảng này"
 
 msgid "Plugin package is invalid"
-msgstr "Gói plugin không hợp lệ"
+msgstr "ID plugin {0} được dành riêng cho các plugin Nginx UI chính thức"
 
 msgid "Plugin package is too large"
 msgstr "Gói plugin quá lớn"
@@ -10967,10 +10967,10 @@ msgid "Plugin uploads are disabled"
 msgstr "Tải lên plugin đã bị tắt"
 
 msgid "Plugin call timed out"
-msgstr "Lời gọi plugin hết thời gian chờ"
+msgstr "Lệnh gọi plugin đã hết thời gian chờ"
 
 msgid "Plugin rpc error: {0}"
-msgstr "Lỗi rpc của plugin: {0}"
+msgstr "Lỗi RPC của plugin: {0}"
 
 msgid "Plugin setting {0} is invalid"
 msgstr "Cài đặt plugin {0} không hợp lệ"
@@ -11091,7 +11091,7 @@ msgid "Sync %{name} to nodes"
 msgstr "Đồng bộ %{name} đến các nút"
 
 msgid "Leave every node unchecked to sync to all child nodes."
-msgstr "Để trống tất cả các nút để đồng bộ đến mọi nút con."
+msgstr "Không chọn nút nào để đồng bộ đến mọi nút con."
 
 msgid "Already in sync"
 msgstr "Đã đồng bộ"
@@ -11218,7 +11218,7 @@ msgid "%{phase}: %{plugin}"
 msgstr "%{phase}: %{plugin}"
 
 msgid "Failed to load the plugin from the marketplace"
-msgstr "Tải plugin từ chợ thất bại"
+msgstr "Tải plugin từ chợ plugin thất bại"
 
 msgid "Update plugin"
 msgstr "Cập nhật plugin"
@@ -11278,16 +11278,16 @@ msgid "Readme"
 msgstr "Readme"
 
 msgid "Failed to load the marketplace sources"
-msgstr "Tải các nguồn chợ thất bại"
+msgstr "Tải các nguồn chợ plugin thất bại"
 
 msgid "Marketplace sources saved"
-msgstr "Đã lưu các nguồn chợ"
+msgstr "Đã lưu các nguồn chợ plugin"
 
 msgid "Failed to save the marketplace sources"
-msgstr "Lưu các nguồn chợ thất bại"
+msgstr "Lưu các nguồn chợ plugin thất bại"
 
 msgid "Marketplace sources"
-msgstr "Nguồn chợ"
+msgstr "Nguồn chợ plugin"
 
 msgid ""
 "Catalogs are merged in order, the first source that offers a plugin wins. "
@@ -11371,7 +11371,7 @@ msgid "In sync"
 msgstr "Đã đồng bộ"
 
 msgid "Outdated"
-msgstr "Lỗi thời"
+msgstr "Chưa cập nhật"
 
 msgid "Not installed"
 msgstr "Chưa cài đặt"
@@ -11394,13 +11394,13 @@ msgstr "Đồng bộ đến nút này"
 msgid ""
 "What every child node has installed, compared with this controller. "
 "Switching the selected node in the header manages that node directly."
-msgstr "Những gì mỗi nút con đã cài đặt, so với bộ điều khiển này. Đổi nút đã chọn ở tiêu đề sẽ quản lý trực tiếp nút đó."
+msgstr "Những gì mỗi nút con đã cài đặt, so với nút điều khiển này. Chọn nút khác ở thanh tiêu đề sẽ quản lý trực tiếp nút đó."
 
 msgid "All nodes"
 msgstr "Tất cả nút"
 
 msgid "This instance has no child node"
-msgstr "Phiên bản này không có nút con nào"
+msgstr "Nginx UI này không có nút con nào"
 
 msgid "Add a node first, then plugins can be installed on it from here."
 msgstr "Hãy thêm một nút trước, sau đó có thể cài đặt plugin lên nút từ đây."
@@ -11412,7 +11412,7 @@ msgid "Sync to all"
 msgstr "Đồng bộ đến tất cả"
 
 msgid "Marketplace"
-msgstr "Chợ"
+msgstr "Chợ plugin"
 
 msgid "%{field} is required"
 msgstr "%{field} là bắt buộc"
@@ -11449,7 +11449,7 @@ msgid ""
 "Keep this plugin at the same version and state on the selected child nodes. "
 "Leave every node unchecked to cover all of them, including the ones added "
 "later."
-msgstr "Giữ plugin này cùng phiên bản và trạng thái trên các nút con đã chọn. Để trống tất cả các nút để áp dụng cho mọi nút, kể cả các nút được thêm sau."
+msgstr "Giữ plugin này cùng phiên bản và trạng thái trên các nút con đã chọn. Không chọn nút nào để áp dụng cho mọi nút, kể cả các nút được thêm sau."
 
 msgid "Also sync the plugin settings"
 msgstr "Đồng bộ cả cài đặt plugin"
@@ -11472,10 +11472,10 @@ msgid "No plugins installed yet"
 msgstr "Chưa cài đặt plugin nào"
 
 msgid "Pick one from the marketplace or upload a bundle you built yourself."
-msgstr "Chọn một plugin từ chợ hoặc tải lên gói do bạn tự xây dựng."
+msgstr "Chọn một plugin từ chợ plugin hoặc tải lên gói do bạn tự xây dựng."
 
 msgid "Browse marketplace"
-msgstr "Duyệt chợ"
+msgstr "Duyệt chợ plugin"
 
 msgid "Install from file"
 msgstr "Cài đặt từ tệp"
@@ -11487,7 +11487,7 @@ msgid "This plugin cannot run on this node"
 msgstr "Plugin này không thể chạy trên nút này"
 
 msgid "More actions"
-msgstr "Thêm hành động"
+msgstr "Thao tác khác"
 
 msgid "Follow new lines"
 msgstr "Theo dõi dòng mới"
@@ -11502,7 +11502,7 @@ msgid "The catalog is empty"
 msgstr "Danh mục trống"
 
 msgid "Search the marketplace"
-msgstr "Tìm trong chợ"
+msgstr "Tìm trong chợ plugin"
 
 msgid "%{count} installed plugin has a newer release."
 msgid_plural "%{count} installed plugins have a newer release."
@@ -11512,7 +11512,7 @@ msgid "Show updates"
 msgstr "Hiện bản cập nhật"
 
 msgid "The marketplace is unavailable"
-msgstr "Chợ không khả dụng"
+msgstr "Chợ plugin không khả dụng"
 
 msgid "Overview"
 msgstr "Tổng quan"
@@ -11680,7 +11680,7 @@ msgid "Please fill in %{field}"
 msgstr "Vui lòng điền %{field}"
 
 msgid "Storage test successful, %{count} stored backups found"
-msgstr "Kiểm tra lưu trữ thành công, tìm thấy %{count} bản sao lưu đã lưu"
+msgstr "Kiểm tra lưu trữ thành công, có %{count} bản sao lưu"
 
 msgid ""
 "The plugin that provides this storage is not enabled. Backups fail until it "
@@ -11710,7 +11710,7 @@ msgid "Test Storage"
 msgstr "Kiểm tra lưu trữ"
 
 msgid "Backups kept in %{storage} under %{prefix}"
-msgstr "Các bản sao lưu được giữ trong %{storage} dưới %{prefix}"
+msgstr "Bản sao lưu được lưu trong %{storage}, tiền tố %{prefix}"
 
 msgid "Delete this backup from the storage?"
 msgstr "Xóa bản sao lưu này khỏi bộ lưu trữ?"
@@ -11894,13 +11894,13 @@ msgid ""
 msgstr ""
 
 msgid "Streamed"
-msgstr "Đã truyền"
+msgstr "Dòng đã chuyển tiếp"
 
 msgid "Rejected"
-msgstr "Bị từ chối"
+msgstr "Dòng bị từ chối"
 
 msgid "Dropped"
-msgstr "Đã loại bỏ"
+msgstr "Dòng bị loại bỏ"
 
 msgid "Unlimited"
 msgstr "Không giới hạn"
@@ -11920,10 +11920,10 @@ msgid ""
 msgstr ""
 
 msgid "Enforced"
-msgstr "Đang thực thi"
+msgstr "Đang áp dụng"
 
 msgid "Not enforced"
-msgstr "Không thực thi"
+msgstr "Chưa áp dụng"
 
 msgid "Access log stream"
 msgstr "Luồng nhật ký truy cập"
@@ -11950,7 +11950,7 @@ msgstr "Chọn nhà cung cấp"
 msgid ""
 "The plugin that provides this provider is not enabled. The upstream is kept "
 "but no longer refreshed."
-msgstr "Plugin cung cấp nhà cung cấp này chưa được bật. Upstream được giữ nhưng không còn được làm mới."
+msgstr "Plugin của nhà cung cấp này chưa được bật. Upstream được giữ nhưng không còn được làm mới."
 
 msgid "The service to resolve, in the terms of the provider."
 msgstr "Dịch vụ cần phân giải, theo cách gọi của nhà cung cấp."
@@ -11977,7 +11977,7 @@ msgid "Links"
 msgstr "Liên kết"
 
 msgid "Plugin package declares version {0}, {1} was expected"
-msgstr "Gói plugin khai báo phiên bản {0}, nhưng mong đợi {1}"
+msgstr "Gói plugin khai báo phiên bản {0}, trong khi cần phiên bản {1}"
 
 msgid "Only localhost addresses are accepted"
 msgstr "Chỉ chấp nhận địa chỉ localhost"
@@ -11986,7 +11986,7 @@ msgid ""
 "Address of a plugin.json served by a static server on this computer. Only "
 "localhost addresses are accepted. The plugin is loaded in addition to the "
 "installed ones."
-msgstr "Địa chỉ của plugin.json được phục vụ bởi máy chủ tĩnh trên máy tính này. Chỉ chấp nhận địa chỉ localhost. Plugin được nạp thêm vào các plugin đã cài đặt."
+msgstr "Địa chỉ của plugin.json do một máy chủ tĩnh trên máy tính này cung cấp. Chỉ chấp nhận địa chỉ localhost. Plugin được nạp thêm vào các plugin đã cài đặt."
 
 msgid "Plugin package is not signed and developer mode is off"
 msgstr "Gói plugin chưa được ký và chế độ nhà phát triển đang tắt"
@@ -12241,7 +12241,7 @@ msgid "turned off"
 msgstr "đã tắt"
 
 msgid "not working right now"
-msgstr "hiện không hoạt động"
+msgstr "không hoạt động"
 
 msgid ""
 "DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
@@ -12324,7 +12324,7 @@ msgid "Plugin catalog is invalid: {0}"
 msgstr "Danh mục plugin không hợp lệ: {0}"
 
 msgid "Plugin is not in the marketplace catalog"
-msgstr "Plugin không có trong danh mục chợ"
+msgstr "Plugin không có trong danh mục chợ plugin"
 
 msgid "No local package found for this plugin"
 msgstr "Không tìm thấy gói cục bộ cho plugin này"
@@ -12333,7 +12333,7 @@ msgid "No plugin package is available for {0}"
 msgstr "Không có gói plugin cho {0}"
 
 msgid "The marketplace has no more trusted package of this plugin"
-msgstr "Chợ không còn gói tin cậy nào của plugin này"
+msgstr "Chợ plugin không còn gói đáng tin cậy nào của plugin này"
 
 msgid "Advanced options"
 msgstr "Tùy chọn nâng cao"
@@ -12396,7 +12396,7 @@ msgid "Upload"
 msgstr "Tải lên"
 
 msgid "Renewed on the node it is synced from"
-msgstr "Được gia hạn trên nút mà nó đồng bộ từ đó"
+msgstr "Gia hạn trên nút nguồn mà chứng chỉ được đồng bộ từ đó"
 
 msgid "Renews around %{date}"
 msgstr "Gia hạn vào khoảng %{date}"
@@ -12546,10 +12546,10 @@ msgid "Install the partner version"
 msgstr "Cài đặt phiên bản của đối tác"
 
 msgid "The marketplace has the official version %{version}."
-msgstr "Chợ có phiên bản chính thức %{version}."
+msgstr "Chợ plugin có phiên bản chính thức %{version}."
 
 msgid "The marketplace has the partner version %{version}."
-msgstr "Chợ có phiên bản của đối tác %{version}."
+msgstr "Chợ plugin có phiên bản của đối tác %{version}."
 
 msgid "This plugin needs no access beyond its own features."
 msgstr "Plugin này không cần quyền truy cập nào ngoài các tính năng của chính nó."
@@ -12625,7 +12625,7 @@ msgid "Only these addresses"
 msgstr "Chỉ các địa chỉ này"
 
 msgid "%{n} more"
-msgstr "Thêm %{n}"
+msgstr "%{n} mục khác"
 
 msgid "No specific addresses listed"
 msgstr "Không có địa chỉ cụ thể nào được liệt kê"
@@ -12656,7 +12656,7 @@ msgid "Develop plugin"
 msgstr "Phát triển plugin"
 
 msgid "Standby"
-msgstr "Chờ"
+msgstr "Chế độ chờ"
 
 msgid "Starts automatically when needed"
 msgstr "Tự động khởi động khi cần"
@@ -12665,15 +12665,15 @@ msgid "Installed. Turn it on to review what it can access."
 msgstr "Đã cài đặt. Hãy bật để xem lại những gì nó có thể truy cập."
 
 msgid "Installed the version from the marketplace"
-msgstr "Đã cài đặt phiên bản từ chợ"
+msgstr "Đã cài đặt phiên bản từ chợ plugin"
 
 msgid "Failed to install the version from the marketplace"
-msgstr "Cài đặt phiên bản từ chợ thất bại"
+msgstr "Cài đặt phiên bản từ chợ plugin thất bại"
 
 msgid ""
 "Replace the installed version with the one from the marketplace? Settings "
 "and data are kept."
-msgstr "Thay thế phiên bản đã cài đặt bằng phiên bản từ chợ? Cài đặt và dữ liệu được giữ lại."
+msgstr "Thay thế phiên bản đã cài đặt bằng phiên bản từ chợ plugin? Cài đặt và dữ liệu được giữ lại."
 
 msgid "%{count} unsaved"
 msgid_plural "%{count} unsaved"
@@ -13101,13 +13101,13 @@ msgstr "Được cấp cho %{node}"
 msgid ""
 "This instance validates the domain, keeps renewing the certificate and sends "
 "each renewal to %{node}."
-msgstr "Phiên bản này xác thực tên miền, tiếp tục gia hạn chứng chỉ và gửi mỗi lần gia hạn đến %{node}."
+msgstr "Nginx UI này xác thực tên miền, tiếp tục gia hạn chứng chỉ và gửi mỗi lần gia hạn đến %{node}."
 
 msgid "Files on the node:"
 msgstr "Các tệp trên nút:"
 
 msgid "Issued by this instance for %{node} and renewed here"
-msgstr "Được cấp bởi phiên bản này cho %{node} và gia hạn tại đây"
+msgstr "Được cấp bởi Nginx UI này cho %{node} và gia hạn tại đây"
 
 msgid "For %{node}"
 msgstr "Dành cho %{node}"
@@ -13115,7 +13115,7 @@ msgstr "Dành cho %{node}"
 msgid ""
 "This instance stops renewing the certificate and deletes its own copy. The "
 "files on %{node} stay unless you remove them below."
-msgstr "Phiên bản này sẽ ngừng gia hạn chứng chỉ và xóa bản sao của chính nó. Các tệp trên %{node} vẫn được giữ trừ khi bạn xóa chúng bên dưới."
+msgstr "Nginx UI này sẽ ngừng gia hạn chứng chỉ và xóa bản sao của chính nó. Các tệp trên %{node} vẫn được giữ trừ khi bạn xóa chúng bên dưới."
 
 msgid "Also remove the certificate files from %{node}"
 msgstr "Đồng thời xóa các tệp chứng chỉ khỏi %{node}"
@@ -13169,7 +13169,7 @@ msgid "Found in"
 msgstr "Tìm thấy trong"
 
 msgid "Such a configuration is not replicated to other nodes. Save it on each node that needs it."
-msgstr "Cấu hình như vậy không được sao chép sang các nút khác. Hãy lưu nó trên từng nút cần dùng."
+msgstr "Cấu hình loại này không được sao chép sang các nút khác. Hãy lưu trên từng nút cần dùng."
 
 msgid "Go to Settings"
 msgstr "Đi tới Cài đặt"
@@ -13256,7 +13256,7 @@ msgid "Security"
 msgstr "Bảo mật"
 
 msgid "Subscription"
-msgstr "Đăng ký"
+msgstr "Gói đăng ký"
 
 msgid "Tools"
 msgstr "Công cụ"
@@ -13361,7 +13361,7 @@ msgid "Upgrade cancelled."
 msgstr "Đã hủy nâng cấp."
 
 msgid "Managed on the marketplace page. The official catalog is always used."
-msgstr "Được quản lý ở trang chợ. Danh mục chính thức luôn được sử dụng."
+msgstr "Quản lý tại trang Chợ plugin. Danh mục chính thức luôn được sử dụng."
 
 msgid "Read resources and runtime status through the management API. Stored secrets such as credentials and private keys are hidden from read-only tokens."
 msgstr "Đọc tài nguyên và trạng thái chạy qua API quản lý. Các bí mật đã lưu như thông tin xác thực và khóa riêng tư bị ẩn đối với token chỉ đọc."
