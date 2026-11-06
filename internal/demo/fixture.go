@@ -25,10 +25,13 @@ import (
 // declines everything else.
 
 const (
-	// logLineCount is a compromise. Enough for the charts to have shape, few
-	// enough that indexing them does not stretch the cold start; the bleve
-	// index runs about 0.9 KB per line.
-	logLineCount = 20000
+	// logLineCount is a compromise. Enough for the charts to have shape (about
+	// three requests a minute across the window), few enough that indexing
+	// them is a small part of the cold start. The container has a quarter of a
+	// vCPU and 1 GiB shared by three nginx-ui processes, and every line costs
+	// tens of kilobytes of heap while Bleve indexes it, so this is the dial
+	// that decides how hard boot leans on both.
+	logLineCount = 5000
 	// logWindow is how far back the oldest entry sits. The dashboard's default
 	// range is the last 24 hours, so the window must cover it.
 	logWindow = 24 * time.Hour
