@@ -173,7 +173,7 @@ distinct values. Two things keep it fast:
    counting newlines since the previous one. At most `TextScanParallelism`
    blocks scan at once, which bounds the memory a query holds.
 
-On 1M lines (`BenchmarkTextSearch`, Apple M2 Pro), before and after:
+On 1M lines (`BenchmarkTextSearch`, Apple M5 Pro), before and after:
 
 | Term | Before | After |
 |---|---|---|
@@ -229,7 +229,7 @@ What exists and is tested:
   bound or a dictionary filter makes that test fail.
 
 In-repo benchmark: 100k combined-format lines from the real `LogDocument`
-type, Apple M2 Pro. Run it with:
+type, Apple M5 Pro. Run it with:
 
 ```
 GOWORK=off go test -tags=unembed -run '^$' -bench 'BenchmarkIngest|BenchmarkSearchRequests' -benchtime=3x ./internal/nginx_log/searcher/
