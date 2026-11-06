@@ -1,6 +1,6 @@
 ---
 name: release
-description: Use when preparing or publishing an NGINX UI release, including version bumping with version.sh, release notes, Avira pre-publication checks, tags, GitHub Releases, and optional post-release publication to the RainYun cloud app store.
+description: Use when preparing or publishing an NGINX UI release, including version bumping with version.sh, bilingual (English and Chinese) release notes, Avira pre-publication checks, tags, GitHub Releases, and optional post-release publication to the RainYun cloud app store.
 ---
 
 # NGINX UI Release
@@ -42,6 +42,16 @@ Create `release-notes-vX.Y.Z.md` in the repository root using exactly these sect
 
 - <User-facing fix summary> by @<contributor> ([<short-hash>](https://github.com/0xJacky/nginx-ui/commit/<full-sha>))
 
+## 中文更新日志
+
+### 新功能
+
+- <面向用户的功能摘要> by @<contributor> ([<short-hash>](https://github.com/0xJacky/nginx-ui/commit/<full-sha>))
+
+### 问题修复
+
+- <面向用户的修复摘要> by @<contributor> ([<short-hash>](https://github.com/0xJacky/nginx-ui/commit/<full-sha>))
+
 ## Contributors
 
 @handle
@@ -59,7 +69,15 @@ Guidelines:
 - If a change section is empty, use `- None.`; this sentinel needs no contributor or hash.
 - Do not include test status unless the user explicitly asks for it.
 
-Before finalizing, check every change bullet for accurate attribution, a resolving commit link, and membership in the release range. Reuse the same reviewed notes for the tag annotation and GitHub Release body.
+Chinese changelog (`## 中文更新日志`):
+
+- Write it after the English notes are final, as a one-to-one translation: `### 新功能` mirrors `## Features` and `### 问题修复` mirrors `## Bug Fixes`, with the same bullets in the same order. Do not add, drop, merge, or split bullets relative to the English sections.
+- Keep each bullet's attribution suffix byte-identical to its English counterpart: the same `by @handle` list and the same linked short hashes.
+- Translate the meaning, not word by word, into natural written Chinese. Keep product names, protocols, identifiers, and literals in their original form (for example NGINX UI, OIDC, HTTP-01, LXC, advisory IDs such as `GHSA-...`, and anything in backticks like setting names, paths, and commands). Follow the terminology used in the `docs/zh_CN` guides where it exists.
+- If an English section is `- None.`, its Chinese counterpart is `- 无。`.
+- `## Contributors` stays a single shared section at the end; do not duplicate it in Chinese.
+
+Before finalizing, check every change bullet for accurate attribution, a resolving commit link, and membership in the release range, and confirm the Chinese sections have the same bullet count, order, and attribution suffixes as the English sections. Reuse the same reviewed notes for the tag annotation and GitHub Release body.
 
 References: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) for curated, grouped summaries and [GitHub release notes](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes) for contributor credit and change traceability. Per-change handles and short hashes are this project's required format.
 
