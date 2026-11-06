@@ -85,7 +85,7 @@ This project is a web-based NGINX management interface built with Go backend and
 
 ## Release Workflow
 - Start releases from the `dev` branch with a clean working tree.
-- Run `./version.sh` outside the sandbox to update the version, rebuild the frontend, and refresh generated artifacts that require network access.
+- Run `./version.sh` outside the sandbox to update the version (including the Helm chart's `version` and `appVersion`, which pick the default image tag), rebuild the frontend, and refresh generated artifacts that require network access.
 - Prepare release notes in a temporary local markdown file such as `release-notes-vX.Y.Z.md`.
 - Follow the existing three-section release note style: `Features`, `Bug Fixes`, and `Contributors`.
 - Write contributor names using GitHub handles when they are known from the merged PR, not raw git author names.
