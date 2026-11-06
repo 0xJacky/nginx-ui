@@ -15,6 +15,10 @@ export const subnetPrefix = process.env.E2E_ACME_SUBNET_PREFIX ?? '10.31.0'
 export const baseURL = process.env.E2E_ACME_BASE_URL ?? `http://127.0.0.1:${uiPort}`
 export const challtestsrvURL = process.env.E2E_ACME_CHALLTESTSRV_URL ?? `http://127.0.0.1:${challtestsrvPort}`
 
+// Image tests/upgrade-dns01.spec.ts upgrades the running stack to. The spec
+// is skipped unless it is set; start the stack on the older image.
+export const upgradeImage = process.env.E2E_ACME_UPGRADE_IMAGE ?? ''
+
 export const dataDir = process.env.E2E_ACME_DATA_DIR
   ?? join(process.env.RUNNER_TEMP ?? tmpdir(), project)
 
@@ -25,6 +29,7 @@ export const authStateFile = join(dataDir, 'e2e-auth-state.json')
 export const addresses = {
   pebble: `${subnetPrefix}.2`,
   challtestsrv: `${subnetPrefix}.3`,
+  dnsapi: `${subnetPrefix}.4`,
   nginxUI: `${subnetPrefix}.10`,
   backend: `${subnetPrefix}.20`,
   // Inside the subnet but assigned to no container.

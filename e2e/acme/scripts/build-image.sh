@@ -50,6 +50,19 @@ case "$binary_mode" in
         ;;
 esac
 
+# The Dockerfile bundles the official plugins from plugins/<os>-<arch>, which
+# the release build fills with `nginx-ui plugin fetch` (see the docker-build
+# job). Do the same with the binary just built.
+acme_log "fetching the bundled plugins into plugins/linux-amd64"
+rm -rf plugins/linux-amd64
+fetch_plugins='config_dir="$(mktemp -d)" && touch "$config_dir/app.ini" && ./nginx-ui-linux-amd64/nginx-ui --config "$config_dir/app.ini" plugin fetch com.nginxui.dns01 --platform linux-amd64 --out plugins/linux-amd64 >/dev/null'
+if [ "$(uname -s)" = "Linux" ] && [ "$(uname -m)" = "x86_64" ]; then
+    sh -c "$fetch_plugins"
+else
+    docker run --rm --platform linux/amd64 -v "$REPO_ROOT":/src -w /src golang:1.27-trixie sh -c "$fetch_plugins"
+fi
+ls plugins/linux-amd64 >&2
+
 acme_log "building image $NGINX_UI_IMAGE"
 docker build -f Dockerfile --platform linux/amd64 -t "$NGINX_UI_IMAGE" \
     --build-arg TARGETOS=linux --build-arg TARGETARCH=amd64 .

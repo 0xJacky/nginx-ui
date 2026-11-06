@@ -14,6 +14,7 @@ Playwright config (`acme/playwright.config.ts`), its own specs
 |----------------|--------------------------------------|------|
 | `pebble`       | `.2`  | ACME CA; validates HTTP-01 on port 80 |
 | `challtestsrv` | `.3`  | DNS for Pebble; every name resolves to nginx-ui unless a test overrides it |
+| `dnsapi`       | `.4`  | DNS API for lego's `httpreq` provider; publishes DNS-01 TXT records in challtestsrv (`dnsapi.py`) |
 | `nginx-ui`     | `.10` | system under test, UI on `127.0.0.1:$E2E_ACME_UI_PORT` |
 | `backend`      | `.20` | plain nginx: reverse-proxy target and "DNS points elsewhere" host |
 
@@ -53,6 +54,18 @@ Specs:
   certificate, HTTP 301, and that the challenge path is still proxied. All
   wizard selectors are in `pages/siteAdd.ts`.
 
+- `tests/upgrade-dns01.spec.ts` upgrades a running 2.x node to v3. It runs
+  only when `E2E_ACME_UPGRADE_IMAGE` names the new image, on a stack started
+  on the old one (see below). On 2.x it creates an `httpreq` DNS credential
+  pointing at `dnsapi` and issues a DNS-01 certificate with Pebble's 180
+  second `e2erenew` profile, waits until the certificate is due, recreates
+  the container from the new image with the same volumes, and checks that
+  the official DNS-01 plugin is installed and enabled on its own, that the
+  credential survived, that the automatic renewal renews the certificate,
+  and that a manual reissue works through the plugin. challtestsrv answers
+  no SOA queries, so the certificate skips the authoritative nameserver
+  check and waits a fixed minute instead.
+
 Every test uses its own random `*.e2e.test` domain, so tests do not depend on
 each other. They share one Nginx and therefore run with one worker.
 
@@ -77,6 +90,17 @@ bun run --cwd e2e test:acme
 sh e2e/acme/scripts/down.sh
 ```
 
+To run the upgrade test, build the new image as above, start the stack on
+the previous release and name the new image:
+
+```sh
+NGINX_UI_IMAGE=uozi/nginx-ui:v2.9.5 sh e2e/acme/scripts/up.sh
+E2E_ACME_UPGRADE_IMAGE=nginx-ui-acme-e2e:local bun run --cwd e2e test:acme -- upgrade-dns01
+```
+
+`build-image.sh` also fetches the official plugins the image bundles into
+`plugins/linux-amd64`, with the binary it built, as the release build does.
+
 Useful switches:
 
 | Variable | Default | Purpose |
@@ -91,6 +115,7 @@ Useful switches:
 | `E2E_ACME_DATA_DIR` | `$RUNNER_TEMP` or `$TMPDIR` + `/<project>` | per-run admin credentials and browser state |
 | `E2E_ACME_BASE_URL` | `http://127.0.0.1:$E2E_ACME_UI_PORT` | Playwright base URL |
 | `E2E_ACME_KEEP_DATA=1` | off | `down.sh` keeps the volumes and the data dir |
+| `E2E_ACME_UPGRADE_IMAGE` | unset | image `upgrade-dns01.spec.ts` upgrades to; the spec is skipped without it |
 
 Export the same variables for every script and for the test run; the scripts
 (`scripts/env.sh`) and the specs (`lib/env.ts`) share the defaults. Change the

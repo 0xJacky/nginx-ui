@@ -172,3 +172,32 @@ export async function restartNginxUI(baseURL: string, timeoutMs = 120_000) {
     await new Promise(resolve => setTimeout(resolve, 1_000))
   }
 }
+
+/**
+ * Recreate the nginx-ui container from another image, keeping its volumes, the
+ * way a Docker user upgrades, and wait until the API answers again.
+ */
+export async function upgradeNginxUI(image: string, baseURL: string, timeoutMs = 180_000) {
+  const result = spawnSync('docker', ['compose', '-p', project, '-f', composeFile, 'up', '-d', '--no-deps', '--force-recreate', 'nginx-ui'], {
+    env: { ...composeEnv(), NGINX_UI_IMAGE: image },
+    encoding: 'utf8',
+    timeout: timeoutMs,
+  })
+  if (result.error)
+    throw result.error
+  if (result.status !== 0)
+    throw new Error(`docker compose up nginx-ui (${image}) exited with ${result.status}: ${result.stderr}`)
+
+  const deadline = Date.now() + timeoutMs
+  for (;;) {
+    try {
+      const response = await fetch(`${baseURL}/api/install`, { signal: AbortSignal.timeout(5_000) })
+      if (response.ok)
+        return
+    }
+    catch {}
+    if (Date.now() > deadline)
+      throw new Error(`nginx-ui did not answer after the upgrade to ${image}`)
+    await new Promise(resolve => setTimeout(resolve, 1_000))
+  }
+}
