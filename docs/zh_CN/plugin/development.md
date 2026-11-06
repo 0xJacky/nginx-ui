@@ -24,6 +24,8 @@ outline: [2, 3]
 - 在服务器上先运行 `nginx-ui plugin pack <目录> <插件包>`，再运行 `nginx-ui plugin install <插件包> --enable --approve-permissions`，一步替换已安装的版本。
 - 把插件包放进插件目录下的 `packages` 目录（默认是 `<配置目录>/plugins/packages`），Nginx UI 下次启动时如果发现它的版本比已安装的新，就会安装它，然后把它移到 `packages/installed`。
 
+发行版也可以把插件包放在一个只读目录里，用 `[plugin]` 段的 `BundledDir` 或环境变量 `NGINX_UI_PLUGIN_BUNDLED_DIR` 指定。官方 Docker 镜像就是这样内置 DNS-01 插件的。Nginx UI 会把每个内置插件安装并启用一次；内置的插件包版本更新时会升级它；用户卸载后不会再自动装回来。只有用官方插件密钥签名的插件包会从这个目录安装。
+
 ## 开发浏览器包 {#developing-a-browser-bundle}
 
 浏览器包可以从本地开发服务器加载，而不是从已安装的插件包加载，这样重新构建后只需刷新页面：

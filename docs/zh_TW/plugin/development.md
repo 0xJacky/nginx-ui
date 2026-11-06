@@ -24,6 +24,8 @@ outline: [2, 3]
 - 在伺服器上先執行 `nginx-ui plugin pack <目錄> <外掛套件>`，再執行 `nginx-ui plugin install <外掛套件> --enable --approve-permissions`，一步取代已安裝的版本。
 - 把外掛套件放進外掛目錄下的 `packages` 目錄（預設是 `<設定目錄>/plugins/packages`），Nginx UI 下次啟動時如果發現它的版本比已安裝的新，就會安裝它，然後把它移到 `packages/installed`。
 
+發行版也可以把外掛套件放在一個唯讀目錄裡，用 `[plugin]` 區段的 `BundledDir` 或環境變數 `NGINX_UI_PLUGIN_BUNDLED_DIR` 指定。官方 Docker 映像檔就是這樣內建 DNS-01 外掛的。Nginx UI 會把每個內建外掛安裝並啟用一次；內建的外掛套件版本更新時會升級它；使用者解除安裝後不會再自動裝回來。只有用官方外掛金鑰簽署的外掛套件會從這個目錄安裝。
+
 ## 開發瀏覽器套件 {#developing-a-browser-bundle}
 
 瀏覽器套件可以從本機開發伺服器載入，而不是從已安裝的外掛套件載入，這樣重新建置後只需重新整理頁面：

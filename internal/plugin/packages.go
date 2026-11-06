@@ -77,15 +77,7 @@ func (m *Manager) InstallLocalPackage(ctx context.Context, id string, opts Insta
 		return nil, err
 	}
 
-	var best *LocalPackage
-	for i := range packages {
-		if packages[i].Manifest.ID != id {
-			continue
-		}
-		if best == nil || CompareVersions(packages[i].Manifest.Version, best.Manifest.Version) > 0 {
-			best = &packages[i]
-		}
-	}
+	best := newestPackage(packages, id)
 	if best == nil {
 		return nil, ErrLocalPackageNotFound
 	}
@@ -103,7 +95,12 @@ func (m *Manager) InstallLocalPackage(ctx context.Context, id string, opts Insta
 // Packages built for another platform stay where they are: cluster sync pushes
 // them to the nodes that run that platform.
 func (m *Manager) localPackages() ([]LocalPackage, error) {
-	dir := m.PackagesDir()
+	return m.packagesIn(m.PackagesDir())
+}
+
+// packagesIn lists the readable archives in dir that run on this node, sorted
+// by plugin id and then by version, oldest first.
+func (m *Manager) packagesIn(dir string) ([]LocalPackage, error) {
 	items, err := os.ReadDir(dir)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -144,6 +141,20 @@ func (m *Manager) localPackages() ([]LocalPackage, error) {
 		return CompareVersions(packages[i].Manifest.Version, packages[j].Manifest.Version) < 0
 	})
 	return packages, nil
+}
+
+// newestPackage returns the newest package of id, nil when there is none.
+func newestPackage(packages []LocalPackage, id string) *LocalPackage {
+	var best *LocalPackage
+	for i := range packages {
+		if packages[i].Manifest.ID != id {
+			continue
+		}
+		if best == nil || CompareVersions(packages[i].Manifest.Version, best.Manifest.Version) > 0 {
+			best = &packages[i]
+		}
+	}
+	return best
 }
 
 // applyLocalPackage installs one archive when it is new or newer than what is

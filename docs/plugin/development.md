@@ -37,6 +37,13 @@ loop short:
   Nginx UI starts, when its version is newer than the installed one. Nginx UI
   then moves it to `packages/installed`.
 
+A distribution can also ship packages in a read-only directory, set with
+`BundledDir` in the `[plugin]` section or `NGINX_UI_PLUGIN_BUNDLED_DIR`. The
+official Docker image bundles the DNS-01 plugin this way. Nginx UI installs and
+enables each bundled plugin once, upgrades it when the bundled package is
+newer, and does not bring it back after it was uninstalled. Only packages
+signed with an official plugin key are installed from this directory.
+
 ## Developing a Browser Bundle
 
 A browser bundle can be loaded from a local development server instead of an

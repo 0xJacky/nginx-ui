@@ -23,7 +23,7 @@ var autoInstallMu sync.Mutex
 // EnsureDNS01Plugin keeps a node that issues DNS-01 certificates working after
 // the provider code moved into a plugin: when a certificate needs DNS-01 and
 // the official plugin is not installed, it is fetched from the offline package
-// directory or from the marketplace. It is safe to call repeatedly.
+// directory, the bundled packages or the marketplace. It is safe to call repeatedly.
 func (m *Manager) EnsureDNS01Plugin(ctx context.Context) {
 	if !settings.PluginSettings.Enabled {
 		return
@@ -56,7 +56,7 @@ func (m *Manager) EnsureDNS01Plugin(ctx context.Context) {
 }
 
 // installDNS01Plugin prefers a package the operator already placed on the
-// node, then falls back to the marketplace. Either way only a package signed
+// node, then one the distribution bundles, then falls back to the marketplace. Either way only a package signed
 // with an official plugin key is installed without the user asking.
 func (m *Manager) installDNS01Plugin(ctx context.Context) (*Info, error) {
 	opts := InstallOptions{Enable: true, ApprovePermissions: true, MinTrust: TrustOfficial}
@@ -67,6 +67,14 @@ func (m *Manager) installDNS01Plugin(ctx context.Context) (*Info, error) {
 	}
 	if err != ErrLocalPackageNotFound {
 		m.log.Warnf("[plugin:%s] local package: %v", OfficialDNS01PluginID, err)
+	}
+
+	info, err = m.installBundledPackage(ctx, OfficialDNS01PluginID, opts)
+	if err == nil {
+		return info, nil
+	}
+	if err != ErrLocalPackageNotFound {
+		m.log.Warnf("[plugin:%s] bundled package: %v", OfficialDNS01PluginID, err)
 	}
 
 	if !settings.PluginSettings.MarketplaceEnabled {

@@ -40,7 +40,7 @@ func (m *Manager) Marketplace() *Marketplace {
 
 // StartMarketplace runs the marketplace side of the boot sequence: it refreshes
 // the partner keyring, installs whatever was dropped into the offline package
-// directory, schedules the daily catalog maintenance and makes sure the DNS-01
+// directory or bundled with the distribution, schedules the daily catalog maintenance and makes sure the DNS-01
 // plugin is there when a certificate needs it. It returns immediately, the
 // work happens in the background.
 func (m *Manager) StartMarketplace(ctx context.Context) {
@@ -55,6 +55,9 @@ func (m *Manager) StartMarketplace(ctx context.Context) {
 	go func() {
 		if err := m.ScanLocalPackages(ctx); err != nil {
 			m.log.Warnf("Scan local plugin packages: %v", err)
+		}
+		if err := m.InstallBundledPackages(ctx); err != nil {
+			m.log.Warnf("Install bundled plugin packages: %v", err)
 		}
 		m.EnsureDNS01Plugin(ctx)
 	}()

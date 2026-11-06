@@ -21,6 +21,10 @@ type Plugin struct {
 	Enabled bool `json:"enabled"`
 	// Dir overrides the plugin directory. Empty means {conf_dir}/plugins.
 	Dir string `json:"dir" protected:"true"`
+	// BundledDir is a read-only directory of plugin packages a distribution
+	// ships next to the binary, such as the official Docker image. They are
+	// installed once per node and upgraded when the bundled one is newer.
+	BundledDir string `json:"bundled_dir" protected:"true"`
 	// DefaultSyncPolicy is applied to newly installed plugins: manual or auto.
 	DefaultSyncPolicy string `json:"default_sync_policy"`
 

@@ -29,6 +29,13 @@ RUN case "${TARGETARCH}/${TARGETVARIANT}" in \
     tar -C / -Jxpf /tmp/s6-overlay-${S6_ARCH}.tar.xz && \
     rm -f /tmp/s6-overlay-noarch.tar.xz /tmp/s6-overlay-${S6_ARCH}.tar.xz
 
+# Bundled plugin packages. CI fetches the newest DNS-01 plugin release this
+# build can run into plugins/<os>-<arch> (see the docker-build job), and Nginx
+# UI installs it on the first boot of a node, so DNS-01 certificates keep
+# renewing without a marketplace download.
+ENV NGINX_UI_PLUGIN_BUNDLED_DIR=/usr/local/share/nginx-ui/plugins
+COPY plugins/$TARGETOS-$TARGETARCH/ /usr/local/share/nginx-ui/plugins/
+
 # register nginx service
 COPY resources/docker/nginx.run /etc/s6-overlay/s6-rc.d/nginx/run
 RUN echo 'longrun' > /etc/s6-overlay/s6-rc.d/nginx/type && \
