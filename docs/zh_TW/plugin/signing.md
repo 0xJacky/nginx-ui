@@ -147,7 +147,7 @@ nginx-ui plugin key rotate --id io.github.example.mydns --primary primary.key --
 
 目錄項目不需要改動，舊版本仍然依靠各自攜帶的憑證通過驗證。
 
-簽章金鑰可能已經外洩時，把它的金鑰 ID 加入目錄項目的 `revoked_signers`，`nginx-ui plugin key revoke signing.pub` 會給出要加入的那一行。Nginx UI 不再信任由它簽署的外掛套件，外掛目錄也會把由它簽署的版本標記為已撤回，正在執行這些版本的節點會收到更新提示。
+簽章金鑰可能已經外洩時，在[開發者中心](https://portal.nginxui.com)中該外掛的簽署者頁面撤銷它，這會把它的金鑰 ID 加入目錄項目的 `revoked_signers`，無需審查。對於你自己的外掛目錄，`nginx-ui plugin key revoke signing.pub` 會給出要加入的那一行。Nginx UI 不再信任由它簽署的外掛套件，外掛目錄也會把由它簽署的版本標記為已撤回，正在執行這些版本的節點會收到更新提示。
 
 主金鑰不能用這種方式更換。換成新的 `author_public_key` 後，所有舊版本都不再有可信的簽章，所以請離線保存並備份主金鑰。
 

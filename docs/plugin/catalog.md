@@ -11,27 +11,10 @@ anyone can publish a catalog of their own that people add as a source.
 
 ## Publishing in the Official Catalog
 
-The official catalog is built from the
-[nginxui/plugins](https://github.com/nginxui/plugins) repository. To submit a
-plugin:
-
-1. Publish the plugin in a public repository, with a GitHub release whose
-   assets are packages signed by a certified
-   [signing key](./signing.md#signing-keys).
-2. Make sure `nginx-ui plugin lint` and, for a plugin with a server process,
-   `nginx-ui plugin conformance` pass. The repository runs both on your
-   release.
-3. Open an issue with the **Submit a plugin** form. The issue is the whole
-   submission: the checks run on it and comment what the listing will show,
-   an edit runs them again, and a maintainer lists the plugin by approving
-   the issue. A pull request adding `plugins/<plugin id>.json` works too.
-
-The repository's contributing guide describes the review. New releases are
-picked up from your repository afterwards, and the listing follows the newest
-stable release: the description, the name translations and the
-[screenshots](./manifest.md#screenshots) of its `plugin.json`, the README at
-its tag and the icon inside its package. Only the English name is reviewed
-again when it changes.
+Plugins in the official catalog are submitted, reviewed and managed in the
+[Developer Center](https://portal.nginxui.com). See
+[Official Catalog](./official-catalog.md) for the requirements, the review
+and how a listing follows your releases.
 
 ## Catalog Document
 

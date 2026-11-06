@@ -74,6 +74,7 @@ const groups: Group[] = [
     items: [
       { link: 'packaging', text: { en: 'Packaging', zh_CN: '打包', zh_TW: '打包' } },
       { link: 'signing', text: { en: 'Signing and Trust', zh_CN: '签名与信任', zh_TW: '簽章與信任' } },
+      { link: 'official-catalog', text: { en: 'Official Catalog', zh_CN: '官方插件目录', zh_TW: '官方外掛目錄' } },
       { link: 'catalog', text: { en: 'Catalogs', zh_CN: '插件目录', zh_TW: '外掛目錄' } },
     ],
   },

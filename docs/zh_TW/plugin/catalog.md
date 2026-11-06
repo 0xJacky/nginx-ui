@@ -8,13 +8,7 @@ Nginx UI 的外掛市集列出一個或多個**外掛目錄**中的外掛。外�
 
 ## 發佈到官方外掛目錄 {#publishing-in-the-official-catalog}
 
-官方外掛目錄由 [nginxui/plugins](https://github.com/nginxui/plugins) 儲存庫建置。提交外掛的步驟：
-
-1. 在公開儲存庫中發佈外掛，並建立一個 GitHub Release，附件是由經過認證的[簽章金鑰](./signing.md#signing-keys)簽署的外掛套件。
-2. 確保 `nginx-ui plugin lint`，以及（對有伺服器端進程的外掛）`nginx-ui plugin conformance` 能夠通過。儲存庫會對你的版本執行這兩項檢查。
-3. 使用 **Submit a plugin** 表單建立 issue。這個 issue 就是完整的提交：檢查會在 issue 上執行，並以留言呈現上架後的展示效果；編輯 issue 會重新檢查；維護者核准 issue 後外掛即上架。也可以提交一個加入 `plugins/<外掛 ID>.json` 的拉取請求。
-
-儲存庫的貢獻指南介紹了審查流程。之後的新版本會自動從你的儲存庫取得，展示內容也跟隨最新的穩定版本：它 `plugin.json` 中的描述、名稱翻譯和[螢幕截圖](./manifest.md#screenshots)，它 tag 上的 README，以及它外掛套件內的圖示。只有英文名稱變更時需要再次審查。
+官方外掛目錄中的外掛在[開發者中心](https://portal.nginxui.com)提交、審查和管理。提交要求、審查流程以及上架內容如何跟隨版本更新，參見[官方外掛目錄](./official-catalog.md)。
 
 ## 目錄文件 {#catalog-document}
 

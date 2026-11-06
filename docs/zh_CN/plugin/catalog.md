@@ -8,13 +8,7 @@ Nginx UI 的插件市场列出一个或多个**插件目录**中的插件。插�
 
 ## 发布到官方插件目录 {#publishing-in-the-official-catalog}
 
-官方插件目录由 [nginxui/plugins](https://github.com/nginxui/plugins) 仓库构建。提交插件的步骤：
-
-1. 在公开仓库中发布插件，并创建一个 GitHub Release，附件是由经过认证的[签名密钥](./signing.md#signing-keys)签名的插件包。
-2. 确保 `nginx-ui plugin lint`，以及（对有服务端进程的插件）`nginx-ui plugin conformance` 能够通过。仓库会对你的版本运行这两项检查。
-3. 使用 **Submit a plugin** 表单创建 issue。这个 issue 就是完整的提交：检查会在 issue 上运行，并以评论给出上架后的展示效果；编辑 issue 会重新检查；维护者批准 issue 后插件即上架。也可以提交一个添加 `plugins/<插件 ID>.json` 的拉取请求。
-
-仓库的贡献指南介绍了审核流程。之后的新版本会自动从你的仓库获取，展示内容也跟随最新的稳定版本：它 `plugin.json` 中的描述、名称翻译和[截图](./manifest.md#screenshots)，它 tag 上的 README，以及它插件包内的图标。只有英文名称变化时需要再次审核。
+官方插件目录中的插件在[开发者中心](https://portal.nginxui.com)提交、审核和管理。提交要求、审核流程以及上架内容如何跟随版本更新，参见[官方插件目录](./official-catalog.md)。
 
 ## 目录文档 {#catalog-document}
 

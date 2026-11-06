@@ -147,7 +147,7 @@ nginx-ui plugin key rotate --id io.github.example.mydns --primary primary.key --
 
 目录条目不需要改动，旧版本仍然依靠各自携带的证书通过验证。
 
-签名密钥可能已经泄露时，把它的密钥 ID 加入目录条目的 `revoked_signers`，`nginx-ui plugin key revoke signing.pub` 会给出要添加的那一行。Nginx UI 不再信任由它签名的插件包，插件目录也会把由它签名的版本标记为已撤回，正在运行这些版本的节点会收到更新提示。
+签名密钥可能已经泄露时，在[开发者中心](https://portal.nginxui.com)中该插件的签名者页面吊销它，这会把它的密钥 ID 加入目录条目的 `revoked_signers`，无需审核。对于你自己的插件目录，`nginx-ui plugin key revoke signing.pub` 会给出要添加的那一行。Nginx UI 不再信任由它签名的插件包，插件目录也会把由它签名的版本标记为已撤回，正在运行这些版本的节点会收到更新提示。
 
 主密钥不能用这种方式更换。换成新的 `author_public_key` 后，所有旧版本都不再有可信的签名，所以请离线保存并备份主密钥。
 
