@@ -1,15 +1,18 @@
 # Nginx UI for Unraid
 
 This directory is the source for the official Nginx UI Community Applications
-repository. Publish its contents at `nginxui/unraid` before submitting
-that public repository to Community Applications.
+repository. A change on the `dev` branch of `0xJacky/nginx-ui` is validated and
+published to `nginxui/unraid` by `.github/workflows/unraid.yml`; edit the
+templates there, not in `nginxui/unraid`.
 
 ## Templates
 
 ### Nginx UI
 
 The standard template runs the bundled Nginx instance. It persists the Nginx UI
-database and settings, Nginx configuration, and web root separately. Container
+database, settings and plugins, Nginx configuration, and web root separately.
+Plugins are installed under `/etc/nginx-ui/plugins`, inside the Nginx UI appdata
+path, and the image bundles the official DNS-01 plugin. Container
 updates are handled by Unraid, so the template deliberately disables Nginx UI's
 Docker-socket-dependent self-updater and does not mount the Docker socket.
 
