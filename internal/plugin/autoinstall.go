@@ -5,6 +5,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/0xJacky/Nginx-UI/internal/cert"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -53,6 +54,21 @@ func (m *Manager) EnsureDNS01Plugin(ctx context.Context) {
 	}
 
 	m.log.Infof("[plugin:%s] installed %s automatically for DNS-01 certificates", info.ID, info.Version)
+}
+
+// renewAfterDNS01Install is the certificate renewal pass a DNS-01 plugin that
+// just became usable starts, a seam for tests.
+var renewAfterDNS01Install = cert.AutoCert
+
+// ensureDNS01PluginAndRenew runs EnsureDNS01Plugin and, when that made the
+// DNS-01 plugin usable, renews the certificates that waited for it right away
+// instead of at the next scheduled check.
+func (m *Manager) ensureDNS01PluginAndRenew(ctx context.Context) {
+	before := m.isUsable(OfficialDNS01PluginID)
+	m.EnsureDNS01Plugin(ctx)
+	if !before && m.isUsable(OfficialDNS01PluginID) {
+		renewAfterDNS01Install()
+	}
 }
 
 // installDNS01Plugin prefers a package the operator already placed on the

@@ -32,6 +32,10 @@ var (
 	dns01PluginNotified = make(map[uint64]time.Time)
 )
 
+// autoCertMu keeps the scheduled pass and the one a newly installed DNS-01
+// plugin starts from renewing the same certificates at the same time.
+var autoCertMu sync.Mutex
+
 func AutoCert() {
 	defer func() {
 		if err := recover(); err != nil {
@@ -40,6 +44,9 @@ func AutoCert() {
 			logger.Errorf("%s\n%s", err, buf)
 		}
 	}()
+	autoCertMu.Lock()
+	defer autoCertMu.Unlock()
+
 	logger.Info("AutoCert Worker Started")
 	autoCertList := model.GetAutoCertList()
 	for _, certModel := range autoCertList {
@@ -123,6 +130,9 @@ func autoCert(certModel *model.Cert) {
 
 	err = IssueCert(payload, log)
 	if err != nil {
+		if waitForDNS01Plugin(certModel, targetName, err) {
+			return
+		}
 		if isHTTP01ChallengeMethod(payload.ChallengeMethod) {
 			err = appendHTTP01ProbeSummary(err, certModel.Domains, certModel.Filename, log)
 		}
@@ -230,12 +240,27 @@ func handleAutoRenewFailure(certModel *model.Cert, log *Logger, name string, err
 	updateAutoRenewStatus(certModel, time.Now(), err.Error())
 	notification.Error("Renew Certificate Error", "Certificate %{name} renewal failed: %{error}",
 		buildAutoRenewNotificationDetails(name, err))
-	notifyDNS01PluginUnavailable(certModel, name, err)
 }
 
+// waitForDNS01Plugin handles a renewal that failed only because no enabled
+// plugin provides the DNS-01 challenge, typically right after an upgrade while
+// the DNS-01 plugin is still being installed. No failure is recorded, so the
+// retry cooldown does not hold the certificate back: the plugin manager renews
+// again as soon as the plugin is installed, and every later check retries.
+func waitForDNS01Plugin(certModel *model.Cert, name string, err error) bool {
+	if !isNoDNS01ProviderError(err) {
+		return false
+	}
+	logger.Warnf("Renewal of %s waits for a DNS-01 plugin: %v", name, err)
+	notifyWaitingForDNS01Plugin(certModel, name, err)
+	return true
+}
+
+// notifyWaitingForDNS01Plugin is a seam for tests.
+var notifyWaitingForDNS01Plugin = notifyDNS01PluginUnavailable
+
 // notifyDNS01PluginUnavailable tells the user that the renewal needs a plugin
-// nothing provides. The generic renewal failure alone does not say what to do
-// about it, so the reminder is sent next to it, once a day per certificate.
+// nothing provides, once a day per certificate.
 func notifyDNS01PluginUnavailable(certModel *model.Cert, name string, err error) {
 	if certModel == nil || !isNoDNS01ProviderError(err) {
 		return

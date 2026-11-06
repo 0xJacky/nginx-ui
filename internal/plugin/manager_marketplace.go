@@ -40,9 +40,9 @@ func (m *Manager) Marketplace() *Marketplace {
 
 // StartMarketplace runs the marketplace side of the boot sequence: it refreshes
 // the partner keyring, installs whatever was dropped into the offline package
-// directory or bundled with the distribution, schedules the daily catalog maintenance and makes sure the DNS-01
-// plugin is there when a certificate needs it. It returns immediately, the
-// work happens in the background.
+// directory or bundled with the distribution, schedules the daily catalog
+// maintenance and makes sure the DNS-01 plugin is there when a certificate
+// needs it. Only the marketplace work happens in the background.
 func (m *Manager) StartMarketplace(ctx context.Context) {
 	if !settings.PluginSettings.Enabled {
 		return
@@ -52,15 +52,17 @@ func (m *Manager) StartMarketplace(ctx context.Context) {
 
 	go m.refreshPartners(ctx)
 
-	go func() {
-		if err := m.ScanLocalPackages(ctx); err != nil {
-			m.log.Warnf("Scan local plugin packages: %v", err)
-		}
-		if err := m.InstallBundledPackages(ctx); err != nil {
-			m.log.Warnf("Install bundled plugin packages: %v", err)
-		}
-		m.EnsureDNS01Plugin(ctx)
-	}()
+	// Packages already on disk are installed before the boot goes on, so the
+	// first certificate renewal pass finds the DNS-01 providers they bring.
+	if err := m.ScanLocalPackages(ctx); err != nil {
+		m.log.Warnf("Scan local plugin packages: %v", err)
+	}
+	if err := m.InstallBundledPackages(ctx); err != nil {
+		m.log.Warnf("Install bundled plugin packages: %v", err)
+	}
+
+	// A marketplace download can take a while, it does not hold the boot up.
+	go m.ensureDNS01PluginAndRenew(ctx)
 }
 
 // scheduleMaintenance registers the daily catalog job on the scheduler the
@@ -91,7 +93,7 @@ func (m *Manager) scheduleMaintenance() {
 func (m *Manager) runMaintenance() {
 	ctx := m.context()
 	m.Marketplace().runMaintenance(ctx)
-	m.EnsureDNS01Plugin(ctx)
+	m.ensureDNS01PluginAndRenew(ctx)
 }
 
 // approvedPermissions returns the permission set the user approved for an

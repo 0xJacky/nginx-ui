@@ -130,3 +130,23 @@ func TestEnsureDNS01PluginReinstallsTheBundledPackage(t *testing.T) {
 	require.NoError(t, err)
 	assert.True(t, info.Enabled)
 }
+
+func TestEnsureDNS01PluginAndRenewRenewsOnceThePluginArrives(t *testing.T) {
+	manager := newCertAwareManager(t)
+	dir, signer := useBundledDir(t)
+	bundlePackage(t, dir, OfficialDNS01PluginID, "1.0.0", signer)
+	addDNS01Cert(t)
+
+	renewals := 0
+	previous := renewAfterDNS01Install
+	renewAfterDNS01Install = func() { renewals++ }
+	t.Cleanup(func() { renewAfterDNS01Install = previous })
+
+	ctx := context.Background()
+	manager.ensureDNS01PluginAndRenew(ctx)
+	assert.Equal(t, 1, renewals, "the certificates that waited for the plugin are renewed")
+
+	// Already there: nothing new to renew for.
+	manager.ensureDNS01PluginAndRenew(ctx)
+	assert.Equal(t, 1, renewals)
+}

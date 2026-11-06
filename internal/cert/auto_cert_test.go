@@ -263,3 +263,32 @@ func TestCertificateRenewalTimeUsesMidpointForOversizedThreshold(t *testing.T) {
 		t.Fatalf("certificateRenewalTime() = %s, want %s", got, want)
 	}
 }
+
+func TestWaitForDNS01PluginKeepsTheRenewalOutOfTheCooldown(t *testing.T) {
+	certModel := &model.Cert{Name: "example.com"}
+	notified := 0
+	previous := notifyWaitingForDNS01Plugin
+	notifyWaitingForDNS01Plugin = func(*model.Cert, string, error) { notified++ }
+	t.Cleanup(func() { notifyWaitingForDNS01Plugin = previous })
+
+	waiting := waitForDNS01Plugin(certModel, "example.com", cosy.WrapErrorWithParams(ErrNoDNS01Provider, "httpreq"))
+
+	if !waiting {
+		t.Fatal("a missing DNS-01 provider should wait for the plugin")
+	}
+	if certModel.LastAutoRenewAt != nil || certModel.LastAutoRenewError != "" {
+		t.Fatalf("no failure should be recorded, got at=%v error=%q", certModel.LastAutoRenewAt, certModel.LastAutoRenewError)
+	}
+	if shouldSkipAutoRenew(certModel, time.Now()) {
+		t.Fatal("the next check must not be held back by the failure cooldown")
+	}
+	if notified != 1 {
+		t.Fatalf("the user is told the renewal waits for the plugin, got %d notifications", notified)
+	}
+}
+
+func TestWaitForDNS01PluginLeavesOtherFailuresAlone(t *testing.T) {
+	if waitForDNS01Plugin(&model.Cert{}, "example.com", stderrors.New("acme: unauthorized")) {
+		t.Fatal("an ordinary renewal failure is not a missing plugin")
+	}
+}
