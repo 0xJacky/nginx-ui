@@ -26,7 +26,8 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Install Script', link: '/guide/install-script-linux' },
             { text: 'Install on Kubernetes', link: '/guide/install-kubernetes' },
             { text: 'Install on OpenWrt', link: '/guide/install-openwrt' },
-            { text: 'Install on Unraid', link: '/guide/install-unraid' }
+            { text: 'Install on Unraid', link: '/guide/install-unraid' },
+            { text: 'Upgrading to v3', link: '/guide/upgrade-v3' }
           ]
         },
         {
@@ -87,6 +88,7 @@ export const enConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Node', link: '/guide/config-node' },
             { text: 'Open ID Connect (OIDC)', link: '/guide/config-oidc' },
             { text: 'Open AI', link: '/guide/config-openai' },
+            { text: 'Plugin', link: '/guide/config-plugin' },
             { text: 'Server', link: '/guide/config-server' },
             { text: 'Site Check', link: '/guide/config-sitecheck' },
             { text: 'Terminal', link: '/guide/config-terminal' },

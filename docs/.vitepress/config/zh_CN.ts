@@ -28,7 +28,8 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: '即刻开始', link: '/zh_CN/guide/getting-started' },
             { text: '使用 Homebrew 安装', link: '/zh_CN/guide/install-homebrew' },
             { text: '使用 Winget 安装', link: '/zh_CN/guide/install-winget' },
-            { text: '安装脚本', link: '/zh_CN/guide/install-script-linux' }
+            { text: '安装脚本', link: '/zh_CN/guide/install-script-linux' },
+            { text: '升级到 v3', link: '/zh_CN/guide/upgrade-v3' }
           ]
         },
         {
@@ -86,6 +87,7 @@ export const zhCNConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Nginx Log', link: '/zh_CN/guide/config-nginx-log' },
             { text: 'Node', link: '/zh_CN/guide/config-node' },
             { text: 'Open AI', link: '/zh_CN/guide/config-openai' },
+            { text: 'Plugin', link: '/zh_CN/guide/config-plugin' },
             { text: 'Server', link: '/zh_CN/guide/config-server' },
             { text: 'Site Check', link: '/zh_CN/guide/config-sitecheck' },
             { text: 'Terminal', link: '/zh_CN/guide/config-terminal' },

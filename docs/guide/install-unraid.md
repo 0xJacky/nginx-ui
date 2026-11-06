@@ -19,6 +19,8 @@ instance. The default host paths are:
 
 Open `http://<unraid-address>:8080` after installation. The initial secret is
 stored at `/mnt/user/appdata/nginx-ui/.install_secret` with the default mapping.
+Installed plugins, including the bundled DNS-01 plugin, are kept in
+`/mnt/user/appdata/nginx-ui/plugins`.
 
 Unraid manages container image updates, so this template does not mount the
 Docker socket and disables Nginx UI's socket-dependent self-updater.

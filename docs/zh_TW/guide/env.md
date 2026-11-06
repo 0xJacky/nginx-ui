@@ -117,10 +117,13 @@
 
 ## Nginx Log
 
-| 設定                     | 環境變數                                       |
-|-------------------------|-----------------------------------------------|
-| IndexingEnabled | NGINX_UI_NGINX_LOG_INDEXING_ENABLED |
-| IndexPath               | NGINX_UI_NGINX_LOG_INDEX_PATH                |
+| 設定 | 環境變數 |
+|---|---|
+| [IndexingEnabled](./config-nginx-log.md#indexingenabled) | NGINX_UI_NGINX_LOG_INDEXING_ENABLED |
+| [IndexPath](./config-nginx-log.md#indexpath) | NGINX_UI_NGINX_LOG_INDEX_PATH |
+| [IncrementalIndexInterval](./config-nginx-log.md#incrementalindexinterval) | NGINX_UI_NGINX_LOG_INCREMENTAL_INDEX_INTERVAL |
+| [MaxConcurrentIndexTasks](./config-nginx-log.md#maxconcurrentindextasks) | NGINX_UI_NGINX_LOG_MAX_CONCURRENT_INDEX_TASKS |
+| [IndexCustomMMDB](./config-nginx-log.md#indexcustommmdb) | NGINX_UI_NGINX_LOG_INDEX_CUSTOM_MMDB |
 | [GeoMapPath](./config-nginx-log.md#geomappath) | NGINX_UI_NGINX_LOG_GEO_MAP_PATH |
 
 ## Node
@@ -139,6 +142,26 @@
 | BaseUrl | NGINX_UI_OPENAI_BASE_URL |
 | Proxy   | NGINX_UI_OPENAI_PROXY    |
 | Token   | NGINX_UI_OPENAI_TOKEN    |
+
+## Plugin
+
+| 設定 | 環境變數 |
+|---|---|
+| [Enabled](./config-plugin.md#enabled) | NGINX_UI_PLUGIN_ENABLED |
+| [Dir](./config-plugin.md#dir) | NGINX_UI_PLUGIN_DIR |
+| [BundledDir](./config-plugin.md#bundleddir) | NGINX_UI_PLUGIN_BUNDLED_DIR |
+| [DefaultSyncPolicy](./config-plugin.md#defaultsyncpolicy) | NGINX_UI_PLUGIN_DEFAULT_SYNC_POLICY |
+| [MarketplaceEnabled](./config-plugin.md#marketplaceenabled) | NGINX_UI_PLUGIN_MARKETPLACE_ENABLED |
+| [MarketplaceSources](./config-plugin.md#marketplacesources) | NGINX_UI_PLUGIN_MARKETPLACE_SOURCES |
+| [TrustedPublicKeys](./config-plugin.md#trustedpublickeys) | NGINX_UI_PLUGIN_TRUSTED_PUBLIC_KEYS |
+| [AllowCommunityPlugins](./config-plugin.md#allowcommunityplugins) | NGINX_UI_PLUGIN_ALLOW_COMMUNITY_PLUGINS |
+| [AllowUploads](./config-plugin.md#allowuploads) | NGINX_UI_PLUGIN_ALLOW_UPLOADS |
+| [AutoUpdate](./config-plugin.md#autoupdate) | NGINX_UI_PLUGIN_AUTO_UPDATE |
+| [AllowInsecureDownloadURL](./config-plugin.md#allowinsecuredownloadurl) | NGINX_UI_PLUGIN_ALLOW_INSECURE_DOWNLOAD_URL |
+| [DeveloperMode](./config-plugin.md#developermode) | NGINX_UI_PLUGIN_DEVELOPER_MODE |
+| [MemoryLimitMB](./config-plugin.md#memorylimitmb) | NGINX_UI_PLUGIN_MEMORY_LIMIT_MB |
+| [CPUPercent](./config-plugin.md#cpupercent) | NGINX_UI_PLUGIN_CPU_PERCENT |
+| [CgroupRoot](./config-plugin.md#cgrouproot) | NGINX_UI_PLUGIN_CGROUP_ROOT |
 
 ## Terminal
 

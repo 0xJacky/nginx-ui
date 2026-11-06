@@ -50,7 +50,10 @@ features:
         details: Edit configurations using our NgxConfigEditor block editor or Ace Code Editor with nginx syntax highlighting.
     -   icon: 📜
         title: Online View Nginx Logs
-        details: Access and view your Nginx logs directly online.
+        details: Read and follow your Nginx logs online, search them with filters, and see traffic on a dashboard and visitor maps.
+    -   icon: 🧩
+        title: Plugin System
+        details: Add capabilities with signed plugins from the marketplace, an uploaded file or an offline directory, such as the official DNS-01 plugin.
     -   icon: 💻
         title: Written in Go and Vue
         details: The platform is built with Go and Vue, and distributed as a single executable binary.

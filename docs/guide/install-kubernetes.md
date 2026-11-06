@@ -76,7 +76,7 @@ The chart creates and retains these claims by default:
 | Claim | Container path | Purpose |
 | --- | --- | --- |
 | `nginx` | `/etc/nginx` | Bundled Nginx configuration |
-| `nginxUI` | `/etc/nginx-ui` | Database, application settings, and install secret |
+| `nginxUI` | `/etc/nginx-ui` | Database, application settings, install secret, log index, and installed plugins |
 
 An optional `www` claim mounts at `/var/www`. Set a StorageClass per claim with
 `persistence.<name>.storageClass`, or reuse a pre-provisioned claim with
