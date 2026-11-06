@@ -15,12 +15,17 @@
   <Category>Tools:System</Category>
   <ExtraSearchTerms>nginx reverse proxy linuxserver swag certificate</ExtraSearchTerms>
   <Requires>An existing LinuxServer SWAG container. The Docker socket grants root-equivalent host control. The SWAG appdata directory must be mounted at /config in both containers.</Requires>
-  <Changes>Initial official SWAG controller template.</Changes>
-  <Date>2026-07-30</Date>
+  <Changes>### 3.0.0
+- Nginx UI 3 adds plugins. They are installed under /etc/nginx-ui/plugins, inside the Nginx UI appdata path, so they survive container updates.
+- The image bundles the official DNS-01 plugin, so DNS-01 certificates keep renewing without a marketplace download.
+- Log analytics uses a new built-in index. Logs are indexed again after the update.
+### 2026-07-30
+- Initial official SWAG controller template.</Changes>
+  <Date>2026-11-06</Date>
   <MinVer>6.12.0</MinVer>
   <License>AGPL-3.0-only</License>
   <Config Name="WebUI port" Target="9000" Default="9000" Mode="tcp" Description="Direct Nginx UI backend port. Do not expose it to the internet." Type="Port" Display="always" Required="true" Mask="false"/>
-  <Config Name="Nginx UI appdata" Target="/etc/nginx-ui" Default="/mnt/user/appdata/nginx-ui-swag" Mode="rw" Description="Nginx UI database, settings, and startup secret." Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Nginx UI appdata" Target="/etc/nginx-ui" Default="/mnt/user/appdata/nginx-ui-swag" Mode="rw" Description="Nginx UI database, settings, plugins, and startup secret." Type="Path" Display="always" Required="true" Mask="false"/>
   <Config Name="SWAG appdata" Target="/config" Default="/mnt/user/appdata/swag" Mode="rw" Description="Use the same host directory SWAG mounts at /config. The container target must remain /config." Type="Path" Display="always" Required="true" Mask="false"/>
   <Config Name="Docker socket" Target="/var/run/docker.sock" Default="/var/run/docker.sock" Mode="rw" Description="Required to test, reload, and restart Nginx in SWAG. Grants root-equivalent host control." Type="Path" Display="always" Required="true" Mask="false"/>
   <Config Name="Timezone" Target="TZ" Default="Etc/UTC" Description="IANA timezone, for example Europe/Berlin." Type="Variable" Display="always" Required="true" Mask="false"/>

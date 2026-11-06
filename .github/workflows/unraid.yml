@@ -1,5 +1,11 @@
 name: Unraid templates
 
+# Validates the Unraid Community Applications repository in
+# packaging/unraid/repository and, on dev, publishes it to nginxui/unraid,
+# the repository Community Applications reads. The templates track
+# uozi/nginx-ui:latest, so Unraid updates the container on every release; this
+# only carries template changes. Publishing needs UNRAID_DEPLOY_KEY, the private
+# half of a deploy key with write access on nginxui/unraid.
 on:
   push:
     branches:
@@ -7,6 +13,7 @@ on:
     paths:
       - 'packaging/unraid/**'
       - '.github/workflows/unraid.yml'
+  workflow_dispatch:
   pull_request:
     paths:
       - 'packaging/unraid/**'
@@ -31,3 +38,42 @@ jobs:
 
       - name: Validate Community Applications repository
         run: bash packaging/unraid/repository/tests/validate.sh
+
+  publish:
+    needs: validate
+    if: github.ref == 'refs/heads/dev' && github.event_name != 'pull_request'
+    runs-on: ubuntu-26.04
+    concurrency:
+      group: unraid-publish
+      cancel-in-progress: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Publish to nginxui/unraid
+        env:
+          DEPLOY_KEY: ${{ secrets.UNRAID_DEPLOY_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DEPLOY_KEY}" ]; then
+            echo "::warning title=Unraid templates not published::UNRAID_DEPLOY_KEY is not set."
+            exit 0
+          fi
+          key="${RUNNER_TEMP}/unraid_deploy_key"
+          (umask 077 && printf '%s\n' "${DEPLOY_KEY}" >"${key}")
+          trap 'rm -f "${key}"' EXIT
+          export GIT_SSH_COMMAND="ssh -i ${key} -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+          target="${RUNNER_TEMP}/unraid"
+          git clone --depth 1 git@github.com:nginxui/unraid.git "${target}"
+          rsync -a --delete --exclude .git packaging/unraid/repository/ "${target}/"
+          cd "${target}"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "nginxui/unraid is up to date"
+            exit 0
+          fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -q -m "chore: sync from 0xJacky/nginx-ui@${GITHUB_SHA::10}"
+          git push origin HEAD:main
