@@ -247,11 +247,9 @@ func TestSupervisorFallsBackToStdioWhenGRPCGoesAway(t *testing.T) {
 func TestSupervisorStaysOnStdioWhenTheGRPCDialFails(t *testing.T) {
 	sup := newTestSupervisor(t, pluginModeGRPCBroken, func(cfg *SupervisorConfig) { cfg.DataDir = shortDataDir(t) })
 	sup.grpcDialTimeout = 2 * time.Second
-	started := time.Now()
 	require.NoError(t, sup.Start(context.Background()))
 	t.Cleanup(func() { _ = sup.Stop(context.Background()) })
 
-	assert.Less(t, time.Since(started), 5*time.Second)
 	assert.Equal(t, protocol.TransportStdio, sup.Transport())
 
 	client, err := sup.Client()
@@ -259,6 +257,23 @@ func TestSupervisorStaysOnStdioWhenTheGRPCDialFails(t *testing.T) {
 	var options protocol.DNS01OptionsResult
 	require.NoError(t, client.Call(context.Background(), protocol.MethodDNS01Options, protocol.DNS01OptionsParams{Provider: "test"}, &options))
 	assert.Equal(t, 90, options.PropagationTimeoutSeconds)
+}
+
+// The dial is timed on its own: starting the plugin process in front of it
+// takes several seconds on a busy runner.
+func TestConnectGRPCGivesUpAfterTheDialTimeout(t *testing.T) {
+	sup := newTestSupervisor(t, pluginModeGRPCBroken, nil)
+	sup.grpcDialTimeout = 500 * time.Millisecond
+	p := &process{initResult: protocol.InitializeResult{
+		Transports: []string{protocol.TransportStdio, protocol.TransportGRPC},
+		RPCSocket:  filepath.Join(shortDataDir(t), "nothing-listens-here.sock"),
+	}}
+
+	started := time.Now()
+	sup.connectGRPC(context.Background(), p)
+
+	assert.Less(t, time.Since(started), defaultGRPCDialTimeout)
+	assert.False(t, p.grpc.active(), "a failed dial leaves the calls on stdio")
 }
 
 func TestSupervisorDialsTheDefaultSocket(t *testing.T) {

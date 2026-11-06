@@ -205,7 +205,9 @@ func newTestSupervisor(t *testing.T, mode string, adjust func(cfg *SupervisorCon
 
 	supervisor := NewSupervisor(cfg)
 	supervisor.extraEnv = []string{testPluginModeEnv + "=" + mode}
-	supervisor.handshakeTimeout = 10 * time.Second
+	// Starting the race instrumented test binary takes several seconds on a
+	// busy CI runner, as in newTestManager.
+	supervisor.handshakeTimeout = testHandshakeTimeout
 	supervisor.pingInterval = 250 * time.Millisecond
 	supervisor.pingTimeout = 2 * time.Second
 	supervisor.shutdownTimeout = 500 * time.Millisecond
@@ -320,6 +322,10 @@ func TestSupervisorRejectsIncompatibleAPIVersion(t *testing.T) {
 	assert.Equal(t, StateError, supervisor.State())
 }
 
+// testRestartWindow bounds waiting for a plugin that crashes and is started
+// again: every start runs the race instrumented test binary anew.
+const testRestartWindow = 90 * time.Second
+
 func TestSupervisorRestartsAfterCrash(t *testing.T) {
 	supervisor := newTestSupervisor(t, pluginModeCrash, nil)
 	// A high limit keeps the plugin in the restart loop for this test.
@@ -329,7 +335,7 @@ func TestSupervisorRestartsAfterCrash(t *testing.T) {
 
 	assert.Eventually(t, func() bool {
 		return supervisor.Restarts() >= 2
-	}, 10*time.Second, 10*time.Millisecond, "the crashed plugin was not restarted")
+	}, testRestartWindow, 10*time.Millisecond, "the crashed plugin was not restarted")
 	assert.Error(t, supervisor.LastError())
 }
 
@@ -340,7 +346,7 @@ func TestSupervisorStopsRestartingAfterThreeCrashes(t *testing.T) {
 
 	assert.Eventually(t, func() bool {
 		return supervisor.State() == StateError
-	}, 10*time.Second, 10*time.Millisecond, "the plugin never reached the error state")
+	}, testRestartWindow, 10*time.Millisecond, "the plugin never reached the error state")
 	assert.Equal(t, 2, supervisor.Restarts())
 	assert.Error(t, supervisor.LastError())
 
