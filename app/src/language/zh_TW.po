@@ -12680,6 +12680,123 @@ msgstr "對原始日誌行進行子字串搜尋"
 msgid "Error log indexing"
 msgstr "錯誤日誌索引"
 
+msgid "Apply restricted nginx directives?"
+msgstr "套用受限的 nginx 指令？"
+
+msgid "Apply anyway"
+msgstr "仍然套用"
+
+msgid "This configuration loads code into the Nginx worker processes, which runs with the privileges of Nginx itself. Only apply it if you wrote these directives or trust where they came from."
+msgstr "此設定會將程式碼載入 Nginx worker 行程中，並以 Nginx 本身的權限執行。僅在這些指令由您撰寫或來源可信時才套用。"
+
+msgid "Restricted directives"
+msgstr "受限指令"
+
+msgid "Found in"
+msgstr "位於"
+
+msgid "Such a configuration is not replicated to other nodes. Save it on each node that needs it."
+msgstr "此類設定不會同步到其他節點，請在需要的每個節點上分別儲存。"
+
+msgid "Go to Settings"
+msgstr "前往設定"
+
+msgid "This configuration loads code into the Nginx worker processes. Applying it needs a two-factor confirmation, so enable two-factor authentication on your account first."
+msgstr "此設定會將程式碼載入 Nginx worker 行程中。套用需要多重要素驗證確認，請先為您的帳號啟用多重要素驗證。"
+
+msgid "Secret files are hidden from read-only service tokens"
+msgstr "唯讀服務權杖看不到機密檔案"
+
+msgid "Include pattern uses glob syntax that cannot be validated: {0}"
+msgstr "包含模式使用了無法驗證的 glob 語法：{0}"
+
+msgid "Included file {0} contains restricted nginx directive: {1}"
+msgstr "包含的檔案 {0} 含有受限的 nginx 指令：{1}"
+
+msgid "Restricted nginx directives need confirmation: {0} in {1}"
+msgstr "受限的 nginx 指令需要確認：{1} 中的 {0}"
+
+msgid "Saving restricted nginx directives requires two-factor authentication on your account: {0} in {1}"
+msgstr "儲存受限的 nginx 指令需要為您的帳號啟用多重要素驗證：{1} 中的 {0}"
+
+msgid "This remote node feed carries stored secrets and requires a token with write scope"
+msgstr "此遠端節點來源包含已儲存的機密，需要具有寫入權限的權杖"
+
+msgid "Enter the API token again to save a different endpoint, proxy or API type"
+msgstr "請重新輸入 API 權杖，以儲存不同的端點、代理或 API 類型"
+
+msgid "Too many failed attempts, please try again later"
+msgstr "失敗次數過多，請稍後再試"
+
+msgid "Waiting for the node to restart and report the target version..."
+msgstr "正在等待節點重新啟動並回報目標版本..."
+
+msgid "Invalid upgrade target. Check for a release before upgrading."
+msgstr "升級目標無效。升級前請先檢查是否有新版本。"
+
+msgid "The upgrade timed out. Check the node logs."
+msgstr "升級逾時。請檢查節點記錄。"
+
+msgid "The node returned an invalid version response."
+msgstr "節點傳回的版本回應無效。"
+
+msgid "The node returned an invalid upgrade response."
+msgstr "節點傳回的升級回應無效。"
+
+msgid "The node failed to upgrade."
+msgstr "節點升級失敗。"
+
+msgid "The upgrade connection failed. Check authentication and network connectivity."
+msgstr "升級連線失敗。請檢查驗證和網路連線。"
+
+msgid "The upgrade connection closed before installation started."
+msgstr "升級連線在開始安裝前已關閉。"
+
+msgid "Could not verify the upgrade. Check the node version and service status."
+msgstr "無法驗證升級。請檢查節點版本和服務狀態。"
+
+msgid "Words match anywhere in the line; all of them must match. Quotes keep a phrase together, a leading - excludes."
+msgstr "詞語可比對行內任意位置，且必須全部比對成功。引號可將片語視為整體，前綴 - 表示排除。"
+
+msgid "Search, e.g. status:5xx ip:10.0.0.0/8 -bot"
+msgstr "搜尋，例如 status:5xx ip:10.0.0.0/8 -bot"
+
+msgid "Level"
+msgstr "等級"
+
+msgid "Client"
+msgstr "用戶端"
+
+msgid "Searched as plain text: %{tokens}"
+msgstr "以純文字搜尋：%{tokens}"
+
+msgid "Search, e.g. level:error upstream timed out -ip:10.0.0.1"
+msgstr "搜尋，例如 level:error upstream timed out -ip:10.0.0.1"
+
+msgid "%{total} entries found in %{took} ms"
+msgstr "找到 %{total} 筆記錄，耗時 %{took} 毫秒"
+
+msgid "Dry run completed for %{node}. No changes were made."
+msgstr "%{node} 試運行已完成，未做任何變更。"
+
+msgid "Upgrade failed for %{node}: %{error}"
+msgstr "%{node} 升級失敗：%{error}"
+
+msgid "Upgrade cancelled."
+msgstr "升級已取消。"
+
+msgid "Read resources and runtime status through the management API. Stored secrets such as credentials and private keys are hidden from read-only tokens."
+msgstr "透過管理 API 讀取資源和執行狀態。憑證、私鑰等已儲存的機密對唯讀權杖隱藏。"
+
+msgid "Use read-only Nginx UI MCP tools. Private keys are hidden from read-only tokens."
+msgstr "使用唯讀的 Nginx UI MCP 工具。私鑰對唯讀權杖隱藏。"
+
+msgid "Pricing per million tokens"
+msgstr "每百萬 token 的價格"
+
+msgid "Dry run completed. No changes were made."
+msgstr "試運行已完成，未做任何變更。"
+
 #~ msgid ""
 #~ "The official catalog is always used and comes first. Catalogs added here "
 #~ "follow it in order, and the first source that offers a plugin wins."

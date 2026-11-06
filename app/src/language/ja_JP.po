@@ -12660,122 +12660,386 @@ msgstr ""
 msgid ""
 "Add Nginx configuration of its own. It takes effect only where you include "
 "it, and Nginx UI applies it only when the configuration remains valid."
-msgstr ""
+msgstr "独自の Nginx 設定を追加します。インクルードした場所でのみ有効になり、設定が有効なままの場合にのみ Nginx UI が適用します。"
 
 msgid "Read the Nginx configuration files of this node."
-msgstr ""
+msgstr "このノードの Nginx 設定ファイルを読み取ります。"
 
 msgid "See the sites of this node and their addresses."
-msgstr ""
+msgstr "このノードのサイトとそのアドレスを確認できます。"
 
 msgid ""
 "See the certificates and when they expire, without the parts that must stay "
 "secret."
-msgstr ""
+msgstr "秘密にすべき部分を除いて、証明書とその有効期限を確認できます。"
 
 msgid "Nginx configuration snippets"
-msgstr ""
+msgstr "Nginx 設定スニペット"
 
 msgid "Nginx configuration"
-msgstr ""
+msgstr "Nginx 設定"
 
 msgid "Certificate list"
-msgstr ""
+msgstr "証明書一覧"
 
 msgid "DNS Validation"
-msgstr ""
+msgstr "DNS 検証"
 
 msgid ""
 "The main node has no DNS-01 plugin. Install it on the main node, or validate "
 "on this node."
-msgstr ""
+msgstr "メインノードに DNS-01 プラグインがありません。メインノードにインストールするか、このノードで検証してください。"
 
 msgid ""
 "Credentials of the main node. Switch to the main node to add or change one."
-msgstr ""
+msgstr "メインノードの認証情報です。追加や変更はメインノードに切り替えて行ってください。"
 
 msgid "On the main node"
-msgstr ""
+msgstr "メインノードで"
 
 msgid "On this node"
-msgstr ""
+msgstr "このノードで"
 
 msgid ""
 "The main node validates the domain with its DNS credentials, sends the "
 "certificate to this node and keeps renewing it."
-msgstr ""
+msgstr "メインノードが DNS 認証情報でドメインを検証し、証明書をこのノードに送信して更新を続けます。"
 
 msgid ""
 "This node validates the domain with its own DNS credentials and renews the "
 "certificate itself."
-msgstr ""
+msgstr "このノードが自身の DNS 認証情報でドメインを検証し、証明書を自分で更新します。"
 
 msgid "Only a DNS-01 certificate can be issued for another node"
-msgstr ""
+msgstr "他のノード向けに発行できるのは DNS-01 証明書のみです"
 
 msgid "Node not found"
-msgstr ""
+msgstr "ノードが見つかりません"
 
 msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
-msgstr ""
+msgstr "ノード {0} は自身向けに発行された証明書を受け取れません。先にアップグレードしてください"
 
 msgid "Node {0} answered {1}: {2}"
-msgstr ""
+msgstr "ノード {0} の応答：{1}：{2}"
 
 msgid "The Nginx configuration still loads the certificate: {0}"
-msgstr ""
+msgstr "Nginx の設定が引き続きこの証明書を読み込んでいます：{0}"
 
 msgid "The certificate was issued, but sending it to node {0} failed: {1}"
-msgstr ""
+msgstr "証明書は発行されましたが、ノード {0} への送信に失敗しました：{1}"
 
 msgid "Node {0} cannot be reached: {1}"
-msgstr ""
+msgstr "ノード {0} に接続できません：{1}"
 
 msgid "[Nginx UI] Sending the certificate to node %{name}"
-msgstr ""
+msgstr "[Nginx UI] ノード %{name} に証明書を送信しています"
 
 msgid "Issued for %{node}"
-msgstr ""
+msgstr "%{node} 向けに発行"
 
 msgid ""
 "This instance validates the domain, keeps renewing the certificate and sends "
 "each renewal to %{node}."
-msgstr ""
+msgstr "このインスタンスがドメインを検証して証明書の更新を続け、更新のたびに %{node} へ送信します。"
 
 msgid "Files on the node:"
-msgstr ""
+msgstr "ノード上のファイル："
 
 msgid "Issued by this instance for %{node} and renewed here"
-msgstr ""
+msgstr "このインスタンスが %{node} 向けに発行し、ここで更新しています"
 
 msgid "For %{node}"
-msgstr ""
+msgstr "%{node} 向け"
 
 msgid ""
 "This instance stops renewing the certificate and deletes its own copy. The "
 "files on %{node} stay unless you remove them below."
-msgstr ""
+msgstr "このインスタンスは証明書の更新を停止し、自身のコピーを削除します。%{node} 上のファイルは、以下で削除しない限り残ります。"
 
 msgid "Also remove the certificate files from %{node}"
-msgstr ""
+msgstr "%{node} から証明書ファイルも削除する"
 
 msgid ""
 "They are kept when the Nginx configuration of the node still loads them."
-msgstr ""
+msgstr "ノードの Nginx 設定がまだ読み込んでいる場合は保持されます。"
 
 msgid "Issue the certificate on the main node"
-msgstr ""
+msgstr "メインノードで証明書を発行"
 
 msgid ""
 "The node did not confirm that it received the certificate. Update Nginx UI "
 "on the node and try again."
-msgstr ""
+msgstr "ノードが証明書の受信を確認しませんでした。ノードの Nginx UI を更新して、もう一度お試しください。"
 
 msgid "Recommended memory: %{size}"
-msgstr ""
+msgstr "推奨メモリ：%{size}"
 
 msgid "Nodes: %{target}"
-msgstr ""
+msgstr "ノード：%{target}"
+
+msgid "Certificates using the DNS-01 challenge cannot be renewed until the DNS-01 plugin is installed."
+msgstr "DNS-01 チャレンジを使用する証明書は、DNS-01 プラグインをインストールするまで更新できません。"
+
+msgid "Plugins updated automatically"
+msgstr "プラグインを自動更新しました"
+
+msgid "Updated automatically: %{plugins}"
+msgstr "自動更新しました：%{plugins}"
+
+msgid "Plugin updates available"
+msgstr "プラグインの更新があります"
+
+msgid "Updates are available for %{plugins}"
+msgstr "%{plugins} の更新があります"
+
+msgid "Apply restricted nginx directives?"
+msgstr "制限付きの nginx ディレクティブを適用しますか？"
+
+msgid "Apply anyway"
+msgstr "そのまま適用"
+
+msgid "This configuration loads code into the Nginx worker processes, which runs with the privileges of Nginx itself. Only apply it if you wrote these directives or trust where they came from."
+msgstr "この設定は Nginx のワーカープロセスにコードを読み込み、Nginx 自身の権限で実行されます。自分で記述したディレクティブか、提供元を信頼できる場合のみ適用してください。"
+
+msgid "Restricted directives"
+msgstr "制限付きディレクティブ"
+
+msgid "Found in"
+msgstr "検出場所"
+
+msgid "Such a configuration is not replicated to other nodes. Save it on each node that needs it."
+msgstr "このような設定は他のノードに複製されません。必要な各ノードで保存してください。"
+
+msgid "Go to Settings"
+msgstr "設定へ移動"
+
+msgid "This configuration loads code into the Nginx worker processes. Applying it needs a two-factor confirmation, so enable two-factor authentication on your account first."
+msgstr "この設定は Nginx のワーカープロセスにコードを読み込みます。適用には二要素確認が必要なため、先にアカウントの二要素認証を有効にしてください。"
+
+msgid "Secret files are hidden from read-only service tokens"
+msgstr "シークレットファイルは読み取り専用のサービストークンには表示されません"
+
+msgid "Include pattern uses glob syntax that cannot be validated: {0}"
+msgstr "インクルードパターンに検証できない glob 構文が使われています：{0}"
+
+msgid "Included file {0} contains restricted nginx directive: {1}"
+msgstr "インクルードされたファイル {0} に制限付きの nginx ディレクティブが含まれています：{1}"
+
+msgid "Restricted nginx directives need confirmation: {0} in {1}"
+msgstr "制限付きの nginx ディレクティブの確認が必要です：{1} 内の {0}"
+
+msgid "Saving restricted nginx directives requires two-factor authentication on your account: {0} in {1}"
+msgstr "制限付きの nginx ディレクティブを保存するには、アカウントの二要素認証が必要です：{1} 内の {0}"
+
+msgid "This remote node feed carries stored secrets and requires a token with write scope"
+msgstr "このリモートノードのフィードには保存済みのシークレットが含まれるため、書き込みスコープのトークンが必要です"
+
+msgid "The plugin id {0} is reserved for official Nginx UI plugins"
+msgstr "プラグイン ID {0} は公式の Nginx UI プラグイン用に予約されています"
+
+msgid "Plugin package is signed by key {0}, which this node does not trust, and developer mode is off"
+msgstr "プラグインパッケージは鍵 {0} で署名されていますが、このノードはその鍵を信頼しておらず、開発者モードもオフです"
+
+msgid "Plugin version {0} was withdrawn from the catalog and is not pushed to nodes"
+msgstr "プラグインのバージョン {0} はカタログから撤回されたため、ノードには配信されません"
+
+msgid "Enter the API token again to save a different endpoint, proxy or API type"
+msgstr "別のエンドポイント、プロキシ、API タイプで保存するには、API トークンを再入力してください"
+
+msgid "Too many failed attempts, please try again later"
+msgstr "失敗回数が多すぎます。しばらくしてからもう一度お試しください"
+
+msgid "Buy a license"
+msgstr "ライセンスを購入"
+
+msgid "Commercial"
+msgstr "商用"
+
+msgid "Free trial of %{days} days"
+msgstr "%{days} 日間の無料トライアル"
+
+msgid "New"
+msgstr "新規"
+
+msgid "Paid license"
+msgstr "有料ライセンス"
+
+msgid "Price"
+msgstr "価格"
+
+msgid "Subscription"
+msgstr "サブスクリプション"
+
+msgid "Waiting for the node to restart and report the target version..."
+msgstr "ノードの再起動と対象バージョンの報告を待っています..."
+
+msgid "Invalid upgrade target. Check for a release before upgrading."
+msgstr "アップグレード対象が無効です。アップグレードする前にリリースを確認してください。"
+
+msgid "The upgrade timed out. Check the node logs."
+msgstr "アップグレードがタイムアウトしました。ノードのログを確認してください。"
+
+msgid "The node returned an invalid version response."
+msgstr "ノードが無効なバージョン応答を返しました。"
+
+msgid "The node returned an invalid upgrade response."
+msgstr "ノードが無効なアップグレード応答を返しました。"
+
+msgid "The node failed to upgrade."
+msgstr "ノードのアップグレードに失敗しました。"
+
+msgid "The upgrade connection failed. Check authentication and network connectivity."
+msgstr "アップグレード接続に失敗しました。認証とネットワーク接続を確認してください。"
+
+msgid "The upgrade connection closed before installation started."
+msgstr "インストール開始前にアップグレード接続が閉じられました。"
+
+msgid "Could not verify the upgrade. Check the node version and service status."
+msgstr "アップグレードを確認できませんでした。ノードのバージョンとサービスの状態を確認してください。"
+
+msgid "Indexing batches shrink to fit the available memory"
+msgstr "インデックス作成のバッチは、利用可能なメモリに合わせて縮小されます"
+
+msgid "More memory indexes large logs faster"
+msgstr "メモリが多いほど、大きなログを高速にインデックス化できます"
+
+msgid "About a quarter of the size of the logs"
+msgstr "ログサイズのおよそ 4 分の 1"
+
+msgid "CPU time to parse and store one log line"
+msgstr "ログ 1 行の解析と保存にかかる CPU 時間"
+
+msgid "Index Size"
+msgstr "インデックスサイズ"
+
+msgid "Per log line, about 0.16x the raw log"
+msgstr "ログ 1 行あたり、生ログの約 0.16 倍"
+
+msgid "Log Viewer Page"
+msgstr "ログビューアページ"
+
+msgid "Results with IP and path facets and statistics"
+msgstr "IP とパスのファセットおよび統計付きの結果"
+
+msgid "* Measured on Apple M2 Pro with 100,000 combined-format log lines. Actual performance may vary based on your hardware configuration."
+msgstr "* 100,000 行の combined 形式ログを使い、Apple M2 Pro で計測。実際のパフォーマンスはハードウェア構成によって異なる場合があります。"
+
+msgid "Compressed columnar storage"
+msgstr "圧縮カラムナストレージ"
+
+msgid "Field filters in the search box"
+msgstr "検索ボックスでのフィールドフィルター"
+
+msgid "Substring search over the raw line"
+msgstr "生の行に対する部分文字列検索"
+
+msgid "Error log indexing"
+msgstr "エラーログのインデックス作成"
+
+msgid "Words match anywhere in the line; all of them must match. Quotes keep a phrase together, a leading - excludes."
+msgstr "単語は行内のどこにでも一致でき、すべて一致する必要があります。引用符でフレーズをまとめ、先頭の - は除外を表します。"
+
+msgid "Search, e.g. status:5xx ip:10.0.0.0/8 -bot"
+msgstr "検索、例：status:5xx ip:10.0.0.0/8 -bot"
+
+msgid "Level"
+msgstr "レベル"
+
+msgid "Client"
+msgstr "クライアント"
+
+msgid "Searched as plain text: %{tokens}"
+msgstr "プレーンテキストとして検索：%{tokens}"
+
+msgid "Search, e.g. level:error upstream timed out -ip:10.0.0.1"
+msgstr "検索、例：level:error upstream timed out -ip:10.0.0.1"
+
+msgid "%{total} entries found in %{took} ms"
+msgstr "%{total} 件が見つかりました（%{took} ミリ秒）"
+
+msgid "Dry run completed for %{node}. No changes were made."
+msgstr "%{node} のドライランが完了しました。変更は行われていません。"
+
+msgid "Upgrade failed for %{node}: %{error}"
+msgstr "%{node} のアップグレードに失敗しました：%{error}"
+
+msgid "Upgrade cancelled."
+msgstr "アップグレードをキャンセルしました。"
+
+msgid "Managed on the marketplace page. The official catalog is always used."
+msgstr "マーケットプレイスページで管理されます。常に公式カタログが使用されます。"
+
+msgid "Read resources and runtime status through the management API. Stored secrets such as credentials and private keys are hidden from read-only tokens."
+msgstr "管理 API を通じてリソースと実行状態を読み取ります。認証情報や秘密鍵などの保存済みシークレットは、読み取り専用トークンには表示されません。"
+
+msgid "Use read-only Nginx UI MCP tools. Private keys are hidden from read-only tokens."
+msgstr "読み取り専用の Nginx UI MCP ツールを使用します。秘密鍵は読み取り専用トークンには表示されません。"
+
+msgid "Pricing per million tokens"
+msgstr "100 万トークンあたりの料金"
+
+msgid "This template comes from the plugin %{id} and cannot be changed. Copy it as a snippet to change it, and review its directives before using it."
+msgstr "このテンプレートはプラグイン %{id} 由来で、変更できません。変更するにはスニペットとしてコピーし、使用前にディレクティブを確認してください。"
+
+msgid "This snippet starts from a template of the plugin %{id}. Review its directives before saving it. Once saved, it is a snippet of your own and no longer follows the plugin."
+msgstr "このスニペットはプラグイン %{id} のテンプレートから作成されています。保存前にディレクティブを確認してください。保存すると独自のスニペットとなり、プラグインには追従しなくなります。"
+
+msgid "Templates"
+msgstr "テンプレート"
+
+msgid "This plugin was taken down from the catalog, and this version was withdrawn. Disable or uninstall it."
+msgstr "このプラグインはカタログから削除され、このバージョンも撤回されました。無効化するかアンインストールしてください。"
+
+msgid "This plugin was taken down from the catalog and receives no more updates."
+msgstr "このプラグインはカタログから削除され、今後の更新はありません。"
+
+msgid "Reason: %{reason}"
+msgstr "理由：%{reason}"
+
+msgid "The publisher withdrew this version. Update it, or disable it until a new version is available."
+msgstr "公開元がこのバージョンを撤回しました。更新するか、新しいバージョンが公開されるまで無効化してください。"
+
+msgid "This version asks for access the installed version does not have"
+msgstr "このバージョンは、インストール済みのバージョンにないアクセス権を要求しています"
+
+msgid "This update asks for access the installed version does not have"
+msgstr "この更新は、インストール済みのバージョンにないアクセス権を要求しています"
+
+msgid "This is a commercial plugin, licensed by its vendor"
+msgstr "これは販売元がライセンスを提供する商用プラグインです"
+
+msgid "New permissions: %{list}"
+msgstr "新しい権限：%{list}"
+
+msgid "New addresses it may reach: %{list}"
+msgstr "新たにアクセスする可能性のあるアドレス：%{list}"
+
+msgid "It may now reach any address instead of a fixed list."
+msgstr "固定のリストではなく、任意のアドレスにアクセスする可能性があります。"
+
+msgid "No longer requested: %{list}"
+msgstr "要求されなくなった権限：%{list}"
+
+msgid "Addresses it no longer reaches: %{list}"
+msgstr "アクセスしなくなるアドレス：%{list}"
+
+msgid "This version asks for less access than the installed version"
+msgstr "このバージョンは、インストール済みのバージョンより少ないアクセス権を要求しています"
+
+msgid "Offered by %{source} instead of the official catalog."
+msgstr "公式カタログではなく %{source} から提供されています。"
+
+msgid "Changes in this update"
+msgstr "この更新の変更点"
+
+msgid "Catalogs are merged in order, and the first source that offers a plugin wins. The official catalog cannot be removed. Move a mirror above it to install from the mirror first."
+msgstr "カタログは順番にマージされ、プラグインを最初に提供したソースが優先されます。公式カタログは削除できません。ミラーから先にインストールするには、ミラーを公式カタログの上に移動してください。"
+
+msgid "This version asks for permissions your earlier approval did not cover, marked as new below. Approve only if you trust the author."
+msgstr "このバージョンは、以前の承認に含まれていない権限を要求しています（下記で「新規」と表示）。作成者を信頼できる場合のみ承認してください。"
+
+msgid "Dry run completed. No changes were made."
+msgstr "ドライランが完了しました。変更は行われていません。"
 
 #~ msgid "Webauthn"
 #~ msgstr "WebAuthn"
