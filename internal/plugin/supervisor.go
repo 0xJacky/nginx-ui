@@ -19,7 +19,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/internal/demo"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/jsonrpc"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/npipe"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/protocol"
@@ -766,8 +765,17 @@ var hostHTTPProxy = func() string {
 }
 
 // hostDemo reports whether the host runs as a public demo. It is read on every
-// spawn, like the proxy.
-var hostDemo = demo.Enabled
+// spawn, like the proxy. internal/demo fills it on a demo node and it stays
+// false everywhere else: importing that package instead would pull in the
+// GeoIP database it decompresses at init, several seconds in a race build, and
+// every test plugin, a copy of the test binary, would pay that on each start.
+var hostDemo = func() bool { return false }
+
+// SetHostDemo fills the demo slot. internal/demo calls it on a demo node,
+// before any plugin starts.
+func SetHostDemo(enabled func() bool) {
+	hostDemo = enabled
+}
 
 // env builds the child environment. Credentials never travel this way: the
 // host configuration variables, which carry the node secret among others,

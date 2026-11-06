@@ -5,6 +5,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/llm"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/internal/performance"
+	"github.com/0xJacky/Nginx-UI/internal/plugin"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
 	"github.com/0xJacky/Nginx-UI/internal/upstream"
 	"github.com/0xJacky/Nginx-UI/internal/version"
@@ -33,6 +34,8 @@ func overrides() []override {
 		// last-write-wins and boot happens well after package init.
 		{"dns-providers", installDNSProviders},
 		{"llm-transport", func() { llm.SetHTTPDoer(llmDoer{}) }},
+		// Plugins learn they run on a demo through NGINX_UI_DEMO in their environment.
+		{"plugin-demo-env", func() { plugin.SetHostDemo(Enabled) }},
 		// Must precede nginx_log.InitializeServices, which is why Install runs
 		// first in the boot sequence: the indexer reads these files once.
 		{"log-fixtures", installLogFixtures},
