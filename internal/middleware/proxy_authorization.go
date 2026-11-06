@@ -47,7 +47,7 @@ func buildProxyRouteAuthorizations() map[string]proxyAuthorization {
 		"nodes/reload_nginx", "nodes/restart_nginx", "nodes/sync", "namespace/sync", "namespaces/:id/sync", "namespaces", "namespaces/:id", "namespaces/:id/recover", "namespaces/order",
 		"auto_backup", "auto_backup/:id", "auto_backup/:id/run", "auto_backup/test_s3", "auto_backup/test_storage",
 		"upstreams", "upstreams/:name", "upstream/server_state", "upstream/convert",
-		"self_check/:name/fix", "site_navigation/test_health_check/:id",
+		"self_check/:name/fix", "nginx_log/index/rebuild", "nginx_log/settings/advanced_indexing/enable", "nginx_log/settings/advanced_indexing/disable", "site_navigation/test_health_check/:id",
 	)
 	add(secure, http.MethodPut, "sites", "streams", "site_navigation/health_check/sync", "cert_sync", "dns/domains/:id/records/:record_id", "dns/domains/:id/ddns", "upstream/socket/:socket")
 	add(secure, http.MethodDelete, "access_lists/:id", "snippets/:file", "streams/:name", "auto_cert/:name", "sites/:name", "dns_credentials/:id", "certs/:id", "cert_sync", "acme_users/:id", "dns/domains/:id", "dns/domains/:id/records/:record_id", "dns/domains/:id/ddns", "settings/auth/banned_ip", "namespaces/:id", "auto_backup/:id", "upstreams/:name")
