@@ -19,6 +19,7 @@ export type PreferenceSectionKey
     | 'external_notify'
     | 'terminal'
     | 'logrotate'
+    | 'geolite'
 
 export interface PreferenceSectionLink {
   label: string
@@ -184,6 +185,17 @@ export function buildPreferenceSections(): PreferenceSection[] {
       label: $gettext('Logrotate'),
       description: $gettext('Scheduled rotation of Nginx log files.'),
       pathPrefixes: ['logrotate'],
+    },
+    {
+      key: 'geolite',
+      group: 'maintenance',
+      label: $gettext('GeoLite'),
+      description: $gettext('Geographic database and map files used by log analytics.'),
+      link: {
+        label: $gettext('Go to logs'),
+        to: '/nginx_log',
+      },
+      pathPrefixes: ['nginx_log'],
     },
   ]
 }

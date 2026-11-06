@@ -15,6 +15,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -369,7 +370,30 @@ func newCertHarness(t *testing.T) *certHarness {
 	}
 	m.issue = h.issue
 	h.m = m
+	// Registered after setupCertTest, so it runs before the settings are
+	// restored: a run may still be writing its condition after waitIdle.
+	t.Cleanup(func() {
+		if !h.waitRuns(10 * time.Second) {
+			t.Error("certificate runs still active after the test")
+		}
+	})
 	return h
+}
+
+// waitRuns waits for every run goroutine of the manager and reports whether
+// they all returned within timeout.
+func (h *certHarness) waitRuns(timeout time.Duration) bool {
+	done := make(chan struct{})
+	go func() {
+		h.m.runs.Wait()
+		close(done)
+	}()
+	select {
+	case <-done:
+		return true
+	case <-time.After(timeout):
+		return false
+	}
 }
 
 // issue writes a certificate for the payload and records it the way
@@ -945,4 +969,35 @@ func TestIssuanceAfterDeleteDoesNotRenew(t *testing.T) {
 	var renewed model.Cert
 	require.NoError(t, model.UseDB().Where("id = ?", row.ID).First(&renewed).Error)
 	assert.Equal(t, model.AutoCertEnabled, renewed.AutoCert)
+}
+
+// A failed run writes its condition after it cleared inFlight, so waitIdle
+// returns while the run is still reading the settings. The harness must wait
+// for it before the test restores them.
+func TestRunFinishesBeforeHarnessCleanup(t *testing.T) {
+	var finished atomic.Bool
+	t.Run("failed run", func(t *testing.T) {
+		h := newCertHarness(t)
+		h.set(func() { h.issueErr = errors.New("boom") })
+		ing := h.addIngress(certIngress("slow", model.IngressTLSModeACME, "slow.example.com"))
+
+		release := make(chan struct{})
+		updateStatus := h.m.updateStatus
+		var calls atomic.Int32
+		h.m.updateStatus = func(name string, fn func(ing *model.Ingress)) (*model.Ingress, error) {
+			// The first call is the Issuing condition written by Ensure; the
+			// second one comes from the run after it failed.
+			if calls.Add(1) > 1 {
+				<-release
+				defer finished.Store(true)
+			}
+			return updateStatus(name, fn)
+		}
+		// Runs before the harness cleanup, which then waits for the run.
+		t.Cleanup(func() { close(release) })
+
+		h.m.Ensure(context.Background(), ing)
+		h.waitIdle("slow")
+	})
+	assert.True(t, finished.Load(), "the run outlived the test that started it")
 }

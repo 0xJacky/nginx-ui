@@ -47,7 +47,7 @@ func newTailer(cfg Config) *tailer {
 	pc.MaxLineLength = cfg.MaxLineLength
 	return &tailer{
 		cfg:    cfg,
-		parser: parser.NewParser(pc),
+		parser: parser.NewParser(pc, nil, nil),
 		files:  map[string]*followed{},
 		now:    time.Now,
 	}

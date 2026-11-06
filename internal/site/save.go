@@ -54,7 +54,7 @@ func Save(ctx context.Context, name string, content string, overwrite bool, name
 		return err
 	}
 
-	err = config.ValidateConfigFile(path, content)
+	err = config.ValidateConfigFileWithRestricted(path, content, resolveMutateOptions(opts).allowRestrictedDirectives)
 	if err != nil {
 		return
 	}

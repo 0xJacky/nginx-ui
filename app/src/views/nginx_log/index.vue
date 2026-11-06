@@ -5,7 +5,7 @@ import EntryGrid from '@/components/EntryGrid/EntryGrid.vue'
 const entries = computed<EntryItem[]>(() => [
   {
     title: $gettext('Access Logs'),
-    description: $gettext('Read access logs page by page or follow them as they arrive.'),
+    description: $gettext('Explore access traffic logs with filters and detailed request information.'),
     path: '/nginx_log/access',
   },
   {
@@ -15,7 +15,7 @@ const entries = computed<EntryItem[]>(() => [
   },
   {
     title: $gettext('Log List'),
-    description: $gettext('See every log file Nginx writes and open one to read it.'),
+    description: $gettext('Manage indexed log files and jump into structured analysis workflows.'),
     path: '/nginx_log/list',
   },
 ])

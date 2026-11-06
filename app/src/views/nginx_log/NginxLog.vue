@@ -5,8 +5,9 @@ import FooterToolBar from '@/components/FooterToolbar'
 import PluginSlotItem from '@/components/PluginSlot/PluginSlotItem.vue'
 import { NGINX_LOG_VIEW_SLOT_PREFIX, uniqueByKey } from '@/plugin/slots'
 import { usePluginStore } from '@/plugin/store'
-import LegacyIndexingNotice from './LegacyIndexingNotice.vue'
+import DashboardViewer from './dashboard/DashboardViewer.vue'
 import RawLogViewer from './raw/RawLogViewer.vue'
+import StructuredLogViewer from './structured/StructuredLogViewer.vue'
 
 // Route and router
 const route = useRoute()
@@ -26,11 +27,10 @@ const logType = computed(() => {
   return 'site'
 })
 
-// The raw view of the host or the key of a view a plugin registered. Empty
-// means the default view of the log type.
-const viewMode = useRouteQuery<string>('view', '')
+// One of the built-in views or the key of a view a plugin registered
+const viewMode = useRouteQuery<string>('view', 'structured')
 
-const RAW_VIEW = 'raw'
+const BUILTIN_VIEWS = new Set(['raw', 'structured', 'dashboard'])
 
 interface LogPathOption {
   label: string
@@ -128,7 +128,21 @@ async function fetchLogPathOptions() {
   }
 }
 
-onMounted(fetchLogPathOptions)
+// Indexing status
+const isIndexingEnabled = ref<boolean | null>(null)
+
+onMounted(async () => {
+  try {
+    const res = await nginxLog.getAdvancedIndexingStatus()
+    isIndexingEnabled.value = res.enabled
+  }
+  catch (err) {
+    console.error('Failed to get indexing status:', err)
+    isIndexingEnabled.value = false
+  }
+
+  await fetchLogPathOptions()
+})
 
 watch(logType, async () => {
   await fetchLogPathOptions()
@@ -151,8 +165,8 @@ const isErrorLog = computed(() => {
 
 const autoRefresh = ref(true)
 
-// Views plugins add next to the raw view. A key that equals the raw view is
-// ignored.
+// Views plugins add after the built-in ones. A key that equals a built-in view
+// is ignored.
 const pluginStore = usePluginStore()
 
 const pluginViewContext = computed(() => ({
@@ -161,43 +175,95 @@ const pluginViewContext = computed(() => ({
 }))
 
 const pluginViews = computed(() => uniqueByKey(pluginStore.slotsByPrefix(NGINX_LOG_VIEW_SLOT_PREFIX, pluginViewContext.value))
-  .filter(item => item.key !== RAW_VIEW))
+  .filter(item => !BUILTIN_VIEWS.has(item.key)))
 
-// Without a `view` in the link, access logs open the structured view a plugin
-// may provide and error logs stay raw.
-const requestedView = computed(() => viewMode.value || (isErrorLog.value ? RAW_VIEW : 'structured'))
+const activePluginView = computed(() => pluginViews.value.find(item => item.key === viewMode.value))
 
-const activePluginView = computed(() => pluginViews.value.find(item => item.key === requestedView.value))
-
-// What the page shows for the requested view. A view nobody provides shows the
-// raw view once plugins finished loading, until then nothing is decided yet.
+// What the page shows. A plugin view nobody provides shows the raw view once
+// plugins finished loading, until then nothing is decided yet.
 const effectiveView = computed(() => {
-  if (requestedView.value === RAW_VIEW || activePluginView.value)
-    return requestedView.value
+  if (BUILTIN_VIEWS.has(viewMode.value) || activePluginView.value)
+    return viewMode.value
 
-  return pluginStore.ready ? RAW_VIEW : ''
+  return pluginStore.ready ? 'raw' : ''
 })
 
-const viewModeOptions = computed(() => [
-  {
-    label: $gettext('Raw'),
-    value: RAW_VIEW,
-  },
-  ...pluginViews.value.map(item => ({
-    label: $gettext(item.registration.label ?? item.key),
-    value: item.key,
-  })),
-])
-
 const segmentedValue = computed({
-  get: () => effectiveView.value || requestedView.value,
+  get: () => effectiveView.value || viewMode.value,
   set: (value: string) => {
     viewMode.value = value
   },
 })
 
-// Without a plugin view there is nothing to switch to
-const showViewToggle = computed(() => pluginViews.value.length > 0)
+const viewModeOptions = computed(() => {
+  const advancedViewDisabled = isIndexingEnabled.value !== true
+
+  // Structured and dashboard views only cover access logs
+  const indexedViews = isErrorLog.value
+    ? []
+    : [
+        {
+          label: $gettext('Structured'),
+          value: 'structured',
+          disabled: advancedViewDisabled,
+        },
+        {
+          label: $gettext('Dashboard'),
+          value: 'dashboard',
+          disabled: advancedViewDisabled,
+        },
+      ]
+
+  return [
+    ...indexedViews,
+    {
+      label: $gettext('Raw'),
+      value: 'raw',
+    },
+    ...pluginViews.value.map(item => ({
+      label: $gettext(item.registration.label ?? item.key),
+      value: item.key,
+    })),
+  ]
+})
+
+// Error logs only have the raw view unless a plugin adds one
+const showViewToggle = computed(() => !isErrorLog.value || pluginViews.value.length > 0)
+
+watch(viewMode, v => {
+  if (v === 'structured' && (isIndexingEnabled.value === false || isErrorLog.value)) {
+    viewMode.value = 'raw'
+  }
+}, { immediate: true })
+
+// View mode logic: set defaults based on log type and indexing status
+watch([isErrorLog, isIndexingEnabled], ([isError, enabled], [prevIsError, prevEnabled]) => {
+  if (enabled === null)
+    return
+
+  // Only set default when conditions change or initial load
+  const isInitialLoad = prevIsError === undefined && prevEnabled === undefined
+  const conditionsChanged = isError !== prevIsError || enabled !== prevEnabled
+
+  // A plugin view stays as requested, the defaults only pick a built-in view
+  if (!BUILTIN_VIEWS.has(viewMode.value))
+    return
+
+  if (isInitialLoad || conditionsChanged) {
+    if (isError) {
+      // Error logs always use raw mode
+      viewMode.value = 'raw'
+    }
+    else if (!enabled) {
+      // Indexing disabled: default to raw
+      viewMode.value = 'raw'
+    }
+    else if (enabled && logType.value === 'access') {
+      // Indexing enabled for access logs: default to structured
+      viewMode.value = 'structured'
+    }
+  }
+}, { immediate: true })
 </script>
 
 <template>
@@ -205,9 +271,7 @@ const showViewToggle = computed(() => pluginViews.value.length > 0)
     :title="$gettext('Nginx Log')"
     variant="borderless"
   >
-    <LegacyIndexingNotice />
-
-    <div class="mb-4 flex flex-wrap items-center justify-end gap-4">
+    <div v-if="effectiveView !== 'structured'" class="mb-4 flex flex-wrap items-center justify-end gap-4">
       <ASelect
         v-model:value="selectedLogPath"
         class="flex-none font-mono"
@@ -222,7 +286,7 @@ const showViewToggle = computed(() => pluginViews.value.length > 0)
           ((option?.label ?? '') as string).toLowerCase().includes(input.toLowerCase())"
       />
 
-      <!-- View mode toggle, only there when a plugin adds a view -->
+      <!-- View Mode Toggle (error logs only get it when a plugin adds a view) -->
       <div v-if="showViewToggle" class="flex items-center">
         <ASegmented
           v-model:value="segmentedValue"
@@ -243,6 +307,40 @@ const showViewToggle = computed(() => pluginViews.value.length > 0)
       :log-path="logPath"
       :log-type="logType"
       :auto-refresh="autoRefresh"
+    />
+
+    <!-- Structured Log View -->
+    <StructuredLogViewer
+      v-else-if="effectiveView === 'structured'"
+      :log-path="logPath"
+    >
+      <template #time-range-right>
+        <ASelect
+          v-model:value="selectedLogPath"
+          class="flex-none font-mono"
+          :style="logSelectStyle"
+          :styles="logSelectStyles"
+          show-search
+          allow-clear
+          :loading="isLoadingLogPathOptions"
+          :options="logPathOptions"
+          :placeholder="$gettext('Select log file')"
+          :filter-option="(input, option) =>
+            ((option?.label ?? '') as string).toLowerCase().includes(input.toLowerCase())"
+        />
+        <div v-if="showViewToggle" class="flex items-center">
+          <ASegmented
+            v-model:value="segmentedValue"
+            :options="viewModeOptions"
+          />
+        </div>
+      </template>
+    </StructuredLogViewer>
+
+    <!-- Dashboard View -->
+    <DashboardViewer
+      v-else-if="effectiveView === 'dashboard'"
+      :log-path="logPath"
     />
 
     <!-- View added by a plugin -->

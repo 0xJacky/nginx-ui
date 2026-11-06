@@ -5,17 +5,14 @@ import (
 	"sort"
 	"sync"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/uozi-tech/cosy/logger"
 )
 
-// NginxLogCache is a log path known to the host.
-type NginxLogCache struct {
-	Path       string `json:"path"`        // Path to the log file
-	Type       string `json:"type"`        // Type of log: "access" or "error"
-	Name       string `json:"name"`        // Name of the log file
-	ConfigFile string `json:"config_file"` // Path to the configuration file that contains this log directive
-}
+// NginxLogCache is a log path known to the host. It is the indexer's type, so
+// the registry can hand paths to the log file manager unchanged.
+type NginxLogCache = indexer.NginxLogCache
 
 // configLogRegistry holds every log path discovered by scanning the nginx
 // configuration. The nginx default logs live in defaultLogRegistry instead.
@@ -34,6 +31,14 @@ func AddLogPath(path, logType, name, configFile string) {
 		ConfigFile: configFile,
 	}
 	configLogRegistryMutex.Unlock()
+
+	// Recording the path before looking the manager up guarantees a path
+	// discovered while the services start is picked up by one of the two
+	// writes: InitializeServices publishes the manager, then seeds it from
+	// this registry.
+	if manager := GetLogFileManager(); manager != nil {
+		manager.AddLogPath(path, logType, name, configFile)
+	}
 }
 
 // RemoveLogPathsFromConfig removes all log paths associated with a specific config file
@@ -54,6 +59,19 @@ func RemoveLogPathsFromConfig(configFile string) {
 		}
 	}
 	configLogRegistryMutex.Unlock()
+
+	if manager := GetLogFileManager(); manager != nil {
+		manager.RemoveLogPathsFromConfig(configFile)
+	}
+}
+
+// configDeclaresLogPath reports whether an access_log or error_log directive
+// declares path.
+func configDeclaresLogPath(path string) bool {
+	configLogRegistryMutex.RLock()
+	defer configLogRegistryMutex.RUnlock()
+	_, ok := configLogRegistry[path]
+	return ok
 }
 
 // registryEntriesSnapshot returns every known log path: the ones discovered from

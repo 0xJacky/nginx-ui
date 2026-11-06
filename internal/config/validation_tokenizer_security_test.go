@@ -152,6 +152,12 @@ func TestTokenizerRejectsHiddenDirectivesInIncludedFiles(t *testing.T) {
 	confDir := setupTokenizerConfDir(t)
 	path := filepath.Join(confDir, "conf.d", "app.conf")
 	for _, tc := range tokenizerAttackCases {
+		// Included files may load the njs and Perl modules (#2087); their
+		// directives stay blocked, and the edited file still may not load
+		// them, which TestTokenizerRejectsHiddenRestrictedDirectives covers.
+		if tc.wantParam == "load_module" {
+			continue
+		}
 		t.Run(tc.name, func(t *testing.T) {
 			included := filepath.Join(confDir, "conf.d", "included.inc")
 			writeIncludeTestFile(t, included, tc.content)

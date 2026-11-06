@@ -13,6 +13,7 @@ import {
   AuthSettings,
   CertSettings,
   ExternalNotify,
+  GeoLiteSettings,
   HealthCheckSettings,
   HTTPSettings,
   LogrotateSettings,
@@ -48,6 +49,7 @@ const sectionComponents: Record<PreferenceSectionKey, Component> = {
   external_notify: ExternalNotify,
   terminal: TerminalSettings,
   logrotate: LogrotateSettings,
+  geolite: GeoLiteSettings,
 }
 
 const systemSettingsStore = useSystemSettingsStore()

@@ -268,18 +268,31 @@ func requireRestrictedDirectiveError(t *testing.T, err error, wantParam string) 
 		t.Fatalf("expected cosy error, got %v", err)
 	}
 
-	var wantErr *cosy.Error
-	if !errors.As(ErrConfigDirectiveNotAllowed, &wantErr) {
-		t.Fatalf("ErrConfigDirectiveNotAllowed is not a cosy error")
+	// A directive found in an included file is reported with the file name
+	// in front of it; either way the directive must be the expected one.
+	if isCosyError(cosyErr, ErrIncludedDirectiveNotAllowed) {
+		if len(cosyErr.Params) != 2 || cosyErr.Params[1] != wantParam {
+			t.Fatalf("expected params [<file> %q], got %v", wantParam, cosyErr.Params)
+		}
+		return
 	}
 
-	if cosyErr.Scope != wantErr.Scope || cosyErr.Code != wantErr.Code {
-		t.Fatalf("expected cosy error %s:%d, got %s:%d", wantErr.Scope, wantErr.Code, cosyErr.Scope, cosyErr.Code)
+	if !isCosyError(cosyErr, ErrConfigDirectiveNotAllowed) {
+		t.Fatalf("expected a restricted directive error, got %s:%d", cosyErr.Scope, cosyErr.Code)
 	}
 
 	if len(cosyErr.Params) != 1 || cosyErr.Params[0] != wantParam {
 		t.Fatalf("expected params [%q], got %v", wantParam, cosyErr.Params)
 	}
+}
+
+func isCosyError(got *cosy.Error, want error) bool {
+	var wantErr *cosy.Error
+	if !errors.As(want, &wantErr) {
+		return false
+	}
+
+	return got.Scope == wantErr.Scope && got.Code == wantErr.Code
 }
 
 func TestValidateConfigFileAcceptsPEMContent(t *testing.T) {

@@ -175,6 +175,99 @@ func RequireVerifiedTwoFactorOrProxy(message string) gin.HandlerFunc {
 	}
 }
 
+// RestrictedDirectiveSaveAllowed reports whether this request may save
+// configuration holding restricted nginx directives, which load code into
+// the Nginx worker. It has to come from an interactive administrator whose
+// two-factor session was verified for this very request: the denylist exists
+// to stop a stolen JWT, a write-scoped service token, an MCP tool, the AI
+// assistant or a cluster node from turning a configuration write into code
+// execution, and none of those can produce that verification.
+//
+// A node principal is refused on purpose, so a configuration with restricted
+// directives does not replicate across the cluster. Propagating the
+// verification the way nodeProxyVerifiedTwoFactor does would extend
+// node-to-node trust to code execution.
+//
+// The public demo is refused as well. Its local configuration CRUD is open to
+// visitors because a configuration write cannot execute code there, which is
+// exactly what this hatch would change: the demo password is published, and
+// passkey enrollment is reachable with it, so a visitor could reach a
+// verified session.
+//
+// Place it behind RequireSecureSession, which is what sets the verified
+// marker. An account with no second factor enrolled never gets the marker,
+// so it is refused here as well. The function never aborts the request; the
+// caller decides how to report a refusal.
+func RestrictedDirectiveSaveAllowed(c *gin.Context) bool {
+	if DemoMode() {
+		return false
+	}
+	if _, isNode := c.Get(nodeauth.GinPrincipalKey); isNode {
+		return false
+	}
+	if _, isServiceToken := c.Get(internalmcp.ServiceTokenPrincipalKey); isServiceToken {
+		return false
+	}
+
+	verified, _ := c.Get(SecureSessionVerifiedKey)
+
+	return verified == true
+}
+
+// RestrictedDirectiveStepUp reports what a caller would have to do before it
+// may save configuration holding restricted nginx directives.
+type RestrictedDirectiveStepUp int
+
+const (
+	// RestrictedDirectiveStepUpImpossible is a caller that is never offered
+	// the step-up: a cluster node or a service token. It keeps the plain
+	// rejection, whatever its account has enrolled.
+	RestrictedDirectiveStepUpImpossible RestrictedDirectiveStepUp = iota
+	// RestrictedDirectiveStepUpUnavailable is an interactive administrator
+	// with no second factor, who has to enrol one before confirming.
+	RestrictedDirectiveStepUpUnavailable
+	// RestrictedDirectiveStepUpAvailable is an interactive administrator who
+	// can confirm the save with a verified two-factor session.
+	RestrictedDirectiveStepUpAvailable
+)
+
+// RestrictedDirectiveStepUpFor reports which of those three the caller is, so
+// a handler can tell an administrator to confirm, tell them to enrol a second
+// factor, or keep the plain rejection for a non-interactive caller.
+func RestrictedDirectiveStepUpFor(c *gin.Context) (RestrictedDirectiveStepUp, error) {
+	// On the demo there is nothing to offer: the hatch stays shut however the
+	// visitor authenticates, so they get the plain rejection rather than a
+	// confirmation they could never satisfy.
+	if DemoMode() {
+		return RestrictedDirectiveStepUpImpossible, nil
+	}
+	if _, isNode := c.Get(nodeauth.GinPrincipalKey); isNode {
+		return RestrictedDirectiveStepUpImpossible, nil
+	}
+	if _, isServiceToken := c.Get(internalmcp.ServiceTokenPrincipalKey); isServiceToken {
+		return RestrictedDirectiveStepUpImpossible, nil
+	}
+
+	u, ok := c.Get("user")
+	if !ok {
+		return RestrictedDirectiveStepUpImpossible, nil
+	}
+	cUser, ok := u.(*model.User)
+	if !ok {
+		return RestrictedDirectiveStepUpImpossible, nil
+	}
+
+	hasSecondFactor, err := userNeedsSecureSession(cUser)
+	if err != nil {
+		return RestrictedDirectiveStepUpImpossible, err
+	}
+	if !hasSecondFactor {
+		return RestrictedDirectiveStepUpUnavailable, nil
+	}
+
+	return RestrictedDirectiveStepUpAvailable, nil
+}
+
 // RequireInteractiveUser prevents a verified node principal from invoking
 // controller-administration APIs intended only for a logged-in administrator.
 func RequireInteractiveUser() gin.HandlerFunc {

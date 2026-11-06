@@ -298,10 +298,15 @@ func TestEditConfigRejectsBinaryContent(t *testing.T) {
 	assertCosyErrorResponse(t, recorder, http.StatusInternalServerError, scope, code)
 }
 
+// An administrator with no second factor cannot complete the step-up that
+// unlocks the njs and Perl directives, so the save is still refused — now
+// naming what has to be enrolled instead of only the directive. The plain
+// ErrConfigDirectiveNotAllowed rejection is what a service token and a
+// cluster node keep getting; see restricted_directives_security_test.go.
 func TestAddConfigRejectsRestrictedScriptingDirectives(t *testing.T) {
-	_, auth := setupConfigSecurityTest(t)
+	confDir, auth := setupConfigSecurityTest(t)
 	router := newConfigMutationRouter()
-	scope, code := mustCosyErrorMeta(t, internalconfig.ErrConfigDirectiveNotAllowed)
+	scope, code := mustCosyErrorMeta(t, internalconfig.ErrConfigRestrictedDirectiveNeedsTwoFactor)
 
 	recorder := performJSONRequest(t, router, http.MethodPost, "/configs", gin.H{
 		"name":    "app.conf",
@@ -310,7 +315,12 @@ func TestAddConfigRejectsRestrictedScriptingDirectives(t *testing.T) {
 		"Authorization": auth.plainToken,
 	})
 
-	assertCosyErrorResponse(t, recorder, http.StatusInternalServerError, scope, code, "js_import")
+	assertCosyErrorResponse(t, recorder, http.StatusInternalServerError, scope, code,
+		"js_import", filepath.Join(confDir, "app.conf"))
+
+	if _, err := os.Stat(filepath.Join(confDir, "app.conf")); !os.IsNotExist(err) {
+		t.Fatalf("expected the rejected configuration to stay absent, stat error: %v", err)
+	}
 }
 
 func TestEditConfigRejectsRootWorkerEscalation(t *testing.T) {
@@ -332,10 +342,11 @@ func TestEditConfigRejectsRootWorkerEscalation(t *testing.T) {
 	assertCosyErrorResponse(t, recorder, http.StatusInternalServerError, scope, code, "user root")
 }
 
+// Same for the dynamic modules that provide those directives.
 func TestEditConfigRejectsRestrictedDynamicModuleLoad(t *testing.T) {
 	confDir, auth := setupConfigSecurityTest(t)
 	router := newConfigMutationRouter()
-	scope, code := mustCosyErrorMeta(t, internalconfig.ErrConfigDirectiveNotAllowed)
+	scope, code := mustCosyErrorMeta(t, internalconfig.ErrConfigRestrictedDirectiveNeedsTwoFactor)
 
 	if err := os.WriteFile(filepath.Join(confDir, "nginx.conf"), []byte("events {}\n"), 0o644); err != nil {
 		t.Fatalf("failed to seed config file: %v", err)
@@ -348,7 +359,16 @@ func TestEditConfigRejectsRestrictedDynamicModuleLoad(t *testing.T) {
 		"Authorization": auth.plainToken,
 	})
 
-	assertCosyErrorResponse(t, recorder, http.StatusInternalServerError, scope, code, "load_module")
+	assertCosyErrorResponse(t, recorder, http.StatusInternalServerError, scope, code,
+		"load_module", filepath.Join(confDir, "nginx.conf"))
+
+	content, err := os.ReadFile(filepath.Join(confDir, "nginx.conf"))
+	if err != nil {
+		t.Fatalf("failed to read config file: %v", err)
+	}
+	if string(content) != "events {}\n" {
+		t.Fatalf("expected the rejected configuration not to be written, got %q", content)
+	}
 }
 
 func TestRenameRejectsDisallowedTargetFile(t *testing.T) {

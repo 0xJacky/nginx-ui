@@ -7,6 +7,8 @@ import {
   freshWedgeState,
   markServing,
   RECOVERY_COOLDOWN_MS,
+  SERVING_RECHECK_MS,
+  servingIsTrusted,
 } from './recovery'
 
 // A clock that starts small on purpose: it catches a cooldown check that
@@ -144,4 +146,54 @@ test('a wedge detected long after the last recovery is acted on immediately', ()
   const started = decideRecovery(stale, T0 + 3_600_000).next
 
   expect(decideRecovery(started, T0 + 3_600_000 + APP_BOOT_GRACE_MS).action).toBe('destroy')
+})
+
+test('a passing health check is trusted only for the recheck window', () => {
+  expect(servingIsTrusted(undefined, T0)).toBe(false)
+  expect(servingIsTrusted(T0, T0)).toBe(true)
+  expect(servingIsTrusted(T0, T0 + SERVING_RECHECK_MS - 1)).toBe(true)
+  expect(servingIsTrusted(T0, T0 + SERVING_RECHECK_MS)).toBe(false)
+})
+
+/**
+ * Replay visitors against an application that served and then hung, mirroring
+ * how ready() combines the trust window with the wedge clock, and report when
+ * the first recovery would be issued.
+ */
+function replayHang(hangsAt: number, pollMs: number): number | undefined {
+  let verifiedAt: number | undefined
+  let wedge = freshWedgeState()
+
+  for (let now = T0; now <= T0 + 60 * 60_000; now += pollMs) {
+    if (servingIsTrusted(verifiedAt, now)) {
+      continue
+    }
+
+    if (now < hangsAt) {
+      verifiedAt = now
+      wedge = markServing()
+      continue
+    }
+
+    verifiedAt = undefined
+    const decision = decideRecovery(wedge, now)
+    wedge = decision.next
+    if (decision.action !== 'wait') {
+      return now - hangsAt
+    }
+  }
+
+  return undefined
+}
+
+test('an application that hangs after serving is recovered, not trusted forever', () => {
+  // Well into the container's life, as in the incident this exists for.
+  const hangsAt = T0 + 30 * 60_000
+
+  for (const pollMs of [1_000, 4_000, 15_000]) {
+    const recoveredAfter = replayHang(hangsAt, pollMs)
+
+    expect(recoveredAfter).toBeDefined()
+    expect(recoveredAfter!).toBeLessThanOrEqual(SERVING_RECHECK_MS + APP_BOOT_GRACE_MS + 2 * pollMs)
+  }
 })

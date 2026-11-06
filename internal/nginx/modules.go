@@ -95,9 +95,7 @@ func addLoadedDynamicModules() {
 		return
 	}
 
-	// Use the shared regex function to find loaded dynamic modules
-	loadModuleRe := GetLoadModuleRegex()
-	matches := loadModuleRe.FindAllStringSubmatch(out, -1)
+	matches := findLoadModuleStatements(out)
 
 	modulesCacheLock.Lock()
 	defer modulesCacheLock.Unlock()
@@ -139,9 +137,7 @@ func updateDynamicModulesStatus() {
 		return
 	}
 
-	// Use the shared regex function to find loaded dynamic modules
-	loadModuleRe := GetLoadModuleRegex()
-	matches := loadModuleRe.FindAllStringSubmatch(out, -1)
+	matches := findLoadModuleStatements(out)
 
 	for _, match := range matches {
 		if len(match) > 1 {
@@ -174,6 +170,23 @@ func GetLoadModuleRegex() *regexp.Regexp {
 	// "? - optional closing quote
 	// \s*; - optional whitespace followed by semicolon
 	return regexp.MustCompile(`load_module\s+"?(?:[^"\s]+/)?([a-zA-Z0-9_-]+)\.so"?\s*;`)
+}
+
+// findLoadModuleStatements returns the load_module matches of nginx -T output.
+// nginx -T dumps the configuration files as written, so commented lines are
+// skipped: a commented out load_module does not load its module.
+func findLoadModuleStatements(output string) [][]string {
+	loadModuleRe := GetLoadModuleRegex()
+
+	var matches [][]string
+	for _, line := range strings.Split(output, "\n") {
+		if isCommentedLine(line) {
+			continue
+		}
+		matches = append(matches, loadModuleRe.FindAllStringSubmatch(line, -1)...)
+	}
+
+	return matches
 }
 
 // normalizeModuleNameFromLoadModule converts a module name from load_module statement

@@ -17,7 +17,7 @@ func TestIncludeGlobDotEntriesAreValidated(t *testing.T) {
 		t.Fatal(err)
 	}
 	writeIncludeTestFile(t, filepath.Join(confDir, "conf.d", "evil.inc"), "js_import m.js;\n")
-	writeIncludeTestFile(t, filepath.Join(confDir, "top.inc"), "load_module modules/ngx_http_perl_module.so;\n")
+	writeIncludeTestFile(t, filepath.Join(confDir, "top.inc"), "perl_modules /tmp/perl;\n")
 
 	// A second temp dir shares the parent of confDir, so ".." can reach it.
 	outside := t.TempDir()
@@ -41,8 +41,8 @@ func TestIncludeGlobDotEntriesAreValidated(t *testing.T) {
 		// "*" matches both "link" and "sub"; "link" sorts first.
 		{"conf.d/*/../evil.inc", "perl_set"},
 		{"conf.d/s?b/../evil.inc", "js_import"},
-		{"conf.d/.*/top.inc", "load_module"},
-		{"conf.d/.?/top.inc", "load_module"},
+		{"conf.d/.*/top.inc", "perl_modules"},
+		{"conf.d/.?/top.inc", "perl_modules"},
 		{"conf.d/.*/conf.d/evil.inc", "js_import"},
 		{"conf.d/sub/.*/evil.inc", "js_import"},
 		{"conf.d/*/../../../" + filepath.Base(outside) + "/x.inc", "user root"},

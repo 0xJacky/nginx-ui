@@ -25,6 +25,7 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/ingress"
 	"github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
 	"github.com/0xJacky/Nginx-UI/internal/passkey"
 	"github.com/0xJacky/Nginx-UI/internal/plugin"
 	"github.com/0xJacky/Nginx-UI/internal/plugin/capability"
@@ -106,8 +107,6 @@ func InitAfterDatabase(ctx context.Context) {
 		// Before cert.InitRegister, so plugin provided DNS-01 providers are
 		// already registered when the certificate registry builds itself.
 		plugin.Init,
-		// Drops the old log index table once the log analytics plugin took it over.
-		plugin.CleanupLegacyLogAnalytics,
 		initPluginCapabilities,
 	}
 
@@ -121,6 +120,7 @@ func InitAfterDatabase(ctx context.Context) {
 		analytic.RetrieveNodesStatus,
 		passkey.Init,
 		mcp.Init,
+		nginx_log.InitializeServices,
 		user.InitTokenCache,
 		ingress.Start,
 	}

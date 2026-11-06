@@ -25,6 +25,10 @@ func EditConfig(c *gin.Context) {
 		Path          string   `json:"path"`
 		SyncOverwrite bool     `json:"sync_overwrite"`
 		SyncNodeIds   []uint64 `json:"sync_node_ids"`
+		// AllowRestrictedDirectives asks to keep the restricted js_*, perl*
+		// and load_module statements in the content. It is honoured only for
+		// an interactive administrator with a verified two-factor session.
+		AllowRestrictedDirectives bool `json:"allow_restricted_directives"`
 	}
 	if !cosy.BindAndValid(c, &json) {
 		return
@@ -53,9 +57,14 @@ func EditConfig(c *gin.Context) {
 	}
 
 	content := json.Content
-	err = config.ValidateConfigFile(absPath, content)
-	if err != nil {
-		cosy.ErrHandler(c, err)
+	allowRestricted := api.AllowRestrictedDirectives(c, json.AllowRestrictedDirectives)
+
+	// Validated before the database work below, so a rejected content leaves
+	// neither the file nor the configuration record touched. config.Save
+	// validates again with the same decision, which keeps the guarantee for
+	// its other callers.
+	if err = config.ValidateConfigFileWithRestricted(absPath, content, allowRestricted); err != nil {
+		api.ConfigSaveError(c, absPath, content, err)
 		return
 	}
 
@@ -82,11 +91,16 @@ func EditConfig(c *gin.Context) {
 	cfg.SyncNodeIds = json.SyncNodeIds
 	cfg.SyncOverwrite = json.SyncOverwrite
 
-	err = config.Save(c.Request.Context(), absPath, content, cfg, api.CurrentUser(c).Name)
+	err = config.SaveWithOptions(c.Request.Context(), absPath, content, cfg, config.SaveOptions{
+		UserName:                  api.CurrentUser(c).Name,
+		AllowRestrictedDirectives: allowRestricted,
+	})
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		api.ConfigSaveError(c, absPath, content, err)
 		return
 	}
+
+	api.RecordRestrictedDirectiveSave(c, absPath, content, allowRestricted)
 
 	c.JSON(http.StatusOK, config.Config{
 		Name:          filepath.Base(absPath),

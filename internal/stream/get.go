@@ -87,14 +87,14 @@ func GetStreamInfo(name string) (*Info, error) {
 }
 
 // SaveStreamConfig saves stream configuration with database update
-func SaveStreamConfig(ctx context.Context, name, content string, namespaceID uint64, syncNodeIDs []uint64, overwrite bool, postAction string) error {
+func SaveStreamConfig(ctx context.Context, name, content string, namespaceID uint64, syncNodeIDs []uint64, overwrite bool, postAction string, opts ...MutateOption) error {
 	// Get stream from database or create if not exists
 	path, err := ResolveAvailablePath(name)
 	if err != nil {
 		return err
 	}
 
-	err = config.ValidateConfigFile(path, content)
+	err = config.ValidateConfigFileWithRestricted(path, content, resolveMutateOptions(opts).allowRestrictedDirectives)
 	if err != nil {
 		return err
 	}
@@ -122,5 +122,5 @@ func SaveStreamConfig(ctx context.Context, name, content string, namespaceID uin
 	}
 
 	// Save the stream configuration file
-	return Save(ctx, name, content, overwrite, syncNodeIDs, postAction)
+	return Save(ctx, name, content, overwrite, syncNodeIDs, postAction, opts...)
 }

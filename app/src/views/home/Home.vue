@@ -99,7 +99,7 @@ const staticSections = computed<HomeSection[]>(() => ([
       },
       {
         title: $gettext('Nginx Log'),
-        description: $gettext('Browse and follow the access and error logs of your sites.'),
+        description: $gettext('Inspect access and error logs with structured analysis tools.'),
         path: '/nginx_log',
       },
       {

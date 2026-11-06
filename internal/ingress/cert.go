@@ -177,6 +177,10 @@ type acmeCertManager struct {
 	// ACME rate limits and the challenge port out of contention.
 	sem chan struct{}
 
+	// runs tracks the run goroutines started by Ensure, so tests can wait
+	// for them before restoring the settings they read.
+	runs sync.WaitGroup
+
 	mu     sync.Mutex
 	seq    uint64
 	states map[string]*acmeState
@@ -521,7 +525,7 @@ func (m *acmeCertManager) Ensure(_ context.Context, ing *model.Ingress) {
 	m.mu.Unlock()
 
 	m.writeCondition(req.Name)
-	go m.run(ctx, token, req)
+	m.runs.Go(func() { m.run(ctx, token, req) })
 }
 
 // run probes and issues one certificate. It never blocks the caller of Ensure.

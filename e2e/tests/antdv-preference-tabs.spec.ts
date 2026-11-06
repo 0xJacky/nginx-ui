@@ -17,6 +17,7 @@ const preferenceSections = [
   { key: 'health_check', label: 'Health Check' },
   { key: 'external_notify', label: 'External Notify' },
   { key: 'logrotate', label: 'Logrotate' },
+  { key: 'geolite', label: 'GeoLite' },
 ]
 
 async function openPreferenceSection(page: Page, label: string) {

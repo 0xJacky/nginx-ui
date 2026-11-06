@@ -7,13 +7,12 @@ import (
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
-	"github.com/0xJacky/Nginx-UI/settings"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-func TestGetLogListGroupsFiltersAndSortsWithoutIndexData(t *testing.T) {
+func TestGetLogListGroupsFiltersAndSorts(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	nginx_log.AddLogPath("/var/log/nginx/api-test-a.access.log", "access", "api-test-a.access.log", "/etc/nginx/api-test.conf")
@@ -35,7 +34,7 @@ func TestGetLogListGroupsFiltersAndSortsWithoutIndexData(t *testing.T) {
 	}
 
 	body := list("name=api-test&sort_by=name")
-	assert.NotContains(t, body, "summary")
+	assert.Contains(t, body, "summary")
 	data, ok := body["data"].([]any)
 	require.True(t, ok)
 	require.Len(t, data, 2, "the rotated file folds into its main log")
@@ -43,30 +42,9 @@ func TestGetLogListGroupsFiltersAndSortsWithoutIndexData(t *testing.T) {
 	assert.Equal(t, "/var/log/nginx/api-test-a.access.log", first["path"])
 	assert.Equal(t, "access", first["type"])
 	assert.Equal(t, "/etc/nginx/api-test.conf", first["config_file"])
-	assert.NotContains(t, first, "index_status")
+	assert.Equal(t, "not_indexed", first["index_status"], "nothing is indexed without the indexing services")
 
 	errors := list("name=api-test&type=error")["data"].([]any)
 	require.Len(t, errors, 1)
 	assert.Equal(t, "/var/log/nginx/api-test-b.error.log", errors[0].(map[string]any)["path"])
-}
-
-func TestGetLegacyIndexingStatusReportsTheReadOnlyFlag(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-
-	previous := settings.NginxLogSettings.IndexingEnabled
-	t.Cleanup(func() { settings.NginxLogSettings.IndexingEnabled = previous })
-
-	for _, enabled := range []bool{true, false} {
-		settings.NginxLogSettings.IndexingEnabled = enabled
-
-		router := gin.New()
-		router.GET("/nginx_log/legacy_indexing", GetLegacyIndexingStatus)
-		recorder := httptest.NewRecorder()
-		router.ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/nginx_log/legacy_indexing", nil))
-		require.Equal(t, http.StatusOK, recorder.Code)
-
-		var body map[string]any
-		require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &body))
-		assert.Equal(t, enabled, body["enabled"])
-	}
 }

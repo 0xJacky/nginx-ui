@@ -6,6 +6,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
+
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/uozi-tech/cosy/logger"
@@ -63,16 +65,25 @@ func RefreshDefaultLogPaths() int {
 	defaultLogRegistryMutex.Lock()
 	previous := defaultLogRegistry
 	defaultLogRegistry = next
-	changed := len(next) != len(previous)
-	if !changed {
-		for path := range previous {
-			if _, kept := next[path]; !kept {
-				changed = true
-				break
-			}
+
+	stale := make([]string, 0, len(previous))
+	for path := range previous {
+		if _, kept := next[path]; !kept {
+			stale = append(stale, path)
 		}
 	}
+	changed := len(stale) > 0 || len(next) != len(previous)
 	defaultLogRegistryMutex.Unlock()
+
+	manager := GetLogFileManager()
+	for _, path := range stale {
+		// A path that stopped being a default may still be declared by an
+		// access_log directive, in which case that config file owns it.
+		if !configDeclaresLogPath(path) && manager != nil {
+			manager.RemoveLogPath(path)
+		}
+	}
+	applyDefaultLogPaths(manager)
 
 	if changed {
 		logger.Infof("Registered %d nginx default log path(s): %s",
@@ -155,4 +166,17 @@ func defaultLogPathList() []string {
 	sort.Strings(paths)
 
 	return paths
+}
+
+// applyDefaultLogPaths registers the nginx default logs with the log file
+// manager, so they are indexed like any declared log.
+func applyDefaultLogPaths(manager *indexer.LogFileManager) int {
+	if manager == nil {
+		return 0
+	}
+	entries := defaultLogPathEntries()
+	for _, entry := range entries {
+		manager.AddLogPath(entry.Path, entry.Type, entry.Name, entry.ConfigFile)
+	}
+	return len(entries)
 }

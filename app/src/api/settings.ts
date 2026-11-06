@@ -146,6 +146,12 @@ export interface NginxControlSettings {
 export interface NginxLogSettings {
   indexing_enabled: boolean
   index_path: string
+  index_custom_mmdb: string
+  geo_map_path: string
+  /** Minutes between two incremental indexing runs, 0 uses the default. */
+  incremental_index_interval?: number
+  /** Log groups indexed at the same time, 0 derives it from the CPU budget. */
+  max_concurrent_index_tasks?: number
 }
 
 export interface NodeSettings {

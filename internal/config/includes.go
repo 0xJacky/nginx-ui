@@ -23,14 +23,23 @@ type configIncludeValidator struct {
 	visited map[string]bool
 	bytes   int
 	files   int
+	opts    validateOptions
+	// pattern is the argument of the include statement in the edited file
+	// that is being expanded, used to name the source of an error.
+	pattern string
 }
 
 // validateConfigIncludes applies the directive policy to existing include
 // targets as well as the edited file. Relative includes use Nginx's main config
 // prefix, not the directory of the file containing the include. Globs with no
 // matches remain valid, and safe system snippets outside the conf root work.
-func validateConfigIncludes(path string, content []byte) error {
-	validator := configIncludeValidator{base: includeBasePath(), active: make(map[string]bool), visited: make(map[string]bool)}
+func validateConfigIncludes(path string, content []byte, opts validateOptions) error {
+	validator := configIncludeValidator{
+		base:    includeBasePath(),
+		active:  make(map[string]bool),
+		visited: make(map[string]bool),
+		opts:    opts,
+	}
 	return validator.validate(path, content, 0)
 }
 
@@ -67,12 +76,15 @@ func (validator *configIncludeValidator) validate(path string, content []byte, d
 	defer delete(validator.active, canonical)
 	validator.files++
 	validator.bytes += len(content)
-	if err := ValidateConfigContentBytes(content); err != nil {
+	if err := validator.validateContent(path, content, depth); err != nil {
 		return err
 	}
 	if err := visitConfigStatementsAsNginx(content, func(statement []string) error {
 		if len(statement) != 2 || !strings.EqualFold(statement[0], "include") {
 			return nil
+		}
+		if depth == 0 {
+			validator.pattern = statement[1]
 		}
 		pattern := includeFullPath(validator.base, statement[1])
 		matches, err := resolveIncludePattern(pattern)
@@ -104,6 +116,109 @@ func (validator *configIncludeValidator) validate(path string, content []byte, d
 	}
 	validator.visited[canonical] = true
 	return nil
+}
+
+// validateContent applies the content policy to one file and names that file
+// on every restricted directive it finds, since the statement validation only
+// knows the directive itself. The edited file is held to the full policy; a
+// file it includes from disk is held to the relaxed one, which accepts the
+// load_module statement a distribution's own modules-enabled snippet wrote
+// (#2087).
+func (validator *configIncludeValidator) validateContent(path string, content []byte, depth int) error {
+	opts := validator.opts
+
+	var found []RestrictedDirective
+	if validator.opts.found != nil {
+		opts.found = &found
+	}
+
+	var err error
+	if depth == 0 {
+		err = validateConfigContent(content, opts)
+	} else {
+		err = validateIncludedConfigContent(content, opts)
+	}
+
+	// The edited file is named by the path the caller asked to save. An
+	// included file is named the way includedDirectiveError names it, so the
+	// confirmation an administrator sees never reveals a path outside the
+	// config directory either.
+	name := path
+	if depth > 0 {
+		name = validator.includedFileName(path)
+	}
+
+	if validator.opts.found != nil {
+		for index := range found {
+			found[index].File = name
+		}
+		*validator.opts.found = append(*validator.opts.found, found...)
+	}
+
+	if restricted, ok := errors.AsType[*RestrictedDirectiveError](err); ok {
+		rejection := restricted.err
+		if depth > 0 {
+			rejection = validator.includedDirectiveError(path, rejection)
+		}
+		return &RestrictedDirectiveError{
+			Found: RestrictedDirective{Directive: restricted.Found.Directive, File: name},
+			err:   rejection,
+		}
+	}
+
+	if err != nil && depth > 0 {
+		return validator.includedDirectiveError(path, err)
+	}
+
+	return err
+}
+
+// includedDirectiveError names the included file that holds a restricted
+// directive, since the edited file itself may contain none. A file is named by
+// its path only when that path lies inside the Nginx config directory without
+// leaving it through "..". Any other file is named by the include argument
+// written in the edited file, so the error never reveals a file name outside
+// the config directory that the caller did not write.
+func (validator *configIncludeValidator) includedDirectiveError(path string, err error) error {
+	cErr, ok := errors.AsType[*cosy.Error](err)
+	if !ok || len(cErr.Params) == 0 {
+		return err
+	}
+	wantErr, ok := errors.AsType[*cosy.Error](ErrConfigDirectiveNotAllowed)
+	if !ok || cErr.Scope != wantErr.Scope || cErr.Code != wantErr.Code {
+		return err
+	}
+
+	return cosy.WrapErrorWithParams(ErrIncludedDirectiveNotAllowed, validator.includedFileName(path), cErr.Params[0])
+}
+
+// includedFileName is the name an included file is reported under: its own
+// path when that path lies inside the Nginx config directory, otherwise the
+// include argument the edited file wrote. See includedDirectiveError.
+func (validator *configIncludeValidator) includedFileName(path string) string {
+	if isPlainPathInConfDir(path) {
+		return filepath.Clean(path)
+	}
+	return validator.pattern
+}
+
+func isPlainPathInConfDir(path string) bool {
+	for _, segment := range strings.Split(filepath.ToSlash(path), "/") {
+		if segment == ".." {
+			return false
+		}
+	}
+	if !strings.HasPrefix(filepath.Clean(path), filepath.Clean(nginx.GetConfPath())+string(filepath.Separator)) {
+		return false
+	}
+	// A symlinked directory inside the conf dir can resolve to a location
+	// outside it, so a name under the conf dir may belong to a file that does
+	// not. Only name a file whose symlink-resolved path still lies under the
+	// symlink-resolved conf dir; anything else falls back to the include
+	// argument. Both sides are resolved so a conf dir that is itself reached
+	// through a symlink (such as /var on macOS) still matches.
+	confPath := canonicalIncludePath(nginx.GetConfPath())
+	return strings.HasPrefix(canonicalIncludePath(path), confPath+string(filepath.Separator))
 }
 
 type includeWalker struct {

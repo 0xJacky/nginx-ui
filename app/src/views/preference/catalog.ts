@@ -123,7 +123,7 @@ export function buildSettingCatalog(): SettingCatalogEntry[] {
       path: 'http.github_proxy',
       section: 'http',
       title: $gettext('Github Proxy'),
-      description: $gettext('Used for downloads from GitHub, such as upgrades.'),
+      description: $gettext('Used for downloads from GitHub, such as upgrades and the GeoLite database.'),
     },
     {
       path: 'http.http_proxy',
@@ -484,6 +484,26 @@ export function buildSettingCatalog(): SettingCatalogEntry[] {
       section: 'logrotate',
       title: $gettext('Interval'),
       description: $gettext('Minutes between two runs.'),
+    },
+
+    // GeoLite
+    {
+      path: 'nginx_log.geolite_database',
+      section: 'geolite',
+      title: $gettext('GeoLite2 Database'),
+      description: $gettext('The GeoLite2 database provides geographic information for IP addresses. This is used for offline geographic analysis in log analytics.'),
+    },
+    {
+      path: 'nginx_log.index_custom_mmdb',
+      section: 'geolite',
+      title: $gettext('Custom MMDB'),
+      description: $gettext('A custom database replaces the GeoLite2 download.'),
+    },
+    {
+      path: 'nginx_log.geo_map_path',
+      section: 'geolite',
+      title: $gettext('Map Boundary Directory'),
+      description: $gettext('Keep files with names like 100000_full.json in this directory. Only the world map is provided by default.'),
     },
   ]
 }

@@ -44,6 +44,7 @@ func GenerateAllModel() []any {
 		Stream{},
 		DnsCredential{},
 		DnsDomain{},
+		NginxLogIndex{},
 		Node{},
 		NodeCredential{},
 		NodeControllerCredential{},
