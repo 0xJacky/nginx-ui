@@ -2,10 +2,11 @@ package logstore
 
 import (
 	"bytes"
+	"encoding/binary"
 	"fmt"
 	"math/bits"
 	"net/netip"
-	"sort"
+	"slices"
 	"strings"
 	"sync"
 )
@@ -70,8 +71,8 @@ type compiledQuery struct {
 	maxBytes      *uint64
 	minReqMs      *uint64
 	maxReqMs      *uint64
-	terms         [][]byte // lower case
-	notTerms      [][]byte // lower case, excluded
+	terms         []textTerm
+	notTerms      []textTerm // excluded
 	dictClauses   []dictClause
 	rangeClauses  []rangeClause
 	matchNone     bool // a criterion that can never match
@@ -153,7 +154,7 @@ func compile(q *Query) *compiledQuery {
 		c.maxReqMs = &v
 	}
 	for _, t := range splitTerms(q.Text) {
-		c.terms = append(c.terms, []byte(lowerASCII(t)))
+		c.terms = append(c.terms, newTextTerm(t))
 	}
 	for _, cl := range q.Clauses {
 		c.addClause(cl)
@@ -181,7 +182,7 @@ func (c *compiledQuery) addClause(cl Clause) {
 		if cl.Text == "" {
 			return
 		}
-		term := []byte(lowerASCII(cl.Text))
+		term := newTextTerm(cl.Text)
 		if cl.Negate {
 			c.notTerms = append(c.notTerms, term)
 		} else {
@@ -428,10 +429,44 @@ func (c *compiledQuery) filterRange(r *blockReader, sel bitset, col Column, lo, 
 	return nil
 }
 
-// filterText keeps rows whose raw line contains every term. It lowers a copy
-// of the block's text once and searches it as a whole, so the work is one
-// bytes.Index pass per term instead of one per row.
+// textTerm is a free-text term, lower case, with its trigrams for the gram
+// filter.
+type textTerm struct {
+	text  []byte
+	grams []uint32
+}
+
+func newTextTerm(s string) textTerm {
+	t := []byte(lowerASCII(s))
+	return textTerm{text: t, grams: termGrams(t)}
+}
+
+// filterText keeps rows whose raw line contains every term and none of the
+// excluded ones. The block's gram filter settles most terms without the raw
+// text: a term it rules out empties the selection, and an excluded term it
+// rules out removes nothing. Only the terms left are searched, over a
+// lower-cased copy of the block's text, one bytes.Index pass per term.
 func (c *compiledQuery) filterText(r *blockReader, sel bitset) error {
+	terms, notTerms := c.terms, c.notTerms
+	if p, ok := r.m.payload(ColRaw, payloadGrams); ok && p.rawLen > 0 {
+		raw, _, err := r.read(ColRaw, payloadGrams)
+		if err != nil {
+			return err
+		}
+		if f, ok := parseGramFilter(raw); ok {
+			for _, t := range terms {
+				if !f.mayContain(t.grams) {
+					sel.reset()
+					return nil
+				}
+			}
+			notTerms = slices.DeleteFunc(slices.Clone(notTerms), func(t textTerm) bool { return !f.mayContain(t.grams) })
+		}
+	}
+	if len(terms) == 0 && len(notTerms) == 0 {
+		return nil
+	}
+
 	r.store.textSlots <- struct{}{}
 	defer func() { <-r.store.textSlots }()
 
@@ -441,56 +476,80 @@ func (c *compiledQuery) filterText(r *blockReader, sel bitset) error {
 	// whole raw column per worker until the worker moved on.
 	rawBuf := rawBufPool.Get().(*[]byte)
 	defer rawBufPool.Put(rawBuf)
-	lower, _, err := r.readInto(ColRaw, payloadValues, *rawBuf)
+	text, _, err := r.readInto(ColRaw, payloadValues, *rawBuf)
 	if err != nil {
 		return err
 	}
-	*rawBuf = lower
-	lines := make([]int, 0, r.m.rows+1)
-	for i, b := range lower {
-		switch {
-		case 'A' <= b && b <= 'Z':
-			lower[i] = b + 'a' - 'A'
-		case b == '\n':
-			lines = append(lines, i+1)
-		}
+	*rawBuf = text
+	if n := bytes.Count(text, newline); n != r.m.rows {
+		return fmt.Errorf("%w: raw has %d lines, want %d", errCorruptBlock, n, r.m.rows)
 	}
-	if len(lines) != r.m.rows {
-		return fmt.Errorf("%w: raw has %d lines, want %d", errCorruptBlock, len(lines), r.m.rows)
+	// Terms without letters match the text as it is.
+	if slices.ContainsFunc(terms, textTerm.hasLetter) || slices.ContainsFunc(notTerms, textTerm.hasLetter) {
+		lowerASCIIInPlace(text)
 	}
-	lines = append([]int{0}, lines...)
+
 	hits := newBitset(r.m.rows, false)
 	markHits := func(term []byte) {
 		hits.reset()
-		for off := 0; off < len(lower); {
-			j := bytes.Index(lower[off:], term)
+		// Lines hold no newline, so neither can a match.
+		if bytes.IndexByte(term, '\n') >= 0 {
+			return
+		}
+		row, counted := 0, 0
+		for off := 0; off < len(text); {
+			j := bytes.Index(text[off:], term)
 			if j < 0 {
 				break
 			}
 			pos := off + j
-			row := sort.SearchInts(lines, pos+1) - 1
-			// A match that runs over the line end belongs to no line.
-			if pos+len(term) < lines[row+1] {
-				hits.set(row)
-			}
-			off = max(lines[row+1], pos+1)
+			row += bytes.Count(text[counted:pos], newline)
+			hits.set(row)
+			// Every line ends with a newline, so one follows the match.
+			end := pos + bytes.IndexByte(text[pos:], '\n')
+			off, counted = end+1, end+1
+			row++
 		}
 	}
-	for _, term := range c.terms {
-		markHits(term)
+	for _, t := range terms {
+		markHits(t.text)
 		sel.and(hits)
 		if sel.empty() {
 			return nil
 		}
 	}
-	for _, term := range c.notTerms {
-		markHits(term)
+	for _, t := range notTerms {
+		markHits(t.text)
 		sel.andNot(hits)
 		if sel.empty() {
 			return nil
 		}
 	}
 	return nil
+}
+
+var newline = []byte{'\n'}
+
+func (t textTerm) hasLetter() bool {
+	return slices.ContainsFunc(t.text, func(b byte) bool { return 'a' <= b && b <= 'z' })
+}
+
+// lowerASCIIInPlace lower-cases ASCII letters eight bytes at a time and leaves
+// every other byte alone.
+func lowerASCIIInPlace(b []byte) {
+	const ones = 0x0101010101010101
+	i := 0
+	for ; i+8 <= len(b); i += 8 {
+		x := binary.LittleEndian.Uint64(b[i:])
+		h := x & (0x7f * ones)
+		// The high bit of a byte is set when its low seven bits are at least
+		// 'A' and below 'Z'+1, and the byte itself is ASCII.
+		upper := ((h + (0x80-'A')*ones) ^ (h + (0x80-'Z'-1)*ones)) &^ x & (0x80 * ones)
+		binary.LittleEndian.PutUint64(b[i:], x|upper>>2)
+	}
+	for ; i < len(b); i++ {
+		b[i] = lowerByte(b[i])
+	}
 }
 
 // rawBufPool recycles the buffers free-text filters decode raw text into,

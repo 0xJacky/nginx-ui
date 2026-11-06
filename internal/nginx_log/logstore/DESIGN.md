@@ -156,13 +156,34 @@ Path, user agent and referer filters become case-insensitive substrings,
 checked once per dictionary entry. They are cheap regardless of corpus size.
 
 Raw text is the only column whose scan cost grows with bytes rather than
-distinct values. The plan to make it fast:
+distinct values. Two things keep it fast:
 
-1. **Now:** decompress each block's raw column, ASCII-lowercase a copy of it,
-   and run `bytes.Index` over the whole buffer. Map matches back to rows
-   through the line offsets. Run blocks in parallel.
-2. **Later, if needed:** add a per-block bloom filter over the lowercased
-   tokens of `raw` (about 2 B/row) to skip blocks for selective terms.
+1. **Gram filter.** Each block stores, as a third payload of the raw column,
+   a bitmap of the lower-cased trigrams its lines hold, at about eight bits
+   per distinct trigram (1 KiB to 512 KiB before compression). A term with a
+   trigram missing from it cannot occur in the block, so the block is skipped
+   without decompressing its text, and an excluded term it rules out removes
+   nothing. Trigrams keep substring semantics exactly, which a token filter
+   would not: `api` still finds `/apiv2`. False positives only cost a scan.
+   Blocks written before the filter, and readers that predate it, scan as
+   before.
+2. **Scan.** The blocks left decompress their raw column, lower-case it
+   eight bytes at a time (not at all when no term has a letter), and run
+   `bytes.Index` over the whole buffer. A match is mapped to its row by
+   counting newlines since the previous one. At most `TextScanParallelism`
+   blocks scan at once, which bounds the memory a query holds.
+
+On 1M lines (`BenchmarkTextSearch`, Apple M2 Pro), before and after:
+
+| Term | Before | After |
+|---|---|---|
+| in every block (`chrome`) | 247 ms | 74 ms |
+| scattered over every block (`/api/v1/users/4242`) | 338 ms | 133 ms |
+| in one window of the log (`sqlmap`) | 254 ms | 16 ms |
+| absent (`wp-login.php`) | 195 ms | 0.08 ms |
+
+Building the filter costs about 0.2 µs per ingested line and adds 0.03 B per
+line on disk.
 
 ## Distinct counts at scale
 
