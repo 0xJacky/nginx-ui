@@ -39,6 +39,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.221
+	github.com/klauspost/compress v1.19.2
 	github.com/mark3labs/mcp-go v1.5.0
 	github.com/mattn/go-sqlite3 v1.14.52
 	github.com/miekg/dns v1.1.73
@@ -228,7 +229,6 @@ require (
 	github.com/jonboulle/clockwork v0.5.0 // indirect
 	github.com/json-iterator/go v1.1.13-0.20220915233716-71ac16282d12 // indirect
 	github.com/k0kubun/go-ansi v0.0.0-20180517002512-3bf9e2903213 // indirect
-	github.com/klauspost/compress v1.19.2 // indirect
 	github.com/klauspost/cpuid/v2 v2.4.0 // indirect
 	github.com/klauspost/crc32 v1.3.0 // indirect
 	github.com/kolo/xmlrpc v0.0.0-20220921171641-a4b6fa1dd06b // indirect
