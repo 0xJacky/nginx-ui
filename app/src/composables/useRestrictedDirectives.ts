@@ -10,8 +10,8 @@ import type { CosyError } from '@/lib/http/types'
  * The codes come from internal/config/errors.go.
  */
 const CONFIG_ERROR_SCOPE = 'config'
-const CONFIRM_REQUIRED_CODE = 40021
-const TWO_FACTOR_REQUIRED_CODE = 40022
+const CONFIRM_REQUIRED_CODE = 40022
+const TWO_FACTOR_REQUIRED_CODE = 40023
 
 /**
  * Thrown when the save was not applied and the administrator has already been

@@ -226,3 +226,110 @@ func TestRestrictedDirectiveGateUsesTheSameTokenizer(t *testing.T) {
 		})
 	}
 }
+
+// The step-up wraps the rejection a non-opting caller receives, so the error
+// an included restricted directive produces has to stay exactly the one
+// #2087 introduced: the included-file code naming the file and the directive,
+// not the plain directive error of the edited file.
+func TestIncludedRestrictedDirectiveKeepsTheIncludedFileError(t *testing.T) {
+	confDir := setupTokenizerConfDir(t)
+	includedPath := filepath.Join(confDir, "conf.d", "scripting.conf")
+	writeIncludeTestFile(t, includedPath, "js_import main from conf.d/main.js;\n")
+
+	path := filepath.Join(confDir, "nginx.conf")
+	content := "events {}\nhttp {\n    include conf.d/scripting.conf;\n}\n"
+
+	requireIncludedDirectiveError(t, ValidateConfigFile(path, content),
+		[]string{includedPath, "js_import"})
+	requireIncludedDirectiveError(t, ValidateConfigFileWithRestricted(path, content, false),
+		[]string{includedPath, "js_import"})
+}
+
+// A file outside the config directory is named by the include argument the
+// edited file wrote, in the confirmation an administrator reads as well as in
+// the rejection, so neither reveals a path they did not write.
+func TestIncludedRestrictedDirectivesOutsideConfDirAreNamedByThePattern(t *testing.T) {
+	confDir := setupTokenizerConfDir(t)
+	outside := t.TempDir()
+	writeIncludeTestFile(t, filepath.Join(outside, "secret-name.inc"), "js_import main from main.js;\n")
+
+	path := filepath.Join(confDir, "sites-available", "example")
+	pattern := filepath.Join(outside, "*.inc")
+	content := "include " + pattern + ";\n"
+
+	requireIncludedDirectiveError(t, ValidateConfigFile(path, content), []string{pattern, "js_import"})
+
+	found, complete := FindRestrictedDirectives(path, content)
+	if !complete {
+		t.Fatal("expected the walk to complete")
+	}
+	if len(found) != 1 || found[0].File != pattern {
+		t.Fatalf("expected the include argument %q to name the finding, got %v", pattern, found)
+	}
+}
+
+// A module that the distribution enabled through modules-enabled needs no
+// confirmation at all: the include relaxation accepts it, so it must not turn
+// up as something an administrator is asked to confirm either.
+func TestDistroEnabledModulesNeedNoConfirmation(t *testing.T) {
+	confDir := useDataValidationRoot(t)
+	enableDebianModule(t, confDir, "http-js", "ngx_http_js_module.so")
+	enableDebianModule(t, confDir, "http-perl", "ngx_http_perl_module.so")
+	writeIncludeTestFile(t, filepath.Join(confDir, "sites-enabled", "default"), "server { listen 80; }\n")
+
+	path := filepath.Join(confDir, "nginx.conf")
+	content := debianNginxConf(confDir)
+
+	if err := ValidateConfigFile(path, content); err != nil {
+		t.Fatalf("nginx.conf with distro-enabled modules rejected: %v", err)
+	}
+	found, complete := FindRestrictedDirectives(path, content)
+	if !complete {
+		t.Fatal("expected the walk to complete")
+	}
+	if len(found) != 0 {
+		t.Fatalf("expected nothing to confirm, got %v", found)
+	}
+}
+
+// "env PERL*" is outside the step-up, like "user root": it only ever smuggles
+// code into "nginx -t" and reload, and an administrator who wants to run
+// their own Perl writes perl_require, which the step-up does unlock.
+func TestEnvPerlVariablesStayOutsideTheStepUp(t *testing.T) {
+	confDir := setupTokenizerConfDir(t)
+	nginxConf := filepath.Join(confDir, "nginx.conf")
+
+	for _, arg := range []string{"PERL5OPT=-Mevil", "PERL5LIB=/tmp/lib", "perl5db=x"} {
+		t.Run(arg, func(t *testing.T) {
+			content := "env \"" + arg + "\";\nevents {}\n"
+
+			for _, allow := range []bool{false, true} {
+				err := ValidateConfigFileWithRestricted(nginxConf, content, allow)
+				if err == nil {
+					t.Fatalf("env %q accepted with allowRestricted=%v", arg, allow)
+				}
+				if _, ok := errors.AsType[*RestrictedDirectiveError](err); ok {
+					t.Fatalf("env %q offered as confirmable with allowRestricted=%v", arg, allow)
+				}
+			}
+
+			found, complete := FindRestrictedDirectives(nginxConf, content)
+			if complete {
+				t.Fatalf("a rejected walk cannot be complete, got %v", found)
+			}
+			if len(found) != 0 {
+				t.Fatalf("expected nothing to confirm, got %v", found)
+			}
+		})
+	}
+
+	// The same inside an included file, where the module load itself is now
+	// accepted: the env export is not.
+	writeIncludeTestFile(t, filepath.Join(confDir, "conf.d", "env.conf"), "env \"PERL5OPT=-Mevil\";\n")
+	content := "include conf.d/env.conf;\nevents {}\n"
+	for _, allow := range []bool{false, true} {
+		if err := ValidateConfigFileWithRestricted(nginxConf, content, allow); err == nil {
+			t.Fatalf("an included env PERL5OPT was accepted with allowRestricted=%v", allow)
+		}
+	}
+}

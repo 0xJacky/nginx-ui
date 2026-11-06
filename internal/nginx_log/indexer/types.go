@@ -52,7 +52,7 @@ type Config struct {
 	FlushInterval        time.Duration `json:"flush_interval"`
 	MaxQueueSize         int           `json:"max_queue_size"`
 	EnableCompression    bool          `json:"enable_compression"` // Deprecated: Scorch/Zap compression is always enabled
-	MemoryQuota          int64         `json:"memory_quota"`       // Maximum estimated bytes retained by queued and active jobs
+	MemoryQuota          int64         `json:"memory_quota"`       // Maximum estimated heap Bleve may hold for queued and in-flight batches; also caps each batch
 	MaxSegmentSize       int64         `json:"max_segment_size"`   // Maximum Scorch in-memory merge input per persister worker
 	OptimizeInterval     time.Duration `json:"optimize_interval"`  // Auto-optimization interval
 	EnableMetrics        bool          `json:"enable_metrics"`
@@ -75,7 +75,12 @@ const (
 
 	// indexMemoryQuotaFraction is the share of the container memory budget the
 	// indexer may retain for queued and in-flight batches.
-	indexMemoryQuotaFraction = 4
+	//
+	// The resident cost is about twice the quota: with the default GOGC the
+	// heap grows to double what is live before a collection finishes, and on
+	// a fraction of a CPU the collector falls behind enough to use all of it.
+	// An eighth therefore keeps indexing to roughly a quarter of the machine.
+	indexMemoryQuotaFraction = 8
 )
 
 // availableCPUs reports the CPU budget used to size the indexer, and

@@ -21,6 +21,22 @@ export const APP_BOOT_GRACE_MS = 75_000
 /** Minimum gap between forced recoveries, so a container that dies on boot is not thrashed. */
 export const RECOVERY_COOLDOWN_MS = 120_000
 
+/**
+ * How long a passing health check is trusted before nginx-ui is probed again.
+ *
+ * Serving once is no promise of serving later. nginx-ui has hung mid-life with
+ * nginx still up in front of it: every request then waited out nginx's 60s
+ * proxy timeout and came back 504, while a cache that trusted the first pass
+ * forever kept the wedge clock from ever starting. This bounds how long a hang
+ * can go unnoticed before recovery gets a chance to run.
+ */
+export const SERVING_RECHECK_MS = 30_000
+
+/** Whether a health check that passed at `verifiedAt` still vouches for the application. */
+export function servingIsTrusted(verifiedAt: number | undefined, now: number): boolean {
+  return verifiedAt !== undefined && now - verifiedAt < SERVING_RECHECK_MS
+}
+
 export interface WedgeState {
   /** When the container first reported healthy without serving, if it has. */
   notServingSince?: number

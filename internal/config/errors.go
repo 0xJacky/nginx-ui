@@ -11,13 +11,14 @@ var (
 	ErrConfigDataInvalid            = e.New(40018, "file content must be valid PEM or htpasswd data")
 	ErrSecretFileHiddenFromReadOnly = e.New(40019, "secret files are hidden from read-only service tokens")
 	ErrConfigIncludeGlobUnsupported = e.New(40020, "include pattern uses glob syntax that cannot be validated: {0}")
+	ErrIncludedDirectiveNotAllowed  = e.New(40021, "included file {0} contains restricted nginx directive: {1}")
 	// ErrConfigRestrictedDirectiveConfirmRequired asks an interactive
 	// administrator to confirm a save that loads code into the Nginx worker.
 	// The request repeats with allow_restricted_directives set to apply it.
-	ErrConfigRestrictedDirectiveConfirmRequired = e.New(40021, "restricted nginx directives need confirmation: {0} in {1}")
+	ErrConfigRestrictedDirectiveConfirmRequired = e.New(40022, "restricted nginx directives need confirmation: {0} in {1}")
 	// ErrConfigRestrictedDirectiveNeedsTwoFactor is returned when the account
 	// has no second factor to step up with, so there is nothing to confirm.
-	ErrConfigRestrictedDirectiveNeedsTwoFactor = e.New(40022, "saving restricted nginx directives requires two-factor authentication on your account: {0} in {1}")
+	ErrConfigRestrictedDirectiveNeedsTwoFactor = e.New(40023, "saving restricted nginx directives requires two-factor authentication on your account: {0} in {1}")
 	ErrPathIsNotUnderTheNginxConfDir           = e.New(50006, "path: {0} is not under the nginx conf dir: {1}")
 	ErrDstFileExists                           = e.New(50007, "destination file: {0} already exists")
 	ErrNginxTestFailed                         = e.New(50008, "nginx test failed: {0}")

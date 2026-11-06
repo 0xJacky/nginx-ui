@@ -10,7 +10,7 @@ import { authHeaders, gotoRoute, isDemoTarget } from './helpers'
 // and its password is published. So the demo gets the plain denylist
 // rejection, 40017, whatever a request asks for. A writable container behaves
 // like a real deployment, where the seeded administrator has no second factor
-// and is told to enrol one (40022).
+// and is told to enrol one (40023).
 //
 // Codes come from internal/config/errors.go.
 const RESTRICTED_CONTENT = 'server {\n    listen 8443;\n    js_import main from conf.d/main.js;\n}\n'
@@ -26,7 +26,7 @@ test('a configuration loading njs is refused, and the opt-in flag alone changes 
   await gotoRoute(page, '/config')
   const headers = await authHeaders(page)
   const demo = await isDemoTarget(request)
-  const expectedCode = demo ? 40017 : 40022
+  const expectedCode = demo ? 40017 : 40023
 
   for (const payload of [
     { name: CONFIG_NAME, content: RESTRICTED_CONTENT },
