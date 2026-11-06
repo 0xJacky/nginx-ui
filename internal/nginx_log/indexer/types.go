@@ -105,10 +105,17 @@ func DefaultIndexerConfig() *Config {
 	// Derive conservative, CPU-aware defaults to avoid oversubscribing small machines.
 	workerCount := clampInt(cpus, 2, maxDefaultWorkerCount)
 
-	// Limit file-level concurrency to at most half of the usable CPUs. Every
-	// concurrent file holds its own parse batch plus a buffered index batch, so
-	// this factor multiplies peak memory directly.
+	// Every file indexed at the same time holds its parse batches and a block
+	// being built, about 80 MB at the largest batch size, so the memory budget
+	// decides how many run at once, never more than half the usable CPUs.
+	// One file indexes about a million lines a second, so a single one is
+	// rarely the bottleneck.
 	fileGroupConcurrency := clampInt(cpus/2, 1, maxDefaultFileGroupConcurrency)
+	if available, ok := availableMemory(); !ok || available < 4<<30 {
+		fileGroupConcurrency = 1
+	} else {
+		fileGroupConcurrency = min(fileGroupConcurrency, 2)
+	}
 
 	shardCount := 1
 	if cpus >= 8 {
@@ -146,6 +153,20 @@ func ParseBatchSize() int {
 		return 2000
 	default:
 		return 5000
+	}
+}
+
+// TextScanParallelism is how many blocks a free-text query scans at once.
+// Each holds a block's decompressed lines, about 15 MB at 64k lines.
+func TextScanParallelism() int {
+	available, ok := availableMemory()
+	switch {
+	case !ok || available < 2<<30:
+		return 2
+	case available < 8<<30:
+		return 4
+	default:
+		return 8
 	}
 }
 

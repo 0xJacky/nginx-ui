@@ -2,6 +2,7 @@ package logstore
 
 import (
 	"bytes"
+	"fmt"
 	"math/bits"
 	"net/netip"
 	"sort"
@@ -432,19 +433,30 @@ func (c *compiledQuery) filterText(r *blockReader, sel bitset) error {
 	r.store.textSlots <- struct{}{}
 	defer func() { <-r.store.textSlots }()
 
-	raw, lines, err := r.rawText()
+	// The text is decoded into a pooled buffer and lower-cased in place, and
+	// nothing keeps it once the block is filtered: the few rows a search
+	// shows read their lines again. Keeping it on the reader held a block's
+	// whole raw column per worker until the worker moved on.
+	rawBuf := rawBufPool.Get().(*[]byte)
+	defer rawBufPool.Put(rawBuf)
+	lower, _, err := r.readInto(ColRaw, payloadValues, *rawBuf)
 	if err != nil {
 		return err
 	}
-	lowerBuf := lowerBufPool.Get().(*[]byte)
-	defer lowerBufPool.Put(lowerBuf)
-	lower := append((*lowerBuf)[:0], raw...)
-	*lowerBuf = lower
+	*rawBuf = lower
+	lines := make([]int, 0, r.m.rows+1)
 	for i, b := range lower {
-		if 'A' <= b && b <= 'Z' {
+		switch {
+		case 'A' <= b && b <= 'Z':
 			lower[i] = b + 'a' - 'A'
+		case b == '\n':
+			lines = append(lines, i+1)
 		}
 	}
+	if len(lines) != r.m.rows {
+		return fmt.Errorf("%w: raw has %d lines, want %d", errCorruptBlock, len(lines), r.m.rows)
+	}
+	lines = append([]int{0}, lines...)
 	hits := newBitset(r.m.rows, false)
 	markHits := func(term []byte) {
 		hits.reset()
@@ -479,9 +491,9 @@ func (c *compiledQuery) filterText(r *blockReader, sel bitset) error {
 	return nil
 }
 
-// lowerBufPool recycles the lower-cased copies of raw text that free-text
-// filters search, which are as large as a block's raw column.
-var lowerBufPool = sync.Pool{New: func() any { b := make([]byte, 0, 1<<20); return &b }}
+// rawBufPool recycles the buffers free-text filters decode raw text into,
+// which are as large as a block's raw column.
+var rawBufPool = sync.Pool{New: func() any { b := make([]byte, 0, 1<<20); return &b }}
 
 func lowerASCII(s string) string {
 	for i := 0; i < len(s); i++ {

@@ -67,7 +67,8 @@ func (ci *ColumnarIndexer) Start(ctx context.Context) error {
 	}
 
 	store, err := logstore.Open(StoreDir(ci.config.IndexPath), logstore.Options{
-		Parallelism: max(availableCPUs(), 1),
+		Parallelism:         max(availableCPUs(), 1),
+		TextScanParallelism: TextScanParallelism(),
 	})
 	if err != nil {
 		return fmt.Errorf("open log store: %w", err)

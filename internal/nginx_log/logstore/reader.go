@@ -3,6 +3,8 @@ package logstore
 import (
 	"bytes"
 	"fmt"
+	"slices"
+	"sync"
 )
 
 // blockReader decodes the columns of one block on demand and keeps what it
@@ -27,6 +29,11 @@ func newBlockReader(s *Store, seg *Segment, st *segState, m *blockMeta) *blockRe
 }
 
 func (r *blockReader) read(col Column, kind uint8) ([]byte, payloadInfo, error) {
+	return r.readInto(col, kind, nil)
+}
+
+// readInto decodes a payload into dst's storage when it is large enough.
+func (r *blockReader) readInto(col Column, kind uint8, dst []byte) ([]byte, payloadInfo, error) {
 	p, ok := r.m.payload(col, kind)
 	if !ok {
 		return nil, p, fmt.Errorf("%w: missing column %s", errCorruptBlock, col)
@@ -34,11 +41,14 @@ func (r *blockReader) read(col Column, kind uint8) ([]byte, payloadInfo, error) 
 	if p.rawLen == 0 {
 		return nil, p, nil
 	}
-	comp := make([]byte, p.compLen)
+	compBuf := compBufPool.Get().(*[]byte)
+	defer compBufPool.Put(compBuf)
+	comp := slices.Grow((*compBuf)[:0], int(p.compLen))[:p.compLen]
+	*compBuf = comp
 	if _, err := r.st.h.f.ReadAt(comp, p.offset); err != nil {
 		return nil, p, err
 	}
-	out, err := r.store.dec.DecodeAll(comp, make([]byte, 0, p.rawLen))
+	out, err := r.store.dec.DecodeAll(comp, slices.Grow(dst[:0], int(p.rawLen)))
 	if err != nil {
 		return nil, p, fmt.Errorf("logstore: decode %s of %s: %w", col, r.seg.Path(), err)
 	}
@@ -210,6 +220,9 @@ func (r *blockReader) row(i int, want *columnSet) (*Row, error) {
 	}
 	return row, nil
 }
+
+// compBufPool recycles the buffers compressed payloads are read into.
+var compBufPool = sync.Pool{New: func() any { b := make([]byte, 0, 256<<10); return &b }}
 
 // columnSet is a set of columns.
 type columnSet uint32

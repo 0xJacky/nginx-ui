@@ -18,7 +18,6 @@ type geoService struct{}
 
 var _ parser.GeoIPService = (*geoService)(nil)
 
-
 func (g *geoService) Search(ip string) (*parser.GeoLocation, error) {
 	addr, err := netip.ParseAddr(ip)
 	if err != nil {
