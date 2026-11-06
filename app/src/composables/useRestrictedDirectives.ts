@@ -1,5 +1,4 @@
 import type { CosyError } from '@/lib/http/types'
-import router from '@/routes'
 
 /**
  * Saving configuration that loads code into the Nginx worker — the njs and
@@ -78,12 +77,16 @@ function listItems(values: string[]) {
 }
 
 export function useRestrictedDirectives() {
-  const { modal } = useGlobalApp()
-  // The modal is opened from an async save handler, where the component
-  // instance is no longer current, so the app context is captured here.
-  const appContext = getCurrentInstance()?.appContext
-
+  // The app's modal plumbing is resolved only when a dialog is actually
+  // needed, and through the auto-imported helper rather than an explicit
+  // import, because importing it pulls the pinia stores — and the `window`
+  // they read as they load — into this module's graph. The site and stream
+  // editor stores build this composable while they are constructed, which
+  // the store unit tests do without a DOM, and an ordinary save never opens
+  // a dialog at all.
   function confirm(rejection: RestrictedDirectiveRejection): Promise<void> {
+    const { modal } = useGlobalApp()
+
     return new Promise((resolve, reject) => {
       modal.confirm({
         title: $gettext('Apply restricted nginx directives?'),
@@ -95,7 +98,7 @@ export function useRestrictedDirectives() {
         okText: $gettext('Apply anyway'),
         okType: 'danger',
         cancelText: $gettext('Cancel'),
-        appContext,
+        appContext: getCurrentInstance()?.appContext,
         content: () => h('div', {}, [
           h(
             'p',
@@ -119,6 +122,8 @@ export function useRestrictedDirectives() {
   }
 
   function guideTwoFactorEnrollment(rejection: RestrictedDirectiveRejection) {
+    const { modal } = useGlobalApp()
+
     modal.confirm({
       title: $gettext('Two-factor authentication required'),
       centered: true,
@@ -126,7 +131,7 @@ export function useRestrictedDirectives() {
       width: '520px',
       okText: $gettext('Go to Settings'),
       cancelText: $gettext('Later'),
-      appContext,
+      appContext: getCurrentInstance()?.appContext,
       content: () => h('div', {}, [
         h(
           'p',
@@ -135,7 +140,14 @@ export function useRestrictedDirectives() {
         ),
         listItems(rejection.directives),
       ]),
-      onOk: () => router.push('/profile'),
+      onOk: async () => {
+        // The router is loaded here rather than at module scope: this
+        // composable is imported by the site and stream editor stores, and
+        // the router module reads `window` as it initialises, which the
+        // store unit tests do not have.
+        const { default: router } = await import('@/routes')
+        await router.push('/profile')
+      },
     })
   }
 
