@@ -16,7 +16,9 @@ import (
 //
 // Note this is not redundant with RequireSecureSession: that middleware is a
 // pass-through for users with no OTP, 2FA or passkey, and demo mode refuses
-// TOTP enrollment, so the demo user can never trigger it.
+// TOTP enrollment, so the demo user can never trigger it. Passkey enrollment
+// has no such refusal, so anything that a verified session would unlock has
+// to check demo mode itself; RestrictedDirectiveSaveAllowed does.
 func RejectInDemo() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if BlockInDemo(c) {
@@ -25,6 +27,14 @@ func RejectInDemo() gin.HandlerFunc {
 
 		c.Next()
 	}
+}
+
+// DemoMode reports whether this node runs as the public demo, for a caller
+// that refuses an action itself instead of aborting the request here. It
+// keeps the flag read in this file, which is the one place in the package
+// allowed to look at it.
+func DemoMode() bool {
+	return settings.NodeSettings.Demo
 }
 
 // BlockInDemo rejects an action that cannot run on the public demo.

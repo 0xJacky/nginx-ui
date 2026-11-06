@@ -18,7 +18,7 @@ import (
 )
 
 // Save saves a site configuration file
-func Save(ctx context.Context, name string, content string, overwrite bool, syncNodeIds []uint64, postAction string) (err error) {
+func Save(ctx context.Context, name string, content string, overwrite bool, syncNodeIds []uint64, postAction string, opts ...MutateOption) (err error) {
 	path, err := ResolveAvailablePath(name)
 	if err != nil {
 		return err
@@ -34,7 +34,7 @@ func Save(ctx context.Context, name string, content string, overwrite bool, sync
 		}
 	}
 
-	err = config.ValidateConfigFile(path, content)
+	err = config.ValidateConfigFileWithRestricted(path, content, resolveMutateOptions(opts).allowRestrictedDirectives)
 	if err != nil {
 		return
 	}
