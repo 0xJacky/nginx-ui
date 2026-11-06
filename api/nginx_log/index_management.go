@@ -141,7 +141,7 @@ func performAsyncRebuild(modernIndexer interface{}, path string) {
 	// Handle index cleanup based on rebuild scope
 	if path != "" {
 		// For single file rebuild, only delete indexes for that log group
-		if err := modernIndexer.(*indexer.ParallelIndexer).DeleteIndexByLogGroup(path, logFileManager); err != nil {
+		if err := modernIndexer.(indexer.LogIndexer).DeleteIndexByLogGroup(path, logFileManager); err != nil {
 			logger.Errorf("Failed to delete existing indexes for log group %s: %v", path, err)
 			return
 		}
@@ -304,7 +304,7 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 
 		startTime := time.Now()
 
-		docsCountMap, docMinTime, docMaxTime, err := modernIndexer.(*indexer.ParallelIndexer).IndexLogGroupWithProgress(path, progressConfig)
+		docsCountMap, docMinTime, docMaxTime, err := modernIndexer.(indexer.LogIndexer).IndexLogGroupWithProgress(path, progressConfig)
 
 		if err != nil {
 			logger.Errorf("Failed to index modern index for file group %s: %v", path, err)
@@ -450,7 +450,7 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 	var wg sync.WaitGroup
 	// Get concurrency from indexer config (FileGroupConcurrency controls both file and group level parallelism)
 	maxConcurrency := 4 // Default fallback
-	if pi, ok := modernIndexer.(*indexer.ParallelIndexer); ok {
+	if pi, ok := modernIndexer.(indexer.LogIndexer); ok {
 		config := pi.GetConfig()
 		if config.FileGroupConcurrency > 0 {
 			maxConcurrency = config.FileGroupConcurrency
@@ -477,7 +477,7 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 			}
 
 			loopStartTime := time.Now()
-			docsCountMap, minTime, maxTime, err := modernIndexer.(*indexer.ParallelIndexer).IndexLogGroupWithProgress(logItem.Path, progressConfig)
+			docsCountMap, minTime, maxTime, err := modernIndexer.(indexer.LogIndexer).IndexLogGroupWithProgress(logItem.Path, progressConfig)
 
 			if err != nil {
 				logger.Warnf("Failed to index file group: %s, error: %v", logItem.Path, err)

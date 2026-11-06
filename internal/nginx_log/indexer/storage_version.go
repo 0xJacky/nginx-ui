@@ -11,7 +11,9 @@ import (
 
 const (
 	indexStorageVersionFile = ".nginx-ui-index-version"
-	indexStorageVersion     = "3"
+	// 4: rows live in the column store (logstore/); the Bleve shard
+	// directories of version 3 are removed and every log group re-indexed.
+	indexStorageVersion = "4"
 )
 
 // PrepareIndexStorage removes rebuildable shard data when the on-disk format
@@ -61,7 +63,7 @@ func isManagedIndexDirectory(entry os.DirEntry) bool {
 	if !entry.IsDir() {
 		return false
 	}
-	if strings.HasPrefix(entry.Name(), "shard_") {
+	if entry.Name() == logstoreDir || strings.HasPrefix(entry.Name(), "shard_") {
 		return true
 	}
 	_, err := uuid.Parse(entry.Name())

@@ -1337,44 +1337,20 @@ func GetGeoStats(c *gin.Context) {
 	})
 }
 
-// getCardinalityCount is a helper function to get accurate cardinality counts
+// getCardinalityCount counts the distinct values of field among the rows the
+// search request selects. Every filter of the request applies, so the unique
+// visitor and page counts match the rows the search returned.
 func getCardinalityCount(ctx context.Context, field string, searchReq *searcher.SearchRequest) int {
-	// Create a CardinalityRequest from the SearchRequest
-	cardReq := &searcher.CardinalityRequest{
-		Field:          field,
-		StartTime:      searchReq.StartTime,
-		EndTime:        searchReq.EndTime,
-		LogPaths:       searchReq.LogPaths,
-		UseMainLogPath: searchReq.UseMainLogPath, // Use main_log_path field if enabled
-	}
-
 	searcherService := nginx_log.GetSearcher()
 	if searcherService == nil {
 		logger.Debugf("getCardinalityCount: searcher not available for field %s", field)
 		return 0
 	}
 
-	shards := searcherService.GetShards()
-	if len(shards) == 0 {
-		logger.Debugf("getCardinalityCount: searcher has no shards for field %s", field)
-		return 0
-	}
-
-	// The counter wraps the shards in a lightweight IndexAlias; close it after
-	// use so each request does not leave an unreleased alias behind.
-	cardinalityCounter := searcher.NewCounter(shards)
-	defer cardinalityCounter.Stop()
-
-	result, err := cardinalityCounter.Count(ctx, cardReq)
+	count, err := searcherService.Cardinality(ctx, field, searchReq)
 	if err != nil {
-		logger.Debugf("getCardinalityCount: counter failed for field %s: %v", field, err)
+		logger.Debugf("getCardinalityCount: counting %s failed: %v", field, err)
 		return 0
 	}
-
-	if result.Error != "" {
-		logger.Debugf("getCardinalityCount: counter returned error for field %s: %s", field, result.Error)
-		return 0
-	}
-
-	return int(result.Cardinality)
+	return int(count)
 }

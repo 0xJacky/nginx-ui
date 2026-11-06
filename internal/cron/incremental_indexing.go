@@ -129,7 +129,7 @@ func performIncrementalIndexing() {
 
 // indexLogFileIncrementally indexes one log file and keeps its index status in
 // step. It reports whether the file was indexed successfully.
-func indexLogFileIncrementally(logPath string, modernIndexer *indexer.ParallelIndexer, logFileManager *indexer.LogFileManager) bool {
+func indexLogFileIncrementally(logPath string, modernIndexer indexer.LogIndexer, logFileManager *indexer.LogFileManager) bool {
 	logger.Debugf("Starting incremental indexing for file: %s", logPath)
 
 	if err := setFileIndexStatus(logPath, string(indexer.IndexStatusIndexing), logFileManager); err != nil {
@@ -281,7 +281,7 @@ func planIncrementalRun(existing *model.NginxLogIndex, currentSize int64, isGzip
 
 // performSingleFileIncrementalIndexing performs TRUE incremental indexing for a single file synchronously
 // This implements real incremental indexing by using LastPosition to only read new content
-func performSingleFileIncrementalIndexing(logPath string, modernIndexer *indexer.ParallelIndexer, lfm *indexer.LogFileManager) (err error) {
+func performSingleFileIncrementalIndexing(logPath string, modernIndexer indexer.LogIndexer, lfm *indexer.LogFileManager) (err error) {
 	defer func() {
 		// Ensure status is always updated, even on panic
 		if r := recover(); r != nil {
@@ -373,7 +373,7 @@ func performSingleFileIncrementalIndexing(logPath string, modernIndexer *indexer
 // reindexLogFile replaces a file's documents with a fresh full read of it.
 // It goes through the same streaming path and document IDs as a scheduled
 // full index, and SaveIndexMetadata records where that read stopped.
-func reindexLogFile(logPath string, modernIndexer *indexer.ParallelIndexer, lfm *indexer.LogFileManager) error {
+func reindexLogFile(logPath string, modernIndexer indexer.LogIndexer, lfm *indexer.LogFileManager) error {
 	if err := modernIndexer.DeleteIndexByFiles([]string{logPath}); err != nil {
 		return fmt.Errorf("failed to delete existing documents before re-indexing: %w", err)
 	}
@@ -395,7 +395,7 @@ func reindexLogFile(logPath string, modernIndexer *indexer.ParallelIndexer, lfm 
 // rotation the documents of the live file describe what is now a rotated
 // file, so only a group-wide re-index keeps them attributed correctly
 // without duplicates.
-func reindexLogGroup(logPath string, modernIndexer *indexer.ParallelIndexer, lfm *indexer.LogFileManager) error {
+func reindexLogGroup(logPath string, modernIndexer indexer.LogIndexer, lfm *indexer.LogFileManager) error {
 	if err := modernIndexer.DeleteIndexByMainLogPath(logPath); err != nil {
 		return fmt.Errorf("failed to delete existing documents before re-indexing the log group: %w", err)
 	}
@@ -431,7 +431,7 @@ func reindexLogGroup(logPath string, modernIndexer *indexer.ParallelIndexer, lfm
 // parsed and handed to the batch writer one parse batch at a time, so memory
 // stays bounded however much was appended.
 // It returns the number of successfully indexed documents, the time range, and the final byte position read.
-func indexFileFromPosition(pi *indexer.ParallelIndexer, filePath string, startPosition int64) (uint64, *time.Time, *time.Time, int64, error) {
+func indexFileFromPosition(pi indexer.LogIndexer, filePath string, startPosition int64) (uint64, *time.Time, *time.Time, int64, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return 0, nil, nil, 0, fmt.Errorf("failed to open file: %w", err)
@@ -480,7 +480,18 @@ func indexFileFromPosition(pi *indexer.ParallelIndexer, filePath string, startPo
 		}
 		return nil
 	})
+	// A failed run must not leave the rows it already flushed behind: the
+	// next run reads again from the same LastPosition and would duplicate
+	// them.
+	abort := func() {
+		if a, ok := batch.(interface{ Abort() error }); ok {
+			if abortErr := a.Abort(); abortErr != nil {
+				logger.Warnf("Failed to discard the partial index of %s: %v", filePath, abortErr)
+			}
+		}
+	}
 	if err != nil {
+		abort()
 		return 0, nil, nil, 0, fmt.Errorf("failed to parse new content: %w", err)
 	}
 
@@ -488,10 +499,15 @@ func indexFileFromPosition(pi *indexer.ParallelIndexer, filePath string, startPo
 	// of the data that was indexed.
 	finalPosition, err := file.Seek(0, io.SeekCurrent)
 	if err != nil {
+		abort()
 		return 0, nil, nil, 0, fmt.Errorf("failed to determine read position: %w", err)
+	}
+	if setter, ok := batch.(interface{ SetSourceEnd(string, int64) }); ok {
+		setter.SetSourceEnd(filePath, finalPosition)
 	}
 
 	if _, err := batch.Flush(); err != nil {
+		abort()
 		return 0, nil, nil, 0, fmt.Errorf("failed to flush batch: %w", err)
 	}
 

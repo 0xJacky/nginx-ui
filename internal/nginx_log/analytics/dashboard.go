@@ -6,6 +6,7 @@ import (
 	"sort"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/logstore"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -348,6 +349,25 @@ func (s *service) calculateDashboardSummaryWithCardinality(ctx context.Context, 
 	// Start with the basic summary but we'll override the UV calculation
 	summary := s.calculateDashboardSummary(analytics, result, aggregates, req)
 
+	// A searcher that counts distinct values itself needs no Bleve counter.
+	if counter, ok := s.searcher.(searcher.CardinalityCounter); ok {
+		uvReq := &searcher.SearchRequest{
+			StartTime:      &req.StartTime,
+			EndTime:        &req.EndTime,
+			LogPaths:       req.LogPaths,
+			UseMainLogPath: true,
+		}
+		if uv, err := counter.Cardinality(ctx, "ip", uvReq); err == nil {
+			summary.TotalUV = int(uv)
+			if len(analytics.DailyStats) > 0 {
+				summary.AvgDailyUV = float64(summary.TotalUV) / float64(len(analytics.DailyStats))
+			}
+		} else {
+			logger.Errorf("Failed to count unique visitors: %v", err)
+		}
+		return summary
+	}
+
 	// Use cardinality counter for accurate unique visitor (UV) counting if available
 	cardinalityCounter := s.getCardinalityCounter()
 	if cardinalityCounter != nil {
@@ -377,6 +397,64 @@ func (s *service) calculateDashboardSummaryWithCardinality(ctx context.Context, 
 	}
 
 	return summary
+}
+
+// scanTimeBucketRows calls add with the timestamp, ip and bytes_sent of every
+// row the request selects, and returns how many it visited.
+//
+// A searcher that can scan column blocks streams them directly. Otherwise the
+// rows are paged with a SearchAfter cursor on the (timestamp, _id) sort key:
+// each page costs O(page) instead of the O(offset+page) of offset pagination,
+// so the scan stays linear in the number of rows.
+func (s *service) scanTimeBucketRows(ctx context.Context, scanReq *searcher.SearchRequest, add func(timestamp int64, ip string, bytesSent int64)) (int, error) {
+	total := 0
+	if scanner, ok := s.searcher.(searcher.BlockScanner); ok {
+		err := scanner.Scan(ctx, scanReq, []string{"timestamp", "ip", "bytes_sent"}, func(v *logstore.BlockView) error {
+			for _, i := range v.Rows {
+				add(v.Timestamp(i), v.String(logstore.ColIP, i), v.BytesSent(i))
+			}
+			total += len(v.Rows)
+			return nil
+		})
+		return total, err
+	}
+
+	const batchSize = 10000
+	var searchAfter []string
+	for {
+		pageReq := *scanReq
+		pageReq.Limit = batchSize
+		pageReq.SearchAfter = searchAfter
+		pageReq.SortBy = "timestamp"
+		pageReq.SortOrder = "asc"
+		pageReq.Fields = []string{"timestamp", "ip", "bytes_sent"}
+		pageReq.UseCache = false // Don't cache intermediate scan pages
+
+		result, err := s.searcher.Search(ctx, &pageReq)
+		if err != nil {
+			return total, err
+		}
+		for _, hit := range result.Hits {
+			timestamp, ok := hit.Fields["timestamp"].(float64)
+			if !ok {
+				continue
+			}
+			ip, _ := hit.Fields["ip"].(string)
+			bytesSent, _ := hit.Fields["bytes_sent"].(float64)
+			add(int64(timestamp), ip, int64(bytesSent))
+		}
+		total += len(result.Hits)
+
+		if len(result.Hits) < batchSize {
+			return total, nil
+		}
+		lastHit := result.Hits[len(result.Hits)-1]
+		if len(lastHit.Sort) == 0 {
+			logger.Warnf("Time-bucket scan: last hit carries no sort values, cannot continue pagination (processed %d)", total)
+			return total, nil
+		}
+		searchAfter = lastHit.Sort
+	}
 }
 
 // scanAggregates holds the range-wide metrics accumulated while the time
@@ -434,99 +512,66 @@ func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQu
 	// outside the daily range simply miss the daily map and are skipped there.
 	scanStart := rangeStart.Unix()
 	scanEnd := rangeEnd.Unix()
-	const batchSize = 10000
 
 	// Traffic and peak-rate figures describe the requested range only, so they
 	// ignore the timezone buffer the hourly buckets need.
 	aggregates := &scanAggregates{}
 	perMinutePV := make(map[int64]int)
 
-	var searchAfter []string
-	totalProcessed := 0
+	// The server-local date of consecutive rows rarely changes, so remember
+	// the day the last row fell in instead of formatting every timestamp.
+	var dayStart, dayEnd int64
+	var dayStr string
+	localDate := func(timestamp int64) string {
+		if timestamp < dayStart || timestamp >= dayEnd {
+			t := time.Unix(timestamp, 0)
+			start := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
+			dayStart, dayEnd = start.Unix(), start.AddDate(0, 0, 1).Unix()
+			dayStr = start.Format("2006-01-02")
+		}
+		return dayStr
+	}
 
-	for {
-		searchReq := &searcher.SearchRequest{
-			StartTime:      &scanStart,
-			EndTime:        &scanEnd,
-			LogPaths:       req.LogPaths,
-			UseMainLogPath: true, // Use main_log_path for efficient log group queries
-			Limit:          batchSize,
-			SearchAfter:    searchAfter,
-			SortBy:         "timestamp",
-			SortOrder:      "asc",
-			Fields:         []string{"timestamp", "ip", "bytes_sent"},
-			UseCache:       false, // Don't cache intermediate scan pages
+	add := func(timestamp int64, ip string, bytesSent int64) {
+		// Range-wide aggregates, restricted to the requested window. The
+		// timestamp range is half-open: include StartTime and exclude
+		// EndTime, so the aggregates cover the same rows as TotalPV even
+		// though this scan uses a wider timezone buffer.
+		if timestamp >= req.StartTime && timestamp < req.EndTime {
+			aggregates.TotalBytes += bytesSent
+			perMinutePV[timestamp-timestamp%60]++
 		}
 
-		result, err := s.searcher.Search(ctx, searchReq)
-		if err != nil {
-			logger.Errorf("Failed to fetch time-bucket batch (processed %d): %v", totalProcessed, err)
-			break
-		}
-
-		for _, hit := range result.Hits {
-			timestampField, ok := hit.Fields["timestamp"]
-			if !ok {
-				continue
-			}
-			timestampFloat, ok := timestampField.(float64)
-			if !ok {
-				continue
-			}
-			timestamp := int64(timestampFloat)
-
-			var ip string
-			if ipField, ok := hit.Fields["ip"]; ok {
-				ip, _ = ipField.(string)
-			}
-
-			// Range-wide aggregates, restricted to the requested window
-			// Bleve's timestamp range is half-open: include StartTime and
-			// exclude EndTime. Keep aggregates on the same document set as
-			// TotalPV even though this scan uses a wider timezone buffer.
-			if timestamp >= req.StartTime && timestamp < req.EndTime {
-				if bytesField, ok := hit.Fields["bytes_sent"]; ok {
-					if bytesSent, ok := bytesField.(float64); ok {
-						aggregates.TotalBytes += int64(bytesSent)
-					}
-				}
-				perMinutePV[timestamp-timestamp%60]++
-			}
-
-			// Daily bucket (server-local date)
-			dateStr := time.Unix(timestamp, 0).Format("2006-01-02")
-			if stats, exists := dailyMap[dateStr]; exists {
-				stats.PV++
-				if ip != "" && !uniqueIPsPerDay[dateStr][ip] {
-					uniqueIPsPerDay[dateStr][ip] = true
-					stats.UV++
-				}
-			}
-
-			// Hourly bucket (UTC hour)
-			t := time.Unix(timestamp, 0).UTC()
-			hourTimestamp := time.Date(t.Year(), t.Month(), t.Day(), t.Hour(), 0, 0, 0, time.UTC).Unix()
-			if stats, exists := hourlyMap[hourTimestamp]; exists {
-				stats.PV++
-				if ip != "" && !uniqueIPsPerHour[hourTimestamp][ip] {
-					uniqueIPsPerHour[hourTimestamp][ip] = true
-					stats.UV++
-				}
+		// Daily bucket (server-local date)
+		dateStr := localDate(timestamp)
+		if stats, exists := dailyMap[dateStr]; exists {
+			stats.PV++
+			if ip != "" && !uniqueIPsPerDay[dateStr][ip] {
+				uniqueIPsPerDay[dateStr][ip] = true
+				stats.UV++
 			}
 		}
 
-		totalProcessed += len(result.Hits)
-
-		if len(result.Hits) < batchSize {
-			break
+		// Hourly bucket (UTC hour)
+		hourTimestamp := timestamp - timestamp%3600
+		if stats, exists := hourlyMap[hourTimestamp]; exists {
+			stats.PV++
+			if ip != "" && !uniqueIPsPerHour[hourTimestamp][ip] {
+				uniqueIPsPerHour[hourTimestamp][ip] = true
+				stats.UV++
+			}
 		}
+	}
 
-		lastHit := result.Hits[len(result.Hits)-1]
-		if len(lastHit.Sort) == 0 {
-			logger.Warnf("Time-bucket scan: last hit carries no sort values, cannot continue pagination (processed %d)", totalProcessed)
-			break
-		}
-		searchAfter = lastHit.Sort
+	scanReq := &searcher.SearchRequest{
+		StartTime:      &scanStart,
+		EndTime:        &scanEnd,
+		LogPaths:       req.LogPaths,
+		UseMainLogPath: true, // Use main_log_path for efficient log group queries
+	}
+	totalProcessed, err := s.scanTimeBucketRows(ctx, scanReq, add)
+	if err != nil {
+		logger.Errorf("Failed to scan time buckets (processed %d): %v", totalProcessed, err)
 	}
 
 	for _, pv := range perMinutePV {

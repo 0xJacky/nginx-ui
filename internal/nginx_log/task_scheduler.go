@@ -18,7 +18,7 @@ import (
 // with unified locking to prevent concurrent execution on the same log group
 type TaskScheduler struct {
 	logFileManager *indexer.LogFileManager
-	modernIndexer  *indexer.ParallelIndexer
+	modernIndexer  indexer.LogIndexer
 	activeTasks    int32 // Counter for active tasks
 	ctx            context.Context
 	cancel         context.CancelFunc

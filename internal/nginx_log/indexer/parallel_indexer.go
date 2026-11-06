@@ -3,14 +3,11 @@ package indexer
 import (
 	"context"
 	"fmt"
-	"os"
-	"path/filepath"
 	"runtime"
 	"sync"
 	"sync/atomic"
 	"time"
 
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/blevesearch/bleve/v2"
 	"github.com/uozi-tech/cosy/logger"
 )
@@ -856,139 +853,7 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 	if !pi.IsHealthy() {
 		return nil, nil, nil, fmt.Errorf("indexer not healthy")
 	}
-
-	// Create progress tracker if config is provided
-	var progressTracker *ProgressTracker
-	if progressConfig != nil {
-		progressTracker = NewProgressTracker(basePath, progressConfig)
-	}
-
-	// Find all files belonging to this log group by globbing
-	globPath := basePath + "*"
-	matches, err := filepath.Glob(globPath)
-	if err != nil {
-		if progressTracker != nil {
-			progressTracker.Cancel(fmt.Sprintf("glob failed: %v", err))
-		}
-		return nil, nil, nil, fmt.Errorf("failed to glob for log files with base %s: %w", basePath, err)
-	}
-
-	// filepath.Glob might not match the base file itself if it has no extension,
-	// so we check for it explicitly and add it to the list.
-	// Validate log path before accessing it
-	if utils.IsValidLogPath(basePath) {
-		info, err := os.Stat(basePath)
-		if err == nil && info.Mode().IsRegular() {
-			matches = append(matches, basePath)
-		}
-	}
-
-	// Deduplicate file list
-	seen := make(map[string]struct{})
-	uniqueFiles := make([]string, 0)
-	for _, match := range matches {
-		if _, ok := seen[match]; !ok {
-			// Further check if it's a file, not a directory. Glob can match dirs.
-			// Validate log path before accessing it
-			if utils.IsValidLogPath(match) {
-				info, err := os.Stat(match)
-				if err == nil && info.Mode().IsRegular() {
-					seen[match] = struct{}{}
-					uniqueFiles = append(uniqueFiles, match)
-				}
-			}
-		}
-	}
-
-	if len(uniqueFiles) == 0 {
-		logger.Warnf("No actual log file found for group: %s", basePath)
-		if progressTracker != nil {
-			progressTracker.Cancel("no files found")
-		}
-		return nil, nil, nil, nil
-	}
-
-	logger.Infof("Found %d file(s) for log group %s: %v", len(uniqueFiles), basePath, uniqueFiles)
-
-	// Set up progress tracking for all files
-	if progressTracker != nil {
-		for _, filePath := range uniqueFiles {
-			isCompressed := IsCompressedFile(filePath)
-			progressTracker.AddFile(filePath, isCompressed)
-
-			// Get file size for progress calculation. The line estimate is set
-			// by IndexSingleFileWithProgress (size/150), which previously
-			// overwrote the sampling-based estimate anyway — so the 1MB
-			// sampling read per file was pure wasted I/O and is skipped here.
-			if stat, err := os.Stat(filePath); err == nil {
-				progressTracker.SetFileSize(filePath, stat.Size())
-			}
-		}
-	}
-
-	docsCountMap := make(map[string]uint64)
-	var docsCountMu sync.RWMutex
-	var overallMinTime, overallMaxTime *time.Time
-	var timeMu sync.Mutex
-
-	// Process files in parallel with controlled concurrency
-	var fileWg sync.WaitGroup
-	maxConcurrency := pi.fileConcurrency()
-	fileSemaphore := make(chan struct{}, maxConcurrency)
-
-	logger.Infof("Processing %d files in log group %s with concurrency=%d", len(uniqueFiles), basePath, maxConcurrency)
-
-	for _, filePath := range uniqueFiles {
-		fileWg.Add(1)
-		go func(fp string) {
-			defer fileWg.Done()
-
-			// Acquire semaphore for controlled concurrency
-			fileSemaphore <- struct{}{}
-			defer func() { <-fileSemaphore }()
-
-			if progressTracker != nil {
-				progressTracker.StartFile(fp)
-			}
-
-			docsIndexed, minTime, maxTime, err := pi.indexSingleFileWithProgress(fp, progressTracker)
-			if err != nil {
-				logger.Warnf("Failed to index file '%s' in group '%s', skipping: %v", fp, basePath, err)
-				if progressTracker != nil {
-					progressTracker.FailFile(fp, err.Error())
-				}
-				return // Skip this file
-			}
-
-			// Thread-safe update of docsCountMap
-			docsCountMu.Lock()
-			docsCountMap[fp] = docsIndexed
-			docsCountMu.Unlock()
-
-			if progressTracker != nil {
-				progressTracker.CompleteFile(fp, int64(docsIndexed))
-			}
-
-			// Thread-safe update of time ranges
-			timeMu.Lock()
-			if minTime != nil {
-				if overallMinTime == nil || minTime.Before(*overallMinTime) {
-					overallMinTime = minTime
-				}
-			}
-			if maxTime != nil {
-				if overallMaxTime == nil || maxTime.After(*overallMaxTime) {
-					overallMaxTime = maxTime
-				}
-			}
-			timeMu.Unlock()
-		}(filePath)
-	}
-
-	// Wait for all files to complete
-	fileWg.Wait()
-
-	return docsCountMap, overallMinTime, overallMaxTime, nil
+	return indexLogGroupFiles(basePath, progressConfig, pi.fileConcurrency(), pi.indexSingleFileWithProgress)
 }
 
 // indexSingleFileWithProgress indexes a single file with progress updates

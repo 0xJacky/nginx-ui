@@ -1,16 +1,8 @@
 package indexer
 
 import (
-	"context"
-	"fmt"
-	"io"
-	"os"
-	"strconv"
 	"strings"
 	"time"
-
-	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
-	"github.com/uozi-tech/cosy/logger"
 )
 
 // IndexLogFile reads and indexes a single log file using the streaming
@@ -31,141 +23,9 @@ func (pi *ParallelIndexer) IndexSingleFile(filePath string) (uint64, *time.Time,
 // batches: only one parse batch is held in memory at a time, so peak memory no
 // longer scales with file size.
 func (pi *ParallelIndexer) IndexSingleFileWithProgress(filePath string, progressTracker *ProgressTracker) (uint64, *time.Time, *time.Time, error) {
-	// Validate log path before accessing it
-	if !utils.IsValidLogPath(filePath) {
-		return 0, nil, nil, fmt.Errorf("invalid log path: %s", filePath)
-	}
-
-	file, err := os.Open(filePath)
-	if err != nil {
-		return 0, nil, nil, fmt.Errorf("failed to open log file %s: %w", filePath, err)
-	}
-	defer file.Close()
-
-	// Get file info for progress tracking
-	fileInfo, err := file.Stat()
-	if err != nil {
-		return 0, nil, nil, fmt.Errorf("failed to get file info for %s: %w", filePath, err)
-	}
-	fileSize := fileInfo.Size()
-
-	// Initialize progress tracking if provided
-	if progressTracker != nil {
-		// Set file size for progress calculation
-		progressTracker.SetFileSize(filePath, fileSize)
-
-		// Estimate line count for progress tracking (rough estimate: ~150 bytes per line)
-		estimatedLines := fileSize / 150
-		if estimatedLines < 100 {
-			estimatedLines = 100 // Minimum estimate
-		}
-		progressTracker.SetFileEstimate(filePath, estimatedLines)
-	}
-
-	logger.Infof("Starting to process file: %s", filePath)
-
-	// Gzip decompression is handled inside the streaming parser via the gzip
-	// magic-header detection in createReaderForFile.
-	ctx := context.Background()
-	isCompressed := strings.HasSuffix(filePath, ".gz")
-
-	batch := pi.StartBatch()
-
-	var docCount uint64
-	var minTime, maxTime *time.Time
-	var invalidEntryCount int
-	var processedLines int64
-
-	// Reuse one buffer for ID construction; the ID itself must be a copied
-	// string because Bleve retains it beyond this loop.
-	idBuf := make([]byte, 0, len(filePath)+16)
-
-	processed, _, err := ParseLogStreamBatches(ctx, file, filePath, func(docs []*LogDocument) error {
-		for _, doc := range docs {
-			// Validate and filter out obviously incorrect parsed entries
-			if !isValidLogEntry(doc) {
-				invalidEntryCount++
-				continue
-			}
-
-			ts := time.Unix(doc.Timestamp, 0)
-			if minTime == nil || ts.Before(*minTime) {
-				tsCopy := ts
-				minTime = &tsCopy
-			}
-			if maxTime == nil || ts.After(*maxTime) {
-				tsCopy := ts
-				maxTime = &tsCopy
-			}
-
-			idBuf = idBuf[:0]
-			idBuf = append(idBuf, filePath...)
-			idBuf = append(idBuf, '-')
-			idBuf = strconv.AppendInt(idBuf, int64(docCount), 10)
-
-			if err := batch.Add(&Document{ID: string(idBuf), Fields: doc}); err != nil {
-				// This indicates an auto-flush occurred and failed.
-				return fmt.Errorf("failed to add document to batch for %s (auto-flush might have failed): %w", filePath, err)
-			}
-			docCount++
-		}
-
-		// Real incremental progress per parsed batch
-		processedLines += int64(len(docs))
-		if progressTracker != nil {
-			if isCompressed {
-				// For compressed files, we can't track byte position accurately
-				progressTracker.UpdateFileProgress(filePath, processedLines)
-			} else {
-				// Estimate position based on processed line count
-				estimatedPos := processedLines * 150 // Assume ~150 bytes per line
-				if estimatedPos > fileSize {
-					estimatedPos = fileSize
-				}
-				progressTracker.UpdateFileProgress(filePath, processedLines, estimatedPos)
-			}
-		}
-		return nil
+	return indexFileInto(filePath, progressTracker, pi.StartBatch(), func(position int64) {
+		pi.recordReadPosition(filePath, position)
 	})
-	if err != nil {
-		return docCount, minTime, maxTime, fmt.Errorf("failed to parse file %s: %w", filePath, err)
-	}
-
-	// Flush any remaining documents in the batch
-	if docCount > 0 {
-		if _, err := batch.Flush(); err != nil {
-			return docCount, minTime, maxTime, fmt.Errorf("failed to flush batch for %s: %w", filePath, err)
-		}
-	}
-
-	// Remember how far the file was read, so the metadata saved for it records
-	// a LastPosition and the incremental job only reads what is appended later.
-	// Without it the next incremental run re-reads the whole file from 0.
-	// The parser reads a plain file to EOF, so the descriptor offset is the
-	// end of the indexed data, including lines appended while indexing ran.
-	// Compressed files are always re-read in full, so they record nothing.
-	if !isCompressed {
-		if position, err := file.Seek(0, io.SeekCurrent); err == nil {
-			pi.recordReadPosition(filePath, position)
-		} else {
-			logger.Warnf("Failed to determine read position for %s: %v", filePath, err)
-		}
-	}
-
-	if invalidEntryCount > 0 {
-		logger.Warnf("File %s: Filtered out %d invalid entries out of %d total (possible parsing issue)",
-			filePath, invalidEntryCount, processed)
-	}
-
-	if minTime != nil && maxTime != nil {
-		logger.Debugf("Calculated time range for %s: %v to %v", filePath, minTime, maxTime)
-	} else if docCount == 0 && processed > 0 {
-		logger.Errorf("All %d entries in file %s were invalid - possible format issue", processed, filePath)
-	}
-
-	logger.Infof("Finished processing file: %s. Total documents indexed: %d", filePath, docCount)
-
-	return docCount, minTime, maxTime, nil
 }
 
 // isValidLogEntry validates if a parsed log entry is correct

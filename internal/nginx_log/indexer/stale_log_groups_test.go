@@ -13,7 +13,7 @@ import (
 
 // indexGroup indexes every given file of a log group and records the group
 // metadata the way the indexing jobs do.
-func indexGroup(t *testing.T, pi *ParallelIndexer, lfm *LogFileManager, mainPath string, files ...string) {
+func indexGroup(t *testing.T, pi LogIndexer, lfm *LogFileManager, mainPath string, files ...string) {
 	t.Helper()
 	for _, file := range files {
 		docs, minTime, maxTime, err := pi.IndexSingleFileWithProgress(file, nil)
