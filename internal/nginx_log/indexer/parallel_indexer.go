@@ -254,9 +254,33 @@ func (pi *ParallelIndexer) IndexDocuments(ctx context.Context, docs []*Document)
 	}
 }
 
-// StartBatch returns a new batch writer using the configured batch size
+// StartBatch returns a new batch writer using the configured batch size,
+// bounded by this writer's share of the memory quota.
 func (pi *ParallelIndexer) StartBatch() BatchWriterInterface {
-	return NewBatchWriter(pi, pi.config.BatchSize)
+	return NewBatchWriter(pi, pi.config.BatchSize, pi.batchMemoryBudget())
+}
+
+// batchMemoryBudget is the estimated indexing memory a single batch may take.
+//
+// Every file of a log group that is indexed concurrently flushes its own
+// batches, so each gets an equal share of the quota: they can all be in flight
+// at once, and no batch is larger than the quota will ever admit.
+func (pi *ParallelIndexer) batchMemoryBudget() int64 {
+	if pi.config.MemoryQuota <= 0 {
+		return 0
+	}
+	return pi.config.MemoryQuota / int64(pi.fileConcurrency())
+}
+
+// fileConcurrency is how many files of one log group are indexed at once.
+func (pi *ParallelIndexer) fileConcurrency() int {
+	if pi.config.FileGroupConcurrency > 0 {
+		return pi.config.FileGroupConcurrency
+	}
+	if workers := pi.WorkerCount(); workers > 0 {
+		return workers
+	}
+	return 4
 }
 
 // FlushAll flushes all pending operations
@@ -909,14 +933,7 @@ func (pi *ParallelIndexer) IndexLogGroupWithProgress(basePath string, progressCo
 
 	// Process files in parallel with controlled concurrency
 	var fileWg sync.WaitGroup
-	// Use FileGroupConcurrency config if set, otherwise fallback to WorkerCount
-	maxConcurrency := pi.config.FileGroupConcurrency
-	if maxConcurrency <= 0 {
-		maxConcurrency = pi.WorkerCount()
-		if maxConcurrency <= 0 {
-			maxConcurrency = 4 // Fallback default
-		}
-	}
+	maxConcurrency := pi.fileConcurrency()
 	fileSemaphore := make(chan struct{}, maxConcurrency)
 
 	logger.Infof("Processing %d files in log group %s with concurrency=%d", len(uniqueFiles), basePath, maxConcurrency)

@@ -69,8 +69,8 @@ func TestDefaultMemoryQuotaFollowsContainerLimit(t *testing.T) {
 		expected  int64
 	}{
 		{
-			name:      "512MB container gets a quarter of its budget",
-			available: 512 * 1024 * 1024,
+			name:      "1GB container gets an eighth of its budget",
+			available: 1024 * 1024 * 1024,
 			known:     true,
 			expected:  128 * 1024 * 1024,
 		},

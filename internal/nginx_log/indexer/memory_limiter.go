@@ -8,6 +8,20 @@ import (
 
 const estimatedDocumentOverhead = int64(256)
 
+// indexingAmplification converts the raw size of a document's fields into the
+// heap Bleve holds while it indexes the document.
+//
+// Analysis is where the memory goes, not the strings themselves: every field
+// gets its own token-frequency map, phrase-searchable fields keep a position
+// for each token, and every numeric field expands into a run of prefix-coded
+// terms, all held until the batch's segment is built. Measured with the log
+// mapping on nginx combined lines, a document whose fields add up to ~890 B
+// costs ~52 KiB of heap to index (about 59x); with request paths four times
+// longer, ~2.3 KiB costs ~116 KiB (about 51x). Rounded up, because an estimate
+// that runs low is exactly what let a 1 GiB container be pushed past its limit.
+// TestIndexingMemoryProbe re-measures it against any log file.
+const indexingAmplification = int64(64)
+
 type indexMemoryLimiter struct {
 	limit   int64
 	mu      sync.Mutex
@@ -74,18 +88,23 @@ func (limiter *indexMemoryLimiter) usage() int64 {
 	return limiter.used
 }
 
+// estimateDocumentsBytes estimates the heap that indexing documents will hold.
 func estimateDocumentsBytes(documents []*Document) int64 {
 	var total int64
 	for _, document := range documents {
-		if document == nil {
-			continue
-		}
-		total += estimatedDocumentOverhead + int64(len(document.ID))
-		fields := document.Fields
-		if fields == nil {
-			continue
-		}
-		total += int64(
+		total += estimateDocumentBytes(document)
+	}
+	return total
+}
+
+// estimateDocumentBytes estimates the heap that indexing one document will hold.
+func estimateDocumentBytes(document *Document) int64 {
+	if document == nil {
+		return 0
+	}
+	raw := estimatedDocumentOverhead + int64(len(document.ID))
+	if fields := document.Fields; fields != nil {
+		raw += int64(
 			len(fields.IP) + len(fields.RegionCode) + len(fields.Province) +
 				len(fields.City) + len(fields.C1) + len(fields.C2) +
 				len(fields.C3) + len(fields.C4) + len(fields.Method) + len(fields.Path) +
@@ -95,5 +114,5 @@ func estimateDocumentsBytes(documents []*Document) int64 {
 				len(fields.FilePath) + len(fields.MainLogPath) + len(fields.Raw),
 		)
 	}
-	return total
+	return raw * indexingAmplification
 }
