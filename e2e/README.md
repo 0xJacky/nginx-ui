@@ -49,6 +49,7 @@ E2E_BASE_URL=https://demo.example.test E2E_USERNAME=admin E2E_PASSWORD=admin \
 A few specs need more than the default demo target and skip themselves with the reason:
 
 - `config-directory-sync.spec.ts` drops unsupported files into the container when `E2E_CONTAINER` names it (for example `E2E_CONTAINER=nginxui-e2e`). It also needs `openssl` on the host to generate a throwaway certificate.
+- `restricted-directives.spec.ts` runs against either target and adapts: on the demo it asserts that a configuration loading njs is refused outright, because the demo never offers the two-factor step-up. Its two UI specs need a non-demo target, where the seeded administrator is told to enrol a second factor; run them against the writable container below.
 - `https-certificate-recommendation.spec.ts` enables HTTPS on a site, which demo mode refuses. Run it against a writable container started with `-e NGINX_UI_NODE_DEMO=false`; the seeded `admin` / `admin` login still works there:
 
 ```sh
