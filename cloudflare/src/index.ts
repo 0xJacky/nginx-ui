@@ -2,7 +2,7 @@ import type { StopParams } from '@cloudflare/containers'
 import type { WedgeState } from './recovery'
 import { Container, getContainer } from '@cloudflare/containers'
 import { loadingPage } from './loading'
-import { clearUnserved, decideRecovery, freshWedgeState, markServing } from './recovery'
+import { clearUnserved, decideRecovery, freshWedgeState, markServing, servingIsTrusted } from './recovery'
 
 interface Env {
   NGINX_UI_DEMO: DurableObjectNamespace<NginxUiDemo>
@@ -48,6 +48,15 @@ const RECYCLE_PATH = '/__demo/recycle'
  */
 const PROBE_INTERVAL_MS = 2_000
 
+/**
+ * How long a health check may take before nginx-ui counts as not serving.
+ *
+ * Generous, because a failed check turns visitors away to the loading page:
+ * nginx-ui on a quarter vCPU can be slow without being hung, and a real hang
+ * still has to fail for the whole APP_BOOT_GRACE_MS before anything is stopped.
+ */
+const HEALTH_PROBE_TIMEOUT_MS = 10_000
+
 export class NginxUiDemo extends Container<Env> {
   // nginx inside the container listens here; it proxies to nginx-ui on 9000.
   defaultPort = 8080
@@ -74,16 +83,23 @@ export class NginxUiDemo extends Container<Env> {
   private booting?: Promise<void>
 
   /**
-   * Whether the application behind nginx has been seen serving.
+   * When the application behind nginx last passed its health check, or
+   * undefined if it has not since the container last stopped or failed one.
    *
    * Container "healthy" is not enough. The platform's port check counts any
    * HTTP response as success, and nginx binds 8080 the moment it starts —
    * several seconds before nginx-ui is up on 9000. During that window nginx
    * answers 502, the container reads as healthy, the loading page is dismissed
-   * and the visitor gets the raw 502. Cached because once nginx-ui is serving
-   * it stays up for the container's life; cleared whenever the container stops.
+   * and the visitor gets the raw 502.
+   *
+   * A pass is trusted only for SERVING_RECHECK_MS, not for the container's
+   * life: nginx-ui can hang after it has served, and the platform still calls
+   * the container healthy because nginx keeps answering.
    */
-  private applicationServing = false
+  private servingVerifiedAt?: number
+
+  /** Health check in flight, shared so concurrent requests wait on one probe. */
+  private probing?: Promise<boolean>
 
   /** When the probe last ran, so a busy loading page cannot drive one per request. */
   private lastProbeAt = 0
@@ -94,25 +110,45 @@ export class NginxUiDemo extends Container<Env> {
   /**
    * Probe the application itself rather than the port in front of it.
    *
-   * Rate-limited: the answer only changes when nginx-ui finishes starting, so
-   * probing more than once every couple of seconds buys nothing and costs an
-   * error event per attempt while the container is down.
+   * Rate-limited while the application is not serving: probing more than once
+   * every couple of seconds buys nothing and costs an error event per attempt
+   * while the container is down. A recheck of an application that was serving
+   * is not throttled, or a healthy demo would be turned away by the limit.
    */
   private async applicationReady(): Promise<boolean> {
-    if (this.applicationServing) {
+    const now = Date.now()
+    if (servingIsTrusted(this.servingVerifiedAt, now)) {
       return true
     }
 
-    const now = Date.now()
-    if (now - this.lastProbeAt < PROBE_INTERVAL_MS) {
+    // A request arriving while a recheck is in flight must wait for its answer
+    // rather than be refused by the rate limit below.
+    if (this.probing) {
+      return this.probing
+    }
+
+    if (this.servingVerifiedAt === undefined && now - this.lastProbeAt < PROBE_INTERVAL_MS) {
       return false
     }
     this.lastProbeAt = now
 
+    this.probing = this.probeApplication().finally(() => {
+      this.probing = undefined
+    })
+    return this.probing
+  }
+
+  private async probeApplication(): Promise<boolean> {
+    const wasServing = this.servingVerifiedAt !== undefined
+
     try {
-      const probe = await this.containerFetch('http://localhost/healthz')
+      // Bounded by the Worker, not by nginx: a hung nginx-ui leaves nginx
+      // holding the request for its full 60s proxy timeout.
+      const probe = await this.containerFetch('http://localhost/healthz', {
+        signal: AbortSignal.timeout(HEALTH_PROBE_TIMEOUT_MS),
+      })
       if (probe.ok) {
-        this.applicationServing = true
+        this.servingVerifiedAt = Date.now()
         return true
       }
 
@@ -124,13 +160,17 @@ export class NginxUiDemo extends Container<Env> {
       }
       else {
         // 502 while nginx-ui is still starting is the case this exists for.
-        console.log(`nginx is up but the app is not serving yet: ${probe.status}`)
+        console.log(`nginx is up but the app is not serving: ${probe.status}`)
       }
     }
     catch (err: unknown) {
       console.log(`health probe failed: ${err}`)
     }
 
+    if (wasServing) {
+      console.error('nginx-ui stopped passing its health check after serving; starting the wedge clock')
+    }
+    this.servingVerifiedAt = undefined
     return false
   }
 
@@ -173,7 +213,7 @@ export class NginxUiDemo extends Container<Env> {
       return false
     }
 
-    this.applicationServing = false
+    this.servingVerifiedAt = undefined
     this.wedge = clearUnserved(this.wedge)
     console.log(`container not ready yet: status=${state.status}`)
 
@@ -190,7 +230,11 @@ export class NginxUiDemo extends Container<Env> {
 
   /**
    * Break the deadlock where the platform reports the container healthy but it
-   * never serves.
+   * never serves, or has stopped serving.
+   *
+   * The second case has happened too: nginx-ui hung hours into a container's
+   * life while nginx kept answering, so the container stayed 'healthy' and every
+   * request came back 504 until the daily restore.
    *
    * getState() is not the truth. When a container goes away without the
    * platform reconciling its record, the state stays 'healthy' indefinitely —
@@ -213,7 +257,7 @@ export class NginxUiDemo extends Container<Env> {
       return
     }
 
-    this.applicationServing = false
+    this.servingVerifiedAt = undefined
     console.error(
       `container has reported healthy for ${Math.round(decision.unservedFor / 1000)}s `
       + `without serving; sending ${decision.action} so the next request starts a fresh one `
@@ -231,7 +275,7 @@ export class NginxUiDemo extends Container<Env> {
   override onStop(params: StopParams): void {
     // A restarted container serves 502 again until nginx-ui is back, so the
     // cached answer must not survive the stop.
-    this.applicationServing = false
+    this.servingVerifiedAt = undefined
     this.wedge = clearUnserved(this.wedge)
     console.log(`container stopped: exitCode=${params.exitCode} reason=${params.reason}`)
   }
