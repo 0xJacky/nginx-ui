@@ -19,10 +19,12 @@ var (
 )
 
 // Payload kinds. A dictionary column has a values payload (the dictionary)
-// and an ids payload; every other column has only a values payload.
+// and an ids payload; every other column has only a values payload, and the
+// raw column a gram filter besides (grams.go).
 const (
 	payloadValues uint8 = 0
 	payloadIDs    uint8 = 1
+	payloadGrams  uint8 = 2
 )
 
 // payloadInfo locates one compressed payload of a block.
@@ -44,7 +46,7 @@ type blockMeta struct {
 	sourceEnd    int64
 	firstOrdinal int64 // ordinal of the block's first row within its segment
 	payloads     []payloadInfo
-	index        [numColumns][2]int16
+	index        [numColumns][3]int16
 }
 
 func (m *blockMeta) payload(col Column, kind uint8) (payloadInfo, bool) {
@@ -57,10 +59,10 @@ func (m *blockMeta) payload(col Column, kind uint8) (payloadInfo, bool) {
 
 func (m *blockMeta) buildIndex() {
 	for c := range m.index {
-		m.index[c] = [2]int16{-1, -1}
+		m.index[c] = [3]int16{-1, -1, -1}
 	}
 	for i, p := range m.payloads {
-		if p.col < numColumns && p.kind <= payloadIDs {
+		if p.col < numColumns && p.kind <= payloadGrams {
 			m.index[p.col][p.kind] = int16(i)
 		}
 	}
@@ -153,7 +155,7 @@ func (b *blockBuilder) encode(enc *zstd.Encoder) []byte {
 		info payloadInfo
 		data []byte
 	}
-	parts := make([]part, 0, 6+2*int(numColumns-ColIP))
+	parts := make([]part, 0, 7+2*int(numColumns-ColIP))
 	addPart := func(col Column, kind, width uint8, raw []byte) {
 		parts = append(parts, part{
 			info: payloadInfo{col: col, kind: kind, width: width, rawLen: uint64(len(raw))},
@@ -188,6 +190,7 @@ func (b *blockBuilder) encode(enc *zstd.Encoder) []byte {
 	}
 
 	addPart(ColRaw, payloadValues, 0, b.raw)
+	addPart(ColRaw, payloadGrams, 0, buildGramFilter(b.raw))
 
 	for c := ColIP; c < numColumns; c++ {
 		d := b.dicts[c]

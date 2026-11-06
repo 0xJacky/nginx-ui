@@ -154,3 +154,50 @@ func BenchmarkSearchRequests(b *testing.B) {
 		}
 	}
 }
+
+// BenchmarkTextSearch measures free-text search, the one query whose cost
+// grows with the bytes of the log rather than its distinct values. A term
+// that only occurs in a short window of the log stands for the usual case of
+// looking for an attack, an error or a request seen at one time.
+func BenchmarkTextSearch(b *testing.B) {
+	const n = 1_000_000
+	docs := benchDocs(n)
+	// One burst of 200 requests from a scanner, a third of the way in.
+	for i := n / 3; i < n/3+200; i++ {
+		doc := docs[i].Fields
+		doc.UserAgent = "sqlmap/1.8.2#stable (https://sqlmap.org)"
+		doc.Raw = fmt.Sprintf(`%s - - [%s] "%s %s HTTP/1.1" %d %d "-" "%s"`, doc.IP,
+			time.Unix(doc.Timestamp, 0).UTC().Format("02/Jan/2006:15:04:05 -0700"), doc.Method, doc.Path, doc.Status, doc.BytesSent, doc.UserAgent)
+	}
+
+	store, err := logstore.Open(b.TempDir(), logstore.Options{})
+	if err != nil {
+		b.Fatal(err)
+	}
+	defer func() { _ = store.Close() }()
+	w, _ := store.Writer(docs[0].Fields.MainLogPath, docs[0].Fields.FilePath)
+	for _, d := range docs {
+		_ = w.Append(indexer.LogDocumentToRow(d.Fields), 0)
+	}
+	_ = w.Flush()
+
+	config := DefaultSearcherConfig()
+	config.EnableCache = false
+	engine := NewColumnarSearcher(config, store)
+
+	for name, query := range map[string]string{
+		"common": "chrome",
+		"rare":   "/api/v1/users/4242",
+		"absent": "wp-login.php",
+		"burst":  "sqlmap",
+	} {
+		b.Run(name, func(b *testing.B) {
+			for b.Loop() {
+				r := SearchRequest{Query: query, Limit: 50}
+				if _, err := engine.Search(context.Background(), &r); err != nil {
+					b.Fatal(err)
+				}
+			}
+		})
+	}
+}
