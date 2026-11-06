@@ -1,14 +1,6 @@
 package demo
 
-import (
-	"time"
-
-	"github.com/0xJacky/Nginx-UI/internal/geolite"
-)
-
-// demoBuildTime anchors every fabricated timestamp so the demo does not appear
-// to have been built moments ago on each cold start.
-var demoBuildTime = time.Date(2026, 6, 1, 0, 0, 0, 0, time.UTC)
+import "github.com/0xJacky/Nginx-UI/internal/geolite"
 
 // geoLiteAvailability reports the city database as installed.
 //

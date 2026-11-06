@@ -71,6 +71,8 @@ func TestAutoBackupMutationRequiresSecureSessionForOTPUser(t *testing.T) {
 	}{
 		{name: "test S3 connection", path: "/auto_backup/test_s3", body: gin.H{"name": "daily"}},
 		{name: "run backup now", path: "/auto_backup/1/run"},
+		{name: "test plugin storage", path: "/auto_backup/test_storage", body: gin.H{"storage_type": "plugin:x"}},
+		{name: "restore a stored backup", path: "/auto_backup/1/stored/restore", body: gin.H{"key": "a/b_1.zip"}},
 	}
 
 	for _, tt := range tests {

@@ -1,0 +1,168 @@
+package nginx_log
+
+import (
+	"path/filepath"
+	"sort"
+	"sync"
+
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/indexer"
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
+	"github.com/uozi-tech/cosy/logger"
+)
+
+// NginxLogCache is a log path known to the host. It is the indexer's type, so
+// the registry can hand paths to the log file manager unchanged.
+type NginxLogCache = indexer.NginxLogCache
+
+// configLogRegistry holds every log path discovered by scanning the nginx
+// configuration. The nginx default logs live in defaultLogRegistry instead.
+var (
+	configLogRegistry      = make(map[string]*NginxLogCache)
+	configLogRegistryMutex sync.RWMutex
+)
+
+// AddLogPath adds a log path to the registry with the source config file
+func AddLogPath(path, logType, name, configFile string) {
+	configLogRegistryMutex.Lock()
+	configLogRegistry[path] = &NginxLogCache{
+		Path:       path,
+		Type:       logType,
+		Name:       name,
+		ConfigFile: configFile,
+	}
+	configLogRegistryMutex.Unlock()
+
+	// Recording the path before looking the manager up guarantees a path
+	// discovered while the services start is picked up by one of the two
+	// writes: InitializeServices publishes the manager, then seeds it from
+	// this registry.
+	if manager := GetLogFileManager(); manager != nil {
+		manager.AddLogPath(path, logType, name, configFile)
+	}
+}
+
+// RemoveLogPathsFromConfig removes all log paths associated with a specific config file
+func RemoveLogPathsFromConfig(configFile string) {
+	if configFile == defaultLogConfigFile {
+		// defaultLogConfigFile is the marker carried by the nginx default
+		// access/error logs, and no real configuration file can own an entry
+		// tagged with it. Refusing the removal keeps a caller that lost the
+		// config path from wiping the defaults.
+		logger.Warn("Ignoring a request to remove nginx log paths for an empty config file")
+		return
+	}
+
+	configLogRegistryMutex.Lock()
+	for p, entry := range configLogRegistry {
+		if entry.ConfigFile == configFile {
+			delete(configLogRegistry, p)
+		}
+	}
+	configLogRegistryMutex.Unlock()
+
+	if manager := GetLogFileManager(); manager != nil {
+		manager.RemoveLogPathsFromConfig(configFile)
+	}
+}
+
+// configDeclaresLogPath reports whether an access_log or error_log directive
+// declares path.
+func configDeclaresLogPath(path string) bool {
+	configLogRegistryMutex.RLock()
+	defer configLogRegistryMutex.RUnlock()
+	_, ok := configLogRegistry[path]
+	return ok
+}
+
+// registryEntriesSnapshot returns every known log path: the ones discovered from
+// the nginx configuration plus the nginx default access/error logs. The result
+// is keyed by path, so a path that is both declared by a directive and a default
+// log appears exactly once and can never produce a duplicate log group. The
+// config-derived entry wins that collision so the UI keeps showing which file
+// declares the path.
+func registryEntriesSnapshot() []NginxLogCache {
+	configLogRegistryMutex.RLock()
+	merged := make(map[string]NginxLogCache, len(configLogRegistry))
+	for path, entry := range configLogRegistry {
+		merged[path] = *entry
+	}
+	configLogRegistryMutex.RUnlock()
+
+	for _, entry := range defaultLogPathEntries() {
+		if _, declared := merged[entry.Path]; declared {
+			continue
+		}
+		merged[entry.Path] = entry
+	}
+
+	entries := make([]NginxLogCache, 0, len(merged))
+	for _, entry := range merged {
+		entries = append(entries, entry)
+	}
+	sort.Slice(entries, func(i, j int) bool { return entries[i].Path < entries[j].Path })
+
+	return entries
+}
+
+// GetAllLogPaths returns all known log paths, optionally filtered
+func GetAllLogPaths(filters ...func(*NginxLogCache) bool) []*NginxLogCache {
+	var logs []*NginxLogCache
+	for _, entry := range registryEntriesSnapshot() {
+		e := entry
+		if matchesAll(&e, filters) {
+			logs = append(logs, &e)
+		}
+	}
+	return logs
+}
+
+// GetAllLogPathsGrouped returns the known log paths grouped by their main log
+// path, so a rotated file such as access.log.1 folds into access.log. The path
+// of a group is its main log path.
+func GetAllLogPathsGrouped(filters ...func(*NginxLogCache) bool) []*NginxLogCache {
+	grouped := make(map[string]*NginxLogCache)
+	order := make([]string, 0)
+	for _, entry := range registryEntriesSnapshot() {
+		base := utils.MainLogPathFromFile(entry.Path)
+		if _, ok := grouped[base]; ok {
+			continue
+		}
+		grouped[base] = &NginxLogCache{
+			Path:       base,
+			Type:       entry.Type,
+			Name:       filepath.Base(base),
+			ConfigFile: entry.ConfigFile,
+		}
+		order = append(order, base)
+	}
+
+	sort.Strings(order)
+
+	result := make([]*NginxLogCache, 0, len(order))
+	for _, base := range order {
+		if matchesAll(grouped[base], filters) {
+			result = append(result, grouped[base])
+		}
+	}
+	return result
+}
+
+func matchesAll(entry *NginxLogCache, filters []func(*NginxLogCache) bool) bool {
+	for _, f := range filters {
+		if !f(entry) {
+			return false
+		}
+	}
+	return true
+}
+
+// IsErrorLogGroup reports whether a log group, named by its main log path,
+// is an nginx error log.
+func IsErrorLogGroup(mainLogPath string) bool {
+	for _, entry := range registryEntriesSnapshot() {
+		if entry.Type == logTypeError && utils.MainLogPathFromFile(entry.Path) == mainLogPath {
+			return true
+		}
+	}
+	return false
+}

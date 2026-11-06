@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
+	"sync"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/event"
 	"github.com/0xJacky/Nginx-UI/internal/notification"
 	"github.com/0xJacky/Nginx-UI/internal/translation"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -19,7 +21,20 @@ import (
 
 const (
 	autoRenewFailureRetryCooldown = 12 * time.Hour
+	// dns01PluginNotifyInterval throttles the "install the plugin" reminder.
+	// Nothing changes until the user acts on it, so one reminder a day is
+	// enough no matter how often the renewal worker runs.
+	dns01PluginNotifyInterval = 24 * time.Hour
 )
+
+var (
+	dns01PluginNotifyMu sync.Mutex
+	dns01PluginNotified = make(map[uint64]time.Time)
+)
+
+// autoCertMu keeps the scheduled pass and the one a newly installed DNS-01
+// plugin starts from renewing the same certificates at the same time.
+var autoCertMu sync.Mutex
 
 func AutoCert() {
 	defer func() {
@@ -29,6 +44,9 @@ func AutoCert() {
 			logger.Errorf("%s\n%s", err, buf)
 		}
 	}()
+	autoCertMu.Lock()
+	defer autoCertMu.Unlock()
+
 	logger.Info("AutoCert Worker Started")
 	autoCertList := model.GetAutoCertList()
 	for _, certModel := range autoCertList {
@@ -112,6 +130,9 @@ func autoCert(certModel *model.Cert) {
 
 	err = IssueCert(payload, log)
 	if err != nil {
+		if waitForDNS01Plugin(certModel, targetName, err) {
+			return
+		}
 		if isHTTP01ChallengeMethod(payload.ChallengeMethod) {
 			err = appendHTTP01ProbeSummary(err, certModel.Domains, certModel.Filename, log)
 		}
@@ -124,6 +145,7 @@ func autoCert(certModel *model.Cert) {
 	notification.Success("Renew Certificate Success", "Certificate %{name} renewed successfully", map[string]any{
 		"name": targetName,
 	})
+	event.PublishCertIssued(certModel.ID, targetName, certModel.Domains, true)
 
 	err = SyncToRemoteServer(certModel)
 	if err != nil {
@@ -138,20 +160,19 @@ func autoCert(certModel *model.Cert) {
 // only after a failed renewal, to explain the failure.
 func newAutoRenewPayload(certModel *model.Cert, certInfo *Info, replacesCertID string) *ConfigPayload {
 	return &ConfigPayload{
-		CertID:                            certModel.ID,
-		ServerName:                        certModel.Domains,
-		ChallengeMethod:                   certModel.ChallengeMethod,
-		Profile:                           certModel.Profile,
-		DNSCredentialID:                   certModel.DnsCredentialID,
-		KeyType:                           certModel.GetKeyType(),
-		ACMEUserID:                        certModel.ACMEUserID,
-		NotBefore:                         certInfo.NotBefore,
-		MustStaple:                        certModel.MustStaple,
-		LegoDisableCNAMESupport:           certModel.LegoDisableCNAMESupport,
-		DisableAuthoritativeNSPropagation: certModel.DisableAuthoritativeNSPropagation,
-		EnableCommonName:                  certModel.EnableCommonName,
-		RevokeOld:                         certModel.RevokeOld,
-		ReplacesCertID:                    replacesCertID,
+		CertID:           certModel.ID,
+		ServerName:       certModel.Domains,
+		ChallengeMethod:  certModel.ChallengeMethod,
+		Profile:          certModel.Profile,
+		DNSCredentialID:  certModel.DnsCredentialID,
+		KeyType:          certModel.GetKeyType(),
+		ACMEUserID:       certModel.ACMEUserID,
+		NotBefore:        certInfo.NotBefore,
+		MustStaple:       certModel.MustStaple,
+		ChallengeConfig:  certModel.ChallengeConfig,
+		EnableCommonName: certModel.EnableCommonName,
+		RevokeOld:        certModel.RevokeOld,
+		ReplacesCertID:   replacesCertID,
 	}
 }
 
@@ -219,6 +240,56 @@ func handleAutoRenewFailure(certModel *model.Cert, log *Logger, name string, err
 	updateAutoRenewStatus(certModel, time.Now(), err.Error())
 	notification.Error("Renew Certificate Error", "Certificate %{name} renewal failed: %{error}",
 		buildAutoRenewNotificationDetails(name, err))
+}
+
+// waitForDNS01Plugin handles a renewal that failed only because no enabled
+// plugin provides the DNS-01 challenge, typically right after an upgrade while
+// the DNS-01 plugin is still being installed. No failure is recorded, so the
+// retry cooldown does not hold the certificate back: the plugin manager renews
+// again as soon as the plugin is installed, and every later check retries.
+func waitForDNS01Plugin(certModel *model.Cert, name string, err error) bool {
+	if !isNoDNS01ProviderError(err) {
+		return false
+	}
+	logger.Warnf("Renewal of %s waits for a DNS-01 plugin: %v", name, err)
+	notifyWaitingForDNS01Plugin(certModel, name, err)
+	return true
+}
+
+// notifyWaitingForDNS01Plugin is a seam for tests.
+var notifyWaitingForDNS01Plugin = notifyDNS01PluginUnavailable
+
+// notifyDNS01PluginUnavailable tells the user that the renewal needs a plugin
+// nothing provides, once a day per certificate.
+func notifyDNS01PluginUnavailable(certModel *model.Cert, name string, err error) {
+	if certModel == nil || !isNoDNS01ProviderError(err) {
+		return
+	}
+
+	now := time.Now()
+	dns01PluginNotifyMu.Lock()
+	last, ok := dns01PluginNotified[certModel.ID]
+	if ok && now.Sub(last) < dns01PluginNotifyInterval {
+		dns01PluginNotifyMu.Unlock()
+		return
+	}
+	dns01PluginNotified[certModel.ID] = now
+	dns01PluginNotifyMu.Unlock()
+
+	notification.Error("DNS-01 plugin unavailable",
+		"Certificate %{name} cannot be renewed because no enabled plugin provides the DNS-01 challenge",
+		map[string]any{"name": name})
+}
+
+// isNoDNS01ProviderError matches ErrNoDNS01Provider. Parameterising a cosy
+// error produces a new value rather than wrapping the sentinel, so the scope
+// and the code are what identify it.
+func isNoDNS01ProviderError(err error) bool {
+	var actual, expected *cosy.Error
+	if !stderrors.As(err, &actual) || !stderrors.As(ErrNoDNS01Provider, &expected) {
+		return false
+	}
+	return actual.Scope == expected.Scope && actual.Code == expected.Code
 }
 
 func updateAutoRenewStatus(certModel *model.Cert, at time.Time, renewalError string) {

@@ -2,6 +2,7 @@ package site
 
 import (
 	"os"
+	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
@@ -86,4 +87,70 @@ func buildLogEntries(directives []utils.LogDirective, defaultAccessLog, defaultE
 	}
 
 	return entries
+}
+
+// LogPaths is the log file of each kind a site writes to. Inherited tells
+// whether the path is the nginx default log rather than a directive of the
+// site itself. A path is empty when the site has no usable log of that kind.
+type LogPaths struct {
+	AccessPath      string
+	AccessInherited bool
+	ErrorPath       string
+	ErrorInherited  bool
+}
+
+// resolveLogPaths picks the log a per site action should use: the first valid
+// directive of the site itself, else the nginx default log when it is valid.
+func resolveLogPaths(directives []utils.LogDirective, defaultAccessLog, defaultErrorLog string, isValid func(string) bool) LogPaths {
+	entries := buildLogEntries(directives, defaultAccessLog, defaultErrorLog, isValid)
+
+	pick := func(logType string) (string, bool) {
+		var inherited *LogEntry
+		for i := range entries {
+			entry := &entries[i]
+			if entry.Type != logType || !entry.Valid {
+				continue
+			}
+			if !entry.Inherited {
+				return entry.Path, false
+			}
+			if inherited == nil {
+				inherited = entry
+			}
+		}
+		if inherited != nil {
+			return inherited.Path, true
+		}
+		return "", false
+	}
+
+	var paths LogPaths
+	paths.AccessPath, paths.AccessInherited = pick("access")
+	paths.ErrorPath, paths.ErrorInherited = pick("error")
+	return paths
+}
+
+// defaultLogResolver looks the nginx default log paths up at most once, and
+// only when a site without a directive of its own asks for them.
+type defaultLogResolver struct {
+	once   sync.Once
+	access string
+	errLog string
+}
+
+func (r *defaultLogResolver) get() (string, string) {
+	r.once.Do(func() {
+		r.access = nginx.GetAccessLogPath()
+		r.errLog = nginx.GetErrorLogPath()
+	})
+	return r.access, r.errLog
+}
+
+func hasLogDirective(directives []utils.LogDirective, logType string) bool {
+	for _, directive := range directives {
+		if directive.Type == logType {
+			return true
+		}
+	}
+	return false
 }

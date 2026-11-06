@@ -107,7 +107,7 @@ func (ps *Preflight) CheckLogPreflight(logPath string) (*PreflightResponse, erro
 }
 
 // handleMissingFile handles the case when a log file doesn't exist
-func (ps *Preflight) handleMissingFile(logPath string, searcherService *searcher.Searcher) (*PreflightResponse, error) {
+func (ps *Preflight) handleMissingFile(logPath string, searcherService *searcher.ColumnarSearcher) (*PreflightResponse, error) {
 	searcherHealthy := searcherService.IsHealthy()
 	logFileManager := GetLogFileManager()
 

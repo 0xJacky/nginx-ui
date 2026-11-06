@@ -2,7 +2,10 @@ package analytics
 
 import (
 	"context"
+	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
 	"github.com/stretchr/testify/assert"
@@ -66,33 +69,20 @@ func (m *MockSearcher) Stop() error {
 	return args.Error(0)
 }
 
-// MockCardinalityCounter implements searcher.Counter for testing
-type MockCardinalityCounter struct {
-	mock.Mock
+// countingSearcher adds exact distinct counts to the mock, as the column
+// store's searcher has them.
+type countingSearcher struct {
+	*MockSearcher
+	distinct uint64
+	asked    []*searcher.SearchRequest
 }
 
-func (m *MockCardinalityCounter) CountCardinality(ctx context.Context, req *searcher.CardinalityRequest) (*searcher.CardinalityResult, error) {
-	args := m.Called(ctx, req)
-	if args.Get(0) == nil {
-		return nil, args.Error(1)
+func (c *countingSearcher) Cardinality(_ context.Context, field string, req *searcher.SearchRequest) (uint64, error) {
+	if field != "ip" {
+		return 0, fmt.Errorf("unexpected field %s", field)
 	}
-	return args.Get(0).(*searcher.CardinalityResult), args.Error(1)
-}
-
-func (m *MockCardinalityCounter) EstimateCardinality(ctx context.Context, req *searcher.CardinalityRequest) (*searcher.CardinalityResult, error) {
-	args := m.Called(ctx, req)
-	if args.Get(0) == nil {
-		return nil, args.Error(1)
-	}
-	return args.Get(0).(*searcher.CardinalityResult), args.Error(1)
-}
-
-func (m *MockCardinalityCounter) BatchCountCardinality(ctx context.Context, fields []string, baseReq *searcher.CardinalityRequest) (map[string]*searcher.CardinalityResult, error) {
-	args := m.Called(ctx, fields, baseReq)
-	if args.Get(0) == nil {
-		return nil, args.Error(1)
-	}
-	return args.Get(0).(map[string]*searcher.CardinalityResult), args.Error(1)
+	c.asked = append(c.asked, req)
+	return c.distinct, nil
 }
 
 func TestNewService(t *testing.T) {
@@ -104,13 +94,6 @@ func TestNewService(t *testing.T) {
 }
 
 // Helper function to create a service with a mock cardinality counter
-func createServiceWithCardinalityCounter(searcher searcher.SearcherInterface, cardinalityCounter *searcher.Counter) Service {
-	return &service{
-		searcher:           searcher,
-		cardinalityCounter: cardinalityCounter,
-	}
-}
-
 func TestService_ValidateLogPath(t *testing.T) {
 	mockSearcher := &MockSearcher{}
 	s := NewService(mockSearcher)
@@ -280,11 +263,23 @@ func TestService_GetLogEntriesStats_Basic(t *testing.T) {
 }
 
 func TestService_GetDashboardAnalytics_WithCardinalityCounter(t *testing.T) {
-	mockSearcher := &MockSearcher{}
+	for _, exact := range []bool{false, true} {
+		t.Run(fmt.Sprintf("exact=%v", exact), func(t *testing.T) {
+			testDashboardUV(t, exact)
+		})
+	}
+}
 
-	// Create a mock cardinality counter for testing
-	mockCardinalityCounter := searcher.NewCounter(nil)
-	s := createServiceWithCardinalityCounter(mockSearcher, mockCardinalityCounter)
+// testDashboardUV checks where the dashboard's total UV comes from: the exact
+// count when the searcher can count distinct values, the IP facet otherwise.
+func testDashboardUV(t *testing.T, exact bool) {
+	mockSearcher := &MockSearcher{}
+	var svcSearcher searcher.SearcherInterface = mockSearcher
+	counting := &countingSearcher{MockSearcher: mockSearcher, distinct: 2500}
+	if exact {
+		svcSearcher = counting
+	}
+	s := NewService(svcSearcher)
 
 	ctx := context.Background()
 	req := &DashboardQueryRequest{
@@ -353,21 +348,23 @@ func TestService_GetDashboardAnalytics_WithCardinalityCounter(t *testing.T) {
 			r.FacetFields[2] == "device_type"
 	})).Return(expectedResult, nil)
 
-	// The key test: Counter should be called to get accurate UV count
-	// Note: We can't easily mock the cardinality counter because it's created internally
-	// This test verifies the logic works when cardinality counter is available
-
 	result, err := s.GetDashboardAnalytics(ctx, req)
 
 	assert.NoError(t, err)
 	assert.NotNil(t, result)
 	assert.NotNil(t, result.Summary)
-
-	// The summary should use the original facet-limited UV count (1000)
-	// since our mock cardinality counter won't actually be called
-	// In a real scenario with proper cardinality counter, this would be 2500
-	assert.Equal(t, 1000, result.Summary.TotalUV) // Limited by facet
 	assert.Equal(t, 5000, result.Summary.TotalPV) // Total hits
+
+	if exact {
+		// The exact count replaces the facet, which stops at its size.
+		assert.Equal(t, 2500, result.Summary.TotalUV)
+		require.Len(t, counting.asked, 1)
+		assert.Equal(t, req.StartTime, *counting.asked[0].StartTime)
+		assert.Equal(t, req.EndTime, *counting.asked[0].EndTime)
+		assert.True(t, counting.asked[0].UseMainLogPath)
+	} else {
+		assert.Equal(t, 1000, result.Summary.TotalUV) // Limited by facet
+	}
 
 	mockSearcher.AssertExpectations(t)
 }

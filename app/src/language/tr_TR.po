@@ -456,27 +456,6 @@ msgstr "Devre dışı"
 msgid "Maintenance"
 msgstr "Bakım"
 
-msgid "Site"
-msgstr "Site"
-
-msgid "Stream"
-msgstr "Akış"
-
-msgid "Configuration"
-msgstr "Yapılandırma"
-
-msgid "+%{count} more"
-msgstr "+%{count} daha"
-
-msgid "Search"
-msgstr "Ara"
-
-msgid "No file matches the search"
-msgstr "Aramayla eşleşen dosya yok"
-
-msgid "Not used"
-msgstr "Kullanılmıyor"
-
 msgid "Starting download..."
 msgstr "İndirme başlıyor..."
 
@@ -1004,6 +983,9 @@ msgstr "Tamamlandı"
 msgid "Unknown"
 msgstr "Bilinmeyen"
 
+msgid "Search"
+msgstr "Ara"
+
 msgid "Open in split view"
 msgstr "Bölünmüş görünümde aç"
 
@@ -1105,6 +1087,12 @@ msgstr ""
 "görevi aynı dosya adlarıyla yedekleri aynı depolama konumuna yazıyor. "
 "Görevlerden birini yeniden adlandırın veya depolama yolunu değiştirin."
 
+msgid "Backups to Keep"
+msgstr "Saklanacak Yedeklemeler"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "Saklanacak Yedekler (0 hepsini saklar)"
+
 msgid "Renew Certificate Success"
 msgstr "Sertifika Yenileme Başarılı"
 
@@ -1134,16 +1122,6 @@ msgstr "Sertifika %{name}, %{days} gün sonra sona erecek"
 
 msgid "Certificate Expiring Soon"
 msgstr "Sertifika Yakında Sona Eriyor"
-
-msgid "Certificate Relocated"
-msgstr "Sertifika taşındı"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr ""
-"%{name} sertifikası artık %{path} içinde saklanıyor. %{previous_path} "
-"yükleyen siteleri ona yönlendirin"
 
 msgid "Sync Certificate Error"
 msgstr "Sertifika Senkronizasyon Hatası"
@@ -1729,51 +1707,6 @@ msgstr "Kurtarma kodunu kullan"
 msgid "Use OTP"
 msgstr "OTP Kullan"
 
-msgid "Recovery codes downloaded"
-msgstr "Kurtarma kodları indirildi"
-
-msgid "MFA setup completed. Save your recovery codes before continuing."
-msgstr "MFA kurulumu tamamlandı. Devam etmeden önce kurtarma kodlarınızı kaydedin."
-
-msgid "Download"
-msgstr "İndir"
-
-msgid "Continue"
-msgstr "Devam"
-
-msgid "MFA session expired. Please sign in again."
-msgstr "MFA oturumu sona erdi. Lütfen tekrar giriş yapın."
-
-msgid "MFA is required. Set up an authenticator or a passkey to continue."
-msgstr "MFA gerekli. Devam etmek için bir doğrulayıcı veya passkey kurun."
-
-msgid "Verify your MFA method to continue signing in."
-msgstr "Oturum açmaya devam etmek için MFA yönteminizi doğrulayın."
-
-msgid "Enable TOTP"
-msgstr "TOTP'yi Etkinleştir"
-
-msgid "Verify"
-msgstr "Doğrula"
-
-msgid "Add a passkey"
-msgstr "Bir geçiş anahtarı ekle"
-
-msgid "Back to sign in"
-msgstr "Giriş sayfasına geri dön"
-
-msgid "Secret has been copied"
-msgstr "Gizli kod kopyalandı"
-
-msgid "Click to copy"
-msgstr "Kopyala için tıklayın"
-
-msgid "Current Password"
-msgstr "Mevcut Şifre"
-
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr "Hesabı uygulamaya eklemek için telefonunuzla QR kodunu tarayın."
-
 msgid "Generate new recovery codes"
 msgstr "Yeni kurtarma kodları oluştur"
 
@@ -1796,13 +1729,6 @@ msgstr "İki faktörlü kimlik doğrulama gerekiyor"
 
 msgid "Invalid passcode or recovery code"
 msgstr "Geçersiz parola veya kurtarma kodu"
-
-msgid ""
-"Enable MFA on your own account before managing MFA policies or resetting "
-"another user."
-msgstr ""
-"MFA politikalarını yönetmeden veya başka bir kullanıcıyı sıfırlamadan önce "
-"kendi hesabınızda MFA'yı etkinleştirin."
 
 msgid "Node Status"
 msgstr "Düğüm Durumu"
@@ -2445,9 +2371,6 @@ msgstr "Dosya içeriği geçersiz kontrol karakterleri içeriyor"
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "Dosya içeriği kısıtlı nginx yönergesi içeriyor: {0}"
 
-msgid "File content must be valid PEM or htpasswd data"
-msgstr "Dosya içeriği geçerli PEM veya htpasswd verisi olmalıdır"
-
 msgid "Destination file: {0} already exists"
 msgstr "Hedef dosya: {0} zaten mevcut"
 
@@ -2639,75 +2562,6 @@ msgstr "Host anahtarı tarama başarısız oldu: {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "Ana makine anahtarı algoritması uyuşmazlığı: {0} bekleniyordu, {1} alındı"
-
-msgid "Invalid request: {0}"
-msgstr "Geçersiz istek: {0}"
-
-msgid ""
-"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
-"starting and ending with a letter or digit"
-msgstr ""
-"Geçersiz ingress adı: 1-40 arası küçük harf, rakam ve tire kullanın; harf "
-"veya rakam ile başlayıp harf veya rakam ile bitmelidir"
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr "Geçersiz sahip: 1-64 harf, rakam, nokta, alt çizgi ve tire kullanın"
-
-msgid "Invalid host: {0}"
-msgstr "Geçersiz ana makine: {0}"
-
-msgid "Invalid backend {0}: {1}"
-msgstr "Geçersiz Backend {0}: {1}"
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr "Arka uç sunucusu {0} izin verilen arka uç aralıklarının dışında"
-
-msgid "Invalid route {0}: {1}"
-msgstr "Geçersiz rota {0}: {1}"
-
-msgid "Invalid tls: {0}"
-msgstr "Geçersiz TLS: {0}"
-
-msgid "Invalid policy: {0}"
-msgstr "Geçersiz politika: {0}"
-
-msgid "Server {0} not found in backend {1}"
-msgstr "Sunucu {0}, {1} arka uçta bulunamadı"
-
-msgid "Ingress {0} not found"
-msgstr "Ingress {0} bulunamadı"
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr ""
-"Ingress {0} sahibi {1} olarak görünüyor; devralmak için force parametresini "
-"kullanın"
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr "Host {0} zaten ingress {1} tarafından sunulmaktadır"
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr "Site {0} zaten var ve bu ingress tarafından yönetilmiyor"
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr "Ingress {0}, silinirken güncellendi"
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr "Upstream {0} zaten mevcut ve bu ingress tarafından yönetilmiyor"
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr "ingress {0} için nesil {1} değerine ulaşması beklenirken zaman aşımı oluştu"
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr "ingress {0} silinmesi beklenirken zaman aşımına uğradı"
-
-msgid "Apply failed: {0}"
-msgstr "Uygulama başarısız: {0}"
-
-msgid "Certificate not ready: {0}"
-msgstr "Sertifika hazır değil: {0}"
-
-msgid "Not implemented"
-msgstr "Uygulanmadı"
 
 msgid "Code completion is not enabled"
 msgstr "Kod tamamlama etkin değil"
@@ -3042,41 +2896,6 @@ msgstr "Site bakım modunda"
 msgid "Read dir failed: {0}"
 msgstr "Dizin okuma hatası: {0}"
 
-msgid ""
-"Site is managed by ingress {0}; change the ingress instead or force the "
-"change"
-msgstr ""
-"Site, ingress {0} tarafından yönetilmektedir; bunun yerine ingress'i "
-"değiştirin veya değişikliği zorlayın"
-
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr ""
-"Dosya adı .conf ile bitmeli ve yalnızca harfler, rakamlar, noktalar, "
-"tireler ve alt çizgiler içermelidir"
-
-msgid "Snippet not found"
-msgstr "Kod parçası bulunamadı"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "Kod parçası 256 KiB sınırını aşıyor"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "Kod parçasının başlığı ayrıştırılamıyor: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "Kod parçası hâlâ {0} tarafından ekleniyor"
-
-msgid "A snippet with this file name already exists"
-msgstr "Bu dosya adına sahip bir snippet zaten mevcut"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "{0} değişkeni geçersiz: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "İçerik şablon olarak ayrıştırılamıyor: {0}"
-
 msgid "Stream not found"
 msgstr "Akış bulunamadı"
 
@@ -3262,9 +3081,6 @@ msgstr ""
 "Ortak bellek alanı zone anahtarı ile ayarlanır; ek direktiflerden zone "
 "direktifini kaldırın"
 
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr "{0} ile başlayan upstream adları ingresses için ayrılmıştır"
-
 msgid "Upstream not found: {0}"
 msgstr "Upstream bulunamadı: {0}"
 
@@ -3286,13 +3102,6 @@ msgid ""
 msgstr ""
 "{0} paylaşılan bellek bölgesi zaten başka bir yönerge tarafından "
 "kullanılıyor; nginx bildirdi: {1}"
-
-msgid ""
-"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
-"the change"
-msgstr ""
-"Upstream {0}, ingress {1} tarafından yönetiliyor; bunun yerine ingress'i "
-"değiştirin veya değişikliği zorlayın"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "nginx conf.d dizini kullanılamıyor: {0}"
@@ -3320,15 +3129,6 @@ msgstr "Geçersiz kurtarma kodu"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "TOTP etkin olmadığı için eski kurtarma kodu kullanılamaz"
-
-msgid "MFA enrollment is required"
-msgstr "MFA kaydı gereklidir"
-
-msgid "MFA verification is required"
-msgstr "MFA doğrulaması gereklidir"
-
-msgid "Cannot remove the last required MFA method"
-msgstr "Son gerekli MFA yöntemi kaldırılamıyor"
 
 msgid "WebAuthn settings are not configured"
 msgstr "WebAuthn ayarları yapılandırılmamış"
@@ -4287,9 +4087,6 @@ msgstr "Grup Kayıtları"
 msgid "Not Found"
 msgstr "Bulunamadı"
 
-msgid "Ingresses"
-msgstr "Ingresses"
-
 msgid "Namespaces"
 msgstr "İsim Alanları"
 
@@ -4316,18 +4113,6 @@ msgstr "Site Listesi"
 
 msgid "Add Site"
 msgstr "Site Ekle"
-
-msgid "Snippets"
-msgstr "Snippets"
-
-msgid "Create Snippet"
-msgstr "Oluştur"
-
-msgid "Built-in Template"
-msgstr "Yerleşik Şablon"
-
-msgid "Edit Snippet"
-msgstr "Snippet'i Düzenle"
 
 msgid "Edit Site"
 msgstr "Siteyi Düzenle"
@@ -4411,17 +4196,29 @@ msgstr ""
 "bir sunucu veya konum için seçin; listeyi burada değiştirmek onu kullanan "
 "tüm siteleri günceller."
 
+msgid "+%{count} more"
+msgstr "+%{count} daha"
+
 msgid "Deny"
 msgstr "Reddet"
 
 msgid "Allow"
 msgstr "İzin ver"
 
+msgid "Not used"
+msgstr "Kullanılmıyor"
+
 msgid "Use list"
 msgstr "Liste kullan"
 
 msgid "Deny (403)"
 msgstr "Reddet (403)"
+
+msgid "Site"
+msgstr "Site"
+
+msgid "Stream"
+msgstr "Akış"
 
 msgid "Access list %{name} saved"
 msgstr "Erişim listesi %{name} kaydedildi"
@@ -4521,15 +4318,6 @@ msgstr "Haftalık olarak %{day} günü %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Her ayın %{day} günü %{time} saatinde"
-
-msgid "Backups to Keep"
-msgstr "Saklanacak Yedeklemeler"
-
-msgid "All"
-msgstr "Tümü"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "Saklanacak Yedekler (0 hepsini saklar)"
 
 msgid "Last Backup Time"
 msgstr "Son Yedekleme Zamanı"
@@ -4902,11 +4690,6 @@ msgstr "Dağıtım doğrulanamıyor"
 msgid "Not After"
 msgstr "Sonra Değil"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "%{count} yapılandırmada kullanılıyor"
-msgstr[1] "%{count} yapılandırmada kullanılıyor"
-
 msgid "Failed to scan certificates"
 msgstr "Sertifikalar taranamadı"
 
@@ -4953,12 +4736,6 @@ msgstr "Geri"
 
 msgid "This field is required"
 msgstr "Bu alan zorunludur"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "Yol mevcut, ancak dosya bir sertifika değil"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "Yol mevcut, ancak dosya bir özel anahtar değil"
 
 msgid "Sync to"
 msgstr "Senkronize Et"
@@ -5029,6 +4806,9 @@ msgstr "Sertifika dosyaları başarıyla indirildi"
 
 msgid "Failed to download certificate files"
 msgstr "Sertifika dosyaları indirilemedi"
+
+msgid "Download"
+msgstr "İndir"
 
 msgid "Download Certificate Files"
 msgstr "Sertifika Dosyalarını İndir"
@@ -5202,14 +4982,14 @@ msgstr "İptali onaylamak için lütfen aşağıdaki alana \"İptal\" yazın:"
 msgid "Renew successfully"
 msgstr "Başarıyla yenilendi"
 
-msgid "AutoCert is running, please wait..."
-msgstr "AutoCert çalışıyor, lütfen bekleyin..."
+msgid "Renew"
+msgstr "Yenile"
 
 msgid "Renew Certificate"
 msgstr "Sertifikayı Yenile"
 
-msgid "Renew"
-msgstr "Yenile"
+msgid "AutoCert is running, please wait..."
+msgstr "AutoCert çalışıyor, lütfen bekleyin..."
 
 msgid "Certificate issued successfully"
 msgstr "Sertifika başarıyla verildi"
@@ -5821,16 +5601,6 @@ msgstr ""
 "İsteğe bağlı mutlak URL. Genel adres, gerçek upstream ana bilgisayarından "
 "veya bağlantı noktasından farklı olduğunda kullanın."
 
-msgid "Site Card Click URL"
-msgstr "Site Kartı Tıklama URL'si"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr ""
-"Bu site kartı açılırken kullanılan isteğe bağlı mutlak HTTP/HTTPS URL'si. "
-"Boşsa, varsayılan site URL'si kullanılır."
-
 msgid "HTTP Method"
 msgstr "HTTP Yöntemi"
 
@@ -6135,6 +5905,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "İlave bilgi"
 
+msgid "All"
+msgstr "Tümü"
+
 msgid "Host, e.g. @ or www"
 msgstr "Host, örn. @ veya www"
 
@@ -6295,6 +6068,9 @@ msgstr "Ad boş olamaz"
 
 msgid "Please select DNS provider"
 msgstr "Lütfen DNS sağlayıcısını seçin"
+
+msgid "Configuration"
+msgstr "Yapılandırma"
 
 msgid "DNS Credentials"
 msgstr "DNS Kimlik Bilgileri"
@@ -6752,304 +6528,6 @@ msgstr "Sistem sağlığını, yükseltme durumunu ve bileşen ayrıntılarını
 
 msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr "Bakım görevleri için entegre terminal oturumlarına erişin."
-
-msgid "HTTP only"
-msgstr "Yalnızca HTTP"
-
-msgid "Not issued yet"
-msgstr "Henüz verilmedi"
-
-msgid "Expired %{date}"
-msgstr "Süresi doldu %{date}"
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] "%{date} (%{days} gün kaldı)"
-
-msgid "Address"
-msgstr "Adres"
-
-msgid "Health"
-msgstr "Sağlık"
-
-msgid "Max Fails"
-msgstr "Maksimum Hata"
-
-msgid "Fail Timeout"
-msgstr "Hata Zaman Aşımı"
-
-msgid "Path Prefix"
-msgstr "Yol Öneki"
-
-msgid "Backend"
-msgstr "Arka Uç"
-
-msgid "Options"
-msgstr "Seçenekler"
-
-msgid "Allowed Sources"
-msgstr "İzin Verilen Kaynaklar"
-
-msgid "Last Transition"
-msgstr "Son Geçiş"
-
-msgid "Drained"
-msgstr "Tükenmiş"
-
-msgid "No Data"
-msgstr "Veri yok"
-
-msgid "Healthy"
-msgstr "Sağlıklı"
-
-msgid "Unhealthy"
-msgstr "Sağlıksız"
-
-msgid ""
-"The generated site could not be loaded. It is written by the first "
-"successful apply."
-msgstr "Oluşturulan site yüklenemedi. İlk başarılı uygulamada yazılır."
-
-msgid "Reconcile Now"
-msgstr "Şimdi mutabakat yap"
-
-msgid "The last apply failed; the previous config is still live"
-msgstr "Son uygulama başarısız oldu; önceki yapılandırma hâlâ aktif."
-
-msgid "Owner"
-msgstr "Sahip"
-
-msgid "External ID"
-msgstr "Harici ID"
-
-msgid "Generation"
-msgstr "Nesil"
-
-msgid "%{observed} applied of %{generation}"
-msgstr "%{generation} uygulanan %{observed}"
-
-msgid "Generated Site"
-msgstr "Oluşturulan Site"
-
-msgid "Last Applied"
-msgstr "Son uygulanan"
-
-msgid "Config Hash"
-msgstr "Yapılandırma hash'i"
-
-msgid "Labels"
-msgstr "Etiketler"
-
-msgid "Hosts"
-msgstr "Hosts"
-
-msgid "TLS"
-msgstr "TLS"
-
-msgid "Mode"
-msgstr "Mod"
-
-msgid "Certificate"
-msgstr "Sertifika"
-
-msgid "View certificate"
-msgstr "Sertifikayı görüntüle"
-
-msgid "Challenge"
-msgstr "Meydan Okuma"
-
-msgid "Redirect to HTTPS"
-msgstr "HTTPS'ye yönlendir"
-
-msgid "HSTS"
-msgstr "HSTS"
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr "Sertifika verilene kadar yalnızca HTTP dinleyicisi sunulur."
-
-msgid "Backends"
-msgstr "Arka uçlar"
-
-msgid "Routes"
-msgstr "Rotalar"
-
-msgid "Policy default"
-msgstr "Varsayılan politika"
-
-msgid "Policy"
-msgstr "Politika"
-
-msgid "Everyone"
-msgstr "Herkes"
-
-msgid "Rate Limit"
-msgstr "Hız sınırı"
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr "istemci başına %{rps} istek/sn, burst %{burst}"
-
-msgid "Unlimited"
-msgstr "Sınırsız"
-
-msgid "Max Body Size"
-msgstr "Maksimum Gövde Boyutu"
-
-msgid "Extra Headers"
-msgstr "Ek Başlıklar"
-
-msgid "Conditions"
-msgstr "Koşullar"
-
-msgid "True"
-msgstr "Doğru"
-
-msgid "False"
-msgstr "Yanlış"
-
-msgid "Generated Site Config"
-msgstr "Oluşturulan Site Yapılandırması"
-
-msgid "Open in site editor"
-msgstr "Site düzenleyicisinde aç"
-
-msgid "Not ready"
-msgstr "Hazır değil"
-
-msgid "The latest spec has not been applied yet"
-msgstr "En son özellik henüz uygulanmadı"
-
-msgid "Applying"
-msgstr "Uygulanıyor"
-
-msgid "Ready"
-msgstr "Hazır"
-
-msgid "Degraded"
-msgstr "Hızı Düşük"
-
-msgid "Config Applied"
-msgstr "Yapılandırma uygulandı"
-
-msgid "Certificate Ready"
-msgstr "Sertifika hazır"
-
-msgid "Backends Healthy"
-msgstr "Arka uçlar sağlıklı"
-
-msgid "Issued automatically (ACME)"
-msgstr "Otomatik olarak verildi (ACME)"
-
-msgid "Existing certificate"
-msgstr "Mevcut sertifika"
-
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Round Robin"
-msgstr "Round Robin"
-
-msgid "Least Connections"
-msgstr "En az bağlantı"
-
-msgid "IP Hash"
-msgstr "IP Karma"
-
-msgid "All owners"
-msgstr "Tüm sahipler"
-
-msgid "Reconcile of %{name} queued"
-msgstr "%{name} mutabakatı sıraya alındı"
-
-msgid "Delete ingress %{name}?"
-msgstr "ingress %{name} silinsin mi?"
-
-msgid ""
-"This ingress is owned by %{owner}. Its controller will probably recreate it "
-"on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-"Bu ingress %{owner} tarafından sahiplenilmiştir. Controller'ı büyük "
-"olasılıkla bir sonraki senkronizasyonda yeniden oluşturacaktır; kalıcı "
-"olarak silmek için controller'dan kaldırın."
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr "Oluşturulan site ve upstream dosyaları kaldırılır ve nginx yeniden yüklenir."
-
-msgid "Also delete the certificate"
-msgstr "Sertifikayı da sil"
-
-msgid "Ingress %{name} deleted"
-msgstr "Ingress %{name} silindi"
-
-msgid "Ingress"
-msgstr "Ingress"
-
-msgid "Phase"
-msgstr "Aşama"
-
-msgid "%{healthy}/%{total} healthy"
-msgstr "%{healthy}/%{total} sağlıklı"
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] "%{total} sunucu"
-msgstr[1] "%{total} sunucu"
-
-msgid "%{count} down"
-msgstr "%{count} kaldı"
-
-msgid "Filter by owner"
-msgstr "Sahibine göre filtrele"
-
-msgid "Applied generation / latest generation"
-msgstr "Uygulanan nesil / En son nesil"
-
-msgid "gen %{observed}/%{generation}"
-msgstr "gen %{observed}/%{generation}"
-
-msgid "Reconcile"
-msgstr "Mutabakat"
-
-msgid ""
-"Ingresses are reverse proxy entries published by external controllers "
-"through the Ingress API. Nginx UI renders each one into a managed site and "
-"upstreams, issues its certificate and reports its status here. Change them "
-"in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-"Ingress'ler, harici denetleyiciler tarafından Ingress API aracılığıyla "
-"yayınlanan ters proxy girişleridir. Nginx UI her birini yönetilen bir site "
-"ve upstream olarak işler, sertifikasını verir ve durumunu burada bildirir. "
-"Bunları ilgili denetleyicilerinde değiştirin; burada yapılan değişiklikler "
-"bir sonraki uzlaştırma tarafından üzerine yazılır."
-
-msgid "Learn more"
-msgstr "Daha fazla bilgi"
-
-msgid "No ingresses yet"
-msgstr "Henüz ingress yok"
-
-msgid ""
-"A controller such as a deployment platform creates ingresses with PUT "
-"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
-"They show up here as soon as they are stored."
-msgstr ""
-"Bir dağıtım platformu gibi bir denetleyici, PUT /api/ingresses/:name ile "
-"kümе düğümü olarak veya API anahtarıyla kimlik doğrulaması yaparak "
-"ingresses oluşturur. Depolandıkları anda burada görünürler."
-
-msgid "Read the Ingress API guide"
-msgstr "Ingress API kılavuzunu okuyun"
-
-msgid "Search by name, host or external ID"
-msgstr "Ada, ana bilgisayara veya harici kimliğe göre ara"
-
-msgid "Search ingresses"
-msgstr "Ingress ara"
-
-msgid "No ingress matches the filter"
-msgstr "Filtreyle eşleşen Ingress yok"
 
 msgid "Please input your E-mail!"
 msgstr "Lütfen e-posta adresinizi giriniz!"
@@ -8428,6 +7906,9 @@ msgstr ""
 msgid "Register passkey successfully"
 msgstr "Geçiş anahtarı başarıyla kaydedildi"
 
+msgid "Add a passkey"
+msgstr "Bir geçiş anahtarı ekle"
+
 msgid "Tips"
 msgstr "İpuçları"
 
@@ -8449,6 +7930,9 @@ msgid ""
 msgstr ""
 "Geçiş anahtarı kayıt işlemini tamamlamak için iletişim kutusundaki "
 "talimatları izleyin."
+
+msgid "Current Password"
+msgstr "Mevcut Şifre"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -8585,9 +8069,6 @@ msgstr "Lütfen mevcut şifrenizi girin"
 msgid "Enable 2FA successfully"
 msgstr "2FA'yı başarıyla etkinleştirildi"
 
-msgid "TOTP disabled"
-msgstr "TOTP devre dışı"
-
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -8605,27 +8086,23 @@ msgstr ""
 "Etkinleştirmek için telefonunuza Google Authenticator veya Microsoft "
 "Authenticator uygulamasını yüklemeniz gerekir."
 
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr "Hesabı uygulamaya eklemek için telefonunuzla QR kodunu tarayın."
+
 msgid "Current account is not enabled TOTP."
 msgstr "Mevcut hesap için TOTP etkin değil."
 
 msgid "Current account is enabled TOTP."
 msgstr "Mevcut hesap için TOTP etkinleştirildi."
 
-msgid "Replace TOTP"
-msgstr "TOTP'yi Değiştir"
+msgid "Enable TOTP"
+msgstr "TOTP'yi Etkinleştir"
 
-msgid "Disable TOTP for this account?"
-msgstr "Bu hesap için TOTP devre dışı bırakılsın mı?"
+msgid "Secret has been copied"
+msgstr "Gizli kod kopyalandı"
 
-msgid "Disable TOTP"
-msgstr "TOTP'yi devre dışı bırak"
-
-msgid ""
-"Your current authenticator remains active until the new code is verified. "
-"New recovery codes replace the old ones."
-msgstr ""
-"Yeni kod doğrulanana kadar mevcut kimlik doğrulayıcınız etkin kalır. Yeni "
-"kurtarma kodları eskilerinin yerini alır."
+msgid "Click to copy"
+msgstr "Kopyala için tıklayın"
 
 msgid "Bark"
 msgstr "Bark"
@@ -9804,6 +9281,9 @@ msgstr "Erişim ve Kurulum"
 msgid "File mode and setup instructions"
 msgstr "Dosya modu ve kurulum talimatları"
 
+msgid "Verify"
+msgstr "Doğrula"
+
 msgid "Run checks and save"
 msgstr "Kontrolleri çalıştır ve kaydet"
 
@@ -10082,29 +9562,6 @@ msgstr "Genel"
 
 msgid "Banned Until"
 msgstr "Şu Zamana Kadar Yasaklı"
-
-msgid "MFA Policy"
-msgstr "MFA Politikası"
-
-msgid ""
-"Require MFA at the next sign-in. Users must enroll their own authenticator "
-"or passkey."
-msgstr ""
-"Sonraki oturum açmada MFA zorunlu olsun. Kullanıcılar kendi Authenticator "
-"veya Passkey kaydını yapmalıdır."
-
-msgid "Require MFA for all users"
-msgstr "Tüm kullanıcılar için MFA gerektir"
-
-msgid "Require local MFA for SSO sign-in"
-msgstr "SSO oturum açma için yerel MFA gerektir"
-
-msgid ""
-"Apply local MFA verification and enrollment requirements to OIDC and "
-"Casdoor sign-in."
-msgstr ""
-"Yerel MFA doğrulama ve kayıt gereksinimlerini OIDC ve Casdoor oturum açmaya "
-"uygulayın."
 
 msgid "Passkeys"
 msgstr "Passkey'ler"
@@ -10400,6 +9857,9 @@ msgstr "Tüm arayüzler"
 msgid "HTTPS"
 msgstr "HTTPS"
 
+msgid "Certificate"
+msgstr "Sertifika"
+
 msgid "Pick the certificate that secures the web interface."
 msgstr "Web arayüzünü güvence altına alan sertifikayı seçin."
 
@@ -10424,6 +9884,9 @@ msgstr "Bitiş zamanı başlangıç zamanından sonra olmalıdır"
 msgid "Set maintenance information"
 msgstr "Bakım bilgilerini ayarla"
 
+msgid "Continue"
+msgstr "Devam"
+
 msgid "Start time"
 msgstr "Başlangıç zamanı"
 
@@ -10447,22 +9910,6 @@ msgstr "Ek bilgiler"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Örneğin: beklenen kurtarma planı veya olay referansı"
-
-msgid "Managed by ingress %{name}"
-msgstr "ingress %{name} tarafından yönetiliyor"
-
-msgid ""
-"Changes will be overwritten by the next reconcile. Edit the ingress in its "
-"controller instead."
-msgstr ""
-"Değişiklikler bir sonraki reconcile tarafından üzerine yazılacaktır. Bunun "
-"yerine Ingress'i controller'ında düzenleyin."
-
-msgid "View ingress"
-msgstr "Ingress'i görüntüle"
-
-msgid "Edit anyway"
-msgstr "Yine de düzenle"
 
 msgid "Configuration Name"
 msgstr "Yapılandırma Adı"
@@ -10682,9 +10129,6 @@ msgstr "İsim alanı"
 msgid "The parameter of server_name is required"
 msgstr "server_name parametresi gereklidir"
 
-msgid "Config Template"
-msgstr "Yapılandırma Şablonu"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "HTTPS'yi etkinleştirmeden önce düzenlenmiş yapılandırmayı kaydedin."
 
@@ -10782,30 +10226,11 @@ msgstr "Kendinden imzalı sertifika"
 msgid "Generate self-signed certificate"
 msgstr "Kendinden imzalı sertifika oluştur"
 
-msgid "Built-in"
-msgstr "Dahili"
-
 msgid "Search templates"
 msgstr "Şablonları ara"
 
-msgid "Snippet"
-msgstr "Kod parçası"
-
 msgid "Author"
 msgstr "Yazar"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"Include, siteyi snippets/%{file} ile bağlantılı tutar; böylece snippet'taki "
-"sonraki değişiklikler uygulanır. Insert ise içeriği siteye kopyalar."
-
-msgid "Insert"
-msgstr "Ekle"
-
-msgid "Include"
-msgstr "Dahil et"
 
 msgid "Do you want to enable TLS?"
 msgstr "TLS'yi etkinleştirmek istiyor musunuz?"
@@ -10834,6 +10259,15 @@ msgstr ""
 
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "Geçerli bir alan adı veya IP adresi değil: %{value}"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Existing certificate"
+msgstr "Mevcut sertifika"
 
 msgid "Skip for now"
 msgstr "Şimdilik atla"
@@ -11108,6 +10542,9 @@ msgstr "DNS Kaydını Yeniden Oluştur"
 msgid "Clear Link"
 msgstr "Bağlantıyı Temizle"
 
+msgid "Config Template"
+msgstr "Yapılandırma Şablonu"
+
 msgid "Port Scanner"
 msgstr "Port Tarayıcı"
 
@@ -11125,9 +10562,6 @@ msgstr "Nginx Yapılandırma Ayrıştırma Hatası"
 
 msgid "No."
 msgstr "No"
-
-msgid "Ingress: %{name}"
-msgstr "Ingress: %{name}"
 
 msgid "Please input name, "
 msgstr "Lütfen adı girin, "
@@ -11196,10 +10630,3061 @@ msgstr "Seçilen siteler için bakım bilgilerini ayarla"
 msgid "%{count} sites selected"
 msgstr "%{count} site seçildi"
 
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] "Bir ingress tarafından yönetilen %{count} siteyi dahil et"
-msgstr[1] "Ingress'ler tarafından yönetilen %{count} siteyi dahil et"
+msgid "Do you want to %{action} this stream?"
+msgstr "Bu akışı %{action} etmek istiyor musunuz?"
+
+msgid "Delete stream: %{stream_name}"
+msgstr "Akışı sil: %{stream_name}"
+
+msgid "Added successfully"
+msgstr "Başarıyla eklendi"
+
+msgid "Add Stream"
+msgstr "Akış Ekle"
+
+msgid "%{count} streams selected"
+msgstr "%{count} akış seçildi"
+
+msgid "Development Mode"
+msgstr "Geliştirme modu"
+
+msgid "Official Document"
+msgstr "Resmi Belge"
+
+msgid "Sponsor"
+msgstr "Sponsor"
+
+msgid "Project Team"
+msgstr "Proje Ekibi"
+
+msgid "License"
+msgstr "Lisans"
+
+msgid "View Third-party Components"
+msgstr "Üçüncü Taraf Bileşenleri Görüntüle"
+
+msgid "View version details and core information about this Nginx UI instance."
+msgstr "Bu Nginx UI örneğinin sürüm ayrıntılarını ve temel bilgilerini görüntüleyin."
+
+msgid "Run built-in diagnostics to validate environment and service readiness."
+msgstr ""
+"Ortam ve servis hazırlık durumunu doğrulamak için yerleşik tanılamayı "
+"çalıştırın."
+
+msgid "Check release updates and execute upgrade operations when available."
+msgstr ""
+"Sürüm güncellemelerini kontrol edin ve mevcut olduğunda yükseltme "
+"işlemlerini yürütün."
+
+msgid "Review third-party licenses and open source component attributions."
+msgstr "Üçüncü taraf lisanslarını ve açık kaynak bileşen atıflarını inceleyin."
+
+msgid "Total Components"
+msgstr "Toplam Bileşenler"
+
+msgid "Backend"
+msgstr "Arka Uç"
+
+msgid "Frontend"
+msgstr "Önyüz"
+
+msgid "License Types"
+msgstr "Lisans Türleri"
+
+msgid "License Distribution"
+msgstr "Lisans Dağılımı"
+
+msgid "components"
+msgstr "bileşenler"
+
+msgid "All Components"
+msgstr "Tüm Bileşenler"
+
+msgid "Dev"
+msgstr "Dev"
+
+msgid "Reinstall"
+msgstr "Yeniden Yükle"
+
+msgid "Core Upgrade"
+msgstr "Çekirdek Yükseltme"
+
+msgid "You can check Nginx UI upgrade at this page."
+msgstr "Bu sayfada Nginx UI güncellemesini kontrol edebilirsiniz."
+
+msgid "Current Version"
+msgstr "Mevcut sürüm"
+
+msgid "Arch"
+msgstr "Mimari"
+
+msgid "Executable Path"
+msgstr "Yürütülebilir Dosya Yolu"
+
+msgid "Last checked at"
+msgstr "En son şu tarihte kontrol edildi"
+
+msgid "You are using the latest version"
+msgstr "En son sürümü kullanıyorsunuz"
+
+msgid "New version released"
+msgstr "Yeni sürüm yayınlandı"
+
+msgid "Release Note"
+msgstr "Sürüm Notları"
+
+msgid "Hide Assistant"
+msgstr "Asistanı gizle"
+
+msgid "Show Assistant"
+msgstr "Asistanı Göster"
+
+msgid "Connection lost for this terminal. Please refresh if needed."
+msgstr "Bu terminal için bağlantı kesildi. Gerekirse yenileyin."
+
+msgid ""
+"This is a simulated terminal running entirely in your browser. Commands are "
+"answered locally and never reach a server."
+msgstr ""
+"Bu, tamamen tarayıcınızda çalışan simüle edilmiş bir terminaldir. Komutlar "
+"yerel olarak yanıtlanır ve asla bir sunucuya ulaşmaz."
+
+msgid ""
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
+msgstr ""
+"Bu terminale, localhost olmayan bir alan adında güvenli olmayan bir HTTP "
+"bağlantısı üzerinden erişiyorsunuz. Bu, hassas bilgilerin açığa çıkmasına "
+"neden olabilir."
+
+msgid "Round Robin (default)"
+msgstr "Round Robin (varsayılan)"
+
+msgid "Least Connections (least_conn)"
+msgstr "En Az Bağlantı (least_conn)"
+
+msgid "IP Hash (ip_hash)"
+msgstr "IP Hash (ip_hash)"
+
+msgid "Hash (hash)"
+msgstr "Hash (hash)"
+
+msgid "Random (random)"
+msgstr "Rastgele (random)"
+
+msgid "Upstream %{name} saved and Nginx reloaded"
+msgstr "Upstream %{name} kaydedildi ve Nginx yeniden yüklendi"
+
+msgid "Edit Upstream %{name}"
+msgstr "Upstream %{name} Düzenle"
+
+msgid "Create Upstream"
+msgstr "Upstream Oluştur"
+
+msgid "Sites use it as proxy_pass http://%{name};"
+msgstr "Siteler bunu proxy_pass http://%{name} olarak kullanır;"
+
+msgid "Load Balancing Method"
+msgstr "Yük Dengeleme Yöntemi"
+
+msgid "Hash Key"
+msgstr "Hash Anahtarı"
+
+msgid "Consistent Hashing"
+msgstr "Tutarlı Hashing"
+
+msgid "Servers"
+msgstr "Sunucular"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Max Fails"
+msgstr "Maksimum Hata"
+
+msgid "Fail Timeout"
+msgstr "Hata Zaman Aşımı"
+
+msgid "Not available with this load balancing method"
+msgstr "Bu yük dengeleme yöntemiyle kullanılamaz"
+
+msgid "Keepalive"
+msgstr "Keepalive"
+
+msgid ""
+"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
+"need proxy_http_version 1.1 and an empty Connection header."
+msgstr ""
+"Her worker için açık tutulacak boşta bağlantılar; 0 devre dışı bırakır. "
+"Proxy'lenen siteler ayrıca proxy_http_version 1.1 ve boş bir Connection "
+"başlığına ihtiyaç duyar."
+
+msgid "Connections"
+msgstr "Bağlantılar"
+
+msgid "Additional Directives"
+msgstr "Ek Direktifler"
+
+msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
+msgstr "Satır başına bir yönerge, örneğin keepalive_timeout veya keepalive_requests."
+
+msgid "Referenced By"
+msgstr "Referans Verenler"
+
+msgid "No site uses this upstream yet."
+msgstr "Henüz hiçbir site bu upstream'i kullanmıyor."
+
+msgid "Configuration Preview"
+msgstr "Yapılandırma Önizlemesi"
+
+msgid "Enable server %{address}"
+msgstr "%{address} sunucusunu etkinleştir"
+
+msgid "Disable server %{address}"
+msgstr "%{address} sunucusunu devre dışı bırak"
+
+msgid ""
+"Create shared upstream groups with load balancing and reuse them across "
+"sites."
+msgstr ""
+"Yük dengelemeli paylaşılan upstream grupları oluşturun ve bunları birden "
+"fazla sitede yeniden kullanın."
+
+msgid "Monitor the health of every proxy target and toggle its health check."
+msgstr "Her proxy hedefinin sağlığını izleyin ve sağlık kontrolünü açıp kapatın."
+
+msgid "Socket"
+msgstr "Soket"
+
+msgid "Direct"
+msgstr "Doğrudan"
+
+msgid "Health Status"
+msgstr "Sağlık Durumu"
+
+msgid "No Data"
+msgstr "Veri yok"
+
+msgid "Last Check"
+msgstr "Son Kontrol"
+
+msgid "Upstream health checks are globally paused"
+msgstr "Upstream sağlık denetimleri genel olarak duraklatıldı"
+
+msgid ""
+"Per-target selections are preserved. Resume probes from Health Check "
+"preferences."
+msgstr ""
+"Hedef bazlı seçimler korunur. Yoklamaları Sağlık Denetimi tercihlerinden "
+"sürdürün."
+
+msgid "Round Robin"
+msgstr "Round Robin"
+
+msgid "Least Connections"
+msgstr "En az bağlantı"
+
+msgid "IP Hash"
+msgstr "IP Karma"
+
+msgid "Hash"
+msgstr "Hash"
+
+msgid "Random"
+msgstr "Rastgele"
+
+msgid "Load Balancing"
+msgstr "Yük Dengeleme"
+
+msgid "Defined In"
+msgstr "Tanımlandığı yer"
+
+msgid "Matched upstreams: %{groups}, servers: %{servers}"
+msgstr "Eşleşen upstream'ler: %{groups}, sunucular: %{servers}"
+
+msgid "Server %{address} enabled"
+msgstr "Sunucu %{address} etkinleştirildi"
+
+msgid "Server %{address} disabled"
+msgstr "%{address} sunucusu devre dışı bırakıldı"
+
+msgid "Disable the last active server of %{name}?"
+msgstr "%{name} içindeki son aktif sunucu devre dışı bırakılsın mı?"
+
+msgid ""
+"No other primary server of this upstream is enabled. Requests will fail "
+"unless a backup server takes over."
+msgstr ""
+"Bu upstream'ın başka hiçbir birincil sunucusu etkin değil. Yedek bir sunucu "
+"devralmadığı sürece istekler başarısız olur."
+
+msgid "Upstream %{name} is still in use"
+msgstr "Upstream %{name} hâlâ kullanımda"
+
+msgid "Point these configurations at another upstream before deleting it:"
+msgstr "Silmeden önce bu yapılandırmaları başka bir upstream'e yönlendirin:"
+
+msgid "Delete upstream %{name}?"
+msgstr "Upstream %{name} silinsin mi?"
+
+msgid "%{path} will be removed and Nginx reloaded."
+msgstr "%{path} kaldırılacak ve Nginx yeniden yüklenecek."
+
+msgid "Upstream %{name} deleted"
+msgstr "Upstream %{name} silindi"
+
+msgid ""
+"An upstream group shares its servers and load balancing method across "
+"sites. Choose it as the proxy target when setting up a site; later changes "
+"here apply to every site that uses it."
+msgstr ""
+"Bir upstream grubu, sunucularını ve yük dengeleme yöntemini siteler "
+"arasında paylaşır. Bir site ayarlarken proxy hedefi olarak seçin; buradaki "
+"sonraki değişiklikler onu kullanan her siteye uygulanır."
+
+msgid "Files are stored in %{dir}."
+msgstr "Dosyalar %{dir} konumunda saklanır."
+
+msgid "Search by name or IP:port"
+msgstr "Ada veya IP:port ile ara"
+
+msgid "Search upstreams by name or server address"
+msgstr "Upstream'ları ada veya sunucu adresine göre ara"
+
+msgid "No upstream group matches the search"
+msgstr "Aramayla eşleşen upstream grubu yok"
+
+msgid "Upstreams Defined in Other Files"
+msgstr "Diğer Dosyalarda Tanımlanan Upstream'ler"
+
+msgid ""
+"These upstream blocks live inside site or other configuration files. Edit "
+"their settings in their own file; servers can be switched on and off here. "
+"A block inside a site can be converted to a shared group that other sites "
+"can use too."
+msgstr ""
+"Bu upstream blokları, site veya diğer yapılandırma dosyalarının içindedir. "
+"Ayarlarını kendi dosyalarında düzenleyin; sunucuları buradan açıp "
+"kapatabilirsiniz. Bir site içindeki blok, diğer sitelerin de "
+"kullanabileceği paylaşılan bir gruba dönüştürülebilir."
+
+msgid "User info updated successfully"
+msgstr "Kullanıcı bilgileri başarıyla güncellendi"
+
+msgid "Passwords do not match"
+msgstr "Şifreler eşleşmiyor"
+
+msgid "Password updated successfully"
+msgstr "Şifre başarıyla güncellendi"
+
+msgid "Personal Information"
+msgstr "Kişisel Bilgiler"
+
+msgid "Update Profile"
+msgstr "Profili Güncelle"
+
+msgid "Security Settings"
+msgstr "Güvenlik Ayarları"
+
+msgid "Change Password"
+msgstr "Şifreyi Değiştir"
+
+msgid "New Password"
+msgstr "Yeni Şifre"
+
+msgid "Confirm New Password"
+msgstr "Yeni Şifreyi Onayla"
+
+msgid "Update Password"
+msgstr "Şifreyi Güncelle"
+
+msgid "Node %{name} cannot be opened"
+msgstr "Düğüm %{name} açılamıyor"
+
+msgid "Exit workspace"
+msgstr "Çalışma alanından çık"
+
+msgid "New tab"
+msgstr "Yeni sekme"
+
+msgid "Single pane"
+msgstr "Tek bölme"
+
+msgid "Split view"
+msgstr "Bölünmüş görünüm"
+
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "Not"
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr "Bakım"
+
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+
+msgid "Install DNS-01 plugin"
+msgstr "DNS-01 eklentisini yükle"
+
+msgid "Go to System > Plugins"
+msgstr "Sistem > Eklentiler'e git"
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr "Alan adınızda CNAME kayıtları varsa ve sertifikaları alamıyorsanız,"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr ""
+"Yerel DNS yayılım kontrollerini atlayın ve istemeden önce 60 saniye bekleyin "
+
+msgid "DNS-01 plugin unavailable"
+msgstr "DNS-01 eklentisi kullanılamıyor"
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr "%{name} sertifikası yenilenemiyor çünkü DNS-01 doğrulamasını sağlayan etkin bir eklenti yok"
+
+msgid "Plugin %{plugin} failed to render"
+msgstr "%{plugin} eklentisi oluşturulamadı"
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr "{0} için DNS-01 sağlayıcısı yok: DNS-01 eklentisini yükleyip etkinleştirin"
+
+msgid "Plugin manifest is invalid"
+msgstr "Eklenti bildirimi geçersiz"
+
+msgid "Plugin not found"
+msgstr "Eklenti bulunamadı"
+
+msgid "Plugin already exists"
+msgstr "Eklenti zaten mevcut"
+
+msgid "Plugin is not running"
+msgstr "Eklenti çalışmıyor"
+
+msgid "Plugin handshake failed"
+msgstr "Eklenti el sıkışması başarısız oldu"
+
+msgid "Plugin has no executable for this platform"
+msgstr "Eklentinin bu platform için çalıştırılabilir dosyası yok"
+
+msgid "Plugin package is invalid"
+msgstr "Eklenti paketi geçersiz"
+
+msgid "Plugin package is too large"
+msgstr "Eklenti paketi çok büyük"
+
+msgid "Plugin api version is incompatible"
+msgstr "Eklenti API sürümü uyumsuz"
+
+msgid "Plugin permissions need approval"
+msgstr "Eklenti izinleri onay gerektiriyor"
+
+msgid "Plugin dependency is missing: {0}"
+msgstr "Eklenti bağımlılığı eksik: {0}"
+
+msgid "Plugin dependencies form a cycle"
+msgstr "Eklenti bağımlılıkları bir döngü oluşturuyor"
+
+msgid "Plugin is in use by {0}"
+msgstr "Eklenti {0} tarafından kullanılıyor"
+
+msgid "Plugin system is disabled"
+msgstr "Eklenti sistemi devre dışı"
+
+msgid "Plugin uploads are disabled"
+msgstr "Eklenti yüklemeleri devre dışı"
+
+msgid "Plugin call timed out"
+msgstr "Eklenti çağrısı zaman aşımına uğradı"
+
+msgid "Plugin rpc error: {0}"
+msgstr "Eklenti RPC hatası: {0}"
+
+msgid "Plugin setting {0} is invalid"
+msgstr "{0} eklenti ayarı geçersiz"
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr "Eklenti nginx-ui {0} veya daha yenisini gerektiriyor, bu düğümde {1} çalışıyor"
+
+msgid "Plugin package declares another id"
+msgstr "Eklenti paketi başka bir kimlik bildiriyor"
+
+msgid "Plugins"
+msgstr "Eklentiler"
+
+msgid "Accept plugin sync"
+msgstr "Eklenti senkronizasyonunu kabul et"
+
+msgid "Accepted"
+msgstr "Kabul edildi"
+
+msgid "Opted out"
+msgstr "Katılmıyor"
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr "Nginx UI'yi genişleten eklentileri yükleyin, yapılandırın ve sorunlarını giderin."
+
+msgid "Plugin"
+msgstr "Eklenti"
+
+msgid "Capabilities"
+msgstr "Yetenekler"
+
+msgid "Auto install to nodes"
+msgstr "Düğümlere otomatik yükle"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "Eklenti %{count} düğümle senkronize edildi"
+
+msgid "Some nodes could not be synchronized"
+msgstr "Bazı düğümler senkronize edilemedi"
+
+msgid "Failed to synchronize the plugin"
+msgstr "Eklenti senkronize edilemedi"
+
+msgid "Installed"
+msgstr "Yüklü"
+
+msgid "Starting"
+msgstr "Başlatılıyor"
+
+msgid "Missing"
+msgstr "Eksik"
+
+msgid "Incompatible"
+msgstr "Uyumsuz"
+
+msgid "Needs approval"
+msgstr "Onay gerekiyor"
+
+msgid "Failed to load the plugin list"
+msgstr "Eklenti listesi yüklenemedi"
+
+msgid "Plugin enabled"
+msgstr "Eklenti etkinleştirildi"
+
+msgid "Failed to enable the plugin"
+msgstr "Eklenti etkinleştirilemedi"
+
+msgid "Plugin disabled"
+msgstr "Eklenti devre dışı bırakıldı"
+
+msgid "Failed to disable the plugin"
+msgstr "Eklenti devre dışı bırakılamadı"
+
+msgid "Plugin uninstalled"
+msgstr "Eklenti kaldırıldı"
+
+msgid "Failed to uninstall the plugin"
+msgstr "Eklenti kaldırılamadı"
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr "Geliştirme eklentisi URL'sini uygulamak için sayfayı yeniden yükleyin"
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr "Eklentiler, Nginx UI'ye ek yetenekler kazandırır. Yalnızca güvendiğiniz yazarların paketlerini yükleyin."
+
+msgid "Development plugin URL"
+msgstr "Geliştirme eklentisi URL'si"
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+
+msgid "Dev plugin"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr "Yüklü eklenti yok"
+
+msgid "Settings"
+msgstr "Ayarlar"
+
+msgid "Logs"
+msgstr "Günlükler"
+
+msgid "Sync to nodes"
+msgstr "Düğümlerle senkronize et"
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr ""
+
+msgid "Uninstall"
+msgstr "Kaldır"
+
+msgid "Sync %{name} to nodes"
+msgstr "%{name} eklentisini düğümlerle senkronize et"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "Tüm alt düğümlerle senkronize etmek için hiçbir düğümü işaretlemeyin."
+
+msgid "Already in sync"
+msgstr "Zaten senkronize"
+
+msgid "This node only"
+msgstr "Yalnızca bu düğüm"
+
+msgid "All child nodes"
+msgstr "Tüm alt düğümler"
+
+msgid "Selected nodes"
+msgstr "Seçili düğümler"
+
+msgid "Failed to read the plugin bundle"
+msgstr "Eklenti paketi okunamadı"
+
+msgid "Plugin installed"
+msgstr "Eklenti yüklendi"
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr "Eklenti burada yüklendi ancak düğümlere gönderilemedi"
+
+msgid "Failed to install the plugin"
+msgstr "Eklenti yüklenemedi"
+
+msgid "Install plugin"
+msgstr "Eklentiyi yükle"
+
+msgid "Click or drag a plugin bundle here"
+msgstr "Bir eklenti paketini buraya tıklayın veya sürükleyin"
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr "Eklenti yazarının oluşturduğu bir .tar.gz"
+
+msgid "ID"
+msgstr "Kimlik"
+
+msgid "(replaces %{version})"
+msgstr "(%{version} sürümünün yerini alır)"
+
+msgid "None"
+msgstr "Yok"
+
+msgid "Install the plugins below first"
+msgstr "Önce aşağıdaki eklentileri yükleyin"
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr "Bu sürüm henüz onaylamadığınız izinler istiyor."
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr "Yüklemeden önce aşağıdaki listeyi inceleyin. Eklenti, onaylayana kadar devre dışı kalır."
+
+msgid "Requested permissions"
+msgstr "İstenen izinler"
+
+msgid "Enable after install"
+msgstr "Yüklemeden sonra etkinleştir"
+
+msgid "Also install to child nodes"
+msgstr "Alt düğümlere de yükle"
+
+msgid "Keep in sync automatically"
+msgstr "Otomatik olarak senkronize tut"
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr "Sürüm, etkin durumu ve gelecekteki güncellemeler bu düğümlerde uyumlu tutulur."
+
+msgid "Failed to load the plugin logs"
+msgstr "Eklenti günlükleri yüklenemedi"
+
+msgid "Logs copied to clipboard"
+msgstr "Günlükler panoya kopyalandı"
+
+msgid "Failed to copy the logs"
+msgstr "Günlükler kopyalanamadı"
+
+msgid "Logs: %{name}"
+msgstr ""
+
+msgid "No log output yet"
+msgstr "Henüz günlük çıktısı yok"
+
+msgid "Failed to load the plugin marketplace"
+msgstr "Eklenti pazaryeri yüklenemedi"
+
+msgid "Reloading the catalog"
+msgstr "Katalog yeniden yükleniyor"
+
+msgid "Search plugins"
+msgstr ""
+
+msgid "All categories"
+msgstr "Tüm kategoriler"
+
+msgid "All sources"
+msgstr "Tüm kaynaklar"
+
+msgid "Updates only"
+msgstr ""
+
+msgid "Sources"
+msgstr "Kaynaklar"
+
+msgid "Every installed plugin is up to date"
+msgstr "Yüklü tüm eklentiler güncel"
+
+msgid "No plugins match your search"
+msgstr "Aramanızla eşleşen eklenti yok"
+
+msgid "Downloading the package"
+msgstr "Paket indiriliyor"
+
+msgid "Verifying the signature"
+msgstr ""
+
+msgid "Installing"
+msgstr "Yükleniyor"
+
+msgid "%{phase}: %{plugin}"
+msgstr "%{phase}: %{plugin}"
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr "Eklenti pazaryerinden yüklenemedi"
+
+msgid "Update plugin"
+msgstr "Eklentiyi güncelle"
+
+msgid "No release available for this platform"
+msgstr "Bu platform için sürüm yok"
+
+msgid "Source"
+msgstr "Kaynak"
+
+msgid "This is a community plugin"
+msgstr "Bu bir topluluk eklentisidir"
+
+msgid "The plugins below are installed together with it"
+msgstr "Aşağıdaki eklentiler onunla birlikte yüklenir"
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr "Canlı ilerleme kullanılamıyor, bunun yerine eklenti listesi kontrol ediliyor"
+
+msgid "No description provided."
+msgstr "Açıklama verilmemiş."
+
+msgid "Installed: %{version}"
+msgstr "Yüklü: %{version}"
+
+msgid "Homepage"
+msgstr "Ana sayfa"
+
+msgid "Repository"
+msgstr "Depo"
+
+msgid "Release notes"
+msgstr "Sürüm notları"
+
+msgid "Released"
+msgstr ""
+
+msgid "Platforms"
+msgstr "Platformlar"
+
+msgid "Failed to load the plugin details"
+msgstr "Eklenti ayrıntıları yüklenemedi"
+
+msgid "Installed version"
+msgstr "Yüklü sürüm"
+
+msgid "Versions"
+msgstr "Sürümler"
+
+msgid "Yanked"
+msgstr ""
+
+msgid "Latest"
+msgstr "En son"
+
+msgid "Readme"
+msgstr "Benioku"
+
+msgid "Failed to load the marketplace sources"
+msgstr "Pazaryeri kaynakları yüklenemedi"
+
+msgid "Marketplace sources saved"
+msgstr "Pazaryeri kaynakları kaydedildi"
+
+msgid "Failed to save the marketplace sources"
+msgstr "Pazaryeri kaynakları kaydedilemedi"
+
+msgid "Marketplace sources"
+msgstr "Pazaryeri kaynakları"
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+
+msgid "Using the official catalog"
+msgstr ""
+
+msgid "Add source"
+msgstr "Kaynak ekle"
+
+msgid "Add the official catalog"
+msgstr ""
+
+msgid "Official"
+msgstr "Resmi"
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr ""
+
+msgid "Verified"
+msgstr "Doğrulandı"
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+
+msgid "Community"
+msgstr "Topluluk"
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr "Üçüncü taraf tarafından yayımlandı ve incelenmedi. Verdiğiniz izinlerle çalışır, bu yüzden yalnızca yazarına güveniyorsanız yükleyin."
+
+msgid "Approve permissions"
+msgstr "İzinleri onayla"
+
+msgid "Approve and enable"
+msgstr "Onayla ve etkinleştir"
+
+msgid "%{name} needs your approval before it can run."
+msgstr "%{name} çalışabilmek için onayınızı gerektiriyor."
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr "Yalnızca yazara güveniyorsanız onaylayın. Onay kaydedilir ve istenen izinler değiştiğinde yeniden sorulur."
+
+msgid "This plugin does not request any host permission."
+msgstr ""
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr "Kayıtlı %{kind} kimlik bilgilerini, gizli bilgileri dahil okuyun."
+
+msgid "unknown"
+msgstr "bilinmiyor"
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr ""
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr ""
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr "Nginx UI bildirim kanalları üzerinden bildirim gönderin."
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr "Bu düğümün CPU, bellek, ağ ve Nginx durumu metriklerini okuyun."
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr ""
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr "Bilinmeyen izin. Yalnızca eklenti yazarına güveniyorsanız verin."
+
+msgid "In sync"
+msgstr "Senkronize"
+
+msgid "Outdated"
+msgstr "Güncel değil"
+
+msgid "Not installed"
+msgstr "Yüklü değil"
+
+msgid "Unsupported platform"
+msgstr "Desteklenmeyen platform"
+
+msgid "Unsupported"
+msgstr "Desteklenmiyor"
+
+msgid "Failed to load the plugin matrix"
+msgstr "Eklenti matrisi yüklenemedi"
+
+msgid "Update to %{version}"
+msgstr "%{version} sürümüne güncelle"
+
+msgid "Sync to this node"
+msgstr "Bu düğümle senkronize et"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr "Her alt düğümde yüklü olanlar, bu denetleyiciyle karşılaştırılarak gösterilir. Üstbilgide seçili düğümü değiştirmek o düğümü doğrudan yönetir."
+
+msgid "All nodes"
+msgstr "Tüm düğümler"
+
+msgid "This instance has no child node"
+msgstr "Bu Nginx UI'nin alt düğümü yok"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr "Önce bir düğüm ekleyin, ardından eklentiler buradan o düğüme yüklenebilir."
+
+msgid "Sync to selected"
+msgstr "Seçililerle senkronize et"
+
+msgid "Sync to all"
+msgstr "Tümüyle senkronize et"
+
+msgid "Marketplace"
+msgstr "Pazaryeri"
+
+msgid "%{field} is required"
+msgstr "%{field} gereklidir"
+
+msgid "Failed to load the plugin settings"
+msgstr "Eklenti ayarları yüklenemedi"
+
+msgid "Plugin settings saved"
+msgstr "Eklenti ayarları kaydedildi"
+
+msgid "Failed to save the plugin settings"
+msgstr "Eklenti ayarları kaydedilemedi"
+
+msgid "Settings: %{name}"
+msgstr ""
+
+msgid "This plugin has no settings."
+msgstr "Bu eklentinin ayarı yok."
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] "%{count} düğüm"
+msgstr[1] "%{count} düğüm"
+
+msgid "Sync policy saved"
+msgstr "Senkronizasyon ilkesi kaydedildi"
+
+msgid "Failed to save the sync policy"
+msgstr "Senkronizasyon ilkesi kaydedilemedi"
+
+msgid "Automatic installation"
+msgstr "Otomatik yükleme"
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr "Bu eklentiyi seçili alt düğümlerde aynı sürümde ve durumda tutun. Sonradan eklenenler dahil hepsini kapsamak için hiçbir düğümü işaretlemeyin."
+
+msgid "Also sync the plugin settings"
+msgstr "Eklenti ayarlarını da senkronize et"
+
+msgid "Needs attention"
+msgstr "Dikkat gerekiyor"
+
+msgid "Uninstall %{name}?"
+msgstr "%{name} kaldırılsın mı?"
+
+msgid ""
+"Its files, data and settings are removed from this node. Other nodes are not "
+"touched."
+msgstr "Dosyaları, verileri ve ayarları bu düğümden kaldırılır. Diğer düğümlere dokunulmaz."
+
+msgid "Search installed plugins"
+msgstr "Yüklü eklentilerde ara"
+
+msgid "No plugins installed yet"
+msgstr "Henüz yüklü eklenti yok"
+
+msgid "Pick one from the marketplace or upload a bundle you built yourself."
+msgstr "Pazaryerinden birini seçin veya kendi oluşturduğunuz bir paketi yükleyin."
+
+msgid "Browse marketplace"
+msgstr "Pazaryerine göz at"
+
+msgid "Install from file"
+msgstr "Dosyadan yükle"
+
+msgid "No plugins match the current filter"
+msgstr "Geçerli filtreyle eşleşen eklenti yok"
+
+msgid "This plugin cannot run on this node"
+msgstr "Bu eklenti bu düğümde çalışamaz"
+
+msgid "More actions"
+msgstr "Daha fazla eylem"
+
+msgid "Follow new lines"
+msgstr "Yeni satırları izle"
+
+msgid "All plugins"
+msgstr "Tüm eklentiler"
+
+msgid "Updates"
+msgstr "Güncellemeler"
+
+msgid "The catalog is empty"
+msgstr "Katalog boş"
+
+msgid "Search the marketplace"
+msgstr "Pazaryerinde ara"
+
+msgid "%{count} installed plugin has a newer release."
+msgid_plural "%{count} installed plugins have a newer release."
+msgstr[0] "%{count} yüklü eklentinin daha yeni bir sürümü var."
+msgstr[1] "%{count} yüklü eklentinin daha yeni bir sürümü var."
+
+msgid "Show updates"
+msgstr "Güncellemeleri göster"
+
+msgid "The marketplace is unavailable"
+msgstr "Pazaryeri kullanılamıyor"
+
+msgid "Overview"
+msgstr "Genel Bakış"
+
+msgid "No background process"
+msgstr ""
+
+msgid "On demand"
+msgstr ""
+
+msgid "Resident"
+msgstr ""
+
+msgid "Last error"
+msgstr "Son hata"
+
+msgid "This plugin needs your approval before it can run."
+msgstr "Bu eklenti çalışabilmek için onayınızı gerektiriyor."
+
+msgid "Turn it on to review the requested permissions."
+msgstr ""
+
+msgid "API version"
+msgstr "API sürümü"
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr "Nginx UI %{version} veya daha yenisi gerekir"
+
+msgid "Depends on"
+msgstr "Bağımlılıkları"
+
+msgid "Needs capabilities"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Cluster"
+msgstr "Küme"
+
+msgid "Sync now"
+msgstr "Şimdi senkronize et"
+
+msgid "Danger zone"
+msgstr ""
+
+msgid "Uninstall this plugin"
+msgstr "Bu eklentiyi kaldır"
+
+msgid "Its files, data and settings are removed from this node."
+msgstr "Dosyaları, verileri ve ayarları bu düğümden kaldırılır."
+
+msgid "%{count} in sync"
+msgstr "%{count} senkronize"
+
+msgid "%{count} pending"
+msgstr "%{count} bekliyor"
+
+msgid "%{count} failing"
+msgstr "%{count} başarısız"
+
+msgid "Manage nodes"
+msgstr "Düğümleri yönet"
+
+msgid "Updates available"
+msgstr "Güncellemeler mevcut"
+
+msgid "Idle"
+msgstr ""
+
+msgid "Include line copied to clipboard"
+msgstr "Include satırı panoya kopyalandı"
+
+msgid "%{n} d"
+msgstr "%{n} g"
+
+msgid "%{n} h"
+msgstr "%{n} sa"
+
+msgid "%{n} min"
+msgstr "%{n} dk"
+
+msgid "%{n} s"
+msgstr "%{n} sn"
+
+msgid "Deploy Certificate Error"
+msgstr "Sertifika Dağıtım Hatası"
+
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr "%{cert_name} sertifikası %{target_name} hedefine dağıtılamadı: %{error}"
+
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr "Kayıtlı yedek {0} bu yedekleme görevine ait değil"
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr "Yalnızca Nginx ve Nginx UI yedekleri geri yüklenebilir"
+
+msgid "This action needs a plugin storage backend"
+msgstr "Bu eylem bir eklenti depolama arka ucu gerektirir"
+
+msgid "Invalid storage key prefix: {0}"
+msgstr "Geçersiz depolama anahtarı öneki: {0}"
+
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr "Bildirici yapılandırma alanı {0} geçersiz: {1}"
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr "{0} eklenti içeriği geçersiz: {1}"
+
+msgid "Storage backend {0} is not available"
+msgstr "{0} depolama arka ucu kullanılamıyor"
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr "Depolama yapılandırma alanı {0} geçersiz: {1}"
+
+msgid "Deploy target kind {0} is not available"
+msgstr "{0} dağıtım hedefi türü kullanılamıyor"
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr "Dağıtım hedefi yapılandırma alanı {0} geçersiz: {1}"
+
+msgid "Blocklist source kind {0} is not available"
+msgstr "{0} engelleme listesi kaynağı türü kullanılamıyor"
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr "Engelleme listesi kaynağı yapılandırma alanı {0} geçersiz: {1}"
+
+msgid "Discovery provider {0} is not available"
+msgstr "{0} keşif sağlayıcısı kullanılamıyor"
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr "Keşif sağlayıcısı yapılandırma alanı {0} geçersiz: {1}"
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr "Yenileme aralığı en az {0} saniye olmalıdır"
+
+msgid "Upstream name {0} is invalid"
+msgstr "{0} upstream adı geçersiz"
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr "{0} upstream adı zaten başka bir hizmete bağlı"
+
+msgid "Extra directives must not contain braces"
+msgstr "Ek yönergeler süslü parantez içermemelidir"
+
+msgid "{0} is still included by the nginx configuration: {1}"
+msgstr "{0} hâlâ nginx yapılandırması tarafından dahil ediliyor: {1}"
+
+msgid "Template not found"
+msgstr "Şablon bulunamadı"
+
+msgid "Deploy Targets"
+msgstr "Dağıtım Hedefleri"
+
+msgid "Blocklists"
+msgstr "Engelleme listeleri"
+
+msgid "Keep Latest Backups"
+msgstr ""
+
+msgid "Stored Backups"
+msgstr "Saklanan Yedekler"
+
+msgid "Please fill in %{field}"
+msgstr "Lütfen %{field} alanını doldurun"
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr "Depolama testi başarılı, %{count} saklanan yedek bulundu"
+
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr "Bu depolamayı sağlayan eklenti etkin değil. Yeniden etkinleştirilene kadar yedeklemeler başarısız olur."
+
+msgid "Key Prefix"
+msgstr "Anahtar Öneki"
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr "Yedekler bu önek altında saklanır, örneğin nginx-ui/daily. Kök için / kullanın."
+
+msgid "Key prefix is required"
+msgstr "Anahtar öneki gereklidir"
+
+msgid "nginx-ui/backups"
+msgstr "nginx-ui/backups"
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr ""
+
+msgid "Test Storage"
+msgstr "Depolamayı Test Et"
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr "Yedekler %{storage} içinde %{prefix} altında tutuluyor"
+
+msgid "Delete this backup from the storage?"
+msgstr "Bu yedek depolamadan silinsin mi?"
+
+msgid "Restore Backup"
+msgstr "Yedeği Geri Yükle"
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr "Geri yükleme mevcut yapılandırmanın yerine geçer. Ardından Nginx ve Nginx UI yeniden başlatılır."
+
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr "%{ok} hedefe dağıtıldı, %{failed} başarısız"
+
+msgid "Deployed to %{ok} targets"
+msgstr "%{ok} hedefe dağıtıldı"
+
+msgid "Manage"
+msgstr "Yönet"
+
+msgid "Deploy Now"
+msgstr "Şimdi Dağıt"
+
+msgid "This certificate is not pushed to any external target."
+msgstr "Bu sertifika hiçbir harici hedefe gönderilmiyor."
+
+msgid "Plugin unavailable"
+msgstr "Eklenti kullanılamıyor"
+
+msgid "Never deployed"
+msgstr "Hiç dağıtılmadı"
+
+msgid "%{count} attempts"
+msgstr "%{count} deneme"
+
+msgid "Deploy History of %{name}"
+msgstr "%{name} Dağıtım Geçmişi"
+
+msgid "All certificates"
+msgstr "Tüm sertifikalar"
+
+msgid "Dry run successful"
+msgstr "Deneme çalıştırması başarılı"
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr "Dağıtım hedefi sunan etkin bir eklenti yok. Önce cert.deploy yeteneğine sahip bir eklenti yükleyip etkinleştirin."
+
+msgid "Target Type"
+msgstr "Hedef Türü"
+
+msgid "Select a target type"
+msgstr "Bir hedef türü seçin"
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr "Bu hedef türünü sağlayan eklenti etkin değil. Yeniden etkinleştirilene kadar gönderimler başarısız olur."
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr "Her verme ve yenilemeden sonra bu hedefe gönderilen sertifika."
+
+msgid "Dry Run"
+msgstr "Deneme Çalıştırması"
+
+msgid "No certificate is bound to this target"
+msgstr "Bu hedefe bağlı sertifika yok"
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr "%{ok} sertifika dağıtıldı, %{failed} başarısız"
+
+msgid "Deployed %{ok} certificates"
+msgstr "%{ok} sertifika dağıtıldı"
+
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
+msgstr "Her yenilemeden sonra sertifikaları CDN'lere, yük dengeleyicilere ve diğer sunuculara gönderin."
+
+msgid "Built-in HTTP / gRPC check"
+msgstr "Yerleşik HTTP / gRPC kontrolü"
+
+msgid "%{kind} (unavailable)"
+msgstr "%{kind} (kullanılamıyor)"
+
+msgid "Check Method"
+msgstr "Kontrol Yöntemi"
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
+msgstr "Bu kontrolü sağlayan eklenti etkin değil. Yeniden etkinleştirilene veya başka bir kontrol yöntemi seçilene kadar site hata olarak bildirilir."
+
+msgid "Refreshed"
+msgstr "Yenilendi"
+
+msgid "Refresh failed"
+msgstr "Yenileme başarısız oldu"
+
+msgid "Source Type"
+msgstr "Kaynak Türü"
+
+msgid "Refresh Interval"
+msgstr "Yenileme Aralığı"
+
+msgid "Entries"
+msgstr "Girdiler"
+
+msgid "Last Result"
+msgstr "Son Sonuç"
+
+msgid "Include"
+msgstr "Include"
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr "Engelleme listesi kaynakları, reddedilecek adres listelerini eklentilerden alır ve bunları kendi dosyalarına deny kuralları olarak yazar. Bir kaynağın include satırını bir server veya location bloğuna ekleyene kadar hiçbir şey engellenmez."
+
+msgid "Refresh Now"
+msgstr "Şimdi Yenile"
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr "Engelleme listesi kaynağı sunan etkin bir eklenti yok. Önce security.blocklist yeteneğine sahip bir eklenti yükleyip etkinleştirin."
+
+msgid "Select a source type"
+msgstr "Bir kaynak türü seçin"
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr "Bu kaynak türünü sağlayan eklenti etkin değil. Liste korunur ancak artık yenilenmez."
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr "Listenin ne sıklıkla yeniden alınacağı, saniye cinsinden. Nginx yalnızca liste değiştiğinde yeniden yüklenir."
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
+msgstr "Listelenen adresleri orada reddetmek için bu satırı bir server veya location bloğuna ekleyin."
+
+msgid "From plugin %{id}"
+msgstr "%{id} eklentisinden"
+
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
+msgstr "Bu şablon %{id} eklentisinden gelir. Eklemeden önce yönergeleri gözden geçirin."
+
+msgid "This package has no build for this node (%{platform})"
+msgstr "Bu paketin bu düğüm (%{platform}) için derlemesi yok"
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr "Bu platform için derlenmiş paketi veya taşınabilir paketi indirip tekrar deneyin."
+
+msgid "This node runs %{platform}, its build is highlighted."
+msgstr ""
+
+msgid ""
+"Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+"can then run them."
+msgstr ""
+
+msgid ""
+"Receive certificates and their private keys in order to push them to "
+"external targets."
+msgstr ""
+
+msgid ""
+"Receive every parsed nginx access log line while enabled, including client "
+"addresses and requested URLs."
+msgstr ""
+
+msgid "Streamed"
+msgstr "İletildi"
+
+msgid "Rejected"
+msgstr "Reddedildi"
+
+msgid "Dropped"
+msgstr "Düşürüldü"
+
+msgid "Unlimited"
+msgstr "Sınırsız"
+
+msgid "Transport"
+msgstr ""
+
+msgid "Resource limits"
+msgstr ""
+
+msgid "The running process is confined to these limits."
+msgstr ""
+
+msgid ""
+"The plugin is not running, or this node cannot confine processes: that needs "
+"Linux with a writable cgroup v2 hierarchy."
+msgstr ""
+
+msgid "Enforced"
+msgstr "Uygulanıyor"
+
+msgid "Not enforced"
+msgstr "Uygulanmıyor"
+
+msgid "Access log stream"
+msgstr "Erişim günlüğü akışı"
+
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr "Nginx'in upstream'i tanıdığı ad: harfler, rakamlar, noktalar, tireler ve alt çizgiler."
+
+msgid "Service"
+msgstr "Hizmet"
+
+msgid "Service Discovery"
+msgstr "Hizmet Keşfi"
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr "Hizmet keşfi sunan etkin bir eklenti yok. Önce upstream.discovery yeteneğine sahip bir eklenti yükleyip etkinleştirin."
+
+msgid "Select a provider"
+msgstr "Bir sağlayıcı seçin"
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr "Bu sağlayıcıyı sunan eklenti etkin değil. Upstream korunur ancak artık yenilenmez."
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr "Çözümlenecek hizmet, sağlayıcının kendi terimleriyle."
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr "Hizmetin ne sıklıkla yeniden çözümleneceği, saniye cinsinden. Nginx yalnızca sunucular değiştiğinde yeniden yüklenir."
+
+msgid "Extra Directives"
+msgstr "Ek Yönergeler"
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr "Upstream bloğunun içine, her satıra bir yönerge olacak şekilde eklenir, örneğin keepalive 32;"
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
+msgstr "Bu satırı http bloğuna ekleyin, örneğin bir site yapılandırmasının en üstüne, ardından istekleri upstream'e adıyla yönlendirin."
+
+msgid "Links"
+msgstr "Bağlantılar"
+
+msgid "Plugin package declares version {0}, {1} was expected"
+msgstr "Eklenti paketi {0} sürümünü bildiriyor, {1} bekleniyordu"
+
+msgid "Only localhost addresses are accepted"
+msgstr "Yalnızca localhost adresleri kabul edilir"
+
+msgid ""
+"Address of a plugin.json served by a static server on this computer. Only "
+"localhost addresses are accepted. The plugin is loaded in addition to the "
+"installed ones."
+msgstr "Bu bilgisayardaki statik bir sunucunun sunduğu plugin.json adresi. Yalnızca localhost adresleri kabul edilir. Eklenti, yüklü olanlara ek olarak yüklenir."
+
+msgid "Plugin package is not signed and developer mode is off"
+msgstr "Eklenti paketi imzalı değil ve geliştirici modu kapalı"
+
+msgid "Plugin package trust {0} is below the installed {1}"
+msgstr "Eklenti paketi güven düzeyi {0}, yüklü olan {1} düzeyinin altında"
+
+msgid "This plugin is not signed"
+msgstr "Bu eklenti imzalı değil"
+
+msgid "Checking the package"
+msgstr "Paket kontrol ediliyor"
+
+msgid "Published by the Nginx UI project."
+msgstr "Nginx UI projesi tarafından yayımlandı."
+
+msgid "Published by a partner of the Nginx UI project."
+msgstr "Nginx UI projesinin bir ortağı tarafından yayımlandı."
+
+msgid "Unsigned"
+msgstr "İmzasız"
+
+msgid ""
+"Not signed, so its publisher cannot be confirmed. Installing it requires "
+"developer mode."
+msgstr "İmzalı değil, bu yüzden yayıncısı doğrulanamaz. Yüklemek için geliştirici modu gerekir."
+
+msgid "This package is trusted less than the version already installed"
+msgstr "Bu pakete, zaten yüklü olan sürümden daha az güveniliyor"
+
+msgid "Installed version: %{installed}. This package: %{package}."
+msgstr "Yüklü sürüm: %{installed}. Bu paket: %{package}."
+
+msgid "Plugin System"
+msgstr "Eklenti Sistemi"
+
+msgid ""
+"Turning it off stops every plugin and hides the plugin pages. Takes effect "
+"after a restart."
+msgstr ""
+
+msgid "Plugin Directory"
+msgstr "Eklenti Dizini"
+
+msgid "Default Sync Policy"
+msgstr "Varsayılan Senkronizasyon İlkesi"
+
+msgid ""
+"Applied to newly installed plugins. Automatic keeps the plugin installed on "
+"the child nodes."
+msgstr "Yeni yüklenen eklentilere uygulanır. Otomatik, eklentiyi alt düğümlerde yüklü tutar."
+
+msgid "Enable Marketplace"
+msgstr "Pazaryerini Etkinleştir"
+
+msgid "Managed on the marketplace page. Empty means the official catalog."
+msgstr ""
+
+msgid "Allow Community Plugins"
+msgstr "Topluluk Eklentilerine İzin Ver"
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr "Topluluk eklentileri üçüncü taraflarca yayımlanır ve yüklenmeden önce onay ister."
+
+msgid "Automatic Updates"
+msgstr "Otomatik Güncellemeler"
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr "İstedikleri izinler aynı kaldığı sürece resmi ve ortak eklentileri kendiliğinden günceller."
+
+msgid "Allow Insecure Download URLs"
+msgstr "Güvensiz İndirme URL'lerine İzin Ver"
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr "Düz http katalog ve indirme adreslerini kabul eder. Yalnızca güvenilir bir ağdaki özel katalog için."
+
+msgid "Allow Uploads"
+msgstr "Yüklemelere İzin Ver"
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr "Tarayıcıdan veya komut satırından yüklenen paketlerin kurulmasına izin verir."
+
+msgid "Developer Mode"
+msgstr "Geliştirici Modu"
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
+msgstr "İmzasız eklentilerin yüklenmesine izin verir. Yalnızca bir eklenti geliştirirken açın."
+
+msgid "Trusted Keys"
+msgstr ""
+
+msgid ""
+"Packages signed with one of these keys install as community plugins. One key "
+"per line."
+msgstr ""
+
+msgid "Memory Limit"
+msgstr "Bellek Sınırı"
+
+msgid ""
+"Applies to every plugin process. 0 means unlimited, a plugin can only lower "
+"its own limit."
+msgstr ""
+
+msgid "CPU Limit"
+msgstr "CPU Sınırı"
+
+msgid "Percent of one core for every plugin process. 0 means unlimited."
+msgstr ""
+
+msgid "cgroup Root"
+msgstr ""
+
+msgid "Limits are enforced on Linux with cgroup v2 only."
+msgstr ""
+
+msgid ""
+"Plugin system, marketplace, packages and resource limits of plugin processes."
+msgstr "Eklenti sistemi, pazaryeri, paketler ve eklenti işlemlerinin kaynak sınırları."
+
+msgid "Go to plugins"
+msgstr "Eklentilere git"
+
+msgid "The plugins directory under the configuration directory"
+msgstr ""
+
+msgid "Official catalog"
+msgstr "Resmi katalog"
+
+msgid "Packages"
+msgstr "Paketler"
+
+msgid "Paste public keys here"
+msgstr ""
+
+msgid "Resources"
+msgstr "Kaynaklar"
+
+msgid "A trusted publisher is not in the expected format or is listed twice"
+msgstr "Güvenilir bir yayıncı beklenen biçimde değil veya iki kez listelenmiş"
+
+msgid "Turning it off stops every plugin and hides the plugin pages."
+msgstr "Kapatmak tüm eklentileri durdurur ve eklenti sayfalarını gizler."
+
+msgid "Trusted Publishers"
+msgstr "Güvenilir Yayıncılar"
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr "Bu yayıncıların eklentileri topluluk eklentisi olarak yüklenir."
+
+msgid "Maximum memory each plugin can use."
+msgstr "Her eklentinin kullanabileceği en yüksek bellek."
+
+msgid "Share of one CPU core each plugin can use."
+msgstr "Her eklentinin kullanabileceği bir CPU çekirdeğinin payı."
+
+msgid ""
+"This is not a valid public key. Paste the whole key the publisher gave you."
+msgstr "Bu geçerli bir genel anahtar değil. Yayıncının verdiği anahtarın tamamını yapıştırın."
+
+msgid "This publisher is already in the list."
+msgstr "Bu yayıncı zaten listede."
+
+msgid "No publishers yet."
+msgstr "Henüz yayıncı yok."
+
+msgid "Unnamed publisher"
+msgstr "Adsız yayıncı"
+
+msgid "Not a valid public key"
+msgstr "Geçerli bir genel anahtar değil"
+
+msgid "Add publisher"
+msgstr "Yayıncı ekle"
+
+msgid "Shown in this list only"
+msgstr "Yalnızca bu listede gösterilir"
+
+msgid "Public Key"
+msgstr "Genel Anahtar"
+
+msgid "Paste the public key the publisher gave you"
+msgstr "Yayıncının verdiği genel anahtarı yapıştırın"
+
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr "Her eklenti için geçerlidir. Bir eklenti yalnızca kendi sınırlarını düşürebilir."
+
+msgid "Only applies on Linux. This system does not support it."
+msgstr "Yalnızca Linux'ta geçerlidir. Bu sistem bunu desteklemiyor."
+
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr "Bu seçenekler eklenti yüklemelerini daha az güvenli hale getirir. Yalnızca gerektiğinde açın."
+
+msgid "Less safe"
+msgstr "Daha az güvenli"
+
+msgid "Validates the domain with a DNS record. Needs a DNS credential."
+msgstr "Alan adını bir DNS kaydıyla doğrular. DNS kimlik bilgisi gerekir."
+
+msgid "Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail."
+msgstr "Joker karakterli sertifikalar genellikle DNS-01 gerektirir. HTTP-01 büyük olasılıkla başarısız olur."
+
+msgid "Validates each domain over port 80 on this server."
+msgstr "Her alan adını bu sunucudaki 80 numaralı bağlantı noktası üzerinden doğrular."
+
+msgid "Can be changed after the plugin is installed."
+msgstr "Eklenti yüklendikten sonra değiştirilebilir."
+
+msgid "Can be changed after the plugin is enabled."
+msgstr "Eklenti etkinleştirildikten sonra değiştirilebilir."
+
+msgid ""
+"Only turn on when you are sure you need it. Firefox may show an error on the "
+"first visit."
+msgstr "Yalnızca gerçekten ihtiyacınız olduğundan eminseniz açın. Firefox ilk ziyarette hata gösterebilir."
+
+msgid "For private CAs that still require this field."
+msgstr "Hâlâ bu alanı gerektiren özel CA'lar için."
+
+msgid "Revokes the previous certificate once the new one is issued."
+msgstr "Yeni sertifika verildiğinde önceki sertifikayı iptal eder."
+
+msgid "New credential"
+msgstr "Yeni kimlik bilgisi"
+
+msgid "The credential was deleted. Please choose another one."
+msgstr "Kimlik bilgisi silindi. Lütfen başka birini seçin."
+
+msgid "Deleted credential"
+msgstr "Silinmiş kimlik bilgisi"
+
+msgid "DNS Credential"
+msgstr "DNS Kimlik Bilgisi"
+
+msgid "Select credential"
+msgstr "Kimlik bilgisi seçin"
+
+msgid "not installed"
+msgstr "yüklü değil"
+
+msgid "turned off"
+msgstr "kapalı"
+
+msgid "not working right now"
+msgstr "şu anda çalışmıyor"
+
+msgid ""
+"DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
+"yet."
+msgstr "DNS-01 doğrulaması, henüz yüklü olmayan DNS-01 eklentisi tarafından sağlanır."
+
+msgid "The DNS-01 plugin is installed but turned off."
+msgstr "DNS-01 eklentisi yüklü ancak kapalı."
+
+msgid "The DNS-01 plugin is turned on but not working right now."
+msgstr "DNS-01 eklentisi açık ancak şu anda çalışmıyor."
+
+msgid ""
+"This certificate renews through the DNS-01 plugin, which is %{state}. It "
+"cannot renew automatically until the plugin is back."
+msgstr "Bu sertifika DNS-01 eklentisi üzerinden yenilenir ve eklenti şu anda: %{state}. Eklenti geri gelene kadar otomatik olarak yenilenemez."
+
+msgid "DNS providers come with the DNS-01 plugin, which is %{state}."
+msgstr "DNS sağlayıcıları DNS-01 eklentisiyle birlikte gelir ve eklenti şu anda: %{state}."
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not installed."
+msgstr "Şu anda yalnızca %{count} sağlayıcı kullanılabilir. Daha fazla sağlayıcı, yüklü olmayan DNS-01 eklentisiyle birlikte gelir."
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is turned off."
+msgstr "Şu anda yalnızca %{count} sağlayıcı kullanılabilir. Daha fazla sağlayıcı, kapalı olan DNS-01 eklentisiyle birlikte gelir."
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not working right now."
+msgstr "Şu anda yalnızca %{count} sağlayıcı kullanılabilir. Daha fazla sağlayıcı, şu anda çalışmayan DNS-01 eklentisiyle birlikte gelir."
+
+msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
+msgstr "DNS doğrulaması DNS-01 eklentisini gerektirir ve eklenti şu anda: %{state}."
+
+msgid "Enable plugin"
+msgstr "Eklentiyi etkinleştir"
+
+msgid "New DNS Credential"
+msgstr "Yeni DNS Kimlik Bilgisi"
+
+msgid "Create and select"
+msgstr "Oluştur ve seç"
+
+msgid ""
+"Automatic renewal can only be switched for certificates issued by Nginx UI"
+msgstr "Otomatik yenileme yalnızca Nginx UI tarafından verilen sertifikalar için değiştirilebilir"
+
+msgid "Plugin marketplace is disabled"
+msgstr "Eklenti pazaryeri devre dışı"
+
+msgid "Plugin marketplace source is unavailable: {0}"
+msgstr "Eklenti pazaryeri kaynağı kullanılamıyor: {0}"
+
+msgid "Plugin release not found"
+msgstr "Eklenti sürümü bulunamadı"
+
+msgid "Plugin release has been yanked"
+msgstr "Eklenti sürümü geri çekildi"
+
+msgid "Plugin package digest does not match the catalog"
+msgstr "Eklenti paketi özeti katalogla eşleşmiyor"
+
+msgid "Plugin package signature is invalid: {0}"
+msgstr "Eklenti paketi imzası geçersiz: {0}"
+
+msgid "Community plugins are not allowed on this node"
+msgstr "Topluluk eklentilerine bu düğümde izin verilmiyor"
+
+msgid "Plugin download url is not https"
+msgstr "Eklenti indirme URL'si https değil"
+
+msgid "Plugin release has no build for this platform"
+msgstr "Eklenti sürümünün bu platform için derlemesi yok"
+
+msgid "Plugin catalog is invalid: {0}"
+msgstr "Eklenti kataloğu geçersiz: {0}"
+
+msgid "Plugin is not in the marketplace catalog"
+msgstr "Eklenti pazaryeri kataloğunda yok"
+
+msgid "No local package found for this plugin"
+msgstr "Bu eklenti için yerel paket bulunamadı"
+
+msgid "No plugin package is available for {0}"
+msgstr "{0} için kullanılabilir eklenti paketi yok"
+
+msgid "The marketplace has no more trusted package of this plugin"
+msgstr "Pazaryerinde bu eklentinin güvenilir başka paketi kalmadı"
+
+msgid "Advanced options"
+msgstr "Gelişmiş seçenekler"
+
+msgid "Sync to other nodes"
+msgstr "Diğer düğümlerle senkronize et"
+
+msgid "Private key"
+msgstr "Özel anahtar"
+
+msgid "Automatic renewal turned on"
+msgstr "Otomatik yenileme açıldı"
+
+msgid "Automatic renewal turned off"
+msgstr "Otomatik yenileme kapatıldı"
+
+msgid "Not issued yet"
+msgstr "Henüz verilmedi"
+
+msgid "Expiring within 30 days"
+msgstr "30 gün içinde sona erecek"
+
+msgid "Renewal failed"
+msgstr "Yenileme başarısız oldu"
+
+msgid "Renewal method"
+msgstr "Yenileme yöntemi"
+
+msgid "Expiry date"
+msgstr "Son kullanma tarihi"
+
+msgid "Search by name or domain"
+msgstr "Ada veya alan adına göre ara"
+
+msgid "Valid · %{days} days left"
+msgstr "Geçerli · %{days} gün kaldı"
+
+msgid "Expires in %{days} days"
+msgstr "%{days} gün içinde sona erer"
+
+msgid "Managed manually"
+msgstr "Elle yönetiliyor"
+
+msgid "DNS validation · %{provider}"
+msgstr "DNS doğrulaması · %{provider}"
+
+msgid "DNS validation"
+msgstr "DNS doğrulaması"
+
+msgid "HTTP validation"
+msgstr "HTTP doğrulaması"
+
+msgid "Self-signed"
+msgstr "Kendinden imzalı"
+
+msgid "Synced from another node"
+msgstr "Başka bir düğümden senkronize edildi"
+
+msgid "Upload"
+msgstr "Yükle"
+
+msgid "Renewed on the node it is synced from"
+msgstr "Senkronize edildiği düğümde yenilenir"
+
+msgid "Renews around %{date}"
+msgstr "Yaklaşık %{date} tarihinde yenilenir"
+
+msgid "Replace the files to renew"
+msgstr "Yenilemek için dosyaları değiştirin"
+
+msgid "Auto renewal"
+msgstr "Otomatik yenileme"
+
+msgid "Issuer"
+msgstr "Veren"
+
+msgid "Certificate files"
+msgstr "Sertifika dosyaları"
+
+msgid "Hide contents"
+msgstr "İçeriği gizle"
+
+msgid "Show contents"
+msgstr "İçeriği göster"
+
+msgid "In progress"
+msgstr "Devam ediyor"
+
+msgid "Failed · %{time}"
+msgstr "Başarısız · %{time}"
+
+msgid "Succeeded · %{time}"
+msgstr "Başarılı · %{time}"
+
+msgid "Last renewal"
+msgstr "Son yenileme"
+
+msgid "Show less"
+msgstr "Daha az göster"
+
+msgid "View full log"
+msgstr "Tüm günlüğü görüntüle"
+
+msgid "No renewal has run yet."
+msgstr "Henüz yenileme çalışmadı."
+
+msgid "Select nodes"
+msgstr "Düğümleri seçin"
+
+msgid "Only kept on this node."
+msgstr "Yalnızca bu düğümde tutulur."
+
+msgid "Renew now"
+msgstr "Şimdi yenile"
+
+msgid "Certificate DNS validation"
+msgstr "Sertifika DNS doğrulaması"
+
+msgid ""
+"Validates domains through DNS records when certificates are issued or "
+"renewed."
+msgstr "Sertifikalar verilirken veya yenilenirken alan adlarını DNS kayıtlarıyla doğrular."
+
+msgid "DNS credentials"
+msgstr "DNS kimlik bilgileri"
+
+msgid "Web pages and API"
+msgstr "Web sayfaları ve API"
+
+msgid "Serves its own pages and API inside Nginx UI."
+msgstr "Nginx UI içinde kendi sayfalarını ve API'sini sunar."
+
+msgid "External notifications"
+msgstr "Harici bildirimler"
+
+msgid "Delivers Nginx UI notifications to other services."
+msgstr "Nginx UI bildirimlerini diğer hizmetlere iletir."
+
+msgid "Health checks"
+msgstr "Sağlık kontrolleri"
+
+msgid "Adds more ways to check whether sites and services are reachable."
+msgstr "Sitelerin ve hizmetlerin erişilebilir olup olmadığını kontrol etmek için daha fazla yol ekler."
+
+msgid "AI assistant tools"
+msgstr "Yapay zeka asistanı araçları"
+
+msgid "Offers actions that AI assistants connected to Nginx UI can run."
+msgstr "Nginx UI'ye bağlı yapay zeka asistanlarının çalıştırabileceği eylemler sunar."
+
+msgid "Backup storage"
+msgstr "Yedekleme depolaması"
+
+msgid "Stores backups and other files in external storage."
+msgstr "Yedekleri ve diğer dosyaları harici depolamada saklar."
+
+msgid "Auto backup"
+msgstr "Otomatik yedekleme"
+
+msgid "Certificate deployment"
+msgstr "Sertifika dağıtımı"
+
+msgid "Pushes issued certificates to other services and devices."
+msgstr "Verilen sertifikaları diğer hizmetlere ve cihazlara gönderir."
+
+msgid "Deploy targets"
+msgstr "Dağıtım hedefleri"
+
+msgid "Keeps lists of addresses that are denied access up to date."
+msgstr "Erişimi reddedilen adreslerin listelerini güncel tutar."
+
+msgid "Service discovery"
+msgstr "Hizmet keşfi"
+
+msgid "Finds backend servers automatically and keeps upstreams up to date."
+msgstr "Arka uç sunucularını otomatik olarak bulur ve upstream'leri güncel tutar."
+
+msgid "Access log forwarding"
+msgstr "Erişim günlüğü iletme"
+
+msgid ""
+"Receives access log entries as they are written, for example to forward or "
+"analyse them."
+msgstr "Erişim günlüğü girdilerini yazıldıkça alır, örneğin iletmek veya analiz etmek için."
+
+msgid "Other feature"
+msgstr "Diğer özellik"
+
+msgid "A feature this version of Nginx UI does not describe."
+msgstr "Bu Nginx UI sürümünün tanımlamadığı bir özellik."
+
+msgid "Disable %{name}?"
+msgstr "%{name} devre dışı bırakılsın mı?"
+
+msgid "Renewal resumes when you turn it back on."
+msgstr "Yeniden açtığınızda yenileme devam eder."
+
+msgid "Installed %{version} is not this version"
+msgstr "Yüklü %{version} bu sürüm değil"
+
+msgid ""
+"This version was not published by the official team or a partner. It may be "
+"a development build or a repackaged copy."
+msgstr "Bu sürüm resmi ekip veya bir ortak tarafından yayımlanmadı. Geliştirme derlemesi veya yeniden paketlenmiş bir kopya olabilir."
+
+msgid "Install the official version"
+msgstr "Resmi sürümü yükle"
+
+msgid "Install the partner version"
+msgstr "Ortak sürümünü yükle"
+
+msgid "The marketplace has the official version %{version}."
+msgstr "Pazaryerinde resmi %{version} sürümü var."
+
+msgid "The marketplace has the partner version %{version}."
+msgstr "Pazaryerinde ortak %{version} sürümü var."
+
+msgid "This plugin needs no access beyond its own features."
+msgstr "Bu eklenti, kendi özellikleri dışında hiçbir erişime ihtiyaç duymaz."
+
+msgid "Keep its own data inside Nginx UI."
+msgstr "Kendi verilerini Nginx UI içinde tutar."
+
+msgid "Connect to other servers over the network."
+msgstr "Ağ üzerinden diğer sunuculara bağlanın."
+
+msgid "Run tasks on a regular schedule."
+msgstr "Görevleri düzenli bir zamanlamayla çalıştırın."
+
+msgid "Manage Nginx UI with your permissions."
+msgstr "Nginx UI'yi sizin izinlerinizle yönetin."
+
+msgid "Offer actions that AI assistants connected to Nginx UI can run."
+msgstr "Nginx UI'ye bağlı yapay zeka asistanlarının çalıştırabileceği eylemler sunun."
+
+msgid ""
+"Receive issued certificates, including the parts that must stay secret, to "
+"push them to other services."
+msgstr "Verilen sertifikaları, gizli kalması gereken kısımlar dahil, diğer hizmetlere göndermek üzere alın."
+
+msgid ""
+"Receive every access log entry while it is on, including visitor addresses "
+"and requested URLs."
+msgstr "Açık olduğu sürece her erişim günlüğü girdisini, ziyaretçi adresleri ve istenen URL'ler dahil alın."
+
+msgid "Stored %{kind} credentials"
+msgstr "Kayıtlı %{kind} kimlik bilgileri"
+
+msgid "Own data storage"
+msgstr "Kendi veri depolaması"
+
+msgid "Scheduled tasks"
+msgstr "Zamanlanmış görevler"
+
+msgid "Server metrics"
+msgstr "Sunucu metrikleri"
+
+msgid "Nginx UI management"
+msgstr "Nginx UI yönetimi"
+
+msgid "Access logs"
+msgstr "Erişim günlükleri"
+
+msgid "Unknown permission"
+msgstr "Bilinmeyen izin"
+
+msgid "Nothing to start"
+msgstr "Başlatılacak bir şey yok"
+
+msgid "Starts when needed"
+msgstr "Gerektiğinde başlar"
+
+msgid "Always running"
+msgstr "Her zaman çalışır"
+
+msgid "Start mode"
+msgstr "Başlatma modu"
+
+msgid "Turn it on to review what it can access."
+msgstr "Nelere erişebileceğini incelemek için açın."
+
+msgid "Provides"
+msgstr "Sağladıkları"
+
+msgid "Can access"
+msgstr "Erişebildikleri"
+
+msgid "Only these addresses"
+msgstr "Yalnızca bu adresler"
+
+msgid "%{n} more"
+msgstr "%{n} tane daha"
+
+msgid "No specific addresses listed"
+msgstr "Belirli adres listelenmemiş"
+
+msgid "Nothing beyond its own features."
+msgstr "Kendi özellikleri dışında hiçbir şey yok."
+
+msgid "In use"
+msgstr "Kullanımda"
+
+msgid "%{count} certificate renews through it:"
+msgid_plural "%{count} certificates renew through it:"
+msgstr[0] "%{count} sertifika bu eklenti üzerinden yenileniyor:"
+msgstr[1] "%{count} sertifika bu eklenti üzerinden yenileniyor:"
+
+msgid "Version, API version, start mode, updated time"
+msgstr "Sürüm, API sürümü, başlatma modu, güncelleme zamanı"
+
+msgid "Needs features"
+msgstr "Gerektirdiği özellikler"
+
+msgid "The limits are applied while the plugin runs."
+msgstr "Sınırlar eklenti çalışırken uygulanır."
+
+msgid "The plugin is not running, or this node cannot apply limits."
+msgstr "Eklenti çalışmıyor veya bu düğüm sınırları uygulayamıyor."
+
+msgid "Develop plugin"
+msgstr "Eklenti geliştir"
+
+msgid "Standby"
+msgstr "Beklemede"
+
+msgid "Starts automatically when needed"
+msgstr "Gerektiğinde otomatik başlar"
+
+msgid "Installed. Turn it on to review what it can access."
+msgstr "Yüklendi. Nelere erişebileceğini incelemek için açın."
+
+msgid "Installed the version from the marketplace"
+msgstr "Pazaryerindeki sürüm yüklendi"
+
+msgid "Failed to install the version from the marketplace"
+msgstr "Pazaryerindeki sürüm yüklenemedi"
+
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
+msgstr "Yüklü sürüm pazaryerindekiyle değiştirilsin mi? Ayarlar ve veriler korunur."
+
+msgid "%{count} unsaved"
+msgid_plural "%{count} unsaved"
+msgstr[0] "%{count} kaydedilmemiş"
+msgstr[1] "%{count} kaydedilmemiş"
+
+msgctxt "list separator"
+msgid ", "
+msgstr ", "
+
+msgid "and %{n} more"
+msgstr "ve %{n} tane daha"
+
+msgid ""
+"%{count} certificate renews through it and will not renew while it is off:"
+msgid_plural ""
+"%{count} certificates renew through it and will not renew while it is off:"
+msgstr[0] "%{count} sertifika bu eklenti üzerinden yenileniyor ve eklenti kapalıyken yenilenmeyecek:"
+msgstr[1] "%{count} sertifika bu eklenti üzerinden yenileniyor ve eklenti kapalıyken yenilenmeyecek:"
+
+msgid "API base URL"
+msgstr "API temel URL'si"
+
+msgid "API timeout"
+msgstr "API zaman aşımı"
+
+msgid "API token"
+msgstr "API belirteci"
+
+msgid "Access key ID"
+msgstr "Erişim anahtarı kimliği"
+
+msgid "AccessKey"
+msgstr "AccessKey"
+
+msgid "AccessKey ID"
+msgstr "AccessKey ID"
+
+msgid "AccessKey secret"
+msgstr "AccessKey gizli anahtarı"
+
+msgid "Account email"
+msgstr "Hesap e-postası"
+
+msgid "Authentication method"
+msgstr "Kimlik doğrulama yöntemi"
+
+msgid "Azure environment"
+msgstr "Azure ortamı"
+
+msgid "Check interval"
+msgstr "Kontrol aralığı"
+
+msgid "Client certificate"
+msgstr "İstemci sertifikası"
+
+msgid "Client certificate path"
+msgstr "İstemci sertifikası yolu"
+
+msgid "Client secret"
+msgstr "İstemci gizli anahtarı"
+
+msgid "DNS line"
+msgstr "DNS hattı"
+
+msgid "Global API key"
+msgstr "Global API anahtarı"
+
+msgid "Instance RAM role"
+msgstr "Örnek RAM rolü"
+
+msgid "Managed identity timeout"
+msgstr "Yönetilen kimlik zaman aşımı"
+
+msgid "Maximum wait"
+msgstr "Maksimum bekleme"
+
+msgid "Needs the DNS edit permission."
+msgstr "DNS düzenleme izni gerekir."
+
+msgid "Needs the zone read permission. Leave empty to use the API token."
+msgstr "Bölge okuma izni gerekir. API belirtecini kullanmak için boş bırakın."
+
+msgid "One of public, usgovernment and china."
+msgstr "public, usgovernment veya china değerlerinden biri."
+
+msgid "Private zone"
+msgstr "Özel bölge"
+
+msgid "Region"
+msgstr "Bölge"
+
+msgid "Region ID"
+msgstr "Bölge kimliği"
+
+msgid "Resource group"
+msgstr "Kaynak grubu"
+
+msgid "STS security token"
+msgstr "STS güvenlik belirteci"
+
+msgid "Secret access key"
+msgstr "Gizli erişim anahtarı"
+
+msgid "SecretId"
+msgstr "SecretId"
+
+msgid "SecretKey"
+msgstr "SecretKey"
+
+msgid "Service discovery filter"
+msgstr "Hizmet keşfi filtresi"
+
+msgid "Session token"
+msgstr "Oturum belirteci"
+
+msgid "Set to true to use a private DNS zone."
+msgstr "Özel bir DNS bölgesi kullanmak için true olarak ayarlayın."
+
+msgid "Subscription ID"
+msgstr "Abonelik Kimliği"
+
+msgid "TXT record TTL"
+msgstr "TXT kaydı TTL'si"
+
+msgid "Zone name"
+msgstr "Bölge adı"
+
+msgid "Zone read token"
+msgstr "Bölge okuma belirteci"
+
+msgid "%{method} (recommended)"
+msgstr "%{method} (önerilen)"
+
+msgid "%{provider} API docs"
+msgstr "%{provider} API belgeleri"
+
+msgid "Sign-in method"
+msgstr "Oturum açma yöntemi"
+
+msgid "Optional"
+msgstr "İsteğe bağlı"
+
+msgid "%{count} changed"
+msgstr "%{count} değiştirildi"
+
+msgid "All default"
+msgstr "Tümü varsayılan"
+
+msgid "sec"
+msgstr "sn"
+
+msgid "Nothing to fill in. The server uses its own credentials."
+msgstr "Doldurulacak bir şey yok. Sunucu kendi kimlik bilgilerini kullanır."
+
+msgid "Browse and follow the access and error logs of your sites."
+msgstr ""
+
+msgid "Read access logs page by page or follow them as they arrive."
+msgstr ""
+
+msgid "See every log file Nginx writes and open one to read it."
+msgstr ""
+
+msgid ""
+"Log analytics is now a plugin. Install it to keep using it; your existing "
+"indexes are kept."
+msgstr ""
+
+msgid "Go to install"
+msgstr ""
+
+msgid "Used for downloads from GitHub, such as upgrades."
+msgstr ""
+
+msgid ""
+"Read the Nginx log files of this node, including visitor addresses and "
+"requested URLs."
+msgstr "Bu düğümün Nginx günlük dosyalarını, ziyaretçi adresleri ve istenen URL'ler dahil okuyun."
+
+msgid "Log files"
+msgstr "Günlük dosyaları"
+
+msgid "This plugin cannot be enabled together with: {0}"
+msgstr "Bu eklenti şu eklentilerle birlikte etkinleştirilemez: {0}"
+
+msgid "Release channel must be stable, beta or dev"
+msgstr "Sürüm kanalı stable, beta veya dev olmalıdır"
+
+msgid ""
+"Advanced Indexing is now provided by the Log Analytics plugin. Install the "
+"plugin to continue using it. Existing indexes are kept."
+msgstr ""
+"Gelişmiş dizinleme artık Log Analytics eklentisi tarafından sağlanıyor. "
+"Kullanmaya devam etmek için eklentiyi yükleyin. Mevcut dizinler korunur."
+
+msgid "Beta"
+msgstr "Beta"
+
+msgid ""
+"This is a beta release. Features may change, and some functions may not work "
+"as expected."
+msgstr ""
+"Bu bir beta sürümüdür. Özellikler değişebilir ve bazı işlevler beklendiği "
+"gibi çalışmayabilir."
+
+msgid "This is a development release. It may be incomplete or unstable."
+msgstr "Bu bir geliştirme sürümüdür. Eksik veya kararsız olabilir."
+
+msgid "This is a stable release."
+msgstr "Bu kararlı bir sürümdür."
+
+msgid "Development releases are received until a stable release is available."
+msgstr "Kararlı bir sürüm yayımlanana kadar geliştirme sürümleri alınır."
+
+msgid "Beta releases are received until a stable release is available."
+msgstr "Kararlı bir sürüm yayımlanana kadar beta sürümleri alınır."
+
+msgid "Receive beta and stable releases."
+msgstr "Beta ve kararlı sürümleri al."
+
+msgid "Receive all releases, including development releases."
+msgstr "Geliştirme sürümleri dahil tüm sürümleri al."
+
+msgid "Receive stable releases only."
+msgstr "Yalnızca kararlı sürümleri al."
+
+msgid "Cannot be enabled together with %{names}"
+msgstr "%{names} ile birlikte etkinleştirilemez"
+
+msgid ""
+"Enabling %{name} will disable %{others}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+"%{name} etkinleştirilirse %{others} devre dışı bırakılır, çünkü bu "
+"eklentiler aynı anda etkin olamaz."
+
+msgid ""
+"Enabling this plugin will disable %{names}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+"Bu eklenti etkinleştirilirse %{names} devre dışı bırakılır, çünkü bu "
+"eklentiler aynı anda etkin olamaz."
+
+msgid "Enable %{name}?"
+msgstr "%{name} etkinleştirilsin mi?"
+
+msgid "Recommended memory"
+msgstr "Önerilen bellek"
+
+msgid "Install a previous version"
+msgstr "Önceki bir sürümü yükle"
+
+msgid "Install this version"
+msgstr "Bu sürümü yükle"
+
+msgid "This version is older than the installed version"
+msgstr "Bu sürüm yüklü sürümden daha eski"
+
+msgid ""
+"Data created by the newer version may not be compatible with this version."
+msgstr "Daha yeni sürümün oluşturduğu veriler bu sürümle uyumlu olmayabilir."
+
+msgid "No stable release of this plugin is available yet."
+msgstr "Bu eklentinin henüz kararlı bir sürümü yok."
+
+msgid ""
+"Newer releases of this channel are received until a stable release is "
+"available."
+msgstr ""
+"Kararlı bir sürüm yayımlanana kadar bu kanalın daha yeni sürümleri alınır."
+
+msgid ""
+"This server has %{system} of memory, below the %{recommended} recommended "
+"for this plugin. The plugin may run slowly or stop unexpectedly."
+msgstr ""
+"Bu sunucuda %{system} bellek var; bu, eklenti için önerilen %{recommended} "
+"değerinin altında. Eklenti yavaş çalışabilir veya beklenmedik şekilde "
+"durabilir."
+
+msgid "Saved"
+msgstr "Kaydedildi"
+
+msgid "Failed to save"
+msgstr "Kaydedilemedi"
+
+msgid "Update channel"
+msgstr "Güncelleme kanalı"
+
+msgid "Screenshots"
+msgstr "Ekran görüntüleri"
+
+msgid "Enter a valid web address"
+msgstr ""
+
+msgid "The source cannot be checked"
+msgstr "Kaynak kontrol edilemiyor"
+
+msgid "Name (optional)"
+msgstr ""
+
+msgid "Checking availability"
+msgstr ""
+
+msgid "Available, %{count} plugin"
+msgid_plural "Available, %{count} plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Unavailable"
+msgstr "Kullanılamıyor"
+
+msgid "Catalog name: %{name}"
+msgstr ""
+
+msgid "New source"
+msgstr "Yeni kaynak"
+
+msgid "Checking"
+msgstr "Kontrol ediliyor"
+
+msgid "%{count} plugin"
+msgid_plural "%{count} plugins"
+msgstr[0] "%{count} eklenti"
+msgstr[1] "%{count} eklenti"
+
+msgid "Invalid address"
+msgstr "Geçersiz adres"
+
+msgid "Drag to reorder"
+msgstr "Sıralamak için sürükleyin"
+
+msgid "Edit address"
+msgstr "Adresi düzenle"
+
+msgid "Add a source to offer plugins from another catalog as well."
+msgstr ""
+
+msgid "Correct the addresses marked as invalid before saving."
+msgstr "Kaydetmeden önce geçersiz olarak işaretlenen adresleri düzeltin."
+
+msgid "Enter a domain or a web address."
+msgstr "Bir alan adı veya web adresi girin."
+
+msgid ""
+"Enter a domain such as plugins.example.com, or the full address of a catalog."
+msgstr "plugins.example.com gibi bir alan adı veya bir kataloğun tam adresini girin."
+
+msgid ""
+"Add Nginx configuration of its own. It takes effect only where you include "
+"it, and Nginx UI applies it only when the configuration remains valid."
+msgstr "Kendi Nginx yapılandırmasını ekler. Yalnızca dahil ettiğiniz yerde etkili olur ve Nginx UI bunu yalnızca yapılandırma geçerli kalırsa uygular."
+
+msgid "Read the Nginx configuration files of this node."
+msgstr "Bu düğümün Nginx yapılandırma dosyalarını okuyun."
+
+msgid "See the sites of this node and their addresses."
+msgstr "Bu düğümün sitelerini ve adreslerini görün."
+
+msgid ""
+"See the certificates and when they expire, without the parts that must stay "
+"secret."
+msgstr "Sertifikaları ve son kullanma tarihlerini, gizli kalması gereken kısımlar olmadan görün."
+
+msgid "Nginx configuration snippets"
+msgstr "Nginx yapılandırma parçacıkları"
+
+msgid "Nginx configuration"
+msgstr "Nginx yapılandırması"
+
+msgid "Certificate list"
+msgstr "Sertifika listesi"
+
+msgid "DNS Validation"
+msgstr "DNS Doğrulaması"
+
+msgid ""
+"The main node has no DNS-01 plugin. Install it on the main node, or validate "
+"on this node."
+msgstr "Ana düğümde DNS-01 eklentisi yok. Eklentiyi ana düğüme yükleyin veya doğrulamayı bu düğümde yapın."
+
+msgid ""
+"Credentials of the main node. Switch to the main node to add or change one."
+msgstr "Ana düğümün kimlik bilgileri. Eklemek veya değiştirmek için ana düğüme geçin."
+
+msgid "On the main node"
+msgstr "Ana düğümde"
+
+msgid "On this node"
+msgstr "Bu düğümde"
+
+msgid ""
+"The main node validates the domain with its DNS credentials, sends the "
+"certificate to this node and keeps renewing it."
+msgstr "Ana düğüm alan adını kendi DNS kimlik bilgileriyle doğrular, sertifikayı bu düğüme gönderir ve yenilemeye devam eder."
+
+msgid ""
+"This node validates the domain with its own DNS credentials and renews the "
+"certificate itself."
+msgstr "Bu düğüm alan adını kendi DNS kimlik bilgileriyle doğrular ve sertifikayı kendisi yeniler."
+
+msgid "Only a DNS-01 certificate can be issued for another node"
+msgstr "Başka bir düğüm için yalnızca DNS-01 sertifikası verilebilir"
+
+msgid "Node not found"
+msgstr "Düğüm bulunamadı"
+
+msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
+msgstr "{0} düğümü kendisi için verilen sertifikaları alamıyor, önce yükseltin"
+
+msgid "Node {0} answered {1}: {2}"
+msgstr "{0} düğümü {1} yanıtını verdi: {2}"
+
+msgid "The Nginx configuration still loads the certificate: {0}"
+msgstr "Nginx yapılandırması sertifikayı hâlâ yüklüyor: {0}"
+
+msgid "The certificate was issued, but sending it to node {0} failed: {1}"
+msgstr "Sertifika verildi ancak {0} düğümüne gönderilemedi: {1}"
+
+msgid "Node {0} cannot be reached: {1}"
+msgstr "{0} düğümüne ulaşılamıyor: {1}"
+
+msgid "[Nginx UI] Sending the certificate to node %{name}"
+msgstr "[Nginx UI] Sertifika %{name} düğümüne gönderiliyor"
+
+msgid "Issued for %{node}"
+msgstr "%{node} için verildi"
+
+msgid ""
+"This instance validates the domain, keeps renewing the certificate and sends "
+"each renewal to %{node}."
+msgstr "Bu Nginx UI alan adını doğrular, sertifikayı yenilemeye devam eder ve her yenilemeyi %{node} düğümüne gönderir."
+
+msgid "Files on the node:"
+msgstr "Düğümdeki dosyalar:"
+
+msgid "Issued by this instance for %{node} and renewed here"
+msgstr "Bu Nginx UI tarafından %{node} için verildi ve burada yenileniyor"
+
+msgid "For %{node}"
+msgstr "%{node} için"
+
+msgid ""
+"This instance stops renewing the certificate and deletes its own copy. The "
+"files on %{node} stay unless you remove them below."
+msgstr "Bu Nginx UI sertifikayı yenilemeyi bırakır ve kendi kopyasını siler. %{node} üzerindeki dosyalar, aşağıdan kaldırmadığınız sürece kalır."
+
+msgid "Also remove the certificate files from %{node}"
+msgstr "Sertifika dosyalarını %{node} düğümünden de kaldır"
+
+msgid ""
+"They are kept when the Nginx configuration of the node still loads them."
+msgstr "Düğümün Nginx yapılandırması hâlâ yüklüyorsa korunurlar."
+
+msgid "Issue the certificate on the main node"
+msgstr "Sertifikayı ana düğümde ver"
+
+msgid ""
+"The node did not confirm that it received the certificate. Update Nginx UI "
+"on the node and try again."
+msgstr "Düğüm sertifikayı aldığını doğrulamadı. Düğümde Nginx UI'yi güncelleyip tekrar deneyin."
+
+msgid "Recommended memory: %{size}"
+msgstr "Önerilen bellek: %{size}"
+
+msgid "Nodes: %{target}"
+msgstr "Düğümler: %{target}"
+
+msgid "Certificates using the DNS-01 challenge cannot be renewed until the DNS-01 plugin is installed."
+msgstr "DNS-01 doğrulaması kullanan sertifikalar, DNS-01 eklentisi yüklenene kadar yenilenemez."
+
+msgid "Plugins updated automatically"
+msgstr "Eklentiler otomatik olarak güncellendi"
+
+msgid "Updated automatically: %{plugins}"
+msgstr "Otomatik olarak güncellendi: %{plugins}"
+
+msgid "Plugin updates available"
+msgstr "Eklenti güncellemeleri mevcut"
+
+msgid "Updates are available for %{plugins}"
+msgstr "%{plugins} için güncellemeler mevcut"
+
+msgid "Apply restricted nginx directives?"
+msgstr "Kısıtlı nginx yönergeleri uygulansın mı?"
+
+msgid "Apply anyway"
+msgstr "Yine de uygula"
+
+msgid "This configuration loads code into the Nginx worker processes, which runs with the privileges of Nginx itself. Only apply it if you wrote these directives or trust where they came from."
+msgstr "Bu yapılandırma, Nginx çalışan işlemlerine kod yükler ve bu kod Nginx'in kendi ayrıcalıklarıyla çalışır. Yalnızca bu yönergeleri kendiniz yazdıysanız veya kaynağına güveniyorsanız uygulayın."
+
+msgid "Restricted directives"
+msgstr "Kısıtlı yönergeler"
+
+msgid "Found in"
+msgstr "Bulunduğu yer"
+
+msgid "Such a configuration is not replicated to other nodes. Save it on each node that needs it."
+msgstr "Böyle bir yapılandırma diğer düğümlere çoğaltılmaz. Gerektiren her düğümde ayrıca kaydedin."
+
+msgid "Go to Settings"
+msgstr "Ayarlara git"
+
+msgid "This configuration loads code into the Nginx worker processes. Applying it needs a two-factor confirmation, so enable two-factor authentication on your account first."
+msgstr "Bu yapılandırma, Nginx çalışan işlemlerine kod yükler. Uygulamak için iki aşamalı onay gerekir, bu yüzden önce hesabınızda iki aşamalı kimlik doğrulamayı etkinleştirin."
+
+msgid "Secret files are hidden from read-only service tokens"
+msgstr "Gizli dosyalar salt okunur hizmet belirteçlerinden gizlenir"
+
+msgid "Include pattern uses glob syntax that cannot be validated: {0}"
+msgstr "Include deseni doğrulanamayan glob sözdizimi kullanıyor: {0}"
+
+msgid "Included file {0} contains restricted nginx directive: {1}"
+msgstr "Dahil edilen {0} dosyası kısıtlı nginx yönergesi içeriyor: {1}"
+
+msgid "Restricted nginx directives need confirmation: {0} in {1}"
+msgstr "Kısıtlı nginx yönergeleri onay gerektirir: {1} içinde {0}"
+
+msgid "Saving restricted nginx directives requires two-factor authentication on your account: {0} in {1}"
+msgstr "Kısıtlı nginx yönergelerini kaydetmek hesabınızda iki aşamalı kimlik doğrulama gerektirir: {1} içinde {0}"
+
+msgid "This remote node feed carries stored secrets and requires a token with write scope"
+msgstr "Bu uzak düğüm akışı kayıtlı gizli bilgiler taşır ve yazma kapsamlı bir belirteç gerektirir"
+
+msgid "The plugin id {0} is reserved for official Nginx UI plugins"
+msgstr "{0} eklenti kimliği resmi Nginx UI eklentileri için ayrılmıştır"
+
+msgid "Plugin package is signed by key {0}, which this node does not trust, and developer mode is off"
+msgstr "Eklenti paketi, bu düğümün güvenmediği {0} anahtarıyla imzalanmış ve geliştirici modu kapalı"
+
+msgid "Plugin version {0} was withdrawn from the catalog and is not pushed to nodes"
+msgstr "{0} eklenti sürümü katalogdan geri çekildi ve düğümlere gönderilmiyor"
+
+msgid "Enter the API token again to save a different endpoint, proxy or API type"
+msgstr "Farklı bir uç nokta, proxy veya API türü kaydetmek için API belirtecini yeniden girin"
+
+msgid "Too many failed attempts, please try again later"
+msgstr "Çok fazla başarısız deneme, lütfen daha sonra tekrar deneyin"
+
+msgid "AI"
+msgstr "Yapay Zeka"
+
+msgid "Backup and storage"
+msgstr "Yedekleme ve depolama"
+
+msgid "Buy a license"
+msgstr "Lisans satın al"
+
+msgid "Categories"
+msgstr "Kategoriler"
+
+msgid "Commercial"
+msgstr "Ticari"
+
+msgid "Config templates"
+msgstr "Yapılandırma şablonları"
+
+msgid "Free trial of %{days} days"
+msgstr "%{days} günlük ücretsiz deneme"
+
+msgid "Integrations"
+msgstr "Entegrasyonlar"
+
+msgid "Language packs"
+msgstr "Dil paketleri"
+
+msgid "Monitoring"
+msgstr "İzleme"
+
+msgid "New"
+msgstr "Yeni"
+
+msgid "Note from the author"
+msgstr "Yazarın notu"
+
+msgid "Paid license"
+msgstr "Ücretli lisans"
+
+msgid "Price"
+msgstr "Fiyat"
+
+msgid "Security"
+msgstr "Güvenlik"
+
+msgid "Subscription"
+msgstr "Abonelik"
+
+msgid "Tools"
+msgstr "Araçlar"
+
+msgid "Traffic and upstreams"
+msgstr "Trafik ve upstream'ler"
+
+msgid "Waiting for the node to restart and report the target version..."
+msgstr "Düğümün yeniden başlaması ve hedef sürümü bildirmesi bekleniyor..."
+
+msgid "Invalid upgrade target. Check for a release before upgrading."
+msgstr "Geçersiz yükseltme hedefi. Yükseltmeden önce bir sürüm olup olmadığını kontrol edin."
+
+msgid "The upgrade timed out. Check the node logs."
+msgstr "Yükseltme zaman aşımına uğradı. Düğüm günlüklerini kontrol edin."
+
+msgid "The node returned an invalid version response."
+msgstr "Düğüm geçersiz bir sürüm yanıtı döndürdü."
+
+msgid "The node returned an invalid upgrade response."
+msgstr "Düğüm geçersiz bir yükseltme yanıtı döndürdü."
+
+msgid "The node failed to upgrade."
+msgstr "Düğüm yükseltilemedi."
+
+msgid "The upgrade connection failed. Check authentication and network connectivity."
+msgstr "Yükseltme bağlantısı başarısız oldu. Kimlik doğrulamayı ve ağ bağlantısını kontrol edin."
+
+msgid "The upgrade connection closed before installation started."
+msgstr "Yükseltme bağlantısı, kurulum başlamadan kapandı."
+
+msgid "Could not verify the upgrade. Check the node version and service status."
+msgstr "Yükseltme doğrulanamadı. Düğüm sürümünü ve hizmet durumunu kontrol edin."
+
+msgid "Indexing batches shrink to fit the available memory"
+msgstr "Dizinleme toplu işlemleri kullanılabilir belleğe sığacak şekilde küçülür"
+
+msgid "More memory indexes large logs faster"
+msgstr "Daha fazla bellek, büyük günlükleri daha hızlı dizinler"
+
+msgid "About a quarter of the size of the logs"
+msgstr "Günlük boyutunun yaklaşık dörtte biri"
+
+msgid "CPU time to parse and store one log line"
+msgstr "Bir günlük satırını ayrıştırıp depolamak için CPU süresi"
+
+msgid "Index Size"
+msgstr "Dizin Boyutu"
+
+msgid "Per log line, about 0.16x the raw log"
+msgstr "Günlük satırı başına, ham günlüğün yaklaşık 0,16 katı"
+
+msgid "Log Viewer Page"
+msgstr "Günlük Görüntüleyici Sayfası"
+
+msgid "Results with IP and path facets and statistics"
+msgstr "IP ve yol kırılımları ile istatistikler içeren sonuçlar"
+
+msgid "* Measured on Apple M2 Pro with 100,000 combined-format log lines. Actual performance may vary based on your hardware configuration."
+msgstr "* Apple M2 Pro üzerinde 100.000 combined biçimli günlük satırıyla ölçülmüştür. Gerçek performans donanım yapılandırmanıza göre değişebilir."
+
+msgid "Compressed columnar storage"
+msgstr "Sıkıştırılmış sütunlu depolama"
+
+msgid "Field filters in the search box"
+msgstr "Arama kutusunda alan filtreleri"
+
+msgid "Substring search over the raw line"
+msgstr "Ham satır üzerinde alt dize araması"
+
+msgid "Error log indexing"
+msgstr "Hata günlüğü dizinleme"
+
+msgid "Words match anywhere in the line; all of them must match. Quotes keep a phrase together, a leading - excludes."
+msgstr "Kelimeler satırın herhangi bir yerinde eşleşir; hepsi eşleşmelidir. Tırnak işaretleri bir ifadeyi bir arada tutar, baştaki - hariç tutar."
+
+msgid "Search, e.g. status:5xx ip:10.0.0.0/8 -bot"
+msgstr "Ara, örn. status:5xx ip:10.0.0.0/8 -bot"
+
+msgid "Level"
+msgstr "Düzey"
+
+msgid "Client"
+msgstr "İstemci"
+
+msgid "Searched as plain text: %{tokens}"
+msgstr "Düz metin olarak arandı: %{tokens}"
+
+msgid "Search, e.g. level:error upstream timed out -ip:10.0.0.1"
+msgstr "Ara, örn. level:error upstream timed out -ip:10.0.0.1"
+
+msgid "%{total} entries found in %{took} ms"
+msgstr "%{took} ms içinde %{total} girdi bulundu"
+
+msgid "Dry run completed for %{node}. No changes were made."
+msgstr "%{node} için deneme çalıştırması tamamlandı. Hiçbir değişiklik yapılmadı."
+
+msgid "Upgrade failed for %{node}: %{error}"
+msgstr "%{node} yükseltmesi başarısız oldu: %{error}"
+
+msgid "Upgrade cancelled."
+msgstr "Yükseltme iptal edildi."
+
+msgid "Managed on the marketplace page. The official catalog is always used."
+msgstr "Pazaryeri sayfasından yönetilir. Resmi katalog her zaman kullanılır."
+
+msgid "Read resources and runtime status through the management API. Stored secrets such as credentials and private keys are hidden from read-only tokens."
+msgstr "Kaynakları ve çalışma durumunu yönetim API'si üzerinden okuyun. Kimlik bilgileri ve özel anahtarlar gibi saklanan gizli bilgiler salt okunur belirteçlerden gizlenir."
+
+msgid "Use read-only Nginx UI MCP tools. Private keys are hidden from read-only tokens."
+msgstr "Salt okunur Nginx UI MCP araçlarını kullanın. Özel anahtarlar salt okunur belirteçlerden gizlenir."
+
+msgid "Pricing per million tokens"
+msgstr "Milyon belirteç başına fiyat"
+
+msgid "This template comes from the plugin %{id} and cannot be changed. Copy it as a snippet to change it, and review its directives before using it."
+msgstr "Bu şablon %{id} eklentisinden gelir ve değiştirilemez. Değiştirmek için parçacık olarak kopyalayın ve kullanmadan önce yönergelerini gözden geçirin."
+
+msgid "This snippet starts from a template of the plugin %{id}. Review its directives before saving it. Once saved, it is a snippet of your own and no longer follows the plugin."
+msgstr "Bu parçacık %{id} eklentisinin bir şablonundan başlar. Kaydetmeden önce yönergelerini gözden geçirin. Kaydedildiğinde size ait bir parçacık olur ve artık eklentiyi izlemez."
+
+msgid "Templates"
+msgstr "Şablonlar"
+
+msgid "This plugin was taken down from the catalog, and this version was withdrawn. Disable or uninstall it."
+msgstr "Bu eklenti katalogdan kaldırıldı ve bu sürüm geri çekildi. Devre dışı bırakın veya kaldırın."
+
+msgid "This plugin was taken down from the catalog and receives no more updates."
+msgstr "Bu eklenti katalogdan kaldırıldı ve artık güncelleme almayacak."
+
+msgid "Reason: %{reason}"
+msgstr "Neden: %{reason}"
+
+msgid "The publisher withdrew this version. Update it, or disable it until a new version is available."
+msgstr "Yayıncı bu sürümü geri çekti. Güncelleyin veya yeni bir sürüm çıkana kadar devre dışı bırakın."
+
+msgid "This version asks for access the installed version does not have"
+msgstr "Bu sürüm, yüklü sürümde olmayan erişim istiyor"
+
+msgid "This update asks for access the installed version does not have"
+msgstr "Bu güncelleme, yüklü sürümde olmayan erişim istiyor"
+
+msgid "This is a commercial plugin, licensed by its vendor"
+msgstr "Bu, satıcısı tarafından lisanslanan ticari bir eklentidir"
+
+msgid "New permissions: %{list}"
+msgstr "Yeni izinler: %{list}"
+
+msgid "New addresses it may reach: %{list}"
+msgstr "Erişebileceği yeni adresler: %{list}"
+
+msgid "It may now reach any address instead of a fixed list."
+msgstr "Artık sabit bir liste yerine herhangi bir adrese erişebilir."
+
+msgid "No longer requested: %{list}"
+msgstr "Artık istenmeyenler: %{list}"
+
+msgid "Addresses it no longer reaches: %{list}"
+msgstr "Artık erişmediği adresler: %{list}"
+
+msgid "This version asks for less access than the installed version"
+msgstr "Bu sürüm, yüklü sürümden daha az erişim istiyor"
+
+msgid "Offered by %{source} instead of the official catalog."
+msgstr "Resmi katalog yerine %{source} tarafından sunuluyor."
+
+msgid "Changes in this update"
+msgstr "Bu güncellemedeki değişiklikler"
+
+msgid "Catalogs are merged in order, and the first source that offers a plugin wins. The official catalog cannot be removed. Move a mirror above it to install from the mirror first."
+msgstr "Kataloglar sırayla birleştirilir ve bir eklentiyi sunan ilk kaynak geçerli olur. Resmi katalog kaldırılamaz. Eklentileri önce bir aynadan yüklemek için o aynayı resmi kataloğun üstüne taşıyın."
+
+msgid "This version asks for permissions your earlier approval did not cover, marked as new below. Approve only if you trust the author."
+msgstr "Bu sürüm, önceki onayınızın kapsamadığı izinler istiyor, aşağıda yeni olarak işaretlenmiştir. Yalnızca yazara güveniyorsanız onaylayın."
+
+msgid "Dry run completed. No changes were made."
+msgstr "Deneme çalıştırması tamamlandı. Hiçbir değişiklik yapılmadı."
+
+#~ msgid "Webauthn"
+#~ msgstr "WebAuthn"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts in "
+#~ "ban threshold minutes,"
+#~ msgstr ""
+#~ "Bir IP'den başarısız oturum açma denemesi sayısı, engelleme eşiği "
+#~ "dakikaları içinde maksimum denemeye ulaşırsa,"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr ""
+#~ "Sistem ad sunucularını geçersiz kılmak için özyineli ad sunucularını "
+#~ "ayarlayın"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "Özel MMDB şu anda etkin"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "IndexCustomMMDB Dosya Adı"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "[nginx_log].GeoMapPath üzerinden yapılandırılmıştır. 100000_full.json gibi "
+#~ "adlara sahip dosyaları bu dizinde saklayın."
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "Varsayılan olarak yalnızca dünya haritası sağlanır. Lütfen Çin ve il sınır "
+#~ "dosyalarını kendiniz indirip bu dizine yerleştirin."
+
+#~ msgid "Global health check controls"
+#~ msgstr "Genel sağlık denetimi kontrolleri"
+
+msgid "No file matches the search"
+msgstr "Aramayla eşleşen dosya yok"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+"Dosya adı .conf ile bitmeli ve yalnızca harfler, rakamlar, noktalar, "
+"tireler ve alt çizgiler içermelidir"
+
+msgid "Snippet not found"
+msgstr "Kod parçası bulunamadı"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "Kod parçası 256 KiB sınırını aşıyor"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "Kod parçasının başlığı ayrıştırılamıyor: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "Kod parçası hâlâ {0} tarafından ekleniyor"
+
+msgid "A snippet with this file name already exists"
+msgstr "Bu dosya adına sahip bir snippet zaten mevcut"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "{0} değişkeni geçersiz: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "İçerik şablon olarak ayrıştırılamıyor: {0}"
+
+msgid "Snippets"
+msgstr "Snippets"
+
+msgid "Create Snippet"
+msgstr "Oluştur"
+
+msgid "Built-in Template"
+msgstr "Yerleşik Şablon"
+
+msgid "Edit Snippet"
+msgstr "Snippet'i Düzenle"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "%{count} yapılandırmada kullanılıyor"
+msgstr[1] "%{count} yapılandırmada kullanılıyor"
+
+msgid "Site Card Click URL"
+msgstr "Site Kartı Tıklama URL'si"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr ""
+"Bu site kartı açılırken kullanılan isteğe bağlı mutlak HTTP/HTTPS URL'si. "
+"Boşsa, varsayılan site URL'si kullanılır."
+
+msgid "Built-in"
+msgstr "Dahili"
+
+msgid "Snippet"
+msgstr "Kod parçası"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include, siteyi snippets/%{file} ile bağlantılı tutar; böylece snippet'taki "
+"sonraki değişiklikler uygulanır. Insert ise içeriği siteye kopyalar."
+
+msgid "Insert"
+msgstr "Ekle"
 
 msgid "Read Only"
 msgstr "Salt okunur"
@@ -11362,6 +13847,9 @@ msgstr "Kullanılmıyor"
 msgid "Max Age"
 msgstr "Maksimum Yaş"
 
+msgid "Options"
+msgstr "Seçenekler"
+
 msgid "Remove option"
 msgstr "Seçeneği kaldır"
 
@@ -11522,256 +14010,399 @@ msgstr "Seçenek değerleri benzersiz olmalıdır."
 msgid "Choose the default option."
 msgstr "Varsayılan seçeneği seçin."
 
-msgid "Do you want to %{action} this stream?"
-msgstr "Bu akışı %{action} etmek istiyor musunuz?"
-
-msgid "Delete stream: %{stream_name}"
-msgstr "Akışı sil: %{stream_name}"
-
-msgid "Added successfully"
-msgstr "Başarıyla eklendi"
-
-msgid "Add Stream"
-msgstr "Akış Ekle"
-
-msgid "%{count} streams selected"
-msgstr "%{count} akış seçildi"
-
-msgid "Development Mode"
-msgstr "Geliştirme modu"
-
-msgid "Official Document"
-msgstr "Resmi Belge"
-
-msgid "Sponsor"
-msgstr "Sponsor"
-
-msgid "Project Team"
-msgstr "Proje Ekibi"
-
-msgid "License"
-msgstr "Lisans"
-
-msgid "View Third-party Components"
-msgstr "Üçüncü Taraf Bileşenleri Görüntüle"
-
-msgid "View version details and core information about this Nginx UI instance."
-msgstr "Bu Nginx UI örneğinin sürüm ayrıntılarını ve temel bilgilerini görüntüleyin."
-
-msgid "Run built-in diagnostics to validate environment and service readiness."
-msgstr ""
-"Ortam ve servis hazırlık durumunu doğrulamak için yerleşik tanılamayı "
-"çalıştırın."
-
-msgid "Check release updates and execute upgrade operations when available."
-msgstr ""
-"Sürüm güncellemelerini kontrol edin ve mevcut olduğunda yükseltme "
-"işlemlerini yürütün."
-
-msgid "Review third-party licenses and open source component attributions."
-msgstr "Üçüncü taraf lisanslarını ve açık kaynak bileşen atıflarını inceleyin."
-
-msgid "Total Components"
-msgstr "Toplam Bileşenler"
-
-msgid "Frontend"
-msgstr "Önyüz"
-
-msgid "License Types"
-msgstr "Lisans Türleri"
-
-msgid "License Distribution"
-msgstr "Lisans Dağılımı"
-
-msgid "components"
-msgstr "bileşenler"
-
-msgid "All Components"
-msgstr "Tüm Bileşenler"
-
-msgid "Dev"
-msgstr "Dev"
-
-msgid "Reinstall"
-msgstr "Yeniden Yükle"
-
-msgid "Core Upgrade"
-msgstr "Çekirdek Yükseltme"
-
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "Bu sayfada Nginx UI güncellemesini kontrol edebilirsiniz."
-
-msgid "Current Version"
-msgstr "Mevcut sürüm"
-
-msgid "Arch"
-msgstr "Mimari"
-
-msgid "Executable Path"
-msgstr "Yürütülebilir Dosya Yolu"
-
-msgid "Last checked at"
-msgstr "En son şu tarihte kontrol edildi"
-
-msgid "You are using the latest version"
-msgstr "En son sürümü kullanıyorsunuz"
-
-msgid "New version released"
-msgstr "Yeni sürüm yayınlandı"
-
-msgid "Release Note"
-msgstr "Sürüm Notları"
-
-msgid "Hide Assistant"
-msgstr "Asistanı gizle"
-
-msgid "Show Assistant"
-msgstr "Asistanı Göster"
-
-msgid "Connection lost for this terminal. Please refresh if needed."
-msgstr "Bu terminal için bağlantı kesildi. Gerekirse yenileyin."
+msgid "Certificate Relocated"
+msgstr "Sertifika taşındı"
 
 msgid ""
-"This is a simulated terminal running entirely in your browser. Commands are "
-"answered locally and never reach a server."
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
 msgstr ""
-"Bu, tamamen tarayıcınızda çalışan simüle edilmiş bir terminaldir. Komutlar "
-"yerel olarak yanıtlanır ve asla bir sunucuya ulaşmaz."
+"%{name} sertifikası artık %{path} içinde saklanıyor. %{previous_path} "
+"yükleyen siteleri ona yönlendirin"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "Yol mevcut, ancak dosya bir sertifika değil"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "Yol mevcut, ancak dosya bir özel anahtar değil"
+
+msgid "MFA Enrollment"
+msgstr "MFA kayıt durumu"
+
+msgid "Enrolled"
+msgstr "Kayıtlı"
+
+msgid "Not enrolled"
+msgstr "Kayıtlı değil"
+
+msgid "Pending enrollment"
+msgstr "Kayıt bekleniyor"
+
+msgid "Invalid request: {0}"
+msgstr "Geçersiz istek: {0}"
 
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
 msgstr ""
-"Bu terminale, localhost olmayan bir alan adında güvenli olmayan bir HTTP "
-"bağlantısı üzerinden erişiyorsunuz. Bu, hassas bilgilerin açığa çıkmasına "
-"neden olabilir."
+"Geçersiz ingress adı: 1-40 arası küçük harf, rakam ve tire kullanın; harf "
+"veya rakam ile başlayıp harf veya rakam ile bitmelidir"
 
-msgid "Create Upstream"
-msgstr "Upstream Oluştur"
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr "Geçersiz sahip: 1-64 harf, rakam, nokta, alt çizgi ve tire kullanın"
 
-msgid "View Upstream %{name}"
-msgstr "upstream %{name} görüntüle"
+msgid "Invalid host: {0}"
+msgstr "Geçersiz ana makine: {0}"
 
-msgid "Edit Upstream %{name}"
-msgstr "Upstream %{name} Düzenle"
+msgid "Invalid backend {0}: {1}"
+msgstr "Geçersiz Backend {0}: {1}"
 
-msgid "Round Robin (default)"
-msgstr "Round Robin (varsayılan)"
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "Arka uç sunucusu {0} izin verilen arka uç aralıklarının dışında"
 
-msgid "Least Connections (least_conn)"
-msgstr "En Az Bağlantı (least_conn)"
+msgid "Invalid route {0}: {1}"
+msgstr "Geçersiz rota {0}: {1}"
 
-msgid "IP Hash (ip_hash)"
-msgstr "IP Hash (ip_hash)"
+msgid "Invalid tls: {0}"
+msgstr "Geçersiz TLS: {0}"
 
-msgid "Hash (hash)"
-msgstr "Hash (hash)"
+msgid "Invalid policy: {0}"
+msgstr "Geçersiz politika: {0}"
 
-msgid "Random (random)"
-msgstr "Rastgele (random)"
+msgid "Server {0} not found in backend {1}"
+msgstr "Sunucu {0}, {1} arka uçta bulunamadı"
 
-msgid "Upstream %{name} saved and Nginx reloaded"
-msgstr "Upstream %{name} kaydedildi ve Nginx yeniden yüklendi"
+msgid "Ingress {0} not found"
+msgstr "Ingress {0} bulunamadı"
 
-msgid "Sites use it as proxy_pass http://%{name};"
-msgstr "Siteler bunu proxy_pass http://%{name} olarak kullanır;"
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr ""
+"Ingress {0} sahibi {1} olarak görünüyor; devralmak için force parametresini "
+"kullanın"
 
-msgid "Load Balancing Method"
-msgstr "Yük Dengeleme Yöntemi"
+msgid "Host {0} is already served by ingress {1}"
+msgstr "Host {0} zaten ingress {1} tarafından sunulmaktadır"
 
-msgid "Hash Key"
-msgstr "Hash Anahtarı"
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "Site {0} zaten var ve bu ingress tarafından yönetilmiyor"
 
-msgid "Consistent Hashing"
-msgstr "Tutarlı Hashing"
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "ingress {0} için nesil {1} değerine ulaşması beklenirken zaman aşımı oluştu"
 
-msgid "Servers"
-msgstr "Sunucular"
+msgid "Apply failed: {0}"
+msgstr "Uygulama başarısız: {0}"
 
-msgid "Not available with this load balancing method"
-msgstr "Bu yük dengeleme yöntemiyle kullanılamaz"
+msgid "Certificate not ready: {0}"
+msgstr "Sertifika hazır değil: {0}"
 
-msgid "Keepalive"
-msgstr "Keepalive"
+msgid "Not implemented"
+msgstr "Uygulanmadı"
 
 msgid ""
-"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
-"need proxy_http_version 1.1 and an empty Connection header."
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
 msgstr ""
-"Her worker için açık tutulacak boşta bağlantılar; 0 devre dışı bırakır. "
-"Proxy'lenen siteler ayrıca proxy_http_version 1.1 ve boş bir Connection "
-"başlığına ihtiyaç duyar."
+"Site, ingress {0} tarafından yönetilmektedir; bunun yerine ingress'i "
+"değiştirin veya değişikliği zorlayın"
 
-msgid "Connections"
-msgstr "Bağlantılar"
+msgid "Ingresses"
+msgstr "Ingresses"
 
-msgid "Additional Directives"
-msgstr "Ek Direktifler"
+msgid "HTTP only"
+msgstr "Yalnızca HTTP"
 
-msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
-msgstr "Satır başına bir yönerge, örneğin keepalive_timeout veya keepalive_requests."
+msgid "Expired %{date}"
+msgstr "Süresi doldu %{date}"
 
-msgid "Referenced By"
-msgstr "Referans Verenler"
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date} (%{days} gün kaldı)"
 
-msgid "No site uses this upstream yet."
-msgstr "Henüz hiçbir site bu upstream'i kullanmıyor."
+msgid "Health"
+msgstr "Sağlık"
 
-msgid "Configuration Preview"
-msgstr "Yapılandırma Önizlemesi"
+msgid "Path Prefix"
+msgstr "Yol Öneki"
 
-msgid "Enable server %{address}"
-msgstr "%{address} sunucusunu etkinleştir"
+msgid "Allowed Sources"
+msgstr "İzin Verilen Kaynaklar"
 
-msgid "Disable server %{address}"
-msgstr "%{address} sunucusunu devre dışı bırak"
+msgid "Last Transition"
+msgstr "Son Geçiş"
+
+msgid "Drained"
+msgstr "Tükenmiş"
+
+msgid "Healthy"
+msgstr "Sağlıklı"
+
+msgid "Unhealthy"
+msgstr "Sağlıksız"
 
 msgid ""
-"Create shared upstream groups with load balancing and reuse them across "
-"sites."
-msgstr ""
-"Yük dengelemeli paylaşılan upstream grupları oluşturun ve bunları birden "
-"fazla sitede yeniden kullanın."
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr "Oluşturulan site yüklenemedi. İlk başarılı uygulamada yazılır."
 
-msgid "Monitor the health of every proxy target and toggle its health check."
-msgstr "Her proxy hedefinin sağlığını izleyin ve sağlık kontrolünü açıp kapatın."
+msgid "Reconcile Now"
+msgstr "Şimdi mutabakat yap"
 
-msgid "Socket"
-msgstr "Soket"
+msgid "The last apply failed; the previous config is still live"
+msgstr "Son uygulama başarısız oldu; önceki yapılandırma hâlâ aktif."
 
-msgid "Direct"
-msgstr "Doğrudan"
+msgid "Owner"
+msgstr "Sahip"
 
-msgid "Health Status"
-msgstr "Sağlık Durumu"
+msgid "External ID"
+msgstr "Harici ID"
 
-msgid "Last Check"
-msgstr "Son Kontrol"
+msgid "Generation"
+msgstr "Nesil"
 
-msgid "Upstream health checks are globally paused"
-msgstr "Upstream sağlık denetimleri genel olarak duraklatıldı"
+msgid "%{observed} applied of %{generation}"
+msgstr "%{generation} uygulanan %{observed}"
+
+msgid "Generated Site"
+msgstr "Oluşturulan Site"
+
+msgid "Last Applied"
+msgstr "Son uygulanan"
+
+msgid "Config Hash"
+msgstr "Yapılandırma hash'i"
+
+msgid "Labels"
+msgstr "Etiketler"
+
+msgid "Hosts"
+msgstr "Hosts"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "Mod"
+
+msgid "View certificate"
+msgstr "Sertifikayı görüntüle"
+
+msgid "Challenge"
+msgstr "Meydan Okuma"
+
+msgid "Redirect to HTTPS"
+msgstr "HTTPS'ye yönlendir"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "Sertifika verilene kadar yalnızca HTTP dinleyicisi sunulur."
+
+msgid "Backends"
+msgstr "Arka uçlar"
+
+msgid "Routes"
+msgstr "Rotalar"
+
+msgid "Policy default"
+msgstr "Varsayılan politika"
+
+msgid "Policy"
+msgstr "Politika"
+
+msgid "Everyone"
+msgstr "Herkes"
+
+msgid "Rate Limit"
+msgstr "Hız sınırı"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "istemci başına %{rps} istek/sn, burst %{burst}"
+
+msgid "Max Body Size"
+msgstr "Maksimum Gövde Boyutu"
+
+msgid "Extra Headers"
+msgstr "Ek Başlıklar"
+
+msgid "Conditions"
+msgstr "Koşullar"
+
+msgid "True"
+msgstr "Doğru"
+
+msgid "False"
+msgstr "Yanlış"
+
+msgid "Generated Site Config"
+msgstr "Oluşturulan Site Yapılandırması"
+
+msgid "Open in site editor"
+msgstr "Site düzenleyicisinde aç"
+
+msgid "Not ready"
+msgstr "Hazır değil"
+
+msgid "The latest spec has not been applied yet"
+msgstr "En son özellik henüz uygulanmadı"
+
+msgid "Applying"
+msgstr "Uygulanıyor"
+
+msgid "Ready"
+msgstr "Hazır"
+
+msgid "Degraded"
+msgstr "Hızı Düşük"
+
+msgid "Config Applied"
+msgstr "Yapılandırma uygulandı"
+
+msgid "Certificate Ready"
+msgstr "Sertifika hazır"
+
+msgid "Backends Healthy"
+msgstr "Arka uçlar sağlıklı"
+
+msgid "Issued automatically (ACME)"
+msgstr "Otomatik olarak verildi (ACME)"
+
+msgid "All owners"
+msgstr "Tüm sahipler"
+
+msgid "Reconcile of %{name} queued"
+msgstr "%{name} mutabakatı sıraya alındı"
+
+msgid "Delete ingress %{name}?"
+msgstr "ingress %{name} silinsin mi?"
 
 msgid ""
-"Per-target selections are preserved. Resume probes from Health Check "
-"preferences."
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
 msgstr ""
-"Hedef bazlı seçimler korunur. Yoklamaları Sağlık Denetimi tercihlerinden "
-"sürdürün."
+"Bu ingress %{owner} tarafından sahiplenilmiştir. Controller'ı büyük "
+"olasılıkla bir sonraki senkronizasyonda yeniden oluşturacaktır; kalıcı "
+"olarak silmek için controller'dan kaldırın."
 
-msgid "Hash"
-msgstr "Hash"
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "Oluşturulan site ve upstream dosyaları kaldırılır ve nginx yeniden yüklenir."
 
-msgid "Random"
-msgstr "Rastgele"
+msgid "Also delete the certificate"
+msgstr "Sertifikayı da sil"
 
-msgid "Load Balancing"
-msgstr "Yük Dengeleme"
+msgid "Ingress %{name} deleted"
+msgstr "Ingress %{name} silindi"
 
-msgid "Defined In"
-msgstr "Tanımlandığı yer"
+msgid "Ingress"
+msgstr "Ingress"
 
-msgid "Matched upstreams: %{groups}, servers: %{servers}"
-msgstr "Eşleşen upstream'ler: %{groups}, sunucular: %{servers}"
+msgid "Phase"
+msgstr "Aşama"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} sağlıklı"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} sunucu"
+msgstr[1] "%{total} sunucu"
+
+msgid "%{count} down"
+msgstr "%{count} kaldı"
+
+msgid "Filter by owner"
+msgstr "Sahibine göre filtrele"
+
+msgid "Applied generation / latest generation"
+msgstr "Uygulanan nesil / En son nesil"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "gen %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "Mutabakat"
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+"Ingress'ler, harici denetleyiciler tarafından Ingress API aracılığıyla "
+"yayınlanan ters proxy girişleridir. Nginx UI her birini yönetilen bir site "
+"ve upstream olarak işler, sertifikasını verir ve durumunu burada bildirir. "
+"Bunları ilgili denetleyicilerinde değiştirin; burada yapılan değişiklikler "
+"bir sonraki uzlaştırma tarafından üzerine yazılır."
+
+msgid "Learn more"
+msgstr "Daha fazla bilgi"
+
+msgid "No ingresses yet"
+msgstr "Henüz ingress yok"
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"Bir dağıtım platformu gibi bir denetleyici, PUT /api/ingresses/:name ile "
+"kümе düğümü olarak veya API anahtarıyla kimlik doğrulaması yaparak "
+"ingresses oluşturur. Depolandıkları anda burada görünürler."
+
+msgid "Read the Ingress API guide"
+msgstr "Ingress API kılavuzunu okuyun"
+
+msgid "Search by name, host or external ID"
+msgstr "Ada, ana bilgisayara veya harici kimliğe göre ara"
+
+msgid "Search ingresses"
+msgstr "Ingress ara"
+
+msgid "No ingress matches the filter"
+msgstr "Filtreyle eşleşen Ingress yok"
+
+msgid "Managed by ingress %{name}"
+msgstr "ingress %{name} tarafından yönetiliyor"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr ""
+"Değişiklikler bir sonraki reconcile tarafından üzerine yazılacaktır. Bunun "
+"yerine Ingress'i controller'ında düzenleyin."
+
+msgid "View ingress"
+msgstr "Ingress'i görüntüle"
+
+msgid "Edit anyway"
+msgstr "Yine de düzenle"
+
+msgid "Ingress: %{name}"
+msgstr "Ingress: %{name}"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "Bir ingress tarafından yönetilen %{count} siteyi dahil et"
+msgstr[1] "Ingress'ler tarafından yönetilen %{count} siteyi dahil et"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0}, silinirken güncellendi"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "Upstream {0} zaten mevcut ve bu ingress tarafından yönetilmiyor"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "ingress {0} silinmesi beklenirken zaman aşımına uğradı"
+
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "{0} ile başlayan upstream adları ingresses için ayrılmıştır"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr ""
+"Upstream {0}, ingress {1} tarafından yönetiliyor; bunun yerine ingress'i "
+"değiştirin veya değişikliği zorlayın"
 
 msgid ""
 "Ingress %{name} owns this upstream. Change the ingress instead; its next "
@@ -11780,71 +14411,87 @@ msgstr ""
 "Ingress %{name} bu upstream'e sahiptir. Bunun yerine ingress'i değiştirin; "
 "bir sonraki uygulaması burada yapılan değişikliklerin üzerine yazar."
 
-msgid "Server %{address} enabled"
-msgstr "Sunucu %{address} etkinleştirildi"
+msgid "View Upstream %{name}"
+msgstr "upstream %{name} görüntüle"
 
-msgid "Server %{address} disabled"
-msgstr "%{address} sunucusu devre dışı bırakıldı"
+msgid "Recovery codes downloaded"
+msgstr "Kurtarma kodları indirildi"
 
-msgid "Disable the last active server of %{name}?"
-msgstr "%{name} içindeki son aktif sunucu devre dışı bırakılsın mı?"
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr "MFA kurulumu tamamlandı. Devam etmeden önce kurtarma kodlarınızı kaydedin."
 
-msgid ""
-"No other primary server of this upstream is enabled. Requests will fail "
-"unless a backup server takes over."
-msgstr ""
-"Bu upstream'ın başka hiçbir birincil sunucusu etkin değil. Yedek bir sunucu "
-"devralmadığı sürece istekler başarısız olur."
+msgid "MFA session expired. Please sign in again."
+msgstr "MFA oturumu sona erdi. Lütfen tekrar giriş yapın."
 
-msgid "Upstream %{name} is still in use"
-msgstr "Upstream %{name} hâlâ kullanımda"
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "MFA gerekli. Devam etmek için bir doğrulayıcı veya passkey kurun."
 
-msgid "Point these configurations at another upstream before deleting it:"
-msgstr "Silmeden önce bu yapılandırmaları başka bir upstream'e yönlendirin:"
+msgid "Verify your MFA method to continue signing in."
+msgstr "Oturum açmaya devam etmek için MFA yönteminizi doğrulayın."
 
-msgid "Delete upstream %{name}?"
-msgstr "Upstream %{name} silinsin mi?"
-
-msgid "%{path} will be removed and Nginx reloaded."
-msgstr "%{path} kaldırılacak ve Nginx yeniden yüklenecek."
-
-msgid "Upstream %{name} deleted"
-msgstr "Upstream %{name} silindi"
+msgid "Back to sign in"
+msgstr "Giriş sayfasına geri dön"
 
 msgid ""
-"An upstream group shares its servers and load balancing method across "
-"sites. Choose it as the proxy target when setting up a site; later changes "
-"here apply to every site that uses it."
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
 msgstr ""
-"Bir upstream grubu, sunucularını ve yük dengeleme yöntemini siteler "
-"arasında paylaşır. Bir site ayarlarken proxy hedefi olarak seçin; buradaki "
-"sonraki değişiklikler onu kullanan her siteye uygulanır."
+"MFA politikalarını yönetmeden veya başka bir kullanıcıyı sıfırlamadan önce "
+"kendi hesabınızda MFA'yı etkinleştirin."
 
-msgid "Files are stored in %{dir}."
-msgstr "Dosyalar %{dir} konumunda saklanır."
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "Dosya içeriği geçerli PEM veya htpasswd verisi olmalıdır"
 
-msgid "Search by name or IP:port"
-msgstr "Ada veya IP:port ile ara"
+msgid "MFA enrollment is required"
+msgstr "MFA kaydı gereklidir"
 
-msgid "Search upstreams by name or server address"
-msgstr "Upstream'ları ada veya sunucu adresine göre ara"
+msgid "MFA verification is required"
+msgstr "MFA doğrulaması gereklidir"
 
-msgid "No upstream group matches the search"
-msgstr "Aramayla eşleşen upstream grubu yok"
+msgid "Cannot remove the last required MFA method"
+msgstr "Son gerekli MFA yöntemi kaldırılamıyor"
 
-msgid "Upstreams Defined in Other Files"
-msgstr "Diğer Dosyalarda Tanımlanan Upstream'ler"
+msgid "TOTP disabled"
+msgstr "TOTP devre dışı"
+
+msgid "Replace TOTP"
+msgstr "TOTP'yi Değiştir"
+
+msgid "Disable TOTP for this account?"
+msgstr "Bu hesap için TOTP devre dışı bırakılsın mı?"
+
+msgid "Disable TOTP"
+msgstr "TOTP'yi devre dışı bırak"
 
 msgid ""
-"These upstream blocks live inside site or other configuration files. Edit "
-"their settings in their own file; servers can be switched on and off here. "
-"A block inside a site can be converted to a shared group that other sites "
-"can use too."
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
 msgstr ""
-"Bu upstream blokları, site veya diğer yapılandırma dosyalarının içindedir. "
-"Ayarlarını kendi dosyalarında düzenleyin; sunucuları buradan açıp "
-"kapatabilirsiniz. Bir site içindeki blok, diğer sitelerin de "
-"kullanabileceği paylaşılan bir gruba dönüştürülebilir."
+"Yeni kod doğrulanana kadar mevcut kimlik doğrulayıcınız etkin kalır. Yeni "
+"kurtarma kodları eskilerinin yerini alır."
+
+msgid "MFA Policy"
+msgstr "MFA Politikası"
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr ""
+"Sonraki oturum açmada MFA zorunlu olsun. Kullanıcılar kendi Authenticator "
+"veya Passkey kaydını yapmalıdır."
+
+msgid "Require MFA for all users"
+msgstr "Tüm kullanıcılar için MFA gerektir"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "SSO oturum açma için yerel MFA gerektir"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr ""
+"Yerel MFA doğrulama ve kayıt gereksinimlerini OIDC ve Casdoor oturum açmaya "
+"uygulayın."
 
 msgid "MFA Settings"
 msgstr "MFA Ayarları"
@@ -11857,21 +14504,6 @@ msgstr "Küresel uygulama"
 
 msgid "User enforcement"
 msgstr "Kullanıcı zorunluluğu"
-
-msgid "Optional"
-msgstr "İsteğe bağlı"
-
-msgid "MFA Enrollment"
-msgstr "MFA kayıt durumu"
-
-msgid "Pending enrollment"
-msgstr "Kayıt bekleniyor"
-
-msgid "Enrolled"
-msgstr "Kayıtlı"
-
-msgid "Not enrolled"
-msgstr "Kayıtlı değil"
 
 msgid "MFA policy updated. It takes effect at the next sign-in."
 msgstr "MFA politikası güncellendi. Bir sonraki oturum açmada yürürlüğe girecektir."
@@ -11899,21 +14531,6 @@ msgstr "Bu kullanıcının tüm MFA kimlik bilgileri ve oturumları sıfırlans�
 msgid "Reset MFA"
 msgstr "MFA'yı sıfırla"
 
-msgid "User info updated successfully"
-msgstr "Kullanıcı bilgileri başarıyla güncellendi"
-
-msgid "Passwords do not match"
-msgstr "Şifreler eşleşmiyor"
-
-msgid "Password updated successfully"
-msgstr "Şifre başarıyla güncellendi"
-
-msgid "Personal Information"
-msgstr "Kişisel Bilgiler"
-
-msgid "Update Profile"
-msgstr "Profili Güncelle"
-
 msgid ""
 "MFA is required by the global policy. You cannot remove your last MFA "
 "method."
@@ -11923,44 +14540,6 @@ msgstr ""
 
 msgid "MFA is required for your account. You cannot remove your last MFA method."
 msgstr "Hesabınız için MFA gereklidir. Son MFA yönteminizi kaldıramazsınız."
-
-msgid "Security Settings"
-msgstr "Güvenlik Ayarları"
-
-msgid "Change Password"
-msgstr "Şifreyi Değiştir"
-
-msgid "New Password"
-msgstr "Yeni Şifre"
-
-msgid "Confirm New Password"
-msgstr "Yeni Şifreyi Onayla"
-
-msgid "Update Password"
-msgstr "Şifreyi Güncelle"
-
-msgid "Node %{name} cannot be opened"
-msgstr "Düğüm %{name} açılamıyor"
-
-msgid "Exit workspace"
-msgstr "Çalışma alanından çık"
-
-msgid "New tab"
-msgstr "Yeni sekme"
-
-msgid "Single pane"
-msgstr "Tek bölme"
-
-msgid "Split view"
-msgstr "Bölünmüş görünüm"
-
-msgctxt "Access list rule"
-msgid "Note"
-msgstr "Not"
-
-msgctxt "preference group"
-msgid "Maintenance"
-msgstr "Bakım"
 
 #~ msgid "Are you sure to reset 2FA?"
 #~ msgstr "İki aşamalı doğrulama sıfırlanacaktır. Emin misiniz?"
@@ -11976,41 +14555,3 @@ msgstr "Bakım"
 
 #~ msgid "2FA"
 #~ msgstr "İki aşamalı kimlik doğrulaması(2FA)"
-
-#~ msgid "Webauthn"
-#~ msgstr "WebAuthn"
-
-#~ msgid ""
-#~ "If the number of login failed attempts from a ip reach the max attempts in "
-#~ "ban threshold minutes,"
-#~ msgstr ""
-#~ "Bir IP'den başarısız oturum açma denemesi sayısı, engelleme eşiği "
-#~ "dakikaları içinde maksimum denemeye ulaşırsa,"
-
-#~ msgid "Set the recursive nameservers to override the systems nameservers "
-#~ msgstr ""
-#~ "Sistem ad sunucularını geçersiz kılmak için özyineli ad sunucularını "
-#~ "ayarlayın"
-
-#~ msgid "Custom MMDB is currently enabled"
-#~ msgstr "Özel MMDB şu anda etkin"
-
-#~ msgid "IndexCustomMMDB File Name"
-#~ msgstr "IndexCustomMMDB Dosya Adı"
-
-#~ msgid ""
-#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
-#~ "100000_full.json in this directory."
-#~ msgstr ""
-#~ "[nginx_log].GeoMapPath üzerinden yapılandırılmıştır. 100000_full.json gibi "
-#~ "adlara sahip dosyaları bu dizinde saklayın."
-
-#~ msgid ""
-#~ "Only the world map is provided by default. Please download China and "
-#~ "province boundary files yourself and place them in this directory."
-#~ msgstr ""
-#~ "Varsayılan olarak yalnızca dünya haritası sağlanır. Lütfen Çin ve il sınır "
-#~ "dosyalarını kendiniz indirip bu dizine yerleştirin."
-
-#~ msgid "Global health check controls"
-#~ msgstr "Genel sağlık denetimi kontrolleri"

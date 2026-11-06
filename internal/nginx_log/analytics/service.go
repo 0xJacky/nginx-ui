@@ -3,11 +3,9 @@ package analytics
 import (
 	"context"
 	"fmt"
-	"sync"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
-	"github.com/blevesearch/bleve/v2"
 )
 
 // Service defines the interface for analytics operations
@@ -30,79 +28,17 @@ type Service interface {
 // service implements the Service interface
 type service struct {
 	searcher searcher.SearcherInterface
-
-	counterMu          sync.Mutex
-	cardinalityCounter *searcher.Counter
-	counterShards      []bleve.Index // Shards the counter was built from, to detect swaps
 }
 
-// NewService creates a new analytics service
+// NewService creates a new analytics service. A searcher that also implements
+// searcher.CardinalityCounter and searcher.BlockScanner, as the column store's
+// does, gets exact unique visitor counts and single-pass time buckets.
 func NewService(s searcher.SearcherInterface) Service {
-	// The cardinality counter is created lazily on first use so it always
-	// reflects the searcher's current shards.
-	return &service{
-		searcher: s,
-	}
+	return &service{searcher: s}
 }
 
-// Stop gracefully stops the analytics service and its components
-func (s *service) Stop() error {
-	s.counterMu.Lock()
-	defer s.counterMu.Unlock()
-	if s.cardinalityCounter != nil {
-		counter := s.cardinalityCounter
-		s.cardinalityCounter = nil
-		s.counterShards = nil
-		return counter.Stop()
-	}
-	return nil
-}
-
-// getCardinalityCounter returns a cardinality counter built from the
-// searcher's current shards. After an index rebuild the searcher swaps its
-// shards (and closes the old ones), so a counter built earlier would query
-// stale shard handles; rebuild it whenever the shard set changes.
-func (s *service) getCardinalityCounter() *searcher.Counter {
-	ds, ok := s.searcher.(*searcher.Searcher)
-	if !ok {
-		return nil
-	}
-
-	shards := ds.GetShards()
-	if len(shards) == 0 {
-		return nil
-	}
-
-	s.counterMu.Lock()
-	defer s.counterMu.Unlock()
-
-	if s.cardinalityCounter != nil && sameShards(s.counterShards, shards) {
-		return s.cardinalityCounter
-	}
-
-	if s.cardinalityCounter != nil {
-		// Closing the counter only closes its IndexAlias wrapper, not the
-		// underlying shards, so this is safe while searches are in flight.
-		_ = s.cardinalityCounter.Stop()
-	}
-
-	s.cardinalityCounter = searcher.NewCounter(shards)
-	s.counterShards = append([]bleve.Index(nil), shards...)
-	return s.cardinalityCounter
-}
-
-// sameShards reports whether two shard slices contain the same indexes in order.
-func sameShards(a, b []bleve.Index) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
-}
+// Stop implements Service. The service owns nothing that needs releasing.
+func (s *service) Stop() error { return nil }
 
 // ValidateLogPath validates the log path against whitelist
 func (s *service) ValidateLogPath(logPath string) error {

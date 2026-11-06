@@ -75,7 +75,7 @@ func TestBusPublishForwardsTypeAndData(t *testing.T) {
 	}{
 		{
 			name:  "struct payload",
-			event: Event{Type: TypeNginxLogIndexProgress, Data: NginxLogIndexProgressData{LogPath: "/var/log/nginx/access.log", Progress: 42.5}},
+			event: Event{Type: TypeProcessingStatus, Data: ProcessingStatusData{IndexScanning: true}},
 		},
 		{
 			name:  "string payload",
@@ -83,7 +83,7 @@ func TestBusPublishForwardsTypeAndData(t *testing.T) {
 		},
 		{
 			name:  "nil payload",
-			event: Event{Type: TypeNginxLogIndexReady, Data: nil},
+			event: Event{Type: TypeIndexScanning, Data: nil},
 		},
 	}
 
@@ -206,11 +206,11 @@ func TestGetEventBusReturnsSingleton(t *testing.T) {
 func TestPackagePublishUsesGlobalBus(t *testing.T) {
 	hub := installGlobalHub(t)
 
-	Publish(Event{Type: TypeNginxLogIndexComplete, Data: NginxLogIndexCompleteData{LogPath: "a.log", Success: true}})
+	Publish(Event{Type: TypeProcessingStatus, Data: ProcessingStatusData{IndexScanning: true}})
 
 	assert.Equal(t, []recordedMessage{{
-		event: string(TypeNginxLogIndexComplete),
-		data:  NginxLogIndexCompleteData{LogPath: "a.log", Success: true},
+		event: string(TypeProcessingStatus),
+		data:  ProcessingStatusData{IndexScanning: true},
 	}}, hub.snapshot())
 }
 

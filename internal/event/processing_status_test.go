@@ -1,6 +1,8 @@
 package event
 
 import (
+	"encoding/json"
+	"fmt"
 	"sync"
 	"testing"
 
@@ -16,7 +18,6 @@ func resetProcessingStatus(t *testing.T) *ProcessingStatusManager {
 	reset := func() {
 		m.UpdateIndexScanning(false)
 		m.UpdateAutoCertProcessing(false)
-		m.UpdateNginxLogIndexing(false)
 	}
 	reset()
 	t.Cleanup(reset)
@@ -36,17 +37,12 @@ func TestProcessingStatusUpdatesPublishFullStatus(t *testing.T) {
 		{
 			name:   "index scanning",
 			update: (*ProcessingStatusManager).UpdateIndexScanning,
-			want:   ProcessingStatusData{IndexScanning: true},
+			want:   ProcessingStatusData{IndexScanning: true, Plugins: []PluginActivity{}},
 		},
 		{
 			name:   "auto cert processing",
 			update: (*ProcessingStatusManager).UpdateAutoCertProcessing,
-			want:   ProcessingStatusData{AutoCertProcessing: true},
-		},
-		{
-			name:   "nginx log indexing",
-			update: (*ProcessingStatusManager).UpdateNginxLogIndexing,
-			want:   ProcessingStatusData{NginxLogIndexing: true},
+			want:   ProcessingStatusData{AutoCertProcessing: true, Plugins: []PluginActivity{}},
 		},
 	}
 
@@ -72,7 +68,6 @@ func TestProcessingStatusUnchangedValueDoesNotPublish(t *testing.T) {
 	}{
 		{name: "index scanning", update: (*ProcessingStatusManager).UpdateIndexScanning},
 		{name: "auto cert processing", update: (*ProcessingStatusManager).UpdateAutoCertProcessing},
-		{name: "nginx log indexing", update: (*ProcessingStatusManager).UpdateNginxLogIndexing},
 	}
 
 	for _, tt := range tests {
@@ -92,7 +87,6 @@ func TestProcessingStatusUnchangedValueDoesNotPublish(t *testing.T) {
 
 		m.UpdateIndexScanning(false)
 		m.UpdateAutoCertProcessing(false)
-		m.UpdateNginxLogIndexing(false)
 
 		assert.Empty(t, hub.snapshot())
 	})
@@ -106,26 +100,11 @@ func TestProcessingStatusFlagsAreIndependent(t *testing.T) {
 	m.UpdateAutoCertProcessing(true)
 	m.UpdateIndexScanning(false)
 
-	assert.Equal(t, ProcessingStatusData{AutoCertProcessing: true}, m.GetCurrentStatus())
+	assert.Equal(t, ProcessingStatusData{AutoCertProcessing: true, Plugins: []PluginActivity{}}, m.GetCurrentStatus())
 	assert.Equal(t, []recordedMessage{
-		{event: string(TypeProcessingStatus), data: ProcessingStatusData{IndexScanning: true}},
-		{event: string(TypeProcessingStatus), data: ProcessingStatusData{IndexScanning: true, AutoCertProcessing: true}},
-		{event: string(TypeProcessingStatus), data: ProcessingStatusData{AutoCertProcessing: true}},
-	}, hub.snapshot())
-}
-
-func TestUpdateNginxLogIndexingAlsoPublishesLegacyStatus(t *testing.T) {
-	m := resetProcessingStatus(t)
-	hub := installGlobalHub(t)
-
-	m.UpdateNginxLogIndexing(true)
-	m.UpdateNginxLogIndexing(false)
-
-	assert.Equal(t, []recordedMessage{
-		{event: string(TypeProcessingStatus), data: ProcessingStatusData{NginxLogIndexing: true}},
-		{event: string(TypeNginxLogStatus), data: NginxLogStatusData{Indexing: true}},
-		{event: string(TypeProcessingStatus), data: ProcessingStatusData{}},
-		{event: string(TypeNginxLogStatus), data: NginxLogStatusData{Indexing: false}},
+		{event: string(TypeProcessingStatus), data: ProcessingStatusData{IndexScanning: true, Plugins: []PluginActivity{}}},
+		{event: string(TypeProcessingStatus), data: ProcessingStatusData{IndexScanning: true, AutoCertProcessing: true, Plugins: []PluginActivity{}}},
+		{event: string(TypeProcessingStatus), data: ProcessingStatusData{AutoCertProcessing: true, Plugins: []PluginActivity{}}},
 	}, hub.snapshot())
 }
 
@@ -137,7 +116,7 @@ func TestBroadcastCurrentStatusAlwaysPublishes(t *testing.T) {
 	m.BroadcastCurrentStatus()
 	m.BroadcastCurrentStatus()
 
-	want := recordedMessage{event: string(TypeProcessingStatus), data: ProcessingStatusData{AutoCertProcessing: true}}
+	want := recordedMessage{event: string(TypeProcessingStatus), data: ProcessingStatusData{AutoCertProcessing: true, Plugins: []PluginActivity{}}}
 	assert.Equal(t, []recordedMessage{want, want}, hub.snapshot())
 }
 
@@ -146,7 +125,7 @@ func TestProcessingStatusConcurrentUpdates(t *testing.T) {
 	installGlobalHub(t)
 
 	const iterations = 100
-	updates := []func(bool){m.UpdateIndexScanning, m.UpdateAutoCertProcessing, m.UpdateNginxLogIndexing}
+	updates := []func(bool){m.UpdateIndexScanning, m.UpdateAutoCertProcessing}
 
 	var wg sync.WaitGroup
 	for _, update := range updates {
@@ -169,5 +148,84 @@ func TestProcessingStatusConcurrentUpdates(t *testing.T) {
 	wg.Wait()
 
 	// The last iteration of each goroutine writes false (iterations is even).
-	assert.Equal(t, ProcessingStatusData{}, m.GetCurrentStatus())
+	assert.Equal(t, ProcessingStatusData{Plugins: []PluginActivity{}}, m.GetCurrentStatus())
+}
+
+func newTestProcessingManager() *ProcessingStatusManager {
+	return &ProcessingStatusManager{status: ProcessingStatusData{Plugins: []PluginActivity{}}}
+}
+
+func TestPluginActivitySetReplaceAndRemove(t *testing.T) {
+	m := newTestProcessingManager()
+
+	e := captureOne(t, func() { assert.True(t, m.SetPluginActivity("com.example.a", "indexing", "Indexing...", true)) })
+	assert.Equal(t, TypeProcessingStatus, e.Type)
+	data, ok := e.Data.(ProcessingStatusData)
+	require.True(t, ok)
+	assert.Equal(t, []PluginActivity{{PluginID: "com.example.a", Key: "indexing", Label: "Indexing..."}}, data.Plugins)
+
+	// The same key replaces the label instead of adding an entry.
+	m.SetPluginActivity("com.example.a", "indexing", "Still indexing...", true)
+	assert.Equal(t, []PluginActivity{{PluginID: "com.example.a", Key: "indexing", Label: "Still indexing..."}}, m.GetCurrentStatus().Plugins)
+
+	// Two plugins may use the same key.
+	m.SetPluginActivity("com.example.b", "indexing", "Other", true)
+	assert.Len(t, m.GetCurrentStatus().Plugins, 2)
+
+	m.SetPluginActivity("com.example.a", "indexing", "", false)
+	assert.Equal(t, []PluginActivity{{PluginID: "com.example.b", Key: "indexing", Label: "Other"}}, m.GetCurrentStatus().Plugins)
+}
+
+func TestPluginActivityRemovingAnUnknownEntryIsSilent(t *testing.T) {
+	m := newTestProcessingManager()
+
+	var published int
+	unsubscribe := Subscribe(func(Event) { published++ })
+	defer unsubscribe()
+
+	assert.True(t, m.SetPluginActivity("com.example.a", "missing", "", false))
+	m.ClearPluginActivities("com.example.a")
+	assert.Zero(t, published)
+}
+
+func TestPluginActivityLimit(t *testing.T) {
+	m := newTestProcessingManager()
+
+	for i := range MaxPluginActivities {
+		require.True(t, m.SetPluginActivity("com.example.a", fmt.Sprintf("k%d", i), "x", true))
+	}
+	assert.False(t, m.SetPluginActivity("com.example.a", "extra", "x", true))
+	// Updating an existing entry and other plugins are not affected.
+	assert.True(t, m.SetPluginActivity("com.example.a", "k0", "y", true))
+	assert.True(t, m.SetPluginActivity("com.example.b", "extra", "x", true))
+}
+
+func TestPluginActivityClear(t *testing.T) {
+	m := newTestProcessingManager()
+	m.SetPluginActivity("com.example.a", "one", "One", true)
+	m.SetPluginActivity("com.example.a", "two", "Two", true)
+	m.SetPluginActivity("com.example.b", "one", "One", true)
+
+	m.ClearPluginActivities("com.example.a")
+
+	assert.Equal(t, []PluginActivity{{PluginID: "com.example.b", Key: "one", Label: "One"}}, m.GetCurrentStatus().Plugins)
+}
+
+func TestProcessingStatusJSONHasEmptyPluginList(t *testing.T) {
+	m := newTestProcessingManager()
+	m.SetPluginActivity("com.example.a", "one", "One", true)
+	m.ClearPluginActivities("com.example.a")
+
+	encoded, err := json.Marshal(m.GetCurrentStatus())
+	require.NoError(t, err)
+	assert.Contains(t, string(encoded), `"plugins":[]`)
+}
+
+func TestPublishedPluginListIsNotEditedLater(t *testing.T) {
+	m := newTestProcessingManager()
+	e := captureOne(t, func() { m.SetPluginActivity("com.example.a", "one", "One", true) })
+	published := e.Data.(ProcessingStatusData)
+
+	m.SetPluginActivity("com.example.a", "one", "Changed", true)
+	assert.Equal(t, "One", published.Plugins[0].Label)
 }

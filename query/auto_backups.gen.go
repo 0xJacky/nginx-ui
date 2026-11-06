@@ -48,6 +48,7 @@ func newAutoBackup(db *gorm.DB, opts ...gen.DOOption) autoBackup {
 	_autoBackup.S3SecretAccessKey = field.NewString(tableName, "s3_secret_access_key")
 	_autoBackup.S3Bucket = field.NewString(tableName, "s3_bucket")
 	_autoBackup.S3Region = field.NewString(tableName, "s3_region")
+	_autoBackup.StorageConfig = field.NewField(tableName, "storage_config")
 
 	_autoBackup.fillFieldMap()
 
@@ -78,6 +79,7 @@ type autoBackup struct {
 	S3SecretAccessKey field.String // S3 secret access key
 	S3Bucket          field.String // S3 bucket name
 	S3Region          field.String // S3 region
+	StorageConfig     field.Field  // Plugin storage backend configuration
 
 	fieldMap map[string]field.Expr
 }
@@ -114,6 +116,7 @@ func (a *autoBackup) updateTableName(table string) *autoBackup {
 	a.S3SecretAccessKey = field.NewString(table, "s3_secret_access_key")
 	a.S3Bucket = field.NewString(table, "s3_bucket")
 	a.S3Region = field.NewString(table, "s3_region")
+	a.StorageConfig = field.NewField(table, "storage_config")
 
 	a.fillFieldMap()
 
@@ -130,7 +133,7 @@ func (a *autoBackup) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (a *autoBackup) fillFieldMap() {
-	a.fieldMap = make(map[string]field.Expr, 20)
+	a.fieldMap = make(map[string]field.Expr, 21)
 	a.fieldMap["id"] = a.ID
 	a.fieldMap["created_at"] = a.CreatedAt
 	a.fieldMap["updated_at"] = a.UpdatedAt
@@ -151,6 +154,7 @@ func (a *autoBackup) fillFieldMap() {
 	a.fieldMap["s3_secret_access_key"] = a.S3SecretAccessKey
 	a.fieldMap["s3_bucket"] = a.S3Bucket
 	a.fieldMap["s3_region"] = a.S3Region
+	a.fieldMap["storage_config"] = a.StorageConfig
 }
 
 func (a autoBackup) clone(db *gorm.DB) autoBackup {

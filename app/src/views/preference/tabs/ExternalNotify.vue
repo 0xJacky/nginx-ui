@@ -2,14 +2,16 @@
 import type { ExternalNotify } from '@/api/external_notify'
 import { StdCurd } from '@uozi-admin/curd'
 import externalNotify, { createExternalNotify, testMessage } from '@/api/external_notify'
-import configMap from '../components/ExternalNotify'
 import columns from '../components/ExternalNotify/columns'
+import { loadPluginChannels, sanitizeConfig } from '../components/ExternalNotify/pluginChannels'
 
 const { message } = App.useApp()
 const table = useTemplateRef('table')
 
 const loadingStates = ref<Record<number, boolean>>({})
 const copyLoadingStates = ref<Record<number, boolean>>({})
+
+onMounted(() => loadPluginChannels(true))
 
 async function handleTestSingleMessage(record: ExternalNotify) {
   if (!record.id)
@@ -22,11 +24,7 @@ async function handleTestSingleMessage(record: ExternalNotify) {
 
   loadingStates.value[record.id] = true
   try {
-    const notifierConfig = configMap[record.type?.toLowerCase() ?? '']
-    const allowedConfigKeys = new Set((notifierConfig?.config ?? []).map(item => item.key))
-    const sanitizedConfig = Object.fromEntries(
-      Object.entries(record.config ?? {}).filter(([key]) => allowedConfigKeys.has(key)),
-    )
+    const sanitizedConfig = sanitizeConfig(record.type, record.config)
 
     // Use new API with direct parameters instead of ID
     await testMessage({
@@ -51,11 +49,7 @@ async function handleCopy(record: ExternalNotify) {
 
   copyLoadingStates.value[record.id] = true
   try {
-    const notifierConfig = configMap[record.type?.toLowerCase() ?? '']
-    const allowedConfigKeys = new Set((notifierConfig?.config ?? []).map(item => item.key))
-    const sanitizedConfig = Object.fromEntries(
-      Object.entries(record.config ?? {}).filter(([key]) => allowedConfigKeys.has(key)),
-    )
+    const sanitizedConfig = sanitizeConfig(record.type, record.config)
 
     await createExternalNotify({
       type: record.type,

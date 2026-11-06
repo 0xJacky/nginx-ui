@@ -3,6 +3,8 @@ package searcher
 import (
 	"context"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/logstore"
 )
 
 // SearcherConfig holds configuration for the searcher
@@ -25,7 +27,6 @@ func DefaultSearcherConfig() *Config {
 		MaxConcurrency:     10,
 		TimeoutDuration:    30 * time.Second,
 		CacheSize:          64 * 1024,
-		MemoryQuota:        defaultSearchMemoryQuota,
 		EnableCache:        true,
 		DefaultLimit:       50,
 		MaxLimit:           10000,
@@ -57,6 +58,7 @@ type SearchRequest struct {
 	Browsers       []string `json:"browsers,omitempty"`
 	OSs            []string `json:"operating_systems,omitempty"`
 	Devices        []string `json:"devices,omitempty"`
+	Levels         []string `json:"levels,omitempty"` // Error log severities
 
 	// Range filters
 	MinBytes   *int64   `json:"min_bytes,omitempty"`
@@ -112,6 +114,10 @@ type SearchResult struct {
 
 	// Warning message for deep pagination or other issues
 	Warning string `json:"warning,omitempty"`
+
+	// QueryWarnings lists the parts of the query that looked like a filter
+	// but were taken as text.
+	QueryWarnings []logstore.SyntaxWarning `json:"query_warnings,omitempty"`
 }
 
 // SearchHit represents a single search result
@@ -170,6 +176,20 @@ type SearchStats struct {
 	// Approximate reports that the scan covered only a prefix of the match set
 	// and the totals were extrapolated from it.
 	Approximate bool `json:"approximate"`
+}
+
+// CacheStats describes a result cache. The column store's searcher keeps no
+// cache, so it reports zeros; the type stays for the API's stats shape.
+type CacheStats struct {
+	Size      int     `json:"size"`
+	Capacity  int     `json:"capacity"`
+	HitCount  int64   `json:"hit_count"`
+	MissCount int64   `json:"miss_count"`
+	HitRate   float64 `json:"hit_rate"`
+	Evictions int64   `json:"evictions"`
+	Additions int64   `json:"additions"`
+	Updates   int64   `json:"updates"`
+	Cost      int64   `json:"cost"`
 }
 
 // SearcherInterface defines the main search interface

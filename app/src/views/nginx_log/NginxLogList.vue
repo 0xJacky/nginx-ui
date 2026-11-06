@@ -2,6 +2,7 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { NginxLogData } from '@/api/nginx_log'
 import type { TabOption } from '@/components/TabFilter'
+import type { NginxLogRow } from '@/plugin/types'
 import { CheckCircleOutlined, ExclamationCircleOutlined, StopOutlined, SyncOutlined } from '@antdv-next/icons'
 import { StdCurd } from '@uozi-admin/curd'
 import { useRouteQuery } from '@vueuse/router'
@@ -9,12 +10,17 @@ import { Badge, Modal, Tag, Tooltip } from 'antdv-next'
 import dayjs from 'dayjs'
 import nginxLog from '@/api/nginx_log'
 import { DevDebugPanel } from '@/components/DevDebugPanel'
+import PluginSlot from '@/components/PluginSlot'
+import PluginSlotItem from '@/components/PluginSlot/PluginSlotItem.vue'
 import { TabFilter } from '@/components/TabFilter'
 import { useGlobalStore, useWebSocketEventBusStore } from '@/pinia'
+import { NGINX_LOG_COLUMN_SLOT_PREFIX } from '@/plugin/slots'
+import { usePluginStore } from '@/plugin/store'
 import IndexingSettingsModal from './components/IndexingSettingsModal.vue'
 import { useIndexProgress } from './composables/useIndexProgress'
 import IndexProgressBar from './indexing/components/IndexProgressBar.vue'
 import IndexManagement from './indexing/IndexManagement.vue'
+import { applyPluginColumns, pluginColumnKey, stripPluginParams } from './pluginColumns'
 
 const { message } = App.useApp()
 
@@ -95,7 +101,8 @@ onMounted(async () => {
   // Subscribe to processing status events
   subscriptionIds.value.push(websocketEventBus.subscribe('processing_status', data => {
     const wasIndexing = processingStatus.value?.nginx_log_indexing
-    processingStatus.value = data
+    // A server without plugin entries sends no list.
+    processingStatus.value = { ...data, plugins: data?.plugins ?? [] }
 
     // Start/stop auto refresh based on indexing status
     if (data?.nginx_log_indexing && !wasIndexing) {
@@ -174,7 +181,7 @@ const baseColumns: StdTableColumn[] = [
   },
 ]
 
-// Index-related columns only for Access logs
+// Index-related columns, access and error logs are both indexed
 const indexColumns: StdTableColumn[] = [
   {
     title: () => $gettext('Index Status'),
@@ -344,18 +351,75 @@ const actionsColumn: StdTableColumn = {
   width: 250,
 }
 
+// Columns plugins add to the list, one per registration. A registration whose
+// condition rejects the list being shown adds no column at all.
+const pluginStore = usePluginStore()
+
+const pluginColumnSlots = computed(() => pluginStore.slotsByPrefix(NGINX_LOG_COLUMN_SLOT_PREFIX, { type: activeLogType.value }).map(item => ({
+  ...item,
+  columnKey: pluginColumnKey(`${item.registration.pluginId}:${item.key}`),
+})))
+
+const pluginColumnRules = computed(() => pluginColumnSlots.value.map(item => ({
+  columnKey: item.columnKey,
+  sortValue: item.registration.sortValue,
+  filters: item.registration.filters,
+})))
+
+const pluginColumns = computed<StdTableColumn[]>(() => pluginColumnSlots.value.map(item => {
+  const { registration } = item
+  const hasFilters = (registration.filters?.length ?? 0) > 0
+
+  return {
+    title: () => $gettext(registration.label ?? item.key),
+    dataIndex: item.columnKey,
+    key: item.columnKey,
+    sorter: !!registration.sortValue,
+    filters: hasFilters
+      ? registration.filters?.map(filter => ({
+          text: $gettext(filter.label),
+          value: filter.value,
+        }))
+      : undefined,
+    customRender: (args: CustomRenderArgs) => {
+      const row = args.record
+      if (!row)
+        return null
+
+      return <PluginSlotItem registration={registration} context={{ row }} />
+    },
+    width: 160,
+  }
+}))
+
 // Computed columns based on active log type
 const columns = computed(() => {
-  const cols = [...baseColumns]
+  const cols = [
+    ...baseColumns,
+    ...indexColumns,
+  ]
 
-  // Only show index-related columns for Access logs
-  if (activeLogType.value === 'access') {
-    cols.push(...indexColumns)
-  }
-
+  cols.push(...pluginColumns.value)
   cols.push(actionsColumn)
   return cols
 })
+
+// The list arrives whole, so sorting and filtering by a plugin column happens
+// here in the browser and the server only sees the parameters it knows.
+const curdApi = {
+  ...nginxLog,
+  async getList(params: Record<string, unknown> = {}, config?: Record<string, unknown>) {
+    const rules = pluginColumnRules.value
+    const response = await nginxLog.getList(stripPluginParams(params), config)
+    if (rules.length === 0)
+      return response
+
+    return {
+      ...response,
+      data: applyPluginColumns((response.data ?? []) as NginxLogRow[], params, rules),
+    }
+  },
+}
 
 function viewLog(record: NginxLogData) {
   router.push({
@@ -465,7 +529,7 @@ const debugData = computed(() => ({
       ref="stdCurdRef"
       :title="$gettext('Log List')"
       :columns="columns"
-      :api="nginxLog"
+      :api="curdApi"
       disable-add
       disable-export
       disable-delete
@@ -486,6 +550,8 @@ const debugData = computed(() => ({
 
       <template #beforeListActions>
         <div class="flex items-center gap-4">
+          <PluginSlot name="nginx_log.list.toolbar" :context="{ type: activeLogType }" />
+
           <!-- Global indexing progress -->
           <div v-if="isGlobalIndexing" class="flex items-center">
             <div class="flex items-center text-blue-500">
@@ -494,8 +560,8 @@ const debugData = computed(() => ({
             </div>
           </div>
 
-          <!-- Advanced Indexing Toggle - only for Access logs -->
-          <div v-if="activeLogType === 'access' && !advancedIndexingEnabled" class="flex items-center">
+          <!-- Advanced Indexing Toggle -->
+          <div v-if="!advancedIndexingEnabled" class="flex items-center">
             <AButton
               type="link"
               size="small"
@@ -505,16 +571,16 @@ const debugData = computed(() => ({
             </AButton>
           </div>
 
-          <!-- Index Management - only for Access logs when advanced indexing is enabled -->
+          <!-- Index Management - when advanced indexing is enabled -->
           <IndexManagement
-            v-if="activeLogType === 'access' && advancedIndexingEnabled"
+            v-if="advancedIndexingEnabled"
             ref="indexManagementRef"
             :disabled="processingStatus.nginx_log_indexing"
             :indexing="isGlobalIndexing || processingStatus.nginx_log_indexing"
             @refresh="refreshTable"
           />
           <AButton
-            v-if="activeLogType === 'access' && advancedIndexingEnabled"
+            v-if="advancedIndexingEnabled"
             type="link"
             size="small"
             danger
@@ -534,9 +600,11 @@ const debugData = computed(() => ({
           {{ $gettext('View') }}
         </AButton>
 
-        <!-- Rebuild File Index Action - only for Access logs with advanced indexing enabled -->
+        <PluginSlot name="nginx_log.list.row.actions" :context="{ row: record }" />
+
+        <!-- Rebuild File Index Action - with advanced indexing enabled -->
         <AButton
-          v-if="record.type === 'access' && advancedIndexingEnabled"
+          v-if="advancedIndexingEnabled"
           type="link"
           size="small"
           :disabled="processingStatus.nginx_log_indexing"

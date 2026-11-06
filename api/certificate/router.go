@@ -23,15 +23,19 @@ func InitCertificateRouter(r *gin.RouterGroup) {
 	r.POST("cert_recommendation", RecommendCert)
 	r.GET("certificate/dns_providers", GetDNSProvidersList)
 	r.GET("certificate/dns_provider/:code", GetDNSProvider)
+	r.GET("certificate/challenge_methods", GetChallengeMethods)
 	o := r.Group("", middleware.RequireSecureSession())
 	{
 		o.POST("certs", AddCert)
 		o.POST("certs/:id", ModifyCert)
 		o.DELETE("certs/:id", RemoveCert)
+		o.POST("certs/:id/auto_renewal", SetCertAutoRenewal)
 		o.POST("cert_import", ImportExistingCert)
 		o.POST("cert_discover_new", DiscoverNewCerts)
 		o.POST("cert_parse_archive", ParseCertificateArchive)
 		o.PUT("cert_sync", SyncCertificate)
+		o.POST("cert_sync/paths", SyncCertificatePaths)
+		o.DELETE("cert_sync", RemoveSyncedCertificate)
 		o.POST("self_signed_cert", GenerateSelfSignedCert)
 		o.POST("self_signed_cert/:id", ModifySelfSignedCert)
 	}
@@ -42,6 +46,7 @@ func InitCertificateWebSocketRouter(r *gin.RouterGroup) {
 	o := r.Group("", middleware.RequireSecureSession(), middleware.RejectInDemo())
 	{
 		o.GET("domain/:name/cert", IssueCert)
+		o.GET("nodes/:id/domain/:name/cert", IssueCertForNode)
 		o.GET("certs/:id/revoke", RevokeCert)
 	}
 }

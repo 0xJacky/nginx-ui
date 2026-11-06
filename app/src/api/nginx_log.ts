@@ -33,6 +33,12 @@ export interface LogListResponse {
   }
 }
 
+export interface DefaultLogDir {
+  access_log_dir: string
+  access_log_path?: string
+  error_log_path?: string
+}
+
 export interface AnalyticsRequest {
   path: string
   start_time?: number
@@ -66,6 +72,31 @@ export interface AccessLogEntry {
   request_time?: number
   upstream_time?: number
   raw: string
+}
+
+// nginx error log severities, from least to most severe
+export type ErrorLogLevel = 'debug' | 'info' | 'notice' | 'warn' | 'error' | 'crit' | 'alert' | 'emerg'
+
+// An entry of an error log search. The request parts are only present when
+// nginx logged the line while handling a request.
+export interface ErrorLogEntry {
+  timestamp: number
+  level: ErrorLogLevel | string
+  ip?: string
+  method?: string
+  path?: string
+  referer?: string
+  raw: string
+  message?: string
+  pid?: number
+  connection?: number
+  server?: string
+  upstream?: string
+  host?: string
+  request?: string
+  file_path?: string
+  main_log_path?: string
+  ip_location_label?: string
 }
 
 export interface LogStats {
@@ -156,6 +187,8 @@ export interface AdvancedSearchRequest {
   browser?: string
   os?: string
   device?: string
+  // Error log severities, comma separated
+  level?: string
   limit?: number
   offset?: number
   sort_by?: string
@@ -172,12 +205,19 @@ export interface SummaryStats {
   traffic_approximate: boolean // Traffic was extrapolated because the match set exceeded the scan budget
 }
 
-export interface AdvancedSearchResponse {
-  entries: AccessLogEntry[]
+// A part of the search box that looked like a filter but was searched as text
+export interface QuerySyntaxWarning {
+  token: string
+  reason: 'unknown_field' | 'invalid_value' | 'unterminated_quote'
+}
+
+export interface AdvancedSearchResponse<T = AccessLogEntry> {
+  entries: T[]
   total: number
   took: number
   query: string
   summary: SummaryStats
+  query_warnings?: QuerySyntaxWarning[]
 }
 
 export interface PreflightResponse {
@@ -345,6 +385,11 @@ const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
     return http.post('/nginx_log/search', data)
   },
 
+  // The same search for an error log, whose entries have their own shape
+  searchErrorLog(data: AdvancedSearchRequest): Promise<AdvancedSearchResponse<ErrorLogEntry>> {
+    return http.post('/nginx_log/search', data)
+  },
+
   getPreflight(logPath?: string): Promise<PreflightResponse> {
     const params = logPath
       ? { log_path: logPath }
@@ -397,8 +442,9 @@ const nginx_log = extendCurdApi(useCurdApi('/nginx_logs'), {
   },
 
   // Directory nginx writes its default access log to, used to propose a
-  // per-site access_log path that is already inside the log whitelist
-  getDefaultLogDir(): Promise<{ access_log_dir: string }> {
+  // per-site access_log path that is already inside the log whitelist, and
+  // the default log files a site without its own log directive falls back to
+  getDefaultLogDir(): Promise<DefaultLogDir> {
     return http.get('/nginx_log/default_log_dir')
   },
 })

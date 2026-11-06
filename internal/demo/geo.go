@@ -8,20 +8,6 @@ import (
 	"github.com/uozi-tech/cosy/geoip"
 )
 
-// Documentation address blocks. The demo's synthetic access log draws its
-// client IPs from these, and the fabricated provider answers for these only.
-//
-// This is what keeps the fake honest: it is a partial function. If this
-// provider were ever installed on a real node by mistake, it could not invent a
-// location for that operator's actual visitors — it would fall through to the
-// same country lookup the real code uses and leave province and city empty.
-var documentationPrefixes = []netip.Prefix{
-	netip.MustParsePrefix("192.0.2.0/24"),    // RFC 5737 TEST-NET-1
-	netip.MustParsePrefix("198.51.100.0/24"), // RFC 5737 TEST-NET-2
-	netip.MustParsePrefix("203.0.113.0/24"),  // RFC 5737 TEST-NET-3
-	netip.MustParsePrefix("2001:db8::/32"),   // RFC 3849
-}
-
 // geoService fabricates province and city for documentation addresses while
 // deferring to the real, embedded country database for everything else.
 //
@@ -31,15 +17,6 @@ var documentationPrefixes = []netip.Prefix{
 type geoService struct{}
 
 var _ parser.GeoIPService = (*geoService)(nil)
-
-func isDocumentationIP(addr netip.Addr) bool {
-	for _, prefix := range documentationPrefixes {
-		if prefix.Contains(addr) {
-			return true
-		}
-	}
-	return false
-}
 
 func (g *geoService) Search(ip string) (*parser.GeoLocation, error) {
 	addr, err := netip.ParseAddr(ip)

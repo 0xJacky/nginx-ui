@@ -1,7 +1,7 @@
 package demo
 
-// Traffic vocabulary for the synthetic access log. Kept beside the geo tables
-// so the shape of the demo's traffic is one reviewable file.
+// Traffic vocabulary for the synthetic access log, kept in one file so the
+// shape of the demo's traffic is one reviewable diff.
 
 // requestPaths are weighted by repetition: the ones that appear more often show
 // up more often in the log, which is what makes the "top paths" panel look like

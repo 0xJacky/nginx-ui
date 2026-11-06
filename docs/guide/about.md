@@ -75,7 +75,8 @@ managing your Nginx server.
 - One-click deployment and automatic renewal Let's Encrypt certificates.
 - Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block
   editor for nginx configurations, or **Ace Code Editor** which supports **LLM Code Completion** and highlighting nginx configuration syntax.
-- Online view Nginx logs.
+- View Nginx logs online, with indexed search, a traffic dashboard and visitor maps.
+- Plugin system: install signed plugins from the marketplace, an uploaded file or an offline directory, for example the official DNS-01 plugin with the DNS providers for certificates.
 - Written in Go and Vue, distribution is a single executable binary.
 - Automatically test configuration file and reload nginx after saving configuration.
 - Web Terminal.

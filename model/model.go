@@ -44,6 +44,7 @@ func GenerateAllModel() []any {
 		Stream{},
 		DnsCredential{},
 		DnsDomain{},
+		NginxLogIndex{},
 		Node{},
 		NodeCredential{},
 		NodeControllerCredential{},
@@ -58,10 +59,15 @@ func GenerateAllModel() []any {
 		AutoBackup{},
 		SiteConfig{},
 		SiteHealthAlertState{},
-		NginxLogIndex{},
 		UpstreamConfig{},
 		AccessList{},
 		Ingress{},
+		Plugin{},
+		PluginKV{},
+		CertDeployTarget{},
+		CertDeployment{},
+		BlocklistSource{},
+		UpstreamDiscovery{},
 	}
 }
 

@@ -22,6 +22,12 @@ This option is used to set the recursive nameservers used by
 Nginx UI in the DNS challenge step of applying for a certificate.
 If this option is not configured, Nginx UI will use the nameservers settings of the operating system.
 
+::: warning Deprecated in v3.0.0
+The DNS-01 propagation check moved into the [DNS-01 plugin](#dns-01-challenge), which has a setting of its own. When the
+plugin is installed on a node for the first time, the value of this option is copied into the plugin settings. Change
+it there afterwards. The option is no longer shown in the web interface.
+:::
+
 
 ## CertRenewalInterval
 
@@ -69,3 +75,12 @@ For every registered domain the UI exposes a full DNS record management experien
 This allows you to verify domains for certificate issuance and perform day-to-day DNS maintenance without leaving the dashboard.
 
 > Make sure the selected DNS Credential contains the API tokens and permissions required by the provider to edit DNS records.
+
+## DNS-01 Challenge
+
+- Version：`>= v3.0.0`
+
+The DNS providers used to solve the DNS-01 challenge are provided by the official plugin `com.nginxui.dns01`, not by
+Nginx UI itself. When a certificate uses DNS-01 and the plugin is missing, Nginx UI installs it automatically, and the
+official Docker image ships with it. See [Plugin](./config-plugin.md#dns-01-plugin) and
+[Upgrading to v3](./upgrade-v3.md).

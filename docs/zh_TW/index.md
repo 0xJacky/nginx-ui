@@ -50,7 +50,10 @@ features:
         details: 使用我們的 NgxConfigEditor 區塊編輯器或帶有 Nginx 語法高亮的 Ace 程式碼編輯器編輯設定。
     -   icon: 📜
         title: 線上檢視 Nginx 日誌
-        details: 直接線上存取和檢視您的 Nginx 日誌。
+        details: 線上檢視和即時追蹤 Nginx 日誌，依條件搜尋，並透過流量面板和訪客地圖檢視存取情況。
+    -   icon: 🧩
+        title: 外掛系統
+        details: 從外掛市集、上傳的檔案或離線目錄安裝帶簽章的外掛來擴充功能，例如官方 DNS-01 外掛。
     -   icon: 💻
         title: 使用 Go 和 Vue 編寫
         details: 該平臺使用 Go 和 Vue 建構，並作為單個可執行二進位制文件分發。

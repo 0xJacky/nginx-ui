@@ -58,6 +58,10 @@ type Node struct {
 	AuthUpgradeErrorCode    string     `json:"auth_upgrade_error_code,omitempty"`
 	AuthUpgradeError        string     `json:"auth_upgrade_error,omitempty"`
 	Enabled                 bool       `json:"enabled" gorm:"default:false"`
+	// AcceptPluginSync lets the operator exclude a node from plugin cluster
+	// sync. Existing rows read as true, so a node keeps receiving plugins
+	// unless it is opted out explicitly.
+	AcceptPluginSync bool `json:"accept_plugin_sync" gorm:"default:true"`
 }
 
 func (n *Node) HasCredential() bool {

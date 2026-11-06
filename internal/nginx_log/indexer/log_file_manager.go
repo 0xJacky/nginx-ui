@@ -55,7 +55,7 @@ type LogFileManager struct {
 	persistence    *PersistenceManager
 	indexingStatus map[string]bool
 	indexingMutex  sync.RWMutex
-	indexer        *ParallelIndexer
+	indexer        LogIndexer
 }
 
 // NewLogFileManager creates a new log file manager
@@ -67,8 +67,8 @@ func NewLogFileManager() *LogFileManager {
 	}
 }
 
-// SetIndexer injects the running ParallelIndexer so we can query exact doc counts before persisting
-func (lm *LogFileManager) SetIndexer(pi *ParallelIndexer) {
+// SetIndexer injects the running indexer so we can query exact doc counts before persisting
+func (lm *LogFileManager) SetIndexer(pi LogIndexer) {
 	lm.indexer = pi
 }
 
@@ -463,7 +463,7 @@ func (lm *LogFileManager) SaveIndexMetadata(basePath string, documentCount uint6
 		}
 	}
 
-	// If indexer is available and healthy, query Bleve for exact document count
+	// If indexer is available and healthy, ask it for the exact document count
 	if lm.indexer != nil && lm.indexer.IsHealthy() {
 		// Decide whether this path is a main log path (group) or a specific file
 		mainPath := getMainLogPathFromFile(basePath)

@@ -704,6 +704,19 @@ jobs:
       - name: Prepare Artifacts
         run: chmod +x ./dist/nginx-ui-*/nginx-ui*
 
+      # The image bundles the newest official DNS-01 plugin release this build
+      # can run, resolved from the catalog by the binary just built, so the
+      # Dockerfile never pins a plugin version or checksum.
+      - name: Fetch bundled plugins
+        run: |
+          config_dir="$(mktemp -d)"
+          touch "$config_dir/app.ini"
+          for platform in linux-amd64 linux-arm64 linux-arm linux-riscv64; do
+            ./dist/nginx-ui-linux-amd64/nginx-ui --config "$config_dir/app.ini" \
+              plugin fetch com.nginxui.dns01 --platform "$platform" --out "./dist/plugins/$platform"
+          done
+          ls -lR ./dist/plugins
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4
         with:

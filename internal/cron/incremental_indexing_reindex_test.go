@@ -50,7 +50,7 @@ func TestPlanIncrementalRun(t *testing.T) {
 
 // newIncrementalTestServices starts an indexer and a log file manager backed
 // by throwaway storage, and returns a whitelisted directory for log files.
-func newIncrementalTestServices(t *testing.T, name string) (*indexer.ParallelIndexer, *indexer.LogFileManager, string) {
+func newIncrementalTestServices(t *testing.T, name string) (*indexer.ColumnarIndexer, *indexer.LogFileManager, string) {
 	t.Helper()
 
 	indexer.InitLogParser()
@@ -78,7 +78,7 @@ func newIncrementalTestServices(t *testing.T, name string) (*indexer.ParallelInd
 
 	config := indexer.DefaultIndexerConfig()
 	config.IndexPath = t.TempDir()
-	pi := indexer.NewParallelIndexer(config, indexer.NewGroupedShardManager(config))
+	pi := indexer.NewColumnarIndexer(config)
 	require.NoError(t, pi.Start(context.Background()))
 	t.Cleanup(func() { _ = pi.Stop() })
 
@@ -100,7 +100,7 @@ func incrementalLogLines(first, count int) string {
 }
 
 // fullIndex indexes a file the way the task scheduler does.
-func fullIndex(t *testing.T, pi *indexer.ParallelIndexer, lfm *indexer.LogFileManager, logPath string) {
+func fullIndex(t *testing.T, pi indexer.LogIndexer, lfm *indexer.LogFileManager, logPath string) {
 	t.Helper()
 	startTime := time.Now()
 	docsCountMap, minTime, maxTime, err := pi.IndexLogGroupWithProgress(logPath, nil)
@@ -121,7 +121,7 @@ func appendToFile(t *testing.T, path, content string) {
 	require.NoError(t, f.Close())
 }
 
-func requireDocCount(t *testing.T, pi *indexer.ParallelIndexer, filePath string, want uint64) {
+func requireDocCount(t *testing.T, pi indexer.LogIndexer, filePath string, want uint64) {
 	t.Helper()
 	count, err := pi.CountDocsByFilePath(filePath)
 	require.NoError(t, err)

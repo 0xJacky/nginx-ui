@@ -50,7 +50,10 @@ features:
         details: 使用我们的 NgxConfigEditor 区块编辑器或带有 Nginx 语法高亮的 Ace 代码编辑器编辑配置。
     -   icon: 📜
         title: 在线查看 Nginx 日志
-        details: 直接在线访问和查看您的 Nginx 日志。
+        details: 在线查看和实时跟踪 Nginx 日志，按条件搜索，并通过流量面板和访客地图查看访问情况。
+    -   icon: 🧩
+        title: 插件系统
+        details: 从插件市场、上传的文件或离线目录安装带签名的插件来扩展功能，例如官方 DNS-01 插件。
     -   icon: 💻
         title: 使用 Go 和 Vue 编写
         details: 平台使用 Go 和 Vue 构建，并作为单个可执行二进制文件分发。

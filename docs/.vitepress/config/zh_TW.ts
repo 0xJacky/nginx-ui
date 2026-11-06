@@ -1,4 +1,5 @@
 import { LocaleSpecificConfig, DefaultTheme } from 'vitepress'
+import { pluginNav, pluginSidebar } from './plugin'
 import { demoUrl, editLinkPattern } from './common'
 
 export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
@@ -6,6 +7,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     nav: [
       { text: '首頁', link: '/zh_TW/' },
       { text: '手冊', link: '/zh_TW/guide/about' },
+      pluginNav('zh_TW'),
       { text: '贊助', link: '/zh_TW/sponsor' },
       { text: '演示', link: demoUrl }
     ],
@@ -16,6 +18,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
     },
 
     sidebar: {
+      ...pluginSidebar('zh_TW'),
       '/zh_TW/guide/': [
         {
           text: '介紹',
@@ -25,7 +28,8 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: '即刻開始', link: '/zh_TW/guide/getting-started' },
             { text: '使用 Homebrew 安裝', link: '/zh_TW/guide/install-homebrew' },
             { text: '使用 Winget 安裝', link: '/zh_TW/guide/install-winget' },
-            { text: '安裝指令碼', link: '/zh_TW/guide/install-script-linux' }
+            { text: '安裝指令碼', link: '/zh_TW/guide/install-script-linux' },
+            { text: '升級到 v3', link: '/zh_TW/guide/upgrade-v3' }
           ]
         },
         {
@@ -83,6 +87,7 @@ export const zhTWConfig: LocaleSpecificConfig<DefaultTheme.Config> = {
             { text: 'Nginx Log', link: '/zh_TW/guide/config-nginx-log' },
             { text: 'Node', link: '/zh_TW/guide/config-node' },
             { text: 'Open AI', link: '/zh_TW/guide/config-openai' },
+            { text: 'Plugin', link: '/zh_TW/guide/config-plugin' },
             { text: 'Server', link: '/zh_TW/guide/config-server' },
             { text: 'Site Check', link: '/zh_TW/guide/config-sitecheck' },
             { text: 'Terminal', link: '/zh_TW/guide/config-terminal' },

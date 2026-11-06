@@ -87,7 +87,6 @@ func TestSetupJobsRegisterOnScheduler(t *testing.T) {
 		{name: "auth token cleanup", setup: setupAuthTokenCleanupJob},
 		{name: "node credential maintenance", setup: setupNodeCredentialMaintenanceJob, wantName: "node_credential_maintenance"},
 		{name: "upstream availability", setup: setupUpstreamAvailabilityJob, wantName: "upstream_availability_test"},
-		{name: "incremental indexing", setup: setupIncrementalIndexingJob, wantName: "incremental_log_indexing"},
 		{name: "namespace sync", setup: setupNamespaceSyncJob, wantName: "namespace_auto_sync"},
 	}
 
@@ -114,17 +113,14 @@ func TestSetupJobsRegisterOnScheduler(t *testing.T) {
 
 func TestIntervalJobsFollowSettings(t *testing.T) {
 	originalUpstream := *settings.UpstreamCheckSettings
-	originalNginxLog := *settings.NginxLogSettings
 	originalUpstreamJob := upstreamAvailabilityJob
 	t.Cleanup(func() {
 		*settings.UpstreamCheckSettings = originalUpstream
-		*settings.NginxLogSettings = originalNginxLog
 		upstreamAvailabilityJob = originalUpstreamJob
 	})
 
-	// Both tasks are no-ops here: indexing is disabled and there are no
-	// upstream targets, so running them immediately is harmless.
-	settings.NginxLogSettings.IndexingEnabled = false
+	// The task is a no-op here: there are no upstream targets, so running it
+	// immediately is harmless.
 
 	tests := []struct {
 		name      string
@@ -144,18 +140,6 @@ func TestIntervalJobsFollowSettings(t *testing.T) {
 			setup:     setupUpstreamAvailabilityJob,
 			want:      30 * time.Second,
 		},
-		{
-			name:      "incremental indexing interval in minutes",
-			configure: func() { settings.NginxLogSettings.IncrementalIndexInterval = 7 },
-			setup:     setupIncrementalIndexingJob,
-			want:      7 * time.Minute,
-		},
-		{
-			name:      "incremental indexing default interval",
-			configure: func() { settings.NginxLogSettings.IncrementalIndexInterval = 0 },
-			setup:     setupIncrementalIndexingJob,
-			want:      15 * time.Minute,
-		},
 	}
 
 	for _, tt := range tests {
@@ -168,7 +152,7 @@ func TestIntervalJobsFollowSettings(t *testing.T) {
 			before := time.Now()
 			scheduler.Start()
 
-			// Both jobs start immediately, then wait one interval, so the
+			// The job starts immediately, then waits one interval, so the
 			// next run is one interval after the start.
 			waitForRun(t, finished, job.ID())
 			after := time.Now()

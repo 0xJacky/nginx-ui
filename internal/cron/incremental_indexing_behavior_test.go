@@ -63,7 +63,7 @@ func fileSize(t *testing.T, path string) int64 {
 // newIndexingEnv starts a real single-shard indexer in a temporary directory,
 // a log file manager that persists index metadata into an in-memory DB, and a
 // log directory that is on the log path whitelist.
-func newIndexingEnv(t *testing.T) (*indexer.ParallelIndexer, *indexer.LogFileManager, *gorm.DB, string) {
+func newIndexingEnv(t *testing.T) (*indexer.ColumnarIndexer, *indexer.LogFileManager, *gorm.DB, string) {
 	t.Helper()
 
 	db := useCronTestDB(t, &model.NginxLogIndex{})
@@ -82,7 +82,7 @@ func newIndexingEnv(t *testing.T) (*indexer.ParallelIndexer, *indexer.LogFileMan
 	config.OptimizeInterval = 0
 	config.EnableMetrics = false
 
-	pi := indexer.NewParallelIndexer(config, nil)
+	pi := indexer.NewColumnarIndexer(config)
 	require.NoError(t, pi.Start(context.Background()))
 	t.Cleanup(func() { _ = pi.Stop() })
 
@@ -99,7 +99,7 @@ func storedLogIndex(t *testing.T, db *gorm.DB, path string) model.NginxLogIndex 
 	return logIndex
 }
 
-func indexedDocs(t *testing.T, pi *indexer.ParallelIndexer, path string) uint64 {
+func indexedDocs(t *testing.T, pi indexer.LogIndexer, path string) uint64 {
 	t.Helper()
 	count, err := pi.CountDocsByFilePath(path)
 	require.NoError(t, err)
@@ -244,7 +244,7 @@ func TestSetFileIndexStatusRejectsUnusableManager(t *testing.T) {
 	}{
 		{name: "nil manager", manager: nil},
 		{name: "wrong type", manager: "not a manager"},
-		{name: "indexer instead of manager", manager: &indexer.ParallelIndexer{}},
+		{name: "indexer instead of manager", manager: &indexer.ColumnarIndexer{}},
 	}
 
 	for _, tt := range tests {

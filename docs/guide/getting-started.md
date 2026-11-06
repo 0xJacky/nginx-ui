@@ -165,6 +165,9 @@ docker run -dit \
 In this example, port `80` and `443` of the container are mapped to port `8080` and `8443` of the host respectively.
 You need to visit `http://<your_server_ip>:8080` to access Nginx UI.
 
+The image bundles the official DNS-01 plugin and installs it on the first start. Installed plugins are kept in
+`/etc/nginx-ui/plugins`, so keep `/etc/nginx-ui` on a volume as in the example. See [Upgrading to v3](./upgrade-v3.md).
+
 ## Run Executable Directly
 
 It is not recommended to run the Nginx UI executable directly for non-testing purposes.

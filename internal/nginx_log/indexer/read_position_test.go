@@ -19,7 +19,7 @@ import (
 
 // newReadPositionTestServices starts an indexer backed by a temporary index
 // directory and a log file manager backed by a temporary metadata database.
-func newReadPositionTestServices(t *testing.T, name string) (*ParallelIndexer, *LogFileManager, string) {
+func newReadPositionTestServices(t *testing.T, name string) (*ColumnarIndexer, *LogFileManager, string) {
 	t.Helper()
 
 	originalModelDB := model.UseDB()
@@ -43,7 +43,7 @@ func newReadPositionTestServices(t *testing.T, name string) (*ParallelIndexer, *
 
 	config := DefaultIndexerConfig()
 	config.IndexPath = t.TempDir()
-	pi := NewParallelIndexer(config, NewGroupedShardManager(config))
+	pi := NewColumnarIndexer(config)
 	require.NoError(t, pi.Start(context.Background()))
 	t.Cleanup(func() { _ = pi.Stop() })
 

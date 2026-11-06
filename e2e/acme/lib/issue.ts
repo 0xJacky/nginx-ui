@@ -35,6 +35,8 @@ export interface IssueOptions {
   challengeMethod?: 'http01' | 'dns01'
   keyType?: string
   timeoutMs?: number
+  /** Further ConfigPayload fields, e.g. dns_credential_id or profile. */
+  extra?: Record<string, unknown>
 }
 
 /** URL-safe base64 without padding, as buildWebSocketUrl() sends the long token. */
@@ -51,6 +53,7 @@ export async function issueViaWebSocket(page: Page, name: string, domains: strin
     server_name: domains,
     challenge_method: options.challengeMethod ?? 'http01',
     key_type: options.keyType ?? 'P256',
+    ...options.extra,
   }, options.timeoutMs)
 }
 

@@ -82,8 +82,9 @@ func GetTemplateBlockList(c *gin.Context) {
 	})
 }
 
-// GetTemplateBlock renders a block template, a built-in one or, with the
-// origin query parameter set to custom, a snippet of the user.
+// GetTemplateBlock renders a block template: a built-in one, with the
+// origin query parameter set to custom a snippet of the user, or with the
+// plugin_id query parameter one of an enabled plugin.
 func GetTemplateBlock(c *gin.Context) {
 	type resp struct {
 		template.ConfigInfoItem
@@ -92,9 +93,11 @@ func GetTemplateBlock(c *gin.Context) {
 	var bindData map[string]template.Variable
 	_ = c.ShouldBindJSON(&bindData)
 	name := c.Param("name")
+	pluginID := c.Query("plugin_id")
 
 	var info template.ConfigInfoItem
-	if c.Query("origin") == template.OriginCustom {
+	switch {
+	case c.Query("origin") == template.OriginCustom:
 		s, err := snippet.Get(name)
 		if err != nil {
 			cosy.ErrHandler(c, err)
@@ -104,7 +107,13 @@ func GetTemplateBlock(c *gin.Context) {
 			Name: s.Name, NameI18n: s.NameI18n, Description: s.Description, Author: s.Author,
 			Filename: s.File, Variables: s.Variables, Origin: template.OriginCustom,
 		}
-	} else {
+	case pluginID != "":
+		var err error
+		if info, err = template.GetPluginTemplateInfo(pluginID, "block", name); err != nil {
+			cosy.ErrHandler(c, err)
+			return
+		}
+	default:
 		info = template.GetTemplateInfo("block", name)
 	}
 
@@ -116,9 +125,12 @@ func GetTemplateBlock(c *gin.Context) {
 		detail template.ConfigDetail
 		err    error
 	)
-	if info.Origin == template.OriginCustom {
+	switch info.Origin {
+	case template.OriginCustom:
 		detail, err = snippet.Render(name, bindData)
-	} else {
+	case template.OriginPlugin:
+		detail, err = template.ParsePluginTemplate(pluginID, "block", name, bindData)
+	default:
 		detail, err = template.ParseTemplate("block", name, bindData)
 	}
 	if err != nil {

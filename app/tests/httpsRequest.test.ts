@@ -16,8 +16,7 @@ function options(overrides: Partial<AutoCertOptions> = {}): AutoCertOptions {
     acme_user_id: 3,
     profile: '',
     must_staple: false,
-    lego_disable_cname_support: false,
-    disable_authoritative_ns_propagation: true,
+    challenge_config: { disable_authoritative_ns_propagation: true },
     enable_common_name: false,
     revoke_old: false,
     ...overrides,
@@ -40,7 +39,7 @@ describe('buildHTTPSRequest', () => {
 
     expect(request.challenge_method).toBe('http01')
     expect(request.dns_credential_id).toBe(0)
-    expect(request.disable_authoritative_ns_propagation).toBe(false)
+    expect(request.challenge_config).toBeUndefined()
     expect(request.acme_user_id).toBe(3)
     expect('certificate_id' in request).toBe(false)
   })
@@ -50,7 +49,7 @@ describe('buildHTTPSRequest', () => {
 
     expect(request.challenge_method).toBe('dns01')
     expect(request.dns_credential_id).toBe(7)
-    expect(request.disable_authoritative_ns_propagation).toBe(true)
+    expect(request.challenge_config).toEqual({ disable_authoritative_ns_propagation: true })
   })
 
   test('an existing certificate sends its id with a neutral challenge', () => {

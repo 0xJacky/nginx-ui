@@ -14,6 +14,11 @@ const entries = computed<EntryItem[]>(() => [
     path: '/certificates/acme_users',
   },
   {
+    title: $gettext('Deploy Targets'),
+    description: $gettext('Push certificates to CDNs, load balancers and other servers after every renewal.'),
+    path: '/certificates/deploy_targets',
+  },
+  {
     title: $gettext('Import Certificate'),
     description: $gettext('Import an existing certificate and key pair into the certificate store.'),
     path: '/certificates/import',

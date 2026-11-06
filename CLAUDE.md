@@ -85,7 +85,7 @@ This project is a web-based NGINX management interface built with Go backend and
 
 ## Release Workflow
 - Start releases from the `dev` branch with a clean working tree.
-- Run `./version.sh` outside the sandbox to update the version, rebuild the frontend, and refresh generated artifacts that require network access.
+- Run `./version.sh` outside the sandbox to update the version (including the Helm chart's `version` and `appVersion`, which pick the default image tag), rebuild the frontend, and refresh generated artifacts that require network access.
 - Prepare release notes in a temporary local markdown file such as `release-notes-vX.Y.Z.md`.
 - Follow the existing three-section release note style: `Features`, `Bug Fixes`, and `Contributors`.
 - Write contributor names using GitHub handles when they are known from the merged PR, not raw git author names.
@@ -95,6 +95,11 @@ This project is a web-based NGINX management interface built with Go backend and
 - Push both `dev` and the release tag with `git push origin dev vX.Y.Z`.
 - Publish the release with `gh release create vX.Y.Z --verify-tag --title vX.Y.Z -F release-notes-vX.Y.Z.md --discussion-category Announcements`.
 - The release flow is expected to create the GitHub Release and the linked Discussion post, then GitHub Actions handles binary, Docker, Homebrew, WinGet, and branch-sync automation.
+
+## Bundled Plugins in the Docker Image
+- The official image bundles the DNS-01 plugin (`com.nginxui.dns01`). The `Fetch bundled plugins` step of the `docker-build` job in `.github/workflows/build.yml` runs `nginx-ui plugin fetch` with the binary of the same build, so each image gets the newest catalog release that version can run. Never pin a plugin version or checksum in the `Dockerfile`.
+- A new plugin release needs no change here; the next image build picks it up. To bundle another official plugin, add its id to that step. To support a new Docker platform, add it to both the step's platform list and `PLATFORMS`.
+- The `Dockerfile` copies `plugins/<os>-<arch>/` into `NGINX_UI_PLUGIN_BUNDLED_DIR`. On first boot Nginx UI installs and enables each bundled package signed with an official key, records it in `<plugin dir>/.bundled.json`, and never reinstalls one the user removed (see `internal/plugin/bundled.go`).
 
 ## Language Requirements
 - **All code comments, documentation, and communication must be in English**

@@ -97,9 +97,9 @@ func TestNginxLogHTTPHandlersWithRealRouterAndIndex(t *testing.T) {
 	require.Equal(t, uint64(len(bytesSent)), indexed)
 	require.NoError(t, indexer.FlushAll())
 
-	searchService := nginxlog.GetSearcher()
-	require.NotNil(t, searchService)
-	require.NoError(t, searchService.SwapShards(indexer.GetAllShards()))
+	// The searcher reads the indexer's store, so the rows are searchable
+	// as soon as they are written.
+	require.NotNil(t, nginxlog.GetSearcher())
 
 	gin.SetMode(gin.TestMode)
 	router := gin.New()
@@ -116,7 +116,9 @@ func TestNginxLogHTTPHandlersWithRealRouterAndIndex(t *testing.T) {
 	require.True(t, ok)
 	require.NotEmpty(t, accessLogDir)
 	assert.Equal(t, logsDir, accessLogDir)
-	require.Len(t, defaultDirBody, 1)
+	// The default access log itself is reported too, since it is readable
+	// through the whitelist.
+	assert.Equal(t, logPath, defaultDirBody["access_log_path"])
 
 	expectedTraffic := int64(2331)
 	startTime := baseTime.Unix()

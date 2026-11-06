@@ -456,27 +456,6 @@ msgstr "Desativado"
 msgid "Maintenance"
 msgstr "Manutenção"
 
-msgid "Site"
-msgstr "Site"
-
-msgid "Stream"
-msgstr "Stream"
-
-msgid "Configuration"
-msgstr "Configuração"
-
-msgid "+%{count} more"
-msgstr "+%{count} mais"
-
-msgid "Search"
-msgstr "Pesquisar"
-
-msgid "No file matches the search"
-msgstr "Nenhum ficheiro corresponde à pesquisa"
-
-msgid "Not used"
-msgstr "Não utilizado"
-
 msgid "Starting download..."
 msgstr "A iniciar o download..."
 
@@ -1012,6 +991,9 @@ msgstr "Concluído"
 msgid "Unknown"
 msgstr "Desconhecido"
 
+msgid "Search"
+msgstr "Pesquisar"
+
 msgid "Open in split view"
 msgstr "Abrir em vista dividida"
 
@@ -1116,6 +1098,12 @@ msgstr ""
 "mesma localização de armazenamento. Altere o nome de uma das tarefas ou "
 "altere o seu caminho de armazenamento."
 
+msgid "Backups to Keep"
+msgstr "Backups a manter"
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr "Backups a manter (0 mantém todos)"
+
 msgid "Renew Certificate Success"
 msgstr "Certificado Renovado com Sucesso"
 
@@ -1145,16 +1133,6 @@ msgstr "O certificado %{name} expirará em %{days} dias"
 
 msgid "Certificate Expiring Soon"
 msgstr "Certificado a expirar em breve"
-
-msgid "Certificate Relocated"
-msgstr "Certificado relocalizado"
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load "
-"%{previous_path} to it"
-msgstr ""
-"O certificado %{name} agora está armazenado em %{path}. Aponte os sites que "
-"carregam %{previous_path} para ele"
 
 msgid "Sync Certificate Error"
 msgstr "Erro ao Sincronizar Certificado"
@@ -1734,55 +1712,6 @@ msgstr "Usar o código de recuperação"
 msgid "Use OTP"
 msgstr "Usar OTP"
 
-msgid "Recovery codes downloaded"
-msgstr "Códigos de recuperação transferidos"
-
-msgid "MFA setup completed. Save your recovery codes before continuing."
-msgstr ""
-"Configuração de MFA concluída. Guarde os seus códigos de recuperação antes "
-"de continuar."
-
-msgid "Download"
-msgstr "Baixar"
-
-msgid "Continue"
-msgstr "Continuar"
-
-msgid "MFA session expired. Please sign in again."
-msgstr "A sessão MFA expirou. Inicie sessão novamente."
-
-msgid "MFA is required. Set up an authenticator or a passkey to continue."
-msgstr "É necessário MFA. Configure um autenticador ou uma passkey para continuar."
-
-msgid "Verify your MFA method to continue signing in."
-msgstr "Verifique o seu método MFA para continuar a iniciar sessão."
-
-msgid "Enable TOTP"
-msgstr "Ativar TOTP"
-
-msgid "Verify"
-msgstr "Verificar"
-
-msgid "Add a passkey"
-msgstr "Adicionar uma chave de acesso"
-
-msgid "Back to sign in"
-msgstr "Voltar ao início de sessão"
-
-msgid "Secret has been copied"
-msgstr "O segredo foi copiado"
-
-msgid "Click to copy"
-msgstr "Clique para copiar"
-
-msgid "Current Password"
-msgstr "Palavra-passe atual"
-
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr ""
-"Digitalize o código QR com o seu telemóvel para adicionar a conta à "
-"aplicação."
-
 msgid "Generate new recovery codes"
 msgstr "Gerar novos códigos de recuperação"
 
@@ -1805,13 +1734,6 @@ msgstr "Autenticação de dois fatores necessária"
 
 msgid "Invalid passcode or recovery code"
 msgstr "Passcode ou código de recuperação inválido"
-
-msgid ""
-"Enable MFA on your own account before managing MFA policies or resetting "
-"another user."
-msgstr ""
-"Ative a MFA na sua própria conta antes de gerir políticas de MFA ou "
-"redefinir outro utilizador."
 
 msgid "Node Status"
 msgstr "Estado do Nó"
@@ -2458,9 +2380,6 @@ msgstr "O conteúdo do ficheiro contém caracteres de controlo inválidos"
 msgid "File content contains restricted nginx directive: {0}"
 msgstr "O conteúdo do ficheiro contém uma diretiva nginx restrita: {0}"
 
-msgid "File content must be valid PEM or htpasswd data"
-msgstr "O conteúdo do ficheiro deve ser dados PEM ou htpasswd válidos"
-
 msgid "Destination file: {0} already exists"
 msgstr "Ficheiro de destino: {0} já existe"
 
@@ -2654,75 +2573,6 @@ msgstr "Falha ao escanear a chave do host: {0}"
 
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr "Algoritmo da chave do host incompatível: esperado {0}, obtido {1}"
-
-msgid "Invalid request: {0}"
-msgstr "Pedido inválido: {0}"
-
-msgid ""
-"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
-"starting and ending with a letter or digit"
-msgstr ""
-"Nome de ingress inválido: use de 1 a 40 letras minúsculas, dígitos e "
-"hífenes, começando e terminando com uma letra ou um dígito"
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr ""
-"Proprietário inválido: use de 1 a 64 letras, dígitos, pontos, sublinhados e "
-"hífenes"
-
-msgid "Invalid host: {0}"
-msgstr "Host inválido: {0}"
-
-msgid "Invalid backend {0}: {1}"
-msgstr "Backend inválido {0}: {1}"
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr "O servidor backend {0} está fora dos intervalos de backend permitidos"
-
-msgid "Invalid route {0}: {1}"
-msgstr "Rota inválida {0}: {1}"
-
-msgid "Invalid tls: {0}"
-msgstr "TLS inválido: {0}"
-
-msgid "Invalid policy: {0}"
-msgstr "Política inválida: {0}"
-
-msgid "Server {0} not found in backend {1}"
-msgstr "Servidor {0} não encontrado no backend {1}"
-
-msgid "Ingress {0} not found"
-msgstr "Ingress {0} não encontrado"
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr "Ingress {0} é de propriedade de {1}; passe force para o assumir"
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr "O host {0} já está a ser servido pelo ingress {1}"
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr "O site {0} já existe e não é gerido por este ingress"
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr "Ingress {0} foi atualizado enquanto estava a ser eliminado"
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr "O upstream {0} já existe e não é gerido por este ingress"
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr "Tempo esgotado à espera que o ingress {0} chegasse à geração {1}"
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr "Tempo esgotado à espera que o ingress {0} seja eliminado"
-
-msgid "Apply failed: {0}"
-msgstr "Falha ao aplicar: {0}"
-
-msgid "Certificate not ready: {0}"
-msgstr "Certificado não pronto: {0}"
-
-msgid "Not implemented"
-msgstr "Não implementado"
 
 msgid "Code completion is not enabled"
 msgstr "A conclusão de código não está ativada"
@@ -3059,39 +2909,6 @@ msgstr "O site está em modo de manutenção"
 msgid "Read dir failed: {0}"
 msgstr "Falha ao ler o diretório: {0}"
 
-msgid ""
-"Site is managed by ingress {0}; change the ingress instead or force the "
-"change"
-msgstr "O site é gerido pelo ingress {0}; altere o ingress ou force a alteração"
-
-msgid ""
-"The file name must end in .conf and use only letters, digits, dots, dashes "
-"and underscores"
-msgstr ""
-"O nome do ficheiro deve terminar em .conf e conter apenas letras, dígitos, "
-"pontos, hífenes e traços inferiores"
-
-msgid "Snippet not found"
-msgstr "Fragmento não encontrado"
-
-msgid "The snippet exceeds 256 KiB"
-msgstr "O fragmento excede 256 KiB"
-
-msgid "The header of the snippet does not parse: {0}"
-msgstr "O cabeçalho do snippet não pode ser analisado: {0}"
-
-msgid "The snippet is still included by {0}"
-msgstr "O snippet ainda é incluído por {0}"
-
-msgid "A snippet with this file name already exists"
-msgstr "Já existe um snippet com este nome de ficheiro"
-
-msgid "The variable {0} is invalid: {1}"
-msgstr "A variável {0} é inválida: {1}"
-
-msgid "The content does not parse as a template: {0}"
-msgstr "O conteúdo não é analisado como um modelo: {0}"
-
 msgid "Stream not found"
 msgstr "Transmissão não encontrada"
 
@@ -3281,9 +3098,6 @@ msgstr ""
 "A zona de memória partilhada é definida pela opção zone; remova a diretiva "
 "zone das diretivas adicionais"
 
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr "Os nomes upstream que começam com {0} são reservados para ingresses"
-
 msgid "Upstream not found: {0}"
 msgstr "Upstream não encontrado: {0}"
 
@@ -3305,13 +3119,6 @@ msgid ""
 msgstr ""
 "A zona de memória partilhada {0} já está a ser usada por outra diretiva; o "
 "nginx reportou: {1}"
-
-msgid ""
-"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
-"the change"
-msgstr ""
-"O upstream {0} é gerido pelo ingress {1}; altere o ingress em vez disso ou "
-"force a alteração"
 
 msgid "The nginx conf.d directory is not available: {0}"
 msgstr "O diretório nginx conf.d não está disponível: {0}"
@@ -3341,15 +3148,6 @@ msgstr "Código de recuperação inválido"
 
 msgid "Legacy recovery code not allowed since totp is not enabled"
 msgstr "Código de recuperação antigo não permitido porque o TOTP não está ativado"
-
-msgid "MFA enrollment is required"
-msgstr "É necessário o registro de MFA"
-
-msgid "MFA verification is required"
-msgstr "É necessária a verificação MFA"
-
-msgid "Cannot remove the last required MFA method"
-msgstr "Não é possível remover o último método de MFA necessário"
 
 msgid "WebAuthn settings are not configured"
 msgstr "As configurações do WebAuthn não estão configuradas"
@@ -4309,9 +4107,6 @@ msgstr "Registos de Grupo"
 msgid "Not Found"
 msgstr "Não Encontrado"
 
-msgid "Ingresses"
-msgstr "Ingresses"
-
 msgid "Namespaces"
 msgstr "Espaços de nomes"
 
@@ -4338,18 +4133,6 @@ msgstr "Lista de Sites"
 
 msgid "Add Site"
 msgstr "Adicionar Site"
-
-msgid "Snippets"
-msgstr "Snippets"
-
-msgid "Create Snippet"
-msgstr "Criar snippet"
-
-msgid "Built-in Template"
-msgstr "Modelo incorporado"
-
-msgid "Edit Snippet"
-msgstr "Editar snippet"
 
 msgid "Edit Site"
 msgstr "Editar Site"
@@ -4433,17 +4216,29 @@ msgstr ""
 "um servidor ou uma localização no editor do site; alterar a lista aqui "
 "atualiza todos os sites que a utilizam."
 
+msgid "+%{count} more"
+msgstr "+%{count} mais"
+
 msgid "Deny"
 msgstr "Negar"
 
 msgid "Allow"
 msgstr "Permitir"
 
+msgid "Not used"
+msgstr "Não utilizado"
+
 msgid "Use list"
 msgstr "Usar lista"
 
 msgid "Deny (403)"
 msgstr "Negar (403)"
+
+msgid "Site"
+msgstr "Site"
+
+msgid "Stream"
+msgstr "Stream"
 
 msgid "Access list %{name} saved"
 msgstr "Lista de acesso %{name} guardada"
@@ -4543,15 +4338,6 @@ msgstr "Semanalmente no %{day} às %{time}"
 
 msgid "Monthly on day %{day} at %{time}"
 msgstr "Mensalmente no dia %{day} às %{time}"
-
-msgid "Backups to Keep"
-msgstr "Backups a manter"
-
-msgid "All"
-msgstr "Todos"
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr "Backups a manter (0 mantém todos)"
 
 msgid "Last Backup Time"
 msgstr "Hora do último backup"
@@ -4925,11 +4711,6 @@ msgstr "Não é possível verificar a implementação"
 msgid "Not After"
 msgstr "Não Depois"
 
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] "Usado por %{count} configuração"
-msgstr[1] "Usado por %{count} configurações"
-
 msgid "Failed to scan certificates"
 msgstr "Falha ao analisar certificados"
 
@@ -4974,12 +4755,6 @@ msgstr "Voltar"
 
 msgid "This field is required"
 msgstr "Este campo é mantatório"
-
-msgid "The path exists, but the file is not a certificate"
-msgstr "O caminho existe, mas o ficheiro não é um certificado"
-
-msgid "The path exists, but the file is not a private key"
-msgstr "O caminho existe, mas o ficheiro não é uma chave privada"
 
 msgid "Sync to"
 msgstr "Sincronizar para"
@@ -5054,6 +4829,9 @@ msgstr "Ficheiros de certificado transferidos com sucesso"
 
 msgid "Failed to download certificate files"
 msgstr "Falha ao baixar os ficheiros do certificado"
+
+msgid "Download"
+msgstr "Baixar"
 
 msgid "Download Certificate Files"
 msgstr "Baixar arquivos de certificado"
@@ -5227,14 +5005,14 @@ msgstr "Para confirmar a revogação, digite \"Revogar\" no campo abaixo:"
 msgid "Renew successfully"
 msgstr "Renovado com Sucesso"
 
-msgid "AutoCert is running, please wait..."
-msgstr "O AutoCert está em execução, aguarde..."
+msgid "Renew"
+msgstr "Renovar"
 
 msgid "Renew Certificate"
 msgstr "Renovar Certificado"
 
-msgid "Renew"
-msgstr "Renovar"
+msgid "AutoCert is running, please wait..."
+msgstr "O AutoCert está em execução, aguarde..."
 
 msgid "Certificate issued successfully"
 msgstr "Certificado emitido com sucesso"
@@ -5852,16 +5630,6 @@ msgstr ""
 "URL absoluto opcional. Utilize-o quando o endereço público for diferente do "
 "host ou porta real do upstream."
 
-msgid "Site Card Click URL"
-msgstr "URL de clique do cartão do site"
-
-msgid ""
-"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
-"empty, the default site URL is used."
-msgstr ""
-"URL HTTP/HTTPS absoluta opcional utilizada ao abrir este cartão de site. Se "
-"estiver vazia, é utilizada a URL predefinida do site."
-
 msgid "HTTP Method"
 msgstr "Método HTTP"
 
@@ -6170,6 +5938,9 @@ msgstr "SDK"
 msgid "Additional"
 msgstr "Adicional"
 
+msgid "All"
+msgstr "Todos"
+
 msgid "Host, e.g. @ or www"
 msgstr "Host, por ex. @ ou www"
 
@@ -6329,6 +6100,9 @@ msgstr "O nome não pode estar vazio"
 
 msgid "Please select DNS provider"
 msgstr "Por favor, selecione o provedor DNS"
+
+msgid "Configuration"
+msgstr "Configuração"
 
 msgid "DNS Credentials"
 msgstr "Credenciais DNS"
@@ -6793,307 +6567,6 @@ msgstr ""
 
 msgid "Access integrated terminal sessions for maintenance tasks."
 msgstr "Aceder a sessões de terminal integradas para tarefas de manutenção."
-
-msgid "HTTP only"
-msgstr "Apenas HTTP"
-
-msgid "Not issued yet"
-msgstr "Ainda não emitido"
-
-msgid "Expired %{date}"
-msgstr "Expirado %{date}"
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] "%{date} (falta %{days} dia)"
-msgstr[1] "%{date} (faltam %{days} dias)"
-
-msgid "Address"
-msgstr "Endereço"
-
-msgid "Health"
-msgstr "Saúde"
-
-msgid "Max Fails"
-msgstr "Falhas máximas"
-
-msgid "Fail Timeout"
-msgstr "Tempo limite de falha"
-
-msgid "Path Prefix"
-msgstr "Prefixo do caminho"
-
-msgid "Backend"
-msgstr "Backend"
-
-msgid "Options"
-msgstr "Opções"
-
-msgid "Allowed Sources"
-msgstr "Fontes permitidas"
-
-msgid "Last Transition"
-msgstr "Última transição"
-
-msgid "Drained"
-msgstr "Exausto"
-
-msgid "No Data"
-msgstr "Sem dados"
-
-msgid "Healthy"
-msgstr "Saudável"
-
-msgid "Unhealthy"
-msgstr "Pouco saudável"
-
-msgid ""
-"The generated site could not be loaded. It is written by the first "
-"successful apply."
-msgstr ""
-"O site gerado não pôde ser carregado. É escrito na primeira aplicação "
-"bem-sucedida."
-
-msgid "Reconcile Now"
-msgstr "Reconciliar agora"
-
-msgid "The last apply failed; the previous config is still live"
-msgstr "A última aplicação falhou; a configuração anterior ainda está ativa."
-
-msgid "Owner"
-msgstr "Proprietário"
-
-msgid "External ID"
-msgstr "ID externo"
-
-msgid "Generation"
-msgstr "Geração"
-
-msgid "%{observed} applied of %{generation}"
-msgstr "%{observed} aplicado de %{generation}"
-
-msgid "Generated Site"
-msgstr "Site gerado"
-
-msgid "Last Applied"
-msgstr "Última aplicação"
-
-msgid "Config Hash"
-msgstr "Hash de configuração"
-
-msgid "Labels"
-msgstr "Etiquetas"
-
-msgid "Hosts"
-msgstr "Hosts"
-
-msgid "TLS"
-msgstr "TLS"
-
-msgid "Mode"
-msgstr "Modo"
-
-msgid "Certificate"
-msgstr "Certificado"
-
-msgid "View certificate"
-msgstr "Ver certificado"
-
-msgid "Challenge"
-msgstr "Desafio"
-
-msgid "Redirect to HTTPS"
-msgstr "Redirecionar para HTTPS"
-
-msgid "HSTS"
-msgstr "HSTS"
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr "Apenas o listener HTTP é servido até que o certificado seja emitido."
-
-msgid "Backends"
-msgstr "Backends"
-
-msgid "Routes"
-msgstr "Rotas"
-
-msgid "Policy default"
-msgstr "Política predefinida"
-
-msgid "Policy"
-msgstr "Política"
-
-msgid "Everyone"
-msgstr "Todos"
-
-msgid "Rate Limit"
-msgstr "Limite de taxa"
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr "%{rps} pedidos/s por cliente, burst %{burst}"
-
-msgid "Unlimited"
-msgstr "Ilimitado"
-
-msgid "Max Body Size"
-msgstr "Tamanho máximo do corpo"
-
-msgid "Extra Headers"
-msgstr "Cabeçalhos adicionais"
-
-msgid "Conditions"
-msgstr "Condições"
-
-msgid "True"
-msgstr "Verdadeiro"
-
-msgid "False"
-msgstr "Falso"
-
-msgid "Generated Site Config"
-msgstr "Configuração do site gerada"
-
-msgid "Open in site editor"
-msgstr "Abrir no editor do site"
-
-msgid "Not ready"
-msgstr "Não pronto"
-
-msgid "The latest spec has not been applied yet"
-msgstr "A especificação mais recente ainda não foi aplicada"
-
-msgid "Applying"
-msgstr "A aplicar"
-
-msgid "Ready"
-msgstr "Pronto"
-
-msgid "Degraded"
-msgstr "Degradado"
-
-msgid "Config Applied"
-msgstr "Configuração aplicada"
-
-msgid "Certificate Ready"
-msgstr "Certificado pronto"
-
-msgid "Backends Healthy"
-msgstr "Backends saudáveis"
-
-msgid "Issued automatically (ACME)"
-msgstr "Emitido automaticamente (ACME)"
-
-msgid "Existing certificate"
-msgstr "Certificado existente"
-
-msgid "HTTP-01"
-msgstr "HTTP-01"
-
-msgid "DNS-01"
-msgstr "DNS-01"
-
-msgid "Round Robin"
-msgstr "Round Robin"
-
-msgid "Least Connections"
-msgstr "Menos ligações"
-
-msgid "IP Hash"
-msgstr "Hash de IP"
-
-msgid "All owners"
-msgstr "Todos os proprietários"
-
-msgid "Reconcile of %{name} queued"
-msgstr "Reconciliação de %{name} em fila"
-
-msgid "Delete ingress %{name}?"
-msgstr "Eliminar ingress %{name}?"
-
-msgid ""
-"This ingress is owned by %{owner}. Its controller will probably recreate it "
-"on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-"Este ingress é propriedade de %{owner}. O seu controller provavelmente irá "
-"recriá-lo na próxima sincronização; remova-o do controller para o eliminar "
-"definitivamente."
-
-msgid "The generated site and upstream files are removed and nginx is reloaded."
-msgstr "O site gerado e os ficheiros upstream são removidos e o nginx é recarregado."
-
-msgid "Also delete the certificate"
-msgstr "Eliminar também o certificado"
-
-msgid "Ingress %{name} deleted"
-msgstr "Ingress %{name} eliminado"
-
-msgid "Ingress"
-msgstr "Ingress"
-
-msgid "Phase"
-msgstr "Fase"
-
-msgid "%{healthy}/%{total} healthy"
-msgstr "%{healthy}/%{total} saudáveis"
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] "%{total} servidor"
-msgstr[1] "%{total} servidores"
-
-msgid "%{count} down"
-msgstr "%{count} restantes"
-
-msgid "Filter by owner"
-msgstr "Filtrar por proprietário"
-
-msgid "Applied generation / latest generation"
-msgstr "Geração aplicada / Última geração"
-
-msgid "gen %{observed}/%{generation}"
-msgstr "gen %{observed}/%{generation}"
-
-msgid "Reconcile"
-msgstr "Reconciliar"
-
-msgid ""
-"Ingresses are reverse proxy entries published by external controllers "
-"through the Ingress API. Nginx UI renders each one into a managed site and "
-"upstreams, issues its certificate and reports its status here. Change them "
-"in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-"Os Ingresses são entradas de proxy reverso publicadas por controladores "
-"externos através da API Ingress. O Nginx UI renderiza cada um como um site "
-"gerido com upstreams, emite o seu certificado e reporta o seu estado aqui. "
-"Altere-os no respetivo controlador; as edições feitas aqui são substituídas "
-"pela próxima reconciliação."
-
-msgid "Learn more"
-msgstr "Saiba mais"
-
-msgid "No ingresses yet"
-msgstr "Ainda não há ingresses"
-
-msgid ""
-"A controller such as a deployment platform creates ingresses with PUT "
-"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
-"They show up here as soon as they are stored."
-msgstr ""
-"Um controlador como uma plataforma de deploy cria ingresses com PUT "
-"/api/ingresses/:name, autenticado como um nó de cluster ou com um token de "
-"API. Eles aparecem aqui assim que são armazenados."
-
-msgid "Read the Ingress API guide"
-msgstr "Leia o guia da API Ingress"
-
-msgid "Search by name, host or external ID"
-msgstr "Pesquisar por nome, host ou ID externo"
-
-msgid "Search ingresses"
-msgstr "Pesquisar Ingress"
-
-msgid "No ingress matches the filter"
-msgstr "Nenhum Ingress corresponde ao filtro"
 
 msgid "Please input your E-mail!"
 msgstr "Por favor introduza o seu E-mail!"
@@ -8479,6 +7952,9 @@ msgstr ""
 msgid "Register passkey successfully"
 msgstr "Chave de acesso registrada com sucesso"
 
+msgid "Add a passkey"
+msgstr "Adicionar uma chave de acesso"
+
 msgid "Tips"
 msgstr "Dicas"
 
@@ -8500,6 +7976,9 @@ msgid ""
 msgstr ""
 "Siga as instruções no diálogo para completar o processo de registo da chave "
 "de acesso."
+
+msgid "Current Password"
+msgstr "Palavra-passe atual"
 
 msgid ""
 "You have not configured the settings of Webauthn, so you cannot add a "
@@ -8639,9 +8118,6 @@ msgstr "Por favor, introduza a sua palavra-passe atual"
 msgid "Enable 2FA successfully"
 msgstr "2FA Activado com Sucesso"
 
-msgid "TOTP disabled"
-msgstr "TOTP desativado"
-
 msgid "TOTP"
 msgstr "TOTP"
 
@@ -8659,27 +8135,25 @@ msgstr ""
 "Para habilitar, tem de instalar a app Google ou Microsoft Authenticator no "
 "seu telemóvel."
 
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr ""
+"Digitalize o código QR com o seu telemóvel para adicionar a conta à "
+"aplicação."
+
 msgid "Current account is not enabled TOTP."
 msgstr "A conta atual não tem o TOTP ativado."
 
 msgid "Current account is enabled TOTP."
 msgstr "A conta atual tem o TOTP ativado."
 
-msgid "Replace TOTP"
-msgstr "Substituir TOTP"
+msgid "Enable TOTP"
+msgstr "Ativar TOTP"
 
-msgid "Disable TOTP for this account?"
-msgstr "Desativar TOTP para esta conta?"
+msgid "Secret has been copied"
+msgstr "O segredo foi copiado"
 
-msgid "Disable TOTP"
-msgstr "Desativar TOTP"
-
-msgid ""
-"Your current authenticator remains active until the new code is verified. "
-"New recovery codes replace the old ones."
-msgstr ""
-"O seu autenticador atual permanece ativo até que o novo código seja "
-"verificado. Os novos códigos de recuperação substituem os anteriores."
+msgid "Click to copy"
+msgstr "Clique para copiar"
 
 msgid "Bark"
 msgstr "Bark"
@@ -9872,6 +9346,9 @@ msgstr "Acesso e instalação"
 msgid "File mode and setup instructions"
 msgstr "Modo de ficheiros e instruções de configuração"
 
+msgid "Verify"
+msgstr "Verificar"
+
 msgid "Run checks and save"
 msgstr "Executar verificações e guardar"
 
@@ -10156,29 +9633,6 @@ msgstr "Geral"
 
 msgid "Banned Until"
 msgstr "Banido Até"
-
-msgid "MFA Policy"
-msgstr "Política MFA"
-
-msgid ""
-"Require MFA at the next sign-in. Users must enroll their own authenticator "
-"or passkey."
-msgstr ""
-"Exigir MFA no próximo início de sessão. Os utilizadores devem registar o "
-"seu próprio authenticator ou passkey."
-
-msgid "Require MFA for all users"
-msgstr "Exigir MFA para todos os utilizadores"
-
-msgid "Require local MFA for SSO sign-in"
-msgstr "Exigir MFA local para início de sessão com SSO"
-
-msgid ""
-"Apply local MFA verification and enrollment requirements to OIDC and "
-"Casdoor sign-in."
-msgstr ""
-"Aplicar os requisitos locais de verificação e inscrição de MFA ao início de "
-"sessão de OIDC e Casdoor."
 
 msgid "Passkeys"
 msgstr "Passkeys"
@@ -10474,6 +9928,9 @@ msgstr "Todas as interfaces"
 msgid "HTTPS"
 msgstr "HTTPS"
 
+msgid "Certificate"
+msgstr "Certificado"
+
 msgid "Pick the certificate that secures the web interface."
 msgstr "Escolha o certificado que protege a interface web."
 
@@ -10499,6 +9956,9 @@ msgstr "A hora de término deve ser posterior à hora de início"
 msgid "Set maintenance information"
 msgstr "Definir informações de manutenção"
 
+msgid "Continue"
+msgstr "Continuar"
+
 msgid "Start time"
 msgstr "Hora de início"
 
@@ -10522,22 +9982,6 @@ msgstr "Informações adicionais"
 
 msgid "For example: expected recovery plan or incident reference"
 msgstr "Por exemplo: plano de recuperação esperado ou referência de incidente"
-
-msgid "Managed by ingress %{name}"
-msgstr "Gerido por ingress %{name}"
-
-msgid ""
-"Changes will be overwritten by the next reconcile. Edit the ingress in its "
-"controller instead."
-msgstr ""
-"As alterações serão substituídas pela próxima reconciliação. Edite o "
-"Ingress no seu controller em vez disso."
-
-msgid "View ingress"
-msgstr "Ver Ingress"
-
-msgid "Edit anyway"
-msgstr "Editar mesmo assim"
 
 msgid "Configuration Name"
 msgstr "Nome da Configuração"
@@ -10759,9 +10203,6 @@ msgstr "Espaço de nomes"
 msgid "The parameter of server_name is required"
 msgstr "O parâmetro de server_name é obrigatório"
 
-msgid "Config Template"
-msgstr "Modelo de Configuração"
-
 msgid "Save the edited configuration before enabling HTTPS."
 msgstr "Guarde a configuração editada antes de ativar o HTTPS."
 
@@ -10861,31 +10302,11 @@ msgstr "Certificado autoassinado"
 msgid "Generate self-signed certificate"
 msgstr "Gerar certificado autoassinado"
 
-msgid "Built-in"
-msgstr "Integrado"
-
 msgid "Search templates"
 msgstr "Pesquisar modelos"
 
-msgid "Snippet"
-msgstr "Trecho"
-
 msgid "Author"
 msgstr "Autor"
-
-msgid ""
-"Include keeps the site linked to snippets/%{file}, so later changes of the "
-"snippet apply to it. Insert copies the content into the site instead."
-msgstr ""
-"Include mantém o site ligado a snippets/%{file}, de modo que as alterações "
-"posteriores do snippet se aplicam a ele. Insert copia o conteúdo para o "
-"site em vez disso."
-
-msgid "Insert"
-msgstr "Inserir"
-
-msgid "Include"
-msgstr "Incluir"
 
 msgid "Do you want to enable TLS?"
 msgstr "Activar TLS?"
@@ -10915,6 +10336,15 @@ msgstr ""
 
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr "Não é um nome de domínio ou endereço IP válido: %{value}"
+
+msgid "HTTP-01"
+msgstr "HTTP-01"
+
+msgid "DNS-01"
+msgstr "DNS-01"
+
+msgid "Existing certificate"
+msgstr "Certificado existente"
 
 msgid "Skip for now"
 msgstr "Ignorar por agora"
@@ -11186,6 +10616,9 @@ msgstr "Recriar registo DNS"
 msgid "Clear Link"
 msgstr "Limpar ligação"
 
+msgid "Config Template"
+msgstr "Modelo de Configuração"
+
 msgid "Port Scanner"
 msgstr "Scanner de portas"
 
@@ -11203,9 +10636,6 @@ msgstr "Erro na análise de configuração do Nginx"
 
 msgid "No."
 msgstr "N.º"
-
-msgid "Ingress: %{name}"
-msgstr "Ingress: %{name}"
 
 msgid "Please input name, "
 msgstr "Insira o nome, "
@@ -11274,10 +10704,3076 @@ msgstr "Definir informações de manutenção para os sites selecionados"
 msgid "%{count} sites selected"
 msgstr "%{count} sites selecionados"
 
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] "Incluir %{count} site gerido por um ingress"
-msgstr[1] "Incluir %{count} sites geridos por ingresses"
+msgid "Do you want to %{action} this stream?"
+msgstr "Deseja %{action} este fluxo?"
+
+msgid "Delete stream: %{stream_name}"
+msgstr "Eliminar stream: %{stream_name}"
+
+msgid "Added successfully"
+msgstr "Adicionado com sucesso"
+
+msgid "Add Stream"
+msgstr "Adicionar Stream"
+
+msgid "%{count} streams selected"
+msgstr "%{count} streams selecionados"
+
+msgid "Development Mode"
+msgstr "Modo Desenvolvimento"
+
+msgid "Official Document"
+msgstr "Documentação oficial"
+
+msgid "Sponsor"
+msgstr "Patrocinador"
+
+msgid "Project Team"
+msgstr "Equipe de Projecto"
+
+msgid "License"
+msgstr "Licença"
+
+msgid "View Third-party Components"
+msgstr "Ver componentes de terceiros"
+
+msgid "View version details and core information about this Nginx UI instance."
+msgstr ""
+"Ver detalhes da versão e informações principais sobre esta instância do "
+"Nginx UI."
+
+msgid "Run built-in diagnostics to validate environment and service readiness."
+msgstr ""
+"Execute os diagnósticos integrados para validar o ambiente e a prontidão do "
+"serviço."
+
+msgid "Check release updates and execute upgrade operations when available."
+msgstr ""
+"Verifique atualizações de lançamento e execute operações de atualização "
+"quando disponíveis."
+
+msgid "Review third-party licenses and open source component attributions."
+msgstr "Rever licenças de terceiros e atribuições de componentes de código aberto."
+
+msgid "Total Components"
+msgstr "Componentes totais"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "License Types"
+msgstr "Tipos de licença"
+
+msgid "License Distribution"
+msgstr "Distribuição de Licenças"
+
+msgid "components"
+msgstr "componentes"
+
+msgid "All Components"
+msgstr "Todos os componentes"
+
+msgid "Dev"
+msgstr "Dev"
+
+msgid "Reinstall"
+msgstr "Reinstalar"
+
+msgid "Core Upgrade"
+msgstr "Actualização do Core"
+
+msgid "You can check Nginx UI upgrade at this page."
+msgstr "Pode verificar a atualização do Nginx UI nesta página."
+
+msgid "Current Version"
+msgstr "Versão Actual"
+
+msgid "Arch"
+msgstr "Arquitetura"
+
+msgid "Executable Path"
+msgstr "Caminho Executável"
+
+msgid "Last checked at"
+msgstr "Última verificação em"
+
+msgid "You are using the latest version"
+msgstr "Está a usar a última versão"
+
+msgid "New version released"
+msgstr "Nova versão lançada"
+
+msgid "Release Note"
+msgstr "Nota de Lançamento"
+
+msgid "Hide Assistant"
+msgstr "Ocultar assistente"
+
+msgid "Show Assistant"
+msgstr "Mostrar assistente"
+
+msgid "Connection lost for this terminal. Please refresh if needed."
+msgstr "Conexão perdida para este terminal. Atualize se necessário."
+
+msgid ""
+"This is a simulated terminal running entirely in your browser. Commands are "
+"answered locally and never reach a server."
+msgstr ""
+"Este é um terminal simulado que funciona inteiramente no seu navegador. Os "
+"comandos são respondidos localmente e nunca chegam a um servidor."
+
+msgid ""
+"You are accessing this terminal over an insecure HTTP connection on a "
+"non-localhost domain. This may expose sensitive information."
+msgstr ""
+"Está a aceder a este terminal através de uma ligação HTTP insegura num "
+"domínio que não é localhost. Isto pode expor informações sensíveis."
+
+msgid "Round Robin (default)"
+msgstr "Round Robin (predefinido)"
+
+msgid "Least Connections (least_conn)"
+msgstr "Menos ligações (least_conn)"
+
+msgid "IP Hash (ip_hash)"
+msgstr "Hash de IP (ip_hash)"
+
+msgid "Hash (hash)"
+msgstr "Hash (hash)"
+
+msgid "Random (random)"
+msgstr "Aleatório (random)"
+
+msgid "Upstream %{name} saved and Nginx reloaded"
+msgstr "Upstream %{name} guardado e Nginx recarregado"
+
+msgid "Edit Upstream %{name}"
+msgstr "Editar Upstream %{name}"
+
+msgid "Create Upstream"
+msgstr "Criar Upstream"
+
+msgid "Sites use it as proxy_pass http://%{name};"
+msgstr "Os sites usam-no como proxy_pass http://%{name};"
+
+msgid "Load Balancing Method"
+msgstr "Método de Balanceamento de Carga"
+
+msgid "Hash Key"
+msgstr "Chave de hash"
+
+msgid "Consistent Hashing"
+msgstr "Hashing consistente"
+
+msgid "Servers"
+msgstr "Servidores"
+
+msgid "Address"
+msgstr "Endereço"
+
+msgid "Max Fails"
+msgstr "Falhas máximas"
+
+msgid "Fail Timeout"
+msgstr "Tempo limite de falha"
+
+msgid "Not available with this load balancing method"
+msgstr "Indisponível com este método de balanceamento de carga"
+
+msgid "Keepalive"
+msgstr "Keepalive"
+
+msgid ""
+"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
+"need proxy_http_version 1.1 and an empty Connection header."
+msgstr ""
+"Conexões inativas a manter abertas por worker; 0 desativa. Os sites em "
+"proxy também precisam de proxy_http_version 1.1 e de um cabeçalho "
+"Connection vazio."
+
+msgid "Connections"
+msgstr "Ligações"
+
+msgid "Additional Directives"
+msgstr "Diretivas adicionais"
+
+msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
+msgstr "Uma diretiva por linha, por exemplo keepalive_timeout ou keepalive_requests."
+
+msgid "Referenced By"
+msgstr "Referenciado por"
+
+msgid "No site uses this upstream yet."
+msgstr "Nenhum site usa este upstream ainda."
+
+msgid "Configuration Preview"
+msgstr "Pré-visualização da configuração"
+
+msgid "Enable server %{address}"
+msgstr "Ativar servidor %{address}"
+
+msgid "Disable server %{address}"
+msgstr "Desativar servidor %{address}"
+
+msgid ""
+"Create shared upstream groups with load balancing and reuse them across "
+"sites."
+msgstr ""
+"Crie grupos de upstream partilhados com balanceamento de carga e "
+"reutilize-os em vários sites."
+
+msgid "Monitor the health of every proxy target and toggle its health check."
+msgstr ""
+"Monitorize a saúde de cada destino de proxy e ative ou desative a sua "
+"verificação de saúde."
+
+msgid "Socket"
+msgstr "Socket"
+
+msgid "Direct"
+msgstr "Direto"
+
+msgid "Health Status"
+msgstr "Estado de saúde"
+
+msgid "No Data"
+msgstr "Sem dados"
+
+msgid "Last Check"
+msgstr "Última verificação"
+
+msgid "Upstream health checks are globally paused"
+msgstr "As verificações de estado dos upstreams estão globalmente em pausa"
+
+msgid ""
+"Per-target selections are preserved. Resume probes from Health Check "
+"preferences."
+msgstr ""
+"As seleções por destino são preservadas. Retome as sondagens nas "
+"preferências de verificação de estado."
+
+msgid "Round Robin"
+msgstr "Round Robin"
+
+msgid "Least Connections"
+msgstr "Menos ligações"
+
+msgid "IP Hash"
+msgstr "Hash de IP"
+
+msgid "Hash"
+msgstr "Hash"
+
+msgid "Random"
+msgstr "Aleatório"
+
+msgid "Load Balancing"
+msgstr "Balanceamento de carga"
+
+msgid "Defined In"
+msgstr "Definido em"
+
+msgid "Matched upstreams: %{groups}, servers: %{servers}"
+msgstr "Upstreams correspondentes: %{groups}, servidores: %{servers}"
+
+msgid "Server %{address} enabled"
+msgstr "Servidor %{address} ativado"
+
+msgid "Server %{address} disabled"
+msgstr "Servidor %{address} desativado"
+
+msgid "Disable the last active server of %{name}?"
+msgstr "Desativar o último servidor ativo de %{name}?"
+
+msgid ""
+"No other primary server of this upstream is enabled. Requests will fail "
+"unless a backup server takes over."
+msgstr ""
+"Não está ativo nenhum outro servidor primário deste upstream. Os pedidos "
+"falharão a menos que um servidor de backup tome a liderança."
+
+msgid "Upstream %{name} is still in use"
+msgstr "O Upstream %{name} ainda está em uso"
+
+msgid "Point these configurations at another upstream before deleting it:"
+msgstr "Aponte estas configurações para outro upstream antes de o eliminar:"
+
+msgid "Delete upstream %{name}?"
+msgstr "Apagar o upstream %{name}?"
+
+msgid "%{path} will be removed and Nginx reloaded."
+msgstr "%{path} será removido e o Nginx será recarregado."
+
+msgid "Upstream %{name} deleted"
+msgstr "Upstream %{name} eliminado"
+
+msgid ""
+"An upstream group shares its servers and load balancing method across "
+"sites. Choose it as the proxy target when setting up a site; later changes "
+"here apply to every site that uses it."
+msgstr ""
+"Um grupo upstream partilha os seus servidores e o seu método de "
+"balanceamento de carga entre os sites. Escolha-o como alvo proxy ao "
+"configurar um site; alterações futuras aqui aplicam-se a todos os sites que "
+"o utilizam."
+
+msgid "Files are stored in %{dir}."
+msgstr "Os ficheiros são armazenados em %{dir}."
+
+msgid "Search by name or IP:port"
+msgstr "Pesquisar por nome ou IP:port"
+
+msgid "Search upstreams by name or server address"
+msgstr "Pesquisar upstreams por nome ou endereço do servidor"
+
+msgid "No upstream group matches the search"
+msgstr "Nenhum grupo de upstream corresponde à pesquisa"
+
+msgid "Upstreams Defined in Other Files"
+msgstr "Upstreams definidos em outros ficheiros"
+
+msgid ""
+"These upstream blocks live inside site or other configuration files. Edit "
+"their settings in their own file; servers can be switched on and off here. "
+"A block inside a site can be converted to a shared group that other sites "
+"can use too."
+msgstr ""
+"Estes blocos upstream existem dentro de ficheiros de configuração de sites "
+"ou de outros ficheiros. Edite as suas definições no próprio ficheiro; os "
+"servidores podem ser ligados e desligados aqui. Um bloco dentro de um site "
+"pode ser convertido num grupo partilhado que outros sites também podem "
+"utilizar."
+
+msgid "User info updated successfully"
+msgstr "Informações do utilizador atualizadas com sucesso"
+
+msgid "Passwords do not match"
+msgstr "As palavras-passe não coincidem"
+
+msgid "Password updated successfully"
+msgstr "Palavra-passe atualizada com sucesso"
+
+msgid "Personal Information"
+msgstr "Informações pessoais"
+
+msgid "Update Profile"
+msgstr "Atualizar perfil"
+
+msgid "Security Settings"
+msgstr "Configurações de segurança"
+
+msgid "Change Password"
+msgstr "Alterar senha"
+
+msgid "New Password"
+msgstr "Nova senha"
+
+msgid "Confirm New Password"
+msgstr "Confirmar nova palavra-passe"
+
+msgid "Update Password"
+msgstr "Atualizar senha"
+
+msgid "Node %{name} cannot be opened"
+msgstr "Não é possível abrir o nó %{name}"
+
+msgid "Exit workspace"
+msgstr "Sair do espaço de trabalho"
+
+msgid "New tab"
+msgstr "Nova aba"
+
+msgid "Single pane"
+msgstr "Painel único"
+
+msgid "Split view"
+msgstr "Vista dividida"
+
+msgctxt "Access list rule"
+msgid "Note"
+msgstr "Nota"
+
+msgctxt "preference group"
+msgid "Maintenance"
+msgstr "Manutenção"
+
+msgid ""
+"DNS-01 challenge requires the DNS-01 plugin. Install it from System > "
+"Plugins."
+msgstr ""
+
+msgid "Install DNS-01 plugin"
+msgstr "Instalar plugin DNS-01"
+
+msgid "Go to System > Plugins"
+msgstr "Ir para Sistema > Plugins"
+
+msgid "If your domain has CNAME records and you cannot obtain certificates, "
+msgstr ""
+"Se o seu domínio tiver registos CNAME e não conseguir obter certificados,"
+
+msgid "Skip local DNS propagation checks and wait 60 seconds before asking "
+msgstr ""
+"Ignore as verificações de propagação DNS locais e aguarde 60 segundos antes "
+"de solicitar "
+
+msgid "DNS-01 plugin unavailable"
+msgstr "Plugin DNS-01 indisponível"
+
+msgid ""
+"Certificate %{name} cannot be renewed because no enabled plugin provides the "
+"DNS-01 challenge"
+msgstr "O certificado %{name} não pode ser renovado porque nenhum plugin ativado fornece o desafio DNS-01"
+
+msgid "Plugin %{plugin} failed to render"
+msgstr "Falha ao renderizar o plugin %{plugin}"
+
+msgid "No DNS-01 provider for {0}: install and enable the DNS-01 plugin"
+msgstr "Não existe fornecedor DNS-01 para {0}: instale e ative o plugin DNS-01"
+
+msgid "Plugin manifest is invalid"
+msgstr "O manifesto do plugin é inválido"
+
+msgid "Plugin not found"
+msgstr "Plugin não encontrado"
+
+msgid "Plugin already exists"
+msgstr "O plugin já existe"
+
+msgid "Plugin is not running"
+msgstr "O plugin não está em execução"
+
+msgid "Plugin handshake failed"
+msgstr "O handshake do plugin falhou"
+
+msgid "Plugin has no executable for this platform"
+msgstr "O plugin não tem executável para esta plataforma"
+
+msgid "Plugin package is invalid"
+msgstr "O pacote do plugin é inválido"
+
+msgid "Plugin package is too large"
+msgstr "O pacote do plugin é demasiado grande"
+
+msgid "Plugin api version is incompatible"
+msgstr "A versão da API do plugin é incompatível"
+
+msgid "Plugin permissions need approval"
+msgstr "As permissões do plugin requerem aprovação"
+
+msgid "Plugin dependency is missing: {0}"
+msgstr "Falta uma dependência do plugin: {0}"
+
+msgid "Plugin dependencies form a cycle"
+msgstr "As dependências do plugin formam um ciclo"
+
+msgid "Plugin is in use by {0}"
+msgstr "O plugin está a ser utilizado por {0}"
+
+msgid "Plugin system is disabled"
+msgstr "O sistema de plugins está desativado"
+
+msgid "Plugin uploads are disabled"
+msgstr "Os carregamentos de plugins estão desativados"
+
+msgid "Plugin call timed out"
+msgstr "A chamada ao plugin excedeu o tempo limite"
+
+msgid "Plugin rpc error: {0}"
+msgstr "Erro RPC do plugin: {0}"
+
+msgid "Plugin setting {0} is invalid"
+msgstr "A definição {0} do plugin é inválida"
+
+msgid "Plugin needs nginx-ui {0} or newer, this node runs {1}"
+msgstr "O plugin requer o nginx-ui {0} ou posterior, este nó executa {1}"
+
+msgid "Plugin package declares another id"
+msgstr "O pacote do plugin declara outro id"
+
+msgid "Plugins"
+msgstr "Plugins"
+
+msgid "Accept plugin sync"
+msgstr "Aceitar sincronização de plugins"
+
+msgid "Accepted"
+msgstr "Aceite"
+
+msgid "Opted out"
+msgstr "Recusado"
+
+msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
+msgstr "Instale, configure e diagnostique plugins que estendem o Nginx UI."
+
+msgid "Plugin"
+msgstr "Plugin"
+
+msgid "Capabilities"
+msgstr "Capacidades"
+
+msgid "Auto install to nodes"
+msgstr "Instalação automática nos nós"
+
+msgid "Plugin synchronized to %{count} node(s)"
+msgstr "Plugin sincronizado com %{count} nó(s)"
+
+msgid "Some nodes could not be synchronized"
+msgstr "Não foi possível sincronizar alguns nós"
+
+msgid "Failed to synchronize the plugin"
+msgstr "Falha ao sincronizar o plugin"
+
+msgid "Installed"
+msgstr "Instalada"
+
+msgid "Starting"
+msgstr "A iniciar"
+
+msgid "Missing"
+msgstr "Em falta"
+
+msgid "Incompatible"
+msgstr "Incompatível"
+
+msgid "Needs approval"
+msgstr "Requer aprovação"
+
+msgid "Failed to load the plugin list"
+msgstr "Falha ao carregar a lista de plugins"
+
+msgid "Plugin enabled"
+msgstr "Plugin ativado"
+
+msgid "Failed to enable the plugin"
+msgstr "Falha ao ativar o plugin"
+
+msgid "Plugin disabled"
+msgstr "Plugin desativado"
+
+msgid "Failed to disable the plugin"
+msgstr "Falha ao desativar o plugin"
+
+msgid "Plugin uninstalled"
+msgstr "Plugin desinstalado"
+
+msgid "Failed to uninstall the plugin"
+msgstr "Falha ao desinstalar o plugin"
+
+msgid "Reload the page to apply the development plugin URL"
+msgstr "Recarregue a página para aplicar o URL do plugin de desenvolvimento"
+
+msgid ""
+"Plugins extend Nginx UI with extra capabilities. Only install bundles from "
+"authors you trust."
+msgstr "Os plugins estendem o Nginx UI com capacidades adicionais. Instale apenas pacotes de autores em quem confia."
+
+msgid "Development plugin URL"
+msgstr "URL do plugin de desenvolvimento"
+
+msgid ""
+"Address of a plugin.json served by any static server. The plugin is loaded "
+"in addition to the installed ones."
+msgstr ""
+
+msgid "Dev plugin"
+msgstr ""
+
+msgid "No plugins installed"
+msgstr "Nenhum plugin instalado"
+
+msgid "Settings"
+msgstr "Configurações"
+
+msgid "Logs"
+msgstr "Registos"
+
+msgid "Sync to nodes"
+msgstr "Sincronizar com nós"
+
+msgid "Uninstall %{name}? Its data and settings are removed."
+msgstr ""
+
+msgid "Uninstall"
+msgstr "Desinstalar"
+
+msgid "Sync %{name} to nodes"
+msgstr "Sincronizar %{name} com nós"
+
+msgid "Leave every node unchecked to sync to all child nodes."
+msgstr "Deixe todos os nós desmarcados para sincronizar com todos os nós filhos."
+
+msgid "Already in sync"
+msgstr "Já sincronizado"
+
+msgid "This node only"
+msgstr "Apenas este nó"
+
+msgid "All child nodes"
+msgstr "Todos os nós filhos"
+
+msgid "Selected nodes"
+msgstr "Nós selecionados"
+
+msgid "Failed to read the plugin bundle"
+msgstr "Falha ao ler o pacote do plugin"
+
+msgid "Plugin installed"
+msgstr "Plugin instalado"
+
+msgid "The plugin was installed here but could not be pushed to the nodes"
+msgstr "O plugin foi instalado aqui, mas não foi possível enviá-lo para os nós"
+
+msgid "Failed to install the plugin"
+msgstr "Falha ao instalar o plugin"
+
+msgid "Install plugin"
+msgstr "Instalar plugin"
+
+msgid "Click or drag a plugin bundle here"
+msgstr "Clique ou arraste um pacote de plugin para esta área"
+
+msgid "A .tar.gz produced by the plugin author"
+msgstr "Um .tar.gz produzido pelo autor do plugin"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "(replaces %{version})"
+msgstr "(substitui %{version})"
+
+msgid "None"
+msgstr "Nenhuma"
+
+msgid "Install the plugins below first"
+msgstr "Instale primeiro os plugins abaixo"
+
+msgid "This version asks for permissions you have not approved yet."
+msgstr "Esta versão pede permissões que ainda não aprovou."
+
+msgid ""
+"Review the list below before installing. The plugin stays disabled until you "
+"approve them."
+msgstr "Reveja a lista abaixo antes de instalar. O plugin permanece desativado até as aprovar."
+
+msgid "Requested permissions"
+msgstr "Permissões pedidas"
+
+msgid "Enable after install"
+msgstr "Ativar após instalar"
+
+msgid "Also install to child nodes"
+msgstr "Instalar também nos nós filhos"
+
+msgid "Keep in sync automatically"
+msgstr "Manter sincronizado automaticamente"
+
+msgid ""
+"The version, the enabled state and future updates are kept aligned on those "
+"nodes."
+msgstr "A versão, o estado de ativação e as atualizações futuras são mantidos alinhados nesses nós."
+
+msgid "Failed to load the plugin logs"
+msgstr "Falha ao carregar os registos do plugin"
+
+msgid "Logs copied to clipboard"
+msgstr "Registos copiados para a área de transferência"
+
+msgid "Failed to copy the logs"
+msgstr "Falha ao copiar os registos"
+
+msgid "Logs: %{name}"
+msgstr ""
+
+msgid "No log output yet"
+msgstr "Ainda não há saída de registo"
+
+msgid "Failed to load the plugin marketplace"
+msgstr "Falha ao carregar o marketplace de plugins"
+
+msgid "Reloading the catalog"
+msgstr "A recarregar o catálogo"
+
+msgid "Search plugins"
+msgstr ""
+
+msgid "All categories"
+msgstr "Todas as categorias"
+
+msgid "All sources"
+msgstr "Todas as origens"
+
+msgid "Updates only"
+msgstr ""
+
+msgid "Sources"
+msgstr "Origens"
+
+msgid "Every installed plugin is up to date"
+msgstr "Todos os plugins instalados estão atualizados"
+
+msgid "No plugins match your search"
+msgstr "Nenhum plugin corresponde à sua pesquisa"
+
+msgid "Downloading the package"
+msgstr "A descarregar o pacote"
+
+msgid "Verifying the signature"
+msgstr ""
+
+msgid "Installing"
+msgstr "A instalar"
+
+msgid "%{phase}: %{plugin}"
+msgstr "%{phase}: %{plugin}"
+
+msgid "Failed to load the plugin from the marketplace"
+msgstr "Falha ao carregar o plugin a partir do marketplace"
+
+msgid "Update plugin"
+msgstr "Atualizar plugin"
+
+msgid "No release available for this platform"
+msgstr "Nenhuma versão disponível para esta plataforma"
+
+msgid "Source"
+msgstr "Origem"
+
+msgid "This is a community plugin"
+msgstr "Este é um plugin da comunidade"
+
+msgid "The plugins below are installed together with it"
+msgstr "Os plugins abaixo são instalados em conjunto com ele"
+
+msgid "Live progress is unavailable, checking the plugin list instead"
+msgstr "Progresso em direto indisponível, a verificar a lista de plugins"
+
+msgid "No description provided."
+msgstr "Nenhuma descrição fornecida."
+
+msgid "Installed: %{version}"
+msgstr "Instalada: %{version}"
+
+msgid "Homepage"
+msgstr "Página inicial"
+
+msgid "Repository"
+msgstr "Repositório"
+
+msgid "Release notes"
+msgstr "Notas de versão"
+
+msgid "Released"
+msgstr ""
+
+msgid "Platforms"
+msgstr "Plataformas"
+
+msgid "Failed to load the plugin details"
+msgstr "Falha ao carregar os detalhes do plugin"
+
+msgid "Installed version"
+msgstr "Versão instalada"
+
+msgid "Versions"
+msgstr "Versões"
+
+msgid "Yanked"
+msgstr ""
+
+msgid "Latest"
+msgstr "Mais recente"
+
+msgid "Readme"
+msgstr "Leia-me"
+
+msgid "Failed to load the marketplace sources"
+msgstr "Falha ao carregar as origens do marketplace"
+
+msgid "Marketplace sources saved"
+msgstr "Origens do marketplace guardadas"
+
+msgid "Failed to save the marketplace sources"
+msgstr "Falha ao guardar as origens do marketplace"
+
+msgid "Marketplace sources"
+msgstr "Origens do marketplace"
+
+msgid ""
+"Catalogs are merged in order, the first source that offers a plugin wins. "
+"Leave the list empty to use the official catalog."
+msgstr ""
+
+msgid "Using the official catalog"
+msgstr ""
+
+msgid "Add source"
+msgstr "Adicionar origem"
+
+msgid "Add the official catalog"
+msgstr ""
+
+msgid "Official"
+msgstr "Oficial"
+
+msgid "Built and signed by the Nginx UI maintainers."
+msgstr ""
+
+msgid "Verified"
+msgstr "Verificado"
+
+msgid "Reviewed by the Nginx UI maintainers and signed with a release key."
+msgstr ""
+
+msgid "Community"
+msgstr "Comunidade"
+
+msgid ""
+"Published by a third party and not reviewed. It runs with the permissions "
+"you grant it, so only install it if you trust the author."
+msgstr "Publicado por terceiros e não revisto. É executado com as permissões que lhe conceder, por isso só o instale se confiar no autor."
+
+msgid "Approve permissions"
+msgstr "Aprovar permissões"
+
+msgid "Approve and enable"
+msgstr "Aprovar e ativar"
+
+msgid "%{name} needs your approval before it can run."
+msgstr "%{name} precisa da sua aprovação antes de poder ser executado."
+
+msgid ""
+"Approve only if you trust the author. The approval is recorded and asked "
+"again whenever the requested permissions change."
+msgstr "Aprove apenas se confiar no autor. A aprovação fica registada e é pedida novamente sempre que as permissões pedidas mudarem."
+
+msgid "This plugin does not request any host permission."
+msgstr ""
+
+msgid "Read stored %{kind} credentials, including their secrets."
+msgstr "Leia as credenciais %{kind} armazenadas, incluindo os respetivos segredos."
+
+msgid "unknown"
+msgstr "desconhecido"
+
+msgid "Store and read its own key-value data inside the Nginx UI database."
+msgstr ""
+
+msgid "Make outbound network requests to the hosts declared in its manifest."
+msgstr ""
+
+msgid "Run scheduled tasks on the schedules declared in its manifest."
+msgstr ""
+
+msgid "Send notifications through the Nginx UI notification channels."
+msgstr "Envie notificações através dos canais de notificação do Nginx UI."
+
+msgid "Read CPU, memory, network and Nginx status metrics of this node."
+msgstr "Leia as métricas de CPU, memória, rede e estado do Nginx deste nó."
+
+msgid "Call the Nginx UI management API with your permissions."
+msgstr ""
+
+msgid "Unknown permission. Only grant it if you trust the plugin author."
+msgstr "Permissão desconhecida. Conceda-a apenas se confiar no autor do plugin."
+
+msgid "In sync"
+msgstr "Sincronizado"
+
+msgid "Outdated"
+msgstr "Desatualizado"
+
+msgid "Not installed"
+msgstr "Não instalado"
+
+msgid "Unsupported platform"
+msgstr "Plataforma não suportada"
+
+msgid "Unsupported"
+msgstr "Não suportado"
+
+msgid "Failed to load the plugin matrix"
+msgstr "Falha ao carregar a matriz de plugins"
+
+msgid "Update to %{version}"
+msgstr "Atualizar para %{version}"
+
+msgid "Sync to this node"
+msgstr "Sincronizar com este nó"
+
+msgid ""
+"What every child node has installed, compared with this controller. "
+"Switching the selected node in the header manages that node directly."
+msgstr "O que cada nó filho tem instalado, em comparação com este controlador. Alterar o nó selecionado no cabeçalho gere esse nó diretamente."
+
+msgid "All nodes"
+msgstr "Todos os nós"
+
+msgid "This instance has no child node"
+msgstr "Esta instância não tem nenhum nó filho"
+
+msgid "Add a node first, then plugins can be installed on it from here."
+msgstr "Adicione primeiro um nó e depois poderá instalar plugins nele a partir daqui."
+
+msgid "Sync to selected"
+msgstr "Sincronizar com os selecionados"
+
+msgid "Sync to all"
+msgstr "Sincronizar com todos"
+
+msgid "Marketplace"
+msgstr "Marketplace"
+
+msgid "%{field} is required"
+msgstr "%{field} é obrigatório"
+
+msgid "Failed to load the plugin settings"
+msgstr "Falha ao carregar as definições do plugin"
+
+msgid "Plugin settings saved"
+msgstr "Definições do plugin guardadas"
+
+msgid "Failed to save the plugin settings"
+msgstr "Falha ao guardar as definições do plugin"
+
+msgid "Settings: %{name}"
+msgstr ""
+
+msgid "This plugin has no settings."
+msgstr "Este plugin não tem definições."
+
+msgid "%{count} node"
+msgid_plural "%{count} nodes"
+msgstr[0] "%{count} nó"
+msgstr[1] "%{count} nós"
+
+msgid "Sync policy saved"
+msgstr "Política de sincronização guardada"
+
+msgid "Failed to save the sync policy"
+msgstr "Falha ao guardar a política de sincronização"
+
+msgid "Automatic installation"
+msgstr "Instalação automática"
+
+msgid ""
+"Keep this plugin at the same version and state on the selected child nodes. "
+"Leave every node unchecked to cover all of them, including the ones added "
+"later."
+msgstr "Mantenha este plugin na mesma versão e estado nos nós filhos selecionados. Deixe todos os nós desmarcados para abranger todos, incluindo os adicionados mais tarde."
+
+msgid "Also sync the plugin settings"
+msgstr "Sincronizar também as definições do plugin"
+
+msgid "Needs attention"
+msgstr "Requer atenção"
+
+msgid "Uninstall %{name}?"
+msgstr "Desinstalar %{name}?"
+
+msgid ""
+"Its files, data and settings are removed from this node. Other nodes are not "
+"touched."
+msgstr "Os seus ficheiros, dados e definições são removidos deste nó. Os outros nós não são afetados."
+
+msgid "Search installed plugins"
+msgstr "Pesquisar plugins instalados"
+
+msgid "No plugins installed yet"
+msgstr "Ainda não há plugins instalados"
+
+msgid "Pick one from the marketplace or upload a bundle you built yourself."
+msgstr "Escolha um no marketplace ou carregue um pacote que tenha criado."
+
+msgid "Browse marketplace"
+msgstr "Explorar marketplace"
+
+msgid "Install from file"
+msgstr "Instalar a partir de ficheiro"
+
+msgid "No plugins match the current filter"
+msgstr "Nenhum plugin corresponde ao filtro atual"
+
+msgid "This plugin cannot run on this node"
+msgstr "Este plugin não pode ser executado neste nó"
+
+msgid "More actions"
+msgstr "Mais ações"
+
+msgid "Follow new lines"
+msgstr "Seguir novas linhas"
+
+msgid "All plugins"
+msgstr "Todos os plugins"
+
+msgid "Updates"
+msgstr "Atualizações"
+
+msgid "The catalog is empty"
+msgstr "O catálogo está vazio"
+
+msgid "Search the marketplace"
+msgstr "Pesquisar no marketplace"
+
+msgid "%{count} installed plugin has a newer release."
+msgid_plural "%{count} installed plugins have a newer release."
+msgstr[0] "%{count} plugin instalado tem uma versão mais recente."
+msgstr[1] "%{count} plugins instalados têm uma versão mais recente."
+
+msgid "Show updates"
+msgstr "Mostrar atualizações"
+
+msgid "The marketplace is unavailable"
+msgstr "O marketplace não está disponível"
+
+msgid "Overview"
+msgstr "Visão geral"
+
+msgid "No background process"
+msgstr ""
+
+msgid "On demand"
+msgstr ""
+
+msgid "Resident"
+msgstr ""
+
+msgid "Last error"
+msgstr "Último erro"
+
+msgid "This plugin needs your approval before it can run."
+msgstr "Este plugin precisa da sua aprovação antes de poder ser executado."
+
+msgid "Turn it on to review the requested permissions."
+msgstr ""
+
+msgid "API version"
+msgstr "Versão da API"
+
+msgid "Needs Nginx UI %{version} or newer"
+msgstr "Requer o Nginx UI %{version} ou posterior"
+
+msgid "Depends on"
+msgstr "Depende de"
+
+msgid "Needs capabilities"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Cluster"
+msgstr "Cluster"
+
+msgid "Sync now"
+msgstr "Sincronizar agora"
+
+msgid "Danger zone"
+msgstr ""
+
+msgid "Uninstall this plugin"
+msgstr "Desinstalar este plugin"
+
+msgid "Its files, data and settings are removed from this node."
+msgstr "Os seus ficheiros, dados e definições são removidos deste nó."
+
+msgid "%{count} in sync"
+msgstr "%{count} sincronizados"
+
+msgid "%{count} pending"
+msgstr "%{count} pendentes"
+
+msgid "%{count} failing"
+msgstr "%{count} com falha"
+
+msgid "Manage nodes"
+msgstr "Gerir nós"
+
+msgid "Updates available"
+msgstr "Atualizações disponíveis"
+
+msgid "Idle"
+msgstr ""
+
+msgid "Include line copied to clipboard"
+msgstr "Linha include copiada para a área de transferência"
+
+msgid "%{n} d"
+msgstr "%{n} d"
+
+msgid "%{n} h"
+msgstr "%{n} h"
+
+msgid "%{n} min"
+msgstr "%{n} min"
+
+msgid "%{n} s"
+msgstr "%{n} s"
+
+msgid "Deploy Certificate Error"
+msgstr "Erro ao implementar certificado"
+
+msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr "Falha ao implementar o certificado %{cert_name} em %{target_name}: %{error}"
+
+msgid "Stored backup {0} does not belong to this backup task"
+msgstr "A cópia de segurança armazenada {0} não pertence a esta tarefa de cópia de segurança"
+
+msgid "Only Nginx and Nginx UI backups can be restored"
+msgstr "Só é possível restaurar cópias de segurança do Nginx e do Nginx UI"
+
+msgid "This action needs a plugin storage backend"
+msgstr "Esta ação requer um backend de armazenamento de plugin"
+
+msgid "Invalid storage key prefix: {0}"
+msgstr "Prefixo de chave de armazenamento inválido: {0}"
+
+msgid "Notifier config field {0} is invalid: {1}"
+msgstr "O campo {0} da configuração do notificador é inválido: {1}"
+
+msgid "Plugin content {0} is invalid: {1}"
+msgstr "O conteúdo {0} do plugin é inválido: {1}"
+
+msgid "Storage backend {0} is not available"
+msgstr "O backend de armazenamento {0} não está disponível"
+
+msgid "Storage config field {0} is invalid: {1}"
+msgstr "O campo {0} da configuração de armazenamento é inválido: {1}"
+
+msgid "Deploy target kind {0} is not available"
+msgstr "O tipo de destino de implementação {0} não está disponível"
+
+msgid "Deploy target config field {0} is invalid: {1}"
+msgstr "O campo {0} da configuração do destino de implementação é inválido: {1}"
+
+msgid "Blocklist source kind {0} is not available"
+msgstr "O tipo de origem de lista de bloqueio {0} não está disponível"
+
+msgid "Blocklist source config field {0} is invalid: {1}"
+msgstr "O campo {0} da configuração da origem de lista de bloqueio é inválido: {1}"
+
+msgid "Discovery provider {0} is not available"
+msgstr "O fornecedor de descoberta {0} não está disponível"
+
+msgid "Discovery provider config field {0} is invalid: {1}"
+msgstr "O campo {0} da configuração do fornecedor de descoberta é inválido: {1}"
+
+msgid "Refresh interval must be at least {0} seconds"
+msgstr "O intervalo de atualização deve ser de pelo menos {0} segundos"
+
+msgid "Upstream name {0} is invalid"
+msgstr "O nome de upstream {0} é inválido"
+
+msgid "Upstream name {0} is already bound to another service"
+msgstr "O nome de upstream {0} já está associado a outro serviço"
+
+msgid "Extra directives must not contain braces"
+msgstr "As diretivas adicionais não podem conter chavetas"
+
+msgid "{0} is still included by the nginx configuration: {1}"
+msgstr "{0} ainda é incluído pela configuração do nginx: {1}"
+
+msgid "Template not found"
+msgstr "Modelo não encontrado"
+
+msgid "Deploy Targets"
+msgstr "Destinos de implementação"
+
+msgid "Blocklists"
+msgstr "Listas de bloqueio"
+
+msgid "Keep Latest Backups"
+msgstr ""
+
+msgid "Stored Backups"
+msgstr "Cópias de segurança armazenadas"
+
+msgid "Please fill in %{field}"
+msgstr "Preencha %{field}"
+
+msgid "Storage test successful, %{count} stored backups found"
+msgstr "Teste de armazenamento bem-sucedido, %{count} cópias de segurança armazenadas encontradas"
+
+msgid ""
+"The plugin that provides this storage is not enabled. Backups fail until it "
+"is enabled again."
+msgstr "O plugin que fornece este armazenamento não está ativado. As cópias de segurança falham até o plugin ser ativado novamente."
+
+msgid "Key Prefix"
+msgstr "Prefixo de chave"
+
+msgid ""
+"Backups are stored under this prefix, for example nginx-ui/daily. Use / for "
+"the root."
+msgstr "As cópias de segurança são armazenadas sob este prefixo, por exemplo nginx-ui/daily. Use / para a raiz."
+
+msgid "Key prefix is required"
+msgstr "O prefixo de chave é obrigatório"
+
+msgid "nginx-ui/backups"
+msgstr "nginx-ui/backups"
+
+msgid ""
+"Older backups in this storage are deleted after each run. 0 keeps every "
+"backup."
+msgstr ""
+
+msgid "Test Storage"
+msgstr "Testar armazenamento"
+
+msgid "Backups kept in %{storage} under %{prefix}"
+msgstr "Cópias de segurança mantidas em %{storage} sob %{prefix}"
+
+msgid "Delete this backup from the storage?"
+msgstr "Eliminar esta cópia de segurança do armazenamento?"
+
+msgid "Restore Backup"
+msgstr "Restaurar cópia de segurança"
+
+msgid ""
+"Restoring replaces the current configuration. Nginx and Nginx UI restart "
+"afterwards."
+msgstr "A restauração substitui a configuração atual. O Nginx e o Nginx UI reiniciam depois."
+
+msgid "Deployed to %{ok} targets, %{failed} failed"
+msgstr "Implementado em %{ok} destinos, %{failed} falharam"
+
+msgid "Deployed to %{ok} targets"
+msgstr "Implementado em %{ok} destinos"
+
+msgid "Manage"
+msgstr "Gerir"
+
+msgid "Deploy Now"
+msgstr "Implementar agora"
+
+msgid "This certificate is not pushed to any external target."
+msgstr "Este certificado não é enviado para nenhum destino externo."
+
+msgid "Plugin unavailable"
+msgstr "Plugin indisponível"
+
+msgid "Never deployed"
+msgstr "Nunca implementado"
+
+msgid "%{count} attempts"
+msgstr "%{count} tentativas"
+
+msgid "Deploy History of %{name}"
+msgstr "Histórico de implementação de %{name}"
+
+msgid "All certificates"
+msgstr "Todos os certificados"
+
+msgid "Dry run successful"
+msgstr "Simulação bem-sucedida"
+
+msgid ""
+"No enabled plugin offers a deploy target. Install and enable a plugin with "
+"the cert.deploy capability first."
+msgstr "Nenhum plugin ativado oferece um destino de implementação. Instale e ative primeiro um plugin com a capacidade cert.deploy."
+
+msgid "Target Type"
+msgstr "Tipo de destino"
+
+msgid "Select a target type"
+msgstr "Selecione um tipo de destino"
+
+msgid ""
+"The plugin that provides this target type is not enabled. Pushes fail until "
+"it is enabled again."
+msgstr "O plugin que fornece este tipo de destino não está ativado. Os envios falham até o plugin ser ativado novamente."
+
+msgid "The certificate pushed to this target after every issuance and renewal."
+msgstr "O certificado enviado para este destino após cada emissão e renovação."
+
+msgid "Dry Run"
+msgstr "Simulação"
+
+msgid "No certificate is bound to this target"
+msgstr "Nenhum certificado está associado a este destino"
+
+msgid "Deployed %{ok} certificates, %{failed} failed"
+msgstr "Implementados %{ok} certificados, %{failed} falharam"
+
+msgid "Deployed %{ok} certificates"
+msgstr "Implementados %{ok} certificados"
+
+msgid ""
+"Push certificates to CDNs, load balancers and other servers after every "
+"renewal."
+msgstr "Envie certificados para CDNs, balanceadores de carga e outros servidores após cada renovação."
+
+msgid "Built-in HTTP / gRPC check"
+msgstr "Verificação HTTP / gRPC integrada"
+
+msgid "%{kind} (unavailable)"
+msgstr "%{kind} (indisponível)"
+
+msgid "Check Method"
+msgstr "Método de verificação"
+
+msgid ""
+"The plugin that provides this check is not enabled. The site is reported as "
+"an error until it is enabled again or another check method is selected."
+msgstr "O plugin que fornece esta verificação não está ativado. O site é comunicado como erro até o plugin ser ativado novamente ou ser selecionado outro método de verificação."
+
+msgid "Refreshed"
+msgstr "Atualizado"
+
+msgid "Refresh failed"
+msgstr "Falha na atualização"
+
+msgid "Source Type"
+msgstr "Tipo de origem"
+
+msgid "Refresh Interval"
+msgstr "Intervalo de atualização"
+
+msgid "Entries"
+msgstr "Entradas"
+
+msgid "Last Result"
+msgstr "Último resultado"
+
+msgid "Include"
+msgstr "Incluir"
+
+msgid ""
+"Blocklist sources fetch lists of addresses to deny from plugins and write "
+"them as deny rules to a file of their own. Nothing is blocked until you add "
+"the include line of a source to a server or location block."
+msgstr "As origens de listas de bloqueio obtêm de plugins listas de endereços a bloquear e escrevem-nas como regras deny num ficheiro próprio. Nada é bloqueado até adicionar a linha include de uma origem a um bloco server ou location."
+
+msgid "Refresh Now"
+msgstr "Atualizar agora"
+
+msgid ""
+"No enabled plugin offers a blocklist source. Install and enable a plugin "
+"with the security.blocklist capability first."
+msgstr "Nenhum plugin ativado oferece uma origem de lista de bloqueio. Instale e ative primeiro um plugin com a capacidade security.blocklist."
+
+msgid "Select a source type"
+msgstr "Selecione um tipo de origem"
+
+msgid ""
+"The plugin that provides this source type is not enabled. The list is kept "
+"but no longer refreshed."
+msgstr "O plugin que fornece este tipo de origem não está ativado. A lista é mantida, mas deixa de ser atualizada."
+
+msgid ""
+"How often the list is fetched again, in seconds. Nginx is reloaded only when "
+"the list changed."
+msgstr "Com que frequência a lista é obtida novamente, em segundos. O Nginx só é recarregado quando a lista mudou."
+
+msgid ""
+"Add this line to a server or location block to deny the listed addresses "
+"there."
+msgstr "Adicione esta linha a um bloco server ou location para negar aí os endereços listados."
+
+msgid "From plugin %{id}"
+msgstr "Do plugin %{id}"
+
+msgid ""
+"This template comes from the plugin %{id}. Review the directives before "
+"adding them."
+msgstr "Este modelo vem do plugin %{id}. Reveja as diretivas antes de as adicionar."
+
+msgid "This package has no build for this node (%{platform})"
+msgstr "Este pacote não tem compilação para este nó (%{platform})"
+
+msgid ""
+"Download the package built for this platform, or the portable package, and "
+"try again."
+msgstr "Descarregue o pacote compilado para esta plataforma, ou o pacote portátil, e tente novamente."
+
+msgid "This node runs %{platform}, its build is highlighted."
+msgstr ""
+
+msgid ""
+"Offer its tools to AI assistants connected to Nginx UI through MCP, which "
+"can then run them."
+msgstr ""
+
+msgid ""
+"Receive certificates and their private keys in order to push them to "
+"external targets."
+msgstr ""
+
+msgid ""
+"Receive every parsed nginx access log line while enabled, including client "
+"addresses and requested URLs."
+msgstr ""
+
+msgid "Streamed"
+msgstr "Em streaming"
+
+msgid "Rejected"
+msgstr "Rejeitado"
+
+msgid "Dropped"
+msgstr "Descartado"
+
+msgid "Unlimited"
+msgstr "Ilimitado"
+
+msgid "Transport"
+msgstr ""
+
+msgid "Resource limits"
+msgstr ""
+
+msgid "The running process is confined to these limits."
+msgstr ""
+
+msgid ""
+"The plugin is not running, or this node cannot confine processes: that needs "
+"Linux with a writable cgroup v2 hierarchy."
+msgstr ""
+
+msgid "Enforced"
+msgstr "Aplicado"
+
+msgid "Not enforced"
+msgstr "Não aplicado"
+
+msgid "Access log stream"
+msgstr "Stream de registo de acesso"
+
+msgid ""
+"The name nginx knows the upstream by: letters, digits, dots, hyphens and "
+"underscores."
+msgstr "O nome pelo qual o nginx conhece o upstream: letras, dígitos, pontos, hífens e underscores."
+
+msgid "Service"
+msgstr "Serviço"
+
+msgid "Service Discovery"
+msgstr "Descoberta de serviços"
+
+msgid ""
+"No enabled plugin offers service discovery. Install and enable a plugin with "
+"the upstream.discovery capability first."
+msgstr "Nenhum plugin ativado oferece descoberta de serviços. Instale e ative primeiro um plugin com a capacidade upstream.discovery."
+
+msgid "Select a provider"
+msgstr "Selecione um fornecedor"
+
+msgid ""
+"The plugin that provides this provider is not enabled. The upstream is kept "
+"but no longer refreshed."
+msgstr "O plugin que fornece este fornecedor não está ativado. O upstream é mantido, mas deixa de ser atualizado."
+
+msgid "The service to resolve, in the terms of the provider."
+msgstr "O serviço a resolver, nos termos do fornecedor."
+
+msgid ""
+"How often the service is resolved again, in seconds. Nginx is reloaded only "
+"when the servers changed."
+msgstr "Com que frequência o serviço é resolvido novamente, em segundos. O Nginx só é recarregado quando os servidores mudaram."
+
+msgid "Extra Directives"
+msgstr "Diretivas adicionais"
+
+msgid ""
+"Appended inside the upstream block, one directive per line, for example "
+"keepalive 32;"
+msgstr "Acrescentadas dentro do bloco upstream, uma diretiva por linha, por exemplo keepalive 32;"
+
+msgid ""
+"Add this line to the http block, for example at the top of a site "
+"configuration, then proxy to the upstream by its name."
+msgstr "Adicione esta linha ao bloco http, por exemplo no início da configuração de um site, e depois encaminhe para o upstream pelo seu nome."
+
+msgid "Links"
+msgstr "Ligações"
+
+msgid "Plugin package declares version {0}, {1} was expected"
+msgstr "O pacote do plugin declara a versão {0}, era esperada a {1}"
+
+msgid "Only localhost addresses are accepted"
+msgstr "Apenas são aceites endereços localhost"
+
+msgid ""
+"Address of a plugin.json served by a static server on this computer. Only "
+"localhost addresses are accepted. The plugin is loaded in addition to the "
+"installed ones."
+msgstr "Endereço de um plugin.json servido por um servidor estático neste computador. Apenas são aceites endereços localhost. O plugin é carregado para além dos instalados."
+
+msgid "Plugin package is not signed and developer mode is off"
+msgstr "O pacote do plugin não está assinado e o modo de programador está desativado"
+
+msgid "Plugin package trust {0} is below the installed {1}"
+msgstr "A confiança {0} do pacote do plugin é inferior à da versão instalada {1}"
+
+msgid "This plugin is not signed"
+msgstr "Este plugin não está assinado"
+
+msgid "Checking the package"
+msgstr "A verificar o pacote"
+
+msgid "Published by the Nginx UI project."
+msgstr "Publicado pelo projeto Nginx UI."
+
+msgid "Published by a partner of the Nginx UI project."
+msgstr "Publicado por um parceiro do projeto Nginx UI."
+
+msgid "Unsigned"
+msgstr "Não assinado"
+
+msgid ""
+"Not signed, so its publisher cannot be confirmed. Installing it requires "
+"developer mode."
+msgstr "Não assinado, pelo que o seu publicador não pode ser confirmado. A instalação requer o modo de programador."
+
+msgid "This package is trusted less than the version already installed"
+msgstr "Este pacote é menos fiável do que a versão já instalada"
+
+msgid "Installed version: %{installed}. This package: %{package}."
+msgstr "Versão instalada: %{installed}. Este pacote: %{package}."
+
+msgid "Plugin System"
+msgstr "Sistema de plugins"
+
+msgid ""
+"Turning it off stops every plugin and hides the plugin pages. Takes effect "
+"after a restart."
+msgstr ""
+
+msgid "Plugin Directory"
+msgstr "Diretório de plugins"
+
+msgid "Default Sync Policy"
+msgstr "Política de sincronização predefinida"
+
+msgid ""
+"Applied to newly installed plugins. Automatic keeps the plugin installed on "
+"the child nodes."
+msgstr "Aplicada a plugins recém-instalados. Automática mantém o plugin instalado nos nós filhos."
+
+msgid "Enable Marketplace"
+msgstr "Ativar marketplace"
+
+msgid "Managed on the marketplace page. Empty means the official catalog."
+msgstr ""
+
+msgid "Allow Community Plugins"
+msgstr "Permitir plugins da comunidade"
+
+msgid ""
+"Community plugins are published by third parties and ask for a confirmation "
+"before they install."
+msgstr "Os plugins da comunidade são publicados por terceiros e pedem confirmação antes de serem instalados."
+
+msgid "Automatic Updates"
+msgstr "Atualizações automáticas"
+
+msgid ""
+"Updates official and partner plugins on their own while the permissions they "
+"ask for stay the same."
+msgstr "Atualiza automaticamente os plugins oficiais e de parceiros, desde que as permissões que pedem se mantenham iguais."
+
+msgid "Allow Insecure Download URLs"
+msgstr "Permitir URLs de descarga inseguros"
+
+msgid ""
+"Accepts plain http catalog and download addresses. Only for a private "
+"catalog on a trusted network."
+msgstr "Aceita endereços http simples de catálogo e de descarga. Apenas para um catálogo privado numa rede de confiança."
+
+msgid "Allow Uploads"
+msgstr "Permitir carregamentos"
+
+msgid ""
+"Allows installing packages uploaded from the browser or the command line."
+msgstr "Permite instalar pacotes carregados a partir do navegador ou da linha de comandos."
+
+msgid "Developer Mode"
+msgstr "Modo de programador"
+
+msgid ""
+"Allows installing unsigned plugins. Only turn this on while developing a "
+"plugin."
+msgstr "Permite instalar plugins não assinados. Ative apenas durante o desenvolvimento de um plugin."
+
+msgid "Trusted Keys"
+msgstr ""
+
+msgid ""
+"Packages signed with one of these keys install as community plugins. One key "
+"per line."
+msgstr ""
+
+msgid "Memory Limit"
+msgstr "Limite de memória"
+
+msgid ""
+"Applies to every plugin process. 0 means unlimited, a plugin can only lower "
+"its own limit."
+msgstr ""
+
+msgid "CPU Limit"
+msgstr "Limite de CPU"
+
+msgid "Percent of one core for every plugin process. 0 means unlimited."
+msgstr ""
+
+msgid "cgroup Root"
+msgstr ""
+
+msgid "Limits are enforced on Linux with cgroup v2 only."
+msgstr ""
+
+msgid ""
+"Plugin system, marketplace, packages and resource limits of plugin processes."
+msgstr "Sistema de plugins, marketplace, pacotes e limites de recursos dos processos de plugins."
+
+msgid "Go to plugins"
+msgstr "Ir para plugins"
+
+msgid "The plugins directory under the configuration directory"
+msgstr ""
+
+msgid "Official catalog"
+msgstr "Catálogo oficial"
+
+msgid "Packages"
+msgstr "Pacotes"
+
+msgid "Paste public keys here"
+msgstr ""
+
+msgid "Resources"
+msgstr "Recursos"
+
+msgid "A trusted publisher is not in the expected format or is listed twice"
+msgstr "Um publicador de confiança não está no formato esperado ou está listado duas vezes"
+
+msgid "Turning it off stops every plugin and hides the plugin pages."
+msgstr "Ao desativá-lo, todos os plugins param e as páginas de plugins ficam ocultas."
+
+msgid "Trusted Publishers"
+msgstr "Publicadores de confiança"
+
+msgid "Plugins from these publishers install as community plugins."
+msgstr "Os plugins destes publicadores são instalados como plugins da comunidade."
+
+msgid "Maximum memory each plugin can use."
+msgstr "Memória máxima que cada plugin pode utilizar."
+
+msgid "Share of one CPU core each plugin can use."
+msgstr "Fração de um núcleo de CPU que cada plugin pode utilizar."
+
+msgid ""
+"This is not a valid public key. Paste the whole key the publisher gave you."
+msgstr "Esta não é uma chave pública válida. Cole a chave completa que o publicador lhe forneceu."
+
+msgid "This publisher is already in the list."
+msgstr "Este publicador já está na lista."
+
+msgid "No publishers yet."
+msgstr "Ainda não há publicadores."
+
+msgid "Unnamed publisher"
+msgstr "Publicador sem nome"
+
+msgid "Not a valid public key"
+msgstr "Não é uma chave pública válida"
+
+msgid "Add publisher"
+msgstr "Adicionar publicador"
+
+msgid "Shown in this list only"
+msgstr "Mostrado apenas nesta lista"
+
+msgid "Public Key"
+msgstr "Chave pública"
+
+msgid "Paste the public key the publisher gave you"
+msgstr "Cole a chave pública que o publicador lhe forneceu"
+
+msgid "Applies to every plugin. A plugin can only lower its own limits."
+msgstr "Aplica-se a todos os plugins. Um plugin só pode reduzir os seus próprios limites."
+
+msgid "Only applies on Linux. This system does not support it."
+msgstr "Aplica-se apenas em Linux. Este sistema não o suporta."
+
+msgid ""
+"These options make plugin installs less safe. Turn them on only when needed."
+msgstr "Estas opções tornam as instalações de plugins menos seguras. Ative-as apenas quando necessário."
+
+msgid "Less safe"
+msgstr "Menos seguro"
+
+msgid "Validates the domain with a DNS record. Needs a DNS credential."
+msgstr "Valida o domínio com um registo DNS. Requer uma credencial de DNS."
+
+msgid "Wildcard certificates usually need DNS-01. HTTP-01 is likely to fail."
+msgstr "Os certificados wildcard normalmente requerem DNS-01. É provável que o HTTP-01 falhe."
+
+msgid "Validates each domain over port 80 on this server."
+msgstr "Valida cada domínio através da porta 80 neste servidor."
+
+msgid "Can be changed after the plugin is installed."
+msgstr "Pode ser alterado depois de o plugin ser instalado."
+
+msgid "Can be changed after the plugin is enabled."
+msgstr "Pode ser alterado depois de o plugin ser ativado."
+
+msgid ""
+"Only turn on when you are sure you need it. Firefox may show an error on the "
+"first visit."
+msgstr "Ative apenas se tiver a certeza de que precisa. O Firefox pode mostrar um erro na primeira visita."
+
+msgid "For private CAs that still require this field."
+msgstr "Para CAs privadas que ainda exigem este campo."
+
+msgid "Revokes the previous certificate once the new one is issued."
+msgstr "Revoga o certificado anterior assim que o novo for emitido."
+
+msgid "New credential"
+msgstr "Nova credencial"
+
+msgid "The credential was deleted. Please choose another one."
+msgstr "A credencial foi eliminada. Escolha outra."
+
+msgid "Deleted credential"
+msgstr "Credencial eliminada"
+
+msgid "DNS Credential"
+msgstr "Credencial de DNS"
+
+msgid "Select credential"
+msgstr "Selecionar credencial"
+
+msgid "not installed"
+msgstr "por instalar"
+
+msgid "turned off"
+msgstr "desativado"
+
+msgid "not working right now"
+msgstr "a falhar neste momento"
+
+msgid ""
+"DNS-01 validation is provided by the DNS-01 plugin, which is not installed "
+"yet."
+msgstr "A validação DNS-01 é fornecida pelo plugin DNS-01, que ainda não está instalado."
+
+msgid "The DNS-01 plugin is installed but turned off."
+msgstr "O plugin DNS-01 está instalado, mas desativado."
+
+msgid "The DNS-01 plugin is turned on but not working right now."
+msgstr "O plugin DNS-01 está ativado, mas não está a funcionar neste momento."
+
+msgid ""
+"This certificate renews through the DNS-01 plugin, which is %{state}. It "
+"cannot renew automatically until the plugin is back."
+msgstr "Este certificado é renovado através do plugin DNS-01, que está %{state}. Não pode ser renovado automaticamente até o plugin voltar a funcionar."
+
+msgid "DNS providers come with the DNS-01 plugin, which is %{state}."
+msgstr "Os fornecedores de DNS vêm com o plugin DNS-01, que está %{state}."
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not installed."
+msgstr "Apenas %{count} fornecedores estão disponíveis neste momento. Mais fornecedores vêm com o plugin DNS-01, que não está instalado."
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is turned off."
+msgstr "Apenas %{count} fornecedores estão disponíveis neste momento. Mais fornecedores vêm com o plugin DNS-01, que está desativado."
+
+msgid ""
+"Only %{count} providers are available now. More providers come with the "
+"DNS-01 plugin, which is not working right now."
+msgstr "Apenas %{count} fornecedores estão disponíveis neste momento. Mais fornecedores vêm com o plugin DNS-01, que não está a funcionar neste momento."
+
+msgid "DNS validation needs the DNS-01 plugin, which is %{state}."
+msgstr "A validação DNS requer o plugin DNS-01, que está %{state}."
+
+msgid "Enable plugin"
+msgstr "Ativar plugin"
+
+msgid "New DNS Credential"
+msgstr "Nova credencial de DNS"
+
+msgid "Create and select"
+msgstr "Criar e selecionar"
+
+msgid ""
+"Automatic renewal can only be switched for certificates issued by Nginx UI"
+msgstr "A renovação automática só pode ser alterada para certificados emitidos pelo Nginx UI"
+
+msgid "Plugin marketplace is disabled"
+msgstr "O marketplace de plugins está desativado"
+
+msgid "Plugin marketplace source is unavailable: {0}"
+msgstr "A origem do marketplace de plugins não está disponível: {0}"
+
+msgid "Plugin release not found"
+msgstr "Versão do plugin não encontrada"
+
+msgid "Plugin release has been yanked"
+msgstr "A versão do plugin foi retirada"
+
+msgid "Plugin package digest does not match the catalog"
+msgstr "O digest do pacote do plugin não corresponde ao catálogo"
+
+msgid "Plugin package signature is invalid: {0}"
+msgstr "A assinatura do pacote do plugin é inválida: {0}"
+
+msgid "Community plugins are not allowed on this node"
+msgstr "Os plugins da comunidade não são permitidos neste nó"
+
+msgid "Plugin download url is not https"
+msgstr "O URL de descarga do plugin não é https"
+
+msgid "Plugin release has no build for this platform"
+msgstr "A versão do plugin não tem compilação para esta plataforma"
+
+msgid "Plugin catalog is invalid: {0}"
+msgstr "O catálogo de plugins é inválido: {0}"
+
+msgid "Plugin is not in the marketplace catalog"
+msgstr "O plugin não está no catálogo do marketplace"
+
+msgid "No local package found for this plugin"
+msgstr "Não foi encontrado nenhum pacote local para este plugin"
+
+msgid "No plugin package is available for {0}"
+msgstr "Não existe nenhum pacote de plugin disponível para {0}"
+
+msgid "The marketplace has no more trusted package of this plugin"
+msgstr "O marketplace já não tem um pacote fiável deste plugin"
+
+msgid "Advanced options"
+msgstr "Opções avançadas"
+
+msgid "Sync to other nodes"
+msgstr "Sincronizar com outros nós"
+
+msgid "Private key"
+msgstr "Chave privada"
+
+msgid "Automatic renewal turned on"
+msgstr "Renovação automática ativada"
+
+msgid "Automatic renewal turned off"
+msgstr "Renovação automática desativada"
+
+msgid "Not issued yet"
+msgstr "Ainda não emitido"
+
+msgid "Expiring within 30 days"
+msgstr "A expirar dentro de 30 dias"
+
+msgid "Renewal failed"
+msgstr "Falha na renovação"
+
+msgid "Renewal method"
+msgstr "Método de renovação"
+
+msgid "Expiry date"
+msgstr "Data de expiração"
+
+msgid "Search by name or domain"
+msgstr "Pesquisar por nome ou domínio"
+
+msgid "Valid · %{days} days left"
+msgstr "Válido · %{days} dias restantes"
+
+msgid "Expires in %{days} days"
+msgstr "Expira em %{days} dias"
+
+msgid "Managed manually"
+msgstr "Gerido manualmente"
+
+msgid "DNS validation · %{provider}"
+msgstr "Validação DNS · %{provider}"
+
+msgid "DNS validation"
+msgstr "Validação DNS"
+
+msgid "HTTP validation"
+msgstr "Validação HTTP"
+
+msgid "Self-signed"
+msgstr "Autoassinado"
+
+msgid "Synced from another node"
+msgstr "Sincronizado de outro nó"
+
+msgid "Upload"
+msgstr "Carregar"
+
+msgid "Renewed on the node it is synced from"
+msgstr "Renovado no nó de onde é sincronizado"
+
+msgid "Renews around %{date}"
+msgstr "Renova por volta de %{date}"
+
+msgid "Replace the files to renew"
+msgstr "Substitua os ficheiros para renovar"
+
+msgid "Auto renewal"
+msgstr "Renovação automática"
+
+msgid "Issuer"
+msgstr "Emissor"
+
+msgid "Certificate files"
+msgstr "Ficheiros do certificado"
+
+msgid "Hide contents"
+msgstr "Ocultar conteúdo"
+
+msgid "Show contents"
+msgstr "Mostrar conteúdo"
+
+msgid "In progress"
+msgstr "Em curso"
+
+msgid "Failed · %{time}"
+msgstr "Falhou · %{time}"
+
+msgid "Succeeded · %{time}"
+msgstr "Concluído · %{time}"
+
+msgid "Last renewal"
+msgstr "Última renovação"
+
+msgid "Show less"
+msgstr "Mostrar menos"
+
+msgid "View full log"
+msgstr "Ver registo completo"
+
+msgid "No renewal has run yet."
+msgstr "Ainda não foi executada nenhuma renovação."
+
+msgid "Select nodes"
+msgstr "Selecionar nós"
+
+msgid "Only kept on this node."
+msgstr "Mantido apenas neste nó."
+
+msgid "Renew now"
+msgstr "Renovar agora"
+
+msgid "Certificate DNS validation"
+msgstr "Validação DNS de certificados"
+
+msgid ""
+"Validates domains through DNS records when certificates are issued or "
+"renewed."
+msgstr "Valida domínios através de registos DNS quando os certificados são emitidos ou renovados."
+
+msgid "DNS credentials"
+msgstr "Credenciais de DNS"
+
+msgid "Web pages and API"
+msgstr "Páginas web e API"
+
+msgid "Serves its own pages and API inside Nginx UI."
+msgstr "Disponibiliza as suas próprias páginas e API dentro do Nginx UI."
+
+msgid "External notifications"
+msgstr "Notificações externas"
+
+msgid "Delivers Nginx UI notifications to other services."
+msgstr "Entrega as notificações do Nginx UI a outros serviços."
+
+msgid "Health checks"
+msgstr "Verificações de estado"
+
+msgid "Adds more ways to check whether sites and services are reachable."
+msgstr "Acrescenta mais formas de verificar se os sites e serviços estão acessíveis."
+
+msgid "AI assistant tools"
+msgstr "Ferramentas do assistente de IA"
+
+msgid "Offers actions that AI assistants connected to Nginx UI can run."
+msgstr "Oferece ações que os assistentes de IA ligados ao Nginx UI podem executar."
+
+msgid "Backup storage"
+msgstr "Armazenamento de cópias de segurança"
+
+msgid "Stores backups and other files in external storage."
+msgstr "Armazena cópias de segurança e outros ficheiros em armazenamento externo."
+
+msgid "Auto backup"
+msgstr "Cópia de segurança automática"
+
+msgid "Certificate deployment"
+msgstr "Implementação de certificados"
+
+msgid "Pushes issued certificates to other services and devices."
+msgstr "Envia os certificados emitidos para outros serviços e dispositivos."
+
+msgid "Deploy targets"
+msgstr "Destinos de implementação"
+
+msgid "Keeps lists of addresses that are denied access up to date."
+msgstr "Mantém atualizadas as listas de endereços aos quais o acesso é negado."
+
+msgid "Service discovery"
+msgstr "Descoberta de serviços"
+
+msgid "Finds backend servers automatically and keeps upstreams up to date."
+msgstr "Encontra servidores de backend automaticamente e mantém os upstreams atualizados."
+
+msgid "Access log forwarding"
+msgstr "Reencaminhamento de registos de acesso"
+
+msgid ""
+"Receives access log entries as they are written, for example to forward or "
+"analyse them."
+msgstr "Recebe as entradas do registo de acesso à medida que são escritas, por exemplo para as reencaminhar ou analisar."
+
+msgid "Other feature"
+msgstr "Outra funcionalidade"
+
+msgid "A feature this version of Nginx UI does not describe."
+msgstr "Uma funcionalidade que esta versão do Nginx UI não descreve."
+
+msgid "Disable %{name}?"
+msgstr "Desativar %{name}?"
+
+msgid "Renewal resumes when you turn it back on."
+msgstr "A renovação é retomada quando o voltar a ativar."
+
+msgid "Installed %{version} is not this version"
+msgstr "A versão instalada %{version} não é esta versão"
+
+msgid ""
+"This version was not published by the official team or a partner. It may be "
+"a development build or a repackaged copy."
+msgstr "Esta versão não foi publicada pela equipa oficial nem por um parceiro. Pode ser uma compilação de desenvolvimento ou uma cópia reempacotada."
+
+msgid "Install the official version"
+msgstr "Instalar a versão oficial"
+
+msgid "Install the partner version"
+msgstr "Instalar a versão do parceiro"
+
+msgid "The marketplace has the official version %{version}."
+msgstr "O marketplace tem a versão oficial %{version}."
+
+msgid "The marketplace has the partner version %{version}."
+msgstr "O marketplace tem a versão do parceiro %{version}."
+
+msgid "This plugin needs no access beyond its own features."
+msgstr "Este plugin não precisa de acesso além das suas próprias funcionalidades."
+
+msgid "Keep its own data inside Nginx UI."
+msgstr "Mantenha os seus próprios dados dentro do Nginx UI."
+
+msgid "Connect to other servers over the network."
+msgstr "Ligue-se a outros servidores através da rede."
+
+msgid "Run tasks on a regular schedule."
+msgstr "Execute tarefas de forma agendada."
+
+msgid "Manage Nginx UI with your permissions."
+msgstr "Gira o Nginx UI com as suas permissões."
+
+msgid "Offer actions that AI assistants connected to Nginx UI can run."
+msgstr "Ofereça ações que os assistentes de IA ligados ao Nginx UI podem executar."
+
+msgid ""
+"Receive issued certificates, including the parts that must stay secret, to "
+"push them to other services."
+msgstr "Receba os certificados emitidos, incluindo as partes que devem permanecer secretas, para os enviar para outros serviços."
+
+msgid ""
+"Receive every access log entry while it is on, including visitor addresses "
+"and requested URLs."
+msgstr "Receba todas as entradas do registo de acesso enquanto estiver ativado, incluindo endereços de visitantes e URLs pedidos."
+
+msgid "Stored %{kind} credentials"
+msgstr "Credenciais %{kind} armazenadas"
+
+msgid "Own data storage"
+msgstr "Armazenamento de dados próprio"
+
+msgid "Scheduled tasks"
+msgstr "Tarefas agendadas"
+
+msgid "Server metrics"
+msgstr "Métricas do servidor"
+
+msgid "Nginx UI management"
+msgstr "Gestão do Nginx UI"
+
+msgid "Access logs"
+msgstr "Registos de acesso"
+
+msgid "Unknown permission"
+msgstr "Permissão desconhecida"
+
+msgid "Nothing to start"
+msgstr "Nada para iniciar"
+
+msgid "Starts when needed"
+msgstr "Inicia quando necessário"
+
+msgid "Always running"
+msgstr "Sempre em execução"
+
+msgid "Start mode"
+msgstr "Modo de arranque"
+
+msgid "Turn it on to review what it can access."
+msgstr "Ative-o para rever os acessos que pede."
+
+msgid "Provides"
+msgstr "Fornece"
+
+msgid "Can access"
+msgstr "Pode aceder a"
+
+msgid "Only these addresses"
+msgstr "Apenas estes endereços"
+
+msgid "%{n} more"
+msgstr "mais %{n}"
+
+msgid "No specific addresses listed"
+msgstr "Nenhum endereço específico listado"
+
+msgid "Nothing beyond its own features."
+msgstr "Nada além das suas próprias funcionalidades."
+
+msgid "In use"
+msgstr "Em uso"
+
+msgid "%{count} certificate renews through it:"
+msgid_plural "%{count} certificates renew through it:"
+msgstr[0] "%{count} certificado é renovado através dele:"
+msgstr[1] "%{count} certificados são renovados através dele:"
+
+msgid "Version, API version, start mode, updated time"
+msgstr "Versão, versão da API, modo de arranque, hora de atualização"
+
+msgid "Needs features"
+msgstr "Requer funcionalidades"
+
+msgid "The limits are applied while the plugin runs."
+msgstr "Os limites são aplicados enquanto o plugin está em execução."
+
+msgid "The plugin is not running, or this node cannot apply limits."
+msgstr "O plugin não está em execução, ou este nó não pode aplicar limites."
+
+msgid "Develop plugin"
+msgstr "Desenvolver plugin"
+
+msgid "Standby"
+msgstr "Em espera"
+
+msgid "Starts automatically when needed"
+msgstr "Inicia automaticamente quando necessário"
+
+msgid "Installed. Turn it on to review what it can access."
+msgstr "Instalado. Ative-o para rever os acessos que pede."
+
+msgid "Installed the version from the marketplace"
+msgstr "Instalada a versão do marketplace"
+
+msgid "Failed to install the version from the marketplace"
+msgstr "Falha ao instalar a versão do marketplace"
+
+msgid ""
+"Replace the installed version with the one from the marketplace? Settings "
+"and data are kept."
+msgstr "Substituir a versão instalada pela do marketplace? As definições e os dados são mantidos."
+
+msgid "%{count} unsaved"
+msgid_plural "%{count} unsaved"
+msgstr[0] "%{count} por guardar"
+msgstr[1] "%{count} por guardar"
+
+msgctxt "list separator"
+msgid ", "
+msgstr ", "
+
+msgid "and %{n} more"
+msgstr "e mais %{n}"
+
+msgid ""
+"%{count} certificate renews through it and will not renew while it is off:"
+msgid_plural ""
+"%{count} certificates renew through it and will not renew while it is off:"
+msgstr[0] "%{count} certificado é renovado através dele e não será renovado enquanto estiver desativado:"
+msgstr[1] "%{count} certificados são renovados através dele e não serão renovados enquanto estiver desativado:"
+
+msgid "API base URL"
+msgstr "URL base da API"
+
+msgid "API timeout"
+msgstr "Tempo limite da API"
+
+msgid "API token"
+msgstr "Token da API"
+
+msgid "Access key ID"
+msgstr "ID da chave de acesso"
+
+msgid "AccessKey"
+msgstr "AccessKey"
+
+msgid "AccessKey ID"
+msgstr "AccessKey ID"
+
+msgid "AccessKey secret"
+msgstr "Segredo da AccessKey"
+
+msgid "Account email"
+msgstr "E-mail da conta"
+
+msgid "Authentication method"
+msgstr "Método de autenticação"
+
+msgid "Azure environment"
+msgstr "Ambiente Azure"
+
+msgid "Check interval"
+msgstr "Intervalo de verificação"
+
+msgid "Client certificate"
+msgstr "Certificado de cliente"
+
+msgid "Client certificate path"
+msgstr "Caminho do certificado de cliente"
+
+msgid "Client secret"
+msgstr "Segredo do cliente"
+
+msgid "DNS line"
+msgstr "Linha DNS"
+
+msgid "Global API key"
+msgstr "Chave de API global"
+
+msgid "Instance RAM role"
+msgstr "Função RAM da instância"
+
+msgid "Managed identity timeout"
+msgstr "Tempo limite da identidade gerida"
+
+msgid "Maximum wait"
+msgstr "Espera máxima"
+
+msgid "Needs the DNS edit permission."
+msgstr "Requer a permissão de edição de DNS."
+
+msgid "Needs the zone read permission. Leave empty to use the API token."
+msgstr ""
+"Requer a permissão de leitura de zonas. Deixe vazio para usar o token da API."
+
+msgid "One of public, usgovernment and china."
+msgstr "Um de public, usgovernment ou china."
+
+msgid "Private zone"
+msgstr "Zona privada"
+
+msgid "Region"
+msgstr "Região"
+
+msgid "Region ID"
+msgstr "ID da região"
+
+msgid "Resource group"
+msgstr "Grupo de recursos"
+
+msgid "STS security token"
+msgstr "Token de segurança STS"
+
+msgid "Secret access key"
+msgstr "Chave de acesso secreta"
+
+msgid "SecretId"
+msgstr "SecretId"
+
+msgid "SecretKey"
+msgstr "SecretKey"
+
+msgid "Service discovery filter"
+msgstr "Filtro de descoberta de serviços"
+
+msgid "Session token"
+msgstr "Token de sessão"
+
+msgid "Set to true to use a private DNS zone."
+msgstr "Defina como true para usar uma zona DNS privada."
+
+msgid "Subscription ID"
+msgstr "ID da subscrição"
+
+msgid "TXT record TTL"
+msgstr "TTL do registo TXT"
+
+msgid "Zone name"
+msgstr "Nome da zona"
+
+msgid "Zone read token"
+msgstr "Token de leitura de zonas"
+
+msgid "%{method} (recommended)"
+msgstr "%{method} (recomendado)"
+
+msgid "%{provider} API docs"
+msgstr "Documentação da API de %{provider}"
+
+msgid "Sign-in method"
+msgstr "Método de início de sessão"
+
+msgid "Optional"
+msgstr "Opcional"
+
+msgid "%{count} changed"
+msgstr "%{count} alterados"
+
+msgid "All default"
+msgstr "Tudo padrão"
+
+msgid "sec"
+msgstr "seg"
+
+msgid "Nothing to fill in. The server uses its own credentials."
+msgstr "Não há nada a preencher. O servidor usa as suas próprias credenciais."
+
+msgid "Browse and follow the access and error logs of your sites."
+msgstr ""
+
+msgid "Read access logs page by page or follow them as they arrive."
+msgstr ""
+
+msgid "See every log file Nginx writes and open one to read it."
+msgstr ""
+
+msgid ""
+"Log analytics is now a plugin. Install it to keep using it; your existing "
+"indexes are kept."
+msgstr ""
+
+msgid "Go to install"
+msgstr ""
+
+msgid "Used for downloads from GitHub, such as upgrades."
+msgstr ""
+
+msgid ""
+"Read the Nginx log files of this node, including visitor addresses and "
+"requested URLs."
+msgstr "Leia os ficheiros de registo do Nginx deste nó, incluindo endereços de visitantes e URLs pedidos."
+
+msgid "Log files"
+msgstr "Ficheiros de registo"
+
+msgid "This plugin cannot be enabled together with: {0}"
+msgstr "Este plugin não pode ser ativado em conjunto com: {0}"
+
+msgid "Release channel must be stable, beta or dev"
+msgstr "O canal de lançamento deve ser stable, beta ou dev"
+
+msgid ""
+"Advanced Indexing is now provided by the Log Analytics plugin. Install the "
+"plugin to continue using it. Existing indexes are kept."
+msgstr ""
+"A indexação avançada é agora fornecida pelo plugin Log Analytics. Instale o "
+"plugin para continuar a utilizá-la. Os índices existentes são mantidos."
+
+msgid "Beta"
+msgstr "Beta"
+
+msgid ""
+"This is a beta release. Features may change, and some functions may not work "
+"as expected."
+msgstr ""
+"Esta é uma versão beta. As funcionalidades podem mudar e algumas podem não "
+"funcionar como esperado."
+
+msgid "This is a development release. It may be incomplete or unstable."
+msgstr ""
+"Esta é uma versão de desenvolvimento. Pode estar incompleta ou instável."
+
+msgid "This is a stable release."
+msgstr "Esta é uma versão estável."
+
+msgid "Development releases are received until a stable release is available."
+msgstr ""
+"São recebidas versões de desenvolvimento até existir uma versão estável."
+
+msgid "Beta releases are received until a stable release is available."
+msgstr "São recebidas versões beta até existir uma versão estável."
+
+msgid "Receive beta and stable releases."
+msgstr "Receber versões beta e estáveis."
+
+msgid "Receive all releases, including development releases."
+msgstr "Receber todas as versões, incluindo as de desenvolvimento."
+
+msgid "Receive stable releases only."
+msgstr "Receber apenas versões estáveis."
+
+msgid "Cannot be enabled together with %{names}"
+msgstr "Não pode ser ativado em conjunto com %{names}"
+
+msgid ""
+"Enabling %{name} will disable %{others}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+"Ativar %{name} irá desativar %{others}, porque estes plugins não podem estar "
+"ativos ao mesmo tempo."
+
+msgid ""
+"Enabling this plugin will disable %{names}, because these plugins cannot be "
+"enabled at the same time."
+msgstr ""
+"Ativar este plugin irá desativar %{names}, porque estes plugins não podem "
+"estar ativos ao mesmo tempo."
+
+msgid "Enable %{name}?"
+msgstr "Ativar %{name}?"
+
+msgid "Recommended memory"
+msgstr "Memória recomendada"
+
+msgid "Install a previous version"
+msgstr "Instalar uma versão anterior"
+
+msgid "Install this version"
+msgstr "Instalar esta versão"
+
+msgid "This version is older than the installed version"
+msgstr "Esta versão é mais antiga do que a versão instalada"
+
+msgid ""
+"Data created by the newer version may not be compatible with this version."
+msgstr ""
+"Os dados criados pela versão mais recente podem não ser compatíveis com esta "
+"versão."
+
+msgid "No stable release of this plugin is available yet."
+msgstr "Ainda não existe uma versão estável deste plugin."
+
+msgid ""
+"Newer releases of this channel are received until a stable release is "
+"available."
+msgstr ""
+"São recebidas as versões mais recentes deste canal até existir uma versão "
+"estável."
+
+msgid ""
+"This server has %{system} of memory, below the %{recommended} recommended "
+"for this plugin. The plugin may run slowly or stop unexpectedly."
+msgstr ""
+"Este servidor tem %{system} de memória, abaixo dos %{recommended} "
+"recomendados para este plugin. O plugin pode ficar lento ou parar "
+"inesperadamente."
+
+msgid "Saved"
+msgstr "Guardado"
+
+msgid "Failed to save"
+msgstr "Falha ao guardar"
+
+msgid "Update channel"
+msgstr "Canal de atualização"
+
+msgid "Screenshots"
+msgstr "Capturas de ecrã"
+
+msgid "Enter a valid web address"
+msgstr ""
+
+msgid "The source cannot be checked"
+msgstr "Não é possível verificar a origem"
+
+msgid "Name (optional)"
+msgstr ""
+
+msgid "Checking availability"
+msgstr ""
+
+msgid "Available, %{count} plugin"
+msgid_plural "Available, %{count} plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Unavailable"
+msgstr "Indisponível"
+
+msgid "Catalog name: %{name}"
+msgstr ""
+
+msgid "New source"
+msgstr "Nova origem"
+
+msgid "Checking"
+msgstr "A verificar"
+
+msgid "%{count} plugin"
+msgid_plural "%{count} plugins"
+msgstr[0] "%{count} plugin"
+msgstr[1] "%{count} plugins"
+
+msgid "Invalid address"
+msgstr "Endereço inválido"
+
+msgid "Drag to reorder"
+msgstr "Arraste para reordenar"
+
+msgid "Edit address"
+msgstr "Editar endereço"
+
+msgid "Add a source to offer plugins from another catalog as well."
+msgstr ""
+
+msgid "Correct the addresses marked as invalid before saving."
+msgstr "Corrija os endereços marcados como inválidos antes de guardar."
+
+msgid "Enter a domain or a web address."
+msgstr "Introduza um domínio ou um endereço web."
+
+msgid ""
+"Enter a domain such as plugins.example.com, or the full address of a catalog."
+msgstr "Introduza um domínio como plugins.example.com, ou o endereço completo de um catálogo."
+
+msgid ""
+"Add Nginx configuration of its own. It takes effect only where you include "
+"it, and Nginx UI applies it only when the configuration remains valid."
+msgstr "Adicione configuração própria do Nginx. Só tem efeito onde a incluir, e o Nginx UI só a aplica quando a configuração continuar válida."
+
+msgid "Read the Nginx configuration files of this node."
+msgstr "Leia os ficheiros de configuração do Nginx deste nó."
+
+msgid "See the sites of this node and their addresses."
+msgstr "Veja os sites deste nó e os respetivos endereços."
+
+msgid ""
+"See the certificates and when they expire, without the parts that must stay "
+"secret."
+msgstr "Veja os certificados e quando expiram, sem as partes que devem permanecer secretas."
+
+msgid "Nginx configuration snippets"
+msgstr "Fragmentos de configuração do Nginx"
+
+msgid "Nginx configuration"
+msgstr "Configuração do Nginx"
+
+msgid "Certificate list"
+msgstr "Lista de certificados"
+
+msgid "DNS Validation"
+msgstr "Validação DNS"
+
+msgid ""
+"The main node has no DNS-01 plugin. Install it on the main node, or validate "
+"on this node."
+msgstr "O nó principal não tem o plugin DNS-01. Instale-o no nó principal ou valide neste nó."
+
+msgid ""
+"Credentials of the main node. Switch to the main node to add or change one."
+msgstr "Credenciais do nó principal. Mude para o nó principal para adicionar ou alterar uma."
+
+msgid "On the main node"
+msgstr "No nó principal"
+
+msgid "On this node"
+msgstr "Neste nó"
+
+msgid ""
+"The main node validates the domain with its DNS credentials, sends the "
+"certificate to this node and keeps renewing it."
+msgstr "O nó principal valida o domínio com as suas credenciais de DNS, envia o certificado para este nó e continua a renová-lo."
+
+msgid ""
+"This node validates the domain with its own DNS credentials and renews the "
+"certificate itself."
+msgstr "Este nó valida o domínio com as suas próprias credenciais de DNS e renova o certificado por si."
+
+msgid "Only a DNS-01 certificate can be issued for another node"
+msgstr "Só é possível emitir um certificado DNS-01 para outro nó"
+
+msgid "Node not found"
+msgstr "Nó não encontrado"
+
+msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
+msgstr "O nó {0} não pode receber certificados emitidos para ele, atualize-o primeiro"
+
+msgid "Node {0} answered {1}: {2}"
+msgstr "O nó {0} respondeu {1}: {2}"
+
+msgid "The Nginx configuration still loads the certificate: {0}"
+msgstr "A configuração do Nginx ainda carrega o certificado: {0}"
+
+msgid "The certificate was issued, but sending it to node {0} failed: {1}"
+msgstr "O certificado foi emitido, mas o envio para o nó {0} falhou: {1}"
+
+msgid "Node {0} cannot be reached: {1}"
+msgstr "Não é possível contactar o nó {0}: {1}"
+
+msgid "[Nginx UI] Sending the certificate to node %{name}"
+msgstr "[Nginx UI] A enviar o certificado para o nó %{name}"
+
+msgid "Issued for %{node}"
+msgstr "Emitido para %{node}"
+
+msgid ""
+"This instance validates the domain, keeps renewing the certificate and sends "
+"each renewal to %{node}."
+msgstr "Esta instância valida o domínio, continua a renovar o certificado e envia cada renovação para %{node}."
+
+msgid "Files on the node:"
+msgstr "Ficheiros no nó:"
+
+msgid "Issued by this instance for %{node} and renewed here"
+msgstr "Emitido por esta instância para %{node} e renovado aqui"
+
+msgid "For %{node}"
+msgstr "Para %{node}"
+
+msgid ""
+"This instance stops renewing the certificate and deletes its own copy. The "
+"files on %{node} stay unless you remove them below."
+msgstr "Esta instância deixa de renovar o certificado e elimina a sua própria cópia. Os ficheiros em %{node} permanecem, a menos que os remova abaixo."
+
+msgid "Also remove the certificate files from %{node}"
+msgstr "Remover também os ficheiros do certificado de %{node}"
+
+msgid ""
+"They are kept when the Nginx configuration of the node still loads them."
+msgstr "São mantidos quando a configuração do Nginx do nó ainda os carregar."
+
+msgid "Issue the certificate on the main node"
+msgstr "Emitir o certificado no nó principal"
+
+msgid ""
+"The node did not confirm that it received the certificate. Update Nginx UI "
+"on the node and try again."
+msgstr "O nó não confirmou que recebeu o certificado. Atualize o Nginx UI no nó e tente novamente."
+
+msgid "Recommended memory: %{size}"
+msgstr "Memória recomendada: %{size}"
+
+msgid "Nodes: %{target}"
+msgstr "Nós: %{target}"
+
+msgid "Certificates using the DNS-01 challenge cannot be renewed until the DNS-01 plugin is installed."
+msgstr "Os certificados que usam o desafio DNS-01 não podem ser renovados até o plugin DNS-01 ser instalado."
+
+msgid "Plugins updated automatically"
+msgstr "Plugins atualizados automaticamente"
+
+msgid "Updated automatically: %{plugins}"
+msgstr "Atualizados automaticamente: %{plugins}"
+
+msgid "Plugin updates available"
+msgstr "Atualizações de plugins disponíveis"
+
+msgid "Updates are available for %{plugins}"
+msgstr "Há atualizações disponíveis para %{plugins}"
+
+msgid "Apply restricted nginx directives?"
+msgstr "Aplicar diretivas restritas do nginx?"
+
+msgid "Apply anyway"
+msgstr "Aplicar mesmo assim"
+
+msgid "This configuration loads code into the Nginx worker processes, which runs with the privileges of Nginx itself. Only apply it if you wrote these directives or trust where they came from."
+msgstr "Esta configuração carrega código nos processos de trabalho do Nginx, que são executados com os privilégios do próprio Nginx. Aplique-a apenas se escreveu estas diretivas ou confia na sua origem."
+
+msgid "Restricted directives"
+msgstr "Diretivas restritas"
+
+msgid "Found in"
+msgstr "Encontrado em"
+
+msgid "Such a configuration is not replicated to other nodes. Save it on each node that needs it."
+msgstr "Esta configuração não é replicada para outros nós. Guarde-a em cada nó que a necessite."
+
+msgid "Go to Settings"
+msgstr "Ir para Definições"
+
+msgid "This configuration loads code into the Nginx worker processes. Applying it needs a two-factor confirmation, so enable two-factor authentication on your account first."
+msgstr "Esta configuração carrega código nos processos de trabalho do Nginx. Aplicá-la requer uma confirmação de dois fatores, por isso ative primeiro a autenticação de dois fatores na sua conta."
+
+msgid "Secret files are hidden from read-only service tokens"
+msgstr "Os ficheiros secretos estão ocultos para tokens de serviço só de leitura"
+
+msgid "Include pattern uses glob syntax that cannot be validated: {0}"
+msgstr "O padrão include usa uma sintaxe glob que não pode ser validada: {0}"
+
+msgid "Included file {0} contains restricted nginx directive: {1}"
+msgstr "O ficheiro incluído {0} contém uma diretiva restrita do nginx: {1}"
+
+msgid "Restricted nginx directives need confirmation: {0} in {1}"
+msgstr "As diretivas restritas do nginx requerem confirmação: {0} em {1}"
+
+msgid "Saving restricted nginx directives requires two-factor authentication on your account: {0} in {1}"
+msgstr "Guardar diretivas restritas do nginx requer autenticação de dois fatores na sua conta: {0} em {1}"
+
+msgid "This remote node feed carries stored secrets and requires a token with write scope"
+msgstr "Este feed de nó remoto contém segredos armazenados e requer um token com âmbito de escrita"
+
+msgid "The plugin id {0} is reserved for official Nginx UI plugins"
+msgstr "O id de plugin {0} está reservado para plugins oficiais do Nginx UI"
+
+msgid "Plugin package is signed by key {0}, which this node does not trust, and developer mode is off"
+msgstr "O pacote do plugin está assinado pela chave {0}, em que este nó não confia, e o modo de programador está desativado"
+
+msgid "Plugin version {0} was withdrawn from the catalog and is not pushed to nodes"
+msgstr "A versão {0} do plugin foi retirada do catálogo e não é enviada para os nós"
+
+msgid "Enter the API token again to save a different endpoint, proxy or API type"
+msgstr "Introduza novamente o token da API para guardar um endpoint, proxy ou tipo de API diferente"
+
+msgid "Too many failed attempts, please try again later"
+msgstr "Demasiadas tentativas falhadas, tente novamente mais tarde"
+
+msgid "AI"
+msgstr "IA"
+
+msgid "Backup and storage"
+msgstr "Cópia de segurança e armazenamento"
+
+msgid "Buy a license"
+msgstr "Comprar uma licença"
+
+msgid "Categories"
+msgstr "Categorias"
+
+msgid "Commercial"
+msgstr "Comercial"
+
+msgid "Config templates"
+msgstr "Modelos de configuração"
+
+msgid "Free trial of %{days} days"
+msgstr "Teste gratuito de %{days} dias"
+
+msgid "Integrations"
+msgstr "Integrações"
+
+msgid "Language packs"
+msgstr "Pacotes de idiomas"
+
+msgid "Monitoring"
+msgstr "Monitorização"
+
+msgid "New"
+msgstr "Novo"
+
+msgid "Note from the author"
+msgstr "Nota do autor"
+
+msgid "Paid license"
+msgstr "Licença paga"
+
+msgid "Price"
+msgstr "Preço"
+
+msgid "Security"
+msgstr "Segurança"
+
+msgid "Subscription"
+msgstr "Subscrição"
+
+msgid "Tools"
+msgstr "Ferramentas"
+
+msgid "Traffic and upstreams"
+msgstr "Tráfego e upstreams"
+
+msgid "Waiting for the node to restart and report the target version..."
+msgstr "A aguardar que o nó reinicie e comunique a versão de destino..."
+
+msgid "Invalid upgrade target. Check for a release before upgrading."
+msgstr "Destino de atualização inválido. Verifique se existe uma versão antes de atualizar."
+
+msgid "The upgrade timed out. Check the node logs."
+msgstr "A atualização excedeu o tempo limite. Verifique os registos do nó."
+
+msgid "The node returned an invalid version response."
+msgstr "O nó devolveu uma resposta de versão inválida."
+
+msgid "The node returned an invalid upgrade response."
+msgstr "O nó devolveu uma resposta de atualização inválida."
+
+msgid "The node failed to upgrade."
+msgstr "A atualização do nó falhou."
+
+msgid "The upgrade connection failed. Check authentication and network connectivity."
+msgstr "A ligação de atualização falhou. Verifique a autenticação e a conectividade de rede."
+
+msgid "The upgrade connection closed before installation started."
+msgstr "A ligação de atualização foi fechada antes de a instalação começar."
+
+msgid "Could not verify the upgrade. Check the node version and service status."
+msgstr "Não foi possível verificar a atualização. Verifique a versão do nó e o estado do serviço."
+
+msgid "Indexing batches shrink to fit the available memory"
+msgstr "Os lotes de indexação reduzem-se para caber na memória disponível"
+
+msgid "More memory indexes large logs faster"
+msgstr "Mais memória indexa registos grandes mais depressa"
+
+msgid "About a quarter of the size of the logs"
+msgstr "Cerca de um quarto do tamanho dos registos"
+
+msgid "CPU time to parse and store one log line"
+msgstr "Tempo de CPU para analisar e armazenar uma linha de registo"
+
+msgid "Index Size"
+msgstr "Tamanho do índice"
+
+msgid "Per log line, about 0.16x the raw log"
+msgstr "Por linha de registo, cerca de 0,16x o registo em bruto"
+
+msgid "Log Viewer Page"
+msgstr "Página do visualizador de registos"
+
+msgid "Results with IP and path facets and statistics"
+msgstr "Resultados com facetas de IP e caminho e estatísticas"
+
+msgid "* Measured on Apple M2 Pro with 100,000 combined-format log lines. Actual performance may vary based on your hardware configuration."
+msgstr "* Medido num Apple M2 Pro com 100 000 linhas de registo em formato combinado. O desempenho real pode variar consoante a configuração do seu hardware."
+
+msgid "Compressed columnar storage"
+msgstr "Armazenamento colunar comprimido"
+
+msgid "Field filters in the search box"
+msgstr "Filtros de campo na caixa de pesquisa"
+
+msgid "Substring search over the raw line"
+msgstr "Pesquisa de subcadeia na linha em bruto"
+
+msgid "Error log indexing"
+msgstr "Indexação de registos de erros"
+
+msgid "Words match anywhere in the line; all of them must match. Quotes keep a phrase together, a leading - excludes."
+msgstr "As palavras correspondem em qualquer parte da linha; todas têm de corresponder. As aspas mantêm uma frase junta, um - inicial exclui."
+
+msgid "Search, e.g. status:5xx ip:10.0.0.0/8 -bot"
+msgstr "Pesquisar, p. ex. status:5xx ip:10.0.0.0/8 -bot"
+
+msgid "Level"
+msgstr "Nível"
+
+msgid "Client"
+msgstr "Cliente"
+
+msgid "Searched as plain text: %{tokens}"
+msgstr "Pesquisado como texto simples: %{tokens}"
+
+msgid "Search, e.g. level:error upstream timed out -ip:10.0.0.1"
+msgstr "Pesquisar, p. ex. level:error upstream timed out -ip:10.0.0.1"
+
+msgid "%{total} entries found in %{took} ms"
+msgstr "%{total} entradas encontradas em %{took} ms"
+
+msgid "Dry run completed for %{node}. No changes were made."
+msgstr "Simulação concluída para %{node}. Não foram feitas alterações."
+
+msgid "Upgrade failed for %{node}: %{error}"
+msgstr "A atualização falhou para %{node}: %{error}"
+
+msgid "Upgrade cancelled."
+msgstr "Atualização cancelada."
+
+msgid "Managed on the marketplace page. The official catalog is always used."
+msgstr "Gerido na página do marketplace. O catálogo oficial é sempre utilizado."
+
+msgid "Read resources and runtime status through the management API. Stored secrets such as credentials and private keys are hidden from read-only tokens."
+msgstr "Leia recursos e o estado de execução através da API de gestão. Os segredos armazenados, como credenciais e chaves privadas, ficam ocultos para tokens só de leitura."
+
+msgid "Use read-only Nginx UI MCP tools. Private keys are hidden from read-only tokens."
+msgstr "Use as ferramentas MCP do Nginx UI só de leitura. As chaves privadas ficam ocultas para tokens só de leitura."
+
+msgid "Pricing per million tokens"
+msgstr "Preço por milhão de tokens"
+
+msgid "This template comes from the plugin %{id} and cannot be changed. Copy it as a snippet to change it, and review its directives before using it."
+msgstr "Este modelo vem do plugin %{id} e não pode ser alterado. Copie-o como fragmento para o alterar e reveja as suas diretivas antes de o utilizar."
+
+msgid "This snippet starts from a template of the plugin %{id}. Review its directives before saving it. Once saved, it is a snippet of your own and no longer follows the plugin."
+msgstr "Este fragmento parte de um modelo do plugin %{id}. Reveja as suas diretivas antes de o guardar. Depois de guardado, é um fragmento seu e deixa de acompanhar o plugin."
+
+msgid "Templates"
+msgstr "Modelos"
+
+msgid "This plugin was taken down from the catalog, and this version was withdrawn. Disable or uninstall it."
+msgstr "Este plugin foi retirado do catálogo e esta versão foi retirada. Desative-o ou desinstale-o."
+
+msgid "This plugin was taken down from the catalog and receives no more updates."
+msgstr "Este plugin foi retirado do catálogo e não recebe mais atualizações."
+
+msgid "Reason: %{reason}"
+msgstr "Motivo: %{reason}"
+
+msgid "The publisher withdrew this version. Update it, or disable it until a new version is available."
+msgstr "O publicador retirou esta versão. Atualize-a ou desative-a até estar disponível uma nova versão."
+
+msgid "This version asks for access the installed version does not have"
+msgstr "Esta versão pede acesso que a versão instalada não tem"
+
+msgid "This update asks for access the installed version does not have"
+msgstr "Esta atualização pede acesso que a versão instalada não tem"
+
+msgid "This is a commercial plugin, licensed by its vendor"
+msgstr "Este é um plugin comercial, licenciado pelo seu fornecedor"
+
+msgid "New permissions: %{list}"
+msgstr "Novas permissões: %{list}"
+
+msgid "New addresses it may reach: %{list}"
+msgstr "Novos endereços que pode contactar: %{list}"
+
+msgid "It may now reach any address instead of a fixed list."
+msgstr "Agora pode contactar qualquer endereço em vez de uma lista fixa."
+
+msgid "No longer requested: %{list}"
+msgstr "Deixaram de ser pedidas: %{list}"
+
+msgid "Addresses it no longer reaches: %{list}"
+msgstr "Endereços que já não contacta: %{list}"
+
+msgid "This version asks for less access than the installed version"
+msgstr "Esta versão pede menos acesso do que a versão instalada"
+
+msgid "Offered by %{source} instead of the official catalog."
+msgstr "Oferecido por %{source} em vez do catálogo oficial."
+
+msgid "Changes in this update"
+msgstr "Alterações nesta atualização"
+
+msgid "Catalogs are merged in order, and the first source that offers a plugin wins. The official catalog cannot be removed. Move a mirror above it to install from the mirror first."
+msgstr "Os catálogos são combinados por ordem, e prevalece a primeira origem que oferecer um plugin. O catálogo oficial não pode ser removido. Mova um espelho para cima dele para instalar primeiro a partir do espelho."
+
+msgid "This version asks for permissions your earlier approval did not cover, marked as new below. Approve only if you trust the author."
+msgstr "Esta versão pede permissões que a sua aprovação anterior não cobria, marcadas como novas abaixo. Aprove apenas se confiar no autor."
+
+msgid "Dry run completed. No changes were made."
+msgstr "Simulação concluída. Não foram feitas alterações."
+
+#~ msgid "Webauthn"
+#~ msgstr "Webauthn"
+
+#~ msgid ""
+#~ "If the number of login failed attempts from a ip reach the max attempts in "
+#~ "ban threshold minutes,"
+#~ msgstr ""
+#~ "Se o número de tentativas de login falhadas de um IP atingir o máximo nos "
+#~ "minutos de limite de bloqueio,"
+
+#~ msgid "Set the recursive nameservers to override the systems nameservers "
+#~ msgstr ""
+#~ "Defina os servidores de nomes recursivos para substituir os servidores de "
+#~ "nomes do sistema"
+
+#~ msgid "Custom MMDB is currently enabled"
+#~ msgstr "A MMDB personalizada está atualmente ativada"
+
+#~ msgid "IndexCustomMMDB File Name"
+#~ msgstr "Nome do ficheiro IndexCustomMMDB"
+
+#~ msgid ""
+#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
+#~ "100000_full.json in this directory."
+#~ msgstr ""
+#~ "Configurado a partir de [nginx_log].GeoMapPath. Guarde os ficheiros com "
+#~ "nomes como 100000_full.json neste diretório."
+
+#~ msgid ""
+#~ "Only the world map is provided by default. Please download China and "
+#~ "province boundary files yourself and place them in this directory."
+#~ msgstr ""
+#~ "Apenas o mapa-múndi é fornecido por padrão. Por favor, faça o download dos "
+#~ "ficheiros de fronteiras da China e das províncias por conta própria e "
+#~ "coloque-os neste diretório."
+
+#~ msgid "Global health check controls"
+#~ msgstr "Controlos globais de verificação de estado"
+
+msgid "No file matches the search"
+msgstr "Nenhum ficheiro corresponde à pesquisa"
+
+msgid ""
+"The file name must end in .conf and use only letters, digits, dots, dashes "
+"and underscores"
+msgstr ""
+"O nome do ficheiro deve terminar em .conf e conter apenas letras, dígitos, "
+"pontos, hífenes e traços inferiores"
+
+msgid "Snippet not found"
+msgstr "Fragmento não encontrado"
+
+msgid "The snippet exceeds 256 KiB"
+msgstr "O fragmento excede 256 KiB"
+
+msgid "The header of the snippet does not parse: {0}"
+msgstr "O cabeçalho do snippet não pode ser analisado: {0}"
+
+msgid "The snippet is still included by {0}"
+msgstr "O snippet ainda é incluído por {0}"
+
+msgid "A snippet with this file name already exists"
+msgstr "Já existe um snippet com este nome de ficheiro"
+
+msgid "The variable {0} is invalid: {1}"
+msgstr "A variável {0} é inválida: {1}"
+
+msgid "The content does not parse as a template: {0}"
+msgstr "O conteúdo não é analisado como um modelo: {0}"
+
+msgid "Snippets"
+msgstr "Snippets"
+
+msgid "Create Snippet"
+msgstr "Criar snippet"
+
+msgid "Built-in Template"
+msgstr "Modelo incorporado"
+
+msgid "Edit Snippet"
+msgstr "Editar snippet"
+
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] "Usado por %{count} configuração"
+msgstr[1] "Usado por %{count} configurações"
+
+msgid "Site Card Click URL"
+msgstr "URL de clique do cartão do site"
+
+msgid ""
+"Optional absolute HTTP/HTTPS URL used when opening this site card. If "
+"empty, the default site URL is used."
+msgstr ""
+"URL HTTP/HTTPS absoluta opcional utilizada ao abrir este cartão de site. Se "
+"estiver vazia, é utilizada a URL predefinida do site."
+
+msgid "Built-in"
+msgstr "Integrado"
+
+msgid "Snippet"
+msgstr "Trecho"
+
+msgid ""
+"Include keeps the site linked to snippets/%{file}, so later changes of the "
+"snippet apply to it. Insert copies the content into the site instead."
+msgstr ""
+"Include mantém o site ligado a snippets/%{file}, de modo que as alterações "
+"posteriores do snippet se aplicam a ele. Insert copia o conteúdo para o "
+"site em vez disso."
+
+msgid "Insert"
+msgstr "Inserir"
 
 msgid "Read Only"
 msgstr "Somente leitura"
@@ -11442,6 +13938,9 @@ msgstr "Não utilizado"
 
 msgid "Max Age"
 msgstr "Idade máxima"
+
+msgid "Options"
+msgstr "Opções"
 
 msgid "Remove option"
 msgstr "Remover opção"
@@ -11609,259 +14108,400 @@ msgstr "Os valores das opções devem ser únicos."
 msgid "Choose the default option."
 msgstr "Escolha a opção predefinida."
 
-msgid "Do you want to %{action} this stream?"
-msgstr "Deseja %{action} este fluxo?"
-
-msgid "Delete stream: %{stream_name}"
-msgstr "Eliminar stream: %{stream_name}"
-
-msgid "Added successfully"
-msgstr "Adicionado com sucesso"
-
-msgid "Add Stream"
-msgstr "Adicionar Stream"
-
-msgid "%{count} streams selected"
-msgstr "%{count} streams selecionados"
-
-msgid "Development Mode"
-msgstr "Modo Desenvolvimento"
-
-msgid "Official Document"
-msgstr "Documentação oficial"
-
-msgid "Sponsor"
-msgstr "Patrocinador"
-
-msgid "Project Team"
-msgstr "Equipe de Projecto"
-
-msgid "License"
-msgstr "Licença"
-
-msgid "View Third-party Components"
-msgstr "Ver componentes de terceiros"
-
-msgid "View version details and core information about this Nginx UI instance."
-msgstr ""
-"Ver detalhes da versão e informações principais sobre esta instância do "
-"Nginx UI."
-
-msgid "Run built-in diagnostics to validate environment and service readiness."
-msgstr ""
-"Execute os diagnósticos integrados para validar o ambiente e a prontidão do "
-"serviço."
-
-msgid "Check release updates and execute upgrade operations when available."
-msgstr ""
-"Verifique atualizações de lançamento e execute operações de atualização "
-"quando disponíveis."
-
-msgid "Review third-party licenses and open source component attributions."
-msgstr "Rever licenças de terceiros e atribuições de componentes de código aberto."
-
-msgid "Total Components"
-msgstr "Componentes totais"
-
-msgid "Frontend"
-msgstr "Frontend"
-
-msgid "License Types"
-msgstr "Tipos de licença"
-
-msgid "License Distribution"
-msgstr "Distribuição de Licenças"
-
-msgid "components"
-msgstr "componentes"
-
-msgid "All Components"
-msgstr "Todos os componentes"
-
-msgid "Dev"
-msgstr "Dev"
-
-msgid "Reinstall"
-msgstr "Reinstalar"
-
-msgid "Core Upgrade"
-msgstr "Actualização do Core"
-
-msgid "You can check Nginx UI upgrade at this page."
-msgstr "Pode verificar a atualização do Nginx UI nesta página."
-
-msgid "Current Version"
-msgstr "Versão Actual"
-
-msgid "Arch"
-msgstr "Arquitetura"
-
-msgid "Executable Path"
-msgstr "Caminho Executável"
-
-msgid "Last checked at"
-msgstr "Última verificação em"
-
-msgid "You are using the latest version"
-msgstr "Está a usar a última versão"
-
-msgid "New version released"
-msgstr "Nova versão lançada"
-
-msgid "Release Note"
-msgstr "Nota de Lançamento"
-
-msgid "Hide Assistant"
-msgstr "Ocultar assistente"
-
-msgid "Show Assistant"
-msgstr "Mostrar assistente"
-
-msgid "Connection lost for this terminal. Please refresh if needed."
-msgstr "Conexão perdida para este terminal. Atualize se necessário."
+msgid "Certificate Relocated"
+msgstr "Certificado relocalizado"
 
 msgid ""
-"This is a simulated terminal running entirely in your browser. Commands are "
-"answered locally and never reach a server."
+"Certificate %{name} is now stored in %{path}, point the sites that load "
+"%{previous_path} to it"
 msgstr ""
-"Este é um terminal simulado que funciona inteiramente no seu navegador. Os "
-"comandos são respondidos localmente e nunca chegam a um servidor."
+"O certificado %{name} agora está armazenado em %{path}. Aponte os sites que "
+"carregam %{previous_path} para ele"
+
+msgid "The path exists, but the file is not a certificate"
+msgstr "O caminho existe, mas o ficheiro não é um certificado"
+
+msgid "The path exists, but the file is not a private key"
+msgstr "O caminho existe, mas o ficheiro não é uma chave privada"
+
+msgid "MFA Enrollment"
+msgstr "Estado de registo MFA"
+
+msgid "Enrolled"
+msgstr "Registado"
+
+msgid "Not enrolled"
+msgstr "Não registado"
+
+msgid "Pending enrollment"
+msgstr "Registo pendente"
+
+msgid "Invalid request: {0}"
+msgstr "Pedido inválido: {0}"
 
 msgid ""
-"You are accessing this terminal over an insecure HTTP connection on a "
-"non-localhost domain. This may expose sensitive information."
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
 msgstr ""
-"Está a aceder a este terminal através de uma ligação HTTP insegura num "
-"domínio que não é localhost. Isto pode expor informações sensíveis."
+"Nome de ingress inválido: use de 1 a 40 letras minúsculas, dígitos e "
+"hífenes, começando e terminando com uma letra ou um dígito"
 
-msgid "Create Upstream"
-msgstr "Criar Upstream"
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr ""
+"Proprietário inválido: use de 1 a 64 letras, dígitos, pontos, sublinhados e "
+"hífenes"
 
-msgid "View Upstream %{name}"
-msgstr "Ver upstream %{name}"
+msgid "Invalid host: {0}"
+msgstr "Host inválido: {0}"
 
-msgid "Edit Upstream %{name}"
-msgstr "Editar Upstream %{name}"
+msgid "Invalid backend {0}: {1}"
+msgstr "Backend inválido {0}: {1}"
 
-msgid "Round Robin (default)"
-msgstr "Round Robin (predefinido)"
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr "O servidor backend {0} está fora dos intervalos de backend permitidos"
 
-msgid "Least Connections (least_conn)"
-msgstr "Menos ligações (least_conn)"
+msgid "Invalid route {0}: {1}"
+msgstr "Rota inválida {0}: {1}"
 
-msgid "IP Hash (ip_hash)"
-msgstr "Hash de IP (ip_hash)"
+msgid "Invalid tls: {0}"
+msgstr "TLS inválido: {0}"
 
-msgid "Hash (hash)"
-msgstr "Hash (hash)"
+msgid "Invalid policy: {0}"
+msgstr "Política inválida: {0}"
 
-msgid "Random (random)"
-msgstr "Aleatório (random)"
+msgid "Server {0} not found in backend {1}"
+msgstr "Servidor {0} não encontrado no backend {1}"
 
-msgid "Upstream %{name} saved and Nginx reloaded"
-msgstr "Upstream %{name} guardado e Nginx recarregado"
+msgid "Ingress {0} not found"
+msgstr "Ingress {0} não encontrado"
 
-msgid "Sites use it as proxy_pass http://%{name};"
-msgstr "Os sites usam-no como proxy_pass http://%{name};"
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr "Ingress {0} é de propriedade de {1}; passe force para o assumir"
 
-msgid "Load Balancing Method"
-msgstr "Método de Balanceamento de Carga"
+msgid "Host {0} is already served by ingress {1}"
+msgstr "O host {0} já está a ser servido pelo ingress {1}"
 
-msgid "Hash Key"
-msgstr "Chave de hash"
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr "O site {0} já existe e não é gerido por este ingress"
 
-msgid "Consistent Hashing"
-msgstr "Hashing consistente"
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr "Tempo esgotado à espera que o ingress {0} chegasse à geração {1}"
 
-msgid "Servers"
-msgstr "Servidores"
+msgid "Apply failed: {0}"
+msgstr "Falha ao aplicar: {0}"
 
-msgid "Not available with this load balancing method"
-msgstr "Indisponível com este método de balanceamento de carga"
+msgid "Certificate not ready: {0}"
+msgstr "Certificado não pronto: {0}"
 
-msgid "Keepalive"
-msgstr "Keepalive"
+msgid "Not implemented"
+msgstr "Não implementado"
 
 msgid ""
-"Idle connections to keep open per worker; 0 disables it. Proxied sites also "
-"need proxy_http_version 1.1 and an empty Connection header."
-msgstr ""
-"Conexões inativas a manter abertas por worker; 0 desativa. Os sites em "
-"proxy também precisam de proxy_http_version 1.1 e de um cabeçalho "
-"Connection vazio."
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
+msgstr "O site é gerido pelo ingress {0}; altere o ingress ou force a alteração"
 
-msgid "Connections"
-msgstr "Ligações"
+msgid "Ingresses"
+msgstr "Ingresses"
 
-msgid "Additional Directives"
-msgstr "Diretivas adicionais"
+msgid "HTTP only"
+msgstr "Apenas HTTP"
 
-msgid "One directive per line, for example keepalive_timeout or keepalive_requests."
-msgstr "Uma diretiva por linha, por exemplo keepalive_timeout ou keepalive_requests."
+msgid "Expired %{date}"
+msgstr "Expirado %{date}"
 
-msgid "Referenced By"
-msgstr "Referenciado por"
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] "%{date} (falta %{days} dia)"
+msgstr[1] "%{date} (faltam %{days} dias)"
 
-msgid "No site uses this upstream yet."
-msgstr "Nenhum site usa este upstream ainda."
+msgid "Health"
+msgstr "Saúde"
 
-msgid "Configuration Preview"
-msgstr "Pré-visualização da configuração"
+msgid "Path Prefix"
+msgstr "Prefixo do caminho"
 
-msgid "Enable server %{address}"
-msgstr "Ativar servidor %{address}"
+msgid "Allowed Sources"
+msgstr "Fontes permitidas"
 
-msgid "Disable server %{address}"
-msgstr "Desativar servidor %{address}"
+msgid "Last Transition"
+msgstr "Última transição"
 
-msgid ""
-"Create shared upstream groups with load balancing and reuse them across "
-"sites."
-msgstr ""
-"Crie grupos de upstream partilhados com balanceamento de carga e "
-"reutilize-os em vários sites."
+msgid "Drained"
+msgstr "Exausto"
 
-msgid "Monitor the health of every proxy target and toggle its health check."
-msgstr ""
-"Monitorize a saúde de cada destino de proxy e ative ou desative a sua "
-"verificação de saúde."
+msgid "Healthy"
+msgstr "Saudável"
 
-msgid "Socket"
-msgstr "Socket"
-
-msgid "Direct"
-msgstr "Direto"
-
-msgid "Health Status"
-msgstr "Estado de saúde"
-
-msgid "Last Check"
-msgstr "Última verificação"
-
-msgid "Upstream health checks are globally paused"
-msgstr "As verificações de estado dos upstreams estão globalmente em pausa"
+msgid "Unhealthy"
+msgstr "Pouco saudável"
 
 msgid ""
-"Per-target selections are preserved. Resume probes from Health Check "
-"preferences."
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
 msgstr ""
-"As seleções por destino são preservadas. Retome as sondagens nas "
-"preferências de verificação de estado."
+"O site gerado não pôde ser carregado. É escrito na primeira aplicação "
+"bem-sucedida."
 
-msgid "Hash"
-msgstr "Hash"
+msgid "Reconcile Now"
+msgstr "Reconciliar agora"
 
-msgid "Random"
-msgstr "Aleatório"
+msgid "The last apply failed; the previous config is still live"
+msgstr "A última aplicação falhou; a configuração anterior ainda está ativa."
 
-msgid "Load Balancing"
-msgstr "Balanceamento de carga"
+msgid "Owner"
+msgstr "Proprietário"
 
-msgid "Defined In"
-msgstr "Definido em"
+msgid "External ID"
+msgstr "ID externo"
 
-msgid "Matched upstreams: %{groups}, servers: %{servers}"
-msgstr "Upstreams correspondentes: %{groups}, servidores: %{servers}"
+msgid "Generation"
+msgstr "Geração"
+
+msgid "%{observed} applied of %{generation}"
+msgstr "%{observed} aplicado de %{generation}"
+
+msgid "Generated Site"
+msgstr "Site gerado"
+
+msgid "Last Applied"
+msgstr "Última aplicação"
+
+msgid "Config Hash"
+msgstr "Hash de configuração"
+
+msgid "Labels"
+msgstr "Etiquetas"
+
+msgid "Hosts"
+msgstr "Hosts"
+
+msgid "TLS"
+msgstr "TLS"
+
+msgid "Mode"
+msgstr "Modo"
+
+msgid "View certificate"
+msgstr "Ver certificado"
+
+msgid "Challenge"
+msgstr "Desafio"
+
+msgid "Redirect to HTTPS"
+msgstr "Redirecionar para HTTPS"
+
+msgid "HSTS"
+msgstr "HSTS"
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr "Apenas o listener HTTP é servido até que o certificado seja emitido."
+
+msgid "Backends"
+msgstr "Backends"
+
+msgid "Routes"
+msgstr "Rotas"
+
+msgid "Policy default"
+msgstr "Política predefinida"
+
+msgid "Policy"
+msgstr "Política"
+
+msgid "Everyone"
+msgstr "Todos"
+
+msgid "Rate Limit"
+msgstr "Limite de taxa"
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr "%{rps} pedidos/s por cliente, burst %{burst}"
+
+msgid "Max Body Size"
+msgstr "Tamanho máximo do corpo"
+
+msgid "Extra Headers"
+msgstr "Cabeçalhos adicionais"
+
+msgid "Conditions"
+msgstr "Condições"
+
+msgid "True"
+msgstr "Verdadeiro"
+
+msgid "False"
+msgstr "Falso"
+
+msgid "Generated Site Config"
+msgstr "Configuração do site gerada"
+
+msgid "Open in site editor"
+msgstr "Abrir no editor do site"
+
+msgid "Not ready"
+msgstr "Não pronto"
+
+msgid "The latest spec has not been applied yet"
+msgstr "A especificação mais recente ainda não foi aplicada"
+
+msgid "Applying"
+msgstr "A aplicar"
+
+msgid "Ready"
+msgstr "Pronto"
+
+msgid "Degraded"
+msgstr "Degradado"
+
+msgid "Config Applied"
+msgstr "Configuração aplicada"
+
+msgid "Certificate Ready"
+msgstr "Certificado pronto"
+
+msgid "Backends Healthy"
+msgstr "Backends saudáveis"
+
+msgid "Issued automatically (ACME)"
+msgstr "Emitido automaticamente (ACME)"
+
+msgid "All owners"
+msgstr "Todos os proprietários"
+
+msgid "Reconcile of %{name} queued"
+msgstr "Reconciliação de %{name} em fila"
+
+msgid "Delete ingress %{name}?"
+msgstr "Eliminar ingress %{name}?"
+
+msgid ""
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
+msgstr ""
+"Este ingress é propriedade de %{owner}. O seu controller provavelmente irá "
+"recriá-lo na próxima sincronização; remova-o do controller para o eliminar "
+"definitivamente."
+
+msgid "The generated site and upstream files are removed and nginx is reloaded."
+msgstr "O site gerado e os ficheiros upstream são removidos e o nginx é recarregado."
+
+msgid "Also delete the certificate"
+msgstr "Eliminar também o certificado"
+
+msgid "Ingress %{name} deleted"
+msgstr "Ingress %{name} eliminado"
+
+msgid "Ingress"
+msgstr "Ingress"
+
+msgid "Phase"
+msgstr "Fase"
+
+msgid "%{healthy}/%{total} healthy"
+msgstr "%{healthy}/%{total} saudáveis"
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] "%{total} servidor"
+msgstr[1] "%{total} servidores"
+
+msgid "%{count} down"
+msgstr "%{count} restantes"
+
+msgid "Filter by owner"
+msgstr "Filtrar por proprietário"
+
+msgid "Applied generation / latest generation"
+msgstr "Geração aplicada / Última geração"
+
+msgid "gen %{observed}/%{generation}"
+msgstr "gen %{observed}/%{generation}"
+
+msgid "Reconcile"
+msgstr "Reconciliar"
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+"Os Ingresses são entradas de proxy reverso publicadas por controladores "
+"externos através da API Ingress. O Nginx UI renderiza cada um como um site "
+"gerido com upstreams, emite o seu certificado e reporta o seu estado aqui. "
+"Altere-os no respetivo controlador; as edições feitas aqui são substituídas "
+"pela próxima reconciliação."
+
+msgid "Learn more"
+msgstr "Saiba mais"
+
+msgid "No ingresses yet"
+msgstr "Ainda não há ingresses"
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT "
+"/api/ingresses/:name, authenticated as a cluster node or with an API token. "
+"They show up here as soon as they are stored."
+msgstr ""
+"Um controlador como uma plataforma de deploy cria ingresses com PUT "
+"/api/ingresses/:name, autenticado como um nó de cluster ou com um token de "
+"API. Eles aparecem aqui assim que são armazenados."
+
+msgid "Read the Ingress API guide"
+msgstr "Leia o guia da API Ingress"
+
+msgid "Search by name, host or external ID"
+msgstr "Pesquisar por nome, host ou ID externo"
+
+msgid "Search ingresses"
+msgstr "Pesquisar Ingress"
+
+msgid "No ingress matches the filter"
+msgstr "Nenhum Ingress corresponde ao filtro"
+
+msgid "Managed by ingress %{name}"
+msgstr "Gerido por ingress %{name}"
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr ""
+"As alterações serão substituídas pela próxima reconciliação. Edite o "
+"Ingress no seu controller em vez disso."
+
+msgid "View ingress"
+msgstr "Ver Ingress"
+
+msgid "Edit anyway"
+msgstr "Editar mesmo assim"
+
+msgid "Ingress: %{name}"
+msgstr "Ingress: %{name}"
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] "Incluir %{count} site gerido por um ingress"
+msgstr[1] "Incluir %{count} sites geridos por ingresses"
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr "Ingress {0} foi atualizado enquanto estava a ser eliminado"
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr "O upstream {0} já existe e não é gerido por este ingress"
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr "Tempo esgotado à espera que o ingress {0} seja eliminado"
+
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr "Os nomes upstream que começam com {0} são reservados para ingresses"
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
+msgstr ""
+"O upstream {0} é gerido pelo ingress {1}; altere o ingress em vez disso ou "
+"force a alteração"
 
 msgid ""
 "Ingress %{name} owns this upstream. Change the ingress instead; its next "
@@ -11870,73 +14510,89 @@ msgstr ""
 "O Ingress %{name} possui este upstream. Altere o ingress em vez disso; a "
 "próxima aplicação sobrescreverá as alterações feitas aqui."
 
-msgid "Server %{address} enabled"
-msgstr "Servidor %{address} ativado"
+msgid "View Upstream %{name}"
+msgstr "Ver upstream %{name}"
 
-msgid "Server %{address} disabled"
-msgstr "Servidor %{address} desativado"
+msgid "Recovery codes downloaded"
+msgstr "Códigos de recuperação transferidos"
 
-msgid "Disable the last active server of %{name}?"
-msgstr "Desativar o último servidor ativo de %{name}?"
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr ""
+"Configuração de MFA concluída. Guarde os seus códigos de recuperação antes "
+"de continuar."
+
+msgid "MFA session expired. Please sign in again."
+msgstr "A sessão MFA expirou. Inicie sessão novamente."
+
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr "É necessário MFA. Configure um autenticador ou uma passkey para continuar."
+
+msgid "Verify your MFA method to continue signing in."
+msgstr "Verifique o seu método MFA para continuar a iniciar sessão."
+
+msgid "Back to sign in"
+msgstr "Voltar ao início de sessão"
 
 msgid ""
-"No other primary server of this upstream is enabled. Requests will fail "
-"unless a backup server takes over."
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
 msgstr ""
-"Não está ativo nenhum outro servidor primário deste upstream. Os pedidos "
-"falharão a menos que um servidor de backup tome a liderança."
+"Ative a MFA na sua própria conta antes de gerir políticas de MFA ou "
+"redefinir outro utilizador."
 
-msgid "Upstream %{name} is still in use"
-msgstr "O Upstream %{name} ainda está em uso"
+msgid "File content must be valid PEM or htpasswd data"
+msgstr "O conteúdo do ficheiro deve ser dados PEM ou htpasswd válidos"
 
-msgid "Point these configurations at another upstream before deleting it:"
-msgstr "Aponte estas configurações para outro upstream antes de o eliminar:"
+msgid "MFA enrollment is required"
+msgstr "É necessário o registro de MFA"
 
-msgid "Delete upstream %{name}?"
-msgstr "Apagar o upstream %{name}?"
+msgid "MFA verification is required"
+msgstr "É necessária a verificação MFA"
 
-msgid "%{path} will be removed and Nginx reloaded."
-msgstr "%{path} será removido e o Nginx será recarregado."
+msgid "Cannot remove the last required MFA method"
+msgstr "Não é possível remover o último método de MFA necessário"
 
-msgid "Upstream %{name} deleted"
-msgstr "Upstream %{name} eliminado"
+msgid "TOTP disabled"
+msgstr "TOTP desativado"
+
+msgid "Replace TOTP"
+msgstr "Substituir TOTP"
+
+msgid "Disable TOTP for this account?"
+msgstr "Desativar TOTP para esta conta?"
+
+msgid "Disable TOTP"
+msgstr "Desativar TOTP"
 
 msgid ""
-"An upstream group shares its servers and load balancing method across "
-"sites. Choose it as the proxy target when setting up a site; later changes "
-"here apply to every site that uses it."
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
 msgstr ""
-"Um grupo upstream partilha os seus servidores e o seu método de "
-"balanceamento de carga entre os sites. Escolha-o como alvo proxy ao "
-"configurar um site; alterações futuras aqui aplicam-se a todos os sites que "
-"o utilizam."
+"O seu autenticador atual permanece ativo até que o novo código seja "
+"verificado. Os novos códigos de recuperação substituem os anteriores."
 
-msgid "Files are stored in %{dir}."
-msgstr "Os ficheiros são armazenados em %{dir}."
-
-msgid "Search by name or IP:port"
-msgstr "Pesquisar por nome ou IP:port"
-
-msgid "Search upstreams by name or server address"
-msgstr "Pesquisar upstreams por nome ou endereço do servidor"
-
-msgid "No upstream group matches the search"
-msgstr "Nenhum grupo de upstream corresponde à pesquisa"
-
-msgid "Upstreams Defined in Other Files"
-msgstr "Upstreams definidos em outros ficheiros"
+msgid "MFA Policy"
+msgstr "Política MFA"
 
 msgid ""
-"These upstream blocks live inside site or other configuration files. Edit "
-"their settings in their own file; servers can be switched on and off here. "
-"A block inside a site can be converted to a shared group that other sites "
-"can use too."
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
 msgstr ""
-"Estes blocos upstream existem dentro de ficheiros de configuração de sites "
-"ou de outros ficheiros. Edite as suas definições no próprio ficheiro; os "
-"servidores podem ser ligados e desligados aqui. Um bloco dentro de um site "
-"pode ser convertido num grupo partilhado que outros sites também podem "
-"utilizar."
+"Exigir MFA no próximo início de sessão. Os utilizadores devem registar o "
+"seu próprio authenticator ou passkey."
+
+msgid "Require MFA for all users"
+msgstr "Exigir MFA para todos os utilizadores"
+
+msgid "Require local MFA for SSO sign-in"
+msgstr "Exigir MFA local para início de sessão com SSO"
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and "
+"Casdoor sign-in."
+msgstr ""
+"Aplicar os requisitos locais de verificação e inscrição de MFA ao início de "
+"sessão de OIDC e Casdoor."
 
 msgid "MFA Settings"
 msgstr "Definições de MFA"
@@ -11949,21 +14605,6 @@ msgstr "Aplicação global"
 
 msgid "User enforcement"
 msgstr "Aplicação de utilizador"
-
-msgid "Optional"
-msgstr "Opcional"
-
-msgid "MFA Enrollment"
-msgstr "Estado de registo MFA"
-
-msgid "Pending enrollment"
-msgstr "Registo pendente"
-
-msgid "Enrolled"
-msgstr "Registado"
-
-msgid "Not enrolled"
-msgstr "Não registado"
 
 msgid "MFA policy updated. It takes effect at the next sign-in."
 msgstr "Política de MFA atualizada. Terá efeito na próxima autenticação."
@@ -11991,21 +14632,6 @@ msgstr "Repor todas as credenciais e sessões MFA deste utilizador?"
 msgid "Reset MFA"
 msgstr "Redefinir MFA"
 
-msgid "User info updated successfully"
-msgstr "Informações do utilizador atualizadas com sucesso"
-
-msgid "Passwords do not match"
-msgstr "As palavras-passe não coincidem"
-
-msgid "Password updated successfully"
-msgstr "Palavra-passe atualizada com sucesso"
-
-msgid "Personal Information"
-msgstr "Informações pessoais"
-
-msgid "Update Profile"
-msgstr "Atualizar perfil"
-
 msgid ""
 "MFA is required by the global policy. You cannot remove your last MFA "
 "method."
@@ -12017,44 +14643,6 @@ msgid "MFA is required for your account. You cannot remove your last MFA method.
 msgstr ""
 "A MFA é obrigatória para a sua conta. Não pode remover o seu último método "
 "MFA."
-
-msgid "Security Settings"
-msgstr "Configurações de segurança"
-
-msgid "Change Password"
-msgstr "Alterar senha"
-
-msgid "New Password"
-msgstr "Nova senha"
-
-msgid "Confirm New Password"
-msgstr "Confirmar nova palavra-passe"
-
-msgid "Update Password"
-msgstr "Atualizar senha"
-
-msgid "Node %{name} cannot be opened"
-msgstr "Não é possível abrir o nó %{name}"
-
-msgid "Exit workspace"
-msgstr "Sair do espaço de trabalho"
-
-msgid "New tab"
-msgstr "Nova aba"
-
-msgid "Single pane"
-msgstr "Painel único"
-
-msgid "Split view"
-msgstr "Vista dividida"
-
-msgctxt "Access list rule"
-msgid "Note"
-msgstr "Nota"
-
-msgctxt "preference group"
-msgid "Maintenance"
-msgstr "Manutenção"
 
 #~ msgid "Are you sure to reset 2FA?"
 #~ msgstr "Tem a certeza de que pretende repor a autenticação de dois fatores?"
@@ -12070,42 +14658,3 @@ msgstr "Manutenção"
 
 #~ msgid "2FA"
 #~ msgstr "2FA"
-
-#~ msgid "Webauthn"
-#~ msgstr "Webauthn"
-
-#~ msgid ""
-#~ "If the number of login failed attempts from a ip reach the max attempts in "
-#~ "ban threshold minutes,"
-#~ msgstr ""
-#~ "Se o número de tentativas de login falhadas de um IP atingir o máximo nos "
-#~ "minutos de limite de bloqueio,"
-
-#~ msgid "Set the recursive nameservers to override the systems nameservers "
-#~ msgstr ""
-#~ "Defina os servidores de nomes recursivos para substituir os servidores de "
-#~ "nomes do sistema"
-
-#~ msgid "Custom MMDB is currently enabled"
-#~ msgstr "A MMDB personalizada está atualmente ativada"
-
-#~ msgid "IndexCustomMMDB File Name"
-#~ msgstr "Nome do ficheiro IndexCustomMMDB"
-
-#~ msgid ""
-#~ "Configured from [nginx_log].GeoMapPath. Keep files with names like "
-#~ "100000_full.json in this directory."
-#~ msgstr ""
-#~ "Configurado a partir de [nginx_log].GeoMapPath. Guarde os ficheiros com "
-#~ "nomes como 100000_full.json neste diretório."
-
-#~ msgid ""
-#~ "Only the world map is provided by default. Please download China and "
-#~ "province boundary files yourself and place them in this directory."
-#~ msgstr ""
-#~ "Apenas o mapa-múndi é fornecido por padrão. Por favor, faça o download dos "
-#~ "ficheiros de fronteiras da China e das províncias por conta própria e "
-#~ "coloque-os neste diretório."
-
-#~ msgid "Global health check controls"
-#~ msgstr "Controlos globais de verificação de estado"

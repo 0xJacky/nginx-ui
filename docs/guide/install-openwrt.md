@@ -12,6 +12,10 @@ submitted to the upstream OpenWrt feeds.
 - An existing Nginx installation
 - At least 256 MiB of writable storage
 
+Certificates that use the DNS-01 challenge need the official DNS-01 plugin,
+which Nginx UI installs into `/etc/nginx-ui/plugins` when such a certificate
+exists. Plan about 60 MB of additional storage for it. See [Plugin](./config-plugin.md#dns-01-plugin).
+
 The initial repository supports:
 
 - `x86_64`

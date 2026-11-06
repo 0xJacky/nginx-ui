@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"sort"
 	"sync"
-	"sync/atomic"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/analytics"
@@ -15,35 +14,21 @@ import (
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
 	"github.com/0xJacky/Nginx-UI/settings"
-	"github.com/blevesearch/bleve/v2"
 	"github.com/uozi-tech/cosy/logger"
 	cSettings "github.com/uozi-tech/cosy/settings"
 )
 
 // Global instances for new services
 var (
-	globalSearcher         *searcher.Searcher
-	globalAnalytics        analytics.Service
-	globalIndexer          *indexer.ParallelIndexer
-	globalLogFileManager   *indexer.LogFileManager
-	servicesInitialized    bool
-	servicesInitializing   bool
-	servicesMutex          sync.RWMutex
-	shutdownCancel         context.CancelFunc
-	isShuttingDown         bool
-	lastShardUpdateAttempt int64
-)
-
-// configLogRegistry holds every log path discovered by scanning the nginx
-// configuration. It deliberately lives in the package instead of inside
-// LogFileManager: the manager is created by InitializeServices and destroyed by
-// StopServices, so a registry owned by the manager would lose every discovered
-// path whenever advanced indexing is switched off and on again, and nothing
-// would repopulate it until the next periodic config scan five minutes later.
-// A rebuild started in that window finds no log groups at all.
-var (
-	configLogRegistry      = make(map[string]*NginxLogCache)
-	configLogRegistryMutex sync.RWMutex
+	globalSearcher       *searcher.ColumnarSearcher
+	globalAnalytics      analytics.Service
+	globalIndexer        *indexer.ColumnarIndexer
+	globalLogFileManager *indexer.LogFileManager
+	servicesInitialized  bool
+	servicesInitializing bool
+	servicesMutex        sync.RWMutex
+	shutdownCancel       context.CancelFunc
+	isShuttingDown       bool
 )
 
 // InitializeServices initializes the new modular services
@@ -120,9 +105,6 @@ func InitializeServices(ctx context.Context) {
 
 	logger.Info("Modern nginx log services initialization completed")
 
-	// Load existing shards after services are visible without blocking readers during initialization.
-	UpdateSearcherShards()
-
 	// Initialize task scheduler after services are ready
 	go InitTaskScheduler(serviceCtx)
 
@@ -140,37 +122,31 @@ func InitializeServices(ctx context.Context) {
 }
 
 // initializeWithDefaults creates services with default configuration.
-func initializeWithDefaults(ctx context.Context) (*searcher.Searcher, analytics.Service, *indexer.ParallelIndexer, *indexer.LogFileManager, error) {
+func initializeWithDefaults(ctx context.Context) (*searcher.ColumnarSearcher, analytics.Service, *indexer.ColumnarIndexer, *indexer.LogFileManager, error) {
 	logger.Info("Initializing services with default configuration")
 
 	// Initialize global log parser singleton before starting indexer/searcher
 	indexer.InitLogParser()
 
-	// Create empty searcher (will be populated when indexes are available)
-	searcherConfig := searcher.DefaultSearcherConfig()
-	searcherInstance := searcher.NewSearcher(searcherConfig, []bleve.Index{})
-
-	// Initialize analytics with empty searcher
-	analyticsInstance := analytics.NewService(searcherInstance)
-
-	// Initialize parallel indexer with shard manager
 	indexerConfig := indexer.DefaultIndexerConfig()
-	// Use config directory for index path
 	indexerConfig.IndexPath = getConfigDirIndexPath()
 	indexStorageNeedsReset, err := indexer.PrepareIndexStorage(indexerConfig.IndexPath)
 	if err != nil {
 		return nil, nil, nil, nil, fmt.Errorf("failed to prepare nginx log index storage: %w", err)
 	}
-	shardManager := indexer.NewGroupedShardManager(indexerConfig)
-	indexerInstance := indexer.NewParallelIndexer(indexerConfig, shardManager)
 
-	// Start the indexer
+	indexerInstance := indexer.NewColumnarIndexer(indexerConfig)
+	indexerInstance.SetErrorLogResolver(IsErrorLogGroup)
 	if err := indexerInstance.Start(ctx); err != nil {
-		logger.Errorf("Failed to start parallel indexer: %v", err)
-		return nil, nil, nil, nil, fmt.Errorf("failed to start parallel indexer: %w", err)
+		logger.Errorf("Failed to start log indexer: %v", err)
+		return nil, nil, nil, nil, fmt.Errorf("failed to start log indexer: %w", err)
 	}
 
-	// Initialize log file manager
+	// The searcher reads the indexer's store directly: rows are visible as
+	// soon as they are written, so there are no shards to swap in later.
+	searcherInstance := searcher.NewColumnarSearcher(searcher.DefaultSearcherConfig(), indexerInstance.Store())
+	analyticsInstance := analytics.NewService(searcherInstance)
+
 	logFileManagerInstance := indexer.NewLogFileManager()
 	// Inject indexer for precise doc counting before persisting
 	logFileManagerInstance.SetIndexer(indexerInstance)
@@ -223,7 +199,7 @@ func getConfigDirIndexPath() string {
 }
 
 // GetSearcher returns the global searcher instance
-func GetSearcher() *searcher.Searcher {
+func GetSearcher() *searcher.ColumnarSearcher {
 	servicesMutex.RLock()
 	defer servicesMutex.RUnlock()
 
@@ -231,30 +207,6 @@ func GetSearcher() *searcher.Searcher {
 		logger.Warn("Modern services not initialized, returning nil")
 		return nil
 	}
-
-	if globalSearcher == nil {
-		logger.Warn("GetSearcher: globalSearcher is nil even though services are initialized")
-		return nil
-	}
-
-	// Check searcher health status
-	isHealthy := globalSearcher.IsHealthy()
-	isRunning := globalSearcher.IsRunning()
-	logger.Debugf("GetSearcher: returning searcher, isHealthy: %v, isRunning: %v", isHealthy, isRunning)
-
-	// Auto-heal: if the searcher is running but unhealthy (likely zero shards),
-	// and the indexer is initialized, trigger an async shard swap (throttled).
-	if !isHealthy && isRunning && globalIndexer != nil {
-		now := time.Now().UnixNano()
-		prev := atomic.LoadInt64(&lastShardUpdateAttempt)
-		if now-prev > int64(5*time.Second) {
-			if atomic.CompareAndSwapInt64(&lastShardUpdateAttempt, prev, now) {
-				logger.Debugf("GetSearcher: unhealthy detected, scheduling UpdateSearcherShards()")
-				go UpdateSearcherShards()
-			}
-		}
-	}
-
 	return globalSearcher
 }
 
@@ -271,12 +223,14 @@ func GetAnalytics() analytics.Service {
 	return globalAnalytics
 }
 
-// GetIndexer returns the global indexer instance
-func GetIndexer() *indexer.ParallelIndexer {
+// GetIndexer returns the global indexer instance, or nil.
+func GetIndexer() indexer.LogIndexer {
 	servicesMutex.RLock()
 	defer servicesMutex.RUnlock()
 
-	if !servicesInitialized {
+	// Return a plain nil, not a nil *ColumnarIndexer in an interface, so
+	// callers' nil checks work.
+	if !servicesInitialized || globalIndexer == nil {
 		return nil
 	}
 
@@ -301,8 +255,7 @@ func GetLogFileManager() *indexer.LogFileManager {
 	return globalLogFileManager
 }
 
-// NginxLogCache Type aliases for backward compatibility
-type NginxLogCache = indexer.NginxLogCache
+// NginxLogWithIndex is a log path with its index status.
 type NginxLogWithIndex = indexer.NginxLogWithIndex
 
 // Constants for backward compatibility
@@ -311,106 +264,6 @@ const (
 	IndexStatusIndexing   = string(indexer.IndexStatusIndexing)
 	IndexStatusNotIndexed = string(indexer.IndexStatusNotIndexed)
 )
-
-// Legacy compatibility functions for log cache system
-
-// AddLogPath adds a log path to the log cache with the source config file
-func AddLogPath(path, logType, name, configFile string) {
-	// Record the path in the durable registry *before* looking the manager up.
-	// InitializeServices publishes the manager and only then seeds it from the
-	// registry, so this ordering guarantees a path discovered concurrently with
-	// a service start is picked up by one of the two writes and can never be
-	// dropped between them.
-	configLogRegistryMutex.Lock()
-	configLogRegistry[path] = &NginxLogCache{
-		Path:       path,
-		Type:       logType,
-		Name:       name,
-		ConfigFile: configFile,
-	}
-	configLogRegistryMutex.Unlock()
-
-	if manager := GetLogFileManager(); manager != nil {
-		manager.AddLogPath(path, logType, name, configFile)
-	}
-}
-
-// RemoveLogPathsFromConfig removes all log paths associated with a specific config file
-func RemoveLogPathsFromConfig(configFile string) {
-	if configFile == defaultLogConfigFile {
-		// defaultLogConfigFile is the marker carried by the nginx default
-		// access/error logs, and no real configuration file can own an entry
-		// tagged with it. Refusing the removal keeps a caller that lost the
-		// config path from wiping the defaults.
-		logger.Warn("Ignoring a request to remove nginx log paths for an empty config file")
-		return
-	}
-
-	configLogRegistryMutex.Lock()
-	for p, entry := range configLogRegistry {
-		if entry.ConfigFile == configFile {
-			delete(configLogRegistry, p)
-		}
-	}
-	configLogRegistryMutex.Unlock()
-
-	if manager := GetLogFileManager(); manager != nil {
-		manager.RemoveLogPathsFromConfig(configFile)
-	}
-}
-
-// registryEntriesSnapshot returns every known log path: the ones discovered from
-// the nginx configuration plus the nginx default access/error logs. The result
-// is keyed by path, so a path that is both declared by a directive and a default
-// log appears exactly once and can never produce a duplicate log group. The
-// config-derived entry wins that collision so the UI keeps showing which file
-// declares the path.
-func registryEntriesSnapshot() []NginxLogCache {
-	configLogRegistryMutex.RLock()
-	merged := make(map[string]NginxLogCache, len(configLogRegistry))
-	for path, entry := range configLogRegistry {
-		merged[path] = *entry
-	}
-	configLogRegistryMutex.RUnlock()
-
-	for _, entry := range defaultLogPathEntries() {
-		if _, declared := merged[entry.Path]; declared {
-			continue
-		}
-		merged[entry.Path] = entry
-	}
-
-	entries := make([]NginxLogCache, 0, len(merged))
-	for _, entry := range merged {
-		entries = append(entries, entry)
-	}
-
-	return entries
-}
-
-// GetAllLogPaths returns all cached log paths, optionally filtered
-func GetAllLogPaths(filters ...func(*NginxLogCache) bool) []*NginxLogCache {
-	if manager := GetLogFileManager(); manager != nil {
-		return manager.GetAllLogPaths(filters...)
-	}
-
-	// Fallback list
-	var logs []*NginxLogCache
-	for _, entry := range registryEntriesSnapshot() {
-		e := entry
-		include := true
-		for _, f := range filters {
-			if !f(&e) {
-				include = false
-				break
-			}
-		}
-		if include {
-			logs = append(logs, &e)
-		}
-	}
-	return logs
-}
 
 // GetAllLogsWithIndex returns all cached log paths with their index status
 func GetAllLogsWithIndex(filters ...func(*NginxLogWithIndex) bool) []*NginxLogWithIndex {
@@ -516,108 +369,11 @@ func GetIndexingFiles() []string {
 	return []string{}
 }
 
-// UpdateSearcherShards fetches all shards from the indexer and performs zero-downtime shard updates.
-// Uses Bleve IndexAlias.Swap() for atomic shard replacement without recreating the searcher.
-// This function is safe for concurrent use and maintains service availability during index rebuilds.
-func UpdateSearcherShards() {
-	// Schedule async update to avoid blocking indexing operations
-	logger.Debugf("UpdateSearcherShards: Scheduling async shard update")
-	go updateSearcherShardsAsync()
-}
-
-// updateSearcherShardsAsync performs the actual shard update asynchronously
-func updateSearcherShardsAsync() {
-	// Small delay to let indexing operations complete
-	time.Sleep(500 * time.Millisecond)
-
-	logger.Debugf("updateSearcherShardsAsync: Attempting to acquire write lock...")
-	servicesMutex.Lock()
-	logger.Debugf("updateSearcherShardsAsync: Write lock acquired")
-	defer func() {
-		logger.Debugf("updateSearcherShardsAsync: Releasing write lock...")
-		servicesMutex.Unlock()
-	}()
-	updateSearcherShardsLocked()
-}
-
-// updateSearcherShardsLocked performs the actual update logic assumes the caller holds the lock.
-// Uses Bleve IndexAlias.Swap() for zero-downtime shard updates following official best practices.
-func updateSearcherShardsLocked() {
-	if !servicesInitialized || globalIndexer == nil {
-		logger.Warn("Cannot update searcher shards, services not fully initialized.")
-		return
-	}
-
-	// Check if indexer is healthy before getting shards
-	if !globalIndexer.IsHealthy() {
-		logger.Warn("Cannot update searcher shards, indexer is not healthy")
-		return
-	}
-
-	newShards := globalIndexer.GetAllShards()
-	logger.Infof("Retrieved %d new shards from indexer for hot-swap update", len(newShards))
-
-	// An empty shard set is expected before the first indexing task creates a
-	// group. Keep the current searcher state until a usable replacement exists.
-	if len(newShards) == 0 {
-		currentShardCount := 0
-		if globalSearcher != nil {
-			currentShardCount = len(globalSearcher.GetShards())
-		}
-		logger.Debugf("No index shards available yet; keeping %d current searcher shards", currentShardCount)
-		return
-	}
-
-	// If no searcher exists yet, create the initial one (first time setup)
-	if globalSearcher == nil {
-		logger.Info("Creating initial searcher with IndexAlias")
-		searcherConfig := searcher.DefaultSearcherConfig()
-		globalSearcher = searcher.NewSearcher(searcherConfig, newShards)
-
-		if globalSearcher == nil {
-			logger.Error("Failed to create initial searcher instance")
-			return
-		}
-
-		// Create analytics service with the initial searcher
-		globalAnalytics = analytics.NewService(globalSearcher)
-
-		isHealthy := globalSearcher.IsHealthy()
-		isRunning := globalSearcher.IsRunning()
-		logger.Infof("Initial searcher created successfully, isHealthy: %v, isRunning: %v", isHealthy, isRunning)
-		return
-	}
-
-	// For subsequent updates, use hot-swap through IndexAlias
-	// This follows Bleve best practices for zero-downtime index updates
-	if globalSearcher != nil {
-		ds := globalSearcher
-		oldShards := ds.GetShards()
-		logger.Debugf("updateSearcherShardsLocked: About to call SwapShards...")
-
-		// Perform atomic shard swap using IndexAlias
-		if err := ds.SwapShards(newShards); err != nil {
-			logger.Errorf("Failed to swap shards atomically: %v", err)
-			return
-		}
-		logger.Debugf("updateSearcherShardsLocked: SwapShards completed successfully")
-
-		logger.Infof("Successfully swapped %d old shards with %d new shards using IndexAlias",
-			len(oldShards), len(newShards))
-
-		// Verify searcher health after swap
-		isHealthy := globalSearcher.IsHealthy()
-		isRunning := globalSearcher.IsRunning()
-		logger.Infof("Post-swap searcher status: isHealthy: %v, isRunning: %v", isHealthy, isRunning)
-
-		// Note: We do NOT recreate the analytics service here since the searcher interface
-		// remains the same. The analytics service rebuilds its cardinality counter lazily
-		// when it detects the searcher's shard set has changed.
-
-	} else {
-		logger.Warn("globalSearcher is not a Searcher, cannot perform hot-swap")
-	}
-}
+// UpdateSearcherShards used to swap freshly built Bleve shards into the
+// searcher. The column store's searcher reads the indexer's store directly
+// and sees new rows as soon as they are written, so there is nothing to swap.
+// It is kept for the indexing paths that call it after writing.
+func UpdateSearcherShards() {}
 
 // StopServices stops all running modern services
 func StopServices() {

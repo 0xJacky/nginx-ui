@@ -153,8 +153,7 @@ func TestTaskScheduler_RecoverUnfinishedTasks_InitialIndexing(t *testing.T) {
 
 	indexerConfig := indexer.DefaultIndexerConfig()
 	indexerConfig.IndexPath = indexDir
-	shardManager := indexer.NewGroupedShardManager(indexerConfig)
-	idx := indexer.NewParallelIndexer(indexerConfig, shardManager)
+	idx := indexer.NewColumnarIndexer(indexerConfig)
 	require.NoError(t, idx.Start(context.Background()))
 	t.Cleanup(func() {
 		_ = idx.Stop()
@@ -164,7 +163,7 @@ func TestTaskScheduler_RecoverUnfinishedTasks_InitialIndexing(t *testing.T) {
 	lfm.SetIndexer(idx)
 	lfm.AddLogPath(logPath, "access", "access.log", "/etc/nginx/nginx.conf")
 
-	searchService := searcher.NewSearcher(searcher.DefaultSearcherConfig(), nil)
+	searchService := searcher.NewColumnarSearcher(searcher.DefaultSearcherConfig(), idx.Store())
 	t.Cleanup(func() {
 		_ = searchService.Stop()
 	})
@@ -175,17 +174,14 @@ func TestTaskScheduler_RecoverUnfinishedTasks_InitialIndexing(t *testing.T) {
 	servicesInitialized = true
 	servicesMutex.Unlock()
 
-	// The initial shard refresh runs before the first index exists. It must
-	// remain an idle state instead of executing a search that can only fail.
-	servicesMutex.Lock()
-	updateSearcherShardsLocked()
-	servicesMutex.Unlock()
-	require.False(t, searchService.IsHealthy())
-	require.Empty(t, searchService.GetShards())
-	require.Zero(t, searchService.GetStats().TotalSearches)
+	// Before anything is indexed the searcher answers with an empty result
+	// rather than an error.
+	empty, err := searchService.Search(context.Background(), &searcher.SearchRequest{Limit: 10})
+	require.NoError(t, err)
+	require.Zero(t, empty.TotalHits)
 
 	ts := NewTaskScheduler(context.Background())
-	err := ts.RecoverUnfinishedTasks(context.Background())
+	err = ts.RecoverUnfinishedTasks(context.Background())
 	require.NoError(t, err)
 
 	// Wait for the background indexing task to complete and persist the result.
@@ -202,7 +198,9 @@ func TestTaskScheduler_RecoverUnfinishedTasks_InitialIndexing(t *testing.T) {
 
 	assert.Equal(t, string(indexer.IndexStatusIndexed), record.IndexStatus)
 	assert.Greater(t, record.DocumentCount, uint64(0))
-	require.Eventually(t, func() bool {
-		return searchService.IsHealthy() && len(searchService.GetShards()) > 0
-	}, 10*time.Second, 100*time.Millisecond, "searcher did not receive the initial index shards")
+	// The searcher reads the indexer's store, so the indexed rows are
+	// searchable without any shard hand-over.
+	result, err := searchService.Search(context.Background(), &searcher.SearchRequest{Limit: 10})
+	require.NoError(t, err)
+	assert.Equal(t, record.DocumentCount, result.TotalHits)
 }

@@ -49,11 +49,13 @@ func CertificateCoversNames(sslCertificatePath string, names []string) error {
 }
 
 type Info struct {
-	SubjectName     string    `json:"subject_name"`
-	IssuerName      string    `json:"issuer_name"`
-	NotAfter        time.Time `json:"not_after"`
-	NotBefore       time.Time `json:"not_before"`
-	SubjectAltNames []string  `json:"subject_alt_names,omitempty"`
+	SubjectName string `json:"subject_name"`
+	IssuerName  string `json:"issuer_name"`
+	// IssuerOrganization is the organization of the issuing CA, e.g. "Let's Encrypt".
+	IssuerOrganization string    `json:"issuer_organization,omitempty"`
+	NotAfter           time.Time `json:"not_after"`
+	NotBefore          time.Time `json:"not_before"`
+	SubjectAltNames    []string  `json:"subject_alt_names,omitempty"`
 }
 
 func GetCertInfo(sslCertificatePath string) (info *Info, err error) {
@@ -93,11 +95,12 @@ func certificateInfo(cert *x509.Certificate) *Info {
 	}
 
 	return &Info{
-		SubjectName:     certificateSubjectName(cert),
-		IssuerName:      cert.Issuer.CommonName,
-		NotAfter:        cert.NotAfter,
-		NotBefore:       cert.NotBefore,
-		SubjectAltNames: certificateSubjectAltNames(cert),
+		SubjectName:        certificateSubjectName(cert),
+		IssuerName:         cert.Issuer.CommonName,
+		IssuerOrganization: firstNonEmpty(cert.Issuer.Organization),
+		NotAfter:           cert.NotAfter,
+		NotBefore:          cert.NotBefore,
+		SubjectAltNames:    certificateSubjectAltNames(cert),
 	}
 }
 
@@ -157,6 +160,15 @@ func certificateSubjectName(cert *x509.Certificate) string {
 	for _, ip := range cert.IPAddresses {
 		if ip != nil {
 			return ip.String()
+		}
+	}
+	return ""
+}
+
+func firstNonEmpty(values []string) string {
+	for _, value := range values {
+		if value = strings.TrimSpace(value); value != "" {
+			return value
 		}
 	}
 	return ""

@@ -52,6 +52,15 @@ else
 fi
 echo "Updated package.json to version ${VERSION#v}"
 
+# The Helm chart pulls the image tagged with its appVersion by default, so the
+# chart follows every release.
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    sed -i '' -e "s/^version: .*/version: ${VERSION#v}/" -e "s/^appVersion: .*/appVersion: \"${VERSION#v}\"/" charts/nginx-ui/Chart.yaml
+else
+    sed -i -e "s/^version: .*/version: ${VERSION#v}/" -e "s/^appVersion: .*/appVersion: \"${VERSION#v}\"/" charts/nginx-ui/Chart.yaml
+fi
+echo "Updated charts/nginx-ui/Chart.yaml to version ${VERSION#v}"
+
 # Build app
 echo "Building app..."
 bun run build

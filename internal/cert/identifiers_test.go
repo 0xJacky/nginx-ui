@@ -29,6 +29,19 @@ func TestNormalizeCertificateIdentifiers(t *testing.T) {
 	}
 }
 
+func TestNormalizeCertificateIdentifiersRejectsPathCharacters(t *testing.T) {
+	for _, identifier := range []string{
+		"../etc", "a/b.example.com", `a\b.example.com`, "example..com", "a b.example.com", "a\x00b.example.com", "c:example.com",
+	} {
+		if _, err := normalizeCertificateIdentifiers([]string{identifier}); err == nil {
+			t.Fatalf("normalizeCertificateIdentifiers(%q) = nil error, want an invalid identifier", identifier)
+		}
+	}
+	if _, err := normalizeCertificateIdentifiers([]string{"*.example.com", "xn--bcher-kva.example", "bücher.example", "_acme.example.com"}); err != nil {
+		t.Fatalf("valid names refused: %v", err)
+	}
+}
+
 func TestCertificateNameUsesFirstIdentifier(t *testing.T) {
 	if got := CertificateName("default.conf", []string{" ", "203.0.113.8"}); got != "203.0.113.8" {
 		t.Fatalf("CertificateName() = %q, want IP identifier", got)

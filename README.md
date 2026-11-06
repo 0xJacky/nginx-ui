@@ -142,7 +142,8 @@ URL：[https://demo.nginxui.com](https://demo.nginxui.com)
 - **MCP** (Model Context Protocol) provides special interfaces for AI agents to interact with Nginx UI, enabling automated configuration management and service control.
 - One-click deployment and automatic renewal Let's Encrypt certificates.
 - Online editing websites configurations with our self-designed **NgxConfigEditor** which is a user-friendly block editor for nginx configurations or **Ace Code Editor** which supports **LLM Code Completion** and highlighting nginx configuration syntax.
-- Online view Nginx logs
+- View Nginx logs online, with indexed search, a traffic dashboard and visitor maps
+- Plugin system: install signed plugins from the marketplace, an uploaded file or an offline directory, for example the official DNS-01 plugin with the DNS providers for certificates
 - Written in Go and Vue, distribution is a single executable binary.
 - Automatically test configuration file and reload nginx after saving configuration.
 - Web Terminal
@@ -247,6 +248,7 @@ you can easily make the switch.
 1. When using this container for the first time, ensure that the volume mapped to /etc/nginx is empty.
 2. If you want to host static files, you can map directories to container.
 3. If you are upgrading from an older image, see the [Docker WebSocket fix guide](https://nginxui.com/guide/docker-websocket-fix.html) for required `conf.d/nginx-ui.conf` updates.
+4. The image bundles the official DNS-01 plugin and installs it on the first start. Installed plugins are kept in `/etc/nginx-ui/plugins`, so keep `/etc/nginx-ui` on a volume. When upgrading from v2, see [Upgrading to v3](https://nginxui.com/guide/upgrade-v3.html).
 
 <details>
 <summary><b>Deploy with Docker</b></summary>

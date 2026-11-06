@@ -18,7 +18,7 @@ import (
 // with unified locking to prevent concurrent execution on the same log group
 type TaskScheduler struct {
 	logFileManager *indexer.LogFileManager
-	modernIndexer  *indexer.ParallelIndexer
+	modernIndexer  indexer.LogIndexer
 	activeTasks    int32 // Counter for active tasks
 	ctx            context.Context
 	cancel         context.CancelFunc
@@ -404,8 +404,7 @@ func (ts *TaskScheduler) RecoverUnfinishedTasks(ctx context.Context) error {
 
 	// Get all logs with their index status
 	allLogs := GetAllLogsWithIndexGrouped(func(log *NginxLogWithIndex) bool {
-		// Only process access logs
-		return log.Type == "access"
+		return log.Type == "access" || log.Type == "error"
 	})
 
 	var incompleteTasksCount int

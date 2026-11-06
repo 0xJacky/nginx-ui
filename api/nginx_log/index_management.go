@@ -141,7 +141,7 @@ func performAsyncRebuild(modernIndexer interface{}, path string) {
 	// Handle index cleanup based on rebuild scope
 	if path != "" {
 		// For single file rebuild, only delete indexes for that log group
-		if err := modernIndexer.(*indexer.ParallelIndexer).DeleteIndexByLogGroup(path, logFileManager); err != nil {
+		if err := modernIndexer.(indexer.LogIndexer).DeleteIndexByLogGroup(path, logFileManager); err != nil {
 			logger.Errorf("Failed to delete existing indexes for log group %s: %v", path, err)
 			return
 		}
@@ -276,67 +276,48 @@ func rebuildSingleFile(modernIndexer interface{}, path string, logFileManager in
 			releaseRebuildLock(path)
 		}()
 	}
-	// For a single file, we need to check its type first
-	allLogsForTypeCheck := nginx_log.GetAllLogsWithIndexGrouped()
-	var targetLog *nginx_log.NginxLogWithIndex
-	for _, log := range allLogsForTypeCheck {
-		if log.Path == path {
-			targetLog = log
-			break
-		}
-	}
-
 	var minTime, maxTime *time.Time
 
-	if targetLog != nil && targetLog.Type == "error" {
-		logger.Infof("Skipping index rebuild for error log as requested: %s", path)
-		if logFileManager != nil {
-			if err := logFileManager.(indexer.MetadataManager).SaveIndexMetadata(path, 0, time.Now(), 0, nil, nil); err != nil {
-				logger.Warnf("Could not reset metadata for skipped error log %s: %v", path, err)
-			}
+	logger.Infof("Starting modern index rebuild for file: %s", path)
+
+	// NOTE: We intentionally do NOT delete existing index metadata here
+	// This allows incremental indexing to work properly with rotated logs
+	// The IndexLogGroupWithProgress method will handle updating existing records
+
+	startTime := time.Now()
+
+	docsCountMap, docMinTime, docMaxTime, err := modernIndexer.(indexer.LogIndexer).IndexLogGroupWithProgress(path, progressConfig)
+
+	if err != nil {
+		logger.Errorf("Failed to index modern index for file group %s: %v", path, err)
+		return nil, nil
+	}
+
+	minTime, maxTime = docMinTime, docMaxTime
+
+	duration := time.Since(startTime)
+	var totalDocsIndexed uint64
+	if logFileManager != nil {
+		// Calculate total document count
+		for _, docCount := range docsCountMap {
+			totalDocsIndexed += docCount
 		}
-	} else {
-		logger.Infof("Starting modern index rebuild for file: %s", path)
 
-		// NOTE: We intentionally do NOT delete existing index metadata here
-		// This allows incremental indexing to work properly with rotated logs
-		// The IndexLogGroupWithProgress method will handle updating existing records
-
-		startTime := time.Now()
-
-		docsCountMap, docMinTime, docMaxTime, err := modernIndexer.(*indexer.ParallelIndexer).IndexLogGroupWithProgress(path, progressConfig)
-
-		if err != nil {
-			logger.Errorf("Failed to index modern index for file group %s: %v", path, err)
-			return nil, nil
+		// Save metadata for the base log path with total count
+		if err := logFileManager.(indexer.MetadataManager).SaveIndexMetadata(path, totalDocsIndexed, startTime, duration, minTime, maxTime); err != nil {
+			logger.Errorf("Failed to save index metadata for %s: %v", path, err)
 		}
 
-		minTime, maxTime = docMinTime, docMaxTime
-
-		duration := time.Since(startTime)
-		var totalDocsIndexed uint64
-		if logFileManager != nil {
-			// Calculate total document count
-			for _, docCount := range docsCountMap {
-				totalDocsIndexed += docCount
-			}
-
-			// Save metadata for the base log path with total count
-			if err := logFileManager.(indexer.MetadataManager).SaveIndexMetadata(path, totalDocsIndexed, startTime, duration, minTime, maxTime); err != nil {
-				logger.Errorf("Failed to save index metadata for %s: %v", path, err)
-			}
-
-			// Also save individual file metadata if needed
-			for filePath, docCount := range docsCountMap {
-				if filePath != path { // Don't duplicate the base path
-					if err := logFileManager.(indexer.MetadataManager).SaveIndexMetadata(filePath, docCount, startTime, duration, minTime, maxTime); err != nil {
-						logger.Errorf("Failed to save index metadata for %s: %v", filePath, err)
-					}
+		// Also save individual file metadata if needed
+		for filePath, docCount := range docsCountMap {
+			if filePath != path { // Don't duplicate the base path
+				if err := logFileManager.(indexer.MetadataManager).SaveIndexMetadata(filePath, docCount, startTime, duration, minTime, maxTime); err != nil {
+					logger.Errorf("Failed to save index metadata for %s: %v", filePath, err)
 				}
 			}
 		}
-		logger.Infof("Successfully completed modern rebuild for file group: %s, Documents: %d", path, totalDocsIndexed)
 	}
+	logger.Infof("Successfully completed modern rebuild for file group: %s, Documents: %d", path, totalDocsIndexed)
 
 	if err := modernIndexer.(indexer.FlushableIndexer).FlushAll(); err != nil {
 		logger.Errorf("Failed to flush all indexer data for single file: %v", err)
@@ -411,16 +392,6 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 	accessLogs := make([]*nginx_log.NginxLogWithIndex, 0)
 
 	for _, log := range allLogs {
-		if log.Type == "error" {
-			logger.Infof("Skipping indexing for error log: %s", log.Path)
-			if logFileManager != nil {
-				if err := logFileManager.(indexer.MetadataManager).SaveIndexMetadata(log.Path, 0, time.Now(), 0, nil, nil); err != nil {
-					logger.Warnf("Could not reset metadata for skipped error log %s: %v", log.Path, err)
-				}
-			}
-			continue
-		}
-
 		// Set to queued status with position
 		if persistence != nil {
 			if err := persistence.SetIndexStatus(log.Path, string(indexer.IndexStatusQueued), queuePosition, ""); err != nil {
@@ -450,7 +421,7 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 	var wg sync.WaitGroup
 	// Get concurrency from indexer config (FileGroupConcurrency controls both file and group level parallelism)
 	maxConcurrency := 4 // Default fallback
-	if pi, ok := modernIndexer.(*indexer.ParallelIndexer); ok {
+	if pi, ok := modernIndexer.(indexer.LogIndexer); ok {
 		config := pi.GetConfig()
 		if config.FileGroupConcurrency > 0 {
 			maxConcurrency = config.FileGroupConcurrency
@@ -477,7 +448,7 @@ func rebuildAllFiles(modernIndexer interface{}, logFileManager interface{}, prog
 			}
 
 			loopStartTime := time.Now()
-			docsCountMap, minTime, maxTime, err := modernIndexer.(*indexer.ParallelIndexer).IndexLogGroupWithProgress(logItem.Path, progressConfig)
+			docsCountMap, minTime, maxTime, err := modernIndexer.(indexer.LogIndexer).IndexLogGroupWithProgress(logItem.Path, progressConfig)
 
 			if err != nil {
 				logger.Warnf("Failed to index file group: %s, error: %v", logItem.Path, err)

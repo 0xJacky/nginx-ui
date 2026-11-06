@@ -102,29 +102,44 @@ function encodePathParamsInPlace(config: InternalAxiosRequestConfig) {
   }
 }
 
+/**
+ * Attach the session headers every backend call needs.
+ *
+ * Exported so the per-plugin axios instances created by the plugin registry
+ * authenticate exactly like the core client instead of restating the rules.
+ */
+export function applyAuthHeaders(config: InternalAxiosRequestConfig): InternalAxiosRequestConfig {
+  const user = useUserStore()
+  const settings = useSettingsStore()
+  const { token, secureSessionId } = storeToRefs(user)
+
+  if (token.value) {
+    config.headers.Authorization = token.value
+  }
+
+  if (settings.node.id && !config.skipNodeProxy) {
+    config.headers['X-Node-ID'] = settings.node.id
+  }
+
+  if (secureSessionId.value) {
+    config.headers['X-Secure-Session-ID'] = secureSessionId.value
+  }
+
+  return config
+}
+
 // Setup request interceptor
 export function setupRequestInterceptor() {
   // Setup stores and refs
   const user = useUserStore()
-  const settings = useSettingsStore()
-  const { token, secureSessionId } = storeToRefs(user)
   setRequestInterceptor(
     async config => {
       if (user.expireSession()) {
         await router.replace('/login')
         throw new CanceledError('Session expired')
       }
-      if (token.value) {
-        config.headers.Authorization = token.value
-      }
 
-      if (settings.node.id && !config.skipNodeProxy) {
-        config.headers['X-Node-ID'] = settings.node.id
-      }
-
-      if (secureSessionId.value) {
-        config.headers['X-Secure-Session-ID'] = secureSessionId.value
-      }
+      applyAuthHeaders(config)
 
       // Handle JSON encryption
       if (config.headers?.['Content-Type'] !== 'multipart/form-data;charset=UTF-8') {

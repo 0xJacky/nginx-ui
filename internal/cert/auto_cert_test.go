@@ -124,16 +124,16 @@ func TestShouldSkipAutoCertForNonSuccessStatus(t *testing.T) {
 	}
 }
 
-func TestNewAutoRenewPayloadPreservesAuthoritativePropagationOption(t *testing.T) {
+func TestNewAutoRenewPayloadPreservesChallengeConfig(t *testing.T) {
 	notBefore := time.Date(2026, time.August, 17, 0, 0, 0, 0, time.UTC)
 	certModel := &model.Cert{
-		DisableAuthoritativeNSPropagation: true,
+		ChallengeConfig: map[string]any{"disable_authoritative_ns_propagation": true},
 	}
 
 	payload := newAutoRenewPayload(certModel, &Info{NotBefore: notBefore}, "aki.serial")
 
-	if !payload.DisableAuthoritativeNSPropagation {
-		t.Fatal("authoritative propagation option was not copied to auto-renew payload")
+	if payload.ChallengeConfig["disable_authoritative_ns_propagation"] != true {
+		t.Fatal("challenge config was not copied to auto-renew payload")
 	}
 	if !payload.NotBefore.Equal(notBefore) {
 		t.Fatalf("NotBefore = %s, want %s", payload.NotBefore, notBefore)
@@ -261,5 +261,34 @@ func TestCertificateRenewalTimeUsesMidpointForOversizedThreshold(t *testing.T) {
 	want := notBefore.Add(10 * 24 * time.Hour)
 	if got := certificateRenewalTime(info, 30); !got.Equal(want) {
 		t.Fatalf("certificateRenewalTime() = %s, want %s", got, want)
+	}
+}
+
+func TestWaitForDNS01PluginKeepsTheRenewalOutOfTheCooldown(t *testing.T) {
+	certModel := &model.Cert{Name: "example.com"}
+	notified := 0
+	previous := notifyWaitingForDNS01Plugin
+	notifyWaitingForDNS01Plugin = func(*model.Cert, string, error) { notified++ }
+	t.Cleanup(func() { notifyWaitingForDNS01Plugin = previous })
+
+	waiting := waitForDNS01Plugin(certModel, "example.com", cosy.WrapErrorWithParams(ErrNoDNS01Provider, "httpreq"))
+
+	if !waiting {
+		t.Fatal("a missing DNS-01 provider should wait for the plugin")
+	}
+	if certModel.LastAutoRenewAt != nil || certModel.LastAutoRenewError != "" {
+		t.Fatalf("no failure should be recorded, got at=%v error=%q", certModel.LastAutoRenewAt, certModel.LastAutoRenewError)
+	}
+	if shouldSkipAutoRenew(certModel, time.Now()) {
+		t.Fatal("the next check must not be held back by the failure cooldown")
+	}
+	if notified != 1 {
+		t.Fatalf("the user is told the renewal waits for the plugin, got %d notifications", notified)
+	}
+}
+
+func TestWaitForDNS01PluginLeavesOtherFailuresAlone(t *testing.T) {
+	if waitForDNS01Plugin(&model.Cert{}, "example.com", stderrors.New("acme: unauthorized")) {
+		t.Fatal("an ordinary renewal failure is not a missing plugin")
 	}
 }

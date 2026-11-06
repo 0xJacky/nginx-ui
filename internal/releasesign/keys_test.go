@@ -25,6 +25,31 @@ func TestTrustedPublicKeysAreValidAndUnique(t *testing.T) {
 	assert.True(t, hasPrimaryKey)
 }
 
+func TestPluginPublicKeysAreValidAndApartFromReleaseKeys(t *testing.T) {
+	releaseIDs := make(map[uint64]struct{})
+	for _, encodedKey := range TrustedPublicKeys() {
+		var publicKey minisign.PublicKey
+		require.NoError(t, publicKey.UnmarshalText([]byte(encodedKey)))
+		releaseIDs[publicKey.ID()] = struct{}{}
+	}
+
+	keys := PluginPublicKeys()
+	require.NotEmpty(t, keys)
+	pluginIDs := make(map[uint64]struct{}, len(keys))
+	for _, encodedKey := range keys {
+		var publicKey minisign.PublicKey
+		require.NoError(t, publicKey.UnmarshalText([]byte(encodedKey)))
+		_, duplicate := pluginIDs[publicKey.ID()]
+		assert.False(t, duplicate)
+		pluginIDs[publicKey.ID()] = struct{}{}
+		_, isReleaseKey := releaseIDs[publicKey.ID()]
+		assert.False(t, isReleaseKey, "a plugin key must never verify an nginx-ui release")
+	}
+
+	_, hasPrimaryKey := pluginIDs[0x088ACCA5E13F459F]
+	assert.True(t, hasPrimaryKey)
+}
+
 func TestTrustedPublicKeysReturnsIsolatedCopy(t *testing.T) {
 	keys := TrustedPublicKeys()
 	keys[0] = "modified"

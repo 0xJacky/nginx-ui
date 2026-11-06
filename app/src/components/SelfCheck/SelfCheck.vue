@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { SelfCheckAccessOptions } from '@/api/self_check'
 import { CheckCircleOutlined, CloseCircleOutlined, WarningOutlined } from '@antdv-next/icons'
-import GeoLiteDownload from '@/components/GeoLiteDownload'
 import { List, ListItem, ListItemMeta } from '@/components/List'
 import AsyncErrorDisplay from './AsyncErrorDisplay.vue'
 import { useSelfCheckStore } from './store'
@@ -19,8 +18,6 @@ const store = useSelfCheckStore()
 
 const { data, loading, fixing, accessError } = storeToRefs(store)
 
-const geoLiteModalVisible = ref(false)
-
 const accessOptions = computed<SelfCheckAccessOptions | undefined>(() => {
   if (!props.setupAuth) {
     return undefined
@@ -34,17 +31,7 @@ const accessOptions = computed<SelfCheckAccessOptions | undefined>(() => {
 })
 
 function handleFix(key: string) {
-  if (key === 'GeoLite-DB') {
-    geoLiteModalVisible.value = true
-  }
-  else {
-    store.fix(key, accessOptions.value)
-  }
-}
-
-function handleGeoLiteDownloadComplete() {
-  geoLiteModalVisible.value = false
-  store.check(accessOptions.value)
+  store.fix(key, accessOptions.value)
 }
 
 watch(accessOptions, options => {
@@ -117,15 +104,6 @@ watch(accessOptions, options => {
         </ListItem>
       </template>
     </List>
-
-    <AModal
-      v-model:open="geoLiteModalVisible"
-      :title="$gettext('Download GeoLite2 Database')"
-      :footer="null"
-      width="600px"
-    >
-      <GeoLiteDownload @download-complete="handleGeoLiteDownloadComplete" />
-    </AModal>
   </ACard>
 </template>
 

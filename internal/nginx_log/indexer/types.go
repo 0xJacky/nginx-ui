@@ -5,8 +5,6 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/cgroup"
-	"github.com/blevesearch/bleve/v2"
-	"github.com/blevesearch/bleve/v2/mapping"
 )
 
 // IndexStatus represents different states of log indexing
@@ -102,23 +100,22 @@ var (
 func DefaultIndexerConfig() *Config {
 	cpus := availableCPUs()
 
-	// Dynamically scale batch size based on usable CPU cores
-	baseBatchSize := 15000
-	if cpus >= 16 {
-		baseBatchSize = 25000 // High-core systems (16+ cores) - maximum throughput
-	} else if cpus >= 8 {
-		baseBatchSize = 20000 // Mid-range systems (8-15 cores) - high throughput
-	} else if cpus >= 4 {
-		baseBatchSize = 18000 // Standard systems (4-7 cores) - good throughput
-	}
+	baseBatchSize := ParseBatchSize()
 
 	// Derive conservative, CPU-aware defaults to avoid oversubscribing small machines.
 	workerCount := clampInt(cpus, 2, maxDefaultWorkerCount)
 
-	// Limit file-level concurrency to at most half of the usable CPUs. Every
-	// concurrent file holds its own parse batch plus a buffered index batch, so
-	// this factor multiplies peak memory directly.
+	// Every file indexed at the same time holds its parse batches and a block
+	// being built, about 80 MB at the largest batch size, so the memory budget
+	// decides how many run at once, never more than half the usable CPUs.
+	// One file indexes about a million lines a second, so a single one is
+	// rarely the bottleneck.
 	fileGroupConcurrency := clampInt(cpus/2, 1, maxDefaultFileGroupConcurrency)
+	if available, ok := availableMemory(); !ok || available < 4<<30 {
+		fileGroupConcurrency = 1
+	} else {
+		fileGroupConcurrency = min(fileGroupConcurrency, 2)
+	}
 
 	shardCount := 1
 	if cpus >= 8 {
@@ -129,7 +126,7 @@ func DefaultIndexerConfig() *Config {
 		IndexPath:            "./log-index",
 		ShardCount:           shardCount,
 		WorkerCount:          workerCount,   // One worker per usable CPU, capped (min 2)
-		BatchSize:            baseBatchSize, // Dynamically scaled based on usable CPU cores
+		BatchSize:            baseBatchSize, // Sized from the memory budget
 		FlushInterval:        5 * time.Second,
 		MaxQueueSize:         max(4, workerCount*2),
 		EnableCompression:    true,
@@ -138,6 +135,38 @@ func DefaultIndexerConfig() *Config {
 		OptimizeInterval:     30 * time.Minute,
 		EnableMetrics:        true,
 		FileGroupConcurrency: fileGroupConcurrency, // Default: up to 50% of usable CPUs, capped
+	}
+}
+
+// ParseBatchSize is how many lines the parser hands over at once, sized from
+// the memory budget the way the log analytics plugins size theirs: a parsed
+// line costs about a kilobyte until its block is encoded, and every file being
+// indexed holds one batch per parse worker.
+func ParseBatchSize() int {
+	available, ok := availableMemory()
+	switch {
+	case !ok || available <= 0:
+		return 2000
+	case available < 1<<30:
+		return 1000
+	case available < 4<<30:
+		return 2000
+	default:
+		return 5000
+	}
+}
+
+// TextScanParallelism is how many blocks a free-text query scans at once.
+// Each holds a block's decompressed lines, about 15 MB at 64k lines.
+func TextScanParallelism() int {
+	available, ok := availableMemory()
+	switch {
+	case !ok || available < 2<<30:
+		return 2
+	case available < 8<<30:
+		return 4
+	default:
+		return 8
 	}
 }
 
@@ -289,14 +318,14 @@ type LogDocument struct {
 	FilePath     string   `json:"file_path"`     // Actual physical file path (e.g., /var/log/nginx/access.log.1.gz)
 	MainLogPath  string   `json:"main_log_path"` // Main log group path (e.g., /var/log/nginx/access.log)
 	Raw          string   `json:"raw"`
+	Level        string   `json:"level,omitempty"` // Severity of an error log entry
 }
 
 // IndexJob represents a single indexing job
 type IndexJob struct {
-	Documents   []*Document `json:"documents"`
-	Priority    int         `json:"priority"`
-	Callback    func(error) `json:"-"`
-	memoryBytes int64
+	Documents []*Document `json:"documents"`
+	Priority  int         `json:"priority"`
+	Callback  func(error) `json:"-"`
 }
 
 // IndexResult represents the result of an indexing operation
@@ -382,23 +411,6 @@ type BatchWriterInterface interface {
 	Reset()
 }
 
-// ShardManager manages multiple index shards
-type ShardManager interface {
-	Initialize() error
-	GetShard(key string) (bleve.Index, int, error)
-	// GetShardForDocument routes by main log group and key; required for grouped manager
-	// mainLogPath must be non-empty
-	GetShardForDocument(mainLogPath string, key string) (bleve.Index, int, error)
-	GetShardByID(id int) (bleve.Index, error)
-	GetAllShards() []bleve.Index
-	GetShardStats() []*ShardInfo
-	CreateShard(id int, path string) error
-	CloseShard(id int) error
-	OptimizeShard(id int) error
-	HealthCheck() error
-	Close() error // Close all shards and cleanup resources
-}
-
 // MetricsCollector collects and reports indexing metrics
 type MetricsCollector interface {
 	RecordIndexOperation(docs int, duration time.Duration, success bool)
@@ -424,86 +436,6 @@ type Metrics struct {
 	AverageThroughput  float64 `json:"average_throughput"` // docs per second
 	AverageBatchTimeMS float64 `json:"average_batch_time_ms"`
 	AverageOptTimeS    float64 `json:"average_optimization_time_s"`
-}
-
-// CreateLogIndexMapping creates optimized index mapping for log entries
-func CreateLogIndexMapping() mapping.IndexMapping {
-	indexMapping := bleve.NewIndexMapping()
-	indexMapping.DefaultAnalyzer = "standard"
-	indexMapping.DefaultField = "raw"
-	indexMapping.IndexDynamic = false
-	indexMapping.StoreDynamic = false
-	indexMapping.DocValuesDynamic = false
-
-	docMapping := bleve.NewDocumentStaticMapping()
-
-	type fieldOptions struct {
-		store              bool
-		index              bool
-		includeTermVectors bool
-		docValues          bool
-	}
-
-	addTextField := func(name, analyzer string, options fieldOptions) {
-		fieldMapping := bleve.NewTextFieldMapping()
-		fieldMapping.Analyzer = analyzer
-		fieldMapping.Store = options.store
-		fieldMapping.Index = options.index
-		fieldMapping.IncludeTermVectors = options.includeTermVectors
-		fieldMapping.IncludeInAll = false
-		fieldMapping.DocValues = options.docValues
-		docMapping.AddFieldMappingsAt(name, fieldMapping)
-	}
-	addNumericField := func(name string, options fieldOptions) {
-		fieldMapping := bleve.NewNumericFieldMapping()
-		fieldMapping.Store = options.store
-		fieldMapping.Index = options.index
-		fieldMapping.IncludeInAll = false
-		fieldMapping.DocValues = options.docValues
-		docMapping.AddFieldMappingsAt(name, fieldMapping)
-	}
-
-	storedAndIndexed := fieldOptions{store: true, index: true}
-	storedIndexedAndSortable := fieldOptions{store: true, index: true, docValues: true}
-	storedPhraseSearchable := fieldOptions{store: true, index: true, includeTermVectors: true}
-
-	// Keep doc values only on fields used by sorting, faceting, or cardinality queries.
-	addNumericField("timestamp", storedIndexedAndSortable)
-	addTextField("ip", "keyword", storedIndexedAndSortable)
-	addTextField("region_code", "keyword", storedIndexedAndSortable)
-	addTextField("province", "keyword", storedIndexedAndSortable)
-	addTextField("city", "keyword", storedAndIndexed)
-	addTextField("c1", "keyword", storedAndIndexed)
-	addTextField("c2", "keyword", storedAndIndexed)
-	addTextField("c3", "keyword", storedAndIndexed)
-	addTextField("c4", "keyword", storedAndIndexed)
-	addTextField("method", "keyword", storedIndexedAndSortable)
-	addTextField("path", "standard", storedPhraseSearchable)
-	addTextField("path_exact", "keyword", fieldOptions{index: true, docValues: true})
-	addTextField("protocol", "keyword", fieldOptions{store: true})
-	addNumericField("status", storedIndexedAndSortable)
-	addNumericField("bytes_sent", storedIndexedAndSortable)
-	addTextField("referer", "standard", storedPhraseSearchable)
-	addTextField("user_agent", "standard", fieldOptions{
-		store: true, index: true, includeTermVectors: true, docValues: true,
-	})
-	addTextField("browser", "keyword", storedIndexedAndSortable)
-	addTextField("browser_version", "keyword", storedAndIndexed)
-	addTextField("os", "keyword", storedIndexedAndSortable)
-	addTextField("os_version", "keyword", storedAndIndexed)
-	addTextField("device_type", "keyword", storedIndexedAndSortable)
-	addNumericField("request_time", storedAndIndexed)
-	addNumericField("upstream_time", storedAndIndexed)
-
-	// Index the original line once for default full-text search instead of
-	// duplicating every field into Bleve's composite _all field.
-	addTextField("raw", "standard", storedAndIndexed)
-	addTextField("file_path", "keyword", storedAndIndexed)
-	addTextField("main_log_path", "keyword", storedAndIndexed)
-
-	indexMapping.AddDocumentMapping("_default", docMapping)
-
-	return indexMapping
 }
 
 // Priority levels for indexing jobs

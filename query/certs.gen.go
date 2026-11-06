@@ -48,8 +48,7 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.Resource = field.NewField(tableName, "resource")
 	_cert.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
 	_cert.MustStaple = field.NewBool(tableName, "must_staple")
-	_cert.LegoDisableCNAMESupport = field.NewBool(tableName, "lego_disable_cname_support")
-	_cert.DisableAuthoritativeNSPropagation = field.NewBool(tableName, "disable_authoritative_ns_propagation")
+	_cert.ChallengeConfig = field.NewField(tableName, "challenge_config")
 	_cert.EnableCommonName = field.NewBool(tableName, "enable_common_name")
 	_cert.RevokeOld = field.NewBool(tableName, "revoke_old")
 	_cert.SelfSignedConfig = field.NewField(tableName, "self_signed_config")
@@ -66,6 +65,10 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 	_cert.Status = field.NewString(tableName, "status")
 	_cert.LastError = field.NewString(tableName, "last_error")
 	_cert.LastAttemptAt = field.NewTime(tableName, "last_attempt_at")
+	_cert.DelegatedNodeID = field.NewUint64(tableName, "delegated_node_id")
+	_cert.DelegatedConfigName = field.NewString(tableName, "delegated_config_name")
+	_cert.RemoteSSLCertificatePath = field.NewString(tableName, "remote_ssl_certificate_path")
+	_cert.RemoteSSLCertificateKeyPath = field.NewString(tableName, "remote_ssl_certificate_key_path")
 	_cert.DnsCredential = certBelongsToDnsCredential{
 		db: db.Session(&gorm.Session{}),
 
@@ -86,46 +89,49 @@ func newCert(db *gorm.DB, opts ...gen.DOOption) cert {
 type cert struct {
 	certDo
 
-	ALL                               field.Asterisk
-	ID                                field.Uint64
-	CreatedAt                         field.Time
-	UpdatedAt                         field.Time
-	DeletedAt                         field.Field
-	Name                              field.String
-	Domains                           field.Field
-	Filename                          field.String
-	SSLCertificatePath                field.String
-	SSLCertificateKeyPath             field.String
-	Fingerprint                       field.String
-	AutoCert                          field.Int
-	ChallengeMethod                   field.String
-	Profile                           field.String
-	DnsCredentialID                   field.Uint64
-	ACMEUserID                        field.Uint64
-	KeyType                           field.String
-	Log                               field.String
-	Resource                          field.Field
-	SyncNodeIds                       field.Field
-	MustStaple                        field.Bool
-	LegoDisableCNAMESupport           field.Bool
-	DisableAuthoritativeNSPropagation field.Bool
-	EnableCommonName                  field.Bool
-	RevokeOld                         field.Bool
-	SelfSignedConfig                  field.Field
-	LastAutoRenewAt                   field.Time
-	LastAutoRenewError                field.String
-	NextAutoRenewAt                   field.Time
-	LastRenewalInfoCheckAt            field.Time
-	AutoRenewScheduleFingerprint      field.String
-	LastExpiryNotifyAt                field.Time
-	LastExpiryNotifyNotAfter          field.Time
-	LastExpiryNotifyStage             field.String
-	LastDeploymentIssueHash           field.String
-	LastDeploymentIssueNotifyAt       field.Time
-	Status                            field.String
-	LastError                         field.String
-	LastAttemptAt                     field.Time
-	DnsCredential                     certBelongsToDnsCredential
+	ALL                          field.Asterisk
+	ID                           field.Uint64
+	CreatedAt                    field.Time
+	UpdatedAt                    field.Time
+	DeletedAt                    field.Field
+	Name                         field.String
+	Domains                      field.Field
+	Filename                     field.String
+	SSLCertificatePath           field.String
+	SSLCertificateKeyPath        field.String
+	Fingerprint                  field.String
+	AutoCert                     field.Int
+	ChallengeMethod              field.String
+	Profile                      field.String
+	DnsCredentialID              field.Uint64
+	ACMEUserID                   field.Uint64
+	KeyType                      field.String
+	Log                          field.String
+	Resource                     field.Field
+	SyncNodeIds                  field.Field
+	MustStaple                   field.Bool
+	ChallengeConfig              field.Field
+	EnableCommonName             field.Bool
+	RevokeOld                    field.Bool
+	SelfSignedConfig             field.Field
+	LastAutoRenewAt              field.Time
+	LastAutoRenewError           field.String
+	NextAutoRenewAt              field.Time
+	LastRenewalInfoCheckAt       field.Time
+	AutoRenewScheduleFingerprint field.String
+	LastExpiryNotifyAt           field.Time
+	LastExpiryNotifyNotAfter     field.Time
+	LastExpiryNotifyStage        field.String
+	LastDeploymentIssueHash      field.String
+	LastDeploymentIssueNotifyAt  field.Time
+	Status                       field.String
+	LastError                    field.String
+	LastAttemptAt                field.Time
+	DelegatedNodeID              field.Uint64
+	DelegatedConfigName          field.String
+	RemoteSSLCertificatePath     field.String
+	RemoteSSLCertificateKeyPath  field.String
+	DnsCredential                certBelongsToDnsCredential
 
 	ACMEUser certBelongsToACMEUser
 
@@ -164,8 +170,7 @@ func (c *cert) updateTableName(table string) *cert {
 	c.Resource = field.NewField(table, "resource")
 	c.SyncNodeIds = field.NewField(table, "sync_node_ids")
 	c.MustStaple = field.NewBool(table, "must_staple")
-	c.LegoDisableCNAMESupport = field.NewBool(table, "lego_disable_cname_support")
-	c.DisableAuthoritativeNSPropagation = field.NewBool(table, "disable_authoritative_ns_propagation")
+	c.ChallengeConfig = field.NewField(table, "challenge_config")
 	c.EnableCommonName = field.NewBool(table, "enable_common_name")
 	c.RevokeOld = field.NewBool(table, "revoke_old")
 	c.SelfSignedConfig = field.NewField(table, "self_signed_config")
@@ -182,6 +187,10 @@ func (c *cert) updateTableName(table string) *cert {
 	c.Status = field.NewString(table, "status")
 	c.LastError = field.NewString(table, "last_error")
 	c.LastAttemptAt = field.NewTime(table, "last_attempt_at")
+	c.DelegatedNodeID = field.NewUint64(table, "delegated_node_id")
+	c.DelegatedConfigName = field.NewString(table, "delegated_config_name")
+	c.RemoteSSLCertificatePath = field.NewString(table, "remote_ssl_certificate_path")
+	c.RemoteSSLCertificateKeyPath = field.NewString(table, "remote_ssl_certificate_key_path")
 
 	c.fillFieldMap()
 
@@ -198,7 +207,7 @@ func (c *cert) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (c *cert) fillFieldMap() {
-	c.fieldMap = make(map[string]field.Expr, 40)
+	c.fieldMap = make(map[string]field.Expr, 43)
 	c.fieldMap["id"] = c.ID
 	c.fieldMap["created_at"] = c.CreatedAt
 	c.fieldMap["updated_at"] = c.UpdatedAt
@@ -219,8 +228,7 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["resource"] = c.Resource
 	c.fieldMap["sync_node_ids"] = c.SyncNodeIds
 	c.fieldMap["must_staple"] = c.MustStaple
-	c.fieldMap["lego_disable_cname_support"] = c.LegoDisableCNAMESupport
-	c.fieldMap["disable_authoritative_ns_propagation"] = c.DisableAuthoritativeNSPropagation
+	c.fieldMap["challenge_config"] = c.ChallengeConfig
 	c.fieldMap["enable_common_name"] = c.EnableCommonName
 	c.fieldMap["revoke_old"] = c.RevokeOld
 	c.fieldMap["self_signed_config"] = c.SelfSignedConfig
@@ -237,6 +245,10 @@ func (c *cert) fillFieldMap() {
 	c.fieldMap["status"] = c.Status
 	c.fieldMap["last_error"] = c.LastError
 	c.fieldMap["last_attempt_at"] = c.LastAttemptAt
+	c.fieldMap["delegated_node_id"] = c.DelegatedNodeID
+	c.fieldMap["delegated_config_name"] = c.DelegatedConfigName
+	c.fieldMap["remote_ssl_certificate_path"] = c.RemoteSSLCertificatePath
+	c.fieldMap["remote_ssl_certificate_key_path"] = c.RemoteSSLCertificateKeyPath
 
 }
 

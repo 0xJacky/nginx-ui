@@ -94,18 +94,19 @@ var resyncSiteSave = func(name, content string) {
 
 // HTTPSRequest is the message a client sends to start an HTTPS onboarding run.
 type HTTPSRequest struct {
-	Domains                           []string           `json:"domains"`
-	ChallengeMethod                   string             `json:"challenge_method"`
-	DNSCredentialID                   uint64             `json:"dns_credential_id"`
-	RedirectHTTPToHTTPS               bool               `json:"redirect_http_to_https"`
-	KeyType                           certcrypto.KeyType `json:"key_type"`
-	ACMEUserID                        uint64             `json:"acme_user_id"`
-	Profile                           string             `json:"profile"`
-	MustStaple                        bool               `json:"must_staple"`
-	LegoDisableCNAMESupport           bool               `json:"lego_disable_cname_support"`
-	DisableAuthoritativeNSPropagation bool               `json:"disable_authoritative_ns_propagation"`
-	EnableCommonName                  bool               `json:"enable_common_name"`
-	RevokeOld                         bool               `json:"revoke_old"`
+	Domains             []string           `json:"domains"`
+	ChallengeMethod     string             `json:"challenge_method"`
+	DNSCredentialID     uint64             `json:"dns_credential_id"`
+	RedirectHTTPToHTTPS bool               `json:"redirect_http_to_https"`
+	KeyType             certcrypto.KeyType `json:"key_type"`
+	ACMEUserID          uint64             `json:"acme_user_id"`
+	Profile             string             `json:"profile"`
+	MustStaple          bool               `json:"must_staple"`
+	// ChallengeConfig carries the options of the plugin that implements the
+	// challenge method.
+	ChallengeConfig  map[string]any `json:"challenge_config"`
+	EnableCommonName bool           `json:"enable_common_name"`
+	RevokeOld        bool           `json:"revoke_old"`
 	// CertificateID selects a certificate from the certificate manager to
 	// install instead of issuing one. 0 issues a new certificate; the ACME
 	// fields and the challenge method are then ignored.
