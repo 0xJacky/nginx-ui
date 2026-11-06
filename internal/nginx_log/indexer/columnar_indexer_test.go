@@ -244,3 +244,19 @@ func TestColumnarIndexerRemembersMovedContentAcrossRestart(t *testing.T) {
 	assert.Equal(t, map[string]int64{base + ".1": 6, base: 2}, syncGroup(t, ci, base))
 	assert.Zero(t, ci.docsIndexed.Load()-before, "nothing is read again after a restart")
 }
+
+// Without the city database, visitors are still located by country from the
+// database embedded in the binary.
+func TestCountryOnlyGeoIPUsesTheEmbeddedDatabase(t *testing.T) {
+	loc, err := countryOnlyGeoIP{}.Search("8.8.8.8")
+	require.NoError(t, err)
+	assert.Equal(t, "US", loc.RegionCode)
+	assert.Empty(t, loc.City)
+
+	loc, err = countryOnlyGeoIP{}.Search("192.168.1.1")
+	require.NoError(t, err)
+	assert.Empty(t, loc.RegionCode, "private addresses have no country")
+
+	_, err = countryOnlyGeoIP{}.Search("-")
+	assert.Error(t, err)
+}

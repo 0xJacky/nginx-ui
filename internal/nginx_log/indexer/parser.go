@@ -1,6 +1,8 @@
 package indexer
 
 import (
+	"net/netip"
+
 	"bufio"
 	"compress/gzip"
 	"context"
@@ -8,6 +10,8 @@ import (
 	"strings"
 	"sync"
 	"sync/atomic"
+
+	"github.com/uozi-tech/cosy/geoip"
 
 	"github.com/0xJacky/Nginx-UI/internal/cgroup"
 	"github.com/0xJacky/Nginx-UI/internal/geolite"
@@ -95,7 +99,11 @@ func InitLogParser() {
 	if geoIPOverride != nil {
 		geoIPService = parser.NewCachedGeoIPService(geoIPOverride, 10000)
 	} else if geoService, err := geolite.GetService(); err != nil {
-		logger.Warnf("Failed to initialize GeoIP service, geo-enrichment will be disabled: %v", err)
+		// Without the city database, countries still come from the
+		// GeoLite2-Country database embedded in the binary, so the world map
+		// works on a fresh node; provinces and cities need the download.
+		logger.Infof("GeoLite2 city database not available (%v); locating visitors by country only", err)
+		geoIPService = parser.NewCachedGeoIPService(countryOnlyGeoIP{}, 10000)
 	} else {
 		geoIPService = parser.NewCachedGeoIPService(parser.NewGeoLiteAdapter(geoService), 10000)
 	}
@@ -281,4 +289,19 @@ func createReaderForFile(reader io.Reader, filePath string) (io.Reader, func(), 
 		logger.Debugf("File %s has .gz extension but stream has no gzip magic header, treating as plain text", filePath)
 		return bufferedReader, nil, nil
 	}
+}
+
+// countryOnlyGeoIP locates an address by country, from the GeoLite2-Country
+// database embedded in cosy.
+type countryOnlyGeoIP struct{}
+
+func (countryOnlyGeoIP) Search(ip string) (*parser.GeoLocation, error) {
+	if _, err := netip.ParseAddr(ip); err != nil {
+		return nil, err
+	}
+	code := geoip.ParseIP(ip)
+	if code == "Unknown" {
+		code = ""
+	}
+	return &parser.GeoLocation{CountryCode: code, RegionCode: code}, nil
 }
