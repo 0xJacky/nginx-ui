@@ -9,6 +9,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/logstore"
+
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
@@ -103,6 +105,9 @@ type AdvancedSearchResponseAPI struct {
 	Took    int64                    `json:"took"` // Milliseconds
 	Query   string                   `json:"query"`
 	Summary SummaryStats             `json:"summary"`
+	// QueryWarnings lists parts of the query that looked like a filter but
+	// were searched as text.
+	QueryWarnings []logstore.SyntaxWarning `json:"query_warnings,omitempty"`
 }
 
 // PreflightResponse represents the response for preflight query
@@ -519,6 +524,8 @@ func AdvancedSearchLogs(c *gin.Context) {
 		Took:    result.Duration.Milliseconds(),
 		Query:   req.Query,
 		Summary: summary,
+
+		QueryWarnings: result.QueryWarnings,
 	}
 
 	c.JSON(http.StatusOK, apiResponse)

@@ -18,8 +18,10 @@ import (
 // API handlers do not change.
 //
 // Differences from the Bleve searcher, all deliberate:
-//   - Query matches the raw line as case-insensitive substrings, every term
-//     required, instead of an OR over analyzed tokens.
+//   - Query is the search box syntax of logstore.ParseSearchText: words match
+//     the raw line as case-insensitive substrings, every term required, and
+//     field:value filters (status:5xx, ip:10.0.0.0/8, path:/api, -bot, ...)
+//     narrow further. Bleve ORed analyzed tokens.
 //   - Paths, UserAgents and Referers are case-insensitive substrings instead
 //     of phrase queries over analyzed tokens.
 //   - Highlighting is not produced; no caller reads it.
@@ -101,10 +103,12 @@ func (s *ColumnarSearcher) search(ctx context.Context, req *SearchRequest) (*Sea
 		return nil, err
 	}
 
+	_, warnings := logstore.ParseSearchText(req.Query)
 	out := &SearchResult{
-		Hits:      make([]*SearchHit, 0, len(res.Hits)),
-		TotalHits: res.Total,
-		Facets:    map[string]*Facet{},
+		Hits:          make([]*SearchHit, 0, len(res.Hits)),
+		TotalHits:     res.Total,
+		Facets:        map[string]*Facet{},
+		QueryWarnings: warnings,
 	}
 	sortField := opts.SortBy
 	for _, h := range res.Hits {
@@ -175,8 +179,9 @@ func bleveCompatibleFacet(name string, f *logstore.FacetResult, size int) *Facet
 
 // QueryFromRequest translates the filter part of a SearchRequest.
 func QueryFromRequest(req *SearchRequest) *logstore.Query {
+	clauses, _ := logstore.ParseSearchText(req.Query)
 	q := &logstore.Query{
-		Text:              req.Query,
+		Clauses:           clauses,
 		IPs:               req.IPAddresses,
 		Methods:           req.Methods,
 		RegionCodes:       req.Countries,

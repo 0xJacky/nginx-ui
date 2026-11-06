@@ -317,3 +317,26 @@ func TestColumnarScanBuildsHourlyBuckets(t *testing.T) {
 	sort.Slice(hours, func(i, j int) bool { return hours[i] < hours[j] })
 	assert.Greater(t, len(hours), 1)
 }
+
+// The search box takes field filters and reports what it could not parse.
+func TestColumnarSearcherQuerySyntax(t *testing.T) {
+	docs := parityDocs(1500)
+	columnar := newColumnarForDocs(t, docs)
+
+	want := 0
+	for _, d := range docs {
+		if d.Fields.Status >= 400 && d.Fields.Status <= 499 && d.Fields.Method != "GET" {
+			want++
+		}
+	}
+	res, err := columnar.Search(context.Background(), &SearchRequest{Query: "status:4xx -method:get colour:red", Limit: 5})
+	require.NoError(t, err)
+	assert.Empty(t, res.Hits, "colour:red is searched as text and matches no line")
+	require.Len(t, res.QueryWarnings, 1)
+	assert.Equal(t, "colour:red", res.QueryWarnings[0].Token)
+
+	res, err = columnar.Search(context.Background(), &SearchRequest{Query: "status:4xx -method:get", Limit: 5})
+	require.NoError(t, err)
+	assert.EqualValues(t, want, res.TotalHits)
+	assert.Empty(t, res.QueryWarnings)
+}

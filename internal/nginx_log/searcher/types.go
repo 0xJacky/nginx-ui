@@ -3,6 +3,8 @@ package searcher
 import (
 	"context"
 	"time"
+
+	"github.com/0xJacky/Nginx-UI/internal/nginx_log/logstore"
 )
 
 // SearcherConfig holds configuration for the searcher
@@ -111,6 +113,10 @@ type SearchResult struct {
 
 	// Warning message for deep pagination or other issues
 	Warning string `json:"warning,omitempty"`
+
+	// QueryWarnings lists the parts of the query that looked like a filter
+	// but were taken as text.
+	QueryWarnings []logstore.SyntaxWarning `json:"query_warnings,omitempty"`
 }
 
 // SearchHit represents a single search result

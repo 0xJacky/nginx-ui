@@ -468,6 +468,12 @@ async function performAdvancedSearch() {
     searchResults.value = result.entries || []
     searchTotal.value = result.total || 0
     searchSummary.value = result.summary || null
+
+    if (result.query_warnings?.length) {
+      message.warning($gettext('Searched as plain text: %{tokens}', {
+        tokens: result.query_warnings.map(w => w.token).join(', '),
+      }))
+    }
   }
   catch (error: unknown) {
     // Check if this is a path validation error - don't show message for these

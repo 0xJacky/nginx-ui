@@ -3,6 +3,7 @@ package logstore
 import (
 	"bytes"
 	"math/bits"
+	"net/netip"
 	"sort"
 	"strings"
 	"sync"
@@ -40,6 +41,10 @@ type Query struct {
 
 	MinBytes, MaxBytes             *int64
 	MinRequestTime, MaxRequestTime *float64 // seconds
+
+	// Clauses come from the search box syntax (ParseSearchText) and combine
+	// with everything above.
+	Clauses []Clause
 }
 
 type exactFilter struct {
@@ -64,7 +69,10 @@ type compiledQuery struct {
 	minReqMs      *uint64
 	maxReqMs      *uint64
 	terms         [][]byte // lower case
-	matchNone     bool     // a criterion that can never match
+	notTerms      [][]byte // lower case, excluded
+	dictClauses   []dictClause
+	rangeClauses  []rangeClause
+	matchNone     bool // a criterion that can never match
 }
 
 func toSet(values []string) map[string]struct{} {
@@ -144,7 +152,61 @@ func compile(q *Query) *compiledQuery {
 	for _, t := range splitTerms(q.Text) {
 		c.terms = append(c.terms, []byte(lowerASCII(t)))
 	}
+	for _, cl := range q.Clauses {
+		c.addClause(cl)
+	}
 	return c
+}
+
+// dictClause is a search box filter on a dictionary column, evaluated once
+// per dictionary value.
+type dictClause struct {
+	col   Column
+	match func(string) bool
+}
+
+// rangeClause is a search box filter on a numeric column.
+type rangeClause struct {
+	col    Column
+	lo, hi uint64
+	negate bool
+}
+
+func (c *compiledQuery) addClause(cl Clause) {
+	switch cl.Kind {
+	case ClauseText:
+		if cl.Text == "" {
+			return
+		}
+		term := []byte(lowerASCII(cl.Text))
+		if cl.Negate {
+			c.notTerms = append(c.notTerms, term)
+		} else {
+			c.terms = append(c.terms, term)
+		}
+	case ClauseRange:
+		c.rangeClauses = append(c.rangeClauses, rangeClause{col: cl.Column, lo: cl.Lo, hi: cl.Hi, negate: cl.Negate})
+	case ClauseContains, ClauseEquals, ClauseIP:
+		var match func(string) bool
+		switch cl.Kind {
+		case ClauseContains:
+			needle := lowerASCII(cl.Text)
+			match = func(v string) bool { return containsFoldASCII(v, needle) }
+		case ClauseEquals:
+			match = func(v string) bool { return strings.EqualFold(v, cl.Text) }
+		default:
+			prefix := cl.Prefix
+			match = func(v string) bool {
+				a, err := netip.ParseAddr(v)
+				return err == nil && prefix.Contains(a.Unmap())
+			}
+		}
+		if cl.Negate {
+			inner := match
+			match = func(v string) bool { return !inner(v) }
+		}
+		c.dictClauses = append(c.dictClauses, dictClause{col: cl.Column, match: match})
+	}
 }
 
 // splitTerms splits on whitespace, keeping double-quoted phrases together.
@@ -265,12 +327,51 @@ func (c *compiledQuery) evaluate(r *blockReader) (bitset, error) {
 		}
 	}
 
-	if len(c.terms) > 0 {
+	for _, dc := range c.dictClauses {
+		if err := c.filterDict(r, sel, dc.col, dc.match); err != nil || sel.empty() {
+			return sel, err
+		}
+	}
+	for _, rc := range c.rangeClauses {
+		if err := c.filterRangeClause(r, sel, rc); err != nil || sel.empty() {
+			return sel, err
+		}
+	}
+
+	if len(c.terms) > 0 || len(c.notTerms) > 0 {
 		if err := c.filterText(r, sel); err != nil {
 			return nil, err
 		}
 	}
 	return sel, nil
+}
+
+// filterRangeClause keeps the rows whose column is within the clause's
+// bounds, or outside them when the clause is negated.
+func (c *compiledQuery) filterRangeClause(r *blockReader, sel bitset, rc rangeClause) error {
+	in := func(v uint64) bool { return (v >= rc.lo && v <= rc.hi) != rc.negate }
+	if rc.col == ColStatus {
+		st, err := r.statuses()
+		if err != nil {
+			return err
+		}
+		sel.forEach(func(i int) {
+			if !in(uint64(st[i])) {
+				sel.clear(i)
+			}
+		})
+		return nil
+	}
+	vals, err := r.uvarints(rc.col)
+	if err != nil {
+		return err
+	}
+	sel.forEach(func(i int) {
+		if !in(vals[i]) {
+			sel.clear(i)
+		}
+	})
+	return nil
 }
 
 // filterDict evaluates match once per dictionary value, then clears every
@@ -345,7 +446,7 @@ func (c *compiledQuery) filterText(r *blockReader, sel bitset) error {
 		}
 	}
 	hits := newBitset(r.m.rows, false)
-	for _, term := range c.terms {
+	markHits := func(term []byte) {
 		hits.reset()
 		for off := 0; off < len(lower); {
 			j := bytes.Index(lower[off:], term)
@@ -360,7 +461,17 @@ func (c *compiledQuery) filterText(r *blockReader, sel bitset) error {
 			}
 			off = max(lines[row+1], pos+1)
 		}
+	}
+	for _, term := range c.terms {
+		markHits(term)
 		sel.and(hits)
+		if sel.empty() {
+			return nil
+		}
+	}
+	for _, term := range c.notTerms {
+		markHits(term)
+		sel.andNot(hits)
 		if sel.empty() {
 			return nil
 		}
@@ -442,6 +553,12 @@ func (b bitset) reset() {
 func (b bitset) and(o bitset) {
 	for i := range b {
 		b[i] &= o[i]
+	}
+}
+
+func (b bitset) andNot(o bitset) {
+	for i := range b {
+		b[i] &^= o[i]
 	}
 }
 

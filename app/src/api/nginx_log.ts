@@ -178,12 +178,19 @@ export interface SummaryStats {
   traffic_approximate: boolean // Traffic was extrapolated because the match set exceeded the scan budget
 }
 
+// A part of the search box that looked like a filter but was searched as text
+export interface QuerySyntaxWarning {
+  token: string
+  reason: 'unknown_field' | 'invalid_value' | 'unterminated_quote'
+}
+
 export interface AdvancedSearchResponse {
   entries: AccessLogEntry[]
   total: number
   took: number
   query: string
   summary: SummaryStats
+  query_warnings?: QuerySyntaxWarning[]
 }
 
 export interface PreflightResponse {

@@ -301,9 +301,9 @@ type LogDocument struct {
 
 // IndexJob represents a single indexing job
 type IndexJob struct {
-	Documents   []*Document `json:"documents"`
-	Priority    int         `json:"priority"`
-	Callback    func(error) `json:"-"`
+	Documents []*Document `json:"documents"`
+	Priority  int         `json:"priority"`
+	Callback  func(error) `json:"-"`
 }
 
 // IndexResult represents the result of an indexing operation

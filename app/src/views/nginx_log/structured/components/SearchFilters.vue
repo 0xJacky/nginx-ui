@@ -1,15 +1,24 @@
 <script setup lang="ts">
 import type { SearchFilters } from '@/api/nginx_log'
-import { CaretRightOutlined } from '@antdv-next/icons'
+import { CaretRightOutlined, QuestionCircleOutlined } from '@antdv-next/icons'
 import { browserOptions, deviceOptions, methodOptions, osOptions, statusOptions } from './search-filter-options'
+
+const emit = defineEmits<Emits>()
+
+// The search box syntax, see logstore.ParseSearchText
+const syntaxHelp = computed(() => [
+  $gettext('Words match anywhere in the line; all of them must match. Quotes keep a phrase together, a leading - excludes.'),
+  'status:404  status:5xx  status:400-499  method:POST',
+  'ip:10.0.0.0/8  path:/api  ua:curl  referer:google',
+  'browser:  os:  device:  country:CN  region:  city:',
+  'bytes:>1000  rt:>0.5  rt:0.1..0.5  -status:404',
+])
 
 // Emits
 interface Emits {
   (e: 'search'): void
   (e: 'reset'): void
 }
-
-const emit = defineEmits<Emits>()
 
 // Use defineModel for simplified v-model handling
 const filters = defineModel<SearchFilters>({ required: true })
@@ -61,12 +70,20 @@ function handleReset() {
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-3">
         <!-- Full Text Search -->
         <div class="lg:col-span-2">
-          <label class="block text-xs font-medium text-gray-700 dark:text-trueGray-300 mb-1">
+          <label class="flex items-center gap-1 text-xs font-medium text-gray-700 dark:text-trueGray-300 mb-1">
             {{ $gettext('Full Text Search') }}
+            <ATooltip placement="topLeft">
+              <template #title>
+                <div v-for="line in syntaxHelp" :key="line">
+                  {{ line }}
+                </div>
+              </template>
+              <QuestionCircleOutlined class="text-gray-400 dark:text-trueGray-500 cursor-help" />
+            </ATooltip>
           </label>
           <AInput
             v-model:value="filters.query"
-            :placeholder="$gettext('Search in log content...')"
+            :placeholder="$gettext('Search, e.g. status:5xx ip:10.0.0.0/8 -bot')"
             @press-enter="handleSearch"
           />
         </div>
