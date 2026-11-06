@@ -11,6 +11,7 @@ var (
 	ErrConfigDataInvalid              = e.New(40018, "file content must be valid PEM or htpasswd data")
 	ErrSecretFileHiddenFromReadOnly   = e.New(40019, "secret files are hidden from read-only service tokens")
 	ErrConfigIncludeGlobUnsupported   = e.New(40020, "include pattern uses glob syntax that cannot be validated: {0}")
+	ErrIncludedDirectiveNotAllowed    = e.New(40021, "included file {0} contains restricted nginx directive: {1}")
 	ErrPathIsNotUnderTheNginxConfDir  = e.New(50006, "path: {0} is not under the nginx conf dir: {1}")
 	ErrDstFileExists                  = e.New(50007, "destination file: {0} already exists")
 	ErrNginxTestFailed                = e.New(50008, "nginx test failed: {0}")

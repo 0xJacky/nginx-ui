@@ -23,6 +23,9 @@ type configIncludeValidator struct {
 	visited map[string]bool
 	bytes   int
 	files   int
+	// pattern is the argument of the include statement in the edited file
+	// that is being expanded, used to name the source of an error.
+	pattern string
 }
 
 // validateConfigIncludes applies the directive policy to existing include
@@ -67,12 +70,19 @@ func (validator *configIncludeValidator) validate(path string, content []byte, d
 	defer delete(validator.active, canonical)
 	validator.files++
 	validator.bytes += len(content)
-	if err := ValidateConfigContentBytes(content); err != nil {
-		return err
+	if depth == 0 {
+		if err := ValidateConfigContentBytes(content); err != nil {
+			return err
+		}
+	} else if err := validateIncludedConfigContent(content); err != nil {
+		return validator.includedDirectiveError(path, err)
 	}
 	if err := visitConfigStatementsAsNginx(content, func(statement []string) error {
 		if len(statement) != 2 || !strings.EqualFold(statement[0], "include") {
 			return nil
+		}
+		if depth == 0 {
+			validator.pattern = statement[1]
 		}
 		pattern := includeFullPath(validator.base, statement[1])
 		matches, err := resolveIncludePattern(pattern)
@@ -104,6 +114,48 @@ func (validator *configIncludeValidator) validate(path string, content []byte, d
 	}
 	validator.visited[canonical] = true
 	return nil
+}
+
+// includedDirectiveError names the included file that holds a restricted
+// directive, since the edited file itself may contain none. A file is named by
+// its path only when that path lies inside the Nginx config directory without
+// leaving it through "..". Any other file is named by the include argument
+// written in the edited file, so the error never reveals a file name outside
+// the config directory that the caller did not write.
+func (validator *configIncludeValidator) includedDirectiveError(path string, err error) error {
+	cErr, ok := errors.AsType[*cosy.Error](err)
+	if !ok || len(cErr.Params) == 0 {
+		return err
+	}
+	wantErr, ok := errors.AsType[*cosy.Error](ErrConfigDirectiveNotAllowed)
+	if !ok || cErr.Scope != wantErr.Scope || cErr.Code != wantErr.Code {
+		return err
+	}
+
+	name := validator.pattern
+	if isPlainPathInConfDir(path) {
+		name = filepath.Clean(path)
+	}
+	return cosy.WrapErrorWithParams(ErrIncludedDirectiveNotAllowed, name, cErr.Params[0])
+}
+
+func isPlainPathInConfDir(path string) bool {
+	for _, segment := range strings.Split(filepath.ToSlash(path), "/") {
+		if segment == ".." {
+			return false
+		}
+	}
+	if !strings.HasPrefix(filepath.Clean(path), filepath.Clean(nginx.GetConfPath())+string(filepath.Separator)) {
+		return false
+	}
+	// A symlinked directory inside the conf dir can resolve to a location
+	// outside it, so a name under the conf dir may belong to a file that does
+	// not. Only name a file whose symlink-resolved path still lies under the
+	// symlink-resolved conf dir; anything else falls back to the include
+	// argument. Both sides are resolved so a conf dir that is itself reached
+	// through a symlink (such as /var on macOS) still matches.
+	confPath := canonicalIncludePath(nginx.GetConfPath())
+	return strings.HasPrefix(canonicalIncludePath(path), confPath+string(filepath.Separator))
 }
 
 type includeWalker struct {
