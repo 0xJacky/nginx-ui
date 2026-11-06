@@ -62,10 +62,15 @@ func main() {
 			return err
 		}
 
-		// Skip excluded directories
+		// Skip excluded directories. Only the part below the root counts:
+		// the repository itself may sit in one of them, such as a worktree
+		// under .claude/worktrees.
+		rel, err := filepath.Rel(root, path)
+		if err != nil {
+			return err
+		}
+		pathParts := strings.Split(rel, string(filepath.Separator))
 		for _, excludeDir := range excludeDirs {
-			// Check if the path contains the excluded directory
-			pathParts := strings.Split(filepath.Clean(path), string(filepath.Separator))
 			for _, part := range pathParts {
 				if part == excludeDir {
 					if info.IsDir() {

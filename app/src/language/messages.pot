@@ -243,11 +243,9 @@ msgstr ""
 msgid "Not supported for IP certificates"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:784
 msgid "DNS Validation"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:800
 msgid ""
 "The main node has no DNS-01 plugin. Install it on the main node, or validate "
 "on this node."
@@ -288,7 +286,6 @@ msgstr ""
 msgid "The credential was deleted. Please choose another one."
 msgstr ""
 
-#: src/components/AutoCertForm/DNSChallenge.vue:177
 msgid ""
 "Credentials of the main node. Switch to the main node to add or change one."
 msgstr ""
@@ -409,6 +406,27 @@ msgstr ""
 msgid "Maintenance"
 msgstr ""
 
+msgid "Site"
+msgstr ""
+
+msgid "Stream"
+msgstr ""
+
+msgid "Configuration"
+msgstr ""
+
+msgid "+%{count} more"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "No file matches the search"
+msgstr ""
+
+msgid "Not used"
+msgstr ""
+
 msgid "not installed"
 msgstr ""
 
@@ -510,6 +528,45 @@ msgid "Success"
 msgstr ""
 
 msgid "Failed"
+msgstr ""
+
+msgid "Starting download..."
+msgstr ""
+
+msgid "Download failed"
+msgstr ""
+
+msgid "Download complete"
+msgstr ""
+
+msgid "GeoLite2 Database Required"
+msgstr ""
+
+msgid ""
+"The GeoLite2 database is required for offline geographic IP analysis. Please "
+"download it to enable this feature."
+msgstr ""
+
+msgid ""
+"Alternatively, if you cannot download the database, you can manually place "
+"GeoLite2-City.mmdb in the same directory as app.ini."
+msgstr ""
+
+msgid ""
+"If you want to enable custom MMDB data, configure `IndexCustomMMDB` and "
+"place the generated file in the same directory as app.ini."
+msgstr ""
+
+msgid "GeoLite2 Database Installed"
+msgstr ""
+
+msgid "Download GeoLite2 Database"
+msgstr ""
+
+msgid "Re-download Database"
+msgstr ""
+
+msgid "Last updated:"
 msgstr ""
 
 msgid "Nginx configuration test failed"
@@ -857,6 +914,9 @@ msgstr ""
 msgid "Error Logs"
 msgstr ""
 
+msgid "Traffic Analytics"
+msgstr ""
+
 msgid "Nginx is not running"
 msgstr ""
 
@@ -948,9 +1008,6 @@ msgid "Done"
 msgstr ""
 
 msgid "Unknown"
-msgstr ""
-
-msgid "Search"
 msgstr ""
 
 msgid "Open in split view"
@@ -1048,12 +1105,6 @@ msgid ""
 "location. Rename one of the tasks or change its storage path."
 msgstr ""
 
-msgid "Backups to Keep"
-msgstr ""
-
-msgid "Backups to Keep (0 keeps all)"
-msgstr ""
-
 msgid "Renew Certificate Success"
 msgstr ""
 
@@ -1096,6 +1147,14 @@ msgid "Deploy Certificate Error"
 msgstr ""
 
 msgid "Failed to deploy certificate %{cert_name} to %{target_name}: %{error}"
+msgstr ""
+
+msgid "Certificate Relocated"
+msgstr ""
+
+msgid ""
+"Certificate %{name} is now stored in %{path}, point the sites that load %"
+"{previous_path} to it"
 msgstr ""
 
 msgid "Sync Certificate Error"
@@ -1164,6 +1223,23 @@ msgid "External Notification Test"
 msgstr ""
 
 msgid "This is a test message sent at %{timestamp} from Nginx UI."
+msgstr ""
+
+msgid ""
+"Certificates using the DNS-01 challenge cannot be renewed until the DNS-01 "
+"plugin is installed."
+msgstr ""
+
+msgid "Plugins updated automatically"
+msgstr ""
+
+msgid "Updated automatically: %{plugins}"
+msgstr ""
+
+msgid "Plugin updates available"
+msgstr ""
+
+msgid "Updates are available for %{plugins}"
 msgstr ""
 
 msgid "Certificate Paths Migrated"
@@ -1419,6 +1495,9 @@ msgstr ""
 msgid "AutoCert is running..."
 msgstr ""
 
+msgid "Nginx Log Indexing..."
+msgstr ""
+
 msgid ""
 "Legacy recovery code is deprecated. Generate new recovery codes to keep "
 "account recovery secure."
@@ -1633,6 +1712,51 @@ msgstr ""
 msgid "Use OTP"
 msgstr ""
 
+msgid "Recovery codes downloaded"
+msgstr ""
+
+msgid "MFA setup completed. Save your recovery codes before continuing."
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "MFA session expired. Please sign in again."
+msgstr ""
+
+msgid "MFA is required. Set up an authenticator or a passkey to continue."
+msgstr ""
+
+msgid "Verify your MFA method to continue signing in."
+msgstr ""
+
+msgid "Enable TOTP"
+msgstr ""
+
+msgid "Verify"
+msgstr ""
+
+msgid "Add a passkey"
+msgstr ""
+
+msgid "Back to sign in"
+msgstr ""
+
+msgid "Secret has been copied"
+msgstr ""
+
+msgid "Click to copy"
+msgstr ""
+
+msgid "Current Password"
+msgstr ""
+
+msgid "Scan the QR code with your mobile phone to add the account to the app."
+msgstr ""
+
 msgid "Generate new recovery codes"
 msgstr ""
 
@@ -1651,6 +1775,11 @@ msgid "Two-factor authentication required"
 msgstr ""
 
 msgid "Invalid passcode or recovery code"
+msgstr ""
+
+msgid ""
+"Enable MFA on your own account before managing MFA policies or resetting "
+"another user."
 msgstr ""
 
 msgid "Node Status"
@@ -1711,6 +1840,18 @@ msgid "Plugin enabled"
 msgstr ""
 
 msgid "Failed to enable the plugin"
+msgstr ""
+
+msgid "High"
+msgstr ""
+
+msgid "Low"
+msgstr ""
+
+msgid "Visits"
+msgstr ""
+
+msgid "Percentage"
 msgstr ""
 
 msgid "On the main node"
@@ -1784,6 +1925,38 @@ msgid "Nginx Memory usage"
 msgstr ""
 
 msgid "Maximum number of connections per worker process"
+msgstr ""
+
+msgid "Apply restricted nginx directives?"
+msgstr ""
+
+msgid "Apply anyway"
+msgstr ""
+
+msgid ""
+"This configuration loads code into the Nginx worker processes, which runs "
+"with the privileges of Nginx itself. Only apply it if you wrote these "
+"directives or trust where they came from."
+msgstr ""
+
+msgid "Restricted directives"
+msgstr ""
+
+msgid "Found in"
+msgstr ""
+
+msgid ""
+"Such a configuration is not replicated to other nodes. Save it on each node "
+"that needs it."
+msgstr ""
+
+msgid "Go to Settings"
+msgstr ""
+
+msgid ""
+"This configuration loads code into the Nginx worker processes. Applying it "
+"needs a two-factor confirmation, so enable two-factor authentication on your "
+"account first."
 msgstr ""
 
 msgid "Type"
@@ -2279,31 +2452,24 @@ msgid ""
 "Automatic renewal can only be switched for certificates issued by Nginx UI"
 msgstr ""
 
-#: src/constants/errors/cert.ts:58
 msgid "Only a DNS-01 certificate can be issued for another node"
 msgstr ""
 
-#: src/constants/errors/cert.ts:59
 msgid "Node not found"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:231
 msgid "Node {0} cannot receive certificates issued for it, upgrade it first"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:231
 msgid "Node {0} answered {1}: {2}"
 msgstr ""
 
-#: src/constants/errors/cert.ts:62
 msgid "The Nginx configuration still loads the certificate: {0}"
 msgstr ""
 
-#: src/constants/errors/cert.ts:63
 msgid "The certificate was issued, but sending it to node {0} failed: {1}"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:231
 msgid "Node {0} cannot be reached: {1}"
 msgstr ""
 
@@ -2329,6 +2495,26 @@ msgid "File content contains invalid control characters"
 msgstr ""
 
 msgid "File content contains restricted nginx directive: {0}"
+msgstr ""
+
+msgid "File content must be valid PEM or htpasswd data"
+msgstr ""
+
+msgid "Secret files are hidden from read-only service tokens"
+msgstr ""
+
+msgid "Include pattern uses glob syntax that cannot be validated: {0}"
+msgstr ""
+
+msgid "Included file {0} contains restricted nginx directive: {1}"
+msgstr ""
+
+msgid "Restricted nginx directives need confirmation: {0} in {1}"
+msgstr ""
+
+msgid ""
+"Saving restricted nginx directives requires two-factor authentication on "
+"your account: {0} in {1}"
 msgstr ""
 
 msgid "Destination file: {0} already exists"
@@ -2401,6 +2587,36 @@ msgid "Could not find old container name"
 msgstr ""
 
 msgid "Could not find temp container"
+msgstr ""
+
+msgid "Failed to download GeoLite2 database: {0}"
+msgstr ""
+
+msgid "Failed to decompress GeoLite2 database: {0}"
+msgstr ""
+
+msgid "GeoLite2 database not found at {0}"
+msgstr ""
+
+msgid "Failed to get file size: {0}"
+msgstr ""
+
+msgid "Failed to save downloaded file: {0}"
+msgstr ""
+
+msgid "Failed to open file: {0}"
+msgstr ""
+
+msgid "Failed to create xz reader: {0}"
+msgstr ""
+
+msgid "Failed to write decompressed data: {0}"
+msgstr ""
+
+msgid "Failed to read compressed data: {0}"
+msgstr ""
+
+msgid "Decompression succeeded but failed to delete compressed file: {0}"
 msgstr ""
 
 msgid ""
@@ -2489,6 +2705,71 @@ msgstr ""
 msgid "Host key algorithm mismatch: expected {0}, got {1}"
 msgstr ""
 
+msgid "Invalid request: {0}"
+msgstr ""
+
+msgid ""
+"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
+"starting and ending with a letter or digit"
+msgstr ""
+
+msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
+msgstr ""
+
+msgid "Invalid host: {0}"
+msgstr ""
+
+msgid "Invalid backend {0}: {1}"
+msgstr ""
+
+msgid "Backend server {0} is outside the allowed backend ranges"
+msgstr ""
+
+msgid "Invalid route {0}: {1}"
+msgstr ""
+
+msgid "Invalid tls: {0}"
+msgstr ""
+
+msgid "Invalid policy: {0}"
+msgstr ""
+
+msgid "Server {0} not found in backend {1}"
+msgstr ""
+
+msgid "Ingress {0} not found"
+msgstr ""
+
+msgid "Ingress {0} is owned by {1}; pass force to take it over"
+msgstr ""
+
+msgid "Host {0} is already served by ingress {1}"
+msgstr ""
+
+msgid "Site {0} already exists and is not managed by this ingress"
+msgstr ""
+
+msgid "Ingress {0} was updated while being deleted"
+msgstr ""
+
+msgid "Upstream {0} already exists and is not managed by this ingress"
+msgstr ""
+
+msgid "Timed out waiting for ingress {0} to reach generation {1}"
+msgstr ""
+
+msgid "Timed out waiting for ingress {0} to be deleted"
+msgstr ""
+
+msgid "Apply failed: {0}"
+msgstr ""
+
+msgid "Certificate not ready: {0}"
+msgstr ""
+
+msgid "Not implemented"
+msgstr ""
+
 msgid "Code completion is not enabled"
 msgstr ""
 
@@ -2537,6 +2818,14 @@ msgstr ""
 msgid "This action is disabled in demo mode"
 msgstr ""
 
+msgid ""
+"This remote node feed carries stored secrets and requires a token with write "
+"scope"
+msgstr ""
+
+msgid "Log parser is not initialized; call indexer.InitLogParser() before use"
+msgstr ""
+
 msgid "Empty log line"
 msgstr ""
 
@@ -2575,16 +2864,58 @@ msgid ""
 "nginxui.com/guide/config-nginx.html for more information"
 msgstr ""
 
+msgid "Log indexer not available"
+msgstr ""
+
+msgid "Analytics service not available"
+msgstr ""
+
 msgid "Log file does not exist"
 msgstr ""
 
 msgid "Log path is not under whitelist"
 msgstr ""
 
+msgid "Cannot access log file"
+msgstr ""
+
+msgid "Background log service not available"
+msgstr ""
+
+msgid "File path is required"
+msgstr ""
+
+msgid "Failed to rebuild index"
+msgstr ""
+
+msgid "Failed to rebuild file index"
+msgstr ""
+
+msgid "Failed to delete file index"
+msgstr ""
+
+msgid "Failed to delete all indexes"
+msgstr ""
+
+msgid "Failed to get index status"
+msgstr ""
+
+msgid "Failed to get persistence stats"
+msgstr ""
+
 msgid "Log file is not a regular file"
 msgstr ""
 
 msgid "Invalid websocket message type"
+msgstr ""
+
+msgid "Modern searcher service not available"
+msgstr ""
+
+msgid "Modern analytics service not available"
+msgstr ""
+
+msgid "Modern indexer service not available"
 msgstr ""
 
 msgid "Nginx error: {0}"
@@ -2916,6 +3247,10 @@ msgstr ""
 msgid "Unknown settings section: {0}"
 msgstr ""
 
+msgid ""
+"Enter the API token again to save a different endpoint, proxy or API type"
+msgstr ""
+
 msgid "A trusted publisher is not in the expected format or is listed twice"
 msgstr ""
 
@@ -2932,6 +3267,11 @@ msgid "Site is in maintenance mode"
 msgstr ""
 
 msgid "Read dir failed: {0}"
+msgstr ""
+
+msgid ""
+"Site is managed by ingress {0}; change the ingress instead or force the "
+"change"
 msgstr ""
 
 msgid ""
@@ -3131,6 +3471,9 @@ msgid ""
 "from the additional directives"
 msgstr ""
 
+msgid "Upstream names starting with {0} are reserved for ingresses"
+msgstr ""
+
 msgid "Upstream not found: {0}"
 msgstr ""
 
@@ -3149,6 +3492,11 @@ msgstr ""
 msgid ""
 "The shared memory zone {0} is already used by another directive; nginx "
 "reported: {1}"
+msgstr ""
+
+msgid ""
+"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
+"the change"
 msgstr ""
 
 msgid "The nginx conf.d directory is not available: {0}"
@@ -3211,6 +3559,18 @@ msgstr ""
 msgid "Init user not exists"
 msgstr ""
 
+msgid "MFA enrollment is required"
+msgstr ""
+
+msgid "MFA verification is required"
+msgstr ""
+
+msgid "Cannot remove the last required MFA method"
+msgstr ""
+
+msgid "Too many failed attempts, please try again later"
+msgstr ""
+
 msgid "Requested with wrong parameters"
 msgstr ""
 
@@ -3254,13 +3614,7 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
-msgid "Low"
-msgstr ""
-
 msgid "Medium"
-msgstr ""
-
-msgid "High"
 msgstr ""
 
 msgid "Default"
@@ -4024,7 +4378,6 @@ msgstr ""
 msgid "[Nginx UI] Revoking old certificate"
 msgstr ""
 
-#: src/language/generate.ts:148
 msgid "[Nginx UI] Sending the certificate to node %{name}"
 msgstr ""
 
@@ -4349,6 +4702,35 @@ msgstr ""
 msgid "Workspace"
 msgstr ""
 
+msgid "Waiting for the node to restart and report the target version..."
+msgstr ""
+
+msgid "Invalid upgrade target. Check for a release before upgrading."
+msgstr ""
+
+msgid "The upgrade timed out. Check the node logs."
+msgstr ""
+
+msgid "The node returned an invalid version response."
+msgstr ""
+
+msgid "The node returned an invalid upgrade response."
+msgstr ""
+
+msgid "The node failed to upgrade."
+msgstr ""
+
+msgid ""
+"The upgrade connection failed. Check authentication and network connectivity."
+msgstr ""
+
+msgid "The upgrade connection closed before installation started."
+msgstr ""
+
+msgid ""
+"Could not verify the upgrade. Check the node version and service status."
+msgstr ""
+
 msgid "Home"
 msgstr ""
 
@@ -4422,6 +4804,9 @@ msgid "Group Records"
 msgstr ""
 
 msgid "Not Found"
+msgstr ""
+
+msgid "Ingresses"
 msgstr ""
 
 msgid "Namespaces"
@@ -4543,28 +4928,16 @@ msgid ""
 "uses it."
 msgstr ""
 
-msgid "+%{count} more"
-msgstr ""
-
 msgid "Deny"
 msgstr ""
 
 msgid "Allow"
 msgstr ""
 
-msgid "Not used"
-msgstr ""
-
 msgid "Use list"
 msgstr ""
 
 msgid "Deny (403)"
-msgstr ""
-
-msgid "Site"
-msgstr ""
-
-msgid "Stream"
 msgstr ""
 
 msgid "Access list %{name} saved"
@@ -4662,6 +5035,15 @@ msgstr ""
 msgid "Monthly on day %{day} at %{time}"
 msgstr ""
 
+msgid "Backups to Keep"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "Backups to Keep (0 keeps all)"
+msgstr ""
+
 msgid "Last Backup Time"
 msgstr ""
 
@@ -4687,9 +5069,6 @@ msgid "S3 Bucket"
 msgstr ""
 
 msgid "S3 Region"
-msgstr ""
-
-msgid "Keep Latest Backups"
 msgstr ""
 
 msgid "Backup Now"
@@ -4841,11 +5220,6 @@ msgid "Key prefix is required"
 msgstr ""
 
 msgid "nginx-ui/backups"
-msgstr ""
-
-msgid ""
-"Older backups in this storage are deleted after each run. 0 keeps every "
-"backup."
 msgstr ""
 
 msgid "Test Storage"
@@ -5010,17 +5384,14 @@ msgstr ""
 msgid "More actions"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:455
 msgid "Issued for %{node}"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:459
 msgid ""
 "This instance validates the domain, keeps renewing the certificate and sends "
 "each renewal to %{node}."
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:462
 msgid "Files on the node:"
 msgstr ""
 
@@ -5063,8 +5434,10 @@ msgstr ""
 msgid "Not After"
 msgstr ""
 
-msgid "All"
-msgstr ""
+msgid "Used by %{count} configuration"
+msgid_plural "Used by %{count} configurations"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Expiring within 30 days"
 msgstr ""
@@ -5072,11 +5445,9 @@ msgstr ""
 msgid "Renewal failed"
 msgstr ""
 
-#: src/views/certificate/CertificateList/Certificate.vue:144
 msgid "Issued by this instance for %{node} and renewed here"
 msgstr ""
 
-#: src/views/certificate/CertificateEditor.vue:78
 msgid "For %{node}"
 msgstr ""
 
@@ -5288,9 +5659,6 @@ msgstr ""
 msgid "Failed to download certificate files"
 msgstr ""
 
-msgid "Download"
-msgstr ""
-
 msgid "Download Certificate Files"
 msgstr ""
 
@@ -5334,6 +5702,15 @@ msgid "Auto renewal"
 msgstr ""
 
 msgid "Issuer"
+msgstr ""
+
+msgid "This field is required"
+msgstr ""
+
+msgid "The path exists, but the file is not a certificate"
+msgstr ""
+
+msgid "The path exists, but the file is not a private key"
 msgstr ""
 
 msgid "Certificate files"
@@ -5486,9 +5863,6 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-msgid "Retry"
-msgstr ""
-
 msgid "Revoke"
 msgstr ""
 
@@ -5510,17 +5884,14 @@ msgstr ""
 msgid "Delete Certificate"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:153
 msgid ""
 "This instance stops renewing the certificate and deletes its own copy. The "
 "files on %{node} stay unless you remove them below."
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:158
 msgid "Also remove the certificate files from %{node}"
 msgstr ""
 
-#: src/views/certificate/components/RemoveCert.vue:161
 msgid ""
 "They are kept when the Nginx configuration of the node still loads them."
 msgstr ""
@@ -5547,19 +5918,22 @@ msgstr ""
 msgid "Renew successfully"
 msgstr ""
 
-msgid "Renew"
-msgstr ""
-
-msgid "Renew Certificate"
-msgstr ""
-
 msgid "AutoCert is running, please wait..."
 msgstr ""
 
 msgid "Renew now"
 msgstr ""
 
+msgid "Renew Certificate"
+msgstr ""
+
+msgid "Renew"
+msgstr ""
+
 msgid "Certificate issued successfully"
+msgstr ""
+
+msgid "Retry"
 msgstr ""
 
 msgid "Retry Certificate Issuance"
@@ -5596,9 +5970,6 @@ msgid "Deployed %{ok} certificates, %{failed} failed"
 msgstr ""
 
 msgid "Deployed %{ok} certificates"
-msgstr ""
-
-msgid "Configuration"
 msgstr ""
 
 msgid "History"
@@ -6997,7 +7368,7 @@ msgstr ""
 msgid "View server, Nginx, and site-level performance metrics."
 msgstr ""
 
-msgid "Browse and follow the access and error logs of your sites."
+msgid "Inspect access and error logs with structured analysis tools."
 msgstr ""
 
 msgid "Track system events and message delivery status."
@@ -7016,6 +7387,289 @@ msgid "Review system health, upgrade status, and component details."
 msgstr ""
 
 msgid "Access integrated terminal sessions for maintenance tasks."
+msgstr ""
+
+msgid "HTTP only"
+msgstr ""
+
+msgid "Expired %{date}"
+msgstr ""
+
+msgid "%{date} (%{days} day left)"
+msgid_plural "%{date} (%{days} days left)"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Address"
+msgstr ""
+
+msgid "Health"
+msgstr ""
+
+msgid "Max Fails"
+msgstr ""
+
+msgid "Fail Timeout"
+msgstr ""
+
+msgid "Path Prefix"
+msgstr ""
+
+msgid "Backend"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Allowed Sources"
+msgstr ""
+
+msgid "Last Transition"
+msgstr ""
+
+msgid "Drained"
+msgstr ""
+
+msgid "No Data"
+msgstr ""
+
+msgid "Healthy"
+msgstr ""
+
+msgid "Unhealthy"
+msgstr ""
+
+msgid ""
+"The generated site could not be loaded. It is written by the first "
+"successful apply."
+msgstr ""
+
+msgid "Reconcile Now"
+msgstr ""
+
+msgid "The last apply failed; the previous config is still live"
+msgstr ""
+
+msgid "Owner"
+msgstr ""
+
+msgid "External ID"
+msgstr ""
+
+msgid "Generation"
+msgstr ""
+
+msgid "%{observed} applied of %{generation}"
+msgstr ""
+
+msgid "Generated Site"
+msgstr ""
+
+msgid "Last Applied"
+msgstr ""
+
+msgid "Config Hash"
+msgstr ""
+
+msgid "Labels"
+msgstr ""
+
+msgid "Hosts"
+msgstr ""
+
+msgid "TLS"
+msgstr ""
+
+msgid "Mode"
+msgstr ""
+
+msgid "View certificate"
+msgstr ""
+
+msgid "Challenge"
+msgstr ""
+
+msgid "Redirect to HTTPS"
+msgstr ""
+
+msgid "HSTS"
+msgstr ""
+
+msgid "Only the HTTP listener is served until the certificate is issued."
+msgstr ""
+
+msgid "Backends"
+msgstr ""
+
+msgid "Routes"
+msgstr ""
+
+msgid "Policy default"
+msgstr ""
+
+msgid "Policy"
+msgstr ""
+
+msgid "Everyone"
+msgstr ""
+
+msgid "Rate Limit"
+msgstr ""
+
+msgid "%{rps} requests/s per client, burst %{burst}"
+msgstr ""
+
+msgid "Unlimited"
+msgstr ""
+
+msgid "Max Body Size"
+msgstr ""
+
+msgid "Extra Headers"
+msgstr ""
+
+msgid "Conditions"
+msgstr ""
+
+msgid "True"
+msgstr ""
+
+msgid "False"
+msgstr ""
+
+msgid "Generated Site Config"
+msgstr ""
+
+msgid "Open in site editor"
+msgstr ""
+
+msgid "Not ready"
+msgstr ""
+
+msgid "The latest spec has not been applied yet"
+msgstr ""
+
+msgid "Applying"
+msgstr ""
+
+msgid "Ready"
+msgstr ""
+
+msgid "Degraded"
+msgstr ""
+
+msgid "Config Applied"
+msgstr ""
+
+msgid "Certificate Ready"
+msgstr ""
+
+msgid "Backends Healthy"
+msgstr ""
+
+msgid "Issued automatically (ACME)"
+msgstr ""
+
+msgid "Existing certificate"
+msgstr ""
+
+msgid "HTTP-01"
+msgstr ""
+
+msgid "DNS-01"
+msgstr ""
+
+msgid "Round Robin"
+msgstr ""
+
+msgid "Least Connections"
+msgstr ""
+
+msgid "IP Hash"
+msgstr ""
+
+msgid "All owners"
+msgstr ""
+
+msgid "Reconcile of %{name} queued"
+msgstr ""
+
+msgid "Delete ingress %{name}?"
+msgstr ""
+
+msgid ""
+"This ingress is owned by %{owner}. Its controller will probably recreate it "
+"on the next sync; remove it from the controller to delete it for good."
+msgstr ""
+
+msgid ""
+"The generated site and upstream files are removed and nginx is reloaded."
+msgstr ""
+
+msgid "Also delete the certificate"
+msgstr ""
+
+msgid "Ingress %{name} deleted"
+msgstr ""
+
+msgid "Ingress"
+msgstr ""
+
+msgid "Phase"
+msgstr ""
+
+msgid "%{healthy}/%{total} healthy"
+msgstr ""
+
+msgid "%{total} server"
+msgid_plural "%{total} servers"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "%{count} down"
+msgstr ""
+
+msgid "Filter by owner"
+msgstr ""
+
+msgid "Applied generation / latest generation"
+msgstr ""
+
+msgid "gen %{observed}/%{generation}"
+msgstr ""
+
+msgid "Reconcile"
+msgstr ""
+
+msgid ""
+"Ingresses are reverse proxy entries published by external controllers "
+"through the Ingress API. Nginx UI renders each one into a managed site and "
+"upstreams, issues its certificate and reports its status here. Change them "
+"in their controller; edits made here are overwritten by the next reconcile."
+msgstr ""
+
+msgid "Learn more"
+msgstr ""
+
+msgid "No ingresses yet"
+msgstr ""
+
+msgid ""
+"A controller such as a deployment platform creates ingresses with PUT /api/"
+"ingresses/:name, authenticated as a cluster node or with an API token. They "
+"show up here as soon as they are stored."
+msgstr ""
+
+msgid "Read the Ingress API guide"
+msgstr ""
+
+msgid "Search by name, host or external ID"
+msgstr ""
+
+msgid "Search ingresses"
+msgstr ""
+
+msgid "No ingress matches the filter"
 msgstr ""
 
 msgid "Please input your E-mail!"
@@ -7121,21 +7775,340 @@ msgstr ""
 msgid "This namespace has no sync node"
 msgstr ""
 
-msgid "Read access logs page by page or follow them as they arrive."
+msgid "CPU"
+msgstr ""
+
+msgid "1 core minimum"
+msgstr ""
+
+msgid "2+ cores recommended"
+msgstr ""
+
+msgid "Indexing batches shrink to fit the available memory"
+msgstr ""
+
+msgid "More memory indexes large logs faster"
+msgstr ""
+
+msgid "About a quarter of the size of the logs"
+msgstr ""
+
+msgid "SSD storage for better I/O performance"
+msgstr ""
+
+msgid "Indexing"
+msgstr ""
+
+msgid "CPU time to parse and store one log line"
+msgstr ""
+
+msgid "Index Size"
+msgstr ""
+
+msgid "Per log line, about 0.16x the raw log"
+msgstr ""
+
+msgid "Log Viewer Page"
+msgstr ""
+
+msgid "Results with IP and path facets and statistics"
+msgstr ""
+
+msgid "Enable Advanced Log Indexing"
+msgstr ""
+
+msgid "Enable Indexing"
+msgstr ""
+
+msgid "Resource Usage Warning"
+msgstr ""
+
+msgid ""
+"Enabling advanced log indexing will consume significant computational "
+"resources including CPU and memory. Please ensure your system meets the "
+"minimum requirements before proceeding."
+msgstr ""
+
+msgid "System Requirements"
+msgstr ""
+
+msgid "Minimum:"
+msgstr ""
+
+msgid "Recommended:"
+msgstr ""
+
+msgid ""
+"* Index files are stored in the \"log-index\" directory within your Nginx UI "
+"config path by default."
+msgstr ""
+
+msgid ""
+"If you want to change the storage location, you can set the `IndexPath` of "
+"`nginx_log` section in the Nginx UI config."
+msgstr ""
+
+msgid "GeoLite2 Database"
+msgstr ""
+
+msgid "Expected Performance"
+msgstr ""
+
+msgid ""
+"* Measured on Apple M2 Pro with 100,000 combined-format log lines. Actual "
+"performance may vary based on your hardware configuration."
+msgstr ""
+
+msgid "Features"
+msgstr ""
+
+msgid "Compressed columnar storage"
+msgstr ""
+
+msgid "Field filters in the search box"
+msgstr ""
+
+msgid "Advanced search & filtering"
+msgstr ""
+
+msgid "Real-time analytics dashboard"
+msgstr ""
+
+msgid "Offline GeoIP analysis"
+msgstr ""
+
+msgid "Incremental index scanning"
+msgstr ""
+
+msgid "Substring search over the raw line"
+msgstr ""
+
+msgid "Automated log rotation detection"
+msgstr ""
+
+msgid "Cross-file timeline correlation"
+msgstr ""
+
+msgid "Compressed log file support"
+msgstr ""
+
+msgid "Error log indexing"
+msgstr ""
+
+msgid "Multi-dimensional data visualization"
+msgstr ""
+
+msgid "Open Source Limitation"
+msgstr ""
+
+msgid "Advanced log indexing features are free and open source for all users"
+msgstr ""
+
+msgid "We do not accept any feature requests"
+msgstr ""
+
+msgid "For commercial or professional use, contact"
+msgstr ""
+
+msgid "Confirmation Required"
+msgstr ""
+
+msgid ""
+"By enabling advanced indexing, you acknowledge that your system meets the "
+"requirements and understand the performance implications. This will start "
+"indexing existing log files immediately."
+msgstr ""
+
+msgid "Indexing logs..."
+msgstr ""
+
+msgid "Queued for indexing..."
+msgstr ""
+
+msgid "Index failed, please try rebuilding"
+msgstr ""
+
+msgid "Log file not indexed yet"
+msgstr ""
+
+msgid "Browser"
+msgstr ""
+
+msgid "Count"
+msgstr ""
+
+msgid "Browser Statistics"
+msgstr ""
+
+msgid "Failed to load China map data"
+msgstr ""
+
+msgid "Failed to load city map data"
+msgstr ""
+
+msgid "Province / Region"
+msgstr ""
+
+msgid "City / C1 / C2 / C3 / C4"
+msgstr ""
+
+msgid "City"
+msgstr ""
+
+msgid "Top 10 Provinces / Regions"
+msgstr ""
+
+msgid "Top 10 City Labels (City + C1 + C2 + C3 + C4)"
+msgstr ""
+
+msgid "Top 10 Cities"
+msgstr ""
+
+msgid "China Access Map"
+msgstr ""
+
+msgid "No China geographic data available"
+msgstr ""
+
+msgid "Daily Access Trends"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Last 7 days"
+msgstr ""
+
+msgid "Last 14 days"
+msgstr ""
+
+msgid "Last 30 days"
+msgstr ""
+
+msgid "Last 90 days"
+msgstr ""
+
+msgid "This month"
+msgstr ""
+
+msgid "Last month"
+msgstr ""
+
+msgid "Date Range"
+msgstr ""
+
+msgid "Quick Select"
+msgstr ""
+
+msgid "Start Date"
+msgstr ""
+
+msgid "End Date"
+msgstr ""
+
+msgid "Device Type"
+msgstr ""
+
+msgid "Device Statistics"
+msgstr ""
+
+msgid "Global Map"
+msgstr ""
+
+msgid "China Map"
+msgstr ""
+
+msgid "Global Access Map"
+msgstr ""
+
+msgid "24-Hour UV/PV Statistics"
+msgstr ""
+
+msgid "Operating System"
+msgstr ""
+
+msgid "Operating System Statistics"
+msgstr ""
+
+msgid "Total PV"
+msgstr ""
+
+msgid "Total UV"
+msgstr ""
+
+msgid "Total Traffic"
+msgstr ""
+
+msgid "Peak Hour"
+msgstr ""
+
+msgid "Avg QPS"
+msgstr ""
+
+msgid "Peak QPS"
+msgstr ""
+
+msgid "Avg Daily PV"
+msgstr ""
+
+msgid "Avg Daily UV"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "TOP 10 URLs"
+msgstr ""
+
+msgid "Country / Region"
+msgstr ""
+
+msgid "No geographic data available"
+msgstr ""
+
+msgid "Top 10 Countries / Regions"
+msgstr ""
+
+msgid ""
+"Explore access traffic logs with filters and detailed request information."
 msgstr ""
 
 msgid "Inspect error events and troubleshoot issues from Nginx error output."
 msgstr ""
 
-msgid "See every log file Nginx writes and open one to read it."
+msgid "Manage indexed log files and jump into structured analysis workflows."
+msgstr ""
+
+msgid "Scanning"
+msgstr ""
+
+msgid "Computing Statistics"
+msgstr ""
+
+msgid "Rebuild Index"
 msgstr ""
 
 msgid ""
-"Advanced Indexing is now provided by the Log Analytics plugin. Install the "
-"plugin to continue using it. Existing indexes are kept."
+"This will rebuild the entire log index. All existing index data will be "
+"deleted and rebuilt from scratch. This may take some time. Continue?"
 msgstr ""
 
-msgid "Go to install"
+msgid "Index and statistics rebuild started successfully"
+msgstr ""
+
+msgid "Rebuild File Index"
+msgstr ""
+
+msgid "This will rebuild the index data for this specific file: %{path}"
+msgstr ""
+
+msgid "File index rebuild started successfully for %{path}"
+msgstr ""
+
+msgid "Rebuild All Index"
+msgstr ""
+
+msgid "Structured"
 msgstr ""
 
 msgid "Raw"
@@ -7147,10 +8120,246 @@ msgstr ""
 msgid "Auto Refresh"
 msgstr ""
 
+msgid "Index Status"
+msgstr ""
+
+msgid "Indexed"
+msgstr ""
+
+msgid "Index failed"
+msgstr ""
+
+msgid "Queued"
+msgstr ""
+
+msgid "Not Indexed"
+msgstr ""
+
+msgid "Last Indexed"
+msgstr ""
+
+msgid "Document Count"
+msgstr ""
+
+msgid "Time Range"
+msgstr ""
+
+msgid "Advanced indexing enabled successfully"
+msgstr ""
+
+msgid "Index rebuild initiated"
+msgstr ""
+
+msgid "Advanced indexing enabled but failed to start rebuild"
+msgstr ""
+
+msgid "Failed to enable advanced indexing"
+msgstr ""
+
+msgid "Disable Advanced Indexing"
+msgstr ""
+
+msgid ""
+"Advanced log indexing will stop and structured log analytics will be "
+"unavailable. Existing index files will not be deleted. Continue?"
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid "Advanced indexing disabled successfully"
+msgstr ""
+
+msgid "Failed to disable advanced indexing"
+msgstr ""
+
+msgid "Enable Advanced Indexing"
+msgstr ""
+
+msgid "Rebuild"
+msgstr ""
+
 msgid "Filter"
 msgstr ""
 
 msgid "Filter log content"
+msgstr ""
+
+msgid ""
+"Words match anywhere in the line; all of them must match. Quotes keep a "
+"phrase together, a leading - excludes."
+msgstr ""
+
+msgid "Search Filters"
+msgstr ""
+
+msgid "Full Text Search"
+msgstr ""
+
+msgid "Search, e.g. status:5xx ip:10.0.0.0/8 -bot"
+msgstr ""
+
+msgid "Method"
+msgstr ""
+
+msgid "Any"
+msgstr ""
+
+msgid "Type or select status codes"
+msgstr ""
+
+msgid "Request Path"
+msgstr ""
+
+msgid "Type or select browser"
+msgstr ""
+
+msgid "OS"
+msgstr ""
+
+msgid "Type or select OS"
+msgstr ""
+
+msgid "Device"
+msgstr ""
+
+msgid "Type or select device"
+msgstr ""
+
+msgid "Referer"
+msgstr ""
+
+msgid "https://..."
+msgstr ""
+
+msgid "Mozilla/5.0..."
+msgstr ""
+
+msgid "Level"
+msgstr ""
+
+msgid "Client"
+msgstr ""
+
+msgid "Request"
+msgstr ""
+
+msgid "Searched as plain text: %{tokens}"
+msgstr ""
+
+msgid "Log indexing completed! Loading updated data..."
+msgstr ""
+
+msgid "Search, e.g. level:error upstream timed out -ip:10.0.0.1"
+msgstr ""
+
+msgid "%{total} entries found in %{took} ms"
+msgstr ""
+
+msgid "%{start}-%{end} of %{total} items"
+msgstr ""
+
+msgid "No entries in current page"
+msgstr ""
+
+msgid "No logs found in the selected time range."
+msgstr ""
+
+msgid "Try adjusting your search criteria or time range."
+msgstr ""
+
+msgid "Reset Search"
+msgstr ""
+
+msgid "No structured log data available"
+msgstr ""
+
+msgid "Log file not available"
+msgstr ""
+
+msgid "Last 15 minutes"
+msgstr ""
+
+msgid "Last 30 minutes"
+msgstr ""
+
+msgid "Last hour"
+msgstr ""
+
+msgid "Last 4 hours"
+msgstr ""
+
+msgid "Last 12 hours"
+msgstr ""
+
+msgid "Last 24 hours"
+msgstr ""
+
+msgid "IP"
+msgstr ""
+
+msgid ""
+"Background indexing in progress. Data will be updated automatically when "
+"ready."
+msgstr ""
+
+msgid "Error Log Detected"
+msgstr ""
+
+msgid ""
+"Error logs do not support structured analysis as they contain free-form text "
+"messages."
+msgstr ""
+
+msgid ""
+"For error logs, please use the Raw Log Viewer for better viewing experience."
+msgstr ""
+
+msgid "Go to Raw Log Viewer"
+msgstr ""
+
+msgid "Sorted by"
+msgstr ""
+
+msgid "Ascending"
+msgstr ""
+
+msgid "Descending"
+msgstr ""
+
+msgid "Total Entries"
+msgstr ""
+
+msgid "PV"
+msgstr ""
+
+msgid "UV"
+msgstr ""
+
+msgid ""
+"The result set is too large to sum exactly, this value is extrapolated from "
+"a sample"
+msgstr ""
+
+msgid "Traffic"
+msgstr ""
+
+msgid "Unique Pages"
+msgstr ""
+
+msgid "Avg/PV"
+msgstr ""
+
+msgid "Try adjusting your search criteria or navigate to different pages."
+msgstr ""
+
+msgid "Search range"
+msgstr ""
+
+msgid "From indexed logs"
+msgstr ""
+
+msgid "Default range"
 msgstr ""
 
 msgid "Stable"
@@ -7165,7 +8374,16 @@ msgstr ""
 msgid "Upgrading Nginx UI, please wait..."
 msgstr ""
 
+msgid "Dry run completed for %{node}. No changes were made."
+msgstr ""
+
 msgid "Upgraded Nginx UI on %{node} successfully 🎉"
+msgstr ""
+
+msgid "Upgrade failed for %{node}: %{error}"
+msgstr ""
+
+msgid "Upgrade cancelled."
 msgstr ""
 
 msgid "Batch Upgrade"
@@ -7377,9 +8595,6 @@ msgstr ""
 msgid "Node connection failed"
 msgstr ""
 
-msgid "URL"
-msgstr ""
-
 msgid "Node Secret"
 msgstr ""
 
@@ -7511,7 +8726,8 @@ msgstr ""
 msgid "Github Proxy"
 msgstr ""
 
-msgid "Used for downloads from GitHub, such as upgrades."
+msgid ""
+"Used for downloads from GitHub, such as upgrades and the GeoLite database."
 msgstr ""
 
 msgid "HTTP Proxy"
@@ -7814,10 +9030,26 @@ msgstr ""
 msgid "Minutes between two runs."
 msgstr ""
 
-msgid "Register passkey successfully"
+msgid ""
+"The GeoLite2 database provides geographic information for IP addresses. This "
+"is used for offline geographic analysis in log analytics."
 msgstr ""
 
-msgid "Add a passkey"
+msgid "Custom MMDB"
+msgstr ""
+
+msgid "A custom database replaces the GeoLite2 download."
+msgstr ""
+
+msgid "Map Boundary Directory"
+msgstr ""
+
+msgid ""
+"Keep files with names like 100000_full.json in this directory. Only the "
+"world map is provided by default."
+msgstr ""
+
+msgid "Register passkey successfully"
 msgstr ""
 
 msgid "Tips"
@@ -7834,9 +9066,6 @@ msgstr ""
 msgid ""
 "Follow the instructions in the dialog to complete the passkey registration "
 "process."
-msgstr ""
-
-msgid "Current Password"
 msgstr ""
 
 msgid ""
@@ -7952,6 +9181,9 @@ msgstr ""
 msgid "Enable 2FA successfully"
 msgstr ""
 
+msgid "TOTP disabled"
+msgstr ""
+
 msgid "TOTP"
 msgstr ""
 
@@ -7965,22 +9197,24 @@ msgid ""
 "on your mobile phone."
 msgstr ""
 
-msgid "Scan the QR code with your mobile phone to add the account to the app."
-msgstr ""
-
 msgid "Current account is not enabled TOTP."
 msgstr ""
 
 msgid "Current account is enabled TOTP."
 msgstr ""
 
-msgid "Enable TOTP"
+msgid "Replace TOTP"
 msgstr ""
 
-msgid "Secret has been copied"
+msgid "Disable TOTP for this account?"
 msgstr ""
 
-msgid "Click to copy"
+msgid "Disable TOTP"
+msgstr ""
+
+msgid ""
+"Your current authenticator remains active until the new code is verified. "
+"New recovery codes replace the old ones."
 msgstr ""
 
 msgid "Bark"
@@ -8384,9 +9618,6 @@ msgid "Detected:"
 msgstr ""
 
 msgid "Restore detected value"
-msgstr ""
-
-msgid "This field is required"
 msgstr ""
 
 msgid ""
@@ -9044,9 +10275,6 @@ msgstr ""
 msgid "File mode and setup instructions"
 msgstr ""
 
-msgid "Verify"
-msgstr ""
-
 msgid "Run checks and save"
 msgstr ""
 
@@ -9140,9 +10368,6 @@ msgstr ""
 msgid "Basics"
 msgstr ""
 
-msgid "Features"
-msgstr ""
-
 msgctxt "preference group"
 msgid "Maintenance"
 msgstr ""
@@ -9231,13 +10456,24 @@ msgstr ""
 msgid "Scheduled rotation of Nginx log files."
 msgstr ""
 
+msgid "GeoLite"
+msgstr ""
+
+msgid "Geographic database and map files used by log analytics."
+msgstr ""
+
+msgid "Go to logs"
+msgstr ""
+
 msgid "Invalid settings: %{fields}"
 msgstr ""
 
 msgid "Management API: Read"
 msgstr ""
 
-msgid "Read resources and runtime status through the management API."
+msgid ""
+"Read resources and runtime status through the management API. Stored secrets "
+"such as credentials and private keys are hidden from read-only tokens."
 msgstr ""
 
 msgid "Management API: Write"
@@ -9251,7 +10487,9 @@ msgstr ""
 msgid "MCP: Read"
 msgstr ""
 
-msgid "Use read-only Nginx UI MCP tools."
+msgid ""
+"Use read-only Nginx UI MCP tools. Private keys are hidden from read-only "
+"tokens."
 msgstr ""
 
 msgid "MCP: Write"
@@ -9348,10 +10586,26 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-msgid "IP"
+msgid "Banned Until"
 msgstr ""
 
-msgid "Banned Until"
+msgid "MFA Policy"
+msgstr ""
+
+msgid ""
+"Require MFA at the next sign-in. Users must enroll their own authenticator "
+"or passkey."
+msgstr ""
+
+msgid "Require MFA for all users"
+msgstr ""
+
+msgid "Require local MFA for SSO sign-in"
+msgstr ""
+
+msgid ""
+"Apply local MFA verification and enrollment requirements to OIDC and Casdoor "
+"sign-in."
 msgstr ""
 
 msgid "Passkeys"
@@ -9381,6 +10635,20 @@ msgid "This notification is disabled"
 msgstr ""
 
 msgid "Failed to send test message"
+msgstr ""
+
+msgid "Database"
+msgstr ""
+
+msgid "Maps"
+msgstr ""
+
+msgid ""
+"Please download China and province boundary files yourself and place them in "
+"this directory."
+msgstr ""
+
+msgid "Template reference"
 msgstr ""
 
 msgid ""
@@ -9507,6 +10775,9 @@ msgstr ""
 msgid "tokens"
 msgstr ""
 
+msgid "Pricing per million tokens"
+msgstr ""
+
 msgid "Global"
 msgstr ""
 
@@ -9600,9 +10871,6 @@ msgstr ""
 msgid "Only applies on Linux. This system does not support it."
 msgstr ""
 
-msgid "Unlimited"
-msgstr ""
-
 msgid ""
 "These options make plugin installs less safe. Turn them on only when needed."
 msgstr ""
@@ -9691,9 +10959,6 @@ msgstr ""
 msgid "Set maintenance information"
 msgstr ""
 
-msgid "Continue"
-msgstr ""
-
 msgid "Start time"
 msgstr ""
 
@@ -9716,6 +10981,20 @@ msgid "Additional information"
 msgstr ""
 
 msgid "For example: expected recovery plan or incident reference"
+msgstr ""
+
+msgid "Managed by ingress %{name}"
+msgstr ""
+
+msgid ""
+"Changes will be overwritten by the next reconcile. Edit the ingress in its "
+"controller instead."
+msgstr ""
+
+msgid "View ingress"
+msgstr ""
+
+msgid "Edit anyway"
 msgstr ""
 
 msgid "Configuration Name"
@@ -10074,15 +11353,6 @@ msgstr ""
 msgid "Not a valid domain name or IP address: %{value}"
 msgstr ""
 
-msgid "HTTP-01"
-msgstr ""
-
-msgid "DNS-01"
-msgstr ""
-
-msgid "Existing certificate"
-msgstr ""
-
 msgid "Skip for now"
 msgstr ""
 
@@ -10128,7 +11398,6 @@ msgstr ""
 msgid "Wildcard domains require DNS-01 validation."
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/HTTPSCard.vue:446
 msgid "Issue the certificate on the main node"
 msgstr ""
 
@@ -10167,9 +11436,6 @@ msgid ""
 "Nginx UI stages the challenge route, verifies it, requests the certificate "
 "and switches the site to HTTPS in one run. If a step fails, the site keeps "
 "serving plain HTTP."
-msgstr ""
-
-msgid "Method"
 msgstr ""
 
 msgid "Add at least one domain or IP address."
@@ -10250,7 +11516,6 @@ msgstr ""
 msgid "Continue without HTTPS"
 msgstr ""
 
-#: src/views/site/site_edit/components/HTTPS/useHTTPSOnboarding.ts:206
 msgid ""
 "The node did not confirm that it received the certificate. Update Nginx UI "
 "on the node and try again."
@@ -10361,6 +11626,9 @@ msgstr ""
 msgid "No."
 msgstr ""
 
+msgid "Ingress: %{name}"
+msgstr ""
+
 msgid "Please input name, "
 msgstr ""
 
@@ -10368,6 +11636,14 @@ msgid "Duplicate to local successfully"
 msgstr ""
 
 msgid "Delete site: %{site_name}"
+msgstr ""
+
+msgid "No valid access log path found for this site"
+msgstr ""
+
+msgid ""
+"This site uses the default access log, which may contain traffic from other "
+"sites"
 msgstr ""
 
 msgid "Sites enabled successfully"
@@ -10409,14 +11685,16 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
-msgid "Disable"
-msgstr ""
-
 msgid "Set maintenance information for selected sites"
 msgstr ""
 
 msgid "%{count} sites selected"
 msgstr ""
+
+msgid "Include %{count} site managed by an ingress"
+msgid_plural "Include %{count} sites managed by ingresses"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Read Only"
 msgstr ""
@@ -10565,16 +11843,10 @@ msgid_plural "Included by %{count} files"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "No file matches the search"
-msgstr ""
-
 msgid "Not Used"
 msgstr ""
 
 msgid "Max Age"
-msgstr ""
-
-msgid "Options"
 msgstr ""
 
 msgid "Remove option"
@@ -10779,9 +12051,6 @@ msgstr ""
 msgid "Total Components"
 msgstr ""
 
-msgid "Backend"
-msgstr ""
-
 msgid "Frontend"
 msgstr ""
 
@@ -10866,39 +12135,6 @@ msgstr ""
 msgid "Needs attention"
 msgstr ""
 
-msgid ""
-"This plugin was taken down from the catalog, and this version was withdrawn. "
-"Disable or uninstall it."
-msgstr ""
-
-msgid "This plugin was taken down from the catalog and receives no more updates."
-msgstr ""
-
-msgid "Reason: %{reason}"
-msgstr ""
-
-msgid ""
-"Certificates using the DNS-01 challenge cannot be renewed until the DNS-01 "
-"plugin is installed."
-msgstr ""
-
-msgid "Plugins updated automatically"
-msgstr ""
-
-msgid "Updated automatically: %{plugins}"
-msgstr ""
-
-msgid "Plugin updates available"
-msgstr ""
-
-msgid "Updates are available for %{plugins}"
-msgstr ""
-
-msgid ""
-"The publisher withdrew this version. Update it, or disable it until a new "
-"version is available."
-msgstr ""
-
 msgid "Updates available"
 msgstr ""
 
@@ -10952,7 +12188,6 @@ msgstr ""
 msgid "No plugins match the current filter"
 msgstr ""
 
-#: src/views/system/plugins/InstalledPluginCard.vue:138
 msgid "Recommended memory: %{size}"
 msgstr ""
 
@@ -10960,6 +12195,23 @@ msgid "This plugin cannot run on this node"
 msgstr ""
 
 msgid "Sync to nodes"
+msgstr ""
+
+msgid ""
+"This plugin was taken down from the catalog, and this version was withdrawn. "
+"Disable or uninstall it."
+msgstr ""
+
+msgid ""
+"This plugin was taken down from the catalog and receives no more updates."
+msgstr ""
+
+msgid "Reason: %{reason}"
+msgstr ""
+
+msgid ""
+"The publisher withdrew this version. Update it, or disable it until a new "
+"version is available."
 msgstr ""
 
 msgid "Settings"
@@ -11014,9 +12266,6 @@ msgid "Recommended memory"
 msgstr ""
 
 msgid "Platforms"
-msgstr ""
-
-msgid "Any"
 msgstr ""
 
 msgid "This package has no build for this node (%{platform})"
@@ -11590,7 +12839,6 @@ msgstr ""
 msgid "Also sync the plugin settings"
 msgstr ""
 
-#: src/views/system/plugins/inventory.ts:16
 msgid "Nodes: %{target}"
 msgstr ""
 
@@ -11611,6 +12859,9 @@ msgstr[1] ""
 msgid "Dev"
 msgstr ""
 
+msgid "Dry run completed. No changes were made."
+msgstr ""
+
 msgid "Reinstall"
 msgstr ""
 
@@ -11621,9 +12872,6 @@ msgid "You can check Nginx UI upgrade at this page."
 msgstr ""
 
 msgid "Current Version"
-msgstr ""
-
-msgid "OS"
 msgstr ""
 
 msgid "Arch"
@@ -11711,6 +12959,15 @@ msgid ""
 "configuration, then proxy to the upstream by its name."
 msgstr ""
 
+msgid "Create Upstream"
+msgstr ""
+
+msgid "View Upstream %{name}"
+msgstr ""
+
+msgid "Edit Upstream %{name}"
+msgstr ""
+
 msgid "Round Robin (default)"
 msgstr ""
 
@@ -11729,12 +12986,6 @@ msgstr ""
 msgid "Upstream %{name} saved and Nginx reloaded"
 msgstr ""
 
-msgid "Edit Upstream %{name}"
-msgstr ""
-
-msgid "Create Upstream"
-msgstr ""
-
 msgid "Sites use it as proxy_pass http://%{name};"
 msgstr ""
 
@@ -11745,15 +12996,6 @@ msgid "Hash Key"
 msgstr ""
 
 msgid "Consistent Hashing"
-msgstr ""
-
-msgid "Address"
-msgstr ""
-
-msgid "Max Fails"
-msgstr ""
-
-msgid "Fail Timeout"
 msgstr ""
 
 msgid "Not available with this load balancing method"
@@ -11809,9 +13051,6 @@ msgstr ""
 msgid "Health Status"
 msgstr ""
 
-msgid "No Data"
-msgstr ""
-
 msgid "Last Check"
 msgstr ""
 
@@ -11821,15 +13060,6 @@ msgstr ""
 msgid ""
 "Per-target selections are preserved. Resume probes from Health Check "
 "preferences."
-msgstr ""
-
-msgid "Round Robin"
-msgstr ""
-
-msgid "Least Connections"
-msgstr ""
-
-msgid "IP Hash"
 msgstr ""
 
 msgid "Hash"
@@ -11845,6 +13075,11 @@ msgid "Defined In"
 msgstr ""
 
 msgid "Matched upstreams: %{groups}, servers: %{servers}"
+msgstr ""
+
+msgid ""
+"Ingress %{name} owns this upstream. Change the ingress instead; its next "
+"apply overwrites changes made here."
 msgstr ""
 
 msgid "Server %{address} enabled"
@@ -11904,6 +13139,52 @@ msgid ""
 "use too."
 msgstr ""
 
+msgid "MFA Settings"
+msgstr ""
+
+msgid "Require MFA for this user"
+msgstr ""
+
+msgid "Global enforcement"
+msgstr ""
+
+msgid "User enforcement"
+msgstr ""
+
+msgid "MFA Enrollment"
+msgstr ""
+
+msgid "Pending enrollment"
+msgstr ""
+
+msgid "Enrolled"
+msgstr ""
+
+msgid "Not enrolled"
+msgstr ""
+
+msgid "MFA policy updated. It takes effect at the next sign-in."
+msgstr ""
+
+msgid "MFA credentials and sessions reset"
+msgstr ""
+
+msgid ""
+"Global MFA enforcement is active. Changing the user policy does not override "
+"it."
+msgstr ""
+
+msgid ""
+"Reset removes TOTP, all passkeys and recovery codes, and ends all sessions. "
+"The MFA requirement is preserved."
+msgstr ""
+
+msgid "Reset all MFA credentials and sessions for this user?"
+msgstr ""
+
+msgid "Reset MFA"
+msgstr ""
+
 msgid "User info updated successfully"
 msgstr ""
 
@@ -11917,6 +13198,14 @@ msgid "Personal Information"
 msgstr ""
 
 msgid "Update Profile"
+msgstr ""
+
+msgid ""
+"MFA is required by the global policy. You cannot remove your last MFA method."
+msgstr ""
+
+msgid ""
+"MFA is required for your account. You cannot remove your last MFA method."
 msgstr ""
 
 msgid "Security Settings"
@@ -11947,521 +13236,4 @@ msgid "Single pane"
 msgstr ""
 
 msgid "Split view"
-msgstr ""
-
-msgid "Used by %{count} configuration"
-msgid_plural "Used by %{count} configurations"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid ""
-"Fixed after creation, so the sites that include the snippet keep working."
-msgstr ""
-
-msgid ""
-"This snippet has variables: %{names}. Insert it from the config template "
-"panel of the site editor, which fills them in; Nginx cannot include it "
-"directly."
-msgstr ""
-
-msgid "To use the snippet, add this directive to a server or location block:"
-msgstr ""
-
-msgid ""
-"Fill in the variables by inserting the snippet from the config template "
-"panel of the site editor."
-msgstr ""
-
-msgid "Certificate Relocated"
-msgstr ""
-
-msgid ""
-"Certificate %{name} is now stored in %{path}, point the sites that load %"
-"{previous_path} to it"
-msgstr ""
-
-msgid "The path exists, but the file is not a certificate"
-msgstr ""
-
-msgid "The path exists, but the file is not a private key"
-msgstr ""
-
-msgid ""
-"Apply local MFA verification and enrollment requirements to OIDC and Casdoor "
-"sign-in."
-msgstr ""
-
-msgid "Back to sign in"
-msgstr ""
-
-msgid "Disable TOTP"
-msgstr ""
-
-msgid "Disable TOTP for this account?"
-msgstr ""
-
-msgid ""
-"Enable MFA on your own account before managing MFA policies or resetting "
-"another user."
-msgstr ""
-
-msgid ""
-"Global MFA enforcement is active. Changing the user policy does not override "
-"it."
-msgstr ""
-
-msgid "Global enforcement"
-msgstr ""
-
-msgid "MFA Enrollment"
-msgstr ""
-
-msgid "MFA Policy"
-msgstr ""
-
-msgid "MFA Settings"
-msgstr ""
-
-msgid "MFA credentials and sessions reset"
-msgstr ""
-
-msgid ""
-"MFA is required by the global policy. You cannot remove your last MFA method."
-msgstr ""
-
-msgid ""
-"MFA is required for your account. You cannot remove your last MFA method."
-msgstr ""
-
-msgid "MFA is required. Set up an authenticator or a passkey to continue."
-msgstr ""
-
-msgid "MFA policy updated. It takes effect at the next sign-in."
-msgstr ""
-
-msgid "MFA session expired. Please sign in again."
-msgstr ""
-
-msgid "MFA setup completed. Save your recovery codes before continuing."
-msgstr ""
-
-msgid "Pending enrollment"
-msgstr ""
-
-msgid "Recovery codes downloaded"
-msgstr ""
-
-msgid "Replace TOTP"
-msgstr ""
-
-msgid ""
-"Require MFA at the next sign-in. Users must enroll their own authenticator "
-"or passkey."
-msgstr ""
-
-msgid "Require MFA for all users"
-msgstr ""
-
-msgid "Require MFA for this user"
-msgstr ""
-
-msgid "Require local MFA for SSO sign-in"
-msgstr ""
-
-msgid "Reset MFA"
-msgstr ""
-
-msgid "Reset all MFA credentials and sessions for this user?"
-msgstr ""
-
-msgid ""
-"Reset removes TOTP, all passkeys and recovery codes, and ends all sessions. "
-"The MFA requirement is preserved."
-msgstr ""
-
-msgid "TOTP disabled"
-msgstr ""
-
-msgid "User enforcement"
-msgstr ""
-
-msgid "Verify your MFA method to continue signing in."
-msgstr ""
-
-msgid ""
-"Your current authenticator remains active until the new code is verified. "
-"New recovery codes replace the old ones."
-msgstr ""
-
-msgid "MFA enrollment is required"
-msgstr ""
-
-msgid "MFA verification is required"
-msgstr ""
-
-msgid "Cannot remove the last required MFA method"
-msgstr ""
-
-msgid "Enrolled"
-msgstr ""
-
-msgid "Not enrolled"
-msgstr ""
-
-msgid "Invalid request: {0}"
-msgstr ""
-
-msgid ""
-"Invalid ingress name: use 1-40 lowercase letters, digits and hyphens, "
-"starting and ending with a letter or digit"
-msgstr ""
-
-msgid "Invalid owner: use 1-64 letters, digits, dots, underscores and hyphens"
-msgstr ""
-
-msgid "Invalid host: {0}"
-msgstr ""
-
-msgid "Invalid backend {0}: {1}"
-msgstr ""
-
-msgid "Backend server {0} is outside the allowed backend ranges"
-msgstr ""
-
-msgid "Invalid route {0}: {1}"
-msgstr ""
-
-msgid "Invalid tls: {0}"
-msgstr ""
-
-msgid "Invalid policy: {0}"
-msgstr ""
-
-msgid "Server {0} not found in backend {1}"
-msgstr ""
-
-msgid "Ingress {0} not found"
-msgstr ""
-
-msgid "Ingress {0} is owned by {1}; pass force to take it over"
-msgstr ""
-
-msgid "Host {0} is already served by ingress {1}"
-msgstr ""
-
-msgid "Site {0} already exists and is not managed by this ingress"
-msgstr ""
-
-msgid "Timed out waiting for ingress {0} to reach generation {1}"
-msgstr ""
-
-msgid "Apply failed: {0}"
-msgstr ""
-
-msgid "Certificate not ready: {0}"
-msgstr ""
-
-msgid "Not implemented"
-msgstr ""
-
-msgid ""
-"Site is managed by ingress {0}; change the ingress instead or force the "
-"change"
-msgstr ""
-
-msgid "Ingresses"
-msgstr ""
-
-msgid "HTTP only"
-msgstr ""
-
-msgid "Expired %{date}"
-msgstr ""
-
-msgid "%{date} (%{days} day left)"
-msgid_plural "%{date} (%{days} days left)"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Health"
-msgstr ""
-
-msgid "Path Prefix"
-msgstr ""
-
-msgid "Allowed Sources"
-msgstr ""
-
-msgid "Last Transition"
-msgstr ""
-
-msgid "Drained"
-msgstr ""
-
-msgid "Healthy"
-msgstr ""
-
-msgid "Unhealthy"
-msgstr ""
-
-msgid ""
-"The generated site could not be loaded. It is written by the first "
-"successful apply."
-msgstr ""
-
-msgid "Reconcile Now"
-msgstr ""
-
-msgid "The last apply failed; the previous config is still live"
-msgstr ""
-
-msgid "Owner"
-msgstr ""
-
-msgid "External ID"
-msgstr ""
-
-msgid "Generation"
-msgstr ""
-
-msgid "%{observed} applied of %{generation}"
-msgstr ""
-
-msgid "Generated Site"
-msgstr ""
-
-msgid "Last Applied"
-msgstr ""
-
-msgid "Config Hash"
-msgstr ""
-
-msgid "Labels"
-msgstr ""
-
-msgid "Hosts"
-msgstr ""
-
-msgid "TLS"
-msgstr ""
-
-msgid "Mode"
-msgstr ""
-
-msgid "View certificate"
-msgstr ""
-
-msgid "Challenge"
-msgstr ""
-
-msgid "Redirect to HTTPS"
-msgstr ""
-
-msgid "HSTS"
-msgstr ""
-
-msgid "Only the HTTP listener is served until the certificate is issued."
-msgstr ""
-
-msgid "Backends"
-msgstr ""
-
-msgid "Routes"
-msgstr ""
-
-msgid "Policy default"
-msgstr ""
-
-msgid "Policy"
-msgstr ""
-
-msgid "Everyone"
-msgstr ""
-
-msgid "Rate Limit"
-msgstr ""
-
-msgid "%{rps} requests/s per client, burst %{burst}"
-msgstr ""
-
-msgid "Max Body Size"
-msgstr ""
-
-msgid "Extra Headers"
-msgstr ""
-
-msgid "Conditions"
-msgstr ""
-
-msgid "True"
-msgstr ""
-
-msgid "False"
-msgstr ""
-
-msgid "Generated Site Config"
-msgstr ""
-
-msgid "Open in site editor"
-msgstr ""
-
-msgid "Not ready"
-msgstr ""
-
-msgid "The latest spec has not been applied yet"
-msgstr ""
-
-msgid "Applying"
-msgstr ""
-
-msgid "Ready"
-msgstr ""
-
-msgid "Degraded"
-msgstr ""
-
-msgid "Config Applied"
-msgstr ""
-
-msgid "Certificate Ready"
-msgstr ""
-
-msgid "Backends Healthy"
-msgstr ""
-
-msgid "Issued automatically (ACME)"
-msgstr ""
-
-msgid "All owners"
-msgstr ""
-
-msgid "Reconcile of %{name} queued"
-msgstr ""
-
-msgid "Delete ingress %{name}?"
-msgstr ""
-
-msgid ""
-"This ingress is owned by %{owner}. Its controller will probably recreate it "
-"on the next sync; remove it from the controller to delete it for good."
-msgstr ""
-
-msgid ""
-"The generated site and upstream files are removed and nginx is reloaded."
-msgstr ""
-
-msgid "Also delete the certificate"
-msgstr ""
-
-msgid "Ingress %{name} deleted"
-msgstr ""
-
-msgid "Ingress"
-msgstr ""
-
-msgid "Phase"
-msgstr ""
-
-msgid "%{healthy}/%{total} healthy"
-msgstr ""
-
-msgid "%{total} server"
-msgid_plural "%{total} servers"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "%{count} down"
-msgstr ""
-
-msgid "Filter by owner"
-msgstr ""
-
-msgid "Applied generation / latest generation"
-msgstr ""
-
-msgid "gen %{observed}/%{generation}"
-msgstr ""
-
-msgid "Reconcile"
-msgstr ""
-
-msgid ""
-"Ingresses are reverse proxy entries published by external controllers "
-"through the Ingress API. Nginx UI renders each one into a managed site and "
-"upstreams, issues its certificate and reports its status here. Change them "
-"in their controller; edits made here are overwritten by the next reconcile."
-msgstr ""
-
-msgid "Learn more"
-msgstr ""
-
-msgid "No ingresses yet"
-msgstr ""
-
-msgid ""
-"A controller such as a deployment platform creates ingresses with PUT /api/"
-"ingresses/:name, authenticated as a cluster node or with an API token. They "
-"show up here as soon as they are stored."
-msgstr ""
-
-msgid "Read the Ingress API guide"
-msgstr ""
-
-msgid "Search by name, host or external ID"
-msgstr ""
-
-msgid "Search ingresses"
-msgstr ""
-
-msgid "No ingress matches the filter"
-msgstr ""
-
-msgid "Managed by ingress %{name}"
-msgstr ""
-
-msgid ""
-"Changes will be overwritten by the next reconcile. Edit the ingress in its "
-"controller instead."
-msgstr ""
-
-msgid "View ingress"
-msgstr ""
-
-msgid "Edit anyway"
-msgstr ""
-
-msgid "Ingress: %{name}"
-msgstr ""
-
-msgid "Include %{count} site managed by an ingress"
-msgid_plural "Include %{count} sites managed by ingresses"
-msgstr[0] ""
-msgstr[1] ""
-
-msgid "Ingress {0} was updated while being deleted"
-msgstr ""
-
-msgid "Upstream {0} already exists and is not managed by this ingress"
-msgstr ""
-
-msgid "Timed out waiting for ingress {0} to be deleted"
-msgstr ""
-
-msgid "Upstream names starting with {0} are reserved for ingresses"
-msgstr ""
-
-msgid ""
-"Upstream {0} is managed by ingress {1}; change the ingress instead or force "
-"the change"
-msgstr ""
-
-msgid ""
-"Ingress %{name} owns this upstream. Change the ingress instead; its next "
-"apply overwrites changes made here."
-msgstr ""
-
-msgid "View Upstream %{name}"
-msgstr ""
-
-msgid "File content must be valid PEM or htpasswd data"
 msgstr ""
