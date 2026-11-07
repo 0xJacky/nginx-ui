@@ -34,9 +34,9 @@ var (
 	ErrPluginVersionMismatch      = e.New(55022, "plugin package declares version {0}, {1} was expected")
 	ErrUnsignedPackage            = e.New(55023, "plugin package is not signed and developer mode is off")
 	ErrTrustDowngrade             = e.New(55024, "plugin package trust {0} is below the installed {1}")
-	ErrPluginConflict             = e.New(55025, "plugin conflicts with the enabled plugin(s): {0}")
+	ErrPluginConflict             = e.New(55025, "this plugin cannot be enabled together with: {0}")
 	ErrChannelInvalid             = e.New(55026, "release channel must be stable, beta or dev")
-	ErrReservedID                 = e.New(55027, "plugin id {0} is reserved for official plugins")
+	ErrReservedID                 = e.New(55027, "the plugin id {0} is reserved for official Nginx UI plugins")
 	ErrUnknownSigner              = e.New(55028, "plugin package is signed by key {0}, which this node does not trust, and developer mode is off")
 	ErrPluginWithdrawn            = e.New(55029, "plugin version {0} was withdrawn from the catalog and is not pushed to nodes")
 
