@@ -272,8 +272,14 @@ func TestLogSinkStopFinishesTheStreamAndDropsTheRest(t *testing.T) {
 	sink.offer(testLogEntries(12, protocol.LogFormatCombined, 200))
 	sink.start()
 
-	// The first stream is open and full; release it once stop was asked.
-	require.Eventually(t, func() bool { return recorder.opened.Load() >= 1 }, 5*time.Second, 5*time.Millisecond)
+	// Stop closes the stream in flight with the entries it already holds, so
+	// wait until the sink took the whole first batch off the queue: once the
+	// fifth entry is taken, push sends it and closes the stream without
+	// looking at stop again. Waiting for the stream to open is not enough, the
+	// batch may still be filling. Release the stream once stop was asked.
+	require.Eventually(t, func() bool {
+		return recorder.opened.Load() >= 1 && len(sink.queue) == 12-5
+	}, 5*time.Second, time.Millisecond)
 	stopped := make(chan struct{})
 	go func() {
 		sink.stop()
