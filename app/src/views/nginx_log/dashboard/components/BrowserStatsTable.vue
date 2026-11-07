@@ -2,6 +2,7 @@
 import type { BrowserStatItem } from '../types'
 import type { DashboardAnalytics } from '@/api/nginx_log'
 import { Card, Table } from 'antdv-next'
+import { statLabel } from '../statLabel'
 
 defineProps<{
   dashboardData: DashboardAnalytics | null
@@ -13,6 +14,7 @@ const browserColumns = [
     title: () => $gettext('Browser'),
     dataIndex: 'browser',
     key: 'browser',
+    render: (value: string) => statLabel(value),
   },
   {
     title: () => $gettext('Count'),

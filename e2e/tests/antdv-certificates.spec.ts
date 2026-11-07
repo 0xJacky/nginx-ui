@@ -67,23 +67,36 @@ test('certificate views keep antdv-next options and rendered content visible', a
 
   const issueModal = page.locator('.ant-modal:visible').last()
   await expect(issueModal).toBeVisible()
-  // Certificate Type, Challenge Method, Key Type, ACME User and DNS Credential.
+  // DNS01, the default challenge method, shows the DNS Credential select only
+  // while the DNS-01 plugin can run it; otherwise the plugin notice takes its
+  // place (AutoCertForm.vue). demo.Dockerfile bundles no plugins, so the demo
+  // shows the notice. Exactly one of the two must appear once the plugin state
+  // has loaded.
+  const dns01Notice = issueModal.locator('.ant-alert').filter({ hasText: 'DNS-01 plugin' })
+  const credentialItem = issueModal.locator('.ant-form-item').filter({
+    has: page.locator('.ant-form-item-label', { hasText: 'DNS Credential' }),
+  })
+  await expect.poll(async () => await dns01Notice.count() + await credentialItem.count()).toBe(1)
+  const hasDns01Plugin = await credentialItem.count() === 1
+
+  // Certificate Type, Challenge Method, Key Type and ACME User, plus DNS
+  // Credential when the plugin is available.
   const issueSelects = issueModal.locator('.ant-select')
-  await expect(issueSelects).toHaveCount(5)
+  await expect(issueSelects).toHaveCount(hasDns01Plugin ? 5 : 4)
   for (let index = 0; index < await issueSelects.count(); index++)
     await expectPopulatedSelect(page, issueSelects.nth(index))
 
-  // The challenge reminder Alert carries its own info icon, so scope to the form label.
-  const credentialInfo = issueModal.locator('.ant-form-item-label .anticon-info-circle')
-  await expect(credentialInfo).toBeVisible()
-  await credentialInfo.hover()
-  const credentialTooltip = page.locator('.ant-tooltip:visible').last()
-  await expect(credentialTooltip).toBeVisible()
-  await expect.poll(async () => (await credentialTooltip.innerText()).trim().length).toBeGreaterThan(0)
-  expect((await credentialTooltip.boundingBox())?.width ?? 0).toBeGreaterThan(0)
+  if (!hasDns01Plugin) {
+    // Read-only check: installing a plugin is refused in demo mode.
+    await expect(dns01Notice).toBeVisible()
+    await expect(dns01Notice.getByRole('button', { name: 'Install DNS-01 plugin' })).toBeVisible()
+    await expect(dns01Notice.getByRole('button', { name: 'Go to System > Plugins' })).toBeVisible()
+  }
 
-  await page.keyboard.press('Escape')
-  await expect(credentialTooltip).toBeHidden()
+  // Let the select dropdowns finish closing, then move the focus from the last
+  // select back to the dialog: a focused select takes the first Escape itself.
+  await expect(page.locator('.ant-select-dropdown:visible')).toHaveCount(0)
+  await issueModal.locator('.ant-modal-title').click()
   await page.keyboard.press('Escape')
   await expect(issueModal).toBeHidden()
 
@@ -133,7 +146,13 @@ test('certificate views keep antdv-next options and rendered content visible', a
   await expect(certificateEditor.locator('.certificate-file-upload')).toHaveCount(2)
   await expect(certificateEditor.locator('.code-editor-container')).toHaveCount(2)
 
-  const syncNodeOptions = page.locator('.ant-checkbox-group').first().locator('.ant-checkbox-wrapper')
+  // The node picker stays collapsed until "Select nodes" is clicked
+  // (CertificateSyncCard.vue).
+  const syncCard = page.locator('.ant-card').filter({
+    has: page.locator('.ant-card-head-title', { hasText: 'Sync to other nodes' }),
+  })
+  await syncCard.getByRole('button', { name: 'Select nodes' }).click()
+  const syncNodeOptions = syncCard.locator('.ant-checkbox-group').first().locator('.ant-checkbox-wrapper')
   await expect.poll(() => syncNodeOptions.count()).toBeGreaterThan(0)
   for (let index = 0; index < await syncNodeOptions.count(); index++)
     expect((await syncNodeOptions.nth(index).innerText()).trim()).not.toBe('')

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { DeviceStatItem } from '../types'
 import type { DashboardAnalytics } from '@/api/nginx_log'
+import { statLabel } from '../statLabel'
 
 defineProps<{
   dashboardData: DashboardAnalytics | null
@@ -12,6 +13,7 @@ const deviceColumns = [
     title: () => $gettext('Device Type'),
     dataIndex: 'device',
     key: 'device',
+    render: (value: string) => statLabel(value),
   },
   {
     title: () => $gettext('Count'),

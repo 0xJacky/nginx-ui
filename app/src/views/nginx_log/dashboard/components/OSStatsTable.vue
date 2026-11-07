@@ -2,6 +2,7 @@
 import type { OSStatItem } from '../types'
 import type { DashboardAnalytics } from '@/api/nginx_log'
 import { Card, Table } from 'antdv-next'
+import { statLabel } from '../statLabel'
 
 defineProps<{
   dashboardData: DashboardAnalytics | null
@@ -13,6 +14,7 @@ const osColumns = [
     title: () => $gettext('Operating System'),
     dataIndex: 'os',
     key: 'os',
+    render: (value: string) => statLabel(value),
   },
   {
     title: () => $gettext('Count'),
