@@ -1,6 +1,6 @@
 module github.com/0xJacky/Nginx-UI
 
-go 1.27.2
+go 1.27.3
 
 require (
 	aead.dev/minisign v0.3.0
@@ -10,10 +10,10 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.15.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns v1.2.0
 	github.com/BurntSushi/toml v1.6.0
-	github.com/Microsoft/go-winio v0.6.2
+	github.com/Microsoft/go-winio v0.6.4
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.2.4
-	github.com/alibabacloud-go/tea v1.5.3
-	github.com/caarlos0/env/v11 v11.4.1
+	github.com/alibabacloud-go/tea v1.5.4
+	github.com/caarlos0/env/v11 v11.4.2
 	github.com/casdoor/casdoor-go-sdk v1.59.0
 	github.com/cloudflare/cloudflare-go/v7 v7.13.1
 	github.com/coreos/go-oidc/v3 v3.21.0
@@ -38,7 +38,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
 	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.221
-	github.com/klauspost/compress v1.19.2
+	github.com/klauspost/compress v1.20.3
 	github.com/mark3labs/mcp-go v1.5.0
 	github.com/mattn/go-sqlite3 v1.14.52
 	github.com/miekg/dns v1.1.73
@@ -46,7 +46,7 @@ require (
 	github.com/minio/selfupdate v0.6.0
 	github.com/nikoksr/notify v1.6.0
 	github.com/nxadm/tail v1.4.11
-	github.com/oschwald/maxminddb-golang/v2 v2.6.0
+	github.com/oschwald/maxminddb-golang/v2 v2.9.0
 	github.com/pires/go-proxyproto v0.16.0
 	github.com/pkg/errors v0.9.1
 	github.com/pkg/sftp v1.13.12
@@ -57,7 +57,7 @@ require (
 	github.com/shirou/gopsutil/v4 v4.26.10
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.12.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.205
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.207
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
 	github.com/ulikunitz/xz v0.5.17
 	github.com/uozi-tech/cosy v1.35.4
