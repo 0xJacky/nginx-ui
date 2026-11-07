@@ -165,7 +165,8 @@ func (s *logSink) offer(entries []protocol.LogSinkPushParams) {
 	}
 }
 
-// stop ends the streamer. The stream in flight is closed and answered, or
+// stop ends the streamer. The stream in flight is closed with the entries it
+// already holds, without waiting for its batch to fill, and answered, or
 // cancelled after the grace period; the rest of the queue is dropped.
 func (s *logSink) stop() {
 	s.once.Do(func() {
