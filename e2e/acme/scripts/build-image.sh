@@ -28,6 +28,18 @@ if [ -z "$binary_mode" ]; then
     fi
 fi
 
+# version.Version is set only by internal/version/version.gen.go, which the
+# release build generates in the "Generate files" step of build.yml. Without
+# it the binary has no --version flag, and the upgrade spec checks that flag.
+if [ "$binary_mode" != "skip" ]; then
+    if command -v go >/dev/null 2>&1; then
+        acme_log "generating internal/version/version.gen.go"
+        GOWORK=off go generate cmd/version/generate.go
+    else
+        acme_log "go is not installed; the image will not report its version"
+    fi
+fi
+
 case "$binary_mode" in
     native)
         acme_log "building nginx-ui-linux-amd64/nginx-ui natively"
