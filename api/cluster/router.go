@@ -5,12 +5,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitRouter(r *gin.RouterGroup) {
-	// The node secret is the only thing a relationship starts from, so an
-	// upgrade arrives already authenticated by the middleware like any other
-	// node request.
-	r.POST("node/pair/upgrade", UpgradeLegacyPairing)
+// InitNodeRouter registers the endpoints a controller calls on this node to
+// manage the credential it authenticates with. They act on the relationship
+// with the controller that signed the request, so they are mounted outside the
+// node proxy and accept only a node principal.
+func InitNodeRouter(r *gin.RouterGroup) {
+	g := r.Group("", middleware.RequireNodePrincipal())
+	{
+		// The node secret is the only thing a relationship starts from, so an
+		// upgrade arrives already authenticated by the middleware like any
+		// other node request.
+		g.POST("node/pair/upgrade", UpgradeLegacyPairing)
+		g.POST("node/credentials/:credential_id/rotation", BeginControllerCredentialRotation)
+		g.POST("node/credentials/:credential_id/rotation/confirm", ConfirmControllerCredentialRotation)
+	}
+}
 
+func InitRouter(r *gin.RouterGroup) {
 	// Node
 	r.GET("nodes", GetNodeList)
 	nodeGroup := r.Group("nodes")
@@ -32,9 +43,6 @@ func InitRouter(r *gin.RouterGroup) {
 		admin.GET("node/credentials", ListControllerCredentials)
 		admin.DELETE("node/credentials/:credential_id", RevokeControllerCredential)
 	}
-
-	r.POST("node/credentials/:credential_id/rotation", BeginControllerCredentialRotation)
-	r.POST("node/credentials/:credential_id/rotation/confirm", ConfirmControllerCredentialRotation)
 
 	mutations := r.Group("", middleware.RequireSecureSession())
 	{

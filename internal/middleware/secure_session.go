@@ -311,6 +311,25 @@ func RequireInteractiveUserOrProxy() gin.HandlerFunc {
 	}
 }
 
+// RequireNodePrincipal keeps a route to the controller that signed the
+// request itself, such as the endpoints that change the credential the
+// controller authenticates with. Mount such routes outside Proxy: the node
+// proxy signs a forwarded request as the controller, so a forwarded call would
+// act on that relationship for whoever selected the node. The guard is
+// deliberately absent from proxyGuardAuthorizations, so Proxy refuses to
+// forward a route that carries it.
+func RequireNodePrincipal() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if _, ok := c.Get(nodeauth.GinPrincipalKey); !ok {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"message": "This operation is only available to a node controller",
+			})
+			return
+		}
+		c.Next()
+	}
+}
+
 func userNeedsSecureSession(cUser *model.User) (bool, error) {
 	if cUser.EnabledOTP() || cUser.EnabledTwoFA {
 		return true, nil

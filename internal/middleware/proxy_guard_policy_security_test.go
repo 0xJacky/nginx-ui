@@ -40,6 +40,7 @@ func TestProxyGuardPolicyFromHandlerNames(t *testing.T) {
 		{"interactive or node", []gin.HandlerFunc{RequireInteractiveUserOrProxy(), sentinel}, proxyInteractiveUserOrNode, true},
 		{"origin check", []gin.HandlerFunc{RequireWebSocketOrigin(), sentinel}, 0, true},
 		{"unknown guard", []gin.HandlerFunc{RequireSecureSession(), RequireSyntheticGuardForProxyTest(), sentinel}, 0, false},
+		{"node principal only", []gin.HandlerFunc{RequireNodePrincipal(), sentinel}, 0, false},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			policy, known := proxyGuardPolicy(names(tc.handlers...))
@@ -100,7 +101,9 @@ func TestProxyEnforcesRegisteredGuardsWithoutPolicyEntry(t *testing.T) {
 		// The child keeps interactive routes to administrators and refuses the
 		// node principal, which the proxy reports as 503.
 		{"interactive stepped up", interactivePath, state.jwt, true, true, http.StatusServiceUnavailable, true},
-		{"unknown guard remote", unknownPath, state.jwt, true, true, http.StatusForbidden, false},
+		// Refused with 503, not 403: the web UI signs out on a 403 carrying
+		// its token, and an unforwardable route says nothing about the session.
+		{"unknown guard remote", unknownPath, state.jwt, true, true, http.StatusServiceUnavailable, false},
 		{"unknown guard local", unknownPath, state.jwt, false, false, http.StatusNoContent, false},
 		{"unguarded", openPath, state.jwt, false, true, http.StatusNoContent, true},
 	}
@@ -153,7 +156,7 @@ func TestWebSocketProxyEnforcesRegisteredGuardsWithoutPolicyEntry(t *testing.T) 
 		want int
 	}{
 		{"/api/synthetic/feed", http.StatusUnauthorized},
-		{"/api/synthetic/unknown_feed", http.StatusForbidden},
+		{"/api/synthetic/unknown_feed", http.StatusServiceUnavailable},
 	} {
 		req := httptest.NewRequest(http.MethodGet, tc.path+"?x_node_id="+strconv.FormatUint(nodeID, 10), nil)
 		req.Header.Set("Authorization", "Bearer "+state.jwt)

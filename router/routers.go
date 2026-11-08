@@ -107,6 +107,14 @@ func InitRouter() {
 			user.InitUserRouter(local)
 		}
 
+		// Node relationship routes (no proxy). A controller calls them on this
+		// node directly to manage the credential it signs with; forwarding one
+		// would act on the relationship of the controller doing the forwarding.
+		node := root.Group("/", middleware.AuthRequired())
+		for _, register := range NodeRouters {
+			register(node)
+		}
+
 		// Local-only WebSocket routes (no proxy). WebSocket handshakes cannot
 		// carry an Authorization header, so they must use AuthRequiredWS, which
 		// also accepts the token from the query string.
@@ -139,6 +147,13 @@ func InitRouter() {
 			register(w)
 		}
 	}
+}
+
+// NodeRouters are mounted behind AuthRequired without Proxy. Their routes
+// serve only the controller that signed the request, so a request selecting a
+// remote node is handled here and refused rather than forwarded.
+var NodeRouters = []func(*gin.RouterGroup){
+	cluster.InitNodeRouter,
 }
 
 // ProxiedRouters are mounted behind AuthRequired and Proxy, so a request that

@@ -82,7 +82,7 @@ func TestProxyAuthorizationCoversRegisteredRouteGuards(t *testing.T) {
 				hasInteractive = hasInteractive || strings.Contains(name, "middleware.RequireInteractiveUser.")
 				hasVerified = hasVerified || strings.Contains(name, "middleware.RequireVerifiedTwoFactorOrProxy.")
 			}
-			if userResponse.Code == http.StatusForbidden && strings.Contains(userResponse.Body.String(), "40302") {
+			if strings.Contains(userResponse.Body.String(), `"code":40302`) {
 				t.Errorf("%s %s carries a guard the node proxy does not enforce", route.Method, route.Path)
 				continue
 			}

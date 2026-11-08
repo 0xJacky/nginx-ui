@@ -38,6 +38,8 @@ var proxyGuardAuthorizations = map[string]proxyAuthorization{
 	"RequireInteractiveUserOrProxy":   proxyInteractiveUserOrNode,
 	// Checks the browser origin of a WebSocket upgrade, not the caller.
 	"RequireWebSocketOrigin": 0,
+	// RequireNodePrincipal is deliberately absent: its routes serve only the
+	// controller that signed the request and must never be forwarded.
 }
 
 // middlewarePackagePrefix prefixes the runtime function names of this
@@ -125,7 +127,10 @@ func authorizeProxyRequest(c *gin.Context) bool {
 	if !known {
 		logger.GetLogger().Errorw("Refusing to proxy a route carrying an authorization guard the node proxy does not enforce",
 			"method", c.Request.Method, "route", proxyRoute(c.FullPath()))
-		c.AbortWithStatusJSON(http.StatusForbidden, ErrProxyGuardNotEnforced)
+		// Not 403: the web UI signs out on a 403 carrying its token, and this
+		// refusal says nothing about the caller's session. 503 matches how the
+		// proxy reports a child node's refusal.
+		c.AbortWithStatusJSON(http.StatusServiceUnavailable, ErrProxyGuardNotEnforced)
 		return false
 	}
 	policy := guardPolicy | proxyRouteAuthorizations[c.Request.Method+" "+c.FullPath()]
