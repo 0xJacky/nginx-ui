@@ -105,7 +105,7 @@ func TestProxyRedactsPluginResourceCredentialsForServiceTokens(t *testing.T) {
 	childServer := httptest.NewServer(child)
 	defer childServer.Close()
 
-	node := &model.Node{Name: "child", URL: childServer.URL, AuthMethod: model.NodeAuthMethodLegacy}
+	node := &model.Node{Name: "child", URL: childServer.URL, Enabled: true, AuthMethod: model.NodeAuthMethodLegacy}
 	require.NoError(t, db.Create(node).Error)
 	encrypted, err := nodeauth.EncryptPrivateCredential(nodeauth.LegacyCredentialPurpose(node.ID), []byte(appsettings.NodeSettings.Secret))
 	require.NoError(t, err)

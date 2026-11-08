@@ -17,6 +17,7 @@ import (
 	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/internal/transport"
+	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
@@ -79,6 +80,9 @@ func Proxy() gin.HandlerFunc {
 			})
 			return
 		}
+		if refuseDisabledProxyNode(c, node) {
+			return
+		}
 
 		baseUrl, err := url.Parse(node.URL)
 		if err != nil {
@@ -137,6 +141,23 @@ func Proxy() gin.HandlerFunc {
 
 		proxy.ServeHTTP(c.Writer, req)
 	}
+}
+
+// refuseDisabledProxyNode refuses a request that selects a disabled node,
+// before anything is sent to the node or read from the request body. The
+// relationship maintenance job skips disabled nodes, so such a node may keep
+// an outdated authentication method and must not stay reachable here.
+func refuseDisabledProxyNode(c *gin.Context, node *model.Node) bool {
+	if node.Enabled {
+		return false
+	}
+	logger.GetLogger().Warnw("Refusing to proxy a request to a disabled node",
+		"node_id", node.ID, "method", c.Request.Method, "route", proxyRoute(c.FullPath()))
+	// Not 403: the web UI signs out on a 403 carrying its token, and a
+	// disabled node says nothing about the caller's session. 503 matches how
+	// the proxy reports a node it cannot reach.
+	c.AbortWithStatusJSON(http.StatusServiceUnavailable, ErrProxyNodeDisabled)
+	return true
 }
 
 func configureProxyResponse(

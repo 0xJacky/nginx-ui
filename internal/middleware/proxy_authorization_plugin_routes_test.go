@@ -107,7 +107,7 @@ func setupPluginProxyFixture(t *testing.T) *pluginProxyFixture {
 	childServer := httptest.NewServer(child)
 	t.Cleanup(childServer.Close)
 
-	node := &model.Node{Name: "plugin-child", URL: childServer.URL, AuthMethod: model.NodeAuthMethodLegacy}
+	node := &model.Node{Name: "plugin-child", URL: childServer.URL, Enabled: true, AuthMethod: model.NodeAuthMethodLegacy}
 	require.NoError(t, db.Create(node).Error)
 	encrypted, err := nodeauth.EncryptPrivateCredential(nodeauth.LegacyCredentialPurpose(node.ID), []byte(settings.NodeSettings.Secret))
 	require.NoError(t, err)

@@ -63,7 +63,7 @@ func setupProxyAuthorizationTest(t *testing.T) proxyAuthorizationTestState {
 func registerProxyTestNode(t *testing.T, endpoint string) uint64 {
 	t.Helper()
 	db := model.UseDB()
-	node := &model.Node{Name: "proxy-child", URL: endpoint, AuthMethod: model.NodeAuthMethodLegacy}
+	node := &model.Node{Name: "proxy-child", URL: endpoint, Enabled: true, AuthMethod: model.NodeAuthMethodLegacy}
 	require.NoError(t, db.Create(node).Error)
 	encrypted, err := nodeauth.EncryptPrivateCredential(nodeauth.LegacyCredentialPurpose(node.ID), []byte(settings.NodeSettings.Secret))
 	require.NoError(t, err)

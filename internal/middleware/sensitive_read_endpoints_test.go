@@ -526,7 +526,7 @@ func setupStoredSecretReadEndpoints(t *testing.T) storedSecretReadState {
 	childServer := httptest.NewServer(local)
 	t.Cleanup(childServer.Close)
 
-	node := &model.Node{Name: "stored-secret-child", URL: childServer.URL, AuthMethod: model.NodeAuthMethodLegacy}
+	node := &model.Node{Name: "stored-secret-child", URL: childServer.URL, Enabled: true, AuthMethod: model.NodeAuthMethodLegacy}
 	require.NoError(t, database.Create(node).Error)
 	encrypted, err := nodeauth.EncryptPrivateCredential(
 		nodeauth.LegacyCredentialPurpose(node.ID),

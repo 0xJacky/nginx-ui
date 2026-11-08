@@ -11,4 +11,5 @@ var (
 	ErrDisabledInDemo        = e.New(40300, "this action is disabled in demo mode")
 	ErrRemoteFeedHasSecrets  = e.New(40301, "this remote node feed carries stored secrets and requires a token with write scope")
 	ErrProxyGuardNotEnforced = e.New(40302, "this route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard")
+	ErrProxyNodeDisabled     = e.New(40303, "this request cannot be forwarded to the remote node because the node is disabled")
 )

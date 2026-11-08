@@ -43,6 +43,9 @@ func ProxyWs() gin.HandlerFunc {
 			logger.Error(err)
 			return
 		}
+		if refuseDisabledProxyNode(c, node) {
+			return
+		}
 
 		decodedUri, err := node.GetWebSocketURL(c.Request.RequestURI)
 
