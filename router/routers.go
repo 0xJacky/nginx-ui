@@ -126,39 +126,8 @@ func InitRouter() {
 		// reporter that keeps every audited request and response in memory and
 		// serves them under /api/debug, which the frontend never uses.
 		g := root.Group("/", middleware.AuthRequired(), middleware.Proxy())
-		{
-			analytic.InitRouter(g)
-			user.InitManageUserRouter(g)
-			nginx.InitRouter(g)
-			sites.InitRouter(g)
-			accesslist.InitRouter(g)
-			snippetapi.InitRouter(g)
-			streams.InitRouter(g)
-			config.InitRouter(g)
-			template.InitRouter(g)
-			certificate.InitCertificateRouter(g)
-			certificate.InitDNSCredentialRouter(g)
-			certificate.InitAcmeUserRouter(g)
-			cert_deploy.InitRouter(g)
-			blocklist.InitRouter(g)
-			upstream_discovery.InitRouter(g)
-			dnsapi.InitRouter(g)
-			system.InitPrivateRouter(g)
-			settings.InitRouter(g)
-			llm.InitRouter(g)
-			mcp.InitManagementRouter(g)
-			cluster.InitRouter(g)
-			host.InitRouter(g)
-			notification.InitRouter(g)
-			pluginapi.InitRouter(g)
-			pluginapi.InitSyncRouter(g)
-			pluginapi.InitMarketplaceRouter(g)
-			external_notify.InitRouter(g)
-			backup.InitAutoBackupRouter(g)
-			nginxLog.InitRouter(g)
-			upstream.InitHTTPRouter(g)
-			ingress.InitRouter(g)
-			g.GET("/geolite/status", geolite.GetStatus)
+		for _, register := range ProxiedRouters {
+			register(g)
 		}
 
 		// The terminal applies its own gates before proxying to a child node.
@@ -166,17 +135,62 @@ func InitRouter() {
 
 		// Authorization required and websocket request (no cookie fallback to prevent CSWSH)
 		w := root.Group("/", middleware.AuthRequiredWS(), middleware.ProxyWs())
-		{
-			analytic.InitWebSocketRouter(w)
-			certificate.InitCertificateWebSocketRouter(w)
-			event.InitRouter(w)
-			nginxLog.InitWebSocketRouter(w)
-			sites.InitWebSocketRouter(w)
-			upstream.InitWebSocketRouter(w)
-			system.InitWebSocketRouter(w)
-			nginx.InitWebSocketRouter(w)
-			cluster.InitWebSocketRouter(w)
-			w.GET("/geolite/download", geolite.DownloadGeoLiteDB)
+		for _, register := range ProxiedWebSocketRouters {
+			register(w)
 		}
 	}
+}
+
+// ProxiedRouters are mounted behind AuthRequired and Proxy, so a request that
+// selects a remote node is forwarded before any route-level guard runs. Proxy
+// enforces those guards against the original caller itself. The proxy
+// authorization audit test registers exactly this list.
+var ProxiedRouters = []func(*gin.RouterGroup){
+	analytic.InitRouter,
+	user.InitManageUserRouter,
+	nginx.InitRouter,
+	sites.InitRouter,
+	accesslist.InitRouter,
+	snippetapi.InitRouter,
+	streams.InitRouter,
+	config.InitRouter,
+	template.InitRouter,
+	certificate.InitCertificateRouter,
+	certificate.InitDNSCredentialRouter,
+	certificate.InitAcmeUserRouter,
+	cert_deploy.InitRouter,
+	blocklist.InitRouter,
+	upstream_discovery.InitRouter,
+	dnsapi.InitRouter,
+	system.InitPrivateRouter,
+	settings.InitRouter,
+	llm.InitRouter,
+	mcp.InitManagementRouter,
+	cluster.InitRouter,
+	host.InitRouter,
+	notification.InitRouter,
+	pluginapi.InitRouter,
+	pluginapi.InitSyncRouter,
+	pluginapi.InitMarketplaceRouter,
+	external_notify.InitRouter,
+	backup.InitAutoBackupRouter,
+	nginxLog.InitRouter,
+	upstream.InitHTTPRouter,
+	ingress.InitRouter,
+	func(g *gin.RouterGroup) { g.GET("/geolite/status", geolite.GetStatus) },
+}
+
+// ProxiedWebSocketRouters are mounted behind AuthRequiredWS and ProxyWs, with
+// the same pre-proxy guard enforcement as ProxiedRouters.
+var ProxiedWebSocketRouters = []func(*gin.RouterGroup){
+	analytic.InitWebSocketRouter,
+	certificate.InitCertificateWebSocketRouter,
+	event.InitRouter,
+	nginxLog.InitWebSocketRouter,
+	sites.InitWebSocketRouter,
+	upstream.InitWebSocketRouter,
+	system.InitWebSocketRouter,
+	nginx.InitWebSocketRouter,
+	cluster.InitWebSocketRouter,
+	func(w *gin.RouterGroup) { w.GET("/geolite/download", geolite.DownloadGeoLiteDB) },
 }

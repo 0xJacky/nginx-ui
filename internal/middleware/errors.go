@@ -3,10 +3,11 @@ package middleware
 import "github.com/uozi-tech/cosy"
 
 var (
-	e                       = cosy.NewErrorScope("middleware")
-	ErrInvalidRequestFormat = e.New(40000, "invalid request format")
-	ErrDecryptionFailed     = e.New(40001, "decryption failed")
-	ErrFormParseFailed      = e.New(40002, "form parse failed")
-	ErrDisabledInDemo       = e.New(40300, "this action is disabled in demo mode")
-	ErrRemoteFeedHasSecrets = e.New(40301, "this remote node feed carries stored secrets and requires a token with write scope")
+	e                        = cosy.NewErrorScope("middleware")
+	ErrInvalidRequestFormat  = e.New(40000, "invalid request format")
+	ErrDecryptionFailed      = e.New(40001, "decryption failed")
+	ErrFormParseFailed       = e.New(40002, "form parse failed")
+	ErrDisabledInDemo        = e.New(40300, "this action is disabled in demo mode")
+	ErrRemoteFeedHasSecrets  = e.New(40301, "this remote node feed carries stored secrets and requires a token with write scope")
+	ErrProxyGuardNotEnforced = e.New(40302, "this route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard")
 )

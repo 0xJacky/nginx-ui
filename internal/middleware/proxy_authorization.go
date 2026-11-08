@@ -2,10 +2,14 @@ package middleware
 
 import (
 	"net/http"
+	"net/url"
+	"reflect"
+	"strings"
 
+	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/gin-gonic/gin"
-	"net/url"
+	"github.com/uozi-tech/cosy/logger"
 )
 
 type proxyAuthorization uint8
@@ -14,12 +18,55 @@ const (
 	proxySecureSession proxyAuthorization = 1 << iota
 	proxyInteractiveUser
 	proxyVerifiedTwoFactor
+	proxyInteractiveUserOrNode
 )
 
-// proxyRouteAuthorizations mirrors the explicit authorization guards on proxied
-// routes. Proxy runs before subrouter middleware, so those guards must also run
-// against the original caller before transport authentication becomes a node.
-// The registration audit test checks this policy against actual route guards.
+// Proxy runs before subrouter middleware, so the authorization guards of a
+// proxied route must run against the original caller before the node transport
+// replaces it with a node principal. A route's policy is the union of the
+// guards actually registered on the route, read from its handler chain, and
+// the explicit entries of proxyRouteAuthorizations.
+
+// proxyGuardAuthorizations maps each route guard of this package, by function
+// name, to the checks Proxy runs for it. Route guards here are named Require*.
+// A proxied route carrying a Require* handler that is not listed is refused
+// before proxying, so a new guard cannot be bypassed through a remote node.
+var proxyGuardAuthorizations = map[string]proxyAuthorization{
+	"RequireSecureSession":            proxySecureSession,
+	"RequireInteractiveUser":          proxyInteractiveUser,
+	"RequireVerifiedTwoFactorOrProxy": proxySecureSession | proxyVerifiedTwoFactor,
+	"RequireInteractiveUserOrProxy":   proxyInteractiveUserOrNode,
+	// Checks the browser origin of a WebSocket upgrade, not the caller.
+	"RequireWebSocketOrigin": 0,
+}
+
+// middlewarePackagePrefix prefixes the runtime function names of this
+// package, which is how Gin reports handlers in Context.HandlerNames.
+var middlewarePackagePrefix = reflect.TypeFor[proxyAuthorization]().PkgPath() + "."
+
+// proxyGuardPolicy derives the policy of the guards registered on the matched
+// route. known is false when the route carries a guard Proxy cannot enforce.
+func proxyGuardPolicy(handlerNames []string) (policy proxyAuthorization, known bool) {
+	for _, name := range handlerNames {
+		guard, ok := strings.CutPrefix(name, middlewarePackagePrefix)
+		if !ok || !strings.HasPrefix(guard, "Require") {
+			continue
+		}
+		guard, _, _ = strings.Cut(guard, ".")
+		guardPolicy, ok := proxyGuardAuthorizations[guard]
+		if !ok {
+			return 0, false
+		}
+		policy |= guardPolicy
+	}
+	return policy, true
+}
+
+// proxyRouteAuthorizations adds caller checks that are not visible as route
+// middleware, such as checks a handler runs itself, and pins the policy of
+// routes explicitly. Guards registered on a route are enforced without an
+// entry here. The registration audit test checks the combined policy against
+// every route that router.InitRouter mounts behind the proxy.
 var proxyRouteAuthorizations = buildProxyRouteAuthorizations()
 
 func buildProxyRouteAuthorizations() map[string]proxyAuthorization {
@@ -74,8 +121,21 @@ func buildProxyRouteAuthorizations() map[string]proxyAuthorization {
 }
 
 func authorizeProxyRequest(c *gin.Context) bool {
-	policy := proxyRouteAuthorizations[c.Request.Method+" "+c.FullPath()]
+	guardPolicy, known := proxyGuardPolicy(c.HandlerNames())
+	if !known {
+		logger.GetLogger().Errorw("Refusing to proxy a route carrying an authorization guard the node proxy does not enforce",
+			"method", c.Request.Method, "route", proxyRoute(c.FullPath()))
+		c.AbortWithStatusJSON(http.StatusForbidden, ErrProxyGuardNotEnforced)
+		return false
+	}
+	policy := guardPolicy | proxyRouteAuthorizations[c.Request.Method+" "+c.FullPath()]
 	if policy&proxyInteractiveUser != 0 && !verifyInteractiveUser(c) {
+		return false
+	}
+	if _, isServiceToken := c.Get(internalmcp.ServiceTokenPrincipalKey); isServiceToken && policy&proxyInteractiveUserOrNode != 0 {
+		c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+			"message": "This operation requires an interactive administrator",
+		})
 		return false
 	}
 	if policy&proxySecureSession != 0 && !verifySecureSession(c) {
