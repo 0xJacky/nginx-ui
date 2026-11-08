@@ -123,6 +123,16 @@ func buildProxyRouteAuthorizations() map[string]proxyAuthorization {
 }
 
 func authorizeProxyRequest(c *gin.Context) bool {
+	// The policy below belongs to the route matched here. A path a proxy in
+	// front of the child could resolve to another route is never forwarded.
+	if !isCanonicalProxyPath(c.Request) {
+		logger.GetLogger().Warnw("Refusing to proxy a request whose path is not canonical",
+			"method", c.Request.Method, "route", proxyRoute(c.FullPath()))
+		// Not 403: the web UI signs out on a 403 carrying its token, and a
+		// malformed path says nothing about the caller's session.
+		c.AbortWithStatusJSON(http.StatusBadRequest, ErrProxyPathNotCanonical)
+		return false
+	}
 	guardPolicy, known := proxyGuardPolicy(c.HandlerNames())
 	if !known {
 		logger.GetLogger().Errorw("Refusing to proxy a route carrying an authorization guard the node proxy does not enforce",
