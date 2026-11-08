@@ -47,7 +47,10 @@ func ProxyWs() gin.HandlerFunc {
 			return
 		}
 
-		decodedUri, err := node.GetWebSocketURL(c.Request.RequestURI)
+		// Build the target from the parsed URL, which is the path the route
+		// was matched and authorized on. Re-parsing the raw request URI would
+		// treat a raw '#' as a fragment and forward a shorter path.
+		decodedUri, err := node.GetWebSocketURL(c.Request.URL.RequestURI())
 
 		if err != nil {
 			logger.Error(err)
