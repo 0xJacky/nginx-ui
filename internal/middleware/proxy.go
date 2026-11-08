@@ -28,13 +28,24 @@ const proxyUpstreamStatusHeader = "X-Nginx-UI-Upstream-Status"
 
 const maxServiceTokenRedactionBodySize = 16 << 20
 
+// serviceTokenRedactedResponseFields removes, for every service token, the
+// stored credentials a child node returns in full to the controller's node
+// principal. Each entry mirrors a local handler that withholds the same fields
+// from service tokens; TestServiceTokenAwareHandlersHaveProxyRedaction keeps
+// the two in step.
 var serviceTokenRedactedResponseFields = map[string][]string{
-	"/api/acme_users":          {"eab_key_id", "eab_hmac_key"},
-	"/api/acme_users/:id":      {"eab_key_id", "eab_hmac_key"},
-	"/api/auto_backup":         {"s3_access_key_id", "s3_secret_access_key"},
-	"/api/auto_backup/:id":     {"s3_access_key_id", "s3_secret_access_key"},
-	"/api/dns_credentials":     {"config", "configuration", "links"},
-	"/api/dns_credentials/:id": {"config", "configuration", "links"},
+	"/api/acme_users":               {"eab_key_id", "eab_hmac_key"},
+	"/api/acme_users/:id":           {"eab_key_id", "eab_hmac_key"},
+	"/api/auto_backup":              {"s3_access_key_id", "s3_secret_access_key"},
+	"/api/auto_backup/:id":          {"s3_access_key_id", "s3_secret_access_key"},
+	"/api/blocklist_sources":        {"config"},
+	"/api/blocklist_sources/:id":    {"config"},
+	"/api/cert_deploy_targets":      {"config"},
+	"/api/cert_deploy_targets/:id":  {"config"},
+	"/api/dns_credentials":          {"config", "configuration", "links"},
+	"/api/dns_credentials/:id":      {"config", "configuration", "links"},
+	"/api/upstream_discoveries":     {"config"},
+	"/api/upstream_discoveries/:id": {"config"},
 }
 
 type proxyLogFunc func(message string, keysAndValues ...any)
