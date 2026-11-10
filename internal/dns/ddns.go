@@ -24,10 +24,16 @@ const (
 	// ipDetectAttemptTimeout bounds a single public IP endpoint attempt (DNS,
 	// connect, TLS and reading the tiny text body). 4s covers that comfortably
 	// even on a ~300ms RTT link, yet keeps the worst case, where every endpoint
-	// in a list hangs, at 5 x 4s = 20s per family. Families are probed
-	// concurrently, so that stays well below the 60s minimum DDNS interval and
+	// in a list hangs, at 8 x 4s = 32s per family. Families are probed
+	// concurrently, so that stays below the 60s minimum DDNS interval and
 	// acceptable for the interactive config save that also resolves IPs.
+	// Pinning makes a missing route fail at dial time, so in practice only
+	// endpoints that accept a connection and stall cost the full 4s.
 	ipDetectAttemptTimeout = 4 * time.Second
+
+	// cloudFallbackIPEndpoint is served by nginx-ui-cloud. The hostname is
+	// dual-stack and answers with the address the client connected from.
+	cloudFallbackIPEndpoint = "https://cloud.nginxui.com/ip"
 
 	// DDNS IP version selectors persisted in DDNSConfig.IPVersion and accepted by the API.
 	DDNSIPVersionIPv4     = "ipv4"
@@ -42,19 +48,31 @@ const (
 var ddnsFamilyFailureGrace = 1 * time.Hour
 
 var (
+	// Public IP echo services, tried in order. Services reachable from mainland
+	// China are mixed in near the top, because the others often time out there
+	// (#2104). Single-family hostnames come first, and dual-stack ones are
+	// fine because each probe is pinned to its family. Our own
+	// cloudFallbackIPEndpoint is always last, so it only sees traffic when
+	// every third-party service fails.
 	ipv4Endpoints = []string{
+		"https://ipv4.ddnspod.com",
 		"https://api.ipify.org",
+		"https://ip.3322.net",
 		"https://ipv4.icanhazip.com",
 		"https://v4.ident.me",
 		"https://ipv4.ifconfig.co",
 		"https://myip.ipip.net",
+		cloudFallbackIPEndpoint,
 	}
 	ipv6Endpoints = []string{
-		"https://api64.ipify.org",
+		"https://ipv6.ddnspod.com",
+		"https://speed.neu6.edu.cn/getIP.php",
 		"https://ipv6.icanhazip.com",
 		"https://v6.ident.me",
 		"https://ipv6.ifconfig.co",
 		"https://myip.ipip.net",
+		"https://api64.ipify.org",
+		cloudFallbackIPEndpoint,
 	}
 	ipRegex = regexp.MustCompile(`(?i)(?:[0-9a-f]{0,4}:){2,7}[0-9a-f]{0,4}|(?:\d{1,3}\.){3}\d{1,3}`)
 

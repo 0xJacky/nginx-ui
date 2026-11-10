@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strconv"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -95,4 +96,23 @@ func TestIPProbeOfDualStackNameUsesRequestedFamily(t *testing.T) {
 	ip, err = fetchIP(context.Background(), endpoint, ipFamilyV4)
 	require.NoError(t, err)
 	require.Equal(t, "198.51.100.12", ip)
+}
+
+// The lists are tried in order, so our own service must stay the last
+// resort, and every endpoint must be a distinct HTTPS URL.
+func TestIPEndpointListsKeepTheCloudFallbackLast(t *testing.T) {
+	for name, endpoints := range map[string][]string{"ipv4": ipv4Endpoints, "ipv6": ipv6Endpoints} {
+		t.Run(name, func(t *testing.T) {
+			require.NotEmpty(t, endpoints)
+			require.Equal(t, cloudFallbackIPEndpoint, endpoints[len(endpoints)-1])
+
+			seen := make(map[string]struct{}, len(endpoints))
+			for _, endpoint := range endpoints {
+				require.Truef(t, strings.HasPrefix(endpoint, "https://"), "%s is not HTTPS", endpoint)
+				_, duplicate := seen[endpoint]
+				require.Falsef(t, duplicate, "%s is listed twice", endpoint)
+				seen[endpoint] = struct{}{}
+			}
+		})
+	}
 }
