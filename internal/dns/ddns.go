@@ -20,7 +20,14 @@ import (
 const (
 	minDDNSIntervalSeconds     = 60
 	defaultDDNSIntervalSeconds = 300
-	ipDetectTimeout            = 8 * time.Second
+
+	// ipDetectAttemptTimeout bounds a single public IP endpoint attempt (DNS,
+	// connect, TLS and reading the tiny text body). 4s covers that comfortably
+	// even on a ~300ms RTT link, yet keeps the worst case, where every endpoint
+	// in a list hangs, at 5 x 4s = 20s per family. Families are probed
+	// concurrently, so that stays well below the 60s minimum DDNS interval and
+	// acceptable for the interactive config save that also resolves IPs.
+	ipDetectAttemptTimeout = 4 * time.Second
 
 	// DDNS IP version selectors persisted in DDNSConfig.IPVersion and accepted by the API.
 	DDNSIPVersionIPv4     = "ipv4"
@@ -50,6 +57,17 @@ var (
 		"https://myip.ipip.net",
 	}
 	ipRegex = regexp.MustCompile(`(?i)(?:[0-9a-f]{0,4}:){2,7}[0-9a-f]{0,4}|(?:\d{1,3}\.){3}\d{1,3}`)
+
+	// ipProbeClients pins each probe to its address family. A dual-stack
+	// endpoint reached through an unpinned client answers over whichever family
+	// the dialer picks, so an IPv6 probe can come back with an IPv4 address.
+	// Pinning also makes a host without an IPv6 route fail the IPv6 probe fast
+	// instead of waiting for a timeout.
+	ipProbeClients = map[ipFamily]*http.Client{
+		ipFamilyAny: newIPProbeClient("tcp"),
+		ipFamilyV4:  newIPProbeClient("tcp4"),
+		ipFamilyV6:  newIPProbeClient("tcp6"),
+	}
 )
 
 type ipFamily int
@@ -538,9 +556,6 @@ func resolvePublicIPs(ctx context.Context, ipVersion string) (ipSnapshot, error)
 	}
 	policy := getDDNSIPVersionPolicy(version)
 
-	ipCtx, cancel := context.WithTimeout(ctx, ipDetectTimeout)
-	defer cancel()
-
 	// Probe each family concurrently so a slow IPv6 lookup does not delay IPv4.
 	var (
 		wg               sync.WaitGroup
@@ -553,13 +568,13 @@ func resolvePublicIPs(ctx context.Context, ipVersion string) (ipSnapshot, error)
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				ipv4Res, ipv4Err = fetchAnyIP(ipCtx, ipv4Endpoints, ipFamilyV4)
+				ipv4Res, ipv4Err = fetchAnyIP(ctx, ipv4Endpoints, ipFamilyV4)
 			}()
 		case ipFamilyV6:
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
-				ipv6Res, ipv6Err = fetchAnyIP(ipCtx, ipv6Endpoints, ipFamilyV6)
+				ipv6Res, ipv6Err = fetchAnyIP(ctx, ipv6Endpoints, ipFamilyV6)
 			}()
 		}
 	}
@@ -597,6 +612,30 @@ func resolvePublicIPs(ctx context.Context, ipVersion string) (ipSnapshot, error)
 	return snapshot, nil
 }
 
+// newIPProbeClient returns a client whose connections are dialed over the
+// given network ("tcp", "tcp4" or "tcp6"). It clones http.DefaultTransport so
+// proxy settings from the environment and the default connection limits stay
+// in effect. When a proxy is configured, the pinned network applies to the
+// connection to the proxy.
+func newIPProbeClient(network string) *http.Client {
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	dialer := &net.Dialer{
+		Timeout:   30 * time.Second,
+		KeepAlive: 30 * time.Second,
+	}
+	transport.DialContext = func(ctx context.Context, _, addr string) (net.Conn, error) {
+		return dialer.DialContext(ctx, network, addr)
+	}
+	return &http.Client{Transport: transport}
+}
+
+func ipProbeClient(family ipFamily) *http.Client {
+	if client, ok := ipProbeClients[family]; ok {
+		return client
+	}
+	return ipProbeClients[ipFamilyAny]
+}
+
 func fetchIP(ctx context.Context, endpoint string, family ipFamily) (string, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
 	if err != nil {
@@ -606,7 +645,7 @@ func fetchIP(ctx context.Context, endpoint string, family ipFamily) (string, err
 	q.Set("format", "text")
 	req.URL.RawQuery = q.Encode()
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := ipProbeClient(family).Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -625,16 +664,29 @@ func fetchIP(ctx context.Context, endpoint string, family ipFamily) (string, err
 	return parsed, nil
 }
 
+// fetchAnyIP tries the endpoints in order and returns the first valid address.
+// Each attempt gets its own ipDetectAttemptTimeout, so an endpoint that hangs
+// cannot use up the time the remaining fallbacks need.
 func fetchAnyIP(ctx context.Context, endpoints []string, family ipFamily) (string, error) {
 	var errs []string
 	for _, ep := range endpoints {
-		if ip, err := fetchIP(ctx, ep, family); err == nil {
-			return ip, nil
-		} else {
+		if err := ctx.Err(); err != nil {
 			errs = append(errs, fmt.Sprintf("%s: %v", ep, err))
+			break
 		}
+		ip, err := fetchIPWithTimeout(ctx, ep, family)
+		if err == nil {
+			return ip, nil
+		}
+		errs = append(errs, fmt.Sprintf("%s: %v", ep, err))
 	}
 	return "", errors.New(strings.Join(errs, "; "))
+}
+
+func fetchIPWithTimeout(ctx context.Context, endpoint string, family ipFamily) (string, error) {
+	attemptCtx, cancel := context.WithTimeout(ctx, ipDetectAttemptTimeout)
+	defer cancel()
+	return fetchIP(attemptCtx, endpoint, family)
 }
 
 func parseIPString(val string, family ipFamily) (string, error) {
