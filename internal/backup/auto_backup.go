@@ -566,7 +566,8 @@ func cleanupLocalBackupFiles(result *ExecutionResult) error {
 }
 
 // ValidateAutoBackupConfig performs comprehensive validation of auto backup configuration.
-// This function centralizes all validation logic for both creation and modification.
+// It is used on creation. Modification goes through ValidateAutoBackupUpdate,
+// which runs the same checks but lets a task keep its stored name.
 //
 // Parameters:
 //   - config: Auto backup configuration to validate

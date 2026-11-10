@@ -1,6 +1,7 @@
 package backup
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -183,18 +184,38 @@ func TestModifyAutoBackupKeepsStoredNameButChecksNewOnes(t *testing.T) {
 
 	// Renaming to another unsafe name is still refused.
 	recorder = pluginStorageRequest(router, http.MethodPost, path, `{"name":"a:b"}`, session)
-	require.NotEqual(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	requireInvalidFilename(t, recorder)
 	require.NoError(t, model.UseDB().First(&stored, legacy.ID).Error)
 	require.Equal(t, "daily:backup", stored.Name)
 
 	// So is creating a task with an unsafe name.
-	recorder = pluginStorageRequest(router, http.MethodPost, "/auto_backup",
-		`{"name":"a:b","backup_type":"nginx_and_nginx_ui","storage_type":"local","cron_expression":"0 0 * * *","enabled":false}`, session)
-	require.NotEqual(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	createBody, err := json.Marshal(map[string]any{
+		"name":            "a:b",
+		"backup_type":     "nginx_and_nginx_ui",
+		"storage_type":    "local",
+		"storage_path":    t.TempDir(),
+		"cron_expression": "0 0 * * *",
+		"enabled":         false,
+	})
+	require.NoError(t, err)
+	recorder = pluginStorageRequest(router, http.MethodPost, "/auto_backup", string(createBody), session)
+	requireInvalidFilename(t, recorder)
 
 	// A safe name still works.
 	recorder = pluginStorageRequest(router, http.MethodPost, path, `{"name":"daily backup"}`, session)
 	require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
 	require.NoError(t, model.UseDB().First(&stored, legacy.ID).Error)
 	require.Equal(t, "daily backup", stored.Name)
+}
+
+// requireInvalidFilename checks that a request was refused by the auto backup
+// name check (code 4917), not by another validation rule.
+func requireInvalidFilename(t *testing.T, recorder *httptest.ResponseRecorder) {
+	t.Helper()
+	require.NotEqual(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	var resp struct {
+		Code int `json:"code"`
+	}
+	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &resp), recorder.Body.String())
+	require.Equal(t, 4917, resp.Code, recorder.Body.String())
 }
