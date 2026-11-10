@@ -574,7 +574,18 @@ func cleanupLocalBackupFiles(result *ExecutionResult) error {
 // Returns:
 //   - error: CosyError if validation fails, nil if configuration is valid
 func ValidateAutoBackupConfig(config *model.AutoBackup) error {
-	if config.Name != "" {
+	return validateAutoBackupConfig(config, true)
+}
+
+// ValidateAutoBackupUpdate validates a modified auto backup configuration.
+// A task created before names were checked can keep its stored name, so the
+// name is only validated when it differs from the stored one.
+func ValidateAutoBackupUpdate(config, stored *model.AutoBackup) error {
+	return validateAutoBackupConfig(config, config.Name != stored.Name)
+}
+
+func validateAutoBackupConfig(config *model.AutoBackup, checkName bool) error {
+	if checkName && config.Name != "" {
 		if err := validateAutoBackupName(config.Name); err != nil {
 			return err
 		}

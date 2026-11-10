@@ -158,3 +158,43 @@ func TestRunAutoBackupAppliesRetentionCount(t *testing.T) {
 		})
 	}
 }
+
+func TestModifyAutoBackupKeepsStoredNameButChecksNewOnes(t *testing.T) {
+	router, session := newPluginStorageRouter(t)
+
+	// A task saved before names were checked, as v2.4.2 allowed.
+	legacy := &model.AutoBackup{
+		Name:           "daily:backup",
+		BackupType:     model.BackupTypeNginxAndNginxUI,
+		StorageType:    model.StorageTypeLocal,
+		CronExpression: "0 0 * * *",
+	}
+	require.NoError(t, model.UseDB().Create(legacy).Error)
+	path := "/auto_backup/" + strconv.FormatUint(legacy.ID, 10)
+
+	// The edit form posts the stored name back unchanged.
+	recorder := pluginStorageRequest(router, http.MethodPost, path,
+		`{"name":"daily:backup","retention_count":5,"enabled":false}`, session)
+	require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	var stored model.AutoBackup
+	require.NoError(t, model.UseDB().First(&stored, legacy.ID).Error)
+	require.Equal(t, "daily:backup", stored.Name)
+	require.Equal(t, 5, stored.RetentionCount)
+
+	// Renaming to another unsafe name is still refused.
+	recorder = pluginStorageRequest(router, http.MethodPost, path, `{"name":"a:b"}`, session)
+	require.NotEqual(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	require.NoError(t, model.UseDB().First(&stored, legacy.ID).Error)
+	require.Equal(t, "daily:backup", stored.Name)
+
+	// So is creating a task with an unsafe name.
+	recorder = pluginStorageRequest(router, http.MethodPost, "/auto_backup",
+		`{"name":"a:b","backup_type":"nginx_and_nginx_ui","storage_type":"local","cron_expression":"0 0 * * *","enabled":false}`, session)
+	require.NotEqual(t, http.StatusOK, recorder.Code, recorder.Body.String())
+
+	// A safe name still works.
+	recorder = pluginStorageRequest(router, http.MethodPost, path, `{"name":"daily backup"}`, session)
+	require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	require.NoError(t, model.UseDB().First(&stored, legacy.ID).Error)
+	require.Equal(t, "daily backup", stored.Name)
+}
