@@ -152,7 +152,7 @@ func ModifyAutoBackup(c *gin.Context) {
 		"storage_config":       "omitempty",
 	}).BeforeExecuteHook(func(ctx *cosy.Ctx[model.AutoBackup]) {
 		// Validate backup configuration before modification
-		if err := backup.ValidateAutoBackupConfig(&ctx.Model); err != nil {
+		if err := backup.ValidateAutoBackupUpdate(&ctx.Model, &ctx.OriginModel); err != nil {
 			ctx.AbortWithError(err)
 			return
 		}
