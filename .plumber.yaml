@@ -11,6 +11,8 @@ github:
     # nginxui is our own organization; nginxui/musl-cross-compilers is maintained by
     # us, so trust the whole owner here. vedantmgoyal9/winget-releaser publishes
     # releases to WinGet; it is pinned by digest and trusted as an exact repo only.
+    # softprops/action-gh-release uploads the build artifacts to GitHub Releases in
+    # build.yml; it is pinned by digest and trusted as an exact repo only.
     # includePlumberDefaults keeps Plumber's curated trusted list in addition to
     # these entries rather than replacing it.
     githubActionMustComeFromAuthorizedSources:
@@ -18,6 +20,7 @@ github:
       trustedGithubActions:
         - nginxui/*
         - vedantmgoyal9/winget-releaser
+        - softprops/action-gh-release
 
     # dev is pushed to directly by maintainers rather than through protected
     # pull requests, so branch protection is intentionally not enforced. Suppress
