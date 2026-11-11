@@ -28,6 +28,10 @@ func TestParseIPStringRespectsAddressFamily(t *testing.T) {
 }
 
 func TestFetchAnyIPSkipsMismatchedAddressFamily(t *testing.T) {
+	// Both servers listen on 127.0.0.1; this test is about rejecting a body of
+	// the wrong family, not about dialing, so the probe is not family pinned.
+	t.Cleanup(useUnpinnedIPProbeClientsForTest())
+
 	ipv4Server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("198.51.100.12"))
 	}))
