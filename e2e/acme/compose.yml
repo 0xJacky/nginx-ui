@@ -59,7 +59,7 @@ services:
   # lego's httpreq DNS provider talks to this adapter, which publishes the TXT
   # record in challtestsrv, so DNS-01 is validated for real.
   dnsapi:
-    image: ${DNSAPI_IMAGE:-python:3.13-alpine}
+    image: ${DNSAPI_IMAGE:-python:3.15-alpine}
     command: python -u /dnsapi.py
     environment:
       CHALLTESTSRV_URL: http://${E2E_ACME_SUBNET_PREFIX:-10.31.0}.3:8055

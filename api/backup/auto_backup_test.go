@@ -1,6 +1,7 @@
 package backup
 
 import (
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -157,4 +158,64 @@ func TestRunAutoBackupAppliesRetentionCount(t *testing.T) {
 			require.FileExists(t, filepath.Join(storageDir, "unrelated.txt"))
 		})
 	}
+}
+
+func TestModifyAutoBackupKeepsStoredNameButChecksNewOnes(t *testing.T) {
+	router, session := newPluginStorageRouter(t)
+
+	// A task saved before names were checked, as v2.4.2 allowed.
+	legacy := &model.AutoBackup{
+		Name:           "daily:backup",
+		BackupType:     model.BackupTypeNginxAndNginxUI,
+		StorageType:    model.StorageTypeLocal,
+		CronExpression: "0 0 * * *",
+	}
+	require.NoError(t, model.UseDB().Create(legacy).Error)
+	path := "/auto_backup/" + strconv.FormatUint(legacy.ID, 10)
+
+	// The edit form posts the stored name back unchanged.
+	recorder := pluginStorageRequest(router, http.MethodPost, path,
+		`{"name":"daily:backup","retention_count":5,"enabled":false}`, session)
+	require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	var stored model.AutoBackup
+	require.NoError(t, model.UseDB().First(&stored, legacy.ID).Error)
+	require.Equal(t, "daily:backup", stored.Name)
+	require.Equal(t, 5, stored.RetentionCount)
+
+	// Renaming to another unsafe name is still refused.
+	recorder = pluginStorageRequest(router, http.MethodPost, path, `{"name":"a:b"}`, session)
+	requireInvalidFilename(t, recorder)
+	require.NoError(t, model.UseDB().First(&stored, legacy.ID).Error)
+	require.Equal(t, "daily:backup", stored.Name)
+
+	// So is creating a task with an unsafe name.
+	createBody, err := json.Marshal(map[string]any{
+		"name":            "a:b",
+		"backup_type":     "nginx_and_nginx_ui",
+		"storage_type":    "local",
+		"storage_path":    t.TempDir(),
+		"cron_expression": "0 0 * * *",
+		"enabled":         false,
+	})
+	require.NoError(t, err)
+	recorder = pluginStorageRequest(router, http.MethodPost, "/auto_backup", string(createBody), session)
+	requireInvalidFilename(t, recorder)
+
+	// A safe name still works.
+	recorder = pluginStorageRequest(router, http.MethodPost, path, `{"name":"daily backup"}`, session)
+	require.Equal(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	require.NoError(t, model.UseDB().First(&stored, legacy.ID).Error)
+	require.Equal(t, "daily backup", stored.Name)
+}
+
+// requireInvalidFilename checks that a request was refused by the auto backup
+// name check (code 4917), not by another validation rule.
+func requireInvalidFilename(t *testing.T, recorder *httptest.ResponseRecorder) {
+	t.Helper()
+	require.NotEqual(t, http.StatusOK, recorder.Code, recorder.Body.String())
+	var resp struct {
+		Code int `json:"code"`
+	}
+	require.NoError(t, json.Unmarshal(recorder.Body.Bytes(), &resp), recorder.Body.String())
+	require.Equal(t, 4917, resp.Code, recorder.Body.String())
 }

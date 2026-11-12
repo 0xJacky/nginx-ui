@@ -142,7 +142,7 @@ func (s *siteConfig) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (s *siteConfig) fillFieldMap() {
-	s.fieldMap = make(map[string]field.Expr, 22)
+	s.fieldMap = make(map[string]field.Expr, 24)
 	s.fieldMap["id"] = s.ID
 	s.fieldMap["created_at"] = s.CreatedAt
 	s.fieldMap["updated_at"] = s.UpdatedAt
