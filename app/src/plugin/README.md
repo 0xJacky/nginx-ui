@@ -188,7 +188,7 @@ plugin `style.css` or the chunk injects a `<style>` element itself.
 "webapp": {
   "bundle_path": "webapp/dist/main.js",
   "style_path": "webapp/dist/style.css",
-  "shared": { "vue": ">=3.5.42 <4", "antdv-next": "~1.5" }
+  "shared": { "vue": ">=3.5.42 <4", "antdv-next": ">=1.5.4 <2" }
 }
 ```
 
