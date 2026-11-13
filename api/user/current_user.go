@@ -56,7 +56,7 @@ func UpdateCurrentUser(c *gin.Context) {
 func UpdateCurrentUserPassword(c *gin.Context) {
 	var json struct {
 		OldPassword string `json:"old_password" binding:"required"`
-		NewPassword string `json:"new_password" binding:"required"`
+		NewPassword string `json:"new_password" binding:"required,max=72"`
 	}
 
 	if !cosy.BindAndValid(c, &json) {
