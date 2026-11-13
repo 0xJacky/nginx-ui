@@ -46,8 +46,8 @@ const rulesRef = reactive({
       message: () => $gettext('Please input your password!'),
     },
     {
-      max: 20,
-      message: () => $gettext('Password length cannot exceed 20 characters'),
+      max: 72,
+      message: () => $gettext('Password length cannot exceed 72 characters'),
     },
   ],
 })
