@@ -39,7 +39,7 @@ When set, the value replaces the defaults entirely, so include `openid` yourself
 
 The ID token claim whose value must equal the Nginx UI username, for example `sub`, `email`, `preferred_username`, `oid`, or `upn`.
 The user must already exist in Nginx UI; OIDC signs users in, it does not create accounts.
-Nginx UI usernames are limited to 20 characters, so the claim value must fit in that limit.
+Nginx UI usernames can be up to 255 characters, so a full email address or UPN fits.
 
 When Identifier is set, only that claim is used. If the claim is missing, is not a string, or is empty, the login is refused and the error names the claim; there is no fallback to other claims.
 
