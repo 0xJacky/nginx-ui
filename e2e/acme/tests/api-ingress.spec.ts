@@ -2,7 +2,7 @@ import type { APIRequestContext } from '@playwright/test'
 import type { ApiError, Ingress, IngressSpec } from '../lib/ingress'
 import { randomBytes } from 'node:crypto'
 import { expect, test } from '@playwright/test'
-import { createApi } from '../lib/api'
+import { apiConnectionHeaders, createApi } from '../lib/api'
 import { clearDomain, pointDomainTo } from '../lib/dns'
 import { inContainer, mustInContainer, restartNginxUI, servedCertificateDNSNames, servedCertificateIssuer, writeContainerFile } from '../lib/docker'
 import { addresses, baseURL } from '../lib/env'
@@ -346,11 +346,14 @@ test('a backend outside AllowedBackends is refused', async () => {
 })
 
 test('the ingress API rejects requests without credentials and with a wrong node secret', async ({ playwright }) => {
-  const anonymous = await playwright.request.newContext({ baseURL: test.info().project.use.baseURL })
+  const anonymous = await playwright.request.newContext({
+    baseURL: test.info().project.use.baseURL,
+    extraHTTPHeaders: apiConnectionHeaders,
+  })
   expect((await anonymous.get('/api/ingresses')).status()).toBe(403)
   const wrong = await playwright.request.newContext({
     baseURL: test.info().project.use.baseURL,
-    extraHTTPHeaders: { 'X-Node-Secret': 'not-the-secret' },
+    extraHTTPHeaders: { ...apiConnectionHeaders, 'X-Node-Secret': 'not-the-secret' },
   })
   expect((await wrong.put('/api/ingresses/nope', { data: { owner: 'x', spec: proxySpec(uniqueDomain('nope')) } })).status()).toBe(403)
   await anonymous.dispose()
