@@ -53,6 +53,26 @@ var (
 	linkReconcileOnce sync.Once
 )
 
+// Reconcile report state remembers the last unresolved/remaining counts so a
+// steady state (orphaned site_configs that can never be matched) is reported at
+// WARN only once instead of on every periodic pass (#2118). The mutex guards the
+// remembered counts because the reconcile runs from the periodic collection
+// loop, from write APIs via ReconcileSiteConfigSiteIDsIfDirty, and at startup.
+// The sentinel -1 means "nothing reported yet" and never equals a real count.
+var (
+	reconcileReportMu          sync.Mutex
+	lastUnresolvedReported     = -1
+	lastRemainingEmptyReported = int64(-1)
+)
+
+// Injectable logging sinks keep production behavior on the real cosy logger
+// while tests can observe which level each reconcile message used.
+var (
+	reconcileWarnf  = logger.Warnf
+	reconcileDebugf = logger.Debugf
+	reconcileInfof  = logger.Infof
+)
+
 type siteConfigCacheEntry struct {
 	config    *model.SiteConfig
 	expiresAt time.Time
@@ -707,17 +727,61 @@ func reconcileSiteConfigSiteIDsIfDirty() {
 		InvalidateSiteConfigCache()
 	}
 
-	if unresolved > 0 {
-		logger.Warnf("Site config auto-upgrade finished with unresolved records: unresolved=%d", unresolved)
+	remainingEmpty := countSiteConfigsWithEmptyIndex()
+
+	// Report unresolved/remaining at WARN only when the situation is new or has
+	// changed since the last pass, and at Debug when it is unchanged, so a
+	// steady orphaned-rows state no longer spams WARN every interval (#2118).
+	reconcileReportMu.Lock()
+	defer reconcileReportMu.Unlock()
+
+	// Real progress means the previous report no longer describes the current
+	// state, so forget it; a later recurrence of the same counts then warns
+	// again instead of being treated as unchanged and suppressed.
+	if updated > 0 || deduplicated > 0 {
+		lastUnresolvedReported = -1
+		lastRemainingEmptyReported = -1
 	}
 
-	remainingEmpty := countSiteConfigsWithEmptyIndex()
+	unresolvedChanged := unresolved > 0 && unresolved != lastUnresolvedReported
+	remainingChanged := remainingEmpty > 0 && remainingEmpty != lastRemainingEmptyReported
+
+	if unresolved > 0 {
+		const msg = "Site config auto-upgrade finished with unresolved records: unresolved=%d"
+		if unresolvedChanged {
+			reconcileWarnf(msg, unresolved)
+		} else {
+			reconcileDebugf(msg, unresolved)
+		}
+		lastUnresolvedReported = unresolved
+	} else {
+		// Dropped to zero: forget so a later recurrence warns again.
+		lastUnresolvedReported = -1
+	}
+
 	if remainingEmpty > 0 {
-		logger.Warnf("Site config auto-upgrade could not resolve all empty indexes: remaining=%d", remainingEmpty)
+		const msg = "Site config auto-upgrade could not resolve all empty indexes: remaining=%d"
+		if remainingChanged {
+			reconcileWarnf(msg, remainingEmpty)
+		} else {
+			reconcileDebugf(msg, remainingEmpty)
+		}
+		lastRemainingEmptyReported = remainingEmpty
+	} else {
+		// Dropped to zero: forget so a later recurrence warns again.
+		lastRemainingEmptyReported = -1
 	}
 
 	if updated > 0 || deduplicated > 0 || unresolved > 0 {
-		logger.Infof("Site config auto-upgrade summary: updated=%d deduplicated=%d unresolved=%d", updated, deduplicated, unresolved)
+		const msg = "Site config auto-upgrade summary: updated=%d deduplicated=%d unresolved=%d"
+		// Keep the summary at INFO when something meaningful happened (real
+		// progress, or a new/changed count); downgrade to Debug for an
+		// unchanged steady state so it stays available without spamming.
+		if updated > 0 || deduplicated > 0 || unresolvedChanged || remainingChanged {
+			reconcileInfof(msg, updated, deduplicated, unresolved)
+		} else {
+			reconcileDebugf(msg, updated, deduplicated, unresolved)
+		}
 	}
 }
 
