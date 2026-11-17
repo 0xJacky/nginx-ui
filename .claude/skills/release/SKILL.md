@@ -120,6 +120,21 @@ Notes:
 - Download the final `nginx-ui-windows-64.zip`, record its SHA-256, extract `nginx-ui.exe`, and record the executable SHA-256.
 - After a successful release, leave the release-note markdown untracked unless the user asks to delete it.
 
+## Homebrew Tap
+
+The `update-homebrew` job of the release `Build` run opens a PR titled `nginx-ui X.Y.Z` (branch `update-nginx-ui-X.Y.Z`) in `0xJacky/homebrew-tools`. It is not merged automatically, so merge it as part of every release once that job has succeeded:
+
+1. Find the PR with `gh pr list --repo 0xJacky/homebrew-tools --state open`.
+2. Confirm it only changes `Formula/nginx-ui.rb`, both `test-bot` checks passed, and it is `MERGEABLE`.
+3. Check that each of the four formula `sha256` values matches the `digest` of the asset it points to (`gh api repos/0xJacky/nginx-ui/releases/tags/vX.Y.Z --jq '.assets[] | "\(.digest) \(.name)"'`).
+4. Merge with a merge commit, as earlier tap PRs were, and delete the branch:
+
+```bash
+gh pr merge <number> --repo 0xJacky/homebrew-tools --merge --delete-branch
+```
+
+If `test-bot` fails, reproduce it locally against the tapped checkout (`brew style 0xjacky/tools`, `brew readall`, `brew audit --tap=0xjacky/tools`) and fix the formula template in nginx-ui's release workflow rather than editing the tap by hand.
+
 ## RainYun Cloud App Publication
 
 RainYun is a downstream distribution phase. Start it only after the GitHub Release is final, the required release workflows have completed, and the versioned Docker image is available for the target RainYun architecture. Do not make RainYun a prerequisite for publishing the GitHub Release.
