@@ -67,19 +67,7 @@ func nonNilSkipped(skipped []SkippedFile) []SkippedFile {
 // SyncNodes replicates the selected kinds of local content to the given nodes.
 // A full scope is the one-click "bring this new node up to date" action.
 func SyncNodes(ctx context.Context, nodeIDs []uint64, scope Scope) (*Summary, error) {
-	if scope.IsEmpty() {
-		return nil, ErrEmptyScope
-	}
-
-	nodes, err := resolveNodes(nodeIDs)
-	if err != nil {
-		return nil, err
-	}
-	if len(nodes) == 0 {
-		return nil, ErrNoTargetNode
-	}
-
-	items, err := buildItems(scope, nil)
+	nodes, items, err := prepareNodes(nodeIDs, scope)
 	if err != nil {
 		return nil, err
 	}
@@ -87,32 +75,62 @@ func SyncNodes(ctx context.Context, nodeIDs []uint64, scope Scope) (*Summary, er
 	return run(ctx, nodes, items), nil
 }
 
+func prepareNodes(nodeIDs []uint64, scope Scope) ([]nodeRef, []item, error) {
+	if scope.IsEmpty() {
+		return nil, nil, ErrEmptyScope
+	}
+
+	nodes, err := resolveNodes(nodeIDs)
+	if err != nil {
+		return nil, nil, err
+	}
+	if len(nodes) == 0 {
+		return nil, nil, ErrNoTargetNode
+	}
+
+	items, err := buildItems(scope, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return nodes, items, nil
+}
+
 // SyncNamespace replicates the namespace record and every site and stream that
 // belongs to it onto all of its member nodes, so each node ends up with the same
 // namespace content.
 func SyncNamespace(ctx context.Context, namespaceID uint64) (*Summary, error) {
+	_, nodes, items, err := prepareNamespace(namespaceID)
+	if err != nil {
+		return nil, err
+	}
+
+	return run(ctx, nodes, items), nil
+}
+
+func prepareNamespace(namespaceID uint64) (*model.Namespace, []nodeRef, []item, error) {
 	n := query.Namespace
 	namespace, err := n.Where(n.ID.Eq(namespaceID)).First()
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, err
 	}
 
 	nodes, err := resolveNodes(namespace.SyncNodeIds)
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, err
 	}
 	if len(nodes) == 0 {
-		return nil, ErrNamespaceHasNoNode
+		return nil, nil, nil, ErrNamespaceHasNoNode
 	}
 
 	items, err := buildItems(Scope{Sites: true, Streams: true, Overwrite: true}, namespace)
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, err
 	}
 
 	items = append([]item{namespaceItem(namespace)}, items...)
 
-	return run(ctx, nodes, items), nil
+	return namespace, nodes, items, nil
 }
 
 // buildItems collects the local content matching the scope. When namespace is

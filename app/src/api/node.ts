@@ -1,4 +1,4 @@
-import type { SyncScope, SyncSummary } from '@/api/cluster_sync'
+import type { SyncScope, SyncTask } from '@/api/cluster_sync'
 import type { GetListResponse, ModelBase } from '@/api/curd'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
@@ -88,9 +88,12 @@ function restartNginx(nodeIds: number[]) {
   return http.post('/nodes/restart_nginx', { node_ids: nodeIds })
 }
 
-/** Pushes the local configurations, sites and streams to the given nodes. */
+/**
+ * Starts pushing the local configurations, sites and streams to the given nodes
+ * in the background.
+ */
 function syncConfigs(nodeIds: number[], scope: SyncScope = {}) {
-  return http.post<SyncSummary>(`${baseUrl}/sync`, { node_ids: nodeIds, ...scope })
+  return http.post<SyncTask>(`${baseUrl}/sync`, { node_ids: nodeIds, ...scope })
 }
 
 /**

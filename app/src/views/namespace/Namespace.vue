@@ -5,13 +5,14 @@ import { StdCurd } from '@uozi-admin/curd'
 import namespace from '@/api/namespace'
 import NodeSelector from '@/components/NodeSelector'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
-import { useClusterSync } from '@/composables/useClusterSync'
+import { useClusterSync, waitForSyncTask } from '@/composables/useClusterSync'
 import columns from './columns'
 
 const table = useTemplateRef('table')
 const { message } = useGlobalApp()
 const { report } = useClusterSync()
 const syncingId = ref(0)
+const syncProgress = ref('')
 
 async function handleDragEnd(data: UpdateOrderRequest) {
   await namespace.updateOrder(data)
@@ -19,7 +20,8 @@ async function handleDragEnd(data: UpdateOrderRequest) {
 }
 
 // Replicates the namespace record and all of its sites and streams so every
-// member node ends up with the same content.
+// member node ends up with the same content. The server runs it in the
+// background, since pushing dozens of sites outlasts a proxy's read timeout.
 function syncNamespace(record: Namespace) {
   if (!record.sync_node_ids?.length) {
     message.warning($gettext('This namespace has no sync node'))
@@ -30,10 +32,15 @@ function syncNamespace(record: Namespace) {
 
   otpModal.open().then(() => {
     syncingId.value = record.id
+    syncProgress.value = ''
     namespace.sync(record.id)
+      .then(task => waitForSyncTask(task, current => {
+        syncProgress.value = `${current.done}/${current.total}`
+      }))
       .then(summary => report(summary))
       .finally(() => {
         syncingId.value = 0
+        syncProgress.value = ''
       })
   })
 }
@@ -60,6 +67,9 @@ function syncNamespace(record: Namespace) {
         @click="syncNamespace(record)"
       >
         {{ $gettext('Sync') }}
+        <template v-if="syncingId === record.id && syncProgress">
+          ({{ syncProgress }})
+        </template>
       </AButton>
     </template>
 

@@ -13,7 +13,8 @@ import (
 )
 
 // SyncNodes pushes the local configurations, sites and streams to the selected
-// nodes. A freshly added node is brought up to date with a single request.
+// nodes in the background. A freshly added node is brought up to date with a
+// single request; the answer is the task to follow.
 func SyncNodes(c *gin.Context) {
 	var json struct {
 		NodeIDs   []uint64 `json:"node_ids" binding:"required"`
@@ -41,25 +42,38 @@ func SyncNodes(c *gin.Context) {
 		scope.Overwrite = *json.Overwrite
 	}
 
-	summary, err := clustersync.SyncNodes(c, json.NodeIDs, scope)
+	task, err := clustersync.StartNodesSync(json.NodeIDs, scope)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, summary)
+	c.JSON(http.StatusAccepted, task)
 }
 
 // SyncNamespace replicates a namespace and all of its sites and streams to every
-// node of that namespace, so each node ends up with the same content.
+// node of that namespace, so each node ends up with the same content. The run
+// happens in the background; the answer is the task to follow.
 func SyncNamespace(c *gin.Context) {
-	summary, err := clustersync.SyncNamespace(c, cast.ToUint64(c.Param("id")))
+	task, err := clustersync.StartNamespaceSync(cast.ToUint64(c.Param("id")))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, summary)
+	c.JSON(http.StatusAccepted, task)
+}
+
+// GetSyncTask reports the progress or the outcome of a background sync, for a
+// browser that missed the task events.
+func GetSyncTask(c *gin.Context) {
+	task, err := clustersync.GetTask(c.Param("id"))
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, task)
 }
 
 // UpsertNamespace is the receiving end of namespace replication. It creates the

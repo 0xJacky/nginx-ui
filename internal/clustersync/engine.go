@@ -38,7 +38,13 @@ func (i item) execute(ctx context.Context, node nodeRef) (outcome, error) {
 // single node receives its items sequentially, which keeps the remote reload
 // order predictable and avoids hammering a node with parallel writes.
 func run(ctx context.Context, nodes []nodeRef, items []item) *Summary {
-	results := &collector{}
+	return runWithProgress(ctx, nodes, items, nil)
+}
+
+// runWithProgress is run that also reports how many pushes have completed.
+// progress is called from the node goroutines and must be safe for that.
+func runWithProgress(ctx context.Context, nodes []nodeRef, items []item, progress func(done int)) *Summary {
+	results := &collector{progress: progress}
 	if len(nodes) == 0 || len(items) == 0 {
 		return results.summary()
 	}

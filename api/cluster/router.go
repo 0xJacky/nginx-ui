@@ -58,6 +58,8 @@ func InitRouter(r *gin.RouterGroup) {
 		mutations.POST("namespaces/order", UpdateNamespacesOrder)
 	}
 
+	r.GET("cluster/sync_tasks/:id", GetSyncTask)
+
 	r.GET("namespaces", GetNamespaceList)
 	r.GET("namespaces/:id", GetNamespace)
 }

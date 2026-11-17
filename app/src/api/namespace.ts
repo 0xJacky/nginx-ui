@@ -1,4 +1,4 @@
-import type { SyncSummary } from '@/api/cluster_sync'
+import type { SyncTask } from '@/api/cluster_sync'
 import type { ModelBase, UpdateOrderRequest } from '@/api/curd'
 import { extendCurdApi, http, useCurdApi } from '@uozi-admin/request'
 
@@ -43,9 +43,9 @@ const namespace = extendCurdApi(useCurdApi<Namespace>(baseUrl), {
   updateOrder(data: UpdateOrderRequest) {
     return http.post('/namespaces/order', data)
   },
-  /** Replicates the namespace and all of its content to its member nodes. */
+  /** Starts replicating the namespace and all of its content to its member nodes in the background. */
   sync(id: number) {
-    return http.post<SyncSummary>(`/namespaces/${id}/sync`)
+    return http.post<SyncTask>(`/namespaces/${id}/sync`)
   },
 })
 
