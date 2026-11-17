@@ -11,4 +11,7 @@ if [ -n "${TZ}" ]; then
     echo "${TZ}" > /etc/timezone
 fi
 
-nginx -g "daemon off;"
+# exec hands the service process to Nginx itself. Without it s6 supervises
+# this shell, and stopping or restarting the service only kills the shell
+# while the Nginx master keeps running outside s6, holding the ports.
+exec nginx -g "daemon off;"

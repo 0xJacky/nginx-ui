@@ -234,3 +234,16 @@ func TestGetMaintenanceHost(t *testing.T) {
 		})
 	}
 }
+
+// The official image hands Nginx restarts to s6. Opting out of the docker
+// socket features (OTA upgrade) must not bring back the generic restart, which
+// starts a daemonized Nginx outside s6 that keeps the ports.
+func TestOfficialDockerRestartsThroughS6WithoutDockerSocket(t *testing.T) {
+	t.Setenv("NGINX_UI_OFFICIAL_DOCKER", "true")
+	t.Setenv("NGINX_UI_IGNORE_DOCKER_SOCKET", "true")
+	NginxSettings.RestartCmd = ""
+
+	Init("../app.example.ini")
+
+	assert.Equal(t, "nginx -s stop", NginxSettings.RestartCmd)
+}
