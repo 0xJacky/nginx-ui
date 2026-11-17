@@ -9,7 +9,9 @@ import (
 	"net"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 	"testing"
@@ -172,6 +174,22 @@ func TestNewHTTPHandlerRejectsUnknownOrUndeclaredPlugins(t *testing.T) {
 	}
 }
 
+// socketTempDir returns a temporary directory short enough to hold a unix
+// socket. macOS limits socket paths to 104 bytes and its per-user TMPDIR plus
+// a long test name already exceeds that, so t.TempDir() cannot be used there.
+func socketTempDir(t *testing.T) string {
+	t.Helper()
+	if runtime.GOOS == "windows" {
+		return t.TempDir()
+	}
+
+	dir, err := os.MkdirTemp("/tmp", "nui-")
+	require.NoError(t, err)
+	t.Cleanup(func() { _ = os.RemoveAll(dir) })
+
+	return dir
+}
+
 // startUnixHTTPServer runs handler behind a real unix socket in dir, the same
 // layout the http capability expects: "<DataDir>/http.sock".
 func startUnixHTTPServer(t *testing.T, dir string, handler http.HandlerFunc) {
@@ -202,7 +220,7 @@ func newUnixProxyServer(t *testing.T, host HTTPHost) *httptest.Server {
 }
 
 func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
-	dir := t.TempDir()
+	dir := socketTempDir(t)
 
 	var (
 		mu           sync.Mutex
@@ -307,7 +325,7 @@ func TestNewHTTPHandlerUnixProxyReturns503WhenTheSocketIsMissing(t *testing.T) {
 }
 
 func TestNewHTTPHandlerUnixProxyReturns503WithoutASecret(t *testing.T) {
-	dir := t.TempDir()
+	dir := socketTempDir(t)
 	called := make(chan struct{}, 1)
 	startUnixHTTPServer(t, dir, func(http.ResponseWriter, *http.Request) { called <- struct{}{} })
 
@@ -413,7 +431,7 @@ func TestNewHTTPHandlerRPCReturns503OnCallError(t *testing.T) {
 }
 
 func TestNewHTTPHandlerProxiesWebSocketsWithoutHandshakeCredentials(t *testing.T) {
-	dir := t.TempDir()
+	dir := socketTempDir(t)
 
 	queries := make(chan string, 1)
 	secrets := make(chan []string, 1)
@@ -455,7 +473,7 @@ func TestNewHTTPHandlerProxiesWebSocketsWithoutHandshakeCredentials(t *testing.T
 }
 
 func TestNewHTTPHandlerKeepsQueryOfPlainRequests(t *testing.T) {
-	dir := t.TempDir()
+	dir := socketTempDir(t)
 
 	queries := make(chan string, 1)
 	startUnixHTTPServer(t, dir, func(w http.ResponseWriter, r *http.Request) {
