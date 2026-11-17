@@ -2297,6 +2297,9 @@ msgstr "لا تحتوي مساحة الأسماء على عقدة للمزامن
 msgid "Select at least one kind of content to sync"
 msgstr "حدد نوعًا واحدًا على الأقل من المحتوى للمزامنة"
 
+msgid "The sync task was not found or has expired"
+msgstr "لم يتم العثور على مهمة المزامنة أو انتهت صلاحيتها"
+
 msgid "File name is not allowed: {0}"
 msgstr "اسم الملف غير مسموح به: {0}"
 
@@ -2541,6 +2544,9 @@ msgstr "فشل فك التشفير"
 
 msgid "Form parse failed"
 msgstr "فشل تحليل النموذج"
+
+msgid "This request path cannot be forwarded to a remote node because it is not in canonical form"
+msgstr "لا يمكن تمرير مسار هذا الطلب إلى عقدة بعيدة لأنه ليس بالصيغة القانونية"
 
 msgid "This action is disabled in demo mode"
 msgstr "هذا الإجراء معطّل في الوضع التجريبي"
@@ -10792,6 +10798,9 @@ msgstr "مقبولة"
 msgid "Opted out"
 msgstr "مستبعدة"
 
+msgid "Synchronization started, the result will be shown when it finishes"
+msgstr "بدأت المزامنة، وستظهر النتيجة عند اكتمالها"
+
 msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
 msgstr "ثبّت الإضافات التي توسّع Nginx UI وكوّنها وعالج مشكلاتها."
 
@@ -13025,6 +13034,12 @@ msgstr "يتطلب حفظ توجيهات nginx المقيّدة مصادقة ث�
 
 msgid "This remote node feed carries stored secrets and requires a token with write scope"
 msgstr "تحمل هذه الخلاصة من العقدة البعيدة أسرارًا مخزنة وتتطلب رمزًا بصلاحية الكتابة"
+
+msgid "This route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard"
+msgstr "لا يمكن تمرير هذا المسار إلى عقدة بعيدة لأن وكيل العقد لا يطبّق فحص التفويض الخاص به"
+
+msgid "This request cannot be forwarded to the remote node because the node is disabled"
+msgstr "لا يمكن تمرير هذا الطلب إلى العقدة البعيدة لأن العقدة معطّلة"
 
 msgid "The plugin id {0} is reserved for official Nginx UI plugins"
 msgstr "معرّف الإضافة {0} محجوز لإضافات Nginx UI الرسمية"

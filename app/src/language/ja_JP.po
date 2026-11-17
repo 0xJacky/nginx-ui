@@ -2219,6 +2219,9 @@ msgstr "この名前空間には同期先のノードがありません"
 msgid "Select at least one kind of content to sync"
 msgstr "同期する内容を 1 種類以上選択してください"
 
+msgid "The sync task was not found or has expired"
+msgstr "同期タスクが見つからないか、期限切れです"
+
 msgid "File name is not allowed: {0}"
 msgstr "ファイル名は許可されていません: {0}"
 
@@ -2463,6 +2466,9 @@ msgstr "復号化に失敗しました"
 
 msgid "Form parse failed"
 msgstr "フォームの解析に失敗しました"
+
+msgid "This request path cannot be forwarded to a remote node because it is not in canonical form"
+msgstr "このリクエストパスは正規形式ではないため、リモートノードに転送できません"
 
 msgid "This action is disabled in demo mode"
 msgstr "この操作はデモモードでは無効です。"
@@ -10439,6 +10445,9 @@ msgstr "受け入れ済み"
 msgid "Opted out"
 msgstr "除外済み"
 
+msgid "Synchronization started, the result will be shown when it finishes"
+msgstr "同期を開始しました。完了すると結果が表示されます"
+
 msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
 msgstr ""
 "Nginx UI を拡張するプラグインのインストール、設定、トラブルシューティングを行"
@@ -12833,6 +12842,12 @@ msgstr "制限付きの nginx ディレクティブを保存するには、ア�
 
 msgid "This remote node feed carries stored secrets and requires a token with write scope"
 msgstr "このリモートノードのフィードには保存済みのシークレットが含まれるため、書き込みスコープのトークンが必要です"
+
+msgid "This route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard"
+msgstr "ノードプロキシはこのルートの認可チェックを適用しないため、リモートノードに転送できません"
+
+msgid "This request cannot be forwarded to the remote node because the node is disabled"
+msgstr "ノードが無効になっているため、このリクエストをリモートノードに転送できません"
 
 msgid "The plugin id {0} is reserved for official Nginx UI plugins"
 msgstr "プラグイン ID {0} は公式の Nginx UI プラグイン用に予約されています"
