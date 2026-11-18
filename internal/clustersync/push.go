@@ -6,14 +6,17 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/model"
+	"github.com/google/uuid"
 	"github.com/uozi-tech/cosy/logger"
 )
 
 // configBatchPayload is the wire format understood by the batch receiver. Nodes
 // applying it write every file first and reload Nginx once.
 type configBatchPayload struct {
+	Async     bool         `json:"async,omitempty"`
 	Files     []ConfigFile `json:"files"`
 	Overwrite bool         `json:"overwrite"`
 }
@@ -31,6 +34,8 @@ type sitePayload struct {
 // namespacePayload replicates the namespace definition itself. Node membership
 // and deploy mode stay controller specific and are deliberately not sent.
 type namespacePayload struct {
+	SourceID         uint64 `json:"source_id,omitempty"`
+	OriginalName     string `json:"original_name,omitempty"`
 	Name             string `json:"name"`
 	PostSyncAction   string `json:"post_sync_action,omitempty"`
 	UpstreamTestType string `json:"upstream_test_type,omitempty"`
@@ -55,18 +60,63 @@ func newConfigBatchItem(name string, files []ConfigFile, overwrite, blocking boo
 		name:     name,
 		blocking: blocking,
 		pushOutcome: func(ctx context.Context, node nodeRef) (outcome, error) {
-			payload := configBatchPayload{Files: files, Overwrite: overwrite}
+			payload := configBatchPayload{Async: true, Files: files, Overwrite: overwrite}
 			body, status, err := node.postForBody(ctx, "/api/config_sync_batch", payload)
-			if err == nil {
-				return batchOutcome(body), batchFailure(body)
+			if status == http.StatusNotFound {
+				// The node predates the batch receiver, fall back to file by file.
+				return outcome{}, pushConfigFilesIndividually(ctx, node, files, overwrite)
 			}
-			if status != http.StatusNotFound {
+			if err != nil {
 				return outcome{}, err
 			}
-
-			// The node predates the batch receiver, fall back to file by file.
-			return outcome{}, pushConfigFilesIndividually(ctx, node, files, overwrite)
+			if status == http.StatusAccepted {
+				body, err = waitForBatch(ctx, node, body)
+				if err != nil {
+					return outcome{}, err
+				}
+			}
+			return batchOutcome(body), batchFailure(body)
 		},
+	}
+}
+
+// waitForBatch polls only the accepted write. Reposting it after a proxy
+// timeout could apply or reload the same configuration twice.
+func waitForBatch(ctx context.Context, node nodeRef, accepted []byte) ([]byte, error) {
+	var task struct {
+		ID uuid.UUID `json:"id"`
+	}
+	if err := json.Unmarshal(accepted, &task); err != nil || task.ID == uuid.Nil {
+		return nil, errors.New("node accepted the configuration batch without a valid task ID")
+	}
+	ctx, cancel := context.WithTimeout(ctx, 10*time.Minute)
+	defer cancel()
+	path := "/api/config_sync_batch/" + task.ID.String()
+	ticker := time.NewTicker(time.Second)
+	defer ticker.Stop()
+	for {
+		resp, err := node.client.R().SetContext(ctx).Get(path)
+		if err != nil {
+			return nil, err
+		}
+		switch resp.StatusCode() {
+		case http.StatusOK:
+			var result struct {
+				Written *int `json:"written"`
+			}
+			if err := json.Unmarshal(resp.Body(), &result); err != nil || result.Written == nil {
+				return nil, fmt.Errorf("%s returned an invalid configuration batch result", path)
+			}
+			return resp.Body(), nil
+		case http.StatusAccepted:
+		default:
+			return nil, fmt.Errorf("%s responded %d: %s", path, resp.StatusCode(), resp.String())
+		}
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		case <-ticker.C:
+		}
 	}
 }
 
@@ -180,10 +230,13 @@ func streamItem(name, content, namespace, postAction string, enabled, overwrite 
 // content the same way.
 func namespaceItem(namespace *model.Namespace) item {
 	return item{
-		kind: KindNamespace,
-		name: namespace.Name,
+		kind:     KindNamespace,
+		blocking: true,
+		name:     namespace.Name,
 		push: func(ctx context.Context, node nodeRef) error {
 			payload := namespacePayload{
+				SourceID:         namespace.ID,
+				OriginalName:     namespace.LegacyMemberNames[node.id],
 				Name:             namespace.Name,
 				PostSyncAction:   namespace.PostSyncAction,
 				UpstreamTestType: namespace.UpstreamTestType,

@@ -1,15 +1,16 @@
 package cluster
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/internal/clustersync"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
-	"gorm.io/gen/field"
 )
 
 // SyncNodes pushes the local configurations, sites and streams to the selected
@@ -80,26 +81,28 @@ func GetSyncTask(c *gin.Context) {
 // namespace when the node does not know it yet and keeps its local node
 // membership and deploy mode untouched.
 func UpsertNamespace(c *gin.Context) {
-	var json struct {
-		Name             string `json:"name" binding:"required"`
-		PostSyncAction   string `json:"post_sync_action" binding:"omitempty,oneof=none reload_nginx"`
-		UpstreamTestType string `json:"upstream_test_type" binding:"omitempty,oneof=local remote mirror"`
-	}
-
-	if !cosy.BindAndValid(c, &json) {
+	var payload namespaceSyncRequest
+	if !cosy.BindAndValid(c, &payload) {
 		return
 	}
-
-	n := query.Namespace
-	namespace, err := n.Assign(field.Attrs(&model.Namespace{
-		Name:             json.Name,
-		PostSyncAction:   json.PostSyncAction,
-		UpstreamTestType: json.UpstreamTestType,
-	})).Where(n.Name.Eq(json.Name)).FirstOrCreate()
+	var source string
+	if principal, ok := nodeauth.PrincipalFromRequest(c.Request); ok && payload.SourceID != 0 {
+		controller := principal.ControllerInstanceID
+		if controller == "legacy" {
+			controller = principal.ReplicatedFrom
+		}
+		if controller != "" {
+			source = fmt.Sprintf("%s/%d", controller, payload.SourceID)
+		}
+	}
+	namespace, err := upsertNamespace(model.UseDB(), payload, source)
+	if errors.Is(err, errNamespaceConflict) {
+		c.JSON(http.StatusConflict, gin.H{"message": err.Error()})
+		return
+	}
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
-
 	c.JSON(http.StatusOK, namespace)
 }

@@ -33,6 +33,8 @@ func newNamespace(db *gorm.DB, opts ...gen.DOOption) namespace {
 	_namespace.UpdatedAt = field.NewTime(tableName, "updated_at")
 	_namespace.DeletedAt = field.NewField(tableName, "deleted_at")
 	_namespace.Name = field.NewString(tableName, "name")
+	_namespace.LegacyMemberNames = field.NewField(tableName, "legacy_member_names")
+	_namespace.ReplicaSource = field.NewString(tableName, "replica_source")
 	_namespace.SyncNodeIds = field.NewField(tableName, "sync_node_ids")
 	_namespace.OrderID = field.NewInt(tableName, "order_id")
 	_namespace.PostSyncAction = field.NewString(tableName, "post_sync_action")
@@ -55,6 +57,8 @@ type namespace struct {
 	UpdatedAt           field.Time
 	DeletedAt           field.Field
 	Name                field.String
+	LegacyMemberNames   field.Field
+	ReplicaSource       field.String
 	SyncNodeIds         field.Field
 	OrderID             field.Int
 	PostSyncAction      field.String
@@ -83,6 +87,8 @@ func (n *namespace) updateTableName(table string) *namespace {
 	n.UpdatedAt = field.NewTime(table, "updated_at")
 	n.DeletedAt = field.NewField(table, "deleted_at")
 	n.Name = field.NewString(table, "name")
+	n.LegacyMemberNames = field.NewField(table, "legacy_member_names")
+	n.ReplicaSource = field.NewString(table, "replica_source")
 	n.SyncNodeIds = field.NewField(table, "sync_node_ids")
 	n.OrderID = field.NewInt(table, "order_id")
 	n.PostSyncAction = field.NewString(table, "post_sync_action")
@@ -106,12 +112,14 @@ func (n *namespace) GetFieldByName(fieldName string) (field.OrderExpr, bool) {
 }
 
 func (n *namespace) fillFieldMap() {
-	n.fieldMap = make(map[string]field.Expr, 12)
+	n.fieldMap = make(map[string]field.Expr, 14)
 	n.fieldMap["id"] = n.ID
 	n.fieldMap["created_at"] = n.CreatedAt
 	n.fieldMap["updated_at"] = n.UpdatedAt
 	n.fieldMap["deleted_at"] = n.DeletedAt
 	n.fieldMap["name"] = n.Name
+	n.fieldMap["legacy_member_names"] = n.LegacyMemberNames
+	n.fieldMap["replica_source"] = n.ReplicaSource
 	n.fieldMap["sync_node_ids"] = n.SyncNodeIds
 	n.fieldMap["order_id"] = n.OrderID
 	n.fieldMap["post_sync_action"] = n.PostSyncAction
