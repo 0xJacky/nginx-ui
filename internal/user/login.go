@@ -39,17 +39,23 @@ func Login(name string, password string) (user *model.User, err error) {
 	return
 }
 
-// banIPMutex serializes BanIP. ban_ips has no key on ip, so two concurrent
-// first failures could otherwise each open a window of their own.
-var banIPMutex sync.Mutex
+// loginRecordMutex serializes the short database writes of logins: BanIP and
+// the transaction that issues a login token. ban_ips has no key on ip, so two
+// concurrent first failures could otherwise each open a window of their own.
+// The token transaction reads before it writes, and on SQLite such a
+// transaction fails with "database is locked" at once instead of waiting when
+// another connection is writing, so failed logins of other clients could
+// otherwise make a correct login fail. It is never held across password
+// hashing or the failure delay.
+var loginRecordMutex sync.Mutex
 
 // BanIP records a failed login attempt for ip. Attempts accumulate in one
 // window of BanThresholdMinutes that starts with the first failure, and the
 // client is banned while that window holds MaxAttempts or more. A failure
 // after the window has ended starts a new window from one.
 func BanIP(ip string) {
-	banIPMutex.Lock()
-	defer banIPMutex.Unlock()
+	loginRecordMutex.Lock()
+	defer loginRecordMutex.Unlock()
 
 	b := query.BanIP
 	now := time.Now().Unix()
@@ -74,4 +80,13 @@ func BanIP(ip string) {
 		Attempts:  1,
 		ExpiredAt: now + int64(settings.AuthSettings.BanThresholdMinutes*60),
 	})
+}
+
+// ClearBanIP forgets the failed login attempts of ip after it logged in.
+func ClearBanIP(ip string) {
+	loginRecordMutex.Lock()
+	defer loginRecordMutex.Unlock()
+
+	b := query.BanIP
+	_, _ = b.Where(b.IP.Eq(ip)).Delete()
 }

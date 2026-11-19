@@ -146,8 +146,7 @@ func FinishPasskeyPreAuthentication(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
-	banIPQuery := query.BanIP
-	_, _ = banIPQuery.Where(banIPQuery.IP.Eq(c.ClientIP())).Delete()
+	user.ClearBanIP(c.ClientIP())
 	secureSessionID := user.SetSecureSessionID(currentUser.ID, currentUser.MFAVersion)
 	middleware.EnsureSecureSessionCookie(c)
 	c.JSON(http.StatusOK, LoginResponse{
@@ -292,10 +291,8 @@ func FinishPasskeyLogin(c *gin.Context) {
 		return
 	}
 
-	b := query.BanIP
-	clientIP := c.ClientIP()
 	// login success, clear banned record
-	_, _ = b.Where(b.IP.Eq(clientIP)).Delete()
+	user.ClearBanIP(c.ClientIP())
 
 	logger.Info("[User Login]", outUser.Name)
 	token, err := user.IssueLoginToken(outUser, user.LoginProofPasskey)

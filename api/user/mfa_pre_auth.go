@@ -153,8 +153,7 @@ func completeMFAPreAuth(c *gin.Context, s *mfaPreAuth, u *model.User, id string,
 	}
 	s.Consumed = true
 	cache.Del(mfaPreAuthPrefix + id)
-	ban := query.BanIP
-	_, _ = ban.Where(ban.IP.Eq(c.ClientIP())).Delete()
+	user.ClearBanIP(c.ClientIP())
 	ssid := user.SetSecureSessionID(u.ID, u.MFAVersion)
 	c.JSON(http.StatusOK, struct {
 		LoginResponse
