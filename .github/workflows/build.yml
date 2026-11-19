@@ -66,7 +66,7 @@ jobs:
         if: github.event_name == 'release'
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.27.3
+          go-version: ^1.27.4
           cache: false
 
       - name: Set up Bun
@@ -179,7 +179,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.27.3
+          go-version: ^1.27.4
           cache: false
 
       - name: Setup environment
@@ -411,7 +411,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.27.3
+          go-version: ^1.27.4
           cache: false
 
       - name: Setup environment
@@ -568,7 +568,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v7
         with:
-          go-version: ^1.27.3
+          go-version: ^1.27.4
           cache: false
 
       - name: Setup environment
@@ -781,7 +781,7 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5
         with:
-          version: v4.3.1
+          version: v4.3.2
 
       - name: Create kind cluster
         uses: helm/kind-action@ea822c7bf1874f08e5a491df991c228edffc3376 # v1.15.2
@@ -859,7 +859,7 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5
         with:
-          version: v4.3.1
+          version: v4.3.2
 
       - name: Package chart
         env:
