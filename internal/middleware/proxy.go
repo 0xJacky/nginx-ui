@@ -114,6 +114,7 @@ func Proxy() gin.HandlerFunc {
 		proxy.Director = func(request *http.Request) {
 			director(request)
 			setProxyVerifiedTwoFactor(request, c)
+			setProxyReadOnlyServiceToken(request, route, hidesStoredSecrets)
 		}
 		configureProxyResponse(proxy, id, route, isServiceToken, hidesStoredSecrets, logger.GetLogger().Warnw)
 
@@ -170,6 +171,10 @@ func configureProxyResponse(
 ) {
 	proxy.ModifyResponse = func(resp *http.Response) error {
 		upstreamStatus := normalizeProxyResponse(resp)
+		childWithheldSecretFiles := takeSecretFilesWithheld(resp)
+		if hidesStoredSecrets {
+			relayChildSecretFileRefusal(resp, route, upstreamStatus, childWithheldSecretFiles)
+		}
 		if upstreamStatus >= http.StatusOK && upstreamStatus < http.StatusMultipleChoices {
 			if isServiceToken {
 				if err := redactServiceTokenProxyResponse(resp, route); err != nil {
@@ -177,7 +182,7 @@ func configureProxyResponse(
 				}
 			}
 			if hidesStoredSecrets {
-				if err := redactReadOnlyServiceTokenProxyResponse(resp, route); err != nil {
+				if err := redactReadOnlyServiceTokenProxyResponse(resp, route, childWithheldSecretFiles); err != nil {
 					return err
 				}
 			}
@@ -269,9 +274,13 @@ func redactResponseFields(payload map[string]any, fields []string) {
 
 // redactReadOnlyServiceTokenProxyResponse applies the read-only rule to a
 // child node's response. A refused read replaces the response with the same
-// cosy error the local handler returns.
-func redactReadOnlyServiceTokenProxyResponse(response *http.Response, route string) error {
+// cosy error the local handler returns. On a route the child classifies
+// itself, a child that did not confirm doing so gets the stricter redaction.
+func redactReadOnlyServiceTokenProxyResponse(response *http.Response, route string, childWithheldSecretFiles bool) error {
 	redact := readOnlyServiceTokenProxyRedactions[route]
+	if unconfirmed, classifiedByChild := readOnlyServiceTokenUnconfirmedProxyRedactions[route]; classifiedByChild && !childWithheldSecretFiles {
+		redact = unconfirmed
+	}
 	if redact == nil {
 		return nil
 	}

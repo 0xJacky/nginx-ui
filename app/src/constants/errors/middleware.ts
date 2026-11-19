@@ -7,4 +7,5 @@ export default {
   40301: () => $gettext('This remote node feed carries stored secrets and requires a token with write scope'),
   40302: () => $gettext('This route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard'),
   40303: () => $gettext('This request cannot be forwarded to the remote node because the node is disabled'),
+  40304: () => $gettext('Configuration files on this remote node are hidden from read-only service tokens until the node is upgraded'),
 }

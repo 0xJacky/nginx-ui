@@ -12,4 +12,7 @@ var (
 	ErrRemoteFeedHasSecrets  = e.New(40301, "this remote node feed carries stored secrets and requires a token with write scope")
 	ErrProxyGuardNotEnforced = e.New(40302, "this route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard")
 	ErrProxyNodeDisabled     = e.New(40303, "this request cannot be forwarded to the remote node because the node is disabled")
+	// The remote node predates the exchange that lets it withhold the files
+	// its own configuration marks as secret.
+	ErrProxyNodeCannotWithholdSecretFiles = e.New(40304, "configuration files on this remote node are hidden from read-only service tokens until the node is upgraded")
 )

@@ -6,7 +6,7 @@ import (
 
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
@@ -42,9 +42,11 @@ func GetConfig(c *gin.Context) {
 
 	// Read-only service tokens may read configuration, certificates and other
 	// data files, but not the secrets stored next to them: private keys,
-	// password files and anything a secret directive references. api:write
-	// tokens and administrators keep full access.
-	if internalmcp.IsReadOnlyServiceTokenRequest(c) &&
+	// password files and anything a secret directive references. This also
+	// holds when a controller relays the read, since only this node knows what
+	// its directives reference. api:write tokens and administrators keep full
+	// access.
+	if middleware.WithholdSecretFiles(c) &&
 		config.IsSecretFile(absPath, content, config.SecretFileReferences()) {
 		c.AbortWithStatusJSON(http.StatusForbidden, config.ErrSecretFileHiddenFromReadOnly)
 		return

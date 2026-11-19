@@ -3,7 +3,7 @@ package config
 import (
 	"github.com/0xJacky/Nginx-UI/internal/config"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
+	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/model"
 	"github.com/gin-gonic/gin"
 	"github.com/uozi-tech/cosy"
@@ -24,8 +24,8 @@ func GetConfigHistory(c *gin.Context) {
 
 	// History keeps earlier revisions of every file saved through the editor,
 	// including secret files, so read-only service tokens get the same
-	// redaction as a direct file read.
-	if internalmcp.IsReadOnlyServiceTokenRequest(c) {
+	// redaction as a direct file read, also when a controller relays it.
+	if middleware.WithholdSecretFiles(c) {
 		core.SetTransformer(config.SecretBackupRedactor(config.SecretFileReferences()))
 	}
 
