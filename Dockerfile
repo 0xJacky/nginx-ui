@@ -21,7 +21,6 @@ RUN case "${TARGETARCH}/${TARGETVARIANT}" in \
         "arm64/"*) S6_ARCH="aarch64" ;; \
         "arm/v7"*) S6_ARCH="arm" ;; \
         "arm/v6"*) S6_ARCH="armhf" ;; \
-        "arm/v5"*) S6_ARCH="arm" ;; \
         "riscv64/"*) S6_ARCH="riscv64" ;; \
         *) echo "Unsupported arch: ${TARGETARCH}/${TARGETVARIANT}" && exit 1 ;; \
     esac && \
