@@ -51,12 +51,17 @@ type LoginResponse struct {
 
 // loginClientBanned reports whether clientIP has used up its login attempts
 // in the current ban window.
+// A failed lookup is logged and treated as not banned, as before: refusing
+// would turn a busy database into refused logins for everyone.
 func loginClientBanned(clientIP string) bool {
 	b := query.BanIP
-	banIP, _ := b.Where(b.IP.Eq(clientIP),
+	banIP, err := b.Where(b.IP.Eq(clientIP),
 		b.ExpiredAt.Gte(time.Now().Unix()),
 		b.Attempts.Gte(settings.AuthSettings.MaxAttempts),
 	).Count()
+	if err != nil {
+		logger.Error("[User Login] ban lookup:", err)
+	}
 	return banIP > 0
 }
 
@@ -124,8 +129,12 @@ func Login(c *gin.Context) {
 
 		if _, err = user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
 			cosy.ErrHandler(c, err)
-			user.BanIP(clientIP)
-			event.PublishAuthLoginFailed(u.Name, clientIP)
+			// A locked database never got to check the code, or found it
+			// valid before the write failed, so it is not a failed guess.
+			if !user.IsDatabaseLocked(err) {
+				user.BanIP(clientIP)
+				event.PublishAuthLoginFailed(u.Name, clientIP)
+			}
 			return
 		}
 

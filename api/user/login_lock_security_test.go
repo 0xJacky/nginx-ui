@@ -180,7 +180,8 @@ func TestBannedClientIsRefusedWhileItsLockIsHeld(t *testing.T) {
 // Wrong OTPs after the correct password take the failure path without the
 // failure delay.
 func TestLoginPerClientLimitHoldsUnderConcurrency(t *testing.T) {
-	router, db := setupLoginBanFixture(t, nil)
+	router, _ := setupLoginBanFixture(t, nil)
+	db := useFileDB(t)
 	secret := enableOTP(t, db)
 
 	var wg sync.WaitGroup
@@ -203,7 +204,8 @@ func TestLoginPerClientLimitHoldsUnderConcurrency(t *testing.T) {
 // failure delay being outside the lock does not open a gap between the check
 // and the recorded failure.
 func TestLoginPerClientPasswordLimitHoldsUnderConcurrency(t *testing.T) {
-	router, db := setupLoginBanFixture(t, nil)
+	router, _ := setupLoginBanFixture(t, nil)
+	db := useFileDB(t)
 	stubLoginFailureDelay(t, 0)
 
 	var wg sync.WaitGroup
@@ -298,6 +300,71 @@ func TestLoginRepeatedAndConcurrentCorrectLogins(t *testing.T) {
 	requireNoClientLocksLeft(t)
 }
 
+// floodFailedLogins sends wrong passwords from ever new client IPs until the
+// returned stop function is called, and reports how many it sent.
+func floodFailedLogins(router http.Handler) (stop func() int64) {
+	done := make(chan struct{})
+	var wg sync.WaitGroup
+	var sent atomic.Int64
+	for range 16 {
+		wg.Go(func() {
+			for {
+				select {
+				case <-done:
+					return
+				default:
+				}
+				n := sent.Add(1)
+				postLogin(router, fmt.Sprintf("10.%d.%d.%d", n>>16&255, n>>8&255, n&255), "", "wrong")
+			}
+		})
+	}
+	return func() int64 {
+		close(done)
+		wg.Wait()
+		return sent.Load()
+	}
+}
+
+// Legitimate side: a correct recovery code logs in while other clients fail
+// logins at the same time. Consuming the code is a database write, so it must
+// not collide with the attempts the failed logins record, and a collision
+// must not count against the client as a wrong code.
+func TestRecoveryCodeLoginSucceedsDuringFailedLoginsOfOtherClients(t *testing.T) {
+	router, _ := setupLoginBanFixture(t, nil)
+	db := useFileDB(t)
+	enableOTP(t, db)
+	stubLoginFailureDelay(t, 0)
+
+	codes := make([]*model.RecoveryCode, 400)
+	for i := range codes {
+		codes[i] = &model.RecoveryCode{Code: fmt.Sprintf("%05d-%05d", i, i)}
+	}
+	require.NoError(t, db.Model(&model.User{Model: model.Model{ID: 1}}).Select("recovery_codes").
+		Updates(&model.User{RecoveryCodes: model.RecoveryCodes{Codes: codes}}).Error)
+
+	stop := floodFailedLogins(router)
+	var failures []string
+	deadline := time.Now().Add(2 * time.Second)
+	logins := 0
+	for _, code := range codes {
+		if !time.Now().Before(deadline) {
+			break
+		}
+		status, resp := postLoginRequest(router, verifyOtherIP, "",
+			LoginUser{Name: "admin", Password: verifyPassword, RecoveryCode: code.Code})
+		logins++
+		if status != http.StatusOK || resp.Code != LoginSuccess {
+			failures = append(failures, fmt.Sprintf("%d %d %s", status, resp.Code, resp.Message))
+		}
+	}
+	sent := stop()
+	t.Logf("%d recovery code logins alongside %d failed logins", logins, sent)
+	require.Empty(t, failures, "recovery code logins failed while other clients were failing")
+	require.Empty(t, banRows(t, db, verifyOtherIP))
+	requireNoClientLocksLeft(t)
+}
+
 // Legitimate side: failed logins from many clients at once do not make a
 // correct login of another client fail. Failed logins are no longer
 // serialized with each other, so the database writes they make must not
@@ -307,23 +374,7 @@ func TestCorrectLoginSucceedsDuringFailedLoginsOfOtherClients(t *testing.T) {
 	useFileDB(t)
 	stubLoginFailureDelay(t, 0)
 
-	stop := make(chan struct{})
-	var wg sync.WaitGroup
-	var sent atomic.Int64
-	for range 16 {
-		wg.Go(func() {
-			for {
-				select {
-				case <-stop:
-					return
-				default:
-				}
-				n := sent.Add(1)
-				postLogin(router, fmt.Sprintf("10.%d.%d.%d", n>>16&255, n>>8&255, n&255), "", "wrong")
-			}
-		})
-	}
-
+	stop := floodFailedLogins(router)
 	var failures []string
 	deadline := time.Now().Add(2 * time.Second)
 	logins := 0
@@ -334,9 +385,8 @@ func TestCorrectLoginSucceedsDuringFailedLoginsOfOtherClients(t *testing.T) {
 			failures = append(failures, fmt.Sprintf("%d %s", status, resp.Message))
 		}
 	}
-	close(stop)
-	wg.Wait()
-	t.Logf("%d correct logins alongside %d failed logins", logins, sent.Load())
+	sent := stop()
+	t.Logf("%d correct logins alongside %d failed logins", logins, sent)
 	require.Empty(t, failures, "correct logins failed while other clients were failing")
 	requireNoClientLocksLeft(t)
 }

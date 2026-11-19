@@ -1,6 +1,7 @@
 package user
 
 import (
+	"errors"
 	"testing"
 	"time"
 
@@ -66,4 +67,12 @@ func TestBanIPToleratesLegacyDuplicateRows(t *testing.T) {
 		require.GreaterOrEqual(t, row.ExpiredAt, now)
 		require.Equal(t, settings.AuthSettings.MaxAttempts, row.Attempts)
 	}
+}
+
+func TestIsDatabaseLocked(t *testing.T) {
+	require.False(t, IsDatabaseLocked(nil))
+	require.False(t, IsDatabaseLocked(ErrRecoveryCode))
+	require.False(t, IsDatabaseLocked(ErrOTPCode))
+	require.True(t, IsDatabaseLocked(errors.New("database is locked")))
+	require.True(t, IsDatabaseLocked(errors.New("database table is locked: ban_ips")))
 }

@@ -126,7 +126,10 @@ func withMFAPreAuth(c *gin.Context, action func(*mfaPreAuth, *model.User, string
 }
 
 func rejectMFAVerification(c *gin.Context, err error) {
-	user.BanIP(c.ClientIP())
+	// A locked database is not a failed guess; see Login.
+	if !user.IsDatabaseLocked(err) {
+		user.BanIP(c.ClientIP())
+	}
 	cosy.ErrHandler(c, err)
 }
 
