@@ -2394,6 +2394,9 @@ msgstr "Простір імен не має вузла для синхроніз
 msgid "Select at least one kind of content to sync"
 msgstr "Виберіть щонайменше один вид вмісту для синхронізації"
 
+msgid "The sync task was not found or has expired"
+msgstr "Завдання синхронізації не знайдено або воно застаріло"
+
 msgid "File name is not allowed: {0}"
 msgstr "Назва файлу не дозволена: {0}"
 
@@ -2640,6 +2643,9 @@ msgstr "Розшифрування не вдалося"
 
 msgid "Form parse failed"
 msgstr "Не вдалося розібрати форму"
+
+msgid "This request path cannot be forwarded to a remote node because it is not in canonical form"
+msgstr "Цей шлях запиту не можна переслати на віддалений вузол, бо він не в канонічній формі"
 
 msgid "This action is disabled in demo mode"
 msgstr "Ця дія вимкнена в демонстраційному режимі."
@@ -6608,8 +6614,8 @@ msgstr "Довжина імені користувача не може пере�
 msgid "Please input your password!"
 msgstr "Будь ласка, введіть ваш пароль!"
 
-msgid "Password length cannot exceed 20 characters"
-msgstr "Довжина пароля не може перевищувати 20 символів"
+msgid "Password length cannot exceed 72 characters"
+msgstr "Довжина пароля не може перевищувати 72 символи"
 
 msgid ""
 "Frontend debug mode: install flow completed without sending a backend "
@@ -11187,6 +11193,9 @@ msgstr "Приймає"
 msgid "Opted out"
 msgstr "Не приймає"
 
+msgid "Synchronization started, the result will be shown when it finishes"
+msgstr "Синхронізацію розпочато, результат буде показано після її завершення"
+
 msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
 msgstr "Встановлюйте, налаштовуйте та усувайте несправності плагінів, що розширюють Nginx UI."
 
@@ -13404,6 +13413,12 @@ msgstr "Збереження обмежених директив nginx потр�
 
 msgid "This remote node feed carries stored secrets and requires a token with write scope"
 msgstr "Цей канал віддаленого вузла містить збережені секрети й потребує токена з правом запису"
+
+msgid "This route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard"
+msgstr "Цей маршрут не можна переслати на віддалений вузол, бо проксі вузлів не застосовує його перевірку авторизації"
+
+msgid "This request cannot be forwarded to the remote node because the node is disabled"
+msgstr "Цей запит не можна переслати на віддалений вузол, бо вузол вимкнено"
 
 msgid "The plugin id {0} is reserved for official Nginx UI plugins"
 msgstr "Ідентифікатор плагіна {0} зарезервовано для офіційних плагінів Nginx UI"

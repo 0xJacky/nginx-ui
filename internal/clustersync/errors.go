@@ -12,4 +12,6 @@ var (
 	ErrNamespaceHasNoNode = e.New(40405, "the namespace has no node to sync with")
 	// ErrEmptyScope is returned when a run would replicate nothing.
 	ErrEmptyScope = e.New(40006, "select at least one kind of content to sync")
+	// ErrTaskNotFound is returned for an unknown or expired sync task.
+	ErrTaskNotFound = e.New(40406, "the sync task was not found or has expired")
 )

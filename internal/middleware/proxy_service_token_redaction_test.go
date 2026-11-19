@@ -201,6 +201,7 @@ var serviceTokenChecks = map[string]bool{
 	"IsServiceTokenRequest":         true,
 	"ServiceTokenPrincipalKey":      true,
 	"IsReadOnlyServiceTokenRequest": false,
+	"WithholdSecretFiles":           false,
 }
 
 // findServiceTokenChecks returns, for each function under apiDir that uses a

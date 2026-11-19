@@ -2,9 +2,10 @@
 import type { AnalyticNode } from '@/api/node'
 import nodeApi from '@/api/node'
 import use2FAModal from '@/components/TwoFA/use2FAModal'
-import { useClusterSync } from '@/composables/useClusterSync'
+import { useClusterSync, waitForSyncTask } from '@/composables/useClusterSync'
 
 const { report } = useClusterSync()
+const { message } = useGlobalApp()
 
 const visible = ref(false)
 const loading = ref(false)
@@ -40,9 +41,14 @@ function ok() {
   otpModal.open().then(() => {
     loading.value = true
     nodeApi.syncConfigs(nodeIds.value, scope.value)
-      .then(summary => {
+      .then(task => {
+        // The sync runs in the background on the server; its outcome is
+        // reported when it finishes, even after the dialog is closed.
         visible.value = false
-        report(summary)
+        loading.value = false
+        message.info($gettext('Synchronization started, the result will be shown when it finishes'))
+
+        return waitForSyncTask(task).then(summary => report(summary))
       })
       .finally(() => {
         loading.value = false

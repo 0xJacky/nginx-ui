@@ -2330,6 +2330,9 @@ msgstr "該命名空間沒有可同步的節點"
 msgid "Select at least one kind of content to sync"
 msgstr "請至少選擇一種要同步的內容"
 
+msgid "The sync task was not found or has expired"
+msgstr "同步任務不存在或已過期"
+
 msgid "File name is not allowed: {0}"
 msgstr "檔案名稱不允許：{0}"
 
@@ -2544,6 +2547,9 @@ msgstr "解密失敗"
 
 msgid "Form parse failed"
 msgstr "表單解析失敗"
+
+msgid "This request path cannot be forwarded to a remote node because it is not in canonical form"
+msgstr "該請求路徑不是規範形式，無法轉發到遠端節點"
 
 msgid "This action is disabled in demo mode"
 msgstr "此操作在示範模式下已停用。"
@@ -7065,8 +7071,8 @@ msgstr "使用者名稱長度不能超過 255 個字元"
 msgid "Please input your password!"
 msgstr "請輸入您的密碼！"
 
-msgid "Password length cannot exceed 20 characters"
-msgstr "密碼長度不能超過 20 個字元"
+msgid "Password length cannot exceed 72 characters"
+msgstr "密碼長度不能超過 72 個字元"
 
 msgid ""
 "Frontend debug mode: install flow completed without sending a backend "
@@ -7162,6 +7168,9 @@ msgstr "分頁閱讀存取日誌，或在新日誌產生時即時追蹤。"
 
 msgid "Inspect error events and troubleshoot issues from Nginx error output."
 msgstr "檢查錯誤事件並根據 Nginx 錯誤輸出進行疑難排解。"
+
+msgid "Manage indexed log files and jump into structured analysis workflows."
+msgstr "管理已索引日誌檔並進入結構化分析流程。"
 
 msgid "See every log file Nginx writes and open one to read it."
 msgstr "檢視 Nginx 寫入的所有日誌檔案，並開啟其中一個閱讀。"
@@ -7432,6 +7441,9 @@ msgstr "已接受"
 
 msgid "Opted out"
 msgstr "已選擇退出"
+
+msgid "Synchronization started, the result will be shown when it finishes"
+msgstr "同步已開始，完成後將顯示結果"
 
 msgid "The selected content will be pushed to: %{nodes}"
 msgstr "所選內容將推送到：%{nodes}"
@@ -7842,6 +7854,9 @@ msgstr "命令"
 
 msgid "Minutes between two runs."
 msgstr "兩次執行的間隔分鐘數。"
+
+msgid "The GeoLite2 database provides geographic information for IP addresses. This is used for offline geographic analysis in log analytics."
+msgstr "GeoLite2 資料庫為 IP 位址提供地理資訊。這用於日誌分析中的離線地理分析。"
 
 msgid "Register passkey successfully"
 msgstr "通行金鑰註冊成功"
@@ -11991,6 +12006,12 @@ msgstr "下載完成"
 msgid "GeoLite2 Database Required"
 msgstr "需要 GeoLite2 資料庫"
 
+msgid "The GeoLite2 database is required for offline geographic IP analysis. Please download it to enable this feature."
+msgstr "離線地理 IP 分析需要 GeoLite2 資料庫。請下載以啟用此功能。"
+
+msgid "Alternatively, if you cannot download the database, you can manually place GeoLite2-City.mmdb in the same directory as app.ini."
+msgstr "或者，如果您無法下載資料庫，可以手動將 GeoLite2-City.mmdb 檔案放置於與 app.ini 相同的目錄中。"
+
 msgid ""
 "If you want to enable custom MMDB data, configure `IndexCustomMMDB` and "
 "place the generated file in the same directory as app.ini."
@@ -12159,6 +12180,12 @@ msgstr "最低要求："
 msgid "Recommended:"
 msgstr "推薦："
 
+msgid "* Index files are stored in the \"log-index\" directory within your Nginx UI config path by default."
+msgstr "* 索引檔案預設儲存在您的 Nginx UI 設定路徑下的 \"log-index\" 目錄中。"
+
+msgid "If you want to change the storage location, you can set the `IndexPath` of `nginx_log` section in the Nginx UI config."
+msgstr "如果要變更儲存位置，可以在 Nginx UI 設定中設定 `nginx_log` 區段的 `IndexPath`。"
+
 msgid "GeoLite2 Database"
 msgstr "GeoLite2 資料庫"
 
@@ -12210,6 +12237,9 @@ msgstr "多維數據可視化"
 
 msgid "Open Source Limitation"
 msgstr "開源限制"
+
+msgid "Advanced log indexing features are free and open source for all users"
+msgstr "進階日誌索引功能對所有使用者免費且開源"
 
 msgid "We do not accept any feature requests"
 msgstr "我們不接受任何功能請求"
@@ -12542,6 +12572,12 @@ msgstr "日誌索引完成！正在載入更新數據..."
 msgid "Error Log Detected"
 msgstr "檢測到錯誤日誌"
 
+msgid "Error logs do not support structured analysis as they contain free-form text messages."
+msgstr "錯誤日誌不支援結構化分析，因為它們包含自由格式的文字訊息。"
+
+msgid "For error logs, please use the Raw Log Viewer for better viewing experience."
+msgstr "對於錯誤日誌，請使用原始日誌檢視器以獲得更好的檢視體驗。"
+
 msgid "Go to Raw Log Viewer"
 msgstr "轉到原始日誌查看器"
 
@@ -12562,6 +12598,9 @@ msgstr "頁面瀏覽量"
 
 msgid "UV"
 msgstr "獨立訪客"
+
+msgid "The result set is too large to sum exactly, this value is extrapolated from a sample"
+msgstr "結果集過大，無法精確求和，該數值是基於樣本資料推算得出。"
 
 msgid "Traffic"
 msgstr "流量"
@@ -12635,11 +12674,17 @@ msgstr "資料庫"
 msgid "Maps"
 msgstr "地圖"
 
+msgid "Please download China and province boundary files yourself and place them in this directory."
+msgstr "請自行下載中國及各省份邊界檔案並放入此目錄。"
+
 msgid "Template reference"
 msgstr "模板參考"
 
 msgid "No valid access log path found for this site"
 msgstr "未找到此網站的有效存取日誌路徑"
+
+msgid "This site uses the default access log, which may contain traffic from other sites"
+msgstr "此網站使用預設的存取日誌，其中可能包含來自其他網站的流量。"
 
 msgid "Indexing batches shrink to fit the available memory"
 msgstr "索引批次會依可用記憶體自動縮小"
@@ -12721,6 +12766,15 @@ msgstr "儲存受限的 nginx 指令需要為您的帳戶啟用多重要素驗�
 
 msgid "This remote node feed carries stored secrets and requires a token with write scope"
 msgstr "此遠端節點來源包含已儲存的機密，需要具有寫入權限的權杖"
+
+msgid "This route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard"
+msgstr "節點代理不執行該路由的授權檢查，因此無法將其轉發到遠端節點"
+
+msgid "This request cannot be forwarded to the remote node because the node is disabled"
+msgstr "該遠端節點已停用，無法轉發此請求"
+
+msgid "Log parser is not initialized; call indexer.InitLogParser() before use"
+msgstr "日誌解析器未初始化；使用前請呼叫 indexer.InitLogParser()"
 
 msgid "Enter the API token again to save a different endpoint, proxy or API type"
 msgstr "請重新輸入 API 權杖，以儲存不同的端點、代理或 API 類型"
@@ -12842,22 +12896,6 @@ msgstr "試運行已完成，未做任何變更。"
 #~ msgstr "已撤回"
 
 #~ msgid ""
-#~ "The GeoLite2 database is required for offline geographic IP analysis. "
-#~ "Please download it to enable this feature."
-#~ msgstr "離線地理 IP 分析需要 GeoLite2 資料庫。請下載以啟用此功能。"
-
-#~ msgid ""
-#~ "Alternatively, if you cannot download the database, you can manually "
-#~ "place GeoLite2-City.mmdb in the same directory as app.ini."
-#~ msgstr ""
-#~ "或者，如果您無法下載數據庫，可以手動將 GeoLite2-City.mmdb 文件放置於與 "
-#~ "app.ini 相同的目錄中。"
-
-#~ msgid ""
-#~ "Log parser is not initialized; call indexer.InitLogParser() before use"
-#~ msgstr "日誌解析器未初始化；使用前請呼叫 indexer.InitLogParser()"
-
-#~ msgid ""
 #~ "GeoLite2 database not found at {0}. Log indexing requires GeoLite2 "
 #~ "database for geographic IP analysis"
 #~ msgstr ""
@@ -12877,60 +12915,8 @@ msgstr "試運行已完成，未做任何變更。"
 #~ msgid "GeoLite2 database available"
 #~ msgstr "GeoLite2 資料庫可用"
 
-#~ msgid ""
-#~ "* Index files are stored in the \"log-index\" directory within your Nginx "
-#~ "UI config path by default."
-#~ msgstr ""
-#~ "* 索引文件預設存儲在您的 Nginx UI 配置路徑下的 \"log-index\" 目錄中。"
-
-#~ msgid ""
-#~ "If you want to change the storage location, you can set the `IndexPath` "
-#~ "of `nginx_log` section in the Nginx UI config."
-#~ msgstr ""
-#~ "如果要更改存儲位置，可以在 Nginx UI 配置中設置 `nginx_log` 部分的 "
-#~ "`IndexPath`。"
-
-#~ msgid ""
-#~ "Advanced log indexing features are free and open source for all users"
-#~ msgstr "高級日誌索引功能對所有用戶免費且開源"
-
-#~ msgid ""
-#~ "Manage indexed log files and jump into structured analysis workflows."
-#~ msgstr "管理已索引日誌檔並進入結構化分析流程。"
-
 #~ msgid "Search in log content..."
 #~ msgstr "在日誌內容中搜尋..."
-
-#~ msgid ""
-#~ "Error logs do not support structured analysis as they contain free-form "
-#~ "text messages."
-#~ msgstr "錯誤日誌不支援結構化分析，因為它們包含自由格式的文字訊息。"
-
-#~ msgid ""
-#~ "For error logs, please use the Raw Log Viewer for better viewing "
-#~ "experience."
-#~ msgstr "對於錯誤日誌，請使用原始日誌檢視器以獲得更好的檢視體驗。"
-
-#~ msgid ""
-#~ "The result set is too large to sum exactly, this value is extrapolated "
-#~ "from a sample"
-#~ msgstr "結果集過大，無法精確求和，該數值是基於樣本資料推算得出。"
-
-#~ msgid ""
-#~ "The GeoLite2 database provides geographic information for IP addresses. "
-#~ "This is used for offline geographic analysis in log analytics."
-#~ msgstr ""
-#~ "GeoLite2 資料庫為 IP 位址提供地理資訊。這用於日誌分析中的離線地理分析。"
-
-#~ msgid ""
-#~ "Please download China and province boundary files yourself and place them "
-#~ "in this directory."
-#~ msgstr "請自行下載中國及各省份邊界檔案並放入此目錄。"
-
-#~ msgid ""
-#~ "This site uses the default access log, which may contain traffic from "
-#~ "other sites"
-#~ msgstr "此網站使用預設的存取日誌，其中可能包含來自其他網站的流量。"
 
 #~ msgid "[Nginx UI] Environment variables cleaned"
 #~ msgstr "[Nginx UI] 環境變數已清理"

@@ -84,7 +84,7 @@ func TestSecretFileReferencesMarkFilesNamedBySecretDirectives(t *testing.T) {
 }
 
 func TestSecretBackupRedactorKeepsOtherHistory(t *testing.T) {
-	references := map[string]struct{}{"/etc/nginx/ssl/site.pass": {}}
+	references := SecretReferences{"/etc/nginx/ssl/site.pass": nil}
 	redact := SecretBackupRedactor(references)
 
 	key := &model.ConfigBackup{Name: "example.key", FilePath: "/etc/nginx/ssl/example.key", Content: "-----BEGIN PRIVATE KEY-----\n"}

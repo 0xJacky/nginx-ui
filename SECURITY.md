@@ -6,6 +6,7 @@ Security support status for currently maintained versions:
 
 | Version | Support Status        |
 |---------|-----------------------|
+| 3.x     | ✅ Actively Maintained |
 | 2.x     | ✅ Actively Maintained |
 | 1.x     | ❌ End of Life         |
 

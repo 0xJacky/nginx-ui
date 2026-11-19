@@ -93,12 +93,19 @@ func FullScope() Scope {
 type collector struct {
 	mutex   sync.Mutex
 	results []Result
+	// progress, when set, receives the number of collected results.
+	progress func(done int)
 }
 
 func (c *collector) add(result Result) {
 	c.mutex.Lock()
-	defer c.mutex.Unlock()
 	c.results = append(c.results, result)
+	done := len(c.results)
+	c.mutex.Unlock()
+
+	if c.progress != nil {
+		c.progress(done)
+	}
 }
 
 func (c *collector) ok(node nodeRef, kind Kind, name string) {

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/0xJacky/Nginx-UI/internal/cache"
@@ -21,6 +22,7 @@ import (
 	"github.com/uozi-tech/cosy"
 	cosyModel "github.com/uozi-tech/cosy/model"
 	cSettings "github.com/uozi-tech/cosy/settings"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -334,4 +336,37 @@ func TestCurrentUserSecurityRouteAllowsValidSecureSessionForOTPUser(t *testing.T
 	router.ServeHTTP(recorder, req)
 
 	require.Equal(t, http.StatusOK, recorder.Code)
+}
+
+func TestManageUserAcceptsEmailLengthNameAndLongPassword(t *testing.T) {
+	fixture := setupManageUserAuthorizationFixture(t)
+
+	// OIDC identifiers are often an email address or UPN, well over 20 characters.
+	name := "first.lastname@corp.example.onmicrosoft.com"
+	// Password managers generate passwords longer than 20 characters; bcrypt takes up to 72 bytes.
+	password := strings.Repeat("p", 72)
+
+	response := performUserRequest(fixture.router, http.MethodPost, "/api/users", fixture.interactiveToken, gin.H{
+		"name": name, "password": password, "status": true,
+	})
+	require.Equal(t, http.StatusOK, response.Code, response.Body.String())
+
+	var created model.User
+	require.NoError(t, fixture.database.Where("name = ?", name).First(&created).Error)
+	require.NoError(t, bcrypt.CompareHashAndPassword([]byte(created.Password), []byte(password)))
+
+	renamed := "second.lastname@corp.example.onmicrosoft.com"
+	response = performUserRequest(fixture.router, http.MethodPost, fmt.Sprintf("/api/users/%d", created.ID), fixture.interactiveToken, gin.H{
+		"name": renamed, "password": strings.Repeat("q", 72),
+	})
+	require.Equal(t, http.StatusOK, response.Code, response.Body.String())
+	require.NoError(t, fixture.database.First(&created, created.ID).Error)
+	require.Equal(t, renamed, created.Name)
+
+	// bcrypt rejects anything past 72 bytes, so the API refuses it up front.
+	response = performUserRequest(fixture.router, http.MethodPost, "/api/users", fixture.interactiveToken, gin.H{
+		"name": "too-long-password", "password": strings.Repeat("p", 73), "status": true,
+	})
+	require.NotEqual(t, http.StatusOK, response.Code, response.Body.String())
+	require.ErrorIs(t, fixture.database.Where("name = ?", "too-long-password").First(&model.User{}).Error, gorm.ErrRecordNotFound)
 }

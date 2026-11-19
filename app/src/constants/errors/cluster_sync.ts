@@ -3,4 +3,5 @@ export default {
   40404: () => $gettext('No enabled target node was found'),
   40405: () => $gettext('The namespace has no node to sync with'),
   40006: () => $gettext('Select at least one kind of content to sync'),
+  40406: () => $gettext('The sync task was not found or has expired'),
 }

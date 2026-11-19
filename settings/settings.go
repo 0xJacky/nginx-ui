@@ -99,9 +99,12 @@ func Init(confPath string) {
 		parseEnv(ptr, prefix+"_")
 	}
 
-	// if in official docker, set the restart cmd of nginx to "nginx -s stop",
-	// then the supervisor of s6-overlay will start the nginx again.
-	if helper.InNginxUIOfficialDocker() && NginxSettings.RestartCmd == "" {
+	// In the official image s6-overlay supervises Nginx, so a restart only
+	// stops it and the supervisor starts it again. The generic restart would
+	// start a daemonized Nginx outside s6 that keeps the ports, and the
+	// supervised one then fails to bind forever. NGINX_UI_IGNORE_DOCKER_SOCKET
+	// only opts out of the docker socket features and must not change this.
+	if helper.IsOfficialDockerImage() && NginxSettings.RestartCmd == "" {
 		NginxSettings.RestartCmd = "nginx -s stop"
 	}
 

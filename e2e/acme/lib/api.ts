@@ -21,6 +21,16 @@ export function readToken(): string {
   throw new Error(`No token in ${authStateFile}; did the setup project run?`)
 }
 
+/**
+ * Headers for every API request context. The API sits behind the Nginx the
+ * specs keep reloading, and a reload closes the idle keep-alive connections of
+ * the old workers. A request the client sends on such a connection just as it
+ * closes fails with ECONNRESET without ever reaching nginx-ui, and the Node
+ * client does not retry it the way a browser would. A connection per request
+ * avoids the race.
+ */
+export const apiConnectionHeaders = { Connection: 'close' }
+
 async function expectOk(response: APIResponse, what: string) {
   if (!response.ok())
     throw new Error(`${what} answered ${response.status()}: ${await response.text()}`)
@@ -41,7 +51,7 @@ export async function createApi(): Promise<AcmeApi> {
   const context = await request.newContext({
     baseURL,
     storageState: authStateFile,
-    extraHTTPHeaders: { Authorization: readToken() },
+    extraHTTPHeaders: { ...apiConnectionHeaders, Authorization: readToken() },
   })
 
   const saveSite = async (name: string, content: string) => {

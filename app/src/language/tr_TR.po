@@ -2359,6 +2359,9 @@ msgstr "Ad alanının eşitlenecek düğümü yok"
 msgid "Select at least one kind of content to sync"
 msgstr "Eşitlemek için en az bir içerik türü seçin"
 
+msgid "The sync task was not found or has expired"
+msgstr "Eşitleme görevi bulunamadı veya süresi doldu"
+
 msgid "File name is not allowed: {0}"
 msgstr "Dosya adına izin verilmiyor: {0}"
 
@@ -2607,6 +2610,9 @@ msgstr "Şifre çözme başarısız"
 
 msgid "Form parse failed"
 msgstr "Form ayrıştırma başarısız"
+
+msgid "This request path cannot be forwarded to a remote node because it is not in canonical form"
+msgstr "Bu istek yolu kanonik biçimde olmadığı için uzak düğüme iletilemez"
 
 msgid "This action is disabled in demo mode"
 msgstr "Bu işlem demo modunda devre dışıdır."
@@ -6541,8 +6547,8 @@ msgstr "Kullanıcı adı uzunluğu 255 karakteri geçemez"
 msgid "Please input your password!"
 msgstr "Lütfen şifrenizi girin!"
 
-msgid "Password length cannot exceed 20 characters"
-msgstr "Şifre uzunluğu 20 karakteri geçemez"
+msgid "Password length cannot exceed 72 characters"
+msgstr "Şifre uzunluğu 72 karakteri geçemez"
 
 msgid ""
 "Frontend debug mode: install flow completed without sending a backend "
@@ -11125,6 +11131,9 @@ msgstr "Kabul edildi"
 msgid "Opted out"
 msgstr "Katılmıyor"
 
+msgid "Synchronization started, the result will be shown when it finishes"
+msgstr "Eşitleme başladı, tamamlandığında sonuç gösterilecek"
+
 msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
 msgstr "Nginx UI'yi genişleten eklentileri yükleyin, yapılandırın ve sorunlarını giderin."
 
@@ -13333,6 +13342,12 @@ msgstr "Kısıtlı nginx yönergelerini kaydetmek hesabınızda iki aşamalı ki
 
 msgid "This remote node feed carries stored secrets and requires a token with write scope"
 msgstr "Bu uzak düğüm akışı kayıtlı gizli bilgiler taşır ve yazma kapsamlı bir belirteç gerektirir"
+
+msgid "This route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard"
+msgstr "Düğüm proxy'si bu rotanın yetkilendirme denetimini uygulamadığı için rota uzak düğüme iletilemez"
+
+msgid "This request cannot be forwarded to the remote node because the node is disabled"
+msgstr "Düğüm devre dışı olduğu için bu istek uzak düğüme iletilemez"
 
 msgid "The plugin id {0} is reserved for official Nginx UI plugins"
 msgstr "{0} eklenti kimliği resmi Nginx UI eklentileri için ayrılmıştır"

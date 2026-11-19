@@ -30,6 +30,7 @@ interface CertRecord {
   domains?: string[]
   challenge_method?: string
   certificate_info?: { not_before: string }
+  ssl_certificate_path?: string
   last_renewal_error?: string
 }
 
@@ -46,6 +47,23 @@ async function getJSON<T>(context: APIRequestContext, path: string): Promise<T> 
   if (!response.ok())
     throw new Error(`GET ${path} answered ${response.status()}: ${await response.text()}`)
   return await response.json() as T
+}
+
+// Pebble's default ARI window for a 180 second certificate spans its whole
+// lifetime, and nginx-ui renews at a point inside the window derived from the
+// certificate hash. That point fell after the renewal check the new release
+// runs at boot about a third of the time, and the next check is 30 minutes
+// away. Pin a window that has already passed, so ARI says "renew now".
+function pinPastARIWindow(certificatePath: string) {
+  const certificate = mustInContainer(`cat '${certificatePath}'`)
+  const now = Date.now()
+  const suggestedWindow = {
+    start: new Date(now - 120_000).toISOString(),
+    end: new Date(now - 60_000).toISOString(),
+  }
+  mustInContainer(`curl -fsS -k -X POST --data-binary @- https://${addresses.pebble}:15000/set-renewal-info/`, {
+    input: JSON.stringify({ Certificate: certificate, ARIResponse: JSON.stringify({ suggestedWindow }) }),
+  })
 }
 
 async function findCert(context: APIRequestContext, domain: string): Promise<CertRecord> {
@@ -92,6 +110,8 @@ test('a DNS-01 certificate issued on 2.x still renews after the upgrade', async 
   const before = await findCert(api.context, domain)
   expect(before.challenge_method).toBe('dns01')
   const firstNotBefore = before.certificate_info!.not_before
+  expect(before.ssl_certificate_path).toBeTruthy()
+  pinPastARIWindow(before.ssl_certificate_path!)
 
   // Upgrade once the certificate is due, so the renewal check the new release
   // runs at boot is the one that has to renew it.

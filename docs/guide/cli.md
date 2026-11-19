@@ -28,8 +28,10 @@ auto-backup endpoints omit their credential fields for every service token. Read
 secret file through `GET /api/config` is refused with `403` and error code
 `40019`: a `.key` or `.htpasswd` file, any file containing a PEM or PGP private
 key block, and any file that the Nginx configuration names in
-`ssl_certificate_key`, `ssl_password_file`, `ssl_session_ticket_key` or
-`auth_basic_user_file` (including the `proxy_`, `grpc_` and `uwsgi_` variants).
+`ssl_certificate_key`, `ssl_password_file` or `ssl_key_log` (including the
+`proxy_`, `grpc_`, `uwsgi_` and other module variants), `ssl_session_ticket_key`,
+`ssl_ech_file`, `quic_host_key`, `auth_basic_user_file` or `auth_jwt_key_file`.
+The configuration is read the way Nginx reads it, following every `include`.
 Revisions of those files in configuration history are redacted.
 Certificates and other configuration files stay readable. The site navigation
 WebSocket feed of a remote node (`X-Node-ID`) is refused with `403` and error

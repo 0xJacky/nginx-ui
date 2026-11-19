@@ -91,7 +91,7 @@ func targetsSecretConfigFile(snapshot *requestSnapshot, reqBody, respBody string
 		}
 	}
 
-	var references map[string]struct{}
+	var references config.SecretReferences
 	for _, candidate := range candidates {
 		if candidate == "" {
 			continue

@@ -1,5 +1,6 @@
 import type { APIRequestContext, APIResponse } from '@playwright/test'
 import { request } from '@playwright/test'
+import { apiConnectionHeaders } from './api'
 import { inContainer, mustInContainer, writeContainerFile } from './docker'
 import { baseURL } from './env'
 
@@ -76,7 +77,7 @@ export function readNodeSecret(): string {
 export async function createNodeApi(): Promise<APIRequestContext> {
   return request.newContext({
     baseURL,
-    extraHTTPHeaders: { 'X-Node-Secret': readNodeSecret() },
+    extraHTTPHeaders: { ...apiConnectionHeaders, 'X-Node-Secret': readNodeSecret() },
   })
 }
 

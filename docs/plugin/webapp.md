@@ -20,7 +20,7 @@ A plugin that only needs a few pages of its own can use
   "style_path": "webapp/dist/style.css",
   "shared": {
     "vue": ">=3.5.42 <4",
-    "antdv-next": "~1.5"
+    "antdv-next": ">=1.5.4 <2"
   },
   "chunks": {
     "dashboard": "webapp/dist/chunks/dashboard.js"

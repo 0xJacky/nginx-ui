@@ -2324,6 +2324,9 @@ msgstr "Không gian tên không có nút nào để đồng bộ"
 msgid "Select at least one kind of content to sync"
 msgstr "Chọn ít nhất một loại nội dung để đồng bộ"
 
+msgid "The sync task was not found or has expired"
+msgstr "Không tìm thấy tác vụ đồng bộ hoặc tác vụ đã hết hạn"
+
 msgid "File name is not allowed: {0}"
 msgstr "Tên tệp không được phép: {0}"
 
@@ -2568,6 +2571,9 @@ msgstr "Giải mã thất bại"
 
 msgid "Form parse failed"
 msgstr "Phân tích biểu mẫu thất bại"
+
+msgid "This request path cannot be forwarded to a remote node because it is not in canonical form"
+msgstr "Không thể chuyển tiếp đường dẫn yêu cầu này đến nút từ xa vì nó không ở dạng chuẩn"
 
 msgid "This action is disabled in demo mode"
 msgstr "Hành động này bị tắt trong chế độ demo."
@@ -6470,8 +6476,8 @@ msgstr "Độ dài tên người dùng không được vượt quá 255 ký tự
 msgid "Please input your password!"
 msgstr "Vui lòng nhập mật khẩu!"
 
-msgid "Password length cannot exceed 20 characters"
-msgstr "Độ dài mật khẩu không được vượt quá 20 ký tự"
+msgid "Password length cannot exceed 72 characters"
+msgstr "Độ dài mật khẩu không được vượt quá 72 ký tự"
 
 msgid ""
 "Frontend debug mode: install flow completed without sending a backend "
@@ -10993,6 +10999,9 @@ msgstr "Đã chấp nhận"
 msgid "Opted out"
 msgstr "Đã từ chối"
 
+msgid "Synchronization started, the result will be shown when it finishes"
+msgstr "Đã bắt đầu đồng bộ, kết quả sẽ hiển thị khi hoàn tất"
+
 msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
 msgstr "Cài đặt, cấu hình và khắc phục sự cố các plugin mở rộng Nginx UI."
 
@@ -13194,6 +13203,12 @@ msgstr "Lưu các chỉ thị nginx bị hạn chế yêu cầu xác thực hai 
 
 msgid "This remote node feed carries stored secrets and requires a token with write scope"
 msgstr "Nguồn cấp dữ liệu nút từ xa này chứa các bí mật đã lưu và yêu cầu token có quyền ghi"
+
+msgid "This route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard"
+msgstr "Không thể chuyển tiếp route này đến nút từ xa vì proxy nút không áp dụng kiểm tra phân quyền của nó"
+
+msgid "This request cannot be forwarded to the remote node because the node is disabled"
+msgstr "Không thể chuyển tiếp yêu cầu này đến nút từ xa vì nút đã bị tắt"
 
 msgid "The plugin id {0} is reserved for official Nginx UI plugins"
 msgstr "Id plugin {0} được dành riêng cho các plugin Nginx UI chính thức"

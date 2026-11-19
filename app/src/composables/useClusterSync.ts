@@ -1,7 +1,68 @@
-import type { SyncSkipReason, SyncSummary } from '@/api/cluster_sync'
+import type { SyncSkipReason, SyncSummary, SyncTask } from '@/api/cluster_sync'
+import { getSyncTask, SYNC_TASK_EVENT } from '@/api/cluster_sync'
+import { useWebSocketEventBusStore } from '@/pinia'
 
 /** Maximum number of failures listed in a single notification. */
 const maxReportedFailures = 5
+
+/**
+ * Polling backs up the task events: the event bus may be reconnecting, or the
+ * request may have gone to a remote node whose events this browser never sees.
+ */
+const taskPollIntervalMs = 5_000
+
+/**
+ * Resolves with the summary of a background synchronization task once it has
+ * finished, calling onProgress while it runs.
+ */
+export function waitForSyncTask(task: SyncTask, onProgress?: (task: SyncTask) => void): Promise<SyncSummary> {
+  const eventBus = useWebSocketEventBusStore()
+
+  return new Promise((resolve, reject) => {
+    let settled = false
+    let subscriptionId = ''
+    let pollTimer: ReturnType<typeof setInterval> | undefined
+
+    function stop() {
+      settled = true
+      eventBus.unsubscribe(subscriptionId)
+      clearInterval(pollTimer)
+    }
+
+    function update(current: SyncTask) {
+      if (settled)
+        return
+      if (current.status !== 'finished') {
+        onProgress?.(current)
+        return
+      }
+      stop()
+      resolve(current.summary ?? {
+        total: 0,
+        succeeded: 0,
+        failed: 0,
+        results: [],
+      })
+    }
+
+    subscriptionId = eventBus.subscribe<SyncTask>(SYNC_TASK_EVENT, data => {
+      if (data.id === task.id)
+        update(data)
+    })
+    pollTimer = setInterval(() => {
+      getSyncTask(task.id)
+        .then(update)
+        .catch(error => {
+          if (settled)
+            return
+          stop()
+          reject(error)
+        })
+    }, taskPollIntervalMs)
+
+    update(task)
+  })
+}
 
 function skipReasonText(reason: SyncSkipReason): string {
   switch (reason) {

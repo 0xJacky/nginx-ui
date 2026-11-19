@@ -14,12 +14,13 @@ RUN apt-get update -y \
     && apt-get install -y --no-install-recommends wget xz-utils logrotate nginx-module-geoip \
     && rm -rf /var/lib/apt/lists/*
 
+# s6-overlay names its tarballs differently from Docker: "arm" is an ARMv7
+# build, and "armhf" is the ARMv6 build that runs on a Raspberry Pi 1 or Zero.
 RUN case "${TARGETARCH}/${TARGETVARIANT}" in \
         "amd64/"*) S6_ARCH="x86_64" ;; \
         "arm64/"*) S6_ARCH="aarch64" ;; \
         "arm/v7"*) S6_ARCH="arm" ;; \
-        "arm/v6"*) S6_ARCH="arm" ;; \
-        "arm/v5"*) S6_ARCH="arm" ;; \
+        "arm/v6"*) S6_ARCH="armhf" ;; \
         "riscv64/"*) S6_ARCH="riscv64" ;; \
         *) echo "Unsupported arch: ${TARGETARCH}/${TARGETVARIANT}" && exit 1 ;; \
     esac && \

@@ -2392,6 +2392,9 @@ msgstr "L'espace de noms n'a aucun nœud avec lequel se synchroniser"
 msgid "Select at least one kind of content to sync"
 msgstr "Sélectionnez au moins un type de contenu à synchroniser"
 
+msgid "The sync task was not found or has expired"
+msgstr "La tâche de synchronisation est introuvable ou a expiré"
+
 msgid "File name is not allowed: {0}"
 msgstr "Le nom de fichier n'est pas autorisé : {0}"
 
@@ -2648,6 +2651,9 @@ msgstr "Échec du décryptage"
 
 msgid "Form parse failed"
 msgstr "Échec de l'analyse du formulaire"
+
+msgid "This request path cannot be forwarded to a remote node because it is not in canonical form"
+msgstr "Ce chemin de requête ne peut pas être transmis à un nœud distant car il n'est pas sous forme canonique"
 
 msgid "This action is disabled in demo mode"
 msgstr "Cette action est désactivée en mode démo."
@@ -6654,8 +6660,8 @@ msgstr "La longueur du nom d'utilisateur ne peut pas dépasser 255 caractères"
 msgid "Please input your password!"
 msgstr "Veuillez saisir votre mot de passe !"
 
-msgid "Password length cannot exceed 20 characters"
-msgstr "La longueur du mot de passe ne peut pas dépasser 20 caractères"
+msgid "Password length cannot exceed 72 characters"
+msgstr "La longueur du mot de passe ne peut pas dépasser 72 caractères"
 
 msgid ""
 "Frontend debug mode: install flow completed without sending a backend "
@@ -11316,6 +11322,9 @@ msgstr "Accepté"
 msgid "Opted out"
 msgstr "Refusé"
 
+msgid "Synchronization started, the result will be shown when it finishes"
+msgstr "Synchronisation lancée, le résultat s'affichera une fois terminée"
+
 msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
 msgstr "Installez, configurez et dépannez les plugins qui étendent Nginx UI."
 
@@ -13535,6 +13544,12 @@ msgstr "L'enregistrement de directives nginx restreintes nécessite l'authentifi
 
 msgid "This remote node feed carries stored secrets and requires a token with write scope"
 msgstr "Ce flux de nœud distant contient des secrets stockés et nécessite un jeton avec la portée d'écriture"
+
+msgid "This route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard"
+msgstr "Cette route ne peut pas être transmise à un nœud distant car le proxy de nœud n'applique pas son contrôle d'autorisation"
+
+msgid "This request cannot be forwarded to the remote node because the node is disabled"
+msgstr "Cette requête ne peut pas être transmise au nœud distant car le nœud est désactivé"
 
 msgid "The plugin id {0} is reserved for official Nginx UI plugins"
 msgstr "L'identifiant de plugin {0} est réservé aux plugins officiels de Nginx UI"

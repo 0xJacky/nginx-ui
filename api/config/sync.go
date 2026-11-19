@@ -13,20 +13,43 @@ import (
 	"github.com/uozi-tech/cosy"
 )
 
+type syncBatchRequest struct {
+	Async     bool                     `json:"async"`
+	Files     []clustersync.ConfigFile `json:"files"`
+	Overwrite bool                     `json:"overwrite"`
+}
+
 // SyncConfigBatch is the receiving end of a directory deployment. It writes
 // every file of the payload and reloads Nginx once, instead of reloading per
 // file like the single file endpoint does.
 func SyncConfigBatch(c *gin.Context) {
-	var json struct {
-		Files     []clustersync.ConfigFile `json:"files"`
-		Overwrite bool                     `json:"overwrite"`
-	}
-
-	if !cosy.BindAndValid(c, &json) {
+	var batch syncBatchRequest
+	if !cosy.BindAndValid(c, &batch) {
 		return
 	}
 	force := isForced(c)
+	if batch.Async {
+		startBatchTask(c, batch, force)
+		return
+	}
+	applyConfigBatch(batch, force).respond(c)
+}
 
+type batchResult struct {
+	status int
+	body   gin.H
+	err    error
+}
+
+func (result batchResult) respond(c *gin.Context) {
+	if result.err != nil {
+		cosy.ErrHandler(c, result.err)
+		return
+	}
+	c.JSON(result.status, result.body)
+}
+
+func applyConfigBatch(batch syncBatchRequest, force bool) batchResult {
 	// One rejected file must not discard the rest of the batch: a real
 	// configuration directory always holds something the validator dislikes, and
 	// dropping the whole sync over it would make the feature useless.
@@ -44,7 +67,7 @@ func SyncConfigBatch(c *gin.Context) {
 	// undone completely instead of waiting on disk for the next Nginx start.
 	tx := &config.FileTransaction{}
 
-	for _, file := range json.Files {
+	for _, file := range batch.Files {
 		relativePath := filepath.ToSlash(filepath.Join(file.BaseDir, file.Name))
 
 		path, err := config.ResolveConfPath(helper.UnescapeURL(file.BaseDir), helper.UnescapeURL(file.Name))
@@ -53,7 +76,7 @@ func SyncConfigBatch(c *gin.Context) {
 			continue
 		}
 
-		if !json.Overwrite {
+		if !batch.Overwrite {
 			exists, existsErr := nginx.Exists(path)
 			if existsErr != nil {
 				failures = append(failures, gin.H{"path": relativePath, "error": existsErr.Error()})
@@ -97,8 +120,7 @@ func SyncConfigBatch(c *gin.Context) {
 		// receiver cannot load is rolled back as a whole and reported back to the
 		// controller node instead of being left behind half applied.
 		if err := tx.TestAndReload(); err != nil {
-			cosy.ErrHandler(c, err)
-			return
+			return batchResult{err: err}
 		}
 	case tx.Len() > 0:
 		// Nothing was applied, but a write that failed midway can still have
@@ -114,14 +136,14 @@ func SyncConfigBatch(c *gin.Context) {
 		status = http.StatusInternalServerError
 	}
 
-	c.JSON(status, gin.H{
+	return batchResult{status: status, body: gin.H{
 		"message": "ok",
 		"written": written,
 		"skipped": skipped,
 		// Files left alone because they already exist and overwrite is off.
 		"skipped_paths": skippedPaths,
 		"failures":      failures,
-	})
+	}}
 }
 
 // SyncConfigDirectory replicates a whole configuration directory to the

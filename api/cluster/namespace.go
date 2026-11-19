@@ -145,6 +145,14 @@ func ModifyNamespace(c *gin.Context) {
 			"sync_strategy":         "omitempty,oneof=" + model.SyncStrategyManual + " " + model.SyncStrategyAuto,
 			"sync_interval_minutes": "omitempty,min=0",
 		}).
+		BeforeExecuteHook(func(ctx *cosy.Ctx[model.Namespace]) {
+			members := ctx.OriginModel.SyncNodeIds
+			if _, supplied := ctx.Payload["sync_node_ids"]; supplied {
+				members = ctx.Model.SyncNodeIds
+			}
+			ctx.Model.RetainMemberNames(ctx.OriginModel, members)
+			ctx.AddSelectedFields("legacy_member_names")
+		}).
 		Modify()
 }
 

@@ -77,6 +77,7 @@ func Boot(ctx context.Context) {
 			cache.Init(ctx)
 		},
 		CheckAndCleanupOTA,
+		WarnOfficialDockerEnvMissing,
 	}
 
 	syncs := []func(ctx context.Context){
@@ -230,6 +231,16 @@ func InitJsExtensionType() {
 	// Hack: fix wrong Content Type of .js file on some OS platforms
 	// See https://github.com/golang/go/issues/32350
 	_ = mime.AddExtensionType(".js", "text/javascript; charset=utf-8")
+}
+
+// WarnOfficialDockerEnvMissing tells the operator that the container lost the
+// environment of the official image. Nginx UI still detects the image, but the
+// same platform setting may drop other variables the image relies on.
+func WarnOfficialDockerEnvMissing() {
+	if helper.OfficialDockerEnvMissing() {
+		logger.Warn("NGINX_UI_OFFICIAL_DOCKER is not set although this is the official Nginx UI image; " +
+			"the container platform (for example an ECS/Fargate task definition) may be overriding the image environment")
+	}
 }
 
 // CheckAndCleanupOTA Check and cleanup OTA update temporary containers

@@ -1,19 +1,21 @@
 package cluster
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/0xJacky/Nginx-UI/internal/clustersync"
+	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
 	"github.com/0xJacky/Nginx-UI/model"
-	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cast"
 	"github.com/uozi-tech/cosy"
-	"gorm.io/gen/field"
 )
 
 // SyncNodes pushes the local configurations, sites and streams to the selected
-// nodes. A freshly added node is brought up to date with a single request.
+// nodes in the background. A freshly added node is brought up to date with a
+// single request; the answer is the task to follow.
 func SyncNodes(c *gin.Context) {
 	var json struct {
 		NodeIDs   []uint64 `json:"node_ids" binding:"required"`
@@ -41,51 +43,66 @@ func SyncNodes(c *gin.Context) {
 		scope.Overwrite = *json.Overwrite
 	}
 
-	summary, err := clustersync.SyncNodes(c, json.NodeIDs, scope)
+	task, err := clustersync.StartNodesSync(json.NodeIDs, scope)
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, summary)
+	c.JSON(http.StatusAccepted, task)
 }
 
 // SyncNamespace replicates a namespace and all of its sites and streams to every
-// node of that namespace, so each node ends up with the same content.
+// node of that namespace, so each node ends up with the same content. The run
+// happens in the background; the answer is the task to follow.
 func SyncNamespace(c *gin.Context) {
-	summary, err := clustersync.SyncNamespace(c, cast.ToUint64(c.Param("id")))
+	task, err := clustersync.StartNamespaceSync(cast.ToUint64(c.Param("id")))
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, summary)
+	c.JSON(http.StatusAccepted, task)
+}
+
+// GetSyncTask reports the progress or the outcome of a background sync, for a
+// browser that missed the task events.
+func GetSyncTask(c *gin.Context) {
+	task, err := clustersync.GetTask(c.Param("id"))
+	if err != nil {
+		cosy.ErrHandler(c, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, task)
 }
 
 // UpsertNamespace is the receiving end of namespace replication. It creates the
 // namespace when the node does not know it yet and keeps its local node
 // membership and deploy mode untouched.
 func UpsertNamespace(c *gin.Context) {
-	var json struct {
-		Name             string `json:"name" binding:"required"`
-		PostSyncAction   string `json:"post_sync_action" binding:"omitempty,oneof=none reload_nginx"`
-		UpstreamTestType string `json:"upstream_test_type" binding:"omitempty,oneof=local remote mirror"`
-	}
-
-	if !cosy.BindAndValid(c, &json) {
+	var payload namespaceSyncRequest
+	if !cosy.BindAndValid(c, &payload) {
 		return
 	}
-
-	n := query.Namespace
-	namespace, err := n.Assign(field.Attrs(&model.Namespace{
-		Name:             json.Name,
-		PostSyncAction:   json.PostSyncAction,
-		UpstreamTestType: json.UpstreamTestType,
-	})).Where(n.Name.Eq(json.Name)).FirstOrCreate()
+	var source string
+	if principal, ok := nodeauth.PrincipalFromRequest(c.Request); ok && payload.SourceID != 0 {
+		controller := principal.ControllerInstanceID
+		if controller == "legacy" {
+			controller = principal.ReplicatedFrom
+		}
+		if controller != "" {
+			source = fmt.Sprintf("%s/%d", controller, payload.SourceID)
+		}
+	}
+	namespace, err := upsertNamespace(model.UseDB(), payload, source)
+	if errors.Is(err, errNamespaceConflict) {
+		c.JSON(http.StatusConflict, gin.H{"message": err.Error()})
+		return
+	}
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return
 	}
-
 	c.JSON(http.StatusOK, namespace)
 }

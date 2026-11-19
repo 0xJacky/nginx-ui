@@ -2390,6 +2390,9 @@ msgstr "El espacio de nombres no tiene ningún nodo con el que sincronizar"
 msgid "Select at least one kind of content to sync"
 msgstr "Seleccione al menos un tipo de contenido para sincronizar"
 
+msgid "The sync task was not found or has expired"
+msgstr "La tarea de sincronización no se encontró o ha caducado"
+
 msgid "File name is not allowed: {0}"
 msgstr "El nombre del archivo no está permitido: {0}"
 
@@ -2642,6 +2645,9 @@ msgstr "Descifrado fallido"
 
 msgid "Form parse failed"
 msgstr "Error al analizar el formulario"
+
+msgid "This request path cannot be forwarded to a remote node because it is not in canonical form"
+msgstr "Esta ruta de solicitud no se puede reenviar a un nodo remoto porque no está en forma canónica"
 
 msgid "This action is disabled in demo mode"
 msgstr "Esta acción está desactivada en el modo demo."
@@ -6627,8 +6633,8 @@ msgstr "La longitud del nombre de usuario no puede exceder los 255 caracteres"
 msgid "Please input your password!"
 msgstr "¡Por favor ingrese su contraseña!"
 
-msgid "Password length cannot exceed 20 characters"
-msgstr "La longitud de la contraseña no puede exceder los 20 caracteres"
+msgid "Password length cannot exceed 72 characters"
+msgstr "La longitud de la contraseña no puede exceder los 72 caracteres"
 
 msgid ""
 "Frontend debug mode: install flow completed without sending a backend "
@@ -11262,6 +11268,9 @@ msgstr "Aceptado"
 msgid "Opted out"
 msgstr "Excluido"
 
+msgid "Synchronization started, the result will be shown when it finishes"
+msgstr "La sincronización ha comenzado; el resultado se mostrará al terminar"
+
 msgid "Install, configure and troubleshoot plugins that extend Nginx UI."
 msgstr "Instale, configure y solucione problemas de los plugins que amplían Nginx UI."
 
@@ -13479,6 +13488,12 @@ msgstr "Guardar directivas restringidas de nginx requiere autenticación de dos 
 
 msgid "This remote node feed carries stored secrets and requires a token with write scope"
 msgstr "Este feed de nodo remoto contiene secretos almacenados y requiere un token con permiso de escritura"
+
+msgid "This route cannot be forwarded to a remote node because the node proxy does not enforce its authorization guard"
+msgstr "Esta ruta no se puede reenviar a un nodo remoto porque el proxy de nodos no aplica su control de autorización"
+
+msgid "This request cannot be forwarded to the remote node because the node is disabled"
+msgstr "Esta solicitud no se puede reenviar al nodo remoto porque el nodo está deshabilitado"
 
 msgid "The plugin id {0} is reserved for official Nginx UI plugins"
 msgstr "El id de plugin {0} está reservado para los plugins oficiales de Nginx UI"

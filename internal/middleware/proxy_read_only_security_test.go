@@ -25,6 +25,15 @@ func newProxyTestResponse(body string) *http.Response {
 	return response
 }
 
+// newConfirmedChildResponse is a child response that confirms the child
+// withheld its own secret files, as an up-to-date child does for a relayed
+// read-only caller.
+func newConfirmedChildResponse(body string) *http.Response {
+	response := newProxyTestResponse(body)
+	response.Header.Set(secretFilesWithheldHeader, "?1")
+	return response
+}
+
 const proxyTestPrivateKey = "-----BEGIN PRIVATE KEY-----\\nMIGH\\n-----END PRIVATE KEY-----\\n"
 
 var readOnlyProxyRedactionCases = []struct {
@@ -111,7 +120,7 @@ func TestConfigureProxyResponseRedactsStoredSecretsForReadOnlyTokens(t *testing.
 		t.Run(tt.name, func(t *testing.T) {
 			proxy := &httputil.ReverseProxy{}
 			configureProxyResponse(proxy, 42, tt.route, true, true, nil)
-			response := newProxyTestResponse(tt.body)
+			response := newConfirmedChildResponse(tt.body)
 
 			require.NoError(t, proxy.ModifyResponse(response))
 			body, err := io.ReadAll(response.Body)
@@ -164,7 +173,7 @@ func TestConfigureProxyResponseRefusesPrivateKeyFilesForReadOnlyTokens(t *testin
 		t.Run(tt.name, func(t *testing.T) {
 			proxy := &httputil.ReverseProxy{}
 			configureProxyResponse(proxy, 42, "/api/config", true, true, nil)
-			response := newProxyTestResponse(tt.body)
+			response := newConfirmedChildResponse(tt.body)
 
 			require.NoError(t, proxy.ModifyResponse(response))
 			body, err := io.ReadAll(response.Body)
@@ -183,7 +192,7 @@ func TestConfigureProxyResponseRefusesPrivateKeyFilesForReadOnlyTokens(t *testin
 	proxy := &httputil.ReverseProxy{}
 	configureProxyResponse(proxy, 42, "/api/config", true, true, nil)
 	plain := `{"name":"nginx.conf","filepath":"/etc/nginx/nginx.conf","content":"events {}"}`
-	response := newProxyTestResponse(plain)
+	response := newConfirmedChildResponse(plain)
 	require.NoError(t, proxy.ModifyResponse(response))
 	body, err := io.ReadAll(response.Body)
 	require.NoError(t, err)

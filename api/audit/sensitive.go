@@ -38,6 +38,10 @@ var (
 // a remote node are answered by the proxy middleware before any handler runs,
 // and the proxied response still passes through the local audit log.
 var sensitiveRoutes = map[string]routeRedaction{
+	// A batch validation error can quote configuration from the original POST.
+	// The poll request has no file names for the conditional redaction check.
+	"GET /api/config_sync_batch/:id": redactResponse,
+
 	// Accounts and session tokens.
 	"POST /api/user/password": redactRequest,
 	"POST /api/users":         redactRequest,

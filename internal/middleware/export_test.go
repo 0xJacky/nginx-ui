@@ -17,3 +17,7 @@ func ProxyServiceTokenRedactedRoutes() (allTokens, readOnly, refusedFeeds map[st
 	}
 	return allTokens, readOnly, refusedFeeds
 }
+
+// ProxyReadOnlyServiceTokenQuery lets tests stand in for a child node that
+// predates the secret file exchange by dropping the controller's marker.
+const ProxyReadOnlyServiceTokenQuery = proxyReadOnlyServiceTokenQuery
