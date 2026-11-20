@@ -203,8 +203,8 @@ func TestAccessLogFixtureCoversTheDashboardWindow(t *testing.T) {
 	t0, _ := time.Parse("02/Jan/2006:15:04:05 -0700", first)
 	t1, _ := time.Parse("02/Jan/2006:15:04:05 -0700", last)
 
-	// The default dashboard range is the last 24h; entries must span it and
-	// stop at the anchor rather than running into the future.
+	// Entries span the 24 hours before the hour-quantised anchor and stop
+	// there rather than running into the future.
 	assert.WithinDuration(t, now.Truncate(time.Hour).Add(-logWindow), t0, time.Minute)
 	assert.False(t, t1.After(now.Truncate(time.Hour)), "fixture must not contain future timestamps")
 }

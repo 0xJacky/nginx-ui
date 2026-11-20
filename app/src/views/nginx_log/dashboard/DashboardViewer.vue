@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AnalyticsRequest, ChinaMapData, DashboardAnalytics, DashboardRequest, WorldMapData } from '@/api/nginx_log'
+import type { AnalyticsRequest, ChinaMapData, DashboardAnalytics, WorldMapData } from '@/api/nginx_log'
 import { Col, Row } from 'antdv-next'
 import dayjs from 'dayjs'
 import nginx_log from '@/api/nginx_log'
@@ -14,7 +14,7 @@ import HourlyChart from './components/HourlyChart.vue'
 import OSStatsTable from './components/OSStatsTable.vue'
 import SummaryStats from './components/SummaryStats.vue'
 import TopUrlsTable from './components/TopUrlsTable.vue'
-import { getDefaultDashboardDateRange } from './dateRange'
+import { buildDashboardRequest, getDefaultDashboardDateRange } from './dateRange'
 
 // Props
 const props = defineProps<{
@@ -74,11 +74,7 @@ async function loadTimeRange() {
 async function loadDashboardData() {
   loading.value = true
   try {
-    const request: DashboardRequest = {
-      log_path: props.logPath,
-      start_date: dateRange.value[0].format('YYYY-MM-DD'),
-      end_date: dateRange.value[1].format('YYYY-MM-DD'),
-    }
+    const request = buildDashboardRequest(props.logPath, dateRange.value)
 
     dashboardData.value = await nginx_log.getDashboardAnalytics(request)
   }

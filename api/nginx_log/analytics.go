@@ -619,6 +619,8 @@ type DashboardRequest struct {
 	LogPath   string `json:"log_path" form:"log_path"`
 	StartDate string `json:"start_date" form:"start_date"` // Format: 2006-01-02
 	EndDate   string `json:"end_date" form:"end_date"`     // Format: 2006-01-02
+	// Timezone is the IANA zone the dates are local to. Empty reads them as UTC.
+	Timezone string `json:"timezone" form:"timezone"`
 }
 
 func bindDashboardRequest(c *gin.Context) (DashboardRequest, bool) {
@@ -707,7 +709,7 @@ func GetDashboardAnalytics(c *gin.Context) {
 		return
 	}
 
-	logger.Debugf("Dashboard API received log_path: '%s', start_date: '%s', end_date: '%s'", req.LogPath, req.StartDate, req.EndDate)
+	logger.Debugf("Dashboard API received log_path: '%s', start_date: '%s', end_date: '%s', timezone: '%s'", req.LogPath, req.StartDate, req.EndDate, req.Timezone)
 
 	analyticsService := nginx_log.GetAnalytics()
 	if analyticsService == nil {
@@ -748,35 +750,12 @@ func GetDashboardAnalytics(c *gin.Context) {
 		return
 	}
 
-	// Parse and validate date strings
-	var startTime, endTime time.Time
-	var err error
-
-	if req.StartDate != "" {
-		startTime, err = time.Parse("2006-01-02", req.StartDate)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid start_date format, expected YYYY-MM-DD: " + err.Error()})
-			return
-		}
-		// Convert to UTC for consistent processing
-		startTime = startTime.UTC()
+	window, err := resolveDashboardRange(req, time.Now())
+	if err != nil {
+		c.JSON(http.StatusBadRequest, ErrorResponse{Error: err.Error()})
+		return
 	}
-
-	if req.EndDate != "" {
-		endTime, err = time.Parse("2006-01-02", req.EndDate)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, ErrorResponse{Error: "Invalid end_date format, expected YYYY-MM-DD: " + err.Error()})
-			return
-		}
-		// Set end time to end of day and convert to UTC
-		endTime = endTime.Add(23*time.Hour + 59*time.Minute + 59*time.Second).UTC()
-	}
-
-	// Set default time range if not provided (last 30 days)
-	if startTime.IsZero() || endTime.IsZero() {
-		endTime = time.Now()
-		startTime = endTime.AddDate(0, 0, -30) // 30 days ago
-	}
+	startTime, endTime := window.Start, window.End
 
 	// Get dashboard analytics with timeout
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 30*time.Second)
@@ -795,6 +774,7 @@ func GetDashboardAnalytics(c *gin.Context) {
 		LogPaths:  []string{safeLogPath}, // Use single main log path
 		StartTime: startTime.Unix(),
 		EndTime:   endTime.Unix(),
+		Location:  window.Location,
 	}
 	logger.Debugf("Query parameters - LogPath='%s', StartTime=%v, EndTime=%v",
 		dashboardReq.LogPath, dashboardReq.StartTime, dashboardReq.EndTime)
