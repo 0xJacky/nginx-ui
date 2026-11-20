@@ -190,6 +190,19 @@ func parseProxyPassURL(passURL, passType string) ProxyTarget {
 
 	// Handle HTTP/HTTPS/gRPC URLs (e.g., "http://backend", "grpc://backend")
 	if strings.HasPrefix(passURL, "http://") || strings.HasPrefix(passURL, "https://") || strings.HasPrefix(passURL, "grpc://") || strings.HasPrefix(passURL, "grpcs://") {
+		// nginx ends an inline socket path at the next colon ("http://unix:/run/app.sock:/uri"),
+		// and url.Parse would read it as host "unix" on the default port.
+		_, rest, _ := strings.Cut(passURL, "://")
+		if path, ok := strings.CutPrefix(rest, "unix:"); ok {
+			path, _, _ = strings.Cut(path, ":")
+			if path == "" {
+				return ProxyTarget{}
+			}
+			target := parseAddressOnly("unix:" + path)
+			target.Type = passType
+			return target
+		}
+
 		if parsedURL, err := url.Parse(passURL); err == nil {
 			host := parsedURL.Hostname()
 			port := parsedURL.Port()
