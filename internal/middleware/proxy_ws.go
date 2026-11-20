@@ -5,6 +5,7 @@ import (
 
 	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/nodeauth"
+	"github.com/0xJacky/Nginx-UI/internal/transport"
 	"github.com/0xJacky/Nginx-UI/query"
 	"github.com/gin-gonic/gin"
 	"github.com/pretty66/websocketproxy"
@@ -62,6 +63,17 @@ func ProxyWs() gin.HandlerFunc {
 
 		logger.Debug("Proxy request", decodedUri)
 
+		// websocketproxy skips certificate verification for wss targets
+		// unless it is given a TLS config. Use the one the HTTP node proxy
+		// gets from the transport package, so [http] InsecureSkipVerify
+		// decides for both and a handshake to an https child is verified by
+		// default.
+		baseTransport, err := transport.NewTransport()
+		if err != nil {
+			logger.Error(err)
+			return
+		}
+
 		wp, err := websocketproxy.NewProxy(decodedUri, func(r *http.Request) error {
 			r.Header.Del("X-Node-ID")
 			queryValues := r.URL.Query()
@@ -73,7 +85,7 @@ func ProxyWs() gin.HandlerFunc {
 			r.URL.RawQuery = queryValues.Encode()
 			setProxyVerifiedTwoFactor(r, c)
 			return nodeauth.SignWebSocketHeaders(node, r.URL.String(), r.Header)
-		})
+		}, websocketproxy.SetTLSConfig(baseTransport.TLSClientConfig.Clone()))
 
 		if err != nil {
 			logger.Error(err)
