@@ -407,7 +407,9 @@ func configureProxyDirector(proxy *httputil.ReverseProxy, requireIdentityEncodin
 		query.Del("x_node_id")
 		// The node transport signs the request as the controller's node after
 		// the director runs; the caller's own credentials must not travel on.
-		stripCallerCredentials(req.Header, query)
+		// The director runs before hop-by-hop headers are removed, so an
+		// upgrade is still recognizable here.
+		stripCallerCredentials(req.Header, query, IsWebSocketUpgrade(req))
 		req.URL.RawQuery = query.Encode()
 		req.Header.Del("X-Node-ID")
 		// Only a node's own synchronization may mark a request as replicated;

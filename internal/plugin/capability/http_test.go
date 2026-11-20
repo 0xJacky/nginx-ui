@@ -491,3 +491,44 @@ func TestNewHTTPHandlerKeepsQueryOfPlainRequests(t *testing.T) {
 
 	assert.Equal(t, "token=mine&x_node_id=3", <-queries)
 }
+
+// TestNewHTTPHandlerRPCStripsHandshakeCredentials checks that the rpc fallback
+// withholds the host's handshake credentials and node selector from the query
+// of an upgrade, as the unix proxy does, and keeps the query of a plain
+// request, which belongs to the plugin.
+func TestNewHTTPHandlerRPCStripsHandshakeCredentials(t *testing.T) {
+	cases := []struct {
+		name    string
+		upgrade bool
+		want    string
+	}{
+		{"upgrade", true, "room=1"},
+		{"plain request", false, "token=mine&x_node_id=3&room=1"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			caller := newFakeCaller()
+			caller.results[protocol.MethodHTTPHandle] = protocol.HTTPHandleResult{Status: http.StatusOK}
+			host := &fakeHTTPHost{info: enabledInfo(), manifest: httpManifest("rpc"), caller: caller}
+
+			query := "token=mine&x_node_id=3&room=1"
+			if tc.upgrade {
+				query = "token=secret&X-Secure-Session-ID=secure-session&x_node_id=3&room=1"
+			}
+			c, _ := newHTTPTestContext(http.MethodGet, "/api/plugins/official.http/http/events?"+query,
+				nil, "official.http", "/events")
+			if tc.upgrade {
+				c.Request.Header.Set("Connection", "Upgrade")
+				c.Request.Header.Set("Upgrade", "websocket")
+			}
+
+			NewHTTPHandler(host)(c)
+
+			calls := caller.methodCalls(protocol.MethodHTTPHandle)
+			require.Len(t, calls, 1)
+			var params protocol.HTTPHandleParams
+			require.NoError(t, json.Unmarshal(calls[0].Params, &params))
+			assert.Equal(t, tc.want, params.Query)
+		})
+	}
+}

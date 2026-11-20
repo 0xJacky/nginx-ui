@@ -81,7 +81,7 @@ func ProxyWs() gin.HandlerFunc {
 			// The child authenticates the handshake as the node from the
 			// signature added below, which covers the query, so the caller's
 			// credentials are removed first.
-			stripCallerCredentials(r.Header, queryValues)
+			stripCallerCredentials(r.Header, queryValues, true)
 			r.URL.RawQuery = queryValues.Encode()
 			setProxyVerifiedTwoFactor(r, c)
 			return nodeauth.SignWebSocketHeaders(node, r.URL.String(), r.Header)

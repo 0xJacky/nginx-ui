@@ -22,13 +22,15 @@ var callerCredentialHeaders = []string{
 	"X-Current-Password",
 }
 
-// callerCredentialQueryKeys are the query parameters that carry the same
-// credentials where a header cannot be set, such as a browser WebSocket
-// handshake.
-var callerCredentialQueryKeys = []string{
-	"token",
-	"X-Secure-Session-ID",
-}
+// secureSessionQueryKey carries the secure session where a header cannot be
+// set. verifySecureSession accepts it from the query on every request.
+const secureSessionQueryKey = "X-Secure-Session-ID"
+
+// handshakeTokenQueryKey carries the session token on a WebSocket handshake,
+// which a browser cannot give an Authorization header. Only AuthRequiredWS
+// reads it; on any other request a token query parameter belongs to the
+// endpoint, such as a plugin's own parameter, and is left alone.
+const handshakeTokenQueryKey = "token"
 
 // IsCallerCredentialHeader reports whether a request header is one of the
 // credentials a caller authenticates to this instance with.
@@ -42,10 +44,12 @@ func IsCallerCredentialHeader(key string) bool {
 }
 
 // StripCallerCredentialQuery removes the credential query parameters from
-// values.
-func StripCallerCredentialQuery(values url.Values) {
-	for _, key := range callerCredentialQueryKeys {
-		values.Del(key)
+// values. handshake reports whether the request is a WebSocket handshake, the
+// only request on which the token query parameter is a credential.
+func StripCallerCredentialQuery(values url.Values, handshake bool) {
+	values.Del(secureSessionQueryKey)
+	if handshake {
+		values.Del(handshakeTokenQueryKey)
 	}
 }
 
@@ -59,9 +63,9 @@ func StripCallerCredentialQuery(values url.Values) {
 //
 // It must run before the request is signed, because the node signature
 // covers the query.
-func stripCallerCredentials(header http.Header, query url.Values) {
+func stripCallerCredentials(header http.Header, query url.Values, handshake bool) {
 	for _, name := range callerCredentialHeaders {
 		header.Del(name)
 	}
-	StripCallerCredentialQuery(query)
+	StripCallerCredentialQuery(query, handshake)
 }

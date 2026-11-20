@@ -93,7 +93,10 @@ func (r *recordingChild) authenticatingChild() http.Handler {
 	}
 	engine.GET("/api/host/setup/publickey", middleware.AuthRequired(), serve)
 	engine.GET("/api/analytic", middleware.AuthRequiredWS(), serve)
-	engine.GET("/api/pty", middleware.AuthRequiredWS(), serve)
+	// The guards terminal.InitRouter registers in front of the PTY handler,
+	// which would start a shell on this host.
+	engine.GET("/api/pty", middleware.AuthRequiredWS(),
+		middleware.RequireInteractiveUserOrProxy(), middleware.RequireSecureSession(), middleware.ProxyWs(), serve)
 	engine.Any("/api/plugins/:id/http/*path",
 		middleware.ForWebSocketUpgrade(middleware.AuthRequiredWS(), middleware.AuthRequired()), serve)
 	return engine
@@ -161,28 +164,53 @@ func (f *proxyCredentialFixture) get(t *testing.T, path string, nodeID uint64) *
 }
 
 // dial opens a WebSocket the way the web UI does with a node selected.
-func (f *proxyCredentialFixture) dial(t *testing.T, path string, query url.Values) {
+// header adds to what a browser sends, as a non-browser client can.
+func (f *proxyCredentialFixture) dial(t *testing.T, path string, query url.Values, header http.Header) {
 	t.Helper()
 	endpoint := "ws" + strings.TrimPrefix(f.server.URL, "http") + path + "?" + query.Encode()
-	conn, res, err := websocket.DefaultDialer.Dial(endpoint, http.Header{
+	requestHeader := http.Header{
 		"Origin": {f.server.URL},
 		"Cookie": {f.cookie},
-	})
+	}
+	for name, values := range header {
+		requestHeader[name] = values
+	}
+	conn, res, err := websocket.DefaultDialer.Dial(endpoint, requestHeader)
 	require.NoError(t, err)
 	require.Equal(t, http.StatusSwitchingProtocols, res.StatusCode)
 	_ = conn.Close()
 }
 
 // requireNoCallerCredentials checks that a forwarded request carries none of
-// the credentials the caller authenticated to the controller with.
-func requireNoCallerCredentials(t *testing.T, seen forwardedRequest) {
+// the credentials the caller authenticated to the controller with. The token
+// query parameter is a credential only on a WebSocket handshake.
+func requireNoCallerCredentials(t *testing.T, seen forwardedRequest, handshake bool) {
 	t.Helper()
 	for _, name := range []string{"Authorization", "Proxy-Authorization", "Cookie", "X-Secure-Session-ID", "X-Node-ID"} {
 		require.Empty(t, seen.Header.Values(name), "%s reached the child", name)
 	}
-	for _, key := range []string{"token", "X-Secure-Session-ID", "x_node_id"} {
+	keys := []string{"X-Secure-Session-ID", "x_node_id"}
+	if handshake {
+		keys = append(keys, "token")
+	}
+	for _, key := range keys {
 		require.NotContains(t, seen.Query, key, "the %s query parameter reached the child", key)
 	}
+}
+
+// plainQuery is the query of a plain HTTP request: an endpoint's own
+// parameters, including one named token, and a secure session the web UI
+// could have put in the query.
+func (f *proxyCredentialFixture) plainQuery() string {
+	return "?" + url.Values{"token": {"mine"}, "page": {"2"}, "X-Secure-Session-ID": {f.secureSession}}.Encode()
+}
+
+// requirePlainQueryKept checks that the endpoint's own parameters of
+// plainQuery reached the child.
+func requirePlainQueryKept(t *testing.T, seen forwardedRequest) {
+	t.Helper()
+	require.Equal(t, []string{"mine"}, seen.Query["token"], "a plain request keeps its own token parameter")
+	require.Equal(t, []string{"2"}, seen.Query["page"])
 }
 
 func requireNodeCredential(t *testing.T, f *proxyCredentialFixture, nodeID uint64, seen forwardedRequest) {
@@ -209,11 +237,12 @@ func TestClusterProxyDoesNotForwardCallerCredentialsToChild(t *testing.T) {
 
 	for _, node := range nodes {
 		t.Run("http "+node.name, func(t *testing.T) {
-			res := f.get(t, "/api/analytic/init", node.id)
+			res := f.get(t, "/api/analytic/init"+f.plainQuery(), node.id)
 			require.Equal(t, http.StatusOK, res.Code, res.Body.String())
 
 			seen := f.child.last(t)
-			requireNoCallerCredentials(t, seen)
+			requireNoCallerCredentials(t, seen, false)
+			requirePlainQueryKept(t, seen)
 			requireNodeCredential(t, f, node.id, seen)
 		})
 
@@ -221,20 +250,40 @@ func TestClusterProxyDoesNotForwardCallerCredentialsToChild(t *testing.T) {
 			f.dial(t, "/api/analytic", url.Values{
 				"token":     {f.shortToken},
 				"x_node_id": {strconv.FormatUint(node.id, 10)},
+			}, nil)
+
+			seen := f.child.last(t)
+			require.Equal(t, "/api/analytic", seen.Path)
+			requireNoCallerCredentials(t, seen, true)
+			requireNodeCredential(t, f, node.id, seen)
+		})
+
+		t.Run("websocket with header credentials "+node.name, func(t *testing.T) {
+			// A non-browser client can authenticate the handshake with
+			// headers instead of the query.
+			f.dial(t, "/api/analytic", url.Values{
+				"id":        {"7"},
+				"x_node_id": {strconv.FormatUint(node.id, 10)},
+			}, http.Header{
+				"Authorization":       {f.jwt},
+				"Proxy-Authorization": {"Basic " + f.jwt},
+				"X-Secure-Session-ID": {f.secureSession},
 			})
 
 			seen := f.child.last(t)
 			require.Equal(t, "/api/analytic", seen.Path)
-			requireNoCallerCredentials(t, seen)
+			requireNoCallerCredentials(t, seen, true)
+			require.Equal(t, []string{"7"}, seen.Query["id"], "ordinary query parameters reach the child")
 			requireNodeCredential(t, f, node.id, seen)
 		})
 		t.Run("plugin http "+node.name, func(t *testing.T) {
-			res := f.get(t, "/api/plugins/demo/http/feed", node.id)
+			res := f.get(t, "/api/plugins/demo/http/feed"+f.plainQuery(), node.id)
 			require.Equal(t, http.StatusOK, res.Code, res.Body.String())
 
 			seen := f.child.last(t)
 			require.Equal(t, "/api/plugins/demo/http/feed", seen.Path)
-			requireNoCallerCredentials(t, seen)
+			requireNoCallerCredentials(t, seen, false)
+			requirePlainQueryKept(t, seen)
 			requireNodeCredential(t, f, node.id, seen)
 		})
 
@@ -242,11 +291,11 @@ func TestClusterProxyDoesNotForwardCallerCredentialsToChild(t *testing.T) {
 			f.dial(t, "/api/plugins/demo/http/feed", url.Values{
 				"token":     {f.shortToken},
 				"x_node_id": {strconv.FormatUint(node.id, 10)},
-			})
+			}, nil)
 
 			seen := f.child.last(t)
 			require.Equal(t, "/api/plugins/demo/http/feed", seen.Path)
-			requireNoCallerCredentials(t, seen)
+			requireNoCallerCredentials(t, seen, true)
 			requireNodeCredential(t, f, node.id, seen)
 		})
 	}
@@ -256,11 +305,11 @@ func TestClusterProxyDoesNotForwardCallerCredentialsToChild(t *testing.T) {
 			"X-Secure-Session-ID": {f.secureSession},
 			"token":               {f.shortToken},
 			"x_node_id":           {strconv.FormatUint(f.pairedNodeID, 10)},
-		})
+		}, nil)
 
 		seen := f.child.last(t)
 		require.Equal(t, "/api/pty", seen.Path)
-		requireNoCallerCredentials(t, seen)
+		requireNoCallerCredentials(t, seen, true)
 		requireNodeCredential(t, f, f.pairedNodeID, seen)
 	})
 
@@ -273,7 +322,6 @@ func TestClusterProxyDoesNotForwardCallerCredentialsToChild(t *testing.T) {
 			require.Empty(t, seen.Header.Values("Authorization"), seen.Path)
 			require.Empty(t, seen.Header.Values("X-Secure-Session-ID"), seen.Path)
 			require.Empty(t, seen.Header.Values("Cookie"), seen.Path)
-			require.Empty(t, seen.Query["token"], seen.Path)
 			require.Empty(t, seen.Query["X-Secure-Session-ID"], seen.Path)
 			for _, values := range seen.Header {
 				for _, value := range values {
@@ -315,19 +363,19 @@ func TestClusterProxyChildAuthenticatesForwardedRequestsAsNode(t *testing.T) {
 			require.True(t, seen.AsNode, "the child did not authenticate the request as the node")
 			require.Equal(t, []string{"true"}, seen.Query["__nginx_ui_proxy_verified_two_factor"],
 				"the stepped-up caller's verified two-factor marker must reach the child")
-			requireNoCallerCredentials(t, seen)
+			requireNoCallerCredentials(t, seen, false)
 		})
 
 		t.Run("websocket "+node.name, func(t *testing.T) {
 			f.dial(t, "/api/analytic", url.Values{
 				"token":     {f.shortToken},
 				"x_node_id": {strconv.FormatUint(node.id, 10)},
-			})
+			}, nil)
 
 			seen := f.child.last(t)
 			require.Equal(t, "/api/analytic", seen.Path)
 			require.True(t, seen.AsNode, "the child did not authenticate the handshake as the node")
-			requireNoCallerCredentials(t, seen)
+			requireNoCallerCredentials(t, seen, true)
 		})
 
 		t.Run("terminal websocket "+node.name, func(t *testing.T) {
@@ -335,12 +383,12 @@ func TestClusterProxyChildAuthenticatesForwardedRequestsAsNode(t *testing.T) {
 				"X-Secure-Session-ID": {f.secureSession},
 				"token":               {f.shortToken},
 				"x_node_id":           {strconv.FormatUint(node.id, 10)},
-			})
+			}, nil)
 
 			seen := f.child.last(t)
 			require.Equal(t, "/api/pty", seen.Path)
 			require.True(t, seen.AsNode, "the child did not authenticate the handshake as the node")
-			requireNoCallerCredentials(t, seen)
+			requireNoCallerCredentials(t, seen, true)
 		})
 		t.Run("plugin http "+node.name, func(t *testing.T) {
 			res := f.get(t, "/api/plugins/demo/http/feed", node.id)
@@ -348,18 +396,18 @@ func TestClusterProxyChildAuthenticatesForwardedRequestsAsNode(t *testing.T) {
 
 			seen := f.child.last(t)
 			require.True(t, seen.AsNode, "the child did not authenticate the request as the node")
-			requireNoCallerCredentials(t, seen)
+			requireNoCallerCredentials(t, seen, false)
 		})
 
 		t.Run("plugin websocket "+node.name, func(t *testing.T) {
 			f.dial(t, "/api/plugins/demo/http/feed", url.Values{
 				"token":     {f.shortToken},
 				"x_node_id": {strconv.FormatUint(node.id, 10)},
-			})
+			}, nil)
 
 			seen := f.child.last(t)
 			require.True(t, seen.AsNode, "the child did not authenticate the handshake as the node")
-			requireNoCallerCredentials(t, seen)
+			requireNoCallerCredentials(t, seen, true)
 		})
 	}
 }
