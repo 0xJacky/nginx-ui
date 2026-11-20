@@ -754,6 +754,75 @@ func TestGrpcPassPortDefaults(t *testing.T) {
 	}
 }
 
+func TestProxyPassInlineUnixSocket(t *testing.T) {
+	tests := []struct {
+		name         string
+		passURL      string
+		expectedHost string
+		expectedPort string
+		expectedType string
+	}{
+		{
+			name:         "path closed by a colon",
+			passURL:      "http://unix:/run/app.sock:",
+			expectedHost: "unix",
+			expectedPort: "/run/app.sock",
+			expectedType: "proxy_pass",
+		},
+		{
+			name:         "URI after the path",
+			passURL:      "http://unix:/run/app.sock:/api/",
+			expectedHost: "unix",
+			expectedPort: "/run/app.sock",
+			expectedType: "proxy_pass",
+		},
+		{
+			name:         "no closing colon",
+			passURL:      "http://unix:/run/app.sock",
+			expectedHost: "unix",
+			expectedPort: "/run/app.sock",
+			expectedType: "proxy_pass",
+		},
+		{
+			name:         "https",
+			passURL:      "https://unix:/run/app.sock:",
+			expectedHost: "unix",
+			expectedPort: "/run/app.sock",
+			expectedType: "proxy_pass",
+		},
+		{
+			name:         "space in the path",
+			passURL:      "http://unix:/run/my app.sock:",
+			expectedHost: "unix",
+			expectedPort: "/run/my app.sock",
+			expectedType: "proxy_pass",
+		},
+		{
+			name:         "no path is skipped",
+			passURL:      "http://unix:",
+			expectedHost: "",
+			expectedPort: "",
+			expectedType: "",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			target := parseProxyPassURL(tt.passURL, "proxy_pass")
+
+			if target.Host != tt.expectedHost {
+				t.Errorf("Expected host %s, got %s", tt.expectedHost, target.Host)
+			}
+			if target.Port != tt.expectedPort {
+				t.Errorf("Expected port %s, got %s", tt.expectedPort, target.Port)
+			}
+			if target.Type != tt.expectedType {
+				t.Errorf("Expected type %s, got %s", tt.expectedType, target.Type)
+			}
+		})
+	}
+}
+
 // New tests covering `set $var ...;` with proxy_pass/grpc_pass
 func TestSetVariableProxyPass_HTTP(t *testing.T) {
 	config := `
