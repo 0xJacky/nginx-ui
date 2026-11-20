@@ -405,6 +405,9 @@ func configureProxyDirector(proxy *httputil.ReverseProxy, requireIdentityEncodin
 		// drop proxy identifier from upstream query to avoid leaking internal ids
 		query := req.URL.Query()
 		query.Del("x_node_id")
+		// The node transport signs the request as the controller's node after
+		// the director runs; the caller's own credentials must not travel on.
+		stripCallerCredentials(req.Header, query)
 		req.URL.RawQuery = query.Encode()
 		req.Header.Del("X-Node-ID")
 		// Only a node's own synchronization may mark a request as replicated;

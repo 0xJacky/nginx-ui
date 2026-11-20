@@ -263,6 +263,8 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 	require.NoError(t, err)
 	req.Header.Set("Authorization", "Bearer secret")
 	req.Header.Set("Cookie", "session=abc")
+	req.Header.Set("Proxy-Authorization", "Basic secret")
+	req.Header.Set("X-Secure-Session-ID", "secure-session")
 	// A client that guesses the header must not get its value through.
 	req.Header.Add(headerPluginSecret, "forged")
 	req.Header.Add("nginx-ui-plugin-secret", "forged-too")
@@ -298,7 +300,7 @@ func TestNewHTTPHandlerProxiesToTheUnixSocket(t *testing.T) {
 	assert.Empty(t, sawCookie)
 	assert.Equal(t, []string{"test-secret"}, sawSecrets, "only the secret of the host reaches the plugin")
 	assert.Equal(t, []string{"alice"}, sawHeaders.Values(headerPluginUser))
-	for _, name := range []string{"X-Nginx-UI-User", "X-Node-Secret", "X-Node-ID", "Signature-Input", "Signature", "X-Nginx-UI-Credential-ID"} {
+	for _, name := range []string{"X-Nginx-UI-User", "X-Node-Secret", "X-Node-ID", "Signature-Input", "Signature", "X-Nginx-UI-Credential-ID", "Proxy-Authorization", "X-Secure-Session-ID"} {
 		assert.Empty(t, sawHeaders.Values(name), "%s must not reach the plugin", name)
 	}
 	assert.Equal(t, "application/json", sawHeaders.Get("Accept"), "other headers pass through")
@@ -458,7 +460,7 @@ func TestNewHTTPHandlerProxiesWebSocketsWithoutHandshakeCredentials(t *testing.T
 	host := &fakeHTTPHost{info: enabledInfo(), manifest: httpManifest("unix"), dataDir: dir}
 	server := newUnixProxyServer(t, host)
 
-	target := "ws" + strings.TrimPrefix(server.URL, "http") + "/plugins/official.http/http/events?token=secret&x_node_id=3&room=1"
+	target := "ws" + strings.TrimPrefix(server.URL, "http") + "/plugins/official.http/http/events?token=secret&X-Secure-Session-ID=secure-session&x_node_id=3&room=1"
 	conn, _, err := websocket.DefaultDialer.Dial(target, http.Header{headerPluginSecret: {"forged"}})
 	require.NoError(t, err)
 	defer conn.Close()
