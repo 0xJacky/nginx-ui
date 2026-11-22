@@ -96,3 +96,15 @@ func TestExternalMessageGetTemplateDataIncludesTypeAndGoToURL(t *testing.T) {
 		t.Fatalf("GoToURL = %q, want #/notifications", data.GoToURL)
 	}
 }
+
+func TestExternalMessageMatchesLevel(t *testing.T) {
+	for _, record := range []*model.ExternalNotify{{}, {Levels: []string{"warning", "error"}}, {Levels: []string{}}} {
+		for _, level := range []model.NotificationType{model.NotificationInfo, model.NotificationSuccess, model.NotificationWarning, model.NotificationError} {
+			msg := ExternalMessage{Notification: &model.Notification{Type: level}}
+			want := record.Levels == nil || len(record.Levels) > 0 && (level == model.NotificationWarning || level == model.NotificationError)
+			if got := msg.matchesLevel(record); got != want {
+				t.Errorf("levels %#v, message %s: got %v, want %v", record.Levels, msg.GetType(), got, want)
+			}
+		}
+	}
+}
