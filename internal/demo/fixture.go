@@ -43,8 +43,11 @@ const (
 	// logLineCount is a compromise. Enough for the charts to have shape, few
 	// enough that indexing them does not stretch the cold start.
 	logLineCount = 20000
-	// logWindow is how far back the oldest entry sits. The dashboard's default
-	// range is the last 24 hours, so the window must cover it.
+	// logWindow is how far back the oldest entry sits. The dashboard opens on
+	// the browser-local calendar day of the newest entry. A 24-hour window
+	// reaches back to that day's midnight in any zone whose day is 24 hours
+	// long, so whatever the boot time and the browser zone, the day it opens
+	// on is populated from its start.
 	logWindow = 24 * time.Hour
 )
 

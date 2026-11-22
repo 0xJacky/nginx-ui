@@ -260,6 +260,7 @@ export interface DashboardRequest {
   log_path?: string
   start_date?: string // Format: YYYY-MM-DD
   end_date?: string // Format: YYYY-MM-DD
+  timezone?: string // IANA time zone the dates are local to; UTC when omitted
 }
 
 export interface HourlyStats {
