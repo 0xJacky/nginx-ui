@@ -1,11 +1,11 @@
 import type { CustomRenderArgs, StdTableColumn } from '@uozi-admin/curd'
 import type { ExternalNotify } from '@/api/external_notify'
 import { datetimeRender, maskRender } from '@uozi-admin/curd'
-import { CheckboxGroup } from 'antdv-next'
 import gettext from '@/gettext'
 import EnabledSwitch from './EnabledSwitch.vue'
 import ExternalNotifyEditor from './ExternalNotifyEditor.vue'
 import configMap from './index'
+import LevelSelect from './LevelSelect.vue'
 import { pluginChannels } from './pluginChannels'
 
 const languageAvailable = gettext.available
@@ -68,32 +68,9 @@ const columns: StdTableColumn[] = [
     title: () => $gettext('Level'),
     hiddenInTable: true,
     edit: {
-      type: ({ formData }: { formData: ExternalNotify }) => {
-        formData.levels ??= ['info', 'success', 'warning', 'error']
-        return (
-          <CheckboxGroup
-            v-model:value={formData.levels}
-            options={[
-              {
-                label: $gettext('Info'),
-                value: 'info',
-              },
-              {
-                label: $gettext('Success'),
-                value: 'success',
-              },
-              {
-                label: $gettext('Warning'),
-                value: 'warning',
-              },
-              {
-                label: $gettext('Error'),
-                value: 'error',
-              },
-            ]}
-          />
-        )
-      },
+      type: ({ formData }: { formData: ExternalNotify }) => (
+        <LevelSelect v-model:value={formData.levels} />
+      ),
     },
   },
   {
