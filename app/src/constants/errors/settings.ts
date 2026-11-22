@@ -5,4 +5,5 @@ export default {
   40004: () => $gettext('Unknown settings section: {0}'),
   40005: () => $gettext('Enter the API token again to save a different endpoint, proxy or API type'),
   40006: () => $gettext('A trusted publisher is not in the expected format or is listed twice'),
+  40007: () => $gettext('The value of {0} cannot be stored in app.ini. Remove a trailing backslash, triple quotes next to a line break, or a %(name)s reference from it'),
 }

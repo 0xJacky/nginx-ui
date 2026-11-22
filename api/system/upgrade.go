@@ -3,6 +3,7 @@ package system
 import (
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/helper"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/upgrader"
@@ -45,7 +46,7 @@ func SaveUpgradeChannel(c *gin.Context) {
 	if err := settings.Update(func() {
 		settings.NodeSettings.UpgradeChannel = payload.Channel
 	}); err != nil {
-		cosy.ErrHandler(c, err)
+		api.SettingsSaveError(c, err)
 		return
 	}
 

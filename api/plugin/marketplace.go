@@ -6,6 +6,7 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	plugin "github.com/0xJacky/Nginx-UI/internal/plugin"
 	"github.com/0xJacky/Nginx-UI/settings"
@@ -238,7 +239,7 @@ func SaveMarketplaceSources(c *gin.Context) {
 	if err = settings.Update(func() {
 		settings.PluginSettings.MarketplaceSources = sources
 	}); err != nil {
-		cosy.ErrHandler(c, err)
+		api.SettingsSaveError(c, err)
 		return
 	}
 

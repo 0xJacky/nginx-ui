@@ -212,6 +212,10 @@ func SaveNginxControlSettings(c *gin.Context) {
 	}
 
 	if err := updateNginxControlSettings(payload); err != nil {
+		if appsettings.IsUnstorableValue(err) {
+			abortBadRequest(c, err)
+			return
+		}
 		cosy.ErrHandler(c, err)
 		return
 	}

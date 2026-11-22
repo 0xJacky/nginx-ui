@@ -176,9 +176,23 @@ func InitNodeSecret() {
 			settings.NodeSettings.Secret = uuidStr
 		})
 		if err != nil {
+			stopIfUnstorable("node secret", err)
 			logger.Error("Error save settings", err)
 		}
 		logger.Info("Generated legacy node API secret")
+	}
+}
+
+// stopIfUnstorable stops the boot when a generated value cannot be saved
+// because app.ini itself stores a value it cannot write back. The value would
+// be generated anew on every start, silently invalidating what was made with
+// the previous one: sessions, service tokens, encrypted node credentials,
+// backup manifests and the instance identity. An environment override that
+// cannot be stored does not get here; app.ini keeps its stored value for it
+// and the generated value is saved.
+func stopIfUnstorable(what string, err error) {
+	if settings.IsUnstorableValue(err) {
+		logger.Fatalf("Cannot save the generated %s: %s", what, settings.UnstorableStoredValueMessage(err))
 	}
 }
 
@@ -195,6 +209,7 @@ func InitNodeInstanceID() {
 	if err := settings.Update(func() {
 		settings.NodeSettings.InstanceID = uuid.NewString()
 	}); err != nil {
+		stopIfUnstorable("node instance ID", err)
 		logger.Fatal("Generate node instance ID: ", err)
 	}
 }
@@ -221,6 +236,7 @@ func InitCryptoSecret() {
 			settings.CryptoSettings.Secret = secret
 		})
 		if err != nil {
+			stopIfUnstorable("crypto secret", err)
 			logger.Error("Error save settings", err)
 		}
 		logger.Info("Secret Generated")

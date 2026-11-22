@@ -1,7 +1,6 @@
 package settings
 
 import (
-	"bytes"
 	"fmt"
 	"reflect"
 	"sort"
@@ -94,12 +93,14 @@ func BuildRestoreConfig(backupPath, currentPath string, preserveProtected bool) 
 		return nil, nil, err
 	}
 
-	var output bytes.Buffer
-	if _, err := backupConfig.WriteTo(&output); err != nil {
+	// The restored file must read back exactly as validated above, like every
+	// other write of app.ini.
+	output, err := encodeConf(backupConfig)
+	if err != nil {
 		return nil, nil, fmt.Errorf("serialize restored settings: %w", err)
 	}
 	sort.Strings(skipped)
-	return output.Bytes(), skipped, nil
+	return output, skipped, nil
 }
 
 // dropLegacyServerKeys removes the v1 [server] keys from a portable backup.

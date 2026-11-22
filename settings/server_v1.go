@@ -191,6 +191,14 @@ func migrate(confPath string) {
 	}
 
 	err = saveConfAtomically(Conf, confPath)
+	if IsUnstorableValue(err) {
+		// Writing the migrated settings would change them, and starting
+		// without them would look like a new installation. Nothing was
+		// written, so the v1 file is left as it is for the operator to correct.
+		logger.Fatalf("The v1 settings in %s cannot be migrated, the file was left unchanged: %s",
+			confPath, migrationUnstorableMessage(Conf))
+		return
+	}
 	if err != nil {
 		logger.Fatalf("Fail to save the migrated settings: %v", err)
 		return
