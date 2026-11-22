@@ -23,6 +23,7 @@ Yet another Nginx Web UI, developed by [0xJacky](https://jackyu.cn/), [Hintay](h
 [![Featured｜HelloGitHub](https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=86f3a8f779934748a34fe6f1b5cd442f&claim_uid=MOFqadzAShCBeQj&theme=small)](https://hellogithub.com/repository/86f3a8f779934748a34fe6f1b5cd442f) [![Plumber Score](https://score.getplumber.io/github.com/0xJacky/nginx-ui.svg)](https://score.getplumber.io/github.com/0xJacky/nginx-ui)
 
 [![Deploy on RainYun](https://rainyun-apps.cn-nb1.rains3.com/materials/deploy-on-rainyun-en.svg)](https://app.rainyun.com/apps/rca/store/8035/nginxui_)
+[![Deploy to ZopDay](https://zop.dev/deploytozopday-inkhard.svg)](https://zop.dev/zopday/app/deploy?image=uozi/nginx-ui:latest&port=9000&name=nginx-ui&utm_source=github&utm_medium=one_click&utm_content=nginx-ui)
 
 </div>
 

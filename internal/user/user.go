@@ -335,6 +335,8 @@ func generateJWT(user *model.User, proof LoginProof) (*AccessTokenPayload, error
 		ExpiredAt:   now.Add(ExpiredTime).Unix(),
 	}
 
+	loginRecordMutex.Lock()
+	defer loginRecordMutex.Unlock()
 	err = model.UseDB().Transaction(func(tx *gorm.DB) error {
 		var current struct {
 			ID          uint64

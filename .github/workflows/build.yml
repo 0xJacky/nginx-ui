@@ -1250,6 +1250,14 @@ jobs:
               if replaced != 1:
                   sys.exit(f"expected 1 url/sha256 pair for {asset}, found {replaced}")
 
+          # The release PR is merged without `brew pr-pull`, so a bottle block
+          # would keep pointing at an older version's bottle and break
+          # `brew install` with "Unexpected bottle contents". The formula only
+          # installs the prebuilt release binary, so it ships without bottles.
+          content = re.sub(
+              r"^  bottle do\n.*?^  end\n\n?", "", content, flags=re.S | re.M
+          )
+
           formula.write_text(content)
           PY
 

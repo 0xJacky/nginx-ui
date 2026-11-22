@@ -15,6 +15,9 @@ import (
 // verifyRecoveryCode consumes a code without writing stale account credentials.
 func verifyRecoveryCode(account *model.User, code string) (result OTPVerificationResult, err error) {
 	exhausted := false
+	// Serialized with the other login writes; see loginRecordMutex.
+	loginRecordMutex.Lock()
+	defer loginRecordMutex.Unlock()
 	err = model.UseDB().Transaction(func(tx *gorm.DB) error {
 		var current model.User
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&current, account.ID).Error; err != nil {

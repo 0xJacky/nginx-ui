@@ -45,11 +45,10 @@ const (
 	headerPluginSecret = "Nginx-UI-Plugin-Secret"
 )
 
-// hostCredentialHeaders authenticate a request to nginx-ui itself, from a
-// person or from another node, and must never reach a plugin.
+// hostCredentialHeaders authenticate a request to nginx-ui itself from
+// another node and must never reach a plugin. The credentials a person
+// presents are listed by middleware.IsCallerCredentialHeader.
 var hostCredentialHeaders = []string{
-	"Authorization",
-	"Cookie",
 	"X-Node-ID",
 	"X-Node-Secret",
 	"Signature",
@@ -63,6 +62,9 @@ var hostCredentialHeaders = []string{
 // credential, or a header in the namespace the host sets for the plugin,
 // which a client must not be able to supply.
 func isHostHeader(key string) bool {
+	if middleware.IsCallerCredentialHeader(key) {
+		return true
+	}
 	for _, name := range hostCredentialHeaders {
 		if strings.EqualFold(key, name) {
 			return true
@@ -178,7 +180,7 @@ func serveHTTPUnix(c *gin.Context, h HTTPHost, id, subPath string) {
 			req.URL.Path = subPath
 			req.URL.RawPath = ""
 			if upgrade {
-				stripHandshakeCredentials(req.URL)
+				req.URL.RawQuery = stripHandshakeCredentials(req.URL.RawQuery)
 			}
 			// Credentials and any copy of the headers below the client sent
 			// must never reach the plugin, the host is their only source.
@@ -194,13 +196,15 @@ func serveHTTPUnix(c *gin.Context, h HTTPHost, id, subPath string) {
 	proxy.ServeHTTP(c.Writer, c.Request)
 }
 
-// stripHandshakeCredentials removes the query parameters a browser WebSocket
-// uses to authenticate with the host, so the plugin never sees a session token.
-func stripHandshakeCredentials(u *url.URL) {
-	values := u.Query()
-	values.Del("token")
+// stripHandshakeCredentials removes from the query of a WebSocket upgrade the
+// parameters a browser WebSocket uses to authenticate with the host and to
+// select a node, so the plugin never sees a session token or secure session.
+// The query of a plain request belongs to the plugin and is not touched.
+func stripHandshakeCredentials(rawQuery string) string {
+	values, _ := url.ParseQuery(rawQuery)
+	middleware.StripCallerCredentialQuery(values, true)
 	values.Del("x_node_id")
-	u.RawQuery = values.Encode()
+	return values.Encode()
 }
 
 // dialerFor resolves how to reach the plugin's http capability: a unix socket
@@ -254,10 +258,14 @@ func serveHTTPRPC(c *gin.Context, h HTTPHost, id, subPath string) {
 		return
 	}
 
+	query := c.Request.URL.RawQuery
+	if middleware.IsWebSocketUpgrade(c.Request) {
+		query = stripHandshakeCredentials(query)
+	}
 	params := protocol.HTTPHandleParams{
 		Method:     c.Request.Method,
 		Path:       subPath,
-		Query:      c.Request.URL.RawQuery,
+		Query:      query,
 		Headers:    sanitizedHeaders(c.Request.Header),
 		BodyBase64: base64.StdEncoding.EncodeToString(body),
 		User:       currentUser(c),

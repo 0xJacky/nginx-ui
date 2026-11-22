@@ -126,7 +126,10 @@ func withMFAPreAuth(c *gin.Context, action func(*mfaPreAuth, *model.User, string
 }
 
 func rejectMFAVerification(c *gin.Context, err error) {
-	user.BanIP(c.ClientIP())
+	// A locked database is not a failed guess; see Login.
+	if !user.IsDatabaseLocked(err) {
+		user.BanIP(c.ClientIP())
+	}
 	cosy.ErrHandler(c, err)
 }
 
@@ -153,8 +156,7 @@ func completeMFAPreAuth(c *gin.Context, s *mfaPreAuth, u *model.User, id string,
 	}
 	s.Consumed = true
 	cache.Del(mfaPreAuthPrefix + id)
-	ban := query.BanIP
-	_, _ = ban.Where(ban.IP.Eq(c.ClientIP())).Delete()
+	user.ClearBanIP(c.ClientIP())
 	ssid := user.SetSecureSessionID(u.ID, u.MFAVersion)
 	c.JSON(http.StatusOK, struct {
 		LoginResponse

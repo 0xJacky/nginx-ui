@@ -3,7 +3,6 @@ package user
 import (
 	"math/rand/v2"
 	"net/http"
-	"sync"
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/event"
@@ -16,7 +15,12 @@ import (
 	"github.com/uozi-tech/cosy/logger"
 )
 
-var mutex = &sync.Mutex{}
+// loginFailureDelay is how long a failed password login waits before it
+// answers. It slows down the client that failed, and runs after the client's
+// login lock is released so no other request waits for it.
+var loginFailureDelay = func() time.Duration {
+	return time.Duration(rand.IntN(10)) * time.Second
+}
 
 type LoginUser struct {
 	Name         string `json:"name" binding:"required,max=255"`
@@ -45,23 +49,34 @@ type LoginResponse struct {
 	MFAStage         string `json:"mfa_stage,omitempty"`
 }
 
-func Login(c *gin.Context) {
-	// make sure that only one request is processed at a time
-	mutex.Lock()
-	defer mutex.Unlock()
-	// check if the ip is banned
-	clientIP := c.ClientIP()
+// loginClientBanned reports whether clientIP has used up its login attempts
+// in the current ban window.
+// A failed lookup is logged and treated as not banned, as before: refusing
+// would turn a busy database into refused logins for everyone.
+func loginClientBanned(clientIP string) bool {
 	b := query.BanIP
-	banIP, _ := b.Where(b.IP.Eq(clientIP),
+	banIP, err := b.Where(b.IP.Eq(clientIP),
 		b.ExpiredAt.Gte(time.Now().Unix()),
 		b.Attempts.Gte(settings.AuthSettings.MaxAttempts),
 	).Count()
+	if err != nil {
+		logger.Error("[User Login] ban lookup:", err)
+	}
+	return banIP > 0
+}
 
-	if banIP > 0 {
-		c.JSON(http.StatusTooManyRequests, LoginResponse{
-			Message: "Max attempts",
-			Code:    ErrMaxAttempts,
-		})
+func respondMaxAttempts(c *gin.Context) {
+	c.JSON(http.StatusTooManyRequests, LoginResponse{
+		Message: "Max attempts",
+		Code:    ErrMaxAttempts,
+	})
+}
+
+func Login(c *gin.Context) {
+	clientIP := c.ClientIP()
+	// Refuse a banned client before it waits for any lock.
+	if loginClientBanned(clientIP) {
+		respondMaxAttempts(c)
 		return
 	}
 
@@ -71,12 +86,23 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// Check the ban again under the client's lock, so the check, the
+	// credential verification and the recorded failure act as one step for
+	// this client. Other clients use their own locks and never wait here.
+	unlock := loginClientLocks.lock(clientIP)
+	defer unlock()
+	if loginClientBanned(clientIP) {
+		respondMaxAttempts(c)
+		return
+	}
+
 	u, err := user.Login(json.Name, json.Password)
 	if err != nil {
 		user.BanIP(clientIP)
 		event.PublishAuthLoginFailed(json.Name, clientIP)
-		random := time.Duration(rand.Int() % 10)
-		time.Sleep(random * time.Second)
+		// The failure is recorded; release the lock before the delay.
+		unlock()
+		time.Sleep(loginFailureDelay())
 		cosy.ErrHandler(c, err)
 		return
 	}
@@ -103,8 +129,12 @@ func Login(c *gin.Context) {
 
 		if _, err = user.VerifyOTP(u, json.OTP, json.RecoveryCode); err != nil {
 			cosy.ErrHandler(c, err)
-			user.BanIP(clientIP)
-			event.PublishAuthLoginFailed(u.Name, clientIP)
+			// A locked database never got to check the code, or found it
+			// valid before the write failed, so it is not a failed guess.
+			if !user.IsDatabaseLocked(err) {
+				user.BanIP(clientIP)
+				event.PublishAuthLoginFailed(u.Name, clientIP)
+			}
 			return
 		}
 
@@ -124,7 +154,7 @@ func Login(c *gin.Context) {
 	}
 
 	// login success, clear banned record
-	_, _ = b.Where(b.IP.Eq(clientIP)).Delete()
+	user.ClearBanIP(clientIP)
 
 	logger.Info("[User Login]", u.Name)
 	accessToken, err := user.IssueLoginToken(u, loginProof)

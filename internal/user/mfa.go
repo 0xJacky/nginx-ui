@@ -77,6 +77,9 @@ func MFAVersion(id uint64) (uint64, error) {
 
 // SaveMFACredentials rejects enrollment if a concurrent recovery reset occurred.
 func SaveMFACredentials(u *model.User, change func(*gorm.DB) error) error {
+	// Serialized with the other login writes; see loginRecordMutex.
+	loginRecordMutex.Lock()
+	defer loginRecordMutex.Unlock()
 	return model.UseDB().Transaction(func(tx *gorm.DB) error {
 		var current model.User
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Select("id", "status", "mfa_version").First(&current, u.ID).Error; err != nil {
