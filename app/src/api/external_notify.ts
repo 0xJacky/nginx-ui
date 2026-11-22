@@ -2,7 +2,11 @@ import type { ModelBase } from '@/api/curd'
 import type { ConfigurationField } from '@/api/plugin'
 import { http, useCurdApi } from '@uozi-admin/request'
 
-export interface ExternalNotify extends ModelBase {
+interface NotificationLevelSelection {
+  levels?: ('info' | 'success' | 'warning' | 'error')[] | null
+}
+
+export interface ExternalNotify extends ModelBase, NotificationLevelSelection {
   type: string
   description: string
   language: string
@@ -16,7 +20,7 @@ export interface TestMessageRequest {
   config: Record<string, string>
 }
 
-export interface CreateExternalNotifyRequest {
+export interface CreateExternalNotifyRequest extends NotificationLevelSelection {
   type: string
   description?: string
   language: string
