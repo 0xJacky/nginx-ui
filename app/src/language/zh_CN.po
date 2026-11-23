@@ -2980,6 +2980,11 @@ msgstr "未知的设置区块：{0}"
 msgid "A trusted publisher is not in the expected format or is listed twice"
 msgstr "有可信发布者的格式不正确或重复添加。"
 
+msgid ""
+"The value of {0} cannot be stored in app.ini. Remove a trailing backslash, "
+"triple quotes next to a line break, or a %(name)s reference from it"
+msgstr "{0} 的值无法保存到 app.ini。请删除其中末尾的反斜杠、紧挨换行的三引号或 %(name)s 引用"
+
 msgid "Site not found"
 msgstr "网站未找到"
 
@@ -8329,6 +8334,10 @@ msgstr "Lark 自定义"
 msgid "Lark"
 msgstr "Lark"
 
+msgid ""
+"No level is selected, so this notifier will not receive any notifications."
+msgstr "未选择任何级别，此通知渠道将收不到任何通知。"
+
 msgid "Mattermost"
 msgstr "Mattermost"
 
@@ -13018,6 +13027,11 @@ msgstr "节点代理不执行该路由的授权校验，因此无法将其转发
 
 msgid "This request cannot be forwarded to the remote node because the node is disabled"
 msgstr "该远程节点已禁用，无法转发此请求"
+
+msgid ""
+"Configuration files on this remote node are hidden from read-only service "
+"tokens until the node is upgraded"
+msgstr "该远程节点升级之前，只读服务令牌看不到它的配置文件"
 
 msgid "Log parser is not initialized; call indexer.InitLogParser() before use"
 msgstr "日志解析器未初始化；使用前请调用 indexer.InitLogParser()"
