@@ -2,8 +2,11 @@ import type { ModelBase } from '@/api/curd'
 import type { ConfigurationField } from '@/api/plugin'
 import { http, useCurdApi } from '@uozi-admin/request'
 
+export type NotificationLevel = 'info' | 'success' | 'warning' | 'error'
+
 interface NotificationLevelSelection {
-  levels?: ('info' | 'success' | 'warning' | 'error')[] | null
+  /** Levels the notifier receives; null or absent means every level. */
+  levels?: NotificationLevel[] | null
 }
 
 export interface ExternalNotify extends ModelBase, NotificationLevelSelection {
