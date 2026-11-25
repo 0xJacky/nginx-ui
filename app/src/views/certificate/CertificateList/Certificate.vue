@@ -1,15 +1,14 @@
 <script setup lang="tsx">
-import type { TableColumnsType } from 'antdv-next'
 import type { Cert, CertListCounts, CertListFilter, DiscoveredCertificatePair } from '@/api/cert'
-import { CloudUploadOutlined, InfoCircleOutlined, PlusOutlined, ReloadOutlined, SearchOutlined } from '@antdv-next/icons'
+import { CloudUploadOutlined, PlusOutlined, ReloadOutlined, SearchOutlined } from '@antdv-next/icons'
 import { useMediaQuery, watchDebounced } from '@vueuse/core'
-import { Tag, Tooltip } from 'antdv-next'
-import dayjs from 'dayjs'
+import { Tag } from 'antdv-next'
 import cert from '@/api/cert'
 import { useGlobalStore } from '@/pinia'
-import { certRenewalMethodLabel, certStateLabel, certStateTone, isAcmeCert, splitVisible } from '../certState'
+import { isAcmeCert } from '../certState'
 import WildcardCertificate from '../components/DNSIssueCertificate.vue'
 import RetryCert from '../components/RetryCert.vue'
+import { certListColumns, certListNarrowColumns } from './listColumns'
 
 const refWildcard = ref()
 const router = useRouter()
@@ -106,148 +105,16 @@ const pagination = computed(() => ({
   },
 }))
 
-function toneColor(record: Cert) {
-  return `var(--ant-color-${{
-    success: 'success',
-    warning: 'warning',
-    error: 'error',
-    processing: 'primary',
-    default: 'text-quaternary',
-  }[certStateTone(record.state)]})`
-}
-
 function editCert(record: Cert) {
   router.push(`/certificates/${record.id}`)
 }
 
-function renderState(record: Cert) {
-  const label = (
-    <span
-      class="cert-state"
-      style={{
-        color: toneColor(record),
-      }}
-    >
-      <span class="cert-state-dot" />
-      {certStateLabel(record)}
-      {record.state === 'failed' && record.last_renewal_error && <InfoCircleOutlined />}
-    </span>
-  )
-  if (record.state === 'failed' && record.last_renewal_error)
-    return <Tooltip title={record.last_renewal_error}>{label}</Tooltip>
-  return label
-}
-
-function expiryDate(record: Cert) {
-  return record.certificate_info?.not_after
-    ? dayjs(record.certificate_info.not_after).format('YYYY-MM-DD')
-    : '-'
-}
-
-// A function so the title follows a language switch.
-function actionsColumn(): TableColumnsType<Cert>[number] {
-  return {
-    title: $gettext('Actions'),
-    key: 'actions',
-    fixed: 'right',
-    align: 'right',
-    width: 130,
-  }
-}
-
-// A certificate issued for a node names that node, since it does not serve
-// any configuration of this instance.
-function renderName(record: Cert) {
-  const link = <a onClick={() => editCert(record)}>{record.name || record.domains?.[0] || '-'}</a>
-  if (!record.delegated_node_id)
-    return link
-  const node = record.delegated_node_name || `#${record.delegated_node_id}`
-  return (
-    <div class="cert-name">
-      {link}
-      <Tooltip title={$gettext('Issued by this instance for %{node} and renewed here', { node })}>
-        <Tag class="m-0" color="geekblue" variant="filled">{$gettext('For %{node}', { node })}</Tag>
-      </Tooltip>
-    </div>
-  )
-}
-
-const columns = computed<TableColumnsType<Cert>>(() => [
-  {
-    title: $gettext('Name'),
-    dataIndex: 'name',
-    ellipsis: true,
-    width: 200,
-    render: (_: unknown, record: Cert) => renderName(record),
-  },
-  {
-    title: $gettext('Domains'),
-    dataIndex: 'domains',
-    width: 260,
-    render: (_: unknown, record: Cert) => {
-      const { visible, hidden } = splitVisible(record.domains ?? [], 2)
-      if (!visible.length)
-        return '-'
-      return (
-        <div class="cert-domains">
-          {visible.map(domain => <Tag class="m-0 font-mono">{domain}</Tag>)}
-          {hidden > 0 && (
-            <Tooltip title={(record.domains ?? []).slice(2).join(', ')}>
-              <Tag class="m-0">{`+${hidden}`}</Tag>
-            </Tooltip>
-          )}
-        </div>
-      )
-    },
-  },
-  {
-    title: $gettext('Status'),
-    dataIndex: 'state',
-    width: 190,
-    render: (_: unknown, record: Cert) => renderState(record),
-  },
-  {
-    title: $gettext('Renewal method'),
-    dataIndex: 'renewal_method',
-    width: 190,
-    ellipsis: true,
-    render: (_: unknown, record: Cert) => certRenewalMethodLabel(record.renewal_method, record.dns_provider),
-  },
-  {
-    title: $gettext('Expiry date'),
-    dataIndex: ['certificate_info', 'not_after'],
-    width: 120,
-    render: (_: unknown, record: Cert) => expiryDate(record),
-  },
-  actionsColumn(),
-])
-
-// Phones get one column with the status and expiry under the name, so the
-// status stays visible without scrolling sideways.
 const isNarrow = useMediaQuery('(max-width: 575px)')
 
-const narrowColumns = computed<TableColumnsType<Cert>>(() => [
-  {
-    title: $gettext('Name'),
-    dataIndex: 'name',
-    render: (_: unknown, record: Cert) => (
-      <div class="min-w-0">
-        {renderName(record)}
-        <div class="cert-narrow-meta">
-          {renderState(record)}
-          {record.certificate_info?.not_after && <span class="cert-narrow-expiry">{expiryDate(record)}</span>}
-        </div>
-      </div>
-    ),
-  },
-  {
-    ...actionsColumn(),
-    fixed: undefined,
-    width: 110,
-  },
-])
-
-const tableColumns = computed(() => isNarrow.value ? narrowColumns.value : columns.value)
+// Computed, so the titles follow a language switch.
+const tableColumns = computed(() => isNarrow.value
+  ? certListNarrowColumns(editCert)
+  : certListColumns(editCert))
 
 const globalStore = useGlobalStore()
 
