@@ -14,7 +14,7 @@ require (
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.2.5
 	github.com/alibabacloud-go/tea v1.5.4
 	github.com/caarlos0/env/v11 v11.4.2
-	github.com/casdoor/casdoor-go-sdk v1.59.0
+	github.com/casdoor/casdoor-go-sdk v1.60.0
 	github.com/cloudflare/cloudflare-go/v7 v7.15.0
 	github.com/coreos/go-oidc/v3 v3.21.0
 	github.com/creack/pty v1.1.24
@@ -27,7 +27,7 @@ require (
 	github.com/gin-contrib/cors v1.7.11
 	github.com/gin-contrib/static v1.1.10
 	github.com/gin-gonic/gin v1.12.0
-	github.com/go-acme/lego/v5 v5.6.0
+	github.com/go-acme/lego/v5 v5.7.0
 	github.com/go-co-op/gocron/v2 v2.23.2
 	github.com/go-gormigrate/gormigrate/v2 v2.1.7
 	github.com/go-playground/validator/v10 v10.30.6
@@ -37,9 +37,9 @@ require (
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674
-	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.223
-	github.com/klauspost/compress v1.20.4
-	github.com/mark3labs/mcp-go v1.5.0
+	github.com/huaweicloud/huaweicloud-sdk-go-v3 v0.1.224
+	github.com/klauspost/compress v1.20.5
+	github.com/mark3labs/mcp-go v1.6.0
 	github.com/mattn/go-sqlite3 v1.14.53
 	github.com/miekg/dns v1.1.73
 	github.com/minio/minio-go/v7 v7.4.1
@@ -57,7 +57,7 @@ require (
 	github.com/shirou/gopsutil/v4 v4.26.10
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.12.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.214
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.217
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
 	github.com/ulikunitz/xz v0.5.17
 	github.com/uozi-tech/cosy v1.35.5
@@ -109,7 +109,7 @@ require (
 	github.com/felixge/httpsnoop v1.1.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.9.4 // indirect
 	github.com/gin-contrib/sse v1.1.1 // indirect
-	github.com/go-jose/go-jose/v4 v4.1.6 // indirect
+	github.com/go-jose/go-jose/v4 v4.1.9 // indirect
 	github.com/go-lark/lark v1.16.0 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -189,10 +189,11 @@ require (
 	go.mongodb.org/mongo-driver/v2 v2.8.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.69.0 // indirect
-	go.opentelemetry.io/otel v1.45.0 // indirect
+	go.opentelemetry.io/otel v1.47.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.42.0 // indirect
-	go.opentelemetry.io/otel/metric v1.45.0 // indirect
-	go.opentelemetry.io/otel/trace v1.45.0 // indirect
+	go.opentelemetry.io/otel/log v1.47.0 // indirect
+	go.opentelemetry.io/otel/metric v1.47.0 // indirect
+	go.opentelemetry.io/otel/trace v1.47.0 // indirect
 	go.uber.org/atomic v1.12.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.6 // indirect
@@ -202,7 +203,7 @@ require (
 	golang.org/x/sync v0.25.0 // indirect
 	golang.org/x/text v0.44.0 // indirect
 	golang.org/x/tools v0.52.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20261019180522-ce908d29299b // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20261104224025-d1e00e9f33ab // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
