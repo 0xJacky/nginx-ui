@@ -823,6 +823,92 @@ func TestProxyPassInlineUnixSocket(t *testing.T) {
 	}
 }
 
+func TestParseProxyTargetsWithDirectivesOnOneLine(t *testing.T) {
+	config := `upstream app { server 10.0.0.1:8080; server 10.0.0.2:8080 backup; }
+server {
+    listen 80;
+    location /app/ { proxy_pass http://app; }
+    location /api/ { proxy_pass http://10.0.0.3:3000; }
+    location /ws/ {
+        proxy_set_header Host $host; proxy_pass http://10.0.0.4:4000;
+    }
+    location /grpc/ { grpc_pass grpc://10.0.0.5:5000; }
+    location /set/ { set $backend http://10.0.0.6:6000; proxy_pass $backend; }
+    # location /old/ { proxy_pass http://10.0.0.7:7000; }
+    location /hash/ { proxy_pass http://10.0.0.8:8000/a#b; } # proxy_pass http://10.0.0.9:9000;
+    location /quoted/ { add_header X-Note "a # b; proxy_pass http://10.0.0.10:10000;"; }
+}`
+
+	targets := ParseProxyTargetsFromRawContent(config)
+
+	expected := map[string]bool{
+		"10.0.0.1:8080:upstream":   true,
+		"10.0.0.2:8080:upstream":   true,
+		"10.0.0.3:3000:proxy_pass": true,
+		"10.0.0.4:4000:proxy_pass": true,
+		"10.0.0.5:5000:grpc_pass":  true,
+		"10.0.0.6:6000:proxy_pass": true,
+		"10.0.0.8:8000:proxy_pass": true,
+	}
+
+	got := make(map[string]bool)
+	for _, target := range targets {
+		got[formatSocketAddress(target.Host, target.Port)+":"+target.Type] = true
+	}
+	for key := range expected {
+		if !got[key] {
+			t.Errorf("Expected target not found: %s", key)
+		}
+	}
+	for key := range got {
+		if !expected[key] {
+			t.Errorf("Unexpected target: %s", key)
+		}
+	}
+}
+
+func TestSplitDirectives(t *testing.T) {
+	tests := []struct {
+		name    string
+		content string
+		want    string
+	}{
+		{
+			name:    "block on one line",
+			content: "location / { proxy_pass http://a; }",
+			want:    "location / {\n proxy_pass http://a;\n }\n",
+		},
+		{
+			name:    "comment at token start",
+			content: "a b; # c; d;\ne f;",
+			want:    "a b;\n \ne f;\n",
+		},
+		{
+			name:    "hash inside a token",
+			content: "a b#c;",
+			want:    "a b#c;\n",
+		},
+		{
+			name:    "quoted text",
+			content: `a "b; #c {}";`,
+			want:    "a \"b; #c {}\";\n",
+		},
+		{
+			name:    "variable in braces",
+			content: "a http://${host}:80;",
+			want:    "a http://${host}:80;\n",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := splitDirectives(tt.content); got != tt.want {
+				t.Errorf("splitDirectives(%q) = %q, want %q", tt.content, got, tt.want)
+			}
+		})
+	}
+}
+
 // New tests covering `set $var ...;` with proxy_pass/grpc_pass
 func TestSetVariableProxyPass_HTTP(t *testing.T) {
 	config := `
