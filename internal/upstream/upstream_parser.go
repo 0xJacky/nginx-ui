@@ -43,6 +43,10 @@ func ParseProxyTargetsAndUpstreamsFromRawContent(content string) *ParseResult {
 	upstreams := make(map[string][]ProxyTarget)
 	upstreamSchemes := make(map[string]string)
 
+	// The patterns below read one directive per line, so put every directive on
+	// its own line first ("location / { proxy_pass http://app; }" is valid nginx).
+	content = splitDirectives(content)
+
 	// First, collect all upstream names and their contexts
 	// Also collect literal variable assignments from `set $var value;`
 	upstreamNames := make(map[string]bool)
@@ -485,6 +489,66 @@ func isUpstreamReference(passURL string, upstreamNames map[string]bool) bool {
 	}
 
 	return false
+}
+
+// splitDirectives drops nginx comments and starts a new line after every ";",
+// "{" and "}", so each directive starts its own line. Like nginx, it reads "#"
+// as a comment only where a token starts and outside quotes, so "a#b" and
+// "\"#\"" are kept. Quoted text and "${name}" are copied as they are.
+func splitDirectives(content string) string {
+	var b strings.Builder
+	b.Grow(len(content))
+	var quote byte
+	tokenStart := true
+	for i := 0; i < len(content); i++ {
+		c := content[i]
+		if quote != 0 {
+			b.WriteByte(c)
+			if c == '\\' && i+1 < len(content) {
+				i++
+				b.WriteByte(content[i])
+			} else if c == quote {
+				quote = 0
+			}
+			continue
+		}
+		switch c {
+		case '#':
+			if tokenStart {
+				for i+1 < len(content) && content[i+1] != '\n' {
+					i++
+				}
+				continue
+			}
+		case '"', '\'':
+			if tokenStart {
+				quote = c
+			}
+		case '\\':
+			b.WriteByte(c)
+			if i+1 < len(content) {
+				i++
+				b.WriteByte(content[i])
+			}
+			tokenStart = false
+			continue
+		}
+		b.WriteByte(c)
+		switch {
+		// "${name}" is a variable, not a block.
+		case c == '{' && i > 0 && content[i-1] == '$':
+			tokenStart = false
+		// Inside a token, "}" is a plain character, as in nginx.
+		case c == ';' || c == '{' || (c == '}' && tokenStart):
+			b.WriteByte('\n')
+			tokenStart = true
+		case c == ' ' || c == '\t' || c == '\r' || c == '\n':
+			tokenStart = true
+		default:
+			tokenStart = false
+		}
+	}
+	return b.String()
 }
 
 // extractLiteralSetVariables parses `set $var value;` directives from the entire content and
