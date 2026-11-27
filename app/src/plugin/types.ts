@@ -17,14 +17,16 @@ export interface SharedRuntime {
   antdvIcons: typeof import('@antdv-next/icons')
   vueuse: typeof import('@vueuse/core')
   gettext: typeof gettext
-  http: typeof http
   /** Resolved versions of the shared libraries, keyed by package name. */
   versions: Record<string, string>
   /** Host dialogs a plugin may open. Older hosts do not have it, so check before use. */
   ui: SharedUI
 }
 
-/** A DNS credential created from `SharedUI.openDnsCredentialEditor`. */
+/**
+ * A stored DNS credential as `SharedUI` hands it to a plugin, without its
+ * configuration or secrets.
+ */
 export interface SharedDnsCredential {
   id: number
   name: string
@@ -39,6 +41,12 @@ export interface SharedUI {
    * Resolves with the created credential, or undefined when it is cancelled.
    */
   openDnsCredentialEditor: () => Promise<SharedDnsCredential | undefined>
+  /**
+   * Lists every stored DNS credential of the selected node, all pages read.
+   * Rejects when the list cannot be read. Needs no permission. Older hosts do
+   * not have it, so check before use.
+   */
+  listDnsCredentials?: () => Promise<SharedDnsCredential[]>
 }
 
 export interface NginxUIGlobal {
@@ -153,7 +161,10 @@ export interface PluginRegistry {
    * so check before use.
    */
   wsUrl: (path: string) => string
-  /** The host API client, usable only with the `core_api` permission. */
+  /**
+   * The host API client. Without the approved `core_api` permission every call
+   * rejects.
+   */
   coreHttp: typeof http
   manifest: PluginManifest
   host: PluginHostState

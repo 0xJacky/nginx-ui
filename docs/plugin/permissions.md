@@ -36,7 +36,7 @@ manifest:
 | `cron` | Registering scheduled calls at runtime with `host.cron.register` and `unregister`. |
 | `notify` | Raising notifications in Nginx UI with `host.notify`. |
 | `metrics.read` | Reading Nginx UI's metrics with `host.metrics.snapshot`. |
-| `core_api` | Calling the Nginx UI REST API from the browser bundle through `registry.coreHttp`. |
+| `core_api` | Calling the Nginx UI REST API from the browser bundle through `registry.coreHttp`. See [Permissions in the Browser](#permissions-in-the-browser). |
 | `mcp` | Publishing the plugin's tools to MCP clients. Required by `mcp`. |
 | `cert.deploy` | Receiving certificates and their private keys in `deploy.push`. Required by `cert.deploy`. |
 | `log.read` | Receiving every nginx access log line in `log.push`. Required by `log.sink`. |
@@ -67,6 +67,23 @@ that only drops permissions needs no approval, and a dropped permission needs
 a new approval if a later version asks for it again. A running plugin therefore
 always holds every permission its manifest asks for. The handshake tells the
 process which permissions it holds, see [Lifecycle](./lifecycle.md#handshake).
+
+### Permissions in the Browser
+
+Nginx UI enforces permissions on the plugin process, where every host call is
+checked. A browser bundle is different: it runs in the Nginx UI page, with the
+same origin and the same signed in session as the rest of the interface.
+Nothing in the browser can stop a bundle from sending its own requests to the
+REST API.
+
+The `core_api` permission therefore keeps honest bundles to what they
+declared, and tells the person installing the plugin that its bundle talks to
+the REST API; it is not a security boundary. Without the approved `core_api`
+permission, every call through `registry.coreHttp` rejects. Nginx UI does not
+publish its REST API client anywhere else: there is no `http` on
+`window.NginxUI.shared`. A bundle that calls the REST API declares `core_api`
+and goes through `registry.coreHttp`, never around it. Judge a plugin with a
+browser bundle by who publishes it, as you would its process.
 
 ### Sensitive Permissions
 

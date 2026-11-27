@@ -123,7 +123,7 @@ Expect `setup` to run more than once and reset any module level state in it.
 | `http` | HTTP client for the plugin's own [HTTP endpoints](./http.md), based at `./api/plugins/<plugin id>/http`. Resolves with the full response. |
 | `wsUrl(path)` | The URL of a WebSocket to `path` under the plugin's HTTP endpoints, with what Nginx UI needs to accept it. Optional. |
 | `loadChunk(name)` | Loads a declared [chunk](#chunks). Optional. |
-| `coreHttp` | Client for the Nginx UI REST API, available with the `core_api` permission. Resolves with the response body. |
+| `coreHttp` | Client for the Nginx UI REST API. Resolves with the response body. Without the approved `core_api` permission every call rejects, see [Permissions in the Browser](./permissions.md#permissions-in-the-browser). This is the only REST API client Nginx UI hands to a bundle. |
 | `manifest` | The plugin's manifest. |
 | `host` | Read-only `{ theme, locale, nodeId, username }`. |
 
@@ -159,6 +159,12 @@ the process.
 `openDnsCredentialEditor()` opens the DNS credential editor and resolves with
 the created credential, or `undefined` when the person cancels. Check that a
 member exists before calling it.
+
+`listDnsCredentials()` resolves with every stored DNS credential of the
+selected node as `{ id, name, code, provider?, provider_code? }`, and rejects
+when the list cannot be read. It never returns a credential's configuration or
+secrets and needs no permission, so a DNS-01 form can offer the stored
+credentials without `core_api`.
 
 ## Chunks
 

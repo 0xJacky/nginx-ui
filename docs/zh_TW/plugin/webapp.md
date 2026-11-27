@@ -99,7 +99,7 @@ registerPlugin('io.github.example.myplugin', defineNginxUIPlugin({
 | `http` | 存取外掛自己的 [HTTP 介面](./http.md)的 HTTP 用戶端，基礎路徑為 `./api/plugins/<外掛 ID>/http`。回傳完整的回應。 |
 | `wsUrl(path)` | 連線到外掛 HTTP 介面下 `path` 的 WebSocket 網址，包含 Nginx UI 接受連線所需的資訊。選用。 |
 | `loadChunk(name)` | 載入已宣告的[分塊](#chunks)。選用。 |
-| `coreHttp` | Nginx UI REST API 的用戶端，需要 `core_api` 權限。回傳回應本文。 |
+| `coreHttp` | Nginx UI REST API 的用戶端，回傳回應本文。沒有已核准的 `core_api` 權限時每次呼叫都會被拒絕，參見[瀏覽器中的權限](./permissions.md#permissions-in-the-browser)。這是 Nginx UI 交給瀏覽器套件的唯一 REST API 用戶端。 |
 | `manifest` | 外掛的清單。 |
 | `host` | 唯讀的 `{ theme, locale, nodeId, username }`。 |
 
@@ -122,6 +122,8 @@ const socket = registry.wsUrl ? new WebSocket(registry.wsUrl('/events')) : undef
 ### 宿主對話框 {#host-dialogs}
 
 `window.NginxUI.shared.ui` 提供了瀏覽器套件可以重複使用的 Nginx UI 對話框。`openDnsCredentialEditor()` 開啟 DNS 認證編輯器，回傳新建的認證，使用者取消時回傳 `undefined`。呼叫前請先檢查該成員是否存在。
+
+`listDnsCredentials()` 以 `{ id, name, code, provider?, provider_code? }` 的形式回傳目前所選節點上儲存的全部 DNS 認證，讀取清單失敗時會被拒絕。它從不回傳認證的設定或金鑰，也不需要任何權限，因此 DNS-01 表單不需要 `core_api` 就能列出已儲存的認證。
 
 ## 分塊 {#chunks}
 

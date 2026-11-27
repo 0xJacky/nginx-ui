@@ -1,11 +1,11 @@
 import type { NginxUIGlobal, NginxUIPlugin } from './types'
 import * as antdvIcons from '@antdv-next/icons'
-import { http } from '@uozi-admin/request'
 import * as vueuse from '@vueuse/core'
 import * as antdvNext from 'antdv-next'
 import * as pinia from 'pinia'
 import * as vue from 'vue'
 import * as vueRouter from 'vue-router'
+import { listDnsCredentials } from '@/components/DnsCredentialEditor/listDnsCredentials'
 import { openDnsCredentialEditor } from '@/components/DnsCredentialEditor/openDnsCredentialEditor'
 import gettext from '@/gettext'
 import version from '@/version.json'
@@ -51,12 +51,14 @@ export function installSharedRuntime() {
       antdvIcons,
       vueuse,
       gettext,
-      http,
       versions: __NGINX_UI_SHARED_VERSIONS__,
-      // Host dialogs for plugins. `openDnsCredentialEditor` lets a certificate
-      // form create a DNS credential in place and select it afterwards.
+      // Host dialogs and lookups for plugins. `openDnsCredentialEditor` lets a
+      // certificate form create a DNS credential in place and select it
+      // afterwards; `listDnsCredentials` offers the stored ones without their
+      // secrets, so such a form needs no `core_api`.
       ui: {
         openDnsCredentialEditor,
+        listDnsCredentials,
       },
     },
     registerPlugin,

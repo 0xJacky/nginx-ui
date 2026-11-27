@@ -17,6 +17,7 @@ import { applyAuthHeaders } from '@/lib/http/interceptors'
 import { useSettingsStore, useUserStore } from '@/pinia'
 import router from '@/routes'
 import { chunkLoader } from './chunks'
+import { coreHttpFor } from './coreHttp'
 import { trackPluginRoute } from './routeRemovers'
 import { usePluginStore } from './store'
 import { buildPluginWebSocketUrl } from './wsUrl'
@@ -135,7 +136,7 @@ export function createRegistry(
     loadChunk,
     http: pluginHttp,
     wsUrl,
-    coreHttp: http,
+    coreHttp: coreHttpFor(pluginId, manifest.permissions, http),
     manifest,
     host,
   }
