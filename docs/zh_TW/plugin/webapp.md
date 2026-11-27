@@ -99,7 +99,7 @@ registerPlugin('io.github.example.myplugin', defineNginxUIPlugin({
 | `http` | 存取外掛自己的 [HTTP 介面](./http.md)的 HTTP 用戶端，基礎路徑為 `./api/plugins/<外掛 ID>/http`。回傳完整的回應。 |
 | `wsUrl(path)` | 連線到外掛 HTTP 介面下 `path` 的 WebSocket 網址，包含 Nginx UI 接受連線所需的資訊。選用。 |
 | `loadChunk(name)` | 載入已宣告的[分塊](#chunks)。選用。 |
-| `coreHttp` | Nginx UI REST API 的用戶端，回傳回應本文。沒有已核准的 `core_api` 權限時每次呼叫都會被拒絕，參見[瀏覽器中的權限](./permissions.md#permissions-in-the-browser)。這是 Nginx UI 交給瀏覽器套件的唯一 REST API 用戶端。 |
+| `coreHttp` | Nginx UI REST API 的用戶端，回傳回應本文。需要 `core_api` 權限：沒有該權限時，目前呼叫仍可用但會輸出棄用警告，之後的版本會拒絕這些呼叫，參見[瀏覽器中的權限](./permissions.md#permissions-in-the-browser)。請用它代替已棄用的 `window.NginxUI.shared.http`。 |
 | `manifest` | 外掛的清單。 |
 | `host` | 唯讀的 `{ theme, locale, nodeId, username }`。 |
 

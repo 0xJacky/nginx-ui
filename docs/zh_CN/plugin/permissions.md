@@ -50,7 +50,11 @@ outline: [2, 3]
 
 Nginx UI 在插件进程一侧执行权限检查，每一次宿主调用都会被校验。浏览器包则不同：它运行在 Nginx UI 的页面中，与界面其余部分同源，并共用同一个登录会话。浏览器里没有任何机制能阻止浏览器包自己向 REST API 发送请求。
 
-因此 `core_api` 权限的作用是让守规矩的浏览器包只做它声明过的事，并告诉安装插件的人它的浏览器包会调用 REST API；它不是安全边界。没有已批准的 `core_api` 权限时，通过 `registry.coreHttp` 发出的每次调用都会被拒绝。Nginx UI 不会在其他地方公开它的 REST API 客户端：`window.NginxUI.shared` 上没有 `http`。调用 REST API 的浏览器包应声明 `core_api`，并且只通过 `registry.coreHttp` 调用，绝不绕过它。评估带浏览器包的插件时，请像评估它的进程一样，看它由谁发布。
+因此 `core_api` 权限的作用是让守规矩的浏览器包只做它声明过的事，并告诉安装插件的人它的浏览器包会调用 REST API；它不是安全边界。调用 REST API 的浏览器包应声明 `core_api`，并且只通过 `registry.coreHttp` 调用，绝不绕过它。评估带浏览器包的插件时，请像评估它的进程一样，看它由谁发布。
+
+::: warning 弃用说明
+目前 Nginx UI 还不会拒绝没有 `core_api` 的浏览器包调用 REST API。这类浏览器包仍能拿到可用的 `registry.coreHttp`，第一次调用时会在浏览器控制台输出弃用警告。`window.NginxUI.shared.http` 是同一个客户端但不做任何检查，同样已弃用，第一次使用时也会警告。之后的版本会拒绝没有已批准 `core_api` 权限的插件通过 `registry.coreHttp` 发出的每次调用，并移除 `window.NginxUI.shared.http`。如果浏览器包需要调用 REST API，请现在就声明 `core_api`。
+:::
 
 ### 敏感权限 {#sensitive-permissions}
 

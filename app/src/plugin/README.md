@@ -26,6 +26,8 @@ window.NginxUI = {
   shared: {
     vue, vueRouter, pinia, antdvNext, antdvIcons, vueuse,
     gettext,        // the host vue3-gettext instance
+    http,           // deprecated host API client, warns on first use; gone
+                    // once ENFORCE_CORE_API is on (see coreHttp.ts)
     versions,       // { vue, 'vue-router', pinia, 'antdv-next', '@vueuse/core' }
     ui: {
       // Opens the host DNS credential form in a modal. Resolves with
@@ -76,7 +78,7 @@ marked `failed` and the other plugins keep loading.
 | `loadChunk(name)` | Loads an on-demand chunk declared in `webapp.chunks` and resolves with the exports the chunk handed to `registerChunk`. See Chunks. |
 | `http` | Axios instance with `baseURL: ./api/plugins/{id}/http`, carrying the same `Authorization`, `X-Node-ID` and `X-Secure-Session-ID` headers as the core client. Plain axios semantics: it resolves with an `AxiosResponse`. |
 | `wsUrl(path)` | Absolute `ws:` or `wss:` URL of a path under the plugin `http` route, built like the host's own WebSocket URLs: the session token and the selected node id travel in the query string, because a browser WebSocket cannot send headers. The plugin route accepts those query credentials for upgrade requests only, and strips them before the request reaches the plugin. A plugin must not build such a URL itself. |
-| `coreHttp` | The host API client (`./api`). Built by `coreHttpFor` in `coreHttp.ts`: a plugin whose approved permissions lack `core_api` gets a client whose every call rejects (and logs one warning). The host client is deliberately not on `window.NginxUI.shared`. Bundles run in the host page, so this keeps honest plugins to what they declared; it is not a security boundary. |
+| `coreHttp` | The host API client (`./api`). Built by `coreHttpFor` in `coreHttp.ts`. A plugin whose approved permissions lack `core_api` gets a wrapper whose first call logs a deprecation warning while `ENFORCE_CORE_API` is off; once it is on, every call of such a plugin rejects. Turning it on also removes the deprecated `window.NginxUI.shared.http`. Bundles run in the host page, so this keeps honest plugins to what they declared; it is not a security boundary. |
 | `manifest` | The plugin manifest. |
 | `host` | Read-only reactive `{ theme, locale, nodeId, username }`. Stores are never exposed. |
 

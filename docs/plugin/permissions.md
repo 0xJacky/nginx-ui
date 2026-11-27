@@ -78,12 +78,20 @@ REST API.
 
 The `core_api` permission therefore keeps honest bundles to what they
 declared, and tells the person installing the plugin that its bundle talks to
-the REST API; it is not a security boundary. Without the approved `core_api`
-permission, every call through `registry.coreHttp` rejects. Nginx UI does not
-publish its REST API client anywhere else: there is no `http` on
-`window.NginxUI.shared`. A bundle that calls the REST API declares `core_api`
-and goes through `registry.coreHttp`, never around it. Judge a plugin with a
-browser bundle by who publishes it, as you would its process.
+the REST API; it is not a security boundary. A bundle that calls the REST API
+declares `core_api` and goes through `registry.coreHttp`, never around it.
+Judge a plugin with a browser bundle by who publishes it, as you would its
+process.
+
+::: warning Deprecation
+Nginx UI does not refuse the REST API to a bundle without `core_api` yet. Such
+a bundle still gets a working `registry.coreHttp`, and its first call logs a
+deprecation warning in the browser console. `window.NginxUI.shared.http`, the
+same client without any check, is deprecated as well and warns on first use.
+A later release rejects every `registry.coreHttp` call of a plugin without the
+approved `core_api` permission and removes `window.NginxUI.shared.http`.
+Declare `core_api` now if the bundle needs the REST API.
+:::
 
 ### Sensitive Permissions
 

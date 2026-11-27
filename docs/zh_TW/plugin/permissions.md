@@ -50,7 +50,11 @@ outline: [2, 3]
 
 Nginx UI 在外掛進程一側執行權限檢查，每一次宿主呼叫都會被驗證。瀏覽器套件則不同：它在 Nginx UI 的頁面中執行，與介面其餘部分同源，並共用同一個登入工作階段。瀏覽器裡沒有任何機制能阻止瀏覽器套件自行向 REST API 發送請求。
 
-因此 `core_api` 權限的作用是讓守規矩的瀏覽器套件只做它宣告過的事，並告訴安裝外掛的人它的瀏覽器套件會呼叫 REST API；它不是安全邊界。沒有已核准的 `core_api` 權限時，透過 `registry.coreHttp` 發出的每次呼叫都會被拒絕。Nginx UI 不會在其他地方公開它的 REST API 用戶端：`window.NginxUI.shared` 上沒有 `http`。呼叫 REST API 的瀏覽器套件應宣告 `core_api`，並且只透過 `registry.coreHttp` 呼叫，絕不繞過它。評估帶有瀏覽器套件的外掛時，請像評估它的進程一樣，看它由誰發布。
+因此 `core_api` 權限的作用是讓守規矩的瀏覽器套件只做它宣告過的事，並告訴安裝外掛的人它的瀏覽器套件會呼叫 REST API；它不是安全邊界。呼叫 REST API 的瀏覽器套件應宣告 `core_api`，並且只透過 `registry.coreHttp` 呼叫，絕不繞過它。評估帶有瀏覽器套件的外掛時，請像評估它的進程一樣，看它由誰發布。
+
+::: warning 棄用說明
+目前 Nginx UI 還不會拒絕沒有 `core_api` 的瀏覽器套件呼叫 REST API。這類瀏覽器套件仍能拿到可用的 `registry.coreHttp`，第一次呼叫時會在瀏覽器主控台輸出棄用警告。`window.NginxUI.shared.http` 是同一個用戶端但不做任何檢查，同樣已棄用，第一次使用時也會警告。之後的版本會拒絕沒有已核准 `core_api` 權限的外掛透過 `registry.coreHttp` 發出的每次呼叫，並移除 `window.NginxUI.shared.http`。如果瀏覽器套件需要呼叫 REST API，請現在就宣告 `core_api`。
+:::
 
 ### 敏感權限 {#sensitive-permissions}
 

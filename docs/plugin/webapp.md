@@ -123,7 +123,7 @@ Expect `setup` to run more than once and reset any module level state in it.
 | `http` | HTTP client for the plugin's own [HTTP endpoints](./http.md), based at `./api/plugins/<plugin id>/http`. Resolves with the full response. |
 | `wsUrl(path)` | The URL of a WebSocket to `path` under the plugin's HTTP endpoints, with what Nginx UI needs to accept it. Optional. |
 | `loadChunk(name)` | Loads a declared [chunk](#chunks). Optional. |
-| `coreHttp` | Client for the Nginx UI REST API. Resolves with the response body. Without the approved `core_api` permission every call rejects, see [Permissions in the Browser](./permissions.md#permissions-in-the-browser). This is the only REST API client Nginx UI hands to a bundle. |
+| `coreHttp` | Client for the Nginx UI REST API. Resolves with the response body. Requires the `core_api` permission: without it, calls work for now with a deprecation warning and a later release rejects them, see [Permissions in the Browser](./permissions.md#permissions-in-the-browser). Use it instead of the deprecated `window.NginxUI.shared.http`. |
 | `manifest` | The plugin's manifest. |
 | `host` | Read-only `{ theme, locale, nodeId, username }`. |
 

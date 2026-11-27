@@ -1,5 +1,6 @@
 import type { NginxUIGlobal, NginxUIPlugin } from './types'
 import * as antdvIcons from '@antdv-next/icons'
+import { http } from '@uozi-admin/request'
 import * as vueuse from '@vueuse/core'
 import * as antdvNext from 'antdv-next'
 import * as pinia from 'pinia'
@@ -10,6 +11,7 @@ import { openDnsCredentialEditor } from '@/components/DnsCredentialEditor/openDn
 import gettext from '@/gettext'
 import version from '@/version.json'
 import { chunkLoader } from './chunks'
+import { deprecatedSharedHttp, ENFORCE_CORE_API } from './coreHttp'
 
 /**
  * Definitions handed over by bundles that already executed. The loader takes
@@ -51,6 +53,12 @@ export function installSharedRuntime() {
       antdvIcons,
       vueuse,
       gettext,
+      // Deprecated: kept with a warning until the core_api check is enforced.
+      ...(ENFORCE_CORE_API
+        ? {}
+        : {
+            http: deprecatedSharedHttp(http),
+          }),
       versions: __NGINX_UI_SHARED_VERSIONS__,
       // Host dialogs and lookups for plugins. `openDnsCredentialEditor` lets a
       // certificate form create a DNS credential in place and select it

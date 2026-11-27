@@ -17,6 +17,11 @@ export interface SharedRuntime {
   antdvIcons: typeof import('@antdv-next/icons')
   vueuse: typeof import('@vueuse/core')
   gettext: typeof gettext
+  /**
+   * @deprecated The host API client, published only until the `core_api`
+   * check is enforced. Declare `core_api` and use `registry.coreHttp`.
+   */
+  http?: typeof http
   /** Resolved versions of the shared libraries, keyed by package name. */
   versions: Record<string, string>
   /** Host dialogs a plugin may open. Older hosts do not have it, so check before use. */
@@ -162,8 +167,9 @@ export interface PluginRegistry {
    */
   wsUrl: (path: string) => string
   /**
-   * The host API client. Without the approved `core_api` permission every call
-   * rejects.
+   * The host API client. Meant for plugins with the approved `core_api`
+   * permission: for any other plugin the first call logs a deprecation
+   * warning, and a later release rejects its calls.
    */
   coreHttp: typeof http
   manifest: PluginManifest
