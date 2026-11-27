@@ -53,13 +53,13 @@ async function callEveryMethod(coreHttp: CoreHttp) {
 
 describe('coreHttpFor', () => {
   test('hands the host client to a plugin with core_api in either mode', () => {
-    expect(coreHttpFor('com.example.demo', ['kv', 'core_api'], client, false)).toBe(client)
-    expect(coreHttpFor('com.example.demo', ['kv', 'core_api'], client, true)).toBe(client)
+    expect(coreHttpFor('com.example.demo', ['kv', 'core_api'], client, { enforce: false })).toBe(client)
+    expect(coreHttpFor('com.example.demo', ['kv', 'core_api'], client, { enforce: true })).toBe(client)
     expect(warnings).toHaveLength(0)
   })
 
   test('warns once but still calls the host API while not enforced', async () => {
-    const coreHttp = coreHttpFor('com.example.demo', ['network'], client, false)
+    const coreHttp = coreHttpFor('com.example.demo', ['network'], client, { enforce: false })
     expect(coreHttp).not.toBe(client)
 
     expect(await callEveryMethod(coreHttp)).toEqual([
@@ -87,7 +87,7 @@ describe('coreHttpFor', () => {
       [],
       undefined,
     ]) {
-      const coreHttp = coreHttpFor('com.example.demo', permissions, client, true)
+      const coreHttp = coreHttpFor('com.example.demo', permissions, client, { enforce: true })
       await expect(coreHttp.get('/dns_credentials')).rejects.toThrow('core_api')
       await expect(coreHttp.post('/settings', {})).rejects.toThrow('core_api')
       await expect(coreHttp.put('/settings', {})).rejects.toThrow('core_api')
@@ -98,6 +98,52 @@ describe('coreHttpFor', () => {
     expect(calls).toHaveLength(0)
     // One warning per plugin registry, however often the bundle calls.
     expect(warnings).toHaveLength(3)
+  })
+})
+
+describe('coreHttpFor DNS credential shim', () => {
+  const summaries = [
+    { id: 1, name: 'cf', code: 'cloudflare' },
+  ]
+  const options = {
+    enforce: true,
+    listDnsCredentials: async () => summaries,
+  }
+
+  test('answers the DNS credential list of a plugin without core_api', async () => {
+    const coreHttp = coreHttpFor('com.nginxui.dns01', ['network'], client, options)
+
+    for (const url of [
+      '/dns_credentials',
+      'dns_credentials',
+      './dns_credentials',
+      '/dns_credentials?page=1',
+    ]) {
+      expect(await coreHttp.get(url, {
+        params: { page: 1 },
+      })).toEqual({ data: summaries })
+    }
+
+    // No pagination, so a paging loop stops after the first page.
+    expect(await coreHttp.get('/dns_credentials')).not.toHaveProperty('pagination')
+    expect(calls).toHaveLength(0)
+  })
+
+  test('still rejects every other call', async () => {
+    const coreHttp = coreHttpFor('com.nginxui.dns01', ['network'], client, options)
+
+    await expect(coreHttp.get('/dns_credentials/1')).rejects.toThrow('core_api')
+    await expect(coreHttp.get('/settings')).rejects.toThrow('core_api')
+    await expect(coreHttp.post('/dns_credentials', {})).rejects.toThrow('core_api')
+    await expect(coreHttp.delete('/dns_credentials')).rejects.toThrow('core_api')
+    expect(calls).toHaveLength(0)
+  })
+
+  test('is not used while the check is not enforced', async () => {
+    const coreHttp = coreHttpFor('com.nginxui.dns01', ['network'], client, { ...options, enforce: false })
+
+    expect(await coreHttp.get('/dns_credentials')).toBe('get')
+    expect(calls).toEqual(['get /dns_credentials'])
   })
 })
 

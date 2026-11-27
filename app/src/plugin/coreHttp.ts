@@ -1,4 +1,5 @@
 import type { http } from '@uozi-admin/request'
+import type { DnsCredentialSummary } from '@/components/DnsCredentialEditor/dnsCredentialSummaries'
 
 /** Permission a plugin needs before `registry.coreHttp` reaches the host API. */
 export const CORE_API_PERMISSION = 'core_api'
@@ -45,6 +46,40 @@ function guardedCoreHttp(client: CoreHttp, message: string, reject: boolean): Co
   }
 }
 
+export interface CoreHttpOptions {
+  /** Defaults to `ENFORCE_CORE_API`. */
+  enforce?: boolean
+  /**
+   * Answers `get('/dns_credentials')` of a plugin without `core_api` once the
+   * check is enforced, see `dnsCredentialsShim`.
+   */
+  listDnsCredentials?: () => Promise<DnsCredentialSummary[]>
+}
+
+/** Whether `url` is the DNS credential list, with or without a query. */
+function isDnsCredentialList(url: string): boolean {
+  return url.split('?')[0].replace(/^\.?\/+/, '').replace(/\/+$/, '') === 'dns_credentials'
+}
+
+/**
+ * Lets DNS-01 releases from before `listDnsCredentials` keep their credential
+ * picker on a host that enforces `core_api`: such a release pages
+ * `GET /dns_credentials` through `registry.coreHttp`. The list is answered
+ * from `listDnsCredentials`, so it carries no secrets, and without pagination,
+ * so the plugin stops after the first page. Every other call still rejects.
+ */
+function dnsCredentialsShim(
+  denied: CoreHttp,
+  listDnsCredentials: () => Promise<DnsCredentialSummary[]>,
+): CoreHttp {
+  return {
+    ...denied,
+    get: ((url: string, config?: Parameters<CoreHttp['get']>[1]) => isDnsCredentialList(url)
+      ? listDnsCredentials().then(data => ({ data }))
+      : denied.get(url, config)) as CoreHttp['get'],
+  }
+}
+
 /**
  * The host API client for a plugin whose approved permissions are
  * `permissions`.
@@ -56,17 +91,30 @@ export function coreHttpFor(
   pluginId: string,
   permissions: readonly string[] | undefined,
   client: CoreHttp,
-  enforce = ENFORCE_CORE_API,
+  options: CoreHttpOptions = {},
 ): CoreHttp {
   if (permissions?.includes(CORE_API_PERMISSION))
     return client
 
-  const message = enforce
-    ? `[plugin] ${pluginId}: registry.coreHttp needs the ${CORE_API_PERMISSION} permission`
-    : `[plugin] ${pluginId}: registry.coreHttp without the ${CORE_API_PERMISSION} permission is deprecated, `
-      + `a later Nginx UI release rejects these calls`
+  const enforce = options.enforce ?? ENFORCE_CORE_API
+  if (!enforce) {
+    return guardedCoreHttp(
+      client,
+      `[plugin] ${pluginId}: registry.coreHttp without the ${CORE_API_PERMISSION} permission is deprecated, `
+      + `a later Nginx UI release rejects these calls`,
+      false,
+    )
+  }
 
-  return guardedCoreHttp(client, message, enforce)
+  const denied = guardedCoreHttp(
+    client,
+    `[plugin] ${pluginId}: registry.coreHttp needs the ${CORE_API_PERMISSION} permission`,
+    true,
+  )
+
+  return options.listDnsCredentials
+    ? dnsCredentialsShim(denied, options.listDnsCredentials)
+    : denied
 }
 
 /**

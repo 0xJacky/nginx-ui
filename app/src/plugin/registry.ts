@@ -12,6 +12,7 @@ import type { PluginManifest, WebappEntry } from '@/api/plugin'
 import { http } from '@uozi-admin/request'
 import axios from 'axios'
 import { localizedPluginName } from '@/api/plugin'
+import { listDnsCredentials } from '@/components/DnsCredentialEditor/listDnsCredentials'
 import gettext from '@/gettext'
 import { applyAuthHeaders } from '@/lib/http/interceptors'
 import { useSettingsStore, useUserStore } from '@/pinia'
@@ -136,7 +137,7 @@ export function createRegistry(
     loadChunk,
     http: pluginHttp,
     wsUrl,
-    coreHttp: coreHttpFor(pluginId, manifest.permissions, http),
+    coreHttp: coreHttpFor(pluginId, manifest.permissions, http, { listDnsCredentials }),
     manifest,
     host,
   }
