@@ -30,6 +30,12 @@
       ]
     },
     {
+      "description": "Digest-pinned GitHub Actions have no release timestamp Renovate can age, so with the default timestamp-required behaviour minimumReleaseAge holds them forever.",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["digest"],
+      "minimumReleaseAgeBehaviour": "timestamp-optional"
+    },
+    {
       "matchPackageNames": ["typescript"],
       "allowedVersions": "!/^(6\\.|7\\.0\\.)/"
     },
