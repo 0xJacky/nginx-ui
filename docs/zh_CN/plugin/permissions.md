@@ -25,7 +25,7 @@ outline: [2, 3]
 | `cron` | 在运行时用 `host.cron.register` 和 `unregister` 注册定时调用。 |
 | `notify` | 用 `host.notify` 在 Nginx UI 中发出通知。 |
 | `metrics.read` | 用 `host.metrics.snapshot` 读取 Nginx UI 的指标。 |
-| `core_api` | 在浏览器包中通过 `registry.coreHttp` 调用 Nginx UI 的 REST API。 |
+| `core_api` | 在浏览器包中通过 `registry.coreHttp` 调用 Nginx UI 的 REST API。参见[浏览器中的权限](#permissions-in-the-browser)。 |
 | `mcp` | 把插件的工具发布给 MCP 客户端。`mcp` 能力必须请求它。 |
 | `cert.deploy` | 在 `deploy.push` 中接收证书及其私钥。`cert.deploy` 能力必须请求它。 |
 | `log.read` | 在 `log.push` 中接收每一行 nginx 访问日志。`log.sink` 能力必须请求它。 |
@@ -45,6 +45,16 @@ outline: [2, 3]
 清单列出插件请求的权限，安装插件的人批准这个列表，只有已批准的权限才算数：调用需要插件未持有的权限时，会以[权限拒绝错误](./protocol.md#error-codes)失败，并且不执行任何操作。
 
 当更新请求了尚未批准的权限时，Nginx UI 不会静默授予。在有人批准新的权限列表之前，更新后的插件保持停止，它的能力也不可用。只减少权限的更新不需要批准；被去掉的权限如果在之后的版本中再次请求，需要重新批准。因此运行中的插件总是持有清单请求的全部权限。握手会告诉进程它持有哪些权限，参见[生命周期](./lifecycle.md#handshake)。
+
+### 浏览器中的权限 {#permissions-in-the-browser}
+
+Nginx UI 在插件进程一侧执行权限检查，每一次宿主调用都会被校验。浏览器包则不同：它运行在 Nginx UI 的页面中，与界面其余部分同源，并共用同一个登录会话。浏览器里没有任何机制能阻止浏览器包自己向 REST API 发送请求。
+
+因此 `core_api` 权限的作用是让守规矩的浏览器包只做它声明过的事，并告诉安装插件的人它的浏览器包会调用 REST API；它不是安全边界。调用 REST API 的浏览器包应声明 `core_api`，并且只通过 `registry.coreHttp` 调用，绝不绕过它。评估带浏览器包的插件时，请像评估它的进程一样，看它由谁发布。
+
+::: warning 弃用说明
+目前 Nginx UI 还不会拒绝没有 `core_api` 的浏览器包调用 REST API。这类浏览器包仍能拿到可用的 `registry.coreHttp`，第一次调用时会在浏览器控制台输出弃用警告。`window.NginxUI.shared.http` 是同一个客户端但不做任何检查，同样已弃用，第一次使用时也会警告。之后的版本会拒绝没有已批准 `core_api` 权限的插件通过 `registry.coreHttp` 发出的每次调用，并移除 `window.NginxUI.shared.http`。如果浏览器包需要调用 REST API，请现在就声明 `core_api`。
+:::
 
 ### 敏感权限 {#sensitive-permissions}
 

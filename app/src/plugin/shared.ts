@@ -6,10 +6,12 @@ import * as antdvNext from 'antdv-next'
 import * as pinia from 'pinia'
 import * as vue from 'vue'
 import * as vueRouter from 'vue-router'
+import { listDnsCredentials } from '@/components/DnsCredentialEditor/listDnsCredentials'
 import { openDnsCredentialEditor } from '@/components/DnsCredentialEditor/openDnsCredentialEditor'
 import gettext from '@/gettext'
 import version from '@/version.json'
 import { chunkLoader } from './chunks'
+import { deprecatedSharedHttp, ENFORCE_CORE_API } from './coreHttp'
 
 /**
  * Definitions handed over by bundles that already executed. The loader takes
@@ -51,12 +53,20 @@ export function installSharedRuntime() {
       antdvIcons,
       vueuse,
       gettext,
-      http,
+      // Deprecated: kept with a warning until the core_api check is enforced.
+      ...(ENFORCE_CORE_API
+        ? {}
+        : {
+            http: deprecatedSharedHttp(http),
+          }),
       versions: __NGINX_UI_SHARED_VERSIONS__,
-      // Host dialogs for plugins. `openDnsCredentialEditor` lets a certificate
-      // form create a DNS credential in place and select it afterwards.
+      // Host dialogs and lookups for plugins. `openDnsCredentialEditor` lets a
+      // certificate form create a DNS credential in place and select it
+      // afterwards; `listDnsCredentials` offers the stored ones without their
+      // secrets, so such a form needs no `core_api`.
       ui: {
         openDnsCredentialEditor,
+        listDnsCredentials,
       },
     },
     registerPlugin,
