@@ -231,10 +231,11 @@ func (c *Conn) closeWith(cause error) {
 		return
 	}
 	c.closed = true
+	// Every way the connection goes away reads as ErrClosed, so callers can
+	// tell a dead peer from a failed call whatever the cause was.
+	c.closeErr = ErrClosed
 	if cause != nil {
-		c.closeErr = cause
-	} else {
-		c.closeErr = ErrClosed
+		c.closeErr = fmt.Errorf("%w: %w", ErrClosed, cause)
 	}
 	pending := c.pending
 	c.pending = make(map[uint64]chan *message)
@@ -244,8 +245,11 @@ func (c *Conn) closeWith(cause error) {
 		close(ch)
 	}
 
-	c.cancel()
+	// Mark the connection done before cancelling the handlers. A handler that
+	// returns because of the cancellation then finds the connection closed and
+	// its reply is dropped instead of reaching the peer.
 	close(c.done)
+	c.cancel()
 
 	if rc, ok := c.r.(io.Closer); ok {
 		_ = rc.Close()
@@ -294,10 +298,7 @@ func (c *Conn) writeFrame(ctx context.Context, v any) error {
 	}
 	select {
 	case err = <-request.done:
-		if err != nil {
-			return fmt.Errorf("jsonrpc: write frame: %w", err)
-		}
-		return nil
+		return err
 	case <-ctx.Done():
 		return ctx.Err()
 	case <-c.done:
@@ -307,13 +308,26 @@ func (c *Conn) writeFrame(ctx context.Context, v any) error {
 
 // writeLoop writes the queued frames one after the other until the connection
 // closes. Close closes the writer as well, which unblocks a write the peer
-// never drains.
+// never drains. A failed write closes the connection: the peer may have
+// received part of the frame, so the stream can no longer be resynchronised.
 func (c *Conn) writeLoop() {
 	for {
 		select {
 		case request := <-c.writes:
-			_, err := c.w.Write(request.data)
-			request.done <- err
+			// A frame queued while Close runs must not leave a closed
+			// connection.
+			select {
+			case <-c.done:
+				request.done <- c.closeReason()
+				return
+			default:
+			}
+			if _, err := c.w.Write(request.data); err != nil {
+				c.closeWith(fmt.Errorf("write frame: %w", err))
+				request.done <- c.closeReason()
+				continue
+			}
+			request.done <- nil
 		case <-c.done:
 			return
 		}

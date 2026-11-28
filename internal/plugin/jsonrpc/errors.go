@@ -9,7 +9,9 @@ import (
 
 var (
 	// ErrClosed is returned by Call and Notify once the connection is gone and
-	// fails every call that was still waiting for a response.
+	// fails every call that was still waiting for a response. When the
+	// connection went away because of an error, such as a failed write or an
+	// oversize frame, the returned error wraps that cause as well.
 	ErrClosed = errors.New("jsonrpc: connection closed")
 	// ErrMessageTooLarge is returned when a frame exceeds MaxMessageSize in
 	// either direction. Incoming oversize frames also close the connection
