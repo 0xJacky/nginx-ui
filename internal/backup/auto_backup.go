@@ -659,35 +659,3 @@ func ValidateS3Config(config *model.AutoBackup) error {
 
 	return nil
 }
-
-// RestoreAutoBackup restores a soft-deleted auto backup configuration.
-// This function restores the backup configuration and re-registers the cron job if enabled.
-//
-// Parameters:
-//   - id: Auto backup configuration ID to restore
-//
-// Returns:
-//   - error: Database error if restore fails
-func RestoreAutoBackup(id uint64) error {
-	// Restore the soft-deleted record
-	_, err := query.AutoBackup.Unscoped().Where(query.AutoBackup.ID.Eq(id)).Update(query.AutoBackup.DeletedAt, nil)
-	if err != nil {
-		return err
-	}
-
-	// Get the restored backup configuration
-	autoBackup, err := GetAutoBackupByID(id)
-	if err != nil {
-		return err
-	}
-
-	// Re-register cron job if the backup is enabled
-	if autoBackup.Enabled {
-		// Import cron package to register the job
-		// Note: This would require importing the cron package, which might create circular dependency
-		// The actual implementation should be handled at the API level
-		logger.Infof("Auto backup %d restored and needs cron job registration", id)
-	}
-
-	return nil
-}

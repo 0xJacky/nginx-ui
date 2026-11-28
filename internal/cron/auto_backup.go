@@ -135,6 +135,14 @@ func AddAutoBackupJob(backupID uint64, cronExpression string) error {
 	return addAutoBackupJob(s, backupID, cronExpression)
 }
 
+// HasAutoBackupJob reports whether an auto backup job is scheduled for the task.
+func HasAutoBackupJob(backupID uint64) bool {
+	autoBackupMu.RLock()
+	defer autoBackupMu.RUnlock()
+	_, exists := autoBackupJobs[backupID]
+	return exists
+}
+
 // RemoveAutoBackupJob removes an auto backup job (public API)
 func RemoveAutoBackupJob(backupID uint64) error {
 	return removeAutoBackupJob(s, backupID)
