@@ -13,6 +13,7 @@ func InitDNSCredentialRouter(r *gin.RouterGroup) {
 		o.POST("dns_credentials", AddDnsCredential)
 		o.POST("dns_credentials/:id", EditDnsCredential)
 		o.DELETE("dns_credentials/:id", DeleteDnsCredential)
+		o.PATCH("dns_credentials/:id", RecoverDnsCredential)
 	}
 }
 
