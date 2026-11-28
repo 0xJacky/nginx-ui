@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 import { findTrustedOffer } from '../src/views/system/plugins/marketplace/trust'
 import { changedSettingKeys, cloneSettings } from '../src/views/system/plugins/settingsForm'
+import { fallbackCatalogEntry, findSingleUpdate, findSingleUpdateEntry } from '../src/views/system/plugins/updates'
 import { formatUsagePreview, previewUsage } from '../src/views/system/plugins/usage'
 
 // Stand in for vue3-gettext: English text with %{name} placeholders filled.
@@ -100,5 +101,69 @@ describe('changedSettingKeys', () => {
     const copy = cloneSettings(saved)
     ;(copy.servers as string[]).push('b')
     expect(saved.servers).toEqual(['a'])
+  })
+})
+
+describe('plugin update helpers', () => {
+  const pluginA = {
+    id: 'com.nginxui.dns01',
+    name: 'DNS-01 Challenge',
+    name_i18n: { en: 'DNS-01 Challenge', zh_CN: 'DNS-01 验证' },
+    version: '1.0.2',
+    api_version: 1,
+    enabled: true,
+    status: 'stopped' as const,
+  }
+  const pluginB = {
+    id: 'com.example.logs',
+    name: 'Logs',
+    version: '1.0.0',
+    api_version: 1,
+    enabled: true,
+    status: 'running' as const,
+  }
+  const updateA = {
+    id: 'com.nginxui.dns01',
+    name: 'DNS-01 Challenge',
+    installed_version: '1.0.2',
+    latest_version: '1.0.3',
+    source: 'https://plugins.nginxui.com/index.json',
+    trust: 'official' as const,
+    installed_yanked: false,
+    permissions_changed: false,
+    release: { version: '1.0.3', api_version: 1, download_url: 'https://plugins.nginxui.com/a.tar.gz' },
+  }
+  const updateB = {
+    ...updateA,
+    id: 'com.example.logs',
+    name: 'Logs',
+    installed_version: '1.0.0',
+    latest_version: '1.1.0',
+  }
+
+  test('findSingleUpdate returns the match only when exactly one installed plugin has an update', () => {
+    expect(findSingleUpdate([pluginA, pluginB], [])).toBeUndefined()
+    expect(findSingleUpdate([pluginA, pluginB], [updateA])).toEqual({ plugin: pluginA, update: updateA })
+    expect(findSingleUpdate([pluginA, pluginB], [updateA, updateB])).toBeUndefined()
+    // Ignores updates that do not match an installed plugin.
+    expect(findSingleUpdate([pluginA], [updateA, updateB])).toEqual({ plugin: pluginA, update: updateA })
+  })
+
+  test('fallbackCatalogEntry carries the update release and installed state', () => {
+    const entry = fallbackCatalogEntry(pluginA, updateA)
+    expect(entry.id).toBe(pluginA.id)
+    expect(entry.name).toEqual(pluginA.name_i18n)
+    expect(entry.installed_version).toBe('1.0.2')
+    expect(entry.installable_release?.version).toBe('1.0.3')
+    expect(entry.update_available).toBe(true)
+    expect(entry.source).toBe(updateA.source)
+  })
+
+  test('findSingleUpdateEntry prefers current entries and falls back to cached catalog', () => {
+    const entryInList = fallbackCatalogEntry(pluginA, updateA)
+    const entryInCatalog = { ...entryInList, source: 'https://cached.example/index.json' }
+    expect(findSingleUpdateEntry([updateA], [entryInList], [entryInCatalog])).toEqual(entryInList)
+    expect(findSingleUpdateEntry([updateA], [], [entryInCatalog])).toEqual(entryInCatalog)
+    expect(findSingleUpdateEntry([updateA, updateB], [entryInList], [entryInCatalog])).toBeUndefined()
   })
 })

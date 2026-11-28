@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { SelectProps } from 'antdv-next'
+import type { PluginInfo } from '@/api/plugin'
 import type { CatalogEntry, CatalogSource } from '@/api/plugin_marketplace'
 import { ArrowUpOutlined, DisconnectOutlined, ReloadOutlined, SearchOutlined, SettingOutlined } from '@antdv-next/icons'
 import { refDebounced } from '@vueuse/core'
-import { getMarketplaceList } from '@/api/plugin_marketplace'
+import { catalogEntryName, getMarketplaceList } from '@/api/plugin_marketplace'
+import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
 import { usePluginLoader } from '@/plugin'
 import { categoryLabel, sortCategories } from './categories'
@@ -13,6 +15,7 @@ import PluginCard from './marketplace/PluginCard.vue'
 import PluginDetailDrawer from './marketplace/PluginDetailDrawer.vue'
 import { rememberSources, useSourceName } from './marketplace/sources'
 import SourcesModal from './marketplace/SourcesModal.vue'
+import { findSingleUpdateEntry } from './updates'
 
 const updatesOnly = defineModel<boolean>('updatesOnly', { default: false })
 
@@ -55,6 +58,7 @@ const sourceOptions = computed<SelectProps['options']>(() =>
   })))
 
 const updateCount = computed(() => inventory.updates.value.length)
+const singleUpdateEntry = computed(() => findSingleUpdateEntry(inventory.updates.value, entries.value, inventory.catalog.value))
 
 const scopeOptions = computed(() => [
   {
@@ -141,7 +145,8 @@ function openInstall(entry: CatalogEntry, version?: string) {
 }
 
 // The installed tab and the counters see the new plugin right away.
-async function onInstalled() {
+async function onInstalled(info: PluginInfo) {
+  await pluginLoader.unload(info.id, { forget: true })
   await Promise.all([
     refreshAll(false),
     inventory.reload(true),
@@ -237,12 +242,31 @@ onMounted(() => refreshAll())
       <span class="updates-banner-icon">
         <ArrowUpOutlined />
       </span>
-      <span class="min-w-0 flex-1">
-        {{ $ngettext('%{count} installed plugin has a newer release.', '%{count} installed plugins have a newer release.', updateCount, { count: String(updateCount) }) }}
-      </span>
-      <AButton size="small" type="primary" ghost @click="updatesOnly = true">
-        {{ $gettext('Show updates') }}
-      </AButton>
+      <div class="updates-banner-body">
+        <span class="updates-banner-text">
+          {{ $ngettext('%{count} installed plugin has a newer release.', '%{count} installed plugins have a newer release.', updateCount, { count: String(updateCount) }) }}
+        </span>
+        <span v-if="singleUpdateEntry?.installed_version && singleUpdateEntry.installable_release" class="updates-banner-meta">
+          <span>{{ catalogEntryName(singleUpdateEntry, gettext.current) }}</span>
+          <span class="updates-banner-version">v{{ singleUpdateEntry.installed_version }} → v{{ singleUpdateEntry.installable_release.version }}</span>
+        </span>
+      </div>
+      <div class="updates-banner-actions">
+        <template v-if="singleUpdateEntry">
+          <AButton size="small" @click="openDetail(singleUpdateEntry)">
+            {{ $gettext('Release notes') }}
+          </AButton>
+          <AButton size="small" type="primary" @click="openInstall(singleUpdateEntry)">
+            <template #icon>
+              <ArrowUpOutlined />
+            </template>
+            {{ $gettext('Update') }}
+          </AButton>
+        </template>
+        <AButton v-else size="small" type="primary" @click="updatesOnly = true">
+          {{ $gettext('Show updates') }}
+        </AButton>
+      </div>
     </div>
 
     <ASpin :spinning="loading">
@@ -335,34 +359,11 @@ onMounted(() => refreshAll())
   padding: 0 6px;
   font-size: 11px;
   font-variant-numeric: tabular-nums;
+  font-weight: 600;
   line-height: 16px;
-  color: var(--ant-color-primary);
-  background: var(--ant-color-primary-bg);
+  color: var(--ant-color-text-light-solid, #fff);
+  background: var(--ant-color-primary);
   border-radius: 999px;
-}
-
-.updates-banner {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-  padding: 10px 14px;
-  color: var(--ant-color-text);
-  background: var(--ant-color-primary-bg);
-  border: 1px solid var(--ant-color-primary-border);
-  border-radius: var(--ant-border-radius-lg);
-}
-
-.updates-banner-icon {
-  flex: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  color: var(--ant-color-primary);
-  background: var(--ant-color-bg-container);
-  border-radius: 8px;
 }
 
 .marketplace-unavailable {

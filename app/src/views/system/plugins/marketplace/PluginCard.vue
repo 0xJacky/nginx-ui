@@ -55,6 +55,7 @@ const actionLabel = computed(() => props.entry.update_available
   <MarketCard
     :entry="entry"
     :locale="gettext.current"
+    :class="{ 'is-updatable': entry.update_available }"
     clickable
     role="button"
     tabindex="0"
@@ -98,6 +99,10 @@ const actionLabel = computed(() => props.entry.update_available
         <WarningOutlined />
         {{ $gettext('Installed %{version} is not this version', { version: entry.installed_version! }) }}
       </span>
+      <span v-else-if="isInstalled && entry.update_available && entry.installable_release" class="plugin-card-update-pill">
+        <ArrowUpOutlined />
+        <span>v{{ entry.installed_version }} → v{{ entry.installable_release.version }}</span>
+      </span>
       <span v-else-if="isInstalled" class="plugin-card-installed" :class="{ 'is-outdated': entry.update_available }">
         <ArrowUpOutlined v-if="entry.update_available" />
         <CheckCircleOutlined v-else />
@@ -123,7 +128,8 @@ const actionLabel = computed(() => props.entry.update_available
         @click="emit('install', entry)"
       >
         <template #icon>
-          <DownloadOutlined />
+          <ArrowUpOutlined v-if="entry.update_available" />
+          <DownloadOutlined v-else />
         </template>
         {{ actionLabel }}
       </AButton>
@@ -135,6 +141,10 @@ const actionLabel = computed(() => props.entry.update_available
 </template>
 
 <style lang="less" scoped>
+.is-updatable {
+  border-color: var(--ant-color-primary-border);
+}
+
 .plugin-card-source {
   display: inline-flex;
   align-items: center;
@@ -148,6 +158,22 @@ const actionLabel = computed(() => props.entry.update_available
   &.is-dev {
     color: var(--ant-purple-6, #722ed1);
   }
+}
+
+.plugin-card-update-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 1px 8px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--ant-color-primary);
+  background: var(--ant-color-primary-bg);
+  border: 1px solid var(--ant-color-primary-border);
+  border-radius: 999px;
 }
 
 .plugin-card-installed {

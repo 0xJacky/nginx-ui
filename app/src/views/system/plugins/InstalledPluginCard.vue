@@ -2,8 +2,9 @@
 import type { MenuProps } from 'antdv-next'
 import type { PluginDrawerTab } from './presets'
 import type { PluginInfo } from '@/api/plugin'
-import type { DelistedNotice } from '@/api/plugin_marketplace'
+import type { DelistedNotice, PluginUpdateInfo } from '@/api/plugin_marketplace'
 import {
+  ArrowUpOutlined,
   CloudSyncOutlined,
   DeleteOutlined,
   FileTextOutlined,
@@ -28,6 +29,8 @@ import { useConflictNames } from './useConflicts'
 const props = defineProps<{
   plugin: PluginInfo
   hasNodes: boolean
+  /** Newer release available from the configured marketplace catalogs. */
+  update?: PluginUpdateInfo
   /** The catalog withdrew the installed version. */
   withdrawn?: boolean
   /** The catalogs took the plugin down. */
@@ -40,6 +43,8 @@ const emit = defineEmits<{
   toggle: [checked: boolean]
   sync: []
   uninstall: []
+  update: []
+  updateDetails: []
   updated: []
 }>()
 
@@ -58,6 +63,14 @@ const conflictingNames = useConflictNames(() => props.plugin)
 const channel = computed(() => pluginChannel(props.plugin))
 const toggleDisabled = computed(() => isToggleDisabled(props.plugin))
 const isMuted = computed(() => !props.plugin.enabled && !attention.value)
+const updateTooltip = computed(() => {
+  if (!props.update)
+    return ''
+  const version = `v${props.update.latest_version}`
+  return props.update.permissions_changed
+    ? $gettext('Update to %{version} (permissions changed)', { version })
+    : $gettext('Update to %{version}', { version })
+})
 
 const toggleHint = computed(() => {
   if (toggleDisabled.value)
@@ -116,7 +129,12 @@ function onMenuClick({ key }: { key: string | number }) {
 <template>
   <article
     class="plugin-card is-clickable"
-    :class="{ 'is-attention': attention, 'is-error': attention && status.badge === 'error', 'is-muted': isMuted }"
+    :class="{
+      'is-attention': attention,
+      'is-error': attention && status.badge === 'error',
+      'is-updatable': Boolean(update) && !attention,
+      'is-muted': isMuted,
+    }"
     role="button"
     tabindex="0"
     @click="emit('open', 'overview')"
@@ -130,6 +148,16 @@ function onMenuClick({ key }: { key: string | number }) {
         </ATooltip>
         <div class="plugin-card-sub">
           <span class="plugin-card-version">v{{ plugin.version }}</span>
+          <ATooltip v-if="update" :title="updateTooltip">
+            <button
+              type="button"
+              class="plugin-card-update"
+              @click.stop="emit('updateDetails')"
+            >
+              <ArrowUpOutlined />
+              <span>v{{ update.latest_version }}</span>
+            </button>
+          </ATooltip>
           <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
             <span class="plugin-card-channel" :class="`is-${channel}`">{{ channelLabel(channel) }}</span>
           </ATooltip>
@@ -233,6 +261,18 @@ function onMenuClick({ key }: { key: string | number }) {
             </template>
           </AButton>
         </ADropdown>
+        <AButton
+          v-if="update"
+          type="primary"
+          size="small"
+          class="ml-1"
+          @click="emit('update')"
+        >
+          <template #icon>
+            <ArrowUpOutlined />
+          </template>
+          {{ $gettext('Update') }}
+        </AButton>
       </div>
     </div>
   </article>
@@ -240,6 +280,33 @@ function onMenuClick({ key }: { key: string | number }) {
 
 <style lang="less" scoped>
 @import './plugin-card.less';
+
+.plugin-card-update {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 7px;
+  font-family: inherit;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--ant-color-primary);
+  background: var(--ant-color-primary-bg);
+  border: 1px solid var(--ant-color-primary-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: var(--ant-color-primary-bg-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--ant-color-primary);
+    outline-offset: 1px;
+  }
+}
 
 .plugin-card-error {
   display: flex;
