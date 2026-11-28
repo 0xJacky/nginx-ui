@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"mime"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -33,7 +34,10 @@ const maxServiceTokenRedactionBodySize = 16 << 20
 // stored credentials a child node returns in full to the controller's node
 // principal. Each entry mirrors a local handler that withholds the same fields
 // from service tokens; TestServiceTokenAwareHandlersHaveProxyRedaction keeps
-// the two in step.
+// the two in step. The fields are removed from the answer of every method on
+// the route. Locally the answer to an api:write token's create or modify is
+// the whole stored record, these fields included; relayed it comes without
+// them, which is stricter.
 var serviceTokenRedactedResponseFields = map[string][]string{
 	"/api/acme_users":               {"eab_key_id", "eab_hmac_key"},
 	"/api/acme_users/:id":           {"eab_key_id", "eab_hmac_key"},
@@ -201,7 +205,9 @@ func proxyRequiresIdentityEncoding(route string, isServiceToken, hidesStoredSecr
 		(hidesStoredSecrets && readOnlyServiceTokenProxyRedactions[route] != nil)
 }
 
-func readProxyJSONResponse(response *http.Response, route string) (map[string]any, error) {
+// readProxyResponseBody reads a relayed body the controller rewrites before
+// relaying it.
+func readProxyResponseBody(response *http.Response, route string) ([]byte, error) {
 	if response.Body == nil {
 		return nil, fmt.Errorf("redact service token response for %s: response body is missing", route)
 	}
@@ -216,6 +222,14 @@ func readProxyJSONResponse(response *http.Response, route string) (map[string]an
 	}
 	if len(body) > maxServiceTokenRedactionBodySize {
 		return nil, fmt.Errorf("redact service token response for %s: response body is too large", route)
+	}
+	return body, nil
+}
+
+func readProxyJSONResponse(response *http.Response, route string) (map[string]any, error) {
+	body, err := readProxyResponseBody(response, route)
+	if err != nil {
+		return nil, err
 	}
 
 	var payload map[string]any
@@ -237,33 +251,91 @@ func writeProxyJSONResponse(response *http.Response, route string, payload any) 
 	return nil
 }
 
+// redactServiceTokenProxyResponse removes the route's stored credentials from
+// a child's successful answer, whatever the method. A list answers
+// {"data": [...]}, a read, create or modify answers the record itself, and a
+// delete or recover answers 204 without a body. A body that is empty, or is
+// uncompressed, declared as something other than JSON and does not parse as
+// JSON, holds no field to remove and is relayed as it is. Anything else that
+// does not parse is refused rather than relayed unredacted.
 func redactServiceTokenProxyResponse(response *http.Response, route string) error {
 	fields := serviceTokenRedactedResponseFields[route]
-	if len(fields) == 0 {
+	if len(fields) == 0 || response.Body == nil {
 		return nil
 	}
 
-	payload, err := readProxyJSONResponse(response, route)
+	body, err := readProxyResponseBody(response, route)
 	if err != nil {
 		return err
 	}
-	if strings.HasSuffix(route, "/:id") {
-		redactResponseFields(payload, fields)
-	} else {
-		items, ok := payload["data"].([]any)
-		if !ok {
-			return fmt.Errorf("redact service token response for %s: list data is invalid", route)
-		}
-		for _, value := range items {
-			item, ok := value.(map[string]any)
-			if !ok {
-				return fmt.Errorf("redact service token response for %s: list item is invalid", route)
-			}
-			redactResponseFields(item, fields)
-		}
+	relayUnchanged := func() error {
+		response.Body = io.NopCloser(bytes.NewReader(body))
+		return nil
+	}
+	if len(bytes.TrimSpace(body)) == 0 {
+		return relayUnchanged()
 	}
 
+	var payload any
+	if err := json.Unmarshal(body, &payload); err != nil {
+		if !declaresJSON(response) && !isContentEncoded(response) {
+			return relayUnchanged()
+		}
+		return fmt.Errorf("redact service token response for %s: %w", route, err)
+	}
+	if err := redactServiceTokenRecords(payload, fields); err != nil {
+		return fmt.Errorf("redact service token response for %s: %w", route, err)
+	}
 	return writeProxyJSONResponse(response, route, payload)
+}
+
+// declaresJSON reports whether a response does not rule out a JSON body: it
+// names a JSON media type, or none at all.
+func declaresJSON(response *http.Response) bool {
+	contentType := response.Header.Get("Content-Type")
+	if contentType == "" {
+		return true
+	}
+	mediaType, _, err := mime.ParseMediaType(contentType)
+	if err != nil {
+		return true
+	}
+	return mediaType == "application/json" || strings.HasSuffix(mediaType, "+json")
+}
+
+// isContentEncoded reports whether a body is compressed or otherwise encoded,
+// which hides any field it holds from the JSON check.
+func isContentEncoded(response *http.Response) bool {
+	for _, encoding := range response.Header.Values("Content-Encoding") {
+		if value := strings.TrimSpace(encoding); value != "" && !strings.EqualFold(value, "identity") {
+			return true
+		}
+	}
+	return false
+}
+
+// redactServiceTokenRecords removes fields from a relayed record and from
+// every record it lists under "data". A bare array is a list of records too.
+func redactServiceTokenRecords(payload any, fields []string) error {
+	switch value := payload.(type) {
+	case map[string]any:
+		redactResponseFields(value, fields)
+		switch data := value["data"].(type) {
+		case []any:
+			return redactServiceTokenRecords(data, fields)
+		case map[string]any:
+			redactResponseFields(data, fields)
+		}
+	case []any:
+		for _, item := range value {
+			record, ok := item.(map[string]any)
+			if !ok {
+				return errProxyRedactionShape
+			}
+			redactResponseFields(record, fields)
+		}
+	}
+	return nil
 }
 
 func redactResponseFields(payload map[string]any, fields []string) {
@@ -294,6 +366,9 @@ func redactReadOnlyServiceTokenProxyResponse(response *http.Response, route stri
 		if !errors.As(err, &refusal) {
 			return fmt.Errorf("redact service token response for %s: %w", route, err)
 		}
+		// A 403 is allowed here although proxy refusals avoid it: this runs
+		// only for a read-only service token, never for the web UI's login
+		// token, so it cannot sign the web UI out.
 		response.StatusCode = http.StatusForbidden
 		response.Status = strconv.Itoa(http.StatusForbidden) + " " + http.StatusText(http.StatusForbidden)
 		response.Header.Set("Content-Type", "application/json; charset=utf-8")

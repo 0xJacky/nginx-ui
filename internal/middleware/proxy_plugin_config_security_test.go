@@ -29,11 +29,15 @@ import (
 
 // GHSA-fpv9-q72v-fgrc, GHSA-8f3g-q7q2-4w6r: the form values of a plugin
 // probe kind (a site's probe_config) and of a plugin storage backend (an auto
-// backup's storage_config) may be credentials. A service token that lacks
-// api:write must not receive the probe values, and no service token receives
-// the storage values, both on this node and relayed from a child node. The
-// child answers the controller's node principal in full, so the relayed
-// response must match what the same caller gets locally. Interactive
+// backup's storage_config) may be credentials. In the list and detail reads
+// below, a service token that lacks api:write does not receive the probe
+// values and no service token receives the storage values, both on this node
+// and relayed from a child node. The child answers the controller's node
+// principal in full, so for these reads the relayed response must match what
+// the same caller gets locally. This does not cover writes: locally an
+// api:write token gets the storage values back in the answers to its own
+// create and modify requests, while the relayed answers leave them out
+// (TestRelayedServiceTokenWritesKeepRedactionInEveryShape). Interactive
 // administrators keep the values the editors need to round-trip.
 func TestPluginConfigBlobsAreRedactedForServiceTokensLocallyAndRelayed(t *testing.T) {
 	gin.SetMode(gin.TestMode)
