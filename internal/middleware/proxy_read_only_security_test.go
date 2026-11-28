@@ -79,6 +79,22 @@ var readOnlyProxyRedactionCases = []struct {
 		keep:    []string{`"POST"`, "example.com/health", "example.com/status", `token=`, `key=`},
 	},
 	{
+		// GHSA-fpv9-q72v-fgrc: the form values of a plugin probe kind.
+		name:    "site health check plugin probe",
+		route:   "/api/site_navigation/health_check/:id",
+		body:    `{"id":1,"host":"example.com:443","probe_kind":"plugin:redis","probe_config":{"password":"probe-form-secret"}}`,
+		secrets: []string{"probe-form-secret"},
+		keep:    []string{`"password"`, `"plugin:redis"`},
+	},
+	{
+		// A child that predates leaving probe values out of the site list.
+		name:    "site navigation plugin probe",
+		route:   "/api/site_navigation",
+		body:    `{"data":[{"id":1,"name":"example.com","probe_kind":"plugin:redis","probe_config":{"password":"probe-form-secret"}}]}`,
+		secrets: []string{"probe-form-secret"},
+		keep:    []string{`"password"`, `"plugin:redis"`},
+	},
+	{
 		name:    "config history password file",
 		route:   "/api/config_histories",
 		body:    `{"data":[{"id":1,"name":".htpasswd","filepath":"/etc/nginx/auth/.htpasswd","content":"admin:htpasswd-secret"},{"id":2,"name":"signing.asc","filepath":"/etc/nginx/signing.asc","content":"-----BEGIN PGP PRIVATE KEY BLOCK-----\\npgp-secret"},{"id":3,"name":"nginx.conf","filepath":"/etc/nginx/nginx.conf","content":"events {}"}]}`,

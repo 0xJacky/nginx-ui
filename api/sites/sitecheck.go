@@ -110,10 +110,14 @@ func GetHealthCheck(c *gin.Context) {
 	c.JSON(http.StatusOK, siteConfig)
 }
 
-// redactHealthCheckHeaders hides custom probe header values, which commonly
-// carry Authorization credentials, from read-only service tokens. Header names
-// stay visible. The config is copied so a shared value is never modified.
+// redactHealthCheckSecrets hides the probe secrets a site config stores from
+// read-only service tokens: custom header values, which commonly carry
+// Authorization credentials, the request body, URL credentials and the form
+// values of a plugin probe kind. The plugin defines that form, so any of its
+// values may be a credential. Header and form keys stay visible. Values are
+// copied so a shared config is never modified.
 func redactHealthCheckSecrets(siteConfig *model.SiteConfig) {
+	siteConfig.ProbeConfig = internalmcp.RedactValues(siteConfig.ProbeConfig)
 	if siteConfig.HealthCheckConfig == nil {
 		return
 	}

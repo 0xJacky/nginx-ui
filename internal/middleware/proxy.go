@@ -37,8 +37,8 @@ const maxServiceTokenRedactionBodySize = 16 << 20
 var serviceTokenRedactedResponseFields = map[string][]string{
 	"/api/acme_users":               {"eab_key_id", "eab_hmac_key"},
 	"/api/acme_users/:id":           {"eab_key_id", "eab_hmac_key"},
-	"/api/auto_backup":              {"s3_access_key_id", "s3_secret_access_key"},
-	"/api/auto_backup/:id":          {"s3_access_key_id", "s3_secret_access_key"},
+	"/api/auto_backup":              {"s3_access_key_id", "s3_secret_access_key", "storage_config"},
+	"/api/auto_backup/:id":          {"s3_access_key_id", "s3_secret_access_key", "storage_config"},
 	"/api/blocklist_sources":        {"config"},
 	"/api/blocklist_sources/:id":    {"config"},
 	"/api/cert_deploy_targets":      {"config"},
