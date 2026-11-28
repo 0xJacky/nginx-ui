@@ -79,22 +79,6 @@ var readOnlyProxyRedactionCases = []struct {
 		keep:    []string{`"POST"`, "example.com/health", "example.com/status", `token=`, `key=`},
 	},
 	{
-		// GHSA-fpv9-q72v-fgrc: the form values of a plugin probe kind.
-		name:    "site health check plugin probe",
-		route:   "/api/site_navigation/health_check/:id",
-		body:    `{"id":1,"host":"example.com:443","probe_kind":"plugin:redis","probe_config":{"password":"probe-form-secret"}}`,
-		secrets: []string{"probe-form-secret"},
-		keep:    []string{`"password"`, `"plugin:redis"`},
-	},
-	{
-		// A child that predates leaving probe values out of the site list.
-		name:    "site navigation plugin probe",
-		route:   "/api/site_navigation",
-		body:    `{"data":[{"id":1,"name":"example.com","probe_kind":"plugin:redis","probe_config":{"password":"probe-form-secret"}}]}`,
-		secrets: []string{"probe-form-secret"},
-		keep:    []string{`"password"`, `"plugin:redis"`},
-	},
-	{
 		name:    "config history password file",
 		route:   "/api/config_histories",
 		body:    `{"data":[{"id":1,"name":".htpasswd","filepath":"/etc/nginx/auth/.htpasswd","content":"admin:htpasswd-secret"},{"id":2,"name":"signing.asc","filepath":"/etc/nginx/signing.asc","content":"-----BEGIN PGP PRIVATE KEY BLOCK-----\\npgp-secret"},{"id":3,"name":"nginx.conf","filepath":"/etc/nginx/nginx.conf","content":"events {}"}]}`,
@@ -151,6 +135,79 @@ func TestConfigureProxyResponseRedactsStoredSecretsForReadOnlyTokens(t *testing.
 			assert.Equal(t, int64(len(body)), response.ContentLength)
 			assert.Equal(t, fmt.Sprint(len(body)), response.Header.Get("Content-Length"))
 			assert.Empty(t, response.Header.Get("ETag"))
+		})
+	}
+}
+
+// serviceTokenProxyPlaceholderCases are relayed values hidden from every
+// service token, api:write included: the form values of a plugin probe kind.
+var serviceTokenProxyPlaceholderCases = []struct {
+	name    string
+	route   string
+	body    string
+	secrets []string
+	keep    []string
+}{
+	{
+		name:    "site health check plugin probe",
+		route:   "/api/site_navigation/health_check/:id",
+		body:    `{"id":1,"host":"example.com:443","probe_kind":"plugin:redis","probe_config":{"password":"probe-form-secret"},"health_check_config":{"headers":{"Authorization":"Bearer probe-secret"}}}`,
+		secrets: []string{"probe-form-secret"},
+		keep:    []string{`"password"`, `"plugin:redis"`},
+	},
+	{
+		// Every released child leaves probe values out of the site list; the
+		// controller hides them anyway rather than rely on the child.
+		name:    "site navigation plugin probe",
+		route:   "/api/site_navigation",
+		body:    `{"data":[{"id":1,"name":"example.com","probe_kind":"plugin:redis","probe_config":{"password":"probe-form-secret"}}]}`,
+		secrets: []string{"probe-form-secret"},
+		keep:    []string{`"password"`, `"plugin:redis"`},
+	},
+}
+
+func TestConfigureProxyResponseRedactsProbeConfigForEveryServiceToken(t *testing.T) {
+	for _, tt := range serviceTokenProxyPlaceholderCases {
+		for _, caller := range []struct {
+			name     string
+			readOnly bool
+		}{
+			{"api:read token", true},
+			{"api:write token", false},
+		} {
+			t.Run(tt.name+"/"+caller.name, func(t *testing.T) {
+				assert.True(t, proxyRequiresIdentityEncoding(tt.route, true, caller.readOnly))
+				proxy := &httputil.ReverseProxy{}
+				configureProxyResponse(proxy, 42, tt.route, true, caller.readOnly, nil)
+				response := newConfirmedChildResponse(tt.body)
+
+				require.NoError(t, proxy.ModifyResponse(response))
+				body, err := io.ReadAll(response.Body)
+				require.NoError(t, err)
+				for _, secret := range tt.secrets {
+					assert.NotContains(t, string(body), secret)
+				}
+				for _, kept := range tt.keep {
+					assert.Contains(t, string(body), kept)
+				}
+				assert.Contains(t, string(body), settings.RedactedSensitiveValue)
+				assert.Equal(t, int64(len(body)), response.ContentLength)
+				if strings.Contains(tt.body, "Bearer probe-secret") {
+					assert.Equal(t, !caller.readOnly, strings.Contains(string(body), "Bearer probe-secret"),
+						"api:write keeps reading the header values, api:read does not")
+				}
+			})
+		}
+
+		t.Run(tt.name+"/interactive administrator", func(t *testing.T) {
+			proxy := &httputil.ReverseProxy{}
+			configureProxyResponse(proxy, 42, tt.route, false, false, nil)
+			response := newProxyTestResponse(tt.body)
+
+			require.NoError(t, proxy.ModifyResponse(response))
+			body, err := io.ReadAll(response.Body)
+			require.NoError(t, err)
+			assert.JSONEq(t, tt.body, string(body))
 		})
 	}
 }

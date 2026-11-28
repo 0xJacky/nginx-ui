@@ -53,6 +53,19 @@ var serviceTokenRedactedResponseFields = map[string][]string{
 	"/api/upstream_discoveries/:id": {"config"},
 }
 
+// serviceTokenProxyRedactions rewrites, for every service token, the values a
+// child node returns in full to the controller's node principal. Unlike
+// serviceTokenRedactedResponseFields the keys stay and the values are replaced
+// with the shared placeholder, mirroring the local handler, so a client that
+// saves the record back sends the placeholder the child knows to keep. The
+// form values of a plugin probe kind (a site's probe_config) are hidden from
+// api:write tokens too, because the plugin defines that form and any of its
+// values may be a credential.
+var serviceTokenProxyRedactions = map[string]proxyJSONRedactor{
+	"/api/site_navigation":                  redactJSONListItems(redactJSONValues("probe_config")),
+	"/api/site_navigation/health_check/:id": redactJSONValues("probe_config"),
+}
+
 type proxyLogFunc func(message string, keysAndValues ...any)
 
 func Proxy() gin.HandlerFunc {
@@ -184,6 +197,9 @@ func configureProxyResponse(
 				if err := redactServiceTokenProxyResponse(resp, route); err != nil {
 					return err
 				}
+				if err := rewriteProxyJSONResponse(resp, route, serviceTokenProxyRedactions[route]); err != nil {
+					return err
+				}
 			}
 			if hidesStoredSecrets {
 				if err := redactReadOnlyServiceTokenProxyResponse(resp, route, childWithheldSecretFiles); err != nil {
@@ -202,6 +218,7 @@ func configureProxyResponse(
 // the controller has to rewrite the response before relaying it.
 func proxyRequiresIdentityEncoding(route string, isServiceToken, hidesStoredSecrets bool) bool {
 	return (isServiceToken && serviceTokenRedactedResponseFields[route] != nil) ||
+		(isServiceToken && serviceTokenProxyRedactions[route] != nil) ||
 		(hidesStoredSecrets && readOnlyServiceTokenProxyRedactions[route] != nil)
 }
 
@@ -353,6 +370,13 @@ func redactReadOnlyServiceTokenProxyResponse(response *http.Response, route stri
 	if unconfirmed, classifiedByChild := readOnlyServiceTokenUnconfirmedProxyRedactions[route]; classifiedByChild && !childWithheldSecretFiles {
 		redact = unconfirmed
 	}
+	return rewriteProxyJSONResponse(response, route, redact)
+}
+
+// rewriteProxyJSONResponse applies redact to a child's JSON answer. A nil
+// redact leaves the answer alone. A refusal replaces the answer with the cosy
+// error the local handler returns.
+func rewriteProxyJSONResponse(response *http.Response, route string, redact proxyJSONRedactor) error {
 	if redact == nil {
 		return nil
 	}
@@ -367,8 +391,8 @@ func redactReadOnlyServiceTokenProxyResponse(response *http.Response, route stri
 			return fmt.Errorf("redact service token response for %s: %w", route, err)
 		}
 		// A 403 is allowed here although proxy refusals avoid it: this runs
-		// only for a read-only service token, never for the web UI's login
-		// token, so it cannot sign the web UI out.
+		// only for a service token, never for the web UI's login token, so it
+		// cannot sign the web UI out.
 		response.StatusCode = http.StatusForbidden
 		response.Status = strconv.Itoa(http.StatusForbidden) + " " + http.StatusText(http.StatusForbidden)
 		response.Header.Set("Content-Type", "application/json; charset=utf-8")

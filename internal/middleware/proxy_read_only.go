@@ -198,13 +198,11 @@ func redactJSONDomainCredential(payload map[string]any) error {
 	return nil
 }
 
-// redactJSONHealthCheck mirrors the local health check redaction: header
-// values, the request body, credentials embedded in the probe and click URLs,
-// and the form values of a plugin probe kind.
+// redactJSONHealthCheck mirrors the local health check redaction for
+// read-only tokens: header values, the request body and credentials embedded
+// in the probe and click URLs. The form values of a plugin probe kind are
+// hidden from every service token by serviceTokenProxyRedactions.
 func redactJSONHealthCheck(payload map[string]any) error {
-	if err := redactJSONValues("probe_config")(payload); err != nil {
-		return err
-	}
 	if err := redactJSONValues("health_check_config", "headers")(payload); err != nil {
 		return err
 	}

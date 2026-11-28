@@ -15,9 +15,9 @@ API 权限范围如下：
 | Scope | 访问权限 |
 | --- | --- |
 | `api:read` | 管理 API 的 `GET`、`HEAD`、`OPTIONS` 请求，已存储的密钥会被隐藏 |
-| `api:write` | 管理 API 的变更请求，同时包含 API 读权限，可读取已存储的密钥 |
+| `api:write` | 管理 API 的变更请求，同时包含 API 读权限，可读取除插件表单值以外的已存储密钥 |
 
-`api:read` 是只读角色，永远不会收到已存储的密钥。响应保持原有结构和所有非敏感字段，敏感值会替换为 `__NGINX_UI_REDACTED__`。范围包括通知渠道配置值、站点健康检查的请求头值、请求体以及探测与点击 URL 中的密码和查询参数值、DNS 域名中附带的 DNS 服务商凭据，以及证书详情中的私钥。DNS 凭据、ACME 账户和 S3 自动备份接口对所有服务令牌都会省略凭据字段。通过 `GET /api/config` 读取敏感文件会返回 `403` 和错误码 `40019`，包括 `.key` 和 `.htpasswd` 文件、任何包含 PEM 或 PGP 私钥块的文件，以及 Nginx 配置在 `ssl_certificate_key`、`ssl_password_file`、`ssl_key_log`（含 `proxy_`、`grpc_`、`uwsgi_` 等模块前缀的变体）、`ssl_session_ticket_key`、`ssl_ech_file`、`quic_host_key`、`auth_basic_user_file` 或 `auth_jwt_key_file` 中引用的文件，配置按 Nginx 自身的读取方式解析，并跟随每一条 `include`；这些文件在配置历史中的版本也会被隐藏。证书和其他配置文件仍可读取。通过 `X-Node-ID` 订阅远程节点的站点导航 WebSocket 会返回 `403` 和错误码 `40301`，因为控制端无法对转发的帧进行脱敏，请改用 `GET /api/site_navigation`。如果自动化任务需要导出私钥或读取已存储的凭据，请使用 `api:write` 令牌。
+`api:read` 是只读角色，永远不会收到已存储的密钥。响应保持原有结构和所有非敏感字段，敏感值会替换为 `__NGINX_UI_REDACTED__`。范围包括通知渠道配置值、站点健康检查的请求头值、请求体以及探测与点击 URL 中的密码和查询参数值、DNS 域名中附带的 DNS 服务商凭据，以及证书详情中的私钥。DNS 凭据、ACME 账户和自动备份接口对所有服务令牌都会省略凭据字段，包括 S3 密钥和插件存储后端的表单值（`storage_config`）。站点健康检查中插件探测类型的表单值（`probe_config`）同样会对所有服务令牌（包括 `api:write`）替换为 `__NGINX_UI_REDACTED__`，因为该表单由插件定义，其中任何值都可能是凭据。保存健康检查时原样提交读取到的 `probe_config`（每个值仍为占位符）或省略 `probe_config`，只要探测类型和探测目标 URL 不变，就会保留已存储的值。如需修改探测类型、探测目标或任何一个值，请提交全部值；占位符与其他值混合提交会被拒绝。这只会让这些值不出现在 API 响应中，并不限制 `api:write` 令牌的其他能力，例如导出备份。通过 `GET /api/config` 读取敏感文件会返回 `403` 和错误码 `40019`，包括 `.key` 和 `.htpasswd` 文件、任何包含 PEM 或 PGP 私钥块的文件，以及 Nginx 配置在 `ssl_certificate_key`、`ssl_password_file`、`ssl_key_log`（含 `proxy_`、`grpc_`、`uwsgi_` 等模块前缀的变体）、`ssl_session_ticket_key`、`ssl_ech_file`、`quic_host_key`、`auth_basic_user_file` 或 `auth_jwt_key_file` 中引用的文件，配置按 Nginx 自身的读取方式解析，并跟随每一条 `include`；这些文件在配置历史中的版本也会被隐藏。证书和其他配置文件仍可读取。通过 `X-Node-ID` 订阅远程节点的站点导航 WebSocket 会返回 `403` 和错误码 `40301`，因为控制端无法对转发的帧进行脱敏，请改用 `GET /api/site_navigation`。如果自动化任务需要导出私钥或读取其他已存储的凭据，请使用 `api:write` 令牌。
 
 MCP 权限与 API 权限彼此独立。授予 `mcp:write` 不会获得管理 API 访问权限，授予 `api:write` 也不会获得 MCP 访问权限。
 

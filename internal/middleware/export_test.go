@@ -9,6 +9,9 @@ func ProxyServiceTokenRedactedRoutes() (allTokens, readOnly, refusedFeeds map[st
 	for route := range serviceTokenRedactedResponseFields {
 		allTokens[route] = true
 	}
+	for route := range serviceTokenProxyRedactions {
+		allTokens[route] = true
+	}
 	for route := range readOnlyServiceTokenProxyRedactions {
 		readOnly[route] = true
 	}
