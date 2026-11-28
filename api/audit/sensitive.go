@@ -148,6 +148,17 @@ var sensitiveRoutes = map[string]routeRedaction{
 	"POST /api/upstream_discoveries":      redactBoth,
 	"POST /api/upstream_discoveries/:id":  redactBoth,
 	"PATCH /api/upstream_discoveries/:id": redactResponse,
+
+	// Site health checks carry the form values of a plugin probe kind, custom
+	// request headers (often Authorization), the probe request body and URLs
+	// that may embed credentials. The web UI reads them back in full to edit
+	// them, and the site list returns all but the plugin form values; node to
+	// node sync sends the same payload to every node.
+	"GET /api/site_navigation":                        redactResponse,
+	"GET /api/site_navigation/health_check/:id":       redactResponse,
+	"POST /api/site_navigation/health_check/:id":      redactRequest,
+	"PUT /api/site_navigation/health_check/sync":      redactRequest,
+	"POST /api/site_navigation/test_health_check/:id": redactRequest,
 }
 
 // SensitiveRoutes lists the "METHOD /route/template" keys whose bodies are
