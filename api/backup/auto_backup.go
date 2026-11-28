@@ -232,36 +232,23 @@ func RunAutoBackup(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Auto backup completed successfully"})
 }
 
-// RestoreAutoBackup restores a soft-deleted auto backup configuration.
-// This endpoint restores the backup configuration and re-registers the cron job if enabled.
+// RestoreAutoBackup recovers a soft-deleted auto backup configuration and
+// re-registers its cron job when it is enabled.
 //
 // Path Parameters:
-//   - id: Auto backup configuration ID to restore
+//   - id: Auto backup configuration ID to recover
 //
-// Response: Success confirmation
+// Response: 204 No Content
 func RestoreAutoBackup(c *gin.Context) {
-	var autoBackup model.AutoBackup
-	if err := c.ShouldBindUri(&autoBackup); err != nil {
-		cosy.ErrHandler(c, err)
+	core := cosy.Core[model.AutoBackup](c)
+	core.Recover()
+
+	// Cosy's Recover chain does not run the executed hook, so the job is
+	// registered here once the recover has answered 204.
+	if c.Writer.Status() != http.StatusNoContent || !core.Model.Enabled {
 		return
 	}
-
-	// Restore the backup configuration
-	if err := backup.RestoreAutoBackup(autoBackup.ID); err != nil {
-		cosy.ErrHandler(c, err)
-		return
+	if err := cron.AddAutoBackupJob(core.Model.ID, core.Model.CronExpression); err != nil {
+		logger.Errorf("Failed to add auto backup job %d after restore: %v", core.Model.ID, err)
 	}
-
-	// Get the restored backup configuration to check if it's enabled
-	restoredBackup, err := backup.GetAutoBackupByID(autoBackup.ID)
-	if err != nil {
-		logger.Errorf("Failed to get restored auto backup %d: %v", autoBackup.ID, err)
-	} else if restoredBackup.Enabled {
-		// Register cron job if the backup is enabled
-		if err := cron.AddAutoBackupJob(restoredBackup.ID, restoredBackup.CronExpression); err != nil {
-			logger.Errorf("Failed to add auto backup job %d after restore: %v", restoredBackup.ID, err)
-		}
-	}
-
-	c.JSON(http.StatusOK, gin.H{"message": "Auto backup restored successfully"})
 }
