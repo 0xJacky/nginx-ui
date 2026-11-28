@@ -5,6 +5,7 @@ import gettext from '@/gettext'
 import EnabledSwitch from './EnabledSwitch.vue'
 import ExternalNotifyEditor from './ExternalNotifyEditor.vue'
 import configMap from './index'
+import LevelSelect from './LevelSelect.vue'
 import { pluginChannels } from './pluginChannels'
 
 const languageAvailable = gettext.available
@@ -60,6 +61,16 @@ const columns: StdTableColumn[] = [
       formItem: {
         required: true,
       },
+    },
+  },
+  {
+    dataIndex: 'levels',
+    title: () => $gettext('Level'),
+    hiddenInTable: true,
+    edit: {
+      type: ({ formData }: { formData: ExternalNotify }) => (
+        <LevelSelect v-model:value={formData.levels} />
+      ),
     },
   },
   {

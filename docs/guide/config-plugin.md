@@ -33,6 +33,19 @@ When a certificate uses the DNS-01 challenge and the plugin is missing, Nginx UI
 
 After you uninstall the plugin it is not installed again, unless a certificate still needs DNS-01.
 
+### Recursive DNS servers
+
+The plugin has a setting of its own, **Recursive DNS servers**, in the Settings tab of the plugin under System → Plugins. It replaces the deprecated [RecursiveNameservers](./config-cert.md#recursivenameservers) option, whose value is copied into it when the plugin is first installed.
+
+The plugin uses these servers for two things:
+
+- to find the DNS zone of a domain before it creates the validation record (since plugin 1.0.2);
+- to check that the record is visible, when a certificate turns on the public resolver check.
+
+When the setting is empty, the plugin asks the resolvers of the operating system. The zone is the first name, going up from `_acme-challenge.<domain>`, for which the resolver returns an SOA record. If your network has an internal (split-horizon) DNS zone such as `sub.example.com`, the system resolver answers for that zone, and the DNS provider is then asked for a zone it does not have. The request fails with an error such as "zone could not be found" or "This service does not exist".
+
+In that case set public resolvers, for example `1.1.1.1:53` and `8.8.8.8:53`, so that the zone lookup finds the zone your DNS provider hosts.
+
 ## Enabled
 
 - Type: `boolean`

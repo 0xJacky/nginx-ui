@@ -56,6 +56,7 @@ async function handleCopy(record: ExternalNotify) {
       description: record.description,
       language: record.language,
       config: sanitizedConfig,
+      levels: record.levels,
       enabled: record.enabled,
     })
 

@@ -38,4 +38,12 @@ test('Quick Setup reverse proxy with TLS and redirect issues a certificate and s
   // answers 502 from the proxy rather than 301 or the backend's 404.
   const challenge = httpGet(domain, '/.well-known/acme-challenge/renewal-probe')
   expect(challenge.status, `${challenge.status} ${challenge.location}\n${readSiteConfig(domain)}`).toBe(502)
+
+  // The certificate list names the site that now serves the certificate.
+  await page.goto('/#/certificates/list')
+  await expect(page.getByRole('columnheader', { name: 'Used By', exact: true })).toBeVisible()
+  const headers = await page.locator('thead th').allTextContents()
+  const usedByIndex = headers.map(text => text.trim()).indexOf('Used By')
+  const usedBy = page.locator('tbody tr').filter({ hasText: domain }).locator('td').nth(usedByIndex)
+  await expect(usedBy).toContainText(domain)
 })

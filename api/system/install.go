@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/cert"
 	internalSystem "github.com/0xJacky/Nginx-UI/internal/system"
 	"github.com/0xJacky/Nginx-UI/model"
@@ -67,7 +68,7 @@ func InstallNginxUI(c *gin.Context) {
 		settings.CertSettings.Email = json.Email
 	})
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		api.SettingsSaveError(c, err)
 		return
 	}
 

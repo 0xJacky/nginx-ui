@@ -36,6 +36,7 @@ func newExternalNotify(db *gorm.DB, opts ...gen.DOOption) externalNotify {
 	_externalNotify.Description = field.NewString(tableName, "description")
 	_externalNotify.Language = field.NewString(tableName, "language")
 	_externalNotify.Config = field.NewField(tableName, "config")
+	_externalNotify.Levels = field.NewField(tableName, "levels")
 	_externalNotify.Enabled = field.NewBool(tableName, "enabled")
 
 	_externalNotify.fillFieldMap()
@@ -55,6 +56,7 @@ type externalNotify struct {
 	Description field.String
 	Language    field.String
 	Config      field.Field
+	Levels      field.Field
 	Enabled     field.Bool
 
 	fieldMap map[string]field.Expr
@@ -80,6 +82,7 @@ func (e *externalNotify) updateTableName(table string) *externalNotify {
 	e.Description = field.NewString(table, "description")
 	e.Language = field.NewString(table, "language")
 	e.Config = field.NewField(table, "config")
+	e.Levels = field.NewField(table, "levels")
 	e.Enabled = field.NewBool(table, "enabled")
 
 	e.fillFieldMap()
@@ -97,7 +100,7 @@ func (e *externalNotify) GetFieldByName(fieldName string) (field.OrderExpr, bool
 }
 
 func (e *externalNotify) fillFieldMap() {
-	e.fieldMap = make(map[string]field.Expr, 9)
+	e.fieldMap = make(map[string]field.Expr, 10)
 	e.fieldMap["id"] = e.ID
 	e.fieldMap["created_at"] = e.CreatedAt
 	e.fieldMap["updated_at"] = e.UpdatedAt
@@ -106,6 +109,7 @@ func (e *externalNotify) fillFieldMap() {
 	e.fieldMap["description"] = e.Description
 	e.fieldMap["language"] = e.Language
 	e.fieldMap["config"] = e.Config
+	e.fieldMap["levels"] = e.Levels
 	e.fieldMap["enabled"] = e.Enabled
 }
 

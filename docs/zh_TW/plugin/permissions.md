@@ -25,7 +25,7 @@ outline: [2, 3]
 | `cron` | 在執行期間用 `host.cron.register` 和 `unregister` 註冊排程呼叫。 |
 | `notify` | 用 `host.notify` 在 Nginx UI 中發出通知。 |
 | `metrics.read` | 用 `host.metrics.snapshot` 讀取 Nginx UI 的指標。 |
-| `core_api` | 在瀏覽器套件中透過 `registry.coreHttp` 呼叫 Nginx UI 的 REST API。 |
+| `core_api` | 在瀏覽器套件中透過 `registry.coreHttp` 呼叫 Nginx UI 的 REST API。參見[瀏覽器中的權限](#permissions-in-the-browser)。 |
 | `mcp` | 把外掛的工具發佈給 MCP 用戶端。`mcp` 能力必須請求它。 |
 | `cert.deploy` | 在 `deploy.push` 中接收憑證及其私鑰。`cert.deploy` 能力必須請求它。 |
 | `log.read` | 在 `log.push` 中接收每一行 nginx 存取日誌。`log.sink` 能力必須請求它。 |
@@ -45,6 +45,16 @@ outline: [2, 3]
 清單列出外掛請求的權限，安裝外掛的人核准這份清單，只有已核准的權限才算數：呼叫需要外掛未持有的權限時，會以[權限拒絕錯誤](./protocol.md#error-codes)失敗，並且不執行任何操作。
 
 當更新請求了尚未核准的權限時，Nginx UI 不會靜默授予。在有人核准新的權限清單之前，更新後的外掛保持停止，它的能力也無法使用。只減少權限的更新不需要核准；被移除的權限若在之後的版本中再次請求，需要重新核准。因此執行中的外掛一律持有清單請求的全部權限。交握會告訴進程它持有哪些權限，參見[生命週期](./lifecycle.md#handshake)。
+
+### 瀏覽器中的權限 {#permissions-in-the-browser}
+
+Nginx UI 在外掛進程一側執行權限檢查，每一次宿主呼叫都會被驗證。瀏覽器套件則不同：它在 Nginx UI 的頁面中執行，與介面其餘部分同源，並共用同一個登入工作階段。瀏覽器裡沒有任何機制能阻止瀏覽器套件自行向 REST API 發送請求。
+
+因此 `core_api` 權限的作用是讓守規矩的瀏覽器套件只做它宣告過的事，並告訴安裝外掛的人它的瀏覽器套件會呼叫 REST API；它不是安全邊界。呼叫 REST API 的瀏覽器套件應宣告 `core_api`，並且只透過 `registry.coreHttp` 呼叫，絕不繞過它。評估帶有瀏覽器套件的外掛時，請像評估它的進程一樣，看它由誰發布。
+
+::: warning 棄用說明
+目前 Nginx UI 還不會拒絕沒有 `core_api` 的瀏覽器套件呼叫 REST API。這類瀏覽器套件仍能拿到可用的 `registry.coreHttp`，第一次呼叫時會在瀏覽器主控台輸出棄用警告。`window.NginxUI.shared.http` 是同一個用戶端但不做任何檢查，同樣已棄用，第一次使用時也會警告。之後的版本會拒絕沒有已核准 `core_api` 權限的外掛透過 `registry.coreHttp` 發出的每次呼叫，並移除 `window.NginxUI.shared.http`。如果瀏覽器套件需要呼叫 REST API，請現在就宣告 `core_api`。
+:::
 
 ### 敏感權限 {#sensitive-permissions}
 

@@ -96,7 +96,9 @@ function manifestFromInfo(entry: WebappEntry, info?: PluginInfo): PluginManifest
     api_version: info?.api_version ?? 0,
     min_nginx_ui_version: info?.min_nginx_ui_version,
     capabilities: info?.capabilities ?? [],
-    permissions: info?.permissions ?? [],
+    // Only what the operator approved: an enabled plugin has no pending
+    // permissions, but the registry gates on this list, so never widen it.
+    permissions: (info?.permissions ?? []).filter(permission => !info?.new_permissions?.includes(permission)),
     requires: info?.requires ?? [],
     requires_capabilities: info?.requires_capabilities ?? [],
     settings_schema: info?.settings_schema ?? null,

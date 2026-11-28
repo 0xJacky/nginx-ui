@@ -2,6 +2,7 @@ package notification
 
 import (
 	"context"
+	"slices"
 	"strings"
 	"sync"
 
@@ -111,9 +112,16 @@ func (n *ExternalMessage) SendTo(ids []uint64) {
 	n.send(externalNotifies)
 }
 
+func (n *ExternalMessage) matchesLevel(record *model.ExternalNotify) bool {
+	return record.Levels == nil || slices.Contains(record.Levels, n.GetType())
+}
+
 func (n *ExternalMessage) send(externalNotifies []*model.ExternalNotify) {
 	ctx := context.Background()
 	for _, externalNotify := range externalNotifies {
+		if !n.matchesLevel(externalNotify) {
+			continue
+		}
 		go func(externalNotify *model.ExternalNotify) {
 			notifier, err := externalNotifierHandler(externalNotify)
 			if err != nil {

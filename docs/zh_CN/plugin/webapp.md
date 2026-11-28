@@ -99,7 +99,7 @@ registerPlugin('io.github.example.myplugin', defineNginxUIPlugin({
 | `http` | 访问插件自己的 [HTTP 接口](./http.md)的 HTTP 客户端，基础路径为 `./api/plugins/<插件 ID>/http`。返回完整的响应。 |
 | `wsUrl(path)` | 连接到插件 HTTP 接口下 `path` 的 WebSocket 地址，包含 Nginx UI 接受连接所需的信息。可选。 |
 | `loadChunk(name)` | 加载已声明的[分块](#chunks)。可选。 |
-| `coreHttp` | Nginx UI REST API 的客户端，需要 `core_api` 权限。返回响应体。 |
+| `coreHttp` | Nginx UI REST API 的客户端，返回响应体。需要 `core_api` 权限：没有该权限时，目前调用仍可用但会输出弃用警告，之后的版本会拒绝这些调用，参见[浏览器中的权限](./permissions.md#permissions-in-the-browser)。请用它代替已弃用的 `window.NginxUI.shared.http`。 |
 | `manifest` | 插件的清单。 |
 | `host` | 只读的 `{ theme, locale, nodeId, username }`。 |
 
@@ -122,6 +122,8 @@ const socket = registry.wsUrl ? new WebSocket(registry.wsUrl('/events')) : undef
 ### 宿主对话框 {#host-dialogs}
 
 `window.NginxUI.shared.ui` 提供了浏览器包可以复用的 Nginx UI 对话框。`openDnsCredentialEditor()` 打开 DNS 凭据编辑器，返回新建的凭据，用户取消时返回 `undefined`。调用前请先检查该成员是否存在。
+
+`listDnsCredentials()` 以 `{ id, name, code, provider?, provider_code? }` 的形式返回当前所选节点上保存的全部 DNS 凭据，读取列表失败时会被拒绝。它从不返回凭据的配置或密钥，也不需要任何权限，因此 DNS-01 表单无需 `core_api` 就能列出已保存的凭据。
 
 ## 分块 {#chunks}
 

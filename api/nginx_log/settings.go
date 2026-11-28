@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/0xJacky/Nginx-UI/api"
 	"github.com/0xJacky/Nginx-UI/internal/kernel"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log"
-	"github.com/uozi-tech/cosy"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx"
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/utils"
@@ -54,7 +54,7 @@ func EnableAdvancedIndexing(c *gin.Context) {
 		settings.NginxLogSettings.IndexingEnabled = true
 	})
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		api.SettingsSaveError(c, err)
 		return
 	}
 
@@ -77,7 +77,7 @@ func DisableAdvancedIndexing(c *gin.Context) {
 		settings.NginxLogSettings.IndexingEnabled = false
 	})
 	if err != nil {
-		cosy.ErrHandler(c, err)
+		api.SettingsSaveError(c, err)
 		return
 	}
 

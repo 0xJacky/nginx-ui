@@ -448,22 +448,21 @@ type scanAggregates struct {
 // key: each page costs O(page) instead of the O(offset+page) of offset
 // pagination, so a full scan stays linear in the number of documents.
 func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQueryRequest) ([]HourlyAccessStats, []DailyAccessStats, *scanAggregates) {
-	// Daily buckets cover the requested range (dates in server-local time,
-	// matching the rest of the dashboard).
+	// Daily buckets cover the requested range, one per calendar day in the
+	// request's zone, so the dates match the days the caller asked for.
 	dailyMap := make(map[string]*DailyAccessStats)
 	uniqueIPsPerDay := make(map[string]map[string]bool)
 
-	start := time.Unix(req.StartTime, 0)
-	end := time.Unix(req.EndTime, 0)
-	for t := start; t.Before(end) || t.Equal(end); t = t.AddDate(0, 0, 1) {
-		dateStr := t.Format("2006-01-02")
-		if _, exists := dailyMap[dateStr]; !exists {
-			dailyMap[dateStr] = &DailyAccessStats{
-				Date:      dateStr,
-				Timestamp: t.Unix(),
-			}
-			uniqueIPsPerDay[dateStr] = make(map[string]bool)
+	loc := req.location()
+	start := time.Unix(req.StartTime, 0).In(loc)
+	end := time.Unix(req.EndTime, 0).In(loc)
+	for day := time.Date(start.Year(), start.Month(), start.Day(), 0, 0, 0, 0, loc); !day.After(end); day = day.AddDate(0, 0, 1) {
+		dateStr := day.Format("2006-01-02")
+		dailyMap[dateStr] = &DailyAccessStats{
+			Date:      dateStr,
+			Timestamp: day.Unix(),
 		}
+		uniqueIPsPerDay[dateStr] = make(map[string]bool)
 	}
 
 	// Hourly buckets cover the requested range plus a timezone buffer
@@ -492,14 +491,14 @@ func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQu
 	aggregates := &scanAggregates{}
 	perMinutePV := make(map[int64]int)
 
-	// The server-local date of consecutive rows rarely changes, so remember
-	// the day the last row fell in instead of formatting every timestamp.
+	// The local date of consecutive rows rarely changes, so remember the day
+	// the last row fell in instead of formatting every timestamp.
 	var dayStart, dayEnd int64
 	var dayStr string
 	localDate := func(timestamp int64) string {
 		if timestamp < dayStart || timestamp >= dayEnd {
-			t := time.Unix(timestamp, 0)
-			start := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
+			t := time.Unix(timestamp, 0).In(loc)
+			start := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, loc)
 			dayStart, dayEnd = start.Unix(), start.AddDate(0, 0, 1).Unix()
 			dayStr = start.Format("2006-01-02")
 		}
@@ -516,7 +515,7 @@ func (s *service) calculateTimeBucketStats(ctx context.Context, req *DashboardQu
 			perMinutePV[timestamp-timestamp%60]++
 		}
 
-		// Daily bucket (server-local date)
+		// Daily bucket (date in the request's zone)
 		dateStr := localDate(timestamp)
 		if stats, exists := dailyMap[dateStr]; exists {
 			stats.PV++

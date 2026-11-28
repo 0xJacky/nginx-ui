@@ -11,6 +11,7 @@ import (
 	"github.com/caarlos0/env/v11"
 	"github.com/elliotchance/orderedmap/v3"
 	"github.com/spf13/cast"
+	"github.com/uozi-tech/cosy/logger"
 	"github.com/uozi-tech/cosy/settings"
 	"gopkg.in/ini.v1"
 )
@@ -119,25 +120,39 @@ func Init(confPath string) {
 	if AuthSettings.SecureSessionTimeoutMinutes <= 0 {
 		AuthSettings.SecureSessionTimeoutMinutes = DefaultSecureSessionTimeoutMinutes
 	}
+
+	reportUnstorableSettings()
 }
 
+// Update applies fn to the live settings and saves them to app.ini. When the
+// document cannot be stored, nothing is written and the live settings are
+// rolled back, so a refused change never stays in effect unsaved: neither a
+// value fn set nor a change that a value stored in app.ini itself keeps from
+// being written.
 func Update(fn func()) (err error) {
 	settingsMu.Lock()
 	defer settingsMu.Unlock()
 
+	snapshot := snapshotSettings()
 	fn()
 
-	return saveLocked()
+	err = saveLocked(snapshot)
+	if IsUnstorableValue(err) {
+		snapshot.restore()
+	}
+	return
 }
 
 func Save() (err error) {
 	settingsMu.Lock()
 	defer settingsMu.Unlock()
 
-	return saveLocked()
+	return saveLocked(nil)
 }
 
-func saveLocked() (err error) {
+// saveLocked writes the live settings to app.ini. previous holds the settings
+// from before the change being saved, or is nil when none was made.
+func saveLocked(previous *settingsSnapshot) (err error) {
 	// "fix" unable to save empty slice
 	if len(CertSettings.RecursiveNameservers) == 0 {
 		settings.Conf.Section("cert").Key("RecursiveNameservers").SetValue("")
@@ -152,8 +167,28 @@ func saveLocked() (err error) {
 		settings.ReflectFrom(name, ptr)
 	}
 
+	if keys := unstorableKeys(settings.Conf); len(keys) > 0 {
+		var before *ini.File
+		if previous != nil {
+			before = previous.document()
+		}
+		for _, key := range keys {
+			if changedSince(before, settings.Conf, key) {
+				discardConfChanges()
+				return unstorableValueError(key)
+			}
+		}
+		// None of them was set by this change; see keepStoredValues.
+		restoreLive := keepStoredValues(settings.Conf, keys)
+		defer restoreLive()
+	}
+
 	err = saveConfAtomically(settings.Conf, settings.ConfPath)
 	if err != nil {
+		if IsUnstorableValue(err) {
+			// app.ini itself stores a value it cannot write back.
+			discardConfChanges()
+		}
 		return
 	}
 
@@ -192,10 +227,28 @@ func saveLocked() (err error) {
 	return
 }
 
+// discardConfChanges reloads the ini document from app.ini, dropping the values
+// just reflected into it. If app.ini cannot be read, the current document is
+// kept rather than left nil; the next save reflects every setting into it
+// again anyway.
+func discardConfChanges() {
+	current := settings.Conf
+	if err := settings.Reload(); err != nil {
+		settings.Conf = current
+		logger.Error("Reload app.ini: ", err)
+	}
+}
+
 func saveConfAtomically(conf *ini.File, confPath string) (err error) {
+	content, err := encodeConf(conf)
+	if err != nil {
+		return
+	}
+
 	tmpPath := confPath + ".tmp"
 
-	err = conf.SaveTo(tmpPath)
+	// Same mode ini.File.SaveTo creates the file with.
+	err = os.WriteFile(tmpPath, content, 0o666)
 	if err != nil {
 		return
 	}

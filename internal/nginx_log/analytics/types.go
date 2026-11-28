@@ -67,6 +67,17 @@ type DashboardQueryRequest struct {
 	LogPaths  []string // The expanded list of physical file paths
 	StartTime int64
 	EndTime   int64
+	// Location is the time zone the daily buckets follow, normally the one
+	// the caller picked its dates in. Nil means the server's local zone.
+	Location *time.Location
+}
+
+// location returns the zone the daily buckets follow.
+func (r *DashboardQueryRequest) location() *time.Location {
+	if r.Location != nil {
+		return r.Location
+	}
+	return time.Local
 }
 
 // DashboardAnalytics represents comprehensive dashboard analytics data

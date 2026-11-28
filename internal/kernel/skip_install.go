@@ -36,6 +36,7 @@ func skipInstall() {
 		}
 	})
 	if err != nil {
+		stopIfUnstorable("JWT and node secrets", err)
 		logger.Fatal(err)
 	}
 

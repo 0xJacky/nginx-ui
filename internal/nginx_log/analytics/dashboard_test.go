@@ -3,10 +3,12 @@ package analytics
 import (
 	"context"
 	"testing"
+	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/nginx_log/searcher"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 )
 
 func TestService_GetDashboardAnalytics_Success(t *testing.T) {
@@ -456,4 +458,39 @@ func TestService_calculateDashboardSummaryWithoutAggregates(t *testing.T) {
 	assert.Equal(t, int64(0), summary.TotalTraffic)
 	assert.InDelta(t, 0.0, summary.AvgQPS, 0.000001)
 	assert.InDelta(t, 0.0, summary.PeakQPS, 0.000001)
+}
+
+// The daily buckets must follow the zone the caller picked its days in. A UTC
+// server bucketing a Shanghai day by UTC date would split it in two and leave
+// the requested date with only the rows after 08:00 local time.
+func TestService_calculateTimeBucketStats_DailyBucketsFollowRequestZone(t *testing.T) {
+	shanghai, err := time.LoadLocation("Asia/Shanghai")
+	require.NoError(t, err)
+
+	dayStart := time.Date(2026, 11, 20, 0, 0, 0, 0, shanghai)
+	dayEnd := dayStart.AddDate(0, 0, 1).Add(-time.Second)
+
+	mockSearcher := &MockSearcher{}
+	mockSearcher.On("Search", mock.Anything, mock.AnythingOfType("*searcher.SearchRequest")).Return(&searcher.SearchResult{
+		TotalHits: 2,
+		Hits: []*searcher.SearchHit{
+			// 00:30 local, still Nov 19 in UTC.
+			{Fields: map[string]interface{}{"timestamp": float64(time.Date(2026, 11, 19, 16, 30, 0, 0, time.UTC).Unix()), "ip": "192.0.2.1"}},
+			// 18:00 local, Nov 20 in UTC too.
+			{Fields: map[string]interface{}{"timestamp": float64(time.Date(2026, 11, 20, 10, 0, 0, 0, time.UTC).Unix()), "ip": "192.0.2.2"}},
+		},
+	}, nil)
+	s := NewService(mockSearcher).(*service)
+
+	_, daily, _ := s.calculateTimeBucketStats(context.Background(), &DashboardQueryRequest{
+		StartTime: dayStart.Unix(),
+		EndTime:   dayEnd.Unix(),
+		Location:  shanghai,
+	})
+
+	require.Len(t, daily, 1)
+	assert.Equal(t, "2026-11-20", daily[0].Date)
+	assert.Equal(t, dayStart.Unix(), daily[0].Timestamp)
+	assert.Equal(t, 2, daily[0].PV)
+	assert.Equal(t, 2, daily[0].UV)
 }

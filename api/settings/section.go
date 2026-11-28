@@ -189,6 +189,10 @@ func persistSections(c *gin.Context, saves ...*sectionSave) bool {
 	if !authorized {
 		return false
 	}
+	if settings.IsUnstorableValue(err) {
+		abortBadRequest(c, err)
+		return false
+	}
 	if err != nil {
 		cosy.ErrHandler(c, err)
 		return false
