@@ -120,14 +120,50 @@ func seedSettings(manifest *protocol.Manifest, row *model.Plugin) {
 	if manifest.ID != OfficialDNS01PluginID {
 		return
 	}
-	nameservers := settings.CertSettings.RecursiveNameservers
+	nameservers, _ := coerceStringList(settings.CertSettings.RecursiveNameservers)
 	if len(nameservers) == 0 {
 		return
 	}
 	if row.Settings == nil {
 		row.Settings = map[string]any{}
 	}
-	row.Settings[recursiveNameserversKey] = strings.Join(nameservers, ",")
+	if settingType(manifest, recursiveNameserversKey) == settingsTypeList {
+		row.Settings[recursiveNameserversKey] = nameservers
+		return
+	}
+	row.Settings[recursiveNameserversKey] = strings.Join(settings.CertSettings.RecursiveNameservers, ",")
+}
+
+// repairSeededSettings converts the comma separated resolver list earlier
+// releases seeded into the list the official DNS-01 plugin declares. The
+// settings form shows such a string as an empty list and every save of it
+// fails validation, on this node and on the nodes it syncs to. It reports
+// whether the row changed.
+func repairSeededSettings(manifest *protocol.Manifest, row *model.Plugin) bool {
+	if manifest == nil || row == nil || manifest.ID != OfficialDNS01PluginID {
+		return false
+	}
+	if settingType(manifest, recursiveNameserversKey) != settingsTypeList {
+		return false
+	}
+	text, ok := row.Settings[recursiveNameserversKey].(string)
+	if !ok {
+		return false
+	}
+	nameservers, _ := coerceStringList(strings.Split(text, ","))
+	row.Settings[recursiveNameserversKey] = nameservers
+	return true
+}
+
+// settingType returns the declared type of a settings field, empty when the
+// manifest does not declare the field.
+func settingType(manifest *protocol.Manifest, key string) string {
+	for _, field := range schemaFields(manifest.SettingsSchema) {
+		if field.Key == key {
+			return field.Type
+		}
+	}
+	return ""
 }
 
 // repairIncompatiblePlugins upgrades the vetted plugins a core upgrade left
