@@ -322,7 +322,9 @@ func TestOversizeIncomingMessageClosesConn(t *testing.T) {
 		t.Fatal("Serve did not fail on an oversize frame")
 	}
 
-	assert.ErrorIs(t, server.Call(context.Background(), "echo", nil, nil), ErrMessageTooLarge)
+	err := server.Call(context.Background(), "echo", nil, nil)
+	assert.ErrorIs(t, err, ErrClosed)
+	assert.ErrorIs(t, err, ErrMessageTooLarge)
 }
 
 func TestCallContextCancel(t *testing.T) {
@@ -430,6 +432,92 @@ func TestEOFFailsPendingCalls(t *testing.T) {
 	}
 
 	assert.ErrorIs(t, client.Call(context.Background(), "echo", nil, nil), ErrClosed)
+}
+
+// recordingWriter keeps every frame and is not an io.Closer, so a frame
+// written after Close lands here instead of failing on a closed writer.
+type recordingWriter struct {
+	mu     sync.Mutex
+	frames []string
+}
+
+func (w *recordingWriter) Write(p []byte) (int, error) {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	w.frames = append(w.frames, string(p))
+	return len(p), nil
+}
+
+func (w *recordingWriter) written() []string {
+	w.mu.Lock()
+	defer w.mu.Unlock()
+	return append([]string(nil), w.frames...)
+}
+
+// Close cancels the handler context, and a handler that returns because of it
+// must not reach the peer. Its "context canceled" reply used to win the race
+// against the EOF and fail the peer's pending call with that error instead of
+// ErrClosed.
+func TestCloseDropsRepliesOfCancelledHandlers(t *testing.T) {
+	for range 50 {
+		in, feed := io.Pipe()
+		out := &recordingWriter{}
+		conn := NewConn(in, out)
+
+		// Start the writer so it is already waiting when the handler replies.
+		require.NoError(t, conn.Notify(context.Background(), "warmup", nil))
+
+		started := make(chan struct{})
+		replied := make(chan struct{})
+		conn.Handle("hang", func(ctx context.Context, params json.RawMessage) (any, error) {
+			close(started)
+			<-ctx.Done()
+			defer close(replied)
+			return nil, ctx.Err()
+		})
+
+		ctx, cancel := context.WithCancel(context.Background())
+		served := make(chan struct{})
+		go func() { defer close(served); _ = conn.Serve(ctx) }()
+		go func() { _, _ = feed.Write([]byte(`{"jsonrpc":"2.0","id":1,"method":"hang"}` + "\n")) }()
+
+		<-started
+		require.NoError(t, conn.Close())
+		<-replied
+		<-served
+		// The reply runs right after the handler returns; give a leaked frame
+		// time to land.
+		time.Sleep(time.Millisecond)
+		cancel()
+
+		frames := out.written()
+		require.Len(t, frames, 1, "only the warmup frame may be written, got %q", frames)
+		assert.Contains(t, frames[0], "warmup")
+	}
+}
+
+// failingWriter rejects every write, like the stdin of a plugin that died.
+type failingWriter struct{}
+
+func (failingWriter) Write(p []byte) (int, error) { return 0, io.ErrClosedPipe }
+
+func TestWriteFailureClosesConn(t *testing.T) {
+	in, _ := io.Pipe()
+	conn := NewConn(in, failingWriter{})
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	go func() { _ = conn.Serve(ctx) }()
+
+	err := conn.Call(context.Background(), "echo", nil, nil)
+	assert.ErrorIs(t, err, ErrClosed)
+	assert.ErrorIs(t, err, io.ErrClosedPipe)
+
+	select {
+	case <-conn.Done():
+	case <-time.After(5 * time.Second):
+		t.Fatal("a failed write did not close the connection")
+	}
+	assert.ErrorIs(t, conn.Notify(context.Background(), "ping", nil), ErrClosed)
 }
 
 func TestMalformedInput(t *testing.T) {
