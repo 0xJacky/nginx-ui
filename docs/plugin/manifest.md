@@ -28,6 +28,7 @@ of the manifest gives editors completion and validation:
 | `version` | string | yes | The plugin's own version, [semantic versioning](https://semver.org/). |
 | `description` | string | no | One line summary shown in the plugin list. |
 | `i18n` | object | no | Translations of `name`, `description`, `permission_reasons` and the screenshot captions. See [Translations](#translations). |
+| `author` | string | no | Who the plugin is by. See [Identity](#identity). |
 | `homepage_url` | string | no | Documentation or repository link. |
 | `icon_path` | string | no | Path of an icon file inside the package. |
 | `api_version` | integer | yes | Protocol generation the plugin speaks. Always `1` today. |
@@ -69,6 +70,9 @@ exception: they are relative to the repository, see [Screenshots](#screenshots).
   `2.0.0-beta.1`. Prerelease versions put a release on a less stable
   [channel](./catalog.md#release-channels).
 - `api_version` is `1`. Nginx UI refuses a plugin with any other value.
+- `author` is informational. The official catalog lists a community plugin
+  by the GitHub owner of its repository, whatever `author` says, so set it to
+  that login. The checks before a submission warn when the two differ.
 
 ## Translations
 

@@ -24,6 +24,7 @@ outline: [2, 3]
 | `version` | string | 是 | 插件自身的版本，使用[语义化版本](https://semver.org/lang/zh-CN/)。 |
 | `description` | string | 否 | 插件列表中显示的一行简介。 |
 | `i18n` | object | 否 | `name`、`description`、`permission_reasons` 和截图说明的翻译。参见[翻译](#translations)。 |
+| `author` | string | 否 | 插件作者。参见[标识](#identity)。 |
 | `homepage_url` | string | 否 | 文档或仓库链接。 |
 | `icon_path` | string | 否 | 插件包内图标文件的路径。 |
 | `api_version` | integer | 是 | 插件使用的协议代次，目前固定为 `1`。 |
@@ -56,6 +57,7 @@ outline: [2, 3]
 - `name` 必填且不能为空。
 - `version` 遵循语义化版本 2.0.0，例如 `1.4.0` 或 `2.0.0-beta.1`。预发布版本会让该版本进入较不稳定的[发布渠道](./catalog.md#release-channels)。
 - `api_version` 为 `1`。Nginx UI 会拒绝其他任何值。
+- `author` 仅供参考。官方插件目录以仓库在 GitHub 上的所有者作为社区插件的作者，不看 `author` 写了什么，因此请填写该用户名。提交前的检查会在两者不一致时给出提示。
 
 ## 翻译 {#translations}
 

@@ -24,6 +24,7 @@ outline: [2, 3]
 | `version` | string | 是 | 外掛本身的版本，使用[語意化版本](https://semver.org/lang/zh-TW/)。 |
 | `description` | string | 否 | 外掛清單中顯示的一行簡介。 |
 | `i18n` | object | 否 | `name`、`description`、`permission_reasons` 和螢幕截圖說明的翻譯。參見[翻譯](#translations)。 |
+| `author` | string | 否 | 外掛作者。參見[識別](#identity)。 |
 | `homepage_url` | string | 否 | 文件或儲存庫連結。 |
 | `icon_path` | string | 否 | 外掛套件內圖示檔案的路徑。 |
 | `api_version` | integer | 是 | 外掛使用的協定世代，目前固定為 `1`。 |
@@ -56,6 +57,7 @@ outline: [2, 3]
 - `name` 必填且不能為空。
 - `version` 遵循語意化版本 2.0.0，例如 `1.4.0` 或 `2.0.0-beta.1`。預發佈版本會讓該版本進入較不穩定的[發佈通道](./catalog.md#release-channels)。
 - `api_version` 為 `1`。Nginx UI 會拒絕其他任何值。
+- `author` 僅供參考。官方外掛目錄以儲存庫在 GitHub 上的擁有者作為社群外掛的作者，不看 `author` 寫了什麼，因此請填寫該使用者名稱。提交前的檢查會在兩者不一致時給出提示。
 
 ## 翻譯 {#translations}
 
