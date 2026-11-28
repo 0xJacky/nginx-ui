@@ -2,7 +2,7 @@
 import type { MenuProps } from 'antdv-next'
 import type { LocationQueryValue } from 'vue-router'
 import type { InstalledFilter } from './presets'
-import { EllipsisOutlined, ExperimentOutlined, UploadOutlined } from '@antdv-next/icons'
+import { ArrowUpOutlined, EllipsisOutlined, ExperimentOutlined, UploadOutlined } from '@antdv-next/icons'
 import settingsApi from '@/api/settings'
 import { usePluginLoader, usePluginStore } from '@/plugin'
 import DevPluginModal from './DevPluginModal.vue'
@@ -81,15 +81,18 @@ const tabs = computed(() => [
     key: 'installed',
     label: $gettext('Installed'),
     count: inventory.plugins.value.length,
+    isUpdate: false,
   },
   {
     key: 'marketplace',
     label: $gettext('Marketplace'),
     count: inventory.updates.value.length,
+    isUpdate: true,
   },
   {
     key: 'nodes',
     label: $gettext('Nodes'),
+    isUpdate: false,
   },
 ])
 
@@ -143,7 +146,16 @@ async function onInstalled() {
       <template #labelRender="{ item }">
         <span class="tab-label">
           {{ item.label }}
-          <span v-if="item.count" class="tab-count">{{ item.count }}</span>
+          <ATooltip
+            v-if="item.isUpdate && item.count"
+            :title="$ngettext('%{count} installed plugin has a newer release.', '%{count} installed plugins have a newer release.', item.count, { count: String(item.count) })"
+          >
+            <span class="tab-count is-update">
+              <ArrowUpOutlined />
+              {{ item.count }}
+            </span>
+          </ATooltip>
+          <span v-else-if="item.count" class="tab-count">{{ item.count }}</span>
         </span>
       </template>
 
@@ -208,6 +220,9 @@ async function onInstalled() {
 }
 
 .tab-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
   padding: 0 6px;
   font-size: 11px;
   font-variant-numeric: tabular-nums;
@@ -215,5 +230,12 @@ async function onInstalled() {
   color: var(--ant-color-text-secondary);
   background: var(--ant-color-fill-secondary);
   border-radius: 999px;
+
+  &.is-update {
+    padding: 1px 7px;
+    font-weight: 600;
+    color: var(--ant-color-text-light-solid, #fff);
+    background: var(--ant-color-primary);
+  }
 }
 </style>

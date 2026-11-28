@@ -217,6 +217,32 @@
     border-color: var(--ant-color-error-border);
     background: var(--ant-color-error-bg);
   }
+
+  &.is-update {
+    border-color: var(--ant-color-primary-border);
+    background: var(--ant-color-primary-bg);
+  }
+}
+
+.update-panel-head {
+  display: flex;
+  flex: 1 1 240px;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.update-panel-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-top: 2px;
+  color: var(--ant-color-primary);
+  background: var(--ant-color-bg-container);
+  border-radius: 8px;
 }
 
 .panel-title {

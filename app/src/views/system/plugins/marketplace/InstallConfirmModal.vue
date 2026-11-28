@@ -262,7 +262,9 @@ async function install() {
     })
     progress.value = 100
     phase.value = 'done'
-    message.success($gettext('Plugin installed'))
+    message.success(isUpgrade.value && !isOlder.value
+      ? $gettext('Plugin updated')
+      : $gettext('Plugin installed'))
     emit('installed', info)
     open.value = false
   }
@@ -286,6 +288,8 @@ watch(open, async value => {
 
   reset()
   await loadEntry()
+  if (installedPlugin.value)
+    enableAfterInstall.value = installedPlugin.value.enabled
   if (props.autoStart && !error.value)
     void install()
 })

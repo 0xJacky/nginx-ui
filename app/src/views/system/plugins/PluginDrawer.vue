@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { PluginDrawerTab } from './presets'
 import type { PluginInfo } from '@/api/plugin'
+import type { PluginUpdateInfo } from '@/api/plugin_marketplace'
+import { ArrowUpOutlined } from '@antdv-next/icons'
 import { PluginIcon } from '@nginxui/plugin-market-ui'
 import { useWindowSize } from '@vueuse/core'
 import { localizedPluginName } from '@/api/plugin'
@@ -13,6 +15,7 @@ import TrustTag from './TrustTag.vue'
 
 const props = defineProps<{
   plugin?: PluginInfo
+  update?: PluginUpdateInfo
   hasNodes: boolean
   toggling?: boolean
 }>()
@@ -21,6 +24,8 @@ const emit = defineEmits<{
   toggle: [checked: boolean]
   sync: []
   uninstall: []
+  update: []
+  updateDetails: []
   updated: []
 }>()
 
@@ -78,6 +83,15 @@ const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
           <div class="flex items-center gap-2">
             <span class="truncate font-semibold">{{ name }}</span>
             <span class="drawer-version">v{{ props.plugin.version }}</span>
+            <button
+              v-if="props.update"
+              type="button"
+              class="drawer-update"
+              @click="emit('updateDetails')"
+            >
+              <ArrowUpOutlined />
+              <span>v{{ props.update.latest_version }}</span>
+            </button>
             <TrustTag :plugin="props.plugin" />
           </div>
           <div class="drawer-id truncate">
@@ -106,9 +120,12 @@ const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
         <PluginOverview
           v-if="item.key === 'overview' && props.plugin"
           :plugin="props.plugin"
+          :update="props.update"
           :has-nodes="props.hasNodes"
           @sync="emit('sync')"
           @uninstall="emit('uninstall')"
+          @update="emit('update')"
+          @update-details="emit('updateDetails')"
           @updated="emit('updated')"
         />
 
@@ -144,6 +161,28 @@ const isActive = (key: PluginDrawerTab) => open.value && tab.value === key
   color: var(--ant-color-text-secondary);
   background: var(--ant-color-fill-tertiary);
   border-radius: 999px;
+}
+
+.drawer-update {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 3px;
+  padding: 0 7px;
+  font-family: inherit;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--ant-color-primary);
+  background: var(--ant-color-primary-bg);
+  border: 1px solid var(--ant-color-primary-border);
+  border-radius: 999px;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--ant-color-primary-bg-hover);
+  }
 }
 
 .drawer-id {

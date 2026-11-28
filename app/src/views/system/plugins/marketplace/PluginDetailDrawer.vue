@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MarketFact } from '@nginxui/plugin-market-ui'
 import type { CatalogEntry } from '@/api/plugin_marketplace'
-import { LinkOutlined } from '@antdv-next/icons'
+import { ArrowUpOutlined, LinkOutlined } from '@antdv-next/icons'
 import { MarketDetail, PluginIcon } from '@nginxui/plugin-market-ui'
 import { useWindowSize } from '@vueuse/core'
 import { marked } from 'marked'
@@ -167,6 +167,9 @@ watch(open, value => {
         :disabled="!canInstall"
         @click="current && emit('install', current)"
       >
+        <template v-if="current?.update_available" #icon>
+          <ArrowUpOutlined />
+        </template>
         {{ current?.update_available ? $gettext('Update') : $gettext('Install') }}
       </AButton>
     </template>
@@ -189,6 +192,13 @@ watch(open, value => {
         :added-permissions="addedPermissions"
       >
         <template #pills>
+          <span
+            v-if="current.update_available && current.installed_version && current.installable_release"
+            class="pmu-pill is-accent"
+          >
+            <ArrowUpOutlined />
+            v{{ current.installed_version }} → v{{ current.installable_release.version }}
+          </span>
           <ATooltip v-if="channel !== 'stable'" :title="channelHint(channel)">
             <span class="pmu-pill" :class="channel === 'beta' ? 'is-warning' : 'is-purple'">{{ channelLabel(channel) }}</span>
           </ATooltip>

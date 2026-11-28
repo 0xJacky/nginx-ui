@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { InstalledFilter, PluginDrawerTab } from './presets'
 import type { PluginInfo, PluginUsage } from '@/api/plugin'
-import { AppstoreOutlined, ReloadOutlined, SearchOutlined, ShopOutlined, UploadOutlined } from '@antdv-next/icons'
+import type { CatalogEntry } from '@/api/plugin_marketplace'
+import { AppstoreOutlined, ArrowUpOutlined, ReloadOutlined, SearchOutlined, ShopOutlined, UploadOutlined } from '@antdv-next/icons'
 import pluginApi, { localizedPluginName } from '@/api/plugin'
 import gettext from '@/gettext'
 import { getErrorMessage } from '@/lib/http'
@@ -9,10 +10,13 @@ import { usePluginLoader } from '@/plugin'
 import { enableReplacesText } from './conflicts'
 import InstalledPluginCard from './InstalledPluginCard.vue'
 import { usePluginInventory } from './inventory'
+import InstallConfirmModal from './marketplace/InstallConfirmModal.vue'
+import PluginDetailDrawer from './marketplace/PluginDetailDrawer.vue'
 import PermissionApprovalModal from './PermissionApprovalModal.vue'
 import PluginDrawer from './PluginDrawer.vue'
 import { matchesFilter, matchesKeyword, needsAttention } from './presets'
 import SyncNodesModal from './SyncNodesModal.vue'
+import { fallbackCatalogEntry, findSingleUpdate } from './updates'
 import { certificateUsageText, formatUsagePreview, previewUsage } from './usage'
 import { enabledConflictNames } from './useConflicts'
 
@@ -44,8 +48,15 @@ const approvalOpen = ref(false)
 const pendingApproval = ref<PluginInfo>()
 // Set when the user already agreed to turn off the plugins that conflict.
 const pendingReplace = ref(false)
+const updateModalOpen = ref(false)
+const updateDetailOpen = ref(false)
+const updateTargetEntry = ref<CatalogEntry>()
+const updateTargetId = ref<string>()
+const updateTargetVersion = ref<string>()
 
-const updateIds = computed(() => new Set(inventory.updates.value.map(item => item.id)))
+const updateById = computed(() => new Map(inventory.updates.value.map(item => [item.id, item])))
+const catalogById = computed(() => new Map(inventory.catalog.value.map(entry => [entry.id, entry])))
+const updateIds = computed(() => new Set(updateById.value.keys()))
 // Installed plugins the catalogs took down, by id.
 const delistedById = computed(() => new Map(inventory.delisted.value.map(notice => [notice.id, notice])))
 // Installed versions the catalog withdrew, a revoked signing key for one,
@@ -102,7 +113,68 @@ watch(() => counts.value.updates, count => {
 const visible = computed(() => plugins.value.filter(item =>
   matchesFilter(item, filter.value, updateIds.value, withdrawnIds.value) && matchesKeyword(item, keyword.value)))
 
+const singleUpdate = computed(() => findSingleUpdate(plugins.value, inventory.updates.value))
+
 const isEmptyInventory = computed(() => !loading.value && !error.value && plugins.value.length === 0)
+
+function catalogEntryFor(plugin: PluginInfo): CatalogEntry | undefined {
+  const existing = catalogById.value.get(plugin.id)
+  if (existing)
+    return existing
+  const update = updateById.value.get(plugin.id)
+  return update
+    ? fallbackCatalogEntry(plugin, update)
+    : undefined
+}
+
+function openUpdate(plugin: PluginInfo, version?: string) {
+  updateTargetEntry.value = catalogById.value.get(plugin.id)
+  updateTargetId.value = plugin.id
+  updateTargetVersion.value = version ?? updateById.value.get(plugin.id)?.latest_version
+  updateDetailOpen.value = false
+  updateModalOpen.value = true
+}
+
+function openUpdateDetails(plugin: PluginInfo) {
+  const entry = catalogEntryFor(plugin)
+  if (!entry) {
+    openUpdate(plugin)
+    return
+  }
+  updateTargetEntry.value = entry
+  updateTargetId.value = plugin.id
+  updateTargetVersion.value = undefined
+  drawerOpen.value = false
+  updateDetailOpen.value = true
+}
+
+function onDetailInstall(entry: CatalogEntry, version?: string) {
+  updateTargetEntry.value = entry
+  updateTargetId.value = entry.id
+  updateTargetVersion.value = version
+  updateDetailOpen.value = false
+  updateModalOpen.value = true
+}
+
+async function onPluginUpdated(info: PluginInfo) {
+  // The updated package may ship a new frontend bundle, so drop the old one first.
+  await pluginLoader.unload(info.id, { forget: true })
+  await inventory.reload(true)
+  await pluginLoader.unloadDisabled(inventory.plugins.value)
+  await Promise.all([
+    inventory.reloadUpdates(),
+    inventory.reloadCatalog(),
+    pluginLoader.loadNew(),
+  ])
+}
+
+async function refreshAll() {
+  await Promise.all([
+    inventory.reload(),
+    inventory.reloadUpdates(),
+    inventory.reloadCatalog(),
+  ])
+}
 
 function openDrawer(plugin: PluginInfo, tab: PluginDrawerTab) {
   selectedId.value = plugin.id
@@ -317,7 +389,7 @@ function confirmUninstall(plugin: PluginInfo) {
         </template>
       </AInput>
 
-      <AButton class="installed-refresh" :loading="loading" @click="inventory.reload()">
+      <AButton class="installed-refresh" :loading="loading" @click="refreshAll">
         <template #icon>
           <ReloadOutlined />
         </template>
@@ -329,10 +401,47 @@ function confirmUninstall(plugin: PluginInfo) {
           <template #labelRender="option">
             <span class="filter-label">
               {{ option.label }}
-              <span class="filter-count">{{ counts[option.value as InstalledFilter] }}</span>
+              <span
+                class="filter-count"
+                :class="{
+                  'is-update': option.value === 'updates' && counts.updates > 0,
+                  'is-attention': option.value === 'attention' && counts.attention > 0,
+                }"
+              >{{ counts[option.value as InstalledFilter] }}</span>
             </span>
           </template>
         </ASegmented>
+      </div>
+    </div>
+
+    <div v-if="counts.updates > 0 && filter !== 'updates'" class="updates-banner">
+      <span class="updates-banner-icon">
+        <ArrowUpOutlined />
+      </span>
+      <div class="updates-banner-body">
+        <span class="updates-banner-text">
+          {{ $ngettext('%{count} installed plugin has a newer release.', '%{count} installed plugins have a newer release.', counts.updates, { count: String(counts.updates) }) }}
+        </span>
+        <span v-if="singleUpdate" class="updates-banner-meta">
+          <span>{{ localizedPluginName(singleUpdate.plugin, gettext.current) }}</span>
+          <span class="updates-banner-version">v{{ singleUpdate.plugin.version }} → v{{ singleUpdate.update.latest_version }}</span>
+        </span>
+      </div>
+      <div class="updates-banner-actions">
+        <template v-if="singleUpdate">
+          <AButton size="small" @click="openUpdateDetails(singleUpdate.plugin)">
+            {{ $gettext('Release notes') }}
+          </AButton>
+          <AButton size="small" type="primary" @click="openUpdate(singleUpdate.plugin)">
+            <template #icon>
+              <ArrowUpOutlined />
+            </template>
+            {{ $gettext('Update') }}
+          </AButton>
+        </template>
+        <AButton v-else size="small" type="primary" @click="filter = 'updates'">
+          {{ $gettext('Show updates') }}
+        </AButton>
       </div>
     </div>
 
@@ -377,6 +486,7 @@ function confirmUninstall(plugin: PluginInfo) {
           :key="plugin.id"
           :plugin="plugin"
           :has-nodes="hasNodes"
+          :update="updateById.get(plugin.id)"
           :withdrawn="withdrawnIds.has(plugin.id)"
           :delisted="delistedById.get(plugin.id)"
           :toggling="togglingId === plugin.id"
@@ -384,6 +494,8 @@ function confirmUninstall(plugin: PluginInfo) {
           @toggle="checked => toggle(plugin, checked)"
           @sync="openSync(plugin)"
           @uninstall="confirmUninstall(plugin)"
+          @update="openUpdate(plugin)"
+          @update-details="openUpdateDetails(plugin)"
           @updated="inventory.reload(true)"
         />
       </div>
@@ -399,12 +511,27 @@ function confirmUninstall(plugin: PluginInfo) {
       v-model:open="drawerOpen"
       v-model:tab="drawerTab"
       :plugin="selected"
+      :update="selected ? updateById.get(selected.id) : undefined"
       :has-nodes="hasNodes"
       :toggling="Boolean(selected) && togglingId === selected?.id"
       @toggle="checked => selected && toggle(selected, checked)"
       @sync="syncOpen = true"
       @uninstall="selected && confirmUninstall(selected)"
+      @update="selected && openUpdate(selected)"
+      @update-details="selected && openUpdateDetails(selected)"
       @updated="inventory.reload(true)"
+    />
+    <PluginDetailDrawer
+      v-model:open="updateDetailOpen"
+      :entry="updateTargetEntry"
+      @install="onDetailInstall"
+    />
+    <InstallConfirmModal
+      v-model:open="updateModalOpen"
+      :entry="updateTargetEntry"
+      :plugin-id="updateTargetId"
+      :version="updateTargetVersion"
+      @installed="onPluginUpdated"
     />
     <SyncNodesModal
       v-model:open="syncOpen"
@@ -479,6 +606,18 @@ function confirmUninstall(plugin: PluginInfo) {
   color: var(--ant-color-text-secondary);
   background: var(--ant-color-fill-secondary);
   border-radius: 999px;
+
+  &.is-update {
+    font-weight: 600;
+    color: var(--ant-color-text-light-solid, #fff);
+    background: var(--ant-color-primary);
+  }
+
+  &.is-attention {
+    font-weight: 600;
+    color: var(--ant-color-warning);
+    background: var(--ant-color-warning-bg);
+  }
 }
 
 .installed-empty {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { PluginChannel, PluginInfo, PluginUsage } from '@/api/plugin'
-import { CloudSyncOutlined, DeleteOutlined, DownOutlined, LinkOutlined, RightOutlined } from '@antdv-next/icons'
+import type { PluginUpdateInfo } from '@/api/plugin_marketplace'
+import { ArrowUpOutlined, CloudSyncOutlined, DeleteOutlined, DownOutlined, LinkOutlined, RightOutlined } from '@antdv-next/icons'
 import pluginApi, { localizedPluginDescription } from '@/api/plugin'
 import gettext from '@/gettext'
 import { formatDateTime } from '@/lib/helper'
@@ -19,12 +20,15 @@ import { useConflictNames } from './useConflicts'
 
 const props = defineProps<{
   plugin: PluginInfo
+  update?: PluginUpdateInfo
   hasNodes: boolean
 }>()
 
 const emit = defineEmits<{
   sync: []
   uninstall: []
+  update: []
+  updateDetails: []
   updated: []
 }>()
 
@@ -285,6 +289,35 @@ function formatCount(value: number) {
       show-icon
       :title="conflictNote(conflictingNames)"
     />
+
+    <div v-if="update" class="panel is-update">
+      <div class="update-panel-head">
+        <span class="update-panel-icon">
+          <ArrowUpOutlined />
+        </span>
+        <div class="min-w-0 flex-1">
+          <div class="panel-title">
+            {{ $gettext('Update available: v%{version}', { version: update.latest_version }) }}
+          </div>
+          <div class="panel-text">
+            {{ update.permissions_changed
+              ? $gettext('Installed v%{current}. This update changes the permissions the plugin requests.', { current: plugin.version })
+              : $gettext('Installed v%{current}. Settings and data are kept when updating.', { current: plugin.version }) }}
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <AButton size="small" @click="emit('updateDetails')">
+          {{ $gettext('Release notes') }}
+        </AButton>
+        <AButton type="primary" size="small" @click="emit('update')">
+          <template #icon>
+            <ArrowUpOutlined />
+          </template>
+          {{ $gettext('Update') }}
+        </AButton>
+      </div>
+    </div>
 
     <div v-if="description || plugin.homepage_url" class="flex flex-col gap-2">
       <p v-if="description" class="overview-description">

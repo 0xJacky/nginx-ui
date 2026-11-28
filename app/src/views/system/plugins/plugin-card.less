@@ -52,6 +52,11 @@
     box-shadow: inset 3px 0 0 var(--ant-color-error);
   }
 
+  // A plugin with a newer release gets a subtle accent border.
+  &.is-updatable {
+    border-color: var(--ant-color-primary-border);
+  }
+
   // A plugin that is off recedes, the switch keeps its normal contrast.
   &.is-muted {
     background: var(--ant-color-fill-quaternary);
@@ -183,6 +188,73 @@
   margin-top: auto;
   padding-top: 12px;
   border-top: 1px solid var(--ant-color-split);
+}
+
+// Shared banner shown above both the installed and marketplace lists when
+// at least one installed plugin has a newer release.
+.updates-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 12px;
+  margin-bottom: 16px;
+  padding: 10px 14px;
+  color: var(--ant-color-text);
+  background: var(--ant-color-primary-bg);
+  border: 1px solid var(--ant-color-primary-border);
+  border-radius: var(--ant-border-radius-lg);
+}
+
+.updates-banner-icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--ant-color-primary);
+  background: var(--ant-color-bg-container);
+  border-radius: 8px;
+}
+
+.updates-banner-body {
+  display: flex;
+  flex: 1 1 220px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  min-width: 0;
+}
+
+.updates-banner-text {
+  font-weight: 500;
+}
+
+.updates-banner-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ant-color-text-secondary);
+}
+
+.updates-banner-version {
+  padding: 1px 7px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  color: var(--ant-color-primary);
+  background: var(--ant-color-bg-container);
+  border: 1px solid var(--ant-color-primary-border);
+  border-radius: 999px;
+}
+
+.updates-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
