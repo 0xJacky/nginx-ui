@@ -141,6 +141,13 @@ func DeleteDnsCredential(c *gin.Context) {
 	cosy.Core[model.DnsCredential](c).Destroy()
 }
 
+// RecoverDnsCredential restores a credential from the trash. Deleting one
+// leaves the certificates and DNS domains that reference it untouched, so
+// recovering it makes those references resolve again.
+func RecoverDnsCredential(c *gin.Context) {
+	cosy.Core[model.DnsCredential](c).Recover()
+}
+
 func resolveProviderCode(payload DnsCredentialManageJson) string {
 	if trimmed := normalizeProviderCode(payload.ProviderCode); trimmed != "" {
 		return trimmed

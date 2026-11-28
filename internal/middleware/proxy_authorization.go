@@ -100,7 +100,7 @@ func buildProxyRouteAuthorizations() map[string]proxyAuthorization {
 	)
 	add(secure, http.MethodPut, "sites", "streams", "site_navigation/health_check/sync", "cert_sync", "dns/domains/:id/records/:record_id", "dns/domains/:id/ddns", "upstream/socket/:socket")
 	add(secure, http.MethodDelete, "access_lists/:id", "snippets/:file", "streams/:name", "auto_cert/:name", "sites/:name", "dns_credentials/:id", "certs/:id", "cert_sync", "acme_users/:id", "dns/domains/:id", "dns/domains/:id/records/:record_id", "dns/domains/:id/ddns", "settings/auth/banned_ip", "namespaces/:id", "auto_backup/:id", "upstreams/:name")
-	add(secure, http.MethodPatch, "acme_users/:id", "auto_backup/:id")
+	add(secure, http.MethodPatch, "acme_users/:id", "auto_backup/:id", "dns_credentials/:id", "dns/domains/:id", "namespaces/:id")
 	add(secure, http.MethodPut, "ingresses", "ingresses/:name")
 	add(secure, http.MethodDelete, "ingresses/:name")
 	add(secure, http.MethodPatch, "ingresses/:name/backends/:backend/servers")

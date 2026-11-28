@@ -54,6 +54,9 @@ func InitRouter(r *gin.RouterGroup) {
 		mutations.POST("namespaces", AddNamespace)
 		mutations.POST("namespaces/:id", ModifyNamespace)
 		mutations.DELETE("namespaces/:id", DeleteNamespace)
+		// The trash view recovers with PATCH, like every other Cosy resource.
+		// The POST route stays for API clients that already call it.
+		mutations.PATCH("namespaces/:id", RecoverNamespace)
 		mutations.POST("namespaces/:id/recover", RecoverNamespace)
 		mutations.POST("namespaces/order", UpdateNamespacesOrder)
 	}

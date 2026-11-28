@@ -151,6 +151,12 @@ func DeleteDomain(c *gin.Context) {
 	cosy.Core[model.DnsDomain](c).Destroy()
 }
 
+// RecoverDomain restores a domain from the trash. The unique index on domain
+// and credential covers deleted rows, so no live duplicate can exist.
+func RecoverDomain(c *gin.Context) {
+	cosy.Core[model.DnsDomain](c).Recover()
+}
+
 func ListRecords(c *gin.Context) {
 	domainID := cast.ToUint64(c.Param("id"))
 	var params recordListQuery

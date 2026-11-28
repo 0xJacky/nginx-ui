@@ -31,6 +31,7 @@ func InitRouter(r *gin.RouterGroup) {
 			o.POST("/domains", CreateDomain)
 			o.POST("/domains/:id", UpdateDomain)
 			o.DELETE("/domains/:id", DeleteDomain)
+			o.PATCH("/domains/:id", RecoverDomain)
 			o.POST("/domains/:id/records", CreateRecord)
 			o.PUT("/domains/:id/records/:record_id", UpdateRecord)
 			o.DELETE("/domains/:id/records/:record_id", DeleteRecord)
