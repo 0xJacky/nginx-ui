@@ -32,6 +32,8 @@ func ProxyWs() gin.HandlerFunc {
 
 		if _, carriesSecrets := readOnlyServiceTokenRefusedProxyWebSockets[c.FullPath()]; carriesSecrets &&
 			internalmcp.IsReadOnlyServiceTokenRequest(c) {
+			// Only a read-only service token gets here, never the web UI's
+			// login token, so this 403 cannot sign the web UI out.
 			c.AbortWithStatusJSON(http.StatusForbidden, ErrRemoteFeedHasSecrets)
 			return
 		}

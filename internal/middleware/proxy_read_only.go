@@ -103,7 +103,9 @@ func takeSecretFilesWithheld(response *http.Response) bool {
 
 // relayChildSecretFileRefusal keeps the 403 a child returns when it refuses a
 // secret file to a relayed read-only caller, which the proxy would otherwise
-// turn into a 503. It applies only to a refusal the child confirmed.
+// turn into a 503. It applies only to a refusal the child confirmed. The 403
+// reaches only read-only service tokens, the only callers this runs for, never
+// the web UI's login token, so it cannot sign the web UI out.
 func relayChildSecretFileRefusal(response *http.Response, route string, upstreamStatus int, childWithheld bool) {
 	if _, classifiedByChild := readOnlyServiceTokenUnconfirmedProxyRedactions[route]; !classifiedByChild ||
 		!childWithheld || upstreamStatus != http.StatusForbidden {
