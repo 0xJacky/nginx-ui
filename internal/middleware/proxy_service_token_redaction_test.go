@@ -188,10 +188,10 @@ var serviceTokenAwareHandlers = map[string]serviceTokenAwareHandler{
 	"dns.GetDomain":                                 {routes: []string{"GET /api/dns/domains/:id"}},
 	"dns.ListDomains":                               {routes: []string{"GET /api/dns/domains"}},
 	"external_notify.redactConfigForReadOnlyTokens": {routes: []string{"GET /api/external_notifies", "GET /api/external_notifies/:id"}},
-	"sites.GetHealthCheck":                          {routes: []string{"GET /api/site_navigation/health_check/:id"}},
-	"sites.GetSiteNavigation":                       {routes: []string{"GET /api/site_navigation"}},
-	"sites.SiteNavigationWebSocket":                 {routes: []string{"GET /api/site_navigation_ws"}},
-	"upstream_discovery.setView":                    {routes: []string{"GET /api/upstream_discoveries", "GET /api/upstream_discoveries/:id"}},
+	"sites.healthCheckSecretViewFor": {routes: []string{
+		"GET /api/site_navigation", "GET /api/site_navigation/health_check/:id", "GET /api/site_navigation_ws",
+	}},
+	"upstream_discovery.setView": {routes: []string{"GET /api/upstream_discoveries", "GET /api/upstream_discoveries/:id"}},
 }
 
 // serviceTokenChecks are the identifiers a handler uses to tell a service

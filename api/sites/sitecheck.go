@@ -3,6 +3,7 @@ package sites
 import (
 	"context"
 	"fmt"
+	"maps"
 	"net/http"
 	"net/url"
 	"strings"
@@ -26,10 +27,7 @@ import (
 // GetSiteNavigation returns all sites for navigation dashboard
 func GetSiteNavigation(c *gin.Context) {
 	service := sitecheck.GetService()
-	sites := service.GetSites()
-	if internalmcp.IsReadOnlyServiceTokenRequest(c) {
-		sites = redactSiteInfos(sites)
-	}
+	sites := redactSiteInfos(service.GetSites(), healthCheckSecretViewFor(c))
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": sites,
@@ -103,22 +101,51 @@ func GetHealthCheck(c *gin.Context) {
 	}
 
 	ensureHealthCheckConfig(siteConfig)
-	if internalmcp.IsReadOnlyServiceTokenRequest(c) {
-		redactHealthCheckSecrets(siteConfig)
-	}
+	healthCheckSecretViewFor(c).redact(siteConfig)
 
 	c.JSON(http.StatusOK, siteConfig)
 }
 
-// redactHealthCheckSecrets hides the probe secrets a site config stores from
-// read-only service tokens: custom header values, which commonly carry
-// Authorization credentials, the request body, URL credentials and the form
-// values of a plugin probe kind. The plugin defines that form, so any of its
-// values may be a credential. Header and form keys stay visible. Values are
-// copied so a shared config is never modified.
-func redactHealthCheckSecrets(siteConfig *model.SiteConfig) {
+// healthCheckSecretView says which of the probe secrets a site config stores
+// a caller may read.
+type healthCheckSecretView uint8
+
+const (
+	// showHealthCheckSecrets is the view of the web UI's login token and of
+	// node-to-node requests, which need every value to round-trip the editor
+	// and to synchronize sites.
+	showHealthCheckSecrets healthCheckSecretView = iota
+	// hideProbeConfigValues is the view of a service token with api:write. The
+	// form values of a plugin probe kind are hidden: the plugin defines that
+	// form, so any of its values may be a credential. The other probe settings
+	// stay readable.
+	hideProbeConfigValues
+	// hideHealthCheckSecrets is the view of a read-only service token. On top of
+	// the plugin form values it hides custom header values, which commonly
+	// carry Authorization credentials, the request body and URL credentials.
+	hideHealthCheckSecrets
+)
+
+func healthCheckSecretViewFor(c *gin.Context) healthCheckSecretView {
+	switch {
+	case internalmcp.IsReadOnlyServiceTokenRequest(c):
+		return hideHealthCheckSecrets
+	case internalmcp.IsServiceTokenRequest(c):
+		return hideProbeConfigValues
+	default:
+		return showHealthCheckSecrets
+	}
+}
+
+// redact replaces the values the view hides with the shared redaction
+// placeholder. Header and form keys stay visible. Values are copied so a
+// shared config is never modified.
+func (view healthCheckSecretView) redact(siteConfig *model.SiteConfig) {
+	if view == showHealthCheckSecrets {
+		return
+	}
 	siteConfig.ProbeConfig = internalmcp.RedactValues(siteConfig.ProbeConfig)
-	if siteConfig.HealthCheckConfig == nil {
+	if view != hideHealthCheckSecrets || siteConfig.HealthCheckConfig == nil {
 		return
 	}
 	healthCheckConfig := *siteConfig.HealthCheckConfig
@@ -131,10 +158,13 @@ func redactHealthCheckSecrets(siteConfig *model.SiteConfig) {
 	siteConfig.HealthCheckConfig = &healthCheckConfig
 }
 
-// redactSiteInfos returns copies of the checker's sites with probe header
-// values hidden. The checker keeps probing with the originals, so they must not
-// be modified.
-func redactSiteInfos(sites []*sitecheck.SiteInfo) []*sitecheck.SiteInfo {
+// redactSiteInfos returns the checker's sites as the view shows them. Hidden
+// values are redacted in copies: the checker keeps probing with the originals,
+// so they must not be modified.
+func redactSiteInfos(sites []*sitecheck.SiteInfo, view healthCheckSecretView) []*sitecheck.SiteInfo {
+	if view == showHealthCheckSecrets {
+		return sites
+	}
 	redacted := make([]*sitecheck.SiteInfo, 0, len(sites))
 	for _, site := range sites {
 		if site == nil {
@@ -142,10 +172,71 @@ func redactSiteInfos(sites []*sitecheck.SiteInfo) []*sitecheck.SiteInfo {
 			continue
 		}
 		clone := *site
-		redactHealthCheckSecrets(&clone.SiteConfig)
+		view.redact(&clone.SiteConfig)
 		redacted = append(redacted, &clone)
 	}
 	return redacted
+}
+
+// restoreRedactedProbeConfig lets a caller save back the probe_config a
+// redacted read returned without overwriting the stored values with the
+// placeholder. A probe_config that is left out, or that is the redacted map
+// itself (the stored keys, each value the placeholder), keeps the stored
+// values, but only while the probe stays the same: the same plugin kind and the
+// same probe target. Otherwise the request could point the stored credentials
+// at a target of its own choosing, so it has to send every value itself. The
+// placeholder mixed with other values is refused rather than compared with the
+// stored values, so the answer never tells whether a guessed value is right.
+// A probe_config without the placeholder is used as sent.
+func restoreRedactedProbeConfig(stored *model.SiteConfig, kind string, config *model.HealthCheckConfig, submitted map[string]string) (map[string]string, error) {
+	if sitecheck.IsBuiltinProbeKind(kind) {
+		return submitted, nil
+	}
+	if submitted != nil && !carriesRedactionPlaceholder(submitted) {
+		return submitted, nil
+	}
+	if submitted == nil {
+		if kind != stored.ProbeKind || len(stored.ProbeConfig) == 0 {
+			return nil, nil
+		}
+		if probeTarget(config) != probeTarget(stored.HealthCheckConfig) {
+			return nil, fmt.Errorf("probe_config is required when the probe target changes")
+		}
+		return maps.Clone(stored.ProbeConfig), nil
+	}
+	for key, value := range submitted {
+		if _, ok := stored.ProbeConfig[key]; !ok || value != settings.RedactedSensitiveValue {
+			return nil, fmt.Errorf("probe_config may only carry the redaction placeholder as the stored form returned it, every value the placeholder; to change a value, send every value")
+		}
+	}
+	if len(submitted) != len(stored.ProbeConfig) {
+		return nil, fmt.Errorf("probe_config carries the redaction placeholder, but its keys differ from the stored ones; send every value")
+	}
+	if kind != stored.ProbeKind {
+		return nil, fmt.Errorf("probe_config carries the redaction placeholder, but probe_kind differs from the stored kind; send every value")
+	}
+	if probeTarget(config) != probeTarget(stored.HealthCheckConfig) {
+		return nil, fmt.Errorf("probe_config carries the redaction placeholder, but the probe target changed; send every value")
+	}
+	return maps.Clone(stored.ProbeConfig), nil
+}
+
+func carriesRedactionPlaceholder(values map[string]string) bool {
+	for _, value := range values {
+		if value == settings.RedactedSensitiveValue {
+			return true
+		}
+	}
+	return false
+}
+
+// probeTarget is the URL a plugin probe kind checks when it is not the site's
+// own URL, which this request cannot change.
+func probeTarget(config *model.HealthCheckConfig) string {
+	if config == nil {
+		return ""
+	}
+	return strings.TrimSpace(config.TargetURL)
 }
 
 // createDefaultHealthCheckConfig creates default health check configuration
@@ -342,6 +433,12 @@ func UpdateHealthCheck(c *gin.Context) {
 		cosy.ErrHandler(c, err)
 		return
 	}
+	// Restore before synchronizing too: the other nodes need the real values.
+	req.ProbeConfig, err = restoreRedactedProbeConfig(siteConfig, req.ProbeKind, req.HealthCheckConfig, req.ProbeConfig)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		return
+	}
 	if err := updateHealthCheckConfig(siteConfig, &req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
@@ -436,7 +533,12 @@ func TestHealthCheck(c *gin.Context) {
 	}
 
 	if !sitecheck.IsBuiltinProbeKind(req.ProbeKind) {
-		testProbeKind(c, siteConfig, req.Config, req.ProbeKind, req.ProbeConfig)
+		probeConfig, err := restoreRedactedProbeConfig(siteConfig, req.ProbeKind, req.Config, req.ProbeConfig)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+			return
+		}
+		testProbeKind(c, siteConfig, req.Config, req.ProbeKind, probeConfig)
 		return
 	}
 

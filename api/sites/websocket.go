@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/0xJacky/Nginx-UI/internal/helper"
-	internalmcp "github.com/0xJacky/Nginx-UI/internal/mcp"
 	"github.com/0xJacky/Nginx-UI/internal/middleware"
 	"github.com/0xJacky/Nginx-UI/internal/sitecheck"
 	"github.com/gin-gonic/gin"
@@ -57,9 +56,10 @@ type WSClient struct {
 	send   chan interface{}
 	mutex  sync.RWMutex
 	closed bool
-	// hideSecrets is set for read-only service tokens. Broadcasts reach every
-	// client from the same site list, so the redaction is applied per client.
-	hideSecrets bool
+	// secretView is the caller's view of the probe secrets. Broadcasts reach
+	// every client from the same site list, so the redaction is applied per
+	// client.
+	secretView healthCheckSecretView
 }
 
 func (c *WSClient) trySend(v interface{}) bool {
@@ -106,13 +106,13 @@ var wsManager = &WSManager{
 }
 
 // AddConnection adds a WebSocket connection to the manager
-func (wm *WSManager) AddConnection(conn *websocket.Conn, hideSecrets bool) *WSClient {
+func (wm *WSManager) AddConnection(conn *websocket.Conn, secretView healthCheckSecretView) *WSClient {
 	wm.mutex.Lock()
 	defer wm.mutex.Unlock()
 	client := &WSClient{
-		conn:        conn,
-		send:        make(chan interface{}, 16),
-		hideSecrets: hideSecrets,
+		conn:       conn,
+		send:       make(chan interface{}, 16),
+		secretView: secretView,
 	}
 	wm.connections[conn] = client
 	return client
@@ -181,19 +181,19 @@ func SiteNavigationWebSocket(c *gin.Context) {
 	}
 
 	logger.Info("Site navigation WebSocket connection established")
-	serveSiteNavigation(conn, sitecheck.GetService(), internalmcp.IsReadOnlyServiceTokenRequest(c))
+	serveSiteNavigation(conn, sitecheck.GetService(), healthCheckSecretViewFor(c))
 	logger.Info("Site navigation WebSocket connection closed")
 }
 
 // serveSiteNavigation runs one site navigation session until the peer closes
 // the connection or stops answering pings, then releases the connection.
-func serveSiteNavigation(conn *websocket.Conn, service *sitecheck.Service, hideSecrets bool) {
+func serveSiteNavigation(conn *websocket.Conn, service *sitecheck.Service, secretView healthCheckSecretView) {
 	// Arm the keepalive before the read loop starts. The read loop below
 	// processes the pongs, so a silent peer makes the read time out and the
 	// connection leaves the broadcast manager within the pong wait.
 	keepalive := helper.StartWebSocketKeepalive(conn)
 
-	client := wsManager.AddConnection(conn, hideSecrets)
+	client := wsManager.AddConnection(conn, secretView)
 	defer func() {
 		keepalive.Stop()
 		wsManager.RemoveConnection(conn)
@@ -213,9 +213,7 @@ func serveSiteNavigation(conn *websocket.Conn, service *sitecheck.Service, hideS
 
 // sendSiteData sends site data via WebSocket
 func sendSiteData(client *WSClient, msgType string, sites []*sitecheck.SiteInfo) error {
-	if client.hideSecrets {
-		sites = redactSiteInfos(sites)
-	}
+	sites = redactSiteInfos(sites, client.secretView)
 	message := ServerMessage{
 		Type: msgType,
 		Data: sites,

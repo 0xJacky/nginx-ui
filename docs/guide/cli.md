@@ -16,15 +16,26 @@ The API scopes are:
 | Scope | Access |
 | --- | --- |
 | `api:read` | `GET`, `HEAD`, and `OPTIONS` management API requests, with stored secrets hidden |
-| `api:write` | Mutating management API requests and API read access, including stored secrets |
+| `api:write` | Mutating management API requests and API read access, including stored secrets except plugin form values |
 
 `api:read` is a read-only role and never receives stored secrets. Responses
 keep their shape and every non-secret field, but secret values are replaced by
 `__NGINX_UI_REDACTED__`. This covers notifier configuration values, site health
 check header values, request bodies and the passwords and query values of
 their probe and click URLs, DNS provider credentials attached to DNS domains, and
-the private key in certificate details. The DNS credential, ACME account and S3
-auto-backup endpoints omit their credential fields for every service token. Reading a
+the private key in certificate details. The DNS credential, ACME account and
+auto-backup endpoints omit their credential fields for every service token,
+including the S3 keys and the form values of a plugin storage backend
+(`storage_config`). The form values of a plugin probe kind on a site health
+check (`probe_config`) are replaced by `__NGINX_UI_REDACTED__` for every service
+token as well, `api:write` included, because the plugin defines that form and
+any of its values may be a credential. Saving a health check back with the
+`probe_config` it returned, every value still the placeholder, or without
+`probe_config`, keeps the stored values as long as the probe kind and the probe
+target URL stay the same. To change the kind, the target or any value, send
+every value; the placeholder mixed with other values is refused. This keeps the
+values out of API answers; it does not limit what else an `api:write` token may
+do, such as exporting a backup. Reading a
 secret file through `GET /api/config` is refused with `403` and error code
 `40019`: a `.key` or `.htpasswd` file, any file containing a PEM or PGP private
 key block, and any file that the Nginx configuration names in
@@ -37,7 +48,7 @@ Certificates and other configuration files stay readable. The site navigation
 WebSocket feed of a remote node (`X-Node-ID`) is refused with `403` and error
 code `40301`, because the controller cannot redact relayed frames. Use
 `GET /api/site_navigation` instead. Use an `api:write` token when automation
-needs to export keys or read stored credentials.
+needs to export keys or read the other stored credentials.
 
 MCP scopes are independent of API scopes. Granting `mcp:write` does not grant
 management API access, and granting `api:write` does not grant MCP access.

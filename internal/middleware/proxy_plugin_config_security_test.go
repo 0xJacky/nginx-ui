@@ -1,7 +1,9 @@
 package middleware_test
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -27,16 +29,17 @@ import (
 	"gorm.io/driver/sqlite"
 )
 
-// GHSA-fpv9-q72v-fgrc, GHSA-8f3g-q7q2-4w6r: the form values of a plugin
-// probe kind (a site's probe_config) and of a plugin storage backend (an auto
-// backup's storage_config) may be credentials. In the list and detail reads
-// below, a service token that lacks api:write does not receive the probe
-// values and no service token receives the storage values, both on this node
-// and relayed from a child node. The child answers the controller's node
-// principal in full, so for these reads the relayed response must match what
-// the same caller gets locally. This does not cover writes: locally an
-// api:write token gets the storage values back in the answers to its own
-// create and modify requests, while the relayed answers leave them out
+// The form values of a plugin probe kind (a site's probe_config) and of a
+// plugin storage backend (an auto backup's storage_config) may be credentials.
+// In the list and detail reads below no service token, api:write included,
+// receives them, both on this node and relayed from a child node. The probe
+// values keep their keys and read as the placeholder; the storage values are
+// left out. The other probe secrets, such as header values, stay readable for
+// api:write. The child answers the controller's node principal in full, so for
+// these reads the relayed response must match what the same caller gets
+// locally. This does not cover writes: locally an api:write token gets the
+// storage values back in the answers to its own create and modify requests,
+// while the relayed answers leave them out
 // (TestRelayedServiceTokenWritesKeepRedactionInEveryShape). Interactive
 // administrators keep the values the editors need to round-trip.
 func TestPluginConfigBlobsAreRedactedForServiceTokensLocallyAndRelayed(t *testing.T) {
@@ -76,10 +79,12 @@ func TestPluginConfigBlobsAreRedactedForServiceTokensLocallyAndRelayed(t *testin
 	_, writeToken, err := internalmcp.CreateServiceToken("writer", []string{model.APITokenScopeWrite}, nil, admin.ID)
 	require.NoError(t, err)
 
-	const probeSecret, storageSecret = "PROBE-SECRET-5", "STORAGE-SECRET-6"
+	const probeSecret, storageSecret, headerSecret = "PROBE-SECRET-5", "STORAGE-SECRET-6", "HEADER-SECRET-7"
 	siteConfig := &model.SiteConfig{
 		SiteKey: "example.com:443", SiteName: "example", Host: "example.com:443", Scheme: "https",
 		ProbeKind: "plugin:redis", ProbeConfig: map[string]string{"password": probeSecret},
+		HealthCheckConfig: &model.HealthCheckConfig{Protocol: "https", Method: "GET", Path: "/",
+			Headers: map[string]string{"Authorization": headerSecret}},
 	}
 	require.NoError(t, db.Create(siteConfig).Error)
 	autoBackup := &model.AutoBackup{
@@ -143,6 +148,11 @@ func TestPluginConfigBlobsAreRedactedForServiceTokensLocallyAndRelayed(t *testin
 	}{
 		{
 			path: "/api/site_navigation/health_check/" + id(siteConfig.ID), secret: probeSecret, keep: `"password"`,
+			hidden: []caller{reader, writer}, visible: []caller{administrator},
+		},
+		{
+			// Unchanged: api:write still reads the header values.
+			path: "/api/site_navigation/health_check/" + id(siteConfig.ID), secret: headerSecret, keep: `"Authorization"`,
 			hidden: []caller{reader}, visible: []caller{writer, administrator},
 		},
 		{
@@ -172,5 +182,42 @@ func TestPluginConfigBlobsAreRedactedForServiceTokensLocallyAndRelayed(t *testin
 		for _, c := range tc.visible {
 			check(c, true)
 		}
+	}
+	// An api:write automation saves back what it read, locally and relayed:
+	// the child keeps its stored probe values instead of the placeholder.
+	for _, remote := range []bool{false, true} {
+		t.Run("api:write save round trip remote="+strconv.FormatBool(remote), func(t *testing.T) {
+			read := get(t, "/api/site_navigation/health_check/"+id(siteConfig.ID), writeToken, remote)
+			require.Contains(t, read, appsettings.RedactedSensitiveValue)
+			var record map[string]any
+			require.NoError(t, json.Unmarshal([]byte(read), &record))
+			body, err := json.Marshal(map[string]any{
+				"health_check_enabled": true,
+				"check_interval":       120,
+				"timeout":              5,
+				"health_check_config":  record["health_check_config"],
+				"probe_kind":           record["probe_kind"],
+				"probe_config":         record["probe_config"],
+			})
+			require.NoError(t, err)
+
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			req := httptest.NewRequest(http.MethodPost, "/api/site_navigation/health_check/"+id(siteConfig.ID), bytes.NewReader(body)).WithContext(ctx)
+			req.Header.Set("Authorization", "Bearer "+writeToken)
+			req.Header.Set("Content-Type", "application/json")
+			if remote {
+				req.Header.Set("X-Node-ID", id(node.ID))
+			}
+			res := httptest.NewRecorder()
+			controller.ServeHTTP(res, req)
+			require.Equal(t, http.StatusOK, res.Code, res.Body.String())
+
+			var saved model.SiteConfig
+			require.NoError(t, db.First(&saved, siteConfig.ID).Error)
+			require.Equal(t, map[string]string{"password": probeSecret}, saved.ProbeConfig)
+			require.Equal(t, headerSecret, saved.HealthCheckConfig.Headers["Authorization"])
+			require.Equal(t, 120, saved.CheckInterval)
+		})
 	}
 }
