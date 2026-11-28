@@ -250,6 +250,8 @@ func (m *Manager) finishInstall(ctx context.Context, manifest *protocol.Manifest
 	}
 	if created {
 		seedSettings(manifest, row)
+	} else {
+		repairSeededSettings(manifest, row)
 	}
 
 	approved := len(unapprovedPermissions(row.ApprovedPermissions, manifest)) == 0

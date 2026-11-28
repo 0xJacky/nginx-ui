@@ -468,11 +468,17 @@ func (m *Manager) discover(ctx context.Context) error {
 				m.log.Errorf("Register plugin %s: %v", id, err)
 				continue
 			}
-		case row.Version != manifest.Version:
-			// The files were replaced out of band, keep the row in sync.
-			row.Version = manifest.Version
-			if err = m.saveRow(ctx, row); err != nil {
-				m.log.Errorf("Update plugin %s version: %v", id, err)
+		default:
+			changed := repairSeededSettings(manifest, row)
+			if row.Version != manifest.Version {
+				// The files were replaced out of band, keep the row in sync.
+				row.Version = manifest.Version
+				changed = true
+			}
+			if changed {
+				if err = m.saveRow(ctx, row); err != nil {
+					m.log.Errorf("Update plugin %s: %v", id, err)
+				}
 			}
 		}
 		entries[id] = m.newEntry(id, manifest, row)
