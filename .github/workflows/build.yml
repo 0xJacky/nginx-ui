@@ -74,6 +74,9 @@ jobs:
         with:
           bun-version: 1.4.5
 
+      - name: Check bun.lock holds one @v-c/util
+        run: bash .github/scripts/check-single-v-c-util.sh bun.lock
+
       - name: Install dependencies
         run: bun ci
 
