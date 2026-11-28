@@ -11,7 +11,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/dns/armdns v1.2.0
 	github.com/BurntSushi/toml v1.6.0
 	github.com/Microsoft/go-winio v0.6.4
-	github.com/alibabacloud-go/darabonba-openapi/v2 v2.2.5
+	github.com/alibabacloud-go/darabonba-openapi/v2 v2.2.6
 	github.com/alibabacloud-go/tea v1.5.4
 	github.com/caarlos0/env/v11 v11.4.2
 	github.com/casdoor/casdoor-go-sdk v1.60.0
@@ -21,7 +21,7 @@ require (
 	github.com/dgraph-io/ristretto/v2 v2.4.2
 	github.com/docker/docker v28.5.2+incompatible
 	github.com/dustin/go-humanize v1.1.0
-	github.com/elliotchance/orderedmap/v3 v3.1.1
+	github.com/elliotchance/orderedmap/v3 v3.2.0
 	github.com/fsnotify/fsnotify v1.10.1
 	github.com/gabriel-vasile/mimetype v1.4.16
 	github.com/gin-contrib/cors v1.7.11
@@ -49,15 +49,15 @@ require (
 	github.com/oschwald/maxminddb-golang/v2 v2.9.1
 	github.com/pires/go-proxyproto v0.16.0
 	github.com/pkg/errors v0.9.1
-	github.com/pkg/sftp v1.13.12
+	github.com/pkg/sftp v1.13.13
 	github.com/pquerna/otp v1.5.0
 	github.com/pretty66/websocketproxy v0.0.0-20220507015215-930b3a686308
 	github.com/samber/lo v1.53.0
-	github.com/sashabaranov/go-openai v1.43.0
+	github.com/sashabaranov/go-openai v1.44.0
 	github.com/shirou/gopsutil/v4 v4.26.10
 	github.com/spf13/cast v1.10.0
 	github.com/stretchr/testify v1.12.1
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.217
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.3.220
 	github.com/tufanbarisyildirim/gonginx v0.0.0-20260220081509-8e17ce617db3
 	github.com/ulikunitz/xz v0.5.17
 	github.com/uozi-tech/cosy v1.35.5
@@ -86,7 +86,7 @@ require (
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.5 // indirect
 	github.com/alibabacloud-go/debug v1.0.1 // indirect
 	github.com/alibabacloud-go/endpoint-util v1.1.1 // indirect
-	github.com/alibabacloud-go/tea-utils/v2 v2.0.9 // indirect
+	github.com/alibabacloud-go/tea-utils/v2 v2.0.10 // indirect
 	github.com/aliyun/credentials-go v1.4.12 // indirect
 	github.com/blinkbean/dingtalk v1.1.3 // indirect
 	github.com/boombuler/barcode v1.1.0 // indirect
